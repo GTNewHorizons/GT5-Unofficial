@@ -1,15 +1,7 @@
 package com.minecraft7771.gtnhintergalactic.block;
 
-import com.minecraft7771.gtnhintergalactic.GTNHIntergalactic;
-import com.minecraft7771.gtnhintergalactic.item.IGItems;
-import com.minecraft7771.gtnhintergalactic.item.ItemCasingSpaceElevator;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.enums.Textures;
-import gregtech.api.objects.GT_CopiedBlockTexture;
-import gregtech.api.util.GT_LanguageManager;
-import gregtech.common.blocks.GT_Block_Casings_Abstract;
-import gregtech.common.blocks.GT_Material_Casings;
+import java.util.List;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -17,7 +9,17 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 
-import java.util.List;
+import com.minecraft7771.gtnhintergalactic.GTNHIntergalactic;
+import com.minecraft7771.gtnhintergalactic.item.IGItems;
+import com.minecraft7771.gtnhintergalactic.item.ItemCasingSpaceElevator;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.Textures;
+import gregtech.api.objects.GT_CopiedBlockTexture;
+import gregtech.api.util.GT_LanguageManager;
+import gregtech.common.blocks.GT_Block_Casings_Abstract;
+import gregtech.common.blocks.GT_Material_Casings;
 
 public class BlockCasingSpaceElevator extends GT_Block_Casings_Abstract {
 
@@ -46,10 +48,14 @@ public class BlockCasingSpaceElevator extends GT_Block_Casings_Abstract {
     @Override
     public void registerBlockIcons(IIconRegister aIconRegister) {
         IconSECasing0 = aIconRegister.registerIcon(GTNHIntergalactic.ASSET_PREFIX + ":spaceElevator/BaseCasing");
-        IconSECasing1[0] = aIconRegister.registerIcon(GTNHIntergalactic.ASSET_PREFIX + ":spaceElevator/SupportStructure");
-        IconSECasing1[1] = aIconRegister.registerIcon(GTNHIntergalactic.ASSET_PREFIX + ":spaceElevator/SupportStructure_Side");
-        IconSECasing2[0] = aIconRegister.registerIcon(GTNHIntergalactic.ASSET_PREFIX + ":spaceElevator/InternalStructure");
-        IconSECasing2[1] = aIconRegister.registerIcon(GTNHIntergalactic.ASSET_PREFIX + ":spaceElevator/InternalStructure_Side");
+        IconSECasing1[0] = aIconRegister
+                .registerIcon(GTNHIntergalactic.ASSET_PREFIX + ":spaceElevator/SupportStructure");
+        IconSECasing1[1] = aIconRegister
+                .registerIcon(GTNHIntergalactic.ASSET_PREFIX + ":spaceElevator/SupportStructure_Side");
+        IconSECasing2[0] = aIconRegister
+                .registerIcon(GTNHIntergalactic.ASSET_PREFIX + ":spaceElevator/InternalStructure");
+        IconSECasing2[1] = aIconRegister
+                .registerIcon(GTNHIntergalactic.ASSET_PREFIX + ":spaceElevator/InternalStructure_Side");
     }
 
     @Override

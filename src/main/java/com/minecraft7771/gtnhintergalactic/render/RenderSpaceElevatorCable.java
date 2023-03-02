@@ -1,10 +1,5 @@
 package com.minecraft7771.gtnhintergalactic.render;
 
-import com.minecraft7771.gtnhintergalactic.GTNHIntergalactic;
-import com.minecraft7771.gtnhintergalactic.block.BlockSpaceElevatorCable;
-import com.minecraft7771.gtnhintergalactic.config.Config;
-import com.minecraft7771.gtnhintergalactic.tile.TileEntitySpaceElevatorCable;
-import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderBlocks;
@@ -17,7 +12,14 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;
+
 import org.lwjgl.opengl.GL11;
+
+import com.minecraft7771.gtnhintergalactic.GTNHIntergalactic;
+import com.minecraft7771.gtnhintergalactic.block.BlockSpaceElevatorCable;
+import com.minecraft7771.gtnhintergalactic.config.Config;
+import com.minecraft7771.gtnhintergalactic.tile.TileEntitySpaceElevatorCable;
+import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
 /**
  * Renderer for the elevator cable
@@ -27,10 +29,11 @@ import org.lwjgl.opengl.GL11;
  * @author minecraft7771
  */
 public class RenderSpaceElevatorCable extends TileEntitySpecialRenderer implements ISimpleBlockRenderingHandler {
+
     /** Location of the climber texture */
     private static final ResourceLocation climberTexture = new ResourceLocation(
-        GTNHIntergalactic.ASSET_PREFIX,
-        "textures/model/climber.png");
+            GTNHIntergalactic.ASSET_PREFIX,
+            "textures/model/climber.png");
     /** Model of the climber */
     private static IModelCustom modelCustom;
     /** Offset of the climber from the Space Elevator Cable block */
@@ -46,17 +49,17 @@ public class RenderSpaceElevatorCable extends TileEntitySpecialRenderer implemen
     private static final double CABLE_HEIGHT = 512.0;
     /** X edges of the helix */
     private static final float[] edgeX = { LONG_DISTANCE, LONG_DISTANCE, SHORT_DISTANCE, -SHORT_DISTANCE,
-        -LONG_DISTANCE, -LONG_DISTANCE, -SHORT_DISTANCE, SHORT_DISTANCE };
+            -LONG_DISTANCE, -LONG_DISTANCE, -SHORT_DISTANCE, SHORT_DISTANCE };
     /** Z edges of the helix */
     private static final float[] edgeZ = { SHORT_DISTANCE, -SHORT_DISTANCE, -LONG_DISTANCE, -LONG_DISTANCE,
-        -SHORT_DISTANCE, SHORT_DISTANCE, LONG_DISTANCE, LONG_DISTANCE };
+            -SHORT_DISTANCE, SHORT_DISTANCE, LONG_DISTANCE, LONG_DISTANCE };
 
     /**
      * Create a new render for the space elevator cable
      */
     public RenderSpaceElevatorCable() {
         modelCustom = AdvancedModelLoader
-            .loadModel(new ResourceLocation(GTNHIntergalactic.ASSET_PREFIX, "models/climber.obj"));
+                .loadModel(new ResourceLocation(GTNHIntergalactic.ASSET_PREFIX, "models/climber.obj"));
     }
 
     /**
@@ -87,12 +90,12 @@ public class RenderSpaceElevatorCable extends TileEntitySpecialRenderer implemen
             GL11.glPushMatrix();
             // If the Space Elevator is build on a low Y level the climber should reach a minimum height
             GL11.glTranslated(
-                x + 0.5,
-                y + 0.5
-                    + cableTile.getClimberHeight()
-                    + ((CLIMBER_OFFSET + cableTile.yCoord) < MIN_CLIMBER_HEIGHT ? MIN_CLIMBER_HEIGHT
-                    : CLIMBER_OFFSET),
-                z + 0.5);
+                    x + 0.5,
+                    y + 0.5
+                            + cableTile.getClimberHeight()
+                            + ((CLIMBER_OFFSET + cableTile.yCoord) < MIN_CLIMBER_HEIGHT ? MIN_CLIMBER_HEIGHT
+                                    : CLIMBER_OFFSET),
+                    z + 0.5);
             GL11.glRotated(cableTile.getClimberRotation(), 0.0, 1.0, 0.0);
             renderClimber();
             GL11.glPopMatrix();
@@ -206,7 +209,7 @@ public class RenderSpaceElevatorCable extends TileEntitySpecialRenderer implemen
      */
     @Override
     public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId,
-                                    RenderBlocks renderer) {
+            RenderBlocks renderer) {
         TileEntity te = world.getTileEntity(x, y, z);
         if (te instanceof TileEntitySpaceElevatorCable) {
             if (!((TileEntitySpaceElevatorCable) te).shouldRender()) {
@@ -270,7 +273,7 @@ public class RenderSpaceElevatorCable extends TileEntitySpecialRenderer implemen
      * @param maxV Maximum V coordinate of the texture
      */
     private void motorGlow(Tessellator tes, double x, double y, double z, double minU, double maxU, double minV,
-                           double maxV) {
+            double maxV) {
         // spotless:off
         tes.addVertexWithUV(x + 0.5f - 2.51f, y - 22f,          z + 0.5f + 0.5f, minU, maxV);
         tes.addVertexWithUV(x + 0.5f - 2.51f, y + 0.5f + 0.5f,  z + 0.5f + 0.5f, minU, minV);
@@ -310,7 +313,7 @@ public class RenderSpaceElevatorCable extends TileEntitySpecialRenderer implemen
      * @param maxV   Maximum V coordinate of the texture
      */
     private void clockwiseHelixPart(Tessellator tes, double x, double y, double z, int offset, double side,
-                                    double width, double minU, double maxU, double minV, double maxV) {
+            double width, double minU, double maxU, double minV, double maxV) {
 
         double sectionHeight = 8 * side;
         int sections = (int) Math.ceil(CABLE_HEIGHT / sectionHeight);
@@ -328,32 +331,32 @@ public class RenderSpaceElevatorCable extends TileEntitySpecialRenderer implemen
                 double lightMaxV = cableLight.getMaxV();
 
                 tes.addVertexWithUV(
-                    x + 0.5f + edgeX[k],
-                    y + side * i + side,
-                    z + 0.5f + edgeZ[k],
-                    lightMinU,
-                    lightMaxV);
+                        x + 0.5f + edgeX[k],
+                        y + side * i + side,
+                        z + 0.5f + edgeZ[k],
+                        lightMinU,
+                        lightMaxV);
                 tes.addVertexWithUV(
-                    x + 0.5f + edgeX[k],
-                    y + side * i + (side + width),
-                    z + 0.5f + edgeZ[k],
-                    lightMinU,
-                    lightMinV);
+                        x + 0.5f + edgeX[k],
+                        y + side * i + (side + width),
+                        z + 0.5f + edgeZ[k],
+                        lightMinU,
+                        lightMinV);
                 tes.addVertexWithUV(
-                    x + 0.5f + edgeX[j],
-                    y + side * i + width,
-                    z + 0.5f + edgeZ[j],
-                    lightMaxU,
-                    lightMinV);
+                        x + 0.5f + edgeX[j],
+                        y + side * i + width,
+                        z + 0.5f + edgeZ[j],
+                        lightMaxU,
+                        lightMinV);
                 tes.addVertexWithUV(x + 0.5f + edgeX[j], y + side * i, z + 0.5f + edgeZ[j], lightMaxU, lightMaxV);
             } else {
                 tes.addVertexWithUV(x + 0.5f + edgeX[k], y + side * i + side, z + 0.5f + edgeZ[k], minU, maxV);
                 tes.addVertexWithUV(
-                    x + 0.5f + edgeX[k],
-                    y + side * i + (side + width),
-                    z + 0.5f + edgeZ[k],
-                    minU,
-                    minV);
+                        x + 0.5f + edgeX[k],
+                        y + side * i + (side + width),
+                        z + 0.5f + edgeZ[k],
+                        minU,
+                        minV);
                 tes.addVertexWithUV(x + 0.5f + edgeX[j], y + side * i + width, z + 0.5f + edgeZ[j], maxU, minV);
                 tes.addVertexWithUV(x + 0.5f + edgeX[j], y + side * i, z + 0.5f + edgeZ[j], maxU, maxV);
             }

@@ -1,13 +1,15 @@
 package com.minecraft7771.gtnhintergalactic.recipe;
 
-import galaxyspace.BarnardsSystem.BRFluids;
-import gregtech.api.enums.Materials;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import org.apache.commons.lang3.tuple.Pair;
-
 import java.util.HashMap;
 import java.util.Map;
+
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+
+import org.apache.commons.lang3.tuple.Pair;
+
+import galaxyspace.BarnardsSystem.BRFluids;
+import gregtech.api.enums.Materials;
 
 /**
  * Available fluids for space pumping are defined here

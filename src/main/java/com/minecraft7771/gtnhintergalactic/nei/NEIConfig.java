@@ -2,6 +2,7 @@ package com.minecraft7771.gtnhintergalactic.nei;
 
 import codechicken.nei.api.API;
 import codechicken.nei.api.IConfigureNEI;
+
 import com.minecraft7771.gtnhintergalactic.Tags;
 import com.minecraft7771.gtnhintergalactic.gui.IG_UITextures;
 import gregtech.api.util.GT_Recipe;

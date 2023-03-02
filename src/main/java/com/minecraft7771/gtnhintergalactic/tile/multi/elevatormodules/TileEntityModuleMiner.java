@@ -1,5 +1,18 @@
 package com.minecraft7771.gtnhintergalactic.tile.multi.elevatormodules;
 
+import static com.github.bartimaeusnek.bartworks.util.RecipeFinderForParallel.handleParallelRecipe;
+import static net.minecraft.util.EnumChatFormatting.DARK_PURPLE;
+
+import java.util.Arrays;
+import java.util.List;
+
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
+import net.minecraftforge.fluids.FluidStack;
+
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.INameFunction;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.IStatusFunction;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus;
@@ -12,6 +25,7 @@ import com.minecraft7771.gtnhintergalactic.Tags;
 import com.minecraft7771.gtnhintergalactic.recipe.IG_Recipe;
 import com.minecraft7771.gtnhintergalactic.recipe.IG_RecipeAdder;
 import com.minecraft7771.gtnhintergalactic.spaceprojects.ProjectAsteroidOutpost;
+
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -23,17 +37,6 @@ import gregtech.common.misc.spaceprojects.enums.SolarSystem;
 import gregtech.common.misc.spaceprojects.interfaces.ISpaceProject;
 import gregtech.common.power.BasicMachineEUPower;
 import gregtech.common.power.Power;
-import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
-import net.minecraftforge.fluids.FluidStack;
-
-import java.util.Arrays;
-import java.util.List;
-
-import static com.github.bartimaeusnek.bartworks.util.RecipeFinderForParallel.handleParallelRecipe;
-import static net.minecraft.util.EnumChatFormatting.DARK_PURPLE;
 
 public abstract class TileEntityModuleMiner extends TileEntityModuleBase {
 
@@ -59,46 +62,46 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase {
 
     /** Input parameters */
     Parameters.Group.ParameterIn distanceSetting, parallelSetting, overdriveSetting, modeSetting, rangeSetting,
-        stepSetting;
+            stepSetting;
 
     Parameters.Group.ParameterOut distanceDisplay;
 
     /** Name of the distance setting */
     private static final INameFunction<TileEntityModuleMiner> DISTANCE_SETTING_NAME = (base, p) -> GCCoreUtil
-        .translate("gt.blockmachines.multimachine.project.gs.miner.cfgi.0"); // Distance
+            .translate("gt.blockmachines.multimachine.project.gs.miner.cfgi.0"); // Distance
     /** Status of the distance setting */
     private static final IStatusFunction<TileEntityModuleMiner> DISTANCE_STATUS = (base, p) -> LedStatus
-        .fromLimitsInclusiveOuterBoundary(p.get(), 1, 0, 200, 300);
+            .fromLimitsInclusiveOuterBoundary(p.get(), 1, 0, 200, 300);
     /** Name of the parallel setting */
     private static final INameFunction<TileEntityModuleMiner> PARALLEL_SETTING_NAME = (base, p) -> GCCoreUtil
-        .translate("gt.blockmachines.multimachine.project.gs.miner.cfgi.1"); // Max parallels
+            .translate("gt.blockmachines.multimachine.project.gs.miner.cfgi.1"); // Max parallels
     /** Status of the parallel setting */
     private static final IStatusFunction<TileEntityModuleMiner> PARALLEL_STATUS = (base, p) -> LedStatus
-        .fromLimitsInclusiveOuterBoundary(p.get(), 0, 1, 100, base.getParallels());
+            .fromLimitsInclusiveOuterBoundary(p.get(), 0, 1, 100, base.getParallels());
     /** Name of the overdrive setting */
     private static final INameFunction<TileEntityModuleMiner> OVERDRIVE_SETTING_NAME = (base, p) -> GCCoreUtil
-        .translate("gt.blockmachines.multimachine.project.gs.miner.cfgi.2"); // Overdrive
+            .translate("gt.blockmachines.multimachine.project.gs.miner.cfgi.2"); // Overdrive
     /** Status of the overdrive setting */
     private static final IStatusFunction<TileEntityModuleMiner> OVERDRIVE_STATUS = (base, p) -> LedStatus
-        .fromLimitsInclusiveOuterBoundary(p.get(), 0, 1, 1.5, 2);
+            .fromLimitsInclusiveOuterBoundary(p.get(), 0, 1, 1.5, 2);
     /** Name of the mode setting */
     private static final INameFunction<TileEntityModuleMiner> MODE_SETTING_NAME = (base, p) -> GCCoreUtil
-        .translate("gt.blockmachines.multimachine.project.gs.miner.cfgi.4"); // Mode
+            .translate("gt.blockmachines.multimachine.project.gs.miner.cfgi.4"); // Mode
     /** Status of the mode setting */
     private static final IStatusFunction<TileEntityModuleMiner> MODE_STATUS = (base, p) -> LedStatus
-        .fromLimitsInclusiveOuterBoundary(p.get(), 0, 0, 1.1, 1.1);
+            .fromLimitsInclusiveOuterBoundary(p.get(), 0, 0, 1.1, 1.1);
     /** Name of the mode setting */
     private static final INameFunction<TileEntityModuleMiner> RANGE_SETTING_NAME = (base, p) -> GCCoreUtil
-        .translate("gt.blockmachines.multimachine.project.gs.miner.cfgi.5"); // Range
+            .translate("gt.blockmachines.multimachine.project.gs.miner.cfgi.5"); // Range
     /** Status of the mode setting */
     private static final IStatusFunction<TileEntityModuleMiner> RANGE_STATUS = (base, p) -> LedStatus
-        .fromLimitsInclusiveOuterBoundary(p.get(), 0, 0, 50, 150);
+            .fromLimitsInclusiveOuterBoundary(p.get(), 0, 0, 50, 150);
     /** Name of the step setting */
     private static final INameFunction<TileEntityModuleMiner> STEP_SETTING_NAME = (base, p) -> GCCoreUtil
-        .translate("gt.blockmachines.multimachine.project.gs.miner.cfgi.6"); // Step
+            .translate("gt.blockmachines.multimachine.project.gs.miner.cfgi.6"); // Step
     /** Status of the step setting */
     private static final IStatusFunction<TileEntityModuleMiner> STEP_STATUS = (base, p) -> LedStatus
-        .fromLimitsInclusiveOuterBoundary(p.get(), 0, 0, 10, 20);
+            .fromLimitsInclusiveOuterBoundary(p.get(), 0, 0, 10, 20);
 
     // endregion
 
@@ -119,7 +122,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase {
      * @param tMinMotorTier Minimum needed motor tier
      */
     public TileEntityModuleMiner(int aID, String aName, String aNameRegional, int tTier, int tModuleTier,
-                                   int tMinMotorTier) {
+            int tMinMotorTier) {
         super(aID, aName, aNameRegional, tTier, tModuleTier, tMinMotorTier);
         power = new MinerPower((byte) tTier, tModuleTier);
     }
@@ -170,11 +173,11 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase {
             if (availablePlasmaTier > 0) {
                 // Check if valid inputs for a mining operation are present
                 if (process(
-                    getStoredInputs().toArray(new ItemStack[0]),
-                    getStoredFluids().toArray(new FluidStack[0]),
-                    availablePlasmaTier,
-                    fluidStack,
-                    getParallels(fluidStack, getPlasmaUsageFromTier(availablePlasmaTier)))) {
+                        getStoredInputs().toArray(new ItemStack[0]),
+                        getStoredFluids().toArray(new FluidStack[0]),
+                        availablePlasmaTier,
+                        fluidStack,
+                        getParallels(fluidStack, getPlasmaUsageFromTier(availablePlasmaTier)))) {
                     cycleDistance();
                     return true;
                 }
@@ -191,8 +194,8 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase {
      * @param fluidInputs Fluid inputs
      * @return Multiblock control structure that contains all process data or null if nothing can be processed
      */
-    public boolean process(ItemStack[] inputs, FluidStack[] fluidInputs, int availablePlasmaTier,
-                                     FluidStack plasma, int maxParallels) {
+    public boolean process(ItemStack[] inputs, FluidStack[] fluidInputs, int availablePlasmaTier, FluidStack plasma,
+            int maxParallels) {
         // Check inputs
         if ((inputs == null && fluidInputs == null) || plasma == null) {
             return false;
@@ -204,16 +207,16 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase {
         // Get all asteroid pools that this drone can pull from
         long tVoltage = getMaxInputVoltage();
         List<IG_Recipe.IG_SpaceMiningRecipe> recipes = IG_RecipeAdder.instance.sSpaceMiningRecipes.findRecipes(
-            getBaseMetaTileEntity(),
-            null,
-            false,
-            false,
-            tVoltage,
-            fluidInputs,
-            null,
-            (int) distanceDisplay.get(),
-            tModuleTier,
-            inputs);
+                getBaseMetaTileEntity(),
+                null,
+                false,
+                false,
+                tVoltage,
+                fluidInputs,
+                null,
+                (int) distanceDisplay.get(),
+                tModuleTier,
+                inputs);
 
         // Return if no recipe was found
         if (recipes == null || recipes.size() <= 0) {
@@ -280,11 +283,8 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase {
         }
 
         plasma.amount = (int) Math.max(
-            0,
-            Math.ceil(
-                plasma.amount
-                    - parallels * getPlasmaUsageFromTier(availablePlasmaTier)
-                    * plasmaModifier));
+                0,
+                Math.ceil(plasma.amount - parallels * getPlasmaUsageFromTier(availablePlasmaTier) * plasmaModifier));
 
         // Assign recipe parameters
         mOutputItems = outputs;
@@ -311,12 +311,12 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase {
         if (fluidStack.isFluidEqual(Materials.Radon.getPlasma(1)) && fluidStack.amount >= PLASMA_RADON_USAGE) {
             return 3;
         } else
-        if (fluidStack.isFluidEqual(Materials.Bismuth.getPlasma(1)) && fluidStack.amount >= PLASMA_BISMUTH_USAGE) {
-            return 2;
-        } else if (fluidStack.isFluidEqual(Materials.Helium.getPlasma(1))
-            && fluidStack.amount >= PLASMA_HELIUM_USAGE) {
-            return 1;
-        }
+            if (fluidStack.isFluidEqual(Materials.Bismuth.getPlasma(1)) && fluidStack.amount >= PLASMA_BISMUTH_USAGE) {
+                return 2;
+            } else if (fluidStack.isFluidEqual(Materials.Helium.getPlasma(1))
+                    && fluidStack.amount >= PLASMA_HELIUM_USAGE) {
+                        return 1;
+                    }
         return 0;
     }
 
@@ -352,8 +352,8 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase {
         // Base chance is 50% + 10% for every plasma tier above T1. The whole chance is multiplied by 2 - overdrive
         // setting
         return Math.min(
-            (int) ((double) (BONUS_STACK_BASE_CHANCE + 1000 * (plasmaTier - 1)) * (2.0D - overdriveSetting.get())),
-            BONUS_STACK_MAX_CHANCE);
+                (int) ((double) (BONUS_STACK_BASE_CHANCE + 1000 * (plasmaTier - 1)) * (2.0D - overdriveSetting.get())),
+                BONUS_STACK_MAX_CHANCE);
     }
 
     /**
@@ -386,9 +386,9 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase {
     protected int getRecipeTime(int unboostedTime, int plasmaTier) {
         // Reduce recipe time by 10% for every plasma tier above T1 and divide recipe time by the overdrive value
         return plasmaTier > 0
-            ? (int) ((double) unboostedTime
-            * Math.max((1D - 0.1D * (plasmaTier - 1)) / overdriveSetting.get(), MIN_RECIPE_TIME_MODIFIER))
-            : unboostedTime;
+                ? (int) ((double) unboostedTime
+                        * Math.max((1D - 0.1D * (plasmaTier - 1)) / overdriveSetting.get(), MIN_RECIPE_TIME_MODIFIER))
+                : unboostedTime;
     }
 
     /**
@@ -437,23 +437,23 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase {
 
         screenElements.widget(
                 TextWidget
-                    .dynamicString(
-                        () -> StatCollector
-                            .translateToLocal("gt.blockmachines.multimachine.project.gs.miner.cfgi.4")
-                            + ": "
-                            + (((int) modeSetting.get() == 0)
-                            ? StatCollector.translateToLocal(
-                            "gt.blockmachines.multimachine.project.gs.miner.cfgi.4.1")
-                            : StatCollector.translateToLocal(
-                            "gt.blockmachines.multimachine.project.gs.miner.cfgi.4.2")))
-                    .setSynced(false).setDefaultColor(COLOR_TEXT_WHITE.get()).setEnabled(widget -> mMachine))
-            .widget(
-                new FakeSyncWidget.IntegerSyncer(
-                    () -> (int) modeSetting.get(),
-                    val -> parametrization.trySetParameters(
-                        modeSetting.id % 10,
-                        modeSetting.id / 10,
-                        modeSetting.get())));
+                        .dynamicString(
+                                () -> StatCollector
+                                        .translateToLocal("gt.blockmachines.multimachine.project.gs.miner.cfgi.4")
+                                        + ": "
+                                        + (((int) modeSetting.get() == 0)
+                                                ? StatCollector.translateToLocal(
+                                                        "gt.blockmachines.multimachine.project.gs.miner.cfgi.4.1")
+                                                : StatCollector.translateToLocal(
+                                                        "gt.blockmachines.multimachine.project.gs.miner.cfgi.4.2")))
+                        .setSynced(false).setDefaultColor(COLOR_TEXT_WHITE.get()).setEnabled(widget -> mMachine))
+                .widget(
+                        new FakeSyncWidget.IntegerSyncer(
+                                () -> (int) modeSetting.get(),
+                                val -> parametrization.trySetParameters(
+                                        modeSetting.id % 10,
+                                        modeSetting.id / 10,
+                                        modeSetting.get())));
     }
 
     @Override
@@ -463,7 +463,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase {
         }
         if (SpaceProjectManager.teamHasProject(getBaseMetaTileEntity().getOwnerUuid(), ASTEROID_OUTPOST)) {
             ISpaceProject proj = SpaceProjectManager
-                .getTeamProject(getBaseMetaTileEntity().getOwnerUuid(), SolarSystem.KuiperBelt, "AsteroidOutpost");
+                    .getTeamProject(getBaseMetaTileEntity().getOwnerUuid(), SolarSystem.KuiperBelt, "AsteroidOutpost");
             if (proj.isFinished()) {
                 asteroidOutpost = (ProjectAsteroidOutpost) proj;
             }
@@ -573,27 +573,29 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase {
         protected GT_Multiblock_Tooltip_Builder createTooltip() {
             final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
             tt.addMachineType(GCCoreUtil.translate("gt.blockmachines.module.name"))
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.miner.desc0")) // Module that
-                // adds Space
-                // Mining
-                // Operations to the
-                .addInfo(
-                    EnumChatFormatting.LIGHT_PURPLE.toString() + EnumChatFormatting.BOLD
-                        + GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.miner.t1.desc1")) // Does
-                // this
-                // violate
-                // drone rights?
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.desc2"))
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.miner.desc3"))
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.miner.desc4"))
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.miner.t1.desc5"))
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.motorT1")).addSeparator()
-                .beginStructureBlock(1, 5, 2, false).addCasingInfo(GCCoreUtil.translate("gt.blockcasings.gs.0.name"), 0)
-                .addInputBus(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-                .addOutputBus(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-                .addInputHatch(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-                .addOutputHatch(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-                .toolTipFinisher(DARK_PURPLE + Tags.MODNAME);
+                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.miner.desc0")) // Module
+                                                                                                           // that
+                    // adds Space
+                    // Mining
+                    // Operations to the
+                    .addInfo(
+                            EnumChatFormatting.LIGHT_PURPLE.toString() + EnumChatFormatting.BOLD
+                                    + GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.miner.t1.desc1")) // Does
+                    // this
+                    // violate
+                    // drone rights?
+                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.desc2"))
+                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.miner.desc3"))
+                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.miner.desc4"))
+                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.miner.t1.desc5"))
+                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.motorT1")).addSeparator()
+                    .beginStructureBlock(1, 5, 2, false)
+                    .addCasingInfo(GCCoreUtil.translate("gt.blockcasings.gs.0.name"), 0)
+                    .addInputBus(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                    .addOutputBus(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                    .addInputHatch(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                    .addOutputHatch(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                    .toolTipFinisher(DARK_PURPLE + Tags.MODNAME);
             return tt;
         }
     }
@@ -663,27 +665,29 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase {
         protected GT_Multiblock_Tooltip_Builder createTooltip() {
             final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
             tt.addMachineType(GCCoreUtil.translate("gt.blockmachines.module.name"))
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.miner.desc0")) // Module that
-                // adds Space
-                // Mining
-                // Operations to the
-                .addInfo(
-                    EnumChatFormatting.LIGHT_PURPLE.toString() + EnumChatFormatting.BOLD
-                        + GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.miner.t2.desc1")) // This
-                // definitely
-                // violates
-                // drone rights.
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.desc2"))
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.miner.desc3"))
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.miner.desc4"))
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.miner.t2.desc5"))
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.motorT2")).addSeparator()
-                .beginStructureBlock(1, 5, 2, false).addCasingInfo(GCCoreUtil.translate("gt.blockcasings.gs.0.name"), 0)
-                .addInputBus(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-                .addOutputBus(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-                .addInputHatch(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-                .addOutputHatch(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-                .toolTipFinisher(DARK_PURPLE + Tags.MODNAME);
+                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.miner.desc0")) // Module
+                                                                                                           // that
+                    // adds Space
+                    // Mining
+                    // Operations to the
+                    .addInfo(
+                            EnumChatFormatting.LIGHT_PURPLE.toString() + EnumChatFormatting.BOLD
+                                    + GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.miner.t2.desc1")) // This
+                    // definitely
+                    // violates
+                    // drone rights.
+                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.desc2"))
+                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.miner.desc3"))
+                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.miner.desc4"))
+                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.miner.t2.desc5"))
+                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.motorT2")).addSeparator()
+                    .beginStructureBlock(1, 5, 2, false)
+                    .addCasingInfo(GCCoreUtil.translate("gt.blockcasings.gs.0.name"), 0)
+                    .addInputBus(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                    .addOutputBus(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                    .addInputHatch(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                    .addOutputHatch(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                    .toolTipFinisher(DARK_PURPLE + Tags.MODNAME);
             return tt;
         }
     }
@@ -753,27 +757,29 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase {
         protected GT_Multiblock_Tooltip_Builder createTooltip() {
             final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
             tt.addMachineType(GCCoreUtil.translate("gt.blockmachines.module.name"))
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.miner.desc0")) // Module that
-                // adds Space
-                // Mining
-                // Operations to the
-                .addInfo(
-                    EnumChatFormatting.LIGHT_PURPLE.toString() + EnumChatFormatting.BOLD
-                        + GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.miner.t3.desc1")) // Great
-                // treasures
-                // beyond
-                // your imagination await!
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.desc2"))
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.miner.desc3"))
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.miner.desc4"))
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.miner.t3.desc5"))
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.motorT3")).addSeparator()
-                .beginStructureBlock(1, 5, 2, false).addCasingInfo(GCCoreUtil.translate("gt.blockcasings.gs.0.name"), 0)
-                .addInputBus(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-                .addOutputBus(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-                .addInputHatch(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-                .addOutputHatch(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-                .toolTipFinisher(DARK_PURPLE + Tags.MODNAME);
+                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.miner.desc0")) // Module
+                                                                                                           // that
+                    // adds Space
+                    // Mining
+                    // Operations to the
+                    .addInfo(
+                            EnumChatFormatting.LIGHT_PURPLE.toString() + EnumChatFormatting.BOLD
+                                    + GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.miner.t3.desc1")) // Great
+                    // treasures
+                    // beyond
+                    // your imagination await!
+                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.desc2"))
+                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.miner.desc3"))
+                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.miner.desc4"))
+                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.miner.t3.desc5"))
+                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.motorT3")).addSeparator()
+                    .beginStructureBlock(1, 5, 2, false)
+                    .addCasingInfo(GCCoreUtil.translate("gt.blockcasings.gs.0.name"), 0)
+                    .addInputBus(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                    .addOutputBus(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                    .addInputHatch(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                    .addOutputHatch(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                    .toolTipFinisher(DARK_PURPLE + Tags.MODNAME);
             return tt;
         }
     }

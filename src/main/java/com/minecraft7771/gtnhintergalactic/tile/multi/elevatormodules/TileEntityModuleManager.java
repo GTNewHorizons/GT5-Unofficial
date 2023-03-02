@@ -1,5 +1,23 @@
 package com.minecraft7771.gtnhintergalactic.tile.multi.elevatormodules;
 
+import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
+import static net.minecraft.util.EnumChatFormatting.DARK_PURPLE;
+import static net.minecraft.util.EnumChatFormatting.WHITE;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.function.BiConsumer;
+import java.util.function.Supplier;
+
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
+import net.minecraftforge.fluids.FluidStack;
+
 import com.github.technus.tectech.thing.gui.TecTechUITextures;
 import com.gtnewhorizons.modularui.api.drawable.*;
 import com.gtnewhorizons.modularui.api.math.Alignment;
@@ -11,6 +29,7 @@ import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.widget.*;
 import com.minecraft7771.gtnhintergalactic.Tags;
 import com.minecraft7771.gtnhintergalactic.gui.IG_UITextures;
+
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -20,22 +39,6 @@ import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 import gregtech.common.misc.spaceprojects.SpaceProjectWorldSavedData;
 import gregtech.common.misc.spaceprojects.interfaces.ISpaceBody;
 import gregtech.common.misc.spaceprojects.interfaces.ISpaceProject;
-import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
-import net.minecraftforge.fluids.FluidStack;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.function.BiConsumer;
-import java.util.function.Supplier;
-
-import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
-import static net.minecraft.util.EnumChatFormatting.DARK_PURPLE;
-import static net.minecraft.util.EnumChatFormatting.WHITE;
 
 /**
  * Module that allows the user to manage their space projects
@@ -102,18 +105,18 @@ public class TileEntityModuleManager extends TileEntityModuleBase {
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType(GCCoreUtil.translate("gt.blockmachines.module.name"))
-            .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.manager.desc0"))
-            .addInfo(
-                EnumChatFormatting.LIGHT_PURPLE.toString() + EnumChatFormatting.BOLD
-                    + GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.manager.desc1"))
-            .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.desc2"))
-            .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.motorT1")).addSeparator()
-            .beginStructureBlock(1, 5, 2, false).addCasingInfo(GCCoreUtil.translate("gt.blockcasings.gs.0.name"), 0)
-            .addInputBus(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-            .addOutputBus(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-            .addInputHatch(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-            .addOutputHatch(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-            .toolTipFinisher(DARK_PURPLE + Tags.MODNAME);
+                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.manager.desc0"))
+                .addInfo(
+                        EnumChatFormatting.LIGHT_PURPLE.toString() + EnumChatFormatting.BOLD
+                                + GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.manager.desc1"))
+                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.desc2"))
+                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.motorT1")).addSeparator()
+                .beginStructureBlock(1, 5, 2, false).addCasingInfo(GCCoreUtil.translate("gt.blockcasings.gs.0.name"), 0)
+                .addInputBus(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                .addOutputBus(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                .addInputHatch(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                .addOutputHatch(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                .toolTipFinisher(DARK_PURPLE + Tags.MODNAME);
         return tt;
     }
 
@@ -139,28 +142,28 @@ public class TileEntityModuleManager extends TileEntityModuleBase {
         if (projectWorkingOn.isFinished() && projectWorkingOn.getUpgradeBeingBuilt() != null) {
             ISpaceProject.ISP_Upgrade upgrade = projectWorkingOn.getUpgradeBeingBuilt();
             recipe = new GT_Recipe(
-                false,
-                upgrade.getItemsCostPerStage(),
-                null,
-                null,
-                null,
-                upgrade.getFluidsCostPerStage(),
-                null,
-                upgrade.getUpgradeBuildTime(),
-                (int) upgrade.getVoltage(),
-                0);
+                    false,
+                    upgrade.getItemsCostPerStage(),
+                    null,
+                    null,
+                    null,
+                    upgrade.getFluidsCostPerStage(),
+                    null,
+                    upgrade.getUpgradeBuildTime(),
+                    (int) upgrade.getVoltage(),
+                    0);
         } else if (!projectWorkingOn.isFinished()) {
             recipe = new GT_Recipe(
-                false,
-                projectWorkingOn.getItemsCostPerStage(),
-                null,
-                null,
-                null,
-                projectWorkingOn.getFluidsCostPerStage(),
-                null,
-                projectWorkingOn.getProjectBuildTime(),
-                (int) projectWorkingOn.getProjectVoltage(),
-                0);
+                    false,
+                    projectWorkingOn.getItemsCostPerStage(),
+                    null,
+                    null,
+                    null,
+                    projectWorkingOn.getFluidsCostPerStage(),
+                    null,
+                    projectWorkingOn.getProjectBuildTime(),
+                    (int) projectWorkingOn.getProjectVoltage(),
+                    0);
         }
 
         if (recipe == null) {
@@ -168,9 +171,9 @@ public class TileEntityModuleManager extends TileEntityModuleBase {
         }
 
         if (!recipe.isRecipeInputEqual(
-            true,
-            getStoredFluids().toArray(new FluidStack[0]),
-            getStoredInputs().toArray(new ItemStack[0]))) {
+                true,
+                getStoredFluids().toArray(new FluidStack[0]),
+                getStoredInputs().toArray(new ItemStack[0]))) {
             return false;
         }
 
@@ -209,17 +212,17 @@ public class TileEntityModuleManager extends TileEntityModuleBase {
 
         if (aNBT.hasKey("mWorkingProject")) {
             projectWorkingOn = SpaceProjectManager.getTeamProject(
-                getBaseMetaTileEntity().getOwnerUuid(),
-                SpaceProjectManager.getLocation(aNBT.getString("workingLocation")),
-                aNBT.getString("mWorkingProject"));
+                    getBaseMetaTileEntity().getOwnerUuid(),
+                    SpaceProjectManager.getLocation(aNBT.getString("workingLocation")),
+                    aNBT.getString("mWorkingProject"));
         }
 
         if (aNBT.hasKey("mProject")) {
             selectedProjectName = aNBT.getString("mProject");
             selectedProject = SpaceProjectManager.getTeamProjectOrCopy(
-                getBaseMetaTileEntity().getOwnerUuid(),
-                selectedProjectName,
-                selectedLocation);
+                    getBaseMetaTileEntity().getOwnerUuid(),
+                    selectedProjectName,
+                    selectedLocation);
             upgradeFromProject = new ArrayList<>(selectedProject.getAllUpgrades());
         }
 
@@ -255,10 +258,10 @@ public class TileEntityModuleManager extends TileEntityModuleBase {
 
     private static final IDrawable buttonUp = GT_UITextures.BUTTON_STANDARD_TOGGLE.getSubArea(0f, 0f, 0.5f, 0.5f);
     private static final IDrawable buttonUpDisabled = GT_UITextures.BUTTON_STANDARD_TOGGLE_DISABLED
-        .getSubArea(0f, 0f, 0.5f, 0.5f);
+            .getSubArea(0f, 0f, 0.5f, 0.5f);
     private static final IDrawable buttonDown = GT_UITextures.BUTTON_STANDARD_TOGGLE.getSubArea(0.5f, 0.5f, 1f, 1f);
     private static final IDrawable buttonDownDisabled = GT_UITextures.BUTTON_STANDARD_TOGGLE_DISABLED
-        .getSubArea(0.5f, 0.5f, 1f, 1f);
+            .getSubArea(0.5f, 0.5f, 1f, 1f);
 
     /**
      * Add the UI widgets to the GUI of this controller
@@ -280,11 +283,11 @@ public class TileEntityModuleManager extends TileEntityModuleBase {
         builder.widget(
                 // Text for displaying the popup message
                 TextWidget.dynamicString(() -> popupText).setTextAlignment(Alignment.Center).setSize(280, 130)
-                    .setPos(0, 20))
-            // Button to close the popup
-            .widget(ButtonWidget.closeWindowButton(true).setSize(20, 20).setPos(280, 0))
-            // Syncer for the popup text
-            .widget(new FakeSyncWidget.StringSyncer(() -> popupText, val -> popupText = val));
+                        .setPos(0, 20))
+                // Button to close the popup
+                .widget(ButtonWidget.closeWindowButton(true).setSize(20, 20).setPos(280, 0))
+                // Syncer for the popup text
+                .widget(new FakeSyncWidget.StringSyncer(() -> popupText, val -> popupText = val));
         return builder.build();
     }
 
@@ -296,12 +299,12 @@ public class TileEntityModuleManager extends TileEntityModuleBase {
     @Override
     protected ButtonWidget createSafeVoidButton() {
         Widget button = ButtonWidget.openSyncedWindowButton(PROJECT_WINDOW_ID).setPlayClickSound(false)
-            .setBackground(() -> {
-                List<UITexture> ret = new ArrayList<>();
-                ret.add(TecTechUITextures.BUTTON_STANDARD_16x16);
-                ret.add(IG_UITextures.OVERLAY_BUTTON_PROJECTS);
-                return ret.toArray(new IDrawable[0]);
-            }).setPos(174, doesBindPlayerInventory() ? 132 : 156).setSize(16, 16);
+                .setBackground(() -> {
+                    List<UITexture> ret = new ArrayList<>();
+                    ret.add(TecTechUITextures.BUTTON_STANDARD_16x16);
+                    ret.add(IG_UITextures.OVERLAY_BUTTON_PROJECTS);
+                    return ret.toArray(new IDrawable[0]);
+                }).setPos(174, doesBindPlayerInventory() ? 132 : 156).setSize(16, 16);
         button.addTooltip(GCCoreUtil.translate("mui.manager.button.projects")).setTooltipShowUpDelay(TOOLTIP_DELAY);
         return (ButtonWidget) button;
     }
@@ -319,38 +322,38 @@ public class TileEntityModuleManager extends TileEntityModuleBase {
         }
         final Scrollable projectListScrollable = new Scrollable().setVerticalScroll();
         projectListScrollable.widget(
-            projects.setSizeProvider(
-                (screenSize, window, parent) -> new Size(
-                    parent.getSize().width,
-                    SpaceProjectManager.getAllProjects().size() * 40)));
+                projects.setSizeProvider(
+                        (screenSize, window, parent) -> new Size(
+                                parent.getSize().width,
+                                SpaceProjectManager.getAllProjects().size() * 40)));
         // Display for the details of the selected project
         final MultiChildWidget activeProjectDetail = new MultiChildWidget();
         activeProjectDetail.addChild(
                 generateCustomButton(StatCollector.translateToLocal("gs.text.project"), (tClickData, tWidget) -> {
-                        projectMode = true;
-                        upgradeMode = false;
-                    },
-                    () -> projectMode,
-                    () -> true,
-                    (screenSize, window,
-                     parent) -> new Size(parent.getSize().width * 0.5, parent.getSize().height * 0.05),
-                    (screenSize, window, parent) -> new Pos2d(0, 0)))
-            .addChild(
-                generateCustomButton(
-                    StatCollector.translateToLocal("gs.text.upgrades"),
-                    (tClickData, tWidget) -> {
-                        if (isUpgradeButtonClickable()) {
-                            projectMode = false;
-                            upgradeMode = true;
-                        }
-                    },
-                    () -> upgradeMode,
-                    this::isUpgradeButtonClickable,
-                    (screenSize, window, parent) -> new Size(
-                        parent.getSize().width * 0.5,
-                        parent.getSize().height * 0.05),
-                    (screenSize, window, parent) -> new Pos2d(parent.getSize().width * 0.5, 0)))
-            .addChild(generateCustomButton(StatCollector.translateToLocal("gs.text.start"), (clickData, widget) -> {
+                    projectMode = true;
+                    upgradeMode = false;
+                },
+                        () -> projectMode,
+                        () -> true,
+                        (screenSize, window,
+                                parent) -> new Size(parent.getSize().width * 0.5, parent.getSize().height * 0.05),
+                        (screenSize, window, parent) -> new Pos2d(0, 0)))
+                .addChild(
+                        generateCustomButton(
+                                StatCollector.translateToLocal("gs.text.upgrades"),
+                                (tClickData, tWidget) -> {
+                                    if (isUpgradeButtonClickable()) {
+                                        projectMode = false;
+                                        upgradeMode = true;
+                                    }
+                                },
+                                () -> upgradeMode,
+                                this::isUpgradeButtonClickable,
+                                (screenSize, window, parent) -> new Size(
+                                        parent.getSize().width * 0.5,
+                                        parent.getSize().height * 0.05),
+                                (screenSize, window, parent) -> new Pos2d(parent.getSize().width * 0.5, 0)))
+                .addChild(generateCustomButton(StatCollector.translateToLocal("gs.text.start"), (clickData, widget) -> {
                     if (widget.getContext().isClient()) return;
                     if (selectedLocation != null && !selectedLocation.getName().equals(LOCATON_UNSELECTED)) {
                         if (selectedProject != null) {
@@ -358,10 +361,10 @@ public class TileEntityModuleManager extends TileEntityModuleBase {
                             if (!selectedProject.isFinished()) {
                                 if (selectedProject.meetsRequirements(getBaseMetaTileEntity().getOwnerUuid())) {
                                     SpaceProjectManager.addTeamProject(
-                                        getBaseMetaTileEntity().getOwnerUuid(),
-                                        selectedLocation,
-                                        selectedProject.getProjectName(),
-                                        selectedProject);
+                                            getBaseMetaTileEntity().getOwnerUuid(),
+                                            selectedLocation,
+                                            selectedProject.getProjectName(),
+                                            selectedProject);
                                     projectWorkingOn = selectedProject;
                                     popupText = StatCollector.translateToLocal("gs.text.started");
                                     widget.getContext().openSyncedWindow(POP_UP_WINDOW_ID);
@@ -389,146 +392,152 @@ public class TileEntityModuleManager extends TileEntityModuleBase {
                         widget.getContext().openSyncedWindow(POP_UP_WINDOW_ID);
                     }
                 },
-                () -> false,
-                () -> true,
-                (screenSize, window,
-                 parent) -> new Size(parent.getSize().width, parent.getSize().height * 0.05),
-                (screenSize, window, parent) -> new Pos2d(0, parent.getSize().height * 0.95)));
+                        () -> false,
+                        () -> true,
+                        (screenSize, window,
+                                parent) -> new Size(parent.getSize().width, parent.getSize().height * 0.05),
+                        (screenSize, window, parent) -> new Pos2d(0, parent.getSize().height * 0.95)));
         generateProjectDetails(activeProjectDetail);
         // Display for the project. Will render a stellar body with the project orbiting it
         final MultiChildWidget activeProjectDisplay = new MultiChildWidget().addChild(
                 // Background
                 // TODO: Background picture size should be dependent on GUI scale or else it looks bad on small scale
                 new RepeatingDrawable().setDrawable(IG_UITextures.BACKGROUND_SPACE_WITH_STARS).setDrawableSize(64, 64)
-                    .asWidget().setSizeProvider(
-                        ((screenSize, window,
-                          parent) -> new Size(parent.getSize().width, parent.getSize().height))))
-            // Celestial body
-            .addChild(
-                new DrawableWidget()
-                    .setDrawable(
-                        () -> selectedLocation != null && selectedLocation.getTexture() != null
-                            ? selectedLocation.getTexture().withRotationDegree(340)
-                            : IG_UITextures.PICTURE_CELESTIAL_BODY_NEPTUNE.withRotationDegree(340))
-                    .setEnabled(
-                        (widget -> selectedLocation != null
-                            && !selectedLocation.getName().equals(LOCATON_UNSELECTED)))
-                    .setPosProvider(
-                        (screenSize, window, parent) -> new Pos2d(
-                            (parent.getSize().width - parent.getSize().width * 0.5) / 2,
-                            (parent.getSize().height - parent.getSize().width * 0.5) / 2))
-                    .setSizeProvider(
-                        (screenSize, window, parent) -> new Size(
-                            parent.getSize().width * 0.5,
-                            parent.getSize().width * 0.5)))
-            // Project icon
-            .addChild(
-                new DrawableWidget()
-                    .setDrawable(
-                        () -> selectedProject != null && selectedProject.getTexture() != null
-                            ? selectedProject.getTexture()
-                            : IG_UITextures.PICTURE_CELESTIAL_BODY_PROTEUS)
-                    .setPosProvider(
-                        (screenSize, window, parent) -> new Pos2d(
-                            (parent.getSize().width) / 2f,
-                            (parent.getSize().height - parent.getSize().width * 0.5) / 2f))
-                    .setSizeProvider(
-                        (screenSize, window, parent) -> new Size(
-                            parent.getSize().width * 0.2,
-                            parent.getSize().width * 0.2)));
+                        .asWidget().setSizeProvider(
+                                ((screenSize, window,
+                                        parent) -> new Size(parent.getSize().width, parent.getSize().height))))
+                // Celestial body
+                .addChild(
+                        new DrawableWidget()
+                                .setDrawable(
+                                        () -> selectedLocation != null && selectedLocation.getTexture() != null
+                                                ? selectedLocation.getTexture().withRotationDegree(340)
+                                                : IG_UITextures.PICTURE_CELESTIAL_BODY_NEPTUNE.withRotationDegree(340))
+                                .setEnabled(
+                                        (widget -> selectedLocation != null
+                                                && !selectedLocation.getName().equals(LOCATON_UNSELECTED)))
+                                .setPosProvider(
+                                        (screenSize, window, parent) -> new Pos2d(
+                                                (parent.getSize().width - parent.getSize().width * 0.5) / 2,
+                                                (parent.getSize().height - parent.getSize().width * 0.5) / 2))
+                                .setSizeProvider(
+                                        (screenSize, window, parent) -> new Size(
+                                                parent.getSize().width * 0.5,
+                                                parent.getSize().width * 0.5)))
+                // Project icon
+                .addChild(
+                        new DrawableWidget()
+                                .setDrawable(
+                                        () -> selectedProject != null && selectedProject.getTexture() != null
+                                                ? selectedProject.getTexture()
+                                                : IG_UITextures.PICTURE_CELESTIAL_BODY_PROTEUS)
+                                .setPosProvider(
+                                        (screenSize, window, parent) -> new Pos2d(
+                                                (parent.getSize().width) / 2f,
+                                                (parent.getSize().height - parent.getSize().width * 0.5) / 2f))
+                                .setSizeProvider(
+                                        (screenSize, window, parent) -> new Size(
+                                                parent.getSize().width * 0.2,
+                                                parent.getSize().width * 0.2)));
         // Actual project window
         return ModularWindow.builderFullScreen().setDraggable(false)
-            .setBackground(TecTechUITextures.BACKGROUND_SCREEN_BLUE)
-            // Scrollable list of available projects
-            .widget(
-                projectListScrollable.setPos(20, 20).setSizeProvider(
-                    (screenSize, window,
-                     parent) -> new Size(screenSize.width * 0.2, screenSize.height - 70)))
-            // Select project detail view in the middle of the window
-            .widget(
-                activeProjectDetail
-                    .setPosProvider(
-                        (screenSize, window, parent) -> new Pos2d(screenSize.width * 0.2 + 40, 20))
-                    .setSizeProvider(
-                        (screenSize, window,
-                         parent) -> new Size(screenSize.width * 0.2, screenSize.height - 40)))
-            // Selected project display on the right side of the window
-            .widget(
-                activeProjectDisplay
-                    .setSizeProvider(
-                        (screenSize, window,
-                         parent) -> new Size(screenSize.width / 2 - 20, screenSize.height - 40))
-                    .setPosProvider((screenSize, window, parent) -> new Pos2d(screenSize.width / 2, 20)))
-            // Elevator logo in bottom right corner
-            .widget(
-                new DrawableWidget().setDrawable(IG_UITextures.PICTURE_ELEVATOR_LOGO_DARK).setSize(36, 36)
-                    .setPosProvider(
-                        (screenSize, mainWindow,
-                         parent) -> new Pos2d(screenSize.width - 40, screenSize.height - 40)))
-            // Drop down to select location
-            .widget(
-                new DropDownWidget().addDropDownItemsSimple(
-                        new ArrayList<>(SpaceProjectManager.getLocationNames()),
-                        (buttonWidget, index, label, setSelected) -> buttonWidget
-                            .setOnClick((clickData, widget) -> {
-                                selectedLocation = SpaceProjectManager.getLocation(label);
-                                locationIndex = index;
-                                projectMode = true;
-                                upgradeMode = false;
-                                if (!widget.getContext().isClient()) {
-                                    selectedProject = SpaceProjectManager.getTeamProjectOrCopy(
-                                        getBaseMetaTileEntity().getOwnerUuid(),
-                                        selectedProject != null ? selectedProject.getProjectName()
-                                            : selectedProjectName,
-                                        selectedLocation);
-                                }
-                                setSelected.run();
-                            }),
-                        true).setDirection(DropDownWidget.Direction.UP).setTextUnselected(LOCATON_UNSELECTED)
-                    .setSelected(locationIndex).setPos(20, 259).setSize(128, 20)
-                    .setBackground(GT_UITextures.BUTTON_STANDARD))
-            // Syncer for selected location
-            .widget(new FakeSyncWidget.StringSyncer(() -> selectedLocation != null ? selectedLocation.getName() : "", val -> {
-                selectedLocation = SpaceProjectManager.getLocation(val);
-                if (selectedProject != null) {
-                    projectMode = true;
-                    upgradeMode = false;
-                }
-            }))
-            // Syncer for selected project
-            .widget(new FakeSyncWidget.StringSyncer(() -> selectedProject != null ? selectedProject.getProjectName() : "", val -> {
-                selectedProjectName = val;
-                selectedProject = SpaceProjectManager.getProject(val);
-                if (selectedProject != null) {
-                    upgradeFromProject = new ArrayList<>(selectedProject.getAllUpgrades());
-                    projectMode = true;
-                    upgradeMode = false;
-                }
-            }))
-            // Syncer for selected project upgrade
-            .widget(
-                new FakeSyncWidget.StringSyncer(
-                    () -> selectedUpgrade != null ? selectedUpgrade.getUpgradeName() : "",
-                    val -> selectedUpgrade = selectedProject != null ? selectedProject.getUpgrade(val)
-                        : null))
-            // Syncer for selected project stage
-            .widget(new FakeSyncWidget.IntegerSyncer(() -> {
-                if (projectMode) {
-                    return selectedProject != null ? selectedProject.getCurrentStage() : 0;
-                } else {
-                    return selectedUpgrade != null ? selectedUpgrade.getCurrentStage() : 0;
-                }
-            }, val -> {
-                if (projectMode && selectedProject != null) {
-                    selectedProject.setProjectCurrentStage(val);
-                } else if (!projectMode && selectedUpgrade != null) {
-                    selectedUpgrade.setUpgradeCurrentStage(val);
-                }
-            }))
-            // Syncer for if the project detail page is enabled
-            .widget(new FakeSyncWidget.BooleanSyncer(() -> projectMode, val -> projectMode = val))
-            // Syncer for if the upgrade detail page is enabled
-            .widget(new FakeSyncWidget.BooleanSyncer(() -> upgradeMode, val -> upgradeMode = val)).build();
+                .setBackground(TecTechUITextures.BACKGROUND_SCREEN_BLUE)
+                // Scrollable list of available projects
+                .widget(
+                        projectListScrollable.setPos(20, 20).setSizeProvider(
+                                (screenSize, window,
+                                        parent) -> new Size(screenSize.width * 0.2, screenSize.height - 70)))
+                // Select project detail view in the middle of the window
+                .widget(
+                        activeProjectDetail
+                                .setPosProvider(
+                                        (screenSize, window, parent) -> new Pos2d(screenSize.width * 0.2 + 40, 20))
+                                .setSizeProvider(
+                                        (screenSize, window,
+                                                parent) -> new Size(screenSize.width * 0.2, screenSize.height - 40)))
+                // Selected project display on the right side of the window
+                .widget(
+                        activeProjectDisplay
+                                .setSizeProvider(
+                                        (screenSize, window,
+                                                parent) -> new Size(screenSize.width / 2 - 20, screenSize.height - 40))
+                                .setPosProvider((screenSize, window, parent) -> new Pos2d(screenSize.width / 2, 20)))
+                // Elevator logo in bottom right corner
+                .widget(
+                        new DrawableWidget().setDrawable(IG_UITextures.PICTURE_ELEVATOR_LOGO_DARK).setSize(36, 36)
+                                .setPosProvider(
+                                        (screenSize, mainWindow,
+                                                parent) -> new Pos2d(screenSize.width - 40, screenSize.height - 40)))
+                // Drop down to select location
+                .widget(
+                        new DropDownWidget().addDropDownItemsSimple(
+                                new ArrayList<>(SpaceProjectManager.getLocationNames()),
+                                (buttonWidget, index, label, setSelected) -> buttonWidget
+                                        .setOnClick((clickData, widget) -> {
+                                            selectedLocation = SpaceProjectManager.getLocation(label);
+                                            locationIndex = index;
+                                            projectMode = true;
+                                            upgradeMode = false;
+                                            if (!widget.getContext().isClient()) {
+                                                selectedProject = SpaceProjectManager.getTeamProjectOrCopy(
+                                                        getBaseMetaTileEntity().getOwnerUuid(),
+                                                        selectedProject != null ? selectedProject.getProjectName()
+                                                                : selectedProjectName,
+                                                        selectedLocation);
+                                            }
+                                            setSelected.run();
+                                        }),
+                                true).setDirection(DropDownWidget.Direction.UP).setTextUnselected(LOCATON_UNSELECTED)
+                                .setSelected(locationIndex).setPos(20, 259).setSize(128, 20)
+                                .setBackground(GT_UITextures.BUTTON_STANDARD))
+                // Syncer for selected location
+                .widget(
+                        new FakeSyncWidget.StringSyncer(
+                                () -> selectedLocation != null ? selectedLocation.getName() : "",
+                                val -> {
+                                    selectedLocation = SpaceProjectManager.getLocation(val);
+                                    if (selectedProject != null) {
+                                        projectMode = true;
+                                        upgradeMode = false;
+                                    }
+                                }))
+                // Syncer for selected project
+                .widget(
+                        new FakeSyncWidget.StringSyncer(
+                                () -> selectedProject != null ? selectedProject.getProjectName() : "",
+                                val -> {
+                                    selectedProjectName = val;
+                                    selectedProject = SpaceProjectManager.getProject(val);
+                                    if (selectedProject != null) {
+                                        upgradeFromProject = new ArrayList<>(selectedProject.getAllUpgrades());
+                                        projectMode = true;
+                                        upgradeMode = false;
+                                    }
+                                }))
+                // Syncer for selected project upgrade
+                .widget(
+                        new FakeSyncWidget.StringSyncer(
+                                () -> selectedUpgrade != null ? selectedUpgrade.getUpgradeName() : "",
+                                val -> selectedUpgrade = selectedProject != null ? selectedProject.getUpgrade(val)
+                                        : null))
+                // Syncer for selected project stage
+                .widget(new FakeSyncWidget.IntegerSyncer(() -> {
+                    if (projectMode) {
+                        return selectedProject != null ? selectedProject.getCurrentStage() : 0;
+                    } else {
+                        return selectedUpgrade != null ? selectedUpgrade.getCurrentStage() : 0;
+                    }
+                }, val -> {
+                    if (projectMode && selectedProject != null) {
+                        selectedProject.setProjectCurrentStage(val);
+                    } else if (!projectMode && selectedUpgrade != null) {
+                        selectedUpgrade.setUpgradeCurrentStage(val);
+                    }
+                }))
+                // Syncer for if the project detail page is enabled
+                .widget(new FakeSyncWidget.BooleanSyncer(() -> projectMode, val -> projectMode = val))
+                // Syncer for if the upgrade detail page is enabled
+                .widget(new FakeSyncWidget.BooleanSyncer(() -> upgradeMode, val -> upgradeMode = val)).build();
     }
 
     /**
@@ -540,27 +549,27 @@ public class TileEntityModuleManager extends TileEntityModuleBase {
         projectDetails.addChild(
                 // Name of the project as title
                 TextWidget.dynamicString(() -> selectedProject != null ? selectedProject.getLocalizedName() : "")
-                    .setScale(2).setDefaultColor(WHITE).setTextAlignment(Alignment.Center)
-                    .setPosProvider(((screenSize, window, parent) -> new Pos2d(0, parent.getSize().height * 0.05)))
-                    .setSizeProvider(
-                        ((screenSize, window,
-                          parent) -> new Size(parent.getSize().width, parent.getSize().height * 0.15))))
-            // Description of project
-            .addChild(
-                TextWidget
-                    .dynamicString(
-                        () -> selectedProject != null
-                            ? StatCollector.translateToLocal(
-                            selectedProject.getUnlocalizedName() + ".description")
-                            : "")
-                    .setDefaultColor(WHITE)
-                    .setPosProvider(
-                        ((screenSize, window, parent) -> new Pos2d(0, parent.getSize().height * 0.2)))
-                    .setSizeProvider(
-                        (screenSize, window, parent) -> new Size(
-                            parent.getSize().width,
-                            parent.getSize().height * 0.4))
-                    .setEnabled(widget -> projectMode));
+                        .setScale(2).setDefaultColor(WHITE).setTextAlignment(Alignment.Center)
+                        .setPosProvider(((screenSize, window, parent) -> new Pos2d(0, parent.getSize().height * 0.05)))
+                        .setSizeProvider(
+                                ((screenSize, window,
+                                        parent) -> new Size(parent.getSize().width, parent.getSize().height * 0.15))))
+                // Description of project
+                .addChild(
+                        TextWidget
+                                .dynamicString(
+                                        () -> selectedProject != null
+                                                ? StatCollector.translateToLocal(
+                                                        selectedProject.getUnlocalizedName() + ".description")
+                                                : "")
+                                .setDefaultColor(WHITE)
+                                .setPosProvider(
+                                        ((screenSize, window, parent) -> new Pos2d(0, parent.getSize().height * 0.2)))
+                                .setSizeProvider(
+                                        (screenSize, window, parent) -> new Size(
+                                                parent.getSize().width,
+                                                parent.getSize().height * 0.4))
+                                .setEnabled(widget -> projectMode));
         generateProjectCosts(projectDetails);
         generateUpgradeCost(projectDetails);
         generateUpgrades(projectDetails);
@@ -577,117 +586,117 @@ public class TileEntityModuleManager extends TileEntityModuleBase {
         for (int i = 0; i < 12; i++) {
             int index = i;
             activeProjectItemsAndFluids.addChild(
-                new ItemDrawable(() -> selectedProject != null ? selectedProject.getItemCostPerStage(index) : null)
-                    .asWidget().dynamicTooltip(() -> {
-                        List<String> tTooltip = new ArrayList<>();
-                        if (selectedProject != null) {
-                            tTooltip.add(
-                                selectedProject.getItemCostPerStage(index) != null
-                                    ? selectedProject.getItemCostPerStage(index).getDisplayName()
-                                    : "");
-                        } else {
-                            tTooltip.add("");
-                        }
-                        return tTooltip;
-                    })
-                    .setSizeProvider(
-                        (screenSize, window, parent) -> new Size(
-                            parent.getSize().height / 16,
-                            parent.getSize().height / 16))
-                    .setBackground(GT_UITextures.BUTTON_STANDARD).setEnabled(
-                        widget -> selectedProject != null
-                            && selectedProject.getItemCostPerStage(index) != null));
+                    new ItemDrawable(() -> selectedProject != null ? selectedProject.getItemCostPerStage(index) : null)
+                            .asWidget().dynamicTooltip(() -> {
+                                List<String> tTooltip = new ArrayList<>();
+                                if (selectedProject != null) {
+                                    tTooltip.add(
+                                            selectedProject.getItemCostPerStage(index) != null
+                                                    ? selectedProject.getItemCostPerStage(index).getDisplayName()
+                                                    : "");
+                                } else {
+                                    tTooltip.add("");
+                                }
+                                return tTooltip;
+                            })
+                            .setSizeProvider(
+                                    (screenSize, window, parent) -> new Size(
+                                            parent.getSize().height / 16,
+                                            parent.getSize().height / 16))
+                            .setBackground(GT_UITextures.BUTTON_STANDARD).setEnabled(
+                                    widget -> selectedProject != null
+                                            && selectedProject.getItemCostPerStage(index) != null));
         }
         for (int i = 0; i < 4; i++) {
             int index = i;
             activeProjectItemsAndFluids.addChild(
-                new FluidDrawable()
-                    .setFluid(
-                        () -> selectedProject != null ? selectedProject.getFluidCostPerStage(index) : null)
-                    .asWidget()
-                    .dynamicTooltip(
-                        () -> Collections.singletonList(
-                            selectedProject != null
-                                ? selectedProject.getFluidCostPerStage(index).getLocalizedName()
-                                : ""))
-                    .setSizeProvider(
-                        (screenSize, window, parent) -> new Size(
-                            parent.getSize().height / 16,
-                            parent.getSize().height / 16))
-                    .setBackground(GT_UITextures.BUTTON_STANDARD).setEnabled(
-                        widget -> selectedProject != null
-                            && selectedProject.getFluidCostPerStage(index) != null));
+                    new FluidDrawable()
+                            .setFluid(
+                                    () -> selectedProject != null ? selectedProject.getFluidCostPerStage(index) : null)
+                            .asWidget()
+                            .dynamicTooltip(
+                                    () -> Collections.singletonList(
+                                            selectedProject != null
+                                                    ? selectedProject.getFluidCostPerStage(index).getLocalizedName()
+                                                    : ""))
+                            .setSizeProvider(
+                                    (screenSize, window, parent) -> new Size(
+                                            parent.getSize().height / 16,
+                                            parent.getSize().height / 16))
+                            .setBackground(GT_UITextures.BUTTON_STANDARD).setEnabled(
+                                    widget -> selectedProject != null
+                                            && selectedProject.getFluidCostPerStage(index) != null));
         }
         for (int i = 0; i < 12; i++) {
             int index = i;
             activeProjectCosts.addChild(
-                TextWidget.dynamicString(
-                        () -> (selectedProject != null && selectedProject.getItemCostPerStage(index) != null
-                            ? selectedProject.getItemCostPerStage(index).stackSize
-                            : "")
-                            + " Per Stage ("
-                            + (selectedProject != null && selectedProject.getCurrentItemProgress(index) != null
-                            ? selectedProject.getCurrentItemProgress(index).stackSize
-                            : "")
-                            + "/"
-                            + (selectedProject != null && selectedProject.getTotalItemCost(index) != null
-                            ? selectedProject.getTotalItemCost(index).stackSize
-                            : "")
-                            + ")")
-                    .setDefaultColor(WHITE).setTextAlignment(Alignment.CenterRight)
-                    .setSizeProvider(
-                        (screenSize, window,
-                         parent) -> new Size(parent.getSize().width, parent.getSize().height / 16))
-                    .setEnabled(
-                        widget -> selectedProject != null
-                            && selectedProject.getItemCostPerStage(index) != null));
+                    TextWidget.dynamicString(
+                            () -> (selectedProject != null && selectedProject.getItemCostPerStage(index) != null
+                                    ? selectedProject.getItemCostPerStage(index).stackSize
+                                    : "")
+                                    + " Per Stage ("
+                                    + (selectedProject != null && selectedProject.getCurrentItemProgress(index) != null
+                                            ? selectedProject.getCurrentItemProgress(index).stackSize
+                                            : "")
+                                    + "/"
+                                    + (selectedProject != null && selectedProject.getTotalItemCost(index) != null
+                                            ? selectedProject.getTotalItemCost(index).stackSize
+                                            : "")
+                                    + ")")
+                            .setDefaultColor(WHITE).setTextAlignment(Alignment.CenterRight)
+                            .setSizeProvider(
+                                    (screenSize, window,
+                                            parent) -> new Size(parent.getSize().width, parent.getSize().height / 16))
+                            .setEnabled(
+                                    widget -> selectedProject != null
+                                            && selectedProject.getItemCostPerStage(index) != null));
         }
         for (int i = 0; i < 4; i++) {
             int index = i;
             activeProjectCosts.addChild(
-                TextWidget.dynamicString(
-                        () -> (selectedProject != null && selectedProject.getCurrentFluidProgress(index) != null
-                            ? selectedProject.getFluidCostPerStage(index).amount
-                            : "")
-                            + " Per Stage ("
-                            + (selectedProject != null && selectedProject.getCurrentFluidProgress(index) != null
-                            ? selectedProject.getCurrentFluidProgress(index).amount
-                            : "")
-                            + "/"
-                            + (selectedProject != null && selectedProject.getTotalFluidCost(index) != null
-                            ? selectedProject.getTotalFluidCost(index).amount
-                            : "")
-                            + ")")
-                    .setDefaultColor(WHITE).setTextAlignment(Alignment.CenterRight)
-                    .setSizeProvider(
-                        (screenSize, window,
-                         parent) -> new Size(parent.getSize().width, parent.getSize().height / 16))
-                    .setEnabled(
-                        widget -> selectedProject != null
-                            && selectedProject.getFluidCostPerStage(index) != null));
+                    TextWidget.dynamicString(
+                            () -> (selectedProject != null && selectedProject.getCurrentFluidProgress(index) != null
+                                    ? selectedProject.getFluidCostPerStage(index).amount
+                                    : "")
+                                    + " Per Stage ("
+                                    + (selectedProject != null && selectedProject.getCurrentFluidProgress(index) != null
+                                            ? selectedProject.getCurrentFluidProgress(index).amount
+                                            : "")
+                                    + "/"
+                                    + (selectedProject != null && selectedProject.getTotalFluidCost(index) != null
+                                            ? selectedProject.getTotalFluidCost(index).amount
+                                            : "")
+                                    + ")")
+                            .setDefaultColor(WHITE).setTextAlignment(Alignment.CenterRight)
+                            .setSizeProvider(
+                                    (screenSize, window,
+                                            parent) -> new Size(parent.getSize().width, parent.getSize().height / 16))
+                            .setEnabled(
+                                    widget -> selectedProject != null
+                                            && selectedProject.getFluidCostPerStage(index) != null));
         }
         projectDetails.addChild(
-            new Scrollable().setVerticalScroll()
-                .widget(
-                    activeProjectCosts.setPos(0, 0).setSizeProvider(
-                        (screenSize, window, parent) -> new Size(
-                            parent.getSize().width * 0.85,
-                            parent.getSize().height * 0.2 * 16)))
-                .widget(
-                    activeProjectItemsAndFluids
-                        .setPosProvider(
-                            (screenSize, window, parent) -> new Pos2d(
-                                parent.getSize().width * 0.85,
-                                -((Scrollable) parent).getVerticalScrollOffset()))
+                new Scrollable().setVerticalScroll()
+                        .widget(
+                                activeProjectCosts.setPos(0, 0).setSizeProvider(
+                                        (screenSize, window, parent) -> new Size(
+                                                parent.getSize().width * 0.85,
+                                                parent.getSize().height * 0.2 * 16)))
+                        .widget(
+                                activeProjectItemsAndFluids
+                                        .setPosProvider(
+                                                (screenSize, window, parent) -> new Pos2d(
+                                                        parent.getSize().width * 0.85,
+                                                        -((Scrollable) parent).getVerticalScrollOffset()))
+                                        .setSizeProvider(
+                                                (screenSize, window, parent) -> new Size(
+                                                        parent.getSize().width * 0.15,
+                                                        parent.getSize().height * 0.2 * 16)))
                         .setSizeProvider(
-                            (screenSize, window, parent) -> new Size(
-                                parent.getSize().width * 0.15,
-                                parent.getSize().height * 0.2 * 16)))
-                .setSizeProvider(
-                    (screenSize, window,
-                     parent) -> new Size(parent.getSize().width, parent.getSize().height * 0.3))
-                .setPosProvider((screenSize, window, parent) -> new Pos2d(0, parent.getSize().height * 0.6))
-                .setEnabled(widget -> projectMode));
+                                (screenSize, window,
+                                        parent) -> new Size(parent.getSize().width, parent.getSize().height * 0.3))
+                        .setPosProvider((screenSize, window, parent) -> new Pos2d(0, parent.getSize().height * 0.6))
+                        .setEnabled(widget -> projectMode));
     }
 
     /**
@@ -700,42 +709,42 @@ public class TileEntityModuleManager extends TileEntityModuleBase {
         for (int i = 0; i < 12; i++) {
             int index = i;
             activeProjectUpgrades.addChild(
-                generateCustomButton(
-                    () -> upgradeFromProject != null && upgradeFromProject.size() > index
-                        ? upgradeFromProject.get(index)
-                        : null));
+                    generateCustomButton(
+                            () -> upgradeFromProject != null && upgradeFromProject.size() > index
+                                    ? upgradeFromProject.get(index)
+                                    : null));
         }
         projectDetails
-            .addChild(
-                new Scrollable().setVerticalScroll().widget(
-                        activeProjectUpgrades.setSizeProvider(
-                            (screenSize, window, parent) -> new Size(parent.getSize().width, 25 * 12)))
-                    .setPosProvider(
-                        (screenSize, window, parent) -> new Pos2d(0, parent.getSize().height * 0.2))
-                    .setSizeProvider(
-                        (screenSize, window, parent) -> new Size(
-                            parent.getSize().width * 0.5,
-                            parent.getSize().height * 0.4))
-                    .setEnabled(widget -> upgradeMode))
-            .addChild(
-                new Scrollable().setVerticalScroll().widget(
-                        TextWidget
-                            .dynamicString(
-                                () -> selectedUpgrade != null
-                                    ? StatCollector.translateToLocal(
-                                    selectedUpgrade.getUnlocalizedName() + ".description")
-                                    : "")
-                            .setDefaultColor(WHITE).setSizeProvider(
-                                (screenSize, window, parent) -> new Size(parent.getSize().width, 200)))
-                    .setSizeProvider(
-                        (screenSize, window, parent) -> new Size(
-                            parent.getSize().width,
-                            parent.getSize().height * 0.4))
-                    .setPosProvider(
-                        (screenSize, window, parent) -> new Pos2d(
-                            parent.getSize().width * 0.5,
-                            parent.getSize().height * 0.2))
-                    .setEnabled(widget -> upgradeMode));
+                .addChild(
+                        new Scrollable().setVerticalScroll().widget(
+                                activeProjectUpgrades.setSizeProvider(
+                                        (screenSize, window, parent) -> new Size(parent.getSize().width, 25 * 12)))
+                                .setPosProvider(
+                                        (screenSize, window, parent) -> new Pos2d(0, parent.getSize().height * 0.2))
+                                .setSizeProvider(
+                                        (screenSize, window, parent) -> new Size(
+                                                parent.getSize().width * 0.5,
+                                                parent.getSize().height * 0.4))
+                                .setEnabled(widget -> upgradeMode))
+                .addChild(
+                        new Scrollable().setVerticalScroll().widget(
+                                TextWidget
+                                        .dynamicString(
+                                                () -> selectedUpgrade != null
+                                                        ? StatCollector.translateToLocal(
+                                                                selectedUpgrade.getUnlocalizedName() + ".description")
+                                                        : "")
+                                        .setDefaultColor(WHITE).setSizeProvider(
+                                                (screenSize, window, parent) -> new Size(parent.getSize().width, 200)))
+                                .setSizeProvider(
+                                        (screenSize, window, parent) -> new Size(
+                                                parent.getSize().width,
+                                                parent.getSize().height * 0.4))
+                                .setPosProvider(
+                                        (screenSize, window, parent) -> new Pos2d(
+                                                parent.getSize().width * 0.5,
+                                                parent.getSize().height * 0.2))
+                                .setEnabled(widget -> upgradeMode));
     }
 
     /**
@@ -749,114 +758,114 @@ public class TileEntityModuleManager extends TileEntityModuleBase {
         for (int i = 0; i < GT_Recipe.GT_Recipe_Map.sFakeSpaceProjectRecipes.mUsualInputCount; i++) {
             int index = i;
             activeUpgradeItemsAndFluids.addChild(
-                new ItemDrawable(() -> selectedUpgrade != null ? selectedUpgrade.getItemCostPerStage(index) : null)
-                    .asWidget().dynamicTooltip(() -> {
-                        List<String> tTooltip = new ArrayList<>();
-                        if (selectedUpgrade != null) {
-                            tTooltip.add(
-                                selectedUpgrade.getItemCostPerStage(index) != null
-                                    ? selectedUpgrade.getItemCostPerStage(index).getDisplayName()
-                                    : "");
-                        } else {
-                            tTooltip.add("");
-                        }
-                        return tTooltip;
-                    })
-                    .setSizeProvider(
-                        (screenSize, window, parent) -> new Size(
-                            parent.getSize().height / 16,
-                            parent.getSize().height / 16))
-                    .setBackground(GT_UITextures.BUTTON_STANDARD).setEnabled(
-                        widget -> selectedUpgrade != null
-                            && selectedUpgrade.getItemCostPerStage(index) != null));
+                    new ItemDrawable(() -> selectedUpgrade != null ? selectedUpgrade.getItemCostPerStage(index) : null)
+                            .asWidget().dynamicTooltip(() -> {
+                                List<String> tTooltip = new ArrayList<>();
+                                if (selectedUpgrade != null) {
+                                    tTooltip.add(
+                                            selectedUpgrade.getItemCostPerStage(index) != null
+                                                    ? selectedUpgrade.getItemCostPerStage(index).getDisplayName()
+                                                    : "");
+                                } else {
+                                    tTooltip.add("");
+                                }
+                                return tTooltip;
+                            })
+                            .setSizeProvider(
+                                    (screenSize, window, parent) -> new Size(
+                                            parent.getSize().height / 16,
+                                            parent.getSize().height / 16))
+                            .setBackground(GT_UITextures.BUTTON_STANDARD).setEnabled(
+                                    widget -> selectedUpgrade != null
+                                            && selectedUpgrade.getItemCostPerStage(index) != null));
         }
         for (int i = 0; i < GT_Recipe.GT_Recipe_Map.sFakeSpaceProjectRecipes.getUsualFluidInputCount(); i++) {
             int index = i;
             activeUpgradeItemsAndFluids.addChild(
-                new FluidDrawable()
-                    .setFluid(
-                        () -> selectedUpgrade != null ? selectedUpgrade.getFluidCostPerStage(index) : null)
-                    .asWidget()
-                    .dynamicTooltip(
-                        () -> Collections.singletonList(
-                            selectedUpgrade != null
-                                ? selectedUpgrade.getFluidCostPerStage(index).getLocalizedName()
-                                : ""))
-                    .setSizeProvider(
-                        (screenSize, window, parent) -> new Size(
-                            parent.getSize().height / 16,
-                            parent.getSize().height / 16))
-                    .setBackground(GT_UITextures.BUTTON_STANDARD).setEnabled(
-                        widget -> selectedUpgrade != null
-                            && selectedUpgrade.getFluidCostPerStage(index) != null));
+                    new FluidDrawable()
+                            .setFluid(
+                                    () -> selectedUpgrade != null ? selectedUpgrade.getFluidCostPerStage(index) : null)
+                            .asWidget()
+                            .dynamicTooltip(
+                                    () -> Collections.singletonList(
+                                            selectedUpgrade != null
+                                                    ? selectedUpgrade.getFluidCostPerStage(index).getLocalizedName()
+                                                    : ""))
+                            .setSizeProvider(
+                                    (screenSize, window, parent) -> new Size(
+                                            parent.getSize().height / 16,
+                                            parent.getSize().height / 16))
+                            .setBackground(GT_UITextures.BUTTON_STANDARD).setEnabled(
+                                    widget -> selectedUpgrade != null
+                                            && selectedUpgrade.getFluidCostPerStage(index) != null));
         }
         for (int i = 0; i < GT_Recipe.GT_Recipe_Map.sFakeSpaceProjectRecipes.mUsualInputCount; i++) {
             int index = i;
             activeUpgradeCosts.addChild(
-                TextWidget.dynamicString(
-                        () -> (selectedUpgrade != null && selectedUpgrade.getItemCostPerStage(index) != null
-                            ? selectedUpgrade.getItemCostPerStage(index).stackSize
-                            : "")
-                            + " Per Stage ("
-                            + (selectedUpgrade != null && selectedUpgrade.getCurrentItemProgress(index) != null
-                            ? selectedUpgrade.getCurrentItemProgress(index).stackSize
-                            : "")
-                            + "/"
-                            + (selectedUpgrade != null && selectedUpgrade.getTotalItemCost(index) != null
-                            ? selectedUpgrade.getTotalItemCost(index).stackSize
-                            : "")
-                            + ")")
-                    .setDefaultColor(WHITE).setTextAlignment(Alignment.CenterRight)
-                    .setSizeProvider(
-                        (screenSize, window,
-                         parent) -> new Size(parent.getSize().width, parent.getSize().height / 16))
-                    .setEnabled(
-                        widget -> selectedUpgrade != null
-                            && selectedUpgrade.getItemCostPerStage(index) != null));
+                    TextWidget.dynamicString(
+                            () -> (selectedUpgrade != null && selectedUpgrade.getItemCostPerStage(index) != null
+                                    ? selectedUpgrade.getItemCostPerStage(index).stackSize
+                                    : "")
+                                    + " Per Stage ("
+                                    + (selectedUpgrade != null && selectedUpgrade.getCurrentItemProgress(index) != null
+                                            ? selectedUpgrade.getCurrentItemProgress(index).stackSize
+                                            : "")
+                                    + "/"
+                                    + (selectedUpgrade != null && selectedUpgrade.getTotalItemCost(index) != null
+                                            ? selectedUpgrade.getTotalItemCost(index).stackSize
+                                            : "")
+                                    + ")")
+                            .setDefaultColor(WHITE).setTextAlignment(Alignment.CenterRight)
+                            .setSizeProvider(
+                                    (screenSize, window,
+                                            parent) -> new Size(parent.getSize().width, parent.getSize().height / 16))
+                            .setEnabled(
+                                    widget -> selectedUpgrade != null
+                                            && selectedUpgrade.getItemCostPerStage(index) != null));
         }
         for (int i = 0; i < 4; i++) {
             int index = i;
             activeUpgradeCosts.addChild(
-                TextWidget.dynamicString(
-                        () -> (selectedUpgrade != null && selectedUpgrade.getCurrentFluidProgress(index) != null
-                            ? selectedUpgrade.getFluidCostPerStage(index).amount
-                            : "")
-                            + " Per Stage ("
-                            + (selectedUpgrade != null && selectedUpgrade.getCurrentFluidProgress(index) != null
-                            ? selectedUpgrade.getCurrentFluidProgress(index).amount
-                            : "")
-                            + "/"
-                            + (selectedUpgrade != null && selectedUpgrade.getTotalFluidCost(index) != null
-                            ? selectedUpgrade.getTotalFluidCost(index).amount
-                            : "")
-                            + ")")
-                    .setDefaultColor(WHITE).setTextAlignment(Alignment.CenterRight)
-                    .setSizeProvider(
-                        (screenSize, window,
-                         parent) -> new Size(parent.getSize().width, parent.getSize().height / 16))
-                    .setEnabled(
-                        widget -> selectedUpgrade != null
-                            && selectedUpgrade.getFluidCostPerStage(index) != null));
+                    TextWidget.dynamicString(
+                            () -> (selectedUpgrade != null && selectedUpgrade.getCurrentFluidProgress(index) != null
+                                    ? selectedUpgrade.getFluidCostPerStage(index).amount
+                                    : "")
+                                    + " Per Stage ("
+                                    + (selectedUpgrade != null && selectedUpgrade.getCurrentFluidProgress(index) != null
+                                            ? selectedUpgrade.getCurrentFluidProgress(index).amount
+                                            : "")
+                                    + "/"
+                                    + (selectedUpgrade != null && selectedUpgrade.getTotalFluidCost(index) != null
+                                            ? selectedUpgrade.getTotalFluidCost(index).amount
+                                            : "")
+                                    + ")")
+                            .setDefaultColor(WHITE).setTextAlignment(Alignment.CenterRight)
+                            .setSizeProvider(
+                                    (screenSize, window,
+                                            parent) -> new Size(parent.getSize().width, parent.getSize().height / 16))
+                            .setEnabled(
+                                    widget -> selectedUpgrade != null
+                                            && selectedUpgrade.getFluidCostPerStage(index) != null));
         }
         projectDetails.addChild(
-            new Scrollable().setVerticalScroll()
-                .widget(
-                    activeUpgradeCosts.setPos(0, 0).setSizeProvider(
-                        (screenSize, window, parent) -> new Size(
-                            parent.getSize().width * 0.85,
-                            parent.getSize().height * 0.2 * 16)))
-                .widget(
-                    activeUpgradeItemsAndFluids.setPosProvider(
-                            (screenSize, window, parent) -> new Pos2d(parent.getSize().width * 0.85, 0))
+                new Scrollable().setVerticalScroll()
+                        .widget(
+                                activeUpgradeCosts.setPos(0, 0).setSizeProvider(
+                                        (screenSize, window, parent) -> new Size(
+                                                parent.getSize().width * 0.85,
+                                                parent.getSize().height * 0.2 * 16)))
+                        .widget(
+                                activeUpgradeItemsAndFluids.setPosProvider(
+                                        (screenSize, window, parent) -> new Pos2d(parent.getSize().width * 0.85, 0))
+                                        .setSizeProvider(
+                                                (screenSize, window, parent) -> new Size(
+                                                        parent.getSize().width * 0.15,
+                                                        parent.getSize().height * 0.2 * 16)))
                         .setSizeProvider(
-                            (screenSize, window, parent) -> new Size(
-                                parent.getSize().width * 0.15,
-                                parent.getSize().height * 0.2 * 16)))
-                .setSizeProvider(
-                    (screenSize, window,
-                     parent) -> new Size(parent.getSize().width, parent.getSize().height * 0.3))
-                .setPosProvider((screenSize, window, parent) -> new Pos2d(0, parent.getSize().height * 0.6))
-                .setEnabled(widget -> upgradeMode));
+                                (screenSize, window,
+                                        parent) -> new Size(parent.getSize().width, parent.getSize().height * 0.3))
+                        .setPosProvider((screenSize, window, parent) -> new Pos2d(0, parent.getSize().height * 0.6))
+                        .setEnabled(widget -> upgradeMode));
     }
 
     /**
@@ -870,28 +879,28 @@ public class TileEntityModuleManager extends TileEntityModuleBase {
 
         ButtonWidget button = new ButtonWidget();
         customButton.addChild(button.setOnClick((clickData, widget) -> {
-                projectMode = true;
-                upgradeMode = false;
-                if (widget.getContext().isClient()) {
-                    selectedProject = SpaceProjectManager.getProject(widget.getInternalName());
-                } else {
-                    selectedProject = SpaceProjectManager.getTeamProjectOrCopy(
+            projectMode = true;
+            upgradeMode = false;
+            if (widget.getContext().isClient()) {
+                selectedProject = SpaceProjectManager.getProject(widget.getInternalName());
+            } else {
+                selectedProject = SpaceProjectManager.getTeamProjectOrCopy(
                         getBaseMetaTileEntity().getOwnerUuid(),
                         widget.getInternalName(),
                         selectedLocation);
-                }
-                if (selectedProject != null) {
-                    upgradeFromProject = new ArrayList<>(selectedProject.getAllUpgrades());
-                }
-            }).setBackground(() -> {
-                if (selectedProject != null && selectedProject.getProjectName().equals(button.getInternalName())) {
-                    return new IDrawable[] { buttonDown };
-                }
-                return new IDrawable[] { buttonUp };
-            }).setInternalName(project.getProjectName())
-            .setSizeProvider((screenSize, window, parent) -> new Size(parent.getSize().width, 40))).addChild(
-            new TextWidget(project.getLocalizedName()).setTextAlignment(Alignment.Center)
-                .setSizeProvider((screenSize, window, parent) -> new Size(parent.getSize().width, 40)));
+            }
+            if (selectedProject != null) {
+                upgradeFromProject = new ArrayList<>(selectedProject.getAllUpgrades());
+            }
+        }).setBackground(() -> {
+            if (selectedProject != null && selectedProject.getProjectName().equals(button.getInternalName())) {
+                return new IDrawable[] { buttonDown };
+            }
+            return new IDrawable[] { buttonUp };
+        }).setInternalName(project.getProjectName())
+                .setSizeProvider((screenSize, window, parent) -> new Size(parent.getSize().width, 40))).addChild(
+                        new TextWidget(project.getLocalizedName()).setTextAlignment(Alignment.Center)
+                                .setSizeProvider((screenSize, window, parent) -> new Size(parent.getSize().width, 40)));
 
         return customButton.setSizeProvider((screenSize, window, parent) -> new Size(parent.getSize().width, 45));
     }
@@ -909,20 +918,20 @@ public class TileEntityModuleManager extends TileEntityModuleBase {
         customButton.addChild(
                 button.setOnClick(
                         (clickData, widget) -> selectedUpgrade = selectedProject.getUpgrade(widget.getInternalName()))
-                    .setBackground(() -> {
-                        if (selectedUpgrade != null
-                            && selectedUpgrade.getUpgradeName().equals(button.getInternalName())) {
-                            return new IDrawable[] { buttonDown };
-                        }
-                        return new IDrawable[] { buttonUp };
-                    }).setSizeProvider((screenSize, window, parent) -> new Size(parent.getSize().width, 35))
-                    .setInternalName(() -> supplier.get() != null ? supplier.get().getUpgradeName() : ""))
-            .addChild(
-                TextWidget.dynamicString(() -> supplier.get() != null ? supplier.get().getLocalizedName() : "")
-                    .setTextAlignment(Alignment.Center)
-                    .setSizeProvider((screenSize, window, parent) -> new Size(parent.getSize().width, 35)));
+                        .setBackground(() -> {
+                            if (selectedUpgrade != null
+                                    && selectedUpgrade.getUpgradeName().equals(button.getInternalName())) {
+                                return new IDrawable[] { buttonDown };
+                            }
+                            return new IDrawable[] { buttonUp };
+                        }).setSizeProvider((screenSize, window, parent) -> new Size(parent.getSize().width, 35))
+                        .setInternalName(() -> supplier.get() != null ? supplier.get().getUpgradeName() : ""))
+                .addChild(
+                        TextWidget.dynamicString(() -> supplier.get() != null ? supplier.get().getLocalizedName() : "")
+                                .setTextAlignment(Alignment.Center)
+                                .setSizeProvider((screenSize, window, parent) -> new Size(parent.getSize().width, 35)));
         return customButton.setSizeProvider((screenSize, window, parent) -> new Size(parent.getSize().width, 40))
-            .setEnabled(widget -> !button.getInternalName().equals(""));
+                .setEnabled(widget -> !button.getInternalName().equals(""));
     }
 
     /**
@@ -937,25 +946,25 @@ public class TileEntityModuleManager extends TileEntityModuleBase {
      * @return Button
      */
     private Widget generateCustomButton(String text, BiConsumer<Widget.ClickData, Widget> consumer,
-                                        Supplier<Boolean> isToggledSupplier, Supplier<Boolean> isClickableSupplier, Widget.SizeProvider buttonSize,
-                                        Widget.PosProvider buttonPos) {
+            Supplier<Boolean> isToggledSupplier, Supplier<Boolean> isClickableSupplier, Widget.SizeProvider buttonSize,
+            Widget.PosProvider buttonPos) {
         MultiChildWidget customButton = new MultiChildWidget();
         customButton.addChild(new ButtonWidget().setOnClick(consumer).setBackground(() -> {
-                if (!isClickableSupplier.get()) {
-                    if (isToggledSupplier.get()) {
-                        return new IDrawable[] { buttonDownDisabled };
-                    }
-                    return new IDrawable[] { buttonUpDisabled };
-                }
+            if (!isClickableSupplier.get()) {
                 if (isToggledSupplier.get()) {
-                    return new IDrawable[] { buttonDown };
+                    return new IDrawable[] { buttonDownDisabled };
                 }
-                return new IDrawable[] { buttonUp };
-            }).setSizeProvider((screenSize, window, parent) -> new Size(parent.getSize().width, parent.getSize().height)))
-            .addChild(
-                new TextWidget(text).setTextAlignment(Alignment.Center).setSizeProvider(
-                    (screenSize, window,
-                     parent) -> new Size(parent.getSize().width, parent.getSize().height)));
+                return new IDrawable[] { buttonUpDisabled };
+            }
+            if (isToggledSupplier.get()) {
+                return new IDrawable[] { buttonDown };
+            }
+            return new IDrawable[] { buttonUp };
+        }).setSizeProvider((screenSize, window, parent) -> new Size(parent.getSize().width, parent.getSize().height)))
+                .addChild(
+                        new TextWidget(text).setTextAlignment(Alignment.Center).setSizeProvider(
+                                (screenSize, window,
+                                        parent) -> new Size(parent.getSize().width, parent.getSize().height)));
         return customButton.setSizeProvider(buttonSize).setPosProvider(buttonPos);
     }
 
@@ -965,9 +974,9 @@ public class TileEntityModuleManager extends TileEntityModuleBase {
     private boolean isUpgradeButtonClickable() {
         if (projectMode) {
             return upgradeFromProject != null && upgradeFromProject.size() > 0
-                && selectedProject != null
-                && selectedProject.isFinished()
-                && selectedProject.getAllUpgrades().size() > 0;
+                    && selectedProject != null
+                    && selectedProject.isFinished()
+                    && selectedProject.getAllUpgrades().size() > 0;
         } else {
             return true;
         }

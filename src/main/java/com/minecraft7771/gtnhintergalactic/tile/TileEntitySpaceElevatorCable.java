@@ -1,14 +1,17 @@
 package com.minecraft7771.gtnhintergalactic.tile;
 
-import com.minecraft7771.gtnhintergalactic.config.Config;
-import cpw.mods.fml.relauncher.Side;
-import io.netty.buffer.ByteBuf;
+import java.util.List;
+
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAdvanced;
 import micdoodle8.mods.galacticraft.core.util.Annotations;
+
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 
-import java.util.List;
+import com.minecraft7771.gtnhintergalactic.config.Config;
+
+import cpw.mods.fml.relauncher.Side;
+import io.netty.buffer.ByteBuf;
 
 /**
  * TE of the Space Elevator Cable
@@ -16,6 +19,7 @@ import java.util.List;
  * @author minecraft7771
  */
 public class TileEntitySpaceElevatorCable extends TileEntityAdvanced {
+
     public enum ClimberAnimation {
         /** Let the climber sit on its spot */
         NO_ANIMATION,

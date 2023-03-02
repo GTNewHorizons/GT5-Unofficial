@@ -1,7 +1,7 @@
 package com.minecraft7771.gtnhintergalactic.proxy;
 
-import com.minecraft7771.gtnhintergalactic.GTNHIntergalactic;
-import com.minecraft7771.gtnhintergalactic.Tags;
+import net.minecraft.util.IIcon;
+
 import com.minecraft7771.gtnhintergalactic.block.BlockCasingSpaceElevator;
 import com.minecraft7771.gtnhintergalactic.block.BlockCasingSpaceElevatorMotor;
 import com.minecraft7771.gtnhintergalactic.block.IGBlocks;
@@ -11,13 +11,13 @@ import com.minecraft7771.gtnhintergalactic.loader.MachineLoader;
 import com.minecraft7771.gtnhintergalactic.loader.RecipeLoader;
 import com.minecraft7771.gtnhintergalactic.nei.IMCForNEI;
 import com.minecraft7771.gtnhintergalactic.recipe.SpaceProjectRegistration;
+
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
-import net.minecraft.util.IIcon;
 
 /**
  * Proxy used by both, the server and the client to load stuff

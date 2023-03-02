@@ -1,17 +1,18 @@
 package com.minecraft7771.gtnhintergalactic.recipe;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
 
 /**
  * GT recipes of GTNH-Intergalactic. These include a needed space project optionally.
@@ -41,20 +42,20 @@ public class IG_Recipe extends GT_Recipe {
      * @param aSpecialValue Special value of the recipe
      */
     public IG_Recipe(boolean aOptimize, ItemStack[] aInputs, ItemStack[] aOutputs, Object aSpecialItems, int[] aChances,
-                     FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue) {
+            FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue) {
         this(
-            aOptimize,
-            aInputs,
-            aOutputs,
-            aSpecialItems,
-            aChances,
-            aFluidInputs,
-            aFluidOutputs,
-            aDuration,
-            aEUt,
-            aSpecialValue,
-            null,
-            null);
+                aOptimize,
+                aInputs,
+                aOutputs,
+                aSpecialItems,
+                aChances,
+                aFluidInputs,
+                aFluidOutputs,
+                aDuration,
+                aEUt,
+                aSpecialValue,
+                null,
+                null);
     }
 
     /**
@@ -73,19 +74,19 @@ public class IG_Recipe extends GT_Recipe {
      * @param neededSpaceProject Space project that is needed to do this recipe
      */
     public IG_Recipe(boolean aOptimize, ItemStack[] aInputs, ItemStack[] aOutputs, Object aSpecialItems, int[] aChances,
-                     FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue,
-                     String neededSpaceProject, String neededSpaceProjectLocation) {
+            FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue,
+            String neededSpaceProject, String neededSpaceProjectLocation) {
         super(
-            aOptimize,
-            aInputs,
-            aOutputs,
-            aSpecialItems,
-            aChances,
-            aFluidInputs,
-            aFluidOutputs,
-            aDuration,
-            aEUt,
-            aSpecialValue);
+                aOptimize,
+                aInputs,
+                aOutputs,
+                aSpecialItems,
+                aChances,
+                aFluidInputs,
+                aFluidOutputs,
+                aDuration,
+                aEUt,
+                aSpecialValue);
         this.neededSpaceProject = neededSpaceProject;
         this.neededSpaceProjectLocation = neededSpaceProjectLocation;
     }
@@ -112,31 +113,31 @@ public class IG_Recipe extends GT_Recipe {
     public static class GT_Recipe_MapGS extends GT_Recipe.GT_Recipe_Map {
 
         public GT_Recipe_MapGS(Collection<GT_Recipe> aRecipeList, String aUnlocalizedName, String aLocalName,
-                               String aNEIName, String aNEIGUIPath, int aUsualInputCount, int aUsualOutputCount,
-                               int aMinimalInputItems, int aMinimalInputFluids, int aAmperage, String aNEISpecialValuePre,
-                               int aNEISpecialValueMultiplier, String aNEISpecialValuePost, boolean aShowVoltageAmperageInNEI,
-                               boolean aNEIAllowed) {
+                String aNEIName, String aNEIGUIPath, int aUsualInputCount, int aUsualOutputCount,
+                int aMinimalInputItems, int aMinimalInputFluids, int aAmperage, String aNEISpecialValuePre,
+                int aNEISpecialValueMultiplier, String aNEISpecialValuePost, boolean aShowVoltageAmperageInNEI,
+                boolean aNEIAllowed) {
             super(
-                aRecipeList,
-                aUnlocalizedName,
-                aLocalName,
-                aNEIName,
-                aNEIGUIPath,
-                aUsualInputCount,
-                aUsualOutputCount,
-                aMinimalInputItems,
-                aMinimalInputFluids,
-                aAmperage,
-                aNEISpecialValuePre,
-                aNEISpecialValueMultiplier,
-                aNEISpecialValuePost,
-                aShowVoltageAmperageInNEI,
-                aNEIAllowed);
+                    aRecipeList,
+                    aUnlocalizedName,
+                    aLocalName,
+                    aNEIName,
+                    aNEIGUIPath,
+                    aUsualInputCount,
+                    aUsualOutputCount,
+                    aMinimalInputItems,
+                    aMinimalInputFluids,
+                    aAmperage,
+                    aNEISpecialValuePre,
+                    aNEISpecialValueMultiplier,
+                    aNEISpecialValuePost,
+                    aShowVoltageAmperageInNEI,
+                    aNEIAllowed);
         }
 
         public List<IG_SpaceMiningRecipe> findRecipes(IHasWorldObjectAndCoords aTileEntity,
-                                                      IG_SpaceMiningRecipe aRecipe, boolean aNotUnificated, boolean aDontCheckStackSizes, long aVoltage,
-                                                      FluidStack[] aFluids, ItemStack aSpecialSlot, int distance, int moduleTier, ItemStack... aInputs) {
+                IG_SpaceMiningRecipe aRecipe, boolean aNotUnificated, boolean aDontCheckStackSizes, long aVoltage,
+                FluidStack[] aFluids, ItemStack aSpecialSlot, int distance, int moduleTier, ItemStack... aInputs) {
             // Search algorithm copied from findRecipe, just fitted to add all found recipes
             if (this.mRecipeList.isEmpty()) {
                 return null;
@@ -194,12 +195,12 @@ public class IG_Recipe extends GT_Recipe {
                 }
 
                 if (aRecipe != null && !aRecipe.mFakeRecipe
-                    && aRecipe.mCanBeBuffered
-                    && aRecipe.isRecipeInputEqual(false, aDontCheckStackSizes, aFluids, aInputs)) {
+                        && aRecipe.mCanBeBuffered
+                        && aRecipe.isRecipeInputEqual(false, aDontCheckStackSizes, aFluids, aInputs)) {
                     if (aRecipe.mEnabled && aVoltage * (long) this.mAmperage >= (long) aRecipe.mEUt
-                        && aRecipe.minDistance <= distance
-                        && aRecipe.maxDistance >= distance
-                        && aRecipe.mSpecialValue <= moduleTier) {
+                            && aRecipe.minDistance <= distance
+                            && aRecipe.maxDistance >= distance
+                            && aRecipe.mSpecialValue <= moduleTier) {
                         recipes.add(aRecipe);
                     }
                 } else {
@@ -221,12 +222,12 @@ public class IG_Recipe extends GT_Recipe {
                                     while (var15.hasNext()) {
                                         tRecipe = (IG_SpaceMiningRecipe) var15.next();
                                         if (!tRecipe.mFakeRecipe && tRecipe
-                                            .isRecipeInputEqual(false, aDontCheckStackSizes, aFluids, aInputs)) {
+                                                .isRecipeInputEqual(false, aDontCheckStackSizes, aFluids, aInputs)) {
                                             if (tRecipe.mEnabled
-                                                && aVoltage * (long) this.mAmperage >= (long) tRecipe.mEUt
-                                                && tRecipe.minDistance <= distance
-                                                && tRecipe.maxDistance >= distance
-                                                && tRecipe.mSpecialValue <= moduleTier) {
+                                                    && aVoltage * (long) this.mAmperage >= (long) tRecipe.mEUt
+                                                    && tRecipe.minDistance <= distance
+                                                    && tRecipe.maxDistance >= distance
+                                                    && tRecipe.mSpecialValue <= moduleTier) {
                                                 recipes.add(tRecipe);
                                             }
                                         }
@@ -240,12 +241,12 @@ public class IG_Recipe extends GT_Recipe {
                                     while (var15.hasNext()) {
                                         tRecipe = (IG_SpaceMiningRecipe) var15.next();
                                         if (!tRecipe.mFakeRecipe && tRecipe
-                                            .isRecipeInputEqual(false, aDontCheckStackSizes, aFluids, aInputs)) {
+                                                .isRecipeInputEqual(false, aDontCheckStackSizes, aFluids, aInputs)) {
                                             if (tRecipe.mEnabled
-                                                && aVoltage * (long) this.mAmperage >= (long) tRecipe.mEUt
-                                                && tRecipe.minDistance <= distance
-                                                && tRecipe.maxDistance >= distance
-                                                && tRecipe.mSpecialValue <= moduleTier) {
+                                                    && aVoltage * (long) this.mAmperage >= (long) tRecipe.mEUt
+                                                    && tRecipe.minDistance <= distance
+                                                    && tRecipe.maxDistance >= distance
+                                                    && tRecipe.mSpecialValue <= moduleTier) {
                                                 recipes.add(tRecipe);
                                             }
                                         }
@@ -269,12 +270,12 @@ public class IG_Recipe extends GT_Recipe {
                                     while (var15.hasNext()) {
                                         tRecipe = (IG_SpaceMiningRecipe) var15.next();
                                         if (!tRecipe.mFakeRecipe && tRecipe
-                                            .isRecipeInputEqual(false, aDontCheckStackSizes, aFluids, aInputs)) {
+                                                .isRecipeInputEqual(false, aDontCheckStackSizes, aFluids, aInputs)) {
                                             if (tRecipe.mEnabled
-                                                && aVoltage * (long) this.mAmperage >= (long) tRecipe.mEUt
-                                                && tRecipe.minDistance <= distance
-                                                && tRecipe.maxDistance >= distance
-                                                && tRecipe.mSpecialValue <= moduleTier) {
+                                                    && aVoltage * (long) this.mAmperage >= (long) tRecipe.mEUt
+                                                    && tRecipe.minDistance <= distance
+                                                    && tRecipe.maxDistance >= distance
+                                                    && tRecipe.mSpecialValue <= moduleTier) {
                                                 recipes.add(tRecipe);
                                             }
                                         }
@@ -304,19 +305,19 @@ public class IG_Recipe extends GT_Recipe {
         public int recipeWeight;
 
         public IG_SpaceMiningRecipe(boolean aOptimize, ItemStack[] aItemInputs, ItemStack[] aItemOutputs,
-                                    FluidStack[] aFluidInputs, int[] aChances, int aDuration, int aEUt, int computation, int minModuleTier,
-                                    int minDistance, int maxDistance, int minSize, int maxSize, int recipeWeight) {
+                FluidStack[] aFluidInputs, int[] aChances, int aDuration, int aEUt, int computation, int minModuleTier,
+                int minDistance, int maxDistance, int minSize, int maxSize, int recipeWeight) {
             super(
-                aOptimize,
-                aItemInputs,
-                aItemOutputs,
-                null,
-                aChances,
-                aFluidInputs,
-                null,
-                aDuration,
-                aEUt,
-                minModuleTier);
+                    aOptimize,
+                    aItemInputs,
+                    aItemOutputs,
+                    null,
+                    aChances,
+                    aFluidInputs,
+                    null,
+                    aDuration,
+                    aEUt,
+                    minModuleTier);
             this.minDistance = minDistance;
             this.maxDistance = maxDistance;
             this.minSize = minSize;

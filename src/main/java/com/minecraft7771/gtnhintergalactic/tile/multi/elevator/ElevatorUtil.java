@@ -1,24 +1,27 @@
 package com.minecraft7771.gtnhintergalactic.tile.multi.elevator;
 
-import com.google.common.collect.ImmutableList;
-import com.gtnewhorizon.structurelib.StructureLibAPI;
-import com.gtnewhorizon.structurelib.structure.*;
-import com.minecraft7771.gtnhintergalactic.block.BlockCasingSpaceElevatorMotor;
-import com.minecraft7771.gtnhintergalactic.tile.multi.elevatormodules.TileEntityModuleBase;
-import gregtech.api.interfaces.IHatchElement;
-import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.util.IGT_HatchAdder;
-import gregtech.common.misc.spaceprojects.SpaceProjectManager;
-import gregtech.common.misc.spaceprojects.interfaces.ISpaceProject;
+import java.util.*;
+import java.util.function.Consumer;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.world.World;
+
 import org.apache.commons.lang3.tuple.Pair;
 
-import java.util.*;
-import java.util.function.Consumer;
+import com.google.common.collect.ImmutableList;
+import com.gtnewhorizon.structurelib.StructureLibAPI;
+import com.gtnewhorizon.structurelib.structure.*;
+import com.minecraft7771.gtnhintergalactic.block.BlockCasingSpaceElevatorMotor;
+import com.minecraft7771.gtnhintergalactic.tile.multi.elevatormodules.TileEntityModuleBase;
+
+import gregtech.api.interfaces.IHatchElement;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.util.IGT_HatchAdder;
+import gregtech.common.misc.spaceprojects.SpaceProjectManager;
+import gregtech.common.misc.spaceprojects.interfaces.ISpaceProject;
 
 /**
  * Utility functions of the Space Elevator
@@ -39,14 +42,15 @@ public class ElevatorUtil {
         if (neededProject != null && !neededProject.equals("")) {
             if (neededLocation != null && !neededLocation.equals("")) {
                 ISpaceProject project = SpaceProjectManager
-                    .getTeamProject(machineOwner, SpaceProjectManager.getLocation(neededLocation), neededProject);
+                        .getTeamProject(machineOwner, SpaceProjectManager.getLocation(neededLocation), neededProject);
                 return project != null && project.isFinished();
             } else {
                 ArrayList<ISpaceProject> projects = new ArrayList<>(
-                    SpaceProjectManager.getTeamSpaceProjects(machineOwner));
+                        SpaceProjectManager.getTeamSpaceProjects(machineOwner));
                 for (ISpaceProject project : projects) {
-                    if (project != null && project.isFinished() && neededLocation != null
-                        && neededLocation.equals(project.getProjectLocation().getName())) {
+                    if (project != null && project.isFinished()
+                            && neededLocation != null
+                            && neededLocation.equals(project.getProjectLocation().getName())) {
                         return true;
                     }
                 }
@@ -83,7 +87,7 @@ public class ElevatorUtil {
      * @return Structure element
      */
     public static <T> IStructureElement<T> ofBlockAdder(IBlockAdder<T> iBlockAdder, Block defaultBlock,
-                                                        int defaultMeta) {
+            int defaultMeta) {
         if (iBlockAdder == null || defaultBlock == null) {
             throw new IllegalArgumentException();
         }
@@ -110,10 +114,10 @@ public class ElevatorUtil {
 
                 @Override
                 public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger,
-                                                      IItemSource s, EntityPlayerMP actor, Consumer<IChatComponent> chatter) {
+                        IItemSource s, EntityPlayerMP actor, Consumer<IChatComponent> chatter) {
                     if (check(t, world, x, y, z)) return PlaceResult.SKIP;
                     return StructureUtility
-                        .survivalPlaceBlock(defaultBlock, defaultMeta, world, x, y, z, s, actor, chatter);
+                            .survivalPlaceBlock(defaultBlock, defaultMeta, world, x, y, z, s, actor, chatter);
                 }
             };
         } else {
@@ -139,10 +143,10 @@ public class ElevatorUtil {
 
                 @Override
                 public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger,
-                                                      IItemSource s, EntityPlayerMP actor, Consumer<IChatComponent> chatter) {
+                        IItemSource s, EntityPlayerMP actor, Consumer<IChatComponent> chatter) {
                     if (check(t, world, x, y, z)) return PlaceResult.SKIP;
                     return StructureUtility
-                        .survivalPlaceBlock(defaultBlock, defaultMeta, world, x, y, z, s, actor, chatter);
+                            .survivalPlaceBlock(defaultBlock, defaultMeta, world, x, y, z, s, actor, chatter);
                 }
             };
         }
@@ -155,11 +159,11 @@ public class ElevatorUtil {
      */
     public static List<Pair<Block, Integer>> getMotorTiers() {
         return ImmutableList.of(
-            Pair.of(BlockCasingSpaceElevatorMotor.INSTANCE, 0),
-            Pair.of(BlockCasingSpaceElevatorMotor.INSTANCE, 1),
-            Pair.of(BlockCasingSpaceElevatorMotor.INSTANCE, 2),
-            Pair.of(BlockCasingSpaceElevatorMotor.INSTANCE, 3),
-            Pair.of(BlockCasingSpaceElevatorMotor.INSTANCE, 4));
+                Pair.of(BlockCasingSpaceElevatorMotor.INSTANCE, 0),
+                Pair.of(BlockCasingSpaceElevatorMotor.INSTANCE, 1),
+                Pair.of(BlockCasingSpaceElevatorMotor.INSTANCE, 2),
+                Pair.of(BlockCasingSpaceElevatorMotor.INSTANCE, 3),
+                Pair.of(BlockCasingSpaceElevatorMotor.INSTANCE, 4));
     }
 
     /**
@@ -198,7 +202,7 @@ public class ElevatorUtil {
 
         @SafeVarargs
         ProjectModuleElement(IGT_HatchAdder<TileEntitySpaceElevator> adder,
-                             Class<? extends IMetaTileEntity>... mteClasses) {
+                Class<? extends IMetaTileEntity>... mteClasses) {
             this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
             this.adder = adder;
         }

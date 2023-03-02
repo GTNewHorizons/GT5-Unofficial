@@ -1,5 +1,19 @@
 package com.minecraft7771.gtnhintergalactic.tile.multi.elevatormodules;
 
+import static net.minecraft.util.EnumChatFormatting.DARK_PURPLE;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
+import net.minecraftforge.fluids.FluidStack;
+
+import org.apache.commons.lang3.tuple.Pair;
+
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.INameFunction;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.IStatusFunction;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus;
@@ -10,28 +24,18 @@ import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.minecraft7771.gtnhintergalactic.Tags;
 import com.minecraft7771.gtnhintergalactic.recipe.SpacePumpingRecipes;
+
 import gregtech.api.enums.GT_Values;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
-import net.minecraftforge.fluids.FluidStack;
-import org.apache.commons.lang3.tuple.Pair;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static net.minecraft.util.EnumChatFormatting.DARK_PURPLE;
 
 /**
  * Space Pump project module of the Space Elevator
  *
  * @author minecraft7771
  */
-public abstract class TileEntityModulePump extends TileEntityModuleBase{
+public abstract class TileEntityModulePump extends TileEntityModuleBase {
 
     /** Energy consumption of the module (1A UHV) */
     public static final int ENERGY_CONSUMPTION = (int) GT_Values.VP[9];
@@ -44,25 +48,25 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase{
 
     /** Name of the planet type setting */
     private static final INameFunction<TileEntityModulePump> PLANET_TYPE_SETTING_NAME = (base,
-                                                                                           p) -> GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.pump.cfgi.0") + " "
-        + (p.hatchId() / 2 + 1); // Planet Type
+            p) -> GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.pump.cfgi.0") + " "
+                    + (p.hatchId() / 2 + 1); // Planet Type
     /** Status of the planet type setting */
     private static final IStatusFunction<TileEntityModulePump> PLANET_TYPE_STATUS = (base, p) -> LedStatus
-        .fromLimitsInclusiveOuterBoundary(p.get(), 1, 0, 100, 100);
+            .fromLimitsInclusiveOuterBoundary(p.get(), 1, 0, 100, 100);
     /** Name of the gas type setting */
     private static final INameFunction<TileEntityModulePump> GAS_TYPE_SETTING_NAME = (base,
-                                                                                        p) -> GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.pump.cfgi.1") + " "
-        + (p.hatchId() / 2 + 1); // Gas Type
+            p) -> GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.pump.cfgi.1") + " "
+                    + (p.hatchId() / 2 + 1); // Gas Type
     /** Status of the gas type setting */
     private static final IStatusFunction<TileEntityModulePump> GAS_TYPE_STATUS = (base, p) -> LedStatus
-        .fromLimitsInclusiveOuterBoundary(p.get(), 1, 0, 100, 100);
+            .fromLimitsInclusiveOuterBoundary(p.get(), 1, 0, 100, 100);
     /** Name of the parallel setting */
     private static final INameFunction<TileEntityModulePump> PARALLEL_SETTING_NAME = (base,
-                                                                                        p) -> GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.pump.cfgi.2") + " "
-        + (p.hatchId() / 2 + 1); // Parallels
+            p) -> GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.pump.cfgi.2") + " "
+                    + (p.hatchId() / 2 + 1); // Parallels
     /** Status of the parallel setting */
     private static final IStatusFunction<TileEntityModulePump> PARALLEL_STATUS = (base, p) -> LedStatus
-        .fromLimitsInclusiveOuterBoundary(p.get(), 0, 1, 100, base.getParallels());
+            .fromLimitsInclusiveOuterBoundary(p.get(), 0, 1, 100, base.getParallels());
 
     /**
      * Create new Space Pump module
@@ -75,7 +79,7 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase{
      * @param tMinMotorTier Minimum needed motor tier
      */
     public TileEntityModulePump(int aID, String aName, String aNameRegional, int tTier, int tModuleTier,
-                                  int tMinMotorTier) {
+            int tMinMotorTier) {
         super(aID, aName, aNameRegional, tTier, tModuleTier, tMinMotorTier);
     }
 
@@ -102,7 +106,8 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase{
         List<FluidStack> outputs = new ArrayList<>();
         int usedEUt = 0;
         for (int i = 0; i < getParallelRecipes(); i++) {
-            FluidStack fluid = SpacePumpingRecipes.RECIPES.get(Pair.of((int) planetTypeSettings[i].get(), (int) gasTypeSettings[i].get()));
+            FluidStack fluid = SpacePumpingRecipes.RECIPES
+                    .get(Pair.of((int) planetTypeSettings[i].get(), (int) gasTypeSettings[i].get()));
             if (fluid != null) {
                 fluid = fluid.copy();
                 fluid.amount = fluid.amount * Math.min((int) parallelSettings[i].get(), getParallels());
@@ -146,11 +151,11 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase{
         parallelSettings = new Parameters.Group.ParameterIn[parallels];
         for (int i = 0; i < getParallelRecipes(); i++) {
             planetTypeSettings[i] = parametrization.getGroup(i * 2, false)
-                .makeInParameter(0, 1, PLANET_TYPE_SETTING_NAME, PLANET_TYPE_STATUS);
+                    .makeInParameter(0, 1, PLANET_TYPE_SETTING_NAME, PLANET_TYPE_STATUS);
             gasTypeSettings[i] = parametrization.getGroup(i * 2, false)
-                .makeInParameter(1, 1, GAS_TYPE_SETTING_NAME, GAS_TYPE_STATUS);
+                    .makeInParameter(1, 1, GAS_TYPE_SETTING_NAME, GAS_TYPE_STATUS);
             parallelSettings[i] = parametrization.getGroup(i * 2 + 1, false)
-                .makeInParameter(0, getParallels(), PARALLEL_SETTING_NAME, PARALLEL_STATUS);
+                    .makeInParameter(0, getParallels(), PARALLEL_SETTING_NAME, PARALLEL_STATUS);
         }
     }
 
@@ -165,33 +170,33 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase{
         super.drawTexts(screenElements, inventorySlot);
 
         screenElements.widget(
-            new TextWidget(StatCollector.translateToLocal("gt.blockmachines.multimachine.gs.elevator.gui.config"))
-                .setDefaultColor(COLOR_TEXT_WHITE.get()).setEnabled(widget -> mMachine));
+                new TextWidget(StatCollector.translateToLocal("gt.blockmachines.multimachine.gs.elevator.gui.config"))
+                        .setDefaultColor(COLOR_TEXT_WHITE.get()).setEnabled(widget -> mMachine));
 
         for (int i = 0; i < getParallelRecipes(); i++) {
             final int fluidIndex = i;
             screenElements.widget(TextWidget.dynamicString(() -> {
-                        String fluidName = getPumpedFluid(fluidIndex);
-                        if (fluidName != null) {
-                            return " - " + fluidName;
-                        }
-                        return "";
-                    }).setSynced(false).setDefaultColor(COLOR_TEXT_WHITE.get())
+                String fluidName = getPumpedFluid(fluidIndex);
+                if (fluidName != null) {
+                    return " - " + fluidName;
+                }
+                return "";
+            }).setSynced(false).setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setEnabled(widget -> mMachine && getPumpedFluid(fluidIndex) != null))
-                .widget(
-                    new FakeSyncWidget.IntegerSyncer(
-                        () -> (int) planetTypeSettings[fluidIndex].get(),
-                        val -> parametrization.trySetParameters(
-                            planetTypeSettings[fluidIndex].id % 10,
-                            planetTypeSettings[fluidIndex].id / 10,
-                            planetTypeSettings[fluidIndex].get())))
-                .widget(
-                    new FakeSyncWidget.IntegerSyncer(
-                        () -> (int) planetTypeSettings[fluidIndex].get(),
-                        val -> parametrization.trySetParameters(
-                            gasTypeSettings[fluidIndex].id % 10,
-                            gasTypeSettings[fluidIndex].id / 10,
-                            gasTypeSettings[fluidIndex].get())));
+                    .widget(
+                            new FakeSyncWidget.IntegerSyncer(
+                                    () -> (int) planetTypeSettings[fluidIndex].get(),
+                                    val -> parametrization.trySetParameters(
+                                            planetTypeSettings[fluidIndex].id % 10,
+                                            planetTypeSettings[fluidIndex].id / 10,
+                                            planetTypeSettings[fluidIndex].get())))
+                    .widget(
+                            new FakeSyncWidget.IntegerSyncer(
+                                    () -> (int) planetTypeSettings[fluidIndex].get(),
+                                    val -> parametrization.trySetParameters(
+                                            gasTypeSettings[fluidIndex].id % 10,
+                                            gasTypeSettings[fluidIndex].id / 10,
+                                            gasTypeSettings[fluidIndex].get())));
         }
     }
 
@@ -206,7 +211,7 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase{
             return null;
         }
         FluidStack fluid = SpacePumpingRecipes.RECIPES
-            .get(Pair.of((int) planetTypeSettings[index].get(), (int) gasTypeSettings[index].get()));
+                .get(Pair.of((int) planetTypeSettings[index].get(), (int) gasTypeSettings[index].get()));
         if (fluid == null) {
             return null;
         }
@@ -284,26 +289,27 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase{
         protected GT_Multiblock_Tooltip_Builder createTooltip() {
             final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
             tt.addMachineType(GCCoreUtil.translate("gt.blockmachines.module.name"))
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.pump.desc0")) // Module that
-                // adds Space
-                // Pumping
-                // Operations to the
-                .addInfo(
-                    EnumChatFormatting.LIGHT_PURPLE.toString() + EnumChatFormatting.BOLD
-                        + GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.pump.t1.desc1")) // Sucking
-                // up
-                // entire
-                // gas planets was
-                // never easier
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.desc2"))
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.pump.desc3"))
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.motorT2")).addSeparator()
-                .beginStructureBlock(1, 5, 2, false).addCasingInfo(GCCoreUtil.translate("gt.blockcasings.gs.0.name"), 0)
-                .addInputBus(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-                .addOutputBus(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-                .addInputHatch(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-                .addOutputHatch(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-                .toolTipFinisher(DARK_PURPLE + Tags.MODNAME);
+                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.pump.desc0")) // Module that
+                    // adds Space
+                    // Pumping
+                    // Operations to the
+                    .addInfo(
+                            EnumChatFormatting.LIGHT_PURPLE.toString() + EnumChatFormatting.BOLD
+                                    + GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.pump.t1.desc1")) // Sucking
+                    // up
+                    // entire
+                    // gas planets was
+                    // never easier
+                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.desc2"))
+                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.pump.desc3"))
+                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.motorT2")).addSeparator()
+                    .beginStructureBlock(1, 5, 2, false)
+                    .addCasingInfo(GCCoreUtil.translate("gt.blockcasings.gs.0.name"), 0)
+                    .addInputBus(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                    .addOutputBus(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                    .addInputHatch(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                    .addOutputHatch(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                    .toolTipFinisher(DARK_PURPLE + Tags.MODNAME);
             return tt;
         }
     }
@@ -379,24 +385,25 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase{
         protected GT_Multiblock_Tooltip_Builder createTooltip() {
             final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
             tt.addMachineType(GCCoreUtil.translate("gt.blockmachines.module.name"))
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.pump.desc0")) // Module that
-                // adds Space
-                // Pumping
-                // Operations to the
-                .addInfo(
-                    EnumChatFormatting.LIGHT_PURPLE.toString() + EnumChatFormatting.BOLD
-                        + GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.pump.t2.desc1")) // Literally
-                // sucks
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.desc2"))
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.pump.desc3"))
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.motorT3"))
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.pump.t2.desc4")).addSeparator()
-                .beginStructureBlock(1, 5, 2, false).addCasingInfo(GCCoreUtil.translate("gt.blockcasings.gs.0.name"), 0)
-                .addInputBus(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-                .addOutputBus(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-                .addInputHatch(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-                .addOutputHatch(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-                .toolTipFinisher(DARK_PURPLE + Tags.MODNAME);
+                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.pump.desc0")) // Module that
+                    // adds Space
+                    // Pumping
+                    // Operations to the
+                    .addInfo(
+                            EnumChatFormatting.LIGHT_PURPLE.toString() + EnumChatFormatting.BOLD
+                                    + GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.pump.t2.desc1")) // Literally
+                    // sucks
+                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.desc2"))
+                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.pump.desc3"))
+                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.motorT3"))
+                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.pump.t2.desc4"))
+                    .addSeparator().beginStructureBlock(1, 5, 2, false)
+                    .addCasingInfo(GCCoreUtil.translate("gt.blockcasings.gs.0.name"), 0)
+                    .addInputBus(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                    .addOutputBus(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                    .addInputHatch(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                    .addOutputHatch(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                    .toolTipFinisher(DARK_PURPLE + Tags.MODNAME);
             return tt;
         }
     }

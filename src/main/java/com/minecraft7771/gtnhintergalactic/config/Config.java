@@ -14,7 +14,11 @@ public class Config {
     public static void synchronizeConfiguration(File configFile) {
         Configuration configuration = new Configuration(configFile);
 
-        isCableRenderingEnabled = configuration.getBoolean("isCableRenderingEnabled", CATEGORY_SPACE_ELEVATOR, isCableRenderingEnabled, "If the Space Elevator should use it's fancy renderer, or simple block renderer");
+        isCableRenderingEnabled = configuration.getBoolean(
+                "isCableRenderingEnabled",
+                CATEGORY_SPACE_ELEVATOR,
+                isCableRenderingEnabled,
+                "If the Space Elevator should use it's fancy renderer, or simple block renderer");
 
         if (configuration.hasChanged()) {
             configuration.save();

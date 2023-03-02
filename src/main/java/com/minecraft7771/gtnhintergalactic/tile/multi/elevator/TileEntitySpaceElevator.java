@@ -6,15 +6,6 @@ import static net.minecraft.util.EnumChatFormatting.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.minecraft7771.gtnhintergalactic.Tags;
-import com.minecraft7771.gtnhintergalactic.block.BlockCasingSpaceElevator;
-import com.minecraft7771.gtnhintergalactic.block.IGBlocks;
-import com.minecraft7771.gtnhintergalactic.config.Config;
-import com.minecraft7771.gtnhintergalactic.gui.IG_UITextures;
-import com.minecraft7771.gtnhintergalactic.tile.TileEntitySpaceElevatorCable;
-import com.minecraft7771.gtnhintergalactic.tile.multi.GT_MetaTileEntity_EnhancedMultiBlockBase_EM;
-import com.minecraft7771.gtnhintergalactic.tile.multi.elevatormodules.TileEntityModuleBase;
-import galaxyspace.core.register.GSBlocks;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiCelestialSelection;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -50,9 +41,18 @@ import com.gtnewhorizons.modularui.api.math.Color;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.*;
+import com.minecraft7771.gtnhintergalactic.Tags;
+import com.minecraft7771.gtnhintergalactic.block.BlockCasingSpaceElevator;
+import com.minecraft7771.gtnhintergalactic.block.IGBlocks;
+import com.minecraft7771.gtnhintergalactic.config.Config;
+import com.minecraft7771.gtnhintergalactic.gui.IG_UITextures;
+import com.minecraft7771.gtnhintergalactic.tile.TileEntitySpaceElevatorCable;
+import com.minecraft7771.gtnhintergalactic.tile.multi.GT_MetaTileEntity_EnhancedMultiBlockBase_EM;
+import com.minecraft7771.gtnhintergalactic.tile.multi.elevatormodules.TileEntityModuleBase;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import galaxyspace.core.register.GSBlocks;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -72,7 +72,7 @@ import gregtech.common.misc.spaceprojects.SpaceProjectManager;
  * @author minecraft7771
  */
 public class TileEntitySpaceElevator extends GT_MetaTileEntity_EnhancedMultiBlockBase_EM
-    implements ISurvivalConstructable {
+        implements ISurvivalConstructable {
     // region Structure and textures variables
 
     /** List of project modules in this elevator */
@@ -370,7 +370,7 @@ public class TileEntitySpaceElevator extends GT_MetaTileEntity_EnhancedMultiBloc
     public IAlignmentLimits getAlignmentLimits() {
         // The elevator should only be buildable upright
         return IAlignmentLimits.Builder.allowAll().deny(ForgeDirection.DOWN).deny(ForgeDirection.UP)
-            .deny(Rotation.UPSIDE_DOWN).deny(Rotation.CLOCKWISE).deny(Rotation.COUNTER_CLOCKWISE).build();
+                .deny(Rotation.UPSIDE_DOWN).deny(Rotation.CLOCKWISE).deny(Rotation.COUNTER_CLOCKWISE).build();
     }
 
     /**
@@ -382,20 +382,20 @@ public class TileEntitySpaceElevator extends GT_MetaTileEntity_EnhancedMultiBloc
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         structureBuild_EM(
-            STRUCTURE_PIECE_MAIN,
-            STRUCTURE_PIECE_MAIN_HOR_OFFSET,
-            STRUCTURE_PIECE_MAIN_VERT_OFFSET,
-            STRUCTURE_PIECE_MAIN_DEPTH_OFFSET,
-            stackSize,
-            hintsOnly);
-        if (stackSize.stackSize >= 3) {
-            structureBuild_EM(
-                STRUCTURE_PIECE_EXTENDED,
-                STRUCTURE_PIECE_EXTENDED_HOR_OFFSET,
-                STRUCTURE_PIECE_EXTENDED_VERT_OFFSET,
-                STRUCTURE_PIECE_EXTENDED_DEPTH_OFFSET,
+                STRUCTURE_PIECE_MAIN,
+                STRUCTURE_PIECE_MAIN_HOR_OFFSET,
+                STRUCTURE_PIECE_MAIN_VERT_OFFSET,
+                STRUCTURE_PIECE_MAIN_DEPTH_OFFSET,
                 stackSize,
                 hintsOnly);
+        if (stackSize.stackSize >= 3) {
+            structureBuild_EM(
+                    STRUCTURE_PIECE_EXTENDED,
+                    STRUCTURE_PIECE_EXTENDED_HOR_OFFSET,
+                    STRUCTURE_PIECE_EXTENDED_VERT_OFFSET,
+                    STRUCTURE_PIECE_EXTENDED_DEPTH_OFFSET,
+                    stackSize,
+                    hintsOnly);
         }
     }
 
@@ -414,28 +414,28 @@ public class TileEntitySpaceElevator extends GT_MetaTileEntity_EnhancedMultiBloc
             return -1;
         } else {
             int consumedBudget = survivialBuildPiece(
-                STRUCTURE_PIECE_MAIN,
-                stackSize,
-                STRUCTURE_PIECE_MAIN_HOR_OFFSET,
-                STRUCTURE_PIECE_MAIN_VERT_OFFSET,
-                STRUCTURE_PIECE_MAIN_DEPTH_OFFSET,
-                elementBudget,
-                source,
-                actor,
-                false,
-                true);
-            if (stackSize.stackSize >= 3) {
-                consumedBudget += survivialBuildPiece(
-                    STRUCTURE_PIECE_EXTENDED,
+                    STRUCTURE_PIECE_MAIN,
                     stackSize,
-                    STRUCTURE_PIECE_EXTENDED_HOR_OFFSET,
-                    STRUCTURE_PIECE_EXTENDED_VERT_OFFSET,
-                    STRUCTURE_PIECE_EXTENDED_DEPTH_OFFSET,
+                    STRUCTURE_PIECE_MAIN_HOR_OFFSET,
+                    STRUCTURE_PIECE_MAIN_VERT_OFFSET,
+                    STRUCTURE_PIECE_MAIN_DEPTH_OFFSET,
                     elementBudget,
                     source,
                     actor,
                     false,
                     true);
+            if (stackSize.stackSize >= 3) {
+                consumedBudget += survivialBuildPiece(
+                        STRUCTURE_PIECE_EXTENDED,
+                        stackSize,
+                        STRUCTURE_PIECE_EXTENDED_HOR_OFFSET,
+                        STRUCTURE_PIECE_EXTENDED_VERT_OFFSET,
+                        STRUCTURE_PIECE_EXTENDED_DEPTH_OFFSET,
+                        elementBudget,
+                        source,
+                        actor,
+                        false,
+                        true);
             }
             return consumedBudget;
         }
@@ -456,10 +456,10 @@ public class TileEntitySpaceElevator extends GT_MetaTileEntity_EnhancedMultiBloc
         motorTier = 0;
         // Check structure
         if (!structureCheck_EM(
-            STRUCTURE_PIECE_MAIN,
-            STRUCTURE_PIECE_MAIN_HOR_OFFSET,
-            STRUCTURE_PIECE_MAIN_VERT_OFFSET,
-            STRUCTURE_PIECE_MAIN_DEPTH_OFFSET)) {
+                STRUCTURE_PIECE_MAIN,
+                STRUCTURE_PIECE_MAIN_HOR_OFFSET,
+                STRUCTURE_PIECE_MAIN_VERT_OFFSET,
+                STRUCTURE_PIECE_MAIN_DEPTH_OFFSET)) {
             if (elevatorCable != null) {
                 elevatorCable.setShouldRender(false);
             }
@@ -467,10 +467,10 @@ public class TileEntitySpaceElevator extends GT_MetaTileEntity_EnhancedMultiBloc
         }
         if (motorTier >= 2) {
             structureCheck_EM(
-                STRUCTURE_PIECE_EXTENDED,
-                STRUCTURE_PIECE_EXTENDED_HOR_OFFSET,
-                STRUCTURE_PIECE_EXTENDED_VERT_OFFSET,
-                STRUCTURE_PIECE_EXTENDED_DEPTH_OFFSET);
+                    STRUCTURE_PIECE_EXTENDED,
+                    STRUCTURE_PIECE_EXTENDED_HOR_OFFSET,
+                    STRUCTURE_PIECE_EXTENDED_VERT_OFFSET,
+                    STRUCTURE_PIECE_EXTENDED_DEPTH_OFFSET);
         }
         // Check if the allowed module amount is exceeded. Motor tier 5 unlocks all module slots
         switch (motorTier) {
@@ -611,15 +611,15 @@ public class TileEntitySpaceElevator extends GT_MetaTileEntity_EnhancedMultiBloc
                 for (int i = -1; i < 2; i++) {
                     for (int j = -1; j < 2; j++) {
                         GT_ChunkManager.requestChunkLoad(
-                            (TileEntity) aBaseMetaTileEntity,
-                            new ChunkCoordIntPair(getChunkX() + offX + i, getChunkZ() + offZ + j));
+                                (TileEntity) aBaseMetaTileEntity,
+                                new ChunkCoordIntPair(getChunkX() + offX + i, getChunkZ() + offZ + j));
                     }
                 }
                 this.isLoadedChunk = true;
             } else {
                 if (elevatorCable != null && Config.isCableRenderingEnabled
-                    && elevatorCable.getAnimation() == TileEntitySpaceElevatorCable.ClimberAnimation.NO_ANIMATION
-                    && aTick % 2000 == 0) {
+                        && elevatorCable.getAnimation() == TileEntitySpaceElevatorCable.ClimberAnimation.NO_ANIMATION
+                        && aTick % 2000 == 0) {
                     elevatorCable.startAnimation(TileEntitySpaceElevatorCable.ClimberAnimation.DELIVER_ANIMATION);
                 }
             }
@@ -635,10 +635,10 @@ public class TileEntitySpaceElevator extends GT_MetaTileEntity_EnhancedMultiBloc
                                 long tAvailableEnergy = getEUVar();
                                 if (tAvailableEnergy > 0) {
                                     setEUVar(
-                                        Math.max(
-                                            0,
-                                            tAvailableEnergy - projectModule
-                                                .increaseStoredEU(Math.min(tEnergy, tAvailableEnergy))));
+                                            Math.max(
+                                                    0,
+                                                    tAvailableEnergy - projectModule
+                                                            .increaseStoredEU(Math.min(tEnergy, tAvailableEnergy))));
                                 }
                             }
                         }
@@ -708,41 +708,41 @@ public class TileEntitySpaceElevator extends GT_MetaTileEntity_EnhancedMultiBloc
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType(GCCoreUtil.translate("gt.blockmachines.multimachine.gs.elevator.name"))
-            .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.gs.elevator.desc0"))
-            .addInfo(LIGHT_PURPLE.toString() + BOLD + LORE_TOOLTIP)
-            .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.gs.elevator.desc2"))
-            .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.gs.elevator.desc3"))
-            .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.gs.elevator.desc4"))
-            .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.gs.elevator.desc5"))
-            .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.gs.elevator.desc6"))
-            .addInfo(GCCoreUtil.translate("gs.elevator.structure.TooComplex"))
-            .addInfo(buildAddedBy(LIGHT_PURPLE + "minecraft7771"))
-            .addInfo(GCCoreUtil.translate("gs.structure.moreContributors")).addSeparator()
-            .beginStructureBlock(35, 43, 35, false)
-            .addOtherStructurePart(
-                GCCoreUtil.translate("gs.elevator.structure.ProjectModule"),
-                GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith2Dot"),
-                2)
-            .addCasingInfo(GCCoreUtil.translate("tile.DysonSwarmFloor.name"), 800)
-            .addCasingInfo(GCCoreUtil.translate("gt.blockcasings.gs.0.name"), 617)
-            .addCasingInfo(GCCoreUtil.translate("gt.blockcasings.gs.1.name"), 620)
-            .addCasingInfo(GCCoreUtil.translate("gt.blockcasings.gs.2.name"), 360)
-            .addCasingInfo(GCCoreUtil.translate("gt.blockcasings.gs.cable.name"), 1)
-            .addCasingInfo(GCCoreUtil.translate("gs.elevator.structure.FrameNeutronium"), 56)
-            .addInputBus(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-            .addOutputBus(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-            .addInputHatch(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-            .addOutputHatch(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-            .addEnergyHatch(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-            .addOtherStructurePart(
-                GCCoreUtil.translate("gs.elevator.structure.Parametrizer"),
-                GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"),
-                1)
-            .addOtherStructurePart(
-                GCCoreUtil.translate("gs.elevator.structure.OpticalConnector"),
-                GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"),
-                1)
-            .toolTipFinisher(DARK_PURPLE + Tags.MODNAME);
+                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.gs.elevator.desc0"))
+                .addInfo(LIGHT_PURPLE.toString() + BOLD + LORE_TOOLTIP)
+                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.gs.elevator.desc2"))
+                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.gs.elevator.desc3"))
+                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.gs.elevator.desc4"))
+                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.gs.elevator.desc5"))
+                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.gs.elevator.desc6"))
+                .addInfo(GCCoreUtil.translate("gs.elevator.structure.TooComplex"))
+                .addInfo(buildAddedBy(LIGHT_PURPLE + "minecraft7771"))
+                .addInfo(GCCoreUtil.translate("gs.structure.moreContributors")).addSeparator()
+                .beginStructureBlock(35, 43, 35, false)
+                .addOtherStructurePart(
+                        GCCoreUtil.translate("gs.elevator.structure.ProjectModule"),
+                        GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith2Dot"),
+                        2)
+                .addCasingInfo(GCCoreUtil.translate("tile.DysonSwarmFloor.name"), 800)
+                .addCasingInfo(GCCoreUtil.translate("gt.blockcasings.gs.0.name"), 617)
+                .addCasingInfo(GCCoreUtil.translate("gt.blockcasings.gs.1.name"), 620)
+                .addCasingInfo(GCCoreUtil.translate("gt.blockcasings.gs.2.name"), 360)
+                .addCasingInfo(GCCoreUtil.translate("gt.blockcasings.gs.cable.name"), 1)
+                .addCasingInfo(GCCoreUtil.translate("gs.elevator.structure.FrameNeutronium"), 56)
+                .addInputBus(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                .addOutputBus(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                .addInputHatch(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                .addOutputHatch(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                .addEnergyHatch(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                .addOtherStructurePart(
+                        GCCoreUtil.translate("gs.elevator.structure.Parametrizer"),
+                        GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"),
+                        1)
+                .addOtherStructurePart(
+                        GCCoreUtil.translate("gs.elevator.structure.OpticalConnector"),
+                        GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"),
+                        1)
+                .toolTipFinisher(DARK_PURPLE + Tags.MODNAME);
         return tt;
     }
 
@@ -759,12 +759,12 @@ public class TileEntitySpaceElevator extends GT_MetaTileEntity_EnhancedMultiBloc
      */
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-                                 boolean aActive, boolean aRedstone) {
+            boolean aActive, boolean aRedstone) {
         if (aSide == aFacing) {
             return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_BASE),
-                new TT_RenderedExtendedFacingTexture(
-                    aActive ? GT_MetaTileEntity_MultiblockBase_EM.ScreenON
-                        : GT_MetaTileEntity_MultiblockBase_EM.ScreenOFF) };
+                    new TT_RenderedExtendedFacingTexture(
+                            aActive ? GT_MetaTileEntity_MultiblockBase_EM.ScreenON
+                                    : GT_MetaTileEntity_MultiblockBase_EM.ScreenOFF) };
         }
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_BASE) };
     }
@@ -780,9 +780,9 @@ public class TileEntitySpaceElevator extends GT_MetaTileEntity_EnhancedMultiBloc
     @Override
     public String[] getInfoData() {
         return new String[] { LIGHT_PURPLE + "Operational Data:" + RESET,
-            "Maintenance Status: " + (getRepairStatus() == getIdealStatus() ? GREEN + "Working perfectly" + RESET
-                : RED + "Has problems" + RESET),
-            "---------------------------------------------" };
+                "Maintenance Status: " + (getRepairStatus() == getIdealStatus() ? GREEN + "Working perfectly" + RESET
+                        : RED + "Has problems" + RESET),
+                "---------------------------------------------" };
     }
 
     @Override
@@ -793,8 +793,8 @@ public class TileEntitySpaceElevator extends GT_MetaTileEntity_EnhancedMultiBloc
     @Override
     public void addGregTechLogo(ModularWindow.Builder builder) {
         builder.widget(
-            new DrawableWidget().setDrawable(IG_UITextures.PICTURE_ELEVATOR_LOGO_DARK).setSize(18, 18)
-                .setPos(150, 154));
+                new DrawableWidget().setDrawable(IG_UITextures.PICTURE_ELEVATOR_LOGO_DARK).setSize(18, 18)
+                        .setPos(150, 154));
     }
 
     @Override
@@ -802,23 +802,23 @@ public class TileEntitySpaceElevator extends GT_MetaTileEntity_EnhancedMultiBloc
         screenElements.setSynced(false).setSpace(0).setPos(10, 7);
 
         screenElements
-            .widget(
-                new TextWidget(GT_Utility.trans("138", "Incomplete Structure."))
-                    .setDefaultColor(COLOR_TEXT_WHITE.get()).setEnabled(widget -> !mMachine))
-            .widget(new FakeSyncWidget.BooleanSyncer(() -> mMachine, val -> mMachine = val));
+                .widget(
+                        new TextWidget(GT_Utility.trans("138", "Incomplete Structure."))
+                                .setDefaultColor(COLOR_TEXT_WHITE.get()).setEnabled(widget -> !mMachine))
+                .widget(new FakeSyncWidget.BooleanSyncer(() -> mMachine, val -> mMachine = val));
 
         screenElements.widget(
-            new TextWidget(StatCollector.translateToLocal("gt.blockmachines.multimachine.gs.elevator.gui.ready"))
-                .setDefaultColor(COLOR_TEXT_WHITE.get()).setEnabled(widget -> mMachine));
+                new TextWidget(StatCollector.translateToLocal("gt.blockmachines.multimachine.gs.elevator.gui.ready"))
+                        .setDefaultColor(COLOR_TEXT_WHITE.get()).setEnabled(widget -> mMachine));
 
         screenElements.widget(
-            TextWidget
-                .dynamicString(
-                    () -> StatCollector.translateToLocal(
-                        "gt.blockmachines.multimachine.gs.elevator.gui.numOfModules") + ": "
-                        + getNumberOfModules())
-                .setDefaultColor(COLOR_TEXT_WHITE.get())
-                .setEnabled(widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0));
+                TextWidget
+                        .dynamicString(
+                                () -> StatCollector.translateToLocal(
+                                        "gt.blockmachines.multimachine.gs.elevator.gui.numOfModules") + ": "
+                                        + getNumberOfModules())
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setEnabled(widget -> getBaseMetaTileEntity().getErrorDisplayID() == 0));
     }
 
     @Override
@@ -826,41 +826,41 @@ public class TileEntitySpaceElevator extends GT_MetaTileEntity_EnhancedMultiBloc
         super.addUIWidgets(builder, buildContext);
         // Teleportation button
         builder.widget(new ButtonWidget().setOnClick((clickData, widget) -> {
-                if (!widget.getContext().isClient()) {
-                    if (getBaseMetaTileEntity().isAllowedToWork() && motorTier > 0) {
-                        EntityPlayer player = widget.getContext().getPlayer();
-                        if (player instanceof EntityPlayerMP) {
-                            EntityPlayerMP playerBase = (EntityPlayerMP) player;
-                            final GCPlayerStats stats = GCPlayerStats.get(playerBase);
-                            stats.coordsTeleportedFromX = playerBase.posX;
-                            stats.coordsTeleportedFromZ = playerBase.posZ;
-                            try {
-                                WorldUtil.toCelestialSelection(
+            if (!widget.getContext().isClient()) {
+                if (getBaseMetaTileEntity().isAllowedToWork() && motorTier > 0) {
+                    EntityPlayer player = widget.getContext().getPlayer();
+                    if (player instanceof EntityPlayerMP) {
+                        EntityPlayerMP playerBase = (EntityPlayerMP) player;
+                        final GCPlayerStats stats = GCPlayerStats.get(playerBase);
+                        stats.coordsTeleportedFromX = playerBase.posX;
+                        stats.coordsTeleportedFromZ = playerBase.posZ;
+                        try {
+                            WorldUtil.toCelestialSelection(
                                     playerBase,
                                     stats,
                                     MAX_TELEPORTATION_TIER,
                                     GuiCelestialSelection.MapMode.TELEPORTATION);
-                            } catch (final Exception e) {
-                                e.printStackTrace();
-                            }
+                        } catch (final Exception e) {
+                            e.printStackTrace();
                         }
                     }
                 }
-            }).setPlayClickSound(false).setBackground(() -> {
-                List<UITexture> ret = new ArrayList<>();
-                ret.add(TecTechUITextures.BUTTON_STANDARD_16x16);
-                ret.add(IG_UITextures.OVERLAY_BUTTON_PLANET_TELEPORT);
-                return ret.toArray(new IDrawable[0]);
-            }).setPos(174, doesBindPlayerInventory() ? 132 : 156).setSize(16, 16)
-            .addTooltip(GCCoreUtil.translate("mui.elevator.button.travel")).setTooltipShowUpDelay(TOOLTIP_DELAY));
+            }
+        }).setPlayClickSound(false).setBackground(() -> {
+            List<UITexture> ret = new ArrayList<>();
+            ret.add(TecTechUITextures.BUTTON_STANDARD_16x16);
+            ret.add(IG_UITextures.OVERLAY_BUTTON_PLANET_TELEPORT);
+            return ret.toArray(new IDrawable[0]);
+        }).setPos(174, doesBindPlayerInventory() ? 132 : 156).setSize(16, 16)
+                .addTooltip(GCCoreUtil.translate("mui.elevator.button.travel")).setTooltipShowUpDelay(TOOLTIP_DELAY));
 
         // Open contributor window button
         builder.widget(new ButtonWidget().setOnClick((clickData, widget) -> {
-                if (!widget.getContext().isClient()) {
-                    widget.getContext().openSyncedWindow(CONTRIBUTORS_WINDOW_ID);
-                }
-            }).addTooltip(StatCollector.translateToLocal("gs.structure.contributors"))
-            .setBackground(ModularUITextures.ICON_INFO).setPos(151, 136).setSize(16, 16));
+            if (!widget.getContext().isClient()) {
+                widget.getContext().openSyncedWindow(CONTRIBUTORS_WINDOW_ID);
+            }
+        }).addTooltip(StatCollector.translateToLocal("gs.structure.contributors"))
+                .setBackground(ModularUITextures.ICON_INFO).setPos(151, 136).setSize(16, 16));
 
         // Contributor window
         buildContext.addSyncedWindow(CONTRIBUTORS_WINDOW_ID, (player) -> {
@@ -868,28 +868,28 @@ public class TileEntitySpaceElevator extends GT_MetaTileEntity_EnhancedMultiBloc
             texts.setSynced(false).setSpace(2).setPos(10, 7);
 
             texts.widget(
-                new TextWidget(StatCollector.translateToLocal("gs.structure.contributors"))
-                    .setDefaultColor(Color.PURPLE.normal));
+                    new TextWidget(StatCollector.translateToLocal("gs.structure.contributors"))
+                            .setDefaultColor(Color.PURPLE.normal));
             texts.widget(
-                new TextWidget(StatCollector.translateToLocal("gs.structure.programming"))
-                    .setDefaultColor(Color.PINK.normal));
+                    new TextWidget(StatCollector.translateToLocal("gs.structure.programming"))
+                            .setDefaultColor(Color.PINK.normal));
             texts.widget(new TextWidget("minecraft7771").setDefaultColor(Color.GRAY.bright(1)));
             texts.widget(new TextWidget("BlueWeabo").setDefaultColor(Color.GRAY.bright(1)));
             texts.widget(
-                new TextWidget(StatCollector.translateToLocal("gs.structure.design"))
-                    .setDefaultColor(Color.PINK.normal));
+                    new TextWidget(StatCollector.translateToLocal("gs.structure.design"))
+                            .setDefaultColor(Color.PINK.normal));
             texts.widget(new TextWidget("Sampsa").setDefaultColor(Color.GRAY.bright(1)));
             texts.widget(new TextWidget("Jimbno").setDefaultColor(Color.GRAY.bright(1)));
             texts.widget(new TextWidget("Adam").setDefaultColor(Color.GRAY.bright(1)));
             texts.widget(new TextWidget("Baunti").setDefaultColor(Color.GRAY.bright(1)));
             texts.widget(
-                new TextWidget(StatCollector.translateToLocal("gs.structure.specialThanks"))
-                    .setDefaultColor(Color.PINK.normal));
+                    new TextWidget(StatCollector.translateToLocal("gs.structure.specialThanks"))
+                            .setDefaultColor(Color.PINK.normal));
             texts.widget(new TextWidget("glowredman").setDefaultColor(Color.GRAY.bright(1)));
             texts.widget(new TextWidget("miozune").setDefaultColor(Color.GRAY.bright(1)));
 
             return ModularWindow.builder(120, 130).setBackground(TecTechUITextures.BACKGROUND_SCREEN_BLUE)
-                .widget(ButtonWidget.closeWindowButton(true).setPos(100, 7)).widget(texts).build();
+                    .widget(ButtonWidget.closeWindowButton(true).setPos(100, 7)).widget(texts).build();
         });
     }
 
@@ -910,8 +910,8 @@ public class TileEntitySpaceElevator extends GT_MetaTileEntity_EnhancedMultiBloc
 
     static {
         String[] possibleLore = new String[] { GCCoreUtil.translate("gt.blockmachines.multimachine.gs.elevator.lore1"),
-            GCCoreUtil.translate("gt.blockmachines.multimachine.gs.elevator.lore2"),
-            GCCoreUtil.translate("gt.blockmachines.multimachine.gs.elevator.lore3") };
+                GCCoreUtil.translate("gt.blockmachines.multimachine.gs.elevator.lore2"),
+                GCCoreUtil.translate("gt.blockmachines.multimachine.gs.elevator.lore3") };
         LORE_TOOLTIP = possibleLore[XSTR.XSTR_INSTANCE.nextInt(possibleLore.length)];
     }
 

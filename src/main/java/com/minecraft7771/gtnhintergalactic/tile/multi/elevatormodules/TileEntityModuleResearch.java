@@ -1,21 +1,24 @@
 package com.minecraft7771.gtnhintergalactic.tile.multi.elevatormodules;
 
+import static net.minecraft.util.EnumChatFormatting.DARK_PURPLE;
+
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.fluids.FluidStack;
+
 import com.minecraft7771.gtnhintergalactic.Tags;
 import com.minecraft7771.gtnhintergalactic.recipe.IG_Recipe;
 import com.minecraft7771.gtnhintergalactic.recipe.IG_RecipeAdder;
 import com.minecraft7771.gtnhintergalactic.tile.multi.elevator.ElevatorUtil;
+
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_OverclockCalculator;
 import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
-import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraftforge.fluids.FluidStack;
-
-import static net.minecraft.util.EnumChatFormatting.DARK_PURPLE;
 
 /**
  * Space Research project module of the Space Elevator
@@ -60,18 +63,18 @@ public class TileEntityModuleResearch extends TileEntityModuleBase {
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType(GCCoreUtil.translate("gt.blockmachines.module.name"))
-            .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.research.desc0"))
-            .addInfo(
-                EnumChatFormatting.LIGHT_PURPLE.toString() + EnumChatFormatting.BOLD
-                    + GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.research.desc1"))
-            .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.desc2"))
-            .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.motorT2")).addSeparator()
-            .beginStructureBlock(1, 5, 2, false).addCasingInfo(GCCoreUtil.translate("gt.blockcasings.gs.0.name"), 0)
-            .addInputBus(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-            .addOutputBus(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-            .addInputHatch(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-            .addOutputHatch(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-            .toolTipFinisher(DARK_PURPLE + Tags.MODNAME);
+                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.research.desc0"))
+                .addInfo(
+                        EnumChatFormatting.LIGHT_PURPLE.toString() + EnumChatFormatting.BOLD
+                                + GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.research.desc1"))
+                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.desc2"))
+                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.motorT2")).addSeparator()
+                .beginStructureBlock(1, 5, 2, false).addCasingInfo(GCCoreUtil.translate("gt.blockcasings.gs.0.name"), 0)
+                .addInputBus(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                .addOutputBus(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                .addInputHatch(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                .addOutputHatch(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                .toolTipFinisher(DARK_PURPLE + Tags.MODNAME);
         return tt;
     }
 
@@ -99,12 +102,12 @@ public class TileEntityModuleResearch extends TileEntityModuleBase {
         ItemStack[] items = getStoredInputs().toArray(new ItemStack[0]);
 
         GT_Recipe recipe = IG_RecipeAdder.instance.sSpaceResearchRecipes.findRecipe(
-            getBaseMetaTileEntity(),
-            false,
-            false,
-            gregtech.api.enums.GT_Values.V[tTier],
-            fluids,
-            items);
+                getBaseMetaTileEntity(),
+                false,
+                false,
+                gregtech.api.enums.GT_Values.V[tTier],
+                fluids,
+                items);
 
         if (recipe == null) {
             return false;
@@ -117,15 +120,15 @@ public class TileEntityModuleResearch extends TileEntityModuleBase {
         if (recipe instanceof IG_Recipe) {
             IG_Recipe gsRecipe = (IG_Recipe) recipe;
             if (!ElevatorUtil.isProjectAvailable(
-                getBaseMetaTileEntity().getOwnerUuid(),
-                gsRecipe.getNeededSpaceProject(),
-                gsRecipe.getNeededSpaceProjectLocation())) {
+                    getBaseMetaTileEntity().getOwnerUuid(),
+                    gsRecipe.getNeededSpaceProject(),
+                    gsRecipe.getNeededSpaceProjectLocation())) {
                 return false;
             }
         }
 
         GT_ParallelHelper helper = new GT_ParallelHelper().setRecipe(recipe).setItemInputs(items).setFluidInputs(fluids)
-            .setAvailableEUt(gregtech.api.enums.GT_Values.V[tTier]).enableOutputCalculation().enableConsumption();
+                .setAvailableEUt(gregtech.api.enums.GT_Values.V[tTier]).enableOutputCalculation().enableConsumption();
         if (!eSafeVoid) {
             helper.enableVoidProtection(this);
         }
@@ -137,8 +140,8 @@ public class TileEntityModuleResearch extends TileEntityModuleBase {
         }
 
         GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(recipe.mEUt)
-            .setEUt(gregtech.api.enums.GT_Values.V[tTier]).setDuration(recipe.mDuration)
-            .setParallel((int) Math.floor(helper.getCurrentParallel())).calculate();
+                .setEUt(gregtech.api.enums.GT_Values.V[tTier]).setDuration(recipe.mDuration)
+                .setParallel((int) Math.floor(helper.getCurrentParallel())).calculate();
 
         lEUt = -calculator.getConsumption();
         mMaxProgresstime = (int) Math.ceil(calculator.getDuration() * helper.getDurationMultiplier());

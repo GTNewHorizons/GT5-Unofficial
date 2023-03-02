@@ -21,7 +21,7 @@ import gregtech.api.interfaces.ISecondaryDescribable;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 
 public abstract class GT_MetaTileEntity_EnhancedMultiBlockBase_EM extends GT_MetaTileEntity_MultiblockBase_EM
-    implements IConstructable, ISecondaryDescribable {
+        implements IConstructable, ISecondaryDescribable {
 
     private static Map<Integer, GT_Multiblock_Tooltip_Builder> tooltips = new HashMap<>();
 
@@ -35,7 +35,7 @@ public abstract class GT_MetaTileEntity_EnhancedMultiBlockBase_EM extends GT_Met
 
     @Override
     public boolean onWrenchRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY,
-                                      float aZ) {
+            float aZ) {
         if (aWrenchingSide != getBaseMetaTileEntity().getFrontFacing())
             return super.onWrenchRightClick(aSide, aWrenchingSide, aPlayer, aX, aY, aZ);
         if (aPlayer.isSneaking()) {
@@ -96,8 +96,8 @@ public abstract class GT_MetaTileEntity_EnhancedMultiBlockBase_EM extends GT_Met
         int numOfContributors = contributors.length;
         while (numOfContributors > 1) {
             addedByString.append(
-                contributors[contributors.length - numOfContributors] + EnumChatFormatting.RESET
-                    + EnumChatFormatting.GRAY);
+                    contributors[contributors.length - numOfContributors] + EnumChatFormatting.RESET
+                            + EnumChatFormatting.GRAY);
             if (numOfContributors > 2) {
                 addedByString.append(", ");
             }

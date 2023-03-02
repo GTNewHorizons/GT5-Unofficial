@@ -1,10 +1,19 @@
 package com.minecraft7771.gtnhintergalactic.tile.multi.elevatormodules;
 
+import static net.minecraft.util.EnumChatFormatting.DARK_PURPLE;
+
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.fluids.FluidStack;
+
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.*;
 import com.minecraft7771.gtnhintergalactic.Tags;
 import com.minecraft7771.gtnhintergalactic.recipe.IG_Recipe;
 import com.minecraft7771.gtnhintergalactic.recipe.IG_RecipeAdder;
 import com.minecraft7771.gtnhintergalactic.tile.multi.elevator.ElevatorUtil;
+
 import gregtech.api.enums.GT_Values;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -14,12 +23,6 @@ import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
 import gregtech.common.power.BasicMachineEUPower;
 import gregtech.common.power.Power;
-import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraftforge.fluids.FluidStack;
-
-import static net.minecraft.util.EnumChatFormatting.DARK_PURPLE;
 
 /**
  * Space Assembler project module of the Space Elevator
@@ -30,10 +33,10 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase {
 
     /** Name of the parallel setting */
     private static final INameFunction<TileEntityModuleAssembler> PARALLEL_SETTING_NAME = (base, p) -> GCCoreUtil
-        .translate("gt.blockmachines.multimachine.project.gs.assembler.cfgi.0"); // Parallels
+            .translate("gt.blockmachines.multimachine.project.gs.assembler.cfgi.0"); // Parallels
     /** Status of the parallel setting */
     private static final IStatusFunction<TileEntityModuleAssembler> PARALLEL_STATUS = (base, p) -> LedStatus
-        .fromLimitsInclusiveOuterBoundary(p.get(), 0, 1, 100, base.getMaxParallels());
+            .fromLimitsInclusiveOuterBoundary(p.get(), 0, 1, 100, base.getMaxParallels());
 
     /** Cache for last recipe */
     GT_Recipe lastRecipe = null;
@@ -54,7 +57,7 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase {
      * @param bufferSizeMultiplier Multiplier for the EU buffer size, if the standard buffer is too small
      */
     public TileEntityModuleAssembler(int aID, String aName, String aNameRegional, int tTier, int tModuleTier,
-                                     int tMinMotorTier, int bufferSizeMultiplier) {
+            int tMinMotorTier, int bufferSizeMultiplier) {
         super(aID, aName, aNameRegional, tTier, tModuleTier, tMinMotorTier, bufferSizeMultiplier);
         power = new AssemblerPower((byte) tTier, tModuleTier);
     }
@@ -69,7 +72,7 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase {
      * @param bufferSizeMultiplier Multiplier for the EU buffer size, if the standard buffer is too small
      */
     public TileEntityModuleAssembler(String aName, int tTier, int tModuleTier, int tMinMotorTier,
-                                     int bufferSizeMultiplier) {
+            int bufferSizeMultiplier) {
         super(aName, tTier, tModuleTier, tMinMotorTier, bufferSizeMultiplier);
         power = new AssemblerPower((byte) tTier, tModuleTier);
     }
@@ -100,13 +103,13 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase {
         ItemStack[] items = getCompactedInputs();
 
         GT_Recipe recipe = IG_RecipeAdder.instance.sSpaceAssemblerRecipes.findRecipe(
-            getBaseMetaTileEntity(),
-            lastRecipe,
-            false,
-            false,
-            gregtech.api.enums.GT_Values.V[tTier],
-            fluids,
-            items);
+                getBaseMetaTileEntity(),
+                lastRecipe,
+                false,
+                false,
+                gregtech.api.enums.GT_Values.V[tTier],
+                fluids,
+                items);
 
         if (recipe == null) {
             return false;
@@ -115,19 +118,19 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase {
         if (lastRecipe != recipe && recipe instanceof IG_Recipe) {
             IG_Recipe gsRecipe = (IG_Recipe) recipe;
             if (!ElevatorUtil.isProjectAvailable(
-                getBaseMetaTileEntity().getOwnerUuid(),
-                gsRecipe.getNeededSpaceProject(),
-                gsRecipe.getNeededSpaceProjectLocation())) {
+                    getBaseMetaTileEntity().getOwnerUuid(),
+                    gsRecipe.getNeededSpaceProject(),
+                    gsRecipe.getNeededSpaceProjectLocation())) {
                 return false;
             }
         }
 
         GT_ParallelHelper helper = new GT_ParallelHelper().setRecipe(recipe).setItemInputs(items).setFluidInputs(fluids)
-            .setAvailableEUt(
-                gregtech.api.enums.GT_Values.V[tTier]
-                    * Math.min(getMaxParallels(), (int) parallelSetting.get()))
-            .setMaxParallel(Math.min(getMaxParallels(), (int) parallelSetting.get())).enableConsumption()
-            .enableOutputCalculation();
+                .setAvailableEUt(
+                        gregtech.api.enums.GT_Values.V[tTier]
+                                * Math.min(getMaxParallels(), (int) parallelSetting.get()))
+                .setMaxParallel(Math.min(getMaxParallels(), (int) parallelSetting.get())).enableConsumption()
+                .enableOutputCalculation();
         if (!eSafeVoid) {
             helper.enableVoidProtection(this);
         }
@@ -139,8 +142,8 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase {
         }
 
         GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(recipe.mEUt)
-            .setEUt(gregtech.api.enums.GT_Values.V[tTier]).setDuration(recipe.mDuration)
-            .setParallel((int) Math.floor(helper.getCurrentParallel())).calculate();
+                .setEUt(gregtech.api.enums.GT_Values.V[tTier]).setDuration(recipe.mDuration)
+                .setParallel((int) Math.floor(helper.getCurrentParallel())).calculate();
 
         lEUt = -calculator.getConsumption();
         mMaxProgresstime = (int) Math.ceil(calculator.getDuration() * helper.getDurationMultiplier());
@@ -245,18 +248,20 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase {
         protected GT_Multiblock_Tooltip_Builder createTooltip() {
             final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
             tt.addMachineType(GCCoreUtil.translate("gt.blockmachines.module.name"))
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.assembler.desc0"))
-                .addInfo(
-                    EnumChatFormatting.LIGHT_PURPLE.toString() + EnumChatFormatting.BOLD
-                        + GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.assembler.t1.desc1"))
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.assembler.t1.desc2"))
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.motorT1")).addSeparator()
-                .beginStructureBlock(1, 5, 2, false).addCasingInfo(GCCoreUtil.translate("gt.blockcasings.gs.0.name"), 0)
-                .addInputBus(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-                .addOutputBus(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-                .addInputHatch(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-                .addOutputHatch(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-                .toolTipFinisher(DARK_PURPLE + Tags.MODNAME);
+                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.assembler.desc0"))
+                    .addInfo(
+                            EnumChatFormatting.LIGHT_PURPLE.toString() + EnumChatFormatting.BOLD
+                                    + GCCoreUtil
+                                            .translate("gt.blockmachines.multimachine.project.gs.assembler.t1.desc1"))
+                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.assembler.t1.desc2"))
+                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.motorT1")).addSeparator()
+                    .beginStructureBlock(1, 5, 2, false)
+                    .addCasingInfo(GCCoreUtil.translate("gt.blockcasings.gs.0.name"), 0)
+                    .addInputBus(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                    .addOutputBus(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                    .addInputHatch(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                    .addOutputHatch(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                    .toolTipFinisher(DARK_PURPLE + Tags.MODNAME);
             return tt;
         }
     }
@@ -322,18 +327,20 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase {
         protected GT_Multiblock_Tooltip_Builder createTooltip() {
             final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
             tt.addMachineType(GCCoreUtil.translate("gt.blockmachines.module.name"))
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.assembler.desc0"))
-                .addInfo(
-                    EnumChatFormatting.LIGHT_PURPLE.toString() + EnumChatFormatting.BOLD
-                        + GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.assembler.t2.desc1"))
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.assembler.t2.desc2"))
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.motorT3")).addSeparator()
-                .beginStructureBlock(1, 5, 2, false).addCasingInfo(GCCoreUtil.translate("gt.blockcasings.gs.0.name"), 0)
-                .addInputBus(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-                .addOutputBus(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-                .addInputHatch(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-                .addOutputHatch(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-                .toolTipFinisher(DARK_PURPLE + Tags.MODNAME);
+                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.assembler.desc0"))
+                    .addInfo(
+                            EnumChatFormatting.LIGHT_PURPLE.toString() + EnumChatFormatting.BOLD
+                                    + GCCoreUtil
+                                            .translate("gt.blockmachines.multimachine.project.gs.assembler.t2.desc1"))
+                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.assembler.t2.desc2"))
+                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.motorT3")).addSeparator()
+                    .beginStructureBlock(1, 5, 2, false)
+                    .addCasingInfo(GCCoreUtil.translate("gt.blockcasings.gs.0.name"), 0)
+                    .addInputBus(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                    .addOutputBus(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                    .addInputHatch(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                    .addOutputHatch(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                    .toolTipFinisher(DARK_PURPLE + Tags.MODNAME);
             return tt;
         }
     }
@@ -399,18 +406,20 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase {
         protected GT_Multiblock_Tooltip_Builder createTooltip() {
             final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
             tt.addMachineType(GCCoreUtil.translate("gt.blockmachines.module.name"))
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.assembler.desc0"))
-                .addInfo(
-                    EnumChatFormatting.LIGHT_PURPLE.toString() + EnumChatFormatting.BOLD
-                        + GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.assembler.t3.desc1"))
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.assembler.t3.desc2"))
-                .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.motorT5")).addSeparator()
-                .beginStructureBlock(1, 5, 2, false).addCasingInfo(GCCoreUtil.translate("gt.blockcasings.gs.0.name"), 0)
-                .addInputBus(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-                .addOutputBus(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-                .addInputHatch(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-                .addOutputHatch(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-                .toolTipFinisher(DARK_PURPLE + Tags.MODNAME);
+                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.assembler.desc0"))
+                    .addInfo(
+                            EnumChatFormatting.LIGHT_PURPLE.toString() + EnumChatFormatting.BOLD
+                                    + GCCoreUtil
+                                            .translate("gt.blockmachines.multimachine.project.gs.assembler.t3.desc1"))
+                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.assembler.t3.desc2"))
+                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.gs.motorT5")).addSeparator()
+                    .beginStructureBlock(1, 5, 2, false)
+                    .addCasingInfo(GCCoreUtil.translate("gt.blockcasings.gs.0.name"), 0)
+                    .addInputBus(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                    .addOutputBus(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                    .addInputHatch(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                    .addOutputHatch(GCCoreUtil.translate("gs.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                    .toolTipFinisher(DARK_PURPLE + Tags.MODNAME);
             return tt;
         }
     }

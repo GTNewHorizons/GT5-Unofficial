@@ -1,14 +1,15 @@
 package com.minecraft7771.gtnhintergalactic.item;
 
-import com.minecraft7771.gtnhintergalactic.GTNHIntergalactic;
-import gregtech.api.enums.Materials;
+import java.util.List;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 
-import java.util.List;
+import com.minecraft7771.gtnhintergalactic.GTNHIntergalactic;
+import gregtech.api.enums.Materials;
 
 /**
  * Drones used for the Space Mining module of the Space Elevator
@@ -18,8 +19,8 @@ import java.util.List;
 public class ItemMiningDrones extends Item {
 
     private static final String[] names = new String[] { "MiningDroneLV", "MiningDroneMV", "MiningDroneHV",
-        "MiningDroneEV", "MiningDroneIV", "MiningDroneLuV", "MiningDroneZPM", "MiningDroneUV", "MiningDroneUHV",
-        "MiningDroneUEV", };
+            "MiningDroneEV", "MiningDroneIV", "MiningDroneLuV", "MiningDroneZPM", "MiningDroneUV", "MiningDroneUHV",
+            "MiningDroneUEV", };
     private static final IIcon[] icons = new IIcon[names.length];
 
     public ItemMiningDrones() {
@@ -90,4 +91,3 @@ public class ItemMiningDrones extends Item {
         }
     }
 }
-

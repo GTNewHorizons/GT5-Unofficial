@@ -1,10 +1,12 @@
 package com.minecraft7771.gtnhintergalactic.item;
 
-import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
+import cpw.mods.fml.common.registry.GameRegistry;
+
 public class IGItems {
+
     public static Item SpaceElevatorItems;
     public static Item MiningDrones;
     public static ItemStack SpaceElevatorCasing0;

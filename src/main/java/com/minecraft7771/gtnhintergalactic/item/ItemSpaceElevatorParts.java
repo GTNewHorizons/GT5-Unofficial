@@ -1,10 +1,11 @@
 package com.minecraft7771.gtnhintergalactic.item;
 
-import com.minecraft7771.gtnhintergalactic.GTNHIntergalactic;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+
+import com.minecraft7771.gtnhintergalactic.GTNHIntergalactic;
 
 /**
  * Item parts used in crafting the Space Elevator

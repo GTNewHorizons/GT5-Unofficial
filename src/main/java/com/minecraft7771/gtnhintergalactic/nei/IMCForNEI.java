@@ -1,8 +1,9 @@
 package com.minecraft7771.gtnhintergalactic.nei;
 
+import net.minecraft.nbt.NBTTagCompound;
+
 import com.minecraft7771.gtnhintergalactic.Tags;
 import cpw.mods.fml.common.event.FMLInterModComms;
-import net.minecraft.nbt.NBTTagCompound;
 
 public class IMCForNEI {
 
@@ -29,7 +30,7 @@ public class IMCForNEI {
     }
 
     private static void sendHandler(String name, String itemStack, int handlerWidth, int handlerHeight,
-                                    int recipePerPage) {
+            int recipePerPage) {
         NBTTagCompound aNBT = new NBTTagCompound();
         aNBT.setString("handler", name);
         aNBT.setString("modName", Tags.MODNAME);

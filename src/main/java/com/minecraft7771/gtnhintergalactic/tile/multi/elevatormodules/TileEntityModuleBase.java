@@ -1,24 +1,24 @@
 package com.minecraft7771.gtnhintergalactic.tile.multi.elevatormodules;
 
-import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedExtendedFacingTexture;
-import com.minecraft7771.gtnhintergalactic.block.BlockCasingSpaceElevator;
-import com.minecraft7771.gtnhintergalactic.tile.multi.elevator.TileEntitySpaceElevator;
-import gregtech.api.enums.Textures;
-import gregtech.api.interfaces.ITexture;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.*;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedExtendedFacingTexture;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.*;
-
+import com.minecraft7771.gtnhintergalactic.block.BlockCasingSpaceElevator;
 import com.minecraft7771.gtnhintergalactic.gui.IG_UITextures;
 import com.minecraft7771.gtnhintergalactic.tile.multi.GT_MetaTileEntity_EnhancedMultiBlockBase_EM;
+import com.minecraft7771.gtnhintergalactic.tile.multi.elevator.TileEntitySpaceElevator;
+
+import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_StructureUtility;
 import gregtech.api.util.GT_Utility;
@@ -46,34 +46,34 @@ public abstract class TileEntityModuleBase extends GT_MetaTileEntity_EnhancedMul
 
     /** Name of the stored energy display */
     private static final INameFunction<TileEntityModuleBase> ENERGY_DISPLAY_NAME = (base, p) -> GCCoreUtil
-        .translate("gt.blockmachines.multimachine.project.gs.cfgo.0"); // Stored Energy
+            .translate("gt.blockmachines.multimachine.project.gs.cfgo.0"); // Stored Energy
     /** Status of the stored energy display */
     private static final IStatusFunction<TileEntityModuleBase> ENERGY_STATUS = (base, p) -> LedStatus
-        .fromLimitsInclusiveOuterBoundary(
-            p.get(),
-            1,
-            (double) base.maxEUStore() / 2D,
-            (double) base.maxEUStore() * 2D,
-            (double) base.maxEUStore() * 2D);
+            .fromLimitsInclusiveOuterBoundary(
+                    p.get(),
+                    1,
+                    (double) base.maxEUStore() / 2D,
+                    (double) base.maxEUStore() * 2D,
+                    (double) base.maxEUStore() * 2D);
 
     /** Name of the main structure piece */
     private static final String STRUCTURE_PIECE_MAIN = "main";
     /** Structure definition of this machine */
     private static final IStructureDefinition<TileEntityModuleBase> STRUCTURE_DEFINITION = StructureDefinition
-        .<TileEntityModuleBase>builder()
-        .addShape(
-            STRUCTURE_PIECE_MAIN,
-            StructureUtility.transpose(
-                new String[][] { { "H", "H" }, { "~", "H" }, { "H", "H" }, { "H", "H" }, { "H", "H" } }))
-        .addElement(
-            'H',
-            GT_StructureUtility.ofHatchAdderOptional(
-                TileEntityModuleBase::addClassicToMachineList,
-                TileEntitySpaceElevator.CASING_INDEX_BASE,
-                1,
-                BlockCasingSpaceElevator.INSTANCE,
-                0))
-        .build();
+            .<TileEntityModuleBase>builder()
+            .addShape(
+                    STRUCTURE_PIECE_MAIN,
+                    StructureUtility.transpose(
+                            new String[][] { { "H", "H" }, { "~", "H" }, { "H", "H" }, { "H", "H" }, { "H", "H" } }))
+            .addElement(
+                    'H',
+                    GT_StructureUtility.ofHatchAdderOptional(
+                            TileEntityModuleBase::addClassicToMachineList,
+                            TileEntitySpaceElevator.CASING_INDEX_BASE,
+                            1,
+                            BlockCasingSpaceElevator.INSTANCE,
+                            0))
+            .build();
 
     /**
      * Create new project module base
@@ -85,7 +85,7 @@ public abstract class TileEntityModuleBase extends GT_MetaTileEntity_EnhancedMul
      * @param tMinMotorTier Minimum needed motor tier
      */
     protected TileEntityModuleBase(int aID, String aName, String aNameRegional, int tTier, int tModuleTier,
-                                   int tMinMotorTier) {
+            int tMinMotorTier) {
         super(aID, aName, aNameRegional);
         this.tTier = tTier;
         this.tModuleTier = tModuleTier;
@@ -105,7 +105,7 @@ public abstract class TileEntityModuleBase extends GT_MetaTileEntity_EnhancedMul
      * @param bufferSizeMultiplier Multiplier for the EU buffer size, if the standard buffer is too small
      */
     protected TileEntityModuleBase(int aID, String aName, String aNameRegional, int tTier, int tModuleTier,
-                                   int tMinMotorTier, int bufferSizeMultiplier) {
+            int tMinMotorTier, int bufferSizeMultiplier) {
         super(aID, aName, aNameRegional);
         this.tTier = tTier;
         this.tModuleTier = tModuleTier;
@@ -139,7 +139,7 @@ public abstract class TileEntityModuleBase extends GT_MetaTileEntity_EnhancedMul
      * @param bufferSizeMultiplier Multiplier for the EU buffer size, if the standard buffer is too small
      */
     protected TileEntityModuleBase(String aName, int tTier, int tModuleTier, int tMinMotorTier,
-                                   int bufferSizeMultiplier) {
+            int bufferSizeMultiplier) {
         super(aName);
         this.tTier = tTier;
         this.tModuleTier = tModuleTier;
@@ -213,7 +213,7 @@ public abstract class TileEntityModuleBase extends GT_MetaTileEntity_EnhancedMul
             return 0;
         }
         long increasedEU = Math
-            .min(getBaseMetaTileEntity().getEUCapacity() - getBaseMetaTileEntity().getStoredEU(), maximumIncrease);
+                .min(getBaseMetaTileEntity().getEUCapacity() - getBaseMetaTileEntity().getStoredEU(), maximumIncrease);
         return getBaseMetaTileEntity().increaseStoredEnergyUnits(increasedEU, false) ? increasedEU : 0;
     }
 
@@ -333,13 +333,13 @@ public abstract class TileEntityModuleBase extends GT_MetaTileEntity_EnhancedMul
      */
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-                                 boolean aActive, boolean aRedstone) {
+            boolean aActive, boolean aRedstone) {
         if (aSide == aFacing) {
             return new ITexture[] {
-                Textures.BlockIcons.getCasingTextureForId(TileEntitySpaceElevator.CASING_INDEX_BASE),
-                new TT_RenderedExtendedFacingTexture(
-                    aActive ? GT_MetaTileEntity_MultiblockBase_EM.ScreenON
-                        : GT_MetaTileEntity_MultiblockBase_EM.ScreenOFF) };
+                    Textures.BlockIcons.getCasingTextureForId(TileEntitySpaceElevator.CASING_INDEX_BASE),
+                    new TT_RenderedExtendedFacingTexture(
+                            aActive ? GT_MetaTileEntity_MultiblockBase_EM.ScreenON
+                                    : GT_MetaTileEntity_MultiblockBase_EM.ScreenOFF) };
         }
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TileEntitySpaceElevator.CASING_INDEX_BASE) };
     }
@@ -347,8 +347,8 @@ public abstract class TileEntityModuleBase extends GT_MetaTileEntity_EnhancedMul
     @Override
     public void addGregTechLogo(ModularWindow.Builder builder) {
         builder.widget(
-            new DrawableWidget().setDrawable(IG_UITextures.PICTURE_ELEVATOR_LOGO_DARK).setSize(18, 18)
-                .setPos(173, 74));
+                new DrawableWidget().setDrawable(IG_UITextures.PICTURE_ELEVATOR_LOGO_DARK).setSize(18, 18)
+                        .setPos(173, 74));
     }
 
     /**
@@ -362,24 +362,24 @@ public abstract class TileEntityModuleBase extends GT_MetaTileEntity_EnhancedMul
         screenElements.setSynced(false).setSpace(0).setPos(10, 7);
 
         screenElements
-            .widget(
-                new TextWidget(GT_Utility.trans("138", "Incomplete Structure."))
-                    .setDefaultColor(COLOR_TEXT_WHITE.get()).setEnabled(widget -> !mMachine))
-            .widget(new FakeSyncWidget.BooleanSyncer(() -> mMachine, val -> mMachine = val));
+                .widget(
+                        new TextWidget(GT_Utility.trans("138", "Incomplete Structure."))
+                                .setDefaultColor(COLOR_TEXT_WHITE.get()).setEnabled(widget -> !mMachine))
+                .widget(new FakeSyncWidget.BooleanSyncer(() -> mMachine, val -> mMachine = val));
 
         screenElements.widget(
-            new TextWidget(StatCollector.translateToLocal("gt.blockmachines.multimachine.gs.elevator.gui.ready"))
-                .setDefaultColor(COLOR_TEXT_WHITE.get()).setEnabled(widget -> mMachine));
+                new TextWidget(StatCollector.translateToLocal("gt.blockmachines.multimachine.gs.elevator.gui.ready"))
+                        .setDefaultColor(COLOR_TEXT_WHITE.get()).setEnabled(widget -> mMachine));
 
         screenElements.widget(
-            new TextWidget(StatCollector.translateToLocal("gt.blockmachines.multimachine.gs.elevator.gui.noRecipe"))
-                .setDefaultColor(COLOR_TEXT_WHITE.get())
-                .setEnabled(widget -> mMachine && !getBaseMetaTileEntity().isActive()));
+                new TextWidget(StatCollector.translateToLocal("gt.blockmachines.multimachine.gs.elevator.gui.noRecipe"))
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setEnabled(widget -> mMachine && !getBaseMetaTileEntity().isActive()));
 
         screenElements.widget(
-            new TextWidget(StatCollector.translateToLocal("gt.blockmachines.multimachine.gs.elevator.gui.recipe"))
-                .setDefaultColor(COLOR_TEXT_WHITE.get())
-                .setEnabled(widget -> mMachine && getBaseMetaTileEntity().isActive()));
+                new TextWidget(StatCollector.translateToLocal("gt.blockmachines.multimachine.gs.elevator.gui.recipe"))
+                        .setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setEnabled(widget -> mMachine && getBaseMetaTileEntity().isActive()));
     }
 
     /**
