@@ -7,15 +7,16 @@ import net.minecraft.util.IIcon;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.minecraft7771.gtnhintergalactic.block.BlockCasingSpaceElevator;
+import com.minecraft7771.gtnhintergalactic.block.BlockCasingSpaceElevatorMotor;
+import com.minecraft7771.gtnhintergalactic.block.IGBlocks;
 import com.minecraft7771.gtnhintergalactic.item.IGItems;
 import com.minecraft7771.gtnhintergalactic.proxy.CommonProxy;
 
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import cpw.mods.fml.common.event.*;
+import cpw.mods.fml.common.registry.GameRegistry;
 
 @Mod(
         modid = Tags.MODID,
@@ -82,6 +83,46 @@ public class GTNHIntergalactic {
     // register server commands in this event handler (Remove if not needed)
     public void serverStarting(FMLServerStartingEvent event) {
         proxy.serverStarting(event);
+    }
+
+    @Mod.EventHandler
+    public void onMissingMapping(FMLMissingMappingsEvent event) {
+        for (FMLMissingMappingsEvent.MissingMapping mapping : event.getAll()) {
+            if (mapping.type == GameRegistry.Type.BLOCK) {
+                switch (mapping.name) {
+                    case "GalaxySpace:spaceelevatorparts":
+                        mapping.remap(BlockCasingSpaceElevator.INSTANCE);
+                        break;
+                    case "GalaxySpace:spaceelevatormotors":
+                        mapping.remap(BlockCasingSpaceElevatorMotor.INSTANCE);
+                        break;
+                    case "GalaxySpace:spaceelevatorcable":
+                        mapping.remap(IGBlocks.SpaceElevatorCable);
+                        break;
+                    default:
+                        mapping.warn();
+                        break;
+                }
+            } else if (mapping.type == GameRegistry.Type.ITEM) {
+                switch (mapping.name) {
+                    case "GalaxySpace:spaceelevatorparts":
+                        mapping.remap(Item.getItemFromBlock(BlockCasingSpaceElevator.INSTANCE));
+                        break;
+                    case "GalaxySpace:spaceelevatormotors":
+                        mapping.remap(Item.getItemFromBlock(BlockCasingSpaceElevatorMotor.INSTANCE));
+                        break;
+                    case "GalaxySpace:spaceelevatorcable":
+                        mapping.remap(Item.getItemFromBlock(IGBlocks.SpaceElevatorCable));
+                        break;
+                    case "GalaxySpace:SpaceElevatorParts":
+                        mapping.remap(IGItems.SpaceElevatorItems);
+                        break;
+                    default:
+                        mapping.warn();
+                        break;
+                }
+            }
+        }
     }
 
     public void markTextureUsed(IIcon o) {
