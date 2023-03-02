@@ -46,7 +46,7 @@ public abstract class TileEntityModuleBase extends GT_MetaTileEntity_EnhancedMul
 
     /** Name of the stored energy display */
     private static final INameFunction<TileEntityModuleBase> ENERGY_DISPLAY_NAME = (base, p) -> GCCoreUtil
-            .translate("gt.blockmachines.multimachine.project.igcfgo.0"); // Stored Energy
+            .translate("gt.blockmachines.multimachine.project.ig.cfgo.0"); // Stored Energy
     /** Status of the stored energy display */
     private static final IStatusFunction<TileEntityModuleBase> ENERGY_STATUS = (base, p) -> LedStatus
             .fromLimitsInclusiveOuterBoundary(

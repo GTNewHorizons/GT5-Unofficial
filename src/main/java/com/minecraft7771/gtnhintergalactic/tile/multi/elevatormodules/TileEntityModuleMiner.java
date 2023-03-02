@@ -68,25 +68,25 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase {
 
     /** Name of the distance setting */
     private static final INameFunction<TileEntityModuleMiner> DISTANCE_SETTING_NAME = (base, p) -> GCCoreUtil
-            .translate("gt.blockmachines.multimachine.project.igminer.cfgi.0"); // Distance
+            .translate("gt.blockmachines.multimachine.project.ig.miner.cfgi.0"); // Distance
     /** Status of the distance setting */
     private static final IStatusFunction<TileEntityModuleMiner> DISTANCE_STATUS = (base, p) -> LedStatus
             .fromLimitsInclusiveOuterBoundary(p.get(), 1, 0, 200, 300);
     /** Name of the parallel setting */
     private static final INameFunction<TileEntityModuleMiner> PARALLEL_SETTING_NAME = (base, p) -> GCCoreUtil
-            .translate("gt.blockmachines.multimachine.project.igminer.cfgi.1"); // Max parallels
+            .translate("gt.blockmachines.multimachine.project.ig.miner.cfgi.1"); // Max parallels
     /** Status of the parallel setting */
     private static final IStatusFunction<TileEntityModuleMiner> PARALLEL_STATUS = (base, p) -> LedStatus
             .fromLimitsInclusiveOuterBoundary(p.get(), 0, 1, 100, base.getParallels());
     /** Name of the overdrive setting */
     private static final INameFunction<TileEntityModuleMiner> OVERDRIVE_SETTING_NAME = (base, p) -> GCCoreUtil
-            .translate("gt.blockmachines.multimachine.project.igminer.cfgi.2"); // Overdrive
+            .translate("gt.blockmachines.multimachine.project.ig.miner.cfgi.2"); // Overdrive
     /** Status of the overdrive setting */
     private static final IStatusFunction<TileEntityModuleMiner> OVERDRIVE_STATUS = (base, p) -> LedStatus
             .fromLimitsInclusiveOuterBoundary(p.get(), 0, 1, 1.5, 2);
     /** Name of the mode setting */
     private static final INameFunction<TileEntityModuleMiner> MODE_SETTING_NAME = (base, p) -> GCCoreUtil
-            .translate("gt.blockmachines.multimachine.project.igminer.cfgi.4"); // Mode
+            .translate("gt.blockmachines.multimachine.project.ig.miner.cfgi.4"); // Mode
     /** Status of the mode setting */
     private static final IStatusFunction<TileEntityModuleMiner> MODE_STATUS = (base, p) -> LedStatus
             .fromLimitsInclusiveOuterBoundary(p.get(), 0, 0, 1.1, 1.1);
