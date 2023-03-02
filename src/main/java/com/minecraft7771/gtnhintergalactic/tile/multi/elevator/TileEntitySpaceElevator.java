@@ -716,12 +716,12 @@ public class TileEntitySpaceElevator extends GT_MetaTileEntity_EnhancedMultiBloc
                         GCCoreUtil.translate("ig.elevator.structure.ProjectModule"),
                         GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith2Dot"),
                         2)
-                .addCasingInfo(GCCoreUtil.translate("tile.DysonSwarmFloor.name"), 800)
-                .addCasingInfo(GCCoreUtil.translate("gt.blockcasings.ig.0.name"), 617)
-                .addCasingInfo(GCCoreUtil.translate("gt.blockcasings.ig.1.name"), 620)
-                .addCasingInfo(GCCoreUtil.translate("gt.blockcasings.ig.2.name"), 360)
-                .addCasingInfo(GCCoreUtil.translate("gt.blockcasings.ig.cable.name"), 1)
-                .addCasingInfo(GCCoreUtil.translate("ig.elevator.structure.FrameNeutronium"), 56)
+                .addCasingInfoExactly(GCCoreUtil.translate("tile.DysonSwarmFloor.name"), 800, false)
+                .addCasingInfoRange(GCCoreUtil.translate("gt.blockcasings.ig.0.name"), 593, 785, false)
+                .addCasingInfoExactly(GCCoreUtil.translate("gt.blockcasings.ig.1.name"), 620, false)
+                .addCasingInfoExactly(GCCoreUtil.translate("gt.blockcasings.ig.2.name"), 360, false)
+                .addCasingInfoExactly(GCCoreUtil.translate("gt.blockcasings.ig.cable.name"), 1, false)
+                .addCasingInfoExactly(GCCoreUtil.translate("ig.elevator.structure.FrameNeutronium"), 56, false)
                 .addInputBus(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
                 .addOutputBus(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
                 .addInputHatch(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
