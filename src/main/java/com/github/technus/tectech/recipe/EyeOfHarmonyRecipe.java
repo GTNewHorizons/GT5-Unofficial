@@ -32,12 +32,12 @@ import gregtech.api.util.GT_OreDictUnificator;
 @SuppressWarnings("SpellCheckingInspection")
 public class EyeOfHarmonyRecipe {
 
-    static final FluidStack[] SPECIAL_FLUIDS = new FluidStack[] { Materials.WhiteDwarfMatter.getMolten(576),
-            Materials.WhiteDwarfMatter.getMolten(576), Materials.WhiteDwarfMatter.getMolten(2_304),
-            Materials.WhiteDwarfMatter.getMolten(9_216), Materials.BlackDwarfMatter.getMolten(576),
-            Materials.BlackDwarfMatter.getMolten(2_304), Materials.BlackDwarfMatter.getMolten(9_216),
-            Materials.Universium.getMolten(576), Materials.Universium.getMolten(2_304),
-            Materials.Universium.getMolten(9_216) };
+    static final FluidStack[] SPECIAL_FLUIDS = new FluidStack[] { Materials.WhiteDwarfMatter.getMolten(1152),
+            Materials.WhiteDwarfMatter.getMolten(1152), Materials.WhiteDwarfMatter.getMolten(4_608),
+            Materials.WhiteDwarfMatter.getMolten(18_384), Materials.BlackDwarfMatter.getMolten(1152),
+            Materials.BlackDwarfMatter.getMolten(4_608), Materials.BlackDwarfMatter.getMolten(18_384),
+            Materials.Universium.getMolten(1152), Materials.Universium.getMolten(4_608),
+            Materials.Universium.getMolten(18_384) };
 
     HashingStrategy<ItemStack> itemStackHashingStrategy = new HashingStrategy<ItemStack>() {
 
