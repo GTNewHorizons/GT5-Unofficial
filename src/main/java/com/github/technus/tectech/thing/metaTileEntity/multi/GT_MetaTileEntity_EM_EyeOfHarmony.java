@@ -79,6 +79,8 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
     // % Increase in recipe chance and % decrease in yield per tier.
     private static final double STABILITY_INCREASE_PROBABILITY_DECREASE_YIELD_PER_TIER = 0.05;
 
+    private static final int TOTAL_CASING_TIERS_WITH_POWER_PENALTY = 8;
+
     private String userUUID = "";
     private long euOutput = 0;
 
@@ -903,7 +905,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
                                 + " per tier (additive)")
                 .addInfo(BLUE + "Stabilisation Field Generator:")
                 .addInfo(
-                        "- Increases the probability of a recipe succeeding by " + RED
+                        "- Increases the power output and probability of a recipe succeeding by " + RED
                                 + formatNumbers(STABILITY_INCREASE_PROBABILITY_DECREASE_YIELD_PER_TIER * 100)
                                 + "%"
                                 + GRAY
@@ -924,7 +926,8 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
                 .addInfo(TOOLTIP_BAR)
                 .addInfo("It should be noted that base recipe chance is determined per recipe and yield always starts")
                 .addInfo("at 1 and subtracts depending on penalities. All fluid/item outputs are multiplied by the")
-                .addInfo("yield. Failure fluid is exempt.").addInfo(TOOLTIP_BAR)
+                .addInfo("yield. Failure fluid is exempt. All power outputs start at 60% of what the recipes display.")
+                .addInfo(TOOLTIP_BAR)
                 .addInfo("This multiblock can only output to ME output busses/hatches. If no space in the network")
                 .addInfo(
                         "is avaliable the items/fluids will be " + UNDERLINE + DARK_RED + "voided" + RESET + GRAY + ".")
@@ -1227,15 +1230,17 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
 
         destroyRenderBlock();
 
+        // Output power with stabilization factor (5% loss per tier below gallifreyan)
+        addEUToGlobalEnergyMap(
+                userUUID,
+                (long) (euOutput * (1 - ((TOTAL_CASING_TIERS_WITH_POWER_PENALTY - stabilisationFieldMetadata)
+                        * STABILITY_INCREASE_PROBABILITY_DECREASE_YIELD_PER_TIER))));
+        euOutput = 0;
+
         if (successChance < random()) {
             outputFailedChance();
             outputItems = new ArrayList<>();
-            addEUToGlobalEnergyMap(
-                    userUUID,
-                    (long) (currentRecipe.getEUStartCost() * pow(4, currentCircuitMultiplier) / 2L));
-        } else {
-            addEUToGlobalEnergyMap(userUUID, euOutput);
-            euOutput = 0;
+            return;
         }
 
         for (ItemStackLong itemStack : outputItems) {
