@@ -34,10 +34,10 @@ public class EyeOfHarmonyRecipe {
 
     static final FluidStack[] SPECIAL_FLUIDS = new FluidStack[] { Materials.WhiteDwarfMatter.getMolten(1152),
             Materials.WhiteDwarfMatter.getMolten(1152), Materials.WhiteDwarfMatter.getMolten(4_608),
-            Materials.WhiteDwarfMatter.getMolten(18_384), Materials.BlackDwarfMatter.getMolten(1152),
-            Materials.BlackDwarfMatter.getMolten(4_608), Materials.BlackDwarfMatter.getMolten(18_384),
+            Materials.WhiteDwarfMatter.getMolten(18_432), Materials.BlackDwarfMatter.getMolten(1152),
+            Materials.BlackDwarfMatter.getMolten(4_608), Materials.BlackDwarfMatter.getMolten(18_432),
             Materials.Universium.getMolten(1152), Materials.Universium.getMolten(4_608),
-            Materials.Universium.getMolten(18_384) };
+            Materials.Universium.getMolten(18_432) };
 
     HashingStrategy<ItemStack> itemStackHashingStrategy = new HashingStrategy<ItemStack>() {
 
