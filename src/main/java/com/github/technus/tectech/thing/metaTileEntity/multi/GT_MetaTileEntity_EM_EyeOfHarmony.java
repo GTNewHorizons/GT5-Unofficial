@@ -773,7 +773,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
 
         final long spacetimeCasingDifference = (recipeSpacetimeCasingRequired - spacetimeCompressionFieldMetadata);
         final double recipeTimeDiscounted = recipeTime * pow(2.0, -timeAccelerationFieldMetadata)
-                * pow(1 - SPACETIME_CASING_DIFFERENCE_DISCOUNT_PERCENTAGE, spacetimeCasingDifference)
+                * pow(1 - SPACETIME_CASING_DIFFERENCE_DISCOUNT_PERCENTAGE, -spacetimeCasingDifference)
                 / max(1, pow(2, currentCircuitMultiplier));
         return (int) Math.max(recipeTimeDiscounted, 1.0);
     }
