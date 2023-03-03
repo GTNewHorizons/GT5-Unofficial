@@ -1306,7 +1306,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
         if (recipeRunning) {
             str.add(GOLD + "---------------------- Other Stats ---------------");
             str.add("Recipe Success Chance: " + RED + formatNumbers(100 * successChance) + RESET + "%");
-            str.add("Recipe Yield: " + RED + formatNumbers(100 * successChance) + RESET + "%");
+            str.add("Recipe Yield: " + RED + formatNumbers(100 * recipeYieldCalculator()) + RESET + "%");
             str.add("EU Output: " + RED + formatNumbers(euOutput) + RESET + " EU");
             if (mOutputFluids.length > 0) {
                 // Star matter is always the last element in the array.
