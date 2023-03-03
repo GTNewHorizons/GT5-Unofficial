@@ -4,6 +4,7 @@ import static gregtech.api.enums.GT_Values.RA;
 import static gregtech.api.enums.GT_Values.VP;
 
 import micdoodle8.mods.galacticraft.core.items.GCItems;
+import micdoodle8.mods.galacticraft.core.util.RecipeUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
 
@@ -23,7 +24,6 @@ import com.minecraft7771.gtnhintergalactic.item.ItemMiningDrones;
 
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
-import galaxyspace.core.register.GSItems;
 import goodgenerator.items.MyMaterial;
 import goodgenerator.util.ItemRefer;
 import gregtech.api.enums.ItemList;
@@ -85,6 +85,14 @@ public class MachineRecipes implements Runnable {
         } else {
             voidMiner = ItemList.OreDrill4.get(1);
         }
+
+        // Planetary Gas Siphon Controller
+        RecipeUtil.addRecipe(
+                IGItems.PlanetaryGasSiphon,
+                new Object[] { "MPM", "CTC", "HTH", 'M', ItemList.Electric_Motor_IV.get(1), 'P',
+                        ItemList.Electric_Pump_IV.get(1), 'C', "circuitElite", 'T',
+                        GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.TungstenSteel, 1), 'H',
+                        ItemList.Hull_IV.get(1) });
 
         // Space Elevator Controller
         TT_recipeAdder.addResearchableAssemblylineRecipe(
@@ -290,12 +298,12 @@ public class MachineRecipes implements Runnable {
 
         // Pump Module MK-I
         TT_recipeAdder.addResearchableAssemblylineRecipe(
-                GSItems.PlanetarySiphonController,
+                IGItems.PlanetaryGasSiphon,
                 16777216,
                 2048,
                 2000000,
                 4,
-                new Object[] { ItemList.OilDrillInfinite.get(1), GSItems.PlanetarySiphonController,
+                new Object[] { ItemList.OilDrillInfinite.get(1), IGItems.PlanetaryGasSiphon,
                         CustomItemList.enderLinkFluidCover.get(2),
                         GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Infinity, 4),
                         new Object[] { OrePrefixes.circuit.get(Materials.Bio), 4 }, ItemList.Electric_Pump_UEV.get(2),
@@ -313,8 +321,7 @@ public class MachineRecipes implements Runnable {
                 8192,
                 64000000,
                 4,
-                new Object[] { ItemList.OilDrillInfinite.get(4),
-                        GT_Utility.copyAmount(4, GSItems.PlanetarySiphonController),
+                new Object[] { ItemList.OilDrillInfinite.get(4), GT_Utility.copyAmount(4, IGItems.PlanetaryGasSiphon),
                         CustomItemList.enderLinkFluidCover.get(8),
                         GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.SpaceTime, 4),
                         new Object[] { OrePrefixes.circuit.get(Materials.Optical), 16 },

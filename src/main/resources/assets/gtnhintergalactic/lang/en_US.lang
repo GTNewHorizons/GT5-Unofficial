@@ -107,6 +107,18 @@ ig.text.nolocation=Please select a location
 ig.button.travel=Travel
 ig.button.projects=Projects
 
+# Planetary Gas Siphon
+gt.blockmachines.multimachine.ig.siphon.name=Planetary Gas Siphon
+gt.blockmachines.multimachine.ig.siphon.type=Pump
+gt.blockmachines.multimachine.ig.siphon.desc1=Build on an Space Station orbiting a Gas Planet
+gt.blockmachines.multimachine.ig.siphon.desc2=Requires a Programmed Circuit set to the depth you want to pump from (1 - 4)
+gt.blockmachines.multimachine.ig.siphon.desc3=Requires 64x depth Mining Pipes
+gt.blockmachines.multimachine.ig.siphon.desc4=EU/t: d*4^(t+2), t is the Space Station's tier and d the depth
+gt.blockmachines.multimachine.ig.siphon.desc5=Can load the chunk it is in (toggle using a Soldering Iron)
+gt.blockmachines.multimachine.ig.siphon.lore0=Taking Space-Mining to another Level!
+gt.blockmachines.multimachine.ig.siphon.lore1=It's time to SUCC!
+gt.blockmachines.multimachine.ig.siphon.lore2=Trading EU -> Fluids
+
 # Space Elevator
 gt.blockmachines.multimachine.ig.elevator.name=Space Elevator
 gt.blockmachines.multimachine.ig.elevator.desc0=Controller block for the Space Elevator
@@ -214,6 +226,14 @@ ig.nei.spaceproject.name=Space Projects
 ig.nei.spaceproject.stages=Stages:
 
 # Structure and Tooltip
+ig.siphon.structure.ControllerPos=Front bottom
+ig.siphon.structure.AnyAdvMachineFrame=Any Advanced Machine Frame
+ig.siphon.structure.PillarMiddle=1x4x1 pillar in the middle
+ig.siphon.structure.Sides=Each pillar's side and 1x3x1 on top
+ig.siphon.structure.Base=3x1x3 base (hollow)
+ig.siphon.structure.AdvMachineFrame=Advanced Machine Frame
+ig.siphon.structure.FrameTungstensteel=Tungstensteel Frame Box
+ig.siphon.structure.ReboltedRhodiumPalladiumCasing=Rebolted Rhodium-Plated Palladium Casing
 ig.elevator.structure.ProjectModule=Project Module
 ig.elevator.structure.FrameNeutronium=Neutronium Frame Box
 ig.elevator.structure.Parametrizer=Parametrizer

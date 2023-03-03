@@ -1,5 +1,6 @@
 package com.minecraft7771.gtnhintergalactic.loader;
 
+import com.minecraft7771.gtnhintergalactic.recipe.GasSiphonRecipes;
 import com.minecraft7771.gtnhintergalactic.recipe.SpaceMiningRecipes;
 import com.minecraft7771.gtnhintergalactic.recipe.SpacePumpingRecipes;
 
@@ -17,5 +18,6 @@ public class RecipeLoader implements Runnable {
     public void run() {
         SpaceMiningRecipes.addAsteroids();
         SpacePumpingRecipes.addPumpingRecipes();
+        GasSiphonRecipes.addPumpingRecipes();
     }
 }

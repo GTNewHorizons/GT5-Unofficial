@@ -3,6 +3,7 @@ package com.minecraft7771.gtnhintergalactic.loader;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 
 import com.minecraft7771.gtnhintergalactic.item.IGItems;
+import com.minecraft7771.gtnhintergalactic.tile.multi.TileEntityPlanetaryGasSiphon;
 import com.minecraft7771.gtnhintergalactic.tile.multi.elevator.TileEntitySpaceElevator;
 import com.minecraft7771.gtnhintergalactic.tile.multi.elevatormodules.*;
 
@@ -18,6 +19,12 @@ public class MachineLoader implements Runnable {
      */
     @Override
     public void run() {
+
+        IGItems.PlanetaryGasSiphon = new TileEntityPlanetaryGasSiphon(
+                14002,
+                "PlanetaryGasSiphon",
+                GCCoreUtil.translate("gt.blockmachines.multimachine.ig.siphon.name")).getStackForm(1);
+
         IGItems.SpaceElevatorController = new TileEntitySpaceElevator(
                 14003,
                 "SpaceElevator",

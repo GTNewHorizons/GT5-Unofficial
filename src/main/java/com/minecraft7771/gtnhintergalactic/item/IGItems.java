@@ -14,6 +14,7 @@ public class IGItems {
 
     public static Item SpaceElevatorItems;
     public static Item MiningDrones;
+    public static ItemStack PlanetaryGasSiphon;
     public static ItemStack SpaceElevatorCasing0;
     public static ItemStack SpaceElevatorCasing1;
     public static ItemStack SpaceElevatorCasing2;

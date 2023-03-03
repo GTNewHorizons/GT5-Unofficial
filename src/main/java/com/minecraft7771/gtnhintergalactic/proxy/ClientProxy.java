@@ -3,6 +3,8 @@ package com.minecraft7771.gtnhintergalactic.proxy;
 import net.minecraft.util.IIcon;
 
 import com.minecraft7771.gtnhintergalactic.block.BlockSpaceElevatorCable;
+import com.minecraft7771.gtnhintergalactic.client.IGTextures;
+import com.minecraft7771.gtnhintergalactic.misc.TooltipUtil;
 import com.minecraft7771.gtnhintergalactic.render.RenderSpaceElevatorCable;
 import com.minecraft7771.gtnhintergalactic.tile.TileEntitySpaceElevatorCable;
 import com.mitchej123.hodgepodge.textures.IPatchedTextureAtlasSprite;
@@ -30,6 +32,7 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void postInit(FMLPostInitializationEvent event) {
         super.postInit(event);
+        TooltipUtil.postInit();
         try {
             ArtifactVersion accepted = new DefaultArtifactVersion(
                     "hodgepodge",
@@ -48,6 +51,7 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerBlockHandler(BlockSpaceElevatorCable.getRenderID(), new RenderSpaceElevatorCable());
         ClientRegistry
                 .bindTileEntitySpecialRenderer(TileEntitySpaceElevatorCable.class, new RenderSpaceElevatorCable());
+        new IGTextures().run();
     }
 
     /**
