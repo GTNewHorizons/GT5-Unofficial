@@ -15,6 +15,8 @@ public class NEIConfig implements IConfigureNEI {
     public void loadConfig() {
         API.registerRecipeHandler(new SpacePumpModuleRecipeHandler());
         API.registerUsageHandler(new SpacePumpModuleRecipeHandler());
+        API.registerRecipeHandler(new GasSiphonRecipeHandler());
+        API.registerUsageHandler(new GasSiphonRecipeHandler());
         // Inject elevator logo into GT5U recipe map
         GT_Recipe.GT_Recipe_Map.sFakeSpaceProjectRecipes.setLogo(IG_UITextures.PICTURE_ELEVATOR_LOGO);
         executed = true;

@@ -21,6 +21,16 @@ public class IMCForNEI {
                 "com.minecraft7771.gtnhintergalactic.nei.SpacePumpModuleRecipeHandler",
                 "gregtech:gt.blockmachines:14011");
 
+        sendHandler(
+                "com.minecraft7771.gtnhintergalactic.nei.GasSiphonRecipeHandler",
+                "gregtech:gt.blockmachines:14002",
+                160,
+                90,
+                3);
+        sendCatalyst(
+                "com.minecraft7771.gtnhintergalactic.nei.GasSiphonRecipeHandler",
+                "gregtech:gt.blockmachines:14002");
+
         sendHandler("gt.recipe.spaceMining", "gregtech:gt.blockmachines:14007");
         sendCatalyst("gt.recipe.spaceMining", "gregtech:gt.blockmachines:14007");
         sendCatalyst("gt.recipe.spaceMining", "gregtech:gt.blockmachines:14008");
