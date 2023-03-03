@@ -1,12 +1,12 @@
 package com.gtnewhorizons.gtnhintergalactic.proxy;
 
+import net.minecraft.util.IIcon;
+
 import com.gtnewhorizons.gtnhintergalactic.block.BlockSpaceElevatorCable;
 import com.gtnewhorizons.gtnhintergalactic.client.IGTextures;
 import com.gtnewhorizons.gtnhintergalactic.misc.TooltipUtil;
 import com.gtnewhorizons.gtnhintergalactic.render.RenderSpaceElevatorCable;
 import com.gtnewhorizons.gtnhintergalactic.tile.TileEntitySpaceElevatorCable;
-import net.minecraft.util.IIcon;
-
 import com.mitchej123.hodgepodge.textures.IPatchedTextureAtlasSprite;
 
 import cpw.mods.fml.client.registry.ClientRegistry;

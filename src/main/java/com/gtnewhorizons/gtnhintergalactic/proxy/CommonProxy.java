@@ -1,6 +1,9 @@
 package com.gtnewhorizons.gtnhintergalactic.proxy;
 
+import net.minecraft.util.IIcon;
+
 import com.gtnewhorizons.gtnhintergalactic.block.IGBlocks;
+import com.gtnewhorizons.gtnhintergalactic.config.Config;
 import com.gtnewhorizons.gtnhintergalactic.item.IGItems;
 import com.gtnewhorizons.gtnhintergalactic.loader.MachineLoader;
 import com.gtnewhorizons.gtnhintergalactic.loader.RecipeLoader;
@@ -8,9 +11,6 @@ import com.gtnewhorizons.gtnhintergalactic.nei.IMCForNEI;
 import com.gtnewhorizons.gtnhintergalactic.recipe.IG_RecipeAdder;
 import com.gtnewhorizons.gtnhintergalactic.recipe.MachineRecipes;
 import com.gtnewhorizons.gtnhintergalactic.recipe.SpaceProjectRegistration;
-import net.minecraft.util.IIcon;
-
-import com.gtnewhorizons.gtnhintergalactic.config.Config;
 
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;

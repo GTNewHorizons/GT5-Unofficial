@@ -3,7 +3,6 @@ package com.gtnewhorizons.gtnhintergalactic.recipe;
 import static gregtech.api.enums.GT_Values.RA;
 import static gregtech.api.enums.GT_Values.VP;
 
-import com.gtnewhorizons.gtnhintergalactic.item.ItemMiningDrones;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.util.RecipeUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
@@ -21,6 +20,7 @@ import com.github.technus.tectech.thing.CustomItemList;
 import com.github.technus.tectech.thing.casing.TT_Container_Casings;
 import com.gtnewhorizons.gtnhintergalactic.block.IGBlocks;
 import com.gtnewhorizons.gtnhintergalactic.item.IGItems;
+import com.gtnewhorizons.gtnhintergalactic.item.ItemMiningDrones;
 
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;

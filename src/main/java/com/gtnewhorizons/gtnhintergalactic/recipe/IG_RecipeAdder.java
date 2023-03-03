@@ -5,12 +5,12 @@ import java.util.*;
 import java.util.List;
 import java.util.function.Supplier;
 
-import com.gtnewhorizons.gtnhintergalactic.gui.IG_UITextures;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.gtnewhorizons.gtnhintergalactic.gui.IG_UITextures;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;

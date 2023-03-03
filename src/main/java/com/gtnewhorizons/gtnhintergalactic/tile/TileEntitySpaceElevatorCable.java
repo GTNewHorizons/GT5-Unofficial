@@ -2,12 +2,13 @@ package com.gtnewhorizons.gtnhintergalactic.tile;
 
 import java.util.List;
 
-import com.gtnewhorizons.gtnhintergalactic.config.Config;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAdvanced;
 import micdoodle8.mods.galacticraft.core.util.Annotations;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
+
+import com.gtnewhorizons.gtnhintergalactic.config.Config;
 
 import cpw.mods.fml.relauncher.Side;
 import io.netty.buffer.ByteBuf;

@@ -3,8 +3,6 @@ package com.gtnewhorizons.gtnhintergalactic.nei;
 import java.awt.*;
 import java.util.Map;
 
-import com.gtnewhorizons.gtnhintergalactic.gui.IG_UITextures;
-import com.gtnewhorizons.gtnhintergalactic.recipe.GasSiphonRecipes;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 
 import net.minecraft.client.Minecraft;
@@ -18,6 +16,8 @@ import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 
+import com.gtnewhorizons.gtnhintergalactic.gui.IG_UITextures;
+import com.gtnewhorizons.gtnhintergalactic.recipe.GasSiphonRecipes;
 import com.gtnewhorizons.modularui.api.GlStateManager;
 import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.UIInfos;

@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
-import com.gtnewhorizons.gtnhintergalactic.Tags;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 
 import net.minecraft.item.ItemStack;
@@ -20,6 +19,8 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.github.technus.tectech.thing.gui.TecTechUITextures;
+import com.gtnewhorizons.gtnhintergalactic.Tags;
+import com.gtnewhorizons.gtnhintergalactic.gui.IG_UITextures;
 import com.gtnewhorizons.modularui.api.drawable.*;
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
@@ -28,7 +29,6 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.widget.*;
-import com.gtnewhorizons.gtnhintergalactic.gui.IG_UITextures;
 
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;

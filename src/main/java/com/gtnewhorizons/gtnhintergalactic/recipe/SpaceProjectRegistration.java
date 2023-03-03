@@ -2,8 +2,6 @@ package com.gtnewhorizons.gtnhintergalactic.recipe;
 
 import static gregtech.api.util.GT_ModHandler.getModItem;
 
-import com.gtnewhorizons.gtnhintergalactic.gui.IG_UITextures;
-import com.gtnewhorizons.gtnhintergalactic.spaceprojects.ProjectAsteroidOutpost;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -13,6 +11,8 @@ import net.minecraftforge.fluids.FluidStack;
 
 import com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry;
 import com.github.technus.tectech.thing.CustomItemList;
+import com.gtnewhorizons.gtnhintergalactic.gui.IG_UITextures;
+import com.gtnewhorizons.gtnhintergalactic.spaceprojects.ProjectAsteroidOutpost;
 
 import cpw.mods.fml.common.Loader;
 import galaxyspace.core.register.GSBlocks;

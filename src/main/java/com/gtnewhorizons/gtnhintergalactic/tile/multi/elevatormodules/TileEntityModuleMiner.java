@@ -5,10 +5,6 @@ import static net.minecraft.util.EnumChatFormatting.DARK_PURPLE;
 import java.util.Arrays;
 import java.util.List;
 
-import com.gtnewhorizons.gtnhintergalactic.Tags;
-import com.gtnewhorizons.gtnhintergalactic.recipe.IG_Recipe;
-import com.gtnewhorizons.gtnhintergalactic.recipe.IG_RecipeAdder;
-import com.gtnewhorizons.gtnhintergalactic.spaceprojects.ProjectAsteroidOutpost;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 
 import net.minecraft.item.ItemStack;
@@ -20,6 +16,10 @@ import com.github.technus.tectech.thing.metaTileEntity.multi.base.INameFunction;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.IStatusFunction;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.Parameters;
+import com.gtnewhorizons.gtnhintergalactic.Tags;
+import com.gtnewhorizons.gtnhintergalactic.recipe.IG_Recipe;
+import com.gtnewhorizons.gtnhintergalactic.recipe.IG_RecipeAdder;
+import com.gtnewhorizons.gtnhintergalactic.spaceprojects.ProjectAsteroidOutpost;
 import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;

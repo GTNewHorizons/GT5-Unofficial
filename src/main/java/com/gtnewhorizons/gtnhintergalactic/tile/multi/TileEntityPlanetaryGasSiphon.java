@@ -7,9 +7,6 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.Objects;
 
-import com.gtnewhorizons.gtnhintergalactic.Tags;
-import com.gtnewhorizons.gtnhintergalactic.client.IGTextures;
-import com.gtnewhorizons.gtnhintergalactic.recipe.GasSiphonRecipes;
 import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 
@@ -34,6 +31,9 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureUtility;
+import com.gtnewhorizons.gtnhintergalactic.Tags;
+import com.gtnewhorizons.gtnhintergalactic.client.IGTextures;
+import com.gtnewhorizons.gtnhintergalactic.recipe.GasSiphonRecipes;
 
 import cpw.mods.fml.common.Loader;
 import galaxyspace.core.register.GSBlocks;
@@ -225,7 +225,8 @@ public class TileEntityPlanetaryGasSiphon extends GT_MetaTileEntity_EnhancedMult
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, byte side, byte facing, byte colorIndex,
             boolean active, boolean redstone) {
         if (side == facing) {
-            if (active) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(IGTextures.ADVANCED_MACHINE_FRAME_INDEX),
+            if (active) return new ITexture[] {
+                    Textures.BlockIcons.getCasingTextureForId(IGTextures.ADVANCED_MACHINE_FRAME_INDEX),
                     TextureFactory.of(IGTextures.SIPHON_OVERLAY_FRONT),
                     TextureFactory.builder().addIcon(IGTextures.SIPHON_OVERLAY_FRONT_ACTIVE_GLOW).glow().build() };
             return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(IGTextures.ADVANCED_MACHINE_FRAME_INDEX),

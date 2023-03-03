@@ -2,13 +2,13 @@ package com.gtnewhorizons.gtnhintergalactic.recipe;
 
 import static gregtech.api.enums.GT_Values.VP;
 
-import com.gtnewhorizons.gtnhintergalactic.item.ItemMiningDrones;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import com.gtnewhorizons.gtnhintergalactic.item.IGItems;
+import com.gtnewhorizons.gtnhintergalactic.item.ItemMiningDrones;
 
 import cpw.mods.fml.common.Loader;
 import goodgenerator.items.MyMaterial;

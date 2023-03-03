@@ -2,7 +2,6 @@ package com.gtnewhorizons.gtnhintergalactic.block;
 
 import java.util.List;
 
-import com.gtnewhorizons.gtnhintergalactic.item.IGItems;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -11,6 +10,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 
 import com.gtnewhorizons.gtnhintergalactic.GTNHIntergalactic;
+import com.gtnewhorizons.gtnhintergalactic.item.IGItems;
 import com.gtnewhorizons.gtnhintergalactic.item.ItemCasingSpaceElevatorMotor;
 
 import cpw.mods.fml.relauncher.Side;

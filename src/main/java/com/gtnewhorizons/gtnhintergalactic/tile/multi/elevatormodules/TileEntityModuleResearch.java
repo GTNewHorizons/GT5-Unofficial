@@ -2,13 +2,13 @@ package com.gtnewhorizons.gtnhintergalactic.tile.multi.elevatormodules;
 
 import static net.minecraft.util.EnumChatFormatting.DARK_PURPLE;
 
-import com.gtnewhorizons.gtnhintergalactic.Tags;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.gtnewhorizons.gtnhintergalactic.Tags;
 import com.gtnewhorizons.gtnhintergalactic.recipe.IG_Recipe;
 import com.gtnewhorizons.gtnhintergalactic.recipe.IG_RecipeAdder;
 import com.gtnewhorizons.gtnhintergalactic.tile.multi.elevator.ElevatorUtil;
