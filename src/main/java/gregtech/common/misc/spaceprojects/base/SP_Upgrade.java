@@ -7,6 +7,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
+import gregtech.common.misc.spaceprojects.enums.SpaceBodyType;
 import gregtech.common.misc.spaceprojects.enums.UpgradeStatus;
 import gregtech.common.misc.spaceprojects.interfaces.ISpaceProject;
 import gregtech.common.misc.spaceprojects.interfaces.ISpaceProject.ISP_Upgrade;
@@ -293,7 +294,7 @@ public class SP_Upgrade implements ISP_Upgrade {
             return true;
         }
 
-        if (requirements.getBodyType() != null) {
+        if (requirements.getBodyType() != null && !requirements.getBodyType().equals(SpaceBodyType.NONE)) {
             if (!requirements.getBodyType().equals(projectBelongingTo.getProjectLocation().getType())) {
                 return false;
             }

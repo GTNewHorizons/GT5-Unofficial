@@ -310,6 +310,7 @@ public class SpaceProject implements ISpaceProject {
 
     public SpaceProject setProjectUpgrades(ISP_Upgrade... spaceProjectUpgrades) {
         for (ISP_Upgrade upgrade : spaceProjectUpgrades) {
+            upgrade.setUpgradeProject(this);
             upgradesAvailable.put(upgrade.getUpgradeName(), upgrade);
         }
         return this;
