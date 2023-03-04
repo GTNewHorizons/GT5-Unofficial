@@ -1,5 +1,7 @@
 package gregtech.api.metatileentity.implementations;
 
+import gregtech.api.GregTech_API;
+import gregtech.api.threads.GT_Runnable_MachineBlockUpdate;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -58,7 +60,7 @@ public abstract class GT_MetaTileEntity_EnhancedMultiBlockBase<T extends GT_Meta
             mMachine = false;
             mUpdated = false;
             mUpdate = 100;
-            if (getBaseMetaTileEntity().isServerSide()) {
+            if (getBaseMetaTileEntity().isServerSide() && !GregTech_API.isDummyWorld(getBaseMetaTileEntity().getWorld())) {
                 StructureLibAPI.sendAlignment(
                         (IAlignmentProvider) base,
                         new NetworkRegistry.TargetPoint(

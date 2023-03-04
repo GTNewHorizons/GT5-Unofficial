@@ -12,6 +12,7 @@ import java.util.function.IntFunction;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import gregtech.common.GT_DummyWorld;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -61,6 +62,8 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.world.GT_Worldgen;
 import gregtech.common.items.GT_IntegratedCircuit_Item;
+
+import javax.annotation.Nonnull;
 
 /**
  * Please do not include this File in your Mod-download as it ruins compatibility, like with the IC2-API You may just
@@ -293,9 +296,33 @@ public class GregTech_API {
     @SuppressWarnings("unchecked")
     private static final IntFunction<TileEntity>[] teCreators = new IntFunction[16];
 
+    private static final Set<Class<?>> dummyWorlds = new HashSet<>();
+
     static {
         sItemStackMappings.add(sCovers);
         sItemStackMappings.add(sCoverBehaviors);
+
+        dummyWorlds.add(GT_DummyWorld.class);
+        tryAddDummyWorld("blockrenderer6343.client.world.DummyWorld");
+    }
+
+    private static void tryAddDummyWorld(String className) {
+        ClassLoader cl = GregTech_API.class.getClassLoader();
+        Class<?> clazz;
+        try {
+            clazz = Class.forName(className, false, cl);
+        } catch (ReflectiveOperationException ex) {
+            return;
+        }
+        dummyWorlds.add(clazz);
+    }
+
+    public static void addDummyWorld(Class<?> clazz) {
+        dummyWorlds.add(clazz);
+    }
+
+    public static boolean isDummyWorld(@Nonnull World w) {
+        return dummyWorlds.contains(w.getClass());
     }
 
     /**
@@ -337,7 +364,7 @@ public class GregTech_API {
      * @param aZ     is the Z-Coord of the update causing Block
      */
     public static boolean causeMachineUpdate(World aWorld, int aX, int aY, int aZ) {
-        if (aWorld != null && !aWorld.isRemote) { // World might be null during World-gen
+        if (aWorld != null && !aWorld.isRemote && !isDummyWorld(aWorld)) { // World might be null during World-gen
             GT_Runnable_MachineBlockUpdate.setMachineUpdateValues(aWorld, new ChunkCoordinates(aX, aY, aZ));
             return true;
         }
@@ -346,7 +373,7 @@ public class GregTech_API {
 
     @SuppressWarnings("UnusedReturnValue") // Retains API method signature
     public static boolean causeCableUpdate(World aWorld, int aX, int aY, int aZ) {
-        if (aWorld == null || aWorld.isRemote) {
+        if (aWorld == null || aWorld.isRemote || isDummyWorld(aWorld)) {
             return false;
         } // World might be null during World-gen
         GT_Runnable_Cable_Update.setCableUpdateValues(aWorld, new ChunkCoordinates(aX, aY, aZ));
