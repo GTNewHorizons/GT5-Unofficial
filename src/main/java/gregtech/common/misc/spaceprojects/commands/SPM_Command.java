@@ -190,13 +190,19 @@ public class SPM_Command extends CommandBase {
 
     private void processUnlock(ICommandSender sender, String projectName, String location, String playerName) {
         UUID tID = SpaceProjectManager.getPlayerUUIDFromName(playerName);
-        ISpaceProject tProject = SpaceProjectManager.getProject(projectName);
+        ISpaceProject tProject = SpaceProjectManager.getTeamProject(tID, getLocation(location), projectName);
         if (tProject != null) {
             tProject.setProjectCurrentStage(tProject.getTotalStages());
-            SpaceProjectManager.addTeamProject(tID, getLocation(location), projectName, tProject);
             sender.addChatMessage(new ChatComponentText("Project unlocked"));
         } else {
-            sender.addChatMessage(new ChatComponentText("Incorrect internal project name. Try again"));
+            tProject = SpaceProjectManager.getProject(projectName);
+            if (tProject != null) {
+                tProject.setProjectCurrentStage(tProject.getTotalStages());
+                SpaceProjectManager.addTeamProject(tID, getLocation(location), projectName, tProject);
+                sender.addChatMessage(new ChatComponentText("Project unlocked"));
+            } else {
+                sender.addChatMessage(new ChatComponentText("Incorrect internal project name. Try again"));
+            }
         }
     }
 
