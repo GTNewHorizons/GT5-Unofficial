@@ -185,8 +185,9 @@ public class SpaceProjectWorldSavedData extends WorldSavedData {
             String projectName = obj.get(PROJECT_NAME).getAsString();
             ISpaceProject project = SpaceProjectManager.getProject(projectName);
             int projectCurrentStage = obj.get(PROJECT_CURRENT_STAGE).getAsInt();
-            ISP_Upgrade[] projectUpgradesBuilt = context
-                    .deserialize(obj.get(PROJECT_UPGRADES_BUILT), ISP_Upgrade.class);
+            ISP_Upgrade[] projectUpgradesBuilt = new ISP_Upgrade[0];
+            projectUpgradesBuilt = context
+                    .deserialize(obj.get(PROJECT_UPGRADES_BUILT), projectUpgradesBuilt.getClass());
             ISP_Upgrade projectCurrentUpgrade = context
                     .deserialize(obj.get(PROJECT_CURRENT_UPGRADE), ISP_Upgrade.class);
             ISpaceBody projectLocation = SpaceProjectManager.getLocation(obj.get(PROJECT_LOCATION).getAsString());
