@@ -11,11 +11,13 @@ import com.gtnewhorizons.gtnhintergalactic.nei.IMCForNEI;
 import com.gtnewhorizons.gtnhintergalactic.recipe.IG_RecipeAdder;
 import com.gtnewhorizons.gtnhintergalactic.recipe.MachineRecipes;
 import com.gtnewhorizons.gtnhintergalactic.recipe.SpaceProjectRegistration;
+import com.gtnewhorizons.gtnhintergalactic.tile.TileEntitySpaceElevatorCable;
 
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 
@@ -42,6 +44,7 @@ public class CommonProxy {
         IGBlocks.init();
         new MachineLoader().run();
         IG_RecipeAdder.init();
+        GameRegistry.registerTileEntity(TileEntitySpaceElevatorCable.class, "Space Elevator Cable");
     }
 
     // postInit "Handle interaction with other mods, complete your setup based on this." (Remove if not needed)

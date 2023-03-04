@@ -140,7 +140,8 @@ public class TileEntityModuleManager extends TileEntityModuleBase {
 
         GT_Recipe recipe = null;
 
-        if (projectWorkingOn.isFinished() && projectWorkingOn.getUpgradeBeingBuilt() != null) {
+        if (projectWorkingOn.isFinished() && projectWorkingOn.getUpgradeBeingBuilt() != null
+                && !projectWorkingOn.getUpgradeBeingBuilt().isFinished()) {
             ISpaceProject.ISP_Upgrade upgrade = projectWorkingOn.getUpgradeBeingBuilt();
             recipe = new GT_Recipe(
                     false,
@@ -192,7 +193,8 @@ public class TileEntityModuleManager extends TileEntityModuleBase {
 
     private void upgradeProjectOrUpgrade() {
         if (projectWorkingOn != null) {
-            if (projectWorkingOn.isFinished() && projectWorkingOn.getUpgradeBeingBuilt() != null) {
+            if (projectWorkingOn.isFinished() && projectWorkingOn.getUpgradeBeingBuilt() != null
+                    && !projectWorkingOn.getUpgradeBeingBuilt().isFinished()) {
                 projectWorkingOn.getUpgradeBeingBuilt().goToNextStage();
             } else if (!projectWorkingOn.isFinished()) {
                 projectWorkingOn.goToNextStage();
@@ -225,6 +227,7 @@ public class TileEntityModuleManager extends TileEntityModuleBase {
                     selectedProjectName,
                     selectedLocation);
             upgradeFromProject = new ArrayList<>(selectedProject.getAllUpgrades());
+            selectedUpgrade = selectedProject.getUpgradeBeingBuilt();
         }
 
         projectMode = aNBT.getBoolean("projectMode");
@@ -376,6 +379,9 @@ public class TileEntityModuleManager extends TileEntityModuleBase {
                             } else if (selectedUpgrade != null) {
                                 if (selectedUpgrade.meetsRequirements(getBaseMetaTileEntity().getOwnerUuid())) {
                                     selectedProject.setCurrentUpgradeBeingBuilt(selectedUpgrade);
+                                    projectWorkingOn = selectedProject;
+                                    popupText = StatCollector.translateToLocal("ig.text.started");
+                                    widget.getContext().openSyncedWindow(POP_UP_WINDOW_ID);
                                 } else {
                                     popupText = StatCollector.translateToLocal("ig.text.upgraderequirements");
                                     widget.getContext().openSyncedWindow(POP_UP_WINDOW_ID);
@@ -519,19 +525,54 @@ public class TileEntityModuleManager extends TileEntityModuleBase {
                 .widget(
                         new FakeSyncWidget.StringSyncer(
                                 () -> selectedUpgrade != null ? selectedUpgrade.getUpgradeName() : "",
-                                val -> selectedUpgrade = selectedProject != null ? selectedProject.getUpgrade(val)
-                                        : null))
+                                val -> {
+                                    if (selectedProject != null) {
+                                        selectedUpgrade = selectedProject.getUpgrade(val);
+                                        selectedProject.setCurrentUpgradeBeingBuilt(selectedUpgrade);
+                                    }
+                                }))
+                // Syncer for upgrade being build
+                .widget(
+                        new FakeSyncWidget.StringSyncer(
+                                () -> selectedProject != null && selectedProject.getUpgradeBeingBuilt() != null
+                                        ? selectedProject.getUpgradeBeingBuilt().getUpgradeName()
+                                        : "",
+                                val -> {
+                                    if (selectedProject != null)
+                                        selectedProject.setCurrentUpgradeBeingBuilt(selectedProject.getUpgrade(val));
+                                }))
                 // Syncer for selected project stage
+                .widget(
+                        new FakeSyncWidget.IntegerSyncer(
+                                () -> selectedProject != null ? selectedProject.getCurrentStage() : 0,
+                                val -> {
+                                    if (selectedProject != null) {
+                                        selectedProject.setProjectCurrentStage(val);
+                                    }
+                                }))
+                // Syncer for selected upgrade stage
                 .widget(new FakeSyncWidget.IntegerSyncer(() -> {
-                    if (projectMode) {
-                        return selectedProject != null ? selectedProject.getCurrentStage() : 0;
-                    } else {
-                        return selectedUpgrade != null ? selectedUpgrade.getCurrentStage() : 0;
+                    if (selectedProject != null && selectedUpgrade != null) {
+                        ISpaceProject.ISP_Upgrade upgradeFromProject = selectedProject.getUpgradeBeingBuilt();
+                        if (upgradeFromProject != null) {
+                            return upgradeFromProject.getCurrentStage();
+                        } else {
+                            upgradeFromProject = selectedProject.getUpgrade(selectedUpgrade.getUpgradeName());
+                            if (upgradeFromProject != null) {
+                                upgradeFromProject.getCurrentStage();
+                            } else if (selectedProject.hasUpgrade(selectedUpgrade.getUpgradeName())) {
+                                return selectedProject.getTotalStages();
+                            }
+                        }
+                    } else if (selectedUpgrade != null) {
+                        return selectedUpgrade.getCurrentStage();
                     }
+                    return 0;
                 }, val -> {
-                    if (projectMode && selectedProject != null) {
-                        selectedProject.setProjectCurrentStage(val);
-                    } else if (!projectMode && selectedUpgrade != null) {
+                    if (selectedProject != null && selectedProject.getUpgradeBeingBuilt() != null) {
+                        selectedProject.getUpgradeBeingBuilt().setUpgradeCurrentStage(val);
+                    }
+                    if (selectedUpgrade != null) {
                         selectedUpgrade.setUpgradeCurrentStage(val);
                     }
                 }))
@@ -916,18 +957,23 @@ public class TileEntityModuleManager extends TileEntityModuleBase {
         MultiChildWidget customButton = new MultiChildWidget();
 
         ButtonWidget button = new ButtonWidget();
-        customButton.addChild(
-                button.setOnClick(
-                        (clickData, widget) -> selectedUpgrade = selectedProject.getUpgrade(widget.getInternalName()))
-                        .setBackground(() -> {
-                            if (selectedUpgrade != null
-                                    && selectedUpgrade.getUpgradeName().equals(button.getInternalName())) {
-                                return new IDrawable[] { buttonDown };
-                            }
-                            return new IDrawable[] { buttonUp };
-                        }).setSizeProvider((screenSize, window, parent) -> new Size(parent.getSize().width, 35))
-                        .setInternalName(() -> supplier.get() != null ? supplier.get().getUpgradeName() : ""))
-                .addChild(
+        customButton.addChild(button.setOnClick((clickData, widget) -> {
+            if (selectedProject.getUpgradeBeingBuilt() != null
+                    && selectedProject.getUpgradeBeingBuilt().getUpgradeName().equals(widget.getInternalName())) {
+                selectedUpgrade = selectedProject.getUpgradeBeingBuilt();
+            } else {
+                selectedUpgrade = selectedProject.getUpgrade(widget.getInternalName());
+                if (selectedProject.hasUpgrade(widget.getInternalName())) {
+                    selectedUpgrade.setUpgradeCurrentStage(selectedUpgrade.getTotalStages());
+                }
+            }
+        }).setBackground(() -> {
+            if (selectedUpgrade != null && selectedUpgrade.getUpgradeName().equals(button.getInternalName())) {
+                return new IDrawable[] { buttonDown };
+            }
+            return new IDrawable[] { buttonUp };
+        }).setSizeProvider((screenSize, window, parent) -> new Size(parent.getSize().width, 35))
+                .setInternalName(() -> supplier.get() != null ? supplier.get().getUpgradeName() : "")).addChild(
                         TextWidget.dynamicString(() -> supplier.get() != null ? supplier.get().getLocalizedName() : "")
                                 .setTextAlignment(Alignment.Center)
                                 .setSizeProvider((screenSize, window, parent) -> new Size(parent.getSize().width, 35)));
