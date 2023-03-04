@@ -193,16 +193,12 @@ public class SPM_Command extends CommandBase {
         ISpaceProject tProject = SpaceProjectManager.getTeamProjectOrCopy(tID, projectName, getLocation(location));
         if (tProject != null) {
             tProject.setProjectCurrentStage(tProject.getTotalStages());
+            if (!SpaceProjectManager.teamHasProject(tID, tProject)) {
+                SpaceProjectManager.addTeamProject(tID, getLocation(location), projectName, tProject);
+            }
             sender.addChatMessage(new ChatComponentText("Project unlocked"));
         } else {
-            tProject = SpaceProjectManager.getProject(projectName);
-            if (tProject != null) {
-                tProject.setProjectCurrentStage(tProject.getTotalStages());
-                SpaceProjectManager.addTeamProject(tID, getLocation(location), projectName, tProject);
-                sender.addChatMessage(new ChatComponentText("Project unlocked"));
-            } else {
-                sender.addChatMessage(new ChatComponentText("Incorrect internal project name. Try again"));
-            }
+            sender.addChatMessage(new ChatComponentText("Incorrect internal project name. Try again"));
         }
     }
 
