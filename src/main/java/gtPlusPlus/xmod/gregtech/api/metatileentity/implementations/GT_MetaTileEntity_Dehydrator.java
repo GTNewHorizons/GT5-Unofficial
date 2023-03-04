@@ -3,6 +3,7 @@ package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_OUT;
 
+import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.Textures.BlockIcons.CustomIcon;
 import gregtech.api.interfaces.ITexture;
@@ -11,7 +12,6 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachin
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTPP_Recipe;
-import gregtech.api.util.GT_Recipe;
 import gtPlusPlus.core.lib.CORE;
 
 @SuppressWarnings("deprecation")
@@ -46,35 +46,12 @@ public class GT_MetaTileEntity_Dehydrator extends GT_MetaTileEntity_BasicMachine
                 2,
                 5,
                 "Dehydrator.png",
-                "UNBOXINATOR",
+                SoundResource.NONE,
                 false,
                 false,
-                0,
+                SpecialEffects.NONE,
                 "",
                 null);
-    }
-
-    public GT_MetaTileEntity_Dehydrator(String aName, int aTier, String[] aDescription,
-            GT_Recipe.GT_Recipe_Map aRecipes, int aTankCapacity, int aAmperage, ITexture[][][] aTextures,
-            String aGUIName, String aNEIName) {
-        super(
-                aName,
-                aTier,
-                aDescription,
-                aRecipes,
-                2,
-                9,
-                aTankCapacity,
-                aAmperage,
-                2,
-                5,
-                aTextures,
-                aGUIName,
-                aNEIName,
-                "",
-                false,
-                false,
-                0);
     }
 
     @Override
