@@ -43,7 +43,7 @@ import gregtech.common.misc.spaceprojects.interfaces.ISpaceProject.ISP_Upgrade;
 /**
  * This class is used so that I can write and read to a json file before the world is opened. On server starting is too
  * late for this as the data stored in the files is needed before entities load their nbt data
- * 
+ *
  * @author BlueWeabo
  */
 public class SpaceProjectWorldSavedData extends WorldSavedData {
@@ -191,9 +191,9 @@ public class SpaceProjectWorldSavedData extends WorldSavedData {
                     .deserialize(obj.get(PROJECT_CURRENT_UPGRADE), ISP_Upgrade.class);
             ISpaceBody projectLocation = SpaceProjectManager.getLocation(obj.get(PROJECT_LOCATION).getAsString());
             project.setBuiltUpgrade(projectUpgradesBuilt);
-            project.setCurrentUpgradeBeingBuilt(projectCurrentUpgrade);
             project.setProjectLocation(projectLocation);
             project.setProjectCurrentStage(projectCurrentStage);
+            project.setCurrentUpgradeBeingBuilt(projectCurrentUpgrade);
             return project;
         }
     }
