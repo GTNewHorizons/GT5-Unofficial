@@ -355,7 +355,7 @@ public class SpaceProject implements ISpaceProject {
         }
 
         for (ISP_Upgrade upgrade : upgrades) {
-            if (currentUpgrade != null && upgrade.getUpgradeName().equals(currentUpgrade.getUpgradeName())) {
+            if (upgrade.equals(currentUpgrade)) {
                 currentUpgrade = null;
             }
             upgradesInstalled.put(upgrade.getUpgradeName(), upgrade);
