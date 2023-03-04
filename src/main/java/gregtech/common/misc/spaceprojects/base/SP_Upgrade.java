@@ -336,6 +336,9 @@ public class SP_Upgrade implements ISP_Upgrade {
     @Override
     public void goToNextStage() {
         currentStage++;
+        if (isFinished()) {
+            projectBelongingTo.setBuiltUpgrade(this);
+        }
     }
 
     @Override
