@@ -5235,7 +5235,7 @@ public class DreamCraftRecipeLoader {
                                 .get(OrePrefixes.frameGt, Materials.MagnetohydrodynamicallyConstrainedStarMatter, 1L),
                         ItemList.Electric_Motor_UXV.get(1L),
                         GT_OreDictUnificator
-                                .get(OrePrefixes.plate, Materials.MagnetohydrodynamicallyConstrainedStarMatter, 16L),
+                                .get(OrePrefixes.plate, Materials.MagnetohydrodynamicallyConstrainedStarMatter, 8L),
                         ItemList.NuclearStar.get(16), new Object[] { OrePrefixes.circuit.get(Materials.Quantum), 4L },
                         GT_OreDictUnificator
                                 .get(OrePrefixes.foil, Materials.MagnetohydrodynamicallyConstrainedStarMatter, 64),
