@@ -1,42 +1,16 @@
 // Add any additional repositories for your dependencies here
 
 repositories {
-    mavenLocal()
-    maven {
-        name 'GTNH Maven'
-        url 'http://jenkins.usrv.eu:8081/nexus/content/groups/public/'
-        allowInsecureProtocol
-    }
-    maven {
-        name 'sponge'
-        url 'https://repo.spongepowered.org/repository/maven-public'
-    }
-    maven {
-        name 'ic2'
-        url 'https://maven.ic2.player.to/'
-        metadataSources {
-            mavenPom()
-            artifact()
+    ivy {
+        url 'https://files.vexatos.com/'
+        patternLayout {
+            artifact "[module]/[artifact]-[revision](-[classifier])(.[ext])"
         }
-    }
-    maven {
-        // IC2
-        name = "ic2"
-        url = "https://maven2.ic2.player.to/"
-        metadataSources {
-            mavenPom()
-            artifact()
-        }
-    }
-    maven {
-        url 'https://cursemaven.com'
         content {
-            includeGroup 'curse.maven'
+            includeGroup("TGregworks")
         }
-    }
-
-    maven {
-        url = "https://jitpack.io"
-        mavenContent { includeGroup "com.github.GTNewHorizons" }
+        metadataSources {
+            artifact()
+        }
     }
 }
