@@ -794,9 +794,10 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
     }
 
     protected boolean canOutput(FluidStack aOutput) {
-        return getDrainableStack() == null || aOutput == null
-                || (getDrainableStack().isFluidEqual(aOutput) && (getDrainableStack().amount <= 0
-                        || getDrainableStack().amount + aOutput.amount <= getCapacity()));
+        if (aOutput == null) return true;
+        FluidStack drainableStack = getDrainableStack();
+        if (drainableStack != null && !drainableStack.isFluidEqual(aOutput)) return false;
+        return (drainableStack != null ? drainableStack.amount : 0) + aOutput.amount <= getCapacity();
     }
 
     protected ItemStack getInputAt(int aIndex) {
