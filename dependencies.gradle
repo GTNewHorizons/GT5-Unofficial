@@ -1,12 +1,12 @@
 // Add your dependencies here
 
 dependencies {
-    compile('com.github.GTNewHorizons:GT5-Unofficial:5.09.41.297-pre:dev')
-    compile("com.github.GTNewHorizons:EnderCore:0.2.11:dev")
-    compile("com.github.GTNewHorizons:EnderIO:2.3.1.47:dev")
-    compile("com.github.GTNewHorizons:Infernal-Mobs:1.7.5-GTNH:dev")
-    compile("com.github.GTNewHorizons:ForestryMC:4.5.6:dev")
-    compile("com.github.GTNewHorizons:ModularUI:1.0.66:dev")
+    api('com.github.GTNewHorizons:GT5-Unofficial:5.09.41.297-pre:dev')
+    api("com.github.GTNewHorizons:EnderCore:0.2.11:dev")
+    api("com.github.GTNewHorizons:EnderIO:2.3.1.47:dev")
+    api("com.github.GTNewHorizons:Infernal-Mobs:1.7.5-GTNH:dev")
+    api("com.github.GTNewHorizons:ForestryMC:4.5.6:dev")
+    api("com.github.GTNewHorizons:ModularUI:1.0.66:dev")
     //compileOnly("curse.maven:extrautilities-225561:2264384") {
     //    transitive = false
     //}
@@ -50,10 +50,10 @@ dependencies {
     //runtimeOnly("com.github.GTNewHorizons:OpenBlocks:1.6.9-GTNH:dev")
     //runtimeOnly("com.github.GTNewHorizons:bartworks:0.5.125:dev")
     //runtimeOnly("com.github.GTNewHorizons:CraftTweaker:3.2.9:dev")
-    //compile("com.github.GTNewHorizons:SpecialMobs:3.3.13:dev")
-    //compile("com.github.GTNewHorizons:twilightforest:2.3.8.17:dev")
-    //compile("com.github.GTNewHorizons:EnderZoo:1.0.23:dev")
+    //api("com.github.GTNewHorizons:SpecialMobs:3.3.13:dev")
+    //api("com.github.GTNewHorizons:twilightforest:2.3.8.17:dev")
+    //api("com.github.GTNewHorizons:EnderZoo:1.0.23:dev")
     //runtimeOnly("thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev")
     //runtimeOnly("com.github.GTNewHorizons:BloodMagic:1.3.18:dev")
-    //compile("curse.maven:witchery-69673:2234410")
+    //api("curse.maven:witchery-69673:2234410")
 }

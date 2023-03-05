@@ -47,8 +47,6 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
@@ -457,6 +455,16 @@ public class Mob_Handler extends TemplateRecipeHandler {
         cycleTicksStatic++;
     }
 
+    @Override
+    public List<String> handleItemTooltip(GuiRecipe<?> gui, ItemStack stack, List<String> currenttip, int recipe) {
+        MobCachedRecipe currentrecipe = ((MobCachedRecipe) arecipes.get(recipe));
+        PositionedStack positionedStack = currentrecipe.mOutputs.stream().filter(ps -> ps.item == stack).findFirst()
+                .orElse(null);
+        if (positionedStack instanceof MobPositionedStack)
+            currenttip.addAll(((MobPositionedStack) positionedStack).extraTooltip);
+        return currenttip;
+    }
+
     public static class MobPositionedStack extends PositionedStack {
 
         public final MobDrop.DropType type;
@@ -466,6 +474,7 @@ public class Mob_Handler extends TemplateRecipeHandler {
         public final List<Integer> damages;
         public final int enchantmentLevel;
         private final Random rand;
+        public final List<String> extraTooltip;
 
         public MobPositionedStack(Object object, int x, int y, MobDrop.DropType type, int chance, Integer enchantable,
                 List<Integer> damages, boolean lootable, boolean isPlayerOnly) {
@@ -479,35 +488,18 @@ public class Mob_Handler extends TemplateRecipeHandler {
             this.randomdamage = damages != null;
             if (this.randomdamage) this.damages = damages;
             else this.damages = null;
-            NBTTagList extratooltip = new NBTTagList();
+            extraTooltip = new ArrayList<>();
 
-            if (chance != 10000)
-                extratooltip.appendTag(new NBTTagString(EnumChatFormatting.RESET + CHANCE.get((double) chance / 100d)));
-            if (lootable) extratooltip.appendTag(new NBTTagString(EnumChatFormatting.RESET + LOOTABLE.get()));
+            if (chance != 10000) extraTooltip.add(EnumChatFormatting.RESET + CHANCE.get((double) chance / 100d));
+            if (lootable) extraTooltip.add(EnumChatFormatting.RESET + LOOTABLE.get());
             if (isPlayerOnly) {
-                extratooltip.appendTag(new NBTTagString(EnumChatFormatting.RESET + PLAYER_ONLY.get()));
-                extratooltip.appendTag(
-                        new NBTTagString(
-                                EnumChatFormatting.RESET + EEC_CHANCE
-                                        .get(((double) chance / 100d) * Config.MobHandler.playerOnlyDropsModifier)));
+                extraTooltip.add(EnumChatFormatting.RESET + PLAYER_ONLY.get());
+                extraTooltip.add(
+                        EnumChatFormatting.RESET
+                                + EEC_CHANCE.get(((double) chance / 100d) * Config.MobHandler.playerOnlyDropsModifier));
             }
-            extratooltip.appendTag(new NBTTagString(EnumChatFormatting.RESET + AVERAGE_REMINDER.get()));
+            extraTooltip.add(EnumChatFormatting.RESET + AVERAGE_REMINDER.get());
 
-            NBTTagCompound itemtag = this.items[0].getTagCompound();
-            if (itemtag == null) itemtag = new NBTTagCompound();
-            NBTTagCompound display = new NBTTagCompound();
-            if (itemtag.hasKey("display")) {
-                display = itemtag.getCompoundTag("display");
-                if (display.hasKey("Lore")) {
-                    NBTTagList lore = display.getTagList("Lore", 8);
-                    for (int i = 0; i < extratooltip.tagCount(); i++)
-                        lore.appendTag(new NBTTagString(extratooltip.getStringTagAt(i)));
-                    display.setTag("Lore", lore);
-                } else display.setTag("Lore", extratooltip);
-            } else display.setTag("Lore", extratooltip);
-            itemtag.setTag("display", display);
-            this.items[0].setTagCompound(itemtag);
-            this.item.setTagCompound((NBTTagCompound) itemtag.copy());
             setPermutationToRender(0);
         }
 
@@ -516,7 +508,7 @@ public class Mob_Handler extends TemplateRecipeHandler {
             if (this.item == null) this.item = this.items[0].copy();
             if (enchantable) {
                 if (this.item.getItem() == Items.enchanted_book) this.item = this.items[0].copy();
-                this.item.getTagCompound().removeTag("ench");
+                if (this.item.hasTagCompound()) this.item.getTagCompound().removeTag("ench");
                 EnchantmentHelper.addRandomEnchantment(rand, this.item, enchantmentLevel);
             }
             if (randomdamage) this.item.setItemDamage(damages.get(rand.nextInt(damages.size())));
