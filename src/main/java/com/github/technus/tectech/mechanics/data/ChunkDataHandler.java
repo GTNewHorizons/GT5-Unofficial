@@ -30,16 +30,20 @@ public class ChunkDataHandler {
     private final ArrayList<IChunkMetaDataHandler> clientHandlers = new ArrayList<>();
     private final ArrayList<IChunkMetaDataHandler> renderHandlers = new ArrayList<>();
 
-    @SubscribeEvent
-    public void onWorldLoad(WorldEvent.Load event) {
-        int dim = event.world.provider.dimensionId;
-        dimensionWiseChunkData.computeIfAbsent(dim, m -> {
+    private HashMap<ChunkCoordIntPair, NBTChunk> getOrCreateDimensionWiseChunkData(int dim) {
+        return dimensionWiseChunkData.computeIfAbsent(dim, m -> {
             HashMap<ChunkCoordIntPair, NBTChunk> map = new HashMap<>();
             for (Map.Entry<String, IChunkMetaDataHandler> meta : metaDataHandlerHashMap.entrySet()) {
                 dimensionWiseMetaChunkData.get(meta.getKey()).put(dim, new ChunkHashMap(meta.getValue(), map));
             }
             return map;
         });
+    }
+
+    @SubscribeEvent
+    public void onWorldLoad(WorldEvent.Load event) {
+        int dim = event.world.provider.dimensionId;
+        getOrCreateDimensionWiseChunkData(dim);
     }
 
     @SubscribeEvent
@@ -62,7 +66,7 @@ public class ChunkDataHandler {
             return;
         }
         int dimId = event.world.provider.dimensionId;
-        HashMap<ChunkCoordIntPair, NBTChunk> dimensionMemory = dimensionWiseChunkData.get(dimId);
+        HashMap<ChunkCoordIntPair, NBTChunk> dimensionMemory = getOrCreateDimensionWiseChunkData(dimId);
         ChunkCoordIntPair chunkCoordIntPair = event.getChunk().getChunkCoordIntPair();
         Set<String> loadedKeys = loadedTag.func_150296_c();
         NBTChunk chunkMemory = dimensionMemory.get(chunkCoordIntPair);
