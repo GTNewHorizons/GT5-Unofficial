@@ -103,6 +103,9 @@ public abstract class MultiBlock_Stackable<T extends MultiBlock_Stackable<T>> ex
         if (stackCount < getMinStacks()) return buildState.failBuilding();
 
         buildState.addOffset(getAfterLastStackOffset());
-        return checkPiece(STACKABLE_TOP, buildState.stopBuilding());
+        if (!checkPiece(STACKABLE_TOP, buildState.stopBuilding())) {
+            return buildState.failBuilding();
+        }
+        return super.checkMachine();
     }
 }

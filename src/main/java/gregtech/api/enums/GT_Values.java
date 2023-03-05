@@ -232,7 +232,7 @@ public class GT_Values {
                 // Machines
                 ACTIVE = "gt.active", // Boolean
                 FLUID_OUT = "gt.fluidout", // Output Fluid
-                ITEM_OUT = "gt,itemout", // Output Item
+                ITEM_OUT = "gt.itemout", // Output Item
                 PARALLEL = "gt.parallel", // Number
                 TANK_CAPACITY = "gt.tankcap", // Number
                 TANK_IN = "gt.tank.in.", // FluidStack
@@ -242,6 +242,13 @@ public class GT_Values {
                 INV_OUTPUT_SIZE = "gt.invsize.out", // Number
                 INV_INPUT_LIST = "gt.invlist.in", // NBT List
                 INV_OUTPUT_LIST = "gt.invlist.out", // NBT List
+                VOLTAGE = "gt.voltage", // Number
+                AMPERAGE = "gt.amperage", // Number
+                STORED_ENERGY = "gt.stored.energy", // Number
+                MAXIMUM_ENERGY = "gt.maximum.energy", // Number
+                EUT_CONSUMPTION = "gt.eut.consumption", // Number
+                BURN_TIME_LEFT = "gt.burn.time.left", // Number
+                TOTAL_BURN_TIME = "gt.total.burn.time", // Number
 
                 // MultiBlock
                 STRUCTURE_OK = "gt.structure.ok", ROTATION = "gt.eRotation", FLIP = "gt.eFlip", TARGET = "gt.target", // Boolean
@@ -255,6 +262,7 @@ public class GT_Values {
                 UPGRADE_INVENTORY_NAME = "gt.invname.upg", // String
                 UPGRADE_INVENTORIES_INPUT = "gt.invlist.upg.in", // NBT List
                 UPGRADE_INVENTORIES_OUTPUT = "gt.invlist.upg.out", // NBT List
+                SEPARATE_INPUTS = "gt.separate.inputs", // Boolean
                 empty_ = "";
     }
 

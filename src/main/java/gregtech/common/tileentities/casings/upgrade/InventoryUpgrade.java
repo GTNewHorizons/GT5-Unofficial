@@ -1,4 +1,4 @@
-package gregtech.api.multitileentity.multiblock.casing;
+package gregtech.common.tileentities.casings.upgrade;
 
 import java.util.UUID;
 
@@ -10,6 +10,7 @@ import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
 
 import gregtech.api.enums.GT_Values.NBT;
 import gregtech.api.multitileentity.interfaces.IMultiBlockController;
+import gregtech.api.multitileentity.multiblock.casing.AdvancedCasing;
 
 public class InventoryUpgrade extends AdvancedCasing {
 

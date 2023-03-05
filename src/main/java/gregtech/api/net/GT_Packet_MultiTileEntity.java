@@ -14,7 +14,7 @@ import gregtech.api.metatileentity.GregTechTileClientEvents;
 import gregtech.api.multitileentity.MultiTileEntityBlock;
 import gregtech.api.multitileentity.interfaces.IMultiBlockPart;
 import gregtech.api.multitileentity.interfaces.IMultiTileEntity;
-import gregtech.api.multitileentity.multiblock.casing.InventoryUpgrade;
+import gregtech.common.tileentities.casings.upgrade.InventoryUpgrade;
 import io.netty.buffer.ByteBuf;
 
 public class GT_Packet_MultiTileEntity extends GT_Packet_New {

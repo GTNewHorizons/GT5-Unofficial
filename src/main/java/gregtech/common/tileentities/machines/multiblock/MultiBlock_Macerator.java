@@ -52,7 +52,7 @@ public class MultiBlock_Macerator extends MultiBlock_Stackable<MultiBlock_Macera
                             transpose(new String[][] { { "  BBB  ", " B---B ", "DC---CD", " B---B ", "  BBB  " }, }))
                     .addShape(
                             STACKABLE_BOTTOM,
-                            transpose(new String[][] { { " A~F ", "AAAAA", "AAAAA", "AAAAA", " AAA " }, }))
+                            transpose(new String[][] { { " G~F ", "AAAAA", "AAAAA", "AAAAA", " AAA " }, }))
                     .addElement('A', ofChain(addMultiTileCasing(getCasingRegistryID(), getCasingMeta(), ENERGY_IN)))
                     .addElement(
                             'B',
@@ -68,7 +68,7 @@ public class MultiBlock_Macerator extends MultiBlock_Stackable<MultiBlock_Macera
                             ofChain(
                                     addMultiTileCasing(getCasingRegistryID(), 20001, NOTHING),
                                     addMultiTileCasing(getCasingRegistryID(), 20002, NOTHING)))
-                    .build();
+                    .addElement('G', addMultiTileCasing(getCasingRegistryID(), 10000, NOTHING)).build();
         }
         return STRUCTURE_DEFINITION;
     }
@@ -138,7 +138,7 @@ public class MultiBlock_Macerator extends MultiBlock_Stackable<MultiBlock_Macera
     @Override
     public ITexture[] getTexture(Block aBlock, byte aSide, boolean isActive, int aRenderPass) {
         // TODO: MTE(Texture)
-        if (mFacing == aSide) {
+        if (facing == aSide) {
             return new ITexture[] {
                     // Base Texture
                     MACHINE_CASINGS[1][0],
@@ -160,21 +160,21 @@ public class MultiBlock_Macerator extends MultiBlock_Stackable<MultiBlock_Macera
     }
 
     @Override
-    public boolean checkRecipe(ItemStack aStack) {
+    protected boolean checkRecipe() {
         if (isSeparateInputs()) {
             for (Pair<ItemStack[], String> tItemInputs : getItemInputsForEachInventory()) {
-                if (processRecipe(aStack, tItemInputs.getLeft(), tItemInputs.getRight())) {
+                if (processRecipe(tItemInputs.getLeft(), tItemInputs.getRight())) {
                     return true;
                 }
             }
             return false;
         } else {
             ItemStack[] tItemInputs = getInventoriesForInput().getStacks().toArray(new ItemStack[0]);
-            return processRecipe(aStack, tItemInputs, null);
+            return processRecipe(tItemInputs, null);
         }
     }
 
-    private boolean processRecipe(ItemStack aStack, ItemStack[] aItemInputs, String aInventory) {
+    private boolean processRecipe(ItemStack[] aItemInputs, String aInventory) {
         GT_Recipe_Map tRecipeMap = GT_Recipe_Map.sMaceratorRecipes;
         GT_Recipe tRecipe = tRecipeMap.findRecipe(this, false, TierEU.IV, null, aItemInputs);
         if (tRecipe == null) {
@@ -185,7 +185,8 @@ public class MultiBlock_Macerator extends MultiBlock_Stackable<MultiBlock_Macera
             return false;
         }
 
-        mMaxProgressTime = tRecipe.mDuration;
+        setDuration(tRecipe.mDuration);
+        setEut(tRecipe.mEUt);
 
         setItemOutputs(tRecipe.mOutputs, aInventory);
         return true;

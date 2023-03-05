@@ -3,12 +3,16 @@ package gregtech.api.multitileentity.machine;
 import static com.google.common.primitives.Ints.saturatedCast;
 import static gregtech.api.enums.GT_Values.emptyIconContainerArray;
 
+import java.util.ArrayList;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityFurnace;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidTank;
 
@@ -18,32 +22,54 @@ import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.GT_Values.NBT;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.TickTime;
 import gregtech.api.fluid.FluidTankGT;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.tileentity.IMachineProgress;
 import gregtech.api.multitileentity.MultiTileEntityRegistry;
 import gregtech.api.multitileentity.base.BaseTickableMultiTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Util;
 import gregtech.api.util.GT_Utility;
 
-public class MultiTileBasicMachine extends BaseTickableMultiTileEntity {
+public class MultiTileBasicMachine extends BaseTickableMultiTileEntity implements IMachineProgress {
+
+    private static final int TICKS_BETWEEN_RECIPE_CHECKS = 5 * TickTime.SECOND;
 
     protected static final IItemHandlerModifiable EMPTY_INVENTORY = new ItemStackHandler(0);
 
     private static final String TEXTURE_LOCATION = "multitileentity/machines/";
-    public IIconContainer[] mTexturesInactive = emptyIconContainerArray;
-    public IIconContainer[] mTexturesActive = emptyIconContainerArray;
+    public IIconContainer[] texturesInactive = emptyIconContainerArray;
+    public IIconContainer[] texturesActive = emptyIconContainerArray;
 
-    protected int mParallel = 1;
-    protected boolean mActive = false;
-    protected long mStoredEnergy = 0;
-    protected FluidTankGT[] mTanksInput = GT_Values.emptyFluidTankGT, mTanksOutput = GT_Values.emptyFluidTankGT;
-    protected FluidStack[] mOutputFluids = GT_Values.emptyFluidStack;
+    protected int maxParallel = 1;
+    protected boolean active = false;
+    protected long storedEnergy = 0;
+    protected long maximumEnergyStored = 0;
+    protected long voltage = 0;
+    protected long amperage = 2;
+    protected long eut = 0;
+    protected int tier = 0;
+    protected int maxProgressTime = 0;
+    protected int progressTime = 0;
+    protected long burnTime = 0;
+    protected long totalBurnTime = 0;
+    protected FluidTankGT[] inputTanks = GT_Values.emptyFluidTankGT;
+    protected FluidTankGT[] outputTanks = GT_Values.emptyFluidTankGT;
+    protected FluidStack[] fluidToOutput = GT_Values.emptyFluidStack;
+    protected ItemStack[] itemsToOutput = GT_Values.emptyItemStackArray;
 
-    protected IItemHandlerModifiable mInputInventory = EMPTY_INVENTORY;
-    protected IItemHandlerModifiable mOutputInventory = EMPTY_INVENTORY;
-    protected boolean mOutputInventoryChanged = false;
+    protected IItemHandlerModifiable inputInventory = EMPTY_INVENTORY;
+    protected IItemHandlerModifiable outputInventory = EMPTY_INVENTORY;
+    protected boolean outputInventoryChanged = false;
+    private boolean powerShutDown = false;
+    private boolean wasEnabled = false;
+    private boolean canWork = true;
+    private boolean isElectric = false;
+    private boolean isSteam = false;
+    private boolean acceptsFuel = true;
+    private boolean isWireless = false;
 
     @Override
     public String getTileEntityName() {
@@ -51,20 +77,47 @@ public class MultiTileBasicMachine extends BaseTickableMultiTileEntity {
     }
 
     @Override
-    public void writeMultiTileNBT(NBTTagCompound aNBT) {
-        super.writeMultiTileNBT(aNBT);
-        if (mParallel > 0) aNBT.setInteger(NBT.PARALLEL, mParallel);
-        if (mActive) aNBT.setBoolean(NBT.ACTIVE, mActive);
-        if (mInputInventory != null && mInputInventory.getSlots() > 0)
-            writeInventory(aNBT, mInputInventory, NBT.INV_INPUT_LIST);
-        if (mOutputInventory != null && mOutputInventory.getSlots() > 0)
-            writeInventory(aNBT, mOutputInventory, NBT.INV_OUTPUT_LIST);
-        for (int i = 0; i < mTanksInput.length; i++) mTanksInput[i].writeToNBT(aNBT, NBT.TANK_IN + i);
-        for (int i = 0; i < mTanksOutput.length; i++) mTanksOutput[i].writeToNBT(aNBT, NBT.TANK_OUT + i);
-        if (mOutputFluids != null && mOutputFluids.length > 0) writeFluids(aNBT, mOutputFluids, NBT.FLUID_OUT);
+    public void writeMultiTileNBT(NBTTagCompound nbt) {
+        super.writeMultiTileNBT(nbt);
+        if (maxParallel > 0) {
+            nbt.setInteger(NBT.PARALLEL, maxParallel);
+        }
+
+        if (active) {
+            nbt.setBoolean(NBT.ACTIVE, active);
+        }
+
+        if (inputInventory != null && inputInventory.getSlots() > 0) {
+            writeInventory(nbt, inputInventory, NBT.INV_INPUT_LIST);
+        }
+
+        if (outputInventory != null && outputInventory.getSlots() > 0) {
+            writeInventory(nbt, outputInventory, NBT.INV_OUTPUT_LIST);
+        }
+
+        for (int i = 0; i < inputTanks.length; i++) {
+            inputTanks[i].writeToNBT(nbt, NBT.TANK_IN + i);
+        }
+
+        for (int i = 0; i < outputTanks.length; i++) {
+            outputTanks[i].writeToNBT(nbt, NBT.TANK_OUT + i);
+        }
+
+        if (fluidToOutput != null && fluidToOutput.length > 0) {
+            writeFluids(nbt, fluidToOutput, NBT.FLUID_OUT);
+        }
+
+        nbt.setInteger(NBT.TIER, tier);
+        nbt.setLong(NBT.VOLTAGE, voltage);
+        nbt.setLong(NBT.AMPERAGE, amperage);
+        nbt.setLong(NBT.EUT_CONSUMPTION, eut);
+        nbt.setLong(NBT.STORED_ENERGY, storedEnergy);
+        nbt.setLong(NBT.MAXIMUM_ENERGY, maximumEnergyStored);
+        nbt.setLong(NBT.BURN_TIME_LEFT, burnTime);
+        nbt.setLong(NBT.TOTAL_BURN_TIME, totalBurnTime);
     }
 
-    protected void writeFluids(NBTTagCompound aNBT, FluidStack[] fluids, String fluidListTag) {
+    protected void writeFluids(NBTTagCompound nbt, FluidStack[] fluids, String fluidListTag) {
         if (fluids != null && fluids.length > 0) {
             final NBTTagList tList = new NBTTagList();
             for (final FluidStack tFluid : fluids) {
@@ -74,54 +127,75 @@ public class MultiTileBasicMachine extends BaseTickableMultiTileEntity {
                     tList.appendTag(tag);
                 }
             }
-            aNBT.setTag(fluidListTag, tList);
+            nbt.setTag(fluidListTag, tList);
         }
     }
 
-    protected void writeInventory(NBTTagCompound aNBT, IItemHandlerModifiable inv, String invListTag) {
+    protected void writeInventory(NBTTagCompound nbt, IItemHandlerModifiable inv, String invListTag) {
         if (inv != null && inv.getSlots() > 0) {
             final NBTTagList tList = new NBTTagList();
-            for (int tSlot = 0; tSlot < inv.getSlots(); tSlot++) {
-                final ItemStack tStack = inv.getStackInSlot(tSlot);
+            for (int slot = 0; slot < inv.getSlots(); slot++) {
+                final ItemStack tStack = inv.getStackInSlot(slot);
                 if (tStack != null) {
                     final NBTTagCompound tag = new NBTTagCompound();
-                    tag.setByte("s", (byte) tSlot);
+                    tag.setByte("s", (byte) slot);
                     tStack.writeToNBT(tag);
                     tList.appendTag(tag);
                 }
             }
-            aNBT.setTag(invListTag, tList);
+            nbt.setTag(invListTag, tList);
         }
     }
 
     @Override
-    public void readMultiTileNBT(NBTTagCompound aNBT) {
-        super.readMultiTileNBT(aNBT);
-        if (aNBT.hasKey(NBT.PARALLEL)) mParallel = Math.max(1, aNBT.getInteger(NBT.PARALLEL));
-        if (aNBT.hasKey(NBT.ACTIVE)) mActive = aNBT.getBoolean(NBT.ACTIVE);
+    public void readMultiTileNBT(NBTTagCompound nbt) {
+        super.readMultiTileNBT(nbt);
+        if (nbt.hasKey(NBT.PARALLEL)) {
+            maxParallel = Math.max(1, nbt.getInteger(NBT.PARALLEL));
+        }
+
+        if (nbt.hasKey(NBT.ACTIVE)) {
+            active = nbt.getBoolean(NBT.ACTIVE);
+        }
 
         /* Inventories */
-        mInputInventory = new ItemStackHandler(Math.max(aNBT.getInteger(NBT.INV_INPUT_SIZE), 0));
-        mOutputInventory = new ItemStackHandler(Math.max(aNBT.getInteger(NBT.INV_OUTPUT_SIZE), 0));
-        loadInventory(aNBT, mInputInventory, NBT.INV_INPUT_LIST);
-        loadInventory(aNBT, mOutputInventory, NBT.INV_OUTPUT_LIST);
+        inputInventory = new ItemStackHandler(Math.max(nbt.getInteger(NBT.INV_INPUT_SIZE), 0));
+        outputInventory = new ItemStackHandler(Math.max(nbt.getInteger(NBT.INV_OUTPUT_SIZE), 0));
+        loadInventory(nbt, inputInventory, NBT.INV_INPUT_LIST);
+        loadInventory(nbt, outputInventory, NBT.INV_OUTPUT_LIST);
 
         /* Tanks */
-        long tCapacity = 1000;
-        if (aNBT.hasKey(NBT.TANK_CAPACITY)) tCapacity = saturatedCast(aNBT.getLong(NBT.TANK_CAPACITY));
+        long capacity = 1000;
+        if (nbt.hasKey(NBT.TANK_CAPACITY)) {
+            capacity = saturatedCast(nbt.getLong(NBT.TANK_CAPACITY));
+        }
 
-        mTanksInput = new FluidTankGT[getFluidInputCount()];
-        mTanksOutput = new FluidTankGT[getFluidOutputCount()];
-        mOutputFluids = new FluidStack[getFluidOutputCount()];
+        inputTanks = new FluidTankGT[getFluidInputCount()];
+        outputTanks = new FluidTankGT[getFluidOutputCount()];
+        fluidToOutput = new FluidStack[getFluidOutputCount()];
 
         // TODO: See if we need the adjustable map here `.setCapacity(mRecipes, mParallel * 2L)` in place of the
         // `setCapacityMultiplier`
-        for (int i = 0; i < mTanksInput.length; i++) mTanksInput[i] = new FluidTankGT(tCapacity)
-                .setCapacityMultiplier(mParallel * 2L).readFromNBT(aNBT, NBT.TANK_IN + i);
-        for (int i = 0; i < mTanksOutput.length; i++)
-            mTanksOutput[i] = new FluidTankGT().readFromNBT(aNBT, NBT.TANK_OUT + i);
-        for (int i = 0; i < mOutputFluids.length; i++)
-            mOutputFluids[i] = FluidStack.loadFluidStackFromNBT(aNBT.getCompoundTag(NBT.FLUID_OUT + "." + i));
+        for (int i = 0; i < inputTanks.length; i++) {
+            inputTanks[i] = new FluidTankGT(capacity).setCapacityMultiplier(maxParallel * 2L)
+                    .readFromNBT(nbt, NBT.TANK_IN + i);
+        }
+        for (int i = 0; i < outputTanks.length; i++) {
+            outputTanks[i] = new FluidTankGT().readFromNBT(nbt, NBT.TANK_OUT + i);
+        }
+
+        for (int i = 0; i < fluidToOutput.length; i++) {
+            fluidToOutput[i] = FluidStack.loadFluidStackFromNBT(nbt.getCompoundTag(NBT.FLUID_OUT + "." + i));
+        }
+
+        tier = nbt.getInteger(NBT.TIER);
+        voltage = nbt.getLong(NBT.VOLTAGE);
+        amperage = nbt.getLong(NBT.AMPERAGE);
+        eut = nbt.getLong(NBT.EUT_CONSUMPTION);
+        storedEnergy = nbt.getLong(NBT.STORED_ENERGY);
+        maximumEnergyStored = nbt.getLong(NBT.MAXIMUM_ENERGY);
+        burnTime = nbt.getLong(NBT.BURN_TIME_LEFT);
+        totalBurnTime = nbt.getLong(NBT.TOTAL_BURN_TIME);
     }
 
     protected void loadInventory(NBTTagCompound aNBT, IItemHandlerModifiable inv, String invListTag) {
@@ -137,21 +211,21 @@ public class MultiTileBasicMachine extends BaseTickableMultiTileEntity {
     public void loadTextureNBT(NBTTagCompound aNBT) {
         // Loading the registry
         final String textureName = aNBT.getString(NBT.TEXTURE);
-        mTextures = new IIconContainer[] {
+        textures = new IIconContainer[] {
                 new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/bottom"),
                 new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/top"),
                 new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/left"),
                 new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/front"),
                 new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/right"),
                 new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/side") };
-        mTexturesInactive = new IIconContainer[] {
+        texturesInactive = new IIconContainer[] {
                 new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/overlay/inactive/bottom"),
                 new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/overlay/inactive/top"),
                 new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/overlay/inactive/left"),
                 new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/overlay/inactive/front"),
                 new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/overlay/inactive/right"),
                 new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/overlay/inactive/back") };
-        mTexturesActive = new IIconContainer[] {
+        texturesActive = new IIconContainer[] {
                 new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/overlay/active/bottom"),
                 new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/overlay/active/top"),
                 new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/overlay/active/left"),
@@ -166,20 +240,20 @@ public class MultiTileBasicMachine extends BaseTickableMultiTileEntity {
         final TileEntity tCanonicalTileEntity = MultiTileEntityRegistry
                 .getCanonicalTileEntity(getMultiTileEntityRegistryID(), getMultiTileEntityID());
         if (tCanonicalTileEntity instanceof MultiTileBasicMachine) {
-            mTextures = ((MultiTileBasicMachine) tCanonicalTileEntity).mTextures;
-            mTexturesInactive = ((MultiTileBasicMachine) tCanonicalTileEntity).mTexturesInactive;
-            mTexturesActive = ((MultiTileBasicMachine) tCanonicalTileEntity).mTexturesActive;
+            textures = ((MultiTileBasicMachine) tCanonicalTileEntity).textures;
+            texturesInactive = ((MultiTileBasicMachine) tCanonicalTileEntity).texturesInactive;
+            texturesActive = ((MultiTileBasicMachine) tCanonicalTileEntity).texturesActive;
         } else {
-            mTextures = mTexturesInactive = mTexturesActive = emptyIconContainerArray;
+            textures = texturesInactive = texturesActive = emptyIconContainerArray;
         }
     }
 
     @Override
     public ITexture[] getTexture(Block aBlock, byte aSide, boolean isActive, int aRenderPass) {
         return new ITexture[] {
-                TextureFactory.of(mTextures[GT_Values.FACING_ROTATIONS[mFacing][aSide]], GT_Util.getRGBaArray(mRGBa)),
-                TextureFactory.of(
-                        (mActive ? mTexturesActive : mTexturesInactive)[GT_Values.FACING_ROTATIONS[mFacing][aSide]]) };
+                TextureFactory.of(textures[GT_Values.FACING_ROTATIONS[facing][aSide]], GT_Util.getRGBaArray(rgba)),
+                TextureFactory
+                        .of((active ? texturesActive : texturesInactive)[GT_Values.FACING_ROTATIONS[facing][aSide]]) };
     }
 
     /*
@@ -221,12 +295,12 @@ public class MultiTileBasicMachine extends BaseTickableMultiTileEntity {
 
     @Override
     public boolean isLiquidInput(byte aSide) {
-        return aSide != mFacing;
+        return aSide != facing;
     }
 
     @Override
     public boolean isLiquidOutput(byte aSide) {
-        return aSide != mFacing;
+        return aSide != facing;
     }
 
     @Override
@@ -235,14 +309,14 @@ public class MultiTileBasicMachine extends BaseTickableMultiTileEntity {
         final boolean fluidOutput = isLiquidOutput(aSide);
 
         if (fluidInput && fluidOutput) {
-            final IFluidTank[] rTanks = new IFluidTank[mTanksInput.length + mTanksOutput.length];
-            System.arraycopy(mTanksInput, 0, rTanks, 0, mTanksInput.length);
-            System.arraycopy(mTanksOutput, 0, rTanks, mTanksInput.length, mTanksOutput.length);
+            final IFluidTank[] rTanks = new IFluidTank[inputTanks.length + outputTanks.length];
+            System.arraycopy(inputTanks, 0, rTanks, 0, inputTanks.length);
+            System.arraycopy(outputTanks, 0, rTanks, inputTanks.length, outputTanks.length);
             return rTanks;
         } else if (fluidInput) {
-            return mTanksInput;
+            return inputTanks;
         } else if (fluidOutput) {
-            return mTanksOutput;
+            return outputTanks;
         }
         return GT_Values.emptyFluidTank;
     }
@@ -250,17 +324,17 @@ public class MultiTileBasicMachine extends BaseTickableMultiTileEntity {
     @Override
     public IFluidTank getFluidTankFillable(byte aSide, FluidStack aFluidToFill) {
         if (!isLiquidInput(aSide)) return null;
-        for (FluidTankGT tankGT : mTanksInput) if (tankGT.contains(aFluidToFill)) return tankGT;
+        for (FluidTankGT tankGT : inputTanks) if (tankGT.contains(aFluidToFill)) return tankGT;
         // if (!mRecipes.containsInput(aFluidToFill, this, slot(mRecipes.mInputItemsCount +
         // mRecipes.mOutputItemsCount))) return null;
-        for (FluidTankGT fluidTankGT : mTanksInput) if (fluidTankGT.isEmpty()) return fluidTankGT;
+        for (FluidTankGT fluidTankGT : inputTanks) if (fluidTankGT.isEmpty()) return fluidTankGT;
         return null;
     }
 
     @Override
     protected IFluidTank getFluidTankDrainable(byte aSide, FluidStack aFluidToDrain) {
         if (!isLiquidOutput(aSide)) return null;
-        for (FluidTankGT fluidTankGT : mTanksOutput)
+        for (FluidTankGT fluidTankGT : outputTanks)
             if (aFluidToDrain == null ? fluidTankGT.has() : fluidTankGT.contains(aFluidToDrain)) return fluidTankGT;
 
         return null;
@@ -287,39 +361,89 @@ public class MultiTileBasicMachine extends BaseTickableMultiTileEntity {
 
     @Override
     public long getUniversalEnergyStored() {
-        return mStoredEnergy;
+        return storedEnergy;
     }
 
     @Override
     public long getUniversalEnergyCapacity() {
-        return 0;
+        return maximumEnergyStored;
     }
 
     @Override
     public long getOutputAmperage() {
-        return 1;
+        return amperage;
     }
 
     @Override
     public long getOutputVoltage() {
-        return 1;
+        return GT_Values.V[tier];
     }
 
     @Override
     public long getInputAmperage() {
-        return 1;
+        return amperage;
     }
 
     @Override
     public long getInputVoltage() {
-        return 1;
+        return GT_Values.V[tier];
     }
 
-    public boolean isEnergyInputSide(byte aSide) {
+    public boolean isEnergyInputSide(byte side) {
         return true;
     }
 
-    public boolean isEnergyOutputSide(byte aSide) {
+    public boolean isEnergyOutputSide(byte side) {
+        return true;
+    }
+
+    @Override
+    public boolean drainEnergyUnits(byte aSide, long aVoltage, long aAmperage) {
+        if (!isElectric() || !outputsEnergyTo(aSide)
+                || getStoredEU() - (aVoltage * aAmperage) < GT_Values.V[tier] * 2) {
+            return false;
+        }
+
+        if (!decreaseStoredEnergyUnits(aVoltage * aAmperage, false)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
+    public long injectEnergyUnits(byte side, long voltage, long amperage) {
+        if (!isElectric() || !inputEnergyFrom(side)) {
+            return 0;
+        }
+        long amps = 0;
+        for (; amps < getInputAmperage(); amps++) {
+            if (!increaseStoredEnergyUnits(voltage, false)) {
+                break;
+            }
+        }
+        return amps;
+    }
+
+    @Override
+    public boolean decreaseStoredEnergyUnits(long energy, boolean ignoreTooLittleEnergy) {
+        if (ignoreTooLittleEnergy && storedEnergy - energy < 0) {
+            storedEnergy = 0;
+        } else if (storedEnergy - energy < 0) {
+            return false;
+        }
+        storedEnergy -= energy;
+        return true;
+    }
+
+    @Override
+    public boolean increaseStoredEnergyUnits(long energy, boolean ignoreTooMuchEnergy) {
+        if (ignoreTooMuchEnergy && storedEnergy + energy > maximumEnergyStored) {
+            storedEnergy = maximumEnergyStored;
+        } else if (storedEnergy + energy > maximumEnergyStored) {
+            return false;
+        }
+        storedEnergy += energy;
         return true;
     }
 
@@ -352,16 +476,20 @@ public class MultiTileBasicMachine extends BaseTickableMultiTileEntity {
     @Override
     public boolean hasInventoryBeenModified() {
         // True if the input inventory has changed
-        return mInventoryChanged;
+        return hasInventoryChanged;
     }
 
     public void markOutputInventoryBeenModified() {
-        mOutputInventoryChanged = true;
+        outputInventoryChanged = true;
     }
 
     public boolean hasOutputInventoryBeenModified() {
         // True if the output inventory has changed
-        return mOutputInventoryChanged;
+        return outputInventoryChanged;
+    }
+
+    public void markInputInventoryBeenModified() {
+        hasInventoryChanged = true;
     }
 
     @Override
@@ -372,5 +500,251 @@ public class MultiTileBasicMachine extends BaseTickableMultiTileEntity {
     @Override
     public int getInventoryStackLimit() {
         return 64;
+    }
+
+    // #region Machine
+
+    @Override
+    public void onPostTick(long tick, boolean isServerSide) {
+        if (isServerSide) {
+            runMachine(tick);
+        }
+    }
+
+    protected void runMachine(long aTick) {
+        if (acceptsFuel() && isActive()) {
+            if (!consumeFuel()) {
+                stopMachine();
+                return;
+            }
+        }
+
+        if (hasThingsToDo()) {
+            markDirty();
+            if (isElectric()) {
+                if (!isGenerator() && !drainEut(eut)) {
+                    stopMachine();
+                    return;
+                }
+                if (isGenerator()) {
+                    generateEut(eut);
+                }
+            }
+
+            if (isSteam()) {
+                return;
+            }
+
+            if (maxProgressTime > 0 && ++progressTime >= maxProgressTime) {
+                progressTime = 0;
+                maxProgressTime = 0;
+                outputItems();
+                if (isAllowedToWork()) {
+                    if (!checkRecipe()) {
+                        setActive(false);
+                    } else {
+                        updateSlots();
+                    }
+                }
+            }
+        } else {
+            if (aTick % TICKS_BETWEEN_RECIPE_CHECKS == 0 || hasWorkJustBeenEnabled() || hasInventoryBeenModified()) {
+                if (isAllowedToWork()) {
+                    if (checkRecipe()) {
+                        setActive(true);
+                        updateSlots();
+                        markDirty();
+                    }
+                }
+            }
+        }
+    }
+
+    protected boolean checkRecipe() {
+        return false;
+    }
+
+    protected void outputItems() {
+        int index = 0;
+        if (itemsToOutput == null) {
+            return;
+        }
+        for (ItemStack item : itemsToOutput) {
+            outputInventory.insertItem(index++, item, false);
+        }
+        itemsToOutput = null;
+    }
+
+    @Override
+    public int getProgress() {
+        return progressTime;
+    }
+
+    @Override
+    public int getMaxProgress() {
+        return maxProgressTime;
+    }
+
+    @Override
+    public boolean increaseProgress(int aProgressAmountInTicks) {
+        progressTime += aProgressAmountInTicks;
+        return true;
+    }
+
+    @Override
+    public boolean hasThingsToDo() {
+        return getMaxProgress() > 0;
+    }
+
+    @Override
+    public boolean hasWorkJustBeenEnabled() {
+        return wasEnabled;
+    }
+
+    @Override
+    public void enableWorking() {
+        canWork = true;
+    }
+
+    @Override
+    public void disableWorking() {
+        canWork = false;
+    }
+
+    @Override
+    public boolean wasShutdown() {
+        return powerShutDown;
+    }
+
+    @Override
+    public boolean isAllowedToWork() {
+        return canWork;
+    }
+
+    @Override
+    public boolean isActive() {
+        return active;
+    }
+
+    @Override
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    protected boolean isElectric() {
+        return isElectric;
+    }
+
+    protected void setAcceptsFuel(boolean isElectric) {
+        this.isElectric = isElectric;
+    }
+
+    protected boolean isSteam() {
+        return isSteam;
+    }
+
+    protected void setSteam(boolean isSteam) {
+        this.isSteam = isSteam;
+    }
+
+    protected boolean acceptsFuel() {
+        return acceptsFuel;
+    }
+
+    protected void setFuel(boolean acceptsFuel) {
+        this.acceptsFuel = acceptsFuel;
+    }
+
+    protected boolean isWireless() {
+        return isWireless;
+    }
+
+    protected void setWireless(boolean isWireless) {
+        this.isWireless = isWireless;
+    }
+
+    protected boolean drainEut(long eut) {
+        return decreaseStoredEnergyUnits(eut, false);
+    }
+
+    protected boolean generateEut(long eut) {
+        return increaseStoredEnergyUnits(eut, true);
+    }
+
+    protected boolean isGenerator() {
+        return false;
+    }
+
+    protected boolean consumeFuel() {
+        if (isActive() && burnTime <= 0) {
+            for (int i = 0; i < inputInventory.getSlots(); i++) {
+                if (inputInventory.getStackInSlot(i) != null) {
+                    int checkBurnTime = TileEntityFurnace.getItemBurnTime(inputInventory.getStackInSlot(i)) / 10;
+                    if (checkBurnTime <= 0) continue;
+                    inputInventory.getStackInSlot(i).stackSize--;
+                    burnTime = checkBurnTime;
+                    totalBurnTime = checkBurnTime;
+                    break;
+                }
+            }
+            updateSlots();
+        }
+
+        if (--burnTime < 0) {
+            burnTime = 0;
+            totalBurnTime = 0;
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
+    protected void addDebugInfo(EntityPlayer player, int logLevel, ArrayList<String> list) {
+        if (isElectric()) {
+            list.add(
+                    "Energy: " + EnumChatFormatting.GOLD
+                            + getUniversalEnergyStored()
+                            + "/"
+                            + getUniversalEnergyCapacity());
+        }
+
+        if (acceptsFuel()) {
+            list.add("Fuel: " + EnumChatFormatting.GOLD + burnTime + "/" + totalBurnTime);
+        }
+    }
+
+    protected void stopMachine() {
+        progressTime = 0;
+        setActive(false);
+        disableWorking();
+    }
+
+    protected void updateSlots() {
+        for (int i = 0; i < inputInventory.getSlots(); i++) {
+            ItemStack item = inputInventory.getStackInSlot(i);
+            if (item != null && item.stackSize <= 0) {
+                inputInventory.setStackInSlot(i, null);
+            }
+        }
+    }
+
+    /**
+     * Must always be a positive. If the multi generates Eu/t isGenerator() should be overridden to true
+     */
+    protected void setEut(long eut) {
+        if (eut < 0) {
+            eut = -eut;
+        }
+
+        this.eut = eut;
+    }
+
+    protected void setDuration(int duration) {
+        if (duration < 0) {
+            duration = -duration;
+        }
+
+        maxProgressTime = duration;
     }
 }

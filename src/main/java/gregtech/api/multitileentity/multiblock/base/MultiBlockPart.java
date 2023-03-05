@@ -305,7 +305,7 @@ public abstract class MultiBlockPart extends BaseNontickableMultiTileEntity
     public void loadTextureNBT(NBTTagCompound aNBT) {
         // Loading the registry
         final String textureName = aNBT.getString(NBT.TEXTURE);
-        mTextures = new IIconContainer[] {
+        textures = new IIconContainer[] {
                 new Textures.BlockIcons.CustomIcon("multitileentity/multiblockparts/" + textureName + "/bottom"),
                 new Textures.BlockIcons.CustomIcon("multitileentity/multiblockparts/" + textureName + "/top"),
                 new Textures.BlockIcons.CustomIcon("multitileentity/multiblockparts/" + textureName + "/side"),
@@ -321,8 +321,7 @@ public abstract class MultiBlockPart extends BaseNontickableMultiTileEntity
         // Loading an instance
         final TileEntity tCanonicalTileEntity = MultiTileEntityRegistry
                 .getCanonicalTileEntity(getMultiTileEntityRegistryID(), getMultiTileEntityID());
-        if (tCanonicalTileEntity instanceof MultiBlockPart)
-            mTextures = ((MultiBlockPart) tCanonicalTileEntity).mTextures;
+        if (tCanonicalTileEntity instanceof MultiBlockPart) textures = ((MultiBlockPart) tCanonicalTileEntity).textures;
     }
 
     @Override
@@ -330,7 +329,7 @@ public abstract class MultiBlockPart extends BaseNontickableMultiTileEntity
         // For normal parts - texture comes from BaseMTE; overlay based on current mode
         // TODO(MTE) - For Advanced parts they might come from somewhere else
         final ITexture baseTexture = TextureFactory.of(super.getTexture(aBlock, aSide, isActive, aRenderPass));
-        if (mMode != 0 && aSide == mFacing) {
+        if (mMode != 0 && aSide == facing) {
             if (mMode == getModeOrdinal(ITEM_IN)) return new ITexture[] { baseTexture,
                     TextureFactory.of(OVERLAY_PIPE_IN), TextureFactory.of(ITEM_IN_SIGN) };
             if (mMode == getModeOrdinal(ITEM_OUT)) return new ITexture[] { baseTexture,
@@ -418,7 +417,7 @@ public abstract class MultiBlockPart extends BaseNontickableMultiTileEntity
         if (!modeSelected(FLUID_IN)) return 0;
         final byte aSide = (byte) aDirection.ordinal();
         if (aDirection != ForgeDirection.UNKNOWN
-                && (aSide != mFacing || !coverLetsFluidIn(aSide, aFluidStack == null ? null : aFluidStack.getFluid())))
+                && (aSide != facing || !coverLetsFluidIn(aSide, aFluidStack == null ? null : aFluidStack.getFluid())))
             return 0;
         final IMultiBlockController controller = getTarget(true);
         return controller == null ? 0 : controller.fill(this, aDirection, aFluidStack, aDoFill);
@@ -429,7 +428,7 @@ public abstract class MultiBlockPart extends BaseNontickableMultiTileEntity
         if (!modeSelected(FLUID_OUT)) return null;
         final byte aSide = (byte) aDirection.ordinal();
         if (aDirection != ForgeDirection.UNKNOWN
-                && (aSide != mFacing || !coverLetsFluidOut(aSide, aFluidStack == null ? null : aFluidStack.getFluid())))
+                && (aSide != facing || !coverLetsFluidOut(aSide, aFluidStack == null ? null : aFluidStack.getFluid())))
             return null;
         final IMultiBlockController controller = getTarget(true);
         return controller == null ? null : controller.drain(this, aDirection, aFluidStack, aDoDrain);
@@ -443,7 +442,7 @@ public abstract class MultiBlockPart extends BaseNontickableMultiTileEntity
         if (controller == null) return null;
         final FluidStack aFluidStack = controller.getDrainableFluid(aSide);
         if (aDirection != ForgeDirection.UNKNOWN
-                && (aSide != mFacing || !coverLetsFluidOut(aSide, aFluidStack == null ? null : aFluidStack.getFluid())))
+                && (aSide != facing || !coverLetsFluidOut(aSide, aFluidStack == null ? null : aFluidStack.getFluid())))
             return null;
         return controller.drain(this, aDirection, aAmountToDrain, aDoDrain);
     }
@@ -452,8 +451,7 @@ public abstract class MultiBlockPart extends BaseNontickableMultiTileEntity
     public boolean canFill(ForgeDirection aDirection, Fluid aFluid) {
         if (!modeSelected(FLUID_IN)) return false;
         final byte aSide = (byte) aDirection.ordinal();
-        if (aDirection != ForgeDirection.UNKNOWN && (aSide != mFacing || !coverLetsFluidIn(aSide, aFluid)))
-            return false;
+        if (aDirection != ForgeDirection.UNKNOWN && (aSide != facing || !coverLetsFluidIn(aSide, aFluid))) return false;
         final IMultiBlockController controller = getTarget(true);
         return controller != null && controller.canFill(this, aDirection, aFluid);
     }
@@ -462,7 +460,7 @@ public abstract class MultiBlockPart extends BaseNontickableMultiTileEntity
     public boolean canDrain(ForgeDirection aDirection, Fluid aFluid) {
         if (!modeSelected(FLUID_OUT)) return false;
         final byte aSide = (byte) aDirection.ordinal();
-        if (aDirection != ForgeDirection.UNKNOWN && (aSide != mFacing || !coverLetsFluidOut(aSide, aFluid)))
+        if (aDirection != ForgeDirection.UNKNOWN && (aSide != facing || !coverLetsFluidOut(aSide, aFluid)))
             return false;
         final IMultiBlockController controller = getTarget(true);
         return controller != null && controller.canDrain(this, aDirection, aFluid);
@@ -471,7 +469,7 @@ public abstract class MultiBlockPart extends BaseNontickableMultiTileEntity
     @Override
     public FluidTankInfo[] getTankInfo(ForgeDirection aDirection) {
         final byte aSide = (byte) aDirection.ordinal();
-        if (!modeSelected(FLUID_IN, FLUID_OUT) || (aSide != SIDE_UNKNOWN && aSide != mFacing))
+        if (!modeSelected(FLUID_IN, FLUID_OUT) || (aSide != SIDE_UNKNOWN && aSide != facing))
             return GT_Values.emptyFluidTankInfo;
         final IMultiBlockController controller = getTarget(true);
         if (controller == null) return GT_Values.emptyFluidTankInfo;
@@ -565,7 +563,7 @@ public abstract class MultiBlockPart extends BaseNontickableMultiTileEntity
 
     @Override
     public boolean drainEnergyUnits(byte aSide, long aVoltage, long aAmperage) {
-        if (!modeSelected(ENERGY_OUT) || (mFacing != SIDE_UNKNOWN && (mFacing != aSide || !coverLetsEnergyOut(aSide))))
+        if (!modeSelected(ENERGY_OUT) || (facing != SIDE_UNKNOWN && (facing != aSide || !coverLetsEnergyOut(aSide))))
             return false;
         final IMultiBlockController controller = getTarget(true);
         return controller != null && controller.drainEnergyUnits(this, aSide, aVoltage, aAmperage);
@@ -573,7 +571,7 @@ public abstract class MultiBlockPart extends BaseNontickableMultiTileEntity
 
     @Override
     public long injectEnergyUnits(byte aSide, long aVoltage, long aAmperage) {
-        if (!modeSelected(ENERGY_IN) || (mFacing != SIDE_UNKNOWN && (mFacing != aSide || !coverLetsEnergyIn(aSide))))
+        if (!modeSelected(ENERGY_IN) || (facing != SIDE_UNKNOWN && (facing != aSide || !coverLetsEnergyIn(aSide))))
             return 0;
         final IMultiBlockController controller = getTarget(true);
         return controller != null ? controller.injectEnergyUnits(this, aSide, aVoltage, aAmperage) : 0;
@@ -609,7 +607,7 @@ public abstract class MultiBlockPart extends BaseNontickableMultiTileEntity
 
     @Override
     public boolean inputEnergyFrom(byte aSide) {
-        if (!modeSelected(ENERGY_IN) || (mFacing != SIDE_UNKNOWN && (mFacing != aSide || !coverLetsEnergyIn(aSide))))
+        if (!modeSelected(ENERGY_IN) || (facing != SIDE_UNKNOWN && (facing != aSide || !coverLetsEnergyIn(aSide))))
             return false;
         final IMultiBlockController controller = getTarget(true);
         return controller != null && controller.inputEnergyFrom(this, aSide);
@@ -617,7 +615,7 @@ public abstract class MultiBlockPart extends BaseNontickableMultiTileEntity
 
     @Override
     public boolean outputsEnergyTo(byte aSide) {
-        if (!modeSelected(ENERGY_OUT) || (mFacing != SIDE_UNKNOWN && (mFacing != aSide || !coverLetsEnergyOut(aSide))))
+        if (!modeSelected(ENERGY_OUT) || (facing != SIDE_UNKNOWN && (facing != aSide || !coverLetsEnergyOut(aSide))))
             return false;
         final IMultiBlockController controller = getTarget(true);
         return controller != null && controller.outputsEnergyTo(this, aSide);
@@ -656,7 +654,7 @@ public abstract class MultiBlockPart extends BaseNontickableMultiTileEntity
 
     @Override
     public int[] getAccessibleSlotsFromSide(int aSide) {
-        if (!modeSelected(ITEM_IN, ITEM_OUT) || (mFacing != SIDE_UNKNOWN && mFacing != aSide))
+        if (!modeSelected(ITEM_IN, ITEM_OUT) || (facing != SIDE_UNKNOWN && facing != aSide))
             return GT_Values.emptyIntArray;
         final IMultiBlockController controller = getTarget(true);
         return controller != null ? controller.getAccessibleSlotsFromSide(this, (byte) aSide) : GT_Values.emptyIntArray;
@@ -665,7 +663,7 @@ public abstract class MultiBlockPart extends BaseNontickableMultiTileEntity
     @Override
     public boolean canInsertItem(int aSlot, ItemStack aStack, int aSide) {
         if (!modeSelected(ITEM_IN, ITEM_OUT)
-                || (mFacing != SIDE_UNKNOWN && (mFacing != aSide || !coverLetsItemsIn((byte) aSide, aSlot))))
+                || (facing != SIDE_UNKNOWN && (facing != aSide || !coverLetsItemsIn((byte) aSide, aSlot))))
             return false;
         final IMultiBlockController controller = getTarget(true);
         return (controller != null && controller.canInsertItem(this, aSlot, aStack, (byte) aSide));
@@ -674,7 +672,7 @@ public abstract class MultiBlockPart extends BaseNontickableMultiTileEntity
     @Override
     public boolean canExtractItem(int aSlot, ItemStack aStack, int aSide) {
         if (!modeSelected(ITEM_IN, ITEM_OUT)
-                || (mFacing != SIDE_UNKNOWN && (mFacing != aSide || !coverLetsItemsOut((byte) aSide, aSlot))))
+                || (facing != SIDE_UNKNOWN && (facing != aSide || !coverLetsItemsOut((byte) aSide, aSlot))))
             return false;
         final IMultiBlockController controller = getTarget(true);
         return (controller != null && controller.canExtractItem(this, aSlot, aStack, (byte) aSide));

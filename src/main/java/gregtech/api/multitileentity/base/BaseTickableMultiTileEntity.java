@@ -13,11 +13,11 @@ import gregtech.api.util.GT_Util;
 public abstract class BaseTickableMultiTileEntity extends BaseMultiTileEntity implements IMTE_OnNeighborBlockChange {
 
     /** Variable for seeing if the Tick Function is called right now. */
-    public boolean mIsRunningTick = false;
+    public boolean isRunningTick = false;
     /** Gets set to true when the Block received a Block Update. */
-    public boolean mBlockUpdated = false;
+    public boolean blockUpdated = false;
     /** Timer Value */
-    protected long mTimer = 0;
+    protected long timer = 0;
     /** Variable for updating Data to the Client */
     private boolean mSendClientData = false;
 
@@ -27,43 +27,43 @@ public abstract class BaseTickableMultiTileEntity extends BaseMultiTileEntity im
 
     @Override
     public final void updateEntity() {
-        mIsRunningTick = true;
+        isRunningTick = true;
         final boolean isServerSide = isServerSide();
         try {
-            if (mTimer++ == 0) {
+            if (timer++ == 0) {
                 markDirty();
                 GT_Util.markChunkDirty(this);
                 onFirstTick(isServerSide);
             }
-            if (!isDead()) onPreTick(mTimer, isServerSide);
+            if (!isDead()) onPreTick(timer, isServerSide);
             if (!isDead()) {
-                mTimer++;
+                timer++;
                 super.updateEntity();
             }
             if (!isServerSide) {
-                if (mNeedsUpdate) {
+                if (needsUpdate) {
                     worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
                     // worldObj.func_147479_m(xCoord, yCoord, zCoord);
-                    mNeedsUpdate = false;
+                    needsUpdate = false;
                 }
             }
-            if (!isDead()) onTick(mTimer, isServerSide);
-            if (!isDead() && isServerSide && mTimer > 2 && mSendClientData) {
+            if (!isDead()) onTick(timer, isServerSide);
+            if (!isDead() && isServerSide && timer > 2 && mSendClientData) {
                 sendClientData(null);
             }
-            if (!isDead()) onPostTick(mTimer, isServerSide);
+            if (!isDead()) onPostTick(timer, isServerSide);
 
         } catch (Throwable e) {
             GT_FML_LOGGER.error("UpdateEntity Failed", e);
             e.printStackTrace(GT_Log.err);
             try {
-                onTickFailed(mTimer, isServerSide);
+                onTickFailed(timer, isServerSide);
             } catch (Throwable e2) {
                 GT_FML_LOGGER.error("UpdateEntity:onTickFailed Failed", e);
             }
         }
 
-        mIsRunningTick = false;
+        isRunningTick = false;
     }
 
     @Override
@@ -106,7 +106,7 @@ public abstract class BaseTickableMultiTileEntity extends BaseMultiTileEntity im
 
     @Override
     public void onNeighborBlockChange(World aWorld, Block aBlock) {
-        mBlockUpdated = true;
+        blockUpdated = true;
     }
 
     @Override

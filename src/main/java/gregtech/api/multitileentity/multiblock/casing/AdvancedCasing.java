@@ -8,11 +8,11 @@ import gregtech.api.multitileentity.multiblock.base.MultiBlockPart;
 
 public abstract class AdvancedCasing extends MultiBlockPart {
 
-    protected int mTier = 0;
+    protected int tier = 0;
 
     @Override
     public int getPartTier() {
-        return mTier;
+        return tier;
     }
 
     @Override
@@ -24,7 +24,7 @@ public abstract class AdvancedCasing extends MultiBlockPart {
     @Override
     public void readMultiTileNBT(NBTTagCompound aNBT) {
         super.readMultiTileNBT(aNBT);
-        mTier = aNBT.getInteger(GT_Values.NBT.TIER);
+        tier = aNBT.getInteger(GT_Values.NBT.TIER);
     }
 
     @Override
