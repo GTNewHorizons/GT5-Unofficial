@@ -67,6 +67,11 @@ public class GTNHIntergalactic {
             public Item getTabIconItem() {
                 return IGItems.SpaceElevatorController.getItem();
             }
+
+            @Override
+            public int func_151243_f() {
+                return IGItems.SpaceElevatorController.getItemDamage();
+            }
         };
         proxy.init(event);
     }
