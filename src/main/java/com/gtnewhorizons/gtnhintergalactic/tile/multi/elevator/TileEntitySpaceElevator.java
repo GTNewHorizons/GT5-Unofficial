@@ -36,6 +36,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import com.gtnewhorizons.gtnhintergalactic.Tags;
 import com.gtnewhorizons.gtnhintergalactic.block.IGBlocks;
+import com.gtnewhorizons.gtnhintergalactic.client.lore.LoreHolder;
 import com.gtnewhorizons.gtnhintergalactic.config.Config;
 import com.gtnewhorizons.gtnhintergalactic.gui.IG_UITextures;
 import com.gtnewhorizons.gtnhintergalactic.tile.TileEntitySpaceElevatorCable;
@@ -58,7 +59,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_ChunkManager;
-import gregtech.api.objects.XSTR;
 import gregtech.api.util.GT_HatchElementBuilder;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_StructureUtility;
@@ -128,7 +128,8 @@ public class TileEntitySpaceElevator extends GT_MetaTileEntity_EnhancedMultiBloc
     private static final int STRUCTURE_PIECE_EXTENDED_DEPTH_OFFSET = 20;
 
     /** Lore tooltip of the machine. Randomly picked from a selection */
-    private static final String LORE_TOOLTIP;
+    @LoreHolder("gt.blockmachines.multimachine.ig.elevator.lore")
+    private static String loreTooltip;
 
     // spotless:off
     /** Structure definition of this machine */
@@ -702,7 +703,7 @@ public class TileEntitySpaceElevator extends GT_MetaTileEntity_EnhancedMultiBloc
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType(GCCoreUtil.translate("gt.blockmachines.multimachine.ig.elevator.name"))
                 .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.ig.elevator.desc0"))
-                .addInfo(LIGHT_PURPLE.toString() + BOLD + LORE_TOOLTIP)
+                .addInfo(LIGHT_PURPLE.toString() + BOLD + loreTooltip)
                 .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.ig.elevator.desc2"))
                 .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.ig.elevator.desc3"))
                 .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.ig.elevator.desc4"))
@@ -922,13 +923,6 @@ public class TileEntitySpaceElevator extends GT_MetaTileEntity_EnhancedMultiBloc
     @Override
     public boolean willExplodeInRain() {
         return false;
-    }
-
-    static {
-        String[] possibleLore = new String[] { GCCoreUtil.translate("gt.blockmachines.multimachine.ig.elevator.lore1"),
-                GCCoreUtil.translate("gt.blockmachines.multimachine.ig.elevator.lore2"),
-                GCCoreUtil.translate("gt.blockmachines.multimachine.ig.elevator.lore3") };
-        LORE_TOOLTIP = possibleLore[XSTR.XSTR_INSTANCE.nextInt(possibleLore.length)];
     }
 
     // endregion
