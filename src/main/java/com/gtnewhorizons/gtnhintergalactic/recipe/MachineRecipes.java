@@ -71,7 +71,7 @@ public class MachineRecipes implements Runnable {
             titaniumBetaCScrew_64 = MyMaterial.titaniumBetaC.get(OrePrefixes.screw, 64);
         } else {
             preciseAssembler_1 = ItemList.Machine_IV_Assembler.get(1);
-            highComputationStationT3_32 = GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Superconductor, 32);
+            highComputationStationT3_32 = GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.SuperconductorUHV, 32);
             highComputationStationT4_32 = GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Infinite, 32);
             highComputationStationT5_32 = GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Bio, 32);
             metaStableOgScrew_64 = GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Neutronium, 64);
@@ -209,7 +209,7 @@ public class MachineRecipes implements Runnable {
                 new Object[] { new ItemStack(IGBlocks.SpaceElevatorCasing, 1, 0), ItemList.Electric_Motor_UV.get(4),
                         GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Neutronium, 8),
                         GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Neutronium, 4),
-                        new Object[] { OrePrefixes.circuit.get(Materials.Superconductor), 1 },
+                        new Object[] { OrePrefixes.circuit.get(Materials.SuperconductorUHV), 1 },
                         GT_OreDictUnificator.get(OrePrefixes.screw, Materials.CosmicNeutronium, 16),
                         GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Osmiridium, 16), },
                 new FluidStack[] { new FluidStack(solderLuV, 5760), Materials.UUMatter.getFluid(8000),
@@ -469,7 +469,7 @@ public class MachineRecipes implements Runnable {
                 8,
                 new Object[] { ItemList.OreDrill4.get(1), ItemList.Robot_Arm_UV.get(8),
                         ItemList.Field_Generator_UV.get(4),
-                        new Object[] { OrePrefixes.circuit.get(Materials.Superconductor), 16 },
+                        new Object[] { OrePrefixes.circuit.get(Materials.SuperconductorUHV), 16 },
                         ItemList.Sensor_UV.get(16),
                         GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUV, 32),
                         GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Neutronium, 16) },
@@ -615,7 +615,7 @@ public class MachineRecipes implements Runnable {
                 8,
                 new Object[] { GT_OreDictUnificator.get(OrePrefixes.toolHeadDrill, Materials.Neutronium, 8),
                         ItemList.Robot_Arm_ZPM.get(8), ItemList.Field_Generator_ZPM.get(2),
-                        new Object[] { OrePrefixes.circuit.get(Materials.Superconductor), 2 },
+                        new Object[] { OrePrefixes.circuit.get(Materials.SuperconductorUHV), 2 },
                         GT_ModHandler.getModItem("dreamcraft", "item.HeavyDutyPlateTier6", 32),
                         GT_ModHandler.getModItem("dreamcraft", "item.HeavyDutyRocketEngineTier3", 4),
                         ItemList.Sensor_ZPM.get(8) },

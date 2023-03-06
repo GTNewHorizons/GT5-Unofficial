@@ -134,7 +134,7 @@ public class BlockCasingSpaceElevator extends GT_Block_Casings_Abstract {
      */
     @Override
     @SuppressWarnings("unchecked")
-    public void getSubBlocks(Item item, CreativeTabs tabs, List list) {
+    public void getSubBlocks(Item item, CreativeTabs tabs, @SuppressWarnings("rawtypes") List list) {
         for (int i = 0; i < NUMBER_OF_CASINGS; i++) {
             list.add(new ItemStack(item, 1, i));
         }

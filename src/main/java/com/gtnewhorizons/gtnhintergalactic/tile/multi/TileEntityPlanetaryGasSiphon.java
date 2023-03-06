@@ -33,6 +33,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import com.gtnewhorizons.gtnhintergalactic.Tags;
 import com.gtnewhorizons.gtnhintergalactic.client.IGTextures;
+import com.gtnewhorizons.gtnhintergalactic.client.lore.LoreHolder;
 import com.gtnewhorizons.gtnhintergalactic.recipe.GasSiphonRecipes;
 
 import cpw.mods.fml.common.Loader;
@@ -47,7 +48,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
 import gregtech.api.objects.GT_ChunkManager;
-import gregtech.api.objects.XSTR;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
@@ -63,8 +63,9 @@ import gregtech.common.blocks.GT_Block_Casings1;
 public class TileEntityPlanetaryGasSiphon extends GT_MetaTileEntity_EnhancedMultiBlockBase<TileEntityPlanetaryGasSiphon>
         implements IChunkLoader {
 
-    /** Lore string, which will be randomly picked from a selection at the start of the game */
-    private static final String LORE_TOOLTIP;
+    /** Lore string, which will be randomly picked from a selection each time the resources are reloaded */
+    @LoreHolder("gt.blockmachines.multimachine.ig.siphon.lore")
+    private static String loreTooltip;
     /** Main structure of the machine */
     private static final String STRUCTURE_PIECE_MAIN = "main";
     /** Cached value of log10(4) */
@@ -166,7 +167,7 @@ public class TileEntityPlanetaryGasSiphon extends GT_MetaTileEntity_EnhancedMult
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType(GCCoreUtil.translate("gt.blockmachines.multimachine.ig.siphon.type"))
-                .addInfo(ITALIC + LORE_TOOLTIP)
+                .addInfo(ITALIC + loreTooltip)
                 .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.ig.siphon.desc1"))
                 .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.ig.siphon.desc2"))
                 .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.ig.siphon.desc3"))
@@ -551,12 +552,5 @@ public class TileEntityPlanetaryGasSiphon extends GT_MetaTileEntity_EnhancedMult
                 return false;
             }
         };
-    }
-
-    static {
-        String[] possibleLore = new String[] { GCCoreUtil.translate("gt.blockmachines.multimachine.ig.siphon.lore0"),
-                GCCoreUtil.translate("gt.blockmachines.multimachine.ig.siphon.lore1"),
-                GCCoreUtil.translate("gt.blockmachines.multimachine.ig.siphon.lore2") };
-        LORE_TOOLTIP = possibleLore[XSTR.XSTR_INSTANCE.nextInt(possibleLore.length)];
     }
 }

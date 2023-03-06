@@ -1,4 +1,14 @@
-#English (US)
+# English (US)
+
+
+# NOTE: 
+# Providing additional lore translations doesn't require any code changes, they are detected automatically. If you have
+# fewer variations in your lang file than the default lang file (en_US, this file), provide blank translations to avoid
+# the game falling back to the default translations. Adding more variations than provided by default is possible.
+
+
+# Creative Tabs
+itemGroup.GTNH-Intergalactic=GTNH-Intergalactic
 
 # Achievements
 achievement.gt.blockmachines.spaceelevator=Space Elevator
@@ -127,9 +137,9 @@ gt.blockmachines.multimachine.ig.elevator.desc3=Motor tier limits module tier an
 gt.blockmachines.multimachine.ig.elevator.desc4=Each module has their own space for IO, except energy
 gt.blockmachines.multimachine.ig.elevator.desc5=Energy is supplied to this controller and gets distributed
 gt.blockmachines.multimachine.ig.elevator.desc6=Starting from MK-III Motors the structure can be expanded to fit 24 modules.
-gt.blockmachines.multimachine.ig.elevator.lore1=Elevates to space
-gt.blockmachines.multimachine.ig.elevator.lore2=What's your favorite thing about space? Mine is space.
-gt.blockmachines.multimachine.ig.elevator.lore3=Putting all those VMs out of jobs
+gt.blockmachines.multimachine.ig.elevator.lore0=Elevates to space
+gt.blockmachines.multimachine.ig.elevator.lore1=What's your favorite thing about space? Mine is space.
+gt.blockmachines.multimachine.ig.elevator.lore2=Putting all those VMs out of jobs
 gt.blockmachines.multimachine.ig.elevator.gui.numOfModules=Installed modules
 gt.blockmachines.multimachine.ig.elevator.gui.ready=Ready for Operation.
 gt.blockmachines.multimachine.ig.elevator.gui.noRecipe=No Operation started.

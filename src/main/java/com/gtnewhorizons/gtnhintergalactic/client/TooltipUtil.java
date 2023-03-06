@@ -1,10 +1,16 @@
-package com.gtnewhorizons.gtnhintergalactic.misc;
+package com.gtnewhorizons.gtnhintergalactic.client;
 
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.*;
 
 import java.util.function.Supplier;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.SimpleReloadableResourceManager;
+
+import com.gtnewhorizons.gtnhintergalactic.client.lore.LoreHandler;
 import com.gtnewhorizons.gtnhintergalactic.item.IGItems;
+import com.gtnewhorizons.gtnhintergalactic.tile.multi.TileEntityPlanetaryGasSiphon;
+import com.gtnewhorizons.gtnhintergalactic.tile.multi.elevator.TileEntitySpaceElevator;
 
 /**
  * Utility functions for tooltips
@@ -13,13 +19,15 @@ import com.gtnewhorizons.gtnhintergalactic.item.IGItems;
  */
 public class TooltipUtil {
 
-    /** Author string of glowredman */
-    public static Supplier<String> AUTHOR_GLOWREDMAN;
-
     /**
      * Initialize the tooltip utilities
      */
     public static void postInit() {
+        ((SimpleReloadableResourceManager) Minecraft.getMinecraft().getResourceManager())
+                .registerReloadListener(new LoreHandler());
+        LoreHandler.registerLoreHolder(TileEntityPlanetaryGasSiphon.class);
+        LoreHandler.registerLoreHolder(TileEntitySpaceElevator.class);
+
         Supplier<String> AUTHOR_GLOWREDMAN = chain(
                 translatedText("ig.structure.author"),
                 text(" "),

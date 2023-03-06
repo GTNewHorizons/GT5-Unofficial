@@ -112,10 +112,10 @@ public class IG_Recipe_Map extends GT_Recipe.GT_Recipe_Map {
                     recipes.add(aRecipe);
                 }
             } else {
-                Iterator var15;
+                Iterator<GT_Recipe> var15;
                 IG_Recipe.IG_SpaceMiningRecipe tRecipe;
                 int var19;
-                Collection tRecipes;
+                Collection<GT_Recipe> tRecipes;
                 if (this.mUsualInputCount > 0 && aInputs != null) {
                     ItemStack[] var18 = aInputs;
                     var19 = aInputs.length;

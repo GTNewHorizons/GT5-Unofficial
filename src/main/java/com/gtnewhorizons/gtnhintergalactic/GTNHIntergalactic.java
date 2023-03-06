@@ -67,6 +67,11 @@ public class GTNHIntergalactic {
             public Item getTabIconItem() {
                 return IGItems.SpaceElevatorController.getItem();
             }
+
+            @Override
+            public int func_151243_f() {
+                return IGItems.SpaceElevatorController.getItemDamage();
+            }
         };
         proxy.init(event);
     }
@@ -75,12 +80,6 @@ public class GTNHIntergalactic {
     // postInit "Handle interaction with other mods, complete your setup based on this." (Remove if not needed)
     public void postInit(FMLPostInitializationEvent event) {
         proxy.postInit(event);
-    }
-
-    @Mod.EventHandler
-    // register server commands in this event handler (Remove if not needed)
-    public void serverStarting(FMLServerStartingEvent event) {
-        proxy.serverStarting(event);
     }
 
     @Mod.EventHandler
