@@ -177,6 +177,8 @@ public class TileEntitySpaceElevatorCable extends TileEntityAdvanced {
             case FORMATION_ANIMATION:
                 animateFormation();
                 break;
+            default:
+                break;
         }
     }
 
