@@ -16,7 +16,6 @@ import com.gtnewhorizons.gtnhintergalactic.tile.TileEntitySpaceElevatorCable;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -54,9 +53,6 @@ public class CommonProxy {
         new MachineRecipes().run();
         IG_RecipeAdder.postInit();
     }
-
-    // register server commands in this event handler (Remove if not needed)
-    public void serverStarting(FMLServerStartingEvent event) {}
 
     /**
      * Mark a texture as used, to prevent hodgepodge from optimizing it
