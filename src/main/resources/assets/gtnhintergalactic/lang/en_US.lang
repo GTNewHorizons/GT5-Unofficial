@@ -1,4 +1,14 @@
-#English (US)
+# English (US)
+
+
+# NOTE: 
+# Providing additional lore translations doesn't require any code changes, they are detected automatically. If you have
+# fewer variations in your lang file than the default lang file (en_US, this file), provide blank translations to avoid
+# the game falling back to the default translations. Adding more variations than provided by default is possible.
+
+
+# Creative Tabs
+itemGroup.GTNH-Intergalactic=GTNH-Intergalactic
 
 # Achievements
 achievement.gt.blockmachines.spaceelevator=Space Elevator
