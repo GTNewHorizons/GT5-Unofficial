@@ -36,13 +36,13 @@ import io.netty.buffer.ByteBuf;
 
 /**
  * Cover variable
- * 
+ *
  * <pre>
  * 1111 1111 1111 1111 1111 1111 1111 1111
  *  |- interval-| |- flow rate 2 compl. -|
  * ^ export?
  * </pre>
- * 
+ * <p>
  * Concat export and flow rate 2 compl. together to get actual flow rate. A positive actual flow rate is export, and
  * vice versa.
  * <p>
@@ -123,7 +123,7 @@ public class GT_Cover_FluidRegulator extends GT_CoverBehaviorBase<GT_Cover_Fluid
             if (tTank1 != null && tTank2 != null) {
                 allowFluid = true;
                 FluidStack tLiquid = tTank1.drain(directionFrom, Math.abs(aCoverVariable.speed), false);
-                if (tLiquid != null) {
+                if (tLiquid != null && this.canTransferFluid(tLiquid)) {
                     tLiquid = tLiquid.copy();
                     tLiquid.amount = tTank2.fill(directionTo, tLiquid, false);
                     if (tLiquid.amount > 0) {
@@ -160,6 +160,10 @@ public class GT_Cover_FluidRegulator extends GT_CoverBehaviorBase<GT_Cover_Fluid
                             tTickRate,
                             tSpeed * 20d / tTickRate));
         }
+    }
+
+    protected boolean canTransferFluid(FluidStack fluid) {
+        return true;
     }
 
     @Override

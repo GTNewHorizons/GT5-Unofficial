@@ -3,10 +3,9 @@ package gregtech.common.covers;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.util.GT_ModHandler;
 
-public class GT_Cover_SteamValve extends GT_Cover_Pump {
+public class GT_Cover_SteamValve extends GT_Cover_FluidRegulator {
 
     /**
      * @deprecated use {@link #GT_Cover_SteamValve(int aTransferRate, ITexture coverTexture)} instead
@@ -18,12 +17,6 @@ public class GT_Cover_SteamValve extends GT_Cover_Pump {
 
     public GT_Cover_SteamValve(int aTransferRate, ITexture coverTexture) {
         super(aTransferRate, coverTexture);
-    }
-
-    @Override
-    public boolean isRedstoneSensitive(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
-            long aTimer) {
-        return false;
     }
 
     @Override
