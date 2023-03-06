@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
+
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.client.resources.IResourceManagerReloadListener;
 import net.minecraft.util.StatCollector;
@@ -82,7 +84,7 @@ public class LoreHandler implements IResourceManagerReloadListener {
             if (unlocalizedLine.equals(localizedLine)) {
                 break;
             } else {
-                if (!localizedLine.isBlank()) {
+                if (!StringUtils.isBlank(localizedLine)) {
                     allLines.add(localizedLine);
                 }
             }
