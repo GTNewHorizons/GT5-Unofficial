@@ -103,10 +103,10 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
                 new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.nanite, Materials.WhiteDwarfMatter, 1L),
                         GT_OreDictUnificator.get(OrePrefixes.nanite, Materials.Universium, 1L),
                         GT_OreDictUnificator.get(OrePrefixes.nanite, Materials.BlackDwarfMatter, 1L) },
-                new FluidStack[] { Materials.RawStarMatter.getFluid(16 * 144L) },
+                new FluidStack[] { Materials.RawStarMatter.getFluid(64 * 144L) },
                 // OUT.
                 new ItemStack[] { GT_Values.NI },
-                new FluidStack[] { Materials.MagnetohydrodynamicallyConstrainedStarMatter.getMolten(4 * 144L) },
+                new FluidStack[] { Materials.MagnetohydrodynamicallyConstrainedStarMatter.getMolten(16 * 144L) },
                 // Recipe stats.
                 20 * 4,
                 (int) TierEU.RECIPE_UXV);
