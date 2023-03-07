@@ -55,7 +55,9 @@ public class ChunkDataHandler {
             event.getData().removeTag(BASE_TAG_NAME);
         } else {
             chunkData.isLoaded = true;
-            event.getData().setTag(BASE_TAG_NAME, chunkData.data);
+            // make a copy of chunk data. this tag will be serialized on another thread. not making a copy might
+            // cause the other thread to encounter ConcurrentModificationException.
+            event.getData().setTag(BASE_TAG_NAME, chunkData.data.copy());
         }
     }
 
