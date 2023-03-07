@@ -14,24 +14,26 @@ import gregtech.api.metatileentity.GregTechTileClientEvents;
 import gregtech.api.multitileentity.MultiTileEntityBlock;
 import gregtech.api.multitileentity.interfaces.IMultiBlockPart;
 import gregtech.api.multitileentity.interfaces.IMultiTileEntity;
+import gregtech.api.multitileentity.interfaces.IMultiTileMachine;
 import gregtech.common.tileentities.casings.upgrade.InventoryUpgrade;
 import io.netty.buffer.ByteBuf;
 
 public class GT_Packet_MultiTileEntity extends GT_Packet_New {
 
     public static final int COVERS = B[0], REDSTONE = B[1], MODES = B[2], CONTROLLER = B[3], INVENTORY_INDEX = B[4],
-            INVENTORY_NAME = B[5];
+            INVENTORY_NAME = B[5], BOOLEANS = B[6];
 
     private int features = 0;
 
     private int mX, mZ;
     private int mC0 = 0, mC1 = 0, mC2 = 0, mC3 = 0, mC4 = 0, mC5 = 0;
     private short mY, mID, mRID;
-    private byte mCommonData, mTexturePage, mUpdate, mRedstone, mColor;
+    private byte mCommonData, mRedstone, mColor;
     private ChunkCoordinates mTargetPos = null;
     private int mLockedInventoryIndex;
     private String mInventoryName;
     private int mInventoryLength;
+    private int booleans;
 
     // MultiBlockPart
     private byte mMode;
@@ -95,6 +97,15 @@ public class GT_Packet_MultiTileEntity extends GT_Packet_New {
         mInventoryName = aInventoryName;
     }
 
+    /**
+     * 
+     * @param boolToSync each bit of the integer will be a boolean.
+     */
+    public void setBooleans(int boolToSync) {
+        features |= BOOLEANS;
+        this.booleans = boolToSync;
+    }
+
     @Override
     public void encode(ByteBuf aOut) {
         // Features
@@ -145,10 +156,8 @@ public class GT_Packet_MultiTileEntity extends GT_Packet_New {
             }
         }
 
-        if (false) {
-            aOut.writeByte(mTexturePage);
-            aOut.writeByte(mUpdate);
-            aOut.writeByte(mColor);
+        if ((features & BOOLEANS) == BOOLEANS) {
+            aOut.writeInt(booleans);
         }
     }
 
@@ -202,6 +211,10 @@ public class GT_Packet_MultiTileEntity extends GT_Packet_New {
             packet.setInventoryName(tName);
         }
 
+        if ((packetFeatures & BOOLEANS) == BOOLEANS) {
+            packet.setBooleans(aData.readInt());
+        }
+
         return packet;
     }
 
@@ -244,6 +257,11 @@ public class GT_Packet_MultiTileEntity extends GT_Packet_New {
                 if ((features & INVENTORY_NAME) == INVENTORY_NAME && mte instanceof InventoryUpgrade) {
                     final InventoryUpgrade invUpg = (InventoryUpgrade) mte;
                     invUpg.setInventoryName(mInventoryName);
+                }
+
+                if ((features & BOOLEANS) == BOOLEANS && mte instanceof IMultiTileMachine) {
+                    final IMultiTileMachine machine = (IMultiTileMachine) mte;
+                    machine.setBooleans(booleans);
                 }
 
             }

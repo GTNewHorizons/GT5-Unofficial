@@ -9,6 +9,8 @@ import net.minecraft.util.Tuple;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.multitileentity.base.BaseMultiTileEntity;
+import gregtech.api.multitileentity.multiblock.casing.AdvancedCasing;
+import gregtech.api.multitileentity.multiblock.casing.FunctionalCasing;
 import gregtech.api.util.GT_Util;
 import gregtech.common.tileentities.casings.upgrade.InventoryUpgrade;
 
@@ -127,6 +129,7 @@ public class MultiTileEntityClassContainer {
     }
 
     public MultiTileEntityClassContainer tier(int aTier) {
+        verifyDescendentOfMultiple(true, AdvancedCasing.class, FunctionalCasing.class);
         mParameters.setInteger(NBT.TIER, aTier);
         return this;
     }
@@ -157,6 +160,27 @@ public class MultiTileEntityClassContainer {
         if (!cls.isAssignableFrom(mClass)) {
             throw new IllegalArgumentException(
                     "Expected a descendent of " + cls.getName() + " got " + mClass.getName() + " instead.");
+        }
+    }
+
+    private void verifyDescendentOfMultiple(boolean onlyOne, Class<?>... classes) {
+        boolean atLeastOne = false;
+        String classNames = "";
+        for (Class<?> cls : classes) {
+            classNames +=cls.getName()+" ";
+            if (!onlyOne) {
+                verifyDescendentOf(cls);
+                atLeastOne = true;
+            } else {
+                if (cls.isAssignableFrom(mClass)) {
+                    atLeastOne = true;
+                }
+            }
+        }
+
+        if (!atLeastOne) {
+            throw new IllegalArgumentException(
+                    "Expected a descendent of any of these " + classNames + " got " + mClass.getName() + " instead.");
         }
     }
 }

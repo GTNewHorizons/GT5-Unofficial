@@ -1,6 +1,7 @@
 package gregtech.api.multitileentity.machine;
 
 import static com.google.common.primitives.Ints.saturatedCast;
+import static gregtech.api.enums.GT_Values.B;
 import static gregtech.api.enums.GT_Values.emptyIconContainerArray;
 
 import java.util.ArrayList;
@@ -29,13 +30,16 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
 import gregtech.api.multitileentity.MultiTileEntityRegistry;
 import gregtech.api.multitileentity.base.BaseTickableMultiTileEntity;
+import gregtech.api.multitileentity.interfaces.IMultiTileMachine;
+import gregtech.api.net.GT_Packet_MultiTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Util;
 import gregtech.api.util.GT_Utility;
 
-public class MultiTileBasicMachine extends BaseTickableMultiTileEntity implements IMachineProgress {
+public class MultiTileBasicMachine extends BaseTickableMultiTileEntity implements IMachineProgress, IMultiTileMachine {
 
-    private static final int TICKS_BETWEEN_RECIPE_CHECKS = 5 * TickTime.SECOND;
+    protected static final int ACTIVE = B[0];
+    protected static final int TICKS_BETWEEN_RECIPE_CHECKS = 5 * TickTime.SECOND;
 
     protected static final IItemHandlerModifiable EMPTY_INVENTORY = new ItemStackHandler(0);
 
@@ -254,6 +258,14 @@ public class MultiTileBasicMachine extends BaseTickableMultiTileEntity implement
                 TextureFactory.of(textures[GT_Values.FACING_ROTATIONS[facing][aSide]], GT_Util.getRGBaArray(rgba)),
                 TextureFactory
                         .of((active ? texturesActive : texturesInactive)[GT_Values.FACING_ROTATIONS[facing][aSide]]) };
+    }
+
+    @Override
+    public GT_Packet_MultiTileEntity getClientDataPacket() {
+        final GT_Packet_MultiTileEntity packet = super.getClientDataPacket();
+        int booleans = getBooleans();
+        packet.setBooleans(booleans);
+        return packet;
     }
 
     /*
@@ -746,5 +758,20 @@ public class MultiTileBasicMachine extends BaseTickableMultiTileEntity implement
         }
 
         maxProgressTime = duration;
+    }
+
+    @Override
+    public int getBooleans() {
+        int booleans = 0;
+        if (isActive()) {
+            booleans |= ACTIVE;
+        }
+        return booleans;
+    }
+
+    public void setBooleans(int booleans) {
+        if ((booleans & ACTIVE) == ACTIVE) {
+            setActive(true);
+        }
     }
 }

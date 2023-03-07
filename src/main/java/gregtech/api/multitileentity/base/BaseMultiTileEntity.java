@@ -57,6 +57,8 @@ import gregtech.api.multitileentity.MultiTileEntityClassContainer;
 import gregtech.api.multitileentity.MultiTileEntityRegistry;
 import gregtech.api.multitileentity.interfaces.IMultiBlockPart;
 import gregtech.api.multitileentity.interfaces.IMultiTileEntity;
+import gregtech.api.multitileentity.interfaces.IMultiTileMachine;
+import gregtech.api.multitileentity.machine.MultiTileBasicMachine;
 import gregtech.api.net.GT_Packet_MultiTileEntity;
 import gregtech.api.net.GT_Packet_New;
 import gregtech.api.objects.GT_ItemStack;
@@ -970,7 +972,7 @@ public abstract class BaseMultiTileEntity extends CoverableTileEntity implements
     /**
      * @return a Packet containing all Data which has to be synchronised to the Client - Override as needed
      */
-    public GT_Packet_New getClientDataPacket() {
+    public GT_Packet_MultiTileEntity getClientDataPacket() {
 
         final GT_Packet_MultiTileEntity packet = new GT_Packet_MultiTileEntity(
                 0,
@@ -996,24 +998,6 @@ public abstract class BaseMultiTileEntity extends CoverableTileEntity implements
                         | ((mSidedRedstone[3] > 0) ? 8 : 0)
                         | ((mSidedRedstone[4] > 0) ? 16 : 0)
                         | ((mSidedRedstone[5] > 0) ? 32 : 0)));
-
-        if (this instanceof IMTE_HasModes) {
-            final IMTE_HasModes mteModes = (IMTE_HasModes) this;
-            packet.setModes(mteModes.getMode(), mteModes.getAllowedModes());
-        }
-        if (this instanceof IMultiBlockPart) {
-            final IMultiBlockPart mtePart = (IMultiBlockPart) this;
-            if (mtePart.getTargetPos() != null) {
-                final ChunkCoordinates aTarget = mtePart.getTargetPos();
-                packet.setTargetPos(aTarget.posX, (short) aTarget.posY, aTarget.posZ);
-            }
-            packet.setInventoryIndex(mtePart.getLockedInventoryIndex());
-        }
-        if (this instanceof InventoryUpgrade) {
-            String tName = ((InventoryUpgrade) this).getInventoryName();
-            packet.setInventoryName(tName);
-        }
-
         return packet;
     }
 

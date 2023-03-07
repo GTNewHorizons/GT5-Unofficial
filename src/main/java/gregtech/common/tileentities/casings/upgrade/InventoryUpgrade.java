@@ -11,6 +11,7 @@ import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
 import gregtech.api.enums.GT_Values.NBT;
 import gregtech.api.multitileentity.interfaces.IMultiBlockController;
 import gregtech.api.multitileentity.multiblock.casing.AdvancedCasing;
+import gregtech.api.net.GT_Packet_MultiTileEntity;
 
 public class InventoryUpgrade extends AdvancedCasing {
 
@@ -91,5 +92,13 @@ public class InventoryUpgrade extends AdvancedCasing {
                 controller.changeInventoryName(mInventoryName, mInventoryID.toString(), mType);
             }
         }).setSize(100, 25).setPos(50, 30));
+    }
+
+    @Override
+    public GT_Packet_MultiTileEntity getClientDataPacket() {
+        final GT_Packet_MultiTileEntity packet = super.getClientDataPacket();
+        String name = getInventoryName();
+        packet.setInventoryName(name);
+        return packet;
     }
 }
