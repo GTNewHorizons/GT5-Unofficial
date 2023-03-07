@@ -48,7 +48,7 @@ public class LargeFusionComputer2 extends LargeFusionComputer {
                 .addInfo("If the recipe has a startup cost greater than the")
                 .addInfo("number of energy hatches * cap, you can't do it")
                 .addInfo("Make sure the whole structure is built in the 3x3")
-                .addInfo("chuck area of the ring center (not controller).")
+                .addInfo("chunk area of the ring center (not controller).")
                 .addInfo("Startup < 160,000,000 EU: 128x Parallel").addInfo("Startup < 320,000,000 EU: 64x Parallel")
                 .addInfo(
                         "Support" + EnumChatFormatting.BLUE

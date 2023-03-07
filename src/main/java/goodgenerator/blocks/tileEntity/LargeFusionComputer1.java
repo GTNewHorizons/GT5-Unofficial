@@ -48,7 +48,7 @@ public class LargeFusionComputer1 extends LargeFusionComputer {
                 .addInfo("If the recipe has a startup cost greater than the")
                 .addInfo("number of energy hatches * cap, you can't do it")
                 .addInfo("Make sure the whole structure is built in the 3x3")
-                .addInfo("chuck area of the ring center (not controller).").addInfo("It can run 64x recipes at most.")
+                .addInfo("chunk area of the ring center (not controller).").addInfo("It can run 64x recipes at most.")
                 .addInfo(
                         "Support" + EnumChatFormatting.BLUE
                                 + " Tec"

@@ -57,7 +57,7 @@ public class LargeFusionComputer4 extends LargeFusionComputerPP {
                 .addInfo("If the recipe has a startup cost greater than the")
                 .addInfo("number of energy hatches * cap, you can't do it")
                 .addInfo("Make sure the whole structure is built in the 3x3")
-                .addInfo("chuck area of the ring center (not controller).").addInfo("Performs 4/4 overclock.")
+                .addInfo("chunk area of the ring center (not controller).").addInfo("Performs 4/4 overclock.")
                 .addInfo("Startup < 160,000,000 EU: 256x Parallel").addInfo("Startup < 320,000,000 EU: 192x Parallel")
                 .addInfo("Startup < 640,000,000 EU: 128x Parallel").addInfo("Startup < 1,200,000,000 EU: 64x Parallel")
                 .addInfo(
