@@ -221,10 +221,11 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
                 .addInfo(Author).addInfo("Spawns and Exterminates monsters for you")
                 .addInfo("You have to insert the powered spawner in controller")
                 .addInfo("Base energy usage: 2,000 EU/t")
-                .addInfo("Supports perfect OC and past 1 tick (multiplies outputs)")
+                .addInfo("Supports perfect OC, minimum time: 20 ticks, after that multiplies the outputs")
                 .addInfo("Recipe time is based on mob health")
                 .addInfo("You can additionally put a weapon to the ULV input bus")
                 .addInfo("It will speed up the process and apply looting level from the weapon (maximum 4 levels)")
+                .addInfo(EnumChatFormatting.RED + "Enchanting the spikes inside does nothing!")
                 .addInfo("Also produces 120 Liquid XP per operation").addInfo("If the mob spawns infernal")
                 .addInfo("it will drain 8 times more power")
                 .addInfo("You can prevent infernal spawns by shift clicking with a screwdriver")
@@ -238,13 +239,13 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
                 .addOtherStructurePart("Borosilicate Glass", "All walls without corners")
                 .addStructureInfo("The glass tier limits the Energy Input tier")
                 .addOtherStructurePart("Steel Frame Box", "All vertical corners (except top and bottom)")
-                .addOtherStructurePart("Diamond spikes", "Inside second layer").addOutputBus("Any casing", 1)
+                .addOtherStructurePart("Diamond spikes", "Inside second layer").addOutputBus("Any bottom casing", 1)
                 .addOtherStructurePart(
                         "1x ULV " + StatCollector.translateToLocal("GT5U.MBTT.InputBus"),
-                        "Any casing",
+                        "Any bottom casing",
                         1)
-                .addOutputHatch("Any casing", 1).addEnergyHatch("Any casing", 1).addMaintenanceHatch("Any casing", 1)
-                .toolTipFinisher(Tags.MODNAME);
+                .addOutputHatch("Any bottom casing", 1).addEnergyHatch("Any bottom casing", 1)
+                .addMaintenanceHatch("Any bottom casing", 1).toolTipFinisher(Tags.MODNAME);
         return tt;
     }
 
