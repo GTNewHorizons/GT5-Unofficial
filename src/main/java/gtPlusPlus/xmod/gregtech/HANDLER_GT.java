@@ -48,7 +48,6 @@ import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
 import gtPlusPlus.core.util.reflect.AddGregtechRecipe;
 import gtPlusPlus.everglades.gen.gt.WorldGen_GT;
-import gtPlusPlus.xmod.gregtech.api.enums.CustomOrePrefix;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import gtPlusPlus.xmod.gregtech.api.util.GTPP_Config;
@@ -159,13 +158,6 @@ public class HANDLER_GT {
         RecipeLoader_AlgaeFarm.generateRecipes();
         if (LoadedMods.AdvancedSolarPanel) {
             RecipeLoader_MolecularTransformer.run();
-        }
-    }
-
-    public static void addNewOrePrefixes() {
-        for (CustomOrePrefix aPrefixTest : CustomOrePrefix.values()) {
-            Logger.INFO("Adding " + aPrefixTest.name() + " to OrePrefixes Enum.");
-            Logger.INFO("Injecting: " + aPrefixTest.addToEnum());
         }
     }
 

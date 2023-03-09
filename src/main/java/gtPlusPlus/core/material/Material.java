@@ -32,7 +32,6 @@ import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
-import gtPlusPlus.xmod.gregtech.api.enums.CustomOrePrefix;
 import gtPlusPlus.xmod.thaumcraft.objects.wrapper.aspect.TC_Aspect_Wrapper;
 import gtPlusPlus.xmod.tinkers.material.BaseTinkersMaterial;
 
@@ -1197,7 +1196,7 @@ public class Material {
     }
 
     public final ItemStack getMilled(final int stacksize) {
-        return getComponentByPrefix(CustomOrePrefix.milled.get(), stacksize);
+        return getComponentByPrefix(OrePrefixes.milled, stacksize);
     }
 
     public final boolean hasSolidForm() {

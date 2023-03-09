@@ -25,7 +25,6 @@ import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.xmod.gregtech.api.enums.CustomOrePrefix;
 
 public class BaseOreComponent extends Item {
 
@@ -91,7 +90,7 @@ public class BaseOreComponent extends Item {
         } else if (componentType == ComponentTypes.DUSTPURE) {
             aKey = OrePrefixes.dustPure.name();
         } else if (componentType == ComponentTypes.MILLED) {
-            aKey = CustomOrePrefix.milled.get().name();
+            aKey = OrePrefixes.milled.name();
         }
 
         ItemStack x = aMap.get(aKey);

@@ -66,7 +66,6 @@ public class CommonProxy {
         }
 
         AddToCreativeTab.initialiseTabs();
-        EnumHelperHandler.init();
 
         // Moved from Init after Debug Loading.
         // 29/01/18 - Alkalus
