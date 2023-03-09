@@ -17,6 +17,7 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLMissingMappingsEvent;
+import cpw.mods.fml.common.event.FMLMissingMappingsEvent.MissingMapping;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
@@ -435,7 +436,11 @@ public class GTplusplus implements ActionListener {
     @Mod.EventHandler
     public void missingMapping(FMLMissingMappingsEvent event) {
         processMissingMappings();
-        for (FMLMissingMappingsEvent.MissingMapping mapping : event.get()) {
+        for (MissingMapping mapping : event.getAll()) {
+            if (mapping.name.startsWith("Australia:")) {
+                mapping.ignore();
+                continue;
+            }
             if (mapping.type == GameRegistry.Type.ITEM) {
                 Item aReplacement = sMissingItemMappings.get(mapping.name);
                 if (aReplacement != null) {
