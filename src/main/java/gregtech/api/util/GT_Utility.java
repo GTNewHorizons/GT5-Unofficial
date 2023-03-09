@@ -2796,6 +2796,13 @@ public class GT_Utility {
         return null;
     }
 
+    public static FluidStack copyAmount(int aAmount, FluidStack aStack) {
+        if (aStack == null) return null;
+        FluidStack rStack = aStack.copy();
+        rStack.amount = aAmount;
+        return rStack;
+    }
+
     public static ItemStack copyAmount(long aAmount, Object... aStacks) {
         ItemStack rStack = copy(aStacks);
         if (isStackInvalid(rStack)) return null;
@@ -4465,8 +4472,7 @@ public class GT_Utility {
                     break;
                 }
             }
-            if (colls1 == null)
-                colls1 = Arrays.asList(lists);
+            if (colls1 == null) colls1 = Arrays.asList(lists);
             colls = colls1;
             int sum = 0;
             for (Collection<E> list : colls) {

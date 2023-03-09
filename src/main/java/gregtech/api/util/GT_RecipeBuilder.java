@@ -3,15 +3,15 @@ package gregtech.api.util;
 import java.util.*;
 import java.util.function.Function;
 
-import gregtech.api.interfaces.IGT_RecipeMap;
+import javax.annotation.Nonnull;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraftforge.fluids.FluidStack;
 
+import gregtech.api.interfaces.IGT_RecipeMap;
 import gregtech.api.objects.GT_FluidStack;
 import gregtech.api.util.extensions.ArrayExt;
-
-import javax.annotation.Nonnull;
 
 public class GT_RecipeBuilder {
 
@@ -197,6 +197,10 @@ public class GT_RecipeBuilder {
         return this;
     }
 
+    /**
+     * prefer to use metadata over this. should only use when the target recipe map does not yet support metadata
+     * system, or it's to bridge legacy code and modern code.
+     */
     public GT_RecipeBuilder specialValue(int specialValue) {
         this.specialValue = specialValue;
         return this;
@@ -608,7 +612,7 @@ public class GT_RecipeBuilder {
         return r;
     }
 
-    public Collection<GT_Recipe> add(IGT_RecipeMap recipeMap) {
+    public Collection<GT_Recipe> addTo(IGT_RecipeMap recipeMap) {
         return recipeMap.doAdd(this);
     }
 

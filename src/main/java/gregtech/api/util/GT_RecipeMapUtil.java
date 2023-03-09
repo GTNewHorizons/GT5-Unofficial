@@ -7,12 +7,14 @@ import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Multimap;
-import cpw.mods.fml.common.Loader;
-import gregtech.api.interfaces.IGT_RecipeMap;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
+
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
+
+import cpw.mods.fml.common.Loader;
+import gregtech.api.interfaces.IGT_RecipeMap;
 
 /**
  * Define helpers useful in the creation of recipe maps.
@@ -45,10 +47,10 @@ public class GT_RecipeMapUtil {
     public static final Function<GT_Recipe, String> FIRST_ITEM_OR_FLUID_OUTPUT = r -> isArrayEmptyOrNull(r.mOutputs)
             ? getStackConfigName(r.mOutputs[0])
             : isArrayEmptyOrNull(r.mFluidOutputs) ? null : r.mFluidOutputs[0].getFluid().getName();
-	private static final Map<String, IGT_RecipeMap> addonRecipeMaps = new HashMap<>();
-	private static final Multimap<String, Consumer<IGT_RecipeMap>> delayedActions = ArrayListMultimap.create();
+    private static final Map<String, IGT_RecipeMap> addonRecipeMaps = new HashMap<>();
+    private static final Multimap<String, Consumer<IGT_RecipeMap>> delayedActions = ArrayListMultimap.create();
 
-	public static <T> T[] appendArray(T[] arr, T val) {
+    public static <T> T[] appendArray(T[] arr, T val) {
         T[] newArr = Arrays.copyOf(arr, arr.length + 1);
         newArr[arr.length] = val;
         return newArr;
@@ -62,6 +64,10 @@ public class GT_RecipeMapUtil {
         return new GT_RecipeTemplate(r, includeTemplate);
     }
 
+    public static GT_RecipeBuilder handleCoilHeat(GT_RecipeBuilder b) {
+        return b.specialValue(b.getMetadata(GT_RecipeConstants.COIL_HEAT));
+    }
+
     public static List<GT_Recipe> buildRecipeForMultiblock(GT_RecipeBuilder b) {
         List<ItemStack> itemInputs = new ArrayList<>(Arrays.asList(b.getItemInputsBasic()));
         List<ItemStack> itemOutputs = new ArrayList<>(Arrays.asList(b.getItemOutputs()));
@@ -69,9 +75,10 @@ public class GT_RecipeMapUtil {
         List<FluidStack> fluidOutputs = new ArrayList<>(Arrays.asList(b.getFluidOutputs()));
         cellToFluid(itemInputs, fluidInputs, true);
         cellToFluid(itemInputs, fluidInputs, false);
-        return buildOrEmpty(b.itemInputs(itemInputs.toArray(new ItemStack[0])).itemOutputs(itemOutputs.toArray(new ItemStack[0]))
-            .fluidInputs(fluidInputs.toArray(new FluidStack[0]))
-            .fluidOutputs(fluidOutputs.toArray(new FluidStack[0])));
+        return buildOrEmpty(
+                b.itemInputs(itemInputs.toArray(new ItemStack[0])).itemOutputs(itemOutputs.toArray(new ItemStack[0]))
+                        .fluidInputs(fluidInputs.toArray(new FluidStack[0]))
+                        .fluidOutputs(fluidOutputs.toArray(new FluidStack[0])));
     }
 
     public static List<GT_Recipe> buildRecipeForMultiblockNoCircuit(GT_RecipeBuilder b) {
@@ -102,45 +109,46 @@ public class GT_RecipeMapUtil {
         return builder.build().map(Collections::singletonList).orElse(Collections.emptyList());
     }
 
-	/**
+    /**
      * Register a recipe map as part of your mod's public API under your modid and your given identifier.
-	 * @param identifier
-	 * @param recipeMap
-	 * @param dependencies fully qualified identifier of dependent recipe maps. scheduler will only add recipes to
-	 *                     one of the dependent recipe maps and this recipe map concurrently, guaranteeing thread safety.
-	 *                     Currently unused, but you are advised to fill them, so that when The Day (tm) comes we
-	 *                     don't end up with a bunch of weird concurrency bugs.
-	 */
-	public static void registerRecipeMap(String identifier, IGT_RecipeMap recipeMap, RecipeMapDependency... dependencies) {
-		String modId = Loader.instance().activeModContainer().getModId();
-		if ("gregtech".equals(modId))
-			throw new IllegalStateException("do not register recipe map under the name of gregtech! do it in your own preinit!");
-		String id = modId + "@" + identifier;
-		addonRecipeMaps.put(id, recipeMap);
-		for (Consumer<IGT_RecipeMap> action : delayedActions.get(id)) {
-			action.accept(recipeMap);
-		}
-	}
+     *
+     * @param identifier
+     * @param recipeMap
+     * @param dependencies fully qualified identifier of dependent recipe maps. scheduler will only add recipes to one
+     *                     of the dependent recipe maps and this recipe map concurrently, guaranteeing thread safety.
+     *                     Currently unused, but you are advised to fill them, so that when The Day (tm) comes we don't
+     *                     end up with a bunch of weird concurrency bugs.
+     */
+    public static void registerRecipeMap(String identifier, IGT_RecipeMap recipeMap,
+            RecipeMapDependency... dependencies) {
+        String modId = Loader.instance().activeModContainer().getModId();
+        if ("gregtech".equals(modId)) throw new IllegalStateException(
+                "do not register recipe map under the name of gregtech! do it in your own preinit!");
+        String id = modId + "@" + identifier;
+        addonRecipeMaps.put(id, recipeMap);
+        for (Consumer<IGT_RecipeMap> action : delayedActions.get(id)) {
+            action.accept(recipeMap);
+        }
+    }
 
-	/**
-	 * Use this to register recipes for a recipe map in addon not present at compile time.
-	 * <p>
-	 * Do not use this for recipes maps already in {@link GT_RecipeConstants}. None of them will be available via this interface!
-	 *
-	 * @param identifier     recipe map id
-	 * @param registerAction DO NOT ADD RECIPES TO MAPS OTHER THAN THE ONE PASSED TO YOU. DO NOT DO ANYTHING OTHER THAN
+    /**
+     * Use this to register recipes for a recipe map in addon not present at compile time.
+     * <p>
+     * Do not use this for recipes maps already in {@link GT_RecipeConstants}. None of them will be available via this
+     * interface!
+     *
+     * @param identifier     recipe map id
+     * @param registerAction DO NOT ADD RECIPES TO MAPS OTHER THAN THE ONE PASSED TO YOU. DO NOT DO ANYTHING OTHER THAN
      *                       ADDING RECIPES TO THIS R
-	 */
-	public static void registerRecipesFor(String modid, String identifier, Consumer<IGT_RecipeMap> registerAction) {
-		String id = modid + "@" + identifier;
-		IGT_RecipeMap map = addonRecipeMaps.get(id);
-		if (map == null)
-			delayedActions.put(id, registerAction);
-		else
-			registerAction.accept(map);
-	}
+     */
+    public static void registerRecipesFor(String modid, String identifier, Consumer<IGT_RecipeMap> registerAction) {
+        String id = modid + "@" + identifier;
+        IGT_RecipeMap map = addonRecipeMaps.get(id);
+        if (map == null) delayedActions.put(id, registerAction);
+        else registerAction.accept(map);
+    }
 
-	public static final class GT_RecipeTemplate {
+    public static final class GT_RecipeTemplate {
 
         private final GT_Recipe template;
         private final List<GT_Recipe> derivatives = new ArrayList<>();
@@ -169,21 +177,22 @@ public class GT_RecipeMapUtil {
         }
     }
 
-	public static final class RecipeMapDependency {
-		private final IGT_RecipeMap obj;
-		private final String id;
+    public static final class RecipeMapDependency {
 
-		public RecipeMapDependency(IGT_RecipeMap obj, String id) {
-			this.obj = obj;
-			this.id = id;
-		}
+        private final IGT_RecipeMap obj;
+        private final String id;
 
-		public static RecipeMapDependency create(String id) {
-			return new RecipeMapDependency(null, id);
-		}
+        public RecipeMapDependency(IGT_RecipeMap obj, String id) {
+            this.obj = obj;
+            this.id = id;
+        }
 
-		public static RecipeMapDependency create(IGT_RecipeMap obj) {
-			return new RecipeMapDependency(obj, null);
-		}
-	}
+        public static RecipeMapDependency create(String id) {
+            return new RecipeMapDependency(null, id);
+        }
+
+        public static RecipeMapDependency create(IGT_RecipeMap obj) {
+            return new RecipeMapDependency(obj, null);
+        }
+    }
 }
