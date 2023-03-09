@@ -645,9 +645,16 @@ public enum OrePrefixes {
             false, 0, -1, 64, -1),
     beeComb("Bee Combs", "", "", true, false, true, false, false, false, false, false, false, false, 0, -1, 64, -1),
     nanite("Nanites", "", " Nanites", true, true, true, false, false, false, false, false, false, false, 0, -1, 64, 50),
-    /** migrated from GT++ */
+    // migrated from GT++
     milled("Milled Ores", "Milled ", " Ore", true, true, false, false, false, false, false, false, false, true, B[3],
-            -1, 64, -1),;
+            -1, 64, -1),
+    // migrated from bartworks
+    blockCasing("A Casing block for a Multiblock-Machine", "Bolted ", " Casing", true, true, true, true, false, true,
+            false, true, false, false, 0, M * 9, 64, -1),
+    blockCasingAdvanced("An Advanced Casing block for a Multiblock-Machine", "Rebolted ", " Casing", true, true, true,
+            true, false, true, false, true, false, false, 0, M * 9, 64, -1),
+    capsuleMolten("Capsule of Molten stuff", "Molten ", " Capsule", true, true, true, true, false, false, false, true,
+            false, false, 0, M * 1, 64, -1);
 
     public static final ImmutableList<OrePrefixes> CELL_TYPES = ImmutableList.of(
             cell,
