@@ -3,6 +3,8 @@ package gregtech.common.tileentities.machines;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_HATCH;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_HATCH_ACTIVE;
 
+import java.util.Iterator;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -53,6 +55,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
     private final ItemStack[] shadowInventory = new ItemStack[SLOT_COUNT];
     private final int[] savedStackSizes = new int[SLOT_COUNT];
     private boolean processingRecipe = false;
+    private boolean autoPullItemList = false;
 
     public GT_MetaTileEntity_Hatch_InputBus_ME(int aID, String aName, String aNameRegional) {
         super(
@@ -85,6 +88,14 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
         return new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_ME_INPUT_HATCH) };
+    }
+
+    @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
+        if (aTimer % 100 == 0 && autoPullItemList) {
+            refreshItemList();
+        }
+        super.onPostTick(aBaseMetaTileEntity, aTimer);
     }
 
     @Override
@@ -135,6 +146,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
         int[] sizes = new int[16];
         for (int i = 0; i < 16; ++i) sizes[i] = mInventory[i + 16] == null ? 0 : mInventory[i + 16].stackSize;
         aNBT.setIntArray("sizes", sizes);
+        aNBT.setBoolean("autoStock", autoPullItemList);
         if (GregTech_API.mAE2) {
             gridProxy.writeToNBT(aNBT);
         }
@@ -155,6 +167,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
                 }
             }
         }
+        autoPullItemList = aNBT.getBoolean("autoStock");
         if (GregTech_API.mAE2) {
             getProxy().readFromNBT(aNBT);
         }
@@ -187,7 +200,15 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
     }
 
     @Override
-    public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {}
+    public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        autoPullItemList = !autoPullItemList;
+        GT_Utility.sendChatToPlayer(aPlayer, "Automatic Item Pull " + autoPullItemList);
+        if (!autoPullItemList) {
+            for (int i = 0; i < SLOT_COUNT; i++) {
+                mInventory[i] = null;
+            }
+        }
+    }
 
     @Override
     public void updateSlots() {}
@@ -266,6 +287,29 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
         processingRecipe = true;
     }
 
+    private void refreshItemList() {
+        if (GregTech_API.mAE2) {
+            AENetworkProxy proxy = getProxy();
+            try {
+                IMEMonitor<IAEItemStack> sg = proxy.getStorage().getItemInventory();
+                Iterator<IAEItemStack> iterator = sg.getStorageList().iterator();
+                int index = 0;
+                while (iterator.hasNext() && index < SLOT_COUNT) {
+                    IAEItemStack currItem = iterator.next();
+                    if (currItem.getStackSize() != 0) {
+                        ItemStack itemstack = GT_Utility.copyAmount(1, currItem.getItemStack());
+                        this.mInventory[index] = itemstack;
+                        index++;
+                    }
+                }
+                for (int i = index; i < SLOT_COUNT; i++) {
+                    mInventory[i] = null;
+                }
+
+            } catch (final GridAccessException ignored) {}
+        }
+    }
+
     @Override
     public void endRecipeProcessing() {
         if (GregTech_API.mAE2) {
@@ -333,7 +377,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
 
                             @Override
                             protected void phantomClick(ClickData clickData, ItemStack cursorStack) {
-                                if (clickData.mouseButton != 0) return;
+                                if (clickData.mouseButton != 0 || autoPullItemList) return;
                                 final int aSlotIndex = getMcSlot().getSlotIndex();
                                 if (cursorStack == null) {
                                     getMcSlot().putStack(null);
