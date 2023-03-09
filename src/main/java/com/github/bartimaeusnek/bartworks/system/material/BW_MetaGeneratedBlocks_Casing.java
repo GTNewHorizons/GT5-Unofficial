@@ -83,8 +83,8 @@ public class BW_MetaGeneratedBlocks_Casing extends BW_MetaGenerated_Blocks
 
     @Override
     public String getUnlocalizedName() {
-        if (_prefixes == WerkstoffLoader.blockCasing) return "bw.werkstoffblockscasing.01";
-        else if (_prefixes == WerkstoffLoader.blockCasingAdvanced) return "bw.werkstoffblockscasingadvanced.01";
+        if (_prefixes == OrePrefixes.blockCasing) return "bw.werkstoffblockscasing.01";
+        else if (_prefixes == OrePrefixes.blockCasingAdvanced) return "bw.werkstoffblockscasingadvanced.01";
         return "";
     }
 
@@ -95,7 +95,7 @@ public class BW_MetaGeneratedBlocks_Casing extends BW_MetaGenerated_Blocks
         Werkstoff.werkstoffHashSet.stream()
                 .filter(
                         pMaterial -> pMaterial.getType().equals(Werkstoff.Types.BIOLOGICAL)
-                                && pMaterial.hasGenerationFeature(WerkstoffLoader.blockCasing)
+                                && pMaterial.hasGenerationFeature(OrePrefixes.blockCasing)
                                 || pMaterial.doesOreDictedItemExists(OrePrefixes.plate)
                                         && pMaterial.doesOreDictedItemExists(OrePrefixes.screw)
                                         && pMaterial.doesOreDictedItemExists(OrePrefixes.plateDouble)

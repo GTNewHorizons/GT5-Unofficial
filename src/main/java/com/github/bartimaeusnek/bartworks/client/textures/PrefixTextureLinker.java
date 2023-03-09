@@ -19,7 +19,6 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
-import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -37,7 +36,7 @@ public class PrefixTextureLinker implements Runnable {
 
     private static void fillBlockTexMap() {
         blockTexMap.put(TextureSet.SET_QUARTZ, TextureSet.INDEX_block4);
-        Stream.of(WerkstoffLoader.blockCasing, WerkstoffLoader.blockCasingAdvanced).forEach(prefixes -> {
+        Stream.of(OrePrefixes.blockCasing, OrePrefixes.blockCasingAdvanced).forEach(prefixes -> {
             HashMap<TextureSet, IIconContainer> curr = new HashMap<>();
             Arrays.stream(TextureSet.class.getFields()).filter(field -> field.getName().contains("SET"))
                     .forEach(SET -> {

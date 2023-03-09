@@ -32,7 +32,6 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
-import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import com.github.bartimaeusnek.bartworks.util.BWRecipes;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
 import com.github.bartimaeusnek.bartworks.util.Pair;
@@ -215,11 +214,11 @@ public class StaticRecipeChangeLoaders {
 
     @SuppressWarnings("ALL")
     private static void runMoltenUnificationEnfocement(Werkstoff werkstoff) {
-        if (werkstoff.getGenerationFeatures().enforceUnification && werkstoff.hasItemType(WerkstoffLoader.cellMolten)) {
+        if (werkstoff.getGenerationFeatures().enforceUnification && werkstoff.hasItemType(OrePrefixes.cellMolten)) {
             try {
                 FluidContainerRegistry.FluidContainerData data = new FluidContainerRegistry.FluidContainerData(
                         new FluidStack(Objects.requireNonNull(molten.get(werkstoff)), 144),
-                        werkstoff.get(WerkstoffLoader.cellMolten),
+                        werkstoff.get(OrePrefixes.cellMolten),
                         Materials.Empty.getCells(1));
                 Field f = GT_Utility.class.getDeclaredField("sFilledContainerToData");
                 f.setAccessible(true);

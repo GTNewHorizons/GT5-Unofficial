@@ -101,7 +101,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
 
     /**
      * GT Materials Bridge Constructor
-     * 
+     *
      * @param materials          a GT Materials
      * @param generationFeatures the new Types you want to add
      * @param type               - self explainatory
@@ -692,8 +692,8 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
             Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.capsule, 0b10000);
             // Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.bottle,0b10000);
 
-            Werkstoff.GenerationFeatures.prefixLogic.put(WerkstoffLoader.capsuleMolten, 0b1000000);
-            Werkstoff.GenerationFeatures.prefixLogic.put(WerkstoffLoader.cellMolten, 0b1000000);
+            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.capsuleMolten, 0b1000000);
+            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.cellMolten, 0b1000000);
 
             Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.plate, 0b10000000);
             Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.foil, 0b10000000);
@@ -724,8 +724,8 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
             Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.ingotQuadruple, 0x200);
             Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.ingotQuintuple, 0x200);
 
-            Werkstoff.GenerationFeatures.prefixLogic.put(WerkstoffLoader.blockCasing, 0x380);
-            Werkstoff.GenerationFeatures.prefixLogic.put(WerkstoffLoader.blockCasingAdvanced, 0x380);
+            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.blockCasing, 0x380);
+            Werkstoff.GenerationFeatures.prefixLogic.put(OrePrefixes.blockCasingAdvanced, 0x380);
         }
 
         public void setExtension() {

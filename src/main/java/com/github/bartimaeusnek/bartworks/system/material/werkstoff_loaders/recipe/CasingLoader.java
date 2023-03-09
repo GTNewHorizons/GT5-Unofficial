@@ -13,8 +13,6 @@
 
 package com.github.bartimaeusnek.bartworks.system.material.werkstoff_loaders.recipe;
 
-import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.blockCasing;
-import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.blockCasingAdvanced;
 import static gregtech.api.enums.OrePrefixes.*;
 
 import net.minecraft.item.ItemStack;

@@ -854,17 +854,12 @@ public class RecipeLoader {
                 ItemList[] sensors = { ItemList.Sensor_EV, ItemList.Sensor_IV, ItemList.Sensor_LuV,
                         ItemList.Sensor_ZPM };
 
-                OrePrefixes[] prefixes = { WerkstoffLoader.gtnhGT ? OrePrefixes.cableGt04 : OrePrefixes.wireGt04,
-                        WerkstoffLoader.gtnhGT ? OrePrefixes.cableGt08 : OrePrefixes.wireGt08,
-                        WerkstoffLoader.gtnhGT ? OrePrefixes.cableGt12 : OrePrefixes.wireGt12,
-                        WerkstoffLoader.gtnhGT ? OrePrefixes.cableGt16 : OrePrefixes.cableGt12 };
+                OrePrefixes[] prefixes = { OrePrefixes.cableGt04, OrePrefixes.cableGt08, OrePrefixes.cableGt12,
+                        OrePrefixes.cableGt16 };
 
                 GT_Values.RA.addAssemblerRecipe(
                         new ItemStack[] { ItemList.Circuit_Parts_GlassFiber.get(32),
-                                GT_OreDictUnificator.get(
-                                        WerkstoffLoader.gtnhGT ? OrePrefixes.foil : OrePrefixes.plateDouble,
-                                        Materials.Electrum,
-                                        WerkstoffLoader.gtnhGT ? 8 : 1),
+                                GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Electrum, 8),
                                 WerkstoffLoader.CubicZirconia.get(OrePrefixes.gemExquisite, 2) },
                         Materials.Polytetrafluoroethylene.getMolten(72),
                         new ItemStack(

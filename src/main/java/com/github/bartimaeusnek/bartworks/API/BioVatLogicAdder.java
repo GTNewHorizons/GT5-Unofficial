@@ -132,14 +132,12 @@ public final class BioVatLogicAdder {
                     96,
                     10);
 
-            if (WerkstoffLoader.gtnhGT) {
-                giveItemStackRadioHatchAbilites(ItemList.MNqCell_1.get(1), Materials.Naquadria, 3);
-                giveItemStackRadioHatchAbilites(ItemList.MNqCell_2.get(1), Materials.Naquadria, 6);
-                giveItemStackRadioHatchAbilites(ItemList.MNqCell_4.get(1), Materials.Naquadria, 12);
-                giveItemStackRadioHatchAbilites(ItemList.Depleted_MNq_1.get(1), Materials.Naquadria, 3, 10);
-                giveItemStackRadioHatchAbilites(ItemList.Depleted_MNq_2.get(1), Materials.Naquadria, 6, 10);
-                giveItemStackRadioHatchAbilites(ItemList.Depleted_MNq_4.get(1), Materials.Naquadria, 12, 10);
-            }
+            giveItemStackRadioHatchAbilites(ItemList.MNqCell_1.get(1), Materials.Naquadria, 3);
+            giveItemStackRadioHatchAbilites(ItemList.MNqCell_2.get(1), Materials.Naquadria, 6);
+            giveItemStackRadioHatchAbilites(ItemList.MNqCell_4.get(1), Materials.Naquadria, 12);
+            giveItemStackRadioHatchAbilites(ItemList.Depleted_MNq_1.get(1), Materials.Naquadria, 3, 10);
+            giveItemStackRadioHatchAbilites(ItemList.Depleted_MNq_2.get(1), Materials.Naquadria, 6, 10);
+            giveItemStackRadioHatchAbilites(ItemList.Depleted_MNq_4.get(1), Materials.Naquadria, 12, 10);
         }
 
         private static final HashSet<BioVatLogicAdder.MaterialSvPair> MaSv = new HashSet<>();

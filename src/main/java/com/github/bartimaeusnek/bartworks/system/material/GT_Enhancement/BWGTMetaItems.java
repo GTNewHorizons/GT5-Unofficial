@@ -34,7 +34,6 @@ import com.github.bartimaeusnek.bartworks.API.SideReference;
 import com.github.bartimaeusnek.bartworks.client.textures.PrefixTextureLinker;
 import com.github.bartimaeusnek.bartworks.system.material.BW_MetaGenerated_Items;
 import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
-import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
 
 import cpw.mods.fml.relauncher.Side;
@@ -58,7 +57,7 @@ public class BWGTMetaItems extends BW_MetaGenerated_Items {
         for (int i = 0; i < Materials.values().length; i++) {
             ItemStack tStack = new ItemStack(this, 1, i);
             Materials material = Materials.values()[i];
-            if (((material.getMolten(1) == null && orePrefixes == WerkstoffLoader.capsuleMolten)
+            if (((material.getMolten(1) == null && orePrefixes == OrePrefixes.capsuleMolten)
                     || ((material.getFluid(1) == null && material.getGas(1) == null)
                             && (orePrefixes == OrePrefixes.capsule || orePrefixes == OrePrefixes.bottle))))
                 continue;
@@ -80,7 +79,7 @@ public class BWGTMetaItems extends BW_MetaGenerated_Items {
             for (int i = 0; i < noSubIDMaterials.size(); i++) {
                 ItemStack tStack = new ItemStack(this, 1, i + 1001);
                 Materials w = noSubIDMaterials.get(i);
-                if (((w.getMolten(1) == null && orePrefixes == WerkstoffLoader.capsuleMolten)
+                if (((w.getMolten(1) == null && orePrefixes == OrePrefixes.capsuleMolten)
                         || ((w.getFluid(1) == null && w.getGas(1) == null)
                                 && (orePrefixes == OrePrefixes.capsule || orePrefixes == OrePrefixes.bottle))))
                     continue;
@@ -179,7 +178,7 @@ public class BWGTMetaItems extends BW_MetaGenerated_Items {
             if ((w == null) || (w.mTypes & Werkstoff.GenerationFeatures.getPrefixDataRaw(this.orePrefixes)) == 0
                     && Werkstoff.GenerationFeatures.getPrefixDataRaw(this.orePrefixes) != 0)
                 continue;
-            else if (((w.getMolten(1) == null && orePrefixes == WerkstoffLoader.capsuleMolten)
+            else if (((w.getMolten(1) == null && orePrefixes == OrePrefixes.capsuleMolten)
                     || ((w.getFluid(1) == null && w.getGas(1) == null)
                             && (orePrefixes == OrePrefixes.capsule || orePrefixes == OrePrefixes.bottle))))
                 continue;
@@ -191,7 +190,7 @@ public class BWGTMetaItems extends BW_MetaGenerated_Items {
             if ((w == null) || (w.mTypes & Werkstoff.GenerationFeatures.getPrefixDataRaw(this.orePrefixes)) == 0
                     && Werkstoff.GenerationFeatures.getPrefixDataRaw(this.orePrefixes) != 0)
                 continue;
-            else if (((w.getMolten(1) == null && orePrefixes == WerkstoffLoader.capsuleMolten)
+            else if (((w.getMolten(1) == null && orePrefixes == OrePrefixes.capsuleMolten)
                     || ((w.getFluid(1) == null && w.getGas(1) == null)
                             && (orePrefixes == OrePrefixes.capsule || orePrefixes == OrePrefixes.bottle))))
                 continue;

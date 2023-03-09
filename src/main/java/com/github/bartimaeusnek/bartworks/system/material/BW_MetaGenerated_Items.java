@@ -256,14 +256,16 @@ public class BW_MetaGenerated_Items extends GT_MetaGenerated_Item implements IRa
     @Override
     public int getCapacity(ItemStack aStack) {
         return this.orePrefixes == OrePrefixes.capsule || this.orePrefixes == OrePrefixes.cell
-                || this.orePrefixes == OrePrefixes.cellPlasma ? 1000
-                        : this.orePrefixes == WerkstoffLoader.cellMolten
-                                || this.orePrefixes == WerkstoffLoader.capsuleMolten ? 144 : 0;
+                || this.orePrefixes == OrePrefixes.cellPlasma
+                        ? 1000
+                        : this.orePrefixes == OrePrefixes.cellMolten || this.orePrefixes == OrePrefixes.capsuleMolten
+                                ? 144
+                                : 0;
     }
 
     @Override
     public ItemStack getContainerItem(ItemStack aStack) {
         return this.orePrefixes == OrePrefixes.cell || this.orePrefixes == OrePrefixes.cellPlasma
-                || this.orePrefixes == WerkstoffLoader.cellMolten ? Materials.Empty.getCells(1) : null;
+                || this.orePrefixes == OrePrefixes.cellMolten ? Materials.Empty.getCells(1) : null;
     }
 }

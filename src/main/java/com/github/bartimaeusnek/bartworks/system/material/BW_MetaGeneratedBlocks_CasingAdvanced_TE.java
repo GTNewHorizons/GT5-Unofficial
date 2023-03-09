@@ -38,7 +38,7 @@ public class BW_MetaGeneratedBlocks_CasingAdvanced_TE extends BW_MetaGenerated_B
             if ((aMaterial != null)) {
                 TextureSet set = aMaterial.getTexSet();
                 ITexture aIconSet = TextureFactory.of(
-                        PrefixTextureLinker.texMapBlocks.get(WerkstoffLoader.blockCasingAdvanced)
+                        PrefixTextureLinker.texMapBlocks.get(OrePrefixes.blockCasingAdvanced)
                                 .getOrDefault(set, TextureSet.SET_NONE.mTextures[OrePrefixes.block.mTextureIndex]),
                         aMaterial.getRGBA());
                 return new ITexture[] { TextureFactory.of(Blocks.iron_block), aIconSet };

@@ -172,7 +172,7 @@ public class CraftingMaterialLoader implements IWerkstoffRunnable {
                     60);
 
             // molten -> metal
-            if (werkstoff.hasItemType(WerkstoffLoader.cellMolten)) {
+            if (werkstoff.hasItemType(cellMolten)) {
 
                 /*
                  * !! No more hardcoded gear, etc. recipe gen, now must go through GenerationFeatures() !!

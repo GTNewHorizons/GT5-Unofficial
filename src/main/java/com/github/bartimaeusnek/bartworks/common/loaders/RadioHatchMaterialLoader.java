@@ -207,14 +207,12 @@ public class RadioHatchMaterialLoader {
                 96,
                 Materials.Naquadah.mRGBa);
 
-        if (WerkstoffLoader.gtnhGT) {
-            BWRecipes.instance.addRadHatch(ItemList.MNqCell_1.get(1), 150, 3, Materials.Naquadria.mRGBa);
-            BWRecipes.instance.addRadHatch(ItemList.MNqCell_2.get(1), 150, 6, Materials.Naquadria.mRGBa);
-            BWRecipes.instance.addRadHatch(ItemList.MNqCell_4.get(1), 150, 12, Materials.Naquadria.mRGBa);
+        BWRecipes.instance.addRadHatch(ItemList.MNqCell_1.get(1), 150, 3, Materials.Naquadria.mRGBa);
+        BWRecipes.instance.addRadHatch(ItemList.MNqCell_2.get(1), 150, 6, Materials.Naquadria.mRGBa);
+        BWRecipes.instance.addRadHatch(ItemList.MNqCell_4.get(1), 150, 12, Materials.Naquadria.mRGBa);
 
-            BWRecipes.instance.addRadHatch(ItemList.Depleted_MNq_1.get(1), 150 / 10, 3, Materials.Naquadria.mRGBa);
-            BWRecipes.instance.addRadHatch(ItemList.Depleted_MNq_2.get(1), 150 / 10, 6, Materials.Naquadria.mRGBa);
-            BWRecipes.instance.addRadHatch(ItemList.Depleted_MNq_4.get(1), 150 / 10, 12, Materials.Naquadria.mRGBa);
-        }
+        BWRecipes.instance.addRadHatch(ItemList.Depleted_MNq_1.get(1), 150 / 10, 3, Materials.Naquadria.mRGBa);
+        BWRecipes.instance.addRadHatch(ItemList.Depleted_MNq_2.get(1), 150 / 10, 6, Materials.Naquadria.mRGBa);
+        BWRecipes.instance.addRadHatch(ItemList.Depleted_MNq_4.get(1), 150 / 10, 12, Materials.Naquadria.mRGBa);
     }
 }

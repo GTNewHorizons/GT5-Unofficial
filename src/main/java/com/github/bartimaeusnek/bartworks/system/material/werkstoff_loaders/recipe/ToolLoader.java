@@ -13,7 +13,6 @@
 
 package com.github.bartimaeusnek.bartworks.system.material.werkstoff_loaders.recipe;
 
-import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.gtnhGT;
 import static gregtech.api.enums.OrePrefixes.*;
 
 import net.minecraft.init.Blocks;
@@ -123,32 +122,30 @@ public class ToolLoader implements IWerkstoffRunnable {
                             stick.get(werkstoff.getBridgeMaterial().mHandleMaterial), 'L',
                             ItemList.Battery_RE_LV_Lithium.get(1L) });
 
-            if (gtnhGT) {
-                GT_ModHandler.addCraftingRecipe(
-                        GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                                SOLDERING_IRON_MV,
-                                1,
-                                werkstoff.getBridgeMaterial(),
-                                Materials.Rubber,
-                                new long[] { 400000L, 128L, 2L, -1L }),
-                        GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GT_ModHandler.RecipeBits.BUFFERED,
-                        new Object[] { "LBf", "Sd ", "P  ", 'B', bolt.get(werkstoff.getBridgeMaterial()), 'P',
-                                plate.get(Materials.AnyRubber), 'S',
-                                stick.get(werkstoff.getBridgeMaterial().mHandleMaterial), 'L',
-                                ItemList.Battery_RE_MV_Lithium.get(1L) });
-                GT_ModHandler.addCraftingRecipe(
-                        GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                                SOLDERING_IRON_HV,
-                                1,
-                                werkstoff.getBridgeMaterial(),
-                                Materials.StyreneButadieneRubber,
-                                new long[] { 1600000L, 512L, 3L, -1L }),
-                        GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GT_ModHandler.RecipeBits.BUFFERED,
-                        new Object[] { "LBf", "Sd ", "P  ", 'B', bolt.get(werkstoff.getBridgeMaterial()), 'P',
-                                plate.get(Materials.StyreneButadieneRubber), 'S',
-                                stick.get(werkstoff.getBridgeMaterial().mHandleMaterial), 'L',
-                                ItemList.Battery_RE_HV_Lithium.get(1L) });
-            }
+            GT_ModHandler.addCraftingRecipe(
+                    GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
+                            SOLDERING_IRON_MV,
+                            1,
+                            werkstoff.getBridgeMaterial(),
+                            Materials.Rubber,
+                            new long[] { 400000L, 128L, 2L, -1L }),
+                    GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GT_ModHandler.RecipeBits.BUFFERED,
+                    new Object[] { "LBf", "Sd ", "P  ", 'B', bolt.get(werkstoff.getBridgeMaterial()), 'P',
+                            plate.get(Materials.AnyRubber), 'S',
+                            stick.get(werkstoff.getBridgeMaterial().mHandleMaterial), 'L',
+                            ItemList.Battery_RE_MV_Lithium.get(1L) });
+            GT_ModHandler.addCraftingRecipe(
+                    GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
+                            SOLDERING_IRON_HV,
+                            1,
+                            werkstoff.getBridgeMaterial(),
+                            Materials.StyreneButadieneRubber,
+                            new long[] { 1600000L, 512L, 3L, -1L }),
+                    GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GT_ModHandler.RecipeBits.BUFFERED,
+                    new Object[] { "LBf", "Sd ", "P  ", 'B', bolt.get(werkstoff.getBridgeMaterial()), 'P',
+                            plate.get(Materials.StyreneButadieneRubber), 'S',
+                            stick.get(werkstoff.getBridgeMaterial().mHandleMaterial), 'L',
+                            ItemList.Battery_RE_HV_Lithium.get(1L) });
 
             if (!werkstoff.hasItemType(gem)) {
                 GT_ModHandler.addCraftingRecipe(
@@ -485,86 +482,84 @@ public class ToolLoader implements IWerkstoffRunnable {
                             ingot.get(werkstoff.getBridgeMaterial()) });
         }
 
-        if (gtnhGT) {
-            GT_ModHandler.addCraftingRecipe(
-                    GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                            SCREWDRIVER_MV,
-                            1,
-                            werkstoff.getBridgeMaterial(),
-                            Materials.Aluminium,
-                            new long[] { 400000L, 128L, 2L, -1L }),
-                    GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
-                            | GT_ModHandler.RecipeBits.BUFFERED,
-                    new Object[] { "PdX", "MGS", "GBP", 'X', stickLong.get(werkstoff.getBridgeMaterial()), 'M',
-                            ItemList.Electric_Motor_MV.get(1L), 'S', screw.get(Materials.Aluminium), 'P',
-                            plate.get(Materials.Aluminium), 'G', gearGtSmall.get(Materials.Titanium), 'B',
-                            ItemList.Battery_RE_MV_Lithium.get(1L) });
-            GT_ModHandler.addCraftingRecipe(
-                    GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                            SCREWDRIVER_MV,
-                            1,
-                            werkstoff.getBridgeMaterial(),
-                            Materials.Aluminium,
-                            new long[] { 300000L, 128L, 2L, -1L }),
-                    GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
-                            | GT_ModHandler.RecipeBits.BUFFERED,
-                    new Object[] { "PdX", "MGS", "GBP", 'X', stickLong.get(werkstoff.getBridgeMaterial()), 'M',
-                            ItemList.Electric_Motor_MV.get(1L), 'S', screw.get(Materials.Aluminium), 'P',
-                            plate.get(Materials.Aluminium), 'G', gearGtSmall.get(Materials.Titanium), 'B',
-                            ItemList.Battery_RE_MV_Cadmium.get(1L) });
-            GT_ModHandler.addCraftingRecipe(
-                    GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                            SCREWDRIVER_MV,
-                            1,
-                            werkstoff.getBridgeMaterial(),
-                            Materials.Aluminium,
-                            new long[] { 200000L, 128L, 2L, -1L }),
-                    GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
-                            | GT_ModHandler.RecipeBits.BUFFERED,
-                    new Object[] { "PdX", "MGS", "GBP", 'X', stickLong.get(werkstoff.getBridgeMaterial()), 'M',
-                            ItemList.Electric_Motor_MV.get(1L), 'S', screw.get(Materials.Aluminium), 'P',
-                            plate.get(Materials.Aluminium), 'G', gearGtSmall.get(Materials.Titanium), 'B',
-                            ItemList.Battery_RE_MV_Sodium.get(1L) });
-            GT_ModHandler.addCraftingRecipe(
-                    GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                            SCREWDRIVER_HV,
-                            1,
-                            werkstoff.getBridgeMaterial(),
-                            Materials.StainlessSteel,
-                            new long[] { 1600000L, 512L, 3L, -1L }),
-                    GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
-                            | GT_ModHandler.RecipeBits.BUFFERED,
-                    new Object[] { "PdX", "MGS", "GBP", 'X', stickLong.get(werkstoff.getBridgeMaterial()), 'M',
-                            ItemList.Electric_Motor_HV.get(1L), 'S', screw.get(Materials.StainlessSteel), 'P',
-                            plate.get(Materials.StainlessSteel), 'G', gearGtSmall.get(Materials.StainlessSteel), 'B',
-                            ItemList.Battery_RE_HV_Lithium.get(1L) });
-            GT_ModHandler.addCraftingRecipe(
-                    GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                            SCREWDRIVER_HV,
-                            1,
-                            werkstoff.getBridgeMaterial(),
-                            Materials.StainlessSteel,
-                            new long[] { 1200000L, 512L, 3L, -1L }),
-                    GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
-                            | GT_ModHandler.RecipeBits.BUFFERED,
-                    new Object[] { "PdX", "MGS", "GBP", 'X', stickLong.get(werkstoff.getBridgeMaterial()), 'M',
-                            ItemList.Electric_Motor_HV.get(1L), 'S', screw.get(Materials.StainlessSteel), 'P',
-                            plate.get(Materials.StainlessSteel), 'G', gearGtSmall.get(Materials.StainlessSteel), 'B',
-                            ItemList.Battery_RE_HV_Cadmium.get(1L) });
-            GT_ModHandler.addCraftingRecipe(
-                    GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
-                            SCREWDRIVER_HV,
-                            1,
-                            werkstoff.getBridgeMaterial(),
-                            Materials.StainlessSteel,
-                            new long[] { 800000L, 512L, 3L, -1L }),
-                    GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
-                            | GT_ModHandler.RecipeBits.BUFFERED,
-                    new Object[] { "PdX", "MGS", "GBP", 'X', stickLong.get(werkstoff.getBridgeMaterial()), 'M',
-                            ItemList.Electric_Motor_HV.get(1L), 'S', screw.get(Materials.StainlessSteel), 'P',
-                            plate.get(Materials.StainlessSteel), 'G', gearGtSmall.get(Materials.StainlessSteel), 'B',
-                            ItemList.Battery_RE_HV_Sodium.get(1L) });
-        }
+        GT_ModHandler.addCraftingRecipe(
+                GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
+                        SCREWDRIVER_MV,
+                        1,
+                        werkstoff.getBridgeMaterial(),
+                        Materials.Aluminium,
+                        new long[] { 400000L, 128L, 2L, -1L }),
+                GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                        | GT_ModHandler.RecipeBits.BUFFERED,
+                new Object[] { "PdX", "MGS", "GBP", 'X', stickLong.get(werkstoff.getBridgeMaterial()), 'M',
+                        ItemList.Electric_Motor_MV.get(1L), 'S', screw.get(Materials.Aluminium), 'P',
+                        plate.get(Materials.Aluminium), 'G', gearGtSmall.get(Materials.Titanium), 'B',
+                        ItemList.Battery_RE_MV_Lithium.get(1L) });
+        GT_ModHandler.addCraftingRecipe(
+                GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
+                        SCREWDRIVER_MV,
+                        1,
+                        werkstoff.getBridgeMaterial(),
+                        Materials.Aluminium,
+                        new long[] { 300000L, 128L, 2L, -1L }),
+                GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                        | GT_ModHandler.RecipeBits.BUFFERED,
+                new Object[] { "PdX", "MGS", "GBP", 'X', stickLong.get(werkstoff.getBridgeMaterial()), 'M',
+                        ItemList.Electric_Motor_MV.get(1L), 'S', screw.get(Materials.Aluminium), 'P',
+                        plate.get(Materials.Aluminium), 'G', gearGtSmall.get(Materials.Titanium), 'B',
+                        ItemList.Battery_RE_MV_Cadmium.get(1L) });
+        GT_ModHandler.addCraftingRecipe(
+                GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
+                        SCREWDRIVER_MV,
+                        1,
+                        werkstoff.getBridgeMaterial(),
+                        Materials.Aluminium,
+                        new long[] { 200000L, 128L, 2L, -1L }),
+                GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                        | GT_ModHandler.RecipeBits.BUFFERED,
+                new Object[] { "PdX", "MGS", "GBP", 'X', stickLong.get(werkstoff.getBridgeMaterial()), 'M',
+                        ItemList.Electric_Motor_MV.get(1L), 'S', screw.get(Materials.Aluminium), 'P',
+                        plate.get(Materials.Aluminium), 'G', gearGtSmall.get(Materials.Titanium), 'B',
+                        ItemList.Battery_RE_MV_Sodium.get(1L) });
+        GT_ModHandler.addCraftingRecipe(
+                GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
+                        SCREWDRIVER_HV,
+                        1,
+                        werkstoff.getBridgeMaterial(),
+                        Materials.StainlessSteel,
+                        new long[] { 1600000L, 512L, 3L, -1L }),
+                GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                        | GT_ModHandler.RecipeBits.BUFFERED,
+                new Object[] { "PdX", "MGS", "GBP", 'X', stickLong.get(werkstoff.getBridgeMaterial()), 'M',
+                        ItemList.Electric_Motor_HV.get(1L), 'S', screw.get(Materials.StainlessSteel), 'P',
+                        plate.get(Materials.StainlessSteel), 'G', gearGtSmall.get(Materials.StainlessSteel), 'B',
+                        ItemList.Battery_RE_HV_Lithium.get(1L) });
+        GT_ModHandler.addCraftingRecipe(
+                GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
+                        SCREWDRIVER_HV,
+                        1,
+                        werkstoff.getBridgeMaterial(),
+                        Materials.StainlessSteel,
+                        new long[] { 1200000L, 512L, 3L, -1L }),
+                GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                        | GT_ModHandler.RecipeBits.BUFFERED,
+                new Object[] { "PdX", "MGS", "GBP", 'X', stickLong.get(werkstoff.getBridgeMaterial()), 'M',
+                        ItemList.Electric_Motor_HV.get(1L), 'S', screw.get(Materials.StainlessSteel), 'P',
+                        plate.get(Materials.StainlessSteel), 'G', gearGtSmall.get(Materials.StainlessSteel), 'B',
+                        ItemList.Battery_RE_HV_Cadmium.get(1L) });
+        GT_ModHandler.addCraftingRecipe(
+                GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(
+                        SCREWDRIVER_HV,
+                        1,
+                        werkstoff.getBridgeMaterial(),
+                        Materials.StainlessSteel,
+                        new long[] { 800000L, 512L, 3L, -1L }),
+                GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS
+                        | GT_ModHandler.RecipeBits.BUFFERED,
+                new Object[] { "PdX", "MGS", "GBP", 'X', stickLong.get(werkstoff.getBridgeMaterial()), 'M',
+                        ItemList.Electric_Motor_HV.get(1L), 'S', screw.get(Materials.StainlessSteel), 'P',
+                        plate.get(Materials.StainlessSteel), 'G', gearGtSmall.get(Materials.StainlessSteel), 'B',
+                        ItemList.Battery_RE_HV_Sodium.get(1L) });
 
         // GT_ModHandler.addCraftingRecipe(GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(16,1,
         // werkstoff.getBridgeMaterial(),werkstoff.getBridgeMaterial(),null),

@@ -18,7 +18,6 @@ import static gregtech.api.enums.OrePrefixes.*;
 import net.minecraft.item.ItemStack;
 
 import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
-import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import com.github.bartimaeusnek.bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
 import gregtech.api.enums.GT_Values;
 
@@ -36,7 +35,7 @@ public class BlockLoader implements IWerkstoffRunnable {
                     90,
                     false);
         }
-        if (werkstoff.hasItemType(WerkstoffLoader.cellMolten)) {
+        if (werkstoff.hasItemType(cellMolten)) {
             GT_Values.RA.addFluidExtractionRecipe(werkstoff.get(block), null, werkstoff.getMolten(1296), 0, 288, 8);
         }
         if (werkstoff.hasItemType(plate)) {

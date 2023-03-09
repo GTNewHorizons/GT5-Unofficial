@@ -58,7 +58,6 @@ import gregtech.api.enums.*;
 import gregtech.api.fluid.GT_FluidFactory;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.common.items.GT_MetaGenerated_Tool_01;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeInputOreDict;
 import ic2.api.recipe.RecipeOutput;
@@ -74,63 +73,16 @@ public class WerkstoffLoader {
     public static final SubTag ANAEROBE_SMELTING = SubTag.getNewSubTag("AnaerobeSmelting");
     public static final SubTag NOBLE_GAS_SMELTING = SubTag.getNewSubTag("NobleGasSmelting");
     public static final SubTag NO_BLAST = SubTag.getNewSubTag("NoBlast");
-    public static OrePrefixes cellMolten;
-    public static OrePrefixes capsuleMolten;
-    public static OrePrefixes blockCasing;
-    public static OrePrefixes blockCasingAdvanced;
     public static ItemList rotorMold;
     public static ItemList rotorShape;
     public static ItemList smallGearShape;
     public static ItemList ringMold;
     public static ItemList boltMold;
-    public static boolean gtnhGT = false;
 
     public static void setUp() {
-        // GTNH detection hack
-        try {
-            Field f = GT_MetaGenerated_Tool_01.class.getField("SOLDERING_IRON_MV");
-            gtnhGT = true;
-        } catch (Exception ignored) {
-            gtnhGT = false;
-        }
-        // GTNH detection hack #2
-        // GTNH hack for molten cells
-        for (OrePrefixes prefix : values()) {
-            if (prefix.toString().equals("cellMolten")) {
-                WerkstoffLoader.cellMolten = prefix;
-                gtnhGT = true;
-                break;
-            }
-        }
 
-        if (!gtnhGT) {
-            WerkstoffLoader.HDCS.getGenerationFeatures().extraRecipes ^= 10;
-        }
-
-        if (WerkstoffLoader.cellMolten == null) {
-            WerkstoffLoader.cellMolten = EnumUtils.addNewOrePrefix(
-                    "cellMolten",
-                    "Cells of Molten stuff",
-                    "Molten ",
-                    " Cell",
-                    true,
-                    true,
-                    true,
-                    true,
-                    false,
-                    false,
-                    false,
-                    true,
-                    false,
-                    false,
-                    0b1000000,
-                    3628800L,
-                    64,
-                    31);
-            // GT_LanguageManager.addStringLocalization(".name", this.getDefaultLocalization(w));
-        } else {
-            WerkstoffLoader.cellMolten.mMaterialGenerationBits = 0b1000000;
-        }
+        OrePrefixes.cellMolten.mMaterialGenerationBits = 0b1000000;
+        OrePrefixes.capsuleMolten.mMaterialGenerationBits = 0b1000000;
 
         try {
             WerkstoffLoader.rotorMold = Enum.valueOf(ItemList.class, "Shape_Mold_Rotor");
@@ -142,68 +94,6 @@ public class WerkstoffLoader {
 
         // add tiberium
         Element t = EnumUtils.createNewElement("Tr", 123L, 203L, 0L, -1L, null, "Tiberium", false);
-        blockCasing = EnumUtils.addNewOrePrefix(
-                "blockCasing",
-                "A Casing block for a Multiblock-Machine",
-                "Bolted ",
-                " Casing",
-                true,
-                true,
-                true,
-                true,
-                false,
-                true,
-                false,
-                true,
-                false,
-                false,
-                0,
-                32659200L,
-                64,
-                -1);
-        blockCasingAdvanced = EnumUtils.addNewOrePrefix(
-                "blockCasingAdvanced",
-                "An Advanced Casing block for a Multiblock-Machine",
-                "Rebolted ",
-                " Casing",
-                true,
-                true,
-                true,
-                true,
-                false,
-                true,
-                false,
-                true,
-                false,
-                false,
-                0,
-                32659200L,
-                64,
-                -1);
-        // add molten & regular capsuls
-        if (LoaderReference.Forestry) {
-            capsuleMolten = EnumUtils.addNewOrePrefix(
-                    "capsuleMolten",
-                    "Capsule of Molten stuff",
-                    "Molten ",
-                    " Capsule",
-                    true,
-                    true,
-                    true,
-                    true,
-                    false,
-                    false,
-                    false,
-                    true,
-                    false,
-                    false,
-                    0b1000000,
-                    3628800L,
-                    64,
-                    -1);
-            capsule.mMaterialGenerationBits = 0b100000;
-            capsule.mDefaultStackSize = 64;
-        }
 
         bottle.mDefaultStackSize = 1;
         Werkstoff.GenerationFeatures.initPrefixLogic();
@@ -1472,9 +1362,9 @@ public class WerkstoffLoader {
         if (orePrefixes == ore) return new ItemStack(WerkstoffLoader.BWOres, amount, werkstoff.getmID());
         else if (orePrefixes == oreSmall) return new ItemStack(WerkstoffLoader.BWSmallOres, amount, werkstoff.getmID());
         else if (orePrefixes == block) return new ItemStack(WerkstoffLoader.BWBlocks, amount, werkstoff.getmID());
-        else if (orePrefixes == WerkstoffLoader.blockCasing)
+        else if (orePrefixes == OrePrefixes.blockCasing)
             return new ItemStack(WerkstoffLoader.BWBlockCasings, amount, werkstoff.getmID());
-        else if (orePrefixes == WerkstoffLoader.blockCasingAdvanced)
+        else if (orePrefixes == OrePrefixes.blockCasingAdvanced)
             return new ItemStack(WerkstoffLoader.BWBlockCasingsAdvanced, amount, werkstoff.getmID());
         else if (WerkstoffLoader.items.get(orePrefixes) == null) return null;
         return new ItemStack(WerkstoffLoader.items.get(orePrefixes), amount, werkstoff.getmID()).copy();
@@ -1649,7 +1539,7 @@ public class WerkstoffLoader {
                     WerkstoffLoader.fluids.put(werkstoff, FluidRegistry.getFluid(werkstoff.getDefaultName()));
                 }
             }
-            if (werkstoff.hasItemType(WerkstoffLoader.cellMolten)) {
+            if (werkstoff.hasItemType(OrePrefixes.cellMolten)) {
                 if (!FluidRegistry.isFluidRegistered("molten." + werkstoff.getDefaultName())) {
                     DebugLog.log("Adding new Molten: " + werkstoff.getDefaultName());
                     Fluid fluid = GT_FluidFactory.builder("molten." + werkstoff.getDefaultName())
@@ -1713,10 +1603,9 @@ public class WerkstoffLoader {
             WerkstoffLoader.items.put(cellPlasma, new BW_MetaGenerated_Items(cellPlasma));
         }
         if ((WerkstoffLoader.toGenerateGlobal & 0b1000000) != 0) {
-            WerkstoffLoader.items
-                    .put(WerkstoffLoader.cellMolten, new BW_MetaGenerated_Items(WerkstoffLoader.cellMolten));
-            if (LoaderReference.Forestry)
-                WerkstoffLoader.items.put(capsuleMolten, new BW_MetaGenerated_Items(capsuleMolten));
+            WerkstoffLoader.items.put(OrePrefixes.cellMolten, new BW_MetaGenerated_Items(OrePrefixes.cellMolten));
+            if (LoaderReference.Forestry) WerkstoffLoader.items
+                    .put(OrePrefixes.capsuleMolten, new BW_MetaGenerated_Items(OrePrefixes.capsuleMolten));
         }
         if ((WerkstoffLoader.toGenerateGlobal & 0b10000000) != 0) {
             WerkstoffLoader.items.put(plate, new BW_MetaGenerated_Items(plate));
@@ -1780,12 +1669,12 @@ public class WerkstoffLoader {
                 Material.iron,
                 BW_MetaGeneratedBlocks_Casing_TE.class,
                 "bw.werkstoffblockscasing",
-                blockCasing);
+                OrePrefixes.blockCasing);
         WerkstoffLoader.BWBlockCasingsAdvanced = new BW_MetaGeneratedBlocks_Casing(
                 Material.iron,
                 BW_MetaGeneratedBlocks_CasingAdvanced_TE.class,
                 "bw.werkstoffblockscasingadvanced",
-                blockCasingAdvanced);
+                OrePrefixes.blockCasingAdvanced);
 
         GameRegistry.registerBlock(WerkstoffLoader.BWOres, BW_MetaGeneratedBlock_Item.class, "bw.blockores.01");
         GameRegistry.registerBlock(WerkstoffLoader.BWSmallOres, BW_MetaGeneratedBlock_Item.class, "bw.blockores.02");
@@ -1816,18 +1705,24 @@ public class WerkstoffLoader {
     }
 
     public static void addVanillaCasingsToGTOreDictUnificator() {
-        GT_OreDictUnificator
-                .addAssociation(blockCasing, Materials.Aluminium, ItemList.Casing_FrostProof.get(1L), false);
-        GT_OreDictUnificator.addAssociation(blockCasing, Materials.Nickel, ItemList.Casing_HeatProof.get(1L), false);
-        GT_OreDictUnificator.addAssociation(blockCasing, Materials.Lead, ItemList.Casing_RadiationProof.get(1L), false);
-        GT_OreDictUnificator.addAssociation(blockCasing, Materials.Steel, ItemList.Casing_SolidSteel.get(1L), false);
         GT_OreDictUnificator.addAssociation(
-                blockCasing,
+                OrePrefixes.blockCasing,
+                Materials.Aluminium,
+                ItemList.Casing_FrostProof.get(1L),
+                false);
+        GT_OreDictUnificator
+                .addAssociation(OrePrefixes.blockCasing, Materials.Nickel, ItemList.Casing_HeatProof.get(1L), false);
+        GT_OreDictUnificator
+                .addAssociation(OrePrefixes.blockCasing, Materials.Lead, ItemList.Casing_RadiationProof.get(1L), false);
+        GT_OreDictUnificator
+                .addAssociation(OrePrefixes.blockCasing, Materials.Steel, ItemList.Casing_SolidSteel.get(1L), false);
+        GT_OreDictUnificator.addAssociation(
+                OrePrefixes.blockCasing,
                 Materials.TungstenSteel,
                 ItemList.Casing_RobustTungstenSteel.get(1L),
                 false);
         GT_OreDictUnificator.addAssociation(
-                blockCasing,
+                OrePrefixes.blockCasing,
                 Materials.Polytetrafluoroethylene,
                 ItemList.Casing_Chemically_Inert.get(1L),
                 false);

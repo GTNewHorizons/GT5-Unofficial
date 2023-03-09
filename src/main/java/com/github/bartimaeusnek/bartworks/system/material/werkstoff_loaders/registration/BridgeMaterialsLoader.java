@@ -21,7 +21,6 @@ import net.minecraft.item.ItemStack;
 
 import com.github.bartimaeusnek.bartworks.API.LoaderReference;
 import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
-import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import com.github.bartimaeusnek.bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
 import com.github.bartimaeusnek.bartworks.util.BWRecipes;
 
@@ -158,7 +157,7 @@ public class BridgeMaterialsLoader implements IWerkstoffRunnable {
                     werkstoffBridgeMaterial.mGas = werkstoff.getFluidOrGas(1).getFluid();
                 }
 
-                if (werkstoff.hasItemType(WerkstoffLoader.cellMolten)) {
+                if (werkstoff.hasItemType(cellMolten)) {
                     werkstoffBridgeMaterial.mStandardMoltenFluid = werkstoff.getMolten(1).getFluid();
                 }
                 werkstoffBridgeMaterial.mName = werkstoff.getVarName();

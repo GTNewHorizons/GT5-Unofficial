@@ -366,7 +366,7 @@ public class ItemRegistry {
                     "MegaOilCracker",
                     "Mega Oil Cracker").getStackForm(1L);
 
-            if (LoaderReference.galacticgreg && WerkstoffLoader.gtnhGT) {
+            if (LoaderReference.galacticgreg) {
                 ItemRegistry.voidminer[2] = new GT_TileEntity_VoidMiners.VMUV(
                         ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 11,
                         "VoidMiner3",
