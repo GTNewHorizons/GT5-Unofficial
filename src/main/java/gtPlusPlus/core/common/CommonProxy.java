@@ -44,6 +44,7 @@ import gtPlusPlus.preloader.CORE_Preloader;
 import gtPlusPlus.xmod.eio.handler.HandlerTooltip_EIO;
 import gtPlusPlus.xmod.galacticraft.handler.HandlerTooltip_GC;
 import gtPlusPlus.xmod.gregtech.api.util.SpecialBehaviourTooltipHandler;
+import gtPlusPlus.xmod.ic2.CustomInternalName;
 
 public class CommonProxy {
 
@@ -66,6 +67,7 @@ public class CommonProxy {
         }
 
         AddToCreativeTab.initialiseTabs();
+        CustomInternalName.init();
 
         // Moved from Init after Debug Loading.
         // 29/01/18 - Alkalus
