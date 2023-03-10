@@ -57,7 +57,6 @@ import gregtech.api.multitileentity.interfaces.IMultiBlockPart;
 import gregtech.api.multitileentity.interfaces.IMultiTileEntity.IMTE_BreakBlock;
 import gregtech.api.multitileentity.interfaces.IMultiTileEntity.IMTE_HasModes;
 import gregtech.api.net.GT_Packet_MultiTileEntity;
-import gregtech.api.net.GT_Packet_New;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.covers.CoverInfo;
@@ -223,7 +222,7 @@ public abstract class MultiBlockPart extends BaseNontickableMultiTileEntity
     @Override
     public GT_Packet_MultiTileEntity getClientDataPacket() {
         final GT_Packet_MultiTileEntity packet = super.getClientDataPacket();
-        packet.setModes(getMode(),getAllowedModes());
+        packet.setModes(getMode(), getAllowedModes());
         if (getTargetPos() != null) {
             final ChunkCoordinates aTarget = getTargetPos();
             packet.setTargetPos(aTarget.posX, (short) aTarget.posY, aTarget.posZ);

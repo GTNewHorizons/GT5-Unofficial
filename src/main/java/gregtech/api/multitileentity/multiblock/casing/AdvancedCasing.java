@@ -27,10 +27,5 @@ public abstract class AdvancedCasing extends MultiBlockPart {
         tier = aNBT.getInteger(GT_Values.NBT.TIER);
     }
 
-    @Override
-    public void writeMultiTileNBT(NBTTagCompound aNBT) {
-        super.writeMultiTileNBT(aNBT);
-    }
-
     protected abstract void customWork(IMultiBlockController aTarget);
 }

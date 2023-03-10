@@ -167,7 +167,7 @@ public class MultiTileEntityClassContainer {
         boolean atLeastOne = false;
         String classNames = "";
         for (Class<?> cls : classes) {
-            classNames +=cls.getName()+" ";
+            classNames += cls.getName() + " ";
             if (!onlyOne) {
                 verifyDescendentOf(cls);
                 atLeastOne = true;

@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -37,11 +38,13 @@ import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.IAlignment;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizon.structurelib.alignment.enumerable.Flip;
 import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
 import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
@@ -87,7 +90,7 @@ import gregtech.api.util.GT_Utility;
 import gregtech.common.tileentities.casings.upgrade.InventoryUpgrade;
 
 public abstract class MultiBlockController<T extends MultiBlockController<T>> extends MultiTileBasicMachine
-        implements IAlignment, IConstructable, IMultiBlockController, IDescribable, IMTE_AddToolTips {
+        implements IAlignment, IConstructable, IMultiBlockController, IDescribable, IMTE_AddToolTips, ISurvivalConstructable {
 
     private static final Map<Integer, GT_Multiblock_Tooltip_Builder> tooltip = new ConcurrentHashMap<>();
     private final List<AdvancedCasing> upgradeCasings = new ArrayList<>();
@@ -294,7 +297,7 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
     }
 
     protected int getToolTipID() {
-        return getMultiTileEntityRegistryID() << 16 + getMultiTileEntityID();
+        return getMultiTileEntityRegistryName() << 16 + getMultiTileEntityID();
     }
 
     protected GT_Multiblock_Tooltip_Builder getTooltip() {
@@ -368,6 +371,29 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
                 verticalOffset,
                 depthOffset,
                 hintOnly);
+    }
+
+    protected final int survivalBuildPiece(String piece, ItemStack trigger, Vec3Impl offset, int elementBudget, ISurvivalBuildEnvironment env, boolean check) {
+        return survivalBuildPiece(piece, trigger, offset.get0(), offset.get1(), offset.get2(), elementBudget, env, check);
+    }
+
+    protected final Integer survivalBuildPiece(String piece, ItemStack trigger, int horizontalOffset,
+            int verticalOffset, int depthOffset, int elementBudget, ISurvivalBuildEnvironment env, boolean check) {
+        return getCastedStructureDefinition().survivalBuild(
+                this,
+                trigger,
+                piece,
+                getWorld(),
+                getExtendedFacing(),
+                getXCoord(),
+                getYCoord(),
+                getZCoord(),
+                horizontalOffset,
+                verticalOffset,
+                depthOffset,
+                elementBudget,
+                env,
+                check);
     }
 
     @SuppressWarnings("unchecked")
@@ -621,7 +647,7 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
         }
     }
 
-    public <S> IStructureElement<S> addMultiTileCasing(int aRegistryID, int aBlockMeta, int aModes) {
+    public <S> IStructureElement<S> addMultiTileCasing(String registryName, int meta, int modes) {
         return new IStructureElement<S>() {
 
             private final short[] DEFAULT = new short[] { 255, 255, 255, 0 };
@@ -633,13 +659,15 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
                 if (!(tileEntity instanceof MultiBlockPart)) return false;
 
                 final MultiBlockPart part = (MultiBlockPart) tileEntity;
-                if (aRegistryID != part.getMultiTileEntityRegistryID() || aBlockMeta != part.getMultiTileEntityID())
+                MultiTileEntityRegistry aRegistry = MultiTileEntityRegistry.getRegistry(registryName);
+                int aRegistryID = Block.getIdFromBlock(aRegistry.mBlock);
+                if (aRegistryID != part.getMultiTileEntityRegistryID() || meta != part.getMultiTileEntityID())
                     return false;
 
                 final IMultiBlockController tTarget = part.getTarget(false);
                 if (tTarget != null && tTarget != MultiBlockController.this) return false;
 
-                part.setTarget(MultiBlockController.this, aModes);
+                part.setTarget(MultiBlockController.this, modes);
 
                 registerSpecialCasings(part);
                 return true;
@@ -663,9 +691,9 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
 
             @Override
             public boolean placeBlock(S t, World world, int x, int y, int z, ItemStack trigger) {
-                final MultiTileEntityRegistry tRegistry = MultiTileEntityRegistry.getRegistry(aRegistryID);
+                final MultiTileEntityRegistry tRegistry = MultiTileEntityRegistry.getRegistry(registryName);
                 final MultiTileEntityContainer tContainer = tRegistry
-                        .getNewTileEntityContainer(world, x, y, z, aBlockMeta, null);
+                        .getNewTileEntityContainer(world, x, y, z, meta, null);
                 if (tContainer == null) {
                     GT_FML_LOGGER.error("NULL CONTAINER");
                     return false;
@@ -677,7 +705,7 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
                 }
                 if (world.setBlock(x, y, z, tContainer.mBlock, 15 - tContainer.mBlockMetaData, 2)) {
                     tContainer.setMultiTile(world, x, y, z);
-                    ((MultiBlockPart) te).setTarget(MultiBlockController.this, aModes);
+                    ((MultiBlockPart) te).setTarget(MultiBlockController.this, modes);
 
                     registerSpecialCasings((MultiBlockPart) te);
                 }

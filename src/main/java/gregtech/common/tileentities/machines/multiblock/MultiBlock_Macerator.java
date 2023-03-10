@@ -33,7 +33,7 @@ import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 
 public class MultiBlock_Macerator extends MultiBlock_Stackable<MultiBlock_Macerator> {
 
-    private IStructureDefinition<MultiBlock_Macerator> STRUCTURE_DEFINITION = null;
+    private static IStructureDefinition<MultiBlock_Macerator> STRUCTURE_DEFINITION = null;
 
     @Override
     public String getTileEntityName() {
