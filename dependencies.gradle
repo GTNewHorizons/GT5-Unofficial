@@ -3,7 +3,7 @@ dependencies {
     api('com.github.GTNewHorizons:Galacticraft:3.0.67-GTNH:dev')
     api('com.github.GTNewHorizons:TecTech:5.0.114:dev')
     api('com.github.GTNewHorizons:ModularUI:1.0.71:dev')
-    api('com.github.GTNewHorizons:GalaxySpace:1.1.62-GTNH-pre:dev')
+    api('com.github.GTNewHorizons:GalaxySpace:1.1.63-GTNH:dev')
     implementation("com.github.GTNewHorizons:Hodgepodge:2.0.43:dev") {transitive = false}
     compileOnly('com.github.GTNewHorizons:GoodGenerator:0.4.88:dev')
     compileOnly('com.github.GTNewHorizons:bartworks:0.5.164:dev')
