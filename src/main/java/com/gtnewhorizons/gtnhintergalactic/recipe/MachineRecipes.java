@@ -71,7 +71,8 @@ public class MachineRecipes implements Runnable {
             titaniumBetaCScrew_64 = MyMaterial.titaniumBetaC.get(OrePrefixes.screw, 64);
         } else {
             preciseAssembler_1 = ItemList.Machine_IV_Assembler.get(1);
-            highComputationStationT3_32 = GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.SuperconductorUHV, 32);
+            highComputationStationT3_32 = GT_OreDictUnificator
+                    .get(OrePrefixes.circuit, Materials.SuperconductorUHV, 32);
             highComputationStationT4_32 = GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Infinite, 32);
             highComputationStationT5_32 = GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Bio, 32);
             metaStableOgScrew_64 = GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Neutronium, 64);

@@ -7,11 +7,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang3.StringUtils;
-
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.client.resources.IResourceManagerReloadListener;
 import net.minecraft.util.StatCollector;
+
+import org.apache.commons.lang3.StringUtils;
 
 import com.gtnewhorizons.gtnhintergalactic.GTNHIntergalactic;
 import gregtech.api.objects.XSTR;

@@ -37,7 +37,8 @@ public class ItemCasingSpaceElevator extends GT_Item_Casings_Abstract {
      */
     @SuppressWarnings("unchecked")
     @Override
-    public void addInformation(ItemStack stack, EntityPlayer player, @SuppressWarnings("rawtypes") List tooltip, boolean f3_h) {
+    public void addInformation(ItemStack stack, EntityPlayer player, @SuppressWarnings("rawtypes") List tooltip,
+            boolean f3_h) {
         tooltip.add(GCCoreUtil.translate("gt.blockcasings.ig." + stack.getItemDamage() + ".desc0"));
         tooltip.add(
                 EnumChatFormatting.LIGHT_PURPLE.toString() + EnumChatFormatting.BOLD
