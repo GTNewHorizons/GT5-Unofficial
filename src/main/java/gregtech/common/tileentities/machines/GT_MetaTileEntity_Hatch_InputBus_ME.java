@@ -14,7 +14,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -79,7 +81,11 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
                 1,
                 SLOT_COUNT * 2 + 1,
                 new String[] { "Advanced item input for Multiblocks", "Retrieves directly from ME",
-                        "Keeps 16 item types in stock" });
+                        "Keeps 16 item types in stock",
+                        "Auto-Pull from ME mode will automatically stock the first 16 items in the ME system, updated every 5 seconds.",
+                        "Toggle by right-clicking with screwdriver, or use the GUI.",
+                        "Use the GUI to limit the minimum stack size for Auto-Pulling.",
+                        "Configuration data can be copy+pasted using a data stick." });
         disableSort = true;
     }
 
@@ -195,6 +201,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
             }
         }
         autoPullItemList = aNBT.getBoolean("autoStock");
+        minAutoPullStackSize = aNBT.getInteger("minAutoPullStackSize");
         if (GregTech_API.mAE2) {
             getProxy().readFromNBT(aNBT);
         }
@@ -234,6 +241,61 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
 
     @Override
     public void updateSlots() {}
+
+    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, byte aSide, float aX,
+            float aY, float aZ) {
+        if (!(aPlayer instanceof EntityPlayerMP))
+            return super.onRightclick(aBaseMetaTileEntity, aPlayer, aSide, aX, aY, aZ);
+        ItemStack dataStick = aPlayer.inventory.getCurrentItem();
+        if (!ItemList.Tool_DataStick.isStackEqual(dataStick, true, true))
+            return super.onRightclick(aBaseMetaTileEntity, aPlayer, aSide, aX, aY, aZ);
+
+        if (!dataStick.hasTagCompound() || !"stockingBus".equals(dataStick.stackTagCompound.getString("type")))
+            return true;
+
+        NBTTagCompound nbt = dataStick.stackTagCompound;
+
+        ItemStack circuit = GT_Utility.loadItem(dataStick.stackTagCompound, "circuit");
+        if (GT_Utility.isStackInvalid(circuit)) circuit = null;
+        setAutoPullItemList(nbt.getBoolean("autoPull"));
+        minAutoPullStackSize = nbt.getInteger("minStackSize");
+        if (!autoPullItemList) {
+            NBTTagList stockingItems = nbt.getTagList("itemsToStock", 10);
+            for (int i = 0; i < stockingItems.tagCount(); i++) {
+                this.mInventory[i] = GT_Utility.loadItem(stockingItems.getCompoundTagAt(i));
+            }
+        }
+        setInventorySlotContents(getCircuitSlot(), circuit);
+        aPlayer.addChatMessage(new ChatComponentText("Loaded Config From Data Stick"));
+        return true;
+    }
+
+    @Override
+    public void onLeftclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+        if (!(aPlayer instanceof EntityPlayerMP)) return;
+
+        ItemStack dataStick = aPlayer.inventory.getCurrentItem();
+        if (!ItemList.Tool_DataStick.isStackEqual(dataStick, true, true)) return;
+
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setString("type", "stockingBus");
+        tag.setBoolean("autoPull", autoPullItemList);
+        tag.setInteger("minStackSize", minAutoPullStackSize);
+        tag.setTag("circuit", GT_Utility.saveItem(getStackInSlot(getCircuitSlot())));
+
+        NBTTagList stockingItems = new NBTTagList();
+
+        if (!autoPullItemList) {
+            for (int index = SLOT_COUNT - 1; index >= 0; index--) {
+                stockingItems.appendTag(GT_Utility.saveItem(mInventory[index]));
+            }
+            tag.setTag("itemsToStock", stockingItems);
+
+        }
+        dataStick.stackTagCompound = tag;
+        dataStick.setStackDisplayName("Stocking Input Bus Configuration");
+        aPlayer.addChatMessage(new ChatComponentText("Saved Config to Data Stick"));
+    }
 
     @Override
     public int getCircuitSlot() {
