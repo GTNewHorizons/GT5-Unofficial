@@ -463,6 +463,12 @@ public enum ItemList implements IItemContainer {
     Steam_Valve_EV,
     Steam_Valve_IV,
 
+    Steam_Regulator_LV,
+    Steam_Regulator_MV,
+    Steam_Regulator_HV,
+    Steam_Regulator_EV,
+    Steam_Regulator_IV,
+
     FluidRegulator_LV,
     FluidRegulator_MV,
     FluidRegulator_HV,

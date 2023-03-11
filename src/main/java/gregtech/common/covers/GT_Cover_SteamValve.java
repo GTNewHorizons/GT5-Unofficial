@@ -28,6 +28,6 @@ public class GT_Cover_SteamValve extends GT_Cover_Pump {
 
     @Override
     protected boolean canTransferFluid(FluidStack fluid) {
-        return GT_ModHandler.isAnySteam(fluid);
+        return GT_ModHandler.isAnySteam(fluid) || GT_ModHandler.isSuperHeatedSteam(fluid);
     }
 }

@@ -172,6 +172,47 @@ public class AssemblerRecipes implements Runnable {
                 500000);
 
         GT_Values.RA.addAssemblerRecipe(
+                new ItemStack[] { ItemList.Steam_Valve_LV.get(1L),
+                        GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.Basic), 2L),
+                        GT_Utility.getIntegratedCircuit(3) },
+                GT_Values.NF,
+                ItemList.Steam_Regulator_LV.get(1L),
+                400,
+                (int) TierEU.RECIPE_LV);
+        GT_Values.RA.addAssemblerRecipe(
+                new ItemStack[] { ItemList.Steam_Valve_MV.get(1L),
+                        GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.Good), 2L),
+                        GT_Utility.getIntegratedCircuit(3) },
+                GT_Values.NF,
+                ItemList.Steam_Regulator_MV.get(1L),
+                350,
+                (int) TierEU.RECIPE_MV);
+        GT_Values.RA.addAssemblerRecipe(
+                new ItemStack[] { ItemList.Steam_Valve_HV.get(1L),
+                        GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.Advanced), 2L),
+                        GT_Utility.getIntegratedCircuit(3) },
+                GT_Values.NF,
+                ItemList.Steam_Regulator_HV.get(1L),
+                300,
+                (int) TierEU.RECIPE_HV);
+        GT_Values.RA.addAssemblerRecipe(
+                new ItemStack[] { ItemList.Steam_Valve_EV.get(1L),
+                        GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.Data), 2L),
+                        GT_Utility.getIntegratedCircuit(3) },
+                GT_Values.NF,
+                ItemList.Steam_Regulator_EV.get(1L),
+                250,
+                (int) TierEU.RECIPE_EV);
+        GT_Values.RA.addAssemblerRecipe(
+                new ItemStack[] { ItemList.Steam_Valve_IV.get(1L),
+                        GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.Elite), 2L),
+                        GT_Utility.getIntegratedCircuit(3) },
+                GT_Values.NF,
+                ItemList.Steam_Regulator_IV.get(1L),
+                200,
+                (int) TierEU.RECIPE_IV);
+
+        GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] { ItemList.Electric_Pump_LV.get(1L), ItemList.Electric_Motor_LV.get(1L),
                         GT_OreDictUnificator.get(OrePrefixes.gear.get(Materials.Steel), 2L),
                         GT_Utility.getIntegratedCircuit(5) },
