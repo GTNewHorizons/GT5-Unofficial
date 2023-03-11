@@ -266,7 +266,7 @@ ig.structure.and= and
 # Space Projects
 ig.spaceproject.asteroidoutpost=Asteroid Outpost
 ig.spaceproject.asteroidoutpost.description=An asteroid outpost used by the drones as a fueling station and command centre
-ig.spaceproject.planetscan=Plantery scan
+ig.spaceproject.planetscan=Planetary scan
 ig.spaceproject.planetscan.description=A probe that will scan the planet it orbits to collect data.
 ig.sp.upgrade.improvedcomputation=Improved Computation Upgrade
 ig.sp.upgrade.improvedcomputation.description=This upgrade allows the quantum computers on the asteroid outpost to work on a higher frequency and enables a higher protection against cosmic rays
