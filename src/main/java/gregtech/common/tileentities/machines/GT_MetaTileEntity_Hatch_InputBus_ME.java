@@ -513,7 +513,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
                     return ret.toArray(new IDrawable[0]);
                 }).addTooltips(
                         ImmutableList.of(
-                                "Click to toggle automatic item pulling from GME.",
+                                "Click to toggle automatic item pulling from ME.",
                                 "Right-Click to edit minimum stack size for item pulling."))
                         .setSize(16, 16).setPos(80, 10))
                 .widget(new FakeSyncWidget.BooleanSyncer(() -> autoPullItemList, this::setAutoPullItemList));
