@@ -188,7 +188,7 @@ public class MultiBlock_Macerator extends MultiBlock_Stackable<MultiBlock_Macera
         setDuration(tRecipe.mDuration);
         setEut(tRecipe.mEUt);
 
-        setItemOutputs(tRecipe.mOutputs, aInventory);
+        setItemOutputs(aInventory, tRecipe.mOutputs);
         return true;
     }
 }

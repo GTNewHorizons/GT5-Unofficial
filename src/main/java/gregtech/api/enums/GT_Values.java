@@ -249,6 +249,7 @@ public class GT_Values {
                 EUT_CONSUMPTION = "gt.eut.consumption", // Number
                 BURN_TIME_LEFT = "gt.burn.time.left", // Number
                 TOTAL_BURN_TIME = "gt.total.burn.time", // Number
+                ALLOWED_WORK = "gt.allowed.work", // Boolean
 
                 // MultiBlock
                 STRUCTURE_OK = "gt.structure.ok", ROTATION = "gt.eRotation", FLIP = "gt.eFlip", TARGET = "gt.target", // Boolean

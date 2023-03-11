@@ -70,9 +70,9 @@ public class MultiTileBasicMachine extends BaseTickableMultiTileEntity implement
     private boolean powerShutDown = false;
     private boolean wasEnabled = false;
     private boolean canWork = true;
-    private boolean isElectric = false;
+    private boolean isElectric = true;
     private boolean isSteam = false;
-    private boolean acceptsFuel = true;
+    private boolean acceptsFuel = false;
     private boolean isWireless = false;
 
     @Override
@@ -119,6 +119,8 @@ public class MultiTileBasicMachine extends BaseTickableMultiTileEntity implement
         nbt.setLong(NBT.MAXIMUM_ENERGY, maximumEnergyStored);
         nbt.setLong(NBT.BURN_TIME_LEFT, burnTime);
         nbt.setLong(NBT.TOTAL_BURN_TIME, totalBurnTime);
+        nbt.setBoolean(NBT.ALLOWED_WORK, canWork);
+        nbt.setBoolean(NBT.ACTIVE, active);
     }
 
     protected void writeFluids(NBTTagCompound nbt, FluidStack[] fluids, String fluidListTag) {
@@ -200,6 +202,8 @@ public class MultiTileBasicMachine extends BaseTickableMultiTileEntity implement
         maximumEnergyStored = nbt.getLong(NBT.MAXIMUM_ENERGY);
         burnTime = nbt.getLong(NBT.BURN_TIME_LEFT);
         totalBurnTime = nbt.getLong(NBT.TOTAL_BURN_TIME);
+        canWork = nbt.getBoolean(NBT.ALLOWED_WORK);
+        active = nbt.getBoolean(NBT.ACTIVE);
     }
 
     protected void loadInventory(NBTTagCompound aNBT, IItemHandlerModifiable inv, String invListTag) {
@@ -254,6 +258,10 @@ public class MultiTileBasicMachine extends BaseTickableMultiTileEntity implement
 
     @Override
     public ITexture[] getTexture(Block aBlock, byte aSide, boolean isActive, int aRenderPass) {
+        if (aSide != facing) {
+            return new ITexture[] { TextureFactory
+                    .of(textures[GT_Values.FACING_ROTATIONS[facing][aSide]], GT_Util.getRGBaArray(rgba)) };
+        }
         return new ITexture[] {
                 TextureFactory.of(textures[GT_Values.FACING_ROTATIONS[facing][aSide]], GT_Util.getRGBaArray(rgba)),
                 TextureFactory
@@ -554,14 +562,14 @@ public class MultiTileBasicMachine extends BaseTickableMultiTileEntity implement
                 if (isAllowedToWork()) {
                     if (!checkRecipe()) {
                         setActive(false);
-                    } else {
-                        updateSlots();
                     }
                 }
+                updateSlots();
             }
         } else {
             if (aTick % TICKS_BETWEEN_RECIPE_CHECKS == 0 || hasWorkJustBeenEnabled() || hasInventoryBeenModified()) {
                 if (isAllowedToWork()) {
+                    wasEnabled = false;
                     if (checkRecipe()) {
                         setActive(true);
                         updateSlots();
@@ -615,6 +623,7 @@ public class MultiTileBasicMachine extends BaseTickableMultiTileEntity implement
 
     @Override
     public void enableWorking() {
+        wasEnabled = true;
         canWork = true;
     }
 
@@ -647,7 +656,7 @@ public class MultiTileBasicMachine extends BaseTickableMultiTileEntity implement
         return isElectric;
     }
 
-    protected void setAcceptsFuel(boolean isElectric) {
+    protected void setElectric(boolean isElectric) {
         this.isElectric = isElectric;
     }
 
@@ -769,9 +778,30 @@ public class MultiTileBasicMachine extends BaseTickableMultiTileEntity implement
         return booleans;
     }
 
+    @Override
     public void setBooleans(int booleans) {
         if ((booleans & ACTIVE) == ACTIVE) {
             setActive(true);
         }
+    }
+
+    protected boolean hasItemInput() {
+        return true;
+    }
+
+    protected boolean hasItemOutput() {
+        return true;
+    }
+
+    protected boolean hasFluidInput() {
+        return true;
+    }
+
+    protected boolean hasFluidOutput() {
+        return true;
+    }
+
+    protected void setItemOutputs(ItemStack... outputs) {
+        itemsToOutput = outputs;
     }
 }

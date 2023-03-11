@@ -46,7 +46,8 @@ public class GT_Loader_MultiTileEntities implements Runnable {
         machineRegistry.create(1000, MultiBlock_Macerator.class).name("Large Macerator")
                 .category("Multiblock Controller").setBlock(machine).material(Materials.Iron).texture("metalwall")
                 .tankCapacity(128000L).inputInventorySize(16).outputInventorySize(16).register();
-        machineRegistry.create(0, MultiBlock_CokeOven.class).name("Coke Oven").category("MultiblockController").setBlock(machine).texture("cokeOven").inputInventorySize(1).outputInventorySize(1).register();
+        machineRegistry.create(0, MultiBlock_CokeOven.class).name("Coke Oven").category("MultiblockController")
+                .setBlock(machine).texture("cokeOven").inputInventorySize(1).outputInventorySize(1).register();
     }
 
     private static void registerCasings() {
@@ -54,8 +55,8 @@ public class GT_Loader_MultiTileEntities implements Runnable {
         final MultiTileEntityBlock casing = MultiTileEntityBlock
                 .getOrCreate("GregTech", "casing", Material.iron, Block.soundTypeMetal, "wrench", 0, 0, 15, true, true);
         GT_MultiTileRegistries.CASING_REGISTRY_ID = (short) Block.getIdFromBlock(casing);
-        casingRegistry.create(CokeOven.getId(), BasicCasing.class).name("Coke Oven Bricks").category("MultiBlock Casing")
-                .setBlock(casing).texture("cokeOven").register();
+        casingRegistry.create(CokeOven.getId(), BasicCasing.class).name("Coke Oven Bricks")
+                .category("MultiBlock Casing").setBlock(casing).texture("cokeOven").register();
         casingRegistry.create(18000, BasicCasing.class).name("Test Casing").category("Multiblock Casing")
                 .setBlock(casing).material(Materials.Cobalt).texture("metalwall").register();
         casingRegistry.create(20001, InventoryUpgrade.class).name("Inventory Upgrade LV")

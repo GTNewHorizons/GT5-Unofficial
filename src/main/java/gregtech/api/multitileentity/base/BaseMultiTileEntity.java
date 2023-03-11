@@ -27,7 +27,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.Packet;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.Explosion;
@@ -55,10 +54,7 @@ import gregtech.api.metatileentity.GregTechTileClientEvents;
 import gregtech.api.multitileentity.MultiTileEntityBlockInternal;
 import gregtech.api.multitileentity.MultiTileEntityClassContainer;
 import gregtech.api.multitileentity.MultiTileEntityRegistry;
-import gregtech.api.multitileentity.interfaces.IMultiBlockPart;
 import gregtech.api.multitileentity.interfaces.IMultiTileEntity;
-import gregtech.api.multitileentity.interfaces.IMultiTileMachine;
-import gregtech.api.multitileentity.machine.MultiTileBasicMachine;
 import gregtech.api.net.GT_Packet_MultiTileEntity;
 import gregtech.api.net.GT_Packet_New;
 import gregtech.api.objects.GT_ItemStack;
@@ -70,7 +66,6 @@ import gregtech.api.util.GT_Util;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.render.GT_MultiTexture;
 import gregtech.common.render.IRenderedBlock;
-import gregtech.common.tileentities.casings.upgrade.InventoryUpgrade;
 
 public abstract class BaseMultiTileEntity extends CoverableTileEntity implements IMultiTileEntity, IRenderedBlock {
 
