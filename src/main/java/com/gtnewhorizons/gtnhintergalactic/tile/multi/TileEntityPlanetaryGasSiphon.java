@@ -7,7 +7,6 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.Objects;
 
-import gregtech.api.enums.OrePrefixes;
 import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 
@@ -41,6 +40,7 @@ import cpw.mods.fml.common.Loader;
 import galaxyspace.core.register.GSBlocks;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IChunkLoader;
 import gregtech.api.interfaces.ITexture;
