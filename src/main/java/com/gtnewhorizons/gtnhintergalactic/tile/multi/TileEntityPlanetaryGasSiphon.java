@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.Objects;
 
+import gregtech.api.enums.OrePrefixes;
 import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 
@@ -500,7 +501,7 @@ public class TileEntityPlanetaryGasSiphon extends GT_MetaTileEntity_EnhancedMult
                         icons = new IIcon[6];
                         Arrays.fill(
                                 icons,
-                                PrefixTextureLinker.texMapBlocks.get(WerkstoffLoader.blockCasingAdvanced)
+                                PrefixTextureLinker.texMapBlocks.get(OrePrefixes.blockCasingAdvanced)
                                         .get(WerkstoffLoader.LuVTierMaterial.getTexSet()).getIcon());
                     }
                     StructureLibAPI
@@ -514,7 +515,7 @@ public class TileEntityPlanetaryGasSiphon extends GT_MetaTileEntity_EnhancedMult
             @Override
             public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
                 if (isBartworksLoaded) {
-                    ItemStack stack = WerkstoffLoader.LuVTierMaterial.get(WerkstoffLoader.blockCasingAdvanced);
+                    ItemStack stack = WerkstoffLoader.LuVTierMaterial.get(OrePrefixes.blockCasingAdvanced);
                     if (stack.getItem() instanceof ItemBlock) {
                         ItemBlock item = (ItemBlock) stack.getItem();
                         return item.placeBlockAt(
