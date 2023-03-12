@@ -286,11 +286,10 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
         NBTTagList stockingItems = new NBTTagList();
 
         if (!autoPullItemList) {
-            for (int index = SLOT_COUNT - 1; index >= 0; index--) {
+            for (int index = 0; index < SLOT_COUNT; index++) {
                 stockingItems.appendTag(GT_Utility.saveItem(mInventory[index]));
             }
             tag.setTag("itemsToStock", stockingItems);
-
         }
         dataStick.stackTagCompound = tag;
         dataStick.setStackDisplayName("Stocking Input Bus Configuration");
