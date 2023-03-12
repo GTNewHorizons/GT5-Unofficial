@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import net.minecraft.client.resources.I18n;
+import net.minecraft.util.StatCollector;
 
 public class DimensionHelper {
 
@@ -99,7 +99,7 @@ public class DimensionHelper {
             for (int i = 0; i < DimNameDisplayed.length; i++) {
                 if (s.equals(DimNameDisplayed[i])) {
                     String k = DimNameTrimmed[i];
-                    s = I18n.format("gtnop.world." + k);
+                    s = StatCollector.translateToLocal("gtnop.world." + k);
                     switch (k) {
                         case "Moon":
                             s = "T1: " + s;
