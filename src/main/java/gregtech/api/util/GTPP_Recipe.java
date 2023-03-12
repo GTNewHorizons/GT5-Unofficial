@@ -169,7 +169,7 @@ public class GTPP_Recipe extends GT_Recipe implements IComparableRecipe {
                 true,
                 true).useModularUI(true);
 
-        public static final GT_Recipe_Map sRocketFuels = new GT_Recipe_Map_Fuel(
+        public static final GT_Recipe_Map_Fuel sRocketFuels = (GT_Recipe_Map_Fuel) new GT_Recipe_Map_Fuel(
                 new HashSet<>(10),
                 "gtpp.recipe.rocketenginefuel",
                 "Rocket Engine Fuel",
