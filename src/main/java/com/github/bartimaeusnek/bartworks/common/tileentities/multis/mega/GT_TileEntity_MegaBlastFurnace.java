@@ -185,7 +185,7 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_TileEntity_MegaMultiBlock
                 .addOtherStructurePart("1007x Borosilicate Glass", "Outer 15x18x15")
                 .addStructureInfo("The glass tier limits the Energy Input tier")
                 .addEnergyHatch("Any bottom layer casing").addMaintenanceHatch("Any bottom layer casing")
-                .addMufflerHatch("Top middle 13x13").addInputBus("Any bottom layer casing")
+                .addMufflerHatch("Top middle").addInputBus("Any bottom layer casing")
                 .addInputHatch("Any bottom layer casing").addOutputBus("Any bottom layer casing")
                 .addOutputHatch("Gasses, Any top layer casing")
                 .addStructureInfo("Recovery amount scales with Muffler Hatch tier")
