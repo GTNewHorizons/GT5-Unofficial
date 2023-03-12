@@ -208,7 +208,7 @@ public class GregTechMetaTileEntity_MegaAlloyBlastSmelter
         if (!checkPiece("main", 5, 16, 0)) return false;
         if (hasNormalCoils) coilLevel = HeatingCoilLevel.None;
         if (mMaintenanceHatches.size() != 1) return false;
-        if (mMufflerHatches.size() != 45) return false;
+        if (mMufflerHatches.size() != 1) return false;
         if (this.glassTier < 10 && !getExoticAndNormalEnergyHatchList().isEmpty()) {
             for (GT_MetaTileEntity_Hatch hatchEnergy : getExoticAndNormalEnergyHatchList()) {
                 if (this.glassTier < hatchEnergy.mTier) {
@@ -309,7 +309,7 @@ public class GregTechMetaTileEntity_MegaAlloyBlastSmelter
                         "Input Bus, Output Bus, Input Hatch, Output Bus, Energy Hatch",
                         "Bottom Casing",
                         1)
-                .addMufflerHatch("At least 45", 3).toolTipFinisher(
+                .addMufflerHatch("1 in the center of the top layer", 3).toolTipFinisher(
                         EnumChatFormatting.AQUA + "MadMan310 "
                                 + EnumChatFormatting.GRAY
                                 + "via "
