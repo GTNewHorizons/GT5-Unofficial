@@ -14,12 +14,13 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static forestry.api.apiculture.BeeManager.beeRoot;
 import static gregtech.api.enums.GT_HatchElement.*;
 import static gregtech.api.enums.Textures.BlockIcons.*;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_GLOW;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static kubatech.api.Variables.*;
 
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -27,17 +28,15 @@ import kubatech.Tags;
 import kubatech.api.LoaderReference;
 import kubatech.api.helpers.GTHelper;
 import kubatech.api.implementations.KubaTechGTMultiBlockBase;
-import kubatech.api.network.CustomTileEntityPacket;
-import kubatech.api.tileentity.CustomTileEntityPacketHandler;
 import kubatech.client.effect.MegaApiaryBeesRenderer;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
+import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 
@@ -55,8 +54,12 @@ import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
 import com.gtnewhorizons.modularui.api.drawable.Text;
 import com.gtnewhorizons.modularui.api.math.Color;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
+import com.gtnewhorizons.modularui.api.screen.ModularUIContext;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.api.widget.Widget;
+import com.gtnewhorizons.modularui.common.builder.UIInfo;
+import com.gtnewhorizons.modularui.common.internal.wrapper.ModularUIContainer;
 import com.gtnewhorizons.modularui.common.widget.*;
 
 import cpw.mods.fml.relauncher.Side;
@@ -79,8 +82,7 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
 
 public class GT_MetaTileEntity_MegaIndustrialApiary
-        extends KubaTechGTMultiBlockBase<GT_MetaTileEntity_MegaIndustrialApiary>
-        implements CustomTileEntityPacketHandler, ISurvivalConstructable {
+        extends KubaTechGTMultiBlockBase<GT_MetaTileEntity_MegaIndustrialApiary> implements ISurvivalConstructable {
 
     private byte mGlassTier = 0;
     private int mCasing = 0;
@@ -256,7 +258,7 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
                 .addInfo("  - Consumes 100 royal jelly per operation").addInfo("  - Base processing time: 1 minute")
                 .addInfo("  - Uses 1 amp " + voltageFormatted(5)).addInfo("  - Can overclock")
                 .addInfo(StructureHologram).addSeparator().beginStructureBlock(15, 17, 15, false)
-                .addController("Front Bottom Center").addCasingInfo("Bronze Plated Bricks", 190)
+                .addController("Front Bottom Center").addCasingInfoMin("Bronze Plated Bricks", 190, false)
                 .addOtherStructurePart("Borosilicate Glass", "Look at the hologram")
                 .addStructureInfo("The glass tier limits the Energy Input tier")
                 .addOtherStructurePart("Flowers", "On dirt/grass", 2).addInputBus("Any casing", 1)
@@ -340,18 +342,12 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
         }
     }
 
-    private CustomTileEntityPacket packet = null;
-
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isServerSide()) {
             // TODO: Look for proper fix
             if (mUpdate < 0) mUpdate = 600;
-            if (packet == null) packet = new CustomTileEntityPacket((TileEntity) aBaseMetaTileEntity, null);
-            packet.resetHelperData();
-            packet.addData(mMaxSlots);
-            packet.sendToAllAround(20);
         } else {
             if (aBaseMetaTileEntity.isActive() && aTick % 100 == 0) {
                 int[] abc = new int[] { 0, -2, 7 };
@@ -450,7 +446,6 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
                     this.mEfficiencyIncrease = 10000;
                     this.mMaxProgresstime = 100;
                     this.mOutputItems = stacks.toArray(new ItemStack[0]);
-                    return true;
                 } else {
                     if (!depleteInput(PluginApiculture.items.royalJelly.getItemStack(64))
                             || !depleteInput(PluginApiculture.items.royalJelly.getItemStack(36))) {
@@ -463,8 +458,8 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
                     this.mEfficiencyIncrease = 10000;
                     this.mOutputItems = new ItemStack[] { this.mStorage.get(0).createIgnobleCopy() };
                     this.updateSlots();
-                    return true;
                 }
+                return true;
             }
         }
 
@@ -546,11 +541,6 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
     }
 
     @Override
-    public void HandleCustomPacket(CustomTileEntityPacket customdata) {
-        mMaxSlots = customdata.getDataInt();
-    }
-
-    @Override
     public boolean useModularUI() {
         return true;
     }
@@ -570,6 +560,65 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
         builder.bindPlayerInventory(buildContext.getPlayer(), new Pos2d(7, 83), this.getGUITextureSet().getItemSlot());
     }
 
+    private static final UIInfo<?, ?> MegaApiaryUI = createKTMetaTileEntityUI(
+            KT_ModulaUIContainer_MegaIndustrialApiary::new);
+
+    @Override
+    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+        if (aBaseMetaTileEntity.isClientSide()) return true;
+        MegaApiaryUI.open(
+                aPlayer,
+                aBaseMetaTileEntity.getWorld(),
+                aBaseMetaTileEntity.getXCoord(),
+                aBaseMetaTileEntity.getYCoord(),
+                aBaseMetaTileEntity.getZCoord());
+        return true;
+    }
+
+    private static class KT_ModulaUIContainer_MegaIndustrialApiary extends ModularUIContainer {
+
+        final WeakReference<GT_MetaTileEntity_MegaIndustrialApiary> parent;
+
+        public KT_ModulaUIContainer_MegaIndustrialApiary(ModularUIContext context, ModularWindow mainWindow,
+                GT_MetaTileEntity_MegaIndustrialApiary mte) {
+            super(context, mainWindow);
+            parent = new WeakReference<>(mte);
+        }
+
+        @Override
+        public ItemStack transferStackInSlot(EntityPlayer aPlayer, int aSlotIndex) {
+            if (!(aPlayer instanceof EntityPlayerMP)) return super.transferStackInSlot(aPlayer, aSlotIndex);
+            final Slot s = getSlot(aSlotIndex);
+            if (s == null) return super.transferStackInSlot(aPlayer, aSlotIndex);
+            if (aSlotIndex >= 36) return super.transferStackInSlot(aPlayer, aSlotIndex);
+            final ItemStack aStack = s.getStack();
+            if (aStack == null) return super.transferStackInSlot(aPlayer, aSlotIndex);
+            GT_MetaTileEntity_MegaIndustrialApiary mte = parent.get();
+            if (mte == null) return super.transferStackInSlot(aPlayer, aSlotIndex);
+            if (mte.mStorage.size() >= mte.mMaxSlots) return super.transferStackInSlot(aPlayer, aSlotIndex);
+            if (beeRoot.getType(aStack) == EnumBeeType.QUEEN) {
+                if (mte.mMaxProgresstime > 0) {
+                    GT_Utility.sendChatToPlayer(aPlayer, EnumChatFormatting.RED + "Can't insert while running !");
+                    return super.transferStackInSlot(aPlayer, aSlotIndex);
+                }
+                World w = mte.getBaseMetaTileEntity().getWorld();
+                float t = (float) GTHelper.getVoltageTierD(mte);
+                BeeSimulator bs = new BeeSimulator(aStack, w, t);
+                if (bs.isValid) {
+                    mte.mStorage.add(bs);
+                    s.putStack(null);
+                    detectAndSendChanges();
+                    mte.isCacheDirty = true;
+                    return null;
+                }
+            }
+            return super.transferStackInSlot(aPlayer, aSlotIndex);
+        }
+    }
+
+    private final List<ItemStack> drawables = new ArrayList<>(mMaxSlots);
+
+    @SuppressWarnings("UnstableApiUsage")
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.widget(
@@ -610,44 +659,21 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
                                         .addTooltip("Configuration").setSize(18, 18))
                         .setPos(151, 4));
 
-        final List<ItemStack> drawables = new ArrayList<>(mMaxSlots);
-        final int perRow = 7;
+        ChangeableWidget beesContainer = new ChangeableWidget(() -> createBeesContainerWidget(player));
 
-        Scrollable beesContainer = new Scrollable().setVerticalScroll();
-
-        if (mMaxSlots > 0) for (int i = 0, imax = ((mMaxSlots - 1) / perRow); i <= imax; i++) {
-            DynamicPositionedRow row = new DynamicPositionedRow().setSynced(false);
-            for (int j = 0, jmax = (i == imax ? (mMaxSlots - 1) % perRow : (perRow - 1)); j <= jmax; j++) {
-                final int finalI = i * perRow;
-                final int finalJ = j;
-                final int ID = finalI + finalJ;
-                row.widget(new ButtonWidget().setOnClick((clickData, widget) -> {
-                    if (!(player instanceof EntityPlayerMP)) return;
-                    if (mStorage.size() <= ID) return;
-                    if (this.mMaxProgresstime > 0) {
-                        GT_Utility.sendChatToPlayer(player, "Can't eject while running !");
-                        return;
-                    }
-                    BeeSimulator removed = mStorage.remove(ID);
-                    addOutput(removed.queenStack);
-                    isCacheDirty = true;
-                    GT_Utility.sendChatToPlayer(player, "Queen ejected !");
-                }).setBackground(
-                        () -> new IDrawable[] { getBaseMetaTileEntity().getGUITextureSet().getItemSlot(),
-                                GT_UITextures.OVERLAY_SLOT_BEE_QUEEN,
-                                new ItemDrawable(drawables.size() > ID ? drawables.get(ID) : null)
-                                        .withFixedSize(16, 16, 1, 1) })
-                        .dynamicTooltip(() -> {
-                            if (drawables.size() > ID) return Arrays.asList(
-                                    drawables.get(ID).getDisplayName(),
-                                    EnumChatFormatting.GRAY + "Left click to eject");
-                            return Collections.emptyList();
-                        }).setSize(18, 18));
+        AtomicInteger lastMaxSlots = new AtomicInteger();
+        builder.widget(beesContainer.attachSyncer(new FakeSyncWidget.IntegerSyncer(() -> {
+            if (lastMaxSlots.get() != mMaxSlots) {
+                lastMaxSlots.set(mMaxSlots);
+                beesContainer.notifyChangeNoSync();
             }
-            beesContainer.widget(
-                    row.setPos(0, i * 18).setEnabled(widget -> widget.getPos().y < beesContainer.getVisibleHeight()));
-        }
-        beesContainer.attachSyncer(
+            return mMaxSlots;
+        }, i -> {
+            if (mMaxSlots != i) {
+                mMaxSlots = i;
+                beesContainer.notifyChangeNoSync();
+            }
+        }), builder).attachSyncer(
                 new FakeSyncWidget.ListSyncer<>(
                         () -> mStorage.stream().map(s -> s.queenStack).collect(Collectors.toList()),
                         l -> {
@@ -668,13 +694,101 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
                                 throw new RuntimeException(e);
                             }
                         }),
-                builder);
-
-        builder.widget(beesContainer.setPos(10, 16).setSize(128, 60));
+                builder));
 
         final DynamicPositionedColumn screenElements = new DynamicPositionedColumn();
         drawTexts(screenElements, null);
         builder.widget(screenElements);
+    }
+
+    private Widget createBeesContainerWidget(EntityPlayer player) {
+        Scrollable beesContainer = new Scrollable().setVerticalScroll();
+        final int perRow = 7;
+        if (mMaxSlots > 0) for (int i = 0, imax = ((mMaxSlots - 1) / perRow); i <= imax; i++) {
+            DynamicPositionedRow row = new DynamicPositionedRow().setSynced(false);
+            for (int j = 0, jmax = (i == imax ? (mMaxSlots - 1) % perRow : (perRow - 1)); j <= jmax; j++) {
+                final int finalI = i * perRow;
+                final int finalJ = j;
+                final int ID = finalI + finalJ;
+                row.widget(new ButtonWidget().setOnClick((clickData, widget) -> {
+                    if (!(player instanceof EntityPlayerMP)) return;
+                    if (!clickData.shift) {
+                        ItemStack input = player.inventory.getItemStack();
+                        if (input != null) {
+                            if (this.mMaxProgresstime > 0) {
+                                GT_Utility.sendChatToPlayer(
+                                        player,
+                                        EnumChatFormatting.RED + "Can't replace/insert while running !");
+                                return;
+                            }
+                            if (beeRoot.getType(input) == EnumBeeType.QUEEN) {
+                                World w = getBaseMetaTileEntity().getWorld();
+                                float t = (float) GTHelper.getVoltageTierD(this);
+                                BeeSimulator bs = new BeeSimulator(input, w, t);
+                                if (bs.isValid) {
+                                    if (mStorage.size() > ID) {
+                                        BeeSimulator removed = mStorage.remove(ID);
+                                        mStorage.add(ID, bs);
+                                        player.inventory.setItemStack(removed.queenStack);
+
+                                    } else {
+                                        mStorage.add(bs);
+                                        player.inventory.setItemStack(null);
+                                    }
+                                    ((EntityPlayerMP) player).isChangingQuantityOnly = false;
+                                    ((EntityPlayerMP) player).updateHeldItem();
+
+                                    isCacheDirty = true;
+                                }
+                            }
+                            return;
+                        }
+                    }
+
+                    if (mStorage.size() <= ID) return;
+                    if (this.mMaxProgresstime > 0) {
+                        GT_Utility.sendChatToPlayer(player, EnumChatFormatting.RED + "Can't eject while running !");
+                        return;
+                    }
+                    BeeSimulator removed = mStorage.remove(ID);
+                    isCacheDirty = true;
+                    if (clickData.shift) {
+                        if (player.inventory.addItemStackToInventory(removed.queenStack)) {
+                            player.inventoryContainer.detectAndSendChanges();
+                            return;
+                        }
+                    }
+                    if (clickData.mouseButton == 1) {
+                        if (player.inventory.getItemStack() == null) {
+                            player.inventory.setItemStack(removed.queenStack);
+                            ((EntityPlayerMP) player).isChangingQuantityOnly = false;
+                            ((EntityPlayerMP) player).updateHeldItem();
+                            return;
+                        }
+                    }
+
+                    addOutput(removed.queenStack);
+                    GT_Utility.sendChatToPlayer(player, "Queen ejected !");
+                }).setBackground(
+                        () -> new IDrawable[] { getBaseMetaTileEntity().getGUITextureSet().getItemSlot(),
+                                GT_UITextures.OVERLAY_SLOT_BEE_QUEEN,
+                                new ItemDrawable(drawables.size() > ID ? drawables.get(ID) : null)
+                                        .withFixedSize(16, 16, 1, 1) })
+                        .dynamicTooltip(() -> {
+                            if (drawables.size() > ID) return Arrays.asList(
+                                    drawables.get(ID).getDisplayName(),
+                                    EnumChatFormatting.GRAY + "Left click to eject into input bus",
+                                    EnumChatFormatting.GRAY + "Right click to get into mouse",
+                                    EnumChatFormatting.GRAY + "Shift click to get into inventory",
+                                    EnumChatFormatting.GRAY + "Click with other queen in mouse to replace");
+                            return Collections
+                                    .singletonList(EnumChatFormatting.GRAY + "Click with queen in mouse to insert");
+                        }).setSize(18, 18));
+            }
+            beesContainer.widget(row.setPos(0, i * 18));
+        }
+        beesContainer.setPos(10, 16).setSize(128, 60);
+        return beesContainer;
     }
 
     protected ModularWindow createConfigurationWindow(final EntityPlayer player) {
@@ -830,10 +944,8 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
 
     private static class BeeSimulator {
 
-        ItemStack queenStack;
+        final ItemStack queenStack;
         boolean isValid;
-        // boolean isBreadingMode;
-        // boolean isInfinite;
         List<BeeDrop> drops = new ArrayList<>();
         List<BeeDrop> specialDrops = new ArrayList<>();
         float beeSpeed;
@@ -905,7 +1017,7 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
             return tag;
         }
 
-        HashMap<BeeDrop, Double> dropProgress = new HashMap<>();
+        final HashMap<BeeDrop, Double> dropProgress = new HashMap<>();
 
         public List<ItemStack> getDrops(final double timePassed) {
             drops.forEach(d -> dropProgress.merge(d, d.getAmount(timePassed / 550d), Double::sum));
@@ -936,12 +1048,12 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
 
         private static class BeeDrop {
 
-            ItemStack stack;
+            final ItemStack stack;
             double amount;
-            GT_Utility.ItemId id;
+            final GT_Utility.ItemId id;
 
-            float chance;
-            float beeSpeed;
+            final float chance;
+            final float beeSpeed;
             float t;
 
             public BeeDrop(ItemStack stack, float chance, float beeSpeed, float t) {
@@ -999,4 +1111,5 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
             }
         }
     }
+
 }

@@ -92,7 +92,7 @@ public class KubaItems extends Item {
         return p_77647_1_;
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public void addInformation(ItemStack p_77624_1_, EntityPlayer p_77624_2_, List p_77624_3_, boolean p_77624_4_) {
         getItem(p_77624_1_).addInformation(p_77624_1_, p_77624_2_, (List<String>) p_77624_3_, p_77624_4_);
@@ -120,7 +120,7 @@ public class KubaItems extends Item {
         return getItem(damage).getIcon();
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public void getSubItems(Item p_150895_1_, CreativeTabs p_150895_2_, List p_150895_3_) {
         for (int i = 0; i < items.size(); i++) p_150895_3_.add(new ItemStack(p_150895_1_, 1, i));

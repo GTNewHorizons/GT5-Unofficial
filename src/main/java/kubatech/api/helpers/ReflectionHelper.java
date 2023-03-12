@@ -18,8 +18,8 @@ public class ReflectionHelper {
 
     private static class _FieldsMethods {
 
-        HashMap<String, Field> fields = new HashMap<>();
-        HashMap<String, Method> methods = new HashMap<>();
+        final HashMap<String, Field> fields = new HashMap<>();
+        final HashMap<String, Method> methods = new HashMap<>();
     }
 
     private static final HashMap<String, _FieldsMethods> classes = new HashMap<>();
@@ -35,7 +35,7 @@ public class ReflectionHelper {
                 if (f == null) return defaultvalue;
                 return (T) f.get(obj);
             }
-            boolean exceptionDetected = false;
+            boolean exceptionDetected;
             Field f = null;
             do {
                 exceptionDetected = false;
@@ -66,7 +66,7 @@ public class ReflectionHelper {
                 f.set(obj, value);
                 return true;
             }
-            boolean exceptionDetected = false;
+            boolean exceptionDetected;
             Field f = null;
             do {
                 exceptionDetected = false;
@@ -110,7 +110,7 @@ public class ReflectionHelper {
                 if (m == null) return defaultValue;
                 return (T) m.invoke(obj, args);
             }
-            boolean exceptionDetected = false;
+            boolean exceptionDetected;
             Method m = null;
             do {
                 exceptionDetected = false;

@@ -8,16 +8,61 @@ import java.util.Arrays;
 import java.util.function.Function;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
+import com.gtnewhorizons.modularui.api.screen.ITileWithModularUI;
+import com.gtnewhorizons.modularui.api.screen.ModularUIContext;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.api.widget.Widget;
+import com.gtnewhorizons.modularui.common.builder.UIBuilder;
+import com.gtnewhorizons.modularui.common.builder.UIInfo;
+import com.gtnewhorizons.modularui.common.internal.wrapper.ModularGui;
+import com.gtnewhorizons.modularui.common.internal.wrapper.ModularUIContainer;
 
 import gregtech.api.gui.modularui.GT_UITextures;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
 
 public abstract class KubaTechGTMultiBlockBase<T extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<T>>
         extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<T> {
+
+    @SuppressWarnings("unchecked")
+    protected static <K extends KubaTechGTMultiBlockBase<?>> UIInfo<?, ?> createKTMetaTileEntityUI(
+            KTContainerConstructor<K> containerConstructor) {
+        return UIBuilder.of().container((player, world, x, y, z) -> {
+            TileEntity te = world.getTileEntity(x, y, z);
+            if (te instanceof BaseMetaTileEntity) {
+                IMetaTileEntity mte = ((BaseMetaTileEntity) te).getMetaTileEntity();
+                if (!(mte instanceof KubaTechGTMultiBlockBase)) return null;
+                final UIBuildContext buildContext = new UIBuildContext(player);
+                final ModularWindow window = ((ITileWithModularUI) te).createWindow(buildContext);
+                return containerConstructor.of(new ModularUIContext(buildContext, te::markDirty), window, (K) mte);
+            }
+            return null;
+        }).gui(((player, world, x, y, z) -> {
+            if (!world.isRemote) return null;
+            TileEntity te = world.getTileEntity(x, y, z);
+            if (te instanceof BaseMetaTileEntity) {
+                IMetaTileEntity mte = ((BaseMetaTileEntity) te).getMetaTileEntity();
+                if (!(mte instanceof KubaTechGTMultiBlockBase)) return null;
+                final UIBuildContext buildContext = new UIBuildContext(player);
+                final ModularWindow window = ((ITileWithModularUI) te).createWindow(buildContext);
+                return new ModularGui(
+                        containerConstructor.of(new ModularUIContext(buildContext, null), window, (K) mte));
+            }
+            return null;
+        })).build();
+    }
+
+    @FunctionalInterface
+    protected interface KTContainerConstructor<T extends KubaTechGTMultiBlockBase<?>> {
+
+        ModularUIContainer of(ModularUIContext context, ModularWindow mainWindow, T multiBlock);
+    }
 
     protected KubaTechGTMultiBlockBase(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -30,7 +75,7 @@ public abstract class KubaTechGTMultiBlockBase<T extends GT_MetaTileEntity_Exten
     /**
      * Enables infinite overclocking (will give more outputs with more energy past 1 tick) Currently doesn't support
      * recipe inputs
-     * 
+     *
      * @return If this supports infinite overclock
      */
     protected boolean isOverclockingInfinite() {

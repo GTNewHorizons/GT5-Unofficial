@@ -75,7 +75,7 @@ public class kubatech {
             return Tags.MODNAME;
         }
 
-        @SuppressWarnings("unchecked")
+        @SuppressWarnings({ "unchecked", "rawtypes" })
         @Override
         public void displayAllReleventItems(List p_78018_1_) {
             super.displayAllReleventItems(p_78018_1_);

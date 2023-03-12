@@ -96,8 +96,8 @@ public class OverridesConfig {
     public static class MobOverride {
 
         public boolean removeAll = false;
-        public List<MobDrop> additions = new ArrayList<>();
-        public List<MobDropSimplified> removals = new ArrayList<>();
+        public final List<MobDrop> additions = new ArrayList<>();
+        public final List<MobDropSimplified> removals = new ArrayList<>();
 
         private static final ByteBuf BufHelper = Unpooled.buffer();
 

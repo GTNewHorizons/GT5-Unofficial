@@ -6,7 +6,7 @@ dependencies {
     api("com.github.GTNewHorizons:EnderIO:2.3.1.47:dev")
     api("com.github.GTNewHorizons:Infernal-Mobs:1.7.5-GTNH:dev")
     api("com.github.GTNewHorizons:ForestryMC:4.5.6:dev")
-    api("com.github.GTNewHorizons:ModularUI:1.0.66:dev")
+    api("com.github.GTNewHorizons:ModularUI:1.1.0:dev")
     //compileOnly("curse.maven:extrautilities-225561:2264384") {
     //    transitive = false
     //}

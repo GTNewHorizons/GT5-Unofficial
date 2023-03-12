@@ -12,8 +12,6 @@ package kubatech.loaders.block;
 
 import java.util.List;
 
-import kubatech.kubatech;
-
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
@@ -42,7 +40,7 @@ public class KubaItemBlock extends ItemBlock {
         return KubaBlock.blocks.get(p_77653_1_.getItemDamage()).getDisplayName(p_77653_1_);
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public void addInformation(ItemStack p_77624_1_, EntityPlayer p_77624_2_, List p_77624_3_, boolean p_77624_4_) {
         KubaBlock.blocks.get(p_77624_1_.getItemDamage()).addInformation(p_77624_1_, p_77624_2_, p_77624_3_, p_77624_4_);

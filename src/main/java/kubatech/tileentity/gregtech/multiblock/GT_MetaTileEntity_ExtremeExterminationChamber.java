@@ -235,7 +235,7 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
                 .addInfo("The mobs will start to buffer and die very slowly by a ritual")
                 .addInfo("You can disable mob animation with a soldering iron").addInfo(StructureHologram)
                 .addSeparator().beginStructureBlock(5, 7, 5, true).addController("Front Bottom Center")
-                .addCasingInfo("Solid Steel Machine Casing", 10)
+                .addCasingInfoMin("Solid Steel Machine Casing", 10, false)
                 .addOtherStructurePart("Borosilicate Glass", "All walls without corners")
                 .addStructureInfo("The glass tier limits the Energy Input tier")
                 .addOtherStructurePart("Steel Frame Box", "All vertical corners (except top and bottom)")
@@ -501,6 +501,7 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
                 EECPlayer.currentWeapon = lootingHolder;
                 Item lootingHolderItem = lootingHolder.getItem();
                 for (int i = 0; i < times + 1; i++) {
+                    // noinspection ConstantConditions
                     if (!lootingHolderItem.hitEntity(lootingHolder, recipe.entity, EECPlayer)) break;
                     if (lootingHolder.stackSize == 0) {
                         // noinspection ConstantConditions

@@ -172,6 +172,7 @@ public class MobRecipeLoader {
                         dropinstance instance = infernaldrops
                                 .add(new dropinstance(stack.copy(), infernaldrops), chance / elitelist.size());
                         instance.isEnchatmentRandomized = true;
+                        // noinspection ConstantConditions
                         instance.enchantmentLevel = stack.getItem().getItemEnchantability();
                     }
                     ArrayList<ItemStack> ultralist = InfernalHelper.getDropIdListUltra();
@@ -180,6 +181,7 @@ public class MobRecipeLoader {
                         dropinstance instance = infernaldrops
                                 .add(new dropinstance(stack.copy(), infernaldrops), chance / ultralist.size());
                         instance.isEnchatmentRandomized = true;
+                        // noinspection ConstantConditions
                         instance.enchantmentLevel = stack.getItem().getItemEnchantability();
                     }
                     ArrayList<ItemStack> infernallist = InfernalHelper.getDropIdListInfernal();
@@ -188,6 +190,7 @@ public class MobRecipeLoader {
                         dropinstance instance = infernaldrops
                                 .add(new dropinstance(stack.copy(), infernaldrops), chance / infernallist.size());
                         instance.isEnchatmentRandomized = true;
+                        // noinspection ConstantConditions
                         instance.enchantmentLevel = stack.getItem().getItemEnchantability();
                     }
                 }
@@ -271,12 +274,13 @@ public class MobRecipeLoader {
                 } else if (p == 2) {
                     infernalstacks = InfernalHelper.getDropIdListUltra();
                     mods = InfernalHelper.getMinUltraModifiers();
-                } else if (p == 3) {
+                } else {
                     infernalstacks = InfernalHelper.getDropIdListInfernal();
                     mods = InfernalHelper.getMinInfernoModifiers();
                 }
                 if (infernalstacks != null) {
                     ItemStack infernalstack = infernalstacks.get(rnd.nextInt(infernalstacks.size())).copy();
+                    // noinspection ConstantConditions
                     EnchantmentHelper
                             .addRandomEnchantment(rnd, infernalstack, infernalstack.getItem().getItemEnchantability());
                     stacks.add(infernalstack);

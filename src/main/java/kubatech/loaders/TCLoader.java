@@ -36,8 +36,6 @@ import cpw.mods.fml.common.registry.GameRegistry;
 
 public class TCLoader {
 
-    private static boolean lateLoaded = false;
-
     public static void load() {}
 
     public static void register() {
