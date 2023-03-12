@@ -168,7 +168,7 @@ public class RecipeGen_Plates extends RecipeGen_Base {
         if (ItemUtils.checkForInvalidItems(plate_SingleNine) && ItemUtils.checkForInvalidItems(plate_Dense))
             if (addBenderRecipe(
                     plate_SingleNine,
-                    plate_Double,
+                    plate_Dense,
                     (int) Math.max(material.getMass() * 2L, 1L),
                     material.vVoltageMultiplier)) {
                         Logger.WARNING("Bender Recipe: " + material.getLocalizedName() + " - Success");
