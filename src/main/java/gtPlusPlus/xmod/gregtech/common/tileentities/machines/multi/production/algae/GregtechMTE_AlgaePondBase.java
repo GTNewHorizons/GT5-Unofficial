@@ -86,7 +86,7 @@ public class GregtechMTE_AlgaePondBase extends GregtechMeta_MultiBlockBase<Gregt
                 .addInfo("Fill Input Hatch with Water to fill the inside of the multiblock.")
                 .addPollutionAmount(getPollutionPerSecond(null)).addSeparator().beginStructureBlock(9, 3, 9, true)
                 .addController("Front Center").addCasingInfo("Machine Casings", 64)
-                .addCasingInfo("Sterile Farm Casings", 34).addInputBus("Any Casing", 1).addOutputBus("Any Casing", 1)
+                .addCasingInfo("Sterile Farm Casings", 64).addInputBus("Any Casing", 1).addOutputBus("Any Casing", 1)
                 .addInputHatch("Any Casing", 1).toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
     }
