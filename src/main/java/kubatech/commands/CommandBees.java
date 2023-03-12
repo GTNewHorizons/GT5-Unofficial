@@ -18,9 +18,12 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.EnumChatFormatting;
 
 import com.google.common.io.Files;
 
@@ -45,8 +48,16 @@ public class CommandBees extends CommandBase {
         return 4;
     }
 
+    @SuppressWarnings("UnstableApiUsage")
     @Override
     public void processCommand(ICommandSender p_71515_1_, String[] p_71515_2_) {
+
+        if (!Minecraft.getMinecraft().isSingleplayer()) {
+            p_71515_1_.addChatMessage(
+                    new ChatComponentText(EnumChatFormatting.RED + "This command is single-player only!"));
+            return;
+        }
+
         // https://docs.google.com/spreadsheets/d/1XaNGtJZ8WYv2nMnYcixTX4Jz3qUr71RadiKT5pToYFk/edit?usp=sharing
         try {
             File f = new File("bees.txt");
@@ -54,7 +65,7 @@ public class CommandBees extends CommandBase {
             String delimer = ",";
 
             writer.write(
-                    "Bee,CHANCE,OLD_0.6S_0UP,OLD_0.6S_8UP,OLD_1.7S_0UP,OLD_1.7S_8UP,NEW_0.6S_0UP_1T,NEW_0.6S_8UP_1T,NEW_1.7S_0UP_1T,NEW_1.7S_8UP_1T,NEW_1.7S_8UP_8T\n");
+                    "Bee,CHANCE,OLD_0.6S_0UP,OLD_0.6S_8UP,OLD_1.7S_0UP,OLD_1.7S_8UP,NEW_0.6S_0UP_1T,NEW_0.6S_8UP_1T,NEW_1.7S_0UP_1T,NEW_1.7S_8UP_1T,NEW_1.7S_0UP_8T,NEW_1.7S_8UP_8T\n");
 
             List<IBee> bees = beeRoot.getIndividualTemplates();
             for (IBee bee : bees) {
@@ -72,6 +83,7 @@ public class CommandBees extends CommandBase {
 
             writer.flush();
             writer.close();
+            p_71515_1_.addChatMessage(new ChatComponentText(f.getAbsolutePath()));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -79,7 +91,7 @@ public class CommandBees extends CommandBase {
 
     private void printData(String nameOfData, ItemStack k, float v, String delimer, StringBuilder b) {
         b.append(nameOfData);
-        b.append(k.toString());
+        b.append(k.getDisplayName());
         b.append(delimer);
         b.append(format(v));
         b.append(delimer);
@@ -98,6 +110,8 @@ public class CommandBees extends CommandBase {
         b.append(format(productChanceNew(0, 1.7d, v, 1)));
         b.append(delimer);
         b.append(format(productChanceNew(8, 1.7d, v, 1)));
+        b.append(delimer);
+        b.append(format(productChanceNew(0, 1.7d, v, 8)));
         b.append(delimer);
         b.append(format(productChanceNew(8, 1.7d, v, 8)));
         b.append("\n");

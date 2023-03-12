@@ -14,10 +14,7 @@ import static kubatech.loaders.BlockLoader.registerBlocks;
 import static kubatech.loaders.ItemLoader.registerItems;
 
 import kubatech.api.LoaderReference;
-import kubatech.commands.CommandConfig;
-import kubatech.commands.CommandHandler;
-import kubatech.commands.CommandHelp;
-import kubatech.commands.CommandTea;
+import kubatech.commands.*;
 import kubatech.config.Config;
 import kubatech.loaders.MTLoader;
 import kubatech.loaders.RecipeLoader;
@@ -58,7 +55,7 @@ public class CommonProxy {
         CommandHandler cmd = new CommandHandler();
         cmd.addCommand(new CommandHelp());
         cmd.addCommand(new CommandConfig());
-        // cmd.addCommand(new CommandBees());
+        cmd.addCommand(new CommandBees());
         cmd.addCommand(new CommandTea());
         event.registerServerCommand(cmd);
     }
