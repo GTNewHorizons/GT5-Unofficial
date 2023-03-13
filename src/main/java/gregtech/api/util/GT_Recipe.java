@@ -2924,11 +2924,13 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             sMixerRecipes.addDownstream(sMultiblockMixerRecipes.deepCopyInput());
             sElectrolyzerRecipes.addDownstream(sMultiblockElectrolyzerRecipes.deepCopyInput());
             sDieselFuels.addDownstream(
-                    b -> b.build().map(sLargeBoilerFakeFuels::addDieselRecipe).map(Collections::singletonList)
-                            .orElse(Collections.emptyList()));
+                    IGT_RecipeMap.newRecipeMap(
+                            b -> b.build().map(sLargeBoilerFakeFuels::addDieselRecipe).map(Collections::singletonList)
+                                    .orElse(Collections.emptyList())));
             sDenseLiquidFuels.addDownstream(
-                    b -> b.build().map(sLargeBoilerFakeFuels::addDenseLiquidRecipe).map(Collections::singletonList)
-                            .orElse(Collections.emptyList()));
+                    IGT_RecipeMap.newRecipeMap(
+                            b -> b.build().map(sLargeBoilerFakeFuels::addDenseLiquidRecipe)
+                                    .map(Collections::singletonList).orElse(Collections.emptyList())));
         }
 
         /**
@@ -3443,6 +3445,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             return this;
         }
 
+        @Override
         public void addDownstream(IGT_RecipeMap downstream) {
             this.downstreams.add(downstream);
         }

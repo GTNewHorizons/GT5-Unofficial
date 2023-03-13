@@ -65,16 +65,16 @@ public class GT_RecipeConstants {
     public static final GT_RecipeBuilder.MetadataIdentifier<Object> OREDICT_INPUT = GT_RecipeBuilder.MetadataIdentifier
             .create(Object.class, "oredict_input");
 
-    public static final IGT_RecipeMap Fusion = builder -> {
+    public static final IGT_RecipeMap Fusion = IGT_RecipeMap.newRecipeMap(builder -> {
         if (GT_Utility.isArrayEmptyOrNull(builder.getFluidInputs())
                 || GT_Utility.isArrayEmptyOrNull(builder.getFluidOutputs()))
             return Collections.emptyList();
         if (builder.getFluidInputs().length > 2 || builder.getFluidOutputs().length > 2)
             return GT_Recipe_Map.sComplexFusionRecipes.doAdd(builder);
         return GT_Recipe_Map.sFusionRecipes.doAdd(builder);
-    };
+    });
 
-    public static final IGT_RecipeMap UniversalArcFurnace = builder -> {
+    public static final IGT_RecipeMap UniversalArcFurnace = IGT_RecipeMap.newRecipeMap(builder -> {
         if (!GT_Utility.isArrayOfLength(builder.getItemInputsBasic(), 1)
                 || GT_Utility.isArrayEmptyOrNull(builder.getItemOutputs()))
             return Collections.emptyList();
@@ -93,9 +93,9 @@ public class GT_RecipeConstants {
         ret.addAll(
                 GT_Recipe_Map.sArcFurnaceRecipes.doAdd(builder.copy().fluidInputs(Materials.Oxygen.getGas(aDuration))));
         return ret;
-    };
+    });
 
-    public static final IGT_RecipeMap UniversalChemical = builder -> {
+    public static final IGT_RecipeMap UniversalChemical = IGT_RecipeMap.newRecipeMap(builder -> {
         for (ItemStack input : builder.getItemInputsBasic()) {
             if (GT_Utility.isAnyIntegratedCircuit(input) && input.getItemDamage() >= 10) return GT_Utility.concat(
                     builder.copy().addTo(GT_Recipe_Map.sChemicalRecipes),
@@ -103,9 +103,9 @@ public class GT_RecipeConstants {
                     builder.metadata(CLEANROOM, false).addTo(GT_Recipe_Map.sMultiblockChemicalRecipes));
         }
         return builder.addTo(GT_Recipe_Map.sChemicalRecipes);
-    };
+    });
 
-    public static final IGT_RecipeMap AssemblyLine = builder -> {
+    public static final IGT_RecipeMap AssemblyLine = IGT_RecipeMap.newRecipeMap(builder -> {
         Optional<GT_Recipe.GT_Recipe_WithAlt> rr = builder.validateInputCount(4, 16).validateOutputCount(1, 1)
                 .validateOutputFluidCount(-1, 0).validateInputFluidCount(0, 4).buildWithAlt();
         if (!rr.isPresent()) return Collections.emptyList();
@@ -189,9 +189,9 @@ public class GT_RecipeConstants {
         GT_Recipe.GT_Recipe_AssemblyLine.sAssemblylineRecipes.add(tRecipe);
         GT_AssemblyLineUtils.addRecipeToCache(tRecipe);
         return ret;
-    };
+    });
 
-    public static IGT_RecipeMap AssemblerOD = builder -> {
+    public static IGT_RecipeMap AssemblerOD = IGT_RecipeMap.newRecipeMap(builder -> {
         Collection<GT_Recipe> ret = new ArrayList<>();
         for (ItemStack input : GT_OreDictUnificator.getOresImmutable(builder.getMetadata(OREDICT_INPUT))) {
             ret.addAll(
@@ -199,9 +199,9 @@ public class GT_RecipeConstants {
                             .addTo(GT_Recipe_Map.sAssemblerRecipes));
         }
         return ret;
-    };
+    });
 
-    public static IGT_RecipeMap Fuel = builder -> {
+    public static IGT_RecipeMap Fuel = IGT_RecipeMap.newRecipeMap(builder -> {
         builder.validateInputCount(1, 1).validateNoInputFluid().validateOutputCount(-1, 0).validateNoOutputFluid();
         if (!builder.isValid()) return Collections.emptyList();
         int fuelType = builder.getMetadata(FUEL_TYPE);
@@ -209,7 +209,7 @@ public class GT_RecipeConstants {
                 GregTech_API.sRecipeFile
                         .get("fuel_" + fuelType, builder.getItemInputBasic(0), builder.getMetadata(FUEL_VALUE)));
         return FuelType.get(fuelType).getTarget().doAdd(builder);
-    };
+    });
 
     public enum FuelType {
 

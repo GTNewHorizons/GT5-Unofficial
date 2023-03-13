@@ -172,7 +172,7 @@ public class GT_RecipeBuilder {
         return noFluidOutputs().noItemOutputs();
     }
 
-    public GT_RecipeBuilder outputChances(int[] chances) {
+    public GT_RecipeBuilder outputChances(int... chances) {
         if (outputs == null) throw new IllegalStateException("no outputs set yet");
         if (chances.length != outputs.length) {
             chances = Arrays.copyOf(chances, outputs.length);
@@ -614,6 +614,30 @@ public class GT_RecipeBuilder {
 
     public Collection<GT_Recipe> addTo(IGT_RecipeMap recipeMap) {
         return recipeMap.doAdd(this);
+    }
+
+    public GT_RecipeBuilder reset() {
+        additionalData.clear();
+        alts = null;
+        chances = null;
+        duration = -1;
+        enabled = true;
+        eut = -1;
+        fakeRecipe = false;
+        fluidInputs = null;
+        fluidOutputs = null;
+        hidden = false;
+        inputsBasic = null;
+        inputsOreDict = null;
+        mCanBeBuffered = true;
+        mNeedsEmptyOutput = false;
+        neiDesc = null;
+        optimize = true;
+        outputs = null;
+        special = null;
+        specialValue = 0;
+        valid = true;
+        return this;
     }
 
     public interface RecipeValidation {

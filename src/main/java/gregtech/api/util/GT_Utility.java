@@ -4455,24 +4455,27 @@ public class GT_Utility {
 
     @SafeVarargs
     public static <E> Collection<E> concat(Collection<E>... colls) {
+        return concat(Arrays.asList(colls));
+    }
+
+    public static <E> Collection<E> concat(Collection<Collection<E>> colls) {
         return new ConcatCollection<>(colls);
     }
 
     private static class ConcatCollection<E> extends AbstractCollection<E> {
 
-        private final List<Collection<E>> colls;
+        private final Collection<Collection<E>> colls;
         private final int size;
 
-        @SafeVarargs
-        public ConcatCollection(Collection<E>... lists) {
-            List<Collection<E>> colls1 = null;
+        public ConcatCollection(Collection<Collection<E>> lists) {
+            Collection<Collection<E>> colls1 = null;
             for (Collection<E> list : lists) {
                 if (list == null || list.isEmpty()) {
-                    colls1 = Arrays.stream(lists).filter(c -> c != null && !c.isEmpty()).collect(Collectors.toList());
+                    colls1 = lists.stream().filter(c -> c != null && !c.isEmpty()).collect(Collectors.toList());
                     break;
                 }
             }
-            if (colls1 == null) colls1 = Arrays.asList(lists);
+            if (colls1 == null) colls1 = lists;
             colls = colls1;
             int sum = 0;
             for (Collection<E> list : colls) {
