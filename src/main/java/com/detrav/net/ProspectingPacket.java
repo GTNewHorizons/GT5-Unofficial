@@ -2,8 +2,8 @@ package com.detrav.net;
 
 import java.io.*;
 import java.util.HashMap;
-import java.util.zip.DeflaterInputStream;
-import java.util.zip.DeflaterOutputStream;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -101,7 +101,7 @@ public class ProspectingPacket extends DetravPacket {
     }
 
     public static Object decode(InputStream in) throws IOException {
-        DataInput aData = new DataInputStream(new DeflaterInputStream(in));
+        DataInput aData = new DataInputStream(new GZIPInputStream(in));
         ProspectingPacket packet = new ProspectingPacket(
                 aData.readInt(),
                 aData.readInt(),
@@ -137,7 +137,7 @@ public class ProspectingPacket extends DetravPacket {
 
     @Override
     public void encode(OutputStream out) throws IOException {
-        DataOutputStream tOut = new DataOutputStream(new DeflaterOutputStream(out));
+        DataOutputStream tOut = new DataOutputStream(new GZIPOutputStream(out));
         tOut.writeInt(chunkX);
         tOut.writeInt(chunkZ);
         tOut.writeInt(posX);
@@ -161,6 +161,7 @@ public class ProspectingPacket extends DetravPacket {
             }
         }
         tOut.writeInt(checkOut);
+        tOut.close();
     }
 
     @Override
