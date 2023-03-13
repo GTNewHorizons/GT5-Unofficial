@@ -72,6 +72,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
     private boolean processingRecipe = false;
     private boolean autoPullItemList = false;
     private int minAutoPullStackSize = 1;
+    private static final int CONFIG_WINDOW_ID = 10;
 
     public GT_MetaTileEntity_Hatch_InputBus_ME(int aID, String aName, String aNameRegional) {
         super(
@@ -179,6 +180,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
             for (int i = 0; i < SLOT_COUNT; i++) {
                 mInventory[i] = null;
             }
+            updateAllInformationSlots();
         } else {
             refreshItemList();
             updateAllInformationSlots();
@@ -242,6 +244,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
     @Override
     public void updateSlots() {}
 
+    @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, byte aSide, float aX,
             float aY, float aZ) {
         if (!(aPlayer instanceof EntityPlayerMP))
@@ -459,7 +462,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         final SlotWidget[] aeSlotWidgets = new SlotWidget[16];
-        buildContext.addSyncedWindow(10, this::createStackSizeConfigurationWindow);
+        buildContext.addSyncedWindow(CONFIG_WINDOW_ID, this::createStackSizeConfigurationWindow);
         builder.widget(
                 SlotGroup.ofItemHandler(inventoryHandler, 4).startFromSlot(0).endAtSlot(15).phantom(true)
                         .background(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_ARROW_ME)
@@ -521,8 +524,8 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
     protected ModularWindow createStackSizeConfigurationWindow(final EntityPlayer player) {
         final int WIDTH = 78;
         final int HEIGHT = 40;
-        final int PARENT_WIDTH = 176;
-        final int PARENT_HEIGHT = 166;
+        final int PARENT_WIDTH = getGUIWidth();
+        final int PARENT_HEIGHT = getGUIHeight();
         ModularWindow.Builder builder = ModularWindow.builder(WIDTH, HEIGHT);
         builder.setBackground(GT_UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
         builder.setGuiTint(getGUIColorization());
