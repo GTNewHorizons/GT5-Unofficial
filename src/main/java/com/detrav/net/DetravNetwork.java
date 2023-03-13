@@ -5,14 +5,14 @@ import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayerMP;
 
-import com.google.common.io.ByteArrayDataInput;
-import com.google.common.io.ByteStreams;
-
 import cpw.mods.fml.common.network.FMLEmbeddedChannel;
 import cpw.mods.fml.common.network.FMLOutboundHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.internal.FMLProxyPacket;
 import cpw.mods.fml.relauncher.Side;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufInputStream;
+import io.netty.buffer.ByteBufOutputStream;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -27,7 +27,6 @@ public class DetravNetwork extends MessageToMessageCodec<FMLProxyPacket, DetravP
 
     static public DetravNetwork INSTANCE;
     private final EnumMap<Side, FMLEmbeddedChannel> mChannel;
-    private DetravPacket[] mSubChannels;
 
     public DetravNetwork() {
         INSTANCE = this;
@@ -36,38 +35,37 @@ public class DetravNetwork extends MessageToMessageCodec<FMLProxyPacket, DetravP
 
     @Override
     protected void encode(ChannelHandlerContext ctx, DetravPacket msg, List<Object> out) throws Exception {
-        out.add(
-                new FMLProxyPacket(
-                        Unpooled.buffer().writeByte(msg.getPacketID()).writeBytes(msg.encode()).copy(),
-                        (String) ctx.channel().attr(NetworkRegistry.FML_CHANNEL).get()));
+        ByteBuf buf = Unpooled.buffer();
+        buf.writeByte(msg.getPacketID());
+        msg.encode(new ByteBufOutputStream(buf));
+        out.add(new FMLProxyPacket(buf, ctx.channel().attr(NetworkRegistry.FML_CHANNEL).get()));
     }
 
-    @SuppressWarnings("UnstableApiUsage")
     @Override
     protected void decode(ChannelHandlerContext ctx, FMLProxyPacket msg, List<Object> out) throws Exception {
-        ByteArrayDataInput aData = ByteStreams.newDataInput(msg.payload().array());
-        aData.readByte(); // Sub Channel - Ignore
-        out.add(ProspectingPacket.decode(aData));
+        ByteBuf payload = msg.payload();
+        payload.readByte(); // Sub Channel - Ignore
+        out.add(ProspectingPacket.decode(new ByteBufInputStream(payload)));
     }
 
     public void sendToPlayer(DetravPacket aPacket, EntityPlayerMP aPlayer) {
-        ((FMLEmbeddedChannel) this.mChannel.get(Side.SERVER)).attr(FMLOutboundHandler.FML_MESSAGETARGET)
+        this.mChannel.get(Side.SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGET)
                 .set(FMLOutboundHandler.OutboundTarget.PLAYER);
-        ((FMLEmbeddedChannel) this.mChannel.get(Side.SERVER)).attr(FMLOutboundHandler.FML_MESSAGETARGETARGS)
-                .set(aPlayer);
-        ((FMLEmbeddedChannel) this.mChannel.get(Side.SERVER)).writeAndFlush(aPacket);
+        this.mChannel.get(Side.SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGETARGS).set(aPlayer);
+        this.mChannel.get(Side.SERVER).writeAndFlush(aPacket);
     }
 
     public void sendToServer(DetravPacket aPacket) {
-        ((FMLEmbeddedChannel) this.mChannel.get(Side.CLIENT)).attr(FMLOutboundHandler.FML_MESSAGETARGET)
+        this.mChannel.get(Side.CLIENT).attr(FMLOutboundHandler.FML_MESSAGETARGET)
                 .set(FMLOutboundHandler.OutboundTarget.TOSERVER);
-        ((FMLEmbeddedChannel) this.mChannel.get(Side.CLIENT)).writeAndFlush(aPacket);
+        this.mChannel.get(Side.CLIENT).writeAndFlush(aPacket);
     }
 
     @ChannelHandler.Sharable
     static final class HandlerShared extends SimpleChannelInboundHandler<DetravPacket> {
 
-        protected void channelRead0(ChannelHandlerContext ctx, DetravPacket aPacket) throws Exception {
+        @Override
+        protected void channelRead0(ChannelHandlerContext ctx, DetravPacket aPacket) {
             aPacket.process();
         }
     }

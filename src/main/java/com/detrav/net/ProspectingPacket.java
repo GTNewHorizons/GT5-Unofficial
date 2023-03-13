@@ -1,6 +1,9 @@
 package com.detrav.net;
 
+import java.io.*;
 import java.util.HashMap;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -12,9 +15,6 @@ import com.detrav.gui.textures.DetravMapTexture;
 import com.detrav.utils.GTppHelper;
 import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
 import com.google.common.base.Objects;
-import com.google.common.io.ByteArrayDataInput;
-import com.google.common.io.ByteArrayDataOutput;
-import com.google.common.io.ByteStreams;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
@@ -100,7 +100,8 @@ public class ProspectingPacket extends DetravPacket {
         packet.metaMap.put(meta, name);
     }
 
-    public static Object decode(ByteArrayDataInput aData) {
+    public static Object decode(InputStream in) throws IOException {
+        DataInput aData = new DataInputStream(new GZIPInputStream(in));
         ProspectingPacket packet = new ProspectingPacket(
                 aData.readInt(),
                 aData.readInt(),
@@ -134,10 +135,9 @@ public class ProspectingPacket extends DetravPacket {
         return 0;
     }
 
-    @SuppressWarnings("UnstableApiUsage")
     @Override
-    public byte[] encode() {
-        ByteArrayDataOutput tOut = ByteStreams.newDataOutput(1);
+    public void encode(OutputStream out) throws IOException {
+        DataOutputStream tOut = new DataOutputStream(new GZIPOutputStream(out));
         tOut.writeInt(chunkX);
         tOut.writeInt(chunkZ);
         tOut.writeInt(posX);
@@ -149,18 +149,19 @@ public class ProspectingPacket extends DetravPacket {
         int aSize = (size * 2 + 1) * 16;
         int checkOut = 0;
         for (int i = 0; i < aSize; i++) for (int j = 0; j < aSize; j++) {
-            if (map[i][j] == null) tOut.writeByte(0);
+            HashMap<Byte, Short> data = map[i][j];
+            if (data == null) tOut.writeByte(0);
             else {
-                tOut.writeByte(map[i][j].keySet().size());
-                for (byte key : map[i][j].keySet()) {
+                tOut.writeByte(data.keySet().size());
+                for (byte key : data.keySet()) {
                     tOut.writeByte(key);
-                    tOut.writeShort(map[i][j].get(key));
+                    tOut.writeShort(data.get(key));
                     checkOut++;
                 }
             }
         }
         tOut.writeInt(checkOut);
-        return tOut.toByteArray();
+        tOut.close();
     }
 
     @Override
