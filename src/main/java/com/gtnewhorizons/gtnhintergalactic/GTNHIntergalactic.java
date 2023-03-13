@@ -114,6 +114,9 @@ public class GTNHIntergalactic {
                     case "GalaxySpace:SpaceElevatorParts":
                         mapping.remap(IGItems.SpaceElevatorItems);
                         break;
+                    case "GalaxySpace:MiningDrone":
+                        mapping.remap(IGItems.MiningDrones);
+                        break;
                     default:
                         mapping.warn();
                         break;
