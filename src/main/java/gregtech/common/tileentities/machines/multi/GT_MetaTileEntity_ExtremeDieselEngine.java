@@ -44,7 +44,7 @@ public class GT_MetaTileEntity_ExtremeDieselEngine extends GT_MetaTileEntity_Die
                 .addInfo("Boosted: Produces 32700EU/t at 150% fuel efficiency")
                 .addInfo("You need to wait for it to reach 300% to output full power")
                 .addPollutionAmount(getPollutionPerSecond(null)).addSeparator().beginStructureBlock(3, 3, 4, false)
-                .addController("Front center").addCasingInfo("Robust Tungstensteel Machine Casing", 16)
+                .addController("Front center").addCasingInfoRange("Robust Tungstensteel Machine Casing", 16, 22, false)
                 .addOtherStructurePart("Titanium Gear Box Machine Casing", "Inner 2 blocks")
                 .addOtherStructurePart("Extreme Engine Intake Machine Casing", "8x, ring around controller")
                 .addStructureInfo("Extreme Engine Intake Casings must not be obstructed in front (only air blocks)")

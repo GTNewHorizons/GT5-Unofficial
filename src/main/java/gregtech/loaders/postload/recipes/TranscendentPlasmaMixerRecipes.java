@@ -45,8 +45,10 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
                 new FluidStack[] { Materials.Helium.getPlasma(1000), Materials.Iron.getPlasma(1000),
                         Materials.Calcium.getPlasma(1000), Materials.Niobium.getPlasma(1000),
 
-                        Materials.Nitrogen.getPlasma(1000), Materials.Zinc.getPlasma(1000),
-                        Materials.Silver.getPlasma(1000), Materials.Titanium.getPlasma(1000), },
+                        Materials.Radon.getPlasma(1000), Materials.Nickel.getPlasma(1000),
+                        Materials.Boron.getPlasma(1000), Materials.Sulfur.getPlasma(1000),
+
+                },
                 PROSAIC_EU_PER_L);
 
         addTranscendentPlasmaMixerRecipe(
@@ -55,11 +57,11 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
                 new FluidStack[] { Materials.Helium.getPlasma(1000), Materials.Iron.getPlasma(1000),
                         Materials.Calcium.getPlasma(1000), Materials.Niobium.getPlasma(1000),
 
-                        Materials.Nitrogen.getPlasma(1000), Materials.Zinc.getPlasma(1000),
-                        Materials.Silver.getPlasma(1000), Materials.Titanium.getPlasma(1000),
-
                         Materials.Radon.getPlasma(1000), Materials.Nickel.getPlasma(1000),
-                        Materials.Boron.getPlasma(1000), Materials.Sulfur.getPlasma(1000), },
+                        Materials.Boron.getPlasma(1000), Materials.Sulfur.getPlasma(1000),
+
+                        Materials.Nitrogen.getPlasma(1000), Materials.Zinc.getPlasma(1000),
+                        Materials.Silver.getPlasma(1000), Materials.Titanium.getPlasma(1000), },
                 RESPLENDENT_EU_PER_L);
 
         addTranscendentPlasmaMixerRecipe(
@@ -68,11 +70,11 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
                 new FluidStack[] { Materials.Helium.getPlasma(1000), Materials.Iron.getPlasma(1000),
                         Materials.Calcium.getPlasma(1000), Materials.Niobium.getPlasma(1000),
 
-                        Materials.Nitrogen.getPlasma(1000), Materials.Zinc.getPlasma(1000),
-                        Materials.Silver.getPlasma(1000), Materials.Titanium.getPlasma(1000),
-
                         Materials.Radon.getPlasma(1000), Materials.Nickel.getPlasma(1000),
                         Materials.Boron.getPlasma(1000), Materials.Sulfur.getPlasma(1000),
+
+                        Materials.Nitrogen.getPlasma(1000), Materials.Zinc.getPlasma(1000),
+                        Materials.Silver.getPlasma(1000), Materials.Titanium.getPlasma(1000),
 
                         Materials.Americium.getPlasma(1000), Materials.Bismuth.getPlasma(1000),
                         Materials.Oxygen.getPlasma(1000), Materials.Tin.getPlasma(1000), },

@@ -438,7 +438,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         beeSpecies.setTemperature(WARM);
     }, template -> AlleleHelper.instance.set(template, SPEED, Speed.SLOWER), dis -> {
         IBeeMutationCustom tMutation = dis.registerMutation(IRON, COAL, 10);
-        tMutation.requireResource("blockSteel");
+        tMutation.requireResource(GregTech_API.sBlockMetal6, 13);
         tMutation.restrictTemperature(HOT);
     }),
     NICKEL(GT_BranchDefinition.METAL, "Nickel", true, new Color(0x8585AD), new Color(0x8585AD), beeSpecies -> {

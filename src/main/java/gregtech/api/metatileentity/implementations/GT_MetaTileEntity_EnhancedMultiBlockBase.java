@@ -19,6 +19,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 
 import cpw.mods.fml.common.network.NetworkRegistry;
+import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 
@@ -58,7 +59,8 @@ public abstract class GT_MetaTileEntity_EnhancedMultiBlockBase<T extends GT_Meta
             mMachine = false;
             mUpdated = false;
             mUpdate = 100;
-            if (getBaseMetaTileEntity().isServerSide()) {
+            if (getBaseMetaTileEntity().isServerSide()
+                    && !GregTech_API.isDummyWorld(getBaseMetaTileEntity().getWorld())) {
                 StructureLibAPI.sendAlignment(
                         (IAlignmentProvider) base,
                         new NetworkRegistry.TargetPoint(

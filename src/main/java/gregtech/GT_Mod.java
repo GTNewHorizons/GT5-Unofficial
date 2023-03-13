@@ -75,7 +75,6 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_RecipeRegistrator;
 import gregtech.api.util.GT_SpawnEventHandler;
 import gregtech.api.util.GT_Utility;
-import gregtech.client.GT_TooltipHandler;
 import gregtech.common.GT_DummyWorld;
 import gregtech.common.GT_Network;
 import gregtech.common.GT_Proxy;
@@ -84,6 +83,8 @@ import gregtech.common.covers.GT_Cover_FacadeAE;
 import gregtech.common.entities.GT_Entity_Arrow;
 import gregtech.common.entities.GT_Entity_Arrow_Potion;
 import gregtech.common.misc.GT_Command;
+import gregtech.common.misc.spaceprojects.commands.SPM_Command;
+import gregtech.common.misc.spaceprojects.commands.SP_Command;
 import gregtech.common.tileentities.storage.GT_MetaTileEntity_DigitalChestBase;
 import gregtech.crossmod.Waila;
 import gregtech.loaders.load.GT_CoverBehaviorLoader;
@@ -146,7 +147,7 @@ import ic2.api.recipe.RecipeOutput;
 public class GT_Mod implements IGT_Mod {
 
     @Deprecated // Keep for use in BaseMetaTileEntity
-    public static final int VERSION = 509, SUBVERSION = 41;
+    public static final int VERSION = 509, SUBVERSION = 42;
 
     @SuppressWarnings("DeprecatedIsStillUsed") // Need initialization until it is deleted
     @Deprecated
@@ -491,7 +492,6 @@ public class GT_Mod implements IGT_Mod {
 
         GT_PostLoad.nerfVanillaTools();
         new GT_ExtremeDieselFuelLoader().run();
-        GT_TooltipHandler.init();
 
         /*
          * Until this point most crafting recipe additions, and removals, have been buffered. Go through, execute the
@@ -712,6 +712,8 @@ public class GT_Mod implements IGT_Mod {
         }
 
         aEvent.registerServerCommand(new GT_Command());
+        aEvent.registerServerCommand(new SP_Command());
+        aEvent.registerServerCommand(new SPM_Command());
         // Sets a new Machine Block Update Thread everytime a world is loaded
         GT_Runnable_MachineBlockUpdate.initExecutorService();
     }

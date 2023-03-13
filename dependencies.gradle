@@ -39,7 +39,7 @@ dependencies {
     compileOnly("com.github.GTNewHorizons:Railcraft:9.13.18:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:Galacticraft:3.0.65-GTNH:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:AppleCore:3.2.10:dev") { transitive = false }
-    compileOnly("com.github.GTNewHorizons:TinkersConstruct:1.9.19-GTNH:dev") { transitive = false }
+    compileOnly("com.github.GTNewHorizons:TinkersConstruct:1.9.23-GTNH:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:Chisel:2.10.17-GTNH:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:EnderIO:2.3.1.57:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:BuildCraft:7.1.28:dev") { transitive = false }

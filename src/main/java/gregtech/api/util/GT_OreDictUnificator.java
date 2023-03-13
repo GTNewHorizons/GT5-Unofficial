@@ -187,12 +187,15 @@ public class GT_OreDictUnificator {
             tPrefixMaterial.mUnificationTarget = sName2StackMap.get(tPrefixMaterial.toString());
         ItemStack rStack = tPrefixMaterial.mUnificationTarget;
         if (GT_Utility.isStackInvalid(rStack)) return GT_Utility.copyOrNull(aStack);
-        rStack.setTagCompound(aStack.getTagCompound());
+        ItemStack newStack;
         if (unsafe) {
-            return GT_Utility.copyAmountUnsafe(aStack.stackSize, rStack);
+            newStack = GT_Utility.copyAmountUnsafe(aStack.stackSize, rStack);
         } else {
-            return GT_Utility.copyAmount(aStack.stackSize, rStack);
+            newStack = GT_Utility.copyAmount(aStack.stackSize, rStack);
         }
+        // NBT is assigned by reference here, so mutating it may have unexpected side effects.
+        newStack.setTagCompound(aStack.getTagCompound());
+        return newStack;
     }
 
     /**
@@ -210,7 +213,6 @@ public class GT_OreDictUnificator {
     static ItemStack get_nocopy(boolean aUseBlackList, ItemStack aStack) {
         if (GT_Utility.isStackInvalid(aStack)) return null;
         ItemData tPrefixMaterial = getAssociation(aStack);
-        ItemStack rStack = null;
         if (tPrefixMaterial == null || !tPrefixMaterial.hasValidPrefixMaterialData()
                 || (aUseBlackList && tPrefixMaterial.mBlackListed))
             return aStack;
@@ -220,11 +222,30 @@ public class GT_OreDictUnificator {
         }
         if (tPrefixMaterial.mUnificationTarget == null)
             tPrefixMaterial.mUnificationTarget = sName2StackMap.get(tPrefixMaterial.toString());
-        rStack = tPrefixMaterial.mUnificationTarget;
+        ItemStack rStack = tPrefixMaterial.mUnificationTarget;
         if (GT_Utility.isStackInvalid(rStack)) return aStack;
-        assert rStack != null;
-        rStack.setTagCompound(aStack.getTagCompound());
-        return rStack;
+
+        // Yes, == and not .equals().
+        // This check is primarily intended to optimize for the case where both rStack and aStack
+        // do not have NBT, and so we would be comparing null == null.
+        //
+        // Even if aStack and rStack may have equal NBT, we prefer to do an inexpensive
+        // new ItemStack() over the potentially expensive NBTTagCompound.equals().
+        if (aStack.getTagCompound() == rStack.getTagCompound()) {
+            // Warning: rStack's stack size may not be equal to aStack's stack size.
+            return rStack;
+        }
+
+        // Okay, okay, I lied, we actually do need to make a copy.
+        // This is to fix a long-standing bug where we were mutating NBT directly on rStack,
+        // which had unexpected and unpredictable ripple effects.
+        //
+        // We will do some custom copying here, to avoid ItemStack.copy(),
+        // which calls the potentially expensive NBTTagCompound.copy()
+        // NBT is assigned by reference here, so mutating it may have unexpected side effects.
+        ItemStack newStack = new ItemStack(rStack.getItem(), aStack.stackSize, Items.feather.getDamage(rStack));
+        newStack.setTagCompound(aStack.getTagCompound());
+        return newStack;
     }
 
     /**
@@ -252,7 +273,6 @@ public class GT_OreDictUnificator {
         rStack = tPrefixMaterial.mUnificationTarget;
         if (GT_Utility.isStackInvalid(rStack))
             return !alreadyCompared && GT_Utility.areStacksEqual(aStack, unified_tStack, true);
-        rStack.setTagCompound(aStack.getTagCompound());
         return GT_Utility.areStacksEqual(rStack, unified_tStack, true);
     }
 

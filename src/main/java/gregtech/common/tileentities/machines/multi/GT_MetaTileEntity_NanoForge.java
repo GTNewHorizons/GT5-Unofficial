@@ -147,7 +147,6 @@ public class GT_MetaTileEntity_NanoForge extends
                             .buildAndChain(GregTech_API.sBlockCasings8, 10))
             .build();
     private byte mSpecialTier = 0;
-    private boolean mSeparate = false;
 
     public GT_MetaTileEntity_NanoForge(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -210,7 +209,7 @@ public class GT_MetaTileEntity_NanoForge extends
     public boolean checkRecipe(ItemStack aStack) {
         GT_Recipe.GT_Recipe_Map map = getRecipeMap();
         FluidStack[] tFluidInputs = getCompactedFluids();
-        if (mSeparate) {
+        if (inputSeparation) {
             ArrayList<ItemStack> tInputList = new ArrayList<ItemStack>();
             for (GT_MetaTileEntity_Hatch_InputBus tBus : mInputBusses) {
                 for (int i = tBus.getSizeInventory() - 1; i >= 0; i--) {
@@ -339,14 +338,15 @@ public class GT_MetaTileEntity_NanoForge extends
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setBoolean("mSeparate", mSeparate);
         aNBT.setByte("mSpecialTier", mSpecialTier);
     }
 
     @Override
     public void loadNBTData(final NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        mSeparate = aNBT.getBoolean("mSeparate");
+        if (!aNBT.hasKey(INPUT_SEPARATION_NBT_KEY)) {
+            inputSeparation = aNBT.getBoolean("mSeparate");
+        }
         mSpecialTier = aNBT.getByte("mSpecialTier");
     }
 
@@ -444,9 +444,14 @@ public class GT_MetaTileEntity_NanoForge extends
 
     @Override
     public final void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        mSeparate = !mSeparate;
+        inputSeparation = !inputSeparation;
         GT_Utility.sendChatToPlayer(
                 aPlayer,
-                StatCollector.translateToLocal("GT5U.machines.separatebus") + " " + mSeparate);
+                StatCollector.translateToLocal("GT5U.machines.separatebus") + " " + inputSeparation);
+    }
+
+    @Override
+    protected boolean isInputSeparationButtonEnabled() {
+        return true;
     }
 }

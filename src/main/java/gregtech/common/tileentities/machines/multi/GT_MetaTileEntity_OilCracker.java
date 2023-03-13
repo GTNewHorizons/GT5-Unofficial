@@ -115,7 +115,7 @@ public class GT_MetaTileEntity_OilCracker extends GT_MetaTileEntity_EnhancedMult
                 .addInfo("(Values compared to cracking in the Chemical Reactor)")
                 .addInfo("Place the appropriate circuit in the controller").addSeparator()
                 .beginStructureBlock(5, 3, 3, true).addController("Front center")
-                .addCasingInfo("Clean Stainless Steel Machine Casing", 18)
+                .addCasingInfoRange("Clean Stainless Steel Machine Casing", 18, 21, false)
                 .addOtherStructurePart("2 Rings of 8 Coils", "Each side of the controller")
                 .addInfo("Gets 10% EU/t reduction per coil tier, up to a maximum of 50%")
                 .addEnergyHatch("Any casing", 1, 2, 3).addMaintenanceHatch("Any casing", 1, 2, 3)

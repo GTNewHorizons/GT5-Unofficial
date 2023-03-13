@@ -92,7 +92,7 @@ public class GT_MetaTileEntity_LargeChemicalReactor
         tt.addMachineType("Chemical Reactor").addInfo("Controller block for the Large Chemical Reactor")
                 .addInfo("Does not lose efficiency when overclocked").addInfo("Accepts fluids instead of fluid cells")
                 .addSeparator().beginStructureBlock(3, 3, 3, false).addController("Front center")
-                .addCasingInfo("Chemically Inert Machine Casing", 8)
+                .addCasingInfoRange("Chemically Inert Machine Casing", 8, 22, false)
                 .addOtherStructurePart("PTFE Pipe Machine Casing", "Center")
                 .addOtherStructurePart("Heating Coil", "Adjacent to the PTFE Pipe Machine Casing", 1)
                 .addEnergyHatch("Any casing", 1, 2).addMaintenanceHatch("Any casing", 1, 2)
@@ -126,6 +126,11 @@ public class GT_MetaTileEntity_LargeChemicalReactor
     @Override
     public boolean supportsSingleRecipeLocking() {
         return true;
+    }
+
+    @Override
+    public GT_Recipe.GT_Recipe_Map getRecipeMap() {
+        return GT_Recipe.GT_Recipe_Map.sMultiblockChemicalRecipes;
     }
 
     @Override

@@ -11,6 +11,7 @@ import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofFrame;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -29,7 +30,9 @@ import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.Text;
+import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.math.Color;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -46,6 +49,7 @@ import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
@@ -77,7 +81,6 @@ public class GT_MetaTileEntity_PCBFactory extends
     private static final String bioUpgrade = "bioUpgrade";
     private static final String ocTier1Upgrade = "ocTier1Upgrade";
     private static final String ocTier2Upgrade = "ocTier2Upgrade";
-    private boolean mSeparate = false;
     private float mRoughnessMultiplier = 1;
     private int mTier = 1, mSetTier = 1, mUpgradesInstalled = 0, mCurrentParallel = 0, mMaxParallel = 0;
     private boolean mBioUpgrade = false, mBioRotate = false, mOCTier1 = false, mOCTier2 = false;
@@ -485,7 +488,7 @@ public class GT_MetaTileEntity_PCBFactory extends
         mCurrentParallel = 0;
         GT_Recipe.GT_Recipe_Map aMap = getRecipeMap();
         FluidStack[] tFluidInputs = getStoredFluids().toArray(new FluidStack[0]);
-        if (mSeparate) {
+        if (inputSeparation) {
             ArrayList<ItemStack> tInputList = new ArrayList<ItemStack>();
             for (GT_MetaTileEntity_Hatch_InputBus tBus : mInputBusses) {
                 for (int i = tBus.getSizeInventory() - 1; i >= 0; i--) {
@@ -822,10 +825,10 @@ public class GT_MetaTileEntity_PCBFactory extends
 
     @Override
     public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        mSeparate = !mSeparate;
+        inputSeparation = !inputSeparation;
         GT_Utility.sendChatToPlayer(
                 aPlayer,
-                StatCollector.translateToLocal("GT5U.machines.separatebus") + " " + mSeparate);
+                StatCollector.translateToLocal("GT5U.machines.separatebus") + " " + inputSeparation);
     }
 
     @Override
@@ -1031,7 +1034,6 @@ public class GT_MetaTileEntity_PCBFactory extends
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setBoolean("mSeparate", mSeparate);
         aNBT.setBoolean("mBioUpgrade", mBioUpgrade);
         aNBT.setBoolean("mBioRotate", mBioRotate);
         aNBT.setInteger("mBioOffsetX", mBioOffsets[0]);
@@ -1049,7 +1051,9 @@ public class GT_MetaTileEntity_PCBFactory extends
     @Override
     public void loadNBTData(final NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        mSeparate = aNBT.getBoolean("mSeparate");
+        if (!aNBT.hasKey(INPUT_SEPARATION_NBT_KEY)) {
+            inputSeparation = aNBT.getBoolean("mSeparate");
+        }
         mBioUpgrade = aNBT.getBoolean("mBioUpgrade");
         mBioRotate = aNBT.getBoolean("mBioRotate");
         mBioOffsets[0] = aNBT.getInteger("mBioOffsetX");
@@ -1067,6 +1071,11 @@ public class GT_MetaTileEntity_PCBFactory extends
     @Override
     public boolean isCorrectMachinePart(ItemStack aStack) {
         return true;
+    }
+
+    @Override
+    protected SoundResource getProcessStartSound() {
+        return SoundResource.IC2_MACHINES_MAGNETIZER_LOOP;
     }
 
     @Override
@@ -1111,17 +1120,20 @@ public class GT_MetaTileEntity_PCBFactory extends
         builder.widget(
                 new ButtonWidget().setOnClick(
                         (clickData, widget) -> { if (!widget.isClient()) widget.getContext().openSyncedWindow(10); })
-                        .setSize(18, 18).setBackground(GT_UITextures.BUTTON_STANDARD)
-                        .setBackground(GT_UITextures.OVERLAY_BUTTON_CYCLIC).addTooltip("Configuration Menu")
-                        .setPos(151, 24))
+                        .setSize(16, 16).setBackground(() -> {
+                            List<UITexture> ret = new ArrayList<>();
+                            ret.add(GT_UITextures.BUTTON_STANDARD);
+                            ret.add(GT_UITextures.OVERLAY_BUTTON_CYCLIC);
+                            return ret.toArray(new IDrawable[0]);
+                        }).addTooltip("Configuration Menu").setPos(174, 130))
                 .widget(
                         new TextWidget(new Text("Tier")).setTextAlignment(Alignment.Center).setScale(0.91f)
-                                .setSize(20, 16).setPos(152, 46))
+                                .setSize(20, 16).setPos(173, 98))
                 .widget(
                         new TextFieldWidget().setGetterInt(() -> mSetTier).setSetterInt(val -> { mSetTier = val; })
                                 .setNumbers(1, 3).setTextColor(Color.WHITE.normal).setTextAlignment(Alignment.Center)
                                 .addTooltip("PCB Factory Tier").setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD)
-                                .setSize(18, 18).setPos(151, 61));
+                                .setSize(18, 18).setPos(173, 110));
     }
 
     protected ModularWindow createConfigurationWindow(final EntityPlayer player) {
@@ -1316,5 +1328,10 @@ public class GT_MetaTileEntity_PCBFactory extends
                                                 .setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
                                 .setPos(110, 25));
         return builder.build();
+    }
+
+    @Override
+    protected boolean isInputSeparationButtonEnabled() {
+        return true;
     }
 }

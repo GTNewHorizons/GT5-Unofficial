@@ -1,6 +1,7 @@
 package gregtech.api.metatileentity.implementations;
 
 import static gregtech.api.enums.GT_Values.*;
+import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static mcp.mobius.waila.api.SpecialChars.GREEN;
 import static mcp.mobius.waila.api.SpecialChars.RED;
 import static mcp.mobius.waila.api.SpecialChars.RESET;
@@ -19,28 +20,31 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.lwjgl.input.Keyboard;
 
 import com.google.common.collect.Iterables;
+import com.gtnewhorizons.modularui.api.drawable.IDrawable;
+import com.gtnewhorizons.modularui.api.drawable.UITexture;
+import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
-import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
-import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
+import com.gtnewhorizons.modularui.api.widget.Widget;
+import com.gtnewhorizons.modularui.common.widget.*;
 
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ConfigCategories;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
+import gregtech.api.interfaces.modularui.IBindPlayerInventoryUI;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -53,7 +57,7 @@ import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_DrillerBase
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_LargeTurbine;
 
 public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
-        implements IAddGregtechLogo, IAddUIWidgets {
+        implements IAddGregtechLogo, IAddUIWidgets, IBindPlayerInventoryUI {
 
     public static boolean disableMaintenance;
     public boolean mMachine = false, mWrench = false, mScrewdriver = false, mSoftHammer = false, mHardHammer = false,
@@ -70,6 +74,12 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     public float damageFactorHigh = 0.6f;
 
     public boolean mLockedToSingleRecipe = false;
+    protected boolean inputSeparation = false;
+    protected boolean voidExcess = true;
+    protected boolean batchMode = false;
+    protected static String INPUT_SEPARATION_NBT_KEY = "inputSeparation";
+    protected static String VOID_EXCESS_NBT_KEY = "voidExcess";
+    protected static String BATCH_MODE_NBT_KEY = "batchMode";
     public GT_Single_Recipe_Check mSingleRecipeCheck = null;
 
     public ArrayList<GT_MetaTileEntity_Hatch_Input> mInputHatches = new ArrayList<>();
@@ -81,6 +91,9 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     public ArrayList<GT_MetaTileEntity_Hatch_Energy> mEnergyHatches = new ArrayList<>();
     public ArrayList<GT_MetaTileEntity_Hatch_Maintenance> mMaintenanceHatches = new ArrayList<>();
     protected final List<GT_MetaTileEntity_Hatch> mExoticEnergyHatches = new ArrayList<>();
+
+    protected static final byte INTERRUPT_SOUND_INDEX = 8;
+    protected static final byte PROCESS_START_SOUND_INDEX = 1;
 
     public GT_MetaTileEntity_MultiBlockBase(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional, 2);
@@ -183,7 +196,11 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         aNBT.setInteger("mEfficiency", mEfficiency);
         aNBT.setInteger("mPollution", mPollution);
         aNBT.setInteger("mRuntime", mRuntime);
-        aNBT.setBoolean("mLockedToSingleRecipe", mLockedToSingleRecipe);
+        if (supportsSingleRecipeLocking()) {
+            aNBT.setBoolean("mLockedToSingleRecipe", mLockedToSingleRecipe);
+            if (mLockedToSingleRecipe && mSingleRecipeCheck != null)
+                aNBT.setTag("mSingleRecipeCheck", mSingleRecipeCheck.writeToNBT());
+        }
 
         if (mOutputItems != null) {
             aNBT.setInteger("mOutputItemsLength", mOutputItems.length);
@@ -205,6 +222,9 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         aNBT.setBoolean("mHardHammer", mHardHammer);
         aNBT.setBoolean("mSolderingTool", mSolderingTool);
         aNBT.setBoolean("mCrowbar", mCrowbar);
+        aNBT.setBoolean(BATCH_MODE_NBT_KEY, batchMode);
+        aNBT.setBoolean(INPUT_SEPARATION_NBT_KEY, inputSeparation);
+        aNBT.setBoolean(VOID_EXCESS_NBT_KEY, voidExcess);
     }
 
     @Override
@@ -217,7 +237,19 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         mEfficiency = aNBT.getInteger("mEfficiency");
         mPollution = aNBT.getInteger("mPollution");
         mRuntime = aNBT.getInteger("mRuntime");
-        mLockedToSingleRecipe = aNBT.getBoolean("mLockedToSingleRecipe");
+        if (supportsSingleRecipeLocking()) {
+            mLockedToSingleRecipe = aNBT.getBoolean("mLockedToSingleRecipe");
+            if (mLockedToSingleRecipe && aNBT.hasKey("mSingleRecipeCheck", Constants.NBT.TAG_COMPOUND)) {
+                GT_Single_Recipe_Check c = loadSingleRecipeChecker(aNBT.getCompoundTag("mSingleRecipeCheck"));
+                if (c != null) mSingleRecipeCheck = c;
+                // the old recipe is gone. we disable the machine to prevent making garbage in case of shared inputs
+                // maybe use a better way to inform player in the future.
+                else getBaseMetaTileEntity().disableWorking();
+            }
+        }
+        batchMode = aNBT.getBoolean(BATCH_MODE_NBT_KEY);
+        inputSeparation = aNBT.getBoolean(INPUT_SEPARATION_NBT_KEY);
+        voidExcess = aNBT.getBoolean(VOID_EXCESS_NBT_KEY);
 
         int aOutputItemsLength = aNBT.getInteger("mOutputItemsLength");
         if (aOutputItemsLength > 0) {
@@ -239,6 +271,10 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         mHardHammer = aNBT.getBoolean("mHardHammer");
         mSolderingTool = aNBT.getBoolean("mSolderingTool");
         mCrowbar = aNBT.getBoolean("mCrowbar");
+    }
+
+    protected GT_Single_Recipe_Check loadSingleRecipeChecker(NBTTagCompound aNBT) {
+        return GT_Single_Recipe_Check.tryLoad(this, aNBT);
     }
 
     @Override
@@ -369,6 +405,9 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     protected boolean checkRecipe() {
         startRecipeProcessing();
         boolean result = checkRecipe(mInventory[1]);
+        if (result && getProcessStartSound() != null) {
+            sendLoopStart(PROCESS_START_SOUND_INDEX);
+        }
         endRecipeProcessing();
         return result;
     }
@@ -445,6 +484,43 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             }
         }
         return mPollution < 10000;
+    }
+
+    @Override
+    public void doSound(byte aIndex, double aX, double aY, double aZ) {
+        super.doSound(aIndex, aX, aY, aZ);
+        switch (aIndex) {
+            case PROCESS_START_SOUND_INDEX:
+                if (getProcessStartSound() != null)
+                    GT_Utility.doSoundAtClient(getProcessStartSound(), getTimeBetweenProcessSounds(), 1.0F, aX, aY, aZ);
+                break;
+            case INTERRUPT_SOUND_INDEX:
+                GT_Utility.doSoundAtClient(SoundResource.IC2_MACHINES_INTERRUPT_ONE, 100, 1.0F, aX, aY, aZ);
+                break;
+        }
+    }
+
+    @Override
+    public void startSoundLoop(byte aIndex, double aX, double aY, double aZ) {
+        super.startSoundLoop(aIndex, aX, aY, aZ);
+        if (aIndex == PROCESS_START_SOUND_INDEX) {
+            if (getProcessStartSound() != null)
+                GT_Utility.doSoundAtClient(getProcessStartSound(), getTimeBetweenProcessSounds(), 1.0F, aX, aY, aZ);
+        }
+    }
+
+    /**
+     * @return Time before the start process sound is played again
+     */
+    protected int getTimeBetweenProcessSounds() {
+        return 100;
+    }
+
+    /**
+     * @return Sound that will be played once, when the recipe check was valid
+     */
+    protected SoundResource getProcessStartSound() {
+        return null;
     }
 
     /**
@@ -525,6 +601,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
 
     public void criticalStopMachine() {
         stopMachine();
+        sendSound(INTERRUPT_SOUND_INDEX);
         getBaseMetaTileEntity().setShutdownStatus(true);
     }
 
@@ -1343,15 +1420,99 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     }
 
     @Override
+    public int getGUIWidth() {
+        return 198;
+    }
+
+    @Override
+    public int getGUIHeight() {
+        return 192;
+    }
+
+    /**
+     * @return if the multi supports input separation. If you want to use it you need to use {@link #inputSeparation}.
+     */
+    protected boolean isInputSeparationButtonEnabled() {
+        return false;
+    }
+
+    /**
+     * @return if the multi supports batch mode. If you want to use it you need to use {@link #batchMode}.
+     */
+    protected boolean isBatchModeButtonEnabled() {
+        return false;
+    }
+
+    /**
+     * @return if the multi supports void excess to be toggled. If you want to use it you need to use
+     *         {@link #voidExcess}.
+     */
+    protected boolean isVoidExcessButtonEnabled() {
+        return false;
+    }
+
+    /**
+     * @return true if input separation is enabled, else false. This is getter is used for displaying the icon in the
+     *         GUI
+     */
+    protected boolean isInputSeparationEnabled() {
+        return inputSeparation;
+    }
+
+    /**
+     * @return true if batch mode is enabled, else false. This is getter is used for displaying the icon in the GUI
+     */
+    protected boolean isBatchModeEnabled() {
+        return batchMode;
+    }
+
+    /**
+     * @return true if void excess is enabled, else false. This is getter is used for displaying the icon in the GUI
+     */
+    protected boolean isVoidExcessEnabled() {
+        return voidExcess;
+    }
+
+    /**
+     * @return true if recipe locking is enabled, else false. This is getter is used for displaying the icon in the GUI
+     */
+    protected boolean isRecipeLockingEnabled() {
+        return mLockedToSingleRecipe;
+    }
+
+    @Override
+    public void bindPlayerInventoryUI(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        builder.bindPlayerInventory(buildContext.getPlayer(), new Pos2d(7, 109), getGUITextureSet().getItemSlot());
+    }
+
+    @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.widget(
-                new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK).setPos(7, 4).setSize(143, 75));
+                new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK).setPos(4, 4).setSize(190, 85));
         final SlotWidget inventorySlot = new SlotWidget(inventoryHandler, 1);
-        builder.widget(inventorySlot.setPos(151, 4));
+        builder.widget(inventorySlot.setPos(173, 167).setBackground(GT_UITextures.SLOT_DARK_GRAY));
 
         final DynamicPositionedColumn screenElements = new DynamicPositionedColumn();
         drawTexts(screenElements, inventorySlot);
         builder.widget(screenElements);
+
+        builder.widget(createPowerSwitchButton())
+                .widget(new FakeSyncWidget.BooleanSyncer(() -> getBaseMetaTileEntity().isAllowedToWork(), val -> {
+                    if (val) getBaseMetaTileEntity().enableWorking();
+                    else getBaseMetaTileEntity().disableWorking();
+                }));
+
+        builder.widget(createVoidExcessButton())
+                .widget(new FakeSyncWidget.BooleanSyncer(() -> voidExcess, val -> voidExcess = val));
+
+        builder.widget(createInputSeparationButton())
+                .widget(new FakeSyncWidget.BooleanSyncer(() -> inputSeparation, val -> inputSeparation = val));
+
+        builder.widget(createBatchModeButton())
+                .widget(new FakeSyncWidget.BooleanSyncer(() -> batchMode, val -> batchMode = val));
+
+        builder.widget(createLockToSingleRecipeButton()).widget(
+                new FakeSyncWidget.BooleanSyncer(() -> mLockedToSingleRecipe, val -> mLockedToSingleRecipe = val));
     }
 
     @Override
@@ -1455,5 +1616,139 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
                             }
                             return false;
                         }));
+    }
+
+    protected ButtonWidget createPowerSwitchButton() {
+        Widget button = new ButtonWidget().setOnClick((clickData, widget) -> {
+            if (getBaseMetaTileEntity().isAllowedToWork()) {
+                getBaseMetaTileEntity().disableWorking();
+            } else {
+                getBaseMetaTileEntity().enableWorking();
+            }
+        }).setPlayClickSound(true).setBackground(() -> {
+            List<UITexture> ret = new ArrayList<>();
+            ret.add(GT_UITextures.BUTTON_STANDARD);
+            if (getBaseMetaTileEntity().isAllowedToWork()) {
+                ret.add(GT_UITextures.OVERLAY_BUTTON_POWER_SWITCH_ON);
+            } else {
+                ret.add(GT_UITextures.OVERLAY_BUTTON_POWER_SWITCH_OFF);
+            }
+            return ret.toArray(new IDrawable[0]);
+        }).setPos(174, 148).setSize(16, 16);
+        button.addTooltip(StatCollector.translateToLocal("GT5U.gui.button.power_switch"))
+                .setTooltipShowUpDelay(TOOLTIP_DELAY);
+        return (ButtonWidget) button;
+    }
+
+    protected ButtonWidget createVoidExcessButton() {
+        Widget button = new ButtonWidget().setOnClick((clickData, widget) -> {
+            if (isVoidExcessButtonEnabled()) {
+                voidExcess = !voidExcess;
+            }
+        }).setPlayClickSound(true).setBackground(() -> {
+            List<UITexture> ret = new ArrayList<>();
+            ret.add(GT_UITextures.BUTTON_STANDARD);
+            if (isVoidExcessButtonEnabled()) {
+                if (isVoidExcessEnabled()) {
+                    ret.add(GT_UITextures.OVERLAY_BUTTON_VOID_EXCESS_ON);
+                } else {
+                    ret.add(GT_UITextures.OVERLAY_BUTTON_VOID_EXCESS_OFF);
+                }
+            } else {
+                if (isVoidExcessEnabled()) {
+                    ret.add(GT_UITextures.OVERLAY_BUTTON_VOID_EXCESS_ON_DISABLED);
+                } else {
+                    ret.add(GT_UITextures.OVERLAY_BUTTON_VOID_EXCESS_OFF_DISABLED);
+                }
+            }
+            return ret.toArray(new IDrawable[0]);
+        }).setPos(8, 91).setSize(16, 16);
+        button.addTooltip(StatCollector.translateToLocal("GT5U.gui.button.void_excess"))
+                .setTooltipShowUpDelay(TOOLTIP_DELAY);
+        return (ButtonWidget) button;
+    }
+
+    protected ButtonWidget createInputSeparationButton() {
+        Widget button = new ButtonWidget().setOnClick((clickData, widget) -> {
+            if (isInputSeparationButtonEnabled()) {
+                inputSeparation = !inputSeparation;
+            }
+        }).setPlayClickSound(true).setBackground(() -> {
+            List<UITexture> ret = new ArrayList<>();
+            ret.add(GT_UITextures.BUTTON_STANDARD);
+            if (isInputSeparationButtonEnabled()) {
+                if (isInputSeparationEnabled()) {
+                    ret.add(GT_UITextures.OVERLAY_BUTTON_INPUT_SEPARATION_ON);
+                } else {
+                    ret.add(GT_UITextures.OVERLAY_BUTTON_INPUT_SEPARATION_OFF);
+                }
+            } else {
+                if (isInputSeparationEnabled()) {
+                    ret.add(GT_UITextures.OVERLAY_BUTTON_INPUT_SEPARATION_ON_DISABLED);
+                } else {
+                    ret.add(GT_UITextures.OVERLAY_BUTTON_INPUT_SEPARATION_OFF_DISABLED);
+                }
+            }
+            return ret.toArray(new IDrawable[0]);
+        }).setPos(26, 91).setSize(16, 16);
+        button.addTooltip(StatCollector.translateToLocal("GT5U.gui.button.input_separation"))
+                .setTooltipShowUpDelay(TOOLTIP_DELAY);
+        return (ButtonWidget) button;
+    }
+
+    protected ButtonWidget createBatchModeButton() {
+        Widget button = new ButtonWidget().setOnClick((clickData, widget) -> {
+            if (isBatchModeButtonEnabled()) {
+                batchMode = !batchMode;
+            }
+        }).setPlayClickSound(true).setBackground(() -> {
+            List<UITexture> ret = new ArrayList<>();
+            ret.add(GT_UITextures.BUTTON_STANDARD);
+            if (isBatchModeButtonEnabled()) {
+                if (isBatchModeEnabled()) {
+                    ret.add(GT_UITextures.OVERLAY_BUTTON_BATCH_MODE_ON);
+                } else {
+                    ret.add(GT_UITextures.OVERLAY_BUTTON_BATCH_MODE_OFF);
+                }
+            } else {
+                if (isBatchModeEnabled()) {
+                    ret.add(GT_UITextures.OVERLAY_BUTTON_BATCH_MODE_ON_DISABLED);
+                } else {
+                    ret.add(GT_UITextures.OVERLAY_BUTTON_BATCH_MODE_OFF_DISABLED);
+                }
+            }
+            return ret.toArray(new IDrawable[0]);
+        }).setPos(44, 91).setSize(16, 16);
+        button.addTooltip(StatCollector.translateToLocal("GT5U.gui.button.batch_mode"))
+                .setTooltipShowUpDelay(TOOLTIP_DELAY);
+        return (ButtonWidget) button;
+    }
+
+    protected ButtonWidget createLockToSingleRecipeButton() {
+        Widget button = new ButtonWidget().setOnClick((clickData, widget) -> {
+            if (supportsSingleRecipeLocking()) {
+                mLockedToSingleRecipe = !mLockedToSingleRecipe;
+            }
+        }).setPlayClickSound(true).setBackground(() -> {
+            List<UITexture> ret = new ArrayList<>();
+            ret.add(GT_UITextures.BUTTON_STANDARD);
+            if (supportsSingleRecipeLocking()) {
+                if (isRecipeLockingEnabled()) {
+                    ret.add(GT_UITextures.OVERLAY_BUTTON_RECIPE_LOCKED);
+                } else {
+                    ret.add(GT_UITextures.OVERLAY_BUTTON_RECIPE_UNLOCKED);
+                }
+            } else {
+                if (isRecipeLockingEnabled()) {
+                    ret.add(GT_UITextures.OVERLAY_BUTTON_RECIPE_LOCKED_DISABLED);
+                } else {
+                    ret.add(GT_UITextures.OVERLAY_BUTTON_RECIPE_UNLOCKED_DISABLED);
+                }
+            }
+            return ret.toArray(new IDrawable[0]);
+        }).setPos(62, 91).setSize(16, 16);
+        button.addTooltip(StatCollector.translateToLocal("GT5U.gui.button.lock_recipe"))
+                .setTooltipShowUpDelay(TOOLTIP_DELAY);
+        return (ButtonWidget) button;
     }
 }

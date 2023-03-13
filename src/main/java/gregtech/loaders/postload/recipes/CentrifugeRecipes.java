@@ -849,6 +849,20 @@ public class CentrifugeRecipes implements Runnable {
                 320,
                 80);
         GT_Values.RA.addCentrifugeRecipe(
+                GT_Utility.getIntegratedCircuit(20),
+                GT_Values.NI,
+                Materials.Lava.getFluid(3600L),
+                GT_Values.NF,
+                Materials.SiliconDioxide.getDust(5),
+                Materials.Magnesia.getDust(1),
+                Materials.Quicklime.getDust(1),
+                Materials.Gold.getIngots(1),
+                Materials.Sapphire.getDust(3),
+                Materials.Tantalite.getDust(1),
+                new int[] { 9000, 9000, 9000, 1000, 3750, 4500 },
+                2880,
+                80);
+        GT_Values.RA.addCentrifugeRecipe(
                 new ItemStack(Blocks.soul_sand, 1),
                 GT_Values.NI,
                 GT_Values.NF,
@@ -887,8 +901,8 @@ public class CentrifugeRecipes implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Silver, 1L),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Phosphorus, 1L),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Scheelite, 1L),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Bauxite, 9L),
-                new int[] { 2000, 4000, 1000, 200, 2250, 4500 },
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Bauxite, 1L),
+                new int[] { 8000, 4000, 1000, 450, 2250, 4500 },
                 328,
                 4096);
 

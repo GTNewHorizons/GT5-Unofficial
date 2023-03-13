@@ -108,6 +108,7 @@ public class GT_MetaTileEntity_TranscendentPlasmaMixer
     }
 
     int multiplier = 1;
+    long mWirelessEUt = 0;
 
     @Override
     public boolean checkRecipe(ItemStack aStack) {
@@ -126,8 +127,9 @@ public class GT_MetaTileEntity_TranscendentPlasmaMixer
         if (originalRecipe == null) {
             return false;
         }
-
-        if (!addEUToGlobalEnergyMap(ownerUUID, -1000L * (long) originalRecipe.mEUt * (long) multiplier)) {
+        mWirelessEUt = 10L * (long) originalRecipe.mEUt * (long) multiplier;
+        // 100L - recipe takes 100 ticks
+        if (!addEUToGlobalEnergyMap(ownerUUID, mWirelessEUt * -100L)) {
             return false;
         }
 
@@ -157,6 +159,11 @@ public class GT_MetaTileEntity_TranscendentPlasmaMixer
         updateSlots();
 
         return true;
+    }
+
+    @Override
+    protected long getActualEnergyUsage() {
+        return mWirelessEUt;
     }
 
     private static final int HORIZONTAL_OFFSET = 2;

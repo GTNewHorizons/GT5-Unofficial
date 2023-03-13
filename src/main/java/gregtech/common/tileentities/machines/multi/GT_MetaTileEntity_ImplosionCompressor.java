@@ -46,7 +46,7 @@ public class GT_MetaTileEntity_ImplosionCompressor
         tt.addMachineType("Implosion Compressor").addInfo("Explosions are fun")
                 .addInfo("Controller block for the Implosion Compressor")
                 .addPollutionAmount(getPollutionPerSecond(null)).addSeparator().beginStructureBlock(3, 3, 3, true)
-                .addController("Front center").addCasingInfo("Solid Steel Machine Casing", 16)
+                .addController("Front center").addCasingInfoRange("Solid Steel Machine Casing", 16, 24, false)
                 .addStructureInfo("Casings can be replaced with Explosion Warning Signs")
                 .addEnergyHatch("Any casing", 1).addMaintenanceHatch("Any casing", 1).addMufflerHatch("Any casing", 1)
                 .addInputBus("Any casing", 1).addOutputBus("Any casing", 1).toolTipFinisher("Gregtech");
@@ -127,11 +127,13 @@ public class GT_MetaTileEntity_ImplosionCompressor
     }
 
     @Override
-    public void startSoundLoop(byte aIndex, double aX, double aY, double aZ) {
-        super.startSoundLoop(aIndex, aX, aY, aZ);
-        if (aIndex == 20) {
-            GT_Utility.doSoundAtClient(SoundResource.RANDOM_EXPLODE, 10, 1.0F, aX, aY, aZ);
-        }
+    protected int getTimeBetweenProcessSounds() {
+        return 10;
+    }
+
+    @Override
+    protected SoundResource getProcessStartSound() {
+        return SoundResource.RANDOM_EXPLODE;
     }
 
     @Override

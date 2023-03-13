@@ -36,6 +36,12 @@ public class GT_Cover_AdvancedRedstoneTransmitterExternal
     }
 
     @Override
+    protected boolean isRedstoneSensitiveImpl(byte aSide, int aCoverID, TransmitterData aCoverVariable,
+            ICoverable aTileEntity, long aTimer) {
+        return true;
+    }
+
+    @Override
     public boolean letsRedstoneGoInImpl(byte aSide, int aCoverID, TransmitterData aCoverVariable,
             ICoverable aTileEntity) {
         return true;

@@ -49,7 +49,7 @@ public class GT_MetaTileEntity_LargeTurbine_Gas extends GT_MetaTileEntity_LargeT
                 .addInfo("See the Advanced Large Gas Turbine as the next, uncapped, option")
                 // .addInfo("The excess fuel that gets consumed will be voided!")
                 .addPollutionAmount(getPollutionPerSecond(null)).addSeparator().beginStructureBlock(3, 3, 4, true)
-                .addController("Front center").addCasingInfo("Stainless Steel Turbine Casing", 24)
+                .addController("Front center").addCasingInfoRange("Stainless Steel Turbine Casing", 8, 30, false)
                 .addDynamoHatch("Back center", 1).addMaintenanceHatch("Side centered", 2)
                 .addMufflerHatch("Side centered", 2).addInputHatch("Gas Fuel, Side centered", 2)
                 .toolTipFinisher("Gregtech");

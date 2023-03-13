@@ -91,7 +91,7 @@ public class GT_MetaTileEntity_MultiFurnace extends
         tt.addMachineType("Furnace").addInfo("Controller Block for the Multi Smelter")
                 .addInfo("Smelts up to 8-8192 items at once").addInfo("Items smelted increases with coil tier")
                 .addPollutionAmount(getPollutionPerSecond(null)).addSeparator().beginStructureBlock(3, 3, 3, true)
-                .addController("Front bottom").addCasingInfo("Heat Proof Machine Casing", 8)
+                .addController("Front bottom").addCasingInfoRange("Heat Proof Machine Casing", 8, 14, false)
                 .addOtherStructurePart("Heating Coils", "Middle layer").addEnergyHatch("Any bottom casing", 1)
                 .addMaintenanceHatch("Any bottom casing", 1).addMufflerHatch("Top Middle", 2)
                 .addInputBus("Any bottom casing", 1).addOutputBus("Any bottom casing", 1).toolTipFinisher("Gregtech");

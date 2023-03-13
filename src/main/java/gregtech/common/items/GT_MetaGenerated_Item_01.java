@@ -1,6 +1,8 @@
 package gregtech.common.items;
 
 import static gregtech.api.enums.Textures.BlockIcons.*;
+import static gregtech.client.GT_TooltipHandler.Tier.*;
+import static gregtech.client.GT_TooltipHandler.registerTieredTooltip;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -1513,7 +1515,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                         new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 1L),
                         new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 1L)));
         setElectricStats(32000 + tLastID, 1000L, GT_Values.V[0], 0L, -3L, false);
-        OreDictionary.registerOre("ULV", ItemList.Battery_RE_ULV_Tantalum.get(1));
+        registerTieredTooltip(ItemList.Battery_RE_ULV_Tantalum.get(1), ULV);
 
         // LV Batteries
         ItemList.Battery_SU_LV_SulfuricAcid.set(
@@ -1526,7 +1528,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                         new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 1L),
                         new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 2L)));
         setElectricStats(32000 + tLastID, 18000L, GT_Values.V[1], 1L, -2L, true);
-        OreDictionary.registerOre("LV", ItemList.Battery_SU_LV_SulfuricAcid.get(1));
+        registerTieredTooltip(ItemList.Battery_SU_LV_SulfuricAcid.get(1), LV);
 
         ItemList.Battery_SU_LV_Mercury.set(
                 addItem(
@@ -1537,7 +1539,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                         new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 1L),
                         new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 2L)));
         setElectricStats(32000 + tLastID, 32000L, GT_Values.V[1], 1L, -2L, true);
-        OreDictionary.registerOre("LV", ItemList.Battery_SU_LV_Mercury.get(1));
+        registerTieredTooltip(ItemList.Battery_SU_LV_Mercury.get(1), LV);
 
         ItemList.Battery_RE_LV_Cadmium.set(
                 addItem(
@@ -1549,10 +1551,9 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                         new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 1L),
                         "batteryLV"));
         setElectricStats(32000 + tLastID, 75000L, GT_Values.V[1], 1L, -3L, true);
-        OreDictionary.registerOre("LV", ItemList.Battery_RE_LV_Cadmium.get(1));
-        OreDictionary.registerOre("calclavia:ADVANCED_BATTERY", ItemList.Battery_RE_LV_Cadmium.get(1)); // Annoying
-                                                                                                        // backwards
-                                                                                                        // compat
+        registerTieredTooltip(ItemList.Battery_RE_LV_Cadmium.get(1), LV);
+        // Annoying backwards compat
+        OreDictionary.registerOre("calclavia:ADVANCED_BATTERY", ItemList.Battery_RE_LV_Cadmium.get(1));
 
         ItemList.Battery_RE_LV_Lithium.set(
                 addItem(
@@ -1564,10 +1565,9 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                         new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 1L),
                         "batteryLV"));
         setElectricStats(32000 + tLastID, 100000L, GT_Values.V[1], 1L, -3L, true);
-        OreDictionary.registerOre("LV", ItemList.Battery_RE_LV_Lithium.get(1));
-        OreDictionary.registerOre("calclavia:ADVANCED_BATTERY", ItemList.Battery_RE_LV_Lithium.get(1)); // Annoying
-                                                                                                        // backwards
-                                                                                                        // compat
+        registerTieredTooltip(ItemList.Battery_RE_LV_Lithium.get(1), LV);
+        // Annoying backwards compat
+        OreDictionary.registerOre("calclavia:ADVANCED_BATTERY", ItemList.Battery_RE_LV_Lithium.get(1));
 
         ItemList.Battery_RE_LV_Sodium.set(
                 addItem(
@@ -1579,10 +1579,9 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                         new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 1L),
                         "calclavia:ADVANCED_BATTERY"));
         setElectricStats(32000 + tLastID, 50000L, GT_Values.V[1], 1L, -3L, true);
-        OreDictionary.registerOre("LV", ItemList.Battery_RE_LV_Sodium.get(1));
-        OreDictionary.registerOre("calclavia:ADVANCED_BATTERY", ItemList.Battery_RE_LV_Sodium.get(1)); // Annoying
-                                                                                                       // backwards
-                                                                                                       // compat
+        registerTieredTooltip(ItemList.Battery_RE_LV_Sodium.get(1), LV);
+        // Annoying backwards compat
+        OreDictionary.registerOre("calclavia:ADVANCED_BATTERY", ItemList.Battery_RE_LV_Sodium.get(1));
 
         // MV Batteries
         ItemList.Battery_SU_MV_SulfuricAcid.set(
@@ -1595,7 +1594,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                         new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 2L),
                         new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 4L)));
         setElectricStats(32000 + tLastID, 72000L, GT_Values.V[2], 2L, -2L, true);
-        OreDictionary.registerOre("MV", ItemList.Battery_SU_MV_SulfuricAcid.get(1));
+        registerTieredTooltip(ItemList.Battery_SU_MV_SulfuricAcid.get(1), MV);
 
         ItemList.Battery_SU_MV_Mercury.set(
                 addItem(
@@ -1607,7 +1606,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                         new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 2L),
                         new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 4L)));
         setElectricStats(32000 + tLastID, 128000L, GT_Values.V[2], 2L, -2L, true);
-        OreDictionary.registerOre("MV", ItemList.Battery_SU_MV_Mercury.get(1));
+        registerTieredTooltip(ItemList.Battery_SU_MV_Mercury.get(1), MV);
 
         ItemList.Battery_RE_MV_Cadmium.set(
                 addItem(
@@ -1619,7 +1618,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                         new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 2L),
                         new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 2L)));
         setElectricStats(32000 + tLastID, 300000L, GT_Values.V[2], 2L, -3L, true);
-        OreDictionary.registerOre("MV", ItemList.Battery_RE_MV_Cadmium.get(1));
+        registerTieredTooltip(ItemList.Battery_RE_MV_Cadmium.get(1), MV);
 
         ItemList.Battery_RE_MV_Lithium.set(
                 addItem(
@@ -1631,7 +1630,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                         new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 2L),
                         new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 2L)));
         setElectricStats(32000 + tLastID, 400000L, GT_Values.V[2], 2L, -3L, true);
-        OreDictionary.registerOre("MV", ItemList.Battery_RE_MV_Lithium.get(1));
+        registerTieredTooltip(ItemList.Battery_RE_MV_Lithium.get(1), MV);
 
         ItemList.Battery_RE_MV_Sodium.set(
                 addItem(
@@ -1643,7 +1642,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                         new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 2L),
                         new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 2L)));
         setElectricStats(32000 + tLastID, 200000L, GT_Values.V[2], 2L, -3L, true);
-        OreDictionary.registerOre("MV", ItemList.Battery_RE_MV_Sodium.get(1));
+        registerTieredTooltip(ItemList.Battery_RE_MV_Sodium.get(1), MV);
 
         // HV Batteries
         ItemList.Battery_SU_HV_SulfuricAcid.set(
@@ -1656,7 +1655,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                         new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L),
                         new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 8L)));
         setElectricStats(32000 + tLastID, 288000L, GT_Values.V[3], 3L, -2L, true);
-        OreDictionary.registerOre("HV", ItemList.Battery_SU_HV_SulfuricAcid.get(1));
+        registerTieredTooltip(ItemList.Battery_SU_HV_SulfuricAcid.get(1), HV);
 
         ItemList.Battery_SU_HV_Mercury.set(
                 addItem(
@@ -1668,7 +1667,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                         new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L),
                         new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 8L)));
         setElectricStats(32000 + tLastID, 512000L, GT_Values.V[3], 3L, -2L, true);
-        OreDictionary.registerOre("HV", ItemList.Battery_SU_HV_Mercury.get(1));
+        registerTieredTooltip(ItemList.Battery_SU_HV_Mercury.get(1), HV);
 
         ItemList.Battery_RE_HV_Cadmium.set(
                 addItem(
@@ -1680,7 +1679,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                         new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L),
                         new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 4L)));
         setElectricStats(32000 + tLastID, 1200000L, GT_Values.V[3], 3L, -3L, true);
-        OreDictionary.registerOre("HV", ItemList.Battery_RE_HV_Cadmium.get(1));
+        registerTieredTooltip(ItemList.Battery_RE_HV_Cadmium.get(1), HV);
 
         ItemList.Battery_RE_HV_Lithium.set(
                 addItem(
@@ -1692,7 +1691,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                         new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L),
                         new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 4L)));
         setElectricStats(32000 + tLastID, 1600000L, GT_Values.V[3], 3L, -3L, true);
-        OreDictionary.registerOre("HV", ItemList.Battery_RE_HV_Lithium.get(1));
+        registerTieredTooltip(ItemList.Battery_RE_HV_Lithium.get(1), HV);
 
         ItemList.Battery_RE_HV_Sodium.set(
                 addItem(
@@ -1704,7 +1703,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                         new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L),
                         new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 4L)));
         setElectricStats(32000 + tLastID, 800000L, GT_Values.V[3], 3L, -3L, true);
-        OreDictionary.registerOre("HV", ItemList.Battery_RE_HV_Sodium.get(1));
+        registerTieredTooltip(ItemList.Battery_RE_HV_Sodium.get(1), HV);
 
         GT_ModHandler
                 .addExtractionRecipe(ItemList.Battery_SU_LV_SulfuricAcid.get(1L), ItemList.Battery_Hull_LV.get(1L));
@@ -1801,7 +1800,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                         new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 16L),
                         OrePrefixes.battery.get(Materials.Ultimate)));
         setElectricStats(32000 + tLastID, 100000000L, GT_Values.V[5], 5L, -3L, true);
-        OreDictionary.registerOre("IV", ItemList.Energy_LapotronicOrb.get(1));
+        registerTieredTooltip(ItemList.Energy_LapotronicOrb.get(1), IV);
 
         // ZPM Module
         ItemList.ZPM.set(
@@ -1814,7 +1813,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                         new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 16L),
                         new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 64L)));
         setElectricStats(32000 + tLastID, 2000000000000L, GT_Values.V[7], 7L, -2L, true);
-        OreDictionary.registerOre("ZPM", ItemList.ZPM.get(1));
+        registerTieredTooltip(ItemList.ZPM.get(1), ZPM);
 
         // LuV Lapotron orb cluster battery
         ItemList.Energy_LapotronicOrb2.set(
@@ -1828,7 +1827,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                         new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 16L),
                         OrePrefixes.battery.get(Materials.Ultimate)));
         setElectricStats(32000 + tLastID, 1000000000L, GT_Values.V[6], 6L, -3L, true);
-        OreDictionary.registerOre("LuV", ItemList.Energy_LapotronicOrb2.get(1));
+        registerTieredTooltip(ItemList.Energy_LapotronicOrb2.get(1), LuV);
 
         // UV Battery
         ItemList.ZPM2.set(
@@ -1841,7 +1840,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                         new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 16L),
                         new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 64L)));
         setElectricStats(32000 + tLastID, Long.MAX_VALUE, GT_Values.V[8], 8L, -3L, true);
-        OreDictionary.registerOre("UV", ItemList.ZPM2.get(1));
+        registerTieredTooltip(ItemList.ZPM2.get(1), UV);
 
         // UMV Battery
         ItemList.ZPM3.set(
@@ -1854,7 +1853,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                         new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 16L),
                         new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 64L)));
         setElectricStats(32000 + tLastID, Long.MAX_VALUE, GT_Values.V[12], 12L, -3L, true);
-        OreDictionary.registerOre("UMV", ItemList.ZPM3.get(1));
+        registerTieredTooltip(ItemList.ZPM3.get(1), UMV);
 
         // UXV Battery
         ItemList.ZPM4.set(
@@ -1867,7 +1866,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                         new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 16L),
                         new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 64L)));
         setElectricStats(32000 + tLastID, Long.MAX_VALUE, GT_Values.V[13], 13L, -3L, true);
-        OreDictionary.registerOre("UXV", ItemList.ZPM4.get(1));
+        registerTieredTooltip(ItemList.ZPM4.get(1), UXV);
 
         // ZPM Cluster
         ItemList.Energy_Module.set(
@@ -1881,7 +1880,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                         new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 16L),
                         OrePrefixes.battery.get(Materials.Ultimate)));
         setElectricStats(32000 + tLastID, 10000000000L, GT_Values.V[7], 7L, -3L, true);
-        OreDictionary.registerOre("ZPM", ItemList.Energy_Module.get(1));
+        registerTieredTooltip(ItemList.Energy_Module.get(1), ZPM);
 
         // UV Cluster
         ItemList.Energy_Cluster.set(
@@ -1894,7 +1893,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                         new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 16L),
                         new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 64L)));
         setElectricStats(32000 + tLastID, 100000000000L, GT_Values.V[8], 8L, -3L, true);
-        OreDictionary.registerOre("UV", ItemList.Energy_Cluster.get(1));
+        registerTieredTooltip(ItemList.Energy_Cluster.get(1), UV);
 
         // UIV, UMV, UXV and MAX component textures backported from gregicality.
         ItemList.Electric_Motor_LV.set(
@@ -3445,7 +3444,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                         "A very simple Circuit",
                         OrePrefixes.circuit.get(Materials.Primitive),
                         SubTag.NO_UNIFICATION));
-        OreDictionary.registerOre("ULV", ItemList.Circuit_Primitive.get(1));
+        registerTieredTooltip(ItemList.Circuit_Primitive.get(1), ULV);
         ItemList.Circuit_Basic.set(
                 addItem(
                         tLastID = 701,
@@ -3453,7 +3452,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                         "A Basic Circuit",
                         OrePrefixes.circuit.get(Materials.Basic),
                         SubTag.NO_UNIFICATION));
-        OreDictionary.registerOre("LV", ItemList.Circuit_Basic.get(1));
+        registerTieredTooltip(ItemList.Circuit_Basic.get(1), LV);
         ItemList.Circuit_Good.set(
                 addItem(
                         tLastID = 702,
@@ -3461,7 +3460,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                         "A Good Circuit",
                         OrePrefixes.circuit.get(Materials.Good),
                         SubTag.NO_UNIFICATION));
-        OreDictionary.registerOre("MV", ItemList.Circuit_Good.get(1));
+        registerTieredTooltip(ItemList.Circuit_Good.get(1), MV);
         ItemList.Circuit_Advanced.set(
                 addItem(
                         tLastID = 703,
@@ -3469,7 +3468,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                         "An Advanced Circuit",
                         OrePrefixes.circuit.get(Materials.Advanced),
                         SubTag.NO_UNIFICATION));
-        OreDictionary.registerOre("HV", ItemList.Circuit_Advanced.get(1));
+        registerTieredTooltip(ItemList.Circuit_Advanced.get(1), HV);
         ItemList.Circuit_Data.set(
                 addItem(
                         tLastID = 704,
@@ -3477,7 +3476,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                         "An Extreme Circuit",
                         OrePrefixes.circuit.get(Materials.Data),
                         SubTag.NO_UNIFICATION));
-        OreDictionary.registerOre("EV", ItemList.Circuit_Data.get(1));
+        registerTieredTooltip(ItemList.Circuit_Data.get(1), EV);
         ItemList.Circuit_Elite.set(
                 addItem(
                         tLastID = 705,
@@ -3485,7 +3484,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                         "An Elite Circuit",
                         OrePrefixes.circuit.get(Materials.Elite),
                         SubTag.NO_UNIFICATION));
-        OreDictionary.registerOre("IV", ItemList.Circuit_Elite.get(1));
+        registerTieredTooltip(ItemList.Circuit_Elite.get(1), IV);
         ItemList.Circuit_Master.set(
                 addItem(
                         tLastID = 706,
@@ -3493,7 +3492,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                         "A Master Circuit",
                         OrePrefixes.circuit.get(Materials.Master),
                         SubTag.NO_UNIFICATION));
-        OreDictionary.registerOre("LuV", ItemList.Circuit_Master.get(1));
+        registerTieredTooltip(ItemList.Circuit_Master.get(1), LuV);
 
         // Backwards compatibility.
         ItemList.Circuit_Parts_Vacuum_Tube.set(ItemList.Circuit_Primitive.get(1));
@@ -4257,6 +4256,84 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new Object[] { "PSP", "PCP", "PBP", 'P', OrePrefixes.plate.get(Materials.Aluminium), 'S',
                         ItemList.Tool_DataStick.get(1L), 'C', ItemList.Cover_Screen.get(1L), 'B',
                         ItemList.Battery_RE_MV_Lithium.get(1L) });
+
+        ItemList.Steam_Regulator_LV.set(
+                addItem(
+                        tLastID = 332,
+                        "Steam Regulator (LV)",
+                        GT_Utility.formatNumbers(1024) + PartCoverText
+                                + GT_Utility.formatNumbers(1024 * 20)
+                                + PartCoverText2,
+                        new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 1L),
+                        new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 1L),
+                        new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 1L),
+                        new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 1L)));
+        ItemList.Steam_Regulator_MV.set(
+                addItem(
+                        tLastID = 333,
+                        "Steam Regulator (MV)",
+                        GT_Utility.formatNumbers(2048) + PartCoverText
+                                + GT_Utility.formatNumbers(2048 * 20)
+                                + PartCoverText2,
+                        new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 2L),
+                        new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 2L),
+                        new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 2L),
+                        new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 2L)));
+        ItemList.Steam_Regulator_HV.set(
+                addItem(
+                        tLastID = 334,
+                        "Steam Regulator (HV)",
+                        GT_Utility.formatNumbers(4096) + PartCoverText
+                                + GT_Utility.formatNumbers(4096 * 20)
+                                + PartCoverText2,
+                        new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4L),
+                        new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 4L),
+                        new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 4L),
+                        new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 4L)));
+        ItemList.Steam_Regulator_EV.set(
+                addItem(
+                        tLastID = 335,
+                        "Steam Regulator (EV)",
+                        GT_Utility.formatNumbers(8192) + PartCoverText
+                                + GT_Utility.formatNumbers(8192 * 20)
+                                + PartCoverText2,
+                        new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 8L),
+                        new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 8L),
+                        new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 8L),
+                        new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 8L)));
+        ItemList.Steam_Regulator_IV.set(
+                addItem(
+                        tLastID = 336,
+                        "Steam Regulator (IV)",
+                        GT_Utility.formatNumbers(16384) + PartCoverText
+                                + GT_Utility.formatNumbers(16384 * 20)
+                                + PartCoverText2,
+                        new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 16L),
+                        new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 16L),
+                        new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 16L),
+                        new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 16L)));
+
+        GregTech_API.registerCover(
+                ItemList.Steam_Regulator_LV.get(1L),
+                TextureFactory.of(MACHINE_CASINGS[1][0], TextureFactory.of(OVERLAY_VALVE)),
+                new GT_Cover_SteamRegulator(1024, TextureFactory.of(OVERLAY_VALVE)));
+        GregTech_API.registerCover(
+                ItemList.Steam_Regulator_MV.get(1L),
+                TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_VALVE)),
+                new GT_Cover_SteamRegulator(2048, TextureFactory.of(OVERLAY_VALVE)));
+        GregTech_API.registerCover(
+                ItemList.Steam_Regulator_HV.get(1L),
+                TextureFactory.of(MACHINE_CASINGS[3][0], TextureFactory.of(OVERLAY_VALVE)),
+                new GT_Cover_SteamRegulator(4096, TextureFactory.of(OVERLAY_VALVE)));
+        GregTech_API.registerCover(
+                ItemList.Steam_Regulator_EV.get(1L),
+                TextureFactory.of(MACHINE_CASINGS[4][0], TextureFactory.of(OVERLAY_VALVE)),
+                new GT_Cover_SteamRegulator(8192, TextureFactory.of(OVERLAY_VALVE)));
+        GregTech_API.registerCover(
+                ItemList.Steam_Regulator_IV.get(1L),
+                TextureFactory.of(MACHINE_CASINGS[5][0], TextureFactory.of(OVERLAY_VALVE)),
+                new GT_Cover_SteamRegulator(16384, TextureFactory.of(OVERLAY_VALVE)));
+
     }
 
     private static final Map<Materials, Materials> cauldronRemap = new HashMap<>();
