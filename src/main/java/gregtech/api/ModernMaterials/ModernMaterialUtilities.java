@@ -1,12 +1,18 @@
 package gregtech.api.ModernMaterials;
 
 import static gregtech.api.enums.ConfigCategories.ModernMaterials.*;
+import static gregtech.api.enums.GT_Values.RES_PATH_BLOCK;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import gregtech.api.ModernMaterials.Fluids.FluidEnum;
+import gregtech.api.ModernMaterials.Fluids.GT_ModernMaterial_Fluid;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
 import net.minecraftforge.client.MinecraftForgeClient;
 
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -15,6 +21,7 @@ import gregtech.api.ModernMaterials.PartProperties.Rendering.ModernMaterialRende
 import gregtech.api.ModernMaterials.PartRecipeGenerators.ModernMaterialsPlateRecipeGenerator;
 import gregtech.api.ModernMaterials.PartsClasses.MaterialPart;
 import gregtech.api.ModernMaterials.PartsClasses.PartsEnum;
+import net.minecraftforge.fluids.FluidRegistry;
 
 public class ModernMaterialUtilities {
 
@@ -38,7 +45,7 @@ public class ModernMaterialUtilities {
         mNameMaterialMap.put(aMaterial.getName(), aMaterial);
     }
 
-    public static void registerAllMaterials() {
+    public static void registerAllMaterialsItems() {
         for (ModernMaterial tMaterial : mNewMaterials) {
             tMaterial.setID(++GregTech_API.mLastMaterialID);
             GregTech_API.sModernMaterialIDs.mConfig.get(materialID.name(), tMaterial.getName(), 0)
@@ -63,6 +70,32 @@ public class ModernMaterialUtilities {
         // Register all material parts.
         for (ModernMaterial material : materialIdToMaterial.values()) {
             registerAllMaterialPartRecipes(material);
+        }
+
+    }
+
+    public static void registerAllMaterialsFluids() {
+
+        // Register the icons for the ModernMaterial fluids.
+        TextureMap textureMap = Minecraft.getMinecraft().getTextureMapBlocks();
+        final String defaultPath = RES_PATH_BLOCK + "ModernMaterialsIcons/Fluids/";
+        for (FluidEnum fluidEnum : FluidEnum.values()) {
+            fluidEnum.stillIcon = textureMap.registerIcon(defaultPath + "still_" + fluidEnum.name().toLowerCase());
+            fluidEnum.flowingIcon = textureMap.registerIcon(defaultPath + "flowing_" + fluidEnum.name().toLowerCase());
+        }
+
+        // Register the fluids with forge.
+        for (ModernMaterial material : materialIdToMaterial.values()) {
+            for (FluidEnum fluid : material.existingFluidsForMaterial) {
+
+                GT_ModernMaterial_Fluid myFluid = new GT_ModernMaterial_Fluid(fluid, material);
+
+                // Edit properties.
+                myFluid.setTemperature(1234);
+
+                // Register fluid.
+                FluidRegistry.registerFluid(myFluid);
+            }
         }
 
     }

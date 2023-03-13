@@ -1,14 +1,20 @@
 package gregtech.api.ModernMaterials;
 
 import java.awt.*;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
+import gregtech.api.ModernMaterials.Fluids.CustomFluidInfo;
+import gregtech.api.ModernMaterials.Fluids.FluidEnum;
 import gregtech.api.ModernMaterials.PartsClasses.CustomPartInfo;
 import gregtech.api.ModernMaterials.PartsClasses.PartsEnum;
 
 public class ModernMaterial {
 
     private final HashMap<PartsEnum, CustomPartInfo> existingPartsForMaterial = new HashMap<>();
+    public final Set<FluidEnum> existingFluidsForMaterial = new HashSet<>();
     private Color color;
     private int ID;
     private String name;
@@ -49,10 +55,15 @@ public class ModernMaterial {
         return this;
     }
 
-    public ModernMaterial addPartsCustom(final CustomPartInfo... aCustomParts) {
-        for (CustomPartInfo aCustomPart : aCustomParts) {
-            existingPartsForMaterial.put(aCustomPart.mPart, aCustomPart);
+    public ModernMaterial addPartsCustom(final CustomPartInfo... customParts) {
+        for (CustomPartInfo customPartInfo : customParts) {
+            existingPartsForMaterial.put(customPartInfo.mPart, customPartInfo);
         }
+        return this;
+    }
+
+    public ModernMaterial addFluids(final FluidEnum... fluids) {
+        existingFluidsForMaterial.addAll(Arrays.asList(fluids));
         return this;
     }
 

@@ -49,10 +49,10 @@ public class MaterialPart extends Item {
             CustomPartInfo customPartInfo = material.getCustomPartInfo(this.mPart);
             String path;
 
-            if (!customPartInfo.getmTextureType().equals(Custom)) {
-                path = RES_PATH_BLOCK + "ModernMaterialsIcons/" + customPartInfo.getmTextureType() + "/" + mPartName;
+            if (!customPartInfo.getTextureType().equals(Custom)) {
+                path = RES_PATH_BLOCK + "ModernMaterialsIcons/" + customPartInfo.getTextureType() + "/" + mPartName;
             } else {
-                path = RES_PATH_BLOCK + "ModernMaterialsIcons/" + customPartInfo.getmTextureType() + "/"
+                path = RES_PATH_BLOCK + "ModernMaterialsIcons/" + customPartInfo.getTextureType() + "/"
                         + material.getName().toLowerCase() + "/" + customPartInfo.getmTextureName();
             }
 

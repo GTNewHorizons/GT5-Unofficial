@@ -7,7 +7,7 @@ import gregtech.api.ModernMaterials.PartProperties.Textures.TextureType;
 public class CustomPartInfo {
 
     public final PartsEnum mPart;
-    private TextureType mTextureType = Metallic;
+    private TextureType textureType = Metallic;
     private String mTextureName;
     private boolean mAnimated;
 
@@ -16,12 +16,12 @@ public class CustomPartInfo {
         mTextureName = aPart.partName;
     }
 
-    public TextureType getmTextureType() {
-        return mTextureType;
+    public TextureType getTextureType() {
+        return textureType;
     }
 
     public CustomPartInfo setTextureType(final TextureType aTextureType) {
-        mTextureType = aTextureType;
+        textureType = aTextureType;
         return this;
     }
 
