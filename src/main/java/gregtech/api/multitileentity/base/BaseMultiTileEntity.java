@@ -96,8 +96,8 @@ public abstract class BaseMultiTileEntity extends CoverableTileEntity implements
     private UUID ownerUUID = GT_Utility.defaultUuid;
     private boolean lockUpgrade = false;
 
-    public BaseMultiTileEntity(boolean mIsTicking) {
-        this.isTicking = mIsTicking;
+    public BaseMultiTileEntity(boolean isTicking) {
+        this.isTicking = isTicking;
     }
 
     @Override

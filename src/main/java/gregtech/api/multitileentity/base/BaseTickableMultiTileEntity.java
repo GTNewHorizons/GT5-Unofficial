@@ -19,7 +19,7 @@ public abstract class BaseTickableMultiTileEntity extends BaseMultiTileEntity im
     /** Timer Value */
     protected long timer = 0;
     /** Variable for updating Data to the Client */
-    private boolean mSendClientData = false;
+    private boolean sendClientData = false;
 
     public BaseTickableMultiTileEntity() {
         super(true);
@@ -48,7 +48,7 @@ public abstract class BaseTickableMultiTileEntity extends BaseMultiTileEntity im
                 }
             }
             if (!isDead()) onTick(timer, isServerSide);
-            if (!isDead() && isServerSide && timer > 2 && mSendClientData) {
+            if (!isDead() && isServerSide && timer > 2 && sendClientData) {
                 sendClientData(null);
             }
             if (!isDead()) onPostTick(timer, isServerSide);
@@ -68,10 +68,10 @@ public abstract class BaseTickableMultiTileEntity extends BaseMultiTileEntity im
 
     @Override
     public void sendClientData(EntityPlayerMP aPlayer) {
-        if (mSendClientData) {
+        if (sendClientData) {
             GT_FML_LOGGER.info("Sending client data");
             super.sendClientData(aPlayer);
-            mSendClientData = false;
+            sendClientData = false;
         }
     }
 
@@ -85,24 +85,16 @@ public abstract class BaseTickableMultiTileEntity extends BaseMultiTileEntity im
     }
 
     /** The first part of the Tick. */
-    public void onPreTick(long aTick, boolean isServerSide) {
-        /* Do nothing */
-    }
+    public abstract void onPreTick(long aTick, boolean isServerSide);
 
     /** The regular Tick. */
-    public void onTick(long aTimer, boolean isServerSide) {
-        /* Do nothing */
-    }
+    public abstract void onTick(long aTimer, boolean isServerSide);
 
     /** The absolute last part of the Tick. */
-    public void onPostTick(long aTick, boolean isServerSide) {
-        /* Do nothing */
-    }
+    public abstract void onPostTick(long aTick, boolean isServerSide);
 
     /** Gets called when there is an Exception happening during one of the Tick Functions. */
-    public void onTickFailed(long aTimer, boolean isServerSide) {
-        /* Do nothing */
-    }
+    public abstract void onTickFailed(long aTimer, boolean isServerSide);
 
     @Override
     public void onNeighborBlockChange(World aWorld, Block aBlock) {
@@ -111,7 +103,7 @@ public abstract class BaseTickableMultiTileEntity extends BaseMultiTileEntity im
 
     @Override
     public void issueClientUpdate() {
-        mSendClientData = true;
+        sendClientData = true;
     }
 
     @Override
