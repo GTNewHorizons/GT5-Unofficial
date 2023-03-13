@@ -210,7 +210,7 @@ public class RecipeLoader_Nuclear {
                 ItemUtils.getGregtechCircuit(3),
                 ELEMENT.getInstance().OXYGEN.getCell(1),
                 ELEMENT.getInstance().HYDROGEN.getFluidStack(1000),
-                MISC_MATERIALS.HYDROXIDE.getFluidStack(2000),
+                MISC_MATERIALS.HYDROXIDE.getFluidStack(1000),
                 CI.emptyCells(1),
                 GT_Values.NI,
                 8 * 20,
