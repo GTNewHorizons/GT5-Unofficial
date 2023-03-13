@@ -111,10 +111,10 @@ public class GTNHIntergalactic {
                     case "GalaxySpace:spaceelevatorcable":
                         mapping.remap(Item.getItemFromBlock(IGBlocks.SpaceElevatorCable));
                         break;
-                    case "GalaxySpace:SpaceElevatorParts":
+                    case "GalaxySpace:item.SpaceElevatorParts":
                         mapping.remap(IGItems.SpaceElevatorItems);
                         break;
-                    case "GalaxySpace:MiningDrone":
+                    case "GalaxySpace:item.MiningDrone":
                         mapping.remap(IGItems.MiningDrones);
                         break;
                     default:
