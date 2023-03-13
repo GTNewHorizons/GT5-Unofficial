@@ -1614,6 +1614,7 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity implements IGregTec
                                         xCoord,
                                         yCoord,
                                         zCoord);
+                                sendClientData();
                             }
                             return true;
                         }

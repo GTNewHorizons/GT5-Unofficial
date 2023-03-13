@@ -146,7 +146,7 @@ import ic2.api.recipe.RecipeOutput;
 public class GT_Mod implements IGT_Mod {
 
     @Deprecated // Keep for use in BaseMetaTileEntity
-    public static final int VERSION = 509, SUBVERSION = 41;
+    public static final int VERSION = 509, SUBVERSION = 42;
 
     @SuppressWarnings("DeprecatedIsStillUsed") // Need initialization until it is deleted
     @Deprecated

@@ -4256,6 +4256,84 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 new Object[] { "PSP", "PCP", "PBP", 'P', OrePrefixes.plate.get(Materials.Aluminium), 'S',
                         ItemList.Tool_DataStick.get(1L), 'C', ItemList.Cover_Screen.get(1L), 'B',
                         ItemList.Battery_RE_MV_Lithium.get(1L) });
+
+        ItemList.Steam_Regulator_LV.set(
+                addItem(
+                        tLastID = 332,
+                        "Steam Regulator (LV)",
+                        GT_Utility.formatNumbers(1024) + PartCoverText
+                                + GT_Utility.formatNumbers(1024 * 20)
+                                + PartCoverText2,
+                        new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 1L),
+                        new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 1L),
+                        new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 1L),
+                        new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 1L)));
+        ItemList.Steam_Regulator_MV.set(
+                addItem(
+                        tLastID = 333,
+                        "Steam Regulator (MV)",
+                        GT_Utility.formatNumbers(2048) + PartCoverText
+                                + GT_Utility.formatNumbers(2048 * 20)
+                                + PartCoverText2,
+                        new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 2L),
+                        new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 2L),
+                        new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 2L),
+                        new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 2L)));
+        ItemList.Steam_Regulator_HV.set(
+                addItem(
+                        tLastID = 334,
+                        "Steam Regulator (HV)",
+                        GT_Utility.formatNumbers(4096) + PartCoverText
+                                + GT_Utility.formatNumbers(4096 * 20)
+                                + PartCoverText2,
+                        new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4L),
+                        new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 4L),
+                        new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 4L),
+                        new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 4L)));
+        ItemList.Steam_Regulator_EV.set(
+                addItem(
+                        tLastID = 335,
+                        "Steam Regulator (EV)",
+                        GT_Utility.formatNumbers(8192) + PartCoverText
+                                + GT_Utility.formatNumbers(8192 * 20)
+                                + PartCoverText2,
+                        new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 8L),
+                        new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 8L),
+                        new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 8L),
+                        new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 8L)));
+        ItemList.Steam_Regulator_IV.set(
+                addItem(
+                        tLastID = 336,
+                        "Steam Regulator (IV)",
+                        GT_Utility.formatNumbers(16384) + PartCoverText
+                                + GT_Utility.formatNumbers(16384 * 20)
+                                + PartCoverText2,
+                        new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 16L),
+                        new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 16L),
+                        new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 16L),
+                        new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 16L)));
+
+        GregTech_API.registerCover(
+                ItemList.Steam_Regulator_LV.get(1L),
+                TextureFactory.of(MACHINE_CASINGS[1][0], TextureFactory.of(OVERLAY_VALVE)),
+                new GT_Cover_SteamRegulator(1024, TextureFactory.of(OVERLAY_VALVE)));
+        GregTech_API.registerCover(
+                ItemList.Steam_Regulator_MV.get(1L),
+                TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_VALVE)),
+                new GT_Cover_SteamRegulator(2048, TextureFactory.of(OVERLAY_VALVE)));
+        GregTech_API.registerCover(
+                ItemList.Steam_Regulator_HV.get(1L),
+                TextureFactory.of(MACHINE_CASINGS[3][0], TextureFactory.of(OVERLAY_VALVE)),
+                new GT_Cover_SteamRegulator(4096, TextureFactory.of(OVERLAY_VALVE)));
+        GregTech_API.registerCover(
+                ItemList.Steam_Regulator_EV.get(1L),
+                TextureFactory.of(MACHINE_CASINGS[4][0], TextureFactory.of(OVERLAY_VALVE)),
+                new GT_Cover_SteamRegulator(8192, TextureFactory.of(OVERLAY_VALVE)));
+        GregTech_API.registerCover(
+                ItemList.Steam_Regulator_IV.get(1L),
+                TextureFactory.of(MACHINE_CASINGS[5][0], TextureFactory.of(OVERLAY_VALVE)),
+                new GT_Cover_SteamRegulator(16384, TextureFactory.of(OVERLAY_VALVE)));
+
     }
 
     private static final Map<Materials, Materials> cauldronRemap = new HashMap<>();
