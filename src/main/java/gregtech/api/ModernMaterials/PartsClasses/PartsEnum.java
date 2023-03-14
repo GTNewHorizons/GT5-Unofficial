@@ -37,6 +37,8 @@ public enum PartsEnum {
     Rotor("% Rotor"),
     Round("% Round"),
     Screw("% Screw"),
+    Bolt("% Bolt"),
+
     Rod("% Rod"),
     LongRod("% Long Rod"),
     TurbineBlade("% Turbine Blade"),
