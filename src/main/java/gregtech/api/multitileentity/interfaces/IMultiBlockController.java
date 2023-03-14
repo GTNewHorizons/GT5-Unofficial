@@ -1,11 +1,11 @@
 package gregtech.api.multitileentity.interfaces;
 
-import gregtech.api.logic.PowerLogic;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraftforge.fluids.FluidStack;
 
-public interface IMultiBlockController
-        extends IMultiTileEntity, IMultiBlockFluidHandler, IMultiBlockInventory {
+import gregtech.api.logic.PowerLogic;
+
+public interface IMultiBlockController extends IMultiTileEntity, IMultiBlockFluidHandler, IMultiBlockInventory {
 
     boolean checkStructure(boolean aForceReset);
 

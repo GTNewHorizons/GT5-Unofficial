@@ -506,7 +506,7 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
         final IMultiBlockController controller = getTarget(true);
         return controller.getPowerLogic(this, side);
     }
-    
+
     @Override
     public boolean isEnetInput() {
         return modeSelected(ENERGY_IN);

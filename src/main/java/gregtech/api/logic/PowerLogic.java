@@ -1,8 +1,10 @@
 package gregtech.api.logic;
 
+import gregtech.api.enums.GT_Values.NBT;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class PowerLogic {
+
     public static int NONE = 0;
     public static int RECEIVER = 1;
     public static int EMITTER = 2;
@@ -11,6 +13,7 @@ public class PowerLogic {
     private long energyCapacity = 0;
     private long voltage = 0;
     private long amperage = 0;
+    private int type = 0;
 
     public PowerLogic() {}
 
@@ -28,7 +31,12 @@ public class PowerLogic {
         this.amperage = amperage;
         return this;
     }
-    
+
+    public PowerLogic setType(int type) {
+        this.type = type;
+        return this;
+    }
+
     public boolean addEnergyUnsafe(long totalEUAdded) {
         if (storedEnergy + totalEUAdded >= energyCapacity) {
             return false;
@@ -63,7 +71,7 @@ public class PowerLogic {
         if (storedEnergy - totalEURemoved < 0) {
             return false;
         }
-        
+
         storedEnergy -= totalEURemoved;
         return true;
     }
@@ -92,7 +100,30 @@ public class PowerLogic {
         return storedEnergy;
     }
 
+    public boolean isEnergyReceiver() {
+        return (type & RECEIVER) > 0;
+    }
+
+    public boolean isEnergyEmitter() {
+        return (type & EMITTER) > 0;
+    }
+
     public void writeToNBT(NBTTagCompound nbt) {
-        
+        NBTTagCompound powerLogic = new NBTTagCompound();
+        powerLogic.setLong(NBT.POWER_LOGIC_ENERGY_CAPACITY, energyCapacity);
+        powerLogic.setLong(NBT.POWER_LOGIC_STORED_ENERGY, storedEnergy);
+        powerLogic.setLong(NBT.POWER_LOGIC_AMPERAGE, amperage);
+        powerLogic.setLong(NBT.POWER_LOGIC_VOLTAGE, voltage);
+        powerLogic.setInteger(NBT.POWER_LOGIC_TYPE, type);
+        nbt.setTag(NBT.POWER_LOGIC, powerLogic);
+    }
+
+    public void loadFromNBT(NBTTagCompound nbt) {
+        NBTTagCompound powerLogic = nbt.getCompoundTag(NBT.POWER_LOGIC);
+        energyCapacity = powerLogic.getLong(NBT.POWER_LOGIC_ENERGY_CAPACITY);
+        storedEnergy = powerLogic.getLong(NBT.POWER_LOGIC_STORED_ENERGY);
+        amperage = powerLogic.getLong(NBT.POWER_LOGIC_AMPERAGE);
+        voltage = powerLogic.getLong(NBT.POWER_LOGIC_VOLTAGE);
+        type = powerLogic.getInteger(NBT.POWER_LOGIC_TYPE);
     }
 }

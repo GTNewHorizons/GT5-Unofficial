@@ -36,7 +36,8 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Util;
 import gregtech.api.util.GT_Utility;
 
-public abstract class MultiTileBasicMachine extends TickableMultiTileEntity implements IMachineProgress, IMultiTileMachine {
+public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
+        implements IMachineProgress, IMultiTileMachine {
 
     protected static final int ACTIVE = B[0];
     protected static final int TICKS_BETWEEN_RECIPE_CHECKS = 5 * TickTime.SECOND;
@@ -433,6 +434,7 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
                 if (isAllowedToWork()) {
                     if (!checkRecipe()) {
                         setActive(false);
+                        issueClientUpdate();
                     }
                 }
                 updateSlots();
@@ -445,6 +447,7 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
                         setActive(true);
                         updateSlots();
                         markDirty();
+                        issueClientUpdate();
                     }
                 }
             }

@@ -266,11 +266,12 @@ public class GT_Values {
                 SEPARATE_INPUTS = "gt.separate.inputs", // Boolean
 
                 // Logic
-                POWER_LOGIC = "gt.power.logic",
-                POWER_LOGIC_STORED_ENERGY = "gt.power.logic.stored.energy",
-                POWER_LOGIC_ENERGY_CAPACITY = "gt.power.logic.energy.capacity",
-                POWER_LOGIC_VOLTAGE = "gt.power.logic.voltage",
-                POWER_LOGIC_AMPERAGE = "gt.power.logic.voltage",
+                POWER_LOGIC = "gt.power.logic", // NBT Tag
+                POWER_LOGIC_STORED_ENERGY = "gt.power.logic.stored.energy", // Number
+                POWER_LOGIC_ENERGY_CAPACITY = "gt.power.logic.energy.capacity", // Number
+                POWER_LOGIC_VOLTAGE = "gt.power.logic.voltage", // Number
+                POWER_LOGIC_AMPERAGE = "gt.power.logic.voltage", // Number
+                POWER_LOGIC_TYPE = "gt.power.logic.type", // Number
                 empty_ = "";
     }
 

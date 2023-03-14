@@ -16,6 +16,7 @@ import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.NOTHIN
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -41,8 +42,9 @@ public class MultiBlock_Macerator extends MultiBlock_Stackable<MultiBlock_Macera
 
     public MultiBlock_Macerator() {
         super();
-        power = new PowerLogic().setMaxVoltage(0).setAmperage(0).setEnergyCapacity(0);
+        power = new PowerLogic().setMaxVoltage(0).setAmperage(0).setEnergyCapacity(0).setType(PowerLogic.RECEIVER);
     }
+
     @Override
     public String getTileEntityName() {
         return "gt.multitileentity.multiblock.macerator";
@@ -61,12 +63,14 @@ public class MultiBlock_Macerator extends MultiBlock_Stackable<MultiBlock_Macera
                     .addShape(
                             STACKABLE_BOTTOM,
                             transpose(new String[][] { { " G~F ", "AAAAA", "AAAAA", "AAAAA", " AAA " }, }))
-                    .addElement('A', ofChain(addMultiTileCasing("gt.multitileentity.casings", getCasingMeta(), ENERGY_IN)))
+                    .addElement(
+                            'A',
+                            ofChain(addMultiTileCasing("gt.multitileentity.casings", getCasingMeta(), ENERGY_IN)))
                     .addElement(
                             'B',
                             ofChain(
                                     addMultiTileCasing(
-                                        "gt.multitileentity.casings",
+                                            "gt.multitileentity.casings",
                                             getCasingMeta(),
                                             FLUID_IN | ITEM_IN | FLUID_OUT | ITEM_OUT)))
                     .addElement('C', addMultiTileCasing("gt.multitileentity.casings", getCasingMeta(), NOTHING))
@@ -199,9 +203,15 @@ public class MultiBlock_Macerator extends MultiBlock_Stackable<MultiBlock_Macera
         setItemOutputs(aInventory, tRecipe.mOutputs);
         return true;
     }
+
     @Override
     public PowerLogic getPowerLogic(byte side) {
         return power;
+    }
+
+    @Override
+    public boolean isEnergyReceiver() {
+        return true;
     }
 
     @Override
@@ -211,5 +221,17 @@ public class MultiBlock_Macerator extends MultiBlock_Stackable<MultiBlock_Macera
         power.setAmperage(amperage);
         power.setMaxVoltage(voltage);
         return result;
+    }
+
+    @Override
+    public void writeMultiTileNBT(NBTTagCompound nbt) {
+        super.writeMultiTileNBT(nbt);
+        power.writeToNBT(nbt);
+    }
+
+    @Override
+    public void readMultiTileNBT(NBTTagCompound nbt) {
+        super.readMultiTileNBT(nbt);
+        power.loadFromNBT(nbt);
     }
 }
