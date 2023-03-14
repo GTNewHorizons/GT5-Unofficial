@@ -620,23 +620,40 @@ public class RecipeLoader {
         GT_Values.RA.addElectromagneticSeparatorRecipe(
                 WerkstoffMaterialPool.CooledMonaziteRareEarthConcentrate.get(OrePrefixes.dust, 1),
                 WerkstoffMaterialPool.MonaziteRarerEarthSediment.get(OrePrefixes.dust, 1),
-                WerkstoffMaterialPool.EuropiumOxide.get(OrePrefixes.dust, 2), // Maybe also holmium
+                WerkstoffMaterialPool.EuropiumIIIOxide.get(OrePrefixes.dust, 5), // Maybe also holmium
                 null,
                 new int[] { 9000, 500 },
                 600,
                 1920);
 
-        // EuO + H2S = EuS + H2O
+        // 5Eu2O3 + Eu = 4EuO
         GT_Values.RA.addChemicalRecipe(
-                WerkstoffMaterialPool.EuropiumOxide.get(OrePrefixes.dust, 2),
+                WerkstoffMaterialPool.EuropiumIIIOxide.get(OrePrefixes.dust, 5),
+                Materials.Europium.getDust(1),
                 null,
-                Materials.HydricSulfide.getGas(1000),
-                Materials.Water.getFluid(1000),
-                WerkstoffMaterialPool.EuropiumSulfide.get(OrePrefixes.dust, 2),
+                null,
+                WerkstoffMaterialPool.EuropiumOxide.get(OrePrefixes.dust, 4),
                 300,
                 8400);
 
+        // 4 EuO = 2 Eu + 2O2
+        GT_Values.RA.addElectrolyzerRecipe(
+                WerkstoffMaterialPool.EuropiumOxide.get(OrePrefixes.dust, 2),
+                null,
+                null,
+                Materials.Oxygen.getGas(1000L),
+                Materials.Europium.getDust(1),
+                null,
+                null,
+                null,
+                null,
+                null,
+                new int[] { 10000, 10000 },
+                300,
+                33000);
+
         // EuS = Eu + S
+        // TODO old recipe. for compat only. remove material and recipe half a year later, i.e. after September 2023.
         GT_Values.RA.addElectrolyzerRecipe(
                 WerkstoffMaterialPool.EuropiumSulfide.get(OrePrefixes.dust, 2),
                 null,
