@@ -523,6 +523,16 @@ public class WerkstoffMaterialPool implements Runnable {
             offsetID + 49,
             TextureSet.SET_DULL);
 
+    public static final Werkstoff EuropiumIIIOxide = new Werkstoff(
+            new short[] { 255, 230, 255 },
+            "Europium III Oxide",
+            subscriptNumbers("Eu2O3"),
+            new Werkstoff.Stats(),
+            Werkstoff.Types.COMPOUND,
+            new Werkstoff.GenerationFeatures().disable().onlyDust(),
+            offsetID + 50,
+            TextureSet.SET_DULL);
+
     // TODO
 
     // BASTNASITE
