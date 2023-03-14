@@ -228,7 +228,10 @@ public class GT_ParallelHelper {
     /**
      * Called by build(). Determines the parallels and everything else that needs to be done at build time
      */
-    private void determineParallel() {
+    protected void determineParallel() {
+        if (mRecipe.mEUt > mAvailableEUt) {
+            return;
+        }
         ItemStack[] tItemInputs = null;
         FluidStack[] tFluidInputs = null;
         boolean tMEOutputBus = false;
