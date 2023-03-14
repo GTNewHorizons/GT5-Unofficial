@@ -633,7 +633,7 @@ public class RecipeLoader {
                 null,
                 null,
                 WerkstoffMaterialPool.EuropiumOxide.get(OrePrefixes.dust, 4),
-                600,
+                300,
                 8400);
 
         // 4 EuO = 2 Eu + 2O2
