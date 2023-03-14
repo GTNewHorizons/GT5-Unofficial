@@ -2,37 +2,31 @@ package gregtech.api.ModernMaterials;
 
 import static gregtech.api.enums.ConfigCategories.ModernMaterials.*;
 import static gregtech.api.enums.GT_Values.RES_PATH_BLOCK;
-import static gregtech.api.enums.GT_Values.W;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import gregtech.api.ModernMaterials.Fluids.FluidEnum;
-import gregtech.api.ModernMaterials.Fluids.GT_ModernMaterial_Fluid;
-import gregtech.api.enums.Materials;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.MinecraftForgeClient;
+import net.minecraftforge.fluids.FluidRegistry;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
+import gregtech.api.ModernMaterials.Fluids.FluidEnum;
+import gregtech.api.ModernMaterials.Fluids.GT_ModernMaterial_Fluid;
 import gregtech.api.ModernMaterials.PartProperties.Rendering.ModernMaterialRenderer;
 import gregtech.api.ModernMaterials.PartRecipeGenerators.ModernMaterialsPlateRecipeGenerator;
 import gregtech.api.ModernMaterials.PartsClasses.MaterialPart;
 import gregtech.api.ModernMaterials.PartsClasses.PartsEnum;
-import net.minecraftforge.fluids.FluidRegistry;
 
 public class ModernMaterialUtilities {
 
     private static final List<ModernMaterial> mNewMaterials = new ArrayList<>();
-    public static final HashMap<Integer, ModernMaterial> materialIdToMaterial = new HashMap<>();
-    public static final HashMap<String, ModernMaterial> mNameMaterialMap = new HashMap<>();
+    public static final HashMap<Integer, ModernMaterial> materialIDToMaterial = new HashMap<>();
+    public static final HashMap<String, ModernMaterial> materialNameToMaterialMap = new HashMap<>();
     public static final HashMap<PartsEnum, MaterialPart> materialPartItemMap = new HashMap<>();
 
     public static void registerMaterial(ModernMaterial aMaterial) {
@@ -42,12 +36,12 @@ public class ModernMaterialUtilities {
             mNewMaterials.add(aMaterial);
         } else {
             aMaterial.setID(tCurrentMaterialID);
-            materialIdToMaterial.put(tCurrentMaterialID, aMaterial);
+            materialIDToMaterial.put(tCurrentMaterialID, aMaterial);
             if (tCurrentMaterialID > GregTech_API.mLastMaterialID) {
                 GregTech_API.mLastMaterialID = tCurrentMaterialID;
             }
         }
-        mNameMaterialMap.put(aMaterial.getName(), aMaterial);
+        materialNameToMaterialMap.put(aMaterial.getName(), aMaterial);
     }
 
     public static void registerAllMaterialsItems() {
@@ -55,7 +49,7 @@ public class ModernMaterialUtilities {
             tMaterial.setID(++GregTech_API.mLastMaterialID);
             GregTech_API.sModernMaterialIDs.mConfig.get(materialID.name(), tMaterial.getName(), 0)
                     .set(GregTech_API.mLastMaterialID);
-            materialIdToMaterial.put(GregTech_API.mLastMaterialID, tMaterial);
+            materialIDToMaterial.put(GregTech_API.mLastMaterialID, tMaterial);
         }
 
         for (PartsEnum tPart : PartsEnum.values()) {
@@ -73,7 +67,7 @@ public class ModernMaterialUtilities {
         }
 
         // Register all material parts.
-        for (ModernMaterial material : materialIdToMaterial.values()) {
+        for (ModernMaterial material : materialIDToMaterial.values()) {
             registerAllMaterialPartRecipes(material);
         }
 
@@ -81,6 +75,7 @@ public class ModernMaterialUtilities {
 
     public static void registerAllMaterialsFluids() {
 
+        // todo fix
         // Register the icons for the ModernMaterial fluids.
         TextureMap textureMap = Minecraft.getMinecraft().getTextureMapBlocks();
         final String defaultPath = RES_PATH_BLOCK + "ModernMaterialsIcons/Fluids/";
@@ -90,7 +85,7 @@ public class ModernMaterialUtilities {
         }
 
         // Register the fluids with forge.
-        for (ModernMaterial material : materialIdToMaterial.values()) {
+        for (ModernMaterial material : materialIDToMaterial.values()) {
             for (FluidEnum fluid : material.existingFluidsForMaterial) {
                 GT_ModernMaterial_Fluid myFluid = new GT_ModernMaterial_Fluid(fluid, material);
 
@@ -123,6 +118,6 @@ public class ModernMaterialUtilities {
     }
 
     public static ModernMaterial getMaterialFromName(final String materialName) {
-        return mNameMaterialMap.get(materialName);
+        return materialNameToMaterialMap.get(materialName);
     }
 }

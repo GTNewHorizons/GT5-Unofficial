@@ -8,7 +8,6 @@ import static gregtech.api.ModernMaterials.PartsClasses.PartsEnum.Gear;
 
 import java.io.File;
 
-import gregtech.api.ModernMaterials.Fluids.FluidEnum;
 import net.minecraftforge.common.config.Configuration;
 
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -37,13 +36,10 @@ public class ModernMaterialsRegistration {
         ModernMaterial samarium = new ModernMaterial().setName("Samarium").setColor(100, 200, 200, 255).addAllParts()
                 .setMaterialTier(TierEU.UMV).setMaterialTimeMultiplier(0.5).build();
 
-        ModernMaterial copper = new ModernMaterial()
-            .setName("Copper")
-            .setColor(255, 0, 0, 255)
-            .addAllParts()
-            .addPartsCustom(new CustomPartInfo(Gear).setTextureType(Custom).setCustomPartTextureOverride("FALLBACK"))
-            .addFluids(Molten, Plasma)
-            .build();
+        ModernMaterial copper = new ModernMaterial().setName("Copper").setColor(255, 0, 0, 255).addAllParts()
+                .addPartsCustom(
+                        new CustomPartInfo(Gear).setTextureType(Custom).setCustomPartTextureOverride("FALLBACK"))
+                .addFluids(Molten, Plasma).build();
 
         registerMaterial(samarium);
         registerMaterial(iron);

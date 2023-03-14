@@ -1,7 +1,8 @@
 package gregtech.api.ModernMaterials.Fluids;
 
-import gregtech.api.ModernMaterials.ModernMaterial;
 import net.minecraft.util.IIcon;
+
+import gregtech.api.ModernMaterials.ModernMaterial;
 
 public enum FluidEnum {
 

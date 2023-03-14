@@ -3,7 +3,6 @@ package gregtech;
 import static gregtech.api.GregTech_API.registerCircuitProgrammer;
 import static gregtech.api.ModernMaterials.ModernMaterialUtilities.registerAllMaterialsFluids;
 import static gregtech.api.enums.GT_Values.MOD_ID_FR;
-import static gregtech.api.enums.GT_Values.RES_PATH_BLOCK;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -13,10 +12,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.function.Predicate;
 
-import gregtech.api.ModernMaterials.Fluids.FluidEnum;
-import gregtech.api.ModernMaterials.Fluids.GT_ModernMaterial_Fluid;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -28,7 +23,6 @@ import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ChestGenHooks;
 import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 
 import org.apache.logging.log4j.LogManager;

@@ -10,10 +10,10 @@ public class ModernMaterialUtilities {
 
     // Item damage values are material IDs.
     public static ModernMaterial getMaterialFromItemStack(ItemStack itemStack) {
-        return materialIdToMaterial.get(itemStack.getItemDamage());
+        return materialIDToMaterial.get(itemStack.getItemDamage());
     }
 
     public static ModernMaterial getMaterialFromName(String aName) {
-        return mNameMaterialMap.get(aName);
+        return materialNameToMaterialMap.get(aName);
     }
 }
