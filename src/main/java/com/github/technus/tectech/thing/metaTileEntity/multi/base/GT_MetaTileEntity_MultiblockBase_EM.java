@@ -1298,9 +1298,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM
                             | (eParameters ? 0 : 256));
             aBaseMetaTileEntity.setActive(mMaxProgresstime > 0);
             boolean active = aBaseMetaTileEntity.isActive() && mPollution > 0;
-            for (GT_MetaTileEntity_Hatch_Muffler aMuffler : mMufflerHatches) {
-                aMuffler.getBaseMetaTileEntity().setActive(active);
-            }
+            setMufflers(active);
         } else {
             soundMagic(getActivitySound());
         }
