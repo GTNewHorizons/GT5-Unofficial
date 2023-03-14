@@ -10,7 +10,7 @@ import gregtech.api.multitileentity.interfaces.IMultiTileEntity.IMTE_OnNeighborB
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Util;
 
-public abstract class BaseTickableMultiTileEntity extends BaseMultiTileEntity implements IMTE_OnNeighborBlockChange {
+public abstract class TickableMultiTileEntity extends MultiTileEntity implements IMTE_OnNeighborBlockChange {
 
     /** Variable for seeing if the Tick Function is called right now. */
     public boolean isRunningTick = false;
@@ -21,7 +21,7 @@ public abstract class BaseTickableMultiTileEntity extends BaseMultiTileEntity im
     /** Variable for updating Data to the Client */
     private boolean sendClientData = false;
 
-    public BaseTickableMultiTileEntity() {
+    public TickableMultiTileEntity() {
         super(true);
     }
 
@@ -85,16 +85,16 @@ public abstract class BaseTickableMultiTileEntity extends BaseMultiTileEntity im
     }
 
     /** The first part of the Tick. */
-    public abstract void onPreTick(long aTick, boolean isServerSide);
+    public void onPreTick(long aTick, boolean isServerSide) {}
 
     /** The regular Tick. */
-    public abstract void onTick(long aTimer, boolean isServerSide);
+    public void onTick(long aTimer, boolean isServerSide) {}
 
     /** The absolute last part of the Tick. */
-    public abstract void onPostTick(long aTick, boolean isServerSide);
+    public void onPostTick(long aTick, boolean isServerSide) {}
 
     /** Gets called when there is an Exception happening during one of the Tick Functions. */
-    public abstract void onTickFailed(long aTimer, boolean isServerSide);
+    public void onTickFailed(long aTimer, boolean isServerSide) {}
 
     @Override
     public void onNeighborBlockChange(World aWorld, Block aBlock) {

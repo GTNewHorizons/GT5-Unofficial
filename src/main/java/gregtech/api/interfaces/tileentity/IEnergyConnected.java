@@ -5,6 +5,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import cofh.api.energy.IEnergyReceiver;
 import gregtech.api.GregTech_API;
+import gregtech.api.logic.PowerLogic;
+import gregtech.api.logic.interfaces.PowerLogicHost;
 import gregtech.api.util.GT_Utility;
 import ic2.api.energy.tile.IEnergySink;
 
@@ -64,7 +66,14 @@ public interface IEnergyConnected extends IColoredTileEntity {
                     if (aEmitter.outputsEnergyTo(i)) {
                         j = GT_Utility.getOppositeSide(i);
                         final TileEntity tTileEntity = emitterTile.getTileEntityAtSide(i);
-                        if (tTileEntity instanceof IEnergyConnected) {
+                        if (tTileEntity instanceof PowerLogicHost) {
+                            PowerLogic logic = ((PowerLogicHost) tTileEntity).getPowerLogic(j);
+                            if (logic == null) {
+                                continue;
+                            }
+    
+                            rUsedAmperes += logic.injectEnergy(aVoltage, aAmperage - rUsedAmperes);
+                        } else if (tTileEntity instanceof IEnergyConnected) {
                             if (aEmitter.getColorization() >= 0) {
                                 final byte tColor = ((IEnergyConnected) tTileEntity).getColorization();
                                 if (tColor >= 0 && tColor != aEmitter.getColorization()) continue;

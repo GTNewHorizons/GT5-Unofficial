@@ -75,6 +75,8 @@ import gregtech.api.enums.TextureSet;
 import gregtech.api.fluid.FluidTankGT;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.IDescribable;
+import gregtech.api.logic.PowerLogic;
+import gregtech.api.logic.interfaces.PowerLogicHost;
 import gregtech.api.multitileentity.MultiTileEntityContainer;
 import gregtech.api.multitileentity.MultiTileEntityRegistry;
 import gregtech.api.multitileentity.interfaces.IMultiBlockController;
@@ -162,7 +164,7 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
         }
         tier = (int) Math.floor(sum / functionalCasings.size());
         // Maximum Energy stores will have a cap of 2 minute work time of current voltage
-        maximumEnergyStored = getInputVoltage() * 2 * 60 * 20;
+        maximumEnergyStored = GT_Values.V[tier] * 2 * 60 * 20;
         voltage = GT_Values.V[tier];
         amperage = 2;
         return tier > 0;
@@ -821,103 +823,20 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
         return GT_Values.emptyFluidTank;
     }
 
-    /**
-     * Energy - MultiBlock related Energy behavior
-     */
+    // #region Energy
     @Override
-    public boolean isUniversalEnergyStored(MultiBlockPart aPart, long aEnergyAmount) {
-        return getUniversalEnergyStored(aPart) >= aEnergyAmount;
-    }
-
-    @Override
-    public long getUniversalEnergyStored(MultiBlockPart aPart) {
-        return Math.min(getUniversalEnergyStored(), getUniversalEnergyCapacity());
-    }
-
-    @Override
-    public long getUniversalEnergyCapacity(MultiBlockPart aPart) {
-        return getUniversalEnergyCapacity();
-    }
-
-    @Override
-    public long getOutputAmperage(MultiBlockPart aPart) {
-        return getOutputAmperage();
-    }
-
-    @Override
-    public long getOutputVoltage(MultiBlockPart aPart) {
-        return getOutputVoltage();
-    }
-
-    @Override
-    public long getInputAmperage(MultiBlockPart aPart) {
-        return getInputAmperage();
-    }
-
-    @Override
-    public long getInputVoltage(MultiBlockPart aPart) {
-        return getInputVoltage();
-    }
-
-    @Override
-    public boolean decreaseStoredEnergyUnits(MultiBlockPart aPart, long energy, boolean ignoreTooLittleEnergy) {
-        return decreaseStoredEnergyUnits(energy, ignoreTooLittleEnergy);
-    }
-
-    @Override
-    public boolean increaseStoredEnergyUnits(MultiBlockPart aPart, long aEnergy, boolean aIgnoreTooMuchEnergy) {
-        return increaseStoredEnergyUnits(aEnergy, aIgnoreTooMuchEnergy);
-    }
-
-    @Override
-    public boolean drainEnergyUnits(MultiBlockPart aPart, byte aSide, long aVoltage, long aAmperage) {
-        return drainEnergyUnits(aSide, aVoltage, aAmperage);
-    }
-
-    @Override
-    public long injectEnergyUnits(MultiBlockPart aPart, byte aSide, long aVoltage, long aAmperage) {
-        return injectEnergyUnits(aSide, aVoltage, aAmperage);
-    }
-
-    @Override
-    public long getAverageElectricInput(MultiBlockPart aPart) {
-        return getAverageElectricInput();
-    }
-
-    @Override
-    public long getAverageElectricOutput(MultiBlockPart aPart) {
-        return getAverageElectricOutput();
-    }
-
-    @Override
-    public long getStoredEU(MultiBlockPart aPart) {
-        return getStoredEU();
-    }
-
-    @Override
-    public long getEUCapacity(MultiBlockPart aPart) {
-        return getEUCapacity();
-    }
-
-    @Override
-    public boolean inputEnergyFrom(MultiBlockPart aPart, byte aSide) {
-        if (aSide == GT_Values.SIDE_UNKNOWN) return true;
-        if (aSide >= 0 && aSide < 6) {
-            if (isInvalid()) return false;
-            if (isEnetInput()) return isEnergyInputSide(aSide);
+    public PowerLogic getPowerLogic(IMultiBlockPart part, byte side) {
+        if (!(this instanceof PowerLogicHost)) {
+            return null;
         }
-        return false;
-    }
 
-    @Override
-    public boolean outputsEnergyTo(MultiBlockPart aPart, byte aSide) {
-        if (aSide == GT_Values.SIDE_UNKNOWN) return true;
-        if (aSide >= 0 && aSide < 6) {
-            if (isInvalid()) return false;
-            if (isEnetOutput()) return isEnergyOutputSide(aSide);
+        if (part.getFrontFacing() != side) {
+            return null;
         }
-        return false;
+
+        return ((PowerLogicHost) this).getPowerLogic(side);
     }
+    // #endregion Energy
 
     /**
      * Item - MultiBlock related Item behaviour.

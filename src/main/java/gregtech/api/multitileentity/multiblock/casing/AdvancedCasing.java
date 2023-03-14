@@ -18,7 +18,7 @@ public abstract class AdvancedCasing extends MultiBlockPart {
     @Override
     public void setTarget(IMultiBlockController aTarget, int aAllowedModes) {
         super.setTarget(aTarget, aAllowedModes);
-        if (mTarget != null) customWork(mTarget);
+        if (target != null) customWork(target);
     }
 
     @Override

@@ -50,8 +50,10 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.logic.PowerLogic;
+import gregtech.api.logic.interfaces.PowerLogicHost;
 import gregtech.api.multitileentity.MultiTileEntityRegistry;
-import gregtech.api.multitileentity.base.BaseNontickableMultiTileEntity;
+import gregtech.api.multitileentity.base.NonTickableMultiTileEntity;
 import gregtech.api.multitileentity.interfaces.IMultiBlockController;
 import gregtech.api.multitileentity.interfaces.IMultiBlockPart;
 import gregtech.api.multitileentity.interfaces.IMultiTileEntity.IMTE_BreakBlock;
@@ -61,8 +63,8 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.covers.CoverInfo;
 
-public abstract class MultiBlockPart extends BaseNontickableMultiTileEntity
-        implements IMultiBlockPart, IMTE_BreakBlock, IMTE_HasModes {
+public abstract class MultiBlockPart extends NonTickableMultiTileEntity
+        implements IMultiBlockPart, IMTE_BreakBlock, IMTE_HasModes, PowerLogicHost {
 
     public static final int NOTHING = 0, ENERGY_IN = B[0], ENERGY_OUT = B[1], FLUID_IN = B[2], FLUID_OUT = B[3],
             ITEM_IN = B[4], ITEM_OUT = B[5];
@@ -71,7 +73,7 @@ public abstract class MultiBlockPart extends BaseNontickableMultiTileEntity
             Arrays.asList(NOTHING, ENERGY_IN, ENERGY_OUT, FLUID_IN, FLUID_OUT, ITEM_IN, ITEM_OUT));
 
     protected ChunkCoordinates mTargetPos = null;
-    protected IMultiBlockController mTarget = null;
+    protected IMultiBlockController target = null;
 
     protected int mAllowedModes = NOTHING; // BITMASK - Modes allowed for this part
     protected byte mMode = 0; // Mode selected for this part
@@ -100,10 +102,10 @@ public abstract class MultiBlockPart extends BaseNontickableMultiTileEntity
     }
 
     public void setTarget(IMultiBlockController aTarget, int aAllowedModes) {
-        mTarget = aTarget;
-        mTargetPos = (mTarget == null ? null : mTarget.getCoords());
+        target = aTarget;
+        mTargetPos = (target == null ? null : target.getCoords());
         mAllowedModes = aAllowedModes;
-        if (mTarget != null) registerCovers(mTarget);
+        if (target != null) registerCovers(target);
     }
 
     @Override
@@ -126,21 +128,21 @@ public abstract class MultiBlockPart extends BaseNontickableMultiTileEntity
 
     public IMultiBlockController getTarget(boolean aCheckValidity) {
         if (mTargetPos == null) return null;
-        if (mTarget == null || mTarget.isDead()) {
+        if (target == null || target.isDead()) {
             if (worldObj.blockExists(mTargetPos.posX, mTargetPos.posY, mTargetPos.posZ)) {
                 final TileEntity te = worldObj.getTileEntity(mTargetPos.posX, mTargetPos.posY, mTargetPos.posZ);
                 if (te instanceof IMultiBlockController) {
-                    mTarget = (IMultiBlockController) te;
+                    target = (IMultiBlockController) te;
                     // Register our covers with the controller
-                    registerCovers(mTarget);
+                    registerCovers(target);
                 } else {
                     mTargetPos = null;
                 }
             }
         }
         if (aCheckValidity) {
-            return mTarget != null && mTarget.checkStructure(false) ? mTarget : null;
-        } else return mTarget;
+            return target != null && target.checkStructure(false) ? target : null;
+        } else return target;
     }
 
     public void registerCovers(IMultiBlockController controller) {
@@ -500,6 +502,12 @@ public abstract class MultiBlockPart extends BaseNontickableMultiTileEntity
      * Energy - Depending on the part type - proxy to the multiblock controller, if we have one
      */
     @Override
+    public PowerLogic getPowerLogic(byte side) {
+        final IMultiBlockController controller = getTarget(true);
+        return controller.getPowerLogic(this, side);
+    }
+    
+    @Override
     public boolean isEnetInput() {
         return modeSelected(ENERGY_IN);
     }
@@ -507,131 +515,6 @@ public abstract class MultiBlockPart extends BaseNontickableMultiTileEntity
     @Override
     public boolean isEnetOutput() {
         return modeSelected(ENERGY_OUT);
-    }
-
-    @Override
-    public boolean isUniversalEnergyStored(long aEnergyAmount) {
-        if (!modeSelected(ENERGY_OUT, ENERGY_IN)) return false;
-        final IMultiBlockController controller = getTarget(true);
-        return controller != null && controller.isUniversalEnergyStored(this, aEnergyAmount);
-    }
-
-    @Override
-    public long getUniversalEnergyStored() {
-        if (!modeSelected(ENERGY_OUT, ENERGY_IN)) return 0;
-        final IMultiBlockController controller = getTarget(true);
-        return controller != null ? controller.getUniversalEnergyStored(this) : 0;
-    }
-
-    @Override
-    public long getUniversalEnergyCapacity() {
-        if (!modeSelected(ENERGY_OUT, ENERGY_IN)) return 0;
-        final IMultiBlockController controller = getTarget(true);
-        return controller != null ? controller.getUniversalEnergyCapacity(this) : 0;
-    }
-
-    @Override
-    public long getOutputAmperage() {
-        if (!modeSelected(ENERGY_OUT)) return 0;
-        final IMultiBlockController controller = getTarget(true);
-        return controller != null ? controller.getOutputAmperage(this) : 0;
-    }
-
-    @Override
-    public long getOutputVoltage() {
-        if (!modeSelected(ENERGY_OUT)) return 0;
-        final IMultiBlockController controller = getTarget(true);
-        return controller != null ? controller.getOutputVoltage(this) : 0;
-    }
-
-    @Override
-    public long getInputAmperage() {
-        if (!modeSelected(ENERGY_IN)) return 0;
-        final IMultiBlockController controller = getTarget(true);
-        return (controller != null && hasMode(ENERGY_IN)) ? controller.getInputAmperage(this) : 0;
-    }
-
-    @Override
-    public long getInputVoltage() {
-        if (!modeSelected(ENERGY_IN)) return 0;
-        final IMultiBlockController controller = getTarget(true);
-        return (controller != null && hasMode(ENERGY_IN)) ? controller.getInputVoltage(this) : 0;
-    }
-
-    @Override
-    public boolean decreaseStoredEnergyUnits(long aEnergy, boolean aIgnoreTooLittleEnergy) {
-        if (!modeSelected(ENERGY_OUT)) return false;
-        final IMultiBlockController controller = getTarget(true);
-        return controller != null && hasMode(ENERGY_OUT)
-                && controller.decreaseStoredEnergyUnits(this, aEnergy, aIgnoreTooLittleEnergy);
-    }
-
-    @Override
-    public boolean increaseStoredEnergyUnits(long aEnergy, boolean aIgnoreTooMuchEnergy) {
-        if (!modeSelected(ENERGY_IN)) return false;
-        final IMultiBlockController controller = getTarget(true);
-        return controller != null && hasMode(ENERGY_IN)
-                && controller.increaseStoredEnergyUnits(this, aEnergy, aIgnoreTooMuchEnergy);
-    }
-
-    @Override
-    public boolean drainEnergyUnits(byte aSide, long aVoltage, long aAmperage) {
-        if (!modeSelected(ENERGY_OUT) || (facing != SIDE_UNKNOWN && (facing != aSide || !coverLetsEnergyOut(aSide))))
-            return false;
-        final IMultiBlockController controller = getTarget(true);
-        return controller != null && controller.drainEnergyUnits(this, aSide, aVoltage, aAmperage);
-    }
-
-    @Override
-    public long injectEnergyUnits(byte aSide, long aVoltage, long aAmperage) {
-        if (!modeSelected(ENERGY_IN) || (facing != SIDE_UNKNOWN && (facing != aSide || !coverLetsEnergyIn(aSide))))
-            return 0;
-        final IMultiBlockController controller = getTarget(true);
-        return controller != null ? controller.injectEnergyUnits(this, aSide, aVoltage, aAmperage) : 0;
-    }
-
-    @Override
-    public long getAverageElectricInput() {
-        if (!modeSelected(ENERGY_IN)) return 0;
-        final IMultiBlockController controller = getTarget(true);
-        return controller != null ? controller.getAverageElectricInput(this) : 0;
-    }
-
-    @Override
-    public long getAverageElectricOutput() {
-        if (!modeSelected(ENERGY_OUT)) return 0;
-        final IMultiBlockController controller = getTarget(true);
-        return controller != null ? controller.getAverageElectricOutput(this) : 0;
-    }
-
-    @Override
-    public long getStoredEU() {
-        if (!modeSelected(ENERGY_OUT, ENERGY_IN)) return 0;
-        final IMultiBlockController controller = getTarget(true);
-        return controller != null ? controller.getStoredEU(this) : 0;
-    }
-
-    @Override
-    public long getEUCapacity() {
-        if (!modeSelected(ENERGY_OUT, ENERGY_IN)) return 0;
-        final IMultiBlockController controller = getTarget(true);
-        return controller != null ? controller.getEUCapacity(this) : 0;
-    }
-
-    @Override
-    public boolean inputEnergyFrom(byte aSide) {
-        if (!modeSelected(ENERGY_IN) || (facing != SIDE_UNKNOWN && (facing != aSide || !coverLetsEnergyIn(aSide))))
-            return false;
-        final IMultiBlockController controller = getTarget(true);
-        return controller != null && controller.inputEnergyFrom(this, aSide);
-    }
-
-    @Override
-    public boolean outputsEnergyTo(byte aSide) {
-        if (!modeSelected(ENERGY_OUT) || (facing != SIDE_UNKNOWN && (facing != aSide || !coverLetsEnergyOut(aSide))))
-            return false;
-        final IMultiBlockController controller = getTarget(true);
-        return controller != null && controller.outputsEnergyTo(this, aSide);
     }
 
     // End Energy

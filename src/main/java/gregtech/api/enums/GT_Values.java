@@ -264,6 +264,13 @@ public class GT_Values {
                 UPGRADE_INVENTORIES_INPUT = "gt.invlist.upg.in", // NBT List
                 UPGRADE_INVENTORIES_OUTPUT = "gt.invlist.upg.out", // NBT List
                 SEPARATE_INPUTS = "gt.separate.inputs", // Boolean
+
+                // Logic
+                POWER_LOGIC = "gt.power.logic",
+                POWER_LOGIC_STORED_ENERGY = "gt.power.logic.stored.energy",
+                POWER_LOGIC_ENERGY_CAPACITY = "gt.power.logic.energy.capacity",
+                POWER_LOGIC_VOLTAGE = "gt.power.logic.voltage",
+                POWER_LOGIC_AMPERAGE = "gt.power.logic.voltage",
                 empty_ = "";
     }
 

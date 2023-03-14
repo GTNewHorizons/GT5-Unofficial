@@ -25,16 +25,24 @@ import com.gtnewhorizon.structurelib.util.Vec3Impl;
 
 import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.logic.PowerLogic;
+import gregtech.api.logic.interfaces.PowerLogicHost;
+import gregtech.api.multitileentity.enums.GT_MultiTileRegistries;
 import gregtech.api.multitileentity.multiblock.base.MultiBlock_Stackable;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 
-public class MultiBlock_Macerator extends MultiBlock_Stackable<MultiBlock_Macerator> {
+public class MultiBlock_Macerator extends MultiBlock_Stackable<MultiBlock_Macerator> implements PowerLogicHost {
 
     private static IStructureDefinition<MultiBlock_Macerator> STRUCTURE_DEFINITION = null;
+    private PowerLogic power;
 
+    public MultiBlock_Macerator() {
+        super();
+        power = new PowerLogic().setMaxVoltage(0).setAmperage(0).setEnergyCapacity(0);
+    }
     @Override
     public String getTileEntityName() {
         return "gt.multitileentity.multiblock.macerator";
@@ -53,29 +61,29 @@ public class MultiBlock_Macerator extends MultiBlock_Stackable<MultiBlock_Macera
                     .addShape(
                             STACKABLE_BOTTOM,
                             transpose(new String[][] { { " G~F ", "AAAAA", "AAAAA", "AAAAA", " AAA " }, }))
-                    .addElement('A', ofChain(addMultiTileCasing(getCasingRegistryID(), getCasingMeta(), ENERGY_IN)))
+                    .addElement('A', ofChain(addMultiTileCasing("gt.multitileentity.casings", getCasingMeta(), ENERGY_IN)))
                     .addElement(
                             'B',
                             ofChain(
                                     addMultiTileCasing(
-                                            getCasingRegistryID(),
+                                        "gt.multitileentity.casings",
                                             getCasingMeta(),
                                             FLUID_IN | ITEM_IN | FLUID_OUT | ITEM_OUT)))
-                    .addElement('C', addMultiTileCasing(getCasingRegistryID(), getCasingMeta(), NOTHING))
-                    .addElement('D', addMultiTileCasing(getCasingRegistryID(), getCasingMeta(), NOTHING))
+                    .addElement('C', addMultiTileCasing("gt.multitileentity.casings", getCasingMeta(), NOTHING))
+                    .addElement('D', addMultiTileCasing("gt.multitileentity.casings", getCasingMeta(), NOTHING))
                     .addElement(
                             'F',
                             ofChain(
-                                    addMultiTileCasing(getCasingRegistryID(), 20001, NOTHING),
-                                    addMultiTileCasing(getCasingRegistryID(), 20002, NOTHING)))
-                    .addElement('G', addMultiTileCasing(getCasingRegistryID(), 10000, NOTHING)).build();
+                                    addMultiTileCasing("gt.multitileentity.casings", 20001, NOTHING),
+                                    addMultiTileCasing("gt.multitileentity.casings", 20002, NOTHING)))
+                    .addElement('G', addMultiTileCasing("gt.multitileentity.casings", 10000, NOTHING)).build();
         }
         return STRUCTURE_DEFINITION;
     }
 
     @Override
     public short getCasingRegistryID() {
-        return getMultiTileEntityRegistryID();
+        return GT_MultiTileRegistries.CASING_REGISTRY_ID;
     }
 
     @Override
@@ -190,5 +198,18 @@ public class MultiBlock_Macerator extends MultiBlock_Stackable<MultiBlock_Macera
 
         setItemOutputs(aInventory, tRecipe.mOutputs);
         return true;
+    }
+    @Override
+    public PowerLogic getPowerLogic(byte side) {
+        return power;
+    }
+
+    @Override
+    public boolean checkMachine() {
+        boolean result = super.checkMachine();
+        power.setEnergyCapacity(maximumEnergyStored);
+        power.setAmperage(amperage);
+        power.setMaxVoltage(voltage);
+        return result;
     }
 }

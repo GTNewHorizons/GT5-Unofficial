@@ -25,7 +25,7 @@ import com.gtnewhorizon.gtnhlib.util.map.ItemStackMap;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
-import gregtech.api.multitileentity.base.BaseMultiTileEntity;
+import gregtech.api.multitileentity.base.MultiTileEntity;
 import gregtech.api.multitileentity.interfaces.IMultiTileEntity;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Util;
@@ -97,7 +97,7 @@ public class MultiTileEntityRegistry {
         return NAMED_REGISTRIES.get(aRegistryName);
     }
 
-    public MultiTileEntityClassContainer create(int aID, Class<? extends BaseMultiTileEntity> aClass) {
+    public MultiTileEntityClassContainer create(int aID, Class<? extends MultiTileEntity> aClass) {
         return new MultiTileEntityClassContainer(this, aID, aClass);
     }
 

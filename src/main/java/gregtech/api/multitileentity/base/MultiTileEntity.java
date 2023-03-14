@@ -67,7 +67,7 @@ import gregtech.api.util.GT_Utility;
 import gregtech.common.render.GT_MultiTexture;
 import gregtech.common.render.IRenderedBlock;
 
-public abstract class BaseMultiTileEntity extends CoverableTileEntity implements IMultiTileEntity, IRenderedBlock {
+public abstract class MultiTileEntity extends CoverableTileEntity implements IMultiTileEntity, IRenderedBlock {
 
     public IIconContainer[] textures = emptyIconContainerArray;
     // public IIconContainer[] mTexturesFront = emptyIconContainerArray;
@@ -96,7 +96,7 @@ public abstract class BaseMultiTileEntity extends CoverableTileEntity implements
     private UUID ownerUUID = GT_Utility.defaultUuid;
     private boolean lockUpgrade = false;
 
-    public BaseMultiTileEntity(boolean isTicking) {
+    public MultiTileEntity(boolean isTicking) {
         this.isTicking = isTicking;
     }
 
@@ -139,8 +139,8 @@ public abstract class BaseMultiTileEntity extends CoverableTileEntity implements
         // Loading an instance
         final TileEntity tCanonicalTileEntity = MultiTileEntityRegistry
                 .getCanonicalTileEntity(getMultiTileEntityRegistryID(), getMultiTileEntityID());
-        if (tCanonicalTileEntity instanceof BaseMultiTileEntity)
-            textures = ((BaseMultiTileEntity) tCanonicalTileEntity).textures;
+        if (tCanonicalTileEntity instanceof MultiTileEntity)
+            textures = ((MultiTileEntity) tCanonicalTileEntity).textures;
     }
 
     @Override

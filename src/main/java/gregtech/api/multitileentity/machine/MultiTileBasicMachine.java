@@ -29,14 +29,14 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
 import gregtech.api.multitileentity.MultiTileEntityRegistry;
-import gregtech.api.multitileentity.base.BaseTickableMultiTileEntity;
+import gregtech.api.multitileentity.base.TickableMultiTileEntity;
 import gregtech.api.multitileentity.interfaces.IMultiTileMachine;
 import gregtech.api.net.GT_Packet_MultiTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Util;
 import gregtech.api.util.GT_Utility;
 
-public abstract class MultiTileBasicMachine extends BaseTickableMultiTileEntity implements IMachineProgress, IMultiTileMachine {
+public abstract class MultiTileBasicMachine extends TickableMultiTileEntity implements IMachineProgress, IMultiTileMachine {
 
     protected static final int ACTIVE = B[0];
     protected static final int TICKS_BETWEEN_RECIPE_CHECKS = 5 * TickTime.SECOND;
@@ -358,135 +358,6 @@ public abstract class MultiTileBasicMachine extends BaseTickableMultiTileEntity 
             if (aFluidToDrain == null ? fluidTankGT.has() : fluidTankGT.contains(aFluidToDrain)) return fluidTankGT;
 
         return null;
-    }
-
-    /*
-     * Energy
-     */
-
-    @Override
-    public boolean isEnetInput() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnetOutput() {
-        return true;
-    }
-
-    @Override
-    public boolean isUniversalEnergyStored(long aEnergyAmount) {
-        return getUniversalEnergyStored() >= aEnergyAmount;
-    }
-
-    @Override
-    public long getUniversalEnergyStored() {
-        return storedEnergy;
-    }
-
-    @Override
-    public long getUniversalEnergyCapacity() {
-        return maximumEnergyStored;
-    }
-
-    @Override
-    public long getOutputAmperage() {
-        return amperage;
-    }
-
-    @Override
-    public long getOutputVoltage() {
-        return GT_Values.V[tier];
-    }
-
-    @Override
-    public long getInputAmperage() {
-        return amperage;
-    }
-
-    @Override
-    public long getInputVoltage() {
-        return GT_Values.V[tier];
-    }
-
-    public boolean isEnergyInputSide(byte side) {
-        return true;
-    }
-
-    public boolean isEnergyOutputSide(byte side) {
-        return true;
-    }
-
-    @Override
-    public boolean drainEnergyUnits(byte aSide, long aVoltage, long aAmperage) {
-        if (!isElectric() || !outputsEnergyTo(aSide)
-                || getStoredEU() - (aVoltage * aAmperage) < GT_Values.V[tier] * 2) {
-            return false;
-        }
-
-        if (!decreaseStoredEnergyUnits(aVoltage * aAmperage, false)) {
-            return false;
-        }
-
-        return true;
-    }
-
-    @Override
-    public long injectEnergyUnits(byte side, long voltage, long amperage) {
-        if (!isElectric() || !inputEnergyFrom(side)) {
-            return 0;
-        }
-        long amps = 0;
-        for (; amps < getInputAmperage(); amps++) {
-            if (!increaseStoredEnergyUnits(voltage, false)) {
-                break;
-            }
-        }
-        return amps;
-    }
-
-    @Override
-    public boolean decreaseStoredEnergyUnits(long energy, boolean ignoreTooLittleEnergy) {
-        if (ignoreTooLittleEnergy && storedEnergy - energy < 0) {
-            storedEnergy = 0;
-        } else if (storedEnergy - energy < 0) {
-            return false;
-        }
-        storedEnergy -= energy;
-        return true;
-    }
-
-    @Override
-    public boolean increaseStoredEnergyUnits(long energy, boolean ignoreTooMuchEnergy) {
-        if (ignoreTooMuchEnergy && storedEnergy + energy > maximumEnergyStored) {
-            storedEnergy = maximumEnergyStored;
-        } else if (storedEnergy + energy > maximumEnergyStored) {
-            return false;
-        }
-        storedEnergy += energy;
-        return true;
-    }
-
-    @Override
-    public boolean inputEnergyFrom(byte aSide) {
-        if (aSide == GT_Values.SIDE_UNKNOWN) return true;
-        if (aSide >= 0 && aSide < 6) {
-            if (isInvalid()) return false;
-            if (!getCoverInfoAtSide(aSide).letsEnergyIn()) return false;
-            if (isEnetInput()) return isEnergyInputSide(aSide);
-        }
-        return false;
-    }
-
-    @Override
-    public boolean outputsEnergyTo(byte aSide) {
-        if (aSide == GT_Values.SIDE_UNKNOWN) return true;
-        if (aSide >= 0 && aSide < 6) {
-            if (isInvalid()) return false;
-            if (!getCoverInfoAtSide(aSide).letsEnergyOut()) return false;
-            if (isEnetOutput()) return isEnergyOutputSide(aSide);
-        }
-        return false;
     }
 
     /*
