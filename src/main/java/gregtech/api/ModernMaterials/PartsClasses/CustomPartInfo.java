@@ -40,7 +40,7 @@ public class CustomPartInfo {
         return this;
     }
 
-    public String getmTextureName() {
+    public String getTextureName() {
         return mTextureName;
     }
 }

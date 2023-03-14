@@ -16,14 +16,14 @@ import net.minecraft.util.IIcon;
 
 public class MaterialPart extends Item {
 
-    private final String mPartName;
+    private final String partName;
     private final PartsEnum mPart;
 
     public MaterialPart(final PartsEnum aPart) {
         setCreativeTab(CreativeTabs.tabMaterials);
         setHasSubtypes(true);
 
-        mPartName = aPart.partName;
+        partName = aPart.partName;
         mPart = aPart;
     }
 
@@ -50,10 +50,10 @@ public class MaterialPart extends Item {
             String path;
 
             if (!customPartInfo.getTextureType().equals(Custom)) {
-                path = RES_PATH_BLOCK + "ModernMaterialsIcons/" + customPartInfo.getTextureType() + "/" + mPartName;
+                path = RES_PATH_BLOCK + "ModernMaterialsIcons/" + customPartInfo.getTextureType() + "/" + partName;
             } else {
                 path = RES_PATH_BLOCK + "ModernMaterialsIcons/" + customPartInfo.getTextureType() + "/"
-                        + material.getName().toLowerCase() + "/" + customPartInfo.getmTextureName();
+                        + material.getName().toLowerCase() + "/" + customPartInfo.getTextureName();
             }
 
             mAnimatedMaterialIconMap.put(materialID, register.registerIcon(path)); // todo probably inefficient?
@@ -70,7 +70,7 @@ public class MaterialPart extends Item {
 
         ModernMaterial material = materialIdToMaterial.get(itemStack.getItemDamage());
 
-        String trueName = this.mPartName.replace("%", material.getName());
+        String trueName = this.partName.replace("%", material.getName());
 
         // Localise the material name.
         GT_LanguageManager.addStringLocalization(trueName + ".name", trueName);
