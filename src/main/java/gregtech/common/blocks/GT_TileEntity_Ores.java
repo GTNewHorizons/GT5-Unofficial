@@ -160,11 +160,14 @@ public class GT_TileEntity_Ores extends TileEntity implements ITexturedTileEntit
     @Override
     public Packet getDescriptionPacket() {
         if (!this.worldObj.isRemote) {
-            if (mBlockedChecked ? !mBlocked : checkBlocked()) GT_Values.NW.sendPacketToAllPlayersInRange(
-                    this.worldObj,
-                    new GT_Packet_Ores(this.xCoord, (short) this.yCoord, this.zCoord, this.mMetaData),
-                    this.xCoord,
-                    this.zCoord);
+            boolean sendUpdate = mBlockedChecked ? !mBlocked : checkBlocked();
+            if (sendUpdate) {
+                GT_Values.NW.sendPacketToAllPlayersInRange(
+                        this.worldObj,
+                        new GT_Packet_Ores(this.xCoord, (short) this.yCoord, this.zCoord, this.mMetaData),
+                        this.xCoord,
+                        this.zCoord);
+            }
         }
         return null;
     }
