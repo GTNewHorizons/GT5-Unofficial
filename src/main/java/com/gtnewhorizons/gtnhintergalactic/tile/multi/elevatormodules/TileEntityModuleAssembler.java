@@ -142,8 +142,8 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase {
         }
 
         GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(recipe.mEUt)
-                .setEUt(gregtech.api.enums.GT_Values.V[tTier]).setDuration(recipe.mDuration)
-                .setParallel((int) Math.floor(helper.getCurrentParallel())).calculate();
+                .setEUt(gregtech.api.enums.GT_Values.V[tTier] * helper.getCurrentParallel())
+                .setDuration(recipe.mDuration).setParallel((int) Math.floor(helper.getCurrentParallel())).calculate();
 
         lEUt = -calculator.getConsumption();
         mMaxProgresstime = (int) Math.ceil(calculator.getDuration() * helper.getDurationMultiplier());
