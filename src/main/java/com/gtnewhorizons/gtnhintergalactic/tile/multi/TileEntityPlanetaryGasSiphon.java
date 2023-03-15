@@ -40,6 +40,7 @@ import cpw.mods.fml.common.Loader;
 import galaxyspace.core.register.GSBlocks;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IChunkLoader;
 import gregtech.api.interfaces.ITexture;
@@ -500,7 +501,7 @@ public class TileEntityPlanetaryGasSiphon extends GT_MetaTileEntity_EnhancedMult
                         icons = new IIcon[6];
                         Arrays.fill(
                                 icons,
-                                PrefixTextureLinker.texMapBlocks.get(WerkstoffLoader.blockCasingAdvanced)
+                                PrefixTextureLinker.texMapBlocks.get(OrePrefixes.blockCasingAdvanced)
                                         .get(WerkstoffLoader.LuVTierMaterial.getTexSet()).getIcon());
                     }
                     StructureLibAPI
@@ -514,7 +515,7 @@ public class TileEntityPlanetaryGasSiphon extends GT_MetaTileEntity_EnhancedMult
             @Override
             public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
                 if (isBartworksLoaded) {
-                    ItemStack stack = WerkstoffLoader.LuVTierMaterial.get(WerkstoffLoader.blockCasingAdvanced);
+                    ItemStack stack = WerkstoffLoader.LuVTierMaterial.get(OrePrefixes.blockCasingAdvanced);
                     if (stack.getItem() instanceof ItemBlock) {
                         ItemBlock item = (ItemBlock) stack.getItem();
                         return item.placeBlockAt(
