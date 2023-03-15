@@ -8,3 +8,4 @@ run/
 bin/
 build/
 *.bat
+layout.json

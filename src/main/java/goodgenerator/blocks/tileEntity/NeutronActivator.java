@@ -1,5 +1,7 @@
 package goodgenerator.blocks.tileEntity;
 
+import static com.github.bartimaeusnek.bartworks.util.RecipeFinderForParallel.getMultiOutput;
+import static com.github.bartimaeusnek.bartworks.util.RecipeFinderForParallel.handleParallelRecipe;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
@@ -8,6 +10,7 @@ import static gregtech.api.util.GT_StructureUtility.ofFrame;
 import java.util.*;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -15,6 +18,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.github.bartimaeusnek.bartworks.util.Pair;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IItemSource;
@@ -57,6 +61,7 @@ public class NeutronActivator extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
     protected int casingAmount = 0;
     protected int height = 0;
     protected int eV = 0, mCeil = 0, mFloor = 0;
+    private GT_Recipe lastRecipe;
     final XSTR R = new XSTR();
 
     private static final IIconContainer textureFontOn = new Textures.BlockIcons.CustomIcon("icons/NeutronActivator_On");
@@ -117,16 +122,35 @@ public class NeutronActivator extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
         ItemStack[] inItems = tItems.toArray(new ItemStack[0]);
         int minNKE, maxNKE;
 
-        for (GT_Recipe recipe : tRecipes) {
-            minNKE = (recipe.mSpecialValue % 10000) * 1000000;
-            maxNKE = (recipe.mSpecialValue / 10000) * 1000000;
-            if (recipe.isRecipeInputEqual(true, inFluids, inItems)) {
+        lastRecipe = getRecipeMap()
+                .findRecipe(this.getBaseMetaTileEntity(), lastRecipe, false, Integer.MAX_VALUE, inFluids, inItems);
+
+        if (lastRecipe != null) {
+            minNKE = (lastRecipe.mSpecialValue % 10000) * 1000000;
+            maxNKE = (lastRecipe.mSpecialValue / 10000) * 1000000;
+            if (batchMode) {
+                int pall = handleParallelRecipe(lastRecipe, inFluids, inItems, 128);
+                if (pall > 0) {
+                    mFloor = minNKE;
+                    mCeil = maxNKE;
+                    mMaxProgresstime = Math.max((int) (lastRecipe.mDuration * pall * Math.pow(0.9, height - 4)), 1);
+                    Pair<ArrayList<FluidStack>, ArrayList<ItemStack>> Outputs = getMultiOutput(this.lastRecipe, pall);
+                    if (eV <= maxNKE && eV >= minNKE) {
+                        this.mOutputFluids = Outputs.getKey().toArray(new FluidStack[0]);
+                        this.mOutputItems = Outputs.getValue().toArray(new ItemStack[0]);
+                    } else {
+                        this.mOutputFluids = null;
+                        this.mOutputItems = new ItemStack[] { ItemRefer.Radioactive_Waste.get(4) };
+                    }
+                    return true;
+                }
+            } else if (lastRecipe.isRecipeInputEqual(true, inFluids, inItems)) {
                 mFloor = minNKE;
                 mCeil = maxNKE;
-                mMaxProgresstime = Math.max((int) (recipe.mDuration * Math.pow(0.9, height - 4)), 1);
+                mMaxProgresstime = Math.max((int) (lastRecipe.mDuration * Math.pow(0.9, height - 4)), 1);
                 if (eV <= maxNKE && eV >= minNKE) {
-                    this.mOutputFluids = recipe.mFluidOutputs;
-                    this.mOutputItems = recipe.mOutputs;
+                    this.mOutputFluids = lastRecipe.mFluidOutputs;
+                    this.mOutputItems = lastRecipe.mOutputs;
                 } else {
                     this.mOutputFluids = null;
                     this.mOutputItems = new ItemStack[] { ItemRefer.Radioactive_Waste.get(4) };
@@ -135,6 +159,18 @@ public class NeutronActivator extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
             }
         }
         return false;
+    }
+
+    @Override
+    public boolean onWireCutterRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY,
+            float aZ) {
+        batchMode = !batchMode;
+        if (batchMode) {
+            GT_Utility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
+        } else {
+            GT_Utility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
+        }
+        return true;
     }
 
     @Override
@@ -163,6 +199,11 @@ public class NeutronActivator extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
         aNBT.setInteger("mFloor", mFloor);
         aNBT.setInteger("height", height);
         super.saveNBTData(aNBT);
+    }
+
+    @Override
+    public GT_Recipe.GT_Recipe_Map getRecipeMap() {
+        return MyRecipeAdder.instance.NA;
     }
 
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
