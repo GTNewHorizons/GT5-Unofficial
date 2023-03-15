@@ -40,6 +40,8 @@ public abstract class TileEntityModuleBase extends GT_MetaTileEntity_EnhancedMul
     protected final int tModuleTier;
     /** Minimum motor tier that is needed to run this module */
     protected final int tMinMotorTier;
+    /** Flag if the module is connected to an elevator */
+    protected boolean isConnected = false;
 
     /** Output parameters */
     Parameters.Group.ParameterOut energyDisplay;
@@ -156,7 +158,7 @@ public abstract class TileEntityModuleBase extends GT_MetaTileEntity_EnhancedMul
      */
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        if (aBaseMetaTileEntity.isServerSide()) {
+        if (aBaseMetaTileEntity.isServerSide() && isConnected) {
             super.onPostTick(aBaseMetaTileEntity, aTick);
             if (aTick % 400 == 0) fixAllIssues();
             if (aTick % 20 == 0) energyDisplay.set(getEUVar());
@@ -212,6 +214,7 @@ public abstract class TileEntityModuleBase extends GT_MetaTileEntity_EnhancedMul
         if (getBaseMetaTileEntity() == null) {
             return 0;
         }
+        isConnected = true;
         long increasedEU = Math
                 .min(getBaseMetaTileEntity().getEUCapacity() - getBaseMetaTileEntity().getStoredEU(), maximumIncrease);
         return getBaseMetaTileEntity().increaseStoredEnergyUnits(increasedEU, false) ? increasedEU : 0;
