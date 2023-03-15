@@ -30,6 +30,7 @@ public class GT_TileEntity_Ores extends TileEntity implements ITexturedTileEntit
     public short mMetaData = 0;
     public boolean mNatural = false;
     public boolean mBlocked = true;
+    public boolean mBlockedChecked = false;
 
     public static byte getHarvestData(short aMetaData, int aBaseBlockHarvestLevel) {
         Materials aMaterial = GregTech_API.sGeneratedMaterials[(aMetaData % 1000)];
@@ -159,20 +160,56 @@ public class GT_TileEntity_Ores extends TileEntity implements ITexturedTileEntit
     @Override
     public Packet getDescriptionPacket() {
         if (!this.worldObj.isRemote) {
-            if (!(this.mBlocked = (GT_Utility.isOpaqueBlock(this.worldObj, this.xCoord + 1, this.yCoord, this.zCoord)
-                    && GT_Utility.isOpaqueBlock(this.worldObj, this.xCoord - 1, this.yCoord, this.zCoord)
-                    && GT_Utility.isOpaqueBlock(this.worldObj, this.xCoord, this.yCoord + 1, this.zCoord)
-                    && GT_Utility.isOpaqueBlock(this.worldObj, this.xCoord, this.yCoord - 1, this.zCoord)
-                    && GT_Utility.isOpaqueBlock(this.worldObj, this.xCoord, this.yCoord, this.zCoord + 1)
-                    && GT_Utility.isOpaqueBlock(this.worldObj, this.xCoord, this.yCoord, this.zCoord - 1)))) {
-                GT_Values.NW.sendPacketToAllPlayersInRange(
-                        this.worldObj,
-                        new GT_Packet_Ores(this.xCoord, (short) this.yCoord, this.zCoord, this.mMetaData),
-                        this.xCoord,
-                        this.zCoord);
-            }
+            if (mBlockedChecked ? !mBlocked : checkBlocked()) GT_Values.NW.sendPacketToAllPlayersInRange(
+                    this.worldObj,
+                    new GT_Packet_Ores(this.xCoord, (short) this.yCoord, this.zCoord, this.mMetaData),
+                    this.xCoord,
+                    this.zCoord);
         }
         return null;
+    }
+
+    private boolean checkBlocked() {
+        // this is called very frequently and is performance critical. unroll the loop.
+        mBlockedChecked = true;
+        if (!worldObj.blockExists(xCoord + 1, yCoord, zCoord)) {
+            mBlockedChecked = false;
+        } else if (!GT_Utility.isOpaqueBlock(worldObj, xCoord + 1, yCoord, zCoord)) {
+            mBlocked = false;
+            return true;
+        }
+        if (!worldObj.blockExists(xCoord - 1, yCoord, zCoord)) {
+            mBlockedChecked = false;
+        } else if (!GT_Utility.isOpaqueBlock(worldObj, xCoord - 1, yCoord, zCoord)) {
+            mBlocked = false;
+            return true;
+        }
+        if (!worldObj.blockExists(xCoord, yCoord + 1, zCoord)) {
+            mBlockedChecked = false;
+        } else if (!GT_Utility.isOpaqueBlock(worldObj, xCoord, yCoord + 1, zCoord)) {
+            mBlocked = false;
+            return true;
+        }
+        if (!worldObj.blockExists(xCoord, yCoord - 1, zCoord)) {
+            mBlockedChecked = false;
+        } else if (!GT_Utility.isOpaqueBlock(worldObj, xCoord, yCoord - 1, zCoord)) {
+            mBlocked = false;
+            return true;
+        }
+        if (!worldObj.blockExists(xCoord, yCoord, zCoord + 1)) {
+            mBlockedChecked = false;
+        } else if (!GT_Utility.isOpaqueBlock(worldObj, xCoord, yCoord, zCoord + 1)) {
+            mBlocked = false;
+            return true;
+        }
+        if (!worldObj.blockExists(xCoord, yCoord, zCoord - 1)) {
+            mBlockedChecked = false;
+        } else if (!GT_Utility.isOpaqueBlock(worldObj, xCoord, yCoord, zCoord - 1)) {
+            mBlocked = false;
+            return true;
+        }
+        mBlocked = true;
+        return false;
     }
 
     public void overrideOreBlockMaterial(Block aOverridingStoneBlock, byte aOverridingStoneMeta) {
