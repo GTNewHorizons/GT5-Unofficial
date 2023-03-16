@@ -15,4 +15,8 @@ public class GG_UITextures {
             .fullImage(MODID, "gui/picture/component_assline");
     public static final UITexture OVERLAY_BUTTON_LOCK_OFF = UITexture.fullImage(MODID, "gui/overlay_button/lock_off");
     public static final UITexture OVERLAY_BUTTON_LOCK_ON = UITexture.fullImage(MODID, "gui/overlay_button/lock_on");
+    public static final UITexture OVERLAY_BUTTON_ASSEMBLER_MODE = UITexture
+            .fullImage(MODID, "gui/overlay_button/assembler_mode");
+    public static final UITexture OVERLAY_BUTTON_PRECISE_MODE = UITexture
+            .fullImage(MODID, "gui/overlay_button/precise_mode");
 }
