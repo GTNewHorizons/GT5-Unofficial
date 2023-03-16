@@ -19,6 +19,7 @@ public enum ItemList implements IItemContainer {
 
     ExtremeExterminationChamber,
     ExtremeIndustrialApiary,
+    ExtremeIndustrialGreenhouse,
     LegendaryBlackTea,
     LegendaryButterflyTea,
     LegendaryEarlGrayTea,

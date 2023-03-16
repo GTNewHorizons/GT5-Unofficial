@@ -10,16 +10,22 @@
 
 package kubatech.tileentity.gregtech.multiblock;
 
-import static com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference.MULTIBLOCK_ADDED_VIA_BARTWORKS;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
-import static gregtech.api.enums.GT_Values.AuthorKuba;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
+import static kubatech.api.Variables.Author;
+import static kubatech.api.Variables.StructureHologram;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.function.Function;
 import java.util.stream.Collectors;
+
+import kubatech.Tags;
+import kubatech.api.LoaderReference;
+import kubatech.api.implementations.KubaTechGTMultiBlockBase;
+import kubatech.api.network.CustomTileEntityPacket;
+import kubatech.api.tileentity.CustomTileEntityPacketHandler;
+import kubatech.client.effect.CropRenderer;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFlower;
@@ -43,13 +49,6 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.github.bartimaeusnek.bartworks.API.BorosilicateGlass;
-import com.github.bartimaeusnek.bartworks.API.LoaderReference;
-import com.github.bartimaeusnek.bartworks.MainMod;
-import kubatech.client.effect.CropRenderer;
-import com.github.bartimaeusnek.bartworks.common.net.EIGPacket;
-import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
-import com.github.bartimaeusnek.bartworks.util.ChatColorHelper;
-import com.github.bartimaeusnek.bartworks.util.Coords;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
@@ -61,7 +60,6 @@ import com.gtnewhorizons.modularui.api.math.Color;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.widget.*;
 
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -90,8 +88,10 @@ import ic2.api.crops.Crops;
 import ic2.core.Ic2Items;
 import ic2.core.crop.TileEntityCrop;
 
+@SuppressWarnings("unused")
 public class GT_MetaTileEntity_ExtremeIndustrialGreenhouse
-        extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_ExtremeIndustrialGreenhouse> {
+        extends KubaTechGTMultiBlockBase<GT_MetaTileEntity_ExtremeIndustrialGreenhouse>
+        implements CustomTileEntityPacketHandler {
 
     private static final boolean debug = false;
     private static final int EIG_MATH_VERSION = 0;
@@ -149,13 +149,12 @@ public class GT_MetaTileEntity_ExtremeIndustrialGreenhouse
                             : ofBlock(Blocks.redstone_lamp, 0))
             .addElement(
                     'g',
-                    debug ? ofBlock(Blocks.glass, 0)
-                            : BorosilicateGlass.ofBoroGlass(
-                                    (byte) 0,
-                                    (byte) 1,
-                                    Byte.MAX_VALUE,
-                                    (te, t) -> te.glasTier = t,
-                                    te -> te.glasTier))
+                    LoaderReference.Bartworks ? BorosilicateGlass.ofBoroGlass(
+                            (byte) 0,
+                            (byte) 1,
+                            Byte.MAX_VALUE,
+                            (te, t) -> te.glasTier = t,
+                            te -> te.glasTier) : onElementPass(t -> t.glasTier = 100, ofBlock(Blocks.glass, 0)))
             .addElement(
                     'd',
                     ofBlock(
@@ -223,15 +222,14 @@ public class GT_MetaTileEntity_ExtremeIndustrialGreenhouse
     }
 
     private static String tierString(int tier) {
-        return GT_Values.TIER_COLORS[tier] + GT_Values.VN[tier] + ChatColorHelper.RESET + ChatColorHelper.GRAY;
+        return GT_Values.TIER_COLORS[tier] + GT_Values.VN[tier] + EnumChatFormatting.RESET + EnumChatFormatting.GRAY;
     }
 
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType("Crop Farm").addInfo("Controller block for the Extreme Industrial Greenhouse")
-                .addInfo(AuthorKuba).addInfo("Grow your crops like a chad !")
-                .addInfo("Use screwdriver to enable/change/disable setup mode")
+        tt.addMachineType("Crop Farm").addInfo("Controller block for the Extreme Industrial Greenhouse").addInfo(Author)
+                .addInfo("Grow your crops like a chad !").addInfo("Use screwdriver to enable/change/disable setup mode")
                 .addInfo("Use screwdriver while sneaking to enable/disable IC2 mode")
                 .addInfo("Use wire cutters to give incoming IC2 crops 0 humidity")
                 .addInfo("Uses 1000L of water per crop per operation")
@@ -257,7 +255,7 @@ public class GT_MetaTileEntity_ExtremeIndustrialGreenhouse
                 .addInfo("Starting with 4 slots").addInfo("Every slot gives 1 crop")
                 .addInfo("Every tier past " + tierString(6) + ", slots are multiplied by 4")
                 .addInfo("Process time: 5 sec").addInfo("All crops are accelerated by x32 times")
-                .addInfo("1 Fertilizer per 1 crop +10%").addInfo(BW_Tooltip_Reference.TT_BLUEPRINT).addSeparator()
+                .addInfo("1 Fertilizer per 1 crop +10%").addInfo(StructureHologram).addSeparator()
                 .beginStructureBlock(5, 6, 5, false).addController("Front bottom center")
                 .addCasingInfo("Clean Stainless Steel Casings", 70)
                 .addOtherStructurePart("Borosilicate Glass", "Hollow two middle layers")
@@ -268,8 +266,7 @@ public class GT_MetaTileEntity_ExtremeIndustrialGreenhouse
                 .addInputBus("Any casing (Except inner bottom ones)", 1)
                 .addOutputBus("Any casing (Except inner bottom ones)", 1)
                 .addInputHatch("Any casing (Except inner bottom ones)", 1)
-                .addEnergyHatch("Any casing (Except inner bottom ones)", 1)
-                .toolTipFinisher(MULTIBLOCK_ADDED_VIA_BARTWORKS.apply(ChatColorHelper.GOLD + "kuba6000"));
+                .addEnergyHatch("Any casing (Except inner bottom ones)", 1).toolTipFinisher(Tags.MODNAME);
         return tt;
     }
 
@@ -311,6 +308,8 @@ public class GT_MetaTileEntity_ExtremeIndustrialGreenhouse
         Minecraft.getMinecraft().effectRenderer.addEffect(crop);
     }
 
+    private CustomTileEntityPacket packet = null;
+
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
@@ -326,27 +325,21 @@ public class GT_MetaTileEntity_ExtremeIndustrialGreenhouse
             }
         }
         if (aBaseMetaTileEntity.isServerSide()) {
-            MainMod.BW_Network_instance.sendPacketToAllPlayersInRange(
-                    aBaseMetaTileEntity.getWorld(),
-                    new EIGPacket(
-                            new Coords(
-                                    aBaseMetaTileEntity.getXCoord(),
-                                    aBaseMetaTileEntity.getYCoord(),
-                                    aBaseMetaTileEntity.getZCoord()),
-                            mMaxSlots),
-                    aBaseMetaTileEntity.getXCoord(),
-                    aBaseMetaTileEntity.getZCoord());
+            if (packet == null) packet = new CustomTileEntityPacket((TileEntity) aBaseMetaTileEntity, null);
+            packet.resetHelperData();
+            packet.addData(mMaxSlots);
+            packet.sendToAllAround(20);
         }
+    }
+
+    @Override
+    public void HandleCustomPacket(CustomTileEntityPacket customdata) {
+        mMaxSlots = customdata.getDataInt();
     }
 
     @Override
     public void construct(ItemStack itemStack, boolean b) {
         buildPiece(STRUCTURE_PIECE_MAIN, itemStack, b, 2, 5, 0);
-    }
-
-    @Override
-    public boolean isCorrectMachinePart(ItemStack itemStack) {
-        return true;
     }
 
     private void updateMaxSlots() {
@@ -519,31 +512,9 @@ public class GT_MetaTileEntity_ExtremeIndustrialGreenhouse
     }
 
     @Override
-    public int getMaxEfficiency(ItemStack itemStack) {
-        return 10000;
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack itemStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack itemStack) {
-        return false;
-    }
-
-    @Override
     public boolean useModularUI() {
         return true;
     }
-
-    private final Function<Widget, Boolean> isFixed = widget -> getIdealStatus() == getRepairStatus() && mMachine;
-
-    private static final Function<Integer, IDrawable[]> toggleButtonBackgroundGetter = val -> {
-        if (val == 0) return new IDrawable[] { GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_CROSS };
-        else return new IDrawable[] { GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_CHECKMARK };
-    };
 
     @Override
     public int getGUIHeight() {
@@ -633,8 +604,7 @@ public class GT_MetaTileEntity_ExtremeIndustrialGreenhouse
                             return Collections.emptyList();
                         }).setSize(18, 18));
             }
-            cropsContainer.widget(
-                    row.setPos(0, i * 18).setEnabled(widget -> widget.getPos().y < cropsContainer.getVisibleHeight()));
+            cropsContainer.widget(row.setPos(0, i * 18));
         }
         cropsContainer.attachSyncer(
                 new FakeSyncWidget.ListSyncer<>(
