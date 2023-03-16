@@ -180,11 +180,10 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
             for (int i = 0; i < SLOT_COUNT; i++) {
                 mInventory[i] = null;
             }
-            updateAllInformationSlots();
         } else {
             refreshItemList();
-            updateAllInformationSlots();
         }
+        updateAllInformationSlots();
     }
 
     @Override
@@ -252,9 +251,8 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
         ItemStack dataStick = aPlayer.inventory.getCurrentItem();
         if (!ItemList.Tool_DataStick.isStackEqual(dataStick, true, true))
             return super.onRightclick(aBaseMetaTileEntity, aPlayer, aSide, aX, aY, aZ);
-
         if (!dataStick.hasTagCompound() || !"stockingBus".equals(dataStick.stackTagCompound.getString("type")))
-            return true;
+            return false;
 
         NBTTagCompound nbt = dataStick.stackTagCompound;
 
@@ -505,7 +503,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
                     if (clickData.mouseButton == 0) {
                         setAutoPullItemList(!autoPullItemList);
                     } else if (clickData.mouseButton == 1 && !widget.isClient()) {
-                        widget.getContext().openSyncedWindow(10);
+                        widget.getContext().openSyncedWindow(CONFIG_WINDOW_ID);
                     }
                 }).setPlayClickSound(true).setBackground(() -> {
                     List<UITexture> ret = new ArrayList<>();
