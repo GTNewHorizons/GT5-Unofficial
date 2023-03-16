@@ -1,0 +1,20 @@
+{
+  "gui.buttonDown": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "buttonDown",
+        "stream": false
+      }
+    ]
+  },
+  "gui.buttonUp": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "buttonUp",
+        "stream": false
+      }
+    ]
+  }
+}
