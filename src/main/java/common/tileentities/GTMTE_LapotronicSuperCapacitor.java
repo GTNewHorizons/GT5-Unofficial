@@ -3,6 +3,7 @@ package common.tileentities;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static common.itemBlocks.IB_LapotronicEnergyUnit.*;
 import static gregtech.api.enums.GT_HatchElement.Maintenance;
+import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.filterByMTEClass;
 import static java.lang.Math.min;
@@ -20,8 +21,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import client.gui.KT_UITextures;
 
 import com.github.bartimaeusnek.bartworks.API.BorosilicateGlass;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DynamoMulti;
@@ -39,11 +43,18 @@ import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.structure.IStructureElement.PlaceResult;
 import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import com.gtnewhorizon.structurelib.util.ItemStackPredicate.NBTMode;
+import com.gtnewhorizons.modularui.api.drawable.IDrawable;
+import com.gtnewhorizons.modularui.api.drawable.UITexture;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
+import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import common.Blocks;
 
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Textures.BlockIcons;
+import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.IGlobalWirelessEnergy;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
@@ -65,6 +76,7 @@ public class GTMTE_LapotronicSuperCapacitor
         NotTop
     }
 
+    private boolean canUseWireless = false;
     private boolean wireless_mode = false;
     private boolean not_processed_lsc = true;
     private int counter = 1;
@@ -984,9 +996,13 @@ public class GTMTE_LapotronicSuperCapacitor
         return true;
     }
 
+    protected boolean canUseWireless() {
+        return getUHVCapacitorCount() != 0 || getUEVCapacitorCount() != 0;
+    }
+
     @Override
     public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        if (getUHVCapacitorCount() != 0 || getUEVCapacitorCount() != 0) {
+        if (canUseWireless()) {
             wireless_mode = !wireless_mode;
             GT_Utility.sendChatToPlayer(aPlayer, "Wireless network mode " + (wireless_mode ? "enabled." : "disabled."));
         } else {
@@ -1002,6 +1018,36 @@ public class GTMTE_LapotronicSuperCapacitor
                             + " capacitor.");
             wireless_mode = false;
         }
+    }
+
+    @Override
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        super.addUIWidgets(builder, buildContext);
+        builder.widget(new ButtonWidget().setOnClick((clickData, widget) -> {
+            if (!widget.isClient()) {
+                canUseWireless = canUseWireless();
+            }
+            if (canUseWireless) {
+                wireless_mode = !wireless_mode;
+            }
+        }).setPlayClickSound(true).setBackground(() -> {
+            List<UITexture> ret = new ArrayList<>();
+            ret.add(GT_UITextures.BUTTON_STANDARD);
+            if (canUseWireless) {
+                if (wireless_mode) {
+                    ret.add(KT_UITextures.OVERLAY_BUTTON_WIRELESS_ON);
+                } else {
+                    ret.add(KT_UITextures.OVERLAY_BUTTON_WIRELESS_OFF);
+                }
+            } else {
+                ret.add(KT_UITextures.OVERLAY_BUTTON_WIRELESS_OFF_DISABLED);
+            }
+            return ret.toArray(new IDrawable[0]);
+        }).setPos(80, 91).setSize(16, 16)
+                .addTooltip(StatCollector.translateToLocal("gui.kekztech_lapotronicenergyunit.wireless"))
+                .setTooltipShowUpDelay(TOOLTIP_DELAY))
+                .widget(new FakeSyncWidget.BooleanSyncer(() -> wireless_mode, val -> wireless_mode = val))
+                .widget(new FakeSyncWidget.BooleanSyncer(this::canUseWireless, val -> canUseWireless = val));
     }
 
     private enum LSCHatchElement implements IHatchElement<GTMTE_LapotronicSuperCapacitor> {
