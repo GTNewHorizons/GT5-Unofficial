@@ -312,6 +312,9 @@ public class GregtechMetaTileEntity_IndustrialMultiMachine extends
 
         // Get Circuit info for this recipe.
         ItemStack tCircuit = getCircuit(aItemInputs);
+        if (tCircuit == null) {
+            return false;
+        }
         int tCircuitID = getCircuitID(tCircuit);
 
         Logger.MACHINE_INFO("Mode: " + tCircuitID);
