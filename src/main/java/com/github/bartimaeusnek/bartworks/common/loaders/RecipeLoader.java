@@ -776,13 +776,6 @@ public class RecipeLoader {
                     new Object[] { "BZB", "BRB", "BZB", 'B', new ItemStack(GregTech_API.sBlockCasings8, 1, 5), 'R',
                             GT_ModHandler.getModItem("IC2", "blockGenerator", 1, 5), 'Z', "circuitSuperconductor" });
 
-            GT_ModHandler.addCraftingRecipe(
-                    ItemRegistry.EIG,
-                    RecipeLoader.BITSD,
-                    new Object[] { "AZA", "BRB", "AZA", 'B', new ItemStack(GregTech_API.sBlockCasings4, 1, 1), 'R',
-                            GT_ModHandler.getModItem("EnderIO", "blockFarmStation", 1), 'A',
-                            new ItemStack(GregTech_API.sBlockMachines, 1, 11104), 'Z', "circuitUltimate" });
-
             if (LoaderReference.galacticgreg) {
                 GT_Values.RA.addAssemblylineRecipe(
                         ItemList.OreDrill4.get(1L),

@@ -208,7 +208,6 @@ public class ItemRegistry {
     public static ItemStack[] voidminer = new ItemStack[3];
     public static ItemStack THTR;
     public static ItemStack HTGR;
-    public static ItemStack EIG;
     public static ItemStack eic;
     public static ItemStack cal;
     public static ItemStack compressedHatch;
@@ -270,10 +269,9 @@ public class ItemRegistry {
                     "HTGR",
                     "High Temperature Gas-cooled Reactor").getStackForm(1L);
             GT_TileEntity_HTGR.HTGRMaterials.registeraTHR_Materials();
-            ItemRegistry.EIG = new GT_TileEntity_ExtremeIndustrialGreenhouse(
-                    ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 15 + 49,
-                    "EIG",
-                    "Extreme Industrial Greenhouse").getStackForm(1L);
+
+            // ID ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 15 + 49 IS TAKEN !!! (12792)
+
             GT_OreDictUnificator.add(
                     OrePrefixes.block,
                     Materials.BorosilicateGlass,
