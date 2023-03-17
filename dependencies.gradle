@@ -26,7 +26,7 @@ dependencies {
     {
         transitive = false
     }
-    compileOnly("com.github.GTNewHorizons:bartworks:0.5.125:dev")
+    compileOnly("com.github.GTNewHorizons:bartworks:0.6.1:dev")
     {
         transitive = false
     }
@@ -53,7 +53,7 @@ dependencies {
     //runtimeOnly("com.github.GTNewHorizons:harvestcraft:1.0.18-GTNH:dev")
     //runtimeOnly("com.github.GTNewHorizons:NewHorizonsCoreMod:1.9.103:dev")
     //runtimeOnly("com.github.GTNewHorizons:OpenBlocks:1.6.9-GTNH:dev")
-    //runtimeOnly("com.github.GTNewHorizons:bartworks:0.5.125:dev")
+    //runtimeOnly("com.github.GTNewHorizons:bartworks:0.6.1:dev")
     //runtimeOnly("com.github.GTNewHorizons:CraftTweaker:3.2.9:dev")
     //api("com.github.GTNewHorizons:SpecialMobs:3.3.13:dev")
     //api("com.github.GTNewHorizons:twilightforest:2.3.8.17:dev")

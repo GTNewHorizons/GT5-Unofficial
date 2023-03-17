@@ -18,5 +18,7 @@ public class LoaderReference {
     public static final boolean Forestry = Loader.isModLoaded("Forestry");
     public static final boolean DraconicEvolution = Loader.isModLoaded("DraconicEvolution");
     public static final boolean Avaritia = Loader.isModLoaded("Avaritia");
+    public static final boolean ProjRedIllumination = Loader.isModLoaded("ProjRed|Illumination");
+    public static final boolean RandomThings = Loader.isModLoaded("RandomThings");
     public static final boolean BetterLoadingScreen = Loader.isModLoaded("betterloadingscreen");
 }

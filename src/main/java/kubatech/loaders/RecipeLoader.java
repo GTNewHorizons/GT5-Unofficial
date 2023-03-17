@@ -18,9 +18,11 @@ import kubatech.Tags;
 import kubatech.api.LoaderReference;
 import kubatech.api.enums.ItemList;
 import kubatech.tileentity.gregtech.multiblock.GT_MetaTileEntity_ExtremeExterminationChamber;
+import kubatech.tileentity.gregtech.multiblock.GT_MetaTileEntity_ExtremeIndustrialGreenhouse;
 import kubatech.tileentity.gregtech.multiblock.GT_MetaTileEntity_MegaIndustrialApiary;
 
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -86,6 +88,25 @@ public class RecipeLoader {
                     6000,
                     2_048_000);
         }
+        if (registerMTEUsingID(
+                12_792,
+                ExtremeIndustrialGreenhouse,
+                GT_MetaTileEntity_ExtremeIndustrialGreenhouse.class,
+                "multimachine.extremegreenhouse",
+                "Extreme Industrial Greenhouse",
+                true /* IC2 is always loaded */)) {
+            GT_ModHandler.addCraftingRecipe(
+                    ExtremeIndustrialGreenhouse.get(1),
+                    bitsd,
+                    new Object[] { "AZA", "BRB", "AZA", 'B', gregtech.api.enums.ItemList.Casing_CleanStainlessSteel,
+                            'R',
+                            GT_ModHandler
+                                    .getModItem("EnderIO", "blockFarmStation", 1, new ItemStack(Items.diamond_hoe)),
+                            'A',
+                            LoaderReference.GTNHCoreMod ? CustomItemList.AcceleratorIV.get(1)
+                                    : gregtech.api.enums.ItemList.Robot_Arm_IV,
+                            'Z', OrePrefixes.circuit.get(Materials.Ultimate) });
+        }
         RegisterTeaLine();
         if (MTEID > MTEIDMax + 1) throw new RuntimeException("MTE ID's");
     }
@@ -108,6 +129,13 @@ public class RecipeLoader {
     private static boolean registerMTE(ItemList item, Class<? extends MetaTileEntity> mte, String aName,
             String aNameRegional, boolean dep) {
         if (MTEID > MTEIDMax) throw new RuntimeException("MTE ID's");
+        registerMTEUsingID(MTEID, item, mte, aName, aNameRegional, dep);
+        MTEID++;
+        return dep;
+    }
+
+    private static boolean registerMTEUsingID(int ID, ItemList item, Class<? extends MetaTileEntity> mte, String aName,
+            String aNameRegional, boolean dep) {
         if (dep) {
             try {
                 item.set(
@@ -123,7 +151,6 @@ public class RecipeLoader {
                 throw new RuntimeException(ex.getMessage());
             }
         }
-        MTEID++;
         return dep;
     }
 
