@@ -845,6 +845,7 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends
             return 0;
         }
         for (GT_MetaTileEntity_Hatch_Turbine h : this.mTurbineRotorHatches) {
+            if (!isValidMetaTileEntity(h)) continue;
             h.setActive(aState);
             aUpdated++;
         }
