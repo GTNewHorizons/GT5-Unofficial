@@ -20,6 +20,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ISecondaryDescribable;
@@ -234,6 +236,21 @@ public class GT_Item_Machines extends ItemBlock implements IFluidContainerItem {
                 String tTranslated = GT_LanguageManager.addStringLocalization(tKey, tDescLine, aWriteIntoLangFile);
                 if (aList != null) aList.add(tTranslated.equals("") ? tDescLine : tTranslated);
             }
+        }
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void registerDescription(int aDamage) {
+        if (aDamage >= GregTech_API.METATILEENTITIES.length) return;
+        if (GregTech_API.METATILEENTITIES[aDamage] != null) {
+            final IMetaTileEntity tMetaTileEntity = GregTech_API.METATILEENTITIES[aDamage].getBaseMetaTileEntity()
+                    .getMetaTileEntity();
+            if (tMetaTileEntity instanceof ISecondaryDescribable) {
+                final String[] tSecondaryDescription = ((ISecondaryDescribable) tMetaTileEntity)
+                        .getSecondaryDescription();
+                addDescription(null, tSecondaryDescription, aDamage, "_Secondary", true);
+            }
+            addDescription(null, tMetaTileEntity.getDescription(), aDamage, "", true);
         }
     }
 
