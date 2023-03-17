@@ -17,6 +17,7 @@ import kubatech.api.LoaderReference;
 import kubatech.commands.*;
 import kubatech.config.Config;
 import kubatech.loaders.MTLoader;
+import kubatech.loaders.MobRecipeLoader;
 import kubatech.loaders.RecipeLoader;
 import kubatech.loaders.TCLoader;
 import kubatech.savedata.PlayerDataManager;
@@ -65,4 +66,8 @@ public class CommonProxy {
     public void serverStopping(FMLServerStoppingEvent event) {}
 
     public void serverStopped(FMLServerStoppedEvent event) {}
+
+    public void loadComplete(FMLLoadCompleteEvent event) {
+        MobRecipeLoader.generateMobRecipeMap();
+    }
 }

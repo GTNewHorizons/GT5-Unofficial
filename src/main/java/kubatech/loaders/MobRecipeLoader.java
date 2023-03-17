@@ -28,6 +28,7 @@ import kubatech.Tags;
 import kubatech.api.LoaderReference;
 import kubatech.api.helpers.EnderIOHelper;
 import kubatech.api.helpers.InfernalHelper;
+import kubatech.api.helpers.ProgressBarWrapper;
 import kubatech.api.mobhandler.MobDrop;
 import kubatech.api.network.LoadConfigPacket;
 import kubatech.api.utils.GSONUtils;
@@ -59,8 +60,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
-import net.minecraftforge.client.event.GuiOpenEvent;
-import net.minecraftforge.common.MinecraftForge;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -74,7 +73,6 @@ import atomicstryker.infernalmobs.common.mods.api.ModifierLoader;
 import com.google.common.io.Files;
 import com.google.gson.Gson;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.util.GT_Utility;
@@ -83,15 +81,6 @@ import gregtech.common.GT_DummyWorld;
 public class MobRecipeLoader {
 
     private static final Logger LOG = LogManager.getLogger(Tags.MODID + "[Mob Recipe Loader]");
-
-    public static final MobRecipeLoader instance = new MobRecipeLoader();
-
-    @SuppressWarnings("unused")
-    @SubscribeEvent
-    public void onOpenGui(GuiOpenEvent event) {
-        MobRecipeLoader.generateMobRecipeMap();
-        MinecraftForge.EVENT_BUS.unregister(instance);
-    }
 
     private static final String dropFewItemsName = isDeobfuscatedEnvironment ? "dropFewItems" : "func_70628_a";
     private static final String dropRareDropName = isDeobfuscatedEnvironment ? "dropRareDrop" : "func_70600_l";
@@ -620,7 +609,9 @@ public class MobRecipeLoader {
                 MobRecipeLoaderCacheStructure s = gson.fromJson(reader, MobRecipeLoaderCacheStructure.class);
                 if (Config.MobHandler.regenerationTrigger == Config.MobHandler._CacheRegenerationTrigger.Never
                         || s.version.equals(modlistversion)) {
+                    ProgressBarWrapper bar = new ProgressBarWrapper("Parsing cached Mob Recipe Map", s.moblist.size());
                     for (Map.Entry<String, ArrayList<MobDrop>> entry : s.moblist.entrySet()) {
+                        bar.step(entry.getKey());
                         try {
                             EntityLiving e;
                             String mobName = entry.getKey();
@@ -637,6 +628,7 @@ public class MobRecipeLoader {
                                     new GeneralMappedMob(e, MobRecipe.generateMobRecipe(e, mobName, drops), drops));
                         } catch (Exception ignored) {}
                     }
+                    bar.end();
                     LOG.info("Parsed cached map, skipping generation");
                     return;
                 } else {
@@ -691,8 +683,9 @@ public class MobRecipeLoader {
         Map<String, Class<? extends Entity>> stringToClassMapping = (Map<String, Class<? extends Entity>>) EntityList.stringToClassMapping;
         boolean registeringWitherSkeleton = !stringToClassMapping.containsKey("witherSkeleton");
         if (registeringWitherSkeleton) stringToClassMapping.put("witherSkeleton", EntitySkeleton.class);
-
+        ProgressBarWrapper bar = new ProgressBarWrapper("Generating Mob Recipe Map", stringToClassMapping.size());
         stringToClassMapping.forEach((k, v) -> {
+            bar.step(k);
             if (v == null) return;
 
             if (Modifier.isAbstract(v.getModifiers())) {
@@ -727,9 +720,9 @@ public class MobRecipeLoader {
                 return;
             }
 
-            e.captureDrops = true;
-
             // POWERFULL GENERATION
+
+            e.captureDrops = true;
 
             if (e instanceof EntitySlime) try {
                 setSlimeSize.invoke(e, 1);
@@ -1100,6 +1093,8 @@ public class MobRecipeLoader {
         time = -time;
 
         LOG.info("Recipe map generated ! It took " + time + "ms");
+
+        bar.end();
 
         isInGenerationProcess = false;
 

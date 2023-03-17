@@ -135,6 +135,11 @@ public class kubatech {
         proxy.serverStopped(event);
     }
 
+    @Mod.EventHandler
+    public void loadComplete(FMLLoadCompleteEvent event) {
+        proxy.loadComplete(event);
+    }
+
     public static void debug(String message) {
         LOG.debug(message);
     }

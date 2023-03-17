@@ -161,7 +161,6 @@ public class RecipeLoader {
         if (lateRecipesInitialized) return;
         lateRecipesInitialized = true;
 
-        MobRecipeLoader.generateMobRecipeMap();
         MobRecipeLoader.processMobRecipeMap();
     }
 
