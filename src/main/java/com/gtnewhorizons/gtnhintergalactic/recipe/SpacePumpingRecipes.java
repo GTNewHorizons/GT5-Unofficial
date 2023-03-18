@@ -43,7 +43,7 @@ public class SpacePumpingRecipes {
         RECIPES.put(Pair.of(5, 3), Materials.SaltWater.getFluid(2800000));
         RECIPES.put(Pair.of(5, 4), Materials.Helium.getGas(1400000));
         RECIPES.put(Pair.of(5, 5), Materials.LiquidOxygen.getGas(896000));
-        RECIPES.put(Pair.of(5, 7), Materials.Argon.getGas(8000));
+        RECIPES.put(Pair.of(5, 7), Materials.Argon.getGas(32000));
         RECIPES.put(Pair.of(5, 9), Materials.Methane.getGas(1792000));
 
         // T6
@@ -68,8 +68,8 @@ public class SpacePumpingRecipes {
 
         if (Loader.isModLoaded("bartworks")) {
             // T5
-            RECIPES.put(Pair.of(5, 6), WerkstoffLoader.Neon.getFluidOrGas(8000));
-            RECIPES.put(Pair.of(5, 8), WerkstoffLoader.Krypton.getFluidOrGas(32000));
+            RECIPES.put(Pair.of(5, 6), WerkstoffLoader.Neon.getFluidOrGas(32000));
+            RECIPES.put(Pair.of(5, 8), WerkstoffLoader.Krypton.getFluidOrGas(8000));
 
             // T6
             RECIPES.put(Pair.of(6, 4), WerkstoffLoader.Xenon.getFluidOrGas(16000));
