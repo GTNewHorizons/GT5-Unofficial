@@ -3,22 +3,10 @@ package gregtech.common.tileentities.machines;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_HATCH;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_HATCH_ACTIVE;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
-import mcp.mobius.waila.api.IWailaConfigHandler;
-import mcp.mobius.waila.api.IWailaDataAccessor;
-
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import appeng.api.config.Actionable;
@@ -36,16 +24,11 @@ import appeng.me.helpers.AENetworkProxy;
 import appeng.me.helpers.IGridProxyable;
 import appeng.util.item.AEItemStack;
 
-import com.google.common.collect.ImmutableList;
-import com.gtnewhorizons.modularui.api.drawable.IDrawable;
-import com.gtnewhorizons.modularui.api.drawable.UITexture;
-import com.gtnewhorizons.modularui.api.math.Alignment;
-import com.gtnewhorizons.modularui.api.math.Color;
-import com.gtnewhorizons.modularui.api.math.Size;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.*;
-import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
+import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
+import com.gtnewhorizons.modularui.common.widget.SlotGroup;
+import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
@@ -70,9 +53,6 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
     private final ItemStack[] shadowInventory = new ItemStack[SLOT_COUNT];
     private final int[] savedStackSizes = new int[SLOT_COUNT];
     private boolean processingRecipe = false;
-    private boolean autoPullItemList = false;
-    private int minAutoPullStackSize = 1;
-    private static final int CONFIG_WINDOW_ID = 10;
 
     public GT_MetaTileEntity_Hatch_InputBus_ME(int aID, String aName, String aNameRegional) {
         super(
@@ -82,11 +62,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
                 1,
                 SLOT_COUNT * 2 + 1,
                 new String[] { "Advanced item input for Multiblocks", "Retrieves directly from ME",
-                        "Keeps 16 item types in stock",
-                        "Auto-Pull from ME mode will automatically stock the first 16 items in the ME system, updated every 5 seconds.",
-                        "Toggle by right-clicking with screwdriver, or use the GUI.",
-                        "Use the GUI to limit the minimum stack size for Auto-Pulling.",
-                        "Configuration data can be copy+pasted using a data stick." });
+                        "Keeps 16 item types in stock" });
         disableSort = true;
     }
 
@@ -109,14 +85,6 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
         return new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_ME_INPUT_HATCH) };
-    }
-
-    @Override
-    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
-        if (aTimer % 100 == 0 && autoPullItemList) {
-            refreshItemList();
-        }
-        super.onPostTick(aBaseMetaTileEntity, aTimer);
     }
 
     @Override
@@ -167,23 +135,9 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
         int[] sizes = new int[16];
         for (int i = 0; i < 16; ++i) sizes[i] = mInventory[i + 16] == null ? 0 : mInventory[i + 16].stackSize;
         aNBT.setIntArray("sizes", sizes);
-        aNBT.setBoolean("autoStock", autoPullItemList);
-        aNBT.setInteger("minAutoPullStackSize", minAutoPullStackSize);
         if (GregTech_API.mAE2) {
             gridProxy.writeToNBT(aNBT);
         }
-    }
-
-    private void setAutoPullItemList(boolean pullItemList) {
-        autoPullItemList = pullItemList;
-        if (!autoPullItemList) {
-            for (int i = 0; i < SLOT_COUNT; i++) {
-                mInventory[i] = null;
-            }
-        } else {
-            refreshItemList();
-        }
-        updateAllInformationSlots();
     }
 
     @Override
@@ -201,8 +155,6 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
                 }
             }
         }
-        autoPullItemList = aNBT.getBoolean("autoStock");
-        minAutoPullStackSize = aNBT.getInteger("minAutoPullStackSize");
         if (GregTech_API.mAE2) {
             getProxy().readFromNBT(aNBT);
         }
@@ -235,67 +187,10 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
     }
 
     @Override
-    public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        setAutoPullItemList(!autoPullItemList);
-        GT_Utility.sendChatToPlayer(aPlayer, "Automatic Item Pull " + autoPullItemList);
-    }
+    public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {}
 
     @Override
     public void updateSlots() {}
-
-    @Override
-    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, byte aSide, float aX,
-            float aY, float aZ) {
-        if (!(aPlayer instanceof EntityPlayerMP))
-            return super.onRightclick(aBaseMetaTileEntity, aPlayer, aSide, aX, aY, aZ);
-        ItemStack dataStick = aPlayer.inventory.getCurrentItem();
-        if (!ItemList.Tool_DataStick.isStackEqual(dataStick, true, true))
-            return super.onRightclick(aBaseMetaTileEntity, aPlayer, aSide, aX, aY, aZ);
-        if (!dataStick.hasTagCompound() || !"stockingBus".equals(dataStick.stackTagCompound.getString("type")))
-            return false;
-
-        NBTTagCompound nbt = dataStick.stackTagCompound;
-
-        ItemStack circuit = GT_Utility.loadItem(dataStick.stackTagCompound, "circuit");
-        if (GT_Utility.isStackInvalid(circuit)) circuit = null;
-        setAutoPullItemList(nbt.getBoolean("autoPull"));
-        minAutoPullStackSize = nbt.getInteger("minStackSize");
-        if (!autoPullItemList) {
-            NBTTagList stockingItems = nbt.getTagList("itemsToStock", 10);
-            for (int i = 0; i < stockingItems.tagCount(); i++) {
-                this.mInventory[i] = GT_Utility.loadItem(stockingItems.getCompoundTagAt(i));
-            }
-        }
-        setInventorySlotContents(getCircuitSlot(), circuit);
-        aPlayer.addChatMessage(new ChatComponentText("Loaded Config From Data Stick"));
-        return true;
-    }
-
-    @Override
-    public void onLeftclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        if (!(aPlayer instanceof EntityPlayerMP)) return;
-
-        ItemStack dataStick = aPlayer.inventory.getCurrentItem();
-        if (!ItemList.Tool_DataStick.isStackEqual(dataStick, true, true)) return;
-
-        NBTTagCompound tag = new NBTTagCompound();
-        tag.setString("type", "stockingBus");
-        tag.setBoolean("autoPull", autoPullItemList);
-        tag.setInteger("minStackSize", minAutoPullStackSize);
-        tag.setTag("circuit", GT_Utility.saveItem(getStackInSlot(getCircuitSlot())));
-
-        NBTTagList stockingItems = new NBTTagList();
-
-        if (!autoPullItemList) {
-            for (int index = 0; index < SLOT_COUNT; index++) {
-                stockingItems.appendTag(GT_Utility.saveItem(mInventory[index]));
-            }
-            tag.setTag("itemsToStock", stockingItems);
-        }
-        dataStick.stackTagCompound = tag;
-        dataStick.setStackDisplayName("Stocking Input Bus Configuration");
-        aPlayer.addChatMessage(new ChatComponentText("Saved Config to Data Stick"));
-    }
 
     @Override
     public int getCircuitSlot() {
@@ -371,35 +266,6 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
         processingRecipe = true;
     }
 
-    private void refreshItemList() {
-        if (GregTech_API.mAE2) {
-            AENetworkProxy proxy = getProxy();
-            try {
-                IMEMonitor<IAEItemStack> sg = proxy.getStorage().getItemInventory();
-                Iterator<IAEItemStack> iterator = sg.getStorageList().iterator();
-                int index = 0;
-                while (iterator.hasNext() && index < SLOT_COUNT) {
-                    IAEItemStack currItem = iterator.next();
-                    if (currItem.getStackSize() >= minAutoPullStackSize) {
-                        ItemStack itemstack = GT_Utility.copyAmount(1, currItem.getItemStack());
-                        this.mInventory[index] = itemstack;
-                        index++;
-                    }
-                }
-                for (int i = index; i < SLOT_COUNT; i++) {
-                    mInventory[i] = null;
-                }
-
-            } catch (final GridAccessException ignored) {}
-        }
-    }
-
-    private void updateAllInformationSlots() {
-        for (int index = 0; index < SLOT_COUNT; index++) {
-            updateInformationSlot(index, mInventory[index]);
-        }
-    }
-
     @Override
     public void endRecipeProcessing() {
         if (GregTech_API.mAE2) {
@@ -460,7 +326,6 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         final SlotWidget[] aeSlotWidgets = new SlotWidget[16];
-        buildContext.addSyncedWindow(CONFIG_WINDOW_ID, this::createStackSizeConfigurationWindow);
         builder.widget(
                 SlotGroup.ofItemHandler(inventoryHandler, 4).startFromSlot(0).endAtSlot(15).phantom(true)
                         .background(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_ARROW_ME)
@@ -468,7 +333,7 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
 
                             @Override
                             protected void phantomClick(ClickData clickData, ItemStack cursorStack) {
-                                if (clickData.mouseButton != 0 || autoPullItemList) return;
+                                if (clickData.mouseButton != 0) return;
                                 final int aSlotIndex = getMcSlot().getSlotIndex();
                                 if (cursorStack == null) {
                                     getMcSlot().putStack(null);
@@ -498,71 +363,12 @@ public class GT_MetaTileEntity_Hatch_InputBus_ME extends GT_MetaTileEntity_Hatch
                                 .build().setPos(97, 9))
                 .widget(
                         new DrawableWidget().setDrawable(GT_UITextures.PICTURE_ARROW_DOUBLE).setPos(82, 40)
-                                .setSize(12, 12))
-                .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
-                    if (clickData.mouseButton == 0) {
-                        setAutoPullItemList(!autoPullItemList);
-                    } else if (clickData.mouseButton == 1 && !widget.isClient()) {
-                        widget.getContext().openSyncedWindow(CONFIG_WINDOW_ID);
-                    }
-                }).setPlayClickSound(true).setBackground(() -> {
-                    List<UITexture> ret = new ArrayList<>();
-                    ret.add(GT_UITextures.BUTTON_STANDARD);
-                    if (autoPullItemList) ret.add(GT_UITextures.OVERLAY_BUTTON_AUTOPULL_ME);
-                    else ret.add(GT_UITextures.OVERLAY_BUTTON_AUTOPULL_ME_DISABLED);
-                    return ret.toArray(new IDrawable[0]);
-                }).addTooltips(
-                        ImmutableList.of(
-                                "Click to toggle automatic item pulling from ME.",
-                                "Right-Click to edit minimum stack size for item pulling."))
-                        .setSize(16, 16).setPos(80, 10))
-                .widget(new FakeSyncWidget.BooleanSyncer(() -> autoPullItemList, this::setAutoPullItemList));
-    }
-
-    protected ModularWindow createStackSizeConfigurationWindow(final EntityPlayer player) {
-        final int WIDTH = 78;
-        final int HEIGHT = 40;
-        final int PARENT_WIDTH = getGUIWidth();
-        final int PARENT_HEIGHT = getGUIHeight();
-        ModularWindow.Builder builder = ModularWindow.builder(WIDTH, HEIGHT);
-        builder.setBackground(GT_UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
-        builder.setGuiTint(getGUIColorization());
-        builder.setDraggable(true);
-        builder.setPos(
-                (size, window) -> Alignment.Center.getAlignedPos(size, new Size(PARENT_WIDTH, PARENT_HEIGHT)).add(
-                        Alignment.TopRight.getAlignedPos(new Size(PARENT_WIDTH, PARENT_HEIGHT), new Size(WIDTH, HEIGHT))
-                                .add(WIDTH - 3, 0)));
-        builder.widget(new TextWidget("Min Stack Size").setPos(3, 2).setSize(74, 14)).widget(
-                new TextFieldWidget().setSetterInt(val -> minAutoPullStackSize = val)
-                        .setGetterInt(() -> minAutoPullStackSize).setNumbers(1, Integer.MAX_VALUE)
-                        .setOnScrollNumbers(1, 4, 64).setTextAlignment(Alignment.Center)
-                        .setTextColor(Color.WHITE.normal).setSize(36, 18).setPos(19, 18)
-                        .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD));
-        return builder.build();
+                                .setSize(12, 12));
     }
 
     @Override
     public void addGregTechLogo(ModularWindow.Builder builder) {
         builder.widget(
                 new DrawableWidget().setDrawable(getGUITextureSet().getGregTechLogo()).setSize(17, 17).setPos(80, 63));
-    }
-
-    @Override
-    public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
-            IWailaConfigHandler config) {
-        NBTTagCompound tag = accessor.getNBTData();
-        boolean autopull = tag.getBoolean("autoPull");
-        int minSize = tag.getInteger("minStackSize");
-        currenttip.add(String.format("Auto-Pull from ME: %s", autopull ? "Enabled" : "Disabled"));
-        if (autopull) currenttip.add(String.format("Minimum Stack Size: %d", minSize));
-        super.getWailaBody(itemStack, currenttip, accessor, config);
-    }
-
-    @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-            int z) {
-        tag.setBoolean("autoPull", autoPullItemList);
-        tag.setInteger("minStackSize", minAutoPullStackSize);
-        super.getWailaNBTData(player, tile, tag, world, x, y, z);
     }
 }

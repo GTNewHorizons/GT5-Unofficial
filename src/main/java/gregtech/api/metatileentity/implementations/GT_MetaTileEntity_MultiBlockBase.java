@@ -1625,19 +1625,16 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             } else {
                 getBaseMetaTileEntity().enableWorking();
             }
-        }).setPlayClickSoundResource(
-                () -> getBaseMetaTileEntity().isAllowedToWork() ? SoundResource.GUI_BUTTON_UP.resourceLocation
-                        : SoundResource.GUI_BUTTON_DOWN.resourceLocation)
-                .setBackground(() -> {
-                    List<UITexture> ret = new ArrayList<>();
-                    ret.add(GT_UITextures.BUTTON_STANDARD);
-                    if (getBaseMetaTileEntity().isAllowedToWork()) {
-                        ret.add(GT_UITextures.OVERLAY_BUTTON_POWER_SWITCH_ON);
-                    } else {
-                        ret.add(GT_UITextures.OVERLAY_BUTTON_POWER_SWITCH_OFF);
-                    }
-                    return ret.toArray(new IDrawable[0]);
-                }).setPos(174, 148).setSize(16, 16);
+        }).setPlayClickSound(true).setBackground(() -> {
+            List<UITexture> ret = new ArrayList<>();
+            ret.add(GT_UITextures.BUTTON_STANDARD);
+            if (getBaseMetaTileEntity().isAllowedToWork()) {
+                ret.add(GT_UITextures.OVERLAY_BUTTON_POWER_SWITCH_ON);
+            } else {
+                ret.add(GT_UITextures.OVERLAY_BUTTON_POWER_SWITCH_OFF);
+            }
+            return ret.toArray(new IDrawable[0]);
+        }).setPos(174, 148).setSize(16, 16);
         button.addTooltip(StatCollector.translateToLocal("GT5U.gui.button.power_switch"))
                 .setTooltipShowUpDelay(TOOLTIP_DELAY);
         return (ButtonWidget) button;
