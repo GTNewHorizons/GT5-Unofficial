@@ -57,6 +57,7 @@ import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.screen.ModularUIContext;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.api.widget.IWidgetParent;
 import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.builder.UIInfo;
 import com.gtnewhorizons.modularui.common.internal.wrapper.ModularUIContainer;
@@ -679,6 +680,9 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
                         l -> {
                             drawables.clear();
                             drawables.addAll(l);
+                            if (beesContainer.getChildren().size() > 0) IWidgetParent.forEachByLayer(
+                                    (IWidgetParent) beesContainer.getChildren().get(0),
+                                    Widget::notifyTooltipChange);
                         },
                         (buffer, i) -> {
                             try {
