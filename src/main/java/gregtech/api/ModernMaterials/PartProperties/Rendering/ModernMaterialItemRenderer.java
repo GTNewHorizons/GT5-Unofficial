@@ -16,7 +16,7 @@ import org.lwjgl.opengl.GL11;
 import gregtech.api.ModernMaterials.ModernMaterial;
 import gregtech.common.render.GT_RenderUtil;
 
-public class ModernMaterialRenderer implements IItemRenderer {
+public class ModernMaterialItemRenderer implements IItemRenderer {
 
     @Override
     public boolean handleRenderType(ItemStack itemStack, ItemRenderType type) {

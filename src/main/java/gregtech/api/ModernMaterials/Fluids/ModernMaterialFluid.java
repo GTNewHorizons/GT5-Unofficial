@@ -7,12 +7,12 @@ import net.minecraftforge.fluids.FluidStack;
 import gregtech.api.ModernMaterials.ModernMaterial;
 import gregtech.api.enums.Materials;
 
-final public class GT_ModernMaterial_Fluid extends Fluid {
+final public class ModernMaterialFluid extends Fluid {
 
     private final ModernMaterial associatedMaterial;
     private final FluidEnum fluidType;
 
-    public GT_ModernMaterial_Fluid(FluidEnum fluidType, ModernMaterial modernMaterial) {
+    public ModernMaterialFluid(FluidEnum fluidType, ModernMaterial modernMaterial) {
         super(fluidType.format(modernMaterial));
         this.associatedMaterial = modernMaterial;
         this.fluidType = fluidType;
@@ -31,7 +31,7 @@ final public class GT_ModernMaterial_Fluid extends Fluid {
 
     @Override
     public int getTemperature(FluidStack stack) {
-        return this.fluidType.getDefaultTemperatureForFluidType();
+        return this.fluidType.getTemperature();
     }
 
     @Override

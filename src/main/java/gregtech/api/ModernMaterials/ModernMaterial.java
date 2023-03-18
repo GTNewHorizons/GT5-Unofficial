@@ -1,24 +1,23 @@
 package gregtech.api.ModernMaterials;
 
 import java.awt.*;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
+import java.sql.Array;
+import java.util.*;
 
 import gregtech.api.ModernMaterials.Fluids.FluidEnum;
+import gregtech.api.ModernMaterials.Fluids.ModernMaterialFluid;
 import gregtech.api.ModernMaterials.PartsClasses.CustomPartInfo;
 import gregtech.api.ModernMaterials.PartsClasses.PartsEnum;
 
 public class ModernMaterial {
 
     private final HashMap<PartsEnum, CustomPartInfo> existingPartsForMaterial = new HashMap<>();
-    public final Set<FluidEnum> existingFluidsForMaterial = new HashSet<>();
     private Color color;
     private int ID;
     private String name;
     private long materialTier;
     private double materialTimeMultiplier;
+    public final ArrayList<ModernMaterialFluid> existingFluids = new ArrayList<>();
 
     public ModernMaterial() {}
 
@@ -62,7 +61,20 @@ public class ModernMaterial {
     }
 
     public ModernMaterial addFluids(final FluidEnum... fluids) {
-        existingFluidsForMaterial.addAll(Arrays.asList(fluids));
+
+        for (FluidEnum fluidEnum : fluids) {
+            ModernMaterialFluid modernMaterialFluid = new ModernMaterialFluid(fluidEnum, this);
+            modernMaterialFluid.setTemperature(fluidEnum.getTemperature());
+            modernMaterialFluid.setGaseous(fluidEnum.isGas());
+
+            existingFluids.add(new ModernMaterialFluid(fluidEnum, this));
+        }
+
+        return this;
+    }
+
+    public ModernMaterial addCustomFluid(ModernMaterialFluid modernMaterialFluid) {
+        existingFluids.add(modernMaterialFluid);
         return this;
     }
 

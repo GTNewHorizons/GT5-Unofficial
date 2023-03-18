@@ -16,8 +16,8 @@ import net.minecraftforge.fluids.FluidRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.ModernMaterials.Fluids.FluidEnum;
-import gregtech.api.ModernMaterials.Fluids.GT_ModernMaterial_Fluid;
-import gregtech.api.ModernMaterials.PartProperties.Rendering.ModernMaterialRenderer;
+import gregtech.api.ModernMaterials.Fluids.ModernMaterialFluid;
+import gregtech.api.ModernMaterials.PartProperties.Rendering.ModernMaterialItemRenderer;
 import gregtech.api.ModernMaterials.PartRecipeGenerators.ModernMaterialsPlateRecipeGenerator;
 import gregtech.api.ModernMaterials.PartsClasses.MaterialPart;
 import gregtech.api.ModernMaterials.PartsClasses.PartsEnum;
@@ -63,7 +63,7 @@ public class ModernMaterialUtilities {
             materialPartItemMap.put(tPart, materialPart);
 
             // Registers the renderer which allows for part colouring.
-            MinecraftForgeClient.registerItemRenderer(materialPart, new ModernMaterialRenderer());
+            MinecraftForgeClient.registerItemRenderer(materialPart, new ModernMaterialItemRenderer());
         }
 
         // Register all material parts.
@@ -86,14 +86,8 @@ public class ModernMaterialUtilities {
 
         // Register the fluids with forge.
         for (ModernMaterial material : materialIDToMaterial.values()) {
-            for (FluidEnum fluid : material.existingFluidsForMaterial) {
-                GT_ModernMaterial_Fluid myFluid = new GT_ModernMaterial_Fluid(fluid, material);
-
-                // Edit properties.
-                myFluid.setTemperature(1234);
-
-                // Register fluid.
-                FluidRegistry.registerFluid(myFluid);
+            for (ModernMaterialFluid fluid : material.existingFluids) {
+                FluidRegistry.registerFluid(fluid);
             }
         }
 
