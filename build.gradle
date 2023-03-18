@@ -1,4 +1,4 @@
-//version: 1678003329
+//version: 1679040806
 /*
  DO NOT CHANGE THIS FILE!
  Also, you may replace this file at any time if there is an update available.
@@ -695,13 +695,13 @@ ext.java17PatchDependenciesCfg = configurations.create("java17PatchDependencies"
 }
 
 dependencies {
-    def lwjgl3ifyVersion = '1.1.35'
+    def lwjgl3ifyVersion = '1.2.2'
     def asmVersion = '9.4'
     if (modId != 'lwjgl3ify') {
         java17Dependencies("com.github.GTNewHorizons:lwjgl3ify:${lwjgl3ifyVersion}")
     }
     if (modId != 'hodgepodge') {
-        java17Dependencies('com.github.GTNewHorizons:Hodgepodge:2.0.40')
+        java17Dependencies('com.github.GTNewHorizons:Hodgepodge:2.1.0')
     }
 
     java17PatchDependencies('net.minecraft:launchwrapper:1.15') {transitive = false}
@@ -1204,7 +1204,7 @@ def addCurseForgeRelation(String type, String name) {
 
 // Updating
 
-def buildscriptGradleVersion = "8.0.1"
+def buildscriptGradleVersion = "8.0.2"
 
 tasks.named('wrapper', Wrapper).configure {
     gradleVersion = buildscriptGradleVersion

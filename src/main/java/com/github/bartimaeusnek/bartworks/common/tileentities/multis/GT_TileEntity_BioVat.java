@@ -85,6 +85,7 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_EnhancedMultiBlockBa
     private int mCasing = 0;
     private int mExpectedMultiplier = 0;
     private int mTimes = 0;
+    private boolean isVisibleFluid = false;
 
     public GT_TileEntity_BioVat(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -196,7 +197,7 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_EnhancedMultiBlockBa
 
     /**
      * Calculates the expected output multiplier based on the output hatch
-     * 
+     *
      * @param recipeFluidOutput the recipe fluid output
      * @param needEqual         if the recipeFluidOutput should be equal to the fluid in the output hatch
      * @return the expected output multiplier
@@ -388,8 +389,8 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_EnhancedMultiBlockBa
     }
 
     private void sendPackagesOrRenewRenderer(int x, int y, int z, BioCulture lCulture) {
-        int xDir = ForgeDirection.getOrientation(this.getBaseMetaTileEntity().getBackFacing()).offsetX * 2;
-        int zDir = ForgeDirection.getOrientation(this.getBaseMetaTileEntity().getBackFacing()).offsetZ * 2;
+        int xDir = getXDir();
+        int zDir = getZDir();
 
         GT_TileEntity_BioVat.staticColorMap.remove(
                 new Coords(
@@ -460,8 +461,9 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_EnhancedMultiBlockBa
     }
 
     private void placeFluid() {
-        int xDir = ForgeDirection.getOrientation(this.getBaseMetaTileEntity().getBackFacing()).offsetX * 2;
-        int zDir = ForgeDirection.getOrientation(this.getBaseMetaTileEntity().getBackFacing()).offsetZ * 2;
+        isVisibleFluid = true;
+        int xDir = getXDir();
+        int zDir = getZDir();
         this.height = this.reCalculateHeight();
         if (this.mFluid != null && this.height > 1 && this.reCalculateFluidAmmount() > 0) for (int x = -1; x < 2; x++) {
             for (int y = 0; y < this.height; y++) {
@@ -482,6 +484,33 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_EnhancedMultiBlockBa
         }
     }
 
+    private void removeFluid(int xDir, int zDir) {
+        isVisibleFluid = false;
+
+        for (int x = -1; x < 2; x++) {
+            for (int y = 1; y < 3; y++) {
+                for (int z = -1; z < 2; z++) {
+                    if (this.getBaseMetaTileEntity().getWorld()
+                            .getBlock(
+                                    xDir + x + this.getBaseMetaTileEntity().getXCoord(),
+                                    y + this.getBaseMetaTileEntity().getYCoord(),
+                                    zDir + z + this.getBaseMetaTileEntity().getZCoord())
+                            .equals(FluidLoader.bioFluidBlock))
+                        this.getBaseMetaTileEntity().getWorld().setBlockToAir(
+                                xDir + x + this.getBaseMetaTileEntity().getXCoord(),
+                                y + this.getBaseMetaTileEntity().getYCoord(),
+                                zDir + z + this.getBaseMetaTileEntity().getZCoord());
+                    GT_TileEntity_BioVat.staticColorMap.remove(
+                            new Coords(
+                                    xDir + x + this.getBaseMetaTileEntity().getXCoord(),
+                                    y + this.getBaseMetaTileEntity().getYCoord(),
+                                    zDir + z + this.getBaseMetaTileEntity().getZCoord()),
+                            this.getBaseMetaTileEntity().getWorld().provider.dimensionId);
+                }
+            }
+        }
+    }
+
     private int reCalculateFluidAmmount() {
         return this.getStoredFluids().stream().mapToInt(fluidStack -> fluidStack.amount).sum();
     }
@@ -497,8 +526,8 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_EnhancedMultiBlockBa
             if (this.mMachine) {
                 ItemStack aStack = this.mInventory[1];
                 BioCulture lCulture = null;
-                int xDir = ForgeDirection.getOrientation(this.getBaseMetaTileEntity().getBackFacing()).offsetX * 2;
-                int zDir = ForgeDirection.getOrientation(this.getBaseMetaTileEntity().getBackFacing()).offsetZ * 2;
+                int xDir = getXDir();
+                int zDir = getZDir();
 
                 if (this.getBaseMetaTileEntity().getTimer() % 200 == 0) {
                     this.check_Chunk();
@@ -580,49 +609,60 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_EnhancedMultiBlockBa
         if (this.mFluid != null) aNBT.setString("mFluid", this.mFluid.getName());
         aNBT.setInteger("mSievert", this.mSievert);
         aNBT.setInteger("mNeededSievert", this.mNeededSievert);
+        aNBT.setBoolean("isVisibleFluid", this.isVisibleFluid);
         super.saveNBTData(aNBT);
     }
 
     @Override
     public void onRemoval() {
-        int xDir = ForgeDirection.getOrientation(this.getBaseMetaTileEntity().getBackFacing()).offsetX * 2;
-        int zDir = ForgeDirection.getOrientation(this.getBaseMetaTileEntity().getBackFacing()).offsetZ * 2;
-        for (int x = -1; x < 2; x++) {
-            for (int y = 1; y < 3; y++) {
-                for (int z = -1; z < 2; z++) {
-                    if (this.getBaseMetaTileEntity().getWorld()
-                            .getBlock(
-                                    xDir + x + this.getBaseMetaTileEntity().getXCoord(),
-                                    y + this.getBaseMetaTileEntity().getYCoord(),
-                                    zDir + z + this.getBaseMetaTileEntity().getZCoord())
-                            .equals(FluidLoader.bioFluidBlock))
-                        this.getBaseMetaTileEntity().getWorld().setBlockToAir(
-                                xDir + x + this.getBaseMetaTileEntity().getXCoord(),
-                                y + this.getBaseMetaTileEntity().getYCoord(),
-                                zDir + z + this.getBaseMetaTileEntity().getZCoord());
-                    GT_TileEntity_BioVat.staticColorMap.remove(
-                            new Coords(
-                                    xDir + x + this.getBaseMetaTileEntity().getXCoord(),
-                                    y + this.getBaseMetaTileEntity().getYCoord(),
-                                    zDir + z + this.getBaseMetaTileEntity().getZCoord()),
-                            this.getBaseMetaTileEntity().getWorld().provider.dimensionId);
-                    if (SideReference.Side.Server) MainMod.BW_Network_instance.sendPacketToAllPlayersInRange(
-                            this.getBaseMetaTileEntity().getWorld(),
-                            new RendererPacket(
-                                    new Coords(
-                                            xDir + x + this.getBaseMetaTileEntity().getXCoord(),
-                                            y + this.getBaseMetaTileEntity().getYCoord(),
-                                            zDir + z + this.getBaseMetaTileEntity().getZCoord(),
-                                            this.getBaseMetaTileEntity().getWorld().provider.dimensionId),
-                                    this.mCulture == null ? BioCulture.NULLCULTURE.getColorRGB()
-                                            : this.mCulture.getColorRGB(),
-                                    true),
-                            this.getBaseMetaTileEntity().getXCoord(),
-                            this.getBaseMetaTileEntity().getZCoord());
+        if (isVisibleFluid) {
+            int xDir = getXDir();
+            int zDir = getZDir();
+            removeFluid(xDir, zDir);
+            sendRenderPackets(xDir, zDir);
+        } else if (this.getBaseMetaTileEntity().getWorld().getWorldTime() % 20 == 7) {
+            sendRenderPackets();
+        }
+
+        super.onRemoval();
+    }
+
+    private int getXDir() {
+        return ForgeDirection.getOrientation(this.getBaseMetaTileEntity().getBackFacing()).offsetX * 2;
+    }
+
+    private int getZDir() {
+        return ForgeDirection.getOrientation(this.getBaseMetaTileEntity().getBackFacing()).offsetZ * 2;
+    }
+
+    private void sendRenderPackets() {
+        int xDir = getXDir();
+        int zDir = getZDir();
+        sendRenderPackets(xDir, zDir);
+    }
+
+    private void sendRenderPackets(int xDir, int zDir) {
+        if (SideReference.Side.Server) {
+            for (int x = -1; x < 2; x++) {
+                for (int y = 1; y < 3; y++) {
+                    for (int z = -1; z < 2; z++) {
+                        MainMod.BW_Network_instance.sendPacketToAllPlayersInRange(
+                                this.getBaseMetaTileEntity().getWorld(),
+                                new RendererPacket(
+                                        new Coords(
+                                                xDir + x + this.getBaseMetaTileEntity().getXCoord(),
+                                                y + this.getBaseMetaTileEntity().getYCoord(),
+                                                zDir + z + this.getBaseMetaTileEntity().getZCoord(),
+                                                this.getBaseMetaTileEntity().getWorld().provider.dimensionId),
+                                        this.mCulture == null ? BioCulture.NULLCULTURE.getColorRGB()
+                                                : this.mCulture.getColorRGB(),
+                                        true),
+                                this.getBaseMetaTileEntity().getXCoord(),
+                                this.getBaseMetaTileEntity().getZCoord());
+                    }
                 }
             }
         }
-        super.onRemoval();
     }
 
     @Override
@@ -633,6 +673,7 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_EnhancedMultiBlockBa
         this.mSievert = aNBT.getInteger("mSievert");
         this.mNeededSievert = aNBT.getInteger("mNeededSievert");
         super.loadNBTData(aNBT);
+        this.isVisibleFluid = aNBT.getBoolean("isVisibleFluid");
     }
 
     @Override
