@@ -436,10 +436,10 @@ public class GT_MetaTileEntity_ExtremeIndustrialGreenhouse
         // weedex
         if (weedexusage > 0 && !this.depleteInput(new FluidStack(weedex, isIC2Mode ? weedexusage * 5 : weedexusage))) {
             IGregTechTileEntity baseMTE = this.getBaseMetaTileEntity();
-            int tokill = baseMTE.getRandomNumber((int) ((double) weedexusage * 0.02d) + 1);
-            for (int i = 0; i < tokill;) {
+            int toKill = baseMTE.getRandomNumber((int) ((double) weedexusage * 0.02d) + 1);
+            while (toKill > 0) {
                 GreenHouseSlot removed = mStorage.remove(baseMTE.getRandomNumber(mStorage.size()));
-                i -= removed.input.stackSize;
+                toKill -= removed.input.stackSize;
             }
         }
 
