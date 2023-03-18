@@ -35,23 +35,21 @@ public abstract class TickableMultiTileEntity extends MultiTileEntity implements
                 GT_Util.markChunkDirty(this);
                 onFirstTick(isServerSide);
             }
-            if (!isDead()) onPreTick(timer, isServerSide);
-            if (!isDead()) {
-                timer++;
-                super.updateEntity();
+            if (isDead()) {
+                return;
             }
-            if (!isServerSide) {
-                if (needsUpdate) {
-                    worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-                    // worldObj.func_147479_m(xCoord, yCoord, zCoord);
-                    needsUpdate = false;
-                }
+            onPreTick(timer, isServerSide);
+            timer++;
+            super.updateEntity();
+            if (!isServerSide && needsUpdate) {
+                worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+                needsUpdate = false;
             }
-            if (!isDead()) onTick(timer, isServerSide);
-            if (!isDead() && isServerSide && timer > 2 && sendClientData) {
+            onTick(timer, isServerSide);
+            if (isServerSide && timer > 2 && sendClientData) {
                 sendClientData(null);
             }
-            if (!isDead()) onPostTick(timer, isServerSide);
+            onPostTick(timer, isServerSide);
 
         } catch (Throwable e) {
             GT_FML_LOGGER.error("UpdateEntity Failed", e);

@@ -9,7 +9,6 @@ import net.minecraft.block.material.Material;
 import gregtech.api.enums.Materials;
 import gregtech.api.multitileentity.MultiTileEntityBlock;
 import gregtech.api.multitileentity.MultiTileEntityRegistry;
-import gregtech.api.multitileentity.enums.GT_MultiTileRegistries;
 import gregtech.api.multitileentity.multiblock.casing.BasicCasing;
 import gregtech.common.tileentities.casings.functional.MotorCasing;
 import gregtech.common.tileentities.casings.upgrade.InventoryUpgrade;
@@ -41,7 +40,6 @@ public class GT_Loader_MultiTileEntities implements Runnable {
                 true,
                 true);
         final MultiTileEntityRegistry machineRegistry = new MultiTileEntityRegistry("gt.multitileentity.controllers");
-        GT_MultiTileRegistries.MACHINE_REGISTRY_ID = (short) Block.getIdFromBlock(machineRegistry.mBlock);
         // Disable for now
         machineRegistry.create(1000, MultiBlock_Macerator.class).name("Large Macerator")
                 .category("Multiblock Controller").setBlock(machine).material(Materials.Iron).texture("metalwall")
@@ -54,7 +52,6 @@ public class GT_Loader_MultiTileEntities implements Runnable {
         final MultiTileEntityRegistry casingRegistry = new MultiTileEntityRegistry("gt.multitileentity.casings");
         final MultiTileEntityBlock casing = MultiTileEntityBlock
                 .getOrCreate("GregTech", "casing", Material.iron, Block.soundTypeMetal, "wrench", 0, 0, 15, true, true);
-        GT_MultiTileRegistries.CASING_REGISTRY_ID = (short) Block.getIdFromBlock(casing);
         casingRegistry.create(CokeOven.getId(), BasicCasing.class).name("Coke Oven Bricks")
                 .category("MultiBlock Casing").setBlock(casing).texture("cokeOven").register();
         casingRegistry.create(18000, BasicCasing.class).name("Test Casing").category("Multiblock Casing")

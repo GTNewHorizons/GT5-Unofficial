@@ -2,6 +2,10 @@ package gregtech.common.tileentities.machines.multiblock;
 
 import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.NOTHING;
 
+import java.util.List;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -10,9 +14,15 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
+import com.gtnewhorizons.modularui.api.math.Alignment;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
+import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
+import gregtech.GT_Mod;
 import gregtech.api.multitileentity.enums.GT_MultiTileCasing;
-import gregtech.api.multitileentity.enums.GT_MultiTileRegistries;
 import gregtech.api.multitileentity.multiblock.base.MultiBlockController;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
@@ -58,7 +68,7 @@ public class MultiBlock_CokeOven extends MultiBlockController<MultiBlock_CokeOve
 
     @Override
     public short getCasingRegistryID() {
-        return GT_MultiTileRegistries.CASING_REGISTRY_ID;
+        return 0;
     }
 
     @Override
@@ -93,6 +103,9 @@ public class MultiBlock_CokeOven extends MultiBlockController<MultiBlock_CokeOve
 
     @Override
     protected boolean checkRecipe() {
+        if (getInventoriesForOutput().getStackInSlot(0) != null || getInventoriesForOutput().getStackInSlot(0).stackSize >= 64) {
+            return false;
+        }
         timeMultiplier = 1;
         ItemStack[] inputs = getAllItemInputs();
         if (inputs == null || inputs[0] == null) {
@@ -100,51 +113,80 @@ public class MultiBlock_CokeOven extends MultiBlockController<MultiBlock_CokeOve
         }
         ItemStack input = inputs[0];
         int originalStackSize = input.stackSize;
-        if (startRecipe(input)) {
-            setDuration(NORMAL_RECIPE_TIME * timeMultiplier);
+        ItemStack output = startRecipe(input);
+        if (output == null || !output.isItemEqual(getInventoriesForOutput().getStackInSlot(0))) {
+            return false;
         }
+
+        setDuration(NORMAL_RECIPE_TIME * timeMultiplier);
+        setItemOutputs(output);
+        input.stackSize -= 1;
 
         return originalStackSize > input.stackSize;
     }
 
-    protected boolean startRecipe(ItemStack input) {
+    protected ItemStack startRecipe(ItemStack input) {
         for (int oreId : OreDictionary.getOreIDs(input)) {
             if (oreId == COAL_ORE_ID) {
-                input.stackSize -= 1;
-                setItemOutputs(GT_OreDictUnificator.get("fuelCoke", null, 1));
-                return true;
+                return GT_OreDictUnificator.get("fuelCoke", null, 1);
             } else if (oreId == COAL_BLOCK_ORE_ID) {
                 timeMultiplier = 9;
-                input.stackSize -= 1;
-                setItemOutputs(GT_ModHandler.getModItem("Railcraft", "cube", 1, 0));
-                return true;
+                return GT_ModHandler.getModItem("Railcraft", "cube", 1, 0);
             } else if (oreId == WOOD_ORE_ID) {
-                input.stackSize -= 1;
-                setItemOutputs(new ItemStack(Items.coal, 1, 1));
-                return true;
+                return new ItemStack(Items.coal, 1, 1);
             } else if (oreId == SUGARCANE_ORE_ID) {
-                input.stackSize -= 1;
-                setItemOutputs(GT_OreDictUnificator.get("itemCharcoalSugar", null, 1));
-                return true;
+                return GT_OreDictUnificator.get("itemCharcoalSugar", null, 1);
             } else if (oreId == SUGAR_CHARCOAL_ORE_ID) {
-                input.stackSize -= 1;
-                setItemOutputs(GT_OreDictUnificator.get("itemCokeSugar", null, 1));
-                return true;
+                return GT_OreDictUnificator.get("itemCokeSugar", null, 1);
             } else if (oreId == CACTUS_ORE_ID) {
-                input.stackSize -= 1;
-                setItemOutputs(GT_OreDictUnificator.get("itemCharcoalCactus", null, 1));
-                return true;
+                return GT_OreDictUnificator.get("itemCharcoalCactus", null, 1);
             } else if (oreId == CACTUS_CHARCOAL_ORE_ID) {
-                input.stackSize -= 1;
-                setItemOutputs(GT_OreDictUnificator.get("itemCokeCactus", null, 1));
-                return true;
+                return GT_OreDictUnificator.get("itemCokeCactus", null, 1);
             }
         }
-        return false;
+        return null;
     }
 
     @Override
     protected boolean hasFluidInput() {
         return false;
+    }
+
+    @Override
+    public void addUIWidgets(ModularWindow.Builder builder,
+            UIBuildContext buildContext) {
+        
+    }
+
+    @Override
+    protected void addTitleTextStyle(com.gtnewhorizons.modularui.api.screen.ModularWindow.Builder builder,
+            String title) {
+        final int TAB_PADDING = 3;
+        final int TITLE_PADDING = 2;
+        int titleWidth = 0, titleHeight = 0;
+        if (NetworkUtils.isClient()) {
+            final FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
+            // noinspection unchecked
+            final List<String> titleLines = fontRenderer
+                    .listFormattedStringToWidth(title, getGUIWidth() - (TAB_PADDING + TITLE_PADDING) * 2);
+            titleWidth = titleLines.size() > 1 ? getGUIWidth() - (TAB_PADDING + TITLE_PADDING) * 2
+                    : fontRenderer.getStringWidth(title);
+            // noinspection PointlessArithmeticExpression
+            titleHeight = titleLines.size() * fontRenderer.FONT_HEIGHT + (titleLines.size() - 1) * 1;
+        }
+    
+        final DrawableWidget tab = new DrawableWidget();
+        final TextWidget text = new TextWidget(title).setDefaultColor(getTitleColor())
+                .setTextAlignment(Alignment.CenterLeft).setMaxWidth(titleWidth);
+        if (GT_Mod.gregtechproxy.mTitleTabStyle == 1) {
+            tab.setDrawable(getGUITextureSet().getTitleTabAngular()).setPos(0, -(titleHeight + TAB_PADDING) + 1)
+                    .setSize(getGUIWidth(), titleHeight + TAB_PADDING * 2);
+            text.setPos(TAB_PADDING + TITLE_PADDING, -titleHeight + TAB_PADDING);
+        } else {
+            tab.setDrawable(getGUITextureSet().getTitleTabDark()).setPos(0, -(titleHeight + TAB_PADDING * 2) + 1)
+                    .setSize(titleWidth + (TAB_PADDING + TITLE_PADDING) * 2, titleHeight + TAB_PADDING * 2 - 1);
+            text.setPos(TAB_PADDING + TITLE_PADDING, -titleHeight);
+        }
+        builder.widget(tab).widget(text);
     }
 }
