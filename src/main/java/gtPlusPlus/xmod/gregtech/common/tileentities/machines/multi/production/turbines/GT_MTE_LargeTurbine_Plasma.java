@@ -106,24 +106,19 @@ public class GT_MTE_LargeTurbine_Plasma extends GregtechMetaTileEntity_LargerTur
                     float aTotalOptimalFlow = 0;
 
                     ItemStack aStack = getFullTurbineAssemblies().get(0).getTurbine();
-                    for (int i = 0; i < getSpeedMultiplier(); i++) {
-                        if (i == 0) {
-                            aTotalBaseEff += GT_Utility.safeInt(
-                                    (long) ((5F
-                                            + ((GT_MetaGenerated_Tool) aStack.getItem()).getToolCombatDamage(aStack))
-                                            * 1000F));
-                        }
-                        aTotalOptimalFlow += GT_Utility.safeInt(
-                                (long) Math.max(
-                                        Float.MIN_NORMAL,
-                                        ((GT_MetaGenerated_Tool) aStack.getItem()).getToolStats(aStack)
-                                                .getSpeedMultiplier()
-                                                * GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mToolSpeed
-                                                * 50));
-                        if (aTotalOptimalFlow < 0) {
-                            log("Int overflow, report to issue tracker");
-                            aTotalOptimalFlow = 100;
-                        }
+                    aTotalBaseEff += GT_Utility.safeInt(
+                            (long) ((5F + ((GT_MetaGenerated_Tool) aStack.getItem()).getToolCombatDamage(aStack))
+                                    * 1000F));
+                    aTotalOptimalFlow += GT_Utility.safeInt(
+                            (long) Math.max(
+                                    Float.MIN_NORMAL,
+                                    ((GT_MetaGenerated_Tool) aStack.getItem()).getToolStats(aStack).getSpeedMultiplier()
+                                            * GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mToolSpeed
+                                            * 50))
+                            * getSpeedMultiplier();
+                    if (aTotalOptimalFlow < 0) {
+                        log("Int overflow, report to issue tracker");
+                        aTotalOptimalFlow = 100;
                     }
 
                     flowMultipliers[0] = GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mSteamMultiplier;
@@ -132,7 +127,6 @@ public class GT_MTE_LargeTurbine_Plasma extends GregtechMetaTileEntity_LargerTur
                     baseEff = MathUtils.roundToClosestInt(aTotalBaseEff);
                     optFlow = MathUtils.roundToClosestInt(aTotalOptimalFlow);
                     if (optFlow <= 0 || baseEff <= 0) {
-                        log("Running checkRecipeGeneric(bad-1)");
                         stopMachine(); // in case the turbine got removed
                         return false;
                     }

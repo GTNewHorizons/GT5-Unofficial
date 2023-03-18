@@ -464,44 +464,30 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends
                         || this.getBaseMetaTileEntity().hasWorkJustBeenEnabled()
                         || this.getBaseMetaTileEntity().hasInventoryBeenModified()) {
                     counter = 0;
-
-                    // log("Running checkRecipeGeneric(1)");
                     float aTotalBaseEff = 0;
                     float aTotalOptimalFlow = 0;
 
                     ItemStack aStack = getFullTurbineAssemblies().get(0).getTurbine();
-                    for (int i = 0; i < getSpeedMultiplier(); i++) {
-                        if (i == 0) {
-                            aTotalBaseEff += GT_Utility.safeInt(
-                                    (long) ((5F
-                                            + ((GT_MetaGenerated_Tool) aStack.getItem()).getToolCombatDamage(aStack))
-                                            * 1000F));
-                            // log("Bumped base eff to "+aTotalBaseEff);
-                        }
-                        aTotalOptimalFlow += GT_Utility.safeInt(
-                                (long) Math.max(
-                                        Float.MIN_NORMAL,
-                                        ((GT_MetaGenerated_Tool) aStack.getItem()).getToolStats(aStack)
-                                                .getSpeedMultiplier()
-                                                * GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mToolSpeed
-                                                * 50));
-                        if (aTotalOptimalFlow < 0) {
-                            log("Int overflow, report to issue tracker");
-                            aTotalOptimalFlow = 100;
-                        }
-                        // log("Bumped base optimal flow to "+aTotalOptimalFlow);
+                    aTotalBaseEff += GT_Utility.safeInt(
+                            (long) ((5F + ((GT_MetaGenerated_Tool) aStack.getItem()).getToolCombatDamage(aStack))
+                                    * 1000F));
+                    aTotalOptimalFlow += GT_Utility.safeInt(
+                            (long) Math.max(
+                                    Float.MIN_NORMAL,
+                                    ((GT_MetaGenerated_Tool) aStack.getItem()).getToolStats(aStack).getSpeedMultiplier()
+                                            * GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mToolSpeed
+                                            * 50)
+                                    * getSpeedMultiplier());
+                    if (aTotalOptimalFlow < 0) {
+                        log("Int overflow, report to issue tracker");
+                        aTotalOptimalFlow = 100;
                     }
 
                     flowMultipliers[0] = GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mSteamMultiplier;
                     flowMultipliers[1] = GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mGasMultiplier;
                     flowMultipliers[2] = GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mPlasmaMultiplier;
-                    // log("Running checkRecipeGeneric(2)");
-                    // log("Total base eff: "+aTotalBaseEff);
-                    // log("Total base optimal flow: "+aTotalOptimalFlow);
                     baseEff = MathUtils.roundToClosestInt(aTotalBaseEff);
                     optFlow = MathUtils.roundToClosestInt(aTotalOptimalFlow);
-                    // log("Total eff: "+baseEff);
-                    // log("Total optimal flow: "+optFlow);
                     if (optFlow <= 0 || baseEff <= 0) {
                         log("Running checkRecipeGeneric(bad-1)");
                         stopMachine(); // in case the turbine got removed
@@ -512,36 +498,25 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends
                 }
             }
 
-            // log("Total eff: "+baseEff);
-            // log("Total optimal flow: "+optFlow);
-
             // How much the turbine should be producing with this flow
             int newPower = fluidIntoPower(tFluids, optFlow, baseEff, flowMultipliers);
-            // log("Bumped newPower to "+newPower);
-            // log("New Power: "+newPower);
             long difference = newPower - this.lEUt; // difference between current output and new output
-            // log("diff: "+difference);
 
             // Magic numbers: can always change by at least 10 eu/t, but otherwise by at most 1 percent of the
             // difference in power level (per tick)
             // This is how much the turbine can actually change during this tick
             int maxChangeAllowed = Math.max(10, GT_Utility.safeInt((long) Math.abs(difference) / 100));
-            // log("Max Change Allowed: "+maxChangeAllowed);
 
             if (Math.abs(difference) > maxChangeAllowed) { // If this difference is too big, use the maximum allowed
                                                            // change
                 int change = maxChangeAllowed * (difference > 0 ? 1 : -1); // Make the change positive or negative.
                 this.lEUt += change; // Apply the change
-                // log("Applied power change.");
             } else {
                 this.lEUt = newPower;
-                // log("Using same value.");
             }
             if (this.lEUt <= 0) {
                 this.lEUt = 0;
                 this.mEfficiency = 0;
-                log("Running checkRecipeGeneric(bad-2)");
-                // stopMachine();
                 return false;
             } else {
                 this.mMaxProgresstime = 1;
@@ -549,7 +524,6 @@ public abstract class GregtechMetaTileEntity_LargerTurbineBase extends
                 // Overvoltage is handled inside the MultiBlockBase when pushing out to dynamos. no need to do it here.
                 // Play sounds (GT++ addition - GT multiblocks play no sounds)
                 startProcess();
-                // log("GOOD RETURN - Making: "+this.mEUt+" EU/t");
                 return true;
             }
         } catch (Throwable t) {
