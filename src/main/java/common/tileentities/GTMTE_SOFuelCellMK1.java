@@ -81,7 +81,7 @@ public class GTMTE_SOFuelCellMK1 extends GT_MetaTileEntity_EnhancedMultiBlockBas
         tt.addMachineType("Gas Turbine")
                 .addInfo("Oxidizes gas fuels to generate electricity without polluting the environment")
                 .addInfo(
-                        "Consumes up to " + (EU_PER_TICK * 20)
+                        "Consumes up to " + GT_Utility.formatNumbers(EU_PER_TICK * 20)
                                 + "EU worth of fuel with up to 100% efficiency each second")
                 .addInfo("Steam production requires the SOFC to heat up completely first")
                 .addInfo("Outputs " + EU_PER_TICK + "EU/t and " + STEAM_PER_SEC + "L/s Steam")
