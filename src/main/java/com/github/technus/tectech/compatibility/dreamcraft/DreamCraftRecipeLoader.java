@@ -5649,7 +5649,7 @@ public class DreamCraftRecipeLoader {
                         new FluidStack[] { new FluidStack(solderUEV, (int) (2_880 * pow(2L, absoluteTier))),
                                 Materials.Space.getMolten(1_440 * (absoluteTier + 1)), specialFluid[absoluteTier], },
                         CustomItemList.SpacetimeCompressionFieldGeneratorTier8.get(1),
-                        set * 16_000 * 20,
+                        (absoluteTier + 1) * 4_000 * 20,
                         (int) TierEU.RECIPE_UMV);
             }
         }
