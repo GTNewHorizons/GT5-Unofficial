@@ -369,7 +369,7 @@ public class GT_MetaTileEntity_NanoForge extends
                 .addInfo("Requires insane amounts of power to create nanites. Each tier")
                 .addInfo("the multi gains a new building next to it. The nanite in the")
                 .addInfo("controller slot controls the tier.").addInfo("--------------------------------------------")
-                .addInfo("Requires a Carbon Nanite to use tier tier " + EnumChatFormatting.DARK_PURPLE + 1)
+                .addInfo("Requires a Carbon Nanite to use tier " + EnumChatFormatting.DARK_PURPLE + 1)
                 .addInfo("Requires a Neutronium Nanite to use tier " + EnumChatFormatting.DARK_PURPLE + 2)
                 .addInfo("Requires a Transcendent Metal Nanite to use tier " + EnumChatFormatting.DARK_PURPLE + 3)
                 .addInfo("--------------------------------------------")
