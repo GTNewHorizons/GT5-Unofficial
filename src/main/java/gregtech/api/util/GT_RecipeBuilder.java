@@ -19,6 +19,11 @@ public class GT_RecipeBuilder {
 
     private static final boolean DEBUG_MODE;
 
+    public static final int HOURS = 20 * 60 * 60;
+    public static final int MINUTES = 20 * 60;
+    public static final int SECONDS = 20;
+    public static final int TICKS = 1;
+
     static {
         boolean tmp;
         try {
@@ -197,6 +202,11 @@ public class GT_RecipeBuilder {
 
     public GT_RecipeBuilder eut(int eut) {
         this.eut = eut;
+        return this;
+    }
+
+    public GT_RecipeBuilder eut(long eut) {
+        this.eut = (int) eut;
         return this;
     }
 
