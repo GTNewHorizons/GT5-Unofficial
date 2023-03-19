@@ -5364,7 +5364,7 @@ public class DreamCraftRecipeLoader {
                     32, // amperage
                     new Object[] {
                             // Space elevator blocks.
-                            getModItem("GalaxySpace", "spaceelevatorparts", 64, 0),
+                            getModItem("gtnhintergalactic", "gt.blockcasingsSE", 64, 0),
                             // Cosmic neutronium block.
                             getModItem("Avaritia", "Resource_Block", 64, 0),
                             GT_OreDictUnificator.get(OrePrefixes.block, Materials.Neutronium, 64),
@@ -5649,7 +5649,7 @@ public class DreamCraftRecipeLoader {
                         new FluidStack[] { new FluidStack(solderUEV, (int) (2_880 * pow(2L, absoluteTier))),
                                 Materials.Space.getMolten(1_440 * (absoluteTier + 1)), specialFluid[absoluteTier], },
                         CustomItemList.SpacetimeCompressionFieldGeneratorTier8.get(1),
-                        set * 16_000 * 20,
+                        (absoluteTier + 1) * 4_000 * 20,
                         (int) TierEU.RECIPE_UMV);
             }
         }
@@ -5846,7 +5846,7 @@ public class DreamCraftRecipeLoader {
                     32, // amperage
                     new Object[] {
                             // Space elevator blocks.
-                            getModItem("GalaxySpace", "spaceelevatorparts", 64, 0),
+                            getModItem("gtnhintergalactic", "gt.blockcasingsSE", 64, 0),
                             // Cosmic neutronium block.
                             getModItem("Avaritia", "Resource_Block", 64, 0),
                             GT_OreDictUnificator.get(OrePrefixes.block, Materials.Neutronium, 64),
@@ -5870,7 +5870,7 @@ public class DreamCraftRecipeLoader {
 
                     new FluidStack[] { Materials.Neutronium.getMolten(144 * 256 * 4),
                             Materials.CosmicNeutronium.getMolten(144 * 256 * 4),
-                            new FluidStack(solderUEV, 144 * 256 * 2), Materials.Space.getMolten(1_440) },
+                            new FluidStack(solderUEV, 144 * 256 * 2), Materials.Time.getMolten(1_440) },
                     CustomItemList.EOH_Reinforced_Temporal_Casing.get(4),
                     10_000,
                     (int) TierEU.RECIPE_UMV);
