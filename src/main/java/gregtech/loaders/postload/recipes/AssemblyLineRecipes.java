@@ -24,9 +24,8 @@ public class AssemblyLineRecipes implements Runnable {
         // addAssemblylineRecipe(ItemStack aResearchItem, int aResearchTime, ItemStack[] aInputs, FluidStack[]
         // aFluidInputs, ItemStack aOutput1, int aDuration, int aEUt);
 
+        // indalloy and ruridit are from gt++ and bartworks which are not dependencies
 
-		// indalloy and ruridit are from gt++ and bartworks which are not dependencies
-		
         Fluid solderIndalloy = FluidRegistry.getFluid("molten.indalloy140") != null
                 ? FluidRegistry.getFluid("molten.indalloy140")
                 : FluidRegistry.getFluid("molten.solderingalloy");
