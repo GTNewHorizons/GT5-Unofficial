@@ -1,5 +1,7 @@
 package gregtech.loaders.postload.recipes;
 
+import static gregtech.loaders.postload.GT_MachineRecipeLoader.isBartWorksLoaded;
+
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -7,8 +9,6 @@ import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.*;
 import gregtech.api.util.GT_OreDictUnificator;
-
-import static gregtech.loaders.postload.GT_MachineRecipeLoader.isBartWorksLoaded;
 
 public class AssemblyLineRecipes implements Runnable {
 
@@ -27,8 +27,8 @@ public class AssemblyLineRecipes implements Runnable {
         Fluid solderIndalloy = FluidRegistry.getFluid("molten.indalloy140") != null
                 ? FluidRegistry.getFluid("molten.indalloy140")
                 : FluidRegistry.getFluid("molten.solderingalloy");
-		
-		Materials LuVMat = isBartWorksLoaded ? Materials.Ruridit : Materials.Osmiridium;
+
+        Materials LuVMat = isBartWorksLoaded ? Materials.Ruridit : Materials.Osmiridium;
 
         // Motors
         GT_Values.RA.addAssemblylineRecipe(
