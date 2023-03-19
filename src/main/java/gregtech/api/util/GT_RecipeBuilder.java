@@ -13,6 +13,8 @@ import gregtech.api.interfaces.IGT_RecipeMap;
 import gregtech.api.objects.GT_FluidStack;
 import gregtech.api.util.extensions.ArrayExt;
 
+import static gregtech.GT_Mod.GT_FML_LOGGER;
+
 public class GT_RecipeBuilder {
 
     private static final boolean DEBUG_MODE;
@@ -143,6 +145,9 @@ public class GT_RecipeBuilder {
 
     public GT_RecipeBuilder itemOutputs(ItemStack... outputs) {
         this.outputs = outputs;
+        if (chances != null && chances.length != outputs.length) {
+            throw new IllegalArgumentException("Output chances array and items array length differs");
+        }
         return this;
     }
 
@@ -173,10 +178,8 @@ public class GT_RecipeBuilder {
     }
 
     public GT_RecipeBuilder outputChances(int... chances) {
-        if (outputs == null) throw new IllegalStateException("no outputs set yet");
-        if (chances.length != outputs.length) {
-            chances = Arrays.copyOf(chances, outputs.length);
-            for (int i = 0; i < chances.length; i++) if (chances[i] <= 0) chances[i] = 10000;
+        if (outputs != null && chances.length != outputs.length) {
+            throw new IllegalArgumentException("Output chances array and items array length differs");
         }
         this.chances = chances;
         return this;
