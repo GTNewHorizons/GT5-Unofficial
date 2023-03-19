@@ -674,37 +674,37 @@ public class GT_MetaTileEntity_IntegratedOreFactory
     private static List<String> getDisplayMode(int mode) {
         List<String> des = new ArrayList<>();
         des.add(StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor1"));
-        EnumChatFormatting aqua = EnumChatFormatting.AQUA;
-        String arrow = " " + aqua + "-> ";
+        final EnumChatFormatting AQUA = EnumChatFormatting.AQUA;
+        final String ARROW = " " + AQUA + "-> ";
         switch (mode) {
             case 0:
-                des.add(aqua + CRUSH + arrow);
-                des.add(aqua + WASH.replace(" ", " " + aqua) + arrow);
-                des.add(aqua + THERMAL.replace(" ", " " + aqua) + arrow);
-                des.add(aqua + CRUSH + ' ');
+                des.add(AQUA + CRUSH + ARROW);
+                des.add(AQUA + WASH.replace(" ", " " + AQUA) + ARROW);
+                des.add(AQUA + THERMAL.replace(" ", " " + AQUA) + ARROW);
+                des.add(AQUA + CRUSH + ' ');
                 break;
             case 1:
-                des.add(aqua + CRUSH + arrow);
-                des.add(aqua + WASH.replace(" ", " " + aqua) + arrow);
-                des.add(aqua + CENTRIFUGE + arrow);
-                des.add(aqua + CRUSH + ' ');
+                des.add(AQUA + CRUSH + ARROW);
+                des.add(AQUA + WASH.replace(" ", " " + AQUA) + ARROW);
+                des.add(AQUA + CENTRIFUGE + ARROW);
+                des.add(AQUA + CRUSH + ' ');
                 break;
             case 2:
-                des.add(aqua + CRUSH + arrow);
-                des.add(aqua + CRUSH + arrow);
-                des.add(aqua + CENTRIFUGE + ' ');
+                des.add(AQUA + CRUSH + ARROW);
+                des.add(AQUA + CRUSH + ARROW);
+                des.add(AQUA + CENTRIFUGE + ' ');
                 break;
             case 3:
-                des.add(aqua + CRUSH + arrow);
-                des.add(aqua + WASH.replace(" ", " " + aqua) + arrow);
-                des.add(aqua + SIFTER + ' ');
+                des.add(AQUA + CRUSH + ARROW);
+                des.add(AQUA + WASH.replace(" ", " " + AQUA) + ARROW);
+                des.add(AQUA + SIFTER + ' ');
 
                 break;
             case 4:
-                des.add(aqua + CRUSH + arrow);
-                des.add(aqua + CHEM_WASH.replace(" ", " " + aqua) + arrow);
-                des.add(aqua + CRUSH + arrow);
-                des.add(aqua + CENTRIFUGE + ' ');
+                des.add(AQUA + CRUSH + ARROW);
+                des.add(AQUA + CHEM_WASH.replace(" ", " " + AQUA) + ARROW);
+                des.add(AQUA + CRUSH + ARROW);
+                des.add(AQUA + CENTRIFUGE + ' ');
                 break;
             default:
                 des.add("Nothing");
