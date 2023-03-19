@@ -1,5 +1,6 @@
 package goodgenerator.blocks.tileEntity;
 
+import static com.github.bartimaeusnek.bartworks.util.BW_Util.ofGlassTieredMixed;
 import static com.github.bartimaeusnek.bartworks.util.RecipeFinderForParallel.getMultiOutput;
 import static com.github.bartimaeusnek.bartworks.util.RecipeFinderForParallel.handleParallelRecipe;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
@@ -9,7 +10,6 @@ import static gregtech.api.util.GT_StructureUtility.ofFrame;
 
 import java.util.*;
 
-import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -50,7 +50,6 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.objects.XSTR;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.*;
-import ic2.core.Ic2Items;
 
 public class NeutronActivator extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
         implements IConstructable, ISurvivalConstructable {
@@ -251,7 +250,7 @@ public class NeutronActivator extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
                                             NeutronActivator::onCasingFound,
                                             ofBlock(GregTech_API.sBlockCasings4, 1))))
                     .addElement('D', ofBlock(GregTech_API.sBlockCasings2, 6)).addElement('F', ofFrame(Materials.Steel))
-                    .addElement('G', ofBlock(Block.getBlockFromItem(Ic2Items.reinforcedGlass.getItem()), 0))
+                    .addElement('G', ofGlassTieredMixed((byte) 4, (byte) 127, 3))
                     .addElement(
                             'P',
                             ofBlock(Loaders.speedingPipe, 0))
