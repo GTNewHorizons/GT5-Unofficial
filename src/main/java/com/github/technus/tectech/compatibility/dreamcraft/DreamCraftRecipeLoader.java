@@ -5364,7 +5364,7 @@ public class DreamCraftRecipeLoader {
                     32, // amperage
                     new Object[] {
                             // Space elevator blocks.
-                            getModItem("GalaxySpace", "spaceelevatorparts", 64, 0),
+                            getModItem("gtnhintergalactic", "gt.blockcasingsSE", 64, 0),
                             // Cosmic neutronium block.
                             getModItem("Avaritia", "Resource_Block", 64, 0),
                             GT_OreDictUnificator.get(OrePrefixes.block, Materials.Neutronium, 64),
@@ -5846,7 +5846,7 @@ public class DreamCraftRecipeLoader {
                     32, // amperage
                     new Object[] {
                             // Space elevator blocks.
-                            getModItem("GalaxySpace", "spaceelevatorparts", 64, 0),
+                            getModItem("gtnhintergalactic", "gt.blockcasingsSE", 64, 0),
                             // Cosmic neutronium block.
                             getModItem("Avaritia", "Resource_Block", 64, 0),
                             GT_OreDictUnificator.get(OrePrefixes.block, Materials.Neutronium, 64),
