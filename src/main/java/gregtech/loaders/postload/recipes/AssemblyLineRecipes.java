@@ -8,6 +8,8 @@ import net.minecraftforge.fluids.FluidStack;
 import gregtech.api.enums.*;
 import gregtech.api.util.GT_OreDictUnificator;
 
+import static gregtech.loaders.postload.GT_MachineRecipeLoader.isBartWorksLoaded;
+
 public class AssemblyLineRecipes implements Runnable {
 
     @Override
@@ -25,6 +27,8 @@ public class AssemblyLineRecipes implements Runnable {
         Fluid solderIndalloy = FluidRegistry.getFluid("molten.indalloy140") != null
                 ? FluidRegistry.getFluid("molten.indalloy140")
                 : FluidRegistry.getFluid("molten.solderingalloy");
+		
+		Materials LuVMat = isBartWorksLoaded ? Materials.Ruridit : Materials.Osmiridium;
 
         // Motors
         GT_Values.RA.addAssemblylineRecipe(
@@ -32,13 +36,13 @@ public class AssemblyLineRecipes implements Runnable {
                 144000,
                 new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.stick, Materials.SamariumMagnetic, 1L),
                         GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.HSSS, 2L),
-                        GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Osmiridium, 64L),
-                        GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Osmiridium, 64L),
+                        GT_OreDictUnificator.get(OrePrefixes.wireFine, LuVMat, 64L),
+                        GT_OreDictUnificator.get(OrePrefixes.wireFine, LuVMat, 64L),
                         GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.YttriumBariumCuprate, 2L) },
                 new FluidStack[] { new FluidStack(solderIndalloy, 144), Materials.Lubricant.getFluid(250) },
                 ItemList.Electric_Motor_LuV.get(1),
                 600,
-                6000);
+                (int) TierEU.RECIPE_IV);
 
         GT_Values.RA.addAssemblylineRecipe(
                 ItemList.Electric_Motor_LuV.get(1, new Object() {}),
