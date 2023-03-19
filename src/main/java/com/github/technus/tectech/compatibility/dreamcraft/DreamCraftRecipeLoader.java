@@ -5870,7 +5870,7 @@ public class DreamCraftRecipeLoader {
 
                     new FluidStack[] { Materials.Neutronium.getMolten(144 * 256 * 4),
                             Materials.CosmicNeutronium.getMolten(144 * 256 * 4),
-                            new FluidStack(solderUEV, 144 * 256 * 2), Materials.Space.getMolten(1_440) },
+                            new FluidStack(solderUEV, 144 * 256 * 2), Materials.Time.getMolten(1_440) },
                     CustomItemList.EOH_Reinforced_Temporal_Casing.get(4),
                     10_000,
                     (int) TierEU.RECIPE_UMV);
