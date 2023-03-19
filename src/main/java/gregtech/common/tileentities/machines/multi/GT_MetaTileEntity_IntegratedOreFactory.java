@@ -9,11 +9,17 @@ import static gregtech.api.util.GT_StructureUtility.ofFrame;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
+
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -226,8 +232,8 @@ public class GT_MetaTileEntity_IntegratedOreFactory
         return true;
     }
 
-    private int getTime() {
-        switch (sMode) {
+    private static int getTime(int mode) {
+        switch (mode) {
             case 0:
                 return 30 * 20;
             case 1:
@@ -343,7 +349,7 @@ public class GT_MetaTileEntity_IntegratedOreFactory
         this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
         this.mEfficiencyIncrease = 10000;
         this.mOutputItems = sMidProduct;
-        calculateOverclockedNessMulti(30 * tRealUsed, getTime(), 1, getMaxInputVoltage());
+        calculateOverclockedNessMulti(30 * tRealUsed, getTime(sMode), 1, getMaxInputVoltage());
         if (this.mEUt > 0) {
             this.mEUt = -this.mEUt;
         }
@@ -372,29 +378,8 @@ public class GT_MetaTileEntity_IntegratedOreFactory
             return;
         }
         sMode = (sMode + 1) % 5;
-        String des;
-        switch (sMode) {
-            case 0:
-                des = EnumChatFormatting.AQUA + CRUSH + "->" + WASH + "->" + THERMAL + "->" + CRUSH;
-                break;
-            case 1:
-                des = EnumChatFormatting.AQUA + CRUSH + "->" + WASH + "->" + CRUSH + "->" + CENTRIFUGE;
-                break;
-            case 2:
-                des = EnumChatFormatting.AQUA + CRUSH + "->" + CRUSH + "->" + CENTRIFUGE;
-                break;
-            case 3:
-                des = EnumChatFormatting.AQUA + CRUSH + "->" + WASH + "->" + SIFTER;
-                break;
-            case 4:
-                des = EnumChatFormatting.AQUA + CRUSH + "->" + CHEM_WASH + "->" + CRUSH + "->" + CENTRIFUGE;
-                break;
-            default:
-                des = "";
-        }
-        GT_Utility.sendChatToPlayer(
-                aPlayer,
-                StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor", des, getTime() / 20));
+        List<String> des = getDisplayMode(sMode);
+        GT_Utility.sendChatToPlayer(aPlayer, String.join("", des));
     }
 
     @Override
@@ -666,6 +651,8 @@ public class GT_MetaTileEntity_IntegratedOreFactory
                 + getCurrentParallelism()
                 + EnumChatFormatting.RESET;
         informationData.add(parallelism);
+        informationData.add(StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.void", sVoidStone));
+        informationData.addAll(getDisplayMode(sMode));
         return informationData.toArray(new String[0]);
     }
 
@@ -682,5 +669,75 @@ public class GT_MetaTileEntity_IntegratedOreFactory
                     TextureFactory.builder().addIcon(OVERLAY_FRONT_PROCESSING_ARRAY_GLOW).extFacing().glow().build() };
         }
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX2) };
+    }
+
+    private static List<String> getDisplayMode(int mode) {
+        List<String> des = new ArrayList<>();
+        des.add(StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor1"));
+        EnumChatFormatting aqua = EnumChatFormatting.AQUA;
+        String arrow = " " + aqua + "-> ";
+        switch (mode) {
+            case 0:
+                des.add(aqua + CRUSH + arrow);
+                des.add(aqua + WASH.replace(" ", " " + aqua) + arrow);
+                des.add(aqua + THERMAL.replace(" ", " " + aqua) + arrow);
+                des.add(aqua + CRUSH + ' ');
+                break;
+            case 1:
+                des.add(aqua + CRUSH + arrow);
+                des.add(aqua + WASH.replace(" ", " " + aqua) + arrow);
+                des.add(aqua + CENTRIFUGE + arrow);
+                des.add(aqua + CRUSH + ' ');
+                break;
+            case 2:
+                des.add(aqua + CRUSH + arrow);
+                des.add(aqua + CRUSH + arrow);
+                des.add(aqua + CENTRIFUGE + ' ');
+                break;
+            case 3:
+                des.add(aqua + CRUSH + arrow);
+                des.add(aqua + WASH.replace(" ", " " + aqua) + arrow);
+                des.add(aqua + SIFTER + ' ');
+
+                break;
+            case 4:
+                des.add(aqua + CRUSH + arrow);
+                des.add(aqua + CHEM_WASH.replace(" ", " " + aqua) + arrow);
+                des.add(aqua + CRUSH + arrow);
+                des.add(aqua + CENTRIFUGE + ' ');
+                break;
+            default:
+                des.add("Nothing");
+        }
+
+        des.add(StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor2", getTime(mode) / 20));
+
+        return des;
+
+    }
+
+    @Override
+    public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
+            IWailaConfigHandler config) {
+        super.getWailaBody(itemStack, currenttip, accessor, config);
+        NBTTagCompound tag = accessor.getNBTData();
+
+        currenttip.add(
+                StatCollector.translateToLocal("GT5U.multiblock.parallelism") + ": "
+                        + EnumChatFormatting.BLUE
+                        + tag.getInteger("currentParallelism")
+                        + EnumChatFormatting.RESET);
+        currenttip.addAll(getDisplayMode(tag.getInteger("ssMode")));
+        currenttip.add(
+                StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.void", tag.getBoolean("ssStone")));
+
+    }
+
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+            int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        tag.setInteger("ssMode", sMode);
+        tag.setBoolean("ssStone", sVoidStone);
+        tag.setInteger("currentParallelism", currentParallelism);
     }
 }
