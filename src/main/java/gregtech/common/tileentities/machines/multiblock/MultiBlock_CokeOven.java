@@ -19,14 +19,18 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
+import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.GT_Mod;
+import gregtech.api.enums.GT_Values;
+import gregtech.api.logic.PollutionLogic;
 import gregtech.api.multitileentity.enums.GT_MultiTileCasing;
 import gregtech.api.multitileentity.multiblock.base.MultiBlockController;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.common.GT_Pollution;
 
 public class MultiBlock_CokeOven extends MultiBlockController<MultiBlock_CokeOven> {
 
@@ -42,6 +46,7 @@ public class MultiBlock_CokeOven extends MultiBlockController<MultiBlock_CokeOve
     private static final Vec3Impl offset = new Vec3Impl(1, 1, 0);
     private static final String MAIN = "Main";
     private int timeMultiplier = 1;
+    private static final PollutionLogic POLLUTION_LOGIC = new PollutionLogic().setPollutionAmount(20);
 
     public MultiBlock_CokeOven() {
         super();
@@ -80,7 +85,7 @@ public class MultiBlock_CokeOven extends MultiBlockController<MultiBlock_CokeOve
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Coke Oven").addInfo("Used for charcoal").beginStructureBlock(3, 3, 3, true)
-                .addCasingInfoExactly("Coke Oven Bricks", 25, false).toolTipFinisher("BlueWeabo");
+                .addCasingInfoExactly("Coke Oven Bricks", 25, false).addPollutionAmount(POLLUTION_LOGIC.getPollutionAmount()).toolTipFinisher(GT_Values.AuthorBlueWeabo);
         return tt;
     }
 
@@ -103,7 +108,8 @@ public class MultiBlock_CokeOven extends MultiBlockController<MultiBlock_CokeOve
 
     @Override
     protected boolean checkRecipe() {
-        if (getInventoriesForOutput().getStackInSlot(0) != null || getInventoriesForOutput().getStackInSlot(0).stackSize >= 64) {
+        if (getInventoriesForOutput().getStackInSlot(0) != null
+                && getInventoriesForOutput().getStackInSlot(0).stackSize >= 64) {
             return false;
         }
         timeMultiplier = 1;
@@ -114,7 +120,8 @@ public class MultiBlock_CokeOven extends MultiBlockController<MultiBlock_CokeOve
         ItemStack input = inputs[0];
         int originalStackSize = input.stackSize;
         ItemStack output = startRecipe(input);
-        if (output == null || !output.isItemEqual(getInventoriesForOutput().getStackInSlot(0))) {
+        if (getInventoriesForOutput().getStackInSlot(0) != null && 
+                (output == null || !output.isItemEqual(getInventoriesForOutput().getStackInSlot(0)))) {
             return false;
         }
 
@@ -123,6 +130,12 @@ public class MultiBlock_CokeOven extends MultiBlockController<MultiBlock_CokeOve
         input.stackSize -= 1;
 
         return originalStackSize > input.stackSize;
+    }
+
+    @Override
+    protected void doPollution() {
+        GT_Pollution.addPollution(getWorld(), getXCoord() >> 4, getZCoord() >> 4, POLLUTION_LOGIC.getPollutionAmount());
+        return;
     }
 
     protected ItemStack startRecipe(ItemStack input) {
@@ -153,14 +166,14 @@ public class MultiBlock_CokeOven extends MultiBlockController<MultiBlock_CokeOve
     }
 
     @Override
-    public void addUIWidgets(ModularWindow.Builder builder,
-            UIBuildContext buildContext) {
-        
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        builder.widget(new SlotWidget(inputInventory, 0).setPos(18, 18).setSize(18, 18));
+        builder.widget(new SlotWidget(outputInventory, 0).setPos(36, 36).setSize(18, 18));
+        builder.widget(createButtons());
     }
 
     @Override
-    protected void addTitleTextStyle(com.gtnewhorizons.modularui.api.screen.ModularWindow.Builder builder,
-            String title) {
+    protected void addTitleTextStyle(ModularWindow.Builder builder, String title) {
         final int TAB_PADDING = 3;
         final int TITLE_PADDING = 2;
         int titleWidth = 0, titleHeight = 0;
@@ -174,7 +187,7 @@ public class MultiBlock_CokeOven extends MultiBlockController<MultiBlock_CokeOve
             // noinspection PointlessArithmeticExpression
             titleHeight = titleLines.size() * fontRenderer.FONT_HEIGHT + (titleLines.size() - 1) * 1;
         }
-    
+
         final DrawableWidget tab = new DrawableWidget();
         final TextWidget text = new TextWidget(title).setDefaultColor(getTitleColor())
                 .setTextAlignment(Alignment.CenterLeft).setMaxWidth(titleWidth);
@@ -188,5 +201,10 @@ public class MultiBlock_CokeOven extends MultiBlockController<MultiBlock_CokeOve
             text.setPos(TAB_PADDING + TITLE_PADDING, -titleHeight);
         }
         builder.widget(tab).widget(text);
+    }
+
+    @Override
+    public String getLocalName() {
+        return "Coke Oven";
     }
 }

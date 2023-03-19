@@ -28,7 +28,6 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.logic.PowerLogic;
 import gregtech.api.logic.interfaces.PowerLogicHost;
-import gregtech.api.multitileentity.enums.GT_MultiTileRegistries;
 import gregtech.api.multitileentity.multiblock.base.MultiBlock_Stackable;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
@@ -87,7 +86,7 @@ public class MultiBlock_Macerator extends MultiBlock_Stackable<MultiBlock_Macera
 
     @Override
     public short getCasingRegistryID() {
-        return GT_MultiTileRegistries.CASING_REGISTRY_ID;
+        return 0;
     }
 
     @Override
@@ -202,6 +201,13 @@ public class MultiBlock_Macerator extends MultiBlock_Stackable<MultiBlock_Macera
 
         setItemOutputs(aInventory, tRecipe.mOutputs);
         return true;
+    }
+
+    @Override
+    protected void consumeEnergy() {
+        if (!power.removeEnergyUnsafe(eut)) {
+            stopMachine();
+        }
     }
 
     @Override

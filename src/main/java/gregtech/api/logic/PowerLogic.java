@@ -1,7 +1,8 @@
 package gregtech.api.logic;
 
-import gregtech.api.enums.GT_Values.NBT;
 import net.minecraft.nbt.NBTTagCompound;
+
+import gregtech.api.enums.GT_Values.NBT;
 
 public class PowerLogic {
 

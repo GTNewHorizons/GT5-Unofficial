@@ -62,7 +62,7 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
     protected long totalBurnTime = 0;
     protected FluidTankGT[] inputTanks = GT_Values.emptyFluidTankGT;
     protected FluidTankGT[] outputTanks = GT_Values.emptyFluidTankGT;
-    protected FluidStack[] fluidToOutput = GT_Values.emptyFluidStack;
+    protected FluidStack[] fluidsToOutput = GT_Values.emptyFluidStack;
     protected ItemStack[] itemsToOutput = GT_Values.emptyItemStackArray;
 
     protected IItemHandlerModifiable inputInventory = EMPTY_INVENTORY;
@@ -108,8 +108,12 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
             outputTanks[i].writeToNBT(nbt, NBT.TANK_OUT + i);
         }
 
-        if (fluidToOutput != null && fluidToOutput.length > 0) {
-            writeFluids(nbt, fluidToOutput, NBT.FLUID_OUT);
+        if (fluidsToOutput != null && fluidsToOutput.length > 0) {
+            writeFluids(nbt, fluidsToOutput, NBT.FLUID_OUT);
+        }
+
+        if (itemsToOutput != null) {
+            saveItemsToOutput(nbt);
         }
 
         nbt.setInteger(NBT.TIER, tier);
@@ -154,6 +158,20 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
         }
     }
 
+    protected void saveItemsToOutput(NBTTagCompound aNBT) {
+        final NBTTagList nbtList = new NBTTagList();
+        for (int slot = 0; slot < itemsToOutput.length; slot++) {
+            final ItemStack itemStack = itemsToOutput[slot];
+            if (itemStack != null) {
+                final NBTTagCompound tag = new NBTTagCompound();
+                tag.setByte("s", (byte) slot);
+                itemStack.writeToNBT(tag);
+                nbtList.appendTag(tag);
+            }
+        }
+        aNBT.setTag(NBT.ITEM_OUT, nbtList);
+    }
+
     @Override
     public void readMultiTileNBT(NBTTagCompound nbt) {
         super.readMultiTileNBT(nbt);
@@ -179,7 +197,7 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
 
         inputTanks = new FluidTankGT[getFluidInputCount()];
         outputTanks = new FluidTankGT[getFluidOutputCount()];
-        fluidToOutput = new FluidStack[getFluidOutputCount()];
+        fluidsToOutput = new FluidStack[getFluidOutputCount()];
 
         // TODO: See if we need the adjustable map here `.setCapacity(mRecipes, mParallel * 2L)` in place of the
         // `setCapacityMultiplier`
@@ -191,9 +209,11 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
             outputTanks[i] = new FluidTankGT().readFromNBT(nbt, NBT.TANK_OUT + i);
         }
 
-        for (int i = 0; i < fluidToOutput.length; i++) {
-            fluidToOutput[i] = FluidStack.loadFluidStackFromNBT(nbt.getCompoundTag(NBT.FLUID_OUT + "." + i));
+        for (int i = 0; i < fluidsToOutput.length; i++) {
+            fluidsToOutput[i] = FluidStack.loadFluidStackFromNBT(nbt.getCompoundTag(NBT.FLUID_OUT + "." + i));
         }
+
+        loadItemsToOutput(nbt);
 
         tier = nbt.getInteger(NBT.TIER);
         voltage = nbt.getLong(NBT.VOLTAGE);
@@ -213,6 +233,16 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
             final NBTTagCompound tNBT = tList.getCompoundTagAt(i);
             final int tSlot = tNBT.getShort("s");
             if (tSlot >= 0 && tSlot < inv.getSlots()) inv.setStackInSlot(tSlot, GT_Utility.loadItem(tNBT));
+        }
+    }
+
+    protected void loadItemsToOutput(NBTTagCompound aNBT) {
+        final NBTTagList tList = aNBT.getTagList(NBT.ITEM_OUT, 10);
+        itemsToOutput = new ItemStack[tList.tagCount()];
+        for (int i = 0; i < tList.tagCount(); i++) {
+            final NBTTagCompound tNBT = tList.getCompoundTagAt(i);
+            final int tSlot = tNBT.getByte("s");
+            if (tSlot >= 0 && tSlot < itemsToOutput.length) itemsToOutput[tSlot] = GT_Utility.loadItem(tNBT);
         }
     }
 
@@ -403,7 +433,11 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
         }
     }
 
-    protected void runMachine(long aTick) {
+    /**
+     * Runs only on server side
+     * @param tick The current tick of the machine
+     */
+    protected void runMachine(long tick) {
         if (acceptsFuel() && isActive()) {
             if (!consumeFuel()) {
                 stopMachine();
@@ -413,34 +447,9 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
 
         if (hasThingsToDo()) {
             markDirty();
-            if (isElectric()) {
-                if (!isGenerator() && !drainEut(eut)) {
-                    stopMachine();
-                    return;
-                }
-                if (isGenerator()) {
-                    generateEut(eut);
-                }
-            }
-
-            if (isSteam()) {
-                return;
-            }
-
-            if (maxProgressTime > 0 && ++progressTime >= maxProgressTime) {
-                progressTime = 0;
-                maxProgressTime = 0;
-                outputItems();
-                if (isAllowedToWork()) {
-                    if (!checkRecipe()) {
-                        setActive(false);
-                        issueClientUpdate();
-                    }
-                }
-                updateSlots();
-            }
+            runningTick(tick);
         } else {
-            if (aTick % TICKS_BETWEEN_RECIPE_CHECKS == 0 || hasWorkJustBeenEnabled() || hasInventoryBeenModified()) {
+            if (tick % TICKS_BETWEEN_RECIPE_CHECKS == 0 || hasWorkJustBeenEnabled() || hasInventoryBeenModified()) {
                 if (isAllowedToWork()) {
                     wasEnabled = false;
                     if (checkRecipe()) {
@@ -454,19 +463,79 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
         }
     }
 
+    /**
+     * Runs only on server side
+     * @param tick The current tick of the machine
+     */
+    protected void runningTick(long tick) {
+        consumeEnergy();
+        if (maxProgressTime > 0 && ++progressTime >= maxProgressTime) {
+            progressTime = 0;
+            maxProgressTime = 0;
+            outputItems();
+            outputFluids();
+            if (isAllowedToWork()) {
+                if (!checkRecipe()) {
+                    setActive(false);
+                    issueClientUpdate();
+                }
+            }
+            updateSlots();
+        }
+        doPollution();
+        emitEnergy();
+    }
+
+    /**
+     * Runs only on server side
+     */
     protected boolean checkRecipe() {
         return false;
     }
 
+    /**
+     * Runs only on server side
+     */
+    protected void doPollution() {}
+
+    /**
+     * Runs only on server side
+     */
+    protected void emitEnergy() {}
+
+    /**
+     * Runs only on server side
+     */
+    protected void consumeEnergy() {}
+
     protected void outputItems() {
-        int index = 0;
         if (itemsToOutput == null) {
             return;
         }
         for (ItemStack item : itemsToOutput) {
-            outputInventory.insertItem(index++, item, false);
+            int index = 0;
+            while (item != null && item.stackSize > 0 && index < outputInventory.getSlots()) {
+                item = outputInventory.insertItem(index++, item.copy(), false);
+            }
         }
         itemsToOutput = null;
+    }
+
+    protected void outputFluids() {
+        if (fluidsToOutput == null) {
+            return;
+        }
+        for (FluidStack fluid : fluidsToOutput) {
+            tryToFillTanks(fluid, outputTanks);
+        }
+    }
+
+    protected void tryToFillTanks(FluidStack fluid, FluidTankGT... tanks) {
+        for (FluidTankGT tank : tanks) {
+            if (tank.canFillAll(fluid)) {
+                tank.add(fluid.amount, fluid);
+            }
+        }
     }
 
     @Override
@@ -677,5 +746,9 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
 
     protected void setItemOutputs(ItemStack... outputs) {
         itemsToOutput = outputs;
+    }
+
+    protected void setFluidOutputs(FluidStack... outputs) {
+        fluidsToOutput = outputs;
     }
 }
