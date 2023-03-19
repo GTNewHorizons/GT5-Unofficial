@@ -28,7 +28,7 @@ public class AssemblyLineRecipes implements Runnable {
                 ? FluidRegistry.getFluid("molten.indalloy140")
                 : FluidRegistry.getFluid("molten.solderingalloy");
 
-        Materials LuVMat = isBartWorksLoaded ? Materials.Ruridit : Materials.Osmiridium;
+        Materials LuVMat = isBartWorksLoaded ? Materials.get("Ruridit") : Materials.Osmiridium;
 
         // Motors
         GT_Values.RA.addAssemblylineRecipe(
