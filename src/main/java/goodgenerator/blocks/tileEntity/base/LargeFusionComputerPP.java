@@ -411,7 +411,8 @@ public abstract class LargeFusionComputerPP extends GT_MetaTileEntity_TooltipMul
             FluidStack[] tFluids = tFluidList.toArray(new FluidStack[0]);
             GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sFusionRecipes
                     .findRecipe(this.getBaseMetaTileEntity(), this.mLastRecipe, false, Integer.MAX_VALUE, tFluids);
-            if ((tRecipe == null && !mRunningOnLoad) || (maxEUStore() < tRecipe.mSpecialValue)) {
+
+            if ((tRecipe == null && !mRunningOnLoad) || (tRecipe != null && (maxEUStore() < tRecipe.mSpecialValue))) {
                 turnCasingActive(false);
                 this.mLastRecipe = null;
                 return false;

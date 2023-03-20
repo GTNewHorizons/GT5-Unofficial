@@ -421,13 +421,15 @@ public abstract class LargeFusionComputer extends GT_MetaTileEntity_TooltipMulti
 
     @Override
     public boolean checkRecipe_EM(ItemStack aStack) {
+
         ArrayList<FluidStack> tFluidList = getStoredFluids();
 
         if (tFluidList.size() > 1) {
             FluidStack[] tFluids = tFluidList.toArray(new FluidStack[0]);
             GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sFusionRecipes
                     .findRecipe(this.getBaseMetaTileEntity(), this.mLastRecipe, false, Integer.MAX_VALUE, tFluids);
-            if (tRecipe == null || !mRunningOnLoad || (maxEUStore() < tRecipe.mSpecialValue)) {
+
+            if ((tRecipe == null && !mRunningOnLoad) || (tRecipe != null && (maxEUStore() < tRecipe.mSpecialValue))) {
                 turnCasingActive(false);
                 this.mLastRecipe = null;
                 return false;
