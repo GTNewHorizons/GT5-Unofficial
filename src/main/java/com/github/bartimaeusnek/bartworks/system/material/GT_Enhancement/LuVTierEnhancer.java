@@ -111,7 +111,6 @@ public class LuVTierEnhancer implements Runnable {
 
     private static void replaceAllRecipes(Collection<ItemStack> LuVMachines, OrePrefixes[] LuVMaterialsGenerated,
             List<IRecipe> bufferedRecipeList) {
-        LuVTierEnhancer.replaceOsmiridiumInLuVRecipes();
 
         for (GT_Recipe_AssemblyLine sAssemblylineRecipe : GT_Recipe_AssemblyLine.sAssemblylineRecipes) {
             for (ItemStack stack : LuVMachines) {
@@ -271,33 +270,6 @@ public class LuVTierEnhancer implements Runnable {
                     true,
                     WerkstoffLoader.LuVTierMaterial.getMolten(1).getFluid());
         }
-    }
-
-    private static void replaceOsmiridiumInLuVRecipes() {
-        Consumer<GT_Recipe> replace = gt_recipe -> gt_recipe.mInputs = replaceArrayWith(
-                gt_recipe.mInputs,
-                Materials.Osmiridium,
-                WerkstoffLoader.Ruridit,
-                gt_recipe);
-
-        GT_Recipe.GT_Recipe_AssemblyLine.sAssemblylineRecipes.stream()
-                .filter(recipe_assemblyLine -> recipe_assemblyLine.mEUt <= 6000).forEach(
-                        recipe_assemblyLine -> recipe_assemblyLine.mInputs = replaceArrayWith(
-                                recipe_assemblyLine.mInputs,
-                                Materials.Osmiridium,
-                                WerkstoffLoader.Ruridit,
-                                recipe_assemblyLine));
-
-        GT_Recipe.GT_Recipe_Map.sAssemblerRecipes.mRecipeList.stream()
-                .filter(
-                        gt_recipe -> gt_recipe.mEUt < BW_Util.getTierVoltage(6)
-                                && !BW_Util.checkStackAndPrefix(gt_recipe.mOutputs[0])
-                                && !isOutputBlackListed(gt_recipe.mOutputs[0]))
-                .forEach(replace);
-
-        GT_Recipe.GT_Recipe_Map.sAssemblylineVisualRecipes.mRecipeList.stream()
-                .filter(gt_recipe -> gt_recipe.mEUt <= 6000 && !isOutputBlackListed(gt_recipe.mOutputs[0]))
-                .forEach(replace);
     }
 
     private static boolean isOutputBlackListed(ItemStack output) {
