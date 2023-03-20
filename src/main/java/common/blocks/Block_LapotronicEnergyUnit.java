@@ -70,6 +70,10 @@ public class Block_LapotronicEnergyUnit extends BaseGTUpdateableBlock {
     private IIcon iconUltimateTop;
     private IIcon iconUltimateExtremeSide;
     private IIcon iconUltimateExtremeTop;
+    private IIcon iconUltimateInsaneSide;
+    private IIcon iconUltimateInsaneTop;
+    private IIcon iconUltimateMegaSide;
+    private IIcon iconUltimateMegaTop;
 
     private Block_LapotronicEnergyUnit() {
         super(Material.iron);
@@ -108,6 +112,10 @@ public class Block_LapotronicEnergyUnit extends BaseGTUpdateableBlock {
         iconUltimateTop = ir.registerIcon("kekztech:UltimateEnergyUnit_top");
         iconUltimateExtremeSide = ir.registerIcon("kekztech:ReallyUltimateEnergyUnit_side");
         iconUltimateExtremeTop = ir.registerIcon("kekztech:ReallyUltimateEnergyUnit_top");
+        iconUltimateInsaneSide = ir.registerIcon("kekztech:InsanelyUltimateEnergyUnit_side");
+        iconUltimateInsaneTop = ir.registerIcon("kekztech:InsanelyUltimateEnergyUnit_top");
+        iconUltimateMegaSide = ir.registerIcon("kekztech:MegaUltimateEnergyUnit_side");
+        iconUltimateMegaTop = ir.registerIcon("kekztech:MegaUltimateEnergyUnit_top");
     }
 
     @Override
@@ -127,6 +135,10 @@ public class Block_LapotronicEnergyUnit extends BaseGTUpdateableBlock {
         par3List.add(new ItemStack(par1, 1, 5));
         // UEV Cap
         par3List.add(new ItemStack(par1, 1, 8));
+        // UIV Cap
+        par3List.add(new ItemStack(par1, 1, 9));
+        // UMV Cap
+        par3List.add(new ItemStack(par1, 1, 10));
     }
 
     @Override
@@ -150,6 +162,10 @@ public class Block_LapotronicEnergyUnit extends BaseGTUpdateableBlock {
                 return (side < 2) ? iconLapoEVTop : iconLapoEVSide;
             case 8:
                 return (side < 2) ? iconUltimateExtremeTop : iconUltimateExtremeSide;
+            case 9:
+                return (side < 2) ? iconUltimateInsaneTop : iconUltimateInsaneSide;
+            case 10:
+                return (side < 2) ? iconUltimateMegaTop : iconUltimateMegaSide;
             default:
                 return iconUltimateTop;
         }
