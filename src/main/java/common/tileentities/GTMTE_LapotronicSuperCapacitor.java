@@ -402,15 +402,13 @@ public class GTMTE_LapotronicSuperCapacitor
                                 + GT_Values.TIER_COLORS[9]
                                 + GT_Values.VN[9]
                                 + EnumChatFormatting.GRAY
-                                + " capacitor and ")
-                .addInfo(
-                        EnumChatFormatting.RED + GT_Utility.formatNumbers(max_passive_drain_eu_per_tick_per_uev_cap)
-                                + EnumChatFormatting.GRAY
-                                + " EU/t passive loss per "
-                                + GT_Values.TIER_COLORS[10]
-                                + GT_Values.VN[10]
-                                + EnumChatFormatting.GRAY
                                 + " capacitor.")
+                .addInfo(
+                        "The passive loss increases " + EnumChatFormatting.DARK_RED
+                                + "100"
+                                + EnumChatFormatting.GRAY
+                                + "-fold"
+                                + " for every capacitor tier above.")
                 .addInfo("Passive loss is multiplied by the number of maintenance issues present.").addSeparator()
                 .addInfo("Glass shell has to be Tier - 3 of the highest capacitor tier.")
                 .addInfo(
@@ -429,11 +427,7 @@ public class GTMTE_LapotronicSuperCapacitor
                         "This mode can only be enabled if you have a " + GT_Values.TIER_COLORS[9]
                                 + GT_Values.VN[9]
                                 + EnumChatFormatting.GRAY
-                                + " or "
-                                + GT_Values.TIER_COLORS[10]
-                                + GT_Values.VN[10]
-                                + EnumChatFormatting.GRAY
-                                + " capacitor in the multiblock.")
+                                + "+ capacitor in the multiblock.")
                 .addInfo(
                         "When enabled every " + EnumChatFormatting.BLUE
                                 + GT_Utility.formatNumbers(LSC_time_between_wireless_rebalance_in_ticks)
@@ -448,20 +442,16 @@ public class GTMTE_LapotronicSuperCapacitor
                                 + GT_Values.TIER_COLORS[9]
                                 + GT_Values.VN[9]
                                 + EnumChatFormatting.GRAY
-                                + ")"
-                                + " or "
-                                + EnumChatFormatting.RED
-                                + GT_Utility.formatNumbers(UEV_wireless_eu_cap)
+                                + ") EU in the LSC")
+                .addInfo("it will withdraw from the network and add to the LSC.")
+                .addInfo("If there is more it will add the EU to the network and remove it from the LSC.")
+                .addInfo(
+                        "The threshold increases " + EnumChatFormatting.DARK_RED
+                                + "100"
                                 + EnumChatFormatting.GRAY
-                                + "("
-                                + GT_Values.TIER_COLORS[10]
-                                + GT_Values.VN[10]
-                                + EnumChatFormatting.GRAY
-                                + ")"
-                                + " EU in the LSC")
-                .addInfo("it will withdraw from the network and add to the LSC. If there is more it will add")
-                .addInfo("the EU to the network and remove it from the LSC.").addSeparator()
-                .beginVariableStructureBlock(5, 5, 4, 50, 5, 5, false)
+                                + "-fold"
+                                + " for every capacitor tier above.")
+                .addSeparator().beginVariableStructureBlock(5, 5, 4, 50, 5, 5, false)
                 .addStructureInfo("Modular height of 4-50 blocks.").addController("Front center bottom")
                 .addOtherStructurePart("Lapotronic Super Capacitor Casing", "5x2x5 base (at least 17x)")
                 .addOtherStructurePart(
@@ -477,8 +467,8 @@ public class GTMTE_LapotronicSuperCapacitor
                                 + GT_Values.VN[9]
                                 + EnumChatFormatting.GRAY
                                 + "-"
-                                + GT_Values.TIER_COLORS[10]
-                                + GT_Values.VN[10]
+                                + GT_Values.TIER_COLORS[12]
+                                + GT_Values.VN[12]
                                 + EnumChatFormatting.GRAY
                                 + ")",
                         "Center 3x(1-47)x3 above base (9-423 blocks)")
