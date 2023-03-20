@@ -117,8 +117,16 @@ public class SpaceProjectWorldSavedData extends WorldSavedData {
     }
 
     private static void loadInstance(World aWorld) {
-        spaceTeamProjects.clear();
-        spaceTeams.clear();
+        if (spaceTeamProjects != null) {
+            spaceTeamProjects.clear();
+        } else {
+            spaceTeamProjects = new HashMap<>();
+        }
+        if (spaceTeams != null) {
+            spaceTeams.clear();
+        } else {
+            spaceTeams = new HashMap<>();
+        }
         spaceTeamsFile = new File(aWorld.getSaveHandler().getWorldDirectory(), SPACE_TEAMS_JSON);
         teamProjectsFile = new File(aWorld.getSaveHandler().getWorldDirectory(), SPACE_TEAM_PROJECTS_JSON);
         MapStorage tStorage = aWorld.mapStorage;
