@@ -81,14 +81,6 @@ public class TileEntitySpaceElevator extends GT_MetaTileEntity_EnhancedMultiBloc
 
     /** Motor tier of the Space Elevator */
     protected int motorTier = 0;
-    /** Number of modules that motor tier 1 supports */
-    private static final int MODULES_MOTOR_T1 = 6;
-    /** Number of modules that motor tier 2 supports */
-    private static final int MODULES_MOTOR_T2 = 12;
-    /** Number of modules that motor tier 3 supports */
-    private static final int MODULES_MOTOR_T3 = 15;
-    /** Number of modules that motor tier 4 supports */
-    private static final int MODULES_MOTOR_T4 = 18;
 
     /** Flag if the chunks of the machine are loaded by it */
     private boolean isLoadedChunk;
@@ -467,30 +459,7 @@ public class TileEntitySpaceElevator extends GT_MetaTileEntity_EnhancedMultiBloc
                     STRUCTURE_PIECE_EXTENDED_DEPTH_OFFSET);
         }
         // Check if the allowed module amount is exceeded. Motor tier 5 unlocks all module slots
-        switch (motorTier) {
-            case 0:
-                isMachineValid = false;
-            case 1:
-                if (mProjectModuleHatches.size() > MODULES_MOTOR_T1) {
-                    isMachineValid = false;
-                }
-                break;
-            case 2:
-                if (mProjectModuleHatches.size() > MODULES_MOTOR_T2) {
-                    isMachineValid = false;
-                }
-                break;
-            case 3:
-                if (mProjectModuleHatches.size() > MODULES_MOTOR_T3) {
-                    isMachineValid = false;
-                }
-                break;
-            case 4:
-                if (mProjectModuleHatches.size() > MODULES_MOTOR_T4) {
-                    isMachineValid = false;
-                }
-                break;
-        }
+        isMachineValid = ElevatorUtil.getModuleSlotsUnlocked(motorTier) >= mProjectModuleHatches.size();
         // Fix maintenance issues
         fixAllIssues();
         if (elevatorCable != null) {

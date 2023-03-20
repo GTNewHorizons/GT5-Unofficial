@@ -9,6 +9,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 
+import com.gtnewhorizons.gtnhintergalactic.tile.multi.elevator.ElevatorUtil;
 import gregtech.common.blocks.GT_Item_Casings_Abstract;
 
 /**
@@ -43,5 +44,9 @@ public class ItemCasingSpaceElevatorMotor extends GT_Item_Casings_Abstract {
         tooltip.add(
                 EnumChatFormatting.LIGHT_PURPLE.toString() + EnumChatFormatting.BOLD
                         + GCCoreUtil.translate("gt.blockcasings.ig.motor.t" + (stack.getItemDamage() + 1) + ".desc1"));
+        tooltip.add(
+                String.format(
+                        GCCoreUtil.translate("gt.blockcasings.ig.motor.desc2"),
+                        ElevatorUtil.getModuleSlotsUnlocked(stack.getItemDamage() + 1)));
     }
 }

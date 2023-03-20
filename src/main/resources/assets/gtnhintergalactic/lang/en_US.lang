@@ -103,6 +103,7 @@ gt.blockcasings.ig.motor.t2.desc1=Faster ascend!
 gt.blockcasings.ig.motor.t3.desc1=Zooooom
 gt.blockcasings.ig.motor.t4.desc1=I AM SPEED
 gt.blockcasings.ig.motor.t5.desc1=Kachow
+gt.blockcasings.ig.motor.desc2=Unlocks %s Module-Slots in the Space Elevator
 
 # GUI
 ig.text.project=Project
