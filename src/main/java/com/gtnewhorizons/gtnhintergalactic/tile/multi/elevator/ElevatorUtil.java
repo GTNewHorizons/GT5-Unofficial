@@ -30,16 +30,8 @@ import gregtech.common.misc.spaceprojects.interfaces.ISpaceProject;
  */
 public class ElevatorUtil {
 
-    /** Number of modules that motor tier 1 supports */
-    private static final int MODULES_MOTOR_T1 = 6;
-    /** Number of modules that motor tier 2 supports */
-    private static final int MODULES_MOTOR_T2 = 12;
-    /** Number of modules that motor tier 3 supports */
-    private static final int MODULES_MOTOR_T3 = 15;
-    /** Number of modules that motor tier 4 supports */
-    private static final int MODULES_MOTOR_T4 = 18;
-    /** Number of modules that motor tier 5 supports */
-    private static final int MODULES_MOTOR_T5 = 24;
+    /** Number of module slots that are available for each motor tier */
+    private static final int[] AVAILABLE_MODULE_SLOTS = { 6, 12, 15, 18, 24 };
 
     /**
      * Check if the owner of the machine has the space project that is needed
@@ -72,26 +64,16 @@ public class ElevatorUtil {
     }
 
     /**
-     * Get the number of available modules slots dependent on the motor tier
+     * Get the number of available module slots dependent on the motor tier
      *
      * @param motorTier Used motor tier
      * @return Number of available module slots
      */
     public static int getModuleSlotsUnlocked(int motorTier) {
-        switch (motorTier) {
-            case 1:
-                return MODULES_MOTOR_T1;
-            case 2:
-                return MODULES_MOTOR_T2;
-            case 3:
-                return MODULES_MOTOR_T3;
-            case 4:
-                return MODULES_MOTOR_T4;
-            case 5:
-                return MODULES_MOTOR_T5;
-            default:
-                return 0;
+        if (motorTier < 0 || motorTier >= AVAILABLE_MODULE_SLOTS.length) {
+            return 0;
         }
+        return AVAILABLE_MODULE_SLOTS[motorTier];
     }
 
     public interface IBlockAdder<T> {
