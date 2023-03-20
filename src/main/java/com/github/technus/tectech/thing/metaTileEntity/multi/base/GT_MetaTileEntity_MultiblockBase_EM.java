@@ -51,6 +51,7 @@ import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.api.widget.Widget;
+import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
 import com.gtnewhorizons.modularui.common.widget.*;
 import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
 
@@ -2833,7 +2834,13 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM
                     new DrawableWidget().setDrawable(TecTechUITextures.BACKGROUND_SCREEN_BLUE_NO_INVENTORY).setPos(4, 4)
                             .setSize(190, 171));
         }
-        final SlotWidget inventorySlot = new SlotWidget(inventoryHandler, 1);
+        final SlotWidget inventorySlot = new SlotWidget(new BaseSlot(inventoryHandler, 1) {
+
+            @Override
+            public int getSlotStackLimit() {
+                return getInventoryStackLimit();
+            }
+        });
         if (doesBindPlayerInventory()) {
             builder.widget(
                     inventorySlot.setBackground(getGUITextureSet().getItemSlot(), TecTechUITextures.OVERLAY_SLOT_MESH)
