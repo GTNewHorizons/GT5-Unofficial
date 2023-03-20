@@ -70,10 +70,10 @@ public class ElevatorUtil {
      * @return Number of available module slots
      */
     public static int getModuleSlotsUnlocked(int motorTier) {
-        if (motorTier < 0 || motorTier >= AVAILABLE_MODULE_SLOTS.length) {
+        if (motorTier < 1 || motorTier > AVAILABLE_MODULE_SLOTS.length) {
             return 0;
         }
-        return AVAILABLE_MODULE_SLOTS[motorTier];
+        return AVAILABLE_MODULE_SLOTS[motorTier - 1];
     }
 
     public interface IBlockAdder<T> {
