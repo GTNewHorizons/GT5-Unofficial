@@ -1,5 +1,7 @@
 package gregtech.loaders.postload.recipes;
 
+import static gregtech.loaders.postload.GT_MachineRecipeLoader.isBartWorksLoaded;
+
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -22,9 +24,13 @@ public class AssemblyLineRecipes implements Runnable {
         // addAssemblylineRecipe(ItemStack aResearchItem, int aResearchTime, ItemStack[] aInputs, FluidStack[]
         // aFluidInputs, ItemStack aOutput1, int aDuration, int aEUt);
 
+        // indalloy and ruridit are from gt++ and bartworks which are not dependencies
+
         Fluid solderIndalloy = FluidRegistry.getFluid("molten.indalloy140") != null
                 ? FluidRegistry.getFluid("molten.indalloy140")
                 : FluidRegistry.getFluid("molten.solderingalloy");
+
+        Materials LuVMat = isBartWorksLoaded ? Materials.get("Ruridit") : Materials.Osmiridium;
 
         // Motors
         GT_Values.RA.addAssemblylineRecipe(
@@ -32,13 +38,13 @@ public class AssemblyLineRecipes implements Runnable {
                 144000,
                 new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.stick, Materials.SamariumMagnetic, 1L),
                         GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.HSSS, 2L),
-                        GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Osmiridium, 64L),
-                        GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Osmiridium, 64L),
+                        GT_OreDictUnificator.get(OrePrefixes.wireFine, LuVMat, 64L),
+                        GT_OreDictUnificator.get(OrePrefixes.wireFine, LuVMat, 64L),
                         GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.YttriumBariumCuprate, 2L) },
                 new FluidStack[] { new FluidStack(solderIndalloy, 144), Materials.Lubricant.getFluid(250) },
                 ItemList.Electric_Motor_LuV.get(1),
                 600,
-                6000);
+                (int) TierEU.RECIPE_IV);
 
         GT_Values.RA.addAssemblylineRecipe(
                 ItemList.Electric_Motor_LuV.get(1, new Object() {}),
@@ -54,7 +60,7 @@ public class AssemblyLineRecipes implements Runnable {
                 new FluidStack[] { new FluidStack(solderIndalloy, 288), Materials.Lubricant.getFluid(750) },
                 ItemList.Electric_Motor_ZPM.get(1),
                 600,
-                24000);
+                (int) TierEU.RECIPE_LuV);
 
         GT_Values.RA.addAssemblylineRecipe(
                 ItemList.Electric_Motor_ZPM.get(1, new Object() {}),
@@ -74,7 +80,7 @@ public class AssemblyLineRecipes implements Runnable {
                         Materials.Lubricant.getFluid(2000) },
                 ItemList.Electric_Motor_UV.get(1),
                 600,
-                100000);
+                (int) TierEU.RECIPE_ZPM);
 
         // Pumps
         GT_Values.RA.addAssemblylineRecipe(
@@ -90,7 +96,7 @@ public class AssemblyLineRecipes implements Runnable {
                 new FluidStack[] { new FluidStack(solderIndalloy, 144), Materials.Lubricant.getFluid(250) },
                 ItemList.Electric_Pump_LuV.get(1),
                 600,
-                6000);
+                (int) TierEU.RECIPE_IV);
 
         GT_Values.RA.addAssemblylineRecipe(
                 ItemList.Electric_Pump_LuV.get(1, new Object() {}),
@@ -105,7 +111,7 @@ public class AssemblyLineRecipes implements Runnable {
                 new FluidStack[] { new FluidStack(solderIndalloy, 288), Materials.Lubricant.getFluid(750) },
                 ItemList.Electric_Pump_ZPM.get(1),
                 600,
-                24000);
+                (int) TierEU.RECIPE_LuV);
 
         GT_Values.RA.addAssemblylineRecipe(
                 ItemList.Electric_Pump_ZPM.get(1, new Object() {}),
@@ -121,7 +127,7 @@ public class AssemblyLineRecipes implements Runnable {
                         Materials.Lubricant.getFluid(2000) },
                 ItemList.Electric_Pump_UV.get(1),
                 600,
-                100000);
+                (int) TierEU.RECIPE_ZPM);
 
         // Conveyors
         GT_Values.RA.addAssemblylineRecipe(
@@ -136,7 +142,7 @@ public class AssemblyLineRecipes implements Runnable {
                 new FluidStack[] { new FluidStack(solderIndalloy, 144), Materials.Lubricant.getFluid(250) },
                 ItemList.Conveyor_Module_LuV.get(1),
                 600,
-                6000);
+                (int) TierEU.RECIPE_IV);
 
         GT_Values.RA.addAssemblylineRecipe(
                 ItemList.Conveyor_Module_LuV.get(1, new Object() {}),
@@ -150,7 +156,7 @@ public class AssemblyLineRecipes implements Runnable {
                 new FluidStack[] { new FluidStack(solderIndalloy, 288), Materials.Lubricant.getFluid(750) },
                 ItemList.Conveyor_Module_ZPM.get(1),
                 600,
-                24000);
+                (int) TierEU.RECIPE_LuV);
 
         GT_Values.RA.addAssemblylineRecipe(
                 ItemList.Conveyor_Module_ZPM.get(1, new Object() {}),
@@ -165,7 +171,7 @@ public class AssemblyLineRecipes implements Runnable {
                         Materials.Lubricant.getFluid(2000) },
                 ItemList.Conveyor_Module_UV.get(1),
                 600,
-                100000);
+                (int) TierEU.RECIPE_ZPM);
 
         // Pistons
         GT_Values.RA.addAssemblylineRecipe(
@@ -182,7 +188,7 @@ public class AssemblyLineRecipes implements Runnable {
                 new FluidStack[] { new FluidStack(solderIndalloy, 144), Materials.Lubricant.getFluid(250) },
                 ItemList.Electric_Piston_LuV.get(1),
                 600,
-                6000);
+                (int) TierEU.RECIPE_IV);
 
         GT_Values.RA.addAssemblylineRecipe(
                 ItemList.Electric_Piston_LuV.get(1, new Object() {}),
@@ -198,7 +204,7 @@ public class AssemblyLineRecipes implements Runnable {
                 new FluidStack[] { new FluidStack(solderIndalloy, 288), Materials.Lubricant.getFluid(750) },
                 ItemList.Electric_Piston_ZPM.get(1),
                 600,
-                24000);
+                (int) TierEU.RECIPE_LuV);
 
         GT_Values.RA.addAssemblylineRecipe(
                 ItemList.Electric_Piston_ZPM.get(1, new Object() {}),
@@ -215,7 +221,7 @@ public class AssemblyLineRecipes implements Runnable {
                         Materials.Lubricant.getFluid(2000) },
                 ItemList.Electric_Piston_UV.get(1),
                 600,
-                100000);
+                (int) TierEU.RECIPE_ZPM);
 
         // RobotArms
         GT_Values.RA.addAssemblylineRecipe(
@@ -233,7 +239,7 @@ public class AssemblyLineRecipes implements Runnable {
                 new FluidStack[] { new FluidStack(solderIndalloy, 576), Materials.Lubricant.getFluid(250) },
                 ItemList.Robot_Arm_LuV.get(1),
                 600,
-                6000);
+                (int) TierEU.RECIPE_IV);
 
         GT_Values.RA.addAssemblylineRecipe(
                 ItemList.Robot_Arm_LuV.get(1, new Object() {}),
@@ -250,7 +256,7 @@ public class AssemblyLineRecipes implements Runnable {
                 new FluidStack[] { new FluidStack(solderIndalloy, 1152), Materials.Lubricant.getFluid(750) },
                 ItemList.Robot_Arm_ZPM.get(1),
                 600,
-                24000);
+                (int) TierEU.RECIPE_LuV);
 
         GT_Values.RA.addAssemblylineRecipe(
                 ItemList.Robot_Arm_ZPM.get(1, new Object() {}),
@@ -268,7 +274,7 @@ public class AssemblyLineRecipes implements Runnable {
                         Materials.Lubricant.getFluid(2000) },
                 ItemList.Robot_Arm_UV.get(1),
                 600,
-                100000);
+                (int) TierEU.RECIPE_ZPM);
 
         // Emitters
         GT_Values.RA.addAssemblylineRecipe(
@@ -276,7 +282,7 @@ public class AssemblyLineRecipes implements Runnable {
                 144000,
                 new Object[] { GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.HSSS, 1L),
                         ItemList.Electric_Motor_LuV.get(1, new Object() {}),
-                        GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Osmiridium, 8L),
+                        GT_OreDictUnificator.get(OrePrefixes.stick, LuVMat, 8L),
                         ItemList.QuantumStar.get(1, new Object() {}),
                         new Object[] { OrePrefixes.circuit.get(Materials.Master), 4 },
                         GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Gallium, 64L),
@@ -286,7 +292,7 @@ public class AssemblyLineRecipes implements Runnable {
                 new FluidStack[] { new FluidStack(solderIndalloy, 576) },
                 ItemList.Emitter_LuV.get(1),
                 600,
-                6000);
+                (int) TierEU.RECIPE_IV);
 
         GT_Values.RA.addAssemblylineRecipe(
                 ItemList.Emitter_LuV.get(1, new Object() {}),
@@ -303,7 +309,7 @@ public class AssemblyLineRecipes implements Runnable {
                 new FluidStack[] { new FluidStack(solderIndalloy, 1152) },
                 ItemList.Emitter_ZPM.get(1),
                 600,
-                24000);
+                (int) TierEU.RECIPE_LuV);
 
         GT_Values.RA.addAssemblylineRecipe(
                 ItemList.Emitter_ZPM.get(1, new Object() {}),
@@ -320,7 +326,7 @@ public class AssemblyLineRecipes implements Runnable {
                 new FluidStack[] { Materials.Naquadria.getMolten(1296), new FluidStack(solderIndalloy, 2304) },
                 ItemList.Emitter_UV.get(1),
                 600,
-                100000);
+                (int) TierEU.RECIPE_ZPM);
 
         // Sensors
         GT_Values.RA.addAssemblylineRecipe(
@@ -328,7 +334,7 @@ public class AssemblyLineRecipes implements Runnable {
                 144000,
                 new Object[] { GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.HSSS, 1L),
                         ItemList.Electric_Motor_LuV.get(1, new Object() {}),
-                        GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Osmiridium, 8L),
+                        GT_OreDictUnificator.get(OrePrefixes.plate, LuVMat, 8L),
                         ItemList.QuantumStar.get(1, new Object() {}),
                         new Object[] { OrePrefixes.circuit.get(Materials.Master), 4 },
                         GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Gallium, 64L),
@@ -338,7 +344,7 @@ public class AssemblyLineRecipes implements Runnable {
                 new FluidStack[] { new FluidStack(solderIndalloy, 576) },
                 ItemList.Sensor_LuV.get(1),
                 600,
-                6000);
+                (int) TierEU.RECIPE_IV);
 
         GT_Values.RA.addAssemblylineRecipe(
                 ItemList.Sensor_LuV.get(1, new Object() {}),
@@ -355,7 +361,7 @@ public class AssemblyLineRecipes implements Runnable {
                 new FluidStack[] { new FluidStack(solderIndalloy, 1152) },
                 ItemList.Sensor_ZPM.get(1),
                 600,
-                24000);
+                (int) TierEU.RECIPE_LuV);
 
         GT_Values.RA.addAssemblylineRecipe(
                 ItemList.Sensor_ZPM.get(1, new Object() {}),
@@ -372,7 +378,7 @@ public class AssemblyLineRecipes implements Runnable {
                 new FluidStack[] { Materials.Naquadria.getMolten(1296), new FluidStack(solderIndalloy, 2304) },
                 ItemList.Sensor_UV.get(1),
                 600,
-                100000);
+                (int) TierEU.RECIPE_ZPM);
 
         // Field Generators
         GT_Values.RA.addAssemblylineRecipe(
@@ -382,15 +388,15 @@ public class AssemblyLineRecipes implements Runnable {
                         GT_OreDictUnificator.get(OrePrefixes.plate, Materials.HSSS, 6L),
                         ItemList.QuantumStar.get(2, new Object() {}), ItemList.Emitter_LuV.get(4, new Object() {}),
                         new Object[] { OrePrefixes.circuit.get(Materials.Ultimate), 4 },
-                        GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Osmiridium, 64L),
-                        GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Osmiridium, 64L),
-                        GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Osmiridium, 64L),
-                        GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Osmiridium, 64L),
+                        GT_OreDictUnificator.get(OrePrefixes.wireFine, LuVMat, 64L),
+                        GT_OreDictUnificator.get(OrePrefixes.wireFine, LuVMat, 64L),
+                        GT_OreDictUnificator.get(OrePrefixes.wireFine, LuVMat, 64L),
+                        GT_OreDictUnificator.get(OrePrefixes.wireFine, LuVMat, 64L),
                         GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.YttriumBariumCuprate, 8L) },
                 new FluidStack[] { new FluidStack(solderIndalloy, 576) },
                 ItemList.Field_Generator_LuV.get(1),
                 600,
-                6000);
+                (int) TierEU.RECIPE_IV);
 
         GT_Values.RA.addAssemblylineRecipe(
                 ItemList.Field_Generator_LuV.get(1, new Object() {}),
@@ -407,7 +413,7 @@ public class AssemblyLineRecipes implements Runnable {
                 new FluidStack[] { new FluidStack(solderIndalloy, 1152) },
                 ItemList.Field_Generator_ZPM.get(1),
                 600,
-                24000);
+                (int) TierEU.RECIPE_LuV);
 
         GT_Values.RA.addAssemblylineRecipe(
                 ItemList.Field_Generator_ZPM.get(1, new Object() {}),
@@ -426,7 +432,7 @@ public class AssemblyLineRecipes implements Runnable {
                 new FluidStack[] { Materials.Naquadria.getMolten(1296), new FluidStack(solderIndalloy, 2304) },
                 ItemList.Field_Generator_UV.get(1),
                 600,
-                100000);
+                (int) TierEU.RECIPE_ZPM);
 
         // Energy Hatches Luv-UV
         GT_Values.RA.addAssemblylineRecipe(
@@ -496,7 +502,7 @@ public class AssemblyLineRecipes implements Runnable {
                         new FluidStack(solderIndalloy, 2880) },
                 ItemList.Hatch_Energy_UV.get(1),
                 800,
-                500000);
+                (int) TierEU.RECIPE_UV);
 
         // Dynamo Hatches Luv-UV
         GT_Values.RA.addAssemblylineRecipe(
@@ -570,7 +576,7 @@ public class AssemblyLineRecipes implements Runnable {
                         new FluidStack(solderIndalloy, 2880) },
                 ItemList.Hatch_Dynamo_UV.get(1),
                 800,
-                500000);
+                (int) TierEU.RECIPE_UV);
 
         GT_Values.RA.addAssemblylineRecipe(
                 ItemList.Energy_LapotronicOrb2.get(1),
@@ -588,7 +594,7 @@ public class AssemblyLineRecipes implements Runnable {
                         new FluidStack(FluidRegistry.getFluid("ic2coolant"), 16000) },
                 ItemList.Energy_Module.get(1),
                 2000,
-                100000);
+                (int) TierEU.RECIPE_ZPM);
 
         GT_Values.RA.addAssemblylineRecipe(
                 ItemList.Energy_Module.get(1),
@@ -623,7 +629,7 @@ public class AssemblyLineRecipes implements Runnable {
                 new FluidStack[] { new FluidStack(solderIndalloy, 2880), Materials.VanadiumGallium.getMolten(1152L), },
                 ItemList.FusionComputer_LuV.get(1),
                 1000,
-                30000);
+                (int) TierEU.RECIPE_LuV);
 
         GT_Values.RA.addAssemblylineRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.block, Materials.Europium, 1),
