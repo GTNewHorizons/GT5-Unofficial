@@ -16,5 +16,14 @@
         "stream": false
       }
     ]
+  },
+  "machines.FusionLoop": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "FusionLoop",
+        "stream": false
+      }
+    ]
   }
 }

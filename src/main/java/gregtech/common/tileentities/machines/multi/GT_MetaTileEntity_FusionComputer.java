@@ -37,6 +37,7 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.GT_Mod;
 import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.gui.modularui.GUITextureSet;
@@ -518,6 +519,11 @@ public abstract class GT_MetaTileEntity_FusionComputer
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
         return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 7, 1, 12, elementBudget, env, false, true);
+    }
+
+    @Override
+    protected SoundResource getProcessStartSound() {
+        return SoundResource.GT_MACHINES_FUSION_LOOP;
     }
 
     @Override

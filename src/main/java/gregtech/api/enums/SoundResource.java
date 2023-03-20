@@ -56,6 +56,8 @@ public enum SoundResource {
     IC2_MACHINES_KA_CHING(211, MOD_ID_IC2, "machines.KaChing"),
     IC2_MACHINES_MAGNETIZER_LOOP(212, MOD_ID_IC2, "machines.MagnetizerLoop"),
 
+    GT_MACHINES_FUSION_LOOP(230, MOD_ID, "machines.FusionLoop"),
+
     GUI_BUTTON_DOWN(-1, MOD_ID, "gui.buttonDown"),
     GUI_BUTTON_UP(-1, MOD_ID, "gui.buttonUp"),
 
