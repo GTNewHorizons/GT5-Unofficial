@@ -1900,6 +1900,7 @@ public enum ItemList implements IItemContainer {
     Circuit_Chip_NanoCPU,
     Circuit_Wafer_QuantumCPU,
     Circuit_Chip_QuantumCPU,
+    Circuit_Wafer_Bioware,
 
     Circuit_Chip_CrystalCPU,
     Circuit_Chip_CrystalSoC,
@@ -1910,6 +1911,7 @@ public enum ItemList implements IItemContainer {
     Circuit_Parts_RawCrystalParts,
     Circuit_Chip_Biocell,
     Circuit_Chip_Optical,
+    Circuit_Parts_Chip_Bioware,
 
     Tube_Wires,
     KevlarFiber,
