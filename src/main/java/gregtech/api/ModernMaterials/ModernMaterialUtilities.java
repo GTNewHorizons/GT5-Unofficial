@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import gregtech.api.ModernMaterials.Blocks.DumbBase.DumbBlock;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.item.ItemStack;
@@ -91,6 +92,7 @@ public class ModernMaterialUtilities {
             }
         }
 
+        DumbBlock.register();
     }
 
     private static void registerAllMaterialPartRecipes(ModernMaterial material) {

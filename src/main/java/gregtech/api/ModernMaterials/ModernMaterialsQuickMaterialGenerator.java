@@ -60,24 +60,23 @@ public class ModernMaterialsQuickMaterialGenerator {
     public ModernMaterial gem(final String materialName, final int red, final int green, final int blue) {
 
         return new ModernMaterial().setName(materialName).setColor(red, green, blue, 255)
-            .addParts(
-                Dust,
-                ImpureDust,
-                PurifiedOre,
-                PurifiedDust,
-                CrushedOre,
-                Bolt,
-                Rod,
-                Screw,
-                Plate,
-                Lens,
-                ExquisiteGem,
-                FlawlessGem,
-                Gem,
-                FlawedGem,
-                ChippedGem
-                )
-            .addFluids(Molten, Plasma).build();
+                .addParts(
+                        Dust,
+                        ImpureDust,
+                        PurifiedOre,
+                        PurifiedDust,
+                        CrushedOre,
+                        Bolt,
+                        Rod,
+                        Screw,
+                        Plate,
+                        Lens,
+                        ExquisiteGem,
+                        FlawlessGem,
+                        Gem,
+                        FlawedGem,
+                        ChippedGem)
+                .addFluids(Molten, Plasma).build();
 
     }
 

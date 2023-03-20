@@ -1,7 +1,6 @@
 package gregtech.api.ModernMaterials;
 
 import java.awt.*;
-import java.sql.Array;
 import java.util.*;
 
 import gregtech.api.ModernMaterials.Fluids.FluidEnum;

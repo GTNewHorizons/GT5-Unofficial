@@ -129,6 +129,9 @@ public class GregTech_API {
      * but we all know what "stupid" customers think about conflicting ID's
      */
     public static final IMetaTileEntity[] METATILEENTITIES = new IMetaTileEntity[MAXIMUM_METATILE_IDS];
+
+    // Storage for all modern material frame boxes.
+    public static final IMetaTileEntity[] MODERN_MATERIALS_FRAME_BOXES = new IMetaTileEntity[MAXIMUM_METATILE_IDS];
     /**
      * The Icon List for Covers
      */
