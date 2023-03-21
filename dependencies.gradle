@@ -2,7 +2,7 @@
 
 dependencies {
 
-    compile('com.github.GTNewHorizons:GT5-Unofficial:5.09.42.03:dev')
+    compile('com.github.GTNewHorizons:GT5-Unofficial:5.09.42.09:dev')
     compile('com.github.GTNewHorizons:StructureLib:1.1.12:dev')
     compile("com.github.GTNewHorizons:ModularUI:1.0.31:dev")
     compile('com.github.GTNewHorizons:bartworks:0.5.131:dev')

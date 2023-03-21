@@ -13,6 +13,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -31,6 +32,7 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.enums.GT_HatchElement;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -332,6 +334,8 @@ public abstract class LargeFusionComputer extends GT_MetaTileEntity_TooltipMulti
             aBaseMetaTileEntity
                     .setErrorDisplayID((aBaseMetaTileEntity.getErrorDisplayID() & ~127) | (mMachine ? 0 : 64));
             aBaseMetaTileEntity.setActive(mMaxProgresstime > 0);
+        } else {
+            soundMagic(getActivitySound());
         }
     }
 
@@ -553,6 +557,11 @@ public abstract class LargeFusionComputer extends GT_MetaTileEntity_TooltipMulti
     @Override
     public boolean explodesOnComponentBreak(ItemStack aStack) {
         return false;
+    }
+
+    @Override
+    protected ResourceLocation getActivitySound() {
+        return SoundResource.GT_MACHINES_FUSION_LOOP.resourceLocation;
     }
 
     @Override
