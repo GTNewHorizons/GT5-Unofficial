@@ -139,8 +139,8 @@ public class RecipeLoader {
         if (dep) {
             try {
                 item.set(
-                        mte.getConstructor(int.class, String.class, String.class)
-                                .newInstance(MTEID, aName, aNameRegional).getStackForm(1));
+                        mte.getConstructor(int.class, String.class, String.class).newInstance(ID, aName, aNameRegional)
+                                .getStackForm(1));
             } catch (InvocationTargetException ex) {
                 Throwable original_ex = ex.getCause();
                 if (original_ex instanceof RuntimeException) throw (RuntimeException) original_ex;
