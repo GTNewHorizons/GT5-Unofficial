@@ -3261,14 +3261,14 @@ public class DreamCraftRecipeLoader {
                 400000);
         // Alternate Ultimate Battery Recipe
         TT_recipeAdder.addResearchableAssemblylineRecipe(
-                ItemList.Energy_Cluster.get(1L),
+                ItemList.Circuit_Chip_PPIC.get(1L),
                 2_304_000,
                 1024,
                 32_000_000,
                 64,
                 new Object[] { ItemList.Circuit_Board_Optical.get(1),
-                        new Object[] { GT_OreDictUnificator.get("foilShirabon", 64) },
-                        new Object[] { OrePrefixes.circuit.get(Materials.Superconductor), 4 },
+                        GT_OreDictUnificator.get("foilShirabon", 64),
+                        new Object[] { OrePrefixes.circuit.get(Materials.Infinite), 4 },
                         ItemList.Circuit_Parts_Crystal_Chip_Master.get(64L),
                         ItemList.Circuit_Parts_Crystal_Chip_Master.get(64L),
                         ItemList.Circuit_Parts_Crystal_Chip_Master.get(64L),
@@ -3356,10 +3356,10 @@ public class DreamCraftRecipeLoader {
         // Mega Ultimate Battery
         TT_recipeAdder.addResearchableAssemblylineRecipe(
                 ItemList.ZPM5.get(1L),
-                1_200_000,
-                128,
-                8_000_000,
-                16,
+                480_000_000,
+                12_288,
+                128_000_000,
+                64,
                 new Object[] { ELEMENT.STANDALONE.DRAGON_METAL.getPlateDouble(32),
                         ELEMENT.STANDALONE.DRAGON_METAL.getPlateDouble(32),
                         new Object[] { OrePrefixes.circuit.get(Materials.Quantum), 1 },
