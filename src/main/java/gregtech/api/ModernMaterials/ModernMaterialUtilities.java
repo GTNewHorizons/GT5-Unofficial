@@ -99,10 +99,10 @@ public class ModernMaterialUtilities {
 
         BlocksEnum.FrameBox.associatedMaterials.addAll(materialIDToMaterial.values());
 //        (new FrameBoxBlock()).registerBlock(FrameBoxTileEntity.class, FrameBoxItemBlock.class);
-        FrameBoxBlock block = new FrameBoxBlock();
-        GameRegistry.registerBlock(block, DumbItemBlock.class, BlocksEnum.FrameBox.name());
-        GameRegistry.registerTileEntity(FrameBoxTileEntity.class, BlocksEnum.FrameBox.name());
 
+        FrameBoxBlock block = new FrameBoxBlock();
+        GameRegistry.registerBlock(block, FrameBoxItemBlock.class, BlocksEnum.FrameBox.name());
+        GameRegistry.registerTileEntity(FrameBoxTileEntity.class, BlocksEnum.FrameBox.name());
     }
 
     private static void registerAllMaterialPartRecipes(ModernMaterial material) {
