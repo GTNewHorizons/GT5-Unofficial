@@ -16,6 +16,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
@@ -36,9 +37,6 @@ public abstract class DumbBlock extends BlockContainer {
     }
 
     public void registerBlock(Class<? extends DumbTileEntity> dumbTileEntity, Class<? extends DumbItemBlock> dumbItemBlock) {
-//        FrameBoxBlock block = new FrameBoxBlock();
-//        GameRegistry.registerBlock(block, FrameBoxItemBlock.class, getBlockEnum().name());
-//        GameRegistry.registerTileEntity(FrameBoxTileEntity.class, getBlockEnum().name());
         GameRegistry.registerBlock(new FrameBoxBlock(), dumbItemBlock, getBlockEnum().name());
         GameRegistry.registerTileEntity(dumbTileEntity, getBlockEnum().name());
     }
