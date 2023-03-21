@@ -12,7 +12,7 @@ public class ModernMaterial {
 
     private final HashMap<PartsEnum, CustomPartInfo> existingPartsForMaterial = new HashMap<>();
     private Color color;
-    private int ID;
+    private int materialID;
     private String name;
     private long materialTier;
     private double materialTimeMultiplier;
@@ -81,16 +81,16 @@ public class ModernMaterial {
         return this;
     }
 
-    public void setID(int aID) {
-        ID = aID;
+    public void setMaterialID(int aID) {
+        materialID = aID;
     }
 
     public Color getColor() {
         return color;
     }
 
-    public int getID() {
-        return ID;
+    public int getMaterialID() {
+        return materialID;
     }
 
     public String getName() {

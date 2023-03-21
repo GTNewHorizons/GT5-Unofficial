@@ -7,7 +7,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import gregtech.api.ModernMaterials.Blocks.DumbBase.DumbBlock;
+import gregtech.api.ModernMaterials.Blocks.BlocksEnum;
+import gregtech.api.ModernMaterials.Blocks.DumbBase.DumbItemBlock;
+import gregtech.api.ModernMaterials.Blocks.DumbBase.DumbTileEntity;
+import gregtech.api.ModernMaterials.Blocks.FrameBox.FrameBoxBlock;
+import gregtech.api.ModernMaterials.Blocks.FrameBox.FrameBoxItemBlock;
+import gregtech.api.ModernMaterials.Blocks.FrameBox.FrameBoxTileEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.item.ItemStack;
@@ -36,7 +41,7 @@ public class ModernMaterialUtilities {
         if (tCurrentMaterialID == -1) {
             mNewMaterials.add(aMaterial);
         } else {
-            aMaterial.setID(tCurrentMaterialID);
+            aMaterial.setMaterialID(tCurrentMaterialID);
             materialIDToMaterial.put(tCurrentMaterialID, aMaterial);
             if (tCurrentMaterialID > GregTech_API.mLastMaterialID) {
                 GregTech_API.mLastMaterialID = tCurrentMaterialID;
@@ -47,7 +52,7 @@ public class ModernMaterialUtilities {
 
     public static void registerAllMaterialsItems() {
         for (ModernMaterial tMaterial : mNewMaterials) {
-            tMaterial.setID(++GregTech_API.mLastMaterialID);
+            tMaterial.setMaterialID(++GregTech_API.mLastMaterialID);
             GregTech_API.sModernMaterialIDs.mConfig.get(materialID.name(), tMaterial.getName(), 0)
                     .set(GregTech_API.mLastMaterialID);
             materialIDToMaterial.put(GregTech_API.mLastMaterialID, tMaterial);
@@ -92,7 +97,12 @@ public class ModernMaterialUtilities {
             }
         }
 
-        DumbBlock.register();
+        BlocksEnum.FrameBox.associatedMaterials.addAll(materialIDToMaterial.values());
+//        (new FrameBoxBlock()).registerBlock(FrameBoxTileEntity.class, FrameBoxItemBlock.class);
+        FrameBoxBlock block = new FrameBoxBlock();
+        GameRegistry.registerBlock(block, DumbItemBlock.class, BlocksEnum.FrameBox.name());
+        GameRegistry.registerTileEntity(FrameBoxTileEntity.class, BlocksEnum.FrameBox.name());
+
     }
 
     private static void registerAllMaterialPartRecipes(ModernMaterial material) {
@@ -106,7 +116,7 @@ public class ModernMaterialUtilities {
                     "Registered material " + material.getName() + " does not have a " + part.toString() + " part.");
         }
 
-        return new ItemStack(materialPartItemMap.get(part), stackSize, material.getID());
+        return new ItemStack(materialPartItemMap.get(part), stackSize, material.getMaterialID());
     }
 
     public static ItemStack getPart(final String materialName, final PartsEnum part, final int stackSize) {

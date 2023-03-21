@@ -53,7 +53,7 @@ public class ModernMaterialItemRenderer implements IItemRenderer {
             return;
         }
         Color materialColor = material.getColor();
-        IIcon partIcon = itemStack.getItem().getIconFromDamage(material.getID()); // todo review this later, seems
+        IIcon partIcon = itemStack.getItem().getIconFromDamage(material.getMaterialID()); // todo review this later, seems
                                                                                   // hacky.
         GL11.glPushMatrix();
 

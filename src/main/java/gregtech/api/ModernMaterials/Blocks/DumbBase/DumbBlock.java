@@ -3,7 +3,10 @@ package gregtech.api.ModernMaterials.Blocks.DumbBase;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.block.Block;
+import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.ModernMaterials.Blocks.BlocksEnum;
+import gregtech.api.ModernMaterials.Blocks.FrameBox.FrameBoxBlock;
+import gregtech.api.ModernMaterials.ModernMaterial;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
@@ -16,23 +19,15 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-import cpw.mods.fml.common.registry.GameRegistry;
+public abstract class DumbBlock extends BlockContainer {
 
-public class DumbBlock extends BlockContainer {
-
-    public static final String NAME = "frame_box_ji2ojmd";
+    public abstract BlocksEnum getBlockEnum();
 
     protected DumbBlock() {
         super(Material.rock);
-        setBlockName(NAME);
-        setCreativeTab(CreativeTabs.tabBlock);
+        setBlockName(getBlockEnum().name());
         setHardness(1.5F);
         setResistance(10.0F);
-    }
-
-    @Override
-    public TileEntity createNewTileEntity(World world, int metadata) {
-        return new DumbTileEntity();
     }
 
     @Override
@@ -40,16 +35,18 @@ public class DumbBlock extends BlockContainer {
         return true;
     }
 
-    public static void register() {
-        Block block = new DumbBlock();
-        GameRegistry.registerBlock(block, DumbItemBlock.class, NAME);
-        GameRegistry.registerTileEntity(DumbTileEntity.class, NAME);
+    public void registerBlock(Class<? extends DumbTileEntity> dumbTileEntity, Class<? extends DumbItemBlock> dumbItemBlock) {
+//        FrameBoxBlock block = new FrameBoxBlock();
+//        GameRegistry.registerBlock(block, FrameBoxItemBlock.class, getBlockEnum().name());
+//        GameRegistry.registerTileEntity(FrameBoxTileEntity.class, getBlockEnum().name());
+        GameRegistry.registerBlock(new FrameBoxBlock(), dumbItemBlock, getBlockEnum().name());
+        GameRegistry.registerTileEntity(dumbTileEntity, getBlockEnum().name());
     }
 
     @Override
     public void getSubBlocks(Item item, CreativeTabs tab, List list) {
-        for (int i = 0; i < 160; i++) { // Replace 3 with the number of sub-blocks you have
-            list.add(new ItemStack(item, 1, i));
+        for (ModernMaterial modernMaterial : getBlockEnum().associatedMaterials) {
+            list.add(new ItemStack(item, 1, modernMaterial.getMaterialID()));
         }
     }
 
