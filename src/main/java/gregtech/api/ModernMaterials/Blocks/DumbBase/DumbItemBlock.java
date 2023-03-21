@@ -1,10 +1,17 @@
 package gregtech.api.ModernMaterials.Blocks.DumbBase;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
+import gregtech.api.ModernMaterials.Blocks.BlocksEnum;
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
 
-public class DumbItemBlock extends ItemBlock {
+import java.util.List;
+
+public abstract class DumbItemBlock extends ItemBlock {
 
     public DumbItemBlock(Block block) {
         super(block);
@@ -18,8 +25,15 @@ public class DumbItemBlock extends ItemBlock {
         return true;
     }
 
+    // Tooltip information.
+    @SideOnly(Side.CLIENT)
     @Override
-    public int getMetadata(int damageValue) {
-        return damageValue;
+    public void addInformation(ItemStack itemStack, EntityPlayer player, List tooltipList, boolean aF3_H)  {
+        tooltipList.add("Generic Tooltip");
     }
+
+    @Override
+    public abstract String getItemStackDisplayName(ItemStack itemStack);
+
+    public abstract BlocksEnum getBlockEnum();
 }
