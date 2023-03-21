@@ -99,9 +99,6 @@ public class TileEntitySpaceElevator extends GT_MetaTileEntity_EnhancedMultiBloc
     /** Name of the extended structure piece */
     private static final String STRUCTURE_PIECE_EXTENDED = "extended";
 
-    /** Maximum planet tier that the Space Elevator can teleport to */
-    private static final int MAX_TELEPORTATION_TIER = 8;
-
     /** Window ID of the contributors child window */
     private static final int CONTRIBUTORS_WINDOW_ID = 10;
 
@@ -821,7 +818,7 @@ public class TileEntitySpaceElevator extends GT_MetaTileEntity_EnhancedMultiBloc
                             WorldUtil.toCelestialSelection(
                                     playerBase,
                                     stats,
-                                    MAX_TELEPORTATION_TIER,
+                                    ElevatorUtil.getPlanetaryTravelTier(motorTier),
                                     GuiCelestialSelection.MapMode.TELEPORTATION);
                         } catch (final Exception e) {
                             e.printStackTrace();

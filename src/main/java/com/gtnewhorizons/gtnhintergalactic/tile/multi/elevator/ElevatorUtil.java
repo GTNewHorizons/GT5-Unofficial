@@ -76,6 +76,19 @@ public class ElevatorUtil {
         return AVAILABLE_MODULE_SLOTS[motorTier - 1];
     }
 
+    /**
+     * Get the maximum tier of planet to which the user can travel
+     *
+     * @param motorTier Used motor tier
+     * @return Max planet tier to travel to
+     */
+    public static int getPlanetaryTravelTier(int motorTier) {
+        if (motorTier >= 3) {
+            return 9;
+        }
+        return 8;
+    }
+
     public interface IBlockAdder<T> {
 
         /**
