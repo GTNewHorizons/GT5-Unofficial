@@ -3282,6 +3282,55 @@ public class DreamCraftRecipeLoader {
                 ItemList.ZPM4.get(1),
                 250 * 20,
                 6_400_000);
+        // Insanely Ultimate Battery
+        TT_recipeAdder.addResearchableAssemblylineRecipe(
+                ItemList.ZPM4.get(1),
+                24_000_000,
+                1_280,
+                32_000_000,
+                32,
+                new Object[] { ELEMENT.STANDALONE.HYPOGEN.getPlateDouble(32),
+                        ELEMENT.STANDALONE.HYPOGEN.getPlateDouble(32),
+                        new Object[] { OrePrefixes.circuit.get(Materials.Piko), 1 },
+                        new Object[] { OrePrefixes.circuit.get(Materials.Piko), 1 },
+                        new Object[] { OrePrefixes.circuit.get(Materials.Piko), 1 },
+                        new Object[] { OrePrefixes.circuit.get(Materials.Piko), 1 }, ItemList.ZPM4.get(8L),
+                        ItemList.Field_Generator_UIV.get(4), ItemList.Circuit_Wafer_QPIC.get(64),
+                        ItemList.Circuit_Wafer_QPIC.get(64),
+                        GT_ModHandler.getModItem("dreamcraft", "item.RawPicoWafer", 64),
+                        ItemList.Circuit_Parts_DiodeXSMD.get(64), ItemList.Circuit_Parts_InductorXSMD.get(32),
+                        GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.SuperconductorUIV, 64) },
+                new FluidStack[] { new FluidStack(solderUEV, 18_432),
+                        ELEMENT.STANDALONE.CELESTIAL_TUNGSTEN.getFluidStack(18_432),
+                        Materials.Quantium.getMolten(18_432), Materials.SuperCoolant.getFluid(128_000) },
+                ItemList.ZPM5.get(1),
+                300 * 20,
+                (int) TierEU.RECIPE_UIV);
+        // Mega Ultimate Battery
+        TT_recipeAdder.addResearchableAssemblylineRecipe(
+                ItemList.ZPM5.get(1L),
+                1_200_000,
+                128,
+                8_000_000,
+                16,
+                new Object[] { ELEMENT.STANDALONE.DRAGON_METAL.getPlateDouble(32),
+                        ELEMENT.STANDALONE.DRAGON_METAL.getPlateDouble(32),
+                        new Object[] { OrePrefixes.circuit.get(Materials.Quantum), 1 },
+                        new Object[] { OrePrefixes.circuit.get(Materials.Quantum), 1 },
+                        new Object[] { OrePrefixes.circuit.get(Materials.Quantum), 1 },
+                        new Object[] { OrePrefixes.circuit.get(Materials.Quantum), 1 }, ItemList.ZPM5.get(8L),
+                        ItemList.Field_Generator_UMV.get(4), ItemList.Circuit_Wafer_QPIC.get(64),
+                        ItemList.Circuit_Wafer_QPIC.get(64),
+                        GT_ModHandler.getModItem("dreamcraft", "item.PicoWafer", 64),
+                        ItemList.Circuit_Parts_DiodeXSMD.get(64), ItemList.Circuit_Parts_InductorXSMD.get(64),
+                        GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUMV, 64) },
+                new FluidStack[] { new FluidStack(solderUEV, 36_864),
+                        ELEMENT.STANDALONE.ASTRAL_TITANIUM.getFluidStack(36_864),
+                        ELEMENT.STANDALONE.CELESTIAL_TUNGSTEN.getFluidStack(36_864),
+                        Materials.SuperCoolant.getFluid(256_000) },
+                ItemList.ZPM6.get(1),
+                350 * 20,
+                (int) TierEU.RECIPE_UMV);
 
         if (Loader.isModLoaded(Reference.GTPLUSPLUS)) {
             // MK4 Computer
