@@ -58,15 +58,15 @@ public class ModernMaterialUtilities {
             materialIDToMaterial.put(GregTech_API.mLastMaterialID, tMaterial);
         }
 
-        for (PartsEnum tPart : PartsEnum.values()) {
-            MaterialPart materialPart = new MaterialPart(tPart);
-            materialPart.setUnlocalizedName(tPart.partName);
+        for (PartsEnum part : PartsEnum.values()) {
+            MaterialPart materialPart = new MaterialPart(part);
+            materialPart.setUnlocalizedName(part.partName);
 
             // Registers the item with the game, only available in preInit.
-            GameRegistry.registerItem(materialPart, tPart.partName);
+            GameRegistry.registerItem(materialPart, part.partName);
 
             // Store the Item so these parts can be retrieved later.
-            materialPartItemMap.put(tPart, materialPart);
+            materialPartItemMap.put(part, materialPart);
 
             // Registers the renderer which allows for part colouring.
             MinecraftForgeClient.registerItemRenderer(materialPart, new ModernMaterialItemRenderer());
@@ -98,11 +98,11 @@ public class ModernMaterialUtilities {
         }
 
         BlocksEnum.FrameBox.associatedMaterials.addAll(materialIDToMaterial.values());
-//        (new FrameBoxBlock()).registerBlock(FrameBoxTileEntity.class, FrameBoxItemBlock.class);
+        (new FrameBoxBlock()).registerBlock(FrameBoxTileEntity.class, FrameBoxItemBlock.class);
 
-        FrameBoxBlock block = new FrameBoxBlock();
-        GameRegistry.registerBlock(block, FrameBoxItemBlock.class, BlocksEnum.FrameBox.name());
-        GameRegistry.registerTileEntity(FrameBoxTileEntity.class, BlocksEnum.FrameBox.name());
+//        FrameBoxBlock block = new FrameBoxBlock();
+//        GameRegistry.registerBlock(block, FrameBoxItemBlock.class, BlocksEnum.FrameBox.name());
+//        GameRegistry.registerTileEntity(FrameBoxTileEntity.class, BlocksEnum.FrameBox.name());
     }
 
     private static void registerAllMaterialPartRecipes(ModernMaterial material) {

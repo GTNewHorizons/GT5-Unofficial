@@ -37,12 +37,15 @@ public abstract class DumbBlock extends BlockContainer {
     }
 
     public void registerBlock(Class<? extends DumbTileEntity> dumbTileEntity, Class<? extends DumbItemBlock> dumbItemBlock) {
-        GameRegistry.registerBlock(new FrameBoxBlock(), dumbItemBlock, getBlockEnum().name());
+        GameRegistry.registerBlock(this, dumbItemBlock, getBlockEnum().name());
         GameRegistry.registerTileEntity(dumbTileEntity, getBlockEnum().name());
     }
 
     @Override
     public void getSubBlocks(Item item, CreativeTabs tab, List list) {
+
+        getBlockEnum().setAssociatedItem(item);
+
         for (ModernMaterial modernMaterial : getBlockEnum().associatedMaterials) {
             list.add(new ItemStack(item, 1, modernMaterial.getMaterialID()));
         }
