@@ -6,6 +6,7 @@ import static gregtech.api.util.GT_ModHandler.getModItem;
 import static gregtech.loaders.postload.GT_MachineRecipeLoader.isHardcoreEnderExpansionLoaded;
 import static gregtech.loaders.postload.GT_MachineRecipeLoader.isRailcraftLoaded;
 
+import gregtech.api.ModernMaterials.Blocks.BlocksEnum;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -385,7 +386,7 @@ public class Pulverizer implements Runnable {
                 480);
 
         GT_Values.RA.addPulveriserRecipe(
-                getPart("Copper", PartsEnum.Gear, 9),
+                getPart("Copper", BlocksEnum.FrameBox, 9),
                 new ItemStack[] { getPart("Iron", PartsEnum.SmallGear, 4) },
                 new int[] { 10000 },
                 1200,

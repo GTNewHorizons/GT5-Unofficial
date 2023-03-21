@@ -1,20 +1,17 @@
 package gregtech.api.ModernMaterials.Blocks;
 
 import gregtech.api.ModernMaterials.ModernMaterial;
+import gregtech.api.ModernMaterials.PartsClasses.IGetItem;
 import net.minecraft.item.Item;
 
 import java.util.ArrayList;
 
-public enum BlocksEnum {
+public enum BlocksEnum implements IGetItem {
 
     FrameBox("% Frame Box");
 
     public String getLocalisedName(final ModernMaterial material) {
         return unlocalisedName.replace("%", material.getName());
-    }
-
-    public void setAssociatedItem(final Item item) {
-        this.item = item;
     }
 
     final private String unlocalisedName;
@@ -23,5 +20,15 @@ public enum BlocksEnum {
 
     BlocksEnum(final String unlocalisedName) {
         this.unlocalisedName = unlocalisedName;
+    }
+
+    @Override
+    public void setAssociatedItem(Item item) {
+        this.item = item;
+    }
+
+    @Override
+    public Item getItem() {
+        return item;
     }
 }

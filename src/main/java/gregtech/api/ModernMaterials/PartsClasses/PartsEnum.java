@@ -1,6 +1,8 @@
 package gregtech.api.ModernMaterials.PartsClasses;
 
-public enum PartsEnum {
+import net.minecraft.item.Item;
+
+public enum PartsEnum implements IGetItem{
 
     // Ingots
     HotIngot("Hot % Ingot"),
@@ -85,4 +87,16 @@ public enum PartsEnum {
     }
 
     public final String partName;
+
+    private Item item;
+
+    @Override
+    public void setAssociatedItem(Item item) {
+        this.item = item;
+    }
+
+    @Override
+    public Item getItem() {
+        return item;
+    }
 }
