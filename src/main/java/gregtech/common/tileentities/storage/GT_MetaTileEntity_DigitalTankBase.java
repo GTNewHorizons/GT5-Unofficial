@@ -90,6 +90,33 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
         }
     }
 
+    private static int tierPump(int tier) {
+        switch (tier) {
+            case 1:
+                return 2;
+            case 2:
+                return 3;
+            case 3:
+                return 3;
+            case 4:
+                return 4;
+            case 5:
+                return 4;
+            case 6:
+                return 5;
+            case 7:
+                return 5;
+            case 8:
+                return 6;
+            case 9:
+                return 7;
+            case 10:
+                return 8;
+            default:
+                return 0;
+        }
+    }
+
     public GT_MetaTileEntity_DigitalTankBase(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 3, aDescription, aTextures);
     }
@@ -372,7 +399,7 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
             if (mOutputFluid && getDrainableStack() != null && (aTick % 20 == 0)) {
                 IFluidHandler tTank = aBaseMetaTileEntity.getITankContainerAtSide(aBaseMetaTileEntity.getFrontFacing());
                 if (tTank != null) {
-                    FluidStack tDrained = drain(commonSizeCompute(mTier) / 100, false);
+                    FluidStack tDrained = drain(20 * (1 << (3 + 2 * tierPump(mTier))), false);
                     if (tDrained != null) {
                         int tFilledAmount = tTank.fill(
                                 ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()),
