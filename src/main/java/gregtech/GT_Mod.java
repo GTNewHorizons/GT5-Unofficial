@@ -512,6 +512,7 @@ public class GT_Mod implements IGT_Mod {
         GT_FML_LOGGER.info("Executed delayed Crafting Recipes (" + stopwatch.stop() + "). Have a Cake.");
 
         GT_Log.out.println("GT_Mod: Saving Lang File.");
+        new GT_MachineTooltipsLoader().run();
         GT_LanguageManager.sEnglishFile.save();
         GregTech_API.sPostloadFinished = true;
         GT_Log.out.println("GT_Mod: PostLoad-Phase finished!");

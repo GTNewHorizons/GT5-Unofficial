@@ -23,7 +23,6 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
@@ -87,7 +86,14 @@ public class GT_MetaTileEntity_IntegratedOreFactory
                                             "EEEEEE     " } }))
             .addElement('i', ofBlock(GregTech_API.sBlockCasings8, 7))
             .addElement('s', ofBlock(GregTech_API.sBlockCasings4, 1))
-            .addElement('g', ofBlockAnyMeta(GameRegistry.findBlock("IC2", "blockAlloyGlass")))
+            .addElement(
+                    'g',
+                    ofChain(
+                            ofBlockUnlocalizedName("IC2", "blockAlloyGlass", 0, true),
+                            ofBlockUnlocalizedName("bartworks", "BW_GlasBlocks", 0, true),
+                            ofBlockUnlocalizedName("bartworks", "BW_GlasBlocks2", 0, true),
+                            // warded glass
+                            ofBlockUnlocalizedName("Thaumcraft", "blockCosmeticOpaque", 2, false)))
             .addElement('x', ofBlock(GregTech_API.sBlockCasings2, 3))
             .addElement('p', ofBlock(GregTech_API.sBlockCasings2, 15)).addElement('t', ofFrame(Materials.TungstenSteel))
             .addElement(

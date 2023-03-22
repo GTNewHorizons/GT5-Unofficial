@@ -21,14 +21,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fluids.IFluidHandler;
 
 import cpw.mods.fml.common.Optional;
-import gregtech.api.interfaces.tileentity.IBasicEnergyContainer;
-import gregtech.api.interfaces.tileentity.ICoverable;
-import gregtech.api.interfaces.tileentity.IDebugableTileEntity;
-import gregtech.api.interfaces.tileentity.IEnergyConnected;
-import gregtech.api.interfaces.tileentity.IHasInventory;
-import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
-import gregtech.api.interfaces.tileentity.ITexturedTileEntity;
-import gregtech.api.interfaces.tileentity.ITurnable;
+import gregtech.api.interfaces.tileentity.*;
 import gregtech.api.multitileentity.MultiTileEntityBlockInternal;
 import gregtech.api.multitileentity.MultiTileEntityItemInternal;
 import gregtech.api.multitileentity.MultiTileEntityRegistry;
@@ -36,8 +29,9 @@ import gregtech.api.multitileentity.MultiTileEntityRegistry;
 /*
  * Heavily inspired by GT6
  */
-public interface IMultiTileEntity extends IHasWorldObjectAndCoords, ICoverable, ITurnable, IHasInventory,
-        IEnergyConnected, IBasicEnergyContainer, IFluidHandler, ITexturedTileEntity, IDebugableTileEntity {
+public interface IMultiTileEntity
+        extends IHasWorldObjectAndCoords, ICoverable, ITurnable, IHasInventory, IEnergyConnected, IBasicEnergyContainer,
+        IFluidHandler, ITexturedTileEntity, IDebugableTileEntity, IColoredTileEntity {
 
     /**
      * Those two IDs HAVE to be saved inside the NBT of the TileEntity itself. They get set by the Registry itself, when
@@ -138,7 +132,7 @@ public interface IMultiTileEntity extends IHasWorldObjectAndCoords, ICoverable, 
 
     /**
      * Sets the main facing to {aSide} and update as appropriately
-     * 
+     *
      * @return Whether the facing was changed
      */
     boolean setMainFacing(byte aSide);

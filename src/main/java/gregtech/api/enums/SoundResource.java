@@ -1,5 +1,6 @@
 package gregtech.api.enums;
 
+import static gregtech.api.enums.GT_Values.MOD_ID;
 import static gregtech.api.enums.GT_Values.MOD_ID_IC2;
 
 import java.util.EnumSet;
@@ -54,6 +55,11 @@ public enum SoundResource {
     IC2_MACHINES_INTERRUPT_ONE(210, MOD_ID_IC2, "machines.InterruptOne"),
     IC2_MACHINES_KA_CHING(211, MOD_ID_IC2, "machines.KaChing"),
     IC2_MACHINES_MAGNETIZER_LOOP(212, MOD_ID_IC2, "machines.MagnetizerLoop"),
+
+    GT_MACHINES_FUSION_LOOP(230, MOD_ID, "machines.FusionLoop"),
+
+    GUI_BUTTON_DOWN(-1, MOD_ID, "gui.buttonDown"),
+    GUI_BUTTON_UP(-1, MOD_ID, "gui.buttonUp"),
 
     /*
      * Other Minecraft Sounds that were missing

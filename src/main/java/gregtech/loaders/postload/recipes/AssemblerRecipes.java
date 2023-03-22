@@ -25,6 +25,8 @@ public class AssemblerRecipes implements Runnable {
     @Override
     public void run() {
 
+        Materials LuVMat = isBartWorksLoaded ? Materials.get("Ruridit") : Materials.Osmiridium;
+
         this.withBartWorks();
         this.withGalacticraftMars();
         this.withoutGTPPRecipes();
@@ -1162,7 +1164,7 @@ public class AssemblerRecipes implements Runnable {
                 (int) TierEU.RECIPE_IV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.stick, Materials.SamariumMagnetic, 1L),
-                        GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Osmiridium, 16L),
+                        GT_OreDictUnificator.get(OrePrefixes.wireFine, LuVMat, 16L),
                         GT_Utility.getIntegratedCircuit(1) },
                 GT_Values.NF,
                 ItemList.LuV_Coil.get(1L),

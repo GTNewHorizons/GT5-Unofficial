@@ -3,7 +3,7 @@ package gregtech.api.interfaces.tileentity;
 /**
  * Interface for internal Code, which is mainly used for independent Energy conversion.
  */
-public interface IBasicEnergyContainer extends IEnergyConnected {
+public interface IBasicEnergyContainer extends IEnergyConnected, IHasWorldObjectAndCoords {
 
     /**
      * Gets if that Amount of Energy is stored inside the Machine. It is used for checking the contained Energy before
