@@ -65,7 +65,7 @@ public class GregtechMetaTileEntity_IndustrialChisel
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType(getMachineType()).addInfo("Factory Grade Auto Chisel")
-                .addInfo("Target block goes in GUI slot").addInfo("If no target provided, firdt chisel result is used")
+                .addInfo("Target block goes in GUI slot").addInfo("If no target provided, first chisel result is used")
                 .addInfo("Speed: +200% | EU Usage: 75% | Parallel: Tier x 16")
                 .addPollutionAmount(getPollutionPerSecond(null)).addSeparator().beginStructureBlock(3, 3, 3, true)
                 .addController("Front center").addCasingInfo("Sturdy Printer Casing", 10).addInputBus("Any casing", 1)
