@@ -712,7 +712,7 @@ public class GT_MetaTileEntity_IntegratedOreFactory
                 des.add(AQUA + CENTRIFUGE + ' ');
                 break;
             default:
-                des.add("Nothing");
+                des.add(StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.WRONG_MODE"));
         }
 
         des.add(StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor2", getTime(mode) / 20));

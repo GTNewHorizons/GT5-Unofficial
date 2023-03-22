@@ -177,6 +177,7 @@ GT5U.machines.oreprocessor.Sifter=Sifter
 GT5U.machines.oreprocessor.Chemical_Bathing=Chemical Bathing
 GT5U.machines.oreprocessor.Ore_Washer=Ore Washer
 GT5U.machines.oreprocessor.Thermal_Centrifuge=Thermal Centrifuge
+GT5U.machines.oreprocessor.WRONG_MODE=Something went wrong
 GT5U.machines.industrialapiary.cancel.tooltip=§cCancel process
 GT5U.machines.industrialapiary.cancel.tooltip.1=§7Will also disable machine (soft mallet)
 GT5U.machines.industrialapiary.cancel.tooltip.2=§7§oCan't stop princess breeding
