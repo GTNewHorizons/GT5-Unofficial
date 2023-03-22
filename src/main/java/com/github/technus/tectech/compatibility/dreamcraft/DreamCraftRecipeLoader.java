@@ -3216,6 +3216,27 @@ public class DreamCraftRecipeLoader {
                 ItemList.Energy_Module.get(1),
                 50 * 20,
                 320_000);
+        // Alternate Energy Cluster Recipe
+        TT_recipeAdder.addResearchableAssemblylineRecipe(
+                ItemList.Energy_Module.get(1L),
+                576_000,
+                256,
+                8_000_000,
+                32,
+                new Object[] { ItemList.Circuit_Board_Bio_Ultra.get(1),
+                        new Object[] { OrePrefixes.foil.get(Materials.CosmicNeutronium), 64L },
+                        new Object[] { OrePrefixes.circuit.get(Materials.Superconductor), 4L },
+                        ItemList.Circuit_Parts_Crystal_Chip_Master.get(64L),
+                        ItemList.Circuit_Parts_Crystal_Chip_Master.get(64L),
+                        ItemList.Circuit_Parts_Crystal_Chip_Master.get(64L),
+                        ItemList.Circuit_Parts_Crystal_Chip_Master.get(64L), ItemList.Circuit_Chip_NPIC.get(64L),
+                        ItemList.Circuit_Parts_DiodeXSMD.get(32L), ItemList.Circuit_Parts_CapacitorXSMD.get(32L),
+                        ItemList.Circuit_Parts_ResistorXSMD.get(32L), ItemList.Circuit_Parts_TransistorXSMD.get(32L),
+                        new Object[] { OrePrefixes.wireGt01.get(Materials.SpaceTime), 12L } },
+                new FluidStack[] { new FluidStack(solderUEV, 1440) },
+                ItemList.Energy_Cluster.get(1),
+                50 * 20,
+                (int) TierEU.RECIPE_UHV);
 
         // Ultimate Battery
         TT_recipeAdder.addResearchableAssemblylineRecipe(
@@ -3238,6 +3259,31 @@ public class DreamCraftRecipeLoader {
                 ItemList.ZPM2.get(1),
                 3000,
                 400000);
+        // Alternate Ultimate Battery Recipe
+        TT_recipeAdder.addResearchableAssemblylineRecipe(
+                ItemList.Circuit_Chip_PPIC.get(1L),
+                2_304_000,
+                1024,
+                32_000_000,
+                64,
+                new Object[] { ItemList.Circuit_Board_Optical.get(1), GT_OreDictUnificator.get("foilShirabon", 64),
+                        new Object[] { OrePrefixes.circuit.get(Materials.Infinite), 4 },
+                        ItemList.Circuit_Parts_Crystal_Chip_Master.get(64L),
+                        ItemList.Circuit_Parts_Crystal_Chip_Master.get(64L),
+                        ItemList.Circuit_Parts_Crystal_Chip_Master.get(64L),
+                        ItemList.Circuit_Parts_Crystal_Chip_Master.get(64L),
+                        ItemList.Circuit_Parts_Crystal_Chip_Master.get(64L),
+                        ItemList.Circuit_Parts_Crystal_Chip_Master.get(64L),
+                        ItemList.Circuit_Parts_Crystal_Chip_Master.get(64L), ItemList.Circuit_Chip_PPIC.get(64L),
+                        ItemList.Circuit_Parts_DiodeXSMD.get(64L), ItemList.Circuit_Parts_CapacitorXSMD.get(64L),
+                        ItemList.Circuit_Parts_ResistorXSMD.get(64L), ItemList.Circuit_Parts_TransistorXSMD.get(64L),
+                        new Object[] { OrePrefixes.bolt.get(Materials.MagnetohydrodynamicallyConstrainedStarMatter),
+                                4L } },
+                new FluidStack[] { new FluidStack(solderUEV, 2880), Materials.WhiteDwarfMatter.getMolten(576),
+                        Materials.BlackDwarfMatter.getMolten(576) },
+                ItemList.ZPM2.get(1),
+                50 * 20,
+                (int) TierEU.RECIPE_UEV);
         // Really Ultimate Battery
         TT_recipeAdder.addResearchableAssemblylineRecipe(
                 ItemList.ZPM2.get(1L),
@@ -3284,6 +3330,56 @@ public class DreamCraftRecipeLoader {
                 6_400_000);
 
         if (Loader.isModLoaded(Reference.GTPLUSPLUS)) {
+            // Insanely Ultimate Battery
+            TT_recipeAdder.addResearchableAssemblylineRecipe(
+                    ItemList.ZPM4.get(1),
+                    24_000_000,
+                    1_280,
+                    32_000_000,
+                    32,
+                    new Object[] { ELEMENT.STANDALONE.HYPOGEN.getPlateDouble(32),
+                            ELEMENT.STANDALONE.HYPOGEN.getPlateDouble(32),
+                            new Object[] { OrePrefixes.circuit.get(Materials.Piko), 1 },
+                            new Object[] { OrePrefixes.circuit.get(Materials.Piko), 1 },
+                            new Object[] { OrePrefixes.circuit.get(Materials.Piko), 1 },
+                            new Object[] { OrePrefixes.circuit.get(Materials.Piko), 1 }, ItemList.ZPM4.get(8L),
+                            ItemList.Field_Generator_UIV.get(4), ItemList.Circuit_Wafer_QPIC.get(64),
+                            ItemList.Circuit_Wafer_QPIC.get(64),
+                            GT_ModHandler.getModItem("dreamcraft", "item.RawPicoWafer", 64),
+                            ItemList.Circuit_Parts_DiodeXSMD.get(64), ItemList.Circuit_Parts_InductorXSMD.get(32),
+                            GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.SuperconductorUIV, 64) },
+                    new FluidStack[] { new FluidStack(solderUEV, 18_432),
+                            ELEMENT.STANDALONE.CELESTIAL_TUNGSTEN.getFluidStack(18_432),
+                            Materials.Quantium.getMolten(18_432), Materials.SuperCoolant.getFluid(128_000) },
+                    ItemList.ZPM5.get(1),
+                    300 * 20,
+                    (int) TierEU.RECIPE_UIV);
+            // Mega Ultimate Battery
+            TT_recipeAdder.addResearchableAssemblylineRecipe(
+                    ItemList.ZPM5.get(1L),
+                    480_000_000,
+                    12_288,
+                    128_000_000,
+                    64,
+                    new Object[] { ELEMENT.STANDALONE.DRAGON_METAL.getPlateDouble(32),
+                            ELEMENT.STANDALONE.DRAGON_METAL.getPlateDouble(32),
+                            new Object[] { OrePrefixes.circuit.get(Materials.Quantum), 1 },
+                            new Object[] { OrePrefixes.circuit.get(Materials.Quantum), 1 },
+                            new Object[] { OrePrefixes.circuit.get(Materials.Quantum), 1 },
+                            new Object[] { OrePrefixes.circuit.get(Materials.Quantum), 1 }, ItemList.ZPM5.get(8L),
+                            ItemList.Field_Generator_UMV.get(4), ItemList.Circuit_Wafer_QPIC.get(64),
+                            ItemList.Circuit_Wafer_QPIC.get(64),
+                            GT_ModHandler.getModItem("dreamcraft", "item.PicoWafer", 64),
+                            ItemList.Circuit_Parts_DiodeXSMD.get(64), ItemList.Circuit_Parts_InductorXSMD.get(64),
+                            GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUMV, 64) },
+                    new FluidStack[] { new FluidStack(solderUEV, 36_864),
+                            ELEMENT.STANDALONE.ASTRAL_TITANIUM.getFluidStack(36_864),
+                            ELEMENT.STANDALONE.CELESTIAL_TUNGSTEN.getFluidStack(36_864),
+                            Materials.SuperCoolant.getFluid(256_000) },
+                    ItemList.ZPM6.get(1),
+                    350 * 20,
+                    (int) TierEU.RECIPE_UMV);
+
             // MK4 Computer
             TT_recipeAdder.addResearchableAssemblylineRecipe(
                     GregtechItemList.Compressed_Fusion_Reactor.get(1),
