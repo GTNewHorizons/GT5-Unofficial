@@ -30,14 +30,14 @@ public enum PartsEnum implements IGetItem, IAssociatedMaterials {
     // QuintuplePlate("Quintuple % Plate"),
 
     // Gems.
-    ChippedGem("Chipped %"),
+    Lens("% Lens"),
+    ExquisiteGem("Exquisite %"),
     FlawlessGem("Flawless %"),
     Gem("% Gem"),
     FlawedGem("Flawed %"),
-    ExquisiteGem("Exquisite %"),
+    ChippedGem("Chipped %"),
 
     // Misc.
-    Lens("% Lens"),
     Ring("% Ring"),
     Rotor("% Rotor"),
     Round("% Round"),
@@ -55,16 +55,17 @@ public enum PartsEnum implements IGetItem, IAssociatedMaterials {
     SmallSpring("Small % Spring"),
 
     // Dusts.
+    ImpureDust("Impure % Dust"),
+    PurifiedDust("Purified % Dust"),
     Dust("% Dust"),
     SmallDust("Small % Dust"),
     TinyDust("Tiny % Dust"),
 
     // Ore stuff.
-    CrushedOre("Crushed % Ore"),
     CrushedCentrifugedOre("Centrifuged % Ore"),
     PurifiedOre("Purified % Ore"),
-    ImpureDust("Impure % Dust"),
-    PurifiedDust("Purified % Dust"),
+    CrushedOre("Crushed % Ore"),
+    Nanites("% Nanites"),
 
     // Tool Parts.
     ArrowHead("% Arrow Head"),
