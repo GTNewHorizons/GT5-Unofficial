@@ -34,5 +34,14 @@
         "stream": false
       }
     ]
+  },
+  "machines.PlasmaForgeLoop": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "PlasmaForgeLoop",
+        "stream": false
+      }
+    ]
   }
 }
