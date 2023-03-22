@@ -86,6 +86,8 @@ public class GTMTE_LapotronicSuperCapacitor
 
     private long max_passive_drain_eu_per_tick_per_uhv_cap = 1_000_000;
     private long max_passive_drain_eu_per_tick_per_uev_cap = 100_000_000;
+    private long max_passive_drain_eu_per_tick_per_uiv_cap = (long) Math.pow(10, 10);
+    private long max_passive_drain_eu_per_tick_per_umv_cap = (long) Math.pow(10, 12);
 
     private enum Capacitor {
 
@@ -96,7 +98,9 @@ public class GTMTE_LapotronicSuperCapacitor
         UHV(6, MAX_LONG),
         None(0, BigInteger.ZERO),
         EV(1, BigInteger.valueOf(EV_cap_storage)),
-        UEV(7, MAX_LONG),;
+        UEV(7, MAX_LONG),
+        UIV(8, BigInteger.valueOf(UIV_cap_storage)),
+        UMV(9, UMV_cap_storage);
 
         private final int minimalGlassTier;
         private final BigInteger providedCapacity;
@@ -275,7 +279,7 @@ public class GTMTE_LapotronicSuperCapacitor
     /**
      * Count the amount of capacitors of each tier in each slot. Index = meta - 1
      */
-    private final int[] capacitors = new int[8];
+    private final int[] capacitors = new int[10];
 
     private BigInteger capacity = BigInteger.ZERO;
     private BigInteger stored = BigInteger.ZERO;
@@ -374,6 +378,18 @@ public class GTMTE_LapotronicSuperCapacitor
         return capacitors[7];
     }
 
+    private int getUIVCapacitorCount() {
+        return capacitors[8];
+    }
+
+    private int getUMVCapacitorCount() {
+        return capacitors[9];
+    }
+
+    private int wirelessCapableCapacitors() {
+        return capacitors[4] + capacitors[7] + capacitors[8] + capacitors[9];
+    }
+
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
@@ -386,15 +402,13 @@ public class GTMTE_LapotronicSuperCapacitor
                                 + GT_Values.TIER_COLORS[9]
                                 + GT_Values.VN[9]
                                 + EnumChatFormatting.GRAY
-                                + " capacitor and ")
-                .addInfo(
-                        EnumChatFormatting.RED + GT_Utility.formatNumbers(max_passive_drain_eu_per_tick_per_uev_cap)
-                                + EnumChatFormatting.GRAY
-                                + " EU/t passive loss per "
-                                + GT_Values.TIER_COLORS[10]
-                                + GT_Values.VN[10]
-                                + EnumChatFormatting.GRAY
                                 + " capacitor.")
+                .addInfo(
+                        "The passive loss increases " + EnumChatFormatting.DARK_RED
+                                + "100"
+                                + EnumChatFormatting.GRAY
+                                + "-fold"
+                                + " for every capacitor tier above.")
                 .addInfo("Passive loss is multiplied by the number of maintenance issues present.").addSeparator()
                 .addInfo("Glass shell has to be Tier - 3 of the highest capacitor tier.")
                 .addInfo(
@@ -413,11 +427,7 @@ public class GTMTE_LapotronicSuperCapacitor
                         "This mode can only be enabled if you have a " + GT_Values.TIER_COLORS[9]
                                 + GT_Values.VN[9]
                                 + EnumChatFormatting.GRAY
-                                + " or "
-                                + GT_Values.TIER_COLORS[10]
-                                + GT_Values.VN[10]
-                                + EnumChatFormatting.GRAY
-                                + " capacitor in the multiblock.")
+                                + "+ capacitor in the multiblock.")
                 .addInfo(
                         "When enabled every " + EnumChatFormatting.BLUE
                                 + GT_Utility.formatNumbers(LSC_time_between_wireless_rebalance_in_ticks)
@@ -432,20 +442,16 @@ public class GTMTE_LapotronicSuperCapacitor
                                 + GT_Values.TIER_COLORS[9]
                                 + GT_Values.VN[9]
                                 + EnumChatFormatting.GRAY
-                                + ")"
-                                + " or "
-                                + EnumChatFormatting.RED
-                                + GT_Utility.formatNumbers(UEV_wireless_eu_cap)
+                                + ") EU in the LSC")
+                .addInfo("it will withdraw from the network and add to the LSC.")
+                .addInfo("If there is more it will add the EU to the network and remove it from the LSC.")
+                .addInfo(
+                        "The threshold increases " + EnumChatFormatting.DARK_RED
+                                + "100"
                                 + EnumChatFormatting.GRAY
-                                + "("
-                                + GT_Values.TIER_COLORS[10]
-                                + GT_Values.VN[10]
-                                + EnumChatFormatting.GRAY
-                                + ")"
-                                + " EU in the LSC")
-                .addInfo("it will withdraw from the network and add to the LSC. If there is more it will add")
-                .addInfo("the EU to the network and remove it from the LSC.").addSeparator()
-                .beginVariableStructureBlock(5, 5, 4, 50, 5, 5, false)
+                                + "-fold"
+                                + " for every capacitor tier above.")
+                .addSeparator().beginVariableStructureBlock(5, 5, 4, 50, 5, 5, false)
                 .addStructureInfo("Modular height of 4-50 blocks.").addController("Front center bottom")
                 .addOtherStructurePart("Lapotronic Super Capacitor Casing", "5x2x5 base (at least 17x)")
                 .addOtherStructurePart(
@@ -461,8 +467,8 @@ public class GTMTE_LapotronicSuperCapacitor
                                 + GT_Values.VN[9]
                                 + EnumChatFormatting.GRAY
                                 + "-"
-                                + GT_Values.TIER_COLORS[10]
-                                + GT_Values.VN[10]
+                                + GT_Values.TIER_COLORS[12]
+                                + GT_Values.VN[12]
                                 + EnumChatFormatting.GRAY
                                 + ")",
                         "Center 3x(1-47)x3 above base (9-423 blocks)")
@@ -575,12 +581,14 @@ public class GTMTE_LapotronicSuperCapacitor
         }
 
         // Check if enough (more than 50%) non-empty caps
-        if (capacitors[6] > capacitors[0] + capacitors[1]
+        if (capacitors[8] > capacitors[0] + capacitors[1]
                 + capacitors[2]
                 + capacitors[3]
                 + getUHVCapacitorCount()
                 + capacitors[6]
-                + getUEVCapacitorCount())
+                + getUEVCapacitorCount()
+                + getUIVCapacitorCount()
+                + getUMVCapacitorCount())
             return false;
 
         // Calculate total capacity
@@ -733,7 +741,7 @@ public class GTMTE_LapotronicSuperCapacitor
             }
         }
 
-        if (getUHVCapacitorCount() <= 0 && getUEVCapacitorCount() <= 0) {
+        if (wirelessCapableCapacitors() <= 0) {
             wireless_mode = false;
         }
 
@@ -747,7 +755,9 @@ public class GTMTE_LapotronicSuperCapacitor
             // Find difference.
             BigInteger transferred_eu = stored.subtract(
                     (LSC_wireless_eu_cap.multiply(BigInteger.valueOf(getUHVCapacitorCount())))
-                            .add(UEV_wireless_eu_cap.multiply(BigInteger.valueOf(getUEVCapacitorCount()))));
+                            .add(UEV_wireless_eu_cap.multiply(BigInteger.valueOf(getUEVCapacitorCount())))
+                            .add(UIV_wireless_eu_cap.multiply(BigInteger.valueOf(getUIVCapacitorCount())))
+                            .add(UMV_wireless_eu_cap.multiply(BigInteger.valueOf(getUMVCapacitorCount()))));
 
             if (transferred_eu.signum() == 1) {
                 inputLastTick += transferred_eu.longValue();
@@ -758,8 +768,10 @@ public class GTMTE_LapotronicSuperCapacitor
             // If that difference can be added then do so.
             if (addEUToGlobalEnergyMap(global_energy_user_uuid, transferred_eu)) {
                 // If it succeeds there was sufficient energy so set the internal capacity as such.
-                stored = LSC_wireless_eu_cap.multiply(BigInteger.valueOf(getUHVCapacitorCount()))
-                        .add(UEV_wireless_eu_cap.multiply(BigInteger.valueOf(getUEVCapacitorCount())));
+                stored = LSC_wireless_eu_cap.multiply(BigInteger.valueOf(getUHVCapacitorCount())).add(
+                        UEV_wireless_eu_cap.multiply(BigInteger.valueOf(getUEVCapacitorCount()))
+                                .add(UIV_wireless_eu_cap.multiply(BigInteger.valueOf(getUIVCapacitorCount())))
+                                .add(UMV_wireless_eu_cap.multiply(BigInteger.valueOf(getUMVCapacitorCount()))));
             }
         }
 
@@ -805,14 +817,19 @@ public class GTMTE_LapotronicSuperCapacitor
     private long recalculateLossWithMaintenance(int repairStatus) {
         repairStatusCache = repairStatus;
 
-        // This cannot overflow because there is a 135 capacitor maximum per LSC.
-        long temp_capacity_divided = capacity.divide(BigInteger.valueOf(100L * 86400L * 20L)).longValue();
+        long temp_capacity_divided = 0;
 
-        // Passive loss is multiplied by number of UHV/UEV caps. Minimum of 1 otherwise loss is 0 for non-UHV/UEV caps
+        if (wirelessCapableCapacitors() == 0) {
+            temp_capacity_divided = capacity.divide(BigInteger.valueOf(100L * 86400L * 20L)).longValue();
+        }
+
+        // Passive loss is multiplied by number of UHV+ caps. Minimum of 1 otherwise loss is 0 for non-UHV+ caps
         // calculations.
-        if (getUHVCapacitorCount() != 0 || getUEVCapacitorCount() != 0) {
+        if (wirelessCapableCapacitors() != 0) {
             temp_capacity_divided = getUHVCapacitorCount() * max_passive_drain_eu_per_tick_per_uhv_cap
-                    + getUEVCapacitorCount() * max_passive_drain_eu_per_tick_per_uev_cap;
+                    + getUEVCapacitorCount() * max_passive_drain_eu_per_tick_per_uev_cap
+                    + getUIVCapacitorCount() * max_passive_drain_eu_per_tick_per_uiv_cap
+                    + getUMVCapacitorCount() * max_passive_drain_eu_per_tick_per_umv_cap;
         }
 
         // Passive loss is multiplied by number of maintenance issues.
@@ -893,6 +910,16 @@ public class GTMTE_LapotronicSuperCapacitor
                         + EnumChatFormatting.RESET
                         + " Capacitors detected: "
                         + getUEVCapacitorCount());
+        ll.add(
+                GT_Values.TIER_COLORS[11] + GT_Values.VN[11]
+                        + EnumChatFormatting.RESET
+                        + " Capacitors detected: "
+                        + getUIVCapacitorCount());
+        ll.add(
+                GT_Values.TIER_COLORS[12] + GT_Values.VN[12]
+                        + EnumChatFormatting.RESET
+                        + " Capacitors detected: "
+                        + getUMVCapacitorCount());
         ll.add(
                 "Total wireless EU: " + EnumChatFormatting.RED
                         + GT_Utility.formatNumbers(getUserEU(global_energy_user_uuid)));
@@ -997,7 +1024,7 @@ public class GTMTE_LapotronicSuperCapacitor
     }
 
     protected boolean canUseWireless() {
-        return getUHVCapacitorCount() != 0 || getUEVCapacitorCount() != 0;
+        return wirelessCapableCapacitors() != 0;
     }
 
     @Override
@@ -1011,11 +1038,7 @@ public class GTMTE_LapotronicSuperCapacitor
                     "Wireless mode cannot be enabled without at least 1 " + GT_Values.TIER_COLORS[9]
                             + GT_Values.VN[9]
                             + EnumChatFormatting.RESET
-                            + " or "
-                            + GT_Values.TIER_COLORS[10]
-                            + GT_Values.VN[10]
-                            + EnumChatFormatting.RESET
-                            + " capacitor.");
+                            + "+ capacitor.");
             wireless_mode = false;
         }
     }

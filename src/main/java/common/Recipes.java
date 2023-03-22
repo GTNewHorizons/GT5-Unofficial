@@ -758,6 +758,84 @@ public class Recipes {
                 640 * 20,
                 (int) TierEU.RECIPE_UHV);
 
+        if (Loader.isModLoaded("miscutils")) {
+            // Insanely Ultimate Capacitor (UIV)
+            TT_recipeAdder.addResearchableAssemblylineRecipe(
+                    new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 8),
+                    24_000_000,
+                    1_280,
+                    32_000_000,
+                    32,
+                    new Object[] { GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.TranscendentMetal, 4),
+                            GT_OreDictUnificator.get(OrePrefixes.screw, Materials.TranscendentMetal, 24),
+                            GT_ModHandler.getModItem("miscutils", "itemPlateDoubleHypogen", 32),
+                            GT_ModHandler.getModItem("miscutils", "itemPlateDoubleHypogen", 32),
+                            new Object[] { OrePrefixes.circuit.get(Materials.Piko), 1 },
+                            new Object[] { OrePrefixes.circuit.get(Materials.Piko), 1 },
+                            new Object[] { OrePrefixes.circuit.get(Materials.Piko), 1 },
+                            new Object[] { OrePrefixes.circuit.get(Materials.Piko), 1 }, ItemList.ZPM4.get(8L),
+                            ItemList.Field_Generator_UIV.get(4), ItemList.Circuit_Wafer_QPIC.get(64),
+                            ItemList.Circuit_Wafer_QPIC.get(64),
+                            GT_ModHandler.getModItem("dreamcraft", "item.RawPicoWafer", 64),
+                            ItemList.Circuit_Parts_DiodeXSMD.get(64), ItemList.Circuit_Parts_InductorXSMD.get(32),
+                            GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.SuperconductorUIV, 64) },
+                    new FluidStack[] { new FluidStack(solderUEV, 18_432),
+                            new FluidStack(FluidRegistry.getFluid("molten.celestialtungsten"), 18432),
+                            Materials.Quantium.getMolten(18_432), Materials.SuperCoolant.getFluid(128_000) },
+                    new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 9),
+                    300 * 20,
+                    (int) TierEU.RECIPE_UIV);
+
+            // Mega Ultimate Capacitor (UMV)
+            TT_recipeAdder.addResearchableAssemblylineRecipe(
+                    new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 9),
+                    480_000_000,
+                    12_288,
+                    128_000_000,
+                    64,
+                    new Object[] { GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.SpaceTime, 4),
+                            GT_OreDictUnificator.get(OrePrefixes.screw, Materials.SpaceTime, 24),
+                            GT_ModHandler.getModItem("miscutils", "itemPlateDoubleDragonblood", 32),
+                            GT_ModHandler.getModItem("miscutils", "itemPlateDoubleDragonblood", 32),
+                            new Object[] { OrePrefixes.circuit.get(Materials.Quantum), 1 },
+                            new Object[] { OrePrefixes.circuit.get(Materials.Quantum), 1 },
+                            new Object[] { OrePrefixes.circuit.get(Materials.Quantum), 1 },
+                            new Object[] { OrePrefixes.circuit.get(Materials.Quantum), 1 }, ItemList.ZPM5.get(8L),
+                            ItemList.Field_Generator_UMV.get(4), ItemList.Circuit_Wafer_QPIC.get(64),
+                            ItemList.Circuit_Wafer_QPIC.get(64),
+                            GT_ModHandler.getModItem("dreamcraft", "item.PicoWafer", 64),
+                            ItemList.Circuit_Parts_DiodeXSMD.get(64), ItemList.Circuit_Parts_InductorXSMD.get(64),
+                            GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUMV, 64) },
+                    new FluidStack[] { new FluidStack(solderUEV, 36_864),
+                            new FluidStack(FluidRegistry.getFluid("molten.astraltitanium"), 36_864),
+                            new FluidStack(FluidRegistry.getFluid("molten.celestialtungsten"), 36_864),
+                            Materials.SuperCoolant.getFluid(256_000) },
+                    new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 10),
+                    350 * 20,
+                    (int) TierEU.RECIPE_UMV);
+        }
+        // UIV Capacitor alt recipe
+        GT_Values.RA.addAssemblerRecipe(
+                new ItemStack[] { ItemList.ZPM5.get(1),
+                        GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.TranscendentMetal, 4),
+                        GT_OreDictUnificator.get(OrePrefixes.screw, Materials.TranscendentMetal, 24),
+                        GT_Utility.getIntegratedCircuit(6) },
+                null,
+                new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 9),
+                640 * 20,
+                (int) TierEU.RECIPE_UEV);
+
+        // UMV Capacitor alt recipe
+        GT_Values.RA.addAssemblerRecipe(
+                new ItemStack[] { ItemList.ZPM6.get(1),
+                        GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.SpaceTime, 4),
+                        GT_OreDictUnificator.get(OrePrefixes.screw, Materials.SpaceTime, 24),
+                        GT_Utility.getIntegratedCircuit(6) },
+                null,
+                new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 10),
+                640 * 20,
+                (int) TierEU.RECIPE_UIV);
+
         // Capacitor recycling
         GT_Values.RA.addUnboxingRecipe(
                 new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 7),
@@ -799,6 +877,18 @@ public class Recipes {
                 new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 8),
                 ItemList.ZPM4.get(1L),
                 GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Infinity, 24),
+                1200,
+                (int) TierEU.RECIPE_LV);
+        GT_Values.RA.addUnboxingRecipe(
+                new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 9),
+                ItemList.ZPM5.get(1L),
+                GT_OreDictUnificator.get(OrePrefixes.screw, Materials.TranscendentMetal, 24),
+                1200,
+                (int) TierEU.RECIPE_LV);
+        GT_Values.RA.addUnboxingRecipe(
+                new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 10),
+                ItemList.ZPM6.get(1L),
+                GT_OreDictUnificator.get(OrePrefixes.screw, Materials.SpaceTime, 24),
                 1200,
                 (int) TierEU.RECIPE_LV);
     }

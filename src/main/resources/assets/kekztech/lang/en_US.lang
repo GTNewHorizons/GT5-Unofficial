@@ -144,6 +144,8 @@ tile.kekztech_lapotronicenergyunit_block.5.name=Ultimate Capacitor (UHV)
 tile.kekztech_lapotronicenergyunit_block.6.name=Empty Capacitor (-)
 tile.kekztech_lapotronicenergyunit_block.7.name=Lapotron Capacitor (EV)
 tile.kekztech_lapotronicenergyunit_block.8.name=Extremely Ultimate Capacitor (UEV)
+tile.kekztech_lapotronicenergyunit_block.9.name=Insanely Ultimate Capacitor (UIV)
+tile.kekztech_lapotronicenergyunit_block.10.name=Mega Ultimate Capacitor (UMV)
 tile.kekztech_lapotronicenergyunit_block.desc=Part of the Lapotronic Super Capacitor
 
 # -------- Thaumium Reinforced Jar: Block
@@ -192,7 +194,12 @@ achievement.tile.kekztech_lapotronicenergyunit_block.4=Lapotronic Capacitor (UV)
 achievement.tile.kekztech_lapotronicenergyunit_block.5.desc=Pickup this item to see the recipe in NEI
 achievement.tile.kekztech_lapotronicenergyunit_block.5=Ultimate Capacitor (UHV)
 achievement.tile.kekztech_lapotronicenergyunit_block.8.desc=Beyond the ranks of Gods
-achievement.tile.kekztech_lapotronicenergyunit_block.8=Ultimate Capacitor (UEV)
+achievement.tile.kekztech_lapotronicenergyunit_block.8=Extremely Ultimate Capacitor (UEV)
+achievement.tile.kekztech_lapotronicenergyunit_block.9.desc=Insanity ensues!
+achievement.tile.kekztech_lapotronicenergyunit_block.9=Insanely Ultimate Capacitor (UIV)
+achievement.tile.kekztech_lapotronicenergyunit_block.10.desc=How far can we go?
+achievement.tile.kekztech_lapotronicenergyunit_block.10=Mega Ultimate Capacitor (UMV)
+
 
 # -------- GUI
 gui.kekztech_lapotronicenergyunit.wireless=Wireless mode
