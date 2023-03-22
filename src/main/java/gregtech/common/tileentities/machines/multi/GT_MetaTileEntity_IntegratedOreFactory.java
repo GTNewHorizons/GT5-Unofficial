@@ -53,12 +53,6 @@ public class GT_MetaTileEntity_IntegratedOreFactory
     private static final int CASING_INDEX1 = 183;
     private static final int CASING_INDEX2 = 49;
     private static final int MAX_PARA = 1024;
-    private static final String CRUSH = "Macerate";
-    private static final String WASH = "Ore Washer";
-    private static final String THERMAL = "Thermal Centrifuge";
-    private static final String CENTRIFUGE = "Centrifuge";
-    private static final String SIFTER = "Sifter";
-    private static final String CHEM_WASH = "Chemical Bathing";
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<GT_MetaTileEntity_IntegratedOreFactory> STRUCTURE_DEFINITION = StructureDefinition
             .<GT_MetaTileEntity_IntegratedOreFactory>builder()
@@ -672,20 +666,31 @@ public class GT_MetaTileEntity_IntegratedOreFactory
     }
 
     private static List<String> getDisplayMode(int mode) {
+        final EnumChatFormatting AQUA = EnumChatFormatting.AQUA;
+        final String CRUSH = StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.Macerate");
+        final String WASH = StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.Ore_Washer")
+                .replace(" ", " " + AQUA);
+        final String THERMAL = StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.Thermal_Centrifuge")
+                .replace(" ", " " + AQUA);
+        final String CENTRIFUGE = StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.Centrifuge");
+        final String SIFTER = StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.Sifter");
+        final String CHEM_WASH = StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.Chemical_Bathing")
+                .replace(" ", " " + AQUA);
+        final String ARROW = " " + AQUA + "-> ";
+
         List<String> des = new ArrayList<>();
         des.add(StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor1"));
-        final EnumChatFormatting AQUA = EnumChatFormatting.AQUA;
-        final String ARROW = " " + AQUA + "-> ";
+
         switch (mode) {
             case 0:
                 des.add(AQUA + CRUSH + ARROW);
-                des.add(AQUA + WASH.replace(" ", " " + AQUA) + ARROW);
-                des.add(AQUA + THERMAL.replace(" ", " " + AQUA) + ARROW);
+                des.add(AQUA + WASH + ARROW);
+                des.add(AQUA + THERMAL + ARROW);
                 des.add(AQUA + CRUSH + ' ');
                 break;
             case 1:
                 des.add(AQUA + CRUSH + ARROW);
-                des.add(AQUA + WASH.replace(" ", " " + AQUA) + ARROW);
+                des.add(AQUA + WASH + ARROW);
                 des.add(AQUA + CENTRIFUGE + ARROW);
                 des.add(AQUA + CRUSH + ' ');
                 break;
@@ -696,13 +701,13 @@ public class GT_MetaTileEntity_IntegratedOreFactory
                 break;
             case 3:
                 des.add(AQUA + CRUSH + ARROW);
-                des.add(AQUA + WASH.replace(" ", " " + AQUA) + ARROW);
+                des.add(AQUA + WASH + ARROW);
                 des.add(AQUA + SIFTER + ' ');
 
                 break;
             case 4:
                 des.add(AQUA + CRUSH + ARROW);
-                des.add(AQUA + CHEM_WASH.replace(" ", " " + AQUA) + ARROW);
+                des.add(AQUA + CHEM_WASH + ARROW);
                 des.add(AQUA + CRUSH + ARROW);
                 des.add(AQUA + CENTRIFUGE + ' ');
                 break;
