@@ -6,8 +6,11 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 
+@SideOnly(Side.CLIENT)
 public class GT_SoundLoop extends MovingSound {
 
     private static final float VOLUME_RAMP = 0.0625f;

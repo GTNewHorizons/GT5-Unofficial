@@ -37,6 +37,8 @@ import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.widget.*;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ConfigCategories;
@@ -94,6 +96,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     public ArrayList<GT_MetaTileEntity_Hatch_Energy> mEnergyHatches = new ArrayList<>();
     public ArrayList<GT_MetaTileEntity_Hatch_Maintenance> mMaintenanceHatches = new ArrayList<>();
     protected final List<GT_MetaTileEntity_Hatch> mExoticEnergyHatches = new ArrayList<>();
+    @SideOnly(Side.CLIENT)
     protected GT_SoundLoop activitySoundLoop;
 
     protected static final byte INTERRUPT_SOUND_INDEX = 8;
@@ -515,6 +518,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         }
     }
 
+    @SideOnly(Side.CLIENT)
     protected void doActivitySound(ResourceLocation activitySound) {
         if (getBaseMetaTileEntity().isActive() && activitySound != null) {
             if (activitySoundLoop == null) {
@@ -545,6 +549,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     /**
      * @return Sound that will be looped for as long as the machine is doing a recipe
      */
+    @SideOnly(Side.CLIENT)
     protected ResourceLocation getActivitySoundLoop() {
         return null;
     }
