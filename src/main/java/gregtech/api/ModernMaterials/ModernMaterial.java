@@ -5,20 +5,27 @@ import java.util.*;
 
 import gregtech.api.ModernMaterials.Fluids.FluidEnum;
 import gregtech.api.ModernMaterials.Fluids.ModernMaterialFluid;
+import gregtech.api.ModernMaterials.PartProperties.Textures.TextureType;
 import gregtech.api.ModernMaterials.PartsClasses.CustomPartInfo;
 import gregtech.api.ModernMaterials.PartsClasses.PartsEnum;
+import org.jetbrains.annotations.NotNull;
+
+import static gregtech.api.ModernMaterials.ModernMaterialUtilities.registerMaterial;
+import static gregtech.api.ModernMaterials.PartProperties.Textures.TextureType.Metallic;
 
 public class ModernMaterial {
 
     private final HashMap<PartsEnum, CustomPartInfo> existingPartsForMaterial = new HashMap<>();
     private Color color;
     private int materialID;
-    private String name;
+    private final String materialName;
     private long materialTier;
     private double materialTimeMultiplier;
     public final ArrayList<ModernMaterialFluid> existingFluids = new ArrayList<>();
 
-    public ModernMaterial() {}
+    public ModernMaterial(final String materialName) {
+        this.materialName = materialName;
+    }
 
     public ModernMaterial setColor(Color aColor) {
         color = aColor;
@@ -31,12 +38,7 @@ public class ModernMaterial {
     }
 
     public ModernMaterial setColor(int aRed, int aGreen, int aBlue) {
-        color = new Color(aRed, aGreen, aBlue);
-        return this;
-    }
-
-    public ModernMaterial setName(String aName) {
-        name = aName;
+        color = new Color(aRed, aGreen, aBlue, 255);
         return this;
     }
 
@@ -45,19 +47,20 @@ public class ModernMaterial {
         return this;
     }
 
-    public ModernMaterial addParts(final PartsEnum... aParts) {
-        for (PartsEnum aPart : aParts) {
-            existingPartsForMaterial.put(aPart, new CustomPartInfo(aPart));
+    public ModernMaterial addParts(final PartsEnum... parts) {
+        for (PartsEnum part : parts) {
+            part.addAssociatedMaterial(this);
+            addPart(part);
         }
         return this;
     }
-
-    public ModernMaterial addPartsCustom(final CustomPartInfo... customParts) {
-        for (CustomPartInfo customPartInfo : customParts) {
-            existingPartsForMaterial.put(customPartInfo.mPart, customPartInfo);
-        }
-        return this;
-    }
+//
+//    public ModernMaterial addPartsCustom(final CustomPartInfo... customParts) {
+//        for (CustomPartInfo customPartInfo : customParts) {
+//            existingPartsForMaterial.put(customPartInfo.part, customPartInfo);
+//        }
+//        return this;
+//    }
 
     public ModernMaterial addFluids(final FluidEnum... fluids) {
 
@@ -77,8 +80,8 @@ public class ModernMaterial {
         return this;
     }
 
-    public ModernMaterial build() {
-        return this;
+    public void build() {
+        registerMaterial(this);
     }
 
     public void setMaterialID(int aID) {
@@ -93,8 +96,8 @@ public class ModernMaterial {
         return materialID;
     }
 
-    public String getName() {
-        return name;
+    public String getMaterialName() {
+        return materialName;
     }
 
     public double getMaterialTimeMultiplier() {
@@ -105,16 +108,21 @@ public class ModernMaterial {
         return materialTier;
     }
 
-    public ModernMaterial addPart(final PartsEnum aPart) {
-        existingPartsForMaterial.put(aPart, new CustomPartInfo(aPart));
+    public ModernMaterial addPart(final PartsEnum part) {
+        existingPartsForMaterial.put(part, new CustomPartInfo(part, textureType));
+        return this;
+    }
+
+    TextureType textureType = Metallic;
+
+    public ModernMaterial setTextureMode(@NotNull final TextureType textureType) {
+        this.textureType = textureType;
         return this;
     }
 
     // This will override all existing parts settings and enable ALL possible parts. Be careful!
     public ModernMaterial addAllParts() {
-        for (PartsEnum tPart : PartsEnum.values()) {
-            existingPartsForMaterial.put(tPart, new CustomPartInfo(tPart));
-        }
+        addParts(PartsEnum.values());
         return this;
     }
 
@@ -123,16 +131,13 @@ public class ModernMaterial {
         return this;
     }
 
-    public ModernMaterial addPart(final CustomPartInfo aCustomPartInfo) {
-        existingPartsForMaterial.put(aCustomPartInfo.mPart, aCustomPartInfo);
+    public ModernMaterial addPart(final CustomPartInfo customPartInfo) {
+        existingPartsForMaterial.put(customPartInfo.part, customPartInfo);
         return this;
     }
 
-    public CustomPartInfo getCustomPartInfo(final PartsEnum aPart) {
-        return existingPartsForMaterial.get(aPart);
+    public CustomPartInfo getCustomPartInfo(final PartsEnum part) {
+        return existingPartsForMaterial.get(part);
     }
 
-    public boolean doesPartExist(PartsEnum aPart) {
-        return existingPartsForMaterial.containsKey(aPart);
-    }
 }

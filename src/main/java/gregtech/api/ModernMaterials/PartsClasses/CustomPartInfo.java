@@ -3,17 +3,18 @@ package gregtech.api.ModernMaterials.PartsClasses;
 import static gregtech.api.ModernMaterials.PartProperties.Textures.TextureType.Metallic;
 
 import gregtech.api.ModernMaterials.PartProperties.Textures.TextureType;
+import org.jetbrains.annotations.NotNull;
 
 public class CustomPartInfo {
 
-    public final PartsEnum mPart;
+    public final PartsEnum part;
     private TextureType textureType = Metallic;
-    private String mTextureName;
-    private boolean mAnimated;
+    private String textureName;
 
-    public CustomPartInfo(PartsEnum aPart) {
-        mPart = aPart;
-        mTextureName = aPart.partName;
+    public CustomPartInfo(@NotNull final PartsEnum part, @NotNull final TextureType textureType) {
+        this.part = part;
+        this.textureName = part.partName;
+        this.textureType = textureType;
     }
 
     public TextureType getTextureType() {
@@ -25,22 +26,7 @@ public class CustomPartInfo {
         return this;
     }
 
-    public boolean isNotAnimated() {
-        return !mAnimated;
-    }
-
-    public CustomPartInfo enableCustomTexture() {
-        mAnimated = true;
-        return this;
-    }
-
-    public CustomPartInfo setCustomPartTextureOverride(final String aFileName) {
-        mAnimated = true;
-        mTextureName = aFileName;
-        return this;
-    }
-
     public String getTextureName() {
-        return mTextureName;
+        return textureName;
     }
 }

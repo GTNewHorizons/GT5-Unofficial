@@ -24,7 +24,7 @@ public enum FluidEnum {
     }
 
     public String format(ModernMaterial material) {
-        return format.replace("%", material.getName());
+        return format.replace("%", material.getMaterialName());
     }
 
     public int getTemperature() {

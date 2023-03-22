@@ -6,9 +6,9 @@ import static gregtech.api.ModernMaterials.PartsClasses.PartsEnum.*;
 
 public class ModernMaterialsQuickMaterialGenerator {
 
-    public ModernMaterial simpleMetal(final String materialName, final int red, final int green, final int blue) {
+    public void simpleMetal(final String materialName, final int red, final int green, final int blue) {
 
-        return new ModernMaterial().setName(materialName).setColor(red, green, blue, 255)
+        new ModernMaterial(materialName).setColor(red, green, blue, 255)
                 .addParts(
                         Dust,
                         SolderingHead,
@@ -57,9 +57,9 @@ public class ModernMaterialsQuickMaterialGenerator {
 
     }
 
-    public ModernMaterial gem(final String materialName, final int red, final int green, final int blue) {
+    public void gem(final String materialName, final int red, final int green, final int blue) {
 
-        return new ModernMaterial().setName(materialName).setColor(red, green, blue, 255)
+        new ModernMaterial(materialName).setColor(red, green, blue, 255)
                 .addParts(
                         Dust,
                         ImpureDust,

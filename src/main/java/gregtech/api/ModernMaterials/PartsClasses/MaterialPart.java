@@ -1,14 +1,19 @@
 package gregtech.api.ModernMaterials.PartsClasses;
 
 import static gregtech.api.ModernMaterials.ModernMaterialUtilities.materialIDToMaterial;
-import static gregtech.api.ModernMaterials.PartProperties.Textures.TextureType.Custom;
+import static gregtech.api.ModernMaterials.ModernMaterialUtilities.tooltipGenerator;
+import static gregtech.api.ModernMaterials.PartProperties.Textures.TextureType.*;
 import static gregtech.api.enums.GT_Values.RES_PATH_BLOCK;
 
 import java.util.HashMap;
 import java.util.List;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.ModernMaterials.ModernMaterialUtilities;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
@@ -30,40 +35,35 @@ public class MaterialPart extends Item {
     }
 
     @Override
-    public void getSubItems(Item item, CreativeTabs aTab, List itemList) {
-        materialIDToMaterial.forEach((materialID, material) -> {
-            if (material.doesPartExist(part)) {
-                ItemStack itemStack = new ItemStack(item, 1, materialID);
-                itemList.add(itemStack);
-            }
-        });
+    public void getSubItems(Item item, CreativeTabs tabs, List itemList) {
+        for(ModernMaterial material : part.getAssociatedMaterials()) {
+            ItemStack itemStack = new ItemStack(item, 1, material.getMaterialID());
+            itemList.add(itemStack);
+        }
     }
 
     private final HashMap<Integer, IIcon> animatedMaterialIconMap = new HashMap<>();
 
     @Override
     public void registerIcons(IIconRegister register) {
-        materialIDToMaterial.forEach((materialID, material) -> {
-            if (!material.doesPartExist(part)) {
-                return; // Skip element.
-            }
+
+        for (final ModernMaterial material : this.part.getAssociatedMaterials()) {
 
             CustomPartInfo customPartInfo = material.getCustomPartInfo(this.part);
-            String path;
+            String path = RES_PATH_BLOCK + "ModernMaterialsIcons/";
 
-            if (!customPartInfo.getTextureType().equals(Custom)) {
-                path = RES_PATH_BLOCK + "ModernMaterialsIcons/" + customPartInfo.getTextureType() + "/" + partName;
+            if (customPartInfo.getTextureType().equals(CustomIndividual)) {
+                path += "Custom/" + material.getMaterialName().toLowerCase() + "/" + partName;
+            } else if (customPartInfo.getTextureType().equals(CustomUnified)) {
+                path += "Custom/" + material.getMaterialName().toLowerCase() + "/unified";
             } else {
-                path = RES_PATH_BLOCK + "ModernMaterialsIcons/"
-                        + customPartInfo.getTextureType()
-                        + "/"
-                        + material.getName().toLowerCase()
-                        + "/"
-                        + customPartInfo.getTextureName();
+                path += customPartInfo.getTextureType()
+                    + "/"
+                    + customPartInfo.getTextureName();
             }
 
-            animatedMaterialIconMap.put(materialID, register.registerIcon(path)); // todo probably inefficient?
-        });
+            animatedMaterialIconMap.put(material.getMaterialID(), register.registerIcon(path)); // todo probably inefficient?
+        }
     }
 
     @Override
@@ -76,11 +76,23 @@ public class MaterialPart extends Item {
 
         ModernMaterial material = materialIDToMaterial.get(itemStack.getItemDamage());
 
-        String trueName = this.partName.replace("%", material.getName());
+        String trueName = this.partName.replace("%", material.getMaterialName());
 
         // Localise the material name.
         GT_LanguageManager.addStringLocalization(trueName + ".name", trueName);
 
         return trueName;
+    }
+
+    // Tooltip information.
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void addInformation(ItemStack itemStack, EntityPlayer player, List tooltipList, boolean aF3_H)  {
+
+        final ModernMaterial material = ModernMaterialUtilities.materialIDToMaterial.get(itemStack.getItemDamage());
+
+        for (String line : tooltipGenerator(material)) {
+            tooltipList.add(line);
+        }
     }
 }

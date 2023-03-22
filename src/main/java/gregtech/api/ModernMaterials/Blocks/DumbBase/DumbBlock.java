@@ -46,7 +46,7 @@ public abstract class DumbBlock extends BlockContainer {
 
         getBlockEnum().setAssociatedItem(item);
 
-        for (ModernMaterial modernMaterial : getBlockEnum().associatedMaterials) {
+        for (ModernMaterial modernMaterial : getBlockEnum().getAssociatedMaterials()) {
             list.add(new ItemStack(item, 1, modernMaterial.getMaterialID()));
         }
     }

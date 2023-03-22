@@ -8,8 +8,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import gregtech.api.ModernMaterials.Blocks.BlocksEnum;
-import gregtech.api.ModernMaterials.Blocks.DumbBase.DumbItemBlock;
-import gregtech.api.ModernMaterials.Blocks.DumbBase.DumbTileEntity;
 import gregtech.api.ModernMaterials.Blocks.FrameBox.FrameBoxBlock;
 import gregtech.api.ModernMaterials.Blocks.FrameBox.FrameBoxItemBlock;
 import gregtech.api.ModernMaterials.Blocks.FrameBox.FrameBoxTileEntity;
@@ -37,7 +35,7 @@ public class ModernMaterialUtilities {
 
     public static void registerMaterial(ModernMaterial aMaterial) {
         final int tCurrentMaterialID = GregTech_API.sModernMaterialIDs.mConfig
-                .get(materialID.name(), aMaterial.getName(), -1).getInt();
+                .get(materialID.name(), aMaterial.getMaterialName(), -1).getInt();
         if (tCurrentMaterialID == -1) {
             mNewMaterials.add(aMaterial);
         } else {
@@ -47,13 +45,13 @@ public class ModernMaterialUtilities {
                 GregTech_API.mLastMaterialID = tCurrentMaterialID;
             }
         }
-        materialNameToMaterialMap.put(aMaterial.getName(), aMaterial);
+        materialNameToMaterialMap.put(aMaterial.getMaterialName(), aMaterial);
     }
 
     public static void registerAllMaterialsItems() {
         for (ModernMaterial tMaterial : mNewMaterials) {
             tMaterial.setMaterialID(++GregTech_API.mLastMaterialID);
-            GregTech_API.sModernMaterialIDs.mConfig.get(materialID.name(), tMaterial.getName(), 0)
+            GregTech_API.sModernMaterialIDs.mConfig.get(materialID.name(), tMaterial.getMaterialName(), 0)
                     .set(GregTech_API.mLastMaterialID);
             materialIDToMaterial.put(GregTech_API.mLastMaterialID, tMaterial);
         }
@@ -97,7 +95,7 @@ public class ModernMaterialUtilities {
             }
         }
 
-        BlocksEnum.FrameBox.associatedMaterials.addAll(materialIDToMaterial.values());
+        BlocksEnum.FrameBox.getAssociatedMaterials().addAll(materialIDToMaterial.values());
         (new FrameBoxBlock()).registerBlock(FrameBoxTileEntity.class, FrameBoxItemBlock.class);
 
 //        FrameBoxBlock block = new FrameBoxBlock();
@@ -118,6 +116,23 @@ public class ModernMaterialUtilities {
     }
 
     public static ModernMaterial getMaterialFromName(final String materialName) {
-        return materialNameToMaterialMap.get(materialName);
+
+        ModernMaterial modernMaterial = materialNameToMaterialMap.getOrDefault(materialName, null);
+
+        if (modernMaterial == null) {
+            throw new IllegalArgumentException("Material % does not exist. Make sure you spelt it correctly.".replace("%", materialName));
+        }
+
+        return modernMaterial;
+    }
+
+    public static ArrayList<String> tooltipGenerator(ModernMaterial material) {
+        // Todo, this is just temporary as a proof of concept.
+        // Probably will put radioactive warning here. Not sure what else yet.
+        ArrayList<String> tooltip = new ArrayList<>();
+        tooltip.add("Generic Tooltip");
+        tooltip.add("Material Name: " + material.getMaterialName());
+
+        return tooltip;
     }
 }
