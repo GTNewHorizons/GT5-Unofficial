@@ -11,6 +11,7 @@
 package kubatech;
 
 import kubatech.api.utils.ModUtils;
+import kubatech.loaders.MobRecipeLoader;
 import kubatech.nei.IMCForNEI;
 import cpw.mods.fml.common.event.*;
 
@@ -53,5 +54,6 @@ public class ClientProxy extends CommonProxy {
 
     public void loadComplete(FMLLoadCompleteEvent event) {
         super.loadComplete(event);
+        MobRecipeLoader.generateMobRecipeMap();
     }
 }
