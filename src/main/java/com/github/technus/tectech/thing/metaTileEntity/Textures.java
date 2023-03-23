@@ -8,6 +8,7 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.objects.GT_SidedTexture;
+import gregtech.api.render.TextureFactory;
 
 public class Textures {
 
@@ -173,6 +174,56 @@ public class Textures {
                     new GT_RenderedTexture(OVERLAY_ENERGY_OUT_LASER, new short[] { 100, 100, 245, 0 }),
                     new GT_RenderedTexture(OVERLAY_ENERGY_OUT_LASER, new short[] { 80, 80, 245, 0 }),
                     new GT_RenderedTexture(OVERLAY_ENERGY_OUT_LASER, new short[] { 60, 60, 245, 0 }), };
+    public static final ITexture[] OVERLAYS_ENERGY_IN_WIRELESS_MULTI_4A = {
+            TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS, new short[] { 255, 50, 50, 0 }),
+            TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS, new short[] { 255, 50, 50, 0 }),
+            TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS, new short[] { 255, 50, 50, 0 }),
+            TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS, new short[] { 255, 50, 50, 0 }),
+            TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS, new short[] { 255, 50, 50, 0 }),
+            TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS, new short[] { 255, 50, 50, 0 }),
+            TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS, new short[] { 255, 50, 50, 0 }),
+            TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS, new short[] { 255, 50, 50, 0 }),
+            TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS, new short[] { 255, 50, 50, 0 }),
+            TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS, new short[] { 255, 50, 50, 0 }),
+            TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS, new short[] { 255, 50, 50, 0 }),
+            TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS, new short[] { 255, 50, 50, 0 }),
+            TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS, new short[] { 255, 50, 50, 0 }),
+            TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS, new short[] { 255, 50, 50, 0 }),
+            TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS, new short[] { 255, 50, 50, 0 }) };
+
+    public static final ITexture[] OVERLAYS_ENERGY_IN_WIRELESS_MULTI_16A = {
+            TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS, new short[] { 50, 50, 240, 0 }),
+            TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS, new short[] { 50, 50, 240, 0 }),
+            TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS, new short[] { 50, 50, 240, 0 }),
+            TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS, new short[] { 50, 50, 240, 0 }),
+            TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS, new short[] { 50, 50, 240, 0 }),
+            TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS, new short[] { 50, 50, 240, 0 }),
+            TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS, new short[] { 50, 50, 240, 0 }),
+            TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS, new short[] { 50, 50, 240, 0 }),
+            TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS, new short[] { 50, 50, 240, 0 }),
+            TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS, new short[] { 50, 50, 240, 0 }),
+            TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS, new short[] { 50, 50, 240, 0 }),
+            TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS, new short[] { 50, 50, 240, 0 }),
+            TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS, new short[] { 50, 50, 240, 0 }),
+            TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS, new short[] { 50, 50, 240, 0 }),
+            TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS, new short[] { 50, 50, 240, 0 }) };
+
+    public static final ITexture[] OVERLAYS_ENERGY_IN_WIRELESS_MULTI_64A = {
+            TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS, new short[] { 50, 255, 50, 0 }),
+            TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS, new short[] { 50, 255, 50, 0 }),
+            TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS, new short[] { 50, 255, 50, 0 }),
+            TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS, new short[] { 50, 255, 50, 0 }),
+            TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS, new short[] { 50, 255, 50, 0 }),
+            TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS, new short[] { 50, 255, 50, 0 }),
+            TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS, new short[] { 50, 255, 50, 0 }),
+            TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS, new short[] { 50, 255, 50, 0 }),
+            TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS, new short[] { 50, 255, 50, 0 }),
+            TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS, new short[] { 50, 255, 50, 0 }),
+            TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS, new short[] { 50, 255, 50, 0 }),
+            TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS, new short[] { 50, 255, 50, 0 }),
+            TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS, new short[] { 50, 255, 50, 0 }),
+            TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS, new short[] { 50, 255, 50, 0 }),
+            TextureFactory.of(OVERLAY_ENERGY_ON_WIRELESS, new short[] { 50, 255, 50, 0 }) };
 
     public static ITexture[][] MACHINE_CASINGS_TT = new ITexture[15][17];
 
