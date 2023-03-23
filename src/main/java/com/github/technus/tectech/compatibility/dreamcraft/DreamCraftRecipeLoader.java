@@ -6035,6 +6035,27 @@ public class DreamCraftRecipeLoader {
                 getItemContainer("Hatch_Energy_UEV").get(1L), getItemContainer("Hatch_Energy_UIV").get(1L),
                 getItemContainer("Hatch_Energy_UMV").get(1L), getItemContainer("Hatch_Energy_UXV").get(1L) };
 
+        ItemStack[] energyHatches_4A = { CustomItemList.eM_energyMulti4_EV.get(1),
+                CustomItemList.eM_energyMulti4_IV.get(1), CustomItemList.eM_energyMulti4_LuV.get(1),
+                CustomItemList.eM_energyMulti4_ZPM.get(1), CustomItemList.eM_energyMulti4_UV.get(1),
+                CustomItemList.eM_energyMulti4_UHV.get(1), CustomItemList.eM_energyMulti4_UEV.get(1),
+                CustomItemList.eM_energyMulti4_UIV.get(1), CustomItemList.eM_energyMulti4_UMV.get(1),
+                CustomItemList.eM_energyMulti4_UXV.get(1) };
+
+        ItemStack[] energyHatches_16A = { CustomItemList.eM_energyMulti16_EV.get(1),
+                CustomItemList.eM_energyMulti16_IV.get(1), CustomItemList.eM_energyMulti16_LuV.get(1),
+                CustomItemList.eM_energyMulti16_ZPM.get(1), CustomItemList.eM_energyMulti16_UV.get(1),
+                CustomItemList.eM_energyMulti16_UHV.get(1), CustomItemList.eM_energyMulti16_UEV.get(1),
+                CustomItemList.eM_energyMulti16_UIV.get(1), CustomItemList.eM_energyMulti16_UMV.get(1),
+                CustomItemList.eM_energyMulti16_UXV.get(1) };
+
+        ItemStack[] energyHatches_64A = { CustomItemList.eM_energyMulti64_EV.get(1),
+                CustomItemList.eM_energyMulti64_IV.get(1), CustomItemList.eM_energyMulti64_LuV.get(1),
+                CustomItemList.eM_energyMulti64_ZPM.get(1), CustomItemList.eM_energyMulti64_UV.get(1),
+                CustomItemList.eM_energyMulti64_UHV.get(1), CustomItemList.eM_energyMulti64_UEV.get(1),
+                CustomItemList.eM_energyMulti64_UIV.get(1), CustomItemList.eM_energyMulti64_UMV.get(1),
+                CustomItemList.eM_energyMulti64_UXV.get(1) };
+
         ItemStack[] dynamoHatches = { ItemList.Hatch_Dynamo_ULV.get(1), ItemList.Hatch_Dynamo_LV.get(1),
                 ItemList.Hatch_Dynamo_MV.get(1), ItemList.Hatch_Dynamo_HV.get(1), ItemList.Hatch_Dynamo_EV.get(1),
                 ItemList.Hatch_Dynamo_IV.get(1), ItemList.Hatch_Dynamo_LuV.get(1), ItemList.Hatch_Dynamo_ZPM.get(1),
@@ -6057,7 +6078,7 @@ public class DreamCraftRecipeLoader {
                 new Object[] { OrePrefixes.circuit.get(Materials.Quantum), 4L }, // MAX (Technically not MAX, can be
                 // changed once MAX circuits become
                 // craftable)
-                new Object[] { OrePrefixes.circuit.get(Materials.Quantum), 16L }, // MAX (Technically not MAX, can be
+                new Object[] { OrePrefixes.circuit.get(Materials.Quantum), 16L } // MAX (Technically not MAX, can be
                 // changed once MAX circuits become
                 // craftable)
         };
@@ -6069,7 +6090,28 @@ public class DreamCraftRecipeLoader {
                 ItemList.Wireless_Hatch_Energy_ZPM.get(1), ItemList.Wireless_Hatch_Energy_UV.get(1),
                 ItemList.Wireless_Hatch_Energy_UHV.get(1), ItemList.Wireless_Hatch_Energy_UEV.get(1),
                 ItemList.Wireless_Hatch_Energy_UIV.get(1), ItemList.Wireless_Hatch_Energy_UMV.get(1),
-                ItemList.Wireless_Hatch_Energy_UXV.get(1), };
+                ItemList.Wireless_Hatch_Energy_UXV.get(1) };
+
+        ItemStack[] wirelessHatches_4A = { CustomItemList.eM_energyWirelessMulti4_EV.get(1),
+                CustomItemList.eM_energyWirelessMulti4_IV.get(1), CustomItemList.eM_energyWirelessMulti4_LuV.get(1),
+                CustomItemList.eM_energyWirelessMulti4_ZPM.get(1), CustomItemList.eM_energyWirelessMulti4_UV.get(1),
+                CustomItemList.eM_energyWirelessMulti4_UHV.get(1), CustomItemList.eM_energyWirelessMulti4_UEV.get(1),
+                CustomItemList.eM_energyWirelessMulti4_UIV.get(1), CustomItemList.eM_energyWirelessMulti4_UMV.get(1),
+                CustomItemList.eM_energyWirelessMulti4_UXV.get(1) };
+
+        ItemStack[] wirelessHatches_16A = { CustomItemList.eM_energyWirelessMulti16_EV.get(1),
+                CustomItemList.eM_energyWirelessMulti16_IV.get(1), CustomItemList.eM_energyWirelessMulti16_LuV.get(1),
+                CustomItemList.eM_energyWirelessMulti16_ZPM.get(1), CustomItemList.eM_energyWirelessMulti16_UV.get(1),
+                CustomItemList.eM_energyWirelessMulti16_UHV.get(1), CustomItemList.eM_energyWirelessMulti16_UEV.get(1),
+                CustomItemList.eM_energyWirelessMulti16_UIV.get(1), CustomItemList.eM_energyWirelessMulti16_UMV.get(1),
+                CustomItemList.eM_energyWirelessMulti16_UXV.get(1) };
+
+        ItemStack[] wirelessHatches_64A = { CustomItemList.eM_energyWirelessMulti64_EV.get(1),
+                CustomItemList.eM_energyWirelessMulti64_IV.get(1), CustomItemList.eM_energyWirelessMulti64_LuV.get(1),
+                CustomItemList.eM_energyWirelessMulti64_ZPM.get(1), CustomItemList.eM_energyWirelessMulti64_UV.get(1),
+                CustomItemList.eM_energyWirelessMulti64_UHV.get(1), CustomItemList.eM_energyWirelessMulti64_UEV.get(1),
+                CustomItemList.eM_energyWirelessMulti64_UIV.get(1), CustomItemList.eM_energyWirelessMulti64_UMV.get(1),
+                CustomItemList.eM_energyWirelessMulti64_UXV.get(1) };
 
         ItemStack[] wirelessDynamos = { ItemList.Wireless_Dynamo_Energy_ULV.get(1),
                 ItemList.Wireless_Dynamo_Energy_LV.get(1), ItemList.Wireless_Dynamo_Energy_MV.get(1),
@@ -6078,7 +6120,7 @@ public class DreamCraftRecipeLoader {
                 ItemList.Wireless_Dynamo_Energy_ZPM.get(1), ItemList.Wireless_Dynamo_Energy_UV.get(1),
                 ItemList.Wireless_Dynamo_Energy_UHV.get(1), ItemList.Wireless_Dynamo_Energy_UEV.get(1),
                 ItemList.Wireless_Dynamo_Energy_UIV.get(1), ItemList.Wireless_Dynamo_Energy_UMV.get(1),
-                ItemList.Wireless_Dynamo_Energy_UXV.get(1), };
+                ItemList.Wireless_Dynamo_Energy_UXV.get(1) };
 
         // ------------------------ Wireless EU hatches ------------------------
 
@@ -6098,6 +6140,74 @@ public class DreamCraftRecipeLoader {
                             circuitsTierPlusTwo[i], ItemList.EnergisedTesseract.get(1) },
                     new FluidStack[] { new FluidStack(solderUEV, 1296), Materials.ExcitedDTEC.getFluid(500L) },
                     wirelessHatches[i],
+                    recipeDurationTicks,
+                    recipeEuPerTick);
+        }
+
+        // ------------------------ 4A Wireless EU hatches ------------------------
+
+        for (int i = 0; i < wirelessHatches_4A.length; i++) {
+
+            TT_recipeAdder.addResearchableAssemblylineRecipe(
+                    energyHatches_4A[i],
+                    totalComputation * 4,
+                    compPerSecond * 4,
+                    researchEuPerTick,
+                    researchAmperage * 2,
+                    new Object[] { energyHatches_4A[i], getModItem("GoodGenerator", "compactFusionCoil", 1, 1),
+                            ItemList.Casing_Coil_Superconductor.get(1), CustomItemList.Machine_Multi_Transformer.get(1),
+                            CustomItemList.eM_Power.get(4),
+                            GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SpaceTime, 4),
+                            GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.WhiteDwarfMatter, 1),
+                            circuitsTierPlusTwo[i + 4], ItemList.EnergisedTesseract.get(1) },
+                    new FluidStack[] { new FluidStack(solderUEV, 1_296 * 4), Materials.ExcitedDTEC.getFluid(500L * 4) },
+                    wirelessHatches_4A[i],
+                    recipeDurationTicks,
+                    recipeEuPerTick);
+        }
+
+        // ------------------------ 16A Wireless EU hatches ------------------------
+
+        for (int i = 0; i < wirelessHatches_16A.length; i++) {
+
+            TT_recipeAdder.addResearchableAssemblylineRecipe(
+                    energyHatches_16A[i],
+                    totalComputation * 16,
+                    compPerSecond * 16,
+                    researchEuPerTick,
+                    researchAmperage * 4,
+                    new Object[] { energyHatches_16A[i], getModItem("GoodGenerator", "compactFusionCoil", 1, 2),
+                            ItemList.Casing_Coil_Superconductor.get(1), CustomItemList.Machine_Multi_Transformer.get(1),
+                            CustomItemList.eM_Power.get(16),
+                            GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SpaceTime, 16),
+                            GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.BlackDwarfMatter, 1),
+                            circuitsTierPlusTwo[i + 4], ItemList.EnergisedTesseract.get(1) },
+                    new FluidStack[] { new FluidStack(solderUEV, 1_296 * 16),
+                            Materials.ExcitedDTEC.getFluid(500L * 16) },
+                    wirelessHatches_16A[i],
+                    recipeDurationTicks,
+                    recipeEuPerTick);
+        }
+
+        // ------------------------ 64A Wireless EU hatches ------------------------
+
+        for (int i = 0; i < wirelessHatches_64A.length; i++) {
+
+            TT_recipeAdder.addResearchableAssemblylineRecipe(
+                    energyHatches_64A[i],
+                    totalComputation * 64,
+                    compPerSecond * 64,
+                    researchEuPerTick,
+                    researchAmperage * 8,
+                    new Object[] { energyHatches_64A[i], getModItem("GoodGenerator", "compactFusionCoil", 1, 3),
+                            ItemList.Casing_Coil_Superconductor.get(1), CustomItemList.Machine_Multi_Transformer.get(1),
+                            CustomItemList.eM_Power.get(64),
+                            GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SpaceTime, 64),
+                            GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Universium, 1),
+                            circuitsTierPlusTwo[i + 4], ItemList.EnergisedTesseract.get(1) },
+                    new FluidStack[] { new FluidStack(solderUEV, 1_296 * 64),
+                            Materials.ExcitedDTEC.getFluid(500L * 64) },
+                    wirelessHatches_64A[i],
                     recipeDurationTicks,
                     recipeEuPerTick);
         }
