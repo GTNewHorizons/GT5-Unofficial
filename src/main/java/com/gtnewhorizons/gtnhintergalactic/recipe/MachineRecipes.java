@@ -481,7 +481,7 @@ public class MachineRecipes implements Runnable {
                 (int) VP[9]);
         // Miner Module MK-II
         TT_recipeAdder.addResearchableAssemblylineRecipe(
-                IGItems.SpaceElevatorModuleMinerT2,
+                IGItems.SpaceElevatorModuleMinerT1,
                 3000000,
                 1024,
                 3000000,
