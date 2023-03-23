@@ -168,7 +168,7 @@ GT5U.machines.stalled_vent.tooltip=§4Stalled: Cannot vent steam!
 GT5U.machines.stalled_vent.tooltip.1=§7Right-click with a wrench to
 GT5U.machines.stalled_vent.tooltip.2=§7point this machine's steam
 GT5U.machines.stalled_vent.tooltip.3=§7vent towards an empty space.
-GT5U.machines.oreprocessor1=§eRunning Mode: 
+GT5U.machines.oreprocessor1=§eRunning Mode:
 GT5U.machines.oreprocessor2=§cTime: %s s
 GT5U.machines.oreprocessor.void=§eVoid Stone Dust: %s
 GT5U.machines.oreprocessor.Macerate=Macerate
@@ -812,8 +812,8 @@ achievement.gt.blockmachines.wireless.transmitter.tier.13.desc=Pickup this item 
 achievement.gt.blockmachines.wireless.transmitter.tier.14=MAX Wireless Dynamo
 achievement.gt.blockmachines.wireless.transmitter.tier.14.desc=Pickup this item to see the recipe in NEI
 
-achievement.gt.blockmachines.multimachine.oildrilinfinite=Infinite Oil/Gas/Fluid Drilling Rig
-achievement.gt.blockmachines.multimachine.oildrilinfinite.desc=Pickup this item to see the recipe in NEI
+achievement.gt.blockmachines.multimachine.oildrillinfinite=Infinite Oil/Gas/Fluid Drilling Rig
+achievement.gt.blockmachines.multimachine.oildrillinfinite.desc=Pickup this item to see the recipe in NEI
 achievement.gt.blockmachines.multimachine.oreprocessor=Integrated Ore Factory
 achievement.gt.blockmachines.multimachine.oreprocessor.desc=Processing all those ores.
 
