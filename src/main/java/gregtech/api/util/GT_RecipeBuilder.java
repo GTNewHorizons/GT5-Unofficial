@@ -97,6 +97,9 @@ public class GT_RecipeBuilder {
         return new GT_RecipeBuilder();
     }
 
+    /**
+     * Non-OreDicted item inputs. Assumes input is unified.
+     */
     public GT_RecipeBuilder itemInputsUnified(ItemStack... inputs) {
         inputsBasic = ArrayExt.withoutTrailingNulls(inputs, ItemStack[]::new);
         inputsOreDict = null;
@@ -104,6 +107,9 @@ public class GT_RecipeBuilder {
         return this;
     }
 
+    /**
+     * Non-OreDicted item inputs. Assumes input is not unified.
+     */
     public GT_RecipeBuilder itemInputs(ItemStack... inputs) {
         inputsBasic = fix(inputs);
         inputsOreDict = null;
@@ -111,6 +117,9 @@ public class GT_RecipeBuilder {
         return this;
     }
 
+    /**
+     * OreDicted item inputs. Currently only used for assline recipes adder.
+     */
     public GT_RecipeBuilder itemInputs(Object... inputs) {
         inputsOreDict = inputs;
         alts = new ItemStack[inputs.length][];
