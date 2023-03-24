@@ -16,8 +16,10 @@ public class Textures {
     private static final IIconContainer OVERLAY_ENERGY_OUT_POWER = new CustomIcon("iconsets/OVERLAY_ENERGY_OUT_POWER");
     private static final IIconContainer OVERLAY_ENERGY_IN_LASER = new CustomIcon("iconsets/OVERLAY_ENERGY_IN_LASER");
     private static final IIconContainer OVERLAY_ENERGY_OUT_LASER = new CustomIcon("iconsets/OVERLAY_ENERGY_OUT_LASER");
-    private static final IIconContainer OVERLAY_ENERGY_ON_WIRELESS_4A = new CustomIcon("iconsets/OVERLAY_ENERGY_ON_WIRELESS_4A");
-    private static final IIconContainer OVERLAY_ENERGY_ON_WIRELESS_16A = new CustomIcon("iconsets/OVERLAY_ENERGY_ON_WIRELESS_16A");
+    private static final IIconContainer OVERLAY_ENERGY_ON_WIRELESS_4A = new CustomIcon(
+            "iconsets/OVERLAY_ENERGY_ON_WIRELESS_4A");
+    private static final IIconContainer OVERLAY_ENERGY_ON_WIRELESS_16A = new CustomIcon(
+            "iconsets/OVERLAY_ENERGY_ON_WIRELESS_16A");
     private static final IIconContainer MACHINE_UEV_SIDE = new CustomIcon("iconsets/MACHINE_UEV_SIDE");
     private static final IIconContainer MACHINE_UIV_SIDE = new CustomIcon("iconsets/MACHINE_UIV_SIDE");
     private static final IIconContainer MACHINE_UMV_SIDE = new CustomIcon("iconsets/MACHINE_UMV_SIDE");
