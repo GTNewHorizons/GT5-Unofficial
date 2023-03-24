@@ -247,6 +247,9 @@ achievement.gt.blockmachines.hatch.energywirelessmulti64.tier.12=UMV 64A Wireles
 achievement.gt.blockmachines.hatch.energywirelessmulti04.tier.13=UXV 4A Wireless Energy Hatch
 achievement.gt.blockmachines.hatch.energywirelessmulti16.tier.13=UXV 16A Wireless Energy Hatch
 achievement.gt.blockmachines.hatch.energywirelessmulti64.tier.13=UXV 64A Wireless Energy Hatch
+achievement.gt.blockmachines.hatch.energywirelessmulti04.tier.14=MAX 4A Wireless Energy Hatch
+achievement.gt.blockmachines.hatch.energywirelessmulti16.tier.14=MAX 16A Wireless Energy Hatch
+achievement.gt.blockmachines.hatch.energywirelessmulti64.tier.14=MAX 64A Wireless Energy Hatch
 
 gt.blockmachines.hatch.energytunnel1.tier.05.name=IV 256A/t Laser Target Hatch
 gt.blockmachines.hatch.energytunnel2.tier.05.name=IV 1024A/t Laser Target Hatch
