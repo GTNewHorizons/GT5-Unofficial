@@ -163,24 +163,32 @@ public class GT_MetaTileEntity_Hatch_WirelessMulti extends GT_MetaTileEntity_Hat
     }
 
     @Override
+    public ConnectionType getConnectionType() {
+        return ConnectionType.WIRELESS;
+    }
+
+    @Override
+    public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
+        if (aBaseMetaTileEntity.isServerSide()) {
+            // On first tick find the player name and attempt to add them to the map.
+
+            // UUID and username of the owner.
+            owner_uuid = aBaseMetaTileEntity.getOwnerUuid().toString();
+            owner_name = aBaseMetaTileEntity.getOwnerName();
+
+            strongCheckOrAddUser(owner_uuid, owner_name);
+
+            if (addEUToGlobalEnergyMap(owner_uuid, eu_transferred_per_operation.negate()))
+                setEUVar(eu_transferred_per_operation_long);
+        }
+    }
+
+    @Override
     public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
 
         super.onPreTick(aBaseMetaTileEntity, aTick);
 
         if (aBaseMetaTileEntity.isServerSide()) {
-
-            // On first tick find the player name and attempt to add them to the map.
-            if (aTick == 1) {
-
-                // UUID and username of the owner.
-                owner_uuid = aBaseMetaTileEntity.getOwnerUuid().toString();
-                owner_name = aBaseMetaTileEntity.getOwnerName();
-
-                strongCheckOrAddUser(owner_uuid, owner_name);
-
-                if (addEUToGlobalEnergyMap(owner_uuid, eu_transferred_per_operation.negate()))
-                    setEUVar(eu_transferred_per_operation_long);
-            }
 
             // This is set up in a way to be as optimised as possible. If a user has a relatively plentiful energy
             // network
