@@ -42,6 +42,7 @@ import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_MultiInput;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_ModHandler;
@@ -1067,6 +1068,8 @@ public class GregtechPump extends Item implements ISpecialElectricItem, IElectri
                                 PlayerUtils.messagePlayer(
                                         aPlayer,
                                         "Drained " + mAmountInserted + "L of " + aStored.getLocalizedName() + ".");
+                            } else {
+                                drain(aStack, mAmountInserted);
                             }
                             return b;
                         }
@@ -1214,7 +1217,8 @@ public class GregtechPump extends Item implements ISpecialElectricItem, IElectri
             return null;
         }
         final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();;
-        if (aMetaTileEntity == null) {
+        if (aMetaTileEntity == null || aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_MultiInput) {
+            // blacklist multiinput hatch as it's too complex
             return null;
         }
         if (aMetaTileEntity instanceof GT_MetaTileEntity_BasicTank) {
