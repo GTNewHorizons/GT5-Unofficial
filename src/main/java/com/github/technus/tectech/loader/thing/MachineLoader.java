@@ -418,6 +418,240 @@ public class MachineLoader implements Runnable {
                         "UXV 64A Energy Hatch",
                         13,
                         64).getStackForm(1L));
+        // ===================================================================================================
+        // Multi AMP Wireless INPUTS
+        // ===================================================================================================
+        eM_energyWirelessMulti4_EV.set(
+                new GT_MetaTileEntity_Hatch_WirelessMulti(
+                        15065,
+                        "hatch.energywirelessmulti04.tier.04",
+                        "EV 4A Wireless Energy Hatch",
+                        4,
+                        4).getStackForm(1L));
+        eM_energyWirelessMulti16_EV.set(
+                new GT_MetaTileEntity_Hatch_WirelessMulti(
+                        15066,
+                        "hatch.energywirelessmulti16.tier.04",
+                        "EV 16A Wireless Energy Hatch",
+                        4,
+                        16).getStackForm(1L));
+        eM_energyWirelessMulti64_EV.set(
+                new GT_MetaTileEntity_Hatch_WirelessMulti(
+                        15067,
+                        "hatch.energywirelessmulti64.tier.04",
+                        "EV 64A Wireless Energy Hatch",
+                        4,
+                        64).getStackForm(1L));
+        eM_energyWirelessMulti4_IV.set(
+                new GT_MetaTileEntity_Hatch_WirelessMulti(
+                        15068,
+                        "hatch.energywirelessmulti04.tier.05",
+                        "IV 4A Wireless Energy Hatch",
+                        5,
+                        4).getStackForm(1L));
+        eM_energyWirelessMulti16_IV.set(
+                new GT_MetaTileEntity_Hatch_WirelessMulti(
+                        15069,
+                        "hatch.energywirelessmulti16.tier.05",
+                        "IV 16A Wireless Energy Hatch",
+                        5,
+                        16).getStackForm(1L));
+        eM_energyWirelessMulti64_IV.set(
+                new GT_MetaTileEntity_Hatch_WirelessMulti(
+                        15070,
+                        "hatch.energywirelessmulti64.tier.05",
+                        "IV 64A Wireless Energy Hatch",
+                        5,
+                        64).getStackForm(1L));
+        eM_energyWirelessMulti4_LuV.set(
+                new GT_MetaTileEntity_Hatch_WirelessMulti(
+                        15071,
+                        "hatch.energywirelessmulti04.tier.06",
+                        "LuV 4A Wireless Energy Hatch",
+                        6,
+                        4).getStackForm(1L));
+        eM_energyWirelessMulti16_LuV.set(
+                new GT_MetaTileEntity_Hatch_WirelessMulti(
+                        15072,
+                        "hatch.energywirelessmulti16.tier.06",
+                        "LuV 16A Wireless Energy Hatch",
+                        6,
+                        16).getStackForm(1L));
+        eM_energyWirelessMulti64_LuV.set(
+                new GT_MetaTileEntity_Hatch_WirelessMulti(
+                        15073,
+                        "hatch.energywirelessmulti64.tier.06",
+                        "LuV 64A Wireless Energy Hatch",
+                        6,
+                        64).getStackForm(1L));
+        eM_energyWirelessMulti4_ZPM.set(
+                new GT_MetaTileEntity_Hatch_WirelessMulti(
+                        15074,
+                        "hatch.energywirelessmulti04.tier.07",
+                        "ZPM 4A Wireless Energy Hatch",
+                        7,
+                        4).getStackForm(1L));
+        eM_energyWirelessMulti16_ZPM.set(
+                new GT_MetaTileEntity_Hatch_WirelessMulti(
+                        15075,
+                        "hatch.energywirelessmulti16.tier.07",
+                        "ZPM 16A Wireless Energy Hatch",
+                        7,
+                        16).getStackForm(1L));
+        eM_energyWirelessMulti64_ZPM.set(
+                new GT_MetaTileEntity_Hatch_WirelessMulti(
+                        15076,
+                        "hatch.energywirelessmulti64.tier.07",
+                        "ZPM 64A Wireless Energy Hatch",
+                        7,
+                        64).getStackForm(1L));
+        eM_energyWirelessMulti4_UV.set(
+                new GT_MetaTileEntity_Hatch_WirelessMulti(
+                        15077,
+                        "hatch.energywirelessmulti04.tier.08",
+                        "UV 4A Wireless Energy Hatch",
+                        8,
+                        4).getStackForm(1L));
+        eM_energyWirelessMulti16_UV.set(
+                new GT_MetaTileEntity_Hatch_WirelessMulti(
+                        15078,
+                        "hatch.energywirelessmulti16.tier.08",
+                        "UV 16A Wireless Energy Hatch",
+                        8,
+                        16).getStackForm(1L));
+        eM_energyWirelessMulti64_UV.set(
+                new GT_MetaTileEntity_Hatch_WirelessMulti(
+                        15079,
+                        "hatch.energywirelessmulti64.tier.08",
+                        "UV 64A Wireless Energy Hatch",
+                        8,
+                        64).getStackForm(1L));
+        eM_energyWirelessMulti4_UHV.set(
+                new GT_MetaTileEntity_Hatch_WirelessMulti(
+                        15080,
+                        "hatch.energywirelessmulti04.tier.09",
+                        "UHV 4A Wireless Energy Hatch",
+                        9,
+                        4).getStackForm(1L));
+        eM_energyWirelessMulti16_UHV.set(
+                new GT_MetaTileEntity_Hatch_WirelessMulti(
+                        15081,
+                        "hatch.energywirelessmulti16.tier.09",
+                        "UHV 16A Wireless Energy Hatch",
+                        9,
+                        16).getStackForm(1L));
+        eM_energyWirelessMulti64_UHV.set(
+                new GT_MetaTileEntity_Hatch_WirelessMulti(
+                        15082,
+                        "hatch.energywirelessmulti64.tier.09",
+                        "UHV 64A Wireless Energy Hatch",
+                        9,
+                        64).getStackForm(1L));
+        eM_energyWirelessMulti4_UEV.set(
+                new GT_MetaTileEntity_Hatch_WirelessMulti(
+                        15083,
+                        "hatch.energywirelessmulti04.tier.10",
+                        "UEV 4A Wireless Energy Hatch",
+                        10,
+                        4).getStackForm(1L));
+        eM_energyWirelessMulti16_UEV.set(
+                new GT_MetaTileEntity_Hatch_WirelessMulti(
+                        15084,
+                        "hatch.energywirelessmulti16.tier.10",
+                        "UEV 16A Wireless Energy Hatch",
+                        10,
+                        16).getStackForm(1L));
+        eM_energyWirelessMulti64_UEV.set(
+                new GT_MetaTileEntity_Hatch_WirelessMulti(
+                        15085,
+                        "hatch.energywirelessmulti64.tier.10",
+                        "UEV 64A Wireless Energy Hatch",
+                        10,
+                        64).getStackForm(1L));
+        eM_energyWirelessMulti4_UIV.set(
+                new GT_MetaTileEntity_Hatch_WirelessMulti(
+                        15086,
+                        "hatch.energywirelessmulti04.tier.11",
+                        "UIV 4A Wireless Energy Hatch",
+                        11,
+                        4).getStackForm(1L));
+        eM_energyWirelessMulti16_UIV.set(
+                new GT_MetaTileEntity_Hatch_WirelessMulti(
+                        15087,
+                        "hatch.energywirelessmulti16.tier.11",
+                        "UIV 16A Wireless Energy Hatch",
+                        11,
+                        16).getStackForm(1L));
+        eM_energyWirelessMulti64_UIV.set(
+                new GT_MetaTileEntity_Hatch_WirelessMulti(
+                        15088,
+                        "hatch.energywirelessmulti64.tier.11",
+                        "UIV 64A Wireless Energy Hatch",
+                        11,
+                        64).getStackForm(1L));
+        eM_energyWirelessMulti4_UMV.set(
+                new GT_MetaTileEntity_Hatch_WirelessMulti(
+                        15089,
+                        "hatch.energywirelessmulti04.tier.12",
+                        "UMV 4A Wireless Energy Hatch",
+                        12,
+                        4).getStackForm(1L));
+        eM_energyWirelessMulti16_UMV.set(
+                new GT_MetaTileEntity_Hatch_WirelessMulti(
+                        15090,
+                        "hatch.energywirelessmulti16.tier.12",
+                        "UMV 16A Wireless Energy Hatch",
+                        12,
+                        16).getStackForm(1L));
+        eM_energyWirelessMulti64_UMV.set(
+                new GT_MetaTileEntity_Hatch_WirelessMulti(
+                        15091,
+                        "hatch.energywirelessmulti64.tier.12",
+                        "UMV 64A Wireless Energy Hatch",
+                        12,
+                        64).getStackForm(1L));
+        eM_energyWirelessMulti4_UXV.set(
+                new GT_MetaTileEntity_Hatch_WirelessMulti(
+                        15092,
+                        "hatch.energywirelessmulti04.tier.13",
+                        "UXV 4A Wireless Energy Hatch",
+                        13,
+                        4).getStackForm(1L));
+        eM_energyWirelessMulti16_UXV.set(
+                new GT_MetaTileEntity_Hatch_WirelessMulti(
+                        15093,
+                        "hatch.energywirelessmulti16.tier.13",
+                        "UXV 16A Wireless Energy Hatch",
+                        13,
+                        16).getStackForm(1L));
+        eM_energyWirelessMulti64_UXV.set(
+                new GT_MetaTileEntity_Hatch_WirelessMulti(
+                        15094,
+                        "hatch.energywirelessmulti64.tier.13",
+                        "UXV 64A Wireless Energy Hatch",
+                        13,
+                        64).getStackForm(1L));
+        eM_energyWirelessMulti4_MAX.set(
+                new GT_MetaTileEntity_Hatch_WirelessMulti(
+                        15095,
+                        "hatch.energywirelessmulti04.tier.14",
+                        "MAX 4A Wireless Energy Hatch",
+                        14,
+                        4).getStackForm(1L));
+        eM_energyWirelessMulti16_MAX.set(
+                new GT_MetaTileEntity_Hatch_WirelessMulti(
+                        15096,
+                        "hatch.energywirelessmulti16.tier.14",
+                        "MAX 16A Wireless Energy Hatch",
+                        14,
+                        16).getStackForm(1L));
+        eM_energyWirelessMulti64_MAX.set(
+                new GT_MetaTileEntity_Hatch_WirelessMulti(
+                        15097,
+                        "hatch.energywirelessmulti64.tier.14",
+                        "MAX 64A Wireless Energy Hatch",
+                        14,
+                        64).getStackForm(1L));
 
         // ===================================================================================================
         // Multi AMP Laser INPUTS
