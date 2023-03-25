@@ -541,6 +541,8 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
 
         // Check Inputs align
         int aItemCount = tRecipe.mInputs.length;
+        if (mInputBusses.size() < aItemCount)
+            return null;
         for (int i = 0; i < aItemCount; i++) {
             GT_MetaTileEntity_Hatch_InputBus tInputBus = mInputBusses.get(i);
             if (tInputBus == null) {
@@ -570,6 +572,8 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
 
     private boolean hasAllFluids(GT_Recipe.GT_Recipe_AssemblyLine tRecipe) {
         int aFluidCount = tRecipe.mFluidInputs.length;
+        if (mInputHatches.size() < aFluidCount)
+            return false;
         for (int i = 0; i < aFluidCount; i++) {
             GT_MetaTileEntity_Hatch_Input tInputHatch = mInputHatches.get(i);
             if (!isValidMetaTileEntity(tInputHatch)) {
