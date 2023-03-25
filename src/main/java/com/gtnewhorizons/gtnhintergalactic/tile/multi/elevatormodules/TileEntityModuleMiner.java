@@ -156,6 +156,10 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase {
      */
     @Override
     public boolean checkRecipe_EM(ItemStack aStack) {
+        if (gregtech.api.enums.GT_Values.V[tTier] * (long) parallelSetting.get() > getEUVar()) {
+            return false;
+        }
+
         lEUt = 0;
         eAmpereFlow = 0;
         eRequiredData = 0;

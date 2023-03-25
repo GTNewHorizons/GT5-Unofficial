@@ -98,7 +98,6 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase {
      */
     @Override
     public boolean checkRecipe_EM(ItemStack aStack) {
-
         FluidStack[] fluids = getCompactedFluids();
         ItemStack[] items = getCompactedInputs();
 
@@ -111,7 +110,7 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase {
                 fluids,
                 items);
 
-        if (recipe == null) {
+        if (recipe == null || gregtech.api.enums.GT_Values.V[tTier] * (long) parallelSetting.get() > getEUVar()) {
             return false;
         }
 

@@ -221,6 +221,13 @@ public abstract class TileEntityModuleBase extends GT_MetaTileEntity_EnhancedMul
     }
 
     /**
+     * Tells the module that it no longer is connected to a Space Elevator
+     */
+    public void disconnect() {
+        isConnected = false;
+    }
+
+    /**
      * Charge the energy buffer of the controller
      *
      * @param aBaseMetaTileEntity This

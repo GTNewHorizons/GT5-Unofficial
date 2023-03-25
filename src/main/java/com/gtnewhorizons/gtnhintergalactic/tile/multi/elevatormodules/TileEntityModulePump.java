@@ -103,6 +103,10 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase {
      */
     @Override
     public boolean checkRecipe_EM(ItemStack aStack) {
+        if (gregtech.api.enums.GT_Values.V[tTier] * getParallelRecipes() * getParallels() > getEUVar()) {
+            return false;
+        }
+
         List<FluidStack> outputs = new ArrayList<>();
         int usedEUt = 0;
         for (int i = 0; i < getParallelRecipes(); i++) {

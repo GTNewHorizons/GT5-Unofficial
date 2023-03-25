@@ -20,6 +20,12 @@ public class IG_UITextures {
     public static final UITexture OVERLAY_BUTTON_PROJECTS = UITexture
             .fullImage(ASSET_PREFIX, "gui/overlay_button/projects.png");
 
+    public static final UITexture OVERLAY_BUTTON_SPACE_ELEVATOR_EXTENSION_ENABLED = UITexture
+            .fullImage(ASSET_PREFIX, "gui/overlay_button/space_elevator_extension_enabled.png");
+
+    public static final UITexture OVERLAY_BUTTON_SPACE_ELEVATOR_EXTENSION_DISABLED = UITexture
+            .fullImage(ASSET_PREFIX, "gui/overlay_button/space_elevator_extension_disabled.png");
+
     public static final UITexture PICTURE_ELEVATOR_LOGO = UITexture
             .fullImage(ASSET_PREFIX, "gui/picture/space_elevator_logo.png");
 

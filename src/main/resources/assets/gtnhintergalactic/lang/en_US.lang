@@ -116,6 +116,7 @@ ig.text.noproject=Please select a project
 ig.text.finishedproject=Please select an upgrade. The project is already finished
 ig.text.nolocation=Please select a location
 ig.button.travel=Travel
+ig.button.extension=Extension
 ig.button.projects=Projects
 
 # Planetary Gas Siphon

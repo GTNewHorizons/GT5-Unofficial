@@ -134,7 +134,7 @@ public class TileEntityModuleManager extends TileEntityModuleBase {
 
     @Override
     public boolean checkRecipe_EM(ItemStack itemStack) {
-        if (projectWorkingOn == null) {
+        if (projectWorkingOn == null || gregtech.api.enums.GT_Values.V[tTier] > getEUVar()) {
             return false;
         }
 

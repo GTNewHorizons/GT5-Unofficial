@@ -98,6 +98,9 @@ public class TileEntityModuleResearch extends TileEntityModuleBase {
      */
     @Override
     public boolean checkRecipe_EM(ItemStack aStack) {
+        if (gregtech.api.enums.GT_Values.V[tTier] > getEUVar()) {
+            return false;
+        }
 
         FluidStack[] fluids = getStoredFluids().toArray(new FluidStack[0]);
         ItemStack[] items = getStoredInputs().toArray(new ItemStack[0]);
