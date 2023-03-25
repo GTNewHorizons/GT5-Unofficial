@@ -497,7 +497,7 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
             // overflow again :(
             lEUt = Long.MIN_VALUE;
             for (int i = 0; i < working; i++) {
-                if (!drainEnergyInput(-baseEUt)){
+                if (!drainEnergyInput(-baseEUt)) {
                     criticalStopMachine();
                     return false;
                 }
@@ -638,7 +638,16 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
             if (recipe != null && recipe.mEUt <= inputVoltage) {
                 setCurrentRecipe(stack, recipe);
                 // first overclock normally
-                calculateOverclockedNessMulti((long) currentRecipe.mEUt, Math.max(recipe.mDuration / recipe.mInputs.length, 1), 1, inputVoltage);
+                // we use the new oc calculator instead
+                // calculateOverclockedNessMulti from super class has a mysterious 5% cable loss thing at the moment
+                // of writing
+                GT_OverclockCalculator ocCalc = new GT_OverclockCalculator()
+                        .setRecipeEUt(currentRecipe.mEUt)
+                        .setDuration(Math.max(recipe.mDuration / recipe.mInputs.length, 1))
+                        .setEUt(inputVoltage);
+                // since we already checked mEUt <= inputVoltage, no need to check if recipe is too OP
+                lEUt = ocCalc.getConsumption();
+                mMaxProgresstime = ocCalc.getDuration();
                 // then laser overclock if needed
                 if (!mExoticEnergyHatches.isEmpty()) {
                     OverclockHelper.OverclockOutput laserOverclock = OverclockHelper.laserOverclock(lEUt, mMaxProgresstime, inputEUt / recipe.mInputs.length, ConfigurationHandler.INSTANCE.getLaserOCPenaltyFactor());
@@ -646,14 +655,6 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
                         lEUt = laserOverclock.getEUt();
                         mMaxProgresstime = laserOverclock.getDuration();
                     }
-                }
-                // In case recipe is too OP for that machine
-                if (mMaxProgresstime == Integer.MAX_VALUE - 1 && lEUt == Integer.MAX_VALUE - 1) {
-                    if (GT_Values.D1) {
-                        GT_FML_LOGGER.info("Recipe too OP");
-                    }
-                    mMaxProgresstime = 0;
-                    continue;
                 }
                 // correct the recipe duration
                 mMaxProgresstime *= recipe.mInputs.length;
