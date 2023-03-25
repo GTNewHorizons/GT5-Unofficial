@@ -212,6 +212,7 @@ public class ItemRegistry {
     public static ItemStack cal;
     public static ItemStack compressedHatch;
     public static ItemStack giantOutputHatch;
+    public static ItemStack humongousInputHatch;
 
     public static ItemStack[][][] TecTechLaserAdditions = new ItemStack[3][4][4];
     public static ItemStack TecTechPipeEnergyLowPower;
@@ -351,6 +352,10 @@ public class ItemRegistry {
                     ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 9,
                     "GiantOutputHatch",
                     "Giant Output Hatch").getStackForm(1L);
+            ItemRegistry.humongousInputHatch = new GT_MetaTileEntity_HumongousInputHatch(
+                    ConfigHandler.IDOffset + GT_Values.VN.length * 9 + 55,
+                    "HumongousInputHatch",
+                    "Humongous Input Hatch").getStackForm(1L);
             ItemRegistry.megaMachines[2] = new GT_TileEntity_MegaDistillTower(
                     ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 10,
                     "MegaDistillationTower",

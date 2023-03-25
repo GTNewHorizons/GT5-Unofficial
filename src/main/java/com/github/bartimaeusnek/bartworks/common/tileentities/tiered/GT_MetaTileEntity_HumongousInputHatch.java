@@ -13,41 +13,32 @@
 
 package com.github.bartimaeusnek.bartworks.common.tileentities.tiered;
 
-import net.minecraftforge.fluids.FluidStack;
-
-import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-import gregtech.api.util.GT_Utility;
 import gregtech.common.gui.modularui.widget.FluidDisplaySlotWidget;
 
-public class GT_MetaTileEntity_CompressedFluidHatch extends GT_MetaTileEntity_Hatch_Input {
+public class GT_MetaTileEntity_HumongousInputHatch extends GT_MetaTileEntity_Hatch_Input {
 
-    public GT_MetaTileEntity_CompressedFluidHatch(int aID, String aName, String aNameRegional) {
+    public GT_MetaTileEntity_HumongousInputHatch(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional, 0);
-        this.mDescriptionArray[1] = "Capacity: 100,000,000L";
+        this.mDescriptionArray[1] = "Capacity: 2,000,000,000L";
     }
 
-    public GT_MetaTileEntity_CompressedFluidHatch(String aName, int aTier, String[] aDescription,
+    public GT_MetaTileEntity_HumongousInputHatch(String aName, int aTier, String[] aDescription,
             ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
     }
 
     @Override
     public int getCapacity() {
-        return 100_000_000;
-    }
-
-    @Override
-    public boolean isFluidInputAllowed(FluidStack aFluid) {
-        return GT_Utility.areFluidsEqual(aFluid, Materials.LiquidAir.getFluid(1));
+        return 2_000_000_000;
     }
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_CompressedFluidHatch(
+        return new GT_MetaTileEntity_HumongousInputHatch(
                 this.mName,
                 this.mTier,
                 this.mDescriptionArray,
@@ -56,6 +47,6 @@ public class GT_MetaTileEntity_CompressedFluidHatch extends GT_MetaTileEntity_Ha
 
     @Override
     protected FluidDisplaySlotWidget createDrainableFluidSlot() {
-        return super.createDrainableFluidSlot().setEmptyCanFillFilter(f -> f == Materials.LiquidAir.mFluid);
+        return super.createDrainableFluidSlot();
     }
 }
