@@ -208,6 +208,7 @@ public enum GregtechItemList implements GregtechItemContainer {
 
     // Upgrade chip for Distillus
     Distillus_Upgrade_Chip,
+    Maceration_Upgrade_Chip,
 
     // Chips used to nerf my multis via custom behavioural attachments
     Chip_MultiNerf_NoOutputBonus,

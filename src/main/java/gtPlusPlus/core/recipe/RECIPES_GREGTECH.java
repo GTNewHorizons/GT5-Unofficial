@@ -9,10 +9,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 import cpw.mods.fml.common.Loader;
-import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.*;
 import gregtech.api.util.*;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
@@ -1509,6 +1506,30 @@ public class RECIPES_GREGTECH {
                 MISC_MATERIALS.SOLAR_SALT_COLD.getCell(5),
                 20 * 10,
                 120);
+        GT_Values.RA.addMixerRecipe(
+                CI.getNumberedAdvancedCircuit(2),
+                Materials.Titanium.getDust(9),
+                Materials.Carbon.getDust(9),
+                Materials.Potassium.getDust(9),
+                Materials.Lithium.getDust(9),
+                Materials.Sulfur.getDust(9),
+                Materials.Hydrogen.getFluid(5000),
+                null,
+                ALLOY.LEAGRISIUM.getDust(50),
+                20 * 60,
+                (int) TierEU.RECIPE_EV);
+        GT_Values.RA.addMixerRecipe(
+                CI.getNumberedAdvancedCircuit(2),
+                Materials.Steel.getDust(16),
+                Materials.Molybdenum.getDust(1),
+                Materials.Titanium.getDust(1),
+                Materials.Nickel.getDust(4),
+                Materials.Cobalt.getDust(2),
+                GT_Values.NF,
+                null,
+                ALLOY.MARAGING250.getDust(24),
+                20 * 60,
+                (int) TierEU.RECIPE_EV);
     }
 
     private static void chemicalReactorRecipes() {

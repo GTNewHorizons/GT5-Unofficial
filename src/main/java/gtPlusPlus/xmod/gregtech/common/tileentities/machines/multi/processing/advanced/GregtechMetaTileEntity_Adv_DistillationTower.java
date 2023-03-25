@@ -411,7 +411,7 @@ public class GregtechMetaTileEntity_Adv_DistillationTower extends
             if (aGuiStack != null) {
                 if (GT_Utility.areStacksEqual(aGuiStack, GregtechItemList.Distillus_Upgrade_Chip.get(1))) {
                     this.mUpgraded = true;
-                    ItemUtils.depleteStack(aGuiStack);
+                    mInventory[1] = ItemUtils.depleteStack(aGuiStack);
                 }
             }
         }
