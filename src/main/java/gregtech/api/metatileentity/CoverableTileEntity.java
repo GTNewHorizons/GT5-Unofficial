@@ -400,7 +400,13 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
     @Override
     public void setOutputRedstoneSignal(byte aSide, byte aStrength) {
         aStrength = (byte) Math.min(Math.max(0, aStrength), 15);
-        if (aSide >= 0 && aSide < 6 && mSidedRedstone[aSide] != aStrength) {
+        if (aSide < 0 || aSide >= 6) return;
+
+        if (mSidedRedstone[aSide] != aStrength || (mStrongRedstone & (1 << aSide)) > 0) {
+            if ((mStrongRedstone & (1 << aSide)) > 0) {
+                mStrongRedstone ^= (1 << aSide);
+                issueBlockUpdate();
+            }
             mSidedRedstone[aSide] = aStrength;
             issueBlockUpdate();
         }
@@ -408,8 +414,14 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
 
     @Override
     public void setStrongOutputRedstoneSignal(byte aSide, byte aStrength) {
-        mStrongRedstone |= (1 << aSide);
-        setOutputRedstoneSignal(aSide, aStrength);
+        aStrength = (byte) Math.min(Math.max(0, aStrength), 15);
+        if (aSide < 0 || aSide >= 6) return;
+
+        if (mSidedRedstone[aSide] != aStrength || (mStrongRedstone & (1 << aSide)) == 0) {
+            mStrongRedstone |= (1 << aSide);
+            mSidedRedstone[aSide] = aStrength;
+            issueBlockUpdate();
+        }
     }
 
     @Override
@@ -560,7 +572,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
 
     /**
      * Add installed cover information, generally called from ItemBlock
-     * 
+     *
      * @param aNBT  - NBTTagCompound from the stack
      * @param aList - List to add the information to
      */
