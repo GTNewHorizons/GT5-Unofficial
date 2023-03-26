@@ -30,15 +30,13 @@ import net.minecraftforge.fluids.IFluidContainerItem;
 import net.minecraftforge.fluids.IFluidHandler;
 import net.minecraftforge.fluids.IFluidTank;
 
-import com.gtnewhorizons.modularui.api.drawable.Text;
-import com.gtnewhorizons.modularui.api.math.Alignment;
+import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
+import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
 import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -56,7 +54,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.WorldSpawnedEventBuilder.ParticleEventBuilder;
-import gregtech.common.gui.modularui.widget.FluidDisplaySlotWidget;
 
 public class GT_MetaTileEntity_Boiler_Lava extends GT_MetaTileEntity_Boiler {
 
@@ -64,7 +61,7 @@ public class GT_MetaTileEntity_Boiler_Lava extends GT_MetaTileEntity_Boiler {
     public static final int ENERGY_PER_LAVA = 1;
     public static final int CONSUMPTION_PER_HEATUP = 3;
     public static final int PRODUCTION_PER_SECOND = 600;
-    private final FluidTank lavaTank = new FluidTank(FluidRegistry.getFluidStack("lava", 0), getCapacity());
+    private final FluidTank lavaTank = new LavaTank(null, getCapacity());
     private int mCooledLava = 0;
 
     public GT_MetaTileEntity_Boiler_Lava(int aID, String aName, String aNameRegional) {
@@ -167,6 +164,7 @@ public class GT_MetaTileEntity_Boiler_Lava extends GT_MetaTileEntity_Boiler {
 
     @Override
     protected int getEnergyConsumption() {
+        this.mCooledLava += CONSUMPTION_PER_HEATUP;
         return CONSUMPTION_PER_HEATUP;
     }
 
@@ -293,21 +291,18 @@ public class GT_MetaTileEntity_Boiler_Lava extends GT_MetaTileEntity_Boiler {
     }
 
     /**
-     * Processes Lava Input for this Lava Boiler
+     * Processes cooled Lava into Obsidian
      *
-     * @param amount The amount of Lava Input to process
-     * @return success
+     * @return success | failure when cannot output
      */
-    private boolean processLava(int amount) {
-        if (this.mCooledLava + amount >= 1000) {
+    private boolean lavaToObsidian() {
+        if (this.mCooledLava >= 1000) {
             if (getBaseMetaTileEntity().addStackToSlot(3, new ItemStack(Blocks.obsidian, 1))) {
                 this.mCooledLava -= 1000;
             } else {
                 return false;
             }
         }
-        this.mCooledLava += amount;
-        this.mProcessingEnergy += amount * ENERGY_PER_LAVA;
         return true;
     }
 
@@ -430,8 +425,9 @@ public class GT_MetaTileEntity_Boiler_Lava extends GT_MetaTileEntity_Boiler {
         final int amountToDrain = Math.min(lavaTank.getFluid().amount, 1000);
         final FluidStack drainedLava = lavaTank.drain(amountToDrain, false);
         if (drainedLava == null || drainedLava.amount == 0) return;
-        if (!processLava(drainedLava.amount)) return;
+        if (!lavaToObsidian()) return;
         lavaTank.drain(amountToDrain, true);
+        this.mProcessingEnergy += drainedLava.amount * ENERGY_PER_LAVA;
     }
 
     @Override
@@ -458,17 +454,10 @@ public class GT_MetaTileEntity_Boiler_Lava extends GT_MetaTileEntity_Boiler {
                 new FluidTankInfo(getDrainableStack(), getCapacity()) };
     }
 
-    protected FluidDisplaySlotWidget createFillableFluidSlot() {
-        return new FluidDisplaySlotWidget(inventoryHandler, getStackDisplaySlot())
-                .setFluidAccessConstructor(() -> constructFluidAccess(false)).setIHasFluidDisplay(this)
-                .setCanDrain(true).setCanFill(true).setActionRealClick(FluidDisplaySlotWidget.Action.TRANSFER)
-                .setBeforeRealClick((clickData, widget) -> {
-                    if (NetworkUtils.isClient()) {
-                        // propagate display item content to actual fluid stored in this tank
-                        setFillableStack(GT_Utility.getFluidFromDisplayStack(widget.getMcSlot().getStack()));
-                    }
-                    return true;
-                });
+    @Override
+    protected IDrawable[] getAshSlotBackground() {
+        return new IDrawable[] { getGUITextureSet().getItemSlot(),
+                GT_UITextures.OVERLAY_SLOT_BLOCK_STEAM.get(getSteamVariant()) };
     }
 
     @Override
@@ -477,24 +466,11 @@ public class GT_MetaTileEntity_Boiler_Lava extends GT_MetaTileEntity_Boiler {
                 new SlotWidget(inventoryHandler, 0).setPos(43, 25)
                         .setBackground(getGUITextureSet().getItemSlot(), getOverlaySlotIn()))
                 .widget(
-                        new SlotWidget(inventoryHandler, 1).setPos(43, 61)
+                        new SlotWidget(inventoryHandler, 1).setAccess(true, false).setPos(43, 61)
                                 .setBackground(getGUITextureSet().getItemSlot(), getOverlaySlotOut()))
-
                 .widget(
-                        createFillableFluidSlot()
-                                .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_IN)
-                                .setPos(115, 61))
-                .widget(
-                        TextWidget
-                                .dynamicText(
-                                        () -> new Text(
-                                                String.format(
-                                                        "%d",
-                                                        (lavaTank.getFluid() != null ? lavaTank.getFluid().amount : 0)
-                                                                / 1000)).shadow())
-                                .setTextAlignment(Alignment.BottomRight).setDefaultColor(COLOR_TEXT_WHITE.get())
-                                .setMaxWidth(64).setPos(115, 70))
-
+                        new FluidSlotWidget(lavaTank)
+                                .setBackground(getGUITextureSet().getFluidSlot(), getOverlaySlotIn()).setPos(115, 61))
                 .widget(
                         createAshSlot())
                 .widget(
@@ -521,5 +497,17 @@ public class GT_MetaTileEntity_Boiler_Lava extends GT_MetaTileEntity_Boiler {
                                 .setTexture(getProgressbarFuel(), 14).setDirection(ProgressBar.Direction.UP)
                                 .setPos(116, 45).setSize(14, 14))
                 .widget(new DrawableWidget().setDrawable(getOverlaySlotCanister()).setPos(43, 43).setSize(18, 18));
+    }
+
+    static class LavaTank extends FluidTank {
+
+        public LavaTank(FluidStack stack, int capacity) {
+            super(stack, capacity);
+        }
+
+        @Override
+        public int fill(FluidStack resource, boolean doFill) {
+            return GT_ModHandler.isLava(resource) ? super.fill(resource, doFill) : 0;
+        }
     }
 }
