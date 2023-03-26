@@ -223,6 +223,7 @@ GT5U.gui.button.input_separation=Input Separation
 GT5U.gui.button.batch_mode=Batch Mode
 GT5U.gui.button.lock_recipe=Lock Recipe
 GT5U.gui.button.down_tier=Down Tier
+GT5U.gui.button.tier=Tier:
 
 GT5U.item.programmed_circuit.select.header=Reprogram Circuit
 
