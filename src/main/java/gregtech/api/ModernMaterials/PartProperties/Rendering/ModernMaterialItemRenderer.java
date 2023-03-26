@@ -11,6 +11,8 @@ import gregtech.api.ModernMaterials.PartsClasses.PartsEnum;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderItem;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.client.IItemRenderer;
@@ -67,11 +69,6 @@ public class ModernMaterialItemRenderer implements IItemRenderer {
 
         GL11.glPushMatrix();
 
-        // Enable transparency.
-        GL11.glEnable(GL11.GL_BLEND);
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-
-        // Adjusts the items position to render correctly in world.
         renderPositionCorrection(type);
 
         // Iterate over the items layers and render them.
@@ -84,8 +81,7 @@ public class ModernMaterialItemRenderer implements IItemRenderer {
                 GL11.glColor3f(
                     materialColor.getRed(),
                     materialColor.getGreen(),
-                    materialColor.getBlue()
-                );
+                    materialColor.getBlue()); // todo review alpha
             }
 
             renderLayer(iconWrapper.icon, type);
