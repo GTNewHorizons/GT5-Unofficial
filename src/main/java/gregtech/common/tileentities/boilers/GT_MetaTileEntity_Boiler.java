@@ -482,7 +482,8 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
     }
 
     protected SlotWidget createAshSlot() {
-        return (SlotWidget) new SlotWidget(inventoryHandler, 3).setPos(115, 25).setBackground(getAshSlotBackground());
+        return (SlotWidget) new SlotWidget(inventoryHandler, 3).setAccess(true, false).setPos(115, 25)
+                .setBackground(getAshSlotBackground());
     }
 
     @Override
