@@ -5,7 +5,6 @@ import java.util.List;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.ModernMaterials.Blocks.BlocksEnum;
-import gregtech.api.ModernMaterials.Blocks.FrameBox.FrameBoxBlock;
 import gregtech.api.ModernMaterials.ModernMaterial;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -16,7 +15,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
@@ -53,11 +52,11 @@ public abstract class DumbBlock extends BlockContainer {
 
     @Override
     public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack itemStack) {
-        final TileEntity tTileEntity = world.getTileEntity(x, y, z);
-        final DumbTileEntity tileEntityFrameBox = (DumbTileEntity) tTileEntity;
+        final TileEntity tileEntity = world.getTileEntity(x, y, z);
+        final DumbTileEntity dumbTileEntity = (DumbTileEntity) tileEntity;
 
-        tileEntityFrameBox.setMaterialID(itemStack.getItemDamage());
-        tileEntityFrameBox.markDirty();
+        dumbTileEntity.setMaterialID(itemStack.getItemDamage());
+        dumbTileEntity.markDirty();
         world.markBlockForUpdate(x, y, z);
     }
 
@@ -69,17 +68,13 @@ public abstract class DumbBlock extends BlockContainer {
     @Override
     public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
 
-        // Get the material ID.
-        DumbTileEntity tileEntityFrameBox = (DumbTileEntity) world.getTileEntity(x, y, z);
-        final int materialID = tileEntityFrameBox.getMaterialID();
-
-        // Destroy the block.
-        world.setBlock(x, y, z, Blocks.air);
-
         // Create a new ItemStack with the saved materialID. This bypasses
         // the 4 bit storage limit in the blocks damage value.
         ArrayList<ItemStack> itemList = new ArrayList<>();
-        itemList.add(new ItemStack(this, 1, materialID));
+        itemList.add(getDroppedItemStack(world, x, y, z));
+
+        // Destroy the block.
+        world.setBlock(x, y, z, Blocks.air);
 
         return itemList;
     }
@@ -90,4 +85,17 @@ public abstract class DumbBlock extends BlockContainer {
         return aWillHarvest || super.removedByPlayer(aWorld, aPlayer, x, y, z, false);
     }
 
+    @Override
+    public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z, EntityPlayer player) {
+        // Return the actual item when pick block is used in creative.
+        return getDroppedItemStack(world, x, y, z);
+    }
+
+    public ItemStack getDroppedItemStack(World world, int x, int y, int z) {
+        // Get the material ID.
+        DumbTileEntity dumbTileEntity = (DumbTileEntity) world.getTileEntity(x, y, z);
+        final int materialID = dumbTileEntity.getMaterialID();
+
+        return new ItemStack(this, 1, materialID);
+    }
 }

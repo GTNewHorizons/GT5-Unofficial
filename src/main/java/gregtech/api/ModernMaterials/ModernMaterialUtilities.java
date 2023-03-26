@@ -7,14 +7,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import gregtech.api.ModernMaterials.Blocks.BlocksEnum;
 import gregtech.api.ModernMaterials.Blocks.FrameBox.FrameBoxBlock;
 import gregtech.api.ModernMaterials.Blocks.FrameBox.FrameBoxItemBlock;
+import gregtech.api.ModernMaterials.Blocks.FrameBox.FrameBoxRenderer;
 import gregtech.api.ModernMaterials.Blocks.FrameBox.FrameBoxTileEntity;
 import gregtech.api.ModernMaterials.PartsClasses.IGetItem;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.fluids.FluidRegistry;
 
@@ -47,6 +51,7 @@ public class ModernMaterialUtilities {
         }
         materialNameToMaterialMap.put(aMaterial.getMaterialName(), aMaterial);
     }
+
 
     public static void registerAllMaterialsItems() {
         for (ModernMaterial tMaterial : mNewMaterials) {
@@ -97,7 +102,7 @@ public class ModernMaterialUtilities {
 
         BlocksEnum.FrameBox.getAssociatedMaterials().addAll(materialIDToMaterial.values());
         (new FrameBoxBlock()).registerBlock(FrameBoxTileEntity.class, FrameBoxItemBlock.class);
-
+        new FrameBoxRenderer();
 //        FrameBoxBlock block = new FrameBoxBlock();
 //        GameRegistry.registerBlock(block, FrameBoxItemBlock.class, BlocksEnum.FrameBox.name());
 //        GameRegistry.registerTileEntity(FrameBoxTileEntity.class, BlocksEnum.FrameBox.name());

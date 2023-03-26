@@ -1,9 +1,13 @@
 package gregtech.api.ModernMaterials.PartProperties.Rendering;
 
 import static gregtech.api.ModernMaterials.PartProperties.ModernMaterialUtilities.ModernMaterialUtilities.getMaterialFromItemStack;
+import static org.lwjgl.opengl.GL11.GL_CURRENT_BIT;
 
 import java.awt.*;
 
+import gregtech.api.ModernMaterials.PartProperties.Textures.TextureType;
+import gregtech.api.ModernMaterials.PartsClasses.MaterialPart;
+import gregtech.api.ModernMaterials.PartsClasses.PartsEnum;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderItem;
@@ -15,6 +19,7 @@ import org.lwjgl.opengl.GL11;
 
 import gregtech.api.ModernMaterials.ModernMaterial;
 import gregtech.common.render.GT_RenderUtil;
+import singulariteam.eternalsingularity.render.CosmicRenderStuffs;
 
 public class ModernMaterialItemRenderer implements IItemRenderer {
 
@@ -31,7 +36,7 @@ public class ModernMaterialItemRenderer implements IItemRenderer {
         return type == ItemRenderType.ENTITY;
     }
 
-    public void renderPositionCorrection(ItemRenderType type) {
+    private void renderPositionCorrection(ItemRenderType type) {
 
         // Rendering correct positions.
         if (type == IItemRenderer.ItemRenderType.ENTITY) {
@@ -52,34 +57,60 @@ public class ModernMaterialItemRenderer implements IItemRenderer {
         if (material == null) {
             return;
         }
+
         Color materialColor = material.getColor();
-        IIcon partIcon = itemStack.getItem().getIconFromDamage(material.getMaterialID()); // todo review this later, seems
-                                                                                  // hacky.
+        MaterialPart item = (MaterialPart) itemStack.getItem();
+        if (item == null) {
+            return;
+        }
+        PartsEnum partsEnum = item.getPart();
+
         GL11.glPushMatrix();
 
+        // Enable transparency.
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+
+        // Adjusts the items position to render correctly in world.
         renderPositionCorrection(type);
 
-        GL11.glColor4f(
-                materialColor.getRed(),
-                materialColor.getGreen(),
-                materialColor.getBlue(),
-                materialColor.getAlpha());
+        // Iterate over the items layers and render them.
+        for (IconWrapper iconWrapper : TextureType.Metallic.getTextureArray(partsEnum)) {
 
-        if (type.equals(ItemRenderType.INVENTORY)) {
-            GT_RenderUtil.renderItemIcon(partIcon, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
-        } else {
-            // Render when held in hand, on floor etc.
-            ItemRenderer.renderItemIn2D(
-                    Tessellator.instance,
-                    partIcon.getMaxU(),
-                    partIcon.getMinV(),
-                    partIcon.getMinU(),
-                    partIcon.getMaxV(),
-                    partIcon.getIconWidth(),
-                    partIcon.getIconHeight(),
-                    0.0625F);
+            GL11.glPushAttrib(GL_CURRENT_BIT);
+
+            // Determines if the layer needs colouring.
+            if (iconWrapper.isColoured) {
+                GL11.glColor3f(
+                    materialColor.getRed(),
+                    materialColor.getGreen(),
+                    materialColor.getBlue()
+                );
+            }
+
+            renderLayer(iconWrapper.icon, type);
+
+            GL11.glPopAttrib();
+
         }
 
         GL11.glPopMatrix();
+    }
+
+    private void renderLayer(IIcon icon, ItemRenderType renderType) {
+        if (renderType.equals(ItemRenderType.INVENTORY)) {
+            GT_RenderUtil.renderItemIcon(icon, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
+        } else {
+            // Render when held in hand, on floor etc.
+            ItemRenderer.renderItemIn2D(
+                Tessellator.instance,
+                icon.getMaxU(),
+                icon.getMinV(),
+                icon.getMinU(),
+                icon.getMaxV(),
+                icon.getIconWidth(),
+                icon.getIconHeight(),
+                0.0625F);
+        }
     }
 }

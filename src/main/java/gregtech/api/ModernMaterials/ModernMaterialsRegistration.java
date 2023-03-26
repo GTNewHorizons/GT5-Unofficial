@@ -26,16 +26,16 @@ public class ModernMaterialsRegistration {
         GregTech_API.mLastMaterialID = GregTech_API.sModernMaterialIDs.mConfig
                 .get(ConfigCategories.ModernMaterials.materialID.name(), "LastMaterialID", 0).getInt();
 
-        new ModernMaterial("UwU").setColor(0, 255, 255, 255)
-            .setTextureMode(CustomIndividual).addParts(Gear).build();
+        new ModernMaterial("UwU").setColor(0, 255, 255)
+            .setTextureMode(Metallic).addParts(Gear).build();
 
-        new ModernMaterial("Amazium").setColor(100, 0, 200, 255).setTextureMode(Metallic).addAllParts()
+        new ModernMaterial("Amazium").setColor(100, 0, 200).setTextureMode(Metallic).addAllParts()
                 .setMaterialTier(TierEU.UXV).setMaterialTimeMultiplier(2.5).addFluids(Molten, Plasma, Gas).build();
 
-        new ModernMaterial("Samarium").setColor(100, 200, 200, 255).setTextureMode(Metallic).addAllParts()
+        new ModernMaterial("Samarium").setColor(100, 200, 200).setTextureMode(Metallic).addAllParts()
                 .setMaterialTier(TierEU.UMV).setMaterialTimeMultiplier(0.5).build();
 
-        new ModernMaterial("Copper").setColor(255, 0, 0, 255).setTextureMode(CustomUnified).addAllParts()
+        new ModernMaterial("Copper").setColor(255, 0, 0).setTextureMode(Metallic).addAllParts()
                 .addFluids(Molten, Plasma).build();
 
         registerAllMaterialsItems();

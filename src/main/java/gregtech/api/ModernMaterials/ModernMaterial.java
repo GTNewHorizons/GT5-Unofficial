@@ -32,13 +32,8 @@ public class ModernMaterial {
         return this;
     }
 
-    public ModernMaterial setColor(int aRed, int aGreen, int aBlue, int aAlpha) {
-        color = new Color(aRed, aGreen, aBlue, aAlpha);
-        return this;
-    }
-
     public ModernMaterial setColor(int aRed, int aGreen, int aBlue) {
-        color = new Color(aRed, aGreen, aBlue, 255);
+        color = new Color(aRed, aGreen, aBlue);
         return this;
     }
 

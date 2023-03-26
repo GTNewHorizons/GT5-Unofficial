@@ -33,7 +33,6 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -81,7 +80,6 @@ import gregtech.common.net.MessageUpdateFluidDisplayItem;
 import gregtech.common.render.*;
 import gregtech.common.render.items.GT_MetaGenerated_Item_Renderer;
 import gregtech.common.tileentities.debug.GT_MetaTileEntity_AdvDebugStructureWriter;
-import gregtech.loaders.ExtraIcons;
 import gregtech.loaders.misc.GT_Bees;
 import gregtech.loaders.preload.GT_PreLoad;
 import ic2.api.tile.IWrenchable;
@@ -517,7 +515,6 @@ public class GT_Client extends GT_Proxy implements Runnable {
     public void onPreLoad() {
         super.onPreLoad();
 
-        MinecraftForge.EVENT_BUS.register(new ExtraIcons());
         Minecraft.getMinecraft().getResourcePackRepository().rprMetadataSerializer
                 .registerMetadataSectionType(new ColorsMetadataSectionSerializer(), ColorsMetadataSection.class);
 

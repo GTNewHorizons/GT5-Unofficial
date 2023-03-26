@@ -43,4 +43,5 @@ public class DumbTileEntity extends TileEntity {
         this.writeToNBT(NBTTag);
         return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 3, NBTTag);
     }
+
 }

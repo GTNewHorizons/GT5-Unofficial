@@ -24,16 +24,20 @@ public class FrameBoxBlock extends DumbBlock {
         return new FrameBoxTileEntity();
     }
 
-
-//    @Override
-//    public IIcon getIcon(int side, int meta) {
-//        return super.getIcon(side, meta);
-//    }
-
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister reg)
     {
         this.blockIcon = reg.registerIcon(RES_PATH_BLOCK + "bottom");
+    }
+
+    @Override
+    public int getRenderType() {
+        return FrameBoxRenderer.renderID;
+    }
+
+    @Override
+    public boolean isOpaqueCube() {
+        return true;
     }
 
 }

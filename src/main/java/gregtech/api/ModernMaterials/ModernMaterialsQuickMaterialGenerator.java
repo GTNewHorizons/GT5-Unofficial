@@ -8,7 +8,7 @@ public class ModernMaterialsQuickMaterialGenerator {
 
     public void simpleMetal(final String materialName, final int red, final int green, final int blue) {
 
-        new ModernMaterial(materialName).setColor(red, green, blue, 255)
+        new ModernMaterial(materialName).setColor(red, green, blue)
                 .addParts(
                         Dust,
                         SolderingHead,
@@ -59,7 +59,7 @@ public class ModernMaterialsQuickMaterialGenerator {
 
     public void gem(final String materialName, final int red, final int green, final int blue) {
 
-        new ModernMaterial(materialName).setColor(red, green, blue, 255)
+        new ModernMaterial(materialName).setColor(red, green, blue)
                 .addParts(
                         Dust,
                         ImpureDust,

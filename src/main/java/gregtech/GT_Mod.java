@@ -12,6 +12,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.function.Predicate;
 
+import gregtech.api.ModernMaterials.ModernMaterialsTextureRegister;
+import gregtech.loaders.ExtraIcons;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -22,6 +24,7 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ChestGenHooks;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -296,6 +299,10 @@ public class GT_Mod implements IGT_Mod {
 
     @Mod.EventHandler
     public void onLoad(FMLInitializationEvent aEvent) {
+
+        MinecraftForge.EVENT_BUS.register(new ExtraIcons());
+        MinecraftForge.EVENT_BUS.register(new ModernMaterialsTextureRegister());
+
         if (GregTech_API.sLoadStarted) {
             return;
         }

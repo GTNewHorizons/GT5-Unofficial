@@ -1,9 +1,6 @@
 package gregtech.api.ModernMaterials.PartsClasses;
 
-import static gregtech.api.ModernMaterials.ModernMaterialUtilities.materialIDToMaterial;
-import static gregtech.api.ModernMaterials.ModernMaterialUtilities.tooltipGenerator;
-import static gregtech.api.ModernMaterials.PartProperties.Textures.TextureType.*;
-import static gregtech.api.enums.GT_Values.RES_PATH_BLOCK;
+import static gregtech.api.ModernMaterials.ModernMaterialUtilities.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -11,7 +8,6 @@ import java.util.List;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.ModernMaterials.ModernMaterialUtilities;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -42,35 +38,6 @@ public class MaterialPart extends Item {
         }
     }
 
-    private final HashMap<Integer, IIcon> animatedMaterialIconMap = new HashMap<>();
-
-    @Override
-    public void registerIcons(IIconRegister register) {
-
-        for (final ModernMaterial material : this.part.getAssociatedMaterials()) {
-
-            CustomPartInfo customPartInfo = material.getCustomPartInfo(this.part);
-            String path = RES_PATH_BLOCK + "ModernMaterialsIcons/";
-
-            if (customPartInfo.getTextureType().equals(CustomIndividual)) {
-                path += "Custom/" + material.getMaterialName().toLowerCase() + "/" + partName;
-            } else if (customPartInfo.getTextureType().equals(CustomUnified)) {
-                path += "Custom/" + material.getMaterialName().toLowerCase() + "/unified";
-            } else {
-                path += customPartInfo.getTextureType()
-                    + "/"
-                    + customPartInfo.getTextureName();
-            }
-
-            animatedMaterialIconMap.put(material.getMaterialID(), register.registerIcon(path)); // todo probably inefficient?
-        }
-    }
-
-    @Override
-    public IIcon getIconFromDamage(int damageValue) {
-        return animatedMaterialIconMap.get(damageValue);
-    }
-
     @Override
     public String getUnlocalizedName(ItemStack itemStack) {
 
@@ -94,5 +61,9 @@ public class MaterialPart extends Item {
         for (String line : tooltipGenerator(material)) {
             tooltipList.add(line);
         }
+    }
+
+    public PartsEnum getPart() {
+        return part;
     }
 }
