@@ -359,7 +359,7 @@ public class MTE_AdvAssLine extends GT_MetaTileEntity_ExtendedPowerMultiBlockBas
         }
         if (aNBT.hasKey(TAG_KEY_CURRENT_STICK, Constants.NBT.TAG_COMPOUND)) {
             loadedStack = ItemStack.loadItemStackFromNBT(aNBT.getCompoundTag(TAG_KEY_CURRENT_STICK));
-            GT_AssemblyLineUtils.LookupResult lookupResult = GT_AssemblyLineUtils.findAssemblyLineRecipeFromDataStick(loadedStack, true);
+            GT_AssemblyLineUtils.LookupResult lookupResult = GT_AssemblyLineUtils.findAssemblyLineRecipeFromDataStick(loadedStack, false);
             switch (lookupResult.getType()) {
                 case VALID_STACK_AND_VALID_HASH:
                     recipe = lookupResult.getRecipe();
