@@ -68,6 +68,8 @@ public class GT_UITextures {
     public static final UITexture OVERLAY_SLOT_DUST = UITexture.fullImage(MODID, "gui/overlay_slot/dust");
     public static final SteamTexture OVERLAY_SLOT_DUST_STEAM = SteamTexture
             .fullImage(MODID, "gui/overlay_slot/dust_%s");
+    public static final SteamTexture OVERLAY_SLOT_BLOCK_STEAM = SteamTexture
+            .fullImage(MODID, "gui/overlay_slot/block_%s");
     public static final UITexture OVERLAY_SLOT_EXPLOSIVE = UITexture.fullImage(MODID, "gui/overlay_slot/explosive");
     public static final UITexture OVERLAY_SLOT_EXTRUDER_SHAPE = UITexture
             .fullImage(MODID, "gui/overlay_slot/extruder_shape");
