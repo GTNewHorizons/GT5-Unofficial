@@ -25,5 +25,23 @@
         "stream": false
       }
     ]
+  },
+  "machines.DistilleryLoop": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "DistilleryLoop",
+        "stream": false
+      }
+    ]
+  },
+  "machines.PlasmaForgeLoop": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "PlasmaForgeLoop",
+        "stream": false
+      }
+    ]
   }
 }

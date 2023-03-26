@@ -27,6 +27,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.interfaces.IHatchElement;
@@ -375,5 +376,10 @@ public class GT_MetaTileEntity_DistillationTower
                 env,
                 false,
                 true);
+    }
+
+    @Override
+    protected SoundResource getProcessStartSound() {
+        return SoundResource.GT_MACHINES_DISTILLERY_LOOP;
     }
 }
