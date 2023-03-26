@@ -3,28 +3,27 @@ package gregtech.api.enums;
 import cpw.mods.fml.common.Loader;
 
 public enum ModIDs {
-
-    EnderIO("EnderIO"),
-    TinkerConstruct("TConstruct"),
-    IndustrialCraft2("IC2"),
-    NotEnoughItems("NotEnoughItems"),
-    Thaumcraft("Thaumcraft"),
+    AppliedEnergistics2("appliedenergistics2"),
+    AvaritiaAddons("avaritiaddons"),
     BartWorks("bartworks"),
+    BuildCraftFactory("BuildCraft|Factory"),
+    EnderIO("EnderIO"),
+    ExtraUtilities("ExtraUtilities"),
+    Forestry("Forestry"),
+    GalacticraftMars("GalacticraftMars"),
+    GalaxySpace("GalaxySpace"),
     GTNHLanthanides("gtnhlanth"),
     GTPlusPlus("miscutils"),
-    GalaxySpace("GalaxySpace"),
-    GalacticraftMars("GalacticraftMars"),
-    IronChests("IronChest"),
-    NewHorizonsCoreMod("dreamcraft"),
-    BuildCraftFactory("BuildCraft|Factory"),
-    IronTanks("irontank"),
-    ExtraUtilities("ExtraUtilities"),
-    ExtraBiomesXL("ExtrabiomesXL"),
-    Railcraft("Railcraft"),
-    Forestry("Forestry"),
+    HardcoreEnderExpansion("HardcoreEnderExpansion"),
     IC2NuclearControl("IC2NuclearControl"),
-    AvaritiaAddons("avaritiaddons"),
-    HardcoreEnderExpansion("HardcoreEnderExpansion");
+    IndustrialCraft2("IC2"),
+    IronChests("IronChest"),
+    IronTanks("irontank"),
+    NewHorizonsCoreMod("dreamcraft"),
+    NotEnoughItems("NotEnoughItems"),
+    Railcraft("Railcraft"),
+    Thaumcraft("Thaumcraft"),
+    TinkerConstruct("TConstruct");
 
     public final String modID;
     private Boolean modLoaded;
