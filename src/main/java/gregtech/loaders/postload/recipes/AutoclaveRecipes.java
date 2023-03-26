@@ -1,6 +1,9 @@
 package gregtech.loaders.postload.recipes;
 
+import static gregtech.api.enums.ModIDs.AppliedEnergistics2;
 import static gregtech.api.util.GT_ModHandler.getModItem;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sAutoclaveRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.*;
 
 import net.minecraft.item.ItemStack;
 
@@ -8,184 +11,425 @@ import gregtech.api.enums.*;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
-import gregtech.loaders.postload.GT_MachineRecipeLoader;
 
 public class AutoclaveRecipes implements Runnable {
 
     @Override
     public void run() {
-        GT_Values.RA.addAutoclaveRecipe(
-                ItemList.IC2_Energium_Dust.get(9L),
-                Materials.EnergeticAlloy.getMolten(288),
-                ItemList.IC2_EnergyCrystal.get(1L),
-                10000,
-                600,
-                256);
-        GT_Values.RA.addAutoclaveRecipe(
-                ItemList.IC2_Energium_Dust.get(9L),
-                Materials.ConductiveIron.getMolten(576),
-                ItemList.IC2_EnergyCrystal.get(1L),
-                10000,
-                1200,
-                256);
-        GT_Values.RA.addAutoclaveRecipe(
-                getModItem(GT_MachineRecipeLoader.aTextAE, "item.ItemCrystalSeed", 1L, 0),
-                Materials.Water.getFluid(200L),
-                getModItem(GT_MachineRecipeLoader.aTextAE, GT_MachineRecipeLoader.aTextAEMM, 1L, 10),
-                8000,
-                2000,
-                24);
-        GT_Values.RA.addAutoclaveRecipe(
-                getModItem(GT_MachineRecipeLoader.aTextAE, "item.ItemCrystalSeed", 1L, 600),
-                Materials.Water.getFluid(200L),
-                getModItem(GT_MachineRecipeLoader.aTextAE, GT_MachineRecipeLoader.aTextAEMM, 1L, 11),
-                8000,
-                2000,
-                24);
-        GT_Values.RA.addAutoclaveRecipe(
-                getModItem(GT_MachineRecipeLoader.aTextAE, "item.ItemCrystalSeed", 1L, 1200),
-                Materials.Water.getFluid(200L),
-                getModItem(GT_MachineRecipeLoader.aTextAE, GT_MachineRecipeLoader.aTextAEMM, 1L, 12),
-                8000,
-                2000,
-                24);
-        GT_Values.RA.addAutoclaveRecipe(
-                getModItem(GT_MachineRecipeLoader.aTextAE, "item.ItemCrystalSeed", 1L, 0),
-                GT_ModHandler.getDistilledWater(100L),
-                getModItem(GT_MachineRecipeLoader.aTextAE, GT_MachineRecipeLoader.aTextAEMM, 1L, 10),
-                9000,
-                1000,
-                24);
-        GT_Values.RA.addAutoclaveRecipe(
-                getModItem(GT_MachineRecipeLoader.aTextAE, "item.ItemCrystalSeed", 1L, 600),
-                GT_ModHandler.getDistilledWater(100L),
-                getModItem(GT_MachineRecipeLoader.aTextAE, GT_MachineRecipeLoader.aTextAEMM, 1L, 11),
-                9000,
-                1000,
-                24);
-        GT_Values.RA.addAutoclaveRecipe(
-                getModItem(GT_MachineRecipeLoader.aTextAE, "item.ItemCrystalSeed", 1L, 1200),
-                GT_ModHandler.getDistilledWater(100L),
-                getModItem(GT_MachineRecipeLoader.aTextAE, GT_MachineRecipeLoader.aTextAEMM, 1L, 12),
-                9000,
-                1000,
-                24);
-        GT_Values.RA.addAutoclaveRecipe(
-                getModItem(GT_MachineRecipeLoader.aTextAE, "item.ItemCrystalSeed", 1L, 0),
-                Materials.Void.getMolten(36L),
-                getModItem(GT_MachineRecipeLoader.aTextAE, GT_MachineRecipeLoader.aTextAEMM, 1L, 10),
-                10000,
-                500,
-                24);
-        GT_Values.RA.addAutoclaveRecipe(
-                getModItem(GT_MachineRecipeLoader.aTextAE, "item.ItemCrystalSeed", 1L, 600),
-                Materials.Void.getMolten(36L),
-                getModItem(GT_MachineRecipeLoader.aTextAE, GT_MachineRecipeLoader.aTextAEMM, 1L, 11),
-                10000,
-                500,
-                24);
-        GT_Values.RA.addAutoclaveRecipe(
-                getModItem(GT_MachineRecipeLoader.aTextAE, "item.ItemCrystalSeed", 1L, 1200),
-                Materials.Void.getMolten(36L),
-                getModItem(GT_MachineRecipeLoader.aTextAE, GT_MachineRecipeLoader.aTextAEMM, 1L, 12),
-                10000,
-                500,
-                24);
-        GT_Values.RA.addAutoclaveRecipe(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 32),
-                Materials.Polybenzimidazole.getMolten(36L),
-                GT_ModHandler.getIC2Item("carbonFiber", 64L),
-                10000,
-                150,
-                (int) TierEU.RECIPE_EV);
-        GT_Values.RA.addAutoclaveRecipe(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 64),
-                Materials.Epoxid.getMolten(144L),
-                GT_ModHandler.getIC2Item("carbonFiber", 64L),
-                10000,
-                300,
-                (int) TierEU.RECIPE_HV);
-        GT_Values.RA.addAutoclaveRecipe(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 64),
-                Materials.Polytetrafluoroethylene.getMolten(288L),
-                GT_ModHandler.getIC2Item("carbonFiber", 32L),
-                10000,
-                400,
-                (int) TierEU.RECIPE_MV);
-        GT_Values.RA.addAutoclaveRecipe(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 64),
-                Materials.Plastic.getMolten(576L),
-                GT_ModHandler.getIC2Item("carbonFiber", 16L),
-                10000,
-                600,
-                (int) TierEU.RECIPE_LV);
-        GT_Values.RA.addAutoclaveRecipe(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.NetherStar, 1),
-                Materials.UUMatter.getFluid(576L),
-                GT_OreDictUnificator.get(OrePrefixes.gem, Materials.NetherStar, 1),
-                3333,
-                72000,
-                (int) TierEU.RECIPE_HV);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemList.IC2_Energium_Dust.get(9L)
+            )
+            .itemOutputs(
+                ItemList.IC2_EnergyCrystal.get(1L)
+            )
+            .outputChances(
+                10000
+            )
+            .fluidInputs(
+                Materials.EnergeticAlloy.getMolten(288)
+            )
+            .noFluidOutputs()
+            .duration(30 * SECONDS)
+            .eut(256)
+            .addTo(sAutoclaveRecipes);
 
-        GT_Values.RA.addAutoclaveRecipe(
-                GT_OreDictUnificator.get(ItemList.QuantumStar.get(1L)),
-                Materials.Neutronium.getMolten(288),
-                ItemList.Gravistar.get(1L),
-                10000,
-                480,
-                (int) TierEU.RECIPE_IV);
-        GT_Values.RA.addAutoclaveRecipe(
-                GT_OreDictUnificator.get(ItemList.Gravistar.get(16L)),
-                Materials.Infinity.getMolten(288),
-                ItemList.NuclearStar.get(1L),
-                10000,
-                480,
-                7864320);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemList.IC2_Energium_Dust.get(9L)
+            )
+            .itemOutputs(
+                ItemList.IC2_EnergyCrystal.get(1L)
+            )
+            .outputChances(
+                10000
+            )
+            .fluidInputs(
+                Materials.ConductiveIron.getMolten(576)
+            )
+            .noFluidOutputs()
+            .duration(60 * SECONDS)
+            .eut(256)
+            .addTo(sAutoclaveRecipes);
 
-        // SiO2 ->Quartzite
-        GT_Values.RA.addAutoclaveRecipe(
-                Materials.SiliconDioxide.getDust(1),
-                Materials.Water.getFluid(200L),
-                Materials.Quartzite.getGems(1),
-                750,
-                2000,
-                24);
-        GT_Values.RA.addAutoclaveRecipe(
-                Materials.SiliconDioxide.getDust(1),
-                GT_ModHandler.getDistilledWater(100L),
-                Materials.Quartzite.getGems(1),
-                1000,
-                1500,
-                24);
-        GT_Values.RA.addAutoclaveRecipe(
-                Materials.SiliconDioxide.getDust(1),
-                Materials.Void.getMolten(36L),
-                Materials.Quartzite.getGems(1),
-                10000,
-                1000,
-                24);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                getModItem(AppliedEnergistics2.modID, "item.ItemCrystalSeed", 1L, 0)
+            )
+            .itemOutputs(
+                getModItem(AppliedEnergistics2.modID, "item.ItemMultiMaterial", 1L, 10)
+            )
+            .outputChances(
+                8000
+            )
+            .fluidInputs(
+                Materials.Water.getFluid(200L)
+            )
+            .noFluidOutputs()
+            .duration(1 * MINUTES + 40 * SECONDS)
+            .eut(24)
+            .addTo(sAutoclaveRecipes);
 
-        GT_Values.RA.addAutoclave4Recipe(
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                getModItem(AppliedEnergistics2.modID, "item.ItemCrystalSeed", 1L, 600)
+            )
+            .itemOutputs(
+                getModItem(AppliedEnergistics2.modID, "item.ItemMultiMaterial", 1L, 11)
+            )
+            .outputChances(
+                8000
+            )
+            .fluidInputs(
+                Materials.Water.getFluid(200L)
+            )
+            .noFluidOutputs()
+            .duration(1 * MINUTES + 40 * SECONDS)
+            .eut(24)
+            .addTo(sAutoclaveRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                getModItem(AppliedEnergistics2.modID, "item.ItemCrystalSeed", 1L, 1200)
+            )
+            .itemOutputs(
+                getModItem(AppliedEnergistics2.modID, "item.ItemMultiMaterial", 1L, 12)
+            )
+            .outputChances(
+                8000
+            )
+            .fluidInputs(
+                Materials.Water.getFluid(200L)
+            )
+            .noFluidOutputs()
+            .duration(1 * MINUTES + 40 * SECONDS)
+            .eut(24)
+            .addTo(sAutoclaveRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                getModItem(AppliedEnergistics2.modID, "item.ItemCrystalSeed", 1L, 0)
+            )
+            .itemOutputs(
+                getModItem(AppliedEnergistics2.modID, "item.ItemMultiMaterial", 1L, 10)
+            )
+            .outputChances(
+                9000
+            )
+            .fluidInputs(
+                GT_ModHandler.getDistilledWater(100L)
+            )
+            .noFluidOutputs()
+            .duration(50 * SECONDS)
+            .eut(24)
+            .addTo(sAutoclaveRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                getModItem(AppliedEnergistics2.modID, "item.ItemCrystalSeed", 1L, 600)
+            )
+            .itemOutputs(
+                getModItem(AppliedEnergistics2.modID, "item.ItemMultiMaterial", 1L, 11)
+            )
+            .outputChances(
+                9000
+            )
+            .fluidInputs(
+                GT_ModHandler.getDistilledWater(100L)
+            )
+            .noFluidOutputs()
+            .duration(50 * SECONDS)
+            .eut(24)
+            .addTo(sAutoclaveRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                getModItem(AppliedEnergistics2.modID, "item.ItemCrystalSeed", 1L, 1200)
+            )
+            .itemOutputs(
+                getModItem(AppliedEnergistics2.modID, "item.ItemMultiMaterial", 1L, 12)
+            )
+            .outputChances(
+                9000
+            )
+            .fluidInputs(
+                GT_ModHandler.getDistilledWater(100L)
+            )
+            .noFluidOutputs()
+            .duration(50 * SECONDS)
+            .eut(24)
+            .addTo(sAutoclaveRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                getModItem(AppliedEnergistics2.modID, "item.ItemCrystalSeed", 1L, 0)
+            )
+            .itemOutputs(
+                getModItem(AppliedEnergistics2.modID, "item.ItemMultiMaterial", 1L, 10)
+            )
+            .outputChances(
+                10000
+            )
+            .fluidInputs(
+                Materials.Void.getMolten(36L)
+            )
+            .noFluidOutputs()
+            .duration(25 * SECONDS)
+            .eut(24)
+            .addTo(sAutoclaveRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                getModItem(AppliedEnergistics2.modID, "item.ItemCrystalSeed", 1L, 600)
+            )
+            .itemOutputs(
+                getModItem(AppliedEnergistics2.modID, "item.ItemMultiMaterial", 1L, 11)
+            )
+            .outputChances(
+                10000
+            )
+            .fluidInputs(
+                Materials.Void.getMolten(36L)
+            )
+            .noFluidOutputs()
+            .duration(25 * SECONDS)
+            .eut(24)
+            .addTo(sAutoclaveRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                getModItem(AppliedEnergistics2.modID, "item.ItemCrystalSeed", 1L, 1200)
+            )
+            .itemOutputs(
+                getModItem(AppliedEnergistics2.modID, "item.ItemMultiMaterial", 1L, 12)
+            )
+            .outputChances(
+                10000
+            )
+            .fluidInputs(
+                Materials.Void.getMolten(36L)
+            )
+            .noFluidOutputs()
+            .duration(25 * SECONDS)
+            .eut(24)
+            .addTo(sAutoclaveRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 32)
+            )
+            .itemOutputs(
+                GT_ModHandler.getIC2Item("carbonFiber", 64L)
+            )
+            .outputChances(
+                10000
+            )
+            .fluidInputs(
+                Materials.Polybenzimidazole.getMolten(36L)
+            )
+            .noFluidOutputs()
+            .duration(7 * SECONDS + 10 * TICKS)
+            .eut((int) TierEU.RECIPE_EV)
+            .addTo(sAutoclaveRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 64)
+            )
+            .itemOutputs(
+                GT_ModHandler.getIC2Item("carbonFiber", 64L)
+            )
+            .outputChances(
+                10000
+            )
+            .fluidInputs(
+                Materials.Epoxid.getMolten(144L)
+            )
+            .noFluidOutputs()
+            .duration(15 * SECONDS)
+            .eut((int) TierEU.RECIPE_HV)
+            .addTo(sAutoclaveRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 64)
+            )
+            .itemOutputs(
+                GT_ModHandler.getIC2Item("carbonFiber", 32L)
+            )
+            .outputChances(
+                10000
+            )
+            .fluidInputs(
+                Materials.Polytetrafluoroethylene.getMolten(288L)
+            )
+            .noFluidOutputs()
+            .duration(20 * SECONDS)
+            .eut((int) TierEU.RECIPE_MV)
+            .addTo(sAutoclaveRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 64)
+            )
+            .itemOutputs(
+                GT_ModHandler.getIC2Item("carbonFiber", 16L)
+            )
+            .outputChances(
+                10000
+            )
+            .fluidInputs(
+                Materials.Plastic.getMolten(576L)
+            )
+            .noFluidOutputs()
+            .duration(30 * SECONDS)
+            .eut((int) TierEU.RECIPE_LV)
+            .addTo(sAutoclaveRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.NetherStar, 1)
+            )
+            .itemOutputs(
+                GT_OreDictUnificator.get(OrePrefixes.gem, Materials.NetherStar, 1)
+            )
+            .outputChances(
+                3333
+            )
+            .fluidInputs(
+                Materials.UUMatter.getFluid(576L)
+            )
+            .noFluidOutputs()
+            .duration(60 * MINUTES)
+            .eut((int) TierEU.RECIPE_HV)
+            .addTo(sAutoclaveRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(ItemList.QuantumStar.get(1L))
+            )
+            .itemOutputs(
+                ItemList.Gravistar.get(1L)
+            )
+            .outputChances(
+                10000
+            )
+            .fluidInputs(
+                Materials.Neutronium.getMolten(288)
+            )
+            .noFluidOutputs()
+            .duration(24 * SECONDS)
+            .eut((int) TierEU.RECIPE_IV)
+            .addTo(sAutoclaveRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(ItemList.Gravistar.get(16L))
+            )
+            .itemOutputs(
+                ItemList.NuclearStar.get(1L)
+            )
+            .outputChances(
+                10000
+            )
+            .fluidInputs(
+                Materials.Infinity.getMolten(288)
+            )
+            .noFluidOutputs()
+            .duration(24 * SECONDS)
+            .eut(TierEU.RECIPE_UEV)
+            .addTo(sAutoclaveRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                Materials.SiliconDioxide.getDust(1)
+            )
+            .itemOutputs(
+                Materials.Quartzite.getGems(1)
+            )
+            .outputChances(
+                750
+            )
+            .fluidInputs(
+                Materials.Water.getFluid(200L)
+            )
+            .noFluidOutputs()
+            .duration(1 * MINUTES + 40 * SECONDS)
+            .eut(24)
+            .addTo(sAutoclaveRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                Materials.SiliconDioxide.getDust(1)
+            )
+            .itemOutputs(
+                Materials.Quartzite.getGems(1)
+            )
+            .outputChances(
+                1000
+            )
+            .fluidInputs(
+                GT_ModHandler.getDistilledWater(100L)
+            )
+            .noFluidOutputs()
+            .duration(1 * MINUTES + 15 * SECONDS)
+            .eut(24)
+            .addTo(sAutoclaveRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                Materials.SiliconDioxide.getDust(1)
+            )
+            .itemOutputs(
+                Materials.Quartzite.getGems(1)
+            )
+            .outputChances(
+                10000
+            )
+            .fluidInputs(
+                Materials.Void.getMolten(36L)
+            )
+            .noFluidOutputs()
+            .duration(50 * SECONDS)
+            .eut(24)
+            .addTo(sAutoclaveRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 1),
-                GT_Utility.getIntegratedCircuit(1),
-                Materials.Water.getFluid(1000L),
-                GT_Values.NF,
-                new ItemStack[] { GT_Values.NI,
-                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 3) },
-                new int[] { 0, 7500 },
-                1200,
-                (int) TierEU.RECIPE_LV,
-                false);
-        GT_Values.RA.addAutoclave4Recipe(
+                GT_Utility.getIntegratedCircuit(1)
+            )
+            .itemOutputs(
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 3)
+            )
+            .outputChances(
+                7500
+            )
+            .fluidInputs(
+                Materials.Water.getFluid(1000L)
+            )
+            .noFluidOutputs()
+            .duration(60 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(sAutoclaveRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 1),
-                GT_Utility.getIntegratedCircuit(1),
-                GT_ModHandler.getDistilledWater(1000L),
-                GT_Values.NF,
-                new ItemStack[] { GT_Values.NI,
-                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 3) },
-                new int[] { 0, 9000 },
-                1200,
-                (int) TierEU.RECIPE_LV,
-                false);
+                GT_Utility.getIntegratedCircuit(1)
+            )
+            .itemOutputs(
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 3)
+            )
+            .outputChances(
+                9000
+            )
+            .fluidInputs(
+                GT_ModHandler.getDistilledWater(1000L)
+            )
+            .noFluidOutputs()
+            .duration(60 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(sAutoclaveRecipes);
     }
 }
