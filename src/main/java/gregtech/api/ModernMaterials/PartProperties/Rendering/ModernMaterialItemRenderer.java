@@ -84,7 +84,7 @@ public class ModernMaterialItemRenderer implements IItemRenderer {
                 GL11.glColor3f(
                     materialColor.getRed(),
                     materialColor.getGreen(),
-                    materialColor.getBlue()); // todo review alpha
+                    materialColor.getBlue());
             }
 
             renderLayer(iconWrapper.icon, type);
