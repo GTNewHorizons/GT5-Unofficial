@@ -13,7 +13,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_OUT;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PUMP;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
-import com.gtnewhorizons.modularui.api.drawable.Text;
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -31,6 +30,7 @@ import net.minecraftforge.fluids.IFluidContainerItem;
 import net.minecraftforge.fluids.IFluidHandler;
 import net.minecraftforge.fluids.IFluidTank;
 
+import com.gtnewhorizons.modularui.api.drawable.Text;
 import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
@@ -487,11 +487,11 @@ public class GT_MetaTileEntity_Boiler_Lava extends GT_MetaTileEntity_Boiler {
                 .widget(
                         TextWidget
                                 .dynamicText(
-                                        () -> new Text(String.format(
-                                                "%d",
-                                                (lavaTank.getFluid() != null ? lavaTank.getFluid().amount : 0) / 1000))
-                                                .shadow()
-                                )
+                                        () -> new Text(
+                                                String.format(
+                                                        "%d",
+                                                        (lavaTank.getFluid() != null ? lavaTank.getFluid().amount : 0)
+                                                                / 1000)).shadow())
                                 .setTextAlignment(Alignment.BottomRight).setDefaultColor(COLOR_TEXT_WHITE.get())
                                 .setMaxWidth(64).setPos(115, 70))
 
