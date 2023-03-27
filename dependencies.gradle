@@ -34,7 +34,7 @@ dependencies {
     api("net.industrial-craft:industrialcraft-2:2.2.828-experimental:dev")
 
     compileOnly("com.github.GTNewHorizons:EnderCore:0.2.12:dev") { transitive = false }
-    compileOnly("com.github.GTNewHorizons:ForestryMC:4.5.6:dev") { transitive = false }
+    compileOnly("com.github.GTNewHorizons:ForestryMC:4.6.1:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:gendustry:1.6.5.5-GTNH:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:Railcraft:9.13.18:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:Galacticraft:3.0.65-GTNH:dev") { transitive = false }
