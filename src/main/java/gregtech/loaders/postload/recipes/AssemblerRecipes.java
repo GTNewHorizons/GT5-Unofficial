@@ -32,10 +32,12 @@ public class AssemblerRecipes implements Runnable {
         this.withGalacticraftMars();
         this.withRailcraft();
         this.withGalaxySpace();
+        this.withGTNHLanthAndGTPP();
         this.loadInputBusesRecipes();
         this.loadInputHatchesRecipes();
         this.loadOutputBusesRecipes();
         this.loadOutputHatchesRecipes();
+        this.withIC2NuclearControl();
 
         GT_Values.RA.addAssemblerRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.BlackSteel, 1L),
@@ -1929,87 +1931,6 @@ public class AssemblerRecipes implements Runnable {
                 400,
                 4);
 
-        if (isIC2NuclearControlLoaded) { // Card recycling recipes
-            GT_Values.RA.addAssemblerRecipe(
-                    getModItem("IC2NuclearControl", "ItemVanillaMachineCard", 1L, 0),
-                    GT_Utility.getIntegratedCircuit(1),
-                    GT_ModHandler.getIC2Item("electronicCircuit", 2L),
-                    200,
-                    (int) TierEU.RECIPE_LV);
-            GT_Values.RA.addAssemblerRecipe(
-                    getModItem("IC2NuclearControl", "ItemInventoryScannerCard", 1L, 0),
-                    GT_Utility.getIntegratedCircuit(1),
-                    GT_ModHandler.getIC2Item("electronicCircuit", 2L),
-                    200,
-                    (int) TierEU.RECIPE_LV);
-            GT_Values.RA.addAssemblerRecipe(
-                    getModItem("IC2NuclearControl", "ItemEnergySensorLocationCard", 1L, 0),
-                    GT_Utility.getIntegratedCircuit(1),
-                    GT_ModHandler.getIC2Item("electronicCircuit", 2L),
-                    200,
-                    (int) TierEU.RECIPE_LV);
-            GT_Values.RA.addAssemblerRecipe(
-                    getModItem("IC2NuclearControl", "RFSensorCard", 1L, 0),
-                    GT_Utility.getIntegratedCircuit(1),
-                    GT_ModHandler.getIC2Item("electronicCircuit", 2L),
-                    200,
-                    (int) TierEU.RECIPE_LV);
-            GT_Values.RA.addAssemblerRecipe(
-                    getModItem("IC2NuclearControl", "ItemMultipleSensorLocationCard", 1L, 0),
-                    GT_Utility.getIntegratedCircuit(1),
-                    GT_ModHandler.getIC2Item("electronicCircuit", 1L),
-                    200,
-                    (int) TierEU.RECIPE_LV); // counter
-            GT_Values.RA.addAssemblerRecipe(
-                    getModItem("IC2NuclearControl", "ItemMultipleSensorLocationCard", 1L, 1),
-                    GT_Utility.getIntegratedCircuit(1),
-                    GT_ModHandler.getIC2Item("electronicCircuit", 1L),
-                    200,
-                    (int) TierEU.RECIPE_LV); // liquid
-            GT_Values.RA.addAssemblerRecipe(
-                    getModItem("IC2NuclearControl", "ItemMultipleSensorLocationCard", 1L, 2),
-                    GT_Utility.getIntegratedCircuit(1),
-                    GT_ModHandler.getIC2Item("electronicCircuit", 2L),
-                    200,
-                    (int) TierEU.RECIPE_LV); // generator
-            GT_Values.RA.addAssemblerRecipe(
-                    getModItem("IC2NuclearControl", "ItemLiquidArrayLocationCard", 1L, 0),
-                    GT_Utility.getIntegratedCircuit(1),
-                    GT_ModHandler.getIC2Item("electronicCircuit", 2L),
-                    200,
-                    (int) TierEU.RECIPE_LV); // 2-6 liquid
-            GT_Values.RA.addAssemblerRecipe(
-                    getModItem("IC2NuclearControl", "ItemEnergyArrayLocationCard", 1L, 0),
-                    GT_Utility.getIntegratedCircuit(1),
-                    GT_ModHandler.getIC2Item("electronicCircuit", 2L),
-                    200,
-                    (int) TierEU.RECIPE_LV); // 2-6 energy
-            GT_Values.RA.addAssemblerRecipe(
-                    getModItem("IC2NuclearControl", "ItemSensorLocationCard", 1L, 0),
-                    GT_Utility.getIntegratedCircuit(1),
-                    GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.Good), 2L),
-                    200,
-                    (int) TierEU.RECIPE_LV); // non-fluid nuke
-            GT_Values.RA.addAssemblerRecipe(
-                    getModItem("IC2NuclearControl", "Item55ReactorCard", 1L, 0),
-                    GT_Utility.getIntegratedCircuit(1),
-                    GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.Good), 2L),
-                    200,
-                    (int) TierEU.RECIPE_LV);
-            GT_Values.RA.addAssemblerRecipe(
-                    getModItem("IC2NuclearControl", "CardAppeng", 1L, 0),
-                    GT_Utility.getIntegratedCircuit(1),
-                    GT_ModHandler.getIC2Item("electronicCircuit", 2L),
-                    200,
-                    (int) TierEU.RECIPE_LV);
-            GT_Values.RA.addAssemblerRecipe(
-                    ItemList.NC_SensorCard.get(1L),
-                    GT_Utility.getIntegratedCircuit(1),
-                    GT_ModHandler.getIC2Item("electronicCircuit", 3L),
-                    200,
-                    (int) TierEU.RECIPE_LV);
-        }
-
         if (!GT_Mod.gregtechproxy.mDisableIC2Cables) {
             GT_Values.RA.addAssemblerRecipe(
                     GT_ModHandler.getIC2Item("tinCableItem", 1L),
@@ -2439,24 +2360,6 @@ public class AssemblerRecipes implements Runnable {
                             16);
                 }
             }
-        }
-
-        if (isGTNHLanthanidLoaded && isGTPPLoaded) {
-            GT_Values.RA
-                    .addAssemblerRecipe(
-                            new ItemStack[] { ItemList.Electric_Pump_EV.get(4L), ItemList.Field_Generator_EV.get(4L),
-                                    getModItem(MOD_ID_GTPP, "itemPlateInconel690", 4L),
-                                    GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Titanium, 16L),
-                                    GT_OreDictUnificator.get(OrePrefixes.ring, Materials.BorosilicateGlass, 16L),
-                                    GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Aluminium, 2L),
-                                    GT_OreDictUnificator
-                                            .get(OrePrefixes.pipeTiny, Materials.Polytetrafluoroethylene, 4L),
-                                    GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Data, 4L),
-                                    ItemList.Shape_Extruder_Wire.get(16L) },
-                            Materials.SolderingAlloy.getGas(144L),
-                            ItemList.Spinneret.get(1L),
-                            2400,
-                            (int) TierEU.RECIPE_EV);
         }
     }
 
@@ -6096,6 +5999,115 @@ public class AssemblerRecipes implements Runnable {
                         3200,
                         (int) TierEU.RECIPE_UMV);
 
+
+    }
+
+    public void withGTNHLanthAndGTPP(){
+        if (!(GTNHLanthanides.isModLoaded() && GTPlusPlus.isModLoaded())) {
+            return;
+        }
+
+        GT_Values.RA
+            .addAssemblerRecipe(
+                new ItemStack[] { ItemList.Electric_Pump_EV.get(4L), ItemList.Field_Generator_EV.get(4L),
+                    getModItem(MOD_ID_GTPP, "itemPlateInconel690", 4L),
+                    GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Titanium, 16L),
+                    GT_OreDictUnificator.get(OrePrefixes.ring, Materials.BorosilicateGlass, 16L),
+                    GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Aluminium, 2L),
+                    GT_OreDictUnificator
+                        .get(OrePrefixes.pipeTiny, Materials.Polytetrafluoroethylene, 4L),
+                    GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Data, 4L),
+                    ItemList.Shape_Extruder_Wire.get(16L) },
+                Materials.SolderingAlloy.getGas(144L),
+                ItemList.Spinneret.get(1L),
+                2400,
+                (int) TierEU.RECIPE_EV);
+
+    }
+
+    public void withIC2NuclearControl(){
+        if (!IC2NuclearControl.isModLoaded()) { // Card recycling recipes
+            return;
+        }
+
+        GT_Values.RA.addAssemblerRecipe(
+            getModItem("IC2NuclearControl", "ItemVanillaMachineCard", 1L, 0),
+            GT_Utility.getIntegratedCircuit(1),
+            GT_ModHandler.getIC2Item("electronicCircuit", 2L),
+            200,
+            (int) TierEU.RECIPE_LV);
+        GT_Values.RA.addAssemblerRecipe(
+            getModItem("IC2NuclearControl", "ItemInventoryScannerCard", 1L, 0),
+            GT_Utility.getIntegratedCircuit(1),
+            GT_ModHandler.getIC2Item("electronicCircuit", 2L),
+            200,
+            (int) TierEU.RECIPE_LV);
+        GT_Values.RA.addAssemblerRecipe(
+            getModItem("IC2NuclearControl", "ItemEnergySensorLocationCard", 1L, 0),
+            GT_Utility.getIntegratedCircuit(1),
+            GT_ModHandler.getIC2Item("electronicCircuit", 2L),
+            200,
+            (int) TierEU.RECIPE_LV);
+        GT_Values.RA.addAssemblerRecipe(
+            getModItem("IC2NuclearControl", "RFSensorCard", 1L, 0),
+            GT_Utility.getIntegratedCircuit(1),
+            GT_ModHandler.getIC2Item("electronicCircuit", 2L),
+            200,
+            (int) TierEU.RECIPE_LV);
+        GT_Values.RA.addAssemblerRecipe(
+            getModItem("IC2NuclearControl", "ItemMultipleSensorLocationCard", 1L, 0),
+            GT_Utility.getIntegratedCircuit(1),
+            GT_ModHandler.getIC2Item("electronicCircuit", 1L),
+            200,
+            (int) TierEU.RECIPE_LV); // counter
+        GT_Values.RA.addAssemblerRecipe(
+            getModItem("IC2NuclearControl", "ItemMultipleSensorLocationCard", 1L, 1),
+            GT_Utility.getIntegratedCircuit(1),
+            GT_ModHandler.getIC2Item("electronicCircuit", 1L),
+            200,
+            (int) TierEU.RECIPE_LV); // liquid
+        GT_Values.RA.addAssemblerRecipe(
+            getModItem("IC2NuclearControl", "ItemMultipleSensorLocationCard", 1L, 2),
+            GT_Utility.getIntegratedCircuit(1),
+            GT_ModHandler.getIC2Item("electronicCircuit", 2L),
+            200,
+            (int) TierEU.RECIPE_LV); // generator
+        GT_Values.RA.addAssemblerRecipe(
+            getModItem("IC2NuclearControl", "ItemLiquidArrayLocationCard", 1L, 0),
+            GT_Utility.getIntegratedCircuit(1),
+            GT_ModHandler.getIC2Item("electronicCircuit", 2L),
+            200,
+            (int) TierEU.RECIPE_LV); // 2-6 liquid
+        GT_Values.RA.addAssemblerRecipe(
+            getModItem("IC2NuclearControl", "ItemEnergyArrayLocationCard", 1L, 0),
+            GT_Utility.getIntegratedCircuit(1),
+            GT_ModHandler.getIC2Item("electronicCircuit", 2L),
+            200,
+            (int) TierEU.RECIPE_LV); // 2-6 energy
+        GT_Values.RA.addAssemblerRecipe(
+            getModItem("IC2NuclearControl", "ItemSensorLocationCard", 1L, 0),
+            GT_Utility.getIntegratedCircuit(1),
+            GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.Good), 2L),
+            200,
+            (int) TierEU.RECIPE_LV); // non-fluid nuke
+        GT_Values.RA.addAssemblerRecipe(
+            getModItem("IC2NuclearControl", "Item55ReactorCard", 1L, 0),
+            GT_Utility.getIntegratedCircuit(1),
+            GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.Good), 2L),
+            200,
+            (int) TierEU.RECIPE_LV);
+        GT_Values.RA.addAssemblerRecipe(
+            getModItem("IC2NuclearControl", "CardAppeng", 1L, 0),
+            GT_Utility.getIntegratedCircuit(1),
+            GT_ModHandler.getIC2Item("electronicCircuit", 2L),
+            200,
+            (int) TierEU.RECIPE_LV);
+        GT_Values.RA.addAssemblerRecipe(
+            ItemList.NC_SensorCard.get(1L),
+            GT_Utility.getIntegratedCircuit(1),
+            GT_ModHandler.getIC2Item("electronicCircuit", 3L),
+            200,
+            (int) TierEU.RECIPE_LV);
 
     }
 }
