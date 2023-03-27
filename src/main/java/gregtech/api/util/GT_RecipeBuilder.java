@@ -13,16 +13,23 @@ import gregtech.api.interfaces.IGT_RecipeMap;
 import gregtech.api.objects.GT_FluidStack;
 import gregtech.api.util.extensions.ArrayExt;
 
-import static gregtech.GT_Mod.GT_FML_LOGGER;
-
 public class GT_RecipeBuilder {
 
     private static final boolean DEBUG_MODE;
 
+    // time units
     public static final int HOURS = 20 * 60 * 60;
     public static final int MINUTES = 20 * 60;
     public static final int SECONDS = 20;
     public static final int TICKS = 1;
+
+    // fluid units
+    public static final int INGOTS = 144;
+    public static final int HALF_INGOT = 72;
+    public static final int QUARTER_INGOT = 36;
+    public static final int EIGHTH_INGOT = 18;
+    public static final int NUGGETS = 16;
+    public static final int BUCKETS = 1000;
 
     static {
         boolean tmp;

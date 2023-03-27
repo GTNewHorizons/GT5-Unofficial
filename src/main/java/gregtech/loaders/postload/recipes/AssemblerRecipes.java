@@ -2,7 +2,10 @@ package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.enums.GT_Values.*;
 import static gregtech.api.enums.GT_Values.MOD_ID_RC;
+import static gregtech.api.enums.ModIDs.*;
 import static gregtech.api.util.GT_ModHandler.getModItem;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sAssemblerRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.*;
 import static gregtech.loaders.postload.GT_MachineRecipeLoader.*;
 
 import net.minecraft.init.Blocks;
@@ -27,10 +30,13 @@ public class AssemblerRecipes implements Runnable {
 
         this.withBartWorks();
         this.withGalacticraftMars();
-        this.withoutGTPPRecipes();
-        this.loadRailcraftRecipes();
-        this.withGalaxySPace();
-        this.addBusAndHatchRecipes();
+        this.withRailcraft();
+        this.withGalaxySpace();
+        this.loadInputBusesRecipes();
+        this.loadInputHatchesRecipes();
+        this.loadOutputBusesRecipes();
+        this.loadOutputHatchesRecipes();
+
         GT_Values.RA.addAssemblerRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.BlackSteel, 1L),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Plastic, 1L),
@@ -53,7 +59,7 @@ public class AssemblerRecipes implements Runnable {
                 GT_Values.RA.addAssemblerRecipe(
                         new ItemStack(Items.string, 3),
                         GT_Utility.getIntegratedCircuit(3),
-                        Dyes.VALUES[i].getFluidDye(j, 24L),
+                        Dyes.VALUES[i].getFluidDye(j, 24),
                         new ItemStack(Blocks.carpet, 2, 15 - i),
                         128,
                         5);
@@ -2455,185 +2461,1752 @@ public class AssemblerRecipes implements Runnable {
     }
 
     /**
-     * Adds new recipes for hatches and busses
+     * Adds recipes for input buses from ULV to UHV
      */
-    public static void addBusAndHatchRecipes() {
-        Materials[] glues = { Materials.Glue, Materials.Plastic, Materials.Polytetrafluoroethylene,
-                Materials.Polybenzimidazole };
+    public void loadInputBusesRecipes(){
+        // ULV input bus
+        {
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_ULV.get(1),
+                    getModItem(NewHorizonsCoreMod.modID, "BabyChest", 1),
+                    GT_Utility.getIntegratedCircuit(1)
+                )
+                .itemOutputs(
+                    ItemList.Hatch_Input_Bus_ULV.get(1)
+                )
+                .fluidInputs(
+                    Materials.Glue.getFluid(1*INGOTS)
+                )
+                .noFluidOutputs()
+                .duration(24* SECONDS)
+                .eut(TierEU.RECIPE_ULV)
+                .addTo(sAssemblerRecipes);
 
-        ItemStack[] chests = { isCoremodLoaded ? getModItem(MOD_ID_DC, "BabyChest", 1) : new ItemStack(Blocks.chest),
-                new ItemStack(Blocks.chest),
-                isIronChestLoaded ? getModItem("IronChest", "BlockIronChest", 1, 3) : new ItemStack(Blocks.chest),
-                isIronChestLoaded ? getModItem("IronChest", "BlockIronChest", 1) : new ItemStack(Blocks.chest),
-                isIronChestLoaded ? getModItem("IronChest", "BlockIronChest", 1, 4) : new ItemStack(Blocks.chest),
-                isIronChestLoaded ? getModItem("IronChest", "BlockIronChest", 1, 1) : new ItemStack(Blocks.chest),
-                isIronChestLoaded ? getModItem("IronChest", "BlockIronChest", 1, 2) : new ItemStack(Blocks.chest),
-                isIronChestLoaded ? getModItem("IronChest", "BlockIronChest", 1, 5) : new ItemStack(Blocks.chest),
-                isIronChestLoaded ? getModItem("IronChest", "BlockIronChest", 1, 6) : new ItemStack(Blocks.chest),
-                isAvaritiaAddonsLoaded ? getModItem("avaritiaddons", "CompressedChest", 1)
-                        : new ItemStack(Blocks.chest) };
-        ItemStack[] tanks = { GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1L),
-                isBuildCraftFactoryLoaded ? getModItem("BuildCraft|Factory", "tankBlock", 1)
-                        : GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1L),
-                isIronTankLoaded ? getModItem("irontank", "copperTank", 1)
-                        : GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1L),
-                isIronTankLoaded ? getModItem("irontank", "ironTank", 1)
-                        : GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1L),
-                isIronTankLoaded ? getModItem("irontank", "silverTank", 1)
-                        : GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1L),
-                isIronTankLoaded ? getModItem("irontank", "goldTank", 1)
-                        : GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1L),
-                isIronTankLoaded ? getModItem("irontank", "diamondTank", 1)
-                        : GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1L),
-                isIronTankLoaded ? getModItem("irontank", "obsidianTank", 1)
-                        : GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1L),
-                getModItem("gregtech", "gt.blockmachines", 1, 130),
-                getModItem("gregtech", "gt.blockmachines", 1, 131) };
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_ULV.get(1),
+                    getModItem(NewHorizonsCoreMod.modID, "BabyChest", 1),
+                    GT_Utility.getIntegratedCircuit(1)
+                )
+                .itemOutputs(
+                    ItemList.Hatch_Input_Bus_ULV.get(1)
+                )
+                .fluidInputs(
+                    Materials.Plastic.getFluid(1* HALF_INGOT)
+                )
+                .noFluidOutputs()
+                .duration(24* SECONDS)
+                .eut(TierEU.RECIPE_ULV)
+                .addTo(sAssemblerRecipes);
 
-        ItemStack[][] aInputs = new ItemStack[10][3];
-        ItemStack[][] aInputs2 = new ItemStack[10][3];
-        ItemStack[][] flInputs = new ItemStack[10][3];
-        ItemStack[][] flInputs2 = new ItemStack[10][3];
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_ULV.get(1),
+                    getModItem(NewHorizonsCoreMod.modID, "BabyChest", 1),
+                    GT_Utility.getIntegratedCircuit(1)
+                )
+                .itemOutputs(
+                    ItemList.Hatch_Input_Bus_ULV.get(1)
+                )
+                .fluidInputs(
+                    Materials.Polytetrafluoroethylene.getFluid(1* EIGHTH_INGOT)
+                )
+                .noFluidOutputs()
+                .duration(24* SECONDS)
+                .eut(TierEU.RECIPE_ULV)
+                .addTo(sAssemblerRecipes);
 
-        for (int i = 0; i < 10; i++) {
-            aInputs[i] = new ItemStack[] { ItemList.MACHINE_HULLS[i].get(1), chests[i].copy(),
-                    GT_Utility.getIntegratedCircuit(1) };
-            aInputs2[i] = new ItemStack[] { ItemList.MACHINE_HULLS[i].get(1), chests[i].copy(),
-                    GT_Utility.getIntegratedCircuit(2) };
-            flInputs[i] = new ItemStack[] { ItemList.MACHINE_HULLS[i].get(1), tanks[i].copy(),
-                    GT_Utility.getIntegratedCircuit(1) };
-            flInputs2[i] = new ItemStack[] { ItemList.MACHINE_HULLS[i].get(1), tanks[i].copy(),
-                    GT_Utility.getIntegratedCircuit(2) };
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_ULV.get(1),
+                    getModItem(NewHorizonsCoreMod.modID, "BabyChest", 1),
+                    GT_Utility.getIntegratedCircuit(1)
+                )
+                .itemOutputs(
+                    ItemList.Hatch_Input_Bus_ULV.get(1)
+                )
+                .fluidInputs(
+                    Materials.Polybenzimidazole.getFluid(4)
+                )
+                .noFluidOutputs()
+                .duration(24* SECONDS)
+                .eut(TierEU.RECIPE_ULV)
+                .addTo(sAssemblerRecipes);
         }
 
-        for (int aTier = 0; aTier < 10; aTier++) {
+        // LV input bus
+        {
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_LV.get(1),
+                    new ItemStack(Blocks.chest),
+                    GT_Utility.getIntegratedCircuit(1)
+                )
+                .itemOutputs(
+                    ItemList.Hatch_Input_Bus_LV.get(1)
+                )
+                .fluidInputs(
+                    Materials.Glue.getFluid(5 * INGOTS)
+                )
+                .noFluidOutputs()
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(sAssemblerRecipes);
 
-            if (aTier < 2) {
-                GT_Values.RA.addAssemblerRecipe(
-                        aInputs[aTier],
-                        glues[0].getFluid((long) (144 * Math.pow((aTier + 4), aTier))),
-                        ItemList.HATCHES_INPUT_BUS[aTier].get(1L),
-                        480,
-                        (int) (30 * Math.pow(4, (aTier - 1))),
-                        false);
-                GT_Values.RA.addAssemblerRecipe(
-                        aInputs2[aTier],
-                        glues[0].getFluid((long) (144 * Math.pow((aTier + 4), aTier))),
-                        ItemList.HATCHES_OUTPUT_BUS[aTier].get(1L),
-                        480,
-                        (int) (30 * Math.pow(4, (aTier - 1))),
-                        false);
-                GT_Values.RA.addAssemblerRecipe(
-                        flInputs[aTier],
-                        glues[0].getFluid((long) (144 * Math.pow((aTier + 4), aTier))),
-                        ItemList.HATCHES_INPUT[aTier].get(1L),
-                        480,
-                        (int) (30 * Math.pow(4, (aTier - 1))),
-                        false);
-                GT_Values.RA.addAssemblerRecipe(
-                        flInputs2[aTier],
-                        glues[0].getFluid((long) (144 * Math.pow((aTier + 4), aTier))),
-                        ItemList.HATCHES_OUTPUT[aTier].get(1L),
-                        480,
-                        (int) (30 * Math.pow(4, (aTier - 1))),
-                        false);
-            }
-            if (aTier < 4) {
-                GT_Values.RA.addAssemblerRecipe(
-                        aInputs[aTier],
-                        aTier == 0 ? glues[1].getMolten(72L) : glues[1].getMolten(144L * aTier),
-                        ItemList.HATCHES_INPUT_BUS[aTier].get(1L),
-                        480,
-                        (int) (30 * Math.pow(4, (aTier - 1))),
-                        false);
-                GT_Values.RA.addAssemblerRecipe(
-                        aInputs2[aTier],
-                        aTier == 0 ? glues[1].getMolten(72L) : glues[1].getMolten(144L * aTier),
-                        ItemList.HATCHES_OUTPUT_BUS[aTier].get(1L),
-                        480,
-                        (int) (30 * Math.pow(4, (aTier - 1))),
-                        false);
-                GT_Values.RA.addAssemblerRecipe(
-                        flInputs[aTier],
-                        aTier == 0 ? glues[1].getMolten(72L) : glues[1].getMolten(144L * aTier),
-                        ItemList.HATCHES_INPUT[aTier].get(1L),
-                        480,
-                        (int) (30 * Math.pow(4, (aTier - 1))),
-                        false);
-                GT_Values.RA.addAssemblerRecipe(
-                        flInputs2[aTier],
-                        aTier == 0 ? glues[1].getMolten(72L) : glues[1].getMolten(144L * aTier),
-                        ItemList.HATCHES_OUTPUT[aTier].get(1L),
-                        480,
-                        (int) (30 * Math.pow(4, (aTier - 1))),
-                        false);
-            }
-            if (aTier < 7) {
-                GT_Values.RA.addAssemblerRecipe(
-                        aInputs[aTier],
-                        glues[2].getMolten((long) (18 * Math.pow(2, (aTier + 1)))),
-                        ItemList.HATCHES_INPUT_BUS[aTier].get(1L),
-                        480,
-                        (int) (30 * Math.pow(4, (aTier - 1))),
-                        false);
-                GT_Values.RA.addAssemblerRecipe(
-                        aInputs2[aTier],
-                        glues[2].getMolten((long) (18 * Math.pow(2, (aTier + 1)))),
-                        ItemList.HATCHES_OUTPUT_BUS[aTier].get(1L),
-                        480,
-                        (int) (30 * Math.pow(4, (aTier - 1))),
-                        false);
-                GT_Values.RA.addAssemblerRecipe(
-                        flInputs[aTier],
-                        glues[2].getMolten((long) (18 * Math.pow(2, (aTier + 1)))),
-                        ItemList.HATCHES_INPUT[aTier].get(1L),
-                        480,
-                        (int) (30 * Math.pow(4, (aTier - 1))),
-                        false);
-                GT_Values.RA.addAssemblerRecipe(
-                        flInputs2[aTier],
-                        glues[2].getMolten((long) (18 * Math.pow(2, (aTier + 1)))),
-                        ItemList.HATCHES_OUTPUT[aTier].get(1L),
-                        480,
-                        (int) (30 * Math.pow(4, (aTier - 1))),
-                        false);
-            }
-            GT_Values.RA.addAssemblerRecipe(
-                    aInputs[aTier],
-                    glues[3].getMolten((long) (2.25 * Math.pow(2, (aTier + 1)))),
-                    ItemList.HATCHES_INPUT_BUS[aTier].get(1L),
-                    480,
-                    (int) (30 * Math.pow(4, (aTier - 1))),
-                    false);
-            GT_Values.RA.addAssemblerRecipe(
-                    aInputs2[aTier],
-                    glues[3].getMolten((long) (2.25 * Math.pow(2, (aTier + 1)))),
-                    ItemList.HATCHES_OUTPUT_BUS[aTier].get(1L),
-                    480,
-                    (int) (30 * Math.pow(4, (aTier - 1))),
-                    false);
-            GT_Values.RA.addAssemblerRecipe(
-                    flInputs[aTier],
-                    glues[3].getMolten((long) (2.25 * Math.pow(2, (aTier + 1)))),
-                    ItemList.HATCHES_INPUT[aTier].get(1L),
-                    480,
-                    (int) (30 * Math.pow(4, (aTier - 1))),
-                    false);
-            GT_Values.RA.addAssemblerRecipe(
-                    flInputs2[aTier],
-                    glues[3].getMolten((long) (2.25 * Math.pow(2, (aTier + 1)))),
-                    ItemList.HATCHES_OUTPUT[aTier].get(1L),
-                    480,
-                    (int) (30 * Math.pow(4, (aTier - 1))),
-                    false);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_LV.get(1),
+                    new ItemStack(Blocks.chest),
+                    GT_Utility.getIntegratedCircuit(1)
+                )
+                .itemOutputs(
+                    ItemList.Hatch_Input_Bus_LV.get(1)
+                )
+                .fluidInputs(
+                    Materials.Plastic.getFluid(1 * INGOTS)
+                )
+                .noFluidOutputs()
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(sAssemblerRecipes);
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_LV.get(1),
+                    new ItemStack(Blocks.chest),
+                    GT_Utility.getIntegratedCircuit(1)
+                )
+                .itemOutputs(
+                    ItemList.Hatch_Input_Bus_LV.get(1)
+                )
+                .fluidInputs(
+                    Materials.Polytetrafluoroethylene.getFluid(1 * HALF_INGOT)
+                )
+                .noFluidOutputs()
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(sAssemblerRecipes);
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_LV.get(1),
+                    new ItemStack(Blocks.chest),
+                    GT_Utility.getIntegratedCircuit(1)
+                )
+                .itemOutputs(
+                    ItemList.Hatch_Input_Bus_LV.get(1)
+                )
+                .fluidInputs(
+                    Materials.Polybenzimidazole.getFluid(9)
+                )
+                .noFluidOutputs()
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(sAssemblerRecipes);
+        }
+
+        // MV input bus
+        {
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_MV.get(1),
+                    getModItem(IronChests.modID, "BlockIronChest", 1, 3),
+                    GT_Utility.getIntegratedCircuit(1)
+                )
+                .itemOutputs(
+                    ItemList.Hatch_Input_Bus_MV.get(1)
+                )
+                .fluidInputs(
+                    Materials.Plastic.getFluid(2 * INGOTS)
+                )
+                .noFluidOutputs()
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_MV)
+                .addTo(sAssemblerRecipes);
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_MV.get(1),
+                    getModItem(IronChests.modID, "BlockIronChest", 1, 3),
+                    GT_Utility.getIntegratedCircuit(1)
+                )
+                .itemOutputs(
+                    ItemList.Hatch_Input_Bus_MV.get(1)
+                )
+                .fluidInputs(
+                    Materials.Polytetrafluoroethylene.getFluid(1 * INGOTS)
+                )
+                .noFluidOutputs()
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_MV)
+                .addTo(sAssemblerRecipes);
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_MV.get(1),
+                    getModItem(IronChests.modID, "BlockIronChest", 1, 3),
+                    GT_Utility.getIntegratedCircuit(1)
+                )
+                .itemOutputs(
+                    ItemList.Hatch_Input_Bus_MV.get(1)
+                )
+                .fluidInputs(
+                    Materials.Polybenzimidazole.getFluid(1*EIGHTH_INGOT)
+                )
+                .noFluidOutputs()
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_MV)
+                .addTo(sAssemblerRecipes);
+        }
+
+        // HV input bus
+        {
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_HV.get(1),
+                    getModItem(IronChests.modID, "BlockIronChest", 1, 0),
+                    GT_Utility.getIntegratedCircuit(1)
+                )
+                .itemOutputs(
+                    ItemList.Hatch_Input_Bus_HV.get(1)
+                )
+                .fluidInputs(
+                    Materials.Plastic.getFluid(3 * INGOTS)
+                )
+                .noFluidOutputs()
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_HV)
+                .addTo(sAssemblerRecipes);
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_HV.get(1),
+                    getModItem(IronChests.modID, "BlockIronChest", 1, 0),
+                    GT_Utility.getIntegratedCircuit(1)
+                )
+                .itemOutputs(
+                    ItemList.Hatch_Input_Bus_HV.get(1)
+                )
+                .fluidInputs(
+                    Materials.Polytetrafluoroethylene.getFluid(2 * INGOTS)
+                )
+                .noFluidOutputs()
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_HV)
+                .addTo(sAssemblerRecipes);
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_HV.get(1),
+                    getModItem(IronChests.modID, "BlockIronChest", 1, 0),
+                    GT_Utility.getIntegratedCircuit(1)
+                )
+                .itemOutputs(
+                    ItemList.Hatch_Input_Bus_HV.get(1)
+                )
+                .fluidInputs(
+                    Materials.Polybenzimidazole.getFluid(1 * QUARTER_INGOT)
+                )
+                .noFluidOutputs()
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_HV)
+                .addTo(sAssemblerRecipes);
+        }
+
+        // EV input bus
+        {
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_EV.get(1),
+                    getModItem(IronChests.modID, "BlockIronChest",1, 4),
+                    GT_Utility.getIntegratedCircuit(1)
+                )
+                .itemOutputs(
+                    ItemList.Hatch_Input_Bus_EV.get(1)
+                )
+                .fluidInputs(
+                    Materials.Polytetrafluoroethylene.getFluid(4 * INGOTS)
+                )
+                .noFluidOutputs()
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_EV)
+                .addTo(sAssemblerRecipes);
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_EV.get(1),
+                    getModItem(IronChests.modID, "BlockIronChest",1, 4),
+                    GT_Utility.getIntegratedCircuit(1)
+                )
+                .itemOutputs(
+                    ItemList.Hatch_Input_Bus_EV.get(1)
+                )
+                .fluidInputs(
+                    Materials.Polybenzimidazole.getFluid(1*HALF_INGOT)
+                )
+                .noFluidOutputs()
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_EV)
+                .addTo(sAssemblerRecipes);
+        }
+
+        // IV input bus
+        {
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_IV.get(1),
+                    getModItem(IronChests.modID, "BlockIronChest",1, 1),
+                    GT_Utility.getIntegratedCircuit(1)
+                )
+                .itemOutputs(
+                    ItemList.Hatch_Input_Bus_IV.get(1)
+                )
+                .fluidInputs(
+                    Materials.Polytetrafluoroethylene.getFluid(8 * INGOTS)
+                )
+                .noFluidOutputs()
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_IV)
+                .addTo(sAssemblerRecipes);
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_IV.get(1),
+                    getModItem(IronChests.modID, "BlockIronChest",1, 1),
+                    GT_Utility.getIntegratedCircuit(1)
+                )
+                .itemOutputs(
+                    ItemList.Hatch_Input_Bus_IV.get(1)
+                )
+                .fluidInputs(
+                    Materials.Polybenzimidazole.getFluid(1* INGOTS)
+                )
+                .noFluidOutputs()
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_IV)
+                .addTo(sAssemblerRecipes);
+        }
+
+        // LuV input bus
+        {
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_LuV.get(1),
+                    getModItem(IronChests.modID, "BlockIronChest",1, 2),
+                    GT_Utility.getIntegratedCircuit(1)
+                )
+                .itemOutputs(
+                    ItemList.Hatch_Input_Bus_LuV.get(1)
+                )
+                .fluidInputs(
+                    Materials.Polytetrafluoroethylene.getFluid(16 * INGOTS)
+                )
+                .noFluidOutputs()
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_LuV)
+                .addTo(sAssemblerRecipes);
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_LuV.get(1),
+                    getModItem(IronChests.modID, "BlockIronChest",1, 2),
+                    GT_Utility.getIntegratedCircuit(1)
+                )
+                .itemOutputs(
+                    ItemList.Hatch_Input_Bus_LuV.get(1)
+                )
+                .fluidInputs(
+                    Materials.Polybenzimidazole.getFluid(2 * INGOTS)
+                )
+                .noFluidOutputs()
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_LuV)
+                .addTo(sAssemblerRecipes);
+        }
+
+        // ZPM input bus
+        {
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_ZPM.get(1),
+                    getModItem(IronChests.modID, "BlockIronChest", 2, 5),
+                    GT_Utility.getIntegratedCircuit(1)
+                )
+                .itemOutputs(
+                    ItemList.Hatch_Input_Bus_ZPM.get(1)
+                )
+                .fluidInputs(
+                    Materials.Polybenzimidazole.getFluid(4 * INGOTS)
+                )
+                .noFluidOutputs()
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_ZPM)
+                .addTo(sAssemblerRecipes);
+        }
+
+        //UV input bus
+        {
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_UV.get(1),
+                    getModItem(IronChests.modID, "BlockIronChest", 2, 6),
+                    GT_Utility.getIntegratedCircuit(1)
+                )
+                .itemOutputs(
+                    ItemList.Hatch_Input_Bus_UV.get(1)
+                )
+                .fluidInputs(
+                    Materials.Polybenzimidazole.getFluid(8 * INGOTS)
+                )
+                .noFluidOutputs()
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_UV)
+                .addTo(sAssemblerRecipes);
+        }
+
+        // UHV input bus
+        {
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_MAX.get(1),
+                    getModItem(AvaritiaAddons.modID, "CompressedChest", 1),
+                    GT_Utility.getIntegratedCircuit(1)
+                )
+                .itemOutputs(
+                    ItemList.Hatch_Input_Bus_MAX.get(1)
+                )
+                .fluidInputs(
+                    Materials.Polybenzimidazole.getFluid(16 * INGOTS)
+                )
+                .noFluidOutputs()
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_UHV)
+                .addTo(sAssemblerRecipes);
+        }
+    }
+
+    /**
+     * Adds recipes for output buses from ULV to UHV
+     */
+    public void loadOutputBusesRecipes(){
+
+        /*  those early exits prevents further hatches recipes from being registered, but it's probably fine, as that
+            means we aren't in full pack */
+
+        if (!NewHorizonsCoreMod.isModLoaded()){
+            return;
+        }
+
+        // ULV output bus
+        {
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_ULV.get(1),
+                    getModItem(NewHorizonsCoreMod.modID, "BabyChest", 1),
+                    GT_Utility.getIntegratedCircuit(2)
+                )
+                .itemOutputs(
+                    ItemList.Hatch_Output_Bus_ULV.get(1)
+                )
+                .fluidInputs(
+                    Materials.Glue.getFluid(1 * INGOTS)
+                )
+                .noFluidOutputs()
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_ULV)
+                .addTo(sAssemblerRecipes);
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_ULV.get(1),
+                    getModItem(NewHorizonsCoreMod.modID, "BabyChest", 1),
+                    GT_Utility.getIntegratedCircuit(2)
+                )
+                .itemOutputs(
+                    ItemList.Hatch_Output_Bus_ULV.get(1)
+                )
+                .fluidInputs(
+                    Materials.Plastic.getFluid(1 * HALF_INGOT)
+                )
+                .noFluidOutputs()
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_ULV)
+                .addTo(sAssemblerRecipes);
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_ULV.get(1),
+                    getModItem(NewHorizonsCoreMod.modID, "BabyChest", 1),
+                    GT_Utility.getIntegratedCircuit(2)
+                )
+                .itemOutputs(
+                    ItemList.Hatch_Output_Bus_ULV.get(1)
+                )
+                .fluidInputs(
+                    Materials.Polytetrafluoroethylene.getFluid(1 * EIGHTH_INGOT)
+                )
+                .noFluidOutputs()
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_ULV)
+                .addTo(sAssemblerRecipes);
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_ULV.get(1),
+                    getModItem(NewHorizonsCoreMod.modID, "BabyChest", 1),
+                    GT_Utility.getIntegratedCircuit(2)
+                )
+                .itemOutputs(
+                    ItemList.Hatch_Output_Bus_ULV.get(1)
+                )
+                .fluidInputs(
+                    Materials.Polybenzimidazole.getFluid(4)
+                )
+                .noFluidOutputs()
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_ULV)
+                .addTo(sAssemblerRecipes);
+        }
+
+        // LV output bus
+        {
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_LV.get(1),
+                    new ItemStack(Blocks.chest),
+                    GT_Utility.getIntegratedCircuit(2)
+                )
+                .itemOutputs(
+                    ItemList.Hatch_Output_Bus_LV.get(1)
+                )
+                .fluidInputs(
+                    Materials.Glue.getFluid(5 * INGOTS)
+                )
+                .noFluidOutputs()
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(sAssemblerRecipes);
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_LV.get(1),
+                    new ItemStack(Blocks.chest),
+                    GT_Utility.getIntegratedCircuit(2)
+                )
+                .itemOutputs(
+                    ItemList.Hatch_Output_Bus_LV.get(1)
+                )
+                .fluidInputs(
+                    Materials.Plastic.getFluid(1 * INGOTS)
+                )
+                .noFluidOutputs()
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(sAssemblerRecipes);
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_LV.get(1),
+                    new ItemStack(Blocks.chest),
+                    GT_Utility.getIntegratedCircuit(2)
+                )
+                .itemOutputs(
+                    ItemList.Hatch_Output_Bus_LV.get(1)
+                )
+                .fluidInputs(
+                    Materials.Polytetrafluoroethylene.getFluid(1 * HALF_INGOT)
+                )
+                .noFluidOutputs()
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(sAssemblerRecipes);
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_LV.get(1),
+                    new ItemStack(Blocks.chest),
+                    GT_Utility.getIntegratedCircuit(2)
+                )
+                .itemOutputs(
+                    ItemList.Hatch_Output_Bus_LV.get(1)
+                )
+                .fluidInputs(
+                    Materials.Polybenzimidazole.getFluid(9)
+                )
+                .noFluidOutputs()
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(sAssemblerRecipes);
+        }
+
+        if (!IronChests.isModLoaded()){
+            return;
+        }
+
+        // MV output bus
+        {
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_MV.get(1),
+                    getModItem(IronChests.modID, "BlockIronChest", 1, 3),
+                    GT_Utility.getIntegratedCircuit(2)
+                )
+                .itemOutputs(
+                    ItemList.Hatch_Output_Bus_MV.get(1)
+                )
+                .fluidInputs(
+                    Materials.Plastic.getFluid(2 * INGOTS)
+                )
+                .noFluidOutputs()
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_MV)
+                .addTo(sAssemblerRecipes);
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_MV.get(1),
+                    getModItem(IronChests.modID, "BlockIronChest", 1, 3),
+                    GT_Utility.getIntegratedCircuit(2)
+                )
+                .itemOutputs(
+                    ItemList.Hatch_Output_Bus_MV.get(1)
+                )
+                .fluidInputs(
+                    Materials.Polytetrafluoroethylene.getFluid(1 * INGOTS)
+                )
+                .noFluidOutputs()
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_MV)
+                .addTo(sAssemblerRecipes);
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_MV.get(1),
+                    getModItem(IronChests.modID, "BlockIronChest", 1, 3),
+                    GT_Utility.getIntegratedCircuit(2)
+                )
+                .itemOutputs(
+                    ItemList.Hatch_Output_Bus_MV.get(1)
+                )
+                .fluidInputs(
+                    Materials.Polybenzimidazole.getFluid(1 * EIGHTH_INGOT)
+                )
+                .noFluidOutputs()
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_MV)
+                .addTo(sAssemblerRecipes);
+        }
+
+        // HV output bus
+        {
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_HV.get(1),
+                    getModItem(IronChests.modID, "BlockIronChest", 1, 0),
+                    GT_Utility.getIntegratedCircuit(2)
+                )
+                .itemOutputs(
+                    ItemList.Hatch_Output_Bus_HV.get(1)
+                )
+                .fluidInputs(
+                    Materials.Plastic.getFluid(3 * INGOTS)
+                )
+                .noFluidOutputs()
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_HV)
+                .addTo(sAssemblerRecipes);
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_HV.get(1),
+                    getModItem(IronChests.modID, "BlockIronChest", 1, 0),
+                    GT_Utility.getIntegratedCircuit(2)
+                )
+                .itemOutputs(
+                    ItemList.Hatch_Output_Bus_HV.get(1)
+                )
+                .fluidInputs(
+                    Materials.Polytetrafluoroethylene.getFluid(2 * INGOTS)
+                )
+                .noFluidOutputs()
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_HV)
+                .addTo(sAssemblerRecipes);
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_HV.get(1),
+                    getModItem(IronChests.modID, "BlockIronChest", 1, 0),
+                    GT_Utility.getIntegratedCircuit(2)
+                )
+                .itemOutputs(
+                    ItemList.Hatch_Output_Bus_HV.get(1)
+                )
+                .fluidInputs(
+                    Materials.Polybenzimidazole.getFluid(1*QUARTER_INGOT)
+                )
+                .noFluidOutputs()
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_HV)
+                .addTo(sAssemblerRecipes);
+        }
+
+        // EV output bus
+        {
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_EV.get(1),
+                    getModItem(IronChests.modID, "BlockIronChest", 1,4),
+                    GT_Utility.getIntegratedCircuit(2)
+                )
+                .itemOutputs(
+                    ItemList.Hatch_Output_Bus_EV.get(1)
+                )
+                .fluidInputs(
+                    Materials.Polytetrafluoroethylene.getFluid(4 * INGOTS)
+                )
+                .noFluidOutputs()
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_EV)
+                .addTo(sAssemblerRecipes);
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_EV.get(1),
+                    getModItem(IronChests.modID, "BlockIronChest",1, 4),
+                    GT_Utility.getIntegratedCircuit(2)
+                )
+                .itemOutputs(
+                    ItemList.Hatch_Output_Bus_EV.get(1)
+                )
+                .fluidInputs(
+                    Materials.Polybenzimidazole.getFluid(1*HALF_INGOT)
+                )
+                .noFluidOutputs()
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_EV)
+                .addTo(sAssemblerRecipes);
+        }
+
+        // IV output bus
+        {
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_IV.get(1),
+                    getModItem(IronChests.modID, "BlockIronChest",1, 1),
+                    GT_Utility.getIntegratedCircuit(2)
+                )
+                .itemOutputs(
+                    ItemList.Hatch_Output_Bus_IV.get(1)
+                )
+                .fluidInputs(
+                    Materials.Polytetrafluoroethylene.getFluid(8 * INGOTS)
+                )
+                .noFluidOutputs()
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_IV)
+                .addTo(sAssemblerRecipes);
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_IV.get(1),
+                    getModItem(IronChests.modID, "BlockIronChest",1, 1),
+                    GT_Utility.getIntegratedCircuit(2)
+                )
+                .itemOutputs(
+                    ItemList.Hatch_Output_Bus_IV.get(1)
+                )
+                .fluidInputs(
+                    Materials.Polybenzimidazole.getFluid(1 * INGOTS)
+                )
+                .noFluidOutputs()
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_IV)
+                .addTo(sAssemblerRecipes);
+        }
+
+        // LuV output bus
+        {
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_LuV.get(1),
+                    getModItem(IronChests.modID, "BlockIronChest", 1,2),
+                    GT_Utility.getIntegratedCircuit(2)
+                )
+                .itemOutputs(
+                    ItemList.Hatch_Output_Bus_LuV.get(1)
+                )
+                .fluidInputs(
+                    Materials.Polytetrafluoroethylene.getFluid(16 * INGOTS)
+                )
+                .noFluidOutputs()
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_LuV)
+                .addTo(sAssemblerRecipes);
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_LuV.get(1),
+                    getModItem(IronChests.modID, "BlockIronChest", 1,2),
+                    GT_Utility.getIntegratedCircuit(2)
+                )
+                .itemOutputs(
+                    ItemList.Hatch_Output_Bus_LuV.get(1)
+                )
+                .fluidInputs(
+                    Materials.Polybenzimidazole.getFluid(2 * INGOTS)
+                )
+                .noFluidOutputs()
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_LuV)
+                .addTo(sAssemblerRecipes);
+        }
+
+        // ZPM output bus
+        {
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_ZPM.get(1),
+                    getModItem(IronChests.modID, "BlockIronChest", 2, 5),
+                    GT_Utility.getIntegratedCircuit(2)
+                )
+                .itemOutputs(
+                    ItemList.Hatch_Output_Bus_ZPM.get(1)
+                )
+                .fluidInputs(
+                    Materials.Polybenzimidazole.getFluid(4 * INGOTS)
+                )
+                .noFluidOutputs()
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_ZPM)
+                .addTo(sAssemblerRecipes);
+        }
+
+        // UV output bus
+        {
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_UV.get(1),
+                    getModItem(IronChests.modID, "BlockIronChest", 2, 6),
+                    GT_Utility.getIntegratedCircuit(2)
+                )
+                .itemOutputs(
+                    ItemList.Hatch_Output_Bus_UV.get(1)
+                )
+                .fluidInputs(
+                    Materials.Polybenzimidazole.getFluid(8 * INGOTS)
+                )
+                .noFluidOutputs()
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_UV)
+                .addTo(sAssemblerRecipes);
+        }
+
+        if (!AvaritiaAddons.isModLoaded()){
+            return;
+        }
+
+        // UHV output bus
+        {
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_MAX.get(1),
+                    getModItem(AvaritiaAddons.modID, "CompressedChest", 1),
+                    GT_Utility.getIntegratedCircuit(2)
+                )
+                .itemOutputs(
+                    ItemList.Hatch_Output_Bus_MAX.get(1)
+                )
+                .fluidInputs(
+                    Materials.Polybenzimidazole.getFluid(16 * INGOTS)
+                )
+                .noFluidOutputs()
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_UHV)
+                .addTo(sAssemblerRecipes);
+        }
+    }
+
+    /**
+     * Adds recipes for input hatches from ULV to UHV
+     */
+    public void loadInputHatchesRecipes(){
+        // ULV input hatch
+        {
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_ULV.get(1),
+                    GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1),
+                    GT_Utility.getIntegratedCircuit(1)
+                )
+                .itemOutputs(
+                    ItemList.Hatch_Input_ULV.get(1)
+                )
+                .fluidInputs(
+                    Materials.Glue.getFluid(1*INGOTS)
+                )
+                .noFluidOutputs()
+                .duration(24* SECONDS)
+                .eut(TierEU.RECIPE_ULV)
+                .addTo(sAssemblerRecipes);
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_ULV.get(1),
+                    GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1),
+                    GT_Utility.getIntegratedCircuit(1)
+                )
+                .itemOutputs(
+                    ItemList.Hatch_Input_ULV.get(1)
+                )
+                .fluidInputs(
+                    Materials.Plastic.getFluid(1* HALF_INGOT)
+                )
+                .noFluidOutputs()
+                .duration(24* SECONDS)
+                .eut(TierEU.RECIPE_ULV)
+                .addTo(sAssemblerRecipes);
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_ULV.get(1),
+                    GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1),
+                    GT_Utility.getIntegratedCircuit(1)
+                )
+                .itemOutputs(
+                    ItemList.Hatch_Input_ULV.get(1)
+                )
+                .fluidInputs(
+                    Materials.Polytetrafluoroethylene.getFluid(1* EIGHTH_INGOT)
+                )
+                .noFluidOutputs()
+                .duration(24* SECONDS)
+                .eut(TierEU.RECIPE_ULV)
+                .addTo(sAssemblerRecipes);
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_ULV.get(1),
+                    GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1),
+                    GT_Utility.getIntegratedCircuit(1)
+                )
+                .itemOutputs(
+                    ItemList.Hatch_Input_ULV.get(1)
+                )
+                .fluidInputs(
+                    Materials.Polybenzimidazole.getFluid(4)
+                )
+                .noFluidOutputs()
+                .duration(24* SECONDS)
+                .eut(TierEU.RECIPE_ULV)
+                .addTo(sAssemblerRecipes);
+        }
+
+        /*  those early exits prevents further hatches recipes from being registered, but it's probably fine, as that
+            means we aren't in full pack */
+
+        if(!BuildCraftFactory.isModLoaded()){
+            return;
+        }
+
+        // LV input hatch
+        {
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_LV.get(1),
+                    getModItem(BuildCraftFactory.modID, "tankBlock", 1),
+                    GT_Utility.getIntegratedCircuit(1)
+                )
+                .itemOutputs(
+                    ItemList.Hatch_Input_LV.get(1)
+                )
+                .fluidInputs(
+                    Materials.Glue.getFluid(5 * INGOTS)
+                )
+                .noFluidOutputs()
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(sAssemblerRecipes);
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_LV.get(1),
+                    getModItem(BuildCraftFactory.modID, "tankBlock", 1),
+                    GT_Utility.getIntegratedCircuit(1)
+                )
+                .itemOutputs(
+                    ItemList.Hatch_Input_LV.get(1)
+                )
+                .fluidInputs(
+                    Materials.Plastic.getFluid(1 * INGOTS)
+                )
+                .noFluidOutputs()
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(sAssemblerRecipes);
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_LV.get(1),
+                    getModItem(BuildCraftFactory.modID, "tankBlock", 1),
+                    GT_Utility.getIntegratedCircuit(1)
+                )
+                .itemOutputs(
+                    ItemList.Hatch_Input_LV.get(1)
+                )
+                .fluidInputs(
+                    Materials.Polytetrafluoroethylene.getFluid(1 * HALF_INGOT)
+                )
+                .noFluidOutputs()
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(sAssemblerRecipes);
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_LV.get(1),
+                    getModItem(BuildCraftFactory.modID, "tankBlock", 1),
+                    GT_Utility.getIntegratedCircuit(1)
+                )
+                .itemOutputs(
+                    ItemList.Hatch_Input_LV.get(1)
+                )
+                .fluidInputs(
+                    Materials.Polybenzimidazole.getFluid(9)
+                )
+                .noFluidOutputs()
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(sAssemblerRecipes);
+        }
+
+        if (!IronTanks.isModLoaded()){
+            return;
+        }
+
+        // MV input hatch
+        {
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_MV.get(1),
+                    getModItem(IronTanks.modID, "copperTank", 1),
+                    GT_Utility.getIntegratedCircuit(1)
+                )
+                .itemOutputs(
+                    ItemList.Hatch_Input_MV.get(1)
+                )
+                .fluidInputs(
+                    Materials.Plastic.getFluid(2 * INGOTS)
+                )
+                .noFluidOutputs()
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_MV)
+                .addTo(sAssemblerRecipes);
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_MV.get(1),
+                    getModItem(IronTanks.modID, "copperTank", 1),
+                    GT_Utility.getIntegratedCircuit(1)
+                )
+                .itemOutputs(
+                    ItemList.Hatch_Input_MV.get(1)
+                )
+                .fluidInputs(
+                    Materials.Polytetrafluoroethylene.getFluid(1 * INGOTS)
+                )
+                .noFluidOutputs()
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_MV)
+                .addTo(sAssemblerRecipes);
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_MV.get(1),
+                    getModItem(IronTanks.modID, "copperTank", 1),
+                    GT_Utility.getIntegratedCircuit(1)
+                )
+                .itemOutputs(
+                    ItemList.Hatch_Input_MV.get(1)
+                )
+                .fluidInputs(
+                    Materials.Polybenzimidazole.getFluid(1*EIGHTH_INGOT)
+                )
+                .noFluidOutputs()
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_MV)
+                .addTo(sAssemblerRecipes);
+        }
+
+        // HV input hatch
+        {
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_HV.get(1),
+                    getModItem(IronTanks.modID, "ironTank", 1),
+                    GT_Utility.getIntegratedCircuit(1)
+                )
+                .itemOutputs(
+                    ItemList.Hatch_Input_HV.get(1)
+                )
+                .fluidInputs(
+                    Materials.Plastic.getFluid(3 * INGOTS)
+                )
+                .noFluidOutputs()
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_HV)
+                .addTo(sAssemblerRecipes);
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_HV.get(1),
+                    getModItem(IronTanks.modID, "ironTank", 1),
+                    GT_Utility.getIntegratedCircuit(1)
+                )
+                .itemOutputs(
+                    ItemList.Hatch_Input_HV.get(1)
+                )
+                .fluidInputs(
+                    Materials.Polytetrafluoroethylene.getFluid(2 * INGOTS)
+                )
+                .noFluidOutputs()
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_HV)
+                .addTo(sAssemblerRecipes);
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_HV.get(1),
+                    getModItem(IronTanks.modID, "ironTank", 1),
+                    GT_Utility.getIntegratedCircuit(1)
+                )
+                .itemOutputs(
+                    ItemList.Hatch_Input_HV.get(1)
+                )
+                .fluidInputs(
+                    Materials.Polybenzimidazole.getFluid(1 * QUARTER_INGOT)
+                )
+                .noFluidOutputs()
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_HV)
+                .addTo(sAssemblerRecipes);
+        }
+
+        // EV input hatch
+        {
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_EV.get(1),
+                    getModItem(IronTanks.modID, "silverTank", 1),
+                    GT_Utility.getIntegratedCircuit(1)
+                )
+                .itemOutputs(
+                    ItemList.Hatch_Input_EV.get(1)
+                )
+                .fluidInputs(
+                    Materials.Polytetrafluoroethylene.getFluid(4 * INGOTS)
+                )
+                .noFluidOutputs()
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_EV)
+                .addTo(sAssemblerRecipes);
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_EV.get(1),
+                    getModItem(IronTanks.modID, "silverTank", 1),
+                    GT_Utility.getIntegratedCircuit(1)
+                )
+                .itemOutputs(
+                    ItemList.Hatch_Input_EV.get(1)
+                )
+                .fluidInputs(
+                    Materials.Polybenzimidazole.getFluid(1*HALF_INGOT)
+                )
+                .noFluidOutputs()
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_EV)
+                .addTo(sAssemblerRecipes);
+        }
+
+        // IV input hatch
+        {
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_IV.get(1),
+                    getModItem(IronTanks.modID, "goldTank", 1),
+                    GT_Utility.getIntegratedCircuit(1)
+                )
+                .itemOutputs(
+                    ItemList.Hatch_Input_IV.get(1)
+                )
+                .fluidInputs(
+                    Materials.Polytetrafluoroethylene.getFluid(8 * INGOTS)
+                )
+                .noFluidOutputs()
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_IV)
+                .addTo(sAssemblerRecipes);
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_IV.get(1),
+                    getModItem(IronTanks.modID, "goldTank", 1),
+                    GT_Utility.getIntegratedCircuit(1)
+                )
+                .itemOutputs(
+                    ItemList.Hatch_Input_IV.get(1)
+                )
+                .fluidInputs(
+                    Materials.Polybenzimidazole.getFluid(1* INGOTS)
+                )
+                .noFluidOutputs()
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_IV)
+                .addTo(sAssemblerRecipes);
+        }
+
+        // LuV input hatch
+        {
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_LuV.get(1),
+                    getModItem(IronTanks.modID, "diamondTank", 1),
+                    GT_Utility.getIntegratedCircuit(1)
+                )
+                .itemOutputs(
+                    ItemList.Hatch_Input_LuV.get(1)
+                )
+                .fluidInputs(
+                    Materials.Polytetrafluoroethylene.getFluid(16 * INGOTS)
+                )
+                .noFluidOutputs()
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_LuV)
+                .addTo(sAssemblerRecipes);
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_LuV.get(1),
+                    getModItem(IronTanks.modID, "diamondTank", 1),
+                    GT_Utility.getIntegratedCircuit(1)
+                )
+                .itemOutputs(
+                    ItemList.Hatch_Input_LuV.get(1)
+                )
+                .fluidInputs(
+                    Materials.Polybenzimidazole.getFluid(2 * INGOTS)
+                )
+                .noFluidOutputs()
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_LuV)
+                .addTo(sAssemblerRecipes);
+        }
+
+        // ZPM input hatch
+        {
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_ZPM.get(1),
+                    getModItem(IronTanks.modID, "obsidianTank", 1),
+                    GT_Utility.getIntegratedCircuit(1)
+                )
+                .itemOutputs(
+                    ItemList.Hatch_Input_ZPM.get(1)
+                )
+                .fluidInputs(
+                    Materials.Polybenzimidazole.getFluid(4 * INGOTS)
+                )
+                .noFluidOutputs()
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_ZPM)
+                .addTo(sAssemblerRecipes);
+        }
+
+        //UV input hatch
+        {
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_UV.get(1),
+                    ItemList.Super_Tank_LV.get(1),
+                    GT_Utility.getIntegratedCircuit(1)
+                )
+                .itemOutputs(
+                    ItemList.Hatch_Input_UV.get(1)
+                )
+                .fluidInputs(
+                    Materials.Polybenzimidazole.getFluid(8 * INGOTS)
+                )
+                .noFluidOutputs()
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_UV)
+                .addTo(sAssemblerRecipes);
+        }
+
+        // UHV input hatch
+        {
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_MAX.get(1),
+                    ItemList.Super_Tank_MV.get(1),
+                    GT_Utility.getIntegratedCircuit(1)
+                )
+                .itemOutputs(
+                    ItemList.Hatch_Input_MAX.get(1)
+                )
+                .fluidInputs(
+                    Materials.Polybenzimidazole.getFluid(16 * INGOTS)
+                )
+                .noFluidOutputs()
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_UHV)
+                .addTo(sAssemblerRecipes);
+        }
+    }
+
+    /**
+     * Adds recipes for output hatches from ULV to UHV
+     */
+    public void loadOutputHatchesRecipes(){
+        // ULV output hatch
+        {
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_ULV.get(1),
+                    GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1),
+                    GT_Utility.getIntegratedCircuit(2)
+                )
+                .itemOutputs(
+                    ItemList.Hatch_Output_Bus_ULV.get(1)
+                )
+                .fluidInputs(
+                    Materials.Glue.getFluid(1 * INGOTS)
+                )
+                .noFluidOutputs()
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_ULV)
+                .addTo(sAssemblerRecipes);
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_ULV.get(1),
+                    GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1),
+                    GT_Utility.getIntegratedCircuit(2)
+                )
+                .itemOutputs(
+                    ItemList.Hatch_Output_Bus_ULV.get(1)
+                )
+                .fluidInputs(
+                    Materials.Plastic.getFluid(1 * HALF_INGOT)
+                )
+                .noFluidOutputs()
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_ULV)
+                .addTo(sAssemblerRecipes);
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_ULV.get(1),
+                    GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1),
+                    GT_Utility.getIntegratedCircuit(2)
+                )
+                .itemOutputs(
+                    ItemList.Hatch_Output_Bus_ULV.get(1)
+                )
+                .fluidInputs(
+                    Materials.Polytetrafluoroethylene.getFluid(1 * EIGHTH_INGOT)
+                )
+                .noFluidOutputs()
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_ULV)
+                .addTo(sAssemblerRecipes);
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_ULV.get(1),
+                    GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1),
+                    GT_Utility.getIntegratedCircuit(2)
+                )
+                .itemOutputs(
+                    ItemList.Hatch_Output_Bus_ULV.get(1)
+                )
+                .fluidInputs(
+                    Materials.Polybenzimidazole.getFluid(4)
+                )
+                .noFluidOutputs()
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_ULV)
+                .addTo(sAssemblerRecipes);
+        }
+
+        /*  those early exits prevents further hatches recipes from being registered, but it's probably fine, as that
+            means we aren't in full pack */
+
+        if (!BuildCraftFactory.isModLoaded()){
+            return;
+        }
+
+        // LV output hatch
+        {
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_LV.get(1),
+                    getModItem(BuildCraftFactory.modID, "tankBlock", 1),
+                    GT_Utility.getIntegratedCircuit(2)
+                )
+                .itemOutputs(
+                    ItemList.Hatch_Output_Bus_LV.get(1)
+                )
+                .fluidInputs(
+                    Materials.Glue.getFluid(5 * INGOTS)
+                )
+                .noFluidOutputs()
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(sAssemblerRecipes);
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_LV.get(1),
+                    getModItem(BuildCraftFactory.modID, "tankBlock", 1),
+                    GT_Utility.getIntegratedCircuit(2)
+                )
+                .itemOutputs(
+                    ItemList.Hatch_Output_Bus_LV.get(1)
+                )
+                .fluidInputs(
+                    Materials.Plastic.getFluid(1 * INGOTS)
+                )
+                .noFluidOutputs()
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(sAssemblerRecipes);
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_LV.get(1),
+                    getModItem(BuildCraftFactory.modID, "tankBlock", 1),
+                    GT_Utility.getIntegratedCircuit(2)
+                )
+                .itemOutputs(
+                    ItemList.Hatch_Output_Bus_LV.get(1)
+                )
+                .fluidInputs(
+                    Materials.Polytetrafluoroethylene.getFluid(1 * HALF_INGOT)
+                )
+                .noFluidOutputs()
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(sAssemblerRecipes);
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_LV.get(1),
+                    getModItem(BuildCraftFactory.modID, "tankBlock", 1),
+                    GT_Utility.getIntegratedCircuit(2)
+                )
+                .itemOutputs(
+                    ItemList.Hatch_Output_Bus_LV.get(1)
+                )
+                .fluidInputs(
+                    Materials.Polybenzimidazole.getFluid(9)
+                )
+                .noFluidOutputs()
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(sAssemblerRecipes);
+        }
+
+        if (!IronTanks.isModLoaded()){
+            return;
+        }
+
+        // MV output hatch
+        {
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_MV.get(1),
+                    getModItem(IronTanks.modID, "copperTank", 1),
+                    GT_Utility.getIntegratedCircuit(2)
+                )
+                .itemOutputs(
+                    ItemList.Hatch_Output_Bus_MV.get(1)
+                )
+                .fluidInputs(
+                    Materials.Plastic.getFluid(2 * INGOTS)
+                )
+                .noFluidOutputs()
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_MV)
+                .addTo(sAssemblerRecipes);
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_MV.get(1),
+                    getModItem(IronTanks.modID, "copperTank", 1),
+                    GT_Utility.getIntegratedCircuit(2)
+                )
+                .itemOutputs(
+                    ItemList.Hatch_Output_Bus_MV.get(1)
+                )
+                .fluidInputs(
+                    Materials.Polytetrafluoroethylene.getFluid(1 * INGOTS)
+                )
+                .noFluidOutputs()
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_MV)
+                .addTo(sAssemblerRecipes);
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_MV.get(1),
+                    getModItem(IronTanks.modID, "copperTank", 1),
+                    GT_Utility.getIntegratedCircuit(2)
+                )
+                .itemOutputs(
+                    ItemList.Hatch_Output_Bus_MV.get(1)
+                )
+                .fluidInputs(
+                    Materials.Polybenzimidazole.getFluid(1 * EIGHTH_INGOT)
+                )
+                .noFluidOutputs()
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_MV)
+                .addTo(sAssemblerRecipes);
+        }
+
+        // HV output hatch
+        {
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_HV.get(1),
+                    getModItem(IronTanks.modID, "ironTank", 1),
+                    GT_Utility.getIntegratedCircuit(2)
+                )
+                .itemOutputs(
+                    ItemList.Hatch_Output_Bus_HV.get(1)
+                )
+                .fluidInputs(
+                    Materials.Plastic.getFluid(3 * INGOTS)
+                )
+                .noFluidOutputs()
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_HV)
+                .addTo(sAssemblerRecipes);
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_HV.get(1),
+                    getModItem(IronTanks.modID, "ironTank", 1),
+                    GT_Utility.getIntegratedCircuit(2)
+                )
+                .itemOutputs(
+                    ItemList.Hatch_Output_Bus_HV.get(1)
+                )
+                .fluidInputs(
+                    Materials.Polytetrafluoroethylene.getFluid(2 * INGOTS)
+                )
+                .noFluidOutputs()
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_HV)
+                .addTo(sAssemblerRecipes);
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_HV.get(1),
+                    getModItem(IronTanks.modID, "ironTank", 1),
+                    GT_Utility.getIntegratedCircuit(2)
+                )
+                .itemOutputs(
+                    ItemList.Hatch_Output_Bus_HV.get(1)
+                )
+                .fluidInputs(
+                    Materials.Polybenzimidazole.getFluid(1*QUARTER_INGOT)
+                )
+                .noFluidOutputs()
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_HV)
+                .addTo(sAssemblerRecipes);
+        }
+
+        // EV output hatch
+        {
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_EV.get(1),
+                    getModItem(IronTanks.modID, "silverTank", 1),
+                    GT_Utility.getIntegratedCircuit(2)
+                )
+                .itemOutputs(
+                    ItemList.Hatch_Output_Bus_EV.get(1)
+                )
+                .fluidInputs(
+                    Materials.Polytetrafluoroethylene.getFluid(4 * INGOTS)
+                )
+                .noFluidOutputs()
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_EV)
+                .addTo(sAssemblerRecipes);
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_EV.get(1),
+                    getModItem(IronTanks.modID, "silverTank", 1),
+                    GT_Utility.getIntegratedCircuit(2)
+                )
+                .itemOutputs(
+                    ItemList.Hatch_Output_Bus_EV.get(1)
+                )
+                .fluidInputs(
+                    Materials.Polybenzimidazole.getFluid(1*HALF_INGOT)
+                )
+                .noFluidOutputs()
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_EV)
+                .addTo(sAssemblerRecipes);
+        }
+
+        // IV output hatch
+        {
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_IV.get(1),
+                    getModItem(IronTanks.modID, "goldTank", 1),
+                    GT_Utility.getIntegratedCircuit(2)
+                )
+                .itemOutputs(
+                    ItemList.Hatch_Output_Bus_IV.get(1)
+                )
+                .fluidInputs(
+                    Materials.Polytetrafluoroethylene.getFluid(8 * INGOTS)
+                )
+                .noFluidOutputs()
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_IV)
+                .addTo(sAssemblerRecipes);
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_IV.get(1),
+                    getModItem(IronTanks.modID, "goldTank", 1),
+                    GT_Utility.getIntegratedCircuit(2)
+                )
+                .itemOutputs(
+                    ItemList.Hatch_Output_Bus_IV.get(1)
+                )
+                .fluidInputs(
+                    Materials.Polybenzimidazole.getFluid(1 * INGOTS)
+                )
+                .noFluidOutputs()
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_IV)
+                .addTo(sAssemblerRecipes);
+        }
+
+        // LuV output hatch
+        {
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_LuV.get(1),
+                    getModItem(IronTanks.modID, "diamondTank", 1),
+                    GT_Utility.getIntegratedCircuit(2)
+                )
+                .itemOutputs(
+                    ItemList.Hatch_Output_Bus_LuV.get(1)
+                )
+                .fluidInputs(
+                    Materials.Polytetrafluoroethylene.getFluid(16 * INGOTS)
+                )
+                .noFluidOutputs()
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_LuV)
+                .addTo(sAssemblerRecipes);
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_LuV.get(1),
+                    getModItem(IronTanks.modID, "diamondTank", 1),
+                    GT_Utility.getIntegratedCircuit(2)
+                )
+                .itemOutputs(
+                    ItemList.Hatch_Output_Bus_LuV.get(1)
+                )
+                .fluidInputs(
+                    Materials.Polybenzimidazole.getFluid(2 * INGOTS)
+                )
+                .noFluidOutputs()
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_LuV)
+                .addTo(sAssemblerRecipes);
+        }
+
+        // ZPM output hatch
+        {
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_ZPM.get(1),
+                    getModItem(IronTanks.modID, "obsidianTank", 1),
+                    GT_Utility.getIntegratedCircuit(2)
+                )
+                .itemOutputs(
+                    ItemList.Hatch_Output_Bus_ZPM.get(1)
+                )
+                .fluidInputs(
+                    Materials.Polybenzimidazole.getFluid(4 * INGOTS)
+                )
+                .noFluidOutputs()
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_ZPM)
+                .addTo(sAssemblerRecipes);
+        }
+
+        // UV output hatch
+        {
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_UV.get(1),
+                    ItemList.Super_Tank_LV.get(1),
+                    GT_Utility.getIntegratedCircuit(2)
+                )
+                .itemOutputs(
+                    ItemList.Hatch_Output_Bus_UV.get(1)
+                )
+                .fluidInputs(
+                    Materials.Polybenzimidazole.getFluid(8 * INGOTS)
+                )
+                .noFluidOutputs()
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_UV)
+                .addTo(sAssemblerRecipes);
+        }
+
+        // UHV output hatch
+        {
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Hull_MAX.get(1),
+                    ItemList.Super_Tank_MV.get(1),
+                    GT_Utility.getIntegratedCircuit(2)
+                )
+                .itemOutputs(
+                    ItemList.Hatch_Output_Bus_MAX.get(1)
+                )
+                .fluidInputs(
+                    Materials.Polybenzimidazole.getFluid(16 * INGOTS)
+                )
+                .noFluidOutputs()
+                .duration(24 * SECONDS)
+                .eut(TierEU.RECIPE_UHV)
+                .addTo(sAssemblerRecipes);
         }
     }
 
     /**
      * Load all Railcraft recipes for GT Machines
      */
-    private void loadRailcraftRecipes() {
-        if (!isRailcraftLoaded) return;
+    private void withRailcraft() {
+        if (!Railcraft.isModLoaded()) return;
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] { new ItemStack(Blocks.stone_slab, 1, 0), ItemList.RC_Rebar.get(1L),
                         GT_Utility.getIntegratedCircuit(1) },
@@ -4370,169 +5943,159 @@ public class AssemblerRecipes implements Runnable {
     }
 
     public void withBartWorks() {
-        if (isBartWorksLoaded) {
-            GT_Values.RA.addAssemblerRecipe(
-                    getModItem("bartworks", "gt.bwMetaGeneratedplate", 6L, 88),
-                    GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Chrome, 1L),
-                    ItemList.Casing_Advanced_Rhodium_Palladium.get(1L),
-                    50,
-                    16);
+        if (BartWorks.isModLoaded()) {
+            return;
         }
+
+        GT_Values.RA.addAssemblerRecipe(
+                getModItem("bartworks", "gt.bwMetaGeneratedplate", 6L, 88),
+                GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Chrome, 1L),
+                ItemList.Casing_Advanced_Rhodium_Palladium.get(1L),
+                50,
+                16);
+
     }
 
     public void withGalacticraftMars() {
-        if (isGalacticraftMarsLoaded) {
-            GT_Values.RA.addAssemblerRecipe(
-                    new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.compressed, Materials.Bronze, 1L),
-                            GT_OreDictUnificator.get(OrePrefixes.compressed, Materials.Aluminium, 1L),
-                            GT_OreDictUnificator.get(OrePrefixes.compressed, Materials.Steel, 1L),
-                            GT_Utility.getIntegratedCircuit(1) },
-                    Materials.StainlessSteel.getMolten(72L),
-                    ItemList.Ingot_Heavy1.get(1L),
-                    300,
-                    (int) TierEU.RECIPE_HV);
-            GT_Values.RA.addAssemblerRecipe(
-                    new ItemStack[] { getModItem("GalacticraftCore", "item.heavyPlating", 1L),
-                            GT_OreDictUnificator.get(OrePrefixes.plate, Materials.MeteoricIron, 2L),
-                            GT_Utility.getIntegratedCircuit(1) },
-                    Materials.TungstenSteel.getMolten(72L),
-                    ItemList.Ingot_Heavy2.get(1L),
-                    300,
-                    (int) TierEU.RECIPE_EV);
-            GT_Values.RA.addAssemblerRecipe(
-                    new ItemStack[] { getModItem("GalacticraftMars", "item.null", 1L, 3),
-                            GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Desh, 4L),
-                            GT_Utility.getIntegratedCircuit(1) },
-                    Materials.Platinum.getMolten(72L),
-                    ItemList.Ingot_Heavy3.get(1L),
-                    300,
-                    (int) TierEU.RECIPE_IV);
+        if (!GalacticraftMars.isModLoaded()) {
+            return;
         }
+
+        GT_Values.RA.addAssemblerRecipe(
+                new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.compressed, Materials.Bronze, 1L),
+                        GT_OreDictUnificator.get(OrePrefixes.compressed, Materials.Aluminium, 1L),
+                        GT_OreDictUnificator.get(OrePrefixes.compressed, Materials.Steel, 1L),
+                        GT_Utility.getIntegratedCircuit(1) },
+                Materials.StainlessSteel.getMolten(72L),
+                ItemList.Ingot_Heavy1.get(1L),
+                300,
+                (int) TierEU.RECIPE_HV);
+        GT_Values.RA.addAssemblerRecipe(
+                new ItemStack[] { getModItem("GalacticraftCore", "item.heavyPlating", 1L),
+                        GT_OreDictUnificator.get(OrePrefixes.plate, Materials.MeteoricIron, 2L),
+                        GT_Utility.getIntegratedCircuit(1) },
+                Materials.TungstenSteel.getMolten(72L),
+                ItemList.Ingot_Heavy2.get(1L),
+                300,
+                (int) TierEU.RECIPE_EV);
+        GT_Values.RA.addAssemblerRecipe(
+                new ItemStack[] { getModItem("GalacticraftMars", "item.null", 1L, 3),
+                        GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Desh, 4L),
+                        GT_Utility.getIntegratedCircuit(1) },
+                Materials.Platinum.getMolten(72L),
+                ItemList.Ingot_Heavy3.get(1L),
+                300,
+                (int) TierEU.RECIPE_IV);
+
     }
 
-    public void withGalaxySPace() {
-        if (isGalaxySpaceLoaded) {
-            GT_Values.RA
-                    .addAssemblerRecipe(
-                            new ItemStack[] {
-                                    GT_OreDictUnificator
-                                            .get(OrePrefixes.wireGt01, Materials.Pentacadmiummagnesiumhexaoxid, 3L),
-                                    GT_OreDictUnificator.get(OrePrefixes.pipeTiny, Materials.StainlessSteel, 2L),
-                                    ItemList.Electric_Pump_MV.get(1L), GT_Utility.getIntegratedCircuit(9) },
-                            new FluidStack(FluidRegistry.getFluid("liquid helium"), 2000),
-                            GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorMV, 3L),
-                            320,
-                            (int) TierEU.RECIPE_MV);
-            GT_Values.RA.addAssemblerRecipe(
-                    new ItemStack[] {
-                            GT_OreDictUnificator
-                                    .get(OrePrefixes.wireGt01, Materials.Titaniumonabariumdecacoppereikosaoxid, 6L),
-                            GT_OreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Titanium, 4L),
-                            ItemList.Electric_Pump_HV.get(1L), GT_Utility.getIntegratedCircuit(9) },
-                    new FluidStack(FluidRegistry.getFluid("liquid helium"), 4000),
-                    GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorHV, 6L),
-                    320,
-                    (int) TierEU.RECIPE_HV);
-            GT_Values.RA.addAssemblerRecipe(
-                    new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Uraniumtriplatinid, 9L),
-                            GT_OreDictUnificator.get(OrePrefixes.pipeTiny, Materials.TungstenSteel, 6L),
-                            ItemList.Electric_Pump_EV.get(1L), GT_Utility.getIntegratedCircuit(9) },
-                    new FluidStack(FluidRegistry.getFluid("liquid helium"), 6000),
-                    GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorEV, 9L),
-                    320,
-                    (int) TierEU.RECIPE_EV);
-            GT_Values.RA.addAssemblerRecipe(
-                    new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Vanadiumtriindinid, 12L),
-                            GT_OreDictUnificator.get(OrePrefixes.pipeTiny, Materials.NiobiumTitanium, 8L),
-                            ItemList.Electric_Pump_IV.get(1L), GT_Utility.getIntegratedCircuit(9) },
-                    new FluidStack(FluidRegistry.getFluid("liquid helium"), 8000),
-                    GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorIV, 12L),
-                    640,
-                    (int) TierEU.RECIPE_IV);
-            GT_Values.RA.addAssemblerRecipe(
-                    new ItemStack[] {
-                            GT_OreDictUnificator.get(
-                                    OrePrefixes.wireGt01,
-                                    Materials.Tetraindiumditindibariumtitaniumheptacoppertetrakaidekaoxid,
-                                    15L),
-                            GT_OreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Enderium, 10L),
-                            ItemList.Electric_Pump_LuV.get(1L), GT_Utility.getIntegratedCircuit(9) },
-                    new FluidStack(FluidRegistry.getFluid("liquid helium"), 12000),
-                    GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorLuV, 15L),
-                    640,
-                    (int) TierEU.RECIPE_LuV);
-            GT_Values.RA.addAssemblerRecipe(
-                    new ItemStack[] {
-                            GT_OreDictUnificator
-                                    .get(OrePrefixes.wireGt01, Materials.Tetranaquadahdiindiumhexaplatiumosminid, 18L),
-                            GT_OreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Naquadah, 12L),
-                            ItemList.Electric_Pump_ZPM.get(1L), GT_Utility.getIntegratedCircuit(9) },
-                    new FluidStack(FluidRegistry.getFluid("liquid helium"), 16000),
-                    GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorZPM, 18L),
-                    1280,
-                    (int) TierEU.RECIPE_ZPM);
-            GT_Values.RA.addAssemblerRecipe(
-                    new ItemStack[] {
-                            GT_OreDictUnificator
-                                    .get(OrePrefixes.wireGt01, Materials.Longasssuperconductornameforuvwire, 21L),
-                            GT_OreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Neutronium, 14L),
-                            ItemList.Electric_Pump_UV.get(1L), GT_Utility.getIntegratedCircuit(9) },
-                    new FluidStack(FluidRegistry.getFluid("liquid helium"), 20000),
-                    GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUV, 21L),
-                    1280,
-                    (int) TierEU.RECIPE_UV);
-            GT_Values.RA.addAssemblerRecipe(
-                    new ItemStack[] {
-                            GT_OreDictUnificator
-                                    .get(OrePrefixes.wireGt01, Materials.Longasssuperconductornameforuhvwire, 24L),
-                            GT_OreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Bedrockium, 16L),
-                            ItemList.Electric_Pump_UHV.get(1L), GT_Utility.getIntegratedCircuit(9) },
-                    new FluidStack(FluidRegistry.getFluid("liquid helium"), 24000),
-                    GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUHV, 24L),
-                    2560,
-                    (int) TierEU.RECIPE_UHV);
-            GT_Values.RA
-                    .addAssemblerRecipe(
-                            new ItemStack[] {
-                                    GT_OreDictUnificator
-                                            .get(OrePrefixes.wireGt01, Materials.SuperconductorUEVBase, 27L),
-                                    GT_OreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Infinity, 18L),
-                                    ItemList.Electric_Pump_UEV.get(1L), GT_Utility.getIntegratedCircuit(9) },
-                            new FluidStack(FluidRegistry.getFluid("liquid helium"), 28000),
-                            GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUEV, 27L),
-                            3200,
-                            (int) TierEU.RECIPE_UEV);
-            GT_Values.RA
-                    .addAssemblerRecipe(
-                            new ItemStack[] {
-                                    GT_OreDictUnificator
-                                            .get(OrePrefixes.wireGt01, Materials.SuperconductorUMVBase, 33L),
-                                    GT_OreDictUnificator.get(OrePrefixes.pipeTiny, Materials.SpaceTime, 22L),
-                                    ItemList.Electric_Pump_UMV.get(1L), GT_Utility.getIntegratedCircuit(9) },
-                            new FluidStack(FluidRegistry.getFluid("liquid helium"), 36000),
-                            GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUMV, 33L),
-                            3200,
-                            (int) TierEU.RECIPE_UMV);
-
+    public void withGalaxySpace() {
+        if (!GalaxySpace.isModLoaded()) {
+            return ;
         }
-    }
 
-    public void withoutGTPPRecipes() {
-        if (!isGTPPLoaded) {
-            GT_Values.RA.addAssemblerRecipe(
-                    new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Graphite, 64),
-                            ItemList.Circuit_Silicon_Wafer4.get(2L), GT_Utility.getIntegratedCircuit(1) },
-                    Materials.AdvancedGlue.getFluid(500L),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Graphene, 64),
-                    400,
-                    (int) TierEU.RECIPE_LuV);
-            GT_Values.RA.addAssemblerRecipe(
-                    new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Graphite, 64),
-                            ItemList.Circuit_Silicon_Wafer5.get(1L), GT_Utility.getIntegratedCircuit(1) },
-                    Materials.AdvancedGlue.getFluid(250L),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Graphene, 64),
-                    80,
-                    (int) TierEU.RECIPE_ZPM);
-        }
+        GT_Values.RA
+                .addAssemblerRecipe(
+                        new ItemStack[] {
+                                GT_OreDictUnificator
+                                        .get(OrePrefixes.wireGt01, Materials.Pentacadmiummagnesiumhexaoxid, 3L),
+                                GT_OreDictUnificator.get(OrePrefixes.pipeTiny, Materials.StainlessSteel, 2L),
+                                ItemList.Electric_Pump_MV.get(1L), GT_Utility.getIntegratedCircuit(9) },
+                        new FluidStack(FluidRegistry.getFluid("liquid helium"), 2000),
+                        GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorMV, 3L),
+                        320,
+                        (int) TierEU.RECIPE_MV);
+        GT_Values.RA.addAssemblerRecipe(
+                new ItemStack[] {
+                        GT_OreDictUnificator
+                                .get(OrePrefixes.wireGt01, Materials.Titaniumonabariumdecacoppereikosaoxid, 6L),
+                        GT_OreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Titanium, 4L),
+                        ItemList.Electric_Pump_HV.get(1L), GT_Utility.getIntegratedCircuit(9) },
+                new FluidStack(FluidRegistry.getFluid("liquid helium"), 4000),
+                GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorHV, 6L),
+                320,
+                (int) TierEU.RECIPE_HV);
+        GT_Values.RA.addAssemblerRecipe(
+                new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Uraniumtriplatinid, 9L),
+                        GT_OreDictUnificator.get(OrePrefixes.pipeTiny, Materials.TungstenSteel, 6L),
+                        ItemList.Electric_Pump_EV.get(1L), GT_Utility.getIntegratedCircuit(9) },
+                new FluidStack(FluidRegistry.getFluid("liquid helium"), 6000),
+                GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorEV, 9L),
+                320,
+                (int) TierEU.RECIPE_EV);
+        GT_Values.RA.addAssemblerRecipe(
+                new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Vanadiumtriindinid, 12L),
+                        GT_OreDictUnificator.get(OrePrefixes.pipeTiny, Materials.NiobiumTitanium, 8L),
+                        ItemList.Electric_Pump_IV.get(1L), GT_Utility.getIntegratedCircuit(9) },
+                new FluidStack(FluidRegistry.getFluid("liquid helium"), 8000),
+                GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorIV, 12L),
+                640,
+                (int) TierEU.RECIPE_IV);
+        GT_Values.RA.addAssemblerRecipe(
+                new ItemStack[] {
+                        GT_OreDictUnificator.get(
+                                OrePrefixes.wireGt01,
+                                Materials.Tetraindiumditindibariumtitaniumheptacoppertetrakaidekaoxid,
+                                15L),
+                        GT_OreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Enderium, 10L),
+                        ItemList.Electric_Pump_LuV.get(1L), GT_Utility.getIntegratedCircuit(9) },
+                new FluidStack(FluidRegistry.getFluid("liquid helium"), 12000),
+                GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorLuV, 15L),
+                640,
+                (int) TierEU.RECIPE_LuV);
+        GT_Values.RA.addAssemblerRecipe(
+                new ItemStack[] {
+                        GT_OreDictUnificator
+                                .get(OrePrefixes.wireGt01, Materials.Tetranaquadahdiindiumhexaplatiumosminid, 18L),
+                        GT_OreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Naquadah, 12L),
+                        ItemList.Electric_Pump_ZPM.get(1L), GT_Utility.getIntegratedCircuit(9) },
+                new FluidStack(FluidRegistry.getFluid("liquid helium"), 16000),
+                GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorZPM, 18L),
+                1280,
+                (int) TierEU.RECIPE_ZPM);
+        GT_Values.RA.addAssemblerRecipe(
+                new ItemStack[] {
+                        GT_OreDictUnificator
+                                .get(OrePrefixes.wireGt01, Materials.Longasssuperconductornameforuvwire, 21L),
+                        GT_OreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Neutronium, 14L),
+                        ItemList.Electric_Pump_UV.get(1L), GT_Utility.getIntegratedCircuit(9) },
+                new FluidStack(FluidRegistry.getFluid("liquid helium"), 20000),
+                GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUV, 21L),
+                1280,
+                (int) TierEU.RECIPE_UV);
+        GT_Values.RA.addAssemblerRecipe(
+                new ItemStack[] {
+                        GT_OreDictUnificator
+                                .get(OrePrefixes.wireGt01, Materials.Longasssuperconductornameforuhvwire, 24L),
+                        GT_OreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Bedrockium, 16L),
+                        ItemList.Electric_Pump_UHV.get(1L), GT_Utility.getIntegratedCircuit(9) },
+                new FluidStack(FluidRegistry.getFluid("liquid helium"), 24000),
+                GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUHV, 24L),
+                2560,
+                (int) TierEU.RECIPE_UHV);
+        GT_Values.RA
+                .addAssemblerRecipe(
+                        new ItemStack[] {
+                                GT_OreDictUnificator
+                                        .get(OrePrefixes.wireGt01, Materials.SuperconductorUEVBase, 27L),
+                                GT_OreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Infinity, 18L),
+                                ItemList.Electric_Pump_UEV.get(1L), GT_Utility.getIntegratedCircuit(9) },
+                        new FluidStack(FluidRegistry.getFluid("liquid helium"), 28000),
+                        GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUEV, 27L),
+                        3200,
+                        (int) TierEU.RECIPE_UEV);
+        GT_Values.RA
+                .addAssemblerRecipe(
+                        new ItemStack[] {
+                                GT_OreDictUnificator
+                                        .get(OrePrefixes.wireGt01, Materials.SuperconductorUMVBase, 33L),
+                                GT_OreDictUnificator.get(OrePrefixes.pipeTiny, Materials.SpaceTime, 22L),
+                                ItemList.Electric_Pump_UMV.get(1L), GT_Utility.getIntegratedCircuit(9) },
+                        new FluidStack(FluidRegistry.getFluid("liquid helium"), 36000),
+                        GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUMV, 33L),
+                        3200,
+                        (int) TierEU.RECIPE_UMV);
+
+
     }
 }
