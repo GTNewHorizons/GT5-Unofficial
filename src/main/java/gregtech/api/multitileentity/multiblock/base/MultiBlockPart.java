@@ -142,7 +142,8 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
         }
         if (aCheckValidity) {
             return target != null && target.checkStructure(false) ? target : null;
-        } else return target;
+        }
+        return target;
     }
 
     public void registerCovers(IMultiBlockController controller) {

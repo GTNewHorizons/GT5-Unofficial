@@ -6,7 +6,7 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.multitileentity.interfaces.IMultiBlockController;
 import gregtech.api.multitileentity.multiblock.base.MultiBlockPart;
 
-public abstract class AdvancedCasing extends MultiBlockPart {
+public abstract class UpgradeCasing extends MultiBlockPart {
 
     protected int tier = 0;
 

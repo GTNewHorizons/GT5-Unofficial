@@ -9,7 +9,7 @@ import net.minecraft.util.Tuple;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.multitileentity.base.MultiTileEntity;
-import gregtech.api.multitileentity.multiblock.casing.AdvancedCasing;
+import gregtech.api.multitileentity.multiblock.casing.UpgradeCasing;
 import gregtech.api.multitileentity.multiblock.casing.FunctionalCasing;
 import gregtech.api.util.GT_Util;
 import gregtech.common.tileentities.casings.upgrade.InventoryUpgrade;
@@ -129,7 +129,7 @@ public class MultiTileEntityClassContainer {
     }
 
     public MultiTileEntityClassContainer tier(int aTier) {
-        verifyDescendentOfMultiple(true, AdvancedCasing.class, FunctionalCasing.class);
+        verifyDescendentOfMultiple(true, UpgradeCasing.class, FunctionalCasing.class);
         mParameters.setInteger(NBT.TIER, aTier);
         return this;
     }

@@ -10,10 +10,10 @@ import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
 
 import gregtech.api.enums.GT_Values.NBT;
 import gregtech.api.multitileentity.interfaces.IMultiBlockController;
-import gregtech.api.multitileentity.multiblock.casing.AdvancedCasing;
+import gregtech.api.multitileentity.multiblock.casing.UpgradeCasing;
 import gregtech.api.net.GT_Packet_MultiTileEntity;
 
-public class InventoryUpgrade extends AdvancedCasing {
+public class InventoryUpgrade extends UpgradeCasing {
 
     public UUID mInventoryID;
     public static final int INPUT = 0;

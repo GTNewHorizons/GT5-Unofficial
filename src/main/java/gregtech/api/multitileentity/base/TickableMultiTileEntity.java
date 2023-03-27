@@ -86,7 +86,9 @@ public abstract class TickableMultiTileEntity extends MultiTileEntity implements
     public void onPreTick(long aTick, boolean isServerSide) {}
 
     /** The regular Tick. */
-    public void onTick(long aTimer, boolean isServerSide) {}
+    public void onTick(long tick, boolean isServerSide) {
+
+    }
 
     /** The absolute last part of the Tick. */
     public void onPostTick(long aTick, boolean isServerSide) {}

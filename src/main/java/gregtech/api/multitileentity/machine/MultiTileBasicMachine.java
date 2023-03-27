@@ -28,6 +28,8 @@ import gregtech.api.fluid.FluidTankGT;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
+import gregtech.api.logic.PowerLogic;
+import gregtech.api.logic.interfaces.PowerLogicHost;
 import gregtech.api.multitileentity.MultiTileEntityRegistry;
 import gregtech.api.multitileentity.base.TickableMultiTileEntity;
 import gregtech.api.multitileentity.interfaces.IMultiTileMachine;
@@ -468,7 +470,10 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
      * @param tick The current tick of the machine
      */
     protected void runningTick(long tick) {
-        consumeEnergy();
+        if (this instanceof PowerLogicHost) {
+            consumeEnergy();
+        }
+        
         if (maxProgressTime > 0 && ++progressTime >= maxProgressTime) {
             progressTime = 0;
             maxProgressTime = 0;
@@ -506,7 +511,17 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
     /**
      * Runs only on server side
      */
-    protected void consumeEnergy() {}
+    protected void consumeEnergy() {
+        PowerLogic logic = ((PowerLogicHost) this).getPowerLogic(GT_Values.SIDE_UNKNOWN);
+
+        if (logic == null) {
+            return;
+        }
+
+        if (logic.removeEnergyUnsafe(eut)) {
+            stopMachine();
+        }
+    }
 
     protected void outputItems() {
         if (itemsToOutput == null) {

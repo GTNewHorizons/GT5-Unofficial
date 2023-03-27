@@ -41,7 +41,7 @@ public class MultiBlock_Macerator extends MultiBlock_Stackable<MultiBlock_Macera
 
     public MultiBlock_Macerator() {
         super();
-        power = new PowerLogic().setMaxVoltage(0).setAmperage(0).setEnergyCapacity(0).setType(PowerLogic.RECEIVER);
+        power = new PowerLogic().setType(PowerLogic.RECEIVER);
     }
 
     @Override
@@ -204,20 +204,8 @@ public class MultiBlock_Macerator extends MultiBlock_Stackable<MultiBlock_Macera
     }
 
     @Override
-    protected void consumeEnergy() {
-        if (!power.removeEnergyUnsafe(eut)) {
-            stopMachine();
-        }
-    }
-
-    @Override
     public PowerLogic getPowerLogic(byte side) {
         return power;
-    }
-
-    @Override
-    public boolean isEnergyReceiver() {
-        return true;
     }
 
     @Override

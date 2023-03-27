@@ -84,7 +84,7 @@ import gregtech.api.multitileentity.interfaces.IMultiBlockPart;
 import gregtech.api.multitileentity.interfaces.IMultiTileEntity;
 import gregtech.api.multitileentity.interfaces.IMultiTileEntity.IMTE_AddToolTips;
 import gregtech.api.multitileentity.machine.MultiTileBasicMachine;
-import gregtech.api.multitileentity.multiblock.casing.AdvancedCasing;
+import gregtech.api.multitileentity.multiblock.casing.UpgradeCasing;
 import gregtech.api.multitileentity.multiblock.casing.FunctionalCasing;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
@@ -95,7 +95,7 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
         IAlignment, IConstructable, IMultiBlockController, IDescribable, IMTE_AddToolTips, ISurvivalConstructable {
 
     private static final Map<Integer, GT_Multiblock_Tooltip_Builder> tooltip = new ConcurrentHashMap<>();
-    private final List<AdvancedCasing> upgradeCasings = new ArrayList<>();
+    private final List<UpgradeCasing> upgradeCasings = new ArrayList<>();
     private final List<FunctionalCasing> functionalCasings = new ArrayList<>();
     protected BuildState buildState = new BuildState();
 
@@ -715,8 +715,8 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
     }
 
     protected void registerSpecialCasings(MultiBlockPart part) {
-        if (part instanceof AdvancedCasing) {
-            upgradeCasings.add((AdvancedCasing) part);
+        if (part instanceof UpgradeCasing) {
+            upgradeCasings.add((UpgradeCasing) part);
         }
         if (part instanceof FunctionalCasing) {
             functionalCasings.add((FunctionalCasing) part);
@@ -875,7 +875,7 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
     @Override
     public IItemHandlerModifiable getInventoryForGUI(MultiBlockPart aPart) {
         if (isServerSide()) {
-            for (AdvancedCasing tPart : upgradeCasings) {
+            for (UpgradeCasing tPart : upgradeCasings) {
                 if (!(tPart instanceof InventoryUpgrade)) continue;
                 tPart.issueClientUpdate();
             }
@@ -1250,7 +1250,7 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         if (isServerSide()) {
-            for (AdvancedCasing tPart : upgradeCasings) {
+            for (UpgradeCasing tPart : upgradeCasings) {
                 if (!(tPart instanceof InventoryUpgrade)) continue;
                 tPart.issueClientUpdate();
             }

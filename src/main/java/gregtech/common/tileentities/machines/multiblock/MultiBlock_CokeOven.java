@@ -1,6 +1,8 @@
 package gregtech.common.tileentities.machines.multiblock;
 
 import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.NOTHING;
+import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.ITEM_IN;
+import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.ITEM_OUT;
 
 import java.util.List;
 
@@ -43,10 +45,10 @@ public class MultiBlock_CokeOven extends MultiBlockController<MultiBlock_CokeOve
     private static final int CACTUS_ORE_ID = OreDictionary.getOreID("blockCactus");
     private static final int CACTUS_CHARCOAL_ORE_ID = OreDictionary.getOreID("itemCharcoalCactus");
     private static final int SUGAR_CHARCOAL_ORE_ID = OreDictionary.getOreID("itemCharcoalSugar");
-    private static final Vec3Impl offset = new Vec3Impl(1, 1, 0);
+    private static final Vec3Impl OFFSET = new Vec3Impl(1, 1, 0);
     private static final String MAIN = "Main";
     private int timeMultiplier = 1;
-    private static final PollutionLogic POLLUTION_LOGIC = new PollutionLogic().setPollutionAmount(20);
+    private static final PollutionLogic POLLUTION_LOGIC = new PollutionLogic().setPollutionAmount(10);
 
     public MultiBlock_CokeOven() {
         super();
@@ -91,7 +93,7 @@ public class MultiBlock_CokeOven extends MultiBlockController<MultiBlock_CokeOve
 
     @Override
     public Vec3Impl getStartingStructureOffset() {
-        return offset;
+        return OFFSET;
     }
 
     @Override
@@ -100,7 +102,7 @@ public class MultiBlock_CokeOven extends MultiBlockController<MultiBlock_CokeOve
             STRUCTURE_DEFINITION = StructureDefinition.<MultiBlock_CokeOven>builder().addShape(
                     MAIN,
                     new String[][] { { "AAA", "A~A", "AAA" }, { "AAA", "A-A", "AAA" }, { "AAA", "AAA", "AAA" } })
-                    .addElement('A', addMultiTileCasing("gt.multitileentity.casings", getCasingMeta(), NOTHING))
+                    .addElement('A', addMultiTileCasing("gt.multitileentity.casings", getCasingMeta(), ITEM_IN | ITEM_OUT))
                     .build();
         }
         return STRUCTURE_DEFINITION;
@@ -185,7 +187,7 @@ public class MultiBlock_CokeOven extends MultiBlockController<MultiBlock_CokeOve
             titleWidth = titleLines.size() > 1 ? getGUIWidth() - (TAB_PADDING + TITLE_PADDING) * 2
                     : fontRenderer.getStringWidth(title);
             // noinspection PointlessArithmeticExpression
-            titleHeight = titleLines.size() * fontRenderer.FONT_HEIGHT + (titleLines.size() - 1) * 1;
+            titleHeight = titleLines.size() * fontRenderer.FONT_HEIGHT + (titleLines.size() - 1);
         }
 
         final DrawableWidget tab = new DrawableWidget();

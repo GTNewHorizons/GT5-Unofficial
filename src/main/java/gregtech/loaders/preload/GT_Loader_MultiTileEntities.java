@@ -9,6 +9,7 @@ import net.minecraft.block.material.Material;
 import gregtech.api.enums.Materials;
 import gregtech.api.multitileentity.MultiTileEntityBlock;
 import gregtech.api.multitileentity.MultiTileEntityRegistry;
+import gregtech.api.multitileentity.multiblock.base.WallShareablePart;
 import gregtech.api.multitileentity.multiblock.casing.BasicCasing;
 import gregtech.common.tileentities.casings.functional.MotorCasing;
 import gregtech.common.tileentities.casings.upgrade.InventoryUpgrade;
@@ -52,7 +53,7 @@ public class GT_Loader_MultiTileEntities implements Runnable {
         final MultiTileEntityRegistry casingRegistry = new MultiTileEntityRegistry("gt.multitileentity.casings");
         final MultiTileEntityBlock casing = MultiTileEntityBlock
                 .getOrCreate("GregTech", "casing", Material.iron, Block.soundTypeMetal, "wrench", 0, 0, 15, true, true);
-        casingRegistry.create(CokeOven.getId(), BasicCasing.class).name("Coke Oven Bricks")
+        casingRegistry.create(CokeOven.getId(), WallShareablePart.class).name("Coke Oven Bricks")
                 .category("MultiBlock Casing").setBlock(casing).texture("cokeOven").register();
         casingRegistry.create(18000, BasicCasing.class).name("Test Casing").category("Multiblock Casing")
                 .setBlock(casing).material(Materials.Cobalt).texture("metalwall").register();
