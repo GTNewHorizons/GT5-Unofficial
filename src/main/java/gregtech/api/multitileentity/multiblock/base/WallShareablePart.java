@@ -5,14 +5,16 @@ import static gregtech.api.enums.GT_Values.ALL_VALID_SIDES;
 import java.util.ArrayList;
 import java.util.List;
 
-import gregtech.api.multitileentity.interfaces.IMultiBlockController;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 
+import gregtech.api.multitileentity.interfaces.IMultiBlockController;
+
 public class WallShareablePart extends MultiBlockPart {
+
     protected List<ChunkCoordinates> targetPositions = new ArrayList<>();
     protected List<IMultiBlockController> targets = new ArrayList<>();
-    
+
     @Override
     public void setTarget(IMultiBlockController aTarget, int aAllowedModes) {
         if (targets.size() > 1 || targetPositions.size() > 1) {
@@ -21,7 +23,7 @@ public class WallShareablePart extends MultiBlockPart {
         } else {
             mAllowedModes = aAllowedModes;
         }
-        
+
         if (aTarget == null) {
             return;
         }

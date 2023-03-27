@@ -27,9 +27,12 @@ import gregtech.api.enums.TickTime;
 import gregtech.api.fluid.FluidTankGT;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.tileentity.IMachineProgress;
+import gregtech.api.logic.PollutionLogic;
 import gregtech.api.logic.PowerLogic;
+import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.logic.interfaces.PollutionLogicHost;
 import gregtech.api.logic.interfaces.PowerLogicHost;
+import gregtech.api.logic.interfaces.ProcessingLogicHost;
 import gregtech.api.multitileentity.MultiTileEntityRegistry;
 import gregtech.api.multitileentity.base.TickableMultiTileEntity;
 import gregtech.api.multitileentity.interfaces.IMultiTileMachine;
@@ -37,12 +40,13 @@ import gregtech.api.net.GT_Packet_MultiTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Util;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.GT_Pollution;
 
-public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
-        implements IMachineProgress, IMultiTileMachine {
+public abstract class MultiTileBasicMachine extends TickableMultiTileEntity implements IMultiTileMachine {
 
     protected static final int ACTIVE = B[0];
     protected static final int TICKS_BETWEEN_RECIPE_CHECKS = 5 * TickTime.SECOND;
+    protected static final int POLLUTION_TICK = TickTime.SECOND;
 
     protected static final IItemHandlerModifiable EMPTY_INVENTORY = new ItemStackHandler(0);
 
@@ -58,8 +62,8 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
     protected long amperage = 2;
     protected long eut = 0;
     protected int tier = 0;
-    protected int maxProgressTime = 0;
-    protected int progressTime = 0;
+    protected long maxProgressTime = 0;
+    protected long progressTime = 0;
     protected long burnTime = 0;
     protected long totalBurnTime = 0;
     protected FluidTankGT[] inputTanks = GT_Values.emptyFluidTankGT;
@@ -437,6 +441,7 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
 
     /**
      * Runs only on server side
+     * 
      * @param tick The current tick of the machine
      */
     protected void runMachine(long tick) {
@@ -467,13 +472,14 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
 
     /**
      * Runs only on server side
+     * 
      * @param tick The current tick of the machine
      */
     protected void runningTick(long tick) {
         if (this instanceof PowerLogicHost) {
             consumeEnergy();
         }
-        
+
         if (maxProgressTime > 0 && ++progressTime >= maxProgressTime) {
             progressTime = 0;
             maxProgressTime = 0;
@@ -487,7 +493,10 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
             }
             updateSlots();
         }
-        doPollution();
+
+        if (this instanceof PollutionLogicHost && tick % POLLUTION_TICK == 0) {
+            doPollution();
+        }
         emitEnergy();
     }
 
@@ -495,13 +504,32 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
      * Runs only on server side
      */
     protected boolean checkRecipe() {
-        return false;
+        if (!(this instanceof ProcessingLogicHost)) {
+            return false;
+        }
+        ProcessingLogic logic = ((ProcessingLogicHost) this).getProcessingLogic();
+        logic.clear();
+        boolean result = logic.setInputItems(inputInventory.getStacks().toArray(new ItemStack[0]))
+                .setCurrentOutputItems(outputInventory.getStacks().toArray(new ItemStack[0])).process();
+        setDuration(logic.getDuration());
+        setEut(logic.getEut());
+        setItemOutputs(logic.getOutputItems());
+        setFluidOutputs(logic.getOutputFluids());
+        return result;
     }
 
     /**
      * Runs only on server side
      */
-    protected void doPollution() {}
+    protected void doPollution() {
+        PollutionLogic logic = ((PollutionLogicHost) this).getPollutionLogic();
+
+        if (logic == null) {
+            return;
+        }
+
+        GT_Pollution.addPollution(getWorld(), getXCoord() >> 4, getZCoord() >> 4, logic.getPollutionAmount());
+    }
 
     /**
      * Runs only on server side
@@ -553,59 +581,48 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
         }
     }
 
-    @Override
-    public int getProgress() {
+    public long getProgress() {
         return progressTime;
     }
 
-    @Override
-    public int getMaxProgress() {
+    public long getMaxProgress() {
         return maxProgressTime;
     }
 
-    @Override
     public boolean increaseProgress(int aProgressAmountInTicks) {
         progressTime += aProgressAmountInTicks;
         return true;
     }
 
-    @Override
     public boolean hasThingsToDo() {
         return getMaxProgress() > 0;
     }
 
-    @Override
     public boolean hasWorkJustBeenEnabled() {
         return wasEnabled;
     }
 
-    @Override
     public void enableWorking() {
         wasEnabled = true;
         canWork = true;
     }
 
-    @Override
     public void disableWorking() {
         canWork = false;
     }
 
-    @Override
     public boolean wasShutdown() {
         return powerShutDown;
     }
 
-    @Override
     public boolean isAllowedToWork() {
         return canWork;
     }
 
-    @Override
     public boolean isActive() {
         return active;
     }
 
-    @Override
     public void setActive(boolean active) {
         this.active = active;
     }
@@ -719,7 +736,7 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity
         this.eut = eut;
     }
 
-    protected void setDuration(int duration) {
+    protected void setDuration(long duration) {
         if (duration < 0) {
             duration = -duration;
         }

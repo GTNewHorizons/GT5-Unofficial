@@ -499,9 +499,8 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
         return GT_Values.emptyFluidTankInfo;
     }
 
-    
     // #region Energy - Depending on the part type - proxy to the multiblock controller, if we have one
-    
+
     @Override
     public PowerLogic getPowerLogic(byte side) {
         final IMultiBlockController controller = getTarget(true);

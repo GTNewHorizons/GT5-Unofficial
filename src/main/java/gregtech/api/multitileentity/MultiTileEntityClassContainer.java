@@ -9,8 +9,8 @@ import net.minecraft.util.Tuple;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.multitileentity.base.MultiTileEntity;
-import gregtech.api.multitileentity.multiblock.casing.UpgradeCasing;
 import gregtech.api.multitileentity.multiblock.casing.FunctionalCasing;
+import gregtech.api.multitileentity.multiblock.casing.UpgradeCasing;
 import gregtech.api.util.GT_Util;
 import gregtech.common.tileentities.casings.upgrade.InventoryUpgrade;
 

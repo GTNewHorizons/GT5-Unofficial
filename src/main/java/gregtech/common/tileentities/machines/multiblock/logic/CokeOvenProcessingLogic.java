@@ -1,0 +1,62 @@
+package gregtech.common.tileentities.machines.multiblock.logic;
+
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
+
+import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_OreDictUnificator;
+
+public class CokeOvenProcessingLogic extends ProcessingLogic {
+
+    private static final int NORMAL_RECIPE_TIME = 1800;
+    private static final int WOOD_ORE_ID = OreDictionary.getOreID("logWood");
+    private static final int COAL_ORE_ID = OreDictionary.getOreID("coal");
+    private static final int COAL_BLOCK_ORE_ID = OreDictionary.getOreID("blockCoal");
+    private static final int SUGARCANE_ORE_ID = OreDictionary.getOreID("sugarcane");
+    private static final int CACTUS_ORE_ID = OreDictionary.getOreID("blockCactus");
+    private static final int CACTUS_CHARCOAL_ORE_ID = OreDictionary.getOreID("itemCharcoalCactus");
+    private static final int SUGAR_CHARCOAL_ORE_ID = OreDictionary.getOreID("itemCharcoalSugar");
+    private int timeMultiplier = 1;
+
+    @Override
+    public boolean process() {
+        if (inputItems == null || inputItems[0] == null) {
+            return false;
+        }
+        ItemStack input = inputItems[0];
+        int originalStackSize = input.stackSize;
+        ItemStack output = findRecipe(input);
+        if (currentOutputItems != null && !currentOutputItems[0].isItemEqual(output)) {
+            return false;
+        }
+        input.stackSize -= 1;
+        setDuration(NORMAL_RECIPE_TIME * timeMultiplier);
+        setOutputItems(output);
+
+        return originalStackSize > input.stackSize;
+    }
+
+    protected ItemStack findRecipe(ItemStack input) {
+        for (int oreId : OreDictionary.getOreIDs(input)) {
+            if (oreId == COAL_ORE_ID) {
+                return GT_OreDictUnificator.get("fuelCoke", null, 1);
+            } else if (oreId == COAL_BLOCK_ORE_ID) {
+                timeMultiplier = 9;
+                return GT_ModHandler.getModItem("Railcraft", "cube", 1, 0);
+            } else if (oreId == WOOD_ORE_ID) {
+                return new ItemStack(Items.coal, 1, 1);
+            } else if (oreId == SUGARCANE_ORE_ID) {
+                return GT_OreDictUnificator.get("itemCharcoalSugar", null, 1);
+            } else if (oreId == SUGAR_CHARCOAL_ORE_ID) {
+                return GT_OreDictUnificator.get("itemCokeSugar", null, 1);
+            } else if (oreId == CACTUS_ORE_ID) {
+                return GT_OreDictUnificator.get("itemCharcoalCactus", null, 1);
+            } else if (oreId == CACTUS_CHARCOAL_ORE_ID) {
+                return GT_OreDictUnificator.get("itemCokeCactus", null, 1);
+            }
+        }
+        return null;
+    }
+}

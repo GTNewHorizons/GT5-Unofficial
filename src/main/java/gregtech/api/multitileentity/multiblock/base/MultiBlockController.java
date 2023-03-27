@@ -76,7 +76,9 @@ import gregtech.api.fluid.FluidTankGT;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.IDescribable;
 import gregtech.api.logic.PowerLogic;
+import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.logic.interfaces.PowerLogicHost;
+import gregtech.api.logic.interfaces.ProcessingLogicHost;
 import gregtech.api.multitileentity.MultiTileEntityContainer;
 import gregtech.api.multitileentity.MultiTileEntityRegistry;
 import gregtech.api.multitileentity.interfaces.IMultiBlockController;
@@ -84,8 +86,8 @@ import gregtech.api.multitileentity.interfaces.IMultiBlockPart;
 import gregtech.api.multitileentity.interfaces.IMultiTileEntity;
 import gregtech.api.multitileentity.interfaces.IMultiTileEntity.IMTE_AddToolTips;
 import gregtech.api.multitileentity.machine.MultiTileBasicMachine;
-import gregtech.api.multitileentity.multiblock.casing.UpgradeCasing;
 import gregtech.api.multitileentity.multiblock.casing.FunctionalCasing;
+import gregtech.api.multitileentity.multiblock.casing.UpgradeCasing;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
@@ -210,8 +212,6 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
         nbt.setTag(NBT.UPGRADE_INVENTORIES_OUTPUT, outputInvList);
     }
 
-    
-
     @Override
     public void readMultiTileNBT(NBTTagCompound nbt) {
         super.readMultiTileNBT(nbt);
@@ -255,8 +255,6 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
             multiBlockOutputInventoryNames.put(invUUID, invName);
         }
     }
-
-    
 
     @Override
     public void addToolTips(List<String> aList, ItemStack aStack, boolean aF3_H) {
@@ -543,12 +541,12 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
 
     // IMachineProgress
     @Override
-    public int getProgress() {
+    public long getProgress() {
         return progressTime;
     }
 
     @Override
-    public int getMaxProgress() {
+    public long getMaxProgress() {
         return maxProgressTime;
     }
 
@@ -1133,6 +1131,10 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
         return getInventoriesForInput().getStacks().toArray(new ItemStack[0]);
     }
 
+    protected ItemStack[] getAllOutputItems() {
+        return getInventoriesForOutput().getStacks().toArray(new ItemStack[0]);
+    }
+
     protected Iterable<Pair<ItemStack[], String>> getItemInputsForEachInventory() {
         return multiBlockInputInventory.entrySet().stream()
                 .map((entry) -> Pair.of(entry.getValue().getStacks().toArray(new ItemStack[0]), entry.getKey()))
@@ -1188,8 +1190,14 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
             return;
         }
 
-        List<FluidTankGT> tanks = new ArrayList<>();
-        
+        List<FluidTankGT> tanks = new ArrayList<>(multiBlockOutputTank.values());
+        for (FluidStack fluid : fluidsToOutput) {
+            int index = 0;
+            while (fluid != null && fluid.amount > 0 && index < tanks.size()) {
+                int filled = tanks.get(index++).fill(fluid, true);
+                fluid.amount -= filled;
+            }
+        }
     }
 
     @Override
@@ -1200,6 +1208,38 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
                 inv.setStackInSlot(i, null);
             }
         }
+    }
+
+    @Override
+    protected boolean checkRecipe() {
+        if (!(this instanceof ProcessingLogicHost)) {
+            return false;
+        }
+        ProcessingLogic logic = ((ProcessingLogicHost) this).getProcessingLogic();
+        logic.clear();
+        boolean result = false;
+        if (isSeparateInputs()) {
+            for (Pair<ItemStack[], String> inventory : getItemInputsForEachInventory()) {
+                IItemHandlerModifiable outputInventory = multiBlockOutputInventory
+                        .getOrDefault(inventory.getLeft(), null);
+                result = logic.setInputItems(inventory.getLeft())
+                        .setCurrentOutputItems(
+                                outputInventory != null ? outputInventory.getStacks().toArray(new ItemStack[0]) : null)
+                        .process();
+                if (result) {
+                    inventoryName = inventory.getRight();
+                    break;
+                }
+                logic.clear();
+            }
+        } else {
+            result = logic.setInputItems(getAllItemInputs()).setCurrentOutputItems(getAllOutputItems()).process();
+        }
+        setDuration(logic.getDuration());
+        setEut(logic.getEut());
+        setItemOutputs(logic.getOutputItems());
+        setFluidOutputs(logic.getOutputFluids());
+        return result;
     }
 
     /*
