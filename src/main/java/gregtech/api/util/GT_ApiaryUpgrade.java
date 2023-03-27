@@ -108,6 +108,10 @@ public enum GT_ApiaryUpgrade {
     sieve(UNIQUE_INDEX.SIEVE_UPGRADE, 32229, 1, (mods, n) -> {
         mods.isCollectingPollen = true;
         mods.energy *= 1.05f;
+    }),
+    unlight(UNIQUE_INDEX.LIGHT_UPGRADE, 32231, 1, (mods, n) -> {
+        mods.isSelfUnlighted = true;
+        mods.energy *= 1.05f;
     }),;
 
     private enum UNIQUE_INDEX {
@@ -115,7 +119,7 @@ public enum GT_ApiaryUpgrade {
         SPEED_UPGRADE,
         PRODUCTION_UPGRADE,
         PLAINS_UPGRADE,
-        LIGHT_UPGRADE,
+        LIGHT_UPGRADE, // also unlight
         FLOWERING_UPGRADE,
         WINTER_UPGRADE,
         DRYER_UPGRADE,

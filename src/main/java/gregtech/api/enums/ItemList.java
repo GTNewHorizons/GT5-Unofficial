@@ -1519,6 +1519,7 @@ public enum ItemList implements IItemContainer {
     IndustrialApiary_Upgrade_SKY,
     IndustrialApiary_Upgrade_HEATER,
     IndustrialApiary_Upgrade_SIEVE,
+    IndustrialApiary_Upgrade_UNLIGHT,
 
     Neutron_Reflector,
 
