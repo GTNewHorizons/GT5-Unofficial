@@ -854,6 +854,12 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                         "Sieve Upgrade",
                         "Sieve upgrade for Industrial Apiary/n Maximum Installed: 1/n * Pollen Collection/n * Energy Consumption +25%",
                         OrePrefixes.apiaryUpgrade.name()));
+        ItemList.IndustrialApiary_Upgrade_UNLIGHT.set(
+                addItem(
+                        tLastID = 231,
+                        "Night Upgrade",
+                        "Night upgrade for Industrial Apiary/n Maximum Installed: 1/n * Internal Darkness/n * Energy Consumption +5%",
+                        OrePrefixes.apiaryUpgrade.name()));
 
         OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_Acceleration_1.get(1L));
         OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_Acceleration_2.get(1L));
@@ -885,6 +891,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
         OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_SKY.get(1L));
         OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_HEATER.get(1L));
         OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_SIEVE.get(1L));
+        OrePrefixes.apiaryUpgrade.add(ItemList.IndustrialApiary_Upgrade_UNLIGHT.get(1L));
 
         ItemList.NuclearStar.set(
                 addItem(
