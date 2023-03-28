@@ -28,7 +28,7 @@ public class CokeOvenProcessingLogic extends ProcessingLogic {
         ItemStack input = inputItems[0];
         int originalStackSize = input.stackSize;
         ItemStack output = findRecipe(input);
-        if (currentOutputItems != null && !currentOutputItems[0].isItemEqual(output)) {
+        if (currentOutputItems != null && currentOutputItems[0] != null && !currentOutputItems[0].isItemEqual(output)) {
             return false;
         }
         input.stackSize -= 1;

@@ -23,8 +23,8 @@ public class GT_Loader_MultiTileEntities implements Runnable {
     @Override
     public void run() {
         GT_FML_LOGGER.info("GT_Mod: Registering MultiTileEntities");
-        registerMachines();
-        registerCasings();
+        // registerMachines();
+        // registerCasings();
 
     }
 

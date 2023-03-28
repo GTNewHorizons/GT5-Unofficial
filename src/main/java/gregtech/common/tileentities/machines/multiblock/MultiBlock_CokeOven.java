@@ -39,7 +39,7 @@ public class MultiBlock_CokeOven extends MultiBlockController<MultiBlock_CokeOve
     private static final Vec3Impl OFFSET = new Vec3Impl(1, 1, 0);
     private static final String MAIN = "Main";
     private static final PollutionLogic POLLUTION_LOGIC = new PollutionLogic().setPollutionAmount(10);
-    private static final ProcessingLogic PROCESSING_LOGIC = new CokeOvenProcessingLogic();
+    private final ProcessingLogic PROCESSING_LOGIC = new CokeOvenProcessingLogic();
 
     public MultiBlock_CokeOven() {
         super();
