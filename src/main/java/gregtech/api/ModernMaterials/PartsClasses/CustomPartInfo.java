@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
 public class CustomPartInfo {
 
     public final PartsEnum part;
-    private TextureType textureType;
+    private final TextureType textureType;
 
     public CustomPartInfo(@NotNull final PartsEnum part, @NotNull final TextureType textureType) {
         this.part = part;
@@ -19,12 +19,4 @@ public class CustomPartInfo {
         return textureType;
     }
 
-    public CustomPartInfo setTextureType(final TextureType aTextureType) {
-        textureType = aTextureType;
-        return this;
-    }
-
-    public String getTextureName() {
-        return part.partName;
-    }
 }

@@ -9,10 +9,10 @@ public enum PartsEnum implements IGetItem, IAssociatedMaterials {
 
     HotIngot("Hot % Ingot"),
     Ingot("% Ingot"),
-    DoubleIngot("Double % Ingot"),
-    TripleIngot("Triple % Ingot"),
-    QuadrupleIngot("Quadruple % Ingot"),
-    QuintupleIngot("Quintuple % Ingot"),
+//    DoubleIngot("Double % Ingot"),
+//    TripleIngot("Triple % Ingot"),
+//    QuadrupleIngot("Quadruple % Ingot"),
+//    QuintupleIngot("Quintuple % Ingot"),
     Nugget("% Nugget"),
 
 

@@ -2,7 +2,6 @@ package gregtech.api.ModernMaterials;
 
 import static gregtech.api.ModernMaterials.Fluids.FluidEnum.*;
 import static gregtech.api.ModernMaterials.ModernMaterialUtilities.registerAllMaterialsItems;
-import static gregtech.api.ModernMaterials.ModernMaterialUtilities.registerMaterial;
 import static gregtech.api.ModernMaterials.PartProperties.Textures.TextureType.*;
 import static gregtech.api.ModernMaterials.PartsClasses.PartsEnum.*;
 
@@ -29,14 +28,14 @@ public class ModernMaterialsRegistration {
         new ModernMaterial("UwU").setColor(0, 255, 255)
             .setTextureMode(Metallic).addParts(Gear).build();
 
-        new ModernMaterial("Amazium").setColor(100, 0, 200).setTextureMode(Metallic).addAllParts()
+        new ModernMaterial("Amazium").setColor(100, 0, 200).setTextureMode(Dull).addAllParts() // .addPart(Ingot).setTextureMode(Metallic).addPart(Gear)
                 .setMaterialTier(TierEU.UXV).setMaterialTimeMultiplier(2.5).addFluids(Molten, Plasma, Gas).build();
 
         new ModernMaterial("Samarium").setColor(100, 200, 200).setTextureMode(Metallic).addAllParts()
                 .setMaterialTier(TierEU.UMV).setMaterialTimeMultiplier(0.5).build();
 
-        new ModernMaterial("Copper").setColor(255, 0, 0).setTextureMode(Metallic).addAllParts()
-                .addFluids(Molten, Plasma).build();
+//        new ModernMaterial("Copper").setColor(255, 0, 0).setTextureMode(Metallic).addAllParts()
+//                .addFluids(Molten, Plasma).build();
 
         registerAllMaterialsItems();
         GregTech_API.sModernMaterialIDs.mConfig

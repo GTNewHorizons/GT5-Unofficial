@@ -17,6 +17,7 @@ import gregtech.api.ModernMaterials.PartsClasses.IGetItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.client.MinecraftForgeClient;
@@ -62,6 +63,7 @@ public class ModernMaterialUtilities {
         }
 
         for (PartsEnum part : PartsEnum.values()) {
+
             MaterialPart materialPart = new MaterialPart(part);
             materialPart.setUnlocalizedName(part.partName);
 
@@ -131,12 +133,13 @@ public class ModernMaterialUtilities {
         return modernMaterial;
     }
 
-    public static ArrayList<String> tooltipGenerator(ModernMaterial material) {
-        // Todo, this is just temporary as a proof of concept.
+    public static ArrayList<String> tooltipGenerator(MaterialPart materialPart, ModernMaterial material) {
+        // Todo, this is just temporary as a proof of concept/debug info.
         // Probably will put radioactive warning here. Not sure what else yet.
         ArrayList<String> tooltip = new ArrayList<>();
         tooltip.add("Generic Tooltip");
         tooltip.add("Material Name: " + material.getMaterialName());
+        tooltip.add("Material Part Type: " + material.getCustomPartInfo(materialPart.getPart()).getTextureType());
 
         return tooltip;
     }

@@ -6,6 +6,7 @@ import static org.lwjgl.opengl.GL11.GL_CURRENT_BIT;
 import java.awt.*;
 
 import gregtech.api.ModernMaterials.PartProperties.Textures.TextureType;
+import gregtech.api.ModernMaterials.PartsClasses.CustomPartInfo;
 import gregtech.api.ModernMaterials.PartsClasses.MaterialPart;
 import gregtech.api.ModernMaterials.PartsClasses.PartsEnum;
 import net.minecraft.client.renderer.ItemRenderer;
@@ -56,16 +57,12 @@ public class ModernMaterialItemRenderer implements IItemRenderer {
     @Override
     public void renderItem(ItemRenderType type, ItemStack itemStack, Object... objects) {
         ModernMaterial material = getMaterialFromItemStack(itemStack);
-        if (material == null) {
-            return;
-        }
 
         Color materialColor = material.getColor();
-        MaterialPart item = (MaterialPart) itemStack.getItem();
-        if (item == null) {
-            return;
-        }
-        PartsEnum partsEnum = item.getPart();
+
+        MaterialPart materialPart = (MaterialPart) itemStack.getItem();
+        PartsEnum partsEnum = materialPart.getPart();
+        CustomPartInfo customPartInfo = material.getCustomPartInfo(partsEnum);
 
         GL11.glPushMatrix();
 
@@ -75,7 +72,7 @@ public class ModernMaterialItemRenderer implements IItemRenderer {
         renderPositionCorrection(type);
 
         // Iterate over the items layers and render them.
-        for (IconWrapper iconWrapper : TextureType.Metallic.getTextureArray(partsEnum)) {
+        for (IconWrapper iconWrapper : customPartInfo.getTextureType().getTextureArray(partsEnum)) {
 
             GL11.glPushAttrib(GL_CURRENT_BIT);
 

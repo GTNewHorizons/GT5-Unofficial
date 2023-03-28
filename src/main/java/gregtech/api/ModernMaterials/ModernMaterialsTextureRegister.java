@@ -22,7 +22,6 @@ public class ModernMaterialsTextureRegister {
     public void registerIcons(TextureStitchEvent.Pre event) {
         if (event.map.getTextureType() == 1) {
              itemTextures(event.map);
-             sortItemTextureLayers();
         } else {
             blockTextures(event.map);
         }

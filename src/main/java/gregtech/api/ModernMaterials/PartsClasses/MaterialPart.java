@@ -58,7 +58,7 @@ public class MaterialPart extends Item {
 
         final ModernMaterial material = ModernMaterialUtilities.materialIDToMaterial.get(itemStack.getItemDamage());
 
-        for (String line : tooltipGenerator(material)) {
+        for (String line : tooltipGenerator((MaterialPart) itemStack.getItem(), material)) {
             tooltipList.add(line);
         }
     }

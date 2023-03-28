@@ -9,14 +9,15 @@ import java.util.Comparator;
 import java.util.HashMap;
 
 public enum TextureType {
-    Metallic;
+    Metallic,
+    Dull;
 //    Stone,
 //    Dull;
 //    Dull,
 //    CustomUnified,
 //    CustomIndividual;
 
-    private HashMap<PartsEnum, ArrayList<IconWrapper>> textureStorage = new HashMap<>();
+    private final HashMap<PartsEnum, ArrayList<IconWrapper>> textureStorage = new HashMap<>();
 
     public void addTexture(PartsEnum part, IconWrapper iconWrapper) {
         ArrayList<IconWrapper> iconList = textureStorage.getOrDefault(part, new ArrayList<>());

@@ -6,6 +6,7 @@ import gregtech.api.GregTech_API;
 import gregtech.api.ModernMaterials.Blocks.BlocksEnum;
 import gregtech.api.ModernMaterials.ModernMaterial;
 import gregtech.api.ModernMaterials.ModernMaterialUtilities;
+import gregtech.api.ModernMaterials.PartsClasses.MaterialPart;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
@@ -36,7 +37,7 @@ public abstract class DumbItemBlock extends ItemBlock {
 
         final ModernMaterial material = ModernMaterialUtilities.materialIDToMaterial.get(itemStack.getItemDamage());
 
-        for (String line : tooltipGenerator(material)) {
+        for (String line : tooltipGenerator((MaterialPart) itemStack.getItem(), material)) {
             tooltipList.add(line);
         }
     }
