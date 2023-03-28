@@ -1,9 +1,9 @@
 package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.enums.GT_Values.*;
+import static gregtech.api.enums.ModIDs.Railcraft;
+import static gregtech.api.enums.ModIDs.Thaumcraft;
 import static gregtech.api.util.GT_ModHandler.getModItem;
-import static gregtech.loaders.postload.GT_MachineRecipeLoader.isRailcraftLoaded;
-import static gregtech.loaders.postload.GT_MachineRecipeLoader.isThaumcraftLoaded;
 import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
 
 import mods.railcraft.common.blocks.aesthetics.cube.EnumCube;
@@ -827,7 +827,7 @@ public class MixerRecipes implements Runnable {
                 200,
                 600);
 
-        if (isThaumcraftLoaded) {
+        if (Thaumcraft.isModLoaded()) {
             GT_Values.RA.addMixerRecipe(
                     ItemList.SFMixture.get(20),
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.InfusedAir, 1L),
@@ -1668,7 +1668,7 @@ public class MixerRecipes implements Runnable {
                 50,
                 1920);
 
-        if (isRailcraftLoaded) {
+        if (Railcraft.isModLoaded()) {
             GT_Values.RA.addMixerRecipe(
                     EnumCube.COKE_BLOCK.getItem(),
                     ItemList.SFMixture.get(2),
@@ -1695,7 +1695,7 @@ public class MixerRecipes implements Runnable {
                     250);
         }
 
-        if (isThaumcraftLoaded && isRailcraftLoaded) {
+        if (Thaumcraft.isModLoaded() && Railcraft.isModLoaded()) {
             GT_Values.RA.addMixerRecipe(
                     EnumCube.COKE_BLOCK.getItem(),
                     ItemList.MSFMixture.get(2),

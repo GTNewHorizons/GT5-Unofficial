@@ -1,8 +1,8 @@
 package gregtech.loaders.postload.recipes;
 
+import static gregtech.api.enums.ModIDs.Forestry;
+import static gregtech.api.enums.ModIDs.Railcraft;
 import static gregtech.api.util.GT_ModHandler.getModItem;
-import static gregtech.loaders.postload.GT_MachineRecipeLoader.isForestryLoaded;
-import static gregtech.loaders.postload.GT_MachineRecipeLoader.isRailcraftLoaded;
 
 import mods.railcraft.common.blocks.aesthetics.cube.EnumCube;
 import mods.railcraft.common.items.RailcraftToolItems;
@@ -22,7 +22,7 @@ public class PyrolyseRecipes implements Runnable {
 
     @Override
     public void run() {
-        if (isRailcraftLoaded) {
+        if (Railcraft.isModLoaded()) {
             GT_Values.RA.addPyrolyseRecipe(
                     GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 16),
                     GT_Values.NF,
@@ -57,7 +57,8 @@ public class PyrolyseRecipes implements Runnable {
                     96);
         }
 
-        if (!GregTech_API.mIC2Classic) GT_Values.RA.addPyrolyseRecipe(
+        if (!GregTech_API.mIC2Classic) {
+            GT_Values.RA.addPyrolyseRecipe(
                 GT_ModHandler.getIC2Item("biochaff", 4L),
                 Materials.Water.getFluid(4000),
                 1,
@@ -65,7 +66,9 @@ public class PyrolyseRecipes implements Runnable {
                 new FluidStack(FluidRegistry.getFluid("ic2biomass"), 5000),
                 900,
                 10);
-        if (isForestryLoaded) {
+        }
+
+        if (Forestry.isModLoaded()) {
             GT_Values.RA.addPyrolyseRecipe(
                     getModItem(GT_MachineRecipeLoader.aTextForestry, "fertilizerBio", 4L),
                     Materials.Water.getFluid(4000),

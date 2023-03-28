@@ -1,9 +1,9 @@
 package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.enums.GT_Values.MOD_ID_RC;
+import static gregtech.api.enums.ModIDs.HardcoreEnderExpansion;
+import static gregtech.api.enums.ModIDs.Railcraft;
 import static gregtech.api.util.GT_ModHandler.getModItem;
-import static gregtech.loaders.postload.GT_MachineRecipeLoader.isHardcoreEnderExpansionLoaded;
-import static gregtech.loaders.postload.GT_MachineRecipeLoader.isRailcraftLoaded;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -382,7 +382,7 @@ public class Pulverizer implements Runnable {
                 1200,
                 480);
 
-        if (isRailcraftLoaded) {
+        if (Railcraft.isModLoaded()) {
             GT_ModHandler.addPulverisationRecipe(
                     getModItem(MOD_ID_RC, "cube.crushed.obsidian", 1L),
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Obsidian, 1L),
@@ -440,7 +440,7 @@ public class Pulverizer implements Runnable {
                 Materials.Iron.getDust(1),
                 true);
 
-        if (isHardcoreEnderExpansionLoaded) {
+        if (HardcoreEnderExpansion.isModLoaded()) {
             GT_ModHandler.addPulverisationRecipe(
                     getModItem("HardcoreEnderExpansion", "endium_ore", 1),
                     GT_OreDictUnificator.get(OrePrefixes.crushed, Materials.HeeEndium, 2),

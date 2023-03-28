@@ -1,11 +1,10 @@
 package gregtech.loaders.postload.recipes;
 
+import static gregtech.api.enums.ModIDs.GTPlusPlus;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sVacuumRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.*;
-import static gregtech.loaders.postload.GT_MachineRecipeLoader.isGTPPLoaded;
 
 import gregtech.api.enums.*;
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -666,7 +665,7 @@ public class VacuumFreezerRecipes implements Runnable {
 
         }
 
-        if (isGTPPLoaded) {
+        if (GTPlusPlus.isModLoaded()) {
             // hot transcendent metal ingot cooling
             GT_Values.RA.stdBuilder()
                 .itemInputs(

@@ -1,8 +1,8 @@
 package gregtech.loaders.postload.recipes;
 
+import static gregtech.api.enums.ModIDs.GTNHLanthanides;
+import static gregtech.api.enums.ModIDs.GTPlusPlus;
 import static gregtech.api.util.GT_ModHandler.getModItem;
-import static gregtech.loaders.postload.GT_MachineRecipeLoader.isGTNHLanthanidLoaded;
-import static gregtech.loaders.postload.GT_MachineRecipeLoader.isGTPPLoaded;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -633,7 +633,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 (int) TierEU.RECIPE_MV,
                 1200);
 
-        if (isGTNHLanthanidLoaded && isGTPPLoaded) {
+        if (GTNHLanthanides.isModLoaded() && GTPlusPlus.isModLoaded()) {
 
             GT_Values.RA.addBlastRecipe(
                     Materials.TranscendentMetal.getDust(1),

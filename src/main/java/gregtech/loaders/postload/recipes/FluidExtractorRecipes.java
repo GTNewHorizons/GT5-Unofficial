@@ -2,8 +2,8 @@ package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.enums.GT_Values.MOD_ID_DC;
 import static gregtech.api.enums.GT_Values.MOD_ID_RC;
+import static gregtech.api.enums.ModIDs.BartWorks;
 import static gregtech.api.util.GT_ModHandler.getModItem;
-import static gregtech.loaders.postload.GT_MachineRecipeLoader.isBartWorksLoaded;
 import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
 
 import net.minecraft.init.Blocks;
@@ -513,7 +513,7 @@ public class FluidExtractorRecipes implements Runnable {
         }
 
         // Beecombs fluid extractor recipes
-        if (isBartWorksLoaded) {
+        if (BartWorks.isModLoaded()) {
             // xenon
             GT_Values.RA.addFluidExtractionRecipe(
                     getModItem("gregtech", "gt.comb", 1L, 134),

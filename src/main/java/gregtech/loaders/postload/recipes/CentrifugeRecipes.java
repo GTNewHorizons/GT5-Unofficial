@@ -1,9 +1,9 @@
 package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.enums.GT_Values.NI;
+import static gregtech.api.enums.ModIDs.ExtraUtilities;
+import static gregtech.api.enums.ModIDs.Thaumcraft;
 import static gregtech.api.util.GT_ModHandler.getModItem;
-import static gregtech.loaders.postload.GT_MachineRecipeLoader.isExtraUtilitiesLoaded;
-import static gregtech.loaders.postload.GT_MachineRecipeLoader.isThaumcraftLoaded;
 import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
 
 import net.minecraft.init.Blocks;
@@ -1040,7 +1040,7 @@ public class CentrifugeRecipes implements Runnable {
                 600,
                 2000000);
 
-        if (isThaumcraftLoaded) {
+        if (Thaumcraft.isModLoaded()) {
             // air
             GT_Values.RA.addCentrifugeRecipe(
                     getModItem("gregtech", "gt.comb", 1L, 144),
@@ -1163,7 +1163,7 @@ public class CentrifugeRecipes implements Runnable {
                     512);
         }
 
-        if (isExtraUtilitiesLoaded) {
+        if (ExtraUtilities.isModLoaded()) {
             // Caelestis red
             GT_Values.RA.addCentrifugeRecipe(
                     getModItem("gregtech", "gt.comb", 1L, 154),

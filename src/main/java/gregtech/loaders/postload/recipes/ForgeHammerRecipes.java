@@ -1,8 +1,8 @@
 package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.enums.GT_Values.MOD_ID_GTPP;
+import static gregtech.api.enums.ModIDs.HardcoreEnderExpansion;
 import static gregtech.api.util.GT_ModHandler.getModItem;
-import static gregtech.loaders.postload.GT_MachineRecipeLoader.isHardcoreEnderExpansionLoaded;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -89,7 +89,7 @@ public class ForgeHammerRecipes implements Runnable {
                 10 * 20,
                 (int) TierEU.RECIPE_UXV);
 
-        if (isHardcoreEnderExpansionLoaded) {
+        if (HardcoreEnderExpansion.isModLoaded()) {
             GT_Values.RA.addForgeHammerRecipe(
                     getModItem("HardcoreEnderExpansion", "endium_ore", 1),
                     GT_OreDictUnificator.get(OrePrefixes.crushed, Materials.HeeEndium, 1),

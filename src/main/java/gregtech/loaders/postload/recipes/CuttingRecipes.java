@@ -1,7 +1,8 @@
 package gregtech.loaders.postload.recipes;
 
+import static gregtech.api.enums.ModIDs.Forestry;
+import static gregtech.api.enums.ModIDs.NotEnoughItems;
 import static gregtech.api.util.GT_ModHandler.getModItem;
-import static gregtech.loaders.postload.GT_MachineRecipeLoader.isForestryloaded;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -194,7 +195,7 @@ public class CuttingRecipes implements Runnable {
                 ItemList.Plank_Citrus.get(2L) };
         int i = 0;
         for (ItemStack cover : coverIDs) {
-            if (isForestryloaded) {
+            if (Forestry.isModLoaded()) {
                 ItemStack slabWood = getModItem(GT_MachineRecipeLoader.aTextForestry, "slabs", 1, i);
                 ItemStack slabWoodFireproof = getModItem(GT_MachineRecipeLoader.aTextForestry, "slabsFireproof", 1, i);
                 GT_ModHandler.addCraftingRecipe(
@@ -207,7 +208,7 @@ public class CuttingRecipes implements Runnable {
                         new Object[] { "s ", " P", 'P', slabWoodFireproof });
                 GT_Values.RA.addCutterRecipe(slabWood, cover, null, 40, 8);
                 GT_Values.RA.addCutterRecipe(slabWoodFireproof, cover, null, 40, 8);
-            } else if (GT_MachineRecipeLoader.isNEILoaded) {
+            } else if (NotEnoughItems.isModLoaded()) {
                 API.hideItem(cover);
             }
             i++;

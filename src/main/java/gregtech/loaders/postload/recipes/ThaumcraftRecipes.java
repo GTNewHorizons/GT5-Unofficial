@@ -1,8 +1,8 @@
 package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.enums.GT_Values.MOD_ID_TC;
+import static gregtech.api.enums.ModIDs.Thaumcraft;
 import static gregtech.api.util.GT_ModHandler.getModItem;
-import static gregtech.loaders.postload.GT_MachineRecipeLoader.isThaumcraftLoaded;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -25,7 +25,7 @@ public class ThaumcraftRecipes implements Runnable {
 
     @Override
     public void run() {
-        if (isThaumcraftLoaded) {
+        if (Thaumcraft.isModLoaded()) {
             // Add Recipe for TC Crucible: Salis Mundus to Balanced Shards
             String tKey = "GT_BALANCE_SHARD_RECIPE";
             GregTech_API.sThaumcraftCompat.addCrucibleRecipe(

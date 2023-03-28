@@ -1,6 +1,7 @@
 package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.enums.GT_Values.*;
+import static gregtech.api.enums.ModIDs.*;
 import static gregtech.api.util.GT_ModHandler.getModItem;
 import static gregtech.loaders.postload.GT_MachineRecipeLoader.*;
 import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
@@ -708,7 +709,7 @@ public class ChemicalRecipes implements Runnable {
                 100,
                 30);
 
-        if (isBartWorksLoaded) {
+        if (BartWorks.isModLoaded()) {
             // CaSi2 + 2HCl = 2Si + CaCl2 + 2H
             GT_Values.RA.addChemicalRecipe(
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.CalciumDisilicide, 3),
@@ -3384,7 +3385,7 @@ public class ChemicalRecipes implements Runnable {
                 20,
                 30);
 
-        if (isGTNHLanthanidLoaded && isGTPPLoaded) {
+        if (GTNHLanthanides.isModLoaded() && GTPlusPlus.isModLoaded()) {
 
             // C4H8O + 2H =Pd= C4H10O
             GT_Values.RA.addChemicalRecipe(
@@ -4773,7 +4774,7 @@ public class ChemicalRecipes implements Runnable {
                 600,
                 500000);
 
-        if (isGTNHLanthanidLoaded && isGTPPLoaded) {
+        if (GTNHLanthanides.isModLoaded() && GTPlusPlus.isModLoaded()) {
             // CH2O + 2C6H7N + HCl = C13H14N2(HCl) + H2O
             GT_Values.RA.addMultiblockChemicalRecipe(
                     new ItemStack[] { GT_Utility.getIntegratedCircuit(1) },

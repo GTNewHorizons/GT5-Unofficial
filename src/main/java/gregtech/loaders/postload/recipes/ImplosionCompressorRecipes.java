@@ -1,7 +1,7 @@
 package gregtech.loaders.postload.recipes;
 
+import static gregtech.api.enums.ModIDs.GalacticraftMars;
 import static gregtech.api.util.GT_ModHandler.getModItem;
-import static gregtech.loaders.postload.GT_MachineRecipeLoader.isGalacticraftMarsLoaded;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
@@ -25,7 +25,7 @@ public class ImplosionCompressorRecipes implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.plateAlloy, Materials.Iridium, 1L),
                 GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 4L));
 
-        if (isGalacticraftMarsLoaded) {
+        if (GalacticraftMars.isModLoaded()) {
 
             GT_Values.RA.addImplosionRecipe(
                     ItemList.Ingot_Heavy1.get(1L),
