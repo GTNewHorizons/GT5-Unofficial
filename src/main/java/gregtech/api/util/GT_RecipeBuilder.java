@@ -287,6 +287,14 @@ public class GT_RecipeBuilder {
         return key.cast(additionalData.getOrDefault(key, defaultValue));
     }
 
+    public GT_RecipeBuilder requiresCleanRoom() {
+        return metadata(GT_RecipeConstants.CLEANROOM, true);
+    }
+
+    public GT_RecipeBuilder requiresLowGravity() {
+        return metadata(GT_RecipeConstants.LOW_GRAVITY, true);
+    }
+
     private static <T> T[] copy(T[] arr) {
         return arr == null ? null : arr.clone();
     }
