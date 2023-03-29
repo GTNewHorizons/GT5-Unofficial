@@ -38,7 +38,7 @@ public class PrinterRecipes implements Runnable {
             .itemInputs(
                 ItemList.Paper_Punch_Card_Empty.get(1L)
             )
-            .special(ItemList.Tool_DataStick.getWithName(0L, "With Punch Card Data"))
+            .specialItem(ItemList.Tool_DataStick.getWithName(0L, "With Punch Card Data"))
             .itemOutputs(
                 ItemList.Paper_Punch_Card_Encoded.get(1L)
             )
@@ -54,7 +54,7 @@ public class PrinterRecipes implements Runnable {
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Paper, 3L)
             )
-            .special(
+            .specialItem(
                 ItemList.Tool_DataStick.getWithName(0L, "With Scanned Book Data")
             )
             .itemOutputs(
@@ -73,7 +73,7 @@ public class PrinterRecipes implements Runnable {
             .itemInputs(
                 new ItemStack(Items.map, 1, 32767)
             )
-            .special(
+            .specialItem(
                 ItemList.Tool_DataStick.getWithName(0L, "With Scanned Map Data")
             )
             .itemOutputs(
