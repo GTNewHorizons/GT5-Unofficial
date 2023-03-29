@@ -162,7 +162,7 @@ public class GT_CraftingRecipeLoader implements Runnable {
         if (tStack != null) {
             GT_ModHandler.addCraftingRecipe(
                     GT_Utility.copyAmount(
-                            GT_Mod.gregtechproxy.mNerfedWoodPlank ? tStack.stackSize : tStack.stackSize * 5 / 4,
+                            GT_Mod.gregtechproxy.mNerfedWoodPlank ? tStack.stackSize : tStack.stackSize * 5L / 4,
                             tStack),
                     bits_no_remove_buffered,
                     new Object[] { "s", "P", "P", 'P', OrePrefixes.plank.get(Materials.Wood) });
@@ -1345,66 +1345,6 @@ public class GT_CraftingRecipeLoader implements Runnable {
                             OrePrefixes.dust.get(Materials.Coal) });
         }
         if (GT_Mod.gregtechproxy.mNerfDustCrafting) {
-            // GT_ModHandler.addShapelessCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dustTiny,
-            // Materials.YttriumBariumCuprate, 5L), bits_no_remove_buffered, new
-            // Object[]{OrePrefixes.dustTiny.get(Materials.Yttrium), OrePrefixes.dustTiny.get(Materials.Barium),
-            // OrePrefixes.dustTiny.get(Materials.Barium), OrePrefixes.dustTiny.get(Materials.AnyCopper),
-            // OrePrefixes.dustTiny.get(Materials.AnyCopper), OrePrefixes.dustTiny.get(Materials.AnyCopper)});
-            // GT_ModHandler.addShapelessCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dustSmall,
-            // Materials.YttriumBariumCuprate, 23L), bits_no_remove_buffered, new
-            // Object[]{OrePrefixes.dust.get(Materials.Yttrium), OrePrefixes.dust.get(Materials.Barium),
-            // OrePrefixes.dust.get(Materials.Barium), OrePrefixes.dust.get(Materials.AnyCopper),
-            // OrePrefixes.dust.get(Materials.AnyCopper), OrePrefixes.dust.get(Materials.AnyCopper)});
-            // GT_ModHandler.addShapelessCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.HSSG, 8L),
-            // bits_no_remove_buffered, new Object[]{OrePrefixes.dust.get(Materials.TungstenSteel),
-            // OrePrefixes.dust.get(Materials.TungstenSteel), OrePrefixes.dust.get(Materials.TungstenSteel),
-            // OrePrefixes.dust.get(Materials.TungstenSteel), OrePrefixes.dust.get(Materials.TungstenSteel),
-            // OrePrefixes.dust.get(Materials.Chrome), OrePrefixes.dust.get(Materials.Molybdenum),
-            // OrePrefixes.dust.get(Materials.Molybdenum), OrePrefixes.dust.get(Materials.Vanadium)});
-            // GT_ModHandler.addShapelessCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.HSSE, 8L),
-            // bits_no_remove_buffered, new Object[]{OrePrefixes.dust.get(Materials.HSSG),
-            // OrePrefixes.dust.get(Materials.HSSG), OrePrefixes.dust.get(Materials.HSSG),
-            // OrePrefixes.dust.get(Materials.HSSG), OrePrefixes.dust.get(Materials.HSSG),
-            // OrePrefixes.dust.get(Materials.HSSG), OrePrefixes.dust.get(Materials.Cobalt),
-            // OrePrefixes.dust.get(Materials.Manganese), OrePrefixes.dust.get(Materials.Silicon)});
-            // GT_ModHandler.addShapelessCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.HSSS, 8L),
-            // bits_no_remove_buffered, new Object[]{OrePrefixes.dust.get(Materials.HSSG),
-            // OrePrefixes.dust.get(Materials.HSSG), OrePrefixes.dust.get(Materials.HSSG),
-            // OrePrefixes.dust.get(Materials.HSSG), OrePrefixes.dust.get(Materials.HSSG),
-            // OrePrefixes.dust.get(Materials.HSSG), OrePrefixes.dust.get(Materials.Iridium),
-            // OrePrefixes.dust.get(Materials.Iridium), OrePrefixes.dust.get(Materials.Osmium)});
-            // GT_ModHandler.addShapelessCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dustTiny,
-            // Materials.StainlessSteel, 8L), bits_no_remove_buffered, new
-            // Object[]{OrePrefixes.dustTiny.get(Materials.Iron), OrePrefixes.dustTiny.get(Materials.Iron),
-            // OrePrefixes.dustTiny.get(Materials.Iron), OrePrefixes.dustTiny.get(Materials.Iron),
-            // OrePrefixes.dustTiny.get(Materials.Iron), OrePrefixes.dustTiny.get(Materials.Iron),
-            // OrePrefixes.dustTiny.get(Materials.Nickel), OrePrefixes.dustTiny.get(Materials.Manganese),
-            // OrePrefixes.dustTiny.get(Materials.Chrome)});
-            // GT_ModHandler.addShapelessCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dust,
-            // Materials.StainlessSteel, 8L), bits_no_remove_buffered, new
-            // Object[]{OrePrefixes.dust.get(Materials.Iron), OrePrefixes.dust.get(Materials.Iron),
-            // OrePrefixes.dust.get(Materials.Iron), OrePrefixes.dust.get(Materials.Iron),
-            // OrePrefixes.dust.get(Materials.Iron), OrePrefixes.dust.get(Materials.Iron),
-            // OrePrefixes.dust.get(Materials.Nickel), OrePrefixes.dust.get(Materials.Manganese),
-            // OrePrefixes.dust.get(Materials.Chrome)});
-            // GT_ModHandler.addShapelessCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dustSmall,
-            // Materials.TungstenSteel, 7L), bits_no_remove_buffered, new
-            // Object[]{OrePrefixes.dust.get(Materials.Tungsten),OrePrefixes.dust.get(Materials.Steel)});
-            // GT_ModHandler.addShapelessCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dustSmall,
-            // Materials.TungstenCarbide, 7L), bits_no_remove_buffered, new
-            // Object[]{OrePrefixes.dust.get(Materials.Tungsten),OrePrefixes.dust.get(Materials.Carbon)});
-            // GT_ModHandler.addShapelessCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dustSmall,
-            // Materials.VanadiumGallium, 15L), bits_no_remove_buffered, new
-            // Object[]{OrePrefixes.dust.get(Materials.Vanadium),OrePrefixes.dust.get(Materials.Vanadium),OrePrefixes.dust.get(Materials.Vanadium),OrePrefixes.dust.get(Materials.Gallium)});
-            // GT_ModHandler.addShapelessCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dustSmall,
-            // Materials.NiobiumTitanium, 7L), bits_no_remove_buffered, new
-            // Object[]{OrePrefixes.dust.get(Materials.Niobium),OrePrefixes.dust.get(Materials.Titanium)});
-            // GT_ModHandler.addShapelessCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dustSmall,
-            // Materials.Osmiridium, 15L), bits_no_remove_buffered, new
-            // Object[]{OrePrefixes.dust.get(Materials.Osmium),OrePrefixes.dust.get(Materials.Iridium),OrePrefixes.dust.get(Materials.Iridium),OrePrefixes.dust.get(Materials.Iridium)});
-            // GT_ModHandler.addShapelessCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dustSmall,
-            // Materials.Electrum, 6L), bits_no_remove_buffered, new Object[]{OrePrefixes.dust.get(Materials.Silver),
-            // OrePrefixes.dust.get(Materials.Gold)});
             GT_ModHandler.removeRecipeByOutputDelayed(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Brass, 1L));
             GT_ModHandler.addShapelessCraftingRecipe(
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Brass, 3L),
@@ -1437,71 +1377,7 @@ public class GT_CraftingRecipeLoader implements Runnable {
                     GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Cupronickel, 6L),
                     bits_no_remove_buffered,
                     new Object[] { OrePrefixes.dust.get(Materials.Nickel), OrePrefixes.dust.get(Materials.AnyCopper) });
-            // GT_ModHandler.addShapelessCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dustSmall,
-            // Materials.Nichrome, 15L), bits_no_remove_buffered, new Object[]{OrePrefixes.dust.get(Materials.Nickel),
-            // OrePrefixes.dust.get(Materials.Nickel), OrePrefixes.dust.get(Materials.Nickel),
-            // OrePrefixes.dust.get(Materials.Nickel), OrePrefixes.dust.get(Materials.Chrome)});
         } else {
-            // GT_ModHandler.addShapelessCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dustTiny,
-            // Materials.YttriumBariumCuprate, 6L), bits_no_remove_buffered, new
-            // Object[]{OrePrefixes.dustTiny.get(Materials.Yttrium), OrePrefixes.dustTiny.get(Materials.Barium),
-            // OrePrefixes.dustTiny.get(Materials.Barium), OrePrefixes.dustTiny.get(Materials.AnyCopper),
-            // OrePrefixes.dustTiny.get(Materials.AnyCopper), OrePrefixes.dustTiny.get(Materials.AnyCopper)});
-            // GT_ModHandler.addShapelessCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dust,
-            // Materials.YttriumBariumCuprate, 6L), bits_no_remove_buffered, new
-            // Object[]{OrePrefixes.dust.get(Materials.Yttrium), OrePrefixes.dust.get(Materials.Barium),
-            // OrePrefixes.dust.get(Materials.Barium), OrePrefixes.dust.get(Materials.AnyCopper),
-            // OrePrefixes.dust.get(Materials.AnyCopper), OrePrefixes.dust.get(Materials.AnyCopper)});
-            // GT_ModHandler.addShapelessCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.HSSG, 9L),
-            // bits_no_remove_buffered, new Object[]{OrePrefixes.dust.get(Materials.TungstenSteel),
-            // OrePrefixes.dust.get(Materials.TungstenSteel), OrePrefixes.dust.get(Materials.TungstenSteel),
-            // OrePrefixes.dust.get(Materials.TungstenSteel), OrePrefixes.dust.get(Materials.TungstenSteel),
-            // OrePrefixes.dust.get(Materials.Chrome), OrePrefixes.dust.get(Materials.Molybdenum),
-            // OrePrefixes.dust.get(Materials.Molybdenum), OrePrefixes.dust.get(Materials.Vanadium)});
-            // GT_ModHandler.addShapelessCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.HSSE, 9L),
-            // bits_no_remove_buffered, new Object[]{OrePrefixes.dust.get(Materials.HSSG),
-            // OrePrefixes.dust.get(Materials.HSSG), OrePrefixes.dust.get(Materials.HSSG),
-            // OrePrefixes.dust.get(Materials.HSSG), OrePrefixes.dust.get(Materials.HSSG),
-            // OrePrefixes.dust.get(Materials.HSSG), OrePrefixes.dust.get(Materials.Cobalt),
-            // OrePrefixes.dust.get(Materials.Manganese), OrePrefixes.dust.get(Materials.Silicon)});
-            // GT_ModHandler.addShapelessCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.HSSS, 9L),
-            // bits_no_remove_buffered, new Object[]{OrePrefixes.dust.get(Materials.HSSG),
-            // OrePrefixes.dust.get(Materials.HSSG), OrePrefixes.dust.get(Materials.HSSG),
-            // OrePrefixes.dust.get(Materials.HSSG), OrePrefixes.dust.get(Materials.HSSG),
-            // OrePrefixes.dust.get(Materials.HSSG), OrePrefixes.dust.get(Materials.Iridium),
-            // OrePrefixes.dust.get(Materials.Iridium), OrePrefixes.dust.get(Materials.Osmium)});
-            // GT_ModHandler.addShapelessCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dust,
-            // Materials.StainlessSteel, 1L), bits_no_remove_buffered, new
-            // Object[]{OrePrefixes.dustTiny.get(Materials.Iron), OrePrefixes.dustTiny.get(Materials.Iron),
-            // OrePrefixes.dustTiny.get(Materials.Iron), OrePrefixes.dustTiny.get(Materials.Iron),
-            // OrePrefixes.dustTiny.get(Materials.Iron), OrePrefixes.dustTiny.get(Materials.Iron),
-            // OrePrefixes.dustTiny.get(Materials.Nickel), OrePrefixes.dustTiny.get(Materials.Manganese),
-            // OrePrefixes.dustTiny.get(Materials.Chrome)});
-            // GT_ModHandler.addShapelessCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dust,
-            // Materials.StainlessSteel, 9L), bits_no_remove_buffered, new
-            // Object[]{OrePrefixes.dust.get(Materials.Iron), OrePrefixes.dust.get(Materials.Iron),
-            // OrePrefixes.dust.get(Materials.Iron), OrePrefixes.dust.get(Materials.Iron),
-            // OrePrefixes.dust.get(Materials.Iron), OrePrefixes.dust.get(Materials.Iron),
-            // OrePrefixes.dust.get(Materials.Nickel), OrePrefixes.dust.get(Materials.Manganese),
-            // OrePrefixes.dust.get(Materials.Chrome)});
-            // GT_ModHandler.addShapelessCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dust,
-            // Materials.TungstenSteel, 2L), bits_no_remove_buffered, new
-            // Object[]{OrePrefixes.dust.get(Materials.Tungsten),OrePrefixes.dust.get(Materials.Steel)});
-            // GT_ModHandler.addShapelessCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dust,
-            // Materials.TungstenCarbide, 2L), bits_no_remove_buffered, new
-            // Object[]{OrePrefixes.dust.get(Materials.Tungsten),OrePrefixes.dust.get(Materials.Carbon)});
-            // GT_ModHandler.addShapelessCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dust,
-            // Materials.VanadiumGallium, 4L), bits_no_remove_buffered, new
-            // Object[]{OrePrefixes.dust.get(Materials.Vanadium),OrePrefixes.dust.get(Materials.Vanadium),OrePrefixes.dust.get(Materials.Vanadium),OrePrefixes.dust.get(Materials.Gallium)});
-            // GT_ModHandler.addShapelessCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dust,
-            // Materials.NiobiumTitanium, 2L), bits_no_remove_buffered, new
-            // Object[]{OrePrefixes.dust.get(Materials.Niobium),OrePrefixes.dust.get(Materials.Titanium)});
-            // GT_ModHandler.addShapelessCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Osmiridium,
-            // 4L), bits_no_remove_buffered, new
-            // Object[]{OrePrefixes.dust.get(Materials.Osmium),OrePrefixes.dust.get(Materials.Iridium),OrePrefixes.dust.get(Materials.Iridium),OrePrefixes.dust.get(Materials.Iridium)});
-            // GT_ModHandler.addShapelessCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Electrum,
-            // 2L), bits_no_remove_buffered, new Object[]{OrePrefixes.dust.get(Materials.Silver),
-            // OrePrefixes.dust.get(Materials.Gold)});
             GT_ModHandler.addShapelessCraftingRecipe(
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Brass, 4L),
                     bits_no_remove_buffered,
@@ -1533,10 +1409,7 @@ public class GT_CraftingRecipeLoader implements Runnable {
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Cupronickel, 2L),
                     bits_no_remove_buffered,
                     new Object[] { OrePrefixes.dust.get(Materials.Nickel), OrePrefixes.dust.get(Materials.AnyCopper) });
-            // GT_ModHandler.addShapelessCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Nichrome,
-            // 5L), bits_no_remove_buffered, new Object[]{OrePrefixes.dust.get(Materials.Nickel),
-            // OrePrefixes.dust.get(Materials.Nickel), OrePrefixes.dust.get(Materials.Nickel),
-            // OrePrefixes.dust.get(Materials.Nickel), OrePrefixes.dust.get(Materials.Chrome)});
+
         }
         GT_ModHandler.addShapelessCraftingRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.RoseGold, 4L),
@@ -1562,29 +1435,7 @@ public class GT_CraftingRecipeLoader implements Runnable {
                 new Object[] { OrePrefixes.dust.get(Materials.Bismuth), OrePrefixes.dust.get(Materials.Zinc),
                         OrePrefixes.dust.get(Materials.AnyCopper), OrePrefixes.dust.get(Materials.AnyCopper),
                         OrePrefixes.dust.get(Materials.AnyCopper) });
-        // GT_ModHandler.addShapelessCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.BlackSteel,
-        // 4L), bits_no_remove_buffered, new Object[]{OrePrefixes.dust.get(Materials.Nickel),
-        // OrePrefixes.dust.get(Materials.BlackBronze), OrePrefixes.dust.get(Materials.Steel),
-        // OrePrefixes.dust.get(Materials.Steel), OrePrefixes.dust.get(Materials.Steel)});
-        // GT_ModHandler.addShapelessCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.RedSteel, 6L),
-        // bits_no_remove_buffered, new Object[]{OrePrefixes.dust.get(Materials.SterlingSilver),
-        // OrePrefixes.dust.get(Materials.BismuthBronze), OrePrefixes.dust.get(Materials.Steel),
-        // OrePrefixes.dust.get(Materials.Steel), OrePrefixes.dust.get(Materials.BlackSteel),
-        // OrePrefixes.dust.get(Materials.BlackSteel), OrePrefixes.dust.get(Materials.BlackSteel),
-        // OrePrefixes.dust.get(Materials.BlackSteel)});
-        // GT_ModHandler.addShapelessCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.BlueSteel, 6L),
-        // bits_no_remove_buffered, new Object[]{OrePrefixes.dust.get(Materials.RoseGold),
-        // OrePrefixes.dust.get(Materials.Brass), OrePrefixes.dust.get(Materials.Steel),
-        // OrePrefixes.dust.get(Materials.Steel), OrePrefixes.dust.get(Materials.BlackSteel),
-        // OrePrefixes.dust.get(Materials.BlackSteel), OrePrefixes.dust.get(Materials.BlackSteel),
-        // OrePrefixes.dust.get(Materials.BlackSteel)});
 
-        // GT_ModHandler.addShapelessCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Ultimet, 9L),
-        // bits_no_remove_buffered, new Object[]{OrePrefixes.dust.get(Materials.Cobalt),
-        // OrePrefixes.dust.get(Materials.Cobalt), OrePrefixes.dust.get(Materials.Cobalt),
-        // OrePrefixes.dust.get(Materials.Cobalt), OrePrefixes.dust.get(Materials.Cobalt),
-        // OrePrefixes.dust.get(Materials.Chrome), OrePrefixes.dust.get(Materials.Chrome),
-        // OrePrefixes.dust.get(Materials.Nickel), OrePrefixes.dust.get(Materials.Molybdenum)});
         GT_ModHandler.addShapelessCraftingRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.CobaltBrass, 8L),
                 bits_no_remove_buffered,
@@ -1593,25 +1444,7 @@ public class GT_CraftingRecipeLoader implements Runnable {
                         OrePrefixes.dust.get(Materials.Brass), OrePrefixes.dust.get(Materials.Brass),
                         OrePrefixes.dust.get(Materials.Brass), OrePrefixes.dust.get(Materials.Aluminium),
                         OrePrefixes.dust.get(Materials.Cobalt) });
-        // GT_ModHandler.addShapelessCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Kanthal, 3L),
-        // bits_no_remove_buffered, new Object[]{OrePrefixes.dust.get(Materials.Iron),
-        // OrePrefixes.dust.get(Materials.Aluminium), OrePrefixes.dust.get(Materials.Chrome)});
 
-        // GT_ModHandler.addShapelessCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Ultimet, 1L),
-        // bits_no_remove_buffered, new Object[]{OrePrefixes.dustTiny.get(Materials.Cobalt),
-        // OrePrefixes.dustTiny.get(Materials.Cobalt), OrePrefixes.dustTiny.get(Materials.Cobalt),
-        // OrePrefixes.dustTiny.get(Materials.Cobalt), OrePrefixes.dustTiny.get(Materials.Cobalt),
-        // OrePrefixes.dustTiny.get(Materials.Chrome), OrePrefixes.dustTiny.get(Materials.Chrome),
-        // OrePrefixes.dustTiny.get(Materials.Nickel), OrePrefixes.dustTiny.get(Materials.Molybdenum)});
-        // GT_ModHandler.addShapelessCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.CobaltBrass,
-        // 1L), bits_no_remove_buffered, new Object[]{OrePrefixes.dustTiny.get(Materials.Brass),
-        // OrePrefixes.dustTiny.get(Materials.Brass), OrePrefixes.dustTiny.get(Materials.Brass),
-        // OrePrefixes.dustTiny.get(Materials.Brass), OrePrefixes.dustTiny.get(Materials.Brass),
-        // OrePrefixes.dustTiny.get(Materials.Brass), OrePrefixes.dustTiny.get(Materials.Brass),
-        // OrePrefixes.dustTiny.get(Materials.Aluminium), OrePrefixes.dustTiny.get(Materials.Cobalt)});
-        // GT_ModHandler.addShapelessCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Kanthal,
-        // 3L), bits_no_remove_buffered, new Object[]{OrePrefixes.dustTiny.get(Materials.Iron),
-        // OrePrefixes.dustTiny.get(Materials.Aluminium), OrePrefixes.dustTiny.get(Materials.Chrome)});
         GT_ModHandler.addShapelessCraftingRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.DamascusSteel, 2L),
                 bits_no_remove_buffered,
@@ -1661,20 +1494,13 @@ public class GT_CraftingRecipeLoader implements Runnable {
                 bits_no_remove_buffered,
                 new Object[] { OrePrefixes.dust.get(Materials.ConductiveIron), OrePrefixes.dust.get(Materials.Silver),
                         OrePrefixes.dust.get(Materials.BlackSteel) });
-        // GT_ModHandler.addShapelessCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.VibrantAlloy,
-        // 2L), bits_no_remove_buffered, new Object[]{OrePrefixes.dust.get(Materials.EnergeticAlloy),
-        // OrePrefixes.dust.get(Materials.EnderEye), OrePrefixes.dust.get(Materials.Chrome)});
-        // GT_ModHandler.addShapelessCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.VividAlloy,
-        // 2L), bits_no_remove_buffered, new Object[]{OrePrefixes.dust.get(Materials.EnergeticSilver),
-        // OrePrefixes.dust.get(Materials.EnderEye), OrePrefixes.dust.get(Materials.Chrome)});
+
         GT_ModHandler.addShapelessCraftingRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.ElectricalSteel, 2L),
                 bits_no_remove_buffered,
                 new Object[] { OrePrefixes.dust.get(Materials.Steel), OrePrefixes.dust.get(Materials.Coal),
                         OrePrefixes.dust.get(Materials.Silicon) });
-        // GT_ModHandler.addShapelessCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.PulsatingIron,
-        // 2L), bits_no_remove_buffered, new Object[]{OrePrefixes.dust.get(Materials.Iron),
-        // OrePrefixes.dust.get(Materials.EnderPearl), OrePrefixes.dust.get(Materials.RedstoneAlloy)});
+
         GT_ModHandler.addShapelessCraftingRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Soularium, 2L),
                 bits_no_remove_buffered,
@@ -1685,18 +1511,7 @@ public class GT_CraftingRecipeLoader implements Runnable {
                 bits_no_remove_buffered,
                 new Object[] { OrePrefixes.dust.get(Materials.ElectricalSteel), OrePrefixes.dust.get(Materials.Coal),
                         OrePrefixes.dust.get(Materials.Obsidian) });
-        // GT_ModHandler.addShapelessCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.EnderiumBase,
-        // 3L), bits_no_remove_buffered, new Object[]{OrePrefixes.dust.get(Materials.Tin),
-        // OrePrefixes.dust.get(Materials.Tin), OrePrefixes.dust.get(Materials.Silver),
-        // OrePrefixes.dust.get(Materials.Platinum)});
-        // GT_ModHandler.addShapelessCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Enderium, 3L),
-        // bits_no_remove_buffered, new Object[]{OrePrefixes.dust.get(Materials.EnderiumBase),
-        // OrePrefixes.dust.get(Materials.EnderiumBase), OrePrefixes.dust.get(Materials.Thaumium),
-        // OrePrefixes.dust.get(Materials.EnderPearl)});
-        // GT_ModHandler.addShapelessCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.ShadowIron,
-        // 3L), bits_no_remove_buffered, new Object[]{OrePrefixes.dust.get(Materials.Iron),
-        // OrePrefixes.dust.get(Materials.Thaumium), OrePrefixes.dust.get(Materials.Thaumium),
-        // OrePrefixes.dust.get(Materials.Thaumium)});
+
         GT_ModHandler.addShapelessCraftingRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Manyullyn, 3L),
                 bits_no_remove_buffered,
@@ -1704,9 +1519,7 @@ public class GT_CraftingRecipeLoader implements Runnable {
                         OrePrefixes.dust.get(Materials.Ardite), OrePrefixes.dust.get(Materials.Ardite),
                         OrePrefixes.dust.get(Materials.Cobalt), OrePrefixes.dust.get(Materials.Cobalt),
                         OrePrefixes.dust.get(Materials.Cobalt), OrePrefixes.dust.get(Materials.Cobalt) });
-        // GT_ModHandler.addShapelessCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.AstralSilver,
-        // 1L), bits_no_remove_buffered, new Object[]{OrePrefixes.dust.get(Materials.Silver),
-        // OrePrefixes.dust.get(Materials.Silver), OrePrefixes.dust.get(Materials.Thaumium)});
+
         GT_ModHandler.addShapelessCraftingRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Haderoth, 1L),
                 bits_no_remove_buffered,
@@ -1715,13 +1528,6 @@ public class GT_CraftingRecipeLoader implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Celenegil, 1L),
                 bits_no_remove_buffered,
                 new Object[] { OrePrefixes.dust.get(Materials.Platinum), OrePrefixes.dust.get(Materials.Orichalcum) });
-
-        // GT_ModHandler.addShapelessCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.VanadiumSteel,
-        // 9L), bits_no_remove_buffered, new Object[]{OrePrefixes.dust.get(Materials.Steel),
-        // OrePrefixes.dust.get(Materials.Steel), OrePrefixes.dust.get(Materials.Steel),
-        // OrePrefixes.dust.get(Materials.Steel), OrePrefixes.dust.get(Materials.Steel),
-        // OrePrefixes.dust.get(Materials.Steel), OrePrefixes.dust.get(Materials.Steel),
-        // OrePrefixes.dust.get(Materials.Vanadium), OrePrefixes.dust.get(Materials.Chrome)});
 
         GT_ModHandler.addShapelessCraftingRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.IronWood, 2L),
@@ -1869,10 +1675,7 @@ public class GT_CraftingRecipeLoader implements Runnable {
                     new Object[] { "RBR", "CMC", 'C', OrePrefixes.cableGt01.get(Materials.Copper), 'R',
                             OrePrefixes.dust.get(Materials.Redstone), 'B', OrePrefixes.battery.get(Materials.Basic),
                             'M', GT_ModHandler.getIC2Item("machine", 1L) });
-            // GT_ModHandler.addCraftingRecipe(GT_ModHandler.getIC2Item("advBattery", 1L), bits_no_remove_buffered, new
-            // Object[]{"CTC", "TST", "TLT", 'C', OrePrefixes.cableGt01.get(Materials.Copper), 'S',
-            // OrePrefixes.dust.get(Materials.Sulfur), 'L', OrePrefixes.dust.get(Materials.Lead), 'T',
-            // GT_ModHandler.getIC2Item("casingbronze", 1L)});
+
             GT_ModHandler.addCraftingRecipe(
                     GT_ModHandler.getIC2Item("boatElectric", 1L),
                     bits_no_remove_buffered,
@@ -2262,38 +2065,14 @@ public class GT_CraftingRecipeLoader implements Runnable {
         }
 
         GT_ModHandler.removeRecipeByOutputDelayed(GT_ModHandler.getIC2Item("diamondDrill", 1L));
-        // GT_ModHandler.addCraftingRecipe(GT_ModHandler.getIC2Item("diamondDrill", 1L), bits_no_remove_buffered, new
-        // Object[]{" D ", "DMD", "TAT", 'M', GT_ModHandler.getIC2Item("miningDrill", 1L, 32767), 'D',
-        // OreDictNames.craftingIndustrialDiamond, 'T', OrePrefixes.plate.get(Materials.Titanium), 'A',
-        // OrePrefixes.circuit.get(Materials.Advanced)});
 
         GT_ModHandler.removeRecipeByOutputDelayed(GT_ModHandler.getIC2Item("miningDrill", 1L));
-        // GT_ModHandler.addCraftingRecipe(GT_ModHandler.getIC2Item("miningDrill", 1L), bits_no_remove_buffered, new
-        // Object[]{" S ", "SCS", "SBS", 'C', OrePrefixes.circuit.get(Materials.Basic), 'B',
-        // OrePrefixes.battery.get(Materials.Basic), 'S',
-        // GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.harderrecipes, "electricsteeltools", true) ?
-        // OrePrefixes.plate.get(Materials.StainlessSteel) : OrePrefixes.plate.get(Materials.Iron)});
 
         GT_ModHandler.removeRecipeByOutputDelayed(GT_ModHandler.getIC2Item("chainsaw", 1L));
-        // GT_ModHandler.addCraftingRecipe(GT_ModHandler.getIC2Item("chainsaw", 1L), bits_no_remove_buffered, new
-        // Object[]{"BS ", "SCS", " SS", 'C', OrePrefixes.circuit.get(Materials.Basic), 'B',
-        // OrePrefixes.battery.get(Materials.Basic), 'S',
-        // GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.harderrecipes, "electricsteeltools", true) ?
-        // OrePrefixes.plate.get(Materials.StainlessSteel) : OrePrefixes.plate.get(Materials.Iron)});
 
         GT_ModHandler.removeRecipeByOutputDelayed(GT_ModHandler.getIC2Item("electricHoe", 1L));
-        // GT_ModHandler.addCraftingRecipe(GT_ModHandler.getIC2Item("electricHoe", 1L), bits_no_remove_buffered, new
-        // Object[]{"SS ", " C ", " B ", 'C', OrePrefixes.circuit.get(Materials.Basic), 'B',
-        // OrePrefixes.battery.get(Materials.Basic), 'S',
-        // GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.harderrecipes, "electricsteeltools", true) ?
-        // OrePrefixes.plate.get(Materials.StainlessSteel) : OrePrefixes.plate.get(Materials.Iron)});
 
         GT_ModHandler.removeRecipeByOutputDelayed(GT_ModHandler.getIC2Item("electricTreetap", 1L));
-        // GT_ModHandler.addCraftingRecipe(GT_ModHandler.getIC2Item("electricTreetap", 1L), bits_no_remove_buffered, new
-        // Object[]{" B ", "SCS", "S ", 'C', OrePrefixes.circuit.get(Materials.Basic), 'B',
-        // OrePrefixes.battery.get(Materials.Basic), 'S',
-        // GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.harderrecipes, "electricsteeltools", true) ?
-        // OrePrefixes.plate.get(Materials.StainlessSteel) : OrePrefixes.plate.get(Materials.Iron)});
 
         GT_Log.out.println("GT_Mod: Removing Q-Armor Recipes if configured.");
         if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.disabledrecipes, "QHelmet", false)) {
