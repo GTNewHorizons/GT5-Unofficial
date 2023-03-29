@@ -54,7 +54,7 @@ import gregtech.api.util.*;
 public class NeutronActivator extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
         implements IConstructable, ISurvivalConstructable {
 
-    protected IStructureDefinition<NeutronActivator> multiDefinition = null;
+    protected static IStructureDefinition<NeutronActivator> multiDefinition = null;
     protected final ArrayList<NeutronAccelerator> mNeutronAccelerator = new ArrayList<>();
     protected final ArrayList<NeutronSensor> mNeutronSensor = new ArrayList<>();
     protected int casingAmount = 0;
@@ -87,38 +87,8 @@ public class NeutronActivator extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
     public boolean checkRecipe_EM(ItemStack aStack) {
         this.mEfficiency = 10000;
 
-        ArrayList<FluidStack> tFluids = getStoredFluids();
-        ArrayList<ItemStack> tItems = getStoredInputs();
-        Collection<GT_Recipe> tRecipes = MyRecipeAdder.instance.NA.mRecipeList;
-
-        for (int i = 0; i < tFluids.size() - 1; i++) {
-            for (int j = i + 1; j < tFluids.size(); j++) {
-                if (GT_Utility.areFluidsEqual(tFluids.get(i), tFluids.get(j))) {
-                    if ((tFluids.get(i)).amount >= (tFluids.get(j)).amount) {
-                        tFluids.remove(j--);
-                    } else {
-                        tFluids.remove(i--);
-                        break;
-                    }
-                }
-            }
-        }
-
-        for (int i = 0; i < tItems.size() - 1; i++) {
-            for (int j = i + 1; j < tItems.size(); j++) {
-                if (GT_Utility.areStacksEqual(tItems.get(i), tItems.get(j))) {
-                    if ((tItems.get(i)).stackSize >= (tItems.get(j)).stackSize) {
-                        tItems.remove(j--);
-                    } else {
-                        tItems.remove(i--);
-                        break;
-                    }
-                }
-            }
-        }
-
-        FluidStack[] inFluids = tFluids.toArray(new FluidStack[0]);
-        ItemStack[] inItems = tItems.toArray(new ItemStack[0]);
+        FluidStack[] inFluids = getStoredFluids().toArray(new FluidStack[0]);
+        ItemStack[] inItems = getStoredInputs().toArray(new ItemStack[0]);
         int minNKE, maxNKE;
 
         lastRecipe = getRecipeMap()
@@ -228,7 +198,10 @@ public class NeutronActivator extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
                 .addOutputBus("Hint block with dot 2").addMaintenanceHatch("Hint block with dot 2")
                 .addOtherStructurePart("Neutron Accelerator", "Hint block with dot 2")
                 .addOtherStructurePart("Neutron Sensor", "Hint block with dot 2")
-                .addCasingInfo("Clean Stainless Steel Machine Casing", 7).toolTipFinisher("Good Generator");
+                .addCasingInfoRange("Clean Stainless Steel Machine Casing", 7, 31, false)
+                .addCasingInfoExactly("Processor Machine Casing", 18, false)
+                .addCasingInfoMin("Steel Frame Box", 16, false).addCasingInfoMin("Speeding Pipe Casing", 4, false)
+                .addCasingInfoMin("EV+ Glass", 32, false).toolTipFinisher("Good Generator");
         return tt;
     }
 
