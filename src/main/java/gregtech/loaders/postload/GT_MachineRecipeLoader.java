@@ -8,10 +8,6 @@ import gregtech.loaders.postload.recipes.*;
 
 public class GT_MachineRecipeLoader implements Runnable {
 
-    public static final String aTextAE = "appliedenergistics2";
-    public static final String aTextAEMM = "item.ItemMultiMaterial";
-    public static final String aTextForestry = "Forestry";
-    public static final String aTextEBXL = "ExtrabiomesXL";
     public static final String aTextTCGTPage = "gt.research.page.1.";
     public static final Boolean isNEILoaded = Loader.isModLoaded("NotEnoughItems");
 

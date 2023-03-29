@@ -196,8 +196,8 @@ public class CuttingRecipes implements Runnable {
         int i = 0;
         for (ItemStack cover : coverIDs) {
             if (Forestry.isModLoaded()) {
-                ItemStack slabWood = getModItem(GT_MachineRecipeLoader.aTextForestry, "slabs", 1, i);
-                ItemStack slabWoodFireproof = getModItem(GT_MachineRecipeLoader.aTextForestry, "slabsFireproof", 1, i);
+                ItemStack slabWood = getModItem(Forestry.modID, "slabs", 1, i);
+                ItemStack slabWoodFireproof = getModItem(Forestry.modID, "slabsFireproof", 1, i);
                 GT_ModHandler.addCraftingRecipe(
                         cover,
                         GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE,

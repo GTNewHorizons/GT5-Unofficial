@@ -70,7 +70,7 @@ public class PyrolyseRecipes implements Runnable {
 
         if (Forestry.isModLoaded()) {
             GT_Values.RA.addPyrolyseRecipe(
-                    getModItem(GT_MachineRecipeLoader.aTextForestry, "fertilizerBio", 4L),
+                    getModItem(Forestry.modID, "fertilizerBio", 4L),
                     Materials.Water.getFluid(4000),
                     1,
                     GT_Values.NI,
@@ -78,7 +78,7 @@ public class PyrolyseRecipes implements Runnable {
                     900,
                     10);
             GT_Values.RA.addPyrolyseRecipe(
-                    getModItem(GT_MachineRecipeLoader.aTextForestry, "mulch", 32L),
+                    getModItem(Forestry.modID, "mulch", 32L),
                     Materials.Water.getFluid(4000),
                     1,
                     GT_Values.NI,

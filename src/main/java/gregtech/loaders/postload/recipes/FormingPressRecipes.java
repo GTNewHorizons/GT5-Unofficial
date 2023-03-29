@@ -1,5 +1,6 @@
 package gregtech.loaders.postload.recipes;
 
+import static gregtech.api.enums.ModIDs.AppliedEnergistics2;
 import static gregtech.api.util.GT_ModHandler.getModItem;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sPressRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
@@ -117,11 +118,11 @@ public class FormingPressRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                getModItem(GT_MachineRecipeLoader.aTextAE, GT_MachineRecipeLoader.aTextAEMM, 1L, 10),
-                getModItem(GT_MachineRecipeLoader.aTextAE, GT_MachineRecipeLoader.aTextAEMM, 0L, 13)
+                getModItem(AppliedEnergistics2.modID, "item.ItemMultiMaterial", 1L, 10),
+                getModItem(AppliedEnergistics2.modID, "item.ItemMultiMaterial", 0L, 13)
             )
             .itemOutputs(
-                getModItem(GT_MachineRecipeLoader.aTextAE, GT_MachineRecipeLoader.aTextAEMM, 1L, 16)
+                getModItem(AppliedEnergistics2.modID, "item.ItemMultiMaterial", 1L, 16)
             )
             .noFluidInputs()
             .noFluidOutputs()
@@ -132,10 +133,10 @@ public class FormingPressRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.CertusQuartz, 1L),
-                getModItem(GT_MachineRecipeLoader.aTextAE, GT_MachineRecipeLoader.aTextAEMM, 0L, 13)
+                getModItem(AppliedEnergistics2.modID, "item.ItemMultiMaterial", 0L, 13)
             )
             .itemOutputs(
-                getModItem(GT_MachineRecipeLoader.aTextAE, GT_MachineRecipeLoader.aTextAEMM, 1L, 16)
+                getModItem(AppliedEnergistics2.modID, "item.ItemMultiMaterial", 1L, 16)
             )
             .noFluidInputs()
             .noFluidOutputs()
@@ -146,10 +147,10 @@ public class FormingPressRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Diamond, 1L),
-                getModItem(GT_MachineRecipeLoader.aTextAE, GT_MachineRecipeLoader.aTextAEMM, 0L, 14)
+                getModItem(AppliedEnergistics2.modID, "item.ItemMultiMaterial", 0L, 14)
             )
             .itemOutputs(
-                getModItem(GT_MachineRecipeLoader.aTextAE, GT_MachineRecipeLoader.aTextAEMM, 1L, 17)
+                getModItem(AppliedEnergistics2.modID, "item.ItemMultiMaterial", 1L, 17)
             )
             .noFluidInputs()
             .noFluidOutputs()
@@ -160,10 +161,10 @@ public class FormingPressRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Gold, 1L),
-                getModItem(GT_MachineRecipeLoader.aTextAE, GT_MachineRecipeLoader.aTextAEMM, 0L, 15)
+                getModItem(AppliedEnergistics2.modID, "item.ItemMultiMaterial", 0L, 15)
             )
             .itemOutputs(
-                getModItem(GT_MachineRecipeLoader.aTextAE, GT_MachineRecipeLoader.aTextAEMM, 1L, 18)
+                getModItem(AppliedEnergistics2.modID, "item.ItemMultiMaterial", 1L, 18)
             )
             .noFluidInputs()
             .noFluidOutputs()
@@ -174,10 +175,10 @@ public class FormingPressRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.SiliconSG, 1L),
-                getModItem(GT_MachineRecipeLoader.aTextAE, GT_MachineRecipeLoader.aTextAEMM, 0L, 19)
+                getModItem(AppliedEnergistics2.modID, "item.ItemMultiMaterial", 0L, 19)
             )
             .itemOutputs(
-                getModItem(GT_MachineRecipeLoader.aTextAE, GT_MachineRecipeLoader.aTextAEMM, 1L, 20)
+                getModItem(AppliedEnergistics2.modID, "item.ItemMultiMaterial", 1L, 20)
             )
             .noFluidInputs()
             .noFluidOutputs()

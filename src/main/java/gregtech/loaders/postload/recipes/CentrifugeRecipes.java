@@ -1,8 +1,7 @@
 package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.enums.GT_Values.NI;
-import static gregtech.api.enums.ModIDs.ExtraUtilities;
-import static gregtech.api.enums.ModIDs.Thaumcraft;
+import static gregtech.api.enums.ModIDs.*;
 import static gregtech.api.util.GT_ModHandler.getModItem;
 import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
 
@@ -923,7 +922,7 @@ public class CentrifugeRecipes implements Runnable {
                 20);
 
         GT_Values.RA.addCentrifugeRecipe(
-                getModItem(GT_MachineRecipeLoader.aTextAE, GT_MachineRecipeLoader.aTextAEMM, 1L, 45),
+                getModItem(AppliedEnergistics2.modID, "item.ItemMultiMaterial", 1L, 45),
                 GT_Utility.getIntegratedCircuit(1),
                 GT_Values.NF,
                 GT_Values.NF,
@@ -937,7 +936,7 @@ public class CentrifugeRecipes implements Runnable {
                 64,
                 20);
         GT_Values.RA.addCentrifugeRecipe(
-                getModItem(GT_MachineRecipeLoader.aTextAE, GT_MachineRecipeLoader.aTextAEMM, 36L, 45),
+                getModItem(AppliedEnergistics2.modID, "item.ItemMultiMaterial", 36L, 45),
                 GT_Utility.getIntegratedCircuit(2),
                 GT_Values.NF,
                 GT_Values.NF,

@@ -1,8 +1,7 @@
 package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.enums.GT_Values.MOD_ID_RC;
-import static gregtech.api.enums.ModIDs.HardcoreEnderExpansion;
-import static gregtech.api.enums.ModIDs.Railcraft;
+import static gregtech.api.enums.ModIDs.*;
 import static gregtech.api.util.GT_ModHandler.getModItem;
 
 import net.minecraft.init.Blocks;
@@ -392,14 +391,14 @@ public class Pulverizer implements Runnable {
         }
 
         GT_ModHandler.addPulverisationRecipe(
-                getModItem(GT_MachineRecipeLoader.aTextAE, "tile.BlockSkyStone", 1L, 32767),
-                getModItem(GT_MachineRecipeLoader.aTextAE, GT_MachineRecipeLoader.aTextAEMM, 1L, 45),
+                getModItem(AppliedEnergistics2.modID, "tile.BlockSkyStone", 1L, 32767),
+                getModItem(AppliedEnergistics2.modID, "item.ItemMultiMaterial", 1L, 45),
                 GT_Values.NI,
                 0,
                 false);
         GT_ModHandler.addPulverisationRecipe(
-                getModItem(GT_MachineRecipeLoader.aTextAE, "tile.BlockSkyChest", 1L, 32767),
-                getModItem(GT_MachineRecipeLoader.aTextAE, GT_MachineRecipeLoader.aTextAEMM, 8L, 45),
+                getModItem(AppliedEnergistics2.modID, "tile.BlockSkyChest", 1L, 32767),
+                getModItem(AppliedEnergistics2.modID, "item.ItemMultiMaterial", 8L, 45),
                 GT_Values.NI,
                 0,
                 false);

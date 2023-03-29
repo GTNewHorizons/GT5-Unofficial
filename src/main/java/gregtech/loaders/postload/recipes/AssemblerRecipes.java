@@ -744,77 +744,77 @@ public class AssemblerRecipes implements Runnable {
                 100,
                 8);
         GT_Values.RA.addAssemblerRecipe(
-                getModItem(GT_MachineRecipeLoader.aTextAE, GT_MachineRecipeLoader.aTextAEMM, 1L, 16),
-                getModItem(GT_MachineRecipeLoader.aTextAE, GT_MachineRecipeLoader.aTextAEMM, 1L, 20),
+                getModItem(AppliedEnergistics2.modID, "item.ItemMultiMaterial", 1L, 16),
+                getModItem(AppliedEnergistics2.modID, "item.ItemMultiMaterial", 1L, 20),
                 Materials.Redstone.getMolten(144L),
-                getModItem(GT_MachineRecipeLoader.aTextAE, GT_MachineRecipeLoader.aTextAEMM, 1L, 23),
+                getModItem(AppliedEnergistics2.modID, "item.ItemMultiMaterial", 1L, 23),
                 64,
                 (int) TierEU.RECIPE_LV);
         GT_Values.RA.addAssemblerRecipe(
-                getModItem(GT_MachineRecipeLoader.aTextAE, GT_MachineRecipeLoader.aTextAEMM, 1L, 17),
-                getModItem(GT_MachineRecipeLoader.aTextAE, GT_MachineRecipeLoader.aTextAEMM, 1L, 20),
+                getModItem(AppliedEnergistics2.modID, "item.ItemMultiMaterial", 1L, 17),
+                getModItem(AppliedEnergistics2.modID, "item.ItemMultiMaterial", 1L, 20),
                 Materials.Redstone.getMolten(144L),
-                getModItem(GT_MachineRecipeLoader.aTextAE, GT_MachineRecipeLoader.aTextAEMM, 1L, 24),
+                getModItem(AppliedEnergistics2.modID, "item.ItemMultiMaterial", 1L, 24),
                 64,
                 (int) TierEU.RECIPE_LV);
         GT_Values.RA.addAssemblerRecipe(
-                getModItem(GT_MachineRecipeLoader.aTextAE, GT_MachineRecipeLoader.aTextAEMM, 1L, 18),
-                getModItem(GT_MachineRecipeLoader.aTextAE, GT_MachineRecipeLoader.aTextAEMM, 1L, 20),
+                getModItem(AppliedEnergistics2.modID, "item.ItemMultiMaterial", 1L, 18),
+                getModItem(AppliedEnergistics2.modID, "item.ItemMultiMaterial", 1L, 20),
                 Materials.Redstone.getMolten(144L),
-                getModItem(GT_MachineRecipeLoader.aTextAE, GT_MachineRecipeLoader.aTextAEMM, 1L, 22),
+                getModItem(AppliedEnergistics2.modID, "item.ItemMultiMaterial", 1L, 22),
                 64,
                 (int) TierEU.RECIPE_LV);
         GT_Values.RA.addAssemblerRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.CertusQuartz, 1L),
                 new ItemStack(Blocks.sand, 1, 32767),
                 GT_Values.NF,
-                getModItem(GT_MachineRecipeLoader.aTextAE, "item.ItemCrystalSeed", 2L, 0),
+                getModItem(AppliedEnergistics2.modID, "item.ItemCrystalSeed", 2L, 0),
                 64,
                 8);
         GT_Values.RA.addAssemblerRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.NetherQuartz, 1L),
                 new ItemStack(Blocks.sand, 1, 32767),
                 GT_Values.NF,
-                getModItem(GT_MachineRecipeLoader.aTextAE, "item.ItemCrystalSeed", 2L, 600),
+                getModItem(AppliedEnergistics2.modID, "item.ItemCrystalSeed", 2L, 600),
                 64,
                 8);
         GT_Values.RA.addAssemblerRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Fluix, 1L),
                 new ItemStack(Blocks.sand, 1, 32767),
                 GT_Values.NF,
-                getModItem(GT_MachineRecipeLoader.aTextAE, "item.ItemCrystalSeed", 2L, 1200),
+                getModItem(AppliedEnergistics2.modID, "item.ItemCrystalSeed", 2L, 1200),
                 64,
                 8);
         GT_Values.RA.addAssemblerRecipe(
                 ItemList.FR_Wax.get(6L),
                 new ItemStack(Items.string, 1, 32767),
                 Materials.Water.getFluid(600L),
-                getModItem(GT_MachineRecipeLoader.aTextForestry, "candle", 24L, 0),
+                getModItem(Forestry.modID, "candle", 24L, 0),
                 64,
                 8);
         GT_Values.RA.addAssemblerRecipe(
                 ItemList.FR_Wax.get(2L),
                 ItemList.FR_Silk.get(1L),
                 Materials.Water.getFluid(200L),
-                getModItem(GT_MachineRecipeLoader.aTextForestry, "candle", 8L, 0),
+                getModItem(Forestry.modID, "candle", 8L, 0),
                 16,
                 8);
         GT_Values.RA.addAssemblerRecipe(
                 ItemList.FR_Silk.get(9L),
                 GT_Utility.getIntegratedCircuit(9),
                 Materials.Water.getFluid(500L),
-                getModItem(GT_MachineRecipeLoader.aTextForestry, "craftingMaterial", 1L, 3),
+                getModItem(Forestry.modID, "craftingMaterial", 1L, 3),
                 64,
                 8);
         GT_Values.RA.addAssemblerRecipe(
-                getModItem(GT_MachineRecipeLoader.aTextForestry, "propolis", 5L, 2),
+                getModItem(Forestry.modID, "propolis", 5L, 2),
                 GT_Utility.getIntegratedCircuit(5),
                 GT_Values.NF,
-                getModItem(GT_MachineRecipeLoader.aTextForestry, "craftingMaterial", 1L, 1),
+                getModItem(Forestry.modID, "craftingMaterial", 1L, 1),
                 16,
                 8);
         GT_Values.RA.addAssemblerRecipe(
-                getModItem(GT_MachineRecipeLoader.aTextForestry, "sturdyMachine", 1L, 0),
+                getModItem(Forestry.modID, "sturdyMachine", 1L, 0),
                 GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Diamond, 4L),
                 Materials.Water.getFluid(5000L),
                 ItemList.FR_Casing_Hardened.get(1L),
@@ -835,7 +835,7 @@ public class AssemblerRecipes implements Runnable {
                 400,
                 1);
         GT_Values.RA.addAssemblerRecipe(
-                getModItem(GT_MachineRecipeLoader.aTextForestry, "craftingMaterial", 5L, 1),
+                getModItem(Forestry.modID, "craftingMaterial", 5L, 1),
                 GT_Utility.getIntegratedCircuit(5),
                 GT_Values.NF,
                 GT_OreDictUnificator.get(OrePrefixes.gem, Materials.EnderPearl, 1L),

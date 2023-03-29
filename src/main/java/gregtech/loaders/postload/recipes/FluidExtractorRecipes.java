@@ -3,6 +3,7 @@ package gregtech.loaders.postload.recipes;
 import static gregtech.api.enums.GT_Values.MOD_ID_DC;
 import static gregtech.api.enums.GT_Values.MOD_ID_RC;
 import static gregtech.api.enums.ModIDs.BartWorks;
+import static gregtech.api.enums.ModIDs.Forestry;
 import static gregtech.api.util.GT_ModHandler.getModItem;
 import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
 
@@ -488,7 +489,7 @@ public class FluidExtractorRecipes implements Runnable {
                 128,
                 4);
         GT_Values.RA.addFluidSmelterRecipe(
-                getModItem(GT_MachineRecipeLoader.aTextForestry, "phosphor", 1L),
+                getModItem(Forestry.modID, "phosphor", 1L),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Phosphorus, 1L),
                 Materials.Lava.getFluid(800L),
                 1000,

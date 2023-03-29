@@ -2,6 +2,7 @@ package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.enums.GT_Values.MOD_ID_DC;
 import static gregtech.api.enums.GT_Values.MOD_ID_RC;
+import static gregtech.api.enums.ModIDs.Forestry;
 import static gregtech.api.enums.ModIDs.Railcraft;
 import static gregtech.api.util.GT_ModHandler.getModItem;
 
@@ -22,7 +23,7 @@ public class CircuitAssemblerRecipes implements Runnable {
                         GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Copper, 2L),
                         GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Copper, 2L) },
                 Materials.Glass.getMolten(576L),
-                getModItem(GT_MachineRecipeLoader.aTextForestry, "thermionicTubes", 4L, 0),
+                getModItem(Forestry.modID, "thermionicTubes", 4L, 0),
                 200,
                 (int) TierEU.RECIPE_LV);
         GT_Values.RA.addCircuitAssemblerRecipe(
@@ -31,7 +32,7 @@ public class CircuitAssemblerRecipes implements Runnable {
                         GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Copper, 2L),
                         GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.AnnealedCopper, 2L) },
                 Materials.Glass.getMolten(576L),
-                getModItem(GT_MachineRecipeLoader.aTextForestry, "thermionicTubes", 4L, 0),
+                getModItem(Forestry.modID, "thermionicTubes", 4L, 0),
                 200,
                 (int) TierEU.RECIPE_LV);
         GT_Values.RA.addCircuitAssemblerRecipe(
@@ -40,7 +41,7 @@ public class CircuitAssemblerRecipes implements Runnable {
                         GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Copper, 2L),
                         GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Tin, 2L) },
                 Materials.Glass.getMolten(576L),
-                getModItem(GT_MachineRecipeLoader.aTextForestry, "thermionicTubes", 4L, 1),
+                getModItem(Forestry.modID, "thermionicTubes", 4L, 1),
                 200,
                 (int) TierEU.RECIPE_LV);
         GT_Values.RA.addCircuitAssemblerRecipe(
@@ -49,7 +50,7 @@ public class CircuitAssemblerRecipes implements Runnable {
                         GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Copper, 2L),
                         GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Bronze, 2L) },
                 Materials.Glass.getMolten(576L),
-                getModItem(GT_MachineRecipeLoader.aTextForestry, "thermionicTubes", 4L, 2),
+                getModItem(Forestry.modID, "thermionicTubes", 4L, 2),
                 200,
                 (int) TierEU.RECIPE_LV);
         GT_Values.RA.addCircuitAssemblerRecipe(
@@ -58,7 +59,7 @@ public class CircuitAssemblerRecipes implements Runnable {
                         GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Copper, 2L),
                         GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Iron, 2L) },
                 Materials.Glass.getMolten(576L),
-                getModItem(GT_MachineRecipeLoader.aTextForestry, "thermionicTubes", 4L, 3),
+                getModItem(Forestry.modID, "thermionicTubes", 4L, 3),
                 200,
                 (int) TierEU.RECIPE_LV);
         GT_Values.RA.addCircuitAssemblerRecipe(
@@ -67,7 +68,7 @@ public class CircuitAssemblerRecipes implements Runnable {
                         GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Copper, 2L),
                         GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.WroughtIron, 2L) },
                 Materials.Glass.getMolten(576L),
-                getModItem(GT_MachineRecipeLoader.aTextForestry, "thermionicTubes", 4L, 3),
+                getModItem(Forestry.modID, "thermionicTubes", 4L, 3),
                 200,
                 (int) TierEU.RECIPE_LV);
         GT_Values.RA.addCircuitAssemblerRecipe(
@@ -76,7 +77,7 @@ public class CircuitAssemblerRecipes implements Runnable {
                         GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Copper, 2L),
                         GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Gold, 2L) },
                 Materials.Glass.getMolten(576L),
-                getModItem(GT_MachineRecipeLoader.aTextForestry, "thermionicTubes", 4L, 4),
+                getModItem(Forestry.modID, "thermionicTubes", 4L, 4),
                 200,
                 (int) TierEU.RECIPE_LV);
         GT_Values.RA.addCircuitAssemblerRecipe(
@@ -85,7 +86,7 @@ public class CircuitAssemblerRecipes implements Runnable {
                         GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Copper, 2L),
                         GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Diamond, 2L) },
                 Materials.Glass.getMolten(576L),
-                getModItem(GT_MachineRecipeLoader.aTextForestry, "thermionicTubes", 4L, 5),
+                getModItem(Forestry.modID, "thermionicTubes", 4L, 5),
                 200,
                 (int) TierEU.RECIPE_LV);
         GT_Values.RA.addCircuitAssemblerRecipe(
@@ -94,7 +95,7 @@ public class CircuitAssemblerRecipes implements Runnable {
                         GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Copper, 2L),
                         getModItem(MOD_ID_DC, "item.LongObsidianRod", 2L, 0) },
                 Materials.Glass.getMolten(576L),
-                getModItem(GT_MachineRecipeLoader.aTextForestry, "thermionicTubes", 4L, 6),
+                getModItem(Forestry.modID, "thermionicTubes", 4L, 6),
                 200,
                 (int) TierEU.RECIPE_LV);
         GT_Values.RA.addCircuitAssemblerRecipe(
@@ -103,7 +104,7 @@ public class CircuitAssemblerRecipes implements Runnable {
                         GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Copper, 2L),
                         GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Blaze, 2L) },
                 Materials.Glass.getMolten(576L),
-                getModItem(GT_MachineRecipeLoader.aTextForestry, "thermionicTubes", 4L, 7),
+                getModItem(Forestry.modID, "thermionicTubes", 4L, 7),
                 200,
                 (int) TierEU.RECIPE_LV);
         GT_Values.RA.addCircuitAssemblerRecipe(
@@ -112,7 +113,7 @@ public class CircuitAssemblerRecipes implements Runnable {
                         GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Copper, 2L),
                         GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Rubber, 2L) },
                 Materials.Glass.getMolten(576L),
-                getModItem(GT_MachineRecipeLoader.aTextForestry, "thermionicTubes", 4L, 8),
+                getModItem(Forestry.modID, "thermionicTubes", 4L, 8),
                 200,
                 (int) TierEU.RECIPE_LV);
         GT_Values.RA.addCircuitAssemblerRecipe(
@@ -121,7 +122,7 @@ public class CircuitAssemblerRecipes implements Runnable {
                         GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Copper, 2L),
                         GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Emerald, 2L) },
                 Materials.Glass.getMolten(576L),
-                getModItem(GT_MachineRecipeLoader.aTextForestry, "thermionicTubes", 4L, 9),
+                getModItem(Forestry.modID, "thermionicTubes", 4L, 9),
                 200,
                 (int) TierEU.RECIPE_LV);
         GT_Values.RA.addCircuitAssemblerRecipe(
@@ -130,7 +131,7 @@ public class CircuitAssemblerRecipes implements Runnable {
                         GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Copper, 2L),
                         GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Apatite, 2L) },
                 Materials.Glass.getMolten(576L),
-                getModItem(GT_MachineRecipeLoader.aTextForestry, "thermionicTubes", 4L, 10),
+                getModItem(Forestry.modID, "thermionicTubes", 4L, 10),
                 200,
                 (int) TierEU.RECIPE_LV);
         GT_Values.RA.addCircuitAssemblerRecipe(
@@ -139,7 +140,7 @@ public class CircuitAssemblerRecipes implements Runnable {
                         GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Copper, 2L),
                         GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Lapis, 2L) },
                 Materials.Glass.getMolten(576L),
-                getModItem(GT_MachineRecipeLoader.aTextForestry, "thermionicTubes", 4L, 11),
+                getModItem(Forestry.modID, "thermionicTubes", 4L, 11),
                 200,
                 (int) TierEU.RECIPE_LV);
         GT_Values.RA.addCircuitAssemblerRecipe(
@@ -148,7 +149,7 @@ public class CircuitAssemblerRecipes implements Runnable {
                         GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Copper, 2L),
                         GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.EnderEye, 2L) },
                 Materials.Glass.getMolten(576L),
-                getModItem(GT_MachineRecipeLoader.aTextForestry, "thermionicTubes", 4L, 12),
+                getModItem(Forestry.modID, "thermionicTubes", 4L, 12),
                 200,
                 (int) TierEU.RECIPE_LV);
         GT_Values.RA.addCircuitAssemblerRecipe(
@@ -157,7 +158,7 @@ public class CircuitAssemblerRecipes implements Runnable {
                         GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Copper, 2L),
                         GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Uranium, 2L) },
                 Materials.Glass.getMolten(576L),
-                getModItem(GT_MachineRecipeLoader.aTextForestry, "thermionicTubes", 4L, 13),
+                getModItem(Forestry.modID, "thermionicTubes", 4L, 13),
                 200,
                 (int) TierEU.RECIPE_LV);
 

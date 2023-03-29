@@ -1,6 +1,7 @@
 package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.enums.GT_Values.MOD_ID_GTPP;
+import static gregtech.api.enums.ModIDs.AppliedEnergistics2;
 import static gregtech.api.enums.ModIDs.Railcraft;
 import static gregtech.api.util.GT_ModHandler.getModItem;
 
@@ -54,16 +55,16 @@ public class CompressorRecipes implements Runnable {
                 new ItemStack(Blocks.ice, 1, 0));
         GT_ModHandler.addCompressionRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.gem, Materials.CertusQuartz, 4L),
-                getModItem(GT_MachineRecipeLoader.aTextAE, "tile.BlockQuartz", 1L));
+                getModItem(AppliedEnergistics2.modID, "tile.BlockQuartz", 1L));
         GT_ModHandler.addCompressionRecipe(
-                getModItem(GT_MachineRecipeLoader.aTextAE, GT_MachineRecipeLoader.aTextAEMM, 8L, 10),
-                getModItem(GT_MachineRecipeLoader.aTextAE, "tile.BlockQuartz", 1L));
+                getModItem(AppliedEnergistics2.modID, "item.ItemMultiMaterial", 8L, 10),
+                getModItem(AppliedEnergistics2.modID, "tile.BlockQuartz", 1L));
         GT_ModHandler.addCompressionRecipe(
-                getModItem(GT_MachineRecipeLoader.aTextAE, GT_MachineRecipeLoader.aTextAEMM, 8L, 11),
+                getModItem(AppliedEnergistics2.modID, "item.ItemMultiMaterial", 8L, 11),
                 new ItemStack(Blocks.quartz_block, 1, 0));
         GT_ModHandler.addCompressionRecipe(
-                getModItem(GT_MachineRecipeLoader.aTextAE, GT_MachineRecipeLoader.aTextAEMM, 8L, 12),
-                getModItem(GT_MachineRecipeLoader.aTextAE, "tile.BlockFluix", 1L));
+                getModItem(AppliedEnergistics2.modID, "item.ItemMultiMaterial", 8L, 12),
+                getModItem(AppliedEnergistics2.modID, "tile.BlockFluix", 1L));
         GT_ModHandler.addCompressionRecipe(new ItemStack(Items.quartz, 4, 0), new ItemStack(Blocks.quartz_block, 1, 0));
         // GT_ModHandler.addCompressionRecipe(new ItemStack(Items.wheat, 9, 0), new ItemStack(Blocks.hay_block, 1, 0));
         GT_ModHandler.addCompressionRecipe(

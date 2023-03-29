@@ -1,8 +1,7 @@
 package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.enums.GT_Values.*;
-import static gregtech.api.enums.ModIDs.Railcraft;
-import static gregtech.api.enums.ModIDs.Thaumcraft;
+import static gregtech.api.enums.ModIDs.*;
 import static gregtech.api.util.GT_ModHandler.getModItem;
 import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
 
@@ -546,7 +545,7 @@ public class MixerRecipes implements Runnable {
                 900,
                 8);
         GT_Values.RA.addMixerRecipe(
-                getModItem(GT_MachineRecipeLoader.aTextAE, GT_MachineRecipeLoader.aTextAEMM, 1L, 1),
+                getModItem(AppliedEnergistics2.modID, "item.ItemMultiMaterial", 1L, 1),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L),
                 GT_OreDictUnificator.get(OrePrefixes.gem, Materials.NetherQuartz, 1L),
                 GT_Values.NI,
@@ -556,7 +555,7 @@ public class MixerRecipes implements Runnable {
                 20,
                 16);
         GT_Values.RA.addMixerRecipe(
-                getModItem(GT_MachineRecipeLoader.aTextAE, GT_MachineRecipeLoader.aTextAEMM, 1L, 1),
+                getModItem(AppliedEnergistics2.modID, "item.ItemMultiMaterial", 1L, 1),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L),
                 GT_OreDictUnificator.get(OrePrefixes.gem, Materials.NetherQuartz, 1L),
                 GT_Values.NI,
@@ -572,7 +571,7 @@ public class MixerRecipes implements Runnable {
                 GT_Values.NI,
                 Materials.Water.getFluid(1000L),
                 GT_Values.NF,
-                getModItem(GT_MachineRecipeLoader.aTextForestry, "soil", 8L, 0),
+                getModItem(Forestry.modID, "soil", 8L, 0),
                 64,
                 16);
         GT_Values.RA.addMixerRecipe(
@@ -582,7 +581,7 @@ public class MixerRecipes implements Runnable {
                 GT_Values.NI,
                 Materials.Water.getFluid(1000L),
                 GT_Values.NF,
-                getModItem(GT_MachineRecipeLoader.aTextForestry, "soil", 8L, 0),
+                getModItem(Forestry.modID, "soil", 8L, 0),
                 64,
                 16);
         GT_Values.RA.addMixerRecipe(
@@ -592,7 +591,7 @@ public class MixerRecipes implements Runnable {
                 GT_Values.NI,
                 Materials.Water.getFluid(1000L),
                 GT_Values.NF,
-                getModItem(GT_MachineRecipeLoader.aTextForestry, "soil", 8L, 0),
+                getModItem(Forestry.modID, "soil", 8L, 0),
                 64,
                 16);
         GT_Values.RA.addMixerRecipe(
@@ -602,7 +601,7 @@ public class MixerRecipes implements Runnable {
                 GT_Values.NI,
                 Materials.Water.getFluid(1000L),
                 GT_Values.NF,
-                getModItem(GT_MachineRecipeLoader.aTextForestry, "soil", 8L, 0),
+                getModItem(Forestry.modID, "soil", 8L, 0),
                 64,
                 16);
         GT_Values.RA.addMixerRecipe(
@@ -612,7 +611,7 @@ public class MixerRecipes implements Runnable {
                 GT_Values.NI,
                 Materials.Water.getFluid(250L),
                 GT_Values.NF,
-                getModItem(GT_MachineRecipeLoader.aTextForestry, "soil", 2L, 1),
+                getModItem(Forestry.modID, "soil", 2L, 1),
                 16,
                 16);
         GT_Values.RA.addMixerRecipe(
