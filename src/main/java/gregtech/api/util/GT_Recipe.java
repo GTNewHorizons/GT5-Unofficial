@@ -1,7 +1,9 @@
 package gregtech.api.util;
 
 import static gregtech.api.enums.GT_Values.*;
-import static gregtech.api.enums.ModIDs.*;
+import static gregtech.api.enums.ModIDs.GTPlusPlus;
+import static gregtech.api.enums.ModIDs.NEICustomDiagrams;
+import static gregtech.api.enums.ModIDs.Railcraft;
 import static gregtech.api.util.GT_RecipeConstants.ADDITIVE_AMOUNT;
 import static gregtech.api.util.GT_RecipeMapUtil.*;
 import static gregtech.api.util.GT_Utility.formatNumbers;
