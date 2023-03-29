@@ -211,6 +211,14 @@ public class GT_RecipeBuilder {
         return this;
     }
 
+    /**
+     * Really just {@link #special(Object)}, but with a different signature to make it less confusing.
+     * WARNING: only for legacy recipe map. do not abuse.
+     */
+    public GT_RecipeBuilder specialItem(ItemStack specialItem) {
+        return special(specialItem);
+    }
+
     public GT_RecipeBuilder duration(int duration) {
         this.duration = duration;
         return this;
