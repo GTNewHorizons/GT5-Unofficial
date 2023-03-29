@@ -888,7 +888,7 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
     private float terrorityMod = 1f;
     private float mutationMod = 1f;
     private float lifespanMod = 1f;
-    private float productionMod = 0f;
+    private float productionMod = 2f;
     private float floweringMod = 1f;
     private float geneticDecayMod = 1f;
     private float energyMod = 1f;
