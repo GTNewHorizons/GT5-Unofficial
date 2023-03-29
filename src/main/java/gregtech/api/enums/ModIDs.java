@@ -7,6 +7,7 @@ public enum ModIDs {
     AvaritiaAddons("avaritiaddons"),
     BartWorks("bartworks"),
     BuildCraftFactory("BuildCraft|Factory"),
+    BuildCraftTransport("BuildCraft|Transport"),
     EnderIO("EnderIO"),
     ExtraUtilities("ExtraUtilities"),
     Forestry("Forestry"),

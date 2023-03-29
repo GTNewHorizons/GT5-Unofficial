@@ -28,6 +28,9 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import ic2.core.Ic2Items;
 
+import static gregtech.api.enums.ModIDs.Forestry;
+import static gregtech.api.util.GT_ModHandler.getModItem;
+
 public class GT_CraftingRecipeLoader implements Runnable {
 
     private static final String aTextIron1 = "X X";
@@ -2365,6 +2368,49 @@ public class GT_CraftingRecipeLoader implements Runnable {
                     new Object[] { "PhP", "PFP", aTextPlateWrench, 'P',
                             GT_ModHandler.getModItem("bartworks", "gt.bwMetaGeneratedplate", 1L, 88), 'F',
                             OrePrefixes.frameGt.get(Materials.Chrome) });
+        }
+
+        if (Forestry.isModLoaded()) {
+            ItemStack[] coverIDs = {
+                ItemList.Plank_Larch.get(2L),
+                ItemList.Plank_Teak.get(2L),
+                ItemList.Plank_Acacia_Green.get(2L),
+                ItemList.Plank_Lime.get(2L),
+                ItemList.Plank_Chestnut.get(2L),
+                ItemList.Plank_Wenge.get(2L),
+                ItemList.Plank_Baobab.get(2L),
+                ItemList.Plank_Sequoia.get(2L),
+                ItemList.Plank_Kapok.get(2L),
+                ItemList.Plank_Ebony.get(2L),
+                ItemList.Plank_Mahagony.get(2L),
+                ItemList.Plank_Balsa.get(2L),
+                ItemList.Plank_Willow.get(2L),
+                ItemList.Plank_Walnut.get(2L),
+                ItemList.Plank_Greenheart.get(2L),
+                ItemList.Plank_Cherry.get(2L),
+                ItemList.Plank_Mahoe.get(2L),
+                ItemList.Plank_Poplar.get(2L),
+                ItemList.Plank_Palm.get(2L),
+                ItemList.Plank_Papaya.get(2L),
+                ItemList.Plank_Pine.get(2L),
+                ItemList.Plank_Plum.get(2L),
+                ItemList.Plank_Maple.get(2L),
+                ItemList.Plank_Citrus.get(2L)
+            };
+            for (int i = 0; i < coverIDs.length; i++) {
+                ItemStack slabWood = getModItem(Forestry.modID, "slabs", 1, i);
+                ItemStack slabWoodFireproof = getModItem(Forestry.modID, "slabsFireproof", 1, i);
+
+                GT_ModHandler.addCraftingRecipe(
+                    coverIDs[i],
+                    GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE,
+                    new Object[]{"s ", " P", 'P', slabWood});
+
+                GT_ModHandler.addCraftingRecipe(
+                    coverIDs[i],
+                    GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE,
+                    new Object[]{"s ", " P", 'P', slabWoodFireproof});
+            }
         }
     }
 }
