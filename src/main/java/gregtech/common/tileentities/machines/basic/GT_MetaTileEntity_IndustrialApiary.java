@@ -894,6 +894,7 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
     private float energyMod = 1f;
     private boolean sealedMod = false;
     private boolean selfLightedMod = false;
+    private boolean selfUnlightedMod = false;
     private boolean sunlightSimulatedMod = false;
     private BiomeGenBase biomeOverride = null;
     private float humidityMod = 0f;
@@ -922,6 +923,7 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
         energyMod = mods.energy;
         sealedMod = mods.isSealed;
         selfLightedMod = mods.isSelfLighted;
+        selfUnlightedMod = mods.isSelfUnlighted;
         sunlightSimulatedMod = mods.isSunlightSimulated;
         biomeOverride = mods.biomeOverride;
         humidityMod = mods.humidity;
@@ -976,6 +978,11 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
     @Override
     public boolean isSelfLighted() {
         return selfLightedMod;
+    }
+
+    @Override
+    public boolean isSelfUnlighted() {
+        return selfUnlightedMod;
     }
 
     @Override

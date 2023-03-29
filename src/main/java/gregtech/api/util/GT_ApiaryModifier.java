@@ -12,6 +12,7 @@ public class GT_ApiaryModifier {
     public float geneticDecay = 1f;
     public boolean isSealed = false;
     public boolean isSelfLighted = false;
+    public boolean isSelfUnlighted = false;
     public boolean isSunlightSimulated = false;
     public boolean isAutomated = false;
     public boolean isCollectingPollen = false;
