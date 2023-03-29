@@ -98,8 +98,8 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase {
      */
     @Override
     public boolean checkRecipe_EM(ItemStack aStack) {
-        FluidStack[] fluids = getCompactedFluids();
-        ItemStack[] items = getCompactedInputs();
+        FluidStack[] fluids = getStoredFluids().toArray(new FluidStack[0]);
+        ItemStack[] items = getStoredInputs().toArray(new ItemStack[0]);
 
         GT_Recipe recipe = IG_RecipeAdder.instance.sSpaceAssemblerRecipes.findRecipe(
                 getBaseMetaTileEntity(),
