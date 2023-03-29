@@ -1,8 +1,7 @@
 package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.enums.GT_Values.*;
-import static gregtech.api.enums.ModIDs.GTPlusPlus;
-import static gregtech.api.enums.ModIDs.NewHorizonsCoreMod;
+import static gregtech.api.enums.ModIDs.*;
 import static gregtech.api.util.GT_ModHandler.getModItem;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sPlasmaForgeRecipes;
 import static gregtech.api.util.GT_RecipeConstants.COIL_HEAT;
@@ -30,7 +29,7 @@ public class PlasmaForgeRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
                 .itemInputs(
                         getModItem(NewHorizonsCoreMod.modID, "item.ChromaticLens", 1),
-                        getModItem("GoodGenerator", "huiCircuit", 1, 4))
+                        getModItem(GoodGenerator.modID, "huiCircuit", 1, 4))
                 .fluidInputs(
                         Materials.WhiteDwarfMatter.getMolten(144),
                         getFluidStack("molten.shirabon", 72),

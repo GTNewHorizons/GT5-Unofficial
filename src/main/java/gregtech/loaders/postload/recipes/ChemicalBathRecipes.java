@@ -1,5 +1,6 @@
 package gregtech.loaders.postload.recipes;
 
+import static gregtech.api.enums.ModIDs.BuildCraftTransport;
 import static gregtech.api.enums.ModIDs.Railcraft;
 import static gregtech.api.util.GT_ModHandler.getModItem;
 
@@ -254,7 +255,7 @@ public class ChemicalBathRecipes implements Runnable {
             GT_Values.RA.addChemicalBathRecipe(
                     GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.RedAlloy, 1L),
                     Dyes.dyeRed.getFluidDye(j, 72L),
-                    getModItem("BuildCraft|Transport", "pipeWire", 4L, 0),
+                    getModItem(BuildCraftTransport.modID, "pipeWire", 4L, 0),
                     GT_Values.NI,
                     GT_Values.NI,
                     null,
@@ -265,7 +266,7 @@ public class ChemicalBathRecipes implements Runnable {
             GT_Values.RA.addChemicalBathRecipe(
                     GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.RedAlloy, 1L),
                     Dyes.dyeBlue.getFluidDye(j, 72L),
-                    getModItem("BuildCraft|Transport", "pipeWire", 4L, 1),
+                    getModItem(BuildCraftTransport.modID, "pipeWire", 4L, 1),
                     GT_Values.NI,
                     GT_Values.NI,
                     null,
@@ -276,7 +277,7 @@ public class ChemicalBathRecipes implements Runnable {
             GT_Values.RA.addChemicalBathRecipe(
                     GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.RedAlloy, 1L),
                     Dyes.dyeGreen.getFluidDye(j, 72L),
-                    getModItem("BuildCraft|Transport", "pipeWire", 4L, 2),
+                    getModItem(BuildCraftTransport.modID, "pipeWire", 4L, 2),
                     GT_Values.NI,
                     GT_Values.NI,
                     null,
@@ -287,7 +288,7 @@ public class ChemicalBathRecipes implements Runnable {
             GT_Values.RA.addChemicalBathRecipe(
                     GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.RedAlloy, 1L),
                     Dyes.dyeYellow.getFluidDye(j, 72L),
-                    getModItem("BuildCraft|Transport", "pipeWire", 4L, 3),
+                    getModItem(BuildCraftTransport.modID, "pipeWire", 4L, 3),
                     GT_Values.NI,
                     GT_Values.NI,
                     null,

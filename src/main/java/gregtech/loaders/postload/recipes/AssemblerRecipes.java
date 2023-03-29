@@ -699,45 +699,45 @@ public class AssemblerRecipes implements Runnable {
                 100,
                 4);
         GT_Values.RA.addAssemblerRecipe(
-                getModItem("TwilightForest", "item.charmOfLife1", 4L, 0),
+                getModItem(TwilightForest.modID, "item.charmOfLife1", 4L, 0),
                 GT_Utility.getIntegratedCircuit(4),
                 GT_Values.NF,
-                getModItem("TwilightForest", "item.charmOfLife2", 1L, 0),
+                getModItem(TwilightForest.modID, "item.charmOfLife2", 1L, 0),
                 100,
                 8);
         GT_Values.RA.addAssemblerRecipe(
-                getModItem("TwilightForest", "item.charmOfKeeping1", 4L, 0),
+                getModItem(TwilightForest.modID, "item.charmOfKeeping1", 4L, 0),
                 GT_Utility.getIntegratedCircuit(4),
                 GT_Values.NF,
-                getModItem("TwilightForest", "item.charmOfKeeping2", 1L, 0),
+                getModItem(TwilightForest.modID, "item.charmOfKeeping2", 1L, 0),
                 100,
                 8);
         GT_Values.RA.addAssemblerRecipe(
-                getModItem("TwilightForest", "item.charmOfKeeping2", 4L, 0),
+                getModItem(TwilightForest.modID, "item.charmOfKeeping2", 4L, 0),
                 GT_Utility.getIntegratedCircuit(4),
                 GT_Values.NF,
-                getModItem("TwilightForest", "item.charmOfKeeping3", 1L, 0),
+                getModItem(TwilightForest.modID, "item.charmOfKeeping3", 1L, 0),
                 100,
                 8);
         GT_Values.RA.addAssemblerRecipe(
-                getModItem("TwilightForest", "item.charmOfLife2", 1L, 0),
+                getModItem(TwilightForest.modID, "item.charmOfLife2", 1L, 0),
                 GT_Utility.getIntegratedCircuit(1),
                 GT_Values.NF,
-                getModItem("TwilightForest", "item.charmOfLife1", 4L, 0),
+                getModItem(TwilightForest.modID, "item.charmOfLife1", 4L, 0),
                 100,
                 8);
         GT_Values.RA.addAssemblerRecipe(
-                getModItem("TwilightForest", "item.charmOfKeeping2", 1L, 0),
+                getModItem(TwilightForest.modID, "item.charmOfKeeping2", 1L, 0),
                 GT_Utility.getIntegratedCircuit(1),
                 GT_Values.NF,
-                getModItem("TwilightForest", "item.charmOfKeeping1", 4L, 0),
+                getModItem(TwilightForest.modID, "item.charmOfKeeping1", 4L, 0),
                 100,
                 8);
         GT_Values.RA.addAssemblerRecipe(
-                getModItem("TwilightForest", "item.charmOfKeeping3", 1L, 0),
+                getModItem(TwilightForest.modID, "item.charmOfKeeping3", 1L, 0),
                 GT_Utility.getIntegratedCircuit(1),
                 GT_Values.NF,
-                getModItem("TwilightForest", "item.charmOfKeeping2", 4L, 0),
+                getModItem(TwilightForest.modID, "item.charmOfKeeping2", 4L, 0),
                 100,
                 8);
         GT_Values.RA.addAssemblerRecipe(
@@ -5435,9 +5435,9 @@ public class AssemblerRecipes implements Runnable {
                         new ItemStack[] { ItemList.Circuit_Board_Plastic_Advanced.get(1L),
                                 GT_OreDictUnificator.get(OrePrefixes.itemCasing, Materials.Aluminium, 2L),
                                 getModItem(Railcraft.modID, "machine.alpha", 1L, 0),
-                                getModItem("OpenComputers", "item", 1L, 26), GT_Utility.getIntegratedCircuit(1) },
+                                getModItem(OpenComputers.modID, "item", 1L, 26), GT_Utility.getIntegratedCircuit(1) },
                         tMat.getMolten(144L * tMultiplier / 2L),
-                        getModItem("OpenComputers", "item", 1L, 62),
+                        getModItem(OpenComputers.modID, "item", 1L, 62),
                         250,
                         256);
             }
@@ -5461,7 +5461,7 @@ public class AssemblerRecipes implements Runnable {
                 16);
 
         GT_Values.RA.addAssemblerRecipe(
-                new ItemStack[] { getModItem("ExtraUtilities", "trashcan", 1L, 0),
+                new ItemStack[] { getModItem(ExtraUtilities.modID, "trashcan", 1L, 0),
                         GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Obsidian, 4L),
                         GT_Utility.getIntegratedCircuit(1) },
                 GT_Values.NF,
@@ -5518,7 +5518,7 @@ public class AssemblerRecipes implements Runnable {
                 (int) TierEU.RECIPE_LV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.plate, Materials.AnyIron, 2L),
-                        getModItem("TConstruct", "GlassPane", 2L, 0), GT_Utility.getIntegratedCircuit(21) },
+                        getModItem(TinkerConstruct.modID, "GlassPane", 2L, 0), GT_Utility.getIntegratedCircuit(21) },
                 GT_Values.NF,
                 getModItem(Railcraft.modID, "machine.beta", 2L, 1),
                 800,
@@ -5546,7 +5546,7 @@ public class AssemblerRecipes implements Runnable {
                 64);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 2L),
-                        getModItem("TConstruct", "GlassPane", 2L, 0), GT_Utility.getIntegratedCircuit(21) },
+                        getModItem(TinkerConstruct.modID, "GlassPane", 2L, 0), GT_Utility.getIntegratedCircuit(21) },
                 GT_Values.NF,
                 getModItem(Railcraft.modID, "machine.beta", 2L, 14),
                 400,
@@ -5573,7 +5573,7 @@ public class AssemblerRecipes implements Runnable {
                 (int) TierEU.RECIPE_MV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Aluminium, 2L),
-                        getModItem("TConstruct", "GlassPane", 2L, 0), GT_Utility.getIntegratedCircuit(21) },
+                        getModItem(TinkerConstruct.modID, "GlassPane", 2L, 0), GT_Utility.getIntegratedCircuit(21) },
                 GT_Values.NF,
                 getModItem(Railcraft.modID, "machine.zeta", 2L, 1),
                 800,
@@ -5601,7 +5601,7 @@ public class AssemblerRecipes implements Runnable {
                 256);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.plate, Materials.StainlessSteel, 2L),
-                        getModItem("TConstruct", "GlassPane", 2L, 0), GT_Utility.getIntegratedCircuit(21) },
+                        getModItem(TinkerConstruct.modID, "GlassPane", 2L, 0), GT_Utility.getIntegratedCircuit(21) },
                 GT_Values.NF,
                 getModItem(Railcraft.modID, "machine.zeta", 2L, 4),
                 400,
@@ -5628,7 +5628,7 @@ public class AssemblerRecipes implements Runnable {
                 (int) TierEU.RECIPE_HV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Titanium, 2L),
-                        getModItem("TConstruct", "GlassPane", 2L, 0), GT_Utility.getIntegratedCircuit(21) },
+                        getModItem(TinkerConstruct.modID, "GlassPane", 2L, 0), GT_Utility.getIntegratedCircuit(21) },
                 GT_Values.NF,
                 getModItem(Railcraft.modID, "machine.zeta", 2L, 7),
                 800,
@@ -5656,7 +5656,7 @@ public class AssemblerRecipes implements Runnable {
                 960);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.plate, Materials.TungstenSteel, 2L),
-                        getModItem("TConstruct", "GlassPane", 2L, 0), GT_Utility.getIntegratedCircuit(21) },
+                        getModItem(TinkerConstruct.modID, "GlassPane", 2L, 0), GT_Utility.getIntegratedCircuit(21) },
                 GT_Values.NF,
                 getModItem(Railcraft.modID, "machine.zeta", 2L, 10),
                 400,
@@ -5683,7 +5683,7 @@ public class AssemblerRecipes implements Runnable {
                 (int) TierEU.RECIPE_EV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Palladium, 2L),
-                        getModItem("TConstruct", "GlassPane", 2L, 0), GT_Utility.getIntegratedCircuit(21) },
+                        getModItem(TinkerConstruct.modID, "GlassPane", 2L, 0), GT_Utility.getIntegratedCircuit(21) },
                 GT_Values.NF,
                 getModItem(Railcraft.modID, "machine.zeta", 2L, 13),
                 800,
@@ -5711,7 +5711,7 @@ public class AssemblerRecipes implements Runnable {
                 4096);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iridium, 2L),
-                        getModItem("TConstruct", "GlassPane", 2L, 0), GT_Utility.getIntegratedCircuit(21) },
+                        getModItem(TinkerConstruct.modID, "GlassPane", 2L, 0), GT_Utility.getIntegratedCircuit(21) },
                 GT_Values.NF,
                 getModItem(Railcraft.modID, "machine.eta", 2L, 1),
                 400,
@@ -5738,7 +5738,7 @@ public class AssemblerRecipes implements Runnable {
                 (int) TierEU.RECIPE_IV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Osmium, 2L),
-                        getModItem("TConstruct", "GlassPane", 2L, 0), GT_Utility.getIntegratedCircuit(21) },
+                        getModItem(TinkerConstruct.modID, "GlassPane", 2L, 0), GT_Utility.getIntegratedCircuit(21) },
                 GT_Values.NF,
                 getModItem(Railcraft.modID, "machine.eta", 2L, 4),
                 800,
@@ -5766,7 +5766,7 @@ public class AssemblerRecipes implements Runnable {
                 (int) TierEU.RECIPE_LuV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 2L),
-                        getModItem("TConstruct", "GlassPane", 2L, 0), GT_Utility.getIntegratedCircuit(21) },
+                        getModItem(TinkerConstruct.modID, "GlassPane", 2L, 0), GT_Utility.getIntegratedCircuit(21) },
                 GT_Values.NF,
                 getModItem(Railcraft.modID, "machine.eta", 2L, 7),
                 400,
@@ -5848,7 +5848,7 @@ public class AssemblerRecipes implements Runnable {
         }
 
         GT_Values.RA.addAssemblerRecipe(
-                getModItem("bartworks", "gt.bwMetaGeneratedplate", 6L, 88),
+                getModItem(BartWorks.modID, "gt.bwMetaGeneratedplate", 6L, 88),
                 GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Chrome, 1L),
                 ItemList.Casing_Advanced_Rhodium_Palladium.get(1L),
                 50,
@@ -5871,7 +5871,7 @@ public class AssemblerRecipes implements Runnable {
                 300,
                 (int) TierEU.RECIPE_HV);
         GT_Values.RA.addAssemblerRecipe(
-                new ItemStack[] { getModItem("GalacticraftCore", "item.heavyPlating", 1L),
+                new ItemStack[] { getModItem(GalacticraftCore.modID, "item.heavyPlating", 1L),
                         GT_OreDictUnificator.get(OrePrefixes.plate, Materials.MeteoricIron, 2L),
                         GT_Utility.getIntegratedCircuit(1) },
                 Materials.TungstenSteel.getMolten(72L),
@@ -5879,7 +5879,7 @@ public class AssemblerRecipes implements Runnable {
                 300,
                 (int) TierEU.RECIPE_EV);
         GT_Values.RA.addAssemblerRecipe(
-                new ItemStack[] { getModItem("GalacticraftMars", "item.null", 1L, 3),
+                new ItemStack[] { getModItem(GalacticraftMars.modID, "item.null", 1L, 3),
                         GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Desh, 4L),
                         GT_Utility.getIntegratedCircuit(1) },
                 Materials.Platinum.getMolten(72L),
@@ -6028,73 +6028,73 @@ public class AssemblerRecipes implements Runnable {
         }
 
         GT_Values.RA.addAssemblerRecipe(
-            getModItem("IC2NuclearControl", "ItemVanillaMachineCard", 1L, 0),
+            getModItem(IC2NuclearControl.modID, "ItemVanillaMachineCard", 1L, 0),
             GT_Utility.getIntegratedCircuit(1),
             GT_ModHandler.getIC2Item("electronicCircuit", 2L),
             200,
             (int) TierEU.RECIPE_LV);
         GT_Values.RA.addAssemblerRecipe(
-            getModItem("IC2NuclearControl", "ItemInventoryScannerCard", 1L, 0),
+            getModItem(IC2NuclearControl.modID, "ItemInventoryScannerCard", 1L, 0),
             GT_Utility.getIntegratedCircuit(1),
             GT_ModHandler.getIC2Item("electronicCircuit", 2L),
             200,
             (int) TierEU.RECIPE_LV);
         GT_Values.RA.addAssemblerRecipe(
-            getModItem("IC2NuclearControl", "ItemEnergySensorLocationCard", 1L, 0),
+            getModItem(IC2NuclearControl.modID, "ItemEnergySensorLocationCard", 1L, 0),
             GT_Utility.getIntegratedCircuit(1),
             GT_ModHandler.getIC2Item("electronicCircuit", 2L),
             200,
             (int) TierEU.RECIPE_LV);
         GT_Values.RA.addAssemblerRecipe(
-            getModItem("IC2NuclearControl", "RFSensorCard", 1L, 0),
+            getModItem(IC2NuclearControl.modID, "RFSensorCard", 1L, 0),
             GT_Utility.getIntegratedCircuit(1),
             GT_ModHandler.getIC2Item("electronicCircuit", 2L),
             200,
             (int) TierEU.RECIPE_LV);
         GT_Values.RA.addAssemblerRecipe(
-            getModItem("IC2NuclearControl", "ItemMultipleSensorLocationCard", 1L, 0),
+            getModItem(IC2NuclearControl.modID, "ItemMultipleSensorLocationCard", 1L, 0),
             GT_Utility.getIntegratedCircuit(1),
             GT_ModHandler.getIC2Item("electronicCircuit", 1L),
             200,
             (int) TierEU.RECIPE_LV); // counter
         GT_Values.RA.addAssemblerRecipe(
-            getModItem("IC2NuclearControl", "ItemMultipleSensorLocationCard", 1L, 1),
+            getModItem(IC2NuclearControl.modID, "ItemMultipleSensorLocationCard", 1L, 1),
             GT_Utility.getIntegratedCircuit(1),
             GT_ModHandler.getIC2Item("electronicCircuit", 1L),
             200,
             (int) TierEU.RECIPE_LV); // liquid
         GT_Values.RA.addAssemblerRecipe(
-            getModItem("IC2NuclearControl", "ItemMultipleSensorLocationCard", 1L, 2),
+            getModItem(IC2NuclearControl.modID, "ItemMultipleSensorLocationCard", 1L, 2),
             GT_Utility.getIntegratedCircuit(1),
             GT_ModHandler.getIC2Item("electronicCircuit", 2L),
             200,
             (int) TierEU.RECIPE_LV); // generator
         GT_Values.RA.addAssemblerRecipe(
-            getModItem("IC2NuclearControl", "ItemLiquidArrayLocationCard", 1L, 0),
+            getModItem(IC2NuclearControl.modID, "ItemLiquidArrayLocationCard", 1L, 0),
             GT_Utility.getIntegratedCircuit(1),
             GT_ModHandler.getIC2Item("electronicCircuit", 2L),
             200,
             (int) TierEU.RECIPE_LV); // 2-6 liquid
         GT_Values.RA.addAssemblerRecipe(
-            getModItem("IC2NuclearControl", "ItemEnergyArrayLocationCard", 1L, 0),
+            getModItem(IC2NuclearControl.modID, "ItemEnergyArrayLocationCard", 1L, 0),
             GT_Utility.getIntegratedCircuit(1),
             GT_ModHandler.getIC2Item("electronicCircuit", 2L),
             200,
             (int) TierEU.RECIPE_LV); // 2-6 energy
         GT_Values.RA.addAssemblerRecipe(
-            getModItem("IC2NuclearControl", "ItemSensorLocationCard", 1L, 0),
+            getModItem(IC2NuclearControl.modID, "ItemSensorLocationCard", 1L, 0),
             GT_Utility.getIntegratedCircuit(1),
             GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.Good), 2L),
             200,
             (int) TierEU.RECIPE_LV); // non-fluid nuke
         GT_Values.RA.addAssemblerRecipe(
-            getModItem("IC2NuclearControl", "Item55ReactorCard", 1L, 0),
+            getModItem(IC2NuclearControl.modID, "Item55ReactorCard", 1L, 0),
             GT_Utility.getIntegratedCircuit(1),
             GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.Good), 2L),
             200,
             (int) TierEU.RECIPE_LV);
         GT_Values.RA.addAssemblerRecipe(
-            getModItem("IC2NuclearControl", "CardAppeng", 1L, 0),
+            getModItem(IC2NuclearControl.modID, "CardAppeng", 1L, 0),
             GT_Utility.getIntegratedCircuit(1),
             GT_ModHandler.getIC2Item("electronicCircuit", 2L),
             200,

@@ -124,7 +124,7 @@ public class FluidExtractorRecipes implements Runnable {
                 32,
                 4);
         GT_Values.RA.addFluidExtractionRecipe(
-                getModItem("Thaumcraft", "ItemResource", 1, 3),
+                getModItem(Thaumcraft.modID, "ItemResource", 1, 3),
                 GT_Values.NI,
                 Materials.Mercury.getFluid(1000L),
                 10000,
@@ -146,7 +146,7 @@ public class FluidExtractorRecipes implements Runnable {
                 64);
 
         GT_Values.RA.addFluidExtractionRecipe(
-                getModItem("IC2", "blockAlloyGlass", 1L, 0),
+                getModItem(IndustrialCraft2.modID, "blockAlloyGlass", 1L, 0),
                 GT_Values.NI,
                 Materials.ReinforceGlass.getMolten(144),
                 10000,
@@ -514,7 +514,7 @@ public class FluidExtractorRecipes implements Runnable {
         if (BartWorks.isModLoaded()) {
             // xenon
             GT_Values.RA.addFluidExtractionRecipe(
-                    getModItem("gregtech", "gt.comb", 1L, 134),
+                    getModItem(GregTech.modID, "gt.comb", 1L, 134),
                     null,
                     getFluidStack("xenon", 250),
                     100 * 100,
@@ -522,7 +522,7 @@ public class FluidExtractorRecipes implements Runnable {
                     8192);
             // neon
             GT_Values.RA.addFluidExtractionRecipe(
-                    getModItem("gregtech", "gt.comb", 1L, 135),
+                    getModItem(GregTech.modID, "gt.comb", 1L, 135),
                     null,
                     getFluidStack("neon", 250),
                     100 * 100,
@@ -530,7 +530,7 @@ public class FluidExtractorRecipes implements Runnable {
                     8192);
             // krpton
             GT_Values.RA.addFluidExtractionRecipe(
-                    getModItem("gregtech", "gt.comb", 1L, 136),
+                    getModItem(GregTech.modID, "gt.comb", 1L, 136),
                     null,
                     getFluidStack("krypton", 250),
                     100 * 100,

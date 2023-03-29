@@ -84,8 +84,8 @@ public class CuttingRecipes implements Runnable {
 
             if (TinkerConstruct.isModLoaded()) {
                 GT_Values.RA.addCutterRecipe(
-                    getModItem("TConstruct", "GlassBlock", 3L, 0),
-                    getModItem("TConstruct", "GlassPane", 8L, 0),
+                    getModItem(TinkerConstruct.modID, "GlassBlock", 3L, 0),
+                    getModItem(TinkerConstruct.modID, "GlassPane", 8L, 0),
                     GT_Values.NI,
                     50,
                     8);
@@ -211,8 +211,8 @@ public class CuttingRecipes implements Runnable {
 
         if (BuildCraftTransport.isModLoaded()) {
             GT_Values.RA.addCutterRecipe(
-                getModItem("BuildCraft|Transport", "item.buildcraftPipe.pipestructurecobblestone", 1L, 0),
-                getModItem("BuildCraft|Transport", "pipePlug", 8L, 0),
+                getModItem(BuildCraftTransport.modID, "item.buildcraftPipe.pipestructurecobblestone", 1L, 0),
+                getModItem(BuildCraftTransport.modID, "pipePlug", 8L, 0),
                 GT_Values.NI,
                 32,
                 16);

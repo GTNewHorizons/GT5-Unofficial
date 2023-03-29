@@ -96,7 +96,7 @@ public class ChemicalRecipes implements Runnable {
                 480);
 
         GT_Values.RA.addChemicalRecipe(
-                getModItem("GalaxySpace", "item.UnknowCrystal", 4L),
+                getModItem(GalaxySpace.modID, "item.UnknowCrystal", 4L),
                 Materials.Osmiridium.getDust(2),
                 Materials.GrowthMediumSterilized.getFluid(1000L),
                 getFluidStack("bacterialsludge", 1000),
@@ -716,7 +716,7 @@ public class ChemicalRecipes implements Runnable {
                     Materials.HydrochloricAcid.getFluid(2000),
                     Materials.Hydrogen.getGas(2000),
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 2),
-                    getModItem("bartworks", "gt.bwMetaGenerateddust", 3L, 63),
+                    getModItem(BartWorks.modID, "gt.bwMetaGenerateddust", 3L, 63),
                     900,
                     30);
             // SiCl4 + 2Zn = 2ZnCl2 + Si
@@ -726,7 +726,7 @@ public class ChemicalRecipes implements Runnable {
                     Materials.SiliconTetrachloride.getFluid(1000),
                     GT_Values.NF,
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconSG, 1),
-                    getModItem("bartworks", "gt.bwMetaGenerateddust", 6L, 10052),
+                    getModItem(BartWorks.modID, "gt.bwMetaGenerateddust", 6L, 10052),
                     400,
                     30);
         }

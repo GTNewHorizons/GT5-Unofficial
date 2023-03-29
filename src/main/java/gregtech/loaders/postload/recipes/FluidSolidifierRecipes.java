@@ -1,7 +1,6 @@
 package gregtech.loaders.postload.recipes;
 
-import static gregtech.api.enums.ModIDs.NewHorizonsCoreMod;
-import static gregtech.api.enums.ModIDs.Railcraft;
+import static gregtech.api.enums.ModIDs.*;
 import static gregtech.api.util.GT_ModHandler.getModItem;
 import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
 
@@ -44,7 +43,7 @@ public class FluidSolidifierRecipes implements Runnable {
         GT_Values.RA.addFluidSolidifierRecipe(
                 ItemList.Shape_Mold_Ball.get(0L),
                 Materials.Mercury.getFluid(1000L),
-                getModItem("Thaumcraft", "ItemResource", 1, 3),
+                getModItem(Thaumcraft.modID, "ItemResource", 1, 3),
                 128,
                 4);
         GT_Values.RA.addFluidSolidifierRecipe(
@@ -172,7 +171,7 @@ public class FluidSolidifierRecipes implements Runnable {
         GT_Values.RA.addFluidSolidifierRecipe(
                 ItemList.Shape_Mold_Block.get(0L),
                 Materials.ReinforceGlass.getMolten(144),
-                getModItem("IC2", "blockAlloyGlass", 1L),
+                getModItem(IndustrialCraft2.modID, "blockAlloyGlass", 1L),
                 160,
                 1920);
 

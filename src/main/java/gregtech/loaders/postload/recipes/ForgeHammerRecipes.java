@@ -91,7 +91,7 @@ public class ForgeHammerRecipes implements Runnable {
 
         if (HardcoreEnderExpansion.isModLoaded()) {
             GT_Values.RA.addForgeHammerRecipe(
-                    getModItem("HardcoreEnderExpansion", "endium_ore", 1),
+                    getModItem(HardcoreEnderExpansion.modID, "endium_ore", 1),
                     GT_OreDictUnificator.get(OrePrefixes.crushed, Materials.HeeEndium, 1),
                     16,
                     10);

@@ -253,7 +253,7 @@ public class CircuitAssemblerRecipes implements Runnable {
                                 GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Iron, 1),
                                 GT_Utility.getIntegratedCircuit(1) },
                         tMat.getMolten(1152L * tMultiplier / 2L),
-                        getModItem("Forestry", "chipsets", 1L, 0),
+                        getModItem(Forestry.modID, "chipsets", 1L, 0),
                         200,
                         (int) TierEU.RECIPE_LV);
                 GT_Values.RA.addCircuitAssemblerRecipe(
@@ -264,7 +264,7 @@ public class CircuitAssemblerRecipes implements Runnable {
                                 GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Bronze, 1),
                                 GT_Utility.getIntegratedCircuit(1) },
                         tMat.getMolten(1152L * tMultiplier / 2L),
-                        getModItem("Forestry", "chipsets", 1L, 1),
+                        getModItem(Forestry.modID, "chipsets", 1L, 1),
                         200,
                         (int) TierEU.RECIPE_LV);
                 GT_Values.RA.addCircuitAssemblerRecipe(
@@ -275,7 +275,7 @@ public class CircuitAssemblerRecipes implements Runnable {
                                 GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Steel, 1),
                                 GT_Utility.getIntegratedCircuit(1) },
                         tMat.getMolten(1152L * tMultiplier / 2L),
-                        getModItem("Forestry", "chipsets", 1L, 2),
+                        getModItem(Forestry.modID, "chipsets", 1L, 2),
                         200,
                         (int) TierEU.RECIPE_LV);
                 GT_Values.RA.addCircuitAssemblerRecipe(
@@ -286,7 +286,7 @@ public class CircuitAssemblerRecipes implements Runnable {
                                 GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Electrum, 1),
                                 GT_Utility.getIntegratedCircuit(1) },
                         tMat.getMolten(1152L * tMultiplier / 2L),
-                        getModItem("Forestry", "chipsets", 1L, 3),
+                        getModItem(Forestry.modID, "chipsets", 1L, 3),
                         200,
                         (int) TierEU.RECIPE_LV);
             }

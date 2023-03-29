@@ -1,5 +1,6 @@
 package gregtech.loaders.postload.recipes;
 
+import static gregtech.api.enums.ModIDs.AppliedEnergistics2;
 import static gregtech.api.enums.ModIDs.Thaumcraft;
 import static gregtech.api.util.GT_ModHandler.getModItem;
 
@@ -561,7 +562,7 @@ public class ThaumcraftRecipes implements Runnable {
                         "Transformation of obsidian into skystone",
                         new String[] { "GT_ADVANCEDMETALLURGY" },
                         "ALCHEMY",
-                        getModItem("appliedenergistics2", "tile.BlockSkyStone", 1),
+                        getModItem(AppliedEnergistics2.modID, "tile.BlockSkyStone", 1),
                         4,
                         0,
                         19,
@@ -577,7 +578,7 @@ public class ThaumcraftRecipes implements Runnable {
                                 GregTech_API.sThaumcraftCompat.addCrucibleRecipe(
                                         tKey,
                                         new ItemStack(Blocks.obsidian),
-                                        getModItem("appliedenergistics2", "tile.BlockSkyStone", 1),
+                                        getModItem(AppliedEnergistics2.modID, "tile.BlockSkyStone", 1),
                                         Arrays.asList(
                                                 new TC_Aspects.TC_AspectStack(TC_Aspects.PERMUTATIO, 2L),
                                                 new TC_Aspects.TC_AspectStack(TC_Aspects.VOLATUS, 1L),

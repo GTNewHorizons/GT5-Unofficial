@@ -1,7 +1,6 @@
 package gregtech.loaders.postload.recipes;
 
-import static gregtech.api.enums.ModIDs.GTNHLanthanides;
-import static gregtech.api.enums.ModIDs.GTPlusPlus;
+import static gregtech.api.enums.ModIDs.*;
 import static gregtech.api.util.GT_ModHandler.getModItem;
 
 import net.minecraft.item.ItemStack;
@@ -648,7 +647,7 @@ public class BlastFurnaceRecipes implements Runnable {
 
             // Rh + 3Cl = RhCl3
             GT_Values.RA.addBlastRecipe(
-                    getModItem("bartworks", "gt.bwMetaGenerateddust", 1L, 78),
+                    getModItem(BartWorks.modID, "gt.bwMetaGenerateddust", 1L, 78),
                     GT_Utility.getIntegratedCircuit(2),
                     Materials.Chlorine.getGas(3000L),
                     GT_Values.NF,
