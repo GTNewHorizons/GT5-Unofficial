@@ -1,8 +1,7 @@
 package gregtech.loaders.preload;
 
 import static gregtech.GT_Mod.GT_FML_LOGGER;
-import static gregtech.api.enums.GT_Values.MOD_ID_AE;
-import static gregtech.api.enums.GT_Values.MOD_ID_GTPP;
+import static gregtech.api.enums.ModIDs.*;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -119,14 +118,14 @@ public class GT_PreLoad {
     }
 
     public static void initCompat() {
-        GregTech_API.mIC2Classic = Loader.isModLoaded("IC2-Classic-Spmod");
-        GregTech_API.mGTPlusPlus = Loader.isModLoaded(MOD_ID_GTPP);
-        GregTech_API.mTranslocator = Loader.isModLoaded("Translocator");
-        GregTech_API.mTConstruct = Loader.isModLoaded("TConstruct");
-        GregTech_API.mGalacticraft = Loader.isModLoaded("GalacticraftCore");
-        GregTech_API.mAE2 = Loader.isModLoaded(MOD_ID_AE);
-        GregTech_API.mHodgepodge = Loader.isModLoaded("hodgepodge");
-        GregTech_API.mEternalSingularity = Loader.isModLoaded("eternalsingularity");
+        GregTech_API.mIC2Classic = IndustrialCraft2Classic.isModLoaded();
+        GregTech_API.mGTPlusPlus = GTPlusPlus.isModLoaded();
+        GregTech_API.mTranslocator = Translocator.isModLoaded();
+        GregTech_API.mTConstruct = TinkerConstruct.isModLoaded();
+        GregTech_API.mGalacticraft = GalacticraftCore.isModLoaded();
+        GregTech_API.mAE2 = AppliedEnergistics2.isModLoaded();
+        GregTech_API.mHodgepodge = HodgePodge.isModLoaded();
+        GregTech_API.mEternalSingularity = EternalSingularity.isModLoaded();
     }
 
     public static void createLogFiles(File parentFile, Configuration tMainConfig) {
@@ -187,7 +186,7 @@ public class GT_PreLoad {
     }
 
     public static void runMineTweakerCompat() {
-        if (!Loader.isModLoaded("MineTweaker3")) return;
+        if (!CraftTweaker.isModLoaded()) return;
 
         GT_FML_LOGGER.info("preReader");
         final List<String> oreTags = new ArrayList<>();
@@ -614,7 +613,7 @@ public class GT_PreLoad {
         GT_Mod.gregtechproxy.mUndergroundOil.getConfig(tMainConfig, "undergroundfluid");
         GT_Mod.gregtechproxy.mEnableCleanroom = tMainConfig.get("general", "EnableCleanroom", true).getBoolean(true);
         if (GT_Mod.gregtechproxy.mEnableCleanroom) GT_MetaTileEntity_Cleanroom.loadConfig(tMainConfig);
-        GT_Mod.gregtechproxy.mLowGravProcessing = Loader.isModLoaded(GT_Values.MOD_ID_GC_CORE)
+        GT_Mod.gregtechproxy.mLowGravProcessing = GalacticraftCore.isModLoaded()
                 && tMainConfig.get("general", "LowGravProcessing", true).getBoolean(true);
         GT_Mod.gregtechproxy.mUseGreatlyShrukenReplacementList = tMainConfig
                 .get("general", "GTNH Optimised Material Loading", true).getBoolean(true);
@@ -633,7 +632,7 @@ public class GT_PreLoad {
         GregTech_API.mEUtoRF = GregTech_API.sOPStuff.get(ConfigCategories.general, "100EUtoRF", 360);
         GregTech_API.mRFtoEU = GregTech_API.sOPStuff.get(ConfigCategories.general, "100RFtoEU", 20);
         GregTech_API.mRFExplosions = GregTech_API.sOPStuff.get(ConfigCategories.general, "RFExplosions", false);
-        GregTech_API.meIOLoaded = Loader.isModLoaded("EnderIO");
+        GregTech_API.meIOLoaded = EnderIO.isModLoaded();
         GT_Mod.gregtechproxy.mForceFreeFace = GregTech_API.sMachineFile
                 .get(ConfigCategories.machineconfig, "forceFreeFace", true);
         GT_Mod.gregtechproxy.mBrickedBlastFurnace = tMainConfig.get("general", "BrickedBlastFurnace", true)

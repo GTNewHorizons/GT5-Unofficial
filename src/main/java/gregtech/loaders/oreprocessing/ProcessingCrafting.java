@@ -1,6 +1,6 @@
 package gregtech.loaders.oreprocessing;
 
-import static gregtech.api.enums.GT_Values.MOD_ID_DC;
+import static gregtech.api.enums.ModIDs.NewHorizonsCoreMod;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -228,7 +228,7 @@ public class ProcessingCrafting implements gregtech.api.interfaces.IOreRecipeReg
                 GT_Values.RA.addLaserEngraverRecipe(
                         GT_OreDictUnificator.get(OrePrefixes.foil, Materials.RedAlloy, 1L),
                         GT_Utility.copyAmount(0L, aStack),
-                        GT_ModHandler.getModItem(MOD_ID_DC, "item.EtchedLowVoltageWiring", 1L, 0),
+                        GT_ModHandler.getModItem(NewHorizonsCoreMod.modID, "item.EtchedLowVoltageWiring", 1L, 0),
                         200,
                         16);
                 GT_Values.RA.addLaserEngraverRecipe(

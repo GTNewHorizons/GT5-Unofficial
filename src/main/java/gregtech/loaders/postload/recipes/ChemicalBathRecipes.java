@@ -1,6 +1,6 @@
 package gregtech.loaders.postload.recipes;
 
-import static gregtech.api.enums.GT_Values.MOD_ID_RC;
+import static gregtech.api.enums.ModIDs.Railcraft;
 import static gregtech.api.util.GT_ModHandler.getModItem;
 
 import net.minecraft.init.Blocks;
@@ -399,7 +399,7 @@ public class ChemicalBathRecipes implements Runnable {
         GT_Values.RA.addChemicalBathRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.log, Materials.Wood, 1L),
                 Materials.Creosote.getFluid(100L),
-                getModItem(MOD_ID_RC, "cube", 1L, 8),
+                getModItem(Railcraft.modID, "cube", 1L, 8),
                 GT_Values.NI,
                 GT_Values.NI,
                 null,

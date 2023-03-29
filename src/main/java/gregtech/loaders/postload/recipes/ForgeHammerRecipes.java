@@ -1,6 +1,6 @@
 package gregtech.loaders.postload.recipes;
 
-import static gregtech.api.enums.GT_Values.MOD_ID_GTPP;
+import static gregtech.api.enums.ModIDs.GTPlusPlus;
 import static gregtech.api.enums.ModIDs.HardcoreEnderExpansion;
 import static gregtech.api.util.GT_ModHandler.getModItem;
 
@@ -82,7 +82,7 @@ public class ForgeHammerRecipes implements Runnable {
         GT_Values.RA.addForgeHammerRecipe(ItemList.Casing_Firebricks.get(1), ItemList.Firebrick.get(3), 10, 16);
 
         GT_Values.RA.addForgeHammerRecipe(
-                new ItemStack[] { ItemList.Tesseract.get(1L), getModItem(MOD_ID_GTPP, "MU-metaitem.01", 1, 32105) },
+                new ItemStack[] { ItemList.Tesseract.get(1L), getModItem(GTPlusPlus.modID, "MU-metaitem.01", 1, 32105) },
                 new FluidStack[] { Materials.SpaceTime.getMolten(2880L) },
                 null,
                 new FluidStack[] { Materials.Space.getMolten(1440L), Materials.Time.getMolten(1440L) },

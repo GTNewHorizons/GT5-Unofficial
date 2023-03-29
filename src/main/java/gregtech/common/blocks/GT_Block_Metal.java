@@ -4,12 +4,13 @@ import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 
-import cpw.mods.fml.common.Loader;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_OreDictUnificator;
+
+import static gregtech.api.enums.ModIDs.NotEnoughItems;
 
 public class GT_Block_Metal extends GT_Block_Storage {
 
@@ -17,7 +18,7 @@ public class GT_Block_Metal extends GT_Block_Storage {
     public OrePrefixes mPrefix;
     public IIconContainer[] mBlockIcons;
     public boolean mHideBlocks;
-    public static boolean mNEIisLoaded = Loader.isModLoaded("NotEnoughItems");
+    public static boolean mNEIisLoaded = NotEnoughItems.isModLoaded();
 
     public GT_Block_Metal(String aName, Materials[] aMats, OrePrefixes aPrefix, IIconContainer[] aBlockIcons) {
         super(GT_Item_Storage.class, aName, Material.iron);

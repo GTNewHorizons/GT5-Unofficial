@@ -17,6 +17,8 @@ import gregtech.api.util.GT_ToolHarvestHelper;
 import gregtech.common.items.behaviors.Behaviour_None;
 import gregtech.common.items.behaviors.Behaviour_Scoop;
 
+import static gregtech.api.enums.ModIDs.Forestry;
+
 public class GT_Tool_Scoop extends GT_Tool {
 
     public static Material sBeeHiveMaterial;
@@ -110,7 +112,7 @@ public class GT_Tool_Scoop extends GT_Tool {
 
     @Override
     public void onStatsAddedToTool(GT_MetaGenerated_Tool aItem, int aID) {
-        if (Loader.isModLoaded(GT_Values.MOD_ID_FR)) {
+        if (Forestry.isModLoaded()) {
             aItem.addItemBehavior(aID, new Behaviour_Scoop(200));
         } else {
             aItem.addItemBehavior(aID, new Behaviour_None());

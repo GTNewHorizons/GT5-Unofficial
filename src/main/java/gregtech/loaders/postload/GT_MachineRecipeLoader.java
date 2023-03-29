@@ -1,15 +1,16 @@
 package gregtech.loaders.postload;
 
-import cpw.mods.fml.common.Loader;
 import gregtech.loaders.postload.chains.GT_BauxiteRefineChain;
 import gregtech.loaders.postload.chains.GT_NaniteChain;
 import gregtech.loaders.postload.chains.GT_PCBFactoryRecipes;
 import gregtech.loaders.postload.recipes.*;
 
+import static gregtech.api.enums.ModIDs.NotEnoughItems;
+
 public class GT_MachineRecipeLoader implements Runnable {
 
     public static final String aTextTCGTPage = "gt.research.page.1.";
-    public static final Boolean isNEILoaded = Loader.isModLoaded("NotEnoughItems");
+    public static final Boolean isNEILoaded = NotEnoughItems.isModLoaded();
 
     /** @deprecated AE2 is a required dependency now */
     @Deprecated

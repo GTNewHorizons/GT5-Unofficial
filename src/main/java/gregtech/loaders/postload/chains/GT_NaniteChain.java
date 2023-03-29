@@ -1,7 +1,7 @@
 package gregtech.loaders.postload.chains;
 
-import static gregtech.api.enums.GT_Values.MOD_ID_DC;
-import static gregtech.api.enums.GT_Values.MOD_ID_GTPP;
+import static gregtech.api.enums.ModIDs.GTPlusPlus;
+import static gregtech.api.enums.ModIDs.NewHorizonsCoreMod;
 import static gregtech.api.util.GT_ModHandler.getModItem;
 
 import net.minecraft.item.ItemStack;
@@ -19,9 +19,9 @@ public class GT_NaniteChain {
 
     public static void run() {
 
-        ItemStack aUVTierLens = getModItem(MOD_ID_DC, "item.MysteriousCrystalLens", 0);
-        ItemStack aUHVTierLens = getModItem(MOD_ID_DC, "item.ChromaticLens", 0);
-        ItemStack aUEVTierLens = getModItem(MOD_ID_DC, "item.RadoxPolymerLens", 0);
+        ItemStack aUVTierLens = getModItem(NewHorizonsCoreMod.modID, "item.MysteriousCrystalLens", 0);
+        ItemStack aUHVTierLens = getModItem(NewHorizonsCoreMod.modID, "item.ChromaticLens", 0);
+        ItemStack aUEVTierLens = getModItem(NewHorizonsCoreMod.modID, "item.RadoxPolymerLens", 0);
         ItemStack aUIVTierLens = ItemList.EnergisedTesseract.get(0);
         ItemStack aUMVTierLens = GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Dilithium, 0, false);
 
@@ -101,7 +101,7 @@ public class GT_NaniteChain {
 
         // Glowstone Nanites - Used in the optical circuit line
         GT_Values.RA.addNanoForgeRecipe(
-                new ItemStack[] { aUEVTierLens, getModItem(MOD_ID_GTPP, "blockCompressedObsidian", 8, 7), // Double
+                new ItemStack[] { aUEVTierLens, getModItem(GTPlusPlus.modID, "blockCompressedObsidian", 8, 7), // Double
                                                                                                           // compressed
                                                                                                           // glowstone
                                                                                                           // blocks
@@ -145,9 +145,9 @@ public class GT_NaniteChain {
         GT_Values.RA.addNanoForgeRecipe(
                 new ItemStack[] { aUMVTierLens, getModItem("bartworks", "gt.bwMetaGeneratedlens", 0, 36), // Magneto
                                                                                                           // lens
-                        getModItem(MOD_ID_GTPP, "MU-metaitem.01", 0, 32105), // Quantum Anomaly, couldn't find any
+                        getModItem(GTPlusPlus.modID, "MU-metaitem.01", 0, 32105), // Quantum Anomaly, couldn't find any
                                                                              // better naming
-                        Materials.WhiteDwarfMatter.getBlocks(8), getModItem(MOD_ID_DC, "item.PicoWafer", 32),
+                        Materials.WhiteDwarfMatter.getBlocks(8), getModItem(NewHorizonsCoreMod.modID, "item.PicoWafer", 32),
                         getModItem("GoodGenerator", "huiCircuit", 1, 4) // Paradox circuit
                 },
                 new FluidStack[] { Materials.UUMatter.getFluid(500_000), Materials.RawStarMatter.getFluid(50_000),
@@ -163,9 +163,9 @@ public class GT_NaniteChain {
         GT_Values.RA.addNanoForgeRecipe(
                 new ItemStack[] { aUMVTierLens, getModItem("bartworks", "gt.bwMetaGeneratedlens", 0, 36), // Magneto
                                                                                                           // lens
-                        getModItem(MOD_ID_GTPP, "MU-metaitem.01", 0, 32105), // Quantum Anomaly, couldn't find any
+                        getModItem(GTPlusPlus.modID, "MU-metaitem.01", 0, 32105), // Quantum Anomaly, couldn't find any
                                                                              // better naming
-                        Materials.BlackDwarfMatter.getBlocks(8), getModItem(MOD_ID_DC, "item.PicoWafer", 32),
+                        Materials.BlackDwarfMatter.getBlocks(8), getModItem(NewHorizonsCoreMod.modID, "item.PicoWafer", 32),
                         getModItem("GoodGenerator", "huiCircuit", 1, 4) // Paradox circuit
                 },
                 new FluidStack[] { Materials.UUMatter.getFluid(500_000), Materials.RawStarMatter.getFluid(50_000),
@@ -181,7 +181,7 @@ public class GT_NaniteChain {
         GT_Values.RA.addNanoForgeRecipe(
                 new ItemStack[] { aUMVTierLens,
                         // Quantum Anomaly, couldn't find any better naming.
-                        getModItem(MOD_ID_GTPP, "MU-metaitem.01", 0, 32105), Materials.Universium.getBlocks(8),
+                        getModItem(GTPlusPlus.modID, "MU-metaitem.01", 0, 32105), Materials.Universium.getBlocks(8),
 
                         ItemList.Optically_Perfected_CPU.get(16), ItemList.Optically_Compatible_Memory.get(16),
                         getModItem("GoodGenerator", "huiCircuit", 1, 4) // Paradox circuit

@@ -1,5 +1,6 @@
 package gregtech.common.items;
 
+import static gregtech.api.enums.ModIDs.GalacticraftMars;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.client.GT_TooltipHandler.Tier.*;
 import static gregtech.client.GT_TooltipHandler.registerTieredTooltip;
@@ -21,7 +22,6 @@ import net.minecraft.potion.Potion;
 import net.minecraft.util.MathHelper;
 import net.minecraftforge.oredict.OreDictionary;
 
-import cpw.mods.fml.common.Loader;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GT_Values;
@@ -1268,7 +1268,7 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 256,
                 256);
 
-        if (Loader.isModLoaded("GalacticraftMars")) {
+        if (GalacticraftMars.isModLoaded()) {
             ItemList.Ingot_Heavy1
                     .set(addItem(tLastID = 462, "Heavy Duty Alloy Ingot T1", "Used to make Heavy Duty Plates T1"));
             ItemList.Ingot_Heavy2

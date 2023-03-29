@@ -6,7 +6,8 @@ import net.minecraft.util.EnumChatFormatting;
 
 import codechicken.nei.NEIClientUtils;
 import codechicken.nei.config.DataDumper;
-import cpw.mods.fml.common.Loader;
+
+import static gregtech.api.enums.ModIDs.NewHorizonsCoreMod;
 
 public abstract class GregTechIDDumper extends DataDumper {
 
@@ -37,7 +38,7 @@ public abstract class GregTechIDDumper extends DataDumper {
     }
 
     protected void logWarn() {
-        if (!Loader.isModLoaded("dreamcraft")) {
+        if (!NewHorizonsCoreMod.isModLoaded()) {
             NEIClientUtils.printChatMessage(
                     new ChatComponentTranslation("nei.options.tools.dump.gt5u.warn_env")
                             .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.DARK_RED)));

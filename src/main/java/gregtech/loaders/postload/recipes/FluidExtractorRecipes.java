@@ -1,9 +1,7 @@
 package gregtech.loaders.postload.recipes;
 
-import static gregtech.api.enums.GT_Values.MOD_ID_DC;
-import static gregtech.api.enums.GT_Values.MOD_ID_RC;
-import static gregtech.api.enums.ModIDs.BartWorks;
-import static gregtech.api.enums.ModIDs.Forestry;
+import static gregtech.api.enums.ModIDs.*;
+import static gregtech.api.enums.ModIDs.Railcraft;
 import static gregtech.api.util.GT_ModHandler.getModItem;
 import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
 
@@ -21,7 +19,6 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_DummyWorld;
-import gregtech.loaders.postload.GT_MachineRecipeLoader;
 
 public class FluidExtractorRecipes implements Runnable {
 
@@ -156,14 +153,14 @@ public class FluidExtractorRecipes implements Runnable {
                 100,
                 1920);
         GT_Values.RA.addFluidExtractionRecipe(
-                getModItem(MOD_ID_DC, "item.ReinforcedGlassPlate", 1L, 0),
+                getModItem(NewHorizonsCoreMod.modID, "item.ReinforcedGlassPlate", 1L, 0),
                 GT_Values.NI,
                 Materials.ReinforceGlass.getMolten(72),
                 10000,
                 50,
                 1920);
         GT_Values.RA.addFluidExtractionRecipe(
-                getModItem(MOD_ID_DC, "item.ReinforcedGlassLense", 1L, 0),
+                getModItem(NewHorizonsCoreMod.modID, "item.ReinforcedGlassLense", 1L, 0),
                 GT_Values.NI,
                 Materials.ReinforceGlass.getMolten(54),
                 10000,
@@ -219,21 +216,21 @@ public class FluidExtractorRecipes implements Runnable {
                 28);
 
         GT_Values.RA.addFluidExtractionRecipe(
-                getModItem(MOD_ID_RC, "machine.beta", 1L, 0),
+                getModItem(Railcraft.modID, "machine.beta", 1L, 0),
                 GT_Values.NI,
                 Materials.Iron.getMolten(288),
                 10000,
                 300,
                 60);
         GT_Values.RA.addFluidExtractionRecipe(
-                getModItem(MOD_ID_RC, "machine.beta", 1L, 1),
+                getModItem(Railcraft.modID, "machine.beta", 1L, 1),
                 GT_Values.NI,
                 Materials.Iron.getMolten(144),
                 10000,
                 300,
                 60);
         GT_Values.RA.addFluidExtractionRecipe(
-                getModItem(MOD_ID_RC, "machine.beta", 1L, 2),
+                getModItem(Railcraft.modID, "machine.beta", 1L, 2),
                 GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Iron, 6),
                 Materials.Bronze.getMolten(1728),
                 10000,
@@ -241,21 +238,21 @@ public class FluidExtractorRecipes implements Runnable {
                 60);
 
         GT_Values.RA.addFluidExtractionRecipe(
-                getModItem(MOD_ID_RC, "machine.beta", 1L, 13),
+                getModItem(Railcraft.modID, "machine.beta", 1L, 13),
                 GT_Values.NI,
                 Materials.Steel.getMolten(288),
                 10000,
                 400,
                 90);
         GT_Values.RA.addFluidExtractionRecipe(
-                getModItem(MOD_ID_RC, "machine.beta", 1L, 14),
+                getModItem(Railcraft.modID, "machine.beta", 1L, 14),
                 GT_Values.NI,
                 Materials.Steel.getMolten(144),
                 10000,
                 400,
                 90);
         GT_Values.RA.addFluidExtractionRecipe(
-                getModItem(MOD_ID_RC, "machine.beta", 1L, 15),
+                getModItem(Railcraft.modID, "machine.beta", 1L, 15),
                 GT_Values.NI,
                 Materials.Steel.getMolten(1836),
                 10000,
@@ -263,21 +260,21 @@ public class FluidExtractorRecipes implements Runnable {
                 90);
 
         GT_Values.RA.addFluidExtractionRecipe(
-                getModItem(MOD_ID_RC, "machine.zeta", 1L, 0),
+                getModItem(Railcraft.modID, "machine.zeta", 1L, 0),
                 GT_Values.NI,
                 Materials.Aluminium.getMolten(288),
                 10000,
                 500,
                 120);
         GT_Values.RA.addFluidExtractionRecipe(
-                getModItem(MOD_ID_RC, "machine.zeta", 1L, 1),
+                getModItem(Railcraft.modID, "machine.zeta", 1L, 1),
                 GT_Values.NI,
                 Materials.Aluminium.getMolten(144),
                 10000,
                 500,
                 120);
         GT_Values.RA.addFluidExtractionRecipe(
-                getModItem(MOD_ID_RC, "machine.zeta", 1L, 2),
+                getModItem(Railcraft.modID, "machine.zeta", 1L, 2),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Ash, 12L),
                 Materials.Aluminium.getMolten(108L),
                 10000,
@@ -285,21 +282,21 @@ public class FluidExtractorRecipes implements Runnable {
                 120);
 
         GT_Values.RA.addFluidExtractionRecipe(
-                getModItem(MOD_ID_RC, "machine.zeta", 1L, 3),
+                getModItem(Railcraft.modID, "machine.zeta", 1L, 3),
                 GT_Values.NI,
                 Materials.StainlessSteel.getMolten(288),
                 10000,
                 600,
                 180);
         GT_Values.RA.addFluidExtractionRecipe(
-                getModItem(MOD_ID_RC, "machine.zeta", 1L, 4),
+                getModItem(Railcraft.modID, "machine.zeta", 1L, 4),
                 GT_Values.NI,
                 Materials.StainlessSteel.getMolten(144),
                 10000,
                 600,
                 180);
         GT_Values.RA.addFluidExtractionRecipe(
-                getModItem(MOD_ID_RC, "machine.zeta", 1L, 5),
+                getModItem(Railcraft.modID, "machine.zeta", 1L, 5),
                 GT_Values.NI,
                 Materials.StainlessSteel.getMolten(1836),
                 10000,
@@ -307,21 +304,21 @@ public class FluidExtractorRecipes implements Runnable {
                 180);
 
         GT_Values.RA.addFluidExtractionRecipe(
-                getModItem(MOD_ID_RC, "machine.zeta", 1L, 6),
+                getModItem(Railcraft.modID, "machine.zeta", 1L, 6),
                 GT_Values.NI,
                 Materials.Titanium.getMolten(288),
                 10000,
                 700,
                 240);
         GT_Values.RA.addFluidExtractionRecipe(
-                getModItem(MOD_ID_RC, "machine.zeta", 1L, 7),
+                getModItem(Railcraft.modID, "machine.zeta", 1L, 7),
                 GT_Values.NI,
                 Materials.Titanium.getMolten(144),
                 10000,
                 700,
                 240);
         GT_Values.RA.addFluidExtractionRecipe(
-                getModItem(MOD_ID_RC, "machine.zeta", 1L, 8),
+                getModItem(Railcraft.modID, "machine.zeta", 1L, 8),
                 GT_Values.NI,
                 Materials.Titanium.getMolten(1836),
                 10000,
@@ -329,21 +326,21 @@ public class FluidExtractorRecipes implements Runnable {
                 240);
 
         GT_Values.RA.addFluidExtractionRecipe(
-                getModItem(MOD_ID_RC, "machine.zeta", 1L, 9),
+                getModItem(Railcraft.modID, "machine.zeta", 1L, 9),
                 GT_Values.NI,
                 Materials.TungstenSteel.getMolten(288),
                 10000,
                 800,
                 360);
         GT_Values.RA.addFluidExtractionRecipe(
-                getModItem(MOD_ID_RC, "machine.zeta", 1L, 10),
+                getModItem(Railcraft.modID, "machine.zeta", 1L, 10),
                 GT_Values.NI,
                 Materials.TungstenSteel.getMolten(144),
                 10000,
                 800,
                 360);
         GT_Values.RA.addFluidExtractionRecipe(
-                getModItem(MOD_ID_RC, "machine.zeta", 1L, 11),
+                getModItem(Railcraft.modID, "machine.zeta", 1L, 11),
                 GT_Values.NI,
                 Materials.TungstenSteel.getMolten(1836),
                 10000,
@@ -351,21 +348,21 @@ public class FluidExtractorRecipes implements Runnable {
                 360);
 
         GT_Values.RA.addFluidExtractionRecipe(
-                getModItem(MOD_ID_RC, "machine.zeta", 1L, 12),
+                getModItem(Railcraft.modID, "machine.zeta", 1L, 12),
                 GT_Values.NI,
                 Materials.Palladium.getMolten(288),
                 10000,
                 900,
                 480);
         GT_Values.RA.addFluidExtractionRecipe(
-                getModItem(MOD_ID_RC, "machine.zeta", 1L, 13),
+                getModItem(Railcraft.modID, "machine.zeta", 1L, 13),
                 GT_Values.NI,
                 Materials.Palladium.getMolten(144),
                 10000,
                 900,
                 480);
         GT_Values.RA.addFluidExtractionRecipe(
-                getModItem(MOD_ID_RC, "machine.zeta", 1L, 14),
+                getModItem(Railcraft.modID, "machine.zeta", 1L, 14),
                 GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Chrome, 6L),
                 Materials.NiobiumTitanium.getMolten(1728),
                 10000,
@@ -373,21 +370,21 @@ public class FluidExtractorRecipes implements Runnable {
                 480);
 
         GT_Values.RA.addFluidExtractionRecipe(
-                getModItem(MOD_ID_RC, "machine.eta", 1L, 0),
+                getModItem(Railcraft.modID, "machine.eta", 1L, 0),
                 GT_Values.NI,
                 Materials.Iridium.getMolten(288),
                 10000,
                 1000,
                 720);
         GT_Values.RA.addFluidExtractionRecipe(
-                getModItem(MOD_ID_RC, "machine.eta", 1L, 1),
+                getModItem(Railcraft.modID, "machine.eta", 1L, 1),
                 GT_Values.NI,
                 Materials.Iridium.getMolten(144),
                 10000,
                 1000,
                 720);
         GT_Values.RA.addFluidExtractionRecipe(
-                getModItem(MOD_ID_RC, "machine.eta", 1L, 2),
+                getModItem(Railcraft.modID, "machine.eta", 1L, 2),
                 GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Iridium, 6L),
                 Materials.Enderium.getMolten(1728),
                 10000,
@@ -395,21 +392,21 @@ public class FluidExtractorRecipes implements Runnable {
                 720);
 
         GT_Values.RA.addFluidExtractionRecipe(
-                getModItem(MOD_ID_RC, "machine.eta", 1L, 3),
+                getModItem(Railcraft.modID, "machine.eta", 1L, 3),
                 GT_Values.NI,
                 Materials.Osmium.getMolten(288),
                 10000,
                 1100,
                 960);
         GT_Values.RA.addFluidExtractionRecipe(
-                getModItem(MOD_ID_RC, "machine.eta", 1L, 4),
+                getModItem(Railcraft.modID, "machine.eta", 1L, 4),
                 GT_Values.NI,
                 Materials.Osmium.getMolten(144),
                 10000,
                 1100,
                 960);
         GT_Values.RA.addFluidExtractionRecipe(
-                getModItem(MOD_ID_RC, "machine.eta", 1L, 5),
+                getModItem(Railcraft.modID, "machine.eta", 1L, 5),
                 GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Osmium, 6L),
                 Materials.Naquadah.getMolten(1728),
                 10000,
@@ -417,21 +414,21 @@ public class FluidExtractorRecipes implements Runnable {
                 960);
 
         GT_Values.RA.addFluidExtractionRecipe(
-                getModItem(MOD_ID_RC, "machine.eta", 1L, 6),
+                getModItem(Railcraft.modID, "machine.eta", 1L, 6),
                 GT_Values.NI,
                 Materials.Neutronium.getMolten(288),
                 10000,
                 1200,
                 1440);
         GT_Values.RA.addFluidExtractionRecipe(
-                getModItem(MOD_ID_RC, "machine.eta", 1L, 7),
+                getModItem(Railcraft.modID, "machine.eta", 1L, 7),
                 GT_Values.NI,
                 Materials.Neutronium.getMolten(144),
                 10000,
                 1200,
                 1440);
         GT_Values.RA.addFluidExtractionRecipe(
-                getModItem(MOD_ID_RC, "machine.eta", 1L, 8),
+                getModItem(Railcraft.modID, "machine.eta", 1L, 8),
                 GT_Values.NI,
                 Materials.Neutronium.getMolten(1836),
                 10000,

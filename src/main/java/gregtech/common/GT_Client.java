@@ -7,6 +7,7 @@ package gregtech.common;
 
 import static gregtech.api.enums.GT_Values.ALL_VALID_SIDES;
 import static gregtech.api.enums.GT_Values.calculateMaxPlasmaTurbineEfficiency;
+import static gregtech.api.enums.ModIDs.Forestry;
 import static org.lwjgl.opengl.GL11.GL_LINE_LOOP;
 
 import java.net.URL;
@@ -561,7 +562,7 @@ public class GT_Client extends GT_Proxy implements Runnable {
         for (GT_MetaGenerated_Item item : GT_MetaGenerated_Item.sInstances.values()) {
             metaGeneratedItemRenderer.registerItem(item);
         }
-        if (Loader.isModLoaded(GT_Values.MOD_ID_FR)) {
+        if (Forestry.isModLoaded()) {
             metaGeneratedItemRenderer.registerItem(GT_Bees.combs);
         }
         new GT_MetaGenerated_Tool_Renderer();

@@ -1,6 +1,5 @@
 package gregtech.loaders.postload.recipes;
 
-import static gregtech.api.enums.GT_Values.MOD_ID_TC;
 import static gregtech.api.enums.ModIDs.Thaumcraft;
 import static gregtech.api.util.GT_ModHandler.getModItem;
 
@@ -30,8 +29,8 @@ public class ThaumcraftRecipes implements Runnable {
             String tKey = "GT_BALANCE_SHARD_RECIPE";
             GregTech_API.sThaumcraftCompat.addCrucibleRecipe(
                     "TB.SM",
-                    getModItem(MOD_ID_TC, "ItemResource", 1L, 14),
-                    getModItem(MOD_ID_TC, "ItemShard", 1L, 6),
+                    getModItem(Thaumcraft.modID, "ItemResource", 1L, 14),
+                    getModItem(Thaumcraft.modID, "ItemShard", 1L, 6),
                     Arrays.asList(
                             new TC_Aspects.TC_AspectStack(TC_Aspects.PRAECANTATIO, 2L),
                             new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 1L)));
@@ -964,11 +963,11 @@ public class ThaumcraftRecipes implements Runnable {
                                                 new TC_Aspects.TC_AspectStack(TC_Aspects.RADIO, 16L),
                                                 new TC_Aspects.TC_AspectStack(TC_Aspects.TUTAMEN, 32L),
                                                 new TC_Aspects.TC_AspectStack(TC_Aspects.VENENUM, 16L)),
-                                        new ItemStack[] { getModItem(MOD_ID_TC, "ItemResource", 1L, 14),
+                                        new ItemStack[] { getModItem(Thaumcraft.modID, "ItemResource", 1L, 14),
                                                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Titanium, 1),
                                                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Rubber, 1),
                                                 GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Lead, 1),
-                                                getModItem(MOD_ID_TC, "ItemResource", 1L, 14),
+                                                getModItem(Thaumcraft.modID, "ItemResource", 1L, 14),
                                                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Titanium, 1),
                                                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Rubber, 1),
                                                 GT_OreDictUnificator

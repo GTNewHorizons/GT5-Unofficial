@@ -1,8 +1,8 @@
 package gregtech.common.tileentities.generators;
 
 import static gregtech.api.enums.ConfigCategories.machineconfig;
-import static gregtech.api.enums.GT_Values.MOD_ID_TC;
 import static gregtech.api.enums.GT_Values.V;
+import static gregtech.api.enums.ModIDs.Thaumcraft;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 import static net.minecraft.util.EnumChatFormatting.GRAY;
@@ -46,7 +46,6 @@ import thaumcraft.api.visnet.VisNetHandler;
 
 import com.google.common.base.Enums;
 
-import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
@@ -72,7 +71,7 @@ interface MagicalEnergyBBListener {
 public class GT_MetaTileEntity_MagicalEnergyAbsorber extends GT_MetaTileEntity_BasicGenerator
         implements MagicalEnergyBBListener {
 
-    private static final boolean THAUMCRAFT_LOADED = Loader.isModLoaded(MOD_ID_TC);
+    private static final boolean THAUMCRAFT_LOADED = Thaumcraft.isModLoaded();
     private static final ConcurrentHashMap<UUID, GT_MetaTileEntity_MagicalEnergyAbsorber> sSubscribedCrystals = new ConcurrentHashMap<>(
             4);
     private static final List<Aspect> sPrimalAspects = (THAUMCRAFT_LOADED) ? Aspect.getPrimalAspects()

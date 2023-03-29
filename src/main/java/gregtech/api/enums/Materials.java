@@ -2,7 +2,8 @@ package gregtech.api.enums;
 
 import static gregtech.api.enums.FluidState.GAS;
 import static gregtech.api.enums.GT_Values.M;
-import static gregtech.api.enums.GT_Values.MOD_ID_DC;
+import static gregtech.api.enums.ModIDs.NewHorizonsCoreMod;
+import static gregtech.api.enums.ModIDs.Thaumcraft;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -13,7 +14,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
-import cpw.mods.fml.common.Loader;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.TC_Aspects.TC_AspectStack;
@@ -2316,7 +2316,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         MATERIALS_ARRAY = MATERIALS_MAP.values().toArray(new Materials[0]); // Generate standard object array. This is a
                                                                             // lot faster to loop over.
         VALUES = Arrays.asList(MATERIALS_ARRAY);
-        if (!Loader.isModLoaded(MOD_ID_DC) && !GT_Mod.gregtechproxy.mEnableAllComponents)
+        if (!NewHorizonsCoreMod.isModLoaded() && !GT_Mod.gregtechproxy.mEnableAllComponents)
             OrePrefixes.initMaterialComponents();
         else {
             OrePrefixes.ingotHot.mDisabledItems.addAll(
@@ -2442,7 +2442,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
                 : aMaterial == Diamond || aMaterial == Thaumium ? Wood
                         : aMaterial.contains(SubTag.BURNING) ? Blaze
                                 : aMaterial.contains(SubTag.MAGICAL) && aMaterial.contains(SubTag.CRYSTAL)
-                                        && Loader.isModLoaded(GT_Values.MOD_ID_TC) ? Thaumium
+                                        && Thaumcraft.isModLoaded() ? Thaumium
                                                 : aMaterial.getMass() > Element.Tc.getMass() * 2 ? TungstenSteel
                                                         : aMaterial.getMass() > Element.Tc.getMass() ? Steel : Wood);
 

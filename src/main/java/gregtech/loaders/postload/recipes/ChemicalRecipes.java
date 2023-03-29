@@ -3,7 +3,6 @@ package gregtech.loaders.postload.recipes;
 import static gregtech.api.enums.GT_Values.*;
 import static gregtech.api.enums.ModIDs.*;
 import static gregtech.api.util.GT_ModHandler.getModItem;
-import static gregtech.loaders.postload.GT_MachineRecipeLoader.*;
 import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
 
 import net.minecraft.init.Blocks;
@@ -1104,7 +1103,7 @@ public class ChemicalRecipes implements Runnable {
         // Co(NO3)2 + 2KOH = CoH2O2 + 2KNO3
         GT_Values.RA.addChemicalRecipe(
                 MaterialsKevlar.CobaltIINitrate.getDust(9),
-                getModItem(MOD_ID_DC, "item.PotassiumHydroxideDust", 6L, 0),
+                getModItem(NewHorizonsCoreMod.modID, "item.PotassiumHydroxideDust", 6L, 0),
                 GT_Values.NF,
                 GT_Values.NF,
                 MaterialsKevlar.CobaltIIHydroxide.getDust(5),
@@ -2357,7 +2356,7 @@ public class ChemicalRecipes implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Saltpeter, 1L),
                 Materials.Glass.getMolten(864L),
                 GT_Values.NF,
-                getModItem(MOD_ID_RC, "tile.railcraft.glass", 6L),
+                getModItem(Railcraft.modID, "tile.railcraft.glass", 6L),
                 50);
 
         // NH3 + 2CH4O = C2H7N + 2H2O
@@ -3399,7 +3398,7 @@ public class ChemicalRecipes implements Runnable {
 
             // 4CH2O + C2H4O =NaOH= C5H12O4 + CO
             GT_Values.RA.addChemicalRecipe(
-                    getModItem(MOD_ID_GTPP, "Formaldehyde", 4L),
+                    getModItem(GTPlusPlus.modID, "Formaldehyde", 4L),
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SodiumHydroxide, 1L),
                     MaterialsKevlar.Acetaldehyde.getGas(1000),
                     Materials.CarbonMonoxide.getGas(1000),
@@ -3424,7 +3423,7 @@ public class ChemicalRecipes implements Runnable {
                     GT_Utility.getIntegratedCircuit(1),
                     Materials.Water.getFluid(2000L),
                     MaterialsKevlar.Acetylene.getGas(1000L),
-                    getModItem(MOD_ID_GTPP, "itemDustCalciumHydroxide", 5L),
+                    getModItem(GTPlusPlus.modID, "itemDustCalciumHydroxide", 5L),
                     300,
                     480);
 
@@ -3435,7 +3434,7 @@ public class ChemicalRecipes implements Runnable {
                     GT_Values.NF,
                     GT_Values.NF,
                     MaterialsKevlar.CobaltIIHydroxide.getDust(5),
-                    getModItem(MOD_ID_GTPP, "itemDustSodiumNitrate", 10L),
+                    getModItem(GTPlusPlus.modID, "itemDustSodiumNitrate", 10L),
                     100,
                     120);
         }
@@ -4953,7 +4952,7 @@ public class ChemicalRecipes implements Runnable {
 
             GT_Values.RA.addMultiblockChemicalRecipe(
                     new ItemStack[] { GT_Utility.getIntegratedCircuit(1),
-                            getModItem(MOD_ID_GTPP, "itemDustCalciumChloride", 1L),
+                            getModItem(GTPlusPlus.modID, "itemDustCalciumChloride", 1L),
                             GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.ParaPhenylenediamine, 9L),
                             GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.TerephthaloylChloride, 9L) },
                     new FluidStack[] { MaterialsKevlar.NMethylIIPyrrolidone.getFluid(1000) },
@@ -4964,7 +4963,7 @@ public class ChemicalRecipes implements Runnable {
                     500000);
             GT_Values.RA.addMultiblockChemicalRecipe(
                     new ItemStack[] { GT_Utility.getIntegratedCircuit(9),
-                            getModItem(MOD_ID_GTPP, "itemDustCalciumChloride", 7L),
+                            getModItem(GTPlusPlus.modID, "itemDustCalciumChloride", 7L),
                             GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.ParaPhenylenediamine, 63L),
                             GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.TerephthaloylChloride, 63L) },
                     new FluidStack[] { MaterialsKevlar.NMethylIIPyrrolidone.getFluid(7000) },

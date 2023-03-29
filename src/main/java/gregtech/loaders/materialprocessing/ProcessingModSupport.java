@@ -1,25 +1,23 @@
 package gregtech.loaders.materialprocessing;
 
-import static gregtech.api.enums.GT_Values.MOD_ID_DC;
+import static gregtech.api.enums.ModIDs.*;
 
-import cpw.mods.fml.common.Loader;
-import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 
 public class ProcessingModSupport implements gregtech.api.interfaces.IMaterialHandler {
 
-    public static boolean aTGregSupport = Loader.isModLoaded("TGregworks") || Loader.isModLoaded(MOD_ID_DC);
-    public static boolean aEnableUBCMats = Loader.isModLoaded("UndergroundBiomes") || aTGregSupport;
-    public static boolean aEnableThaumcraftMats = Loader.isModLoaded("Thaumcraft") || aTGregSupport;
-    public static boolean aEnableRotaryCraftMats = Loader.isModLoaded("RotaryCraft") || aTGregSupport;
-    public static boolean aEnableThermalFoundationMats = Loader.isModLoaded("ThermalFoundation") || aTGregSupport;
-    public static boolean aEnableEnderIOMats = Loader.isModLoaded("EnderIO") || aTGregSupport;
-    public static boolean aEnableRailcraftMats = Loader.isModLoaded(GT_Values.MOD_ID_RC) || aTGregSupport;
-    public static boolean aEnableGCMarsMats = Loader.isModLoaded("GalacticraftMars") || aTGregSupport;
-    public static boolean aEnableTwilightMats = Loader.isModLoaded(GT_Values.MOD_ID_TF) || aTGregSupport;
-    public static boolean aEnableMetallurgyMats = Loader.isModLoaded("Metallurgy") || aTGregSupport;
-    public static boolean aEnableProjectRedMats = Loader.isModLoaded("ProjRed|Core") || aTGregSupport;
+    public static boolean aTGregSupport = TinkersGregworks.isModLoaded() || NewHorizonsCoreMod.isModLoaded();
+    public static boolean aEnableUBCMats = UndergroundBiomes.isModLoaded() || aTGregSupport;
+    public static boolean aEnableThaumcraftMats = Thaumcraft.isModLoaded() || aTGregSupport;
+    public static boolean aEnableRotaryCraftMats = RotaryCraft.isModLoaded() || aTGregSupport;
+    public static boolean aEnableThermalFoundationMats = ThermalFondation.isModLoaded() || aTGregSupport;
+    public static boolean aEnableEnderIOMats = EnderIO.isModLoaded() || aTGregSupport;
+    public static boolean aEnableRailcraftMats = Railcraft.isModLoaded() || aTGregSupport;
+    public static boolean aEnableGCMarsMats = GalacticraftMars.isModLoaded()|| aTGregSupport;
+    public static boolean aEnableTwilightMats = TwilightForest.isModLoaded() || aTGregSupport;
+    public static boolean aEnableMetallurgyMats = Metallurgy.isModLoaded() || aTGregSupport;
+    public static boolean aEnableProjectRedMats = ProjectRedCore.isModLoaded() || aTGregSupport;
 
     public ProcessingModSupport() {
         Materials.add(this);
@@ -140,12 +138,12 @@ public class ProcessingModSupport implements gregtech.api.interfaces.IMaterialHa
         }
 
         // Enable Materials if correct mod is Loaded
-        Materials.ChromiumDioxide.mHasParentMod = Loader.isModLoaded("computronics");
+        Materials.ChromiumDioxide.mHasParentMod = Computronics.isModLoaded();
     }
 
     @Override
     public void onComponentInit() {
-        if (Loader.isModLoaded("computronics")) {
+        if (Computronics.isModLoaded()) {
             OrePrefixes.ring.enableComponent(Materials.RedAlloy);
             OrePrefixes.ring.enableComponent(Materials.NiobiumTitanium);
             OrePrefixes.foil.enableComponent(Materials.StainlessSteel);

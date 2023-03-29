@@ -1,12 +1,10 @@
 package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.enums.GT_Values.*;
-import static gregtech.api.enums.GT_Values.MOD_ID_RC;
 import static gregtech.api.enums.ModIDs.*;
 import static gregtech.api.util.GT_ModHandler.getModItem;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sAssemblerRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.*;
-import static gregtech.loaders.postload.GT_MachineRecipeLoader.*;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -21,7 +19,6 @@ import gregtech.api.enums.*;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
-import gregtech.loaders.postload.GT_MachineRecipeLoader;
 
 public class AssemblerRecipes implements Runnable {
 
@@ -681,7 +678,7 @@ public class AssemblerRecipes implements Runnable {
                 100,
                 8);
         GT_Values.RA.addAssemblerRecipe(
-                getModItem(MOD_ID_DC, "item.ArtificialLeather", 1L, 0),
+                getModItem(NewHorizonsCoreMod.modID, "item.ArtificialLeather", 1L, 0),
                 new ItemStack(Items.lead, 1, 32767),
                 Materials.Glue.getFluid(72L),
                 new ItemStack(Items.name_tag, 1, 0),
@@ -901,7 +898,7 @@ public class AssemblerRecipes implements Runnable {
                 8);
         GT_Values.RA.addAssemblerRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Paper, 3L),
-                getModItem(MOD_ID_DC, "item.ArtificialLeather", 1L, 0),
+                getModItem(NewHorizonsCoreMod.modID, "item.ArtificialLeather", 1L, 0),
                 Materials.Glue.getFluid(20L),
                 new ItemStack(Items.book, 1, 0),
                 32,
@@ -922,7 +919,7 @@ public class AssemblerRecipes implements Runnable {
                 8);
         GT_Values.RA.addAssemblerRecipe(
                 ItemList.Paper_Printed_Pages.get(1L),
-                getModItem(MOD_ID_DC, "item.ArtificialLeather", 1L, 0),
+                getModItem(NewHorizonsCoreMod.modID, "item.ArtificialLeather", 1L, 0),
                 Materials.Glue.getFluid(20L),
                 new ItemStack(Items.written_book, 1, 0),
                 32,
@@ -4316,13 +4313,13 @@ public class AssemblerRecipes implements Runnable {
                 ItemList.RC_Bed_Stone.get(48L),
                 200,
                 48);
-        ItemStack tRailWood = getModItem(MOD_ID_RC, "track", 64, 736);
+        ItemStack tRailWood = getModItem(Railcraft.modID, "track", 64, 736);
         if (tRailWood != null) {
             NBTTagCompound tTagWood = new NBTTagCompound();
             tTagWood.setString("track", "railcraft:track.slow");
             tRailWood.stackTagCompound = tTagWood;
 
-            ItemStack tRailWoodB = getModItem(MOD_ID_RC, "track.slow", 16);
+            ItemStack tRailWoodB = getModItem(Railcraft.modID, "track.slow", 16);
             NBTTagCompound tTagWoodB = new NBTTagCompound();
             tTagWoodB.setString("track", "railcraft:track.slow.boost");
             tRailWoodB.stackTagCompound = tTagWoodB;
@@ -4360,7 +4357,7 @@ public class AssemblerRecipes implements Runnable {
                 200,
                 (int) TierEU.RECIPE_LV);
 
-        ItemStack tRailRe = getModItem(MOD_ID_RC, "track", 64);
+        ItemStack tRailRe = getModItem(Railcraft.modID, "track", 64);
         NBTTagCompound tTagRe = new NBTTagCompound();
         tTagRe.setString("track", "railcraft:track.reinforced");
         tRailRe.stackTagCompound = tTagRe;
@@ -4373,7 +4370,7 @@ public class AssemblerRecipes implements Runnable {
                 200,
                 (int) TierEU.RECIPE_LV);
 
-        ItemStack tRailReB = getModItem(MOD_ID_RC, "track.reinforced", 16);
+        ItemStack tRailReB = getModItem(Railcraft.modID, "track.reinforced", 16);
         NBTTagCompound tTagReB = new NBTTagCompound();
         tTagReB.setString("track", "railcraft:track.reinforced.boost");
         tRailReB.stackTagCompound = tTagReB;
@@ -4387,7 +4384,7 @@ public class AssemblerRecipes implements Runnable {
                 300,
                 (int) TierEU.RECIPE_LV);
 
-        ItemStack tRailEl = getModItem(MOD_ID_RC, "track", 64);
+        ItemStack tRailEl = getModItem(Railcraft.modID, "track", 64);
         NBTTagCompound tTagEl = new NBTTagCompound();
         tTagEl.setString("track", "railcraft:track.electric");
         tRailEl.stackTagCompound = tTagEl;
@@ -4400,7 +4397,7 @@ public class AssemblerRecipes implements Runnable {
                 200,
                 (int) TierEU.RECIPE_LV);
 
-        ItemStack tRailHs = getModItem(MOD_ID_RC, "track", 64, 816);
+        ItemStack tRailHs = getModItem(Railcraft.modID, "track", 64, 816);
         if (tRailHs != null) {
             NBTTagCompound tTagHs = new NBTTagCompound();
             tTagHs.setString("track", "railcraft:track.speed");
@@ -4414,7 +4411,7 @@ public class AssemblerRecipes implements Runnable {
                     200,
                     (int) TierEU.RECIPE_LV);
         }
-        ItemStack tRailHsB = getModItem(MOD_ID_RC, "track.speed", 16);
+        ItemStack tRailHsB = getModItem(Railcraft.modID, "track.speed", 16);
         NBTTagCompound tTagHsB = new NBTTagCompound();
         tTagHsB.setString("track", "railcraft:track.speed.boost");
         tRailHsB.stackTagCompound = tTagHsB;
@@ -4429,7 +4426,7 @@ public class AssemblerRecipes implements Runnable {
                 (int) TierEU.RECIPE_LV);
 
         // --- Wooden Switch Track ---
-        ItemStack tRailSS = getModItem(MOD_ID_RC, "track.slow", 1, 19986);
+        ItemStack tRailSS = getModItem(Railcraft.modID, "track.slow", 1, 19986);
         if (tRailSS != null) {
             NBTTagCompound tTagSS = new NBTTagCompound();
             tTagSS.setString("track", "railcraft:track.slow.switch");
@@ -4493,7 +4490,7 @@ public class AssemblerRecipes implements Runnable {
                     256);
         }
         // --- Wooden Wye Track ---
-        ItemStack tRailSW = getModItem(MOD_ID_RC, "track.slow", 1);
+        ItemStack tRailSW = getModItem(Railcraft.modID, "track.slow", 1);
         if (tRailSW != null) {
             NBTTagCompound tTagSW = new NBTTagCompound();
             tTagSW.setString("track", "railcraft:track.slow.wye");
@@ -4557,7 +4554,7 @@ public class AssemblerRecipes implements Runnable {
                     256);
         }
         // --- Wooden Junction Tack ---
-        ItemStack tRailSJ = getModItem(MOD_ID_RC, "track.slow", 1);
+        ItemStack tRailSJ = getModItem(Railcraft.modID, "track.slow", 1);
         if (tRailSJ != null) {
             NBTTagCompound tTagSJ = new NBTTagCompound();
             tTagSJ.setString("track", "railcraft:track.slow.junction");
@@ -4621,7 +4618,7 @@ public class AssemblerRecipes implements Runnable {
                     256);
         }
         // --- Switch Tack ---
-        ItemStack tRailNS = getModItem(MOD_ID_RC, "track", 1, 4767);
+        ItemStack tRailNS = getModItem(Railcraft.modID, "track", 1, 4767);
         if (tRailNS != null) {
             NBTTagCompound tTagNS = new NBTTagCompound();
             tTagNS.setString("track", "railcraft:track.switch");
@@ -4685,7 +4682,7 @@ public class AssemblerRecipes implements Runnable {
                     (int) TierEU.RECIPE_HV);
         }
         // --- Wye Tack ---
-        ItemStack tRailNW = getModItem(MOD_ID_RC, "track", 1, 2144);
+        ItemStack tRailNW = getModItem(Railcraft.modID, "track", 1, 2144);
         if (tRailNW != null) {
             NBTTagCompound tTagNW = new NBTTagCompound();
             tTagNW.setString("track", "railcraft:track.wye");
@@ -4749,7 +4746,7 @@ public class AssemblerRecipes implements Runnable {
                     (int) TierEU.RECIPE_HV);
         }
         // --- Junction Tack ---
-        ItemStack tRailNJ = getModItem(MOD_ID_RC, "track", 1);
+        ItemStack tRailNJ = getModItem(Railcraft.modID, "track", 1);
         if (tRailNJ != null) {
             NBTTagCompound tTagNJ = new NBTTagCompound();
             tTagNJ.setString("track", "railcraft:track.junction");
@@ -4813,7 +4810,7 @@ public class AssemblerRecipes implements Runnable {
                     (int) TierEU.RECIPE_HV);
         }
         // --- Reinforced Switch Track ---
-        ItemStack tRailRS = getModItem(MOD_ID_RC, "track.reinforced", 1);
+        ItemStack tRailRS = getModItem(Railcraft.modID, "track.reinforced", 1);
         if (tRailRS != null) {
             NBTTagCompound tTagRS = new NBTTagCompound();
             tTagRS.setString("track", "railcraft:track.reinforced.switch");
@@ -4877,7 +4874,7 @@ public class AssemblerRecipes implements Runnable {
                     (int) TierEU.RECIPE_HV);
         }
         // --- Reinforced Wye Track ---
-        ItemStack tRailRW = getModItem(MOD_ID_RC, "track.reinforced", 1);
+        ItemStack tRailRW = getModItem(Railcraft.modID, "track.reinforced", 1);
         if (tRailRW != null) {
             NBTTagCompound tTagRW = new NBTTagCompound();
             tTagRW.setString("track", "railcraft:track.reinforced.wye");
@@ -4941,7 +4938,7 @@ public class AssemblerRecipes implements Runnable {
                     (int) TierEU.RECIPE_HV);
         }
         // --- Reinforced Junction Track ---
-        ItemStack tRailRJ = getModItem(MOD_ID_RC, "track.reinforced", 1, 764);
+        ItemStack tRailRJ = getModItem(Railcraft.modID, "track.reinforced", 1, 764);
         if (tRailRJ != null) {
             NBTTagCompound tTagRJ = new NBTTagCompound();
             tTagRJ.setString("track", "railcraft:track.reinforced.junction");
@@ -5005,7 +5002,7 @@ public class AssemblerRecipes implements Runnable {
                     (int) TierEU.RECIPE_HV);
         }
         // --- H.S. Switch Track ---
-        ItemStack tRailSSw = getModItem(MOD_ID_RC, "track.speed", 1, 7916);
+        ItemStack tRailSSw = getModItem(Railcraft.modID, "track.speed", 1, 7916);
         if (tRailSSw != null) {
             NBTTagCompound tTagRSSw = new NBTTagCompound();
             tTagRSSw.setString("track", "railcraft:track.speed.switch");
@@ -5069,7 +5066,7 @@ public class AssemblerRecipes implements Runnable {
                     (int) TierEU.RECIPE_HV);
         }
         // --- H.S. Wye Track ---
-        ItemStack tRailSWy = getModItem(MOD_ID_RC, "track.speed", 1);
+        ItemStack tRailSWy = getModItem(Railcraft.modID, "track.speed", 1);
         if (tRailSWy != null) {
             NBTTagCompound tTagRSWy = new NBTTagCompound();
             tTagRSWy.setString("track", "railcraft:track.speed.wye");
@@ -5133,7 +5130,7 @@ public class AssemblerRecipes implements Runnable {
                     (int) TierEU.RECIPE_HV);
         }
         // --- H.S. Transition Track ---
-        ItemStack tRailSTt = getModItem(MOD_ID_RC, "track.speed", 1, 26865);
+        ItemStack tRailSTt = getModItem(Railcraft.modID, "track.speed", 1, 26865);
         if (tRailSTt != null) {
             NBTTagCompound tTagRSTt = new NBTTagCompound();
             tTagRSTt.setString("track", "railcraft:track.speed.transition");
@@ -5181,7 +5178,7 @@ public class AssemblerRecipes implements Runnable {
                     (int) TierEU.RECIPE_HV);
         }
         // --- Electric Switch Track ---
-        ItemStack tRailES = getModItem(MOD_ID_RC, "track.electric", 1, 10488);
+        ItemStack tRailES = getModItem(Railcraft.modID, "track.electric", 1, 10488);
         if (tRailES != null) {
             NBTTagCompound tTagES = new NBTTagCompound();
             tTagES.setString("track", "railcraft:track.electric.switch");
@@ -5245,7 +5242,7 @@ public class AssemblerRecipes implements Runnable {
                     (int) TierEU.RECIPE_HV);
         }
         // --- Electric Wye Track ---
-        ItemStack tRailEw = getModItem(MOD_ID_RC, "track.electric", 1);
+        ItemStack tRailEw = getModItem(Railcraft.modID, "track.electric", 1);
         if (tRailEw != null) {
             NBTTagCompound tTagEw = new NBTTagCompound();
             tTagEw.setString("track", "railcraft:track.electric.wye");
@@ -5309,7 +5306,7 @@ public class AssemblerRecipes implements Runnable {
                     (int) TierEU.RECIPE_HV);
         }
         // --- Electric Junction Track ---
-        ItemStack tRailEJ = getModItem(MOD_ID_RC, "track.electric", 1);
+        ItemStack tRailEJ = getModItem(Railcraft.modID, "track.electric", 1);
         if (tRailEJ != null) {
             NBTTagCompound tTagREJ = new NBTTagCompound();
             tTagREJ.setString("track", "railcraft:track.electric.junction");
@@ -5437,7 +5434,7 @@ public class AssemblerRecipes implements Runnable {
                 GT_Values.RA.addAssemblerRecipe(
                         new ItemStack[] { ItemList.Circuit_Board_Plastic_Advanced.get(1L),
                                 GT_OreDictUnificator.get(OrePrefixes.itemCasing, Materials.Aluminium, 2L),
-                                getModItem(MOD_ID_RC, "machine.alpha", 1L, 0),
+                                getModItem(Railcraft.modID, "machine.alpha", 1L, 0),
                                 getModItem("OpenComputers", "item", 1L, 26), GT_Utility.getIntegratedCircuit(1) },
                         tMat.getMolten(144L * tMultiplier / 2L),
                         getModItem("OpenComputers", "item", 1L, 62),
@@ -5451,7 +5448,7 @@ public class AssemblerRecipes implements Runnable {
                         GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Lapis, 1L),
                         GT_Utility.getIntegratedCircuit(1) },
                 Materials.SeedOil.getFluid(250L),
-                getModItem(MOD_ID_DC, "item.EngineCore", 1L, 0),
+                getModItem(NewHorizonsCoreMod.modID, "item.EngineCore", 1L, 0),
                 100,
                 16);
         GT_Values.RA.addAssemblerRecipe(
@@ -5459,7 +5456,7 @@ public class AssemblerRecipes implements Runnable {
                         GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Lapis, 1L),
                         GT_Utility.getIntegratedCircuit(1) },
                 Materials.Lubricant.getFluid(125L),
-                getModItem(MOD_ID_DC, "item.EngineCore", 1L, 0),
+                getModItem(NewHorizonsCoreMod.modID, "item.EngineCore", 1L, 0),
                 100,
                 16);
 
@@ -5468,31 +5465,31 @@ public class AssemblerRecipes implements Runnable {
                         GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Obsidian, 4L),
                         GT_Utility.getIntegratedCircuit(1) },
                 GT_Values.NF,
-                getModItem(MOD_ID_RC, "machine.beta", 1L, 11),
+                getModItem(Railcraft.modID, "machine.beta", 1L, 11),
                 200,
                 16);
         GT_Values.RA.addAssemblerRecipe(
-                new ItemStack[] { getModItem(MOD_ID_DC, "item.EngineCore", 1L),
+                new ItemStack[] { getModItem(NewHorizonsCoreMod.modID, "item.EngineCore", 1L),
                         GT_OreDictUnificator.get(OrePrefixes.plate, Materials.AnyCopper, 10L),
                         GT_Utility.getIntegratedCircuit(10) },
                 GT_Values.NF,
-                getModItem(MOD_ID_RC, "machine.beta", 1L, 7),
+                getModItem(Railcraft.modID, "machine.beta", 1L, 7),
                 200,
                 16);
         GT_Values.RA.addAssemblerRecipe(
-                new ItemStack[] { getModItem(MOD_ID_DC, "item.EngineCore", 1L),
+                new ItemStack[] { getModItem(NewHorizonsCoreMod.modID, "item.EngineCore", 1L),
                         GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 10L),
                         GT_Utility.getIntegratedCircuit(10) },
                 GT_Values.NF,
-                getModItem(MOD_ID_RC, "machine.beta", 1L, 8),
+                getModItem(Railcraft.modID, "machine.beta", 1L, 8),
                 200,
                 16);
         GT_Values.RA.addAssemblerRecipe(
-                new ItemStack[] { getModItem(MOD_ID_DC, "item.EngineCore", 1L),
+                new ItemStack[] { getModItem(NewHorizonsCoreMod.modID, "item.EngineCore", 1L),
                         GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Aluminium, 10L),
                         GT_Utility.getIntegratedCircuit(10) },
                 GT_Values.NF,
-                getModItem(MOD_ID_RC, "machine.beta", 1L, 9),
+                getModItem(Railcraft.modID, "machine.beta", 1L, 9),
                 200,
                 16);
         GT_Values.RA.addAssemblerRecipe(
@@ -5502,283 +5499,283 @@ public class AssemblerRecipes implements Runnable {
                         GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Obsidian, 2L),
                         GT_Utility.getIntegratedCircuit(1) },
                 GT_Values.NF,
-                getModItem(MOD_ID_RC, "machine.alpha", 1, 0),
+                getModItem(Railcraft.modID, "machine.alpha", 1, 0),
                 600,
                 (int) TierEU.RECIPE_HV);
 
         GT_Values.RA.addAssemblerRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.AnyIron, 2L),
                 GT_Utility.getIntegratedCircuit(20),
-                getModItem(MOD_ID_RC, "machine.beta", 1L, 0),
+                getModItem(Railcraft.modID, "machine.beta", 1L, 0),
                 600,
                 (int) TierEU.RECIPE_LV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.plate, Materials.AnyIron, 2L),
                         new ItemStack(Blocks.glass_pane, 2, 0), GT_Utility.getIntegratedCircuit(21) },
                 GT_Values.NF,
-                getModItem(MOD_ID_RC, "machine.beta", 2L, 1),
+                getModItem(Railcraft.modID, "machine.beta", 2L, 1),
                 800,
                 (int) TierEU.RECIPE_LV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.plate, Materials.AnyIron, 2L),
                         getModItem("TConstruct", "GlassPane", 2L, 0), GT_Utility.getIntegratedCircuit(21) },
                 GT_Values.NF,
-                getModItem(MOD_ID_RC, "machine.beta", 2L, 1),
+                getModItem(Railcraft.modID, "machine.beta", 2L, 1),
                 800,
                 (int) TierEU.RECIPE_LV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Bronze, 2L),
                         new ItemStack(Blocks.iron_bars, 2, 0), GT_Utility.getIntegratedCircuit(22) },
                 GT_Values.NF,
-                getModItem(MOD_ID_RC, "machine.beta", 1L, 2),
+                getModItem(Railcraft.modID, "machine.beta", 1L, 2),
                 800,
                 (int) TierEU.RECIPE_LV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 2L),
                         GT_Utility.getIntegratedCircuit(20) },
                 GT_Values.NF,
-                getModItem(MOD_ID_RC, "machine.beta", 1L, 13),
+                getModItem(Railcraft.modID, "machine.beta", 1L, 13),
                 200,
                 64);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 2L),
                         new ItemStack(Blocks.glass_pane, 2, 0), GT_Utility.getIntegratedCircuit(21) },
                 GT_Values.NF,
-                getModItem(MOD_ID_RC, "machine.beta", 2L, 14),
+                getModItem(Railcraft.modID, "machine.beta", 2L, 14),
                 400,
                 64);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 2L),
                         getModItem("TConstruct", "GlassPane", 2L, 0), GT_Utility.getIntegratedCircuit(21) },
                 GT_Values.NF,
-                getModItem(MOD_ID_RC, "machine.beta", 2L, 14),
+                getModItem(Railcraft.modID, "machine.beta", 2L, 14),
                 400,
                 64);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Steel, 2L),
-                        getModItem(MOD_ID_DC, "item.SteelBars", 2L), GT_Utility.getIntegratedCircuit(22) },
+                        getModItem(NewHorizonsCoreMod.modID, "item.SteelBars", 2L), GT_Utility.getIntegratedCircuit(22) },
                 GT_Values.NF,
-                getModItem(MOD_ID_RC, "machine.beta", 1L, 15),
+                getModItem(Railcraft.modID, "machine.beta", 1L, 15),
                 400,
                 64);
         GT_Values.RA.addAssemblerRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Aluminium, 2L),
                 GT_Utility.getIntegratedCircuit(20),
-                getModItem(MOD_ID_RC, "machine.zeta", 1L, 0),
+                getModItem(Railcraft.modID, "machine.zeta", 1L, 0),
                 600,
                 (int) TierEU.RECIPE_MV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Aluminium, 2L),
                         new ItemStack(Blocks.glass_pane, 2, 0), GT_Utility.getIntegratedCircuit(21) },
                 GT_Values.NF,
-                getModItem(MOD_ID_RC, "machine.zeta", 2L, 1),
+                getModItem(Railcraft.modID, "machine.zeta", 2L, 1),
                 800,
                 (int) TierEU.RECIPE_MV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Aluminium, 2L),
                         getModItem("TConstruct", "GlassPane", 2L, 0), GT_Utility.getIntegratedCircuit(21) },
                 GT_Values.NF,
-                getModItem(MOD_ID_RC, "machine.zeta", 2L, 1),
+                getModItem(Railcraft.modID, "machine.zeta", 2L, 1),
                 800,
                 (int) TierEU.RECIPE_MV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Plastic, 2L),
-                        getModItem(MOD_ID_DC, "item.AluminiumBars", 2L), GT_Utility.getIntegratedCircuit(22) },
+                        getModItem(NewHorizonsCoreMod.modID, "item.AluminiumBars", 2L), GT_Utility.getIntegratedCircuit(22) },
                 GT_Values.NF,
-                getModItem(MOD_ID_RC, "machine.zeta", 1L, 2),
+                getModItem(Railcraft.modID, "machine.zeta", 1L, 2),
                 800,
                 (int) TierEU.RECIPE_MV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.plate, Materials.StainlessSteel, 2L),
                         GT_Utility.getIntegratedCircuit(20) },
                 GT_Values.NF,
-                getModItem(MOD_ID_RC, "machine.zeta", 1L, 3),
+                getModItem(Railcraft.modID, "machine.zeta", 1L, 3),
                 200,
                 256);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.plate, Materials.StainlessSteel, 2L),
                         new ItemStack(Blocks.glass_pane, 2, 0), GT_Utility.getIntegratedCircuit(21) },
                 GT_Values.NF,
-                getModItem(MOD_ID_RC, "machine.zeta", 2L, 4),
+                getModItem(Railcraft.modID, "machine.zeta", 2L, 4),
                 400,
                 256);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.plate, Materials.StainlessSteel, 2L),
                         getModItem("TConstruct", "GlassPane", 2L, 0), GT_Utility.getIntegratedCircuit(21) },
                 GT_Values.NF,
-                getModItem(MOD_ID_RC, "machine.zeta", 2L, 4),
+                getModItem(Railcraft.modID, "machine.zeta", 2L, 4),
                 400,
                 256);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.StainlessSteel, 2L),
-                        getModItem(MOD_ID_DC, "item.StainlessSteelBars", 2L), GT_Utility.getIntegratedCircuit(22) },
+                        getModItem(NewHorizonsCoreMod.modID, "item.StainlessSteelBars", 2L), GT_Utility.getIntegratedCircuit(22) },
                 GT_Values.NF,
-                getModItem(MOD_ID_RC, "machine.zeta", 1L, 5),
+                getModItem(Railcraft.modID, "machine.zeta", 1L, 5),
                 400,
                 256);
         GT_Values.RA.addAssemblerRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Titanium, 2L),
                 GT_Utility.getIntegratedCircuit(20),
-                getModItem(MOD_ID_RC, "machine.zeta", 1L, 6),
+                getModItem(Railcraft.modID, "machine.zeta", 1L, 6),
                 600,
                 (int) TierEU.RECIPE_HV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Titanium, 2L),
                         new ItemStack(Blocks.glass_pane, 2, 0), GT_Utility.getIntegratedCircuit(21) },
                 GT_Values.NF,
-                getModItem(MOD_ID_RC, "machine.zeta", 2L, 7),
+                getModItem(Railcraft.modID, "machine.zeta", 2L, 7),
                 800,
                 (int) TierEU.RECIPE_HV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Titanium, 2L),
                         getModItem("TConstruct", "GlassPane", 2L, 0), GT_Utility.getIntegratedCircuit(21) },
                 GT_Values.NF,
-                getModItem(MOD_ID_RC, "machine.zeta", 2L, 7),
+                getModItem(Railcraft.modID, "machine.zeta", 2L, 7),
                 800,
                 (int) TierEU.RECIPE_HV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Titanium, 2L),
-                        getModItem(MOD_ID_DC, "item.TitaniumBars", 2L), GT_Utility.getIntegratedCircuit(22) },
+                        getModItem(NewHorizonsCoreMod.modID, "item.TitaniumBars", 2L), GT_Utility.getIntegratedCircuit(22) },
                 GT_Values.NF,
-                getModItem(MOD_ID_RC, "machine.zeta", 1L, 8),
+                getModItem(Railcraft.modID, "machine.zeta", 1L, 8),
                 800,
                 (int) TierEU.RECIPE_HV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.plate, Materials.TungstenSteel, 2L),
                         GT_Utility.getIntegratedCircuit(20) },
                 GT_Values.NF,
-                getModItem(MOD_ID_RC, "machine.zeta", 1L, 9),
+                getModItem(Railcraft.modID, "machine.zeta", 1L, 9),
                 200,
                 960);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.plate, Materials.TungstenSteel, 2L),
                         new ItemStack(Blocks.glass_pane, 2, 0), GT_Utility.getIntegratedCircuit(21) },
                 GT_Values.NF,
-                getModItem(MOD_ID_RC, "machine.zeta", 2L, 10),
+                getModItem(Railcraft.modID, "machine.zeta", 2L, 10),
                 400,
                 960);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.plate, Materials.TungstenSteel, 2L),
                         getModItem("TConstruct", "GlassPane", 2L, 0), GT_Utility.getIntegratedCircuit(21) },
                 GT_Values.NF,
-                getModItem(MOD_ID_RC, "machine.zeta", 2L, 10),
+                getModItem(Railcraft.modID, "machine.zeta", 2L, 10),
                 400,
                 960);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.TungstenSteel, 2L),
-                        getModItem(MOD_ID_DC, "item.TungstenSteelBars", 2L), GT_Utility.getIntegratedCircuit(22) },
+                        getModItem(NewHorizonsCoreMod.modID, "item.TungstenSteelBars", 2L), GT_Utility.getIntegratedCircuit(22) },
                 GT_Values.NF,
-                getModItem(MOD_ID_RC, "machine.zeta", 1L, 11),
+                getModItem(Railcraft.modID, "machine.zeta", 1L, 11),
                 400,
                 960);
         GT_Values.RA.addAssemblerRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Palladium, 2L),
                 GT_Utility.getIntegratedCircuit(20),
-                getModItem(MOD_ID_RC, "machine.zeta", 1L, 12),
+                getModItem(Railcraft.modID, "machine.zeta", 1L, 12),
                 600,
                 (int) TierEU.RECIPE_EV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Palladium, 2L),
                         new ItemStack(Blocks.glass_pane, 2, 0), GT_Utility.getIntegratedCircuit(21) },
                 GT_Values.NF,
-                getModItem(MOD_ID_RC, "machine.zeta", 2L, 13),
+                getModItem(Railcraft.modID, "machine.zeta", 2L, 13),
                 800,
                 (int) TierEU.RECIPE_EV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Palladium, 2L),
                         getModItem("TConstruct", "GlassPane", 2L, 0), GT_Utility.getIntegratedCircuit(21) },
                 GT_Values.NF,
-                getModItem(MOD_ID_RC, "machine.zeta", 2L, 13),
+                getModItem(Railcraft.modID, "machine.zeta", 2L, 13),
                 800,
                 (int) TierEU.RECIPE_EV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.NiobiumTitanium, 2L),
-                        getModItem(MOD_ID_DC, "item.ChromeBars", 2L), GT_Utility.getIntegratedCircuit(22) },
+                        getModItem(NewHorizonsCoreMod.modID, "item.ChromeBars", 2L), GT_Utility.getIntegratedCircuit(22) },
                 GT_Values.NF,
-                getModItem(MOD_ID_RC, "machine.zeta", 1L, 14),
+                getModItem(Railcraft.modID, "machine.zeta", 1L, 14),
                 800,
                 (int) TierEU.RECIPE_EV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iridium, 2L),
                         GT_Utility.getIntegratedCircuit(20) },
                 GT_Values.NF,
-                getModItem(MOD_ID_RC, "machine.eta", 1L, 0),
+                getModItem(Railcraft.modID, "machine.eta", 1L, 0),
                 200,
                 4096);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iridium, 2L),
                         new ItemStack(Blocks.glass_pane, 2, 0), GT_Utility.getIntegratedCircuit(21) },
                 GT_Values.NF,
-                getModItem(MOD_ID_RC, "machine.eta", 2L, 1),
+                getModItem(Railcraft.modID, "machine.eta", 2L, 1),
                 400,
                 4096);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iridium, 2L),
                         getModItem("TConstruct", "GlassPane", 2L, 0), GT_Utility.getIntegratedCircuit(21) },
                 GT_Values.NF,
-                getModItem(MOD_ID_RC, "machine.eta", 2L, 1),
+                getModItem(Railcraft.modID, "machine.eta", 2L, 1),
                 400,
                 4096);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Enderium, 2L),
-                        getModItem(MOD_ID_DC, "item.IridiumBars", 2L), GT_Utility.getIntegratedCircuit(22) },
+                        getModItem(NewHorizonsCoreMod.modID, "item.IridiumBars", 2L), GT_Utility.getIntegratedCircuit(22) },
                 GT_Values.NF,
-                getModItem(MOD_ID_RC, "machine.eta", 1L, 2),
+                getModItem(Railcraft.modID, "machine.eta", 1L, 2),
                 400,
                 4096);
         GT_Values.RA.addAssemblerRecipe(
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Osmium, 2L),
                 GT_Utility.getIntegratedCircuit(20),
-                getModItem(MOD_ID_RC, "machine.eta", 1L, 3),
+                getModItem(Railcraft.modID, "machine.eta", 1L, 3),
                 600,
                 (int) TierEU.RECIPE_IV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Osmium, 2L),
                         new ItemStack(Blocks.glass_pane, 2, 0), GT_Utility.getIntegratedCircuit(21) },
                 GT_Values.NF,
-                getModItem(MOD_ID_RC, "machine.eta", 2L, 4),
+                getModItem(Railcraft.modID, "machine.eta", 2L, 4),
                 800,
                 (int) TierEU.RECIPE_IV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Osmium, 2L),
                         getModItem("TConstruct", "GlassPane", 2L, 0), GT_Utility.getIntegratedCircuit(21) },
                 GT_Values.NF,
-                getModItem(MOD_ID_RC, "machine.eta", 2L, 4),
+                getModItem(Railcraft.modID, "machine.eta", 2L, 4),
                 800,
                 (int) TierEU.RECIPE_IV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Naquadah, 2L),
-                        getModItem(MOD_ID_DC, "item.OsmiumBars", 2L), GT_Utility.getIntegratedCircuit(22) },
+                        getModItem(NewHorizonsCoreMod.modID, "item.OsmiumBars", 2L), GT_Utility.getIntegratedCircuit(22) },
                 GT_Values.NF,
-                getModItem(MOD_ID_RC, "machine.eta", 1L, 5),
+                getModItem(Railcraft.modID, "machine.eta", 1L, 5),
                 800,
                 (int) TierEU.RECIPE_IV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 2L),
                         GT_Utility.getIntegratedCircuit(20) },
                 GT_Values.NF,
-                getModItem(MOD_ID_RC, "machine.eta", 1L, 6),
+                getModItem(Railcraft.modID, "machine.eta", 1L, 6),
                 200,
                 (int) TierEU.RECIPE_LuV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 2L),
                         new ItemStack(Blocks.glass_pane, 2, 0), GT_Utility.getIntegratedCircuit(21) },
                 GT_Values.NF,
-                getModItem(MOD_ID_RC, "machine.eta", 2L, 7),
+                getModItem(Railcraft.modID, "machine.eta", 2L, 7),
                 400,
                 (int) TierEU.RECIPE_LuV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 2L),
                         getModItem("TConstruct", "GlassPane", 2L, 0), GT_Utility.getIntegratedCircuit(21) },
                 GT_Values.NF,
-                getModItem(MOD_ID_RC, "machine.eta", 2L, 7),
+                getModItem(Railcraft.modID, "machine.eta", 2L, 7),
                 400,
                 (int) TierEU.RECIPE_LuV);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Neutronium, 2L),
-                        getModItem(MOD_ID_DC, "item.NeutroniumBars", 2L), GT_Utility.getIntegratedCircuit(22) },
+                        getModItem(NewHorizonsCoreMod.modID, "item.NeutroniumBars", 2L), GT_Utility.getIntegratedCircuit(22) },
                 GT_Values.NF,
-                getModItem(MOD_ID_RC, "machine.eta", 1L, 8),
+                getModItem(Railcraft.modID, "machine.eta", 1L, 8),
                 400,
                 (int) TierEU.RECIPE_LuV);
         // Water Tank
@@ -5786,7 +5783,7 @@ public class AssemblerRecipes implements Runnable {
                 new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Iron, 1L),
                         GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Wood, 2L) },
                 Materials.Glue.getFluid(36L),
-                getModItem(MOD_ID_RC, "machine.alpha", 1L, 14),
+                getModItem(Railcraft.modID, "machine.alpha", 1L, 14),
                 200,
                 8,
                 false);
@@ -5794,7 +5791,7 @@ public class AssemblerRecipes implements Runnable {
                 new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.stick, Materials.IronMagnetic, 1L),
                         GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Wood, 2L) },
                 Materials.Glue.getFluid(36L),
-                getModItem(MOD_ID_RC, "machine.alpha", 1L, 14),
+                getModItem(Railcraft.modID, "machine.alpha", 1L, 14),
                 200,
                 8,
                 false);
@@ -5802,7 +5799,7 @@ public class AssemblerRecipes implements Runnable {
                 new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.stick, Materials.WroughtIron, 1L),
                         GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Wood, 2L) },
                 Materials.Glue.getFluid(36L),
-                getModItem(MOD_ID_RC, "machine.alpha", 1L, 14),
+                getModItem(Railcraft.modID, "machine.alpha", 1L, 14),
                 200,
                 8,
                 false);
@@ -5810,7 +5807,7 @@ public class AssemblerRecipes implements Runnable {
                 new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Steel, 4L),
                         GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Wood, 4L) },
                 Materials.Glue.getFluid(72L),
-                getModItem(MOD_ID_RC, "machine.alpha", 3L, 14),
+                getModItem(Railcraft.modID, "machine.alpha", 3L, 14),
                 400,
                 30,
                 false);
@@ -5818,7 +5815,7 @@ public class AssemblerRecipes implements Runnable {
                 new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Steel, 2L),
                         GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.WoodSealed, 1L) },
                 Materials.Plastic.getMolten(36L),
-                getModItem(MOD_ID_RC, "machine.alpha", 3L, 14),
+                getModItem(Railcraft.modID, "machine.alpha", 3L, 14),
                 400,
                 30,
                 false);
@@ -5826,7 +5823,7 @@ public class AssemblerRecipes implements Runnable {
                 new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.StainlessSteel, 4L),
                         GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.WoodSealed, 4L) },
                 Materials.Plastic.getMolten(72L),
-                getModItem(MOD_ID_RC, "machine.alpha", 9L, 14),
+                getModItem(Railcraft.modID, "machine.alpha", 9L, 14),
                 400,
                 120,
                 false);
@@ -5834,13 +5831,13 @@ public class AssemblerRecipes implements Runnable {
         GT_Values.RA.addAssemblerRecipe(
                 ItemList.IC2_Item_Casing_Iron.get(6L),
                 GT_Utility.getIntegratedCircuit(6),
-                getModItem(MOD_ID_RC, "machine.beta", 1L, 3),
+                getModItem(Railcraft.modID, "machine.beta", 1L, 3),
                 400,
                 (int) TierEU.RECIPE_LV);
         GT_Values.RA.addAssemblerRecipe(
                 ItemList.IC2_Item_Casing_Steel.get(6L),
                 GT_Utility.getIntegratedCircuit(6),
-                getModItem(MOD_ID_RC, "machine.beta", 1L, 4),
+                getModItem(Railcraft.modID, "machine.beta", 1L, 4),
                 400,
                 64);
     }
@@ -6010,7 +6007,7 @@ public class AssemblerRecipes implements Runnable {
         GT_Values.RA
             .addAssemblerRecipe(
                 new ItemStack[] { ItemList.Electric_Pump_EV.get(4L), ItemList.Field_Generator_EV.get(4L),
-                    getModItem(MOD_ID_GTPP, "itemPlateInconel690", 4L),
+                    getModItem(GTPlusPlus.modID, "itemPlateInconel690", 4L),
                     GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Titanium, 16L),
                     GT_OreDictUnificator.get(OrePrefixes.ring, Materials.BorosilicateGlass, 16L),
                     GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Aluminium, 2L),

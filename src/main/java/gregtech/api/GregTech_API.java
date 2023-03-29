@@ -3,7 +3,7 @@ package gregtech.api;
 import static gregtech.api.enums.GT_Values.B;
 import static gregtech.api.enums.GT_Values.L;
 import static gregtech.api.enums.GT_Values.M;
-import static gregtech.api.enums.GT_Values.MOD_ID_IC2;
+import static gregtech.api.enums.ModIDs.IndustrialCraft2;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -284,7 +284,7 @@ public class GregTech_API {
 
     public static boolean mUseOnlyGoodSolderingMaterials = false;
 
-    private static final String aTextIC2Lower = MOD_ID_IC2.toLowerCase(Locale.ENGLISH);
+    private static final String aTextIC2Lower = IndustrialCraft2.modID.toLowerCase(Locale.ENGLISH);
     /**
      * Getting assigned by the Mod loading
      */

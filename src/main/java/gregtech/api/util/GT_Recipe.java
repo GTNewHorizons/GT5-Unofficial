@@ -1,6 +1,7 @@
 package gregtech.api.util;
 
 import static gregtech.api.enums.GT_Values.*;
+import static gregtech.api.enums.ModIDs.*;
 import static gregtech.api.util.GT_RecipeConstants.ADDITIVE_AMOUNT;
 import static gregtech.api.util.GT_RecipeMapUtil.*;
 import static gregtech.api.util.GT_Utility.formatNumbers;
@@ -2133,17 +2134,17 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                                         .setOutputs(aOutput1, aOutput2, Materials.DarkAsh.getDustTiny(aCoalAmount));
                             }
                             int aDuration = builder.duration;
-                            if (Loader.isModLoaded("Railcraft")) {
+                            if (Railcraft.isModLoaded()) {
                                 coll.derive()
                                         .setInputs(aInput1, aInput2, RailcraftToolItems.getCoalCoke(aCoalAmount / 2))
                                         .setOutputs(aOutput1, aOutput2, Materials.Ash.getDustTiny(aCoalAmount / 2))
                                         .setDuration(aDuration * 2 / 3);
                             }
-                            if (Loader.isModLoaded(MOD_ID_GTPP)) {
+                            if (GTPlusPlus.isModLoaded()) {
                                 ItemStack cactusCoke = GT_ModHandler
-                                        .getModItem(MOD_ID_GTPP, "itemCactusCoke", aCoalAmount * 2L);
+                                        .getModItem(GTPlusPlus.modID, "itemCactusCoke", aCoalAmount * 2L);
                                 ItemStack sugarCoke = GT_ModHandler
-                                        .getModItem(MOD_ID_GTPP, "itemSugarCoke", aCoalAmount * 2L);
+                                        .getModItem(GTPlusPlus.modID, "itemSugarCoke", aCoalAmount * 2L);
                                 coll.derive().setInputs(aInput1, aInput2, cactusCoke)
                                         .setOutputs(aOutput1, aOutput2, Materials.Ash.getDustTiny(aCoalAmount * 2))
                                         .setDuration(aDuration * 2 / 3);
@@ -2168,7 +2169,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                                             .setOutputs(aOutput1, aOutput2, Materials.DarkAsh.getDust(aCoalAmount))
                                             .setDuration(aDuration * 10);
                                 }
-                                if (Loader.isModLoaded("Railcraft")) {
+                                if (Railcraft.isModLoaded()) {
                                     coll.derive()
                                             .setInputs(aInput1, aInput2, EnumCube.COKE_BLOCK.getItem(aCoalAmount / 2))
                                             .setOutputs(aOutput1, aOutput2, Materials.Ash.getDust(aCoalAmount / 2))
@@ -2409,7 +2410,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 1,
                 E,
                 true,
-                true).setNEIUnificateOutput(!Loader.isModLoaded("neicustomdiagram"))
+                true).setNEIUnificateOutput(!NEICustomDiagrams.isModLoaded())
                         .setRecipeConfigFile("circuitassembler", FIRST_ITEM_OUTPUT)
                         .setSlotOverlay(false, false, GT_UITextures.OVERLAY_SLOT_CIRCUIT)
                         .setProgressBar(GT_UITextures.PROGRESSBAR_CIRCUIT_ASSEMBLER, ProgressBar.Direction.RIGHT);

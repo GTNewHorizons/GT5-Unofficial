@@ -1,6 +1,5 @@
 package gregtech.loaders.postload.recipes;
 
-import static gregtech.api.enums.GT_Values.MOD_ID_RC;
 import static gregtech.api.enums.ModIDs.*;
 import static gregtech.api.util.GT_ModHandler.getModItem;
 
@@ -14,7 +13,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.loaders.postload.GT_MachineRecipeLoader;
 
 public class Pulverizer implements Runnable {
 
@@ -160,248 +158,253 @@ public class Pulverizer implements Runnable {
                 1500,
                 80);
 
-        // recycling RC Tanks
-        // Iron
-        GT_Values.RA.addPulveriserRecipe(
-                getModItem(MOD_ID_RC, "machine.beta", 1L, 0),
-                new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 2L) },
-                new int[] { 10000 },
-                300,
-                2);
-        GT_Values.RA.addPulveriserRecipe(
-                getModItem(MOD_ID_RC, "machine.beta", 1L, 1),
-                new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 1L),
-                        GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Glass, 3L) },
-                new int[] { 10000, 10000 },
-                300,
-                2);
-        GT_Values.RA.addPulveriserRecipe(
-                getModItem(MOD_ID_RC, "machine.beta", 1L, 2),
-                new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Bronze, 12L),
-                        GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Iron, 3L) },
-                new int[] { 10000, 10000 },
-                300,
-                2);
-
-        // Steel
-        GT_Values.RA.addPulveriserRecipe(
-                getModItem(MOD_ID_RC, "machine.beta", 1L, 13),
-                new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Steel, 2L) },
-                new int[] { 10000 },
-                300,
-                2);
-        GT_Values.RA.addPulveriserRecipe(
-                getModItem(MOD_ID_RC, "machine.beta", 1L, 14),
-                new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Steel, 1L),
-                        GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Glass, 3L) },
-                new int[] { 10000, 10000 },
-                300,
-                2);
-        GT_Values.RA.addPulveriserRecipe(
-                getModItem(MOD_ID_RC, "machine.beta", 1L, 15),
-                new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Steel, 12L),
-                        GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Steel, 3L) },
-                new int[] { 10000 },
-                300,
-                2);
-
-        // Aluminium
-        GT_Values.RA.addPulveriserRecipe(
-                getModItem(MOD_ID_RC, "machine.zeta", 1L, 0),
-                new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Aluminium, 2L) },
-                new int[] { 10000 },
-                450,
-                8);
-        GT_Values.RA.addPulveriserRecipe(
-                getModItem(MOD_ID_RC, "machine.zeta", 1L, 1),
-                new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Aluminium, 1L),
-                        GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Glass, 3L) },
-                new int[] { 10000, 10000 },
-                450,
-                8);
-        GT_Values.RA.addPulveriserRecipe(
-                getModItem(MOD_ID_RC, "machine.zeta", 1L, 2),
-                new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Plastic, 12L),
-                        GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Aluminium, 3L) },
-                new int[] { 10000, 10000 },
-                450,
-                8);
-
-        // Stainless Steel
-        GT_Values.RA.addPulveriserRecipe(
-                getModItem(MOD_ID_RC, "machine.zeta", 1L, 3),
-                new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.dust, Materials.StainlessSteel, 2L) },
-                new int[] { 10000 },
-                600,
-                16);
-        GT_Values.RA.addPulveriserRecipe(
-                getModItem(MOD_ID_RC, "machine.zeta", 1L, 4),
-                new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.dust, Materials.StainlessSteel, 1L),
-                        GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Glass, 3L) },
-                new int[] { 10000, 10000 },
-                600,
-                16);
-        GT_Values.RA.addPulveriserRecipe(
-                getModItem(MOD_ID_RC, "machine.zeta", 1L, 5),
-                new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.dust, Materials.StainlessSteel, 12L),
-                        GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.StainlessSteel, 3L) },
-                new int[] { 10000 },
-                600,
-                16);
-
-        // Titanium
-        GT_Values.RA.addPulveriserRecipe(
-                getModItem(MOD_ID_RC, "machine.zeta", 1L, 6),
-                new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Titanium, 2L) },
-                new int[] { 10000 },
-                600,
-                30);
-        GT_Values.RA.addPulveriserRecipe(
-                getModItem(MOD_ID_RC, "machine.zeta", 1L, 7),
-                new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Titanium, 1L),
-                        GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Glass, 3L) },
-                new int[] { 10000, 10000 },
-                600,
-                30);
-        GT_Values.RA.addPulveriserRecipe(
-                getModItem(MOD_ID_RC, "machine.zeta", 1L, 8),
-                new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Titanium, 12L),
-                        GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Titanium, 3L) },
-                new int[] { 10000 },
-                600,
-                30);
-
-        // Tungesten Steel
-        GT_Values.RA.addPulveriserRecipe(
-                getModItem(MOD_ID_RC, "machine.zeta", 1L, 9),
-                new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.dust, Materials.TungstenSteel, 2L) },
-                new int[] { 10000 },
-                600,
-                30);
-        GT_Values.RA.addPulveriserRecipe(
-                getModItem(MOD_ID_RC, "machine.zeta", 1L, 10),
-                new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.dust, Materials.TungstenSteel, 1L),
-                        GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Glass, 3L) },
-                new int[] { 10000, 10000 },
-                600,
-                30);
-        GT_Values.RA.addPulveriserRecipe(
-                getModItem(MOD_ID_RC, "machine.zeta", 1L, 11),
-                new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.dust, Materials.TungstenSteel, 12L),
-                        GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.TungstenSteel, 3L) },
-                new int[] { 10000 },
-                600,
-                30);
-
-        // Palladium
-        GT_Values.RA.addPulveriserRecipe(
-                getModItem(MOD_ID_RC, "machine.zeta", 1L, 12),
-                new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Palladium, 2L) },
-                new int[] { 10000 },
-                750,
-                64);
-        GT_Values.RA.addPulveriserRecipe(
-                getModItem(MOD_ID_RC, "machine.zeta", 1L, 13),
-                new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Palladium, 1L),
-                        GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Glass, 3L) },
-                new int[] { 10000, 10000 },
-                750,
-                64);
-        GT_Values.RA.addPulveriserRecipe(
-                getModItem(MOD_ID_RC, "machine.zeta", 1L, 14),
-                new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.dust, Materials.NiobiumTitanium, 12L),
-                        GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Chrome, 3L) },
-                new int[] { 10000, 10000 },
-                750,
-                64);
-
-        // Iridium
-        GT_Values.RA.addPulveriserRecipe(
-                getModItem(MOD_ID_RC, "machine.eta", 1L, 0),
-                new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iridium, 2L) },
-                new int[] { 10000 },
-                900,
-                120);
-        GT_Values.RA.addPulveriserRecipe(
-                getModItem(MOD_ID_RC, "machine.eta", 1L, 1),
-                new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iridium, 1L),
-                        GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Glass, 3L) },
-                new int[] { 10000, 10000 },
-                900,
-                120);
-        GT_Values.RA.addPulveriserRecipe(
-                getModItem(MOD_ID_RC, "machine.eta", 1L, 2),
-                new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Enderium, 12L),
-                        GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Iridium, 3L) },
-                new int[] { 10000, 10000 },
-                900,
-                120);
-
-        // Osmium
-        GT_Values.RA.addPulveriserRecipe(
-                getModItem(MOD_ID_RC, "machine.eta", 1L, 3),
-                new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Osmium, 2L) },
-                new int[] { 10000 },
-                1050,
-                256);
-        GT_Values.RA.addPulveriserRecipe(
-                getModItem(MOD_ID_RC, "machine.eta", 1L, 4),
-                new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Osmium, 1L),
-                        GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Glass, 3L) },
-                new int[] { 10000, 10000 },
-                1050,
-                256);
-        GT_Values.RA.addPulveriserRecipe(
-                getModItem(MOD_ID_RC, "machine.eta", 1L, 5),
-                new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 12L),
-                        GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Osmium, 3L) },
-                new int[] { 10000, 10000 },
-                1050,
-                256);
-
-        // Neutronium
-        GT_Values.RA.addPulveriserRecipe(
-                getModItem(MOD_ID_RC, "machine.eta", 1L, 6),
-                new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Neutronium, 2L) },
-                new int[] { 10000 },
-                1200,
-                480);
-        GT_Values.RA.addPulveriserRecipe(
-                getModItem(MOD_ID_RC, "machine.eta", 1L, 7),
-                new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Neutronium, 1L),
-                        GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Glass, 3L) },
-                new int[] { 10000, 10000 },
-                1200,
-                480);
-        GT_Values.RA.addPulveriserRecipe(
-                getModItem(MOD_ID_RC, "machine.eta", 1L, 8),
-                new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Neutronium, 12L),
-                        GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Neutronium, 3L) },
-                new int[] { 10000 },
-                1200,
-                480);
-
         if (Railcraft.isModLoaded()) {
-            GT_ModHandler.addPulverisationRecipe(
-                    getModItem(MOD_ID_RC, "cube.crushed.obsidian", 1L),
+            // recycling RC Tanks
+            // Iron
+            GT_Values.RA.addPulveriserRecipe(
+                getModItem(Railcraft.modID, "machine.beta", 1L, 0),
+                new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 2L)},
+                new int[]{10000},
+                300,
+                2);
+            GT_Values.RA.addPulveriserRecipe(
+                getModItem(Railcraft.modID, "machine.beta", 1L, 1),
+                new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 1L),
+                    GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Glass, 3L)},
+                new int[]{10000, 10000},
+                300,
+                2);
+            GT_Values.RA.addPulveriserRecipe(
+                getModItem(Railcraft.modID, "machine.beta", 1L, 2),
+                new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Bronze, 12L),
+                    GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Iron, 3L)},
+                new int[]{10000, 10000},
+                300,
+                2);
+
+            // Steel
+            GT_Values.RA.addPulveriserRecipe(
+                getModItem(Railcraft.modID, "machine.beta", 1L, 13),
+                new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Steel, 2L)},
+                new int[]{10000},
+                300,
+                2);
+            GT_Values.RA.addPulveriserRecipe(
+                getModItem(Railcraft.modID, "machine.beta", 1L, 14),
+                new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Steel, 1L),
+                    GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Glass, 3L)},
+                new int[]{10000, 10000},
+                300,
+                2);
+            GT_Values.RA.addPulveriserRecipe(
+                getModItem(Railcraft.modID, "machine.beta", 1L, 15),
+                new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Steel, 12L),
+                    GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Steel, 3L)},
+                new int[]{10000},
+                300,
+                2);
+
+            // Aluminium
+            GT_Values.RA.addPulveriserRecipe(
+                getModItem(Railcraft.modID, "machine.zeta", 1L, 0),
+                new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Aluminium, 2L)},
+                new int[]{10000},
+                450,
+                8);
+            GT_Values.RA.addPulveriserRecipe(
+                getModItem(Railcraft.modID, "machine.zeta", 1L, 1),
+                new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Aluminium, 1L),
+                    GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Glass, 3L)},
+                new int[]{10000, 10000},
+                450,
+                8);
+            GT_Values.RA.addPulveriserRecipe(
+                getModItem(Railcraft.modID, "machine.zeta", 1L, 2),
+                new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Plastic, 12L),
+                    GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Aluminium, 3L)},
+                new int[]{10000, 10000},
+                450,
+                8);
+
+            // Stainless Steel
+            GT_Values.RA.addPulveriserRecipe(
+                getModItem(Railcraft.modID, "machine.zeta", 1L, 3),
+                new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.dust, Materials.StainlessSteel, 2L)},
+                new int[]{10000},
+                600,
+                16);
+            GT_Values.RA.addPulveriserRecipe(
+                getModItem(Railcraft.modID, "machine.zeta", 1L, 4),
+                new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.dust, Materials.StainlessSteel, 1L),
+                    GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Glass, 3L)},
+                new int[]{10000, 10000},
+                600,
+                16);
+            GT_Values.RA.addPulveriserRecipe(
+                getModItem(Railcraft.modID, "machine.zeta", 1L, 5),
+                new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.dust, Materials.StainlessSteel, 12L),
+                    GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.StainlessSteel, 3L)},
+                new int[]{10000},
+                600,
+                16);
+
+            // Titanium
+            GT_Values.RA.addPulveriserRecipe(
+                getModItem(Railcraft.modID, "machine.zeta", 1L, 6),
+                new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Titanium, 2L)},
+                new int[]{10000},
+                600,
+                30);
+            GT_Values.RA.addPulveriserRecipe(
+                getModItem(Railcraft.modID, "machine.zeta", 1L, 7),
+                new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Titanium, 1L),
+                    GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Glass, 3L)},
+                new int[]{10000, 10000},
+                600,
+                30);
+            GT_Values.RA.addPulveriserRecipe(
+                getModItem(Railcraft.modID, "machine.zeta", 1L, 8),
+                new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Titanium, 12L),
+                    GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Titanium, 3L)},
+                new int[]{10000},
+                600,
+                30);
+
+            // Tungesten Steel
+            GT_Values.RA.addPulveriserRecipe(
+                getModItem(Railcraft.modID, "machine.zeta", 1L, 9),
+                new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.dust, Materials.TungstenSteel, 2L)},
+                new int[]{10000},
+                600,
+                30);
+            GT_Values.RA.addPulveriserRecipe(
+                getModItem(Railcraft.modID, "machine.zeta", 1L, 10),
+                new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.dust, Materials.TungstenSteel, 1L),
+                    GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Glass, 3L)},
+                new int[]{10000, 10000},
+                600,
+                30);
+            GT_Values.RA.addPulveriserRecipe(
+                getModItem(Railcraft.modID, "machine.zeta", 1L, 11),
+                new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.dust, Materials.TungstenSteel, 12L),
+                    GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.TungstenSteel, 3L)},
+                new int[]{10000},
+                600,
+                30);
+
+            // Palladium
+            GT_Values.RA.addPulveriserRecipe(
+                getModItem(Railcraft.modID, "machine.zeta", 1L, 12),
+                new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Palladium, 2L)},
+                new int[]{10000},
+                750,
+                64);
+            GT_Values.RA.addPulveriserRecipe(
+                getModItem(Railcraft.modID, "machine.zeta", 1L, 13),
+                new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Palladium, 1L),
+                    GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Glass, 3L)},
+                new int[]{10000, 10000},
+                750,
+                64);
+            GT_Values.RA.addPulveriserRecipe(
+                getModItem(Railcraft.modID, "machine.zeta", 1L, 14),
+                new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.dust, Materials.NiobiumTitanium, 12L),
+                    GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Chrome, 3L)},
+                new int[]{10000, 10000},
+                750,
+                64);
+
+            // Iridium
+            GT_Values.RA.addPulveriserRecipe(
+                getModItem(Railcraft.modID, "machine.eta", 1L, 0),
+                new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iridium, 2L)},
+                new int[]{10000},
+                900,
+                120);
+            GT_Values.RA.addPulveriserRecipe(
+                getModItem(Railcraft.modID, "machine.eta", 1L, 1),
+                new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iridium, 1L),
+                    GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Glass, 3L)},
+                new int[]{10000, 10000},
+                900,
+                120);
+            GT_Values.RA.addPulveriserRecipe(
+                getModItem(Railcraft.modID, "machine.eta", 1L, 2),
+                new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Enderium, 12L),
+                    GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Iridium, 3L)},
+                new int[]{10000, 10000},
+                900,
+                120);
+
+            // Osmium
+            GT_Values.RA.addPulveriserRecipe(
+                getModItem(Railcraft.modID, "machine.eta", 1L, 3),
+                new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Osmium, 2L)},
+                new int[]{10000},
+                1050,
+                256);
+            GT_Values.RA.addPulveriserRecipe(
+                getModItem(Railcraft.modID, "machine.eta", 1L, 4),
+                new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Osmium, 1L),
+                    GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Glass, 3L)},
+                new int[]{10000, 10000},
+                1050,
+                256);
+            GT_Values.RA.addPulveriserRecipe(
+                getModItem(Railcraft.modID, "machine.eta", 1L, 5),
+                new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 12L),
+                    GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Osmium, 3L)},
+                new int[]{10000, 10000},
+                1050,
+                256);
+
+            // Neutronium
+            GT_Values.RA.addPulveriserRecipe(
+                getModItem(Railcraft.modID, "machine.eta", 1L, 6),
+                new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Neutronium, 2L)},
+                new int[]{10000},
+                1200,
+                480);
+            GT_Values.RA.addPulveriserRecipe(
+                getModItem(Railcraft.modID, "machine.eta", 1L, 7),
+                new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Neutronium, 1L),
+                    GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Glass, 3L)},
+                new int[]{10000, 10000},
+                1200,
+                480);
+            GT_Values.RA.addPulveriserRecipe(
+                getModItem(Railcraft.modID, "machine.eta", 1L, 8),
+                new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Neutronium, 12L),
+                    GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Neutronium, 3L)},
+                new int[]{10000},
+                1200,
+                480);
+
+            if (Railcraft.isModLoaded()) {
+                GT_ModHandler.addPulverisationRecipe(
+                    getModItem(Railcraft.modID, "cube.crushed.obsidian", 1L),
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Obsidian, 1L),
                     GT_Values.NI,
                     0,
                     true);
+            }
         }
 
-        GT_ModHandler.addPulverisationRecipe(
+        if (AppliedEnergistics2.isModLoaded()) {
+            GT_ModHandler.addPulverisationRecipe(
                 getModItem(AppliedEnergistics2.modID, "tile.BlockSkyStone", 1L, 32767),
                 getModItem(AppliedEnergistics2.modID, "item.ItemMultiMaterial", 1L, 45),
                 GT_Values.NI,
                 0,
                 false);
-        GT_ModHandler.addPulverisationRecipe(
+            GT_ModHandler.addPulverisationRecipe(
                 getModItem(AppliedEnergistics2.modID, "tile.BlockSkyChest", 1L, 32767),
                 getModItem(AppliedEnergistics2.modID, "item.ItemMultiMaterial", 8L, 45),
                 GT_Values.NI,
                 0,
                 false);
+        }
+
         GT_ModHandler.addPulverisationRecipe(
                 new ItemStack(Items.blaze_rod, 1),
                 new ItemStack(Items.blaze_powder, 3),
@@ -441,7 +444,7 @@ public class Pulverizer implements Runnable {
 
         if (HardcoreEnderExpansion.isModLoaded()) {
             GT_ModHandler.addPulverisationRecipe(
-                    getModItem("HardcoreEnderExpansion", "endium_ore", 1),
+                    getModItem(HardcoreEnderExpansion.modID, "endium_ore", 1),
                     GT_OreDictUnificator.get(OrePrefixes.crushed, Materials.HeeEndium, 2),
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Endstone, 1),
                     50,

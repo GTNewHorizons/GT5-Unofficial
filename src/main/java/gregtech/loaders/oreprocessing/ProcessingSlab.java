@@ -1,10 +1,9 @@
 package gregtech.loaders.oreprocessing;
 
-import static gregtech.api.enums.GT_Values.MOD_ID_RC;
+import static gregtech.api.enums.ModIDs.Railcraft;
 
 import net.minecraft.item.ItemStack;
 
-import cpw.mods.fml.common.Loader;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -21,7 +20,7 @@ public class ProcessingSlab implements gregtech.api.interfaces.IOreRecipeRegistr
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
             ItemStack aStack) {
         if (aOreDictName.startsWith("slabWood")) {
-            if (Loader.isModLoaded(MOD_ID_RC)) {
+            if (Railcraft.isModLoaded()) {
                 GT_Values.RA.addChemicalBathRecipe(
                         GT_Utility.copyAmount(3L, aStack),
                         Materials.Creosote.getFluid(300L),

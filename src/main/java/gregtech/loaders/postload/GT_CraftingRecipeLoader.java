@@ -11,7 +11,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
-import cpw.mods.fml.common.Loader;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ConfigCategories;
@@ -28,7 +27,8 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import ic2.core.Ic2Items;
 
-import static gregtech.api.enums.ModIDs.Forestry;
+import static gregtech.api.enums.ModIDs.*;
+import static gregtech.api.enums.ModIDs.GraviSuite;
 import static gregtech.api.util.GT_ModHandler.getModItem;
 
 public class GT_CraftingRecipeLoader implements Runnable {
@@ -1606,7 +1606,7 @@ public class GT_CraftingRecipeLoader implements Runnable {
                                     "splitterCableItem", "electrolyzer", "cutter" })
                     .map(x -> GT_ModHandler.getIC2Item(x, 1L)).collect(Collectors.toList());
 
-            if (Loader.isModLoaded("NotEnoughItems")) {
+            if (NotEnoughItems.isModLoaded()) {
                 iToRemoveAndHide.forEach(item -> {
                     codechicken.nei.api.API.hideItem(item);
                     GT_ModHandler.removeRecipeByOutputDelayed(item);
@@ -1788,7 +1788,7 @@ public class GT_CraftingRecipeLoader implements Runnable {
                             OrePrefixes.dust.get(Materials.Silver), 'E', ItemList.IC2_Energium_Dust.get(1L) });
         }
 
-        if (Loader.isModLoaded("NotEnoughItems")) {
+        if (NotEnoughItems.isModLoaded()) {
             codechicken.nei.api.API.hideItem(GT_ModHandler.getIC2Item("reactorUraniumSimple", 1L, 1));
             codechicken.nei.api.API.hideItem(GT_ModHandler.getIC2Item("reactorUraniumDual", 1L, 1));
             codechicken.nei.api.API.hideItem(GT_ModHandler.getIC2Item("reactorUraniumQuad", 1L, 1));
@@ -2088,23 +2088,23 @@ public class GT_CraftingRecipeLoader implements Runnable {
             GT_ModHandler.removeRecipeByOutputDelayed(GT_ModHandler.getIC2Item("quantumBoots", 1L));
         }
 
-        if (Loader.isModLoaded("GraviSuite")) {
+        if (GraviSuite.isModLoaded()) {
             GT_ModHandler.removeRecipeByOutputDelayed(
-                    GT_ModHandler.getModItem("GraviSuite", "advNanoChestPlate", 1, GT_Values.W));
+                    GT_ModHandler.getModItem(GraviSuite.modID, "advNanoChestPlate", 1, GT_Values.W));
             GT_ModHandler.addCraftingRecipe(
-                    GT_ModHandler.getModItem("GraviSuite", "advNanoChestPlate", 1, GT_Values.W),
+                    GT_ModHandler.getModItem(GraviSuite.modID, "advNanoChestPlate", 1, GT_Values.W),
                     bits_no_remove_buffered,
                     new Object[] { "CJC", "TNT", "WPW", 'C', OrePrefixes.plateAlloy.get(Materials.Advanced), 'T',
                             OrePrefixes.plate.get(Materials.TungstenSteel), 'J',
-                            GT_ModHandler.getModItem("GraviSuite", "advJetpack", 1, GT_Values.W), 'N',
+                            GT_ModHandler.getModItem(GraviSuite.modID, "advJetpack", 1, GT_Values.W), 'N',
                             GT_ModHandler.getModItem("IC2", "itemArmorNanoChestplate", 1, GT_Values.W), 'W',
                             OrePrefixes.wireGt12.get(Materials.Platinum), 'P',
                             OrePrefixes.circuit.get(Materials.Elite) });
 
             GT_ModHandler
-                    .removeRecipeByOutputDelayed(GT_ModHandler.getModItem("GraviSuite", "advLappack", 1, GT_Values.W));
+                    .removeRecipeByOutputDelayed(GT_ModHandler.getModItem(GraviSuite.modID, "advLappack", 1, GT_Values.W));
             GT_ModHandler.addCraftingRecipe(
-                    GT_ModHandler.getModItem("GraviSuite", "advLappack", 1, GT_Values.W),
+                    GT_ModHandler.getModItem(GraviSuite.modID, "advLappack", 1, GT_Values.W),
                     bits_no_remove_buffered,
                     new Object[] { "CEC", "EJE", "WPW", 'C', OrePrefixes.plateAlloy.get(Materials.Carbon), 'J',
                             GT_ModHandler.getModItem("IC2", "itemArmorEnergypack", 1L, GT_Values.W), 'E',
@@ -2113,9 +2113,9 @@ public class GT_CraftingRecipeLoader implements Runnable {
                             OrePrefixes.circuit.get(Materials.Data) });
 
             GT_ModHandler
-                    .removeRecipeByOutputDelayed(GT_ModHandler.getModItem("GraviSuite", "advJetpack", 1, GT_Values.W));
+                    .removeRecipeByOutputDelayed(GT_ModHandler.getModItem(GraviSuite.modID, "advJetpack", 1, GT_Values.W));
             GT_ModHandler.addCraftingRecipe(
-                    GT_ModHandler.getModItem("GraviSuite", "advJetpack", 1, GT_Values.W),
+                    GT_ModHandler.getModItem(GraviSuite.modID, "advJetpack", 1, GT_Values.W),
                     bits_no_remove_buffered,
                     new Object[] { "CJC", "EXE", "YZY", 'C', OrePrefixes.plateAlloy.get(Materials.Carbon), 'J',
                             GT_ModHandler.getModItem("IC2", "itemArmorJetpackElectric", 1, GT_Values.W), 'E',
@@ -2140,12 +2140,12 @@ public class GT_CraftingRecipeLoader implements Runnable {
                 44,
                 24);
 
-        if (Loader.isModLoaded("bartworks")) {
+        if (BartWorks.isModLoaded()) {
             GT_ModHandler.addCraftingRecipe(
                     ItemList.Casing_Advanced_Rhodium_Palladium.get(1L),
                     bits,
                     new Object[] { "PhP", "PFP", aTextPlateWrench, 'P',
-                            GT_ModHandler.getModItem("bartworks", "gt.bwMetaGeneratedplate", 1L, 88), 'F',
+                            GT_ModHandler.getModItem(BartWorks.modID, "gt.bwMetaGeneratedplate", 1L, 88), 'F',
                             OrePrefixes.frameGt.get(Materials.Chrome) });
         }
 

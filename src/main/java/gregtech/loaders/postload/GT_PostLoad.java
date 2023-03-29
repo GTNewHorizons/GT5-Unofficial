@@ -1,7 +1,7 @@
 package gregtech.loaders.postload;
 
-import static gregtech.api.enums.GT_Values.MOD_ID_FR;
 import static gregtech.api.enums.GT_Values.VP;
+import static gregtech.api.enums.ModIDs.*;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
@@ -23,7 +23,6 @@ import net.minecraftforge.fluids.FluidStack;
 
 import com.google.common.base.Stopwatch;
 
-import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ProgressManager;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -153,7 +152,9 @@ public class GT_PostLoad {
     public static void addFakeRecipes() {
         GT_Log.out.println("GT_Mod: Adding Fake Recipes for NEI");
 
-        if (Loader.isModLoaded(MOD_ID_FR)) GT_Forestry_Compat.populateFakeNeiRecipes();
+        if (Forestry.isModLoaded()){
+            GT_Forestry_Compat.populateFakeNeiRecipes();
+        }
 
         if (ItemList.IC2_Crop_Seeds.get(1L) != null) {
             GT_Recipe.GT_Recipe_Map.sScannerFakeRecipes.addFakeRecipe(
@@ -217,12 +218,12 @@ public class GT_PostLoad {
                 1000,
                 30,
                 0);
-        if (Loader.isModLoaded("GalacticraftCore")) {
+        if (GalacticraftCore.isModLoaded()) {
             GT_Recipe.GT_Recipe_Map.sScannerFakeRecipes
                     .addFakeRecipe(
                             false,
                             new ItemStack[] { Objects.requireNonNull(
-                                    GT_ModHandler.getModItem("GalacticraftCore", "item.schematic", 1, Short.MAX_VALUE))
+                                    GT_ModHandler.getModItem(GalacticraftCore.modID, "item.schematic", 1, Short.MAX_VALUE))
                                     .setStackDisplayName("Any Schematic") },
                             new ItemStack[] { ItemList.Tool_DataStick.getWithName(1L, "Scanned Schematic") },
                             ItemList.Tool_DataStick.getWithName(1L, "Stick to save it to"),
@@ -231,11 +232,11 @@ public class GT_PostLoad {
                             36000,
                             480,
                             0);
-            if (Loader.isModLoaded("GalacticraftMars"))
+            if (GalacticraftMars.isModLoaded())
                 GT_Recipe.GT_Recipe_Map.sScannerFakeRecipes.addFakeRecipe(
                         false,
                         new ItemStack[] { Objects.requireNonNull(
-                                GT_ModHandler.getModItem("GalacticraftMars", "item.schematic", 1, Short.MAX_VALUE))
+                                GT_ModHandler.getModItem(GalacticraftMars.modID, "item.schematic", 1, Short.MAX_VALUE))
                                 .setStackDisplayName("Any Schematic") },
                         new ItemStack[] { ItemList.Tool_DataStick.getWithName(1L, "Scanned Schematic") },
                         ItemList.Tool_DataStick.getWithName(1L, "Stick to save it to"),
@@ -244,7 +245,7 @@ public class GT_PostLoad {
                         36000,
                         480,
                         0);
-            if (Loader.isModLoaded("GalaxySpace")) {
+            if (GalaxySpace.isModLoaded()) {
                 for (int i = 4; i < 9; i++) {
                     GT_Recipe.GT_Recipe_Map.sScannerFakeRecipes.addFakeRecipe(
                             false,
@@ -519,7 +520,7 @@ public class GT_PostLoad {
                 GT_OreDictUnificator.get(ItemList.Block_SSFUEL.get(1)),
                 GT_OreDictUnificator.get(ItemList.Block_MSSFUEL.get(1)),
                 GT_OreDictUnificator.get(OrePrefixes.rod, Materials.Blaze, 1));
-        if (Loader.isModLoaded("Thaumcraft")) {
+        if (Thaumcraft.isModLoaded()) {
             GT_Recipe.GT_Recipe_Map.sLargeBoilerFakeFuels
                     .addSolidRecipe(GT_ModHandler.getModItem("Thaumcraft", "ItemResource", 1));
         }

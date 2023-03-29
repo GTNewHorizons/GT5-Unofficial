@@ -1,6 +1,6 @@
 package gregtech.common.tileentities.machines.basic;
 
-import static gregtech.api.enums.GT_Values.MOD_ID_RC;
+import static gregtech.api.enums.ModIDs.Railcraft;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 
 import java.util.*;
@@ -137,9 +137,11 @@ public class GT_MetaTileEntity_Disassembler extends GT_MetaTileEntity_BasicMachi
         addBlacklist(Materials.Graphene.getDust(1));
         addBlacklist(ItemList.Circuit_Parts_Vacuum_Tube.get(1L));
         addBlacklist(ItemList.Schematic.get(1L));
-        addBlacklist(GT_ModHandler.getModItem(MOD_ID_RC, "track", 1L, 0));
-        addBlacklist(GT_ModHandler.getModItem(MOD_ID_RC, "track", 1L, 736));
-        addBlacklist(GT_ModHandler.getModItem(MOD_ID_RC, "track", 1L, 816));
+        if (Railcraft.isModLoaded()) {
+            addBlacklist(GT_ModHandler.getModItem(Railcraft.modID, "track", 1L, 0));
+            addBlacklist(GT_ModHandler.getModItem(Railcraft.modID, "track", 1L, 736));
+            addBlacklist(GT_ModHandler.getModItem(Railcraft.modID, "track", 1L, 816));
+        }
         addBlacklist(IC2Items.getItem("mixedMetalIngot"));
         addBlacklist(GT_ModHandler.getModItem("Railcraft", "machine.alpha", 1L, 14));
         // region transformer

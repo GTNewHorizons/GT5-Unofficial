@@ -1,7 +1,7 @@
 package gregtech.loaders.postload.recipes;
 
-import static gregtech.api.enums.GT_Values.MOD_ID_DC;
-import static gregtech.api.enums.GT_Values.MOD_ID_RC;
+import static gregtech.api.enums.ModIDs.NewHorizonsCoreMod;
+import static gregtech.api.enums.ModIDs.Railcraft;
 import static gregtech.api.util.GT_ModHandler.getModItem;
 import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
 
@@ -166,7 +166,7 @@ public class FluidSolidifierRecipes implements Runnable {
         GT_Values.RA.addFluidSolidifierRecipe(
                 ItemList.Shape_Mold_Plate.get(0L),
                 Materials.ReinforceGlass.getMolten(72),
-                getModItem(MOD_ID_DC, "item.ReinforcedGlassPlate", 1L, 0),
+                getModItem(NewHorizonsCoreMod.modID, "item.ReinforcedGlassPlate", 1L, 0),
                 160,
                 1920);
         GT_Values.RA.addFluidSolidifierRecipe(
@@ -249,7 +249,7 @@ public class FluidSolidifierRecipes implements Runnable {
         GT_Values.RA.addFluidSolidifierRecipe(
                 ItemList.Shape_Mold_Anvil.get(0L),
                 Materials.Steel.getMolten(4464L),
-                getModItem(MOD_ID_RC, "tile.railcraft.anvil", 1L, 0),
+                getModItem(Railcraft.modID, "tile.railcraft.anvil", 1L, 0),
                 128,
                 16);
 

@@ -1,6 +1,7 @@
 package gregtech.api.util;
 
 import static gregtech.api.enums.GT_Values.E;
+import static gregtech.api.enums.ModIDs.IC2CropPlugin;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +13,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 
 import speiger.src.crops.api.ICropCardInfo;
-import cpw.mods.fml.common.Loader;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ConfigCategories;
@@ -33,7 +33,7 @@ public class GT_BaseCrop extends CropCard implements ICropCardInfo {
             mGrowthSpeed = 0;
     private ItemStack mDrop = null, mSpecialDrops[] = null;
     private Materials mBlock = null;
-    private static boolean bIc2NeiLoaded = Loader.isModLoaded("Ic2Nei");
+    private static boolean bIc2NeiLoaded = IC2CropPlugin.isModLoaded();
 
     /**
      * To create new Crops

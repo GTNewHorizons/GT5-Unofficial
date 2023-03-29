@@ -1,9 +1,6 @@
 package gregtech.loaders.postload.recipes;
 
-import static gregtech.api.enums.GT_Values.MOD_ID_DC;
-import static gregtech.api.enums.GT_Values.MOD_ID_RC;
-import static gregtech.api.enums.ModIDs.Forestry;
-import static gregtech.api.enums.ModIDs.Railcraft;
+import static gregtech.api.enums.ModIDs.*;
 import static gregtech.api.util.GT_ModHandler.getModItem;
 
 import net.minecraft.item.ItemStack;
@@ -11,7 +8,6 @@ import net.minecraft.item.ItemStack;
 import gregtech.api.enums.*;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
-import gregtech.loaders.postload.GT_MachineRecipeLoader;
 
 public class CircuitAssemblerRecipes implements Runnable {
 
@@ -93,7 +89,7 @@ public class CircuitAssemblerRecipes implements Runnable {
                 new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.plate, Materials.RedAlloy, 1L),
                         GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.Gold, 2L),
                         GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Copper, 2L),
-                        getModItem(MOD_ID_DC, "item.LongObsidianRod", 2L, 0) },
+                        getModItem(NewHorizonsCoreMod.modID, "item.LongObsidianRod", 2L, 0) },
                 Materials.Glass.getMolten(576L),
                 getModItem(Forestry.modID, "thermionicTubes", 4L, 6),
                 200,
@@ -175,7 +171,7 @@ public class CircuitAssemblerRecipes implements Runnable {
                                 GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Basic, 1),
                                 ItemList.Cover_Controller.get(1L) },
                         tMat.getMolten(144L * tMultiplier / 2L),
-                        getModItem(MOD_ID_RC, "part.circuit", 4L, 0),
+                        getModItem(Railcraft.modID, "part.circuit", 4L, 0),
                         300,
                         (int) TierEU.RECIPE_LV);
                 GT_Values.RA.addCircuitAssemblerRecipe(
@@ -183,15 +179,15 @@ public class CircuitAssemblerRecipes implements Runnable {
                                 GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Basic, 1),
                                 ItemList.Sensor_LV.get(1L) },
                         tMat.getMolten(144L * tMultiplier / 2L),
-                        getModItem(MOD_ID_RC, "part.circuit", 4L, 1),
+                        getModItem(Railcraft.modID, "part.circuit", 4L, 1),
                         300,
                         (int) TierEU.RECIPE_LV);
                 GT_Values.RA.addCircuitAssemblerRecipe(
                         new ItemStack[] { ItemList.Circuit_Board_Coated_Basic.get(1L),
                                 GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Basic, 1),
-                                getModItem(MOD_ID_RC, "part.signal.lamp", 1L, 0) },
+                                getModItem(Railcraft.modID, "part.signal.lamp", 1L, 0) },
                         tMat.getMolten(144L * tMultiplier / 2L),
-                        getModItem(MOD_ID_RC, "part.circuit", 4L, 2),
+                        getModItem(Railcraft.modID, "part.circuit", 4L, 2),
                         300,
                         (int) TierEU.RECIPE_LV);
                 GT_Values.RA.addCircuitAssemblerRecipe(
@@ -199,7 +195,7 @@ public class CircuitAssemblerRecipes implements Runnable {
                                 GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Good, 1),
                                 ItemList.Cover_Controller.get(1L) },
                         tMat.getMolten(144L * tMultiplier / 2L),
-                        getModItem(MOD_ID_RC, "part.circuit", 8L, 0),
+                        getModItem(Railcraft.modID, "part.circuit", 8L, 0),
                         400,
                         (int) TierEU.RECIPE_LV);
                 GT_Values.RA.addCircuitAssemblerRecipe(
@@ -207,15 +203,15 @@ public class CircuitAssemblerRecipes implements Runnable {
                                 GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Good, 1),
                                 ItemList.Sensor_LV.get(1L) },
                         tMat.getMolten(144L * tMultiplier / 2L),
-                        getModItem(MOD_ID_RC, "part.circuit", 8L, 1),
+                        getModItem(Railcraft.modID, "part.circuit", 8L, 1),
                         400,
                         (int) TierEU.RECIPE_LV);
                 GT_Values.RA.addCircuitAssemblerRecipe(
                         new ItemStack[] { ItemList.Circuit_Board_Phenolic_Good.get(1L),
                                 GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Good, 1),
-                                getModItem(MOD_ID_RC, "part.signal.lamp", 1L, 0) },
+                                getModItem(Railcraft.modID, "part.signal.lamp", 1L, 0) },
                         tMat.getMolten(144L * tMultiplier / 2L),
-                        getModItem(MOD_ID_RC, "part.circuit", 8L, 2),
+                        getModItem(Railcraft.modID, "part.circuit", 8L, 2),
                         400,
                         (int) TierEU.RECIPE_LV);
                 GT_Values.RA.addCircuitAssemblerRecipe(
@@ -223,7 +219,7 @@ public class CircuitAssemblerRecipes implements Runnable {
                                 GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Advanced, 1),
                                 ItemList.Cover_Controller.get(1L) },
                         tMat.getMolten(144L * tMultiplier / 2L),
-                        getModItem(MOD_ID_RC, "part.circuit", 16L, 0),
+                        getModItem(Railcraft.modID, "part.circuit", 16L, 0),
                         500,
                         (int) TierEU.RECIPE_LV);
                 GT_Values.RA.addCircuitAssemblerRecipe(
@@ -231,15 +227,15 @@ public class CircuitAssemblerRecipes implements Runnable {
                                 GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Advanced, 1),
                                 ItemList.Sensor_LV.get(1L) },
                         tMat.getMolten(144L * tMultiplier / 2L),
-                        getModItem(MOD_ID_RC, "part.circuit", 16L, 1),
+                        getModItem(Railcraft.modID, "part.circuit", 16L, 1),
                         500,
                         (int) TierEU.RECIPE_LV);
                 GT_Values.RA.addCircuitAssemblerRecipe(
                         new ItemStack[] { ItemList.Circuit_Board_Epoxy_Advanced.get(1L),
                                 GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Advanced, 1),
-                                getModItem(MOD_ID_RC, "part.signal.lamp", 1L, 0) },
+                                getModItem(Railcraft.modID, "part.signal.lamp", 1L, 0) },
                         tMat.getMolten(144L * tMultiplier / 2L),
-                        getModItem(MOD_ID_RC, "part.circuit", 16L, 2),
+                        getModItem(Railcraft.modID, "part.circuit", 16L, 2),
                         500,
                         (int) TierEU.RECIPE_LV);
             }

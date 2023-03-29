@@ -1,6 +1,8 @@
 package gregtech.common.tileentities.machines.basic;
 
 import static gregtech.api.enums.GT_Values.*;
+import static gregtech.api.enums.ModIDs.GalacticraftCore;
+import static gregtech.api.enums.ModIDs.GalacticraftMars;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sScannerFakeRecipes;
 
@@ -228,35 +230,35 @@ public class GT_MetaTileEntity_Scanner extends GT_MetaTileEntity_BasicMachine {
                     int stackItemID = Item.getIdFromItem(aStack.getItem());
                     int stackItemDamage = aStack.getItemDamage();
                     if (stackItemID == Item.getIdFromItem(
-                            Objects.requireNonNull(GT_ModHandler.getModItem(MOD_ID_GC_CORE, "item.schematic", 1L, 0))
+                            Objects.requireNonNull(GT_ModHandler.getModItem(GalacticraftCore.modID, "item.schematic", 1L, 0))
                                     .getItem())) {
                         if (stackItemDamage == 0 && aStack.toString().equals(
                                 Objects.requireNonNull(
-                                        GT_ModHandler.getModItem(MOD_ID_GC_CORE, "item.schematic", 1L, 0)).copy()
+                                        GT_ModHandler.getModItem(GalacticraftCore.modID, "item.schematic", 1L, 0)).copy()
                                         .toString()))
                             sTier = "100";
                         else if (stackItemDamage == 1 && aStack.toString().equals(
                                 Objects.requireNonNull(
-                                        GT_ModHandler.getModItem(MOD_ID_GC_CORE, "item.schematic", 1L, 1)).copy()
+                                        GT_ModHandler.getModItem(GalacticraftCore.modID, "item.schematic", 1L, 1)).copy()
                                         .toString()))
                             sTier = "2";
                     } else {
                         if (stackItemID == Item.getIdFromItem(
                                 Objects.requireNonNull(
-                                        GT_ModHandler.getModItem(MOD_ID_GC_MARS, "item.schematic", 1L, 0)).getItem())) {
+                                        GT_ModHandler.getModItem(GalacticraftMars.modID, "item.schematic", 1L, 0)).getItem())) {
                             if (stackItemDamage == 0 && aStack.toString().equals(
                                     Objects.requireNonNull(
-                                            GT_ModHandler.getModItem(MOD_ID_GC_MARS, "item.schematic", 1L, 0)).copy()
+                                            GT_ModHandler.getModItem(GalacticraftMars.modID, "item.schematic", 1L, 0)).copy()
                                             .toString()))
                                 sTier = "3";
                             else if (stackItemDamage == 1 && aStack.toString().equals(
                                     Objects.requireNonNull(
-                                            GT_ModHandler.getModItem(MOD_ID_GC_MARS, "item.schematic", 1L, 1)).copy()
+                                            GT_ModHandler.getModItem(GalacticraftMars.modID, "item.schematic", 1L, 1)).copy()
                                             .toString()))
                                 sTier = "101";
                             else if (stackItemDamage == 2 && aStack.toString().equals(
                                     Objects.requireNonNull(
-                                            GT_ModHandler.getModItem(MOD_ID_GC_MARS, "item.schematic", 1L, 2)).copy()
+                                            GT_ModHandler.getModItem(GalacticraftMars.modID, "item.schematic", 1L, 2)).copy()
                                             .toString()))
                                 sTier = "102";
                         } else if (aStack.getUnlocalizedName().matches(".*\\d+.*"))

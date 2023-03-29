@@ -6,12 +6,9 @@ import static gregtech.api.enums.FluidState.LIQUID;
 import static gregtech.api.enums.FluidState.MOLTEN;
 import static gregtech.api.enums.FluidState.PLASMA;
 import static gregtech.api.enums.GT_Values.MOD_ID;
-import static gregtech.api.enums.GT_Values.MOD_ID_RC;
-import static gregtech.api.enums.GT_Values.MOD_ID_TC;
-import static gregtech.api.enums.GT_Values.MOD_ID_TE;
-import static gregtech.api.enums.GT_Values.MOD_ID_TF;
 import static gregtech.api.enums.GT_Values.W;
 import static gregtech.api.enums.GT_Values.debugEntityCramming;
+import static gregtech.api.enums.ModIDs.*;
 import static gregtech.api.util.GT_Util.LAST_BROKEN_TILEENTITY;
 
 import java.io.File;
@@ -787,34 +784,34 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
             }
         }
         GT_Log.out.println("GT_Mod: Getting required Items of other Mods.");
-        ItemList.TE_Slag.set(GT_ModHandler.getModItem(MOD_ID_TE, "slag", 1L));
-        ItemList.TE_Slag_Rich.set(GT_ModHandler.getModItem(MOD_ID_TE, "slagRich", 1L));
-        ItemList.TE_Rockwool.set(GT_ModHandler.getModItem(MOD_ID_TE, "rockwool", 1L));
-        ItemList.TE_Hardened_Glass.set(GT_ModHandler.getModItem(MOD_ID_TE, "glassHardened", 1L));
+        ItemList.TE_Slag.set(GT_ModHandler.getModItem(ThermalExpansion.modID, "slag", 1L));
+        ItemList.TE_Slag_Rich.set(GT_ModHandler.getModItem(ThermalExpansion.modID, "slagRich", 1L));
+        ItemList.TE_Rockwool.set(GT_ModHandler.getModItem(ThermalExpansion.modID, "rockwool", 1L));
+        ItemList.TE_Hardened_Glass.set(GT_ModHandler.getModItem(ThermalExpansion.modID, "glassHardened", 1L));
 
-        ItemList.RC_ShuntingWire.set(GT_ModHandler.getModItem(MOD_ID_RC, "machine.delta", 1L, 0));
-        ItemList.RC_ShuntingWireFrame.set(GT_ModHandler.getModItem(MOD_ID_RC, "frame", 1L, 0));
-        ItemList.RC_Rail_Standard.set(GT_ModHandler.getModItem(MOD_ID_RC, "part.rail", 1L, 0));
-        ItemList.RC_Rail_Adv.set(GT_ModHandler.getModItem(MOD_ID_RC, "part.rail", 1L, 1));
-        ItemList.RC_Rail_Wooden.set(GT_ModHandler.getModItem(MOD_ID_RC, "part.rail", 1L, 2));
-        ItemList.RC_Rail_HS.set(GT_ModHandler.getModItem(MOD_ID_RC, "part.rail", 1L, 3));
-        ItemList.RC_Rail_Reinforced.set(GT_ModHandler.getModItem(MOD_ID_RC, "part.rail", 1L, 4));
-        ItemList.RC_Rail_Electric.set(GT_ModHandler.getModItem(MOD_ID_RC, "part.rail", 1L, 5));
-        ItemList.RC_Tie_Wood.set(GT_ModHandler.getModItem(MOD_ID_RC, "part.tie", 1L, 0));
-        ItemList.RC_Tie_Stone.set(GT_ModHandler.getModItem(MOD_ID_RC, "part.tie", 1L, 1));
-        ItemList.RC_Bed_Wood.set(GT_ModHandler.getModItem(MOD_ID_RC, "part.railbed", 1L, 0));
-        ItemList.RC_Bed_Stone.set(GT_ModHandler.getModItem(MOD_ID_RC, "part.railbed", 1L, 1));
-        ItemList.RC_Rebar.set(GT_ModHandler.getModItem(MOD_ID_RC, "part.rebar", 1L));
-        ItemList.TC_Thaumometer.set(GT_ModHandler.getModItem(MOD_ID_TC, "ItemThaumometer", 1L, 0));
-        ItemList.Tool_Sword_Steel.set(GT_ModHandler.getModItem(MOD_ID_RC, "tool.steel.sword", 1L));
-        ItemList.Tool_Pickaxe_Steel.set(GT_ModHandler.getModItem(MOD_ID_RC, "tool.steel.pickaxe", 1L));
-        ItemList.Tool_Shovel_Steel.set(GT_ModHandler.getModItem(MOD_ID_RC, "tool.steel.shovel", 1L));
-        ItemList.Tool_Axe_Steel.set(GT_ModHandler.getModItem(MOD_ID_RC, "tool.steel.axe", 1L));
-        ItemList.Tool_Hoe_Steel.set(GT_ModHandler.getModItem(MOD_ID_RC, "tool.steel.hoe", 1L));
+        ItemList.RC_ShuntingWire.set(GT_ModHandler.getModItem(Railcraft.modID, "machine.delta", 1L, 0));
+        ItemList.RC_ShuntingWireFrame.set(GT_ModHandler.getModItem(Railcraft.modID, "frame", 1L, 0));
+        ItemList.RC_Rail_Standard.set(GT_ModHandler.getModItem(Railcraft.modID, "part.rail", 1L, 0));
+        ItemList.RC_Rail_Adv.set(GT_ModHandler.getModItem(Railcraft.modID, "part.rail", 1L, 1));
+        ItemList.RC_Rail_Wooden.set(GT_ModHandler.getModItem(Railcraft.modID, "part.rail", 1L, 2));
+        ItemList.RC_Rail_HS.set(GT_ModHandler.getModItem(Railcraft.modID, "part.rail", 1L, 3));
+        ItemList.RC_Rail_Reinforced.set(GT_ModHandler.getModItem(Railcraft.modID, "part.rail", 1L, 4));
+        ItemList.RC_Rail_Electric.set(GT_ModHandler.getModItem(Railcraft.modID, "part.rail", 1L, 5));
+        ItemList.RC_Tie_Wood.set(GT_ModHandler.getModItem(Railcraft.modID, "part.tie", 1L, 0));
+        ItemList.RC_Tie_Stone.set(GT_ModHandler.getModItem(Railcraft.modID, "part.tie", 1L, 1));
+        ItemList.RC_Bed_Wood.set(GT_ModHandler.getModItem(Railcraft.modID, "part.railbed", 1L, 0));
+        ItemList.RC_Bed_Stone.set(GT_ModHandler.getModItem(Railcraft.modID, "part.railbed", 1L, 1));
+        ItemList.RC_Rebar.set(GT_ModHandler.getModItem(Railcraft.modID, "part.rebar", 1L));
+        ItemList.TC_Thaumometer.set(GT_ModHandler.getModItem(Thaumcraft.modID, "ItemThaumometer", 1L, 0));
+        ItemList.Tool_Sword_Steel.set(GT_ModHandler.getModItem(Railcraft.modID, "tool.steel.sword", 1L));
+        ItemList.Tool_Pickaxe_Steel.set(GT_ModHandler.getModItem(Railcraft.modID, "tool.steel.pickaxe", 1L));
+        ItemList.Tool_Shovel_Steel.set(GT_ModHandler.getModItem(Railcraft.modID, "tool.steel.shovel", 1L));
+        ItemList.Tool_Axe_Steel.set(GT_ModHandler.getModItem(Railcraft.modID, "tool.steel.axe", 1L));
+        ItemList.Tool_Hoe_Steel.set(GT_ModHandler.getModItem(Railcraft.modID, "tool.steel.hoe", 1L));
 
-        ItemList.TF_LiveRoot.set(GT_ModHandler.getModItem(MOD_ID_TF, "item.liveRoot", 1L, 0));
-        ItemList.TF_Vial_FieryBlood.set(GT_ModHandler.getModItem(MOD_ID_TF, "item.fieryBlood", 1L));
-        ItemList.TF_Vial_FieryTears.set(GT_ModHandler.getModItem(MOD_ID_TF, "item.fieryTears", 1L));
+        ItemList.TF_LiveRoot.set(GT_ModHandler.getModItem(TwilightForest.modID, "item.liveRoot", 1L, 0));
+        ItemList.TF_Vial_FieryBlood.set(GT_ModHandler.getModItem(TwilightForest.modID, "item.fieryBlood", 1L));
+        ItemList.TF_Vial_FieryTears.set(GT_ModHandler.getModItem(TwilightForest.modID, "item.fieryTears", 1L));
 
         ItemList.FR_Lemon.set(GT_ModHandler.getModItem(aTextForestry, "fruits", 1L, 3));
         ItemList.FR_Mulch.set(GT_ModHandler.getModItem(aTextForestry, "mulch", 1L));
@@ -963,22 +960,22 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
         GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getIC2Item("hazmatChestplate", 1L, 32767));
         GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getIC2Item("hazmatLeggings", 1L, 32767));
         GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getIC2Item("hazmatBoots", 1L, 32767));
-        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem(MOD_ID_RC, "part.turbine.disk", 1L, 32767));
-        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem(MOD_ID_RC, "part.turbine.blade", 1L, 32767));
-        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem(MOD_ID_RC, "part.turbine.rotor", 1L, 32767));
-        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem(MOD_ID_RC, "borehead.diamond", 1L, 32767));
-        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem(MOD_ID_RC, "borehead.steel", 1L, 32767));
-        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem(MOD_ID_RC, "borehead.iron", 1L, 32767));
-        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem(MOD_ID_TF, "item.plateNaga", 1L, 32767));
-        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem(MOD_ID_TF, "item.legsNaga", 1L, 32767));
-        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem(MOD_ID_TF, "item.arcticHelm", 1L, 32767));
-        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem(MOD_ID_TF, "item.arcticPlate", 1L, 32767));
-        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem(MOD_ID_TF, "item.arcticLegs", 1L, 32767));
-        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem(MOD_ID_TF, "item.arcticBoots", 1L, 32767));
-        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem(MOD_ID_TF, "item.yetiHelm", 1L, 32767));
-        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem(MOD_ID_TF, "item.yetiPlate", 1L, 32767));
-        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem(MOD_ID_TF, "item.yetiLegs", 1L, 32767));
-        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem(MOD_ID_TF, "item.yetiBoots", 1L, 32767));
+        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem(Railcraft.modID, "part.turbine.disk", 1L, 32767));
+        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem(Railcraft.modID, "part.turbine.blade", 1L, 32767));
+        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem(Railcraft.modID, "part.turbine.rotor", 1L, 32767));
+        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem(Railcraft.modID, "borehead.diamond", 1L, 32767));
+        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem(Railcraft.modID, "borehead.steel", 1L, 32767));
+        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem(Railcraft.modID, "borehead.iron", 1L, 32767));
+        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem(TwilightForest.modID, "item.plateNaga", 1L, 32767));
+        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem(TwilightForest.modID, "item.legsNaga", 1L, 32767));
+        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem(TwilightForest.modID, "item.arcticHelm", 1L, 32767));
+        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem(TwilightForest.modID, "item.arcticPlate", 1L, 32767));
+        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem(TwilightForest.modID, "item.arcticLegs", 1L, 32767));
+        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem(TwilightForest.modID, "item.arcticBoots", 1L, 32767));
+        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem(TwilightForest.modID, "item.yetiHelm", 1L, 32767));
+        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem(TwilightForest.modID, "item.yetiPlate", 1L, 32767));
+        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem(TwilightForest.modID, "item.yetiLegs", 1L, 32767));
+        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem(TwilightForest.modID, "item.yetiBoots", 1L, 32767));
         GT_ModHandler.sNonReplaceableItems
                 .add(GT_ModHandler.getModItem("appliedenergistics2", "item.ToolCertusQuartzCuttingKnife", 1L, 32767));
         GT_ModHandler.sNonReplaceableItems
@@ -1024,25 +1021,25 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
         GT_OreDictUnificator.registerOre("cropTea", GT_ModHandler.getModItem("ganyssurface", "teaLeaves", 1L, 0));
 
         // Clay buckets, which don't get registered until Iguana Tweaks pre-init
-        if (Loader.isModLoaded("IguanaTweaksTConstruct")) {
+        if (IguanaTweaksTinkerConstruct.isModLoaded()) {
             OrePrefixes.bucketClay.mContainerItem = GT_ModHandler
-                    .getModItem("IguanaTweaksTConstruct", "clayBucketFired", 1L, 0);
+                    .getModItem(IguanaTweaksTinkerConstruct.modID, "clayBucketFired", 1L, 0);
             GT_OreDictUnificator.set(
                     OrePrefixes.bucketClay,
                     Materials.Empty,
-                    GT_ModHandler.getModItem("IguanaTweaksTConstruct", "clayBucketFired", 1L, 0));
+                    GT_ModHandler.getModItem(IguanaTweaksTinkerConstruct.modID, "clayBucketFired", 1L, 0));
             GT_OreDictUnificator.set(
                     OrePrefixes.bucketClay,
                     Materials.Water,
-                    GT_ModHandler.getModItem("IguanaTweaksTConstruct", "clayBucketWater", 1L, 0));
+                    GT_ModHandler.getModItem(IguanaTweaksTinkerConstruct.modID, "clayBucketWater", 1L, 0));
             GT_OreDictUnificator.set(
                     OrePrefixes.bucketClay,
                     Materials.Lava,
-                    GT_ModHandler.getModItem("IguanaTweaksTConstruct", "clayBucketLava", 1L, 0));
+                    GT_ModHandler.getModItem(IguanaTweaksTinkerConstruct.modID, "clayBucketLava", 1L, 0));
             GT_OreDictUnificator.set(
                     OrePrefixes.bucketClay,
                     Materials.Milk,
-                    GT_ModHandler.getModItem("IguanaTweaksTConstruct", "clayBucketMilk", 1L, 0));
+                    GT_ModHandler.getModItem(IguanaTweaksTinkerConstruct.modID, "clayBucketMilk", 1L, 0));
 
             FluidContainerRegistry.registerFluidContainer(
                     new FluidContainerRegistry.FluidContainerData(
@@ -2887,7 +2884,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
         this.mOreDictActivated = true;
         ProgressManager.ProgressBar progressBar = ProgressManager.push("Register materials", mEvents.size());
 
-        if (Loader.isModLoaded("betterloadingscreen")) {
+        if (BetterLoadingScreen.isModLoaded()) {
             GT_Values.cls_enabled = true;
             try {
                 GT_CLS_Compat.stepMaterialsCLS(mEvents, progressBar);

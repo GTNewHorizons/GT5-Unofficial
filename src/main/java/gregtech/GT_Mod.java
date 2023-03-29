@@ -1,7 +1,7 @@
 package gregtech;
 
 import static gregtech.api.GregTech_API.registerCircuitProgrammer;
-import static gregtech.api.enums.GT_Values.MOD_ID_FR;
+import static gregtech.api.enums.ModIDs.Forestry;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -11,6 +11,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.function.Predicate;
 
+import gregtech.api.enums.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -32,7 +33,6 @@ import appeng.api.AEApi;
 import com.google.common.base.Stopwatch;
 
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -48,13 +48,6 @@ import gregtech.api.GregTech_API;
 import gregtech.api.enchants.Enchantment_EnderDamage;
 import gregtech.api.enchants.Enchantment_Hazmat;
 import gregtech.api.enchants.Enchantment_Radioactivity;
-import gregtech.api.enums.ConfigCategories;
-import gregtech.api.enums.Element;
-import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.internal.IGT_Mod;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.objects.GT_ItemStack;
@@ -303,7 +296,7 @@ public class GT_Mod implements IGT_Mod {
             }
         }
 
-        if (Loader.isModLoaded(MOD_ID_FR))
+        if (Forestry.isModLoaded())
             // noinspection InstantiationOfUtilityClass//TODO: Refactor GT_Bees with proper state handling
             new GT_Bees();
 
@@ -330,7 +323,7 @@ public class GT_Mod implements IGT_Mod {
             gregtechproxy.registerUnificationEntries();
             new GT_FuelLoader().run();
         }
-        if (Loader.isModLoaded("Waila")) {
+        if (ModIDs.Waila.isModLoaded()) {
             Waila.init();
         }
         IMCForNEI.IMCSender();
@@ -464,7 +457,7 @@ public class GT_Mod implements IGT_Mod {
 
         GT_PostLoad.registerFluidCannerRecipes();
 
-        if (Loader.isModLoaded(MOD_ID_FR)) {
+        if (Forestry.isModLoaded()) {
             GT_Forestry_Compat.transferCentrifugeRecipes();
             GT_Forestry_Compat.transferSqueezerRecipes();
         }

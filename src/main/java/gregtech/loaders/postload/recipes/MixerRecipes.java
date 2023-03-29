@@ -1698,7 +1698,7 @@ public class MixerRecipes implements Runnable {
             GT_Values.RA.addMixerRecipe(
                     EnumCube.COKE_BLOCK.getItem(),
                     ItemList.MSFMixture.get(2),
-                    getModItem(MOD_ID_TC, "ItemResource", 4),
+                    getModItem(Thaumcraft.modID, "ItemResource", 4),
                     GT_Values.NI,
                     GT_Values.NI,
                     GT_Utility.getIntegratedCircuit(1),
@@ -1710,7 +1710,7 @@ public class MixerRecipes implements Runnable {
             GT_Values.RA.addMixerRecipe(
                     EnumCube.COKE_BLOCK.getItem(),
                     ItemList.MSFMixture.get(2),
-                    getModItem(MOD_ID_TC, "ItemResource", 4),
+                    getModItem(Thaumcraft.modID, "ItemResource", 4),
                     GT_Values.NI,
                     GT_Values.NI,
                     GT_Utility.getIntegratedCircuit(1),

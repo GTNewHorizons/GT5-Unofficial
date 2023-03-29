@@ -1,7 +1,8 @@
 package gregtech.common;
 
 import static gregtech.GT_Mod.GT_FML_LOGGER;
-import static gregtech.api.enums.GT_Values.MOD_ID_GTPP;
+import static gregtech.api.enums.ModIDs.GTPlusPlus;
+import static gregtech.api.enums.ModIDs.Railcraft;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,7 +20,6 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
-import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
@@ -636,7 +636,7 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
                     0,
                     0);
         }
-        if (Loader.isModLoaded("Railcraft")) {
+        if (Railcraft.isModLoaded()) {
             GT_Recipe.GT_Recipe_Map.sPrimitiveBlastRecipes.addRecipe(
                     true,
                     new ItemStack[] { aInput1, aInput2, RailcraftToolItems.getCoalCoke(aCoalAmount / 2) },
@@ -649,11 +649,11 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
                     0,
                     0);
         }
-        if (Loader.isModLoaded(MOD_ID_GTPP)) {
+        if (GTPlusPlus.isModLoaded()) {
             GT_Recipe.GT_Recipe_Map.sPrimitiveBlastRecipes.addRecipe(
                     true,
                     new ItemStack[] { aInput1, aInput2,
-                            GT_ModHandler.getModItem(MOD_ID_GTPP, "itemCactusCoke", (aCoalAmount * 2L)) },
+                            GT_ModHandler.getModItem(GTPlusPlus.modID, "itemCactusCoke", (aCoalAmount * 2L)) },
                     new ItemStack[] { aOutput1, aOutput2, Materials.Ash.getDustTiny(aCoalAmount * 2) },
                     null,
                     null,
@@ -665,7 +665,7 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
             GT_Recipe.GT_Recipe_Map.sPrimitiveBlastRecipes.addRecipe(
                     true,
                     new ItemStack[] { aInput1, aInput2,
-                            GT_ModHandler.getModItem(MOD_ID_GTPP, "itemSugarCoke", (aCoalAmount * 2L)) },
+                            GT_ModHandler.getModItem(GTPlusPlus.modID, "itemSugarCoke", (aCoalAmount * 2L)) },
                     new ItemStack[] { aOutput1, aOutput2, Materials.Ash.getDustTiny(aCoalAmount * 2) },
                     null,
                     null,
@@ -706,7 +706,7 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
                         0,
                         0);
             }
-            if (Loader.isModLoaded("Railcraft")) {
+            if (Railcraft.isModLoaded()) {
                 GT_Recipe.GT_Recipe_Map.sPrimitiveBlastRecipes.addRecipe(
                         true,
                         new ItemStack[] { aInput1, aInput2, EnumCube.COKE_BLOCK.getItem(aCoalAmount / 2) },

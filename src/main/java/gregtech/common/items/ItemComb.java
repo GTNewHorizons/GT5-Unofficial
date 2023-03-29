@@ -1,6 +1,7 @@
 package gregtech.common.items;
 
 import static gregtech.api.enums.GT_Values.*;
+import static gregtech.api.enums.ModIDs.*;
 
 import java.util.Arrays;
 import java.util.List;
@@ -17,7 +18,6 @@ import net.minecraftforge.fluids.FluidStack;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMap.Builder;
 
-import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -228,7 +228,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
         addCentrifugeToItemStack(
                 CombType.LAPOTRON,
                 new ItemStack[] { GT_Bees.drop.getStackForType(DropType.LAPIS),
-                        GT_ModHandler.getModItem(MOD_ID_DC, "item.LapotronDust", 1, 0),
+                        GT_ModHandler.getModItem(NewHorizonsCoreMod.modID, "item.LapotronDust", 1, 0),
                         GT_ModHandler.getModItem("MagicBees", "wax", 1, 2) },
                 new int[] { 20 * 100, 15 * 100, 40 * 100 },
                 Voltage.HV,
@@ -1186,35 +1186,35 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
         addCentrifugeToItemStack(
                 CombType.NAGA,
                 new ItemStack[] { GT_ModHandler.getModItem("MagicBees", "propolis", 1L, 4),
-                        GT_ModHandler.getModItem(MOD_ID_DC, "item.NagaScaleChip", 1L, 0),
-                        GT_ModHandler.getModItem(MOD_ID_DC, "item.NagaScaleFragment", 1L, 0), ItemList.FR_Wax.get(1) },
+                        GT_ModHandler.getModItem(NewHorizonsCoreMod.modID, "item.NagaScaleChip", 1L, 0),
+                        GT_ModHandler.getModItem(NewHorizonsCoreMod.modID, "item.NagaScaleFragment", 1L, 0), ItemList.FR_Wax.get(1) },
                 new int[] { 5 * 100, 33 * 100, 8 * 100, 30 * 100 },
                 Voltage.MV);
         addCentrifugeToItemStack(
                 CombType.LICH,
                 new ItemStack[] { GT_ModHandler.getModItem("MagicBees", "propolis", 1L, 5),
-                        GT_ModHandler.getModItem(MOD_ID_DC, "item.LichBoneChip", 1L, 0),
-                        GT_ModHandler.getModItem(MOD_ID_DC, "item.LichBoneFragment", 1L, 0), ItemList.FR_Wax.get(1) },
+                        GT_ModHandler.getModItem(NewHorizonsCoreMod.modID, "item.LichBoneChip", 1L, 0),
+                        GT_ModHandler.getModItem(NewHorizonsCoreMod.modID, "item.LichBoneFragment", 1L, 0), ItemList.FR_Wax.get(1) },
                 new int[] { 5 * 100, 33 * 100, 8 * 100, 30 * 100 },
                 Voltage.HV);
         addCentrifugeToItemStack(
                 CombType.HYDRA,
                 new ItemStack[] { GT_ModHandler.getModItem("MagicBees", "propolis", 1L, 1),
-                        GT_ModHandler.getModItem(MOD_ID_DC, "item.FieryBloodDrop", 1L, 0),
+                        GT_ModHandler.getModItem(NewHorizonsCoreMod.modID, "item.FieryBloodDrop", 1L, 0),
                         GT_Bees.drop.getStackForType(DropType.HYDRA), ItemList.FR_Wax.get(1) },
                 new int[] { 5 * 100, 33 * 100, 8 * 100, 30 * 100 },
                 Voltage.HV);
         addCentrifugeToItemStack(
                 CombType.URGHAST,
                 new ItemStack[] { GT_ModHandler.getModItem("MagicBees", "propolis", 1L, 2),
-                        GT_ModHandler.getModItem(MOD_ID_DC, "item.CarminiteChip", 1L, 0),
-                        GT_ModHandler.getModItem(MOD_ID_DC, "item.CarminiteFragment", 1L, 0), ItemList.FR_Wax.get(1) },
+                        GT_ModHandler.getModItem(NewHorizonsCoreMod.modID, "item.CarminiteChip", 1L, 0),
+                        GT_ModHandler.getModItem(NewHorizonsCoreMod.modID, "item.CarminiteFragment", 1L, 0), ItemList.FR_Wax.get(1) },
                 new int[] { 5 * 100, 33 * 100, 8 * 100, 30 * 100 },
                 Voltage.EV);
         addCentrifugeToItemStack(
                 CombType.SNOWQUEEN,
                 new ItemStack[] { GT_ModHandler.getModItem("MagicBees", "propolis", 1L, 3),
-                        GT_ModHandler.getModItem(MOD_ID_DC, "item.SnowQueenBloodDrop", 1L, 0),
+                        GT_ModHandler.getModItem(NewHorizonsCoreMod.modID, "item.SnowQueenBloodDrop", 1L, 0),
                         GT_Bees.drop.getStackForType(DropType.SNOW_QUEEN), ItemList.FR_Wax.get(1) },
                 new int[] { 5 * 100, 33 * 100, 8 * 100, 30 * 100 },
                 Voltage.EV);
@@ -1283,17 +1283,17 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
         addCentrifugeToItemStack(
                 CombType.RUNEI,
                 new ItemStack[] { GT_ModHandler.getModItem("MagicBees", "wax", 1L, 0),
-                        GT_ModHandler.getModItem(MOD_ID_DC, "item.RuneOfPowerFragment", 1L, 0),
-                        GT_ModHandler.getModItem(MOD_ID_DC, "item.RuneOfAgilityFragment", 1L, 0),
-                        GT_ModHandler.getModItem(MOD_ID_DC, "item.RuneOfVigorFragment", 1L, 0),
-                        GT_ModHandler.getModItem(MOD_ID_DC, "item.RuneOfDefenseFragment", 1L, 0),
-                        GT_ModHandler.getModItem(MOD_ID_DC, "item.RuneOfMagicFragment", 1L, 0) },
+                        GT_ModHandler.getModItem(NewHorizonsCoreMod.modID, "item.RuneOfPowerFragment", 1L, 0),
+                        GT_ModHandler.getModItem(NewHorizonsCoreMod.modID, "item.RuneOfAgilityFragment", 1L, 0),
+                        GT_ModHandler.getModItem(NewHorizonsCoreMod.modID, "item.RuneOfVigorFragment", 1L, 0),
+                        GT_ModHandler.getModItem(NewHorizonsCoreMod.modID, "item.RuneOfDefenseFragment", 1L, 0),
+                        GT_ModHandler.getModItem(NewHorizonsCoreMod.modID, "item.RuneOfMagicFragment", 1L, 0) },
                 new int[] { 25 * 100, 5 * 100, 5 * 100, 5 * 100, 5 * 100, 5 * 100 },
                 Voltage.IV);
         addCentrifugeToItemStack(
                 CombType.RUNEII,
                 new ItemStack[] { GT_ModHandler.getModItem("MagicBees", "wax", 1L, 0),
-                        GT_ModHandler.getModItem(MOD_ID_DC, "item.RuneOfVoidFragment", 1L, 0) },
+                        GT_ModHandler.getModItem(NewHorizonsCoreMod.modID, "item.RuneOfVoidFragment", 1L, 0) },
                 new int[] { 50 * 100, (int) (2.5 * 100) },
                 Voltage.IV);
         addCentrifugeToItemStack(
@@ -1304,7 +1304,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
                 new int[] { 30 * 100, (int) (7.5 * 100), 20 * 100 },
                 Voltage.IV);
         // Walrus Recipe
-        if (Loader.isModLoaded("ae2fc")) {
+        if (AE2FluidCraft.isModLoaded()) {
             addCentrifugeToItemStack(
                     CombType.WALRUS,
                     new ItemStack[] { GT_ModHandler.getModItem("ae2fc", "walrus", 1L, 0) },
@@ -1316,7 +1316,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
                 CombType.SPACE,
                 new ItemStack[] { ItemList.FR_Wax.get(1L), ItemList.FR_RefractoryWax.get(1L),
                         GT_Bees.drop.getStackForType(DropType.OXYGEN),
-                        GT_ModHandler.getModItem(MOD_ID_DC, "item.CoinSpace", 1L, 0) },
+                        GT_ModHandler.getModItem(NewHorizonsCoreMod.modID, "item.CoinSpace", 1L, 0) },
                 new int[] { 50 * 100, 30 * 100, 15 * 100, 5 * 100 },
                 Voltage.HV);
         addProcessGT(CombType.METEORICIRON, new Materials[] { Materials.MeteoricIron }, Voltage.HV);
@@ -1418,24 +1418,24 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
         addCentrifugeToItemStack(
                 CombType.MOON,
                 new ItemStack[] { ItemList.FR_Wax.get(1L),
-                        GT_ModHandler.getModItem(MOD_ID_DC, "item.MoonStoneDust", 1L, 0) },
+                        GT_ModHandler.getModItem(NewHorizonsCoreMod.modID, "item.MoonStoneDust", 1L, 0) },
                 new int[] { 50 * 100, 30 * 100 },
                 Voltage.MV,
                 300);
         addCentrifugeToItemStack(
                 CombType.MARS,
                 new ItemStack[] { ItemList.FR_Wax.get(1L),
-                        GT_ModHandler.getModItem(MOD_ID_DC, "item.MarsStoneDust", 1L, 0) },
+                        GT_ModHandler.getModItem(NewHorizonsCoreMod.modID, "item.MarsStoneDust", 1L, 0) },
                 new int[] { 50 * 100, 30 * 100 },
                 Voltage.HV,
                 300);
         addCentrifugeToItemStack(
                 CombType.JUPITER,
-                new ItemStack[] { GT_ModHandler.getModItem(MOD_ID_DC, "item.IoStoneDust", 1L, 0),
-                        GT_ModHandler.getModItem(MOD_ID_DC, "item.EuropaIceDust", 1L, 0),
-                        GT_ModHandler.getModItem(MOD_ID_DC, "item.EuropaStoneDust", 1L, 0),
-                        GT_ModHandler.getModItem(MOD_ID_DC, "item.GanymedeStoneDust", 1L, 0),
-                        GT_ModHandler.getModItem(MOD_ID_DC, "item.CallistoStoneDust", 1L, 0),
+                new ItemStack[] { GT_ModHandler.getModItem(NewHorizonsCoreMod.modID, "item.IoStoneDust", 1L, 0),
+                        GT_ModHandler.getModItem(NewHorizonsCoreMod.modID, "item.EuropaIceDust", 1L, 0),
+                        GT_ModHandler.getModItem(NewHorizonsCoreMod.modID, "item.EuropaStoneDust", 1L, 0),
+                        GT_ModHandler.getModItem(NewHorizonsCoreMod.modID, "item.GanymedeStoneDust", 1L, 0),
+                        GT_ModHandler.getModItem(NewHorizonsCoreMod.modID, "item.CallistoStoneDust", 1L, 0),
                         GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.CallistoIce, 1L),
                         ItemList.FR_Wax.get(1L) },
                 new int[] { 30 * 100, 30 * 100, 30 * 100, 30 * 100, 30 * 100, 5 * 100, 50 * 100 },
@@ -1444,95 +1444,95 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
         addCentrifugeToItemStack(
                 CombType.MERCURY,
                 new ItemStack[] { ItemList.FR_Wax.get(1L),
-                        GT_ModHandler.getModItem(MOD_ID_DC, "item.MercuryCoreDust", 1L, 0),
-                        GT_ModHandler.getModItem(MOD_ID_DC, "item.MercuryStoneDust", 1L, 0) },
+                        GT_ModHandler.getModItem(NewHorizonsCoreMod.modID, "item.MercuryCoreDust", 1L, 0),
+                        GT_ModHandler.getModItem(NewHorizonsCoreMod.modID, "item.MercuryStoneDust", 1L, 0) },
                 new int[] { 50 * 100, 30 * 100, 30 * 100 },
                 Voltage.EV,
                 300);
         addCentrifugeToItemStack(
                 CombType.VENUS,
                 new ItemStack[] { ItemList.FR_Wax.get(1L),
-                        GT_ModHandler.getModItem(MOD_ID_DC, "item.VenusStoneDust", 1L, 0) },
+                        GT_ModHandler.getModItem(NewHorizonsCoreMod.modID, "item.VenusStoneDust", 1L, 0) },
                 new int[] { 50 * 100, 30 * 100 },
                 Voltage.EV,
                 300);
         addCentrifugeToItemStack(
                 CombType.SATURN,
                 new ItemStack[] { ItemList.FR_Wax.get(1L),
-                        GT_ModHandler.getModItem(MOD_ID_DC, "item.EnceladusStoneDust", 1L, 0),
-                        GT_ModHandler.getModItem(MOD_ID_DC, "item.TitanStoneDust", 1L, 0) },
+                        GT_ModHandler.getModItem(NewHorizonsCoreMod.modID, "item.EnceladusStoneDust", 1L, 0),
+                        GT_ModHandler.getModItem(NewHorizonsCoreMod.modID, "item.TitanStoneDust", 1L, 0) },
                 new int[] { 50 * 100, 30 * 100, 30 * 100 },
                 Voltage.IV,
                 300);
         addCentrifugeToItemStack(
                 CombType.URANUS,
                 new ItemStack[] { ItemList.FR_Wax.get(1L),
-                        GT_ModHandler.getModItem(MOD_ID_DC, "item.MirandaStoneDust", 1L, 0),
-                        GT_ModHandler.getModItem(MOD_ID_DC, "item.OberonStoneDust", 1L, 0) },
+                        GT_ModHandler.getModItem(NewHorizonsCoreMod.modID, "item.MirandaStoneDust", 1L, 0),
+                        GT_ModHandler.getModItem(NewHorizonsCoreMod.modID, "item.OberonStoneDust", 1L, 0) },
                 new int[] { 50 * 100, 30 * 100, 30 * 100 },
                 Voltage.IV,
                 300);
         addCentrifugeToItemStack(
                 CombType.NEPTUN,
                 new ItemStack[] { ItemList.FR_Wax.get(1L),
-                        GT_ModHandler.getModItem(MOD_ID_DC, "item.ProteusStoneDust", 1L, 0),
-                        GT_ModHandler.getModItem(MOD_ID_DC, "item.TritonStoneDust", 1L, 0) },
+                        GT_ModHandler.getModItem(NewHorizonsCoreMod.modID, "item.ProteusStoneDust", 1L, 0),
+                        GT_ModHandler.getModItem(NewHorizonsCoreMod.modID, "item.TritonStoneDust", 1L, 0) },
                 new int[] { 50 * 100, 30 * 100, 30 * 100 },
                 Voltage.IV,
                 300);
         addCentrifugeToItemStack(
                 CombType.PLUTO,
                 new ItemStack[] { ItemList.FR_Wax.get(1L),
-                        GT_ModHandler.getModItem(MOD_ID_DC, "item.PlutoStoneDust", 1L, 0),
-                        GT_ModHandler.getModItem(MOD_ID_DC, "item.PlutoIceDust", 1L, 0) },
+                        GT_ModHandler.getModItem(NewHorizonsCoreMod.modID, "item.PlutoStoneDust", 1L, 0),
+                        GT_ModHandler.getModItem(NewHorizonsCoreMod.modID, "item.PlutoIceDust", 1L, 0) },
                 new int[] { 50 * 100, 30 * 100, 30 * 100 },
                 Voltage.LuV,
                 300);
         addCentrifugeToItemStack(
                 CombType.HAUMEA,
                 new ItemStack[] { ItemList.FR_Wax.get(1L),
-                        GT_ModHandler.getModItem(MOD_ID_DC, "item.HaumeaStoneDust", 1L, 0) },
+                        GT_ModHandler.getModItem(NewHorizonsCoreMod.modID, "item.HaumeaStoneDust", 1L, 0) },
                 new int[] { 50 * 100, 30 * 100 },
                 Voltage.LuV,
                 300);
         addCentrifugeToItemStack(
                 CombType.MAKEMAKE,
                 new ItemStack[] { ItemList.FR_Wax.get(1L),
-                        GT_ModHandler.getModItem(MOD_ID_DC, "item.MakeMakeStoneDust", 1L, 0) },
+                        GT_ModHandler.getModItem(NewHorizonsCoreMod.modID, "item.MakeMakeStoneDust", 1L, 0) },
                 new int[] { 50 * 100, 30 * 100 },
                 Voltage.LuV,
                 300);
         addCentrifugeToItemStack(
                 CombType.CENTAURI,
                 new ItemStack[] { ItemList.FR_Wax.get(1L),
-                        GT_ModHandler.getModItem(MOD_ID_DC, "item.CentauriASurfaceDust", 1L, 0),
-                        GT_ModHandler.getModItem(MOD_ID_DC, "item.CentauriAStoneDust", 1L, 0) },
+                        GT_ModHandler.getModItem(NewHorizonsCoreMod.modID, "item.CentauriASurfaceDust", 1L, 0),
+                        GT_ModHandler.getModItem(NewHorizonsCoreMod.modID, "item.CentauriAStoneDust", 1L, 0) },
                 new int[] { 50 * 100, 30 * 100, 30 * 100 },
                 Voltage.ZPM,
                 300);
         addCentrifugeToItemStack(
                 CombType.TCETI,
                 new ItemStack[] { ItemList.FR_Wax.get(1L),
-                        GT_ModHandler.getModItem(MOD_ID_DC, "item.TCetiEStoneDust", 1L, 0) },
+                        GT_ModHandler.getModItem(NewHorizonsCoreMod.modID, "item.TCetiEStoneDust", 1L, 0) },
                 new int[] { 50 * 100, 30 * 100 },
                 Voltage.ZPM,
                 300);
         addCentrifugeToItemStack(
                 CombType.BARNARDA,
                 new ItemStack[] { ItemList.FR_Wax.get(1L),
-                        GT_ModHandler.getModItem(MOD_ID_DC, "item.BarnardaEStoneDust", 1L, 0),
-                        GT_ModHandler.getModItem(MOD_ID_DC, "item.BarnardaFStoneDust", 1L, 0) },
+                        GT_ModHandler.getModItem(NewHorizonsCoreMod.modID, "item.BarnardaEStoneDust", 1L, 0),
+                        GT_ModHandler.getModItem(NewHorizonsCoreMod.modID, "item.BarnardaFStoneDust", 1L, 0) },
                 new int[] { 50 * 100, 30 * 100, 30 * 100 },
                 Voltage.ZPM,
                 300);
         addCentrifugeToItemStack(
                 CombType.VEGA,
                 new ItemStack[] { ItemList.FR_Wax.get(1L),
-                        GT_ModHandler.getModItem(MOD_ID_DC, "item.VegaBStoneDust", 1L, 0) },
+                        GT_ModHandler.getModItem(NewHorizonsCoreMod.modID, "item.VegaBStoneDust", 1L, 0) },
                 new int[] { 50 * 100, 30 * 100 },
                 Voltage.ZPM,
                 300);
-        if (Loader.isModLoaded("GalaxySpace")) {
+        if (GalaxySpace.isModLoaded()) {
             addCentrifugeToItemStack(
                     CombType.SEAWEED,
                     new ItemStack[] { ItemList.FR_Wax.get(1L),

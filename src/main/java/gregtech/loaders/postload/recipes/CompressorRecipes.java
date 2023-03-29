@@ -1,8 +1,6 @@
 package gregtech.loaders.postload.recipes;
 
-import static gregtech.api.enums.GT_Values.MOD_ID_GTPP;
-import static gregtech.api.enums.ModIDs.AppliedEnergistics2;
-import static gregtech.api.enums.ModIDs.Railcraft;
+import static gregtech.api.enums.ModIDs.*;
 import static gregtech.api.util.GT_ModHandler.getModItem;
 
 import mods.railcraft.common.blocks.aesthetics.cube.EnumCube;
@@ -19,14 +17,13 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.loaders.postload.GT_MachineRecipeLoader;
 
 public class CompressorRecipes implements Runnable {
 
     @Override
     public void run() {
         GT_ModHandler.addCompressionRecipe(
-                getModItem(MOD_ID_GTPP, "blockRainforestOakSapling", 8, 0),
+                getModItem(GTPlusPlus.modID, "blockRainforestOakSapling", 8, 0),
                 ItemList.IC2_Plantball.get(1));
 
         GT_Values.RA.addCompressorRecipe(
