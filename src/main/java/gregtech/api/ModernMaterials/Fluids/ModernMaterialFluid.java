@@ -7,6 +7,9 @@ import net.minecraftforge.fluids.FluidStack;
 import gregtech.api.ModernMaterials.ModernMaterial;
 import gregtech.api.enums.Materials;
 
+import java.util.HashSet;
+import java.util.Set;
+
 final public class ModernMaterialFluid extends Fluid {
 
     private final ModernMaterial associatedMaterial;

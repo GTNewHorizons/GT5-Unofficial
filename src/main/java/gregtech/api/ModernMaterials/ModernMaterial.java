@@ -1,82 +1,34 @@
 package gregtech.api.ModernMaterials;
 
-import java.awt.*;
-import java.util.*;
-
 import gregtech.api.ModernMaterials.Fluids.FluidEnum;
 import gregtech.api.ModernMaterials.Fluids.ModernMaterialFluid;
 import gregtech.api.ModernMaterials.PartProperties.Textures.TextureType;
 import gregtech.api.ModernMaterials.PartsClasses.CustomPartInfo;
 import gregtech.api.ModernMaterials.PartsClasses.PartsEnum;
+import net.minecraftforge.fluids.Fluid;
 import org.jetbrains.annotations.NotNull;
+
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import static gregtech.api.ModernMaterials.ModernMaterialUtilities.registerMaterial;
 import static gregtech.api.ModernMaterials.PartProperties.Textures.TextureType.Metallic;
 
-public class ModernMaterial {
+@SuppressWarnings("unused")
+public final class ModernMaterial {
 
     private final HashMap<PartsEnum, CustomPartInfo> existingPartsForMaterial = new HashMap<>();
+    public final ArrayList<ModernMaterialFluid> existingFluids = new ArrayList<>();
     private Color color;
     private int materialID;
-    private final String materialName;
+    private String materialName;
     private long materialTier;
     private double materialTimeMultiplier;
-    public final ArrayList<ModernMaterialFluid> existingFluids = new ArrayList<>();
+    private TextureType textureType = Metallic;
 
     public ModernMaterial(final String materialName) {
         this.materialName = materialName;
-    }
-
-    public ModernMaterial setColor(Color aColor) {
-        color = aColor;
-        return this;
-    }
-
-    public ModernMaterial setColor(int aRed, int aGreen, int aBlue) {
-        color = new Color(aRed, aGreen, aBlue);
-        return this;
-    }
-
-    public ModernMaterial setMaterialTimeMultiplier(double materialTimeMultiplier) {
-        this.materialTimeMultiplier = materialTimeMultiplier;
-        return this;
-    }
-
-    public ModernMaterial addParts(final PartsEnum... parts) {
-        for (PartsEnum part : parts) {
-            part.addAssociatedMaterial(this);
-            addPart(part);
-        }
-        return this;
-    }
-//
-//    public ModernMaterial addPartsCustom(final CustomPartInfo... customParts) {
-//        for (CustomPartInfo customPartInfo : customParts) {
-//            existingPartsForMaterial.put(customPartInfo.part, customPartInfo);
-//        }
-//        return this;
-//    }
-
-    public ModernMaterial addFluids(final FluidEnum... fluids) {
-
-        for (FluidEnum fluidEnum : fluids) {
-            ModernMaterialFluid modernMaterialFluid = new ModernMaterialFluid(fluidEnum, this);
-            modernMaterialFluid.setTemperature(fluidEnum.getTemperature());
-            modernMaterialFluid.setGaseous(fluidEnum.isGas());
-
-            existingFluids.add(new ModernMaterialFluid(fluidEnum, this));
-        }
-
-        return this;
-    }
-
-    public ModernMaterial addCustomFluid(ModernMaterialFluid modernMaterialFluid) {
-        existingFluids.add(modernMaterialFluid);
-        return this;
-    }
-
-    public void build() {
-        registerMaterial(this);
     }
 
     public void setMaterialID(int aID) {
@@ -103,36 +55,90 @@ public class ModernMaterial {
         return materialTier;
     }
 
-    public ModernMaterial addPart(final PartsEnum part) {
-        existingPartsForMaterial.put(part, new CustomPartInfo(part, textureType));
-        return this;
-    }
-
-    TextureType textureType = Metallic;
-
-    public ModernMaterial setTextureMode(@NotNull final TextureType textureType) {
-        this.textureType = textureType;
-        return this;
-    }
-
-    // This will override all existing parts settings and enable ALL possible parts. Be careful!
-    public ModernMaterial addAllParts() {
-        addParts(PartsEnum.values());
-        return this;
-    }
-
-    public ModernMaterial setMaterialTier(final long tier) {
-        this.materialTier = tier;
-        return this;
-    }
-
-    public ModernMaterial addPart(final CustomPartInfo customPartInfo) {
-        existingPartsForMaterial.put(customPartInfo.part, customPartInfo);
-        return this;
-    }
-
     public CustomPartInfo getCustomPartInfo(final PartsEnum part) {
         return existingPartsForMaterial.get(part);
+    }
+
+    private ModernMaterial() {}
+
+    public static class Builder {
+
+        public static ModernMaterial materialToBuild;
+
+        public Builder(String materialName) {
+            materialToBuild = new ModernMaterial(materialName);
+        }
+
+        ModernMaterial build() {
+            ModernMaterial builtMaterial = materialToBuild;
+            materialToBuild = new ModernMaterial();
+
+            registerMaterial(builtMaterial);
+            return builtMaterial;
+        }
+
+        public Builder setColor(int red, int green, int blue) {
+            this.materialToBuild.color = new Color(red, green, blue);
+            return this;
+        }
+
+        public Builder setMaterialTimeMultiplier(double materialTimeMultiplier) {
+            this.materialToBuild.materialTimeMultiplier = materialTimeMultiplier;
+            return this;
+        }
+
+        public Builder addParts(PartsEnum... parts) {
+            for (PartsEnum part : parts) {
+                part.addAssociatedMaterial(this.materialToBuild);
+                addPart(part);
+            }
+            return this;
+        }
+
+        public Builder addPart(PartsEnum part) {
+            this.materialToBuild.existingPartsForMaterial.put(part, new CustomPartInfo(part, this.materialToBuild.textureType));
+            return this;
+        }
+
+        // This will override all existing parts settings and enable ALL possible parts. Be careful!
+        public Builder addAllParts() {
+            addParts(PartsEnum.values());
+            return this;
+        }
+
+        public Builder addFluids(FluidEnum... fluids) {
+
+            for (FluidEnum fluidEnum : fluids) {
+                ModernMaterialFluid modernMaterialFluid = new ModernMaterialFluid(fluidEnum, this.materialToBuild);
+                modernMaterialFluid.setTemperature(fluidEnum.getTemperature());
+                modernMaterialFluid.setGaseous(fluidEnum.isGas());
+
+                this.materialToBuild.existingFluids.add(new ModernMaterialFluid(fluidEnum, this.materialToBuild));
+            }
+
+            return this;
+        }
+
+        public Builder addCustomFluid(ModernMaterialFluid modernMaterialFluid) {
+            this.materialToBuild.existingFluids.add(modernMaterialFluid);
+            return this;
+        }
+
+        public Builder setMaterialTier(long tier) {
+            this.materialToBuild.materialTier = tier;
+            return this;
+        }
+
+        public Builder addPart(CustomPartInfo customPartInfo) {
+            this.materialToBuild.existingPartsForMaterial.put(customPartInfo.part, customPartInfo);
+            return this;
+        }
+
+        public Builder setTextureMode(@NotNull final TextureType textureType) {
+            this.materialToBuild.textureType = textureType;
+            return this;
+        }
+
     }
 
 

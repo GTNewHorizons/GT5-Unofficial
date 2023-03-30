@@ -386,8 +386,8 @@ public class Pulverizer implements Runnable {
                 480);
 
         GT_Values.RA.addPulveriserRecipe(
-                getPart("Amazium", BlocksEnum.FrameBox, 9),
-                new ItemStack[] { getPart("UwU", PartsEnum.SmallGear, 4) },
+                getPart("Copper", BlocksEnum.FrameBox, 9),
+                new ItemStack[] { getPart("Copper", PartsEnum.SmallGear, 4) },
                 new int[] { 10000 },
                 1200,
                 480);

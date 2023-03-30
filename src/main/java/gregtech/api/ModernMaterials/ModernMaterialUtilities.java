@@ -1,36 +1,31 @@
 package gregtech.api.ModernMaterials;
 
-import static gregtech.api.enums.ConfigCategories.ModernMaterials.*;
-import static gregtech.api.enums.GT_Values.RES_PATH_BLOCK;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
-import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.GregTech_API;
 import gregtech.api.ModernMaterials.Blocks.BlocksEnum;
 import gregtech.api.ModernMaterials.Blocks.FrameBox.FrameBoxBlock;
 import gregtech.api.ModernMaterials.Blocks.FrameBox.FrameBoxItemBlock;
 import gregtech.api.ModernMaterials.Blocks.FrameBox.FrameBoxRenderer;
 import gregtech.api.ModernMaterials.Blocks.FrameBox.FrameBoxTileEntity;
-import gregtech.api.ModernMaterials.PartsClasses.IGetItem;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
-import net.minecraftforge.client.MinecraftForgeClient;
-import net.minecraftforge.fluids.FluidRegistry;
-
-import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.GregTech_API;
 import gregtech.api.ModernMaterials.Fluids.FluidEnum;
 import gregtech.api.ModernMaterials.Fluids.ModernMaterialFluid;
 import gregtech.api.ModernMaterials.PartProperties.Rendering.ModernMaterialItemRenderer;
 import gregtech.api.ModernMaterials.PartRecipeGenerators.ModernMaterialsPlateRecipeGenerator;
+import gregtech.api.ModernMaterials.PartsClasses.IGetItem;
 import gregtech.api.ModernMaterials.PartsClasses.MaterialPart;
 import gregtech.api.ModernMaterials.PartsClasses.PartsEnum;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.client.MinecraftForgeClient;
+import net.minecraftforge.fluids.FluidRegistry;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import static gregtech.api.enums.ConfigCategories.ModernMaterials.materialID;
+import static gregtech.api.enums.GT_Values.RES_PATH_BLOCK;
 
 public class ModernMaterialUtilities {
 
@@ -39,15 +34,15 @@ public class ModernMaterialUtilities {
     public static final HashMap<String, ModernMaterial> materialNameToMaterialMap = new HashMap<>();
 
     public static void registerMaterial(ModernMaterial aMaterial) {
-        final int tCurrentMaterialID = GregTech_API.sModernMaterialIDs.mConfig
+        final int tCurrentMaterialID = GregTech_API.modernMaterialIDs.mConfig
                 .get(materialID.name(), aMaterial.getMaterialName(), -1).getInt();
         if (tCurrentMaterialID == -1) {
             mNewMaterials.add(aMaterial);
         } else {
             aMaterial.setMaterialID(tCurrentMaterialID);
             materialIDToMaterial.put(tCurrentMaterialID, aMaterial);
-            if (tCurrentMaterialID > GregTech_API.mLastMaterialID) {
-                GregTech_API.mLastMaterialID = tCurrentMaterialID;
+            if (tCurrentMaterialID > GregTech_API.lastMaterialID) {
+                GregTech_API.lastMaterialID = tCurrentMaterialID;
             }
         }
         materialNameToMaterialMap.put(aMaterial.getMaterialName(), aMaterial);
@@ -56,10 +51,10 @@ public class ModernMaterialUtilities {
 
     public static void registerAllMaterialsItems() {
         for (ModernMaterial tMaterial : mNewMaterials) {
-            tMaterial.setMaterialID(++GregTech_API.mLastMaterialID);
-            GregTech_API.sModernMaterialIDs.mConfig.get(materialID.name(), tMaterial.getMaterialName(), 0)
-                    .set(GregTech_API.mLastMaterialID);
-            materialIDToMaterial.put(GregTech_API.mLastMaterialID, tMaterial);
+            tMaterial.setMaterialID(++GregTech_API.lastMaterialID);
+            GregTech_API.modernMaterialIDs.mConfig.get(materialID.name(), tMaterial.getMaterialName(), 0)
+                    .set(GregTech_API.lastMaterialID);
+            materialIDToMaterial.put(GregTech_API.lastMaterialID, tMaterial);
         }
 
         for (PartsEnum part : PartsEnum.values()) {
