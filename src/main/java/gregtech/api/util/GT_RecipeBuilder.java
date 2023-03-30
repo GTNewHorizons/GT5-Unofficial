@@ -17,6 +17,8 @@ public class GT_RecipeBuilder {
 
     private static final boolean DEBUG_MODE;
 
+    public static final int WILDCARD = 32767;
+
     // time units
     public static final int HOURS = 20 * 60 * 60;
     public static final int MINUTES = 20 * 60;
