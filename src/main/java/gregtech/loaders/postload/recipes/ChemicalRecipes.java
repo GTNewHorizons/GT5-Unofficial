@@ -26,8 +26,12 @@ public class ChemicalRecipes implements Runnable {
     public void run() {
         singleBlockOnly();
         multiblockOnly();
-        polymerizationRecipes();
+        registerBoth();
 
+        polymerizationRecipes();
+    }
+
+    public void registerBoth(){
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 new ItemStack(Items.paper, 1),
