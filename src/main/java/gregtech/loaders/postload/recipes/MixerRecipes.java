@@ -1,31 +1,37 @@
 package gregtech.loaders.postload.recipes;
 
-import static gregtech.api.enums.GT_Values.*;
-import static gregtech.api.enums.ModIDs.*;
-import static gregtech.api.util.GT_ModHandler.getModItem;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sMixerRecipes;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sMultiblockMixerRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
-import static gregtech.api.util.GT_RecipeBuilder.TICKS;
-import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
-
+import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.MaterialsKevlar;
+import gregtech.api.enums.MaterialsOreAlum;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.TierEU;
+import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_Utility;
 import mods.railcraft.common.blocks.aesthetics.cube.EnumCube;
-
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
-import gregtech.api.enums.*;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Utility;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import static gregtech.api.enums.GT_Values.NF;
+import static gregtech.api.enums.GT_Values.NI;
+import static gregtech.api.enums.ModIDs.AppliedEnergistics2;
+import static gregtech.api.enums.ModIDs.BiomesOPlanty;
+import static gregtech.api.enums.ModIDs.Forestry;
+import static gregtech.api.enums.ModIDs.Natura;
+import static gregtech.api.enums.ModIDs.PamsHarvestCraft;
+import static gregtech.api.enums.ModIDs.Railcraft;
+import static gregtech.api.enums.ModIDs.Thaumcraft;
+import static gregtech.api.util.GT_ModHandler.getModItem;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sMixerRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.GT_RecipeBuilder.TICKS;
+import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
 
 public class MixerRecipes implements Runnable {
 
@@ -2421,171 +2427,108 @@ public class MixerRecipes implements Runnable {
                 .addTo(sMixerRecipes);
     }
 
-    public void addMixerRecipe(ItemStack[] itemInputArray, FluidStack[] fluidInputArray, ItemStack[] itemOutputArray,
-                                  FluidStack[] fluidOutputArray, int duration, long EUTick) {
-
-        boolean itemInputNull = itemInputArray == null;
-        boolean itemOutputNull = itemOutputArray == null;
-        boolean fluidInputNull = fluidInputArray == null;
-        boolean fluidOutputNull = fluidOutputArray == null;
-
-        // todo: Maybe doing some null checks?
-
-        // incorrectly shaped recipe
-        if ((itemInputNull && fluidInputNull) || (itemOutputNull && fluidOutputNull)) {
-            return ;
-        }
-
-        /* single block recipe creation */
-
-        GT_Values.RA.stdBuilder()
-            .itemInputs(itemInputArray)
-            .itemOutputs(itemOutputArray)
-            .fluidInputs(fluidInputArray)
-            .fluidOutputs(fluidOutputArray)
-            .duration(duration)
-            .eut(EUTick)
-            .addTo(sMixerRecipes);
-
-        // converting what can be converted to fluids for multiblock recipe
-
-        // converting the inputs
-        List<ItemStack> itemInputList = itemInputNull ? new ArrayList<>(1) : new ArrayList<>(Arrays.asList(itemInputArray));
-        List<FluidStack> fluidInputList = fluidInputNull ? new ArrayList<>(1) : new ArrayList<>(Arrays.asList(fluidInputArray));
-
-        for (int i = 0; i < itemInputList.size(); i++) {
-            if (itemInputList.get(i) != null) {
-                if (GT_Utility.getFluidForFilledItem(itemInputList.get(i), true) != null
-                    || GT_Utility.isCellEmpty(itemInputList.get(i))) {
-                    fluidInputList.add(GT_Utility.convertCellToFluid(itemInputList.get(i)));
-                    itemInputList.set(i, null);
-                }
-            }
-        }
-
-        // converting the outputs
-        List<ItemStack> itemOutputList = itemOutputNull ? new ArrayList<>(1) : new ArrayList<>(Arrays.asList(itemOutputArray));
-        List<FluidStack> fluidOutputList = fluidOutputNull ? new ArrayList<>(1) : new ArrayList<>(Arrays.asList(fluidOutputArray));
-
-        for (int i = 0; i < itemOutputList.size(); i++) {
-            if (itemOutputList.get(i) != null) {
-                if (GT_Utility.getFluidForFilledItem(itemOutputList.get(i), true) != null
-                    || GT_Utility.isCellEmpty(itemOutputList.get(i))) {
-                    fluidInputList.add(GT_Utility.convertCellToFluid(itemOutputList.get(i)));
-                    itemOutputList.set(i, null);
-                }
-            }
-        }
-
-        /* Multiblock recipe creation */
-        GT_Values.RA.stdBuilder()
-            .itemInputs(itemInputList.toArray(new ItemStack[0]))
-            .itemOutputs(itemOutputList.toArray(new ItemStack[0]))
-            .fluidInputs(fluidInputList.toArray(new FluidStack[0]))
-            .fluidOutputs(fluidOutputList.toArray(new FluidStack[0]))
-            .duration(duration)
-            .eut(EUTick)
-            .addTo(sMultiblockMixerRecipes);
-    }
-
     public void registerSingleBlockAndMulti(){
-        addMixerRecipe(
-            new ItemStack[] {
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
                 Materials.NaquadahEnriched.getDust(8), Materials.Holmium.getDust(2),
                 GT_Utility.getIntegratedCircuit(4)
-            },
-            null,
-            new ItemStack[] {
-                Materials.EnrichedHolmium.getDust(10)
-            },
-            null,
-            30 * SECONDS,
-            TierEU.RECIPE_ZPM);
+            )
+            .itemOutputs(
+                Materials.EnrichedHolmium.getDust(10))
+            .noFluidInputs()
+            .noFluidOutputs()
+            .duration(30 * SECONDS)
+            .eut(TierEU.RECIPE_ZPM)
+            .addTo(sMixerRecipes);
 
         // Catalysts for Plasma Forge.
-        addMixerRecipe(
-            new ItemStack[] {
-                GT_Utility.getIntegratedCircuit(9)
-            },
-            new FluidStack[] {
-                Materials.Helium.getPlasma(1000L),
-                Materials.Iron.getPlasma(1000L),
-                Materials.Calcium.getPlasma(1000L),
-                Materials.Niobium.getPlasma(1000L)
-            },
-            null,
-            new FluidStack[] {
-                Materials.DimensionallyTranscendentCrudeCatalyst.getFluid(1000L)
-            },
-            41*MINUTES+40*SECONDS,
-            TierEU.RECIPE_ZPM);
+        {
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    GT_Utility.getIntegratedCircuit(9))
+                .noItemOutputs()
+                .fluidInputs(
+                    Materials.Helium.getPlasma(1000L),
+                    Materials.Iron.getPlasma(1000L),
+                    Materials.Calcium.getPlasma(1000L),
+                    Materials.Niobium.getPlasma(1000L))
+                .fluidOutputs(
+                    Materials.DimensionallyTranscendentCrudeCatalyst.getFluid(1000L))
+                .duration(41 * MINUTES + 40 * SECONDS)
+                .eut(TierEU.RECIPE_ZPM)
+                .addTo(sMixerRecipes);
 
-        addMixerRecipe(
-            new ItemStack[] {
-                GT_Utility.getIntegratedCircuit(10)
-            },
-            new FluidStack[] {
-                Materials.DimensionallyTranscendentCrudeCatalyst.getFluid(1000L),
-                Materials.Radon.getPlasma(1000L),
-                Materials.Nickel.getPlasma(1000L),
-                Materials.Boron.getPlasma(1000L),
-                Materials.Sulfur.getPlasma(1000L)
-            },
-            null,
-            new FluidStack[] {
-                Materials.DimensionallyTranscendentProsaicCatalyst.getFluid(1000L)
-            },
-            41*MINUTES+40*SECONDS,
-            TierEU.RECIPE_UV);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    GT_Utility.getIntegratedCircuit(10)
+                )
+                .noItemOutputs()
+                .fluidInputs(
+                    Materials.DimensionallyTranscendentCrudeCatalyst.getFluid(1000L),
+                    Materials.Radon.getPlasma(1000L),
+                    Materials.Nickel.getPlasma(1000L),
+                    Materials.Boron.getPlasma(1000L),
+                    Materials.Sulfur.getPlasma(1000L)
+                )
+                .fluidOutputs(
+                    Materials.DimensionallyTranscendentProsaicCatalyst.getFluid(1000L)
+                )
+                .duration(41 * MINUTES + 40 * SECONDS)
+                .eut(TierEU.RECIPE_ZPM)
+                .addTo(sMixerRecipes);
 
-        addMixerRecipe(
-            new ItemStack[] {
-                GT_Utility.getIntegratedCircuit(11)
-            },
-            new FluidStack[] {
-                Materials.DimensionallyTranscendentProsaicCatalyst.getFluid(1000L),
-                Materials.Nitrogen.getPlasma(1000L),
-                Materials.Zinc.getPlasma(1000L),
-                Materials.Silver.getPlasma(1000L),
-                Materials.Titanium.getPlasma(1000L)
-            },
-            null,
-            new FluidStack[] {
-                Materials.DimensionallyTranscendentResplendentCatalyst.getFluid(1000L)
-            },
-            41*MINUTES+40*SECONDS,
-            TierEU.RECIPE_UHV);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    GT_Utility.getIntegratedCircuit(11)
+                )
+                .noItemOutputs()
+                .fluidInputs(
+                    Materials.DimensionallyTranscendentProsaicCatalyst.getFluid(1000L),
+                    Materials.Nitrogen.getPlasma(1000L),
+                    Materials.Zinc.getPlasma(1000L),
+                    Materials.Silver.getPlasma(1000L),
+                    Materials.Titanium.getPlasma(1000L)
+                )
+                .fluidOutputs(
+                    Materials.DimensionallyTranscendentResplendentCatalyst.getFluid(1000L)
+                )
+                .duration(41 * MINUTES + 40 * SECONDS)
+                .eut(TierEU.RECIPE_ZPM)
+                .addTo(sMixerRecipes);
 
-        addMixerRecipe(
-            new ItemStack[] {
-                GT_Utility.getIntegratedCircuit(12)
-            },
-            new FluidStack[] {
-                Materials.DimensionallyTranscendentResplendentCatalyst.getFluid(1000L),
-                Materials.Americium.getPlasma(1000L),
-                Materials.Bismuth.getPlasma(1000L),
-                Materials.Oxygen.getPlasma(1000L),
-                Materials.Tin.getPlasma(1000L)
-            },
-            null,
-            new FluidStack[] {
-                Materials.DimensionallyTranscendentExoticCatalyst.getFluid(1000L)
-            },
-            41*MINUTES+40*SECONDS,
-            TierEU.RECIPE_UEV);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    GT_Utility.getIntegratedCircuit(12)
+                )
+                .noItemOutputs()
+                .fluidInputs(
+                    Materials.DimensionallyTranscendentResplendentCatalyst.getFluid(1000L),
+                    Materials.Americium.getPlasma(1000L),
+                    Materials.Bismuth.getPlasma(1000L),
+                    Materials.Oxygen.getPlasma(1000L),
+                    Materials.Tin.getPlasma(1000L)
+                )
+                .fluidOutputs(
+                    Materials.DimensionallyTranscendentExoticCatalyst.getFluid(1000L)
+                )
+                .duration(41 * MINUTES + 40 * SECONDS)
+                .eut(TierEU.RECIPE_ZPM)
+                .addTo(sMixerRecipes);
+        }
 
-        addMixerRecipe(
-            new ItemStack[] {
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
                 ItemList.IC2_Spray_WeedEx.get(1)
-            },
-            new FluidStack[] {
+            )
+            .noItemOutputs()
+            .fluidInputs(
                 MaterialsKevlar.NaphthenicAcid.getFluid(10)
-            },
-            null,
-            new FluidStack[] {
+            )
+            .fluidOutputs(
                 Materials.WeedEX9000.getFluid(750)
-            },
-            5*SECONDS,
-            100);
+            )
+            .duration(5*SECONDS)
+            .eut(100)
+            .addTo(sMixerRecipes);
     }
 }
