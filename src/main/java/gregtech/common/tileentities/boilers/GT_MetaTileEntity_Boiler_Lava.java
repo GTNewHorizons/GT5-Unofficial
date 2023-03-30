@@ -9,8 +9,8 @@ import static gregtech.api.enums.Textures.BlockIcons.FLUID_OUT_SIGN;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_STEELBRICKS_BOTTOM;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_STEELBRICKS_SIDE;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_STEELBRICKS_TOP;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_DRAIN;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_OUT;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PUMP;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
 import net.minecraft.block.Block;
@@ -118,7 +118,7 @@ public class GT_MetaTileEntity_Boiler_Lava extends GT_MetaTileEntity_Boiler {
             short[] colorModulation = Dyes.getModulation(color, Dyes._NULL.mRGBa);
             rTextures[0][i] = new ITexture[] { TextureFactory.of(MACHINE_STEELBRICKS_BOTTOM, colorModulation) };
             rTextures[1][i] = new ITexture[] { TextureFactory.of(MACHINE_STEELBRICKS_TOP, colorModulation),
-                    TextureFactory.of(OVERLAY_PUMP), TextureFactory.of(FLUID_IN_SIGN) };
+                    TextureFactory.of(OVERLAY_DRAIN), TextureFactory.of(FLUID_IN_SIGN) };
             rTextures[2][i] = new ITexture[] { TextureFactory.of(MACHINE_STEELBRICKS_SIDE, colorModulation),
                     TextureFactory.of(OVERLAY_PIPE_OUT), TextureFactory.of(FLUID_IN_SIGN) };
             rTextures[3][i] = new ITexture[] { TextureFactory.of(MACHINE_STEELBRICKS_SIDE, colorModulation),
