@@ -4,6 +4,7 @@ import static gregtech.api.enums.ModIDs.*;
 import static gregtech.api.util.GT_ModHandler.getModItem;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sAssemblerRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.*;
+import static gregtech.loaders.postload.GT_MachineRecipeLoader.solderingMats;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -20,11 +21,6 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 
 public class AssemblerRecipes implements Runnable {
-    Materials[] solderingMats = new Materials[]{
-        Materials.Lead,
-        Materials.SolderingAlloy,
-        Materials.Tin
-    };
 
     @Override
     public void run() {

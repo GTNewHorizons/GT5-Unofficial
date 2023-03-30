@@ -1,5 +1,6 @@
 package gregtech.loaders.postload;
 
+import gregtech.api.enums.Materials;
 import gregtech.loaders.postload.chains.GT_BauxiteRefineChain;
 import gregtech.loaders.postload.chains.GT_NaniteChain;
 import gregtech.loaders.postload.chains.GT_PCBFactoryRecipes;
@@ -15,6 +16,12 @@ public class GT_MachineRecipeLoader implements Runnable {
     /** @deprecated AE2 is a required dependency now */
     @Deprecated
     public static final Boolean isAE2Loaded = true;
+
+    public static final Materials[] solderingMats = new Materials[]{
+        Materials.Lead,
+        Materials.SolderingAlloy,
+        Materials.Tin
+    };
 
     @Override
     public void run() {
