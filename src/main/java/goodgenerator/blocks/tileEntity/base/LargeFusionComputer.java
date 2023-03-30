@@ -48,6 +48,7 @@ import gregtech.api.util.GT_HatchElementBuilder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.power.FusionPower;
+import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_Output_ME;
 
 public abstract class LargeFusionComputer extends GT_MetaTileEntity_TooltipMultiBlockBase_EM
         implements IConstructable, ISurvivalConstructable {
@@ -516,7 +517,7 @@ public abstract class LargeFusionComputer extends GT_MetaTileEntity_TooltipMulti
         if (aMetaTileEntity == null) return false;
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch) {
             GT_MetaTileEntity_Hatch tHatch = (GT_MetaTileEntity_Hatch) aMetaTileEntity;
-            if (tHatch.mTier < hatchTier()) return false;
+            if (tHatch.mTier < hatchTier() && !(tHatch instanceof GT_MetaTileEntity_Hatch_Output_ME)) return false;
         } else {
             return false;
         }
