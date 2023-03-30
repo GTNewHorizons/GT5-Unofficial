@@ -439,7 +439,6 @@ public enum GT_BeeDefinition implements IBeeDefinition {
     }, template -> AlleleHelper.instance.set(template, SPEED, Speed.SLOWER), dis -> {
         IBeeMutationCustom tMutation = dis.registerMutation(IRON, COAL, 10);
         tMutation.requireResource(GregTech_API.sBlockMetal6, 13);
-        tMutation.restrictTemperature(HOT);
     }),
     NICKEL(GT_BranchDefinition.METAL, "Nickel", true, new Color(0x8585AD), new Color(0x8585AD), beeSpecies -> {
         beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.SLAG), 0.30f);
@@ -610,7 +609,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.SLAG), 0.30f);
         beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.SALT), 0.35f);
         beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.LITHIUM), 0.05f);
-        beeSpecies.setHumidity(EnumHumidity.NORMAL);
+        beeSpecies.setHumidity(ARID);
         beeSpecies.setTemperature(WARM);
     }, template -> AlleleHelper.instance.set(template, SPEED, Speed.SLOWER), dis -> {
         IBeeMutationCustom tMutation = dis.registerMutation(CLAY, ALUMINIUM, 5);
