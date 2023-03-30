@@ -967,6 +967,6 @@ public class BreweryRecipes implements Runnable {
             .addTo(sBrewingRecipes);
 
 
-        MixerRecipes.addMixerPotionRecipes(aName, aItem);
+        MixerRecipes.addMixerPotionRecipes(aName);
     }
 }
