@@ -422,7 +422,7 @@ public class GT_MetaTileEntity_Boiler_Lava extends GT_MetaTileEntity_Boiler {
     @Override
     protected void updateFuel(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (!lavaToObsidian()) return;
-        if (lavaTank.getFluid().amount <= 0) return;
+        if (lavaTank.getFluid() == null || lavaTank.getFluid().amount <= 0) return;
         final int amountToDrain = Math.min(lavaTank.getFluid().amount, 1000);
         final FluidStack drainedLava = lavaTank.drain(amountToDrain, false);
         if (drainedLava == null || drainedLava.amount == 0) return;
