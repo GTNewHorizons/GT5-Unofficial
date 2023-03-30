@@ -251,7 +251,7 @@ public class GregTech_API {
      */
     public static GT_Config sRecipeFile = null, sMachineFile = null, sWorldgenFile = null, sMaterialProperties = null,
             sMaterialComponents = null, sUnification = null, sSpecialFile = null, sClientDataFile, sOPStuff = null,
-            sModernMaterialIDs = null;
+            modernMaterialIDs = null;
 
     public static int TICKS_FOR_LAG_AVERAGING = 25, MILLISECOND_THRESHOLD_UNTIL_LAG_WARNING = 100;
     /**
@@ -280,7 +280,7 @@ public class GregTech_API {
             mHodgepodge = false, mEternalSingularity = false;
 
     public static int mEUtoRF = 360, mRFtoEU = 20;
-    public static int mLastMaterialID = 0;
+    public static int lastMaterialID = 0;
 
     /**
      * Option to not use MACHINE_METAL mixing into colors
