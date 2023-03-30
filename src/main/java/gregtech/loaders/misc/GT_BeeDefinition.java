@@ -609,8 +609,8 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.SLAG), 0.30f);
         beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.SALT), 0.35f);
         beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.LITHIUM), 0.05f);
-        beeSpecies.setHumidity(EnumHumidity.NORMAL);
-        beeSpecies.setTemperature(NORMAL);
+        beeSpecies.setHumidity(ARID);
+        beeSpecies.setTemperature(WARM);
     }, template -> AlleleHelper.instance.set(template, SPEED, Speed.SLOWER), dis -> {
         IBeeMutationCustom tMutation = dis.registerMutation(CLAY, ALUMINIUM, 5);
         tMutation.requireResource("blockSalt");
