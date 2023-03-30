@@ -2,6 +2,7 @@ package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.enums.ModIDs.*;
 import static gregtech.api.util.GT_ModHandler.getModItem;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sChemicalRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
@@ -6961,619 +6962,1126 @@ public class ChemicalRecipes implements Runnable {
     }
 
     public void singleBlockOnly() {
-        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(
-            Materials.Methane.getCells(1),
-            Materials.Empty.getCells(2),
-            Materials.Chlorine.getGas(6000),
-            Materials.Chloroform.getFluid(1000),
-            Materials.HydrochloricAcid.getCells(3),
-            GT_Values.NI,
-            80,
-            30);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                Materials.Methane.getCells(1),
+                Materials.Empty.getCells(2)
+            )
+            .itemOutputs(
+                Materials.HydrochloricAcid.getCells(3)
+            )
+            .fluidInputs(
+                Materials.Chlorine.getGas(6000)
+            )
+            .fluidOutputs(
+                Materials.Chloroform.getFluid(1000)
+            )
+            .duration(4 * SECONDS)
+            .eut(30)
+            .addTo(sChemicalRecipes);
 
-        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(
-            Materials.Silicon.getDust(1),
-            Materials.Chloromethane.getCells(2),
-            GT_Values.NF,
-            Materials.Dimethyldichlorosilane.getFluid(1000),
-            Materials.Empty.getCells(2),
-            GT_Values.NI,
-            240,
-            96);
-        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(
-            Materials.Dimethyldichlorosilane.getCells(1),
-            Materials.Water.getCells(1),
-            GT_Values.NF,
-            Materials.DilutedHydrochloricAcid.getFluid(1000),
-            Materials.Polydimethylsiloxane.getDust(3),
-            Materials.Empty.getCells(2),
-            240,
-            96);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                Materials.Silicon.getDust(1),
+                Materials.Chloromethane.getCells(2)
+            )
+            .itemOutputs(
+                Materials.Empty.getCells(2)
+            )
+            .noFluidInputs()
+            .fluidOutputs(
+                Materials.Dimethyldichlorosilane.getFluid(1000)
+            )
+            .duration(12 * SECONDS)
+            .eut(96)
+            .addTo(sChemicalRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                Materials.Dimethyldichlorosilane.getCells(1),
+                Materials.Water.getCells(1)
+            )
+            .itemOutputs(
+                Materials.Polydimethylsiloxane.getDust(3),
+                Materials.Empty.getCells(2)
+            )
+            .noFluidInputs()
+            .fluidOutputs(
+                Materials.DilutedHydrochloricAcid.getFluid(1000)
+            )
+            .duration(12 * SECONDS)
+            .eut(96)
+            .addTo(sChemicalRecipes);
 
         // Ca5(PO4)3Cl + 5H2SO4 + 10H2O = 5CaSO4(H2O)2 + HCl + 3H3PO4
-        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(
-            Materials.Apatite.getDust(9),
-            Materials.SulfuricAcid.getCells(5),
-            Materials.Water.getFluid(10000),
-            Materials.PhosphoricAcid.getFluid(3000),
-            Materials.HydrochloricAcid.getCells(1),
-            Materials.Empty.getCells(4),
-            320,
-            30);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                Materials.Apatite.getDust(9),
+                Materials.SulfuricAcid.getCells(5)
+            )
+            .itemOutputs(
+                Materials.HydrochloricAcid.getCells(1),
+                Materials.Empty.getCells(4)
+            )
+            .fluidInputs(
+                Materials.Water.getFluid(10000)
+            )
+            .fluidOutputs(
+                Materials.PhosphoricAcid.getFluid(3000)
+            )
+            .duration(16 * SECONDS)
+            .eut(30)
+            .addTo(sChemicalRecipes);
 
         // 10O + 4P = P4O10
-        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(
-            Materials.Phosphorus.getDust(4),
-            GT_Values.NI,
-            Materials.Oxygen.getGas(10000),
-            GT_Values.NF,
-            Materials.PhosphorousPentoxide.getDust(14),
-            GT_Values.NI,
-            40,
-            30);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                Materials.Phosphorus.getDust(4)
+            )
+            .itemOutputs(
+                Materials.PhosphorousPentoxide.getDust(14)
+            )
+            .fluidInputs(
+                Materials.Oxygen.getGas(10000)
+            )
+            .noFluidOutputs()
+            .duration(2 * SECONDS)
+            .eut(30)
+            .addTo(sChemicalRecipes);
 
         // HCl + C3H8O3 = C3H5ClO + 2H2O
-        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(
-            Materials.HydrochloricAcid.getCells(1),
-            Materials.Glycerol.getCells(1),
-            GT_Values.NF,
-            Materials.Epichlorohydrin.getFluid(1000),
-            Materials.Water.getCells(2),
-            GT_Values.NI,
-            480,
-            30);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                Materials.HydrochloricAcid.getCells(1),
+                Materials.Glycerol.getCells(1)
+            )
+            .itemOutputs(
+                Materials.Water.getCells(2)
+            )
+            .noFluidInputs()
+            .fluidOutputs(
+                Materials.Epichlorohydrin.getFluid(1000)
+            )
+            .duration(24 * SECONDS)
+            .eut(30)
+            .addTo(sChemicalRecipes);
 
         // H2O + Cl =Hg= HClO + H
-        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(
-            Materials.Chlorine.getCells(10),
-            Materials.Mercury.getCells(1),
-            Materials.Water.getFluid(10000),
-            Materials.HypochlorousAcid.getFluid(10000),
-            Materials.Hydrogen.getCells(10),
-            Materials.Empty.getCells(1),
-            600,
-            8);
-        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(
-            Materials.Water.getCells(10),
-            Materials.Mercury.getCells(1),
-            Materials.Chlorine.getGas(10000),
-            Materials.HypochlorousAcid.getFluid(10000),
-            Materials.Hydrogen.getCells(10),
-            Materials.Empty.getCells(1),
-            600,
-            8);
-        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(
-            Materials.Chlorine.getCells(1),
-            Materials.Water.getCells(1),
-            Materials.Mercury.getFluid(100),
-            Materials.HypochlorousAcid.getFluid(1000),
-            Materials.Hydrogen.getCells(1),
-            Materials.Empty.getCells(1),
-            60,
-            8);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                Materials.Chlorine.getCells(10),
+                Materials.Mercury.getCells(1)
+            )
+            .itemOutputs(
+                Materials.Hydrogen.getCells(10),
+                Materials.Empty.getCells(1)
+            )
+            .fluidInputs(
+                Materials.Water.getFluid(10000)
+            )
+            .fluidOutputs(
+                Materials.HypochlorousAcid.getFluid(10000)
+            )
+            .duration(30 * SECONDS)
+            .eut(8)
+            .addTo(sChemicalRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                Materials.Water.getCells(10),
+                Materials.Mercury.getCells(1)
+            )
+            .itemOutputs(
+                Materials.Hydrogen.getCells(10),
+                Materials.Empty.getCells(1)
+            )
+            .fluidInputs(
+                Materials.Chlorine.getGas(10000)
+            )
+            .fluidOutputs(
+                Materials.HypochlorousAcid.getFluid(10000)
+            )
+            .duration(30 * SECONDS)
+            .eut(8)
+            .addTo(sChemicalRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                Materials.Chlorine.getCells(1),
+                Materials.Water.getCells(1)
+            )
+            .itemOutputs(
+                Materials.Hydrogen.getCells(1),
+                Materials.Empty.getCells(1)
+            )
+            .fluidInputs(
+                Materials.Mercury.getFluid(100)
+            )
+            .fluidOutputs(
+                Materials.HypochlorousAcid.getFluid(1000)
+            )
+            .duration(3 * SECONDS)
+            .eut(8)
+            .addTo(sChemicalRecipes);
 
         // P + 3Cl = PCl3
-        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(
-            Materials.Phosphorus.getDust(1),
-            Materials.Chlorine.getCells(3),
-            GT_Values.NF,
-            MaterialsKevlar.PhosphorusTrichloride.getFluid(1000L),
-            ItemList.Cell_Empty.get(3L),
-            GT_Values.NI,
-            200,
-            120);
 
-        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(
-            GT_OreDictUnificator.get(OrePrefixes.cell, MaterialsKevlar.EthyleneOxide, 1L),
-            GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Water, 5L),
-            Materials.Dimethyldichlorosilane.getFluid(4000),
-            MaterialsKevlar.SiliconOil.getFluid(5000),
-            ItemList.Cell_Empty.get(6L),
-            GT_Values.NI,
-            600,
-            480);
-        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(
-            GT_OreDictUnificator.get(OrePrefixes.cell, MaterialsKevlar.EthyleneOxide, 1L),
-            GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Dimethyldichlorosilane, 4L),
-            Materials.Water.getFluid(5000),
-            MaterialsKevlar.SiliconOil.getFluid(5000),
-            ItemList.Cell_Empty.get(5L),
-            GT_Values.NI,
-            600,
-            480);
-        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(
-            GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Water, 1L),
-            GT_Utility.getIntegratedCircuit(2),
-            MaterialsKevlar.EthyleneOxide.getGas(1000),
-            MaterialsKevlar.Ethyleneglycol.getFluid(1000),
-            ItemList.Cell_Empty.get(1L),
-            GT_Values.NI,
-            200,
-            480);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                Materials.Phosphorus.getDust(1),
+                Materials.Chlorine.getCells(3)
+            )
+            .itemOutputs(
+                ItemList.Cell_Empty.get(3)
+            )
+            .noFluidInputs()
+            .fluidOutputs(
+                MaterialsKevlar.PhosphorusTrichloride.getFluid(1000)
+            )
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(sChemicalRecipes);
 
-        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(
-            MaterialsKevlar.CobaltIIHydroxide.getDust(5),
-            MaterialsKevlar.NaphthenicAcid.getCells(1),
-            GT_Values.NF,
-            GT_Values.NF,
-            MaterialsKevlar.CobaltIINaphthenate.getDust(41),
-            ItemList.Cell_Empty.get(1L),
-            100,
-            480);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.cell, MaterialsKevlar.EthyleneOxide, 1),
+                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Water, 5)
+            )
+            .itemOutputs(
+                ItemList.Cell_Empty.get(6)
+            )
+            .fluidInputs(
+                Materials.Dimethyldichlorosilane.getFluid(4000)
+            )
+            .fluidOutputs(
+                MaterialsKevlar.SiliconOil.getFluid(5000)
+            )
+            .duration(30 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(sChemicalRecipes);
 
-        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(
-            MaterialsKevlar.CobaltIIAcetate.getDust(15),
-            MaterialsKevlar.NaphthenicAcid.getCells(1),
-            GT_Values.NF,
-            Materials.AceticAcid.getFluid(1500L),
-            MaterialsKevlar.CobaltIINaphthenate.getDust(41),
-            ItemList.Cell_Empty.get(1L),
-            100,
-            480);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.cell, MaterialsKevlar.EthyleneOxide, 1),
+                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Dimethyldichlorosilane, 4)
+            )
+            .itemOutputs(
+                ItemList.Cell_Empty.get(5)
+            )
+            .fluidInputs(
+                Materials.Water.getFluid(5000)
+            )
+            .fluidOutputs(
+                MaterialsKevlar.SiliconOil.getFluid(5000)
+            )
+            .duration(30 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(sChemicalRecipes);
 
-        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(
-            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 1),
-            GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Chlorine, 4),
-            GT_Values.NF,
-            Materials.SiliconTetrachloride.getFluid(1000),
-            ItemList.Cell_Empty.get(4L),
-            GT_Values.NI,
-            400,
-            30);
-        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(
-            GT_OreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Galena, 3),
-            GT_OreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Sphalerite, 1),
-            Materials.SulfuricAcid.getFluid(4000),
-            new FluidStack(ItemList.sIndiumConcentrate, 8000),
-            null,
-            null,
-            60,
-            150);
-        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(
-            Materials.Carbon.getDust(1),
-            Materials.Empty.getCells(1),
-            Materials.Hydrogen.getGas(4000L),
-            GT_Values.NF,
-            Materials.Methane.getCells(1),
-            GT_Values.NI,
-            200,
-            30);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Water, 1),
+                GT_Utility.getIntegratedCircuit(2)
+            )
+            .itemOutputs(
+                ItemList.Cell_Empty.get(1)
+            )
+            .fluidInputs(
+                MaterialsKevlar.EthyleneOxide.getGas(1000)
+            )
+            .fluidOutputs(
+                MaterialsKevlar.Ethyleneglycol.getFluid(1000)
+            )
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(sChemicalRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                MaterialsKevlar.CobaltIIHydroxide.getDust(5),
+                MaterialsKevlar.NaphthenicAcid.getCells(1)
+            )
+            .itemOutputs(
+                MaterialsKevlar.CobaltIINaphthenate.getDust(41),
+                ItemList.Cell_Empty.get(1)
+            )
+            .noFluidInputs()
+            .noFluidOutputs()
+            .duration(5 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(sChemicalRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                MaterialsKevlar.CobaltIIAcetate.getDust(15),
+                MaterialsKevlar.NaphthenicAcid.getCells(1)
+            )
+            .itemOutputs(
+                MaterialsKevlar.CobaltIINaphthenate.getDust(41),
+                ItemList.Cell_Empty.get(1)
+            )
+            .noFluidInputs()
+            .fluidOutputs(
+                Materials.AceticAcid.getFluid(1500)
+            )
+            .duration(5 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(sChemicalRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 1),
+                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Chlorine, 4)
+            )
+            .itemOutputs(
+                ItemList.Cell_Empty.get(4)
+            )
+            .noFluidInputs()
+            .fluidOutputs(
+                Materials.SiliconTetrachloride.getFluid(1000)
+            )
+            .duration(20 * SECONDS)
+            .eut(30)
+            .addTo(sChemicalRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Galena, 3),
+                GT_OreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Sphalerite, 1)
+            )
+            .noItemOutputs()
+            .fluidInputs(
+                Materials.SulfuricAcid.getFluid(4000)
+            )
+            .fluidOutputs(
+                new FluidStack(ItemList.sIndiumConcentrate, 8000)
+            )
+            .duration(3 * SECONDS)
+            .eut(150)
+            .addTo(sChemicalRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                Materials.Carbon.getDust(1),
+                Materials.Empty.getCells(1)
+            )
+            .itemOutputs(
+                Materials.Methane.getCells(1)
+            )
+            .fluidInputs(
+                Materials.Hydrogen.getGas(4000)
+            )
+            .noFluidOutputs()
+            .duration(10 * SECONDS)
+            .eut(30)
+            .addTo(sChemicalRecipes);
+
         // O + 2H = H2O
-        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(
-            GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Oxygen, 1L),
-            GT_Utility.getIntegratedCircuit(22),
-            Materials.Hydrogen.getGas(2000L),
-            GT_ModHandler.getDistilledWater(1000L),
-            ItemList.Cell_Empty.get(1L),
-            GT_Values.NI,
-            10,
-            30);
-        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(
-            GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Hydrogen, 1L),
-            GT_Utility.getIntegratedCircuit(22),
-            Materials.Oxygen.getGas(500L),
-            GT_ModHandler.getDistilledWater(500L),
-            ItemList.Cell_Empty.get(1L),
-            GT_Values.NI,
-            5,
-            30);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Oxygen, 1),
+                GT_Utility.getIntegratedCircuit(22)
+            )
+            .itemOutputs(
+                ItemList.Cell_Empty.get(1)
+            )
+            .fluidInputs(
+                Materials.Hydrogen.getGas(2000)
+            )
+            .fluidOutputs(
+                GT_ModHandler.getDistilledWater(1000)
+            )
+            .duration(10 * TICKS)
+            .eut(30)
+            .addTo(sChemicalRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Hydrogen, 1),
+                GT_Utility.getIntegratedCircuit(22)
+            )
+            .itemOutputs(
+                ItemList.Cell_Empty.get(1)
+            )
+            .fluidInputs(
+                Materials.Oxygen.getGas(500)
+            )
+            .fluidOutputs(
+                GT_ModHandler.getDistilledWater(500)
+            )
+            .duration(5 * TICKS)
+            .eut(30)
+            .addTo(sChemicalRecipes);
+
         // Si + 4Cl = SiCl4
-        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(
-            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 1),
-            ItemList.Cell_Empty.get(2L),
-            Materials.HydrochloricAcid.getFluid(3000),
-            Materials.Trichlorosilane.getFluid(1000),
-            GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Hydrogen, 2),
-            GT_Values.NI,
-            300,
-            30);
-        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(
-            GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Silane, 1),
-            GT_Utility.getIntegratedCircuit(1),
-            GT_Values.NF,
-            Materials.Hydrogen.getGas(4000),
-            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconSG, 1),
-            ItemList.Cell_Empty.get(1L),
-            300,
-            30);
-        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(
-            GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Silane, 1),
-            ItemList.Cell_Empty.get(3L),
-            GT_Values.NF,
-            GT_Values.NF,
-            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconSG, 1),
-            GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Hydrogen, 4),
-            300,
-            30);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 1),
+                ItemList.Cell_Empty.get(2)
+            )
+            .itemOutputs(
+                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Hydrogen, 2)
+            )
+            .fluidInputs(
+                Materials.HydrochloricAcid.getFluid(3000)
+            )
+            .fluidOutputs(
+                Materials.Trichlorosilane.getFluid(1000)
+            )
+            .duration(15 * SECONDS)
+            .eut(30)
+            .addTo(sChemicalRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Silane, 1),
+                GT_Utility.getIntegratedCircuit(1)
+            )
+            .itemOutputs(
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconSG, 1),
+                ItemList.Cell_Empty.get(1)
+            )
+            .noFluidInputs()
+            .fluidOutputs(
+                Materials.Hydrogen.getGas(4000)
+            )
+            .duration(15 * SECONDS)
+            .eut(30)
+            .addTo(sChemicalRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Silane, 1),
+                ItemList.Cell_Empty.get(3)
+            )
+            .itemOutputs(
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconSG, 1),
+                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Hydrogen, 4)
+            )
+            .noFluidInputs()
+            .noFluidOutputs()
+            .duration(15 * SECONDS)
+            .eut(30)
+            .addTo(sChemicalRecipes);
 
         // S + 2Cl = SCl2
-        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sulfur, 8L),
-                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Chlorine, 16L),
-                GT_Values.NF,
-                GT_Values.NF,
-                GT_OreDictUnificator.get(OrePrefixes.cell, MaterialsKevlar.SulfurDichloride, 8L),
-                ItemList.Cell_Empty.get(8),
-                800,
-                30);
-        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sulfur, 8L),
-                ItemList.Cell_Empty.get(8L),
-                Materials.Chlorine.getGas(16000),
-                GT_Values.NF,
-                GT_OreDictUnificator.get(OrePrefixes.cell, MaterialsKevlar.SulfurDichloride, 8L),
-                GT_Values.NI,
-                800,
-                30);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sulfur, 8),
+                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Chlorine, 16)
+            )
+            .itemOutputs(
+                GT_OreDictUnificator.get(OrePrefixes.cell, MaterialsKevlar.SulfurDichloride, 8),
+                ItemList.Cell_Empty.get(8)
+            )
+            .noFluidInputs()
+            .noFluidOutputs()
+            .duration(40 * SECONDS)
+            .eut(30)
+            .addTo(sChemicalRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sulfur, 8),
+                ItemList.Cell_Empty.get(8)
+            )
+            .itemOutputs(
+                GT_OreDictUnificator.get(OrePrefixes.cell, MaterialsKevlar.SulfurDichloride, 8)
+            )
+            .fluidInputs(
+                Materials.Chlorine.getGas(16000)
+            )
+            .noFluidOutputs()
+            .duration(40 * SECONDS)
+            .eut(30)
+            .addTo(sChemicalRecipes);
 
         // C6H6 + C3H6 = C9H12
-        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
                 Materials.Propene.getCells(8),
+                Materials.PhosphoricAcid.getCells(1)
+            )
+            .itemOutputs(
+                Materials.Empty.getCells(9)
+            )
+            .fluidInputs(
+                Materials.Benzene.getFluid(8000)
+            )
+            .fluidOutputs(
+                Materials.Cumene.getFluid(8000)
+            )
+            .duration(1 * MINUTES + 36 * SECONDS)
+            .eut(30)
+            .addTo(sChemicalRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
                 Materials.PhosphoricAcid.getCells(1),
-                Materials.Benzene.getFluid(8000),
-                Materials.Cumene.getFluid(8000),
-                Materials.Empty.getCells(9),
-                GT_Values.NI,
-                1920,
-                30);
-        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(
-                Materials.PhosphoricAcid.getCells(1),
-                Materials.Benzene.getCells(8),
-                Materials.Propene.getGas(8000),
-                Materials.Cumene.getFluid(8000),
-                Materials.Empty.getCells(9),
-                GT_Values.NI,
-                1920,
-                30);
-        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(
+                Materials.Benzene.getCells(8)
+            )
+            .itemOutputs(
+                Materials.Empty.getCells(9)
+            )
+            .fluidInputs(
+                Materials.Propene.getGas(8000)
+            )
+            .fluidOutputs(
+                Materials.Cumene.getFluid(8000)
+            )
+            .duration(1 * MINUTES + 36 * SECONDS)
+            .eut(30)
+            .addTo(sChemicalRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
                 Materials.Benzene.getCells(1),
-                Materials.Propene.getCells(1),
-                Materials.PhosphoricAcid.getFluid(125),
-                Materials.Cumene.getFluid(1000),
-                Materials.Empty.getCells(2),
-                GT_Values.NI,
-                240,
-                30);
+                Materials.Propene.getCells(1)
+            )
+            .itemOutputs(
+                Materials.Empty.getCells(2)
+            )
+            .fluidInputs(
+                Materials.PhosphoricAcid.getFluid(125)
+            )
+            .fluidOutputs(
+                Materials.Cumene.getFluid(1000)
+            )
+            .duration(12 * SECONDS)
+            .eut(30)
+            .addTo(sChemicalRecipes);
 
         // C3H6O + 2C6H6O =HCl= C15H16O2 + H2O
-        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
                 Materials.Acetone.getCells(1),
-                Materials.Phenol.getCells(2),
-                Materials.HydrochloricAcid.getFluid(1000),
-                Materials.BisphenolA.getFluid(1000),
+                Materials.Phenol.getCells(2)
+            )
+            .itemOutputs(
                 Materials.Water.getCells(1),
-                Materials.Empty.getCells(2),
-                160,
-                30);
-        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(
+                Materials.Empty.getCells(2)
+            )
+            .fluidInputs(
+                Materials.HydrochloricAcid.getFluid(1000)
+            )
+            .fluidOutputs(
+                Materials.BisphenolA.getFluid(1000)
+            )
+            .duration(8 * SECONDS)
+            .eut(30)
+            .addTo(sChemicalRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
                 Materials.HydrochloricAcid.getCells(1),
-                Materials.Acetone.getCells(1),
-                Materials.Phenol.getFluid(2000),
-                Materials.BisphenolA.getFluid(1000),
+                Materials.Acetone.getCells(1)
+            )
+            .itemOutputs(
                 Materials.Water.getCells(1),
-                Materials.Empty.getCells(1),
-                160,
-                30);
-        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(
+                Materials.Empty.getCells(1)
+            )
+            .fluidInputs(
+                Materials.Phenol.getFluid(2000)
+            )
+            .fluidOutputs(
+                Materials.BisphenolA.getFluid(1000)
+            )
+            .duration(8 * SECONDS)
+            .eut(30)
+            .addTo(sChemicalRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
                 Materials.Phenol.getCells(2),
-                Materials.HydrochloricAcid.getCells(1),
-                Materials.Acetone.getFluid(1000),
-                Materials.BisphenolA.getFluid(1000),
+                Materials.HydrochloricAcid.getCells(1)
+            )
+            .itemOutputs(
                 Materials.Water.getCells(1),
-                Materials.Empty.getCells(2),
-                160,
-                30);
+                Materials.Empty.getCells(2)
+            )
+            .fluidInputs(
+                Materials.Acetone.getFluid(1000)
+            )
+            .fluidOutputs(
+                Materials.BisphenolA.getFluid(1000)
+            )
+            .duration(8 * SECONDS)
+            .eut(30)
+            .addTo(sChemicalRecipes);
 
         // N + 3H = NH3
-        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
                 Materials.Nitrogen.getCells(1),
-                GT_Utility.getIntegratedCircuit(1),
-                Materials.Hydrogen.getGas(3000),
-                Materials.Ammonia.getGas(1000),
-                Materials.Empty.getCells(1),
-                GT_Values.NI,
-                320,
-                384);
-        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(
+                GT_Utility.getIntegratedCircuit(1)
+            )
+            .itemOutputs(
+                Materials.Empty.getCells(1)
+            )
+            .fluidInputs(
+                Materials.Hydrogen.getGas(3000)
+            )
+            .fluidOutputs(
+                Materials.Ammonia.getGas(1000)
+            )
+            .duration(16 * SECONDS)
+            .eut(384)
+            .addTo(sChemicalRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
                 Materials.Hydrogen.getCells(3),
-                GT_Utility.getIntegratedCircuit(1),
-                Materials.Nitrogen.getGas(1000),
-                Materials.Ammonia.getGas(1000),
-                Materials.Empty.getCells(3),
-                GT_Values.NI,
-                320,
-                384);
-        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(
+                GT_Utility.getIntegratedCircuit(1)
+            )
+            .itemOutputs(
+                Materials.Empty.getCells(3)
+            )
+            .fluidInputs(
+                Materials.Nitrogen.getGas(1000)
+            )
+            .fluidOutputs(
+                Materials.Ammonia.getGas(1000)
+            )
+            .duration(16 * SECONDS)
+            .eut(384)
+            .addTo(sChemicalRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
                 Materials.Nitrogen.getCells(1),
-                GT_Utility.getIntegratedCircuit(11),
-                Materials.Hydrogen.getGas(3000),
-                GT_Values.NF,
-                Materials.Ammonia.getCells(1),
-                GT_Values.NI,
-                320,
-                384);
+                GT_Utility.getIntegratedCircuit(11)
+            )
+            .itemOutputs(
+                Materials.Ammonia.getCells(1)
+            )
+            .fluidInputs(
+                Materials.Hydrogen.getGas(3000)
+            )
+            .noFluidOutputs()
+            .duration(16 * SECONDS)
+            .eut(384)
+            .addTo(sChemicalRecipes);
 
-        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
                 Materials.Hydrogen.getCells(3),
-                GT_Utility.getIntegratedCircuit(11),
-                Materials.Nitrogen.getGas(1000),
-                GT_Values.NF,
+                GT_Utility.getIntegratedCircuit(11)
+            )
+            .itemOutputs(
                 Materials.Ammonia.getCells(1),
-                Materials.Empty.getCells(2),
-                320,
-                384);
+                Materials.Empty.getCells(2)
+            )
+            .fluidInputs(
+                Materials.Nitrogen.getGas(1000)
+            )
+            .noFluidOutputs()
+            .duration(16 * SECONDS)
+            .eut(384)
+            .addTo(sChemicalRecipes);
 
-        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
                 Materials.Ammonia.getCells(1),
-                Materials.Empty.getCells(1),
-                Materials.Methanol.getFluid(2000),
-                Materials.Dimethylamine.getGas(1000),
-                Materials.Water.getCells(2),
-                GT_Values.NI,
-                240,
-                120);
+                Materials.Empty.getCells(1)
+            )
+            .itemOutputs(
+                Materials.Water.getCells(2)
+            )
+            .fluidInputs(
+                Materials.Methanol.getFluid(2000)
+            )
+            .fluidOutputs(
+                Materials.Dimethylamine.getGas(1000)
+            )
+            .duration(12 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(sChemicalRecipes);
 
-        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
                 Materials.Ammonia.getCells(4),
-                Materials.Empty.getCells(2),
-                Materials.Oxygen.getGas(10000),
-                Materials.NitricOxide.getGas(4000),
-                Materials.Water.getCells(6),
-                GT_Values.NI,
-                320,
-                30);
+                Materials.Empty.getCells(2)
+            )
+            .itemOutputs(
+                Materials.Water.getCells(6)
+            )
+            .fluidInputs(
+                Materials.Oxygen.getGas(10000)
+            )
+            .fluidOutputs(
+                Materials.NitricOxide.getGas(4000)
+            )
+            .duration(16 * SECONDS)
+            .eut(30)
+            .addTo(sChemicalRecipes);
 
-        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
                 Materials.Water.getCells(1),
-                Materials.Empty.getCells(1),
-                Materials.NitrogenDioxide.getGas(3000),
-                Materials.NitricOxide.getGas(1000),
-                Materials.NitricAcid.getCells(2),
-                GT_Values.NI,
-                240,
-                30);
+                Materials.Empty.getCells(1)
+            )
+            .itemOutputs(
+                Materials.NitricAcid.getCells(2)
+            )
+            .fluidInputs(
+                Materials.NitrogenDioxide.getGas(3000)
+            )
+            .fluidOutputs(
+                Materials.NitricOxide.getGas(1000)
+            )
+            .duration(12 * SECONDS)
+            .eut(30)
+            .addTo(sChemicalRecipes);
 
         // 2NO2 + O + H2O = 2HNO3
-        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(
-                Materials.NitrogenDioxide.getCells(2),
-                Materials.Oxygen.getCells(1),
-                Materials.Water.getFluid(1000),
-                Materials.NitricAcid.getFluid(2000),
-                Materials.Empty.getCells(3),
-                GT_Values.NI,
-                240,
-                30);
-        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(
-                Materials.Oxygen.getCells(1),
-                Materials.Water.getCells(1),
-                Materials.NitrogenDioxide.getGas(2000),
-                Materials.NitricAcid.getFluid(2000),
-                Materials.Empty.getCells(2),
-                GT_Values.NI,
-                240,
-                30);
-        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(
-                Materials.Water.getCells(1),
-                Materials.NitrogenDioxide.getCells(2),
-                Materials.Oxygen.getGas(1000),
-                Materials.NitricAcid.getFluid(2000),
-                Materials.Empty.getCells(3),
-                GT_Values.NI,
-                240,
-                30);
 
-        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                Materials.NitrogenDioxide.getCells(2),
+                Materials.Oxygen.getCells(1)
+            )
+            .itemOutputs(
+                Materials.Empty.getCells(3)
+            )
+            .fluidInputs(
+                Materials.Water.getFluid(1000)
+            )
+            .fluidOutputs(
+                Materials.NitricAcid.getFluid(2000)
+            )
+            .duration(12 * SECONDS)
+            .eut(30)
+            .addTo(sChemicalRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                Materials.Oxygen.getCells(1),
+                Materials.Water.getCells(1)
+            )
+            .itemOutputs(
+                Materials.Empty.getCells(2)
+            )
+            .fluidInputs(
+                Materials.NitrogenDioxide.getGas(2000)
+            )
+            .fluidOutputs(
+                Materials.NitricAcid.getFluid(2000)
+            )
+            .duration(12 * SECONDS)
+            .eut(30)
+            .addTo(sChemicalRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                Materials.Water.getCells(1),
+                Materials.NitrogenDioxide.getCells(2)
+            )
+            .itemOutputs(
+                Materials.Empty.getCells(3)
+            )
+            .fluidInputs(
+                Materials.Oxygen.getGas(1000)
+            )
+            .fluidOutputs(
+                Materials.NitricAcid.getFluid(2000)
+            )
+            .duration(12 * SECONDS)
+            .eut(30)
+            .addTo(sChemicalRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
                 Materials.Sulfur.getDust(1),
-                Materials.Empty.getCells(1),
-                Materials.Hydrogen.getGas(2000),
-                GT_Values.NF,
-                Materials.HydricSulfide.getCells(1),
-                GT_Values.NI,
-                60,
-                8);
+                Materials.Empty.getCells(1)
+            )
+            .itemOutputs(
+                Materials.HydricSulfide.getCells(1)
+            )
+            .fluidInputs(
+                Materials.Hydrogen.getGas(2000)
+            )
+            .noFluidOutputs()
+            .duration(3 * SECONDS)
+            .eut(8)
+            .addTo(sChemicalRecipes);
 
         // C2H4 + HCl + O = C2H3Cl + H2O
-        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(
-                Materials.Ethylene.getCells(1),
-                Materials.HydrochloricAcid.getCells(1),
-                Materials.Oxygen.getGas(1000),
-                Materials.VinylChloride.getGas(1000),
-                Materials.Water.getCells(1),
-                Materials.Empty.getCells(1),
-                160,
-                30);
-        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(
-                Materials.HydrochloricAcid.getCells(1),
-                Materials.Oxygen.getCells(1),
-                Materials.Ethylene.getGas(1000),
-                Materials.VinylChloride.getGas(1000),
-                Materials.Water.getCells(1),
-                Materials.Empty.getCells(1),
-                160,
-                30);
-        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(
-                Materials.Oxygen.getCells(1),
-                Materials.Ethylene.getCells(1),
-                Materials.HydrochloricAcid.getFluid(1000),
-                Materials.VinylChloride.getGas(1000),
-                Materials.Water.getCells(1),
-                Materials.Empty.getCells(1),
-                160,
-                30);
 
-        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                Materials.Ethylene.getCells(1),
+                Materials.HydrochloricAcid.getCells(1)
+            )
+            .itemOutputs(
+                Materials.Water.getCells(1),
+                Materials.Empty.getCells(1)
+            )
+            .fluidInputs(
+                Materials.Oxygen.getGas(1000)
+            )
+            .fluidOutputs(
+                Materials.VinylChloride.getGas(1000)
+            )
+            .duration(8 * SECONDS)
+            .eut(30)
+            .addTo(sChemicalRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                Materials.HydrochloricAcid.getCells(1),
+                Materials.Oxygen.getCells(1)
+            )
+            .itemOutputs(
+                Materials.Water.getCells(1),
+                Materials.Empty.getCells(1)
+            )
+            .fluidInputs(
+                Materials.Ethylene.getGas(1000)
+            )
+            .fluidOutputs(
+                Materials.VinylChloride.getGas(1000)
+            )
+            .duration(8 * SECONDS)
+            .eut(30)
+            .addTo(sChemicalRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                Materials.Oxygen.getCells(1),
+                Materials.Ethylene.getCells(1)
+            )
+            .itemOutputs(
+                Materials.Water.getCells(1),
+                Materials.Empty.getCells(1)
+            )
+            .fluidInputs(
+                Materials.HydrochloricAcid.getFluid(1000)
+            )
+            .fluidOutputs(
+                Materials.VinylChloride.getGas(1000)
+            )
+            .duration(8 * SECONDS)
+            .eut(30)
+            .addTo(sChemicalRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
                 Materials.Butadiene.getCells(1),
-                ItemList.Cell_Air.get(5),
-                Materials.Styrene.getFluid(350),
-                GT_Values.NF,
+                ItemList.Cell_Air.get(5)
+            )
+            .itemOutputs(
                 Materials.RawStyreneButadieneRubber.getDust(9),
-                Materials.Empty.getCells(6),
-                160,
-                240);
-        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(
+                Materials.Empty.getCells(6)
+            )
+            .fluidInputs(
+                Materials.Styrene.getFluid(350)
+            )
+            .noFluidOutputs()
+            .duration(8 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(sChemicalRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
                 Materials.Butadiene.getCells(1),
-                Materials.Oxygen.getCells(5),
-                Materials.Styrene.getFluid(350),
-                GT_Values.NF,
+                Materials.Oxygen.getCells(5)
+            )
+            .itemOutputs(
                 Materials.RawStyreneButadieneRubber.getDust(13),
-                Materials.Empty.getCells(6),
-                160,
-                240);
-        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(
-                Materials.Styrene.getCells(1),
-                ItemList.Cell_Air.get(15),
-                Materials.Butadiene.getGas(3000),
-                GT_Values.NF,
-                Materials.RawStyreneButadieneRubber.getDust(27),
-                Materials.Empty.getCells(16),
-                480,
-                240);
-        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(
-                Materials.Styrene.getCells(1),
-                Materials.Oxygen.getCells(15),
-                Materials.Butadiene.getGas(3000),
-                GT_Values.NF,
-                Materials.RawStyreneButadieneRubber.getDust(41),
-                Materials.Empty.getCells(16),
-                480,
-                240);
-        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(
-                Materials.Styrene.getCells(1),
-                Materials.Butadiene.getCells(3),
-                Materials.Air.getGas(15000),
-                GT_Values.NF,
-                Materials.RawStyreneButadieneRubber.getDust(27),
-                Materials.Empty.getCells(4),
-                480,
-                240);
-        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(
-                Materials.Styrene.getCells(1),
-                Materials.Butadiene.getCells(3),
-                Materials.Oxygen.getGas(15000),
-                GT_Values.NF,
-                Materials.RawStyreneButadieneRubber.getDust(41),
-                Materials.Empty.getCells(4),
-                480,
-                240);
+                Materials.Empty.getCells(6)
+            )
+            .fluidInputs(
+                Materials.Styrene.getFluid(350)
+            )
+            .noFluidOutputs()
+            .duration(8 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(sChemicalRecipes);
 
-        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                Materials.Styrene.getCells(1),
+                ItemList.Cell_Air.get(15)
+            )
+            .itemOutputs(
+                Materials.RawStyreneButadieneRubber.getDust(27),
+                Materials.Empty.getCells(16)
+            )
+            .fluidInputs(
+                Materials.Butadiene.getGas(3000)
+            )
+            .noFluidOutputs()
+            .duration(24 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(sChemicalRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                Materials.Styrene.getCells(1),
+                Materials.Oxygen.getCells(15)
+            )
+            .itemOutputs(
+                Materials.RawStyreneButadieneRubber.getDust(41),
+                Materials.Empty.getCells(16)
+            )
+            .fluidInputs(
+                Materials.Butadiene.getGas(3000)
+            )
+            .noFluidOutputs()
+            .duration(24 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(sChemicalRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                Materials.Styrene.getCells(1),
+                Materials.Butadiene.getCells(3)
+            )
+            .itemOutputs(
+                Materials.RawStyreneButadieneRubber.getDust(27),
+                Materials.Empty.getCells(4)
+            )
+            .fluidInputs(
+                Materials.Air.getGas(15000)
+            )
+            .noFluidOutputs()
+            .duration(24 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(sChemicalRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                Materials.Styrene.getCells(1),
+                Materials.Butadiene.getCells(3)
+            )
+            .itemOutputs(
+                Materials.RawStyreneButadieneRubber.getDust(41),
+                Materials.Empty.getCells(4)
+            )
+            .fluidInputs(
+                Materials.Oxygen.getGas(15000)
+            )
+            .noFluidOutputs()
+            .duration(24 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(sChemicalRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
                 Materials.Benzene.getCells(1),
-                Materials.Empty.getCells(1),
-                Materials.Chlorine.getGas(4000),
-                Materials.Dichlorobenzene.getFluid(1000),
-                Materials.HydrochloricAcid.getCells(2),
-                GT_Values.NI,
-                240,
-                30);
+                Materials.Empty.getCells(1)
+            )
+            .itemOutputs(
+                Materials.HydrochloricAcid.getCells(2)
+            )
+            .fluidInputs(
+                Materials.Chlorine.getGas(4000)
+            )
+            .fluidOutputs(
+                Materials.Dichlorobenzene.getFluid(1000)
+            )
+            .duration(12 * SECONDS)
+            .eut(30)
+            .addTo(sChemicalRecipes);
 
-        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
                 Materials.Glycerol.getCells(1),
-                Materials.Empty.getCells(2),
-                Materials.NitrationMixture.getFluid(6000),
-                Materials.Glyceryl.getFluid(1000),
-                Materials.DilutedSulfuricAcid.getCells(3),
-                GT_Values.NI,
-                180,
-                30);
+                Materials.Empty.getCells(2)
+            )
+            .itemOutputs(
+                Materials.DilutedSulfuricAcid.getCells(3)
+            )
+            .fluidInputs(
+                Materials.NitrationMixture.getFluid(6000)
+            )
+            .fluidOutputs(
+                Materials.Glyceryl.getFluid(1000)
+            )
+            .duration(9 * SECONDS)
+            .eut(30)
+            .addTo(sChemicalRecipes);
 
-        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
                 Materials.SodiumHydroxide.getDust(12),
-                Materials.Empty.getCells(4),
-                Materials.Chlorobenzene.getFluid(4000),
-                GT_Values.NF,
+                Materials.Empty.getCells(4)
+            )
+            .itemOutputs(
                 Materials.Salt.getDust(8),
-                Materials.Phenol.getCells(4),
-                960,
-                30);
-        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(
+                Materials.Phenol.getCells(4)
+            )
+            .fluidInputs(
+                Materials.Chlorobenzene.getFluid(4000)
+            )
+            .noFluidOutputs()
+            .duration(48 * SECONDS)
+            .eut(30)
+            .addTo(sChemicalRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
                 Materials.SodiumHydroxide.getDust(12),
-                Materials.Chlorobenzene.getCells(4),
-                GT_Values.NF,
-                GT_Values.NF,
+                Materials.Chlorobenzene.getCells(4)
+            )
+            .itemOutputs(
                 Materials.Salt.getDust(8),
-                Materials.Phenol.getCells(4),
-                960,
-                30);
+                Materials.Phenol.getCells(4)
+            )
+            .noFluidInputs()
+            .noFluidOutputs()
+            .duration(48 * SECONDS)
+            .eut(30)
+            .addTo(sChemicalRecipes);
 
         // Recipes for gasoline
         // 2N + O = N2O
-        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
                 Materials.Nitrogen.getCells(2),
-                Materials.Oxygen.getCells(1),
-                GT_Values.NF,
-                GT_Values.NF,
+                Materials.Oxygen.getCells(1)
+            )
+            .itemOutputs(
                 Materials.NitrousOxide.getCells(1),
-                Materials.Empty.getCells(2),
-                200,
-                30);
-        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(
+                Materials.Empty.getCells(2)
+            )
+            .noFluidInputs()
+            .noFluidOutputs()
+            .duration(10 * SECONDS)
+            .eut(30)
+            .addTo(sChemicalRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
                 Materials.Nitrogen.getCells(2),
-                GT_Utility.getIntegratedCircuit(1),
-                Materials.Oxygen.getGas(1000L),
-                Materials.NitrousOxide.getGas(1000L),
-                Materials.Empty.getCells(2),
-                GT_Values.NI,
-                200,
-                30);
-        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(
+                GT_Utility.getIntegratedCircuit(1)
+            )
+            .itemOutputs(
+                Materials.Empty.getCells(2)
+            )
+            .fluidInputs(
+                Materials.Oxygen.getGas(1000)
+            )
+            .fluidOutputs(
+                Materials.NitrousOxide.getGas(1000)
+            )
+            .duration(10 * SECONDS)
+            .eut(30)
+            .addTo(sChemicalRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
                 Materials.Nitrogen.getCells(2),
-                GT_Utility.getIntegratedCircuit(11),
-                Materials.Oxygen.getGas(1000L),
-                GT_Values.NF,
+                GT_Utility.getIntegratedCircuit(11)
+            )
+            .itemOutputs(
                 Materials.NitrousOxide.getCells(1),
-                Materials.Empty.getCells(1),
-                200,
-                30);
-        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(
+                Materials.Empty.getCells(1)
+            )
+            .fluidInputs(
+                Materials.Oxygen.getGas(1000)
+            )
+            .noFluidOutputs()
+            .duration(10 * SECONDS)
+            .eut(30)
+            .addTo(sChemicalRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
                 Materials.Oxygen.getCells(1),
-                GT_Utility.getIntegratedCircuit(1),
-                Materials.Nitrogen.getGas(2000L),
-                Materials.NitrousOxide.getGas(1000L),
-                Materials.Empty.getCells(1),
-                GT_Values.NI,
-                200,
-                30);
-        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(
+                GT_Utility.getIntegratedCircuit(1)
+            )
+            .itemOutputs(
+                Materials.Empty.getCells(1)
+            )
+            .fluidInputs(
+                Materials.Nitrogen.getGas(2000)
+            )
+            .fluidOutputs(
+                Materials.NitrousOxide.getGas(1000)
+            )
+            .duration(10 * SECONDS)
+            .eut(30)
+            .addTo(sChemicalRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
                 Materials.Oxygen.getCells(1),
-                GT_Utility.getIntegratedCircuit(11),
-                Materials.Nitrogen.getGas(2000L),
-                GT_Values.NF,
-                Materials.NitrousOxide.getCells(1),
-                GT_Values.NI,
-                200,
-                30);
+                GT_Utility.getIntegratedCircuit(11)
+            )
+            .itemOutputs(
+                Materials.NitrousOxide.getCells(1)
+            )
+            .fluidInputs(
+                Materials.Nitrogen.getGas(2000)
+            )
+            .noFluidOutputs()
+            .duration(10 * SECONDS)
+            .eut(30)
+            .addTo(sChemicalRecipes);
 
         // C2H6O + C4H8 = C6H14O
-        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
                 Materials.Ethanol.getCells(1),
-                Materials.Butene.getCells(1),
-                GT_Values.NF,
-                GT_Values.NF,
+                Materials.Butene.getCells(1)
+            )
+            .itemOutputs(
                 Materials.AntiKnock.getCells(1),
-                Materials.Empty.getCells(1),
-                400,
-                480);
+                Materials.Empty.getCells(1)
+            )
+            .noFluidInputs()
+            .noFluidOutputs()
+            .duration(20 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(sChemicalRecipes);
 
         // Potassium Dichromate
         // 2KNO3 + 2CrO3 = K2Cr2O7 + 2NO + 3O
-        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
                 Materials.Saltpeter.getDust(10),
-                Materials.ChromiumTrioxide.getDust(8),
-                GT_Values.NF,
-                Materials.NitricOxide.getGas(2000),
-                Materials.Potassiumdichromate.getDust(11),
-                GT_Values.NI,
-                100,
-                480);
-        GT_Values.RA.addChemicalRecipeForBasicMachineOnly(
+                Materials.ChromiumTrioxide.getDust(8)
+            )
+            .itemOutputs(
+                Materials.Potassiumdichromate.getDust(11)
+            )
+            .noFluidInputs()
+            .fluidOutputs(
+                Materials.NitricOxide.getGas(2000)
+            )
+            .duration(5 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(sChemicalRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
                 Materials.PotassiumNitrade.getDust(10),
-                Materials.ChromiumTrioxide.getDust(8),
-                GT_Values.NF,
-                Materials.NitricOxide.getGas(2000),
-                Materials.Potassiumdichromate.getDust(11),
-                GT_Values.NI,
-                100,
-                480);
+                Materials.ChromiumTrioxide.getDust(8)
+            )
+            .itemOutputs(
+                Materials.Potassiumdichromate.getDust(11)
+            )
+            .noFluidInputs()
+            .fluidOutputs(
+                Materials.NitricOxide.getGas(2000)
+            )
+            .duration(5 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(sChemicalRecipes);
     }
 
     public void multiblockOnly() {
