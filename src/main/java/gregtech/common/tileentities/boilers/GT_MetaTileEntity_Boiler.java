@@ -318,7 +318,14 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
         tile.doExplosion(2048L);
     }
 
+    /**
+     * Pushes Steam to a Side of this Boiler
+     *
+     * @param aBaseMetaTileEntity The tile-entity instance of this Boiler
+     * @param aSide               The ordinal direction of the side to push Steam to
+     */
     protected final void pushSteamToSide(IGregTechTileEntity aBaseMetaTileEntity, int aSide) {
+        if (mSteam == null || mSteam.amount == 0) return;
         IFluidHandler tTileEntity = aBaseMetaTileEntity.getITankContainerAtSide((byte) aSide);
         if (tTileEntity == null) return;
         FluidStack tDrained = aBaseMetaTileEntity
@@ -332,7 +339,13 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
                 true);
     }
 
+    /**
+     * Pushes steam to Fluid inventories at all sides except Front.
+     *
+     * @param aBaseMetaTileEntity The tile-entity instance of this Boiler
+     */
     protected void pushSteamToInventories(IGregTechTileEntity aBaseMetaTileEntity) {
+        if (mSteam == null || mSteam.amount == 0) return;
         for (int i = 1; (this.mSteam != null) && (i < 6); i++) {
             if (i == aBaseMetaTileEntity.getFrontFacing()) continue;
             pushSteamToSide(aBaseMetaTileEntity, i);
@@ -378,10 +391,6 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
     @Override
     public int getTankPressure() {
         return 100;
-    }
-
-    protected boolean isOutputToFront() {
-        return false;
     }
 
     protected abstract int getPollution();
@@ -473,7 +482,8 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
     }
 
     protected SlotWidget createAshSlot() {
-        return (SlotWidget) new SlotWidget(inventoryHandler, 3).setPos(115, 25).setBackground(getAshSlotBackground());
+        return (SlotWidget) new SlotWidget(inventoryHandler, 3).setAccess(true, false).setPos(115, 25)
+                .setBackground(getAshSlotBackground());
     }
 
     @Override
