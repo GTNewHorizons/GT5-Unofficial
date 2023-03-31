@@ -246,8 +246,6 @@ public class CompressorRecipes implements Runnable {
             .eut(4)
             .addTo(sCompressorRecipes);
 
-        GameRegistry.addSmelting(ItemList.CompressedFireclay.get(1), ItemList.Firebrick.get(1), 0);
-
         if (Railcraft.isModLoaded()) {
             GT_Values.RA.stdBuilder()
                 .itemInputs(

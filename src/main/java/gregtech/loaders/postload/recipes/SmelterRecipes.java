@@ -1,5 +1,6 @@
 package gregtech.loaders.postload.recipes;
 
+import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
@@ -84,5 +85,7 @@ public class SmelterRecipes implements Runnable {
         GT_ModHandler.addSmeltingRecipe(
             GT_OreDictUnificator.get(OrePrefixes.oreRedgranite, Materials.Graphite, 1L),
             GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Graphite, 1L));
+
+        GameRegistry.addSmelting(ItemList.CompressedFireclay.get(1), ItemList.Firebrick.get(1), 0);
     }
 }
