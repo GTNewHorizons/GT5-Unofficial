@@ -9,6 +9,7 @@ import gregtech.api.enums.*;
 import gregtech.api.util.GT_OreDictUnificator;
 
 import static gregtech.api.enums.ModIDs.BartWorks;
+import static gregtech.api.util.GT_RecipeConstants.*;
 
 public class AssemblyLineRecipes implements Runnable {
 
@@ -33,18 +34,20 @@ public class AssemblyLineRecipes implements Runnable {
         Materials LuVMat = BartWorks.isModLoaded() ? Materials.get("Ruridit") : Materials.Osmiridium;
 
         // Motors
-        GT_Values.RA.addAssemblylineRecipe(
-                ItemList.Electric_Motor_IV.get(1, new Object() {}),
-                144000,
-                new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.stick, Materials.SamariumMagnetic, 1L),
-                        GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.HSSS, 2L),
-                        GT_OreDictUnificator.get(OrePrefixes.wireFine, LuVMat, 64L),
-                        GT_OreDictUnificator.get(OrePrefixes.wireFine, LuVMat, 64L),
-                        GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.YttriumBariumCuprate, 2L) },
-                new FluidStack[] { new FluidStack(solderIndalloy, 144), Materials.Lubricant.getFluid(250) },
-                ItemList.Electric_Motor_LuV.get(1),
-                600,
-                (int) TierEU.RECIPE_IV);
+        GT_Values.RA.stdBuilder()
+            .metadata(RESEARCH_ITEM, ItemList.Electric_Motor_IV.get(1))
+            .metadata(RESEARCH_TIME, 144000)
+            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.stick, Materials.SamariumMagnetic, 1L),
+                GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.HSSS, 2L),
+                GT_OreDictUnificator.get(OrePrefixes.wireFine, LuVMat, 64L),
+                GT_OreDictUnificator.get(OrePrefixes.wireFine, LuVMat, 64L),
+                GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.YttriumBariumCuprate, 2L))
+            .fluidInputs(new FluidStack(solderIndalloy, 144), Materials.Lubricant.getFluid(250))
+            .noFluidOutputs()
+            .itemOutputs(ItemList.Electric_Motor_LuV.get(1))
+            .eut(TierEU.RECIPE_IV)
+            .duration(600)
+            .addTo(AssemblyLine);
 
         GT_Values.RA.addAssemblylineRecipe(
                 ItemList.Electric_Motor_LuV.get(1, new Object() {}),
@@ -83,20 +86,22 @@ public class AssemblyLineRecipes implements Runnable {
                 (int) TierEU.RECIPE_ZPM);
 
         // Pumps
-        GT_Values.RA.addAssemblylineRecipe(
-                ItemList.Electric_Pump_IV.get(1, new Object() {}),
-                144000,
-                new Object[] { ItemList.Electric_Motor_LuV.get(1, new Object() {}),
-                        GT_OreDictUnificator.get(OrePrefixes.pipeSmall, Materials.NiobiumTitanium, 2L),
-                        GT_OreDictUnificator.get(OrePrefixes.plate, Materials.HSSS, 2L),
-                        GT_OreDictUnificator.get(OrePrefixes.screw, Materials.HSSS, 8L),
-                        new Object[] { OrePrefixes.ring.get(Materials.AnySyntheticRubber), 4L },
-                        GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.HSSS, 2L),
-                        GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.YttriumBariumCuprate, 2L) },
-                new FluidStack[] { new FluidStack(solderIndalloy, 144), Materials.Lubricant.getFluid(250) },
-                ItemList.Electric_Pump_LuV.get(1),
-                600,
-                (int) TierEU.RECIPE_IV);
+        GT_Values.RA.stdBuilder()
+            .metadata(RESEARCH_ITEM, ItemList.Electric_Pump_IV.get(1))
+            .metadata(RESEARCH_TIME, 144000)
+            .itemInputs(ItemList.Electric_Motor_LuV.get(1, new Object() {}),
+                GT_OreDictUnificator.get(OrePrefixes.pipeSmall, Materials.NiobiumTitanium, 2L),
+                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.HSSS, 2L),
+                GT_OreDictUnificator.get(OrePrefixes.screw, Materials.HSSS, 8L),
+                new Object[] { OrePrefixes.ring.get(Materials.AnySyntheticRubber), 4L },
+                GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.HSSS, 2L),
+                GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.YttriumBariumCuprate, 2L))
+            .fluidInputs(new FluidStack(solderIndalloy, 144), Materials.Lubricant.getFluid(250))
+            .noFluidOutputs()
+            .itemOutputs(ItemList.Electric_Pump_LuV.get(1))
+            .eut(TierEU.RECIPE_IV)
+            .duration(600)
+            .addTo(AssemblyLine);
 
         GT_Values.RA.addAssemblylineRecipe(
                 ItemList.Electric_Pump_LuV.get(1, new Object() {}),
