@@ -838,7 +838,7 @@ public class CentrifugeRecipes implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 1),
                 new ItemStack(Blocks.sand, 36)
             )
-            .outputChances(3750, 2500, 9000, 0, 0, 0)
+            .outputChances(3750, 2500, 9000)
             .noFluidInputs()
             .fluidOutputs(
                 Materials.Helium.getGas(4320)
@@ -857,7 +857,7 @@ public class CentrifugeRecipes implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Coal, 4),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Gold, 1)
             )
-            .outputChances(5625, 9900, 5625, 2500, 0, 0)
+            .outputChances(5625, 9900, 5625, 2500)
             .noFluidInputs()
             .noFluidOutputs()
             .duration(4 * MINUTES + 48 * SECONDS)
@@ -915,7 +915,7 @@ public class CentrifugeRecipes implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Coal, 1),
                 new ItemStack(Blocks.sand, 1)
             )
-            .outputChances(1000, 700, 9000, 0, 0, 0)
+            .outputChances(1000, 700, 9000)
             .noFluidInputs()
             .fluidOutputs(
                 Materials.Oil.getFluid(200)

@@ -41,12 +41,8 @@ public class GT_RecipeMapUtil {
             : getStackConfigName(r.mInputs[0]);
     public static final Function<GT_Recipe, String> FIRST_ITEM_OUTPUT = r -> isArrayEmptyOrNull(r.mOutputs) ? null
             : getStackConfigName(r.mOutputs[0]);
-    public static final Function<GT_Recipe, String> FIRST_ITEM_OR_FLUID_INPUT = r -> isArrayEmptyOrNull(r.mInputs)
-            ? getStackConfigName(r.mInputs[0])
-            : isArrayEmptyOrNull(r.mFluidInputs) ? null : r.mFluidInputs[0].getFluid().getName();
-    public static final Function<GT_Recipe, String> FIRST_ITEM_OR_FLUID_OUTPUT = r -> isArrayEmptyOrNull(r.mOutputs)
-            ? getStackConfigName(r.mOutputs[0])
-            : isArrayEmptyOrNull(r.mFluidOutputs) ? null : r.mFluidOutputs[0].getFluid().getName();
+    public static final Function<GT_Recipe, String> FIRST_ITEM_OR_FLUID_INPUT = r -> isArrayEmptyOrNull(r.mInputs) ? isArrayEmptyOrNull(r.mFluidInputs) ? null : r.mFluidInputs[0].getFluid().getName() : getStackConfigName(r.mInputs[0]);
+    public static final Function<GT_Recipe, String> FIRST_ITEM_OR_FLUID_OUTPUT = r -> isArrayEmptyOrNull(r.mOutputs) ? isArrayEmptyOrNull(r.mFluidOutputs) ? null : r.mFluidOutputs[0].getFluid().getName() : getStackConfigName(r.mOutputs[0]);
     private static final Map<String, IGT_RecipeMap> addonRecipeMaps = new HashMap<>();
     private static final Multimap<String, Consumer<IGT_RecipeMap>> delayedActions = ArrayListMultimap.create();
 
