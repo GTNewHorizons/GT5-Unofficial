@@ -332,7 +332,7 @@ public class AssemblyLineRecipes implements Runnable {
                     }),
                     ItemList.Electric_Piston_UV.get(1, new Object() {
                     }),
-                    new Object[]{OrePrefixes.circuit.get(Materials.Superconductor), 2},
+                    new Object[]{OrePrefixes.circuit.get(Materials.SuperconductorUHV), 2},
                     new Object[]{OrePrefixes.circuit.get(Materials.Ultimate), 4},
                     new Object[]{OrePrefixes.circuit.get(Materials.Master), 8},
                     GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.NaquadahAlloy, 6L)},
@@ -398,7 +398,7 @@ public class AssemblyLineRecipes implements Runnable {
                     GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Neutronium, 8L),
                     ItemList.Gravistar.get(4, new Object() {
                     }),
-                    new Object[]{OrePrefixes.circuit.get(Materials.Superconductor), 4},
+                    new Object[]{OrePrefixes.circuit.get(Materials.SuperconductorUHV), 4},
                     GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Naquadria, 64L),
                     GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Naquadria, 64L),
                     GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Naquadria, 64L),
@@ -464,7 +464,7 @@ public class AssemblyLineRecipes implements Runnable {
                     GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 8L),
                     ItemList.Gravistar.get(4, new Object() {
                     }),
-                    new Object[]{OrePrefixes.circuit.get(Materials.Superconductor), 4},
+                    new Object[]{OrePrefixes.circuit.get(Materials.SuperconductorUHV), 4},
                     GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Naquadria, 64L),
                     GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Naquadria, 64L),
                     GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Naquadria, 64L),
@@ -508,7 +508,7 @@ public class AssemblyLineRecipes implements Runnable {
                     ItemList.QuantumStar.get(2, new Object() {
                     }), ItemList.Emitter_ZPM.get(4, new Object() {
                 }),
-                    new Object[]{OrePrefixes.circuit.get(Materials.Superconductor), 4},
+                    new Object[]{OrePrefixes.circuit.get(Materials.SuperconductorUHV), 4},
                     GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Europium, 64L),
                     GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Europium, 64L),
                     GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Europium, 64L),
@@ -621,7 +621,7 @@ public class AssemblyLineRecipes implements Runnable {
                     GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorUV, 2L),
                     ItemList.Circuit_Chip_PPIC.get(2L, new Object() {
                     }),
-                    new Object[]{OrePrefixes.circuit.get(Materials.Superconductor), 2},
+                    new Object[]{OrePrefixes.circuit.get(Materials.SuperconductorUHV), 2},
                     ItemList.UV_Coil.get(2L, new Object() {
                     }),
                     new ItemStack[]{ItemList.Reactor_Coolant_He_6.get(1, new Object() {
@@ -739,7 +739,7 @@ public class AssemblyLineRecipes implements Runnable {
                     GT_OreDictUnificator.get(OrePrefixes.spring, Materials.Longasssuperconductornameforuvwire, 4L),
                     ItemList.Circuit_Chip_PPIC.get(2L, new Object() {
                     }),
-                    new Object[]{OrePrefixes.circuit.get(Materials.Superconductor), 2},
+                    new Object[]{OrePrefixes.circuit.get(Materials.SuperconductorUHV), 2},
                     ItemList.UV_Coil.get(2L, new Object() {
                     }),
                     new ItemStack[]{ItemList.Reactor_Coolant_He_6.get(1, new Object() {
@@ -800,10 +800,10 @@ public class AssemblyLineRecipes implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.block, Materials.Europium, 1),
                 288000,
                 new Object[]{ItemList.Casing_Fusion_Coil.get(1),
-                    new Object[]{OrePrefixes.circuit.get(Materials.Superconductor), 1},
-                    new Object[]{OrePrefixes.circuit.get(Materials.Superconductor), 1},
-                    new Object[]{OrePrefixes.circuit.get(Materials.Superconductor), 1},
-                    new Object[]{OrePrefixes.circuit.get(Materials.Superconductor), 1},
+                    new Object[]{OrePrefixes.circuit.get(Materials.SuperconductorUHV), 1},
+                    new Object[]{OrePrefixes.circuit.get(Materials.SuperconductorUHV), 1},
+                    new Object[]{OrePrefixes.circuit.get(Materials.SuperconductorUHV), 1},
+                    new Object[]{OrePrefixes.circuit.get(Materials.SuperconductorUHV), 1},
                     GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Europium, 4L),
                     ItemList.Field_Generator_ZPM.get(2), ItemList.Circuit_Wafer_PPIC.get(48),
                     GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorZPM, 32),},
@@ -854,10 +854,10 @@ public class AssemblyLineRecipes implements Runnable {
             ItemList.Energy_Module.get(1),
             288000,
             new Object[] { GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Americium, 32L),
-                new Object[] { OrePrefixes.circuit.get(Materials.Superconductor), 1 },
-                new Object[] { OrePrefixes.circuit.get(Materials.Superconductor), 1 },
-                new Object[] { OrePrefixes.circuit.get(Materials.Superconductor), 1 },
-                new Object[] { OrePrefixes.circuit.get(Materials.Superconductor), 1 },
+                new Object[] { OrePrefixes.circuit.get(Materials.SuperconductorUHV), 1 },
+                new Object[] { OrePrefixes.circuit.get(Materials.SuperconductorUHV), 1 },
+                new Object[] { OrePrefixes.circuit.get(Materials.SuperconductorUHV), 1 },
+                new Object[] { OrePrefixes.circuit.get(Materials.SuperconductorUHV), 1 },
                 ItemList.Energy_Module.get(8L), ItemList.Field_Generator_ZPM.get(2),
                 ItemList.Circuit_Wafer_HPIC.get(64), ItemList.Circuit_Wafer_HPIC.get(64),
                 ItemList.Circuit_Parts_DiodeASMD.get(16),
