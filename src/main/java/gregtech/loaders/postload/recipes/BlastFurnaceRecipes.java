@@ -695,9 +695,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 .fluidInputs(
                     Materials.Radon.getGas(8000)
                 )
-                .fluidOutputs(
-                    null
-                )
+                .noFluidOutputs()
                 .duration(15 * MINUTES)
                 .eut((int) TierEU.RECIPE_IV)
                 .specialValue(6484)
