@@ -25,8 +25,6 @@ public class AssemblerRecipes implements Runnable {
     @Override
     public void run() {
 
-        Materials LuVMat = isBartWorksLoaded ? Materials.get("Ruridit") : Materials.Osmiridium;
-
         this.withBartWorks();
         this.withGalacticraftMars();
         this.withRailcraft();
