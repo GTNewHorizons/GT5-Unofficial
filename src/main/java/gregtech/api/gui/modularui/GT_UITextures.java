@@ -25,6 +25,7 @@ public class GT_UITextures {
             .of(MODID, "gui/background/text_field_light_gray", 61, 12, 1);
 
     public static final SteamTexture SLOT_ITEM_STEAM = SteamTexture.fullImage(MODID, "gui/slot/item_%s");
+    public static final SteamTexture SLOT_FLUID_STEAM = SteamTexture.fullImage(MODID, "gui/slot/fluid_%s");
     public static final AdaptableUITexture SLOT_DARK_GRAY = AdaptableUITexture
             .of(MODID, "gui/slot/dark_gray", 18, 18, 1);
     public static final AdaptableUITexture SLOT_MAINTENANCE = AdaptableUITexture
@@ -68,6 +69,8 @@ public class GT_UITextures {
     public static final UITexture OVERLAY_SLOT_DUST = UITexture.fullImage(MODID, "gui/overlay_slot/dust");
     public static final SteamTexture OVERLAY_SLOT_DUST_STEAM = SteamTexture
             .fullImage(MODID, "gui/overlay_slot/dust_%s");
+    public static final SteamTexture OVERLAY_SLOT_BLOCK_STEAM = SteamTexture
+            .fullImage(MODID, "gui/overlay_slot/block_%s");
     public static final UITexture OVERLAY_SLOT_EXPLOSIVE = UITexture.fullImage(MODID, "gui/overlay_slot/explosive");
     public static final UITexture OVERLAY_SLOT_EXTRUDER_SHAPE = UITexture
             .fullImage(MODID, "gui/overlay_slot/extruder_shape");

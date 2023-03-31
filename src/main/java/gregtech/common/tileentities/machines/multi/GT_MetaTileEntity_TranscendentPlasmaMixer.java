@@ -112,7 +112,7 @@ public class GT_MetaTileEntity_TranscendentPlasmaMixer
 
     @Override
     public boolean checkRecipe(ItemStack aStack) {
-        if (aStack.getItem() instanceof GT_IntegratedCircuit_Item) {
+        if (aStack != null && aStack.getItem() instanceof GT_IntegratedCircuit_Item) {
             multiplier = aStack.stackSize * max(1, aStack.getItemDamage());
         }
 
