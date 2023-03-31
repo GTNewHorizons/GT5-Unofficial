@@ -1335,7 +1335,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 E,
                 true,
                 true).setSlotOverlay(false, false, true, true, GT_UITextures.OVERLAY_SLOT_DATA_ORB)
-                        .setUsualFluidInputCount(4);
+                        .setUsualFluidInputCount(4).setDisableOptimize(true);
         public static final GT_Recipe_Map sPlasmaArcFurnaceRecipes = new GT_Recipe_Map(
                 new HashSet<>(20000),
                 "gt.recipe.plasmaarcfurnace",
@@ -1794,7 +1794,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 true,
                 true).setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT)
                         .useComparatorForNEI(true).setUsualFluidInputCount(2)
-                        .setRecipeConfigFile("fusion", FIRST_FLUID_OUTPUT)
+                        .setRecipeConfigFile("fusion", FIRST_FLUID_OUTPUT).setDisableOptimize(true)
                         .setNEISpecialInfoFormatter(FusionSpecialValueFormatter.INSTANCE);
         public static final GT_Recipe_Map sComplexFusionRecipes = new GT_Recipe_Map_ComplexFusion(
                 new HashSet<>(50),
@@ -1814,7 +1814,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 true).setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT)
                         .setUsualFluidInputCount(16).setUsualFluidOutputCount(16)
                         .setNEITransferRect(new Rectangle(79, 34, 18, 18)).setLogoPos(80, 61)
-                        .setNEISpecialInfoFormatter(FusionSpecialValueFormatter.INSTANCE);
+                        .setNEISpecialInfoFormatter(FusionSpecialValueFormatter.INSTANCE).setDisableOptimize(true);
         public static final GT_Recipe_Map sCentrifugeRecipes = new GT_Recipe_Map(
                 new HashSet<>(1200),
                 "gt.recipe.centrifuge",
@@ -1897,7 +1897,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 false,
                 true).setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT)
                         .setUsualFluidInputCount(9).setUsualFluidOutputCount(9)
-                        .setRecipeEmitter(b -> buildOrEmpty(handleCoilHeat(b)))
+                        .setRecipeEmitter(b -> buildOrEmpty(handleCoilHeat(b.noOptimize())))
                         .setNEISpecialInfoFormatter(HeatingCoilSpecialValueFormatter.INSTANCE);
 
         public static final GT_Recipe_Map sTranscendentPlasmaMixerRecipes = new TranscendentPlasmaMixerRecipeMap(
@@ -1915,7 +1915,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 0,
                 "",
                 false,
-                true);
+                true).setDisableOptimize(true);
 
         public static class GT_FakeSpaceProjectRecipe extends GT_Recipe {
 
@@ -2040,7 +2040,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                                 .setSize(bar2Width, 72));
             }
         }.useModularUI(true).setRenderRealStackSizes(false).setUsualFluidInputCount(4).setNEIBackgroundOffset(2, 23)
-                .setLogoPos(152, 83);
+                .setLogoPos(152, 83).setDisableOptimize(true);
 
         public static class TranscendentPlasmaMixerRecipeMap extends GT_Recipe_Map {
 
@@ -2206,7 +2206,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                                 default:
                                     return b.build().map(Collections::singletonList).orElse(Collections.emptyList());
                             }
-                            Optional<GT_Recipe> t = b.duration(20).eut(30).validateInputCount(1, 1)
+                            Optional<GT_Recipe> t = b.noOptimize().duration(20).eut(30).validateInputCount(1, 1)
                                     .validateOutputCount(1, 1).build();
                             if (!t.isPresent()) return Collections.emptyList();
                             ItemStack input = b.getItemInputBasic(0);
@@ -2223,7 +2223,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                             coll.derive().setInputs(input, new ItemStack(Blocks.tnt, tTNT));
                             coll.derive().setInputs(input, GT_ModHandler.getIC2Item("industrialTnt", tITNT, null));
                             return coll.getAll();
-                        }).setProgressBar(GT_UITextures.PROGRESSBAR_COMPRESS, ProgressBar.Direction.RIGHT);
+                        }).setDisableOptimize(true).setProgressBar(GT_UITextures.PROGRESSBAR_COMPRESS, ProgressBar.Direction.RIGHT);
         public static final GT_Recipe_Map sVacuumRecipes = new GT_Recipe_Map(
                 new HashSet<>(305),
                 "gt.recipe.vacuumfreezer",
@@ -2241,6 +2241,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 false,
                 true).setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT)
                         .setRecipeConfigFile("vacuumfreezer", FIRST_ITEM_INPUT).setRecipeEmitter(b -> {
+                            b.noOptimize();
                             FluidStack in, out;
                             if (isArrayOfLength(b.getItemInputsBasic(), 1) && isArrayOfLength(b.getItemOutputs(), 1)
                                     && isArrayEmptyOrNull(b.getFluidInputs())
@@ -2252,7 +2253,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                                         b.fluidInputs(in).fluidOutputs(out).noItemInputs().noItemOutputs().build()
                                                 .get());
                             }
-                            return Collections.singletonList(b.build().get());
+                            return buildOrEmpty(b);
                         }).setUsualFluidInputCount(2);
         public static final GT_Recipe_Map sChemicalRecipes = new GT_Recipe_Map(
                 new HashSet<>(1170),
@@ -2282,7 +2283,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         public static final GT_Recipe_Map sDistillationRecipes = new GT_Recipe_Map_DistillationTower()
                 .setRecipeConfigFile("distillation", FIRST_FLUIDSTACK_INPUT)
                 .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW_MULTIPLE, ProgressBar.Direction.RIGHT)
-                .setUsualFluidOutputCount(11);
+                .setUsualFluidOutputCount(11).setDisableOptimize(true);
         public static final GT_Recipe_Map_OilCracker sCrackingRecipes = (GT_Recipe_Map_OilCracker) new GT_Recipe_Map_OilCracker()
                 .setRecipeConfigFile("cracking", FIRST_FLUIDSTACK_INPUT)
                 .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW_MULTIPLE, ProgressBar.Direction.RIGHT)
@@ -2308,7 +2309,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 1,
                 E,
                 true,
-                true).setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT)
+                true).setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT).setDisableOptimize(true)
                         .setRecipeConfigFile("pyrolyse", FIRST_ITEM_INPUT);
         public static final GT_Recipe_Map sWiremillRecipes = new GT_Recipe_Map(
                 new HashSet<>(450),
@@ -2847,7 +2848,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 0,
                 "",
                 true,
-                false).setRecipeEmitter(GT_RecipeMapUtil::buildRecipeForMultiblock);
+                false).setRecipeEmitter(GT_RecipeMapUtil::buildRecipeForMultiblock).setDisableOptimize(true);
         public static final GT_Recipe_Map sMultiblockMixerRecipes = new GT_Recipe_Map(
                 new HashSet<>(900),
                 "gt.recipe.largemixer",
@@ -2863,9 +2864,9 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 0,
                 "",
                 true,
-                false).setRecipeEmitter(GT_RecipeMapUtil::buildRecipeForMultiblock);
+                false).setRecipeEmitter(GT_RecipeMapUtil::buildRecipeForMultiblock).setDisableOptimize(true);
         public static final GT_Recipe_Map_LargeBoilerFakeFuels sLargeBoilerFakeFuels = (GT_Recipe_Map_LargeBoilerFakeFuels) new GT_Recipe_Map_LargeBoilerFakeFuels()
-                .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT);
+                .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT).setDisableOptimize(true);
 
         public static final GT_Recipe_Map sNanoForge = new GT_Recipe_Map(
                 new HashSet<>(10),
@@ -2882,7 +2883,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 1,
                 "",
                 false,
-                true).useModularUI(true).setUsualFluidInputCount(3)
+                true).useModularUI(true).setUsualFluidInputCount(3).setDisableOptimize(true)
                         .setSlotOverlay(false, false, true, GT_UITextures.OVERLAY_SLOT_LENS)
                         .setProgressBar(GT_UITextures.PROGRESSBAR_ASSEMBLE, ProgressBar.Direction.RIGHT);
 
@@ -2901,7 +2902,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 0,
                 E,
                 true,
-                true).useModularUI(true).setUsualFluidInputCount(3).setUsualFluidOutputCount(0)
+                true).useModularUI(true).setUsualFluidInputCount(3).setUsualFluidOutputCount(0).setDisableOptimize(true)
                         .setProgressBar(GT_UITextures.PROGRESSBAR_ASSEMBLE, ProgressBar.Direction.RIGHT)
                         .setNEISpecialInfoFormatter((recipeInfo, applyPrefixAndSuffix) -> {
                             List<String> result = new ArrayList<>();
@@ -2920,7 +2921,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                             return result;
                         });
 
-        public static final GT_Recipe_Map_IC2NuclearFake sIC2NuclearFakeRecipe = new GT_Recipe_Map_IC2NuclearFake();
+        public static final GT_Recipe_Map_IC2NuclearFake sIC2NuclearFakeRecipe = (GT_Recipe_Map_IC2NuclearFake) new GT_Recipe_Map_IC2NuclearFake().setDisableOptimize(true);
 
         static {
             sCentrifugeRecipes.addDownstream(sMultiblockCentrifugeRecipes.deepCopyInput());
@@ -3074,6 +3075,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
         private INEISpecialInfoFormatter neiSpecialInfoFormatter;
         private boolean checkForCollision = true, allowNoInput, allowNoInputFluid, allowNoOutput, allowNoOutputFluid;
+        private boolean disableOptimize = false;
         private Function<? super GT_RecipeBuilder, ? extends Iterable<? extends GT_Recipe>> recipeEmitter = this::defaultBuildRecipe;
         private Function<? super GT_Recipe, ? extends GT_Recipe> specialHandler;
         private String recipeConfigCategory;
@@ -3168,6 +3170,11 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                     aShowVoltageAmperageInNEI,
                     aNEIAllowed);
             setNEIUnificateOutput(aNEIUnificateOutput);
+        }
+
+        public GT_Recipe_Map setDisableOptimize(boolean disableOptimize) {
+            this.disableOptimize = disableOptimize;
+            return this;
         }
 
         public GT_Recipe_Map setNEIUnificateOutput(boolean mNEIUnificateOutput) {
@@ -3653,6 +3660,8 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
         public final Iterable<? extends GT_Recipe> defaultBuildRecipe(GT_RecipeBuilder builder) {
             // TODO sensible validation
+            if (!downstreams.isEmpty() && disableOptimize && !builder.optimize)
+                return buildOrEmpty(builder.copy().noOptimize());
             return buildOrEmpty(builder);
         }
 
@@ -4573,6 +4582,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                     aNEISpecialValuePost,
                     aShowVoltageAmperageInNEI,
                     aNEIAllowed);
+            setDisableOptimize(true);
         }
 
         public GT_Recipe addFuel(ItemStack aInput, ItemStack aOutput, int aFuelValueInEU) {
