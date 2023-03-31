@@ -680,6 +680,11 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM
         }
     }
 
+    @Override
+    protected long getActualEnergyUsage() {
+        return -(useLongPower ? lEUt : mEUt) * eAmpereFlow * 10_000 / Math.max(1_000, mEfficiency);
+    }
+
     /**
      * Extra hook on cyclic updates (not really needed for machines smaller than 1 chunk) BUT NEEDED WHEN - machine
      * blocks are not touching each other or they don't implement IMachineBlockUpdateable (ex. air,stone,weird TE's)
