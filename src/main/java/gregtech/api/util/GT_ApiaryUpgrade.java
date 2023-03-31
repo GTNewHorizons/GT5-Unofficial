@@ -22,11 +22,11 @@ public enum GT_ApiaryUpgrade {
     speed8(UNIQUE_INDEX.SPEED_UPGRADE, 32207, 1, (mods, n) -> mods.maxSpeed = 8),
     speed8upgraded(UNIQUE_INDEX.SPEED_UPGRADE, 32208, 1, (mods, n) -> {
         mods.maxSpeed = 8;
-        mods.production = 2f;
+        mods.production = 17.19926784f;
         mods.energy *= 14.75;
     }),
     production(UNIQUE_INDEX.PRODUCTION_UPGRADE, 32209, 8, (mods, n) -> {
-        mods.production += 0.25f * n;
+        mods.production = 4.f * (float) Math.pow(1.2d, n);
         mods.energy *= Math.pow(1.4f, n);
     }),
     plains(UNIQUE_INDEX.PLAINS_UPGRADE, 32210, 1, (mods, n) -> {
@@ -108,6 +108,10 @@ public enum GT_ApiaryUpgrade {
     sieve(UNIQUE_INDEX.SIEVE_UPGRADE, 32229, 1, (mods, n) -> {
         mods.isCollectingPollen = true;
         mods.energy *= 1.05f;
+    }),
+    unlight(UNIQUE_INDEX.LIGHT_UPGRADE, 32231, 1, (mods, n) -> {
+        mods.isSelfUnlighted = true;
+        mods.energy *= 1.05f;
     }),;
 
     private enum UNIQUE_INDEX {
@@ -115,7 +119,7 @@ public enum GT_ApiaryUpgrade {
         SPEED_UPGRADE,
         PRODUCTION_UPGRADE,
         PLAINS_UPGRADE,
-        LIGHT_UPGRADE,
+        LIGHT_UPGRADE, // also unlight
         FLOWERING_UPGRADE,
         WINTER_UPGRADE,
         DRYER_UPGRADE,

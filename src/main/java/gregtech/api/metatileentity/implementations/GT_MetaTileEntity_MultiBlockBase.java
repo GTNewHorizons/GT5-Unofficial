@@ -12,12 +12,14 @@ import java.util.List;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
@@ -35,6 +37,8 @@ import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.widget.*;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ConfigCategories;
@@ -51,6 +55,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.*;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
+import gregtech.client.GT_SoundLoop;
 import gregtech.common.GT_Pollution;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_DrillerBase;
@@ -91,6 +96,8 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     public ArrayList<GT_MetaTileEntity_Hatch_Energy> mEnergyHatches = new ArrayList<>();
     public ArrayList<GT_MetaTileEntity_Hatch_Maintenance> mMaintenanceHatches = new ArrayList<>();
     protected final List<GT_MetaTileEntity_Hatch> mExoticEnergyHatches = new ArrayList<>();
+    @SideOnly(Side.CLIENT)
+    protected GT_SoundLoop activitySoundLoop;
 
     protected static final byte INTERRUPT_SOUND_INDEX = 8;
     protected static final byte PROCESS_START_SOUND_INDEX = 1;
@@ -366,6 +373,8 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             aBaseMetaTileEntity.setActive(mMaxProgresstime > 0);
             boolean active = aBaseMetaTileEntity.isActive() && mPollution > 0;
             setMufflers(active);
+        } else {
+            doActivitySound(getActivitySoundLoop());
         }
     }
 
@@ -509,6 +518,20 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         }
     }
 
+    @SideOnly(Side.CLIENT)
+    protected void doActivitySound(ResourceLocation activitySound) {
+        if (getBaseMetaTileEntity().isActive() && activitySound != null) {
+            if (activitySoundLoop == null) {
+                activitySoundLoop = new GT_SoundLoop(activitySound, getBaseMetaTileEntity(), false, true);
+                Minecraft.getMinecraft().getSoundHandler().playSound(activitySoundLoop);
+            }
+        } else {
+            if (activitySoundLoop != null) {
+                activitySoundLoop = null;
+            }
+        }
+    }
+
     /**
      * @return Time before the start process sound is played again
      */
@@ -520,6 +543,14 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
      * @return Sound that will be played once, when the recipe check was valid
      */
     protected SoundResource getProcessStartSound() {
+        return null;
+    }
+
+    /**
+     * @return Sound that will be looped for as long as the machine is doing a recipe
+     */
+    @SideOnly(Side.CLIENT)
+    protected ResourceLocation getActivitySoundLoop() {
         return null;
     }
 

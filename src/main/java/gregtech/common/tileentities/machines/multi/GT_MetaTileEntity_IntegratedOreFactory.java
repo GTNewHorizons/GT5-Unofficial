@@ -9,11 +9,17 @@ import static gregtech.api.util.GT_StructureUtility.ofFrame;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
+
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -23,7 +29,6 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
@@ -48,12 +53,6 @@ public class GT_MetaTileEntity_IntegratedOreFactory
     private static final int CASING_INDEX1 = 183;
     private static final int CASING_INDEX2 = 49;
     private static final int MAX_PARA = 1024;
-    private static final String CRUSH = "Macerate";
-    private static final String WASH = "Ore Washer";
-    private static final String THERMAL = "Thermal Centrifuge";
-    private static final String CENTRIFUGE = "Centrifuge";
-    private static final String SIFTER = "Sifter";
-    private static final String CHEM_WASH = "Chemical Bathing";
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<GT_MetaTileEntity_IntegratedOreFactory> STRUCTURE_DEFINITION = StructureDefinition
             .<GT_MetaTileEntity_IntegratedOreFactory>builder()
@@ -87,7 +86,14 @@ public class GT_MetaTileEntity_IntegratedOreFactory
                                             "EEEEEE     " } }))
             .addElement('i', ofBlock(GregTech_API.sBlockCasings8, 7))
             .addElement('s', ofBlock(GregTech_API.sBlockCasings4, 1))
-            .addElement('g', ofBlockAnyMeta(GameRegistry.findBlock("IC2", "blockAlloyGlass")))
+            .addElement(
+                    'g',
+                    ofChain(
+                            ofBlockUnlocalizedName("IC2", "blockAlloyGlass", 0, true),
+                            ofBlockUnlocalizedName("bartworks", "BW_GlasBlocks", 0, true),
+                            ofBlockUnlocalizedName("bartworks", "BW_GlasBlocks2", 0, true),
+                            // warded glass
+                            ofBlockUnlocalizedName("Thaumcraft", "blockCosmeticOpaque", 2, false)))
             .addElement('x', ofBlock(GregTech_API.sBlockCasings2, 3))
             .addElement('p', ofBlock(GregTech_API.sBlockCasings2, 15)).addElement('t', ofFrame(Materials.TungstenSteel))
             .addElement(
@@ -220,8 +226,8 @@ public class GT_MetaTileEntity_IntegratedOreFactory
         return true;
     }
 
-    private int getTime() {
-        switch (sMode) {
+    private static int getTime(int mode) {
+        switch (mode) {
             case 0:
                 return 30 * 20;
             case 1:
@@ -337,7 +343,7 @@ public class GT_MetaTileEntity_IntegratedOreFactory
         this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
         this.mEfficiencyIncrease = 10000;
         this.mOutputItems = sMidProduct;
-        calculateOverclockedNessMulti(30 * tRealUsed, getTime(), 1, getMaxInputVoltage());
+        calculateOverclockedNessMulti(30 * tRealUsed, getTime(sMode), 1, getMaxInputVoltage());
         if (this.mEUt > 0) {
             this.mEUt = -this.mEUt;
         }
@@ -366,29 +372,8 @@ public class GT_MetaTileEntity_IntegratedOreFactory
             return;
         }
         sMode = (sMode + 1) % 5;
-        String des;
-        switch (sMode) {
-            case 0:
-                des = EnumChatFormatting.AQUA + CRUSH + "->" + WASH + "->" + THERMAL + "->" + CRUSH;
-                break;
-            case 1:
-                des = EnumChatFormatting.AQUA + CRUSH + "->" + WASH + "->" + CRUSH + "->" + CENTRIFUGE;
-                break;
-            case 2:
-                des = EnumChatFormatting.AQUA + CRUSH + "->" + CRUSH + "->" + CENTRIFUGE;
-                break;
-            case 3:
-                des = EnumChatFormatting.AQUA + CRUSH + "->" + WASH + "->" + SIFTER;
-                break;
-            case 4:
-                des = EnumChatFormatting.AQUA + CRUSH + "->" + CHEM_WASH + "->" + CRUSH + "->" + CENTRIFUGE;
-                break;
-            default:
-                des = "";
-        }
-        GT_Utility.sendChatToPlayer(
-                aPlayer,
-                StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor", des, getTime() / 20));
+        List<String> des = getDisplayMode(sMode);
+        GT_Utility.sendChatToPlayer(aPlayer, String.join("", des));
     }
 
     @Override
@@ -660,6 +645,8 @@ public class GT_MetaTileEntity_IntegratedOreFactory
                 + getCurrentParallelism()
                 + EnumChatFormatting.RESET;
         informationData.add(parallelism);
+        informationData.add(StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.void", sVoidStone));
+        informationData.addAll(getDisplayMode(sMode));
         return informationData.toArray(new String[0]);
     }
 
@@ -676,5 +663,86 @@ public class GT_MetaTileEntity_IntegratedOreFactory
                     TextureFactory.builder().addIcon(OVERLAY_FRONT_PROCESSING_ARRAY_GLOW).extFacing().glow().build() };
         }
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX2) };
+    }
+
+    private static List<String> getDisplayMode(int mode) {
+        final EnumChatFormatting AQUA = EnumChatFormatting.AQUA;
+        final String CRUSH = StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.Macerate");
+        final String WASH = StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.Ore_Washer")
+                .replace(" ", " " + AQUA);
+        final String THERMAL = StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.Thermal_Centrifuge")
+                .replace(" ", " " + AQUA);
+        final String CENTRIFUGE = StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.Centrifuge");
+        final String SIFTER = StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.Sifter");
+        final String CHEM_WASH = StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.Chemical_Bathing")
+                .replace(" ", " " + AQUA);
+        final String ARROW = " " + AQUA + "-> ";
+
+        List<String> des = new ArrayList<>();
+        des.add(StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor1") + " ");
+
+        switch (mode) {
+            case 0:
+                des.add(AQUA + CRUSH + ARROW);
+                des.add(AQUA + WASH + ARROW);
+                des.add(AQUA + THERMAL + ARROW);
+                des.add(AQUA + CRUSH + ' ');
+                break;
+            case 1:
+                des.add(AQUA + CRUSH + ARROW);
+                des.add(AQUA + WASH + ARROW);
+                des.add(AQUA + CENTRIFUGE + ARROW);
+                des.add(AQUA + CRUSH + ' ');
+                break;
+            case 2:
+                des.add(AQUA + CRUSH + ARROW);
+                des.add(AQUA + CRUSH + ARROW);
+                des.add(AQUA + CENTRIFUGE + ' ');
+                break;
+            case 3:
+                des.add(AQUA + CRUSH + ARROW);
+                des.add(AQUA + WASH + ARROW);
+                des.add(AQUA + SIFTER + ' ');
+
+                break;
+            case 4:
+                des.add(AQUA + CRUSH + ARROW);
+                des.add(AQUA + CHEM_WASH + ARROW);
+                des.add(AQUA + CRUSH + ARROW);
+                des.add(AQUA + CENTRIFUGE + ' ');
+                break;
+            default:
+                des.add(StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.WRONG_MODE"));
+        }
+
+        des.add(StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor2", getTime(mode) / 20));
+
+        return des;
+
+    }
+
+    @Override
+    public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
+            IWailaConfigHandler config) {
+        super.getWailaBody(itemStack, currenttip, accessor, config);
+        NBTTagCompound tag = accessor.getNBTData();
+
+        currenttip.add(
+                StatCollector.translateToLocal("GT5U.multiblock.parallelism") + ": "
+                        + EnumChatFormatting.BLUE
+                        + tag.getInteger("currentParallelism")
+                        + EnumChatFormatting.RESET);
+        currenttip.addAll(getDisplayMode(tag.getInteger("ssMode")));
+        currenttip.add(
+                StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.void", tag.getBoolean("ssStone")));
+
+    }
+
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+            int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        tag.setInteger("ssMode", sMode);
+        tag.setBoolean("ssStone", sVoidStone);
+        tag.setInteger("currentParallelism", currentParallelism);
     }
 }

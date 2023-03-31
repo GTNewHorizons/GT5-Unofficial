@@ -41,6 +41,7 @@ public class GUITextureSet {
     public static final Function<SteamVariant, GUITextureSet> STEAM = steamVariant -> new GUITextureSet()
             .setMainBackground(GT_UITextures.BACKGROUND_STEAM.get(steamVariant))
             .setItemSlot(GT_UITextures.SLOT_ITEM_STEAM.get(steamVariant))
+            .setFluidSlot(GT_UITextures.SLOT_FLUID_STEAM.get(steamVariant))
             .setCoverTab(
                     GT_UITextures.TAB_COVER_STEAM_NORMAL.get(steamVariant),
                     GT_UITextures.TAB_COVER_STEAM_HIGHLIGHT.get(steamVariant),

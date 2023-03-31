@@ -2166,9 +2166,9 @@ public class GT_Utility {
         if (GregTech_API.sMultiThreadedSounds) new Thread(
                 new GT_Runnable_Sound(
                         GT.getThePlayer().worldObj,
-                        MathHelper.floor_double(aX),
-                        MathHelper.floor_double(aY),
-                        MathHelper.floor_double(aZ),
+                        aX,
+                        aY,
+                        aZ,
                         aTimeUntilNextSound,
                         aSoundResourceLocation,
                         aSoundStrength,
@@ -2176,9 +2176,9 @@ public class GT_Utility {
                 "Sound Effect").start();
         else new GT_Runnable_Sound(
                 GT.getThePlayer().worldObj,
-                MathHelper.floor_double(aX),
-                MathHelper.floor_double(aY),
-                MathHelper.floor_double(aZ),
+                aX,
+                aY,
+                aZ,
                 aTimeUntilNextSound,
                 aSoundResourceLocation,
                 aSoundStrength,

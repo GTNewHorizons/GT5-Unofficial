@@ -1868,6 +1868,32 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         setElectricStats(32000 + tLastID, Long.MAX_VALUE, GT_Values.V[13], 13L, -3L, true);
         registerTieredTooltip(ItemList.ZPM4.get(1), UXV);
 
+        // MAX Battery
+        ItemList.ZPM5.set(
+                addItem(
+                        tLastID = 145,
+                        "Insanely Ultimate Battery",
+                        "Fill this for fun",
+                        "batteryMAX",
+                        new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 64L),
+                        new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 16L),
+                        new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 64L)));
+        setElectricStats(32000 + tLastID, Long.MAX_VALUE, GT_Values.V[14], 14L, -3L, true);
+        registerTieredTooltip(ItemList.ZPM5.get(1), MAX);
+
+        // ERROR Battery
+        ItemList.ZPM6.set(
+                addItem(
+                        tLastID = 146,
+                        "Mega Ultimate Battery",
+                        "Fill the capacitor to reach enlightenment",
+                        "batteryERV",
+                        new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 64L),
+                        new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 16L),
+                        new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 64L)));
+        setElectricStats(32000 + tLastID, Long.MAX_VALUE, GT_Values.V[15], 15L, -3L, true);
+        registerTieredTooltip(ItemList.ZPM6.get(1), ERV);
+
         // ZPM Cluster
         ItemList.Energy_Module.set(
                 addItem(

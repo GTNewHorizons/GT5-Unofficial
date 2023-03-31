@@ -76,6 +76,7 @@ public class GT_MetaTileEntity_AssemblyLine extends
                     ofChain(
                             ofBlockUnlocalizedName("IC2", "blockAlloyGlass", 0, true),
                             ofBlockUnlocalizedName("bartworks", "BW_GlasBlocks", 0, true),
+                            ofBlockUnlocalizedName("bartworks", "BW_GlasBlocks2", 0, true),
                             // warded glass
                             ofBlockUnlocalizedName("Thaumcraft", "blockCosmeticOpaque", 2, false)))
             .addElement(

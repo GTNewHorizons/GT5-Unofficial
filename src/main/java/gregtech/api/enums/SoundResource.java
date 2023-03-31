@@ -56,6 +56,10 @@ public enum SoundResource {
     IC2_MACHINES_KA_CHING(211, IndustrialCraft2.modID, "machines.KaChing"),
     IC2_MACHINES_MAGNETIZER_LOOP(212, IndustrialCraft2.modID, "machines.MagnetizerLoop"),
 
+    GT_MACHINES_FUSION_LOOP(230, MOD_ID, "machines.FusionLoop"),
+    GT_MACHINES_DISTILLERY_LOOP(231, MOD_ID, "machines.DistilleryLoop"),
+    GT_MACHINES_PLASMAFORGE_LOOP(232, MOD_ID, "machines.PlasmaForgeLoop"),
+
     GUI_BUTTON_DOWN(-1, MOD_ID, "gui.buttonDown"),
     GUI_BUTTON_UP(-1, MOD_ID, "gui.buttonUp"),
 
