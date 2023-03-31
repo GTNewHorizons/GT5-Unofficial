@@ -106,12 +106,14 @@ public class GT_RecipeConstants {
     });
 
     public static final IGT_RecipeMap AssemblyLine = IGT_RecipeMap.newRecipeMap(builder -> {
-        Optional<GT_Recipe.GT_Recipe_WithAlt> rr = builder.validateInputCount(4, 16).validateOutputCount(1, 1)
+        Optional<GT_Recipe.GT_Recipe_WithAlt> rr = builder.forceOreDictInput().validateInputCount(4, 16).validateOutputCount(1, 1)
                 .validateOutputFluidCount(-1, 0).validateInputFluidCount(0, 4).buildWithAlt();
         if (!rr.isPresent()) return Collections.emptyList();
         GT_Recipe.GT_Recipe_WithAlt r = rr.get();
         ItemStack[][] mOreDictAlt = r.mOreDictAlt;
         Object[] inputs = builder.getItemInputsOreDict();
+        ItemStack aResearchItem = builder.getMetadata(RESEARCH_ITEM);
+        ItemStack aOutput = r.mOutputs[0];
         int tPersistentHash = 1;
         for (int i = 0, mOreDictAltLength = mOreDictAlt.length; i < mOreDictAltLength; i++) {
             ItemStack[] alts = mOreDictAlt[i];
@@ -123,7 +125,7 @@ public class GT_RecipeConstants {
                     tPersistentHash = tPersistentHash * 31 + GT_Utility.persistentHash(alt, true, false);
                 }
                 tPersistentHash *= 31;
-            } else {
+            } else if (input instanceof Object[]) {
                 Object[] objs = (Object[]) input;
                 Arrays.sort(
                         alts,
@@ -136,10 +138,12 @@ public class GT_RecipeConstants {
                 tPersistentHash = tPersistentHash * 31 + (objs[0] == null ? "" : objs[0].toString()).hashCode();
                 tPersistentHash = tPersistentHash * 31 + ((Number) objs[1]).intValue();
             }
+            GT_Log.err.println("addAssemblingLineRecipe " + aResearchItem.getDisplayName()
+                + " --> "
+                + aOutput.getUnlocalizedName()
+                + " there is some null item in that recipe");
         }
-        ItemStack aResearchItem = builder.getMetadata(RESEARCH_ITEM);
         tPersistentHash = tPersistentHash * 31 + GT_Utility.persistentHash(aResearchItem, true, false);
-        ItemStack aOutput = r.mOutputs[0];
         tPersistentHash = tPersistentHash * 31 + GT_Utility.persistentHash(aOutput, true, false);
         for (FluidStack fluidInput : r.mFluidInputs) {
             if (fluidInput == null) continue;

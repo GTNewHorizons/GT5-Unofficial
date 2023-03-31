@@ -3953,8 +3953,7 @@ public class AssemblerRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                new ItemStack[] { ItemList.KevlarFiber.get(8), GT_Utility.getIntegratedCircuit(8) },
-                GT_Values.NF
+                ItemList.KevlarFiber.get(8), GT_Utility.getIntegratedCircuit(8)
             )
             .itemOutputs(
                 ItemList.WovenKevlar.get(1)

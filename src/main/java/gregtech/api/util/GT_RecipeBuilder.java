@@ -146,11 +146,18 @@ public class GT_RecipeBuilder {
                 int size = ((Number) arr[1]).intValue();
                 alts[i] = ores.stream().map(s -> GT_Utility.copyAmount(size, s)).filter(GT_Utility::isStackValid)
                         .toArray(ItemStack[]::new);
+            } else if (input == null) {
+                if (DEBUG_MODE) {
+                    throw new NullPointerException();
+                } else {
+                    GT_Log.err.printf("null detected in recipe oredict input. ignoring. %s%n", new NullPointerException());
+                    alts[i] = new ItemStack[0];
+                }
             } else {
                 throw new IllegalArgumentException("index " + i + ", unexpected type: " + input.getClass());
             }
         }
-        inputsBasic = Arrays.stream(alts).map(ss -> ss[0]).toArray(ItemStack[]::new);
+        inputsBasic = Arrays.stream(alts).map(ss -> ss.length > 0 ? ss[0] : null).toArray(ItemStack[]::new);
         // optimize cannot handle recipes with alts
         return noOptimize();
     }
@@ -438,36 +445,6 @@ public class GT_RecipeBuilder {
         return min <= count && max >= count;
     }
 
-    public RecipeValidation startCheck() {
-        return new RecipeValidation() {
-
-            @Override
-            public RecipeValidation inputItems(int min, int max) {
-                return null;
-            }
-
-            @Override
-            public RecipeValidation outputItems(int min, int max) {
-                return null;
-            }
-
-            @Override
-            public RecipeValidation inputFluids(int min, int max) {
-                return null;
-            }
-
-            @Override
-            public RecipeValidation outputFluids(int min, int max) {
-                return null;
-            }
-
-            @Override
-            public boolean isValid() {
-                return false;
-            }
-        };
-    }
-
     /**
      * Validate if input item match requirement. Return as invalidated if fails prereq. Specify -1 as min to allow
      * unset. Both bound inclusive. Only supposed to be called by IGT_RecipeMap and not client code.
@@ -580,6 +557,11 @@ public class GT_RecipeBuilder {
                                 neiDesc)));
     }
 
+    public GT_RecipeBuilder forceOreDictInput() {
+        if (inputsOreDict != null || inputsBasic == null) return this;
+        return itemInputs((Object[]) inputsBasic);
+    }
+
     public Optional<GT_Recipe.GT_Recipe_WithAlt> buildWithAlt() {
         if (inputsOreDict == null) {
             throw new UnsupportedOperationException();
@@ -685,40 +667,6 @@ public class GT_RecipeBuilder {
         specialValue = 0;
         valid = true;
         return this;
-    }
-
-    public interface RecipeValidation {
-
-        RecipeValidation inputItems(int min, int max);
-
-        RecipeValidation outputItems(int min, int max);
-
-        RecipeValidation inputFluids(int min, int max);
-
-        RecipeValidation outputFluids(int min, int max);
-
-        default RecipeValidation noInputItems() {
-            return inputItems(-1, 0);
-        }
-
-        default RecipeValidation noOutputItems() {
-            return outputItems(-1, 0);
-        }
-
-        default RecipeValidation noInputFluids() {
-            return inputFluids(-1, 0);
-        }
-
-        default RecipeValidation noOutputFluids() {
-            return outputFluids(-1, 0);
-        }
-
-        /**
-         * Test if the current values on parent builder pass the current validation settings.
-         *
-         * @return
-         */
-        boolean isValid();
     }
 
     public final static class MetadataIdentifier<T> {
