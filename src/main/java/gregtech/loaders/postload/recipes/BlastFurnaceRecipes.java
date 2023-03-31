@@ -5,9 +5,9 @@ import static gregtech.api.util.GT_ModHandler.getModItem;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sBlastRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sPrimitiveBlastRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.*;
+import static gregtech.api.util.GT_RecipeConstants.COIL_HEAT;
 
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_Recipe;
 import mods.railcraft.common.blocks.aesthetics.cube.EnumCube;
 import mods.railcraft.common.items.RailcraftToolItems;
 import net.minecraft.item.ItemStack;
@@ -19,8 +19,6 @@ import gregtech.api.enums.*;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import org.apache.commons.lang3.ArrayUtils;
-
-import java.util.Arrays;
 
 public class BlastFurnaceRecipes implements Runnable {
 
@@ -44,7 +42,7 @@ public class BlastFurnaceRecipes implements Runnable {
             )
             .duration(10 * SECONDS)
             .eut((int) TierEU.RECIPE_HV)
-            .specialValue(3200)
+            .metadata(COIL_HEAT, 3200)
             .addTo(sBlastRecipes);
 
         // Carbothermic Reduction
@@ -66,7 +64,7 @@ public class BlastFurnaceRecipes implements Runnable {
             )
             .duration(12 * SECONDS)
             .eut((int) TierEU.RECIPE_MV)
-            .specialValue(1200)
+            .metadata(COIL_HEAT, 1200)
             .addTo(sBlastRecipes);
 
         GT_Values.RA.stdBuilder()
@@ -84,7 +82,7 @@ public class BlastFurnaceRecipes implements Runnable {
             )
             .duration(12 * SECONDS)
             .eut((int) TierEU.RECIPE_MV)
-            .specialValue(1200)
+            .metadata(COIL_HEAT, 1200)
             .addTo(sBlastRecipes);
 
         GT_Values.RA.stdBuilder()
@@ -102,7 +100,7 @@ public class BlastFurnaceRecipes implements Runnable {
             )
             .duration(12 * SECONDS)
             .eut((int) TierEU.RECIPE_MV)
-            .specialValue(1200)
+            .metadata(COIL_HEAT, 1200)
             .addTo(sBlastRecipes);
 
         GT_Values.RA.stdBuilder()
@@ -120,7 +118,7 @@ public class BlastFurnaceRecipes implements Runnable {
             )
             .duration(12 * SECONDS)
             .eut((int) TierEU.RECIPE_MV)
-            .specialValue(1200)
+            .metadata(COIL_HEAT, 1200)
             .addTo(sBlastRecipes);
 
         GT_Values.RA.stdBuilder()
@@ -138,7 +136,7 @@ public class BlastFurnaceRecipes implements Runnable {
             )
             .duration(12 * SECONDS)
             .eut((int) TierEU.RECIPE_MV)
-            .specialValue(1200)
+            .metadata(COIL_HEAT, 1200)
             .addTo(sBlastRecipes);
 
         GT_Values.RA.stdBuilder()
@@ -156,7 +154,7 @@ public class BlastFurnaceRecipes implements Runnable {
             )
             .duration(12 * SECONDS)
             .eut((int) TierEU.RECIPE_MV)
-            .specialValue(1200)
+            .metadata(COIL_HEAT, 1200)
             .addTo(sBlastRecipes);
 
         GT_Values.RA.stdBuilder()
@@ -174,7 +172,7 @@ public class BlastFurnaceRecipes implements Runnable {
             )
             .duration(12 * SECONDS)
             .eut((int) TierEU.RECIPE_MV)
-            .specialValue(1200)
+            .metadata(COIL_HEAT, 1200)
             .addTo(sBlastRecipes);
 
         GT_Values.RA.stdBuilder()
@@ -192,7 +190,7 @@ public class BlastFurnaceRecipes implements Runnable {
             )
             .duration(12 * SECONDS)
             .eut((int) TierEU.RECIPE_MV)
-            .specialValue(1200)
+            .metadata(COIL_HEAT, 1200)
             .addTo(sBlastRecipes);
 
         GT_Values.RA.stdBuilder()
@@ -210,7 +208,7 @@ public class BlastFurnaceRecipes implements Runnable {
             )
             .duration(12 * SECONDS)
             .eut((int) TierEU.RECIPE_MV)
-            .specialValue(1200)
+            .metadata(COIL_HEAT, 1200)
             .addTo(sBlastRecipes);
 
         GT_Values.RA.stdBuilder()
@@ -228,7 +226,7 @@ public class BlastFurnaceRecipes implements Runnable {
             )
             .duration(12 * SECONDS)
             .eut((int) TierEU.RECIPE_MV)
-            .specialValue(1200)
+            .metadata(COIL_HEAT, 1200)
             .addTo(sBlastRecipes);
 
         GT_Values.RA.stdBuilder()
@@ -246,7 +244,7 @@ public class BlastFurnaceRecipes implements Runnable {
             )
             .duration(12 * SECONDS)
             .eut((int) TierEU.RECIPE_MV)
-            .specialValue(1200)
+            .metadata(COIL_HEAT, 1200)
             .addTo(sBlastRecipes);
 
         GT_Values.RA.stdBuilder()
@@ -264,7 +262,7 @@ public class BlastFurnaceRecipes implements Runnable {
             )
             .duration(12 * SECONDS)
             .eut((int) TierEU.RECIPE_MV)
-            .specialValue(1200)
+            .metadata(COIL_HEAT, 1200)
             .addTo(sBlastRecipes);
 
         GT_Values.RA.stdBuilder()
@@ -282,7 +280,7 @@ public class BlastFurnaceRecipes implements Runnable {
             )
             .duration(12 * SECONDS)
             .eut((int) TierEU.RECIPE_MV)
-            .specialValue(1200)
+            .metadata(COIL_HEAT, 1200)
             .addTo(sBlastRecipes);
 
         GT_Values.RA.stdBuilder()
@@ -300,7 +298,7 @@ public class BlastFurnaceRecipes implements Runnable {
             )
             .duration(12 * SECONDS)
             .eut((int) TierEU.RECIPE_MV)
-            .specialValue(1200)
+            .metadata(COIL_HEAT, 1200)
             .addTo(sBlastRecipes);
 
         GT_Values.RA.stdBuilder()
@@ -318,7 +316,7 @@ public class BlastFurnaceRecipes implements Runnable {
             )
             .duration(12 * SECONDS)
             .eut((int) TierEU.RECIPE_MV)
-            .specialValue(1200)
+            .metadata(COIL_HEAT, 1200)
             .addTo(sBlastRecipes);
 
         GT_Values.RA.stdBuilder()
@@ -336,7 +334,7 @@ public class BlastFurnaceRecipes implements Runnable {
             )
             .duration(12 * SECONDS)
             .eut((int) TierEU.RECIPE_MV)
-            .specialValue(1200)
+            .metadata(COIL_HEAT, 1200)
             .addTo(sBlastRecipes);
 
         GT_Values.RA.stdBuilder()
@@ -354,7 +352,7 @@ public class BlastFurnaceRecipes implements Runnable {
             )
             .duration(4 * SECONDS)
             .eut((int) TierEU.RECIPE_MV)
-            .specialValue(1200)
+            .metadata(COIL_HEAT, 1200)
             .addTo(sBlastRecipes);
 
         if (GT_Mod.gregtechproxy.mMixedOreOnlyYieldsTwoThirdsOfPureOre) {
@@ -373,7 +371,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 )
                 .duration(12 * SECONDS)
                 .eut((int) TierEU.RECIPE_MV)
-                .specialValue(1200)
+                .metadata(COIL_HEAT, 1200)
                 .addTo(sBlastRecipes);
 
             GT_Values.RA.stdBuilder()
@@ -391,7 +389,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 )
                 .duration(12 * SECONDS)
                 .eut((int) TierEU.RECIPE_MV)
-                .specialValue(1200)
+                .metadata(COIL_HEAT, 1200)
                 .addTo(sBlastRecipes);
 
             GT_Values.RA.stdBuilder()
@@ -409,7 +407,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 )
                 .duration(12 * SECONDS)
                 .eut((int) TierEU.RECIPE_MV)
-                .specialValue(1200)
+                .metadata(COIL_HEAT, 1200)
                 .addTo(sBlastRecipes);
 
             GT_Values.RA.stdBuilder()
@@ -427,7 +425,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 )
                 .duration(12 * SECONDS)
                 .eut((int) TierEU.RECIPE_MV)
-                .specialValue(1200)
+                .metadata(COIL_HEAT, 1200)
                 .addTo(sBlastRecipes);
 
             GT_Values.RA.stdBuilder()
@@ -445,7 +443,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 )
                 .duration(12 * SECONDS)
                 .eut((int) TierEU.RECIPE_MV)
-                .specialValue(1200)
+                .metadata(COIL_HEAT, 1200)
                 .addTo(sBlastRecipes);
 
             GT_Values.RA.stdBuilder()
@@ -463,7 +461,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 )
                 .duration(12 * SECONDS)
                 .eut((int) TierEU.RECIPE_MV)
-                .specialValue(1200)
+                .metadata(COIL_HEAT, 1200)
                 .addTo(sBlastRecipes);
 
             GT_Values.RA.stdBuilder()
@@ -481,7 +479,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 )
                 .duration(12 * SECONDS)
                 .eut((int) TierEU.RECIPE_MV)
-                .specialValue(1200)
+                .metadata(COIL_HEAT, 1200)
                 .addTo(sBlastRecipes);
 
             GT_Values.RA.stdBuilder()
@@ -499,7 +497,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 )
                 .duration(12 * SECONDS)
                 .eut((int) TierEU.RECIPE_MV)
-                .specialValue(1200)
+                .metadata(COIL_HEAT, 1200)
                 .addTo(sBlastRecipes);
 
             GT_Values.RA.stdBuilder()
@@ -517,7 +515,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 )
                 .duration(12 * SECONDS)
                 .eut((int) TierEU.RECIPE_MV)
-                .specialValue(1200)
+                .metadata(COIL_HEAT, 1200)
                 .addTo(sBlastRecipes);
 
             GT_Values.RA.stdBuilder()
@@ -535,7 +533,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 )
                 .duration(12 * SECONDS)
                 .eut((int) TierEU.RECIPE_MV)
-                .specialValue(1200)
+                .metadata(COIL_HEAT, 1200)
                 .addTo(sBlastRecipes);
 
             GT_Values.RA.stdBuilder()
@@ -553,7 +551,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 )
                 .duration(12 * SECONDS)
                 .eut((int) TierEU.RECIPE_MV)
-                .specialValue(1200)
+                .metadata(COIL_HEAT, 1200)
                 .addTo(sBlastRecipes);
 
             GT_Values.RA.stdBuilder()
@@ -571,7 +569,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 )
                 .duration(12 * SECONDS)
                 .eut((int) TierEU.RECIPE_MV)
-                .specialValue(1200)
+                .metadata(COIL_HEAT, 1200)
                 .addTo(sBlastRecipes);
 
             GT_Values.RA.stdBuilder()
@@ -589,7 +587,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 )
                 .duration(12 * SECONDS)
                 .eut((int) TierEU.RECIPE_MV)
-                .specialValue(1200)
+                .metadata(COIL_HEAT, 1200)
                 .addTo(sBlastRecipes);
 
             GT_Values.RA.stdBuilder()
@@ -607,7 +605,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 )
                 .duration(12 * SECONDS)
                 .eut((int) TierEU.RECIPE_MV)
-                .specialValue(1200)
+                .metadata(COIL_HEAT, 1200)
                 .addTo(sBlastRecipes);
 
             GT_Values.RA.stdBuilder()
@@ -625,7 +623,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 )
                 .duration(12 * SECONDS)
                 .eut((int) TierEU.RECIPE_MV)
-                .specialValue(1200)
+                .metadata(COIL_HEAT, 1200)
                 .addTo(sBlastRecipes);
 
             GT_Values.RA.stdBuilder()
@@ -641,7 +639,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 .noFluidOutputs()
                 .duration(7 * MINUTES + 30 * SECONDS)
                 .eut((int) TierEU.RECIPE_MV)
-                .specialValue(1784)
+                .metadata(COIL_HEAT, 1784)
                 .addTo(sBlastRecipes);
 
             GT_Values.RA.stdBuilder()
@@ -660,7 +658,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 .noFluidOutputs()
                 .duration(10 * MINUTES)
                 .eut((int) TierEU.RECIPE_HV)
-                .specialValue(2484)
+                .metadata(COIL_HEAT, 2484)
                 .addTo(sBlastRecipes);
 
             GT_Values.RA.stdBuilder()
@@ -679,7 +677,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 .noFluidOutputs()
                 .duration(12 * MINUTES + 30 * SECONDS)
                 .eut((int) TierEU.RECIPE_EV)
-                .specialValue(4484)
+                .metadata(COIL_HEAT, 4484)
                 .addTo(sBlastRecipes);
 
             GT_Values.RA.stdBuilder()
@@ -698,7 +696,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 .noFluidOutputs()
                 .duration(15 * MINUTES)
                 .eut((int) TierEU.RECIPE_IV)
-                .specialValue(6484)
+                .metadata(COIL_HEAT, 6484)
                 .addTo(sBlastRecipes);
 
             GT_Values.RA.stdBuilder()
@@ -717,7 +715,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 .noFluidOutputs()
                 .duration(17 * MINUTES + 30 * SECONDS)
                 .eut((int) TierEU.RECIPE_LuV)
-                .specialValue(9000)
+                .metadata(COIL_HEAT, 9000)
                 .addTo(sBlastRecipes);
 
             // CaH2 + 2Si = CaSi2 + 2H
@@ -736,7 +734,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 )
                 .duration(15 * SECONDS)
                 .eut((int) TierEU.RECIPE_MV)
-                .specialValue(1273)
+                .metadata(COIL_HEAT, 1273)
                 .addTo(sBlastRecipes);
 
             GT_Values.RA.stdBuilder()
@@ -751,7 +749,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 .noFluidOutputs()
                 .duration(16 * MINUTES + 23 * SECONDS)
                 .eut((int) TierEU.RECIPE_UV)
-                .specialValue(11800)
+                .metadata(COIL_HEAT, 11800)
                 .addTo(sBlastRecipes);
 
             GT_Values.RA.stdBuilder()
@@ -768,7 +766,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 .noFluidOutputs()
                 .duration(7 * MINUTES + 22 * SECONDS + 7 * TICKS)
                 .eut((int) TierEU.RECIPE_UV)
-                .specialValue(11800)
+                .metadata(COIL_HEAT, 11800)
                 .addTo(sBlastRecipes);
 
             // 0.45 * 19660 = 8847
@@ -785,7 +783,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 .noFluidOutputs()
                 .duration(16 * MINUTES + 23 * SECONDS)
                 .eut((int) TierEU.RECIPE_UHV)
-                .specialValue(12700)
+                .metadata(COIL_HEAT, 12700)
                 .addTo(sBlastRecipes);
 
             GT_Values.RA.stdBuilder()
@@ -802,7 +800,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 .noFluidOutputs()
                 .duration(7 * MINUTES + 22 * SECONDS + 7 * TICKS)
                 .eut((int) TierEU.RECIPE_UHV)
-                .specialValue(12700)
+                .metadata(COIL_HEAT, 12700)
                 .addTo(sBlastRecipes);
 
             // 0.45 * 19660 = 8847
@@ -819,7 +817,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 .noFluidOutputs()
                 .duration(16 * MINUTES + 23 * SECONDS)
                 .eut((int) TierEU.RECIPE_UEV)
-                .specialValue(13600)
+                .metadata(COIL_HEAT, 13600)
                 .addTo(sBlastRecipes);
 
             GT_Values.RA.stdBuilder()
@@ -836,7 +834,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 .noFluidOutputs()
                 .duration(7 * MINUTES + 22 * SECONDS + 7 * TICKS)
                 .eut((int) TierEU.RECIPE_UEV)
-                .specialValue(13600)
+                .metadata(COIL_HEAT, 13600)
                 .addTo(sBlastRecipes);
 
             // 0.45 * 19660 = 8847
@@ -856,7 +854,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 )
                 .duration(30 * SECONDS)
                 .eut((int) TierEU.RECIPE_HV)
-                .specialValue(2573)
+                .metadata(COIL_HEAT, 2573)
                 .addTo(sBlastRecipes);
 
             // Ni + 3Al = NiAl3
@@ -873,7 +871,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 .noFluidOutputs()
                 .duration(45 * SECONDS)
                 .eut((int) TierEU.RECIPE_HV)
-                .specialValue(1688)
+                .metadata(COIL_HEAT, 1688)
                 .addTo(sBlastRecipes);
 
             ItemStack[] tSiliconDioxide = new ItemStack[]{Materials.SiliconDioxide.getDust(3),
@@ -990,7 +988,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 )
                 .duration(3 * MINUTES)
                 .eut(32000000)
-                .specialValue(11701)
+                .metadata(COIL_HEAT, 11701)
                 .addTo(sBlastRecipes);
 
             // Rh + 3Cl = RhCl3
@@ -1009,7 +1007,7 @@ public class BlastFurnaceRecipes implements Runnable {
                 .noFluidOutputs()
                 .duration(30 * SECONDS)
                 .eut((int) TierEU.RECIPE_HV)
-                .specialValue(573)
+                .metadata(COIL_HEAT, 573)
                 .addTo(sBlastRecipes);
         }
     }
