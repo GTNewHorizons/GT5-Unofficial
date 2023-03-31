@@ -1504,9 +1504,12 @@ public class AssemblerRecipes implements Runnable {
             .eut(TierEU.RECIPE_IV)
             .addTo(sAssemblerRecipes);
 
+        Materials LuVMat = BartWorks.isModLoaded() ? Materials.get("Ruridit") : Materials.Osmiridium;
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.SamariumMagnetic, 1), GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Osmiridium, 16), GT_Utility.getIntegratedCircuit(1)
+                GT_OreDictUnificator.get(OrePrefixes.stick, Materials.SamariumMagnetic, 1),
+                GT_OreDictUnificator.get(OrePrefixes.wireFine, LuVMat, 16),
+                GT_Utility.getIntegratedCircuit(1)
             )
             .itemOutputs(
                 ItemList.LuV_Coil.get(1)
