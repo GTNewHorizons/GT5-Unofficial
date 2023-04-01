@@ -97,10 +97,10 @@ public class GT_GuiTooltip {
         List<String> list;
         if (text != null) {
             list = new ArrayList<>(text.length);
-            for (int i = 0; i < text.length; i++) {
-                if (text[i] == null) continue;
-                if (list.isEmpty()) list.add("\u00a7f" + text[i]);
-                else list.add("\u00a77" + text[i]);
+            for (String s : text) {
+                if (s == null) continue;
+                if (list.isEmpty()) list.add("\u00a7f" + s);
+                else list.add("\u00a77" + s);
             }
         } else {
             list = Collections.emptyList();

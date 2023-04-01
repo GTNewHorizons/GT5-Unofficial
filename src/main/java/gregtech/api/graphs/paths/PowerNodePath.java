@@ -90,8 +90,8 @@ public class PowerNodePath extends NodePath {
     public long getVoltage(MetaPipeEntity aCable) {
         int tLoss = 0;
         if (mCountUp) {
-            for (int i = 0; i < mPipes.length; i++) {
-                GT_MetaPipeEntity_Cable tCable = (GT_MetaPipeEntity_Cable) mPipes[i];
+            for (MetaPipeEntity mPipe : mPipes) {
+                GT_MetaPipeEntity_Cable tCable = (GT_MetaPipeEntity_Cable) mPipe;
                 tLoss += tCable.mCableLossPerMeter;
                 if (aCable == tCable) {
                     return Math.max(mVoltage - tLoss, 0);

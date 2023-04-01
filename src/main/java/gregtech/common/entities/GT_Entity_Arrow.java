@@ -131,8 +131,8 @@ public class GT_Entity_Arrow extends EntityArrow {
                     this.boundingBox.addCoord(this.motionX, this.motionY, this.motionZ)
                                     .expand(1.0D, 1.0D, 1.0D));
             double tLargestDistance = Double.MAX_VALUE;
-            for (int i = 0; i < tAllPotentiallyHitEntities.size(); i++) {
-                Entity entity1 = (Entity) tAllPotentiallyHitEntities.get(i);
+            for (Entity tAllPotentiallyHitEntity : tAllPotentiallyHitEntities) {
+                Entity entity1 = (Entity) tAllPotentiallyHitEntity;
                 if ((entity1.canBeCollidedWith()) && ((entity1 != tShootingEntity) || (this.ticksInAir >= 5))) {
                     AxisAlignedBB axisalignedbb1 = entity1.boundingBox.expand(0.3D, 0.3D, 0.3D);
                     MovingObjectPosition movingobjectposition1 = axisalignedbb1.calculateIntercept(vec31, vec3);

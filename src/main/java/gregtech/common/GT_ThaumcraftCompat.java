@@ -142,9 +142,7 @@ public class GT_ThaumcraftCompat implements IThaumcraftCompat {
         if (tCategory == null) {
             return null;
         }
-        for (Iterator<ResearchItem> i$ = tCategory.research.values()
-                                             .iterator(); i$.hasNext();) {
-            ResearchItem tResearch = (ResearchItem) i$.next();
+        for (ResearchItem tResearch : tCategory.research.values()) {
             if ((tResearch.displayColumn == aX) && (tResearch.displayRow == aY)) {
                 aX += (aX > 0 ? 5 : -5);
                 aY += (aY > 0 ? 5 : -5);

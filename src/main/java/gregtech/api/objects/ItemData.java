@@ -41,8 +41,8 @@ public class ItemData {
             MaterialStack[] tByProducts = aByProducts.length < 1 ? EMPTY_MATERIALSTACK_ARRAY
                     : new MaterialStack[aByProducts.length];
             int j = 0;
-            for (int i = 0; i < aByProducts.length; i++) if (aByProducts[i] != null && aByProducts[i].mMaterial != null)
-                tByProducts[j++] = aByProducts[i].clone();
+            for (MaterialStack aByProduct : aByProducts)
+                if (aByProduct != null && aByProduct.mMaterial != null) tByProducts[j++] = aByProduct.clone();
             mByProducts = j > 0 ? new MaterialStack[j] : EMPTY_MATERIALSTACK_ARRAY;
             for (int i = 0; i < mByProducts.length; i++) mByProducts[i] = tByProducts[i];
         }
