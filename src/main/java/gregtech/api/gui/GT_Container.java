@@ -149,7 +149,7 @@ public class GT_Container extends Container {
                     }
                 }
             } else if (aShifthold == 1) {
-                aSlot = (Slot) this.inventorySlots.get(aSlotIndex);
+                aSlot = this.inventorySlots.get(aSlotIndex);
                 if (aSlot != null && aSlot.canTakeStack(aPlayer)) {
                     tTempStack = this.transferStackInSlot(aPlayer, aSlotIndex);
                     if (tTempStack != null) {
@@ -165,7 +165,7 @@ public class GT_Container extends Container {
                 if (aSlotIndex < 0) {
                     return null;
                 }
-                aSlot = (Slot) this.inventorySlots.get(aSlotIndex);
+                aSlot = this.inventorySlots.get(aSlotIndex);
                 if (aSlot != null) {
                     tTempStack = aSlot.getStack();
                     ItemStack mouseStack = aPlayerInventory.getItemStack();
@@ -239,7 +239,7 @@ public class GT_Container extends Container {
             // number key from 1 to 9
             // aMouseclick == 0 means number 1, aMouseclick == 8 means number 9
         } else if (aShifthold == 2 && aMouseclick >= 0 && aMouseclick < 9) {
-            aSlot = (Slot) this.inventorySlots.get(aSlotIndex);
+            aSlot = this.inventorySlots.get(aSlotIndex);
 
             if (aSlot.canTakeStack(aPlayer)) {
                 // get the stack at the specified hotbar slot.
@@ -277,7 +277,7 @@ public class GT_Container extends Container {
         } else if (aShifthold == 3 && aPlayer.capabilities.isCreativeMode
                 && aPlayerInventory.getItemStack() == null
                 && aSlotIndex >= 0) {
-                    aSlot = (Slot) this.inventorySlots.get(aSlotIndex);
+                    aSlot = this.inventorySlots.get(aSlotIndex);
                     if (aSlot != null && aSlot.getHasStack()) {
                         tTempStack = GT_Utility.copyOrNull(aSlot.getStack());
                         tTempStack.stackSize = tTempStack.getMaxStackSize();
@@ -290,7 +290,7 @@ public class GT_Container extends Container {
     @Override
     public ItemStack transferStackInSlot(EntityPlayer aPlayer, int aSlotIndex) {
         ItemStack stack = null;
-        Slot slotObject = (Slot) inventorySlots.get(aSlotIndex);
+        Slot slotObject = inventorySlots.get(aSlotIndex);
 
         mTileEntity.markDirty();
 
@@ -345,7 +345,7 @@ public class GT_Container extends Container {
         if (aStack.isStackable()) {
             while (aStack.stackSize > 0
                     && (!reverseOrder && slotIndex < aSlotCount || reverseOrder && slotIndex >= aStartIndex)) {
-                slot = (Slot) this.inventorySlots.get(slotIndex);
+                slot = this.inventorySlots.get(slotIndex);
                 itemStack = slot.getStack();
                 if (!(slot instanceof GT_Slot_Holo) && !(slot instanceof GT_Slot_Output)
                         && slot.isItemValid(aStack)
@@ -384,7 +384,7 @@ public class GT_Container extends Container {
             }
 
             while (!reverseOrder && slotIndex < aSlotCount || reverseOrder && slotIndex >= aStartIndex) {
-                slot = (Slot) this.inventorySlots.get(slotIndex);
+                slot = this.inventorySlots.get(slotIndex);
                 itemStack = slot.getStack();
 
                 if (slot.isItemValid(aStack) && itemStack == null) {

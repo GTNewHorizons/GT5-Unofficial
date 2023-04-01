@@ -221,7 +221,7 @@ public class GT_Container_BasicMachine extends GT_Container_BasicTank {
                     GT_MetaTileEntity_BasicTank tTank = (GT_MetaTileEntity_BasicTank) mTileEntity.getMetaTileEntity();
                     if (mTileEntity.isClientSide()) {
                         // see parent class slotClick for an explanation on why doing this
-                        Slot slot = (Slot) inventorySlots.get(aSlotNumber);
+                        Slot slot = inventorySlots.get(aSlotNumber);
                         tTank.setFillableStack(GT_Utility.getFluidFromDisplayStack(slot.getStack()));
                     }
                     IFluidAccess tFillableAccess = constructFluidAccess(tTank, true);

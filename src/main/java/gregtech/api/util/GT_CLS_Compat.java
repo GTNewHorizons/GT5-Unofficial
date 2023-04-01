@@ -105,7 +105,7 @@ public class GT_CLS_Compat {
             if (nextBakingMsgAt < now) {
                 nextBakingMsgAt = now + bakingMsgEvery;
                 GT_Mod.GT_FML_LOGGER.info(
-                        String.format("%s - Baking: %d%%", materialsType, (Integer) (currentStep * 100 / sizeStep)));
+                        String.format("%s - Baking: %d%%", materialsType, currentStep * 100 / sizeStep));
             }
             action.accept(m);
             currentStep += 1;

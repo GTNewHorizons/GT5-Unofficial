@@ -1544,7 +1544,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
         addCentrifugeToMaterial(
                 CombType.INFINITYCATALYST,
                 new Materials[] { Materials.InfinityCatalyst, Materials.Neutronium },
-                new int[] { (int) (25 * 100), 20 * 100 },
+                new int[] { 25 * 100, 20 * 100 },
                 new int[] {},
                 Voltage.ZPM,
                 100,
@@ -1595,7 +1595,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
                 100 * 100,
                 (fluid.getFluid()
                       .getDensity() * 128 > 0
-                              ? (int) (fluid.getFluid()
+                              ? (fluid.getFluid()
                                             .getDensity()
                                       * 100)
                               : 128),
@@ -1886,7 +1886,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
             if (this == Voltage.ULV) {
                 return 5;
             } else {
-                return (int) (this.getVoltage() / 16) * 15;
+                return (this.getVoltage() / 16) * 15;
             }
         }
     }

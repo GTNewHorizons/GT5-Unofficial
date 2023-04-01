@@ -140,7 +140,7 @@ public class ProcessingOre implements gregtech.api.interfaces.IOreRecipeRegistra
             gregtech.api.util.GT_Recipe.GT_Recipe_Map.sByProductList.addFakeRecipe(
                     false,
                     new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.ore, aMaterial, aOreStack, 1L) },
-                    (ItemStack[]) tByProductStacks.toArray(new ItemStack[0]),
+                    tByProductStacks.toArray(new ItemStack[0]),
                     null,
                     null,
                     null,

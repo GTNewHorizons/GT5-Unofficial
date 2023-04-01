@@ -173,7 +173,7 @@ public abstract class GT_MetaTileEntity_BasicMachine_Bronze extends GT_MetaTileE
             sendSound((byte) 9);
             mNeedsSteamVenting = false;
             try {
-                for (EntityLivingBase tLiving : (ArrayList<EntityLivingBase>) getBaseMetaTileEntity().getWorld()
+                for (EntityLivingBase tLiving : getBaseMetaTileEntity().getWorld()
                                                                                                      .getEntitiesWithinAABB(
                                                                                                              EntityLivingBase.class,
                                                                                                              AxisAlignedBB.getBoundingBox(

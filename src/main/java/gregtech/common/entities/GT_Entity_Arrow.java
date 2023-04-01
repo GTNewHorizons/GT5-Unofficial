@@ -132,7 +132,7 @@ public class GT_Entity_Arrow extends EntityArrow {
                                     .expand(1.0D, 1.0D, 1.0D));
             double tLargestDistance = Double.MAX_VALUE;
             for (Entity tAllPotentiallyHitEntity : tAllPotentiallyHitEntities) {
-                Entity entity1 = (Entity) tAllPotentiallyHitEntity;
+                Entity entity1 = tAllPotentiallyHitEntity;
                 if ((entity1.canBeCollidedWith()) && ((entity1 != tShootingEntity) || (this.ticksInAir >= 5))) {
                     AxisAlignedBB axisalignedbb1 = entity1.boundingBox.expand(0.3D, 0.3D, 0.3D);
                     MovingObjectPosition movingobjectposition1 = axisalignedbb1.calculateIntercept(vec31, vec3);
@@ -208,7 +208,7 @@ public class GT_Entity_Arrow extends EntityArrow {
                                         new GameProfile(
                                                 new UUID(0L, 0L),
                                                 (tShootingEntity instanceof EntityLivingBase)
-                                                        ? ((EntityLivingBase) tShootingEntity).getCommandSenderName()
+                                                        ? tShootingEntity.getCommandSenderName()
                                                         : "Arrow"));
                             }
                             if (tPlayer != null) {

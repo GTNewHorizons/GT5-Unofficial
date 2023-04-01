@@ -101,11 +101,11 @@ public class GT_RadioactiveCellIC_Item extends GT_RadioactiveCell_Item implement
 
                     int dheat = heat / heatAcceptors.size();
                     heat -= dheat;
-                    dheat = ((IReactorComponent) ((ItemStackCoord) heatAcceptors.get(0)).stack.getItem()).alterHeat(
+                    dheat = ((IReactorComponent) heatAcceptors.get(0).stack.getItem()).alterHeat(
                             reactor,
-                            ((ItemStackCoord) heatAcceptors.get(0)).stack,
-                            ((ItemStackCoord) heatAcceptors.get(0)).x,
-                            ((ItemStackCoord) heatAcceptors.get(0)).y,
+                            heatAcceptors.get(0).stack,
+                            heatAcceptors.get(0).x,
+                            heatAcceptors.get(0).y,
                             dheat);
                     heat += dheat;
                     heatAcceptors.remove(0);
@@ -149,7 +149,7 @@ public class GT_RadioactiveCellIC_Item extends GT_RadioactiveCell_Item implement
                 float ReaktorOutput = 1.5F * breedereffectiveness + 1.0F;
                 reactor.addOutput(ReaktorOutput * this.sEnergy);
             } else {
-                reactor.addOutput((float) (1.0F * this.sEnergy));
+                reactor.addOutput(1.0F * this.sEnergy);
             }
         }
         return true;

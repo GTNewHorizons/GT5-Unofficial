@@ -767,7 +767,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
                 for (Iterator<ItemStack> i$ = OreDictionary.getOres(tOreName)
                                                 .iterator(); i$.hasNext(); registerOre(
                                                         new OreDictionary.OreRegisterEvent(tOreName, tOreStack))) {
-                    tOreStack = (ItemStack) i$.next();
+                    tOreStack = i$.next();
                 }
             }
         } catch (Throwable e) {
@@ -1790,7 +1790,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
                                         aPrefix,
                                         tReRegisteredMaterial,
                                         aEvent.Ore)) {
-                                    tReRegisteredMaterial = (Materials) i$.next();
+                                    tReRegisteredMaterial = i$.next();
                                 }
                                 aMaterial.add(GT_Utility.copyAmount(1L, aEvent.Ore));
 
@@ -2168,7 +2168,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
                 }
                 for (int i = 0; i < aEvent.world.loadedEntityList.size(); i++) {
                     if ((aEvent.world.loadedEntityList.get(i) instanceof Entity)) {
-                        Entity tEntity = (Entity) aEvent.world.loadedEntityList.get(i);
+                        Entity tEntity = aEvent.world.loadedEntityList.get(i);
                         if (((tEntity instanceof EntityItem)) && (this.mItemDespawnTime != 6000)
                                 && (((EntityItem) tEntity).lifespan == 6000)) {
                             ((EntityItem) tEntity).lifespan = this.mItemDespawnTime;

@@ -212,8 +212,8 @@ public class GT_Worldgenerator implements IWorldGenerator {
             // bits of the chunk so we have bits for dimension.
             // ( (long)oreseedZ & 0x000000000fffffffL )) Puts the chunk Z in the bits 0-27. Cuts off the top few bits
             // of the chunk so we have bits for dimension.
-            long oreveinSeed = ((long) this.mWorld.getSeed() << 16)
-                    ^ ((long) ((this.mWorld.provider.dimensionId & 0xffL) << 56)
+            long oreveinSeed = (this.mWorld.getSeed() << 16)
+                    ^ (((this.mWorld.provider.dimensionId & 0xffL) << 56)
                             | (((long) oreseedX & 0x000000000fffffffL) << 28)
                             | ((long) oreseedZ & 0x000000000fffffffL)); // Use an RNG that is identical every time it is
                                                                         // called for
@@ -491,7 +491,7 @@ public class GT_Worldgenerator implements IWorldGenerator {
                     for (int i = 0; (i < oreveinAttempts) && (temp); i++) {
                         tRandomWeight = aRandom.nextInt(GT_Worldgen_GT_Ore_Layer.sWeight);
                         for (GT_Worldgen_GT_Ore_Layer tWorldGen : GT_Worldgen_GT_Ore_Layer.sList) {
-                            tRandomWeight -= ((GT_Worldgen_GT_Ore_Layer) tWorldGen).mWeight;
+                            tRandomWeight -= tWorldGen.mWeight;
                             if (tRandomWeight <= 0) {
                                 try {
                                     // if ((tWorldGen.mEndAsteroid && tDimensionType == 1) || (tWorldGen.mAsteroid &&
@@ -516,7 +516,7 @@ public class GT_Worldgenerator implements IWorldGenerator {
                 int tY = 50 + aRandom.nextInt(200 - 50);
                 int tZ = mZ * 16 + aRandom.nextInt(16);
                 if (tDimensionType == 1) {
-                    mSize = aRandom.nextInt((int) (endMaxSize - endMinSize));
+                    mSize = aRandom.nextInt(endMaxSize - endMinSize);
                     // } else if (tDimensionName.equals("Asteroids")) {
                     // mSize = aRandom.nextInt((int) (gcMaxSize - gcMinSize));
                 }

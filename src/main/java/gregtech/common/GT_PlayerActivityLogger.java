@@ -20,9 +20,9 @@ public class GT_PlayerActivityLogger implements Runnable {
                 int i = 0;
                 for (int j = tList.size(); i < j; i++) {
                     if (!tLastOutput.equals(tList.get(i))) {
-                        GT_Log.pal.println((String) tList.get(i));
+                        GT_Log.pal.println(tList.get(i));
                     }
-                    tLastOutput = (String) tList.get(i);
+                    tLastOutput = tList.get(i);
                 }
                 Thread.sleep(10000L);
             }

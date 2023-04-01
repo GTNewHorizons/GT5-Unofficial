@@ -96,13 +96,13 @@ public class GT_Worldgen_Stone extends GT_Worldgen_Ore {
         // Check stone seeds to see if they have been added
         for (int x = aChunkX / 16 - windowWidth; x < (aChunkX / 16 + windowWidth + 1); x++) {
             for (int z = aChunkZ / 16 - windowWidth; z < (aChunkZ / 16 + windowWidth + 1); z++) {
-                long hash = ((long) ((aWorld.provider.dimensionId & 0xffL) << 56)
+                long hash = (((aWorld.provider.dimensionId & 0xffL) << 56)
                         | (((long) x & 0x000000000fffffffL) << 28)
                         | ((long) z & 0x000000000fffffffL));
                 if (!validStoneSeeds.containsKey(hash)) {
                     // Determine if RNG says to add stone at this chunk
                     stoneRNG.setSeed(
-                            (long) aWorld.getSeed() ^ hash + Math.abs(mBlockMeta)
+                            aWorld.getSeed() ^ hash + Math.abs(mBlockMeta)
                                     + Math.abs(mSize)
                                     + ((GregTech_API.sBlockGranites == mBlock) ? (32768) : (0))); // Don't judge me.
                                                                                                   // Want different
@@ -139,7 +139,7 @@ public class GT_Worldgen_Stone extends GT_Worldgen_Ore {
             int z = stones.get(0).mZ * 16;
 
             stoneRNG.setSeed(
-                    (long) aWorld.getSeed() ^ ((long) ((aWorld.provider.dimensionId & 0xffL) << 56)
+                    aWorld.getSeed() ^ (((aWorld.provider.dimensionId & 0xffL) << 56)
                             | (((long) x & 0x000000000fffffffL) << 28)
                             | ((long) z & 0x000000000fffffffL)) + Math.abs(mBlockMeta)
                             + Math.abs(mSize)
@@ -198,7 +198,7 @@ public class GT_Worldgen_Stone extends GT_Worldgen_Ore {
                                     + " tMaxY="
                                     + tMaxY
                                     + " - Skipped because first requesting chunk would not contain this stone");
-                    long hash = ((long) ((aWorld.provider.dimensionId & 0xffL) << 56)
+                    long hash = (((aWorld.provider.dimensionId & 0xffL) << 56)
                             | (((long) x & 0x000000000fffffffL) << 28)
                             | ((long) z & 0x000000000fffffffL));
                     validStoneSeeds.remove(hash);

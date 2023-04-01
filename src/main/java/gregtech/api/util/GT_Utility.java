@@ -438,7 +438,7 @@ public class GT_Utility {
 
     public static ItemStack suckOneItemStackAt(World aWorld, double aX, double aY, double aZ, double aL, double aH,
             double aW) {
-        for (EntityItem tItem : (ArrayList<EntityItem>) aWorld.getEntitiesWithinAABB(
+        for (EntityItem tItem : aWorld.getEntitiesWithinAABB(
                 EntityItem.class,
                 AxisAlignedBB.getBoundingBox(aX, aY, aZ, aX + aL, aY + aH, aZ + aW))) {
             if (!tItem.isDead) {
@@ -3188,7 +3188,7 @@ public class GT_Utility {
             player.mcServer.getConfigurationManager()
                            .syncPlayerInventory(player);
 
-            for (PotionEffect potionEffect : (Iterable<PotionEffect>) player.getActivePotionEffects()) {
+            for (PotionEffect potionEffect : player.getActivePotionEffects()) {
                 player.playerNetServerHandler.sendPacket(new S1DPacketEntityEffect(player.getEntityId(), potionEffect));
             }
 

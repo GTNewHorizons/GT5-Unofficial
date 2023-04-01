@@ -151,10 +151,10 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                         int tList_sS = tList.size();
                         for (int i = 0; i < tList_sS; i++) {
                             if ((!ItemList.Cell_Air.isStackEqual(tList.get(i)))
-                                    && ((tFluid = GT_Utility.getFluidForFilledItem((ItemStack) tList.get(i), true))
+                                    && ((tFluid = GT_Utility.getFluidForFilledItem(tList.get(i), true))
                                     != null)) {
                                 tFluid.amount *= tList.get(i).stackSize;
-                                tCapsuleCount -= GT_ModHandler.getCapsuleCellContainerCountMultipliedWithStackSize((ItemStack) tList.get(
+                                tCapsuleCount -= GT_ModHandler.getCapsuleCellContainerCountMultipliedWithStackSize(tList.get(
                                         i));
                                 tList.remove(i);
                                 break;
@@ -165,12 +165,12 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                                     tCapsuleCount > 0L ? ItemList.Cell_Empty.get(tCapsuleCount) : null,
                                     null,
                                     tFluid,
-                                    tList.size() < 1 ? null : (ItemStack) tList.get(0),
-                                    tList.size() < 2 ? null : (ItemStack) tList.get(1),
-                                    tList.size() < 3 ? null : (ItemStack) tList.get(2),
-                                    tList.size() < 4 ? null : (ItemStack) tList.get(3),
-                                    tList.size() < 5 ? null : (ItemStack) tList.get(4),
-                                    tList.size() < 6 ? null : (ItemStack) tList.get(5),
+                                    tList.size() < 1 ? null : tList.get(0),
+                                    tList.size() < 2 ? null : tList.get(1),
+                                    tList.size() < 3 ? null : tList.get(2),
+                                    tList.size() < 4 ? null : tList.get(3),
+                                    tList.size() < 5 ? null : tList.get(4),
+                                    tList.size() < 6 ? null : tList.get(5),
                                     null,
                                     (int) Math.max(1L, Math.abs(aMaterial.getProtons() * 2L * tItemAmount)),
                                     Math.min(4, tList.size()) * 30);
@@ -179,12 +179,12 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                                     tCapsuleCount > 0L ? ItemList.Cell_Empty.get(tCapsuleCount) : null,
                                     null,
                                     tFluid,
-                                    tList.size() < 1 ? null : (ItemStack) tList.get(0),
-                                    tList.size() < 2 ? null : (ItemStack) tList.get(1),
-                                    tList.size() < 3 ? null : (ItemStack) tList.get(2),
-                                    tList.size() < 4 ? null : (ItemStack) tList.get(3),
-                                    tList.size() < 5 ? null : (ItemStack) tList.get(4),
-                                    tList.size() < 6 ? null : (ItemStack) tList.get(5),
+                                    tList.size() < 1 ? null : tList.get(0),
+                                    tList.size() < 2 ? null : tList.get(1),
+                                    tList.size() < 3 ? null : tList.get(2),
+                                    tList.size() < 4 ? null : tList.get(3),
+                                    tList.size() < 5 ? null : tList.get(4),
+                                    tList.size() < 6 ? null : tList.get(5),
                                     null,
                                     (int) Math.max(1L, Math.abs(aMaterial.getMass() * 4L * tItemAmount)),
                                     Math.min(4, tList.size()) * 5);
@@ -292,7 +292,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                 }
             }
             case dustPure, dustImpure, dustRefined -> {
-                Materials tByProduct = (Materials) GT_Utility.selectItemInList(aPrefix == OrePrefixes.dustRefined
+                Materials tByProduct = GT_Utility.selectItemInList(aPrefix == OrePrefixes.dustRefined
                                 ? 2
                                 : aPrefix == OrePrefixes.dustPure ? 1 : 0,
                         aMaterial,

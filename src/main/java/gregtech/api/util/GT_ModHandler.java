@@ -1428,7 +1428,7 @@ public class GT_ModHandler {
                                  .values()
                                  .removeIf(
                                          tOutput -> GT_Utility.isStackValid(tOutput)
-                                                 && GT_Utility.areStacksEqual(aOutput, (ItemStack) tOutput, true));
+                                                 && GT_Utility.areStacksEqual(aOutput, tOutput, true));
         }
         return false;
     }
@@ -1747,7 +1747,7 @@ public class GT_ModHandler {
         if (!GregTech_API.sPostloadStarted || GregTech_API.sPostloadFinished)
             sSingleNonBlockDamagableRecipeList.clear();
         if (sSingleNonBlockDamagableRecipeList.isEmpty()) {
-            for (IRecipe tRecipe : (ArrayList<IRecipe>) CraftingManager.getInstance()
+            for (IRecipe tRecipe : CraftingManager.getInstance()
                                                                        .getRecipeList()) {
                 ItemStack tStack = tRecipe.getRecipeOutput();
                 if (GT_Utility.isStackValid(tStack) && tStack.getMaxStackSize() == 1
@@ -1823,7 +1823,7 @@ public class GT_ModHandler {
      */
     public static List<ItemStack> getRecipeOutputsBuffered(ItemStack... aRecipe) {
 
-        if (bufferedRecipes == null) bufferedRecipes = (List<IRecipe>) CraftingManager.getInstance()
+        if (bufferedRecipes == null) bufferedRecipes = CraftingManager.getInstance()
                                                                                       .getRecipeList()
                                                                                       .stream()
                                                                                       .filter(
@@ -1832,7 +1832,7 @@ public class GT_ModHandler {
                                                                                                       && !(tRecipe instanceof IGT_CraftingRecipe))
                                                                                       .filter(tRecipe -> {
                                                                                           try {
-                                                                                              ItemStack tOutput = ((IRecipe) tRecipe).getRecipeOutput();
+                                                                                              ItemStack tOutput = tRecipe.getRecipeOutput();
                                                                                               if (tOutput.stackSize == 1
                                                                                                       && tOutput.getMaxDamage()
                                                                                                               > 0

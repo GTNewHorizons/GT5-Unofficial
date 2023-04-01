@@ -119,7 +119,7 @@ public enum GT_GuiIcon implements IGuiIcon {
         if (location == null || location.length == 0) return;
 
         int startIndex = TEXTURES.length;
-        TEXTURES = (ResourceLocation[]) Arrays.copyOf(TEXTURES, location.length);
+        TEXTURES = Arrays.copyOf(TEXTURES, location.length);
         System.arraycopy(location, 0, TEXTURES, startIndex + 0, location.length);
     }
 

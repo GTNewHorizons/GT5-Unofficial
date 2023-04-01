@@ -51,7 +51,7 @@ public class GT_Container_BasicTank extends GT_ContainerMetaTile_Machine {
                  * to become only more severe when playing MP over ethernet, which would have much more latency than a
                  * memory connection
                  */
-                Slot slot = (Slot) inventorySlots.get(aSlotIndex);
+                Slot slot = inventorySlots.get(aSlotIndex);
                 tTank.setDrainableStack(GT_Utility.getFluidFromDisplayStack(slot.getStack()));
             }
             IFluidAccess tDrainableAccess = constructFluidAccess(tTank, false);

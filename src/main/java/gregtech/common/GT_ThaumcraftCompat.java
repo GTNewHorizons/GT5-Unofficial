@@ -126,7 +126,7 @@ public class GT_ThaumcraftCompat implements IThaumcraftCompat {
         for (Iterator<TC_Aspects.TC_AspectStack> i$ = aAspects.iterator(); i$.hasNext(); rAspects.add(
                 (Aspect) tAspect.mAspect.mAspect,
                 (int) tAspect.mAmount)) {
-            tAspect = (TC_Aspects.TC_AspectStack) i$.next();
+            tAspect = i$.next();
         }
         return rAspects;
     }
@@ -203,7 +203,7 @@ public class GT_ThaumcraftCompat implements IThaumcraftCompat {
                 }
             }
             if (tParentResearches.size() > 0) {
-                rResearch.setParents((String[]) tParentResearches.toArray(new String[0]));
+                rResearch.setParents(tParentResearches.toArray(new String[0]));
                 rResearch.setConcealed();
             }
         }
@@ -211,7 +211,7 @@ public class GT_ThaumcraftCompat implements IThaumcraftCompat {
             rResearch.setItemTriggers(aResearchTriggers);
             rResearch.setHidden();
         }
-        rResearch.setPages((ResearchPage[]) tPages.toArray(new ResearchPage[0]));
+        rResearch.setPages(tPages.toArray(new ResearchPage[0]));
         return rResearch.registerResearchItem();
     }
 
@@ -271,7 +271,7 @@ public class GT_ThaumcraftCompat implements IThaumcraftCompat {
     public boolean registerThaumcraftAspectsToItem(ItemStack aExampleStack, List<TC_Aspects.TC_AspectStack> aAspects,
             String aOreDict) {
         if (aAspects.isEmpty()) return false;
-        ThaumcraftApi.registerObjectTag(aOreDict, (AspectList) getAspectList(aAspects));
+        ThaumcraftApi.registerObjectTag(aOreDict, getAspectList(aAspects));
         return true;
     }
 
@@ -280,12 +280,12 @@ public class GT_ThaumcraftCompat implements IThaumcraftCompat {
             boolean aAdditive) {
         if (aAspects.isEmpty()) return false;
         if (aAdditive) {
-            ThaumcraftApi.registerComplexObjectTag(aStack, (AspectList) getAspectList(aAspects));
+            ThaumcraftApi.registerComplexObjectTag(aStack, getAspectList(aAspects));
             return true;
         }
         AspectList tAlreadyRegisteredAspects = ThaumcraftApiHelper.getObjectAspects(aStack);
         if (tAlreadyRegisteredAspects == null || tAlreadyRegisteredAspects.size() <= 0) {
-            ThaumcraftApi.registerObjectTag(aStack, (AspectList) getAspectList(aAspects));
+            ThaumcraftApi.registerObjectTag(aStack, getAspectList(aAspects));
         }
         return true;
     }

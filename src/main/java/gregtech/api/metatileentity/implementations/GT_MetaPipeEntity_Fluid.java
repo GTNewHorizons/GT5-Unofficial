@@ -333,7 +333,7 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
                 sendSound((byte) 9);
                 if (tTemperature > 320) {
                     try {
-                        for (EntityLivingBase tLiving : (ArrayList<EntityLivingBase>) getBaseMetaTileEntity().getWorld()
+                        for (EntityLivingBase tLiving : getBaseMetaTileEntity().getWorld()
                                                                                                              .getEntitiesWithinAABB(
                                                                                                                      EntityLivingBase.class,
                                                                                                                      AxisAlignedBB.getBoundingBox(
@@ -356,7 +356,7 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
                     }
                 } else if (tTemperature < 260) {
                     try {
-                        for (EntityLivingBase tLiving : (ArrayList<EntityLivingBase>) getBaseMetaTileEntity().getWorld()
+                        for (EntityLivingBase tLiving : getBaseMetaTileEntity().getWorld()
                                                                                                              .getEntitiesWithinAABB(
                                                                                                                      EntityLivingBase.class,
                                                                                                                      AxisAlignedBB.getBoundingBox(

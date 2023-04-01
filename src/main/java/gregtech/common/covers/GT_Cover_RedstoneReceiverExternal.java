@@ -30,7 +30,7 @@ public class GT_Cover_RedstoneReceiverExternal extends GT_Cover_RedstoneWireless
         aTileEntity.setOutputRedstoneSignal(
                 aSide,
                 GregTech_API.sWirelessRedstone.get(aCoverVariable) == null ? 0
-                        : (Byte) GregTech_API.sWirelessRedstone.get(aCoverVariable));
+                        : GregTech_API.sWirelessRedstone.get(aCoverVariable));
         return aCoverVariable;
     }
 

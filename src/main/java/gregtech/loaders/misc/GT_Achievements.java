@@ -389,8 +389,7 @@ public class GT_Achievements {
         if (GT_Mod.gregtechproxy.mAchievements) {
             AchievementPage.registerAchievementPage(
                     new AchievementPage(
-                            "GregTech 5",
-                            (Achievement[]) this.achievementList.values()
+                            "GregTech 5", this.achievementList.values()
                                                                 .toArray(new Achievement[0])));
             MinecraftForge.EVENT_BUS.register(this);
             FMLCommonHandler.instance()
@@ -480,12 +479,12 @@ public class GT_Achievements {
         if (entityplayer == null || !GT_Mod.gregtechproxy.mAchievements) {
             return;
         }
-        entityplayer.triggerAchievement((StatBase) this.achievementList.get(textId));
+        entityplayer.triggerAchievement(this.achievementList.get(textId));
     }
 
     public Achievement getAchievement(String textId) {
         if (this.achievementList.containsKey(textId)) {
-            return (Achievement) this.achievementList.get(textId);
+            return this.achievementList.get(textId);
         }
         return null;
     }
