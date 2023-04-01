@@ -1,5 +1,9 @@
 package gregtech.loaders.postload;
 
+import static gregtech.api.enums.ModIDs.*;
+import static gregtech.api.enums.ModIDs.GraviSuite;
+import static gregtech.api.util.GT_ModHandler.getModItem;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,10 +30,6 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import ic2.core.Ic2Items;
-
-import static gregtech.api.enums.ModIDs.*;
-import static gregtech.api.enums.ModIDs.GraviSuite;
-import static gregtech.api.util.GT_ModHandler.getModItem;
 
 public class GT_CraftingRecipeLoader implements Runnable {
 
@@ -160,12 +160,14 @@ public class GT_CraftingRecipeLoader implements Runnable {
         ItemStack tStack = GT_ModHandler
                 .removeRecipe(new ItemStack(Blocks.planks, 1, 0), null, null, new ItemStack(Blocks.planks, 1, 0));
         if (tStack != null) {
-            GT_ModHandler.addCraftingRecipe(
-                    GT_Utility.copyAmount(
-                            GT_Mod.gregtechproxy.mNerfedWoodPlank ? tStack.stackSize : tStack.stackSize * 5L / 4,
-                            tStack),
-                    bits_no_remove_buffered,
-                    new Object[] { "s", "P", "P", 'P', OrePrefixes.plank.get(Materials.Wood) });
+            GT_ModHandler
+                    .addCraftingRecipe(
+                            GT_Utility.copyAmount(
+                                    GT_Mod.gregtechproxy.mNerfedWoodPlank ? tStack.stackSize
+                                            : tStack.stackSize * 5L / 4,
+                                    tStack),
+                            bits_no_remove_buffered,
+                            new Object[] { "s", "P", "P", 'P', OrePrefixes.plank.get(Materials.Wood) });
             GT_ModHandler.addCraftingRecipe(
                     GT_Utility.copyAmount(
                             GT_Mod.gregtechproxy.mNerfedWoodPlank ? tStack.stackSize / 2 : tStack.stackSize,
@@ -2101,8 +2103,8 @@ public class GT_CraftingRecipeLoader implements Runnable {
                             OrePrefixes.wireGt12.get(Materials.Platinum), 'P',
                             OrePrefixes.circuit.get(Materials.Elite) });
 
-            GT_ModHandler
-                    .removeRecipeByOutputDelayed(GT_ModHandler.getModItem(GraviSuite.modID, "advLappack", 1, GT_Values.W));
+            GT_ModHandler.removeRecipeByOutputDelayed(
+                    GT_ModHandler.getModItem(GraviSuite.modID, "advLappack", 1, GT_Values.W));
             GT_ModHandler.addCraftingRecipe(
                     GT_ModHandler.getModItem(GraviSuite.modID, "advLappack", 1, GT_Values.W),
                     bits_no_remove_buffered,
@@ -2112,8 +2114,8 @@ public class GT_CraftingRecipeLoader implements Runnable {
                             OrePrefixes.wireGt04.get(Materials.Platinum), 'P',
                             OrePrefixes.circuit.get(Materials.Data) });
 
-            GT_ModHandler
-                    .removeRecipeByOutputDelayed(GT_ModHandler.getModItem(GraviSuite.modID, "advJetpack", 1, GT_Values.W));
+            GT_ModHandler.removeRecipeByOutputDelayed(
+                    GT_ModHandler.getModItem(GraviSuite.modID, "advJetpack", 1, GT_Values.W));
             GT_ModHandler.addCraftingRecipe(
                     GT_ModHandler.getModItem(GraviSuite.modID, "advJetpack", 1, GT_Values.W),
                     bits_no_remove_buffered,
@@ -2150,45 +2152,28 @@ public class GT_CraftingRecipeLoader implements Runnable {
         }
 
         if (Forestry.isModLoaded()) {
-            ItemStack[] coverIDs = {
-                ItemList.Plank_Larch.get(2L),
-                ItemList.Plank_Teak.get(2L),
-                ItemList.Plank_Acacia_Green.get(2L),
-                ItemList.Plank_Lime.get(2L),
-                ItemList.Plank_Chestnut.get(2L),
-                ItemList.Plank_Wenge.get(2L),
-                ItemList.Plank_Baobab.get(2L),
-                ItemList.Plank_Sequoia.get(2L),
-                ItemList.Plank_Kapok.get(2L),
-                ItemList.Plank_Ebony.get(2L),
-                ItemList.Plank_Mahagony.get(2L),
-                ItemList.Plank_Balsa.get(2L),
-                ItemList.Plank_Willow.get(2L),
-                ItemList.Plank_Walnut.get(2L),
-                ItemList.Plank_Greenheart.get(2L),
-                ItemList.Plank_Cherry.get(2L),
-                ItemList.Plank_Mahoe.get(2L),
-                ItemList.Plank_Poplar.get(2L),
-                ItemList.Plank_Palm.get(2L),
-                ItemList.Plank_Papaya.get(2L),
-                ItemList.Plank_Pine.get(2L),
-                ItemList.Plank_Plum.get(2L),
-                ItemList.Plank_Maple.get(2L),
-                ItemList.Plank_Citrus.get(2L)
-            };
+            ItemStack[] coverIDs = { ItemList.Plank_Larch.get(2L), ItemList.Plank_Teak.get(2L),
+                    ItemList.Plank_Acacia_Green.get(2L), ItemList.Plank_Lime.get(2L), ItemList.Plank_Chestnut.get(2L),
+                    ItemList.Plank_Wenge.get(2L), ItemList.Plank_Baobab.get(2L), ItemList.Plank_Sequoia.get(2L),
+                    ItemList.Plank_Kapok.get(2L), ItemList.Plank_Ebony.get(2L), ItemList.Plank_Mahagony.get(2L),
+                    ItemList.Plank_Balsa.get(2L), ItemList.Plank_Willow.get(2L), ItemList.Plank_Walnut.get(2L),
+                    ItemList.Plank_Greenheart.get(2L), ItemList.Plank_Cherry.get(2L), ItemList.Plank_Mahoe.get(2L),
+                    ItemList.Plank_Poplar.get(2L), ItemList.Plank_Palm.get(2L), ItemList.Plank_Papaya.get(2L),
+                    ItemList.Plank_Pine.get(2L), ItemList.Plank_Plum.get(2L), ItemList.Plank_Maple.get(2L),
+                    ItemList.Plank_Citrus.get(2L) };
             for (int i = 0; i < coverIDs.length; i++) {
                 ItemStack slabWood = getModItem(Forestry.modID, "slabs", 1, i);
                 ItemStack slabWoodFireproof = getModItem(Forestry.modID, "slabsFireproof", 1, i);
 
                 GT_ModHandler.addCraftingRecipe(
-                    coverIDs[i],
-                    GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE,
-                    new Object[]{"s ", " P", 'P', slabWood});
+                        coverIDs[i],
+                        GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE,
+                        new Object[] { "s ", " P", 'P', slabWood });
 
                 GT_ModHandler.addCraftingRecipe(
-                    coverIDs[i],
-                    GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE,
-                    new Object[]{"s ", " P", 'P', slabWoodFireproof});
+                        coverIDs[i],
+                        GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE,
+                        new Object[] { "s ", " P", 'P', slabWoodFireproof });
             }
         }
     }

@@ -33,12 +33,12 @@ public class GT_RecipeConstants {
      * Common additive to use in recipe, e.g. for PBF, this is coal amount.
      */
     public static final GT_RecipeBuilder.MetadataIdentifier<Integer> ADDITIVE_AMOUNT = GT_RecipeBuilder.MetadataIdentifier
-        .create(Integer.class, "additives");
+            .create(Integer.class, "additives");
     /**
      * Used for fusion reactor. Denotes ignition threshold.
      */
     public static final GT_RecipeBuilder.MetadataIdentifier<Integer> FUSION_THRESHOLD = GT_RecipeBuilder.MetadataIdentifier
-        .create(Integer.class, "fusion_threshold");
+            .create(Integer.class, "fusion_threshold");
     /**
      * Research time in a scanner used in ticks.
      */
@@ -111,8 +111,8 @@ public class GT_RecipeConstants {
     });
 
     public static final IGT_RecipeMap AssemblyLine = IGT_RecipeMap.newRecipeMap(builder -> {
-        Optional<GT_Recipe.GT_Recipe_WithAlt> rr = builder.forceOreDictInput().validateInputCount(4, 16).validateOutputCount(1, 1)
-                .validateOutputFluidCount(-1, 0).validateInputFluidCount(0, 4).buildWithAlt();
+        Optional<GT_Recipe.GT_Recipe_WithAlt> rr = builder.forceOreDictInput().validateInputCount(4, 16)
+                .validateOutputCount(1, 1).validateOutputFluidCount(-1, 0).validateInputFluidCount(0, 4).buildWithAlt();
         if (!rr.isPresent()) return Collections.emptyList();
         GT_Recipe.GT_Recipe_WithAlt r = rr.get();
         ItemStack[][] mOreDictAlt = r.mOreDictAlt;
@@ -143,10 +143,11 @@ public class GT_RecipeConstants {
                 tPersistentHash = tPersistentHash * 31 + (objs[0] == null ? "" : objs[0].toString()).hashCode();
                 tPersistentHash = tPersistentHash * 31 + ((Number) objs[1]).intValue();
             }
-            GT_Log.err.println("addAssemblingLineRecipe " + aResearchItem.getDisplayName()
-                + " --> "
-                + aOutput.getUnlocalizedName()
-                + " there is some null item in that recipe");
+            GT_Log.err.println(
+                    "addAssemblingLineRecipe " + aResearchItem.getDisplayName()
+                            + " --> "
+                            + aOutput.getUnlocalizedName()
+                            + " there is some null item in that recipe");
         }
         tPersistentHash = tPersistentHash * 31 + GT_Utility.persistentHash(aResearchItem, true, false);
         tPersistentHash = tPersistentHash * 31 + GT_Utility.persistentHash(aOutput, true, false);
@@ -214,7 +215,8 @@ public class GT_RecipeConstants {
         builder.validateInputCount(1, 1).validateNoInputFluid().validateOutputCount(-1, 0).validateNoOutputFluid();
         if (!builder.isValid()) return Collections.emptyList();
         int fuelType = builder.getMetadata(FUEL_TYPE);
-        builder.metadata(FUEL_VALUE,
+        builder.metadata(
+                FUEL_VALUE,
                 GregTech_API.sRecipeFile
                         .get("fuel_" + fuelType, builder.getItemInputBasic(0), builder.getMetadata(FUEL_VALUE)));
         return FuelType.get(fuelType).getTarget().doAdd(builder);

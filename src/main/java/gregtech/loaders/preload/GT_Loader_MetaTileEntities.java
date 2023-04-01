@@ -1,12 +1,13 @@
 package gregtech.loaders.preload;
 
+import static gregtech.api.enums.ModIDs.*;
+
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 
 import codechicken.nei.api.API;
-import cpw.mods.fml.common.Loader;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.*;
@@ -27,8 +28,6 @@ import gregtech.common.tileentities.storage.*;
 import gregtech.loaders.postload.GT_PCBFactoryMaterialLoader;
 import gregtech.loaders.postload.GT_ProcessingArrayRecipeLoader;
 import ic2.core.Ic2Items;
-
-import static gregtech.api.enums.ModIDs.*;
 
 // Free IDs left for machines in GT as of 29th of July 2022 - Colen. Please try use them up in order.
 // 358

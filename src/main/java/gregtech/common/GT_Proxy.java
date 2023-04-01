@@ -960,22 +960,36 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
         GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getIC2Item("hazmatChestplate", 1L, 32767));
         GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getIC2Item("hazmatLeggings", 1L, 32767));
         GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getIC2Item("hazmatBoots", 1L, 32767));
-        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem(Railcraft.modID, "part.turbine.disk", 1L, 32767));
-        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem(Railcraft.modID, "part.turbine.blade", 1L, 32767));
-        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem(Railcraft.modID, "part.turbine.rotor", 1L, 32767));
-        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem(Railcraft.modID, "borehead.diamond", 1L, 32767));
+        GT_ModHandler.sNonReplaceableItems
+                .add(GT_ModHandler.getModItem(Railcraft.modID, "part.turbine.disk", 1L, 32767));
+        GT_ModHandler.sNonReplaceableItems
+                .add(GT_ModHandler.getModItem(Railcraft.modID, "part.turbine.blade", 1L, 32767));
+        GT_ModHandler.sNonReplaceableItems
+                .add(GT_ModHandler.getModItem(Railcraft.modID, "part.turbine.rotor", 1L, 32767));
+        GT_ModHandler.sNonReplaceableItems
+                .add(GT_ModHandler.getModItem(Railcraft.modID, "borehead.diamond", 1L, 32767));
         GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem(Railcraft.modID, "borehead.steel", 1L, 32767));
         GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem(Railcraft.modID, "borehead.iron", 1L, 32767));
-        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem(TwilightForest.modID, "item.plateNaga", 1L, 32767));
-        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem(TwilightForest.modID, "item.legsNaga", 1L, 32767));
-        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem(TwilightForest.modID, "item.arcticHelm", 1L, 32767));
-        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem(TwilightForest.modID, "item.arcticPlate", 1L, 32767));
-        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem(TwilightForest.modID, "item.arcticLegs", 1L, 32767));
-        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem(TwilightForest.modID, "item.arcticBoots", 1L, 32767));
-        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem(TwilightForest.modID, "item.yetiHelm", 1L, 32767));
-        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem(TwilightForest.modID, "item.yetiPlate", 1L, 32767));
-        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem(TwilightForest.modID, "item.yetiLegs", 1L, 32767));
-        GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem(TwilightForest.modID, "item.yetiBoots", 1L, 32767));
+        GT_ModHandler.sNonReplaceableItems
+                .add(GT_ModHandler.getModItem(TwilightForest.modID, "item.plateNaga", 1L, 32767));
+        GT_ModHandler.sNonReplaceableItems
+                .add(GT_ModHandler.getModItem(TwilightForest.modID, "item.legsNaga", 1L, 32767));
+        GT_ModHandler.sNonReplaceableItems
+                .add(GT_ModHandler.getModItem(TwilightForest.modID, "item.arcticHelm", 1L, 32767));
+        GT_ModHandler.sNonReplaceableItems
+                .add(GT_ModHandler.getModItem(TwilightForest.modID, "item.arcticPlate", 1L, 32767));
+        GT_ModHandler.sNonReplaceableItems
+                .add(GT_ModHandler.getModItem(TwilightForest.modID, "item.arcticLegs", 1L, 32767));
+        GT_ModHandler.sNonReplaceableItems
+                .add(GT_ModHandler.getModItem(TwilightForest.modID, "item.arcticBoots", 1L, 32767));
+        GT_ModHandler.sNonReplaceableItems
+                .add(GT_ModHandler.getModItem(TwilightForest.modID, "item.yetiHelm", 1L, 32767));
+        GT_ModHandler.sNonReplaceableItems
+                .add(GT_ModHandler.getModItem(TwilightForest.modID, "item.yetiPlate", 1L, 32767));
+        GT_ModHandler.sNonReplaceableItems
+                .add(GT_ModHandler.getModItem(TwilightForest.modID, "item.yetiLegs", 1L, 32767));
+        GT_ModHandler.sNonReplaceableItems
+                .add(GT_ModHandler.getModItem(TwilightForest.modID, "item.yetiBoots", 1L, 32767));
         GT_ModHandler.sNonReplaceableItems
                 .add(GT_ModHandler.getModItem("appliedenergistics2", "item.ToolCertusQuartzCuttingKnife", 1L, 32767));
         GT_ModHandler.sNonReplaceableItems

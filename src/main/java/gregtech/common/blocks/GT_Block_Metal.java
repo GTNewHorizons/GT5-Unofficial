@@ -1,5 +1,7 @@
 package gregtech.common.blocks;
 
+import static gregtech.api.enums.ModIDs.NotEnoughItems;
+
 import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
@@ -9,8 +11,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_OreDictUnificator;
-
-import static gregtech.api.enums.ModIDs.NotEnoughItems;
 
 public class GT_Block_Metal extends GT_Block_Storage {
 

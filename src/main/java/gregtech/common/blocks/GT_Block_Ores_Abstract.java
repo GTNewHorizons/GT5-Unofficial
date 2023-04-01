@@ -1,5 +1,7 @@
 package gregtech.common.blocks;
 
+import static gregtech.api.enums.ModIDs.NotEnoughItems;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -37,8 +39,6 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.render.GT_Renderer_Block;
-
-import static gregtech.api.enums.ModIDs.NotEnoughItems;
 
 public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements ITileEntityProvider {
 

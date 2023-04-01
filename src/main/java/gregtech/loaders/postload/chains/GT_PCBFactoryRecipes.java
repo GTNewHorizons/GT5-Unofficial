@@ -1,5 +1,7 @@
 package gregtech.loaders.postload.chains;
 
+import static gregtech.api.enums.ModIDs.GTPlusPlus;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,8 +18,6 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_PCBFactoryManager;
 import gregtech.api.util.GT_Utility;
-
-import static gregtech.api.enums.ModIDs.GTPlusPlus;
 
 @SuppressWarnings("SpellCheckingInspection")
 public class GT_PCBFactoryRecipes {

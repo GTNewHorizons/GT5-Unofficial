@@ -3,6 +3,7 @@ package gregtech.api.enums;
 import cpw.mods.fml.common.Loader;
 
 public enum ModIDs {
+
     AdvancedSolarPanel("AdvancedSolarPanel"),
     AE2FluidCraft("ae2fc"),
     AppleCore("AppleCore"),
@@ -59,7 +60,7 @@ public enum ModIDs {
     Translocator("Translocator"),
     TwilightForest("TwilightForest"),
     Waila("Waila"),
-    //Do we keep compat of those?
+    // Do we keep compat of those?
     IndustrialCraft2Classic("IC2-Classic-Spmod"),
     Metallurgy("Metallurgy"),
     RotaryCraft("RotaryCraft"),

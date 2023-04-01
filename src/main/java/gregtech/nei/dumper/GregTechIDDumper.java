@@ -1,13 +1,13 @@
 package gregtech.nei.dumper;
 
+import static gregtech.api.enums.ModIDs.NewHorizonsCoreMod;
+
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 
 import codechicken.nei.NEIClientUtils;
 import codechicken.nei.config.DataDumper;
-
-import static gregtech.api.enums.ModIDs.NewHorizonsCoreMod;
 
 public abstract class GregTechIDDumper extends DataDumper {
 

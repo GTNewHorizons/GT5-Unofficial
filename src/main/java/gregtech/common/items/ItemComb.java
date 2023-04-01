@@ -1187,14 +1187,16 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
                 CombType.NAGA,
                 new ItemStack[] { GT_ModHandler.getModItem("MagicBees", "propolis", 1L, 4),
                         GT_ModHandler.getModItem(NewHorizonsCoreMod.modID, "item.NagaScaleChip", 1L, 0),
-                        GT_ModHandler.getModItem(NewHorizonsCoreMod.modID, "item.NagaScaleFragment", 1L, 0), ItemList.FR_Wax.get(1) },
+                        GT_ModHandler.getModItem(NewHorizonsCoreMod.modID, "item.NagaScaleFragment", 1L, 0),
+                        ItemList.FR_Wax.get(1) },
                 new int[] { 5 * 100, 33 * 100, 8 * 100, 30 * 100 },
                 Voltage.MV);
         addCentrifugeToItemStack(
                 CombType.LICH,
                 new ItemStack[] { GT_ModHandler.getModItem("MagicBees", "propolis", 1L, 5),
                         GT_ModHandler.getModItem(NewHorizonsCoreMod.modID, "item.LichBoneChip", 1L, 0),
-                        GT_ModHandler.getModItem(NewHorizonsCoreMod.modID, "item.LichBoneFragment", 1L, 0), ItemList.FR_Wax.get(1) },
+                        GT_ModHandler.getModItem(NewHorizonsCoreMod.modID, "item.LichBoneFragment", 1L, 0),
+                        ItemList.FR_Wax.get(1) },
                 new int[] { 5 * 100, 33 * 100, 8 * 100, 30 * 100 },
                 Voltage.HV);
         addCentrifugeToItemStack(
@@ -1208,7 +1210,8 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
                 CombType.URGHAST,
                 new ItemStack[] { GT_ModHandler.getModItem("MagicBees", "propolis", 1L, 2),
                         GT_ModHandler.getModItem(NewHorizonsCoreMod.modID, "item.CarminiteChip", 1L, 0),
-                        GT_ModHandler.getModItem(NewHorizonsCoreMod.modID, "item.CarminiteFragment", 1L, 0), ItemList.FR_Wax.get(1) },
+                        GT_ModHandler.getModItem(NewHorizonsCoreMod.modID, "item.CarminiteFragment", 1L, 0),
+                        ItemList.FR_Wax.get(1) },
                 new int[] { 5 * 100, 33 * 100, 8 * 100, 30 * 100 },
                 Voltage.EV);
         addCentrifugeToItemStack(

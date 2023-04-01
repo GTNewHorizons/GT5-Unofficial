@@ -150,7 +150,9 @@ public class GT_RecipeBuilder {
                 if (DEBUG_MODE) {
                     throw new NullPointerException();
                 } else {
-                    GT_Log.err.printf("null detected in recipe oredict input. ignoring. %s%n", new NullPointerException());
+                    GT_Log.err.printf(
+                            "null detected in recipe oredict input. ignoring. %s%n",
+                            new NullPointerException());
                     alts[i] = new ItemStack[0];
                 }
             } else {
@@ -221,8 +223,8 @@ public class GT_RecipeBuilder {
     }
 
     /**
-     * Really just {@link #special(Object)}, but with a different signature to make it less confusing.
-     * WARNING: only for legacy recipe map. do not abuse.
+     * Really just {@link #special(Object)}, but with a different signature to make it less confusing. WARNING: only for
+     * legacy recipe map. do not abuse.
      */
     public GT_RecipeBuilder specialItem(ItemStack specialItem) {
         return special(specialItem);

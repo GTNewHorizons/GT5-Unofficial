@@ -11,7 +11,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.function.Predicate;
 
-import gregtech.api.enums.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -48,6 +47,7 @@ import gregtech.api.GregTech_API;
 import gregtech.api.enchants.Enchantment_EnderDamage;
 import gregtech.api.enchants.Enchantment_Hazmat;
 import gregtech.api.enchants.Enchantment_Radioactivity;
+import gregtech.api.enums.*;
 import gregtech.api.interfaces.internal.IGT_Mod;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.objects.GT_ItemStack;

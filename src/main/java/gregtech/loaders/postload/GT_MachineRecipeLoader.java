@@ -1,12 +1,12 @@
 package gregtech.loaders.postload;
 
+import static gregtech.api.enums.ModIDs.NotEnoughItems;
+
 import gregtech.api.enums.Materials;
 import gregtech.loaders.postload.chains.GT_BauxiteRefineChain;
 import gregtech.loaders.postload.chains.GT_NaniteChain;
 import gregtech.loaders.postload.chains.GT_PCBFactoryRecipes;
 import gregtech.loaders.postload.recipes.*;
-
-import static gregtech.api.enums.ModIDs.NotEnoughItems;
 
 public class GT_MachineRecipeLoader implements Runnable {
 
@@ -17,11 +17,8 @@ public class GT_MachineRecipeLoader implements Runnable {
     @Deprecated
     public static final Boolean isAE2Loaded = true;
 
-    public static final Materials[] solderingMats = new Materials[]{
-        Materials.Lead,
-        Materials.SolderingAlloy,
-        Materials.Tin
-    };
+    public static final Materials[] solderingMats = new Materials[] { Materials.Lead, Materials.SolderingAlloy,
+            Materials.Tin };
 
     @Override
     public void run() {

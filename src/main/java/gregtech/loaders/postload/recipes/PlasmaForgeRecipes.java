@@ -34,7 +34,7 @@ public class PlasmaForgeRecipes implements Runnable {
                         Materials.WhiteDwarfMatter.getMolten(144),
                         getFluidStack("molten.shirabon", 72),
                         Materials.BlackDwarfMatter.getMolten(144))
-                .itemOutputs(getModItem(GTPlusPlus.modID, "MU-metaitem.01", 1, 32105)).noFluidOutputs().duration(50 * 20)
-                .eut((int) TierEU.RECIPE_UXV).metadata(COIL_HEAT, 13500).addTo(sPlasmaForgeRecipes);
+                .itemOutputs(getModItem(GTPlusPlus.modID, "MU-metaitem.01", 1, 32105)).noFluidOutputs()
+                .duration(50 * 20).eut((int) TierEU.RECIPE_UXV).metadata(COIL_HEAT, 13500).addTo(sPlasmaForgeRecipes);
     }
 }

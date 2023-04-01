@@ -2221,7 +2221,8 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                             coll.derive().setInputs(input, new ItemStack(Blocks.tnt, tTNT));
                             coll.derive().setInputs(input, GT_ModHandler.getIC2Item("industrialTnt", tITNT, null));
                             return coll.getAll();
-                        }).setDisableOptimize(true).setProgressBar(GT_UITextures.PROGRESSBAR_COMPRESS, ProgressBar.Direction.RIGHT);
+                        }).setDisableOptimize(true)
+                        .setProgressBar(GT_UITextures.PROGRESSBAR_COMPRESS, ProgressBar.Direction.RIGHT);
         public static final GT_Recipe_Map sVacuumRecipes = new GT_Recipe_Map(
                 new HashSet<>(305),
                 "gt.recipe.vacuumfreezer",
@@ -2307,8 +2308,8 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 1,
                 E,
                 true,
-                true).setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT).setDisableOptimize(true)
-                        .setRecipeConfigFile("pyrolyse", FIRST_ITEM_INPUT);
+                true).setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT)
+                        .setDisableOptimize(true).setRecipeConfigFile("pyrolyse", FIRST_ITEM_INPUT);
         public static final GT_Recipe_Map sWiremillRecipes = new GT_Recipe_Map(
                 new HashSet<>(450),
                 "gt.recipe.wiremill",
@@ -2919,7 +2920,8 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                             return result;
                         });
 
-        public static final GT_Recipe_Map_IC2NuclearFake sIC2NuclearFakeRecipe = (GT_Recipe_Map_IC2NuclearFake) new GT_Recipe_Map_IC2NuclearFake().setDisableOptimize(true);
+        public static final GT_Recipe_Map_IC2NuclearFake sIC2NuclearFakeRecipe = (GT_Recipe_Map_IC2NuclearFake) new GT_Recipe_Map_IC2NuclearFake()
+                .setDisableOptimize(true);
 
         static {
             sCentrifugeRecipes.addDownstream(sMultiblockCentrifugeRecipes.deepCopyInput());

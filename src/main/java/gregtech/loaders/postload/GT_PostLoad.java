@@ -152,7 +152,7 @@ public class GT_PostLoad {
     public static void addFakeRecipes() {
         GT_Log.out.println("GT_Mod: Adding Fake Recipes for NEI");
 
-        if (Forestry.isModLoaded()){
+        if (Forestry.isModLoaded()) {
             GT_Forestry_Compat.populateFakeNeiRecipes();
         }
 
@@ -219,32 +219,30 @@ public class GT_PostLoad {
                 30,
                 0);
         if (GalacticraftCore.isModLoaded()) {
-            GT_Recipe.GT_Recipe_Map.sScannerFakeRecipes
-                    .addFakeRecipe(
-                            false,
-                            new ItemStack[] { Objects.requireNonNull(
-                                    GT_ModHandler.getModItem(GalacticraftCore.modID, "item.schematic", 1, Short.MAX_VALUE))
-                                    .setStackDisplayName("Any Schematic") },
-                            new ItemStack[] { ItemList.Tool_DataStick.getWithName(1L, "Scanned Schematic") },
-                            ItemList.Tool_DataStick.getWithName(1L, "Stick to save it to"),
-                            null,
-                            null,
-                            36000,
-                            480,
-                            0);
-            if (GalacticraftMars.isModLoaded())
-                GT_Recipe.GT_Recipe_Map.sScannerFakeRecipes.addFakeRecipe(
-                        false,
-                        new ItemStack[] { Objects.requireNonNull(
-                                GT_ModHandler.getModItem(GalacticraftMars.modID, "item.schematic", 1, Short.MAX_VALUE))
-                                .setStackDisplayName("Any Schematic") },
-                        new ItemStack[] { ItemList.Tool_DataStick.getWithName(1L, "Scanned Schematic") },
-                        ItemList.Tool_DataStick.getWithName(1L, "Stick to save it to"),
-                        null,
-                        null,
-                        36000,
-                        480,
-                        0);
+            GT_Recipe.GT_Recipe_Map.sScannerFakeRecipes.addFakeRecipe(
+                    false,
+                    new ItemStack[] { Objects.requireNonNull(
+                            GT_ModHandler.getModItem(GalacticraftCore.modID, "item.schematic", 1, Short.MAX_VALUE))
+                            .setStackDisplayName("Any Schematic") },
+                    new ItemStack[] { ItemList.Tool_DataStick.getWithName(1L, "Scanned Schematic") },
+                    ItemList.Tool_DataStick.getWithName(1L, "Stick to save it to"),
+                    null,
+                    null,
+                    36000,
+                    480,
+                    0);
+            if (GalacticraftMars.isModLoaded()) GT_Recipe.GT_Recipe_Map.sScannerFakeRecipes.addFakeRecipe(
+                    false,
+                    new ItemStack[] { Objects.requireNonNull(
+                            GT_ModHandler.getModItem(GalacticraftMars.modID, "item.schematic", 1, Short.MAX_VALUE))
+                            .setStackDisplayName("Any Schematic") },
+                    new ItemStack[] { ItemList.Tool_DataStick.getWithName(1L, "Scanned Schematic") },
+                    ItemList.Tool_DataStick.getWithName(1L, "Stick to save it to"),
+                    null,
+                    null,
+                    36000,
+                    480,
+                    0);
             if (GalaxySpace.isModLoaded()) {
                 for (int i = 4; i < 9; i++) {
                     GT_Recipe.GT_Recipe_Map.sScannerFakeRecipes.addFakeRecipe(

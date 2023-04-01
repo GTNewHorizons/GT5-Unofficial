@@ -14,7 +14,7 @@ public class ProcessingModSupport implements gregtech.api.interfaces.IMaterialHa
     public static boolean aEnableThermalFoundationMats = ThermalFondation.isModLoaded() || aTGregSupport;
     public static boolean aEnableEnderIOMats = EnderIO.isModLoaded() || aTGregSupport;
     public static boolean aEnableRailcraftMats = Railcraft.isModLoaded() || aTGregSupport;
-    public static boolean aEnableGCMarsMats = GalacticraftMars.isModLoaded()|| aTGregSupport;
+    public static boolean aEnableGCMarsMats = GalacticraftMars.isModLoaded() || aTGregSupport;
     public static boolean aEnableTwilightMats = TwilightForest.isModLoaded() || aTGregSupport;
     public static boolean aEnableMetallurgyMats = Metallurgy.isModLoaded() || aTGregSupport;
     public static boolean aEnableProjectRedMats = ProjectRedCore.isModLoaded() || aTGregSupport;

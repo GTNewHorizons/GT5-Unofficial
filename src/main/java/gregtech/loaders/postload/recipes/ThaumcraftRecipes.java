@@ -32,12 +32,12 @@ public class ThaumcraftRecipes implements Runnable {
         // Add Recipe for TC Crucible: Salis Mundus to Balanced Shards
         String tKey = "GT_BALANCE_SHARD_RECIPE";
         GregTech_API.sThaumcraftCompat.addCrucibleRecipe(
-            "TB.SM",
-            getModItem(Thaumcraft.modID, "ItemResource", 1L, 14),
-            getModItem(Thaumcraft.modID, "ItemShard", 1L, 6),
-            Arrays.asList(
-                new TC_Aspects.TC_AspectStack(TC_Aspects.PRAECANTATIO, 2L),
-                new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 1L)));
+                "TB.SM",
+                getModItem(Thaumcraft.modID, "ItemResource", 1L, 14),
+                getModItem(Thaumcraft.modID, "ItemShard", 1L, 6),
+                Arrays.asList(
+                        new TC_Aspects.TC_AspectStack(TC_Aspects.PRAECANTATIO, 2L),
+                        new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 1L)));
 
         tKey = "GT_WOOD_TO_CHARCOAL";
         GT_LanguageManager.addStringLocalization(
@@ -108,8 +108,7 @@ public class ThaumcraftRecipes implements Runnable {
                                 tKey,
                                 GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1L),
                                 GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Water, 1L),
-                                Collections
-                                        .singletonList(new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 4L))) });
+                                Collections.singletonList(new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 4L))) });
 
         tKey = "GT_TRANSZINC";
         GT_LanguageManager.addStringLocalization(
@@ -281,8 +280,7 @@ public class ThaumcraftRecipes implements Runnable {
                                 tKey,
                                 OrePrefixes.nugget.get(Materials.Iron),
                                 GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Steel, 1L),
-                                Collections
-                                        .singletonList(new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 1L))) });
+                                Collections.singletonList(new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 1L))) });
 
         tKey = "GT_TRANSBRONZE";
         GT_LanguageManager.addStringLocalization(
@@ -501,9 +499,8 @@ public class ThaumcraftRecipes implements Runnable {
                 tKey,
                 "Advanced Metallurgic Transmutation",
                 "Mastering the basic metals",
-                new String[] { "GT_TRANSBISMUTH", "GT_IRON_TO_STEEL", "GT_TRANSSOLDERINGALLOY",
-                        "GT_TRANSBATTERYALLOY", "GT_TRANSBRASS", "GT_TRANSELECTRUM", "GT_TRANSCUPRONICKEL",
-                        "GT_TRANSINVAR" },
+                new String[] { "GT_TRANSBISMUTH", "GT_IRON_TO_STEEL", "GT_TRANSSOLDERINGALLOY", "GT_TRANSBATTERYALLOY",
+                        "GT_TRANSBRASS", "GT_TRANSELECTRUM", "GT_TRANSCUPRONICKEL", "GT_TRANSINVAR" },
                 "ALCHEMY",
                 GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Iron, 1L),
                 3,
@@ -659,38 +656,32 @@ public class ThaumcraftRecipes implements Runnable {
                                 tKey,
                                 OrePrefixes.dust.get(Materials.InfusedOrder),
                                 GT_OreDictUnificator.get(OrePrefixes.gem, Materials.InfusedOrder, 1L),
-                                Collections
-                                        .singletonList(new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 4L))),
+                                Collections.singletonList(new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 4L))),
                         GregTech_API.sThaumcraftCompat.addCrucibleRecipe(
                                 tKey,
                                 OrePrefixes.dust.get(Materials.InfusedEntropy),
                                 GT_OreDictUnificator.get(OrePrefixes.gem, Materials.InfusedEntropy, 1L),
-                                Collections
-                                        .singletonList(new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 4L))),
+                                Collections.singletonList(new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 4L))),
                         GregTech_API.sThaumcraftCompat.addCrucibleRecipe(
                                 tKey,
                                 OrePrefixes.dust.get(Materials.InfusedAir),
                                 GT_OreDictUnificator.get(OrePrefixes.gem, Materials.InfusedAir, 1L),
-                                Collections
-                                        .singletonList(new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 4L))),
+                                Collections.singletonList(new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 4L))),
                         GregTech_API.sThaumcraftCompat.addCrucibleRecipe(
                                 tKey,
                                 OrePrefixes.dust.get(Materials.InfusedEarth),
                                 GT_OreDictUnificator.get(OrePrefixes.gem, Materials.InfusedEarth, 1L),
-                                Collections
-                                        .singletonList(new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 4L))),
+                                Collections.singletonList(new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 4L))),
                         GregTech_API.sThaumcraftCompat.addCrucibleRecipe(
                                 tKey,
                                 OrePrefixes.dust.get(Materials.InfusedFire),
                                 GT_OreDictUnificator.get(OrePrefixes.gem, Materials.InfusedFire, 1L),
-                                Collections
-                                        .singletonList(new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 4L))),
+                                Collections.singletonList(new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 4L))),
                         GregTech_API.sThaumcraftCompat.addCrucibleRecipe(
                                 tKey,
                                 OrePrefixes.dust.get(Materials.InfusedWater),
                                 GT_OreDictUnificator.get(OrePrefixes.gem, Materials.InfusedWater, 1L),
-                                Collections.singletonList(
-                                        new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 4L))) });
+                                Collections.singletonList(new TC_Aspects.TC_AspectStack(TC_Aspects.VITREUS, 4L))) });
 
         tKey = "GT_MAGICENERGY";
         GT_LanguageManager.addStringLocalization(
@@ -758,12 +749,10 @@ public class ThaumcraftRecipes implements Runnable {
                                 ItemList.Hull_MV.get(1L),
                                 new ItemStack[] { new ItemStack(Blocks.beacon),
                                         GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Advanced, 1L),
-                                        GT_OreDictUnificator
-                                                .get(OrePrefixes.plateDouble, Materials.Thaumium, 1L),
+                                        GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Thaumium, 1L),
                                         ItemList.Sensor_HV.get(2L),
                                         GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Advanced, 1L),
-                                        GT_OreDictUnificator
-                                                .get(OrePrefixes.plateDouble, Materials.StainlessSteel, 1L),
+                                        GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.StainlessSteel, 1L),
                                         ItemList.Sensor_HV.get(2L) },
                                 ItemList.MagicEnergyConverter_MV.get(1L),
                                 6,
@@ -799,12 +788,10 @@ public class ThaumcraftRecipes implements Runnable {
                                 ItemList.Hull_HV.get(1L),
                                 new ItemStack[] { new ItemStack(Blocks.beacon),
                                         GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Data, 1L),
-                                        GT_OreDictUnificator
-                                                .get(OrePrefixes.plateDense, Materials.Thaumium, 1L),
+                                        GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Thaumium, 1L),
                                         ItemList.Field_Generator_MV.get(1L),
                                         GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Data, 1L),
-                                        GT_OreDictUnificator
-                                                .get(OrePrefixes.plateDense, Materials.Titanium, 1L),
+                                        GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Titanium, 1L),
                                         ItemList.Field_Generator_MV.get(1L) },
                                 ItemList.MagicEnergyConverter_HV.get(1L),
                                 8,
@@ -920,8 +907,7 @@ public class ThaumcraftRecipes implements Runnable {
                                         ItemList.Field_Generator_HV.get(1L),
                                         GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 1L),
                                         GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Void, 1),
-                                        GT_OreDictUnificator
-                                                .get(OrePrefixes.plate, Materials.TungstenSteel, 1), },
+                                        GT_OreDictUnificator.get(OrePrefixes.plate, Materials.TungstenSteel, 1), },
                                 ItemList.MagicEnergyAbsorber_EV.get(1L),
                                 10,
                                 Arrays.asList(
@@ -972,9 +958,7 @@ public class ThaumcraftRecipes implements Runnable {
                                         getModItem(Thaumcraft.modID, "ItemResource", 1L, 14),
                                         GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Titanium, 1),
                                         GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Rubber, 1),
-                                        GT_OreDictUnificator
-                                                .get(OrePrefixes.plateDense, Materials.Lead, 1) }) });
-
+                                        GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Lead, 1) }) });
 
     }
 }

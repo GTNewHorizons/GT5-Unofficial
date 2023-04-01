@@ -1,10 +1,10 @@
 package gregtech.nei;
 
+import static gregtech.api.enums.ModIDs.NotEnoughItems;
+
 import net.minecraft.nbt.NBTTagCompound;
 
 import cpw.mods.fml.common.event.FMLInterModComms;
-
-import static gregtech.api.enums.ModIDs.NotEnoughItems;
 
 public class IMCForNEI {
 

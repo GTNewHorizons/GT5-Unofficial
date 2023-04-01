@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-import gregtech.api.enums.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -23,6 +22,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import cofh.api.energy.IEnergyReceiver;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.*;
 import gregtech.api.graphs.Node;
 import gregtech.api.graphs.NodeList;
 import gregtech.api.graphs.PowerNode;

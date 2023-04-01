@@ -1,5 +1,7 @@
 package gregtech.loaders.misc;
 
+import static gregtech.api.enums.ModIDs.Thaumcraft;
+
 import java.util.concurrent.ConcurrentHashMap;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -28,8 +30,6 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
 import ic2.core.Ic2Items;
-
-import static gregtech.api.enums.ModIDs.Thaumcraft;
 
 public class GT_Achievements {
 
