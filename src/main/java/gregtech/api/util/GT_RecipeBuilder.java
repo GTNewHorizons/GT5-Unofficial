@@ -95,7 +95,10 @@ public class GT_RecipeBuilder {
     }
 
     private static FluidStack[] fix(FluidStack[] fluidInputs) {
-        return Arrays.stream(fluidInputs).filter(Objects::nonNull).map(GT_FluidStack::new).toArray(FluidStack[]::new);
+        return Arrays.stream(fluidInputs)
+                     .filter(Objects::nonNull)
+                     .map(GT_FluidStack::new)
+                     .toArray(FluidStack[]::new);
     }
 
     private static ItemStack[] fix(ItemStack[] inputs) {
@@ -144,8 +147,10 @@ public class GT_RecipeBuilder {
                 List<ItemStack> ores = GT_OreDictUnificator.getOres(arr[0]);
                 if (ores.isEmpty()) continue;
                 int size = ((Number) arr[1]).intValue();
-                alts[i] = ores.stream().map(s -> GT_Utility.copyAmount(size, s)).filter(GT_Utility::isStackValid)
-                        .toArray(ItemStack[]::new);
+                alts[i] = ores.stream()
+                              .map(s -> GT_Utility.copyAmount(size, s))
+                              .filter(GT_Utility::isStackValid)
+                              .toArray(ItemStack[]::new);
             } else if (input == null) {
                 if (DEBUG_MODE) {
                     throw new NullPointerException();
@@ -159,7 +164,9 @@ public class GT_RecipeBuilder {
                 throw new IllegalArgumentException("index " + i + ", unexpected type: " + input.getClass());
             }
         }
-        inputsBasic = Arrays.stream(alts).map(ss -> ss.length > 0 ? ss[0] : null).toArray(ItemStack[]::new);
+        inputsBasic = Arrays.stream(alts)
+                            .map(ss -> ss.length > 0 ? ss[0] : null)
+                            .toArray(ItemStack[]::new);
         // optimize cannot handle recipes with alts
         return noOptimize();
     }
@@ -673,8 +680,8 @@ public class GT_RecipeBuilder {
 
     public final static class MetadataIdentifier<T> {
 
-        private static final Map<MetadataIdentifier<?>, MetadataIdentifier<?>> allIdentifiers = Collections
-                .synchronizedMap(new HashMap<>());
+        private static final Map<MetadataIdentifier<?>, MetadataIdentifier<?>> allIdentifiers = Collections.synchronizedMap(
+                new HashMap<>());
         private final Class<T> clazz;
         private final String identifier;
 

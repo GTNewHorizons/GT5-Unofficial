@@ -26,10 +26,10 @@ public class ExtraIcons {
         if (reg.getTextureType() == 1) { // are for items
             steelLargeCellInner = reg.registerIcon(RES_PATH_ITEM + "large_fluid_cell_custom/steel_inner");
             aluminiumLargeCellInner = reg.registerIcon(RES_PATH_ITEM + "large_fluid_cell_custom/aluminium_inner");
-            stainlesssteelLargeCellInner = reg
-                    .registerIcon(RES_PATH_ITEM + "large_fluid_cell_custom/stainlesssteel_inner");
-            tungstensteelLargeCellInner = reg
-                    .registerIcon(RES_PATH_ITEM + "large_fluid_cell_custom/tungstensteel_inner");
+            stainlesssteelLargeCellInner = reg.registerIcon(
+                    RES_PATH_ITEM + "large_fluid_cell_custom/stainlesssteel_inner");
+            tungstensteelLargeCellInner = reg.registerIcon(
+                    RES_PATH_ITEM + "large_fluid_cell_custom/tungstensteel_inner");
             titaniumLargeCellInner = reg.registerIcon(RES_PATH_ITEM + "large_fluid_cell_custom/titanium_inner");
             chromiumLargeCellInner = reg.registerIcon(RES_PATH_ITEM + "large_fluid_cell_custom/chromium_inner");
             iridiumLargeCellInner = reg.registerIcon(RES_PATH_ITEM + "large_fluid_cell_custom/iridium_inner");

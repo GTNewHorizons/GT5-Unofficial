@@ -35,8 +35,10 @@ public class ReverseShapelessRecipe {
             if (!recipeOptional.isPresent()) continue;
             GT_Recipe recipe = recipeOptional.get();
             ItemStack[] replacement = new ItemStack[recipe.mOutputs.length];
-            GT_MetaTileEntity_Disassembler
-                    .handleRecipeTransformation(recipe.mOutputs, replacement, Collections.singleton(recipe.mOutputs));
+            GT_MetaTileEntity_Disassembler.handleRecipeTransformation(
+                    recipe.mOutputs,
+                    replacement,
+                    Collections.singleton(recipe.mOutputs));
 
             recipe.mOutputs = replacement;
             sDisassemblerRecipes.add(recipe);

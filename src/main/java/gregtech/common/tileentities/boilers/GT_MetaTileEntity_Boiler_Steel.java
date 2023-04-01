@@ -43,9 +43,15 @@ public class GT_MetaTileEntity_Boiler_Steel extends GT_MetaTileEntity_Boiler_Bro
                 texTop = { TextureFactory.of(MACHINE_STEELBRICKS_TOP), TextureFactory.of(OVERLAY_PIPE) },
                 texSide = { TextureFactory.of(MACHINE_STEELBRICKS_SIDE), TextureFactory.of(OVERLAY_PIPE) },
                 texFront = { TextureFactory.of(MACHINE_STEELBRICKS_SIDE), TextureFactory.of(BOILER_FRONT),
-                        TextureFactory.builder().addIcon(BOILER_FRONT_GLOW).glow().build() },
+                        TextureFactory.builder()
+                                      .addIcon(BOILER_FRONT_GLOW)
+                                      .glow()
+                                      .build() },
                 texFrontActive = { TextureFactory.of(MACHINE_STEELBRICKS_SIDE), TextureFactory.of(BOILER_FRONT_ACTIVE),
-                        TextureFactory.builder().addIcon(BOILER_FRONT_ACTIVE_GLOW).glow().build() };
+                        TextureFactory.builder()
+                                      .addIcon(BOILER_FRONT_ACTIVE_GLOW)
+                                      .glow()
+                                      .build() };
         for (int i = 0; i < 17; i++) {
             rTextures[0][i] = texBottom;
             rTextures[1][i] = texTop;

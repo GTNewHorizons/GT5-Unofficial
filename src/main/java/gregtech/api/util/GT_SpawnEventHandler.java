@@ -40,8 +40,9 @@ public class GT_SpawnEventHandler {
     public void denyMobSpawn(CheckSpawn event) {
         if (event.getResult() == Event.Result.DENY) return;
 
-        if (event.entityLiving instanceof EntitySlime
-                && !(((EntitySlime) event.entityLiving).getCustomNameTag().length() > 0)) {
+        if (event.entityLiving instanceof EntitySlime && !(((EntitySlime) event.entityLiving).getCustomNameTag()
+                                                                                             .length()
+                > 0)) {
             if (event.getResult() == Event.Result.ALLOW) event.setResult(Event.Result.DEFAULT);
         }
 
@@ -64,10 +65,9 @@ public class GT_SpawnEventHandler {
                     if (check > maxRangeCheck) continue;
 
                     final TileEntity tTile = event.entity.worldObj.getTileEntity(rep[0], rep[1], rep[2]);
-                    if (tTile instanceof BaseMetaTileEntity && ((BaseMetaTileEntity) tTile)
-                            .getMetaTileEntity() instanceof GT_MetaTileEntity_MonsterRepellent) {
-                        final int r = ((GT_MetaTileEntity_MonsterRepellent) ((BaseMetaTileEntity) tTile)
-                                .getMetaTileEntity()).mRange;
+                    if (tTile instanceof BaseMetaTileEntity
+                            && ((BaseMetaTileEntity) tTile).getMetaTileEntity() instanceof GT_MetaTileEntity_MonsterRepellent) {
+                        final int r = ((GT_MetaTileEntity_MonsterRepellent) ((BaseMetaTileEntity) tTile).getMetaTileEntity()).mRange;
                         if (check <= Math.pow(r, 2)) {
                             if (event.entityLiving instanceof EntitySlime)
                                 ((EntitySlime) event.entityLiving).setCustomNameTag("DoNotSpawnSlimes");

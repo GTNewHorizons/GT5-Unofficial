@@ -175,15 +175,21 @@ public class GT_Cover_WirelessItemDetector
             super.addUIWidgets(builder);
             builder.widget(
                     new ItemWatcherSlotWidget().setGetter(this::getTargetItem)
-                            .setPos(startX + spaceX * 4 - 1, startY + spaceY * 3))
-                    .widget(
-                            new TextWidget(GT_Utility.trans("221", "Item threshold"))
-                                    .setDefaultColor(COLOR_TEXT_GRAY.get())
-                                    .setPos(startX + spaceX * 5, 4 + startY + spaceY * 2))
-                    .widget(
-                            new TextWidget(GT_Utility.trans("254.0", "Detect Slot"))
-                                    .setDefaultColor(COLOR_TEXT_GRAY.get())
-                                    .setPos(startX + spaceX * 5, 4 + startY + spaceY * 3));
+                                               .setPos(startX + spaceX * 4 - 1, startY + spaceY * 3))
+                   .widget(
+                           new TextWidget(GT_Utility.trans("221", "Item threshold"))
+                                                                                    .setDefaultColor(
+                                                                                            COLOR_TEXT_GRAY.get())
+                                                                                    .setPos(
+                                                                                            startX + spaceX * 5,
+                                                                                            4 + startY + spaceY * 2))
+                   .widget(
+                           new TextWidget(GT_Utility.trans("254.0", "Detect Slot"))
+                                                                                   .setDefaultColor(
+                                                                                           COLOR_TEXT_GRAY.get())
+                                                                                   .setPos(
+                                                                                           startX + spaceX * 5,
+                                                                                           4 + startY + spaceY * 3));
         }
 
         @Override
@@ -196,32 +202,36 @@ public class GT_Cover_WirelessItemDetector
                         coverData.threshold = (int) MathExpression.parseMathExpression(state);
                         return coverData;
                     },
-                    widget -> widget.setOnScrollNumbers(1, 10, 64).setNumbers(() -> 0, this::getMaxItemCount)
-                            .setPos(1, 2 + spaceY * 2).setSize(spaceX * 5 - 4, 12))
-                    .addFollower(
-                            new CoverDataFollower_TextFieldWidget<>(),
-                            coverData -> getSlotTextFieldContent(coverData.slot),
-                            (coverData, state) -> {
-                                coverData.slot = getIntFromText(state);
-                                return coverData;
-                            },
-                            widget -> widget.setOnScrollText().setValidator(val -> {
-                                final int valSlot = getIntFromText(val);
-                                if (valSlot > -1) {
-                                    return TextFieldWidget.format.format(Math.min(valSlot, maxSlot));
-                                } else {
-                                    return ALL_TEXT;
-                                }
-                            }).setPattern(BaseTextFieldWidget.NATURAL_NUMS).setPos(1, 2 + spaceY * 3)
-                                    .setSize(spaceX * 4 - 8, 12));
+                    widget -> widget.setOnScrollNumbers(1, 10, 64)
+                                    .setNumbers(() -> 0, this::getMaxItemCount)
+                                    .setPos(1, 2 + spaceY * 2)
+                                    .setSize(spaceX * 5 - 4, 12))
+                      .addFollower(
+                              new CoverDataFollower_TextFieldWidget<>(),
+                              coverData -> getSlotTextFieldContent(coverData.slot),
+                              (coverData, state) -> {
+                                  coverData.slot = getIntFromText(state);
+                                  return coverData;
+                              },
+                              widget -> widget.setOnScrollText()
+                                              .setValidator(val -> {
+                                                  final int valSlot = getIntFromText(val);
+                                                  if (valSlot > -1) {
+                                                      return TextFieldWidget.format.format(Math.min(valSlot, maxSlot));
+                                                  } else {
+                                                      return ALL_TEXT;
+                                                  }
+                                              })
+                                              .setPattern(BaseTextFieldWidget.NATURAL_NUMS)
+                                              .setPos(1, 2 + spaceY * 3)
+                                              .setSize(spaceX * 4 - 8, 12));
         }
 
         private int getMaxSlot() {
             final ICoverable tile = getUIBuildContext().getTile();
             if (tile instanceof TileEntity && !tile.isDead()
                     && tile instanceof IGregTechTileEntity
-                    && !(((IGregTechTileEntity) tile)
-                            .getMetaTileEntity() instanceof GT_MetaTileEntity_DigitalChestBase)) {
+                    && !(((IGregTechTileEntity) tile).getMetaTileEntity() instanceof GT_MetaTileEntity_DigitalChestBase)) {
                 return tile.getSizeInventory() - 1;
             } else {
                 return -1;

@@ -15,8 +15,10 @@ public class ProcessingAll implements gregtech.api.interfaces.IOreRecipeRegistra
     @Override
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
             ItemStack aStack) {
-        if (((aStack.getItem() instanceof net.minecraft.item.ItemBlock))
-                && (aPrefix.mDefaultStackSize < aStack.getItem().getItemStackLimit(aStack)))
-            aStack.getItem().setMaxStackSize(aPrefix.mDefaultStackSize);
+        if (((aStack.getItem() instanceof net.minecraft.item.ItemBlock)) && (aPrefix.mDefaultStackSize
+                < aStack.getItem()
+                        .getItemStackLimit(aStack)))
+            aStack.getItem()
+                  .setMaxStackSize(aPrefix.mDefaultStackSize);
     }
 }

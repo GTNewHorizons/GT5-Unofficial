@@ -66,9 +66,10 @@ public interface IMetaTileEntityItemPipe extends IMetaTileEntity {
                             continue;
                         oppositeSide = GT_Utility.getOppositeSide(side);
                         if (aSuckItems) {
-                            if (aBaseMetaTileEntity.getCoverInfoAtSide(side).letsItemsIn(-2)) {
-                                final IGregTechTileEntity tItemPipe = aBaseMetaTileEntity
-                                        .getIGregTechTileEntityAtSide(side);
+                            if (aBaseMetaTileEntity.getCoverInfoAtSide(side)
+                                                   .letsItemsIn(-2)) {
+                                final IGregTechTileEntity tItemPipe = aBaseMetaTileEntity.getIGregTechTileEntityAtSide(
+                                        side);
                                 if (aBaseMetaTileEntity.getColorization() >= 0) {
                                     final byte tColor = tItemPipe.getColorization();
                                     if (tColor >= 0 && tColor != aBaseMetaTileEntity.getColorization()) {
@@ -78,7 +79,8 @@ public interface IMetaTileEntityItemPipe extends IMetaTileEntity {
                                 if (tItemPipe instanceof BaseMetaPipeEntity) {
                                     final IMetaTileEntity tMetaTileEntity = tItemPipe.getMetaTileEntity();
                                     if (tMetaTileEntity instanceof IMetaTileEntityItemPipe
-                                            && tItemPipe.getCoverInfoAtSide(oppositeSide).letsItemsOut(-2)) {
+                                            && tItemPipe.getCoverInfoAtSide(oppositeSide)
+                                                        .letsItemsOut(-2)) {
                                         scanPipes(
                                                 (IMetaTileEntityItemPipe) tMetaTileEntity,
                                                 aMap,
@@ -89,9 +91,10 @@ public interface IMetaTileEntityItemPipe extends IMetaTileEntity {
                                 }
                             }
                         } else {
-                            if (aBaseMetaTileEntity.getCoverInfoAtSide(side).letsItemsOut(-2)) {
-                                final IGregTechTileEntity tItemPipe = aBaseMetaTileEntity
-                                        .getIGregTechTileEntityAtSide(side);
+                            if (aBaseMetaTileEntity.getCoverInfoAtSide(side)
+                                                   .letsItemsOut(-2)) {
+                                final IGregTechTileEntity tItemPipe = aBaseMetaTileEntity.getIGregTechTileEntityAtSide(
+                                        side);
                                 if (tItemPipe != null) {
                                     if (aBaseMetaTileEntity.getColorization() >= 0) {
                                         final byte tColor = tItemPipe.getColorization();
@@ -102,7 +105,8 @@ public interface IMetaTileEntityItemPipe extends IMetaTileEntity {
                                     if (tItemPipe instanceof BaseMetaPipeEntity) {
                                         final IMetaTileEntity tMetaTileEntity = tItemPipe.getMetaTileEntity();
                                         if (tMetaTileEntity instanceof IMetaTileEntityItemPipe
-                                                && tItemPipe.getCoverInfoAtSide(oppositeSide).letsItemsIn(-2)) {
+                                                && tItemPipe.getCoverInfoAtSide(oppositeSide)
+                                                            .letsItemsIn(-2)) {
                                             scanPipes(
                                                     (IMetaTileEntityItemPipe) tMetaTileEntity,
                                                     aMap,

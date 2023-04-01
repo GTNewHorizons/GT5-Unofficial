@@ -94,8 +94,13 @@ public class GT_Single_Recipe_Check_Processing_Array extends GT_Single_Recipe_Ch
         if (consumeInputs) {
             if (totalItemCost > 0) {
                 int remainingItemCost = totalItemCost * finalParallel;
-                Map<GT_Utility.ItemId, Integer> runningItemCost = itemCost.entrySet().stream()
-                        .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue() * finalParallel));
+                Map<GT_Utility.ItemId, Integer> runningItemCost = itemCost.entrySet()
+                                                                          .stream()
+                                                                          .collect(
+                                                                                  Collectors.toMap(
+                                                                                          Map.Entry::getKey,
+                                                                                          entry -> entry.getValue()
+                                                                                                  * finalParallel));
 
                 for (ItemStack itemStack : items) {
                     GT_Utility.ItemId key = GT_Utility.ItemId.createNoCopy(itemStack);
@@ -113,8 +118,13 @@ public class GT_Single_Recipe_Check_Processing_Array extends GT_Single_Recipe_Ch
 
             if (totalFluidCost > 0) {
                 int remainingFluidCost = totalFluidCost * finalParallel;
-                Map<Fluid, Integer> runningFluidCost = fluidCost.entrySet().stream()
-                        .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue() * finalParallel));
+                Map<Fluid, Integer> runningFluidCost = fluidCost.entrySet()
+                                                                .stream()
+                                                                .collect(
+                                                                        Collectors.toMap(
+                                                                                Map.Entry::getKey,
+                                                                                entry -> entry.getValue()
+                                                                                        * finalParallel));
 
                 for (FluidStack fluidStack : fluids) {
                     Fluid key = fluidStack.getFluid();

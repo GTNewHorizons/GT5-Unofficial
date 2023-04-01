@@ -178,7 +178,8 @@ public class GT_RecipeRegistrator {
                 || (L * aMaterialAmount) / (M * aStack.stackSize) <= 0)
             return;
         ItemData tData = GT_OreDictUnificator.getItemData(aStack);
-        boolean tHide = aStack.getUnlocalizedName().startsWith("gt.blockmachines")
+        boolean tHide = aStack.getUnlocalizedName()
+                              .startsWith("gt.blockmachines")
                 && (GT_Mod.gregtechproxy.mHideRecyclingRecipes);
         if (GT_Mod.gregtechproxy.mHideRecyclingRecipes && tData != null
                 && tData.hasValidPrefixData()
@@ -199,8 +200,9 @@ public class GT_RecipeRegistrator {
                                 : aByproduct.mMaterial.contains(SubTag.NO_SMELTING)
                                         || !aByproduct.mMaterial.contains(SubTag.METAL)
                                                 ? aByproduct.mMaterial.contains(SubTag.FLAMMABLE)
-                                                        ? GT_OreDictUnificator
-                                                                .getDust(Materials.Ash, aByproduct.mAmount / 2)
+                                                        ? GT_OreDictUnificator.getDust(
+                                                                Materials.Ash,
+                                                                aByproduct.mAmount / 2)
                                                         : aByproduct.mMaterial.contains(SubTag.UNBURNABLE)
                                                                 ? GT_OreDictUnificator.getDustOrIngot(
                                                                         aByproduct.mMaterial.mSmeltInto,
@@ -467,7 +469,8 @@ public class GT_RecipeRegistrator {
     private static Map<RecipeShape, List<IRecipe>> createIndexedRecipeListCache() {
         Map<RecipeShape, List<IRecipe>> result = new IdentityHashMap<>();
         @SuppressWarnings("unchecked")
-        ArrayList<IRecipe> allRecipeList = (ArrayList<IRecipe>) CraftingManager.getInstance().getRecipeList();
+        ArrayList<IRecipe> allRecipeList = (ArrayList<IRecipe>) CraftingManager.getInstance()
+                                                                               .getRecipeList();
         // filter using the empty slots in the shape.
         // if the empty slots doesn't match, the recipe will definitely fail
         SetMultimap<List<Integer>, RecipeShape> filter = HashMultimap.create();
@@ -498,7 +501,8 @@ public class GT_RecipeRegistrator {
                             getRecipeWidth(tShapedRecipe),
                             getRecipeHeight(tShapedRecipe))) {
                         for (RecipeShape s : filter.get(buffer)) {
-                            result.computeIfAbsent(s, k -> new ArrayList<>()).add(tRecipe);
+                            result.computeIfAbsent(s, k -> new ArrayList<>())
+                                  .add(tRecipe);
                         }
                     }
                 } else if (tRecipe instanceof ShapedRecipes) {
@@ -509,14 +513,16 @@ public class GT_RecipeRegistrator {
                             getRecipeWidth(tShapedRecipe),
                             getRecipeHeight(tShapedRecipe))) {
                         for (RecipeShape s : filter.get(buffer)) {
-                            result.computeIfAbsent(s, k -> new ArrayList<>()).add(tRecipe);
+                            result.computeIfAbsent(s, k -> new ArrayList<>())
+                                  .add(tRecipe);
                         }
                     }
                 } else {
                     for (RecipeShape s : sShapes) {
                         // unknown recipe type. cannot determine empty slots. we choose to add to the recipe list for
                         // all shapes
-                        result.computeIfAbsent(s, k -> new ArrayList<>()).add(tRecipe);
+                        result.computeIfAbsent(s, k -> new ArrayList<>())
+                              .add(tRecipe);
                     }
                 }
             }
@@ -563,8 +569,10 @@ public class GT_RecipeRegistrator {
                 for (int i = 0; i < sShapes.length; i++) {
                     RecipeShape tRecipe = sShapes[i];
 
-                    for (ItemStack tCrafted : GT_ModHandler
-                            .getRecipeOutputs(getRecipeList(tRecipe), true, tRecipe.shape)) {
+                    for (ItemStack tCrafted : GT_ModHandler.getRecipeOutputs(
+                            getRecipeList(tRecipe),
+                            true,
+                            tRecipe.shape)) {
                         if (aItemData != null && aItemData.hasValidPrefixMaterialData())
                             GT_OreDictUnificator.addItemData(
                                     tCrafted,
@@ -735,7 +743,8 @@ public class GT_RecipeRegistrator {
     }
 
     public static boolean hasVanillaRecipes(Materials materials) {
-        return Arrays.stream(VANILLA_MATS).anyMatch(mat -> mat == materials);
+        return Arrays.stream(VANILLA_MATS)
+                     .anyMatch(mat -> mat == materials);
     }
 
     private static int getRecipeWidth(ShapedOreRecipe r) {

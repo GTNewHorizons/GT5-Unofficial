@@ -220,7 +220,8 @@ public class GT_GuiTabLine {
      */
     public void onMouseClicked(int mouseX, int mouseY, int mouseButton) {
         for (int tabId = 0; tabId < mTabs.length; tabId++) {
-            if (mTabs[tabId] != null && mTabs[tabId].getBounds().contains(mouseX, mouseY)) {
+            if (mTabs[tabId] != null && mTabs[tabId].getBounds()
+                                                    .contains(mouseX, mouseY)) {
                 tabClicked(tabId, mouseButton);
                 return;
             }

@@ -44,23 +44,25 @@ public class GT_CLS_Compat {
             GT_Mod.GT_FML_LOGGER.catching(ex);
         }
 
-        Optional.ofNullable(alexiilMinecraftDisplayer).ifPresent(e -> {
-            try {
-                getLastPercent = e.getMethod("getLastPercent");
-                isReplacingVanillaMaterials = e.getField("isReplacingVanillaMaterials");
-                isRegisteringGTmaterials = e.getField("isRegisteringGTmaterials");
-            } catch (NoSuchMethodException | NoSuchFieldException ex) {
-                GT_Mod.GT_FML_LOGGER.catching(ex);
-            }
-        });
+        Optional.ofNullable(alexiilMinecraftDisplayer)
+                .ifPresent(e -> {
+                    try {
+                        getLastPercent = e.getMethod("getLastPercent");
+                        isReplacingVanillaMaterials = e.getField("isReplacingVanillaMaterials");
+                        isRegisteringGTmaterials = e.getField("isRegisteringGTmaterials");
+                    } catch (NoSuchMethodException | NoSuchFieldException ex) {
+                        GT_Mod.GT_FML_LOGGER.catching(ex);
+                    }
+                });
 
-        Optional.ofNullable(alexiilProgressDisplayer).ifPresent(e -> {
-            try {
-                displayProgress = e.getMethod("displayProgress", String.class, float.class);
-            } catch (NoSuchMethodException ex) {
-                GT_Mod.GT_FML_LOGGER.catching(ex);
-            }
-        });
+        Optional.ofNullable(alexiilProgressDisplayer)
+                .ifPresent(e -> {
+                    try {
+                        displayProgress = e.getMethod("displayProgress", String.class, float.class);
+                    } catch (NoSuchMethodException ex) {
+                        GT_Mod.GT_FML_LOGGER.catching(ex);
+                    }
+                });
 
         try {
             progressBarStep = cpwProgressBar.getDeclaredField("step");
@@ -86,7 +88,8 @@ public class GT_CLS_Compat {
 
             if (nextProgressionReportAt < now) {
                 nextProgressionReportAt = now + progressionReportsEvery;
-                String materialName = getName.apply(m).toString();
+                String materialName = getName.apply(m)
+                                             .toString();
                 try {
                     displayProgress.invoke(null, materialName, (float) currentStep / sizeStep);
                 } catch (IllegalAccessException | InvocationTargetException iae) {

@@ -43,13 +43,21 @@ public class GT_MetaTileEntity_ImplosionCompressor
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType("Implosion Compressor").addInfo("Explosions are fun")
-                .addInfo("Controller block for the Implosion Compressor")
-                .addPollutionAmount(getPollutionPerSecond(null)).addSeparator().beginStructureBlock(3, 3, 3, true)
-                .addController("Front center").addCasingInfoRange("Solid Steel Machine Casing", 16, 24, false)
-                .addStructureInfo("Casings can be replaced with Explosion Warning Signs")
-                .addEnergyHatch("Any casing", 1).addMaintenanceHatch("Any casing", 1).addMufflerHatch("Any casing", 1)
-                .addInputBus("Any casing", 1).addOutputBus("Any casing", 1).toolTipFinisher("Gregtech");
+        tt.addMachineType("Implosion Compressor")
+          .addInfo("Explosions are fun")
+          .addInfo("Controller block for the Implosion Compressor")
+          .addPollutionAmount(getPollutionPerSecond(null))
+          .addSeparator()
+          .beginStructureBlock(3, 3, 3, true)
+          .addController("Front center")
+          .addCasingInfoRange("Solid Steel Machine Casing", 16, 24, false)
+          .addStructureInfo("Casings can be replaced with Explosion Warning Signs")
+          .addEnergyHatch("Any casing", 1)
+          .addMaintenanceHatch("Any casing", 1)
+          .addMufflerHatch("Any casing", 1)
+          .addInputBus("Any casing", 1)
+          .addOutputBus("Any casing", 1)
+          .toolTipFinisher("Gregtech");
         return tt;
     }
 
@@ -63,14 +71,26 @@ public class GT_MetaTileEntity_ImplosionCompressor
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
             boolean aActive, boolean aRedstone) {
         if (aSide == aFacing) {
-            if (aActive) return new ITexture[] { BlockIcons.casingTexturePages[0][16],
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_IMPLOSION_COMPRESSOR_ACTIVE).extFacing().build(),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_IMPLOSION_COMPRESSOR_ACTIVE_GLOW).extFacing().glow()
-                            .build() };
-            return new ITexture[] { BlockIcons.casingTexturePages[0][16],
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_IMPLOSION_COMPRESSOR).extFacing().build(),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_IMPLOSION_COMPRESSOR_GLOW).extFacing().glow()
-                            .build() };
+            if (aActive) return new ITexture[] { BlockIcons.casingTexturePages[0][16], TextureFactory.builder()
+                                                                                                     .addIcon(
+                                                                                                             OVERLAY_FRONT_IMPLOSION_COMPRESSOR_ACTIVE)
+                                                                                                     .extFacing()
+                                                                                                     .build(),
+                    TextureFactory.builder()
+                                  .addIcon(OVERLAY_FRONT_IMPLOSION_COMPRESSOR_ACTIVE_GLOW)
+                                  .extFacing()
+                                  .glow()
+                                  .build() };
+            return new ITexture[] { BlockIcons.casingTexturePages[0][16], TextureFactory.builder()
+                                                                                        .addIcon(
+                                                                                                OVERLAY_FRONT_IMPLOSION_COMPRESSOR)
+                                                                                        .extFacing()
+                                                                                        .build(),
+                    TextureFactory.builder()
+                                  .addIcon(OVERLAY_FRONT_IMPLOSION_COMPRESSOR_GLOW)
+                                  .extFacing()
+                                  .glow()
+                                  .build() };
         }
         return new ITexture[] { Textures.BlockIcons.casingTexturePages[0][16] };
     }
@@ -105,8 +125,12 @@ public class GT_MetaTileEntity_ImplosionCompressor
         }
         ItemStack[] tInputs = tInputList.toArray(new ItemStack[0]);
         if (!tInputList.isEmpty()) {
-            GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sImplosionRecipes
-                    .findRecipe(getBaseMetaTileEntity(), false, 9223372036854775807L, null, tInputs);
+            GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sImplosionRecipes.findRecipe(
+                    getBaseMetaTileEntity(),
+                    false,
+                    9223372036854775807L,
+                    null,
+                    tInputs);
             if ((tRecipe != null) && (tRecipe.isRecipeInputEqual(true, null, tInputs))) {
                 this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
                 this.mEfficiencyIncrease = 10000;

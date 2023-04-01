@@ -82,8 +82,9 @@ public class TileIC2EnergySink extends TileEntity implements IEnergySink {
     @Override
     public double injectEnergy(ForgeDirection directionFrom, double amount, double voltage) {
 
-        final long amps = (long) Math
-                .max(amount / (cableMeta != null ? cableMeta.mVoltage : myMeta.getInputVoltage() * 1.0), 1.0);
+        final long amps = (long) Math.max(
+                amount / (cableMeta != null ? cableMeta.mVoltage : myMeta.getInputVoltage() * 1.0),
+                1.0);
         final long euPerAmp = (long) (amount / (amps * 1.0));
 
         final IMetaTileEntity metaTile = myMeta.getMetaTileEntity();
@@ -97,8 +98,10 @@ public class TileIC2EnergySink extends TileEntity implements IEnergySink {
                     amps,
                     Sets.newHashSet((TileEntity) myMeta));
 
-        } else usedAmps = myMeta
-                .injectEnergyUnits((byte) directionFrom.ordinal(), Math.min(euPerAmp, myMeta.getInputVoltage()), amps);
+        } else usedAmps = myMeta.injectEnergyUnits(
+                (byte) directionFrom.ordinal(),
+                Math.min(euPerAmp, myMeta.getInputVoltage()),
+                amps);
         return amount - (usedAmps * euPerAmp);
 
         // transferElectricity for cables

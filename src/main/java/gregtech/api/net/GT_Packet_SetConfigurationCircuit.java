@@ -101,8 +101,10 @@ public class GT_Packet_SetConfigurationCircuit extends GT_Packet_New {
         final IConfigurationCircuitSupport machine = ((BaseTileEntity) tile).getConfigurationCircuitSupport();
         if (machine == null) return;
         if (!machine.allowSelectCircuit()) return;
-        machine.getConfigurationCircuits().stream().filter(stack -> GT_Utility.areStacksEqual(stack, circuit))
-                .findFirst()
-                .ifPresent(stack -> ((IHasInventory) tile).setInventorySlotContents(machine.getCircuitSlot(), stack));
+        machine.getConfigurationCircuits()
+               .stream()
+               .filter(stack -> GT_Utility.areStacksEqual(stack, circuit))
+               .findFirst()
+               .ifPresent(stack -> ((IHasInventory) tile).setInventorySlotContents(machine.getCircuitSlot(), stack));
     }
 }

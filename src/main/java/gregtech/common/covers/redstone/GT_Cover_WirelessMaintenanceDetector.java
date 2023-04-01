@@ -225,7 +225,9 @@ public class GT_Cover_WirelessMaintenanceDetector extends
             for (int i = 0; i < 8; i++) {
                 builder.widget(
                         new TextWidget(extraTexts[i]).setDefaultColor(COLOR_TEXT_GRAY.get())
-                                .setPos(startX + spaceX * (i % 2 == 0 ? 1 : 7), 4 + startY + spaceY * (2 + i / 2)));
+                                                     .setPos(
+                                                             startX + spaceX * (i % 2 == 0 ? 1 : 7),
+                                                             4 + startY + spaceY * (2 + i / 2)));
             }
         }
 
@@ -241,9 +243,10 @@ public class GT_Cover_WirelessMaintenanceDetector extends
                             coverData.mode = MaintenanceMode.values()[index];
                             return coverData;
                         },
-                        widget -> widget
-                                .setToggleTexture(GT_UITextures.OVERLAY_BUTTON_CHECKMARK, GT_UITextures.TRANSPARENT)
-                                .setPos(spaceX * (index % 2 == 0 ? 0 : 6), spaceY * (2 + index / 2)));
+                        widget -> widget.setToggleTexture(
+                                GT_UITextures.OVERLAY_BUTTON_CHECKMARK,
+                                GT_UITextures.TRANSPARENT)
+                                        .setPos(spaceX * (index % 2 == 0 ? 0 : 6), spaceY * (2 + index / 2)));
             }
         }
     }

@@ -68,13 +68,15 @@ public abstract class GT_Cover_RedstoneWirelessBase extends GT_CoverBehavior {
             GregTech_API.sWirelessRedstone.put(aCoverVariable, (byte) 0);
 
             int val = GT_Utility.stackToInt(aPlayer.inventory.getCurrentItem())
-                    * (1 + aPlayer.inventory.getCurrentItem().getItemDamage());
+                    * (1 + aPlayer.inventory.getCurrentItem()
+                                            .getItemDamage());
 
             aCoverVariable = (aCoverVariable & (PRIVATE_MASK | CHECKBOX_MASK)) | (val & PUBLIC_MASK);
 
             aTileEntity.setCoverDataAtSide(aSide, aCoverVariable);
-            GT_Utility
-                    .sendChatToPlayer(aPlayer, GT_Utility.trans("081", "Frequency: ") + (aCoverVariable & PUBLIC_MASK));
+            GT_Utility.sendChatToPlayer(
+                    aPlayer,
+                    GT_Utility.trans("081", "Frequency: ") + (aCoverVariable & PUBLIC_MASK));
             return true;
         }
         return false;
@@ -198,30 +200,41 @@ public abstract class GT_Cover_RedstoneWirelessBase extends GT_CoverBehavior {
                     new CoverDataControllerWidget<>(
                             this::getCoverData,
                             this::setCoverData,
-                            GT_Cover_RedstoneWirelessBase.this)
-                                    .addFollower(
-                                            new CoverDataFollower_TextFieldWidget<>(),
-                                            coverData -> String.valueOf(getFlagFrequency(convert(coverData))),
-                                            (coverData, text) -> new ISerializableObject.LegacyCoverData(
-                                                    (int) MathExpression.parseMathExpression(text)
-                                                            | getFlagCheckbox(convert(coverData))),
-                                            widget -> widget.setOnScrollNumbers().setNumbers(0, MAX_CHANNEL)
-                                                    .setFocusOnGuiOpen(true).setPos(spaceX * 0, spaceY * 0 + 2)
+                            GT_Cover_RedstoneWirelessBase.this).addFollower(
+                                    new CoverDataFollower_TextFieldWidget<>(),
+                                    coverData -> String.valueOf(getFlagFrequency(convert(coverData))),
+                                    (coverData, text) -> new ISerializableObject.LegacyCoverData(
+                                            (int) MathExpression.parseMathExpression(text)
+                                                    | getFlagCheckbox(convert(coverData))),
+                                    widget -> widget.setOnScrollNumbers()
+                                                    .setNumbers(0, MAX_CHANNEL)
+                                                    .setFocusOnGuiOpen(true)
+                                                    .setPos(spaceX * 0, spaceY * 0 + 2)
                                                     .setSize(spaceX * 4 - 3, 12))
-                                    .addFollower(
-                                            CoverDataFollower_ToggleButtonWidget.ofCheck(),
-                                            coverData -> getFlagCheckbox(convert(coverData)) > 0,
-                                            (coverData, state) -> new ISerializableObject.LegacyCoverData(
-                                                    getFlagFrequency(convert(coverData)) | (state ? CHECKBOX_MASK : 0)),
-                                            widget -> widget.setPos(spaceX * 0, spaceY * 2))
-                                    .setPos(startX, startY))
-                    .widget(
-                            new TextWidget(GT_Utility.trans("246", "Frequency")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                                    .setPos(startX + spaceX * 4, 4 + startY + spaceY * 0))
-                    .widget(
-                            new TextWidget(GT_Utility.trans("602", "Use Private Frequency"))
-                                    .setDefaultColor(COLOR_TEXT_GRAY.get())
-                                    .setPos(startX + spaceX * 1, startY + spaceY * 2 + 4));
+                                                               .addFollower(
+                                                                       CoverDataFollower_ToggleButtonWidget.ofCheck(),
+                                                                       coverData -> getFlagCheckbox(convert(coverData))
+                                                                               > 0,
+                                                                       (coverData,
+                                                                               state) -> new ISerializableObject.LegacyCoverData(
+                                                                                       getFlagFrequency(
+                                                                                               convert(coverData))
+                                                                                               | (state ? CHECKBOX_MASK
+                                                                                                       : 0)),
+                                                                       widget -> widget.setPos(spaceX * 0, spaceY * 2))
+                                                               .setPos(startX, startY))
+                   .widget(
+                           new TextWidget(GT_Utility.trans("246", "Frequency")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                                                                               .setPos(
+                                                                                       startX + spaceX * 4,
+                                                                                       4 + startY + spaceY * 0))
+                   .widget(
+                           new TextWidget(GT_Utility.trans("602", "Use Private Frequency")).setDefaultColor(
+                                   COLOR_TEXT_GRAY.get())
+                                                                                           .setPos(
+                                                                                                   startX + spaceX * 1,
+                                                                                                   startY + spaceY * 2
+                                                                                                           + 4));
         }
 
         private int getFlagFrequency(int coverVariable) {

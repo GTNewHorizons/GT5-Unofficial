@@ -68,8 +68,10 @@ public class GT_FluidDisplayItem extends GT_Generic_Item {
                             + " K"
                             + EnumChatFormatting.GRAY);
             aList.add(
-                    EnumChatFormatting.GREEN + String
-                            .format(transItem("018", "State: %s"), aNBT.getBoolean("mFluidState") ? "Gas" : "Liquid")
+                    EnumChatFormatting.GREEN
+                            + String.format(
+                                    transItem("018", "State: %s"),
+                                    aNBT.getBoolean("mFluidState") ? "Gas" : "Liquid")
                             + EnumChatFormatting.GRAY);
         }
     }
@@ -80,8 +82,12 @@ public class GT_FluidDisplayItem extends GT_Generic_Item {
 
     @Override
     public IIcon getIconFromDamage(int aMetaData) {
-        return Stream.of(FluidRegistry.getFluid(aMetaData), FluidRegistry.WATER).filter(Objects::nonNull)
-                .map(Fluid::getStillIcon).filter(Objects::nonNull).findFirst().orElseThrow(IllegalStateException::new);
+        return Stream.of(FluidRegistry.getFluid(aMetaData), FluidRegistry.WATER)
+                     .filter(Objects::nonNull)
+                     .map(Fluid::getStillIcon)
+                     .filter(Objects::nonNull)
+                     .findFirst()
+                     .orElseThrow(IllegalStateException::new);
     }
 
     @Override
@@ -168,8 +174,10 @@ public class GT_FluidDisplayItem extends GT_Generic_Item {
         for (int tOreDict : OreDictionary.getOreIDs(tItemStack)) {
             String tOreDictName = OreDictionary.getOreName(tOreDict);
             if (tOreDictName.startsWith("cell")) {
-                return Materials
-                        .getRealMaterial(tOreDictName.replace("cell", "").replace("Molten", "").replace("Plasma", ""));
+                return Materials.getRealMaterial(
+                        tOreDictName.replace("cell", "")
+                                    .replace("Molten", "")
+                                    .replace("Plasma", ""));
             }
         }
         return Materials._NULL;

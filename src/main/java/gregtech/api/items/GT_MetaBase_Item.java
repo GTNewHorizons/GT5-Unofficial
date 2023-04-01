@@ -61,8 +61,9 @@ public abstract class GT_MetaBase_Item extends GT_Generic_Item
      */
     public final GT_MetaBase_Item addItemBehavior(int aMetaValue, IItemBehaviour<GT_MetaBase_Item> aBehavior) {
         if (aMetaValue < 0 || aMetaValue >= 32766 || aBehavior == null) return this;
-        ArrayList<IItemBehaviour<GT_MetaBase_Item>> tList = mItemBehaviors
-                .computeIfAbsent((short) aMetaValue, k -> new ArrayList<>(1));
+        ArrayList<IItemBehaviour<GT_MetaBase_Item>> tList = mItemBehaviors.computeIfAbsent(
+                (short) aMetaValue,
+                k -> new ArrayList<>(1));
         tList.add(aBehavior);
         return this;
     }
@@ -200,7 +201,8 @@ public abstract class GT_MetaBase_Item extends GT_Generic_Item
     @Override
     public final void addInformation(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean aF3_H) {
         String tKey = getUnlocalizedName(aStack) + ".tooltip";
-        String[] tStrings = GT_LanguageManager.getTranslation(tKey).split("/n ");
+        String[] tStrings = GT_LanguageManager.getTranslation(tKey)
+                                              .split("/n ");
         for (String tString : tStrings)
             if (GT_Utility.isStringValid(tString) && !tKey.equals(tString)) aList.add(tString);
 
@@ -208,10 +210,12 @@ public abstract class GT_MetaBase_Item extends GT_Generic_Item
         if (tStats != null) {
             if (tStats[3] > 0) {
                 aList.add(
-                        EnumChatFormatting.AQUA + String.format(
-                                transItem("009", "Contains %s EU   Tier: %s"),
-                                formatNumbers(tStats[3]),
-                                "" + (tStats[2] >= 0 ? tStats[2] : 0)) + EnumChatFormatting.GRAY);
+                        EnumChatFormatting.AQUA
+                                + String.format(
+                                        transItem("009", "Contains %s EU   Tier: %s"),
+                                        formatNumbers(tStats[3]),
+                                        "" + (tStats[2] >= 0 ? tStats[2] : 0))
+                                + EnumChatFormatting.GRAY);
             } else {
                 long tCharge = getRealCharge(aStack);
                 if (tStats[3] == -2 && tCharge <= 0) {
@@ -240,10 +244,12 @@ public abstract class GT_MetaBase_Item extends GT_Generic_Item
                     EnumChatFormatting.BLUE + ((tFluid == null ? transItem("012", "No Fluids Contained")
                             : GT_Utility.getFluidName(tFluid, true))) + EnumChatFormatting.GRAY);
             aList.add(
-                    EnumChatFormatting.BLUE + String.format(
-                            transItem("013", "%sL / %sL"),
-                            "" + (tFluid == null ? 0 : formatNumbers(tFluid.amount)),
-                            "" + formatNumbers(tStats[0])) + EnumChatFormatting.GRAY);
+                    EnumChatFormatting.BLUE
+                            + String.format(
+                                    transItem("013", "%sL / %sL"),
+                                    "" + (tFluid == null ? 0 : formatNumbers(tFluid.amount)),
+                                    "" + formatNumbers(tStats[0]))
+                            + EnumChatFormatting.GRAY);
         }
 
         ArrayList<IItemBehaviour<GT_MetaBase_Item>> tList = mItemBehaviors.get((short) getDamage(aStack));
@@ -312,8 +318,9 @@ public abstract class GT_MetaBase_Item extends GT_Generic_Item
             if (!aSimulate) aStack.stackSize--;
             return tStats[3];
         }
-        long tChargeBefore = getRealCharge(aStack), tNewCharge = Math
-                .max(0, tChargeBefore - (aIgnoreTransferLimit ? (long) aCharge : Math.min(tStats[1], (long) aCharge)));
+        long tChargeBefore = getRealCharge(aStack), tNewCharge = Math.max(
+                0,
+                tChargeBefore - (aIgnoreTransferLimit ? (long) aCharge : Math.min(tStats[1], (long) aCharge)));
         if (!aSimulate) setCharge(aStack, tNewCharge);
         return tChargeBefore - tNewCharge;
     }
@@ -464,12 +471,19 @@ public abstract class GT_MetaBase_Item extends GT_Generic_Item
         }
 
         Long[] tStats = getFluidContainerStats(aStack);
-        if (tStats == null || tStats[0] <= 0 || aFluid == null || aFluid.getFluid().getID() <= 0 || aFluid.amount <= 0)
+        if (tStats == null || tStats[0] <= 0
+                || aFluid == null
+                || aFluid.getFluid()
+                         .getID()
+                        <= 0
+                || aFluid.amount <= 0)
             return 0;
 
         FluidStack tFluid = getFluidContent(aStack);
 
-        if (tFluid == null || tFluid.getFluid().getID() <= 0) {
+        if (tFluid == null || tFluid.getFluid()
+                                    .getID()
+                <= 0) {
             if (aFluid.amount <= tStats[0]) {
                 if (doFill) {
                     setFluidContent(aStack, aFluid);

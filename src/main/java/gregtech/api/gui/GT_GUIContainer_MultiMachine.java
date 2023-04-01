@@ -64,7 +64,8 @@ public class GT_GUIContainer_MultiMachine extends GT_GUIContainerMetaTile_Machin
                 if (index == 0) {
                     current_line.append(str);
                 } else {
-                    current_line.append(" ").append(str);
+                    current_line.append(" ")
+                                .append(str);
                 }
                 index++;
             }
@@ -93,33 +94,48 @@ public class GT_GUIContainer_MultiMachine extends GT_GUIContainerMetaTile_Machin
             }
 
             if ((mContainer.mDisplayErrorCode & 8) != 0) {
-                fontRendererObj
-                        .drawString(GT_Utility.trans("135", "Platings are dented."), 10, line_counter, textColor);
+                fontRendererObj.drawString(
+                        GT_Utility.trans("135", "Platings are dented."),
+                        10,
+                        line_counter,
+                        textColor);
                 line_counter += 8;
             }
 
             if ((mContainer.mDisplayErrorCode & 16) != 0) {
-                fontRendererObj
-                        .drawString(GT_Utility.trans("136", "Circuitry burned out."), 10, line_counter, textColor);
+                fontRendererObj.drawString(
+                        GT_Utility.trans("136", "Circuitry burned out."),
+                        10,
+                        line_counter,
+                        textColor);
                 line_counter += 8;
             }
 
             if ((mContainer.mDisplayErrorCode & 32) != 0) {
-                fontRendererObj
-                        .drawString(GT_Utility.trans("137", "That doesn't belong there."), 10, line_counter, textColor);
+                fontRendererObj.drawString(
+                        GT_Utility.trans("137", "That doesn't belong there."),
+                        10,
+                        line_counter,
+                        textColor);
                 line_counter += 8;
             }
 
             if ((mContainer.mDisplayErrorCode & 64) != 0) {
-                fontRendererObj
-                        .drawString(GT_Utility.trans("138", "Incomplete Structure."), 10, line_counter, textColor);
+                fontRendererObj.drawString(
+                        GT_Utility.trans("138", "Incomplete Structure."),
+                        10,
+                        line_counter,
+                        textColor);
                 line_counter += 8;
             }
 
             if (mContainer.mDisplayErrorCode == 0) {
                 if (mContainer.mActive == 0) {
-                    fontRendererObj
-                            .drawString(GT_Utility.trans("139", "Hit with Soft Mallet"), 10, line_counter, textColor);
+                    fontRendererObj.drawString(
+                            GT_Utility.trans("139", "Hit with Soft Mallet"),
+                            10,
+                            line_counter,
+                            textColor);
                     line_counter += 8;
                     fontRendererObj.drawString(
                             GT_Utility.trans("140", "to (re-)start the Machine"),
@@ -127,15 +143,22 @@ public class GT_GUIContainer_MultiMachine extends GT_GUIContainerMetaTile_Machin
                             line_counter,
                             textColor);
                     line_counter += 8;
-                    fontRendererObj
-                            .drawString(GT_Utility.trans("141", "if it doesn't start."), 10, line_counter, textColor);
+                    fontRendererObj.drawString(
+                            GT_Utility.trans("141", "if it doesn't start."),
+                            10,
+                            line_counter,
+                            textColor);
                 } else {
-                    fontRendererObj
-                            .drawString(GT_Utility.trans("142", "Running perfectly."), 10, line_counter, textColor);
+                    fontRendererObj.drawString(
+                            GT_Utility.trans("142", "Running perfectly."),
+                            10,
+                            line_counter,
+                            textColor);
                 }
                 line_counter += 8;
                 if (mContainer.mTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_DrillerBase) {
-                    ItemStack tItem = mContainer.mTileEntity.getMetaTileEntity().getStackInSlot(1);
+                    ItemStack tItem = mContainer.mTileEntity.getMetaTileEntity()
+                                                            .getStackInSlot(1);
                     if (tItem == null
                             || !GT_Utility.areStacksEqual(tItem, GT_ModHandler.getIC2Item("miningPipe", 1L))) {
                         fontRendererObj.drawString(
@@ -145,7 +168,8 @@ public class GT_GUIContainer_MultiMachine extends GT_GUIContainerMetaTile_Machin
                                 textColor);
                     }
                 } else if (mContainer.mTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_LargeTurbine) {
-                    ItemStack tItem = mContainer.mTileEntity.getMetaTileEntity().getStackInSlot(1);
+                    ItemStack tItem = mContainer.mTileEntity.getMetaTileEntity()
+                                                            .getStackInSlot(1);
                     if (tItem == null
                             || !(tItem.getItem() == GT_MetaGenerated_Tool_01.INSTANCE && tItem.getItemDamage() >= 170
                                     && tItem.getItemDamage() <= 177)) {

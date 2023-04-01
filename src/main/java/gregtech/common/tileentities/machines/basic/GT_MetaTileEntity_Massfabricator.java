@@ -44,28 +44,52 @@ public class GT_MetaTileEntity_Massfabricator extends GT_MetaTileEntity_BasicMac
                 "",
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_SIDE_MASSFAB_ACTIVE),
-                        TextureFactory.builder().addIcon(OVERLAY_SIDE_MASSFAB_ACTIVE_GLOW).glow().build()),
+                        TextureFactory.builder()
+                                      .addIcon(OVERLAY_SIDE_MASSFAB_ACTIVE_GLOW)
+                                      .glow()
+                                      .build()),
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_SIDE_MASSFAB),
-                        TextureFactory.builder().addIcon(OVERLAY_SIDE_MASSFAB_GLOW).glow().build()),
+                        TextureFactory.builder()
+                                      .addIcon(OVERLAY_SIDE_MASSFAB_GLOW)
+                                      .glow()
+                                      .build()),
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_FRONT_MASSFAB_ACTIVE),
-                        TextureFactory.builder().addIcon(OVERLAY_FRONT_MASSFAB_ACTIVE_GLOW).glow().build()),
+                        TextureFactory.builder()
+                                      .addIcon(OVERLAY_FRONT_MASSFAB_ACTIVE_GLOW)
+                                      .glow()
+                                      .build()),
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_FRONT_MASSFAB),
-                        TextureFactory.builder().addIcon(OVERLAY_FRONT_MASSFAB_GLOW).glow().build()),
+                        TextureFactory.builder()
+                                      .addIcon(OVERLAY_FRONT_MASSFAB_GLOW)
+                                      .glow()
+                                      .build()),
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_TOP_MASSFAB_ACTIVE),
-                        TextureFactory.builder().addIcon(OVERLAY_TOP_MASSFAB_ACTIVE_GLOW).glow().build()),
+                        TextureFactory.builder()
+                                      .addIcon(OVERLAY_TOP_MASSFAB_ACTIVE_GLOW)
+                                      .glow()
+                                      .build()),
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_TOP_MASSFAB),
-                        TextureFactory.builder().addIcon(OVERLAY_TOP_MASSFAB_GLOW).glow().build()),
+                        TextureFactory.builder()
+                                      .addIcon(OVERLAY_TOP_MASSFAB_GLOW)
+                                      .glow()
+                                      .build()),
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_BOTTOM_MASSFAB_ACTIVE),
-                        TextureFactory.builder().addIcon(OVERLAY_BOTTOM_MASSFAB_ACTIVE_GLOW).glow().build()),
+                        TextureFactory.builder()
+                                      .addIcon(OVERLAY_BOTTOM_MASSFAB_ACTIVE_GLOW)
+                                      .glow()
+                                      .build()),
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_BOTTOM_MASSFAB),
-                        TextureFactory.builder().addIcon(OVERLAY_BOTTOM_MASSFAB_GLOW).glow().build()));
+                        TextureFactory.builder()
+                                      .addIcon(OVERLAY_BOTTOM_MASSFAB_GLOW)
+                                      .glow()
+                                      .build()));
         EUt = V[1] * (long) Math.pow(2, mTier + 2);
     }
 
@@ -105,8 +129,10 @@ public class GT_MetaTileEntity_Massfabricator extends GT_MetaTileEntity_BasicMac
     @Override
     public void onConfigLoad(GT_Config aConfig) {
         super.onConfigLoad(aConfig);
-        sDurationMultiplier = aConfig
-                .get(ConfigCategories.machineconfig, "Massfabricator.UUM_Duration_Multiplier", sDurationMultiplier);
+        sDurationMultiplier = aConfig.get(
+                ConfigCategories.machineconfig,
+                "Massfabricator.UUM_Duration_Multiplier",
+                sDurationMultiplier);
         sUUAperUUM = aConfig.get(ConfigCategories.machineconfig, "Massfabricator.UUA_per_UUM", sUUAperUUM);
         sUUASpeedBonus = aConfig.get(ConfigCategories.machineconfig, "Massfabricator.UUA_Speed_Bonus", sUUASpeedBonus);
         sRequiresUUA = aConfig.get(ConfigCategories.machineconfig, "Massfabricator.UUA_Requirement", sRequiresUUA);
@@ -139,9 +165,9 @@ public class GT_MetaTileEntity_Massfabricator extends GT_MetaTileEntity_BasicMac
                 return FOUND_AND_SUCCESSFULLY_USED_RECIPE;
             }
             return sRequiresUUA || Arrays.stream(getAllInputs())
-                    .anyMatch(s -> ItemList.Circuit_Integrated.isStackEqual(s, true, true))
-                            ? FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS
-                            : FOUND_AND_SUCCESSFULLY_USED_RECIPE;
+                                         .anyMatch(s -> ItemList.Circuit_Integrated.isStackEqual(s, true, true))
+                                                 ? FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS
+                                                 : FOUND_AND_SUCCESSFULLY_USED_RECIPE;
         }
         return DID_NOT_FIND_RECIPE;
     }

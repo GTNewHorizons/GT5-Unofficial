@@ -17,10 +17,12 @@ public class GT_Item_Casings5 extends GT_Item_Casings_Abstract {
         super(block);
     }
 
-    protected static final String mCoilHeatTooltip = GT_LanguageManager
-            .addStringLocalization("gt.coilheattooltip", "Base Heating Capacity = ");
-    protected static final String mCoilUnitTooltip = GT_LanguageManager
-            .addStringLocalization("gt.coilunittooltip", " Kelvin");
+    protected static final String mCoilHeatTooltip = GT_LanguageManager.addStringLocalization(
+            "gt.coilheattooltip",
+            "Base Heating Capacity = ");
+    protected static final String mCoilUnitTooltip = GT_LanguageManager.addStringLocalization(
+            "gt.coilunittooltip",
+            " Kelvin");
 
     @Override
     @SideOnly(Side.CLIENT)

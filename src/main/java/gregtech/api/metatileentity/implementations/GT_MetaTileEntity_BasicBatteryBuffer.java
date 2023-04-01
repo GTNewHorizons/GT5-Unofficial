@@ -237,7 +237,8 @@ public class GT_MetaTileEntity_BasicBatteryBuffer extends GT_MetaTileEntity_Tier
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
-        if (GT_ModHandler.isElectricItem(aStack) && aStack.getUnlocalizedName().startsWith("gt.metaitem.01.")) {
+        if (GT_ModHandler.isElectricItem(aStack) && aStack.getUnlocalizedName()
+                                                          .startsWith("gt.metaitem.01.")) {
             String name = aStack.getUnlocalizedName();
             if (name.equals("gt.metaitem.01.32510") || name.equals("gt.metaitem.01.32511")
                     || name.equals("gt.metaitem.01.32520")
@@ -383,47 +384,67 @@ public class GT_MetaTileEntity_BasicBatteryBuffer extends GT_MetaTileEntity_Tier
         switch (mInventory.length) {
             case 4:
                 builder.widget(
-                        SlotGroup.ofItemHandler(inventoryHandler, 2).startFromSlot(0).endAtSlot(3)
-                                .slotCreator(index -> new BaseSlot(inventoryHandler, index) {
+                        SlotGroup.ofItemHandler(inventoryHandler, 2)
+                                 .startFromSlot(0)
+                                 .endAtSlot(3)
+                                 .slotCreator(index -> new BaseSlot(inventoryHandler, index) {
 
-                                    @Override
-                                    public int getSlotStackLimit() {
-                                        return 1;
-                                    }
-                                }).background(getGUITextureSet().getItemSlot()).build().setPos(70, 25));
+                                     @Override
+                                     public int getSlotStackLimit() {
+                                         return 1;
+                                     }
+                                 })
+                                 .background(getGUITextureSet().getItemSlot())
+                                 .build()
+                                 .setPos(70, 25));
                 break;
             case 9:
                 builder.widget(
-                        SlotGroup.ofItemHandler(inventoryHandler, 3).startFromSlot(0).endAtSlot(8)
-                                .slotCreator(index -> new BaseSlot(inventoryHandler, index) {
+                        SlotGroup.ofItemHandler(inventoryHandler, 3)
+                                 .startFromSlot(0)
+                                 .endAtSlot(8)
+                                 .slotCreator(index -> new BaseSlot(inventoryHandler, index) {
 
-                                    @Override
-                                    public int getSlotStackLimit() {
-                                        return 1;
-                                    }
-                                }).background(getGUITextureSet().getItemSlot()).build().setPos(61, 16));
+                                     @Override
+                                     public int getSlotStackLimit() {
+                                         return 1;
+                                     }
+                                 })
+                                 .background(getGUITextureSet().getItemSlot())
+                                 .build()
+                                 .setPos(61, 16));
                 break;
             case 16:
                 builder.widget(
-                        SlotGroup.ofItemHandler(inventoryHandler, 4).startFromSlot(0).endAtSlot(15)
-                                .slotCreator(index -> new BaseSlot(inventoryHandler, index) {
+                        SlotGroup.ofItemHandler(inventoryHandler, 4)
+                                 .startFromSlot(0)
+                                 .endAtSlot(15)
+                                 .slotCreator(index -> new BaseSlot(inventoryHandler, index) {
 
-                                    @Override
-                                    public int getSlotStackLimit() {
-                                        return 1;
-                                    }
-                                }).background(getGUITextureSet().getItemSlot()).build().setPos(52, 7));
+                                     @Override
+                                     public int getSlotStackLimit() {
+                                         return 1;
+                                     }
+                                 })
+                                 .background(getGUITextureSet().getItemSlot())
+                                 .build()
+                                 .setPos(52, 7));
                 break;
             default:
                 builder.widget(
-                        SlotGroup.ofItemHandler(inventoryHandler, 1).startFromSlot(0).endAtSlot(0)
-                                .slotCreator(index -> new BaseSlot(inventoryHandler, index) {
+                        SlotGroup.ofItemHandler(inventoryHandler, 1)
+                                 .startFromSlot(0)
+                                 .endAtSlot(0)
+                                 .slotCreator(index -> new BaseSlot(inventoryHandler, index) {
 
-                                    @Override
-                                    public int getSlotStackLimit() {
-                                        return 1;
-                                    }
-                                }).background(getGUITextureSet().getItemSlot()).build().setPos(79, 34));
+                                     @Override
+                                     public int getSlotStackLimit() {
+                                         return 1;
+                                     }
+                                 })
+                                 .background(getGUITextureSet().getItemSlot())
+                                 .build()
+                                 .setPos(79, 34));
                 break;
         }
     }

@@ -31,16 +31,16 @@ public class GT_MetaTileEntity_CuringOven extends GT_MetaTileEntity_BasicMachine
                 1,
                 "E_Oven.png",
                 "",
-                TextureFactory
-                        .of(new Textures.BlockIcons.CustomIcon("basicmachines/ELECTRIC_OVEN/OVERLAY_SIDE_ACTIVE")),
+                TextureFactory.of(
+                        new Textures.BlockIcons.CustomIcon("basicmachines/ELECTRIC_OVEN/OVERLAY_SIDE_ACTIVE")),
                 TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/ELECTRIC_OVEN/OVERLAY_SIDE")),
-                TextureFactory
-                        .of(new Textures.BlockIcons.CustomIcon("basicmachines/ELECTRIC_OVEN/OVERLAY_FRONT_ACTIVE")),
+                TextureFactory.of(
+                        new Textures.BlockIcons.CustomIcon("basicmachines/ELECTRIC_OVEN/OVERLAY_FRONT_ACTIVE")),
                 TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/ELECTRIC_OVEN/OVERLAY_FRONT")),
                 TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/ELECTRIC_OVEN/OVERLAY_TOP_ACTIVE")),
                 TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/ELECTRIC_OVEN/OVERLAY_TOP")),
-                TextureFactory
-                        .of(new Textures.BlockIcons.CustomIcon("basicmachines/ELECTRIC_OVEN/OVERLAY_BOTTOM_ACTIVE")),
+                TextureFactory.of(
+                        new Textures.BlockIcons.CustomIcon("basicmachines/ELECTRIC_OVEN/OVERLAY_BOTTOM_ACTIVE")),
                 TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/ELECTRIC_OVEN/OVERLAY_BOTTOM")));
     }
 
@@ -86,7 +86,8 @@ public class GT_MetaTileEntity_CuringOven extends GT_MetaTileEntity_BasicMachine
                         NBTTagCompound aNBT = tStack.getTagCompound();
                         if (aNBT != null) {
                             int tHeat = 300;
-                            long tWorldTime = getBaseMetaTileEntity().getWorld().getTotalWorldTime();
+                            long tWorldTime = getBaseMetaTileEntity().getWorld()
+                                                                     .getTotalWorldTime();
                             aNBT = aNBT.getCompoundTag("GT.ToolStats");
                             if (aNBT != null && aNBT.hasKey("Heat")) {
                                 tHeat = aNBT.getInteger("Heat");

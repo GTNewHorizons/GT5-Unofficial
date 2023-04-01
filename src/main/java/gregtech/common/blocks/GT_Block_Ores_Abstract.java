@@ -325,7 +325,8 @@ public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements
             return ((GT_TileEntity_Ores) tTileEntity).getDrops(getDroppedBlock(), aFortune);
         }
         return mTemporaryTileEntity.get() == null ? new ArrayList<>()
-                : mTemporaryTileEntity.get().getDrops(getDroppedBlock(), aFortune);
+                : mTemporaryTileEntity.get()
+                                      .getDrops(getDroppedBlock(), aFortune);
     }
 
     @Override
@@ -343,7 +344,8 @@ public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements
             Materials tMaterial = GregTech_API.sGeneratedMaterials[i];
             if ((tMaterial != null) && ((tMaterial.mTypes & 0x8) != 0) && !aBlockedOres.contains(tMaterial)) {
                 for (int meta = i; meta < 23000 + i; meta += 1000) {
-                    if (!(new ItemStack(aItem, 1, meta).getDisplayName().contains(DOT_NAME)))
+                    if (!(new ItemStack(aItem, 1, meta).getDisplayName()
+                                                       .contains(DOT_NAME)))
                         aList.add(new ItemStack(aItem, 1, meta));
                 }
             }

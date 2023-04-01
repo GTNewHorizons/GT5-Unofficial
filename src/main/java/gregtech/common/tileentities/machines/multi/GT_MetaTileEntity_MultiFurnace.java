@@ -49,28 +49,50 @@ public class GT_MetaTileEntity_MultiFurnace extends
 
     private static final int CASING_INDEX = 11;
     private static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final IStructureDefinition<GT_MetaTileEntity_MultiFurnace> STRUCTURE_DEFINITION = StructureDefinition
-            .<GT_MetaTileEntity_MultiFurnace>builder()
-            .addShape(
-                    STRUCTURE_PIECE_MAIN,
-                    transpose(
-                            new String[][] { { "ccc", "cmc", "ccc" }, { "CCC", "C-C", "CCC" },
-                                    { "b~b", "bbb", "bbb" } }))
-            .addElement('c', ofBlock(GregTech_API.sBlockCasings1, CASING_INDEX))
-            .addElement('m', Muffler.newAny(CASING_INDEX, 2))
-            .addElement(
-                    'C',
-                    GT_StructureUtility.ofCoil(
-                            GT_MetaTileEntity_MultiFurnace::setCoilLevel,
-                            GT_MetaTileEntity_MultiFurnace::getCoilLevel))
-            .addElement(
-                    'b',
-                    ofChain(
-                            GT_StructureUtility.<GT_MetaTileEntity_MultiFurnace>buildHatchAdder()
-                                    .atLeast(Maintenance, InputBus, OutputBus, Energy).casingIndex(CASING_INDEX).dot(1)
-                                    .build(),
-                            ofBlock(GregTech_API.sBlockCasings1, CASING_INDEX)))
-            .build();
+    private static final IStructureDefinition<GT_MetaTileEntity_MultiFurnace> STRUCTURE_DEFINITION = StructureDefinition.<GT_MetaTileEntity_MultiFurnace>builder()
+                                                                                                                        .addShape(
+                                                                                                                                STRUCTURE_PIECE_MAIN,
+                                                                                                                                transpose(
+                                                                                                                                        new String[][] {
+                                                                                                                                                { "ccc", "cmc",
+                                                                                                                                                        "ccc" },
+                                                                                                                                                { "CCC", "C-C",
+                                                                                                                                                        "CCC" },
+                                                                                                                                                { "b~b", "bbb",
+                                                                                                                                                        "bbb" } }))
+                                                                                                                        .addElement(
+                                                                                                                                'c',
+                                                                                                                                ofBlock(
+                                                                                                                                        GregTech_API.sBlockCasings1,
+                                                                                                                                        CASING_INDEX))
+                                                                                                                        .addElement(
+                                                                                                                                'm',
+                                                                                                                                Muffler.newAny(
+                                                                                                                                        CASING_INDEX,
+                                                                                                                                        2))
+                                                                                                                        .addElement(
+                                                                                                                                'C',
+                                                                                                                                GT_StructureUtility.ofCoil(
+                                                                                                                                        GT_MetaTileEntity_MultiFurnace::setCoilLevel,
+                                                                                                                                        GT_MetaTileEntity_MultiFurnace::getCoilLevel))
+                                                                                                                        .addElement(
+                                                                                                                                'b',
+                                                                                                                                ofChain(
+                                                                                                                                        GT_StructureUtility.<GT_MetaTileEntity_MultiFurnace>buildHatchAdder()
+                                                                                                                                                           .atLeast(
+                                                                                                                                                                   Maintenance,
+                                                                                                                                                                   InputBus,
+                                                                                                                                                                   OutputBus,
+                                                                                                                                                                   Energy)
+                                                                                                                                                           .casingIndex(
+                                                                                                                                                                   CASING_INDEX)
+                                                                                                                                                           .dot(
+                                                                                                                                                                   1)
+                                                                                                                                                           .build(),
+                                                                                                                                        ofBlock(
+                                                                                                                                                GregTech_API.sBlockCasings1,
+                                                                                                                                                CASING_INDEX)))
+                                                                                                                        .build();
 
     public GT_MetaTileEntity_MultiFurnace(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -88,13 +110,22 @@ public class GT_MetaTileEntity_MultiFurnace extends
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType("Furnace").addInfo("Controller Block for the Multi Smelter")
-                .addInfo("Smelts up to 8-8192 items at once").addInfo("Items smelted increases with coil tier")
-                .addPollutionAmount(getPollutionPerSecond(null)).addSeparator().beginStructureBlock(3, 3, 3, true)
-                .addController("Front bottom").addCasingInfoRange("Heat Proof Machine Casing", 8, 14, false)
-                .addOtherStructurePart("Heating Coils", "Middle layer").addEnergyHatch("Any bottom casing", 1)
-                .addMaintenanceHatch("Any bottom casing", 1).addMufflerHatch("Top Middle", 2)
-                .addInputBus("Any bottom casing", 1).addOutputBus("Any bottom casing", 1).toolTipFinisher("Gregtech");
+        tt.addMachineType("Furnace")
+          .addInfo("Controller Block for the Multi Smelter")
+          .addInfo("Smelts up to 8-8192 items at once")
+          .addInfo("Items smelted increases with coil tier")
+          .addPollutionAmount(getPollutionPerSecond(null))
+          .addSeparator()
+          .beginStructureBlock(3, 3, 3, true)
+          .addController("Front bottom")
+          .addCasingInfoRange("Heat Proof Machine Casing", 8, 14, false)
+          .addOtherStructurePart("Heating Coils", "Middle layer")
+          .addEnergyHatch("Any bottom casing", 1)
+          .addMaintenanceHatch("Any bottom casing", 1)
+          .addMufflerHatch("Top Middle", 2)
+          .addInputBus("Any bottom casing", 1)
+          .addOutputBus("Any bottom casing", 1)
+          .toolTipFinisher("Gregtech");
         return tt;
     }
 
@@ -102,12 +133,25 @@ public class GT_MetaTileEntity_MultiFurnace extends
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
             boolean aActive, boolean aRedstone) {
         if (aSide != aFacing) return new ITexture[] { casingTexturePages[0][CASING_INDEX] };
-        if (aActive) return new ITexture[] { casingTexturePages[0][CASING_INDEX],
-                TextureFactory.builder().addIcon(OVERLAY_FRONT_MULTI_SMELTER_ACTIVE).extFacing().build(),
-                TextureFactory.builder().addIcon(OVERLAY_FRONT_MULTI_SMELTER_ACTIVE_GLOW).extFacing().glow().build() };
-        return new ITexture[] { casingTexturePages[0][CASING_INDEX],
-                TextureFactory.builder().addIcon(OVERLAY_FRONT_MULTI_SMELTER).extFacing().build(),
-                TextureFactory.builder().addIcon(OVERLAY_FRONT_MULTI_SMELTER_GLOW).extFacing().glow().build() };
+        if (aActive) return new ITexture[] { casingTexturePages[0][CASING_INDEX], TextureFactory.builder()
+                                                                                                .addIcon(
+                                                                                                        OVERLAY_FRONT_MULTI_SMELTER_ACTIVE)
+                                                                                                .extFacing()
+                                                                                                .build(),
+                TextureFactory.builder()
+                              .addIcon(OVERLAY_FRONT_MULTI_SMELTER_ACTIVE_GLOW)
+                              .extFacing()
+                              .glow()
+                              .build() };
+        return new ITexture[] { casingTexturePages[0][CASING_INDEX], TextureFactory.builder()
+                                                                                   .addIcon(OVERLAY_FRONT_MULTI_SMELTER)
+                                                                                   .extFacing()
+                                                                                   .build(),
+                TextureFactory.builder()
+                              .addIcon(OVERLAY_FRONT_MULTI_SMELTER_GLOW)
+                              .extFacing()
+                              .glow()
+                              .build() };
     }
 
     @Override
@@ -214,7 +258,7 @@ public class GT_MetaTileEntity_MultiFurnace extends
             if (tUsedMeta >= 12 && tUsedMeta <= 14
                     && aBaseMetaTileEntity.getBlock(xPos, tY + 1, zPos) == GregTech_API.sBlockCasings1)
                 aBaseMetaTileEntity.getWorld()
-                        .setBlock(xPos, tY + 1, zPos, GregTech_API.sBlockCasings5, tUsedMeta - 12, 3);
+                                   .setBlock(xPos, tY + 1, zPos, GregTech_API.sBlockCasings5, tUsedMeta - 12, 3);
         }
     }
 
@@ -227,8 +271,10 @@ public class GT_MetaTileEntity_MultiFurnace extends
         long storedEnergy = 0;
         long maxEnergy = 0;
         for (GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches) if (isValidMetaTileEntity(tHatch)) {
-            storedEnergy += tHatch.getBaseMetaTileEntity().getStoredEU();
-            maxEnergy += tHatch.getBaseMetaTileEntity().getEUCapacity();
+            storedEnergy += tHatch.getBaseMetaTileEntity()
+                                  .getStoredEU();
+            maxEnergy += tHatch.getBaseMetaTileEntity()
+                               .getEUCapacity();
         }
 
         return new String[] {

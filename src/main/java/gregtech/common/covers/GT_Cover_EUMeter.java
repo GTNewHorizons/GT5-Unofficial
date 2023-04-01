@@ -229,8 +229,10 @@ public class GT_Cover_EUMeter extends GT_CoverBehaviorBase<GT_Cover_EUMeter.EUMe
             final String NORMAL = GT_Utility.trans("NORMAL", "Normal");
 
             builder.widget(
-                    new CoverDataControllerWidget<>(this::getCoverData, this::setCoverData, GT_Cover_EUMeter.this)
-                            .addFollower(
+                    new CoverDataControllerWidget<>(
+                            this::getCoverData,
+                            this::setCoverData,
+                            GT_Cover_EUMeter.this).addFollower(
                                     new CoverDataFollower_CycleButtonWidget<>(),
                                     coverData -> coverData.type.ordinal(),
                                     (coverData, state) -> {
@@ -238,42 +240,56 @@ public class GT_Cover_EUMeter extends GT_CoverBehaviorBase<GT_Cover_EUMeter.EUMe
                                         return coverData;
                                     },
                                     widget -> widget.setLength(EnergyType.values().length)
-                                            .addTooltip(state -> EnergyType.getEnergyType(state).getTooltip())
-                                            .setStaticTexture(GT_UITextures.OVERLAY_BUTTON_CYCLIC)
-                                            .setPos(spaceX * 0, spaceY * 0))
-                            .addFollower(
-                                    CoverDataFollower_ToggleButtonWidget.ofRedstone(),
-                                    coverData -> coverData.inverted,
-                                    (coverData, state) -> {
-                                        coverData.inverted = state;
-                                        return coverData;
-                                    },
-                                    widget -> widget.addTooltip(0, NORMAL).addTooltip(1, INVERTED)
-                                            .setPos(spaceX * 0, spaceY * 1))
-                            .addFollower(
-                                    new CoverDataFollower_TextFieldWidget<>(),
-                                    coverData -> String.valueOf(coverData.threshold),
-                                    (coverData, state) -> {
-                                        coverData.threshold = (long) MathExpression.parseMathExpression(state);
-                                        return coverData;
-                                    },
-                                    widget -> widget.setOnScrollNumbersLong(1000, 100, 100000)
-                                            .setNumbersLong(() -> 0L, () -> Long.MAX_VALUE).setFocusOnGuiOpen(true)
-                                            .setPos(spaceX * 0, spaceY * 2 + 2).setSize(spaceX * 8, 12))
-                            .setPos(startX, startY))
-                    .widget(
-                            TextWidget.dynamicString(() -> getCoverData() != null ? getCoverData().type.getTitle() : "")
-                                    .setSynced(false).setDefaultColor(COLOR_TEXT_GRAY.get()).setPos(
-                                            startX + spaceX,
-                                            4 + startY))
-                    .widget(
-                            TextWidget.dynamicString(
-                                    () -> getCoverData() != null ? getCoverData().inverted ? INVERTED : NORMAL : "")
-                                    .setSynced(false).setDefaultColor(COLOR_TEXT_GRAY.get())
-                                    .setPos(startX + spaceX, 4 + startY + spaceY))
-                    .widget(
-                            new TextWidget(GT_Utility.trans("222.1", "Energy threshold"))
-                                    .setDefaultColor(COLOR_TEXT_GRAY.get()).setPos(startX, startY + spaceY * 3 + 4));
+                                                    .addTooltip(
+                                                            state -> EnergyType.getEnergyType(state)
+                                                                               .getTooltip())
+                                                    .setStaticTexture(GT_UITextures.OVERLAY_BUTTON_CYCLIC)
+                                                    .setPos(spaceX * 0, spaceY * 0))
+                                                  .addFollower(
+                                                          CoverDataFollower_ToggleButtonWidget.ofRedstone(),
+                                                          coverData -> coverData.inverted,
+                                                          (coverData, state) -> {
+                                                              coverData.inverted = state;
+                                                              return coverData;
+                                                          },
+                                                          widget -> widget.addTooltip(0, NORMAL)
+                                                                          .addTooltip(1, INVERTED)
+                                                                          .setPos(spaceX * 0, spaceY * 1))
+                                                  .addFollower(
+                                                          new CoverDataFollower_TextFieldWidget<>(),
+                                                          coverData -> String.valueOf(coverData.threshold),
+                                                          (coverData, state) -> {
+                                                              coverData.threshold = (long) MathExpression.parseMathExpression(
+                                                                      state);
+                                                              return coverData;
+                                                          },
+                                                          widget -> widget.setOnScrollNumbersLong(1000, 100, 100000)
+                                                                          .setNumbersLong(
+                                                                                  () -> 0L,
+                                                                                  () -> Long.MAX_VALUE)
+                                                                          .setFocusOnGuiOpen(true)
+                                                                          .setPos(spaceX * 0, spaceY * 2 + 2)
+                                                                          .setSize(spaceX * 8, 12))
+                                                  .setPos(startX, startY))
+                   .widget(
+                           TextWidget.dynamicString(() -> getCoverData() != null ? getCoverData().type.getTitle() : "")
+                                     .setSynced(false)
+                                     .setDefaultColor(COLOR_TEXT_GRAY.get())
+                                     .setPos(startX + spaceX, 4 + startY))
+                   .widget(
+                           TextWidget.dynamicString(
+                                   () -> getCoverData() != null ? getCoverData().inverted ? INVERTED : NORMAL : "")
+                                     .setSynced(false)
+                                     .setDefaultColor(COLOR_TEXT_GRAY.get())
+                                     .setPos(startX + spaceX, 4 + startY + spaceY))
+                   .widget(
+                           new TextWidget(GT_Utility.trans("222.1", "Energy threshold"))
+                                                                                        .setDefaultColor(
+                                                                                                COLOR_TEXT_GRAY.get())
+                                                                                        .setPos(
+                                                                                                startX,
+                                                                                                startY + spaceY * 3
+                                                                                                        + 4));
         }
     }
 

@@ -52,28 +52,52 @@ public class GT_MetaTileEntity_Replicator extends GT_MetaTileEntity_BasicMachine
                 "",
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_SIDE_REPLICATOR_ACTIVE),
-                        TextureFactory.builder().addIcon(OVERLAY_SIDE_REPLICATOR_ACTIVE_GLOW).glow().build()),
+                        TextureFactory.builder()
+                                      .addIcon(OVERLAY_SIDE_REPLICATOR_ACTIVE_GLOW)
+                                      .glow()
+                                      .build()),
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_SIDE_REPLICATOR),
-                        TextureFactory.builder().addIcon(OVERLAY_SIDE_REPLICATOR_GLOW).glow().build()),
+                        TextureFactory.builder()
+                                      .addIcon(OVERLAY_SIDE_REPLICATOR_GLOW)
+                                      .glow()
+                                      .build()),
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_FRONT_REPLICATOR_ACTIVE),
-                        TextureFactory.builder().addIcon(OVERLAY_FRONT_REPLICATOR_ACTIVE_GLOW).glow().build()),
+                        TextureFactory.builder()
+                                      .addIcon(OVERLAY_FRONT_REPLICATOR_ACTIVE_GLOW)
+                                      .glow()
+                                      .build()),
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_FRONT_REPLICATOR),
-                        TextureFactory.builder().addIcon(OVERLAY_FRONT_REPLICATOR_GLOW).glow().build()),
+                        TextureFactory.builder()
+                                      .addIcon(OVERLAY_FRONT_REPLICATOR_GLOW)
+                                      .glow()
+                                      .build()),
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_TOP_REPLICATOR_ACTIVE),
-                        TextureFactory.builder().addIcon(OVERLAY_TOP_REPLICATOR_ACTIVE_GLOW).glow().build()),
+                        TextureFactory.builder()
+                                      .addIcon(OVERLAY_TOP_REPLICATOR_ACTIVE_GLOW)
+                                      .glow()
+                                      .build()),
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_TOP_REPLICATOR),
-                        TextureFactory.builder().addIcon(OVERLAY_TOP_REPLICATOR_GLOW).glow().build()),
+                        TextureFactory.builder()
+                                      .addIcon(OVERLAY_TOP_REPLICATOR_GLOW)
+                                      .glow()
+                                      .build()),
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_BOTTOM_REPLICATOR_ACTIVE),
-                        TextureFactory.builder().addIcon(OVERLAY_BOTTOM_REPLICATOR_ACTIVE_GLOW).glow().build()),
+                        TextureFactory.builder()
+                                      .addIcon(OVERLAY_BOTTOM_REPLICATOR_ACTIVE_GLOW)
+                                      .glow()
+                                      .build()),
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_BOTTOM_REPLICATOR),
-                        TextureFactory.builder().addIcon(OVERLAY_BOTTOM_REPLICATOR_GLOW).glow().build()));
+                        TextureFactory.builder()
+                                      .addIcon(OVERLAY_BOTTOM_REPLICATOR_GLOW)
+                                      .glow()
+                                      .build()));
     }
 
     public GT_MetaTileEntity_Replicator(String aName, int aTier, String aDescription, ITexture[][][] aTextures,
@@ -106,8 +130,9 @@ public class GT_MetaTileEntity_Replicator extends GT_MetaTileEntity_BasicMachine
         FluidStack tFluid = getFillableStack();
         if ((tFluid != null) && (tFluid.isFluidEqual(Materials.UUMatter.getFluid(1L)))) {
             ItemStack tDataOrb = getSpecialSlot();
-            if ((ItemList.Tool_DataOrb.isStackEqual(tDataOrb, false, true))
-                    && (Behaviour_DataOrb.getDataTitle(tDataOrb).equals("Elemental-Scan"))) {
+            if ((ItemList.Tool_DataOrb.isStackEqual(tDataOrb, false, true)) && (Behaviour_DataOrb.getDataTitle(tDataOrb)
+                                                                                                 .equals(
+                                                                                                         "Elemental-Scan"))) {
                 Materials tMaterial = Element.get(Behaviour_DataOrb.getDataName(tDataOrb)).mLinkedMaterials.get(0);
                 long tMass = cubicFluidMultiplier(MASS_OVERRIDES.getOrDefault(tMaterial, tMaterial.getMass()));
                 if ((tFluid.amount >= tMass) && (tMass > 0L)) {
@@ -169,9 +194,12 @@ public class GT_MetaTileEntity_Replicator extends GT_MetaTileEntity_BasicMachine
     @Override
     public int getCapacity() {
         if ((sHeaviestElementMass == 0) && (GregTech_API.sPostloadFinished)) {
-            sHeaviestElementMass = Materials.getMaterialsMap().values().stream()
-                    .mapToInt(material -> (int) cubicFluidMultiplier((int) material.getMass())).max()
-                    .orElseThrow(NoSuchElementException::new);
+            sHeaviestElementMass = Materials.getMaterialsMap()
+                                            .values()
+                                            .stream()
+                                            .mapToInt(material -> (int) cubicFluidMultiplier((int) material.getMass()))
+                                            .max()
+                                            .orElseThrow(NoSuchElementException::new);
             // Make the Number nicer =)
             sHeaviestElementMass = 1000 * (sHeaviestElementMass / 1000 + 1);
         }

@@ -53,7 +53,8 @@ public class ColorsMetadataSection implements IMetadataSection {
     }
 
     private boolean isColorInMap(String key, Map<String, String> hexMap) {
-        return hexMap.containsKey(key) && !hexMap.get(key).isEmpty();
+        return hexMap.containsKey(key) && !hexMap.get(key)
+                                                 .isEmpty();
     }
 
     public boolean sGuiTintingEnabled() {

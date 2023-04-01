@@ -123,16 +123,18 @@ public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch impl
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isServerSide() && aBaseMetaTileEntity.isAllowedToWork() && mFluid != null) {
-            IFluidHandler tTileEntity = aBaseMetaTileEntity
-                    .getITankContainerAtSide(aBaseMetaTileEntity.getFrontFacing());
+            IFluidHandler tTileEntity = aBaseMetaTileEntity.getITankContainerAtSide(
+                    aBaseMetaTileEntity.getFrontFacing());
             if (tTileEntity != null) {
                 FluidStack tDrained = aBaseMetaTileEntity.drain(
                         ForgeDirection.getOrientation(aBaseMetaTileEntity.getFrontFacing()),
                         Math.max(1, mFluid.amount),
                         false);
                 if (tDrained != null) {
-                    int tFilledAmount = tTileEntity
-                            .fill(ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()), tDrained, false);
+                    int tFilledAmount = tTileEntity.fill(
+                            ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()),
+                            tDrained,
+                            false);
                     if (tFilledAmount > 0) {
                         tTileEntity.fill(
                                 ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()),
@@ -163,7 +165,8 @@ public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch impl
         lockedFluidName = aNBT.getString("lockedFluidName");
         lockedFluidName = lockedFluidName.length() == 0 ? null : lockedFluidName;
         if (GT_Utility.getFluidFromUnlocalizedName(lockedFluidName) != null) {
-            lockedFluidName = GT_Utility.getFluidFromUnlocalizedName(lockedFluidName).getName();
+            lockedFluidName = GT_Utility.getFluidFromUnlocalizedName(lockedFluidName)
+                                        .getName();
         }
     }
 
@@ -239,7 +242,9 @@ public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch impl
 
     @Override
     public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        if (!getBaseMetaTileEntity().getCoverInfoAtSide(aSide).isGUIClickable()) return;
+        if (!getBaseMetaTileEntity().getCoverInfoAtSide(aSide)
+                                    .isGUIClickable())
+            return;
         if (aPlayer.isSneaking()) {
             mMode = (byte) ((mMode + 9) % 10);
         } else {
@@ -287,8 +292,12 @@ public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch impl
                             "115.3",
                             "currently none, will be locked to the next that is put in (or use fluid cell to lock)");
                 } else {
-                    this.setLockedFluidName(this.getDrainableStack().getFluid().getName());
-                    inBrackets = this.getDrainableStack().getLocalizedName();
+                    this.setLockedFluidName(
+                            this.getDrainableStack()
+                                .getFluid()
+                                .getName());
+                    inBrackets = this.getDrainableStack()
+                                     .getLocalizedName();
                 }
                 GT_Utility.sendChatToPlayer(
                         aPlayer,
@@ -305,8 +314,12 @@ public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch impl
                             "115.3",
                             "currently none, will be locked to the next that is put in (or use fluid cell to lock)");
                 } else {
-                    this.setLockedFluidName(this.getDrainableStack().getFluid().getName());
-                    inBrackets = this.getDrainableStack().getLocalizedName();
+                    this.setLockedFluidName(
+                            this.getDrainableStack()
+                                .getFluid()
+                                .getName());
+                    inBrackets = this.getDrainableStack()
+                                     .getLocalizedName();
                 }
                 GT_Utility.sendChatToPlayer(
                         aPlayer,
@@ -316,7 +329,9 @@ public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch impl
     }
 
     private boolean tryToLockHatch(EntityPlayer aPlayer, byte aSide) {
-        if (!getBaseMetaTileEntity().getCoverInfoAtSide(aSide).isGUIClickable()) return false;
+        if (!getBaseMetaTileEntity().getCoverInfoAtSide(aSide)
+                                    .isGUIClickable())
+            return false;
         if (!isFluidLocked()) return false;
         final ItemStack tCurrentItem = aPlayer.inventory.getCurrentItem();
         if (tCurrentItem == null) return false;
@@ -324,7 +339,9 @@ public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch impl
         if (tFluid == null && tCurrentItem.getItem() instanceof IFluidContainerItem)
             tFluid = ((IFluidContainerItem) tCurrentItem.getItem()).getFluid(tCurrentItem);
         if (tFluid != null) {
-            if (getLockedFluidName() != null && !getLockedFluidName().equals(tFluid.getFluid().getName())) {
+            if (getLockedFluidName() != null && !getLockedFluidName().equals(
+                    tFluid.getFluid()
+                          .getName())) {
                 GT_Utility.sendChatToPlayer(
                         aPlayer,
                         String.format(
@@ -334,7 +351,9 @@ public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch impl
                                         "Hatch is locked to a different fluid. To change the locking, empty it and made it locked to the next fluid with a screwdriver. Currently locked to"),
                                 StatCollector.translateToLocal(getLockedFluidName())));
             } else {
-                setLockedFluidName(tFluid.getFluid().getName());
+                setLockedFluidName(
+                        tFluid.getFluid()
+                              .getName());
                 if (mMode == 8) GT_Utility.sendChatToPlayer(
                         aPlayer,
                         String.format(
@@ -427,7 +446,9 @@ public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch impl
     @Override
     protected void onEmptyingContainerWhenEmpty() {
         if (this.lockedFluidName == null && this.mFluid != null && isFluidLocked()) {
-            this.setLockedFluidName(this.mFluid.getFluid().getName());
+            this.setLockedFluidName(
+                    this.mFluid.getFluid()
+                               .getName());
             final EntityPlayer player;
             if (playerThatLockedfluid == null || (player = playerThatLockedfluid.get()) == null) return;
             GT_Utility.sendChatToPlayer(
@@ -459,7 +480,8 @@ public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch impl
                         + EnumChatFormatting.RESET,
                 (!isFluidLocked() || lockedFluidName == null) ? "Not Locked"
                         : ("Locked to " + StatCollector.translateToLocal(
-                                FluidRegistry.getFluidStack(lockedFluidName, 1).getUnlocalizedName())) };
+                                FluidRegistry.getFluidStack(lockedFluidName, 1)
+                                             .getUnlocalizedName())) };
     }
 
     @Override
@@ -471,28 +493,51 @@ public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch impl
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         super.addUIWidgets(builder, buildContext);
         builder.widget(
-                new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK).setPos(98, 16).setSize(71, 45))
-                .widget(
-                        new FluidDisplaySlotWidget(inventoryHandler, getLockedDisplaySlot()).setIHasFluidDisplay(this)
-                                .setActionRealClick(FluidDisplaySlotWidget.Action.LOCK)
-                                .setActionDragAndDrop(FluidDisplaySlotWidget.Action.LOCK)
-                                .setBeforeClick((clickData, widget) -> {
-                                    if (NetworkUtils.isClient()) {
-                                        // propagate display item content to actual fluid stored in this tank
-                                        setDrainableStack(
-                                                GT_Utility.getFluidFromDisplayStack(mInventory[getStackDisplaySlot()]));
-                                    }
-                                    return true;
-                                }).setBackground(GT_UITextures.TRANSPARENT).setPos(149, 41))
-                .widget(new TextWidget("Locked Fluid").setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(101, 20))
-                .widget(TextWidget.dynamicString(() -> {
-                    final ItemStack lockedDisplayStack = mInventory[getLockedDisplaySlot()];
-                    return lockedDisplayStack == null ? "None" : lockedDisplayStack.getDisplayName();
-                }).setSynced(false).setDefaultColor(COLOR_TEXT_WHITE.get()).setTextAlignment(Alignment.CenterLeft)
-                        .setMaxWidth(65).setPos(101, 30))
-                // #updateFluidDisplayItem invalidates locked fluid slot
-                // if lockedFluidName == null or mMode is incorrect
-                .widget(new FakeSyncWidget.StringSyncer(() -> lockedFluidName, val -> lockedFluidName = val))
-                .widget(new FakeSyncWidget.ByteSyncer(() -> mMode, val -> mMode = val));
+                new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
+                                    .setPos(98, 16)
+                                    .setSize(71, 45))
+               .widget(
+                       new FluidDisplaySlotWidget(inventoryHandler, getLockedDisplaySlot()).setIHasFluidDisplay(this)
+                                                                                           .setActionRealClick(
+                                                                                                   FluidDisplaySlotWidget.Action.LOCK)
+                                                                                           .setActionDragAndDrop(
+                                                                                                   FluidDisplaySlotWidget.Action.LOCK)
+                                                                                           .setBeforeClick(
+                                                                                                   (clickData,
+                                                                                                           widget) -> {
+                                                                                                       if (NetworkUtils.isClient()) {
+                                                                                                           // propagate
+                                                                                                           // display
+                                                                                                           // item
+                                                                                                           // content to
+                                                                                                           // actual
+                                                                                                           // fluid
+                                                                                                           // stored in
+                                                                                                           // this tank
+                                                                                                           setDrainableStack(
+                                                                                                                   GT_Utility.getFluidFromDisplayStack(
+                                                                                                                           mInventory[getStackDisplaySlot()]));
+                                                                                                       }
+                                                                                                       return true;
+                                                                                                   })
+                                                                                           .setBackground(
+                                                                                                   GT_UITextures.TRANSPARENT)
+                                                                                           .setPos(149, 41))
+               .widget(
+                       new TextWidget("Locked Fluid").setDefaultColor(COLOR_TEXT_WHITE.get())
+                                                     .setPos(101, 20))
+               .widget(TextWidget.dynamicString(() -> {
+                   final ItemStack lockedDisplayStack = mInventory[getLockedDisplaySlot()];
+                   return lockedDisplayStack == null ? "None" : lockedDisplayStack.getDisplayName();
+               })
+                                 .setSynced(false)
+                                 .setDefaultColor(COLOR_TEXT_WHITE.get())
+                                 .setTextAlignment(Alignment.CenterLeft)
+                                 .setMaxWidth(65)
+                                 .setPos(101, 30))
+               // #updateFluidDisplayItem invalidates locked fluid slot
+               // if lockedFluidName == null or mMode is incorrect
+               .widget(new FakeSyncWidget.StringSyncer(() -> lockedFluidName, val -> lockedFluidName = val))
+               .widget(new FakeSyncWidget.ByteSyncer(() -> mMode, val -> mMode = val));
     }
 }

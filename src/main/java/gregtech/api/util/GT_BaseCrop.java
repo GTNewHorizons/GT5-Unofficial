@@ -118,8 +118,11 @@ public class GT_BaseCrop extends CropCard implements ICropCardInfo {
         if (bIc2NeiLoaded) {
             try {
                 Class.forName("speiger.src.crops.api.CropPluginAPI")
-                        .getMethod("registerCropInfo", Class.forName("speiger.src.crops.api.ICropCardInfo"))
-                        .invoke(Class.forName("speiger.src.crops.api.CropPluginAPI").getField("instance"), this);
+                     .getMethod("registerCropInfo", Class.forName("speiger.src.crops.api.ICropCardInfo"))
+                     .invoke(
+                             Class.forName("speiger.src.crops.api.CropPluginAPI")
+                                  .getField("instance"),
+                             this);
             } catch (IllegalAccessException ex) {
                 bIc2NeiLoaded = false;
             } catch (IllegalArgumentException ex) {
@@ -206,10 +209,12 @@ public class GT_BaseCrop extends CropCard implements ICropCardInfo {
     @Override
     public ItemStack getGain(ICropTile aCrop) {
         int tDrop = 0;
-        if (mSpecialDrops != null
-                && (tDrop = java.util.concurrent.ThreadLocalRandom.current().nextInt(0, (mSpecialDrops.length * 2) + 2))
-                        < mSpecialDrops.length
-                && mSpecialDrops[tDrop] != null) {
+        if (mSpecialDrops != null && (tDrop = java.util.concurrent.ThreadLocalRandom.current()
+                                                                                    .nextInt(
+                                                                                            0,
+                                                                                            (mSpecialDrops.length * 2)
+                                                                                                    + 2))
+                < mSpecialDrops.length && mSpecialDrops[tDrop] != null) {
             return GT_Utility.copyOrNull(mSpecialDrops[tDrop]);
         }
         return GT_Utility.copyOrNull(mDrop);
@@ -232,12 +237,16 @@ public class GT_BaseCrop extends CropCard implements ICropCardInfo {
         }
         for (int i = 1; i < this.getrootslength(aCrop); i++) {
             Block tBlock = aCrop.getWorld()
-                    .getBlock(aCrop.getLocation().posX, aCrop.getLocation().posY - i, aCrop.getLocation().posZ);
+                                .getBlock(
+                                        aCrop.getLocation().posX,
+                                        aCrop.getLocation().posY - i,
+                                        aCrop.getLocation().posZ);
             if ((tBlock instanceof GT_Block_Ores_Abstract)) {
-                TileEntity tTileEntity = aCrop.getWorld().getTileEntity(
-                        aCrop.getLocation().posX,
-                        aCrop.getLocation().posY - i,
-                        aCrop.getLocation().posZ);
+                TileEntity tTileEntity = aCrop.getWorld()
+                                              .getTileEntity(
+                                                      aCrop.getLocation().posX,
+                                                      aCrop.getLocation().posY - i,
+                                                      aCrop.getLocation().posZ);
                 if ((tTileEntity instanceof GT_TileEntity_Ores)) {
                     Materials tMaterial = GregTech_API.sGeneratedMaterials[(((GT_TileEntity_Ores) tTileEntity).mMetaData
                             % 1000)];
@@ -250,12 +259,14 @@ public class GT_BaseCrop extends CropCard implements ICropCardInfo {
                     }
                 }
             } else {
-                int tMetaID = aCrop.getWorld().getBlockMetadata(
-                        aCrop.getLocation().posX,
-                        aCrop.getLocation().posY - i,
-                        aCrop.getLocation().posZ);
+                int tMetaID = aCrop.getWorld()
+                                   .getBlockMetadata(
+                                           aCrop.getLocation().posX,
+                                           aCrop.getLocation().posY - i,
+                                           aCrop.getLocation().posZ);
                 ItemData tAssotiation = GT_OreDictUnificator.getAssociation(new ItemStack(tBlock, 1, tMetaID));
-                if ((tAssotiation != null) && (tAssotiation.mPrefix.toString().startsWith("ore"))
+                if ((tAssotiation != null) && (tAssotiation.mPrefix.toString()
+                                                                   .startsWith("ore"))
                         && (tAssotiation.mMaterial.mMaterial == mBlock)) {
                     return true;
                 }

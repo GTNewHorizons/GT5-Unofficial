@@ -89,9 +89,9 @@ public class ProcessingArrows implements gregtech.api.interfaces.IOreRecipeRegis
         GT_Utility.ItemNBT.addEnchantment(
                 tOutput,
                 gregtech.api.enchants.Enchantment_EnderDamage.INSTANCE,
-                EnchantmentHelper
-                        .getEnchantmentLevel(gregtech.api.enchants.Enchantment_EnderDamage.INSTANCE.effectId, tOutput)
-                        + 1);
+                EnchantmentHelper.getEnchantmentLevel(
+                        gregtech.api.enchants.Enchantment_EnderDamage.INSTANCE.effectId,
+                        tOutput) + 1);
         GT_Values.RA.addChemicalBathRecipe(
                 GT_Utility.copyAmount(1L, aStack),
                 Materials.Mercury.getFluid(25L),

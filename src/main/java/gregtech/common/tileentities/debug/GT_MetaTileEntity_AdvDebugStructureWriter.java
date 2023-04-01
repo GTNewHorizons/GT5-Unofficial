@@ -72,11 +72,17 @@ public class GT_MetaTileEntity_AdvDebugStructureWriter extends GT_MetaTileEntity
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
             boolean aActive, boolean aRedstone) {
-        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1],
-                aSide != aFacing ? TextureFactory.of(
-                        TextureFactory.builder().addIcon(Textures.BlockIcons.OVERLAY_TELEPORTER_ACTIVE).glow().build())
-                        : TextureFactory.of(
-                                TextureFactory.builder().addIcon(Textures.BlockIcons.STRUCTURE_MARK).glow().build()) };
+        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1], aSide != aFacing
+                ? TextureFactory.of(
+                        TextureFactory.builder()
+                                      .addIcon(Textures.BlockIcons.OVERLAY_TELEPORTER_ACTIVE)
+                                      .glow()
+                                      .build())
+                : TextureFactory.of(
+                        TextureFactory.builder()
+                                      .addIcon(Textures.BlockIcons.STRUCTURE_MARK)
+                                      .glow()
+                                      .build()) };
     }
 
     @Override
@@ -126,8 +132,8 @@ public class GT_MetaTileEntity_AdvDebugStructureWriter extends GT_MetaTileEntity
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide()) {
-            ExtendedFacing writerFacing = ExtendedFacing
-                    .of(ForgeDirection.getOrientation(aBaseMetaTileEntity.getFrontFacing()));
+            ExtendedFacing writerFacing = ExtendedFacing.of(
+                    ForgeDirection.getOrientation(aBaseMetaTileEntity.getFrontFacing()));
             double[] abc = new double[3];
             double[] xyz = new double[3];
             boundingBox.dim = aBaseMetaTileEntity.getWorld().provider.dimensionId;
@@ -174,7 +180,8 @@ public class GT_MetaTileEntity_AdvDebugStructureWriter extends GT_MetaTileEntity
                 numbers[0],
                 numbers[1],
                 numbers[2],
-                te -> te.getClass().getCanonicalName(),
+                te -> te.getClass()
+                        .getCanonicalName(),
                 numbers[3],
                 numbers[4],
                 numbers[5],
@@ -233,56 +240,86 @@ public class GT_MetaTileEntity_AdvDebugStructureWriter extends GT_MetaTileEntity
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.widget(
-                new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK).setSize(90, 112).setPos(43, 4))
-                .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
-                    if (getBaseMetaTileEntity().isServerSide()) {
-                        printStructure(widget.getContext().getPlayer());
-                    }
-                }).setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_PRINT).setSize(18, 18)
-                        .setPos(11, 128)
-                        .addTooltip(translateToLocal("GT5U.machines.advdebugstructurewriter.gui.print.tooltip")))
-                .widget(
-                        new CycleButtonWidget().setToggle(() -> transpose, aBoolean -> transpose = aBoolean)
-                                .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
-                                .setStaticTexture(GT_UITextures.OVERLAY_BUTTON_TRANSPOSE).setSize(18, 18)
-                                .setPos(32, 128).addTooltip(
-                                        translateToLocal(
-                                                "GT5U.machines.advdebugstructurewriter.gui.transpose.tooltip")))
-                .widget(
-                        new CycleButtonWidget()
-                                .setToggle(() -> showHighlightBox, aBoolean -> showHighlightBox = aBoolean)
-                                .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
-                                .setStaticTexture(GT_UITextures.OVERLAY_BUTTON_BOUNDING_BOX).setSize(18, 18)
-                                .setPos(53, 128).addTooltip(
-                                        translateToLocal(
-                                                "GT5U.machines.advdebugstructurewriter.gui.highlight.tooltip")))
-                .widget(
-                        new MultiChildWidget().addChild(
-                                new TextWidget(translateToLocal("GT5U.machines.advdebugstructurewriter.gui.origin"))
-                                        .setDefaultColor(0xf0f0ff).setPos(0, 0))
-                                .addChild(
-                                        TextWidget.dynamicString(() -> "A: " + numbers[0]).setDefaultColor(0xf0f0ff)
-                                                .setPos(0, 10))
-                                .addChild(
-                                        TextWidget.dynamicString(() -> "B: " + numbers[1]).setDefaultColor(0xf0f0ff)
-                                                .setPos(0, 18))
-                                .addChild(
-                                        TextWidget.dynamicString(() -> "C: " + numbers[2]).setDefaultColor(0xf0f0ff)
-                                                .setPos(0, 26))
-                                .addChild(
-                                        new TextWidget(
-                                                translateToLocal("GT5U.machines.advdebugstructurewriter.gui.size"))
-                                                        .setDefaultColor(0xf0f0ff).setPos(0, 52))
-                                .addChild(
-                                        TextWidget.dynamicString(() -> "A: " + numbers[3]).setDefaultColor(0xf0f0ff)
-                                                .setPos(0, 62))
-                                .addChild(
-                                        TextWidget.dynamicString(() -> "B: " + numbers[4]).setDefaultColor(0xf0f0ff)
-                                                .setPos(0, 70))
-                                .addChild(
-                                        TextWidget.dynamicString(() -> "C: " + numbers[5]).setDefaultColor(0xf0f0ff)
-                                                .setPos(0, 78))
-                                .setPos(46, 8));
+                new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
+                                    .setSize(90, 112)
+                                    .setPos(43, 4))
+               .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
+                   if (getBaseMetaTileEntity().isServerSide()) {
+                       printStructure(
+                               widget.getContext()
+                                     .getPlayer());
+                   }
+               })
+                                         .setBackground(
+                                                 GT_UITextures.BUTTON_STANDARD,
+                                                 GT_UITextures.OVERLAY_BUTTON_PRINT)
+                                         .setSize(18, 18)
+                                         .setPos(11, 128)
+                                         .addTooltip(
+                                                 translateToLocal(
+                                                         "GT5U.machines.advdebugstructurewriter.gui.print.tooltip")))
+               .widget(
+                       new CycleButtonWidget().setToggle(() -> transpose, aBoolean -> transpose = aBoolean)
+                                              .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
+                                              .setStaticTexture(GT_UITextures.OVERLAY_BUTTON_TRANSPOSE)
+                                              .setSize(18, 18)
+                                              .setPos(32, 128)
+                                              .addTooltip(
+                                                      translateToLocal(
+                                                              "GT5U.machines.advdebugstructurewriter.gui.transpose.tooltip")))
+               .widget(
+                       new CycleButtonWidget().setToggle(
+                               () -> showHighlightBox,
+                               aBoolean -> showHighlightBox = aBoolean)
+                                              .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
+                                              .setStaticTexture(GT_UITextures.OVERLAY_BUTTON_BOUNDING_BOX)
+                                              .setSize(18, 18)
+                                              .setPos(53, 128)
+                                              .addTooltip(
+                                                      translateToLocal(
+                                                              "GT5U.machines.advdebugstructurewriter.gui.highlight.tooltip")))
+               .widget(
+                       new MultiChildWidget().addChild(
+                               new TextWidget(
+                                       translateToLocal("GT5U.machines.advdebugstructurewriter.gui.origin"))
+                                                                                                            .setDefaultColor(
+                                                                                                                    0xf0f0ff)
+                                                                                                            .setPos(
+                                                                                                                    0,
+                                                                                                                    0))
+                                             .addChild(
+                                                     TextWidget.dynamicString(() -> "A: " + numbers[0])
+                                                               .setDefaultColor(0xf0f0ff)
+                                                               .setPos(0, 10))
+                                             .addChild(
+                                                     TextWidget.dynamicString(() -> "B: " + numbers[1])
+                                                               .setDefaultColor(0xf0f0ff)
+                                                               .setPos(0, 18))
+                                             .addChild(
+                                                     TextWidget.dynamicString(() -> "C: " + numbers[2])
+                                                               .setDefaultColor(0xf0f0ff)
+                                                               .setPos(0, 26))
+                                             .addChild(
+                                                     new TextWidget(
+                                                             translateToLocal(
+                                                                     "GT5U.machines.advdebugstructurewriter.gui.size")).setDefaultColor(
+                                                                             0xf0f0ff)
+                                                                                                                       .setPos(
+                                                                                                                               0,
+                                                                                                                               52))
+                                             .addChild(
+                                                     TextWidget.dynamicString(() -> "A: " + numbers[3])
+                                                               .setDefaultColor(0xf0f0ff)
+                                                               .setPos(0, 62))
+                                             .addChild(
+                                                     TextWidget.dynamicString(() -> "B: " + numbers[4])
+                                                               .setDefaultColor(0xf0f0ff)
+                                                               .setPos(0, 70))
+                                             .addChild(
+                                                     TextWidget.dynamicString(() -> "C: " + numbers[5])
+                                                               .setDefaultColor(0xf0f0ff)
+                                                               .setPos(0, 78))
+                                             .setPos(46, 8));
         addChangeNumberButtons(builder, GT_UITextures.OVERLAY_BUTTON_MINUS_LARGE, -512, -64, 7);
         addChangeNumberButtons(builder, GT_UITextures.OVERLAY_BUTTON_MINUS_SMALL, -16, -1, 25);
         addChangeNumberButtons(builder, GT_UITextures.OVERLAY_BUTTON_PLUS_SMALL, 16, 1, 133);
@@ -297,8 +334,9 @@ public class GT_MetaTileEntity_AdvDebugStructureWriter extends GT_MetaTileEntity
             builder.widget(
                     new ButtonWidget().setOnClick(
                             (clickData, widget) -> numbers[index] += clickData.shift ? addNumberShift : addNumber)
-                            .setBackground(GT_UITextures.BUTTON_STANDARD, overlay).setSize(18, 18)
-                            .setPos(xPos, yPos[index]));
+                                      .setBackground(GT_UITextures.BUTTON_STANDARD, overlay)
+                                      .setSize(18, 18)
+                                      .setPos(xPos, yPos[index]));
         }
     }
 
@@ -310,7 +348,9 @@ public class GT_MetaTileEntity_AdvDebugStructureWriter extends GT_MetaTileEntity
     @Override
     public void addGregTechLogo(ModularWindow.Builder builder) {
         builder.widget(
-                new DrawableWidget().setDrawable(getGUITextureSet().getGregTechLogo()).setSize(17, 17).setPos(113, 96));
+                new DrawableWidget().setDrawable(getGUITextureSet().getGregTechLogo())
+                                    .setSize(17, 17)
+                                    .setPos(113, 96));
     }
 
     @Override

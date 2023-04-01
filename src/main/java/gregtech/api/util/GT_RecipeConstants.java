@@ -21,54 +21,64 @@ public class GT_RecipeConstants {
      * Set to true to signal the recipe require low gravity. do nothing if recipe set specialValue explicitly. Can
      * coexist with CLEANROOM just fine
      */
-    public static final GT_RecipeBuilder.MetadataIdentifier<Boolean> LOW_GRAVITY = GT_RecipeBuilder.MetadataIdentifier
-            .create(Boolean.class, "low_gravity");
+    public static final GT_RecipeBuilder.MetadataIdentifier<Boolean> LOW_GRAVITY = GT_RecipeBuilder.MetadataIdentifier.create(
+            Boolean.class,
+            "low_gravity");
     /**
      * Set to true to signal the recipe require cleanroom. do nothing if recipe set specialValue explicitly. Can coexist
      * with LOW_GRAVITY just fine
      */
-    public static final GT_RecipeBuilder.MetadataIdentifier<Boolean> CLEANROOM = GT_RecipeBuilder.MetadataIdentifier
-            .create(Boolean.class, "cleanroom");
+    public static final GT_RecipeBuilder.MetadataIdentifier<Boolean> CLEANROOM = GT_RecipeBuilder.MetadataIdentifier.create(
+            Boolean.class,
+            "cleanroom");
     /**
      * Common additive to use in recipe, e.g. for PBF, this is coal amount.
      */
-    public static final GT_RecipeBuilder.MetadataIdentifier<Integer> ADDITIVE_AMOUNT = GT_RecipeBuilder.MetadataIdentifier
-            .create(Integer.class, "additives");
+    public static final GT_RecipeBuilder.MetadataIdentifier<Integer> ADDITIVE_AMOUNT = GT_RecipeBuilder.MetadataIdentifier.create(
+            Integer.class,
+            "additives");
     /**
      * Used for fusion reactor. Denotes ignition threshold.
      */
-    public static final GT_RecipeBuilder.MetadataIdentifier<Integer> FUSION_THRESHOLD = GT_RecipeBuilder.MetadataIdentifier
-            .create(Integer.class, "fusion_threshold");
+    public static final GT_RecipeBuilder.MetadataIdentifier<Integer> FUSION_THRESHOLD = GT_RecipeBuilder.MetadataIdentifier.create(
+            Integer.class,
+            "fusion_threshold");
     /**
      * Research time in a scanner used in ticks.
      */
-    public static final GT_RecipeBuilder.MetadataIdentifier<Integer> RESEARCH_TIME = GT_RecipeBuilder.MetadataIdentifier
-            .create(Integer.class, "research_time");
+    public static final GT_RecipeBuilder.MetadataIdentifier<Integer> RESEARCH_TIME = GT_RecipeBuilder.MetadataIdentifier.create(
+            Integer.class,
+            "research_time");
     /**
      * Fuel type. TODO should we use enum directly?
      */
-    public static final GT_RecipeBuilder.MetadataIdentifier<Integer> FUEL_TYPE = GT_RecipeBuilder.MetadataIdentifier
-            .create(Integer.class, "fuel_type");
+    public static final GT_RecipeBuilder.MetadataIdentifier<Integer> FUEL_TYPE = GT_RecipeBuilder.MetadataIdentifier.create(
+            Integer.class,
+            "fuel_type");
     /**
      * Fuel value.
      */
-    public static final GT_RecipeBuilder.MetadataIdentifier<Integer> FUEL_VALUE = GT_RecipeBuilder.MetadataIdentifier
-            .create(Integer.class, "fuel_value");
+    public static final GT_RecipeBuilder.MetadataIdentifier<Integer> FUEL_VALUE = GT_RecipeBuilder.MetadataIdentifier.create(
+            Integer.class,
+            "fuel_value");
     /**
      * Fuel value.
      */
-    public static final GT_RecipeBuilder.MetadataIdentifier<Integer> COIL_HEAT = GT_RecipeBuilder.MetadataIdentifier
-            .create(Integer.class, "coil_heat");
+    public static final GT_RecipeBuilder.MetadataIdentifier<Integer> COIL_HEAT = GT_RecipeBuilder.MetadataIdentifier.create(
+            Integer.class,
+            "coil_heat");
     /**
      * Research item used by assline recipes.
      */
-    public static final GT_RecipeBuilder.MetadataIdentifier<ItemStack> RESEARCH_ITEM = GT_RecipeBuilder.MetadataIdentifier
-            .create(ItemStack.class, "research_item");
+    public static final GT_RecipeBuilder.MetadataIdentifier<ItemStack> RESEARCH_ITEM = GT_RecipeBuilder.MetadataIdentifier.create(
+            ItemStack.class,
+            "research_item");
     /**
      * For assembler. It accepts a single item as oredict. It looks like no one uses this anyway...
      */
-    public static final GT_RecipeBuilder.MetadataIdentifier<Object> OREDICT_INPUT = GT_RecipeBuilder.MetadataIdentifier
-            .create(Object.class, "oredict_input");
+    public static final GT_RecipeBuilder.MetadataIdentifier<Object> OREDICT_INPUT = GT_RecipeBuilder.MetadataIdentifier.create(
+            Object.class,
+            "oredict_input");
 
     public static final IGT_RecipeMap Fusion = IGT_RecipeMap.newRecipeMap(builder -> {
         if (GT_Utility.isArrayEmptyOrNull(builder.getFluidInputs())
@@ -92,27 +102,36 @@ public class GT_RecipeConstants {
         for (Materials mat : new Materials[] { Materials.Argon, Materials.Nitrogen }) {
             int tPlasmaAmount = (int) Math.max(1L, aDuration / (mat.getMass() * 16L));
             GT_RecipeBuilder b2 = builder.copy();
-            b2.fluidInputs(mat.getPlasma(tPlasmaAmount)).fluidOutputs(mat.getGas(tPlasmaAmount));
+            b2.fluidInputs(mat.getPlasma(tPlasmaAmount))
+              .fluidOutputs(mat.getGas(tPlasmaAmount));
             ret.addAll(GT_Recipe_Map.sPlasmaArcFurnaceRecipes.doAdd(b2));
         }
         ret.addAll(
-                GT_Recipe_Map.sArcFurnaceRecipes.doAdd(builder.copy().fluidInputs(Materials.Oxygen.getGas(aDuration))));
+                GT_Recipe_Map.sArcFurnaceRecipes.doAdd(
+                        builder.copy()
+                               .fluidInputs(Materials.Oxygen.getGas(aDuration))));
         return ret;
     });
 
     public static final IGT_RecipeMap UniversalChemical = IGT_RecipeMap.newRecipeMap(builder -> {
         for (ItemStack input : builder.getItemInputsBasic()) {
             if (GT_Utility.isAnyIntegratedCircuit(input) && input.getItemDamage() >= 10) return GT_Utility.concat(
-                    builder.copy().addTo(GT_Recipe_Map.sChemicalRecipes),
+                    builder.copy()
+                           .addTo(GT_Recipe_Map.sChemicalRecipes),
                     // LCR does not need cleanroom, for now.
-                    builder.metadata(CLEANROOM, false).addTo(GT_Recipe_Map.sMultiblockChemicalRecipes));
+                    builder.metadata(CLEANROOM, false)
+                           .addTo(GT_Recipe_Map.sMultiblockChemicalRecipes));
         }
         return builder.addTo(GT_Recipe_Map.sChemicalRecipes);
     });
 
     public static final IGT_RecipeMap AssemblyLine = IGT_RecipeMap.newRecipeMap(builder -> {
-        Optional<GT_Recipe.GT_Recipe_WithAlt> rr = builder.forceOreDictInput().validateInputCount(4, 16)
-                .validateOutputCount(1, 1).validateOutputFluidCount(-1, 0).validateInputFluidCount(0, 4).buildWithAlt();
+        Optional<GT_Recipe.GT_Recipe_WithAlt> rr = builder.forceOreDictInput()
+                                                          .validateInputCount(4, 16)
+                                                          .validateOutputCount(1, 1)
+                                                          .validateOutputFluidCount(-1, 0)
+                                                          .validateInputFluidCount(0, 4)
+                                                          .buildWithAlt();
         if (!rr.isPresent()) return Collections.emptyList();
         GT_Recipe.GT_Recipe_WithAlt r = rr.get();
         ItemStack[][] mOreDictAlt = r.mOreDictAlt;
@@ -134,11 +153,11 @@ public class GT_RecipeConstants {
                 Object[] objs = (Object[]) input;
                 Arrays.sort(
                         alts,
-                        Comparator
-                                .<ItemStack, String>comparing(
-                                        s -> GameRegistry.findUniqueIdentifierFor(s.getItem()).modId)
-                                .thenComparing(s -> GameRegistry.findUniqueIdentifierFor(s.getItem()).name)
-                                .thenComparingInt(Items.feather::getDamage).thenComparingInt(s -> s.stackSize));
+                        Comparator.<ItemStack, String>comparing(
+                                s -> GameRegistry.findUniqueIdentifierFor(s.getItem()).modId)
+                                  .thenComparing(s -> GameRegistry.findUniqueIdentifierFor(s.getItem()).name)
+                                  .thenComparingInt(Items.feather::getDamage)
+                                  .thenComparingInt(s -> s.stackSize));
 
                 tPersistentHash = tPersistentHash * 31 + (objs[0] == null ? "" : objs[0].toString()).hashCode();
                 tPersistentHash = tPersistentHash * 31 + ((Number) objs[1]).intValue();
@@ -205,21 +224,29 @@ public class GT_RecipeConstants {
         Collection<GT_Recipe> ret = new ArrayList<>();
         for (ItemStack input : GT_OreDictUnificator.getOresImmutable(builder.getMetadata(OREDICT_INPUT))) {
             ret.addAll(
-                    builder.copy().itemInputs(GT_RecipeMapUtil.appendArray(builder.getItemInputsBasic(), input))
-                            .addTo(GT_Recipe_Map.sAssemblerRecipes));
+                    builder.copy()
+                           .itemInputs(GT_RecipeMapUtil.appendArray(builder.getItemInputsBasic(), input))
+                           .addTo(GT_Recipe_Map.sAssemblerRecipes));
         }
         return ret;
     });
 
     public static IGT_RecipeMap Fuel = IGT_RecipeMap.newRecipeMap(builder -> {
-        builder.validateInputCount(1, 1).validateNoInputFluid().validateOutputCount(-1, 0).validateNoOutputFluid();
+        builder.validateInputCount(1, 1)
+               .validateNoInputFluid()
+               .validateOutputCount(-1, 0)
+               .validateNoOutputFluid();
         if (!builder.isValid()) return Collections.emptyList();
         int fuelType = builder.getMetadata(FUEL_TYPE);
         builder.metadata(
                 FUEL_VALUE,
-                GregTech_API.sRecipeFile
-                        .get("fuel_" + fuelType, builder.getItemInputBasic(0), builder.getMetadata(FUEL_VALUE)));
-        return FuelType.get(fuelType).getTarget().doAdd(builder);
+                GregTech_API.sRecipeFile.get(
+                        "fuel_" + fuelType,
+                        builder.getItemInputBasic(0),
+                        builder.getMetadata(FUEL_VALUE)));
+        return FuelType.get(fuelType)
+                       .getTarget()
+                       .doAdd(builder);
     });
 
     public enum FuelType {

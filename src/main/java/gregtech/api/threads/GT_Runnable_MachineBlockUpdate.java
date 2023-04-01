@@ -76,8 +76,13 @@ public class GT_Runnable_MachineBlockUpdate implements Runnable {
     }
 
     public static void initExecutorService() {
-        EXECUTOR_SERVICE = Executors
-                .newFixedThreadPool(Math.max(1, (Runtime.getRuntime().availableProcessors() * 2 / 3)), THREAD_FACTORY);
+        EXECUTOR_SERVICE = Executors.newFixedThreadPool(
+                Math.max(
+                        1,
+                        (Runtime.getRuntime()
+                                .availableProcessors() * 2
+                                / 3)),
+                THREAD_FACTORY);
     }
 
     public static void shutdownExecutorService() {
@@ -98,7 +103,8 @@ public class GT_Runnable_MachineBlockUpdate implements Runnable {
             // (Re-)Cancel if current thread also interrupted
             EXECUTOR_SERVICE.shutdownNow();
             // Preserve interrupt status
-            Thread.currentThread().interrupt();
+            Thread.currentThread()
+                  .interrupt();
         } catch (Exception e) {
             GT_Mod.GT_FML_LOGGER.error("Well this didn't terminated well...", e);
             // (Re-)Cancel in case

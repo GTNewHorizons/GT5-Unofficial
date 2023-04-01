@@ -28,9 +28,11 @@ public class GT_RecipeMapUtil {
     };
 
     public static final Function<GT_Recipe, String> FIRST_FLUID_INPUT = r -> isArrayEmptyOrNull(r.mFluidInputs) ? null
-            : r.mFluidInputs[0].getFluid().getName();
+            : r.mFluidInputs[0].getFluid()
+                               .getName();
     public static final Function<GT_Recipe, String> FIRST_FLUID_OUTPUT = r -> isArrayEmptyOrNull(r.mFluidInputs) ? null
-            : r.mFluidOutputs[0].getFluid().getName();
+            : r.mFluidOutputs[0].getFluid()
+                                .getName();
     public static final Function<GT_Recipe, String> FIRST_FLUIDSTACK_INPUT = r -> isArrayEmptyOrNull(r.mFluidInputs)
             ? null
             : r.mFluidInputs[0].getUnlocalizedName();
@@ -42,10 +44,14 @@ public class GT_RecipeMapUtil {
     public static final Function<GT_Recipe, String> FIRST_ITEM_OUTPUT = r -> isArrayEmptyOrNull(r.mOutputs) ? null
             : getStackConfigName(r.mOutputs[0]);
     public static final Function<GT_Recipe, String> FIRST_ITEM_OR_FLUID_INPUT = r -> isArrayEmptyOrNull(r.mInputs)
-            ? isArrayEmptyOrNull(r.mFluidInputs) ? null : r.mFluidInputs[0].getFluid().getName()
+            ? isArrayEmptyOrNull(r.mFluidInputs) ? null
+                    : r.mFluidInputs[0].getFluid()
+                                       .getName()
             : getStackConfigName(r.mInputs[0]);
     public static final Function<GT_Recipe, String> FIRST_ITEM_OR_FLUID_OUTPUT = r -> isArrayEmptyOrNull(r.mOutputs)
-            ? isArrayEmptyOrNull(r.mFluidOutputs) ? null : r.mFluidOutputs[0].getFluid().getName()
+            ? isArrayEmptyOrNull(r.mFluidOutputs) ? null
+                    : r.mFluidOutputs[0].getFluid()
+                                        .getName()
             : getStackConfigName(r.mOutputs[0]);
     private static final Map<String, IGT_RecipeMap> addonRecipeMaps = new HashMap<>();
     private static final Multimap<String, Consumer<IGT_RecipeMap>> delayedActions = ArrayListMultimap.create();
@@ -74,9 +80,10 @@ public class GT_RecipeMapUtil {
         cellToFluid(itemInputs, fluidInputs, true);
         cellToFluid(itemInputs, fluidInputs, false);
         return buildOrEmpty(
-                b.itemInputs(itemInputs.toArray(new ItemStack[0])).itemOutputs(itemOutputs.toArray(new ItemStack[0]))
-                        .fluidInputs(fluidInputs.toArray(new FluidStack[0]))
-                        .fluidOutputs(fluidOutputs.toArray(new FluidStack[0])));
+                b.itemInputs(itemInputs.toArray(new ItemStack[0]))
+                 .itemOutputs(itemOutputs.toArray(new ItemStack[0]))
+                 .fluidInputs(fluidInputs.toArray(new FluidStack[0]))
+                 .fluidOutputs(fluidOutputs.toArray(new FluidStack[0])));
     }
 
     public static List<GT_Recipe> buildRecipeForMultiblockNoCircuit(GT_RecipeBuilder b) {
@@ -87,9 +94,10 @@ public class GT_RecipeMapUtil {
         cellToFluid(itemInputs, fluidInputs, false);
         cellToFluid(itemInputs, fluidInputs, false);
         return buildOrEmpty(
-                b.itemInputs(itemInputs.toArray(new ItemStack[0])).itemOutputs(itemOutputs.toArray(new ItemStack[0]))
-                        .fluidInputs(fluidInputs.toArray(new FluidStack[0]))
-                        .fluidOutputs(fluidOutputs.toArray(new FluidStack[0])));
+                b.itemInputs(itemInputs.toArray(new ItemStack[0]))
+                 .itemOutputs(itemOutputs.toArray(new ItemStack[0]))
+                 .fluidInputs(fluidInputs.toArray(new FluidStack[0]))
+                 .fluidOutputs(fluidOutputs.toArray(new FluidStack[0])));
     }
 
     private static void cellToFluid(List<ItemStack> items, List<FluidStack> fluids, boolean removeIntegratedCircuit) {
@@ -104,7 +112,9 @@ public class GT_RecipeMapUtil {
     }
 
     public static List<GT_Recipe> buildOrEmpty(GT_RecipeBuilder builder) {
-        return builder.build().map(Collections::singletonList).orElse(Collections.emptyList());
+        return builder.build()
+                      .map(Collections::singletonList)
+                      .orElse(Collections.emptyList());
     }
 
     /**
@@ -119,7 +129,9 @@ public class GT_RecipeMapUtil {
      */
     public static void registerRecipeMap(String identifier, IGT_RecipeMap recipeMap,
             RecipeMapDependency... dependencies) {
-        String modId = Loader.instance().activeModContainer().getModId();
+        String modId = Loader.instance()
+                             .activeModContainer()
+                             .getModId();
         if ("gregtech".equals(modId)) throw new IllegalStateException(
                 "do not register recipe map under the name of gregtech! do it in your own preinit!");
         String id = modId + "@" + identifier;

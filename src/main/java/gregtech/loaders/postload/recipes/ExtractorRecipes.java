@@ -38,7 +38,13 @@ public class ExtractorRecipes implements Runnable {
 
     public void addExtractionRecipe(ItemStack input, ItemStack output) {
         output = GT_OreDictUnificator.get(true, output);
-        GT_Values.RA.stdBuilder().itemInputs(input).itemOutputs(output).noFluidInputs().noFluidOutputs()
-                .duration(15 * SECONDS).eut(2).addTo(sExtractorRecipes);
+        GT_Values.RA.stdBuilder()
+                    .itemInputs(input)
+                    .itemOutputs(output)
+                    .noFluidInputs()
+                    .noFluidOutputs()
+                    .duration(15 * SECONDS)
+                    .eut(2)
+                    .addTo(sExtractorRecipes);
     }
 }

@@ -86,7 +86,8 @@ public enum GT_HatchElement implements IHatchElement<GT_MetaTileEntity_MultiBloc
 
         @Override
         public long count(GT_MetaTileEntity_MultiBlockBase t) {
-            return t.getExoticEnergyHatches().size();
+            return t.getExoticEnergyHatches()
+                    .size();
         }
     },;
 

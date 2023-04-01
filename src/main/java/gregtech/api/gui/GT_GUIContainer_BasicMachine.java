@@ -138,8 +138,8 @@ public class GT_GUIContainer_BasicMachine extends GT_GUIContainerMetaTile_Machin
         },
                 mTooltipCache.getData(
                         STALLED_STUTTERING_TOOLTIP,
-                        StatCollector
-                                .translateToLocal(POWER_SOURCE_KEY + (machine.isSteampowered() ? "steam" : "power")))));
+                        StatCollector.translateToLocal(
+                                POWER_SOURCE_KEY + (machine.isSteampowered() ? "steam" : "power")))));
     }
 
     /**

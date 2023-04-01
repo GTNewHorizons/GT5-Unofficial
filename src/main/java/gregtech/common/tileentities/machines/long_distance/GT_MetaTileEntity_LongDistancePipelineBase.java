@@ -136,8 +136,7 @@ public abstract class GT_MetaTileEntity_LongDistancePipelineBase extends GT_Meta
                 TileEntity te = world.getTileEntity(mTargetPos.posX, mTargetPos.posY, mTargetPos.posZ);
                 final IMetaTileEntity tMeta;
                 if (te instanceof BaseMetaTileEntity
-                        && ((tMeta = ((BaseMetaTileEntity) te)
-                                .getMetaTileEntity()) instanceof GT_MetaTileEntity_LongDistancePipelineBase)
+                        && ((tMeta = ((BaseMetaTileEntity) te).getMetaTileEntity()) instanceof GT_MetaTileEntity_LongDistancePipelineBase)
                         && isSameClass((GT_MetaTileEntity_LongDistancePipelineBase) tMeta)) {
                     // It's the right type!
                     mTarget = (GT_MetaTileEntity_LongDistancePipelineBase) tMeta;
@@ -241,10 +240,8 @@ public abstract class GT_MetaTileEntity_LongDistancePipelineBase extends GT_Meta
                     // It's not a block - let's see if it's a tile entity
                     TileEntity tTileEntity = world.getTileEntity(aCoords.posX, aCoords.posY, aCoords.posZ);
                     if (tTileEntity != gtTile && tTileEntity instanceof BaseMetaTileEntity
-                            && ((BaseMetaTileEntity) tTileEntity)
-                                    .getMetaTileEntity() instanceof GT_MetaTileEntity_LongDistancePipelineBase) {
-                        final GT_MetaTileEntity_LongDistancePipelineBase tGtTile = (GT_MetaTileEntity_LongDistancePipelineBase) ((BaseMetaTileEntity) tTileEntity)
-                                .getMetaTileEntity();
+                            && ((BaseMetaTileEntity) tTileEntity).getMetaTileEntity() instanceof GT_MetaTileEntity_LongDistancePipelineBase) {
+                        final GT_MetaTileEntity_LongDistancePipelineBase tGtTile = (GT_MetaTileEntity_LongDistancePipelineBase) ((BaseMetaTileEntity) tTileEntity).getMetaTileEntity();
                         if (isSameClass(tGtTile) && tWires.contains(
                                 tGtTile.getFacingOffset(
                                         (BaseMetaTileEntity) tTileEntity,
@@ -315,7 +312,8 @@ public abstract class GT_MetaTileEntity_LongDistancePipelineBase extends GT_Meta
             IWailaConfigHandler config) {
         final NBTTagCompound tag = accessor.getNBTData();
         final int facing = getBaseMetaTileEntity().getFrontFacing();
-        final int side = (byte) accessor.getSide().ordinal();
+        final int side = (byte) accessor.getSide()
+                                        .ordinal();
 
         if (side == facing) currentTip.add(GOLD + "Pipeline Input" + RESET);
         else if (side == ForgeDirection.OPPOSITES[facing]) currentTip.add(BLUE + "Pipeline Output" + RESET);

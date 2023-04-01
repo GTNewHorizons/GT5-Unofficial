@@ -43,8 +43,11 @@ public class GT_Spray_Hardener_Item extends GT_Tool_Item {
         TileEntity aTileEntity = aWorld.getTileEntity(aX, aY, aZ);
 
         try {
-            if (GT_Utility.getClassName(aTileEntity).startsWith("TileEntityCable")) {
-                if (GT_Utility.getPublicField(aTileEntity, "foamed").getByte(aTileEntity) == 1) {
+            if (GT_Utility.getClassName(aTileEntity)
+                          .startsWith("TileEntityCable")) {
+                if (GT_Utility.getPublicField(aTileEntity, "foamed")
+                              .getByte(aTileEntity)
+                        == 1) {
                     if (GT_ModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer)) {
                         GT_Utility.sendSoundToPlayers(aWorld, SoundResource.IC2_TOOLS_PAINTER, 1.0F, -1, aX, aY, aZ);
                         GT_Utility.callPublicMethod(aTileEntity, "changeFoam", (byte) 2);

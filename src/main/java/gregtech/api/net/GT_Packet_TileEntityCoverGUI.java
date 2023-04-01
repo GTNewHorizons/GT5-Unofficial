@@ -177,7 +177,9 @@ public class GT_Packet_TileEntityCoverGUI extends GT_Packet_New {
                 aData.readInt(),
                 aData.readByte(),
                 coverID = aData.readInt(),
-                GregTech_API.getCoverBehaviorNew(coverID).createDataObject().readFromPacket(aData, null),
+                GregTech_API.getCoverBehaviorNew(coverID)
+                            .createDataObject()
+                            .readFromPacket(aData, null),
                 aData.readInt(),
                 aData.readInt(),
                 aData.readInt());
@@ -207,7 +209,8 @@ public class GT_Packet_TileEntityCoverGUI extends GT_Packet_New {
                     if (gui instanceof GT_GUICover) {
                         ((GT_GUICover) gui).setParentGuiId(parentGuiId);
                     }
-                    Minecraft.getMinecraft().displayGuiScreen(gui);
+                    Minecraft.getMinecraft()
+                             .displayGuiScreen(gui);
                 }
             }
         }

@@ -98,7 +98,8 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
 
     @Override
     public String getItemStackDisplayName(ItemStack stack) {
-        return CombType.valueOf(stack.getItemDamage()).getName();
+        return CombType.valueOf(stack.getItemDamage())
+                       .getName();
     }
 
     @Override
@@ -1597,7 +1598,12 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
                 null,
                 fluid,
                 100 * 100,
-                (fluid.getFluid().getDensity() * 128 > 0 ? (int) (fluid.getFluid().getDensity() * 100) : 128),
+                (fluid.getFluid()
+                      .getDensity() * 128 > 0
+                              ? (int) (fluid.getFluid()
+                                            .getDensity()
+                                      * 100)
+                              : 128),
                 volt.getSimpleEnergy() / 2);
     }
 

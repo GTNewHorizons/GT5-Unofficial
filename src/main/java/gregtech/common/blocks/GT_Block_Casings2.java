@@ -20,7 +20,9 @@ public class GT_Block_Casings2 extends GT_Block_Casings_Abstract {
         super(GT_Item_Casings2.class, "gt.blockcasings2", GT_Material_Casings.INSTANCE, 96);
         // Special handler for Pyrolyse Oven Casing on hatches...
         Textures.BlockIcons.casingTexturePages[0][22] = TextureFactory.of(
-                Block.getBlockFromItem(ItemList.Casing_ULV.get(1).getItem()),
+                Block.getBlockFromItem(
+                        ItemList.Casing_ULV.get(1)
+                                           .getItem()),
                 0,
                 ForgeDirection.UNKNOWN,
                 Dyes.MACHINE_METAL.mRGBa);

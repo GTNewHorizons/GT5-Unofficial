@@ -30,8 +30,16 @@ public class GT_RecyclerBlacklistLoader implements Runnable {
             ItemStack tStack = new ItemStack(Blocks.cobblestone, 1, 0);
             while (tStack != null) {
                 GT_ModHandler.addToRecyclerBlackList(tStack);
-                tStack = GT_ModHandler
-                        .getRecipeOutput(tStack, tStack, tStack, tStack, tStack, tStack, tStack, tStack, tStack);
+                tStack = GT_ModHandler.getRecipeOutput(
+                        tStack,
+                        tStack,
+                        tStack,
+                        tStack,
+                        tStack,
+                        tStack,
+                        tStack,
+                        tStack,
+                        tStack);
             }
             GT_ModHandler.addToRecyclerBlackList(new ItemStack(Blocks.gravel, 1, 32767));
             GT_ModHandler.addToRecyclerBlackList(new ItemStack(Items.flint, 1, 32767));
@@ -96,8 +104,9 @@ public class GT_RecyclerBlacklistLoader implements Runnable {
                             new ItemStack(Blocks.sandstone, 1, 0)));
             GT_ModHandler.addToRecyclerBlackList(GT_ModHandler.getRecipeOutput(new ItemStack(Blocks.glass, 1, 0)));
             GT_ModHandler.addToRecyclerBlackList(
-                    GT_ModHandler
-                            .getRecipeOutput(new ItemStack(Blocks.glass, 1, 0), new ItemStack(Blocks.glass, 1, 0)));
+                    GT_ModHandler.getRecipeOutput(
+                            new ItemStack(Blocks.glass, 1, 0),
+                            new ItemStack(Blocks.glass, 1, 0)));
         }
     }
 }

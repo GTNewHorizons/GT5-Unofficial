@@ -132,8 +132,8 @@ public class GT_MetaTileEntity_Hatch_InputBus extends GT_MetaTileEntity_Hatch
     @Override
     public void initDefaultModes(NBTTagCompound aNBT) {
         if (!getBaseMetaTileEntity().getWorld().isRemote) {
-            GT_ClientPreference tPreference = GT_Mod.gregtechproxy
-                    .getClientPreference(getBaseMetaTileEntity().getOwnerUuid());
+            GT_ClientPreference tPreference = GT_Mod.gregtechproxy.getClientPreference(
+                    getBaseMetaTileEntity().getOwnerUuid());
             if (tPreference != null) disableFilter = !tPreference.isInputBusInitialFilterEnabled();
         }
     }
@@ -174,7 +174,8 @@ public class GT_MetaTileEntity_Hatch_InputBus extends GT_MetaTileEntity_Hatch
             if (toSet == 0) continue;
             int slot = validSlots.get(slotindex);
             slotindex++;
-            mInventory[slot] = stacks.get(sID).copy();
+            mInventory[slot] = stacks.get(sID)
+                                     .copy();
             toSet = Math.min(toSet, mInventory[slot].getMaxStackSize());
             mInventory[slot].stackSize = toSet;
             slots.merge(sID, toSet, (a, b) -> a - b);
@@ -201,7 +202,9 @@ public class GT_MetaTileEntity_Hatch_InputBus extends GT_MetaTileEntity_Hatch
 
     @Override
     public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        if (!getBaseMetaTileEntity().getCoverInfoAtSide(aSide).isGUIClickable()) return;
+        if (!getBaseMetaTileEntity().getCoverInfoAtSide(aSide)
+                                    .isGUIClickable())
+            return;
         if (aPlayer.isSneaking()) {
             if (disableSort) {
                 disableSort = false;

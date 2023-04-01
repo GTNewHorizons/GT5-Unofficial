@@ -12,10 +12,12 @@ import gregtech.api.util.GT_LanguageManager;
 
 public class GT_Item_LongDistancePipe extends ItemBlock {
 
-    protected final String mNoMobsToolTip = GT_LanguageManager
-            .addStringLocalization("gt.nomobspawnsonthisblock", "Mobs cannot Spawn on this Block");
-    protected final String mNoTileEntityToolTip = GT_LanguageManager
-            .addStringLocalization("gt.notileentityinthisblock", "This is NOT a TileEntity!");
+    protected final String mNoMobsToolTip = GT_LanguageManager.addStringLocalization(
+            "gt.nomobspawnsonthisblock",
+            "Mobs cannot Spawn on this Block");
+    protected final String mNoTileEntityToolTip = GT_LanguageManager.addStringLocalization(
+            "gt.notileentityinthisblock",
+            "This is NOT a TileEntity!");
 
     public GT_Item_LongDistancePipe(Block block) {
         super(block);

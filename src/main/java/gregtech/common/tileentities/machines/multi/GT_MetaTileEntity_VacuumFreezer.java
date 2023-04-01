@@ -41,12 +41,20 @@ public class GT_MetaTileEntity_VacuumFreezer
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType("Vacuum Freezer").addInfo("Controller Block for the Vacuum Freezer")
-                .addInfo("Cools hot ingots and cells").addSeparator().beginStructureBlock(3, 3, 3, true)
-                .addController("Front center").addCasingInfoRange("Frost Proof Machine Casing", 16, 24, false)
-                .addEnergyHatch("Any casing", 1).addMaintenanceHatch("Any casing", 1).addInputHatch("Any casing", 1)
-                .addOutputHatch("Any casing", 1).addInputBus("Any casing", 1).addOutputBus("Any casing", 1)
-                .toolTipFinisher("Gregtech");
+        tt.addMachineType("Vacuum Freezer")
+          .addInfo("Controller Block for the Vacuum Freezer")
+          .addInfo("Cools hot ingots and cells")
+          .addSeparator()
+          .beginStructureBlock(3, 3, 3, true)
+          .addController("Front center")
+          .addCasingInfoRange("Frost Proof Machine Casing", 16, 24, false)
+          .addEnergyHatch("Any casing", 1)
+          .addMaintenanceHatch("Any casing", 1)
+          .addInputHatch("Any casing", 1)
+          .addOutputHatch("Any casing", 1)
+          .addInputBus("Any casing", 1)
+          .addOutputBus("Any casing", 1)
+          .toolTipFinisher("Gregtech");
         return tt;
     }
 
@@ -56,15 +64,27 @@ public class GT_MetaTileEntity_VacuumFreezer
         ITexture[] rTexture;
         if (aSide == aFacing) {
             if (aActive) {
-                rTexture = new ITexture[] { casingTexturePages[0][17],
-                        TextureFactory.builder().addIcon(OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE).extFacing().build(),
-                        TextureFactory.builder().addIcon(OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE_GLOW).extFacing().glow()
-                                .build() };
+                rTexture = new ITexture[] { casingTexturePages[0][17], TextureFactory.builder()
+                                                                                     .addIcon(
+                                                                                             OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE)
+                                                                                     .extFacing()
+                                                                                     .build(),
+                        TextureFactory.builder()
+                                      .addIcon(OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE_GLOW)
+                                      .extFacing()
+                                      .glow()
+                                      .build() };
             } else {
-                rTexture = new ITexture[] { casingTexturePages[0][17],
-                        TextureFactory.builder().addIcon(OVERLAY_FRONT_VACUUM_FREEZER).extFacing().build(),
-                        TextureFactory.builder().addIcon(OVERLAY_FRONT_VACUUM_FREEZER_GLOW).extFacing().glow()
-                                .build() };
+                rTexture = new ITexture[] { casingTexturePages[0][17], TextureFactory.builder()
+                                                                                     .addIcon(
+                                                                                             OVERLAY_FRONT_VACUUM_FREEZER)
+                                                                                     .extFacing()
+                                                                                     .build(),
+                        TextureFactory.builder()
+                                      .addIcon(OVERLAY_FRONT_VACUUM_FREEZER_GLOW)
+                                      .extFacing()
+                                      .glow()
+                                      .build() };
             }
         } else {
             rTexture = new ITexture[] { casingTexturePages[0][17] };

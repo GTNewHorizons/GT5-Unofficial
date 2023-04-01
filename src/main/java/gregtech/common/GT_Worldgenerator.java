@@ -440,7 +440,8 @@ public class GT_Worldgenerator implements IWorldGenerator {
 
             // Determine bounding box on how far out to check for oreveins affecting this chunk
             // For now, manually reducing oreveinMaxSize when not in the Underdark for performance
-            if (this.mWorld.provider.getDimensionName().equals("Underdark")) {
+            if (this.mWorld.provider.getDimensionName()
+                                    .equals("Underdark")) {
                 oreveinMaxSize = 32; // Leave Deep Dark/Underdark max oregen at 32, instead of 64
             } else {
                 oreveinMaxSize = 32;
@@ -519,7 +520,8 @@ public class GT_Worldgenerator implements IWorldGenerator {
                     // } else if (tDimensionName.equals("Asteroids")) {
                     // mSize = aRandom.nextInt((int) (gcMaxSize - gcMinSize));
                 }
-                if ((mWorld.getBlock(tX, tY, tZ).isAir(mWorld, tX, tY, tZ))) {
+                if ((mWorld.getBlock(tX, tY, tZ)
+                           .isAir(mWorld, tX, tY, tZ))) {
                     float randomRadian = aRandom.nextFloat() * (float) Math.PI;
                     double xBase = tX + 8 + MathHelper.sin(randomRadian) * mSize / 8.0F;
                     double xFactor = tX + 8 - MathHelper.sin(randomRadian) * mSize / 8.0F;
@@ -551,20 +553,41 @@ public class GT_Worldgenerator implements IWorldGenerator {
                                         for (int eZ = tMinZ; eZ <= tMaxZ; eZ++) {
                                             double zChance = (eZ + 0.5D - zCenter) / (halfLength / 2.0D);
                                             if ((xChance * xChance + yChance * yChance + zChance * zChance < 1.0D)
-                                                    && (mWorld.getBlock(tX, tY, tZ).isAir(mWorld, tX, tY, tZ))) {
+                                                    && (mWorld.getBlock(tX, tY, tZ)
+                                                              .isAir(mWorld, tX, tY, tZ))) {
                                                 int ranOre = aRandom.nextInt(50);
                                                 if (ranOre < 3) {
-                                                    GT_TileEntity_Ores
-                                                            .setOreBlock(mWorld, eX, eY, eZ, primaryMeta, false);
+                                                    GT_TileEntity_Ores.setOreBlock(
+                                                            mWorld,
+                                                            eX,
+                                                            eY,
+                                                            eZ,
+                                                            primaryMeta,
+                                                            false);
                                                 } else if (ranOre < 6) {
-                                                    GT_TileEntity_Ores
-                                                            .setOreBlock(mWorld, eX, eY, eZ, secondaryMeta, false);
+                                                    GT_TileEntity_Ores.setOreBlock(
+                                                            mWorld,
+                                                            eX,
+                                                            eY,
+                                                            eZ,
+                                                            secondaryMeta,
+                                                            false);
                                                 } else if (ranOre < 8) {
-                                                    GT_TileEntity_Ores
-                                                            .setOreBlock(mWorld, eX, eY, eZ, betweenMeta, false);
+                                                    GT_TileEntity_Ores.setOreBlock(
+                                                            mWorld,
+                                                            eX,
+                                                            eY,
+                                                            eZ,
+                                                            betweenMeta,
+                                                            false);
                                                 } else if (ranOre < 10) {
-                                                    GT_TileEntity_Ores
-                                                            .setOreBlock(mWorld, eX, eY, eZ, sporadicMeta, false);
+                                                    GT_TileEntity_Ores.setOreBlock(
+                                                            mWorld,
+                                                            eX,
+                                                            eY,
+                                                            eZ,
+                                                            sporadicMeta,
+                                                            false);
                                                 } else {
                                                     mWorld.setBlock(eX, eY, eZ, Blocks.end_stone, 0, 0);
                                                 }

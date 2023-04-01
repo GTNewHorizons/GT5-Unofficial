@@ -51,8 +51,13 @@ public class MultiTileEntityBlockInternal extends Block implements IRenderedBloc
 
     public boolean placeBlock(World aWorld, int aX, int aY, int aZ, byte aSide, short aMetaData, NBTTagCompound aNBT,
             boolean aCauseBlockUpdates, boolean aForcePlacement) {
-        final MultiTileEntityContainer aMTEContainer = mMultiTileEntityRegistry
-                .getNewTileEntityContainer(aWorld, aX, aY, aZ, aMetaData, aNBT);
+        final MultiTileEntityContainer aMTEContainer = mMultiTileEntityRegistry.getNewTileEntityContainer(
+                aWorld,
+                aX,
+                aY,
+                aZ,
+                aMetaData,
+                aNBT);
         if (aMTEContainer == null) return false;
 
         final Block tReplacedBlock = aWorld.getBlock(aX, aY, aZ);
@@ -85,8 +90,7 @@ public class MultiTileEntityBlockInternal extends Block implements IRenderedBloc
 
         try {
             if (aMTEContainer.mTileEntity instanceof IMTE_HasMultiBlockMachineRelevantData) {
-                if (((IMTE_HasMultiBlockMachineRelevantData) aMTEContainer.mTileEntity)
-                        .hasMultiBlockMachineRelevantData())
+                if (((IMTE_HasMultiBlockMachineRelevantData) aMTEContainer.mTileEntity).hasMultiBlockMachineRelevantData())
                     GregTech_API.causeMachineUpdate(aWorld, aX, aY, aZ);
             }
         } catch (Throwable e) {

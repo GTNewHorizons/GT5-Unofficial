@@ -55,10 +55,13 @@ public class GT_Fluid extends Fluid implements IGT_Fluid, IGT_RegisteredFluid, R
                 setGaseous(false).setViscosity(10000);
                 break;
             case GAS:
-                setGaseous(true).setDensity(-100).setViscosity(200);
+                setGaseous(true).setDensity(-100)
+                                .setViscosity(200);
                 break;
             case PLASMA:
-                setGaseous(true).setDensity(55536).setViscosity(10).setLuminosity(15);
+                setGaseous(true).setDensity(55536)
+                                .setViscosity(10)
+                                .setLuminosity(15);
                 break;
             case MOLTEN:
                 final int luminosity;

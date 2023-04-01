@@ -136,8 +136,8 @@ public abstract class GT_Tool implements IToolStats {
     }
 
     public IChatComponent getDeathMessage(EntityLivingBase aPlayer, EntityLivingBase aEntity) {
-        return new EntityDamageSource((aPlayer instanceof EntityPlayer) ? "player" : "mob", aPlayer)
-                .func_151519_b(aEntity);
+        return new EntityDamageSource((aPlayer instanceof EntityPlayer) ? "player" : "mob", aPlayer).func_151519_b(
+                aEntity);
     }
 
     @Override

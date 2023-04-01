@@ -53,8 +53,9 @@ public class GT_AlleleHelper extends AlleleHelper {
                     EnumBeeChromosome.FLOWER_PROVIDER,
                     EnumButterflyChromosome.FLOWER_PROVIDER);
 
-            AlleleManager.alleleRegistry
-                    .registerDeprecatedAlleleReplacement("forestry.speedNorm", get(EnumAllele.Speed.NORMAL));
+            AlleleManager.alleleRegistry.registerDeprecatedAlleleReplacement(
+                    "forestry.speedNorm",
+                    get(EnumAllele.Speed.NORMAL));
         }
 
         if (PluginManager.Module.ARBORICULTURE.isEnabled()) {
@@ -65,30 +66,39 @@ public class GT_AlleleHelper extends AlleleHelper {
             createAlleles(EnumAllele.Maturation.class, EnumTreeChromosome.MATURATION);
             createAlleles(EnumAllele.Sappiness.class, EnumTreeChromosome.SAPPINESS);
 
-            AlleleManager.alleleRegistry
-                    .registerDeprecatedAlleleReplacement("forestry.heightMax10", get(EnumAllele.Height.AVERAGE));
-            AlleleManager.alleleRegistry
-                    .registerDeprecatedAlleleReplacement("forestry.saplingsDefault", get(EnumAllele.Saplings.AVERAGE));
-            AlleleManager.alleleRegistry
-                    .registerDeprecatedAlleleReplacement("forestry.saplingsDouble", get(EnumAllele.Saplings.HIGH));
-            AlleleManager.alleleRegistry
-                    .registerDeprecatedAlleleReplacement("forestry.saplingsTriple", get(EnumAllele.Saplings.HIGHER));
-            AlleleManager.alleleRegistry
-                    .registerDeprecatedAlleleReplacement("forestry.yieldDefault", get(EnumAllele.Yield.AVERAGE));
+            AlleleManager.alleleRegistry.registerDeprecatedAlleleReplacement(
+                    "forestry.heightMax10",
+                    get(EnumAllele.Height.AVERAGE));
+            AlleleManager.alleleRegistry.registerDeprecatedAlleleReplacement(
+                    "forestry.saplingsDefault",
+                    get(EnumAllele.Saplings.AVERAGE));
+            AlleleManager.alleleRegistry.registerDeprecatedAlleleReplacement(
+                    "forestry.saplingsDouble",
+                    get(EnumAllele.Saplings.HIGH));
+            AlleleManager.alleleRegistry.registerDeprecatedAlleleReplacement(
+                    "forestry.saplingsTriple",
+                    get(EnumAllele.Saplings.HIGHER));
+            AlleleManager.alleleRegistry.registerDeprecatedAlleleReplacement(
+                    "forestry.yieldDefault",
+                    get(EnumAllele.Yield.AVERAGE));
             AlleleManager.alleleRegistry.registerDeprecatedAlleleReplacement(
                     "forestry.maturitySlowest",
                     get(EnumAllele.Maturation.SLOWEST));
-            AlleleManager.alleleRegistry
-                    .registerDeprecatedAlleleReplacement("forestry.maturitySlower", get(EnumAllele.Maturation.SLOWER));
-            AlleleManager.alleleRegistry
-                    .registerDeprecatedAlleleReplacement("forestry.maturitySlow", get(EnumAllele.Maturation.SLOW));
+            AlleleManager.alleleRegistry.registerDeprecatedAlleleReplacement(
+                    "forestry.maturitySlower",
+                    get(EnumAllele.Maturation.SLOWER));
+            AlleleManager.alleleRegistry.registerDeprecatedAlleleReplacement(
+                    "forestry.maturitySlow",
+                    get(EnumAllele.Maturation.SLOW));
             AlleleManager.alleleRegistry.registerDeprecatedAlleleReplacement(
                     "forestry.maturityAverage",
                     get(EnumAllele.Maturation.AVERAGE));
-            AlleleManager.alleleRegistry
-                    .registerDeprecatedAlleleReplacement("forestry.maturityFast", get(EnumAllele.Maturation.FAST));
-            AlleleManager.alleleRegistry
-                    .registerDeprecatedAlleleReplacement("forestry.maturityFaster", get(EnumAllele.Maturation.FASTER));
+            AlleleManager.alleleRegistry.registerDeprecatedAlleleReplacement(
+                    "forestry.maturityFast",
+                    get(EnumAllele.Maturation.FAST));
+            AlleleManager.alleleRegistry.registerDeprecatedAlleleReplacement(
+                    "forestry.maturityFaster",
+                    get(EnumAllele.Maturation.FASTER));
             AlleleManager.alleleRegistry.registerDeprecatedAlleleReplacement(
                     "forestry.maturityFastest",
                     get(EnumAllele.Maturation.FASTEST));
@@ -151,7 +161,8 @@ public class GT_AlleleHelper extends AlleleHelper {
             return;
         }
 
-        if (!chromosomeType.getAlleleClass().isInstance(allele)) {
+        if (!chromosomeType.getAlleleClass()
+                           .isInstance(allele)) {
             GT_Mod.GT_FML_LOGGER.info("chromosomeType is not an instance of allele!" + allele.getName());
             return;
         }
@@ -216,7 +227,8 @@ public class GT_AlleleHelper extends AlleleHelper {
     }
 
     private <K extends Enum<K> & IAlleleValue<V>, V> void createAlleles(Class<K> enumClass, IChromosomeType... types) {
-        String category = enumClass.getSimpleName().toLowerCase(Locale.ENGLISH);
+        String category = enumClass.getSimpleName()
+                                   .toLowerCase(Locale.ENGLISH);
         EnumMap<K, IAllele> map = new EnumMap<>(enumClass);
         for (K enumValue : enumClass.getEnumConstants()) {
             IAllele allele = createAllele(category, enumValue, types);
@@ -229,7 +241,8 @@ public class GT_AlleleHelper extends AlleleHelper {
             IChromosomeType... types) {
         V value = enumValue.getValue();
         boolean isDominant = enumValue.isDominant();
-        String name = enumValue.toString().toLowerCase(Locale.ENGLISH);
+        String name = enumValue.toString()
+                               .toLowerCase(Locale.ENGLISH);
 
         Class<?> valueClass = value.getClass();
         if (Float.class.isAssignableFrom(valueClass)) {
@@ -238,8 +251,15 @@ public class GT_AlleleHelper extends AlleleHelper {
             return AlleleManager.alleleFactory.createInteger(modId, category, name, (Integer) value, isDominant, types);
         } else if (IVect.class.isAssignableFrom(valueClass)) {
             IVect area = (IVect) value;
-            return AlleleManager.alleleFactory
-                    .createArea(modId, category, name, area.getX(), area.getY(), area.getZ(), isDominant, types);
+            return AlleleManager.alleleFactory.createArea(
+                    modId,
+                    category,
+                    name,
+                    area.getX(),
+                    area.getY(),
+                    area.getZ(),
+                    isDominant,
+                    types);
         } else if (Boolean.class.isAssignableFrom(valueClass)) {
             return AlleleManager.alleleFactory.createBoolean(modId, category, (Boolean) value, isDominant, types);
         } else if (EnumTolerance.class.isAssignableFrom(valueClass)) {
@@ -252,8 +272,13 @@ public class GT_AlleleHelper extends AlleleHelper {
             AlleleManager.alleleRegistry.registerAllele(alleleTolerance, types);
             return alleleTolerance;
         } else if (FlowerProvider.class.isAssignableFrom(valueClass)) {
-            return AlleleManager.alleleFactory
-                    .createFlowers(modId, category, name, (FlowerProvider) value, isDominant, types);
+            return AlleleManager.alleleFactory.createFlowers(
+                    modId,
+                    category,
+                    name,
+                    (FlowerProvider) value,
+                    isDominant,
+                    types);
         }
         throw new RuntimeException("could not create allele for category: " + category + " and value " + valueClass);
     }

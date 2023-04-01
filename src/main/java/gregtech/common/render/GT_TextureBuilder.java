@@ -137,8 +137,10 @@ public class GT_TextureBuilder implements ITextureBuilder {
     }
 
     private boolean isCTMBlock(Block fromBlock, int fromMeta) {
-        return GT_Mod.gregtechproxy.mCTMBlockCache
-                .computeIfAbsent(fromBlock, (byte) fromMeta, GT_TextureBuilder::apply);
+        return GT_Mod.gregtechproxy.mCTMBlockCache.computeIfAbsent(
+                fromBlock,
+                (byte) fromMeta,
+                GT_TextureBuilder::apply);
     }
 
     private static Boolean apply(Block b, Byte m) {

@@ -63,29 +63,41 @@ public abstract class GT_MetaTileEntity_DrillerBase
         @Override
         protected IStructureDefinition<GT_MetaTileEntity_DrillerBase> computeValue(Class<?> type) {
             return StructureDefinition.<GT_MetaTileEntity_DrillerBase>builder()
-                    .addShape(
-                            STRUCTURE_PIECE_MAIN,
-                            transpose(
-                                    new String[][] { { "   ", " f ", "   " }, { "   ", " f ", "   " },
-                                            { "   ", " f ", "   " }, { " f ", "fcf", " f " }, { " f ", "fcf", " f " },
-                                            { " f ", "fcf", " f " }, { "b~b", "bbb", "bbb" }, }))
-                    .addElement('f', lazy(t -> ofFrame(t.getFrameMaterial())))
-                    .addElement(
-                            'c',
-                            lazy(
-                                    t -> ofBlock(
-                                            t.getCasingBlockItem().getBlock(),
-                                            t.getCasingBlockItem().get(0).getItemDamage())))
-                    .addElement(
-                            'b',
-                            lazy(
-                                    t -> buildHatchAdder(GT_MetaTileEntity_DrillerBase.class)
-                                            .atLeastList(t.getAllowedHatches())
-                                            .adder(GT_MetaTileEntity_DrillerBase::addToMachineList)
-                                            .casingIndex(t.casingTextureIndex).dot(1).buildAndChain(
-                                                    t.getCasingBlockItem().getBlock(),
-                                                    t.getCasingBlockItem().get(0).getItemDamage())))
-                    .build();
+                                      .addShape(
+                                              STRUCTURE_PIECE_MAIN,
+                                              transpose(
+                                                      new String[][] { { "   ", " f ", "   " }, { "   ", " f ", "   " },
+                                                              { "   ", " f ", "   " }, { " f ", "fcf", " f " },
+                                                              { " f ", "fcf", " f " }, { " f ", "fcf", " f " },
+                                                              { "b~b", "bbb", "bbb" }, }))
+                                      .addElement('f', lazy(t -> ofFrame(t.getFrameMaterial())))
+                                      .addElement(
+                                              'c',
+                                              lazy(
+                                                      t -> ofBlock(
+                                                              t.getCasingBlockItem()
+                                                               .getBlock(),
+                                                              t.getCasingBlockItem()
+                                                               .get(0)
+                                                               .getItemDamage())))
+                                      .addElement(
+                                              'b',
+                                              lazy(
+                                                      t -> buildHatchAdder(
+                                                              GT_MetaTileEntity_DrillerBase.class).atLeastList(
+                                                                      t.getAllowedHatches())
+                                                                                                  .adder(
+                                                                                                          GT_MetaTileEntity_DrillerBase::addToMachineList)
+                                                                                                  .casingIndex(
+                                                                                                          t.casingTextureIndex)
+                                                                                                  .dot(1)
+                                                                                                  .buildAndChain(
+                                                                                                          t.getCasingBlockItem()
+                                                                                                           .getBlock(),
+                                                                                                          t.getCasingBlockItem()
+                                                                                                           .get(0)
+                                                                                                           .getItemDamage())))
+                                      .build();
         }
     };
 
@@ -126,7 +138,8 @@ public abstract class GT_MetaTileEntity_DrillerBase
 
     private void initFields() {
         casingBlock = getCasingBlockItem().getBlock();
-        casingMeta = getCasingBlockItem().get(0).getItemDamage();
+        casingMeta = getCasingBlockItem().get(0)
+                                         .getItemDamage();
         int frameId = 4096 + getFrameMaterial().mMetaItemSubID;
         frameMeta = GregTech_API.METATILEENTITIES[frameId] != null
                 ? GregTech_API.METATILEENTITIES[frameId].getTileEntityBaseType()
@@ -139,12 +152,26 @@ public abstract class GT_MetaTileEntity_DrillerBase
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
             boolean aActive, boolean aRedstone) {
         if (aSide == aFacing) {
-            if (aActive) return new ITexture[] { getCasingTextureForId(casingTextureIndex),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_ORE_DRILL_ACTIVE).extFacing().build(),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_ORE_DRILL_ACTIVE_GLOW).extFacing().glow().build() };
-            return new ITexture[] { getCasingTextureForId(casingTextureIndex),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_ORE_DRILL).extFacing().build(),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_ORE_DRILL_GLOW).extFacing().glow().build() };
+            if (aActive) return new ITexture[] { getCasingTextureForId(casingTextureIndex), TextureFactory.builder()
+                                                                                                          .addIcon(
+                                                                                                                  OVERLAY_FRONT_ORE_DRILL_ACTIVE)
+                                                                                                          .extFacing()
+                                                                                                          .build(),
+                    TextureFactory.builder()
+                                  .addIcon(OVERLAY_FRONT_ORE_DRILL_ACTIVE_GLOW)
+                                  .extFacing()
+                                  .glow()
+                                  .build() };
+            return new ITexture[] { getCasingTextureForId(casingTextureIndex), TextureFactory.builder()
+                                                                                             .addIcon(
+                                                                                                     OVERLAY_FRONT_ORE_DRILL)
+                                                                                             .extFacing()
+                                                                                             .build(),
+                    TextureFactory.builder()
+                                  .addIcon(OVERLAY_FRONT_ORE_DRILL_GLOW)
+                                  .extFacing()
+                                  .glow()
+                                  .build() };
         }
         return new ITexture[] { getCasingTextureForId(casingTextureIndex) };
     }
@@ -210,9 +237,14 @@ public abstract class GT_MetaTileEntity_DrillerBase
     protected boolean tryPickPipe() {
         if (yHead == yDrill) return isPickingPipes = false;
         if (tryOutputPipe()) {
-            if (checkBlockAndMeta(xPipe, yHead + 1, zPipe, miningPipeBlock, W))
-                getBaseMetaTileEntity().getWorld().setBlock(xPipe, yHead + 1, zPipe, miningPipeTipBlock);
-            getBaseMetaTileEntity().getWorld().setBlockToAir(xPipe, yHead, zPipe);
+            if (checkBlockAndMeta(xPipe, yHead + 1, zPipe, miningPipeBlock, W)) getBaseMetaTileEntity().getWorld()
+                                                                                                       .setBlock(
+                                                                                                               xPipe,
+                                                                                                               yHead + 1,
+                                                                                                               zPipe,
+                                                                                                               miningPipeTipBlock);
+            getBaseMetaTileEntity().getWorld()
+                                   .setBlockToAir(xPipe, yHead, zPipe);
             return isPickingPipes = true;
         }
         return isPickingPipes = false;
@@ -259,7 +291,8 @@ public abstract class GT_MetaTileEntity_DrillerBase
                 isSimulating))
             return 3;
         if (!isSimulating) {
-            if (yHead != yDrill) getBaseMetaTileEntity().getWorld().setBlock(xPipe, yHead, zPipe, miningPipeBlock);
+            if (yHead != yDrill) getBaseMetaTileEntity().getWorld()
+                                                        .setBlock(xPipe, yHead, zPipe, miningPipeBlock);
             if (b != miningPipeBlock && b != miningPipeTipBlock) getBaseMetaTileEntity().decrStackSize(1, 1);
         }
 
@@ -434,7 +467,8 @@ public abstract class GT_MetaTileEntity_DrillerBase
         // is pipe tip OR is controller layer
         if (checkBlockAndMeta(xPipe, yHead, zPipe, miningPipeTipBlock, W) || ++yHead == yDrill) return true;
         // pipe column is broken - try fix
-        getBaseMetaTileEntity().getWorld().setBlock(xPipe, yHead, zPipe, miningPipeTipBlock);
+        getBaseMetaTileEntity().getWorld()
+                               .setBlock(xPipe, yHead, zPipe, miningPipeTipBlock);
         return true;
     }
 
@@ -534,10 +568,18 @@ public abstract class GT_MetaTileEntity_DrillerBase
         }
         for (GT_MetaTileEntity_Hatch_DataAccess tHatch : mDataAccessHatches) {
             if (isValidMetaTileEntity(tHatch)) {
-                for (int i = 0; i < tHatch.getBaseMetaTileEntity().getSizeInventory(); i++) {
-                    if (tHatch.getBaseMetaTileEntity().getStackInSlot(i) != null
-                            && isCorrectDataItem(tHatch.getBaseMetaTileEntity().getStackInSlot(i), state))
-                        rList.add(tHatch.getBaseMetaTileEntity().getStackInSlot(i));
+                for (int i = 0; i < tHatch.getBaseMetaTileEntity()
+                                          .getSizeInventory(); i++) {
+                    if (tHatch.getBaseMetaTileEntity()
+                              .getStackInSlot(i)
+                            != null
+                            && isCorrectDataItem(
+                                    tHatch.getBaseMetaTileEntity()
+                                          .getStackInSlot(i),
+                                    state))
+                        rList.add(
+                                tHatch.getBaseMetaTileEntity()
+                                      .getStackInSlot(i));
                 }
             }
         }

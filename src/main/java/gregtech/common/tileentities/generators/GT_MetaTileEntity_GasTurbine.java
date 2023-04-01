@@ -94,8 +94,10 @@ public class GT_MetaTileEntity_GasTurbine extends GT_MetaTileEntity_BasicGenerat
     }
 
     public void onConfigLoad() {
-        this.mEfficiency = GregTech_API.sMachineFile
-                .get(ConfigCategories.machineconfig, "GasTurbine.efficiency.tier." + this.mTier, this.mEfficiency);
+        this.mEfficiency = GregTech_API.sMachineFile.get(
+                ConfigCategories.machineconfig,
+                "GasTurbine.efficiency.tier." + this.mTier,
+                this.mEfficiency);
     }
 
     @Override
@@ -108,7 +110,10 @@ public class GT_MetaTileEntity_GasTurbine extends GT_MetaTileEntity_BasicGenerat
         return new ITexture[] { super.getFront(aColor)[0],
                 TextureFactory.of(
                         TextureFactory.of(GAS_TURBINE_FRONT),
-                        TextureFactory.builder().addIcon(GAS_TURBINE_FRONT_GLOW).glow().build()),
+                        TextureFactory.builder()
+                                      .addIcon(GAS_TURBINE_FRONT_GLOW)
+                                      .glow()
+                                      .build()),
                 OVERLAYS_ENERGY_OUT[this.mTier] };
     }
 
@@ -117,7 +122,10 @@ public class GT_MetaTileEntity_GasTurbine extends GT_MetaTileEntity_BasicGenerat
         return new ITexture[] { super.getBack(aColor)[0],
                 TextureFactory.of(
                         TextureFactory.of(GAS_TURBINE_BACK),
-                        TextureFactory.builder().addIcon(GAS_TURBINE_BACK_GLOW).glow().build()) };
+                        TextureFactory.builder()
+                                      .addIcon(GAS_TURBINE_BACK_GLOW)
+                                      .glow()
+                                      .build()) };
     }
 
     @Override
@@ -125,7 +133,10 @@ public class GT_MetaTileEntity_GasTurbine extends GT_MetaTileEntity_BasicGenerat
         return new ITexture[] { super.getBottom(aColor)[0],
                 TextureFactory.of(
                         TextureFactory.of(GAS_TURBINE_BOTTOM),
-                        TextureFactory.builder().addIcon(GAS_TURBINE_BOTTOM_GLOW).glow().build()) };
+                        TextureFactory.builder()
+                                      .addIcon(GAS_TURBINE_BOTTOM_GLOW)
+                                      .glow()
+                                      .build()) };
     }
 
     @Override
@@ -133,7 +144,10 @@ public class GT_MetaTileEntity_GasTurbine extends GT_MetaTileEntity_BasicGenerat
         return new ITexture[] { super.getTop(aColor)[0],
                 TextureFactory.of(
                         TextureFactory.of(GAS_TURBINE_TOP),
-                        TextureFactory.builder().addIcon(GAS_TURBINE_TOP_GLOW).glow().build()) };
+                        TextureFactory.builder()
+                                      .addIcon(GAS_TURBINE_TOP_GLOW)
+                                      .glow()
+                                      .build()) };
     }
 
     @Override
@@ -141,7 +155,10 @@ public class GT_MetaTileEntity_GasTurbine extends GT_MetaTileEntity_BasicGenerat
         return new ITexture[] { super.getSides(aColor)[0],
                 TextureFactory.of(
                         TextureFactory.of(GAS_TURBINE_SIDE),
-                        TextureFactory.builder().addIcon(GAS_TURBINE_SIDE_GLOW).glow().build()) };
+                        TextureFactory.builder()
+                                      .addIcon(GAS_TURBINE_SIDE_GLOW)
+                                      .glow()
+                                      .build()) };
     }
 
     @Override
@@ -149,7 +166,10 @@ public class GT_MetaTileEntity_GasTurbine extends GT_MetaTileEntity_BasicGenerat
         return new ITexture[] { super.getFrontActive(aColor)[0],
                 TextureFactory.of(
                         TextureFactory.of(GAS_TURBINE_FRONT_ACTIVE),
-                        TextureFactory.builder().addIcon(GAS_TURBINE_FRONT_ACTIVE_GLOW).glow().build()),
+                        TextureFactory.builder()
+                                      .addIcon(GAS_TURBINE_FRONT_ACTIVE_GLOW)
+                                      .glow()
+                                      .build()),
                 OVERLAYS_ENERGY_OUT[this.mTier] };
     }
 
@@ -158,7 +178,10 @@ public class GT_MetaTileEntity_GasTurbine extends GT_MetaTileEntity_BasicGenerat
         return new ITexture[] { super.getBackActive(aColor)[0],
                 TextureFactory.of(
                         TextureFactory.of(GAS_TURBINE_BACK_ACTIVE),
-                        TextureFactory.builder().addIcon(GAS_TURBINE_BACK_ACTIVE_GLOW).glow().build()) };
+                        TextureFactory.builder()
+                                      .addIcon(GAS_TURBINE_BACK_ACTIVE_GLOW)
+                                      .glow()
+                                      .build()) };
     }
 
     @Override
@@ -166,7 +189,10 @@ public class GT_MetaTileEntity_GasTurbine extends GT_MetaTileEntity_BasicGenerat
         return new ITexture[] { super.getBottomActive(aColor)[0],
                 TextureFactory.of(
                         TextureFactory.of(GAS_TURBINE_BOTTOM_ACTIVE),
-                        TextureFactory.builder().addIcon(GAS_TURBINE_BOTTOM_ACTIVE_GLOW).glow().build()) };
+                        TextureFactory.builder()
+                                      .addIcon(GAS_TURBINE_BOTTOM_ACTIVE_GLOW)
+                                      .glow()
+                                      .build()) };
     }
 
     @Override
@@ -174,7 +200,10 @@ public class GT_MetaTileEntity_GasTurbine extends GT_MetaTileEntity_BasicGenerat
         return new ITexture[] { super.getTopActive(aColor)[0],
                 TextureFactory.of(
                         TextureFactory.of(GAS_TURBINE_TOP_ACTIVE),
-                        TextureFactory.builder().addIcon(GAS_TURBINE_TOP_ACTIVE_GLOW).glow().build()) };
+                        TextureFactory.builder()
+                                      .addIcon(GAS_TURBINE_TOP_ACTIVE_GLOW)
+                                      .glow()
+                                      .build()) };
     }
 
     @Override
@@ -182,7 +211,10 @@ public class GT_MetaTileEntity_GasTurbine extends GT_MetaTileEntity_BasicGenerat
         return new ITexture[] { super.getSidesActive(aColor)[0],
                 TextureFactory.of(
                         TextureFactory.of(GAS_TURBINE_SIDE_ACTIVE),
-                        TextureFactory.builder().addIcon(GAS_TURBINE_SIDE_ACTIVE_GLOW).glow().build()) };
+                        TextureFactory.builder()
+                                      .addIcon(GAS_TURBINE_SIDE_ACTIVE_GLOW)
+                                      .glow()
+                                      .build()) };
     }
 
     @Override

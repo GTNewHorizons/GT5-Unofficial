@@ -125,7 +125,8 @@ public class GT_MetaTileEntity_Wireless_Dynamo extends GT_MetaTileEntity_Hatch_D
             if (aTick == 1) {
 
                 // UUID and username of the owner.
-                owner_uuid = aBaseMetaTileEntity.getOwnerUuid().toString();
+                owner_uuid = aBaseMetaTileEntity.getOwnerUuid()
+                                                .toString();
                 owner_name = aBaseMetaTileEntity.getOwnerName();
 
                 strongCheckOrAddUser(owner_uuid, owner_name);

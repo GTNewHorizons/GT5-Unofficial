@@ -131,8 +131,14 @@ public abstract class GT_MetaTileEntity_EnhancedMultiBlockBase<T extends GT_Meta
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setByte("eRotation", (byte) mExtendedFacing.getRotation().getIndex());
-        aNBT.setByte("eFlip", (byte) mExtendedFacing.getFlip().getIndex());
+        aNBT.setByte(
+                "eRotation",
+                (byte) mExtendedFacing.getRotation()
+                                      .getIndex());
+        aNBT.setByte(
+                "eFlip",
+                (byte) mExtendedFacing.getFlip()
+                                      .getIndex());
     }
 
     @Override

@@ -61,14 +61,30 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
         ITexture[][][] rTextures = new ITexture[ForgeDirection.VALID_DIRECTIONS.length][17][];
         ITexture tIcon = getOverlayIcon();
         ITexture tOut = TextureFactory.of(OVERLAY_PIPE_OUT);
-        ITexture tUp = TextureFactory
-                .of(TextureFactory.of(ARROW_UP), TextureFactory.builder().addIcon(ARROW_UP_GLOW).glow().build());
-        ITexture tDown = TextureFactory
-                .of(TextureFactory.of(ARROW_DOWN), TextureFactory.builder().addIcon(ARROW_DOWN_GLOW).glow().build());
-        ITexture tLeft = TextureFactory
-                .of(TextureFactory.of(ARROW_LEFT), TextureFactory.builder().addIcon(ARROW_LEFT_GLOW).glow().build());
-        ITexture tRight = TextureFactory
-                .of(TextureFactory.of(ARROW_RIGHT), TextureFactory.builder().addIcon(ARROW_RIGHT_GLOW).glow().build());
+        ITexture tUp = TextureFactory.of(
+                TextureFactory.of(ARROW_UP),
+                TextureFactory.builder()
+                              .addIcon(ARROW_UP_GLOW)
+                              .glow()
+                              .build());
+        ITexture tDown = TextureFactory.of(
+                TextureFactory.of(ARROW_DOWN),
+                TextureFactory.builder()
+                              .addIcon(ARROW_DOWN_GLOW)
+                              .glow()
+                              .build());
+        ITexture tLeft = TextureFactory.of(
+                TextureFactory.of(ARROW_LEFT),
+                TextureFactory.builder()
+                              .addIcon(ARROW_LEFT_GLOW)
+                              .glow()
+                              .build());
+        ITexture tRight = TextureFactory.of(
+                TextureFactory.of(ARROW_RIGHT),
+                TextureFactory.builder()
+                              .addIcon(ARROW_RIGHT_GLOW)
+                              .glow()
+                              .build());
         for (int i = 0; i < rTextures[0].length; i++) {
             rTextures[OUTPUT_INDEX][i] = new ITexture[] { MACHINE_CASINGS[mTier][i], tOut };
             rTextures[ARROW_RIGHT_INDEX][i] = new ITexture[] { MACHINE_CASINGS[mTier][i], tRight, tIcon };
@@ -401,7 +417,8 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
             if (toSet == 0) continue;
             int slot = validSlots.get(slotindex);
             slotindex++;
-            mInventory[slot] = stacks.get(sID).copy();
+            mInventory[slot] = stacks.get(sID)
+                                     .copy();
             toSet = Math.min(toSet, mInventory[slot].getMaxStackSize());
             mInventory[slot].stackSize = toSet;
             slots.merge(sID, toSet, (a, b) -> a - b);
@@ -433,15 +450,21 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
             bOutput = !bOutput;
             if (bOutput) {
                 GT_Utility.sendChatToPlayer(
-                        widget.getContext().getPlayer(),
+                        widget.getContext()
+                              .getPlayer(),
                         GT_Utility.trans("116", "Emit Energy to Outputside"));
             } else {
                 GT_Utility.sendChatToPlayer(
-                        widget.getContext().getPlayer(),
+                        widget.getContext()
+                              .getPlayer(),
                         GT_Utility.trans("117", "Don't emit Energy"));
             }
-        }).setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_EMIT_ENERGY).setPos(7, 62)
-                .setSize(18, 18));
+        })
+                                         .setBackground(
+                                                 GT_UITextures.BUTTON_STANDARD,
+                                                 GT_UITextures.OVERLAY_BUTTON_EMIT_ENERGY)
+                                         .setPos(7, 62)
+                                         .setSize(18, 18));
     }
 
     protected void addEmitRedstoneButton(ModularWindow.Builder builder) {
@@ -449,30 +472,43 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
             bRedstoneIfFull = !bRedstoneIfFull;
             if (bRedstoneIfFull) {
                 GT_Utility.sendChatToPlayer(
-                        widget.getContext().getPlayer(),
+                        widget.getContext()
+                              .getPlayer(),
                         GT_Utility.trans("118", "Emit Redstone if no Slot is free"));
             } else {
                 GT_Utility.sendChatToPlayer(
-                        widget.getContext().getPlayer(),
+                        widget.getContext()
+                              .getPlayer(),
                         GT_Utility.trans("119", "Don't emit Redstone"));
             }
-        }).setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_EMIT_REDSTONE).setPos(25, 62)
-                .setSize(18, 18));
+        })
+                                         .setBackground(
+                                                 GT_UITextures.BUTTON_STANDARD,
+                                                 GT_UITextures.OVERLAY_BUTTON_EMIT_REDSTONE)
+                                         .setPos(25, 62)
+                                         .setSize(18, 18));
     }
 
     protected void addInvertRedstoneButton(ModularWindow.Builder builder) {
         builder.widget(new ButtonWidget().setOnClick((clickData, widget) -> {
             bInvert = !bInvert;
             if (bInvert) {
-                GT_Utility
-                        .sendChatToPlayer(widget.getContext().getPlayer(), GT_Utility.trans("120", "Invert Redstone"));
+                GT_Utility.sendChatToPlayer(
+                        widget.getContext()
+                              .getPlayer(),
+                        GT_Utility.trans("120", "Invert Redstone"));
             } else {
                 GT_Utility.sendChatToPlayer(
-                        widget.getContext().getPlayer(),
+                        widget.getContext()
+                              .getPlayer(),
                         GT_Utility.trans("121", "Don't invert Redstone"));
             }
-        }).setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_INVERT_REDSTONE).setPos(43, 62)
-                .setSize(18, 18));
+        })
+                                         .setBackground(
+                                                 GT_UITextures.BUTTON_STANDARD,
+                                                 GT_UITextures.OVERLAY_BUTTON_INVERT_REDSTONE)
+                                         .setPos(43, 62)
+                                         .setSize(18, 18));
     }
 
     protected void addStockingModeButton(ModularWindow.Builder builder) {
@@ -480,22 +516,32 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
             bStockingMode = !bStockingMode;
             if (bStockingMode) {
                 GT_Utility.sendChatToPlayer(
-                        widget.getContext().getPlayer(),
+                        widget.getContext()
+                              .getPlayer(),
                         GT_Utility.trans(
                                 "217",
                                 "Stocking mode. Keeps this many items in destination input slots. This mode can be server unfriendly."));
             } else {
                 GT_Utility.sendChatToPlayer(
-                        widget.getContext().getPlayer(),
+                        widget.getContext()
+                              .getPlayer(),
                         GT_Utility.trans(
                                 "218",
                                 "Transfer size mode. Add exactly this many items in destination input slots as long as there is room."));
             }
-        }).setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_STOCKING_MODE).setPos(61, 62)
-                .setSize(18, 18));
+        })
+                                         .setBackground(
+                                                 GT_UITextures.BUTTON_STANDARD,
+                                                 GT_UITextures.OVERLAY_BUTTON_STOCKING_MODE)
+                                         .setPos(61, 62)
+                                         .setSize(18, 18));
     }
 
     protected void addInventorySlots(ModularWindow.Builder builder) {
-        builder.widget(SlotGroup.ofItemHandler(inventoryHandler, 9).endAtSlot(26).build().setPos(7, 4));
+        builder.widget(
+                SlotGroup.ofItemHandler(inventoryHandler, 9)
+                         .endAtSlot(26)
+                         .build()
+                         .setPos(7, 4));
     }
 }

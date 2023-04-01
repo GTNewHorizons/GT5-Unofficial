@@ -49,7 +49,9 @@ public class GT_GuiTooltipManager {
         for (GT_GuiTooltip tip : tips) {
             // Give the tooltip the opportunity to decide whether they should be enabled
             tip.onTick();
-            if (tip.enabled && (!tip.isDelayed() || mouseStopped > DELAY) && tip.getBounds().contains(mouseX, mouseY)) {
+            if (tip.enabled && (!tip.isDelayed() || mouseStopped > DELAY)
+                    && tip.getBounds()
+                          .contains(mouseX, mouseY)) {
                 tip.updateText();
                 drawTooltip(tip, mouseX, mouseY, render);
                 break;
@@ -64,7 +66,8 @@ public class GT_GuiTooltipManager {
         if (mouseX > render.getGuiLeft() + render.getXSize() / 2) {
             int maxWidth = 0;
             for (String s : text) {
-                int w = render.getFontRenderer().getStringWidth(s);
+                int w = render.getFontRenderer()
+                              .getStringWidth(s);
                 if (w > maxWidth) {
                     maxWidth = w;
                 }

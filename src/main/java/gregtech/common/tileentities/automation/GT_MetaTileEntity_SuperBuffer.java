@@ -57,7 +57,10 @@ public class GT_MetaTileEntity_SuperBuffer extends GT_MetaTileEntity_ChestBuffer
     public ITexture getOverlayIcon() {
         return TextureFactory.of(
                 TextureFactory.of(AUTOMATION_SUPERBUFFER),
-                TextureFactory.builder().addIcon(AUTOMATION_SUPERBUFFER_GLOW).glow().build());
+                TextureFactory.builder()
+                              .addIcon(AUTOMATION_SUPERBUFFER_GLOW)
+                              .glow()
+                              .build());
     }
 
     @Override
@@ -82,7 +85,8 @@ public class GT_MetaTileEntity_SuperBuffer extends GT_MetaTileEntity_ChestBuffer
         for (Map.Entry<GT_Utility.ItemId, Integer> entry : slots.entrySet()) {
             do {
                 int slot = validSlots.get(i);
-                mInventory[slot] = stacks.get(entry.getKey()).copy();
+                mInventory[slot] = stacks.get(entry.getKey())
+                                         .copy();
                 int toSet = Math.min(entry.getValue(), mInventory[slot].getMaxStackSize());
                 mInventory[slot].stackSize = toSet;
                 entry.setValue(entry.getValue() - toSet);
@@ -94,6 +98,8 @@ public class GT_MetaTileEntity_SuperBuffer extends GT_MetaTileEntity_ChestBuffer
     @Override
     protected void addMainUI(ModularWindow.Builder builder) {
         builder.widget(
-                new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SUPER_BUFFER).setPos(61, 4).setSize(54, 54));
+                new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SUPER_BUFFER)
+                                    .setPos(61, 4)
+                                    .setSize(54, 54));
     }
 }

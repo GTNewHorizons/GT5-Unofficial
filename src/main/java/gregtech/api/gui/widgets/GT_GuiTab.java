@@ -130,12 +130,14 @@ public class GT_GuiTab {
                     GL11.glEnable(GL12.GL_RESCALE_NORMAL);
                 }
                 int margin = (bounds.height - SLOT_SIZE);
-                gui.getItemRenderer().renderItemAndEffectIntoGUI(
-                        gui.getFontRenderer(),
-                        Minecraft.getMinecraft().getTextureManager(),
-                        item,
-                        bounds.x + (this.flipHorizontally ? 0 : margin),
-                        bounds.y + margin);
+                gui.getItemRenderer()
+                   .renderItemAndEffectIntoGUI(
+                           gui.getFontRenderer(),
+                           Minecraft.getMinecraft()
+                                    .getTextureManager(),
+                           item,
+                           bounds.x + (this.flipHorizontally ? 0 : margin),
+                           bounds.y + margin);
 
                 if (item.getItem() instanceof ItemBlock) GL11.glPopAttrib();
 

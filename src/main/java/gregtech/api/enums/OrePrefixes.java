@@ -709,9 +709,11 @@ public enum OrePrefixes {
         ingot.addFamiliarPrefix(nugget);
         nugget.addFamiliarPrefix(ingot);
 
-        for (OrePrefixes tPrefix1 : values())
-            if (tPrefix1.name().startsWith("ore")) for (OrePrefixes tPrefix2 : values())
-                if (tPrefix2.name().startsWith("ore")) tPrefix1.addFamiliarPrefix(tPrefix2);
+        for (OrePrefixes tPrefix1 : values()) if (tPrefix1.name()
+                                                          .startsWith("ore"))
+            for (OrePrefixes tPrefix2 : values()) if (tPrefix2.name()
+                                                              .startsWith("ore"))
+                tPrefix1.addFamiliarPrefix(tPrefix2);
 
         // These are only the important ones.
         gem.mNotGeneratedItems.add(Materials.Coal);
@@ -1137,59 +1139,109 @@ public enum OrePrefixes {
 
     public static void initMaterialComponents() {
         boolean enablePerItemSettings = GregTech_API.sMaterialComponents.get("general", "enablePerItemSettings", false);
-        boolean enableUnusedIngotHot = GregTech_API.sMaterialComponents
-                .get("globalcomponents", "enableUnusedIngotHot", false);
-        boolean enableUnusedPlates = GregTech_API.sMaterialComponents
-                .get("globalcomponents", "enableUnusedPlates", false);
-        boolean enableUnusedDoubleIngots = GregTech_API.sMaterialComponents
-                .get("globalcomponents", "enableUnusedDoubleIngots", false);
-        boolean enableUnusedTripleIngots = GregTech_API.sMaterialComponents
-                .get("globalcomponents", "enableUnusedTripleIngots", false);
-        boolean enableUnusedQuadIngots = GregTech_API.sMaterialComponents
-                .get("globalcomponents", "enableUnusedQuadIngots", false);
-        boolean enableUnusedQuinIngots = GregTech_API.sMaterialComponents
-                .get("globalcomponents", "enableUnusedQuinIngots", false);
-        boolean enableUnusedDoublePlates = GregTech_API.sMaterialComponents
-                .get("globalcomponents", "enableUnusedDoublePlates", false);
-        boolean enableUnusedTriplePlates = GregTech_API.sMaterialComponents
-                .get("globalcomponents", "enableUnusedTriplePlates", false);
-        boolean enableUnusedQuadPlates = GregTech_API.sMaterialComponents
-                .get("globalcomponents", "enableUnusedQuadPlates", false);
-        boolean enableUnusedQuinPlates = GregTech_API.sMaterialComponents
-                .get("globalcomponents", "enableUnusedQuinPlates", false);
-        boolean enableUnusedDensePlates = GregTech_API.sMaterialComponents
-                .get("globalcomponents", "enableUnusedDensePlates", false);
-        boolean enableUnusedGears = GregTech_API.sMaterialComponents
-                .get("globalcomponents", "enableUnusedGears", false);
-        boolean enableUnusedSmallGears = GregTech_API.sMaterialComponents
-                .get("globalcomponents", "enableUnusedSmallGears", false);
-        boolean enableUnusedRings = GregTech_API.sMaterialComponents
-                .get("globalcomponents", "enableUnusedRings", false);
-        boolean enableUnusedSprings = GregTech_API.sMaterialComponents
-                .get("globalcomponents", "enableUnusedSprings", false);
-        boolean enableUnusedSmallSprings = GregTech_API.sMaterialComponents
-                .get("globalcomponents", "enableUnusedSmallSprings", false);
-        boolean enableUnusedRounds = GregTech_API.sMaterialComponents
-                .get("globalcomponents", "enableUnusedRounds", false);
-        boolean enableUnusedRotors = GregTech_API.sMaterialComponents
-                .get("globalcomponents", "enableUnusedRotors", false);
-        boolean enableUnusedFineWires = GregTech_API.sMaterialComponents
-                .get("globalcomponents", "enableUnusedFineWires", false);
+        boolean enableUnusedIngotHot = GregTech_API.sMaterialComponents.get(
+                "globalcomponents",
+                "enableUnusedIngotHot",
+                false);
+        boolean enableUnusedPlates = GregTech_API.sMaterialComponents.get(
+                "globalcomponents",
+                "enableUnusedPlates",
+                false);
+        boolean enableUnusedDoubleIngots = GregTech_API.sMaterialComponents.get(
+                "globalcomponents",
+                "enableUnusedDoubleIngots",
+                false);
+        boolean enableUnusedTripleIngots = GregTech_API.sMaterialComponents.get(
+                "globalcomponents",
+                "enableUnusedTripleIngots",
+                false);
+        boolean enableUnusedQuadIngots = GregTech_API.sMaterialComponents.get(
+                "globalcomponents",
+                "enableUnusedQuadIngots",
+                false);
+        boolean enableUnusedQuinIngots = GregTech_API.sMaterialComponents.get(
+                "globalcomponents",
+                "enableUnusedQuinIngots",
+                false);
+        boolean enableUnusedDoublePlates = GregTech_API.sMaterialComponents.get(
+                "globalcomponents",
+                "enableUnusedDoublePlates",
+                false);
+        boolean enableUnusedTriplePlates = GregTech_API.sMaterialComponents.get(
+                "globalcomponents",
+                "enableUnusedTriplePlates",
+                false);
+        boolean enableUnusedQuadPlates = GregTech_API.sMaterialComponents.get(
+                "globalcomponents",
+                "enableUnusedQuadPlates",
+                false);
+        boolean enableUnusedQuinPlates = GregTech_API.sMaterialComponents.get(
+                "globalcomponents",
+                "enableUnusedQuinPlates",
+                false);
+        boolean enableUnusedDensePlates = GregTech_API.sMaterialComponents.get(
+                "globalcomponents",
+                "enableUnusedDensePlates",
+                false);
+        boolean enableUnusedGears = GregTech_API.sMaterialComponents.get(
+                "globalcomponents",
+                "enableUnusedGears",
+                false);
+        boolean enableUnusedSmallGears = GregTech_API.sMaterialComponents.get(
+                "globalcomponents",
+                "enableUnusedSmallGears",
+                false);
+        boolean enableUnusedRings = GregTech_API.sMaterialComponents.get(
+                "globalcomponents",
+                "enableUnusedRings",
+                false);
+        boolean enableUnusedSprings = GregTech_API.sMaterialComponents.get(
+                "globalcomponents",
+                "enableUnusedSprings",
+                false);
+        boolean enableUnusedSmallSprings = GregTech_API.sMaterialComponents.get(
+                "globalcomponents",
+                "enableUnusedSmallSprings",
+                false);
+        boolean enableUnusedRounds = GregTech_API.sMaterialComponents.get(
+                "globalcomponents",
+                "enableUnusedRounds",
+                false);
+        boolean enableUnusedRotors = GregTech_API.sMaterialComponents.get(
+                "globalcomponents",
+                "enableUnusedRotors",
+                false);
+        boolean enableUnusedFineWires = GregTech_API.sMaterialComponents.get(
+                "globalcomponents",
+                "enableUnusedFineWires",
+                false);
         boolean enableUnusedFoil = GregTech_API.sMaterialComponents.get("globalcomponents", "enableUnusedFoil", false);
-        boolean enableUnusedArrows = GregTech_API.sMaterialComponents
-                .get("globalcomponents", "enableUnusedArrowHeads", false);
-        boolean enableUnusedCrates = GregTech_API.sMaterialComponents
-                .get("globalcomponents", "enableUnusedCrates", false);
-        boolean enableUnusedBolts = GregTech_API.sMaterialComponents
-                .get("globalcomponents", "enableUnusedBolts", false);
-        boolean enableUnusedScrews = GregTech_API.sMaterialComponents
-                .get("globalcomponents", "enableUnusedScrews", false);
+        boolean enableUnusedArrows = GregTech_API.sMaterialComponents.get(
+                "globalcomponents",
+                "enableUnusedArrowHeads",
+                false);
+        boolean enableUnusedCrates = GregTech_API.sMaterialComponents.get(
+                "globalcomponents",
+                "enableUnusedCrates",
+                false);
+        boolean enableUnusedBolts = GregTech_API.sMaterialComponents.get(
+                "globalcomponents",
+                "enableUnusedBolts",
+                false);
+        boolean enableUnusedScrews = GregTech_API.sMaterialComponents.get(
+                "globalcomponents",
+                "enableUnusedScrews",
+                false);
         boolean enableUnusedRods = GregTech_API.sMaterialComponents.get("globalcomponents", "enableUnusedRods", false);
-        boolean enableUnusedLongRods = GregTech_API.sMaterialComponents
-                .get("globalcomponents", "enableUnusedLongRods", false);
+        boolean enableUnusedLongRods = GregTech_API.sMaterialComponents.get(
+                "globalcomponents",
+                "enableUnusedLongRods",
+                false);
         boolean enableUnusedGems = GregTech_API.sMaterialComponents.get("globalcomponents", "enableUnusedGems", false);
-        boolean enableUnusedItemCasing = GregTech_API.sMaterialComponents
-                .get("globalcomponents", "enableUnusedItemCasing", false);
+        boolean enableUnusedItemCasing = GregTech_API.sMaterialComponents.get(
+                "globalcomponents",
+                "enableUnusedItemCasing",
+                false);
 
         // TODO possibly use OrePrefix mNotGeneratedItems/mGeneratedItems instead of a static List for every material
         // instance?
@@ -1512,12 +1564,16 @@ public enum OrePrefixes {
                 }
                 if (enablePerItemSettings) {
                     StringBuilder aConfigPathSB = new StringBuilder();
-                    aConfigPathSB.append("materialcomponents.").append(aMaterial.mConfigSection).append(".")
-                            .append(aMaterial.mName);
+                    aConfigPathSB.append("materialcomponents.")
+                                 .append(aMaterial.mConfigSection)
+                                 .append(".")
+                                 .append(aMaterial.mName);
                     String aConfigPath = aConfigPathSB.toString();
                     for (OrePrefixes aPrefix : mPreventableComponents) {
-                        boolean aEnableComponent = GregTech_API.sMaterialComponents
-                                .get(aConfigPath, aPrefix.toString(), !aPrefix.mDisabledItems.contains(aMaterial));
+                        boolean aEnableComponent = GregTech_API.sMaterialComponents.get(
+                                aConfigPath,
+                                aPrefix.toString(),
+                                !aPrefix.mDisabledItems.contains(aMaterial));
                         if (!aEnableComponent) { // Disable component if false and is not already in disabled list
                             aPrefix.disableComponent(aMaterial);
                         } else if (aEnableComponent) { // Enable component if true and is not already in enabled list

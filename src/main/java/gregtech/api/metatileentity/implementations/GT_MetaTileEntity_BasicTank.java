@@ -208,8 +208,11 @@ public abstract class GT_MetaTileEntity_BasicTank extends GT_MetaTileEntity_Tier
             }
 
             if (doesFillContainers()) {
-                ItemStack tOutput = GT_Utility
-                        .fillFluidContainer(getDrainableStack(), mInventory[getInputSlot()], false, true);
+                ItemStack tOutput = GT_Utility.fillFluidContainer(
+                        getDrainableStack(),
+                        mInventory[getInputSlot()],
+                        false,
+                        true);
                 if (tOutput != null && aBaseMetaTileEntity.addStackToSlot(getOutputSlot(), tOutput, 1)) {
                     FluidStack tFluid = GT_Utility.getFluidForFilledItem(tOutput, true);
                     aBaseMetaTileEntity.decrStackSize(getInputSlot(), 1);
@@ -227,8 +230,10 @@ public abstract class GT_MetaTileEntity_BasicTank extends GT_MetaTileEntity_Tier
                 if (ItemList.Display_Fluid.isStackEqual(mInventory[getStackDisplaySlot()], true, true))
                     mInventory[getStackDisplaySlot()] = null;
             } else {
-                mInventory[getStackDisplaySlot()] = GT_Utility
-                        .getFluidDisplayStack(getDisplayedFluid(), true, !displaysStackSize());
+                mInventory[getStackDisplaySlot()] = GT_Utility.getFluidDisplayStack(
+                        getDisplayedFluid(),
+                        true,
+                        !displaysStackSize());
             }
         }
     }
@@ -245,13 +250,14 @@ public abstract class GT_MetaTileEntity_BasicTank extends GT_MetaTileEntity_Tier
 
     @Override
     public int fill(FluidStack aFluid, boolean doFill) {
-        if (aFluid == null || aFluid.getFluid().getID() <= 0
-                || aFluid.amount <= 0
-                || !canTankBeFilled()
-                || !isFluidInputAllowed(aFluid))
+        if (aFluid == null || aFluid.getFluid()
+                                    .getID()
+                <= 0 || aFluid.amount <= 0 || !canTankBeFilled() || !isFluidInputAllowed(aFluid))
             return 0;
 
-        if (getFillableStack() == null || getFillableStack().getFluid().getID() <= 0) {
+        if (getFillableStack() == null || getFillableStack().getFluid()
+                                                            .getID()
+                <= 0) {
             if (aFluid.amount <= getCapacity()) {
                 if (doFill) {
                     setFillableStack(aFluid.copy());
@@ -337,34 +343,56 @@ public abstract class GT_MetaTileEntity_BasicTank extends GT_MetaTileEntity_Tier
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.widget(
-                new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK).setPos(7, 16).setSize(71, 45))
-                .widget(new DrawableWidget().setDrawable(GT_UITextures.PICTURE_GAUGE).setPos(79, 34).setSize(18, 18))
-                .widget(
-                        new SlotWidget(inventoryHandler, getInputSlot())
-                                .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_IN)
-                                .setPos(79, 16))
-                .widget(
-                        new SlotWidget(inventoryHandler, getOutputSlot())
-                                .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_OUT)
-                                .setPos(79, 52))
-                .widget(createDrainableFluidSlot().setBackground(GT_UITextures.TRANSPARENT).setPos(58, 41))
-                .widget(new TextWidget("Liquid Amount").setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(10, 20)).widget(
-                        TextWidget
-                                .dynamicString(() -> GT_Utility.parseNumberToString(mFluid != null ? mFluid.amount : 0))
-                                .setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(10, 30));
+                new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
+                                    .setPos(7, 16)
+                                    .setSize(71, 45))
+               .widget(
+                       new DrawableWidget().setDrawable(GT_UITextures.PICTURE_GAUGE)
+                                           .setPos(79, 34)
+                                           .setSize(18, 18))
+               .widget(
+                       new SlotWidget(inventoryHandler, getInputSlot())
+                                                                       .setBackground(
+                                                                               getGUITextureSet().getItemSlot(),
+                                                                               GT_UITextures.OVERLAY_SLOT_IN)
+                                                                       .setPos(79, 16))
+               .widget(
+                       new SlotWidget(inventoryHandler, getOutputSlot())
+                                                                        .setBackground(
+                                                                                getGUITextureSet().getItemSlot(),
+                                                                                GT_UITextures.OVERLAY_SLOT_OUT)
+                                                                        .setPos(79, 52))
+               .widget(
+                       createDrainableFluidSlot().setBackground(GT_UITextures.TRANSPARENT)
+                                                 .setPos(58, 41))
+               .widget(
+                       new TextWidget("Liquid Amount").setDefaultColor(COLOR_TEXT_WHITE.get())
+                                                      .setPos(10, 20))
+               .widget(
+                       TextWidget.dynamicString(
+                               () -> GT_Utility.parseNumberToString(mFluid != null ? mFluid.amount : 0))
+                                 .setDefaultColor(COLOR_TEXT_WHITE.get())
+                                 .setPos(10, 30));
     }
 
     protected FluidDisplaySlotWidget createDrainableFluidSlot() {
-        return new FluidDisplaySlotWidget(inventoryHandler, getStackDisplaySlot())
-                .setFluidAccessConstructor(() -> constructFluidAccess(false)).setIHasFluidDisplay(this)
-                .setCanDrain(true).setCanFill(!isDrainableStackSeparate())
-                .setActionRealClick(FluidDisplaySlotWidget.Action.TRANSFER).setBeforeRealClick((clickData, widget) -> {
-                    if (NetworkUtils.isClient()) {
-                        // propagate display item content to actual fluid stored in this tank
-                        setDrainableStack(GT_Utility.getFluidFromDisplayStack(widget.getMcSlot().getStack()));
-                    }
-                    return true;
-                });
+        return new FluidDisplaySlotWidget(
+                inventoryHandler,
+                getStackDisplaySlot()).setFluidAccessConstructor(() -> constructFluidAccess(false))
+                                      .setIHasFluidDisplay(this)
+                                      .setCanDrain(true)
+                                      .setCanFill(!isDrainableStackSeparate())
+                                      .setActionRealClick(FluidDisplaySlotWidget.Action.TRANSFER)
+                                      .setBeforeRealClick((clickData, widget) -> {
+                                          if (NetworkUtils.isClient()) {
+                                              // propagate display item content to actual fluid stored in this tank
+                                              setDrainableStack(
+                                                      GT_Utility.getFluidFromDisplayStack(
+                                                              widget.getMcSlot()
+                                                                    .getStack()));
+                                          }
+                                          return true;
+                                      });
     }
 
     protected IFluidAccess constructFluidAccess(boolean aIsFillableStack) {

@@ -50,33 +50,67 @@ public class MultiBlock_Macerator extends MultiBlock_Stackable<MultiBlock_Macera
     public IStructureDefinition<MultiBlock_Macerator> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
             STRUCTURE_DEFINITION = StructureDefinition.<MultiBlock_Macerator>builder()
-                    .addShape(
-                            STACKABLE_TOP,
-                            transpose(new String[][] { { " CCC ", "CCCCC", "CCCCC", "CCCCC", " CCC " }, }))
-                    .addShape(
-                            STACKABLE_MIDDLE,
-                            transpose(new String[][] { { "  BBB  ", " B---B ", "DC---CD", " B---B ", "  BBB  " }, }))
-                    .addShape(
-                            STACKABLE_BOTTOM,
-                            transpose(new String[][] { { " G~F ", "AAAAA", "AAAAA", "AAAAA", " AAA " }, }))
-                    .addElement(
-                            'A',
-                            ofChain(addMultiTileCasing("gt.multitileentity.casings", getCasingMeta(), ENERGY_IN)))
-                    .addElement(
-                            'B',
-                            ofChain(
-                                    addMultiTileCasing(
-                                            "gt.multitileentity.casings",
-                                            getCasingMeta(),
-                                            FLUID_IN | ITEM_IN | FLUID_OUT | ITEM_OUT)))
-                    .addElement('C', addMultiTileCasing("gt.multitileentity.casings", getCasingMeta(), NOTHING))
-                    .addElement('D', addMultiTileCasing("gt.multitileentity.casings", getCasingMeta(), NOTHING))
-                    .addElement(
-                            'F',
-                            ofChain(
-                                    addMultiTileCasing("gt.multitileentity.casings", 20001, NOTHING),
-                                    addMultiTileCasing("gt.multitileentity.casings", 20002, NOTHING)))
-                    .addElement('G', addMultiTileCasing("gt.multitileentity.casings", 10000, NOTHING)).build();
+                                                      .addShape(
+                                                              STACKABLE_TOP,
+                                                              transpose(
+                                                                      new String[][] { { " CCC ", "CCCCC", "CCCCC",
+                                                                              "CCCCC", " CCC " }, }))
+                                                      .addShape(
+                                                              STACKABLE_MIDDLE,
+                                                              transpose(
+                                                                      new String[][] { { "  BBB  ", " B---B ",
+                                                                              "DC---CD", " B---B ", "  BBB  " }, }))
+                                                      .addShape(
+                                                              STACKABLE_BOTTOM,
+                                                              transpose(
+                                                                      new String[][] { { " G~F ", "AAAAA", "AAAAA",
+                                                                              "AAAAA", " AAA " }, }))
+                                                      .addElement(
+                                                              'A',
+                                                              ofChain(
+                                                                      addMultiTileCasing(
+                                                                              "gt.multitileentity.casings",
+                                                                              getCasingMeta(),
+                                                                              ENERGY_IN)))
+                                                      .addElement(
+                                                              'B',
+                                                              ofChain(
+                                                                      addMultiTileCasing(
+                                                                              "gt.multitileentity.casings",
+                                                                              getCasingMeta(),
+                                                                              FLUID_IN | ITEM_IN
+                                                                                      | FLUID_OUT
+                                                                                      | ITEM_OUT)))
+                                                      .addElement(
+                                                              'C',
+                                                              addMultiTileCasing(
+                                                                      "gt.multitileentity.casings",
+                                                                      getCasingMeta(),
+                                                                      NOTHING))
+                                                      .addElement(
+                                                              'D',
+                                                              addMultiTileCasing(
+                                                                      "gt.multitileentity.casings",
+                                                                      getCasingMeta(),
+                                                                      NOTHING))
+                                                      .addElement(
+                                                              'F',
+                                                              ofChain(
+                                                                      addMultiTileCasing(
+                                                                              "gt.multitileentity.casings",
+                                                                              20001,
+                                                                              NOTHING),
+                                                                      addMultiTileCasing(
+                                                                              "gt.multitileentity.casings",
+                                                                              20002,
+                                                                              NOTHING)))
+                                                      .addElement(
+                                                              'G',
+                                                              addMultiTileCasing(
+                                                                      "gt.multitileentity.casings",
+                                                                      10000,
+                                                                      NOTHING))
+                                                      .build();
         }
         return STRUCTURE_DEFINITION;
     }
@@ -99,17 +133,20 @@ public class MultiBlock_Macerator extends MultiBlock_Stackable<MultiBlock_Macera
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType("Macerator").addInfo("Controller for the Macerator").addSeparator()
-                .beginVariableStructureBlock(7, 9, 2 + getMinStacks(), 2 + getMaxStacks(), 7, 9, true)
-                .addController("Bottom Front Center").addCasingInfoExactly("Test Casing", 60, false)
-                .addEnergyHatch("Any bottom layer casing")
-                .addInputHatch("Any non-optional external facing casing on the stacks")
-                .addInputBus("Any non-optional external facing casing on the stacks")
-                .addOutputHatch("Any non-optional external facing casing on the stacks")
-                .addOutputBus("Any non-optional external facing casing on the stacks")
-                .addStructureInfo(
-                        String.format("Stackable middle stacks between %d-%d time(s).", getMinStacks(), getMaxStacks()))
-                .toolTipFinisher("Wildcard");
+        tt.addMachineType("Macerator")
+          .addInfo("Controller for the Macerator")
+          .addSeparator()
+          .beginVariableStructureBlock(7, 9, 2 + getMinStacks(), 2 + getMaxStacks(), 7, 9, true)
+          .addController("Bottom Front Center")
+          .addCasingInfoExactly("Test Casing", 60, false)
+          .addEnergyHatch("Any bottom layer casing")
+          .addInputHatch("Any non-optional external facing casing on the stacks")
+          .addInputBus("Any non-optional external facing casing on the stacks")
+          .addOutputHatch("Any non-optional external facing casing on the stacks")
+          .addOutputBus("Any non-optional external facing casing on the stacks")
+          .addStructureInfo(
+                  String.format("Stackable middle stacks between %d-%d time(s).", getMinStacks(), getMaxStacks()))
+          .toolTipFinisher("Wildcard");
         return tt;
     }
 
@@ -151,17 +188,25 @@ public class MultiBlock_Macerator extends MultiBlock_Stackable<MultiBlock_Macera
                     // Base Texture
                     MACHINE_CASINGS[1][0],
                     // Active
-                    isActive()
-                            ? TextureFactory.builder().addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE).extFacing()
-                                    .build()
-                            : TextureFactory.builder().addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE).extFacing()
-                                    .build(),
+                    isActive() ? TextureFactory.builder()
+                                               .addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE)
+                                               .extFacing()
+                                               .build()
+                            : TextureFactory.builder()
+                                            .addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE)
+                                            .extFacing()
+                                            .build(),
                     // Active Glow
-                    isActive()
-                            ? TextureFactory.builder().addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE_GLOW)
-                                    .extFacing().glow().build()
-                            : TextureFactory.builder().addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_GLOW).extFacing()
-                                    .glow().build() };
+                    isActive() ? TextureFactory.builder()
+                                               .addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE_GLOW)
+                                               .extFacing()
+                                               .glow()
+                                               .build()
+                            : TextureFactory.builder()
+                                            .addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_GLOW)
+                                            .extFacing()
+                                            .glow()
+                                            .build() };
         }
         // Base Texture
         return new ITexture[] { MACHINE_CASINGS[1][0] };
@@ -177,7 +222,8 @@ public class MultiBlock_Macerator extends MultiBlock_Stackable<MultiBlock_Macera
             }
             return false;
         } else {
-            ItemStack[] tItemInputs = getInventoriesForInput().getStacks().toArray(new ItemStack[0]);
+            ItemStack[] tItemInputs = getInventoriesForInput().getStacks()
+                                                              .toArray(new ItemStack[0]);
             return processRecipe(tItemInputs, null);
         }
     }
