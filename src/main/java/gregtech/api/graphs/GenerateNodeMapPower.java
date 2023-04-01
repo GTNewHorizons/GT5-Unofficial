@@ -95,8 +95,8 @@ public class GenerateNodeMapPower extends GenerateNodeMap {
     @Override
     protected Node getEmptyNode(int aNodeValue, byte aSide, TileEntity aTileEntity,
             ArrayList<ConsumerNode> aConsumers) {
-        Node tNode = new EmptyPowerConsumer(aNodeValue, aTileEntity, aSide, aConsumers);
-        aConsumers.add((ConsumerNode) tNode);
+        ConsumerNode tNode = new EmptyPowerConsumer(aNodeValue, aTileEntity, aSide, aConsumers);
+        aConsumers.add(tNode);
         return tNode;
     }
 

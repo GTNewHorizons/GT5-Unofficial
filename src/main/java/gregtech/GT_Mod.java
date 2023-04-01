@@ -715,10 +715,10 @@ public class GT_Mod implements IGT_Mod {
 
         if (gregtechproxy.mCraftingUnification) {
             GT_Log.out.println("GT_Mod: Crafting Recipes");
-            for (Object tRecipe : CraftingManager.getInstance()
+            for (IRecipe tRecipe : CraftingManager.getInstance()
                                                  .getRecipeList()) {
                 if ((tRecipe instanceof IRecipe)) {
-                    tStacks.add(((IRecipe) tRecipe).getRecipeOutput());
+                    tStacks.add(tRecipe.getRecipeOutput());
                 }
             }
         }

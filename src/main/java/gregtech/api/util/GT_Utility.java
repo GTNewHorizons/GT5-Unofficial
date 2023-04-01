@@ -3103,7 +3103,7 @@ public class GT_Utility {
         if (entity.riddenByEntity != null) entity.riddenByEntity.mountEntity(null);
 
         World startWorld = entity.worldObj;
-        World destinationWorld = FMLCommonHandler.instance()
+        WorldServer destinationWorld = FMLCommonHandler.instance()
                                                  .getMinecraftServerInstance()
                                                  .worldServerForDimension(aDimension);
 
@@ -3145,7 +3145,7 @@ public class GT_Utility {
 
         entity.setLocationAndAngles(aX, aY, aZ, entity.rotationYaw, entity.rotationPitch);
 
-        ((WorldServer) destinationWorld).theChunkProviderServer.loadChunk((int) aX >> 4, (int) aZ >> 4);
+        destinationWorld.theChunkProviderServer.loadChunk((int) aX >> 4, (int) aZ >> 4);
 
         destinationWorld.theProfiler.startSection("placing");
         if (interDimensional) {
@@ -3173,7 +3173,7 @@ public class GT_Utility {
             EntityPlayerMP player = (EntityPlayerMP) entity;
             if (interDimensional) {
                 player.mcServer.getConfigurationManager()
-                               .func_72375_a(player, (WorldServer) destinationWorld);
+                               .func_72375_a(player, destinationWorld);
             }
             player.playerNetServerHandler.setPlayerLocation(aX, aY, aZ, player.rotationYaw, player.rotationPitch);
         }
@@ -3182,9 +3182,9 @@ public class GT_Utility {
 
         if (((entity instanceof EntityPlayerMP)) && interDimensional) {
             EntityPlayerMP player = (EntityPlayerMP) entity;
-            player.theItemInWorldManager.setWorld((WorldServer) destinationWorld);
+            player.theItemInWorldManager.setWorld(destinationWorld);
             player.mcServer.getConfigurationManager()
-                           .updateTimeAndWeatherForPlayer(player, (WorldServer) destinationWorld);
+                           .updateTimeAndWeatherForPlayer(player, destinationWorld);
             player.mcServer.getConfigurationManager()
                            .syncPlayerInventory(player);
 
@@ -3839,14 +3839,14 @@ public class GT_Utility {
                 return;
             }
             ArrayList<String> tTagsToRemove = new ArrayList<>();
-            for (Object tKey : aNBT.func_150296_c()) {
-                NBTBase tValue = aNBT.getTag((String) tKey);
+            for (String tKey : aNBT.func_150296_c()) {
+                NBTBase tValue = aNBT.getTag(tKey);
                 if (tValue == null || (tValue instanceof NBTPrimitive && ((NBTPrimitive) tValue).func_150291_c() == 0)
                         || (tValue instanceof NBTTagString
                                 && isStringInvalid(((NBTTagString) tValue).func_150285_a_())))
-                    tTagsToRemove.add((String) tKey);
+                    tTagsToRemove.add(tKey);
             }
-            for (Object tKey : tTagsToRemove) aNBT.removeTag((String) tKey);
+            for (String tKey : tTagsToRemove) aNBT.removeTag(tKey);
             aStack.setTagCompound(aNBT.hasNoTags() ? null : aNBT);
         }
 

@@ -1404,10 +1404,10 @@ public class GT_ModHandler {
      */
     public static boolean removeFurnaceSmelting(ItemStack aInput) {
         if (aInput != null) {
-            for (Object tInput : FurnaceRecipes.smelting()
+            for (ItemStack tInput : FurnaceRecipes.smelting()
                                                .getSmeltingList()
                                                .keySet()) {
-                if (GT_Utility.isStackValid(tInput) && GT_Utility.areStacksEqual(aInput, (ItemStack) tInput, true)) {
+                if (GT_Utility.isStackValid(tInput) && GT_Utility.areStacksEqual(aInput, tInput, true)) {
                     FurnaceRecipes.smelting()
                                   .getSmeltingList()
                                   .remove(tInput);

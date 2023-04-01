@@ -730,9 +730,9 @@ public class GT_MetaTileEntity_MagicalEnergyAbsorber extends GT_MetaTileEntity_B
             World tWorld = mAbsorber.getBaseMetaTileEntity()
                                     .getWorld();
             mLivingCrystalIDs.clear();
-            for (Object o : tWorld.getEntitiesWithinAABB(EntityEnderCrystal.class, getAxisAlignedBB())) {
-                if (((EntityEnderCrystal) o).isEntityAlive()) {
-                    mLivingCrystalIDs.add(((EntityEnderCrystal) o).getPersistentID());
+            for (EntityEnderCrystal o : tWorld.getEntitiesWithinAABB(EntityEnderCrystal.class, getAxisAlignedBB())) {
+                if (o.isEntityAlive()) {
+                    mLivingCrystalIDs.add(o.getPersistentID());
                 }
             }
         }

@@ -77,8 +77,8 @@ public class GT_Container_BasicTank extends GT_ContainerMetaTile_Machine {
     }
 
     public void sendProgressBar() {
-        for (Object crafter : this.crafters) {
-            ICrafting player = (ICrafting) crafter;
+        for (ICrafting crafter : this.crafters) {
+            ICrafting player = crafter;
             if (mTimer % 500 == 0 || oContent != mContent) {
                 player.sendProgressBarUpdate(this, 100, mContent & 65535);
                 player.sendProgressBarUpdate(this, 101, mContent >>> 16);
