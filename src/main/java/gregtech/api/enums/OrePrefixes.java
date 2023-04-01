@@ -1476,8 +1476,6 @@ public enum OrePrefixes {
                                 || aMaterial == Materials.Uranium235
                                 || aMaterial == Materials.Plutonium241
                                 || aMaterial == Materials.Americium
-                                || aMaterial == Materials.Neutronium
-                                || aMaterial == Materials.Bronze
                                 || aMaterial == Materials.Brass
                                 || aMaterial == Materials.Electrum
                                 || aMaterial == Materials.NaquadahEnriched
@@ -1544,7 +1542,7 @@ public enum OrePrefixes {
                                 !aPrefix.mDisabledItems.contains(aMaterial));
                         if (!aEnableComponent) { // Disable component if false and is not already in disabled list
                             aPrefix.disableComponent(aMaterial);
-                        } else if (aEnableComponent) { // Enable component if true and is not already in enabled list
+                        } else { // Enable component if true and is not already in enabled list
                             aPrefix.enableComponent(aMaterial);
                         }
                     }
