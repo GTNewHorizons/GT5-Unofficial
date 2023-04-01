@@ -10,6 +10,7 @@ import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
 import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
 
+import gregtech.api.objects.GT_FluidStack;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -6935,28 +6936,138 @@ public class ChemicalRecipes implements Runnable {
         }
     }
 
+    public void addDefaultPolymerizationRecipes(Fluid aBasicMaterial, ItemStack aBasicMaterialCell, Fluid aPolymer) {
+        // Oxygen/Titaniumtetrafluoride -> +50% Output each
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Cell_Air.get(1),
+                GT_Utility.getIntegratedCircuit(1)
+            )
+            .itemOutputs(
+                Materials.Empty.getCells(1)
+            )
+            .fluidInputs(
+                new GT_FluidStack(aBasicMaterial, 144)
+            )
+            .fluidOutputs(
+                new GT_FluidStack(aPolymer, 144)
+            )
+            .duration(8 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(sChemicalRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                Materials.Oxygen.getCells(1),
+                GT_Utility.getIntegratedCircuit(1)
+            )
+            .itemOutputs(
+                Materials.Empty.getCells(1)
+            )
+            .fluidInputs(
+                new GT_FluidStack(aBasicMaterial, 144)
+            )
+            .fluidOutputs(
+                new GT_FluidStack(aPolymer, 216)
+            )
+            .duration(8 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(sChemicalRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                aBasicMaterialCell,
+                GT_Utility.getIntegratedCircuit(1)
+            )
+            .itemOutputs(
+                Materials.Empty.getCells(1)
+            )
+            .fluidInputs(
+                Materials.Air.getGas(14000)
+            )
+            .fluidOutputs(
+                new GT_FluidStack(aPolymer, 1000)
+            )
+            .duration(56 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(sChemicalRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                aBasicMaterialCell,
+                GT_Utility.getIntegratedCircuit(1)
+            )
+            .itemOutputs(
+                Materials.Empty.getCells(1)
+            )
+            .fluidInputs(
+                Materials.Oxygen.getGas(7000)
+            )
+            .fluidOutputs(
+                new GT_FluidStack(aPolymer, 1500)
+            )
+            .duration(56 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(sChemicalRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(2)
+            )
+            .noItemOutputs()
+            .fluidInputs(
+                new GT_FluidStack(aBasicMaterial, 2160),
+                Materials.Air.getGas(7500),
+                Materials.Titaniumtetrachloride.getFluid(100)
+            )
+            .fluidOutputs(
+                new GT_FluidStack(aPolymer, 3240)
+            )
+            .duration(40 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(sMultiblockChemicalRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.getIntegratedCircuit(2)
+            )
+            .noItemOutputs()
+            .fluidInputs(
+                new GT_FluidStack(aBasicMaterial, 2160),
+                Materials.Oxygen.getGas(7500),
+                Materials.Titaniumtetrachloride.getFluid(100)
+            )
+            .fluidOutputs(
+                new GT_FluidStack(aPolymer, 4320)
+            )
+            .duration(40 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(sMultiblockChemicalRecipes);
+
+    }
+
     public void polymerizationRecipes() {
-        GT_Values.RA.addDefaultPolymerizationRecipes(
+        addDefaultPolymerizationRecipes(
                 Materials.VinylAcetate.mFluid,
                 Materials.VinylAcetate.getCells(1),
                 Materials.PolyvinylAcetate.mFluid);
 
-        GT_Values.RA.addDefaultPolymerizationRecipes(
+        addDefaultPolymerizationRecipes(
                 Materials.Ethylene.mGas,
                 Materials.Ethylene.getCells(1),
                 Materials.Plastic.mStandardMoltenFluid);
 
-        GT_Values.RA.addDefaultPolymerizationRecipes(
+        addDefaultPolymerizationRecipes(
                 Materials.Tetrafluoroethylene.mGas,
                 Materials.Tetrafluoroethylene.getCells(1),
                 Materials.Polytetrafluoroethylene.mStandardMoltenFluid);
 
-        GT_Values.RA.addDefaultPolymerizationRecipes(
+        addDefaultPolymerizationRecipes(
                 Materials.VinylChloride.mGas,
                 Materials.VinylChloride.getCells(1),
                 Materials.PolyvinylChloride.mStandardMoltenFluid);
 
-        GT_Values.RA.addDefaultPolymerizationRecipes(
+        addDefaultPolymerizationRecipes(
                 Materials.Styrene.mFluid,
                 Materials.Styrene.getCells(1),
                 Materials.Polystyrene.mStandardMoltenFluid);
