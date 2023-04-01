@@ -679,7 +679,7 @@ public class BlastFurnaceRecipes implements Runnable {
         // compute if it can make fuel block version of the recipes
         boolean blockVersion = true;
         for (ItemStack inputStack : inputs) {
-            if (inputStack.stackSize <= 6) {
+            if (inputStack.stackSize > 6) {
                 blockVersion = false;
                 break;
             }
@@ -688,7 +688,7 @@ public class BlastFurnaceRecipes implements Runnable {
         // skipping if it has been already set to false
         if (blockVersion) {
             for (ItemStack outputStack : outputs) {
-                if (outputStack.stackSize <= 6) {
+                if (outputStack.stackSize > 6) {
                     blockVersion = false;
                     break;
                 }
@@ -740,8 +740,8 @@ public class BlastFurnaceRecipes implements Runnable {
 
             // coal as block
             GT_Values.RA.stdBuilder()
-                        .itemInputs(ArrayUtils.add(inputs, coal.getBlocks(coalAmount)))
-                        .itemOutputs(ArrayUtils.add(outputs, Materials.DarkAsh.getDust(coalAmount)))
+                        .itemInputs(ArrayUtils.add(inputsBlocks, coal.getBlocks(coalAmount)))
+                        .itemOutputs(ArrayUtils.add(outputsBlocks, Materials.DarkAsh.getDust(coalAmount)))
                         .noFluidInputs()
                         .noFluidOutputs()
                         .duration(duration * 10)
@@ -760,15 +760,17 @@ public class BlastFurnaceRecipes implements Runnable {
                         .eut(0)
                         .addTo(sPrimitiveBlastRecipes);
 
-            // coal coke block
-            GT_Values.RA.stdBuilder()
-                        .itemInputs(ArrayUtils.add(inputs, EnumCube.COKE_BLOCK.getItem(coalAmount / 2)))
-                        .itemOutputs(ArrayUtils.add(outputs, Materials.Ash.getDust(coalAmount / 2)))
-                        .noFluidInputs()
-                        .noFluidOutputs()
-                        .duration(duration * 10 * 2 / 3)
-                        .eut(0)
-                        .addTo(sPrimitiveBlastRecipes);
+            if (blockVersion) {
+                // coal coke block
+                GT_Values.RA.stdBuilder()
+                            .itemInputs(ArrayUtils.add(inputs, EnumCube.COKE_BLOCK.getItem(coalAmount / 2)))
+                            .itemOutputs(ArrayUtils.add(outputs, Materials.Ash.getDust(coalAmount / 2)))
+                            .noFluidInputs()
+                            .noFluidOutputs()
+                            .duration(duration * 10 * 2 / 3)
+                            .eut(0)
+                            .addTo(sPrimitiveBlastRecipes);
+            }
         }
 
         if (GTPlusPlus.isModLoaded()) {
