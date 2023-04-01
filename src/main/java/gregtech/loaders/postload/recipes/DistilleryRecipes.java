@@ -90,19 +90,23 @@ public class DistilleryRecipes implements Runnable {
                 .fluidInputs(MaterialsOreAlum.SluiceJuice.getFluid(1000)).fluidOutputs(Materials.Water.getFluid(500))
                 .duration(5 * SECONDS).eut(16).addTo(sDistilleryRecipes);
 
-        GT_Values.RA.stdBuilder().itemInputs(6).noItemOutputs().fluidInputs(Materials.WoodTar.getFluid(200))
+        GT_Values.RA.stdBuilder().itemInputs(GT_Utility.getIntegratedCircuit(6)).noItemOutputs()
+                .fluidInputs(Materials.WoodTar.getFluid(200))
                 .fluidOutputs(MaterialsKevlar.IIIDimethylbenzene.getFluid(30)).duration(16 * TICKS).eut(64)
                 .addTo(sDistilleryRecipes);
 
-        GT_Values.RA.stdBuilder().itemInputs(6).noItemOutputs().fluidInputs(Materials.CharcoalByproducts.getGas(200))
+        GT_Values.RA.stdBuilder().itemInputs(GT_Utility.getIntegratedCircuit(6)).noItemOutputs()
+                .fluidInputs(Materials.CharcoalByproducts.getGas(200))
                 .fluidOutputs(MaterialsKevlar.IIIDimethylbenzene.getFluid(20)).duration(5 * SECONDS).eut(64)
                 .addTo(sDistilleryRecipes);
 
-        GT_Values.RA.stdBuilder().itemInputs(7).noItemOutputs().fluidInputs(Materials.WoodTar.getFluid(200))
+        GT_Values.RA.stdBuilder().itemInputs(GT_Utility.getIntegratedCircuit(7)).noItemOutputs()
+                .fluidInputs(Materials.WoodTar.getFluid(200))
                 .fluidOutputs(MaterialsKevlar.IVDimethylbenzene.getFluid(30)).duration(16 * TICKS).eut(64)
                 .addTo(sDistilleryRecipes);
 
-        GT_Values.RA.stdBuilder().itemInputs(7).noItemOutputs().fluidInputs(Materials.CharcoalByproducts.getGas(200))
+        GT_Values.RA.stdBuilder().itemInputs(GT_Utility.getIntegratedCircuit(7)).noItemOutputs()
+                .fluidInputs(Materials.CharcoalByproducts.getGas(200))
                 .fluidOutputs(MaterialsKevlar.IVDimethylbenzene.getFluid(20)).duration(5 * SECONDS).eut(64)
                 .addTo(sDistilleryRecipes);
         // (NaCl·H2O) = NaCl + H2O
@@ -149,18 +153,21 @@ public class DistilleryRecipes implements Runnable {
                 .fluidOutputs(new FluidStack(FluidRegistry.getFluid("ic2biogas"), 3000)).duration(8 * SECONDS).eut(8)
                 .addTo(sDistilleryRecipes);
 
-        GT_Values.RA.stdBuilder().itemInputs(2).noItemOutputs().fluidInputs(Materials.HeavyFuel.getFluid(100))
-                .fluidOutputs(Materials.Benzene.getFluid(40)).duration(8 * SECONDS).eut(24).addTo(sDistilleryRecipes);
+        GT_Values.RA.stdBuilder().itemInputs(GT_Utility.getIntegratedCircuit(2)).noItemOutputs()
+                .fluidInputs(Materials.HeavyFuel.getFluid(100)).fluidOutputs(Materials.Benzene.getFluid(40))
+                .duration(8 * SECONDS).eut(24).addTo(sDistilleryRecipes);
 
-        GT_Values.RA.stdBuilder().itemInputs(3).noItemOutputs().fluidInputs(Materials.HeavyFuel.getFluid(100))
-                .fluidOutputs(Materials.Phenol.getFluid(25)).duration(8 * SECONDS).eut(24).addTo(sDistilleryRecipes);
+        GT_Values.RA.stdBuilder().itemInputs(GT_Utility.getIntegratedCircuit(3)).noItemOutputs()
+                .fluidInputs(Materials.HeavyFuel.getFluid(100)).fluidOutputs(Materials.Phenol.getFluid(25))
+                .duration(8 * SECONDS).eut(24).addTo(sDistilleryRecipes);
         // Dimethylbenzene
 
-        GT_Values.RA.stdBuilder().itemInputs(5).noItemOutputs().fluidInputs(Materials.WoodTar.getFluid(200))
-                .fluidOutputs(Materials.Dimethylbenzene.getFluid(30)).duration(5 * SECONDS).eut(TierEU.RECIPE_MV)
-                .addTo(sDistilleryRecipes);
+        GT_Values.RA.stdBuilder().itemInputs(GT_Utility.getIntegratedCircuit(5)).noItemOutputs()
+                .fluidInputs(Materials.WoodTar.getFluid(200)).fluidOutputs(Materials.Dimethylbenzene.getFluid(30))
+                .duration(5 * SECONDS).eut(TierEU.RECIPE_MV).addTo(sDistilleryRecipes);
 
-        GT_Values.RA.stdBuilder().itemInputs(5).noItemOutputs().fluidInputs(Materials.CharcoalByproducts.getGas(200))
+        GT_Values.RA.stdBuilder().itemInputs(GT_Utility.getIntegratedCircuit(5)).noItemOutputs()
+                .fluidInputs(Materials.CharcoalByproducts.getGas(200))
                 .fluidOutputs(Materials.Dimethylbenzene.getFluid(20)).duration(5 * SECONDS).eut(TierEU.RECIPE_MV)
                 .addTo(sDistilleryRecipes);
 
