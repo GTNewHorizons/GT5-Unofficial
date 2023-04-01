@@ -96,7 +96,7 @@ public class GT_Generic_Item extends Item implements IProjectileItem {
 
     @SuppressWarnings("unchecked")
     @Override
-    public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean aF3_H) {
+    public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
         if (getMaxDamage() > 0 && !getHasSubtypes())
             aList.add((aStack.getMaxDamage() - getDamage(aStack)) + " / " + aStack.getMaxDamage());
         if (mTooltip != null) aList.add(GT_LanguageManager.getTranslation(mTooltip));

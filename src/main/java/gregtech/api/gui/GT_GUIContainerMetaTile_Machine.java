@@ -190,7 +190,7 @@ public class GT_GUIContainerMetaTile_Machine extends GT_GUIContainer implements 
 
     // GT_IToolTipRenderer and GT_ITabRenderer implementations
     @Override
-    public void drawHoveringText(List text, int mouseX, int mouseY, FontRenderer font) {
+    public void drawHoveringText(List<String> text, int mouseX, int mouseY, FontRenderer font) {
         super.drawHoveringText(text, mouseX, mouseY, font);
     }
 

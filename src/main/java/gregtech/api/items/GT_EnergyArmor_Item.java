@@ -32,7 +32,7 @@ import gregtech.api.util.GT_Utility;
 
 public class GT_EnergyArmor_Item extends ItemArmor implements ISpecialArmor {
 
-    public static Map jumpChargeMap = new ConcurrentHashMap();
+    public static Map<EntityPlayer, Float> jumpChargeMap = new ConcurrentHashMap<>();
     public int mCharge, mTransfer, mTier, mDamageEnergyCost, mSpecials;
     public boolean mChargeProvider;
     public double mArmorAbsorbtionPercentage;
@@ -88,7 +88,7 @@ public class GT_EnergyArmor_Item extends ItemArmor implements ISpecialArmor {
     }
 
     @Override
-    public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean aF3_H) {
+    public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
         aList.add("Tier: " + mTier);
         if ((mSpecials & 1) != 0) aList.add("Rebreather");
         if ((mSpecials & 2) != 0) aList.add("Inertia Damper");

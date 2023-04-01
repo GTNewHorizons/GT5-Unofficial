@@ -214,7 +214,7 @@ public class GT_Utility {
         return rField;
     }
 
-    public static Field getField(Class aObject, String aField) {
+    public static Field getField(Class<?> aObject, String aField) {
         Field rField = null;
         try {
             rField = aObject.getDeclaredField(aField);
@@ -225,7 +225,7 @@ public class GT_Utility {
         return rField;
     }
 
-    public static Method getMethod(Class aObject, String aMethod, Class<?>... aParameterTypes) {
+    public static Method getMethod(Class<?> aObject, String aMethod, Class<?>... aParameterTypes) {
         Method rMethod = null;
         try {
             rMethod = aObject.getMethod(aMethod, aParameterTypes);
@@ -292,7 +292,7 @@ public class GT_Utility {
             Class<?>[] tParameterTypes = new Class<?>[aParameters.length];
             for (byte i = 0; i < aParameters.length; i++) {
                 if (aParameters[i] instanceof Class) {
-                    tParameterTypes[i] = (Class) aParameters[i];
+                    tParameterTypes[i] = (Class<?>) aParameters[i];
                     aParameters[i] = null;
                 } else {
                     tParameterTypes[i] = aParameters[i].getClass();
@@ -2340,7 +2340,7 @@ public class GT_Utility {
         return listContains(aObject, Arrays.asList(aObjects));
     }
 
-    public static boolean listContains(Object aObject, Collection aObjects) {
+    public static boolean listContains(Object aObject, Collection<?> aObjects) {
         if (aObjects == null) return false;
         return aObjects.contains(aObject);
     }
@@ -3055,7 +3055,7 @@ public class GT_Utility {
     /**
      * Why the fuck do neither Java nor Guava have a Function to do this?
      */
-    public static <X, Y extends Comparable> LinkedHashMap<X, Y> sortMapByValuesDescending(Map<X, Y> aMap) {
+    public static <X, Y extends Comparable<Y>> LinkedHashMap<X, Y> sortMapByValuesDescending(Map<X, Y> aMap) {
         List<Map.Entry<X, Y>> tEntrySet = new LinkedList<>(aMap.entrySet());
         tEntrySet.sort((aValue1, aValue2) -> {
             return aValue2.getValue()

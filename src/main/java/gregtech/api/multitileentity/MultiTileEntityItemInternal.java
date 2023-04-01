@@ -49,7 +49,7 @@ public class MultiTileEntityItemInternal extends ItemBlock implements IFluidCont
 
     @Override
     @SuppressWarnings("unchecked")
-    public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean aF3_H) {
+    public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
         final MultiTileEntityContainer tTileEntityContainer = mBlock.mMultiTileEntityRegistry.getNewTileEntityContainer(
                 aStack);
         if (tTileEntityContainer == null) {
