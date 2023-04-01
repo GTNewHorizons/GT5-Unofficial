@@ -50,18 +50,21 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.logic.PowerLogic;
+import gregtech.api.logic.interfaces.PowerLogicHost;
 import gregtech.api.multitileentity.MultiTileEntityRegistry;
-import gregtech.api.multitileentity.base.BaseNontickableMultiTileEntity;
+import gregtech.api.multitileentity.base.NonTickableMultiTileEntity;
 import gregtech.api.multitileentity.interfaces.IMultiBlockController;
 import gregtech.api.multitileentity.interfaces.IMultiBlockPart;
 import gregtech.api.multitileentity.interfaces.IMultiTileEntity.IMTE_BreakBlock;
 import gregtech.api.multitileentity.interfaces.IMultiTileEntity.IMTE_HasModes;
+import gregtech.api.net.GT_Packet_MultiTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.covers.CoverInfo;
 
-public abstract class MultiBlockPart extends BaseNontickableMultiTileEntity
-        implements IMultiBlockPart, IMTE_BreakBlock, IMTE_HasModes {
+public abstract class MultiBlockPart extends NonTickableMultiTileEntity
+        implements IMultiBlockPart, IMTE_BreakBlock, IMTE_HasModes, PowerLogicHost {
 
     public static final int NOTHING = 0, ENERGY_IN = B[0], ENERGY_OUT = B[1], FLUID_IN = B[2], FLUID_OUT = B[3],
             ITEM_IN = B[4], ITEM_OUT = B[5];
@@ -70,7 +73,7 @@ public abstract class MultiBlockPart extends BaseNontickableMultiTileEntity
             Arrays.asList(NOTHING, ENERGY_IN, ENERGY_OUT, FLUID_IN, FLUID_OUT, ITEM_IN, ITEM_OUT));
 
     protected ChunkCoordinates mTargetPos = null;
-    protected IMultiBlockController mTarget = null;
+    protected IMultiBlockController target = null;
 
     protected int mAllowedModes = NOTHING; // BITMASK - Modes allowed for this part
     protected byte mMode = 0; // Mode selected for this part
@@ -99,10 +102,10 @@ public abstract class MultiBlockPart extends BaseNontickableMultiTileEntity
     }
 
     public void setTarget(IMultiBlockController aTarget, int aAllowedModes) {
-        mTarget = aTarget;
-        mTargetPos = (mTarget == null ? null : mTarget.getCoords());
+        target = aTarget;
+        mTargetPos = (target == null ? null : target.getCoords());
         mAllowedModes = aAllowedModes;
-        if (mTarget != null) registerCovers(mTarget);
+        if (target != null) registerCovers(target);
     }
 
     @Override
@@ -125,21 +128,22 @@ public abstract class MultiBlockPart extends BaseNontickableMultiTileEntity
 
     public IMultiBlockController getTarget(boolean aCheckValidity) {
         if (mTargetPos == null) return null;
-        if (mTarget == null || mTarget.isDead()) {
+        if (target == null || target.isDead()) {
             if (worldObj.blockExists(mTargetPos.posX, mTargetPos.posY, mTargetPos.posZ)) {
                 final TileEntity te = worldObj.getTileEntity(mTargetPos.posX, mTargetPos.posY, mTargetPos.posZ);
                 if (te instanceof IMultiBlockController) {
-                    mTarget = (IMultiBlockController) te;
+                    target = (IMultiBlockController) te;
                     // Register our covers with the controller
-                    registerCovers(mTarget);
+                    registerCovers(target);
                 } else {
                     mTargetPos = null;
                 }
             }
         }
         if (aCheckValidity) {
-            return mTarget != null && mTarget.checkStructure(false) ? mTarget : null;
-        } else return mTarget;
+            return target != null && target.checkStructure(false) ? target : null;
+        }
+        return target;
     }
 
     public void registerCovers(IMultiBlockController controller) {
@@ -216,6 +220,18 @@ public abstract class MultiBlockPart extends BaseNontickableMultiTileEntity
         if (mLockedInventoryIndex != 0) {
             aNBT.setInteger(NBT.LOCKED_INVENTORY_INDEX, mLockedInventoryIndex);
         }
+    }
+
+    @Override
+    public GT_Packet_MultiTileEntity getClientDataPacket() {
+        final GT_Packet_MultiTileEntity packet = super.getClientDataPacket();
+        packet.setModes(getMode(), getAllowedModes());
+        if (getTargetPos() != null) {
+            final ChunkCoordinates aTarget = getTargetPos();
+            packet.setTargetPos(aTarget.posX, (short) aTarget.posY, aTarget.posZ);
+        }
+        packet.setInventoryIndex(getLockedInventoryIndex());
+        return packet;
     }
 
     @Override
@@ -305,7 +321,7 @@ public abstract class MultiBlockPart extends BaseNontickableMultiTileEntity
     public void loadTextureNBT(NBTTagCompound aNBT) {
         // Loading the registry
         final String textureName = aNBT.getString(NBT.TEXTURE);
-        mTextures = new IIconContainer[] {
+        textures = new IIconContainer[] {
                 new Textures.BlockIcons.CustomIcon("multitileentity/multiblockparts/" + textureName + "/bottom"),
                 new Textures.BlockIcons.CustomIcon("multitileentity/multiblockparts/" + textureName + "/top"),
                 new Textures.BlockIcons.CustomIcon("multitileentity/multiblockparts/" + textureName + "/side"),
@@ -321,8 +337,7 @@ public abstract class MultiBlockPart extends BaseNontickableMultiTileEntity
         // Loading an instance
         final TileEntity tCanonicalTileEntity = MultiTileEntityRegistry
                 .getCanonicalTileEntity(getMultiTileEntityRegistryID(), getMultiTileEntityID());
-        if (tCanonicalTileEntity instanceof MultiBlockPart)
-            mTextures = ((MultiBlockPart) tCanonicalTileEntity).mTextures;
+        if (tCanonicalTileEntity instanceof MultiBlockPart) textures = ((MultiBlockPart) tCanonicalTileEntity).textures;
     }
 
     @Override
@@ -330,7 +345,7 @@ public abstract class MultiBlockPart extends BaseNontickableMultiTileEntity
         // For normal parts - texture comes from BaseMTE; overlay based on current mode
         // TODO(MTE) - For Advanced parts they might come from somewhere else
         final ITexture baseTexture = TextureFactory.of(super.getTexture(aBlock, aSide, isActive, aRenderPass));
-        if (mMode != 0 && aSide == mFacing) {
+        if (mMode != 0 && aSide == facing) {
             if (mMode == getModeOrdinal(ITEM_IN)) return new ITexture[] { baseTexture,
                     TextureFactory.of(OVERLAY_PIPE_IN), TextureFactory.of(ITEM_IN_SIGN) };
             if (mMode == getModeOrdinal(ITEM_OUT)) return new ITexture[] { baseTexture,
@@ -418,7 +433,7 @@ public abstract class MultiBlockPart extends BaseNontickableMultiTileEntity
         if (!modeSelected(FLUID_IN)) return 0;
         final byte aSide = (byte) aDirection.ordinal();
         if (aDirection != ForgeDirection.UNKNOWN
-                && (aSide != mFacing || !coverLetsFluidIn(aSide, aFluidStack == null ? null : aFluidStack.getFluid())))
+                && (aSide != facing || !coverLetsFluidIn(aSide, aFluidStack == null ? null : aFluidStack.getFluid())))
             return 0;
         final IMultiBlockController controller = getTarget(true);
         return controller == null ? 0 : controller.fill(this, aDirection, aFluidStack, aDoFill);
@@ -429,7 +444,7 @@ public abstract class MultiBlockPart extends BaseNontickableMultiTileEntity
         if (!modeSelected(FLUID_OUT)) return null;
         final byte aSide = (byte) aDirection.ordinal();
         if (aDirection != ForgeDirection.UNKNOWN
-                && (aSide != mFacing || !coverLetsFluidOut(aSide, aFluidStack == null ? null : aFluidStack.getFluid())))
+                && (aSide != facing || !coverLetsFluidOut(aSide, aFluidStack == null ? null : aFluidStack.getFluid())))
             return null;
         final IMultiBlockController controller = getTarget(true);
         return controller == null ? null : controller.drain(this, aDirection, aFluidStack, aDoDrain);
@@ -443,7 +458,7 @@ public abstract class MultiBlockPart extends BaseNontickableMultiTileEntity
         if (controller == null) return null;
         final FluidStack aFluidStack = controller.getDrainableFluid(aSide);
         if (aDirection != ForgeDirection.UNKNOWN
-                && (aSide != mFacing || !coverLetsFluidOut(aSide, aFluidStack == null ? null : aFluidStack.getFluid())))
+                && (aSide != facing || !coverLetsFluidOut(aSide, aFluidStack == null ? null : aFluidStack.getFluid())))
             return null;
         return controller.drain(this, aDirection, aAmountToDrain, aDoDrain);
     }
@@ -452,8 +467,7 @@ public abstract class MultiBlockPart extends BaseNontickableMultiTileEntity
     public boolean canFill(ForgeDirection aDirection, Fluid aFluid) {
         if (!modeSelected(FLUID_IN)) return false;
         final byte aSide = (byte) aDirection.ordinal();
-        if (aDirection != ForgeDirection.UNKNOWN && (aSide != mFacing || !coverLetsFluidIn(aSide, aFluid)))
-            return false;
+        if (aDirection != ForgeDirection.UNKNOWN && (aSide != facing || !coverLetsFluidIn(aSide, aFluid))) return false;
         final IMultiBlockController controller = getTarget(true);
         return controller != null && controller.canFill(this, aDirection, aFluid);
     }
@@ -462,7 +476,7 @@ public abstract class MultiBlockPart extends BaseNontickableMultiTileEntity
     public boolean canDrain(ForgeDirection aDirection, Fluid aFluid) {
         if (!modeSelected(FLUID_OUT)) return false;
         final byte aSide = (byte) aDirection.ordinal();
-        if (aDirection != ForgeDirection.UNKNOWN && (aSide != mFacing || !coverLetsFluidOut(aSide, aFluid)))
+        if (aDirection != ForgeDirection.UNKNOWN && (aSide != facing || !coverLetsFluidOut(aSide, aFluid)))
             return false;
         final IMultiBlockController controller = getTarget(true);
         return controller != null && controller.canDrain(this, aDirection, aFluid);
@@ -471,7 +485,7 @@ public abstract class MultiBlockPart extends BaseNontickableMultiTileEntity
     @Override
     public FluidTankInfo[] getTankInfo(ForgeDirection aDirection) {
         final byte aSide = (byte) aDirection.ordinal();
-        if (!modeSelected(FLUID_IN, FLUID_OUT) || (aSide != SIDE_UNKNOWN && aSide != mFacing))
+        if (!modeSelected(FLUID_IN, FLUID_OUT) || (aSide != SIDE_UNKNOWN && aSide != facing))
             return GT_Values.emptyFluidTankInfo;
         final IMultiBlockController controller = getTarget(true);
         if (controller == null) return GT_Values.emptyFluidTankInfo;
@@ -485,9 +499,14 @@ public abstract class MultiBlockPart extends BaseNontickableMultiTileEntity
         return GT_Values.emptyFluidTankInfo;
     }
 
-    /**
-     * Energy - Depending on the part type - proxy to the multiblock controller, if we have one
-     */
+    // #region Energy - Depending on the part type - proxy to the multiblock controller, if we have one
+
+    @Override
+    public PowerLogic getPowerLogic(byte side) {
+        final IMultiBlockController controller = getTarget(true);
+        return controller.getPowerLogic(this, side);
+    }
+
     @Override
     public boolean isEnetInput() {
         return modeSelected(ENERGY_IN);
@@ -498,132 +517,7 @@ public abstract class MultiBlockPart extends BaseNontickableMultiTileEntity
         return modeSelected(ENERGY_OUT);
     }
 
-    @Override
-    public boolean isUniversalEnergyStored(long aEnergyAmount) {
-        if (!modeSelected(ENERGY_OUT, ENERGY_IN)) return false;
-        final IMultiBlockController controller = getTarget(true);
-        return controller != null && controller.isUniversalEnergyStored(this, aEnergyAmount);
-    }
-
-    @Override
-    public long getUniversalEnergyStored() {
-        if (!modeSelected(ENERGY_OUT, ENERGY_IN)) return 0;
-        final IMultiBlockController controller = getTarget(true);
-        return controller != null ? controller.getUniversalEnergyStored(this) : 0;
-    }
-
-    @Override
-    public long getUniversalEnergyCapacity() {
-        if (!modeSelected(ENERGY_OUT, ENERGY_IN)) return 0;
-        final IMultiBlockController controller = getTarget(true);
-        return controller != null ? controller.getUniversalEnergyCapacity(this) : 0;
-    }
-
-    @Override
-    public long getOutputAmperage() {
-        if (!modeSelected(ENERGY_OUT)) return 0;
-        final IMultiBlockController controller = getTarget(true);
-        return controller != null ? controller.getOutputAmperage(this) : 0;
-    }
-
-    @Override
-    public long getOutputVoltage() {
-        if (!modeSelected(ENERGY_OUT)) return 0;
-        final IMultiBlockController controller = getTarget(true);
-        return controller != null ? controller.getOutputVoltage(this) : 0;
-    }
-
-    @Override
-    public long getInputAmperage() {
-        if (!modeSelected(ENERGY_IN)) return 0;
-        final IMultiBlockController controller = getTarget(true);
-        return (controller != null && hasMode(ENERGY_IN)) ? controller.getInputAmperage(this) : 0;
-    }
-
-    @Override
-    public long getInputVoltage() {
-        if (!modeSelected(ENERGY_IN)) return 0;
-        final IMultiBlockController controller = getTarget(true);
-        return (controller != null && hasMode(ENERGY_IN)) ? controller.getInputVoltage(this) : 0;
-    }
-
-    @Override
-    public boolean decreaseStoredEnergyUnits(long aEnergy, boolean aIgnoreTooLittleEnergy) {
-        if (!modeSelected(ENERGY_OUT)) return false;
-        final IMultiBlockController controller = getTarget(true);
-        return controller != null && hasMode(ENERGY_OUT)
-                && controller.decreaseStoredEnergyUnits(this, aEnergy, aIgnoreTooLittleEnergy);
-    }
-
-    @Override
-    public boolean increaseStoredEnergyUnits(long aEnergy, boolean aIgnoreTooMuchEnergy) {
-        if (!modeSelected(ENERGY_IN)) return false;
-        final IMultiBlockController controller = getTarget(true);
-        return controller != null && hasMode(ENERGY_IN)
-                && controller.increaseStoredEnergyUnits(this, aEnergy, aIgnoreTooMuchEnergy);
-    }
-
-    @Override
-    public boolean drainEnergyUnits(byte aSide, long aVoltage, long aAmperage) {
-        if (!modeSelected(ENERGY_OUT) || (mFacing != SIDE_UNKNOWN && (mFacing != aSide || !coverLetsEnergyOut(aSide))))
-            return false;
-        final IMultiBlockController controller = getTarget(true);
-        return controller != null && controller.drainEnergyUnits(this, aSide, aVoltage, aAmperage);
-    }
-
-    @Override
-    public long injectEnergyUnits(byte aSide, long aVoltage, long aAmperage) {
-        if (!modeSelected(ENERGY_IN) || (mFacing != SIDE_UNKNOWN && (mFacing != aSide || !coverLetsEnergyIn(aSide))))
-            return 0;
-        final IMultiBlockController controller = getTarget(true);
-        return controller != null ? controller.injectEnergyUnits(this, aSide, aVoltage, aAmperage) : 0;
-    }
-
-    @Override
-    public long getAverageElectricInput() {
-        if (!modeSelected(ENERGY_IN)) return 0;
-        final IMultiBlockController controller = getTarget(true);
-        return controller != null ? controller.getAverageElectricInput(this) : 0;
-    }
-
-    @Override
-    public long getAverageElectricOutput() {
-        if (!modeSelected(ENERGY_OUT)) return 0;
-        final IMultiBlockController controller = getTarget(true);
-        return controller != null ? controller.getAverageElectricOutput(this) : 0;
-    }
-
-    @Override
-    public long getStoredEU() {
-        if (!modeSelected(ENERGY_OUT, ENERGY_IN)) return 0;
-        final IMultiBlockController controller = getTarget(true);
-        return controller != null ? controller.getStoredEU(this) : 0;
-    }
-
-    @Override
-    public long getEUCapacity() {
-        if (!modeSelected(ENERGY_OUT, ENERGY_IN)) return 0;
-        final IMultiBlockController controller = getTarget(true);
-        return controller != null ? controller.getEUCapacity(this) : 0;
-    }
-
-    @Override
-    public boolean inputEnergyFrom(byte aSide) {
-        if (!modeSelected(ENERGY_IN) || (mFacing != SIDE_UNKNOWN && (mFacing != aSide || !coverLetsEnergyIn(aSide))))
-            return false;
-        final IMultiBlockController controller = getTarget(true);
-        return controller != null && controller.inputEnergyFrom(this, aSide);
-    }
-
-    @Override
-    public boolean outputsEnergyTo(byte aSide) {
-        if (!modeSelected(ENERGY_OUT) || (mFacing != SIDE_UNKNOWN && (mFacing != aSide || !coverLetsEnergyOut(aSide))))
-            return false;
-        final IMultiBlockController controller = getTarget(true);
-        return controller != null && controller.outputsEnergyTo(this, aSide);
-    }
-
-    // End Energy
+    // #endregion
 
     /**
      * Inventory - Depending on the part type - proxy to the multiblock controller, if we have one
@@ -656,7 +550,7 @@ public abstract class MultiBlockPart extends BaseNontickableMultiTileEntity
 
     @Override
     public int[] getAccessibleSlotsFromSide(int aSide) {
-        if (!modeSelected(ITEM_IN, ITEM_OUT) || (mFacing != SIDE_UNKNOWN && mFacing != aSide))
+        if (!modeSelected(ITEM_IN, ITEM_OUT) || (facing != SIDE_UNKNOWN && facing != aSide))
             return GT_Values.emptyIntArray;
         final IMultiBlockController controller = getTarget(true);
         return controller != null ? controller.getAccessibleSlotsFromSide(this, (byte) aSide) : GT_Values.emptyIntArray;
@@ -665,7 +559,7 @@ public abstract class MultiBlockPart extends BaseNontickableMultiTileEntity
     @Override
     public boolean canInsertItem(int aSlot, ItemStack aStack, int aSide) {
         if (!modeSelected(ITEM_IN, ITEM_OUT)
-                || (mFacing != SIDE_UNKNOWN && (mFacing != aSide || !coverLetsItemsIn((byte) aSide, aSlot))))
+                || (facing != SIDE_UNKNOWN && (facing != aSide || !coverLetsItemsIn((byte) aSide, aSlot))))
             return false;
         final IMultiBlockController controller = getTarget(true);
         return (controller != null && controller.canInsertItem(this, aSlot, aStack, (byte) aSide));
@@ -674,7 +568,7 @@ public abstract class MultiBlockPart extends BaseNontickableMultiTileEntity
     @Override
     public boolean canExtractItem(int aSlot, ItemStack aStack, int aSide) {
         if (!modeSelected(ITEM_IN, ITEM_OUT)
-                || (mFacing != SIDE_UNKNOWN && (mFacing != aSide || !coverLetsItemsOut((byte) aSide, aSlot))))
+                || (facing != SIDE_UNKNOWN && (facing != aSide || !coverLetsItemsOut((byte) aSide, aSlot))))
             return false;
         final IMultiBlockController controller = getTarget(true);
         return (controller != null && controller.canExtractItem(this, aSlot, aStack, (byte) aSide));

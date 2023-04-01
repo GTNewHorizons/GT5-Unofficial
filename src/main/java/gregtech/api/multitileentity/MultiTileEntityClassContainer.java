@@ -8,9 +8,11 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.Tuple;
 
 import gregtech.api.enums.Materials;
-import gregtech.api.multitileentity.base.BaseMultiTileEntity;
-import gregtech.api.multitileentity.multiblock.casing.AdvancedCasing;
+import gregtech.api.multitileentity.base.MultiTileEntity;
+import gregtech.api.multitileentity.multiblock.casing.FunctionalCasing;
+import gregtech.api.multitileentity.multiblock.casing.UpgradeCasing;
 import gregtech.api.util.GT_Util;
+import gregtech.common.tileentities.casings.upgrade.InventoryUpgrade;
 
 public class MultiTileEntityClassContainer {
 
@@ -19,9 +21,9 @@ public class MultiTileEntityClassContainer {
     private String mCategoryName;
 
     public final short mID;
-    public Class<? extends BaseMultiTileEntity> mClass;
+    public Class<? extends MultiTileEntity> mClass;
     public MultiTileEntityBlock mBlock;
-    public BaseMultiTileEntity mCanonicalTileEntity;
+    public MultiTileEntity mCanonicalTileEntity;
     public NBTTagCompound mParameters;
 
     // These have defaults
@@ -30,7 +32,7 @@ public class MultiTileEntityClassContainer {
     public boolean mHidden = false;
 
     public MultiTileEntityClassContainer(MultiTileEntityRegistry aRegistry, int aID,
-            Class<? extends BaseMultiTileEntity> aClass) {
+            Class<? extends MultiTileEntity> aClass) {
         /* Start the Builder */
         mRegistry = new WeakReference<>(aRegistry);
         mID = (short) aID;
@@ -127,14 +129,13 @@ public class MultiTileEntityClassContainer {
     }
 
     public MultiTileEntityClassContainer tier(int aTier) {
-        verifyDescendentOf(AdvancedCasing.class);
-
+        verifyDescendentOfMultiple(true, UpgradeCasing.class, FunctionalCasing.class);
         mParameters.setInteger(NBT.TIER, aTier);
         return this;
     }
 
     public MultiTileEntityClassContainer upgradeInventorySize(int aSize) {
-        verifyDescendentOf(AdvancedCasing.class);
+        verifyDescendentOf(InventoryUpgrade.class);
 
         mParameters.setInteger(NBT.UPGRADE_INVENTORY_SIZE, aSize);
         return this;
@@ -159,6 +160,27 @@ public class MultiTileEntityClassContainer {
         if (!cls.isAssignableFrom(mClass)) {
             throw new IllegalArgumentException(
                     "Expected a descendent of " + cls.getName() + " got " + mClass.getName() + " instead.");
+        }
+    }
+
+    private void verifyDescendentOfMultiple(boolean onlyOne, Class<?>... classes) {
+        boolean atLeastOne = false;
+        String classNames = "";
+        for (Class<?> cls : classes) {
+            classNames += cls.getName() + " ";
+            if (!onlyOne) {
+                verifyDescendentOf(cls);
+                atLeastOne = true;
+            } else {
+                if (cls.isAssignableFrom(mClass)) {
+                    atLeastOne = true;
+                }
+            }
+        }
+
+        if (!atLeastOne) {
+            throw new IllegalArgumentException(
+                    "Expected a descendent of any of these " + classNames + " got " + mClass.getName() + " instead.");
         }
     }
 }

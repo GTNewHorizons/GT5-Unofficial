@@ -10,68 +10,66 @@ import gregtech.api.multitileentity.interfaces.IMultiTileEntity.IMTE_OnNeighborB
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Util;
 
-public abstract class BaseTickableMultiTileEntity extends BaseMultiTileEntity implements IMTE_OnNeighborBlockChange {
+public abstract class TickableMultiTileEntity extends MultiTileEntity implements IMTE_OnNeighborBlockChange {
 
     /** Variable for seeing if the Tick Function is called right now. */
-    public boolean mIsRunningTick = false;
+    public boolean isRunningTick = false;
     /** Gets set to true when the Block received a Block Update. */
-    public boolean mBlockUpdated = false;
+    public boolean blockUpdated = false;
     /** Timer Value */
-    protected long mTimer = 0;
+    protected long timer = 0;
     /** Variable for updating Data to the Client */
-    private boolean mSendClientData = false;
+    private boolean sendClientData = false;
 
-    public BaseTickableMultiTileEntity() {
+    public TickableMultiTileEntity() {
         super(true);
     }
 
     @Override
     public final void updateEntity() {
-        mIsRunningTick = true;
+        isRunningTick = true;
         final boolean isServerSide = isServerSide();
         try {
-            if (mTimer++ == 0) {
+            if (timer++ == 0) {
                 markDirty();
                 GT_Util.markChunkDirty(this);
                 onFirstTick(isServerSide);
             }
-            if (!isDead()) onPreTick(mTimer, isServerSide);
-            if (!isDead()) {
-                mTimer++;
-                super.updateEntity();
+            if (isDead()) {
+                return;
             }
-            if (!isServerSide) {
-                if (mNeedsUpdate) {
-                    worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-                    // worldObj.func_147479_m(xCoord, yCoord, zCoord);
-                    mNeedsUpdate = false;
-                }
+            onPreTick(timer, isServerSide);
+            timer++;
+            super.updateEntity();
+            if (!isServerSide && needsUpdate) {
+                worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+                needsUpdate = false;
             }
-            if (!isDead()) onTick(mTimer, isServerSide);
-            if (!isDead() && isServerSide && mTimer > 2 && mSendClientData) {
+            onTick(timer, isServerSide);
+            if (isServerSide && timer > 2 && sendClientData) {
                 sendClientData(null);
             }
-            if (!isDead()) onPostTick(mTimer, isServerSide);
+            onPostTick(timer, isServerSide);
 
         } catch (Throwable e) {
             GT_FML_LOGGER.error("UpdateEntity Failed", e);
             e.printStackTrace(GT_Log.err);
             try {
-                onTickFailed(mTimer, isServerSide);
+                onTickFailed(timer, isServerSide);
             } catch (Throwable e2) {
                 GT_FML_LOGGER.error("UpdateEntity:onTickFailed Failed", e);
             }
         }
 
-        mIsRunningTick = false;
+        isRunningTick = false;
     }
 
     @Override
     public void sendClientData(EntityPlayerMP aPlayer) {
-        if (mSendClientData) {
+        if (sendClientData) {
             GT_FML_LOGGER.info("Sending client data");
             super.sendClientData(aPlayer);
-            mSendClientData = false;
+            sendClientData = false;
         }
     }
 
@@ -85,33 +83,27 @@ public abstract class BaseTickableMultiTileEntity extends BaseMultiTileEntity im
     }
 
     /** The first part of the Tick. */
-    public void onPreTick(long aTick, boolean isServerSide) {
-        /* Do nothing */
-    }
+    public void onPreTick(long aTick, boolean isServerSide) {}
 
     /** The regular Tick. */
-    public void onTick(long aTimer, boolean isServerSide) {
-        /* Do nothing */
+    public void onTick(long tick, boolean isServerSide) {
+
     }
 
     /** The absolute last part of the Tick. */
-    public void onPostTick(long aTick, boolean isServerSide) {
-        /* Do nothing */
-    }
+    public void onPostTick(long aTick, boolean isServerSide) {}
 
     /** Gets called when there is an Exception happening during one of the Tick Functions. */
-    public void onTickFailed(long aTimer, boolean isServerSide) {
-        /* Do nothing */
-    }
+    public void onTickFailed(long aTimer, boolean isServerSide) {}
 
     @Override
     public void onNeighborBlockChange(World aWorld, Block aBlock) {
-        mBlockUpdated = true;
+        blockUpdated = true;
     }
 
     @Override
     public void issueClientUpdate() {
-        mSendClientData = true;
+        sendClientData = true;
     }
 
     @Override

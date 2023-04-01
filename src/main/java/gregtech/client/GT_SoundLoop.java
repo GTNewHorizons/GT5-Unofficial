@@ -9,6 +9,7 @@ import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.multitileentity.machine.MultiTileBasicMachine;
 
 @SideOnly(Side.CLIENT)
 public class GT_SoundLoop extends MovingSound {
@@ -22,6 +23,19 @@ public class GT_SoundLoop extends MovingSound {
     public GT_SoundLoop(ResourceLocation p_i45104_1_, IGregTechTileEntity base, boolean stopWhenActive,
             boolean stopWhenInactive) {
         super(p_i45104_1_);
+        this.whileActive = stopWhenActive;
+        this.whileInactive = stopWhenInactive;
+        xPosF = base.getXCoord();
+        yPosF = base.getYCoord();
+        zPosF = base.getZCoord();
+        worldID = base.getWorld().provider.dimensionId;
+        repeat = true;
+        volume = VOLUME_RAMP;
+    }
+
+    public GT_SoundLoop(ResourceLocation sound, MultiTileBasicMachine base, boolean stopWhenActive,
+            boolean stopWhenInactive) {
+        super(sound);
         this.whileActive = stopWhenActive;
         this.whileInactive = stopWhenInactive;
         xPosF = base.getXCoord();
@@ -51,10 +65,16 @@ public class GT_SoundLoop extends MovingSound {
                 .checkChunksExist((int) xPosF, (int) yPosF, (int) zPosF, (int) xPosF, (int) yPosF, (int) zPosF);
         if (donePlaying) return;
         TileEntity tile = world.getTileEntity((int) xPosF, (int) yPosF, (int) zPosF);
-        if (!(tile instanceof IGregTechTileEntity)) {
-            donePlaying = true;
+        if ((tile instanceof IGregTechTileEntity)) {
+            fadeMe |= ((IGregTechTileEntity) tile).isActive() ? whileActive : whileInactive;
             return;
         }
-        fadeMe |= ((IGregTechTileEntity) tile).isActive() ? whileActive : whileInactive;
+
+        if ((tile instanceof MultiTileBasicMachine)) {
+            fadeMe |= ((MultiTileBasicMachine) tile).isActive() ? whileActive : whileInactive;
+            return;
+        }
+
+        donePlaying = true;
     }
 }

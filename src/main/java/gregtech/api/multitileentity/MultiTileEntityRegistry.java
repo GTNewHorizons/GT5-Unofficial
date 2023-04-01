@@ -25,7 +25,7 @@ import com.gtnewhorizon.gtnhlib.util.map.ItemStackMap;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
-import gregtech.api.multitileentity.base.BaseMultiTileEntity;
+import gregtech.api.multitileentity.base.MultiTileEntity;
 import gregtech.api.multitileentity.interfaces.IMultiTileEntity;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Util;
@@ -75,6 +75,7 @@ public class MultiTileEntityRegistry {
                 "The MultiTileEntity Registry must be initialised during Preload Phase and not before");
         mNameInternal = aNameInternal;
         mBlock = aBlock;
+        GT_FML_LOGGER.info(aNameInternal + " " + Block.getIdFromBlock(aBlock) + "This is the answer");
         mBlock.mMultiTileEntityRegistry = this;
         REGISTRIES.put(new ItemStack(Item.getItemFromBlock(aBlock), 1, GT_Values.W), this);
         NAMED_REGISTRIES.put(mNameInternal, this);
@@ -96,7 +97,7 @@ public class MultiTileEntityRegistry {
         return NAMED_REGISTRIES.get(aRegistryName);
     }
 
-    public MultiTileEntityClassContainer create(int aID, Class<? extends BaseMultiTileEntity> aClass) {
+    public MultiTileEntityClassContainer create(int aID, Class<? extends MultiTileEntity> aClass) {
         return new MultiTileEntityClassContainer(this, aID, aClass);
     }
 

@@ -1,4 +1,4 @@
-package gregtech.api.multitileentity.multiblock.casing;
+package gregtech.common.tileentities.casings.upgrade;
 
 import java.util.UUID;
 
@@ -10,8 +10,10 @@ import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
 
 import gregtech.api.enums.GT_Values.NBT;
 import gregtech.api.multitileentity.interfaces.IMultiBlockController;
+import gregtech.api.multitileentity.multiblock.casing.UpgradeCasing;
+import gregtech.api.net.GT_Packet_MultiTileEntity;
 
-public class InventoryUpgrade extends AdvancedCasing {
+public class InventoryUpgrade extends UpgradeCasing {
 
     public UUID mInventoryID;
     public static final int INPUT = 0;
@@ -90,5 +92,13 @@ public class InventoryUpgrade extends AdvancedCasing {
                 controller.changeInventoryName(mInventoryName, mInventoryID.toString(), mType);
             }
         }).setSize(100, 25).setPos(50, 30));
+    }
+
+    @Override
+    public GT_Packet_MultiTileEntity getClientDataPacket() {
+        final GT_Packet_MultiTileEntity packet = super.getClientDataPacket();
+        String name = getInventoryName();
+        packet.setInventoryName(name);
+        return packet;
     }
 }
