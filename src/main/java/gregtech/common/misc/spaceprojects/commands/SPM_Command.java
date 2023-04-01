@@ -123,10 +123,8 @@ public class SPM_Command extends CommandBase {
         List<String> autoComplete = new ArrayList<>();
         String filter = arguments.length == 0 ? "" : arguments[0].trim();
         switch (arguments.length) {
-            case 1:
-                autoComplete.addAll(Arrays.asList(getSubCommands()));
-                break;
-            case 2:
+            case 1 -> autoComplete.addAll(Arrays.asList(getSubCommands()));
+            case 2 -> {
                 filter = arguments.length == 1 ? "" : arguments[1].trim();
                 if (arguments[0].equals(LIST)) {
                     autoComplete.addAll(Arrays.asList(getListArguments()));
@@ -135,37 +133,40 @@ public class SPM_Command extends CommandBase {
                 } else {
                     autoComplete.addAll(Arrays.asList(getProjects()));
                 }
-                break;
-            case 3:
+            }
+            case 3 -> {
                 filter = arguments.length == 2 ? "" : arguments[2].trim();
-                if (arguments[1].equals(ALL)) {
-                    break;
-                } else if (arguments[0].equals(LIST)) {
+                if (arguments[1].equals(ALL)) {} else if (arguments[0].equals(LIST)) {
                     autoComplete.addAll(Arrays.asList(getPlayers()));
                 } else {
                     autoComplete.addAll(Arrays.asList(getLocations()));
                 }
-                break;
-            case 4:
+            }
+            case 4 -> {
                 filter = arguments.length == 3 ? "" : arguments[3].trim();
                 autoComplete.addAll(Arrays.asList(getPlayers()));
-                break;
+            }
         }
         String finalFilter = filter;
-        return autoComplete.stream().filter(s -> finalFilter.isEmpty() || s.startsWith(finalFilter))
-                .collect(Collectors.toList());
+        return autoComplete.stream()
+                           .filter(s -> finalFilter.isEmpty() || s.startsWith(finalFilter))
+                           .collect(Collectors.toList());
     }
 
     private String[] getPlayers() {
-        return MinecraftServer.getServer().getAllUsernames();
+        return MinecraftServer.getServer()
+                              .getAllUsernames();
     }
 
     private String[] getLocations() {
-        return SpaceProjectManager.getLocationNames().toArray(new String[0]);
+        return SpaceProjectManager.getLocationNames()
+                                  .toArray(new String[0]);
     }
 
     private String[] getProjects() {
-        return SpaceProjectManager.getProjectsMap().keySet().toArray(new String[0]);
+        return SpaceProjectManager.getProjectsMap()
+                                  .keySet()
+                                  .toArray(new String[0]);
     }
 
     private String[] getSubCommands() {
@@ -203,23 +204,24 @@ public class SPM_Command extends CommandBase {
     private void processList(ICommandSender sender, String argument, String playerName) {
         UUID tID = SpaceProjectManager.getPlayerUUIDFromName(playerName);
         switch (argument) {
-            case ALL:
-                for (String project : SpaceProjectManager.getProjectsMap().keySet()) {
+            case ALL -> {
+                for (String project : SpaceProjectManager.getProjectsMap()
+                                                         .keySet()) {
                     sender.addChatMessage(new ChatComponentText(project));
                 }
-                break;
-            case AVAILABLE:
+            }
+            case AVAILABLE -> {
                 for (ISpaceProject project : SpaceProjectManager.getAllProjects()) {
                     if (project.meetsRequirements(tID, false)) {
                         sender.addChatMessage(new ChatComponentText(project.getProjectName()));
                     }
                 }
-                break;
-            case UNLOCKED:
+            }
+            case UNLOCKED -> {
                 for (ISpaceProject project : SpaceProjectManager.getTeamSpaceProjects(tID)) {
                     sender.addChatMessage(new ChatComponentText(project.getProjectName()));
                 }
-                break;
+            }
         }
     }
 

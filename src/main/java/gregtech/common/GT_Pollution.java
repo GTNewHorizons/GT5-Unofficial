@@ -318,8 +318,7 @@ public class GT_Pollution {
         if (iMetaTileEntity instanceof IMachineCallback) {
             if (((IMachineCallback) iMetaTileEntity).getCallbackBase() instanceof GT_MetaTileEntity_Cleanroom) {
                 if (aPollution > 0) {
-                    ((GT_MetaTileEntity_Cleanroom) ((IMachineCallback) iMetaTileEntity).getCallbackBase())
-                            .doMaintenanceIssue();
+                    ((GT_MetaTileEntity_Cleanroom) ((IMachineCallback) iMetaTileEntity).getCallbackBase()).doMaintenanceIssue();
                 }
             }
         }
@@ -384,7 +383,8 @@ public class GT_Pollution {
         if (w.isRemote)
             // it really should be querying the client side stuff instead
             return GT_PollutionRenderer.getKnownPollution(chunkX << 4, chunkZ << 4);
-        return STORAGE.get(w, chunkX, chunkZ).getAmount();
+        return STORAGE.get(w, chunkX, chunkZ)
+                      .getAmount();
     }
 
     @Deprecated
@@ -394,7 +394,9 @@ public class GT_Pollution {
 
     public static boolean hasPollution(Chunk ch) {
         if (!GT_Mod.gregtechproxy.mPollution) return false;
-        return STORAGE.isCreated(ch.worldObj, ch.getChunkCoordIntPair()) && STORAGE.get(ch).getAmount() > 0;
+        return STORAGE.isCreated(ch.worldObj, ch.getChunkCoordIntPair()) && STORAGE.get(ch)
+                                                                                   .getAmount()
+                > 0;
     }
 
     // Add compatibility with old code
@@ -406,7 +408,10 @@ public class GT_Pollution {
     }
 
     static void migrate(ChunkDataEvent.Load e) {
-        addPollution(e.getChunk(), e.getData().getInteger("GTPOLLUTION"));
+        addPollution(
+                e.getChunk(),
+                e.getData()
+                 .getInteger("GTPOLLUTION"));
     }
 
     public static class GT_PollutionEventHandler {
@@ -416,7 +421,8 @@ public class GT_Pollution {
             if (!GT_Mod.gregtechproxy.mPollution) return;
             World world = event.player.worldObj;
             if (STORAGE.isCreated(world, event.chunk)) {
-                int pollution = STORAGE.get(world, event.chunk).getAmount();
+                int pollution = STORAGE.get(world, event.chunk)
+                                       .getAmount();
                 if (pollution > POLLUTIONPACKET_MINVALUE)
                     GT_Values.NW.sendToPlayer(new GT_Packet_Pollution(event.chunk, pollution), event.player);
             }

@@ -1,2 +1,5 @@
 # Ignore spotlessApply reformat
 0d9aab72aa570f13dc3e32e0d32b3f3a95f95e0a
+5f50e4a36ec000657b0a1664784acf00275293c6
+# Ignore large automated refactor to make use of Java 17 features
+b088958c9f6935d356b6c087c8e8106b400aa24f

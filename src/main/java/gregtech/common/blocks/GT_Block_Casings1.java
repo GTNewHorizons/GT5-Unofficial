@@ -33,8 +33,9 @@ public class GT_Block_Casings1 extends GT_Block_Casings_Abstract {
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".9.name", "UHV Machine Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".10.name", "Bronze Plated Bricks");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".11.name", "Heat Proof Machine Casing");
-        GT_LanguageManager
-                .addStringLocalization(getUnlocalizedName() + ".12.name", "Dimensionally Transcendent Casing");
+        GT_LanguageManager.addStringLocalization(
+                getUnlocalizedName() + ".12.name",
+                "Dimensionally Transcendent Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".13.name", "Dimensional Injection Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".14.name", "Dimensional Bridge");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".15.name", "Superconducting Coil Block");
@@ -65,18 +66,24 @@ public class GT_Block_Casings1 extends GT_Block_Casings_Abstract {
     public IIcon getIcon(int aSide, int aMeta) {
         if ((aMeta >= 0) && (aMeta < 16)) {
             switch (aMeta) {
-                case 10:
+                case 10 -> {
                     return Textures.BlockIcons.MACHINE_BRONZEPLATEDBRICKS.getIcon();
-                case 11:
+                }
+                case 11 -> {
                     return Textures.BlockIcons.MACHINE_HEATPROOFCASING.getIcon();
-                case 12:
+                }
+                case 12 -> {
                     return Textures.BlockIcons.MACHINE_DIM_TRANS_CASING.getIcon();
-                case 13:
+                }
+                case 13 -> {
                     return Textures.BlockIcons.MACHINE_DIM_INJECTOR.getIcon();
-                case 14:
+                }
+                case 14 -> {
                     return Textures.BlockIcons.MACHINE_DIM_BRIDGE.getIcon();
-                case 15:
+                }
+                case 15 -> {
                     return Textures.BlockIcons.MACHINE_COIL_SUPERCONDUCTOR.getIcon();
+                }
             }
             if (aSide == 0) {
                 return Textures.BlockIcons.MACHINECASINGS_BOTTOM[aMeta].getIcon();

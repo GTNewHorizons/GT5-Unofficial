@@ -21,7 +21,7 @@ public interface IColoredTileEntity {
      * @return Actual color shown on GUI
      */
     default int getGUIColorization() {
-        return GT_Util
-                .getRGBInt((getColorization() != -1 ? Dyes.get(getColorization()) : Dyes.MACHINE_METAL).getRGBA());
+        return GT_Util.getRGBInt(
+                (getColorization() != -1 ? Dyes.get(getColorization()) : Dyes.MACHINE_METAL).getRGBA());
     }
 }

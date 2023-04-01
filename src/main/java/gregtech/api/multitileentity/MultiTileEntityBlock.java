@@ -243,8 +243,8 @@ public class MultiTileEntityBlock extends Block
 
     @Override
     @SuppressWarnings("unchecked")
-    public final void addCollisionBoxesToList(World aWorld, int aX, int aY, int aZ, AxisAlignedBB aAABB, List aList,
-            Entity aEntity) {
+    public final void addCollisionBoxesToList(World aWorld, int aX, int aY, int aZ, AxisAlignedBB aAABB,
+            List<AxisAlignedBB> aList, Entity aEntity) {
         final TileEntity aTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (aTileEntity instanceof IMultiTileEntity)
             ((IMultiTileEntity) aTileEntity).addCollisionBoxesToList(aAABB, aList, aEntity);
@@ -444,17 +444,18 @@ public class MultiTileEntityBlock extends Block
     @Override
     public Block getFacade(IBlockAccess aWorld, int aX, int aY, int aZ, int side) {
         final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if (tTileEntity instanceof CoverableTileEntity) {
+        if (tTileEntity instanceof CoverableTileEntity tile) {
             final byte aSide = (byte) side;
-            final CoverableTileEntity tile = (CoverableTileEntity) tTileEntity;
             if (side != -1) {
-                final Block facadeBlock = tile.getCoverInfoAtSide(aSide).getFacadeBlock();
+                final Block facadeBlock = tile.getCoverInfoAtSide(aSide)
+                                              .getFacadeBlock();
                 if (facadeBlock != null) return facadeBlock;
             } else {
                 // we do not allow more than one type of facade per block, so no need to check every side
                 // see comment in gregtech.common.covers.GT_Cover_FacadeBase.isCoverPlaceable
                 for (byte tSide : ALL_VALID_SIDES) {
-                    final Block facadeBlock = tile.getCoverInfoAtSide(tSide).getFacadeBlock();
+                    final Block facadeBlock = tile.getCoverInfoAtSide(tSide)
+                                                  .getFacadeBlock();
                     if (facadeBlock != null) {
                         return facadeBlock;
                     }
@@ -467,9 +468,8 @@ public class MultiTileEntityBlock extends Block
     @Override
     public int getFacadeMetadata(IBlockAccess aWorld, int aX, int aY, int aZ, int side) {
         final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if (tTileEntity instanceof CoverableTileEntity) {
+        if (tTileEntity instanceof CoverableTileEntity tile) {
             final byte aSide = (byte) side;
-            final CoverableTileEntity tile = (CoverableTileEntity) tTileEntity;
             if (side != -1) {
                 final CoverInfo coverInfo = tile.getCoverInfoAtSide(aSide);
                 final Block facadeBlock = coverInfo.getFacadeBlock();
@@ -516,7 +516,7 @@ public class MultiTileEntityBlock extends Block
     }
 
     @Override
-    public final void getSubBlocks(Item aItem, CreativeTabs aCreativeTab, List aList) {
+    public final void getSubBlocks(Item aItem, CreativeTabs aCreativeTab, List<ItemStack> aList) {
         /**/
     }
 
@@ -531,8 +531,8 @@ public class MultiTileEntityBlock extends Block
         return aTileEntity instanceof IMTE_GetComparatorInputOverride
                 ? ((IMTE_GetComparatorInputOverride) aTileEntity).getComparatorInputOverride((byte) aSide)
                 : aTileEntity instanceof IMTE_IsProvidingWeakPower
-                        ? ((IMTE_IsProvidingWeakPower) aTileEntity)
-                                .isProvidingWeakPower(GT_Utility.getOppositeSide(aSide))
+                        ? ((IMTE_IsProvidingWeakPower) aTileEntity).isProvidingWeakPower(
+                                GT_Utility.getOppositeSide(aSide))
                         : super.getComparatorInputOverride(aWorld, aX, aY, aZ, aSide);
     }
 
@@ -550,8 +550,8 @@ public class MultiTileEntityBlock extends Block
     public final boolean isSideSolid(IBlockAccess aWorld, int aX, int aY, int aZ, ForgeDirection aSide) {
         final TileEntity aTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         return aTileEntity instanceof IMultiTileEntity
-                ? ((IMultiTileEntity) aTileEntity)
-                        .isSideSolid((byte) (aSide != null ? aSide.ordinal() : GT_Values.SIDE_UNKNOWN))
+                ? ((IMultiTileEntity) aTileEntity).isSideSolid(
+                        (byte) (aSide != null ? aSide.ordinal() : GT_Values.SIDE_UNKNOWN))
                 : mOpaque;
     }
 
@@ -595,8 +595,11 @@ public class MultiTileEntityBlock extends Block
             double aExplosionX, double aExplosionY, double aExplosionZ) {
         final TileEntity aTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         return aTileEntity instanceof IMultiTileEntity
-                ? ((IMultiTileEntity) aTileEntity)
-                        .getExplosionResistance(aExploder, aExplosionX, aExplosionY, aExplosionZ)
+                ? ((IMultiTileEntity) aTileEntity).getExplosionResistance(
+                        aExploder,
+                        aExplosionX,
+                        aExplosionY,
+                        aExplosionZ)
                 : 1.0F;
     }
 

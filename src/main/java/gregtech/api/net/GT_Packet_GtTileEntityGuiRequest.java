@@ -88,9 +88,8 @@ public class GT_Packet_GtTileEntityGuiRequest extends GT_Packet_New {
         final World world = DimensionManager.getWorld(this.dimId);
         if (world == null) return;
         final TileEntity tile = world.getTileEntity(this.mX, this.mY, this.mZ);
-        if (!(tile instanceof BaseTileEntity) || ((BaseTileEntity) tile).isDead()) return;
+        if (!(tile instanceof BaseTileEntity baseTile) || ((BaseTileEntity) tile).isDead()) return;
 
-        final BaseTileEntity baseTile = ((BaseTileEntity) tile);
         final EntityPlayerMP player = (EntityPlayerMP) world.getEntityByID(playerId);
         final CoverableTileEntity coverableTile = (baseTile instanceof CoverableTileEntity)
                 ? (CoverableTileEntity) baseTile

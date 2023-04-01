@@ -52,13 +52,11 @@ public class GT_Circuit_Equals extends GT_CircuitryBehavior {
 
     @Override
     public String getDataDescription(int[] aCircuitData, int aCircuitDataIndex) {
-        switch (aCircuitDataIndex) {
-            case 0:
-                return "Signal";
-            case 1:
-                return aCircuitData[1] == 0 ? "Equal" : "Unequal";
-        }
-        return "";
+        return switch (aCircuitDataIndex) {
+            case 0 -> "Signal";
+            case 1 -> aCircuitData[1] == 0 ? "Equal" : "Unequal";
+            default -> "";
+        };
     }
 
     @Override

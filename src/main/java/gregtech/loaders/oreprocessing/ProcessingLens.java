@@ -21,8 +21,7 @@ public class ProcessingLens implements gregtech.api.interfaces.IOreRecipeRegistr
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
             ItemStack aStack) {
         switch (aMaterial.mName) {
-            case "Diamond":
-            case "Glass":
+            case "Diamond", "Glass" -> {
                 GT_Values.RA.addLatheRecipe(
                         GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L),
                         GT_OreDictUnificator.get(OrePrefixes.lens, aMaterial, 1L),
@@ -35,15 +34,13 @@ public class ProcessingLens implements gregtech.api.interfaces.IOreRecipeRegistr
                         GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L),
                         2400,
                         16);
-                break;
-            case "ChromaticGlass":
-                GT_Values.RA.addCompressorRecipe(
-                        GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 16L),
-                        GT_OreDictUnificator.get(OrePrefixes.lens, aMaterial, 1L),
-                        600 * 20,
-                        1966080);
-                break;
-            default:
+            }
+            case "ChromaticGlass" -> GT_Values.RA.addCompressorRecipe(
+                    GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 16L),
+                    GT_OreDictUnificator.get(OrePrefixes.lens, aMaterial, 1L),
+                    600 * 20,
+                    1966080);
+            default -> {
                 GT_Values.RA.addLatheRecipe(
                         GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L),
                         GT_OreDictUnificator.get(OrePrefixes.lens, aMaterial, 1L),
@@ -56,12 +53,15 @@ public class ProcessingLens implements gregtech.api.interfaces.IOreRecipeRegistr
                         GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 2L),
                         2400,
                         30);
-                final ITexture lensCoverTexture = TextureFactory
-                        .of(Textures.BlockIcons.OVERLAY_LENS, aMaterial.mRGBa, false);
+                final ITexture lensCoverTexture = TextureFactory.of(
+                        Textures.BlockIcons.OVERLAY_LENS,
+                        aMaterial.mRGBa,
+                        false);
                 GregTech_API.registerCover(
                         aStack,
                         TextureFactory.of(Textures.BlockIcons.MACHINE_CASINGS[2][0], lensCoverTexture),
                         new gregtech.common.covers.GT_Cover_Lens(aMaterial.mColor.mIndex, lensCoverTexture));
+            }
         }
     }
 }

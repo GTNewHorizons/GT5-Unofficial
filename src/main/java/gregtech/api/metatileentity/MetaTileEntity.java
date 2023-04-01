@@ -1,7 +1,5 @@
 package gregtech.api.metatileentity;
 
-import static gregtech.api.enums.GT_Values.V;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +43,7 @@ import gnu.trove.list.TIntList;
 import gnu.trove.list.array.TIntArrayList;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Dyes;
+import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.SteamVariant;
 import gregtech.api.gui.GT_GUIColorOverride;
@@ -129,7 +128,8 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
         } else {
             throw new IllegalArgumentException("MetaMachine-Slot Nr. " + aID + " is already occupied!");
         }
-        mName = aBasicName.replace(" ", "_").toLowerCase(Locale.ENGLISH);
+        mName = aBasicName.replace(" ", "_")
+                          .toLowerCase(Locale.ENGLISH);
         setBaseMetaTileEntity(GregTech_API.constructBaseMetaTileEntity());
         getBaseMetaTileEntity().setMetaTileID((short) aID);
         GT_LanguageManager.addStringLocalization("gt.blockmachines." + mName + ".name", aRegionalName);
@@ -165,7 +165,8 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
     @Override
     public void setBaseMetaTileEntity(IGregTechTileEntity aBaseMetaTileEntity) {
         if (mBaseMetaTileEntity != null && aBaseMetaTileEntity == null) {
-            mBaseMetaTileEntity.getMetaTileEntity().inValidate();
+            mBaseMetaTileEntity.getMetaTileEntity()
+                               .inValidate();
             mBaseMetaTileEntity.setMetaTileEntity(null);
         }
         mBaseMetaTileEntity = aBaseMetaTileEntity;
@@ -245,7 +246,13 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
                 && (((IGregTechTileEntity) tTileEntity).getMetaTileEntity() instanceof GT_MetaPipeEntity_Cable)) {
             // The tile entity we're facing is a cable, let's try to connect to it
             return ((IGregTechTileEntity) tTileEntity).getMetaTileEntity()
-                    .onWireCutterRightClick(aWrenchingSide, tSide, aPlayer, aX, aY, aZ);
+                                                      .onWireCutterRightClick(
+                                                              aWrenchingSide,
+                                                              tSide,
+                                                              aPlayer,
+                                                              aX,
+                                                              aY,
+                                                              aZ);
         }
         return false;
     }
@@ -260,7 +267,13 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
                 && (((IGregTechTileEntity) tTileEntity).getMetaTileEntity() instanceof GT_MetaPipeEntity_Cable)) {
             // The tile entity we're facing is a cable, let's try to connect to it
             return ((IGregTechTileEntity) tTileEntity).getMetaTileEntity()
-                    .onSolderingToolRightClick(aWrenchingSide, tSide, aPlayer, aX, aY, aZ);
+                                                      .onSolderingToolRightClick(
+                                                              aWrenchingSide,
+                                                              tSide,
+                                                              aPlayer,
+                                                              aX,
+                                                              aY,
+                                                              aZ);
         }
         return false;
     }
@@ -268,13 +281,17 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
     @Override
     public void onExplosion() {
         GT_Log.exp.println(
-                "Machine at " + this.getBaseMetaTileEntity().getXCoord()
+                "Machine at " + this.getBaseMetaTileEntity()
+                                    .getXCoord()
                         + " | "
-                        + this.getBaseMetaTileEntity().getYCoord()
+                        + this.getBaseMetaTileEntity()
+                              .getYCoord()
                         + " | "
-                        + this.getBaseMetaTileEntity().getZCoord()
+                        + this.getBaseMetaTileEntity()
+                              .getZCoord()
                         + " DIMID: "
-                        + this.getBaseMetaTileEntity().getWorld().provider.dimensionId
+                        + this.getBaseMetaTileEntity()
+                              .getWorld().provider.dimensionId
                         + " exploded.");
     }
 
@@ -828,8 +845,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
     @Override
     public void setInventorySlotContents(int aIndex, ItemStack aStack) {
         markDirty();
-        if (this instanceof IConfigurationCircuitSupport) {
-            IConfigurationCircuitSupport ccs = (IConfigurationCircuitSupport) this;
+        if (this instanceof IConfigurationCircuitSupport ccs) {
             if (ccs.allowSelectCircuit() && aIndex == ccs.getCircuitSlot() && aStack != null) {
                 mInventory[aIndex] = GT_Utility.copyAmount(0, aStack);
                 return;
@@ -1072,28 +1088,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
 
     @Override
     public void doExplosion(long aExplosionPower) {
-        // spotless:off
-        float tStrength =
-            aExplosionPower < V[0] ? 1.0F :
-            aExplosionPower < V[1] ? 2.0F :
-            aExplosionPower < V[2] ? 3.0F :
-            aExplosionPower < V[3] ? 4.0F :
-            aExplosionPower < V[4] ? 5.0F :
-            aExplosionPower < V[4] * 2 ? 6.0F :
-            aExplosionPower < V[5] ? 7.0F :
-            aExplosionPower < V[6] ? 8.0F :
-            aExplosionPower < V[7] ? 9.0F :
-            aExplosionPower < V[8] ? 10.0F :
-            aExplosionPower < V[8] * 2 ? 11.0F :
-            aExplosionPower < V[9] ? 12.0F :
-            aExplosionPower < V[10] ? 13.0F :
-            aExplosionPower < V[11] ? 14.0F :
-            aExplosionPower < V[12] ? 15.0F :
-            aExplosionPower < V[12] * 2 ? 16.0F :
-            aExplosionPower < V[13] ? 17.0F :
-            aExplosionPower < V[14] ? 18.0F :
-            aExplosionPower < V[15] ? 19.0F : 20.0F;
-        // spotless:on
+        float tStrength = GT_Values.getExplosionPowerForVoltage(aExplosionPower);
         final int tX = getBaseMetaTileEntity().getXCoord();
         final int tY = getBaseMetaTileEntity().getYCoord();
         final int tZ = getBaseMetaTileEntity().getZCoord();
@@ -1180,11 +1175,11 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
         currenttip.add(
                 String.format(
                         "Facing: %s",
-                        ForgeDirection.getOrientation(mBaseMetaTileEntity.getFrontFacing()).name()));
+                        ForgeDirection.getOrientation(mBaseMetaTileEntity.getFrontFacing())
+                                      .name()));
 
-        if (this instanceof IPowerChannelState) {
+        if (this instanceof IPowerChannelState state) {
             // adapted from PowerStateWailaDataProvider
-            final IPowerChannelState state = (IPowerChannelState) this;
             NBTTagCompound tag = accessor.getNBTData();
             final boolean isActive = tag.getBoolean("isActive");
             final boolean isPowered = tag.getBoolean("isPowered");
@@ -1205,9 +1200,8 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
             int z) {
-        if (this instanceof IPowerChannelState) {
+        if (this instanceof IPowerChannelState state) {
             // adapted from PowerStateWailaDataProvider
-            final IPowerChannelState state = (IPowerChannelState) this;
             final boolean isActive = state.isActive();
             final boolean isPowered = state.isPowered();
             final boolean isBooting = state.isBooting();
@@ -1221,11 +1215,20 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
         try {
             if (getProxy() == null) return "(proxy)";
             if (getProxy().getNode() == null) return "(node)";
-            if (getProxy().getNode().getGrid() == null) return "(grid)";
-            if (!getProxy().getNode().meetsChannelRequirements()) return "(channels)";
-            IPathingGrid pg = getProxy().getNode().getGrid().getCache(IPathingGrid.class);
+            if (getProxy().getNode()
+                          .getGrid()
+                    == null)
+                return "(grid)";
+            if (!getProxy().getNode()
+                           .meetsChannelRequirements())
+                return "(channels)";
+            IPathingGrid pg = getProxy().getNode()
+                                        .getGrid()
+                                        .getCache(IPathingGrid.class);
             if (!pg.isNetworkBooting()) return "(booting)";
-            IEnergyGrid eg = getProxy().getNode().getGrid().getCache(IEnergyGrid.class);
+            IEnergyGrid eg = getProxy().getNode()
+                                       .getGrid()
+                                       .getCache(IEnergyGrid.class);
             if (!eg.isNetworkPowered()) return "(power)";
         } catch (Throwable ex) {
             ex.printStackTrace();

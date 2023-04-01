@@ -1,5 +1,6 @@
 package gregtech.common.items;
 
+import static gregtech.api.enums.ModIDs.GalacticraftMars;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.client.GT_TooltipHandler.Tier.*;
 import static gregtech.client.GT_TooltipHandler.registerTieredTooltip;
@@ -21,7 +22,6 @@ import net.minecraft.potion.Potion;
 import net.minecraft.util.MathHelper;
 import net.minecraftforge.oredict.OreDictionary;
 
-import cpw.mods.fml.common.Loader;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GT_Values;
@@ -50,8 +50,9 @@ import gregtech.common.items.behaviors.*;
 public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
 
     public static GT_MetaGenerated_Item_01 INSTANCE;
-    private final String mToolTipPurify = GT_LanguageManager
-            .addStringLocalization("metaitem.01.tooltip.purify", "Throw into Cauldron to get clean Dust");
+    private final String mToolTipPurify = GT_LanguageManager.addStringLocalization(
+            "metaitem.01.tooltip.purify",
+            "Throw into Cauldron to get clean Dust");
     private static final String aTextArrow = "  A";
     private static final String aTextStick = " S ";
     private static final String aTextFeather = "F  ";
@@ -679,8 +680,8 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         ItemList.Shape_Mold_Plate.set(addItem(tLastID = 301, "Mold (Plate)", "Mold for making Plates"));
         ItemList.Shape_Mold_Casing.set(addItem(tLastID = 302, "Mold (Casing)", "Mold for making Item Casings"));
         ItemList.Shape_Mold_Gear.set(addItem(tLastID = 303, "Mold (Gear)", "Mold for making Gears"));
-        ItemList.Shape_Mold_Credit
-                .set(addItem(tLastID = 304, "Mold (Coinage)", "Secure Mold for making Coins (Don't lose it!)"));
+        ItemList.Shape_Mold_Credit.set(
+                addItem(tLastID = 304, "Mold (Coinage)", "Secure Mold for making Coins (Don't lose it!)"));
         ItemList.Shape_Mold_Bottle.set(addItem(tLastID = 305, "Mold (Bottle)", "Mold for making Bottles"));
         ItemList.Shape_Mold_Ingot.set(addItem(tLastID = 306, "Mold (Ingot)", "Mold for making Ingots"));
         ItemList.Shape_Mold_Ball.set(addItem(tLastID = 307, "Mold (Ball)", "Mold for making Balls"));
@@ -691,8 +692,8 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         ItemList.Shape_Mold_Baguette.set(addItem(tLastID = 312, "Mold (Baguette)", "Mold for shaping Baguettes"));
         ItemList.Shape_Mold_Cylinder.set(addItem(tLastID = 313, "Mold (Cylinder)", "Mold for shaping Cylinders"));
         ItemList.Shape_Mold_Anvil.set(addItem(tLastID = 314, "Mold (Anvil)", "Mold for shaping Anvils"));
-        ItemList.Shape_Mold_Name
-                .set(addItem(tLastID = 315, "Mold (Name)", "Mold for naming Items (rename Mold with Anvil)"));
+        ItemList.Shape_Mold_Name.set(
+                addItem(tLastID = 315, "Mold (Name)", "Mold for naming Items (rename Mold with Anvil)"));
         ItemList.Shape_Mold_Arrow.set(addItem(tLastID = 316, "Mold (Arrow Head)", "Mold for making Arrow Heads"));
         ItemList.Shape_Mold_Gear_Small.set(addItem(tLastID = 317, "Mold (Small Gear)", "Mold for making small Gears"));
         ItemList.Shape_Mold_Rod.set(addItem(tLastID = 318, "Mold (Rod)", "Mold for making Rods"));
@@ -702,16 +703,16 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         ItemList.Shape_Mold_Ring.set(addItem(tLastID = 322, "Mold (Ring)", "Mold for making Rings"));
         ItemList.Shape_Mold_Rod_Long.set(addItem(tLastID = 323, "Mold (Long Rod)", "Mold for making Long Rods"));
         ItemList.Shape_Mold_Rotor.set(addItem(tLastID = 324, "Mold (Rotor)", "Mold for making a Rotor"));
-        ItemList.Shape_Mold_Turbine_Blade
-                .set(addItem(tLastID = 325, "Mold (Turbine Blade)", "Mold for making a Turbine Blade"));
+        ItemList.Shape_Mold_Turbine_Blade.set(
+                addItem(tLastID = 325, "Mold (Turbine Blade)", "Mold for making a Turbine Blade"));
         ItemList.Shape_Mold_Pipe_Tiny.set(addItem(tLastID = 326, "Mold (Tiny Pipe)", "Mold for making tiny Pipes"));
         ItemList.Shape_Mold_Pipe_Small.set(addItem(tLastID = 327, "Mold (Small Pipe)", "Mold for making small Pipes"));
         ItemList.Shape_Mold_Pipe_Medium.set(addItem(tLastID = 328, "Mold (Normal Pipe)", "Mold for making Pipes"));
         ItemList.Shape_Mold_Pipe_Large.set(addItem(tLastID = 329, "Mold (Large Pipe)", "Mold for making large Pipes"));
-        ItemList.Shape_Mold_Pipe_Huge
-                .set(addItem(tLastID = 330, "Mold (Huge Pipe)", "Mold for making full Block Pipes"));
-        ItemList.Shape_Mold_ToolHeadDrill
-                .set(addItem(tLastID = 331, "Mold (Drill Head)", "Mold for making Drill Heads"));
+        ItemList.Shape_Mold_Pipe_Huge.set(
+                addItem(tLastID = 330, "Mold (Huge Pipe)", "Mold for making full Block Pipes"));
+        ItemList.Shape_Mold_ToolHeadDrill.set(
+                addItem(tLastID = 331, "Mold (Drill Head)", "Mold for making Drill Heads"));
         GT_ModHandler.removeRecipe(
                 new ItemStack(Blocks.glass),
                 null,
@@ -719,69 +720,69 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 null,
                 new ItemStack(Blocks.glass));
 
-        ItemList.Shape_Extruder_Plate
-                .set(addItem(tLastID = 350, "Extruder Shape (Plate)", "Extruder Shape for making Plates"));
-        ItemList.Shape_Extruder_Rod
-                .set(addItem(tLastID = 351, "Extruder Shape (Rod)", "Extruder Shape for making Rods"));
-        ItemList.Shape_Extruder_Bolt
-                .set(addItem(tLastID = 352, "Extruder Shape (Bolt)", "Extruder Shape for making Bolts"));
-        ItemList.Shape_Extruder_Ring
-                .set(addItem(tLastID = 353, "Extruder Shape (Ring)", "Extruder Shape for making Rings"));
-        ItemList.Shape_Extruder_Cell
-                .set(addItem(tLastID = 354, "Extruder Shape (Cell)", "Extruder Shape for making Cells"));
+        ItemList.Shape_Extruder_Plate.set(
+                addItem(tLastID = 350, "Extruder Shape (Plate)", "Extruder Shape for making Plates"));
+        ItemList.Shape_Extruder_Rod.set(
+                addItem(tLastID = 351, "Extruder Shape (Rod)", "Extruder Shape for making Rods"));
+        ItemList.Shape_Extruder_Bolt.set(
+                addItem(tLastID = 352, "Extruder Shape (Bolt)", "Extruder Shape for making Bolts"));
+        ItemList.Shape_Extruder_Ring.set(
+                addItem(tLastID = 353, "Extruder Shape (Ring)", "Extruder Shape for making Rings"));
+        ItemList.Shape_Extruder_Cell.set(
+                addItem(tLastID = 354, "Extruder Shape (Cell)", "Extruder Shape for making Cells"));
         ItemList.Shape_Extruder_Ingot.set(
                 addItem(
                         tLastID = 355,
                         "Extruder Shape (Ingot)",
                         "Extruder Shape for, wait, can't we just use a Furnace?"));
-        ItemList.Shape_Extruder_Wire
-                .set(addItem(tLastID = 356, "Extruder Shape (Wire)", "Extruder Shape for making Wires"));
-        ItemList.Shape_Extruder_Casing
-                .set(addItem(tLastID = 357, "Extruder Shape (Casing)", "Extruder Shape for making Item Casings"));
-        ItemList.Shape_Extruder_Pipe_Tiny
-                .set(addItem(tLastID = 358, "Extruder Shape (Tiny Pipe)", "Extruder Shape for making tiny Pipes"));
-        ItemList.Shape_Extruder_Pipe_Small
-                .set(addItem(tLastID = 359, "Extruder Shape (Small Pipe)", "Extruder Shape for making small Pipes"));
-        ItemList.Shape_Extruder_Pipe_Medium
-                .set(addItem(tLastID = 360, "Extruder Shape (Normal Pipe)", "Extruder Shape for making Pipes"));
-        ItemList.Shape_Extruder_Pipe_Large
-                .set(addItem(tLastID = 361, "Extruder Shape (Large Pipe)", "Extruder Shape for making large Pipes"));
+        ItemList.Shape_Extruder_Wire.set(
+                addItem(tLastID = 356, "Extruder Shape (Wire)", "Extruder Shape for making Wires"));
+        ItemList.Shape_Extruder_Casing.set(
+                addItem(tLastID = 357, "Extruder Shape (Casing)", "Extruder Shape for making Item Casings"));
+        ItemList.Shape_Extruder_Pipe_Tiny.set(
+                addItem(tLastID = 358, "Extruder Shape (Tiny Pipe)", "Extruder Shape for making tiny Pipes"));
+        ItemList.Shape_Extruder_Pipe_Small.set(
+                addItem(tLastID = 359, "Extruder Shape (Small Pipe)", "Extruder Shape for making small Pipes"));
+        ItemList.Shape_Extruder_Pipe_Medium.set(
+                addItem(tLastID = 360, "Extruder Shape (Normal Pipe)", "Extruder Shape for making Pipes"));
+        ItemList.Shape_Extruder_Pipe_Large.set(
+                addItem(tLastID = 361, "Extruder Shape (Large Pipe)", "Extruder Shape for making large Pipes"));
         ItemList.Shape_Extruder_Pipe_Huge.set(
                 addItem(tLastID = 362, "Extruder Shape (Huge Pipe)", "Extruder Shape for making full Block Pipes"));
-        ItemList.Shape_Extruder_Block
-                .set(addItem(tLastID = 363, "Extruder Shape (Block)", "Extruder Shape for making Blocks"));
-        ItemList.Shape_Extruder_Sword
-                .set(addItem(tLastID = 364, "Extruder Shape (Sword Blade)", "Extruder Shape for making Swords"));
-        ItemList.Shape_Extruder_Pickaxe
-                .set(addItem(tLastID = 365, "Extruder Shape (Pickaxe Head)", "Extruder Shape for making Pickaxes"));
-        ItemList.Shape_Extruder_Shovel
-                .set(addItem(tLastID = 366, "Extruder Shape (Shovel Head)", "Extruder Shape for making Shovels"));
-        ItemList.Shape_Extruder_Axe
-                .set(addItem(tLastID = 367, "Extruder Shape (Axe Head)", "Extruder Shape for making Axes"));
-        ItemList.Shape_Extruder_Hoe
-                .set(addItem(tLastID = 368, "Extruder Shape (Hoe Head)", "Extruder Shape for making Hoes"));
-        ItemList.Shape_Extruder_Hammer
-                .set(addItem(tLastID = 369, "Extruder Shape (Hammer Head)", "Extruder Shape for making Hammers"));
-        ItemList.Shape_Extruder_File
-                .set(addItem(tLastID = 370, "Extruder Shape (File Head)", "Extruder Shape for making Files"));
-        ItemList.Shape_Extruder_Saw
-                .set(addItem(tLastID = 371, "Extruder Shape (Saw Blade)", "Extruder Shape for making Saws"));
-        ItemList.Shape_Extruder_Gear
-                .set(addItem(tLastID = 372, "Extruder Shape (Gear)", "Extruder Shape for making Gears"));
-        ItemList.Shape_Extruder_Bottle
-                .set(addItem(tLastID = 373, "Extruder Shape (Bottle)", "Extruder Shape for making Bottles"));
-        ItemList.Shape_Extruder_Rotor
-                .set(addItem(tLastID = 374, "Extruder Shape (Rotor)", "Extruder Shape for a Rotor"));
-        ItemList.Shape_Extruder_Small_Gear
-                .set(addItem(tLastID = 375, "Extruder Shape (Small Gear)", "Extruder Shape for a Small Gear"));
-        ItemList.Shape_Extruder_Turbine_Blade
-                .set(addItem(tLastID = 376, "Extruder Shape (Turbine Blade)", "Extruder Shape for a Turbine Blade"));
-        ItemList.Shape_Extruder_ToolHeadDrill
-                .set(addItem(tLastID = 377, "Extruder Shape (Drill Head)", "Extruder Shape for a Drill Head"));
+        ItemList.Shape_Extruder_Block.set(
+                addItem(tLastID = 363, "Extruder Shape (Block)", "Extruder Shape for making Blocks"));
+        ItemList.Shape_Extruder_Sword.set(
+                addItem(tLastID = 364, "Extruder Shape (Sword Blade)", "Extruder Shape for making Swords"));
+        ItemList.Shape_Extruder_Pickaxe.set(
+                addItem(tLastID = 365, "Extruder Shape (Pickaxe Head)", "Extruder Shape for making Pickaxes"));
+        ItemList.Shape_Extruder_Shovel.set(
+                addItem(tLastID = 366, "Extruder Shape (Shovel Head)", "Extruder Shape for making Shovels"));
+        ItemList.Shape_Extruder_Axe.set(
+                addItem(tLastID = 367, "Extruder Shape (Axe Head)", "Extruder Shape for making Axes"));
+        ItemList.Shape_Extruder_Hoe.set(
+                addItem(tLastID = 368, "Extruder Shape (Hoe Head)", "Extruder Shape for making Hoes"));
+        ItemList.Shape_Extruder_Hammer.set(
+                addItem(tLastID = 369, "Extruder Shape (Hammer Head)", "Extruder Shape for making Hammers"));
+        ItemList.Shape_Extruder_File.set(
+                addItem(tLastID = 370, "Extruder Shape (File Head)", "Extruder Shape for making Files"));
+        ItemList.Shape_Extruder_Saw.set(
+                addItem(tLastID = 371, "Extruder Shape (Saw Blade)", "Extruder Shape for making Saws"));
+        ItemList.Shape_Extruder_Gear.set(
+                addItem(tLastID = 372, "Extruder Shape (Gear)", "Extruder Shape for making Gears"));
+        ItemList.Shape_Extruder_Bottle.set(
+                addItem(tLastID = 373, "Extruder Shape (Bottle)", "Extruder Shape for making Bottles"));
+        ItemList.Shape_Extruder_Rotor.set(
+                addItem(tLastID = 374, "Extruder Shape (Rotor)", "Extruder Shape for a Rotor"));
+        ItemList.Shape_Extruder_Small_Gear.set(
+                addItem(tLastID = 375, "Extruder Shape (Small Gear)", "Extruder Shape for a Small Gear"));
+        ItemList.Shape_Extruder_Turbine_Blade.set(
+                addItem(tLastID = 376, "Extruder Shape (Turbine Blade)", "Extruder Shape for a Turbine Blade"));
+        ItemList.Shape_Extruder_ToolHeadDrill.set(
+                addItem(tLastID = 377, "Extruder Shape (Drill Head)", "Extruder Shape for a Drill Head"));
 
         ItemList.Shape_Slicer_Flat.set(addItem(tLastID = 398, "Slicer Blade (Flat)", "Slicer Blade for cutting Flat"));
-        ItemList.Shape_Slicer_Stripes
-                .set(addItem(tLastID = 399, "Slicer Blade (Stripes)", "Slicer Blade for cutting Stripes"));
+        ItemList.Shape_Slicer_Stripes.set(
+                addItem(tLastID = 399, "Slicer Blade (Stripes)", "Slicer Blade for cutting Stripes"));
 
         GT_ModHandler.addCraftingRecipe(
                 ItemList.Shape_Slicer_Flat.get(1L),
@@ -1178,8 +1179,12 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 ItemList.Tool_MatchBox_Full.get(1L),
                 64,
                 16);
-        GT_Values.RA
-                .addUnboxingRecipe(ItemList.Tool_MatchBox_Full.get(1L), ItemList.Tool_Matches.get(16L), null, 32, 16);
+        GT_Values.RA.addUnboxingRecipe(
+                ItemList.Tool_MatchBox_Full.get(1L),
+                ItemList.Tool_Matches.get(16L),
+                null,
+                32,
+                16);
 
         ItemList.Tool_Lighter_Invar_Empty.set(
                 addItem(
@@ -1268,13 +1273,13 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 256,
                 256);
 
-        if (Loader.isModLoaded("GalacticraftMars")) {
-            ItemList.Ingot_Heavy1
-                    .set(addItem(tLastID = 462, "Heavy Duty Alloy Ingot T1", "Used to make Heavy Duty Plates T1"));
-            ItemList.Ingot_Heavy2
-                    .set(addItem(tLastID = 463, "Heavy Duty Alloy Ingot T2", "Used to make Heavy Duty Plates T2"));
-            ItemList.Ingot_Heavy3
-                    .set(addItem(tLastID = 464, "Heavy Duty Alloy Ingot T3", "Used to make Heavy Duty Plates T3"));
+        if (GalacticraftMars.isModLoaded()) {
+            ItemList.Ingot_Heavy1.set(
+                    addItem(tLastID = 462, "Heavy Duty Alloy Ingot T1", "Used to make Heavy Duty Plates T1"));
+            ItemList.Ingot_Heavy2.set(
+                    addItem(tLastID = 463, "Heavy Duty Alloy Ingot T2", "Used to make Heavy Duty Plates T2"));
+            ItemList.Ingot_Heavy3.set(
+                    addItem(tLastID = 464, "Heavy Duty Alloy Ingot T3", "Used to make Heavy Duty Plates T3"));
 
             // GT_ModHandler.addCraftingRecipe(ItemList.Ingot_Heavy1.get(1L, new Object[0]),
             // GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{"BhB", "CAS", "B B", 'B',
@@ -1705,14 +1710,17 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         setElectricStats(32000 + tLastID, 800000L, GT_Values.V[3], 3L, -3L, true);
         registerTieredTooltip(ItemList.Battery_RE_HV_Sodium.get(1), HV);
 
-        GT_ModHandler
-                .addExtractionRecipe(ItemList.Battery_SU_LV_SulfuricAcid.get(1L), ItemList.Battery_Hull_LV.get(1L));
+        GT_ModHandler.addExtractionRecipe(
+                ItemList.Battery_SU_LV_SulfuricAcid.get(1L),
+                ItemList.Battery_Hull_LV.get(1L));
         GT_ModHandler.addExtractionRecipe(ItemList.Battery_SU_LV_Mercury.get(1L), ItemList.Battery_Hull_LV.get(1L));
-        GT_ModHandler
-                .addExtractionRecipe(ItemList.Battery_SU_MV_SulfuricAcid.get(1L), ItemList.Battery_Hull_MV.get(1L));
+        GT_ModHandler.addExtractionRecipe(
+                ItemList.Battery_SU_MV_SulfuricAcid.get(1L),
+                ItemList.Battery_Hull_MV.get(1L));
         GT_ModHandler.addExtractionRecipe(ItemList.Battery_SU_MV_Mercury.get(1L), ItemList.Battery_Hull_MV.get(1L));
-        GT_ModHandler
-                .addExtractionRecipe(ItemList.Battery_SU_HV_SulfuricAcid.get(1L), ItemList.Battery_Hull_HV.get(1L));
+        GT_ModHandler.addExtractionRecipe(
+                ItemList.Battery_SU_HV_SulfuricAcid.get(1L),
+                ItemList.Battery_Hull_HV.get(1L));
         GT_ModHandler.addExtractionRecipe(ItemList.Battery_SU_HV_Mercury.get(1L), ItemList.Battery_Hull_HV.get(1L));
         GT_ModHandler.addExtractionRecipe(ItemList.Battery_RE_LV_Cadmium.get(1L), ItemList.Battery_Hull_LV.get(1L));
         GT_ModHandler.addExtractionRecipe(ItemList.Battery_RE_LV_Lithium.get(1L), ItemList.Battery_Hull_LV.get(1L));
@@ -2565,8 +2573,8 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 TextureFactory.of(MACHINE_CASINGS[5][0], TextureFactory.of(OVERLAY_VALVE)),
                 new GT_Cover_SteamValve(16384, TextureFactory.of(OVERLAY_VALVE)));
 
-        ItemList.FluidRegulator_LV
-                .set(addItem(tLastID = 660, "Fluid Regulator (LV)", FRText1 + GT_Utility.formatNumbers(640) + FRText2));
+        ItemList.FluidRegulator_LV.set(
+                addItem(tLastID = 660, "Fluid Regulator (LV)", FRText1 + GT_Utility.formatNumbers(640) + FRText2));
         ItemList.FluidRegulator_MV.set(
                 addItem(tLastID = 661, "Fluid Regulator (MV)", FRText1 + GT_Utility.formatNumbers(2560) + FRText2));
         ItemList.FluidRegulator_HV.set(
@@ -2615,8 +2623,8 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 TextureFactory.of(MACHINE_CASINGS[8][0], TextureFactory.of(OVERLAY_PUMP)),
                 new GT_Cover_FluidRegulator(524288, TextureFactory.of(OVERLAY_PUMP)));
 
-        ItemList.FluidFilter
-                .set(addItem(669, "Fluid Filter Cover", "Set with Fluid Container to only accept one Fluid Type"));
+        ItemList.FluidFilter.set(
+                addItem(669, "Fluid Filter Cover", "Set with Fluid Container to only accept one Fluid Type"));
         GregTech_API.registerCover(
                 ItemList.FluidFilter.get(1L),
                 TextureFactory.of(MACHINE_CASINGS[1][0], TextureFactory.of(OVERLAY_SHUTTER)),
@@ -2639,8 +2647,8 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                 ItemList.ItemFilter_Import.get(1L),
                 TextureFactory.of(MACHINE_CASINGS[5][0], TextureFactory.of(OVERLAY_CONVEYOR)),
                 new GT_Cover_ItemFilter(false, TextureFactory.of(OVERLAY_CONVEYOR)));
-        ItemList.Cover_FluidLimiter
-                .set(addItem(272, "Fluid Limiter Cover", "Limits fluid input depending on fill level"));
+        ItemList.Cover_FluidLimiter.set(
+                addItem(272, "Fluid Limiter Cover", "Limits fluid input depending on fill level"));
         GregTech_API.registerCover(
                 ItemList.Cover_FluidLimiter.get(1L),
                 TextureFactory.of(MACHINE_CASINGS[1][0], TextureFactory.of(OVERLAY_SHUTTER)),
@@ -3561,15 +3569,15 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         ItemList.Circuit_Board_Coated.set(ItemList.Circuit_Board_Basic.get(1));
         ItemList.Circuit_Board_Advanced.set(addItem(tLastID = 711, "Epoxy Circuit Board", "An Advanced Board"));
         ItemList.Circuit_Board_Epoxy.set(ItemList.Circuit_Board_Advanced.get(1));
-        ItemList.Circuit_Board_Elite
-                .set(addItem(tLastID = 712, "Multilayer Fiber-Reinforced Circuit Board", "An Elite Board"));
+        ItemList.Circuit_Board_Elite.set(
+                addItem(tLastID = 712, "Multilayer Fiber-Reinforced Circuit Board", "An Elite Board"));
         ItemList.Circuit_Board_Multifiberglass.set(ItemList.Circuit_Board_Elite.get(1));
-        ItemList.Circuit_Parts_Crystal_Chip_Elite
-                .set(addItem(tLastID = 713, "Engraved Crystal Chip", "Needed for Circuits"));
-        ItemList.Circuit_Parts_Crystal_Chip_Master
-                .set(addItem(tLastID = 714, "Engraved Lapotron Chip", "Needed for Circuits"));
-        ItemList.Circuit_Parts_Crystal_Chip_Wetware
-                .set(addItem(tLastID = 668, "Living Crystal Chip", "Needed for Circuits"));
+        ItemList.Circuit_Parts_Crystal_Chip_Elite.set(
+                addItem(tLastID = 713, "Engraved Crystal Chip", "Needed for Circuits"));
+        ItemList.Circuit_Parts_Crystal_Chip_Master.set(
+                addItem(tLastID = 714, "Engraved Lapotron Chip", "Needed for Circuits"));
+        ItemList.Circuit_Parts_Crystal_Chip_Wetware.set(
+                addItem(tLastID = 668, "Living Crystal Chip", "Needed for Circuits"));
         ItemList.Circuit_Parts_Advanced.set(addItem(tLastID = 715, "Diode", "Basic Electronic Component"));
         ItemList.Circuit_Parts_Diode.set(ItemList.Circuit_Parts_Advanced.get(1));
         ItemList.Circuit_Parts_Wiring_Basic.set(addItem(tLastID = 716, "Resistor", "Basic Electronic Component"));
@@ -3793,7 +3801,10 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
 
         final ITexture doesWorkCoverTexture = TextureFactory.of(
                 TextureFactory.of(OVERLAY_ACTIVITYDETECTOR),
-                TextureFactory.builder().addIcon(OVERLAY_ACTIVITYDETECTOR_GLOW).glow().build());
+                TextureFactory.builder()
+                              .addIcon(OVERLAY_ACTIVITYDETECTOR_GLOW)
+                              .glow()
+                              .build());
         GregTech_API.registerCover(
                 ItemList.Cover_ActivityDetector.get(1L),
                 TextureFactory.of(MACHINE_CASINGS[2][0], doesWorkCoverTexture),
@@ -3813,7 +3824,10 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
 
         final ITexture playerDectectorCoverTexture = TextureFactory.of(
                 TextureFactory.of(OVERLAY_ACTIVITYDETECTOR),
-                TextureFactory.builder().addIcon(OVERLAY_ACTIVITYDETECTOR_GLOW).glow().build());
+                TextureFactory.builder()
+                              .addIcon(OVERLAY_ACTIVITYDETECTOR_GLOW)
+                              .glow()
+                              .build());
         GregTech_API.registerCover(
                 ItemList.Cover_PlayerDetector.get(1L),
                 TextureFactory.of(MACHINE_CASINGS[2][0], playerDectectorCoverTexture),
@@ -3942,7 +3956,10 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
 
         final ITexture screenCoverTexture = TextureFactory.of(
                 TextureFactory.of(OVERLAY_SCREEN),
-                TextureFactory.builder().addIcon(OVERLAY_SCREEN_GLOW).glow().build());
+                TextureFactory.builder()
+                              .addIcon(OVERLAY_SCREEN_GLOW)
+                              .glow()
+                              .build());
         GregTech_API.registerCover(
                 ItemList.Cover_Screen.get(1L),
                 TextureFactory.of(MACHINE_CASINGS[2][0], screenCoverTexture),
@@ -4370,7 +4387,8 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
 
     @Override
     public boolean onEntityItemUpdate(EntityItem aItemEntity) {
-        int aDamage = aItemEntity.getEntityItem().getItemDamage();
+        int aDamage = aItemEntity.getEntityItem()
+                                 .getItemDamage();
         if ((aDamage < 32000) && (aDamage >= 0) && (!aItemEntity.worldObj.isRemote)) {
             Materials aMaterial = GregTech_API.sGeneratedMaterials[(aDamage % 1000)];
             if ((aMaterial != null) && (aMaterial != Materials.Empty) && (aMaterial != Materials._NULL)) {
@@ -4386,8 +4404,10 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
                         aMaterial = cauldronRemap.getOrDefault(aMaterial, aMaterial);
 
                         aItemEntity.setEntityItemStack(
-                                GT_OreDictUnificator
-                                        .get(OrePrefixes.dust, aMaterial, aItemEntity.getEntityItem().stackSize));
+                                GT_OreDictUnificator.get(
+                                        OrePrefixes.dust,
+                                        aMaterial,
+                                        aItemEntity.getEntityItem().stackSize));
                         aItemEntity.worldObj.setBlockMetadataWithNotify(tX, tY, tZ, tMetaData - 1, 3);
                         return true;
                     }
@@ -4437,10 +4457,12 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         if (aPrefix == OrePrefixes.cellPlasma && aMaterial.getPlasma(1L) != null) { // Materials has a plasma fluid
             for (GT_Recipe recipe : fusionRecipes) { // Loop through fusion recipes
                 if (recipe.getFluidOutput(0) != null) { // Make sure fluid output can't be null (not sure if possible)
-                    if (recipe.getFluidOutput(0).isFluidEqual(aMaterial.getPlasma(1L))) return true; // Fusion recipe
-                                                                                                     // output matches
-                                                                                                     // current plasma
-                                                                                                     // cell fluid
+                    if (recipe.getFluidOutput(0)
+                              .isFluidEqual(aMaterial.getPlasma(1L)))
+                        return true; // Fusion recipe
+                                     // output matches
+                                     // current plasma
+                                     // cell fluid
                 }
             }
         }

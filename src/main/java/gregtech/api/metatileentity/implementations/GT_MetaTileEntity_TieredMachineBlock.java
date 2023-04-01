@@ -124,7 +124,15 @@ public abstract class GT_MetaTileEntity_TieredMachineBlock extends MetaTileEntit
 
     protected SlotWidget createChargerSlot(int x, int y, String tooltipKey, Object[] tooltipArgs) {
         return (SlotWidget) new SlotWidget(inventoryHandler, rechargerSlotStartIndex()).disableShiftInsert()
-                .setGTTooltip(() -> mTooltipCache.getData(tooltipKey, tooltipArgs)).setTooltipShowUpDelay(TOOLTIP_DELAY)
-                .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_CHARGER).setPos(x, y);
+                                                                                       .setGTTooltip(
+                                                                                               () -> mTooltipCache.getData(
+                                                                                                       tooltipKey,
+                                                                                                       tooltipArgs))
+                                                                                       .setTooltipShowUpDelay(
+                                                                                               TOOLTIP_DELAY)
+                                                                                       .setBackground(
+                                                                                               getGUITextureSet().getItemSlot(),
+                                                                                               GT_UITextures.OVERLAY_SLOT_CHARGER)
+                                                                                       .setPos(x, y);
     }
 }

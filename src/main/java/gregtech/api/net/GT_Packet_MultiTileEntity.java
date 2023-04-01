@@ -14,24 +14,28 @@ import gregtech.api.metatileentity.GregTechTileClientEvents;
 import gregtech.api.multitileentity.MultiTileEntityBlock;
 import gregtech.api.multitileentity.interfaces.IMultiBlockPart;
 import gregtech.api.multitileentity.interfaces.IMultiTileEntity;
-import gregtech.api.multitileentity.multiblock.casing.InventoryUpgrade;
+import gregtech.api.multitileentity.interfaces.IMultiTileMachine;
+import gregtech.common.tileentities.casings.upgrade.InventoryUpgrade;
 import io.netty.buffer.ByteBuf;
 
 public class GT_Packet_MultiTileEntity extends GT_Packet_New {
 
     public static final int COVERS = B[0], REDSTONE = B[1], MODES = B[2], CONTROLLER = B[3], INVENTORY_INDEX = B[4],
-            INVENTORY_NAME = B[5];
+            INVENTORY_NAME = B[5], BOOLEANS = B[6], SOUND = B[7];
 
     private int features = 0;
 
     private int mX, mZ;
     private int mC0 = 0, mC1 = 0, mC2 = 0, mC3 = 0, mC4 = 0, mC5 = 0;
     private short mY, mID, mRID;
-    private byte mCommonData, mTexturePage, mUpdate, mRedstone, mColor;
+    private byte mCommonData, mRedstone, mColor;
     private ChunkCoordinates mTargetPos = null;
     private int mLockedInventoryIndex;
     private String mInventoryName;
     private int mInventoryLength;
+    private int booleans;
+    private byte soundEvent;
+    private int soundEventValue;
 
     // MultiBlockPart
     private byte mMode;
@@ -95,6 +99,21 @@ public class GT_Packet_MultiTileEntity extends GT_Packet_New {
         mInventoryName = aInventoryName;
     }
 
+    /**
+     *
+     * @param boolToSync each bit of the integer will be a boolean.
+     */
+    public void setBooleans(int boolToSync) {
+        features |= BOOLEANS;
+        this.booleans = boolToSync;
+    }
+
+    public void setSoundEvent(byte soundEvent, int soundEventValue) {
+        features |= SOUND;
+        this.soundEvent = soundEvent;
+        this.soundEventValue = soundEventValue;
+    }
+
     @Override
     public void encode(ByteBuf aOut) {
         // Features
@@ -145,10 +164,13 @@ public class GT_Packet_MultiTileEntity extends GT_Packet_New {
             }
         }
 
-        if (false) {
-            aOut.writeByte(mTexturePage);
-            aOut.writeByte(mUpdate);
-            aOut.writeByte(mColor);
+        if ((features & BOOLEANS) == BOOLEANS) {
+            aOut.writeInt(booleans);
+        }
+
+        if ((features & SOUND) == SOUND) {
+            aOut.writeByte(soundEvent);
+            aOut.writeInt(soundEventValue);
         }
     }
 
@@ -191,15 +213,25 @@ public class GT_Packet_MultiTileEntity extends GT_Packet_New {
         }
         if ((packetFeatures & INVENTORY_NAME) == INVENTORY_NAME) {
             int tLength = aData.readInt();
-            String tName = "";
+            String tName;
             if (tLength > 0) {
+                StringBuilder tNameBuilder = new StringBuilder();
                 for (int i = 0; i < tLength; i++) {
-                    tName += aData.readChar();
+                    tNameBuilder.append(aData.readChar());
                 }
+                tName = tNameBuilder.toString();
             } else {
                 tName = null;
             }
             packet.setInventoryName(tName);
+        }
+
+        if ((packetFeatures & BOOLEANS) == BOOLEANS) {
+            packet.setBooleans(aData.readInt());
+        }
+
+        if ((packetFeatures & SOUND) == SOUND) {
+            packet.setSoundEvent(aData.readByte(), aData.readInt());
         }
 
         return packet;
@@ -211,8 +243,7 @@ public class GT_Packet_MultiTileEntity extends GT_Packet_New {
         final TileEntity tTileEntity = aWorld.getTileEntity(mX, mY, mZ);
         try {
             final Block tBlock = aWorld.getBlock(mX, mY, mZ);
-            if (tBlock instanceof MultiTileEntityBlock) {
-                final MultiTileEntityBlock mteBlock = (MultiTileEntityBlock) tBlock;
+            if (tBlock instanceof MultiTileEntityBlock mteBlock) {
                 final IMultiTileEntity mte = mteBlock.receiveMultiTileEntityData(aWorld, mX, mY, mZ, mRID, mID);
                 if (mte == null) return;
                 mte.receiveClientEvent(GregTechTileClientEvents.CHANGE_COMMON_DATA, mCommonData);
@@ -225,8 +256,7 @@ public class GT_Packet_MultiTileEntity extends GT_Packet_New {
                     mte.receiveClientEvent(GregTechTileClientEvents.CHANGE_REDSTONE_OUTPUT, mRedstone);
                 }
 
-                if ((features & MODES) == MODES && mte instanceof IMultiTileEntity.IMTE_HasModes) {
-                    final IMultiTileEntity.IMTE_HasModes mteModes = (IMultiTileEntity.IMTE_HasModes) mte;
+                if ((features & MODES) == MODES && mte instanceof IMultiTileEntity.IMTE_HasModes mteModes) {
                     mteModes.setMode(mMode);
                     mteModes.setAllowedModes(mAllowedModes);
                 }
@@ -241,9 +271,18 @@ public class GT_Packet_MultiTileEntity extends GT_Packet_New {
                     mtePart.setLockedInventoryIndex(mLockedInventoryIndex);
                 }
 
-                if ((features & INVENTORY_NAME) == INVENTORY_NAME && mte instanceof InventoryUpgrade) {
-                    final InventoryUpgrade invUpg = (InventoryUpgrade) mte;
+                if ((features & INVENTORY_NAME) == INVENTORY_NAME && mte instanceof InventoryUpgrade invUpg) {
                     invUpg.setInventoryName(mInventoryName);
+                }
+
+                if ((features & BOOLEANS) == BOOLEANS && mte instanceof IMultiTileMachine) {
+                    final IMultiTileMachine machine = (IMultiTileMachine) mte;
+                    machine.setBooleans(booleans);
+                }
+
+                if ((features & SOUND) == SOUND && mte instanceof IMultiTileMachine) {
+                    final IMultiTileMachine machine = (IMultiTileMachine) mte;
+                    machine.setSound(soundEvent, soundEventValue);
                 }
 
             }

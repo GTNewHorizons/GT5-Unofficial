@@ -44,23 +44,25 @@ public class GT_CLS_Compat {
             GT_Mod.GT_FML_LOGGER.catching(ex);
         }
 
-        Optional.ofNullable(alexiilMinecraftDisplayer).ifPresent(e -> {
-            try {
-                getLastPercent = e.getMethod("getLastPercent");
-                isReplacingVanillaMaterials = e.getField("isReplacingVanillaMaterials");
-                isRegisteringGTmaterials = e.getField("isRegisteringGTmaterials");
-            } catch (NoSuchMethodException | NoSuchFieldException ex) {
-                GT_Mod.GT_FML_LOGGER.catching(ex);
-            }
-        });
+        Optional.ofNullable(alexiilMinecraftDisplayer)
+                .ifPresent(e -> {
+                    try {
+                        getLastPercent = e.getMethod("getLastPercent");
+                        isReplacingVanillaMaterials = e.getField("isReplacingVanillaMaterials");
+                        isRegisteringGTmaterials = e.getField("isRegisteringGTmaterials");
+                    } catch (NoSuchMethodException | NoSuchFieldException ex) {
+                        GT_Mod.GT_FML_LOGGER.catching(ex);
+                    }
+                });
 
-        Optional.ofNullable(alexiilProgressDisplayer).ifPresent(e -> {
-            try {
-                displayProgress = e.getMethod("displayProgress", String.class, float.class);
-            } catch (NoSuchMethodException ex) {
-                GT_Mod.GT_FML_LOGGER.catching(ex);
-            }
-        });
+        Optional.ofNullable(alexiilProgressDisplayer)
+                .ifPresent(e -> {
+                    try {
+                        displayProgress = e.getMethod("displayProgress", String.class, float.class);
+                    } catch (NoSuchMethodException ex) {
+                        GT_Mod.GT_FML_LOGGER.catching(ex);
+                    }
+                });
 
         try {
             progressBarStep = cpwProgressBar.getDeclaredField("step");
@@ -86,7 +88,8 @@ public class GT_CLS_Compat {
 
             if (nextProgressionReportAt < now) {
                 nextProgressionReportAt = now + progressionReportsEvery;
-                String materialName = getName.apply(m).toString();
+                String materialName = getName.apply(m)
+                                             .toString();
                 try {
                     displayProgress.invoke(null, materialName, (float) currentStep / sizeStep);
                 } catch (IllegalAccessException | InvocationTargetException iae) {
@@ -102,11 +105,11 @@ public class GT_CLS_Compat {
             if (nextBakingMsgAt < now) {
                 nextBakingMsgAt = now + bakingMsgEvery;
                 GT_Mod.GT_FML_LOGGER.info(
-                        String.format("%s - Baking: %d%%", materialsType, (Integer) (currentStep * 100 / sizeStep)));
+                        String.format("%s - Baking: %d%%", materialsType, currentStep * 100 / sizeStep));
             }
             action.accept(m);
             currentStep += 1;
-        } ;
+        }
         GT_Mod.GT_FML_LOGGER.info(String.format("%s - Baking: Done", materialsType));
         try {
             progressBarStep.set(progressBar, currentStep);
@@ -127,7 +130,7 @@ public class GT_CLS_Compat {
                 mEvents,
                 progressBar,
                 m -> m.mMaterial,
-                m -> GT_Proxy.registerRecipes(m));
+                GT_Proxy::registerRecipes);
         ProgressManager.pop(progressBar);
         isRegisteringGTmaterials.set(null, false);
     }
@@ -144,7 +147,7 @@ public class GT_CLS_Compat {
                 replacedVanillaItemsSet,
                 progressBar,
                 m -> m.mDefaultLocalName,
-                m -> GT_PostLoad.doActualRegistration(m));
+                GT_PostLoad::doActualRegistration);
     }
 
     public static void pushToDisplayProgress() throws InvocationTargetException, IllegalAccessException {

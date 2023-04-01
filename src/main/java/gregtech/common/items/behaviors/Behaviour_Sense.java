@@ -15,8 +15,9 @@ import ic2.api.crops.ICropTile;
 public class Behaviour_Sense extends Behaviour_None {
 
     private final int mCosts;
-    private final String mTooltip = GT_LanguageManager
-            .addStringLocalization("gt.behaviour.sense", "Rightclick to harvest Crop Sticks");
+    private final String mTooltip = GT_LanguageManager.addStringLocalization(
+            "gt.behaviour.sense",
+            "Rightclick to harvest Crop Sticks");
 
     public Behaviour_Sense(int aCosts) {
         this.mCosts = aCosts;

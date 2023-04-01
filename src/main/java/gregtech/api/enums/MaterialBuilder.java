@@ -42,7 +42,8 @@ public class MaterialBuilder {
     public MaterialBuilder(int metaItemSubID, TextureSet iconSet, String defaultLocalName) {
         this.metaItemSubID = metaItemSubID;
         this.iconSet = iconSet;
-        this.name = defaultLocalName.replace(" ", "").replace("-", "");
+        this.name = defaultLocalName.replace(" ", "")
+                                    .replace("-", "");
         this.defaultLocalName = defaultLocalName;
     }
 
@@ -72,7 +73,8 @@ public class MaterialBuilder {
                 color,
                 extraData,
                 materialList,
-                aspects).setHasCorrespondingFluid(hasCorrespondingFluid).setHasCorrespondingGas(hasCorrespondingGas)
+                aspects).setHasCorrespondingFluid(hasCorrespondingFluid)
+                        .setHasCorrespondingGas(hasCorrespondingGas)
                         .setCanBeCracked(canBeCracked);
     }
 

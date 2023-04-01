@@ -47,29 +47,23 @@ public class GT_MetaTileEntity_NaquadahReactor extends GT_MetaTileEntity_BasicGe
     public GT_Recipe.GT_Recipe_Map getRecipes() {
         GT_Recipe.GT_Recipe_Map ret;
         switch (mTier) {
-            case 4: {
+            case 4 -> {
                 ret = GT_Recipe.GT_Recipe_Map.sSmallNaquadahReactorFuels;
-                break;
             }
-            case 5: {
+            case 5 -> {
                 ret = GT_Recipe.GT_Recipe_Map.sLargeNaquadahReactorFuels;
-                break;
             }
-            case 6: {
+            case 6 -> {
                 ret = GT_Recipe.GT_Recipe_Map.sHugeNaquadahReactorFuels;
-                break;
             }
-            case 7: {
+            case 7 -> {
                 ret = GT_Recipe.GT_Recipe_Map.sExtremeNaquadahReactorFuels;
-                break;
             }
-            case 8: {
+            case 8 -> {
                 ret = GT_Recipe.GT_Recipe_Map.sUltraHugeNaquadahReactorFuels;
-                break;
             }
-            default: {
+            default -> {
                 ret = null;
-                break;
             }
         }
         return ret;
@@ -90,8 +84,10 @@ public class GT_MetaTileEntity_NaquadahReactor extends GT_MetaTileEntity_BasicGe
     }
 
     public int onConfigLoad() {
-        return mEfficiency = GregTech_API.sMachineFile
-                .get(ConfigCategories.machineconfig, "SolidNaquadah.efficiency.tier." + mTier, getBaseEff());
+        return mEfficiency = GregTech_API.sMachineFile.get(
+                ConfigCategories.machineconfig,
+                "SolidNaquadah.efficiency.tier." + mTier,
+                getBaseEff());
     }
 
     @Override
@@ -99,7 +95,10 @@ public class GT_MetaTileEntity_NaquadahReactor extends GT_MetaTileEntity_BasicGe
         return new ITexture[] { super.getFront(aColor)[0],
                 TextureFactory.of(
                         TextureFactory.of(NAQUADAH_REACTOR_SOLID_FRONT),
-                        TextureFactory.builder().addIcon(NAQUADAH_REACTOR_SOLID_FRONT_GLOW).glow().build()) };
+                        TextureFactory.builder()
+                                      .addIcon(NAQUADAH_REACTOR_SOLID_FRONT_GLOW)
+                                      .glow()
+                                      .build()) };
     }
 
     @Override
@@ -107,7 +106,10 @@ public class GT_MetaTileEntity_NaquadahReactor extends GT_MetaTileEntity_BasicGe
         return new ITexture[] { super.getBack(aColor)[0],
                 TextureFactory.of(
                         TextureFactory.of(NAQUADAH_REACTOR_SOLID_BACK),
-                        TextureFactory.builder().addIcon(NAQUADAH_REACTOR_SOLID_BACK_GLOW).glow().build()) };
+                        TextureFactory.builder()
+                                      .addIcon(NAQUADAH_REACTOR_SOLID_BACK_GLOW)
+                                      .glow()
+                                      .build()) };
     }
 
     @Override
@@ -115,7 +117,10 @@ public class GT_MetaTileEntity_NaquadahReactor extends GT_MetaTileEntity_BasicGe
         return new ITexture[] { super.getBottom(aColor)[0],
                 TextureFactory.of(
                         TextureFactory.of(NAQUADAH_REACTOR_SOLID_BOTTOM),
-                        TextureFactory.builder().addIcon(NAQUADAH_REACTOR_SOLID_BOTTOM_GLOW).glow().build()) };
+                        TextureFactory.builder()
+                                      .addIcon(NAQUADAH_REACTOR_SOLID_BOTTOM_GLOW)
+                                      .glow()
+                                      .build()) };
     }
 
     @Override
@@ -123,7 +128,10 @@ public class GT_MetaTileEntity_NaquadahReactor extends GT_MetaTileEntity_BasicGe
         return new ITexture[] { super.getTop(aColor)[0],
                 TextureFactory.of(
                         TextureFactory.of(NAQUADAH_REACTOR_SOLID_TOP),
-                        TextureFactory.builder().addIcon(NAQUADAH_REACTOR_SOLID_TOP_GLOW).glow().build()) };
+                        TextureFactory.builder()
+                                      .addIcon(NAQUADAH_REACTOR_SOLID_TOP_GLOW)
+                                      .glow()
+                                      .build()) };
     }
 
     @Override
@@ -131,38 +139,56 @@ public class GT_MetaTileEntity_NaquadahReactor extends GT_MetaTileEntity_BasicGe
         return new ITexture[] { super.getSides(aColor)[0],
                 TextureFactory.of(
                         TextureFactory.of(NAQUADAH_REACTOR_SOLID_SIDE),
-                        TextureFactory.builder().addIcon(NAQUADAH_REACTOR_SOLID_SIDE_GLOW).glow().build()) };
+                        TextureFactory.builder()
+                                      .addIcon(NAQUADAH_REACTOR_SOLID_SIDE_GLOW)
+                                      .glow()
+                                      .build()) };
     }
 
     @Override
     public ITexture[] getFrontActive(byte aColor) {
         return new ITexture[] { super.getFrontActive(aColor)[0], TextureFactory.of(NAQUADAH_REACTOR_SOLID_FRONT_ACTIVE),
-                TextureFactory.builder().addIcon(NAQUADAH_REACTOR_SOLID_FRONT_ACTIVE_GLOW).glow().build() };
+                TextureFactory.builder()
+                              .addIcon(NAQUADAH_REACTOR_SOLID_FRONT_ACTIVE_GLOW)
+                              .glow()
+                              .build() };
     }
 
     @Override
     public ITexture[] getBackActive(byte aColor) {
         return new ITexture[] { super.getBackActive(aColor)[0], TextureFactory.of(NAQUADAH_REACTOR_SOLID_BACK_ACTIVE),
-                TextureFactory.builder().addIcon(NAQUADAH_REACTOR_SOLID_BACK_ACTIVE_GLOW).glow().build() };
+                TextureFactory.builder()
+                              .addIcon(NAQUADAH_REACTOR_SOLID_BACK_ACTIVE_GLOW)
+                              .glow()
+                              .build() };
     }
 
     @Override
     public ITexture[] getBottomActive(byte aColor) {
-        return new ITexture[] { super.getBottomActive(aColor)[0],
-                TextureFactory.of(NAQUADAH_REACTOR_SOLID_BOTTOM_ACTIVE),
-                TextureFactory.builder().addIcon(NAQUADAH_REACTOR_SOLID_BOTTOM_ACTIVE_GLOW).glow().build() };
+        return new ITexture[] {
+                super.getBottomActive(aColor)[0], TextureFactory.of(NAQUADAH_REACTOR_SOLID_BOTTOM_ACTIVE),
+                TextureFactory.builder()
+                              .addIcon(NAQUADAH_REACTOR_SOLID_BOTTOM_ACTIVE_GLOW)
+                              .glow()
+                              .build() };
     }
 
     @Override
     public ITexture[] getTopActive(byte aColor) {
         return new ITexture[] { super.getTopActive(aColor)[0], TextureFactory.of(NAQUADAH_REACTOR_SOLID_TOP_ACTIVE),
-                TextureFactory.builder().addIcon(NAQUADAH_REACTOR_SOLID_TOP_ACTIVE_GLOW).glow().build() };
+                TextureFactory.builder()
+                              .addIcon(NAQUADAH_REACTOR_SOLID_TOP_ACTIVE_GLOW)
+                              .glow()
+                              .build() };
     }
 
     @Override
     public ITexture[] getSidesActive(byte aColor) {
         return new ITexture[] { super.getSidesActive(aColor)[0], TextureFactory.of(NAQUADAH_REACTOR_SOLID_SIDE_ACTIVE),
-                TextureFactory.builder().addIcon(NAQUADAH_REACTOR_SOLID_SIDE_ACTIVE_GLOW).glow().build() };
+                TextureFactory.builder()
+                              .addIcon(NAQUADAH_REACTOR_SOLID_SIDE_ACTIVE_GLOW)
+                              .glow()
+                              .build() };
     }
 
     @Override

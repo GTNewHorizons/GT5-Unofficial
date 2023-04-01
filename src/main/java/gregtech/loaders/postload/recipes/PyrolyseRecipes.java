@@ -1,8 +1,11 @@
 package gregtech.loaders.postload.recipes;
 
+import static gregtech.api.enums.ModIDs.Forestry;
+import static gregtech.api.enums.ModIDs.Railcraft;
 import static gregtech.api.util.GT_ModHandler.getModItem;
-import static gregtech.loaders.postload.GT_MachineRecipeLoader.isForestryLoaded;
-import static gregtech.loaders.postload.GT_MachineRecipeLoader.isRailcraftLoaded;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sPyrolyseRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 
 import mods.railcraft.common.blocks.aesthetics.cube.EnumCube;
 import mods.railcraft.common.items.RailcraftToolItems;
@@ -16,114 +19,132 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.loaders.postload.GT_MachineRecipeLoader;
+import gregtech.api.util.GT_Utility;
 
 public class PyrolyseRecipes implements Runnable {
 
     @Override
     public void run() {
-        if (isRailcraftLoaded) {
-            GT_Values.RA.addPyrolyseRecipe(
-                    GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 16),
-                    GT_Values.NF,
-                    1,
-                    RailcraftToolItems.getCoalCoke(16),
-                    Materials.Creosote.getFluid(8000),
-                    640,
-                    64);
-            GT_Values.RA.addPyrolyseRecipe(
-                    GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 16),
-                    Materials.Nitrogen.getGas(1000),
-                    2,
-                    RailcraftToolItems.getCoalCoke(16),
-                    Materials.Creosote.getFluid(8000),
-                    320,
-                    96);
-            GT_Values.RA.addPyrolyseRecipe(
-                    GT_OreDictUnificator.get(OrePrefixes.block, Materials.Coal, 8),
-                    GT_Values.NF,
-                    1,
-                    EnumCube.COKE_BLOCK.getItem(8),
-                    Materials.Creosote.getFluid(32000),
-                    2560,
-                    64);
-            GT_Values.RA.addPyrolyseRecipe(
-                    GT_OreDictUnificator.get(OrePrefixes.block, Materials.Coal, 8),
-                    Materials.Nitrogen.getGas(1000),
-                    2,
-                    EnumCube.COKE_BLOCK.getItem(8),
-                    Materials.Creosote.getFluid(32000),
-                    1280,
-                    96);
+        if (Railcraft.isModLoaded()) {
+            GT_Values.RA.stdBuilder()
+                        .itemInputs(
+                                GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 16),
+                                GT_Utility.getIntegratedCircuit(1))
+                        .itemOutputs(RailcraftToolItems.getCoalCoke(16))
+                        .noFluidInputs()
+                        .fluidOutputs(Materials.Creosote.getFluid(8000))
+                        .duration(32 * SECONDS)
+                        .eut(64)
+                        .addTo(sPyrolyseRecipes);
+
+            GT_Values.RA.stdBuilder()
+                        .itemInputs(
+                                GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 16),
+                                GT_Utility.getIntegratedCircuit(2))
+                        .itemOutputs(RailcraftToolItems.getCoalCoke(16))
+                        .fluidInputs(Materials.Nitrogen.getGas(1000))
+                        .fluidOutputs(Materials.Creosote.getFluid(8000))
+                        .duration(16 * SECONDS)
+                        .eut(96)
+                        .addTo(sPyrolyseRecipes);
+
+            GT_Values.RA.stdBuilder()
+                        .itemInputs(
+                                GT_OreDictUnificator.get(OrePrefixes.block, Materials.Coal, 8),
+                                GT_Utility.getIntegratedCircuit(1))
+                        .itemOutputs(EnumCube.COKE_BLOCK.getItem(8))
+                        .noFluidInputs()
+                        .fluidOutputs(Materials.Creosote.getFluid(32000))
+                        .duration(2 * MINUTES + 8 * SECONDS)
+                        .eut(64)
+                        .addTo(sPyrolyseRecipes);
+
+            GT_Values.RA.stdBuilder()
+                        .itemInputs(
+                                GT_OreDictUnificator.get(OrePrefixes.block, Materials.Coal, 8),
+                                GT_Utility.getIntegratedCircuit(2))
+                        .itemOutputs(EnumCube.COKE_BLOCK.getItem(8))
+                        .fluidInputs(Materials.Nitrogen.getGas(1000))
+                        .fluidOutputs(Materials.Creosote.getFluid(32000))
+                        .duration(1 * MINUTES + 4 * SECONDS)
+                        .eut(96)
+                        .addTo(sPyrolyseRecipes);
         }
 
-        if (!GregTech_API.mIC2Classic) GT_Values.RA.addPyrolyseRecipe(
-                GT_ModHandler.getIC2Item("biochaff", 4L),
-                Materials.Water.getFluid(4000),
-                1,
-                GT_Values.NI,
-                new FluidStack(FluidRegistry.getFluid("ic2biomass"), 5000),
-                900,
-                10);
-        if (isForestryLoaded) {
-            GT_Values.RA.addPyrolyseRecipe(
-                    getModItem(GT_MachineRecipeLoader.aTextForestry, "fertilizerBio", 4L),
-                    Materials.Water.getFluid(4000),
-                    1,
-                    GT_Values.NI,
-                    Materials.Biomass.getFluid(5000),
-                    900,
-                    10);
-            GT_Values.RA.addPyrolyseRecipe(
-                    getModItem(GT_MachineRecipeLoader.aTextForestry, "mulch", 32L),
-                    Materials.Water.getFluid(4000),
-                    1,
-                    GT_Values.NI,
-                    Materials.Biomass.getFluid(5000),
-                    900,
-                    10);
+        if (!GregTech_API.mIC2Classic) {
+            GT_Values.RA.stdBuilder()
+                        .itemInputs(GT_ModHandler.getIC2Item("biochaff", 4), GT_Utility.getIntegratedCircuit(1))
+                        .noItemOutputs()
+                        .fluidInputs(Materials.Water.getFluid(4000))
+                        .fluidOutputs(new FluidStack(FluidRegistry.getFluid("ic2biomass"), 5000))
+                        .duration(45 * SECONDS)
+                        .eut(10)
+                        .addTo(sPyrolyseRecipes);
         }
 
-        GT_Values.RA.addPyrolyseRecipe(
-                GT_ModHandler.getIC2Item("biochaff", 1),
-                Materials.Water.getFluid(1500),
-                2,
-                GT_Values.NI,
-                Materials.FermentedBiomass.getFluid(1500),
-                200,
-                10);
-        GT_Values.RA.addPyrolyseRecipe(
-                GT_Values.NI,
-                new FluidStack(FluidRegistry.getFluid("ic2biomass"), 1000),
-                2,
-                GT_Values.NI,
-                Materials.FermentedBiomass.getFluid(1000),
-                100,
-                10);
-        GT_Values.RA.addPyrolyseRecipe(
-                GT_Values.NI,
-                Materials.Biomass.getFluid(1000),
-                2,
-                GT_Values.NI,
-                Materials.FermentedBiomass.getFluid(1000),
-                100,
-                10);
+        if (Forestry.isModLoaded()) {
+            GT_Values.RA.stdBuilder()
+                        .itemInputs(getModItem(Forestry.modID, "fertilizerBio", 4), GT_Utility.getIntegratedCircuit(1))
+                        .noItemOutputs()
+                        .fluidInputs(Materials.Water.getFluid(4000))
+                        .fluidOutputs(Materials.Biomass.getFluid(5000))
+                        .duration(45 * SECONDS)
+                        .eut(10)
+                        .addTo(sPyrolyseRecipes);
 
-        GT_Values.RA.addPyrolyseRecipe(
-                Materials.Sugar.getDust(23),
-                GT_Values.NF,
-                1,
-                Materials.Charcoal.getDust(12),
-                Materials.Water.getFluid(1500),
-                320,
-                64);
-        GT_Values.RA.addPyrolyseRecipe(
-                Materials.Sugar.getDust(23),
-                Materials.Nitrogen.getGas(500),
-                2,
-                Materials.Charcoal.getDust(12),
-                Materials.Water.getFluid(1500),
-                160,
-                96);
+            GT_Values.RA.stdBuilder()
+                        .itemInputs(getModItem(Forestry.modID, "mulch", 32), GT_Utility.getIntegratedCircuit(1))
+                        .noItemOutputs()
+                        .fluidInputs(Materials.Water.getFluid(4000))
+                        .fluidOutputs(Materials.Biomass.getFluid(5000))
+                        .duration(45 * SECONDS)
+                        .eut(10)
+                        .addTo(sPyrolyseRecipes);
+        }
+
+        GT_Values.RA.stdBuilder()
+                    .itemInputs(GT_ModHandler.getIC2Item("biochaff", 1), GT_Utility.getIntegratedCircuit(2))
+                    .noItemOutputs()
+                    .fluidInputs(Materials.Water.getFluid(1500))
+                    .fluidOutputs(Materials.FermentedBiomass.getFluid(1500))
+                    .duration(10 * SECONDS)
+                    .eut(10)
+                    .addTo(sPyrolyseRecipes);
+
+        GT_Values.RA.stdBuilder()
+                    .noItemInputs()
+                    .noItemOutputs()
+                    .fluidInputs(new FluidStack(FluidRegistry.getFluid("ic2biomass"), 1000))
+                    .fluidOutputs(Materials.FermentedBiomass.getFluid(1000))
+                    .duration(5 * SECONDS)
+                    .eut(10)
+                    .addTo(sPyrolyseRecipes);
+
+        GT_Values.RA.stdBuilder()
+                    .noItemInputs()
+                    .noItemOutputs()
+                    .fluidInputs(Materials.Biomass.getFluid(1000))
+                    .fluidOutputs(Materials.FermentedBiomass.getFluid(1000))
+                    .duration(5 * SECONDS)
+                    .eut(10)
+                    .addTo(sPyrolyseRecipes);
+
+        GT_Values.RA.stdBuilder()
+                    .itemInputs(Materials.Sugar.getDust(23), GT_Utility.getIntegratedCircuit(1))
+                    .itemOutputs(Materials.Charcoal.getDust(12))
+                    .noFluidInputs()
+                    .fluidOutputs(Materials.Water.getFluid(1500))
+                    .duration(16 * SECONDS)
+                    .eut(64)
+                    .addTo(sPyrolyseRecipes);
+
+        GT_Values.RA.stdBuilder()
+                    .itemInputs(Materials.Sugar.getDust(23), GT_Utility.getIntegratedCircuit(2))
+                    .itemOutputs(Materials.Charcoal.getDust(12))
+                    .fluidInputs(Materials.Nitrogen.getGas(500))
+                    .fluidOutputs(Materials.Water.getFluid(1500))
+                    .duration(8 * SECONDS)
+                    .eut(96)
+                    .addTo(sPyrolyseRecipes);
     }
 }

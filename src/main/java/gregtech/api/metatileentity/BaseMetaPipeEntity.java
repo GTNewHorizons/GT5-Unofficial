@@ -346,36 +346,34 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
         if (isClientSide()) {
             issueTextureUpdate();
             switch (aEventID) {
-                case GregTechTileClientEvents.CHANGE_COMMON_DATA:
-                    mConnections = (byte) aValue;
-                    break;
-                case GregTechTileClientEvents.CHANGE_CUSTOM_DATA:
+                case GregTechTileClientEvents.CHANGE_COMMON_DATA -> mConnections = (byte) aValue;
+                case GregTechTileClientEvents.CHANGE_CUSTOM_DATA -> {
                     if (hasValidMetaTileEntity()) mMetaTileEntity.onValueUpdate((byte) aValue);
-                    break;
-                case GregTechTileClientEvents.CHANGE_COLOR:
+                }
+                case GregTechTileClientEvents.CHANGE_COLOR -> {
                     if (aValue > 16 || aValue < 0) aValue = 0;
                     mColor = (byte) aValue;
-                    break;
-                case GregTechTileClientEvents.CHANGE_REDSTONE_OUTPUT:
+                }
+                case GregTechTileClientEvents.CHANGE_REDSTONE_OUTPUT -> {
                     mSidedRedstone[0] = (byte) ((aValue & 1) == 1 ? 15 : 0);
                     mSidedRedstone[1] = (byte) ((aValue & 2) == 2 ? 15 : 0);
                     mSidedRedstone[2] = (byte) ((aValue & 4) == 4 ? 15 : 0);
                     mSidedRedstone[3] = (byte) ((aValue & 8) == 8 ? 15 : 0);
                     mSidedRedstone[4] = (byte) ((aValue & 16) == 16 ? 15 : 0);
                     mSidedRedstone[5] = (byte) ((aValue & 32) == 32 ? 15 : 0);
-                    break;
-                case GregTechTileClientEvents.DO_SOUND:
+                }
+                case GregTechTileClientEvents.DO_SOUND -> {
                     if (hasValidMetaTileEntity() && mTickTimer > 20)
                         mMetaTileEntity.doSound((byte) aValue, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5);
-                    break;
-                case GregTechTileClientEvents.START_SOUND_LOOP:
+                }
+                case GregTechTileClientEvents.START_SOUND_LOOP -> {
                     if (hasValidMetaTileEntity() && mTickTimer > 20)
                         mMetaTileEntity.startSoundLoop((byte) aValue, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5);
-                    break;
-                case GregTechTileClientEvents.STOP_SOUND_LOOP:
+                }
+                case GregTechTileClientEvents.STOP_SOUND_LOOP -> {
                     if (hasValidMetaTileEntity() && mTickTimer > 20)
                         mMetaTileEntity.stopSoundLoop((byte) aValue, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5);
-                    break;
+                }
             }
         }
         return true;
@@ -943,7 +941,7 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
                 if (coverInfo.getCoverID() == 0) {
                     if (GT_Utility.isStackInList(tCurrentItem, GregTech_API.sCovers.keySet())) {
                         if (GregTech_API.getCoverBehaviorNew(tCurrentItem)
-                                .isCoverPlaceable(coverSide, tCurrentItem, this)
+                                        .isCoverPlaceable(coverSide, tCurrentItem, this)
                                 && mMetaTileEntity.allowCoverOnSide(coverSide, new GT_ItemStack(tCurrentItem))) {
                             setCoverItemAtSide(coverSide, tCurrentItem);
                             mMetaTileEntity.markDirty();
@@ -1224,7 +1222,9 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
         if (mTickTimer > 5 && canAccessData()
                 && canMoveFluidOnSide(
                         aSide,
-                        mMetaTileEntity.getFluid() == null ? null : mMetaTileEntity.getFluid().getFluid(),
+                        mMetaTileEntity.getFluid() == null ? null
+                                : mMetaTileEntity.getFluid()
+                                                 .getFluid(),
                         false))
             return mMetaTileEntity.drain(aSide, maxDrain, doDrain);
         return null;

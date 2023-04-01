@@ -46,8 +46,9 @@ public class GT_Circuit_Randomizer extends GT_CircuitryBehavior {
         }
         if (aCircuitData[4] >= aCircuitData[0]) {
             aCircuitData[4] = 0;
-            aRedstoneCircuitBlock
-                    .setRedstone((byte) aRedstoneCircuitBlock.getRandom(16), aRedstoneCircuitBlock.getOutputFacing());
+            aRedstoneCircuitBlock.setRedstone(
+                    (byte) aRedstoneCircuitBlock.getRandom(16),
+                    aRedstoneCircuitBlock.getOutputFacing());
         }
     }
 
@@ -63,15 +64,12 @@ public class GT_Circuit_Randomizer extends GT_CircuitryBehavior {
 
     @Override
     public String getDataDescription(int[] aCircuitData, int aCircuitDataIndex) {
-        switch (aCircuitDataIndex) {
-            case 0:
-                return "Delay";
-            case 3:
-                return aCircuitData[aCircuitDataIndex] == 1 ? "RS => ON" : "RS => OFF";
-            case 4:
-                return "Status";
-        }
-        return "";
+        return switch (aCircuitDataIndex) {
+            case 0 -> "Delay";
+            case 3 -> aCircuitData[aCircuitDataIndex] == 1 ? "RS => ON" : "RS => OFF";
+            case 4 -> "Status";
+            default -> "";
+        };
     }
 
     @Override

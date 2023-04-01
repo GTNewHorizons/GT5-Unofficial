@@ -20,7 +20,9 @@ public class GT_Block_Casings2 extends GT_Block_Casings_Abstract {
         super(GT_Item_Casings2.class, "gt.blockcasings2", GT_Material_Casings.INSTANCE, 96);
         // Special handler for Pyrolyse Oven Casing on hatches...
         Textures.BlockIcons.casingTexturePages[0][22] = TextureFactory.of(
-                Block.getBlockFromItem(ItemList.Casing_ULV.get(1).getItem()),
+                Block.getBlockFromItem(
+                        ItemList.Casing_ULV.get(1)
+                                           .getItem()),
                 0,
                 ForgeDirection.UNKNOWN,
                 Dyes.MACHINE_METAL.mRGBa);
@@ -66,41 +68,25 @@ public class GT_Block_Casings2 extends GT_Block_Casings_Abstract {
 
     @Override
     public IIcon getIcon(int aSide, int aMeta) {
-        switch (aMeta) {
-            case 0:
-                return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
-            case 1:
-                return Textures.BlockIcons.MACHINE_CASING_FROST_PROOF.getIcon();
-            case 2:
-                return Textures.BlockIcons.MACHINE_CASING_GEARBOX_BRONZE.getIcon();
-            case 3:
-                return Textures.BlockIcons.MACHINE_CASING_GEARBOX_STEEL.getIcon();
-            case 4:
-                return Textures.BlockIcons.MACHINE_CASING_GEARBOX_TITANIUM.getIcon();
-            case 5:
-                return Textures.BlockIcons.MACHINE_CASING_GEARBOX_TUNGSTENSTEEL.getIcon();
-            case 6:
-                return Textures.BlockIcons.MACHINE_CASING_PROCESSOR.getIcon();
-            case 7:
-                return Textures.BlockIcons.MACHINE_CASING_DATA_DRIVE.getIcon();
-            case 8:
-                return Textures.BlockIcons.MACHINE_CASING_CONTAINMENT_FIELD.getIcon();
-            case 9:
-                return Textures.BlockIcons.MACHINE_CASING_ASSEMBLER.getIcon();
-            case 10:
-                return Textures.BlockIcons.MACHINE_CASING_PUMP.getIcon();
-            case 11:
-                return Textures.BlockIcons.MACHINE_CASING_MOTOR.getIcon();
-            case 12:
-                return Textures.BlockIcons.MACHINE_CASING_PIPE_BRONZE.getIcon();
-            case 13:
-                return Textures.BlockIcons.MACHINE_CASING_PIPE_STEEL.getIcon();
-            case 14:
-                return Textures.BlockIcons.MACHINE_CASING_PIPE_TITANIUM.getIcon();
-            case 15:
-                return Textures.BlockIcons.MACHINE_CASING_PIPE_TUNGSTENSTEEL.getIcon();
-        }
-        return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
+        return switch (aMeta) {
+            case 0 -> Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
+            case 1 -> Textures.BlockIcons.MACHINE_CASING_FROST_PROOF.getIcon();
+            case 2 -> Textures.BlockIcons.MACHINE_CASING_GEARBOX_BRONZE.getIcon();
+            case 3 -> Textures.BlockIcons.MACHINE_CASING_GEARBOX_STEEL.getIcon();
+            case 4 -> Textures.BlockIcons.MACHINE_CASING_GEARBOX_TITANIUM.getIcon();
+            case 5 -> Textures.BlockIcons.MACHINE_CASING_GEARBOX_TUNGSTENSTEEL.getIcon();
+            case 6 -> Textures.BlockIcons.MACHINE_CASING_PROCESSOR.getIcon();
+            case 7 -> Textures.BlockIcons.MACHINE_CASING_DATA_DRIVE.getIcon();
+            case 8 -> Textures.BlockIcons.MACHINE_CASING_CONTAINMENT_FIELD.getIcon();
+            case 9 -> Textures.BlockIcons.MACHINE_CASING_ASSEMBLER.getIcon();
+            case 10 -> Textures.BlockIcons.MACHINE_CASING_PUMP.getIcon();
+            case 11 -> Textures.BlockIcons.MACHINE_CASING_MOTOR.getIcon();
+            case 12 -> Textures.BlockIcons.MACHINE_CASING_PIPE_BRONZE.getIcon();
+            case 13 -> Textures.BlockIcons.MACHINE_CASING_PIPE_STEEL.getIcon();
+            case 14 -> Textures.BlockIcons.MACHINE_CASING_PIPE_TITANIUM.getIcon();
+            case 15 -> Textures.BlockIcons.MACHINE_CASING_PIPE_TUNGSTENSTEEL.getIcon();
+            default -> Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
+        };
     }
 
     @Override

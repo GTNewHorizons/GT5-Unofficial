@@ -49,11 +49,13 @@ public class GT_BookAndLootLoader implements Runnable {
             tChest.setMax(tChest.getMax() + 16);
             tChest.setMin(tChest.getMin() + 8);
         }
-        ChestGenHooks
-                .addItem("bonusChest", new WeightedRandomChestContent(ItemList.Bottle_Purple_Drink.get(1L), 8, 16, 2));
+        ChestGenHooks.addItem(
+                "bonusChest",
+                new WeightedRandomChestContent(ItemList.Bottle_Purple_Drink.get(1L), 8, 16, 2));
 
-        ChestGenHooks
-                .addItem("dungeonChest", new WeightedRandomChestContent(ItemList.Bottle_Holy_Water.get(1L), 4, 8, 20));
+        ChestGenHooks.addItem(
+                "dungeonChest",
+                new WeightedRandomChestContent(ItemList.Bottle_Holy_Water.get(1L), 4, 8, 20));
         ChestGenHooks.addItem(
                 "dungeonChest",
                 new WeightedRandomChestContent(ItemList.Bottle_Purple_Drink.get(1L), 8, 16, 80));
@@ -370,8 +372,9 @@ public class GT_BookAndLootLoader implements Runnable {
                         4,
                         1));
 
-        ChestGenHooks
-                .addItem("villageBlacksmith", new WeightedRandomChestContent(ItemList.McGuffium_239.get(1L), 1, 1, 1));
+        ChestGenHooks.addItem(
+                "villageBlacksmith",
+                new WeightedRandomChestContent(ItemList.McGuffium_239.get(1L), 1, 1, 1));
         ChestGenHooks.addItem(
                 "villageBlacksmith",
                 new WeightedRandomChestContent(

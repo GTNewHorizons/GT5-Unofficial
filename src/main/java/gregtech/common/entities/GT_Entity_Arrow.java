@@ -86,8 +86,11 @@ public class GT_Entity_Arrow extends EntityArrow {
         Block tBlock = this.worldObj.getBlock(this.mHitBlockX, this.mHitBlockY, this.mHitBlockZ);
         if (tBlock.getMaterial() != Material.air) {
             tBlock.setBlockBoundsBasedOnState(this.worldObj, this.mHitBlockX, this.mHitBlockY, this.mHitBlockZ);
-            AxisAlignedBB axisalignedbb = tBlock
-                    .getCollisionBoundingBoxFromPool(this.worldObj, this.mHitBlockX, this.mHitBlockY, this.mHitBlockZ);
+            AxisAlignedBB axisalignedbb = tBlock.getCollisionBoundingBoxFromPool(
+                    this.worldObj,
+                    this.mHitBlockX,
+                    this.mHitBlockY,
+                    this.mHitBlockZ);
             if ((axisalignedbb != null)
                     && (axisalignedbb.isVecInside(Vec3.createVectorHelper(this.posX, this.posY, this.posZ)))) {
                 this.inGround = true;
@@ -109,22 +112,27 @@ public class GT_Entity_Arrow extends EntityArrow {
         } else {
             this.ticksInAir += 1;
             Vec3 vec31 = Vec3.createVectorHelper(this.posX, this.posY, this.posZ);
-            Vec3 vec3 = Vec3
-                    .createVectorHelper(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
+            Vec3 vec3 = Vec3.createVectorHelper(
+                    this.posX + this.motionX,
+                    this.posY + this.motionY,
+                    this.posZ + this.motionZ);
             MovingObjectPosition tVector = this.worldObj.func_147447_a(vec31, vec3, false, true, false);
             vec31 = Vec3.createVectorHelper(this.posX, this.posY, this.posZ);
-            vec3 = Vec3
-                    .createVectorHelper(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
+            vec3 = Vec3.createVectorHelper(
+                    this.posX + this.motionX,
+                    this.posY + this.motionY,
+                    this.posZ + this.motionZ);
             if (tVector != null) {
                 vec3 = Vec3.createVectorHelper(tVector.hitVec.xCoord, tVector.hitVec.yCoord, tVector.hitVec.zCoord);
             }
             Entity tHitEntity = null;
-            List tAllPotentiallyHitEntities = this.worldObj.getEntitiesWithinAABBExcludingEntity(
+            List<Entity> tAllPotentiallyHitEntities = this.worldObj.getEntitiesWithinAABBExcludingEntity(
                     this,
-                    this.boundingBox.addCoord(this.motionX, this.motionY, this.motionZ).expand(1.0D, 1.0D, 1.0D));
+                    this.boundingBox.addCoord(this.motionX, this.motionY, this.motionZ)
+                                    .expand(1.0D, 1.0D, 1.0D));
             double tLargestDistance = Double.MAX_VALUE;
-            for (int i = 0; i < tAllPotentiallyHitEntities.size(); i++) {
-                Entity entity1 = (Entity) tAllPotentiallyHitEntities.get(i);
+            for (Entity tAllPotentiallyHitEntity : tAllPotentiallyHitEntities) {
+                Entity entity1 = tAllPotentiallyHitEntity;
                 if ((entity1.canBeCollidedWith()) && ((entity1 != tShootingEntity) || (this.ticksInAir >= 5))) {
                     AxisAlignedBB axisalignedbb1 = entity1.boundingBox.expand(0.3D, 0.3D, 0.3D);
                     MovingObjectPosition movingobjectposition1 = axisalignedbb1.calculateIntercept(vec31, vec3);
@@ -140,8 +148,7 @@ public class GT_Entity_Arrow extends EntityArrow {
             if (tHitEntity != null) {
                 tVector = new MovingObjectPosition(tHitEntity);
             }
-            if ((tVector != null) && ((tVector.entityHit instanceof EntityPlayer))) {
-                EntityPlayer entityplayer = (EntityPlayer) tVector.entityHit;
+            if ((tVector != null) && ((tVector.entityHit instanceof EntityPlayer entityplayer))) {
                 if ((entityplayer.capabilities.disableDamage) || (((tShootingEntity instanceof EntityPlayer))
                         && (!((EntityPlayer) tShootingEntity).canAttackPlayer(entityplayer)))) {
                     tVector = null;
@@ -151,8 +158,10 @@ public class GT_Entity_Arrow extends EntityArrow {
                 if (tVector.entityHit != null) {
                     ItemData tData = GT_OreDictUnificator.getItemData(this.mArrow);
 
-                    float tMagicDamage = (tVector.entityHit instanceof EntityLivingBase) ? EnchantmentHelper
-                            .func_152377_a(this.mArrow, ((EntityLivingBase) tVector.entityHit).getCreatureAttribute())
+                    float tMagicDamage = (tVector.entityHit instanceof EntityLivingBase)
+                            ? EnchantmentHelper.func_152377_a(
+                                    this.mArrow,
+                                    ((EntityLivingBase) tVector.entityHit).getCreatureAttribute())
                             : 0.0F;
                     float tDamage = MathHelper.ceiling_double_int(
                             MathHelper.sqrt_double(
@@ -199,7 +208,7 @@ public class GT_Entity_Arrow extends EntityArrow {
                                         new GameProfile(
                                                 new UUID(0L, 0L),
                                                 (tShootingEntity instanceof EntityLivingBase)
-                                                        ? ((EntityLivingBase) tShootingEntity).getCommandSenderName()
+                                                        ? tShootingEntity.getCommandSenderName()
                                                         : "Arrow"));
                             }
                             if (tPlayer != null) {
@@ -209,26 +218,28 @@ public class GT_Entity_Arrow extends EntityArrow {
                                 tPlayer.setDead();
                             }
                         }
-                        DamageSource tDamageSource = DamageSource
-                                .causeArrowDamage(this, tShootingEntity == null ? this : tShootingEntity);
+                        DamageSource tDamageSource = DamageSource.causeArrowDamage(
+                                this,
+                                tShootingEntity == null ? this : tShootingEntity);
                         if ((tDamage + tMagicDamage > 0.0F)
                                 && (tVector.entityHit.attackEntityFrom(tDamageSource, tDamage + tMagicDamage))) {
-                            if ((tVector.entityHit instanceof EntityLivingBase)) {
+                            if ((tVector.entityHit instanceof EntityLivingBase tHitLivingEntity)) {
                                 if (tHitTimer >= 0) {
                                     tVector.entityHit.hurtResistantTime = tHitTimer;
                                 }
-                                if (((tVector.entityHit instanceof EntityCreeper)) && (EnchantmentHelper
-                                        .getEnchantmentLevel(Enchantment.fireAspect.effectId, this.mArrow) > 0)) {
+                                if (((tVector.entityHit instanceof EntityCreeper))
+                                        && (EnchantmentHelper.getEnchantmentLevel(
+                                                Enchantment.fireAspect.effectId,
+                                                this.mArrow) > 0)) {
                                     ((EntityCreeper) tVector.entityHit).func_146079_cb();
                                 }
-                                EntityLivingBase tHitLivingEntity = (EntityLivingBase) tVector.entityHit;
                                 if (!this.worldObj.isRemote) {
-                                    tHitLivingEntity
-                                            .setArrowCountInEntity(tHitLivingEntity.getArrowCountInEntity() + 1);
+                                    tHitLivingEntity.setArrowCountInEntity(
+                                            tHitLivingEntity.getArrowCountInEntity() + 1);
                                 }
                                 if (tKnockback > 0) {
-                                    float tKnockbackDivider = MathHelper
-                                            .sqrt_double(this.motionX * this.motionX + this.motionZ * this.motionZ);
+                                    float tKnockbackDivider = MathHelper.sqrt_double(
+                                            this.motionX * this.motionX + this.motionZ * this.motionZ);
                                     if (tKnockbackDivider > 0.0F) {
                                         tHitLivingEntity.addVelocity(
                                                 this.motionX * tKnockback * 0.6000000238418579D / tKnockbackDivider,
@@ -249,8 +260,8 @@ public class GT_Entity_Arrow extends EntityArrow {
                                 if ((tShootingEntity != null) && (tHitLivingEntity != tShootingEntity)
                                         && ((tHitLivingEntity instanceof EntityPlayer))
                                         && ((tShootingEntity instanceof EntityPlayerMP))) {
-                                    ((EntityPlayerMP) tShootingEntity).playerNetServerHandler
-                                            .sendPacket(new S2BPacketChangeGameState(6, 0.0F));
+                                    ((EntityPlayerMP) tShootingEntity).playerNetServerHandler.sendPacket(
+                                            new S2BPacketChangeGameState(6, 0.0F));
                                 }
                             }
                             if (((tShootingEntity instanceof EntityPlayer)) && (tMagicDamage > 0.0F)) {
@@ -279,8 +290,10 @@ public class GT_Entity_Arrow extends EntityArrow {
                     this.mHitBlockY = tVector.blockY;
                     this.mHitBlockZ = tVector.blockZ;
                     this.mHitBlock = this.worldObj.getBlock(this.mHitBlockX, this.mHitBlockY, this.mHitBlockZ);
-                    this.mHitBlockMeta = this.worldObj
-                            .getBlockMetadata(this.mHitBlockX, this.mHitBlockY, this.mHitBlockZ);
+                    this.mHitBlockMeta = this.worldObj.getBlockMetadata(
+                            this.mHitBlockX,
+                            this.mHitBlockY,
+                            this.mHitBlockZ);
                     this.motionX = ((float) (tVector.hitVec.xCoord - this.posX));
                     this.motionY = ((float) (tVector.hitVec.yCoord - this.posY));
                     this.motionZ = ((float) (tVector.hitVec.zCoord - this.posZ));
@@ -316,20 +329,19 @@ public class GT_Entity_Arrow extends EntityArrow {
                     }
                 }
             }
-            WorldSpawnedEventBuilder.ParticleEventBuilder events = new WorldSpawnedEventBuilder.ParticleEventBuilder()
-                    .setWorld(this.worldObj);
+            WorldSpawnedEventBuilder.ParticleEventBuilder events = new WorldSpawnedEventBuilder.ParticleEventBuilder().setWorld(
+                    this.worldObj);
 
             if (getIsCritical()) {
                 events.setIdentifier(ParticleFX.CRIT)
-                        .setMotion(
-                                -this.motionX,
-                                -this.motionY + 0.2D,
-                                -this.motionZ).<WorldSpawnedEventBuilder.ParticleEventBuilder>times(
-                                        4,
-                                        (x, i) -> x.setPosition(
-                                                this.posX + this.motionX * i / 4.0D,
-                                                this.posY + this.motionY * i / 4.0D,
-                                                this.posZ + this.motionZ * i / 4.0D).run());
+                      .setMotion(-this.motionX, -this.motionY + 0.2D, -this.motionZ).<WorldSpawnedEventBuilder
+                              .ParticleEventBuilder>times(
+                                      4,
+                                      (x, i) -> x.setPosition(
+                                              this.posX + this.motionX * i / 4.0D,
+                                              this.posY + this.motionY * i / 4.0D,
+                                              this.posZ + this.motionZ * i / 4.0D)
+                                                 .run());
             }
             this.posX += this.motionX;
             this.posY += this.motionY;
@@ -354,12 +366,13 @@ public class GT_Entity_Arrow extends EntityArrow {
             this.rotationYaw = (this.prevRotationYaw + (this.rotationYaw - this.prevRotationYaw) * 0.2F);
             float tFrictionMultiplier = 0.99F;
             if (isInWater()) {
-                events.setMotion(-this.motionX, -this.motionY + 0.2D, -this.motionZ).setIdentifier(ParticleFX.BUBBLE)
-                        .setPosition(
-                                this.posX - this.motionX * 0.25D,
-                                this.posY - this.motionY * 0.25D,
-                                this.posZ - this.motionZ * 0.25D)
-                        .times(4, Runnable::run);
+                events.setMotion(-this.motionX, -this.motionY + 0.2D, -this.motionZ)
+                      .setIdentifier(ParticleFX.BUBBLE)
+                      .setPosition(
+                              this.posX - this.motionX * 0.25D,
+                              this.posY - this.motionY * 0.25D,
+                              this.posZ - this.motionZ * 0.25D)
+                      .times(4, Runnable::run);
                 tFrictionMultiplier = 0.8F;
             }
             if (isWet()) {

@@ -32,11 +32,13 @@ public class GT_Spray_Pepper_Item extends GT_Tool_Item {
                         getUnlocalizedName() + ".tooltip_1",
                         "especially Pedobears, Care Bears,"));
         aList.add(
-                GT_LanguageManager
-                        .addStringLocalization(getUnlocalizedName() + ".tooltip_2", "Confession Bears, Bear Grylls"));
+                GT_LanguageManager.addStringLocalization(
+                        getUnlocalizedName() + ".tooltip_2",
+                        "Confession Bears, Bear Grylls"));
         aList.add(
-                GT_LanguageManager
-                        .addStringLocalization(getUnlocalizedName() + ".tooltip_3", "And ofcourse Man-Bear-Pig"));
+                GT_LanguageManager.addStringLocalization(
+                        getUnlocalizedName() + ".tooltip_3",
+                        "And ofcourse Man-Bear-Pig"));
     }
     /*
      * @Override public void onHitEntity(Entity aEntity) { if (aEntity instanceof EntityLiving) {
@@ -54,7 +56,6 @@ public class GT_Spray_Pepper_Item extends GT_Tool_Item {
             return false;
         }
         Block aBlock = aWorld.getBlock(aX, aY, aZ);
-        if (aBlock == null) return false;
         // byte aMeta = (byte)aWorld.getBlockMetadata(aX, aY, aZ);
         // TileEntity aTileEntity = aWorld.getTileEntity(aX, aY, aZ);
 

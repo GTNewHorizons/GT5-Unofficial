@@ -46,7 +46,10 @@ public class ProcessingDye implements IOreRecipeRegistrator {
                     null,
                     null,
                     Materials.Water.getFluid(216L),
-                    FluidRegistry.getFluidStack("dye.watermixed." + aDye.name().toLowerCase(Locale.ENGLISH), 192),
+                    FluidRegistry.getFluidStack(
+                            "dye.watermixed." + aDye.name()
+                                                    .toLowerCase(Locale.ENGLISH),
+                            192),
                     null,
                     16,
                     4);
@@ -56,7 +59,10 @@ public class ProcessingDye implements IOreRecipeRegistrator {
                     null,
                     null,
                     GT_ModHandler.getDistilledWater(288L),
-                    FluidRegistry.getFluidStack("dye.watermixed." + aDye.name().toLowerCase(Locale.ENGLISH), 216),
+                    FluidRegistry.getFluidStack(
+                            "dye.watermixed." + aDye.name()
+                                                    .toLowerCase(Locale.ENGLISH),
+                            216),
                     null,
                     16,
                     4);
@@ -64,7 +70,10 @@ public class ProcessingDye implements IOreRecipeRegistrator {
                     GT_Utility.copyAmount(1L, aStack),
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Salt, 2),
                     Materials.SulfuricAcid.getFluid(432),
-                    FluidRegistry.getFluidStack("dye.chemical." + aDye.name().toLowerCase(Locale.ENGLISH), 288),
+                    FluidRegistry.getFluidStack(
+                            "dye.chemical." + aDye.name()
+                                                  .toLowerCase(Locale.ENGLISH),
+                            288),
                     GT_Values.NI,
                     600,
                     48);

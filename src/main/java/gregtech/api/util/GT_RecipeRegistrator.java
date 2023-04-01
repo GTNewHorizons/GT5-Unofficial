@@ -40,7 +40,7 @@ public class GT_RecipeRegistrator {
      * List of Materials, which are used in the Creation of Sticks. All Rod Materials are automatically added to this
      * List.
      */
-    public static final List<Materials> sRodMaterialList = new ArrayList<Materials>();
+    public static final List<Materials> sRodMaterialList = new ArrayList<>();
 
     private static final ItemStack sMt1 = new ItemStack(Blocks.dirt, 1, 0), sMt2 = new ItemStack(Blocks.dirt, 1, 0);
     private static final String s_H = "h", s_F = "f", s_I = "I", s_P = "P", s_R = "R";
@@ -178,7 +178,8 @@ public class GT_RecipeRegistrator {
                 || (L * aMaterialAmount) / (M * aStack.stackSize) <= 0)
             return;
         ItemData tData = GT_OreDictUnificator.getItemData(aStack);
-        boolean tHide = aStack.getUnlocalizedName().startsWith("gt.blockmachines")
+        boolean tHide = aStack.getUnlocalizedName()
+                              .startsWith("gt.blockmachines")
                 && (GT_Mod.gregtechproxy.mHideRecyclingRecipes);
         if (GT_Mod.gregtechproxy.mHideRecyclingRecipes && tData != null
                 && tData.hasValidPrefixData()
@@ -199,8 +200,9 @@ public class GT_RecipeRegistrator {
                                 : aByproduct.mMaterial.contains(SubTag.NO_SMELTING)
                                         || !aByproduct.mMaterial.contains(SubTag.METAL)
                                                 ? aByproduct.mMaterial.contains(SubTag.FLAMMABLE)
-                                                        ? GT_OreDictUnificator
-                                                                .getDust(Materials.Ash, aByproduct.mAmount / 2)
+                                                        ? GT_OreDictUnificator.getDust(
+                                                                Materials.Ash,
+                                                                aByproduct.mAmount / 2)
                                                         : aByproduct.mMaterial.contains(SubTag.UNBURNABLE)
                                                                 ? GT_OreDictUnificator.getDustOrIngot(
                                                                         aByproduct.mMaterial.mSmeltInto,
@@ -467,7 +469,8 @@ public class GT_RecipeRegistrator {
     private static Map<RecipeShape, List<IRecipe>> createIndexedRecipeListCache() {
         Map<RecipeShape, List<IRecipe>> result = new IdentityHashMap<>();
         @SuppressWarnings("unchecked")
-        ArrayList<IRecipe> allRecipeList = (ArrayList<IRecipe>) CraftingManager.getInstance().getRecipeList();
+        ArrayList<IRecipe> allRecipeList = (ArrayList<IRecipe>) CraftingManager.getInstance()
+                                                                               .getRecipeList();
         // filter using the empty slots in the shape.
         // if the empty slots doesn't match, the recipe will definitely fail
         SetMultimap<List<Integer>, RecipeShape> filter = HashMultimap.create();
@@ -498,7 +501,8 @@ public class GT_RecipeRegistrator {
                             getRecipeWidth(tShapedRecipe),
                             getRecipeHeight(tShapedRecipe))) {
                         for (RecipeShape s : filter.get(buffer)) {
-                            result.computeIfAbsent(s, k -> new ArrayList<>()).add(tRecipe);
+                            result.computeIfAbsent(s, k -> new ArrayList<>())
+                                  .add(tRecipe);
                         }
                     }
                 } else if (tRecipe instanceof ShapedRecipes) {
@@ -509,14 +513,16 @@ public class GT_RecipeRegistrator {
                             getRecipeWidth(tShapedRecipe),
                             getRecipeHeight(tShapedRecipe))) {
                         for (RecipeShape s : filter.get(buffer)) {
-                            result.computeIfAbsent(s, k -> new ArrayList<>()).add(tRecipe);
+                            result.computeIfAbsent(s, k -> new ArrayList<>())
+                                  .add(tRecipe);
                         }
                     }
                 } else {
                     for (RecipeShape s : sShapes) {
                         // unknown recipe type. cannot determine empty slots. we choose to add to the recipe list for
                         // all shapes
-                        result.computeIfAbsent(s, k -> new ArrayList<>()).add(tRecipe);
+                        result.computeIfAbsent(s, k -> new ArrayList<>())
+                              .add(tRecipe);
                     }
                 }
             }
@@ -563,8 +569,10 @@ public class GT_RecipeRegistrator {
                 for (int i = 0; i < sShapes.length; i++) {
                     RecipeShape tRecipe = sShapes[i];
 
-                    for (ItemStack tCrafted : GT_ModHandler
-                            .getRecipeOutputs(getRecipeList(tRecipe), true, tRecipe.shape)) {
+                    for (ItemStack tCrafted : GT_ModHandler.getRecipeOutputs(
+                            getRecipeList(tRecipe),
+                            true,
+                            tRecipe.shape)) {
                         if (aItemData != null && aItemData.hasValidPrefixMaterialData())
                             GT_OreDictUnificator.addItemData(
                                     tCrafted,
@@ -583,31 +591,23 @@ public class GT_RecipeRegistrator {
                                     true)) {
                                 if (null != (tStack = GT_ModHandler.removeRecipe(tRecipe.shape))) {
                                     switch (sShapesA[i].length) {
-                                        case 2:
-                                            GT_ModHandler.addCraftingRecipe(
-                                                    tStack,
-                                                    GT_ModHandler.RecipeBits.BUFFERED,
-                                                    new Object[] { sShapesA[i][1], s_P.charAt(0), aPlate, s_R.charAt(0),
-                                                            OrePrefixes.stick.get(tMaterial), s_I.charAt(0),
-                                                            aItemData });
-                                            break;
-                                        case 3:
-                                            GT_ModHandler.addCraftingRecipe(
-                                                    tStack,
-                                                    GT_ModHandler.RecipeBits.BUFFERED,
-                                                    new Object[] { sShapesA[i][1], sShapesA[i][2], s_P.charAt(0),
-                                                            aPlate, s_R.charAt(0), OrePrefixes.stick.get(tMaterial),
-                                                            s_I.charAt(0), aItemData });
-                                            break;
-                                        default:
-                                            GT_ModHandler.addCraftingRecipe(
-                                                    tStack,
-                                                    GT_ModHandler.RecipeBits.BUFFERED,
-                                                    new Object[] { sShapesA[i][1], sShapesA[i][2], sShapesA[i][3],
-                                                            s_P.charAt(0), aPlate, s_R.charAt(0),
-                                                            OrePrefixes.stick.get(tMaterial), s_I.charAt(0),
-                                                            aItemData });
-                                            break;
+                                        case 2 -> GT_ModHandler.addCraftingRecipe(
+                                                tStack,
+                                                GT_ModHandler.RecipeBits.BUFFERED,
+                                                new Object[] { sShapesA[i][1], s_P.charAt(0), aPlate, s_R.charAt(0),
+                                                        OrePrefixes.stick.get(tMaterial), s_I.charAt(0), aItemData });
+                                        case 3 -> GT_ModHandler.addCraftingRecipe(
+                                                tStack,
+                                                GT_ModHandler.RecipeBits.BUFFERED,
+                                                new Object[] { sShapesA[i][1], sShapesA[i][2], s_P.charAt(0), aPlate,
+                                                        s_R.charAt(0), OrePrefixes.stick.get(tMaterial), s_I.charAt(0),
+                                                        aItemData });
+                                        default -> GT_ModHandler.addCraftingRecipe(
+                                                tStack,
+                                                GT_ModHandler.RecipeBits.BUFFERED,
+                                                new Object[] { sShapesA[i][1], sShapesA[i][2], sShapesA[i][3],
+                                                        s_P.charAt(0), aPlate, s_R.charAt(0),
+                                                        OrePrefixes.stick.get(tMaterial), s_I.charAt(0), aItemData });
                                     }
                                 }
                             }
@@ -620,7 +620,7 @@ public class GT_RecipeRegistrator {
 
     /**
      * Registers wiremill recipes for given material using integrated circuits.
-     * 
+     *
      * @param aMaterial    material to register
      * @param baseDuration base duration ticks for ingot -> 1x wire recipe
      * @param aEUt         EU/t for recipe If you provide a proper EU tier for recipe processing then aEUt will be
@@ -638,7 +638,7 @@ public class GT_RecipeRegistrator {
 
     /**
      * Registers wiremill recipes for given material using integrated circuits.
-     * 
+     *
      * @param aMaterial    material to register
      * @param baseDuration base duration ticks for ingot -> 1x wire recipe
      * @param aEUt         EU/t for recipe
@@ -735,7 +735,8 @@ public class GT_RecipeRegistrator {
     }
 
     public static boolean hasVanillaRecipes(Materials materials) {
-        return Arrays.stream(VANILLA_MATS).anyMatch(mat -> mat == materials);
+        return Arrays.stream(VANILLA_MATS)
+                     .anyMatch(mat -> mat == materials);
     }
 
     private static int getRecipeWidth(ShapedOreRecipe r) {

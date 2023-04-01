@@ -42,9 +42,13 @@ public class GT_MetaTileEntity_LightningRod extends GT_MetaTileEntity_TieredMach
         }
         if (!aActive) return new ITexture[] { BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1],
                 TextureFactory.of(BlockIcons.MACHINE_CASING_FUSION_GLASS) };
-        return new ITexture[] { BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1],
-                TextureFactory.of(BlockIcons.MACHINE_CASING_FUSION_GLASS_YELLOW),
-                TextureFactory.builder().addIcon(BlockIcons.MACHINE_CASING_FUSION_GLASS_YELLOW_GLOW).glow().build() };
+        return new ITexture[] {
+                BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1], TextureFactory.of(
+                        BlockIcons.MACHINE_CASING_FUSION_GLASS_YELLOW),
+                TextureFactory.builder()
+                              .addIcon(BlockIcons.MACHINE_CASING_FUSION_GLASS_YELLOW_GLOW)
+                              .glow()
+                              .build() };
     }
 
     @Override
@@ -81,8 +85,9 @@ public class GT_MetaTileEntity_LightningRod extends GT_MetaTileEntity_TieredMach
                 int aZ = aBaseMetaTileEntity.getZCoord();
 
                 for (int i = aBaseMetaTileEntity.getYCoord() + 1; i < aWorld.getHeight() - 1; i++) {
-                    if (isRodValid
-                            && aBaseMetaTileEntity.getBlock(aX, i, aZ).getUnlocalizedName().equals("blockFenceIron")) {
+                    if (isRodValid && aBaseMetaTileEntity.getBlock(aX, i, aZ)
+                                                         .getUnlocalizedName()
+                                                         .equals("blockFenceIron")) {
                         aRodValue++;
                     } else {
                         isRodValid = false;
@@ -94,8 +99,9 @@ public class GT_MetaTileEntity_LightningRod extends GT_MetaTileEntity_TieredMach
                 }
                 if (!aWorld.isThundering() && ((aY + aRodValue) < 128)) aRodValue = 0;
                 if (XSTR_INSTANCE.nextInt(4 * aWorld.getHeight()) < (aRodValue * (aY + aRodValue))) {
-                    aBaseMetaTileEntity
-                            .increaseStoredEnergyUnits(maxEUStore() - aBaseMetaTileEntity.getStoredEU(), false);
+                    aBaseMetaTileEntity.increaseStoredEnergyUnits(
+                            maxEUStore() - aBaseMetaTileEntity.getStoredEU(),
+                            false);
                     aWorld.addWeatherEffect(new EntityLightningBolt(aWorld, aX, aY + aRodValue, aZ));
                 }
             }

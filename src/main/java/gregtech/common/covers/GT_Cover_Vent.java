@@ -84,27 +84,18 @@ public class GT_Cover_Vent extends GT_CoverBehavior {
             return 0;
         }
         if (blockAtSide == Blocks.water || blockAtSide == Blocks.flowing_water) {
-            switch (mEfficiency) {
-                case 2:
-                    chances = 10000; // 100% chances for Diamond reactor vent with water
-                    break;
-                case 1:
-                    chances = 5000; // 50% chances for Gold and Overclocked reactor vents with water
-                    break;
-                default:
-                    chances = 2500; // 25% chances for Basic reactor vent with water
-                    break;
-            }
+            chances = switch (mEfficiency) {
+                case 2 -> 10000; // 100% chances for Diamond reactor vent with water
+                case 1 -> 5000; // 50% chances for Gold and Overclocked reactor vents with water
+                default -> 2500; // 25% chances for Basic reactor vent with water
+            };
         } else if (blockAtSide.isAir(world, offsetX, offsetY, offsetZ)) {
             switch (mEfficiency) {
-                case 2:
-                    chances = 2500; // 25% chances for Diamond reactor vent with air
-                    break;
-                case 1:
-                    chances = 1250; // 12.5% chances for Gold and Overclocked reactor vents with air
-                    break;
-                default:
+                case 2 -> chances = 2500; // 25% chances for Diamond reactor vent with air
+                case 1 -> chances = 1250; // 12.5% chances for Gold and Overclocked reactor vents with air
+                default -> {
                     return 0; // Basic reactor vent cannot be used with air
+                }
             }
         } else {
             return 0; // Vent cover need water or air

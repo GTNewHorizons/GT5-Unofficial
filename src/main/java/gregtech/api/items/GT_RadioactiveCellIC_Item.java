@@ -50,8 +50,15 @@ public class GT_RadioactiveCellIC_Item extends GT_RadioactiveCell_Item implement
     private static int checkPulseable(IReactor reactor, int x, int y, ItemStack me, int mex, int mey, boolean heatrun) {
         ItemStack other = reactor.getItemAt(x, y);
         if ((other != null) && ((other.getItem() instanceof IReactorComponent))
-                && (((IReactorComponent) other.getItem())
-                        .acceptUraniumPulse(reactor, other, me, x, y, mex, mey, heatrun))) {
+                && (((IReactorComponent) other.getItem()).acceptUraniumPulse(
+                        reactor,
+                        other,
+                        me,
+                        x,
+                        y,
+                        mex,
+                        mey,
+                        heatrun))) {
             return 1;
         }
         return 0;
@@ -94,11 +101,11 @@ public class GT_RadioactiveCellIC_Item extends GT_RadioactiveCell_Item implement
 
                     int dheat = heat / heatAcceptors.size();
                     heat -= dheat;
-                    dheat = ((IReactorComponent) ((ItemStackCoord) heatAcceptors.get(0)).stack.getItem()).alterHeat(
+                    dheat = ((IReactorComponent) heatAcceptors.get(0).stack.getItem()).alterHeat(
                             reactor,
-                            ((ItemStackCoord) heatAcceptors.get(0)).stack,
-                            ((ItemStackCoord) heatAcceptors.get(0)).x,
-                            ((ItemStackCoord) heatAcceptors.get(0)).y,
+                            heatAcceptors.get(0).stack,
+                            heatAcceptors.get(0).x,
+                            heatAcceptors.get(0).y,
                             dheat);
                     heat += dheat;
                     heatAcceptors.remove(0);
@@ -142,7 +149,7 @@ public class GT_RadioactiveCellIC_Item extends GT_RadioactiveCell_Item implement
                 float ReaktorOutput = 1.5F * breedereffectiveness + 1.0F;
                 reactor.addOutput(ReaktorOutput * this.sEnergy);
             } else {
-                reactor.addOutput((float) (1.0F * this.sEnergy));
+                reactor.addOutput(1.0F * this.sEnergy);
             }
         }
         return true;
@@ -175,15 +182,14 @@ public class GT_RadioactiveCellIC_Item extends GT_RadioactiveCell_Item implement
 
     @Override
     public void onUpdate(ItemStack stack, World world, Entity entity, int slotIndex, boolean isCurrentItem) {
-        if (this.sRadiation > 0 && (entity instanceof EntityLivingBase)) {
-            EntityLivingBase entityLiving = (EntityLivingBase) entity;
+        if (this.sRadiation > 0 && (entity instanceof EntityLivingBase entityLiving)) {
             if (!GregTech_API.mIC2Classic && !GT_Utility.isWearingFullRadioHazmat(entityLiving)) {
                 IC2Potion.radiation.applyTo(entityLiving, sRadiation * 20, sRadiation * 10);
             }
         }
     }
 
-    private class ItemStackCoord {
+    private static class ItemStackCoord {
 
         public ItemStack stack;
         public int x;

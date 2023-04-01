@@ -47,21 +47,25 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
         implements IAlignment, ISurvivalConstructable, IAddUIWidgets, IGetTitleColor {
 
     public static final int INPUT_SLOTS = 3, OUTPUT_SLOTS = 3;
-    private static final ClassValue<IStructureDefinition<GT_MetaTileEntity_PrimitiveBlastFurnace>> STRUCTURE_DEFINITION = new ClassValue<IStructureDefinition<GT_MetaTileEntity_PrimitiveBlastFurnace>>() {
+    private static final ClassValue<IStructureDefinition<GT_MetaTileEntity_PrimitiveBlastFurnace>> STRUCTURE_DEFINITION = new ClassValue<>() {
 
         @Override
         protected IStructureDefinition<GT_MetaTileEntity_PrimitiveBlastFurnace> computeValue(Class<?> type) {
             return IStructureDefinition.<GT_MetaTileEntity_PrimitiveBlastFurnace>builder()
-                    .addShape(
-                            "main",
-                            transpose(
-                                    new String[][] { { "ccc", "c-c", "ccc" }, { "ccc", "clc", "ccc" },
-                                            { "c~c", "clc", "ccc" }, { "ccc", "ccc", "ccc" }, }))
-                    .addElement('c', lazy(t -> ofBlock(t.getCasingBlock(), t.getCasingMetaID())))
-                    .addElement(
-                            'l',
-                            ofChain(isAir(), ofBlockAnyMeta(Blocks.lava, 1), ofBlockAnyMeta(Blocks.flowing_lava, 1)))
-                    .build();
+                                       .addShape(
+                                               "main",
+                                               transpose(
+                                                       new String[][] { { "ccc", "c-c", "ccc" },
+                                                               { "ccc", "clc", "ccc" }, { "c~c", "clc", "ccc" },
+                                                               { "ccc", "ccc", "ccc" }, }))
+                                       .addElement('c', lazy(t -> ofBlock(t.getCasingBlock(), t.getCasingMetaID())))
+                                       .addElement(
+                                               'l',
+                                               ofChain(
+                                                       isAir(),
+                                                       ofBlockAnyMeta(Blocks.lava, 1),
+                                                       ofBlockAnyMeta(Blocks.flowing_lava, 1)))
+                                       .build();
         }
     };
 
@@ -155,7 +159,8 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
 
     @Override
     public boolean allowCoverOnSide(byte aSide, GT_ItemStack aCoverID) {
-        return (GregTech_API.getCoverBehaviorNew(aCoverID.toStack()).isSimpleCover())
+        return (GregTech_API.getCoverBehaviorNew(aCoverID.toStack())
+                            .isSimpleCover())
                 && (super.allowCoverOnSide(aSide, aCoverID));
     }
 
@@ -201,7 +206,9 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
 
     @Override
     public void setExtendedFacing(ExtendedFacing alignment) {
-        getBaseMetaTileEntity().setFrontFacing((byte) alignment.getDirection().ordinal());
+        getBaseMetaTileEntity().setFrontFacing(
+                (byte) alignment.getDirection()
+                                .ordinal());
     }
 
     @Override
@@ -210,18 +217,19 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
     }
 
     private boolean checkMachine() {
-        return STRUCTURE_DEFINITION.get(this.getClass()).check(
-                this,
-                "main",
-                getBaseMetaTileEntity().getWorld(),
-                getExtendedFacing(),
-                getBaseMetaTileEntity().getXCoord(),
-                getBaseMetaTileEntity().getYCoord(),
-                getBaseMetaTileEntity().getZCoord(),
-                1,
-                2,
-                0,
-                !mMachine);
+        return STRUCTURE_DEFINITION.get(this.getClass())
+                                   .check(
+                                           this,
+                                           "main",
+                                           getBaseMetaTileEntity().getWorld(),
+                                           getExtendedFacing(),
+                                           getBaseMetaTileEntity().getXCoord(),
+                                           getBaseMetaTileEntity().getYCoord(),
+                                           getBaseMetaTileEntity().getZCoord(),
+                                           1,
+                                           2,
+                                           0,
+                                           !mMachine);
     }
 
     protected abstract Block getCasingBlock();
@@ -240,12 +248,15 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
         if ((aBaseMetaTileEntity.isClientSide()) && (aBaseMetaTileEntity.isActive())) {
 
             new WorldSpawnedEventBuilder.ParticleEventBuilder().setMotion(0D, 0.3D, 0D)
-                    .setIdentifier(ParticleFX.LARGE_SMOKE)
-                    .setPosition(
-                            lavaX + XSTR_INSTANCE.nextFloat(),
-                            aBaseMetaTileEntity.getOffsetY(aBaseMetaTileEntity.getBackFacing(), 1),
-                            lavaZ + XSTR_INSTANCE.nextFloat())
-                    .setWorld(getBaseMetaTileEntity().getWorld()).run();
+                                                               .setIdentifier(ParticleFX.LARGE_SMOKE)
+                                                               .setPosition(
+                                                                       lavaX + XSTR_INSTANCE.nextFloat(),
+                                                                       aBaseMetaTileEntity.getOffsetY(
+                                                                               aBaseMetaTileEntity.getBackFacing(),
+                                                                               1),
+                                                                       lavaZ + XSTR_INSTANCE.nextFloat())
+                                                               .setWorld(getBaseMetaTileEntity().getWorld())
+                                                               .run();
         }
         if (aBaseMetaTileEntity.isServerSide()) {
             if (mUpdated) {
@@ -265,7 +276,7 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
                         this.mMaxProgresstime = 0;
                         GT_Mod.achievements.issueAchievement(
                                 aBaseMetaTileEntity.getWorld()
-                                        .getPlayerEntityByName(aBaseMetaTileEntity.getOwnerName()),
+                                                   .getPlayerEntityByName(aBaseMetaTileEntity.getOwnerName()),
                                 "steel");
                     }
                 } else if (aBaseMetaTileEntity.isAllowedToWork()) {
@@ -282,22 +293,26 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
             final short lavaY = aBaseMetaTileEntity.getYCoord();
             if (aBaseMetaTileEntity.isActive()) {
                 if (aBaseMetaTileEntity.getAir(lavaX, lavaY, lavaZ)) {
-                    aBaseMetaTileEntity.getWorld().setBlock(lavaX, lavaY, lavaZ, Blocks.lava, 1, 2);
+                    aBaseMetaTileEntity.getWorld()
+                                       .setBlock(lavaX, lavaY, lavaZ, Blocks.lava, 1, 2);
                     this.mUpdate = 1;
                 }
                 if (aBaseMetaTileEntity.getAir(lavaX, lavaY + 1, lavaZ)) {
-                    aBaseMetaTileEntity.getWorld().setBlock(lavaX, lavaY + 1, lavaZ, Blocks.lava, 1, 2);
+                    aBaseMetaTileEntity.getWorld()
+                                       .setBlock(lavaX, lavaY + 1, lavaZ, Blocks.lava, 1, 2);
                     this.mUpdate = 1;
                 }
             } else {
                 Block lowerLava = aBaseMetaTileEntity.getBlock(lavaX, lavaY, lavaZ);
                 Block upperLava = aBaseMetaTileEntity.getBlock(lavaX, lavaY + 1, lavaZ);
                 if (lowerLava == Blocks.lava) {
-                    aBaseMetaTileEntity.getWorld().setBlock(lavaX, lavaY, lavaZ, Blocks.air, 0, 2);
+                    aBaseMetaTileEntity.getWorld()
+                                       .setBlock(lavaX, lavaY, lavaZ, Blocks.air, 0, 2);
                     this.mUpdate = 1;
                 }
                 if (upperLava == Blocks.lava) {
-                    aBaseMetaTileEntity.getWorld().setBlock(lavaX, lavaY + 1, lavaZ, Blocks.air, 0, 2);
+                    aBaseMetaTileEntity.getWorld()
+                                       .setBlock(lavaX, lavaY + 1, lavaZ, Blocks.air, 0, 2);
                     this.mUpdate = 1;
                 }
             }
@@ -349,9 +364,13 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
             }
 
             ParticleEventBuilder particleEventBuilder = (new ParticleEventBuilder()).setMotion(0D, 0D, 0D)
-                    .setPosition(x, y, z).setWorld(getBaseMetaTileEntity().getWorld());
-            particleEventBuilder.setIdentifier(ParticleFX.SMOKE).run();
-            particleEventBuilder.setIdentifier(ParticleFX.FLAME).run();
+                                                                                    .setPosition(x, y, z)
+                                                                                    .setWorld(
+                                                                                            getBaseMetaTileEntity().getWorld());
+            particleEventBuilder.setIdentifier(ParticleFX.SMOKE)
+                                .run();
+            particleEventBuilder.setIdentifier(ParticleFX.FLAME)
+                                .run();
         }
     }
 
@@ -449,21 +468,22 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return STRUCTURE_DEFINITION.get(getClass()).survivalBuild(
-                this,
-                stackSize,
-                "main",
-                getBaseMetaTileEntity().getWorld(),
-                getExtendedFacing(),
-                getBaseMetaTileEntity().getXCoord(),
-                getBaseMetaTileEntity().getYCoord(),
-                getBaseMetaTileEntity().getZCoord(),
-                1,
-                2,
-                0,
-                elementBudget,
-                env,
-                false);
+        return STRUCTURE_DEFINITION.get(getClass())
+                                   .survivalBuild(
+                                           this,
+                                           stackSize,
+                                           "main",
+                                           getBaseMetaTileEntity().getWorld(),
+                                           getExtendedFacing(),
+                                           getBaseMetaTileEntity().getXCoord(),
+                                           getBaseMetaTileEntity().getYCoord(),
+                                           getBaseMetaTileEntity().getZCoord(),
+                                           1,
+                                           2,
+                                           0,
+                                           elementBudget,
+                                           env,
+                                           false);
     }
 
     @Override
@@ -473,19 +493,20 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        STRUCTURE_DEFINITION.get(getClass()).buildOrHints(
-                this,
-                stackSize,
-                "main",
-                getBaseMetaTileEntity().getWorld(),
-                getExtendedFacing(),
-                getBaseMetaTileEntity().getXCoord(),
-                getBaseMetaTileEntity().getYCoord(),
-                getBaseMetaTileEntity().getZCoord(),
-                1,
-                2,
-                0,
-                hintsOnly);
+        STRUCTURE_DEFINITION.get(getClass())
+                            .buildOrHints(
+                                    this,
+                                    stackSize,
+                                    "main",
+                                    getBaseMetaTileEntity().getWorld(),
+                                    getExtendedFacing(),
+                                    getBaseMetaTileEntity().getXCoord(),
+                                    getBaseMetaTileEntity().getYCoord(),
+                                    getBaseMetaTileEntity().getZCoord(),
+                                    1,
+                                    2,
+                                    0,
+                                    hintsOnly);
     }
 
     @Override
@@ -496,39 +517,53 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.widget(
-                new SlotWidget(inventoryHandler, 0).setBackground(
-                        getGUITextureSet().getItemSlot(),
-                        GT_UITextures.OVERLAY_SLOT_INGOT_STEAM.get(getSteamVariant())).setPos(33, 15))
-                .widget(
-                        new SlotWidget(inventoryHandler, 1).setBackground(
-                                getGUITextureSet().getItemSlot(),
-                                GT_UITextures.OVERLAY_SLOT_DUST_STEAM.get(getSteamVariant())).setPos(33, 33))
-                .widget(
-                        new SlotWidget(inventoryHandler, 2).setBackground(
-                                getGUITextureSet().getItemSlot(),
-                                GT_UITextures.OVERLAY_SLOT_FURNACE_STEAM.get(getSteamVariant())).setPos(33, 51))
-                .widget(
-                        new SlotWidget(inventoryHandler, 3).setAccess(true, false)
-                                .setBackground(
-                                        getGUITextureSet().getItemSlot(),
-                                        GT_UITextures.OVERLAY_SLOT_INGOT_STEAM.get(getSteamVariant()))
-                                .setPos(85, 24))
-                .widget(
-                        new SlotWidget(inventoryHandler, 4).setAccess(true, false)
-                                .setBackground(
-                                        getGUITextureSet().getItemSlot(),
-                                        GT_UITextures.OVERLAY_SLOT_DUST_STEAM.get(getSteamVariant()))
-                                .setPos(103, 24))
-                .widget(
-                        new SlotWidget(inventoryHandler, 5).setAccess(true, false)
-                                .setBackground(
-                                        getGUITextureSet().getItemSlot(),
-                                        GT_UITextures.OVERLAY_SLOT_DUST_STEAM.get(getSteamVariant()))
-                                .setPos(121, 24))
-                .widget(
-                        new ProgressBar().setTexture(GT_UITextures.PROGRESSBAR_ARROW_2_STEAM.get(getSteamVariant()), 20)
-                                .setProgress(() -> (float) mProgresstime / mMaxProgresstime)
-                                .setNEITransferRect(getRecipeMap().mNEIName).setPos(58, 24).setSize(20, 18));
+                new SlotWidget(inventoryHandler, 0)
+                                                   .setBackground(
+                                                           getGUITextureSet().getItemSlot(),
+                                                           GT_UITextures.OVERLAY_SLOT_INGOT_STEAM.get(
+                                                                   getSteamVariant()))
+                                                   .setPos(33, 15))
+               .widget(
+                       new SlotWidget(inventoryHandler, 1)
+                                                          .setBackground(
+                                                                  getGUITextureSet().getItemSlot(),
+                                                                  GT_UITextures.OVERLAY_SLOT_DUST_STEAM.get(
+                                                                          getSteamVariant()))
+                                                          .setPos(33, 33))
+               .widget(
+                       new SlotWidget(inventoryHandler, 2)
+                                                          .setBackground(
+                                                                  getGUITextureSet().getItemSlot(),
+                                                                  GT_UITextures.OVERLAY_SLOT_FURNACE_STEAM.get(
+                                                                          getSteamVariant()))
+                                                          .setPos(33, 51))
+               .widget(
+                       new SlotWidget(inventoryHandler, 3).setAccess(true, false)
+                                                          .setBackground(
+                                                                  getGUITextureSet().getItemSlot(),
+                                                                  GT_UITextures.OVERLAY_SLOT_INGOT_STEAM.get(
+                                                                          getSteamVariant()))
+                                                          .setPos(85, 24))
+               .widget(
+                       new SlotWidget(inventoryHandler, 4).setAccess(true, false)
+                                                          .setBackground(
+                                                                  getGUITextureSet().getItemSlot(),
+                                                                  GT_UITextures.OVERLAY_SLOT_DUST_STEAM.get(
+                                                                          getSteamVariant()))
+                                                          .setPos(103, 24))
+               .widget(
+                       new SlotWidget(inventoryHandler, 5).setAccess(true, false)
+                                                          .setBackground(
+                                                                  getGUITextureSet().getItemSlot(),
+                                                                  GT_UITextures.OVERLAY_SLOT_DUST_STEAM.get(
+                                                                          getSteamVariant()))
+                                                          .setPos(121, 24))
+               .widget(
+                       new ProgressBar().setTexture(GT_UITextures.PROGRESSBAR_ARROW_2_STEAM.get(getSteamVariant()), 20)
+                                        .setProgress(() -> (float) mProgresstime / mMaxProgresstime)
+                                        .setNEITransferRect(getRecipeMap().mNEIName)
+                                        .setPos(58, 24)
+                                        .setSize(20, 18));
     }
 
     @Override

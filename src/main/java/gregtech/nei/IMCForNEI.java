@@ -1,14 +1,15 @@
 package gregtech.nei;
 
+import static gregtech.api.enums.ModIDs.NotEnoughItems;
+
 import net.minecraft.nbt.NBTTagCompound;
 
-import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.event.FMLInterModComms;
 
 public class IMCForNEI {
 
     public static void IMCSender() {
-        if (!Loader.isModLoaded("NotEnoughItems")) {
+        if (!NotEnoughItems.isModLoaded()) {
             return;
         }
 

@@ -25,7 +25,7 @@ import com.gtnewhorizon.gtnhlib.util.map.ItemStackMap;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
-import gregtech.api.multitileentity.base.BaseMultiTileEntity;
+import gregtech.api.multitileentity.base.MultiTileEntity;
 import gregtech.api.multitileentity.interfaces.IMultiTileEntity;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Util;
@@ -75,6 +75,7 @@ public class MultiTileEntityRegistry {
                 "The MultiTileEntity Registry must be initialised during Preload Phase and not before");
         mNameInternal = aNameInternal;
         mBlock = aBlock;
+        GT_FML_LOGGER.info(aNameInternal + " " + Block.getIdFromBlock(aBlock) + "This is the answer");
         mBlock.mMultiTileEntityRegistry = this;
         REGISTRIES.put(new ItemStack(Item.getItemFromBlock(aBlock), 1, GT_Values.W), this);
         NAMED_REGISTRIES.put(mNameInternal, this);
@@ -96,7 +97,7 @@ public class MultiTileEntityRegistry {
         return NAMED_REGISTRIES.get(aRegistryName);
     }
 
-    public MultiTileEntityClassContainer create(int aID, Class<? extends BaseMultiTileEntity> aClass) {
+    public MultiTileEntityClassContainer create(int aID, Class<? extends MultiTileEntity> aClass) {
         return new MultiTileEntityClassContainer(this, aID, aClass);
     }
 
@@ -136,15 +137,19 @@ public class MultiTileEntityRegistry {
         if (tFailed) {
             GT_FML_LOGGER.error("MULTI-TILE REGISTRY ERROR: STACKTRACE START");
             int i = 0;
-            for (StackTraceElement tElement : new Exception().getStackTrace())
-                if (i++ < 5 && !tElement.getClassName().startsWith("sun")) GT_FML_LOGGER.error("\tat " + tElement);
-                else break;
+            for (StackTraceElement tElement : new Exception().getStackTrace()) if (i++ < 5 && !tElement.getClassName()
+                                                                                                       .startsWith(
+                                                                                                               "sun"))
+                GT_FML_LOGGER.error("\tat " + tElement);
+            else break;
             GT_FML_LOGGER.error("MULTI-TILE REGISTRY ERROR: STACKTRACE END");
             return null;
         }
 
-        GT_LanguageManager
-                .addStringLocalization(mNameInternal + "." + aClassContainer.mID + ".name", aLocalised, false);
+        GT_LanguageManager.addStringLocalization(
+                mNameInternal + "." + aClassContainer.mID + ".name",
+                aLocalised,
+                false);
         mRegistry.put(aClassContainer.mID, aClassContainer);
         mLastRegisteredID = aClassContainer.mID;
         mRegistrations.add(aClassContainer);
@@ -214,7 +219,7 @@ public class MultiTileEntityRegistry {
 
     public TileEntity getNewTileEntity(int aID) {
         final MultiTileEntityContainer tContainer = getNewTileEntityContainer(null, 0, 0, 0, aID, null);
-        return tContainer == null ? null : (TileEntity) tContainer.mTileEntity;
+        return tContainer == null ? null : tContainer.mTileEntity;
     }
 
     public MultiTileEntityContainer getNewTileEntityContainer(World aWorld, int aX, int aY, int aZ, int aID,

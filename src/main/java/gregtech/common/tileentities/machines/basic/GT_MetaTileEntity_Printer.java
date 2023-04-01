@@ -41,13 +41,13 @@ public class GT_MetaTileEntity_Printer extends GT_MetaTileEntity_BasicMachine {
         } else if ((GT_Utility.isStackValid(getInputAt(0))) && (getInputAt(0).stackSize > 0)
                 && (GT_Utility.isStackInvalid(getSpecialSlot()))
                 && (OrePrefixes.block.contains(getInputAt(0)))) {
-                    ArrayList<ItemStack> tList = GT_OreDictUnificator
-                            .getOres(GT_OreDictUnificator.getAssociation(getInputAt(0)));
+                    ArrayList<ItemStack> tList = GT_OreDictUnificator.getOres(
+                            GT_OreDictUnificator.getAssociation(getInputAt(0)));
                     if (tList.size() > 1) {
                         tList.add(tList.get(0));
                         int i = 0;
                         for (int j = tList.size() - 1; i < j; i++) {
-                            if (GT_Utility.areStacksEqual(getInputAt(0), (ItemStack) tList.get(i))) {
+                            if (GT_Utility.areStacksEqual(getInputAt(0), tList.get(i))) {
                                 this.mOutputItems[0] = GT_Utility.copyAmount(1L, tList.get(i + 1));
                                 calculateOverclockedNess(1, 32);
                                 // In case recipe is too OP for that machine

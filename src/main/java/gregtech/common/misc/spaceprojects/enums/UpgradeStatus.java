@@ -7,5 +7,5 @@ public enum UpgradeStatus {
     Locked,
     Unlocked,
     InProgress,
-    Finished;
+    Finished
 }

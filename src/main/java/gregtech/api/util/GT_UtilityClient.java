@@ -14,8 +14,10 @@ import cpw.mods.fml.relauncher.ReflectionHelper;
 
 public class GT_UtilityClient {
 
-    private static final Field isDrawingField = ReflectionHelper
-            .findField(Tessellator.class, "isDrawing", "field_78415_z");
+    private static final Field isDrawingField = ReflectionHelper.findField(
+            Tessellator.class,
+            "isDrawing",
+            "field_78415_z");
 
     public static boolean isDrawing(Tessellator tess) {
         try {

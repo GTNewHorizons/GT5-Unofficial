@@ -180,9 +180,7 @@ public class GT_GUIContainerMetaTile_Machine extends GT_GUIContainer implements 
      * are enabled.
      */
     protected void setupTooltips() {
-        if (mContainer.mTileEntity.getMetaTileEntity() instanceof IConfigurationCircuitSupport) {
-            IConfigurationCircuitSupport ccs = (IConfigurationCircuitSupport) mContainer.mTileEntity
-                    .getMetaTileEntity();
+        if (mContainer.mTileEntity.getMetaTileEntity() instanceof IConfigurationCircuitSupport ccs) {
             if (ccs.allowSelectCircuit()) addToolTip(
                     new GT_GuiSlotTooltip(
                             mContainer.getSlot(ccs.getCircuitGUISlot()),
@@ -192,7 +190,7 @@ public class GT_GUIContainerMetaTile_Machine extends GT_GUIContainer implements 
 
     // GT_IToolTipRenderer and GT_ITabRenderer implementations
     @Override
-    public void drawHoveringText(List text, int mouseX, int mouseY, FontRenderer font) {
+    public void drawHoveringText(List<String> text, int mouseX, int mouseY, FontRenderer font) {
         super.drawHoveringText(text, mouseX, mouseY, font);
     }
 
@@ -233,9 +231,7 @@ public class GT_GUIContainerMetaTile_Machine extends GT_GUIContainer implements 
 
     @Override
     protected void onMouseWheel(int mx, int my, int delta) {
-        if (mContainer.mTileEntity.getMetaTileEntity() instanceof IConfigurationCircuitSupport) {
-            IConfigurationCircuitSupport ccs = (IConfigurationCircuitSupport) mContainer.mTileEntity
-                    .getMetaTileEntity();
+        if (mContainer.mTileEntity.getMetaTileEntity() instanceof IConfigurationCircuitSupport ccs) {
             Slot slotCircuit = mContainer.getSlot(ccs.getCircuitGUISlot());
             if (slotCircuit != null
                     && func_146978_c(slotCircuit.xDisplayPosition, slotCircuit.yDisplayPosition, 16, 16, mx, my)) {

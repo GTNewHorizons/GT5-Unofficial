@@ -54,36 +54,19 @@ public class GT_CoolantCell_Item extends GT_Generic_Item {
     public void addAdditionalToolTips(List<String> aList, ItemStack aStack, EntityPlayer aPlayer) {
         super.addAdditionalToolTips(aList, aStack, aPlayer);
         int rHeat = getHeatOfStack(aStack) * 10 / this.heatStorage;
-        EnumChatFormatting color;
-        switch (rHeat) {
-            case 0:
-                color = EnumChatFormatting.BLUE;
-                break;
-            case 1:
-            case 2:
-                color = EnumChatFormatting.GREEN;
-                break;
-            case 3:
-            case 4:
-            case 5:
-            case 6:
-                color = EnumChatFormatting.YELLOW;
-                break;
-            case 7:
-            case 8:
-                color = EnumChatFormatting.RED;
-                break;
-            default:
-                color = EnumChatFormatting.DARK_RED;
-                break;
-        }
+        EnumChatFormatting color = switch (rHeat) {
+            case 0 -> EnumChatFormatting.BLUE;
+            case 1, 2 -> EnumChatFormatting.GREEN;
+            case 3, 4, 5, 6 -> EnumChatFormatting.YELLOW;
+            case 7, 8 -> EnumChatFormatting.RED;
+            default -> EnumChatFormatting.DARK_RED;
+        };
         aList.add(
                 EnumChatFormatting.WHITE
                         + String.format(transItem("000", "Stored Heat: %s"), "" + color + getHeatOfStack(aStack)));
-        switch (getControlTagOfStack(aStack)) {
-            case 1:
-                aList.add(StatCollector.translateToLocal("ic2.reactoritem.heatwarning.line1"));
-                aList.add(StatCollector.translateToLocal("ic2.reactoritem.heatwarning.line2"));
+        if (getControlTagOfStack(aStack) == 1) {
+            aList.add(StatCollector.translateToLocal("ic2.reactoritem.heatwarning.line1"));
+            aList.add(StatCollector.translateToLocal("ic2.reactoritem.heatwarning.line2"));
         }
     }
 

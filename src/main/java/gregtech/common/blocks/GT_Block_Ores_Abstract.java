@@ -1,5 +1,7 @@
 package gregtech.common.blocks;
 
+import static gregtech.api.enums.ModIDs.NotEnoughItems;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -24,7 +26,6 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GT_Mod;
@@ -54,7 +55,7 @@ public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements
         this.isBlockContainer = true;
         setStepSound(soundTypeStone);
         setCreativeTab(GregTech_API.TAB_GREGTECH_ORES);
-        tHideOres = Loader.isModLoaded("NotEnoughItems") && GT_Mod.gregtechproxy.mHideUnusedOres;
+        tHideOres = NotEnoughItems.isModLoaded() && GT_Mod.gregtechproxy.mHideUnusedOres;
         if (aOreMetaCount > 8 || aOreMetaCount < 0) aOreMetaCount = 8;
 
         for (int i = 0; i < 16; i++) {
@@ -128,32 +129,11 @@ public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements
     }
 
     public String getLocalizedNameFormat(Materials aMaterial) {
-        switch (aMaterial.mName) {
-            case "InfusedAir":
-            case "InfusedDull":
-            case "InfusedEarth":
-            case "InfusedEntropy":
-            case "InfusedFire":
-            case "InfusedOrder":
-            case "InfusedVis":
-            case "InfusedWater":
-                return "%material Infused Stone";
-            case "Vermiculite":
-            case "Bentonite":
-            case "Kaolinite":
-            case "Talc":
-            case "BasalticMineralSand":
-            case "GraniticMineralSand":
-            case "GlauconiteSand":
-            case "CassiteriteSand":
-            case "GarnetSand":
-            case "QuartzSand":
-            case "Pitchblende":
-            case "FullersEarth":
-                return "%material";
-            default:
-                return "%material" + OrePrefixes.ore.mLocalizedMaterialPost;
-        }
+        return switch (aMaterial.mName) {
+            case "InfusedAir", "InfusedDull", "InfusedEarth", "InfusedEntropy", "InfusedFire", "InfusedOrder", "InfusedVis", "InfusedWater" -> "%material Infused Stone";
+            case "Vermiculite", "Bentonite", "Kaolinite", "Talc", "BasalticMineralSand", "GraniticMineralSand", "GlauconiteSand", "CassiteriteSand", "GarnetSand", "QuartzSand", "Pitchblende", "FullersEarth" -> "%material";
+            default -> "%material" + OrePrefixes.ore.mLocalizedMaterialPost;
+        };
     }
 
     public String getLocalizedName(Materials aMaterial) {
@@ -324,7 +304,8 @@ public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements
             return ((GT_TileEntity_Ores) tTileEntity).getDrops(getDroppedBlock(), aFortune);
         }
         return mTemporaryTileEntity.get() == null ? new ArrayList<>()
-                : mTemporaryTileEntity.get().getDrops(getDroppedBlock(), aFortune);
+                : mTemporaryTileEntity.get()
+                                      .getDrops(getDroppedBlock(), aFortune);
     }
 
     @Override
@@ -337,12 +318,13 @@ public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements
     @SuppressWarnings({ "unchecked" })
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item aItem, CreativeTabs aTab, List aList) {
+    public void getSubBlocks(Item aItem, CreativeTabs aTab, List<ItemStack> aList) {
         for (int i = 0; i < GregTech_API.sGeneratedMaterials.length; i++) {
             Materials tMaterial = GregTech_API.sGeneratedMaterials[i];
             if ((tMaterial != null) && ((tMaterial.mTypes & 0x8) != 0) && !aBlockedOres.contains(tMaterial)) {
                 for (int meta = i; meta < 23000 + i; meta += 1000) {
-                    if (!(new ItemStack(aItem, 1, meta).getDisplayName().contains(DOT_NAME)))
+                    if (!(new ItemStack(aItem, 1, meta).getDisplayName()
+                                                       .contains(DOT_NAME)))
                         aList.add(new ItemStack(aItem, 1, meta));
                 }
             }

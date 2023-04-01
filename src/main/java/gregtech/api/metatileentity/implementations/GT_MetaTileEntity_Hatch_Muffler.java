@@ -34,7 +34,7 @@ public class GT_MetaTileEntity_Hatch_Muffler extends GT_MetaTileEntity_Hatch {
     private final int pollutionReduction = calculatePollutionReduction(100);
     private final int pollutionRecover = 100 - pollutionReduction;
     private final String[] description = String.format(localizedDescFormat, pollutionReduction, pollutionRecover)
-            .split("\\R");
+                                               .split("\\R");
     private final boolean[] facings = new boolean[ForgeDirection.VALID_DIRECTIONS.length];
 
     public GT_MetaTileEntity_Hatch_Muffler(int aID, String aName, String aNameRegional, int aTier) {
@@ -103,8 +103,12 @@ public class GT_MetaTileEntity_Hatch_Muffler extends GT_MetaTileEntity_Hatch {
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
-        if (aBaseMetaTileEntity.isClientSide() && this.getBaseMetaTileEntity().isActive()) {
-            pollutionParticles(this.getBaseMetaTileEntity().getWorld(), ParticleFX.LARGE_SMOKE.toString());
+        if (aBaseMetaTileEntity.isClientSide() && this.getBaseMetaTileEntity()
+                                                      .isActive()) {
+            pollutionParticles(
+                    this.getBaseMetaTileEntity()
+                        .getWorld(),
+                    ParticleFX.LARGE_SMOKE.toString());
         }
     }
 
@@ -159,26 +163,35 @@ public class GT_MetaTileEntity_Hatch_Muffler extends GT_MetaTileEntity_Hatch {
             zSpd = aDir.offsetZ * (0.1F + 0.2F * XSTR_INSTANCE.nextFloat());
         }
 
-        WorldSpawnedEventBuilder.ParticleEventBuilder events = new WorldSpawnedEventBuilder.ParticleEventBuilder()
-                .setIdentifier(name).setWorld(aWorld).setMotion(xSpd, ySpd, zSpd);
+        WorldSpawnedEventBuilder.ParticleEventBuilder events = new WorldSpawnedEventBuilder.ParticleEventBuilder().setIdentifier(
+                name)
+                                                                                                                  .setWorld(
+                                                                                                                          aWorld)
+                                                                                                                  .setMotion(
+                                                                                                                          xSpd,
+                                                                                                                          ySpd,
+                                                                                                                          zSpd);
 
         if (chk1) {
             events.setPosition(
                     xPos + ran1 * 0.5F,
                     yPos + XSTR_INSTANCE.nextFloat() * 0.5F,
-                    zPos + XSTR_INSTANCE.nextFloat() * 0.5F).run();
+                    zPos + XSTR_INSTANCE.nextFloat() * 0.5F)
+                  .run();
         }
         if (chk2) {
             events.setPosition(
                     xPos + ran2 * 0.5F,
                     yPos + XSTR_INSTANCE.nextFloat() * 0.5F,
-                    zPos + XSTR_INSTANCE.nextFloat() * 0.5F).run();
+                    zPos + XSTR_INSTANCE.nextFloat() * 0.5F)
+                  .run();
         }
         if (chk3) {
             events.setPosition(
                     xPos + ran3 * 0.5F,
                     yPos + XSTR_INSTANCE.nextFloat() * 0.5F,
-                    zPos + XSTR_INSTANCE.nextFloat() * 0.5F).run();
+                    zPos + XSTR_INSTANCE.nextFloat() * 0.5F)
+                  .run();
         }
     }
 
@@ -217,6 +230,7 @@ public class GT_MetaTileEntity_Hatch_Muffler extends GT_MetaTileEntity_Hatch {
      */
     public void setInValidFacings(ForgeDirection... aFacings) {
         Arrays.fill(facings, true);
-        Arrays.stream(aFacings).forEach(face -> facings[face.ordinal()] = false);
+        Arrays.stream(aFacings)
+              .forEach(face -> facings[face.ordinal()] = false);
     }
 }

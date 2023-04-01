@@ -32,9 +32,10 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
 
                 if (aMaterial.contains(SubTag.NO_SMASHING)) {
                     tVoltageMultiplier /= 4;
-                } else if (aPrefix.name().startsWith(OrePrefixes.dust.name())) {
-                    return;
-                }
+                } else if (aPrefix.name()
+                                  .startsWith(OrePrefixes.dust.name())) {
+                                      return;
+                                  }
 
                 if (!OrePrefixes.block.isIgnored(aMaterial.mSmeltInto)) {
                     GT_Values.RA.addExtruderRecipe(
@@ -242,55 +243,55 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
 
                 GT_Values.RA.addExtruderRecipe(
                         GT_Utility.copyAmount(2L, aStack),
-                        ItemList.Shape_Extruder_Sword.get(0L, new Object[0]),
+                        ItemList.Shape_Extruder_Sword.get(0L),
                         GT_OreDictUnificator.get(OrePrefixes.toolHeadSword, aMaterial.mSmeltInto, tAmount),
                         (int) Math.max(aMaterialMass * 2L * tAmount, tAmount),
                         calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier));
                 GT_Values.RA.addExtruderRecipe(
                         GT_Utility.copyAmount(3L, aStack),
-                        ItemList.Shape_Extruder_Pickaxe.get(0L, new Object[0]),
+                        ItemList.Shape_Extruder_Pickaxe.get(0L),
                         GT_OreDictUnificator.get(OrePrefixes.toolHeadPickaxe, aMaterial.mSmeltInto, tAmount),
                         (int) Math.max(aMaterialMass * 3L * tAmount, tAmount),
                         calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier));
                 GT_Values.RA.addExtruderRecipe(
                         GT_Utility.copyAmount(1L, aStack),
-                        ItemList.Shape_Extruder_Shovel.get(0L, new Object[0]),
+                        ItemList.Shape_Extruder_Shovel.get(0L),
                         GT_OreDictUnificator.get(OrePrefixes.toolHeadShovel, aMaterial.mSmeltInto, tAmount),
                         (int) Math.max(aMaterialMass * 1L * tAmount, tAmount),
                         calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier));
                 GT_Values.RA.addExtruderRecipe(
                         GT_Utility.copyAmount(3L, aStack),
-                        ItemList.Shape_Extruder_Axe.get(0L, new Object[0]),
+                        ItemList.Shape_Extruder_Axe.get(0L),
                         GT_OreDictUnificator.get(OrePrefixes.toolHeadAxe, aMaterial.mSmeltInto, tAmount),
                         (int) Math.max(aMaterialMass * 3L * tAmount, tAmount),
                         calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier));
                 GT_Values.RA.addExtruderRecipe(
                         GT_Utility.copyAmount(2L, aStack),
-                        ItemList.Shape_Extruder_Hoe.get(0L, new Object[0]),
+                        ItemList.Shape_Extruder_Hoe.get(0L),
                         GT_OreDictUnificator.get(OrePrefixes.toolHeadHoe, aMaterial.mSmeltInto, tAmount),
                         (int) Math.max(aMaterialMass * 2L * tAmount, tAmount),
                         calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier));
                 GT_Values.RA.addExtruderRecipe(
                         GT_Utility.copyAmount(6L, aStack),
-                        ItemList.Shape_Extruder_Hammer.get(0L, new Object[0]),
+                        ItemList.Shape_Extruder_Hammer.get(0L),
                         GT_OreDictUnificator.get(OrePrefixes.toolHeadHammer, aMaterial.mSmeltInto, tAmount),
                         (int) Math.max(aMaterialMass * 6L * tAmount, tAmount),
                         calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier));
                 GT_Values.RA.addExtruderRecipe(
                         GT_Utility.copyAmount(2L, aStack),
-                        ItemList.Shape_Extruder_File.get(0L, new Object[0]),
+                        ItemList.Shape_Extruder_File.get(0L),
                         GT_OreDictUnificator.get(OrePrefixes.toolHeadFile, aMaterial.mSmeltInto, tAmount),
                         (int) Math.max(aMaterialMass * 2L * tAmount, tAmount),
                         calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier));
                 GT_Values.RA.addExtruderRecipe(
                         GT_Utility.copyAmount(2L, aStack),
-                        ItemList.Shape_Extruder_Saw.get(0L, new Object[0]),
+                        ItemList.Shape_Extruder_Saw.get(0L),
                         GT_OreDictUnificator.get(OrePrefixes.toolHeadSaw, aMaterial.mSmeltInto, tAmount),
                         (int) Math.max(aMaterialMass * 2L * tAmount, tAmount),
                         calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier));
                 GT_Values.RA.addExtruderRecipe(
                         GT_Utility.copyAmount(4L, aStack),
-                        ItemList.Shape_Extruder_Gear.get(0L, new Object[0]),
+                        ItemList.Shape_Extruder_Gear.get(0L),
                         GT_OreDictUnificator.get(OrePrefixes.gearGt, aMaterial.mSmeltInto, tAmount),
                         (int) Math.max(aMaterialMass * 5L * tAmount, tAmount),
                         calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier));
@@ -327,7 +328,7 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                 }
 
                 switch (aMaterial.mSmeltInto.mName) {
-                    case "Glass":
+                    case "Glass" -> {
                         GT_Values.RA.addExtruderRecipe(
                                 GT_Utility.copyAmount(1L, aStack),
                                 ItemList.Shape_Extruder_Bottle.get(0L),
@@ -340,8 +341,8 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                                 new ItemStack(Items.glass_bottle, 1),
                                 tAmount * 64,
                                 4);
-                        break;
-                    case "Steel":
+                    }
+                    case "Steel" -> {
                         GT_Values.RA.addExtruderRecipe(
                                 GT_Utility.copyAmount(1L, aStack),
                                 ItemList.Shape_Extruder_Cell.get(0L),
@@ -360,9 +361,8 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                                 GT_ModHandler.getIC2Item("casingadviron", tAmount * 3),
                                 tAmount * 128,
                                 1 * tVoltageMultiplier);
-                        break;
-                    case "Iron":
-                    case "WroughtIron":
+                    }
+                    case "Iron", "WroughtIron" -> {
                         GT_Values.RA.addExtruderRecipe(
                                 GT_Utility.copyAmount(1L, aStack),
                                 ItemList.Shape_Extruder_Cell.get(0L),
@@ -387,8 +387,8 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                                 new ItemStack(Blocks.anvil, 1, 0),
                                 tAmount * 512,
                                 4 * tVoltageMultiplier);
-                        break;
-                    case "Tin":
+                    }
+                    case "Tin" -> {
                         GT_Values.RA.addExtruderRecipe(
                                 GT_Utility.copyAmount(2L, aStack),
                                 ItemList.Shape_Extruder_Cell.get(0L),
@@ -407,8 +407,8 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                                 GT_ModHandler.getIC2Item("casingtin", tAmount * 3),
                                 tAmount * 128,
                                 1 * tVoltageMultiplier);
-                        break;
-                    case "Lead":
+                    }
+                    case "Lead" -> {
                         if (tAmount * 2 <= 64) GT_Values.RA.addExtruderRecipe(
                                 GT_Utility.copyAmount(1L, aStack),
                                 ItemList.Shape_Extruder_Casing.get(0L),
@@ -421,9 +421,8 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                                 GT_ModHandler.getIC2Item("casinglead", tAmount * 3),
                                 tAmount * 128,
                                 1 * tVoltageMultiplier);
-                        break;
-                    case "Copper":
-                    case "AnnealedCopper":
+                    }
+                    case "Copper", "AnnealedCopper" -> {
                         if (tAmount * 2 <= 64) GT_Values.RA.addExtruderRecipe(
                                 GT_Utility.copyAmount(1L, aStack),
                                 ItemList.Shape_Extruder_Casing.get(0L),
@@ -436,8 +435,8 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                                 GT_ModHandler.getIC2Item("casingcopper", tAmount * 3),
                                 tAmount * 128,
                                 1 * tVoltageMultiplier);
-                        break;
-                    case "Bronze":
+                    }
+                    case "Bronze" -> {
                         if (tAmount * 2 <= 64) GT_Values.RA.addExtruderRecipe(
                                 GT_Utility.copyAmount(1L, aStack),
                                 ItemList.Shape_Extruder_Casing.get(0L),
@@ -450,8 +449,8 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                                 GT_ModHandler.getIC2Item("casingbronze", tAmount * 3),
                                 tAmount * 128,
                                 1 * tVoltageMultiplier);
-                        break;
-                    case "Gold":
+                    }
+                    case "Gold" -> {
                         if (tAmount * 2 <= 64) GT_Values.RA.addExtruderRecipe(
                                 GT_Utility.copyAmount(1L, aStack),
                                 ItemList.Shape_Extruder_Casing.get(0L),
@@ -464,15 +463,14 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                                 GT_ModHandler.getIC2Item("casinggold", tAmount * 3),
                                 tAmount * 128,
                                 1 * tVoltageMultiplier);
-                        break;
-                    case "Polytetrafluoroethylene": // Recipe for cells from PTFE, why is it here?
+                    }
+                    case "Polytetrafluoroethylene" -> // Recipe for cells from PTFE, why is it here?
                         GT_Values.RA.addExtruderRecipe(
                                 GT_Utility.copyAmount(1L, aStack),
                                 ItemList.Shape_Extruder_Cell.get(0L),
                                 ItemList.Cell_Empty.get(tAmount * 4),
                                 tAmount * 128,
                                 30);
-                        break;
                 }
             }
         }

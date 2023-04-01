@@ -39,8 +39,8 @@ public class GT_MetaTileEntity_Pump extends GT_MetaTileEntity_Hatch {
 
     private static final ItemStack MINING_PIPE = GT_ModHandler.getIC2Item("miningPipe", 0);
     private static final Block MINING_PIPE_BLOCK = GT_Utility.getBlockFromStack(MINING_PIPE);
-    private static final Block MINING_PIPE_TIP_BLOCK = GT_Utility
-            .getBlockFromStack(GT_ModHandler.getIC2Item("miningPipeTip", 0));
+    private static final Block MINING_PIPE_TIP_BLOCK = GT_Utility.getBlockFromStack(
+            GT_ModHandler.getIC2Item("miningPipeTip", 0));
 
     public static int getMaxDistanceForTier(int aTier) {
         return (10 * ((int) Math.pow(1.6D, aTier)));
@@ -366,13 +366,20 @@ public class GT_MetaTileEntity_Pump extends GT_MetaTileEntity_Hatch {
                         // 2. once per 5 tick
                         // 3. can hold retracted pipe in inventory
                         int tHeadY = getYOfPumpHead();
-                        if (tHeadY < this.getBaseMetaTileEntity().getYCoord()) {
-                            final int tXCoord = this.getBaseMetaTileEntity().getXCoord();
-                            final int tZCoord = this.getBaseMetaTileEntity().getZCoord();
-                            this.getBaseMetaTileEntity().getWorld().setBlockToAir(tXCoord, tHeadY, tZCoord);
-                            if (tHeadY < this.getBaseMetaTileEntity().getYCoord() - 1) {
+                        if (tHeadY < this.getBaseMetaTileEntity()
+                                         .getYCoord()) {
+                            final int tXCoord = this.getBaseMetaTileEntity()
+                                                    .getXCoord();
+                            final int tZCoord = this.getBaseMetaTileEntity()
+                                                    .getZCoord();
+                            this.getBaseMetaTileEntity()
+                                .getWorld()
+                                .setBlockToAir(tXCoord, tHeadY, tZCoord);
+                            if (tHeadY < this.getBaseMetaTileEntity()
+                                             .getYCoord()
+                                    - 1) {
                                 getBaseMetaTileEntity().getWorld()
-                                        .setBlock(tXCoord, tHeadY + 1, tZCoord, MINING_PIPE_TIP_BLOCK);
+                                                       .setBlock(tXCoord, tHeadY + 1, tZCoord, MINING_PIPE_TIP_BLOCK);
                             }
                             if (this.mInventory[0] == null) {
                                 final ItemStack copy = MINING_PIPE.copy();
@@ -443,7 +450,11 @@ public class GT_MetaTileEntity_Pump extends GT_MetaTileEntity_Hatch {
         int x = getBaseMetaTileEntity().getXCoord(), z = getBaseMetaTileEntity().getZCoord();
 
         if ((!consumeFluid(x, yHead - 1, z)) && (!getBaseMetaTileEntity().getBlock(x, yHead - 1, z)
-                .isAir(getBaseMetaTileEntity().getWorld(), x, yHead - 1, z))) {
+                                                                         .isAir(
+                                                                                 getBaseMetaTileEntity().getWorld(),
+                                                                                 x,
+                                                                                 yHead - 1,
+                                                                                 z))) {
             // Either we didn't consume a fluid, or it's a non Air block
             if (debugBlockPump) {
                 GT_Log.out.println("PUMP: Did not consume fluid, or non-airblock found");
@@ -466,7 +477,8 @@ public class GT_MetaTileEntity_Pump extends GT_MetaTileEntity_Hatch {
         }
         // And change the previous block to a pipe -- as long as it isn't the pump itself!
         if (yHead != getBaseMetaTileEntity().getYCoord()) {
-            getBaseMetaTileEntity().getWorld().setBlock(x, yHead, z, MINING_PIPE_BLOCK);
+            getBaseMetaTileEntity().getWorld()
+                                   .setBlock(x, yHead, z, MINING_PIPE_BLOCK);
         }
         getBaseMetaTileEntity().decrStackSize(0, 1);
         if (debugBlockPump) {
@@ -491,7 +503,8 @@ public class GT_MetaTileEntity_Pump extends GT_MetaTileEntity_Hatch {
                 if (nextBlock == MINING_PIPE_BLOCK || nextBlock == MINING_PIPE_TIP_BLOCK) {
                     // We're running into an existing set of pipes -- Turn this block into a pipe and keep going
                     this.clearQueue(true);
-                    getBaseMetaTileEntity().getWorld().setBlock(x, y, z, MINING_PIPE_BLOCK);
+                    getBaseMetaTileEntity().getWorld()
+                                           .setBlock(x, y, z, MINING_PIPE_BLOCK);
                     if (debugBlockPump) {
                         GT_Log.out.println("PUMP: Hit pipes already in place, trying to merge");
                     }
@@ -509,7 +522,8 @@ public class GT_MetaTileEntity_Pump extends GT_MetaTileEntity_Hatch {
                 // We're below the pump at the bottom of the pipes, we haven't found a tip; make the previous pipe a
                 // tip!
                 this.clearQueue(true);
-                getBaseMetaTileEntity().getWorld().setBlock(x, y + 1, z, MINING_PIPE_TIP_BLOCK);
+                getBaseMetaTileEntity().getWorld()
+                                       .setBlock(x, y + 1, z, MINING_PIPE_TIP_BLOCK);
                 if (debugBlockPump) {
                     GT_Log.out.println("PUMP: Did not find a tip at bottom, setting last pipe as tip");
                 }
@@ -652,7 +666,9 @@ public class GT_MetaTileEntity_Pump extends GT_MetaTileEntity_Hatch {
                             ((IFluidBlock) aBlock).drain(getBaseMetaTileEntity().getWorld(), aX, aY, aZ, false))) {
                                 if (!isWaterOrLava) {
                                     // Only set Block to Air for non lava/water fluids
-                                    this.getBaseMetaTileEntity().getWorld().setBlockToAir(aX, aY, aZ);
+                                    this.getBaseMetaTileEntity()
+                                        .getWorld()
+                                        .setBlockToAir(aX, aY, aZ);
                                 }
                                 this.mFluid.amount += 1000;
 
@@ -665,7 +681,8 @@ public class GT_MetaTileEntity_Pump extends GT_MetaTileEntity_Hatch {
                             }
 
             getBaseMetaTileEntity().decreaseStoredEnergyUnits(this.getEuUsagePerAction(), true);
-            getBaseMetaTileEntity().getWorld().setBlock(aX, aY, aZ, Blocks.air, 0, 2);
+            getBaseMetaTileEntity().getWorld()
+                                   .setBlock(aX, aY, aZ, Blocks.air, 0, 2);
             return true;
         }
         return false;

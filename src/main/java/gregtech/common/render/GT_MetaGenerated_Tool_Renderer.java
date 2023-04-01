@@ -160,8 +160,9 @@ public class GT_MetaGenerated_Tool_Renderer implements IItemRenderer {
                 } else if (tDamage >= tMaxDamage) {
                     aIcon = gregtech.api.enums.Textures.ItemIcons.DURABILITY_BAR[0];
                 } else {
-                    aIcon = gregtech.api.enums.Textures.ItemIcons.DURABILITY_BAR[((int) java.lang.Math
-                            .max(0L, java.lang.Math.min(7L, (tMaxDamage - tDamage) * 8L / tMaxDamage)))];
+                    aIcon = gregtech.api.enums.Textures.ItemIcons.DURABILITY_BAR[((int) java.lang.Math.max(
+                            0L,
+                            java.lang.Math.min(7L, (tMaxDamage - tDamage) * 8L / tMaxDamage)))];
                 }
                 if (aIcon != null) {
                     IIcon tIcon = aIcon.getIcon();
@@ -209,8 +210,9 @@ public class GT_MetaGenerated_Tool_Renderer implements IItemRenderer {
                     } else if (tCharge >= tStats[0]) {
                         aIcon = gregtech.api.enums.Textures.ItemIcons.ENERGY_BAR[8];
                     } else {
-                        aIcon = gregtech.api.enums.Textures.ItemIcons.ENERGY_BAR[(7 - (int) java.lang.Math
-                                .max(0L, java.lang.Math.min(6L, (tStats[0] - tCharge) * 7L / tStats[0])))];
+                        aIcon = gregtech.api.enums.Textures.ItemIcons.ENERGY_BAR[(7 - (int) java.lang.Math.max(
+                                0L,
+                                java.lang.Math.min(6L, (tStats[0] - tCharge) * 7L / tStats[0])))];
                     }
                 } else {
                     aIcon = null;

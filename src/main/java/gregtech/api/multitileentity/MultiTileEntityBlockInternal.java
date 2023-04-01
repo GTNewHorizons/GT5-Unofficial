@@ -51,8 +51,13 @@ public class MultiTileEntityBlockInternal extends Block implements IRenderedBloc
 
     public boolean placeBlock(World aWorld, int aX, int aY, int aZ, byte aSide, short aMetaData, NBTTagCompound aNBT,
             boolean aCauseBlockUpdates, boolean aForcePlacement) {
-        final MultiTileEntityContainer aMTEContainer = mMultiTileEntityRegistry
-                .getNewTileEntityContainer(aWorld, aX, aY, aZ, aMetaData, aNBT);
+        final MultiTileEntityContainer aMTEContainer = mMultiTileEntityRegistry.getNewTileEntityContainer(
+                aWorld,
+                aX,
+                aY,
+                aZ,
+                aMetaData,
+                aNBT);
         if (aMTEContainer == null) return false;
 
         final Block tReplacedBlock = aWorld.getBlock(aX, aY, aZ);
@@ -69,7 +74,7 @@ public class MultiTileEntityBlockInternal extends Block implements IRenderedBloc
         // TileEntity should not refresh yet! -Greg
         ((IMultiTileEntity) aMTEContainer.mTileEntity).setShouldRefresh(false);
         // Fake-Set the TileEntity first, bypassing a lot of checks. -Greg
-        setTileEntity(aWorld, aX, aY, aZ, (TileEntity) aMTEContainer.mTileEntity, false);
+        setTileEntity(aWorld, aX, aY, aZ, aMTEContainer.mTileEntity, false);
         // Now set the Block with the REAL MetaData. -Greg
         setTileEntity(aWorld, aX, aY, aZ, aMTEContainer.mBlock, aMTEContainer.mBlockMetaData, 0, false);
         // When the TileEntity is set now it SHOULD refresh! -Greg
@@ -80,13 +85,12 @@ public class MultiTileEntityBlockInternal extends Block implements IRenderedBloc
             return false;
         }
         // And finally properly set the TileEntity for real! -Greg
-        setTileEntity(aWorld, aX, aY, aZ, (TileEntity) aMTEContainer.mTileEntity, aCauseBlockUpdates);
+        setTileEntity(aWorld, aX, aY, aZ, aMTEContainer.mTileEntity, aCauseBlockUpdates);
         // Yep, all this just to set one Block and its TileEntity properly... -Greg
 
         try {
             if (aMTEContainer.mTileEntity instanceof IMTE_HasMultiBlockMachineRelevantData) {
-                if (((IMTE_HasMultiBlockMachineRelevantData) aMTEContainer.mTileEntity)
-                        .hasMultiBlockMachineRelevantData())
+                if (((IMTE_HasMultiBlockMachineRelevantData) aMTEContainer.mTileEntity).hasMultiBlockMachineRelevantData())
                     GregTech_API.causeMachineUpdate(aWorld, aX, aY, aZ);
             }
         } catch (Throwable e) {

@@ -55,8 +55,8 @@ public class GT_Runnable_Cable_Update extends GT_Runnable_MachineBlockUpdate {
                         && ((BaseMetaPipeEntity) tTileEntity).getMetaTileEntity() instanceof GT_MetaPipeEntity_Cable) {
                     ChunkCoordinates tCoords;
                     for (byte tSide : ALL_VALID_SIDES) {
-                        if (((GT_MetaPipeEntity_Cable) ((BaseMetaPipeEntity) tTileEntity).getMetaTileEntity())
-                                .isConnectedAtSide(tSide)) {
+                        if (((GT_MetaPipeEntity_Cable) ((BaseMetaPipeEntity) tTileEntity).getMetaTileEntity()).isConnectedAtSide(
+                                tSide)) {
                             final ForgeDirection offset = ForgeDirection.getOrientation(tSide);
                             if (visited.add(
                                     tCoords = new ChunkCoordinates(

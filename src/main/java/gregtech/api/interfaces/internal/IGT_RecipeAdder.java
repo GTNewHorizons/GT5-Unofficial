@@ -5,6 +5,7 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GT_RecipeBuilder;
 
 public interface IGT_RecipeAdder {
 
@@ -960,4 +961,6 @@ public interface IGT_RecipeAdder {
      */
     GT_Recipe addIC2ReactorFuelCell(ItemStack input, ItemStack output, boolean aMox, float aHeat, float aEnergy,
             int aCells);
+
+    GT_RecipeBuilder stdBuilder();
 }

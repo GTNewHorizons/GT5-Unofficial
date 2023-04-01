@@ -7,11 +7,12 @@ public class GT_ApiaryModifier {
     public float territory = 1f;
     public float mutation = 1f;
     public float lifespan = 1f;
-    public float production = 0f;
+    public float production = 2f;
     public float flowering = 1f;
     public float geneticDecay = 1f;
     public boolean isSealed = false;
     public boolean isSelfLighted = false;
+    public boolean isSelfUnlighted = false;
     public boolean isSunlightSimulated = false;
     public boolean isAutomated = false;
     public boolean isCollectingPollen = false;

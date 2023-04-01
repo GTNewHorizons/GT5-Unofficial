@@ -38,25 +38,37 @@ public class GT_MetaTileEntity_LargeTurbine_HPSteam extends GT_MetaTileEntity_La
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
             boolean aActive, boolean aRedstone) {
-        return new ITexture[] { MACHINE_CASINGS[1][aColorIndex + 1],
-                aFacing == aSide
-                        ? (aActive ? TextureFactory.builder().addIcon(LARGETURBINE_NEW_ACTIVE5).build()
-                                : hasTurbine() ? TextureFactory.builder().addIcon(LARGETURBINE_NEW5).build()
-                                        : TextureFactory.builder().addIcon(LARGETURBINE_NEW_EMPTY5).build())
+        return new ITexture[] { MACHINE_CASINGS[1][aColorIndex + 1], aFacing
+                == aSide ? (aActive ? TextureFactory.builder()
+                                                    .addIcon(LARGETURBINE_NEW_ACTIVE5)
+                                                    .build()
+                        : hasTurbine() ? TextureFactory.builder()
+                                                       .addIcon(LARGETURBINE_NEW5)
+                                                       .build()
+                                : TextureFactory.builder()
+                                                .addIcon(LARGETURBINE_NEW_EMPTY5)
+                                                .build())
                         : casingTexturePages[0][59] };
     }
 
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType("Steam Turbine").addInfo("Controller block for the Large High Pressure Steam Turbine")
-                .addInfo("Needs a Turbine, place inside controller").addInfo("Outputs Steam as well as producing power")
-                .addInfo("Power output depends on turbine and fitting")
-                .addInfo("Use screwdriver to adjust fitting of turbine").addSeparator()
-                .beginStructureBlock(3, 3, 4, true).addController("Front center")
-                .addCasingInfoRange("Titanium Turbine Casing", 8, 31, false).addDynamoHatch("Back center", 1)
-                .addMaintenanceHatch("Side centered", 2).addInputHatch("Superheated Steam, Side centered", 2)
-                .addOutputHatch("Steam, Side centered", 2).toolTipFinisher("Gregtech");
+        tt.addMachineType("Steam Turbine")
+          .addInfo("Controller block for the Large High Pressure Steam Turbine")
+          .addInfo("Needs a Turbine, place inside controller")
+          .addInfo("Outputs Steam as well as producing power")
+          .addInfo("Power output depends on turbine and fitting")
+          .addInfo("Use screwdriver to adjust fitting of turbine")
+          .addSeparator()
+          .beginStructureBlock(3, 3, 4, true)
+          .addController("Front center")
+          .addCasingInfoRange("Titanium Turbine Casing", 8, 31, false)
+          .addDynamoHatch("Back center", 1)
+          .addMaintenanceHatch("Side centered", 2)
+          .addInputHatch("Superheated Steam, Side centered", 2)
+          .addOutputHatch("Steam, Side centered", 2)
+          .toolTipFinisher("Gregtech");
         return tt;
     }
 
@@ -121,8 +133,11 @@ public class GT_MetaTileEntity_LargeTurbine_HPSteam extends GT_MetaTileEntity_La
                 if (!achievement) {
                     try {
                         GT_Mod.achievements.issueAchievement(
-                                this.getBaseMetaTileEntity().getWorld()
-                                        .getPlayerEntityByName(this.getBaseMetaTileEntity().getOwnerName()),
+                                this.getBaseMetaTileEntity()
+                                    .getWorld()
+                                    .getPlayerEntityByName(
+                                            this.getBaseMetaTileEntity()
+                                                .getOwnerName()),
                                 "efficientsteam");
                     } catch (Exception ignored) {}
                     achievement = true;

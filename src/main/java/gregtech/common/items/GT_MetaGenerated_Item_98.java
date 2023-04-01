@@ -312,9 +312,12 @@ public class GT_MetaGenerated_Item_98 extends GT_MetaGenerated_Item {
     @SuppressWarnings("unchecked")
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubItems(Item aItem, CreativeTabs aCreativeTab, List aList) {
-        Arrays.stream(FluidCell.values()).filter(fluid -> FluidRegistry.getFluid(fluid.getFluidName()) != null)
-                .map(FluidCell::get).filter(Objects::nonNull).forEach(aList::add);
+    public void getSubItems(Item aItem, CreativeTabs aCreativeTab, List<ItemStack> aList) {
+        Arrays.stream(FluidCell.values())
+              .filter(fluid -> FluidRegistry.getFluid(fluid.getFluidName()) != null)
+              .map(FluidCell::get)
+              .filter(Objects::nonNull)
+              .forEach(aList::add);
     }
 
     @Override

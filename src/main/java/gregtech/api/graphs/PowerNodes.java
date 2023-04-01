@@ -30,7 +30,6 @@ public class PowerNodes {
                         if (tNextNode.mNodeValue == tConsumer.mNodeValue) {
                             tAmpsUsed += processNodeInject(aCurrentNode, tConsumer, j, aMaxAmps - tAmpsUsed, aVoltage);
                             tConsumer = (ConsumerNode) aConsumers.getNextNode();
-                            break;
                         } else {
                             if (aPreviousNode == tNextNode) return tAmpsUsed;
                             tAmpsUsed += processNextNode(
@@ -41,8 +40,8 @@ public class PowerNodes {
                                     aMaxAmps - tAmpsUsed,
                                     aVoltage);
                             tConsumer = (ConsumerNode) aConsumers.getNode();
-                            break;
                         }
+                        break;
                     }
                 }
             } else {

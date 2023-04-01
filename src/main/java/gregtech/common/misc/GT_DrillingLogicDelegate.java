@@ -22,8 +22,8 @@ public class GT_DrillingLogicDelegate {
 
     public static final ItemStack MINING_PIPE_STACK = GT_ModHandler.getIC2Item("miningPipe", 0);
     public static final Block MINING_PIPE_BLOCK = GT_Utility.getBlockFromStack(MINING_PIPE_STACK);
-    public static final Block MINING_PIPE_TIP_BLOCK = GT_Utility
-            .getBlockFromStack(GT_ModHandler.getIC2Item("miningPipeTip", 0));
+    public static final Block MINING_PIPE_TIP_BLOCK = GT_Utility.getBlockFromStack(
+            GT_ModHandler.getIC2Item("miningPipeTip", 0));
 
     /** The owner machine pointer */
     private final GT_IDrillingLogicDelegateOwner owner;
@@ -74,7 +74,8 @@ public class GT_DrillingLogicDelegate {
 
         // Replace the tip onto pipe
         if (te.getBlockOffset(0, tipDepth, 0) == MINING_PIPE_TIP_BLOCK) {
-            te.getWorld().setBlock(xCoord, yCoord + tipDepth, zCoord, MINING_PIPE_BLOCK);
+            te.getWorld()
+              .setBlock(xCoord, yCoord + tipDepth, zCoord, MINING_PIPE_BLOCK);
         }
         // Get and decrease pipe from the machine
         boolean pipeTaken = owner.pullInputs(MINING_PIPE_STACK.getItem(), 1, false);
@@ -91,7 +92,8 @@ public class GT_DrillingLogicDelegate {
         }
 
         // Descent the pipe tip
-        te.getWorld().setBlock(xCoord, yCoord + tipDepth - 1, zCoord, MINING_PIPE_TIP_BLOCK);
+        te.getWorld()
+          .setBlock(xCoord, yCoord + tipDepth - 1, zCoord, MINING_PIPE_TIP_BLOCK);
         tipDepth--;
         return true;
     }
@@ -140,16 +142,19 @@ public class GT_DrillingLogicDelegate {
         int actualDrillY = yCoord + tipDepth;
         // Move the pipe tip position
         if (actualDrillY < yCoord - 1) {
-            owner.getBaseMetaTileEntity().getWorld().setBlock(xCoord, actualDrillY + 1, zCoord, MINING_PIPE_TIP_BLOCK);
+            owner.getBaseMetaTileEntity()
+                 .getWorld()
+                 .setBlock(xCoord, actualDrillY + 1, zCoord, MINING_PIPE_TIP_BLOCK);
         }
         // Remove the old pipe tip
-        aBaseMetaTileEntity.getWorld().setBlock(
-                xCoord,
-                actualDrillY,
-                zCoord,
-                Blocks.air,
-                0,
-                /* send to client without neighbour updates */ 2);
+        aBaseMetaTileEntity.getWorld()
+                           .setBlock(
+                                   xCoord,
+                                   actualDrillY,
+                                   zCoord,
+                                   Blocks.air,
+                                   0,
+                                   /* send to client without neighbour updates */ 2);
 
         // Return the pipe back to the machine (inputs allowed for this case!)
         owner.pushOutputs(MINING_PIPE_STACK, 1, false, true);
@@ -177,19 +182,21 @@ public class GT_DrillingLogicDelegate {
         }
 
         short metaData = 0;
-        TileEntity tTileEntity = owner.getBaseMetaTileEntity().getTileEntity(x, y, z);
+        TileEntity tTileEntity = owner.getBaseMetaTileEntity()
+                                      .getTileEntity(x, y, z);
         if (tTileEntity instanceof GT_TileEntity_Ores) {
             metaData = ((GT_TileEntity_Ores) tTileEntity).mMetaData;
         }
 
         ItemStack cobble = GT_Utility.getCobbleForOre(block, metaData);
-        te.getWorld().setBlock(
-                x,
-                y,
-                z,
-                Block.getBlockFromItem(cobble.getItem()),
-                cobble.getItemDamage(), /* cause updates(1) + send to client(2) */
-                3);
+        te.getWorld()
+          .setBlock(
+                  x,
+                  y,
+                  z,
+                  Block.getBlockFromItem(cobble.getItem()),
+                  cobble.getItemDamage(), /* cause updates(1) + send to client(2) */
+                  3);
     }
 
     /**
@@ -231,18 +238,26 @@ public class GT_DrillingLogicDelegate {
     }
 
     public boolean canFakePlayerInteract(IGregTechTileEntity te, int xCoord, int yCoord, int zCoord) {
-        return GT_Utility
-                .setBlockByFakePlayer(getFakePlayer(te), xCoord, yCoord, zCoord, MINING_PIPE_TIP_BLOCK, 0, true);
+        return GT_Utility.setBlockByFakePlayer(
+                getFakePlayer(te),
+                xCoord,
+                yCoord,
+                zCoord,
+                MINING_PIPE_TIP_BLOCK,
+                0,
+                true);
     }
 
     /** Get target block drops. We need to encapsulate everyting of mining in this class. */
     private List<ItemStack> getBlockDrops(final Block oreBlock, int posX, int posY, int posZ) {
         return oreBlock.getDrops(
-                owner.getBaseMetaTileEntity().getWorld(),
+                owner.getBaseMetaTileEntity()
+                     .getWorld(),
                 posX,
                 posY,
                 posZ,
-                owner.getBaseMetaTileEntity().getMetaID(posX, posY, posZ),
+                owner.getBaseMetaTileEntity()
+                     .getMetaID(posX, posY, posZ),
                 owner.getMachineTier());
     }
 

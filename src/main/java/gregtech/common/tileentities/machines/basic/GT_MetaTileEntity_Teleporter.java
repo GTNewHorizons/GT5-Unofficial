@@ -111,14 +111,13 @@ public class GT_MetaTileEntity_Teleporter extends GT_MetaTileEntity_BasicTank
         if ((aEntity instanceof EntityWeatherEffect)) {
             return -1.0F;
         }
-        if ((aEntity instanceof EntityPlayer)) {
-            EntityPlayer tPlayer = (EntityPlayer) aEntity;
+        if ((aEntity instanceof EntityPlayer tPlayer)) {
             int tCount = 64;
             for (int i = 0; i < 36; i++) {
                 if (tPlayer.inventory.getStackInSlot(i) != null) {
-                    tCount += (tPlayer.inventory.getStackInSlot(i).getMaxStackSize() > 1
-                            ? tPlayer.inventory.getStackInSlot(i).stackSize
-                            : 64);
+                    tCount += (tPlayer.inventory.getStackInSlot(i)
+                                                .getMaxStackSize()
+                            > 1 ? tPlayer.inventory.getStackInSlot(i).stackSize : 64);
                 }
             }
             for (int i = 0; i < 4; i++) {
@@ -128,10 +127,12 @@ public class GT_MetaTileEntity_Teleporter extends GT_MetaTileEntity_BasicTank
             }
             return Math.min(5.0F, tCount / 666.6F);
         }
-        if (GT_Utility.getClassName(aEntity).equals("EntityItnt")) {
+        if (GT_Utility.getClassName(aEntity)
+                      .equals("EntityItnt")) {
             return 5.0F;
         }
-        if (GT_Utility.getClassName(aEntity).equals("EntityNuke")) {
+        if (GT_Utility.getClassName(aEntity)
+                      .equals("EntityNuke")) {
             return 50.0F;
         }
         if ((aEntity instanceof EntityArrow)) {
@@ -212,14 +213,23 @@ public class GT_MetaTileEntity_Teleporter extends GT_MetaTileEntity_BasicTank
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
             boolean aActive, boolean aRedstone) {
-        if (aSide != this.getBaseMetaTileEntity().getFrontFacing()) return new ITexture[] {
-                MACHINE_CASINGS[mTier][aColorIndex + 1], TextureFactory.of(OVERLAY_TELEPORTER_SIDES),
-                TextureFactory.builder().addIcon(OVERLAY_TELEPORTER_SIDES_GLOW).glow().build() };
+        if (aSide != this.getBaseMetaTileEntity()
+                         .getFrontFacing())
+            return new ITexture[] { MACHINE_CASINGS[mTier][aColorIndex + 1],
+                    TextureFactory.of(OVERLAY_TELEPORTER_SIDES), TextureFactory.builder()
+                                                                               .addIcon(OVERLAY_TELEPORTER_SIDES_GLOW)
+                                                                               .glow()
+                                                                               .build() };
         if (aActive) return new ITexture[] { MACHINE_CASINGS[mTier][aColorIndex + 1],
-                TextureFactory.of(OVERLAY_TELEPORTER_ACTIVE),
-                TextureFactory.builder().addIcon(OVERLAY_TELEPORTER_ACTIVE_GLOW).glow().build() };
+                TextureFactory.of(OVERLAY_TELEPORTER_ACTIVE), TextureFactory.builder()
+                                                                            .addIcon(OVERLAY_TELEPORTER_ACTIVE_GLOW)
+                                                                            .glow()
+                                                                            .build() };
         return new ITexture[] { MACHINE_CASINGS[mTier][aColorIndex + 1], TextureFactory.of(OVERLAY_TELEPORTER),
-                TextureFactory.builder().addIcon(OVERLAY_TELEPORTER_GLOW).glow().build() };
+                TextureFactory.builder()
+                              .addIcon(OVERLAY_TELEPORTER_GLOW)
+                              .glow()
+                              .build() };
     }
 
     @Override
@@ -244,10 +254,14 @@ public class GT_MetaTileEntity_Teleporter extends GT_MetaTileEntity_BasicTank
 
     @Override
     public void onConfigLoad(GT_Config aConfig) {
-        sInterDimensionalTeleportAllowed = aConfig
-                .get(ConfigCategories.machineconfig, "Teleporter.Interdimensional", true);
-        sPassiveEnergyDrain = aConfig
-                .get(ConfigCategories.machineconfig, "Teleporter.PassiveDrain", sPassiveEnergyDrain);
+        sInterDimensionalTeleportAllowed = aConfig.get(
+                ConfigCategories.machineconfig,
+                "Teleporter.Interdimensional",
+                true);
+        sPassiveEnergyDrain = aConfig.get(
+                ConfigCategories.machineconfig,
+                "Teleporter.PassiveDrain",
+                sPassiveEnergyDrain);
         sPowerMultiplyer = aConfig.get(ConfigCategories.machineconfig, "Teleporter.PowerMultipler", sPowerMultiplyer);
         sFPowerMultiplyer = sPowerMultiplyer / 100.0;
     }
@@ -343,30 +357,39 @@ public class GT_MetaTileEntity_Teleporter extends GT_MetaTileEntity_BasicTank
                                     (byte) 64,
                                     (byte) 1);
                             if (mInventory[0] == null || mInventory[0].stackSize < tStacksize) {
-                                getBaseMetaTileEntity()
-                                        .decreaseStoredEnergyUnits(
-                                                (long) (Math.pow(tDistance, 1.5) * tDistance
-                                                        * (tStacksize
-                                                                - (mInventory[0] == null ? 0 : mInventory[0].stackSize))
-                                                        * sFPowerMultiplyer),
-                                                false);
+                                getBaseMetaTileEntity().decreaseStoredEnergyUnits(
+                                        (long) (Math.pow(tDistance, 1.5) * tDistance
+                                                * (tStacksize - (mInventory[0] == null ? 0 : mInventory[0].stackSize))
+                                                * sFPowerMultiplyer),
+                                        false);
                             }
                         }
                     }
-                    List entities_in_box = getBaseMetaTileEntity().getWorld().getEntitiesWithinAABB(
-                            Entity.class,
-                            AxisAlignedBB.getBoundingBox(
-                                    getBaseMetaTileEntity().getOffsetX(getBaseMetaTileEntity().getFrontFacing(), 2) - 1,
-                                    getBaseMetaTileEntity().getOffsetY(getBaseMetaTileEntity().getFrontFacing(), 2) - 1,
-                                    getBaseMetaTileEntity().getOffsetZ(getBaseMetaTileEntity().getFrontFacing(), 2) - 1,
-                                    getBaseMetaTileEntity().getOffsetX(getBaseMetaTileEntity().getFrontFacing(), 2) + 2,
-                                    getBaseMetaTileEntity().getOffsetY(getBaseMetaTileEntity().getFrontFacing(), 2) + 2,
-                                    getBaseMetaTileEntity().getOffsetZ(getBaseMetaTileEntity().getFrontFacing(), 2)
-                                            + 2));
+                    List<Entity> entities_in_box = getBaseMetaTileEntity().getWorld()
+                                                                          .getEntitiesWithinAABB(
+                                                                                  Entity.class,
+                                                                                  AxisAlignedBB.getBoundingBox(
+                                                                                          getBaseMetaTileEntity().getOffsetX(
+                                                                                                  getBaseMetaTileEntity().getFrontFacing(),
+                                                                                                  2) - 1,
+                                                                                          getBaseMetaTileEntity().getOffsetY(
+                                                                                                  getBaseMetaTileEntity().getFrontFacing(),
+                                                                                                  2) - 1,
+                                                                                          getBaseMetaTileEntity().getOffsetZ(
+                                                                                                  getBaseMetaTileEntity().getFrontFacing(),
+                                                                                                  2) - 1,
+                                                                                          getBaseMetaTileEntity().getOffsetX(
+                                                                                                  getBaseMetaTileEntity().getFrontFacing(),
+                                                                                                  2) + 2,
+                                                                                          getBaseMetaTileEntity().getOffsetY(
+                                                                                                  getBaseMetaTileEntity().getFrontFacing(),
+                                                                                                  2) + 2,
+                                                                                          getBaseMetaTileEntity().getOffsetZ(
+                                                                                                  getBaseMetaTileEntity().getFrontFacing(),
+                                                                                                  2) + 2));
 
                     for (Object tObject : entities_in_box) {
-                        if (((tObject instanceof Entity)) && (!((Entity) tObject).isDead)) {
-                            Entity tEntity = (Entity) tObject;
+                        if (((tObject instanceof Entity tEntity)) && (!((Entity) tObject).isDead)) {
                             // GT_FML_LOGGER.info("teleport"+(Math.pow(tDistance, 1.5)));
                             if (getBaseMetaTileEntity().decreaseStoredEnergyUnits(
                                     (long) (Math.pow(tDistance, 1.5) * weightCalculation(tEntity) * sFPowerMultiplyer),
@@ -568,26 +591,32 @@ public class GT_MetaTileEntity_Teleporter extends GT_MetaTileEntity_BasicTank
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.widget(
-                new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK).setSize(90, 72).setPos(43, 4))
-                .widget(
-                        TextWidget.dynamicString(() -> "X: " + GT_Utility.parseNumberToString(mTargetX))
-                                .setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(46, 8))
-                .widget(
-                        TextWidget.dynamicString(() -> "Y: " + GT_Utility.parseNumberToString(mTargetY))
-                                .setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(46, 16))
-                .widget(
-                        TextWidget.dynamicString(() -> "Z: " + GT_Utility.parseNumberToString(mTargetZ))
-                                .setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(46, 24))
-                .widget(
-                        TextWidget.dynamicString(() -> "Dim: " + GT_Utility.parseNumberToString(mTargetD))
-                                .setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(46, 32))
-                .widget(
-                        TextWidget
-                                .dynamicString(
-                                        () -> "Dim Valid: " + (GT_Utility.isRealDimension(mTargetD) ? "Yes" : "No"))
-                                .setDefaultColor(COLOR_TEXT_WHITE.get())
-                                .setEnabled(widget -> hasDimensionalTeleportCapability()).setPos(46, 40))
-                .widget(new FakeSyncWidget.FluidStackSyncer(() -> mFluid, val -> mFluid = val));
+                new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
+                                    .setSize(90, 72)
+                                    .setPos(43, 4))
+               .widget(
+                       TextWidget.dynamicString(() -> "X: " + GT_Utility.parseNumberToString(mTargetX))
+                                 .setDefaultColor(COLOR_TEXT_WHITE.get())
+                                 .setPos(46, 8))
+               .widget(
+                       TextWidget.dynamicString(() -> "Y: " + GT_Utility.parseNumberToString(mTargetY))
+                                 .setDefaultColor(COLOR_TEXT_WHITE.get())
+                                 .setPos(46, 16))
+               .widget(
+                       TextWidget.dynamicString(() -> "Z: " + GT_Utility.parseNumberToString(mTargetZ))
+                                 .setDefaultColor(COLOR_TEXT_WHITE.get())
+                                 .setPos(46, 24))
+               .widget(
+                       TextWidget.dynamicString(() -> "Dim: " + GT_Utility.parseNumberToString(mTargetD))
+                                 .setDefaultColor(COLOR_TEXT_WHITE.get())
+                                 .setPos(46, 32))
+               .widget(
+                       TextWidget.dynamicString(
+                               () -> "Dim Valid: " + (GT_Utility.isRealDimension(mTargetD) ? "Yes" : "No"))
+                                 .setDefaultColor(COLOR_TEXT_WHITE.get())
+                                 .setEnabled(widget -> hasDimensionalTeleportCapability())
+                                 .setPos(46, 40))
+               .widget(new FakeSyncWidget.FluidStackSyncer(() -> mFluid, val -> mFluid = val));
 
         addChangeNumberButtons(builder, GT_UITextures.OVERLAY_BUTTON_MINUS_LARGE, -512, -64, 7);
         addChangeNumberButtons(builder, GT_UITextures.OVERLAY_BUTTON_MINUS_SMALL, -16, -1, 25);
@@ -624,9 +653,11 @@ public class GT_MetaTileEntity_Teleporter extends GT_MetaTileEntity_BasicTank
     private void addChangeNumberButton(ModularWindow.Builder builder, IDrawable overlay, Consumer<Integer> setter,
             int addNumberShift, int addNumber, int xPos, int yPos) {
         builder.widget(
-                new ButtonWidget()
-                        .setOnClick((clickData, widget) -> setter.accept(clickData.shift ? addNumberShift : addNumber))
-                        .setBackground(GT_UITextures.BUTTON_STANDARD, overlay).setSize(18, 18).setPos(xPos, yPos));
+                new ButtonWidget().setOnClick(
+                        (clickData, widget) -> setter.accept(clickData.shift ? addNumberShift : addNumber))
+                                  .setBackground(GT_UITextures.BUTTON_STANDARD, overlay)
+                                  .setSize(18, 18)
+                                  .setPos(xPos, yPos));
     }
 
     @Override
@@ -637,6 +668,8 @@ public class GT_MetaTileEntity_Teleporter extends GT_MetaTileEntity_BasicTank
     @Override
     public void addGregTechLogo(ModularWindow.Builder builder) {
         builder.widget(
-                new DrawableWidget().setDrawable(getGUITextureSet().getGregTechLogo()).setSize(17, 17).setPos(113, 56));
+                new DrawableWidget().setDrawable(getGUITextureSet().getGregTechLogo())
+                                    .setSize(17, 17)
+                                    .setPos(113, 56));
     }
 }

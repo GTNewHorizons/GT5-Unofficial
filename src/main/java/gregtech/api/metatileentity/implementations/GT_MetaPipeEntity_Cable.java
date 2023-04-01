@@ -1,6 +1,7 @@
 package gregtech.api.metatileentity.implementations;
 
 import static gregtech.api.enums.GT_Values.ALL_VALID_SIDES;
+import static gregtech.api.enums.ModIDs.GalacticraftCore;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -19,13 +20,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import cofh.api.energy.IEnergyReceiver;
-import cpw.mods.fml.common.Loader;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.Dyes;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.TextureSet;
-import gregtech.api.enums.Textures;
+import gregtech.api.enums.*;
 import gregtech.api.graphs.Node;
 import gregtech.api.graphs.NodeList;
 import gregtech.api.graphs.PowerNode;
@@ -208,7 +205,9 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
     @Override
     public long injectEnergyUnits(byte aSide, long aVoltage, long aAmperage) {
         if (!isConnectedAtSide(aSide) && aSide != 6) return 0;
-        if (!getBaseMetaTileEntity().getCoverInfoAtSide(aSide).letsEnergyIn()) return 0;
+        if (!getBaseMetaTileEntity().getCoverInfoAtSide(aSide)
+                                    .letsEnergyIn())
+            return 0;
         final HashSet<TileEntity> nul = null;
         return transferElectricity(aSide, aVoltage, aAmperage, nul);
     }
@@ -224,8 +223,7 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
     public long transferElectricity(byte aSide, long aVoltage, long aAmperage, HashSet<TileEntity> aAlreadyPassedSet) {
         if (!getBaseMetaTileEntity().isServerSide() || !isConnectedAtSide(aSide) && aSide != 6) return 0;
         final BaseMetaPipeEntity tBase = (BaseMetaPipeEntity) getBaseMetaTileEntity();
-        if (!(tBase.getNode() instanceof PowerNode)) return 0;
-        final PowerNode tNode = (PowerNode) tBase.getNode();
+        if (!(tBase.getNode() instanceof PowerNode tNode)) return 0;
         if (tNode != null) {
             int tPlace = 0;
             final Node[] tToPower = new Node[tNode.mConsumers.size()];
@@ -248,9 +246,11 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
     public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
         if (aBaseMetaTileEntity.isServerSide()) {
             lastAmperage = new int[16];
-            lastWorldTick = aBaseMetaTileEntity.getWorld().getTotalWorldTime() - 1; // sets initial value -1 since it is
-                                                                                    // in the same tick as first on post
-                                                                                    // tick
+            lastWorldTick = aBaseMetaTileEntity.getWorld()
+                                               .getTotalWorldTime()
+                    - 1; // sets initial value -1 since it is
+                         // in the same tick as first on post
+                         // tick
         }
     }
 
@@ -348,7 +348,7 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
 
         // ((tIsGregTechTileEntity && tIsTileEntityCable) && (tAlwaysLookConnected || tLetEnergyIn || tLetEnergyOut) )
         // --> Not needed
-        if (Loader.isModLoaded("GalacticraftCore") && GT_GC_Compat.canConnect(tTileEntity, tDir)) return true;
+        if (GalacticraftCore.isModLoaded() && GT_GC_Compat.canConnect(tTileEntity, tDir)) return true;
 
         // AE2-p2p Compat
         if (GT_Mod.gregtechproxy.mAE2Integration) {
@@ -549,8 +549,13 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
         if ((tConn & (1 << ForgeDirection.WEST.ordinal())) != 0) tSide4 = 0f;
         if ((tConn & (1 << ForgeDirection.EAST.ordinal())) != 0) tSide5 = 1f;
 
-        return AxisAlignedBB
-                .getBoundingBox(aX + tSide4, aY + tSide0, aZ + tSide2, aX + tSide5, aY + tSide1, aZ + tSide3);
+        return AxisAlignedBB.getBoundingBox(
+                aX + tSide4,
+                aY + tSide0,
+                aZ + tSide2,
+                aX + tSide5,
+                aY + tSide1,
+                aZ + tSide3);
     }
 
     @Override

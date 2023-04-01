@@ -98,17 +98,19 @@ public final class GT_Command extends CommandBase implements IGlobalWirelessEner
     }
 
     @Override
-    public List addTabCompletionOptions(ICommandSender sender, String[] ss) {
+    public List<String> addTabCompletionOptions(ICommandSender sender, String[] ss) {
         List<String> l = new ArrayList<>();
         String test = ss.length == 0 ? "" : ss[0].trim();
-        if (ss.length == 0 || ss.length == 1 && (test.isEmpty() || Stream.of(
-                "toggle",
-                "chunks",
-                "pollution",
-                "global_energy_add",
-                "global_energy_set",
-                "global_energy_join",
-                "global_energy_display").anyMatch(s -> s.startsWith(test)))) {
+        if (ss.length == 0 || ss.length == 1 && (test.isEmpty() || Stream
+                                                                         .of(
+                                                                                 "toggle",
+                                                                                 "chunks",
+                                                                                 "pollution",
+                                                                                 "global_energy_add",
+                                                                                 "global_energy_set",
+                                                                                 "global_energy_join",
+                                                                                 "global_energy_display")
+                                                                         .anyMatch(s -> s.startsWith(test)))) {
             Stream.of(
                     "toggle",
                     "chunks",
@@ -116,7 +118,9 @@ public final class GT_Command extends CommandBase implements IGlobalWirelessEner
                     "global_energy_add",
                     "global_energy_set",
                     "global_energy_join",
-                    "global_energy_display").filter(s -> test.isEmpty() || s.startsWith(test)).forEach(l::add);
+                    "global_energy_display")
+                  .filter(s -> test.isEmpty() || s.startsWith(test))
+                  .forEach(l::add);
         } else if (test.equals("toggle")) {
             String test1 = ss[1].trim();
             Stream.of(
@@ -133,7 +137,9 @@ public final class GT_Command extends CommandBase implements IGlobalWirelessEner
                     "debugStones",
                     "debugChunkloaders",
                     "debugMulti",
-                    "debugWorldData").filter(s -> test1.isEmpty() || s.startsWith(test1)).forEach(l::add);
+                    "debugWorldData")
+                  .filter(s -> test1.isEmpty() || s.startsWith(test1))
+                  .forEach(l::add);
         }
         return l;
     }
@@ -145,7 +151,7 @@ public final class GT_Command extends CommandBase implements IGlobalWirelessEner
             return;
         }
         switch (strings[0]) {
-            case "toggle":
+            case "toggle" -> {
                 if (strings.length < 2) {
                     printHelp(sender);
                     return;
@@ -168,20 +174,21 @@ public final class GT_Command extends CommandBase implements IGlobalWirelessEner
                 } catch (Exception e) {
                     sender.addChatMessage(new ChatComponentText("No such variable: " + strings[0]));
                 }
-                break;
-            case "chunks":
+            }
+            case "chunks" -> {
                 GT_ChunkManager.printTickets();
                 sender.addChatMessage(new ChatComponentText("Forced chunks logged to GregTech.log"));
-                break;
-            case "pollution":
+            }
+            case "pollution" -> {
                 ChunkCoordinates coordinates = sender.getPlayerCoordinates();
                 int amount = (strings.length < 2) ? GT_Mod.gregtechproxy.mPollutionSmogLimit
                         : Integer.parseInt(strings[1]);
                 GT_Pollution.addPollution(
-                        sender.getEntityWorld().getChunkFromBlockCoords(coordinates.posX, coordinates.posZ),
+                        sender.getEntityWorld()
+                              .getChunkFromBlockCoords(coordinates.posX, coordinates.posZ),
                         amount);
-                break;
-            case "global_energy_add": {
+            }
+            case "global_energy_add" -> {
                 String username = strings[1];
                 String formatted_username = EnumChatFormatting.BLUE + username + EnumChatFormatting.RESET;
                 String uuid = getUUIDFromUsername(username);
@@ -221,9 +228,8 @@ public final class GT_Command extends CommandBase implements IGlobalWirelessEner
                                         + EnumChatFormatting.RESET
                                         + "EU in their network."));
 
-                break;
             }
-            case "global_energy_set": {
+            case "global_energy_set" -> {
 
                 // Usage is /gt global_energy_set username EU
 
@@ -256,9 +262,8 @@ public final class GT_Command extends CommandBase implements IGlobalWirelessEner
                                         + EnumChatFormatting.RESET
                                         + "EU."));
 
-                break;
             }
-            case "global_energy_join": {
+            case "global_energy_join" -> {
 
                 // Usage is /gt global_energy_join username_of_you username_to_join
 
@@ -320,9 +325,8 @@ public final class GT_Command extends CommandBase implements IGlobalWirelessEner
                                         + formatted_username_0
                                         + "."));
 
-                break;
             }
-            case "global_energy_display": {
+            case "global_energy_display" -> {
 
                 // Usage is /gt global_energy_display username.
 
@@ -345,12 +349,12 @@ public final class GT_Command extends CommandBase implements IGlobalWirelessEner
                                         + EnumChatFormatting.RESET
                                         + "EU in their network."));
 
-                break;
             }
-            default:
+            default -> {
                 sender.addChatMessage(
                         new ChatComponentText(EnumChatFormatting.RED + "Invalid command/syntax detected."));
                 printHelp(sender);
+            }
         }
     }
 }

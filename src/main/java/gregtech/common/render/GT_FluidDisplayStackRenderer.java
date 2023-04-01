@@ -48,7 +48,8 @@ public class GT_FluidDisplayStackRenderer implements IItemRenderer {
         Materials associatedFluidMaterial = Materials.get(item.stackTagCompound.getString("mFluidMaterialName"));
         if (associatedFluidMaterial.renderer == null
                 || !associatedFluidMaterial.renderer.renderFluidDisplayItem(type, item, data)) {
-            IIcon icon = item.getItem().getIconFromDamage(item.getItemDamage());
+            IIcon icon = item.getItem()
+                             .getIconFromDamage(item.getItemDamage());
             Tessellator tess = Tessellator.instance;
             tess.startDrawingQuads();
             // draw a simple rectangle for the inventory icon
@@ -70,8 +71,10 @@ public class GT_FluidDisplayStackRenderer implements IItemRenderer {
         }
 
         // Render Fluid amount text
-        long fluidAmount = item.getTagCompound().getLong("mFluidDisplayAmount");
-        if (fluidAmount > 0L && !item.getTagCompound().getBoolean("mHideStackSize")) {
+        long fluidAmount = item.getTagCompound()
+                               .getLong("mFluidDisplayAmount");
+        if (fluidAmount > 0L && !item.getTagCompound()
+                                     .getBoolean("mHideStackSize")) {
             String amountString;
 
             if (fluidAmount < 10_000) {

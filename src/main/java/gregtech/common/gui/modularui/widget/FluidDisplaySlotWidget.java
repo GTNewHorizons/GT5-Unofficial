@@ -141,8 +141,8 @@ public class FluidDisplaySlotWidget extends SlotWidget {
         ItemStack ret = null;
         if (actionRealClick == Action.TRANSFER) {
             if (fluidAccessConstructor == null) {
-                GT_Mod.GT_FML_LOGGER
-                        .warn("FluidDisplaySlotWidget is asked to transfer fluid, but fluidAccessConstructor is null!");
+                GT_Mod.GT_FML_LOGGER.warn(
+                        "FluidDisplaySlotWidget is asked to transfer fluid, but fluidAccessConstructor is null!");
                 return null;
             }
             ret = transferFluid(
@@ -209,8 +209,7 @@ public class FluidDisplaySlotWidget extends SlotWidget {
         if (tStackSizedOne == null || tStackHeld.stackSize == 0) return null;
         int tOriginalFluidAmount = tTankStack.amount;
         ItemStack tFilledContainer = GT_Utility.fillFluidContainer(tTankStack, tStackSizedOne, true, false);
-        if (tFilledContainer == null && tStackSizedOne.getItem() instanceof IFluidContainerItem) {
-            IFluidContainerItem tContainerItem = (IFluidContainerItem) tStackSizedOne.getItem();
+        if (tFilledContainer == null && tStackSizedOne.getItem() instanceof IFluidContainerItem tContainerItem) {
             int tFilledAmount = tContainerItem.fill(tStackSizedOne, tTankStack, true);
             if (tFilledAmount > 0) {
                 tFilledContainer = tStackSizedOne;
@@ -238,7 +237,9 @@ public class FluidDisplaySlotWidget extends SlotWidget {
     protected static ItemStack fillFluid(IFluidAccess aFluidAccess, EntityPlayer aPlayer, FluidStack aFluidHeld,
             boolean aProcessFullStack) {
         // we are not using aMachine.fill() here any more, so we need to check for fluid type here ourselves
-        if (aFluidAccess.get() != null && !aFluidAccess.get().isFluidEqual(aFluidHeld)) return null;
+        if (aFluidAccess.get() != null && !aFluidAccess.get()
+                                                       .isFluidEqual(aFluidHeld))
+            return null;
         ItemStack tStackHeld = aPlayer.inventory.getItemStack();
         ItemStack tStackSizedOne = GT_Utility.copyAmount(1, tStackHeld);
         if (tStackSizedOne == null) return null;
@@ -258,9 +259,8 @@ public class FluidDisplaySlotWidget extends SlotWidget {
             tStackEmptied = GT_Utility.getContainerForFilledItem(tStackSizedOne, false);
             tAmountTaken = aFluidHeld.amount;
         }
-        if (tStackEmptied == null && tStackSizedOne.getItem() instanceof IFluidContainerItem) {
+        if (tStackEmptied == null && tStackSizedOne.getItem() instanceof IFluidContainerItem container) {
             // either partially accepted, or is IFluidContainerItem
-            IFluidContainerItem container = (IFluidContainerItem) tStackSizedOne.getItem();
             FluidStack tDrained = container.drain(tStackSizedOne, tFreeSpace, true);
             if (tDrained != null && tDrained.amount > 0) {
                 // something is actually drained - change the cell and drop it to player
@@ -317,8 +317,7 @@ public class FluidDisplaySlotWidget extends SlotWidget {
     }
 
     protected void lockFluid(ItemStack cursorStack) {
-        if (!(iHasFluidDisplay instanceof IFluidLockable)) return;
-        IFluidLockable mteToLock = (IFluidLockable) iHasFluidDisplay;
+        if (!(iHasFluidDisplay instanceof IFluidLockable mteToLock)) return;
 
         if (cursorStack == null) {
             if (!mteToLock.allowChangingLockedFluid(null)) return;
@@ -415,7 +414,7 @@ public class FluidDisplaySlotWidget extends SlotWidget {
 
     /**
      * Sets function called before {@link #executeRealClick}.
-     * 
+     *
      * @param beforeRealClick (click data, this widget) -> if allow click
      */
     public FluidDisplaySlotWidget setBeforeRealClick(
@@ -426,7 +425,7 @@ public class FluidDisplaySlotWidget extends SlotWidget {
 
     /**
      * Sets function called before {@link #executeDragAndDrop}.
-     * 
+     *
      * @param beforeDragAndDrop (click data, this widget) -> if allow click
      */
     public FluidDisplaySlotWidget setBeforeDragAndDrop(
@@ -437,7 +436,7 @@ public class FluidDisplaySlotWidget extends SlotWidget {
 
     /**
      * Sets function called before both of {@link #executeRealClick} and {@link #executeDragAndDrop}.
-     * 
+     *
      * @param beforeClick (click data, this widget) -> if allow click
      */
     public FluidDisplaySlotWidget setBeforeClick(BiFunction<ClickData, FluidDisplaySlotWidget, Boolean> beforeClick) {

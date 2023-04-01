@@ -23,7 +23,7 @@ public enum DropType {
     public int chance;
     private String name;
 
-    private DropType(String pName, boolean show) {
+    DropType(String pName, boolean show) {
         this.name = pName;
         this.showInList = show;
     }
@@ -36,7 +36,10 @@ public enum DropType {
 
         return GT_LanguageManager.addStringLocalization(
                 "drop." + this.name,
-                this.name.substring(0, 1).toUpperCase() + this.name.substring(1) + " Drop");
+                this.name.substring(0, 1)
+                         .toUpperCase()
+                        + this.name.substring(1)
+                        + " Drop");
     }
 
     public int[] getColours() {

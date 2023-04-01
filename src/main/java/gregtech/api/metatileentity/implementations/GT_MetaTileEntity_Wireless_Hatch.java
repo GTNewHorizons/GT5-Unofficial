@@ -18,8 +18,8 @@ import gregtech.api.metatileentity.MetaTileEntity;
 public class GT_MetaTileEntity_Wireless_Hatch extends GT_MetaTileEntity_Hatch_Energy
         implements IGlobalWirelessEnergy, IWirelessEnergyHatchInformation {
 
-    private final BigInteger eu_transferred_per_operation = BigInteger
-            .valueOf(2 * V[mTier] * ticks_between_energy_addition);
+    private final BigInteger eu_transferred_per_operation = BigInteger.valueOf(
+            2 * V[mTier] * ticks_between_energy_addition);
     private final long eu_transferred_per_operation_long = eu_transferred_per_operation.longValue();
 
     private String owner_uuid;
@@ -131,7 +131,8 @@ public class GT_MetaTileEntity_Wireless_Hatch extends GT_MetaTileEntity_Hatch_En
             if (aTick == 1) {
 
                 // UUID and username of the owner.
-                owner_uuid = aBaseMetaTileEntity.getOwnerUuid().toString();
+                owner_uuid = aBaseMetaTileEntity.getOwnerUuid()
+                                                .toString();
                 owner_name = aBaseMetaTileEntity.getOwnerName();
 
                 strongCheckOrAddUser(owner_uuid, owner_name);

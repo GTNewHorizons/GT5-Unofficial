@@ -52,8 +52,8 @@ public class GT_Circuit_RedstoneMeter extends GT_CircuitryBehavior {
     public void onTick(int[] aCircuitData, IRedstoneCircuitBlock aRedstoneCircuitBlock) {
         byte tRedstone = getStrongestRedstone(aRedstoneCircuitBlock);
         aRedstoneCircuitBlock.setRedstone(
-                (byte) (((tRedstone >= aCircuitData[0]) && (tRedstone <= aCircuitData[1]) ? 1 : 0)
-                        != (aCircuitData[2] != 0 ? 1 : 0) ? (byte) aCircuitData[3] : 0),
+                ((tRedstone >= aCircuitData[0]) && (tRedstone <= aCircuitData[1]) ? 1 : 0)
+                        != (aCircuitData[2] != 0 ? 1 : 0) ? (byte) aCircuitData[3] : 0,
                 aRedstoneCircuitBlock.getOutputFacing());
     }
 
@@ -69,17 +69,13 @@ public class GT_Circuit_RedstoneMeter extends GT_CircuitryBehavior {
 
     @Override
     public String getDataDescription(int[] aCircuitData, int aCircuitDataIndex) {
-        switch (aCircuitDataIndex) {
-            case 0:
-                return "Lower";
-            case 1:
-                return "Upper";
-            case 2:
-                return "Invert:";
-            case 3:
-                return "RS Out:";
-        }
-        return "";
+        return switch (aCircuitDataIndex) {
+            case 0 -> "Lower";
+            case 1 -> "Upper";
+            case 2 -> "Invert:";
+            case 3 -> "RS Out:";
+            default -> "";
+        };
     }
 
     @Override

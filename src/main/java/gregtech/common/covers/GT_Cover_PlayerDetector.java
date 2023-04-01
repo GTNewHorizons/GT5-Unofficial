@@ -55,8 +55,7 @@ public class GT_Cover_PlayerDetector extends GT_CoverBehavior {
             placer = ((IGregTechTileEntity) aTileEntity).getOwnerName();
         }
         for (Object tObject : aTileEntity.getWorld().playerEntities) {
-            if ((tObject instanceof EntityPlayerMP)) {
-                EntityPlayerMP tEntity = (EntityPlayerMP) tObject;
+            if ((tObject instanceof EntityPlayerMP tEntity)) {
                 int dist = Math.max(
                         1,
                         (int) tEntity.getDistance(
@@ -68,7 +67,8 @@ public class GT_Cover_PlayerDetector extends GT_CoverBehavior {
                         playerDetected = true;
                         break;
                     }
-                    if (tEntity.getDisplayName().equalsIgnoreCase(placer)) {
+                    if (tEntity.getDisplayName()
+                               .equalsIgnoreCase(placer)) {
                         if (aCoverVariable == 1) {
                             playerDetected = true;
                             break;
@@ -93,15 +93,9 @@ public class GT_Cover_PlayerDetector extends GT_CoverBehavior {
             aCoverVariable = 2;
         }
         switch (aCoverVariable) {
-            case 0:
-                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("068.1", "Emit if any Player is close"));
-                break;
-            case 1:
-                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("069.1", "Emit if other Player is close"));
-                break;
-            case 2:
-                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("070", "Emit if you are close"));
-                break;
+            case 0 -> GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("068.1", "Emit if any Player is close"));
+            case 1 -> GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("069.1", "Emit if other Player is close"));
+            case 2 -> GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("070", "Emit if you are close"));
         }
         return aCoverVariable;
     }
@@ -187,33 +181,49 @@ public class GT_Cover_PlayerDetector extends GT_CoverBehavior {
                             (index, coverData) -> new ISerializableObject.LegacyCoverData(index)).addToggleButton(
                                     0,
                                     CoverDataFollower_ToggleButtonWidget.ofCheck(),
-                                    widget -> widget
-                                            .addTooltip(GT_Utility.trans("068.1", "Emit if any Player is close"))
-                                            .setPos(spaceX * 0, spaceY * 0))
-                                    .addToggleButton(
-                                            1,
-                                            CoverDataFollower_ToggleButtonWidget.ofCheck(),
-                                            widget -> widget
-                                                    .addTooltip(
-                                                            GT_Utility.trans("069.1", "Emit if other Player is close"))
-                                                    .setPos(spaceX * 0, spaceY * 1))
-                                    .addToggleButton(
-                                            2,
-                                            CoverDataFollower_ToggleButtonWidget.ofCheck(),
-                                            widget -> widget
-                                                    .addTooltip(GT_Utility.trans("070", "Emit if you are close"))
-                                                    .setPos(spaceX * 0, spaceY * 2))
-                                    .setPos(startX, startY))
-                    .widget(
-                            new TextWidget(GT_Utility.trans("319", "Any player")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                                    .setPos(startX + spaceX * 1, 4 + startY + spaceY * 0))
-                    .widget(
-                            new TextWidget(GT_Utility.trans("320", "Other players"))
-                                    .setDefaultColor(COLOR_TEXT_GRAY.get())
-                                    .setPos(startX + spaceX * 1, 4 + startY + spaceY * 1))
-                    .widget(
-                            new TextWidget(GT_Utility.trans("321", "Only owner")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                                    .setPos(startX + spaceX * 1, 4 + startY + spaceY * 2));
+                                    widget -> widget.addTooltip(
+                                            GT_Utility.trans("068.1", "Emit if any Player is close"))
+                                                    .setPos(spaceX * 0, spaceY * 0))
+                                                                                                 .addToggleButton(
+                                                                                                         1,
+                                                                                                         CoverDataFollower_ToggleButtonWidget.ofCheck(),
+                                                                                                         widget -> widget.addTooltip(
+                                                                                                                 GT_Utility.trans(
+                                                                                                                         "069.1",
+                                                                                                                         "Emit if other Player is close"))
+                                                                                                                         .setPos(
+                                                                                                                                 spaceX * 0,
+                                                                                                                                 spaceY * 1))
+                                                                                                 .addToggleButton(
+                                                                                                         2,
+                                                                                                         CoverDataFollower_ToggleButtonWidget.ofCheck(),
+                                                                                                         widget -> widget.addTooltip(
+                                                                                                                 GT_Utility.trans(
+                                                                                                                         "070",
+                                                                                                                         "Emit if you are close"))
+                                                                                                                         .setPos(
+                                                                                                                                 spaceX * 0,
+                                                                                                                                 spaceY * 2))
+                                                                                                 .setPos(
+                                                                                                         startX,
+                                                                                                         startY))
+                   .widget(
+                           new TextWidget(GT_Utility.trans("319", "Any player")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                                                                                .setPos(
+                                                                                        startX + spaceX * 1,
+                                                                                        4 + startY + spaceY * 0))
+                   .widget(
+                           new TextWidget(GT_Utility.trans("320", "Other players"))
+                                                                                   .setDefaultColor(
+                                                                                           COLOR_TEXT_GRAY.get())
+                                                                                   .setPos(
+                                                                                           startX + spaceX * 1,
+                                                                                           4 + startY + spaceY * 1))
+                   .widget(
+                           new TextWidget(GT_Utility.trans("321", "Only owner")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                                                                                .setPos(
+                                                                                        startX + spaceX * 1,
+                                                                                        4 + startY + spaceY * 2));
         }
     }
 }

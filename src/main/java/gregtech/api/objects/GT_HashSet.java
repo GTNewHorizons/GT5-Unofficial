@@ -38,13 +38,14 @@ public class GT_HashSet<E extends GT_ItemStack> extends AbstractSet<E> {
         GregTech_API.sItemStackMappings.add(map);
     }
 
-    public HashMap getMap() {
+    public Map<GT_ItemStack, Object> getMap() {
         return map;
     }
 
     @Override
     public Iterator<E> iterator() {
-        return (Iterator<E>) map.keySet().iterator();
+        return (Iterator<E>) map.keySet()
+                                .iterator();
     }
 
     @Override

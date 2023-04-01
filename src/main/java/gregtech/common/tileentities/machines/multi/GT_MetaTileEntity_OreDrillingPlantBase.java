@@ -113,15 +113,18 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
         fillMineListIfEmpty(xDrill, yDrill, zDrill, xPipe, zPipe, yHead);
         if (oreBlockPositions.isEmpty()) {
             switch (tryLowerPipeState()) {
-                case 2:
+                case 2 -> {
                     mMaxProgresstime = 0;
                     return false;
-                case 3:
+                }
+                case 3 -> {
                     workState = STATE_UPWARD;
                     return true;
-                case 1:
+                }
+                case 1 -> {
                     workState = STATE_AT_BOTTOM;
                     return true;
+                }
             }
             // new layer - fill again
             fillMineListIfEmpty(xDrill, yDrill, zDrill, xPipe, zPipe, yHead);
@@ -142,7 +145,8 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
             z = oreBlockPos.chunkPosZ;
             if (GT_Utility.eraseBlockByFakePlayer(getFakePlayer(getBaseMetaTileEntity()), x, y, z, true))
                 oreBlock = getBaseMetaTileEntity().getBlock(x, y, z);
-            oreBlockMetadata = getBaseMetaTileEntity().getWorld().getBlockMetadata(x, y, z);
+            oreBlockMetadata = getBaseMetaTileEntity().getWorld()
+                                                      .getBlockMetadata(x, y, z);
         }
 
         if (!tryConsumeDrillingFluid()) {
@@ -160,10 +164,19 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
             ItemStack cobble = GT_Utility.getCobbleForOre(oreBlock, metaData);
             if (replaceWithCobblestone) {
                 getBaseMetaTileEntity().getWorld()
-                        .setBlock(x, y, z, Block.getBlockFromItem(cobble.getItem()), cobble.getItemDamage(), 3);
+                                       .setBlock(
+                                               x,
+                                               y,
+                                               z,
+                                               Block.getBlockFromItem(cobble.getItem()),
+                                               cobble.getItemDamage(),
+                                               3);
             } else {
                 getBaseMetaTileEntity().getWorld()
-                        .setBlockToAir(oreBlockPos.chunkPosX, oreBlockPos.chunkPosY, oreBlockPos.chunkPosZ);
+                                       .setBlockToAir(
+                                               oreBlockPos.chunkPosX,
+                                               oreBlockPos.chunkPosY,
+                                               oreBlockPos.chunkPosZ);
             }
             mOutputItems = getOutputByDrops(oreBlockDrops);
         }
@@ -250,8 +263,9 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
             return false;
         }
         mCurrentChunk = new ChunkCoordIntPair(nextChunkX, nextChunkZ);
-        GT_ChunkManager
-                .requestChunkLoad((TileEntity) getBaseMetaTileEntity(), new ChunkCoordIntPair(nextChunkX, nextChunkZ));
+        GT_ChunkManager.requestChunkLoad(
+                (TileEntity) getBaseMetaTileEntity(),
+                new ChunkCoordIntPair(nextChunkX, nextChunkZ));
         return true;
     }
 
@@ -286,8 +300,12 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
                 outputItems.add(multiplyStackSize(currentItem));
                 return;
             }
-            GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sMaceratorRecipes
-                    .findRecipe(getBaseMetaTileEntity(), false, voltage, null, currentItem);
+            GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sMaceratorRecipes.findRecipe(
+                    getBaseMetaTileEntity(),
+                    false,
+                    voltage,
+                    null,
+                    currentItem);
             if (tRecipe == null) {
                 outputItems.add(currentItem);
                 return;
@@ -380,26 +398,31 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
     protected abstract int getBaseProgressTime();
 
     protected GT_Multiblock_Tooltip_Builder createTooltip(String tierSuffix) {
-        String casings = getCasingBlockItem().get(0).getDisplayName();
+        String casings = getCasingBlockItem().get(0)
+                                             .getDisplayName();
 
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Miner")
-                .addInfo("Controller Block for the Ore Drilling Plant " + (tierSuffix != null ? tierSuffix : ""))
-                .addInfo("Use a Screwdriver to configure block radius")
-                .addInfo("Maximum radius is " + (getRadiusInChunks() << 4) + " blocks")
-                .addInfo("Use Soldering iron to turn off chunk mode")
-                .addInfo("Use Wire Cutter to toggle replacing mined blocks with cobblestone")
-                .addInfo("In chunk mode, working area center is the chunk corner nearest to the drill")
-                .addInfo("Gives ~3x as much crushed ore vs normal processing")
-                .addInfo("Fortune bonus of " + (mTier + 3) + ". Only works on small ores").addSeparator()
-                .beginStructureBlock(3, 7, 3, false).addController("Front bottom")
-                .addOtherStructurePart(casings, "form the 3x1x3 Base")
-                .addOtherStructurePart(casings, "1x3x1 pillar above the center of the base (2 minimum total)")
-                .addOtherStructurePart(getFrameMaterial().mName + " Frame Boxes", "Each pillar's side and 1x3x1 on top")
-                .addEnergyHatch(VN[getMinTier()] + "+, Any base casing", 1).addMaintenanceHatch("Any base casing", 1)
-                .addInputBus("Mining Pipes, optional, any base casing", 1)
-                .addInputHatch("Drilling Fluid, any base casing", 1).addOutputBus("Any base casing", 1)
-                .toolTipFinisher("Gregtech");
+          .addInfo("Controller Block for the Ore Drilling Plant " + (tierSuffix != null ? tierSuffix : ""))
+          .addInfo("Use a Screwdriver to configure block radius")
+          .addInfo("Maximum radius is " + (getRadiusInChunks() << 4) + " blocks")
+          .addInfo("Use Soldering iron to turn off chunk mode")
+          .addInfo("Use Wire Cutter to toggle replacing mined blocks with cobblestone")
+          .addInfo("In chunk mode, working area center is the chunk corner nearest to the drill")
+          .addInfo("Gives ~3x as much crushed ore vs normal processing")
+          .addInfo("Fortune bonus of " + (mTier + 3) + ". Only works on small ores")
+          .addSeparator()
+          .beginStructureBlock(3, 7, 3, false)
+          .addController("Front bottom")
+          .addOtherStructurePart(casings, "form the 3x1x3 Base")
+          .addOtherStructurePart(casings, "1x3x1 pillar above the center of the base (2 minimum total)")
+          .addOtherStructurePart(getFrameMaterial().mName + " Frame Boxes", "Each pillar's side and 1x3x1 on top")
+          .addEnergyHatch(VN[getMinTier()] + "+, Any base casing", 1)
+          .addMaintenanceHatch("Any base casing", 1)
+          .addInputBus("Mining Pipes, optional, any base casing", 1)
+          .addInputHatch("Drilling Fluid, any base casing", 1)
+          .addOutputBus("Any base casing", 1)
+          .toolTipFinisher("Gregtech");
         return tt;
     }
 

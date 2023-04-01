@@ -44,29 +44,39 @@ public abstract class GT_MetaTileEntity_LargeTurbine extends
         GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_LargeTurbine> implements ISurvivalConstructable {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final ClassValue<IStructureDefinition<GT_MetaTileEntity_LargeTurbine>> STRUCTURE_DEFINITION = new ClassValue<IStructureDefinition<GT_MetaTileEntity_LargeTurbine>>() {
+    private static final ClassValue<IStructureDefinition<GT_MetaTileEntity_LargeTurbine>> STRUCTURE_DEFINITION = new ClassValue<>() {
 
         @Override
         protected IStructureDefinition<GT_MetaTileEntity_LargeTurbine> computeValue(Class<?> type) {
             return StructureDefinition.<GT_MetaTileEntity_LargeTurbine>builder()
-                    .addShape(
-                            STRUCTURE_PIECE_MAIN,
-                            transpose(
-                                    new String[][] { { "     ", "     ", "     ", "     ", "     ", },
-                                            { " --- ", " ccc ", " hhh ", " hhh ", " hhh ", },
-                                            { " --- ", " c~c ", " h-h ", " h-h ", " hdh ", },
-                                            { " --- ", " ccc ", " hhh ", " hhh ", " hhh ", },
-                                            { "     ", "     ", "     ", "     ", "     ", }, }))
-                    .addElement('c', lazy(t -> ofBlock(t.getCasingBlock(), t.getCasingMeta())))
-                    .addElement('d', lazy(t -> Dynamo.newAny(t.getCasingTextureIndex(), 1)))
-                    .addElement(
-                            'h',
-                            lazy(
-                                    t -> buildHatchAdder(GT_MetaTileEntity_LargeTurbine.class)
-                                            .atLeast(Maintenance, InputHatch, OutputHatch, OutputBus, InputBus, Muffler)
-                                            .casingIndex(t.getCasingTextureIndex()).dot(2)
-                                            .buildAndChain(t.getCasingBlock(), t.getCasingMeta())))
-                    .build();
+                                      .addShape(
+                                              STRUCTURE_PIECE_MAIN,
+                                              transpose(
+                                                      new String[][] { { "     ", "     ", "     ", "     ", "     ", },
+                                                              { " --- ", " ccc ", " hhh ", " hhh ", " hhh ", },
+                                                              { " --- ", " c~c ", " h-h ", " h-h ", " hdh ", },
+                                                              { " --- ", " ccc ", " hhh ", " hhh ", " hhh ", },
+                                                              { "     ", "     ", "     ", "     ", "     ", }, }))
+                                      .addElement('c', lazy(t -> ofBlock(t.getCasingBlock(), t.getCasingMeta())))
+                                      .addElement('d', lazy(t -> Dynamo.newAny(t.getCasingTextureIndex(), 1)))
+                                      .addElement(
+                                              'h',
+                                              lazy(
+                                                      t -> buildHatchAdder(
+                                                              GT_MetaTileEntity_LargeTurbine.class).atLeast(
+                                                                      Maintenance,
+                                                                      InputHatch,
+                                                                      OutputHatch,
+                                                                      OutputBus,
+                                                                      InputBus,
+                                                                      Muffler)
+                                                                                                   .casingIndex(
+                                                                                                           t.getCasingTextureIndex())
+                                                                                                   .dot(2)
+                                                                                                   .buildAndChain(
+                                                                                                           t.getCasingBlock(),
+                                                                                                           t.getCasingMeta())))
+                                      .build();
         }
     };
 
@@ -167,7 +177,8 @@ public abstract class GT_MetaTileEntity_LargeTurbine extends
                                 aX + tDirection.offsetX,
                                 tY + tDirection.offsetY,
                                 aZ + tDirection.offsetZ));
-                tLighting.setupLighting(tBlock, tX, tY, tZ, tFacing).setupColor(tFacing, Dyes._NULL.mRGBa);
+                tLighting.setupLighting(tBlock, tX, tY, tZ, tFacing)
+                         .setupColor(tFacing, Dyes._NULL.mRGBa);
                 GT_RenderUtil.renderBlockIcon(
                         aRenderer,
                         tBlock,
@@ -230,15 +241,18 @@ public abstract class GT_MetaTileEntity_LargeTurbine extends
 
             if (baseEff == 0 || optFlow == 0
                     || counter >= 512
-                    || this.getBaseMetaTileEntity().hasWorkJustBeenEnabled()
-                    || this.getBaseMetaTileEntity().hasInventoryBeenModified()) {
+                    || this.getBaseMetaTileEntity()
+                           .hasWorkJustBeenEnabled()
+                    || this.getBaseMetaTileEntity()
+                           .hasInventoryBeenModified()) {
                 counter = 0;
                 baseEff = GT_Utility.safeInt(
                         (long) ((5F + ((GT_MetaGenerated_Tool) aStack.getItem()).getToolCombatDamage(aStack)) * 1000F));
                 optFlow = GT_Utility.safeInt(
                         (long) Math.max(
                                 Float.MIN_NORMAL,
-                                ((GT_MetaGenerated_Tool) aStack.getItem()).getToolStats(aStack).getSpeedMultiplier()
+                                ((GT_MetaGenerated_Tool) aStack.getItem()).getToolStats(aStack)
+                                                                          .getSpeedMultiplier()
                                         * GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mToolSpeed
                                         * 50));
 
@@ -368,8 +382,10 @@ public abstract class GT_MetaTileEntity_LargeTurbine extends
         long maxEnergy = 0;
         for (GT_MetaTileEntity_Hatch_Dynamo tHatch : mDynamoHatches) {
             if (isValidMetaTileEntity(tHatch)) {
-                storedEnergy += tHatch.getBaseMetaTileEntity().getStoredEU();
-                maxEnergy += tHatch.getBaseMetaTileEntity().getEUCapacity();
+                storedEnergy += tHatch.getBaseMetaTileEntity()
+                                      .getStoredEU();
+                maxEnergy += tHatch.getBaseMetaTileEntity()
+                                   .getEUCapacity();
             }
         }
         String[] ret = new String[] {
@@ -420,7 +436,9 @@ public abstract class GT_MetaTileEntity_LargeTurbine extends
                         + EnumChatFormatting.RESET
                         + " %" /* 8 */
         };
-        if (!this.getClass().getName().contains("Steam"))
+        if (!this.getClass()
+                 .getName()
+                 .contains("Steam"))
             ret[4] = StatCollector.translateToLocal("GT5U.turbine.flow") + ": "
                     + EnumChatFormatting.YELLOW
                     + GT_Utility.safeInt((long) realOptFlow)

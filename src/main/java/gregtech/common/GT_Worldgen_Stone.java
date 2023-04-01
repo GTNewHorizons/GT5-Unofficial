@@ -22,7 +22,7 @@ import gregtech.common.blocks.GT_TileEntity_Ores;
 
 public class GT_Worldgen_Stone extends GT_Worldgen_Ore {
 
-    static final double sizeConversion[] = { 1, 1, 1.333333, 1.333333, 2, 2, 2, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4 }; // Bias
+    static final double[] sizeConversion = { 1, 1, 1.333333, 1.333333, 2, 2, 2, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4 }; // Bias
                                                                                                                          // the
                                                                                                                          // sizes
                                                                                                                          // towards
@@ -36,18 +36,18 @@ public class GT_Worldgen_Stone extends GT_Worldgen_Ore {
                                                                                                                          // or
                                                                                                                          // sills.
 
-    public Hashtable<Long, StoneSeeds> validStoneSeeds = new Hashtable(1024);
+    public Hashtable<Long, StoneSeeds> validStoneSeeds = new Hashtable<>(1024);
 
-    class StoneSeeds {
+    static class StoneSeeds {
 
         public boolean mExists;
 
         StoneSeeds(boolean exists) {
             mExists = exists;
         }
-    };
+    }
 
-    class ValidSeeds {
+    static class ValidSeeds {
 
         public int mX;
         public int mZ;
@@ -56,7 +56,7 @@ public class GT_Worldgen_Stone extends GT_Worldgen_Ore {
             this.mX = x;
             this.mZ = z;
         }
-    };
+    }
 
     public GT_Worldgen_Stone(String aName, boolean aDefault, Block aBlock, int aBlockMeta, int aDimensionType,
             int aAmount, int aSize, int aProbability, int aMinY, int aMaxY, Collection<String> aBiomeList,
@@ -80,7 +80,7 @@ public class GT_Worldgen_Stone extends GT_Worldgen_Ore {
     public boolean executeWorldgen(World aWorld, Random aRandom, String aBiome, int aDimensionType, int aChunkX,
             int aChunkZ, IChunkProvider aChunkGenerator, IChunkProvider aChunkProvider) {
         XSTR stoneRNG = new XSTR();
-        ArrayList<ValidSeeds> stones = new ArrayList();
+        ArrayList<ValidSeeds> stones = new ArrayList<>();
 
         if (!isGenerationAllowed(aWorld, aDimensionType, this.mDimensionType)) {
             return false;
@@ -96,13 +96,12 @@ public class GT_Worldgen_Stone extends GT_Worldgen_Ore {
         // Check stone seeds to see if they have been added
         for (int x = aChunkX / 16 - windowWidth; x < (aChunkX / 16 + windowWidth + 1); x++) {
             for (int z = aChunkZ / 16 - windowWidth; z < (aChunkZ / 16 + windowWidth + 1); z++) {
-                long hash = ((long) ((aWorld.provider.dimensionId & 0xffL) << 56)
-                        | (((long) x & 0x000000000fffffffL) << 28)
+                long hash = (((aWorld.provider.dimensionId & 0xffL) << 56) | (((long) x & 0x000000000fffffffL) << 28)
                         | ((long) z & 0x000000000fffffffL));
                 if (!validStoneSeeds.containsKey(hash)) {
                     // Determine if RNG says to add stone at this chunk
                     stoneRNG.setSeed(
-                            (long) aWorld.getSeed() ^ hash + Math.abs(mBlockMeta)
+                            aWorld.getSeed() ^ hash + Math.abs(mBlockMeta)
                                     + Math.abs(mSize)
                                     + ((GregTech_API.sBlockGranites == mBlock) ? (32768) : (0))); // Don't judge me.
                                                                                                   // Want different
@@ -139,11 +138,11 @@ public class GT_Worldgen_Stone extends GT_Worldgen_Ore {
             int z = stones.get(0).mZ * 16;
 
             stoneRNG.setSeed(
-                    (long) aWorld.getSeed() ^ ((long) ((aWorld.provider.dimensionId & 0xffL) << 56)
-                            | (((long) x & 0x000000000fffffffL) << 28)
-                            | ((long) z & 0x000000000fffffffL)) + Math.abs(mBlockMeta)
-                            + Math.abs(mSize)
-                            + ((GregTech_API.sBlockGranites == mBlock) ? (32768) : (0))); // Don't judge me
+                    aWorld.getSeed()
+                            ^ (((aWorld.provider.dimensionId & 0xffL) << 56) | (((long) x & 0x000000000fffffffL) << 28)
+                                    | ((long) z & 0x000000000fffffffL)) + Math.abs(mBlockMeta)
+                                    + Math.abs(mSize)
+                                    + ((GregTech_API.sBlockGranites == mBlock) ? (32768) : (0))); // Don't judge me
             for (int i = 0; i < this.mAmount; i++) { // Not sure why you would want more than one in a chunk! Left alone
                                                      // though.
                 // Locate the stoneseed XYZ. Original code would request an isAir at the seed location, causing a chunk
@@ -176,7 +175,8 @@ public class GT_Worldgen_Stone extends GT_Worldgen_Ore {
                 int tMaxZ = tZ + (int) (realSize / zSize + 2.0);
 
                 // If the (tY-ySize) of the stoneseed is air in the current chunk, mark the seed empty and move on.
-                if (aWorld.getBlock(aChunkX + 8, tMinY, aChunkZ + 8).isAir(aWorld, aChunkX + 8, tMinY, aChunkZ + 8)) {
+                if (aWorld.getBlock(aChunkX + 8, tMinY, aChunkZ + 8)
+                          .isAir(aWorld, aChunkX + 8, tMinY, aChunkZ + 8)) {
                     if (debugStones) GT_Log.out.println(
                             mWorldGenName + " tX="
                                     + tX
@@ -197,7 +197,7 @@ public class GT_Worldgen_Stone extends GT_Worldgen_Ore {
                                     + " tMaxY="
                                     + tMaxY
                                     + " - Skipped because first requesting chunk would not contain this stone");
-                    long hash = ((long) ((aWorld.provider.dimensionId & 0xffL) << 56)
+                    long hash = (((aWorld.provider.dimensionId & 0xffL) << 56)
                             | (((long) x & 0x000000000fffffffL) << 28)
                             | ((long) z & 0x000000000fffffffL));
                     validStoneSeeds.remove(hash);
@@ -271,25 +271,42 @@ public class GT_Worldgen_Stone extends GT_Worldgen_Ore {
                                         if (tTargetedBlock != GregTech_API.sBlockOres1) {
                                             ((GT_TileEntity_Ores) tTileEntity).convertOreBlock(aWorld, iX, iY, iZ);
                                         }
-                                        ((GT_TileEntity_Ores) tTileEntity)
-                                                .overrideOreBlockMaterial(this.mBlock, (byte) this.mBlockMeta);
+                                        ((GT_TileEntity_Ores) tTileEntity).overrideOreBlockMaterial(
+                                                this.mBlock,
+                                                (byte) this.mBlockMeta);
                                     }
-                                } else if (((this.mAllowToGenerateinVoid)
-                                        && (aWorld.getBlock(iX, iY, iZ).isAir(aWorld, iX, iY, iZ)))
-                                        || ((tTargetedBlock != null) && ((tTargetedBlock
-                                                .isReplaceableOreGen(aWorld, iX, iY, iZ, Blocks.stone))
+                                } else if (((this.mAllowToGenerateinVoid) && (aWorld.getBlock(iX, iY, iZ)
+                                                                                    .isAir(aWorld, iX, iY, iZ)))
+                                        || ((tTargetedBlock != null) && ((tTargetedBlock.isReplaceableOreGen(
+                                                aWorld,
+                                                iX,
+                                                iY,
+                                                iZ,
+                                                Blocks.stone))
                                                 || (tTargetedBlock.isReplaceableOreGen(
                                                         aWorld,
                                                         iX,
                                                         iY,
                                                         iZ,
                                                         Blocks.stained_hardened_clay))
-                                                || (tTargetedBlock
-                                                        .isReplaceableOreGen(aWorld, iX, iY, iZ, Blocks.cobblestone))
-                                                || (tTargetedBlock
-                                                        .isReplaceableOreGen(aWorld, iX, iY, iZ, Blocks.end_stone))
-                                                || (tTargetedBlock
-                                                        .isReplaceableOreGen(aWorld, iX, iY, iZ, Blocks.netherrack))
+                                                || (tTargetedBlock.isReplaceableOreGen(
+                                                        aWorld,
+                                                        iX,
+                                                        iY,
+                                                        iZ,
+                                                        Blocks.cobblestone))
+                                                || (tTargetedBlock.isReplaceableOreGen(
+                                                        aWorld,
+                                                        iX,
+                                                        iY,
+                                                        iZ,
+                                                        Blocks.end_stone))
+                                                || (tTargetedBlock.isReplaceableOreGen(
+                                                        aWorld,
+                                                        iX,
+                                                        iY,
+                                                        iZ,
+                                                        Blocks.netherrack))
                                                 || (tTargetedBlock.isReplaceableOreGen(
                                                         aWorld,
                                                         iX,

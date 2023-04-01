@@ -50,24 +50,15 @@ public class GT_Cover_WirelessMaintenanceDetector extends
 
         if (tileEntity instanceof IGregTechTileEntity) {
             IMetaTileEntity metaTE = ((IGregTechTileEntity) tileEntity).getMetaTileEntity();
-            if (metaTE instanceof GT_MetaTileEntity_MultiBlockBase) {
-                GT_MetaTileEntity_MultiBlockBase multiTE = (GT_MetaTileEntity_MultiBlockBase) metaTE;
+            if (metaTE instanceof GT_MetaTileEntity_MultiBlockBase multiTE) {
                 int ideal = multiTE.getIdealStatus();
                 int real = multiTE.getRepairStatus();
 
                 switch (coverVariable.mode) {
-                    case NO_ISSUE:
-                        signal = ideal == real;
-                        break;
-                    case ONE_ISSUE:
-                    case TWO_ISSUES:
-                    case THREE_ISSUES:
-                    case FOUR_ISSUES:
-                    case FIVE_ISSUES:
-                        signal = ideal - real >= coverVariable.mode.ordinal();
-                        break;
-                    case ROTOR_80:
-                    case ROTOR_100:
+                    case NO_ISSUE -> signal = ideal == real;
+                    case ONE_ISSUE, TWO_ISSUES, THREE_ISSUES, FOUR_ISSUES, FIVE_ISSUES -> signal = ideal - real
+                            >= coverVariable.mode.ordinal();
+                    case ROTOR_80, ROTOR_100 -> {
                         ItemStack rotor = multiTE.getRealInventory()[1];
                         if (GT_Cover_NeedMaintainance.isRotor(rotor)) {
                             long max = GT_MetaGenerated_Tool.getToolMaxDamage(rotor);
@@ -85,6 +76,7 @@ public class GT_Cover_WirelessMaintenanceDetector extends
                         } else {
                             signal = true;
                         }
+                    }
                 }
             }
         }
@@ -225,7 +217,9 @@ public class GT_Cover_WirelessMaintenanceDetector extends
             for (int i = 0; i < 8; i++) {
                 builder.widget(
                         new TextWidget(extraTexts[i]).setDefaultColor(COLOR_TEXT_GRAY.get())
-                                .setPos(startX + spaceX * (i % 2 == 0 ? 1 : 7), 4 + startY + spaceY * (2 + i / 2)));
+                                                     .setPos(
+                                                             startX + spaceX * (i % 2 == 0 ? 1 : 7),
+                                                             4 + startY + spaceY * (2 + i / 2)));
             }
         }
 
@@ -241,9 +235,10 @@ public class GT_Cover_WirelessMaintenanceDetector extends
                             coverData.mode = MaintenanceMode.values()[index];
                             return coverData;
                         },
-                        widget -> widget
-                                .setToggleTexture(GT_UITextures.OVERLAY_BUTTON_CHECKMARK, GT_UITextures.TRANSPARENT)
-                                .setPos(spaceX * (index % 2 == 0 ? 0 : 6), spaceY * (2 + index / 2)));
+                        widget -> widget.setToggleTexture(
+                                GT_UITextures.OVERLAY_BUTTON_CHECKMARK,
+                                GT_UITextures.TRANSPARENT)
+                                        .setPos(spaceX * (index % 2 == 0 ? 0 : 6), spaceY * (2 + index / 2)));
             }
         }
     }

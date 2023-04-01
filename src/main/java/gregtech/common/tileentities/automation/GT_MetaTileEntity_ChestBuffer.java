@@ -65,7 +65,10 @@ public class GT_MetaTileEntity_ChestBuffer extends GT_MetaTileEntity_Buffer impl
     public ITexture getOverlayIcon() {
         return TextureFactory.of(
                 TextureFactory.of(AUTOMATION_CHESTBUFFER),
-                TextureFactory.builder().addIcon(AUTOMATION_CHESTBUFFER_GLOW).glow().build());
+                TextureFactory.builder()
+                              .addIcon(AUTOMATION_CHESTBUFFER_GLOW)
+                              .glow()
+                              .build());
     }
 
     @Override
@@ -122,8 +125,9 @@ public class GT_MetaTileEntity_ChestBuffer extends GT_MetaTileEntity_Buffer impl
         addInvertRedstoneButton(builder);
         addStockingModeButton(builder);
         builder.widget(
-                new DrawableWidget().setDrawable(GT_UITextures.PICTURE_ARROW_22_RED.apply(69, true)).setPos(80, 60)
-                        .setSize(69, 22));
+                new DrawableWidget().setDrawable(GT_UITextures.PICTURE_ARROW_22_RED.apply(69, true))
+                                    .setPos(80, 60)
+                                    .setSize(69, 22));
         addMainUI(builder);
     }
 

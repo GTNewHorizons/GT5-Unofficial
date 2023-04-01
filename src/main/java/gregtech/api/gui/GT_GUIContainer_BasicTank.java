@@ -22,8 +22,11 @@ public class GT_GUIContainer_BasicTank extends GT_GUIContainerMetaTile_Machine {
 
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-        fontRendererObj
-                .drawString(StatCollector.translateToLocal("container.inventory"), 8, ySize - 96 + 2, textColorTitle);
+        fontRendererObj.drawString(
+                StatCollector.translateToLocal("container.inventory"),
+                8,
+                ySize - 96 + 2,
+                textColorTitle);
         fontRendererObj.drawString(mName, 8, 6, textColorTitle);
         if (mContainer != null) {
             fontRendererObj.drawString("Liquid Amount", 10, 20, textColor);

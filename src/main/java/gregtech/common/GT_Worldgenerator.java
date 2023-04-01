@@ -34,8 +34,8 @@ public class GT_Worldgenerator implements IWorldGenerator {
     private static int endMinSize = 50;
     private static int endMaxSize = 200;
     private static boolean endAsteroids = true;
-    public static List<Runnable> mList = new ArrayList();
-    public static HashSet<Long> ProcChunks = new HashSet<Long>();
+    public static List<Runnable> mList = new ArrayList<>();
+    public static HashSet<Long> ProcChunks = new HashSet<>();
     // This is probably not going to work. Trying to create a fake orevein to put into hashtable when there will be no
     // ores in a vein.
     public static GT_Worldgen_GT_Ore_Layer noOresInVein = new GT_Worldgen_GT_Ore_Layer(
@@ -53,7 +53,7 @@ public class GT_Worldgenerator implements IWorldGenerator {
             Materials.Aluminium,
             Materials.Aluminium,
             Materials.Aluminium);
-    public static Hashtable<Long, GT_Worldgen_GT_Ore_Layer> validOreveins = new Hashtable(1024);
+    public static Hashtable<Long, GT_Worldgen_GT_Ore_Layer> validOreveins = new Hashtable<>(1024);
     public boolean mIsGenerating = false;
     public static final Object listLock = new Object();
 
@@ -136,7 +136,7 @@ public class GT_Worldgenerator implements IWorldGenerator {
         // static int test=0;
 
         // Local class to track which orevein seeds must be checked when doing chunkified worldgen
-        class NearbySeeds {
+        static class NearbySeeds {
 
             public int mX;
             public int mZ;
@@ -149,8 +149,7 @@ public class GT_Worldgenerator implements IWorldGenerator {
             @Override
             public boolean equals(Object o) {
                 if (this == o) return true;
-                if (!(o instanceof GT_Worldgenerator.WorldGenContainer.NearbySeeds)) return false;
-                GT_Worldgenerator.WorldGenContainer.NearbySeeds that = (GT_Worldgenerator.WorldGenContainer.NearbySeeds) o;
+                if (!(o instanceof NearbySeeds that)) return false;
                 if (this.mX != that.mX) return false;
                 return this.mZ == that.mZ;
             }
@@ -161,9 +160,9 @@ public class GT_Worldgenerator implements IWorldGenerator {
                 result = 31 * result + this.mZ;
                 return result;
             }
-        };
+        }
 
-        public static ArrayList<GT_Worldgenerator.WorldGenContainer.NearbySeeds> seedList = new ArrayList();
+        public static ArrayList<GT_Worldgenerator.WorldGenContainer.NearbySeeds> seedList = new ArrayList<>();
 
         // aX and aZ are now the by-chunk X and Z for the chunk of interest
         public WorldGenContainer(Random aRandom, int aX, int aZ, int aDimensionType, World aWorld,
@@ -213,11 +212,10 @@ public class GT_Worldgenerator implements IWorldGenerator {
             // bits of the chunk so we have bits for dimension.
             // ( (long)oreseedZ & 0x000000000fffffffL )) Puts the chunk Z in the bits 0-27. Cuts off the top few bits
             // of the chunk so we have bits for dimension.
-            long oreveinSeed = ((long) this.mWorld.getSeed() << 16)
-                    ^ ((long) ((this.mWorld.provider.dimensionId & 0xffL) << 56)
-                            | (((long) oreseedX & 0x000000000fffffffL) << 28)
-                            | ((long) oreseedZ & 0x000000000fffffffL)); // Use an RNG that is identical every time it is
-                                                                        // called for
+            long oreveinSeed = (this.mWorld.getSeed() << 16) ^ (((this.mWorld.provider.dimensionId & 0xffL) << 56)
+                    | (((long) oreseedX & 0x000000000fffffffL) << 28)
+                    | ((long) oreseedZ & 0x000000000fffffffL)); // Use an RNG that is identical every time it is
+                                                                // called for
             // this oreseed.
             XSTR oreveinRNG = new XSTR(oreveinSeed);
             int oreveinPercentageRoll = oreveinRNG.nextInt(100); // Roll the dice, see if we get an orevein here at all
@@ -279,7 +277,7 @@ public class GT_Worldgenerator implements IWorldGenerator {
                                             this.mChunkGenerator,
                                             this.mChunkProvider);
                                     switch (placementResult) {
-                                        case GT_Worldgen_GT_Ore_Layer.ORE_PLACED:
+                                        case GT_Worldgen_GT_Ore_Layer.ORE_PLACED -> {
                                             if (debugOrevein) GT_Log.out.println(
                                                     " Added near oreveinSeed=" + oreveinSeed
                                                             + " "
@@ -292,12 +290,11 @@ public class GT_Worldgenerator implements IWorldGenerator {
                                                             + tDimensionName);
                                             validOreveins.put(oreveinSeed, tWorldGen);
                                             oreveinFound = true;
-                                            break;
-                                        case GT_Worldgen_GT_Ore_Layer.NO_ORE_IN_BOTTOM_LAYER:
-                                            placementAttempts++;
-                                            // SHould do retry in this case until out of chances
-                                            break;
-                                        case GT_Worldgen_GT_Ore_Layer.NO_OVERLAP:
+                                        }
+                                        case GT_Worldgen_GT_Ore_Layer.NO_ORE_IN_BOTTOM_LAYER -> placementAttempts++;
+
+                                        // SHould do retry in this case until out of chances
+                                        case GT_Worldgen_GT_Ore_Layer.NO_OVERLAP -> {
                                             if (debugOrevein) GT_Log.out.println(
                                                     " Added far oreveinSeed=" + oreveinSeed
                                                             + " "
@@ -310,8 +307,8 @@ public class GT_Worldgenerator implements IWorldGenerator {
                                                             + tDimensionName);
                                             validOreveins.put(oreveinSeed, tWorldGen);
                                             oreveinFound = true;
-                                            break;
-                                        case GT_Worldgen_GT_Ore_Layer.NO_OVERLAP_AIR_BLOCK:
+                                        }
+                                        case GT_Worldgen_GT_Ore_Layer.NO_OVERLAP_AIR_BLOCK -> {
                                             if (debugOrevein) GT_Log.out.println(
                                                     " No overlap and air block in test spot=" + oreveinSeed
                                                             + " "
@@ -324,7 +321,7 @@ public class GT_Worldgenerator implements IWorldGenerator {
                                                             + tDimensionName);
                                             // SHould do retry in this case until out of chances
                                             placementAttempts++;
-                                            break;
+                                        }
                                     }
                                     break; // Try the next orevein
                                 } catch (Throwable e) {
@@ -403,11 +400,12 @@ public class GT_Worldgenerator implements IWorldGenerator {
                         this.mChunkGenerator,
                         this.mChunkProvider);
                 switch (placementResult) {
-                    case GT_Worldgen_GT_Ore_Layer.NO_ORE_IN_BOTTOM_LAYER:
+                    case GT_Worldgen_GT_Ore_Layer.NO_ORE_IN_BOTTOM_LAYER -> {
                         if (debugOrevein) GT_Log.out.println(" No ore in bottom layer");
-                        break;
-                    case GT_Worldgen_GT_Ore_Layer.NO_OVERLAP:
+                    }
+                    case GT_Worldgen_GT_Ore_Layer.NO_OVERLAP -> {
                         if (debugOrevein) GT_Log.out.println(" No overlap");
+                    }
                 }
             }
         }
@@ -440,7 +438,8 @@ public class GT_Worldgenerator implements IWorldGenerator {
 
             // Determine bounding box on how far out to check for oreveins affecting this chunk
             // For now, manually reducing oreveinMaxSize when not in the Underdark for performance
-            if (this.mWorld.provider.getDimensionName().equals("Underdark")) {
+            if (this.mWorld.provider.getDimensionName()
+                                    .equals("Underdark")) {
                 oreveinMaxSize = 32; // Leave Deep Dark/Underdark max oregen at 32, instead of 64
             } else {
                 oreveinMaxSize = 32;
@@ -457,7 +456,7 @@ public class GT_Worldgenerator implements IWorldGenerator {
                     // Determine if this X/Z is an orevein seed
                     if (((Math.abs(x) % 3) == 1) && ((Math.abs(z) % 3) == 1)) {
                         if (debugWorldGen) GT_Log.out.println("Adding seed x=" + x + " z=" + z);
-                        seedList.add(new GT_Worldgenerator.WorldGenContainer.NearbySeeds(x, z));
+                        seedList.add(new NearbySeeds(x, z));
                     }
                 }
             }
@@ -490,7 +489,7 @@ public class GT_Worldgenerator implements IWorldGenerator {
                     for (int i = 0; (i < oreveinAttempts) && (temp); i++) {
                         tRandomWeight = aRandom.nextInt(GT_Worldgen_GT_Ore_Layer.sWeight);
                         for (GT_Worldgen_GT_Ore_Layer tWorldGen : GT_Worldgen_GT_Ore_Layer.sList) {
-                            tRandomWeight -= ((GT_Worldgen_GT_Ore_Layer) tWorldGen).mWeight;
+                            tRandomWeight -= tWorldGen.mWeight;
                             if (tRandomWeight <= 0) {
                                 try {
                                     // if ((tWorldGen.mEndAsteroid && tDimensionType == 1) || (tWorldGen.mAsteroid &&
@@ -515,11 +514,12 @@ public class GT_Worldgenerator implements IWorldGenerator {
                 int tY = 50 + aRandom.nextInt(200 - 50);
                 int tZ = mZ * 16 + aRandom.nextInt(16);
                 if (tDimensionType == 1) {
-                    mSize = aRandom.nextInt((int) (endMaxSize - endMinSize));
+                    mSize = aRandom.nextInt(endMaxSize - endMinSize);
                     // } else if (tDimensionName.equals("Asteroids")) {
                     // mSize = aRandom.nextInt((int) (gcMaxSize - gcMinSize));
                 }
-                if ((mWorld.getBlock(tX, tY, tZ).isAir(mWorld, tX, tY, tZ))) {
+                if ((mWorld.getBlock(tX, tY, tZ)
+                           .isAir(mWorld, tX, tY, tZ))) {
                     float randomRadian = aRandom.nextFloat() * (float) Math.PI;
                     double xBase = tX + 8 + MathHelper.sin(randomRadian) * mSize / 8.0F;
                     double xFactor = tX + 8 - MathHelper.sin(randomRadian) * mSize / 8.0F;
@@ -551,20 +551,41 @@ public class GT_Worldgenerator implements IWorldGenerator {
                                         for (int eZ = tMinZ; eZ <= tMaxZ; eZ++) {
                                             double zChance = (eZ + 0.5D - zCenter) / (halfLength / 2.0D);
                                             if ((xChance * xChance + yChance * yChance + zChance * zChance < 1.0D)
-                                                    && (mWorld.getBlock(tX, tY, tZ).isAir(mWorld, tX, tY, tZ))) {
+                                                    && (mWorld.getBlock(tX, tY, tZ)
+                                                              .isAir(mWorld, tX, tY, tZ))) {
                                                 int ranOre = aRandom.nextInt(50);
                                                 if (ranOre < 3) {
-                                                    GT_TileEntity_Ores
-                                                            .setOreBlock(mWorld, eX, eY, eZ, primaryMeta, false);
+                                                    GT_TileEntity_Ores.setOreBlock(
+                                                            mWorld,
+                                                            eX,
+                                                            eY,
+                                                            eZ,
+                                                            primaryMeta,
+                                                            false);
                                                 } else if (ranOre < 6) {
-                                                    GT_TileEntity_Ores
-                                                            .setOreBlock(mWorld, eX, eY, eZ, secondaryMeta, false);
+                                                    GT_TileEntity_Ores.setOreBlock(
+                                                            mWorld,
+                                                            eX,
+                                                            eY,
+                                                            eZ,
+                                                            secondaryMeta,
+                                                            false);
                                                 } else if (ranOre < 8) {
-                                                    GT_TileEntity_Ores
-                                                            .setOreBlock(mWorld, eX, eY, eZ, betweenMeta, false);
+                                                    GT_TileEntity_Ores.setOreBlock(
+                                                            mWorld,
+                                                            eX,
+                                                            eY,
+                                                            eZ,
+                                                            betweenMeta,
+                                                            false);
                                                 } else if (ranOre < 10) {
-                                                    GT_TileEntity_Ores
-                                                            .setOreBlock(mWorld, eX, eY, eZ, sporadicMeta, false);
+                                                    GT_TileEntity_Ores.setOreBlock(
+                                                            mWorld,
+                                                            eX,
+                                                            eY,
+                                                            eZ,
+                                                            sporadicMeta,
+                                                            false);
                                                 } else {
                                                     mWorld.setBlock(eX, eY, eZ, Blocks.end_stone, 0, 0);
                                                 }

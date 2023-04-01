@@ -32,22 +32,27 @@ public class GT_Cover_SolarPanel extends GT_CoverBehavior {
         int coverState = aCoverVariable & 0x3;
         int coverNum = aCoverVariable >> 2;
         if (aTimer % 100L == 0L) {
-            if (aTileEntity.getWorld().isThundering()) {
+            if (aTileEntity.getWorld()
+                           .isThundering()) {
                 return aTileEntity.getBiome().rainfall > 0.0F && aTileEntity.getSkyAtSide(aSide)
                         ? Math.min(20, coverNum) << 2
                         : coverNum << 2;
             } else {
-                if (aTileEntity.getWorld().isRaining() && aTileEntity.getBiome().rainfall > 0.0F) { // really rains
+                if (aTileEntity.getWorld()
+                               .isRaining()
+                        && aTileEntity.getBiome().rainfall > 0.0F) { // really rains
                     if (aTileEntity.getSkyAtSide(aSide)) coverNum = Math.min(30, coverNum);
                     if (aTileEntity.getWorld().skylightSubtracted >= 4) {
-                        if (aTileEntity.getWorld().isDaytime()) {
+                        if (aTileEntity.getWorld()
+                                       .isDaytime()) {
                             coverState = 2;
                         } else {
                             return coverNum << 2;
                         }
                     }
                 } else { // not rains
-                    if (aTileEntity.getWorld().isDaytime()) {
+                    if (aTileEntity.getWorld()
+                                   .isDaytime()) {
                         coverState = 1;
                     } else {
                         coverState = 2;
@@ -74,7 +79,8 @@ public class GT_Cover_SolarPanel extends GT_CoverBehavior {
         for (int i = 0; i < aPlayer.inventory.mainInventory.length; i++) {
             ItemStack is = aPlayer.inventory.mainInventory[i];
             if (is == null) continue;
-            if (is.getUnlocalizedName().equals(new ItemStack(Items.water_bucket).getUnlocalizedName())) {
+            if (is.getUnlocalizedName()
+                  .equals(new ItemStack(Items.water_bucket).getUnlocalizedName())) {
                 aPlayer.inventory.mainInventory[i] = new ItemStack(Items.bucket);
                 if (aPlayer.inventoryContainer != null) aPlayer.inventoryContainer.detectAndSendChanges();
                 GT_Utility.sendChatToPlayer(
@@ -100,7 +106,8 @@ public class GT_Cover_SolarPanel extends GT_CoverBehavior {
         for (int i = 0; i < aPlayer.inventory.mainInventory.length; i++) {
             ItemStack is = aPlayer.inventory.mainInventory[i];
             if (is == null) continue;
-            if (is.getUnlocalizedName().equals(new ItemStack(Items.water_bucket).getUnlocalizedName())) {
+            if (is.getUnlocalizedName()
+                  .equals(new ItemStack(Items.water_bucket).getUnlocalizedName())) {
                 aPlayer.inventory.mainInventory[i] = new ItemStack(Items.bucket);
                 if (aPlayer.inventoryContainer != null) aPlayer.inventoryContainer.detectAndSendChanges();
                 GT_Utility.sendChatToPlayer(aPlayer, "Cleaned solar panel from " + (aCoverVariable >> 2) + "% dirt");

@@ -122,7 +122,7 @@ public class Behaviour_Arrow extends Behaviour_None {
                 -1,
                 null,
                 true,
-                new Object[] { aWorld, Double.valueOf(aX), Double.valueOf(aY), Double.valueOf(aZ) });
+                new Object[] { aWorld, aX, aY, aZ });
         rArrow.setArrowItem(aStack);
         return rArrow;
     }
@@ -138,7 +138,7 @@ public class Behaviour_Arrow extends Behaviour_None {
                 -1,
                 null,
                 true,
-                new Object[] { aWorld, aEntity, Float.valueOf(this.mSpeedMultiplier * aSpeed) });
+                new Object[] { aWorld, aEntity, this.mSpeedMultiplier * aSpeed });
         rArrow.setArrowItem(aStack);
         return rArrow;
     }

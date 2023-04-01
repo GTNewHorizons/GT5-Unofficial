@@ -14,8 +14,9 @@ public abstract class GT_Worldgen {
 
     public final String mWorldGenName;
     public final boolean mEnabled;
-    private final Map<String, Boolean> mDimensionMap = new ConcurrentHashMap<String, Boolean>();
+    private final Map<String, Boolean> mDimensionMap = new ConcurrentHashMap<>();
 
+    @SuppressWarnings({ "unchecked", "rawtypes" }) // The adding of "this" needs a List<this> which does not exist
     public GT_Worldgen(String aName, List aList, boolean aDefault) {
         mWorldGenName = aName;
         mEnabled = GregTech_API.sWorldgenFile.get("worldgen", mWorldGenName, aDefault);
@@ -65,18 +66,25 @@ public abstract class GT_Worldgen {
      */
     public boolean isGenerationAllowed(World aWorld, int aDimensionType, int aAllowedDimensionType) {
 
-        if (!((aWorld.provider.getDimensionName().equalsIgnoreCase("Overworld"))
-                || (aWorld.provider.getDimensionName().equalsIgnoreCase("Nether"))
-                || (aWorld.provider.getDimensionName().equalsIgnoreCase("The End"))
-                || (aWorld.provider.getDimensionName().equalsIgnoreCase("Twilight Forest"))
-                || (aWorld.provider.getDimensionName().equalsIgnoreCase("Underdark"))))
+        if (!((aWorld.provider.getDimensionName()
+                              .equalsIgnoreCase("Overworld"))
+                || (aWorld.provider.getDimensionName()
+                                   .equalsIgnoreCase("Nether"))
+                || (aWorld.provider.getDimensionName()
+                                   .equalsIgnoreCase("The End"))
+                || (aWorld.provider.getDimensionName()
+                                   .equalsIgnoreCase("Twilight Forest"))
+                || (aWorld.provider.getDimensionName()
+                                   .equalsIgnoreCase("Underdark"))))
             return false;
 
         String aDimName = aWorld.provider.getDimensionName();
         Boolean tAllowed = mDimensionMap.get(aDimName);
         if (tAllowed == null) {
-            boolean tValue = GregTech_API.sWorldgenFile
-                    .get("worldgen." + mWorldGenName, aDimName, aDimensionType == aAllowedDimensionType);
+            boolean tValue = GregTech_API.sWorldgenFile.get(
+                    "worldgen." + mWorldGenName,
+                    aDimName,
+                    aDimensionType == aAllowedDimensionType);
             mDimensionMap.put(aDimName, tValue);
             return tValue;
         }

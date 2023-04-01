@@ -3,6 +3,7 @@ package gregtech.api.util;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import net.minecraft.block.Block;
@@ -59,7 +60,8 @@ public class GT_RenderingWorld implements IBlockAccess {
     public void register(int x, int y, int z, Block block, int meta) {
         ChunkPosition key = new ChunkPosition(x, y, z);
         infos.put(key, new BlockInfo(block, meta));
-        index.computeIfAbsent(new ChunkCoordIntPair(x >> 4, z >> 4), p -> new HashSet<>()).add(key);
+        index.computeIfAbsent(new ChunkCoordIntPair(x >> 4, z >> 4), p -> new HashSet<>())
+             .add(key);
     }
 
     public void unregister(int x, int y, int z, Block block, int meta) {
@@ -127,7 +129,9 @@ public class GT_RenderingWorld implements IBlockAccess {
     public class FMLEventHandler {
 
         public FMLEventHandler() {
-            FMLCommonHandler.instance().bus().register(this);
+            FMLCommonHandler.instance()
+                            .bus()
+                            .register(this);
         }
 
         @SubscribeEvent(priority = EventPriority.HIGHEST)
@@ -145,8 +149,11 @@ public class GT_RenderingWorld implements IBlockAccess {
         @SubscribeEvent
         public void onChunkUnloaded(ChunkEvent.Unload e) {
             if (!e.world.isRemote) return;
-            Set<ChunkPosition> set = index.remove(e.getChunk().getChunkCoordIntPair());
-            if (set != null) infos.keySet().removeAll(set);
+            Set<ChunkPosition> set = index.remove(
+                    e.getChunk()
+                     .getChunkCoordIntPair());
+            if (set != null) infos.keySet()
+                                  .removeAll(set);
         }
 
         @SubscribeEvent
@@ -175,7 +182,7 @@ public class GT_RenderingWorld implements IBlockAccess {
             BlockInfo blockInfo = (BlockInfo) o;
 
             if (meta != blockInfo.meta) return false;
-            return block != null ? block.equals(blockInfo.block) : blockInfo.block == null;
+            return Objects.equals(block, blockInfo.block);
         }
 
         @Override

@@ -62,38 +62,23 @@ public class GT_Block_Casings6 extends GT_Block_Casings_Abstract {
         if (aSide == 1) {
             return Textures.BlockIcons.MACHINECASINGS_TOP[aMeta].getIcon();
         }
-        switch (aMeta) {
-            case 1:
-                return Textures.BlockIcons.MACHINE_CASING_TANK_1.getIcon();
-            case 2:
-                return Textures.BlockIcons.MACHINE_CASING_TANK_2.getIcon();
-            case 3:
-                return Textures.BlockIcons.MACHINE_CASING_TANK_3.getIcon();
-            case 4:
-                return Textures.BlockIcons.MACHINE_CASING_TANK_4.getIcon();
-            case 5:
-                return Textures.BlockIcons.MACHINE_CASING_TANK_5.getIcon();
-            case 6:
-                return Textures.BlockIcons.MACHINE_CASING_TANK_6.getIcon();
-            case 7:
-                return Textures.BlockIcons.MACHINE_CASING_TANK_7.getIcon();
-            case 8:
-                return Textures.BlockIcons.MACHINE_CASING_TANK_8.getIcon();
-            case 9:
-                return Textures.BlockIcons.MACHINE_CASING_TANK_9.getIcon();
-            case 10:
-                return Textures.BlockIcons.MACHINE_CASING_TANK_10.getIcon();
-            case 11:
-                return Textures.BlockIcons.MACHINE_CASING_TANK_11.getIcon();
-            case 12:
-                return Textures.BlockIcons.MACHINE_CASING_TANK_12.getIcon();
-            case 13:
-                return Textures.BlockIcons.MACHINE_CASING_TANK_13.getIcon();
-            case 14:
-                return Textures.BlockIcons.MACHINE_CASING_TANK_14.getIcon();
-            default:
-                return Textures.BlockIcons.MACHINE_CASING_TANK_0.getIcon();
-        }
+        return switch (aMeta) {
+            case 1 -> Textures.BlockIcons.MACHINE_CASING_TANK_1.getIcon();
+            case 2 -> Textures.BlockIcons.MACHINE_CASING_TANK_2.getIcon();
+            case 3 -> Textures.BlockIcons.MACHINE_CASING_TANK_3.getIcon();
+            case 4 -> Textures.BlockIcons.MACHINE_CASING_TANK_4.getIcon();
+            case 5 -> Textures.BlockIcons.MACHINE_CASING_TANK_5.getIcon();
+            case 6 -> Textures.BlockIcons.MACHINE_CASING_TANK_6.getIcon();
+            case 7 -> Textures.BlockIcons.MACHINE_CASING_TANK_7.getIcon();
+            case 8 -> Textures.BlockIcons.MACHINE_CASING_TANK_8.getIcon();
+            case 9 -> Textures.BlockIcons.MACHINE_CASING_TANK_9.getIcon();
+            case 10 -> Textures.BlockIcons.MACHINE_CASING_TANK_10.getIcon();
+            case 11 -> Textures.BlockIcons.MACHINE_CASING_TANK_11.getIcon();
+            case 12 -> Textures.BlockIcons.MACHINE_CASING_TANK_12.getIcon();
+            case 13 -> Textures.BlockIcons.MACHINE_CASING_TANK_13.getIcon();
+            case 14 -> Textures.BlockIcons.MACHINE_CASING_TANK_14.getIcon();
+            default -> Textures.BlockIcons.MACHINE_CASING_TANK_0.getIcon();
+        };
     }
 
     @Override

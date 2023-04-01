@@ -100,7 +100,8 @@ public class GT_MetaTileEntity_Boiler_Solar extends GT_MetaTileEntity_Boiler {
         return String.format(
                 localizedDescFormat,
                 GT_Utility.formatNumbers(getMaxOutputPerSecond()),
-                GT_Utility.formatNumbers(getMinOutputPerSecond())).split("\\R");
+                GT_Utility.formatNumbers(getMinOutputPerSecond()))
+                     .split("\\R");
     }
 
     public int getMinOutputPerSecond() {
@@ -278,7 +279,8 @@ public class GT_MetaTileEntity_Boiler_Solar extends GT_MetaTileEntity_Boiler {
                 GT_Utility.formatNumbers(getHotTimeSeconds()),
                 GT_Utility.formatNumbers(getMinOutputPerSecond()),
                 GT_Utility.formatNumbers(getMaxOutputPerSecond()),
-                GT_Utility.formatNumbers(getProductionPerSecond())).split("\\R");
+                GT_Utility.formatNumbers(getProductionPerSecond()))
+                     .split("\\R");
     }
 
     public int getHeatCapacityPercent() {
@@ -368,9 +370,12 @@ public class GT_MetaTileEntity_Boiler_Solar extends GT_MetaTileEntity_Boiler {
         protected int get(final String aCategory, final String aKey, final int aDefaultValue,
                 final String... aComments) {
             final StringBuilder tCommentBuilder = new StringBuilder();
-            for (String tComment : aComments) tCommentBuilder.append(tComment).append('\n');
-            tCommentBuilder.append("Default: ").append(aDefaultValue);
-            return sMachineFile.mConfig.get(aCategory, aKey, aDefaultValue, tCommentBuilder.toString()).getInt();
+            for (String tComment : aComments) tCommentBuilder.append(tComment)
+                                                             .append('\n');
+            tCommentBuilder.append("Default: ")
+                           .append(aDefaultValue);
+            return sMachineFile.mConfig.get(aCategory, aKey, aDefaultValue, tCommentBuilder.toString())
+                                       .getInt();
         }
 
         public int getCalcificationTicks() {

@@ -11,7 +11,6 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.gui.widgets.GT_GuiIcon;
 import gregtech.api.gui.widgets.GT_GuiSlotTooltip;
 import gregtech.api.gui.widgets.GT_GuiSmartTooltip;
-import gregtech.api.gui.widgets.GT_GuiSmartTooltip.TooltipVisibilityProvider;
 import gregtech.api.gui.widgets.GT_GuiTabLine.GT_GuiTabIconSet;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine;
@@ -84,12 +83,11 @@ public class GT_GUIContainer_BasicMachine extends GT_GUIContainerMetaTile_Machin
         if (machine.isSteampowered()) {
             batterySlotTooltipKey = UNUSED_SLOT_TOOLTIP;
             batterySlotTooltipArgs = new String[0];
-            addToolTip(new GT_GuiSmartTooltip(tProblemArea, new TooltipVisibilityProvider() {
-
-                public boolean shouldShowTooltip() {
-                    return hasErrorCode(NEEDS_STEAM_VENTING);
-                }
-            }, mTooltipCache.getData(STALLED_VENT_TOOLTIP)));
+            addToolTip(
+                    new GT_GuiSmartTooltip(
+                            tProblemArea,
+                            () -> hasErrorCode(NEEDS_STEAM_VENTING),
+                            mTooltipCache.getData(STALLED_VENT_TOOLTIP)));
         } else {
             String pTier1 = powerTierName(machine.mTier);
             if (machine.mTier == GT_Values.VN.length - 1) {
@@ -130,21 +128,19 @@ public class GT_GUIContainer_BasicMachine extends GT_GUIContainerMetaTile_Machin
                         mTooltipCache.getData(
                                 recipes != null && recipes.usesSpecialSlot() ? SPECIAL_SLOT_TOOLTIP
                                         : UNUSED_SLOT_TOOLTIP)));
-        addToolTip(new GT_GuiSmartTooltip(tProblemArea, new TooltipVisibilityProvider() {
-
-            public boolean shouldShowTooltip() {
-                return container.mStuttering && !hasErrorCode(NEEDS_STEAM_VENTING);
-            }
-        },
-                mTooltipCache.getData(
-                        STALLED_STUTTERING_TOOLTIP,
-                        StatCollector
-                                .translateToLocal(POWER_SOURCE_KEY + (machine.isSteampowered() ? "steam" : "power")))));
+        addToolTip(
+                new GT_GuiSmartTooltip(
+                        tProblemArea,
+                        () -> container.mStuttering && !hasErrorCode(NEEDS_STEAM_VENTING),
+                        mTooltipCache.getData(
+                                STALLED_STUTTERING_TOOLTIP,
+                                StatCollector.translateToLocal(
+                                        POWER_SOURCE_KEY + (machine.isSteampowered() ? "steam" : "power")))));
     }
 
     /**
      * Apply proper coloration to a machine's power tier short name
-     * 
+     *
      * @param machineTier
      * @return colored power tier short name
      */
@@ -187,34 +183,38 @@ public class GT_GUIContainer_BasicMachine extends GT_GUIContainerMetaTile_Machin
                         % (tSize + 1);
 
                 switch (mProgressBarDirection) { // yes, my OCD was mad at me before I did the Tabs.
-                    case 0:
-                        drawTexturedModalRect(x + 78, y + 24, 176, 0, tProgress, 18);
-                        break;
-                    case 1:
-                        drawTexturedModalRect(x + 78 + 20 - tProgress, y + 24, 176 + 20 - tProgress, 0, tProgress, 18);
-                        break;
-                    case 2:
-                        drawTexturedModalRect(x + 78, y + 24, 176, 0, 20, tProgress);
-                        break;
-                    case 3:
-                        drawTexturedModalRect(x + 78, y + 24 + 18 - tProgress, 176, 18 - tProgress, 20, tProgress);
-                        break;
-                    case 4:
+                    case 0 -> drawTexturedModalRect(x + 78, y + 24, 176, 0, tProgress, 18);
+                    case 1 -> drawTexturedModalRect(
+                            x + 78 + 20 - tProgress,
+                            y + 24,
+                            176 + 20 - tProgress,
+                            0,
+                            tProgress,
+                            18);
+                    case 2 -> drawTexturedModalRect(x + 78, y + 24, 176, 0, 20, tProgress);
+                    case 3 -> drawTexturedModalRect(
+                            x + 78,
+                            y + 24 + 18 - tProgress,
+                            176,
+                            18 - tProgress,
+                            20,
+                            tProgress);
+                    case 4 -> {
                         tProgress = 20 - tProgress;
                         drawTexturedModalRect(x + 78, y + 24, 176, 0, tProgress, 18);
-                        break;
-                    case 5:
+                    }
+                    case 5 -> {
                         tProgress = 20 - tProgress;
                         drawTexturedModalRect(x + 78 + 20 - tProgress, y + 24, 176 + 20 - tProgress, 0, tProgress, 18);
-                        break;
-                    case 6:
+                    }
+                    case 6 -> {
                         tProgress = 18 - tProgress;
                         drawTexturedModalRect(x + 78, y + 24, 176, 0, 20, tProgress);
-                        break;
-                    case 7:
+                    }
+                    case 7 -> {
                         tProgress = 18 - tProgress;
                         drawTexturedModalRect(x + 78, y + 24 + 18 - tProgress, 176, 18 - tProgress, 20, tProgress);
-                        break;
+                    }
                 }
             }
         }

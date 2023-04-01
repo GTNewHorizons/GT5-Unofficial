@@ -32,27 +32,38 @@ public class GT_MetaTileEntity_LargeTurbine_Gas extends GT_MetaTileEntity_LargeT
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
             boolean aActive, boolean aRedstone) {
-        return new ITexture[] { MACHINE_CASINGS[1][aColorIndex + 1],
-                aFacing == aSide
-                        ? (aActive ? TextureFactory.builder().addIcon(LARGETURBINE_NEW_ACTIVE5).build()
-                                : hasTurbine() ? TextureFactory.builder().addIcon(LARGETURBINE_NEW5).build()
-                                        : TextureFactory.builder().addIcon(LARGETURBINE_NEW_EMPTY5).build())
+        return new ITexture[] { MACHINE_CASINGS[1][aColorIndex + 1], aFacing
+                == aSide ? (aActive ? TextureFactory.builder()
+                                                    .addIcon(LARGETURBINE_NEW_ACTIVE5)
+                                                    .build()
+                        : hasTurbine() ? TextureFactory.builder()
+                                                       .addIcon(LARGETURBINE_NEW5)
+                                                       .build()
+                                : TextureFactory.builder()
+                                                .addIcon(LARGETURBINE_NEW_EMPTY5)
+                                                .build())
                         : casingTexturePages[0][58] };
     }
 
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType("Gas Turbine").addInfo("Controller block for the Large Gas Turbine")
-                .addInfo("Needs a Turbine, place inside controller")
-                .addInfo("Warning: Will be capped at 8192 EU/t in a future update")
-                .addInfo("See the Advanced Large Gas Turbine as the next, uncapped, option")
-                // .addInfo("The excess fuel that gets consumed will be voided!")
-                .addPollutionAmount(getPollutionPerSecond(null)).addSeparator().beginStructureBlock(3, 3, 4, true)
-                .addController("Front center").addCasingInfoRange("Stainless Steel Turbine Casing", 8, 30, false)
-                .addDynamoHatch("Back center", 1).addMaintenanceHatch("Side centered", 2)
-                .addMufflerHatch("Side centered", 2).addInputHatch("Gas Fuel, Side centered", 2)
-                .toolTipFinisher("Gregtech");
+        tt.addMachineType("Gas Turbine")
+          .addInfo("Controller block for the Large Gas Turbine")
+          .addInfo("Needs a Turbine, place inside controller")
+          .addInfo("Warning: Will be capped at 8192 EU/t in a future update")
+          .addInfo("See the Advanced Large Gas Turbine as the next, uncapped, option")
+          // .addInfo("The excess fuel that gets consumed will be voided!")
+          .addPollutionAmount(getPollutionPerSecond(null))
+          .addSeparator()
+          .beginStructureBlock(3, 3, 4, true)
+          .addController("Front center")
+          .addCasingInfoRange("Stainless Steel Turbine Casing", 8, 30, false)
+          .addDynamoHatch("Back center", 1)
+          .addMaintenanceHatch("Side centered", 2)
+          .addMufflerHatch("Side centered", 2)
+          .addInputHatch("Gas Fuel, Side centered", 2)
+          .toolTipFinisher("Gregtech");
         return tt;
     }
 
@@ -143,13 +154,11 @@ public class GT_MetaTileEntity_LargeTurbine_Gas extends GT_MetaTileEntity_LargeT
             if (totalFlow <= 0) return 0;
             tEU = GT_Utility.safeInt((long) totalFlow * fuelValue);
 
-            if (totalFlow == actualOptimalFlow) {
-                tEU = GT_Utility.safeInt((long) tEU * (long) aBaseEff / 10000L);
-            } else {
+            if (totalFlow != actualOptimalFlow) {
                 float efficiency = getOverflowEfficiency(totalFlow, actualOptimalFlow, overflowMultiplier);
                 tEU *= efficiency;
-                tEU = GT_Utility.safeInt((long) tEU * (long) aBaseEff / 10000L);
             }
+            tEU = GT_Utility.safeInt((long) tEU * (long) aBaseEff / 10000L);
 
             // EU/t output cap to properly tier the LGT against the Advanced LGT, will be implemented in a future dev
             // update

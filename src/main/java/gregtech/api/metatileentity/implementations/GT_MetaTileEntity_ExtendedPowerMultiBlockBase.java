@@ -139,8 +139,10 @@ public abstract class GT_MetaTileEntity_ExtendedPowerMultiBlockBase<T extends GT
         long maxEnergy = 0;
         for (GT_MetaTileEntity_Hatch tHatch : getExoticAndNormalEnergyHatchList()) {
             if (isValidMetaTileEntity(tHatch)) {
-                storedEnergy += tHatch.getBaseMetaTileEntity().getStoredEU();
-                maxEnergy += tHatch.getBaseMetaTileEntity().getEUCapacity();
+                storedEnergy += tHatch.getBaseMetaTileEntity()
+                                      .getStoredEU();
+                maxEnergy += tHatch.getBaseMetaTileEntity()
+                                   .getEUCapacity();
             }
         }
         long voltage = getAverageInputVoltage();
@@ -190,7 +192,7 @@ public abstract class GT_MetaTileEntity_ExtendedPowerMultiBlockBase<T extends GT
                         + StatCollector.translateToLocal("GT5U.multiblock.efficiency")
                         + ": "
                         + EnumChatFormatting.YELLOW
-                        + Float.toString(mEfficiency / 100.0F)
+                        + mEfficiency / 100.0F
                         + EnumChatFormatting.RESET
                         + " %",
                 /* 6 */ StatCollector.translateToLocal("GT5U.multiblock.pollution") + ": "

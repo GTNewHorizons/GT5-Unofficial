@@ -3,8 +3,9 @@ package gregtech.api.multitileentity.interfaces;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraftforge.fluids.FluidStack;
 
-public interface IMultiBlockController
-        extends IMultiTileEntity, IMultiBlockFluidHandler, IMultiBlockInventory, IMultiBlockEnergy {
+import gregtech.api.logic.PowerLogic;
+
+public interface IMultiBlockController extends IMultiTileEntity, IMultiBlockFluidHandler, IMultiBlockInventory {
 
     boolean checkStructure(boolean aForceReset);
 
@@ -29,4 +30,6 @@ public interface IMultiBlockController
     void unregisterInventory(String aName, String aID, int aType);
 
     void changeInventoryName(String aName, String aID, int aType);
+
+    PowerLogic getPowerLogic(IMultiBlockPart part, byte side);
 }

@@ -49,8 +49,8 @@ public class GT_Circuit_Pulser extends GT_CircuitryBehavior {
             }
         }
         aRedstoneCircuitBlock.setRedstone(
-                (byte) ((aCircuitData[4] > 0) && (aCircuitData[4] <= aCircuitData[0]) ? (byte) aCircuitData[1]
-                        : (aCircuitData[1] <= 0) || (aCircuitData[1] > 15) ? (byte) aCircuitData[5] : 0),
+                (aCircuitData[4] > 0) && (aCircuitData[4] <= aCircuitData[0]) ? (byte) aCircuitData[1]
+                        : (aCircuitData[1] <= 0) || (aCircuitData[1] > 15) ? (byte) aCircuitData[5] : 0,
                 aRedstoneCircuitBlock.getOutputFacing());
     }
 
@@ -66,13 +66,11 @@ public class GT_Circuit_Pulser extends GT_CircuitryBehavior {
 
     @Override
     public String getDataDescription(int[] aCircuitData, int aCircuitDataIndex) {
-        switch (aCircuitDataIndex) {
-            case 0:
-                return "Length";
-            case 1:
-                return "RS Out";
-        }
-        return "";
+        return switch (aCircuitDataIndex) {
+            case 0 -> "Length";
+            case 1 -> "RS Out";
+            default -> "";
+        };
     }
 
     @Override

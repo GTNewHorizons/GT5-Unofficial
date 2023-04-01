@@ -21,7 +21,7 @@ import gregtech.common.blocks.GT_TileEntity_Ores;
 
 public class GT_Worldgen_GT_Ore_Layer extends GT_Worldgen {
 
-    public static ArrayList<GT_Worldgen_GT_Ore_Layer> sList = new ArrayList();
+    public static ArrayList<GT_Worldgen_GT_Ore_Layer> sList = new ArrayList<>();
     public static int sWeight = 0;
     public final short mMinY;
     public final short mMaxY;
@@ -67,22 +67,37 @@ public class GT_Worldgen_GT_Ore_Layer extends GT_Worldgen {
             mMaxY = (short) (this.mMinY + 9);
         }
         this.mMaxY = mMaxY;
-        this.mWeight = ((short) GregTech_API.sWorldgenFile
-                .get(aTextWorldgen + this.mWorldGenName, "RandomWeight", aWeight));
-        this.mDensity = ((short) GregTech_API.sWorldgenFile
-                .get(aTextWorldgen + this.mWorldGenName, "Density", aDensity));
-        this.mSize = ((short) Math
-                .max(1, GregTech_API.sWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "Size", aSize)));
-        this.mPrimaryMeta = ((short) GregTech_API.sWorldgenFile
-                .get(aTextWorldgen + this.mWorldGenName, "OrePrimaryLayer", aPrimary));
-        this.mSecondaryMeta = ((short) GregTech_API.sWorldgenFile
-                .get(aTextWorldgen + this.mWorldGenName, "OreSecondaryLayer", aSecondary));
-        this.mBetweenMeta = ((short) GregTech_API.sWorldgenFile
-                .get(aTextWorldgen + this.mWorldGenName, "OreSporadiclyInbetween", aBetween));
-        this.mSporadicMeta = ((short) GregTech_API.sWorldgenFile
-                .get(aTextWorldgen + this.mWorldGenName, "OreSporaticlyAround", aSporadic));
-        this.mRestrictBiome = GregTech_API.sWorldgenFile
-                .get(aTextWorldgen + this.mWorldGenName, "RestrictToBiomeName", "None");
+        this.mWeight = ((short) GregTech_API.sWorldgenFile.get(
+                aTextWorldgen + this.mWorldGenName,
+                "RandomWeight",
+                aWeight));
+        this.mDensity = ((short) GregTech_API.sWorldgenFile.get(
+                aTextWorldgen + this.mWorldGenName,
+                "Density",
+                aDensity));
+        this.mSize = ((short) Math.max(
+                1,
+                GregTech_API.sWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "Size", aSize)));
+        this.mPrimaryMeta = ((short) GregTech_API.sWorldgenFile.get(
+                aTextWorldgen + this.mWorldGenName,
+                "OrePrimaryLayer",
+                aPrimary));
+        this.mSecondaryMeta = ((short) GregTech_API.sWorldgenFile.get(
+                aTextWorldgen + this.mWorldGenName,
+                "OreSecondaryLayer",
+                aSecondary));
+        this.mBetweenMeta = ((short) GregTech_API.sWorldgenFile.get(
+                aTextWorldgen + this.mWorldGenName,
+                "OreSporadiclyInbetween",
+                aBetween));
+        this.mSporadicMeta = ((short) GregTech_API.sWorldgenFile.get(
+                aTextWorldgen + this.mWorldGenName,
+                "OreSporaticlyAround",
+                aSporadic));
+        this.mRestrictBiome = GregTech_API.sWorldgenFile.get(
+                aTextWorldgen + this.mWorldGenName,
+                "RestrictToBiomeName",
+                "None");
 
         if (this.mEnabled) {
             sWeight += this.mWeight;
@@ -125,22 +140,37 @@ public class GT_Worldgen_GT_Ore_Layer extends GT_Worldgen {
             mMaxY = (short) (this.mMinY + 9);
         }
         this.mMaxY = mMaxY;
-        this.mWeight = ((short) GregTech_API.sWorldgenFile
-                .get(aTextWorldgen + this.mWorldGenName, "RandomWeight", aWeight));
-        this.mDensity = ((short) GregTech_API.sWorldgenFile
-                .get(aTextWorldgen + this.mWorldGenName, "Density", aDensity));
-        this.mSize = ((short) Math
-                .max(1, GregTech_API.sWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "Size", aSize)));
-        this.mPrimaryMeta = ((short) GregTech_API.sWorldgenFile
-                .get(aTextWorldgen + this.mWorldGenName, "OrePrimaryLayer", aPrimary.mMetaItemSubID));
-        this.mSecondaryMeta = ((short) GregTech_API.sWorldgenFile
-                .get(aTextWorldgen + this.mWorldGenName, "OreSecondaryLayer", aSecondary.mMetaItemSubID));
-        this.mBetweenMeta = ((short) GregTech_API.sWorldgenFile
-                .get(aTextWorldgen + this.mWorldGenName, "OreSporadiclyInbetween", aBetween.mMetaItemSubID));
-        this.mSporadicMeta = ((short) GregTech_API.sWorldgenFile
-                .get(aTextWorldgen + this.mWorldGenName, "OreSporaticlyAround", aSporadic.mMetaItemSubID));
-        this.mRestrictBiome = GregTech_API.sWorldgenFile
-                .get(aTextWorldgen + this.mWorldGenName, "RestrictToBiomeName", "None");
+        this.mWeight = ((short) GregTech_API.sWorldgenFile.get(
+                aTextWorldgen + this.mWorldGenName,
+                "RandomWeight",
+                aWeight));
+        this.mDensity = ((short) GregTech_API.sWorldgenFile.get(
+                aTextWorldgen + this.mWorldGenName,
+                "Density",
+                aDensity));
+        this.mSize = ((short) Math.max(
+                1,
+                GregTech_API.sWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "Size", aSize)));
+        this.mPrimaryMeta = ((short) GregTech_API.sWorldgenFile.get(
+                aTextWorldgen + this.mWorldGenName,
+                "OrePrimaryLayer",
+                aPrimary.mMetaItemSubID));
+        this.mSecondaryMeta = ((short) GregTech_API.sWorldgenFile.get(
+                aTextWorldgen + this.mWorldGenName,
+                "OreSecondaryLayer",
+                aSecondary.mMetaItemSubID));
+        this.mBetweenMeta = ((short) GregTech_API.sWorldgenFile.get(
+                aTextWorldgen + this.mWorldGenName,
+                "OreSporadiclyInbetween",
+                aBetween.mMetaItemSubID));
+        this.mSporadicMeta = ((short) GregTech_API.sWorldgenFile.get(
+                aTextWorldgen + this.mWorldGenName,
+                "OreSporaticlyAround",
+                aSporadic.mMetaItemSubID));
+        this.mRestrictBiome = GregTech_API.sWorldgenFile.get(
+                aTextWorldgen + this.mWorldGenName,
+                "RestrictToBiomeName",
+                "None");
 
         if (this.mEnabled) {
             sWeight += this.mWeight;
@@ -246,8 +276,8 @@ public class GT_Worldgen_GT_Ore_Layer extends GT_Worldgen {
         // should always be max density due to truncation of Math.sqrt().
         int localDensity = Math.max(
                 1,
-                this.mDensity / ((int) Math
-                        .sqrt(2 + Math.pow(aChunkX / 16 - aSeedX / 16, 2) + Math.pow(aChunkZ / 16 - aSeedZ / 16, 2))));
+                this.mDensity / ((int) Math.sqrt(
+                        2 + Math.pow(aChunkX / 16 - aSeedX / 16, 2) + Math.pow(aChunkZ / 16 - aSeedZ / 16, 2))));
 
         // To allow for early exit due to no ore placed in the bottom layer (probably because we are in the sky), unroll
         // 1 pass through the loop
@@ -255,22 +285,35 @@ public class GT_Worldgen_GT_Ore_Layer extends GT_Worldgen {
         // Layer -1 Secondary and Sporadic
         int level = tMinY - 1; // Dunno why, but the first layer is actually played one below tMinY. Go figure.
         for (int tX = wX; tX < eX; tX++) {
-            int placeX = Math
-                    .max(1, Math.max(MathHelper.abs_int(wXVein - tX), MathHelper.abs_int(eXVein - tX)) / localDensity);
+            int placeX = Math.max(
+                    1,
+                    Math.max(MathHelper.abs_int(wXVein - tX), MathHelper.abs_int(eXVein - tX)) / localDensity);
             for (int tZ = nZ; tZ < sZ; tZ++) {
                 int placeZ = Math.max(
                         1,
                         Math.max(MathHelper.abs_int(sZVein - tZ), MathHelper.abs_int(nZVein - tZ)) / localDensity);
                 if (((aRandom.nextInt(placeZ) == 0) || (aRandom.nextInt(placeX) == 0)) && (this.mSecondaryMeta > 0)) {
-                    if (GT_TileEntity_Ores
-                            .setOreBlock(aWorld, tX, level, tZ, this.mSecondaryMeta, false, isUnderdark)) {
+                    if (GT_TileEntity_Ores.setOreBlock(
+                            aWorld,
+                            tX,
+                            level,
+                            tZ,
+                            this.mSecondaryMeta,
+                            false,
+                            isUnderdark)) {
                         placeCount[1]++;
                     }
                 } else
                     if ((aRandom.nextInt(7) == 0) && ((aRandom.nextInt(placeZ) == 0) || (aRandom.nextInt(placeX) == 0))
                             && (this.mSporadicMeta > 0)) { // Sporadics are reduce by 1/7 to compensate
-                                if (GT_TileEntity_Ores
-                                        .setOreBlock(aWorld, tX, level, tZ, this.mSporadicMeta, false, isUnderdark))
+                                if (GT_TileEntity_Ores.setOreBlock(
+                                        aWorld,
+                                        tX,
+                                        level,
+                                        tZ,
+                                        this.mSporadicMeta,
+                                        false,
+                                        isUnderdark))
                                     placeCount[3]++;
                             }
             }
@@ -291,15 +334,27 @@ public class GT_Worldgen_GT_Ore_Layer extends GT_Worldgen {
                             Math.max(MathHelper.abs_int(sZVein - tZ), MathHelper.abs_int(nZVein - tZ)) / localDensity);
                     if (((aRandom.nextInt(placeZ) == 0) || (aRandom.nextInt(placeX) == 0))
                             && (this.mSecondaryMeta > 0)) {
-                        if (GT_TileEntity_Ores
-                                .setOreBlock(aWorld, tX, level, tZ, this.mSecondaryMeta, false, isUnderdark)) {
+                        if (GT_TileEntity_Ores.setOreBlock(
+                                aWorld,
+                                tX,
+                                level,
+                                tZ,
+                                this.mSecondaryMeta,
+                                false,
+                                isUnderdark)) {
                             placeCount[1]++;
                         }
                     } else if ((aRandom.nextInt(7) == 0)
                             && ((aRandom.nextInt(placeZ) == 0) || (aRandom.nextInt(placeX) == 0))
                             && (this.mSporadicMeta > 0)) { // Sporadics are reduce by 1/7 to compensate
-                                if (GT_TileEntity_Ores
-                                        .setOreBlock(aWorld, tX, level, tZ, this.mSporadicMeta, false, isUnderdark))
+                                if (GT_TileEntity_Ores.setOreBlock(
+                                        aWorld,
+                                        tX,
+                                        level,
+                                        tZ,
+                                        this.mSporadicMeta,
+                                        false,
+                                        isUnderdark))
                                     placeCount[3]++;
                             }
                 }
@@ -307,8 +362,9 @@ public class GT_Worldgen_GT_Ore_Layer extends GT_Worldgen {
         }
         // Layer 2 is Secondary, in-between, and sporadic
         for (int tX = wX; tX < eX; tX++) {
-            int placeX = Math
-                    .max(1, Math.max(MathHelper.abs_int(wXVein - tX), MathHelper.abs_int(eXVein - tX)) / localDensity);
+            int placeX = Math.max(
+                    1,
+                    Math.max(MathHelper.abs_int(wXVein - tX), MathHelper.abs_int(eXVein - tX)) / localDensity);
             for (int tZ = nZ; tZ < sZ; tZ++) {
                 int placeZ = Math.max(
                         1,
@@ -320,15 +376,27 @@ public class GT_Worldgen_GT_Ore_Layer extends GT_Worldgen {
                     }
                 } else if (((aRandom.nextInt(placeZ) == 0) || (aRandom.nextInt(placeX) == 0))
                         && (this.mSecondaryMeta > 0)) {
-                            if (GT_TileEntity_Ores
-                                    .setOreBlock(aWorld, tX, level, tZ, this.mSecondaryMeta, false, isUnderdark)) {
+                            if (GT_TileEntity_Ores.setOreBlock(
+                                    aWorld,
+                                    tX,
+                                    level,
+                                    tZ,
+                                    this.mSecondaryMeta,
+                                    false,
+                                    isUnderdark)) {
                                 placeCount[1]++;
                             }
                         } else
                     if ((aRandom.nextInt(7) == 0) && ((aRandom.nextInt(placeZ) == 0) || (aRandom.nextInt(placeX) == 0))
                             && (this.mSporadicMeta > 0)) { // Sporadics are reduce by 1/7 to compensate
-                                if (GT_TileEntity_Ores
-                                        .setOreBlock(aWorld, tX, level, tZ, this.mSporadicMeta, false, isUnderdark))
+                                if (GT_TileEntity_Ores.setOreBlock(
+                                        aWorld,
+                                        tX,
+                                        level,
+                                        tZ,
+                                        this.mSporadicMeta,
+                                        false,
+                                        isUnderdark))
                                     placeCount[3]++;
                             }
             }
@@ -336,8 +404,9 @@ public class GT_Worldgen_GT_Ore_Layer extends GT_Worldgen {
         level++; // Increment level to next layer
         // Layer 3 is In-between, and sporadic
         for (int tX = wX; tX < eX; tX++) {
-            int placeX = Math
-                    .max(1, Math.max(MathHelper.abs_int(wXVein - tX), MathHelper.abs_int(eXVein - tX)) / localDensity);
+            int placeX = Math.max(
+                    1,
+                    Math.max(MathHelper.abs_int(wXVein - tX), MathHelper.abs_int(eXVein - tX)) / localDensity);
             for (int tZ = nZ; tZ < sZ; tZ++) {
                 int placeZ = Math.max(
                         1,
@@ -350,8 +419,14 @@ public class GT_Worldgen_GT_Ore_Layer extends GT_Worldgen {
                 } else
                     if ((aRandom.nextInt(7) == 0) && ((aRandom.nextInt(placeZ) == 0) || (aRandom.nextInt(placeX) == 0))
                             && (this.mSporadicMeta > 0)) { // Sporadics are reduce by 1/7 to compensate
-                                if (GT_TileEntity_Ores
-                                        .setOreBlock(aWorld, tX, level, tZ, this.mSporadicMeta, false, isUnderdark))
+                                if (GT_TileEntity_Ores.setOreBlock(
+                                        aWorld,
+                                        tX,
+                                        level,
+                                        tZ,
+                                        this.mSporadicMeta,
+                                        false,
+                                        isUnderdark))
                                     placeCount[3]++;
                             }
             }
@@ -359,8 +434,9 @@ public class GT_Worldgen_GT_Ore_Layer extends GT_Worldgen {
         level++; // Increment level to next layer
         // Layer 4 is In-between, Primary and sporadic
         for (int tX = wX; tX < eX; tX++) {
-            int placeX = Math
-                    .max(1, Math.max(MathHelper.abs_int(wXVein - tX), MathHelper.abs_int(eXVein - tX)) / localDensity);
+            int placeX = Math.max(
+                    1,
+                    Math.max(MathHelper.abs_int(wXVein - tX), MathHelper.abs_int(eXVein - tX)) / localDensity);
             for (int tZ = nZ; tZ < sZ; tZ++) {
                 int placeZ = Math.max(
                         1,
@@ -372,15 +448,27 @@ public class GT_Worldgen_GT_Ore_Layer extends GT_Worldgen {
                     }
                 } else
                     if (((aRandom.nextInt(placeZ) == 0) || (aRandom.nextInt(placeX) == 0)) && (this.mPrimaryMeta > 0)) {
-                        if (GT_TileEntity_Ores
-                                .setOreBlock(aWorld, tX, level, tZ, this.mPrimaryMeta, false, isUnderdark)) {
+                        if (GT_TileEntity_Ores.setOreBlock(
+                                aWorld,
+                                tX,
+                                level,
+                                tZ,
+                                this.mPrimaryMeta,
+                                false,
+                                isUnderdark)) {
                             placeCount[1]++;
                         }
                     } else if ((aRandom.nextInt(7) == 0)
                             && ((aRandom.nextInt(placeZ) == 0) || (aRandom.nextInt(placeX) == 0))
                             && (this.mSporadicMeta > 0)) { // Sporadics are reduce by 1/7 to compensate
-                                if (GT_TileEntity_Ores
-                                        .setOreBlock(aWorld, tX, level, tZ, this.mSporadicMeta, false, isUnderdark))
+                                if (GT_TileEntity_Ores.setOreBlock(
+                                        aWorld,
+                                        tX,
+                                        level,
+                                        tZ,
+                                        this.mSporadicMeta,
+                                        false,
+                                        isUnderdark))
                                     placeCount[3]++;
                             }
             }
@@ -388,8 +476,9 @@ public class GT_Worldgen_GT_Ore_Layer extends GT_Worldgen {
         level++; // Increment level to next layer
         // Layer 5 is In-between, Primary and sporadic
         for (int tX = wX; tX < eX; tX++) {
-            int placeX = Math
-                    .max(1, Math.max(MathHelper.abs_int(wXVein - tX), MathHelper.abs_int(eXVein - tX)) / localDensity);
+            int placeX = Math.max(
+                    1,
+                    Math.max(MathHelper.abs_int(wXVein - tX), MathHelper.abs_int(eXVein - tX)) / localDensity);
             for (int tZ = nZ; tZ < sZ; tZ++) {
                 int placeZ = Math.max(
                         1,
@@ -401,15 +490,27 @@ public class GT_Worldgen_GT_Ore_Layer extends GT_Worldgen {
                     }
                 } else
                     if (((aRandom.nextInt(placeZ) == 0) || (aRandom.nextInt(placeX) == 0)) && (this.mPrimaryMeta > 0)) {
-                        if (GT_TileEntity_Ores
-                                .setOreBlock(aWorld, tX, level, tZ, this.mPrimaryMeta, false, isUnderdark)) {
+                        if (GT_TileEntity_Ores.setOreBlock(
+                                aWorld,
+                                tX,
+                                level,
+                                tZ,
+                                this.mPrimaryMeta,
+                                false,
+                                isUnderdark)) {
                             placeCount[1]++;
                         }
                     } else if ((aRandom.nextInt(7) == 0)
                             && ((aRandom.nextInt(placeZ) == 0) || (aRandom.nextInt(placeX) == 0))
                             && (this.mSporadicMeta > 0)) { // Sporadics are reduce by 1/7 to compensate
-                                if (GT_TileEntity_Ores
-                                        .setOreBlock(aWorld, tX, level, tZ, this.mSporadicMeta, false, isUnderdark))
+                                if (GT_TileEntity_Ores.setOreBlock(
+                                        aWorld,
+                                        tX,
+                                        level,
+                                        tZ,
+                                        this.mSporadicMeta,
+                                        false,
+                                        isUnderdark))
                                     placeCount[3]++;
                             }
             }
@@ -417,8 +518,9 @@ public class GT_Worldgen_GT_Ore_Layer extends GT_Worldgen {
         level++; // Increment level to next layer
         // Layer 6 is Primary and sporadic
         for (int tX = wX; tX < eX; tX++) {
-            int placeX = Math
-                    .max(1, Math.max(MathHelper.abs_int(wXVein - tX), MathHelper.abs_int(eXVein - tX)) / localDensity);
+            int placeX = Math.max(
+                    1,
+                    Math.max(MathHelper.abs_int(wXVein - tX), MathHelper.abs_int(eXVein - tX)) / localDensity);
             for (int tZ = nZ; tZ < sZ; tZ++) {
                 int placeZ = Math.max(
                         1,
@@ -430,8 +532,14 @@ public class GT_Worldgen_GT_Ore_Layer extends GT_Worldgen {
                 } else
                     if ((aRandom.nextInt(7) == 0) && ((aRandom.nextInt(placeZ) == 0) || (aRandom.nextInt(placeX) == 0))
                             && (this.mSporadicMeta > 0)) { // Sporadics are reduce by 1/7 to compensate
-                                if (GT_TileEntity_Ores
-                                        .setOreBlock(aWorld, tX, level, tZ, this.mSporadicMeta, false, isUnderdark))
+                                if (GT_TileEntity_Ores.setOreBlock(
+                                        aWorld,
+                                        tX,
+                                        level,
+                                        tZ,
+                                        this.mSporadicMeta,
+                                        false,
+                                        isUnderdark))
                                     placeCount[3]++;
                             }
             }
@@ -439,8 +547,9 @@ public class GT_Worldgen_GT_Ore_Layer extends GT_Worldgen {
         level++; // Increment level to next layer
         // Layer 7 is Primary and sporadic
         for (int tX = wX; tX < eX; tX++) {
-            int placeX = Math
-                    .max(1, Math.max(MathHelper.abs_int(wXVein - tX), MathHelper.abs_int(eXVein - tX)) / localDensity);
+            int placeX = Math.max(
+                    1,
+                    Math.max(MathHelper.abs_int(wXVein - tX), MathHelper.abs_int(eXVein - tX)) / localDensity);
             for (int tZ = nZ; tZ < sZ; tZ++) {
                 int placeZ = Math.max(
                         1,
@@ -452,8 +561,14 @@ public class GT_Worldgen_GT_Ore_Layer extends GT_Worldgen {
                 } else
                     if ((aRandom.nextInt(7) == 0) && ((aRandom.nextInt(placeZ) == 0) || (aRandom.nextInt(placeX) == 0))
                             && (this.mSporadicMeta > 0)) { // Sporadics are reduce by 1/7 to compensate
-                                if (GT_TileEntity_Ores
-                                        .setOreBlock(aWorld, tX, level, tZ, this.mSporadicMeta, false, isUnderdark))
+                                if (GT_TileEntity_Ores.setOreBlock(
+                                        aWorld,
+                                        tX,
+                                        level,
+                                        tZ,
+                                        this.mSporadicMeta,
+                                        false,
+                                        isUnderdark))
                                     placeCount[3]++;
                             }
             }

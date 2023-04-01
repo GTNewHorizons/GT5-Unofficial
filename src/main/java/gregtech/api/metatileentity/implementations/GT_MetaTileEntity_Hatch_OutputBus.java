@@ -113,7 +113,7 @@ public class GT_MetaTileEntity_Hatch_OutputBus extends GT_MetaTileEntity_Hatch i
     /**
      * Attempt to store as many items as possible into the internal inventory of this output bus. If you need atomicity
      * you should use {@link gregtech.api.interfaces.tileentity.IHasInventory#addStackToSlot(int, ItemStack)}
-     * 
+     *
      * @param aStack Assume valid. Will be mutated. Take over the ownership. Caller should not retain a reference to
      *               this stack if the call returns true.
      * @return true if stack is fully accepted. false is stack is partially accepted or nothing is accepted
@@ -160,8 +160,8 @@ public class GT_MetaTileEntity_Hatch_OutputBus extends GT_MetaTileEntity_Hatch i
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isServerSide() && aBaseMetaTileEntity.isAllowedToWork() && (aTick & 0x7) == 0) {
-            final IInventory tTileEntity = aBaseMetaTileEntity
-                    .getIInventoryAtSide(aBaseMetaTileEntity.getFrontFacing());
+            final IInventory tTileEntity = aBaseMetaTileEntity.getIInventoryAtSide(
+                    aBaseMetaTileEntity.getFrontFacing());
             if (tTileEntity != null) {
                 moveMultipleItemStacks(
                         aBaseMetaTileEntity,
@@ -193,18 +193,10 @@ public class GT_MetaTileEntity_Hatch_OutputBus extends GT_MetaTileEntity_Hatch i
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         switch (mTier) {
-            case 0:
-                getBaseMetaTileEntity().add1by1Slot(builder);
-                break;
-            case 1:
-                getBaseMetaTileEntity().add2by2Slots(builder);
-                break;
-            case 2:
-                getBaseMetaTileEntity().add3by3Slots(builder);
-                break;
-            default:
-                getBaseMetaTileEntity().add4by4Slots(builder);
-                break;
+            case 0 -> getBaseMetaTileEntity().add1by1Slot(builder);
+            case 1 -> getBaseMetaTileEntity().add2by2Slots(builder);
+            case 2 -> getBaseMetaTileEntity().add3by3Slots(builder);
+            default -> getBaseMetaTileEntity().add4by4Slots(builder);
         }
     }
 }

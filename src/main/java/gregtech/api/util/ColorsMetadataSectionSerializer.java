@@ -11,7 +11,6 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
-import com.google.gson.JsonSerializer;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -20,7 +19,7 @@ import gregtech.api.GregTech_API;
 import gregtech.api.enums.Dyes;
 
 @SideOnly(Side.CLIENT)
-public class ColorsMetadataSectionSerializer extends BaseMetadataSectionSerializer implements JsonSerializer {
+public class ColorsMetadataSectionSerializer extends BaseMetadataSectionSerializer {
 
     public ColorsMetadataSection deserialize(JsonElement metadataColors, Type type,
             JsonDeserializationContext context) {
@@ -33,8 +32,12 @@ public class ColorsMetadataSectionSerializer extends BaseMetadataSectionSerializ
         if (jsonObject.has("textColor")) {
             JsonObject textColors = JsonUtils.func_152754_s(jsonObject, "textColor");
             for (Map.Entry<String, JsonElement> entry : textColors.entrySet()) {
-                if (entry.getValue().isJsonPrimitive()) {
-                    hexTextColorMap.put(entry.getKey(), entry.getValue().getAsString());
+                if (entry.getValue()
+                         .isJsonPrimitive()) {
+                    hexTextColorMap.put(
+                            entry.getKey(),
+                            entry.getValue()
+                                 .getAsString());
                 } else {
                     GT_Mod.GT_FML_LOGGER.warn("ColorOverride expects primitive value for key `textColor`");
                 }
@@ -43,8 +46,10 @@ public class ColorsMetadataSectionSerializer extends BaseMetadataSectionSerializ
 
         if (jsonObject.has("guiTint")) {
             JsonObject guiTints = JsonUtils.func_152754_s(jsonObject, "guiTint");
-            enableGuiTint = JsonUtils
-                    .getJsonObjectBooleanFieldValueOrDefault(guiTints, "enableGuiTintWhenPainted", true);
+            enableGuiTint = JsonUtils.getJsonObjectBooleanFieldValueOrDefault(
+                    guiTints,
+                    "enableGuiTintWhenPainted",
+                    true);
 
             for (Dyes dye : Dyes.values()) {
                 hexGuiTintMap.put(dye.mName, GT_Util.toHexString(dye.getRGBA()));

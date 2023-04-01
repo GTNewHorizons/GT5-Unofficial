@@ -1,6 +1,7 @@
 package gregtech.api.items;
 
 import static gregtech.api.enums.GT_Values.*;
+import static gregtech.api.enums.ModIDs.AppleCore;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,7 +21,6 @@ import net.minecraft.world.World;
 
 import squeek.applecore.api.food.FoodValues;
 import squeek.applecore.api.food.IEdible;
-import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -65,7 +65,7 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements 
      * <p/>
      * You can also use the unlocalized Name gotten from getUnlocalizedName() as Key if you want to get a specific Item.
      */
-    public static final ConcurrentHashMap<String, GT_MetaGenerated_Item> sInstances = new ConcurrentHashMap<String, GT_MetaGenerated_Item>();
+    public static final ConcurrentHashMap<String, GT_MetaGenerated_Item> sInstances = new ConcurrentHashMap<>();
 
     /* ---------- CONSTRUCTOR AND MEMBER VARIABLES ---------- */
 
@@ -120,7 +120,7 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements 
             mVisibleItems.set(aID);
             GT_LanguageManager.addStringLocalization(getUnlocalizedName(rStack) + ".name", aEnglish);
             GT_LanguageManager.addStringLocalization(getUnlocalizedName(rStack) + ".tooltip", aToolTip);
-            List<TC_AspectStack> tAspects = new ArrayList<TC_AspectStack>();
+            List<TC_AspectStack> tAspects = new ArrayList<>();
             // Important Stuff to do first
             for (Object tRandomData : aRandomData) if (tRandomData instanceof SubTag) {
                 if (tRandomData == SubTag.INVISIBLE) {
@@ -230,8 +230,9 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements 
             mElectricStats.put(
                     (short) aMetaValue,
                     new Long[] { aMaxCharge, Math.max(0, aTransferLimit), Math.max(-1, aTier), aSpecialData });
-            if (aMetaValue >= mOffset && aUseAnimations) mIconList[aMetaValue - mOffset] = Arrays
-                    .copyOf(mIconList[aMetaValue - mOffset], Math.max(9, mIconList[aMetaValue - mOffset].length));
+            if (aMetaValue >= mOffset && aUseAnimations) mIconList[aMetaValue - mOffset] = Arrays.copyOf(
+                    mIconList[aMetaValue - mOffset],
+                    Math.max(9, mIconList[aMetaValue - mOffset].length));
         }
         return this;
     }
@@ -321,19 +322,19 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements 
     public final ItemStack onEaten(ItemStack aStack, World aWorld, EntityPlayer aPlayer) {
         IFoodStat tStat = mFoodStats.get((short) getDamage(aStack));
         if (tStat != null) {
-            if (Loader.isModLoaded(MOD_ID_APC)) {
-                aPlayer.getFoodStats().func_151686_a(
-                        (ItemFood) GT_Utility.callConstructor(
-                                "squeek.applecore.api.food.ItemFoodProxy.ItemFoodProxy",
-                                0,
-                                null,
-                                true,
-                                this),
-                        aStack);
+            if (AppleCore.isModLoaded()) {
+                aPlayer.getFoodStats()
+                       .func_151686_a(
+                               (ItemFood) GT_Utility.callConstructor(
+                                       "squeek.applecore.api.food.ItemFoodProxy.ItemFoodProxy",
+                                       0,
+                                       null,
+                                       true,
+                                       this),
+                               aStack);
             } else {
-                aPlayer.getFoodStats().addStats(
-                        tStat.getFoodLevel(this, aStack, aPlayer),
-                        tStat.getSaturation(this, aStack, aPlayer));
+                aPlayer.getFoodStats()
+                       .addStats(tStat.getFoodLevel(this, aStack, aPlayer), tStat.getSaturation(this, aStack, aPlayer));
             }
             tStat.onEaten(this, aStack, aPlayer);
         }
@@ -350,7 +351,7 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements 
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubItems(Item aItem, CreativeTabs aCreativeTab, List aList) {
+    public void getSubItems(Item aItem, CreativeTabs aCreativeTab, List<ItemStack> aList) {
         int j = mEnabledItems.length();
         for (int i = 0; i < j; i++) if (mVisibleItems.get(i) || (D1 && mEnabledItems.get(i))) {
             Long[] tStats = mElectricStats.get((short) (mOffset + i));
@@ -377,8 +378,8 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements 
                 mIconList[i][k] = aIconRegister.registerIcon(
                         RES_PATH_ITEM + (GT_Config.troll ? "troll" : getUnlocalizedName() + "/" + i + "/" + k));
             }
-            mIconList[i][0] = aIconRegister
-                    .registerIcon(RES_PATH_ITEM + (GT_Config.troll ? "troll" : getUnlocalizedName() + "/" + i));
+            mIconList[i][0] = aIconRegister.registerIcon(
+                    RES_PATH_ITEM + (GT_Config.troll ? "troll" : getUnlocalizedName() + "/" + i));
         }
     }
 

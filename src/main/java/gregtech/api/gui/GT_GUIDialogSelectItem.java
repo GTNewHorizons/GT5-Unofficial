@@ -28,8 +28,11 @@ public class GT_GUIDialogSelectItem extends GT_GUIScreen {
     // all slots not including btnCurrent
     private final List<GT_GuiFakeItemButton> slots = new ArrayList<>();
     // the currently selected slot content
-    private final GT_GuiFakeItemButton btnCurrent = new GT_GuiFakeItemButton(this, 8, 25, GT_GuiIcon.SLOT_DARKGRAY)
-            .setMimicSlot(true);
+    private final GT_GuiFakeItemButton btnCurrent = new GT_GuiFakeItemButton(
+            this,
+            8,
+            25,
+            GT_GuiIcon.SLOT_DARKGRAY).setMimicSlot(true);
     private final boolean noDeselect;
     private int selected;
     private int scroll = 0;
@@ -49,7 +52,7 @@ public class GT_GUIDialogSelectItem extends GT_GUIScreen {
     /**
      * Open a dialog to select an item from given list. Given callback may be called zero or more times depending on
      * user action.
-     * 
+     *
      * @param header           Header text
      * @param headerItem       ItemStack to use as Dialog icon
      * @param parent           open which GUIScreen when this dialog is closed. use null if it has no parent.
@@ -77,8 +80,8 @@ public class GT_GUIDialogSelectItem extends GT_GUIScreen {
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
                 slots.add(
-                        new GT_GuiFakeItemButton(this, 8 + 18 * j, 44 + 18 * i, GT_GuiIcon.SLOT_GRAY)
-                                .setMimicSlot(true));
+                        new GT_GuiFakeItemButton(this, 8 + 18 * j, 44 + 18 * i, GT_GuiIcon.SLOT_GRAY).setMimicSlot(
+                                true));
             }
         }
 
@@ -102,12 +105,14 @@ public class GT_GUIDialogSelectItem extends GT_GUIScreen {
     @Override
     public void buttonClicked(GuiButton button) {
         switch (button.id) {
-            case 0:
+            case 0 -> {
                 setScroll(scroll - 1);
                 return;
-            case 1:
+            }
+            case 1 -> {
                 setScroll(scroll + 1);
                 return;
+            }
         }
         super.buttonClicked(button);
     }
@@ -123,25 +128,29 @@ public class GT_GUIDialogSelectItem extends GT_GUIScreen {
     public void mouseClicked(int x, int y, int button) {
         int mx = x - guiLeft, my = y - guiTop;
         if (button == 0) {
-            if (btnCurrent.getBounds().contains(mx, my)) {
+            if (btnCurrent.getBounds()
+                          .contains(mx, my)) {
                 ensureSelectedDisplayed();
                 return;
             }
 
             for (int i = 0, slotsSize = slots.size(); i < slotsSize; i++) {
                 GT_GuiFakeItemButton slot = slots.get(i);
-                if (slot.getBounds().contains(mx, my)) {
+                if (slot.getBounds()
+                        .contains(mx, my)) {
                     setSelected(slotIndexToListIndex(i));
                     return;
                 }
             }
         } else if (button == 1 && getSelected() >= 0) {
-            if (btnCurrent.getBounds().contains(mx, my)) {
+            if (btnCurrent.getBounds()
+                          .contains(mx, my)) {
                 setSelected(UNSELECTED);
                 return;
             }
             GT_GuiFakeItemButton slot = getSlot(listIndexToSlotIndex(getSelected()));
-            if (slot != null && slot.getBounds().contains(mx, my)) {
+            if (slot != null && slot.getBounds()
+                                    .contains(mx, my)) {
                 setSelected(UNSELECTED);
             }
         }
@@ -156,8 +165,9 @@ public class GT_GUIDialogSelectItem extends GT_GUIScreen {
 
     private void fillSlots() {
         for (int i = 0, j = scroll * cols; i < slots.size(); i++, j++) {
-            slots.get(i).setItem(getCandidate(j))
-                    .setBgIcon(j == getSelected() ? GT_GuiIcon.SLOT_DARKGRAY : GT_GuiIcon.SLOT_GRAY);
+            slots.get(i)
+                 .setItem(getCandidate(j))
+                 .setBgIcon(j == getSelected() ? GT_GuiIcon.SLOT_DARKGRAY : GT_GuiIcon.SLOT_GRAY);
         }
     }
 

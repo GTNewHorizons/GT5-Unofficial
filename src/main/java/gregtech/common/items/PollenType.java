@@ -13,7 +13,7 @@ public enum PollenType {
     public int chance;
     private String name;
 
-    private PollenType(String pName, boolean show) {
+    PollenType(String pName, boolean show) {
         this.name = pName;
         this.showInList = show;
     }
@@ -25,7 +25,10 @@ public enum PollenType {
     public String getName() {
         return GT_LanguageManager.addStringLocalization(
                 "pollen." + this.name,
-                this.name.substring(0, 1).toUpperCase() + this.name.substring(1) + " Pollen");
+                this.name.substring(0, 1)
+                         .toUpperCase()
+                        + this.name.substring(1)
+                        + " Pollen");
     }
 
     public int[] getColours() {

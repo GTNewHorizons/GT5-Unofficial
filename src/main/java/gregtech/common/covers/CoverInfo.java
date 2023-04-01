@@ -136,8 +136,13 @@ public final class CoverInfo {
     }
 
     public ISerializableObject doCoverThings(long aTickTimer, byte aRedstone) {
-        return getCoverBehavior()
-                .doCoverThings(coverSide, aRedstone, coverID, coverData, coveredTile.get(), aTickTimer);
+        return getCoverBehavior().doCoverThings(
+                coverSide,
+                aRedstone,
+                coverID,
+                coverData,
+                coveredTile.get(),
+                aTickTimer);
     }
 
     public void onBaseTEDestroyed() {
@@ -219,8 +224,15 @@ public final class CoverInfo {
     }
 
     public boolean onCoverRightClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        return getCoverBehavior()
-                .onCoverRightClick(coverSide, coverID, coverData, coveredTile.get(), aPlayer, aX, aY, aZ);
+        return getCoverBehavior().onCoverRightClick(
+                coverSide,
+                coverID,
+                coverData,
+                coveredTile.get(),
+                aPlayer,
+                aX,
+                aY,
+                aZ);
     }
 
     public boolean onCoverShiftRightClick(EntityPlayer aPlayer) {
@@ -228,8 +240,15 @@ public final class CoverInfo {
     }
 
     public ISerializableObject onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        return getCoverBehavior()
-                .onCoverScrewdriverClick(coverSide, coverID, coverData, coveredTile.get(), aPlayer, aX, aY, aZ);
+        return getCoverBehavior().onCoverScrewdriverClick(
+                coverSide,
+                coverID,
+                coverData,
+                coveredTile.get(),
+                aPlayer,
+                aX,
+                aY,
+                aZ);
     }
 
     public Block getFacadeBlock() {

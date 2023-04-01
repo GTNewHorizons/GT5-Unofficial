@@ -63,7 +63,8 @@ public class GT_RenderedTexture extends GT_TextureBase implements ITexture, ICol
             lighting.setLightnessOverride(1.0F);
             if (enableAO) lighting.setBrightnessOverride(MAX_BRIGHTNESS);
         }
-        lighting.setupLightingXPos(aBlock, aX, aY, aZ).setupColor(ForgeDirection.EAST.ordinal(), mRGBa);
+        lighting.setupLightingXPos(aBlock, aX, aY, aZ)
+                .setupColor(ForgeDirection.EAST.ordinal(), mRGBa);
         final ExtendedFacing rotation = getExtendedFacing(aX, aY, aZ);
         renderFaceXPos(aRenderer, aX, aY, aZ, mIconContainer.getIcon(), rotation);
         if (mIconContainer.getOverlayIcon() != null) {
@@ -88,7 +89,8 @@ public class GT_RenderedTexture extends GT_TextureBase implements ITexture, ICol
             lighting.setLightnessOverride(1.0F);
             lighting.setBrightnessOverride(MAX_BRIGHTNESS);
         }
-        lighting.setupLightingXNeg(aBlock, aX, aY, aZ).setupColor(ForgeDirection.WEST.ordinal(), mRGBa);
+        lighting.setupLightingXNeg(aBlock, aX, aY, aZ)
+                .setupColor(ForgeDirection.WEST.ordinal(), mRGBa);
         final ExtendedFacing rotation = getExtendedFacing(aX, aY, aZ);
         renderFaceXNeg(aRenderer, aX, aY, aZ, mIconContainer.getIcon(), rotation);
         if (mIconContainer.getOverlayIcon() != null) {
@@ -113,7 +115,8 @@ public class GT_RenderedTexture extends GT_TextureBase implements ITexture, ICol
             lighting.setLightnessOverride(1.0F);
             lighting.setBrightnessOverride(MAX_BRIGHTNESS);
         }
-        lighting.setupLightingYPos(aBlock, aX, aY, aZ).setupColor(ForgeDirection.UP.ordinal(), mRGBa);
+        lighting.setupLightingYPos(aBlock, aX, aY, aZ)
+                .setupColor(ForgeDirection.UP.ordinal(), mRGBa);
         final ExtendedFacing rotation = getExtendedFacing(aX, aY, aZ);
         renderFaceYPos(aRenderer, aX, aY, aZ, mIconContainer.getIcon(), rotation);
         if (mIconContainer.getOverlayIcon() != null) {
@@ -138,7 +141,8 @@ public class GT_RenderedTexture extends GT_TextureBase implements ITexture, ICol
             lighting.setLightnessOverride(1.0F);
             lighting.setBrightnessOverride(MAX_BRIGHTNESS);
         }
-        lighting.setupLightingYNeg(aBlock, aX, aY, aZ).setupColor(ForgeDirection.DOWN.ordinal(), mRGBa);
+        lighting.setupLightingYNeg(aBlock, aX, aY, aZ)
+                .setupColor(ForgeDirection.DOWN.ordinal(), mRGBa);
         final ExtendedFacing rotation = getExtendedFacing(aX, aY, aZ);
         renderFaceYNeg(aRenderer, aX, aY, aZ, mIconContainer.getIcon(), rotation);
         if (mIconContainer.getOverlayIcon() != null) {
@@ -163,7 +167,8 @@ public class GT_RenderedTexture extends GT_TextureBase implements ITexture, ICol
             lighting.setLightnessOverride(1.0F);
             lighting.setBrightnessOverride(MAX_BRIGHTNESS);
         }
-        lighting.setupLightingZPos(aBlock, aX, aY, aZ).setupColor(ForgeDirection.SOUTH.ordinal(), mRGBa);
+        lighting.setupLightingZPos(aBlock, aX, aY, aZ)
+                .setupColor(ForgeDirection.SOUTH.ordinal(), mRGBa);
         final ExtendedFacing rotation = getExtendedFacing(aX, aY, aZ);
         renderFaceZPos(aRenderer, aX, aY, aZ, mIconContainer.getIcon(), rotation);
         if (mIconContainer.getOverlayIcon() != null) {
@@ -188,7 +193,8 @@ public class GT_RenderedTexture extends GT_TextureBase implements ITexture, ICol
             lighting.setLightnessOverride(1.0F);
             lighting.setBrightnessOverride(MAX_BRIGHTNESS);
         }
-        lighting.setupLightingZNeg(aBlock, aX, aY, aZ).setupColor(ForgeDirection.NORTH.ordinal(), mRGBa);
+        lighting.setupLightingZNeg(aBlock, aX, aY, aZ)
+                .setupColor(ForgeDirection.NORTH.ordinal(), mRGBa);
         final ExtendedFacing rotation = getExtendedFacing(aX, aY, aZ);
         renderFaceZNeg(aRenderer, aX, aY, aZ, mIconContainer.getIcon(), rotation);
         if (mIconContainer.getOverlayIcon() != null) {
@@ -216,18 +222,10 @@ public class GT_RenderedTexture extends GT_TextureBase implements ITexture, ICol
             ExtendedFacing extendedFacing) {
 
         switch (useExtFacing ? extendedFacing.getRotation() : Rotation.NORMAL) {
-            case COUNTER_CLOCKWISE:
-                aRenderer.uvRotateBottom = 2;
-                break;
-            case CLOCKWISE:
-                aRenderer.uvRotateBottom = 1;
-                break;
-            case UPSIDE_DOWN:
-                aRenderer.uvRotateBottom = 3;
-                break;
-            default:
-                aRenderer.uvRotateBottom = 0;
-                break;
+            case COUNTER_CLOCKWISE -> aRenderer.uvRotateBottom = 2;
+            case CLOCKWISE -> aRenderer.uvRotateBottom = 1;
+            case UPSIDE_DOWN -> aRenderer.uvRotateBottom = 3;
+            default -> aRenderer.uvRotateBottom = 0;
         }
 
         final Flip aFlip = extendedFacing.getFlip();
@@ -252,18 +250,10 @@ public class GT_RenderedTexture extends GT_TextureBase implements ITexture, ICol
             ExtendedFacing extendedFacing) {
 
         switch (useExtFacing ? extendedFacing.getRotation() : Rotation.NORMAL) {
-            case COUNTER_CLOCKWISE:
-                aRenderer.uvRotateTop = 2;
-                break;
-            case CLOCKWISE:
-                aRenderer.uvRotateTop = 1;
-                break;
-            case UPSIDE_DOWN:
-                aRenderer.uvRotateTop = 3;
-                break;
-            default:
-                aRenderer.uvRotateTop = 0;
-                break;
+            case COUNTER_CLOCKWISE -> aRenderer.uvRotateTop = 2;
+            case CLOCKWISE -> aRenderer.uvRotateTop = 1;
+            case UPSIDE_DOWN -> aRenderer.uvRotateTop = 3;
+            default -> aRenderer.uvRotateTop = 0;
         }
 
         final Flip aFlip = extendedFacing.getFlip();
@@ -286,18 +276,10 @@ public class GT_RenderedTexture extends GT_TextureBase implements ITexture, ICol
         aRenderer.field_152631_f = true;
         // **NOT A BUG**: aRenderer.uvRotateEast REALLY CONTROLS THE ROTATION OF THE NORTH SIDE
         switch (useExtFacing ? extendedFacing.getRotation() : Rotation.NORMAL) {
-            case COUNTER_CLOCKWISE:
-                aRenderer.uvRotateEast = 2;
-                break;
-            case CLOCKWISE:
-                aRenderer.uvRotateEast = 1;
-                break;
-            case UPSIDE_DOWN:
-                aRenderer.uvRotateEast = 3;
-                break;
-            default:
-                aRenderer.uvRotateEast = 0;
-                break;
+            case COUNTER_CLOCKWISE -> aRenderer.uvRotateEast = 2;
+            case CLOCKWISE -> aRenderer.uvRotateEast = 1;
+            case UPSIDE_DOWN -> aRenderer.uvRotateEast = 3;
+            default -> aRenderer.uvRotateEast = 0;
         }
 
         final Flip aFlip = extendedFacing.getFlip();
@@ -320,18 +302,10 @@ public class GT_RenderedTexture extends GT_TextureBase implements ITexture, ICol
             ExtendedFacing extendedFacing) {
         // **NOT A BUG**: aRenderer.uvRotateWest REALLY CONTROLS THE ROTATION OF THE SOUTH SIDE
         switch (useExtFacing ? extendedFacing.getRotation() : Rotation.NORMAL) {
-            case COUNTER_CLOCKWISE:
-                aRenderer.uvRotateWest = 2;
-                break;
-            case CLOCKWISE:
-                aRenderer.uvRotateWest = 1;
-                break;
-            case UPSIDE_DOWN:
-                aRenderer.uvRotateWest = 3;
-                break;
-            default:
-                aRenderer.uvRotateWest = 0;
-                break;
+            case COUNTER_CLOCKWISE -> aRenderer.uvRotateWest = 2;
+            case CLOCKWISE -> aRenderer.uvRotateWest = 1;
+            case UPSIDE_DOWN -> aRenderer.uvRotateWest = 3;
+            default -> aRenderer.uvRotateWest = 0;
         }
 
         final Flip aFlip = extendedFacing.getFlip();
@@ -353,18 +327,10 @@ public class GT_RenderedTexture extends GT_TextureBase implements ITexture, ICol
             ExtendedFacing extendedFacing) {
         // **NOT A BUG**: aRenderer.uvRotateNorth REALLY CONTROLS THE ROTATION OF THE WEST SIDE
         switch (useExtFacing ? extendedFacing.getRotation() : Rotation.NORMAL) {
-            case COUNTER_CLOCKWISE:
-                aRenderer.uvRotateNorth = 2;
-                break;
-            case CLOCKWISE:
-                aRenderer.uvRotateNorth = 1;
-                break;
-            case UPSIDE_DOWN:
-                aRenderer.uvRotateNorth = 3;
-                break;
-            default:
-                aRenderer.uvRotateNorth = 0;
-                break;
+            case COUNTER_CLOCKWISE -> aRenderer.uvRotateNorth = 2;
+            case CLOCKWISE -> aRenderer.uvRotateNorth = 1;
+            case UPSIDE_DOWN -> aRenderer.uvRotateNorth = 3;
+            default -> aRenderer.uvRotateNorth = 0;
         }
 
         final Flip aFlip = extendedFacing.getFlip();
@@ -387,18 +353,10 @@ public class GT_RenderedTexture extends GT_TextureBase implements ITexture, ICol
         aRenderer.field_152631_f = true;
         // **NOT A BUG**: aRenderer.uvRotateSouth REALLY CONTROLS THE ROTATION OF THE EAST SIDE
         switch (useExtFacing ? extendedFacing.getRotation() : Rotation.NORMAL) {
-            case COUNTER_CLOCKWISE:
-                aRenderer.uvRotateSouth = 2;
-                break;
-            case CLOCKWISE:
-                aRenderer.uvRotateSouth = 1;
-                break;
-            case UPSIDE_DOWN:
-                aRenderer.uvRotateSouth = 3;
-                break;
-            default:
-                aRenderer.uvRotateSouth = 0;
-                break;
+            case COUNTER_CLOCKWISE -> aRenderer.uvRotateSouth = 2;
+            case CLOCKWISE -> aRenderer.uvRotateSouth = 1;
+            case UPSIDE_DOWN -> aRenderer.uvRotateSouth = 3;
+            default -> aRenderer.uvRotateSouth = 0;
         }
 
         final Flip aFlip = extendedFacing.getFlip();
@@ -427,7 +385,10 @@ public class GT_RenderedTexture extends GT_TextureBase implements ITexture, ICol
             if (meta instanceof IAlignmentProvider) {
                 alignment = ((IAlignmentProvider) meta).getAlignment();
             } else if (meta != null) {
-                return ExtendedFacing.of(ForgeDirection.getOrientation(meta.getBaseMetaTileEntity().getFrontFacing()));
+                return ExtendedFacing.of(
+                        ForgeDirection.getOrientation(
+                                meta.getBaseMetaTileEntity()
+                                    .getFrontFacing()));
             }
         } else if (te instanceof IAlignmentProvider) {
             alignment = ((IAlignmentProvider) te).getAlignment();

@@ -4,8 +4,6 @@ import static gregtech.api.enums.GT_Values.D1;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
-import java.util.ArrayList;
-
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
@@ -173,19 +171,28 @@ public abstract class GT_MetaTileEntity_BasicMachine_Bronze extends GT_MetaTileE
             sendSound((byte) 9);
             mNeedsSteamVenting = false;
             try {
-                for (EntityLivingBase tLiving : (ArrayList<EntityLivingBase>) getBaseMetaTileEntity().getWorld()
-                        .getEntitiesWithinAABB(
-                                EntityLivingBase.class,
-                                AxisAlignedBB.getBoundingBox(
-                                        getBaseMetaTileEntity().getOffsetX(getBaseMetaTileEntity().getFrontFacing(), 1),
-                                        getBaseMetaTileEntity().getOffsetY(getBaseMetaTileEntity().getFrontFacing(), 1),
-                                        getBaseMetaTileEntity().getOffsetZ(getBaseMetaTileEntity().getFrontFacing(), 1),
-                                        getBaseMetaTileEntity().getOffsetX(getBaseMetaTileEntity().getFrontFacing(), 1)
-                                                + 1,
-                                        getBaseMetaTileEntity().getOffsetY(getBaseMetaTileEntity().getFrontFacing(), 1)
-                                                + 1,
-                                        getBaseMetaTileEntity().getOffsetZ(getBaseMetaTileEntity().getFrontFacing(), 1)
-                                                + 1))) {
+                for (EntityLivingBase tLiving : getBaseMetaTileEntity().getWorld()
+                                                                       .getEntitiesWithinAABB(
+                                                                               EntityLivingBase.class,
+                                                                               AxisAlignedBB.getBoundingBox(
+                                                                                       getBaseMetaTileEntity().getOffsetX(
+                                                                                               getBaseMetaTileEntity().getFrontFacing(),
+                                                                                               1),
+                                                                                       getBaseMetaTileEntity().getOffsetY(
+                                                                                               getBaseMetaTileEntity().getFrontFacing(),
+                                                                                               1),
+                                                                                       getBaseMetaTileEntity().getOffsetZ(
+                                                                                               getBaseMetaTileEntity().getFrontFacing(),
+                                                                                               1),
+                                                                                       getBaseMetaTileEntity().getOffsetX(
+                                                                                               getBaseMetaTileEntity().getFrontFacing(),
+                                                                                               1) + 1,
+                                                                                       getBaseMetaTileEntity().getOffsetY(
+                                                                                               getBaseMetaTileEntity().getFrontFacing(),
+                                                                                               1) + 1,
+                                                                                       getBaseMetaTileEntity().getOffsetZ(
+                                                                                               getBaseMetaTileEntity().getFrontFacing(),
+                                                                                               1) + 1))) {
                     GT_Utility.applyHeatDamage(tLiving, getSteamDamage());
                 }
             } catch (Throwable e) {
@@ -230,17 +237,22 @@ public abstract class GT_MetaTileEntity_BasicMachine_Bronze extends GT_MetaTileE
         if (aIndex == 9) {
             GT_Utility.doSoundAtClient(SoundResource.RANDOM_FIZZ, 5, 1.0F, aX, aY, aZ);
 
-            new ParticleEventBuilder().setIdentifier(ParticleFX.CLOUD).setWorld(getBaseMetaTileEntity().getWorld())
-                    .setMotion(
-                            ForgeDirection.getOrientation(getBaseMetaTileEntity().getFrontFacing()).offsetX / 5.0,
-                            ForgeDirection.getOrientation(getBaseMetaTileEntity().getFrontFacing()).offsetY / 5.0,
-                            ForgeDirection.getOrientation(getBaseMetaTileEntity().getFrontFacing()).offsetZ / 5.0)
-                    .<ParticleEventBuilder>times(
-                            8,
-                            x -> x.setPosition(
-                                    aX - 0.5 + XSTR_INSTANCE.nextFloat(),
-                                    aY - 0.5 + XSTR_INSTANCE.nextFloat(),
-                                    aZ - 0.5 + XSTR_INSTANCE.nextFloat()).run());
+            new ParticleEventBuilder().setIdentifier(ParticleFX.CLOUD)
+                                      .setWorld(getBaseMetaTileEntity().getWorld())
+                                      .setMotion(
+                                              ForgeDirection.getOrientation(
+                                                      getBaseMetaTileEntity().getFrontFacing()).offsetX / 5.0,
+                                              ForgeDirection.getOrientation(
+                                                      getBaseMetaTileEntity().getFrontFacing()).offsetY / 5.0,
+                                              ForgeDirection.getOrientation(
+                                                      getBaseMetaTileEntity().getFrontFacing()).offsetZ / 5.0)
+                                      .<ParticleEventBuilder>times(
+                                              8,
+                                              x -> x.setPosition(
+                                                      aX - 0.5 + XSTR_INSTANCE.nextFloat(),
+                                                      aY - 0.5 + XSTR_INSTANCE.nextFloat(),
+                                                      aZ - 0.5 + XSTR_INSTANCE.nextFloat())
+                                                    .run());
         }
     }
 
@@ -251,7 +263,8 @@ public abstract class GT_MetaTileEntity_BasicMachine_Bronze extends GT_MetaTileE
 
     @Override
     public boolean allowCoverOnSide(byte aSide, GT_ItemStack aCoverID) {
-        return GregTech_API.getCoverBehaviorNew(aCoverID.toStack()).isSimpleCover()
+        return GregTech_API.getCoverBehaviorNew(aCoverID.toStack())
+                           .isSimpleCover()
                 && super.allowCoverOnSide(aSide, aCoverID);
     }
 
@@ -370,7 +383,9 @@ public abstract class GT_MetaTileEntity_BasicMachine_Bronze extends GT_MetaTileE
     @Override
     public void addGregTechLogo(ModularWindow.Builder builder) {
         builder.widget(
-                new DrawableWidget().setDrawable(getGUITextureSet().getGregTechLogo()).setSize(17, 17).setPos(152, 63));
+                new DrawableWidget().setDrawable(getGUITextureSet().getGregTechLogo())
+                                    .setSize(17, 17)
+                                    .setPos(152, 63));
     }
 
     @Override

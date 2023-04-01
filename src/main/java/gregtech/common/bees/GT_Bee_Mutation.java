@@ -47,7 +47,8 @@ public class GT_Bee_Mutation extends BeeMutation {
         }
 
         IBeeModifier beeHousingModifier = BeeManager.beeRoot.createBeeHousingModifier(housing);
-        IBeeModifier beeModeModifier = BeeManager.beeRoot.getBeekeepingMode(world).getBeeModifier();
+        IBeeModifier beeModeModifier = BeeManager.beeRoot.getBeekeepingMode(world)
+                                                         .getBeeModifier();
 
         processedChance *= beeHousingModifier.getMutationModifier(genome0, genome1, processedChance);
         processedChance *= beeModeModifier.getMutationModifier(genome0, genome1, processedChance);

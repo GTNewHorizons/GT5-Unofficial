@@ -1519,6 +1519,7 @@ public enum ItemList implements IItemContainer {
     IndustrialApiary_Upgrade_SKY,
     IndustrialApiary_Upgrade_HEATER,
     IndustrialApiary_Upgrade_SIEVE,
+    IndustrialApiary_Upgrade_UNLIGHT,
 
     Neutron_Reflector,
 
@@ -2162,8 +2163,12 @@ public enum ItemList implements IItemContainer {
         StringBuilder tCamelCasedDisplayNameBuilder = new StringBuilder();
         final String[] tDisplayNameWords = aDisplayName.split("\\W");
         for (String tWord : tDisplayNameWords) {
-            if (tWord.length() > 0) tCamelCasedDisplayNameBuilder.append(tWord.substring(0, 1).toUpperCase(Locale.US));
-            if (tWord.length() > 1) tCamelCasedDisplayNameBuilder.append(tWord.substring(1).toLowerCase(Locale.US));
+            if (tWord.length() > 0) tCamelCasedDisplayNameBuilder.append(
+                    tWord.substring(0, 1)
+                         .toUpperCase(Locale.US));
+            if (tWord.length() > 1) tCamelCasedDisplayNameBuilder.append(
+                    tWord.substring(1)
+                         .toLowerCase(Locale.US));
         }
         if (tCamelCasedDisplayNameBuilder.length() == 0) {
             // CamelCased DisplayName is empty, so use hash of aDisplayName

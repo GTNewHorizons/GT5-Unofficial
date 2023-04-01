@@ -61,7 +61,7 @@ public abstract class GT_GUIScreen extends GuiScreen implements GT_IToolTipRende
         guiTop = (this.height - this.gui_height) / 2;
 
         for (IGuiElement element : elements) {
-            if (element instanceof GuiButton) buttonList.add(element);
+            if (element instanceof GuiButton button) buttonList.add(button);
             if (element instanceof GT_GuiIntegerTextBox) textBoxes.add((GT_GuiIntegerTextBox) element);
         }
 
@@ -181,12 +181,11 @@ public abstract class GT_GUIScreen extends GuiScreen implements GT_IToolTipRende
             if (focusedTextBox != null) {
                 resetTextBox(focusedTextBox);
                 setFocusedTextBox(null);
-                return;
             } else {
                 closeScreen();
                 // don't fall through to parent
-                return;
             }
+            return;
         }
 
         if (c == '\t') { // tab
@@ -268,7 +267,7 @@ public abstract class GT_GUIScreen extends GuiScreen implements GT_IToolTipRende
      * GT_IToolTipRenderer
      */
     @Override
-    public void drawHoveringText(List text, int mouseX, int mouseY, FontRenderer render) {
+    public void drawHoveringText(List<String> text, int mouseX, int mouseY, FontRenderer render) {
         super.drawHoveringText(text, mouseX, mouseY, render);
     }
 

@@ -21,8 +21,7 @@ public class InfinityRenderer extends GT_GeneratedMaterial_Renderer {
     @Override
     public void renderItem(ItemRenderType type, ItemStack aStack, Object... data) {
         short aMetaData = (short) aStack.getItemDamage();
-        if (!(aStack.getItem() instanceof IGT_ItemWithMaterialRenderer)) return;
-        IGT_ItemWithMaterialRenderer aItem = (IGT_ItemWithMaterialRenderer) aStack.getItem();
+        if (!(aStack.getItem() instanceof IGT_ItemWithMaterialRenderer aItem)) return;
 
         int passes = 1;
         if (aItem.requiresMultipleRenderPasses()) {
@@ -61,7 +60,8 @@ public class InfinityRenderer extends GT_GeneratedMaterial_Renderer {
             }
 
             if (tOverlay != null && aFluid != null && aFluid.getFluid() != null) {
-                IIcon fluidIcon = aFluid.getFluid().getIcon(aFluid);
+                IIcon fluidIcon = aFluid.getFluid()
+                                        .getIcon(aFluid);
                 if (fluidIcon != null) {
                     markNeedsAnimationUpdate(fluidIcon);
                     // Adds colour to a cells fluid. Does not colour full fluid icons as shown in NEI etc.

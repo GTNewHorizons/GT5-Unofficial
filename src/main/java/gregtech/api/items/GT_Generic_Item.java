@@ -49,8 +49,10 @@ public class GT_Generic_Item extends Item implements IProjectileItem {
         super();
         mName = "gt." + aUnlocalized;
         GT_LanguageManager.addStringLocalization(mName + ".name", aEnglish);
-        if (GT_Utility.isStringValid(aEnglishTooltip)) GT_LanguageManager
-                .addStringLocalization(mTooltip = mName + ".tooltip_main", aEnglishTooltip, aWriteToolTipIntoLangFile);
+        if (GT_Utility.isStringValid(aEnglishTooltip)) GT_LanguageManager.addStringLocalization(
+                mTooltip = mName + ".tooltip_main",
+                aEnglishTooltip,
+                aWriteToolTipIntoLangFile);
         else mTooltip = null;
         setCreativeTab(GregTech_API.TAB_GREGTECH);
         GameRegistry.registerItem(this, mName, MOD_ID);
@@ -94,7 +96,7 @@ public class GT_Generic_Item extends Item implements IProjectileItem {
 
     @SuppressWarnings("unchecked")
     @Override
-    public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean aF3_H) {
+    public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
         if (getMaxDamage() > 0 && !getHasSubtypes())
             aList.add((aStack.getMaxDamage() - getDamage(aStack)) + " / " + aStack.getMaxDamage());
         if (mTooltip != null) aList.add(GT_LanguageManager.getTranslation(mTooltip));

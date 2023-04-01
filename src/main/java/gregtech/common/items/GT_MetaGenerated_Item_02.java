@@ -1679,7 +1679,8 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                             tLastID = 414 + i,
                             Dyes.get(i).mName + " Dye",
                             "",
-                            Dyes.get(i).name(),
+                            Dyes.get(i)
+                                .name(),
                             new TC_Aspects.TC_AspectStack(TC_Aspects.SENSUS, 1L)));
         }
         ItemList.Plank_Oak.set(
@@ -2816,16 +2817,20 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Tin, 1L));
 
         GT_ModHandler.addCompressionRecipe(ItemList.Crop_Drop_Coppon.get(4L), new ItemStack(Blocks.wool, 1, 1));
-        GT_ModHandler
-                .addCompressionRecipe(ItemList.Crop_Drop_Plumbilia.get(4L), ItemList.IC2_PlantballCompressed.get(1L));
-        GT_ModHandler
-                .addCompressionRecipe(ItemList.Crop_Drop_Argentia.get(4L), ItemList.IC2_PlantballCompressed.get(1L));
+        GT_ModHandler.addCompressionRecipe(
+                ItemList.Crop_Drop_Plumbilia.get(4L),
+                ItemList.IC2_PlantballCompressed.get(1L));
+        GT_ModHandler.addCompressionRecipe(
+                ItemList.Crop_Drop_Argentia.get(4L),
+                ItemList.IC2_PlantballCompressed.get(1L));
         GT_ModHandler.addCompressionRecipe(ItemList.Crop_Drop_Indigo.get(4L), ItemList.IC2_PlantballCompressed.get(1L));
         GT_ModHandler.addCompressionRecipe(ItemList.Crop_Drop_Ferru.get(4L), ItemList.IC2_PlantballCompressed.get(1L));
-        GT_ModHandler
-                .addCompressionRecipe(ItemList.Crop_Drop_Aurelia.get(4L), ItemList.IC2_PlantballCompressed.get(1L));
-        GT_ModHandler
-                .addCompressionRecipe(ItemList.Crop_Drop_OilBerry.get(4L), ItemList.IC2_PlantballCompressed.get(1L));
+        GT_ModHandler.addCompressionRecipe(
+                ItemList.Crop_Drop_Aurelia.get(4L),
+                ItemList.IC2_PlantballCompressed.get(1L));
+        GT_ModHandler.addCompressionRecipe(
+                ItemList.Crop_Drop_OilBerry.get(4L),
+                ItemList.IC2_PlantballCompressed.get(1L));
         GT_ModHandler.addCompressionRecipe(
                 ItemList.Crop_Drop_BobsYerUncleRanks.get(4L),
                 ItemList.IC2_PlantballCompressed.get(1L));
@@ -2898,9 +2903,9 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
         try {
             ic2.api.crops.CropCard tCrop;
             GT_Utility.getField(tCrop = ic2.api.crops.Crops.instance.getCropList()[13], "mDrop")
-                    .set(tCrop, ItemList.Crop_Drop_Ferru.get(1L));
+                      .set(tCrop, ItemList.Crop_Drop_Ferru.get(1L));
             GT_Utility.getField(tCrop = ic2.api.crops.Crops.instance.getCropList()[14], "mDrop")
-                    .set(tCrop, ItemList.Crop_Drop_Aurelia.get(1L));
+                      .set(tCrop, ItemList.Crop_Drop_Aurelia.get(1L));
         } catch (Throwable e) {
             if (GT_Values.D1) {
                 e.printStackTrace(GT_Log.err);
@@ -2953,8 +2958,13 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
         int aDamage = aStack.getItemDamage();
         if ((aDamage >= 25000) && (aDamage < 27000)) {
             if (aDamage >= 26000) {
-                return Behaviour_Arrow.DEFAULT_PLASTIC
-                        .getProjectile(this, aProjectileType, aStack, aWorld, aEntity, aSpeed);
+                return Behaviour_Arrow.DEFAULT_PLASTIC.getProjectile(
+                        this,
+                        aProjectileType,
+                        aStack,
+                        aWorld,
+                        aEntity,
+                        aSpeed);
             }
             return Behaviour_Arrow.DEFAULT_WOODEN.getProjectile(this, aProjectileType, aStack, aWorld, aEntity, aSpeed);
         }
@@ -2982,7 +2992,8 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
 
     @Override
     public boolean doesShowInCreative(OrePrefixes aPrefix, Materials aMaterial, boolean aDoShowAllItems) {
-        return (aDoShowAllItems) || (!aPrefix.name().startsWith("toolHead"));
+        return (aDoShowAllItems) || (!aPrefix.name()
+                                             .startsWith("toolHead"));
     }
 
     @Override

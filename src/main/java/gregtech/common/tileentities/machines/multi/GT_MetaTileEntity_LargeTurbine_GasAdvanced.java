@@ -32,26 +32,38 @@ public class GT_MetaTileEntity_LargeTurbine_GasAdvanced extends GT_MetaTileEntit
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
             boolean aActive, boolean aRedstone) {
-        return new ITexture[] { MACHINE_CASINGS[1][aColorIndex + 1],
-                aFacing == aSide
-                        ? (aActive ? TextureFactory.builder().addIcon(LARGETURBINE_NEW_ACTIVE5).build()
-                                : hasTurbine() ? TextureFactory.builder().addIcon(LARGETURBINE_NEW5).build()
-                                        : TextureFactory.builder().addIcon(LARGETURBINE_NEW_EMPTY5).build())
+        return new ITexture[] { MACHINE_CASINGS[1][aColorIndex + 1], aFacing
+                == aSide ? (aActive ? TextureFactory.builder()
+                                                    .addIcon(LARGETURBINE_NEW_ACTIVE5)
+                                                    .build()
+                        : hasTurbine() ? TextureFactory.builder()
+                                                       .addIcon(LARGETURBINE_NEW5)
+                                                       .build()
+                                : TextureFactory.builder()
+                                                .addIcon(LARGETURBINE_NEW_EMPTY5)
+                                                .build())
                         : casingTexturePages[1][57] };
     }
 
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType("Gas Turbine").addInfo("Warning: This is an experimental multiblock, subject to changes ")
-                .addInfo("Controller block for the Large Advanced Gas Turbine")
-                .addInfo("Needs a Turbine, place inside controller").addInfo("Only accepts gases above 800k EU/bucket")
-                .addInfo("Has no maximum EU/t output, only depends on the Dynamo Hatch")
-                .addPollutionAmount(getPollutionPerSecond(null)).addSeparator().beginStructureBlock(3, 3, 4, true)
-                .addController("Front center").addCasingInfoRange("Advanced Gas Turbine Casing", 8, 30, false)
-                .addDynamoHatch("Back center", 1).addMaintenanceHatch("Side centered", 2)
-                .addMufflerHatch("Side centered", 2).addInputHatch("Gas Fuel, Side centered", 2)
-                .toolTipFinisher("Gregtech");
+        tt.addMachineType("Gas Turbine")
+          .addInfo("Warning: This is an experimental multiblock, subject to changes ")
+          .addInfo("Controller block for the Large Advanced Gas Turbine")
+          .addInfo("Needs a Turbine, place inside controller")
+          .addInfo("Only accepts gases above 800k EU/bucket")
+          .addInfo("Has no maximum EU/t output, only depends on the Dynamo Hatch")
+          .addPollutionAmount(getPollutionPerSecond(null))
+          .addSeparator()
+          .beginStructureBlock(3, 3, 4, true)
+          .addController("Front center")
+          .addCasingInfoRange("Advanced Gas Turbine Casing", 8, 30, false)
+          .addDynamoHatch("Back center", 1)
+          .addMaintenanceHatch("Side centered", 2)
+          .addMufflerHatch("Side centered", 2)
+          .addInputHatch("Gas Fuel, Side centered", 2)
+          .toolTipFinisher("Gregtech");
         return tt;
     }
 
@@ -146,13 +158,11 @@ public class GT_MetaTileEntity_LargeTurbine_GasAdvanced extends GT_MetaTileEntit
             if (totalFlow <= 0) return 0;
             tEU = GT_Utility.safeInt((long) totalFlow * fuelValue);
 
-            if (totalFlow == actualOptimalFlow) {
-                tEU = GT_Utility.safeInt((long) tEU * (long) aBaseEff / 10000L);
-            } else {
+            if (totalFlow != actualOptimalFlow) {
                 float efficiency = getOverflowEfficiency(totalFlow, actualOptimalFlow, overflowMultiplier);
                 tEU *= efficiency;
-                tEU = GT_Utility.safeInt((long) tEU * (long) aBaseEff / 10000L);
             }
+            tEU = GT_Utility.safeInt((long) tEU * (long) aBaseEff / 10000L);
 
             // If next output is above the maximum the dynamo can handle, set it to the maximum instead of exploding the
             // turbine

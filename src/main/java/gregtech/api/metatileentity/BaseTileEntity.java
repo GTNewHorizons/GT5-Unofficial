@@ -201,7 +201,8 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
 
     @Override
     public int getRandomNumber(int aRange) {
-        return ThreadLocalRandom.current().nextInt(aRange);
+        return ThreadLocalRandom.current()
+                                .nextInt(aRange);
     }
 
     @Override
@@ -530,8 +531,9 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
                 // update if it was / is strong powered.
                 if (((((mStrongRedstone | oStrongRedstone) >>> dir.ordinal()) & 1) != 0)
                         && getBlock(x1, y1, z1).isNormalCube()) {
-                    final int skipUpdateSide = dir.getOpposite().ordinal(); // Don't update this block. Still updates
-                                                                            // diagonal blocks twice if conditions
+                    final int skipUpdateSide = dir.getOpposite()
+                                                  .ordinal(); // Don't update this block. Still updates
+                                                              // diagonal blocks twice if conditions
                     // meet.
 
                     for (final ForgeDirection dir2 : ForgeDirection.VALID_DIRECTIONS) {
@@ -707,8 +709,9 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
         if (NetworkUtils.isClient()) {
             final FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
             // noinspection unchecked
-            final List<String> titleLines = fontRenderer
-                    .listFormattedStringToWidth(title, getGUIWidth() - (TAB_PADDING + TITLE_PADDING) * 2);
+            final List<String> titleLines = fontRenderer.listFormattedStringToWidth(
+                    title,
+                    getGUIWidth() - (TAB_PADDING + TITLE_PADDING) * 2);
             titleWidth = titleLines.size() > 1 ? getGUIWidth() - (TAB_PADDING + TITLE_PADDING) * 2
                     : fontRenderer.getStringWidth(title);
             // noinspection PointlessArithmeticExpression
@@ -717,27 +720,35 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
 
         final DrawableWidget tab = new DrawableWidget();
         final TextWidget text = new TextWidget(title).setDefaultColor(getTitleColor())
-                .setTextAlignment(Alignment.CenterLeft).setMaxWidth(titleWidth);
+                                                     .setTextAlignment(Alignment.CenterLeft)
+                                                     .setMaxWidth(titleWidth);
         if (GT_Mod.gregtechproxy.mTitleTabStyle == 1) {
-            tab.setDrawable(getGUITextureSet().getTitleTabAngular()).setPos(0, -(titleHeight + TAB_PADDING) + 1)
-                    .setSize(getGUIWidth(), titleHeight + TAB_PADDING * 2);
+            tab.setDrawable(getGUITextureSet().getTitleTabAngular())
+               .setPos(0, -(titleHeight + TAB_PADDING) + 1)
+               .setSize(getGUIWidth(), titleHeight + TAB_PADDING * 2);
             text.setPos(TAB_PADDING + TITLE_PADDING, -titleHeight + TAB_PADDING);
         } else {
-            tab.setDrawable(getGUITextureSet().getTitleTabDark()).setPos(0, -(titleHeight + TAB_PADDING * 2) + 1)
-                    .setSize(titleWidth + (TAB_PADDING + TITLE_PADDING) * 2, titleHeight + TAB_PADDING * 2 - 1);
+            tab.setDrawable(getGUITextureSet().getTitleTabDark())
+               .setPos(0, -(titleHeight + TAB_PADDING * 2) + 1)
+               .setSize(titleWidth + (TAB_PADDING + TITLE_PADDING) * 2, titleHeight + TAB_PADDING * 2 - 1);
             text.setPos(TAB_PADDING + TITLE_PADDING, -titleHeight);
         }
-        builder.widget(tab).widget(text);
+        builder.widget(tab)
+               .widget(text);
     }
 
     protected void addTitleItemIconStyle(ModularWindow.Builder builder, String title) {
         builder.widget(
-                new MultiChildWidget()
-                        .addChild(
-                                new DrawableWidget().setDrawable(getGUITextureSet().getTitleTabNormal()).setPos(0, 0)
-                                        .setSize(24, 24))
-                        .addChild(new ItemDrawable(getStackForm(1)).asWidget().setPos(4, 4)).addTooltip(title)
-                        .setTooltipShowUpDelay(TOOLTIP_DELAY).setPos(0, -24 + 3));
+                new MultiChildWidget().addChild(
+                        new DrawableWidget().setDrawable(getGUITextureSet().getTitleTabNormal())
+                                            .setPos(0, 0)
+                                            .setSize(24, 24))
+                                      .addChild(
+                                              new ItemDrawable(getStackForm(1)).asWidget()
+                                                                               .setPos(4, 4))
+                                      .addTooltip(title)
+                                      .setTooltipShowUpDelay(TOOLTIP_DELAY)
+                                      .setPos(0, -24 + 3));
     }
 
     @Override
@@ -752,7 +763,9 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
     @Override
     public void addGregTechLogo(ModularWindow.Builder builder) {
         builder.widget(
-                new DrawableWidget().setDrawable(getGUITextureSet().getGregTechLogo()).setSize(17, 17).setPos(152, 63));
+                new DrawableWidget().setDrawable(getGUITextureSet().getGregTechLogo())
+                                    .setSize(17, 17)
+                                    .setPos(152, 63));
     }
 
     protected int getGUIWidth() {
@@ -776,8 +789,12 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
             background = new IDrawable[] { getGUITextureSet().getItemSlot() };
         }
         builder.widget(
-                SlotGroup.ofItemHandler(inventoryHandler, 1).startFromSlot(0).endAtSlot(0).background(background)
-                        .build().setPos(79, 34));
+                SlotGroup.ofItemHandler(inventoryHandler, 1)
+                         .startFromSlot(0)
+                         .endAtSlot(0)
+                         .background(background)
+                         .build()
+                         .setPos(79, 34));
     }
 
     @Override
@@ -789,8 +806,12 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
             background = new IDrawable[] { getGUITextureSet().getItemSlot() };
         }
         builder.widget(
-                SlotGroup.ofItemHandler(inventoryHandler, 2).startFromSlot(0).endAtSlot(3).background(background)
-                        .build().setPos(70, 25));
+                SlotGroup.ofItemHandler(inventoryHandler, 2)
+                         .startFromSlot(0)
+                         .endAtSlot(3)
+                         .background(background)
+                         .build()
+                         .setPos(70, 25));
     }
 
     @Override
@@ -802,8 +823,12 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
             background = new IDrawable[] { getGUITextureSet().getItemSlot() };
         }
         builder.widget(
-                SlotGroup.ofItemHandler(inventoryHandler, 3).startFromSlot(0).endAtSlot(8).background(background)
-                        .build().setPos(61, 16));
+                SlotGroup.ofItemHandler(inventoryHandler, 3)
+                         .startFromSlot(0)
+                         .endAtSlot(8)
+                         .background(background)
+                         .build()
+                         .setPos(61, 16));
     }
 
     @Override
@@ -815,8 +840,12 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
             background = new IDrawable[] { getGUITextureSet().getItemSlot() };
         }
         builder.widget(
-                SlotGroup.ofItemHandler(inventoryHandler, 4).startFromSlot(0).endAtSlot(15).background(background)
-                        .build().setPos(52, 7));
+                SlotGroup.ofItemHandler(inventoryHandler, 4)
+                         .startFromSlot(0)
+                         .endAtSlot(15)
+                         .background(background)
+                         .build()
+                         .setPos(52, 7));
     }
 
     public void addCoverTabs(ModularWindow.Builder builder, UIBuildContext buildContext) {
@@ -832,8 +861,7 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
         final ItemStackHandler inventoryHandler = getInventoryHandler();
         if (inventoryHandler == null) return;
 
-        if (!(this instanceof IInventory)) return;
-        final IInventory inv = (IInventory) this;
+        if (!(this instanceof IInventory inv)) return;
 
         final IConfigurationCircuitSupport ccs = getConfigurationCircuitSupport();
         if (ccs == null) return;
@@ -857,8 +885,9 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
                     final List<ItemStack> tCircuits = ccs.getConfigurationCircuits();
                     final int index = GT_Utility.findMatchingStackInList(tCircuits, cursorStack);
                     if (index < 0) {
-                        int curIndex = GT_Utility
-                                .findMatchingStackInList(tCircuits, inv.getStackInSlot(ccs.getCircuitSlot())) + 1;
+                        int curIndex = GT_Utility.findMatchingStackInList(
+                                tCircuits,
+                                inv.getStackInSlot(ccs.getCircuitSlot())) + 1;
                         if (clickData.mouseButton == 0) {
                             curIndex += 1;
                         } else {
@@ -894,18 +923,20 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
                     line -> line.contains(StatCollector.translateToLocal("gt.integrated_circuit.tooltip.0"))
                             || line.contains(StatCollector.translateToLocal("gt.integrated_circuit.tooltip.1")));
             return list;
-        }).disableShiftInsert().setHandlePhantomActionClient(true)
-                .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_INT_CIRCUIT)
-                .setGTTooltip(() -> mTooltipCache.getData("GT5U.machines.select_circuit.tooltip"))
-                .setTooltipShowUpDelay(TOOLTIP_DELAY).setPos(ccs.getCircuitSlotX() - 1, ccs.getCircuitSlotY() - 1));
+        })
+         .disableShiftInsert()
+         .setHandlePhantomActionClient(true)
+         .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_INT_CIRCUIT)
+         .setGTTooltip(() -> mTooltipCache.getData("GT5U.machines.select_circuit.tooltip"))
+         .setTooltipShowUpDelay(TOOLTIP_DELAY)
+         .setPos(ccs.getCircuitSlotX() - 1, ccs.getCircuitSlotY() - 1));
     }
 
     protected void openSelectCircuitDialog(ModularUIContext uiContext, AtomicBoolean dialogOpened) {
         final IConfigurationCircuitSupport ccs = getConfigurationCircuitSupport();
         if (ccs == null) return;
 
-        if (!(this instanceof IInventory)) return;
-        final IInventory inv = (IInventory) this;
+        if (!(this instanceof IInventory inv)) return;
 
         final List<ItemStack> circuits = ccs.getConfigurationCircuits();
         uiContext.openClientWindow(
@@ -915,17 +946,24 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
                         this::onCircuitSelected,
                         circuits,
                         GT_Utility.findMatchingStackInList(circuits, inv.getStackInSlot(ccs.getCircuitSlot())))
-                                .setAnotherWindow(true, dialogOpened).setGuiTint(getGUIColorization())
-                                .setCurrentGetter(() -> inv.getStackInSlot(ccs.getCircuitSlot()))
-                                .createWindow(new UIBuildContext(player)));
+                                                                                                               .setAnotherWindow(
+                                                                                                                       true,
+                                                                                                                       dialogOpened)
+                                                                                                               .setGuiTint(
+                                                                                                                       getGUIColorization())
+                                                                                                               .setCurrentGetter(
+                                                                                                                       () -> inv.getStackInSlot(
+                                                                                                                               ccs.getCircuitSlot()))
+                                                                                                               .createWindow(
+                                                                                                                       new UIBuildContext(
+                                                                                                                               player)));
     }
 
     protected void onCircuitSelected(ItemStack selected) {
         final IConfigurationCircuitSupport ccs = getConfigurationCircuitSupport();
         if (ccs == null) return;
 
-        if (!(this instanceof IInventory)) return;
-        final IInventory inv = (IInventory) this;
+        if (!(this instanceof IInventory inv)) return;
 
         GT_Values.NW.sendToServer(new GT_Packet_SetConfigurationCircuit(this, selected));
         // we will not do any validation on client side

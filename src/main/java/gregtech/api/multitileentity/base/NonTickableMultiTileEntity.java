@@ -9,11 +9,11 @@ import gregtech.api.net.GT_Packet_SendCoverData;
 import gregtech.api.util.ISerializableObject;
 import gregtech.common.covers.CoverInfo;
 
-public abstract class BaseNontickableMultiTileEntity extends BaseMultiTileEntity {
+public abstract class NonTickableMultiTileEntity extends MultiTileEntity {
 
     boolean mConstructed = false; // Keeps track of whether this TE has been constructed and placed in the world
 
-    public BaseNontickableMultiTileEntity() {
+    public NonTickableMultiTileEntity() {
         super(false);
     }
 

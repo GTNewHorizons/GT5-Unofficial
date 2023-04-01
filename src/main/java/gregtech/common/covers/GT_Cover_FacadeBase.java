@@ -122,12 +122,13 @@ public abstract class GT_Cover_FacadeBase extends GT_CoverBehaviorBase<GT_Cover_
                 GT_Utility.stackToInt(aCover),
                 new FacadeData(GT_Utility.copyAmount(1, aCover), 0));
 
-        if (aTileEntity.isClientSide()) GT_RenderingWorld.getInstance().register(
-                aTileEntity.getXCoord(),
-                aTileEntity.getYCoord(),
-                aTileEntity.getZCoord(),
-                getTargetBlock(aCover),
-                getTargetMeta(aCover));
+        if (aTileEntity.isClientSide()) GT_RenderingWorld.getInstance()
+                                                         .register(
+                                                                 aTileEntity.getXCoord(),
+                                                                 aTileEntity.getYCoord(),
+                                                                 aTileEntity.getZCoord(),
+                                                                 getTargetBlock(aCover),
+                                                                 getTargetMeta(aCover));
     }
 
     @Override
@@ -149,8 +150,11 @@ public abstract class GT_Cover_FacadeBase extends GT_CoverBehaviorBase<GT_Cover_
         if (block == null) return Textures.BlockIcons.ERROR_RENDERING[0];
         // TODO: change this when *someone* made the block render in both pass
         if (block.getRenderBlockPass() != 0) return Textures.BlockIcons.ERROR_RENDERING[0];
-        return TextureFactory.builder().setFromBlock(block, getTargetMeta(aCoverVariable.mStack)).useWorldCoord()
-                .setFromSide(ForgeDirection.getOrientation(aSide)).build();
+        return TextureFactory.builder()
+                             .setFromBlock(block, getTargetMeta(aCoverVariable.mStack))
+                             .useWorldCoord()
+                             .setFromSide(ForgeDirection.getOrientation(aSide))
+                             .build();
     }
 
     @Override
@@ -177,12 +181,13 @@ public abstract class GT_Cover_FacadeBase extends GT_CoverBehaviorBase<GT_Cover_
 
     @Override
     protected void onDataChangedImpl(byte aSide, int aCoverID, FacadeData aCoverVariable, ICoverable aTileEntity) {
-        if (aTileEntity.isClientSide()) GT_RenderingWorld.getInstance().register(
-                aTileEntity.getXCoord(),
-                aTileEntity.getYCoord(),
-                aTileEntity.getZCoord(),
-                getTargetBlock(aCoverVariable.mStack),
-                getTargetMeta(aCoverVariable.mStack));
+        if (aTileEntity.isClientSide()) GT_RenderingWorld.getInstance()
+                                                         .register(
+                                                                 aTileEntity.getXCoord(),
+                                                                 aTileEntity.getYCoord(),
+                                                                 aTileEntity.getZCoord(),
+                                                                 getTargetBlock(aCoverVariable.mStack),
+                                                                 getTargetMeta(aCoverVariable.mStack));
     }
 
     @Override
@@ -195,12 +200,13 @@ public abstract class GT_Cover_FacadeBase extends GT_CoverBehaviorBase<GT_Cover_
             }
             if (aCoverVariable.mStack != null)
                 // mStack == null -> cover removed before data reach client
-                GT_RenderingWorld.getInstance().unregister(
-                        aTileEntity.getXCoord(),
-                        aTileEntity.getYCoord(),
-                        aTileEntity.getZCoord(),
-                        getTargetBlock(aCoverVariable.mStack),
-                        getTargetMeta(aCoverVariable.mStack));
+                GT_RenderingWorld.getInstance()
+                                 .unregister(
+                                         aTileEntity.getXCoord(),
+                                         aTileEntity.getYCoord(),
+                                         aTileEntity.getZCoord(),
+                                         getTargetBlock(aCoverVariable.mStack),
+                                         getTargetMeta(aCoverVariable.mStack));
         }
     }
 
@@ -329,70 +335,74 @@ public abstract class GT_Cover_FacadeBase extends GT_CoverBehaviorBase<GT_Cover_
                                     0,
                                     CoverDataFollower_ToggleButtonWidget.ofCheckAndCross(),
                                     widget -> widget.setPos(spaceX * 0, spaceY * 0))
-                                    .addToggleButton(
-                                            1,
-                                            CoverDataFollower_ToggleButtonWidget.ofCheckAndCross(),
-                                            widget -> widget.setPos(spaceX * 0, spaceY * 1))
-                                    .addToggleButton(
-                                            2,
-                                            CoverDataFollower_ToggleButtonWidget.ofCheckAndCross(),
-                                            widget -> widget.setPos(spaceX * 0, spaceY * 2))
-                                    .addToggleButton(
-                                            3,
-                                            CoverDataFollower_ToggleButtonWidget.ofCheckAndCross(),
-                                            widget -> widget.setPos(spaceX * 0, spaceY * 3))
-                                    .setPos(startX, startY))
-                    .widget(
-                            new ItemDrawable(() -> getCoverData() != null ? getCoverData().mStack : null).asWidget()
-                                    .setPos(5, 5).setSize(16, 16))
-                    .widget(
-                            TextWidget
-                                    .dynamicString(
-                                            () -> getCoverData() != null ? getCoverData().mStack.getDisplayName() : "")
-                                    .setSynced(false).setDefaultColor(COLOR_TITLE.get()).setPos(25, 9))
-                    .widget(
-                            new TextWidget(GT_Utility.trans("128", "Redstone")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                                    .setPos(3 + startX + spaceX * 1, 4 + startY + spaceY * 0))
-                    .widget(
-                            new TextWidget(GT_Utility.trans("129", "Energy")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                                    .setPos(3 + startX + spaceX * 1, 4 + startY + spaceY * 1))
-                    .widget(
-                            new TextWidget(GT_Utility.trans("130", "Fluids")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                                    .setPos(3 + startX + spaceX * 1, 4 + startY + spaceY * 2))
-                    .widget(
-                            new TextWidget(GT_Utility.trans("131", "Items")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                                    .setPos(3 + startX + spaceX * 1, 4 + startY + spaceY * 3));
+                              .addToggleButton(
+                                      1,
+                                      CoverDataFollower_ToggleButtonWidget.ofCheckAndCross(),
+                                      widget -> widget.setPos(spaceX * 0, spaceY * 1))
+                              .addToggleButton(
+                                      2,
+                                      CoverDataFollower_ToggleButtonWidget.ofCheckAndCross(),
+                                      widget -> widget.setPos(spaceX * 0, spaceY * 2))
+                              .addToggleButton(
+                                      3,
+                                      CoverDataFollower_ToggleButtonWidget.ofCheckAndCross(),
+                                      widget -> widget.setPos(spaceX * 0, spaceY * 3))
+                              .setPos(startX, startY))
+                   .widget(
+                           new ItemDrawable(() -> getCoverData() != null ? getCoverData().mStack : null).asWidget()
+                                                                                                        .setPos(5, 5)
+                                                                                                        .setSize(
+                                                                                                                16,
+                                                                                                                16))
+                   .widget(
+                           TextWidget.dynamicString(
+                                   () -> getCoverData() != null ? getCoverData().mStack.getDisplayName() : "")
+                                     .setSynced(false)
+                                     .setDefaultColor(COLOR_TITLE.get())
+                                     .setPos(25, 9))
+                   .widget(
+                           new TextWidget(GT_Utility.trans("128", "Redstone")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                                                                              .setPos(
+                                                                                      3 + startX + spaceX * 1,
+                                                                                      4 + startY + spaceY * 0))
+                   .widget(
+                           new TextWidget(GT_Utility.trans("129", "Energy")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                                                                            .setPos(
+                                                                                    3 + startX + spaceX * 1,
+                                                                                    4 + startY + spaceY * 1))
+                   .widget(
+                           new TextWidget(GT_Utility.trans("130", "Fluids")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                                                                            .setPos(
+                                                                                    3 + startX + spaceX * 1,
+                                                                                    4 + startY + spaceY * 2))
+                   .widget(
+                           new TextWidget(GT_Utility.trans("131", "Items")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                                                                           .setPos(
+                                                                                   3 + startX + spaceX * 1,
+                                                                                   4 + startY + spaceY * 3));
         }
 
         @Override
         protected void addTitleToUI(ModularWindow.Builder builder) {}
 
         private int getNewCoverVariable(int id, FacadeData coverVariable) {
-            switch (id) {
-                case 0:
-                    return coverVariable.mFlags ^ 0x1;
-                case 1:
-                    return coverVariable.mFlags ^ 0x2;
-                case 2:
-                    return coverVariable.mFlags ^ 0x4;
-                case 3:
-                    return coverVariable.mFlags ^ 0x8;
-            }
-            return coverVariable.mFlags;
+            return switch (id) {
+                case 0 -> coverVariable.mFlags ^ 0x1;
+                case 1 -> coverVariable.mFlags ^ 0x2;
+                case 2 -> coverVariable.mFlags ^ 0x4;
+                case 3 -> coverVariable.mFlags ^ 0x8;
+                default -> coverVariable.mFlags;
+            };
         }
 
         private boolean isEnabled(int id, FacadeData coverVariable) {
-            switch (id) {
-                case 0:
-                    return (coverVariable.mFlags & 0x1) > 0;
-                case 1:
-                    return (coverVariable.mFlags & 0x2) > 0;
-                case 2:
-                    return (coverVariable.mFlags & 0x4) > 0;
-                case 3:
-                    return (coverVariable.mFlags & 0x8) > 0;
-            }
-            return false;
+            return switch (id) {
+                case 0 -> (coverVariable.mFlags & 0x1) > 0;
+                case 1 -> (coverVariable.mFlags & 0x2) > 0;
+                case 2 -> (coverVariable.mFlags & 0x4) > 0;
+                case 3 -> (coverVariable.mFlags & 0x8) > 0;
+                default -> false;
+            };
         }
     }
 }

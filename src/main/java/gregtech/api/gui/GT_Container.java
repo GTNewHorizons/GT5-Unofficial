@@ -139,19 +139,24 @@ public class GT_Container extends Container {
                         aPlayerInventory.setItemStack(null);
                     }
                     if (aMouseclick == 1) {
-                        aPlayer.dropPlayerItemWithRandomChoice(aPlayerInventory.getItemStack().splitStack(1), true);
+                        aPlayer.dropPlayerItemWithRandomChoice(
+                                aPlayerInventory.getItemStack()
+                                                .splitStack(1),
+                                true);
                         if (aPlayerInventory.getItemStack().stackSize == 0) {
                             aPlayerInventory.setItemStack(null);
                         }
                     }
                 }
             } else if (aShifthold == 1) {
-                aSlot = (Slot) this.inventorySlots.get(aSlotIndex);
+                aSlot = this.inventorySlots.get(aSlotIndex);
                 if (aSlot != null && aSlot.canTakeStack(aPlayer)) {
                     tTempStack = this.transferStackInSlot(aPlayer, aSlotIndex);
                     if (tTempStack != null) {
                         rStack = GT_Utility.copyOrNull(tTempStack);
-                        if (aSlot.getStack() != null && aSlot.getStack().getItem() == tTempStack.getItem()) {
+                        if (aSlot.getStack() != null && aSlot.getStack()
+                                                             .getItem()
+                                == tTempStack.getItem()) {
                             slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
                         }
                     }
@@ -160,7 +165,7 @@ public class GT_Container extends Container {
                 if (aSlotIndex < 0) {
                     return null;
                 }
-                aSlot = (Slot) this.inventorySlots.get(aSlotIndex);
+                aSlot = this.inventorySlots.get(aSlotIndex);
                 if (aSlot != null) {
                     tTempStack = aSlot.getStack();
                     ItemStack mouseStack = aPlayerInventory.getItemStack();
@@ -234,7 +239,7 @@ public class GT_Container extends Container {
             // number key from 1 to 9
             // aMouseclick == 0 means number 1, aMouseclick == 8 means number 9
         } else if (aShifthold == 2 && aMouseclick >= 0 && aMouseclick < 9) {
-            aSlot = (Slot) this.inventorySlots.get(aSlotIndex);
+            aSlot = this.inventorySlots.get(aSlotIndex);
 
             if (aSlot.canTakeStack(aPlayer)) {
                 // get the stack at the specified hotbar slot.
@@ -272,7 +277,7 @@ public class GT_Container extends Container {
         } else if (aShifthold == 3 && aPlayer.capabilities.isCreativeMode
                 && aPlayerInventory.getItemStack() == null
                 && aSlotIndex >= 0) {
-                    aSlot = (Slot) this.inventorySlots.get(aSlotIndex);
+                    aSlot = this.inventorySlots.get(aSlotIndex);
                     if (aSlot != null && aSlot.getHasStack()) {
                         tTempStack = GT_Utility.copyOrNull(aSlot.getStack());
                         tTempStack.stackSize = tTempStack.getMaxStackSize();
@@ -285,7 +290,7 @@ public class GT_Container extends Container {
     @Override
     public ItemStack transferStackInSlot(EntityPlayer aPlayer, int aSlotIndex) {
         ItemStack stack = null;
-        Slot slotObject = (Slot) inventorySlots.get(aSlotIndex);
+        Slot slotObject = inventorySlots.get(aSlotIndex);
 
         mTileEntity.markDirty();
 
@@ -340,7 +345,7 @@ public class GT_Container extends Container {
         if (aStack.isStackable()) {
             while (aStack.stackSize > 0
                     && (!reverseOrder && slotIndex < aSlotCount || reverseOrder && slotIndex >= aStartIndex)) {
-                slot = (Slot) this.inventorySlots.get(slotIndex);
+                slot = this.inventorySlots.get(slotIndex);
                 itemStack = slot.getStack();
                 if (!(slot instanceof GT_Slot_Holo) && !(slot instanceof GT_Slot_Output)
                         && slot.isItemValid(aStack)
@@ -379,7 +384,7 @@ public class GT_Container extends Container {
             }
 
             while (!reverseOrder && slotIndex < aSlotCount || reverseOrder && slotIndex >= aStartIndex) {
-                slot = (Slot) this.inventorySlots.get(slotIndex);
+                slot = this.inventorySlots.get(slotIndex);
                 itemStack = slot.getStack();
 
                 if (slot.isItemValid(aStack) && itemStack == null) {
@@ -422,7 +427,7 @@ public class GT_Container extends Container {
     }
 
     @Override
-    public List getInventory() {
+    public List<ItemStack> getInventory() {
         try {
             return super.getInventory();
         } catch (Throwable e) {
@@ -638,8 +643,7 @@ public class GT_Container extends Container {
         if (tStackSizedOne == null || tStackHeld.stackSize == 0) return null;
         int tOriginalFluidAmount = tTankStack.amount;
         ItemStack tFilledContainer = GT_Utility.fillFluidContainer(tTankStack, tStackSizedOne, true, false);
-        if (tFilledContainer == null && tStackSizedOne.getItem() instanceof IFluidContainerItem) {
-            IFluidContainerItem tContainerItem = (IFluidContainerItem) tStackSizedOne.getItem();
+        if (tFilledContainer == null && tStackSizedOne.getItem() instanceof IFluidContainerItem tContainerItem) {
             int tFilledAmount = tContainerItem.fill(tStackSizedOne, tTankStack, true);
             if (tFilledAmount > 0) {
                 tFilledContainer = tStackSizedOne;
@@ -667,7 +671,9 @@ public class GT_Container extends Container {
     protected static ItemStack fillFluid(IFluidAccess aFluidAccess, EntityPlayer aPlayer, FluidStack aFluidHeld,
             boolean aProcessFullStack) {
         // we are not using aMachine.fill() here any more, so we need to check for fluid type here ourselves
-        if (aFluidAccess.get() != null && !aFluidAccess.get().isFluidEqual(aFluidHeld)) return null;
+        if (aFluidAccess.get() != null && !aFluidAccess.get()
+                                                       .isFluidEqual(aFluidHeld))
+            return null;
         ItemStack tStackHeld = aPlayer.inventory.getItemStack();
         ItemStack tStackSizedOne = GT_Utility.copyAmount(1, tStackHeld);
         if (tStackSizedOne == null) return null;
@@ -687,9 +693,8 @@ public class GT_Container extends Container {
             tStackEmptied = GT_Utility.getContainerForFilledItem(tStackSizedOne, false);
             tAmountTaken = aFluidHeld.amount;
         }
-        if (tStackEmptied == null && tStackSizedOne.getItem() instanceof IFluidContainerItem) {
+        if (tStackEmptied == null && tStackSizedOne.getItem() instanceof IFluidContainerItem container) {
             // either partially accepted, or is IFluidContainerItem
-            IFluidContainerItem container = (IFluidContainerItem) tStackSizedOne.getItem();
             FluidStack tDrained = container.drain(tStackSizedOne, tFreeSpace, true);
             if (tDrained != null && tDrained.amount > 0) {
                 // something is actually drained - change the cell and drop it to player

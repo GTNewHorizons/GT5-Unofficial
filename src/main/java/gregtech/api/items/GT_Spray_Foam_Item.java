@@ -58,8 +58,11 @@ public class GT_Spray_Foam_Item extends GT_Tool_Item {
         TileEntity aTileEntity = aWorld.getTileEntity(aX, aY, aZ);
 
         try {
-            if (GT_Utility.getClassName(aTileEntity).startsWith("TileEntityCable")) {
-                if (GT_Utility.getPublicField(aTileEntity, "foamed").getByte(aTileEntity) == 0) {
+            if (GT_Utility.getClassName(aTileEntity)
+                          .startsWith("TileEntityCable")) {
+                if (GT_Utility.getPublicField(aTileEntity, "foamed")
+                              .getByte(aTileEntity)
+                        == 0) {
                     if (GT_ModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer)) {
                         GT_Utility.sendSoundToPlayers(aWorld, SoundResource.IC2_TOOLS_PAINTER, 1.0F, -1, aX, aY, aZ);
                         GT_Utility.callPublicMethod(aTileEntity, "changeFoam", (byte) 1);
@@ -93,36 +96,35 @@ public class GT_Spray_Foam_Item extends GT_Tool_Item {
             } else if (tRotationPitch <= -65) {
                 tSide = 0;
             } else {
-                switch (MathHelper.floor_double((aPlayer.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3) {
-                    case 0:
-                        tSide = 2;
-                        break;
-                    case 1:
-                        tSide = 5;
-                        break;
-                    case 2:
-                        tSide = 3;
-                        break;
-                    case 3:
-                        tSide = 4;
-                        break;
-                }
+                tSide = switch (MathHelper.floor_double((aPlayer.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3) {
+                    case 0 -> 2;
+                    case 1 -> 5;
+                    case 2 -> 3;
+                    case 3 -> 4;
+                    default -> tSide;
+                };
             }
             switch (0) {
-                case 0:
+                case 0 -> {
                     if (GT_Utility.isBlockAir(aWorld, aX, aY, aZ)
                             && GT_ModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer)) {
                         GT_Utility.sendSoundToPlayers(aWorld, SoundResource.IC2_TOOLS_PAINTER, 1.0F, -1, aX, aY, aZ);
                         aWorld.setBlock(aX, aY, aZ, GT_Utility.getBlockFromStack(tStack), tStack.getItemDamage(), 3);
                         return true;
                     }
-                    break;
-                case 1:
+                }
+                case 1 -> {
                     for (byte i = 0; i < 4; i++) {
                         if (GT_Utility.isBlockAir(aWorld, aX, aY, aZ)
                                 && GT_ModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer)) {
-                            GT_Utility
-                                    .sendSoundToPlayers(aWorld, SoundResource.IC2_TOOLS_PAINTER, 1.0F, -1, aX, aY, aZ);
+                            GT_Utility.sendSoundToPlayers(
+                                    aWorld,
+                                    SoundResource.IC2_TOOLS_PAINTER,
+                                    1.0F,
+                                    -1,
+                                    aX,
+                                    aY,
+                                    aZ);
                             aWorld.setBlock(
                                     aX,
                                     aY,
@@ -139,15 +141,14 @@ public class GT_Spray_Foam_Item extends GT_Tool_Item {
                         aZ -= ForgeDirection.getOrientation(tSide).offsetZ;
                     }
                     return true;
-                case 2:
+                }
+                case 2 -> {
                     boolean temp = false, tXFactor = (ForgeDirection.getOrientation(tSide).offsetX == 0),
                             tYFactor = (ForgeDirection.getOrientation(tSide).offsetY == 0),
                             tZFactor = (ForgeDirection.getOrientation(tSide).offsetZ == 0);
-
                     aX -= (tXFactor ? 1 : 0);
                     aY -= (tYFactor ? 1 : 0);
                     aZ -= (tZFactor ? 1 : 0);
-
                     for (byte i = 0; i < 3; i++) for (byte j = 0; j < 3; j++) {
                         if (GT_Utility.isBlockAir(
                                 aWorld,
@@ -177,6 +178,7 @@ public class GT_Spray_Foam_Item extends GT_Tool_Item {
                         }
                     }
                     return temp;
+                }
             }
         }
         return false;

@@ -13,8 +13,7 @@ public class GT_Cover_AdvancedRedstoneReceiverInternal extends GT_Cover_Advanced
     @Override
     public ReceiverData doCoverThingsImpl(byte aSide, byte aInputRedstone, int aCoverID, ReceiverData aCoverVariable,
             ICoverable aTileEntity, long aTimer) {
-        if (aTileEntity instanceof IMachineProgress) {
-            IMachineProgress machine = ((IMachineProgress) aTileEntity);
+        if (aTileEntity instanceof IMachineProgress machine) {
             if (getRedstoneInput(aSide, aInputRedstone, aCoverID, aCoverVariable, aTileEntity) > 0) {
                 machine.enableWorking();
             } else {

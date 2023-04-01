@@ -32,11 +32,13 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
                                 ItemList.Circuit_Integrated.getWithDamage(0L, 1L),
                                 null,
                                 null,
-                                aMaterial.mBlastFurnaceTemp > 1750 ? GT_OreDictUnificator.get(
-                                        OrePrefixes.ingotHot,
-                                        aMaterial,
-                                        GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L),
-                                        1L) : GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L),
+                                aMaterial.mBlastFurnaceTemp > 1750
+                                        ? GT_OreDictUnificator.get(
+                                                OrePrefixes.ingotHot,
+                                                aMaterial,
+                                                GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L),
+                                                1L)
+                                        : GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L),
                                 null,
                                 (int) Math.max(aMaterial.getMass() / 4L, 1L) * aMaterial.mBlastFurnaceTemp,
                                 120,

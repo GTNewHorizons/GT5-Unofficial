@@ -38,24 +38,35 @@ public class GT_MetaTileEntity_LargeTurbine_Plasma extends GT_MetaTileEntity_Lar
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
             boolean aActive, boolean aRedstone) {
-        return new ITexture[] { MACHINE_CASINGS[1][aColorIndex + 1],
-                aFacing == aSide
-                        ? (aActive ? TextureFactory.builder().addIcon(LARGETURBINE_NEW_ACTIVE5).build()
-                                : hasTurbine() ? TextureFactory.builder().addIcon(LARGETURBINE_NEW5).build()
-                                        : TextureFactory.builder().addIcon(LARGETURBINE_NEW_EMPTY5).build())
+        return new ITexture[] { MACHINE_CASINGS[1][aColorIndex + 1], aFacing
+                == aSide ? (aActive ? TextureFactory.builder()
+                                                    .addIcon(LARGETURBINE_NEW_ACTIVE5)
+                                                    .build()
+                        : hasTurbine() ? TextureFactory.builder()
+                                                       .addIcon(LARGETURBINE_NEW5)
+                                                       .build()
+                                : TextureFactory.builder()
+                                                .addIcon(LARGETURBINE_NEW_EMPTY5)
+                                                .build())
                         : casingTexturePages[0][60] };
     }
 
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType("Plasma Turbine").addInfo("Controller block for the Large Plasma Generator")
-                .addInfo("Needs a Turbine, place inside controller")
-                .addInfo("Use your Fusion Reactor to produce the Plasma").addSeparator()
-                .beginStructureBlock(3, 3, 4, true).addController("Front center")
-                .addCasingInfoRange("Tungstensteel Turbine Casing", 8, 31, false).addDynamoHatch("Back center", 1)
-                .addMaintenanceHatch("Side centered", 2).addInputHatch("Plasma Fluid, Side centered", 2)
-                .addOutputHatch("Molten Fluid, optional, Side centered", 2).toolTipFinisher("Gregtech");
+        tt.addMachineType("Plasma Turbine")
+          .addInfo("Controller block for the Large Plasma Generator")
+          .addInfo("Needs a Turbine, place inside controller")
+          .addInfo("Use your Fusion Reactor to produce the Plasma")
+          .addSeparator()
+          .beginStructureBlock(3, 3, 4, true)
+          .addController("Front center")
+          .addCasingInfoRange("Tungstensteel Turbine Casing", 8, 31, false)
+          .addDynamoHatch("Back center", 1)
+          .addMaintenanceHatch("Side centered", 2)
+          .addInputHatch("Plasma Fluid, Side centered", 2)
+          .addOutputHatch("Molten Fluid, optional, Side centered", 2)
+          .toolTipFinisher("Gregtech");
         return tt;
     }
 
@@ -103,8 +114,8 @@ public class GT_MetaTileEntity_LargeTurbine_Plasma extends GT_MetaTileEntity_Lar
             FluidStack firstFuelType = new FluidStack(aFluids.get(0), 0); // Identify a SINGLE type of fluid to process.
                                                                           // Doesn't matter which one. Ignore the rest!
             int fuelValue = getFuelValue(firstFuelType);
-            actualOptimalFlow = GT_Utility
-                    .safeInt((long) Math.ceil((double) aOptFlow * flowMultipliers[2] / (double) fuelValue));
+            actualOptimalFlow = GT_Utility.safeInt(
+                    (long) Math.ceil((double) aOptFlow * flowMultipliers[2] / (double) fuelValue));
             this.realOptFlow = actualOptimalFlow; // For scanner info
 
             // Allowed to use up to 550% optimal flow rate, depending on the value of overflowMultiplier.
@@ -147,13 +158,11 @@ public class GT_MetaTileEntity_LargeTurbine_Plasma extends GT_MetaTileEntity_Lar
 
             // GT_FML_LOGGER.info(totalFlow+" : "+fuelValue+" : "+aOptFlow+" : "+actualOptimalFlow+" : "+tEU);
 
-            if (totalFlow == actualOptimalFlow) {
-                tEU = GT_Utility.safeInt((long) (aBaseEff / 10000D * tEU));
-            } else {
+            if (totalFlow != actualOptimalFlow) {
                 float efficiency = getOverflowEfficiency(totalFlow, actualOptimalFlow, overflowMultiplier);
                 tEU = (int) (tEU * efficiency);
-                tEU = GT_Utility.safeInt((long) (aBaseEff / 10000D * tEU));
             }
+            tEU = GT_Utility.safeInt((long) (aBaseEff / 10000D * tEU));
 
             // If next output is above the maximum the dynamo can handle, set it to the maximum instead of exploding the
             // turbine
@@ -199,17 +208,20 @@ public class GT_MetaTileEntity_LargeTurbine_Plasma extends GT_MetaTileEntity_Lar
         if (!tFluids.isEmpty()) {
             if (baseEff == 0 || optFlow == 0
                     || counter >= 512
-                    || this.getBaseMetaTileEntity().hasWorkJustBeenEnabled()
-                    || this.getBaseMetaTileEntity().hasInventoryBeenModified()) {
+                    || this.getBaseMetaTileEntity()
+                           .hasWorkJustBeenEnabled()
+                    || this.getBaseMetaTileEntity()
+                           .hasInventoryBeenModified()) {
                 counter = 0;
                 baseEff = GT_Utility.safeInt(
                         (long) ((5F + ((GT_MetaGenerated_Tool) aStack.getItem()).getToolCombatDamage(aStack)) * 1000F));
                 optFlow = GT_Utility.safeInt(
                         (long) Math.max(
                                 Float.MIN_NORMAL,
-                                ((GT_MetaGenerated_Tool) aStack.getItem()).getToolStats(aStack).getSpeedMultiplier()
-                                        * ((GT_MetaGenerated_Tool) aStack.getItem())
-                                                .getPrimaryMaterial(aStack).mToolSpeed
+                                ((GT_MetaGenerated_Tool) aStack.getItem()).getToolStats(aStack)
+                                                                          .getSpeedMultiplier()
+                                        * ((GT_MetaGenerated_Tool) aStack.getItem()).getPrimaryMaterial(
+                                                aStack).mToolSpeed
                                         * 50));
                 overflowMultiplier = getOverflowMultiplier(aStack);
 
@@ -288,8 +300,10 @@ public class GT_MetaTileEntity_LargeTurbine_Plasma extends GT_MetaTileEntity_Lar
         long maxEnergy = 0;
         for (GT_MetaTileEntity_Hatch_Dynamo tHatch : mDynamoHatches) {
             if (isValidMetaTileEntity(tHatch)) {
-                storedEnergy += tHatch.getBaseMetaTileEntity().getStoredEU();
-                maxEnergy += tHatch.getBaseMetaTileEntity().getEUCapacity();
+                storedEnergy += tHatch.getBaseMetaTileEntity()
+                                      .getStoredEU();
+                maxEnergy += tHatch.getBaseMetaTileEntity()
+                                   .getEUCapacity();
             }
         }
         String[] ret = new String[] {
@@ -331,7 +345,7 @@ public class GT_MetaTileEntity_LargeTurbine_Plasma extends GT_MetaTileEntity_Lar
                         + "L", /* 6 */
                 StatCollector.translateToLocal("GT5U.turbine.dmg") + ": "
                         + EnumChatFormatting.RED
-                        + Integer.toString(tDura)
+                        + tDura
                         + EnumChatFormatting.RESET
                         + "%", /* 7 */
                 StatCollector.translateToLocal("GT5U.multiblock.pollution") + ": "
@@ -340,7 +354,9 @@ public class GT_MetaTileEntity_LargeTurbine_Plasma extends GT_MetaTileEntity_Lar
                         + EnumChatFormatting.RESET
                         + " %" /* 8 */
         };
-        if (!this.getClass().getName().contains("Steam"))
+        if (!this.getClass()
+                 .getName()
+                 .contains("Steam"))
             ret[4] = StatCollector.translateToLocal("GT5U.turbine.flow") + ": "
                     + EnumChatFormatting.YELLOW
                     + GT_Utility.safeInt((long) realOptFlow)

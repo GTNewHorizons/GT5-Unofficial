@@ -1,7 +1,6 @@
 package gregtech.api.metatileentity;
 
 import static gregtech.api.enums.GT_Values.GT;
-import static gregtech.api.enums.GT_Values.V;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -33,6 +32,7 @@ import gnu.trove.list.TIntList;
 import gnu.trove.list.array.TIntArrayList;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Dyes;
+import gregtech.api.enums.GT_Values;
 import gregtech.api.interfaces.metatileentity.IConnectable;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IColoredTileEntity;
@@ -98,7 +98,8 @@ public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable {
         } else {
             throw new IllegalArgumentException("MetaMachine-Slot Nr. " + aID + " is already occupied!");
         }
-        mName = aBasicName.replaceAll(" ", "_").toLowerCase(Locale.ENGLISH);
+        mName = aBasicName.replaceAll(" ", "_")
+                          .toLowerCase(Locale.ENGLISH);
         setBaseMetaTileEntity(new BaseMetaPipeEntity());
         getBaseMetaTileEntity().setMetaTileID((short) aID);
         GT_LanguageManager.addStringLocalization("gt.blockmachines." + mName + ".name", aRegionalName);
@@ -113,7 +114,8 @@ public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable {
         if (!GT.isClientSide()) return;
 
         ItemStack tStack = new ItemStack(GregTech_API.sBlockMachines, 1, aID);
-        tStack.getItem().addInformation(tStack, null, new ArrayList<String>(), true);
+        tStack.getItem()
+              .addInformation(tStack, null, new ArrayList<>(), true);
     }
 
     /**
@@ -146,7 +148,8 @@ public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable {
     @Override
     public void setBaseMetaTileEntity(IGregTechTileEntity aBaseMetaTileEntity) {
         if (mBaseMetaTileEntity != null && aBaseMetaTileEntity == null) {
-            mBaseMetaTileEntity.getMetaTileEntity().inValidate();
+            mBaseMetaTileEntity.getMetaTileEntity()
+                               .inValidate();
             mBaseMetaTileEntity.setMetaTileEntity(null);
         }
         mBaseMetaTileEntity = aBaseMetaTileEntity;
@@ -751,43 +754,17 @@ public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable {
 
     @Override
     public void doExplosion(long aExplosionPower) {
-        float tStrength = aExplosionPower < V[0] ? 1.0F
-                : aExplosionPower < V[1] ? 2.0F
-                        : aExplosionPower < V[2] ? 3.0F
-                                : aExplosionPower < V[3] ? 4.0F
-                                        : aExplosionPower < V[4] ? 5.0F
-                                                : aExplosionPower < V[4] * 2 ? 6.0F
-                                                        : aExplosionPower < V[5] ? 7.0F
-                                                                : aExplosionPower < V[6] ? 8.0F
-                                                                        : aExplosionPower < V[7] ? 9.0F
-                                                                                : aExplosionPower < V[8] ? 10.0F
-                                                                                        : aExplosionPower < V[8] * 2
-                                                                                                ? 11.0F
-                                                                                                : aExplosionPower < V[9]
-                                                                                                        ? 12.0F
-                                                                                                        : aExplosionPower
-                                                                                                                < V[10] ? 13.0F
-                                                                                                                        : aExplosionPower
-                                                                                                                                < V[11] ? 14.0F
-                                                                                                                                        : aExplosionPower
-                                                                                                                                                < V[12] ? 15.0F
-                                                                                                                                                        : aExplosionPower
-                                                                                                                                                                < V[12] * 2
-                                                                                                                                                                        ? 16.0F
-                                                                                                                                                                        : aExplosionPower
-                                                                                                                                                                                < V[13] ? 17.0F
-                                                                                                                                                                                        : aExplosionPower
-                                                                                                                                                                                                < V[14] ? 18.0F
-                                                                                                                                                                                                        : aExplosionPower
-                                                                                                                                                                                                                < V[15] ? 19.0F
-                                                                                                                                                                                                                        : 20.0F;
+        float tStrength = GT_Values.getExplosionPowerForVoltage(aExplosionPower);
         int tX = getBaseMetaTileEntity().getXCoord(), tY = getBaseMetaTileEntity().getYCoord(),
                 tZ = getBaseMetaTileEntity().getZCoord();
         World tWorld = getBaseMetaTileEntity().getWorld();
         tWorld.setBlock(tX, tY, tZ, Blocks.air);
         if (GregTech_API.sMachineExplosions) {
-            new WorldSpawnedEventBuilder.ExplosionEffectEventBuilder().setStrength(tStrength).setSmoking(true)
-                    .setPosition(tX + 0.5, tY + 0.5, tZ + 0.5).setWorld(tWorld).run();
+            new WorldSpawnedEventBuilder.ExplosionEffectEventBuilder().setStrength(tStrength)
+                                                                      .setSmoking(true)
+                                                                      .setPosition(tX + 0.5, tY + 0.5, tZ + 0.5)
+                                                                      .setWorld(tWorld)
+                                                                      .run();
         }
     }
 
@@ -875,7 +852,8 @@ public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable {
             final IMetaTileEntity tPipe = tTileEntity instanceof IGregTechTileEntity
                     ? ((IGregTechTileEntity) tTileEntity).getMetaTileEntity()
                     : null;
-            if (getClass().isInstance(tPipe) || (tPipe != null && tPipe.getClass().isInstance(this))) {
+            if (getClass().isInstance(tPipe) || (tPipe != null && tPipe.getClass()
+                                                                       .isInstance(this))) {
                 connectAtSide(aSide);
                 if (!((MetaPipeEntity) tPipe).isConnectedAtSide(tSide)) {
                     // Make sure pipes all get together -- connect back to us if we're connecting to a pipe
@@ -890,8 +868,11 @@ public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable {
                     connectAtSide(aSide);
                     return 1;
                 }
-            if (!baseMetaTile.getWorld().getChunkProvider()
-                    .chunkExists(baseMetaTile.getOffsetX(aSide, 1) >> 4, baseMetaTile.getOffsetZ(aSide, 1) >> 4)) {
+            if (!baseMetaTile.getWorld()
+                             .getChunkProvider()
+                             .chunkExists(
+                                     baseMetaTile.getOffsetX(aSide, 1) >> 4,
+                                     baseMetaTile.getOffsetZ(aSide, 1) >> 4)) {
                 // Target chunk unloaded
                 return -1;
             }
@@ -921,7 +902,10 @@ public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable {
         byte tSide = GT_Utility.getOppositeSide(aSide);
         IGregTechTileEntity tTileEntity = getBaseMetaTileEntity().getIGregTechTileEntityAtSide(aSide);
         IMetaTileEntity tPipe = tTileEntity == null ? null : tTileEntity.getMetaTileEntity();
-        if ((this.getClass().isInstance(tPipe) || (tPipe != null && tPipe.getClass().isInstance(this)))
+        if ((this.getClass()
+                 .isInstance(tPipe)
+                || (tPipe != null && tPipe.getClass()
+                                          .isInstance(this)))
                 && ((MetaPipeEntity) tPipe).isConnectedAtSide(tSide))
             ((MetaPipeEntity) tPipe).disconnect(tSide);
     }

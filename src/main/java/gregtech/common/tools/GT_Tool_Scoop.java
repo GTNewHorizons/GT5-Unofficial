@@ -1,5 +1,7 @@
 package gregtech.common.tools;
 
+import static gregtech.api.enums.ModIDs.Forestry;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLivingBase;
@@ -8,8 +10,6 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 
-import cpw.mods.fml.common.Loader;
-import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.GT_MetaGenerated_Tool;
@@ -110,7 +110,7 @@ public class GT_Tool_Scoop extends GT_Tool {
 
     @Override
     public void onStatsAddedToTool(GT_MetaGenerated_Tool aItem, int aID) {
-        if (Loader.isModLoaded(GT_Values.MOD_ID_FR)) {
+        if (Forestry.isModLoaded()) {
             aItem.addItemBehavior(aID, new Behaviour_Scoop(200));
         } else {
             aItem.addItemBehavior(aID, new Behaviour_None());

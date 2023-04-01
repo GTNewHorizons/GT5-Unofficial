@@ -22,7 +22,8 @@ public class Behaviour_WrittenBook extends Behaviour_None {
             int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
         if ((GT_Utility.isStringValid(GT_Utility.ItemNBT.getBookTitle(aStack)))
                 && ((aPlayer instanceof EntityPlayerSP))) {
-            Minecraft.getMinecraft().displayGuiScreen(new GuiScreenBook(aPlayer, aStack, false));
+            Minecraft.getMinecraft()
+                     .displayGuiScreen(new GuiScreenBook(aPlayer, aStack, false));
         }
         return true;
     }

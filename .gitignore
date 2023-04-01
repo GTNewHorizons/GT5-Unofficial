@@ -33,3 +33,4 @@ src/main/resources/mixins.*.json
 /src/test/generated/
 .DS_Store
 classes
+.factorypath

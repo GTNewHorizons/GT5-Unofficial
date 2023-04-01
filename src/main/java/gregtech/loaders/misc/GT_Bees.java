@@ -1,11 +1,10 @@
 package gregtech.loaders.misc;
 
-import static gregtech.api.enums.GT_Values.MOD_ID_FR;
+import static gregtech.api.enums.ModIDs.Forestry;
 
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 
-import cpw.mods.fml.common.Loader;
 import forestry.api.apiculture.EnumBeeChromosome;
 import forestry.api.core.IClimateProvider;
 import forestry.api.genetics.*;
@@ -42,19 +41,22 @@ public class GT_Bees {
     public static ItemComb combs;
 
     public GT_Bees() {
-        if (Loader.isModLoaded(MOD_ID_FR) && GT_Mod.gregtechproxy.mGTBees) {
-            GT_AlleleHelper.initialisation();
-            setupGTAlleles();
-            propolis = new ItemPropolis();
-            propolis.initPropolisRecipes();
-            pollen = new ItemPollen();
-            drop = new ItemDrop();
-            drop.initDropsRecipes();
-            combs = new ItemComb();
-            combs.initCombsRecipes();
-            combs.registerOreDict();
-            GT_BeeDefinition.initBees();
+        if (!(Forestry.isModLoaded() && GT_Mod.gregtechproxy.mGTBees)) {
+            return;
         }
+
+        GT_AlleleHelper.initialisation();
+        setupGTAlleles();
+        propolis = new ItemPropolis();
+        propolis.initPropolisRecipes();
+        pollen = new ItemPollen();
+        drop = new ItemDrop();
+        drop.initDropsRecipes();
+        combs = new ItemComb();
+        combs.initCombsRecipes();
+        combs.registerOreDict();
+        GT_BeeDefinition.initBees();
+
     }
 
     private static void setupGTAlleles() {
@@ -70,7 +72,7 @@ public class GT_Bees {
 
         noWork = new AlleleFloat("speedUnproductive", 0, false);
         superSpeed = new AlleleFloat("speedAccelerated", 4F, false);
-        speedBlinding = (IAlleleFloat) AlleleManager.alleleRegistry.getAllele("magicbees.speedBlinding") == null
+        speedBlinding = AlleleManager.alleleRegistry.getAllele("magicbees.speedBlinding") == null
                 ? new AlleleFloat("speedBlinding", 2f, false)
                 : (IAlleleFloat) AlleleManager.alleleRegistry.getAllele("magicbees.speedBlinding");
 

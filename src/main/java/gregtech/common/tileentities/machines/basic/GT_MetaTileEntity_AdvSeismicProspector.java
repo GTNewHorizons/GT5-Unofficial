@@ -56,28 +56,52 @@ public class GT_MetaTileEntity_AdvSeismicProspector extends GT_MetaTileEntity_Ba
                 "", // NEI name
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_SIDE_ROCK_BREAKER_ACTIVE),
-                        TextureFactory.builder().addIcon(OVERLAY_SIDE_ROCK_BREAKER_ACTIVE_GLOW).glow().build()),
+                        TextureFactory.builder()
+                                      .addIcon(OVERLAY_SIDE_ROCK_BREAKER_ACTIVE_GLOW)
+                                      .glow()
+                                      .build()),
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_SIDE_ROCK_BREAKER),
-                        TextureFactory.builder().addIcon(OVERLAY_SIDE_ROCK_BREAKER_GLOW).glow().build()),
+                        TextureFactory.builder()
+                                      .addIcon(OVERLAY_SIDE_ROCK_BREAKER_GLOW)
+                                      .glow()
+                                      .build()),
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_TOP_ROCK_BREAKER_ACTIVE),
-                        TextureFactory.builder().addIcon(OVERLAY_TOP_ROCK_BREAKER_ACTIVE_GLOW).glow().build()),
+                        TextureFactory.builder()
+                                      .addIcon(OVERLAY_TOP_ROCK_BREAKER_ACTIVE_GLOW)
+                                      .glow()
+                                      .build()),
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_TOP_ROCK_BREAKER),
-                        TextureFactory.builder().addIcon(OVERLAY_TOP_ROCK_BREAKER_GLOW).glow().build()),
+                        TextureFactory.builder()
+                                      .addIcon(OVERLAY_TOP_ROCK_BREAKER_GLOW)
+                                      .glow()
+                                      .build()),
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_FRONT_ROCK_BREAKER_ACTIVE),
-                        TextureFactory.builder().addIcon(OVERLAY_FRONT_ROCK_BREAKER_ACTIVE_GLOW).glow().build()),
+                        TextureFactory.builder()
+                                      .addIcon(OVERLAY_FRONT_ROCK_BREAKER_ACTIVE_GLOW)
+                                      .glow()
+                                      .build()),
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_FRONT_ROCK_BREAKER),
-                        TextureFactory.builder().addIcon(OVERLAY_FRONT_ROCK_BREAKER_GLOW).glow().build()),
+                        TextureFactory.builder()
+                                      .addIcon(OVERLAY_FRONT_ROCK_BREAKER_GLOW)
+                                      .glow()
+                                      .build()),
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_BOTTOM_ROCK_BREAKER_ACTIVE),
-                        TextureFactory.builder().addIcon(OVERLAY_BOTTOM_ROCK_BREAKER_ACTIVE_GLOW).glow().build()),
+                        TextureFactory.builder()
+                                      .addIcon(OVERLAY_BOTTOM_ROCK_BREAKER_ACTIVE_GLOW)
+                                      .glow()
+                                      .build()),
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_BOTTOM_ROCK_BREAKER),
-                        TextureFactory.builder().addIcon(OVERLAY_BOTTOM_ROCK_BREAKER_GLOW).glow().build()));
+                        TextureFactory.builder()
+                                      .addIcon(OVERLAY_BOTTOM_ROCK_BREAKER_GLOW)
+                                      .glow()
+                                      .build()));
         radius = aRadius;
         step = aStep;
     }
@@ -142,10 +166,14 @@ public class GT_MetaTileEntity_AdvSeismicProspector extends GT_MetaTileEntity_Ba
                         GT_Utility.ItemNBT.setAdvancedProspectionData(
                                 mTier,
                                 aStack,
-                                this.getBaseMetaTileEntity().getXCoord(),
-                                this.getBaseMetaTileEntity().getYCoord(),
-                                this.getBaseMetaTileEntity().getZCoord(),
-                                this.getBaseMetaTileEntity().getWorld().provider.dimensionId,
+                                this.getBaseMetaTileEntity()
+                                    .getXCoord(),
+                                this.getBaseMetaTileEntity()
+                                    .getYCoord(),
+                                this.getBaseMetaTileEntity()
+                                    .getZCoord(),
+                                this.getBaseMetaTileEntity()
+                                    .getWorld().provider.dimensionId,
                                 tOils,
                                 GT_Utility.sortByValueToList(tOres),
                                 radius);
@@ -173,9 +201,10 @@ public class GT_MetaTileEntity_AdvSeismicProspector extends GT_MetaTileEntity_Ba
 
                     for (int i = 0; i < oilfieldSize; i++) {
                         for (int j = 0; j < oilfieldSize; j++) {
-                            Chunk tChunk = getBaseMetaTileEntity().getWorld().getChunkFromChunkCoords(
-                                    xChunk + i + x * oilfieldSize,
-                                    zChunk + j + z * oilfieldSize);
+                            Chunk tChunk = getBaseMetaTileEntity().getWorld()
+                                                                  .getChunkFromChunkCoords(
+                                                                          xChunk + i + x * oilfieldSize,
+                                                                          zChunk + j + z * oilfieldSize);
                             FluidStack tFluid = undergroundOilReadInformation(tChunk);
                             if (tFluid != null) {
                                 if (tFluid.amount > max) max = tFluid.amount;
@@ -187,17 +216,28 @@ public class GT_MetaTileEntity_AdvSeismicProspector extends GT_MetaTileEntity_Ba
                         }
                     }
 
-                    aOils.add(++oilFieldCount + "," + min + "-" + max + "," + tFluids.get(cInts).getLocalizedName());
+                    aOils.add(
+                            ++oilFieldCount + ","
+                                    + min
+                                    + "-"
+                                    + max
+                                    + ","
+                                    + tFluids.get(cInts)
+                                             .getLocalizedName());
                 }
             }
         } catch (Exception ignored) {}
     }
 
     private void prospectOres(Map<String, Integer> aOres) {
-        int tLeftXBound = this.getBaseMetaTileEntity().getXCoord() - radius;
+        int tLeftXBound = this.getBaseMetaTileEntity()
+                              .getXCoord()
+                - radius;
         int tRightXBound = tLeftXBound + 2 * radius;
 
-        int tLeftZBound = this.getBaseMetaTileEntity().getZCoord() - radius;
+        int tLeftZBound = this.getBaseMetaTileEntity()
+                              .getZCoord()
+                - radius;
         int tRightZBound = tLeftZBound + 2 * radius;
 
         for (int i = tLeftXBound; i <= tRightXBound; i += step) {
@@ -217,17 +257,20 @@ public class GT_MetaTileEntity_AdvSeismicProspector extends GT_MetaTileEntity_Ba
 
     private void prospectHole(int i, int k, Map<String, Integer> aOres) {
         String tFoundOre;
-        for (int j = this.getBaseMetaTileEntity().getYCoord(); j > 0; j--) {
+        for (int j = this.getBaseMetaTileEntity()
+                         .getYCoord(); j > 0; j--) {
             tFoundOre = checkForOre(i, j, k);
             if (tFoundOre != null) countOre(aOres, tFoundOre, cX, cZ);
         }
     }
 
     private String checkForOre(int x, int y, int z) {
-        Block tBlock = this.getBaseMetaTileEntity().getBlock(x, y, z);
+        Block tBlock = this.getBaseMetaTileEntity()
+                           .getBlock(x, y, z);
 
         if (tBlock instanceof GT_Block_Ores_Abstract) {
-            TileEntity tTileEntity = getBaseMetaTileEntity().getWorld().getTileEntity(x, y, z);
+            TileEntity tTileEntity = getBaseMetaTileEntity().getWorld()
+                                                            .getTileEntity(x, y, z);
 
             if ((tTileEntity instanceof GT_TileEntity_Ores) && (((GT_TileEntity_Ores) tTileEntity).mMetaData < 16000)) { // Filtering
                                                                                                                          // small
@@ -238,10 +281,12 @@ public class GT_MetaTileEntity_AdvSeismicProspector extends GT_MetaTileEntity_Ba
                 if ((tMaterial != null) && (tMaterial != Materials._NULL)) return tMaterial.mDefaultLocalName;
             }
         } else {
-            int tMetaID = getBaseMetaTileEntity().getWorld().getBlockMetadata(x, y, z);
+            int tMetaID = getBaseMetaTileEntity().getWorld()
+                                                 .getBlockMetadata(x, y, z);
             ItemStack is = new ItemStack(tBlock, 1, tMetaID);
             ItemData association = GT_OreDictUnificator.getAssociation(is);
-            if ((association != null) && (association.mPrefix.toString().startsWith("ore")))
+            if ((association != null) && (association.mPrefix.toString()
+                                                             .startsWith("ore")))
                 return association.mMaterial.mMaterial.mDefaultLocalName;
             else if (GT_Utility.isOre(tBlock, tMetaID)) return tBlock.getLocalizedName();
         }

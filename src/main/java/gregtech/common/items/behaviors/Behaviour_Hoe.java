@@ -45,11 +45,14 @@ public class Behaviour_Hoe extends Behaviour_None {
         Block aBlock = aWorld.getBlock(aX, aY, aZ);
         if ((aSide != 0) && (GT_Utility.isBlockAir(aWorld, aX, aY + 1, aZ))
                 && ((aBlock == Blocks.grass) || (aBlock == Blocks.dirt))) {
-            new WorldSpawnedEventBuilder.SoundEventBuilder()
-                    .setVolume((Blocks.farmland.stepSound.getVolume() + 1.0F) / 2.0F)
-                    .setPitch(Blocks.farmland.stepSound.getPitch() * 0.8F)
-                    .setIdentifier(Blocks.farmland.stepSound.getStepResourcePath())
-                    .setPosition(aX + 0.5F, aY + 0.5F, aZ + 0.5F).setWorld(aWorld).run();
+            new WorldSpawnedEventBuilder.SoundEventBuilder().setVolume(
+                    (Blocks.farmland.stepSound.getVolume() + 1.0F) / 2.0F)
+                                                            .setPitch(Blocks.farmland.stepSound.getPitch() * 0.8F)
+                                                            .setIdentifier(
+                                                                    Blocks.farmland.stepSound.getStepResourcePath())
+                                                            .setPosition(aX + 0.5F, aY + 0.5F, aZ + 0.5F)
+                                                            .setWorld(aWorld)
+                                                            .run();
             if (aWorld.isRemote) {
                 return true;
             }

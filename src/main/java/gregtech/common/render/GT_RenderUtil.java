@@ -13,8 +13,7 @@ import gregtech.api.interfaces.IGT_ItemWithMaterialRenderer;
 public class GT_RenderUtil {
 
     public static void colorGTItem(ItemStack aStack) {
-        if (aStack.getItem() instanceof IGT_ItemWithMaterialRenderer) {
-            IGT_ItemWithMaterialRenderer aItem = (IGT_ItemWithMaterialRenderer) aStack.getItem();
+        if (aStack.getItem() instanceof IGT_ItemWithMaterialRenderer aItem) {
 
             short[] tModulation = aItem.getRGBa(aStack);
             GL11.glColor4f(tModulation[0] / 255.0F, tModulation[1] / 255.0F, tModulation[2] / 255.0F, 255.0f);
@@ -26,24 +25,30 @@ public class GT_RenderUtil {
     public static void renderBlockIcon(RenderBlocks aRenderer, Block aBlock, double aX, double aY, double aZ,
             IIcon aIcon, byte aSide) {
         switch (aSide) {
-            case 0:
+            case 0 -> {
                 aRenderer.renderFaceYNeg(aBlock, aX, aY, aZ, aIcon);
                 return;
-            case 1:
+            }
+            case 1 -> {
                 aRenderer.renderFaceYPos(aBlock, aX, aY, aZ, aIcon);
                 return;
-            case 2:
+            }
+            case 2 -> {
                 aRenderer.renderFaceZNeg(aBlock, aX, aY, aZ, aIcon);
                 return;
-            case 3:
+            }
+            case 3 -> {
                 aRenderer.renderFaceZPos(aBlock, aX, aY, aZ, aIcon);
                 return;
-            case 4:
+            }
+            case 4 -> {
                 aRenderer.renderFaceXNeg(aBlock, aX, aY, aZ, aIcon);
                 return;
-            case 5:
+            }
+            case 5 -> {
                 aRenderer.renderFaceXPos(aBlock, aX, aY, aZ, aIcon);
                 return;
+            }
         }
     }
 

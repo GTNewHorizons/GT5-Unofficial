@@ -32,26 +32,25 @@ public class Behaviour_DataStick extends Behaviour_None {
                 aList.add(tString.substring(i, Math.min(i + 64, j)));
             }
         }
-        short sTier = GT_Utility.ItemNBT.getNBT(aStack).getShort("rocket_tier");
+        short sTier = GT_Utility.ItemNBT.getNBT(aStack)
+                                        .getShort("rocket_tier");
         if (sTier > 0 && sTier < 100) {
             aList.add("Rocket Schematic Tier: " + sTier);
         } else if (sTier >= 100) {
             switch (sTier) {
-                case 100: {
+                case 100 -> {
                     aList.add("Moonbuggy Schematic");
-                    break;
                 }
-                case 101: {
+                case 101 -> {
                     aList.add("Cargo-Rocket Schematic");
-                    break;
                 }
-                case 102: {
+                case 102 -> {
                     aList.add("Astro-Miner Schematic");
-                    break;
                 }
             }
         }
-        long lastUpdate = GT_Utility.ItemNBT.getNBT(aStack).getLong("lastUpdate");
+        long lastUpdate = GT_Utility.ItemNBT.getNBT(aStack)
+                                            .getLong("lastUpdate");
         if (lastUpdate != 0) aList.add(String.format("Last update at: %tc", lastUpdate));
 
         return aList;

@@ -72,7 +72,9 @@ public abstract class GT_Cover_AdvancedRedstoneReceiverBase
             super.addUIWidgets(builder);
             builder.widget(
                     new TextWidget(GT_Utility.trans("335", "Gate Mode")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                            .setPos(startX + spaceX * 5, 4 + startY + spaceY * 2));
+                                                                        .setPos(
+                                                                                startX + spaceX * 5,
+                                                                                4 + startY + spaceY * 2));
         }
 
         @SuppressWarnings("PointlessArithmeticExpression")
@@ -87,48 +89,52 @@ public abstract class GT_Cover_AdvancedRedstoneReceiverBase
                         return coverData;
                     },
                     widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_GATE_AND)
-                            .addTooltip(GT_Utility.trans("331", "AND Gate")).setPos(spaceX * 0, spaceY * 2))
-                    .addFollower(
-                            CoverDataFollower_ToggleButtonWidget.ofDisableable(),
-                            coverData -> coverData.mode == GateMode.NAND,
-                            (coverData, state) -> {
-                                coverData.mode = GateMode.NAND;
-                                return coverData;
-                            },
-                            widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_GATE_NAND)
-                                    .addTooltip(GT_Utility.trans("332", "NAND Gate")).setPos(spaceX * 1, spaceY * 2))
-                    .addFollower(
-                            CoverDataFollower_ToggleButtonWidget.ofDisableable(),
-                            coverData -> coverData.mode == GateMode.OR,
-                            (coverData, state) -> {
-                                coverData.mode = GateMode.OR;
-                                return coverData;
-                            },
-                            widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_GATE_OR)
-                                    .addTooltip(GT_Utility.trans("333", "OR Gate")).setPos(spaceX * 2, spaceY * 2))
-                    .addFollower(
-                            CoverDataFollower_ToggleButtonWidget.ofDisableable(),
-                            coverData -> coverData.mode == GateMode.NOR,
-                            (coverData, state) -> {
-                                coverData.mode = GateMode.NOR;
-                                return coverData;
-                            },
-                            widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_GATE_NOR)
-                                    .addTooltip(GT_Utility.trans("334", "NOR Gate")).setPos(spaceX * 3, spaceY * 2))
-                    .addFollower(
-                            CoverDataFollower_ToggleButtonWidget.ofDisableable(),
-                            coverData -> coverData.mode == GateMode.SINGLE_SOURCE,
-                            (coverData, state) -> {
-                                coverData.mode = GateMode.SINGLE_SOURCE;
-                                return coverData;
-                            },
-                            widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_ANALOG)
-                                    .addTooltips(
-                                            Arrays.asList(
-                                                    "ANALOG Mode",
-                                                    "Only use this mode with ONE transmitter in total,",
-                                                    "no logic involved"))
-                                    .setPos(spaceX * 4, spaceY * 2));
+                                    .addTooltip(GT_Utility.trans("331", "AND Gate"))
+                                    .setPos(spaceX * 0, spaceY * 2))
+                      .addFollower(
+                              CoverDataFollower_ToggleButtonWidget.ofDisableable(),
+                              coverData -> coverData.mode == GateMode.NAND,
+                              (coverData, state) -> {
+                                  coverData.mode = GateMode.NAND;
+                                  return coverData;
+                              },
+                              widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_GATE_NAND)
+                                              .addTooltip(GT_Utility.trans("332", "NAND Gate"))
+                                              .setPos(spaceX * 1, spaceY * 2))
+                      .addFollower(
+                              CoverDataFollower_ToggleButtonWidget.ofDisableable(),
+                              coverData -> coverData.mode == GateMode.OR,
+                              (coverData, state) -> {
+                                  coverData.mode = GateMode.OR;
+                                  return coverData;
+                              },
+                              widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_GATE_OR)
+                                              .addTooltip(GT_Utility.trans("333", "OR Gate"))
+                                              .setPos(spaceX * 2, spaceY * 2))
+                      .addFollower(
+                              CoverDataFollower_ToggleButtonWidget.ofDisableable(),
+                              coverData -> coverData.mode == GateMode.NOR,
+                              (coverData, state) -> {
+                                  coverData.mode = GateMode.NOR;
+                                  return coverData;
+                              },
+                              widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_GATE_NOR)
+                                              .addTooltip(GT_Utility.trans("334", "NOR Gate"))
+                                              .setPos(spaceX * 3, spaceY * 2))
+                      .addFollower(
+                              CoverDataFollower_ToggleButtonWidget.ofDisableable(),
+                              coverData -> coverData.mode == GateMode.SINGLE_SOURCE,
+                              (coverData, state) -> {
+                                  coverData.mode = GateMode.SINGLE_SOURCE;
+                                  return coverData;
+                              },
+                              widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_ANALOG)
+                                              .addTooltips(
+                                                      Arrays.asList(
+                                                              "ANALOG Mode",
+                                                              "Only use this mode with ONE transmitter in total,",
+                                                              "no logic involved"))
+                                              .setPos(spaceX * 4, spaceY * 2));
         }
     }
 

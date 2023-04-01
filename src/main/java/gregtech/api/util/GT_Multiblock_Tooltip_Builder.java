@@ -75,8 +75,10 @@ public class GT_Multiblock_Tooltip_Builder {
     private static final String TT_mod = StatCollector.translateToLocal("GT5U.MBTT.Mod");
     private static final String TT_air = StatCollector.translateToLocal("GT5U.MBTT.Air");
     private static final String[] TT_dots = IntStream.range(0, 16)
-            .mapToObj(i -> StatCollector.translateToLocal("structurelib.blockhint." + i + ".name"))
-            .toArray(String[]::new);
+                                                     .mapToObj(
+                                                             i -> StatCollector.translateToLocal(
+                                                                     "structurelib.blockhint." + i + ".name"))
+                                                     .toArray(String[]::new);
 
     public GT_Multiblock_Tooltip_Builder() {
         iLines = new LinkedList<>();
@@ -567,12 +569,13 @@ public class GT_Multiblock_Tooltip_Builder {
         iArray = iLines.toArray(new String[0]);
         sArray = sLines.toArray(new String[0]);
         // e.getKey() - 1 because 1 dot is meta 0.
-        hArray = Stream
-                .concat(
-                        hLines.stream(),
-                        hBlocks.asMap().entrySet().stream()
-                                .map(e -> TT_dots[e.getKey() - 1] + COLON + String.join(SEPARATOR, e.getValue())))
-                .toArray(String[]::new);
+        hArray = Stream.concat(
+                hLines.stream(),
+                hBlocks.asMap()
+                       .entrySet()
+                       .stream()
+                       .map(e -> TT_dots[e.getKey() - 1] + COLON + String.join(SEPARATOR, e.getValue())))
+                       .toArray(String[]::new);
     }
 
     public String[] getInformation() {

@@ -43,26 +43,42 @@ public abstract class GT_Cover_AdvancedWirelessRedstoneBase<T extends GT_Cover_A
         if (signals == null) signals = new ConcurrentHashMap<>();
 
         switch (mode) {
-            case AND:
-                return (byte) (signals.values().stream().map(signal -> signal > 0)
-                        .reduce(true, (signalA, signalB) -> signalA && signalB) ? 15 : 0);
-            case NAND:
-                return (byte) (signals.values().stream().map(signal -> signal > 0)
-                        .reduce(true, (signalA, signalB) -> signalA && signalB) ? 0 : 15);
-            case OR:
-                return (byte) (signals.values().stream().map(signal -> signal > 0)
-                        .reduce(false, (signalA, signalB) -> signalA || signalB) ? 15 : 0);
-            case NOR:
-                return (byte) (signals.values().stream().map(signal -> signal > 0)
-                        .reduce(false, (signalA, signalB) -> signalA || signalB) ? 0 : 15);
-            case SINGLE_SOURCE:
-                if (signals.values().isEmpty()) {
+            case AND -> {
+                return (byte) (signals.values()
+                                      .stream()
+                                      .map(signal -> signal > 0)
+                                      .reduce(true, (signalA, signalB) -> signalA && signalB) ? 15 : 0);
+            }
+            case NAND -> {
+                return (byte) (signals.values()
+                                      .stream()
+                                      .map(signal -> signal > 0)
+                                      .reduce(true, (signalA, signalB) -> signalA && signalB) ? 0 : 15);
+            }
+            case OR -> {
+                return (byte) (signals.values()
+                                      .stream()
+                                      .map(signal -> signal > 0)
+                                      .reduce(false, (signalA, signalB) -> signalA || signalB) ? 15 : 0);
+            }
+            case NOR -> {
+                return (byte) (signals.values()
+                                      .stream()
+                                      .map(signal -> signal > 0)
+                                      .reduce(false, (signalA, signalB) -> signalA || signalB) ? 0 : 15);
+            }
+            case SINGLE_SOURCE -> {
+                if (signals.values()
+                           .isEmpty()) {
                     return 0;
                 }
-
-                return signals.values().iterator().next();
-            default:
+                return signals.values()
+                              .iterator()
+                              .next();
+            }
+            default -> {
                 return 0;
+            }
         }
     }
 
@@ -76,8 +92,9 @@ public abstract class GT_Cover_AdvancedWirelessRedstoneBase<T extends GT_Cover_A
     }
 
     public static void setSignalAt(UUID uuid, int frequency, long hash, byte value) {
-        Map<Integer, Map<Long, Byte>> frequencies = GregTech_API.sAdvancedWirelessRedstone
-                .computeIfAbsent(String.valueOf(uuid), k -> new ConcurrentHashMap<>());
+        Map<Integer, Map<Long, Byte>> frequencies = GregTech_API.sAdvancedWirelessRedstone.computeIfAbsent(
+                String.valueOf(uuid),
+                k -> new ConcurrentHashMap<>());
         Map<Long, Byte> signals = frequencies.computeIfAbsent(frequency, k -> new ConcurrentHashMap<>());
         signals.put(hash, value);
     }
@@ -238,14 +255,22 @@ public abstract class GT_Cover_AdvancedWirelessRedstoneBase<T extends GT_Cover_A
             addUIForDataController(dataController);
 
             builder.widget(dataController)
-                    .widget(
-                            new TextWidget(GT_Utility.trans("246", "Frequency")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                                    .setPos(startX + spaceX * 5, 4 + startY + spaceY * getFrequencyRow()))
-                    .widget(
-                            new TextWidget(GT_Utility.trans("602", "Use Private Frequency"))
-                                    .setDefaultColor(COLOR_TEXT_GRAY.get()).setPos(
-                                            startX + spaceX * privateExtraColumn,
-                                            4 + startY + spaceY * getButtonRow()));
+                   .widget(
+                           new TextWidget(GT_Utility.trans("246", "Frequency")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                                                                               .setPos(
+                                                                                       startX + spaceX * 5,
+                                                                                       4 + startY
+                                                                                               + spaceY * getFrequencyRow()))
+                   .widget(
+                           new TextWidget(
+                                   GT_Utility.trans("602", "Use Private Frequency"))
+                                                                                    .setDefaultColor(
+                                                                                            COLOR_TEXT_GRAY.get())
+                                                                                    .setPos(
+                                                                                            startX + spaceX
+                                                                                                    * privateExtraColumn,
+                                                                                            4 + startY
+                                                                                                    + spaceY * getButtonRow()));
         }
 
         protected void addUIForDataController(CoverDataControllerWidget<T> controller) {
@@ -256,20 +281,24 @@ public abstract class GT_Cover_AdvancedWirelessRedstoneBase<T extends GT_Cover_A
                         coverData.frequency = (int) MathExpression.parseMathExpression(state);
                         return coverData;
                     },
-                    widget -> widget.setOnScrollNumbers().setNumbers(0, Integer.MAX_VALUE).setFocusOnGuiOpen(true)
-                            .setPos(1, 2 + spaceY * getFrequencyRow()).setSize(spaceX * 5 - 4, 12))
-                    .addFollower(
-                            CoverDataFollower_ToggleButtonWidget.ofCheck(),
-                            coverData -> coverData.uuid != null,
-                            (coverData, state) -> {
-                                if (state) {
-                                    coverData.uuid = getUIBuildContext().getPlayer().getUniqueID();
-                                } else {
-                                    coverData.uuid = null;
-                                }
-                                return coverData;
-                            },
-                            widget -> widget.setPos(0, spaceY * getButtonRow()));
+                    widget -> widget.setOnScrollNumbers()
+                                    .setNumbers(0, Integer.MAX_VALUE)
+                                    .setFocusOnGuiOpen(true)
+                                    .setPos(1, 2 + spaceY * getFrequencyRow())
+                                    .setSize(spaceX * 5 - 4, 12))
+                      .addFollower(
+                              CoverDataFollower_ToggleButtonWidget.ofCheck(),
+                              coverData -> coverData.uuid != null,
+                              (coverData, state) -> {
+                                  if (state) {
+                                      coverData.uuid = getUIBuildContext().getPlayer()
+                                                                          .getUniqueID();
+                                  } else {
+                                      coverData.uuid = null;
+                                  }
+                                  return coverData;
+                              },
+                              widget -> widget.setPos(0, spaceY * getButtonRow()));
         }
 
         protected abstract int getFrequencyRow();

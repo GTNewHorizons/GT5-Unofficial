@@ -163,8 +163,10 @@ public abstract class GT_Cover_AdvancedRedstoneTransmitterBase<T extends GT_Cove
                 } else {
                     return "";
                 }
-            }).setSynced(false).setDefaultColor(COLOR_TEXT_GRAY.get())
-                    .setPos(startX + spaceX * 10, 4 + startY + spaceY * getButtonRow()));
+            })
+                                     .setSynced(false)
+                                     .setDefaultColor(COLOR_TEXT_GRAY.get())
+                                     .setPos(startX + spaceX * 10, 4 + startY + spaceY * getButtonRow()));
         }
 
         @Override
@@ -178,8 +180,8 @@ public abstract class GT_Cover_AdvancedRedstoneTransmitterBase<T extends GT_Cove
                         return coverData;
                     },
                     widget -> widget.addTooltip(0, GT_Utility.trans("NORMAL", "Normal"))
-                            .addTooltip(1, GT_Utility.trans("INVERTED", "Inverted"))
-                            .setPos(spaceX * 9, spaceY * getButtonRow()));
+                                    .addTooltip(1, GT_Utility.trans("INVERTED", "Inverted"))
+                                    .setPos(spaceX * 9, spaceY * getButtonRow()));
         }
     }
 }

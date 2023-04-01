@@ -195,7 +195,9 @@ public class GT_MetaTileEntity_LongDistancePipelineItem extends GT_MetaTileEntit
         else if (aSide == GT_Utility.getOppositeSide(aFacing)) return new ITexture[] {
                 MACHINE_CASINGS[mTier][aColorIndex + 1], TextureFactory.of(OVERLAY_PIPELINE_ITEM_BACK) };
         else return new ITexture[] { MACHINE_CASINGS[mTier][aColorIndex + 1],
-                TextureFactory.of(OVERLAY_PIPELINE_ITEM_SIDE),
-                TextureFactory.builder().addIcon(OVERLAY_PIPELINE_ITEM_SIDE_GLOW).glow().build() };
+                TextureFactory.of(OVERLAY_PIPELINE_ITEM_SIDE), TextureFactory.builder()
+                                                                             .addIcon(OVERLAY_PIPELINE_ITEM_SIDE_GLOW)
+                                                                             .glow()
+                                                                             .build() };
     }
 }

@@ -80,10 +80,9 @@ public class GT_Packet_SetLockedFluid extends GT_Packet_New {
         TileEntity tile = world.getTileEntity(mX, mY, mZ);
         if (!(tile instanceof IGregTechTileEntity) || ((IGregTechTileEntity) tile).isDead()) return;
         IMetaTileEntity mte = ((IGregTechTileEntity) tile).getMetaTileEntity();
-        if (!(mte instanceof IFluidLockable)) return;
+        if (!(mte instanceof IFluidLockable mteToLock)) return;
         Fluid tFluid = FluidRegistry.getFluid(mFluidID);
         if (tFluid == null) return;
-        IFluidLockable mteToLock = (IFluidLockable) mte;
         if (!mteToLock.allowChangingLockedFluid(tFluid.getName())) return;
 
         mteToLock.lockFluid(true);

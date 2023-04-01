@@ -15,12 +15,14 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -36,20 +38,26 @@ import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.IAlignment;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizon.structurelib.alignment.enumerable.Flip;
 import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
 import com.gtnewhorizons.modularui.api.ModularUITextures;
+import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
+import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 import com.gtnewhorizons.modularui.api.forge.ListItemHandler;
 import com.gtnewhorizons.modularui.api.screen.*;
 import com.gtnewhorizons.modularui.api.widget.Widget;
+import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
+import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
 import com.gtnewhorizons.modularui.common.widget.MultiChildWidget;
 import com.gtnewhorizons.modularui.common.widget.Scrollable;
@@ -61,48 +69,58 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import gnu.trove.list.TIntList;
 import gnu.trove.list.array.TIntArrayList;
 import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GT_Values.NBT;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
+import gregtech.api.fluid.FluidTankGT;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.IDescribable;
-import gregtech.api.interfaces.tileentity.IMachineProgress;
+import gregtech.api.logic.PowerLogic;
+import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.logic.interfaces.PowerLogicHost;
+import gregtech.api.logic.interfaces.ProcessingLogicHost;
 import gregtech.api.multitileentity.MultiTileEntityContainer;
 import gregtech.api.multitileentity.MultiTileEntityRegistry;
 import gregtech.api.multitileentity.interfaces.IMultiBlockController;
-import gregtech.api.multitileentity.interfaces.IMultiBlockFluidHandler;
-import gregtech.api.multitileentity.interfaces.IMultiBlockInventory;
 import gregtech.api.multitileentity.interfaces.IMultiBlockPart;
 import gregtech.api.multitileentity.interfaces.IMultiTileEntity;
 import gregtech.api.multitileentity.interfaces.IMultiTileEntity.IMTE_AddToolTips;
 import gregtech.api.multitileentity.machine.MultiTileBasicMachine;
-import gregtech.api.multitileentity.multiblock.casing.AdvancedCasing;
-import gregtech.api.multitileentity.multiblock.casing.InventoryUpgrade;
+import gregtech.api.multitileentity.multiblock.casing.FunctionalCasing;
+import gregtech.api.multitileentity.multiblock.casing.UpgradeCasing;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.tileentities.casings.upgrade.InventoryUpgrade;
 
-public abstract class MultiBlockController<T extends MultiBlockController<T>> extends MultiTileBasicMachine
-        implements IAlignment, IConstructable, IMultiBlockController, IDescribable, IMachineProgress,
-        IMultiBlockFluidHandler, IMultiBlockInventory, IMTE_AddToolTips {
+public abstract class MultiBlockController<T extends MultiBlockController<T>> extends MultiTileBasicMachine implements
+        IAlignment, IConstructable, IMultiBlockController, IDescribable, IMTE_AddToolTips, ISurvivalConstructable {
 
-    private static final int TICKS_BETWEEN_RECIPE_CHECKS = 100;
     private static final Map<Integer, GT_Multiblock_Tooltip_Builder> tooltip = new ConcurrentHashMap<>();
-    private final List<AdvancedCasing> mUpgradeCasings = new ArrayList<AdvancedCasing>();
+    private final List<UpgradeCasing> upgradeCasings = new ArrayList<>();
+    private final List<FunctionalCasing> functionalCasings = new ArrayList<>();
     protected BuildState buildState = new BuildState();
 
     protected Map<String, String> multiBlockInputInventoryNames = new LinkedHashMap<>();
     protected Map<String, String> multiBlockOutputInventoryNames = new LinkedHashMap<>();
+    protected Map<String, String> multiBlockInputInventoryToTankLink = new LinkedHashMap<>();
     protected Map<String, IItemHandlerModifiable> multiBlockInputInventory = new LinkedHashMap<>();
     protected Map<String, IItemHandlerModifiable> multiBlockOutputInventory = new LinkedHashMap<>();
 
-    protected int mMaxProgressTime = 0;
-    private int mProgressTime = 0;
-    private boolean mStructureOkay = false, mStructureChanged = false;
-    private boolean mWorks = true, mWorkUpdate = false, mWasShutdown = false, mActive = false, mSeparateInputs = true;
-    private ExtendedFacing mExtendedFacing = ExtendedFacing.DEFAULT;
-    private IAlignmentLimits mLimits = getInitialAlignmentLimits();
-    private ItemStack[] mItemsToOutput;
-    private String mInventory;
+    protected Map<String, String> multiBlockInputTankNames = new LinkedHashMap<>();
+    protected Map<String, String> multiBlockOutputTankNames = new LinkedHashMap<>();
+    protected Map<String, FluidTankGT> multiBlockInputTank = new LinkedHashMap<>();
+    protected Map<String, FluidTankGT> multiBlockOutputTank = new LinkedHashMap<>();
+
+    private boolean structureOkay = false, structureChanged = false;
+    private ExtendedFacing extendedFacing = ExtendedFacing.DEFAULT;
+    private IAlignmentLimits limits = getInitialAlignmentLimits();
+    private String inventoryName;
+    private String tankName;
+    protected boolean separateInputs = false;
+    protected boolean voidExcess = false;
+    protected boolean batchMode = false;
+    protected boolean recipeLock = false;
 
     // A list of sides
     // Each side has a list of parts that have a cover that need to be ticked
@@ -143,117 +161,101 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
      * <p>
      * NOTE: If using `buildState` be sure to `startBuilding()` and either `endBuilding()` or `failBuilding()`
      */
-    public abstract boolean checkMachine();
-
-    /**
-     * Checks the Recipe
-     */
-    public abstract boolean checkRecipe(ItemStack aStack);
-
-    @Override
-    public void writeMultiTileNBT(NBTTagCompound aNBT) {
-        super.writeMultiTileNBT(aNBT);
-
-        aNBT.setBoolean(NBT.STRUCTURE_OK, mStructureOkay);
-        aNBT.setByte(NBT.ROTATION, (byte) mExtendedFacing.getRotation().getIndex());
-        aNBT.setByte(NBT.FLIP, (byte) mExtendedFacing.getFlip().getIndex());
-
-        saveUpgradeInventoriesToNBT(aNBT);
-        saveItemsToOutput(aNBT);
-    }
-
-    private void saveUpgradeInventoriesToNBT(NBTTagCompound aNBT) {
-        final NBTTagList tListInputInvs = new NBTTagList();
-        multiBlockInputInventory.forEach((tID, tInv) -> {
-            if (tID.equals("controller")) {} else {
-                final NBTTagCompound tTag = new NBTTagCompound();
-                tTag.setString(NBT.UPGRADE_INVENTORY_UUID, tID);
-                tTag.setString(NBT.UPGRADE_INVENTORY_NAME, multiBlockInputInventoryNames.get(tID));
-                tTag.setInteger(NBT.UPGRADE_INVENTORY_SIZE, tInv.getSlots());
-                writeInventory(tTag, tInv, NBT.INV_INPUT_LIST);
-                tListInputInvs.appendTag(tTag);
-            }
-        });
-        final NBTTagList tListOutputInvs = new NBTTagList();
-        multiBlockOutputInventory.forEach((tID, tInv) -> {
-            if (tID.equals("controller")) {} else {
-                final NBTTagCompound tTag = new NBTTagCompound();
-                tTag.setString(NBT.UPGRADE_INVENTORY_UUID, tID);
-                tTag.setString(NBT.UPGRADE_INVENTORY_NAME, multiBlockOutputInventoryNames.get(tID));
-                tTag.setInteger(NBT.UPGRADE_INVENTORY_SIZE, tInv.getSlots());
-                writeInventory(tTag, tInv, NBT.INV_OUTPUT_LIST);
-                tListOutputInvs.appendTag(tTag);
-            }
-        });
-        aNBT.setTag(NBT.UPGRADE_INVENTORIES_INPUT, tListInputInvs);
-        aNBT.setTag(NBT.UPGRADE_INVENTORIES_OUTPUT, tListOutputInvs);
-    }
-
-    private void saveItemsToOutput(NBTTagCompound aNBT) {
-        final NBTTagList tList = new NBTTagList();
-        for (int tSlot = 0; tSlot < mItemsToOutput.length; tSlot++) {
-            final ItemStack tStack = mItemsToOutput[tSlot];
-            if (tStack != null) {
-                final NBTTagCompound tag = new NBTTagCompound();
-                tag.setByte("s", (byte) tSlot);
-                tStack.writeToNBT(tag);
-                tList.appendTag(tag);
-            }
+    public boolean checkMachine() {
+        double sum = 0;
+        for (FunctionalCasing casing : functionalCasings) {
+            sum += casing.getPartTier();
         }
-        aNBT.setTag(NBT.ITEM_OUT, tList);
+        tier = (int) Math.floor(sum / functionalCasings.size());
+        // Maximum Energy stores will have a cap of 2 minute work time of current voltage
+        return tier > 0;
     }
 
     @Override
-    public void readMultiTileNBT(NBTTagCompound aNBT) {
-        super.readMultiTileNBT(aNBT);
+    public void writeMultiTileNBT(NBTTagCompound nbt) {
+        super.writeMultiTileNBT(nbt);
+
+        nbt.setBoolean(NBT.STRUCTURE_OK, structureOkay);
+        nbt.setByte(
+                NBT.ROTATION,
+                (byte) extendedFacing.getRotation()
+                                     .getIndex());
+        nbt.setByte(
+                NBT.FLIP,
+                (byte) extendedFacing.getFlip()
+                                     .getIndex());
+
+        saveUpgradeInventoriesToNBT(nbt);
+    }
+
+    private void saveUpgradeInventoriesToNBT(NBTTagCompound nbt) {
+        final NBTTagList inputInvList = new NBTTagList();
+        multiBlockInputInventory.forEach((id, inv) -> {
+            if (!id.equals("controller")) {
+                final NBTTagCompound tTag = new NBTTagCompound();
+                tTag.setString(NBT.UPGRADE_INVENTORY_UUID, id);
+                tTag.setString(NBT.UPGRADE_INVENTORY_NAME, multiBlockInputInventoryNames.get(id));
+                tTag.setInteger(NBT.UPGRADE_INVENTORY_SIZE, inv.getSlots());
+                writeInventory(tTag, inv, NBT.INV_INPUT_LIST);
+                inputInvList.appendTag(tTag);
+            }
+        });
+        final NBTTagList outputInvList = new NBTTagList();
+        multiBlockOutputInventory.forEach((id, inv) -> {
+            if (!id.equals("controller")) {
+                final NBTTagCompound tTag = new NBTTagCompound();
+                tTag.setString(NBT.UPGRADE_INVENTORY_UUID, id);
+                tTag.setString(NBT.UPGRADE_INVENTORY_NAME, multiBlockOutputInventoryNames.get(id));
+                tTag.setInteger(NBT.UPGRADE_INVENTORY_SIZE, inv.getSlots());
+                writeInventory(tTag, inv, NBT.INV_OUTPUT_LIST);
+                outputInvList.appendTag(tTag);
+            }
+        });
+        nbt.setTag(NBT.UPGRADE_INVENTORIES_INPUT, inputInvList);
+        nbt.setTag(NBT.UPGRADE_INVENTORIES_OUTPUT, outputInvList);
+    }
+
+    @Override
+    public void readMultiTileNBT(NBTTagCompound nbt) {
+        super.readMultiTileNBT(nbt);
 
         // Multiblock inventories are a collection of inventories. The first inventory is the default internal
         // inventory, and the others are added by inventory extending blocks.
-        if (mInputInventory != null) multiBlockInputInventory.put("controller", mInputInventory);
-        if (mOutputInventory != null) multiBlockOutputInventory.put("controller", mOutputInventory);
+        if (inputInventory != null) multiBlockInputInventory.put("controller", inputInventory);
+        if (outputInventory != null) multiBlockOutputInventory.put("controller", outputInventory);
 
-        mStructureOkay = aNBT.getBoolean(NBT.STRUCTURE_OK);
-        mExtendedFacing = ExtendedFacing.of(
+        structureOkay = nbt.getBoolean(NBT.STRUCTURE_OK);
+        extendedFacing = ExtendedFacing.of(
                 ForgeDirection.getOrientation(getFrontFacing()),
-                Rotation.byIndex(aNBT.getByte(NBT.ROTATION)),
-                Flip.byIndex(aNBT.getByte(NBT.FLIP)));
+                Rotation.byIndex(nbt.getByte(NBT.ROTATION)),
+                Flip.byIndex(nbt.getByte(NBT.FLIP)));
 
-        loadUpgradeInventoriesFromNBT(aNBT);
-        loadItemsToOutput(aNBT);
+        loadUpgradeInventoriesFromNBT(nbt);
     }
 
-    private void loadUpgradeInventoriesFromNBT(NBTTagCompound aNBT) {
-        final NBTTagList tListInput = aNBT.getTagList(NBT.UPGRADE_INVENTORIES_INPUT, 10);
-        for (int i = 0; i < tListInput.tagCount(); i++) {
-            final NBTTagCompound tNBT = tListInput.getCompoundTagAt(i);
-            String invUUID = tNBT.getString(NBT.UPGRADE_INVENTORY_UUID);
-            String invName = tNBT.getString(NBT.UPGRADE_INVENTORY_NAME);
-            int tInvSize = tNBT.getInteger(NBT.UPGRADE_INVENTORY_SIZE);
-            IItemHandlerModifiable tInv = new ItemStackHandler(tInvSize);
-            loadInventory(tNBT, tInv, NBT.INV_INPUT_LIST);
-            multiBlockInputInventory.put(invUUID, tInv);
+    private void loadUpgradeInventoriesFromNBT(NBTTagCompound nbt) {
+        final NBTTagList listInputInventories = nbt.getTagList(NBT.UPGRADE_INVENTORIES_INPUT, 10);
+        for (int i = 0; i < listInputInventories.tagCount(); i++) {
+            final NBTTagCompound nbtInv = listInputInventories.getCompoundTagAt(i);
+            String invUUID = nbtInv.getString(NBT.UPGRADE_INVENTORY_UUID);
+            String invName = nbtInv.getString(NBT.UPGRADE_INVENTORY_NAME);
+            int invSize = nbtInv.getInteger(NBT.UPGRADE_INVENTORY_SIZE);
+            IItemHandlerModifiable inv = new ItemStackHandler(invSize);
+            loadInventory(nbtInv, inv, NBT.INV_INPUT_LIST);
+            multiBlockInputInventory.put(invUUID, inv);
             multiBlockInputInventoryNames.put(invUUID, invName);
         }
-        final NBTTagList tListOutput = aNBT.getTagList(NBT.UPGRADE_INVENTORIES_OUTPUT, 10);
-        for (int i = 0; i < tListOutput.tagCount(); i++) {
-            final NBTTagCompound tNBT = tListOutput.getCompoundTagAt(i);
-            String invUUID = tNBT.getString(NBT.UPGRADE_INVENTORY_UUID);
-            String invName = tNBT.getString(NBT.UPGRADE_INVENTORY_NAME);
-            int tInvSize = tNBT.getInteger(NBT.UPGRADE_INVENTORY_SIZE);
-            IItemHandlerModifiable tInv = new ItemStackHandler(tInvSize);
-            loadInventory(tNBT, tInv, NBT.INV_OUTPUT_LIST);
-            multiBlockOutputInventory.put(invUUID, tInv);
-            multiBlockOutputInventoryNames.put(invUUID, invName);
-        }
-    }
 
-    private void loadItemsToOutput(NBTTagCompound aNBT) {
-        final NBTTagList tList = aNBT.getTagList(NBT.ITEM_OUT, 10);
-        mItemsToOutput = new ItemStack[tList.tagCount()];
-        for (int i = 0; i < tList.tagCount(); i++) {
-            final NBTTagCompound tNBT = tList.getCompoundTagAt(i);
-            final int tSlot = tNBT.getByte("s");
-            if (tSlot >= 0 && tSlot < mItemsToOutput.length) mItemsToOutput[tSlot] = GT_Utility.loadItem(tNBT);
+        final NBTTagList listOutputInventories = nbt.getTagList(NBT.UPGRADE_INVENTORIES_OUTPUT, 10);
+        for (int i = 0; i < listOutputInventories.tagCount(); i++) {
+            final NBTTagCompound nbtInv = listOutputInventories.getCompoundTagAt(i);
+            String invUUID = nbtInv.getString(NBT.UPGRADE_INVENTORY_UUID);
+            String invName = nbtInv.getString(NBT.UPGRADE_INVENTORY_NAME);
+            int invSize = nbtInv.getInteger(NBT.UPGRADE_INVENTORY_SIZE);
+            IItemHandlerModifiable inv = new ItemStackHandler(invSize);
+            loadInventory(nbtInv, inv, NBT.INV_OUTPUT_LIST);
+            multiBlockOutputInventory.put(invUUID, inv);
+            multiBlockOutputInventoryNames.put(invUUID, invName);
         }
     }
 
@@ -273,6 +275,7 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
 
     @Override
     protected void addDebugInfo(EntityPlayer aPlayer, int aLogLevel, ArrayList<String> tList) {
+        super.addDebugInfo(aPlayer, aLogLevel, tList);
         tList.add("Structure ok: " + checkStructure(false));
     }
 
@@ -286,19 +289,19 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
 
     @Override
     public boolean checkStructure(boolean aForceReset) {
-        if (!isServerSide()) return mStructureOkay;
+        if (!isServerSide()) return structureOkay;
 
         // Only trigger an update if forced (from onPostTick, generally), or if the structure has changed
-        if ((mStructureChanged || aForceReset)) {
-            mStructureOkay = checkMachine();
+        if ((structureChanged || aForceReset)) {
+            structureOkay = checkMachine();
         }
-        mStructureChanged = false;
-        return mStructureOkay;
+        structureChanged = false;
+        return structureOkay;
     }
 
     @Override
     public void onStructureChange() {
-        mStructureChanged = true;
+        structureChanged = true;
     }
 
     public final boolean checkPiece(String piece, Vec3Impl offset) {
@@ -329,7 +332,7 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
                 horizontalOffset,
                 verticalOffset,
                 depthOffset,
-                !mStructureOkay);
+                !structureOkay);
     }
 
     public final boolean buildPiece(String piece, ItemStack trigger, boolean hintsOnly, Vec3Impl offset) {
@@ -353,6 +356,38 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
                 hintOnly);
     }
 
+    protected final int survivalBuildPiece(String piece, ItemStack trigger, Vec3Impl offset, int elementBudget,
+            ISurvivalBuildEnvironment env, boolean check) {
+        return survivalBuildPiece(
+                piece,
+                trigger,
+                offset.get0(),
+                offset.get1(),
+                offset.get2(),
+                elementBudget,
+                env,
+                check);
+    }
+
+    protected final Integer survivalBuildPiece(String piece, ItemStack trigger, int horizontalOffset,
+            int verticalOffset, int depthOffset, int elementBudget, ISurvivalBuildEnvironment env, boolean check) {
+        return getCastedStructureDefinition().survivalBuild(
+                this,
+                trigger,
+                piece,
+                getWorld(),
+                getExtendedFacing(),
+                getXCoord(),
+                getYCoord(),
+                getZCoord(),
+                horizontalOffset,
+                verticalOffset,
+                depthOffset,
+                elementBudget,
+                env,
+                check);
+    }
+
     @SuppressWarnings("unchecked")
     private IStructureDefinition<MultiBlockController<T>> getCastedStructureDefinition() {
         return (IStructureDefinition<MultiBlockController<T>>) getStructureDefinition();
@@ -360,16 +395,16 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
 
     @Override
     public ExtendedFacing getExtendedFacing() {
-        return mExtendedFacing;
+        return extendedFacing;
     }
 
     @Override
     public void setExtendedFacing(ExtendedFacing newExtendedFacing) {
-        if (mExtendedFacing != newExtendedFacing) {
+        if (extendedFacing != newExtendedFacing) {
             onStructureChange();
-            if (mStructureOkay) stopMachine();
-            mExtendedFacing = newExtendedFacing;
-            mStructureOkay = false;
+            if (structureOkay) stopMachine();
+            extendedFacing = newExtendedFacing;
+            structureOkay = false;
             if (isServerSide()) {
                 StructureLibAPI.sendAlignment(
                         this,
@@ -423,9 +458,9 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
     }
 
     @Override
-    public void onFirstTick(boolean aIsServerSide) {
-        super.onFirstTick(aIsServerSide);
-        if (aIsServerSide) {
+    public void onFirstTick(boolean isServerSide) {
+        super.onFirstTick(isServerSide);
+        if (isServerSide) {
             checkStructure(true);
         } else {
             StructureLibAPI.queryAlignment(this);
@@ -451,57 +486,32 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
     }
 
     @Override
-    public void onTick(long aTimer, boolean isServerSide) {
-        // Tick all covers!
+    public void onTick(long timer, boolean isServerSide) {
         if (!tickCovers()) {
             return;
         }
     }
 
     @Override
-    public void onPostTick(long aTick, boolean aIsServerSide) {
-        if (aIsServerSide) {
-            if (aTick % 600 == 5) {
+    public void onPostTick(long tick, boolean isServerSide) {
+        if (isServerSide) {
+            if (tick % 600 == 5) {
                 clearSpecialLists();
                 // Recheck the structure every 30 seconds or so
                 if (!checkStructure(false)) checkStructure(true);
             }
-            if (mStructureOkay) {
-                runMachine(aTick);
+            if (structureOkay) {
+                runMachine(tick);
             } else {
                 stopMachine();
             }
-        }
-    }
-
-    protected void runMachine(long aTick) {
-        if (mMaxProgressTime > 0) {
-            markDirty();
-            if (mMaxProgressTime > 0 && ++mProgressTime >= mMaxProgressTime) {
-                mProgressTime = 0;
-                mMaxProgressTime = 0;
-                outputItems();
-                if (isAllowedToWork()) {
-                    checkRecipe();
-                }
-            }
         } else {
-            if (aTick % TICKS_BETWEEN_RECIPE_CHECKS == 0 || hasWorkJustBeenEnabled() || hasInventoryBeenModified()) {
-                if (isAllowedToWork()) {
-                    if (checkRecipe()) {
-                        markDirty();
-                    }
-                }
-            }
+            doActivitySound(getActivitySoundLoop());
         }
-    }
-
-    protected boolean checkRecipe() {
-        return checkRecipe(null);
     }
 
     protected void clearSpecialLists() {
-        mUpgradeCasings.clear();
+        upgradeCasings.clear();
     }
 
     @Override
@@ -517,7 +527,7 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
 
     @Override
     public boolean allowCoverOnSide(byte aSide, GT_ItemStack aCoverID) {
-        return aSide != mFacing;
+        return aSide != facing;
     }
 
     @Override
@@ -527,22 +537,22 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
 
     @Override
     public IAlignmentLimits getAlignmentLimits() {
-        return mLimits;
+        return limits;
     }
 
     protected void setAlignmentLimits(IAlignmentLimits mLimits) {
-        this.mLimits = mLimits;
+        this.limits = mLimits;
     }
 
     // IMachineProgress
     @Override
-    public int getProgress() {
-        return mProgressTime;
+    public long getProgress() {
+        return progressTime;
     }
 
     @Override
-    public int getMaxProgress() {
-        return mMaxProgressTime;
+    public long getMaxProgress() {
+        return maxProgressTime;
     }
 
     @Override
@@ -568,56 +578,15 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
         return getMaxProgress() > 0;
     }
 
-    @Override
-    public boolean hasWorkJustBeenEnabled() {
-        return mWorkUpdate;
-    }
-
-    @Override
-    public void enableWorking() {
-        if (!mWorks) mWorkUpdate = true;
-        mWorks = true;
-        mWasShutdown = false;
-    }
-
-    @Override
-    public void disableWorking() {
-        mWorks = false;
-    }
-
-    @Override
-    public boolean isAllowedToWork() {
-        return mWorks;
-    }
-
-    @Override
-    public boolean isActive() {
-        return mActive;
-    }
-
-    @Override
-    public void setActive(boolean aActive) {
-        mActive = aActive;
-    }
-
     public boolean isSeparateInputs() {
-        return mSeparateInputs;
+        return separateInputs;
     }
 
     public void setSeparateInputs(boolean aSeparateInputs) {
-        mSeparateInputs = aSeparateInputs;
-    }
-
-    @Override
-    public boolean wasShutdown() {
-        return mWasShutdown;
+        separateInputs = aSeparateInputs;
     }
 
     // End IMachineProgress
-
-    public void stopMachine() {
-        disableWorking();
-    }
 
     protected IAlignmentLimits getInitialAlignmentLimits() {
         return (d, r, f) -> !f.isVerticallyFliped();
@@ -672,7 +641,13 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
         }
     }
 
-    public <S> IStructureElement<S> addMultiTileCasing(int aRegistryID, int aBlockMeta, int aModes) {
+    public <S> IStructureElement<S> addMultiTileCasing(String registryName, int meta, int modes) {
+        MultiTileEntityRegistry registry = MultiTileEntityRegistry.getRegistry(registryName);
+        int registryID = Block.getIdFromBlock(registry.mBlock);
+        return addMultiTileCasing(registryID, meta, modes);
+    }
+
+    public <S> IStructureElement<S> addMultiTileCasing(int registryID, int meta, int modes) {
         return new IStructureElement<S>() {
 
             private final short[] DEFAULT = new short[] { 255, 255, 255, 0 };
@@ -681,20 +656,17 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
             @Override
             public boolean check(S t, World world, int x, int y, int z) {
                 final TileEntity tileEntity = world.getTileEntity(x, y, z);
-                if (!(tileEntity instanceof MultiBlockPart)) return false;
+                if (!(tileEntity instanceof MultiBlockPart part)) return false;
 
-                final MultiBlockPart part = (MultiBlockPart) tileEntity;
-                if (aRegistryID != part.getMultiTileEntityRegistryID() || aBlockMeta != part.getMultiTileEntityID())
+                if (registryID != part.getMultiTileEntityRegistryID() || meta != part.getMultiTileEntityID())
                     return false;
 
                 final IMultiBlockController tTarget = part.getTarget(false);
                 if (tTarget != null && tTarget != MultiBlockController.this) return false;
 
-                part.setTarget(MultiBlockController.this, aModes);
+                part.setTarget(MultiBlockController.this, modes);
 
-                if (part instanceof AdvancedCasing) {
-                    mUpgradeCasings.add((AdvancedCasing) part);
-                }
+                registerSpecialCasings(part);
                 return true;
             }
 
@@ -716,9 +688,14 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
 
             @Override
             public boolean placeBlock(S t, World world, int x, int y, int z, ItemStack trigger) {
-                final MultiTileEntityRegistry tRegistry = MultiTileEntityRegistry.getRegistry(aRegistryID);
-                final MultiTileEntityContainer tContainer = tRegistry
-                        .getNewTileEntityContainer(world, x, y, z, aBlockMeta, null);
+                final MultiTileEntityRegistry tRegistry = MultiTileEntityRegistry.getRegistry(registryID);
+                final MultiTileEntityContainer tContainer = tRegistry.getNewTileEntityContainer(
+                        world,
+                        x,
+                        y,
+                        z,
+                        meta,
+                        null);
                 if (tContainer == null) {
                     GT_FML_LOGGER.error("NULL CONTAINER");
                     return false;
@@ -730,7 +707,7 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
                 }
                 if (world.setBlock(x, y, z, tContainer.mBlock, 15 - tContainer.mBlockMetaData, 2)) {
                     tContainer.setMultiTile(world, x, y, z);
-                    ((MultiBlockPart) te).setTarget(MultiBlockController.this, aModes);
+                    ((MultiBlockPart) te).setTarget(MultiBlockController.this, modes);
 
                     registerSpecialCasings((MultiBlockPart) te);
                 }
@@ -744,9 +721,12 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
         };
     }
 
-    protected void registerSpecialCasings(MultiBlockPart aPart) {
-        if (aPart instanceof AdvancedCasing) {
-            mUpgradeCasings.add((AdvancedCasing) aPart);
+    protected void registerSpecialCasings(MultiBlockPart part) {
+        if (part instanceof UpgradeCasing) {
+            upgradeCasings.add((UpgradeCasing) part);
+        }
+        if (part instanceof FunctionalCasing) {
+            functionalCasings.add((FunctionalCasing) part);
         }
     }
 
@@ -771,7 +751,7 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
         final IFluidTank tTank = getFluidTankFillable(aPart, (byte) aDirection.ordinal(), aFluid);
         if (tTank == null) return 0;
         final int rFilledAmount = tTank.fill(aFluid, aDoFill);
-        if (rFilledAmount > 0 && aDoFill) mInventoryChanged = true;
+        if (rFilledAmount > 0 && aDoFill) hasInventoryChanged = true;
         return rFilledAmount;
     }
 
@@ -781,7 +761,8 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
         final IFluidTank tTank = getFluidTankDrainable(aPart, (byte) aDirection.ordinal(), aFluid);
         if (tTank == null || tTank.getFluid() == null
                 || tTank.getFluidAmount() == 0
-                || !tTank.getFluid().isFluidEqual(aFluid))
+                || !tTank.getFluid()
+                         .isFluidEqual(aFluid))
             return null;
         final FluidStack rDrained = tTank.drain(aFluid.amount, aDoDrain);
         if (rDrained != null && aDoDrain) markInventoryBeenModified();
@@ -802,14 +783,18 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
     public boolean canFill(MultiBlockPart aPart, ForgeDirection aDirection, Fluid aFluid) {
         if (aFluid == null) return false;
         final IFluidTank tTank = getFluidTankFillable(aPart, (byte) aDirection.ordinal(), new FluidStack(aFluid, 0));
-        return tTank != null && (tTank.getFluid() == null || tTank.getFluid().getFluid() == aFluid);
+        return tTank != null && (tTank.getFluid() == null || tTank.getFluid()
+                                                                  .getFluid()
+                == aFluid);
     }
 
     @Override
     public boolean canDrain(MultiBlockPart aPart, ForgeDirection aDirection, Fluid aFluid) {
         if (aFluid == null) return false;
         final IFluidTank tTank = getFluidTankDrainable(aPart, (byte) aDirection.ordinal(), new FluidStack(aFluid, 0));
-        return tTank != null && (tTank.getFluid() != null && tTank.getFluid().getFluid() == aFluid);
+        return tTank != null && (tTank.getFluid() != null && tTank.getFluid()
+                                                                  .getFluid()
+                == aFluid);
     }
 
     @Override
@@ -823,108 +808,25 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
 
     @Override
     public IFluidTank[] getFluidTanksForGUI(MultiBlockPart aPart) {
-        if (aPart.modeSelected(MultiBlockPart.FLUID_IN)) return mTanksInput;
-        if (aPart.modeSelected(MultiBlockPart.FLUID_OUT)) return mTanksOutput;
+        if (aPart.modeSelected(MultiBlockPart.FLUID_IN)) return inputTanks;
+        if (aPart.modeSelected(MultiBlockPart.FLUID_OUT)) return outputTanks;
         return GT_Values.emptyFluidTank;
     }
 
-    /**
-     * Energy - MultiBlock related Energy behavior
-     */
+    // #region Energy
     @Override
-    public boolean isUniversalEnergyStored(MultiBlockPart aPart, long aEnergyAmount) {
-        return getUniversalEnergyStored(aPart) >= aEnergyAmount;
-    }
-
-    @Override
-    public long getUniversalEnergyStored(MultiBlockPart aPart) {
-        return Math.min(getUniversalEnergyStored(), getUniversalEnergyCapacity());
-    }
-
-    @Override
-    public long getUniversalEnergyCapacity(MultiBlockPart aPart) {
-        return getUniversalEnergyCapacity();
-    }
-
-    @Override
-    public long getOutputAmperage(MultiBlockPart aPart) {
-        return getOutputAmperage();
-    }
-
-    @Override
-    public long getOutputVoltage(MultiBlockPart aPart) {
-        return getOutputVoltage();
-    }
-
-    @Override
-    public long getInputAmperage(MultiBlockPart aPart) {
-        return getInputAmperage();
-    }
-
-    @Override
-    public long getInputVoltage(MultiBlockPart aPart) {
-        return getInputVoltage();
-    }
-
-    @Override
-    public boolean decreaseStoredEnergyUnits(MultiBlockPart aPart, long aEnergy, boolean aIgnoreTooLittleEnergy) {
-        return decreaseStoredEnergyUnits(aEnergy, aIgnoreTooLittleEnergy);
-    }
-
-    @Override
-    public boolean increaseStoredEnergyUnits(MultiBlockPart aPart, long aEnergy, boolean aIgnoreTooMuchEnergy) {
-        return increaseStoredEnergyUnits(aEnergy, aIgnoreTooMuchEnergy);
-    }
-
-    @Override
-    public boolean drainEnergyUnits(MultiBlockPart aPart, byte aSide, long aVoltage, long aAmperage) {
-        return drainEnergyUnits(aSide, aVoltage, aAmperage);
-    }
-
-    @Override
-    public long injectEnergyUnits(MultiBlockPart aPart, byte aSide, long aVoltage, long aAmperage) {
-        return injectEnergyUnits(aSide, aVoltage, aAmperage);
-    }
-
-    @Override
-    public long getAverageElectricInput(MultiBlockPart aPart) {
-        return getAverageElectricInput();
-    }
-
-    @Override
-    public long getAverageElectricOutput(MultiBlockPart aPart) {
-        return getAverageElectricOutput();
-    }
-
-    @Override
-    public long getStoredEU(MultiBlockPart aPart) {
-        return getStoredEU();
-    }
-
-    @Override
-    public long getEUCapacity(MultiBlockPart aPart) {
-        return getEUCapacity();
-    }
-
-    @Override
-    public boolean inputEnergyFrom(MultiBlockPart aPart, byte aSide) {
-        if (aSide == GT_Values.SIDE_UNKNOWN) return true;
-        if (aSide >= 0 && aSide < 6) {
-            if (isInvalid()) return false;
-            if (isEnetInput()) return isEnergyInputSide(aSide);
+    public PowerLogic getPowerLogic(IMultiBlockPart part, byte side) {
+        if (!(this instanceof PowerLogicHost)) {
+            return null;
         }
-        return false;
-    }
 
-    @Override
-    public boolean outputsEnergyTo(MultiBlockPart aPart, byte aSide) {
-        if (aSide == GT_Values.SIDE_UNKNOWN) return true;
-        if (aSide >= 0 && aSide < 6) {
-            if (isInvalid()) return false;
-            if (isEnetOutput()) return isEnergyOutputSide(aSide);
+        if (part.getFrontFacing() != side) {
+            return null;
         }
-        return false;
+
+        return ((PowerLogicHost) this).getPowerLogic(side);
     }
+    // #endregion Energy
 
     /**
      * Item - MultiBlock related Item behaviour.
@@ -985,7 +887,7 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
     @Override
     public IItemHandlerModifiable getInventoryForGUI(MultiBlockPart aPart) {
         if (isServerSide()) {
-            for (AdvancedCasing tPart : mUpgradeCasings) {
+            for (UpgradeCasing tPart : upgradeCasings) {
                 if (!(tPart instanceof InventoryUpgrade)) continue;
                 tPart.issueClientUpdate();
             }
@@ -1071,7 +973,7 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
         if (tInv == null) return false;
 
         final int tSlot = tInv.getRight();
-        final IItemHandlerModifiable inv = tInv.getLeft();;
+        final IItemHandlerModifiable inv = tInv.getLeft();
 
         return inv.getStackInSlot(tSlot) == null || GT_Utility.areStacksEqual(aStack, inv.getStackInSlot(tSlot)); // &&
                                                                                                                   // allowPutStack(getBaseMetaTileEntity(),
@@ -1087,7 +989,7 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
         if (tInv == null) return false;
 
         final int tSlot = tInv.getRight();
-        final IItemHandlerModifiable inv = tInv.getLeft();;
+        final IItemHandlerModifiable inv = tInv.getLeft();
 
         return inv.getStackInSlot(tSlot) != null; // && allowPullStack(getBaseMetaTileEntity(), aIndex, (byte) aSide,
                                                   // aStack);
@@ -1190,7 +1092,9 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
         }
         final String lockedInventory = aPart.getLockedInventory();
         if (lockedInventory != null && !lockedInventory.equals("")) {
-            str.append(" [Locked: ").append(lockedInventory).append("]");
+            str.append(" [Locked: ")
+               .append(lockedInventory)
+               .append("]");
         }
 
         return str.toString();
@@ -1240,36 +1144,132 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
      */
 
     protected ItemStack[] getAllItemInputs() {
-        return getInventoriesForInput().getStacks().toArray(new ItemStack[0]);
+        return getInventoriesForInput().getStacks()
+                                       .toArray(new ItemStack[0]);
+    }
+
+    protected ItemStack[] getAllOutputItems() {
+        return getInventoriesForOutput().getStacks()
+                                        .toArray(new ItemStack[0]);
     }
 
     protected Iterable<Pair<ItemStack[], String>> getItemInputsForEachInventory() {
-        return multiBlockInputInventory.entrySet().stream()
-                .map((entry) -> Pair.of(entry.getValue().getStacks().toArray(new ItemStack[0]), entry.getKey()))
-                .collect(Collectors.toList());
+        return multiBlockInputInventory.entrySet()
+                                       .stream()
+                                       .map(
+                                               (entry) -> Pair.of(
+                                                       entry.getValue()
+                                                            .getStacks()
+                                                            .toArray(new ItemStack[0]),
+                                                       entry.getKey()))
+                                       .collect(Collectors.toList());
     }
 
-    protected void setItemOutputs(ItemStack[] aItemOutputs, String aInventory) {
-        mItemsToOutput = aItemOutputs;
-        mInventory = aInventory;
+    protected void setItemOutputs(String inventory, ItemStack... itemOutputs) {
+        itemsToOutput = itemOutputs;
+        inventoryName = inventory;
     }
 
-    private void outputItems() {
-        int index = 0;
-        if (mItemsToOutput == null) {
+    @Override
+    protected void setItemOutputs(ItemStack... outputs) {
+        super.setItemOutputs(outputs);
+        inventoryName = null;
+    }
+
+    @Override
+    protected void outputItems() {
+        if (itemsToOutput == null) {
             return;
         }
-        if (mInventory != null) {
-            for (ItemStack tItem : mItemsToOutput) {
-                multiBlockOutputInventory.getOrDefault(mInventory, getInventoriesForOutput())
-                        .insertItem(index++, tItem.copy(), false);
-            }
+
+        IItemHandlerModifiable inv;
+        if (inventoryName != null) {
+            inv = multiBlockOutputInventory.getOrDefault(inventoryName, getInventoriesForOutput());
         } else {
-            for (ItemStack tItem : mItemsToOutput) {
-                getInventoriesForOutput().insertItem(index++, tItem.copy(), false);
+            inv = getInventoriesForOutput();
+        }
+        for (ItemStack item : itemsToOutput) {
+            int index = 0;
+            while (item != null && item.stackSize > 0 && index < inv.getSlots()) {
+                item = inv.insertItem(index++, item.copy(), false);
             }
         }
-        mItemsToOutput = null;
+        itemsToOutput = null;
+    }
+
+    protected void setFluidOutputs(String tank, FluidStack... fluidOuputs) {
+        fluidsToOutput = fluidOuputs;
+        tankName = tank;
+    }
+
+    @Override
+    protected void setFluidOutputs(FluidStack... outputs) {
+        super.setFluidOutputs(outputs);
+        tankName = null;
+    }
+
+    @Override
+    protected void outputFluids() {
+        if (fluidsToOutput == null) {
+            return;
+        }
+
+        List<FluidTankGT> tanks = new ArrayList<>(multiBlockOutputTank.values());
+        for (FluidStack fluid : fluidsToOutput) {
+            int index = 0;
+            while (fluid != null && fluid.amount > 0 && index < tanks.size()) {
+                int filled = tanks.get(index++)
+                                  .fill(fluid, true);
+                fluid.amount -= filled;
+            }
+        }
+    }
+
+    @Override
+    protected void updateSlots() {
+        IItemHandlerModifiable inv = getInventoriesForInput();
+        for (int i = 0; i < inv.getSlots(); i++) {
+            if (inv.getStackInSlot(i).stackSize <= 0) {
+                inv.setStackInSlot(i, null);
+            }
+        }
+    }
+
+    @Override
+    protected boolean checkRecipe() {
+        if (!(this instanceof ProcessingLogicHost)) {
+            return false;
+        }
+        ProcessingLogic logic = ((ProcessingLogicHost) this).getProcessingLogic();
+        logic.clear();
+        boolean result = false;
+        if (isSeparateInputs()) {
+            for (Pair<ItemStack[], String> inventory : getItemInputsForEachInventory()) {
+                IItemHandlerModifiable outputInventory = multiBlockOutputInventory.getOrDefault(
+                        inventory.getLeft(),
+                        null);
+                result = logic.setInputItems(inventory.getLeft())
+                              .setCurrentOutputItems(
+                                      outputInventory != null ? outputInventory.getStacks()
+                                                                               .toArray(new ItemStack[0])
+                                              : null)
+                              .process();
+                if (result) {
+                    inventoryName = inventory.getRight();
+                    break;
+                }
+                logic.clear();
+            }
+        } else {
+            result = logic.setInputItems(getAllItemInputs())
+                          .setCurrentOutputItems(getAllOutputItems())
+                          .process();
+        }
+        setDuration(logic.getDuration());
+        setEut(logic.getEut());
+        setItemOutputs(logic.getOutputItems());
+        setFluidOutputs(logic.getOutputFluids());
+        return result;
     }
 
     /*
@@ -1283,7 +1283,19 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
     @Override
     public ModularWindow createWindow(UIBuildContext buildContext) {
         System.out.println("MultiBlockController::createWindow");
-        return super.createWindow(buildContext);
+        if (!useModularUI()) return null;
+
+        buildContext.setValidator(getValidator());
+        final ModularWindow.Builder builder = ModularWindow.builder(getGUIWidth(), getGUIHeight());
+        builder.setBackground(getGUITextureSet().getMainBackground());
+        builder.setGuiTint(getGUIColorization());
+        if (doesBindPlayerInventory()) {
+            bindPlayerInventoryUI(builder, buildContext);
+        }
+        addUIWidgets(builder, buildContext);
+        addTitleToUI(builder);
+        addCoverTabs(builder, buildContext);
+        return builder.build();
     }
 
     @Override
@@ -1297,88 +1309,151 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
     }
 
     @Override
-    public void addGregTechLogo(ModularWindow.Builder builder) {
-        builder.widget(
-                new DrawableWidget().setDrawable(getGUITextureSet().getGregTechLogo()).setSize(17, 17).setPos(148, 60));
+    public int getGUIHeight() {
+        return 192;
+    }
+
+    protected Widget getGregTechLogo() {
+        return new DrawableWidget().setDrawable(getGUITextureSet().getGregTechLogo())
+                                   .setSize(17, 17);
     }
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         if (isServerSide()) {
-            for (AdvancedCasing tPart : mUpgradeCasings) {
+            for (UpgradeCasing tPart : upgradeCasings) {
                 if (!(tPart instanceof InventoryUpgrade)) continue;
                 tPart.issueClientUpdate();
             }
         }
-        builder.widget(
-                new TabContainer()
-                        .setButtonSize(
-                                20,
-                                24)
-                        .addTabButton(
-                                new TabButton(0)
-                                        .setBackground(
-                                                false,
-                                                ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0, 1f, 0.5f))
-                                        .setBackground(
-                                                true,
-                                                ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0.5f, 1f, 1f))
-                                        .addTooltip(getLocalName()).setPos(0, -20))
-                        .addTabButton(
-                                new TabButton(1)
-                                        .setBackground(
-                                                false,
-                                                ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0, 1f, 0.5f))
-                                        .setBackground(
-                                                true,
-                                                ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0.5f, 1f, 1f))
-                                        .setPos(20, -20))
-                        .addTabButton(
-                                new TabButton(2)
-                                        .setBackground(
-                                                false,
-                                                ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0, 1f, 0.5f))
-                                        .setBackground(
-                                                true,
-                                                ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0.5f, 1f, 1f))
-                                        .setPos(40, -20))
-                        .addTabButton(
-                                new TabButton(3)
-                                        .setBackground(
-                                                false,
-                                                ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0, 1f, 0.5f))
-                                        .setBackground(
-                                                true,
-                                                ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0.5f, 1f, 1f))
-                                        .setPos(60, -20))
-                        .addTabButton(
-                                new TabButton(4)
-                                        .setBackground(
-                                                false,
-                                                ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0, 1f, 0.5f))
-                                        .setBackground(
-                                                true,
-                                                ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0.5f, 1f, 1f))
-                                        .setPos(80, -20))
-                        .addPage(
-                                new MultiChildWidget().addChild(
-                                        new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
-                                                .setPos(7, 4).setSize(160, 75)))
-                        .addPage(new MultiChildWidget().addChild(getItemInventoryInputGUI()))
-                        .addPage(new MultiChildWidget().addChild(getItemInventoryOutputGUI()))
-                        .addPage(new MultiChildWidget().addChild(getFluidInventoryInputGUI()))
-                        .addPage(new MultiChildWidget().addChild(getFluidInventoryOutputGUI())))
-                .widget(new ItemDrawable(getStackForm(1)).asWidget().setSize(16, 16).setPos(2, -16))
-                .widget(new DrawableWidget().setDrawable(GT_UITextures.PICTURE_ITEM_IN).setSize(16, 16).setPos(22, -16))
-                .widget(
-                        new DrawableWidget().setDrawable(GT_UITextures.PICTURE_ITEM_OUT).setSize(16, 16)
-                                .setPos(42, -16))
-                .widget(
-                        new DrawableWidget().setDrawable(GT_UITextures.PICTURE_FLUID_IN).setSize(16, 16)
-                                .setPos(62, -16))
-                .widget(
-                        new DrawableWidget().setDrawable(GT_UITextures.PICTURE_FLUID_OUT).setSize(16, 16)
-                                .setPos(82, -16));
+        int page = 0;
+        TabContainer tabs = new TabContainer().setButtonSize(20, 24);
+        tabs.addTabButton(
+                new TabButton(page++)
+                                     .setBackground(
+                                             false,
+                                             ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0, 1f, 0.5f),
+                                             new ItemDrawable(getStackForm(1)).withFixedSize(16, 16)
+                                                                              .withOffset(2, 4))
+                                     .setBackground(
+                                             true,
+                                             ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0.5f, 1f, 1f),
+                                             new ItemDrawable(getStackForm(1)).withFixedSize(16, 16)
+                                                                              .withOffset(2, 4))
+                                     .addTooltip(getLocalName())
+                                     .setPos(20 * (page - 1), -20))
+            .addPage(createMainPage().setSize(getGUIWidth(), getGUIHeight()));
+        if (hasItemInput()) {
+            tabs.addTabButton(
+                    new TabButton(page++)
+                                         .setBackground(
+                                                 false,
+                                                 ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0, 1f, 0.5f),
+                                                 GT_UITextures.PICTURE_ITEM_IN.withFixedSize(16, 16)
+                                                                              .withOffset(2, 4))
+                                         .setBackground(
+                                                 true,
+                                                 ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0.5f, 1f, 1f),
+                                                 GT_UITextures.PICTURE_ITEM_IN.withFixedSize(16, 16)
+                                                                              .withOffset(2, 4))
+                                         .setPos(20 * (page - 1), -20))
+                .addPage(
+                        new MultiChildWidget().addChild(getItemInventoryInputGUI())
+                                              .addChild(getGregTechLogo().setPos(147, 86))
+                                              .setSize(getGUIWidth(), getGUIHeight()));
+        }
+
+        if (hasItemOutput()) {
+            tabs.addTabButton(
+                    new TabButton(page++)
+                                         .setBackground(
+                                                 false,
+                                                 ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0, 1f, 0.5f),
+                                                 GT_UITextures.PICTURE_ITEM_OUT.withFixedSize(16, 16)
+                                                                               .withOffset(2, 4))
+                                         .setBackground(
+                                                 true,
+                                                 ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0.5f, 1f, 1f),
+                                                 GT_UITextures.PICTURE_ITEM_OUT.withFixedSize(16, 16)
+                                                                               .withOffset(2, 4))
+                                         .setPos(20 * (page - 1), -20))
+                .addPage(
+                        new MultiChildWidget().addChild(getItemInventoryOutputGUI())
+                                              .addChild(getGregTechLogo().setPos(147, 86))
+                                              .setSize(getGUIWidth(), getGUIHeight()));
+        }
+
+        if (hasFluidInput()) {
+            tabs.addTabButton(
+                    new TabButton(page++)
+                                         .setBackground(
+                                                 false,
+                                                 ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0, 1f, 0.5f),
+                                                 GT_UITextures.PICTURE_FLUID_IN.withFixedSize(16, 16)
+                                                                               .withOffset(2, 4))
+                                         .setBackground(
+                                                 true,
+                                                 ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0.5f, 1f, 1f),
+                                                 GT_UITextures.PICTURE_FLUID_IN.withFixedSize(16, 16)
+                                                                               .withOffset(2, 4))
+                                         .setPos(20 * (page - 1), -20))
+                .addPage(
+                        new MultiChildWidget().addChild(getFluidInventoryInputGUI())
+                                              .addChild(getGregTechLogo().setPos(147, 86))
+                                              .setSize(getGUIWidth(), getGUIHeight()));
+        }
+
+        if (hasFluidOutput()) {
+            tabs.addTabButton(
+                    new TabButton(page++)
+                                         .setBackground(
+                                                 false,
+                                                 ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0, 1f, 0.5f),
+                                                 GT_UITextures.PICTURE_FLUID_OUT.withFixedSize(16, 16)
+                                                                                .withOffset(2, 4))
+                                         .setBackground(
+                                                 true,
+                                                 ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0.5f, 1f, 1f),
+                                                 GT_UITextures.PICTURE_FLUID_OUT.withFixedSize(16, 16)
+                                                                                .withOffset(2, 4))
+                                         .setPos(20 * (page - 1), -20))
+                .addPage(
+                        new MultiChildWidget().addChild(getFluidInventoryOutputGUI())
+                                              .addChild(getGregTechLogo().setPos(147, 86))
+                                              .setSize(getGUIWidth(), getGUIHeight()));
+        }
+        builder.widget(tabs);
+    }
+
+    protected MultiChildWidget createMainPage() {
+        MultiChildWidget page = new MultiChildWidget();
+        page.addChild(
+                new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
+                                    .setPos(7, 4)
+                                    .setSize(160, 75))
+            .addChild(createButtons());
+        return page;
+    }
+
+    protected MultiChildWidget createButtons() {
+        MultiChildWidget buttons = new MultiChildWidget();
+        buttons.setSize(16, 167)
+               .setPos(7, 86);
+        buttons.addChild(createPowerSwitchButton())
+               .addChild(new FakeSyncWidget.BooleanSyncer(this::isAllowedToWork, val -> {
+                   if (val) enableWorking();
+                   else disableWorking();
+               }))
+               .addChild(createVoidExcessButton())
+               .addChild(new FakeSyncWidget.BooleanSyncer(() -> voidExcess, val -> voidExcess = val))
+               .addChild(createInputSeparationButton())
+               .addChild(new FakeSyncWidget.BooleanSyncer(() -> separateInputs, val -> separateInputs = val))
+               .addChild(createBatchModeButton())
+               .addChild(new FakeSyncWidget.BooleanSyncer(() -> batchMode, val -> batchMode = val))
+               .addChild(createLockToSingleRecipeButton())
+               .addChild(new FakeSyncWidget.BooleanSyncer(() -> recipeLock, val -> recipeLock = val));
+
+        return buttons;
     }
 
     protected Widget getItemInventoryInputGUI() {
@@ -1387,11 +1462,13 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
         for (int rows = 0; rows * 4 < Math.min(inv.getSlots(), 128); rows++) {
             final int columnsToMake = Math.min(Math.min(inv.getSlots(), 128) - rows * 4, 4);
             for (int column = 0; column < columnsToMake; column++) {
-                scrollable
-                        .widget(new SlotWidget(inv, rows * 4 + column).setPos(column * 18, rows * 18).setSize(18, 18));
+                scrollable.widget(
+                        new SlotWidget(inv, rows * 4 + column).setPos(column * 18, rows * 18)
+                                                              .setSize(18, 18));
             }
         }
-        return scrollable.setSize(18 * 4 + 4, 18 * 4).setPos(52, 7);
+        return scrollable.setSize(18 * 4 + 4, 18 * 5)
+                         .setPos(52, 7);
     }
 
     protected Widget getItemInventoryOutputGUI() {
@@ -1400,11 +1477,13 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
         for (int rows = 0; rows * 4 < Math.min(inv.getSlots(), 128); rows++) {
             final int columnsToMake = Math.min(Math.min(inv.getSlots(), 128) - rows * 4, 4);
             for (int column = 0; column < columnsToMake; column++) {
-                scrollable
-                        .widget(new SlotWidget(inv, rows * 4 + column).setPos(column * 18, rows * 18).setSize(18, 18));
+                scrollable.widget(
+                        new SlotWidget(inv, rows * 4 + column).setPos(column * 18, rows * 18)
+                                                              .setSize(18, 18));
             }
         }
-        return scrollable.setSize(18 * 4 + 4, 18 * 4).setPos(52, 7);
+        return scrollable.setSize(18 * 4 + 4, 18 * 5)
+                         .setPos(52, 7);
     }
 
     protected IItemHandlerModifiable getInventoriesForInput() {
@@ -1416,29 +1495,223 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
     }
 
     protected Widget getFluidInventoryInputGUI() {
-        final IFluidTank[] tanks = mTanksInput;
+        final IFluidTank[] tanks = inputTanks;
         final Scrollable scrollable = new Scrollable().setVerticalScroll();
         for (int rows = 0; rows * 4 < tanks.length; rows++) {
             final int columnsToMake = Math.min(tanks.length - rows * 4, 4);
             for (int column = 0; column < columnsToMake; column++) {
                 final FluidSlotWidget fluidSlot = new FluidSlotWidget(tanks[rows * 4 + column]);
-                scrollable.widget(fluidSlot.setPos(column * 18, rows * 18).setSize(18, 18));
+                scrollable.widget(
+                        fluidSlot.setPos(column * 18, rows * 18)
+                                 .setSize(18, 18));
             }
         }
-        return scrollable.setSize(18 * 4 + 4, 18 * 4).setPos(52, 7);
+        return scrollable.setSize(18 * 4 + 4, 18 * 4)
+                         .setPos(52, 7);
     }
 
     protected Widget getFluidInventoryOutputGUI() {
-        final IFluidTank[] tanks = mTanksOutput;
+        final IFluidTank[] tanks = outputTanks;
         final Scrollable scrollable = new Scrollable().setVerticalScroll();
         for (int rows = 0; rows * 4 < tanks.length; rows++) {
             final int columnsToMake = Math.min(tanks.length - rows * 4, 4);
             for (int column = 0; column < columnsToMake; column++) {
                 final FluidSlotWidget fluidSlot = new FluidSlotWidget(tanks[rows * 4 + column]);
                 fluidSlot.setInteraction(true, false);
-                scrollable.widget(fluidSlot.setPos(column * 18, rows * 18).setSize(18, 18));
+                scrollable.widget(
+                        fluidSlot.setPos(column * 18, rows * 18)
+                                 .setSize(18, 18));
             }
         }
-        return scrollable.setSize(18 * 4 + 4, 18 * 4).setPos(52, 7);
+        return scrollable.setSize(18 * 4 + 4, 18 * 5)
+                         .setPos(52, 7);
+    }
+
+    protected ButtonWidget createPowerSwitchButton() {
+        ButtonWidget button = new ButtonWidget().setOnClick((clickData, widget) -> {
+            if (isAllowedToWork()) {
+                disableWorking();
+            } else {
+                enableWorking();
+            }
+        })
+                                                .setPlayClickSound(true);
+        button.setBackground(() -> {
+            List<UITexture> ret = new ArrayList<>();
+            ret.add(GT_UITextures.BUTTON_STANDARD);
+            if (isAllowedToWork()) {
+                ret.add(GT_UITextures.OVERLAY_BUTTON_POWER_SWITCH_ON);
+            } else {
+                ret.add(GT_UITextures.OVERLAY_BUTTON_POWER_SWITCH_OFF);
+            }
+            return ret.toArray(new IDrawable[0]);
+        })
+              .setPos(144, 0)
+              .setSize(16, 16);
+        button.addTooltip(StatCollector.translateToLocal("GT5U.gui.button.power_switch"))
+              .setTooltipShowUpDelay(TOOLTIP_DELAY);
+        return button;
+    }
+
+    protected ButtonWidget createVoidExcessButton() {
+        ButtonWidget button = new ButtonWidget().setOnClick((clickData, widget) -> {
+            if (isVoidExcessButtonEnabled()) {
+                voidExcess = !voidExcess;
+            }
+        })
+                                                .setPlayClickSound(true);
+        button.setBackground(() -> {
+            List<UITexture> ret = new ArrayList<>();
+            ret.add(GT_UITextures.BUTTON_STANDARD);
+            if (isVoidExcessButtonEnabled()) {
+                if (isVoidExcessEnabled()) {
+                    ret.add(GT_UITextures.OVERLAY_BUTTON_VOID_EXCESS_ON);
+                } else {
+                    ret.add(GT_UITextures.OVERLAY_BUTTON_VOID_EXCESS_OFF);
+                }
+            } else {
+                if (isVoidExcessEnabled()) {
+                    ret.add(GT_UITextures.OVERLAY_BUTTON_VOID_EXCESS_ON_DISABLED);
+                } else {
+                    ret.add(GT_UITextures.OVERLAY_BUTTON_VOID_EXCESS_OFF_DISABLED);
+                }
+            }
+            return ret.toArray(new IDrawable[0]);
+        })
+              .setPos(54, 0)
+              .setSize(16, 16);
+        button.addTooltip(StatCollector.translateToLocal("GT5U.gui.button.void_excess"))
+              .setTooltipShowUpDelay(TOOLTIP_DELAY);
+        return button;
+    }
+
+    protected boolean isVoidExcessEnabled() {
+        return voidExcess;
+    }
+
+    protected boolean isVoidExcessButtonEnabled() {
+        return true;
+    }
+
+    protected ButtonWidget createInputSeparationButton() {
+        Widget button = new ButtonWidget().setOnClick((clickData, widget) -> {
+            if (isInputSeparationButtonEnabled()) {
+                separateInputs = !separateInputs;
+            }
+        })
+                                          .setPlayClickSound(true)
+                                          .setBackground(() -> {
+                                              List<UITexture> ret = new ArrayList<>();
+                                              ret.add(GT_UITextures.BUTTON_STANDARD);
+                                              if (isInputSeparationButtonEnabled()) {
+                                                  if (isInputSeparationEnabled()) {
+                                                      ret.add(GT_UITextures.OVERLAY_BUTTON_INPUT_SEPARATION_ON);
+                                                  } else {
+                                                      ret.add(GT_UITextures.OVERLAY_BUTTON_INPUT_SEPARATION_OFF);
+                                                  }
+                                              } else {
+                                                  if (isInputSeparationEnabled()) {
+                                                      ret.add(
+                                                              GT_UITextures.OVERLAY_BUTTON_INPUT_SEPARATION_ON_DISABLED);
+                                                  } else {
+                                                      ret.add(
+                                                              GT_UITextures.OVERLAY_BUTTON_INPUT_SEPARATION_OFF_DISABLED);
+                                                  }
+                                              }
+                                              return ret.toArray(new IDrawable[0]);
+                                          })
+                                          .setPos(36, 0)
+                                          .setSize(16, 16);
+        button.addTooltip(StatCollector.translateToLocal("GT5U.gui.button.input_separation"))
+              .setTooltipShowUpDelay(TOOLTIP_DELAY);
+        return (ButtonWidget) button;
+    }
+
+    protected boolean isInputSeparationEnabled() {
+        return separateInputs;
+    }
+
+    protected boolean isInputSeparationButtonEnabled() {
+        return true;
+    }
+
+    protected ButtonWidget createBatchModeButton() {
+        Widget button = new ButtonWidget().setOnClick((clickData, widget) -> {
+            if (isBatchModeButtonEnabled()) {
+                batchMode = !batchMode;
+            }
+        })
+                                          .setPlayClickSound(true)
+                                          .setBackground(() -> {
+                                              List<UITexture> ret = new ArrayList<>();
+                                              ret.add(GT_UITextures.BUTTON_STANDARD);
+                                              if (isBatchModeButtonEnabled()) {
+                                                  if (isBatchModeEnabled()) {
+                                                      ret.add(GT_UITextures.OVERLAY_BUTTON_BATCH_MODE_ON);
+                                                  } else {
+                                                      ret.add(GT_UITextures.OVERLAY_BUTTON_BATCH_MODE_OFF);
+                                                  }
+                                              } else {
+                                                  if (isBatchModeEnabled()) {
+                                                      ret.add(GT_UITextures.OVERLAY_BUTTON_BATCH_MODE_ON_DISABLED);
+                                                  } else {
+                                                      ret.add(GT_UITextures.OVERLAY_BUTTON_BATCH_MODE_OFF_DISABLED);
+                                                  }
+                                              }
+                                              return ret.toArray(new IDrawable[0]);
+                                          })
+                                          .setPos(18, 0)
+                                          .setSize(16, 16);
+        button.addTooltip(StatCollector.translateToLocal("GT5U.gui.button.batch_mode"))
+              .setTooltipShowUpDelay(TOOLTIP_DELAY);
+        return (ButtonWidget) button;
+    }
+
+    protected boolean isBatchModeButtonEnabled() {
+        return true;
+    }
+
+    protected boolean isBatchModeEnabled() {
+        return batchMode;
+    }
+
+    protected ButtonWidget createLockToSingleRecipeButton() {
+        Widget button = new ButtonWidget().setOnClick((clickData, widget) -> {
+            if (supportsSingleRecipeLocking()) {
+                recipeLock = !recipeLock;
+            }
+        })
+                                          .setPlayClickSound(true)
+                                          .setBackground(() -> {
+                                              List<UITexture> ret = new ArrayList<>();
+                                              ret.add(GT_UITextures.BUTTON_STANDARD);
+                                              if (supportsSingleRecipeLocking()) {
+                                                  if (isRecipeLockingEnabled()) {
+                                                      ret.add(GT_UITextures.OVERLAY_BUTTON_RECIPE_LOCKED);
+                                                  } else {
+                                                      ret.add(GT_UITextures.OVERLAY_BUTTON_RECIPE_UNLOCKED);
+                                                  }
+                                              } else {
+                                                  if (isRecipeLockingEnabled()) {
+                                                      ret.add(GT_UITextures.OVERLAY_BUTTON_RECIPE_LOCKED_DISABLED);
+                                                  } else {
+                                                      ret.add(GT_UITextures.OVERLAY_BUTTON_RECIPE_UNLOCKED_DISABLED);
+                                                  }
+                                              }
+                                              return ret.toArray(new IDrawable[0]);
+                                          })
+                                          .setPos(0, 0)
+                                          .setSize(16, 16);
+        button.addTooltip(StatCollector.translateToLocal("GT5U.gui.button.lock_recipe"))
+              .setTooltipShowUpDelay(TOOLTIP_DELAY);
+        return (ButtonWidget) button;
+    }
+
+    protected boolean supportsSingleRecipeLocking() {
+        return false;
+    }
+
+    protected boolean isRecipeLockingEnabled() {
+        return recipeLock;
     }
 }

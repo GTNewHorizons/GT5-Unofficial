@@ -68,7 +68,10 @@ public class GT_MetaTileEntity_ItemDistributor extends GT_MetaTileEntity_Buffer 
     public ITexture getOverlayIcon() {
         return TextureFactory.of(
                 TextureFactory.of(AUTOMATION_ITEMDISTRIBUTOR),
-                TextureFactory.builder().addIcon(AUTOMATION_ITEMDISTRIBUTOR_GLOW).glow().build());
+                TextureFactory.builder()
+                              .addIcon(AUTOMATION_ITEMDISTRIBUTOR_GLOW)
+                              .glow()
+                              .build());
     }
 
     @Override
@@ -188,8 +191,9 @@ public class GT_MetaTileEntity_ItemDistributor extends GT_MetaTileEntity_Buffer 
         addEmitRedstoneButton(builder);
         addInvertRedstoneButton(builder);
         builder.widget(
-                new DrawableWidget().setDrawable(GT_UITextures.PICTURE_ARROW_22_RED.apply(87, true)).setPos(62, 60)
-                        .setSize(87, 22));
+                new DrawableWidget().setDrawable(GT_UITextures.PICTURE_ARROW_22_RED.apply(87, true))
+                                    .setPos(62, 60)
+                                    .setSize(87, 22));
         addInventorySlots(builder);
     }
 }

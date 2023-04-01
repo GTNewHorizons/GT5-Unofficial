@@ -418,7 +418,9 @@ public class FluidTankGT implements IFluidTank {
     }
 
     public String name() {
-        return mFluid == null ? null : mFluid.getFluid().getName();
+        return mFluid == null ? null
+                : mFluid.getFluid()
+                        .getName();
     }
 
     public FluidStack get() {

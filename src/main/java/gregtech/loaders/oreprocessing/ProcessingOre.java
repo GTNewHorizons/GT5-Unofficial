@@ -15,15 +15,16 @@ import gregtech.api.util.GT_Utility;
 
 public class ProcessingOre implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
-    private ArrayList<Materials> mAlreadyListedOres = new ArrayList(1000);
+    private ArrayList<Materials> mAlreadyListedOres = new ArrayList<>(1000);
 
     public ProcessingOre() {
-        for (OrePrefixes tPrefix : OrePrefixes.values())
-            if ((tPrefix.name().startsWith("ore")) && (tPrefix != OrePrefixes.orePoor)
-                    && (tPrefix != OrePrefixes.oreSmall)
-                    && (tPrefix != OrePrefixes.oreRich)
-                    && (tPrefix != OrePrefixes.oreNormal))
-                tPrefix.add(this);
+        for (OrePrefixes tPrefix : OrePrefixes.values()) if ((tPrefix.name()
+                                                                     .startsWith("ore"))
+                && (tPrefix != OrePrefixes.orePoor)
+                && (tPrefix != OrePrefixes.oreSmall)
+                && (tPrefix != OrePrefixes.oreRich)
+                && (tPrefix != OrePrefixes.oreNormal))
+            tPrefix.add(this);
     }
 
     @Override
@@ -80,28 +81,29 @@ public class ProcessingOre implements gregtech.api.interfaces.IOreRecipeRegistra
 
         ItemStack tIngot = GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial.mDirectSmelting, 1L);
         ItemStack tGem = GT_OreDictUnificator.get(OrePrefixes.gem, tMaterial, 1L);
-        ItemStack tSmeltInto = tIngot
-                == null ? null
-                        : aMaterial.contains(SubTag.SMELTING_TO_GEM)
-                                ? GT_OreDictUnificator.get(
-                                        OrePrefixes.gem,
+        ItemStack tSmeltInto = tIngot == null ? null
+                : aMaterial.contains(SubTag.SMELTING_TO_GEM)
+                        ? GT_OreDictUnificator.get(
+                                OrePrefixes.gem,
+                                tMaterial.mDirectSmelting,
+                                GT_OreDictUnificator.get(
+                                        OrePrefixes.crystal,
                                         tMaterial.mDirectSmelting,
                                         GT_OreDictUnificator.get(
-                                                OrePrefixes.crystal,
-                                                tMaterial.mDirectSmelting,
-                                                GT_OreDictUnificator.get(
-                                                        OrePrefixes.gem,
-                                                        tMaterial,
-                                                        GT_OreDictUnificator.get(OrePrefixes.crystal, tMaterial, 1L),
-                                                        1L),
+                                                OrePrefixes.gem,
+                                                tMaterial,
+                                                GT_OreDictUnificator.get(OrePrefixes.crystal, tMaterial, 1L),
                                                 1L),
-                                        1L)
-                                : tIngot;
+                                        1L),
+                                1L)
+                        : tIngot;
 
         ItemStack tDust = GT_OreDictUnificator.get(OrePrefixes.dust, tMaterial, tGem, 1L);
         ItemStack tCleaned = GT_OreDictUnificator.get(OrePrefixes.crushedPurified, tMaterial, tDust, 1L);
-        ItemStack tCrushed = GT_OreDictUnificator
-                .get(OrePrefixes.crushed, tMaterial, aMaterial.mOreMultiplier * aMultiplier);
+        ItemStack tCrushed = GT_OreDictUnificator.get(
+                OrePrefixes.crushed,
+                tMaterial,
+                aMaterial.mOreMultiplier * aMultiplier);
         ItemStack tPrimaryByProduct = null;
 
         if (tCrushed == null) {
@@ -112,7 +114,7 @@ public class ProcessingOre implements gregtech.api.interfaces.IOreRecipeRegistra
                     aMaterial.mOreMultiplier * aMultiplier);
         }
 
-        ArrayList<ItemStack> tByProductStacks = new ArrayList();
+        ArrayList<ItemStack> tByProductStacks = new ArrayList<>();
 
         for (Materials tMat : aMaterial.mOreByProducts) {
             ItemStack tByProduct = GT_OreDictUnificator.get(OrePrefixes.dust, tMat, 1L);
@@ -120,19 +122,25 @@ public class ProcessingOre implements gregtech.api.interfaces.IOreRecipeRegistra
             if (tPrimaryByProduct == null) {
                 tPrimaryByMaterial = tMat;
                 tPrimaryByProduct = GT_OreDictUnificator.get(OrePrefixes.dust, tMat, 1L);
-                if (GT_OreDictUnificator.get(OrePrefixes.dustSmall, tMat, 1L) == null) GT_OreDictUnificator
-                        .get(OrePrefixes.dustTiny, tMat, GT_OreDictUnificator.get(OrePrefixes.nugget, tMat, 2L), 2L);
+                if (GT_OreDictUnificator.get(OrePrefixes.dustSmall, tMat, 1L) == null) GT_OreDictUnificator.get(
+                        OrePrefixes.dustTiny,
+                        tMat,
+                        GT_OreDictUnificator.get(OrePrefixes.nugget, tMat, 2L),
+                        2L);
             }
             GT_OreDictUnificator.get(OrePrefixes.dust, tMat, 1L);
-            if (GT_OreDictUnificator.get(OrePrefixes.dustSmall, tMat, 1L) == null) GT_OreDictUnificator
-                    .get(OrePrefixes.dustTiny, tMat, GT_OreDictUnificator.get(OrePrefixes.nugget, tMat, 2L), 2L);
+            if (GT_OreDictUnificator.get(OrePrefixes.dustSmall, tMat, 1L) == null) GT_OreDictUnificator.get(
+                    OrePrefixes.dustTiny,
+                    tMat,
+                    GT_OreDictUnificator.get(OrePrefixes.nugget, tMat, 2L),
+                    2L);
         }
         if ((!tByProductStacks.isEmpty()) && (!this.mAlreadyListedOres.contains(aMaterial))) {
             this.mAlreadyListedOres.add(aMaterial);
             gregtech.api.util.GT_Recipe.GT_Recipe_Map.sByProductList.addFakeRecipe(
                     false,
                     new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.ore, aMaterial, aOreStack, 1L) },
-                    (ItemStack[]) tByProductStacks.toArray(new ItemStack[0]),
+                    tByProductStacks.toArray(new ItemStack[0]),
                     null,
                     null,
                     null,
@@ -163,8 +171,9 @@ public class ProcessingOre implements gregtech.api.interfaces.IOreRecipeRegistra
                             null,
                             null,
                             GT_Utility.mul(aMultiplier * 3 * aMaterial.mSmeltingMultiplier, tSmeltInto),
-                            ItemList.TE_Slag
-                                    .get(1L, GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.DarkAsh, 1L)),
+                            ItemList.TE_Slag.get(
+                                    1L,
+                                    GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.DarkAsh, 1L)),
                             tSmeltInto.stackSize * 500,
                             120,
                             1500);
@@ -174,8 +183,9 @@ public class ProcessingOre implements gregtech.api.interfaces.IOreRecipeRegistra
                             null,
                             null,
                             GT_Utility.mul(aMultiplier * 3 * aMaterial.mSmeltingMultiplier, tSmeltInto),
-                            ItemList.TE_Slag
-                                    .get(1L, GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.DarkAsh, 1L)),
+                            ItemList.TE_Slag.get(
+                                    1L,
+                                    GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.DarkAsh, 1L)),
                             tSmeltInto.stackSize * 500,
                             120,
                             1500);
@@ -188,8 +198,9 @@ public class ProcessingOre implements gregtech.api.interfaces.IOreRecipeRegistra
                             null,
                             null,
                             GT_Utility.mul(aMultiplier * 2 * aMaterial.mSmeltingMultiplier, tSmeltInto),
-                            ItemList.TE_Slag
-                                    .get(1L, GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.DarkAsh, 1L)),
+                            ItemList.TE_Slag.get(
+                                    1L,
+                                    GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.DarkAsh, 1L)),
                             tSmeltInto.stackSize * 500,
                             120,
                             1500);
@@ -199,8 +210,9 @@ public class ProcessingOre implements gregtech.api.interfaces.IOreRecipeRegistra
                             null,
                             null,
                             GT_Utility.mul(aMultiplier * 2 * aMaterial.mSmeltingMultiplier, tSmeltInto),
-                            ItemList.TE_Slag
-                                    .get(1L, GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.DarkAsh, 1L)),
+                            ItemList.TE_Slag.get(
+                                    1L,
+                                    GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.DarkAsh, 1L)),
                             tSmeltInto.stackSize * 500,
                             120,
                             1500);

@@ -1,6 +1,6 @@
 package gregtech.common.tileentities.machines.basic;
 
-import static gregtech.api.enums.GT_Values.MOD_ID_RC;
+import static gregtech.api.enums.ModIDs.Railcraft;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 
 import java.util.*;
@@ -58,28 +58,52 @@ public class GT_MetaTileEntity_Disassembler extends GT_MetaTileEntity_BasicMachi
                 // Textures
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_SIDE_DISASSEMBLER_ACTIVE),
-                        TextureFactory.builder().addIcon(OVERLAY_SIDE_DISASSEMBLER_ACTIVE_GLOW).glow().build()),
+                        TextureFactory.builder()
+                                      .addIcon(OVERLAY_SIDE_DISASSEMBLER_ACTIVE_GLOW)
+                                      .glow()
+                                      .build()),
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_SIDE_DISASSEMBLER),
-                        TextureFactory.builder().addIcon(OVERLAY_SIDE_DISASSEMBLER_GLOW).glow().build()),
+                        TextureFactory.builder()
+                                      .addIcon(OVERLAY_SIDE_DISASSEMBLER_GLOW)
+                                      .glow()
+                                      .build()),
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_FRONT_DISASSEMBLER_ACTIVE),
-                        TextureFactory.builder().addIcon(OVERLAY_FRONT_DISASSEMBLER_ACTIVE_GLOW).glow().build()),
+                        TextureFactory.builder()
+                                      .addIcon(OVERLAY_FRONT_DISASSEMBLER_ACTIVE_GLOW)
+                                      .glow()
+                                      .build()),
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_FRONT_DISASSEMBLER),
-                        TextureFactory.builder().addIcon(OVERLAY_FRONT_DISASSEMBLER_GLOW).glow().build()),
+                        TextureFactory.builder()
+                                      .addIcon(OVERLAY_FRONT_DISASSEMBLER_GLOW)
+                                      .glow()
+                                      .build()),
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_TOP_DISASSEMBLER_ACTIVE),
-                        TextureFactory.builder().addIcon(OVERLAY_TOP_DISASSEMBLER_ACTIVE_GLOW).glow().build()),
+                        TextureFactory.builder()
+                                      .addIcon(OVERLAY_TOP_DISASSEMBLER_ACTIVE_GLOW)
+                                      .glow()
+                                      .build()),
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_TOP_DISASSEMBLER),
-                        TextureFactory.builder().addIcon(OVERLAY_TOP_DISASSEMBLER_GLOW).glow().build()),
+                        TextureFactory.builder()
+                                      .addIcon(OVERLAY_TOP_DISASSEMBLER_GLOW)
+                                      .glow()
+                                      .build()),
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_BOTTOM_DISASSEMBLER_ACTIVE),
-                        TextureFactory.builder().addIcon(OVERLAY_BOTTOM_DISASSEMBLER_ACTIVE_GLOW).glow().build()),
+                        TextureFactory.builder()
+                                      .addIcon(OVERLAY_BOTTOM_DISASSEMBLER_ACTIVE_GLOW)
+                                      .glow()
+                                      .build()),
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_BOTTOM_DISASSEMBLER),
-                        TextureFactory.builder().addIcon(OVERLAY_BOTTOM_DISASSEMBLER_GLOW).glow().build()));
+                        TextureFactory.builder()
+                                      .addIcon(OVERLAY_BOTTOM_DISASSEMBLER_GLOW)
+                                      .glow()
+                                      .build()));
     }
 
     public GT_MetaTileEntity_Disassembler(String aName, int aTier, String aDescription, ITexture[][][] aTextures,
@@ -137,9 +161,11 @@ public class GT_MetaTileEntity_Disassembler extends GT_MetaTileEntity_BasicMachi
         addBlacklist(Materials.Graphene.getDust(1));
         addBlacklist(ItemList.Circuit_Parts_Vacuum_Tube.get(1L));
         addBlacklist(ItemList.Schematic.get(1L));
-        addBlacklist(GT_ModHandler.getModItem(MOD_ID_RC, "track", 1L, 0));
-        addBlacklist(GT_ModHandler.getModItem(MOD_ID_RC, "track", 1L, 736));
-        addBlacklist(GT_ModHandler.getModItem(MOD_ID_RC, "track", 1L, 816));
+        if (Railcraft.isModLoaded()) {
+            addBlacklist(GT_ModHandler.getModItem(Railcraft.modID, "track", 1L, 0));
+            addBlacklist(GT_ModHandler.getModItem(Railcraft.modID, "track", 1L, 736));
+            addBlacklist(GT_ModHandler.getModItem(Railcraft.modID, "track", 1L, 816));
+        }
         addBlacklist(IC2Items.getItem("mixedMetalIngot"));
         addBlacklist(GT_ModHandler.getModItem("Railcraft", "machine.alpha", 1L, 14));
         // region transformer
@@ -182,7 +208,8 @@ public class GT_MetaTileEntity_Disassembler extends GT_MetaTileEntity_BasicMachi
         if (GT_Utility.isStackInvalid(is)) return DID_NOT_FIND_RECIPE;
 
         if (is.getItem() instanceof GT_MetaGenerated_Tool || isCircuit(is)
-                || blackList.stream().anyMatch(t -> GT_Utility.areStacksEqual(t.toStack(), is, true))
+                || blackList.stream()
+                            .anyMatch(t -> GT_Utility.areStacksEqual(t.toStack(), is, true))
                 || compareToUnpacker(is))
             return DID_NOT_FIND_RECIPE;
 
@@ -198,9 +225,10 @@ public class GT_MetaTileEntity_Disassembler extends GT_MetaTileEntity_BasicMachi
             ItemStack in = is.copy();
             in.stackSize = 1;
             if (stack.isStackEqual(in) && stack.mStackSize <= is.stackSize) {
-                return setOutputsAndTime(outputHardOverrides.get(stack).toArray(new ItemStack[0]), stack.mStackSize)
-                        ? FOUND_AND_SUCCESSFULLY_USED_RECIPE
-                        : DID_NOT_FIND_RECIPE;
+                return setOutputsAndTime(
+                        outputHardOverrides.get(stack)
+                                           .toArray(new ItemStack[0]),
+                        stack.mStackSize) ? FOUND_AND_SUCCESSFULLY_USED_RECIPE : DID_NOT_FIND_RECIPE;
             }
         }
         return null;
@@ -248,8 +276,12 @@ public class GT_MetaTileEntity_Disassembler extends GT_MetaTileEntity_BasicMachi
     }
 
     private int checkRecipeMap() {
-        GT_Recipe gt_recipe = GT_Recipe.GT_Recipe_Map.sDisassemblerRecipes
-                .findRecipe(this.getBaseMetaTileEntity(), true, this.maxEUInput(), null, this.getAllInputs());
+        GT_Recipe gt_recipe = GT_Recipe.GT_Recipe_Map.sDisassemblerRecipes.findRecipe(
+                this.getBaseMetaTileEntity(),
+                true,
+                this.maxEUInput(),
+                null,
+                this.getAllInputs());
         if (gt_recipe == null) return DID_NOT_FIND_RECIPE;
         if (gt_recipe.isRecipeInputEqual(false, null, this.getAllInputs())) {
             if (gt_recipe.mSpecialValue == -100) {
@@ -283,17 +315,27 @@ public class GT_MetaTileEntity_Disassembler extends GT_MetaTileEntity_BasicMachi
     }
 
     private static DissassembleReference ensureDowncasting(Collection<? extends DissassembleReference> recipes) {
-        ItemStack[] inputs = recipes.stream().findFirst().orElseThrow(NullPointerException::new).inputs;
-        int EUt = recipes.stream().findFirst().orElseThrow(NullPointerException::new).EUt;
+        ItemStack[] inputs = recipes.stream()
+                                    .findFirst()
+                                    .orElseThrow(NullPointerException::new).inputs;
+        int EUt = recipes.stream()
+                         .findFirst()
+                         .orElseThrow(NullPointerException::new).EUt;
 
         ItemStack[] output = new ItemStack[inputs.length];
         List<GT_Recipe> recipesColl = null;
-        if (recipes.size() > 1) recipesColl = recipes.stream().skip(1).map(x -> x.recipe).collect(Collectors.toList());
+        if (recipes.size() > 1) recipesColl = recipes.stream()
+                                                     .skip(1)
+                                                     .map(x -> x.recipe)
+                                                     .collect(Collectors.toList());
 
         handleRecipeTransformation(inputs, output, recipesColl);
 
         return new DissassembleReference(
-                recipes.stream().mapToInt(x -> x.stackSize).min().orElseThrow(NumberFormatException::new),
+                recipes.stream()
+                       .mapToInt(x -> x.stackSize)
+                       .min()
+                       .orElseThrow(NumberFormatException::new),
                 output,
                 null,
                 EUt);
@@ -303,8 +345,9 @@ public class GT_MetaTileEntity_Disassembler extends GT_MetaTileEntity_BasicMachi
             List<? extends GT_Recipe> recipesColl) {
         for (int i = 0, inputsLength = inputs.length; i < inputsLength; i++) {
             Set<ItemStack[]> inputsStacks = null;
-            if (recipesColl != null)
-                inputsStacks = recipesColl.stream().map(x -> x.mInputs).collect(Collectors.toSet());
+            if (recipesColl != null) inputsStacks = recipesColl.stream()
+                                                               .map(x -> x.mInputs)
+                                                               .collect(Collectors.toSet());
             handleRecipeTransformationInternal(inputs, output, inputsStacks, i);
         }
         addOthersAndHandleAlwaysReplace(inputs, output);
@@ -358,25 +401,29 @@ public class GT_MetaTileEntity_Disassembler extends GT_MetaTileEntity_BasicMachi
 
     private static ItemStack handleUnification(ItemStack stack) {
         for (int oreID : OreDictionary.getOreIDs(stack)) {
-            for (int i = 0; i < OreDictionaryOverride[0].length; i++)
-                if (OreDictionary.getOreName(oreID).equals(OreDictionaryOverride[0][i])) {
-                    ItemStack ret = ((ItemStack) OreDictionaryOverride[1][i]).copy();
-                    ret.stackSize = stack.stackSize;
-                    return ret;
-                }
+            for (int i = 0; i < OreDictionaryOverride[0].length; i++) if (OreDictionary.getOreName(oreID)
+                                                                                       .equals(
+                                                                                               OreDictionaryOverride[0][i])) {
+                                                                                                   ItemStack ret = ((ItemStack) OreDictionaryOverride[1][i]).copy();
+                                                                                                   ret.stackSize = stack.stackSize;
+                                                                                                   return ret;
+                                                                                               }
         }
         return GT_OreDictUnificator.get(stack);
     }
 
     private static ItemStack handleWildcard(ItemStack stack) {
-        if (stack != null && stack.getItemDamage() == OreDictionary.WILDCARD_VALUE && !stack.getItem().isDamageable()) {
+        if (stack != null && stack.getItemDamage() == OreDictionary.WILDCARD_VALUE
+                && !stack.getItem()
+                         .isDamageable()) {
             stack.setItemDamage(0);
         }
         return stack;
     }
 
     private static ItemStack handleContainerItem(ItemStack stack) {
-        if (stack != null && stack.getItem().hasContainerItem(stack)) {
+        if (stack != null && stack.getItem()
+                                  .hasContainerItem(stack)) {
             return null;
         }
         return stack;
@@ -419,14 +466,20 @@ public class GT_MetaTileEntity_Disassembler extends GT_MetaTileEntity_BasicMachi
     }
 
     private static void handleAnyMaterials(Materials first, AtomicReference<? super Materials> toRpl) {
-        if (first.mOreReRegistrations.stream().anyMatch(y -> y.equals(Materials.AnyIron))) toRpl.set(Materials.Iron);
-        else if (first.mOreReRegistrations.stream().anyMatch(y -> y.equals(Materials.AnyCopper)))
+        if (first.mOreReRegistrations.stream()
+                                     .anyMatch(y -> y.equals(Materials.AnyIron)))
+            toRpl.set(Materials.Iron);
+        else if (first.mOreReRegistrations.stream()
+                                          .anyMatch(y -> y.equals(Materials.AnyCopper)))
             toRpl.set(Materials.Copper);
-        else if (first.mOreReRegistrations.stream().anyMatch(y -> y.equals(Materials.AnyRubber)))
+        else if (first.mOreReRegistrations.stream()
+                                          .anyMatch(y -> y.equals(Materials.AnyRubber)))
             toRpl.set(Materials.Rubber);
-        else if (first.mOreReRegistrations.stream().anyMatch(y -> y.equals(Materials.AnyBronze)))
+        else if (first.mOreReRegistrations.stream()
+                                          .anyMatch(y -> y.equals(Materials.AnyBronze)))
             toRpl.set(Materials.Bronze);
-        else if (first.mOreReRegistrations.stream().anyMatch(y -> y.equals(Materials.AnySyntheticRubber)))
+        else if (first.mOreReRegistrations.stream()
+                                          .anyMatch(y -> y.equals(Materials.AnySyntheticRubber)))
             toRpl.set(Materials.Rubber);
     }
 
@@ -513,13 +566,31 @@ public class GT_MetaTileEntity_Disassembler extends GT_MetaTileEntity_BasicMachi
         AtomicInteger stacksize = new AtomicInteger();
         // Check Recipe Maps for creation of Item
         List<DissassembleReference> possibleRecipes = GT_Recipe.GT_Recipe_Map.sAssemblerRecipes.mRecipeList.stream()
-                .filter(x -> Arrays.stream(x.mOutputs).anyMatch(y -> {
-                    ItemStack out = is.copy();
-                    out.stackSize = y.stackSize;
-                    boolean isDone = GT_Utility.areStacksEqual(y, out, true) && y.stackSize <= is.stackSize;
-                    if (isDone) stacksize.set(y.stackSize);
-                    return isDone;
-                })).map(x -> new DissassembleReference(stacksize.get(), x.mInputs, x)).collect(Collectors.toList());
+                                                                                                           .filter(
+                                                                                                                   x -> Arrays.stream(
+                                                                                                                           x.mOutputs)
+                                                                                                                              .anyMatch(
+                                                                                                                                      y -> {
+                                                                                                                                          ItemStack out = is.copy();
+                                                                                                                                          out.stackSize = y.stackSize;
+                                                                                                                                          boolean isDone = GT_Utility.areStacksEqual(
+                                                                                                                                                  y,
+                                                                                                                                                  out,
+                                                                                                                                                  true)
+                                                                                                                                                  && y.stackSize
+                                                                                                                                                          <= is.stackSize;
+                                                                                                                                          if (isDone)
+                                                                                                                                              stacksize.set(
+                                                                                                                                                      y.stackSize);
+                                                                                                                                          return isDone;
+                                                                                                                                      }))
+                                                                                                           .map(
+                                                                                                                   x -> new DissassembleReference(
+                                                                                                                           stacksize.get(),
+                                                                                                                           x.mInputs,
+                                                                                                                           x))
+                                                                                                           .collect(
+                                                                                                                   Collectors.toList());
 
         // Is there only one way to create it?
         if (possibleRecipes.size() == 1) return possibleRecipes;
@@ -527,20 +598,26 @@ public class GT_MetaTileEntity_Disassembler extends GT_MetaTileEntity_BasicMachi
         // There are Multiple Ways -> Get recipe with cheapest inputs
         // More Inputs should mean cheaper Materials
         return possibleRecipes.stream()
-                .sorted(Comparator.comparingDouble(GT_MetaTileEntity_Disassembler::getCheaperInputs))
-                .collect(Collectors.toList());
+                              .sorted(Comparator.comparingDouble(GT_MetaTileEntity_Disassembler::getCheaperInputs))
+                              .collect(Collectors.toList());
     }
 
     private static double getCheaperInputs(GT_MetaTileEntity_Disassembler.DissassembleReference x) {
-        double fluidInputValueRaw = Arrays.stream(x.recipe.mFluidInputs).flatMapToInt(f -> IntStream.of(f.amount))
-                .sum();
+        double fluidInputValueRaw = Arrays.stream(x.recipe.mFluidInputs)
+                                          .flatMapToInt(f -> IntStream.of(f.amount))
+                                          .sum();
         fluidInputValueRaw = fluidInputValueRaw > 0 ? fluidInputValueRaw : 144D;
-        double inputValue = Arrays.stream(x.inputs).flatMapToInt(f -> IntStream.of(f.stackSize)).sum()
+        double inputValue = Arrays.stream(x.inputs)
+                                  .flatMapToInt(f -> IntStream.of(f.stackSize))
+                                  .sum()
                 + (fluidInputValueRaw / 144D);
-        double fluidOutputValueRaw = Arrays.stream(x.recipe.mFluidOutputs).flatMapToInt(f -> IntStream.of(f.amount))
-                .sum();
+        double fluidOutputValueRaw = Arrays.stream(x.recipe.mFluidOutputs)
+                                           .flatMapToInt(f -> IntStream.of(f.amount))
+                                           .sum();
         fluidOutputValueRaw = fluidOutputValueRaw > 0 ? fluidOutputValueRaw : 144D;
-        double outputValue = Arrays.stream(x.recipe.mOutputs).flatMapToInt(f -> IntStream.of(f.stackSize)).sum()
+        double outputValue = Arrays.stream(x.recipe.mOutputs)
+                                   .flatMapToInt(f -> IntStream.of(f.stackSize))
+                                   .sum()
                 + (fluidOutputValueRaw / 144D);
         return outputValue / inputValue;
     }
@@ -554,7 +631,9 @@ public class GT_MetaTileEntity_Disassembler extends GT_MetaTileEntity_BasicMachi
             ItemStack aStack) {
         return super.allowPutStackValidated(aBaseMetaTileEntity, aIndex, aSide, aStack)
                 && aStack.getTagCompound() != null
-                && aStack.getTagCompound().getCompoundTag("GT.CraftingComponents") != null;
+                && aStack.getTagCompound()
+                         .getCompoundTag("GT.CraftingComponents")
+                        != null;
     }
 
     @Override

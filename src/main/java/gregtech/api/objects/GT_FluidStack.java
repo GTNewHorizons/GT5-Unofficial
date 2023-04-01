@@ -18,8 +18,8 @@ import gregtech.api.util.GT_Utility;
  */
 public class GT_FluidStack extends FluidStack {
 
-    private static final Collection<GT_FluidStack> sAllFluidStacks = Collections
-            .newSetFromMap(new WeakHashMap<>(10000));
+    private static final Collection<GT_FluidStack> sAllFluidStacks = Collections.newSetFromMap(
+            new WeakHashMap<>(10000));
     private static volatile boolean lock = false;
     private Fluid mFluid;
 
@@ -57,7 +57,8 @@ public class GT_FluidStack extends FluidStack {
         if (ForgeVersion.getBuildVersion() < 1355 && ForgeVersion.getRevisionVersion() < 4) {
             int fluidID;
             try {
-                fluidID = this.getFluid().getID();
+                fluidID = this.getFluid()
+                              .getID();
             } catch (Throwable e) {
                 System.err.println(e);
             }
@@ -79,7 +80,11 @@ public class GT_FluidStack extends FluidStack {
 
     @Override
     public String toString() {
-        return String
-                .format("GT_FluidStack: %s x %s, ID:%s", this.amount, this.getFluid().getName(), this.getFluidID());
+        return String.format(
+                "GT_FluidStack: %s x %s, ID:%s",
+                this.amount,
+                this.getFluid()
+                    .getName(),
+                this.getFluidID());
     }
 }

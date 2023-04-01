@@ -37,10 +37,12 @@ public class Behaviour_Spray_Color extends Behaviour_None {
             Blocks.hardened_clay,
             ItemList.TE_Rockwool.getBlock());
     private final String mTooltip;
-    private final String mTooltipUses = GT_LanguageManager
-            .addStringLocalization("gt.behaviour.paintspray.uses", "Remaining Uses:");
-    private final String mTooltipUnstackable = GT_LanguageManager
-            .addStringLocalization("gt.behaviour.unstackable", "Not usable when stacked!");
+    private final String mTooltipUses = GT_LanguageManager.addStringLocalization(
+            "gt.behaviour.paintspray.uses",
+            "Remaining Uses:");
+    private final String mTooltipUnstackable = GT_LanguageManager.addStringLocalization(
+            "gt.behaviour.unstackable",
+            "Not usable when stacked!");
 
     public Behaviour_Spray_Color(ItemStack aEmpty, ItemStack aUsed, ItemStack aFull, long aUses, int aColor) {
         this.mEmpty = aEmpty;

@@ -278,8 +278,10 @@ public abstract class GT_MetaTileEntity_BasicGenerator extends GT_MetaTileEntity
                                                                          // solid...
                     !(stack.getItem() instanceof IFluidHandler) && // when the item is a fluid handler its not a
                                                                    // solid...
-                    !stack.getItem().getUnlocalizedName().contains("bucket"); // since we cant really check for
-                                                                              // buckets...
+                    !stack.getItem()
+                          .getUnlocalizedName()
+                          .contains("bucket"); // since we cant really check for
+                                               // buckets...
         }
     }
 
@@ -300,8 +302,7 @@ public abstract class GT_MetaTileEntity_BasicGenerator extends GT_MetaTileEntity
 
     public long getFuelValue(FluidStack aLiquid, boolean aLong) {
         GT_Recipe_Map tRecipes = getRecipes();
-        if (aLiquid == null || !(tRecipes instanceof GT_Recipe.GT_Recipe_Map_Fuel)) return 0;
-        GT_Recipe.GT_Recipe_Map_Fuel tFuels = (GT_Recipe.GT_Recipe_Map_Fuel) tRecipes;
+        if (aLiquid == null || !(tRecipes instanceof GT_Recipe.GT_Recipe_Map_Fuel tFuels)) return 0;
         GT_Recipe tFuel = tFuels.findFuel(aLiquid);
         if (tFuel == null) return 0;
 

@@ -22,15 +22,16 @@ public class ProcessingCrop implements gregtech.api.interfaces.IOreRecipeRegistr
                 gregtech.api.util.GT_Utility.copyAmount(8L, aStack),
                 ItemList.IC2_PlantballCompressed.get(1L));
         switch (aOreDictName) {
-            case "cropTea":
+            case "cropTea" -> {
                 GT_Values.RA.addBrewingRecipe(aStack, FluidRegistry.WATER, FluidRegistry.getFluid("potion.tea"), false);
                 GT_Values.RA.addBrewingRecipe(
                         aStack,
-                        GT_ModHandler.getDistilledWater(1L).getFluid(),
+                        GT_ModHandler.getDistilledWater(1L)
+                                     .getFluid(),
                         FluidRegistry.getFluid("potion.tea"),
                         false);
-                break;
-            case "cropGrape":
+            }
+            case "cropGrape" -> {
                 GT_Values.RA.addBrewingRecipe(
                         aStack,
                         FluidRegistry.WATER,
@@ -38,21 +39,18 @@ public class ProcessingCrop implements gregtech.api.interfaces.IOreRecipeRegistr
                         false);
                 GT_Values.RA.addBrewingRecipe(
                         aStack,
-                        GT_ModHandler.getDistilledWater(1L).getFluid(),
+                        GT_ModHandler.getDistilledWater(1L)
+                                     .getFluid(),
                         FluidRegistry.getFluid("potion.grapejuice"),
                         false);
-                break;
-            case "cropChilipepper":
-                GT_ModHandler.addPulverisationRecipe(
-                        aStack,
-                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Chili, 1L));
-                break;
-            case "cropCoffee":
-                GT_ModHandler.addPulverisationRecipe(
-                        aStack,
-                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Coffee, 1L));
-                break;
-            case "cropPotato":
+            }
+            case "cropChilipepper" -> GT_ModHandler.addPulverisationRecipe(
+                    aStack,
+                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Chili, 1L));
+            case "cropCoffee" -> GT_ModHandler.addPulverisationRecipe(
+                    aStack,
+                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Coffee, 1L));
+            case "cropPotato" -> {
                 GT_Values.RA.addSlicerRecipe(
                         aStack,
                         ItemList.Shape_Slicer_Flat.get(0L),
@@ -72,11 +70,12 @@ public class ProcessingCrop implements gregtech.api.interfaces.IOreRecipeRegistr
                         true);
                 GT_Values.RA.addBrewingRecipe(
                         aStack,
-                        GT_ModHandler.getDistilledWater(1L).getFluid(),
+                        GT_ModHandler.getDistilledWater(1L)
+                                     .getFluid(),
                         FluidRegistry.getFluid("potion.potatojuice"),
                         true);
-                break;
-            case "cropLemon":
+            }
+            case "cropLemon" -> {
                 GT_Values.RA.addSlicerRecipe(
                         aStack,
                         ItemList.Shape_Slicer_Flat.get(0L),
@@ -90,7 +89,8 @@ public class ProcessingCrop implements gregtech.api.interfaces.IOreRecipeRegistr
                         false);
                 GT_Values.RA.addBrewingRecipe(
                         aStack,
-                        GT_ModHandler.getDistilledWater(1L).getFluid(),
+                        GT_ModHandler.getDistilledWater(1L)
+                                     .getFluid(),
                         FluidRegistry.getFluid("potion.lemonjuice"),
                         false);
                 GT_Values.RA.addBrewingRecipe(
@@ -98,31 +98,25 @@ public class ProcessingCrop implements gregtech.api.interfaces.IOreRecipeRegistr
                         FluidRegistry.getFluid("potion.vodka"),
                         FluidRegistry.getFluid("potion.leninade"),
                         true);
-                break;
-            case "cropTomato":
-                GT_Values.RA.addSlicerRecipe(
-                        aStack,
-                        ItemList.Shape_Slicer_Flat.get(0L),
-                        ItemList.Food_Sliced_Tomato.get(4L),
-                        64,
-                        4);
-                break;
-            case "cropCucumber":
-                GT_Values.RA.addSlicerRecipe(
-                        aStack,
-                        ItemList.Shape_Slicer_Flat.get(0L),
-                        ItemList.Food_Sliced_Cucumber.get(4L),
-                        64,
-                        4);
-                break;
-            case "cropOnion":
-                GT_Values.RA.addSlicerRecipe(
-                        aStack,
-                        ItemList.Shape_Slicer_Flat.get(0L),
-                        ItemList.Food_Sliced_Onion.get(4L),
-                        64,
-                        4);
-                break;
+            }
+            case "cropTomato" -> GT_Values.RA.addSlicerRecipe(
+                    aStack,
+                    ItemList.Shape_Slicer_Flat.get(0L),
+                    ItemList.Food_Sliced_Tomato.get(4L),
+                    64,
+                    4);
+            case "cropCucumber" -> GT_Values.RA.addSlicerRecipe(
+                    aStack,
+                    ItemList.Shape_Slicer_Flat.get(0L),
+                    ItemList.Food_Sliced_Cucumber.get(4L),
+                    64,
+                    4);
+            case "cropOnion" -> GT_Values.RA.addSlicerRecipe(
+                    aStack,
+                    ItemList.Shape_Slicer_Flat.get(0L),
+                    ItemList.Food_Sliced_Onion.get(4L),
+                    64,
+                    4);
         }
     }
 }

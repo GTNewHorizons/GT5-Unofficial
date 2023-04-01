@@ -47,31 +47,62 @@ public class GT_MetaTileEntity_ElectricBlastFurnace
 
     protected static final int CASING_INDEX = 11;
     protected static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final IStructureDefinition<GT_MetaTileEntity_ElectricBlastFurnace> STRUCTURE_DEFINITION = StructureDefinition
-            .<GT_MetaTileEntity_ElectricBlastFurnace>builder()
-            .addShape(
-                    STRUCTURE_PIECE_MAIN,
-                    transpose(
-                            new String[][] { { "ttt", "tmt", "ttt" }, { "CCC", "C-C", "CCC" }, { "CCC", "C-C", "CCC" },
-                                    { "b~b", "bbb", "bbb" } }))
-            .addElement(
-                    't',
-                    buildHatchAdder(GT_MetaTileEntity_ElectricBlastFurnace.class).atLeast(
-                            OutputHatch.withAdder(GT_MetaTileEntity_ElectricBlastFurnace::addOutputHatchToTopList)
-                                    .withCount(t -> t.mPollutionOutputHatches.size()))
-                            .casingIndex(CASING_INDEX).dot(1).buildAndChain(GregTech_API.sBlockCasings1, CASING_INDEX))
-            .addElement('m', Muffler.newAny(CASING_INDEX, 2))
-            .addElement(
-                    'C',
-                    ofCoil(
-                            GT_MetaTileEntity_ElectricBlastFurnace::setCoilLevel,
-                            GT_MetaTileEntity_ElectricBlastFurnace::getCoilLevel))
-            .addElement(
-                    'b',
-                    buildHatchAdder(GT_MetaTileEntity_ElectricBlastFurnace.class)
-                            .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy)
-                            .casingIndex(CASING_INDEX).dot(1).buildAndChain(GregTech_API.sBlockCasings1, CASING_INDEX))
-            .build();
+    private static final IStructureDefinition<GT_MetaTileEntity_ElectricBlastFurnace> STRUCTURE_DEFINITION = StructureDefinition.<GT_MetaTileEntity_ElectricBlastFurnace>builder()
+                                                                                                                                .addShape(
+                                                                                                                                        STRUCTURE_PIECE_MAIN,
+                                                                                                                                        transpose(
+                                                                                                                                                new String[][] {
+                                                                                                                                                        { "ttt", "tmt",
+                                                                                                                                                                "ttt" },
+                                                                                                                                                        { "CCC", "C-C",
+                                                                                                                                                                "CCC" },
+                                                                                                                                                        { "CCC", "C-C",
+                                                                                                                                                                "CCC" },
+                                                                                                                                                        { "b~b", "bbb",
+                                                                                                                                                                "bbb" } }))
+                                                                                                                                .addElement(
+                                                                                                                                        't',
+                                                                                                                                        buildHatchAdder(
+                                                                                                                                                GT_MetaTileEntity_ElectricBlastFurnace.class).atLeast(
+                                                                                                                                                        OutputHatch.withAdder(
+                                                                                                                                                                GT_MetaTileEntity_ElectricBlastFurnace::addOutputHatchToTopList)
+                                                                                                                                                                   .withCount(
+                                                                                                                                                                           t -> t.mPollutionOutputHatches.size()))
+                                                                                                                                                                                             .casingIndex(
+                                                                                                                                                                                                     CASING_INDEX)
+                                                                                                                                                                                             .dot(
+                                                                                                                                                                                                     1)
+                                                                                                                                                                                             .buildAndChain(
+                                                                                                                                                                                                     GregTech_API.sBlockCasings1,
+                                                                                                                                                                                                     CASING_INDEX))
+                                                                                                                                .addElement(
+                                                                                                                                        'm',
+                                                                                                                                        Muffler.newAny(
+                                                                                                                                                CASING_INDEX,
+                                                                                                                                                2))
+                                                                                                                                .addElement(
+                                                                                                                                        'C',
+                                                                                                                                        ofCoil(
+                                                                                                                                                GT_MetaTileEntity_ElectricBlastFurnace::setCoilLevel,
+                                                                                                                                                GT_MetaTileEntity_ElectricBlastFurnace::getCoilLevel))
+                                                                                                                                .addElement(
+                                                                                                                                        'b',
+                                                                                                                                        buildHatchAdder(
+                                                                                                                                                GT_MetaTileEntity_ElectricBlastFurnace.class).atLeast(
+                                                                                                                                                        InputHatch,
+                                                                                                                                                        OutputHatch,
+                                                                                                                                                        InputBus,
+                                                                                                                                                        OutputBus,
+                                                                                                                                                        Maintenance,
+                                                                                                                                                        Energy)
+                                                                                                                                                                                             .casingIndex(
+                                                                                                                                                                                                     CASING_INDEX)
+                                                                                                                                                                                             .dot(
+                                                                                                                                                                                                     1)
+                                                                                                                                                                                             .buildAndChain(
+                                                                                                                                                                                                     GregTech_API.sBlockCasings1,
+                                                                                                                                                                                                     CASING_INDEX))
+                                                                                                                                .build();
 
     public GT_MetaTileEntity_ElectricBlastFurnace(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -89,22 +120,30 @@ public class GT_MetaTileEntity_ElectricBlastFurnace
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType("Blast Furnace").addInfo("Controller block for the Electric Blast Furnace")
-                .addInfo("You can use some fluids to reduce recipe time. Place the circuit in the Input Bus")
-                .addInfo("Each 900K over the min. Heat required reduces power consumption by 5% (multiplicatively)")
-                .addInfo("Each 1800K over the min. Heat required grants one perfect overclock")
-                .addInfo(
-                        "For each perfect overclock the EBF will reduce recipe time 4 times (instead of 2) (100% efficiency)")
-                .addInfo("Additionally gives +100K for every tier past MV")
-                .addPollutionAmount(getPollutionPerSecond(null)).addSeparator().beginStructureBlock(3, 4, 3, true)
-                .addController("Front bottom").addCasingInfoRange("Heat Proof Machine Casing", 0, 15, false)
-                .addOtherStructurePart("Heating Coils", "Two middle Layers")
-                .addEnergyHatch("Any bottom layer casing", 3).addMaintenanceHatch("Any bottom layer casing", 3)
-                .addMufflerHatch("Top middle", 2).addInputBus("Any bottom layer casing", 3)
-                .addInputHatch("Any bottom layer casing", 3).addOutputBus("Any bottom layer casing", 3)
-                .addOutputHatch("Liquid form of fluids, Any bottom layer casing")
-                .addOutputHatch("Gas form of fluids, Any top layer casing", 1)
-                .addStructureInfo("Recovery amount scales with Muffler Hatch tier").toolTipFinisher("Gregtech");
+        tt.addMachineType("Blast Furnace")
+          .addInfo("Controller block for the Electric Blast Furnace")
+          .addInfo("You can use some fluids to reduce recipe time. Place the circuit in the Input Bus")
+          .addInfo("Each 900K over the min. Heat required reduces power consumption by 5% (multiplicatively)")
+          .addInfo("Each 1800K over the min. Heat required grants one perfect overclock")
+          .addInfo(
+                  "For each perfect overclock the EBF will reduce recipe time 4 times (instead of 2) (100% efficiency)")
+          .addInfo("Additionally gives +100K for every tier past MV")
+          .addPollutionAmount(getPollutionPerSecond(null))
+          .addSeparator()
+          .beginStructureBlock(3, 4, 3, true)
+          .addController("Front bottom")
+          .addCasingInfoRange("Heat Proof Machine Casing", 0, 15, false)
+          .addOtherStructurePart("Heating Coils", "Two middle Layers")
+          .addEnergyHatch("Any bottom layer casing", 3)
+          .addMaintenanceHatch("Any bottom layer casing", 3)
+          .addMufflerHatch("Top middle", 2)
+          .addInputBus("Any bottom layer casing", 3)
+          .addInputHatch("Any bottom layer casing", 3)
+          .addOutputBus("Any bottom layer casing", 3)
+          .addOutputHatch("Liquid form of fluids, Any bottom layer casing")
+          .addOutputHatch("Gas form of fluids, Any top layer casing", 1)
+          .addStructureInfo("Recovery amount scales with Muffler Hatch tier")
+          .toolTipFinisher("Gregtech");
         return tt;
     }
 
@@ -112,14 +151,26 @@ public class GT_MetaTileEntity_ElectricBlastFurnace
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
             boolean aActive, boolean aRedstone) {
         if (aSide == aFacing) {
-            if (aActive) return new ITexture[] { casingTexturePages[0][CASING_INDEX],
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE).extFacing().build(),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE_GLOW).extFacing()
-                            .glow().build() };
-            return new ITexture[] { casingTexturePages[0][CASING_INDEX],
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE).extFacing().build(),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_GLOW).extFacing().glow()
-                            .build() };
+            if (aActive) return new ITexture[] { casingTexturePages[0][CASING_INDEX], TextureFactory.builder()
+                                                                                                    .addIcon(
+                                                                                                            OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE)
+                                                                                                    .extFacing()
+                                                                                                    .build(),
+                    TextureFactory.builder()
+                                  .addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE_GLOW)
+                                  .extFacing()
+                                  .glow()
+                                  .build() };
+            return new ITexture[] { casingTexturePages[0][CASING_INDEX], TextureFactory.builder()
+                                                                                       .addIcon(
+                                                                                               OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE)
+                                                                                       .extFacing()
+                                                                                       .build(),
+                    TextureFactory.builder()
+                                  .addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_GLOW)
+                                  .extFacing()
+                                  .glow()
+                                  .build() };
         }
         return new ITexture[] { casingTexturePages[0][CASING_INDEX] };
     }
@@ -153,9 +204,14 @@ public class GT_MetaTileEntity_ElectricBlastFurnace
                 tBus.mRecipeMap = getRecipeMap();
 
                 if (isValidMetaTileEntity(tBus)) {
-                    for (int i = tBus.getBaseMetaTileEntity().getSizeInventory() - 1; i >= 0; i--) {
-                        if (tBus.getBaseMetaTileEntity().getStackInSlot(i) != null) {
-                            tInputs.add(tBus.getBaseMetaTileEntity().getStackInSlot(i));
+                    for (int i = tBus.getBaseMetaTileEntity()
+                                     .getSizeInventory()
+                            - 1; i >= 0; i--) {
+                        if (tBus.getBaseMetaTileEntity()
+                                .getStackInSlot(i) != null) {
+                            tInputs.add(
+                                    tBus.getBaseMetaTileEntity()
+                                        .getStackInSlot(i));
                         }
                     }
                 }
@@ -176,8 +232,12 @@ public class GT_MetaTileEntity_ElectricBlastFurnace
         long tVoltage = getMaxInputVoltage();
         byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
 
-        GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sBlastRecipes
-                .findRecipe(getBaseMetaTileEntity(), false, V[tTier], tFluids, tItems);
+        GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sBlastRecipes.findRecipe(
+                getBaseMetaTileEntity(),
+                false,
+                V[tTier],
+                tFluids,
+                tItems);
 
         if (tRecipe == null) return false;
         if (this.mHeatingCapacity < tRecipe.mSpecialValue) return false;
@@ -322,8 +382,10 @@ public class GT_MetaTileEntity_ElectricBlastFurnace
         long maxEnergy = 0;
         for (GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches) {
             if (!isValidMetaTileEntity(tHatch)) continue;
-            storedEnergy += tHatch.getBaseMetaTileEntity().getStoredEU();
-            maxEnergy += tHatch.getBaseMetaTileEntity().getEUCapacity();
+            storedEnergy += tHatch.getBaseMetaTileEntity()
+                                  .getStoredEU();
+            maxEnergy += tHatch.getBaseMetaTileEntity()
+                               .getEUCapacity();
         }
 
         return new String[] {

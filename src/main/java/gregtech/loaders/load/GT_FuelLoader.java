@@ -19,16 +19,36 @@ public class GT_FuelLoader implements Runnable {
     @Override
     public void run() {
         GT_Log.out.println("GT_Mod: Initializing various Fuels.");
-        ItemList.sBlueVitriol = GT_Mod.gregtechproxy
-                .addFluid("solution.bluevitriol", "Blue Vitriol water solution", null, 1, 295);
-        ItemList.sNickelSulfate = GT_Mod.gregtechproxy
-                .addFluid("solution.nickelsulfate", "Nickel sulfate water solution", null, 1, 295);
-        ItemList.sGreenVitriol = GT_Mod.gregtechproxy
-                .addFluid("solution.greenvitriol", "Green Vitriol water solution", null, 1, 295);
-        ItemList.sIndiumConcentrate = GT_Mod.gregtechproxy
-                .addFluid("indiumconcentrate", "Indium Concentrate", null, 1, 295); // TODO CHECK NEW x3
-        ItemList.sLeadZincSolution = GT_Mod.gregtechproxy
-                .addFluid("leadzincsolution", "Lead-Zinc solution", null, 1, 295);
+        ItemList.sBlueVitriol = GT_Mod.gregtechproxy.addFluid(
+                "solution.bluevitriol",
+                "Blue Vitriol water solution",
+                null,
+                1,
+                295);
+        ItemList.sNickelSulfate = GT_Mod.gregtechproxy.addFluid(
+                "solution.nickelsulfate",
+                "Nickel sulfate water solution",
+                null,
+                1,
+                295);
+        ItemList.sGreenVitriol = GT_Mod.gregtechproxy.addFluid(
+                "solution.greenvitriol",
+                "Green Vitriol water solution",
+                null,
+                1,
+                295);
+        ItemList.sIndiumConcentrate = GT_Mod.gregtechproxy.addFluid(
+                "indiumconcentrate",
+                "Indium Concentrate",
+                null,
+                1,
+                295); // TODO CHECK NEW x3
+        ItemList.sLeadZincSolution = GT_Mod.gregtechproxy.addFluid(
+                "leadzincsolution",
+                "Lead-Zinc solution",
+                null,
+                1,
+                295);
         ItemList.sRocketFuel = GT_Mod.gregtechproxy.addFluid("rocket_fuel", "Rocket Fuel", null, 1, 295);
         new GT_Recipe(
                 new ItemStack(Items.lava_bucket),

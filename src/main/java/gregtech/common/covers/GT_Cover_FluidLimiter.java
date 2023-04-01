@@ -152,8 +152,7 @@ public class GT_Cover_FluidLimiter extends GT_CoverBehaviorBase<GT_Cover_FluidLi
 
         @Override
         public void loadDataFromNBT(NBTBase aNBT) {
-            if (aNBT instanceof NBTTagCompound) {
-                NBTTagCompound tag = (NBTTagCompound) aNBT;
+            if (aNBT instanceof NBTTagCompound tag) {
                 this.threshold = tag.getFloat("threshold");
             }
         }
@@ -197,19 +196,23 @@ public class GT_Cover_FluidLimiter extends GT_CoverBehaviorBase<GT_Cover_FluidLi
         @Override
         protected void addUIWidgets(ModularWindow.Builder builder) {
             builder.widget(
-                    new CoverDataControllerWidget<>(this::getCoverData, this::setCoverData, GT_Cover_FluidLimiter.this)
-                            .addFollower(
+                    new CoverDataControllerWidget<>(
+                            this::getCoverData,
+                            this::setCoverData,
+                            GT_Cover_FluidLimiter.this).addFollower(
                                     new CoverDataFollower_TextFieldWidget<>(),
                                     coverData -> String.valueOf(Math.round(coverData.threshold * 100)),
                                     (coverData, val) -> {
                                         coverData.threshold = (float) (MathExpression.parseMathExpression(val) / 100);
                                         return coverData;
                                     },
-                                    widget -> widget.setNumbers(0, 100).setFocusOnGuiOpen(true)
-                                            .setPos(startX, startY + spaceY * 2 - 24).setSize(spaceX * 4 - 3, 12)))
-                    .widget(
-                            new TextWidget("Percent threshold").setDefaultColor(COLOR_TEXT_GRAY.get())
-                                    .setPos(startX, startY + spaceY * 2 - 35));
+                                    widget -> widget.setNumbers(0, 100)
+                                                    .setFocusOnGuiOpen(true)
+                                                    .setPos(startX, startY + spaceY * 2 - 24)
+                                                    .setSize(spaceX * 4 - 3, 12)))
+                   .widget(
+                           new TextWidget("Percent threshold").setDefaultColor(COLOR_TEXT_GRAY.get())
+                                                              .setPos(startX, startY + spaceY * 2 - 35));
         }
     }
 }

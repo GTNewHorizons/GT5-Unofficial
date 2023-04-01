@@ -96,7 +96,9 @@ public class GT_Packet_TileEntityCoverNew extends GT_Packet_New {
                 aData.readInt(),
                 aData.readByte(),
                 coverId = aData.readInt(),
-                GregTech_API.getCoverBehaviorNew(coverId).createDataObject().readFromPacket(aData, mPlayer),
+                GregTech_API.getCoverBehaviorNew(coverId)
+                            .createDataObject()
+                            .readFromPacket(aData, mPlayer),
                 aData.readInt());
     }
 

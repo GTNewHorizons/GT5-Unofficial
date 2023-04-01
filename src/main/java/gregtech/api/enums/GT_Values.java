@@ -1,5 +1,7 @@
 package gregtech.api.enums;
 
+import static gregtech.api.enums.ModIDs.IndustrialCraft2;
+
 import java.math.BigInteger;
 import java.util.*;
 
@@ -84,9 +86,13 @@ public class GT_Values {
      * tier. These leave a bit of headroom for cable and transformer losses, but not enough to make it a great gain.
      */
     // this will correctly map ULV to 7.
-    public static final long[] VP = Arrays.stream(V).map(
-            i -> BigInteger.valueOf(i).multiply(BigInteger.valueOf(30)).divide(BigInteger.valueOf(32)).longValueExact())
-            .toArray();
+    public static final long[] VP = Arrays.stream(V)
+                                          .map(
+                                                  i -> BigInteger.valueOf(i)
+                                                                 .multiply(BigInteger.valueOf(30))
+                                                                 .divide(BigInteger.valueOf(32))
+                                                                 .longValueExact())
+                                          .toArray();
     // Why -7? Mystery of the universe. Something may break if you change this so please do not without extensive
     // testing.
     // TODO:Adding that in coremod!!!
@@ -164,13 +170,10 @@ public class GT_Values {
             EnumChatFormatting.DARK_GREEN.toString(), // UV, 8
             EnumChatFormatting.DARK_RED.toString(), // UHV, 9
             EnumChatFormatting.DARK_PURPLE.toString(), // UEV, 10
-            EnumChatFormatting.DARK_BLUE.toString() + EnumChatFormatting.BOLD.toString(), // UIV, 11
-            EnumChatFormatting.RED.toString() + EnumChatFormatting.BOLD.toString()
-                    + EnumChatFormatting.UNDERLINE.toString(), // UMV, 12
-            EnumChatFormatting.DARK_RED.toString() + EnumChatFormatting.BOLD.toString()
-                    + EnumChatFormatting.UNDERLINE.toString(), // UXV, 13
-            EnumChatFormatting.WHITE.toString() + EnumChatFormatting.BOLD.toString()
-                    + EnumChatFormatting.UNDERLINE.toString(), // MAX, 14
+            EnumChatFormatting.DARK_BLUE.toString() + EnumChatFormatting.BOLD, // UIV, 11
+            EnumChatFormatting.RED.toString() + EnumChatFormatting.BOLD + EnumChatFormatting.UNDERLINE, // UMV, 12
+            EnumChatFormatting.DARK_RED.toString() + EnumChatFormatting.BOLD + EnumChatFormatting.UNDERLINE, // UXV, 13
+            EnumChatFormatting.WHITE.toString() + EnumChatFormatting.BOLD + EnumChatFormatting.UNDERLINE, // MAX, 14
             EnumChatFormatting.OBFUSCATED.toString() // ~~~, 15
     };
 
@@ -206,7 +209,7 @@ public class GT_Values {
             TEX_DIR_ASPECTS = TEX_DIR + "aspects/", RES_PATH = MOD_ID + ":" + TEX_DIR,
             RES_PATH_GUI = MOD_ID + ":" + TEX_DIR_GUI, RES_PATH_ITEM = MOD_ID + ":", RES_PATH_BLOCK = MOD_ID + ":",
             RES_PATH_ENTITY = MOD_ID + ":" + TEX_DIR_ENTITY, RES_PATH_ASPECTS = MOD_ID + ":" + TEX_DIR_ASPECTS,
-            RES_PATH_IC2 = MOD_ID_IC2.toLowerCase(Locale.ENGLISH) + ":",
+            RES_PATH_IC2 = IndustrialCraft2.modID.toLowerCase(Locale.ENGLISH) + ":",
             RES_PATH_MODEL = MOD_ID + ":" + TEX_DIR + "models/";
 
     /**
@@ -232,7 +235,7 @@ public class GT_Values {
                 // Machines
                 ACTIVE = "gt.active", // Boolean
                 FLUID_OUT = "gt.fluidout", // Output Fluid
-                ITEM_OUT = "gt,itemout", // Output Item
+                ITEM_OUT = "gt.itemout", // Output Item
                 PARALLEL = "gt.parallel", // Number
                 TANK_CAPACITY = "gt.tankcap", // Number
                 TANK_IN = "gt.tank.in.", // FluidStack
@@ -242,6 +245,14 @@ public class GT_Values {
                 INV_OUTPUT_SIZE = "gt.invsize.out", // Number
                 INV_INPUT_LIST = "gt.invlist.in", // NBT List
                 INV_OUTPUT_LIST = "gt.invlist.out", // NBT List
+                VOLTAGE = "gt.voltage", // Number
+                AMPERAGE = "gt.amperage", // Number
+                STORED_ENERGY = "gt.stored.energy", // Number
+                MAXIMUM_ENERGY = "gt.maximum.energy", // Number
+                EUT_CONSUMPTION = "gt.eut.consumption", // Number
+                BURN_TIME_LEFT = "gt.burn.time.left", // Number
+                TOTAL_BURN_TIME = "gt.total.burn.time", // Number
+                ALLOWED_WORK = "gt.allowed.work", // Boolean
 
                 // MultiBlock
                 STRUCTURE_OK = "gt.structure.ok", ROTATION = "gt.eRotation", FLIP = "gt.eFlip", TARGET = "gt.target", // Boolean
@@ -255,6 +266,15 @@ public class GT_Values {
                 UPGRADE_INVENTORY_NAME = "gt.invname.upg", // String
                 UPGRADE_INVENTORIES_INPUT = "gt.invlist.upg.in", // NBT List
                 UPGRADE_INVENTORIES_OUTPUT = "gt.invlist.upg.out", // NBT List
+                SEPARATE_INPUTS = "gt.separate.inputs", // Boolean
+
+                // Logic
+                POWER_LOGIC = "gt.power.logic", // NBT Tag
+                POWER_LOGIC_STORED_ENERGY = "gt.power.logic.stored.energy", // Number
+                POWER_LOGIC_ENERGY_CAPACITY = "gt.power.logic.energy.capacity", // Number
+                POWER_LOGIC_VOLTAGE = "gt.power.logic.voltage", // Number
+                POWER_LOGIC_AMPERAGE = "gt.power.logic.voltage", // Number
+                POWER_LOGIC_TYPE = "gt.power.logic.type", // Number
                 empty_ = "";
     }
 
@@ -523,5 +543,19 @@ public class GT_Values {
 
     public static double getMaxPlasmaTurbineEfficiency() {
         return maxPlasmaTurbineEfficiency;
+    }
+
+    private static final long[] EXPLOSION_LOOKUP_V = new long[] { V[0], V[1], V[2], V[3], V[4], V[4] * 2, V[5], V[6],
+            V[7], V[8], V[8] * 2, V[9], V[10], V[11], V[12], V[12] * 2, V[13], V[14], V[15] };
+    private static final float[] EXPLOSION_LOOKUP_POWER = new float[] { 1.0F, 2.0F, 3.0F, 4.0F, 5.0F, 6.0F, 7.0F, 8.0F,
+            9.0F, 10.0F, 11.0F, 12.0F, 13.0F, 14.0F, 15.0F, 16.0F, 17.0F, 18.0F, 19.0F, 20.0F };
+
+    public static float getExplosionPowerForVoltage(long voltage) {
+        for (int i = 0; i < EXPLOSION_LOOKUP_V.length; i++) {
+            if (voltage < EXPLOSION_LOOKUP_V[i]) {
+                return EXPLOSION_LOOKUP_POWER[i];
+            }
+        }
+        return EXPLOSION_LOOKUP_POWER[EXPLOSION_LOOKUP_POWER.length - 1];
     }
 }

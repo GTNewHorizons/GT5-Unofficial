@@ -38,17 +38,47 @@ public class GT_Util {
         for (Tuple t : aTags) {
             if (t.getSecond() == null) continue;
 
-            if (t.getSecond() instanceof Boolean) rNBT.setBoolean(t.getFirst().toString(), (Boolean) t.getSecond());
-            else if (t.getSecond() instanceof Byte) rNBT.setByte(t.getFirst().toString(), (Byte) t.getSecond());
-            else if (t.getSecond() instanceof Short) rNBT.setShort(t.getFirst().toString(), (Short) t.getSecond());
-            else if (t.getSecond() instanceof Integer)
-                rNBT.setInteger(t.getFirst().toString(), (Integer) t.getSecond());
-            else if (t.getSecond() instanceof Long) rNBT.setLong(t.getFirst().toString(), (Long) t.getSecond());
-            else if (t.getSecond() instanceof Float) rNBT.setFloat(t.getFirst().toString(), (Float) t.getSecond());
-            else if (t.getSecond() instanceof Double) rNBT.setDouble(t.getFirst().toString(), (Double) t.getSecond());
-            else if (t.getSecond() instanceof String) rNBT.setString(t.getFirst().toString(), (String) t.getSecond());
-            else if (t.getSecond() instanceof NBTBase) rNBT.setTag(t.getFirst().toString(), (NBTBase) t.getSecond());
-            else rNBT.setString(t.getFirst().toString(), t.getSecond().toString());
+            if (t.getSecond() instanceof Boolean) rNBT.setBoolean(
+                    t.getFirst()
+                     .toString(),
+                    (Boolean) t.getSecond());
+            else if (t.getSecond() instanceof Byte) rNBT.setByte(
+                    t.getFirst()
+                     .toString(),
+                    (Byte) t.getSecond());
+            else if (t.getSecond() instanceof Short) rNBT.setShort(
+                    t.getFirst()
+                     .toString(),
+                    (Short) t.getSecond());
+            else if (t.getSecond() instanceof Integer) rNBT.setInteger(
+                    t.getFirst()
+                     .toString(),
+                    (Integer) t.getSecond());
+            else if (t.getSecond() instanceof Long) rNBT.setLong(
+                    t.getFirst()
+                     .toString(),
+                    (Long) t.getSecond());
+            else if (t.getSecond() instanceof Float) rNBT.setFloat(
+                    t.getFirst()
+                     .toString(),
+                    (Float) t.getSecond());
+            else if (t.getSecond() instanceof Double) rNBT.setDouble(
+                    t.getFirst()
+                     .toString(),
+                    (Double) t.getSecond());
+            else if (t.getSecond() instanceof String) rNBT.setString(
+                    t.getFirst()
+                     .toString(),
+                    (String) t.getSecond());
+            else if (t.getSecond() instanceof NBTBase) rNBT.setTag(
+                    t.getFirst()
+                     .toString(),
+                    (NBTBase) t.getSecond());
+            else rNBT.setString(
+                    t.getFirst()
+                     .toString(),
+                    t.getSecond()
+                     .toString());
         }
 
         return rNBT;

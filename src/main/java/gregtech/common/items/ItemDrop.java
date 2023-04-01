@@ -1,7 +1,8 @@
 package gregtech.common.items;
 
 import static gregtech.api.enums.GT_Values.MOD_ID;
-import static gregtech.api.enums.GT_Values.MOD_ID_DC;
+import static gregtech.api.enums.ModIDs.HardcoreEnderExpansion;
+import static gregtech.api.enums.ModIDs.NewHorizonsCoreMod;
 
 import java.util.List;
 
@@ -13,7 +14,6 @@ import net.minecraft.util.IIcon;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
-import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -46,7 +46,7 @@ public class ItemDrop extends Item {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubItems(Item item, CreativeTabs tabs, List list) {
+    public void getSubItems(Item item, CreativeTabs tabs, List<ItemStack> list) {
         for (DropType type : DropType.values()) {
             if (type.showInList) {
                 list.add(this.getStackForType(type));
@@ -141,7 +141,7 @@ public class ItemDrop extends Item {
         addProcessMV(
                 tDrop,
                 Materials.FierySteel.getFluid(200L),
-                GT_ModHandler.getModItem(MOD_ID_DC, "SnowQueenBloodDrop", 1L, 0),
+                GT_ModHandler.getModItem(NewHorizonsCoreMod.modID, "SnowQueenBloodDrop", 1L, 0),
                 1500,
                 48);
         tDrop = getStackForType(DropType.LAPIS);
@@ -180,7 +180,7 @@ public class ItemDrop extends Item {
                 GT_ModHandler.getModItem("ExtraBees", "propolis", 1L, 2),
                 30);
         tDrop = getStackForType(DropType.ENDERGOO);
-        if (Loader.isModLoaded("HardcoreEnderExpansion"))
+        if (HardcoreEnderExpansion.isModLoaded())
             addProcessHV(tDrop, new FluidStack(FluidRegistry.getFluid("endergoo"), 500), GT_Values.NI, 1000);
     }
 

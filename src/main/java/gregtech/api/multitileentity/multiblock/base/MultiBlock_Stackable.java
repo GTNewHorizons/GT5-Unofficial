@@ -4,7 +4,7 @@ import net.minecraft.item.ItemStack;
 
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
 
-public abstract class MultiBlock_Stackable<T extends MultiBlock_Stackable<T>> extends MultiBlockController<T> {
+public abstract class MultiBlock_Stackable<T extends MultiBlock_Stackable<T>> extends MultiBlockPowerController<T> {
 
     protected static String STACKABLE_TOP = "STACKABLE_TOP";
     protected static String STACKABLE_MIDDLE = "STACKABLE_MIDDLE";
@@ -103,6 +103,9 @@ public abstract class MultiBlock_Stackable<T extends MultiBlock_Stackable<T>> ex
         if (stackCount < getMinStacks()) return buildState.failBuilding();
 
         buildState.addOffset(getAfterLastStackOffset());
-        return checkPiece(STACKABLE_TOP, buildState.stopBuilding());
+        if (!checkPiece(STACKABLE_TOP, buildState.stopBuilding())) {
+            return buildState.failBuilding();
+        }
+        return super.checkMachine();
     }
 }

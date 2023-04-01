@@ -32,7 +32,7 @@ public class GT_ParallelHelper {
     /**
      * @mMachineMulti a MultiTileEntity Controller
      */
-    private MultiBlockController mMachineMulti;
+    private MultiBlockController<?> mMachineMulti;
     /**
      * @mRecipe Recipe used when trying to calculate parallels
      */
@@ -87,7 +87,7 @@ public class GT_ParallelHelper {
     /**
      * Enables void protection on a multitile multiblock. Experimental! Still needs to be worked on
      */
-    public GT_ParallelHelper enableVoidProtection(MultiBlockController aMachineMulti) {
+    public GT_ParallelHelper enableVoidProtection(MultiBlockController<?> aMachineMulti) {
         mVoidProtection = true;
         mMachineMulti = aMachineMulti;
         return this;
@@ -319,7 +319,8 @@ public class GT_ParallelHelper {
                         if (mRecipe.getOutput(i) == null) {
                             mItemOutputs[i] = null;
                         } else {
-                            ItemStack tItem = mRecipe.getOutput(i).copy();
+                            ItemStack tItem = mRecipe.getOutput(i)
+                                                     .copy();
                             tItem.stackSize *= mCurrentParallel;
                             mItemOutputs[i] = tItem;
                         }
@@ -332,7 +333,8 @@ public class GT_ParallelHelper {
                     if (mRecipe.getFluidOutput(i) == null) {
                         mFluidOutputs[i] = null;
                     } else {
-                        FluidStack tFluid = mRecipe.getFluidOutput(i).copy();
+                        FluidStack tFluid = mRecipe.getFluidOutput(i)
+                                                   .copy();
                         tFluid.amount *= mCurrentParallel;
                         mFluidOutputs[i] = tFluid;
                     }
@@ -392,7 +394,9 @@ public class GT_ParallelHelper {
                             continue;
                         }
                         if (tHatch.isFluidLocked() && tLockedFluidName != null
-                                && !tLockedFluidName.equals(tFluidOutput.getFluid().getName())) {
+                                && !tLockedFluidName.equals(
+                                        tFluidOutput.getFluid()
+                                                    .getName())) {
                             continue;
                         }
                     }

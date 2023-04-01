@@ -38,10 +38,26 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
 
         GT_ModHandler.removeRecipeDelayed(GT_Utility.copyAmount(1L, aStack));
 
-        if (tStack1 != null) GT_ModHandler
-                .removeRecipeDelayed(tStack1, tStack1, tStack1, tStack1, tStack1, tStack1, tStack1, tStack1, tStack1);
-        if (tStack2 != null) GT_ModHandler
-                .removeRecipeDelayed(tStack2, tStack2, tStack2, tStack2, tStack2, tStack2, tStack2, tStack2, tStack2);
+        if (tStack1 != null) GT_ModHandler.removeRecipeDelayed(
+                tStack1,
+                tStack1,
+                tStack1,
+                tStack1,
+                tStack1,
+                tStack1,
+                tStack1,
+                tStack1,
+                tStack1);
+        if (tStack2 != null) GT_ModHandler.removeRecipeDelayed(
+                tStack2,
+                tStack2,
+                tStack2,
+                tStack2,
+                tStack2,
+                tStack2,
+                tStack2,
+                tStack2,
+                tStack2);
         if (tStack3 != null) {
             GT_ModHandler.removeRecipeDelayed(
                     tStack3,
@@ -69,7 +85,8 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
         }
         if (GregTech_API.sRecipeFile.get(
                 ConfigCategories.Recipes.storageblockcrafting,
-                OrePrefixes.block.get(aMaterial).toString(),
+                OrePrefixes.block.get(aMaterial)
+                                 .toString(),
                 false)) {
             if ((tStack1 == null) && (tStack2 == null) && (tStack3 != null)) GT_ModHandler.addCraftingRecipe(
                     GT_OreDictUnificator.get(OrePrefixes.block, aMaterial, 1L),
@@ -90,7 +107,8 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
 
         if (GregTech_API.sRecipeFile.get(
                 ConfigCategories.Recipes.storageblockdecrafting,
-                OrePrefixes.block.get(aMaterial).toString(),
+                OrePrefixes.block.get(aMaterial)
+                                 .toString(),
                 tStack2 != null)) {
             if (tStack3 != null)
                 GT_ModHandler.addShapelessCraftingRecipe(tStack3, new Object[] { OrePrefixes.block.get(aMaterial) });
@@ -109,20 +127,14 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
         }
 
         switch (aMaterial.mName) {
-            case "Mercury":
-                System.err.println(
-                        "'blockQuickSilver'?, In which Ice Desert can you actually place this as a solid Block? On Pluto Greg :)");
-                break;
-            case "Iron":
-            case "WroughtIron":
-            case "Steel":
-                GT_Values.RA.addAssemblerRecipe(
-                        ItemList.IC2_Compressed_Coal_Ball.get(8L),
-                        GT_Utility.copyAmount(1L, aStack),
-                        ItemList.IC2_Compressed_Coal_Chunk.get(1L),
-                        400,
-                        4);
-                break;
+            case "Mercury" -> System.err.println(
+                    "'blockQuickSilver'?, In which Ice Desert can you actually place this as a solid Block? On Pluto Greg :)");
+            case "Iron", "WroughtIron", "Steel" -> GT_Values.RA.addAssemblerRecipe(
+                    ItemList.IC2_Compressed_Coal_Ball.get(8L),
+                    GT_Utility.copyAmount(1L, aStack),
+                    ItemList.IC2_Compressed_Coal_Chunk.get(1L),
+                    400,
+                    4);
         }
     }
 }

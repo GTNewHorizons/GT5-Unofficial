@@ -18,8 +18,9 @@ import gregtech.api.util.GT_Utility;
 public class Behaviour_Plunger_Essentia extends Behaviour_None {
 
     private final int mCosts;
-    private final String mTooltip = GT_LanguageManager
-            .addStringLocalization("gt.behaviour.plunger.essentia", "Clears Essentia from Containers and Tubes");
+    private final String mTooltip = GT_LanguageManager.addStringLocalization(
+            "gt.behaviour.plunger.essentia",
+            "Clears Essentia from Containers and Tubes");
 
     public Behaviour_Plunger_Essentia(int aCosts) {
         this.mCosts = aCosts;

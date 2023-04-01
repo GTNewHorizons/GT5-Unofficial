@@ -29,8 +29,10 @@ public class GT_GC_Compat {
                     if (tReceived > 0) {
                         tSizeToReceive -= tReceived;
                         while (tSizeToReceive > 0) {
-                            tReceived = ((IEnergyHandlerGC) tTileEntity)
-                                    .receiveEnergyGC(eSource, tSizeToReceive, false);
+                            tReceived = ((IEnergyHandlerGC) tTileEntity).receiveEnergyGC(
+                                    eSource,
+                                    tSizeToReceive,
+                                    false);
                             if (tReceived < 1) break;
                             tSizeToReceive -= tReceived;
                         }

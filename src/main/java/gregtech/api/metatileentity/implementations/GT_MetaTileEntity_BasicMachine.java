@@ -237,14 +237,37 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
             boolean aActive, boolean aRedstone) {
-        return mTextures[mMainFacing < 2
-                ? aSide == aFacing ? aActive ? 2 : 3
-                        : aSide == 0 ? aActive ? 6 : 7 : aSide == 1 ? aActive ? 4 : 5 : aActive ? 0 : 1
-                : aSide == mMainFacing ? aActive ? 2 : 3
-                        : (showPipeFacing() && aSide == aFacing)
-                                ? aSide == 0 ? aActive ? 8 : 9 : aSide == 1 ? aActive ? 10 : 11 : aActive ? 12 : 13
-                                : aSide == 0 ? aActive ? 6 : 7
-                                        : aSide == 1 ? aActive ? 4 : 5 : aActive ? 0 : 1][aColorIndex + 1];
+        final int textureIndex;
+        if (mMainFacing < 2) {
+            if (aSide == aFacing) {
+                textureIndex = aActive ? 2 : 3;
+            } else {
+                textureIndex = switch (aSide) {
+                    case 0 -> aActive ? 6 : 7;
+                    case 1 -> aActive ? 4 : 5;
+                    default -> aActive ? 0 : 1;
+                };
+            }
+        } else {
+            if (aSide == mMainFacing) {
+                textureIndex = aActive ? 2 : 3;
+            } else {
+                if (showPipeFacing() && aSide == aFacing) {
+                    textureIndex = switch (aSide) {
+                        case 0 -> aActive ? 8 : 9;
+                        case 1 -> aActive ? 10 : 11;
+                        default -> aActive ? 12 : 13;
+                    };
+                } else {
+                    textureIndex = switch (aSide) {
+                        case 0 -> aActive ? 6 : 7;
+                        case 1 -> aActive ? 4 : 5;
+                        default -> aActive ? 0 : 1;
+                    };
+                }
+            }
+        }
+        return mTextures[textureIndex][aColorIndex + 1];
     }
 
     @Override
@@ -503,8 +526,8 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
     public void initDefaultModes(NBTTagCompound aNBT) {
         mMainFacing = -1;
         if (!getBaseMetaTileEntity().getWorld().isRemote) {
-            GT_ClientPreference tPreference = GT_Mod.gregtechproxy
-                    .getClientPreference(getBaseMetaTileEntity().getOwnerUuid());
+            GT_ClientPreference tPreference = GT_Mod.gregtechproxy.getClientPreference(
+                    getBaseMetaTileEntity().getOwnerUuid());
             if (tPreference != null) {
                 mDisableFilter = !tPreference.isSingleBlockInitialFilterEnabled();
                 mDisableMultiStack = !tPreference.isSingleBlockInitialMultiStackEnabled();
@@ -569,8 +592,9 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
                 if (mProgresstime < 0 || drainEnergyForProcess(mEUt)) {
                     if (++mProgresstime >= mMaxProgresstime) {
                         for (int i = 0; i < mOutputItems.length; i++)
-                            for (int j = 0; j < mOutputItems.length; j++) if (aBaseMetaTileEntity
-                                    .addStackToSlot(getOutputSlot() + ((j + i) % mOutputItems.length), mOutputItems[i]))
+                            for (int j = 0; j < mOutputItems.length; j++) if (aBaseMetaTileEntity.addStackToSlot(
+                                    getOutputSlot() + ((j + i) % mOutputItems.length),
+                                    mOutputItems[i]))
                                 break;
                         if (mOutputFluid != null)
                             if (getDrainableStack() == null) setDrainableStack(mOutputFluid.copy());
@@ -731,8 +755,10 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
                 if (ItemList.Display_Fluid.isStackEqual(mInventory[tDisplayStackSlot], true, true))
                     mInventory[tDisplayStackSlot] = null;
             } else {
-                mInventory[tDisplayStackSlot] = GT_Utility
-                        .getFluidDisplayStack(getFillableStack(), true, !displaysStackSize());
+                mInventory[tDisplayStackSlot] = GT_Utility.getFluidDisplayStack(
+                        getFillableStack(),
+                        true,
+                        !displaysStackSize());
             }
         }
     }
@@ -1058,11 +1084,26 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
 
     public static boolean isValidForLowGravity(GT_Recipe tRecipe, int dimId) {
         return // TODO check or get a better solution
-        DimensionManager.getProvider(dimId).getClass().getName().contains("Orbit")
-                || DimensionManager.getProvider(dimId).getClass().getName().endsWith("Space")
-                || DimensionManager.getProvider(dimId).getClass().getName().endsWith("Asteroids")
-                || DimensionManager.getProvider(dimId).getClass().getName().endsWith("SS")
-                || DimensionManager.getProvider(dimId).getClass().getName().contains("SpaceStation");
+        DimensionManager.getProvider(dimId)
+                        .getClass()
+                        .getName()
+                        .contains("Orbit")
+                || DimensionManager.getProvider(dimId)
+                                   .getClass()
+                                   .getName()
+                                   .endsWith("Space")
+                || DimensionManager.getProvider(dimId)
+                                   .getClass()
+                                   .getName()
+                                   .endsWith("Asteroids")
+                || DimensionManager.getProvider(dimId)
+                                   .getClass()
+                                   .getName()
+                                   .endsWith("SS")
+                || DimensionManager.getProvider(dimId)
+                                   .getClass()
+                                   .getName()
+                                   .contains("SpaceStation");
     }
 
     /**
@@ -1213,12 +1254,14 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
         currenttip.add(
                 String.format(
                         "Machine Facing: %s",
-                        ForgeDirection.getOrientation(tag.getInteger("mainFacingSingleBlock")).name()));
+                        ForgeDirection.getOrientation(tag.getInteger("mainFacingSingleBlock"))
+                                      .name()));
 
         currenttip.add(
                 String.format(
                         "Output Facing: %s",
-                        ForgeDirection.getOrientation(tag.getInteger("outputFacingSingleBlock")).name()));
+                        ForgeDirection.getOrientation(tag.getInteger("outputFacingSingleBlock"))
+                                      .name()));
     }
 
     @Override
@@ -1267,8 +1310,9 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
             getRecipeList().addGregTechLogoUI(builder, new Pos2d(0, 0));
         } else {
             builder.widget(
-                    new DrawableWidget().setDrawable(getGUITextureSet().getGregTechLogo()).setSize(17, 17)
-                            .setPos(152, 63));
+                    new DrawableWidget().setDrawable(getGUITextureSet().getGregTechLogo())
+                                        .setSize(17, 17)
+                                        .setPos(152, 63));
         }
     }
 
@@ -1331,7 +1375,8 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
      */
     protected SlotWidget createItemInputSlot(int index, IDrawable[] backgrounds, Pos2d pos) {
         return (SlotWidget) new SlotWidget(inventoryHandler, getInputSlot() + index).setAccess(true, true)
-                .setBackground(backgrounds).setPos(pos);
+                                                                                    .setBackground(backgrounds)
+                                                                                    .setPos(pos);
     }
 
     /**
@@ -1339,7 +1384,8 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
      */
     protected SlotWidget createItemOutputSlot(int index, IDrawable[] backgrounds, Pos2d pos) {
         return (SlotWidget) new SlotWidget(inventoryHandler, getOutputSlot() + index).setAccess(true, false)
-                .setBackground(backgrounds).setPos(pos);
+                                                                                     .setBackground(backgrounds)
+                                                                                     .setPos(pos);
     }
 
     /**
@@ -1347,46 +1393,71 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
      */
     protected SlotWidget createSpecialSlot(IDrawable[] backgrounds, Pos2d pos) {
         return (SlotWidget) new SlotWidget(inventoryHandler, getSpecialSlotIndex()).setAccess(true, true)
-                .disableShiftInsert()
-                .setGTTooltip(
-                        () -> mTooltipCache.getData(
-                                getRecipeList() != null && getRecipeList().usesSpecialSlot() ? SPECIAL_SLOT_TOOLTIP
-                                        : UNUSED_SLOT_TOOLTIP))
-                .setTooltipShowUpDelay(TOOLTIP_DELAY).setBackground(backgrounds).setPos(pos);
+                                                                                   .disableShiftInsert()
+                                                                                   .setGTTooltip(
+                                                                                           () -> mTooltipCache.getData(
+                                                                                                   getRecipeList()
+                                                                                                           != null
+                                                                                                           && getRecipeList().usesSpecialSlot()
+                                                                                                                   ? SPECIAL_SLOT_TOOLTIP
+                                                                                                                   : UNUSED_SLOT_TOOLTIP))
+                                                                                   .setTooltipShowUpDelay(TOOLTIP_DELAY)
+                                                                                   .setBackground(backgrounds)
+                                                                                   .setPos(pos);
     }
 
     protected FluidDisplaySlotWidget createFluidInputSlot(IDrawable[] backgrounds, Pos2d pos) {
         return (FluidDisplaySlotWidget) new FluidDisplaySlotWidget(
                 inventoryHandler,
                 OTHER_SLOT_COUNT + mInputSlotCount + mOutputItems.length)
-                        .setFluidAccessConstructor(() -> constructFluidAccess(true)).setIHasFluidDisplay(this)
-                        .setCanDrain(true).setCanFill(true).setActionRealClick(FluidDisplaySlotWidget.Action.TRANSFER)
-                        .setBeforeRealClick((clickData, widget) -> {
-                            if (NetworkUtils.isClient()) {
-                                // propagate display item content to actual fluid stored in this tank
-                                setFillableStack(GT_Utility.getFluidFromDisplayStack(widget.getMcSlot().getStack()));
-                            }
-                            return true;
-                        }).setUpdateFluidDisplayItem(this::updateFluidInputDisplayItem)
-                        .setGTTooltip(
-                                () -> mTooltipCache
-                                        .getData(FLUID_INPUT_TOOLTIP, GT_Utility.formatNumbers(getCapacity())))
-                        .setTooltipShowUpDelay(TOOLTIP_DELAY).setBackground(backgrounds).setPos(pos);
+                                                                         .setFluidAccessConstructor(
+                                                                                 () -> constructFluidAccess(true))
+                                                                         .setIHasFluidDisplay(this)
+                                                                         .setCanDrain(true)
+                                                                         .setCanFill(true)
+                                                                         .setActionRealClick(
+                                                                                 FluidDisplaySlotWidget.Action.TRANSFER)
+                                                                         .setBeforeRealClick((clickData, widget) -> {
+                                                                             if (NetworkUtils.isClient()) {
+                                                                                 // propagate display item content to
+                                                                                 // actual fluid stored in this tank
+                                                                                 setFillableStack(
+                                                                                         GT_Utility.getFluidFromDisplayStack(
+                                                                                                 widget.getMcSlot()
+                                                                                                       .getStack()));
+                                                                             }
+                                                                             return true;
+                                                                         })
+                                                                         .setUpdateFluidDisplayItem(
+                                                                                 this::updateFluidInputDisplayItem)
+                                                                         .setGTTooltip(
+                                                                                 () -> mTooltipCache.getData(
+                                                                                         FLUID_INPUT_TOOLTIP,
+                                                                                         GT_Utility.formatNumbers(
+                                                                                                 getCapacity())))
+                                                                         .setTooltipShowUpDelay(TOOLTIP_DELAY)
+                                                                         .setBackground(backgrounds)
+                                                                         .setPos(pos);
     }
 
     protected FluidDisplaySlotWidget createFluidOutputSlot(IDrawable[] backgrounds, Pos2d pos) {
-        return (FluidDisplaySlotWidget) createDrainableFluidSlot()
-                .setUpdateFluidDisplayItem(this::updateFluidOutputDisplayItem)
-                .setGTTooltip(
-                        () -> mTooltipCache.getData(FLUID_OUTPUT_TOOLTIP, GT_Utility.formatNumbers(getCapacity())))
-                .setTooltipShowUpDelay(TOOLTIP_DELAY).setBackground(backgrounds).setPos(pos);
+        return (FluidDisplaySlotWidget) createDrainableFluidSlot().setUpdateFluidDisplayItem(
+                this::updateFluidOutputDisplayItem)
+                                                                  .setGTTooltip(
+                                                                          () -> mTooltipCache.getData(
+                                                                                  FLUID_OUTPUT_TOOLTIP,
+                                                                                  GT_Utility.formatNumbers(
+                                                                                          getCapacity())))
+                                                                  .setTooltipShowUpDelay(TOOLTIP_DELAY)
+                                                                  .setBackground(backgrounds)
+                                                                  .setPos(pos);
     }
 
     @Override
     protected SlotWidget createChargerSlot(int x, int y) {
         if (isSteampowered()) {
-            return (SlotWidget) createChargerSlot(x, y, UNUSED_SLOT_TOOLTIP, new String[0])
-                    .setBackground(getGUITextureSet().getItemSlot());
+            return (SlotWidget) createChargerSlot(x, y, UNUSED_SLOT_TOOLTIP, new String[0]).setBackground(
+                    getGUITextureSet().getItemSlot());
         } else {
             return super.createChargerSlot(x, y);
         }
@@ -1394,25 +1465,36 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
 
     protected CycleButtonWidget createItemAutoOutputButton() {
         return (CycleButtonWidget) new CycleButtonWidget().setToggle(() -> mItemTransfer, val -> mItemTransfer = val)
-                .setStaticTexture(GT_UITextures.OVERLAY_BUTTON_AUTOOUTPUT_ITEM)
-                .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
-                .setGTTooltip(() -> mTooltipCache.getData(ITEM_TRANSFER_TOOLTIP)).setTooltipShowUpDelay(TOOLTIP_DELAY)
-                .setPos(25, 62).setSize(18, 18);
+                                                          .setStaticTexture(
+                                                                  GT_UITextures.OVERLAY_BUTTON_AUTOOUTPUT_ITEM)
+                                                          .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
+                                                          .setGTTooltip(
+                                                                  () -> mTooltipCache.getData(ITEM_TRANSFER_TOOLTIP))
+                                                          .setTooltipShowUpDelay(TOOLTIP_DELAY)
+                                                          .setPos(25, 62)
+                                                          .setSize(18, 18);
     }
 
     protected CycleButtonWidget createFluidAutoOutputButton() {
         return (CycleButtonWidget) new CycleButtonWidget().setToggle(() -> mFluidTransfer, val -> mFluidTransfer = val)
-                .setStaticTexture(GT_UITextures.OVERLAY_BUTTON_AUTOOUTPUT_FLUID)
-                .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
-                .setGTTooltip(() -> mTooltipCache.getData(FLUID_TRANSFER_TOOLTIP)).setTooltipShowUpDelay(TOOLTIP_DELAY)
-                .setPos(7, 62).setSize(18, 18);
+                                                          .setStaticTexture(
+                                                                  GT_UITextures.OVERLAY_BUTTON_AUTOOUTPUT_FLUID)
+                                                          .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
+                                                          .setGTTooltip(
+                                                                  () -> mTooltipCache.getData(FLUID_TRANSFER_TOOLTIP))
+                                                          .setTooltipShowUpDelay(TOOLTIP_DELAY)
+                                                          .setPos(7, 62)
+                                                          .setSize(18, 18);
     }
 
     protected ProgressBar createProgressBar(UITexture texture, int imageSize, ProgressBar.Direction direction,
             Pos2d pos, Size size) {
         final ProgressBar ret = new ProgressBar();
         ret.setProgress(() -> maxProgresstime() != 0 ? (float) getProgresstime() / maxProgresstime() : 0)
-                .setTexture(texture, imageSize).setDirection(direction).setPos(pos).setSize(size);
+           .setTexture(texture, imageSize)
+           .setDirection(direction)
+           .setPos(pos)
+           .setSize(size);
         return ret;
     }
 
@@ -1425,11 +1507,13 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
             final Power powerInfo = getPower();
             final String transferRectTooltip;
             if (isSteampowered()) {
-                transferRectTooltip = StatCollector
-                        .translateToLocalFormatted(NEI_TRANSFER_STEAM_TOOLTIP, powerInfo.getTierString());
+                transferRectTooltip = StatCollector.translateToLocalFormatted(
+                        NEI_TRANSFER_STEAM_TOOLTIP,
+                        powerInfo.getTierString());
             } else {
-                transferRectTooltip = StatCollector
-                        .translateToLocalFormatted(NEI_TRANSFER_VOLTAGE_TOOLTIP, powerInfo.getTierString());
+                transferRectTooltip = StatCollector.translateToLocalFormatted(
+                        NEI_TRANSFER_VOLTAGE_TOOLTIP,
+                        powerInfo.getTierString());
             }
             widget.setNEITransferRect(transferRectID, new Object[] { powerInfo }, transferRectTooltip);
         }
@@ -1440,34 +1524,53 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
         if (isSteampowered()) {
             for (Pair<SteamTexture, Pair<Size, Pos2d>> specialTexture : getRecipeList().specialTexturesSteam) {
                 builder.widget(
-                        new DrawableWidget().setDrawable(specialTexture.getLeft().get(getSteamVariant()))
-                                .setSize(specialTexture.getRight().getLeft())
-                                .setPos(specialTexture.getRight().getRight()));
+                        new DrawableWidget().setDrawable(
+                                specialTexture.getLeft()
+                                              .get(getSteamVariant()))
+                                            .setSize(
+                                                    specialTexture.getRight()
+                                                                  .getLeft())
+                                            .setPos(
+                                                    specialTexture.getRight()
+                                                                  .getRight()));
             }
         } else {
             for (Pair<IDrawable, Pair<Size, Pos2d>> specialTexture : getRecipeList().specialTextures) {
                 builder.widget(
                         new DrawableWidget().setDrawable(specialTexture.getLeft())
-                                .setSize(specialTexture.getRight().getLeft())
-                                .setPos(specialTexture.getRight().getRight()));
+                                            .setSize(
+                                                    specialTexture.getRight()
+                                                                  .getLeft())
+                                            .setPos(
+                                                    specialTexture.getRight()
+                                                                  .getRight()));
             }
         }
     }
 
     protected DrawableWidget createErrorStatusArea(ModularWindow.Builder builder, IDrawable picture) {
-        return (DrawableWidget) new DrawableWidget().setDrawable(picture).setTooltipShowUpDelay(TOOLTIP_DELAY)
-                .setEnabled(widget -> !widget.getTooltip().isEmpty()).dynamicTooltip(this::getErrorDescriptions)
-                .dynamicTooltipShift(this::getErrorDescriptionsShift).setPos(79, 44).setSize(18, 18)
-                .attachSyncer(
-                        new FakeSyncWidget.BooleanSyncer(() -> mStuttering, val -> mStuttering = val),
-                        builder,
-                        (widget, val) -> widget.notifyTooltipChange())
-                .attachSyncer(
-                        new FakeSyncWidget.IntegerSyncer(
-                                () -> getBaseMetaTileEntity().getErrorDisplayID(),
-                                val -> getBaseMetaTileEntity().setErrorDisplayID(val)),
-                        builder,
-                        (widget, val) -> widget.notifyTooltipChange());
+        return (DrawableWidget) new DrawableWidget().setDrawable(picture)
+                                                    .setTooltipShowUpDelay(TOOLTIP_DELAY)
+                                                    .setEnabled(
+                                                            widget -> !widget.getTooltip()
+                                                                             .isEmpty())
+                                                    .dynamicTooltip(this::getErrorDescriptions)
+                                                    .dynamicTooltipShift(this::getErrorDescriptionsShift)
+                                                    .setPos(79, 44)
+                                                    .setSize(18, 18)
+                                                    .attachSyncer(
+                                                            new FakeSyncWidget.BooleanSyncer(
+                                                                    () -> mStuttering,
+                                                                    val -> mStuttering = val),
+                                                            builder,
+                                                            (widget, val) -> widget.notifyTooltipChange())
+                                                    .attachSyncer(
+                                                            new FakeSyncWidget.IntegerSyncer(
+                                                                    () -> getBaseMetaTileEntity().getErrorDisplayID(),
+                                                                    val -> getBaseMetaTileEntity().setErrorDisplayID(
+                                                                            val)),
+                                                            builder,
+                                                            (widget, val) -> widget.notifyTooltipChange());
     }
 
     protected List<String> getErrorDescriptions() {

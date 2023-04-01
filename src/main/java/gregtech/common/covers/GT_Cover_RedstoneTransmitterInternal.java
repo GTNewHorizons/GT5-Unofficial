@@ -27,8 +27,7 @@ public class GT_Cover_RedstoneTransmitterInternal extends GT_Cover_RedstoneWirel
     @Override
     public int doCoverThings(byte aSide, byte aInputRedstone, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
             long aTimer) {
-        GregTech_API.sWirelessRedstone
-                .put(Integer.valueOf(aCoverVariable), Byte.valueOf(aTileEntity.getOutputRedstoneSignal(aSide)));
+        GregTech_API.sWirelessRedstone.put(aCoverVariable, aTileEntity.getOutputRedstoneSignal(aSide));
         return aCoverVariable;
     }
 

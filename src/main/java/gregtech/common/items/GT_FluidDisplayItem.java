@@ -68,8 +68,10 @@ public class GT_FluidDisplayItem extends GT_Generic_Item {
                             + " K"
                             + EnumChatFormatting.GRAY);
             aList.add(
-                    EnumChatFormatting.GREEN + String
-                            .format(transItem("018", "State: %s"), aNBT.getBoolean("mFluidState") ? "Gas" : "Liquid")
+                    EnumChatFormatting.GREEN
+                            + String.format(
+                                    transItem("018", "State: %s"),
+                                    aNBT.getBoolean("mFluidState") ? "Gas" : "Liquid")
                             + EnumChatFormatting.GRAY);
         }
     }
@@ -80,8 +82,12 @@ public class GT_FluidDisplayItem extends GT_Generic_Item {
 
     @Override
     public IIcon getIconFromDamage(int aMetaData) {
-        return Stream.of(FluidRegistry.getFluid(aMetaData), FluidRegistry.WATER).filter(Objects::nonNull)
-                .map(Fluid::getStillIcon).filter(Objects::nonNull).findFirst().orElseThrow(IllegalStateException::new);
+        return Stream.of(FluidRegistry.getFluid(aMetaData), FluidRegistry.WATER)
+                     .filter(Objects::nonNull)
+                     .map(Fluid::getStillIcon)
+                     .filter(Objects::nonNull)
+                     .findFirst()
+                     .orElseThrow(IllegalStateException::new);
     }
 
     @Override
@@ -144,7 +150,7 @@ public class GT_FluidDisplayItem extends GT_Generic_Item {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubItems(Item aItem, CreativeTabs aTab, List aList) {
+    public void getSubItems(Item aItem, CreativeTabs aTab, List<ItemStack> aList) {
         if (GT_Values.D1) {
             int i = 0;
             for (int j = FluidRegistry.getMaxID(); i < j; i++) {
@@ -168,8 +174,10 @@ public class GT_FluidDisplayItem extends GT_Generic_Item {
         for (int tOreDict : OreDictionary.getOreIDs(tItemStack)) {
             String tOreDictName = OreDictionary.getOreName(tOreDict);
             if (tOreDictName.startsWith("cell")) {
-                return Materials
-                        .getRealMaterial(tOreDictName.replace("cell", "").replace("Molten", "").replace("Plasma", ""));
+                return Materials.getRealMaterial(
+                        tOreDictName.replace("cell", "")
+                                    .replace("Molten", "")
+                                    .replace("Plasma", ""));
             }
         }
         return Materials._NULL;

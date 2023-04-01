@@ -26,7 +26,7 @@ public class GT_Worldgen_GT_Ore_SmallPieces extends GT_Worldgen {
     public final boolean mMoon = false, mMars = false, mAsteroid = false;
     public final String mBiome;
     public final String aTextWorldgen = "worldgen.";
-    public static ArrayList<GT_Worldgen_GT_Ore_SmallPieces> sList = new ArrayList<GT_Worldgen_GT_Ore_SmallPieces>();
+    public static ArrayList<GT_Worldgen_GT_Ore_SmallPieces> sList = new ArrayList<>();
 
     // TODO CHECK IF INSTANTIATION IS CORRECT
     public GT_Worldgen_GT_Ore_SmallPieces(String aName, boolean aDefault, int aMinY, int aMaxY, int aAmount,
@@ -39,10 +39,13 @@ public class GT_Worldgen_GT_Ore_SmallPieces extends GT_Worldgen {
         this.mMaxY = ((short) Math.max(
                 this.mMinY + 1,
                 GregTech_API.sWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "MaxHeight", aMaxY)));
-        this.mAmount = ((short) Math
-                .max(1, GregTech_API.sWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "Amount", aAmount)));
-        this.mMeta = ((short) GregTech_API.sWorldgenFile
-                .get(aTextWorldgen + this.mWorldGenName, "Ore", aPrimary.mMetaItemSubID));
+        this.mAmount = ((short) Math.max(
+                1,
+                GregTech_API.sWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "Amount", aAmount)));
+        this.mMeta = ((short) GregTech_API.sWorldgenFile.get(
+                aTextWorldgen + this.mWorldGenName,
+                "Ore",
+                aPrimary.mMetaItemSubID));
         this.mBiome = GregTech_API.sWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "BiomeName", "None");
         sList.add(this);
     }
@@ -58,10 +61,13 @@ public class GT_Worldgen_GT_Ore_SmallPieces extends GT_Worldgen {
         this.mMaxY = ((short) Math.max(
                 this.mMinY + 1,
                 GregTech_API.sWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "MaxHeight", aMaxY)));
-        this.mAmount = ((short) Math
-                .max(1, GregTech_API.sWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "Amount", aAmount)));
-        this.mMeta = ((short) GregTech_API.sWorldgenFile
-                .get(aTextWorldgen + this.mWorldGenName, "Ore", aPrimary.mMetaItemSubID));
+        this.mAmount = ((short) Math.max(
+                1,
+                GregTech_API.sWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "Amount", aAmount)));
+        this.mMeta = ((short) GregTech_API.sWorldgenFile.get(
+                aTextWorldgen + this.mWorldGenName,
+                "Ore",
+                aPrimary.mMetaItemSubID));
         this.mBiome = GregTech_API.sWorldgenFile.get(aTextWorldgen + this.mWorldGenName, "BiomeName", "None");
         sList.add(this);
     }

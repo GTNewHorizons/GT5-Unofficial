@@ -54,19 +54,84 @@ public class GT_Block_Reinforced extends GT_Generic_Block {
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".10.name", "Naquadah Reinforced Block");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".11.name", "Neutronium Reinforced Block");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".12.name", "Raw Deep Dark Portal Block");
-        ItemList.Block_BronzePlate.set(new ItemStack(this.setHardness(60.0f).setResistance(150.0f), 1, 0));
-        ItemList.Block_IridiumTungstensteel.set(new ItemStack(this.setHardness(400.0f).setResistance(600.0f), 1, 1));
-        ItemList.Block_Plascrete.set(new ItemStack(this.setHardness(5.0f).setResistance(6.0f), 1, 2));
-        ItemList.Block_TungstenSteelReinforced.set(new ItemStack(this.setHardness(250.0f).setResistance(400.0f), 1, 3));
-        ItemList.Block_BrittleCharcoal.set(new ItemStack(this.setHardness(0.5f).setResistance(8.0f), 1, 4));
-        ItemList.Block_Powderbarrel.set(new ItemStack(this.setHardness(2.5f).setResistance(2.0f), 1, 5));
-        ItemList.Block_SSFUEL.set(new ItemStack(this.setHardness(2.5f).setResistance(2.0f), 1, 6));
-        ItemList.Block_MSSFUEL.set(new ItemStack(this.setHardness(2.5f).setResistance(2.0f), 1, 7));
-        ItemList.Block_SteelPlate.set(new ItemStack(this.setHardness(150.0f).setResistance(200.0f), 1, 8));
-        ItemList.Block_TitaniumPlate.set(new ItemStack(this.setHardness(200.0f).setResistance(300.0f), 1, 9));
-        ItemList.Block_NaquadahPlate.set(new ItemStack(this.setHardness(500.0f).setResistance(1000.0f), 1, 10));
-        ItemList.Block_NeutroniumPlate.set(new ItemStack(this.setHardness(750.0f).setResistance(2500.0f), 1, 11));
-        ItemList.Block_BedrockiumCompressed.set(new ItemStack(this.setHardness(1500.0f).setResistance(5000.0f), 1, 12));
+        ItemList.Block_BronzePlate.set(
+                new ItemStack(
+                        this.setHardness(60.0f)
+                            .setResistance(150.0f),
+                        1,
+                        0));
+        ItemList.Block_IridiumTungstensteel.set(
+                new ItemStack(
+                        this.setHardness(400.0f)
+                            .setResistance(600.0f),
+                        1,
+                        1));
+        ItemList.Block_Plascrete.set(
+                new ItemStack(
+                        this.setHardness(5.0f)
+                            .setResistance(6.0f),
+                        1,
+                        2));
+        ItemList.Block_TungstenSteelReinforced.set(
+                new ItemStack(
+                        this.setHardness(250.0f)
+                            .setResistance(400.0f),
+                        1,
+                        3));
+        ItemList.Block_BrittleCharcoal.set(
+                new ItemStack(
+                        this.setHardness(0.5f)
+                            .setResistance(8.0f),
+                        1,
+                        4));
+        ItemList.Block_Powderbarrel.set(
+                new ItemStack(
+                        this.setHardness(2.5f)
+                            .setResistance(2.0f),
+                        1,
+                        5));
+        ItemList.Block_SSFUEL.set(
+                new ItemStack(
+                        this.setHardness(2.5f)
+                            .setResistance(2.0f),
+                        1,
+                        6));
+        ItemList.Block_MSSFUEL.set(
+                new ItemStack(
+                        this.setHardness(2.5f)
+                            .setResistance(2.0f),
+                        1,
+                        7));
+        ItemList.Block_SteelPlate.set(
+                new ItemStack(
+                        this.setHardness(150.0f)
+                            .setResistance(200.0f),
+                        1,
+                        8));
+        ItemList.Block_TitaniumPlate.set(
+                new ItemStack(
+                        this.setHardness(200.0f)
+                            .setResistance(300.0f),
+                        1,
+                        9));
+        ItemList.Block_NaquadahPlate.set(
+                new ItemStack(
+                        this.setHardness(500.0f)
+                            .setResistance(1000.0f),
+                        1,
+                        10));
+        ItemList.Block_NeutroniumPlate.set(
+                new ItemStack(
+                        this.setHardness(750.0f)
+                            .setResistance(2500.0f),
+                        1,
+                        11));
+        ItemList.Block_BedrockiumCompressed.set(
+                new ItemStack(
+                        this.setHardness(1500.0f)
+                            .setResistance(5000.0f),
+                        1,
+                        12));
         GT_ModHandler.addShapelessCraftingRecipe(
                 new ItemStack(Items.coal, 1, 1),
                 new Object[] { ItemList.Block_BrittleCharcoal.get(1) });
@@ -97,32 +162,45 @@ public class GT_Block_Reinforced extends GT_Generic_Block {
     public IIcon getIcon(int aSide, int aMeta) {
         if ((aMeta >= 0) && (aMeta < 16)) {
             switch (aMeta) {
-                case 0:
+                case 0 -> {
                     return Textures.BlockIcons.BLOCK_BRONZEPREIN.getIcon();
-                case 1:
+                }
+                case 1 -> {
                     return Textures.BlockIcons.BLOCK_IRREIN.getIcon();
-                case 2:
+                }
+                case 2 -> {
                     return Textures.BlockIcons.BLOCK_PLASCRETE.getIcon();
-                case 3:
+                }
+                case 3 -> {
                     return Textures.BlockIcons.BLOCK_TSREIN.getIcon();
-                case 4:
+                }
+                case 4 -> {
                     return Blocks.coal_block.getIcon(0, 0);
-                case 5:
+                }
+                case 5 -> {
                     return Textures.BlockIcons.COVER_WOOD_PLATE.getIcon();
-                case 6:
+                }
+                case 6 -> {
                     return Blocks.coal_block.getIcon(0, 0);
-                case 7:
+                }
+                case 7 -> {
                     return Blocks.coal_block.getIcon(0, 0);
-                case 8:
+                }
+                case 8 -> {
                     return Textures.BlockIcons.BLOCK_STEELPREIN.getIcon();
-                case 9:
+                }
+                case 9 -> {
                     return Textures.BlockIcons.BLOCK_TITANIUMPREIN.getIcon();
-                case 10:
+                }
+                case 10 -> {
                     return Textures.BlockIcons.BLOCK_NAQUADAHPREIN.getIcon();
-                case 11:
+                }
+                case 11 -> {
                     return Textures.BlockIcons.BLOCK_NEUTRONIUMPREIN.getIcon();
-                case 12:
+                }
+                case 12 -> {
                     return Textures.BlockIcons.BLOCK_DEEP_DARK_RAW.getIcon();
+                }
             }
         }
         return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
@@ -257,8 +335,12 @@ public class GT_Block_Reinforced extends GT_Generic_Block {
         if (!world.isRemote && world.getBlockMetadata(x, y, z) == 5) {
             EntityTNTPrimed entitytntprimed = new EntityTNTPrimed(world, x + 0.5F, y + 0.5F, z + 0.5F, player);
             world.spawnEntityInWorld(entitytntprimed);
-            new WorldSpawnedEventBuilder.SoundAtEntityEventBuilder().setPitch(1f).setVolume(1f)
-                    .setIdentifier(SoundResource.GAME_TNT_PRIMED).setEntity(entitytntprimed).setWorld(world).run();
+            new WorldSpawnedEventBuilder.SoundAtEntityEventBuilder().setPitch(1f)
+                                                                    .setVolume(1f)
+                                                                    .setIdentifier(SoundResource.GAME_TNT_PRIMED)
+                                                                    .setEntity(entitytntprimed)
+                                                                    .setWorld(world)
+                                                                    .run();
             world.setBlockToAir(x, y, z);
             return false;
         }
@@ -298,9 +380,9 @@ public class GT_Block_Reinforced extends GT_Generic_Block {
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float xOffset,
             float yOffset, float zOffset) {
-        if ((player.getCurrentEquippedItem() != null)
-                && (player.getCurrentEquippedItem().getItem() == Items.flint_and_steel)
-                && world.getBlockMetadata(x, y, z) == 5) {
+        if ((player.getCurrentEquippedItem() != null) && (player.getCurrentEquippedItem()
+                                                                .getItem()
+                == Items.flint_and_steel) && world.getBlockMetadata(x, y, z) == 5) {
             removedByPlayer(world, player, x, y, z);
 
             return true;
@@ -314,10 +396,12 @@ public class GT_Block_Reinforced extends GT_Generic_Block {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item aItem, CreativeTabs aCreativeTab, List aList) {
+    public void getSubBlocks(Item aItem, CreativeTabs aCreativeTab, List<ItemStack> aList) {
         for (int i = 0; i < 16; i++) {
             ItemStack aStack = new ItemStack(aItem, 1, i);
-            if (!aStack.getDisplayName().contains(".name")) aList.add(aStack);
+            if (!aStack.getDisplayName()
+                       .contains(".name"))
+                aList.add(aStack);
         }
     }
 

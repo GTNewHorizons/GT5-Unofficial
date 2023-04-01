@@ -115,13 +115,13 @@ public class RecipeRemover implements Runnable {
 
         if (!GregTech_API.mIC2Classic) {
             try {
-                Map<String, ILiquidHeatExchangerManager.HeatExchangeProperty> tLiqExchange = ic2.api.recipe.Recipes.liquidCooldownManager
-                        .getHeatExchangeProperties();
-                Iterator<Map.Entry<String, ILiquidHeatExchangerManager.HeatExchangeProperty>> tIterator = tLiqExchange
-                        .entrySet().iterator();
+                Map<String, ILiquidHeatExchangerManager.HeatExchangeProperty> tLiqExchange = ic2.api.recipe.Recipes.liquidCooldownManager.getHeatExchangeProperties();
+                Iterator<Map.Entry<String, ILiquidHeatExchangerManager.HeatExchangeProperty>> tIterator = tLiqExchange.entrySet()
+                                                                                                                      .iterator();
                 while (tIterator.hasNext()) {
                     Map.Entry<String, ILiquidHeatExchangerManager.HeatExchangeProperty> tEntry = tIterator.next();
-                    if (tEntry.getKey().equals("ic2hotcoolant")) {
+                    if (tEntry.getKey()
+                              .equals("ic2hotcoolant")) {
                         tIterator.remove();
                         Recipes.liquidCooldownManager.addFluid("ic2hotcoolant", "ic2coolant", 100);
                     }
@@ -131,13 +131,13 @@ public class RecipeRemover implements Runnable {
             }
 
             try {
-                Map<String, ILiquidHeatExchangerManager.HeatExchangeProperty> tLiqExchange = ic2.api.recipe.Recipes.liquidHeatupManager
-                        .getHeatExchangeProperties();
-                Iterator<Map.Entry<String, ILiquidHeatExchangerManager.HeatExchangeProperty>> tIterator = tLiqExchange
-                        .entrySet().iterator();
+                Map<String, ILiquidHeatExchangerManager.HeatExchangeProperty> tLiqExchange = ic2.api.recipe.Recipes.liquidHeatupManager.getHeatExchangeProperties();
+                Iterator<Map.Entry<String, ILiquidHeatExchangerManager.HeatExchangeProperty>> tIterator = tLiqExchange.entrySet()
+                                                                                                                      .iterator();
                 while (tIterator.hasNext()) {
                     Map.Entry<String, ILiquidHeatExchangerManager.HeatExchangeProperty> tEntry = tIterator.next();
-                    if (tEntry.getKey().equals("ic2coolant")) {
+                    if (tEntry.getKey()
+                              .equals("ic2coolant")) {
                         tIterator.remove();
                         Recipes.liquidHeatupManager.addFluid("ic2coolant", "ic2hotcoolant", 100);
                     }
@@ -150,13 +150,13 @@ public class RecipeRemover implements Runnable {
 
     public void removeSmelting() {
         GT_ModHandler.removeFurnaceSmelting(GT_OreDictUnificator.get(OrePrefixes.ore, Materials.Graphite, 1L));
-        GT_ModHandler
-                .removeFurnaceSmelting(GT_OreDictUnificator.get(OrePrefixes.oreBlackgranite, Materials.Graphite, 1L));
+        GT_ModHandler.removeFurnaceSmelting(
+                GT_OreDictUnificator.get(OrePrefixes.oreBlackgranite, Materials.Graphite, 1L));
         GT_ModHandler.removeFurnaceSmelting(GT_OreDictUnificator.get(OrePrefixes.oreEndstone, Materials.Graphite, 1L));
-        GT_ModHandler
-                .removeFurnaceSmelting(GT_OreDictUnificator.get(OrePrefixes.oreNetherrack, Materials.Graphite, 1L));
-        GT_ModHandler
-                .removeFurnaceSmelting(GT_OreDictUnificator.get(OrePrefixes.oreRedgranite, Materials.Graphite, 1L));
+        GT_ModHandler.removeFurnaceSmelting(
+                GT_OreDictUnificator.get(OrePrefixes.oreNetherrack, Materials.Graphite, 1L));
+        GT_ModHandler.removeFurnaceSmelting(
+                GT_OreDictUnificator.get(OrePrefixes.oreRedgranite, Materials.Graphite, 1L));
         GT_ModHandler.removeFurnaceSmelting(ItemList.IC2_Resin.get(1L));
     }
 }

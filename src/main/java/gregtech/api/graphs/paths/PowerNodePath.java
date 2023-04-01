@@ -27,7 +27,8 @@ public class PowerNodePath extends NodePath {
     }
 
     public void applyVoltage(long aVoltage, boolean aCountUp) {
-        int tNewTime = MinecraftServer.getServer().getTickCounter();
+        int tNewTime = MinecraftServer.getServer()
+                                      .getTickCounter();
         if (mTick != tNewTime) {
             reset(tNewTime - mTick);
             mTick = tNewTime;
@@ -76,7 +77,9 @@ public class PowerNodePath extends NodePath {
     // if no amps pass through for more than 0.5 second reduce them to minimize wrong results
     // but still allow the player to see if activity is happening
     public long getAmps() {
-        int tTime = MinecraftServer.getServer().getTickCounter() - 10;
+        int tTime = MinecraftServer.getServer()
+                                   .getTickCounter()
+                - 10;
         if (mTick < tTime) {
             reset(tTime - mTick);
             mTick = tTime;
@@ -87,8 +90,8 @@ public class PowerNodePath extends NodePath {
     public long getVoltage(MetaPipeEntity aCable) {
         int tLoss = 0;
         if (mCountUp) {
-            for (int i = 0; i < mPipes.length; i++) {
-                GT_MetaPipeEntity_Cable tCable = (GT_MetaPipeEntity_Cable) mPipes[i];
+            for (MetaPipeEntity mPipe : mPipes) {
+                GT_MetaPipeEntity_Cable tCable = (GT_MetaPipeEntity_Cable) mPipe;
                 tLoss += tCable.mCableLossPerMeter;
                 if (aCable == tCable) {
                     return Math.max(mVoltage - tLoss, 0);

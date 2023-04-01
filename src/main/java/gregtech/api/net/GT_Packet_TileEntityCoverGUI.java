@@ -177,7 +177,9 @@ public class GT_Packet_TileEntityCoverGUI extends GT_Packet_New {
                 aData.readInt(),
                 aData.readByte(),
                 coverID = aData.readInt(),
-                GregTech_API.getCoverBehaviorNew(coverID).createDataObject().readFromPacket(aData, null),
+                GregTech_API.getCoverBehaviorNew(coverID)
+                            .createDataObject()
+                            .readFromPacket(aData, null),
                 aData.readInt(),
                 aData.readInt(),
                 aData.readInt());
@@ -189,8 +191,7 @@ public class GT_Packet_TileEntityCoverGUI extends GT_Packet_New {
             // Using EntityPlayer instead of EntityClientPlayerMP so both client and server can load this
             final EntityPlayer thePlayer = ((EntityPlayer) ((World) aWorld).getEntityByID(playerID));
             final TileEntity tile = aWorld.getTileEntity(mX, mY, mZ);
-            if (tile instanceof IGregTechTileEntity && !((IGregTechTileEntity) tile).isDead()) {
-                final IGregTechTileEntity gtTile = ((IGregTechTileEntity) tile);
+            if (tile instanceof IGregTechTileEntity gtTile && !((IGregTechTileEntity) tile).isDead()) {
                 gtTile.setCoverDataAtSide(side, coverData); // Set it client side to read later.
 
                 GT_CoverBehaviorBase<?> cover = gtTile.getCoverBehaviorAtSideNew(side);
@@ -207,7 +208,8 @@ public class GT_Packet_TileEntityCoverGUI extends GT_Packet_New {
                     if (gui instanceof GT_GUICover) {
                         ((GT_GUICover) gui).setParentGuiId(parentGuiId);
                     }
-                    Minecraft.getMinecraft().displayGuiScreen(gui);
+                    Minecraft.getMinecraft()
+                             .displayGuiScreen(gui);
                 }
             }
         }

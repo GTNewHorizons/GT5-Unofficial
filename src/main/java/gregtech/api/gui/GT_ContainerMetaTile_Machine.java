@@ -59,8 +59,7 @@ public class GT_ContainerMetaTile_Machine extends GT_Container {
     }
 
     protected void addCircuitSlot() {
-        if (mTileEntity.getMetaTileEntity() instanceof IConfigurationCircuitSupport) {
-            IConfigurationCircuitSupport ccs = (IConfigurationCircuitSupport) mTileEntity.getMetaTileEntity();
+        if (mTileEntity.getMetaTileEntity() instanceof IConfigurationCircuitSupport ccs) {
             GT_Slot_Render slotCircuit = new GT_Slot_Render(
                     mTileEntity,
                     ccs.getCircuitSlot(),
@@ -94,8 +93,8 @@ public class GT_ContainerMetaTile_Machine extends GT_Container {
         mActive = mTileEntity.isActive() ? 1 : 0;
         mTimer++;
 
-        for (Object crafter : this.crafters) {
-            ICrafting player = (ICrafting) crafter;
+        for (ICrafting crafter : this.crafters) {
+            ICrafting player = crafter;
             if (mTimer % 500 == 10 || oEnergy != mEnergy) {
                 player.sendProgressBarUpdate(this, 0, mEnergy & 65535);
                 player.sendProgressBarUpdate(this, 1, mEnergy >>> 16);
@@ -165,69 +164,27 @@ public class GT_ContainerMetaTile_Machine extends GT_Container {
     public void updateProgressBar(int id, int value) {
         super.updateProgressBar(id, value);
         switch (id) {
-            case 0:
-                mEnergy = mEnergy & 0xffff0000 | value & 0x0000ffff;
-                break;
-            case 1:
-                mEnergy = mEnergy & 0x0000ffff | value << 16;
-                break;
-            case 2:
-                mStorage = mStorage & 0xffff0000 | value & 0x0000ffff;
-                break;
-            case 3:
-                mStorage = mStorage & 0x0000ffff | value << 16;
-                break;
-            case 4:
-                mOutput = value;
-                break;
-            case 5:
-                mInput = value;
-                break;
-            case 6:
-                mDisplayErrorCode = value;
-                break;
-            case 11:
-                mProgressTime = mProgressTime & 0xffff0000 | value;
-                break;
-            case 12:
-                mProgressTime = mProgressTime & 0x0000ffff | value << 16;
-                break;
-            case 13:
-                mMaxProgressTime = mMaxProgressTime & 0xffff0000 | value & 0x0000ffff;
-                break;
-            case 14:
-                mMaxProgressTime = mMaxProgressTime & 0x0000ffff | value << 16;
-                break;
-            case 15:
-                mID = value;
-                break;
-            case 16:
-                mActive = value;
-                break;
-            case 17:
-                mSteam = mSteam & 0xffff0000 | value & 0x0000ffff;
-                break;
-            case 18:
-                mSteam = mSteam & 0x0000ffff | value << 16;
-                break;
-            case 19:
-                mSteamStorage = mSteamStorage & 0xffff0000 | value & 0x0000ffff;
-                break;
-            case 20:
-                mSteamStorage = mSteamStorage & 0x0000ffff | value << 16;
-                break;
-            case 21:
-                mEnergyLong = mEnergyLong & 0xffffffff00000000L | value & 0x00000000ffffffffL;
-                break;
-            case 22:
-                mEnergyLong = mEnergyLong & 0x00000000ffffffffL | (long) value << 32;
-                break;
-            case 23:
-                mStorageLong = mStorageLong & 0xffffffff00000000L | value & 0x00000000ffffffffL;
-                break;
-            case 24:
-                mStorageLong = mStorageLong & 0x00000000ffffffffL | (long) value << 32;
-                break;
+            case 0 -> mEnergy = mEnergy & 0xffff0000 | value & 0x0000ffff;
+            case 1 -> mEnergy = mEnergy & 0x0000ffff | value << 16;
+            case 2 -> mStorage = mStorage & 0xffff0000 | value & 0x0000ffff;
+            case 3 -> mStorage = mStorage & 0x0000ffff | value << 16;
+            case 4 -> mOutput = value;
+            case 5 -> mInput = value;
+            case 6 -> mDisplayErrorCode = value;
+            case 11 -> mProgressTime = mProgressTime & 0xffff0000 | value;
+            case 12 -> mProgressTime = mProgressTime & 0x0000ffff | value << 16;
+            case 13 -> mMaxProgressTime = mMaxProgressTime & 0xffff0000 | value & 0x0000ffff;
+            case 14 -> mMaxProgressTime = mMaxProgressTime & 0x0000ffff | value << 16;
+            case 15 -> mID = value;
+            case 16 -> mActive = value;
+            case 17 -> mSteam = mSteam & 0xffff0000 | value & 0x0000ffff;
+            case 18 -> mSteam = mSteam & 0x0000ffff | value << 16;
+            case 19 -> mSteamStorage = mSteamStorage & 0xffff0000 | value & 0x0000ffff;
+            case 20 -> mSteamStorage = mSteamStorage & 0x0000ffff | value << 16;
+            case 21 -> mEnergyLong = mEnergyLong & 0xffffffff00000000L | value & 0x00000000ffffffffL;
+            case 22 -> mEnergyLong = mEnergyLong & 0x00000000ffffffffL | (long) value << 32;
+            case 23 -> mStorageLong = mStorageLong & 0xffffffff00000000L | value & 0x00000000ffffffffL;
+            case 24 -> mStorageLong = mStorageLong & 0x00000000ffffffffL | (long) value << 32;
         }
     }
 
@@ -265,8 +222,9 @@ public class GT_ContainerMetaTile_Machine extends GT_Container {
                     List<ItemStack> tCircuits = ccs.getConfigurationCircuits();
                     int index = GT_Utility.findMatchingStackInList(tCircuits, cursorStack);
                     if (index < 0) {
-                        int curIndex = GT_Utility
-                                .findMatchingStackInList(tCircuits, machine.getStackInSlot(ccs.getCircuitSlot())) + 1;
+                        int curIndex = GT_Utility.findMatchingStackInList(
+                                tCircuits,
+                                machine.getStackInSlot(ccs.getCircuitSlot())) + 1;
                         if (aMouseclick == 0) {
                             curIndex += 1;
                         } else {

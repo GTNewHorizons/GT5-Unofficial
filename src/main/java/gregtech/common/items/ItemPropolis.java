@@ -1,7 +1,7 @@
 package gregtech.common.items;
 
 import static gregtech.api.enums.GT_Values.MOD_ID;
-import static gregtech.api.enums.GT_Values.MOD_ID_DC;
+import static gregtech.api.enums.ModIDs.NewHorizonsCoreMod;
 
 import java.util.List;
 
@@ -45,7 +45,7 @@ public class ItemPropolis extends Item {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubItems(Item item, CreativeTabs tabs, List list) {
+    public void getSubItems(Item item, CreativeTabs tabs, List<ItemStack> list) {
         for (PropolisType type : PropolisType.values()) {
             if (type.showInList) {
                 list.add(this.getStackForType(type));
@@ -84,9 +84,9 @@ public class ItemPropolis extends Item {
         tPropolis = getStackForType(PropolisType.Stardust);
         addProcessHV(tPropolis, GT_ModHandler.getModItem("HardcoreEnderExpansion", "stardust", 1, 0));
         tPropolis = getStackForType(PropolisType.Ectoplasma);
-        addProcessEV(tPropolis, GT_ModHandler.getModItem(MOD_ID_DC, "item.EctoplasmaChip", 1, 0));
+        addProcessEV(tPropolis, GT_ModHandler.getModItem(NewHorizonsCoreMod.modID, "item.EctoplasmaChip", 1, 0));
         tPropolis = getStackForType(PropolisType.Arcaneshard);
-        addProcessEV(tPropolis, GT_ModHandler.getModItem(MOD_ID_DC, "item.ArcaneShardChip", 1, 0));
+        addProcessEV(tPropolis, GT_ModHandler.getModItem(NewHorizonsCoreMod.modID, "item.ArcaneShardChip", 1, 0));
         tPropolis = getStackForType(PropolisType.Dragonessence);
         addProcessIV(tPropolis, GT_ModHandler.getModItem("HardcoreEnderExpansion", "essence", 16, 0));
         tPropolis = getStackForType(PropolisType.Enderman);

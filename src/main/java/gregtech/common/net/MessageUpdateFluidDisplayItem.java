@@ -52,8 +52,7 @@ public class MessageUpdateFluidDisplayItem extends GT_Packet_New {
         if (world != null) {
             if (world.blockExists(mBlockX, mBlockY, mBlockZ)) {
                 TileEntity tileEntity = world.getTileEntity(mBlockX, mBlockY, mBlockZ);
-                if (tileEntity instanceof IGregTechTileEntity) {
-                    IGregTechTileEntity gtTile = (IGregTechTileEntity) tileEntity;
+                if (tileEntity instanceof IGregTechTileEntity gtTile) {
                     if (gtTile.getMetaTileEntity() instanceof IHasFluidDisplayItem) {
                         ((IHasFluidDisplayItem) gtTile.getMetaTileEntity()).updateFluidDisplayItem();
                     }

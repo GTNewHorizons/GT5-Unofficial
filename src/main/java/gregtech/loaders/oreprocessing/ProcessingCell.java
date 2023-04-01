@@ -25,7 +25,7 @@ public class ProcessingCell implements IOreRecipeRegistrator {
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
             ItemStack aStack) {
         switch (aPrefix) {
-            case cell:
+            case cell -> {
                 if (aMaterial == Materials.Empty) {
                     GT_ModHandler.removeRecipeByOutputDelayed(aStack);
                     if (aModName.equalsIgnoreCase("AtomicScience")) {
@@ -60,8 +60,10 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                                 } else {
                                     tStack = GT_OreDictUnificator.get(OrePrefixes.dust, tMat.mMaterial, tMat.mAmount);
                                     if (tStack == null) {
-                                        tStack = GT_OreDictUnificator
-                                                .get(OrePrefixes.cell, tMat.mMaterial, tMat.mAmount);
+                                        tStack = GT_OreDictUnificator.get(
+                                                OrePrefixes.cell,
+                                                tMat.mMaterial,
+                                                tMat.mAmount);
                                     }
                                 }
                                 if (tItemAmount + tMat.mAmount * 3628800L
@@ -81,8 +83,8 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                                             tList.add(GT_Utility.copyAmount(64L, tStack));
                                             tStack.stackSize -= 64;
                                         }
-                                        int tThisCapsuleCount = GT_ModHandler
-                                                .getCapsuleCellContainerCountMultipliedWithStackSize(tStack);
+                                        int tThisCapsuleCount = GT_ModHandler.getCapsuleCellContainerCountMultipliedWithStackSize(
+                                                tStack);
                                         if (tStack.stackSize > 0 && tCapsuleCount + tThisCapsuleCount <= 64L) {
                                             if (tCapsuleCount + tThisCapsuleCount < 0L ? tList.size() < 5
                                                     : tList.size() < 6) {
@@ -143,8 +145,8 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                         }
                     }
                 }
-                break;
-            case cellPlasma:
+            }
+            case cellPlasma -> {
                 if (aMaterial == Materials.Empty) {
                     GT_ModHandler.removeRecipeByOutputDelayed(aStack);
                 } else {
@@ -157,12 +159,11 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                             4);
                     GT_Values.RA.addVacuumFreezerRecipe(
                             GT_Utility.copyAmount(1L, aStack),
-                            gregtech.api.util.GT_OreDictUnificator.get(OrePrefixes.cell, aMaterial, 1L),
+                            GT_OreDictUnificator.get(OrePrefixes.cell, aMaterial, 1L),
                             (int) Math.max(aMaterial.getMass() * 2L, 1L));
                 }
-                break;
-            default:
-                break;
+            }
+            default -> {}
         }
     }
 }

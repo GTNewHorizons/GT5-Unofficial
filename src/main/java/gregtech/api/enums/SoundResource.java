@@ -1,7 +1,7 @@
 package gregtech.api.enums;
 
 import static gregtech.api.enums.GT_Values.MOD_ID;
-import static gregtech.api.enums.GT_Values.MOD_ID_IC2;
+import static gregtech.api.enums.ModIDs.IndustrialCraft2;
 
 import java.util.EnumSet;
 import java.util.Locale;
@@ -30,31 +30,31 @@ public enum SoundResource {
     RANDOM_EXPLODE(5, "random.explode"),
     FIRE_IGNITE(6, "fire.ignite"),
 
-    IC2_TOOLS_WRENCH(100, MOD_ID_IC2, "tools.Wrench"),
-    IC2_TOOLS_RUBBER_TRAMPOLINE(101, MOD_ID_IC2, "tools.RubberTrampoline"),
-    IC2_TOOLS_PAINTER(102, MOD_ID_IC2, "tools.Painter"),
-    IC2_TOOLS_BATTERY_USE(103, MOD_ID_IC2, "tools.BatteryUse"),
-    IC2_TOOLS_CHAINSAW_CHAINSAW_USE_ONE(104, MOD_ID_IC2, "tools.chainsaw.ChainsawUseOne"),
-    IC2_TOOLS_CHAINSAW_CHAINSAW_USE_TWO(105, MOD_ID_IC2, "tools.chainsaw.ChainsawUseTwo"),
-    IC2_TOOLS_DRILL_DRILL_SOFT(106, MOD_ID_IC2, "tools.drill.DrillSoft"),
-    IC2_TOOLS_DRILL_DRILL_HARD(107, MOD_ID_IC2, "tools.drill.DrillHard"),
-    IC2_TOOLS_OD_SCANNER(108, MOD_ID_IC2, "tools.ODScanner"),
-    IC2_TOOLS_INSULATION_CUTTERS(109, MOD_ID_IC2, "tools.InsulationCutters"),
+    IC2_TOOLS_WRENCH(100, IndustrialCraft2.modID, "tools.Wrench"),
+    IC2_TOOLS_RUBBER_TRAMPOLINE(101, IndustrialCraft2.modID, "tools.RubberTrampoline"),
+    IC2_TOOLS_PAINTER(102, IndustrialCraft2.modID, "tools.Painter"),
+    IC2_TOOLS_BATTERY_USE(103, IndustrialCraft2.modID, "tools.BatteryUse"),
+    IC2_TOOLS_CHAINSAW_CHAINSAW_USE_ONE(104, IndustrialCraft2.modID, "tools.chainsaw.ChainsawUseOne"),
+    IC2_TOOLS_CHAINSAW_CHAINSAW_USE_TWO(105, IndustrialCraft2.modID, "tools.chainsaw.ChainsawUseTwo"),
+    IC2_TOOLS_DRILL_DRILL_SOFT(106, IndustrialCraft2.modID, "tools.drill.DrillSoft"),
+    IC2_TOOLS_DRILL_DRILL_HARD(107, IndustrialCraft2.modID, "tools.drill.DrillHard"),
+    IC2_TOOLS_OD_SCANNER(108, IndustrialCraft2.modID, "tools.ODScanner"),
+    IC2_TOOLS_INSULATION_CUTTERS(109, IndustrialCraft2.modID, "tools.InsulationCutters"),
 
-    IC2_MACHINES_EXTRACTOR_OP(200, MOD_ID_IC2, "machines.ExtractorOp"),
-    IC2_MACHINES_MACERATOR_OP(201, MOD_ID_IC2, "machines.MaceratorOp"),
-    IC2_MACHINES_INDUCTION_LOOP(202, MOD_ID_IC2, "machines.InductionLoop"),
-    IC2_MACHINES_COMPRESSOR_OP(203, MOD_ID_IC2, "machines.CompressorOp"),
-    IC2_MACHINES_RECYCLER_OP(204, MOD_ID_IC2, "machines.RecyclerOp"),
-    IC2_MACHINES_MINER_OP(205, MOD_ID_IC2, "machines.MinerOp"),
-    IC2_MACHINES_PUMP_OP(206, MOD_ID_IC2, "machines.PumpOp"),
-    IC2_MACHINES_ELECTROFURNACE_LOOP(207, MOD_ID_IC2, "machines.ElectroFurnaceLoop"),
+    IC2_MACHINES_EXTRACTOR_OP(200, IndustrialCraft2.modID, "machines.ExtractorOp"),
+    IC2_MACHINES_MACERATOR_OP(201, IndustrialCraft2.modID, "machines.MaceratorOp"),
+    IC2_MACHINES_INDUCTION_LOOP(202, IndustrialCraft2.modID, "machines.InductionLoop"),
+    IC2_MACHINES_COMPRESSOR_OP(203, IndustrialCraft2.modID, "machines.CompressorOp"),
+    IC2_MACHINES_RECYCLER_OP(204, IndustrialCraft2.modID, "machines.RecyclerOp"),
+    IC2_MACHINES_MINER_OP(205, IndustrialCraft2.modID, "machines.MinerOp"),
+    IC2_MACHINES_PUMP_OP(206, IndustrialCraft2.modID, "machines.PumpOp"),
+    IC2_MACHINES_ELECTROFURNACE_LOOP(207, IndustrialCraft2.modID, "machines.ElectroFurnaceLoop"),
     @Deprecated
-    DEPRECATED_DUPE_OF_IC2_MACHINES_INDUCTION_LOOP(208, MOD_ID_IC2, "machines.InductionLoop"),
-    IC2_MACHINES_MACHINE_OVERLOAD(209, MOD_ID_IC2, "machines.MachineOverload"),
-    IC2_MACHINES_INTERRUPT_ONE(210, MOD_ID_IC2, "machines.InterruptOne"),
-    IC2_MACHINES_KA_CHING(211, MOD_ID_IC2, "machines.KaChing"),
-    IC2_MACHINES_MAGNETIZER_LOOP(212, MOD_ID_IC2, "machines.MagnetizerLoop"),
+    DEPRECATED_DUPE_OF_IC2_MACHINES_INDUCTION_LOOP(208, IndustrialCraft2.modID, "machines.InductionLoop"),
+    IC2_MACHINES_MACHINE_OVERLOAD(209, IndustrialCraft2.modID, "machines.MachineOverload"),
+    IC2_MACHINES_INTERRUPT_ONE(210, IndustrialCraft2.modID, "machines.InterruptOne"),
+    IC2_MACHINES_KA_CHING(211, IndustrialCraft2.modID, "machines.KaChing"),
+    IC2_MACHINES_MAGNETIZER_LOOP(212, IndustrialCraft2.modID, "machines.MagnetizerLoop"),
 
     GT_MACHINES_FUSION_LOOP(230, MOD_ID, "machines.FusionLoop"),
     GT_MACHINES_DISTILLERY_LOOP(231, MOD_ID, "machines.DistilleryLoop"),
@@ -304,9 +304,10 @@ public enum SoundResource {
     private static final Map<String, SoundResource> RESOURCE_STR_SOUND_MAP = new ConcurrentHashMap<>();
 
     static {
-        EnumSet.allOf(SoundResource.class).forEach(sound -> { if (sound.id >= 0) ID_SOUND_MAP.put(sound.id, sound); });
         EnumSet.allOf(SoundResource.class)
-                .forEach(sound -> RESOURCE_STR_SOUND_MAP.put(sound.resourceLocation.toString(), sound));
+               .forEach(sound -> { if (sound.id >= 0) ID_SOUND_MAP.put(sound.id, sound); });
+        EnumSet.allOf(SoundResource.class)
+               .forEach(sound -> RESOURCE_STR_SOUND_MAP.put(sound.resourceLocation.toString(), sound));
     }
 
     /**

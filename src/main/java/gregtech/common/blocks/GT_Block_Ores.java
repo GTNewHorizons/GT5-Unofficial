@@ -49,22 +49,15 @@ public class GT_Block_Ores extends GT_Block_Ores_Abstract {
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int side, int meta) {
         int index = ((meta / 1000) % 16);
-        switch (index) {
-            case 1:
-                return Blocks.netherrack.getIcon(side, 0);
-            case 2:
-                return Blocks.end_stone.getIcon(side, 0);
-            case 3:
-                return GRANITE_BLACK_STONE.getIcon();
-            case 4:
-                return GRANITE_RED_STONE.getIcon();
-            case 5:
-                return MARBLE_STONE.getIcon();
-            case 6:
-                return BASALT_STONE.getIcon();
-            default:
-                return Blocks.stone.getIcon(side, 0);
-        }
+        return switch (index) {
+            case 1 -> Blocks.netherrack.getIcon(side, 0);
+            case 2 -> Blocks.end_stone.getIcon(side, 0);
+            case 3 -> GRANITE_BLACK_STONE.getIcon();
+            case 4 -> GRANITE_RED_STONE.getIcon();
+            case 5 -> MARBLE_STONE.getIcon();
+            case 6 -> BASALT_STONE.getIcon();
+            default -> Blocks.stone.getIcon(side, 0);
+        };
     }
 
     /**
@@ -85,18 +78,10 @@ public class GT_Block_Ores extends GT_Block_Ores_Abstract {
 
     @Override
     public int getBaseBlockHarvestLevel(int aMeta) {
-        switch (aMeta) {
-            case 3:
-            case 4:
-                return 3;
-            case 0:
-            case 1:
-            case 2:
-            case 5:
-            case 6:
-            default:
-                return 0;
-        }
+        return switch (aMeta) {
+            case 3, 4 -> 3;
+            default -> 0;
+        };
     }
 
     @Override
@@ -123,10 +108,22 @@ public class GT_Block_Ores extends GT_Block_Ores_Abstract {
         Arrays.fill(rTextures, TextureFactory.of(Blocks.stone));
         rTextures[1] = TextureFactory.of(Blocks.netherrack);
         rTextures[2] = TextureFactory.of(Blocks.end_stone);
-        rTextures[3] = TextureFactory.builder().addIcon(GRANITE_BLACK_STONE).stdOrient().build();
-        rTextures[4] = TextureFactory.builder().addIcon(GRANITE_RED_STONE).stdOrient().build();
-        rTextures[5] = TextureFactory.builder().addIcon(MARBLE_STONE).stdOrient().build();
-        rTextures[6] = TextureFactory.builder().addIcon(BASALT_STONE).stdOrient().build();
+        rTextures[3] = TextureFactory.builder()
+                                     .addIcon(GRANITE_BLACK_STONE)
+                                     .stdOrient()
+                                     .build();
+        rTextures[4] = TextureFactory.builder()
+                                     .addIcon(GRANITE_RED_STONE)
+                                     .stdOrient()
+                                     .build();
+        rTextures[5] = TextureFactory.builder()
+                                     .addIcon(MARBLE_STONE)
+                                     .stdOrient()
+                                     .build();
+        rTextures[6] = TextureFactory.builder()
+                                     .addIcon(BASALT_STONE)
+                                     .stdOrient()
+                                     .build();
         return rTextures;
     }
 }

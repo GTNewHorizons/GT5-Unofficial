@@ -88,7 +88,9 @@ public class GT_Packet_WirelessRedstoneCover extends GT_Packet_TileEntityCover {
         if (world != null && world.blockExists(mX, mY, mZ)) {
             TileEntity tile = world.getTileEntity(mX, mY, mZ);
             if (tile instanceof IGregTechTileEntity && !((IGregTechTileEntity) tile).isDead()) {
-                int tPrivateChannel = (mCheckBoxValue > 0) ? mPlayer.getUniqueID().hashCode() & PRIVATE_MASK : 0;
+                int tPrivateChannel = (mCheckBoxValue > 0) ? mPlayer.getUniqueID()
+                                                                    .hashCode()
+                        & PRIVATE_MASK : 0;
                 int tCoverData = tPrivateChannel | (mCheckBoxValue & CHECKBOX_MASK) | (mPublicChannel & PUBLIC_MASK);
                 ((IGregTechTileEntity) tile).receiveCoverData(side, coverID, tCoverData);
             }

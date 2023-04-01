@@ -25,7 +25,9 @@ public class GT_Packet_Pollution extends GT_Packet_New {
 
     @Override
     public void encode(ByteBuf aOut) {
-        aOut.writeInt(chunk.chunkXPos).writeInt(chunk.chunkZPos).writeInt(pollution);
+        aOut.writeInt(chunk.chunkXPos)
+            .writeInt(chunk.chunkZPos)
+            .writeInt(pollution);
     }
 
     @Override

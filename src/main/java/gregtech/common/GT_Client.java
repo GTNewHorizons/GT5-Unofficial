@@ -7,6 +7,7 @@ package gregtech.common;
 
 import static gregtech.api.enums.GT_Values.ALL_VALID_SIDES;
 import static gregtech.api.enums.GT_Values.calculateMaxPlasmaTurbineEfficiency;
+import static gregtech.api.enums.ModIDs.Forestry;
 import static org.lwjgl.opengl.GL11.GL_LINE_LOOP;
 
 import java.net.URL;
@@ -48,7 +49,6 @@ import com.gtnewhorizon.structurelib.alignment.IAlignmentProvider;
 
 import cpw.mods.fml.client.event.ConfigChangedEvent;
 import cpw.mods.fml.client.registry.RenderingRegistry;
-import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.common.network.FMLNetworkEvent;
@@ -99,17 +99,25 @@ public class GT_Client extends GT_Proxy implements Runnable {
     // don't ask. these "just works"
     private static final Transformation ROTATION_MARKER_TRANSFORM_CENTER = new Scale(0.5);
     private static final Transformation[] ROTATION_MARKER_TRANSFORMS_SIDES_TRANSFORMS = {
-            new Scale(0.25).with(new Translation(0, 0, 0.375)).compile(),
-            new Scale(0.25).with(new Translation(0.375, 0, 0)).compile(),
-            new Scale(0.25).with(new Translation(0, 0, -0.375)).compile(),
-            new Scale(0.25).with(new Translation(-0.375, 0, 0)).compile(), };
+            new Scale(0.25).with(new Translation(0, 0, 0.375))
+                           .compile(),
+            new Scale(0.25).with(new Translation(0.375, 0, 0))
+                           .compile(),
+            new Scale(0.25).with(new Translation(0, 0, -0.375))
+                           .compile(),
+            new Scale(0.25).with(new Translation(-0.375, 0, 0))
+                           .compile(), };
     private static final int[] ROTATION_MARKER_TRANSFORMS_SIDES = { -1, -1, 2, 0, 3, 1, -1, -1, 0, 2, 3, 1, 0, 2, -1,
             -1, 3, 1, 2, 0, -1, -1, 3, 1, 1, 3, 2, 0, -1, -1, 3, 1, 2, 0, -1, -1 };
     private static final Transformation[] ROTATION_MARKER_TRANSFORMS_CORNER = {
-            new Scale(0.25).with(new Translation(0.375, 0, 0.375)).compile(),
-            new Scale(0.25).with(new Translation(-0.375, 0, 0.375)).compile(),
-            new Scale(0.25).with(new Translation(0.375, 0, -0.375)).compile(),
-            new Scale(0.25).with(new Translation(-0.375, 0, -0.375)).compile(), };
+            new Scale(0.25).with(new Translation(0.375, 0, 0.375))
+                           .compile(),
+            new Scale(0.25).with(new Translation(-0.375, 0, 0.375))
+                           .compile(),
+            new Scale(0.25).with(new Translation(0.375, 0, -0.375))
+                           .compile(),
+            new Scale(0.25).with(new Translation(-0.375, 0, -0.375))
+                           .compile(), };
     private static int rotationMarkerDisplayList;
     private static boolean rotationMarkerDisplayListCompiled = false;
 
@@ -312,8 +320,10 @@ public class GT_Client extends GT_Proxy implements Runnable {
         GL11.glVertex3d(+.25D, .0D, +.50D);
         GL11.glVertex3d(-.25D, .0D, -.50D);
         GL11.glVertex3d(-.25D, .0D, +.50D);
-        final TileEntity tTile = aEvent.player.worldObj
-                .getTileEntity(aEvent.target.blockX, aEvent.target.blockY, aEvent.target.blockZ);
+        final TileEntity tTile = aEvent.player.worldObj.getTileEntity(
+                aEvent.target.blockX,
+                aEvent.target.blockY,
+                aEvent.target.blockZ);
 
         // draw connection indicators
         byte tConnections = 0;
@@ -330,37 +340,37 @@ public class GT_Client extends GT_Proxy implements Runnable {
             for (byte tSide : ALL_VALID_SIDES) {
                 if ((tConnections & (1 << tSide)) != 0) {
                     switch (GRID_SWITCH_TABLE[aEvent.target.sideHit][tSide]) {
-                        case 0:
+                        case 0 -> {
                             GL11.glVertex3d(+.25D, .0D, +.25D);
                             GL11.glVertex3d(-.25D, .0D, -.25D);
                             GL11.glVertex3d(-.25D, .0D, +.25D);
                             GL11.glVertex3d(+.25D, .0D, -.25D);
-                            break;
-                        case 1:
+                        }
+                        case 1 -> {
                             GL11.glVertex3d(-.25D, .0D, +.50D);
                             GL11.glVertex3d(+.25D, .0D, +.25D);
                             GL11.glVertex3d(-.25D, .0D, +.25D);
                             GL11.glVertex3d(+.25D, .0D, +.50D);
-                            break;
-                        case 2:
+                        }
+                        case 2 -> {
                             GL11.glVertex3d(-.50D, .0D, -.25D);
                             GL11.glVertex3d(-.25D, .0D, +.25D);
                             GL11.glVertex3d(-.50D, .0D, +.25D);
                             GL11.glVertex3d(-.25D, .0D, -.25D);
-                            break;
-                        case 3:
+                        }
+                        case 3 -> {
                             GL11.glVertex3d(-.25D, .0D, -.50D);
                             GL11.glVertex3d(+.25D, .0D, -.25D);
                             GL11.glVertex3d(-.25D, .0D, -.25D);
                             GL11.glVertex3d(+.25D, .0D, -.50D);
-                            break;
-                        case 4:
+                        }
+                        case 4 -> {
                             GL11.glVertex3d(+.50D, .0D, -.25D);
                             GL11.glVertex3d(+.25D, .0D, +.25D);
                             GL11.glVertex3d(+.50D, .0D, +.25D);
                             GL11.glVertex3d(+.25D, .0D, -.25D);
-                            break;
-                        case 5:
+                        }
+                        case 5 -> {
                             GL11.glVertex3d(+.50D, .0D, +.50D);
                             GL11.glVertex3d(+.25D, .0D, +.25D);
                             GL11.glVertex3d(+.50D, .0D, +.25D);
@@ -377,7 +387,7 @@ public class GT_Client extends GT_Proxy implements Runnable {
                             GL11.glVertex3d(-.25D, .0D, -.25D);
                             GL11.glVertex3d(-.50D, .0D, -.25D);
                             GL11.glVertex3d(-.25D, .0D, -.50D);
-                            break;
+                        }
                     }
                 }
             }
@@ -390,17 +400,19 @@ public class GT_Client extends GT_Proxy implements Runnable {
                 final ForgeDirection direction = tAlignment.getDirection();
                 if (direction.ordinal() == tSideHit)
                     drawExtendedRotationMarker(ROTATION_MARKER_TRANSFORM_CENTER, aIsSneaking, false);
-                else if (direction.getOpposite().ordinal() == tSideHit) {
-                    for (Transformation t : ROTATION_MARKER_TRANSFORMS_CORNER) {
-                        drawExtendedRotationMarker(t, aIsSneaking, true);
-                    }
-                } else {
-                    drawExtendedRotationMarker(
-                            ROTATION_MARKER_TRANSFORMS_SIDES_TRANSFORMS[ROTATION_MARKER_TRANSFORMS_SIDES[tSideHit * 6
-                                    + direction.ordinal()]],
-                            aIsSneaking,
-                            true);
-                }
+                else if (direction.getOpposite()
+                                  .ordinal()
+                        == tSideHit) {
+                            for (Transformation t : ROTATION_MARKER_TRANSFORMS_CORNER) {
+                                drawExtendedRotationMarker(t, aIsSneaking, true);
+                            }
+                        } else {
+                            drawExtendedRotationMarker(
+                                    ROTATION_MARKER_TRANSFORMS_SIDES_TRANSFORMS[ROTATION_MARKER_TRANSFORMS_SIDES[tSideHit
+                                            * 6 + direction.ordinal()]],
+                                    aIsSneaking,
+                                    true);
+                        }
             }
         }
         GL11.glPopMatrix(); // get back to player center
@@ -515,8 +527,10 @@ public class GT_Client extends GT_Proxy implements Runnable {
     public void onPreLoad() {
         super.onPreLoad();
 
-        Minecraft.getMinecraft().getResourcePackRepository().rprMetadataSerializer
-                .registerMetadataSectionType(new ColorsMetadataSectionSerializer(), ColorsMetadataSection.class);
+        Minecraft.getMinecraft()
+                 .getResourcePackRepository().rprMetadataSerializer.registerMetadataSectionType(
+                         new ColorsMetadataSectionSerializer(),
+                         ColorsMetadataSection.class);
 
         new GT_MetaTileEntity_AdvDebugStructureWriter.ForgeEventHandler();
 
@@ -558,7 +572,7 @@ public class GT_Client extends GT_Proxy implements Runnable {
         for (GT_MetaGenerated_Item item : GT_MetaGenerated_Item.sInstances.values()) {
             metaGeneratedItemRenderer.registerItem(item);
         }
-        if (Loader.isModLoaded(GT_Values.MOD_ID_FR)) {
+        if (Forestry.isModLoaded()) {
             metaGeneratedItemRenderer.registerItem(GT_Bees.combs);
         }
         new GT_MetaGenerated_Tool_Renderer();
@@ -577,7 +591,8 @@ public class GT_Client extends GT_Proxy implements Runnable {
                 for (int i = 1; i < GregTech_API.METATILEENTITIES.length; i++) {
                     try {
                         if (GregTech_API.METATILEENTITIES[i] != null) {
-                            GregTech_API.METATILEENTITIES[i].getStackForm(1L).getTooltip(null, true);
+                            GregTech_API.METATILEENTITIES[i].getStackForm(1L)
+                                                            .getTooltip(null, true);
                             GT_Log.out.println("META " + i + " " + GregTech_API.METATILEENTITIES[i].getMetaName());
                         }
                     } catch (Throwable e) {
@@ -591,16 +606,19 @@ public class GT_Client extends GT_Proxy implements Runnable {
 
         // reobf doesn't work with lambda, so this must be a class
         // noinspection Convert2Lambda
-        ((IReloadableResourceManager) Minecraft.getMinecraft().getResourceManager())
-                .registerReloadListener(new IResourceManagerReloadListener() {
+        ((IReloadableResourceManager) Minecraft.getMinecraft()
+                                               .getResourceManager()).registerReloadListener(
+                                                       new IResourceManagerReloadListener() {
 
-                    @Override
-                    public void onResourceManagerReload(IResourceManager l) {
-                        GT_GUIColorOverride.onResourceManagerReload();
-                        FallbackableSteamTexture.reload();
-                        GregTech_API.sCoverBehaviors.values().forEach(GT_CoverBehaviorBase::reloadColorOverride);
-                    }
-                });
+                                                           @Override
+                                                           public void onResourceManagerReload(IResourceManager l) {
+                                                               GT_GUIColorOverride.onResourceManagerReload();
+                                                               FallbackableSteamTexture.reload();
+                                                               GregTech_API.sCoverBehaviors.values()
+                                                                                           .forEach(
+                                                                                                   GT_CoverBehaviorBase::reloadColorOverride);
+                                                           }
+                                                       });
     }
 
     @Override
@@ -608,7 +626,9 @@ public class GT_Client extends GT_Proxy implements Runnable {
         GT_Log.out.println("GT_Mod: Downloading Cape List.");
         try (final Scanner tScanner = new Scanner(new URL(GT_CAPE_LIST_URL).openStream())) {
             while (tScanner.hasNextLine()) {
-                this.mCapeList.add(tScanner.nextLine().toLowerCase());
+                this.mCapeList.add(
+                        tScanner.nextLine()
+                                .toLowerCase());
             }
         } catch (Throwable e) {
             e.printStackTrace(GT_Log.err);
@@ -616,7 +636,8 @@ public class GT_Client extends GT_Proxy implements Runnable {
         GT_Log.out.println("GT New Horizons: Downloading Cape List.");
         try (final Scanner tScanner = new Scanner(new URL(GTNH_CAPE_LIST_URL).openStream())) {
             while (tScanner.hasNextLine()) {
-                final String tName = tScanner.nextLine().toLowerCase();
+                final String tName = tScanner.nextLine()
+                                             .toLowerCase();
                 if (tName.contains(":")) {
                     if (!this.mCapeList.contains(tName.substring(0, tName.indexOf(":")))) {
                         this.mCapeList.add(tName);
@@ -656,7 +677,8 @@ public class GT_Client extends GT_Proxy implements Runnable {
                 mFirstTick = false;
                 GT_Values.NW.sendToServer(new GT_Packet_ClientPreference(mPreference));
 
-                if (!Minecraft.getMinecraft().isSingleplayer()) {
+                if (!Minecraft.getMinecraft()
+                              .isSingleplayer()) {
                     // Check for more IC2 recipes to also catch MineTweaker additions
                     GT_ModHandler.addIC2RecipesToGT(
                             GT_ModHandler.getMaceratorRecipeList(),
@@ -698,7 +720,7 @@ public class GT_Client extends GT_Proxy implements Runnable {
                 }
             }
             for (Iterator<Map.Entry<GT_PlayedSound, Integer>> iterator = GT_Utility.sPlayedSoundMap.entrySet()
-                    .iterator(); iterator.hasNext();) {
+                                                                                                   .iterator(); iterator.hasNext();) {
                 Map.Entry<GT_PlayedSound, Integer> tEntry = iterator.next();
                 if (tEntry.getValue() < 0) {
                     iterator.remove();
@@ -715,10 +737,11 @@ public class GT_Client extends GT_Proxy implements Runnable {
                     mLastUpdatedBlockX = trace.blockX;
                     mLastUpdatedBlockY = trace.blockY;
                     mLastUpdatedBlockZ = trace.blockZ;
-                    final TileEntity tileEntity = aEvent.player.worldObj
-                            .getTileEntity(trace.blockX, trace.blockY, trace.blockZ);
-                    if (tileEntity instanceof IGregTechTileEntity) {
-                        final IGregTechTileEntity gtTile = (IGregTechTileEntity) tileEntity;
+                    final TileEntity tileEntity = aEvent.player.worldObj.getTileEntity(
+                            trace.blockX,
+                            trace.blockY,
+                            trace.blockZ);
+                    if (tileEntity instanceof IGregTechTileEntity gtTile) {
                         if (gtTile.getMetaTileEntity() instanceof IHasFluidDisplayItem) {
                             GT_Values.NW.sendToServer(
                                     new MessageUpdateFluidDisplayItem(
@@ -746,10 +769,14 @@ public class GT_Client extends GT_Proxy implements Runnable {
 
     @SubscribeEvent
     public void onDrawBlockHighlight(DrawBlockHighlightEvent aEvent) {
-        final Block aBlock = aEvent.player.worldObj
-                .getBlock(aEvent.target.blockX, aEvent.target.blockY, aEvent.target.blockZ);
-        final TileEntity aTileEntity = aEvent.player.worldObj
-                .getTileEntity(aEvent.target.blockX, aEvent.target.blockY, aEvent.target.blockZ);
+        final Block aBlock = aEvent.player.worldObj.getBlock(
+                aEvent.target.blockX,
+                aEvent.target.blockY,
+                aEvent.target.blockZ);
+        final TileEntity aTileEntity = aEvent.player.worldObj.getTileEntity(
+                aEvent.target.blockX,
+                aEvent.target.blockY,
+                aEvent.target.blockZ);
 
         if (GT_Utility.isStackInList(aEvent.currentItem, GregTech_API.sWrenchList)) {
             if (aTileEntity instanceof ITurnable || ROTATABLE_VANILLA_BLOCKS.contains(aBlock)
@@ -917,66 +944,49 @@ public class GT_Client extends GT_Proxy implements Runnable {
         if (tString.startsWith(SoundResource.RANDOM_EXPLODE.toString()))
             if (aStack.stackSize == 3) tString = SoundResource.RANDOM_FUSE.toString();
             else if (aStack.stackSize == 2) tString = "random.old_explode";
-        if (tString.startsWith("streaming.")) switch (aStack.stackSize) {
-            case 1: // '\001'
-                tString = tString + "13";
-                break;
-
-            case 2: // '\002'
-                tString = tString + "cat";
-                break;
-
-            case 3: // '\003'
-                tString = tString + "blocks";
-                break;
-
-            case 4: // '\004'
-                tString = tString + "chirp";
-                break;
-
-            case 5: // '\005'
-                tString = tString + "far";
-                break;
-
-            case 6: // '\006'
-                tString = tString + "mall";
-                break;
-
-            case 7: // '\007'
-                tString = tString + "mellohi";
-                break;
-
-            case 8: // '\b'
-                tString = tString + "stal";
-                break;
-
-            case 9: // '\t'
-                tString = tString + "strad";
-                break;
-
-            case 10: // '\n'
-                tString = tString + "ward";
-                break;
-
-            case 11: // '\013'
-                tString = tString + "11";
-                break;
-
-            case 12: // '\f'
-                tString = tString + "wait";
-                break;
-
-            default:
-                tString = tString + "wherearewenow";
-                break;
-        }
+        if (tString.startsWith("streaming.")) tString = switch (aStack.stackSize) {
+            case 1 -> // '\001'
+                tString + "13";
+            case 2 -> // '\002'
+                tString + "cat";
+            case 3 -> // '\003'
+                tString + "blocks";
+            case 4 -> // '\004'
+                tString + "chirp";
+            case 5 -> // '\005'
+                tString + "far";
+            case 6 -> // '\006'
+                tString + "mall";
+            case 7 -> // '\007'
+                tString + "mellohi";
+            case 8 -> // '\b'
+                tString + "stal";
+            case 9 -> // '\t'
+                tString + "strad";
+            case 10 -> // '\n'
+                tString + "ward";
+            case 11 -> // '\013'
+                tString + "11";
+            case 12 -> // '\f'
+                tString + "wait";
+            default -> tString + "wherearewenow";
+        };
         if (tString.startsWith("streaming.")) {
             new WorldSpawnedEventBuilder.RecordEffectEventBuilder().setIdentifier(tString.substring(10))
-                    .setPosition(aX, aY, aZ).run();
+                                                                   .setPosition(aX, aY, aZ)
+                                                                   .run();
         } else {
-            new WorldSpawnedEventBuilder.SoundEventBuilder().setVolume(3f).setPitch(
-                    tString.startsWith("note.") ? (float) Math.pow(2D, (double) (aStack.stackSize - 13) / 12D) : 1.0F)
-                    .setIdentifier(tString).setPosition(aX, aY, aZ).run();
+            new WorldSpawnedEventBuilder.SoundEventBuilder().setVolume(3f)
+                                                            .setPitch(
+                                                                    tString.startsWith("note.")
+                                                                            ? (float) Math.pow(
+                                                                                    2D,
+                                                                                    (double) (aStack.stackSize - 13)
+                                                                                            / 12D)
+                                                                            : 1.0F)
+                                                            .setIdentifier(tString)
+                                                            .setPosition(aX, aY, aZ)
+                                                            .run();
         }
     }
 
@@ -1002,7 +1012,8 @@ public class GT_Client extends GT_Proxy implements Runnable {
             final int[] ids = OreDictionary.getOreIDs(tCurrentItem);
             int hide = 0;
             for (int i : ids) {
-                if (OreDictionary.getOreName(i).equals("craftingToolSolderingIron")) {
+                if (OreDictionary.getOreName(i)
+                                 .equals("craftingToolSolderingIron")) {
                     hide |= 0x1;
                     break;
                 }

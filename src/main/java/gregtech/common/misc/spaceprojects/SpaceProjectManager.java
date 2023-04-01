@@ -63,7 +63,7 @@ public class SpaceProjectManager {
      */
     public static boolean addTeamProject(UUID member, ISpaceBody location, String projectName, ISpaceProject project) {
         if (!spaceTeamProjects.containsKey(getLeader(member)) || spaceTeamProjects.get(getLeader(member)) == null) {
-            spaceTeamProjects.put(getLeader(member), new HashMap<Pair<ISpaceBody, String>, ISpaceProject>());
+            spaceTeamProjects.put(getLeader(member), new HashMap<>());
         }
 
         Map<Pair<ISpaceBody, String>, ISpaceProject> map = spaceTeamProjects.get(getLeader(member));
@@ -103,11 +103,12 @@ public class SpaceProjectManager {
     public static void putInTeam(UUID teamMember, UUID teamLeader) {
         if (teamMember.equals(teamLeader)) {
             spaceTeams.put(teamMember, teamLeader);
-        } else if (!spaceTeams.get(teamLeader).equals(teamLeader)) {
-            putInTeam(teamMember, spaceTeams.get(teamLeader));
-        } else {
-            spaceTeams.put(teamMember, teamLeader);
-        }
+        } else if (!spaceTeams.get(teamLeader)
+                              .equals(teamLeader)) {
+                                  putInTeam(teamMember, spaceTeams.get(teamLeader));
+                              } else {
+                                  spaceTeams.put(teamMember, teamLeader);
+                              }
 
         SpaceProjectWorldSavedData.INSTANCE.markDirty();
     }
@@ -264,14 +265,20 @@ public class SpaceProjectManager {
      * Gets the UUID using the player's username
      */
     public static UUID getPlayerUUIDFromName(String playerName) {
-        return MinecraftServer.getServer().func_152358_ax().func_152655_a(playerName).getId();
+        return MinecraftServer.getServer()
+                              .func_152358_ax()
+                              .func_152655_a(playerName)
+                              .getId();
     }
 
     /**
      * Gets the player's name using their UUID
      */
     public static String getPlayerNameFromUUID(UUID playerUUID) {
-        return MinecraftServer.getServer().func_152358_ax().func_152652_a(playerUUID).getName();
+        return MinecraftServer.getServer()
+                              .func_152358_ax()
+                              .func_152652_a(playerUUID)
+                              .getName();
     }
 
     // #endregion

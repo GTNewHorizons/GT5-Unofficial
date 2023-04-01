@@ -54,65 +54,184 @@ public class GT_MetaTileEntity_IntegratedOreFactory
     private static final int CASING_INDEX2 = 49;
     private static final int MAX_PARA = 1024;
     private static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final IStructureDefinition<GT_MetaTileEntity_IntegratedOreFactory> STRUCTURE_DEFINITION = StructureDefinition
-            .<GT_MetaTileEntity_IntegratedOreFactory>builder()
-            .addShape(
-                    STRUCTURE_PIECE_MAIN,
-                    transpose(
-                            new String[][] {
-                                    { "           ", "           ", "       WWW ", "       WWW ", "           ",
-                                            "           " },
-                                    { "           ", "       sss ", "      sppps", "      sppps", "       sss ",
-                                            "           " },
-                                    { "           ", "       sss ", "      s   s", "      s   s", "       sss ",
-                                            "           " },
-                                    { "           ", "       sss ", "      sppps", "      sppps", "       sss ",
-                                            "           " },
-                                    { "           ", "       sss ", "      s   s", "      s   s", "       sss ",
-                                            "           " },
-                                    { "           ", "       sss ", "      sppps", "      sppps", "       sss ",
-                                            "           " },
-                                    { "iiiiii     ", "iIIIIiisssi", "iIIIIis   s", "iIIIIis   s", "iIIIIiisssi",
-                                            "iiiiii     " },
-                                    { "iggggi     ", "gt  t isssi", "g xx  sppps", "g xx  sppps", "gt  t isssi",
-                                            "iggggi     " },
-                                    { "iggggi     ", "gt  t isssi", "g xx  s   s", "g xx  s   s", "gt  t isssi",
-                                            "iggggi     " },
-                                    { "iggggi     ", "gt  t is~si", "g xx  spppO", "g xx  spppO", "gt  t isssi",
-                                            "iggggi     " },
-                                    { "iggggi     ", "gt  t isssi", "g xx  s   O", "g xx  s   O", "gt  t isssi",
-                                            "iggggi     " },
-                                    { "EEEEEE     ", "EEEEEEEEEEE", "EEEEEEEEEEE", "EEEEEEEEEEE", "EEEEEEEEEEE",
-                                            "EEEEEE     " } }))
-            .addElement('i', ofBlock(GregTech_API.sBlockCasings8, 7))
-            .addElement('s', ofBlock(GregTech_API.sBlockCasings4, 1))
-            .addElement(
-                    'g',
-                    ofChain(
-                            ofBlockUnlocalizedName("IC2", "blockAlloyGlass", 0, true),
-                            ofBlockUnlocalizedName("bartworks", "BW_GlasBlocks", 0, true),
-                            ofBlockUnlocalizedName("bartworks", "BW_GlasBlocks2", 0, true),
-                            // warded glass
-                            ofBlockUnlocalizedName("Thaumcraft", "blockCosmeticOpaque", 2, false)))
-            .addElement('x', ofBlock(GregTech_API.sBlockCasings2, 3))
-            .addElement('p', ofBlock(GregTech_API.sBlockCasings2, 15)).addElement('t', ofFrame(Materials.TungstenSteel))
-            .addElement(
-                    'E',
-                    buildHatchAdder(GT_MetaTileEntity_IntegratedOreFactory.class).atLeast(Energy, Maintenance)
-                            .casingIndex(CASING_INDEX1).dot(1).buildAndChain(GregTech_API.sBlockCasings8, 7))
-            .addElement(
-                    'I',
-                    buildHatchAdder(GT_MetaTileEntity_IntegratedOreFactory.class).atLeast(InputBus)
-                            .casingIndex(CASING_INDEX1).dot(2).buildAndChain(GregTech_API.sBlockCasings8, 7))
-            .addElement(
-                    'W',
-                    buildHatchAdder(GT_MetaTileEntity_IntegratedOreFactory.class).atLeast(InputHatch, Muffler)
-                            .casingIndex(CASING_INDEX2).dot(3).buildAndChain(GregTech_API.sBlockCasings4, 1))
-            .addElement(
-                    'O',
-                    buildHatchAdder(GT_MetaTileEntity_IntegratedOreFactory.class).atLeast(OutputBus, OutputHatch)
-                            .casingIndex(CASING_INDEX2).dot(4).buildAndChain(GregTech_API.sBlockCasings4, 1))
-            .build();
+    private static final IStructureDefinition<GT_MetaTileEntity_IntegratedOreFactory> STRUCTURE_DEFINITION = StructureDefinition.<GT_MetaTileEntity_IntegratedOreFactory>builder()
+                                                                                                                                .addShape(
+                                                                                                                                        STRUCTURE_PIECE_MAIN,
+                                                                                                                                        transpose(
+                                                                                                                                                new String[][] {
+                                                                                                                                                        { "           ",
+                                                                                                                                                                "           ",
+                                                                                                                                                                "       WWW ",
+                                                                                                                                                                "       WWW ",
+                                                                                                                                                                "           ",
+                                                                                                                                                                "           " },
+                                                                                                                                                        { "           ",
+                                                                                                                                                                "       sss ",
+                                                                                                                                                                "      sppps",
+                                                                                                                                                                "      sppps",
+                                                                                                                                                                "       sss ",
+                                                                                                                                                                "           " },
+                                                                                                                                                        { "           ",
+                                                                                                                                                                "       sss ",
+                                                                                                                                                                "      s   s",
+                                                                                                                                                                "      s   s",
+                                                                                                                                                                "       sss ",
+                                                                                                                                                                "           " },
+                                                                                                                                                        { "           ",
+                                                                                                                                                                "       sss ",
+                                                                                                                                                                "      sppps",
+                                                                                                                                                                "      sppps",
+                                                                                                                                                                "       sss ",
+                                                                                                                                                                "           " },
+                                                                                                                                                        { "           ",
+                                                                                                                                                                "       sss ",
+                                                                                                                                                                "      s   s",
+                                                                                                                                                                "      s   s",
+                                                                                                                                                                "       sss ",
+                                                                                                                                                                "           " },
+                                                                                                                                                        { "           ",
+                                                                                                                                                                "       sss ",
+                                                                                                                                                                "      sppps",
+                                                                                                                                                                "      sppps",
+                                                                                                                                                                "       sss ",
+                                                                                                                                                                "           " },
+                                                                                                                                                        { "iiiiii     ",
+                                                                                                                                                                "iIIIIiisssi",
+                                                                                                                                                                "iIIIIis   s",
+                                                                                                                                                                "iIIIIis   s",
+                                                                                                                                                                "iIIIIiisssi",
+                                                                                                                                                                "iiiiii     " },
+                                                                                                                                                        { "iggggi     ",
+                                                                                                                                                                "gt  t isssi",
+                                                                                                                                                                "g xx  sppps",
+                                                                                                                                                                "g xx  sppps",
+                                                                                                                                                                "gt  t isssi",
+                                                                                                                                                                "iggggi     " },
+                                                                                                                                                        { "iggggi     ",
+                                                                                                                                                                "gt  t isssi",
+                                                                                                                                                                "g xx  s   s",
+                                                                                                                                                                "g xx  s   s",
+                                                                                                                                                                "gt  t isssi",
+                                                                                                                                                                "iggggi     " },
+                                                                                                                                                        { "iggggi     ",
+                                                                                                                                                                "gt  t is~si",
+                                                                                                                                                                "g xx  spppO",
+                                                                                                                                                                "g xx  spppO",
+                                                                                                                                                                "gt  t isssi",
+                                                                                                                                                                "iggggi     " },
+                                                                                                                                                        { "iggggi     ",
+                                                                                                                                                                "gt  t isssi",
+                                                                                                                                                                "g xx  s   O",
+                                                                                                                                                                "g xx  s   O",
+                                                                                                                                                                "gt  t isssi",
+                                                                                                                                                                "iggggi     " },
+                                                                                                                                                        { "EEEEEE     ",
+                                                                                                                                                                "EEEEEEEEEEE",
+                                                                                                                                                                "EEEEEEEEEEE",
+                                                                                                                                                                "EEEEEEEEEEE",
+                                                                                                                                                                "EEEEEEEEEEE",
+                                                                                                                                                                "EEEEEE     " } }))
+                                                                                                                                .addElement(
+                                                                                                                                        'i',
+                                                                                                                                        ofBlock(
+                                                                                                                                                GregTech_API.sBlockCasings8,
+                                                                                                                                                7))
+                                                                                                                                .addElement(
+                                                                                                                                        's',
+                                                                                                                                        ofBlock(
+                                                                                                                                                GregTech_API.sBlockCasings4,
+                                                                                                                                                1))
+                                                                                                                                .addElement(
+                                                                                                                                        'g',
+                                                                                                                                        ofChain(
+                                                                                                                                                ofBlockUnlocalizedName(
+                                                                                                                                                        "IC2",
+                                                                                                                                                        "blockAlloyGlass",
+                                                                                                                                                        0,
+                                                                                                                                                        true),
+                                                                                                                                                ofBlockUnlocalizedName(
+                                                                                                                                                        "bartworks",
+                                                                                                                                                        "BW_GlasBlocks",
+                                                                                                                                                        0,
+                                                                                                                                                        true),
+                                                                                                                                                ofBlockUnlocalizedName(
+                                                                                                                                                        "bartworks",
+                                                                                                                                                        "BW_GlasBlocks2",
+                                                                                                                                                        0,
+                                                                                                                                                        true),
+                                                                                                                                                // warded
+                                                                                                                                                // glass
+                                                                                                                                                ofBlockUnlocalizedName(
+                                                                                                                                                        "Thaumcraft",
+                                                                                                                                                        "blockCosmeticOpaque",
+                                                                                                                                                        2,
+                                                                                                                                                        false)))
+                                                                                                                                .addElement(
+                                                                                                                                        'x',
+                                                                                                                                        ofBlock(
+                                                                                                                                                GregTech_API.sBlockCasings2,
+                                                                                                                                                3))
+                                                                                                                                .addElement(
+                                                                                                                                        'p',
+                                                                                                                                        ofBlock(
+                                                                                                                                                GregTech_API.sBlockCasings2,
+                                                                                                                                                15))
+                                                                                                                                .addElement(
+                                                                                                                                        't',
+                                                                                                                                        ofFrame(
+                                                                                                                                                Materials.TungstenSteel))
+                                                                                                                                .addElement(
+                                                                                                                                        'E',
+                                                                                                                                        buildHatchAdder(
+                                                                                                                                                GT_MetaTileEntity_IntegratedOreFactory.class).atLeast(
+                                                                                                                                                        Energy,
+                                                                                                                                                        Maintenance)
+                                                                                                                                                                                             .casingIndex(
+                                                                                                                                                                                                     CASING_INDEX1)
+                                                                                                                                                                                             .dot(
+                                                                                                                                                                                                     1)
+                                                                                                                                                                                             .buildAndChain(
+                                                                                                                                                                                                     GregTech_API.sBlockCasings8,
+                                                                                                                                                                                                     7))
+                                                                                                                                .addElement(
+                                                                                                                                        'I',
+                                                                                                                                        buildHatchAdder(
+                                                                                                                                                GT_MetaTileEntity_IntegratedOreFactory.class).atLeast(
+                                                                                                                                                        InputBus)
+                                                                                                                                                                                             .casingIndex(
+                                                                                                                                                                                                     CASING_INDEX1)
+                                                                                                                                                                                             .dot(
+                                                                                                                                                                                                     2)
+                                                                                                                                                                                             .buildAndChain(
+                                                                                                                                                                                                     GregTech_API.sBlockCasings8,
+                                                                                                                                                                                                     7))
+                                                                                                                                .addElement(
+                                                                                                                                        'W',
+                                                                                                                                        buildHatchAdder(
+                                                                                                                                                GT_MetaTileEntity_IntegratedOreFactory.class).atLeast(
+                                                                                                                                                        InputHatch,
+                                                                                                                                                        Muffler)
+                                                                                                                                                                                             .casingIndex(
+                                                                                                                                                                                                     CASING_INDEX2)
+                                                                                                                                                                                             .dot(
+                                                                                                                                                                                                     3)
+                                                                                                                                                                                             .buildAndChain(
+                                                                                                                                                                                                     GregTech_API.sBlockCasings4,
+                                                                                                                                                                                                     1))
+                                                                                                                                .addElement(
+                                                                                                                                        'O',
+                                                                                                                                        buildHatchAdder(
+                                                                                                                                                GT_MetaTileEntity_IntegratedOreFactory.class).atLeast(
+                                                                                                                                                        OutputBus,
+                                                                                                                                                        OutputHatch)
+                                                                                                                                                                                             .casingIndex(
+                                                                                                                                                                                                     CASING_INDEX2)
+                                                                                                                                                                                             .dot(
+                                                                                                                                                                                                     4)
+                                                                                                                                                                                             .buildAndChain(
+                                                                                                                                                                                                     GregTech_API.sBlockCasings4,
+                                                                                                                                                                                                     1))
+                                                                                                                                .build();
 
     private static final HashSet<Integer> isCrushedOre = new HashSet<>();
     private static final HashSet<Integer> isCrushedPureOre = new HashSet<>();
@@ -188,20 +307,31 @@ public class GT_MetaTileEntity_IntegratedOreFactory
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType("Ore Processor").addInfo("Controller Block for the Integrated Ore Factory")
-                .addInfo("It is OP. I mean ore processor.").addInfo("Do all ore procession in one step.")
-                .addInfo("Can process up to 1024 ores per time.")
-                .addInfo("Every ore costs 30EU/t, 2L lubricant, 200L distilled water.")
-                .addInfo("Process time is depend on mode.").addInfo("Use a screwdriver to switch mode.")
-                .addInfo("Sneak click with screwdriver to void the stone dusts.").addSeparator()
-                .beginStructureBlock(6, 12, 11, false).addController("The third layer")
-                .addStructureInfo("128 advanced iridium plated machine casing")
-                .addStructureInfo("105 clean stainless steel machine casing").addStructureInfo("48 reinforced glass")
-                .addStructureInfo("30 tungstensteel pipe casing").addStructureInfo("16 tungstensteel frame box")
-                .addStructureInfo("16 steel gear box casing").addEnergyHatch("Button Casing", 1)
-                .addMaintenanceHatch("Button Casing", 1).addInputBus("Input ore/crushed ore", 2)
-                .addInputHatch("Input lubricant/distilled water/washing chemicals", 3)
-                .addMufflerHatch("Output Pollution", 3).addOutputBus("Output products", 4).toolTipFinisher("Gregtech");
+        tt.addMachineType("Ore Processor")
+          .addInfo("Controller Block for the Integrated Ore Factory")
+          .addInfo("It is OP. I mean ore processor.")
+          .addInfo("Do all ore procession in one step.")
+          .addInfo("Can process up to 1024 ores per time.")
+          .addInfo("Every ore costs 30EU/t, 2L lubricant, 200L distilled water.")
+          .addInfo("Process time is depend on mode.")
+          .addInfo("Use a screwdriver to switch mode.")
+          .addInfo("Sneak click with screwdriver to void the stone dusts.")
+          .addSeparator()
+          .beginStructureBlock(6, 12, 11, false)
+          .addController("The third layer")
+          .addStructureInfo("128 advanced iridium plated machine casing")
+          .addStructureInfo("105 clean stainless steel machine casing")
+          .addStructureInfo("48 reinforced glass")
+          .addStructureInfo("30 tungstensteel pipe casing")
+          .addStructureInfo("16 tungstensteel frame box")
+          .addStructureInfo("16 steel gear box casing")
+          .addEnergyHatch("Button Casing", 1)
+          .addMaintenanceHatch("Button Casing", 1)
+          .addInputBus("Input ore/crushed ore", 2)
+          .addInputHatch("Input lubricant/distilled water/washing chemicals", 3)
+          .addMufflerHatch("Output Pollution", 3)
+          .addOutputBus("Output products", 4)
+          .toolTipFinisher("Gregtech");
         return tt;
     }
 
@@ -227,20 +357,16 @@ public class GT_MetaTileEntity_IntegratedOreFactory
     }
 
     private static int getTime(int mode) {
-        switch (mode) {
-            case 0:
-                return 30 * 20;
-            case 1:
-                return 15 * 20;
-            case 2:
-                return 10 * 20;
-            case 3:
-                return 20 * 20;
-            case 4:
-                return 17 * 20;
-        }
-        // go to hell
-        return 1000000000;
+        return switch (mode) {
+            case 0 -> 30 * 20;
+            case 1 -> 15 * 20;
+            case 2 -> 10 * 20;
+            case 3 -> 20 * 20;
+            case 4 -> 17 * 20;
+            default ->
+                // go to hell
+                1000000000;
+        };
     }
 
     @Override
@@ -308,36 +434,37 @@ public class GT_MetaTileEntity_IntegratedOreFactory
         sMidProduct = tOres.toArray(new ItemStack[0]);
 
         switch (sMode) {
-            case 0:
+            case 0 -> {
                 doMac(isOre);
                 doWash(isCrushedOre);
                 doThermal(isCrushedPureOre, isCrushedOre);
                 doMac(isThermal, isOre, isCrushedOre, isCrushedPureOre);
-                break;
-            case 1:
+            }
+            case 1 -> {
                 doMac(isOre);
                 doWash(isCrushedOre);
                 doMac(isOre, isCrushedOre, isCrushedPureOre);
                 doCentrifuge(isImpureDust, isPureDust);
-                break;
-            case 2:
+            }
+            case 2 -> {
                 doMac(isOre);
                 doMac(isThermal, isOre, isCrushedOre, isCrushedPureOre);
                 doCentrifuge(isImpureDust, isPureDust);
-                break;
-            case 3:
+            }
+            case 3 -> {
                 doMac(isOre);
                 doWash(isCrushedOre);
                 doSift(isCrushedPureOre);
-                break;
-            case 4:
+            }
+            case 4 -> {
                 doMac(isOre);
                 doChemWash(isCrushedOre, isCrushedPureOre);
                 doMac(isCrushedOre, isCrushedPureOre);
                 doCentrifuge(isImpureDust, isPureDust);
-                break;
-            default:
+            }
+            default -> {
                 return false;
+            }
         }
 
         this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
@@ -399,8 +526,12 @@ public class GT_MetaTileEntity_IntegratedOreFactory
             for (ItemStack aStack : sMidProduct) {
                 int tID = GT_Utility.stackToInt(aStack);
                 if (checkTypes(tID, aTables)) {
-                    GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sMaceratorRecipes
-                            .findRecipe(getBaseMetaTileEntity(), false, GT_Values.V[15], null, aStack);
+                    GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sMaceratorRecipes.findRecipe(
+                            getBaseMetaTileEntity(),
+                            false,
+                            GT_Values.V[15],
+                            null,
+                            aStack);
                     if (tRecipe != null) {
                         tProduct.addAll(getOutputStack(tRecipe, aStack.stackSize));
                     } else {
@@ -447,8 +578,12 @@ public class GT_MetaTileEntity_IntegratedOreFactory
             for (ItemStack aStack : sMidProduct) {
                 int tID = GT_Utility.stackToInt(aStack);
                 if (checkTypes(tID, aTables)) {
-                    GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sThermalCentrifugeRecipes
-                            .findRecipe(getBaseMetaTileEntity(), false, GT_Values.V[15], null, aStack);
+                    GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sThermalCentrifugeRecipes.findRecipe(
+                            getBaseMetaTileEntity(),
+                            false,
+                            GT_Values.V[15],
+                            null,
+                            aStack);
                     if (tRecipe != null) {
                         tProduct.addAll(getOutputStack(tRecipe, aStack.stackSize));
                     } else {
@@ -469,8 +604,12 @@ public class GT_MetaTileEntity_IntegratedOreFactory
             for (ItemStack aStack : sMidProduct) {
                 int tID = GT_Utility.stackToInt(aStack);
                 if (checkTypes(tID, aTables)) {
-                    GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes
-                            .findRecipe(getBaseMetaTileEntity(), false, GT_Values.V[15], null, aStack);
+                    GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes.findRecipe(
+                            getBaseMetaTileEntity(),
+                            false,
+                            GT_Values.V[15],
+                            null,
+                            aStack);
                     if (tRecipe != null) {
                         tProduct.addAll(getOutputStack(tRecipe, aStack.stackSize));
                     } else {
@@ -491,8 +630,12 @@ public class GT_MetaTileEntity_IntegratedOreFactory
             for (ItemStack aStack : sMidProduct) {
                 int tID = GT_Utility.stackToInt(aStack);
                 if (checkTypes(tID, aTables)) {
-                    GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sSifterRecipes
-                            .findRecipe(getBaseMetaTileEntity(), false, GT_Values.V[15], null, aStack);
+                    GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sSifterRecipes.findRecipe(
+                            getBaseMetaTileEntity(),
+                            false,
+                            GT_Values.V[15],
+                            null,
+                            aStack);
                     if (tRecipe != null) {
                         tProduct.addAll(getOutputStack(tRecipe, aStack.stackSize));
                     } else {
@@ -520,7 +663,8 @@ public class GT_MetaTileEntity_IntegratedOreFactory
                             getStoredFluids().toArray(new FluidStack[0]),
                             aStack);
                     if (tRecipe != null && tRecipe.getRepresentativeFluidInput(0) != null) {
-                        FluidStack tInputFluid = tRecipe.getRepresentativeFluidInput(0).copy();
+                        FluidStack tInputFluid = tRecipe.getRepresentativeFluidInput(0)
+                                                        .copy();
                         int tStored = getFluidAmount(tInputFluid);
                         int tWashed = Math.min(tStored / tInputFluid.amount, aStack.stackSize);
                         depleteInput(new FluidStack(tInputFluid.getFluid(), tWashed * tInputFluid.amount));
@@ -569,7 +713,9 @@ public class GT_MetaTileEntity_IntegratedOreFactory
                         GT_Utility.copyAmountUnsafe(tAmount * aRecipe.getOutput(i).stackSize, aRecipe.getOutput(i)));
             }
         }
-        return tOutput.stream().filter(i -> (i != null && i.stackSize > 0)).collect(Collectors.toList());
+        return tOutput.stream()
+                      .filter(i -> (i != null && i.stackSize > 0))
+                      .collect(Collectors.toList());
     }
 
     private void doCompress(List<ItemStack> aList) {
@@ -655,12 +801,25 @@ public class GT_MetaTileEntity_IntegratedOreFactory
             boolean aActive, boolean aRedstone) {
         if (aSide == aFacing) {
             if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX2),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE).extFacing().build(),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE_GLOW).extFacing().glow()
-                            .build() };
-            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX2),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_PROCESSING_ARRAY).extFacing().build(),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_PROCESSING_ARRAY_GLOW).extFacing().glow().build() };
+                    TextureFactory.builder()
+                                  .addIcon(OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE)
+                                  .extFacing()
+                                  .build(),
+                    TextureFactory.builder()
+                                  .addIcon(OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE_GLOW)
+                                  .extFacing()
+                                  .glow()
+                                  .build() };
+            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX2), TextureFactory.builder()
+                                                                                                            .addIcon(
+                                                                                                                    OVERLAY_FRONT_PROCESSING_ARRAY)
+                                                                                                            .extFacing()
+                                                                                                            .build(),
+                    TextureFactory.builder()
+                                  .addIcon(OVERLAY_FRONT_PROCESSING_ARRAY_GLOW)
+                                  .extFacing()
+                                  .glow()
+                                  .build() };
         }
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX2) };
     }
@@ -669,50 +828,48 @@ public class GT_MetaTileEntity_IntegratedOreFactory
         final EnumChatFormatting AQUA = EnumChatFormatting.AQUA;
         final String CRUSH = StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.Macerate");
         final String WASH = StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.Ore_Washer")
-                .replace(" ", " " + AQUA);
+                                         .replace(" ", " " + AQUA);
         final String THERMAL = StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.Thermal_Centrifuge")
-                .replace(" ", " " + AQUA);
+                                            .replace(" ", " " + AQUA);
         final String CENTRIFUGE = StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.Centrifuge");
         final String SIFTER = StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.Sifter");
         final String CHEM_WASH = StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.Chemical_Bathing")
-                .replace(" ", " " + AQUA);
+                                              .replace(" ", " " + AQUA);
         final String ARROW = " " + AQUA + "-> ";
 
         List<String> des = new ArrayList<>();
         des.add(StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor1") + " ");
 
         switch (mode) {
-            case 0:
+            case 0 -> {
                 des.add(AQUA + CRUSH + ARROW);
                 des.add(AQUA + WASH + ARROW);
                 des.add(AQUA + THERMAL + ARROW);
                 des.add(AQUA + CRUSH + ' ');
-                break;
-            case 1:
+            }
+            case 1 -> {
                 des.add(AQUA + CRUSH + ARROW);
                 des.add(AQUA + WASH + ARROW);
                 des.add(AQUA + CENTRIFUGE + ARROW);
                 des.add(AQUA + CRUSH + ' ');
-                break;
-            case 2:
+            }
+            case 2 -> {
                 des.add(AQUA + CRUSH + ARROW);
                 des.add(AQUA + CRUSH + ARROW);
                 des.add(AQUA + CENTRIFUGE + ' ');
-                break;
-            case 3:
+            }
+            case 3 -> {
                 des.add(AQUA + CRUSH + ARROW);
                 des.add(AQUA + WASH + ARROW);
                 des.add(AQUA + SIFTER + ' ');
-
-                break;
-            case 4:
+            }
+            case 4 -> {
                 des.add(AQUA + CRUSH + ARROW);
                 des.add(AQUA + CHEM_WASH + ARROW);
                 des.add(AQUA + CRUSH + ARROW);
                 des.add(AQUA + CENTRIFUGE + ' ');
-                break;
-            default:
-                des.add(StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.WRONG_MODE"));
+            }
+            default -> des.add(StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.WRONG_MODE"));
         }
 
         des.add(StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor2", getTime(mode) / 20));

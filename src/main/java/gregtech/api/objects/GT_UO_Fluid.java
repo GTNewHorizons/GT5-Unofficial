@@ -19,26 +19,31 @@ public class GT_UO_Fluid {
     public GT_UO_Fluid(ConfigCategory aConfigCategory) { // TODO CONFIGURE
         if (aConfigCategory.containsKey("Registry")) {
             aConfigCategory.get("Registry").comment = "Fluid registry name";
-            Registry = aConfigCategory.get("Registry").getString();
+            Registry = aConfigCategory.get("Registry")
+                                      .getString();
         }
         if (aConfigCategory.containsKey("MaxAmount")) {
-            aConfigCategory
-                    .get("MaxAmount").comment = "Max amount generation (per operation, sets the VeinData) 80000 MAX";
-            MaxAmount = aConfigCategory.get("MaxAmount").getInt(0);
+            aConfigCategory.get(
+                    "MaxAmount").comment = "Max amount generation (per operation, sets the VeinData) 80000 MAX";
+            MaxAmount = aConfigCategory.get("MaxAmount")
+                                       .getInt(0);
         }
         if (aConfigCategory.containsKey("MinAmount")) {
             aConfigCategory.get("MinAmount").comment = "Min amount generation (per operation, sets the VeinData) 0 MIN";
-            MinAmount = aConfigCategory.get("MinAmount").getInt(0);
+            MinAmount = aConfigCategory.get("MinAmount")
+                                       .getInt(0);
         }
         if (aConfigCategory.containsKey("Chance")) {
             aConfigCategory.get(
                     "Chance").comment = "Chance generating (weighted chance!, there will be a fluid in chunk always!)";
-            Chance = aConfigCategory.get("Chance").getInt(0);
+            Chance = aConfigCategory.get("Chance")
+                                    .getInt(0);
         }
         if (aConfigCategory.containsKey("DecreasePerOperationAmount")) {
             aConfigCategory.get(
                     "DecreasePerOperationAmount").comment = "Decrease per operation (actual fluid gained works like (Litre)VeinData/5000)";
-            DecreasePerOperationAmount = aConfigCategory.get("DecreasePerOperationAmount").getInt(5);
+            DecreasePerOperationAmount = aConfigCategory.get("DecreasePerOperationAmount")
+                                                        .getInt(5);
         }
         // GT_FML_LOGGER.info("GT UO "+aConfigCategory.getName()+" Fluid:"+Registry+" Max:"+MaxAmount+"
         // Min:"+MinAmount+" Chance:"+Chance);

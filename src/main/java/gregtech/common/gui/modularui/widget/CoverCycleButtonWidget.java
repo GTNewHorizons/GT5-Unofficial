@@ -16,13 +16,22 @@ import gregtech.api.gui.modularui.GT_UITextures;
  */
 public class CoverCycleButtonWidget extends CycleButtonWidget {
 
-    private static final UITexture BUTTON_NORMAL_NOT_PRESSED = GT_UITextures.BUTTON_COVER_NORMAL
-            .getSubArea(0, 0, 1, 0.5f);
+    private static final UITexture BUTTON_NORMAL_NOT_PRESSED = GT_UITextures.BUTTON_COVER_NORMAL.getSubArea(
+            0,
+            0,
+            1,
+            0.5f);
     private static final UITexture BUTTON_NORMAL_PRESSED = GT_UITextures.BUTTON_COVER_NORMAL.getSubArea(0, 0.5f, 1, 1);
-    private static final UITexture BUTTON_HOVERED_NOT_PRESSED = GT_UITextures.BUTTON_COVER_NORMAL_HOVERED
-            .getSubArea(0, 0, 1, 0.5f);
-    private static final UITexture BUTTON_HOVERED_PRESSED = GT_UITextures.BUTTON_COVER_NORMAL_HOVERED
-            .getSubArea(0, 0.5f, 1, 1);
+    private static final UITexture BUTTON_HOVERED_NOT_PRESSED = GT_UITextures.BUTTON_COVER_NORMAL_HOVERED.getSubArea(
+            0,
+            0,
+            1,
+            0.5f);
+    private static final UITexture BUTTON_HOVERED_PRESSED = GT_UITextures.BUTTON_COVER_NORMAL_HOVERED.getSubArea(
+            0,
+            0.5f,
+            1,
+            1);
 
     private boolean clickPressed;
 
