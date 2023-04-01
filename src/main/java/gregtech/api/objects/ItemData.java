@@ -108,7 +108,7 @@ public class ItemData {
     }
 
     public final ArrayList<MaterialStack> getAllMaterialStacks() {
-        ArrayList<MaterialStack> rList = new ArrayList();
+        ArrayList<MaterialStack> rList = new ArrayList<>();
         if (hasValidMaterialData()) rList.add(mMaterial);
         rList.addAll(Arrays.asList(mByProducts));
         return rList;

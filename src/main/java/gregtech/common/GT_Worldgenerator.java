@@ -34,7 +34,7 @@ public class GT_Worldgenerator implements IWorldGenerator {
     private static int endMinSize = 50;
     private static int endMaxSize = 200;
     private static boolean endAsteroids = true;
-    public static List<Runnable> mList = new ArrayList();
+    public static List<Runnable> mList = new ArrayList<>();
     public static HashSet<Long> ProcChunks = new HashSet<Long>();
     // This is probably not going to work. Trying to create a fake orevein to put into hashtable when there will be no
     // ores in a vein.
@@ -53,7 +53,7 @@ public class GT_Worldgenerator implements IWorldGenerator {
             Materials.Aluminium,
             Materials.Aluminium,
             Materials.Aluminium);
-    public static Hashtable<Long, GT_Worldgen_GT_Ore_Layer> validOreveins = new Hashtable(1024);
+    public static Hashtable<Long, GT_Worldgen_GT_Ore_Layer> validOreveins = new Hashtable<>(1024);
     public boolean mIsGenerating = false;
     public static final Object listLock = new Object();
 
@@ -163,7 +163,7 @@ public class GT_Worldgenerator implements IWorldGenerator {
             }
         };
 
-        public static ArrayList<GT_Worldgenerator.WorldGenContainer.NearbySeeds> seedList = new ArrayList();
+        public static ArrayList<GT_Worldgenerator.WorldGenContainer.NearbySeeds> seedList = new ArrayList<>();
 
         // aX and aZ are now the by-chunk X and Z for the chunk of interest
         public WorldGenContainer(Random aRandom, int aX, int aZ, int aDimensionType, World aWorld,

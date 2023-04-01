@@ -158,7 +158,7 @@ public class GT_ThaumcraftCompat implements IThaumcraftCompat {
                 aY,
                 aComplexity,
                 aIcon);
-        ArrayList<ResearchPage> tPages = new ArrayList(aPages.length);
+        ArrayList<ResearchPage> tPages = new ArrayList<>(aPages.length);
         GT_LanguageManager.addStringLocalization("tc.research_name." + aResearch, aName);
         GT_LanguageManager.addStringLocalization("tc.research_text." + aResearch, "[GT] " + aText);
         for (Object tPage : aPages) {
@@ -198,7 +198,7 @@ public class GT_ThaumcraftCompat implements IThaumcraftCompat {
             rResearch.setStub();
         }
         if (aParentResearches != null) {
-            ArrayList<String> tParentResearches = new ArrayList();
+            ArrayList<String> tParentResearches = new ArrayList<>();
             for (String tParent : aParentResearches) {
                 if (GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.researches, aResearch, true)) {
                     tParentResearches.add(tParent);

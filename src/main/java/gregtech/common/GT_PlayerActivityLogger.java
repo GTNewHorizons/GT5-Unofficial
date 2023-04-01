@@ -15,7 +15,7 @@ public class GT_PlayerActivityLogger implements Runnable {
                     return;
                 }
                 ArrayList<String> tList = GT_Mod.gregtechproxy.mBufferedPlayerActivity;
-                GT_Mod.gregtechproxy.mBufferedPlayerActivity = new ArrayList();
+                GT_Mod.gregtechproxy.mBufferedPlayerActivity = new ArrayList<>();
                 String tLastOutput = "";
                 int i = 0;
                 for (int j = tList.size(); i < j; i++) {

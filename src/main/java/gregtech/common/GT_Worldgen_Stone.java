@@ -36,7 +36,7 @@ public class GT_Worldgen_Stone extends GT_Worldgen_Ore {
                                                                                                                          // or
                                                                                                                          // sills.
 
-    public Hashtable<Long, StoneSeeds> validStoneSeeds = new Hashtable(1024);
+    public Hashtable<Long, StoneSeeds> validStoneSeeds = new Hashtable<>(1024);
 
     class StoneSeeds {
 
@@ -80,7 +80,7 @@ public class GT_Worldgen_Stone extends GT_Worldgen_Ore {
     public boolean executeWorldgen(World aWorld, Random aRandom, String aBiome, int aDimensionType, int aChunkX,
             int aChunkZ, IChunkProvider aChunkGenerator, IChunkProvider aChunkProvider) {
         XSTR stoneRNG = new XSTR();
-        ArrayList<ValidSeeds> stones = new ArrayList();
+        ArrayList<ValidSeeds> stones = new ArrayList<>();
 
         if (!isGenerationAllowed(aWorld, aDimensionType, this.mDimensionType)) {
             return false;
