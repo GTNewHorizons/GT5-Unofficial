@@ -29,10 +29,17 @@ import ic2.api.crops.ICropTile;
 public class GT_BaseCrop extends CropCard implements ICropCardInfo {
 
     public static ArrayList<GT_BaseCrop> sCropList = new ArrayList<>();
-    private String mName = E, mDiscoveredBy = "Gregorius Techneticies", mAttributes[];
-    private int mTier = 0, mMaxSize = 0, mAfterHarvestSize = 0, mHarvestSize = 0, mStats[] = new int[5],
-            mGrowthSpeed = 0;
-    private ItemStack mDrop = null, mSpecialDrops[] = null;
+    private String mName = E;
+    private String mDiscoveredBy = "Gregorius Techneticies";
+    private String[] mAttributes;
+    private int mTier = 0;
+    private int mMaxSize = 0;
+    private int mAfterHarvestSize = 0;
+    private int mHarvestSize = 0;
+    private int[] mStats = new int[5];
+    private int mGrowthSpeed = 0;
+    private ItemStack mDrop = null;
+    private ItemStack[] mSpecialDrops = null;
     private Materials mBlock = null;
     private static boolean bIc2NeiLoaded = IC2CropPlugin.isModLoaded();
 

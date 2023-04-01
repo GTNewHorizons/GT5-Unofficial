@@ -22,7 +22,7 @@ import gregtech.common.blocks.GT_TileEntity_Ores;
 
 public class GT_Worldgen_Stone extends GT_Worldgen_Ore {
 
-    static final double sizeConversion[] = { 1, 1, 1.333333, 1.333333, 2, 2, 2, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4 }; // Bias
+    static final double[] sizeConversion = { 1, 1, 1.333333, 1.333333, 2, 2, 2, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4 }; // Bias
                                                                                                                          // the
                                                                                                                          // sizes
                                                                                                                          // towards
