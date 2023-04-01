@@ -1672,7 +1672,7 @@ public class GT_ModHandler {
                 int tNewDamage = tStack1.getMaxDamage() + tStack1.getItemDamage()
                         - tStack2.getItemDamage()
                         + tStack1.getMaxDamage() / 20;
-                return new ItemStack(tStack1.getItem(), 1, tNewDamage < 0 ? 0 : tNewDamage);
+                return new ItemStack(tStack1.getItem(), 1, Math.max(tNewDamage, 0));
             }
         }
 

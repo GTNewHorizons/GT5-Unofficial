@@ -4426,7 +4426,7 @@ public class GT_Utility {
     }
 
     public static int clamp(int val, int lo, int hi) {
-        return val > hi ? hi : val < lo ? lo : val;
+        return MathHelper.clamp_int(val, lo, hi);
     }
 
     public static int ceilDiv(int lhs, int rhs) {
