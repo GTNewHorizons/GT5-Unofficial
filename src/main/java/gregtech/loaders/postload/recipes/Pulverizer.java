@@ -226,7 +226,6 @@ public class Pulverizer implements Runnable {
             GT_Values.RA.stdBuilder()
                         .itemInputs(getModItem(Railcraft.modID, "machine.beta", 1L, 0))
                         .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 2))
-                        .outputChances(10000)
                         .noFluidInputs()
                         .noFluidOutputs()
                         .duration(15 * SECONDS)
@@ -238,7 +237,6 @@ public class Pulverizer implements Runnable {
                         .itemOutputs(
                                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 1),
                                 GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Glass, 3))
-                        .outputChances(10000, 10000)
                         .noFluidInputs()
                         .noFluidOutputs()
                         .duration(15 * SECONDS)
@@ -250,7 +248,6 @@ public class Pulverizer implements Runnable {
                         .itemOutputs(
                                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Bronze, 12),
                                 GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Iron, 3))
-                        .outputChances(10000, 10000)
                         .noFluidInputs()
                         .noFluidOutputs()
                         .duration(15 * SECONDS)
@@ -262,7 +259,6 @@ public class Pulverizer implements Runnable {
             GT_Values.RA.stdBuilder()
                         .itemInputs(getModItem(Railcraft.modID, "machine.beta", 1L, 13))
                         .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Steel, 2))
-                        .outputChances(10000)
                         .noFluidInputs()
                         .noFluidOutputs()
                         .duration(15 * SECONDS)
@@ -274,7 +270,6 @@ public class Pulverizer implements Runnable {
                         .itemOutputs(
                                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Steel, 1),
                                 GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Glass, 3))
-                        .outputChances(10000, 10000)
                         .noFluidInputs()
                         .noFluidOutputs()
                         .duration(15 * SECONDS)
@@ -286,7 +281,6 @@ public class Pulverizer implements Runnable {
                         .itemOutputs(
                                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Steel, 12),
                                 GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Steel, 3))
-                        .outputChances(10000)
                         .noFluidInputs()
                         .noFluidOutputs()
                         .duration(15 * SECONDS)
@@ -298,7 +292,6 @@ public class Pulverizer implements Runnable {
             GT_Values.RA.stdBuilder()
                         .itemInputs(getModItem(Railcraft.modID, "machine.zeta", 1L, 0))
                         .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Aluminium, 2))
-                        .outputChances(10000)
                         .noFluidInputs()
                         .noFluidOutputs()
                         .duration(22 * SECONDS + 10 * TICKS)
@@ -310,7 +303,6 @@ public class Pulverizer implements Runnable {
                         .itemOutputs(
                                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Aluminium, 1),
                                 GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Glass, 3))
-                        .outputChances(10000, 10000)
                         .noFluidInputs()
                         .noFluidOutputs()
                         .duration(22 * SECONDS + 10 * TICKS)
@@ -322,7 +314,6 @@ public class Pulverizer implements Runnable {
                         .itemOutputs(
                                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Plastic, 12),
                                 GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Aluminium, 3))
-                        .outputChances(10000, 10000)
                         .noFluidInputs()
                         .noFluidOutputs()
                         .duration(22 * SECONDS + 10 * TICKS)
@@ -334,7 +325,6 @@ public class Pulverizer implements Runnable {
             GT_Values.RA.stdBuilder()
                         .itemInputs(getModItem(Railcraft.modID, "machine.zeta", 1L, 3))
                         .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.StainlessSteel, 2))
-                        .outputChances(10000)
                         .noFluidInputs()
                         .noFluidOutputs()
                         .duration(30 * SECONDS)
@@ -346,7 +336,6 @@ public class Pulverizer implements Runnable {
                         .itemOutputs(
                                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.StainlessSteel, 1),
                                 GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Glass, 3))
-                        .outputChances(10000, 10000)
                         .noFluidInputs()
                         .noFluidOutputs()
                         .duration(30 * SECONDS)
@@ -358,7 +347,6 @@ public class Pulverizer implements Runnable {
                         .itemOutputs(
                                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.StainlessSteel, 12),
                                 GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.StainlessSteel, 3))
-                        .outputChances(10000)
                         .noFluidInputs()
                         .noFluidOutputs()
                         .duration(30 * SECONDS)
@@ -370,7 +358,6 @@ public class Pulverizer implements Runnable {
             GT_Values.RA.stdBuilder()
                         .itemInputs(getModItem(Railcraft.modID, "machine.zeta", 1L, 6))
                         .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Titanium, 2))
-                        .outputChances(10000)
                         .noFluidInputs()
                         .noFluidOutputs()
                         .duration(30 * SECONDS)
@@ -382,7 +369,6 @@ public class Pulverizer implements Runnable {
                         .itemOutputs(
                                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Titanium, 1),
                                 GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Glass, 3))
-                        .outputChances(10000, 10000)
                         .noFluidInputs()
                         .noFluidOutputs()
                         .duration(30 * SECONDS)
@@ -394,7 +380,6 @@ public class Pulverizer implements Runnable {
                         .itemOutputs(
                                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Titanium, 12),
                                 GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Titanium, 3))
-                        .outputChances(10000)
                         .noFluidInputs()
                         .noFluidOutputs()
                         .duration(30 * SECONDS)
@@ -406,7 +391,6 @@ public class Pulverizer implements Runnable {
             GT_Values.RA.stdBuilder()
                         .itemInputs(getModItem(Railcraft.modID, "machine.zeta", 1L, 9))
                         .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.TungstenSteel, 2))
-                        .outputChances(10000)
                         .noFluidInputs()
                         .noFluidOutputs()
                         .duration(30 * SECONDS)
@@ -418,7 +402,6 @@ public class Pulverizer implements Runnable {
                         .itemOutputs(
                                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.TungstenSteel, 1),
                                 GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Glass, 3))
-                        .outputChances(10000, 10000)
                         .noFluidInputs()
                         .noFluidOutputs()
                         .duration(30 * SECONDS)
@@ -430,7 +413,6 @@ public class Pulverizer implements Runnable {
                         .itemOutputs(
                                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.TungstenSteel, 12),
                                 GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.TungstenSteel, 3))
-                        .outputChances(10000)
                         .noFluidInputs()
                         .noFluidOutputs()
                         .duration(30 * SECONDS)
@@ -442,7 +424,6 @@ public class Pulverizer implements Runnable {
             GT_Values.RA.stdBuilder()
                         .itemInputs(getModItem(Railcraft.modID, "machine.zeta", 1L, 12))
                         .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Palladium, 2))
-                        .outputChances(10000)
                         .noFluidInputs()
                         .noFluidOutputs()
                         .duration(37 * SECONDS + 10 * TICKS)
@@ -454,7 +435,6 @@ public class Pulverizer implements Runnable {
                         .itemOutputs(
                                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Palladium, 1),
                                 GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Glass, 3))
-                        .outputChances(10000, 10000)
                         .noFluidInputs()
                         .noFluidOutputs()
                         .duration(37 * SECONDS + 10 * TICKS)
@@ -466,7 +446,6 @@ public class Pulverizer implements Runnable {
                         .itemOutputs(
                                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.NiobiumTitanium, 12),
                                 GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Chrome, 3))
-                        .outputChances(10000, 10000)
                         .noFluidInputs()
                         .noFluidOutputs()
                         .duration(37 * SECONDS + 10 * TICKS)
@@ -478,7 +457,6 @@ public class Pulverizer implements Runnable {
             GT_Values.RA.stdBuilder()
                         .itemInputs(getModItem(Railcraft.modID, "machine.eta", 1L, 0))
                         .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iridium, 2))
-                        .outputChances(10000)
                         .noFluidInputs()
                         .noFluidOutputs()
                         .duration(45 * SECONDS)
@@ -490,7 +468,6 @@ public class Pulverizer implements Runnable {
                         .itemOutputs(
                                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iridium, 1),
                                 GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Glass, 3))
-                        .outputChances(10000, 10000)
                         .noFluidInputs()
                         .noFluidOutputs()
                         .duration(45 * SECONDS)
@@ -502,7 +479,6 @@ public class Pulverizer implements Runnable {
                         .itemOutputs(
                                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Enderium, 12),
                                 GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Iridium, 3))
-                        .outputChances(10000, 10000)
                         .noFluidInputs()
                         .noFluidOutputs()
                         .duration(45 * SECONDS)
@@ -514,7 +490,6 @@ public class Pulverizer implements Runnable {
             GT_Values.RA.stdBuilder()
                         .itemInputs(getModItem(Railcraft.modID, "machine.eta", 1L, 3))
                         .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Osmium, 2))
-                        .outputChances(10000)
                         .noFluidInputs()
                         .noFluidOutputs()
                         .duration(52 * SECONDS + 10 * TICKS)
@@ -526,7 +501,6 @@ public class Pulverizer implements Runnable {
                         .itemOutputs(
                                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Osmium, 1),
                                 GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Glass, 3))
-                        .outputChances(10000, 10000)
                         .noFluidInputs()
                         .noFluidOutputs()
                         .duration(52 * SECONDS + 10 * TICKS)
@@ -538,7 +512,6 @@ public class Pulverizer implements Runnable {
                         .itemOutputs(
                                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 12),
                                 GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Osmium, 3))
-                        .outputChances(10000, 10000)
                         .noFluidInputs()
                         .noFluidOutputs()
                         .duration(52 * SECONDS + 10 * TICKS)
@@ -550,7 +523,6 @@ public class Pulverizer implements Runnable {
             GT_Values.RA.stdBuilder()
                         .itemInputs(getModItem(Railcraft.modID, "machine.eta", 1L, 6))
                         .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Neutronium, 2))
-                        .outputChances(10000)
                         .noFluidInputs()
                         .noFluidOutputs()
                         .duration(60 * SECONDS)
@@ -562,7 +534,6 @@ public class Pulverizer implements Runnable {
                         .itemOutputs(
                                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Neutronium, 1),
                                 GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Glass, 3))
-                        .outputChances(10000, 10000)
                         .noFluidInputs()
                         .noFluidOutputs()
                         .duration(60 * SECONDS)
@@ -574,7 +545,6 @@ public class Pulverizer implements Runnable {
                         .itemOutputs(
                                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Neutronium, 12),
                                 GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Neutronium, 3))
-                        .outputChances(10000)
                         .noFluidInputs()
                         .noFluidOutputs()
                         .duration(60 * SECONDS)
