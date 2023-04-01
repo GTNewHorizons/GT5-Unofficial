@@ -154,13 +154,11 @@ public class GT_MetaTileEntity_LargeTurbine_Gas extends GT_MetaTileEntity_LargeT
             if (totalFlow <= 0) return 0;
             tEU = GT_Utility.safeInt((long) totalFlow * fuelValue);
 
-            if (totalFlow == actualOptimalFlow) {
-                tEU = GT_Utility.safeInt((long) tEU * (long) aBaseEff / 10000L);
-            } else {
+            if (totalFlow != actualOptimalFlow) {
                 float efficiency = getOverflowEfficiency(totalFlow, actualOptimalFlow, overflowMultiplier);
                 tEU *= efficiency;
-                tEU = GT_Utility.safeInt((long) tEU * (long) aBaseEff / 10000L);
             }
+            tEU = GT_Utility.safeInt((long) tEU * (long) aBaseEff / 10000L);
 
             // EU/t output cap to properly tier the LGT against the Advanced LGT, will be implemented in a future dev
             // update

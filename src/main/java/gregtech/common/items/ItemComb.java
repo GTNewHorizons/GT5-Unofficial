@@ -742,13 +742,8 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
         addProcessGT(CombType.SULFUR, new Materials[] { Materials.Sulfur }, Voltage.LV);
         addProcessGT(CombType.GALLIUM, new Materials[] { Materials.Gallium }, Voltage.LV);
         addProcessGT(CombType.ARSENIC, new Materials[] { Materials.Arsenic }, Voltage.LV);
-        if (ProcessingModSupport.aEnableGCMarsMats) {
-            addProcessGT(CombType.IRON, new Materials[] { Materials.Iron }, Voltage.LV);
-            addProcessGT(CombType.STEEL, new Materials[] { Materials.Steel }, Voltage.LV);
-        } else {
-            addProcessGT(CombType.IRON, new Materials[] { Materials.Iron }, Voltage.LV);
-            addProcessGT(CombType.STEEL, new Materials[] { Materials.Steel }, Voltage.LV);
-        }
+        addProcessGT(CombType.IRON, new Materials[] { Materials.Iron }, Voltage.LV);
+        addProcessGT(CombType.STEEL, new Materials[] { Materials.Steel }, Voltage.LV);
         if (GT_Mod.gregtechproxy.mNerfedCombs) {
             addCentrifugeToMaterial(
                     CombType.SLAG,

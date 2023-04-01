@@ -181,12 +181,11 @@ public abstract class GT_GUIScreen extends GuiScreen implements GT_IToolTipRende
             if (focusedTextBox != null) {
                 resetTextBox(focusedTextBox);
                 setFocusedTextBox(null);
-                return;
             } else {
                 closeScreen();
                 // don't fall through to parent
-                return;
             }
+            return;
         }
 
         if (c == '\t') { // tab
