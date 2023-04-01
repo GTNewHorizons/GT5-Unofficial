@@ -26,7 +26,6 @@ import java.util.stream.IntStream;
 
 import kubatech.Tags;
 import kubatech.api.LoaderReference;
-import kubatech.api.helpers.GTHelper;
 import kubatech.api.implementations.KubaTechGTMultiBlockBase;
 import kubatech.client.effect.MegaApiaryBeesRenderer;
 
@@ -227,10 +226,6 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
         return (d, r, f) -> d.offsetY == 0 && r.isNotRotated();
     }
 
-    private String voltageFormatted(int v) {
-        return GT_Values.TIER_COLORS[v] + GT_Values.VN[v] + EnumChatFormatting.GRAY;
-    }
-
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
@@ -244,9 +239,9 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
                 .addInfo("-------------------- OUTPUT MODE ---------------------").addInfo("- Does not take power")
                 .addInfo("- Will give your bees back to output bus")
                 .addInfo("------------------- OPERATING MODE -------------------").addInfo("- NORMAL:")
-                .addInfo("  - For each " + voltageFormatted(6) + " amp you can insert 1 bee")
+                .addInfo("  - For each " + voltageTooltipFormatted(6) + " amp you can insert 1 bee")
                 .addInfo("  - Processing time: 5 seconds")
-                .addInfo("  - Uses 1 " + voltageFormatted(6) + " amp per queen")
+                .addInfo("  - Uses 1 " + voltageTooltipFormatted(6) + " amp per queen")
                 .addInfo("  - All bees are accelerated 64 times").addInfo("  - 8 production upgrades are applied")
                 .addInfo("  - Genetic Stabilizer upgrade applied")
                 .addInfo("  - Simulates perfect environment for your bees")
@@ -257,7 +252,7 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
                 .addInfo("- SWARMER:").addInfo("  - You can only insert 1 queen")
                 .addInfo("  - It will slowly produce ignoble princesses")
                 .addInfo("  - Consumes 100 royal jelly per operation").addInfo("  - Base processing time: 1 minute")
-                .addInfo("  - Uses 1 amp " + voltageFormatted(5)).addInfo("  - Can overclock")
+                .addInfo("  - Uses 1 amp " + voltageTooltipFormatted(5)).addInfo("  - Can overclock")
                 .addInfo(StructureHologram).addSeparator().beginStructureBlock(15, 17, 15, false)
                 .addController("Front Bottom Center").addCasingInfoMin("Bronze Plated Bricks", 190, false)
                 .addOtherStructurePart("Borosilicate Glass", "Look at the hologram")
@@ -374,7 +369,7 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
         if (mPrimaryMode < 2) {
             if (mPrimaryMode == 0 && mStorage.size() < mMaxSlots) {
                 World w = getBaseMetaTileEntity().getWorld();
-                float t = (float) GTHelper.getVoltageTierD(this);
+                float t = (float) getVoltageTierExact();
                 ArrayList<ItemStack> inputs = getStoredInputs();
                 for (ItemStack input : inputs) {
                     if (beeRoot.getType(input) == EnumBeeType.QUEEN) {
@@ -405,7 +400,7 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
                     if (megaApiaryStorageVersion != MEGA_APIARY_STORAGE_VERSION) {
                         megaApiaryStorageVersion = MEGA_APIARY_STORAGE_VERSION;
                         World w = getBaseMetaTileEntity().getWorld();
-                        float t = (float) GTHelper.getVoltageTierD(this);
+                        float t = (float) getVoltageTierExact();
                         mStorage.forEach(s -> s.generate(w, t));
                     }
 
@@ -414,7 +409,7 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
                     if (flowersError) return false;
 
                     if (needsTVarUpdate) {
-                        float t = (float) GTHelper.getVoltageTierD(this);
+                        float t = (float) getVoltageTierExact();
                         needsTVarUpdate = false;
                         mStorage.forEach(s -> s.updateTVar(t));
                     }
@@ -603,7 +598,7 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
                     return super.transferStackInSlot(aPlayer, aSlotIndex);
                 }
                 World w = mte.getBaseMetaTileEntity().getWorld();
-                float t = (float) GTHelper.getVoltageTierD(mte);
+                float t = (float) mte.getVoltageTierExact();
                 BeeSimulator bs = new BeeSimulator(aStack, w, t);
                 if (bs.isValid) {
                     mte.mStorage.add(bs);
@@ -727,7 +722,7 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
                             }
                             if (beeRoot.getType(input) == EnumBeeType.QUEEN) {
                                 World w = getBaseMetaTileEntity().getWorld();
-                                float t = (float) GTHelper.getVoltageTierD(this);
+                                float t = (float) getVoltageTierExact();
                                 BeeSimulator bs = new BeeSimulator(input, w, t);
                                 if (bs.isValid) {
                                     if (mStorage.size() > ID) {

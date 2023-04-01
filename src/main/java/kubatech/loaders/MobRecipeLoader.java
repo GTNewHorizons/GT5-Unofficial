@@ -273,7 +273,7 @@ public class MobRecipeLoader {
                     EnchantmentHelper
                             .addRandomEnchantment(rnd, infernalstack, infernalstack.getItem().getItemEnchantability());
                     stacks.add(infernalstack);
-                    MTE.mEUt *= 8L;
+                    MTE.lEUt *= 8L;
                     MTE.mMaxProgresstime *= mods * InfernalMobsCore.instance().getMobModHealthFactor();
                 }
             }

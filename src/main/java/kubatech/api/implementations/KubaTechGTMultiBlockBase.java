@@ -9,6 +9,7 @@ import java.util.function.Function;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
@@ -22,6 +23,7 @@ import com.gtnewhorizons.modularui.common.builder.UIInfo;
 import com.gtnewhorizons.modularui.common.internal.wrapper.ModularGui;
 import com.gtnewhorizons.modularui.common.internal.wrapper.ModularUIContainer;
 
+import gregtech.api.enums.GT_Values;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
@@ -29,6 +31,9 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPow
 
 public abstract class KubaTechGTMultiBlockBase<T extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<T>>
         extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<T> {
+
+    @Deprecated
+    public final int mEUt = 0;
 
     @SuppressWarnings("unchecked")
     protected static <K extends KubaTechGTMultiBlockBase<?>> UIInfo<?, ?> createKTMetaTileEntityUI(
@@ -160,6 +165,14 @@ public abstract class KubaTechGTMultiBlockBase<T extends GT_MetaTileEntity_Exten
         return calculateOverclock(aEUt, aDuration, true);
     }
 
+    public int getVoltageTier() {
+        return (int) getVoltageTierExact();
+    }
+
+    public double getVoltageTierExact() {
+        return Math.log((double) getMaxInputEu() / 8d) / ln4 + 1e-8d;
+    }
+
     @Override
     public boolean isCorrectMachinePart(ItemStack aStack) {
         return true;
@@ -180,7 +193,11 @@ public abstract class KubaTechGTMultiBlockBase<T extends GT_MetaTileEntity_Exten
         return false;
     }
 
-    // ModularUI stuff
+    // UI stuff
+
+    protected static String voltageTooltipFormatted(int tier) {
+        return GT_Values.TIER_COLORS[tier] + GT_Values.VN[tier] + EnumChatFormatting.GRAY;
+    }
 
     protected final Function<Widget, Boolean> isFixed = widget -> getIdealStatus() == getRepairStatus() && mMachine;
     protected static final Function<Integer, IDrawable[]> toggleButtonBackgroundGetter = val -> {

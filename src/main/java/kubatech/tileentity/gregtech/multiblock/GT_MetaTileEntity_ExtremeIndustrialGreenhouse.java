@@ -227,10 +227,6 @@ public class GT_MetaTileEntity_ExtremeIndustrialGreenhouse
         return (d, r, f) -> d.offsetY == 0 && r.isNotRotated() && f.isNotFlipped();
     }
 
-    private static String tierString(int tier) {
-        return GT_Values.TIER_COLORS[tier] + GT_Values.VN[tier] + EnumChatFormatting.RESET + EnumChatFormatting.GRAY;
-    }
-
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
@@ -248,18 +244,21 @@ public class GT_MetaTileEntity_ExtremeIndustrialGreenhouse
                 .addInfo("[IC2] You need to also input block that is required under the crop")
                 .addInfo("Output mode: machine will take planted seeds and output them")
                 .addInfo("-------------------- NORMAL CROPS --------------------")
-                .addInfo("Minimal tier: " + tierString(4)).addInfo("Starting with 1 slot")
+                .addInfo("Minimal tier: " + voltageTooltipFormatted(4)).addInfo("Starting with 1 slot")
                 .addInfo("Every slot gives 64 crops")
-                .addInfo("Every tier past " + tierString(4) + ", slots are multiplied by 2")
+                .addInfo("Every tier past " + voltageTooltipFormatted(4) + ", slots are multiplied by 2")
                 .addInfo("Base process time: 5 sec")
-                .addInfo("Process time is divided by number of tiers past " + tierString(3) + " (Minimum 1 sec)")
+                .addInfo(
+                        "Process time is divided by number of tiers past " + voltageTooltipFormatted(3)
+                                + " (Minimum 1 sec)")
                 .addInfo("All crops are grown at the end of the operation")
                 .addInfo("Will automatically craft seeds if they are not dropped")
                 .addInfo("1 Fertilizer per 1 crop +200%")
                 .addInfo("-------------------- IC2    CROPS --------------------")
-                .addInfo("Minimal tier: " + tierString(6)).addInfo("Need " + tierString(6) + " glass tier")
-                .addInfo("Starting with 4 slots").addInfo("Every slot gives 1 crop")
-                .addInfo("Every tier past " + tierString(6) + ", slots are multiplied by 4")
+                .addInfo("Minimal tier: " + voltageTooltipFormatted(6))
+                .addInfo("Need " + voltageTooltipFormatted(6) + " glass tier").addInfo("Starting with 4 slots")
+                .addInfo("Every slot gives 1 crop")
+                .addInfo("Every tier past " + voltageTooltipFormatted(6) + ", slots are multiplied by 4")
                 .addInfo("Process time: 5 sec").addInfo("All crops are accelerated by x32 times")
                 .addInfo("1 Fertilizer per 1 crop +10%").addInfo(StructureHologram).addSeparator()
                 .beginStructureBlock(5, 6, 5, false).addController("Front bottom center")
@@ -336,8 +335,7 @@ public class GT_MetaTileEntity_ExtremeIndustrialGreenhouse
     }
 
     private void updateMaxSlots() {
-        long v = this.getMaxInputVoltage();
-        int tier = GT_Utility.getTier(v);
+        int tier = getVoltageTier();
         if (tier < (isIC2Mode ? 6 : 4)) mMaxSlots = 0;
         else if (isIC2Mode) mMaxSlots = 4 << (2 * (tier - 6));
         else mMaxSlots = 1 << (tier - 4);
@@ -345,8 +343,7 @@ public class GT_MetaTileEntity_ExtremeIndustrialGreenhouse
 
     @Override
     public boolean checkRecipe(ItemStack itemStack) {
-        long v = this.getMaxInputVoltage();
-        int tier = GT_Utility.getTier(v);
+        int tier = getVoltageTier();
         updateMaxSlots();
 
         if (oldVersion != EIG_MATH_VERSION) {
@@ -385,7 +382,7 @@ public class GT_MetaTileEntity_ExtremeIndustrialGreenhouse
 
             this.updateSlots();
             this.mMaxProgresstime = 5;
-            this.mEUt = 0;
+            this.lEUt = 0;
             this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
             this.mEfficiencyIncrease = 10000;
             return true;
@@ -478,7 +475,7 @@ public class GT_MetaTileEntity_ExtremeIndustrialGreenhouse
             }
             this.mOutputItems = outputs.toArray(new ItemStack[0]);
         }
-        this.mEUt = -(int) ((double) GT_Values.V[tier] * 0.99d);
+        this.lEUt = -(int) ((double) GT_Values.V[tier] * 0.99d);
         this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
         this.mEfficiencyIncrease = 10000;
         this.updateSlots();
