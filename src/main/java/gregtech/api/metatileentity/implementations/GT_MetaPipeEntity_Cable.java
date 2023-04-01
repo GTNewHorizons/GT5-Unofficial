@@ -1,6 +1,7 @@
 package gregtech.api.metatileentity.implementations;
 
 import static gregtech.api.enums.GT_Values.ALL_VALID_SIDES;
+import static gregtech.api.enums.ModIDs.GalacticraftCore;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -19,13 +20,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import cofh.api.energy.IEnergyReceiver;
-import cpw.mods.fml.common.Loader;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.Dyes;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.TextureSet;
-import gregtech.api.enums.Textures;
+import gregtech.api.enums.*;
 import gregtech.api.graphs.Node;
 import gregtech.api.graphs.NodeList;
 import gregtech.api.graphs.PowerNode;
@@ -348,7 +345,7 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
 
         // ((tIsGregTechTileEntity && tIsTileEntityCable) && (tAlwaysLookConnected || tLetEnergyIn || tLetEnergyOut) )
         // --> Not needed
-        if (Loader.isModLoaded("GalacticraftCore") && GT_GC_Compat.canConnect(tTileEntity, tDir)) return true;
+        if (GalacticraftCore.isModLoaded() && GT_GC_Compat.canConnect(tTileEntity, tDir)) return true;
 
         // AE2-p2p Compat
         if (GT_Mod.gregtechproxy.mAE2Integration) {

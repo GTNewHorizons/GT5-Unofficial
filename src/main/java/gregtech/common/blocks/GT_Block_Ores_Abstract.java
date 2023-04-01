@@ -1,5 +1,7 @@
 package gregtech.common.blocks;
 
+import static gregtech.api.enums.ModIDs.NotEnoughItems;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -24,7 +26,6 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GT_Mod;
@@ -54,7 +55,7 @@ public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements
         this.isBlockContainer = true;
         setStepSound(soundTypeStone);
         setCreativeTab(GregTech_API.TAB_GREGTECH_ORES);
-        tHideOres = Loader.isModLoaded("NotEnoughItems") && GT_Mod.gregtechproxy.mHideUnusedOres;
+        tHideOres = NotEnoughItems.isModLoaded() && GT_Mod.gregtechproxy.mHideUnusedOres;
         if (aOreMetaCount > 8 || aOreMetaCount < 0) aOreMetaCount = 8;
 
         for (int i = 0; i < 16; i++) {

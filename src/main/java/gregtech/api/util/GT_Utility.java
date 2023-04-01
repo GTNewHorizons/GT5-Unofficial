@@ -25,6 +25,7 @@ import java.util.function.Function;
 import java.util.function.IntFunction;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -2795,6 +2796,13 @@ public class GT_Utility {
         return null;
     }
 
+    public static FluidStack copyAmount(int aAmount, FluidStack aStack) {
+        if (aStack == null) return null;
+        FluidStack rStack = aStack.copy();
+        rStack.amount = aAmount;
+        return rStack;
+    }
+
     public static ItemStack copyAmount(long aAmount, Object... aStacks) {
         ItemStack rStack = copy(aStacks);
         if (isStackInvalid(rStack)) return null;
@@ -2802,6 +2810,17 @@ public class GT_Utility {
         else if (aAmount == -1) aAmount = 111;
         else if (aAmount < 0) aAmount = 0;
         rStack.stackSize = (byte) aAmount;
+        return rStack;
+    }
+
+    public static ItemStack multiplyStack(long aMultiplier, Object... aStacks) {
+        ItemStack rStack = copy(aStacks);
+        if (isStackInvalid(rStack)) return null;
+        long tAmount = rStack.stackSize * aMultiplier;
+        if (tAmount > 64) tAmount = 64;
+        else if (tAmount == -1) tAmount = 111;
+        else if (tAmount < 0) tAmount = 0;
+        rStack.stackSize = (byte) tAmount;
         return rStack;
     }
 
@@ -4337,6 +4356,10 @@ public class GT_Utility {
         return GT_Utility.areStacksEqual(itemStack, tStack);
     }
 
+    /**
+     * Convert a cell to fluid. If given itemstack does not contain any fluid, return null. Will correctly multiple
+     * output fluid amount if input stack size is greater than 1.
+     */
     public static FluidStack convertCellToFluid(ItemStack itemStack) {
         if (itemStack == null) return null;
         if (getFluidForFilledItem(itemStack, true) != null) {
@@ -4347,10 +4370,20 @@ public class GT_Utility {
         return null;
     }
 
+    /**
+     * @deprecated typo in method name. use {@link #isAnyIntegratedCircuit(ItemStack)} instead.
+     */
+    @Deprecated
     public static boolean checkIfSameIntegratedCircuit(ItemStack itemStack) {
         if (itemStack == null) return false;
         for (int i = 0; i < 25; i++) if (itemStack.isItemEqual(GT_Utility.getIntegratedCircuit(i))) return true;
         return false;
+    }
+
+    public static boolean isAnyIntegratedCircuit(ItemStack itemStack) {
+        if (itemStack == null) return false;
+        return itemStack.getItem() == ItemList.Circuit_Integrated.getItem() && 0 <= itemStack.getItemDamage()
+                && itemStack.getItemDamage() < 25;
     }
 
     public static byte convertRatioToRedstone(long used, long max, int threshold, boolean inverted) {
@@ -4410,6 +4443,56 @@ public class GT_Utility {
                 (b, t) -> b.put(keyMapper.apply(t), valueMapper.apply(t)),
                 (b1, b2) -> b1.putAll(b2.build()),
                 ImmutableMap.Builder::build);
+    }
+
+    public static boolean isArrayEmptyOrNull(Object[] arr) {
+        return arr == null || arr.length == 0;
+    }
+
+    public static boolean isArrayOfLength(Object[] arr, int expectedLength) {
+        return arr != null && arr.length == expectedLength;
+    }
+
+    @SafeVarargs
+    public static <E> Collection<E> concat(Collection<E>... colls) {
+        return concat(Arrays.asList(colls));
+    }
+
+    public static <E> Collection<E> concat(Collection<Collection<E>> colls) {
+        return new ConcatCollection<>(colls);
+    }
+
+    private static class ConcatCollection<E> extends AbstractCollection<E> {
+
+        private final Collection<Collection<E>> colls;
+        private final int size;
+
+        public ConcatCollection(Collection<Collection<E>> lists) {
+            Collection<Collection<E>> colls1 = null;
+            for (Collection<E> list : lists) {
+                if (list == null || list.isEmpty()) {
+                    colls1 = lists.stream().filter(c -> c != null && !c.isEmpty()).collect(Collectors.toList());
+                    break;
+                }
+            }
+            if (colls1 == null) colls1 = lists;
+            colls = colls1;
+            int sum = 0;
+            for (Collection<E> list : colls) {
+                sum += list.size();
+            }
+            size = sum;
+        }
+
+        @Override
+        public Iterator<E> iterator() {
+            return colls.stream().flatMap(Collection::stream).iterator();
+        }
+
+        @Override
+        public int size() {
+            return size;
+        }
     }
 
     @AutoValue

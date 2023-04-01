@@ -1,5 +1,9 @@
 package gregtech.loaders.postload.recipes;
 
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sFermentingRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
 
 import net.minecraftforge.fluids.FluidRegistry;
@@ -12,218 +16,189 @@ public class FermenterRecipes implements Runnable {
 
     @Override
     public void run() {
-        GT_Values.RA.addFermentingRecipe(
-                Materials.Biomass.getFluid(100),
-                Materials.FermentedBiomass.getFluid(100),
-                150,
-                false);
-        GT_Values.RA.addFermentingRecipe(
-                new FluidStack(FluidRegistry.getFluid("ic2biomass"), 100),
-                Materials.FermentedBiomass.getFluid(100),
-                150,
-                false);
 
-        GT_Values.RA.addFermentingRecipe(getFluidStack("milk", 50), getFluidStack("potion.mundane", 25), 1024, false);
-        GT_Values.RA.addFermentingRecipe(
-                getFluidStack("potion.lemonjuice", 50),
-                getFluidStack("potion.limoncello", 25),
-                1024,
-                true);
-        GT_Values.RA.addFermentingRecipe(
-                getFluidStack("potion.applejuice", 50),
-                getFluidStack("potion.cider", 25),
-                1024,
-                false);
-        GT_Values.RA.addFermentingRecipe(
-                getFluidStack("potion.goldenapplejuice", 50),
-                getFluidStack("potion.goldencider", 25),
-                1024,
-                true);
-        GT_Values.RA.addFermentingRecipe(
-                getFluidStack("potion.idunsapplejuice", 50),
-                getFluidStack("potion.notchesbrew", 25),
-                1024,
-                true);
-        GT_Values.RA.addFermentingRecipe(
-                getFluidStack("potion.reedwater", 50),
-                getFluidStack("potion.rum", 25),
-                1024,
-                true);
-        GT_Values.RA.addFermentingRecipe(
-                getFluidStack("potion.rum", 50),
-                getFluidStack("potion.piratebrew", 10),
-                2048,
-                false);
-        GT_Values.RA.addFermentingRecipe(
-                getFluidStack("potion.grapejuice", 50),
-                getFluidStack("potion.wine", 25),
-                1024,
-                false);
-        GT_Values.RA
-                .addFermentingRecipe(getFluidStack("potion.wine", 50), getFluidStack("potion.vinegar", 10), 2048, true);
-        GT_Values.RA.addFermentingRecipe(
-                getFluidStack("potion.wheatyjuice", 50),
-                getFluidStack("potion.scotch", 25),
-                1024,
-                true);
-        GT_Values.RA.addFermentingRecipe(
-                getFluidStack("potion.scotch", 50),
-                getFluidStack("potion.glenmckenner", 10),
-                2048,
-                true);
-        GT_Values.RA.addFermentingRecipe(
-                getFluidStack("potion.wheatyhopsjuice", 50),
-                getFluidStack("potion.beer", 25),
-                1024,
-                false);
-        GT_Values.RA.addFermentingRecipe(
-                getFluidStack("potion.hopsjuice", 50),
-                getFluidStack("potion.darkbeer", 25),
-                1024,
-                false);
-        GT_Values.RA.addFermentingRecipe(
-                getFluidStack("potion.darkbeer", 50),
-                getFluidStack("potion.dragonblood", 10),
-                2048,
-                true);
+        GT_Values.RA.stdBuilder().noItemInputs().noItemOutputs().fluidInputs(Materials.Biomass.getFluid(100))
+                .fluidOutputs(Materials.FermentedBiomass.getFluid(100)).duration(7 * SECONDS + 10 * TICKS).eut(2)
+                .addTo(sFermentingRecipes);
 
-        GT_Values.RA.addFermentingRecipe(
-                getFluidStack("potion.beer", 75),
-                getFluidStack("potion.vinegar", 50),
-                2048,
-                false);
-        GT_Values.RA.addFermentingRecipe(
-                getFluidStack("potion.cider", 75),
-                getFluidStack("potion.vinegar", 50),
-                2048,
-                false);
-        GT_Values.RA.addFermentingRecipe(
-                getFluidStack("potion.goldencider", 75),
-                getFluidStack("potion.vinegar", 50),
-                2048,
-                true);
-        GT_Values.RA
-                .addFermentingRecipe(getFluidStack("potion.rum", 75), getFluidStack("potion.vinegar", 50), 2048, false);
-        GT_Values.RA.addFermentingRecipe(
-                getFluidStack("potion.wine", 75),
-                getFluidStack("potion.vinegar", 50),
-                2048,
-                false);
+        GT_Values.RA.stdBuilder().noItemInputs().noItemOutputs()
+                .fluidInputs(new FluidStack(FluidRegistry.getFluid("ic2biomass"), 100))
+                .fluidOutputs(Materials.FermentedBiomass.getFluid(100)).duration(7 * SECONDS + 10 * TICKS).eut(2)
+                .addTo(sFermentingRecipes);
 
-        GT_Values.RA.addFermentingRecipe(
-                getFluidStack("potion.awkward", 50),
-                getFluidStack("potion.weakness", 25),
-                1024,
-                false);
-        GT_Values.RA.addFermentingRecipe(
-                getFluidStack("potion.mundane", 50),
-                getFluidStack("potion.weakness", 25),
-                1024,
-                false);
-        GT_Values.RA.addFermentingRecipe(
-                getFluidStack("potion.thick", 50),
-                getFluidStack("potion.weakness", 25),
-                1024,
-                false);
-        GT_Values.RA.addFermentingRecipe(
-                getFluidStack("potion.poison", 50),
-                getFluidStack("potion.damage", 25),
-                1024,
-                false);
-        GT_Values.RA.addFermentingRecipe(
-                getFluidStack("potion.health", 50),
-                getFluidStack("potion.damage", 25),
-                1024,
-                false);
-        GT_Values.RA.addFermentingRecipe(
-                getFluidStack("potion.waterbreathing", 50),
-                getFluidStack("potion.damage", 25),
-                1024,
-                false);
-        GT_Values.RA.addFermentingRecipe(
-                getFluidStack("potion.nightvision", 50),
-                getFluidStack("potion.invisibility", 25),
-                1024,
-                false);
-        GT_Values.RA.addFermentingRecipe(
-                getFluidStack("potion.fireresistance", 50),
-                getFluidStack("potion.slowness", 25),
-                1024,
-                false);
-        GT_Values.RA.addFermentingRecipe(
-                getFluidStack("potion.speed", 50),
-                getFluidStack("potion.slowness", 25),
-                1024,
-                false);
-        GT_Values.RA.addFermentingRecipe(
-                getFluidStack("potion.strength", 50),
-                getFluidStack("potion.weakness", 25),
-                1024,
-                false);
-        GT_Values.RA.addFermentingRecipe(
-                getFluidStack("potion.regen", 50),
-                getFluidStack("potion.poison", 25),
-                1024,
-                false);
-        GT_Values.RA.addFermentingRecipe(
-                getFluidStack("potion.poison.strong", 50),
-                getFluidStack("potion.damage.strong", 10),
-                2048,
-                false);
-        GT_Values.RA.addFermentingRecipe(
-                getFluidStack("potion.health.strong", 50),
-                getFluidStack("potion.damage.strong", 10),
-                2048,
-                false);
-        GT_Values.RA.addFermentingRecipe(
-                getFluidStack("potion.speed.strong", 50),
-                getFluidStack("potion.slowness.strong", 10),
-                2048,
-                false);
-        GT_Values.RA.addFermentingRecipe(
-                getFluidStack("potion.strength.strong", 50),
-                getFluidStack("potion.weakness.strong", 10),
-                2048,
-                false);
-        GT_Values.RA.addFermentingRecipe(
-                getFluidStack("potion.nightvision.long", 50),
-                getFluidStack("potion.invisibility.long", 10),
-                2048,
-                false);
-        GT_Values.RA.addFermentingRecipe(
-                getFluidStack("potion.regen.strong", 50),
-                getFluidStack("potion.poison.strong", 10),
-                2048,
-                false);
-        GT_Values.RA.addFermentingRecipe(
-                getFluidStack("potion.poison.long", 50),
-                getFluidStack("potion.damage.long", 10),
-                2048,
-                false);
-        GT_Values.RA.addFermentingRecipe(
-                getFluidStack("potion.waterbreathing.long", 50),
-                getFluidStack("potion.damage.long", 10),
-                2048,
-                false);
-        GT_Values.RA.addFermentingRecipe(
-                getFluidStack("potion.fireresistance.long", 50),
-                getFluidStack("potion.slowness.long", 10),
-                2048,
-                false);
-        GT_Values.RA.addFermentingRecipe(
-                getFluidStack("potion.speed.long", 50),
-                getFluidStack("potion.slowness.long", 10),
-                2048,
-                false);
-        GT_Values.RA.addFermentingRecipe(
-                getFluidStack("potion.strength.long", 50),
-                getFluidStack("potion.weakness.long", 10),
-                2048,
-                false);
-        GT_Values.RA.addFermentingRecipe(
-                getFluidStack("potion.regen.long", 50),
-                getFluidStack("potion.poison.long", 10),
-                2048,
-                false);
+        GT_Values.RA.stdBuilder().noItemInputs().noItemOutputs().fluidInputs(getFluidStack("milk", 50))
+                .fluidOutputs(getFluidStack("potion.mundane", 25)).duration(51 * SECONDS + 4 * TICKS).eut(2)
+                .addTo(sFermentingRecipes);
+
+        GT_Values.RA.stdBuilder().noItemInputs().noItemOutputs().fluidInputs(getFluidStack("potion.lemonjuice", 50))
+                .fluidOutputs(getFluidStack("potion.limoncello", 25)).duration(51 * SECONDS + 4 * TICKS).eut(2)
+                .addTo(sFermentingRecipes);
+
+        GT_Values.RA.stdBuilder().noItemInputs().noItemOutputs().fluidInputs(getFluidStack("potion.applejuice", 50))
+                .fluidOutputs(getFluidStack("potion.cider", 25)).duration(51 * SECONDS + 4 * TICKS).eut(2)
+                .addTo(sFermentingRecipes);
+
+        GT_Values.RA.stdBuilder().noItemInputs().noItemOutputs()
+                .fluidInputs(getFluidStack("potion.goldenapplejuice", 50))
+                .fluidOutputs(getFluidStack("potion.goldencider", 25)).duration(51 * SECONDS + 4 * TICKS).eut(2)
+                .addTo(sFermentingRecipes);
+
+        GT_Values.RA.stdBuilder().noItemInputs().noItemOutputs()
+                .fluidInputs(getFluidStack("potion.idunsapplejuice", 50))
+                .fluidOutputs(getFluidStack("potion.notchesbrew", 25)).duration(51 * SECONDS + 4 * TICKS).eut(2)
+                .addTo(sFermentingRecipes);
+
+        GT_Values.RA.stdBuilder().noItemInputs().noItemOutputs().fluidInputs(getFluidStack("potion.reedwater", 50))
+                .fluidOutputs(getFluidStack("potion.rum", 25)).duration(51 * SECONDS + 4 * TICKS).eut(2)
+                .addTo(sFermentingRecipes);
+
+        GT_Values.RA.stdBuilder().noItemInputs().noItemOutputs().fluidInputs(getFluidStack("potion.rum", 50))
+                .fluidOutputs(getFluidStack("potion.piratebrew", 10)).duration(1 * MINUTES + 42 * SECONDS + 8 * TICKS)
+                .eut(2).addTo(sFermentingRecipes);
+
+        GT_Values.RA.stdBuilder().noItemInputs().noItemOutputs().fluidInputs(getFluidStack("potion.grapejuice", 50))
+                .fluidOutputs(getFluidStack("potion.wine", 25)).duration(51 * SECONDS + 4 * TICKS).eut(2)
+                .addTo(sFermentingRecipes);
+
+        GT_Values.RA.stdBuilder().noItemInputs().noItemOutputs().fluidInputs(getFluidStack("potion.wine", 50))
+                .fluidOutputs(getFluidStack("potion.vinegar", 10)).duration(1 * MINUTES + 42 * SECONDS + 8 * TICKS)
+                .eut(2).addTo(sFermentingRecipes);
+
+        GT_Values.RA.stdBuilder().noItemInputs().noItemOutputs().fluidInputs(getFluidStack("potion.wheatyjuice", 50))
+                .fluidOutputs(getFluidStack("potion.scotch", 25)).duration(51 * SECONDS + 4 * TICKS).eut(2)
+                .addTo(sFermentingRecipes);
+
+        GT_Values.RA.stdBuilder().noItemInputs().noItemOutputs().fluidInputs(getFluidStack("potion.scotch", 50))
+                .fluidOutputs(getFluidStack("potion.glenmckenner", 10)).duration(1 * MINUTES + 42 * SECONDS + 8 * TICKS)
+                .eut(2).addTo(sFermentingRecipes);
+
+        GT_Values.RA.stdBuilder().noItemInputs().noItemOutputs()
+                .fluidInputs(getFluidStack("potion.wheatyhopsjuice", 50)).fluidOutputs(getFluidStack("potion.beer", 25))
+                .duration(51 * SECONDS + 4 * TICKS).eut(2).addTo(sFermentingRecipes);
+
+        GT_Values.RA.stdBuilder().noItemInputs().noItemOutputs().fluidInputs(getFluidStack("potion.hopsjuice", 50))
+                .fluidOutputs(getFluidStack("potion.darkbeer", 25)).duration(51 * SECONDS + 4 * TICKS).eut(2)
+                .addTo(sFermentingRecipes);
+
+        GT_Values.RA.stdBuilder().noItemInputs().noItemOutputs().fluidInputs(getFluidStack("potion.darkbeer", 50))
+                .fluidOutputs(getFluidStack("potion.dragonblood", 10)).duration(1 * MINUTES + 42 * SECONDS + 8 * TICKS)
+                .eut(2).addTo(sFermentingRecipes);
+
+        GT_Values.RA.stdBuilder().noItemInputs().noItemOutputs().fluidInputs(getFluidStack("potion.beer", 75))
+                .fluidOutputs(getFluidStack("potion.vinegar", 50)).duration(1 * MINUTES + 42 * SECONDS + 8 * TICKS)
+                .eut(2).addTo(sFermentingRecipes);
+
+        GT_Values.RA.stdBuilder().noItemInputs().noItemOutputs().fluidInputs(getFluidStack("potion.cider", 75))
+                .fluidOutputs(getFluidStack("potion.vinegar", 50)).duration(1 * MINUTES + 42 * SECONDS + 8 * TICKS)
+                .eut(2).addTo(sFermentingRecipes);
+
+        GT_Values.RA.stdBuilder().noItemInputs().noItemOutputs().fluidInputs(getFluidStack("potion.goldencider", 75))
+                .fluidOutputs(getFluidStack("potion.vinegar", 50)).duration(1 * MINUTES + 42 * SECONDS + 8 * TICKS)
+                .eut(2).addTo(sFermentingRecipes);
+
+        GT_Values.RA.stdBuilder().noItemInputs().noItemOutputs().fluidInputs(getFluidStack("potion.rum", 75))
+                .fluidOutputs(getFluidStack("potion.vinegar", 50)).duration(1 * MINUTES + 42 * SECONDS + 8 * TICKS)
+                .eut(2).addTo(sFermentingRecipes);
+
+        GT_Values.RA.stdBuilder().noItemInputs().noItemOutputs().fluidInputs(getFluidStack("potion.wine", 75))
+                .fluidOutputs(getFluidStack("potion.vinegar", 50)).duration(1 * MINUTES + 42 * SECONDS + 8 * TICKS)
+                .eut(2).addTo(sFermentingRecipes);
+
+        GT_Values.RA.stdBuilder().noItemInputs().noItemOutputs().fluidInputs(getFluidStack("potion.awkward", 50))
+                .fluidOutputs(getFluidStack("potion.weakness", 25)).duration(51 * SECONDS + 4 * TICKS).eut(2)
+                .addTo(sFermentingRecipes);
+
+        GT_Values.RA.stdBuilder().noItemInputs().noItemOutputs().fluidInputs(getFluidStack("potion.mundane", 50))
+                .fluidOutputs(getFluidStack("potion.weakness", 25)).duration(51 * SECONDS + 4 * TICKS).eut(2)
+                .addTo(sFermentingRecipes);
+
+        GT_Values.RA.stdBuilder().noItemInputs().noItemOutputs().fluidInputs(getFluidStack("potion.thick", 50))
+                .fluidOutputs(getFluidStack("potion.weakness", 25)).duration(51 * SECONDS + 4 * TICKS).eut(2)
+                .addTo(sFermentingRecipes);
+
+        GT_Values.RA.stdBuilder().noItemInputs().noItemOutputs().fluidInputs(getFluidStack("potion.poison", 50))
+                .fluidOutputs(getFluidStack("potion.damage", 25)).duration(51 * SECONDS + 4 * TICKS).eut(2)
+                .addTo(sFermentingRecipes);
+
+        GT_Values.RA.stdBuilder().noItemInputs().noItemOutputs().fluidInputs(getFluidStack("potion.health", 50))
+                .fluidOutputs(getFluidStack("potion.damage", 25)).duration(51 * SECONDS + 4 * TICKS).eut(2)
+                .addTo(sFermentingRecipes);
+
+        GT_Values.RA.stdBuilder().noItemInputs().noItemOutputs().fluidInputs(getFluidStack("potion.waterbreathing", 50))
+                .fluidOutputs(getFluidStack("potion.damage", 25)).duration(51 * SECONDS + 4 * TICKS).eut(2)
+                .addTo(sFermentingRecipes);
+
+        GT_Values.RA.stdBuilder().noItemInputs().noItemOutputs().fluidInputs(getFluidStack("potion.nightvision", 50))
+                .fluidOutputs(getFluidStack("potion.invisibility", 25)).duration(51 * SECONDS + 4 * TICKS).eut(2)
+                .addTo(sFermentingRecipes);
+
+        GT_Values.RA.stdBuilder().noItemInputs().noItemOutputs().fluidInputs(getFluidStack("potion.fireresistance", 50))
+                .fluidOutputs(getFluidStack("potion.slowness", 25)).duration(51 * SECONDS + 4 * TICKS).eut(2)
+                .addTo(sFermentingRecipes);
+
+        GT_Values.RA.stdBuilder().noItemInputs().noItemOutputs().fluidInputs(getFluidStack("potion.speed", 50))
+                .fluidOutputs(getFluidStack("potion.slowness", 25)).duration(51 * SECONDS + 4 * TICKS).eut(2)
+                .addTo(sFermentingRecipes);
+
+        GT_Values.RA.stdBuilder().noItemInputs().noItemOutputs().fluidInputs(getFluidStack("potion.strength", 50))
+                .fluidOutputs(getFluidStack("potion.weakness", 25)).duration(51 * SECONDS + 4 * TICKS).eut(2)
+                .addTo(sFermentingRecipes);
+
+        GT_Values.RA.stdBuilder().noItemInputs().noItemOutputs().fluidInputs(getFluidStack("potion.regen", 50))
+                .fluidOutputs(getFluidStack("potion.poison", 25)).duration(51 * SECONDS + 4 * TICKS).eut(2)
+                .addTo(sFermentingRecipes);
+
+        GT_Values.RA.stdBuilder().noItemInputs().noItemOutputs().fluidInputs(getFluidStack("potion.poison.strong", 50))
+                .fluidOutputs(getFluidStack("potion.damage.strong", 10))
+                .duration(1 * MINUTES + 42 * SECONDS + 8 * TICKS).eut(2).addTo(sFermentingRecipes);
+
+        GT_Values.RA.stdBuilder().noItemInputs().noItemOutputs().fluidInputs(getFluidStack("potion.health.strong", 50))
+                .fluidOutputs(getFluidStack("potion.damage.strong", 10))
+                .duration(1 * MINUTES + 42 * SECONDS + 8 * TICKS).eut(2).addTo(sFermentingRecipes);
+
+        GT_Values.RA.stdBuilder().noItemInputs().noItemOutputs().fluidInputs(getFluidStack("potion.speed.strong", 50))
+                .fluidOutputs(getFluidStack("potion.slowness.strong", 10))
+                .duration(1 * MINUTES + 42 * SECONDS + 8 * TICKS).eut(2).addTo(sFermentingRecipes);
+
+        GT_Values.RA.stdBuilder().noItemInputs().noItemOutputs()
+                .fluidInputs(getFluidStack("potion.strength.strong", 50))
+                .fluidOutputs(getFluidStack("potion.weakness.strong", 10))
+                .duration(1 * MINUTES + 42 * SECONDS + 8 * TICKS).eut(2).addTo(sFermentingRecipes);
+
+        GT_Values.RA.stdBuilder().noItemInputs().noItemOutputs()
+                .fluidInputs(getFluidStack("potion.nightvision.long", 50))
+                .fluidOutputs(getFluidStack("potion.invisibility.long", 10))
+                .duration(1 * MINUTES + 42 * SECONDS + 8 * TICKS).eut(2).addTo(sFermentingRecipes);
+
+        GT_Values.RA.stdBuilder().noItemInputs().noItemOutputs().fluidInputs(getFluidStack("potion.regen.strong", 50))
+                .fluidOutputs(getFluidStack("potion.poison.strong", 10))
+                .duration(1 * MINUTES + 42 * SECONDS + 8 * TICKS).eut(2).addTo(sFermentingRecipes);
+
+        GT_Values.RA.stdBuilder().noItemInputs().noItemOutputs().fluidInputs(getFluidStack("potion.poison.long", 50))
+                .fluidOutputs(getFluidStack("potion.damage.long", 10)).duration(1 * MINUTES + 42 * SECONDS + 8 * TICKS)
+                .eut(2).addTo(sFermentingRecipes);
+
+        GT_Values.RA.stdBuilder().noItemInputs().noItemOutputs()
+                .fluidInputs(getFluidStack("potion.waterbreathing.long", 50))
+                .fluidOutputs(getFluidStack("potion.damage.long", 10)).duration(1 * MINUTES + 42 * SECONDS + 8 * TICKS)
+                .eut(2).addTo(sFermentingRecipes);
+
+        GT_Values.RA.stdBuilder().noItemInputs().noItemOutputs()
+                .fluidInputs(getFluidStack("potion.fireresistance.long", 50))
+                .fluidOutputs(getFluidStack("potion.slowness.long", 10))
+                .duration(1 * MINUTES + 42 * SECONDS + 8 * TICKS).eut(2).addTo(sFermentingRecipes);
+
+        GT_Values.RA.stdBuilder().noItemInputs().noItemOutputs().fluidInputs(getFluidStack("potion.speed.long", 50))
+                .fluidOutputs(getFluidStack("potion.slowness.long", 10))
+                .duration(1 * MINUTES + 42 * SECONDS + 8 * TICKS).eut(2).addTo(sFermentingRecipes);
+
+        GT_Values.RA.stdBuilder().noItemInputs().noItemOutputs().fluidInputs(getFluidStack("potion.strength.long", 50))
+                .fluidOutputs(getFluidStack("potion.weakness.long", 10))
+                .duration(1 * MINUTES + 42 * SECONDS + 8 * TICKS).eut(2).addTo(sFermentingRecipes);
+
+        GT_Values.RA.stdBuilder().noItemInputs().noItemOutputs().fluidInputs(getFluidStack("potion.regen.long", 50))
+                .fluidOutputs(getFluidStack("potion.poison.long", 10)).duration(1 * MINUTES + 42 * SECONDS + 8 * TICKS)
+                .eut(2).addTo(sFermentingRecipes);
+
     }
 }

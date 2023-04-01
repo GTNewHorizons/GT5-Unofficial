@@ -1,6 +1,6 @@
 package gregtech.loaders.postload.chains;
 
-import static gregtech.api.enums.GT_Values.MOD_ID_GTPP;
+import static gregtech.api.enums.ModIDs.GTPlusPlus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +10,6 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
-import cpw.mods.fml.common.Loader;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -59,14 +58,14 @@ public class GT_PCBFactoryRecipes {
                 30 * 20,
                 (int) GT_Values.VP[9]);
         GT_Values.RA.addAssemblerRecipe(
-                new ItemStack[] { GT_ModHandler.getModItem(MOD_ID_GTPP, "blockFrameGtCelestialTungsten", 1),
+                new ItemStack[] { GT_ModHandler.getModItem(GTPlusPlus.modID, "blockFrameGtCelestialTungsten", 1),
                         Materials.get("Quantum").getPlates(6) },
                 null,
                 ItemList.RadiationProofPhotolithographicFrameworkCasing.get(1),
                 30 * 20,
                 (int) GT_Values.VP[11]);
         GT_Values.RA.addAssemblerRecipe(
-                new ItemStack[] { GT_ModHandler.getModItem(MOD_ID_GTPP, "blockFrameGtHypogen", 1),
+                new ItemStack[] { GT_ModHandler.getModItem(GTPlusPlus.modID, "blockFrameGtHypogen", 1),
                         GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.Infinity, 2),
                         Materials.Thulium.getPlates(6) },
                 Materials.SpaceTime.getMolten(144 * 8),
@@ -526,7 +525,7 @@ public class GT_PCBFactoryRecipes {
                     mTier3BitMap | mBioUpgradeBitMap);
         }
 
-        if (Loader.isModLoaded("miscutils")) {
+        if (GTPlusPlus.isModLoaded()) {
             // Optical Circuit Board
             for (int tier = 7; tier <= GT_PCBFactoryManager.mTiersOfPlastics; tier++) {
                 int amountOfBoards = (int) Math.ceil(8 * (Math.sqrt(Math.pow(2, tier - 7))));

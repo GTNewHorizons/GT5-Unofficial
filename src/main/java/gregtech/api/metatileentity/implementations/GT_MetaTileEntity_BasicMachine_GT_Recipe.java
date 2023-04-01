@@ -4,6 +4,7 @@ import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.GT_Values.VN;
 import static gregtech.api.enums.GT_Values.W;
 import static gregtech.api.enums.GT_Values.ticksBetweenSounds;
+import static gregtech.api.enums.ModIDs.BartWorks;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
 import java.util.Locale;
@@ -23,7 +24,6 @@ import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.math.Size;
 import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 
-import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.*;
@@ -206,12 +206,12 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
                         case 6:
                         case 7:
                         case 8:
-                            if (Loader.isModLoaded("bartworks")) { // todo remove via provider pattern on all enums?
+                            if (BartWorks.isModLoaded()) { // todo remove via provider pattern on all enums?
                                 aRecipe[i] = "blockGlass" + VN[aTier];
                                 break;
                             }
                         default:
-                            if (Loader.isModLoaded("bartworks")) { // todo remove via provider pattern on all enums?
+                            if (BartWorks.isModLoaded()) { // todo remove via provider pattern on all enums?
                                 aRecipe[i] = "blockGlass" + VN[8];
                             } else {
                                 aRecipe[i] = Ic2Items.reinforcedGlass;

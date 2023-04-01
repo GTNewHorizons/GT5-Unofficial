@@ -1,5 +1,7 @@
 package gregtech.api.enums;
 
+import static gregtech.api.enums.ModIDs.IndustrialCraft2;
+
 import java.math.BigInteger;
 import java.util.*;
 
@@ -206,7 +208,7 @@ public class GT_Values {
             TEX_DIR_ASPECTS = TEX_DIR + "aspects/", RES_PATH = MOD_ID + ":" + TEX_DIR,
             RES_PATH_GUI = MOD_ID + ":" + TEX_DIR_GUI, RES_PATH_ITEM = MOD_ID + ":", RES_PATH_BLOCK = MOD_ID + ":",
             RES_PATH_ENTITY = MOD_ID + ":" + TEX_DIR_ENTITY, RES_PATH_ASPECTS = MOD_ID + ":" + TEX_DIR_ASPECTS,
-            RES_PATH_IC2 = MOD_ID_IC2.toLowerCase(Locale.ENGLISH) + ":",
+            RES_PATH_IC2 = IndustrialCraft2.modID.toLowerCase(Locale.ENGLISH) + ":",
             RES_PATH_MODEL = MOD_ID + ":" + TEX_DIR + "models/";
 
     /**

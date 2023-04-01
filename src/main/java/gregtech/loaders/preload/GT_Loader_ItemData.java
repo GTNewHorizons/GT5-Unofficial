@@ -1,6 +1,6 @@
 package gregtech.loaders.preload;
 
-import static gregtech.api.enums.GT_Values.MOD_ID_DC;
+import static gregtech.api.enums.ModIDs.NewHorizonsCoreMod;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -152,7 +152,7 @@ public class GT_Loader_ItemData implements Runnable {
         GT_OreDictUnificator
                 .addItemData(new ItemStack(Blocks.iron_bars, 8, 32767), new ItemData(Materials.Iron, 10886400L));
         GT_OreDictUnificator.addItemData(
-                GT_ModHandler.getModItem(MOD_ID_DC, "item.SteelBars", 8L, 0),
+                GT_ModHandler.getModItem(NewHorizonsCoreMod.modID, "item.SteelBars", 8L, 0),
                 new ItemData(Materials.Steel, 10886400L));
         GT_OreDictUnificator
                 .addItemData(GT_ModHandler.getIC2Item("ironFurnace", 1L), new ItemData(Materials.Iron, 18144000L));

@@ -1,6 +1,7 @@
 package gregtech.api.items;
 
 import static gregtech.api.enums.GT_Values.*;
+import static gregtech.api.enums.ModIDs.AppleCore;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,7 +21,6 @@ import net.minecraft.world.World;
 
 import squeek.applecore.api.food.FoodValues;
 import squeek.applecore.api.food.IEdible;
-import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -321,7 +321,7 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements 
     public final ItemStack onEaten(ItemStack aStack, World aWorld, EntityPlayer aPlayer) {
         IFoodStat tStat = mFoodStats.get((short) getDamage(aStack));
         if (tStat != null) {
-            if (Loader.isModLoaded(MOD_ID_APC)) {
+            if (AppleCore.isModLoaded()) {
                 aPlayer.getFoodStats().func_151686_a(
                         (ItemFood) GT_Utility.callConstructor(
                                 "squeek.applecore.api.food.ItemFoodProxy.ItemFoodProxy",

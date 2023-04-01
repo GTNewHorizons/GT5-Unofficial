@@ -1,7 +1,8 @@
 package gregtech.common;
 
 import static gregtech.GT_Mod.GT_FML_LOGGER;
-import static gregtech.api.enums.GT_Values.MOD_ID_GTPP;
+import static gregtech.api.enums.ModIDs.GTPlusPlus;
+import static gregtech.api.enums.ModIDs.Railcraft;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,7 +20,6 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
-import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
@@ -299,8 +299,8 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
 
         for (ItemStack item : itemInputs) {
             if (item != null) {
-                if (GT_Utility.getFluidForFilledItem(aInput1, true) != null || GT_Utility.isCellEmpty(item)
-                        || GT_Utility.checkIfSameIntegratedCircuit(item)) {
+                if (GT_Utility.getFluidForFilledItem(item, true) != null || GT_Utility.isCellEmpty(item)
+                        || GT_Utility.isAnyIntegratedCircuit(item)) {
                     fluidInputs[iNumber + 1] = GT_Utility.convertCellToFluid(item);
                     itemInputs[iNumber] = null;
                 }
@@ -636,7 +636,7 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
                     0,
                     0);
         }
-        if (Loader.isModLoaded("Railcraft")) {
+        if (Railcraft.isModLoaded()) {
             GT_Recipe.GT_Recipe_Map.sPrimitiveBlastRecipes.addRecipe(
                     true,
                     new ItemStack[] { aInput1, aInput2, RailcraftToolItems.getCoalCoke(aCoalAmount / 2) },
@@ -649,11 +649,11 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
                     0,
                     0);
         }
-        if (Loader.isModLoaded(MOD_ID_GTPP)) {
+        if (GTPlusPlus.isModLoaded()) {
             GT_Recipe.GT_Recipe_Map.sPrimitiveBlastRecipes.addRecipe(
                     true,
                     new ItemStack[] { aInput1, aInput2,
-                            GT_ModHandler.getModItem(MOD_ID_GTPP, "itemCactusCoke", (aCoalAmount * 2L)) },
+                            GT_ModHandler.getModItem(GTPlusPlus.modID, "itemCactusCoke", (aCoalAmount * 2L)) },
                     new ItemStack[] { aOutput1, aOutput2, Materials.Ash.getDustTiny(aCoalAmount * 2) },
                     null,
                     null,
@@ -665,7 +665,7 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
             GT_Recipe.GT_Recipe_Map.sPrimitiveBlastRecipes.addRecipe(
                     true,
                     new ItemStack[] { aInput1, aInput2,
-                            GT_ModHandler.getModItem(MOD_ID_GTPP, "itemSugarCoke", (aCoalAmount * 2L)) },
+                            GT_ModHandler.getModItem(GTPlusPlus.modID, "itemSugarCoke", (aCoalAmount * 2L)) },
                     new ItemStack[] { aOutput1, aOutput2, Materials.Ash.getDustTiny(aCoalAmount * 2) },
                     null,
                     null,
@@ -706,7 +706,7 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
                         0,
                         0);
             }
-            if (Loader.isModLoaded("Railcraft")) {
+            if (Railcraft.isModLoaded()) {
                 GT_Recipe.GT_Recipe_Map.sPrimitiveBlastRecipes.addRecipe(
                         true,
                         new ItemStack[] { aInput1, aInput2, EnumCube.COKE_BLOCK.getItem(aCoalAmount / 2) },
@@ -2812,7 +2812,7 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         if ((aDuration = GregTech_API.sRecipeFile.get("cracking", aInput.getUnlocalizedName(), aDuration)) <= 0) {
             return false;
         }
-        GT_Recipe.GT_Recipe_Map.sCrakingRecipes.addRecipe(
+        GT_Recipe.GT_Recipe_Map.sCrackingRecipes.addRecipe(
                 false,
                 new ItemStack[] { GT_Utility.getIntegratedCircuit(circuitConfig) },
                 null,
@@ -2926,7 +2926,7 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
                                 Comparator
                                         .<ItemStack, String>comparing(
                                                 s -> GameRegistry.findUniqueIdentifierFor(s.getItem()).modId)
-                                        .thenComparing(s -> GameRegistry.findUniqueIdentifierFor(s.getItem()).modId)
+                                        .thenComparing(s -> GameRegistry.findUniqueIdentifierFor(s.getItem()).name)
                                         .thenComparingInt(Items.feather::getDamage).thenComparingInt(s -> s.stackSize));
                         int tAmount = ((Number) objs[1]).intValue();
                         List<ItemStack> uList = new ArrayList<>();
@@ -3173,5 +3173,10 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
             }
         }
         return itemsNull && fluidsNull;
+    }
+
+    @Override
+    public GT_RecipeBuilder stdBuilder() {
+        return GT_RecipeBuilder.builder();
     }
 }
