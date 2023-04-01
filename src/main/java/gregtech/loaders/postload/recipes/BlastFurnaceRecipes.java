@@ -8,18 +8,12 @@ import static gregtech.api.util.GT_RecipeBuilder.*;
 import static gregtech.api.util.GT_RecipeConstants.ADDITIVE_AMOUNT;
 import static gregtech.api.util.GT_RecipeConstants.COIL_HEAT;
 
-import mods.railcraft.common.blocks.aesthetics.cube.EnumCube;
-import mods.railcraft.common.items.RailcraftToolItems;
-
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
-import org.apache.commons.lang3.ArrayUtils;
-
 import gregtech.GT_Mod;
 import gregtech.api.enums.*;
-import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 
@@ -679,43 +673,43 @@ public class BlastFurnaceRecipes implements Runnable {
     public void registerPrimitiveBlastFurnaceRecipes() {
         GT_Values.RA.stdBuilder()
 
-            .itemInputs(Materials.Iron.getIngots(1))
-            .itemOutputs(Materials.Steel.getIngots(1))
-            .noFluidInputs()
-            .noFluidOutputs()
-            .duration(6*MINUTES)
-            .eut(0)
-            .metadata(ADDITIVE_AMOUNT, 4)
-            .addTo(sPrimitiveBlastRecipes);
+                    .itemInputs(Materials.Iron.getIngots(1))
+                    .itemOutputs(Materials.Steel.getIngots(1))
+                    .noFluidInputs()
+                    .noFluidOutputs()
+                    .duration(6 * MINUTES)
+                    .eut(0)
+                    .metadata(ADDITIVE_AMOUNT, 4)
+                    .addTo(sPrimitiveBlastRecipes);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs( Materials.Iron.getDust(1))
-            .itemOutputs(Materials.Steel.getIngots(1))
-            .noFluidInputs()
-            .noFluidOutputs()
-            .duration(6*MINUTES)
-            .eut(0)
-            .metadata(ADDITIVE_AMOUNT, 4)
-            .addTo(sPrimitiveBlastRecipes);
+                    .itemInputs(Materials.Iron.getDust(1))
+                    .itemOutputs(Materials.Steel.getIngots(1))
+                    .noFluidInputs()
+                    .noFluidOutputs()
+                    .duration(6 * MINUTES)
+                    .eut(0)
+                    .metadata(ADDITIVE_AMOUNT, 4)
+                    .addTo(sPrimitiveBlastRecipes);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(Materials.Iron.getBlocks(1))
-            .itemOutputs( Materials.Steel.getIngots(9))
-            .noFluidInputs()
-            .noFluidOutputs()
-            .duration(54*MINUTES)
-            .eut(0)
-            .metadata(ADDITIVE_AMOUNT, 36)
-            .addTo(sPrimitiveBlastRecipes);
+                    .itemInputs(Materials.Iron.getBlocks(1))
+                    .itemOutputs(Materials.Steel.getIngots(9))
+                    .noFluidInputs()
+                    .noFluidOutputs()
+                    .duration(54 * MINUTES)
+                    .eut(0)
+                    .metadata(ADDITIVE_AMOUNT, 36)
+                    .addTo(sPrimitiveBlastRecipes);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(Materials.Steel.getDust(1))
-            .itemOutputs(Materials.Steel.getIngots(1) )
-            .noFluidInputs()
-            .noFluidOutputs()
-            .duration(6*MINUTES)
-            .eut(0)
-            .metadata(ADDITIVE_AMOUNT, 2)
-            .addTo(sPrimitiveBlastRecipes);
+                    .itemInputs(Materials.Steel.getDust(1))
+                    .itemOutputs(Materials.Steel.getIngots(1))
+                    .noFluidInputs()
+                    .noFluidOutputs()
+                    .duration(6 * MINUTES)
+                    .eut(0)
+                    .metadata(ADDITIVE_AMOUNT, 2)
+                    .addTo(sPrimitiveBlastRecipes);
     }
 }
