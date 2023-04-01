@@ -33,7 +33,12 @@ public class GT_RecipeConstants {
      * Common additive to use in recipe, e.g. for PBF, this is coal amount.
      */
     public static final GT_RecipeBuilder.MetadataIdentifier<Integer> ADDITIVE_AMOUNT = GT_RecipeBuilder.MetadataIdentifier
-            .create(Integer.class, "additives");
+        .create(Integer.class, "additives");
+    /**
+     * Used for fusion reactor. Denotes ignition threshold.
+     */
+    public static final GT_RecipeBuilder.MetadataIdentifier<Integer> FUSION_THRESHOLD = GT_RecipeBuilder.MetadataIdentifier
+        .create(Integer.class, "fusion_threshold");
     /**
      * Research time in a scanner used in ticks.
      */
@@ -209,7 +214,7 @@ public class GT_RecipeConstants {
         builder.validateInputCount(1, 1).validateNoInputFluid().validateOutputCount(-1, 0).validateNoOutputFluid();
         if (!builder.isValid()) return Collections.emptyList();
         int fuelType = builder.getMetadata(FUEL_TYPE);
-        builder.specialValue(
+        builder.metadata(FUEL_VALUE,
                 GregTech_API.sRecipeFile
                         .get("fuel_" + fuelType, builder.getItemInputBasic(0), builder.getMetadata(FUEL_VALUE)));
         return FuelType.get(fuelType).getTarget().doAdd(builder);
@@ -241,5 +246,11 @@ public class GT_RecipeConstants {
         public IGT_RecipeMap getTarget() {
             return target;
         }
+    }
+
+    static {
+        GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(COIL_HEAT);
+        GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(FUSION_THRESHOLD);
+        GT_RecipeMapUtil.SPECIAL_VALUE_ALIASES.add(FUEL_VALUE);
     }
 }

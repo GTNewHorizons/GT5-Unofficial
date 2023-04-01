@@ -1875,7 +1875,6 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 false,
                 true).setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT)
                         .setRecipeConfigFile("blastfurnace", FIRST_ITEM_INPUT)
-                        .setRecipeEmitter(b -> buildOrEmpty(handleCoilHeat(b)))
                         .setNEISpecialInfoFormatter(HeatingCoilSpecialValueFormatter.INSTANCE);
         /**
          * Use special value as coil heat level.
@@ -1896,8 +1895,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 " K",
                 false,
                 true).setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT)
-                        .setUsualFluidInputCount(9).setUsualFluidOutputCount(9)
-                        .setRecipeEmitter(b -> buildOrEmpty(handleCoilHeat(b.noOptimize())))
+                        .setUsualFluidInputCount(9).setUsualFluidOutputCount(9).setDisableOptimize(true)
                         .setNEISpecialInfoFormatter(HeatingCoilSpecialValueFormatter.INSTANCE);
 
         public static final GT_Recipe_Map sTranscendentPlasmaMixerRecipes = new TranscendentPlasmaMixerRecipeMap(
@@ -3641,6 +3639,13 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                     int specialValue = 0;
                     if (builder.getMetadata(GT_RecipeConstants.LOW_GRAVITY, false)) specialValue -= 100;
                     if (builder.getMetadata(GT_RecipeConstants.CLEANROOM, false)) specialValue -= 200;
+                    for (GT_RecipeBuilder.MetadataIdentifier<Integer> ident : SPECIAL_VALUE_ALIASES) {
+                        Integer metadata = builder.getMetadata(ident, null);
+                        if (metadata != null) {
+                            specialValue = metadata;
+                            break;
+                        }
+                    }
                     r.mSpecialValue = specialValue;
                 }
                 if (specialHandler != null) r = specialHandler.apply(r);

@@ -7,6 +7,7 @@ import gregtech.api.enums.TierEU;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sFusionRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
+import static gregtech.api.util.GT_RecipeConstants.FUSION_THRESHOLD;
 
 public class FusionReactorRecipes implements Runnable {
 
@@ -31,7 +32,7 @@ public class FusionReactorRecipes implements Runnable {
             )
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(TierEU.RECIPE_LuV)
-            .specialValue(300000000)
+            .metadata(FUSION_THRESHOLD, 300000000)
             .addTo(sFusionRecipes); // FT1+ - utility
 
         GT_Values.RA.stdBuilder()
@@ -46,7 +47,7 @@ public class FusionReactorRecipes implements Runnable {
             )
             .duration(16 * TICKS)
             .eut(4096)
-            .specialValue(40000000)
+            .metadata(FUSION_THRESHOLD, 40000000)
             .addTo(sFusionRecipes); // FT1 Cheap - farmable
 
         GT_Values.RA.stdBuilder()
@@ -61,7 +62,7 @@ public class FusionReactorRecipes implements Runnable {
             )
             .duration(16 * TICKS)
             .eut(2048)
-            .specialValue(60000000)
+            .metadata(FUSION_THRESHOLD, 60000000)
             .addTo(sFusionRecipes); // FT1 Expensive //
 
         GT_Values.RA.stdBuilder()
@@ -76,7 +77,7 @@ public class FusionReactorRecipes implements Runnable {
             )
             .duration(1 * SECONDS + 12 * TICKS)
             .eut(4096)
-            .specialValue(80000000)
+            .metadata(FUSION_THRESHOLD, 80000000)
             .addTo(sFusionRecipes); // FT1 Expensive //
 
         GT_Values.RA.stdBuilder()
@@ -91,7 +92,7 @@ public class FusionReactorRecipes implements Runnable {
             )
             .duration(1 * SECONDS + 12 * TICKS)
             .eut(10240)
-            .specialValue(240000000)
+            .metadata(FUSION_THRESHOLD, 240000000)
             .addTo(sFusionRecipes); // FT1+ Cheap
 
         GT_Values.RA.stdBuilder()
@@ -106,7 +107,7 @@ public class FusionReactorRecipes implements Runnable {
             )
             .duration(16 * TICKS)
             .eut(16384)
-            .specialValue(180000000)
+            .metadata(FUSION_THRESHOLD, 180000000)
             .addTo(sFusionRecipes); // FT1+ Expensive //
 
         GT_Values.RA.stdBuilder()
@@ -121,7 +122,7 @@ public class FusionReactorRecipes implements Runnable {
             )
             .duration(1 * SECONDS + 12 * TICKS)
             .eut(8192)
-            .specialValue(360000000)
+            .metadata(FUSION_THRESHOLD, 360000000)
             .addTo(sFusionRecipes); // FT1++ Cheap //
 
         GT_Values.RA.stdBuilder()
@@ -136,7 +137,7 @@ public class FusionReactorRecipes implements Runnable {
             )
             .duration(16 * TICKS)
             .eut(TierEU.RECIPE_LuV)
-            .specialValue(480000000)
+            .metadata(FUSION_THRESHOLD, 480000000)
             .addTo(sFusionRecipes); // FT1++ Expensive //
 
         GT_Values.RA.stdBuilder()
@@ -151,7 +152,7 @@ public class FusionReactorRecipes implements Runnable {
             )
             .duration(1 * SECONDS + 12 * TICKS)
             .eut(TierEU.RECIPE_LuV)
-            .specialValue(150000000)
+            .metadata(FUSION_THRESHOLD, 150000000)
             .addTo(sFusionRecipes); // FT1 - utility
 
         GT_Values.RA.stdBuilder()
@@ -166,7 +167,7 @@ public class FusionReactorRecipes implements Runnable {
             )
             .duration(1 * SECONDS + 12 * TICKS)
             .eut(24576)
-            .specialValue(150000000)
+            .metadata(FUSION_THRESHOLD, 150000000)
             .addTo(sFusionRecipes); // FT1 - utility
 
         GT_Values.RA.stdBuilder()
@@ -181,7 +182,7 @@ public class FusionReactorRecipes implements Runnable {
             )
             .duration(4 * SECONDS + 16 * TICKS)
             .eut(49152)
-            .specialValue(200000000)
+            .metadata(FUSION_THRESHOLD, 200000000)
             .addTo(sFusionRecipes); // FT2 - utility
 
         GT_Values.RA.stdBuilder()
@@ -196,7 +197,7 @@ public class FusionReactorRecipes implements Runnable {
             )
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(TierEU.RECIPE_LuV)
-            .specialValue(300000000)
+            .metadata(FUSION_THRESHOLD, 300000000)
             .addTo(sFusionRecipes); // FT1+ - utility
 
         GT_Values.RA.stdBuilder()
@@ -211,7 +212,7 @@ public class FusionReactorRecipes implements Runnable {
             )
             .duration(12 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
-            .specialValue(640000000)
+            .metadata(FUSION_THRESHOLD, 640000000)
             .addTo(sFusionRecipes); // FT3 - utility
 
         GT_Values.RA.stdBuilder()
@@ -226,7 +227,7 @@ public class FusionReactorRecipes implements Runnable {
             )
             .duration(1 * SECONDS + 12 * TICKS)
             .eut(TierEU.RECIPE_IV)
-            .specialValue(40000000)
+            .metadata(FUSION_THRESHOLD, 40000000)
             .addTo(sFusionRecipes); // Mark 1 Expensive //
 
         GT_Values.RA.stdBuilder()
@@ -241,7 +242,7 @@ public class FusionReactorRecipes implements Runnable {
             )
             .duration(12 * SECONDS + 16 * TICKS)
             .eut(24578)
-            .specialValue(150000000)
+            .metadata(FUSION_THRESHOLD, 150000000)
             .addTo(sFusionRecipes); // FT1 - utility
 
         GT_Values.RA.stdBuilder()
@@ -256,7 +257,7 @@ public class FusionReactorRecipes implements Runnable {
             )
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(8192)
-            .specialValue(120000000)
+            .metadata(FUSION_THRESHOLD, 120000000)
             .addTo(sFusionRecipes); // FT1 - utility
 
         GT_Values.RA.stdBuilder()
@@ -271,7 +272,7 @@ public class FusionReactorRecipes implements Runnable {
             )
             .duration(6 * SECONDS + 8 * TICKS)
             .eut(8192)
-            .specialValue(120000000)
+            .metadata(FUSION_THRESHOLD, 120000000)
             .addTo(sFusionRecipes); //
 
         GT_Values.RA.stdBuilder()
@@ -286,7 +287,7 @@ public class FusionReactorRecipes implements Runnable {
             )
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(49152)
-            .specialValue(240000000)
+            .metadata(FUSION_THRESHOLD, 240000000)
             .addTo(sFusionRecipes); // FT2 - utility
 
         GT_Values.RA.stdBuilder()
@@ -301,7 +302,7 @@ public class FusionReactorRecipes implements Runnable {
             )
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(49152)
-            .specialValue(240000000)
+            .metadata(FUSION_THRESHOLD, 240000000)
             .addTo(sFusionRecipes); // FT2 - utility
 
         GT_Values.RA.stdBuilder()
@@ -316,7 +317,7 @@ public class FusionReactorRecipes implements Runnable {
             )
             .duration(6 * SECONDS + 8 * TICKS)
             .eut(49152)
-            .specialValue(480000000)
+            .metadata(FUSION_THRESHOLD, 480000000)
             .addTo(sFusionRecipes); // FT2+ - utility
 
         GT_Values.RA.stdBuilder()
@@ -331,7 +332,7 @@ public class FusionReactorRecipes implements Runnable {
             )
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(24576)
-            .specialValue(140000000)
+            .metadata(FUSION_THRESHOLD, 140000000)
             .addTo(sFusionRecipes); // FT1 - utility
 
         GT_Values.RA.stdBuilder()
@@ -346,7 +347,7 @@ public class FusionReactorRecipes implements Runnable {
             )
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(16384)
-            .specialValue(140000000)
+            .metadata(FUSION_THRESHOLD, 140000000)
             .addTo(sFusionRecipes);
 
 
@@ -363,7 +364,7 @@ public class FusionReactorRecipes implements Runnable {
             )
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(TierEU.RECIPE_LuV)
-            .specialValue(200000000)
+            .metadata(FUSION_THRESHOLD, 200000000)
             .addTo(sFusionRecipes);
 
 
@@ -380,7 +381,7 @@ public class FusionReactorRecipes implements Runnable {
             )
             .duration(16 * TICKS)
             .eut(24576)
-            .specialValue(200000000)
+            .metadata(FUSION_THRESHOLD, 200000000)
             .addTo(sFusionRecipes); //
 
         GT_Values.RA.stdBuilder()
@@ -395,7 +396,7 @@ public class FusionReactorRecipes implements Runnable {
             )
             .duration(1 * SECONDS + 12 * TICKS)
             .eut(24576)
-            .specialValue(380000000)
+            .metadata(FUSION_THRESHOLD, 380000000)
             .addTo(sFusionRecipes); //
 
         // NEW RECIPES FOR FUSION
@@ -411,7 +412,7 @@ public class FusionReactorRecipes implements Runnable {
             )
             .duration(1 * SECONDS + 12 * TICKS)
             .eut(24576)
-            .specialValue(180000000)
+            .metadata(FUSION_THRESHOLD, 180000000)
             .addTo(sFusionRecipes); // FT1+ - utility
 
         GT_Values.RA.stdBuilder()
@@ -426,7 +427,7 @@ public class FusionReactorRecipes implements Runnable {
             )
             .duration(16 * TICKS)
             .eut(49152)
-            .specialValue(180000000)
+            .metadata(FUSION_THRESHOLD, 180000000)
             .addTo(sFusionRecipes); // FT2 - farmable
 
         GT_Values.RA.stdBuilder()
@@ -441,7 +442,7 @@ public class FusionReactorRecipes implements Runnable {
             )
             .duration(16 * TICKS)
             .eut(49152)
-            .specialValue(200000000)
+            .metadata(FUSION_THRESHOLD, 200000000)
             .addTo(sFusionRecipes); // FT2 - utility
 
         GT_Values.RA.stdBuilder()
@@ -456,7 +457,7 @@ public class FusionReactorRecipes implements Runnable {
             )
             .duration(16 * TICKS)
             .eut(49152)
-            .specialValue(350000000)
+            .metadata(FUSION_THRESHOLD, 350000000)
             .addTo(sFusionRecipes); // FT2+
 
         GT_Values.RA.stdBuilder()
@@ -471,7 +472,7 @@ public class FusionReactorRecipes implements Runnable {
             )
             .duration(16 * TICKS)
             .eut(49152)
-            .specialValue(280000000)
+            .metadata(FUSION_THRESHOLD, 280000000)
             .addTo(sFusionRecipes); // FT2
 
         GT_Values.RA.stdBuilder()
@@ -486,7 +487,7 @@ public class FusionReactorRecipes implements Runnable {
             )
             .duration(16 * TICKS)
             .eut(49152)
-            .specialValue(300000000)
+            .metadata(FUSION_THRESHOLD, 300000000)
             .addTo(sFusionRecipes); // FT2
 
         GT_Values.RA.stdBuilder()
@@ -501,7 +502,7 @@ public class FusionReactorRecipes implements Runnable {
             )
             .duration(16 * TICKS)
             .eut(98304)
-            .specialValue(350000000)
+            .metadata(FUSION_THRESHOLD, 350000000)
             .addTo(sFusionRecipes); // FT3 - farmable
 
         GT_Values.RA.stdBuilder()
@@ -516,7 +517,7 @@ public class FusionReactorRecipes implements Runnable {
             )
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(49152)
-            .specialValue(400000000)
+            .metadata(FUSION_THRESHOLD, 400000000)
             .addTo(sFusionRecipes); // FT3
 
         GT_Values.RA.stdBuilder()
@@ -531,7 +532,7 @@ public class FusionReactorRecipes implements Runnable {
             )
             .duration(1 * SECONDS + 12 * TICKS)
             .eut(98304)
-            .specialValue(450000000)
+            .metadata(FUSION_THRESHOLD, 450000000)
             .addTo(sFusionRecipes); // FT3 - utility
 
         GT_Values.RA.stdBuilder()
@@ -546,7 +547,7 @@ public class FusionReactorRecipes implements Runnable {
             )
             .duration(3 * SECONDS + 4 * TICKS)
             .eut(98304)
-            .specialValue(500000000)
+            .metadata(FUSION_THRESHOLD, 500000000)
             .addTo(sFusionRecipes); // FT3
     }
 }

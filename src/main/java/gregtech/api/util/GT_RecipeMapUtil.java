@@ -4,6 +4,7 @@ import static gregtech.api.util.GT_Config.getStackConfigName;
 import static gregtech.api.util.GT_Utility.isArrayEmptyOrNull;
 
 import java.util.*;
+import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -46,6 +47,8 @@ public class GT_RecipeMapUtil {
     private static final Map<String, IGT_RecipeMap> addonRecipeMaps = new HashMap<>();
     private static final Multimap<String, Consumer<IGT_RecipeMap>> delayedActions = ArrayListMultimap.create();
 
+    public static final Set<GT_RecipeBuilder.MetadataIdentifier<Integer>> SPECIAL_VALUE_ALIASES = new HashSet<>();
+
     public static <T> T[] appendArray(T[] arr, T val) {
         T[] newArr = Arrays.copyOf(arr, arr.length + 1);
         newArr[arr.length] = val;
@@ -58,10 +61,6 @@ public class GT_RecipeMapUtil {
 
     public static GT_RecipeTemplate asTemplate(GT_Recipe r, boolean includeTemplate) {
         return new GT_RecipeTemplate(r, includeTemplate);
-    }
-
-    public static GT_RecipeBuilder handleCoilHeat(GT_RecipeBuilder b) {
-        return b.specialValue(b.getMetadata(GT_RecipeConstants.COIL_HEAT));
     }
 
     public static List<GT_Recipe> buildRecipeForMultiblock(GT_RecipeBuilder b) {
