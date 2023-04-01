@@ -43,8 +43,7 @@ public class GT_GeneratedItem_Renderer implements IItemRenderer {
     @Override
     public void renderItem(ItemRenderType type, ItemStack aStack, Object... data) {
         short aMetaData = (short) aStack.getItemDamage();
-        if (!(aStack.getItem() instanceof GT_MetaGenerated_Item)) return;
-        GT_MetaGenerated_Item aItem = (GT_MetaGenerated_Item) aStack.getItem();
+        if (!(aStack.getItem() instanceof GT_MetaGenerated_Item aItem)) return;
 
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glColor3f(1.0F, 1.0F, 1.0F);

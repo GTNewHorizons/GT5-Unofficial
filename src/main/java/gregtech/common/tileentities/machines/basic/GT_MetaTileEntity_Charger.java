@@ -59,8 +59,7 @@ public class GT_MetaTileEntity_Charger extends GT_MetaTileEntity_BasicBatteryBuf
             super.onPostTick(aBaseMetaTileEntity, aTick);
             if (this.getBaseMetaTileEntity() instanceof BaseMetaTileEntity) {
                 BaseMetaTileEntity mBaseMetaTileEntity = (BaseMetaTileEntity) getBaseMetaTileEntity();
-                if (mBaseMetaTileEntity.getMetaTileEntity() instanceof MetaTileEntity) {
-                    MetaTileEntity mMetaTileEntity = (MetaTileEntity) mBaseMetaTileEntity.getMetaTileEntity();
+                if (mBaseMetaTileEntity.getMetaTileEntity() instanceof MetaTileEntity mMetaTileEntity) {
                     // for (int t = 0; t < 6; t++) {
                     if (mMetaTileEntity.dechargerSlotCount() > 0
                             && mBaseMetaTileEntity.getStoredEU() < mBaseMetaTileEntity.getEUCapacity()) {

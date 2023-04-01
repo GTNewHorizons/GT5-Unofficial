@@ -50,8 +50,7 @@ public class GT_Cover_WirelessMaintenanceDetector extends
 
         if (tileEntity instanceof IGregTechTileEntity) {
             IMetaTileEntity metaTE = ((IGregTechTileEntity) tileEntity).getMetaTileEntity();
-            if (metaTE instanceof GT_MetaTileEntity_MultiBlockBase) {
-                GT_MetaTileEntity_MultiBlockBase multiTE = (GT_MetaTileEntity_MultiBlockBase) metaTE;
+            if (metaTE instanceof GT_MetaTileEntity_MultiBlockBase multiTE) {
                 int ideal = multiTE.getIdealStatus();
                 int real = multiTE.getRepairStatus();
 

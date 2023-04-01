@@ -728,8 +728,7 @@ public class GT_NEI_DefaultHandler extends RecipeMapHandler {
 
             if (GT_NEI_DefaultHandler.this.mRecipeMap.useModularUI) {
                 for (Widget child : modularWindow.getChildren()) {
-                    if (child instanceof SlotWidget) {
-                        SlotWidget widget = (SlotWidget) child;
+                    if (child instanceof SlotWidget widget) {
                         if (widget.getMcSlot()
                                   .getItemHandler()
                                 == itemInputsInventory) {

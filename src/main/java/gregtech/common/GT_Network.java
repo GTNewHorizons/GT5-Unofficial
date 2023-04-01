@@ -141,10 +141,9 @@ public class GT_Network extends MessageToMessageCodec<FMLProxyPacket, GT_Packet>
     public void sendPacketToAllPlayersInRange(World aWorld, GT_Packet aPacket, int aX, int aZ) {
         if (!aWorld.isRemote) {
             for (Object tObject : aWorld.playerEntities) {
-                if (!(tObject instanceof EntityPlayerMP)) {
+                if (!(tObject instanceof EntityPlayerMP tPlayer)) {
                     break;
                 }
-                EntityPlayerMP tPlayer = (EntityPlayerMP) tObject;
                 Chunk tChunk = aWorld.getChunkFromBlockCoords(aX, aZ);
                 if (tPlayer.getServerForPlayer()
                            .getPlayerManager()

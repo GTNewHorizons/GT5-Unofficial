@@ -444,9 +444,8 @@ public class MultiTileEntityBlock extends Block
     @Override
     public Block getFacade(IBlockAccess aWorld, int aX, int aY, int aZ, int side) {
         final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if (tTileEntity instanceof CoverableTileEntity) {
+        if (tTileEntity instanceof CoverableTileEntity tile) {
             final byte aSide = (byte) side;
-            final CoverableTileEntity tile = (CoverableTileEntity) tTileEntity;
             if (side != -1) {
                 final Block facadeBlock = tile.getCoverInfoAtSide(aSide)
                                               .getFacadeBlock();
@@ -469,9 +468,8 @@ public class MultiTileEntityBlock extends Block
     @Override
     public int getFacadeMetadata(IBlockAccess aWorld, int aX, int aY, int aZ, int side) {
         final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if (tTileEntity instanceof CoverableTileEntity) {
+        if (tTileEntity instanceof CoverableTileEntity tile) {
             final byte aSide = (byte) side;
-            final CoverableTileEntity tile = (CoverableTileEntity) tTileEntity;
             if (side != -1) {
                 final CoverInfo coverInfo = tile.getCoverInfoAtSide(aSide);
                 final Block facadeBlock = coverInfo.getFacadeBlock();

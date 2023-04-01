@@ -141,8 +141,7 @@ public class GT_RecipeBuilder {
                 alts[i] = new ItemStack[] { (ItemStack) input };
             } else if (input instanceof ItemStack[]) {
                 alts[i] = ((ItemStack[]) input).clone();
-            } else if (input instanceof Object[]) {
-                Object[] arr = (Object[]) input;
+            } else if (input instanceof Object[] arr) {
                 if (arr.length != 2) continue;
                 List<ItemStack> ores = GT_OreDictUnificator.getOres(arr[0]);
                 if (ores.isEmpty()) continue;

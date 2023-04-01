@@ -861,8 +861,7 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
         final ItemStackHandler inventoryHandler = getInventoryHandler();
         if (inventoryHandler == null) return;
 
-        if (!(this instanceof IInventory)) return;
-        final IInventory inv = (IInventory) this;
+        if (!(this instanceof IInventory inv)) return;
 
         final IConfigurationCircuitSupport ccs = getConfigurationCircuitSupport();
         if (ccs == null) return;
@@ -937,8 +936,7 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
         final IConfigurationCircuitSupport ccs = getConfigurationCircuitSupport();
         if (ccs == null) return;
 
-        if (!(this instanceof IInventory)) return;
-        final IInventory inv = (IInventory) this;
+        if (!(this instanceof IInventory inv)) return;
 
         final List<ItemStack> circuits = ccs.getConfigurationCircuits();
         uiContext.openClientWindow(
@@ -965,8 +963,7 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
         final IConfigurationCircuitSupport ccs = getConfigurationCircuitSupport();
         if (ccs == null) return;
 
-        if (!(this instanceof IInventory)) return;
-        final IInventory inv = (IInventory) this;
+        if (!(this instanceof IInventory inv)) return;
 
         GT_Values.NW.sendToServer(new GT_Packet_SetConfigurationCircuit(this, selected));
         // we will not do any validation on client side

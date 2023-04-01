@@ -102,8 +102,7 @@ public class GT_Packet_RequestCoverData extends GT_Packet_New {
         final World world = DimensionManager.getWorld(mPlayer.dimension);
         if (world != null) {
             final TileEntity tile = world.getTileEntity(mX, mY, mZ);
-            if (tile instanceof CoverableTileEntity) {
-                final CoverableTileEntity te = (CoverableTileEntity) tile;
+            if (tile instanceof CoverableTileEntity te) {
                 if (!te.isDead() && te.getCoverIDAtSide(side) == coverID) {
                     te.issueCoverUpdate(side);
                 }

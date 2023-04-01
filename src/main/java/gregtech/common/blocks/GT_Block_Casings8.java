@@ -141,10 +141,8 @@ public class GT_Block_Casings8 extends GT_Block_Casings_Abstract {
 
     private static int isTurbineControllerWithSide(IBlockAccess aWorld, int aX, int aY, int aZ, int aSide) {
         TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if (!(tTileEntity instanceof IGregTechTileEntity)) return 0;
-        IGregTechTileEntity tTile = (IGregTechTileEntity) tTileEntity;
-        if (tTile.getMetaTileEntity() instanceof GT_MetaTileEntity_LargeTurbine && tTile.getFrontFacing() == aSide) {
-            GT_MetaTileEntity_LargeTurbine turbine = (GT_MetaTileEntity_LargeTurbine) tTile.getMetaTileEntity();
+        if (!(tTileEntity instanceof IGregTechTileEntity tTile)) return 0;
+        if (tTile.getMetaTileEntity() instanceof GT_MetaTileEntity_LargeTurbine turbine && tTile.getFrontFacing() == aSide) {
             if (turbine.isNewStyleRendering()) return 0;
             if (tTile.isActive()) return 1;
             return turbine.hasTurbine() ? 2 : 3;

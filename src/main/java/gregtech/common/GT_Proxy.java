@@ -2402,8 +2402,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
             return null;
         }
         final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if ((tTileEntity instanceof IGregTechTileEntity)) {
-            final IGregTechTileEntity tile = (IGregTechTileEntity) tTileEntity;
+        if ((tTileEntity instanceof IGregTechTileEntity tile)) {
 
             if (GUI_ID_COVER_SIDE_BASE <= aID && aID < GUI_ID_COVER_SIDE_BASE + 6) {
                 final byte side = (byte) (aID - GT_Proxy.GUI_ID_COVER_SIDE_BASE);

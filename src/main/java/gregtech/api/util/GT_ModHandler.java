@@ -1175,8 +1175,7 @@ public class GT_ModHandler {
                 }
                 Character chr = (Character) aRecipe[idx];
                 Object in = aRecipe[idx + 1];
-                if (in instanceof ItemStack) {
-                    ItemStack is = (ItemStack) in;
+                if (in instanceof ItemStack is) {
                     tItemStackMap.put(chr, GT_Utility.copyOrNull(is));
                     tItemDataMap.put(chr, GT_OreDictUnificator.getItemData(is));
                 } else if (in instanceof ItemData) {
@@ -2209,8 +2208,7 @@ public class GT_ModHandler {
     public static boolean useSolderingIron(ItemStack aStack, EntityLivingBase aPlayer, IInventory aExternalInventory) {
         if (aPlayer == null || aStack == null) return false;
         if (GT_Utility.isStackInList(aStack, GregTech_API.sSolderingToolList)) {
-            if (aPlayer instanceof EntityPlayer) {
-                EntityPlayer tPlayer = (EntityPlayer) aPlayer;
+            if (aPlayer instanceof EntityPlayer tPlayer) {
                 if (tPlayer.capabilities.isCreativeMode) return true;
                 if (isElectricItem(aStack) && ic2.api.item.ElectricItem.manager.getCharge(aStack) > 1000.0d) {
                     if (consumeSolderingMaterial(tPlayer)

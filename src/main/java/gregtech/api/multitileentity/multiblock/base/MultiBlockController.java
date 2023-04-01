@@ -656,9 +656,8 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
             @Override
             public boolean check(S t, World world, int x, int y, int z) {
                 final TileEntity tileEntity = world.getTileEntity(x, y, z);
-                if (!(tileEntity instanceof MultiBlockPart)) return false;
+                if (!(tileEntity instanceof MultiBlockPart part)) return false;
 
-                final MultiBlockPart part = (MultiBlockPart) tileEntity;
                 if (registryID != part.getMultiTileEntityRegistryID() || meta != part.getMultiTileEntityID())
                     return false;
 

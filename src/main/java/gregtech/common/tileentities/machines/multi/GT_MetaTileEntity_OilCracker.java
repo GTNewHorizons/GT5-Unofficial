@@ -250,8 +250,7 @@ public class GT_MetaTileEntity_OilCracker extends GT_MetaTileEntity_EnhancedMult
         if (aTileEntity == null) return false;
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
-            GT_MetaTileEntity_Hatch_Input tHatch = (GT_MetaTileEntity_Hatch_Input) aMetaTileEntity;
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input tHatch) {
             tHatch.updateTexture(aBaseCasingIndex);
             tHatch.mRecipeMap = getRecipeMap();
             return mMiddleInputHatches.add(tHatch);

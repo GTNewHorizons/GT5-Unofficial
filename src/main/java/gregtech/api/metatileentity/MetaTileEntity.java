@@ -846,8 +846,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
     @Override
     public void setInventorySlotContents(int aIndex, ItemStack aStack) {
         markDirty();
-        if (this instanceof IConfigurationCircuitSupport) {
-            IConfigurationCircuitSupport ccs = (IConfigurationCircuitSupport) this;
+        if (this instanceof IConfigurationCircuitSupport ccs) {
             if (ccs.allowSelectCircuit() && aIndex == ccs.getCircuitSlot() && aStack != null) {
                 mInventory[aIndex] = GT_Utility.copyAmount(0, aStack);
                 return;
@@ -1201,9 +1200,8 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
                         ForgeDirection.getOrientation(mBaseMetaTileEntity.getFrontFacing())
                                       .name()));
 
-        if (this instanceof IPowerChannelState) {
+        if (this instanceof IPowerChannelState state) {
             // adapted from PowerStateWailaDataProvider
-            final IPowerChannelState state = (IPowerChannelState) this;
             NBTTagCompound tag = accessor.getNBTData();
             final boolean isActive = tag.getBoolean("isActive");
             final boolean isPowered = tag.getBoolean("isPowered");
@@ -1224,9 +1222,8 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
             int z) {
-        if (this instanceof IPowerChannelState) {
+        if (this instanceof IPowerChannelState state) {
             // adapted from PowerStateWailaDataProvider
-            final IPowerChannelState state = (IPowerChannelState) this;
             final boolean isActive = state.isActive();
             final boolean isPowered = state.isPowered();
             final boolean isBooting = state.isBooting();

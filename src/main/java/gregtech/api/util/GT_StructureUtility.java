@@ -66,8 +66,7 @@ public class GT_StructureUtility {
             @Override
             public boolean check(T t, World world, int x, int y, int z) {
                 TileEntity tBase = world.getTileEntity(x, y, z);
-                if (tBase instanceof BaseMetaPipeEntity) {
-                    BaseMetaPipeEntity tPipeBase = (BaseMetaPipeEntity) tBase;
+                if (tBase instanceof BaseMetaPipeEntity tPipeBase) {
                     if (tPipeBase.isInvalidTileEntity()) return false;
                     if (tPipeBase.getMetaTileEntity() instanceof GT_MetaPipeEntity_Frame)
                         return aFrameMaterial == ((GT_MetaPipeEntity_Frame) tPipeBase.getMetaTileEntity()).mMaterial;
@@ -88,9 +87,8 @@ public class GT_StructureUtility {
             @Override
             public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
                 ItemStack tFrameStack = getFrameStack();
-                if (!GT_Utility.isStackValid(tFrameStack) || !(tFrameStack.getItem() instanceof ItemBlock))
+                if (!GT_Utility.isStackValid(tFrameStack) || !(tFrameStack.getItem() instanceof ItemBlock tFrameStackItem))
                     return false;
-                ItemBlock tFrameStackItem = (ItemBlock) tFrameStack.getItem();
                 return tFrameStackItem.placeBlockAt(tFrameStack,
                         null,
                         world,

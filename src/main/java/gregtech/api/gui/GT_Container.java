@@ -643,8 +643,7 @@ public class GT_Container extends Container {
         if (tStackSizedOne == null || tStackHeld.stackSize == 0) return null;
         int tOriginalFluidAmount = tTankStack.amount;
         ItemStack tFilledContainer = GT_Utility.fillFluidContainer(tTankStack, tStackSizedOne, true, false);
-        if (tFilledContainer == null && tStackSizedOne.getItem() instanceof IFluidContainerItem) {
-            IFluidContainerItem tContainerItem = (IFluidContainerItem) tStackSizedOne.getItem();
+        if (tFilledContainer == null && tStackSizedOne.getItem() instanceof IFluidContainerItem tContainerItem) {
             int tFilledAmount = tContainerItem.fill(tStackSizedOne, tTankStack, true);
             if (tFilledAmount > 0) {
                 tFilledContainer = tStackSizedOne;
@@ -694,9 +693,8 @@ public class GT_Container extends Container {
             tStackEmptied = GT_Utility.getContainerForFilledItem(tStackSizedOne, false);
             tAmountTaken = aFluidHeld.amount;
         }
-        if (tStackEmptied == null && tStackSizedOne.getItem() instanceof IFluidContainerItem) {
+        if (tStackEmptied == null && tStackSizedOne.getItem() instanceof IFluidContainerItem container) {
             // either partially accepted, or is IFluidContainerItem
-            IFluidContainerItem container = (IFluidContainerItem) tStackSizedOne.getItem();
             FluidStack tDrained = container.drain(tStackSizedOne, tFreeSpace, true);
             if (tDrained != null && tDrained.amount > 0) {
                 // something is actually drained - change the cell and drop it to player

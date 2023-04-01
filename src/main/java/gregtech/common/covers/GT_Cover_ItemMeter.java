@@ -82,8 +82,7 @@ public class GT_Cover_ItemMeter extends GT_CoverBehaviorBase<GT_Cover_ItemMeter.
         long max = 0;
         long used = 0;
         IMetaTileEntity mte = ((IGregTechTileEntity) tileEntity).getMetaTileEntity();
-        if (mte instanceof GT_MetaTileEntity_DigitalChestBase) {
-            GT_MetaTileEntity_DigitalChestBase dc = (GT_MetaTileEntity_DigitalChestBase) mte;
+        if (mte instanceof GT_MetaTileEntity_DigitalChestBase dc) {
             max = dc.getMaxItemCount();
             used = dc.getProgresstime();
         } else if (GregTech_API.mAE2 && mte instanceof GT_MetaTileEntity_Hatch_OutputBus_ME) {

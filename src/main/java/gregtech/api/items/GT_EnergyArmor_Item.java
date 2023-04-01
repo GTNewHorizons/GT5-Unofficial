@@ -291,8 +291,7 @@ public class GT_EnergyArmor_Item extends ItemArmor implements ISpecialArmor {
 
     // TODO: @ForgeSubscribe
     public void onEntityLivingFallEvent(LivingFallEvent event) {
-        if (!event.entity.worldObj.isRemote && event.entity instanceof EntityPlayer) {
-            EntityPlayer player = (EntityPlayer) event.entity;
+        if (!event.entity.worldObj.isRemote && event.entity instanceof EntityPlayer player) {
             for (int i = 0; i < 4; i++) {
                 ItemStack armor = player.inventory.armorInventory[i];
                 if (armor != null && armor.getItem() == this && (mSpecials & 2) != 0) {

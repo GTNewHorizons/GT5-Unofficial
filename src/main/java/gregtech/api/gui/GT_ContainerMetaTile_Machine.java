@@ -59,8 +59,7 @@ public class GT_ContainerMetaTile_Machine extends GT_Container {
     }
 
     protected void addCircuitSlot() {
-        if (mTileEntity.getMetaTileEntity() instanceof IConfigurationCircuitSupport) {
-            IConfigurationCircuitSupport ccs = (IConfigurationCircuitSupport) mTileEntity.getMetaTileEntity();
+        if (mTileEntity.getMetaTileEntity() instanceof IConfigurationCircuitSupport ccs) {
             GT_Slot_Render slotCircuit = new GT_Slot_Render(
                     mTileEntity,
                     ccs.getCircuitSlot(),

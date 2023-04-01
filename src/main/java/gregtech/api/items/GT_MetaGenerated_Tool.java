@@ -271,8 +271,7 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item
         }
         IToolStats tStats = getToolStats(aStack);
         Block aBlock = aPlayer.worldObj.getBlock(aX, aY, aZ);
-        if (tStats.isChainsaw() && (aBlock instanceof IShearable)) {
-            IShearable target = (IShearable) aBlock;
+        if (tStats.isChainsaw() && (aBlock instanceof IShearable target)) {
             if ((target.isShearable(aStack, aPlayer.worldObj, aX, aY, aZ))) {
                 ArrayList<ItemStack> drops = target.onSheared(
                         aStack,

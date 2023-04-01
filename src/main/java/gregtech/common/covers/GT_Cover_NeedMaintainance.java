@@ -50,11 +50,9 @@ public class GT_Cover_NeedMaintainance extends GT_CoverBehavior {
     public int doCoverThings(byte aSide, byte aInputRedstone, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
             long aTimer) {
         boolean needsRepair = false;
-        if (aTileEntity instanceof IGregTechTileEntity) {
-            IGregTechTileEntity tTileEntity = (IGregTechTileEntity) aTileEntity;
+        if (aTileEntity instanceof IGregTechTileEntity tTileEntity) {
             IMetaTileEntity mTileEntity = tTileEntity.getMetaTileEntity();
-            if (mTileEntity instanceof GT_MetaTileEntity_MultiBlockBase) {
-                GT_MetaTileEntity_MultiBlockBase multi = (GT_MetaTileEntity_MultiBlockBase) mTileEntity;
+            if (mTileEntity instanceof GT_MetaTileEntity_MultiBlockBase multi) {
                 int ideal = multi.getIdealStatus();
                 int real = multi.getRepairStatus();
                 ItemStack tRotor = multi.getRealInventory()[1];

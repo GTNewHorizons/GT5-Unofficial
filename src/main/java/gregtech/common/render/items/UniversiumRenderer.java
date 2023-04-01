@@ -45,8 +45,7 @@ public class UniversiumRenderer extends GT_GeneratedMaterial_Renderer {
     @Override
     public void renderItem(ItemRenderType type, ItemStack aStack, Object... data) {
         short aMetaData = (short) aStack.getItemDamage();
-        if (!(aStack.getItem() instanceof IGT_ItemWithMaterialRenderer)) return;
-        IGT_ItemWithMaterialRenderer aItem = (IGT_ItemWithMaterialRenderer) aStack.getItem();
+        if (!(aStack.getItem() instanceof IGT_ItemWithMaterialRenderer aItem)) return;
 
         int passes = 1;
         if (aItem.requiresMultipleRenderPasses()) {

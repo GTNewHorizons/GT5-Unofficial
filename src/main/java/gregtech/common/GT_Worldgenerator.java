@@ -149,8 +149,7 @@ public class GT_Worldgenerator implements IWorldGenerator {
             @Override
             public boolean equals(Object o) {
                 if (this == o) return true;
-                if (!(o instanceof GT_Worldgenerator.WorldGenContainer.NearbySeeds)) return false;
-                GT_Worldgenerator.WorldGenContainer.NearbySeeds that = (GT_Worldgenerator.WorldGenContainer.NearbySeeds) o;
+                if (!(o instanceof NearbySeeds that)) return false;
                 if (this.mX != that.mX) return false;
                 return this.mZ == that.mZ;
             }

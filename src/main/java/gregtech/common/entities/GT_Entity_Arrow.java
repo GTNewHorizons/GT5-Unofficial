@@ -148,8 +148,7 @@ public class GT_Entity_Arrow extends EntityArrow {
             if (tHitEntity != null) {
                 tVector = new MovingObjectPosition(tHitEntity);
             }
-            if ((tVector != null) && ((tVector.entityHit instanceof EntityPlayer))) {
-                EntityPlayer entityplayer = (EntityPlayer) tVector.entityHit;
+            if ((tVector != null) && ((tVector.entityHit instanceof EntityPlayer entityplayer))) {
                 if ((entityplayer.capabilities.disableDamage) || (((tShootingEntity instanceof EntityPlayer))
                         && (!((EntityPlayer) tShootingEntity).canAttackPlayer(entityplayer)))) {
                     tVector = null;
@@ -224,7 +223,7 @@ public class GT_Entity_Arrow extends EntityArrow {
                                 tShootingEntity == null ? this : tShootingEntity);
                         if ((tDamage + tMagicDamage > 0.0F)
                                 && (tVector.entityHit.attackEntityFrom(tDamageSource, tDamage + tMagicDamage))) {
-                            if ((tVector.entityHit instanceof EntityLivingBase)) {
+                            if ((tVector.entityHit instanceof EntityLivingBase tHitLivingEntity)) {
                                 if (tHitTimer >= 0) {
                                     tVector.entityHit.hurtResistantTime = tHitTimer;
                                 }
@@ -234,7 +233,6 @@ public class GT_Entity_Arrow extends EntityArrow {
                                                 this.mArrow) > 0)) {
                                     ((EntityCreeper) tVector.entityHit).func_146079_cb();
                                 }
-                                EntityLivingBase tHitLivingEntity = (EntityLivingBase) tVector.entityHit;
                                 if (!this.worldObj.isRemote) {
                                     tHitLivingEntity.setArrowCountInEntity(
                                             tHitLivingEntity.getArrowCountInEntity() + 1);

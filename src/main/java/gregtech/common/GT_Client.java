@@ -744,8 +744,7 @@ public class GT_Client extends GT_Proxy implements Runnable {
                             trace.blockX,
                             trace.blockY,
                             trace.blockZ);
-                    if (tileEntity instanceof IGregTechTileEntity) {
-                        final IGregTechTileEntity gtTile = (IGregTechTileEntity) tileEntity;
+                    if (tileEntity instanceof IGregTechTileEntity gtTile) {
                         if (gtTile.getMetaTileEntity() instanceof IHasFluidDisplayItem) {
                             GT_Values.NW.sendToServer(
                                     new MessageUpdateFluidDisplayItem(

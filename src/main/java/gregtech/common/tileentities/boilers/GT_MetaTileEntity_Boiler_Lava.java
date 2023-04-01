@@ -192,8 +192,7 @@ public class GT_MetaTileEntity_Boiler_Lava extends GT_MetaTileEntity_Boiler {
         if (fillableAmount <= 0) return null;
 
         final Item containerItem = SourceItemStack.getItem();
-        if (containerItem instanceof IFluidContainerItem) {
-            IFluidContainerItem equippedIFluidContainerItem = (IFluidContainerItem) containerItem;
+        if (containerItem instanceof IFluidContainerItem equippedIFluidContainerItem) {
             destinationIFluidTank.fill(equippedIFluidContainerItem.drain(SourceItemStack, fillableAmount, true), true);
             return null;
         } else {

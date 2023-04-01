@@ -822,8 +822,7 @@ public class GT_Utility {
         }
 
         // if target is an inventory, e.g. chest, machine, drawers...
-        if (aTileEntity2 instanceof IInventory) {
-            final IInventory tPutInventory = (IInventory) aTileEntity2;
+        if (aTileEntity2 instanceof IInventory tPutInventory) {
 
             // partially filled slot spare space mapping.
             // value is the sum of all spare space left not counting completely empty slot
@@ -1263,8 +1262,7 @@ public class GT_Utility {
                 if (tMovedItemCount > 0) return tMovedItemCount;
             }
 
-            if (aDoCheckChests && aTileEntity1 instanceof TileEntityChest) {
-                TileEntityChest tTileEntity1 = (TileEntityChest) aTileEntity1;
+            if (aDoCheckChests && aTileEntity1 instanceof TileEntityChest tTileEntity1) {
                 if (tTileEntity1.adjacentChestChecked) {
                     byte tAmount = 0;
                     if (tTileEntity1.adjacentChestXNeg != null) {
@@ -1323,8 +1321,7 @@ public class GT_Utility {
                     if (tAmount != 0) return tAmount;
                 }
             }
-            if (aDoCheckChests && aTileEntity2 instanceof TileEntityChest) {
-                TileEntityChest tTileEntity2 = (TileEntityChest) aTileEntity2;
+            if (aDoCheckChests && aTileEntity2 instanceof TileEntityChest tTileEntity2) {
                 if (tTileEntity2.adjacentChestChecked) {
                     byte tAmount = 0;
                     if (tTileEntity2.adjacentChestXNeg != null) {
@@ -1568,8 +1565,7 @@ public class GT_Utility {
             }
             if (tMovedItemCount > 0) return tMovedItemCount;
 
-            if (aDoCheckChests && toTile instanceof TileEntityChest) {
-                TileEntityChest tTileEntity2 = (TileEntityChest) toTile;
+            if (aDoCheckChests && toTile instanceof TileEntityChest tTileEntity2) {
                 if (tTileEntity2.adjacentChestChecked) {
                     if (tTileEntity2.adjacentChestXNeg != null) {
                         tMovedItemCount = moveFromSlotToSide(
@@ -3506,9 +3502,8 @@ public class GT_Utility {
                 if (D1) e.printStackTrace(GT_Log.err);
             }
             try {
-                if (tTileEntity instanceof ic2.api.crops.ICropTile) {
+                if (tTileEntity instanceof ic2.api.crops.ICropTile crop) {
                     rEUAmount += 1000;
-                    final ic2.api.crops.ICropTile crop = (ic2.api.crops.ICropTile) tTileEntity;
                     if (crop.getScanLevel() < 4) crop.setScanLevel((byte) 4);
                     if (crop.getCrop() != null) {
                         tList.add(
@@ -3554,8 +3549,7 @@ public class GT_Utility {
             }
 
             try {
-                if (tTileEntity instanceof forestry.arboriculture.tiles.TileLeaves) {
-                    final forestry.arboriculture.tiles.TileLeaves tileLeaves = (forestry.arboriculture.tiles.TileLeaves) tTileEntity;
+                if (tTileEntity instanceof forestry.arboriculture.tiles.TileLeaves tileLeaves) {
                     final forestry.api.arboriculture.ITree tree = tileLeaves.getTree();
                     if (tree != null) {
                         rEUAmount += 1000;
@@ -4379,8 +4373,7 @@ public class GT_Utility {
                 ItemStack toAdd = ((ItemStack) o.getKey()).copy();
                 toAdd.stackSize = amount;
                 inputs.add(toAdd);
-            } else if (o.getKey() instanceof String) {
-                final String dictName = (String) o.getKey();
+            } else if (o.getKey() instanceof String dictName) {
                 // Do not register tools dictName in inputs
                 if (ToolDictNames.contains(dictName)) continue;
                 ItemStack stack = GT_OreDictUnificator.get(dictName, null, amount, false, true);

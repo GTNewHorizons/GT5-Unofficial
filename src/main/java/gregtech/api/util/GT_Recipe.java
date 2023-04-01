@@ -993,10 +993,9 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             if (this == obj) {
                 return true;
             }
-            if (!(obj instanceof GT_Recipe_AssemblyLine)) {
+            if (!(obj instanceof GT_Recipe_AssemblyLine other)) {
                 return false;
             }
-            GT_Recipe_AssemblyLine other = (GT_Recipe_AssemblyLine) obj;
             if (this.mInputs.length != other.mInputs.length) {
                 return false;
             }

@@ -182,8 +182,7 @@ public class GT_RadioactiveCellIC_Item extends GT_RadioactiveCell_Item implement
 
     @Override
     public void onUpdate(ItemStack stack, World world, Entity entity, int slotIndex, boolean isCurrentItem) {
-        if (this.sRadiation > 0 && (entity instanceof EntityLivingBase)) {
-            EntityLivingBase entityLiving = (EntityLivingBase) entity;
+        if (this.sRadiation > 0 && (entity instanceof EntityLivingBase entityLiving)) {
             if (!GregTech_API.mIC2Classic && !GT_Utility.isWearingFullRadioHazmat(entityLiving)) {
                 IC2Potion.radiation.applyTo(entityLiving, sRadiation * 20, sRadiation * 10);
             }

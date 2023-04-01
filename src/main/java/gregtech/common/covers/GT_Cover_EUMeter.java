@@ -391,8 +391,7 @@ public class GT_Cover_EUMeter extends GT_CoverBehaviorBase<GT_Cover_EUMeter.EUMe
                 GT_Utility.trans("261", "Electricity Storage(Including Batteries)"), (te) -> {
                     if (te instanceof IGregTechTileEntity) {
                         IMetaTileEntity mte = ((IGregTechTileEntity) te).getMetaTileEntity();
-                        if (mte instanceof GT_MetaTileEntity_BasicBatteryBuffer) {
-                            GT_MetaTileEntity_BasicBatteryBuffer buffer = (GT_MetaTileEntity_BasicBatteryBuffer) mte;
+                        if (mte instanceof GT_MetaTileEntity_BasicBatteryBuffer buffer) {
                             return buffer.getStoredEnergy()[0];
                         }
                     }
@@ -400,8 +399,7 @@ public class GT_Cover_EUMeter extends GT_CoverBehaviorBase<GT_Cover_EUMeter.EUMe
                 }, (te) -> {
                     if (te instanceof IGregTechTileEntity) {
                         IMetaTileEntity mte = ((IGregTechTileEntity) te).getMetaTileEntity();
-                        if (mte instanceof GT_MetaTileEntity_BasicBatteryBuffer) {
-                            GT_MetaTileEntity_BasicBatteryBuffer buffer = (GT_MetaTileEntity_BasicBatteryBuffer) mte;
+                        if (mte instanceof GT_MetaTileEntity_BasicBatteryBuffer buffer) {
                             return buffer.getStoredEnergy()[1];
                         }
                     }
