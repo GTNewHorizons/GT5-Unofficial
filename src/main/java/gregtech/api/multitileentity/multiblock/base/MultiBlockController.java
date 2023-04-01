@@ -1441,7 +1441,7 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
         buttons.setSize(16, 167)
                .setPos(7, 86);
         buttons.addChild(createPowerSwitchButton())
-               .addChild(new FakeSyncWidget.BooleanSyncer(() -> isAllowedToWork(), val -> {
+               .addChild(new FakeSyncWidget.BooleanSyncer(this::isAllowedToWork, val -> {
                    if (val) enableWorking();
                    else disableWorking();
                }))

@@ -129,8 +129,7 @@ public class GT_CLS_Compat {
                 "GregTech materials",
                 mEvents,
                 progressBar,
-                m -> m.mMaterial,
-                m -> GT_Proxy.registerRecipes(m));
+                m -> m.mMaterial, GT_Proxy::registerRecipes);
         ProgressManager.pop(progressBar);
         isRegisteringGTmaterials.set(null, false);
     }
@@ -146,8 +145,7 @@ public class GT_CLS_Compat {
                 "Vanilla materials",
                 replacedVanillaItemsSet,
                 progressBar,
-                m -> m.mDefaultLocalName,
-                m -> GT_PostLoad.doActualRegistration(m));
+                m -> m.mDefaultLocalName, GT_PostLoad::doActualRegistration);
     }
 
     public static void pushToDisplayProgress() throws InvocationTargetException, IllegalAccessException {

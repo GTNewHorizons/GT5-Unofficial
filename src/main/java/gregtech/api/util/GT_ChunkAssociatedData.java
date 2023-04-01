@@ -189,7 +189,7 @@ public abstract class GT_ChunkAssociatedData<T extends GT_ChunkAssociatedData.ID
     }
 
     private void saveRegions(Stream<SuperRegion> stream) {
-        stream.filter(r -> r.isDirty())
+        stream.filter(SuperRegion::isDirty)
               .map(c -> (Runnable) c::save)
               .map(r -> CompletableFuture.runAsync(r, IO_WORKERS))
               .reduce(CompletableFuture::allOf)
