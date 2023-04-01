@@ -1,7 +1,6 @@
 package gregtech.api.metatileentity;
 
 import static gregtech.api.enums.GT_Values.GT;
-import static gregtech.api.enums.GT_Values.V;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -33,6 +32,7 @@ import gnu.trove.list.TIntList;
 import gnu.trove.list.array.TIntArrayList;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Dyes;
+import gregtech.api.enums.GT_Values;
 import gregtech.api.interfaces.metatileentity.IConnectable;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IColoredTileEntity;
@@ -754,36 +754,7 @@ public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable {
 
     @Override
     public void doExplosion(long aExplosionPower) {
-        float tStrength = aExplosionPower < V[0] ? 1.0F
-                : aExplosionPower < V[1] ? 2.0F
-                        : aExplosionPower < V[2] ? 3.0F
-                                : aExplosionPower < V[3] ? 4.0F
-                                        : aExplosionPower < V[4] ? 5.0F
-                                                : aExplosionPower < V[4] * 2 ? 6.0F
-                                                        : aExplosionPower < V[5] ? 7.0F
-                                                                : aExplosionPower < V[6] ? 8.0F
-                                                                        : aExplosionPower < V[7] ? 9.0F
-                                                                                : aExplosionPower < V[8] ? 10.0F
-                                                                                        : aExplosionPower < V[8] * 2
-                                                                                                ? 11.0F
-                                                                                                : aExplosionPower < V[9]
-                                                                                                        ? 12.0F
-                                                                                                        : aExplosionPower
-                                                                                                                < V[10] ? 13.0F
-                                                                                                                        : aExplosionPower
-                                                                                                                                < V[11] ? 14.0F
-                                                                                                                                        : aExplosionPower
-                                                                                                                                                < V[12] ? 15.0F
-                                                                                                                                                        : aExplosionPower
-                                                                                                                                                                < V[12] * 2
-                                                                                                                                                                        ? 16.0F
-                                                                                                                                                                        : aExplosionPower
-                                                                                                                                                                                < V[13] ? 17.0F
-                                                                                                                                                                                        : aExplosionPower
-                                                                                                                                                                                                < V[14] ? 18.0F
-                                                                                                                                                                                                        : aExplosionPower
-                                                                                                                                                                                                                < V[15] ? 19.0F
-                                                                                                                                                                                                                        : 20.0F;
+        float tStrength = GT_Values.getExplosionPowerForVoltage(aExplosionPower);
         int tX = getBaseMetaTileEntity().getXCoord(), tY = getBaseMetaTileEntity().getYCoord(),
                 tZ = getBaseMetaTileEntity().getZCoord();
         World tWorld = getBaseMetaTileEntity().getWorld();

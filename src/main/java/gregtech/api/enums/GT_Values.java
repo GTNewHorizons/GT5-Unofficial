@@ -171,12 +171,9 @@ public class GT_Values {
             EnumChatFormatting.DARK_RED.toString(), // UHV, 9
             EnumChatFormatting.DARK_PURPLE.toString(), // UEV, 10
             EnumChatFormatting.DARK_BLUE.toString() + EnumChatFormatting.BOLD, // UIV, 11
-            EnumChatFormatting.RED.toString() + EnumChatFormatting.BOLD
-                    + EnumChatFormatting.UNDERLINE, // UMV, 12
-            EnumChatFormatting.DARK_RED.toString() + EnumChatFormatting.BOLD
-                    + EnumChatFormatting.UNDERLINE, // UXV, 13
-            EnumChatFormatting.WHITE.toString() + EnumChatFormatting.BOLD
-                    + EnumChatFormatting.UNDERLINE, // MAX, 14
+            EnumChatFormatting.RED.toString() + EnumChatFormatting.BOLD + EnumChatFormatting.UNDERLINE, // UMV, 12
+            EnumChatFormatting.DARK_RED.toString() + EnumChatFormatting.BOLD + EnumChatFormatting.UNDERLINE, // UXV, 13
+            EnumChatFormatting.WHITE.toString() + EnumChatFormatting.BOLD + EnumChatFormatting.UNDERLINE, // MAX, 14
             EnumChatFormatting.OBFUSCATED.toString() // ~~~, 15
     };
 
@@ -546,5 +543,49 @@ public class GT_Values {
 
     public static double getMaxPlasmaTurbineEfficiency() {
         return maxPlasmaTurbineEfficiency;
+    }
+
+    public static float getExplosionPowerForVoltage(long voltage) {
+        if (voltage < V[0]) {
+            return 1.0F;
+        } else if (voltage < V[1]) {
+            return 2.0F;
+        } else if (voltage < V[2]) {
+            return 3.0F;
+        } else if (voltage < V[3]) {
+            return 4.0F;
+        } else if (voltage < V[4]) {
+            return 5.0F;
+        } else if (voltage < V[4] * 2) {
+            return 6.0F;
+        } else if (voltage < V[5]) {
+            return 7.0F;
+        } else if (voltage < V[6]) {
+            return 8.0F;
+        } else if (voltage < V[7]) {
+            return 9.0F;
+        } else if (voltage < V[8]) {
+            return 10.0F;
+        } else if (voltage < V[8] * 2) {
+            return 11.0F;
+        } else if (voltage < V[9]) {
+            return 12.0F;
+        } else if (voltage < V[10]) {
+            return 13.0F;
+        } else if (voltage < V[11]) {
+            return 14.0F;
+        } else if (voltage < V[12]) {
+            return 15.0F;
+        } else if (voltage < V[12] * 2) {
+            return 16.0F;
+        } else if (voltage < V[13]) {
+            return 17.0F;
+        } else if (voltage < V[14]) {
+            return 18.0F;
+        } else if (voltage < V[15]) {
+            return 19.0F;
+        } else {
+            return 20.0F;
+        }
     }
 }
