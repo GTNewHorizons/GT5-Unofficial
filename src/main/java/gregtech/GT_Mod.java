@@ -711,7 +711,7 @@ public class GT_Mod implements IGT_Mod {
         FurnaceRecipes.smelting()
                       .getSmeltingList()
                       .values()
-                      .forEach(k -> tStacks.add(k));
+                      .forEach(tStacks::add);
 
         if (gregtechproxy.mCraftingUnification) {
             GT_Log.out.println("GT_Mod: Crafting Recipes");
