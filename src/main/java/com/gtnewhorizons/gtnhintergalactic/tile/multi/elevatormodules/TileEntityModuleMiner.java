@@ -23,6 +23,7 @@ import com.github.technus.tectech.thing.metaTileEntity.multi.base.IStatusFunctio
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.Parameters;
 import com.gtnewhorizons.gtnhintergalactic.Tags;
+import com.gtnewhorizons.gtnhintergalactic.gui.IG_UITextures;
 import com.gtnewhorizons.gtnhintergalactic.recipe.IG_Recipe;
 import com.gtnewhorizons.gtnhintergalactic.recipe.IG_RecipeAdder;
 import com.gtnewhorizons.gtnhintergalactic.spaceprojects.ProjectAsteroidOutpost;
@@ -522,9 +523,9 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase {
             List<UITexture> ret = new ArrayList<>();
             ret.add(TecTechUITextures.BUTTON_STANDARD_16x16);
             if (isWhitelisted) {
-                ret.add(TecTechUITextures.OVERLAY_BUTTON_SAFE_VOID_ON);
+                ret.add(IG_UITextures.OVERLAY_BUTTON_CHECK);
             } else {
-                ret.add(TecTechUITextures.OVERLAY_BUTTON_SAFE_VOID_OFF);
+                ret.add(IG_UITextures.OVERLAY_BUTTON_CROSS);
             }
             return ret.toArray(new IDrawable[0]);
         }).setPos(174, 132).setSize(16, 16);
