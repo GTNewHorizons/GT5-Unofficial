@@ -291,9 +291,7 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
                 }
 
                 if (aRecipe[i] == GT_MetaTileEntity_BasicMachine_GT_Recipe.X.STICK_DISTILLATION) {
-                    switch (this.mTier) {
-                        default -> aRecipe[i] = OrePrefixes.stick.get(Materials.Blaze);
-                    }
+                    aRecipe[i] = OrePrefixes.stick.get(Materials.Blaze);
                     continue;
                 }
 

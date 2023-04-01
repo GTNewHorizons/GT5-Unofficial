@@ -447,9 +447,10 @@ public abstract class GT_ChunkAssociatedData<T extends GT_ChunkAssociatedData.ID
             World world = Objects.requireNonNull(this.world.get(), "Attempting to load region of another world!");
             try (DataInputStream input = new DataInputStream(new FileInputStream(file))) {
                 byte b = input.readByte();
-                switch (b) {
-                    case 0 -> loadV0(input, world);
-                    default -> GT_Log.err.printf("Unknown ChunkAssociatedData version %d\n", b);
+                if (b == 0) {
+                    loadV0(input, world);
+                } else {
+                    GT_Log.err.printf("Unknown ChunkAssociatedData version %d\n", b);
                 }
             }
         }

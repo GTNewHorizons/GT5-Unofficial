@@ -370,16 +370,12 @@ public abstract class GT_MetaTileEntity_DrillerBase
 
     protected boolean workingAtBottom(ItemStack aStack, int xDrill, int yDrill, int zDrill, int xPipe, int zPipe,
             int yHead, int oldYHead) {
-        switch (tryLowerPipeState(true)) {
-            case 0 -> {
-                workState = STATE_DOWNWARD;
-                return true;
-            }
-            default -> {
-                workState = STATE_UPWARD;
-                return true;
-            }
+        if (tryLowerPipeState(true) == 0) {
+            workState = STATE_DOWNWARD;
+            return true;
         }
+        workState = STATE_UPWARD;
+        return true;
     }
 
     protected boolean workingUpward(ItemStack aStack, int xDrill, int yDrill, int zDrill, int xPipe, int zPipe,
