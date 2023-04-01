@@ -584,7 +584,7 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
     }
 
     protected int getTimeBetweenProcessSounds() {
-        return 1000;
+        return 100;
     }
 
     protected void doActivitySound(ResourceLocation activitySound) {
