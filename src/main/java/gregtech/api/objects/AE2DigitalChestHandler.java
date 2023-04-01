@@ -16,7 +16,7 @@ public class AE2DigitalChestHandler implements appeng.api.storage.IExternalStora
     }
 
     @Override
-    public appeng.api.storage.IMEInventory getInventory(final TileEntity te, final ForgeDirection d,
+    public appeng.api.storage.IMEInventory<?> getInventory(final TileEntity te, final ForgeDirection d,
             final appeng.api.storage.StorageChannel chan, final appeng.api.networking.security.BaseActionSource src) {
         if (chan == appeng.api.storage.StorageChannel.ITEMS) {
             return ((GT_MetaTileEntity_DigitalChestBase) (((BaseMetaTileEntity) te).getMetaTileEntity()));

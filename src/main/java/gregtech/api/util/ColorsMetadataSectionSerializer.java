@@ -20,7 +20,7 @@ import gregtech.api.GregTech_API;
 import gregtech.api.enums.Dyes;
 
 @SideOnly(Side.CLIENT)
-public class ColorsMetadataSectionSerializer extends BaseMetadataSectionSerializer implements JsonSerializer {
+public class ColorsMetadataSectionSerializer extends BaseMetadataSectionSerializer {
 
     public ColorsMetadataSection deserialize(JsonElement metadataColors, Type type,
             JsonDeserializationContext context) {
