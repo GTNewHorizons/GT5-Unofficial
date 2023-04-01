@@ -250,7 +250,7 @@ public class GT_Utility {
 
     public static Field getField(Object aObject, String aField, boolean aPrivate, boolean aLogErrors) {
         try {
-            Field tField = (aObject instanceof Class) ? ((Class) aObject).getDeclaredField(aField)
+            Field tField = (aObject instanceof Class) ? ((Class<?>) aObject).getDeclaredField(aField)
                     : (aObject instanceof String) ? Class.forName((String) aObject)
                                                          .getDeclaredField(aField)
                             : aObject.getClass()
@@ -265,7 +265,7 @@ public class GT_Utility {
 
     public static Object getFieldContent(Object aObject, String aField, boolean aPrivate, boolean aLogErrors) {
         try {
-            Field tField = (aObject instanceof Class) ? ((Class) aObject).getDeclaredField(aField)
+            Field tField = (aObject instanceof Class) ? ((Class<?>) aObject).getDeclaredField(aField)
                     : (aObject instanceof String) ? Class.forName((String) aObject)
                                                          .getDeclaredField(aField)
                             : aObject.getClass()
@@ -308,7 +308,7 @@ public class GT_Utility {
                 }
             }
 
-            Method tMethod = (aObject instanceof Class) ? ((Class) aObject).getMethod(aMethod, tParameterTypes)
+            Method tMethod = (aObject instanceof Class) ? ((Class<?>) aObject).getMethod(aMethod, tParameterTypes)
                     : aObject.getClass()
                              .getMethod(aMethod, tParameterTypes);
             if (aPrivate) tMethod.setAccessible(true);
@@ -377,7 +377,7 @@ public class GT_Utility {
                 }
             }
 
-            if (tPotionHashmap != null) return ((HashMap) tPotionHashmap.get(aPlayer)).get(aPotionIndex) != null;
+            if (tPotionHashmap != null) return ((HashMap<?, ?>) tPotionHashmap.get(aPlayer)).get(aPotionIndex) != null;
         } catch (Throwable e) {
             if (D1) e.printStackTrace(GT_Log.err);
         }
@@ -408,7 +408,7 @@ public class GT_Utility {
                 }
             }
 
-            if (tPotionHashmap != null) ((HashMap) tPotionHashmap.get(aPlayer)).remove(aPotionIndex);
+            if (tPotionHashmap != null) ((HashMap<?, ?>) tPotionHashmap.get(aPlayer)).remove(aPotionIndex);
         } catch (Throwable e) {
             if (D1) e.printStackTrace(GT_Log.err);
         }

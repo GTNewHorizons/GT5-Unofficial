@@ -1066,7 +1066,7 @@ public class GT_ModHandler {
 
         for (byte i = 0; i < aRecipe.length; i++) {
             if (aRecipe[i] instanceof IItemContainer) aRecipe[i] = ((IItemContainer) aRecipe[i]).get(1);
-            else if (aRecipe[i] instanceof Enum) aRecipe[i] = ((Enum) aRecipe[i]).name();
+            else if (aRecipe[i] instanceof Enum) aRecipe[i] = ((Enum<?>) aRecipe[i]).name();
             else if (!(aRecipe[i] == null || aRecipe[i] instanceof ItemStack
                     || aRecipe[i] instanceof ItemData
                     || aRecipe[i] instanceof String
@@ -1360,7 +1360,7 @@ public class GT_ModHandler {
         if (aRecipe == null || aRecipe.length <= 0) return false;
         for (byte i = 0; i < aRecipe.length; i++) {
             if (aRecipe[i] instanceof IItemContainer) aRecipe[i] = ((IItemContainer) aRecipe[i]).get(1);
-            else if (aRecipe[i] instanceof Enum) aRecipe[i] = ((Enum) aRecipe[i]).name();
+            else if (aRecipe[i] instanceof Enum) aRecipe[i] = ((Enum<?>) aRecipe[i]).name();
             else if (!(aRecipe[i] == null || aRecipe[i] instanceof ItemStack
                     || aRecipe[i] instanceof String
                     || aRecipe[i] instanceof Character))
@@ -1787,7 +1787,7 @@ public class GT_ModHandler {
                                     temp = false;
                                     break;
                                 }
-                                if (tObject instanceof List && ((List) tObject).isEmpty()) {
+                                if (tObject instanceof List && ((List<?>) tObject).isEmpty()) {
                                     temp = false;
                                     break;
                                 }

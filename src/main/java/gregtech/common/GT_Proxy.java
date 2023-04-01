@@ -1324,14 +1324,14 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
         for (int i = 0; i < tList.size(); i++) {
             if ((tList.get(i) instanceof ShapedOreRecipe)) {
                 for (Object tObject : ((ShapedOreRecipe) tList.get(i)).getInput()) {
-                    if (((tObject instanceof List)) && (((List) tObject).isEmpty())) {
+                    if (((tObject instanceof List)) && (((List<?>) tObject).isEmpty())) {
                         tList.remove(i--);
                         break;
                     }
                 }
             } else if ((tList.get(i) instanceof ShapelessOreRecipe)) {
                 for (Object tObject : ((ShapelessOreRecipe) tList.get(i)).getInput()) {
-                    if (((tObject instanceof List)) && (((List) tObject).isEmpty())) {
+                    if (((tObject instanceof List)) && (((List<?>) tObject).isEmpty())) {
                         tList.remove(i--);
                         break;
                     }
