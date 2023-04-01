@@ -132,8 +132,16 @@ public class EyeOfHarmonyRecipe {
         // --- Output and process fluids of the recipe.
         ArrayList<FluidStack> fluidStackArrayList = validPlasmaGenerator(materialList);
 
+        if (rocketTier == 9) {
+            fluidStackArrayList.add(Materials.Helium.getPlasma(1));
+            fluidStackArrayList.add(Materials.Nitrogen.getPlasma(1));
+            fluidStackArrayList.add(Materials.Radon.getPlasma(1));
+            fluidStackArrayList.add(Materials.Boron.getPlasma(1));
+            fluidStackArrayList.add(Materials.Oxygen.getPlasma(1));
+        }
+
         for (FluidStack fluidStack : fluidStackArrayList) {
-            fluidStack.amount = (int) ((this.spacetimeCasingTierRequired + 1) * 1_000_000L);
+            fluidStack.amount = (int) ((this.spacetimeCasingTierRequired + 1) * 8_000_000L);
         }
 
         // Add a bonus fluid of compressed star matter.
