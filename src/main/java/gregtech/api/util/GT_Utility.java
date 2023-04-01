@@ -4074,17 +4074,17 @@ public class GT_Utility {
 
                 if (tOils != null) fillBookWithList(tNBTList, "Oils%s\n\n", "\n", 9, tOils);
 
-                tPageText = "Oil notes\n\n" + "Prospects from NW to SE 576 chunks"
-                        + "(9 8x8 oilfields)\n around and gives min-max amount"
-                        + "\n\n"
-                        + "[1][2][3]"
-                        + "\n"
-                        + "[4][5][6]"
-                        + "\n"
-                        + "[7][8][9]"
-                        + "\n"
-                        + "\n"
-                        + "[5] - Prospector in this 8x8 area";
+                tPageText = """
+                    Oil notes
+
+                    Prospects from NW to SE 576 chunks(9 8x8 oilfields)
+                     around and gives min-max amount
+
+                    [1][2][3]
+                    [4][5][6]
+                    [7][8][9]
+
+                    [5] - Prospector in this 8x8 area""";
                 tNBTList.appendTag(new NBTTagString(tPageText));
 
                 tPageText = "Corners of [5] are \n" + tOilsPosStr + "\n" + "P - Prospector in 8x8 field";
