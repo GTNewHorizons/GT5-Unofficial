@@ -45,7 +45,7 @@ public class GT_Worldgen_Stone extends GT_Worldgen_Ore {
         StoneSeeds(boolean exists) {
             mExists = exists;
         }
-    };
+    }
 
     class ValidSeeds {
 
@@ -56,7 +56,7 @@ public class GT_Worldgen_Stone extends GT_Worldgen_Ore {
             this.mX = x;
             this.mZ = z;
         }
-    };
+    }
 
     public GT_Worldgen_Stone(String aName, boolean aDefault, Block aBlock, int aBlockMeta, int aDimensionType,
             int aAmount, int aSize, int aProbability, int aMinY, int aMaxY, Collection<String> aBiomeList,

@@ -109,7 +109,7 @@ public class GT_CLS_Compat {
             }
             action.accept(m);
             currentStep += 1;
-        } ;
+        }
         GT_Mod.GT_FML_LOGGER.info(String.format("%s - Baking: Done", materialsType));
         try {
             progressBarStep.set(progressBar, currentStep);

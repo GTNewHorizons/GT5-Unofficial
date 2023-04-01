@@ -160,7 +160,7 @@ public class GT_Worldgenerator implements IWorldGenerator {
                 result = 31 * result + this.mZ;
                 return result;
             }
-        };
+        }
 
         public static ArrayList<GT_Worldgenerator.WorldGenContainer.NearbySeeds> seedList = new ArrayList<>();
 

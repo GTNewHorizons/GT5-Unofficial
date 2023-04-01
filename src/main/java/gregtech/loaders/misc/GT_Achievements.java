@@ -425,7 +425,7 @@ public class GT_Achievements {
             boolean special) {
         if (!GT_Mod.gregtechproxy.mAchievements) {
             return null;
-        } ;
+        }
         Achievement achievement = new Achievement(
                 textId,
                 textId,

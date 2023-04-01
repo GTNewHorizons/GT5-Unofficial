@@ -973,7 +973,7 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
         if (tInv == null) return false;
 
         final int tSlot = tInv.getRight();
-        final IItemHandlerModifiable inv = tInv.getLeft();;
+        final IItemHandlerModifiable inv = tInv.getLeft();
 
         return inv.getStackInSlot(tSlot) == null || GT_Utility.areStacksEqual(aStack, inv.getStackInSlot(tSlot)); // &&
                                                                                                                   // allowPutStack(getBaseMetaTileEntity(),

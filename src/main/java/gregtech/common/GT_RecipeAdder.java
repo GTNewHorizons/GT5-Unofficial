@@ -2366,7 +2366,7 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         }
         List<FluidStack> tFluidOutputList;
         if (FluidOutputArray != null) {
-            tFluidOutputList = new ArrayList<>(Arrays.asList(FluidOutputArray));;
+            tFluidOutputList = new ArrayList<>(Arrays.asList(FluidOutputArray));
         } else {
             tFluidOutputList = new ArrayList<>(1);
         }
