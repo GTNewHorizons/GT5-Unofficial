@@ -192,6 +192,7 @@ gt.blockmachines.multimachine.project.ig.miner.desc4=Higher tier plasmas give bo
 gt.blockmachines.multimachine.project.ig.miner.t1.desc5=Up to 2 parallels
 gt.blockmachines.multimachine.project.ig.miner.t2.desc5=Up to 4 parallels
 gt.blockmachines.multimachine.project.ig.miner.t3.desc5=Up to 8 parallels
+gt.blockmachines.multimachine.project.ig.miner.desc6=Ores can be black-/whitelisted by putting them in an input bus
 
 # Module Pump
 gt.blockmachines.multimachine.project.ig.pump.t1.name=Space Pumping Module MK-I
