@@ -162,7 +162,7 @@ public class GT_EnergyArmor_Item extends ItemArmor implements ISpecialArmor {
                 }
             }
 
-            jumpChargeMap.put(aPlayer, Float.valueOf(jumpCharge));
+            jumpChargeMap.put(aPlayer, jumpCharge);
         }
 
         if ((mSpecials & 256) != 0) {
