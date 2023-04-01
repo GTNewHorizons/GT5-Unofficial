@@ -59,15 +59,14 @@ public class GT_StructureUtility {
 
     public static <T> IStructureElement<T> ofFrame(Materials aFrameMaterial) {
         if (aFrameMaterial == null) throw new IllegalArgumentException();
-        return new IStructureElement<T>() {
+        return new IStructureElement<>() {
 
             private IIcon[] mIcons;
 
             @Override
             public boolean check(T t, World world, int x, int y, int z) {
                 TileEntity tBase = world.getTileEntity(x, y, z);
-                if (tBase instanceof BaseMetaPipeEntity) {
-                    BaseMetaPipeEntity tPipeBase = (BaseMetaPipeEntity) tBase;
+                if (tBase instanceof BaseMetaPipeEntity tPipeBase) {
                     if (tPipeBase.isInvalidTileEntity()) return false;
                     if (tPipeBase.getMetaTileEntity() instanceof GT_MetaPipeEntity_Frame)
                         return aFrameMaterial == ((GT_MetaPipeEntity_Frame) tPipeBase.getMetaTileEntity()).mMaterial;
@@ -88,9 +87,9 @@ public class GT_StructureUtility {
             @Override
             public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
                 ItemStack tFrameStack = getFrameStack();
-                if (!GT_Utility.isStackValid(tFrameStack) || !(tFrameStack.getItem() instanceof ItemBlock))
+                if (!GT_Utility.isStackValid(tFrameStack)
+                        || !(tFrameStack.getItem() instanceof ItemBlock tFrameStackItem))
                     return false;
-                ItemBlock tFrameStackItem = (ItemBlock) tFrameStack.getItem();
                 return tFrameStackItem.placeBlockAt(
                         tFrameStack,
                         null,
@@ -171,7 +170,7 @@ public class GT_StructureUtility {
         if (aHatchAdder == null || aHintBlock == null) {
             throw new IllegalArgumentException();
         }
-        return new IStructureElementNoPlacement<T>() {
+        return new IStructureElementNoPlacement<>() {
 
             @Override
             public boolean check(T t, World world, int x, int y, int z) {
@@ -194,7 +193,7 @@ public class GT_StructureUtility {
         if (aHatchAdder == null) {
             throw new IllegalArgumentException();
         }
-        return new IStructureElement<T>() {
+        return new IStructureElement<>() {
 
             @Override
             public boolean check(T t, World world, int x, int y, int z) {
@@ -280,7 +279,7 @@ public class GT_StructureUtility {
         if (aHatchAdder == null) {
             throw new IllegalArgumentException();
         }
-        return new IStructureElement<T>() {
+        return new IStructureElement<>() {
 
             @Override
             public boolean check(T t, World world, int x, int y, int z) {
@@ -379,7 +378,7 @@ public class GT_StructureUtility {
         if (aHatchAdder == null || aHintBlock == null) {
             throw new IllegalArgumentException();
         }
-        return new IStructureElement<T>() {
+        return new IStructureElement<>() {
 
             @Override
             public boolean check(T t, World world, int x, int y, int z) {
@@ -446,7 +445,7 @@ public class GT_StructureUtility {
         if (aHeatingCoilSetter == null || aHeatingCoilGetter == null) {
             throw new IllegalArgumentException();
         }
-        return new IStructureElement<T>() {
+        return new IStructureElement<>() {
 
             @Override
             public boolean check(T t, World world, int x, int y, int z) {

@@ -158,13 +158,11 @@ public class GT_MetaTileEntity_LargeTurbine_Plasma extends GT_MetaTileEntity_Lar
 
             // GT_FML_LOGGER.info(totalFlow+" : "+fuelValue+" : "+aOptFlow+" : "+actualOptimalFlow+" : "+tEU);
 
-            if (totalFlow == actualOptimalFlow) {
-                tEU = GT_Utility.safeInt((long) (aBaseEff / 10000D * tEU));
-            } else {
+            if (totalFlow != actualOptimalFlow) {
                 float efficiency = getOverflowEfficiency(totalFlow, actualOptimalFlow, overflowMultiplier);
                 tEU = (int) (tEU * efficiency);
-                tEU = GT_Utility.safeInt((long) (aBaseEff / 10000D * tEU));
             }
+            tEU = GT_Utility.safeInt((long) (aBaseEff / 10000D * tEU));
 
             // If next output is above the maximum the dynamo can handle, set it to the maximum instead of exploding the
             // turbine
@@ -347,7 +345,7 @@ public class GT_MetaTileEntity_LargeTurbine_Plasma extends GT_MetaTileEntity_Lar
                         + "L", /* 6 */
                 StatCollector.translateToLocal("GT5U.turbine.dmg") + ": "
                         + EnumChatFormatting.RED
-                        + Integer.toString(tDura)
+                        + tDura
                         + EnumChatFormatting.RESET
                         + "%", /* 7 */
                 StatCollector.translateToLocal("GT5U.multiblock.pollution") + ": "

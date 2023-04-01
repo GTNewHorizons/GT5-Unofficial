@@ -23,25 +23,20 @@ public class ProcessingCrafting implements gregtech.api.interfaces.IOreRecipeReg
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
             ItemStack aStack) {
         switch (aOreDictName) {
-            case "craftingQuartz":
-                GT_Values.RA.addAssemblerRecipe(
-                        new ItemStack(Blocks.redstone_torch, 3, 32767),
-                        GT_Utility.copyAmount(1L, aStack),
-                        Materials.Concrete.getMolten(144L),
-                        new ItemStack(net.minecraft.init.Items.comparator, 1, 0),
-                        800,
-                        1);
-                break;
-            case "craftingWireCopper":
-            case "craftingWireTin":
-                GT_Values.RA.addAssemblerRecipe(
-                        ItemList.Circuit_Basic.get(1L),
-                        GT_Utility.copyAmount(1L, aStack),
-                        GT_ModHandler.getIC2Item("frequencyTransmitter", 1L),
-                        800,
-                        1);
-                break;
-            case "craftingLensBlue":
+            case "craftingQuartz" -> GT_Values.RA.addAssemblerRecipe(
+                    new ItemStack(Blocks.redstone_torch, 3, 32767),
+                    GT_Utility.copyAmount(1L, aStack),
+                    Materials.Concrete.getMolten(144L),
+                    new ItemStack(net.minecraft.init.Items.comparator, 1, 0),
+                    800,
+                    1);
+            case "craftingWireCopper", "craftingWireTin" -> GT_Values.RA.addAssemblerRecipe(
+                    ItemList.Circuit_Basic.get(1L),
+                    GT_Utility.copyAmount(1L, aStack),
+                    GT_ModHandler.getIC2Item("frequencyTransmitter", 1L),
+                    800,
+                    1);
+            case "craftingLensBlue" -> {
                 GT_Values.RA.addLaserEngraverRecipe(
                         GT_OreDictUnificator.get(OrePrefixes.block, Materials.Iron, 1L),
                         GT_Utility.copyAmount(0L, aStack),
@@ -89,8 +84,8 @@ public class ProcessingCrafting implements gregtech.api.interfaces.IOreRecipeReg
                         2400,
                         500000,
                         true);
-                break;
-            case "craftingLensYellow":
+            }
+            case "craftingLensYellow" -> {
                 GT_Values.RA.addLaserEngraverRecipe(
                         GT_OreDictUnificator.get(OrePrefixes.block, Materials.Iron, 1L),
                         GT_Utility.copyAmount(0L, aStack),
@@ -138,8 +133,8 @@ public class ProcessingCrafting implements gregtech.api.interfaces.IOreRecipeReg
                         300,
                         30720,
                         true);
-                break;
-            case "craftingLensOrange":
+            }
+            case "craftingLensOrange" -> {
                 GT_Values.RA.addLaserEngraverRecipe(
                         ItemList.Circuit_Silicon_Wafer.get(1),
                         GT_Utility.copyAmount(0L, aStack),
@@ -168,8 +163,8 @@ public class ProcessingCrafting implements gregtech.api.interfaces.IOreRecipeReg
                         300,
                         4096,
                         false);
-                break;
-            case "craftingLensCyan":
+            }
+            case "craftingLensCyan" -> {
                 GT_Values.RA.addLaserEngraverRecipe(
                         GT_OreDictUnificator.get(OrePrefixes.block, Materials.Iron, 1L),
                         GT_Utility.copyAmount(0L, aStack),
@@ -217,8 +212,8 @@ public class ProcessingCrafting implements gregtech.api.interfaces.IOreRecipeReg
                         150,
                         30720,
                         true);
-                break;
-            case "craftingLensRed":
+            }
+            case "craftingLensRed" -> {
                 GT_Values.RA.addLaserEngraverRecipe(
                         GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Redstone, 1L),
                         GT_Utility.copyAmount(0L, aStack),
@@ -266,8 +261,8 @@ public class ProcessingCrafting implements gregtech.api.interfaces.IOreRecipeReg
                         1500,
                         122880,
                         true);
-                break;
-            case "craftingLensGreen":
+            }
+            case "craftingLensGreen" -> {
                 GT_Values.RA.addLaserEngraverRecipe(
                         ItemList.Circuit_Parts_Crystal_Chip_Elite.get(1L),
                         GT_Utility.copyAmount(0L, aStack),
@@ -317,8 +312,8 @@ public class ProcessingCrafting implements gregtech.api.interfaces.IOreRecipeReg
                         1200,
                         30720,
                         true);
-                break;
-            case "craftingLensWhite":
+            }
+            case "craftingLensWhite" -> {
                 GT_Values.RA.addLaserEngraverRecipe(
                         GT_OreDictUnificator.get(OrePrefixes.block, Materials.Iron, 1L),
                         GT_Utility.copyAmount(0L, aStack),
@@ -331,7 +326,6 @@ public class ProcessingCrafting implements gregtech.api.interfaces.IOreRecipeReg
                         GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 19),
                         2000,
                         1920);
-
                 GT_Values.RA.addLaserEngraverRecipe(
                         new ItemStack(Blocks.sandstone, 1, 2),
                         GT_Utility.copyAmount(0L, aStack),
@@ -391,7 +385,7 @@ public class ProcessingCrafting implements gregtech.api.interfaces.IOreRecipeReg
                         150,
                         30720,
                         true);
-                break;
+            }
         }
     }
 }

@@ -379,9 +379,7 @@ public class GT_MetaTileEntity_AssemblyLine extends
                 if (!isValidMetaTileEntity(mInputHatches.get(i))) {
                     continue nextDataStick;
                 } else {
-                    if (mInputHatches.get(i) instanceof GT_MetaTileEntity_Hatch_MultiInput) {
-                        GT_MetaTileEntity_Hatch_MultiInput tMultiHatch = (GT_MetaTileEntity_Hatch_MultiInput) mInputHatches.get(
-                                i);
+                    if (mInputHatches.get(i) instanceof GT_MetaTileEntity_Hatch_MultiInput tMultiHatch) {
                         if (!tMultiHatch.hasFluid(tRecipe.mFluidInputs[i])
                                 || tMultiHatch.getFluidAmount(tRecipe.mFluidInputs[i])
                                         < tRecipe.mFluidInputs[i].amount) {
@@ -437,9 +435,7 @@ public class GT_MetaTileEntity_AssemblyLine extends
         }
 
         for (int i = 0; i < tFluids.length; i++) {
-            if (mInputHatches.get(i) instanceof GT_MetaTileEntity_Hatch_MultiInput) {
-                GT_MetaTileEntity_Hatch_MultiInput tMultiHatch = (GT_MetaTileEntity_Hatch_MultiInput) mInputHatches.get(
-                        i);
+            if (mInputHatches.get(i) instanceof GT_MetaTileEntity_Hatch_MultiInput tMultiHatch) {
                 tMultiHatch.getFluid(tFluidSlot[i]).amount -= tFluids[i];
                 if (tMultiHatch.getFluid(tFluidSlot[i]).amount <= 0) {
                     tMultiHatch.setFluid(null, tFluidSlot[i]);

@@ -3,6 +3,7 @@ package gregtech.api.util;
 import static gregtech.api.enums.GT_Values.E;
 import static gregtech.api.enums.ModIDs.IC2CropPlugin;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,11 +28,18 @@ import ic2.api.crops.ICropTile;
 
 public class GT_BaseCrop extends CropCard implements ICropCardInfo {
 
-    public static ArrayList<GT_BaseCrop> sCropList = new ArrayList<GT_BaseCrop>();
-    private String mName = E, mDiscoveredBy = "Gregorius Techneticies", mAttributes[];
-    private int mTier = 0, mMaxSize = 0, mAfterHarvestSize = 0, mHarvestSize = 0, mStats[] = new int[5],
-            mGrowthSpeed = 0;
-    private ItemStack mDrop = null, mSpecialDrops[] = null;
+    public static ArrayList<GT_BaseCrop> sCropList = new ArrayList<>();
+    private String mName = E;
+    private String mDiscoveredBy = "Gregorius Techneticies";
+    private String[] mAttributes;
+    private int mTier = 0;
+    private int mMaxSize = 0;
+    private int mAfterHarvestSize = 0;
+    private int mHarvestSize = 0;
+    private int[] mStats = new int[5];
+    private int mGrowthSpeed = 0;
+    private ItemStack mDrop = null;
+    private ItemStack[] mSpecialDrops = null;
     private Materials mBlock = null;
     private static boolean bIc2NeiLoaded = IC2CropPlugin.isModLoaded();
 
@@ -123,19 +131,8 @@ public class GT_BaseCrop extends CropCard implements ICropCardInfo {
                              Class.forName("speiger.src.crops.api.CropPluginAPI")
                                   .getField("instance"),
                              this);
-            } catch (IllegalAccessException ex) {
-                bIc2NeiLoaded = false;
-            } catch (IllegalArgumentException ex) {
-                bIc2NeiLoaded = false;
-            } catch (java.lang.reflect.InvocationTargetException ex) {
-                bIc2NeiLoaded = false;
-            } catch (NoSuchFieldException ex) {
-                bIc2NeiLoaded = false;
-            } catch (NoSuchMethodException ex) {
-                bIc2NeiLoaded = false;
-            } catch (SecurityException ex) {
-                bIc2NeiLoaded = false;
-            } catch (ClassNotFoundException ex) {
+            } catch (IllegalAccessException | ClassNotFoundException | SecurityException | NoSuchMethodException
+                    | NoSuchFieldException | InvocationTargetException | IllegalArgumentException ex) {
                 bIc2NeiLoaded = false;
             }
         }
@@ -294,7 +291,7 @@ public class GT_BaseCrop extends CropCard implements ICropCardInfo {
     @Override
     public List<String> getCropInformation() {
         if (mBlock != null) {
-            ArrayList<String> result = new ArrayList<String>(1);
+            ArrayList<String> result = new ArrayList<>(1);
             result.add(
                     String.format(
                             "Requires %s Ore or Block of %s as soil block to reach full growth.",

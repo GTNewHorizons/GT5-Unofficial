@@ -72,7 +72,7 @@ public class GT_TooltipDataCache {
      * @return The lines for the key and all of it's subkeys
      */
     private List<String> getAllLines(String key, Object... args) {
-        List<String> lines = new ArrayList<String>();
+        List<String> lines = new ArrayList<>();
         String keyToLookup = key;
         int i = 1; // First loop has no .number postfix
         while (StatCollector.canTranslate(keyToLookup)) {

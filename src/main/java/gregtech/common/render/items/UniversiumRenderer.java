@@ -45,8 +45,7 @@ public class UniversiumRenderer extends GT_GeneratedMaterial_Renderer {
     @Override
     public void renderItem(ItemRenderType type, ItemStack aStack, Object... data) {
         short aMetaData = (short) aStack.getItemDamage();
-        if (!(aStack.getItem() instanceof IGT_ItemWithMaterialRenderer)) return;
-        IGT_ItemWithMaterialRenderer aItem = (IGT_ItemWithMaterialRenderer) aStack.getItem();
+        if (!(aStack.getItem() instanceof IGT_ItemWithMaterialRenderer aItem)) return;
 
         int passes = 1;
         if (aItem.requiresMultipleRenderPasses()) {
@@ -90,20 +89,17 @@ public class UniversiumRenderer extends GT_GeneratedMaterial_Renderer {
         processLightLevel(type, data);
 
         switch (type) {
-            case ENTITY: {
+            case ENTITY -> {
                 GL11.glPushMatrix();
                 if (aStack.isOnItemFrame()) GL11.glTranslatef(0F, -0.3F, 0.01F);
                 render(tIcon);
                 GL11.glPopMatrix();
 
-                break;
             }
-            case EQUIPPED:
-            case EQUIPPED_FIRST_PERSON: {
+            case EQUIPPED, EQUIPPED_FIRST_PERSON -> {
                 render(tIcon);
-                break;
             }
-            case INVENTORY: {
+            case INVENTORY -> {
                 GL11.glPushMatrix();
                 GL11.glEnable(GL11.GL_BLEND);
                 GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
@@ -163,10 +159,8 @@ public class UniversiumRenderer extends GT_GeneratedMaterial_Renderer {
 
                 GL11.glDisable(GL11.GL_BLEND);
                 GL11.glPopMatrix();
-                break;
             }
-            default:
-                break;
+            default -> {}
         }
     }
 
@@ -229,7 +223,7 @@ public class UniversiumRenderer extends GT_GeneratedMaterial_Renderer {
 
     private void processLightLevel(ItemRenderType type, Object... data) {
         switch (type) {
-            case ENTITY: {
+            case ENTITY -> {
                 EntityItem ent = (EntityItem) (data[1]);
                 if (ent != null) {
                     CosmicRenderStuffs.setLightFromLocation(
@@ -238,10 +232,8 @@ public class UniversiumRenderer extends GT_GeneratedMaterial_Renderer {
                             MathHelper.floor_double(ent.posY),
                             MathHelper.floor_double(ent.posZ));
                 }
-                break;
             }
-            case EQUIPPED:
-            case EQUIPPED_FIRST_PERSON: {
+            case EQUIPPED, EQUIPPED_FIRST_PERSON -> {
                 EntityLivingBase ent = (EntityLivingBase) (data[1]);
                 if (ent != null) {
                     CosmicRenderStuffs.setLightFromLocation(
@@ -250,13 +242,12 @@ public class UniversiumRenderer extends GT_GeneratedMaterial_Renderer {
                             MathHelper.floor_double(ent.posY),
                             MathHelper.floor_double(ent.posZ));
                 }
-                break;
             }
-            case INVENTORY: {
+            case INVENTORY -> {
                 CosmicRenderStuffs.setLightLevel(10.2f);
                 return;
             }
-            default: {
+            default -> {
                 CosmicRenderStuffs.setLightLevel(1.0f);
             }
         }

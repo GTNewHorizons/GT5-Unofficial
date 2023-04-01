@@ -32,7 +32,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
             ItemStack aStack) {
         switch (aPrefix) {
-            case dust:
+            case dust -> {
                 if (aMaterial.mFuelPower > 0) GT_Values.RA.addFuel(
                         GT_Utility.copyAmount(1L, aStack),
                         null,
@@ -59,7 +59,6 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                                 null);
                     }
                 }
-
                 ItemStack tDustStack;
                 if ((null != (tDustStack = GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial.mSmeltInto, 1L)))
                         && (!aMaterial.contains(SubTag.NO_SMELTING))) {
@@ -111,7 +110,6 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                                 GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L));
                     }
                 }
-
                 if ((aMaterial.mMaterialList.size() > 0) && ((aMaterial.mExtraData & 0x3) != 0)) {
                     long tItemAmount = 0L;
                     long tCapsuleCount = 0L;
@@ -157,11 +155,10 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                         int tList_sS = tList.size();
                         for (int i = 0; i < tList_sS; i++) {
                             if ((!ItemList.Cell_Air.isStackEqual(tList.get(i)))
-                                    && ((tFluid = GT_Utility.getFluidForFilledItem((ItemStack) tList.get(i), true))
-                                            != null)) {
+                                    && ((tFluid = GT_Utility.getFluidForFilledItem(tList.get(i), true)) != null)) {
                                 tFluid.amount *= tList.get(i).stackSize;
                                 tCapsuleCount -= GT_ModHandler.getCapsuleCellContainerCountMultipliedWithStackSize(
-                                        (ItemStack) tList.get(i));
+                                        tList.get(i));
                                 tList.remove(i);
                                 break;
                             }
@@ -171,12 +168,12 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                                 tCapsuleCount > 0L ? ItemList.Cell_Empty.get(tCapsuleCount) : null,
                                 null,
                                 tFluid,
-                                tList.size() < 1 ? null : (ItemStack) tList.get(0),
-                                tList.size() < 2 ? null : (ItemStack) tList.get(1),
-                                tList.size() < 3 ? null : (ItemStack) tList.get(2),
-                                tList.size() < 4 ? null : (ItemStack) tList.get(3),
-                                tList.size() < 5 ? null : (ItemStack) tList.get(4),
-                                tList.size() < 6 ? null : (ItemStack) tList.get(5),
+                                tList.size() < 1 ? null : tList.get(0),
+                                tList.size() < 2 ? null : tList.get(1),
+                                tList.size() < 3 ? null : tList.get(2),
+                                tList.size() < 4 ? null : tList.get(3),
+                                tList.size() < 5 ? null : tList.get(4),
+                                tList.size() < 6 ? null : tList.get(5),
                                 null,
                                 (int) Math.max(1L, Math.abs(aMaterial.getProtons() * 2L * tItemAmount)),
                                 Math.min(4, tList.size()) * 30);
@@ -186,12 +183,12 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                                     tCapsuleCount > 0L ? ItemList.Cell_Empty.get(tCapsuleCount) : null,
                                     null,
                                     tFluid,
-                                    tList.size() < 1 ? null : (ItemStack) tList.get(0),
-                                    tList.size() < 2 ? null : (ItemStack) tList.get(1),
-                                    tList.size() < 3 ? null : (ItemStack) tList.get(2),
-                                    tList.size() < 4 ? null : (ItemStack) tList.get(3),
-                                    tList.size() < 5 ? null : (ItemStack) tList.get(4),
-                                    tList.size() < 6 ? null : (ItemStack) tList.get(5),
+                                    tList.size() < 1 ? null : tList.get(0),
+                                    tList.size() < 2 ? null : tList.get(1),
+                                    tList.size() < 3 ? null : tList.get(2),
+                                    tList.size() < 4 ? null : tList.get(3),
+                                    tList.size() < 5 ? null : tList.get(4),
+                                    tList.size() < 6 ? null : tList.get(5),
                                     null,
                                     (int) Math.max(1L, Math.abs(aMaterial.getMass() * 4L * tItemAmount)),
                                     Math.min(4, tList.size()) * 5);
@@ -227,7 +224,6 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                             24,
                             false);
                 }
-
                 switch (aMaterial.mName) {
                     case "NULL":
                         break;
@@ -309,15 +305,12 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                                 GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, 3L),
                                 GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 8L));
                 }
-                break;
-            case dustPure:
-            case dustImpure:
-            case dustRefined:
-                Materials tByProduct = (Materials) GT_Utility.selectItemInList(
+            }
+            case dustPure, dustImpure, dustRefined -> {
+                Materials tByProduct = GT_Utility.selectItemInList(
                         aPrefix == OrePrefixes.dustRefined ? 2 : aPrefix == OrePrefixes.dustPure ? 1 : 0,
                         aMaterial,
                         aMaterial.mOreByProducts);
-
                 if (aPrefix == OrePrefixes.dustPure) {
                     if (aMaterial.contains(SubTag.ELECTROMAGNETIC_SEPERATION_GOLD))
                         GT_Values.RA.addElectromagneticSeparatorRecipe(
@@ -361,7 +354,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                     GT_Values.RA.addAutoclaveRecipe(
                             GT_Utility.copyAmount(1L, aStack),
                             GT_Utility.getIntegratedCircuit(2),
-                            gregtech.api.util.GT_ModHandler.getDistilledWater(100L),
+                            GT_ModHandler.getDistilledWater(100L),
                             GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L),
                             9500,
                             1500,
@@ -377,7 +370,6 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                             24,
                             false);
                 }
-
                 ItemStack tImpureStack = GT_OreDictUnificator.get(
                         OrePrefixes.dustTiny,
                         tByProduct,
@@ -479,8 +471,8 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                             (int) Math.max(1L, aMaterial.getMass() * 8L),
                             5);
                 }
-                break;
-            case dustSmall:
+            }
+            case dustSmall -> {
                 GT_Values.RA.addBoxingRecipe(
                         GT_Utility.copyAmount(4L, aStack),
                         ItemList.Schematic_Dust.get(0L),
@@ -499,8 +491,8 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                                 null);
                     }
                 }
-                break;
-            case dustTiny:
+            }
+            case dustTiny -> {
                 GT_Values.RA.addBoxingRecipe(
                         GT_Utility.copyAmount(9L, aStack),
                         ItemList.Schematic_Dust.get(0L),
@@ -519,14 +511,13 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                                 null);
                     }
                 }
-                if (!aMaterial.contains(gregtech.api.enums.SubTag.NO_SMELTING)) {
+                if (!aMaterial.contains(SubTag.NO_SMELTING)) {
                     if (aMaterial.mBlastFurnaceRequired) {
                         GT_ModHandler.removeFurnaceSmelting(aStack);
                     }
                 }
-                break;
-            default:
-                break;
+            }
+            default -> {}
         }
     }
 }

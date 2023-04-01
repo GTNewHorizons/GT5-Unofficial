@@ -268,7 +268,7 @@ public class GT_HatchElementBuilder<T> {
      * This will clear the sides set by previous call to this or {@link #allowOnly(ForgeDirection...)}
      * <p>
      * Usually mandatory for multis with multiple slices, and otherwise not needed if it contains a single slice only.
-     * 
+     *
      * @param facings disallowed direction in ABC coordinate system
      */
     public GT_HatchElementBuilder<T> disallowOnly(ForgeDirection... facings) {
@@ -284,7 +284,7 @@ public class GT_HatchElementBuilder<T> {
      * This will clear the sides set by previous call to this or {@link #disallowOnly(ForgeDirection...)}
      * <p>
      * Usually mandatory for multis with multiple slices, and otherwise not needed if it contains a single slice only.
-     * 
+     *
      * @param facings allowed direction in ABC coordinate system
      */
     public GT_HatchElementBuilder<T> allowOnly(ForgeDirection... facings) {
@@ -376,7 +376,7 @@ public class GT_HatchElementBuilder<T> {
         }
         if (mHatchItemFilter == null) {
             // no item filter -> no placement
-            return new IStructureElementNoPlacement<T>() {
+            return new IStructureElementNoPlacement<>() {
 
                 @Override
                 public boolean check(T t, World world, int x, int y, int z) {
@@ -392,7 +392,7 @@ public class GT_HatchElementBuilder<T> {
                 }
             };
         }
-        return new IStructureElement<T>() {
+        return new IStructureElement<>() {
 
             private String mHint = mHatchItemType == null ? "unspecified GT hatch" : mHatchItemType.get();
 

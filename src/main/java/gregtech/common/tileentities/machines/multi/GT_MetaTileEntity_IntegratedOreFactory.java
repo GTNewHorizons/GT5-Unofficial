@@ -357,20 +357,16 @@ public class GT_MetaTileEntity_IntegratedOreFactory
     }
 
     private static int getTime(int mode) {
-        switch (mode) {
-            case 0:
-                return 30 * 20;
-            case 1:
-                return 15 * 20;
-            case 2:
-                return 10 * 20;
-            case 3:
-                return 20 * 20;
-            case 4:
-                return 17 * 20;
-        }
-        // go to hell
-        return 1000000000;
+        return switch (mode) {
+            case 0 -> 30 * 20;
+            case 1 -> 15 * 20;
+            case 2 -> 10 * 20;
+            case 3 -> 20 * 20;
+            case 4 -> 17 * 20;
+            default ->
+                // go to hell
+                1000000000;
+        };
     }
 
     @Override
@@ -438,36 +434,37 @@ public class GT_MetaTileEntity_IntegratedOreFactory
         sMidProduct = tOres.toArray(new ItemStack[0]);
 
         switch (sMode) {
-            case 0:
+            case 0 -> {
                 doMac(isOre);
                 doWash(isCrushedOre);
                 doThermal(isCrushedPureOre, isCrushedOre);
                 doMac(isThermal, isOre, isCrushedOre, isCrushedPureOre);
-                break;
-            case 1:
+            }
+            case 1 -> {
                 doMac(isOre);
                 doWash(isCrushedOre);
                 doMac(isOre, isCrushedOre, isCrushedPureOre);
                 doCentrifuge(isImpureDust, isPureDust);
-                break;
-            case 2:
+            }
+            case 2 -> {
                 doMac(isOre);
                 doMac(isThermal, isOre, isCrushedOre, isCrushedPureOre);
                 doCentrifuge(isImpureDust, isPureDust);
-                break;
-            case 3:
+            }
+            case 3 -> {
                 doMac(isOre);
                 doWash(isCrushedOre);
                 doSift(isCrushedPureOre);
-                break;
-            case 4:
+            }
+            case 4 -> {
                 doMac(isOre);
                 doChemWash(isCrushedOre, isCrushedPureOre);
                 doMac(isCrushedOre, isCrushedPureOre);
                 doCentrifuge(isImpureDust, isPureDust);
-                break;
-            default:
+            }
+            default -> {
                 return false;
+            }
         }
 
         this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
@@ -844,37 +841,35 @@ public class GT_MetaTileEntity_IntegratedOreFactory
         des.add(StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor1") + " ");
 
         switch (mode) {
-            case 0:
+            case 0 -> {
                 des.add(AQUA + CRUSH + ARROW);
                 des.add(AQUA + WASH + ARROW);
                 des.add(AQUA + THERMAL + ARROW);
                 des.add(AQUA + CRUSH + ' ');
-                break;
-            case 1:
+            }
+            case 1 -> {
                 des.add(AQUA + CRUSH + ARROW);
                 des.add(AQUA + WASH + ARROW);
                 des.add(AQUA + CENTRIFUGE + ARROW);
                 des.add(AQUA + CRUSH + ' ');
-                break;
-            case 2:
+            }
+            case 2 -> {
                 des.add(AQUA + CRUSH + ARROW);
                 des.add(AQUA + CRUSH + ARROW);
                 des.add(AQUA + CENTRIFUGE + ' ');
-                break;
-            case 3:
+            }
+            case 3 -> {
                 des.add(AQUA + CRUSH + ARROW);
                 des.add(AQUA + WASH + ARROW);
                 des.add(AQUA + SIFTER + ' ');
-
-                break;
-            case 4:
+            }
+            case 4 -> {
                 des.add(AQUA + CRUSH + ARROW);
                 des.add(AQUA + CHEM_WASH + ARROW);
                 des.add(AQUA + CRUSH + ARROW);
                 des.add(AQUA + CENTRIFUGE + ' ');
-                break;
-            default:
-                des.add(StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.WRONG_MODE"));
+            }
+            default -> des.add(StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.WRONG_MODE"));
         }
 
         des.add(StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor2", getTime(mode) / 20));

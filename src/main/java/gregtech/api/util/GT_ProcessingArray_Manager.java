@@ -7,7 +7,7 @@ import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 
 public class GT_ProcessingArray_Manager {
 
-    private static final HashMap<String, GT_Recipe_Map> mRecipeSaves = new HashMap<String, GT_Recipe_Map>();
+    private static final HashMap<String, GT_Recipe_Map> mRecipeSaves = new HashMap<>();
     private static final HashMap<String, SoundResource> machineSounds = new HashMap<>();
 
     // Adds recipe Maps to the PA using the machines unlocalized name.

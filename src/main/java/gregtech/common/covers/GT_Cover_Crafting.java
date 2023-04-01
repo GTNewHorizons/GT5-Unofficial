@@ -36,9 +36,9 @@ public class GT_Cover_Crafting extends GT_CoverBehavior {
             ((EntityPlayerMP) aPlayer).getNextWindowId();
             ((EntityPlayerMP) aPlayer).playerNetServerHandler.sendPacket(
                     new S2DPacketOpenWindow(((EntityPlayerMP) aPlayer).currentWindowId, 1, "Crafting", 9, true));
-            ((EntityPlayerMP) aPlayer).openContainer = new ContainerWorkbench(
-                    ((EntityPlayerMP) aPlayer).inventory,
-                    ((EntityPlayerMP) aPlayer).worldObj,
+            aPlayer.openContainer = new ContainerWorkbench(
+                    aPlayer.inventory,
+                    aPlayer.worldObj,
                     aTileEntity.getXCoord(),
                     aTileEntity.getYCoord(),
                     aTileEntity.getZCoord()) {
@@ -48,8 +48,8 @@ public class GT_Cover_Crafting extends GT_CoverBehavior {
                     return true;
                 }
             };
-            ((EntityPlayerMP) aPlayer).openContainer.windowId = ((EntityPlayerMP) aPlayer).currentWindowId;
-            ((EntityPlayerMP) aPlayer).openContainer.addCraftingToCrafters((EntityPlayerMP) aPlayer);
+            aPlayer.openContainer.windowId = ((EntityPlayerMP) aPlayer).currentWindowId;
+            aPlayer.openContainer.addCraftingToCrafters((EntityPlayerMP) aPlayer);
         }
         return true;
     }

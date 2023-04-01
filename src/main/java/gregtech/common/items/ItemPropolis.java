@@ -45,7 +45,7 @@ public class ItemPropolis extends Item {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubItems(Item item, CreativeTabs tabs, List list) {
+    public void getSubItems(Item item, CreativeTabs tabs, List<ItemStack> list) {
         for (PropolisType type : PropolisType.values()) {
             if (type.showInList) {
                 list.add(this.getStackForType(type));

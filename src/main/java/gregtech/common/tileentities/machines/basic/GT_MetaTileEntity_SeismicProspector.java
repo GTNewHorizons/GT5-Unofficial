@@ -154,7 +154,7 @@ public class GT_MetaTileEntity_SeismicProspector extends GT_MetaTileEntity_Basic
                     && aStack.getItem() == ItemList.Tool_DataStick.getItem()) {
                         this.ready = false;
                         GT_Utility.ItemNBT.setBookTitle(aPlayer.getCurrentEquippedItem(), "Raw Prospection Data");
-                        List<String> tStringList = new ArrayList<String>();
+                        List<String> tStringList = new ArrayList<>();
 
                         // range by tier
                         int min = -range();
@@ -238,26 +238,20 @@ public class GT_MetaTileEntity_SeismicProspector extends GT_MetaTileEntity_Basic
     }
 
     private int range() {
-        switch (mTier) {
-            case 1:
-                return 16;
-            case 2:
-                return 32;
-            case 3:
-                return 48;
-        }
-        return 0;
+        return switch (mTier) {
+            case 1 -> 16;
+            case 2 -> 32;
+            case 3 -> 48;
+            default -> 0;
+        };
     }
 
     private int step() {
-        switch (mTier) {
-            case 1:
-                return 1;
-            case 2:
-                return 3;
-            case 3:
-                return 4;
-        }
-        return 1;
+        return switch (mTier) {
+            case 1 -> 1;
+            case 2 -> 3;
+            case 3 -> 4;
+            default -> 1;
+        };
     }
 }

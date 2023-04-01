@@ -238,8 +238,7 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
                          .storage()
                          .createItemStack(GT_Utility.loadItem((NBTTagCompound) t)));
             t = aNBT.getTag("cachedItems");
-            if (t instanceof NBTTagList) {
-                NBTTagList l = (NBTTagList) t;
+            if (t instanceof NBTTagList l) {
                 for (int i = 0; i < l.tagCount(); ++i) {
                     NBTTagCompound tag = l.getCompoundTagAt(i);
                     if (!tag.hasKey("itemStack")) { // legacy #868

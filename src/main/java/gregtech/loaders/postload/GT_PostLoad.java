@@ -490,7 +490,7 @@ public class GT_PostLoad {
 
             @SuppressWarnings("unchecked") // Overrides legacy method with raw types
             @Override
-            public void displayAllReleventItems(List aList) {
+            public void displayAllReleventItems(List<ItemStack> aList) {
 
                 for (int i = 0; i < 32766; i += 2) {
                     if (GT_MetaGenerated_Tool_01.INSTANCE.getToolStats(

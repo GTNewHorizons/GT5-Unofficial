@@ -51,7 +51,7 @@ public class GT_Container_BasicTank extends GT_ContainerMetaTile_Machine {
                  * to become only more severe when playing MP over ethernet, which would have much more latency than a
                  * memory connection
                  */
-                Slot slot = (Slot) inventorySlots.get(aSlotIndex);
+                Slot slot = inventorySlots.get(aSlotIndex);
                 tTank.setDrainableStack(GT_Utility.getFluidFromDisplayStack(slot.getStack()));
             }
             IFluidAccess tDrainableAccess = constructFluidAccess(tTank, false);
@@ -77,8 +77,8 @@ public class GT_Container_BasicTank extends GT_ContainerMetaTile_Machine {
     }
 
     public void sendProgressBar() {
-        for (Object crafter : this.crafters) {
-            ICrafting player = (ICrafting) crafter;
+        for (ICrafting crafter : this.crafters) {
+            ICrafting player = crafter;
             if (mTimer % 500 == 0 || oContent != mContent) {
                 player.sendProgressBarUpdate(this, 100, mContent & 65535);
                 player.sendProgressBarUpdate(this, 101, mContent >>> 16);
@@ -91,12 +91,8 @@ public class GT_Container_BasicTank extends GT_ContainerMetaTile_Machine {
     public void updateProgressBar(int id, int value) {
         super.updateProgressBar(id, value);
         switch (id) {
-            case 100:
-                mContent = mContent & 0xffff0000 | value & 0x0000ffff;
-                break;
-            case 101:
-                mContent = mContent & 0xffff | value << 16;
-                break;
+            case 100 -> mContent = mContent & 0xffff0000 | value & 0x0000ffff;
+            case 101 -> mContent = mContent & 0xffff | value << 16;
         }
     }
 

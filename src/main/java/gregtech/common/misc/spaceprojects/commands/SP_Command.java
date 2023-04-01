@@ -19,9 +19,8 @@ import gregtech.common.misc.spaceprojects.SpaceProjectManager;
  */
 public class SP_Command extends CommandBase {
 
-    private static Set<Pair<EntityPlayerMP, EntityPlayerMP>> invite = Collections.newSetFromMap(
-            new WeakHashMap<Pair<EntityPlayerMP, EntityPlayerMP>, Boolean>());
-    private static Set<EntityPlayerMP> confirm = Collections.newSetFromMap(new WeakHashMap<EntityPlayerMP, Boolean>());
+    private static Set<Pair<EntityPlayerMP, EntityPlayerMP>> invite = Collections.newSetFromMap(new WeakHashMap<>());
+    private static Set<EntityPlayerMP> confirm = Collections.newSetFromMap(new WeakHashMap<>());
 
     private static final String INVITE = "invite";
     private static final String ACCEPT = "accept";
@@ -49,24 +48,20 @@ public class SP_Command extends CommandBase {
             return;
         }
         switch (arguments[0]) {
-            case INVITE:
+            case INVITE -> {
                 if (arguments.length < 2) {
                     return;
                 }
                 processInvite(sender, arguments[1]);
-                break;
-            case ACCEPT:
+            }
+            case ACCEPT -> {
                 if (arguments.length < 2) {
                     return;
                 }
                 processAccept(sender, arguments[1]);
-                break;
-            case LEAVE:
-                processLeave(sender);
-                break;
-            case CONFIRM:
-                processConfirm(sender);
-                break;
+            }
+            case LEAVE -> processLeave(sender);
+            case CONFIRM -> processConfirm(sender);
         }
     }
 

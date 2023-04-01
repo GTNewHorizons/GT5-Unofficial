@@ -658,7 +658,7 @@ public class GT_MetaTileEntity_MagicalEnergyAbsorber extends GT_MetaTileEntity_B
         MagicalEnergyBB(GT_MetaTileEntity_MagicalEnergyAbsorber aAbsorber, int aDefaultTier, int aMaxTier) {
             mAbsorber = aAbsorber;
             mListener = aAbsorber;
-            mMaxTier = Math.max(aMaxTier > 0 ? aMaxTier : 0, aDefaultTier > 0 ? aDefaultTier : 0);
+            mMaxTier = Math.max(Math.max(aMaxTier, 0), Math.max(aDefaultTier, 0));
             mDefaultTier = Math.min(aDefaultTier, mMaxTier);
             mTier = mDefaultTier;
             if (THAUMCRAFT_LOADED) mAvailableAspects = new ArrayList<>(Aspect.aspects.size());
@@ -676,11 +676,7 @@ public class GT_MetaTileEntity_MagicalEnergyAbsorber extends GT_MetaTileEntity_B
          */
         int setTier(int aTier) {
             if (aTier >= 0) {
-                if (aTier <= mMaxTier) {
-                    mTier = aTier;
-                } else {
-                    mTier = mMaxTier;
-                }
+                mTier = Math.min(aTier, mMaxTier);
             } else {
                 mTier = 0;
             }
@@ -730,9 +726,9 @@ public class GT_MetaTileEntity_MagicalEnergyAbsorber extends GT_MetaTileEntity_B
             World tWorld = mAbsorber.getBaseMetaTileEntity()
                                     .getWorld();
             mLivingCrystalIDs.clear();
-            for (Object o : tWorld.getEntitiesWithinAABB(EntityEnderCrystal.class, getAxisAlignedBB())) {
-                if (((EntityEnderCrystal) o).isEntityAlive()) {
-                    mLivingCrystalIDs.add(((EntityEnderCrystal) o).getPersistentID());
+            for (EntityEnderCrystal o : tWorld.getEntitiesWithinAABB(EntityEnderCrystal.class, getAxisAlignedBB())) {
+                if (o.isEntityAlive()) {
+                    mLivingCrystalIDs.add(o.getPersistentID());
                 }
             }
         }

@@ -557,8 +557,7 @@ public class GT_Cover_FluidRegulator extends GT_CoverBehaviorBase<GT_Cover_Fluid
 
         @Override
         public void loadDataFromNBT(NBTBase aNBT) {
-            if (!(aNBT instanceof NBTTagCompound)) return; // not very good...
-            NBTTagCompound tag = (NBTTagCompound) aNBT;
+            if (!(aNBT instanceof NBTTagCompound tag)) return; // not very good...
             speed = tag.getInteger("mSpeed");
             tickRate = tag.getInteger("mTickRate");
             condition = Conditional.VALUES[tag.getByte("mCondition")];

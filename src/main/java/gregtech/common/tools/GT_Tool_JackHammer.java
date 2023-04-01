@@ -90,7 +90,7 @@ public class GT_Tool_JackHammer extends GT_Tool_Drill_LV {
                         true,
                         2147483647L,
                         null,
-                        GT_Utility.copyAmount(1L, new Object[] { tDrop }));
+                        GT_Utility.copyAmount(1L, tDrop));
                 if (tRecipe != null) {
                     ItemStack tHammeringOutput = tRecipe.getOutput(0);
                     if (tHammeringOutput != null) {

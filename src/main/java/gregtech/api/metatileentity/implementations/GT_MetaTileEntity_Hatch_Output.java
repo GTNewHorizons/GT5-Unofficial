@@ -252,39 +252,39 @@ public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch impl
         }
         final String inBrackets;
         switch (mMode) {
-            case 0:
+            case 0 -> {
                 GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("108", "Outputs misc. Fluids, Steam and Items"));
                 this.setLockedFluidName(null);
-                break;
-            case 1:
+            }
+            case 1 -> {
                 GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("109", "Outputs Steam and Items"));
                 this.setLockedFluidName(null);
-                break;
-            case 2:
+            }
+            case 2 -> {
                 GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("110", "Outputs Steam and misc. Fluids"));
                 this.setLockedFluidName(null);
-                break;
-            case 3:
+            }
+            case 3 -> {
                 GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("111", "Outputs Steam"));
                 this.setLockedFluidName(null);
-                break;
-            case 4:
+            }
+            case 4 -> {
                 GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("112", "Outputs misc. Fluids and Items"));
                 this.setLockedFluidName(null);
-                break;
-            case 5:
+            }
+            case 5 -> {
                 GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("113", "Outputs only Items"));
                 this.setLockedFluidName(null);
-                break;
-            case 6:
+            }
+            case 6 -> {
                 GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("114", "Outputs only misc. Fluids"));
                 this.setLockedFluidName(null);
-                break;
-            case 7:
+            }
+            case 7 -> {
                 GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("115", "Outputs nothing"));
                 this.setLockedFluidName(null);
-                break;
-            case 8:
+            }
+            case 8 -> {
                 playerThatLockedfluid = new WeakReference<>(aPlayer);
                 if (mFluid == null) {
                     this.setLockedFluidName(null);
@@ -305,8 +305,8 @@ public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch impl
                                 "%s (%s)",
                                 GT_Utility.trans("151.1", "Outputs items and 1 specific Fluid"),
                                 inBrackets));
-                break;
-            case 9:
+            }
+            case 9 -> {
                 playerThatLockedfluid = new WeakReference<>(aPlayer);
                 if (mFluid == null) {
                     this.setLockedFluidName(null);
@@ -324,7 +324,7 @@ public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch impl
                 GT_Utility.sendChatToPlayer(
                         aPlayer,
                         String.format("%s (%s)", GT_Utility.trans("151.2", "Outputs 1 specific Fluid"), inBrackets));
-                break;
+            }
         }
     }
 

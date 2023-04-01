@@ -138,21 +138,11 @@ public class GT_RadioactiveCell_Item extends GT_Generic_Item implements IBoxable
         super.addAdditionalToolTips(aList, aStack, aPlayer);
         // aList.add("Time left: " + (this.maxDelay - getDurabilityOfStack(aStack)) + " secs");
         int rDmg = getDurabilityOfStack(aStack) * 6 / this.maxDmg;
-        EnumChatFormatting color2;
-        switch (rDmg) {
-            case 0:
-            case 1:
-                color2 = EnumChatFormatting.WHITE;
-                break;
-            case 2:
-            case 3:
-            case 4:
-                color2 = EnumChatFormatting.GRAY;
-                break;
-            default:
-                color2 = EnumChatFormatting.DARK_GRAY;
-                break;
-        }
+        EnumChatFormatting color2 = switch (rDmg) {
+            case 0, 1 -> EnumChatFormatting.WHITE;
+            case 2, 3, 4 -> EnumChatFormatting.GRAY;
+            default -> EnumChatFormatting.DARK_GRAY;
+        };
         EnumChatFormatting color1 = this instanceof GT_DepletetCell_Item ? color2 = EnumChatFormatting.DARK_GRAY
                 : EnumChatFormatting.WHITE;
         aList.add(

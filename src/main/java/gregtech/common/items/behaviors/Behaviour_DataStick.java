@@ -38,17 +38,14 @@ public class Behaviour_DataStick extends Behaviour_None {
             aList.add("Rocket Schematic Tier: " + sTier);
         } else if (sTier >= 100) {
             switch (sTier) {
-                case 100: {
+                case 100 -> {
                     aList.add("Moonbuggy Schematic");
-                    break;
                 }
-                case 101: {
+                case 101 -> {
                     aList.add("Cargo-Rocket Schematic");
-                    break;
                 }
-                case 102: {
+                case 102 -> {
                     aList.add("Astro-Miner Schematic");
-                    break;
                 }
             }
         }

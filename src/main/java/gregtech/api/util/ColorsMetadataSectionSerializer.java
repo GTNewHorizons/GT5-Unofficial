@@ -11,7 +11,6 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
-import com.google.gson.JsonSerializer;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -20,7 +19,7 @@ import gregtech.api.GregTech_API;
 import gregtech.api.enums.Dyes;
 
 @SideOnly(Side.CLIENT)
-public class ColorsMetadataSectionSerializer extends BaseMetadataSectionSerializer implements JsonSerializer {
+public class ColorsMetadataSectionSerializer extends BaseMetadataSectionSerializer {
 
     public ColorsMetadataSection deserialize(JsonElement metadataColors, Type type,
             JsonDeserializationContext context) {

@@ -152,8 +152,7 @@ public class GT_Cover_FluidLimiter extends GT_CoverBehaviorBase<GT_Cover_FluidLi
 
         @Override
         public void loadDataFromNBT(NBTBase aNBT) {
-            if (aNBT instanceof NBTTagCompound) {
-                NBTTagCompound tag = (NBTTagCompound) aNBT;
+            if (aNBT instanceof NBTTagCompound tag) {
                 this.threshold = tag.getFloat("threshold");
             }
         }

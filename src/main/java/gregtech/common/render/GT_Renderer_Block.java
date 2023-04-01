@@ -142,7 +142,7 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
         }
 
         switch (aConnections) {
-            case NO_CONNECTION:
+            case NO_CONNECTION -> {
                 aBlock.setBlockBounds(pipeMin, pipeMin, pipeMin, pipeMax, pipeMax, pipeMax);
                 aRenderer.setRenderBoundsFromBlock(aBlock);
                 renderNegativeYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[DOWN.ordinal()], false);
@@ -151,8 +151,8 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
                 renderPositiveZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[SOUTH.ordinal()], false);
                 renderNegativeXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[WEST.ordinal()], false);
                 renderPositiveXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[EAST.ordinal()], false);
-                break;
-            case CONNECTED_EAST | CONNECTED_WEST:
+            }
+            case CONNECTED_EAST | CONNECTED_WEST -> {
                 // EAST - WEST Pipe Sides
                 aBlock.setBlockBounds(blockMin, pipeMin, pipeMin, blockMax, pipeMax, pipeMax);
                 aRenderer.setRenderBoundsFromBlock(aBlock);
@@ -164,8 +164,8 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
                 // EAST - WEST Pipe Ends
                 renderNegativeXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[WEST.ordinal()], false);
                 renderPositiveXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[EAST.ordinal()], false);
-                break;
-            case CONNECTED_DOWN | CONNECTED_UP:
+            }
+            case CONNECTED_DOWN | CONNECTED_UP -> {
                 // UP - DOWN Pipe Sides
                 aBlock.setBlockBounds(pipeMin, blockMin, pipeMin, pipeMax, blockMax, pipeMax);
                 aRenderer.setRenderBoundsFromBlock(aBlock);
@@ -177,8 +177,8 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
                 // UP - DOWN Pipe Ends
                 renderNegativeYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[DOWN.ordinal()], false);
                 renderPositiveYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[UP.ordinal()], false);
-                break;
-            case CONNECTED_NORTH | CONNECTED_SOUTH:
+            }
+            case CONNECTED_NORTH | CONNECTED_SOUTH -> {
                 // NORTH - SOUTH Pipe Sides
                 aBlock.setBlockBounds(pipeMin, pipeMin, blockMin, pipeMax, pipeMax, blockMax);
                 aRenderer.setRenderBoundsFromBlock(aBlock);
@@ -190,8 +190,8 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
                 // NORTH - SOUTH Pipe Ends
                 renderNegativeZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[NORTH.ordinal()], false);
                 renderPositiveZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[SOUTH.ordinal()], false);
-                break;
-            default:
+            }
+            default -> {
                 if ((aConnections & CONNECTED_WEST) == 0) {
                     aBlock.setBlockBounds(pipeMin, pipeMin, pipeMin, pipeMax, pipeMax, pipeMax);
                     aRenderer.setRenderBoundsFromBlock(aBlock);
@@ -204,7 +204,6 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
                     renderPositiveZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[SOUTH.ordinal()], false);
                 }
                 renderNegativeXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[WEST.ordinal()], false);
-
                 if ((aConnections & CONNECTED_EAST) == 0) {
                     aBlock.setBlockBounds(pipeMin, pipeMin, pipeMin, pipeMax, pipeMax, pipeMax);
                     aRenderer.setRenderBoundsFromBlock(aBlock);
@@ -217,7 +216,6 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
                     renderPositiveZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[SOUTH.ordinal()], false);
                 }
                 renderPositiveXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[EAST.ordinal()], false);
-
                 if ((aConnections & CONNECTED_DOWN) == 0) {
                     aBlock.setBlockBounds(pipeMin, pipeMin, pipeMin, pipeMax, pipeMax, pipeMax);
                     aRenderer.setRenderBoundsFromBlock(aBlock);
@@ -230,7 +228,6 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
                     renderPositiveXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[EAST.ordinal()], false);
                 }
                 renderNegativeYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[DOWN.ordinal()], false);
-
                 if ((aConnections & CONNECTED_UP) == 0) {
                     aBlock.setBlockBounds(pipeMin, pipeMin, pipeMin, pipeMax, pipeMax, pipeMax);
                     aRenderer.setRenderBoundsFromBlock(aBlock);
@@ -243,7 +240,6 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
                     renderPositiveXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[EAST.ordinal()], false);
                 }
                 renderPositiveYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[UP.ordinal()], false);
-
                 if ((aConnections & CONNECTED_NORTH) == 0) {
                     aBlock.setBlockBounds(pipeMin, pipeMin, pipeMin, pipeMax, pipeMax, pipeMax);
                     aRenderer.setRenderBoundsFromBlock(aBlock);
@@ -256,7 +252,6 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
                     renderPositiveXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[EAST.ordinal()], false);
                 }
                 renderNegativeZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[NORTH.ordinal()], false);
-
                 if ((aConnections & CONNECTED_SOUTH) == 0) {
                     aBlock.setBlockBounds(pipeMin, pipeMin, pipeMin, pipeMax, pipeMax, pipeMax);
                     aRenderer.setRenderBoundsFromBlock(aBlock);
@@ -269,7 +264,7 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
                     renderPositiveXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[EAST.ordinal()], false);
                 }
                 renderPositiveZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tIcons[SOUTH.ordinal()], false);
-                break;
+            }
         }
 
         // Render covers on pipes

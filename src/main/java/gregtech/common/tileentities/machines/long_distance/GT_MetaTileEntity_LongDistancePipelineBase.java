@@ -240,8 +240,7 @@ public abstract class GT_MetaTileEntity_LongDistancePipelineBase extends GT_Meta
                     // It's not a block - let's see if it's a tile entity
                     TileEntity tTileEntity = world.getTileEntity(aCoords.posX, aCoords.posY, aCoords.posZ);
                     if (tTileEntity != gtTile && tTileEntity instanceof BaseMetaTileEntity
-                            && ((BaseMetaTileEntity) tTileEntity).getMetaTileEntity() instanceof GT_MetaTileEntity_LongDistancePipelineBase) {
-                        final GT_MetaTileEntity_LongDistancePipelineBase tGtTile = (GT_MetaTileEntity_LongDistancePipelineBase) ((BaseMetaTileEntity) tTileEntity).getMetaTileEntity();
+                            && ((BaseMetaTileEntity) tTileEntity).getMetaTileEntity() instanceof GT_MetaTileEntity_LongDistancePipelineBase tGtTile) {
                         if (isSameClass(tGtTile) && tWires.contains(
                                 tGtTile.getFacingOffset(
                                         (BaseMetaTileEntity) tTileEntity,

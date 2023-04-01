@@ -32,7 +32,7 @@ public class GT_ParallelHelper {
     /**
      * @mMachineMulti a MultiTileEntity Controller
      */
-    private MultiBlockController mMachineMulti;
+    private MultiBlockController<?> mMachineMulti;
     /**
      * @mRecipe Recipe used when trying to calculate parallels
      */
@@ -87,7 +87,7 @@ public class GT_ParallelHelper {
     /**
      * Enables void protection on a multitile multiblock. Experimental! Still needs to be worked on
      */
-    public GT_ParallelHelper enableVoidProtection(MultiBlockController aMachineMulti) {
+    public GT_ParallelHelper enableVoidProtection(MultiBlockController<?> aMachineMulti) {
         mVoidProtection = true;
         mMachineMulti = aMachineMulti;
         return this;

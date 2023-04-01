@@ -61,6 +61,7 @@ public class GT_Tool_Plunger extends GT_Tool {
     }
 
     @Override
+    @SuppressWarnings("unchecked") // the IItemBehaviour cast cannot be expressed strictly via generics
     public void onStatsAddedToTool(GT_MetaGenerated_Tool aItem, int aID) {
         aItem.addItemBehavior(aID, new Behaviour_Plunger_Item(getToolDamagePerDropConversion()));
         aItem.addItemBehavior(aID, new Behaviour_Plunger_Fluid(getToolDamagePerDropConversion()));

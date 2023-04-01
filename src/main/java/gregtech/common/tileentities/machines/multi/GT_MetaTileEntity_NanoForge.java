@@ -250,7 +250,7 @@ public class GT_MetaTileEntity_NanoForge extends
         GT_Recipe.GT_Recipe_Map map = getRecipeMap();
         FluidStack[] tFluidInputs = getCompactedFluids();
         if (inputSeparation) {
-            ArrayList<ItemStack> tInputList = new ArrayList<ItemStack>();
+            ArrayList<ItemStack> tInputList = new ArrayList<>();
             for (GT_MetaTileEntity_Hatch_InputBus tBus : mInputBusses) {
                 for (int i = tBus.getSizeInventory() - 1; i >= 0; i--) {
                     if (tBus.getStackInSlot(i) != null) tInputList.add(tBus.getStackInSlot(i));
@@ -303,7 +303,7 @@ public class GT_MetaTileEntity_NanoForge extends
                 this.lEUt *= -1;
             }
 
-            ArrayList<ItemStack> tOutputs = new ArrayList<ItemStack>();
+            ArrayList<ItemStack> tOutputs = new ArrayList<>();
             for (int i = 0; i < tRecipe.mOutputs.length; i++) {
                 if (getBaseMetaTileEntity().getRandomNumber(10000) < tRecipe.getOutputChance(i)) {
                     tOutputs.add(tRecipe.getOutput(i));

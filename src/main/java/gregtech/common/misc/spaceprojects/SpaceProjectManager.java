@@ -63,7 +63,7 @@ public class SpaceProjectManager {
      */
     public static boolean addTeamProject(UUID member, ISpaceBody location, String projectName, ISpaceProject project) {
         if (!spaceTeamProjects.containsKey(getLeader(member)) || spaceTeamProjects.get(getLeader(member)) == null) {
-            spaceTeamProjects.put(getLeader(member), new HashMap<Pair<ISpaceBody, String>, ISpaceProject>());
+            spaceTeamProjects.put(getLeader(member), new HashMap<>());
         }
 
         Map<Pair<ISpaceBody, String>, ISpaceProject> map = spaceTeamProjects.get(getLeader(member));

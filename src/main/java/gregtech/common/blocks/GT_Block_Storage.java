@@ -94,7 +94,7 @@ public class GT_Block_Storage extends GT_Generic_Block {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item aItem, CreativeTabs aCreativeTab, List aList) {
+    public void getSubBlocks(Item aItem, CreativeTabs aCreativeTab, List<ItemStack> aList) {
         for (int i = 0; i < 16; i++) {
             if (!(new ItemStack(aItem, 1, i).getDisplayName()
                                             .contains(".name")))

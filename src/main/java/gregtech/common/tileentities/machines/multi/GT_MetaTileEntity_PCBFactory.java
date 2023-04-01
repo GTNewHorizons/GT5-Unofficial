@@ -628,7 +628,7 @@ public class GT_MetaTileEntity_PCBFactory extends
         GT_Recipe.GT_Recipe_Map aMap = getRecipeMap();
         FluidStack[] tFluidInputs = getStoredFluids().toArray(new FluidStack[0]);
         if (inputSeparation) {
-            ArrayList<ItemStack> tInputList = new ArrayList<ItemStack>();
+            ArrayList<ItemStack> tInputList = new ArrayList<>();
             for (GT_MetaTileEntity_Hatch_InputBus tBus : mInputBusses) {
                 for (int i = tBus.getSizeInventory() - 1; i >= 0; i--) {
                     if (tBus.getStackInSlot(i) != null) tInputList.add(tBus.getStackInSlot(i));
@@ -743,7 +743,7 @@ public class GT_MetaTileEntity_PCBFactory extends
                 }
 
                 mOutputItems = new ItemStack[tRecipe.mOutputs.length];
-                ArrayList<ItemStack> tOutputs = new ArrayList<ItemStack>();
+                ArrayList<ItemStack> tOutputs = new ArrayList<>();
                 int remainingEfficiency = getMaxEfficiency(aStack);
                 for (int j = 0; j < (int) Math.ceil(getMaxEfficiency(aStack) / 10000.0f); j++) {
                     int chanced = getBaseMetaTileEntity().getRandomNumber(10000);
@@ -875,43 +875,33 @@ public class GT_MetaTileEntity_PCBFactory extends
 
         if (curDirection == ForgeDirection.UP || curDirection == ForgeDirection.DOWN) {
             switch (curRotation) {
-                case CLOCKWISE:
-                case COUNTER_CLOCKWISE:
+                case CLOCKWISE, COUNTER_CLOCKWISE -> {
                     newFlip = curFlip == Flip.NONE ? Flip.HORIZONTAL : Flip.NONE;
                     newDirection = curDirection == ForgeDirection.UP ? ForgeDirection.NORTH : ForgeDirection.SOUTH;
-                    break;
-                case NORMAL:
+                }
+                case NORMAL -> {
                     newRotation = curDirection == ForgeDirection.UP ? Rotation.CLOCKWISE : Rotation.COUNTER_CLOCKWISE;
                     newDirection = curDirection == ForgeDirection.UP ? ForgeDirection.EAST : ForgeDirection.WEST;
                     newFlip = Flip.NONE;
-                    break;
-                case UPSIDE_DOWN:
+                }
+                case UPSIDE_DOWN -> {
                     newRotation = curDirection == ForgeDirection.UP ? Rotation.COUNTER_CLOCKWISE : Rotation.CLOCKWISE;
                     newDirection = curDirection == ForgeDirection.UP ? ForgeDirection.EAST : ForgeDirection.WEST;
                     newFlip = Flip.NONE;
-                    break;
+                }
             }
         } else if (curRotation == Rotation.CLOCKWISE || curRotation == Rotation.COUNTER_CLOCKWISE) {
             newFlip = curRotation == Rotation.CLOCKWISE ? curFlip == Flip.NONE ? Flip.NONE : Flip.HORIZONTAL
                     : curFlip != Flip.NONE ? Flip.NONE : Flip.HORIZONTAL;
             newDirection = curRotation == Rotation.CLOCKWISE ? ForgeDirection.UP : ForgeDirection.DOWN;
         } else {
-            switch (curDirection) {
-                case EAST:
-                    newDirection = ForgeDirection.SOUTH;
-                    break;
-                case NORTH:
-                    newDirection = ForgeDirection.EAST;
-                    break;
-                case WEST:
-                    newDirection = ForgeDirection.NORTH;
-                    break;
-                case SOUTH:
-                    newDirection = ForgeDirection.WEST;
-                    break;
-                default:
-                    newDirection = curDirection;
-            }
+            newDirection = switch (curDirection) {
+                case EAST -> ForgeDirection.SOUTH;
+                case NORTH -> ForgeDirection.EAST;
+                case WEST -> ForgeDirection.NORTH;
+                case SOUTH -> ForgeDirection.WEST;
+                default -> curDirection;
+            };
         }
 
         if (curRotation == Rotation.UPSIDE_DOWN) {
@@ -1059,7 +1049,7 @@ public class GT_MetaTileEntity_PCBFactory extends
                         + StatCollector.translateToLocal("GT5U.multiblock.efficiency")
                         + ": "
                         + EnumChatFormatting.YELLOW
-                        + Float.toString(mEfficiency / 100.0F)
+                        + mEfficiency / 100.0F
                         + EnumChatFormatting.RESET
                         + " %",
                 /* 6 */ StatCollector.translateToLocal("GT5U.multiblock.pollution") + ": "
@@ -1293,7 +1283,7 @@ public class GT_MetaTileEntity_PCBFactory extends
                                                        .setPos(173, 98))
                .widget(
                        new TextFieldWidget().setGetterInt(() -> mSetTier)
-                                            .setSetterInt(val -> { mSetTier = val; })
+                                            .setSetterInt(val -> mSetTier = val)
                                             .setNumbers(1, 3)
                                             .setTextColor(Color.WHITE.normal)
                                             .setTextAlignment(Alignment.Center)
@@ -1486,10 +1476,8 @@ public class GT_MetaTileEntity_PCBFactory extends
                                                             new TextFieldWidget().setGetterInt(
                                                                     () -> (int) ((1f / mRoughnessMultiplier) * 100f))
                                                                                  .setSetterInt(
-                                                                                         val -> {
-                                                                                             mRoughnessMultiplier = 100f
-                                                                                                     / val;
-                                                                                         })
+                                                                                         val -> mRoughnessMultiplier = 100f
+                                                                                                 / val)
                                                                                  .setNumbers(50, 200)
                                                                                  .setTextColor(Color.WHITE.normal)
                                                                                  .setTextAlignment(Alignment.Center)
@@ -1523,9 +1511,7 @@ public class GT_MetaTileEntity_PCBFactory extends
                                                                                               new TextFieldWidget().setGetterInt(
                                                                                                       () -> mBioOffsets[0])
                                                                                                                    .setSetterInt(
-                                                                                                                           val -> {
-                                                                                                                               mBioOffsets[0] = val;
-                                                                                                                           })
+                                                                                                                           val -> mBioOffsets[0] = val)
                                                                                                                    .setNumbers(
                                                                                                                            -16,
                                                                                                                            16)
@@ -1544,9 +1530,7 @@ public class GT_MetaTileEntity_PCBFactory extends
                                                                                               new TextFieldWidget().setGetterInt(
                                                                                                       () -> mBioOffsets[1])
                                                                                                                    .setSetterInt(
-                                                                                                                           val -> {
-                                                                                                                               mBioOffsets[1] = val;
-                                                                                                                           })
+                                                                                                                           val -> mBioOffsets[1] = val)
                                                                                                                    .setNumbers(
                                                                                                                            -16,
                                                                                                                            16)
@@ -1574,9 +1558,7 @@ public class GT_MetaTileEntity_PCBFactory extends
                                                                                               new TextFieldWidget().setGetterInt(
                                                                                                       () -> mOCTier1Offsets[0])
                                                                                                                    .setSetterInt(
-                                                                                                                           val -> {
-                                                                                                                               mOCTier1Offsets[0] = val;
-                                                                                                                           })
+                                                                                                                           val -> mOCTier1Offsets[0] = val)
                                                                                                                    .setNumbers(
                                                                                                                            -16,
                                                                                                                            16)
@@ -1595,9 +1577,7 @@ public class GT_MetaTileEntity_PCBFactory extends
                                                                                               new TextFieldWidget().setGetterInt(
                                                                                                       () -> mOCTier1Offsets[1])
                                                                                                                    .setSetterInt(
-                                                                                                                           val -> {
-                                                                                                                               mOCTier1Offsets[1] = val;
-                                                                                                                           })
+                                                                                                                           val -> mOCTier1Offsets[1] = val)
                                                                                                                    .setNumbers(
                                                                                                                            -16,
                                                                                                                            16)
@@ -1625,9 +1605,7 @@ public class GT_MetaTileEntity_PCBFactory extends
                                                                                               new TextFieldWidget().setGetterInt(
                                                                                                       () -> mOCTier2Offsets[0])
                                                                                                                    .setSetterInt(
-                                                                                                                           val -> {
-                                                                                                                               mOCTier2Offsets[0] = val;
-                                                                                                                           })
+                                                                                                                           val -> mOCTier2Offsets[0] = val)
                                                                                                                    .setNumbers(
                                                                                                                            -16,
                                                                                                                            16)
@@ -1646,9 +1624,7 @@ public class GT_MetaTileEntity_PCBFactory extends
                                                                                               new TextFieldWidget().setGetterInt(
                                                                                                       () -> mOCTier2Offsets[1])
                                                                                                                    .setSetterInt(
-                                                                                                                           val -> {
-                                                                                                                               mOCTier2Offsets[1] = val;
-                                                                                                                           })
+                                                                                                                           val -> mOCTier2Offsets[1] = val)
                                                                                                                    .setNumbers(
                                                                                                                            -16,
                                                                                                                            16)

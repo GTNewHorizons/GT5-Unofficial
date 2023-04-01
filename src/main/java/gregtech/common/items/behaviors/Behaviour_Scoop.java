@@ -33,24 +33,22 @@ public class Behaviour_Scoop extends Behaviour_None {
             }
             if ((aPlayer.capabilities.isCreativeMode)
                     || (((GT_MetaGenerated_Tool) aItem).doDamage(aStack, this.mCosts))) {
-                Object tButterfly = ((IEntityButterfly) aEntity).getButterfly();
-                ((IButterfly) tButterfly).getGenome()
-                                         .getPrimary()
-                                         .getRoot()
-                                         .getBreedingTracker(aEntity.worldObj, aPlayer.getGameProfile())
-                                         .registerCatch((IButterfly) tButterfly);
+                IButterfly tButterfly = ((IEntityButterfly) aEntity).getButterfly();
+                tButterfly.getGenome()
+                          .getPrimary()
+                          .getRoot()
+                          .getBreedingTracker(aEntity.worldObj, aPlayer.getGameProfile())
+                          .registerCatch(tButterfly);
                 aPlayer.worldObj.spawnEntityInWorld(
                         new EntityItem(
                                 aPlayer.worldObj,
                                 aEntity.posX,
                                 aEntity.posY,
                                 aEntity.posZ,
-                                ((IButterfly) tButterfly).getGenome()
-                                                         .getPrimary()
-                                                         .getRoot()
-                                                         .getMemberStack(
-                                                                 ((IButterfly) tButterfly).copy(),
-                                                                 EnumFlutterType.BUTTERFLY.ordinal())));
+                                tButterfly.getGenome()
+                                          .getPrimary()
+                                          .getRoot()
+                                          .getMemberStack(tButterfly.copy(), EnumFlutterType.BUTTERFLY.ordinal())));
                 aEntity.setDead();
             }
             return true;

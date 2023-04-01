@@ -162,32 +162,45 @@ public class GT_Block_Reinforced extends GT_Generic_Block {
     public IIcon getIcon(int aSide, int aMeta) {
         if ((aMeta >= 0) && (aMeta < 16)) {
             switch (aMeta) {
-                case 0:
+                case 0 -> {
                     return Textures.BlockIcons.BLOCK_BRONZEPREIN.getIcon();
-                case 1:
+                }
+                case 1 -> {
                     return Textures.BlockIcons.BLOCK_IRREIN.getIcon();
-                case 2:
+                }
+                case 2 -> {
                     return Textures.BlockIcons.BLOCK_PLASCRETE.getIcon();
-                case 3:
+                }
+                case 3 -> {
                     return Textures.BlockIcons.BLOCK_TSREIN.getIcon();
-                case 4:
+                }
+                case 4 -> {
                     return Blocks.coal_block.getIcon(0, 0);
-                case 5:
+                }
+                case 5 -> {
                     return Textures.BlockIcons.COVER_WOOD_PLATE.getIcon();
-                case 6:
+                }
+                case 6 -> {
                     return Blocks.coal_block.getIcon(0, 0);
-                case 7:
+                }
+                case 7 -> {
                     return Blocks.coal_block.getIcon(0, 0);
-                case 8:
+                }
+                case 8 -> {
                     return Textures.BlockIcons.BLOCK_STEELPREIN.getIcon();
-                case 9:
+                }
+                case 9 -> {
                     return Textures.BlockIcons.BLOCK_TITANIUMPREIN.getIcon();
-                case 10:
+                }
+                case 10 -> {
                     return Textures.BlockIcons.BLOCK_NAQUADAHPREIN.getIcon();
-                case 11:
+                }
+                case 11 -> {
                     return Textures.BlockIcons.BLOCK_NEUTRONIUMPREIN.getIcon();
-                case 12:
+                }
+                case 12 -> {
                     return Textures.BlockIcons.BLOCK_DEEP_DARK_RAW.getIcon();
+                }
             }
         }
         return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
@@ -383,7 +396,7 @@ public class GT_Block_Reinforced extends GT_Generic_Block {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item aItem, CreativeTabs aCreativeTab, List aList) {
+    public void getSubBlocks(Item aItem, CreativeTabs aCreativeTab, List<ItemStack> aList) {
         for (int i = 0; i < 16; i++) {
             ItemStack aStack = new ItemStack(aItem, 1, i);
             if (!aStack.getDisplayName()

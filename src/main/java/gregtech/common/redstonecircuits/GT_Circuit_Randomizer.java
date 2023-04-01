@@ -64,15 +64,12 @@ public class GT_Circuit_Randomizer extends GT_CircuitryBehavior {
 
     @Override
     public String getDataDescription(int[] aCircuitData, int aCircuitDataIndex) {
-        switch (aCircuitDataIndex) {
-            case 0:
-                return "Delay";
-            case 3:
-                return aCircuitData[aCircuitDataIndex] == 1 ? "RS => ON" : "RS => OFF";
-            case 4:
-                return "Status";
-        }
-        return "";
+        return switch (aCircuitDataIndex) {
+            case 0 -> "Delay";
+            case 3 -> aCircuitData[aCircuitDataIndex] == 1 ? "RS => ON" : "RS => OFF";
+            case 4 -> "Status";
+            default -> "";
+        };
     }
 
     @Override

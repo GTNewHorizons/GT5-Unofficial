@@ -37,7 +37,7 @@ public abstract class GT_MetaBase_Item extends GT_Generic_Item
         implements ISpecialElectricItem, IElectricItemManager, IFluidContainerItem {
 
     /* ---------- CONSTRUCTOR AND MEMBER VARIABLES ---------- */
-    private final ConcurrentHashMap<Short, ArrayList<IItemBehaviour<GT_MetaBase_Item>>> mItemBehaviors = new ConcurrentHashMap<Short, ArrayList<IItemBehaviour<GT_MetaBase_Item>>>();
+    private final ConcurrentHashMap<Short, ArrayList<IItemBehaviour<GT_MetaBase_Item>>> mItemBehaviors = new ConcurrentHashMap<>();
 
     /**
      * Creates the Item using these Parameters.
@@ -197,9 +197,8 @@ public abstract class GT_MetaBase_Item extends GT_Generic_Item
         return aStack;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
-    public final void addInformation(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean aF3_H) {
+    public final void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
         String tKey = getUnlocalizedName(aStack) + ".tooltip";
         String[] tStrings = GT_LanguageManager.getTranslation(tKey)
                                               .split("/n ");
@@ -224,7 +223,7 @@ public abstract class GT_MetaBase_Item extends GT_Generic_Item
                                     + EnumChatFormatting.GRAY);
                 } else {
                     aList.add(
-                            String.valueOf(EnumChatFormatting.AQUA)
+                            EnumChatFormatting.AQUA
                                     + String.format(
                                             transItem("011", "%s / %s EU - Voltage: %s"),
                                             formatNumbers(tCharge),

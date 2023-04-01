@@ -97,8 +97,8 @@ public class GT_Tool_Crowbar extends GT_Tool {
         }
         String tTool = aBlock.getHarvestTool(aMetaData);
         if ((tTool == null) || (tTool.equals(""))) {
-            for (Iterator i$ = GT_MetaGenerated_Tool_01.INSTANCE.mToolStats.values()
-                                                                           .iterator(); i$.hasNext(); i$.next()) {
+            for (Iterator<IToolStats> i$ = GT_MetaGenerated_Tool_01.INSTANCE.mToolStats.values()
+                                                                                       .iterator(); i$.hasNext(); i$.next()) {
                 if (((i$ instanceof GT_Tool_Crowbar)) && (!((IToolStats) i$).isMinableBlock(aBlock, aMetaData))) {
                     return false;
                 }

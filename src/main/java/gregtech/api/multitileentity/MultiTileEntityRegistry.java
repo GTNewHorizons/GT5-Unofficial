@@ -219,7 +219,7 @@ public class MultiTileEntityRegistry {
 
     public TileEntity getNewTileEntity(int aID) {
         final MultiTileEntityContainer tContainer = getNewTileEntityContainer(null, 0, 0, 0, aID, null);
-        return tContainer == null ? null : (TileEntity) tContainer.mTileEntity;
+        return tContainer == null ? null : tContainer.mTileEntity;
     }
 
     public MultiTileEntityContainer getNewTileEntityContainer(World aWorld, int aX, int aY, int aZ, int aID,

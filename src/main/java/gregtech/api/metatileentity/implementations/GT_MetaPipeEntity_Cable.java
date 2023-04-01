@@ -223,8 +223,7 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
     public long transferElectricity(byte aSide, long aVoltage, long aAmperage, HashSet<TileEntity> aAlreadyPassedSet) {
         if (!getBaseMetaTileEntity().isServerSide() || !isConnectedAtSide(aSide) && aSide != 6) return 0;
         final BaseMetaPipeEntity tBase = (BaseMetaPipeEntity) getBaseMetaTileEntity();
-        if (!(tBase.getNode() instanceof PowerNode)) return 0;
-        final PowerNode tNode = (PowerNode) tBase.getNode();
+        if (!(tBase.getNode() instanceof PowerNode tNode)) return 0;
         if (tNode != null) {
             int tPlace = 0;
             final Node[] tToPower = new Node[tNode.mConsumers.size()];

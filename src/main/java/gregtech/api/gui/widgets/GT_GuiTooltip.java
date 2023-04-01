@@ -2,7 +2,6 @@ package gregtech.api.gui.widgets;
 
 import java.awt.Rectangle;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -44,10 +43,10 @@ public class GT_GuiTooltip {
 
     private TooltipData sanitizeTooltipData(TooltipData data) {
         if (data.text == null) {
-            data.text = Arrays.asList(new String[0]);
+            data.text = Collections.emptyList();
         }
         if (data.shiftText == null) {
-            data.shiftText = Arrays.asList(new String[0]);
+            data.shiftText = Collections.emptyList();
         }
         return data;
     }
@@ -97,10 +96,10 @@ public class GT_GuiTooltip {
         List<String> list;
         if (text != null) {
             list = new ArrayList<>(text.length);
-            for (int i = 0; i < text.length; i++) {
-                if (text[i] == null) continue;
-                if (list.isEmpty()) list.add("\u00a7f" + text[i]);
-                else list.add("\u00a77" + text[i]);
+            for (String s : text) {
+                if (s == null) continue;
+                if (list.isEmpty()) list.add("\u00a7f" + s);
+                else list.add("\u00a77" + s);
             }
         } else {
             list = Collections.emptyList();

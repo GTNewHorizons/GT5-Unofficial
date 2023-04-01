@@ -26,7 +26,7 @@ public class GT_Worldgen_GT_Ore_SmallPieces extends GT_Worldgen {
     public final boolean mMoon = false, mMars = false, mAsteroid = false;
     public final String mBiome;
     public final String aTextWorldgen = "worldgen.";
-    public static ArrayList<GT_Worldgen_GT_Ore_SmallPieces> sList = new ArrayList<GT_Worldgen_GT_Ore_SmallPieces>();
+    public static ArrayList<GT_Worldgen_GT_Ore_SmallPieces> sList = new ArrayList<>();
 
     // TODO CHECK IF INSTANTIATION IS CORRECT
     public GT_Worldgen_GT_Ore_SmallPieces(String aName, boolean aDefault, int aMinY, int aMaxY, int aAmount,

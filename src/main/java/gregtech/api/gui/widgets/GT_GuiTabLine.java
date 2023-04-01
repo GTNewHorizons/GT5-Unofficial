@@ -34,7 +34,7 @@ public class GT_GuiTabLine {
     /**
      * Controls the rendering style of the tab line
      */
-    public static enum DisplayStyle {
+    public enum DisplayStyle {
 
         NONE((byte) 0),
         NORMAL((byte) 1),
@@ -189,9 +189,9 @@ public class GT_GuiTabLine {
      * @param mouseY
      */
     protected void drawOverlays(float parTicks, int mouseX, int mouseY) {
-        for (int i = 0; i < mTabs.length; i++) {
-            if (mTabs[i] != null) {
-                mTabs[i].drawOverlays(mouseX, mouseY, parTicks);
+        for (GT_GuiTab mTab : mTabs) {
+            if (mTab != null) {
+                mTab.drawOverlays(mouseX, mouseY, parTicks);
             }
         }
     }
@@ -204,9 +204,9 @@ public class GT_GuiTabLine {
      * @param mouseY
      */
     protected void drawBackground(float parTicks, int mouseX, int mouseY) {
-        for (int i = 0; i < mTabs.length; i++) {
-            if (mTabs[i] != null) {
-                mTabs[i].drawBackground(mouseX, mouseY, parTicks);
+        for (GT_GuiTab mTab : mTabs) {
+            if (mTab != null) {
+                mTab.drawBackground(mouseX, mouseY, parTicks);
             }
         }
     }

@@ -252,8 +252,7 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
         super.loadNBTData(aNBT);
         if (GregTech_API.mAE2) {
             NBTBase t = aNBT.getTag("cachedFluids");
-            if (t instanceof NBTTagList) {
-                NBTTagList l = (NBTTagList) t;
+            if (t instanceof NBTTagList l) {
                 for (int i = 0; i < l.tagCount(); ++i) {
                     NBTTagCompound tag = l.getCompoundTagAt(i);
                     NBTTagCompound tagFluidStack = tag.getCompoundTag("fluidStack");

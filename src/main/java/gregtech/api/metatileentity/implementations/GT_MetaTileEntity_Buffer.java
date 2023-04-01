@@ -105,57 +105,63 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
         if (side == facing) return mTextures[FRONT_INDEX][colorIndex];
         if (ForgeDirection.OPPOSITES[aSide] == aFacing) return mTextures[OUTPUT_INDEX][colorIndex];
         switch (facing) {
-            case DOWN:
+            case DOWN -> {
                 return mTextures[ARROW_UP_INDEX][colorIndex]; // ARROW_UP
-            case UP:
+            }
+            case UP -> {
                 return mTextures[ARROW_DOWN_INDEX][colorIndex]; // ARROW_DOWN
-            case NORTH:
+            }
+            case NORTH -> {
                 switch (side) {
-                    case DOWN:
-                    case UP:
+                    case DOWN, UP -> {
                         return mTextures[ARROW_DOWN_INDEX][colorIndex]; // ARROW_DOWN
-                    case WEST:
+                    }
+                    case WEST -> {
                         return mTextures[ARROW_RIGHT_INDEX][colorIndex]; // ARROW_RIGHT
-                    case EAST:
+                    }
+                    case EAST -> {
                         return mTextures[ARROW_LEFT_INDEX][colorIndex]; // ARROW_LEFT
-                    default:
+                    }
+                    default -> {}
                 }
-                break;
-            case SOUTH:
+            }
+            case SOUTH -> {
                 switch (side) {
-                    case DOWN:
-                    case UP:
+                    case DOWN, UP -> {
                         return mTextures[ARROW_UP_INDEX][colorIndex]; // ARROW_UP
-                    case WEST:
+                    }
+                    case WEST -> {
                         return mTextures[ARROW_LEFT_INDEX][colorIndex]; // ARROW_LEFT
-                    case EAST:
+                    }
+                    case EAST -> {
                         return mTextures[ARROW_RIGHT_INDEX][colorIndex]; // ARROW_RIGHT
-                    default:
+                    }
+                    default -> {}
                 }
-                break;
-            case WEST:
+            }
+            case WEST -> {
                 switch (side) {
-                    case UP:
-                    case SOUTH:
+                    case UP, SOUTH -> {
                         return mTextures[ARROW_RIGHT_INDEX][colorIndex]; // ARROW_RIGHT
-                    case DOWN:
-                    case NORTH:
+                    }
+                    case DOWN, NORTH -> {
                         return mTextures[ARROW_LEFT_INDEX][colorIndex]; // ARROW_LEFT
-                    default:
+                    }
+                    default -> {}
                 }
-                break;
-            case EAST:
+            }
+            case EAST -> {
                 switch (side) {
-                    case UP:
-                    case SOUTH:
+                    case UP, SOUTH -> {
                         return mTextures[ARROW_LEFT_INDEX][colorIndex]; // ARROW_LEFT
-                    case DOWN:
-                    case NORTH:
+                    }
+                    case DOWN, NORTH -> {
                         return mTextures[ARROW_RIGHT_INDEX][colorIndex]; // ARROW_RIGHT
-                    default:
+                    }
+                    default -> {}
                 }
-                break;
-            default:
+            }
+            default -> {}
         }
         return mTextures[FRONT_INDEX][colorIndex];
     }

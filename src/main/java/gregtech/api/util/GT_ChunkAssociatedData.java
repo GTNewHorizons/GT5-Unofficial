@@ -189,7 +189,7 @@ public abstract class GT_ChunkAssociatedData<T extends GT_ChunkAssociatedData.ID
     }
 
     private void saveRegions(Stream<SuperRegion> stream) {
-        stream.filter(r -> r.isDirty())
+        stream.filter(SuperRegion::isDirty)
               .map(c -> (Runnable) c::save)
               .map(r -> CompletableFuture.runAsync(r, IO_WORKERS))
               .reduce(CompletableFuture::allOf)
@@ -447,12 +447,10 @@ public abstract class GT_ChunkAssociatedData<T extends GT_ChunkAssociatedData.ID
             World world = Objects.requireNonNull(this.world.get(), "Attempting to load region of another world!");
             try (DataInputStream input = new DataInputStream(new FileInputStream(file))) {
                 byte b = input.readByte();
-                switch (b) {
-                    case 0:
-                        loadV0(input, world);
-                        break;
-                    default:
-                        GT_Log.err.printf("Unknown ChunkAssociatedData version %d\n", b);
+                if (b == 0) {
+                    loadV0(input, world);
+                } else {
+                    GT_Log.err.printf("Unknown ChunkAssociatedData version %d\n", b);
                 }
             }
         }

@@ -386,31 +386,23 @@ public abstract class GT_Cover_FacadeBase extends GT_CoverBehaviorBase<GT_Cover_
         protected void addTitleToUI(ModularWindow.Builder builder) {}
 
         private int getNewCoverVariable(int id, FacadeData coverVariable) {
-            switch (id) {
-                case 0:
-                    return coverVariable.mFlags ^ 0x1;
-                case 1:
-                    return coverVariable.mFlags ^ 0x2;
-                case 2:
-                    return coverVariable.mFlags ^ 0x4;
-                case 3:
-                    return coverVariable.mFlags ^ 0x8;
-            }
-            return coverVariable.mFlags;
+            return switch (id) {
+                case 0 -> coverVariable.mFlags ^ 0x1;
+                case 1 -> coverVariable.mFlags ^ 0x2;
+                case 2 -> coverVariable.mFlags ^ 0x4;
+                case 3 -> coverVariable.mFlags ^ 0x8;
+                default -> coverVariable.mFlags;
+            };
         }
 
         private boolean isEnabled(int id, FacadeData coverVariable) {
-            switch (id) {
-                case 0:
-                    return (coverVariable.mFlags & 0x1) > 0;
-                case 1:
-                    return (coverVariable.mFlags & 0x2) > 0;
-                case 2:
-                    return (coverVariable.mFlags & 0x4) > 0;
-                case 3:
-                    return (coverVariable.mFlags & 0x8) > 0;
-            }
-            return false;
+            return switch (id) {
+                case 0 -> (coverVariable.mFlags & 0x1) > 0;
+                case 1 -> (coverVariable.mFlags & 0x2) > 0;
+                case 2 -> (coverVariable.mFlags & 0x4) > 0;
+                case 3 -> (coverVariable.mFlags & 0x8) > 0;
+                default -> false;
+            };
         }
     }
 }

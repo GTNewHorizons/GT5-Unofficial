@@ -80,7 +80,7 @@ public class GT_PCBFactoryRecipes {
         // Plastic Circuit Board
         for (int tier = 1; tier <= GT_PCBFactoryManager.mTiersOfPlastics; tier++) {
             int amountOfBoards = (int) Math.ceil(8 * (Math.sqrt(Math.pow(2, tier - 1))));
-            List<ItemStack> aBoards = new ArrayList<ItemStack>();
+            List<ItemStack> aBoards = new ArrayList<>();
             for (int i = amountOfBoards; i > 64; i -= 64) {
                 aBoards.add(ItemList.Circuit_Board_Plastic_Advanced.get(64));
                 amountOfBoards -= 64;
@@ -107,7 +107,7 @@ public class GT_PCBFactoryRecipes {
         }
         for (int tier = 1; tier <= GT_PCBFactoryManager.mTiersOfPlastics; tier++) {
             int amountOfBoards = (int) Math.ceil(8 * (Math.sqrt(Math.pow(2, tier - 0.5))));
-            List<ItemStack> aBoards = new ArrayList<ItemStack>();
+            List<ItemStack> aBoards = new ArrayList<>();
             for (int i = amountOfBoards; i > 64; i -= 64) {
                 aBoards.add(ItemList.Circuit_Board_Plastic_Advanced.get(64));
                 amountOfBoards -= 64;
@@ -135,7 +135,7 @@ public class GT_PCBFactoryRecipes {
         }
         for (int tier = 1; tier <= GT_PCBFactoryManager.mTiersOfPlastics; tier++) {
             int amountOfBoards = (int) Math.ceil(8 * (Math.sqrt(Math.pow(2, tier))));
-            List<ItemStack> aBoards = new ArrayList<ItemStack>();
+            List<ItemStack> aBoards = new ArrayList<>();
             for (int i = amountOfBoards; i > 64; i -= 64) {
                 aBoards.add(ItemList.Circuit_Board_Plastic_Advanced.get(64));
                 amountOfBoards -= 64;
@@ -165,7 +165,7 @@ public class GT_PCBFactoryRecipes {
         // Advanced Circuit Board
         for (int tier = 2; tier <= GT_PCBFactoryManager.mTiersOfPlastics; tier++) {
             int amountOfBoards = (int) Math.ceil(8 * (Math.sqrt(Math.pow(2, tier - 2))));
-            List<ItemStack> aBoards = new ArrayList<ItemStack>();
+            List<ItemStack> aBoards = new ArrayList<>();
             for (int i = amountOfBoards; i > 64; i -= 64) {
                 aBoards.add(ItemList.Circuit_Board_Epoxy_Advanced.get(i));
                 amountOfBoards -= 64;
@@ -192,7 +192,7 @@ public class GT_PCBFactoryRecipes {
         }
         for (int tier = 2; tier <= GT_PCBFactoryManager.mTiersOfPlastics; tier++) {
             int amountOfBoards = (int) Math.ceil(8 * (Math.sqrt(Math.pow(2, tier - 1.5))));
-            List<ItemStack> aBoards = new ArrayList<ItemStack>();
+            List<ItemStack> aBoards = new ArrayList<>();
             for (int i = amountOfBoards; i > 64; i -= 64) {
                 aBoards.add(ItemList.Circuit_Board_Epoxy_Advanced.get(i));
                 amountOfBoards -= 64;
@@ -220,7 +220,7 @@ public class GT_PCBFactoryRecipes {
         }
         for (int tier = 2; tier <= GT_PCBFactoryManager.mTiersOfPlastics; tier++) {
             int amountOfBoards = (int) Math.ceil(8 * (Math.sqrt(Math.pow(2, tier - 1))));
-            List<ItemStack> aBoards = new ArrayList<ItemStack>();
+            List<ItemStack> aBoards = new ArrayList<>();
             for (int i = amountOfBoards; i > 64; i -= 64) {
                 aBoards.add(ItemList.Circuit_Board_Epoxy_Advanced.get(i));
                 amountOfBoards -= 64;
@@ -250,7 +250,7 @@ public class GT_PCBFactoryRecipes {
         // More Advanced Circuit Board
         for (int tier = 3; tier <= GT_PCBFactoryManager.mTiersOfPlastics; tier++) {
             int amountOfBoards = (int) Math.ceil(8 * (Math.sqrt(Math.pow(2, tier - 3))));
-            List<ItemStack> aBoards = new ArrayList<ItemStack>();
+            List<ItemStack> aBoards = new ArrayList<>();
             for (int i = amountOfBoards; i > 64; i -= 64) {
                 aBoards.add(ItemList.Circuit_Board_Fiberglass_Advanced.get(i));
                 amountOfBoards -= 64;
@@ -277,7 +277,7 @@ public class GT_PCBFactoryRecipes {
         }
         for (int tier = 3; tier <= GT_PCBFactoryManager.mTiersOfPlastics; tier++) {
             int amountOfBoards = (int) Math.ceil(8 * (Math.sqrt(Math.pow(2, tier - 2.5))));
-            List<ItemStack> aBoards = new ArrayList<ItemStack>();
+            List<ItemStack> aBoards = new ArrayList<>();
             for (int i = amountOfBoards; i > 64; i -= 64) {
                 aBoards.add(ItemList.Circuit_Board_Fiberglass_Advanced.get(i));
                 amountOfBoards -= 64;
@@ -305,7 +305,7 @@ public class GT_PCBFactoryRecipes {
         }
         for (int tier = 3; tier <= GT_PCBFactoryManager.mTiersOfPlastics; tier++) {
             int amountOfBoards = (int) Math.ceil(8 * (Math.sqrt(Math.pow(2, tier - 2))));
-            List<ItemStack> aBoards = new ArrayList<ItemStack>();
+            List<ItemStack> aBoards = new ArrayList<>();
             for (int i = amountOfBoards; i > 64; i -= 64) {
                 aBoards.add(ItemList.Circuit_Board_Fiberglass_Advanced.get(i));
                 amountOfBoards -= 64;
@@ -335,7 +335,7 @@ public class GT_PCBFactoryRecipes {
         // Elite Circuit Board
         for (int tier = 4; tier <= GT_PCBFactoryManager.mTiersOfPlastics; tier++) {
             int amountOfBoards = (int) Math.ceil(8 * (Math.sqrt(Math.pow(2, tier - 4))));
-            List<ItemStack> aBoards = new ArrayList<ItemStack>();
+            List<ItemStack> aBoards = new ArrayList<>();
             for (int i = amountOfBoards; i > 64; i -= 64) {
                 aBoards.add(ItemList.Circuit_Board_Multifiberglass_Elite.get(i));
                 amountOfBoards -= 64;
@@ -362,7 +362,7 @@ public class GT_PCBFactoryRecipes {
         }
         for (int tier = 4; tier <= GT_PCBFactoryManager.mTiersOfPlastics; tier++) {
             int amountOfBoards = (int) Math.ceil(8 * (Math.sqrt(Math.pow(2, tier - 3.5))));
-            List<ItemStack> aBoards = new ArrayList<ItemStack>();
+            List<ItemStack> aBoards = new ArrayList<>();
             for (int i = amountOfBoards; i > 64; i -= 64) {
                 aBoards.add(ItemList.Circuit_Board_Multifiberglass_Elite.get(i));
                 amountOfBoards -= 64;
@@ -390,7 +390,7 @@ public class GT_PCBFactoryRecipes {
         }
         for (int tier = 4; tier <= GT_PCBFactoryManager.mTiersOfPlastics; tier++) {
             int amountOfBoards = (int) Math.ceil(8 * (Math.sqrt(Math.pow(2, tier - 3))));
-            List<ItemStack> aBoards = new ArrayList<ItemStack>();
+            List<ItemStack> aBoards = new ArrayList<>();
             for (int i = amountOfBoards; i > 64; i -= 64) {
                 aBoards.add(ItemList.Circuit_Board_Multifiberglass_Elite.get(i));
                 amountOfBoards -= 64;
@@ -420,7 +420,7 @@ public class GT_PCBFactoryRecipes {
         // Wetware Circuit Board
         for (int tier = 5; tier <= GT_PCBFactoryManager.mTiersOfPlastics; tier++) {
             int amountOfBoards = (int) Math.ceil(8 * (Math.sqrt(Math.pow(2, tier - 5))));
-            List<ItemStack> aBoards = new ArrayList<ItemStack>();
+            List<ItemStack> aBoards = new ArrayList<>();
             for (int i = amountOfBoards; i > 64; i -= 64) {
                 aBoards.add(ItemList.Circuit_Board_Wetware_Extreme.get(i));
                 amountOfBoards -= 64;
@@ -448,7 +448,7 @@ public class GT_PCBFactoryRecipes {
         }
         for (int tier = 5; tier <= GT_PCBFactoryManager.mTiersOfPlastics; tier++) {
             int amountOfBoards = (int) Math.ceil(8 * (Math.sqrt(Math.pow(2, tier - 4.5))));
-            List<ItemStack> aBoards = new ArrayList<ItemStack>();
+            List<ItemStack> aBoards = new ArrayList<>();
             for (int i = amountOfBoards; i > 64; i -= 64) {
                 aBoards.add(ItemList.Circuit_Board_Wetware_Extreme.get(i));
                 amountOfBoards -= 64;
@@ -477,7 +477,7 @@ public class GT_PCBFactoryRecipes {
         }
         for (int tier = 5; tier <= GT_PCBFactoryManager.mTiersOfPlastics; tier++) {
             int amountOfBoards = (int) Math.ceil(8 * (Math.sqrt(Math.pow(2, tier - 4))));
-            List<ItemStack> aBoards = new ArrayList<ItemStack>();
+            List<ItemStack> aBoards = new ArrayList<>();
             for (int i = amountOfBoards; i > 64; i -= 64) {
                 aBoards.add(ItemList.Circuit_Board_Wetware_Extreme.get(i));
                 amountOfBoards -= 64;
@@ -508,7 +508,7 @@ public class GT_PCBFactoryRecipes {
         // Bioware Circuit Board
         for (int tier = 6; tier <= GT_PCBFactoryManager.mTiersOfPlastics; tier++) {
             int amountOfBoards = (int) Math.ceil(8 * (Math.sqrt(Math.pow(2, tier - 6))));
-            List<ItemStack> aBoards = new ArrayList<ItemStack>();
+            List<ItemStack> aBoards = new ArrayList<>();
             for (int i = amountOfBoards; i > 64; i -= 64) {
                 aBoards.add(ItemList.Circuit_Board_Bio_Ultra.get(i));
                 amountOfBoards -= 64;
@@ -536,7 +536,7 @@ public class GT_PCBFactoryRecipes {
         }
         for (int tier = 6; tier <= GT_PCBFactoryManager.mTiersOfPlastics; tier++) {
             int amountOfBoards = (int) Math.ceil(8 * (Math.sqrt(Math.pow(2, tier - 5.5))));
-            List<ItemStack> aBoards = new ArrayList<ItemStack>();
+            List<ItemStack> aBoards = new ArrayList<>();
             for (int i = amountOfBoards; i > 64; i -= 64) {
                 aBoards.add(ItemList.Circuit_Board_Bio_Ultra.get(i));
                 amountOfBoards -= 64;
@@ -565,7 +565,7 @@ public class GT_PCBFactoryRecipes {
         }
         for (int tier = 6; tier <= GT_PCBFactoryManager.mTiersOfPlastics; tier++) {
             int amountOfBoards = (int) Math.ceil(8 * (Math.sqrt(Math.pow(2, tier - 5))));
-            List<ItemStack> aBoards = new ArrayList<ItemStack>();
+            List<ItemStack> aBoards = new ArrayList<>();
             for (int i = amountOfBoards; i > 64; i -= 64) {
                 aBoards.add(ItemList.Circuit_Board_Bio_Ultra.get(i));
                 amountOfBoards -= 64;
@@ -597,7 +597,7 @@ public class GT_PCBFactoryRecipes {
             // Optical Circuit Board
             for (int tier = 7; tier <= GT_PCBFactoryManager.mTiersOfPlastics; tier++) {
                 int amountOfBoards = (int) Math.ceil(8 * (Math.sqrt(Math.pow(2, tier - 7))));
-                List<ItemStack> aBoards = new ArrayList<ItemStack>();
+                List<ItemStack> aBoards = new ArrayList<>();
                 for (int i = amountOfBoards; i > 64; i -= 64) {
                     aBoards.add(ItemList.Circuit_Board_Optical.get(i));
                     amountOfBoards -= 64;
@@ -630,7 +630,7 @@ public class GT_PCBFactoryRecipes {
             }
             for (int tier = 7; tier <= GT_PCBFactoryManager.mTiersOfPlastics; tier++) {
                 int amountOfBoards = (int) Math.ceil(8 * (Math.sqrt(Math.pow(2, tier - 6.5))));
-                List<ItemStack> aBoards = new ArrayList<ItemStack>();
+                List<ItemStack> aBoards = new ArrayList<>();
                 for (int i = amountOfBoards; i > 64; i -= 64) {
                     aBoards.add(ItemList.Circuit_Board_Optical.get(i));
                     amountOfBoards -= 64;
@@ -664,7 +664,7 @@ public class GT_PCBFactoryRecipes {
             }
             for (int tier = 7; tier <= GT_PCBFactoryManager.mTiersOfPlastics; tier++) {
                 int amountOfBoards = (int) Math.ceil(8 * (Math.sqrt(Math.pow(2, tier - 6))));
-                List<ItemStack> aBoards = new ArrayList<ItemStack>();
+                List<ItemStack> aBoards = new ArrayList<>();
                 for (int i = amountOfBoards; i > 64; i -= 64) {
                     aBoards.add(ItemList.Circuit_Board_Optical.get(i));
                     amountOfBoards -= 64;

@@ -104,8 +104,7 @@ public class Behaviour_Cover_Tool extends Behaviour_None {
                         + aWorld.provider.dimensionId
                         + EnumChatFormatting.RESET
                         + " -----");
-        if (aTileEntity instanceof ICoverable) {
-            ICoverable tCoverable = (ICoverable) aTileEntity;
+        if (aTileEntity instanceof ICoverable tCoverable) {
             int tSide = tCoverable.getCoverItemAtSide((byte) aSide) != null ? aSide
                     : tCoverable.getCoverItemAtSide(GT_Utility.determineWrenchingSide((byte) aSide, hitX, hitY, hitZ))
                             != null ? GT_Utility.determineWrenchingSide((byte) aSide, hitX, hitY, hitZ) : -1;
@@ -135,8 +134,7 @@ public class Behaviour_Cover_Tool extends Behaviour_None {
     }
 
     private void doPaste(TileEntity aTileEntity, int aSide, float hitX, float hitY, float hitZ, EntityPlayer aPlayer) {
-        if (aTileEntity instanceof ICoverable) {
-            ICoverable tCoverable = (ICoverable) aTileEntity;
+        if (aTileEntity instanceof ICoverable tCoverable) {
             if (mCoverType == 0 || mStoredData == null) {
                 GT_Utility.sendChatToPlayer(aPlayer, "Please Copy a Valid Cover First.");
                 return;

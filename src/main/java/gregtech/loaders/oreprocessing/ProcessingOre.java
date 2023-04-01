@@ -15,7 +15,7 @@ import gregtech.api.util.GT_Utility;
 
 public class ProcessingOre implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
-    private ArrayList<Materials> mAlreadyListedOres = new ArrayList(1000);
+    private ArrayList<Materials> mAlreadyListedOres = new ArrayList<>(1000);
 
     public ProcessingOre() {
         for (OrePrefixes tPrefix : OrePrefixes.values()) if ((tPrefix.name()
@@ -114,7 +114,7 @@ public class ProcessingOre implements gregtech.api.interfaces.IOreRecipeRegistra
                     aMaterial.mOreMultiplier * aMultiplier);
         }
 
-        ArrayList<ItemStack> tByProductStacks = new ArrayList();
+        ArrayList<ItemStack> tByProductStacks = new ArrayList<>();
 
         for (Materials tMat : aMaterial.mOreByProducts) {
             ItemStack tByProduct = GT_OreDictUnificator.get(OrePrefixes.dust, tMat, 1L);
@@ -140,7 +140,7 @@ public class ProcessingOre implements gregtech.api.interfaces.IOreRecipeRegistra
             gregtech.api.util.GT_Recipe.GT_Recipe_Map.sByProductList.addFakeRecipe(
                     false,
                     new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.ore, aMaterial, aOreStack, 1L) },
-                    (ItemStack[]) tByProductStacks.toArray(new ItemStack[0]),
+                    tByProductStacks.toArray(new ItemStack[0]),
                     null,
                     null,
                     null,

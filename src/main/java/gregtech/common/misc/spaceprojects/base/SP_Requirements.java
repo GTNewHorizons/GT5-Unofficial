@@ -1,6 +1,7 @@
 package gregtech.common.misc.spaceprojects.base;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import gregtech.common.misc.spaceprojects.enums.SpaceBodyType;
@@ -60,16 +61,12 @@ public class SP_Requirements implements ISP_Requirements {
     }
 
     public SP_Requirements setUpgrades(ISP_Upgrade... requirementUpgrades) {
-        for (ISP_Upgrade upgrade : requirementUpgrades) {
-            upgrades.add(upgrade);
-        }
+        upgrades.addAll(Arrays.asList(requirementUpgrades));
         return this;
     }
 
     public SP_Requirements setSpaceProjects(ISpaceProject... requirementProjects) {
-        for (ISpaceProject project : requirementProjects) {
-            spaceProjects.add(project);
-        }
+        spaceProjects.addAll(Arrays.asList(requirementProjects));
         return this;
     }
 

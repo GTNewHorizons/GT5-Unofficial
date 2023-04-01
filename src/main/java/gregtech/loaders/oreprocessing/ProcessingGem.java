@@ -35,7 +35,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
         boolean aFuelPower = aMaterial.mFuelPower > 0;
 
         switch (aPrefix) {
-            case gem:
+            case gem -> {
                 if (aFuelPower) {
                     GT_Values.RA.addFuel(
                             GT_Utility.copyAmount(1L, aStack),
@@ -96,7 +96,6 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                             (int) Math.max(aMaterialMass * 9L, 1L),
                             calculateRecipeEU(aMaterial, 96));
                 }
-
                 if (aNoWorking) {
                     if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
                         GT_Values.RA.addLatheRecipe(
@@ -135,8 +134,8 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                         break;
                     case "Coal":
                     case "Charcoal":
-                        if (gregtech.api.GregTech_API.sRecipeFile.get(
-                                gregtech.api.enums.ConfigCategories.Recipes.disabledrecipes,
+                        if (GregTech_API.sRecipeFile.get(
+                                ConfigCategories.Recipes.disabledrecipes,
                                 "torchesFromCoal",
                                 false)) {
                             GT_ModHandler.removeRecipeDelayed(
@@ -160,8 +159,8 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                                 30);
                 }
                 for (ItemStack is : OreDictionary.getOres("craftingLens" + aMaterial.mColor.mName.replace(" ", ""))) { // Engraver
-                                                                                                                       // Recipe
-                                                                                                                       // adder
+                    // Recipe
+                    // adder
                     is.stackSize = 0;
                     GT_Values.RA.addLaserEngraverRecipe(
                             GT_Utility.copyAmount(3L, aStack),
@@ -170,8 +169,8 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                             1200,
                             480);
                 }
-                break;
-            case gemChipped:
+            }
+            case gemChipped -> {
                 if (aFuelPower) GT_Values.RA.addFuel(
                         GT_Utility.copyAmount(1L, aStack),
                         null,
@@ -201,8 +200,8 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                     }
                 }
                 for (ItemStack is : OreDictionary.getOres("craftingLens" + aMaterial.mColor.mName.replace(" ", ""))) { // Engraver
-                                                                                                                       // Recipe
-                                                                                                                       // adder
+                    // Recipe
+                    // adder
                     is.stackSize = 0;
                     GT_Values.RA.addLaserEngraverRecipe(
                             GT_Utility.copyAmount(3L, aStack),
@@ -211,8 +210,8 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                             600,
                             30);
                 }
-                break;
-            case gemExquisite:
+            }
+            case gemExquisite -> {
                 if (aFuelPower) GT_Values.RA.addFuel(
                         GT_Utility.copyAmount(1L, aStack),
                         null,
@@ -230,8 +229,8 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                         GT_OreDictUnificator.get(OrePrefixes.gemFlawless, aMaterial, 2L),
                         64,
                         16);
-                break;
-            case gemFlawed:
+            }
+            case gemFlawed -> {
                 if (aFuelPower) GT_Values.RA.addFuel(
                         GT_Utility.copyAmount(1L, aStack),
                         null,
@@ -266,8 +265,8 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                         64,
                         16);
                 for (ItemStack is : OreDictionary.getOres("craftingLens" + aMaterial.mColor.mName.replace(" ", ""))) { // Engraver
-                                                                                                                       // Recipe
-                                                                                                                       // adder
+                    // Recipe
+                    // adder
                     is.stackSize = 0;
                     GT_Values.RA.addLaserEngraverRecipe(
                             GT_Utility.copyAmount(3L, aStack),
@@ -276,8 +275,8 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                             600,
                             120);
                 }
-                break;
-            case gemFlawless:
+            }
+            case gemFlawless -> {
                 if (aFuelPower) GT_Values.RA.addFuel(
                         GT_Utility.copyAmount(1L, aStack),
                         null,
@@ -314,8 +313,8 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                         64,
                         16);
                 for (ItemStack is : OreDictionary.getOres("craftingLens" + aMaterial.mColor.mName.replace(" ", ""))) { // Engraver
-                                                                                                                       // Recipe
-                                                                                                                       // adder
+                    // Recipe
+                    // adder
                     is.stackSize = 0;
                     GT_Values.RA.addLaserEngraverRecipe(
                             GT_Utility.copyAmount(3L, aStack),
@@ -324,9 +323,8 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                             2400,
                             2000);
                 }
-                break;
-            default:
-                break;
+            }
+            default -> {}
         }
     }
 }
