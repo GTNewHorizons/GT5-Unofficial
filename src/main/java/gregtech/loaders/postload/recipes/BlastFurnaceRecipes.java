@@ -5,6 +5,7 @@ import static gregtech.api.util.GT_ModHandler.getModItem;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sBlastRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sPrimitiveBlastRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.*;
+import static gregtech.api.util.GT_RecipeConstants.ADDITIVE_AMOUNT;
 import static gregtech.api.util.GT_RecipeConstants.COIL_HEAT;
 
 import mods.railcraft.common.blocks.aesthetics.cube.EnumCube;
@@ -675,157 +676,46 @@ public class BlastFurnaceRecipes implements Runnable {
         }
     }
 
-    public void addPrimitiveBlastFurnaceRecipes(ItemStack[] inputs, int coalAmount, ItemStack[] outputs, int duration) {
-        // compute if it can make fuel block version of the recipes
-        boolean blockVersion = true;
-        for (ItemStack inputStack : inputs) {
-            if (inputStack.stackSize > 6) {
-                blockVersion = false;
-                break;
-            }
-        }
-
-        // skipping if it has been already set to false
-        if (blockVersion) {
-            for (ItemStack outputStack : outputs) {
-                if (outputStack.stackSize > 6) {
-                    blockVersion = false;
-                    break;
-                }
-            }
-        }
-
-        ItemStack[] inputsBlocks = new ItemStack[inputs.length];
-        ItemStack[] outputsBlocks = new ItemStack[outputs.length];
-
-        // allocating the two arrays only if block version is possible
-        if (blockVersion) {
-            for (int i = 0; i < inputs.length; i++) {
-                ItemStack itemStack = inputs[i].copy();
-                itemStack.stackSize *= 10;
-                inputsBlocks[i] = itemStack;
-            }
-
-            for (int i = 0; i < outputs.length; i++) {
-                ItemStack itemStack = outputs[i].copy();
-                itemStack.stackSize *= 10;
-                outputsBlocks[i] = itemStack;
-            }
-        }
-
-        for (Materials coal : new Materials[] { Materials.Coal, Materials.Charcoal }) {
-            // coal as gems
-            GT_Values.RA.stdBuilder()
-                        .itemInputs(ArrayUtils.add(inputs, coal.getGems(coalAmount)))
-                        .itemOutputs(ArrayUtils.add(outputs, Materials.DarkAsh.getDustTiny(coalAmount)))
-                        .noFluidInputs()
-                        .noFluidOutputs()
-                        .duration(duration)
-                        .eut(0)
-                        .addTo(sPrimitiveBlastRecipes);
-
-            // coal as dust
-            GT_Values.RA.stdBuilder()
-                        .itemInputs(ArrayUtils.add(inputs, coal.getDust(coalAmount)))
-                        .itemOutputs(ArrayUtils.add(outputs, Materials.DarkAsh.getDustTiny(coalAmount)))
-                        .noFluidInputs()
-                        .noFluidOutputs()
-                        .duration(duration)
-                        .eut(0)
-                        .addTo(sPrimitiveBlastRecipes);
-
-            if (!blockVersion) {
-                continue;
-            }
-
-            // coal as block
-            GT_Values.RA.stdBuilder()
-                        .itemInputs(ArrayUtils.add(inputsBlocks, coal.getBlocks(coalAmount)))
-                        .itemOutputs(ArrayUtils.add(outputsBlocks, Materials.DarkAsh.getDust(coalAmount)))
-                        .noFluidInputs()
-                        .noFluidOutputs()
-                        .duration(duration * 10)
-                        .eut(0)
-                        .addTo(sPrimitiveBlastRecipes);
-        }
-
-        if (Railcraft.isModLoaded()) {
-            // coal coke
-            GT_Values.RA.stdBuilder()
-                        .itemInputs(ArrayUtils.add(inputs, RailcraftToolItems.getCoalCoke(coalAmount / 2)))
-                        .itemOutputs(ArrayUtils.add(outputs, Materials.Ash.getDustTiny(coalAmount / 2)))
-                        .noFluidInputs()
-                        .noFluidOutputs()
-                        .duration(duration * 2 / 3)
-                        .eut(0)
-                        .addTo(sPrimitiveBlastRecipes);
-
-            if (blockVersion) {
-                // coal coke block
-                GT_Values.RA.stdBuilder()
-                            .itemInputs(ArrayUtils.add(inputs, EnumCube.COKE_BLOCK.getItem(coalAmount / 2)))
-                            .itemOutputs(ArrayUtils.add(outputs, Materials.Ash.getDust(coalAmount / 2)))
-                            .noFluidInputs()
-                            .noFluidOutputs()
-                            .duration(duration * 10 * 2 / 3)
-                            .eut(0)
-                            .addTo(sPrimitiveBlastRecipes);
-            }
-        }
-
-        if (GTPlusPlus.isModLoaded()) {
-            // cactus coke
-            GT_Values.RA.stdBuilder()
-                        .itemInputs(
-                                ArrayUtils.add(
-                                        inputs,
-                                        GT_ModHandler.getModItem(GTPlusPlus.modID, "itemCactusCoke", coalAmount * 2)))
-                        .itemOutputs(ArrayUtils.add(outputs, Materials.Ash.getDustTiny(coalAmount * 2)))
-                        .noFluidInputs()
-                        .noFluidOutputs()
-                        .duration(duration * 2 / 3)
-                        .eut(0)
-                        .addTo(sPrimitiveBlastRecipes);
-
-            // sugar coke
-            GT_Values.RA.stdBuilder()
-                        .itemInputs(
-                                ArrayUtils.add(
-                                        inputs,
-                                        GT_ModHandler.getModItem(GTPlusPlus.modID, "itemSugarCoke", (coalAmount * 2))))
-                        .itemOutputs(ArrayUtils.add(outputs, Materials.Ash.getDustTiny(coalAmount * 2)))
-                        .noFluidInputs()
-                        .noFluidOutputs()
-                        .duration(duration * 2 / 3)
-                        .eut(0)
-                        .addTo(sPrimitiveBlastRecipes);
-        }
-
-    }
-
     public void registerPrimitiveBlastFurnaceRecipes() {
-        addPrimitiveBlastFurnaceRecipes(
-                new ItemStack[] { Materials.Iron.getIngots(1) },
-                4,
-                new ItemStack[] { Materials.Steel.getIngots(1) },
-                6 * MINUTES);
+        GT_Values.RA.stdBuilder()
 
-        addPrimitiveBlastFurnaceRecipes(
-                new ItemStack[] { Materials.Iron.getDust(1) },
-                4,
-                new ItemStack[] { Materials.Steel.getIngots(1) },
-                6 * MINUTES);
+            .itemInputs(Materials.Iron.getIngots(1))
+            .itemOutputs(Materials.Steel.getIngots(1))
+            .noFluidInputs()
+            .noFluidOutputs()
+            .duration(6*MINUTES)
+            .eut(0)
+            .metadata(ADDITIVE_AMOUNT, 4)
+            .addTo(sPrimitiveBlastRecipes);
 
-        addPrimitiveBlastFurnaceRecipes(
-                new ItemStack[] { Materials.Iron.getBlocks(1) },
-                36,
-                new ItemStack[] { Materials.Steel.getIngots(9) },
-                54 * MINUTES);
+        GT_Values.RA.stdBuilder()
+            .itemInputs( Materials.Iron.getDust(1))
+            .itemOutputs(Materials.Steel.getIngots(1))
+            .noFluidInputs()
+            .noFluidOutputs()
+            .duration(6*MINUTES)
+            .eut(0)
+            .metadata(ADDITIVE_AMOUNT, 4)
+            .addTo(sPrimitiveBlastRecipes);
 
-        addPrimitiveBlastFurnaceRecipes(
-                new ItemStack[] { Materials.Steel.getDust(1) },
-                2,
-                new ItemStack[] { Materials.Steel.getIngots(1) },
-                6 * MINUTES);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(Materials.Iron.getBlocks(1))
+            .itemOutputs( Materials.Steel.getIngots(9))
+            .noFluidInputs()
+            .noFluidOutputs()
+            .duration(54*MINUTES)
+            .eut(0)
+            .metadata(ADDITIVE_AMOUNT, 36)
+            .addTo(sPrimitiveBlastRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(Materials.Steel.getDust(1))
+            .itemOutputs(Materials.Steel.getIngots(1) )
+            .noFluidInputs()
+            .noFluidOutputs()
+            .duration(6*MINUTES)
+            .eut(0)
+            .metadata(ADDITIVE_AMOUNT, 2)
+            .addTo(sPrimitiveBlastRecipes);
     }
 }
