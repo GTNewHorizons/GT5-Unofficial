@@ -449,7 +449,9 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
             addTitleToUI(builder);
             addUIWidgets(builder);
             if (getUIBuildContext().isAnotherWindow()) {
-                builder.widget(ButtonWidget.closeWindowButton(true).setPos(getGUIWidth() - 15, 3));
+                builder.widget(
+                        ButtonWidget.closeWindowButton(true)
+                                    .setPos(getGUIWidth() - 15, 3));
             }
             return builder.build();
         }
@@ -470,7 +472,8 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
         public T getCoverData() {
             if (isCoverValid()) {
                 return forceCast(
-                        getUIBuildContext().getTile().getComplexCoverDataAtSide(getUIBuildContext().getCoverSide()));
+                        getUIBuildContext().getTile()
+                                           .getComplexCoverDataAtSide(getUIBuildContext().getCoverSide()));
             } else {
                 return null;
             }
@@ -478,13 +481,14 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
 
         public boolean setCoverData(T data) {
             if (isCoverValid()) {
-                getUIBuildContext().getTile().receiveCoverData(
-                        getUIBuildContext().getCoverSide(),
-                        getUIBuildContext().getCoverID(),
-                        data,
-                        getUIBuildContext().getPlayer() instanceof EntityPlayerMP
-                                ? (EntityPlayerMP) getUIBuildContext().getPlayer()
-                                : null);
+                getUIBuildContext().getTile()
+                                   .receiveCoverData(
+                                           getUIBuildContext().getCoverSide(),
+                                           getUIBuildContext().getCoverID(),
+                                           data,
+                                           getUIBuildContext().getPlayer() instanceof EntityPlayerMP
+                                                   ? (EntityPlayerMP) getUIBuildContext().getPlayer()
+                                                   : null);
                 return true;
             } else {
                 return false;
@@ -492,16 +496,23 @@ public abstract class GT_CoverBehaviorBase<T extends ISerializableObject> {
         }
 
         public boolean isCoverValid() {
-            return !getUIBuildContext().getTile().isDead()
-                    && getUIBuildContext().getTile().getCoverBehaviorAtSideNew(getUIBuildContext().getCoverSide())
+            return !getUIBuildContext().getTile()
+                                       .isDead()
+                    && getUIBuildContext().getTile()
+                                          .getCoverBehaviorAtSideNew(getUIBuildContext().getCoverSide())
                             != GregTech_API.sNoBehavior;
         }
 
         protected void addTitleToUI(ModularWindow.Builder builder) {
             ItemStack coverItem = GT_Utility.intToStack(getUIBuildContext().getCoverID());
             if (coverItem != null) {
-                builder.widget(new ItemDrawable(coverItem).asWidget().setPos(5, 5).setSize(16, 16)).widget(
-                        new TextWidget(coverItem.getDisplayName()).setDefaultColor(COLOR_TITLE.get()).setPos(25, 9));
+                builder.widget(
+                        new ItemDrawable(coverItem).asWidget()
+                                                   .setPos(5, 5)
+                                                   .setSize(16, 16))
+                       .widget(
+                               new TextWidget(coverItem.getDisplayName()).setDefaultColor(COLOR_TITLE.get())
+                                                                         .setPos(25, 9));
             }
         }
 

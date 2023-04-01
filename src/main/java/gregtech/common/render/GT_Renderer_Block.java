@@ -507,7 +507,9 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
                         0.0,
                         block,
                         block.getDamageValue(world, x, y, z),
-                        side)).applyColourMultiplier(x, y, z).multiplyVelocity(0.2F).multipleParticleScaleBy(0.6F));
+                        side)).applyColourMultiplier(x, y, z)
+                              .multiplyVelocity(0.2F)
+                              .multipleParticleScaleBy(0.6F));
     }
 
     @SideOnly(Side.CLIENT)
@@ -900,8 +902,8 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
             int aZ, ITexture[] aIcon, boolean aFullBlock) {
         if (aWorld != null) {
             if ((aFullBlock) && (!aBlock.shouldSideBeRendered(aWorld, aX, aY - 1, aZ, 0))) return;
-            Tessellator.instance
-                    .setBrightness(aBlock.getMixedBrightnessForBlock(aWorld, aX, aFullBlock ? aY - 1 : aY, aZ));
+            Tessellator.instance.setBrightness(
+                    aBlock.getMixedBrightnessForBlock(aWorld, aX, aFullBlock ? aY - 1 : aY, aZ));
         }
         if (aIcon == null) return;
         for (ITexture iTexture : aIcon) {
@@ -915,8 +917,8 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
             int aZ, ITexture[] aIcon, boolean aFullBlock) {
         if (aWorld != null) {
             if ((aFullBlock) && (!aBlock.shouldSideBeRendered(aWorld, aX, aY + 1, aZ, 1))) return;
-            Tessellator.instance
-                    .setBrightness(aBlock.getMixedBrightnessForBlock(aWorld, aX, aFullBlock ? aY + 1 : aY, aZ));
+            Tessellator.instance.setBrightness(
+                    aBlock.getMixedBrightnessForBlock(aWorld, aX, aFullBlock ? aY + 1 : aY, aZ));
         }
         if (aIcon == null) return;
         for (ITexture iTexture : aIcon) {
@@ -930,8 +932,8 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
             int aZ, ITexture[] aIcon, boolean aFullBlock) {
         if (aWorld != null) {
             if ((aFullBlock) && (!aBlock.shouldSideBeRendered(aWorld, aX, aY, aZ - 1, 2))) return;
-            Tessellator.instance
-                    .setBrightness(aBlock.getMixedBrightnessForBlock(aWorld, aX, aY, aFullBlock ? aZ - 1 : aZ));
+            Tessellator.instance.setBrightness(
+                    aBlock.getMixedBrightnessForBlock(aWorld, aX, aY, aFullBlock ? aZ - 1 : aZ));
         }
         if (aIcon == null) return;
         for (ITexture iTexture : aIcon) {
@@ -945,8 +947,8 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
             int aZ, ITexture[] aIcon, boolean aFullBlock) {
         if (aWorld != null) {
             if ((aFullBlock) && (!aBlock.shouldSideBeRendered(aWorld, aX, aY, aZ + 1, 3))) return;
-            Tessellator.instance
-                    .setBrightness(aBlock.getMixedBrightnessForBlock(aWorld, aX, aY, aFullBlock ? aZ + 1 : aZ));
+            Tessellator.instance.setBrightness(
+                    aBlock.getMixedBrightnessForBlock(aWorld, aX, aY, aFullBlock ? aZ + 1 : aZ));
         }
         if (aIcon == null) return;
         for (ITexture iTexture : aIcon) {
@@ -960,8 +962,8 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
             int aZ, ITexture[] aIcon, boolean aFullBlock) {
         if (aWorld != null) {
             if ((aFullBlock) && (!aBlock.shouldSideBeRendered(aWorld, aX - 1, aY, aZ, 4))) return;
-            Tessellator.instance
-                    .setBrightness(aBlock.getMixedBrightnessForBlock(aWorld, aFullBlock ? aX - 1 : aX, aY, aZ));
+            Tessellator.instance.setBrightness(
+                    aBlock.getMixedBrightnessForBlock(aWorld, aFullBlock ? aX - 1 : aX, aY, aZ));
         }
         if (aIcon == null) return;
         for (ITexture iTexture : aIcon) {
@@ -975,8 +977,8 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
             int aZ, ITexture[] aIcon, boolean aFullBlock) {
         if (aWorld != null) {
             if ((aFullBlock) && (!aBlock.shouldSideBeRendered(aWorld, aX + 1, aY, aZ, 5))) return;
-            Tessellator.instance
-                    .setBrightness(aBlock.getMixedBrightnessForBlock(aWorld, aFullBlock ? aX + 1 : aX, aY, aZ));
+            Tessellator.instance.setBrightness(
+                    aBlock.getMixedBrightnessForBlock(aWorld, aFullBlock ? aX + 1 : aX, aY, aZ));
         }
         if (aIcon == null) return;
         for (ITexture iTexture : aIcon) {
@@ -1002,11 +1004,18 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
             } else {
                 final boolean[] tSides = new boolean[6];
                 if (tRenderer instanceof IRenderedBlockSideCheck) {
-                    for (byte tSide : ALL_VALID_SIDES) rReturn |= (tSides[tSide] = ((IRenderedBlockSideCheck) tRenderer)
-                            .renderFullBlockSide(aBlock, aRenderer, tSide));
+                    for (byte tSide : ALL_VALID_SIDES)
+                        rReturn |= (tSides[tSide] = ((IRenderedBlockSideCheck) tRenderer).renderFullBlockSide(
+                                aBlock,
+                                aRenderer,
+                                tSide));
                 } else {
-                    for (byte tSide : ALL_VALID_SIDES) rReturn |= (tSides[tSide] = aBlock
-                            .shouldSideBeRendered(aWorld, aX + OFFX[tSide], aY + OFFY[tSide], aZ + OFFZ[tSide], tSide));
+                    for (byte tSide : ALL_VALID_SIDES) rReturn |= (tSides[tSide] = aBlock.shouldSideBeRendered(
+                            aWorld,
+                            aX + OFFX[tSide],
+                            aY + OFFY[tSide],
+                            aZ + OFFZ[tSide],
+                            tSide));
                 }
                 for (int i = 0, j = tRenderer.getRenderPasses(aBlock); i < j; i++) {
                     if (tRenderer.usesRenderPass(i)) {

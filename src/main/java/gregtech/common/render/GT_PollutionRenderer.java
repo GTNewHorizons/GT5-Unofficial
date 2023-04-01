@@ -57,7 +57,9 @@ public class GT_PollutionRenderer {
 
     public void preLoad() {
         net.minecraftforge.common.MinecraftForge.EVENT_BUS.register(this);
-        FMLCommonHandler.instance().bus().register(this);
+        FMLCommonHandler.instance()
+                        .bus()
+                        .register(this);
     }
 
     public void processPacket(ChunkCoordIntPair chunk, int pollution) {

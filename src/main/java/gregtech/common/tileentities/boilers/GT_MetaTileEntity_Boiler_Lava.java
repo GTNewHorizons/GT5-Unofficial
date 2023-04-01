@@ -124,8 +124,10 @@ public class GT_MetaTileEntity_Boiler_Lava extends GT_MetaTileEntity_Boiler {
             rTextures[3][i] = new ITexture[] { TextureFactory.of(MACHINE_STEELBRICKS_SIDE, colorModulation),
                     TextureFactory.of(BOILER_LAVA_FRONT, colorModulation), TextureFactory.of(BOILER_LAVA_FRONT_GLOW) };
             rTextures[4][i] = new ITexture[] { TextureFactory.of(MACHINE_STEELBRICKS_SIDE, colorModulation),
-                    TextureFactory.of(BOILER_LAVA_FRONT_ACTIVE),
-                    TextureFactory.builder().addIcon(BOILER_LAVA_FRONT_ACTIVE_GLOW).glow().build() };
+                    TextureFactory.of(BOILER_LAVA_FRONT_ACTIVE), TextureFactory.builder()
+                                                                               .addIcon(BOILER_LAVA_FRONT_ACTIVE_GLOW)
+                                                                               .glow()
+                                                                               .build() };
             rTextures[5][i] = new ITexture[] { TextureFactory.of(MACHINE_STEELBRICKS_SIDE, colorModulation),
                     TextureFactory.of(OVERLAY_PIPE_OUT), TextureFactory.of(FLUID_OUT_SIGN) };
         }
@@ -222,13 +224,14 @@ public class GT_MetaTileEntity_Boiler_Lava extends GT_MetaTileEntity_Boiler {
         if (returnedItemStack != null && !aPlayer.capabilities.isCreativeMode) {
             if (equippedItemStack.stackSize > 1) {
                 if (!aPlayer.inventory.addItemStackToInventory(returnedItemStack)) {
-                    aBaseMetaTileEntity.getWorld().spawnEntityInWorld(
-                            new EntityItem(
-                                    aBaseMetaTileEntity.getWorld(),
-                                    (double) aBaseMetaTileEntity.getXCoord() + 0.5D,
-                                    (double) aBaseMetaTileEntity.getYCoord() + 1.5D,
-                                    (double) aBaseMetaTileEntity.getZCoord() + 0.5D,
-                                    equippedItemStack));
+                    aBaseMetaTileEntity.getWorld()
+                                       .spawnEntityInWorld(
+                                               new EntityItem(
+                                                       aBaseMetaTileEntity.getWorld(),
+                                                       (double) aBaseMetaTileEntity.getXCoord() + 0.5D,
+                                                       (double) aBaseMetaTileEntity.getYCoord() + 1.5D,
+                                                       (double) aBaseMetaTileEntity.getZCoord() + 0.5D,
+                                                       equippedItemStack));
                 } else if (aPlayer instanceof EntityPlayerMP) {
                     ((EntityPlayerMP) aPlayer).sendContainerToPlayer(aPlayer.inventoryContainer);
                 }
@@ -243,7 +246,10 @@ public class GT_MetaTileEntity_Boiler_Lava extends GT_MetaTileEntity_Boiler {
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        if (lavaTank.getFluid() != null) aNBT.setTag("mLava", lavaTank.getFluid().writeToNBT(new NBTTagCompound()));
+        if (lavaTank.getFluid() != null) aNBT.setTag(
+                "mLava",
+                lavaTank.getFluid()
+                        .writeToNBT(new NBTTagCompound()));
         aNBT.setInteger("mCooledLava", this.mCooledLava);
     }
 
@@ -264,7 +270,9 @@ public class GT_MetaTileEntity_Boiler_Lava extends GT_MetaTileEntity_Boiler {
         if (mSteam == null || mSteam.amount == 0) return;
         pushSteamToSide(
                 aBaseMetaTileEntity,
-                ForgeDirection.getOrientation(aBaseMetaTileEntity.getFrontFacing()).getOpposite().ordinal());
+                ForgeDirection.getOrientation(aBaseMetaTileEntity.getFrontFacing())
+                              .getOpposite()
+                              .ordinal());
     }
 
     /**
@@ -352,9 +360,13 @@ public class GT_MetaTileEntity_Boiler_Lava extends GT_MetaTileEntity_Boiler {
                 }
 
                 ParticleEventBuilder particleEventBuilder = (new ParticleEventBuilder()).setMotion(0D, 0D, 0D)
-                        .setPosition(x, y, z).setWorld(getBaseMetaTileEntity().getWorld());
-                particleEventBuilder.setIdentifier(ParticleFX.SMOKE).run();
-                particleEventBuilder.setIdentifier(ParticleFX.FLAME).run();
+                                                                                        .setPosition(x, y, z)
+                                                                                        .setWorld(
+                                                                                                getBaseMetaTileEntity().getWorld());
+                particleEventBuilder.setIdentifier(ParticleFX.SMOKE)
+                                    .run();
+                particleEventBuilder.setIdentifier(ParticleFX.FLAME)
+                                    .run();
             }
         }
     }
@@ -401,7 +413,7 @@ public class GT_MetaTileEntity_Boiler_Lava extends GT_MetaTileEntity_Boiler {
         if (aIndex != GT_MetaTileEntity_Boiler.SOUND_EVENT_LET_OFF_EXCESS_STEAM) return;
 
         final ForgeDirection rearDirection = ForgeDirection.getOrientation(getBaseMetaTileEntity().getFrontFacing())
-                .getOpposite();
+                                                           .getOpposite();
         GT_Utility.doSoundAtClient(
                 SoundResource.RANDOM_FIZZ,
                 2,
@@ -411,12 +423,18 @@ public class GT_MetaTileEntity_Boiler_Lava extends GT_MetaTileEntity_Boiler {
                 aY,
                 aZ + 0.5 * rearDirection.offsetZ);
 
-        new ParticleEventBuilder().setIdentifier(ParticleFX.CLOUD).setWorld(getBaseMetaTileEntity().getWorld())
-                // Particles emitted with a 1 block/s velocity toward rear
-                .setMotion(rearDirection.offsetX / 20D, 0D, rearDirection.offsetZ / 20D).<ParticleEventBuilder>times(
-                        8,
-                        // Particles emitted from center of rear face (Steam Output)
-                        x -> x.setPosition(aX + rearDirection.offsetX / 2D, aY, aZ + rearDirection.offsetZ / 2D).run());
+        new ParticleEventBuilder().setIdentifier(ParticleFX.CLOUD)
+                                  .setWorld(getBaseMetaTileEntity().getWorld())
+                                  // Particles emitted with a 1 block/s velocity toward rear
+                                  .setMotion(rearDirection.offsetX / 20D, 0D, rearDirection.offsetZ / 20D)
+                                  .<ParticleEventBuilder>times(
+                                          8,
+                                          // Particles emitted from center of rear face (Steam Output)
+                                          x -> x.setPosition(
+                                                  aX + rearDirection.offsetX / 2D,
+                                                  aY,
+                                                  aZ + rearDirection.offsetZ / 2D)
+                                                .run());
     }
 
     @Override
@@ -464,39 +482,53 @@ public class GT_MetaTileEntity_Boiler_Lava extends GT_MetaTileEntity_Boiler {
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.widget(
                 new SlotWidget(inventoryHandler, 0).setPos(43, 25)
-                        .setBackground(getGUITextureSet().getItemSlot(), getOverlaySlotIn()))
-                .widget(
-                        new SlotWidget(inventoryHandler, 1).setAccess(true, false).setPos(43, 61)
-                                .setBackground(getGUITextureSet().getItemSlot(), getOverlaySlotOut()))
-                .widget(
-                        new FluidSlotWidget(lavaTank)
-                                .setBackground(getGUITextureSet().getFluidSlot(), getOverlaySlotIn()).setPos(115, 61))
-                .widget(
-                        createAshSlot())
-                .widget(
-                        new ProgressBar().setProgress(() -> mSteam == null ? 0 : (float) mSteam.amount / getCapacity())
-                                .setTexture(
-                                        getProgressbarEmpty(),
-                                        GT_UITextures.PROGRESSBAR_BOILER_STEAM,
-                                        10)
-                                .setDirection(ProgressBar.Direction.UP).setPos(70, 25).setSize(10, 54))
-                .widget(
-                        new ProgressBar().setProgress(() -> mFluid == null ? 0 : (float) mFluid.amount / getCapacity())
-                                .setTexture(getProgressbarEmpty(), GT_UITextures.PROGRESSBAR_BOILER_WATER, 10)
-                                .setDirection(ProgressBar.Direction.UP).setPos(83, 25).setSize(10, 54))
-                .widget(
-                        new ProgressBar().setProgress(() -> (float) mTemperature / maxProgresstime())
-                                .setTexture(getProgressbarEmpty(), GT_UITextures.PROGRESSBAR_BOILER_HEAT, 10)
-                                .setDirection(ProgressBar.Direction.UP).setPos(96, 25).setSize(10, 54))
-                .widget(
-                        new ProgressBar()
-                                // cap minimum so that one can easily see there's fuel remaining
-                                .setProgress(
-                                        () -> mProcessingEnergy > 0 ? Math.max((float) mProcessingEnergy / 1000, 1f / 5)
-                                                : 0)
-                                .setTexture(getProgressbarFuel(), 14).setDirection(ProgressBar.Direction.UP)
-                                .setPos(116, 45).setSize(14, 14))
-                .widget(new DrawableWidget().setDrawable(getOverlaySlotCanister()).setPos(43, 43).setSize(18, 18));
+                                                   .setBackground(getGUITextureSet().getItemSlot(), getOverlaySlotIn()))
+               .widget(
+                       new SlotWidget(inventoryHandler, 1).setAccess(true, false)
+                                                          .setPos(43, 61)
+                                                          .setBackground(
+                                                                  getGUITextureSet().getItemSlot(),
+                                                                  getOverlaySlotOut()))
+               .widget(
+                       new FluidSlotWidget(lavaTank)
+                                                    .setBackground(
+                                                            getGUITextureSet().getFluidSlot(),
+                                                            getOverlaySlotIn())
+                                                    .setPos(115, 61))
+               .widget(createAshSlot())
+               .widget(
+                       new ProgressBar().setProgress(() -> mSteam == null ? 0 : (float) mSteam.amount / getCapacity())
+                                        .setTexture(getProgressbarEmpty(), GT_UITextures.PROGRESSBAR_BOILER_STEAM, 10)
+                                        .setDirection(ProgressBar.Direction.UP)
+                                        .setPos(70, 25)
+                                        .setSize(10, 54))
+               .widget(
+                       new ProgressBar().setProgress(() -> mFluid == null ? 0 : (float) mFluid.amount / getCapacity())
+                                        .setTexture(getProgressbarEmpty(), GT_UITextures.PROGRESSBAR_BOILER_WATER, 10)
+                                        .setDirection(ProgressBar.Direction.UP)
+                                        .setPos(83, 25)
+                                        .setSize(10, 54))
+               .widget(
+                       new ProgressBar().setProgress(() -> (float) mTemperature / maxProgresstime())
+                                        .setTexture(getProgressbarEmpty(), GT_UITextures.PROGRESSBAR_BOILER_HEAT, 10)
+                                        .setDirection(ProgressBar.Direction.UP)
+                                        .setPos(96, 25)
+                                        .setSize(10, 54))
+               .widget(
+                       new ProgressBar()
+                                        // cap minimum so that one can easily see there's fuel remaining
+                                        .setProgress(
+                                                () -> mProcessingEnergy > 0
+                                                        ? Math.max((float) mProcessingEnergy / 1000, 1f / 5)
+                                                        : 0)
+                                        .setTexture(getProgressbarFuel(), 14)
+                                        .setDirection(ProgressBar.Direction.UP)
+                                        .setPos(116, 45)
+                                        .setSize(14, 14))
+               .widget(
+                       new DrawableWidget().setDrawable(getOverlaySlotCanister())
+                                           .setPos(43, 43)
+                                           .setSize(18, 18));
     }
 
     static class LavaTank extends FluidTank {

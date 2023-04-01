@@ -36,9 +36,12 @@ public class GT_Shaped_Recipe extends ShapedOreRecipe implements IGT_CraftingRec
             for (int i = 0; i < aGrid.getSizeInventory(); i++) {
                 if (aGrid.getStackInSlot(i) != null) {
                     if (tStack != null) {
-                        if ((tStack.hasTagCompound() != aGrid.getStackInSlot(i).hasTagCompound())
-                                || (tStack.hasTagCompound()
-                                        && !tStack.getTagCompound().equals(aGrid.getStackInSlot(i).getTagCompound())))
+                        if ((tStack.hasTagCompound() != aGrid.getStackInSlot(i)
+                                                             .hasTagCompound())
+                                || (tStack.hasTagCompound() && !tStack.getTagCompound()
+                                                                      .equals(
+                                                                              aGrid.getStackInSlot(i)
+                                                                                   .getTagCompound())))
                             return false;
                     }
                     tStack = aGrid.getStackInSlot(i);
@@ -57,8 +60,12 @@ public class GT_Shaped_Recipe extends ShapedOreRecipe implements IGT_CraftingRec
 
             // Keeping NBT
             if (mKeepingNBT) for (int i = 0; i < aGrid.getSizeInventory(); i++) {
-                if (aGrid.getStackInSlot(i) != null && aGrid.getStackInSlot(i).hasTagCompound()) {
-                    rStack.setTagCompound((NBTTagCompound) aGrid.getStackInSlot(i).getTagCompound().copy());
+                if (aGrid.getStackInSlot(i) != null && aGrid.getStackInSlot(i)
+                                                            .hasTagCompound()) {
+                    rStack.setTagCompound(
+                            (NBTTagCompound) aGrid.getStackInSlot(i)
+                                                  .getTagCompound()
+                                                  .copy());
                     break;
                 }
             }

@@ -78,9 +78,12 @@ public class MultiBlock_CokeOven extends MultiBlockController<MultiBlock_CokeOve
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType("Coke Oven").addInfo("Used for charcoal").beginStructureBlock(3, 3, 3, true)
-                .addCasingInfoExactly("Coke Oven Bricks", 25, false)
-                .addPollutionAmount(POLLUTION_LOGIC.getPollutionAmount()).toolTipFinisher(GT_Values.AuthorBlueWeabo);
+        tt.addMachineType("Coke Oven")
+          .addInfo("Used for charcoal")
+          .beginStructureBlock(3, 3, 3, true)
+          .addCasingInfoExactly("Coke Oven Bricks", 25, false)
+          .addPollutionAmount(POLLUTION_LOGIC.getPollutionAmount())
+          .toolTipFinisher(GT_Values.AuthorBlueWeabo);
         return tt;
     }
 
@@ -92,13 +95,19 @@ public class MultiBlock_CokeOven extends MultiBlockController<MultiBlock_CokeOve
     @Override
     public IStructureDefinition<MultiBlock_CokeOven> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<MultiBlock_CokeOven>builder().addShape(
-                    MAIN,
-                    new String[][] { { "AAA", "A~A", "AAA" }, { "AAA", "A-A", "AAA" }, { "AAA", "AAA", "AAA" } })
-                    .addElement(
-                            'A',
-                            addMultiTileCasing("gt.multitileentity.casings", getCasingMeta(), ITEM_IN | ITEM_OUT))
-                    .build();
+            STRUCTURE_DEFINITION = StructureDefinition.<MultiBlock_CokeOven>builder()
+                                                      .addShape(
+                                                              MAIN,
+                                                              new String[][] { { "AAA", "A~A", "AAA" },
+                                                                      { "AAA", "A-A", "AAA" },
+                                                                      { "AAA", "AAA", "AAA" } })
+                                                      .addElement(
+                                                              'A',
+                                                              addMultiTileCasing(
+                                                                      "gt.multitileentity.casings",
+                                                                      getCasingMeta(),
+                                                                      ITEM_IN | ITEM_OUT))
+                                                      .build();
         }
         return STRUCTURE_DEFINITION;
     }
@@ -110,8 +119,12 @@ public class MultiBlock_CokeOven extends MultiBlockController<MultiBlock_CokeOve
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        builder.widget(new SlotWidget(inputInventory, 0).setPos(18, 18).setSize(18, 18));
-        builder.widget(new SlotWidget(outputInventory, 0).setPos(36, 36).setSize(18, 18));
+        builder.widget(
+                new SlotWidget(inputInventory, 0).setPos(18, 18)
+                                                 .setSize(18, 18));
+        builder.widget(
+                new SlotWidget(outputInventory, 0).setPos(36, 36)
+                                                  .setSize(18, 18));
         builder.widget(createButtons());
     }
 
@@ -123,8 +136,9 @@ public class MultiBlock_CokeOven extends MultiBlockController<MultiBlock_CokeOve
         if (NetworkUtils.isClient()) {
             final FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
             // noinspection unchecked
-            final List<String> titleLines = fontRenderer
-                    .listFormattedStringToWidth(title, getGUIWidth() - (TAB_PADDING + TITLE_PADDING) * 2);
+            final List<String> titleLines = fontRenderer.listFormattedStringToWidth(
+                    title,
+                    getGUIWidth() - (TAB_PADDING + TITLE_PADDING) * 2);
             titleWidth = titleLines.size() > 1 ? getGUIWidth() - (TAB_PADDING + TITLE_PADDING) * 2
                     : fontRenderer.getStringWidth(title);
             // noinspection PointlessArithmeticExpression
@@ -133,17 +147,21 @@ public class MultiBlock_CokeOven extends MultiBlockController<MultiBlock_CokeOve
 
         final DrawableWidget tab = new DrawableWidget();
         final TextWidget text = new TextWidget(title).setDefaultColor(getTitleColor())
-                .setTextAlignment(Alignment.CenterLeft).setMaxWidth(titleWidth);
+                                                     .setTextAlignment(Alignment.CenterLeft)
+                                                     .setMaxWidth(titleWidth);
         if (GT_Mod.gregtechproxy.mTitleTabStyle == 1) {
-            tab.setDrawable(getGUITextureSet().getTitleTabAngular()).setPos(0, -(titleHeight + TAB_PADDING) + 1)
-                    .setSize(getGUIWidth(), titleHeight + TAB_PADDING * 2);
+            tab.setDrawable(getGUITextureSet().getTitleTabAngular())
+               .setPos(0, -(titleHeight + TAB_PADDING) + 1)
+               .setSize(getGUIWidth(), titleHeight + TAB_PADDING * 2);
             text.setPos(TAB_PADDING + TITLE_PADDING, -titleHeight + TAB_PADDING);
         } else {
-            tab.setDrawable(getGUITextureSet().getTitleTabDark()).setPos(0, -(titleHeight + TAB_PADDING * 2) + 1)
-                    .setSize(titleWidth + (TAB_PADDING + TITLE_PADDING) * 2, titleHeight + TAB_PADDING * 2 - 1);
+            tab.setDrawable(getGUITextureSet().getTitleTabDark())
+               .setPos(0, -(titleHeight + TAB_PADDING * 2) + 1)
+               .setSize(titleWidth + (TAB_PADDING + TITLE_PADDING) * 2, titleHeight + TAB_PADDING * 2 - 1);
             text.setPos(TAB_PADDING + TITLE_PADDING, -titleHeight);
         }
-        builder.widget(tab).widget(text);
+        builder.widget(tab)
+               .widget(text);
     }
 
     @Override

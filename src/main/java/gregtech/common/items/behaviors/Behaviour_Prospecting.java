@@ -31,8 +31,9 @@ public class Behaviour_Prospecting extends Behaviour_None {
 
     private final int mVanillaCosts;
     private final int mEUCosts;
-    private final String mTooltip = GT_LanguageManager
-            .addStringLocalization("gt.behaviour.prospecting", "Usable for Prospecting");
+    private final String mTooltip = GT_LanguageManager.addStringLocalization(
+            "gt.behaviour.prospecting",
+            "Usable for Prospecting");
 
     public Behaviour_Prospecting(int aVanillaCosts, int aEUCosts) {
         this.mVanillaCosts = aVanillaCosts;
@@ -54,7 +55,8 @@ public class Behaviour_Prospecting extends Behaviour_None {
         ItemData tAssociation = GT_OreDictUnificator.getAssociation(new ItemStack(aBlock, 1, aMeta));
         if (tAssociation != null && tAssociation.mPrefix != null
                 && tAssociation.mMaterial != null
-                && tAssociation.mPrefix.toString().startsWith("ore")) {
+                && tAssociation.mPrefix.toString()
+                                       .startsWith("ore")) {
             GT_Utility.sendChatToPlayer(
                     aPlayer,
                     GT_Utility.trans("100", "This is ") + tAssociation.mMaterial.mMaterial.mDefaultLocalName
@@ -85,8 +87,9 @@ public class Behaviour_Prospecting extends Behaviour_None {
 
                     tBlock = aWorld.getBlock(tX, tY, tZ);
                     if (tBlock == Blocks.lava || tBlock == Blocks.flowing_lava) {
-                        GT_Utility
-                                .sendChatToPlayer(aPlayer, GT_Utility.trans("102", "There is Lava behind this Rock."));
+                        GT_Utility.sendChatToPlayer(
+                                aPlayer,
+                                GT_Utility.trans("102", "There is Lava behind this Rock."));
                         break;
                     }
                     if (tBlock instanceof BlockLiquid || tBlock instanceof IFluidBlock) {
@@ -133,7 +136,8 @@ public class Behaviour_Prospecting extends Behaviour_None {
                         tAssociation = GT_OreDictUnificator.getAssociation(new ItemStack(tBlock, 1, tMetaID));
                         if (tAssociation != null && tAssociation.mPrefix != null
                                 && tAssociation.mMaterial != null
-                                && tAssociation.mPrefix.toString().startsWith("ore")) {
+                                && tAssociation.mPrefix.toString()
+                                                       .startsWith("ore")) {
                             GT_Utility.sendChatToPlayer(
                                     aPlayer,
                                     GT_Utility.trans("106", "Found traces of ")

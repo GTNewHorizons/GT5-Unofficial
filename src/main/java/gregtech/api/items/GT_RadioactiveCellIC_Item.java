@@ -50,8 +50,15 @@ public class GT_RadioactiveCellIC_Item extends GT_RadioactiveCell_Item implement
     private static int checkPulseable(IReactor reactor, int x, int y, ItemStack me, int mex, int mey, boolean heatrun) {
         ItemStack other = reactor.getItemAt(x, y);
         if ((other != null) && ((other.getItem() instanceof IReactorComponent))
-                && (((IReactorComponent) other.getItem())
-                        .acceptUraniumPulse(reactor, other, me, x, y, mex, mey, heatrun))) {
+                && (((IReactorComponent) other.getItem()).acceptUraniumPulse(
+                        reactor,
+                        other,
+                        me,
+                        x,
+                        y,
+                        mex,
+                        mey,
+                        heatrun))) {
             return 1;
         }
         return 0;

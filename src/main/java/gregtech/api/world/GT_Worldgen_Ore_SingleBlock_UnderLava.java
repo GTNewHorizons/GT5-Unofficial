@@ -38,7 +38,8 @@ public class GT_Worldgen_Ore_SingleBlock_UnderLava extends GT_Worldgen_Ore {
                 int tX = aChunkX + aRandom.nextInt(16), tY = mMinY + aRandom.nextInt(mMaxY - mMinY),
                         tZ = aChunkZ + aRandom.nextInt(16);
                 Block tBlock = aWorld.getBlock(tX, tY, tZ);
-                if (((mAllowToGenerateinVoid && aWorld.getBlock(tX, tY, tZ).isAir(aWorld, tX, tY, tZ))
+                if (((mAllowToGenerateinVoid && aWorld.getBlock(tX, tY, tZ)
+                                                      .isAir(aWorld, tX, tY, tZ))
                         || (tBlock != null && (tBlock.isReplaceableOreGen(aWorld, tX, tY, tZ, Blocks.stone)
                                 || tBlock.isReplaceableOreGen(aWorld, tX, tY, tZ, Blocks.end_stone)
                                 || tBlock.isReplaceableOreGen(aWorld, tX, tY, tZ, Blocks.netherrack))))) {

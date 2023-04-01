@@ -335,8 +335,9 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
     @Override
     public void copyTextures() {
         // Loading an instance
-        final TileEntity tCanonicalTileEntity = MultiTileEntityRegistry
-                .getCanonicalTileEntity(getMultiTileEntityRegistryID(), getMultiTileEntityID());
+        final TileEntity tCanonicalTileEntity = MultiTileEntityRegistry.getCanonicalTileEntity(
+                getMultiTileEntityRegistryID(),
+                getMultiTileEntityID());
         if (tCanonicalTileEntity instanceof MultiBlockPart) textures = ((MultiBlockPart) tCanonicalTileEntity).textures;
     }
 
@@ -662,11 +663,14 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
         for (int rows = 0; rows * 4 < Math.min(inv.getSlots(), 128); rows++) {
             int columnsToMake = Math.min(Math.min(inv.getSlots(), 128) - rows * 4, 4);
             for (int column = 0; column < columnsToMake; column++) {
-                scrollable
-                        .widget(new SlotWidget(inv, rows * 4 + column).setPos(column * 18, rows * 18).setSize(18, 18));
+                scrollable.widget(
+                        new SlotWidget(inv, rows * 4 + column).setPos(column * 18, rows * 18)
+                                                              .setSize(18, 18));
             }
         }
-        builder.widget(scrollable.setSize(18 * 4 + 4, 18 * 4).setPos(52, 18));
+        builder.widget(
+                scrollable.setSize(18 * 4 + 4, 18 * 4)
+                          .setPos(52, 18));
         DropDownWidget dropDown = new DropDownWidget();
         dropDown.addDropDownItemsSimple(
                 controller.getInventoryNames(this),
@@ -684,8 +688,11 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
                 },
                 true);
         builder.widget(
-                dropDown.setSelected(mLockedInventoryIndex).setExpandedMaxHeight(60)
-                        .setDirection(DropDownWidget.Direction.DOWN).setPos(53, 5).setSize(70, 11));
+                dropDown.setSelected(mLockedInventoryIndex)
+                        .setExpandedMaxHeight(60)
+                        .setDirection(DropDownWidget.Direction.DOWN)
+                        .setPos(53, 5)
+                        .setSize(70, 11));
     }
 
     protected String getNameOfInventoryFromIndex(final IMultiBlockController controller, int index) {
@@ -710,10 +717,14 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
                 if (modeSelected(FLUID_OUT)) {
                     fluidSlot.setInteraction(true, false);
                 }
-                scrollable.widget(fluidSlot.setPos(column * 18, rows * 18).setSize(18, 18));
+                scrollable.widget(
+                        fluidSlot.setPos(column * 18, rows * 18)
+                                 .setSize(18, 18));
             }
         }
-        builder.widget(scrollable.setSize(18 * 4 + 4, 18 * 4).setPos(52, 7));
+        builder.widget(
+                scrollable.setSize(18 * 4 + 4, 18 * 4)
+                          .setPos(52, 7));
     }
 
     @Override
@@ -747,8 +758,9 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
     public void addGregTechLogo(Builder builder) {
         if (modeSelected(ITEM_IN, ITEM_OUT)) {
             builder.widget(
-                    new DrawableWidget().setDrawable(getGUITextureSet().getGregTechLogo()).setSize(17, 17)
-                            .setPos(152, 74));
+                    new DrawableWidget().setDrawable(getGUITextureSet().getGregTechLogo())
+                                        .setSize(17, 17)
+                                        .setPos(152, 74));
         } else {
             super.addGregTechLogo(builder);
         }

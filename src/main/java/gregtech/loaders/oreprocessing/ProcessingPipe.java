@@ -119,8 +119,13 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
                     GT_ModHandler.addCraftingRecipe(
                             GT_Utility.copyAmount(1, aStack),
                             GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED,
-                            new Object[] { "PPP", "PPP", "PPP", 'P', GT_OreDictUnificator
-                                    .get(aOreDictName.replaceFirst("Nonuple", "Small"), null, 1L, false, true) });
+                            new Object[] { "PPP", "PPP", "PPP", 'P',
+                                    GT_OreDictUnificator.get(
+                                            aOreDictName.replaceFirst("Nonuple", "Small"),
+                                            null,
+                                            1L,
+                                            false,
+                                            true) });
                 }
 
                 RA.addAssemblerRecipe(

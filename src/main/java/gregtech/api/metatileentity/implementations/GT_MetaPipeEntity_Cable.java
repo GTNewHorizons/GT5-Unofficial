@@ -205,7 +205,9 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
     @Override
     public long injectEnergyUnits(byte aSide, long aVoltage, long aAmperage) {
         if (!isConnectedAtSide(aSide) && aSide != 6) return 0;
-        if (!getBaseMetaTileEntity().getCoverInfoAtSide(aSide).letsEnergyIn()) return 0;
+        if (!getBaseMetaTileEntity().getCoverInfoAtSide(aSide)
+                                    .letsEnergyIn())
+            return 0;
         final HashSet<TileEntity> nul = null;
         return transferElectricity(aSide, aVoltage, aAmperage, nul);
     }
@@ -245,9 +247,11 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
     public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
         if (aBaseMetaTileEntity.isServerSide()) {
             lastAmperage = new int[16];
-            lastWorldTick = aBaseMetaTileEntity.getWorld().getTotalWorldTime() - 1; // sets initial value -1 since it is
-                                                                                    // in the same tick as first on post
-                                                                                    // tick
+            lastWorldTick = aBaseMetaTileEntity.getWorld()
+                                               .getTotalWorldTime()
+                    - 1; // sets initial value -1 since it is
+                         // in the same tick as first on post
+                         // tick
         }
     }
 
@@ -546,8 +550,13 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
         if ((tConn & (1 << ForgeDirection.WEST.ordinal())) != 0) tSide4 = 0f;
         if ((tConn & (1 << ForgeDirection.EAST.ordinal())) != 0) tSide5 = 1f;
 
-        return AxisAlignedBB
-                .getBoundingBox(aX + tSide4, aY + tSide0, aZ + tSide2, aX + tSide5, aY + tSide1, aZ + tSide3);
+        return AxisAlignedBB.getBoundingBox(
+                aX + tSide4,
+                aY + tSide0,
+                aZ + tSide2,
+                aX + tSide5,
+                aY + tSide1,
+                aZ + tSide3);
     }
 
     @Override

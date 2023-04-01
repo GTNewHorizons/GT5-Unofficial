@@ -138,8 +138,19 @@ public class GT_Packet_TileEntity extends GT_Packet_New {
                     mUpdate,
                     mRedstone,
                     mColor);
-            else if (tTileEntity instanceof BaseMetaPipeEntity) ((BaseMetaPipeEntity) tTileEntity)
-                    .receiveMetaTileEntityData(mID, mC0, mC1, mC2, mC3, mC4, mC5, mTexture, mUpdate, mRedstone, mColor);
+            else if (tTileEntity instanceof BaseMetaPipeEntity)
+                ((BaseMetaPipeEntity) tTileEntity).receiveMetaTileEntityData(
+                        mID,
+                        mC0,
+                        mC1,
+                        mC2,
+                        mC3,
+                        mC4,
+                        mC5,
+                        mTexture,
+                        mUpdate,
+                        mRedstone,
+                        mColor);
         } catch (Exception e) {
             GT_Mod.GT_FML_LOGGER.error(
                     "Exception setting tile entity data for tile entity {} at ({}, {}, {})",

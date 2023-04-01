@@ -47,7 +47,10 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
 
     private BaseActionSource requestSource = null;
     private AENetworkProxy gridProxy = null;
-    IItemList<IAEItemStack> itemCache = GregTech_API.mAE2 ? AEApi.instance().storage().createItemList() : null;
+    IItemList<IAEItemStack> itemCache = GregTech_API.mAE2 ? AEApi.instance()
+                                                                 .storage()
+                                                                 .createItemList()
+            : null;
     long lastOutputTick = 0;
     long tickCounter = 0;
     boolean lastOutputFailed = false;
@@ -104,7 +107,10 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
      */
     public int store(final ItemStack stack) {
         if (!infiniteCache && lastOutputFailed) return stack.stackSize;
-        itemCache.add(AEApi.instance().storage().createItemStack(stack));
+        itemCache.add(
+                AEApi.instance()
+                     .storage()
+                     .createItemStack(stack));
         return 0;
     }
 
@@ -125,10 +131,13 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
 
     @Override
     public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        if (!getBaseMetaTileEntity().getCoverInfoAtSide(aSide).isGUIClickable()) return;
+        if (!getBaseMetaTileEntity().getCoverInfoAtSide(aSide)
+                                    .isGUIClickable())
+            return;
         infiniteCache = !infiniteCache;
-        GT_Utility
-                .sendChatToPlayer(aPlayer, StatCollector.translateToLocal("GT5U.hatch.infiniteCache." + infiniteCache));
+        GT_Utility.sendChatToPlayer(
+                aPlayer,
+                StatCollector.translateToLocal("GT5U.hatch.infiniteCache." + infiniteCache));
     }
 
     @Override
@@ -143,7 +152,7 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
                 gridProxy.setFlags(GridFlags.REQUIRE_CHANNEL);
                 if (getBaseMetaTileEntity().getWorld() != null) gridProxy.setOwner(
                         getBaseMetaTileEntity().getWorld()
-                                .getPlayerEntityByName(getBaseMetaTileEntity().getOwnerName()));
+                                               .getPlayerEntityByName(getBaseMetaTileEntity().getOwnerName()));
             }
         }
         return this.gridProxy;
@@ -160,7 +169,8 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
             return;
         }
         try {
-            IMEMonitor<IAEItemStack> sg = proxy.getStorage().getItemInventory();
+            IMEMonitor<IAEItemStack> sg = proxy.getStorage()
+                                               .getItemInventory();
             for (IAEItemStack s : itemCache) {
                 if (s.getStackSize() == 0) continue;
                 IAEItemStack rest = Platform.poweredInsert(proxy.getEnergy(), sg, s, getRequest());
@@ -206,7 +216,8 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
                 if (s.getStackSize() == 0) continue;
                 NBTTagCompound tag = new NBTTagCompound();
                 NBTTagCompound tagItemStack = new NBTTagCompound();
-                s.getItemStack().writeToNBT(tagItemStack);
+                s.getItemStack()
+                 .writeToNBT(tagItemStack);
                 tag.setTag("itemStack", tagItemStack);
                 tag.setLong("size", s.getStackSize());
                 items.appendTag(tag);
@@ -222,8 +233,10 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
 
         if (GregTech_API.mAE2) {
             NBTBase t = aNBT.getTag("cachedStack"); // legacy
-            if (t instanceof NBTTagCompound)
-                itemCache.add(AEApi.instance().storage().createItemStack(GT_Utility.loadItem((NBTTagCompound) t)));
+            if (t instanceof NBTTagCompound) itemCache.add(
+                    AEApi.instance()
+                         .storage()
+                         .createItemStack(GT_Utility.loadItem((NBTTagCompound) t)));
             t = aNBT.getTag("cachedItems");
             if (t instanceof NBTTagList) {
                 NBTTagList l = (NBTTagList) t;
@@ -231,12 +244,15 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
                     NBTTagCompound tag = l.getCompoundTagAt(i);
                     if (!tag.hasKey("itemStack")) { // legacy #868
                         itemCache.add(
-                                AEApi.instance().storage().createItemStack(GT_Utility.loadItem(l.getCompoundTagAt(i))));
+                                AEApi.instance()
+                                     .storage()
+                                     .createItemStack(GT_Utility.loadItem(l.getCompoundTagAt(i))));
                         continue;
                     }
                     NBTTagCompound tagItemStack = tag.getCompoundTag("itemStack");
-                    final IAEItemStack s = AEApi.instance().storage()
-                            .createItemStack(GT_Utility.loadItem(tagItemStack));
+                    final IAEItemStack s = AEApi.instance()
+                                                .storage()
+                                                .createItemStack(GT_Utility.loadItem(tagItemStack));
                     if (s != null) {
                         s.setStackSize(tag.getLong("size"));
                         itemCache.add(s);
@@ -274,7 +290,8 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
             int counter = 0;
             for (IAEItemStack s : itemCache) {
                 ss.add(
-                        s.getItem().getItemStackDisplayName(s.getItemStack()) + ": "
+                        s.getItem()
+                         .getItemStackDisplayName(s.getItemStack()) + ": "
                                 + EnumChatFormatting.GOLD
                                 + nc.toWideReadableForm(s.getStackSize())
                                 + EnumChatFormatting.RESET);

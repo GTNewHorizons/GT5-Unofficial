@@ -35,7 +35,8 @@ public class GT_StdRenderedTexture extends GT_RenderedTexture {
     @Override
     public void renderYNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
         LightingHelper lighting = new LightingHelper(aRenderer);
-        lighting.setupLightingYNeg(aBlock, aX, aY, aZ).setupColor(ForgeDirection.DOWN.ordinal(), mRGBa);
+        lighting.setupLightingYNeg(aBlock, aX, aY, aZ)
+                .setupColor(ForgeDirection.DOWN.ordinal(), mRGBa);
         aRenderer.renderFaceYNeg(aBlock, aX, aY, aZ, mIconContainer.getIcon());
         if (mIconContainer.getOverlayIcon() != null) {
             lighting.setupColor(ForgeDirection.DOWN.ordinal(), 0xffffff);

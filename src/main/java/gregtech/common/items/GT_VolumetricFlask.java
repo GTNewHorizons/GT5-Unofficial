@@ -228,7 +228,8 @@ public class GT_VolumetricFlask extends GT_Generic_Item implements IFluidContain
     @SideOnly(Side.CLIENT)
     public void getSubItems(Item item, CreativeTabs creativeTabs, List itemList) {
         itemList.add(new ItemStack(this));
-        for (Fluid fluid : FluidRegistry.getRegisteredFluids().values()) {
+        for (Fluid fluid : FluidRegistry.getRegisteredFluids()
+                                        .values()) {
             if (fluid != null) {
                 ItemStack stack = new ItemStack(this);
                 setCapacity(stack, getMaxCapacity());
@@ -339,11 +340,14 @@ public class GT_VolumetricFlask extends GT_Generic_Item implements IFluidContain
             textField.setText(
                     String.valueOf(((GT_VolumetricFlask) getCurrentItem().getItem()).getCapacity(getCurrentItem())));
             builder.widget(
-                    textField.setNumbers(() -> 1, () -> maxCapacity).setPattern(BaseTextFieldWidget.NATURAL_NUMS)
-                            .setTextAlignment(Alignment.CenterLeft).setTextColor(Color.WHITE.dark(1))
-                            .setFocusOnGuiOpen(true)
-                            .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD_LIGHT_GRAY.withOffset(-1, -1, 2, 2))
-                            .setPos(60, 55).setSize(59, 12));
+                    textField.setNumbers(() -> 1, () -> maxCapacity)
+                             .setPattern(BaseTextFieldWidget.NATURAL_NUMS)
+                             .setTextAlignment(Alignment.CenterLeft)
+                             .setTextColor(Color.WHITE.dark(1))
+                             .setFocusOnGuiOpen(true)
+                             .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD_LIGHT_GRAY.withOffset(-1, -1, 2, 2))
+                             .setPos(60, 55)
+                             .setSize(59, 12));
 
             addChangeAmountButton(builder, "+1", new Pos2d(20, 26), new Size(22, 20), val -> val + 1);
             addChangeAmountButton(builder, "+10", new Pos2d(48, 26), new Size(28, 20), val -> val + 10);
@@ -355,26 +359,34 @@ public class GT_VolumetricFlask extends GT_Generic_Item implements IFluidContain
             addChangeAmountButton(builder, "-1000", new Pos2d(120, 75), new Size(38, 20), val -> val - 1000);
             builder.widget(
                     new VanillaButtonWidget().setDisplayString("Accept")
-                            .setClickableGetter(() -> MathExpression.parseMathExpression(textField.getText()) > 0)
-                            .setOnClick((clickData, widget) -> {
-                                if (widget.isClient()) {
-                                    textField.onRemoveFocus();
-                                } else {
-                                    widget.getWindow().tryClose();
-                                }
-                            }).setPos(128, 51).setSize(38, 20));
+                                             .setClickableGetter(
+                                                     () -> MathExpression.parseMathExpression(textField.getText()) > 0)
+                                             .setOnClick((clickData, widget) -> {
+                                                 if (widget.isClient()) {
+                                                     textField.onRemoveFocus();
+                                                 } else {
+                                                     widget.getWindow()
+                                                           .tryClose();
+                                                 }
+                                             })
+                                             .setPos(128, 51)
+                                             .setSize(38, 20));
 
             return builder.build();
         }
 
         private void addChangeAmountButton(ModularWindow.Builder builder, String text, Pos2d pos, Size size,
                 Function<Integer, Integer> function) {
-            builder.widget(new VanillaButtonWidget().setDisplayString(text).setOnClick((clickData, widget) -> {
-                String currentText = textField.getText();
-                int amount = (int) MathExpression.parseMathExpression(currentText, 1);
-                amount = Math.min(maxCapacity, Math.max(1, function.apply(amount)));
-                textField.setText(String.valueOf(amount));
-            }).setPos(pos).setSize(size));
+            builder.widget(
+                    new VanillaButtonWidget().setDisplayString(text)
+                                             .setOnClick((clickData, widget) -> {
+                                                 String currentText = textField.getText();
+                                                 int amount = (int) MathExpression.parseMathExpression(currentText, 1);
+                                                 amount = Math.min(maxCapacity, Math.max(1, function.apply(amount)));
+                                                 textField.setText(String.valueOf(amount));
+                                             })
+                                             .setPos(pos)
+                                             .setSize(size));
         }
 
         private ItemStack getCurrentItem() {

@@ -51,7 +51,11 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         if (aInput1 == null || aInput2 == null || aOutput1 == null || aDuration < 1 || aEUt < 1 || aStartEU < 1) {
             return false;
         }
-        if ((aDuration = GregTech_API.sRecipeFile.get("fusion", aOutput1.getFluid().getName(), aDuration)) <= 0) {
+        if ((aDuration = GregTech_API.sRecipeFile.get(
+                "fusion",
+                aOutput1.getFluid()
+                        .getName(),
+                aDuration)) <= 0) {
             return false;
         }
         GT_Recipe.GT_Recipe_Map.sFusionRecipes.addRecipe(
@@ -163,8 +167,11 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         if ((aInput1 != null) && ((aDuration = GregTech_API.sRecipeFile.get("centrifuge", aInput1, aDuration)) <= 0)) {
             return false;
         }
-        if ((aFluidInput != null) && ((aDuration = GregTech_API.sRecipeFile
-                .get("centrifuge", aFluidInput.getFluid().getName(), aDuration)) <= 0)) {
+        if ((aFluidInput != null) && ((aDuration = GregTech_API.sRecipeFile.get(
+                "centrifuge",
+                aFluidInput.getFluid()
+                           .getName(),
+                aDuration)) <= 0)) {
             return false;
         }
         if (!GT_Mod.gregtechproxy.mEnableCleanroom) {
@@ -274,8 +281,11 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
                 && ((aDuration = GregTech_API.sRecipeFile.get("electrolyzer", aInput1, aDuration)) <= 0)) {
             return false;
         }
-        if ((aFluidInput != null) && ((aDuration = GregTech_API.sRecipeFile
-                .get("electrolyzer", aFluidInput.getFluid().getName(), aDuration)) <= 0)) {
+        if ((aFluidInput != null) && ((aDuration = GregTech_API.sRecipeFile.get(
+                "electrolyzer",
+                aFluidInput.getFluid()
+                           .getName(),
+                aDuration)) <= 0)) {
             return false;
         }
         GT_Recipe.GT_Recipe_Map.sElectrolyzerRecipes.addRecipe(
@@ -395,8 +405,11 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
                 && ((aDuration = GregTech_API.sRecipeFile.get("chemicalreactor", aOutput, aDuration)) <= 0)) {
             return false;
         }
-        if ((aFluidOutput != null) && ((aDuration = GregTech_API.sRecipeFile
-                .get("chemicalreactor", aFluidOutput.getFluid().getName(), aDuration)) <= 0)) {
+        if ((aFluidOutput != null) && ((aDuration = GregTech_API.sRecipeFile.get(
+                "chemicalreactor",
+                aFluidOutput.getFluid()
+                            .getName(),
+                aDuration)) <= 0)) {
             return false;
         }
         if (aEUtick <= 0) {
@@ -444,8 +457,17 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         if (aEUtick <= 0) {
             return false;
         }
-        GT_Recipe.GT_Recipe_Map.sMultiblockChemicalRecipes
-                .addRecipe(false, aInputs, aOutputs, null, null, aFluidInputs, aFluidOutputs, aDuration, aEUtick, 0);
+        GT_Recipe.GT_Recipe_Map.sMultiblockChemicalRecipes.addRecipe(
+                false,
+                aInputs,
+                aOutputs,
+                null,
+                null,
+                aFluidInputs,
+                aFluidOutputs,
+                aDuration,
+                aEUtick,
+                0);
         return true;
     }
 
@@ -460,8 +482,11 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
                 && ((aDuration = GregTech_API.sRecipeFile.get("chemicalreactor", aOutput, aDuration)) <= 0)) {
             return false;
         }
-        if ((aFluidOutput != null) && ((aDuration = GregTech_API.sRecipeFile
-                .get("chemicalreactor", aFluidOutput.getFluid().getName(), aDuration)) <= 0)) {
+        if ((aFluidOutput != null) && ((aDuration = GregTech_API.sRecipeFile.get(
+                "chemicalreactor",
+                aFluidOutput.getFluid()
+                            .getName(),
+                aDuration)) <= 0)) {
             return false;
         }
         if (aEUtick <= 0) {
@@ -861,7 +886,8 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         if ((aInputs == null) || (aOutputs == null) || aInputs.length == 0 || aOutputs.length == 0) {
             return false;
         }
-        if (Arrays.stream(aOutputs).noneMatch(Objects::nonNull)) {
+        if (Arrays.stream(aOutputs)
+                  .noneMatch(Objects::nonNull)) {
             return false;
         }
         if ((aDuration = GregTech_API.sRecipeFile.get("cutting", aInputs[0], aDuration)) <= 0) {
@@ -992,7 +1018,8 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         }
 
         for (int oreID : OreDictionary.getOreIDs(aOutput1)) {
-            if (OreDictionary.getOreName(oreID).startsWith("circuit")) {
+            if (OreDictionary.getOreName(oreID)
+                             .startsWith("circuit")) {
                 return this.addAssemblerRecipeNonOD(aInputs, aFluidInput, aOutput1, aDuration, aEUt, aCleanroom);
             }
         }
@@ -1676,8 +1703,11 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         if ((aInput == null) || (aOutput == null)) {
             return false;
         }
-        if ((aDuration = GregTech_API.sRecipeFile.get("fermenting", aOutput.getFluid().getUnlocalizedName(), aDuration))
-                <= 0) {
+        if ((aDuration = GregTech_API.sRecipeFile.get(
+                "fermenting",
+                aOutput.getFluid()
+                       .getUnlocalizedName(),
+                aDuration)) <= 0) {
             return false;
         }
         GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sFermentingRecipes.addRecipe(
@@ -1707,8 +1737,11 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         if ((aInput == null) || (aOutput == null)) {
             return false;
         }
-        if ((aDuration = GregTech_API.sRecipeFile.get("distillery", aOutput.getFluid().getUnlocalizedName(), aDuration))
-                <= 0) {
+        if ((aDuration = GregTech_API.sRecipeFile.get(
+                "distillery",
+                aOutput.getFluid()
+                       .getUnlocalizedName(),
+                aDuration)) <= 0) {
             return false;
         }
         // reduce the batch size if fluid amount is exceeding
@@ -2230,9 +2263,11 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         if ((aOutput != null) && ((aDuration = GregTech_API.sRecipeFile.get("mixer", aOutput, aDuration)) <= 0)) {
             return false;
         }
-        if ((aFluidOutput != null)
-                && ((aDuration = GregTech_API.sRecipeFile.get("mixer", aFluidOutput.getFluid().getName(), aDuration))
-                        <= 0)) {
+        if ((aFluidOutput != null) && ((aDuration = GregTech_API.sRecipeFile.get(
+                "mixer",
+                aFluidOutput.getFluid()
+                            .getName(),
+                aDuration)) <= 0)) {
             return false;
         }
         GT_Recipe.GT_Recipe_Map.sMixerRecipes.addRecipe(
@@ -2274,8 +2309,17 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
             oNumber++;
         }
 
-        GT_Recipe.GT_Recipe_Map.sMultiblockMixerRecipes
-                .addRecipe(false, itemInputs, itemOutputs, null, null, fluidInputs, fluidOutputs, aDuration, aEUt, 0);
+        GT_Recipe.GT_Recipe_Map.sMultiblockMixerRecipes.addRecipe(
+                false,
+                itemInputs,
+                itemOutputs,
+                null,
+                null,
+                fluidInputs,
+                fluidOutputs,
+                aDuration,
+                aEUt,
+                0);
         return true;
     }
 
@@ -2374,9 +2418,11 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         if ((aOutput1 != null) && ((aDuration = GregTech_API.sRecipeFile.get("mixer", aOutput1, aDuration)) <= 0)) {
             return false;
         }
-        if ((aFluidOutput != null)
-                && ((aDuration = GregTech_API.sRecipeFile.get("mixer", aFluidOutput.getFluid().getName(), aDuration))
-                        <= 0)) {
+        if ((aFluidOutput != null) && ((aDuration = GregTech_API.sRecipeFile.get(
+                "mixer",
+                aFluidOutput.getFluid()
+                            .getName(),
+                aDuration)) <= 0)) {
             return false;
         }
         GT_Recipe.GT_Recipe_Map.sMixerRecipes.addRecipe(
@@ -2418,8 +2464,17 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
             oNumber++;
         }
 
-        GT_Recipe.GT_Recipe_Map.sMultiblockMixerRecipes
-                .addRecipe(false, itemInputs, itemOutputs, null, null, fluidInputs, fluidOutputs, aDuration, aEUt, 0);
+        GT_Recipe.GT_Recipe_Map.sMultiblockMixerRecipes.addRecipe(
+                false,
+                itemInputs,
+                itemOutputs,
+                null,
+                null,
+                fluidInputs,
+                fluidOutputs,
+                aDuration,
+                aEUt,
+                0);
         return true;
     }
 
@@ -2501,8 +2556,16 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         if ((ItemInputArray == null) || (OutputItemArray == null)) {
             return false;
         }
-        GT_Recipe.GT_Recipe_Map.sPressRecipes
-                .addRecipe(true, ItemInputArray, OutputItemArray, null, null, null, aDuration, aEUt, 0);
+        GT_Recipe.GT_Recipe_Map.sPressRecipes.addRecipe(
+                true,
+                ItemInputArray,
+                OutputItemArray,
+                null,
+                null,
+                null,
+                aDuration,
+                aEUt,
+                0);
         return true;
     }
 
@@ -2511,8 +2574,11 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         if ((aItem == null) || (aOutput == null)) {
             return false;
         }
-        if ((aDuration = GregTech_API.sRecipeFile
-                .get("fluidheater", aOutput.getFluid().getUnlocalizedName(), aDuration)) <= 0) {
+        if ((aDuration = GregTech_API.sRecipeFile.get(
+                "fluidheater",
+                aOutput.getFluid()
+                       .getUnlocalizedName(),
+                aDuration)) <= 0) {
             return false;
         }
         GT_Recipe.GT_Recipe_Map.sFluidHeaterRecipes.addRecipe(
@@ -2534,8 +2600,11 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         if ((aInput == null) || (aOutput == null)) {
             return false;
         }
-        if ((aDuration = GregTech_API.sRecipeFile
-                .get("fluidheater", aOutput.getFluid().getUnlocalizedName(), aDuration)) <= 0) {
+        if ((aDuration = GregTech_API.sRecipeFile.get(
+                "fluidheater",
+                aOutput.getFluid()
+                       .getUnlocalizedName(),
+                aDuration)) <= 0) {
             return false;
         }
         GT_Recipe.GT_Recipe_Map.sFluidHeaterRecipes.addRecipe(
@@ -2923,11 +2992,11 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
                     try {
                         // sort the output, so the hash code is stable across launches
                         tList.sort(
-                                Comparator
-                                        .<ItemStack, String>comparing(
-                                                s -> GameRegistry.findUniqueIdentifierFor(s.getItem()).modId)
-                                        .thenComparing(s -> GameRegistry.findUniqueIdentifierFor(s.getItem()).name)
-                                        .thenComparingInt(Items.feather::getDamage).thenComparingInt(s -> s.stackSize));
+                                Comparator.<ItemStack, String>comparing(
+                                        s -> GameRegistry.findUniqueIdentifierFor(s.getItem()).modId)
+                                          .thenComparing(s -> GameRegistry.findUniqueIdentifierFor(s.getItem()).name)
+                                          .thenComparingInt(Items.feather::getDamage)
+                                          .thenComparingInt(s -> s.stackSize));
                         int tAmount = ((Number) objs[1]).intValue();
                         List<ItemStack> uList = new ArrayList<>();
                         for (ItemStack tStack : tList) {
@@ -3023,7 +3092,8 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         }
 
         for (int oreID : OreDictionary.getOreIDs(aOutput)) {
-            if (OreDictionary.getOreName(oreID).startsWith("circuit")) {
+            if (OreDictionary.getOreName(oreID)
+                             .startsWith("circuit")) {
                 return this.addCircuitAssemblerRecipeNonOredicted(
                         aInputs,
                         aFluidInput,

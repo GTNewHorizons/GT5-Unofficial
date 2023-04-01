@@ -21,8 +21,9 @@ import gregtech.api.util.GT_Utility;
 public class Behaviour_Plunger_Item extends Behaviour_None {
 
     private final int mCosts;
-    private final String mTooltip = GT_LanguageManager
-            .addStringLocalization("gt.behaviour.plunger.item", "Clears Items from Pipes");
+    private final String mTooltip = GT_LanguageManager.addStringLocalization(
+            "gt.behaviour.plunger.item",
+            "Clears Items from Pipes");
 
     public Behaviour_Plunger_Item(int aCosts) {
         this.mCosts = aCosts;
@@ -39,9 +40,13 @@ public class Behaviour_Plunger_Item extends Behaviour_None {
             IMetaTileEntity tMetaTileEntity = ((IGregTechTileEntity) aTileEntity).getMetaTileEntity();
             if ((tMetaTileEntity instanceof IMetaTileEntityItemPipe)) {
                 for (IMetaTileEntityItemPipe tTileEntity : GT_Utility.sortMapByValuesAcending(
-                        IMetaTileEntityItemPipe.Util
-                                .scanPipes((IMetaTileEntityItemPipe) tMetaTileEntity, new HashMap<>(), 0L, false, true))
-                        .keySet()) {
+                        IMetaTileEntityItemPipe.Util.scanPipes(
+                                (IMetaTileEntityItemPipe) tMetaTileEntity,
+                                new HashMap<>(),
+                                0L,
+                                false,
+                                true))
+                                                                     .keySet()) {
                     int i = 0;
                     for (int j = tTileEntity.getSizeInventory(); i < j; i++) {
                         if (tTileEntity.isValidSlot(i)) {

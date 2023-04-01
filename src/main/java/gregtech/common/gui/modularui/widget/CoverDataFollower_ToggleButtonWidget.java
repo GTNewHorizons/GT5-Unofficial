@@ -44,18 +44,21 @@ public class CoverDataFollower_ToggleButtonWidget<T extends ISerializableObject>
     }
 
     public static <T extends ISerializableObject> CoverDataFollower_ToggleButtonWidget<T> ofCheckAndCross() {
-        return new CoverDataFollower_ToggleButtonWidget<T>()
-                .setToggleTexture(GT_UITextures.OVERLAY_BUTTON_CHECKMARK, GT_UITextures.OVERLAY_BUTTON_CROSS);
+        return new CoverDataFollower_ToggleButtonWidget<T>().setToggleTexture(
+                GT_UITextures.OVERLAY_BUTTON_CHECKMARK,
+                GT_UITextures.OVERLAY_BUTTON_CROSS);
     }
 
     public static <T extends ISerializableObject> CoverDataFollower_ToggleButtonWidget<T> ofCheck() {
-        return new CoverDataFollower_ToggleButtonWidget<T>()
-                .setToggleTexture(GT_UITextures.OVERLAY_BUTTON_CHECKMARK, GT_UITextures.TRANSPARENT);
+        return new CoverDataFollower_ToggleButtonWidget<T>().setToggleTexture(
+                GT_UITextures.OVERLAY_BUTTON_CHECKMARK,
+                GT_UITextures.TRANSPARENT);
     }
 
     public static <T extends ISerializableObject> CoverDataFollower_ToggleButtonWidget<T> ofRedstone() {
-        return new CoverDataFollower_ToggleButtonWidget<T>()
-                .setToggleTexture(GT_UITextures.OVERLAY_BUTTON_REDSTONE_ON, GT_UITextures.OVERLAY_BUTTON_REDSTONE_OFF);
+        return new CoverDataFollower_ToggleButtonWidget<T>().setToggleTexture(
+                GT_UITextures.OVERLAY_BUTTON_REDSTONE_ON,
+                GT_UITextures.OVERLAY_BUTTON_REDSTONE_OFF);
     }
 
     public static <T extends ISerializableObject> CoverDataFollower_ToggleButtonWidget<T> ofDisableable() {

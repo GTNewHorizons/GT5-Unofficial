@@ -42,8 +42,14 @@ public class GT_Single_Recipe_Check {
         this.itemCost = itemCost;
         this.fluidCost = fluidCost;
 
-        this.totalItemCost = itemCost.values().stream().mapToInt(Integer::intValue).sum();
-        this.totalFluidCost = fluidCost.values().stream().mapToInt(Integer::intValue).sum();
+        this.totalItemCost = itemCost.values()
+                                     .stream()
+                                     .mapToInt(Integer::intValue)
+                                     .sum();
+        this.totalFluidCost = fluidCost.values()
+                                       .stream()
+                                       .mapToInt(Integer::intValue)
+                                       .sum();
     }
 
     public GT_Recipe getRecipe() {
@@ -208,13 +214,19 @@ public class GT_Single_Recipe_Check {
         tag.setInteger("specialValue", recipe.mSpecialValue);
         tag.setTag("itemCost", writeList(itemCost.entrySet(), e -> {
             NBTTagCompound ret = new NBTTagCompound();
-            ret.setTag("id", e.getKey().writeToNBT());
+            ret.setTag(
+                    "id",
+                    e.getKey()
+                     .writeToNBT());
             ret.setInteger("count", e.getValue());
             return ret;
         }));
         tag.setTag("fluidCost", writeList(fluidCost.entrySet(), e -> {
             NBTTagCompound ret = new NBTTagCompound();
-            ret.setString("id", e.getKey().getName());
+            ret.setString(
+                    "id",
+                    e.getKey()
+                     .getName());
             ret.setInteger("count", e.getValue());
             return ret;
         }));
@@ -248,30 +260,36 @@ public class GT_Single_Recipe_Check {
     }
 
     protected static ImmutableMap<Fluid, Integer> loadFluidCost(NBTTagCompound tag) {
-        return GT_Utility.streamCompounds(tag.getTagList("fluidCost", Constants.NBT.TAG_COMPOUND)).collect(
-                GT_Utility.toImmutableMapSerial(
-                        t -> FluidRegistry.getFluid(t.getString("id")),
-                        t -> t.getInteger("count")));
+        return GT_Utility.streamCompounds(tag.getTagList("fluidCost", Constants.NBT.TAG_COMPOUND))
+                         .collect(
+                                 GT_Utility.toImmutableMapSerial(
+                                         t -> FluidRegistry.getFluid(t.getString("id")),
+                                         t -> t.getInteger("count")));
     }
 
     protected static ImmutableMap<GT_Utility.ItemId, Integer> loadItemCost(NBTTagCompound tag) {
-        return GT_Utility.streamCompounds(tag.getTagList("itemCost", Constants.NBT.TAG_COMPOUND)).collect(
-                GT_Utility.toImmutableMapSerial(
-                        t -> GT_Utility.ItemId.create(t.getCompoundTag("id")),
-                        t -> t.getInteger("count")));
+        return GT_Utility.streamCompounds(tag.getTagList("itemCost", Constants.NBT.TAG_COMPOUND))
+                         .collect(
+                                 GT_Utility.toImmutableMapSerial(
+                                         t -> GT_Utility.ItemId.create(t.getCompoundTag("id")),
+                                         t -> t.getInteger("count")));
     }
 
     protected static GT_Recipe tryFindRecipe(GT_MetaTileEntity_MultiBlockBase parent, GT_Recipe.GT_Recipe_Map recipeMap,
             NBTTagCompound tag) {
         if (tag == null || tag.hasNoTags()) return null;
         ItemStack[] inputs = GT_Utility.streamCompounds(tag.getTagList("inputs", Constants.NBT.TAG_COMPOUND))
-                .map(GT_Utility::loadItem).toArray(ItemStack[]::new);
+                                       .map(GT_Utility::loadItem)
+                                       .toArray(ItemStack[]::new);
         ItemStack[] outputs = GT_Utility.streamCompounds(tag.getTagList("outputs", Constants.NBT.TAG_COMPOUND))
-                .map(GT_Utility::loadItem).toArray(ItemStack[]::new);
+                                        .map(GT_Utility::loadItem)
+                                        .toArray(ItemStack[]::new);
         FluidStack[] fInputs = GT_Utility.streamCompounds(tag.getTagList("fInputs", Constants.NBT.TAG_COMPOUND))
-                .map(FluidStack::loadFluidStackFromNBT).toArray(FluidStack[]::new);
+                                         .map(FluidStack::loadFluidStackFromNBT)
+                                         .toArray(FluidStack[]::new);
         FluidStack[] fOutputs = GT_Utility.streamCompounds(tag.getTagList("fOutputs", Constants.NBT.TAG_COMPOUND))
-                .map(FluidStack::loadFluidStackFromNBT).toArray(FluidStack[]::new);
+                                          .map(FluidStack::loadFluidStackFromNBT)
+                                          .toArray(FluidStack[]::new);
         int eut = tag.getInteger("eut");
         GT_Recipe found = recipeMap.findRecipe(
                 parent.getBaseMetaTileEntity(),

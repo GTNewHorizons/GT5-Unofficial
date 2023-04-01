@@ -41,8 +41,8 @@ public class GT_MetaTileEntity_Printer extends GT_MetaTileEntity_BasicMachine {
         } else if ((GT_Utility.isStackValid(getInputAt(0))) && (getInputAt(0).stackSize > 0)
                 && (GT_Utility.isStackInvalid(getSpecialSlot()))
                 && (OrePrefixes.block.contains(getInputAt(0)))) {
-                    ArrayList<ItemStack> tList = GT_OreDictUnificator
-                            .getOres(GT_OreDictUnificator.getAssociation(getInputAt(0)));
+                    ArrayList<ItemStack> tList = GT_OreDictUnificator.getOres(
+                            GT_OreDictUnificator.getAssociation(getInputAt(0)));
                     if (tList.size() > 1) {
                         tList.add(tList.get(0));
                         int i = 0;

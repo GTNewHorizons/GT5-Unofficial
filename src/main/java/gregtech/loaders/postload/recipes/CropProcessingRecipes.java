@@ -128,29 +128,41 @@ public class CropProcessingRecipes implements Runnable {
             return;
         if (GT_Mod.gregtechproxy.mNerfedCrops) {
             FluidStack fluidOutputChemReactor = aMaterialOut.mOreByProducts.isEmpty() ? null
-                    : aMaterialOut.mOreByProducts.get(0).getMolten(144);
+                    : aMaterialOut.mOreByProducts.get(0)
+                                                 .getMolten(144);
 
             GT_Values.RA.stdBuilder()
-                    .itemInputs(
-                            GT_Utility.copyAmount(9, tCrop),
-                            GT_OreDictUnificator.get(OrePrefixes.crushed, aMaterial, 1))
-                    .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.crushedPurified, aMaterial, 4))
-                    .fluidInputs(Materials.Water.getFluid(1000)).fluidOutputs(fluidOutputChemReactor)
-                    .duration(4 * SECONDS + 16 * TICKS).eut(24).addTo(UniversalChemical);
+                        .itemInputs(
+                                GT_Utility.copyAmount(9, tCrop),
+                                GT_OreDictUnificator.get(OrePrefixes.crushed, aMaterial, 1))
+                        .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.crushedPurified, aMaterial, 4))
+                        .fluidInputs(Materials.Water.getFluid(1000))
+                        .fluidOutputs(fluidOutputChemReactor)
+                        .duration(4 * SECONDS + 16 * TICKS)
+                        .eut(24)
+                        .addTo(UniversalChemical);
 
             GT_Values.RA.stdBuilder()
-                    .itemInputs(
-                            GT_Utility.copyAmount(16, tCrop),
-                            GT_OreDictUnificator.get(OrePrefixes.crushed, aMaterial, 1))
-                    .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.crushedPurified, aMaterial, 1))
-                    .fluidInputs(Materials.UUMatter.getFluid(Math.max(1, ((aMaterial.getMass() + 9) / 10))))
-                    .noFluidOutputs().duration((int) (aMaterial.getMass() * 128)).eut(384).addTo(sAutoclaveRecipes);
+                        .itemInputs(
+                                GT_Utility.copyAmount(16, tCrop),
+                                GT_OreDictUnificator.get(OrePrefixes.crushed, aMaterial, 1))
+                        .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.crushedPurified, aMaterial, 1))
+                        .fluidInputs(Materials.UUMatter.getFluid(Math.max(1, ((aMaterial.getMass() + 9) / 10))))
+                        .noFluidOutputs()
+                        .duration((int) (aMaterial.getMass() * 128))
+                        .eut(384)
+                        .addTo(sAutoclaveRecipes);
 
         } else {
             if (aMainOutput) {
-                GT_Values.RA.stdBuilder().itemInputs(GT_Utility.copyAmount(9, tCrop))
-                        .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 1)).noFluidInputs()
-                        .noFluidOutputs().duration(15 * SECONDS).eut(2).addTo(sExtractorRecipes);
+                GT_Values.RA.stdBuilder()
+                            .itemInputs(GT_Utility.copyAmount(9, tCrop))
+                            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 1))
+                            .noFluidInputs()
+                            .noFluidOutputs()
+                            .duration(15 * SECONDS)
+                            .eut(2)
+                            .addTo(sExtractorRecipes);
             }
         }
     }

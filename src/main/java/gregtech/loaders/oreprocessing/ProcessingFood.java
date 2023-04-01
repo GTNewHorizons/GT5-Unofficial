@@ -31,8 +31,11 @@ public class ProcessingFood implements gregtech.api.interfaces.IOreRecipeRegistr
                 break;
             case "foodDough":
                 GT_ModHandler.removeFurnaceSmelting(aStack);
-                GT_Values.RA
-                        .addBenderRecipe(GT_Utility.copyAmount(1L, aStack), ItemList.Food_Flat_Dough.get(1L), 16, 4);
+                GT_Values.RA.addBenderRecipe(
+                        GT_Utility.copyAmount(1L, aStack),
+                        ItemList.Food_Flat_Dough.get(1L),
+                        16,
+                        4);
 
                 GT_Values.RA.addMixerRecipe(
                         aStack,

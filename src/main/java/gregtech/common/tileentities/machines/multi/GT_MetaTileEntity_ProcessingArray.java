@@ -86,18 +86,25 @@ public class GT_MetaTileEntity_ProcessingArray
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType("Processing Array").addInfo("Runs supplied machines as if placed in the world")
-                .addInfo("Place up to 64 singleblock GT machines into the controller")
-                .addInfo("Note that you still need to supply power to them all")
-                .addInfo("Use a screwdriver to enable separate input busses")
-                .addInfo("Use a wire cutter to disable UEV+ downtiering")
-                .addInfo("Doesn't work on certain machines, deal with it")
-                .addInfo("Use it if you hate GT++, or want even more speed later on").addSeparator()
-                .beginStructureBlock(3, 3, 3, true).addController("Front center")
-                .addCasingInfoRange("Robust Tungstensteel Machine Casing", 14, 24, false)
-                .addEnergyHatch("Any casing", 1).addMaintenanceHatch("Any casing", 1).addInputBus("Any casing", 1)
-                .addInputHatch("Any casing", 1).addOutputBus("Any casing", 1).addOutputHatch("Any casing", 1)
-                .toolTipFinisher("Gregtech");
+        tt.addMachineType("Processing Array")
+          .addInfo("Runs supplied machines as if placed in the world")
+          .addInfo("Place up to 64 singleblock GT machines into the controller")
+          .addInfo("Note that you still need to supply power to them all")
+          .addInfo("Use a screwdriver to enable separate input busses")
+          .addInfo("Use a wire cutter to disable UEV+ downtiering")
+          .addInfo("Doesn't work on certain machines, deal with it")
+          .addInfo("Use it if you hate GT++, or want even more speed later on")
+          .addSeparator()
+          .beginStructureBlock(3, 3, 3, true)
+          .addController("Front center")
+          .addCasingInfoRange("Robust Tungstensteel Machine Casing", 14, 24, false)
+          .addEnergyHatch("Any casing", 1)
+          .addMaintenanceHatch("Any casing", 1)
+          .addInputBus("Any casing", 1)
+          .addInputHatch("Any casing", 1)
+          .addOutputBus("Any casing", 1)
+          .addOutputHatch("Any casing", 1)
+          .toolTipFinisher("Gregtech");
         return tt;
     }
 
@@ -111,13 +118,26 @@ public class GT_MetaTileEntity_ProcessingArray
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
             boolean aActive, boolean aRedstone) {
         if (aSide == aFacing) {
-            if (aActive) return new ITexture[] { BlockIcons.casingTexturePages[0][48],
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE).extFacing().build(),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE_GLOW).extFacing().glow()
-                            .build() };
-            return new ITexture[] { BlockIcons.casingTexturePages[0][48],
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_PROCESSING_ARRAY).extFacing().build(),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_PROCESSING_ARRAY_GLOW).extFacing().glow().build() };
+            if (aActive) return new ITexture[] { BlockIcons.casingTexturePages[0][48], TextureFactory.builder()
+                                                                                                     .addIcon(
+                                                                                                             OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE)
+                                                                                                     .extFacing()
+                                                                                                     .build(),
+                    TextureFactory.builder()
+                                  .addIcon(OVERLAY_FRONT_PROCESSING_ARRAY_ACTIVE_GLOW)
+                                  .extFacing()
+                                  .glow()
+                                  .build() };
+            return new ITexture[] { BlockIcons.casingTexturePages[0][48], TextureFactory.builder()
+                                                                                        .addIcon(
+                                                                                                OVERLAY_FRONT_PROCESSING_ARRAY)
+                                                                                        .extFacing()
+                                                                                        .build(),
+                    TextureFactory.builder()
+                                  .addIcon(OVERLAY_FRONT_PROCESSING_ARRAY_GLOW)
+                                  .extFacing()
+                                  .glow()
+                                  .build() };
         }
         return new ITexture[] { Textures.BlockIcons.casingTexturePages[0][48] };
     }
@@ -135,8 +155,10 @@ public class GT_MetaTileEntity_ProcessingArray
     @Override
     public GT_Recipe_Map getRecipeMap() {
         if (isCorrectMachinePart(mInventory[1])) {
-            int length = mInventory[1].getUnlocalizedName().length();
-            String aMachineName = mInventory[1].getUnlocalizedName().substring(17, length - 8);
+            int length = mInventory[1].getUnlocalizedName()
+                                      .length();
+            String aMachineName = mInventory[1].getUnlocalizedName()
+                                               .substring(17, length - 8);
             return GT_ProcessingArray_Manager.giveRecipeMap(aMachineName);
         }
         return null;
@@ -144,7 +166,8 @@ public class GT_MetaTileEntity_ProcessingArray
 
     @Override
     public boolean isCorrectMachinePart(ItemStack aStack) {
-        return aStack != null && aStack.getUnlocalizedName().startsWith("gt.blockmachines.");
+        return aStack != null && aStack.getUnlocalizedName()
+                                       .startsWith("gt.blockmachines.");
     }
 
     @Override
@@ -166,8 +189,10 @@ public class GT_MetaTileEntity_ProcessingArray
         startRecipeProcessing();
         boolean result = checkRecipe(mInventory[1]);
         if (result) {
-            int length = mInventory[1].getUnlocalizedName().length();
-            String aMachineName = mInventory[1].getUnlocalizedName().substring(17, length - 8);
+            int length = mInventory[1].getUnlocalizedName()
+                                      .length();
+            String aMachineName = mInventory[1].getUnlocalizedName()
+                                               .substring(17, length - 8);
             SoundResource sound = GT_ProcessingArray_Manager.getSoundResource(aMachineName);
             if (sound != null) {
                 sendLoopStart((byte) sound.id);
@@ -265,7 +290,7 @@ public class GT_MetaTileEntity_ProcessingArray
             // We're locked to a single recipe, but haven't built the recipe checker yet.
             // Build the checker on next successful recipe.
             tSingleRecipeCheckBuilder = GT_Single_Recipe_Check_Processing_Array.processingArrayBuilder(this)
-                    .setBefore(tInputs, tFluids);
+                                                                               .setBefore(tInputs, tFluids);
         }
 
         boolean recipeLocked = false;
@@ -277,8 +302,10 @@ public class GT_MetaTileEntity_ProcessingArray
                 break;
             } else if (mLockedToSingleRecipe && !recipeLocked) {
                 // We want to lock to a single run of the recipe.
-                mSingleRecipeCheck = tSingleRecipeCheckBuilder.setAfter(tInputs, tFluids).setRecipe(tRecipe)
-                        .setRecipeAmperage(map.mAmperage).build();
+                mSingleRecipeCheck = tSingleRecipeCheckBuilder.setAfter(tInputs, tFluids)
+                                                              .setRecipe(tRecipe)
+                                                              .setRecipeAmperage(map.mAmperage)
+                                                              .build();
                 recipeLocked = true;
             }
         }
@@ -324,13 +351,15 @@ public class GT_MetaTileEntity_ProcessingArray
         ItemStack[] tOut = new ItemStack[aRecipe.mOutputs.length];
         for (int h = 0; h < aRecipe.mOutputs.length; h++) {
             if (aRecipe.getOutput(h) != null) {
-                tOut[h] = aRecipe.getOutput(h).copy();
+                tOut[h] = aRecipe.getOutput(h)
+                                 .copy();
                 tOut[h].stackSize = 0;
             }
         }
         FluidStack[] tFOut = new FluidStack[aRecipe.mFluidOutputs.length];
         for (int i = 0; i < aRecipe.mFluidOutputs.length; i++)
-            if (aRecipe.getFluidOutput(i) != null) tFOut[i] = aRecipe.getFluidOutput(i).copy();
+            if (aRecipe.getFluidOutput(i) != null) tFOut[i] = aRecipe.getFluidOutput(i)
+                                                                     .copy();
         for (int f = 0; f < tOut.length; f++) {
             if (aRecipe.mOutputs[f] != null && tOut[f] != null) {
                 for (int g = 0; g < parallel * multiplier; g++) {
@@ -348,9 +377,11 @@ public class GT_MetaTileEntity_ProcessingArray
             oNumber++;
         }
         this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
-        this.mOutputItems = Arrays.stream(tOut).filter(Objects::nonNull)
-                .flatMap(GT_MetaTileEntity_ProcessingArray::splitOversizedStack).filter(is -> is.stackSize > 0)
-                .toArray(ItemStack[]::new);
+        this.mOutputItems = Arrays.stream(tOut)
+                                  .filter(Objects::nonNull)
+                                  .flatMap(GT_MetaTileEntity_ProcessingArray::splitOversizedStack)
+                                  .filter(is -> is.stackSize > 0)
+                                  .toArray(ItemStack[]::new);
         this.mOutputFluids = tFOut;
         updateSlots();
         return true;
@@ -473,8 +504,15 @@ public class GT_MetaTileEntity_ProcessingArray
 
     @Override
     protected List<IHatchElement<? super GT_MetaTileEntity_CubicMultiBlockBase<?>>> getAllowedHatches() {
-        return ImmutableList
-                .of(InputHatch, OutputHatch, InputBus, OutputBus, Muffler, Maintenance, Energy, ExoticEnergy);
+        return ImmutableList.of(
+                InputHatch,
+                OutputHatch,
+                InputBus,
+                OutputBus,
+                Muffler,
+                Maintenance,
+                Energy,
+                ExoticEnergy);
     }
 
     @Override
@@ -494,8 +532,10 @@ public class GT_MetaTileEntity_ProcessingArray
         long maxEnergy = 0;
         for (GT_MetaTileEntity_Hatch tHatch : mExoticEnergyHatches) {
             if (isValidMetaTileEntity(tHatch)) {
-                storedEnergy += tHatch.getBaseMetaTileEntity().getStoredEU();
-                maxEnergy += tHatch.getBaseMetaTileEntity().getEUCapacity();
+                storedEnergy += tHatch.getBaseMetaTileEntity()
+                                      .getStoredEU();
+                maxEnergy += tHatch.getBaseMetaTileEntity()
+                                   .getEUCapacity();
             }
         }
 
@@ -536,8 +576,8 @@ public class GT_MetaTileEntity_ProcessingArray
                         + ": "
                         + EnumChatFormatting.YELLOW
                         + VN[GT_Utility.getTier(
-                                GT_ExoticEnergyInputHelper
-                                        .getMaxInputVoltageMulti(getExoticAndNormalEnergyHatchList()))]
+                                GT_ExoticEnergyInputHelper.getMaxInputVoltageMulti(
+                                        getExoticAndNormalEnergyHatchList()))]
                         + EnumChatFormatting.RESET,
                 StatCollector.translateToLocal("GT5U.multiblock.problems") + ": "
                         + EnumChatFormatting.RED
@@ -649,19 +689,22 @@ public class GT_MetaTileEntity_ProcessingArray
         super.addUIWidgets(builder, buildContext);
 
         builder.widget(
-                new ButtonWidget().setOnClick((clickData, widget) -> downtierUEV = !downtierUEV).setPlayClickSound(true)
-                        .setBackground(() -> {
-                            List<UITexture> ret = new ArrayList<>();
-                            ret.add(GT_UITextures.BUTTON_STANDARD);
-                            if (downtierUEV) {
-                                ret.add(GT_UITextures.OVERLAY_BUTTON_DOWN_TIERING_ON);
-                            } else {
-                                ret.add(GT_UITextures.OVERLAY_BUTTON_DOWN_TIERING_OFF);
-                            }
-                            return ret.toArray(new IDrawable[0]);
-                        }).setPos(80, 91).setSize(16, 16)
-                        .addTooltip(StatCollector.translateToLocal("GT5U.gui.button.down_tier"))
-                        .setTooltipShowUpDelay(TOOLTIP_DELAY))
-                .widget(new FakeSyncWidget.BooleanSyncer(() -> downtierUEV, val -> downtierUEV = val));
+                new ButtonWidget().setOnClick((clickData, widget) -> downtierUEV = !downtierUEV)
+                                  .setPlayClickSound(true)
+                                  .setBackground(() -> {
+                                      List<UITexture> ret = new ArrayList<>();
+                                      ret.add(GT_UITextures.BUTTON_STANDARD);
+                                      if (downtierUEV) {
+                                          ret.add(GT_UITextures.OVERLAY_BUTTON_DOWN_TIERING_ON);
+                                      } else {
+                                          ret.add(GT_UITextures.OVERLAY_BUTTON_DOWN_TIERING_OFF);
+                                      }
+                                      return ret.toArray(new IDrawable[0]);
+                                  })
+                                  .setPos(80, 91)
+                                  .setSize(16, 16)
+                                  .addTooltip(StatCollector.translateToLocal("GT5U.gui.button.down_tier"))
+                                  .setTooltipShowUpDelay(TOOLTIP_DELAY))
+               .widget(new FakeSyncWidget.BooleanSyncer(() -> downtierUEV, val -> downtierUEV = val));
     }
 }

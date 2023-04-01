@@ -12,12 +12,22 @@ public class MatterAmplifierRecipes implements Runnable {
 
     @Override
     public void run() {
-        GT_Values.RA.stdBuilder().itemInputs(ItemList.IC2_Scrap.get(9L)).noItemOutputs().noFluidInputs()
-                .fluidOutputs(Materials.UUAmplifier.getFluid(1)).duration(9 * SECONDS).eut(TierEU.RECIPE_LV)
-                .addTo(sAmplifiers);
+        GT_Values.RA.stdBuilder()
+                    .itemInputs(ItemList.IC2_Scrap.get(9L))
+                    .noItemOutputs()
+                    .noFluidInputs()
+                    .fluidOutputs(Materials.UUAmplifier.getFluid(1))
+                    .duration(9 * SECONDS)
+                    .eut(TierEU.RECIPE_LV)
+                    .addTo(sAmplifiers);
 
-        GT_Values.RA.stdBuilder().itemInputs(ItemList.IC2_Scrapbox.get(1L)).noItemOutputs().noFluidInputs()
-                .fluidOutputs(Materials.UUAmplifier.getFluid(1)).duration(9 * SECONDS).eut(TierEU.RECIPE_LV)
-                .addTo(sAmplifiers);
+        GT_Values.RA.stdBuilder()
+                    .itemInputs(ItemList.IC2_Scrapbox.get(1L))
+                    .noItemOutputs()
+                    .noFluidInputs()
+                    .fluidOutputs(Materials.UUAmplifier.getFluid(1))
+                    .duration(9 * SECONDS)
+                    .eut(TierEU.RECIPE_LV)
+                    .addTo(sAmplifiers);
     }
 }

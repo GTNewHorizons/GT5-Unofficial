@@ -26,7 +26,9 @@ public class UIHelper {
             SteamVariant steamVariant, Pos2d offset) {
         List<Pos2d> itemInputPositions = recipeMap != null ? recipeMap.getItemInputPositions(itemInputCount)
                 : UIHelper.getItemInputPositions(itemInputCount);
-        itemInputPositions = itemInputPositions.stream().map(p -> p.add(offset)).collect(Collectors.toList());
+        itemInputPositions = itemInputPositions.stream()
+                                               .map(p -> p.add(offset))
+                                               .collect(Collectors.toList());
         for (int i = 0; i < itemInputPositions.size(); i++) {
             forEachItemInputSlot.accept(
                     i,
@@ -36,7 +38,9 @@ public class UIHelper {
 
         List<Pos2d> itemOutputPositions = recipeMap != null ? recipeMap.getItemOutputPositions(itemOutputCount)
                 : UIHelper.getItemOutputPositions(itemOutputCount);
-        itemOutputPositions = itemOutputPositions.stream().map(p -> p.add(offset)).collect(Collectors.toList());
+        itemOutputPositions = itemOutputPositions.stream()
+                                                 .map(p -> p.add(offset))
+                                                 .collect(Collectors.toList());
         for (int i = 0; i < itemOutputPositions.size(); i++) {
             forEachItemOutputSlot.accept(
                     i,
@@ -47,12 +51,14 @@ public class UIHelper {
         forEachSpecialSlot.accept(
                 0,
                 getBackgroundsForSlot(itemSlotBackground, recipeMap, false, false, 0, true, steamVariant),
-                (recipeMap != null ? recipeMap.getSpecialItemPosition() : UIHelper.getSpecialItemPosition())
-                        .add(offset));
+                (recipeMap != null ? recipeMap.getSpecialItemPosition() : UIHelper.getSpecialItemPosition()).add(
+                        offset));
 
         List<Pos2d> fluidInputPositions = recipeMap != null ? recipeMap.getFluidInputPositions(fluidInputCount)
                 : UIHelper.getFluidInputPositions(fluidInputCount);
-        fluidInputPositions = fluidInputPositions.stream().map(p -> p.add(offset)).collect(Collectors.toList());
+        fluidInputPositions = fluidInputPositions.stream()
+                                                 .map(p -> p.add(offset))
+                                                 .collect(Collectors.toList());
         for (int i = 0; i < fluidInputPositions.size(); i++) {
             forEachFluidInputSlot.accept(
                     i,
@@ -62,7 +68,9 @@ public class UIHelper {
 
         List<Pos2d> fluidOutputPositions = recipeMap != null ? recipeMap.getFluidOutputPositions(fluidOutputCount)
                 : UIHelper.getFluidOutputPositions(fluidOutputCount);
-        fluidOutputPositions = fluidOutputPositions.stream().map(p -> p.add(offset)).collect(Collectors.toList());
+        fluidOutputPositions = fluidOutputPositions.stream()
+                                                   .map(p -> p.add(offset))
+                                                   .collect(Collectors.toList());
         for (int i = 0; i < fluidOutputPositions.size(); i++) {
             forEachFluidOutputSlot.accept(
                     i,

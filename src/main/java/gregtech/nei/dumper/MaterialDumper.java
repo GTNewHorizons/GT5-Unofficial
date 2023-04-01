@@ -24,8 +24,9 @@ public class MaterialDumper extends GregTechIDDumper {
     @Override
     protected Iterable<String[]> dump(Mode mode) {
         List<String[]> dump = new ArrayList<>();
-        Map<Integer, Materials> idMap = Arrays.stream(GregTech_API.sGeneratedMaterials).filter(Objects::nonNull)
-                .collect(Collectors.toMap(m -> m.mMetaItemSubID, m -> m));
+        Map<Integer, Materials> idMap = Arrays.stream(GregTech_API.sGeneratedMaterials)
+                                              .filter(Objects::nonNull)
+                                              .collect(Collectors.toMap(m -> m.mMetaItemSubID, m -> m));
         for (int i = 0; i < 1000; i++) {
             if (mode == Mode.FREE && !idMap.containsKey(i)) {
                 dump.add(new String[] { String.valueOf(i), "", });

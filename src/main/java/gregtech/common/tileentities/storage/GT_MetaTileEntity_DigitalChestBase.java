@@ -95,8 +95,10 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
     }
 
     public static void registerAEIntegration() {
-        appeng.api.AEApi.instance().registries().externalStorage()
-                .addExternalStorageInterface(new AE2DigitalChestHandler());
+        appeng.api.AEApi.instance()
+                        .registries()
+                        .externalStorage()
+                        .addExternalStorageInterface(new AE2DigitalChestHandler());
     }
 
     @Override
@@ -417,8 +419,7 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
 
     private boolean hasActiveMEConnection() {
         if (listeners == null || listeners.isEmpty()) return false;
-        for (Map.Entry<appeng.api.storage.IMEMonitorHandlerReceiver<appeng.api.storage.data.IAEItemStack>, Object> e : listeners
-                .entrySet()) {
+        for (Map.Entry<appeng.api.storage.IMEMonitorHandlerReceiver<appeng.api.storage.data.IAEItemStack>, Object> e : listeners.entrySet()) {
             if ((e.getKey() instanceof appeng.api.parts.IPart)) {
                 appeng.api.networking.IGridNode n = ((appeng.api.parts.IPart) e.getKey()).getGridNode();
                 if (n != null && n.isActive()) return true;
@@ -467,7 +468,10 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
             boolean aActive, boolean aRedstone) {
         if (aSide != aFacing) return new ITexture[] { MACHINE_CASINGS[mTier][aColorIndex + 1] };
         return new ITexture[] { MACHINE_CASINGS[mTier][aColorIndex + 1], TextureFactory.of(OVERLAY_SCHEST),
-                TextureFactory.builder().addIcon(OVERLAY_SCHEST_GLOW).glow().build() };
+                TextureFactory.builder()
+                              .addIcon(OVERLAY_SCHEST_GLOW)
+                              .glow()
+                              .build() };
     }
 
     @Override
@@ -478,7 +482,8 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
         if (tag.hasKey("itemType", Constants.NBT.TAG_COMPOUND)) {
             currenttip.add("Item Count: " + GT_Utility.parseNumberToString(tag.getInteger("itemCount")));
             currenttip.add(
-                    "Item Type: " + ItemStack.loadItemStackFromNBT(tag.getCompoundTag("itemType")).getDisplayName());
+                    "Item Type: " + ItemStack.loadItemStackFromNBT(tag.getCompoundTag("itemType"))
+                                             .getDisplayName());
         } else {
             currenttip.add("Chest Empty");
         }
@@ -505,26 +510,36 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.widget(
-                new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK).setPos(7, 16).setSize(71, 45))
-                .widget(
-                        new SlotWidget(inventoryHandler, 0)
-                                .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_IN)
-                                .setPos(79, 16))
-                .widget(
-                        new SlotWidget(inventoryHandler, 1).setAccess(true, false)
-                                .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_OUT)
-                                .setPos(79, 52))
-                .widget(
-                        SlotWidget.phantom(inventoryHandler, 2).disableInteraction()
-                                .setBackground(GT_UITextures.TRANSPARENT).setPos(59, 42))
-                .widget(
-                        new TextWidget("Item Amount").setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(10, 20))
-                .widget(
-                        TextWidget.dynamicString(
-                                () -> GT_Utility.parseNumberToString(
-                                        this instanceof GT_MetaTileEntity_QuantumChest
-                                                ? ((GT_MetaTileEntity_QuantumChest) this).mItemCount
-                                                : 0))
-                                .setDefaultColor(COLOR_TEXT_WHITE.get()).setPos(10, 30));
+                new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
+                                    .setPos(7, 16)
+                                    .setSize(71, 45))
+               .widget(
+                       new SlotWidget(inventoryHandler, 0)
+                                                          .setBackground(
+                                                                  getGUITextureSet().getItemSlot(),
+                                                                  GT_UITextures.OVERLAY_SLOT_IN)
+                                                          .setPos(79, 16))
+               .widget(
+                       new SlotWidget(inventoryHandler, 1).setAccess(true, false)
+                                                          .setBackground(
+                                                                  getGUITextureSet().getItemSlot(),
+                                                                  GT_UITextures.OVERLAY_SLOT_OUT)
+                                                          .setPos(79, 52))
+               .widget(
+                       SlotWidget.phantom(inventoryHandler, 2)
+                                 .disableInteraction()
+                                 .setBackground(GT_UITextures.TRANSPARENT)
+                                 .setPos(59, 42))
+               .widget(
+                       new TextWidget("Item Amount").setDefaultColor(COLOR_TEXT_WHITE.get())
+                                                    .setPos(10, 20))
+               .widget(
+                       TextWidget.dynamicString(
+                               () -> GT_Utility.parseNumberToString(
+                                       this instanceof GT_MetaTileEntity_QuantumChest
+                                               ? ((GT_MetaTileEntity_QuantumChest) this).mItemCount
+                                               : 0))
+                                 .setDefaultColor(COLOR_TEXT_WHITE.get())
+                                 .setPos(10, 30));
     }
 }

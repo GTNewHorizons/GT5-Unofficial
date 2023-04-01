@@ -218,7 +218,7 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
         // `setCapacityMultiplier`
         for (int i = 0; i < inputTanks.length; i++) {
             inputTanks[i] = new FluidTankGT(capacity).setCapacityMultiplier(maxParallel * 2L)
-                    .readFromNBT(nbt, NBT.TANK_IN + i);
+                                                     .readFromNBT(nbt, NBT.TANK_IN + i);
         }
         for (int i = 0; i < outputTanks.length; i++) {
             outputTanks[i] = new FluidTankGT().readFromNBT(nbt, NBT.TANK_OUT + i);
@@ -287,8 +287,9 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
     @Override
     public void copyTextures() {
         // Loading an instance
-        final TileEntity tCanonicalTileEntity = MultiTileEntityRegistry
-                .getCanonicalTileEntity(getMultiTileEntityRegistryID(), getMultiTileEntityID());
+        final TileEntity tCanonicalTileEntity = MultiTileEntityRegistry.getCanonicalTileEntity(
+                getMultiTileEntityRegistryID(),
+                getMultiTileEntityID());
         if (tCanonicalTileEntity instanceof MultiTileBasicMachine) {
             textures = ((MultiTileBasicMachine) tCanonicalTileEntity).textures;
             texturesInactive = ((MultiTileBasicMachine) tCanonicalTileEntity).texturesInactive;
@@ -301,13 +302,14 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
     @Override
     public ITexture[] getTexture(Block aBlock, byte aSide, boolean isActive, int aRenderPass) {
         if (aSide != facing) {
-            return new ITexture[] { TextureFactory
-                    .of(textures[GT_Values.FACING_ROTATIONS[facing][aSide]], GT_Util.getRGBaArray(rgba)) };
+            return new ITexture[] { TextureFactory.of(
+                    textures[GT_Values.FACING_ROTATIONS[facing][aSide]],
+                    GT_Util.getRGBaArray(rgba)) };
         }
         return new ITexture[] {
                 TextureFactory.of(textures[GT_Values.FACING_ROTATIONS[facing][aSide]], GT_Util.getRGBaArray(rgba)),
-                TextureFactory
-                        .of((active ? texturesActive : texturesInactive)[GT_Values.FACING_ROTATIONS[facing][aSide]]) };
+                TextureFactory.of(
+                        (active ? texturesActive : texturesInactive)[GT_Values.FACING_ROTATIONS[facing][aSide]]) };
     }
 
     @Override
@@ -518,8 +520,13 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
         }
         ProcessingLogic logic = ((ProcessingLogicHost) this).getProcessingLogic();
         logic.clear();
-        boolean result = logic.setInputItems(inputInventory.getStacks().toArray(new ItemStack[0]))
-                .setCurrentOutputItems(outputInventory.getStacks().toArray(new ItemStack[0])).process();
+        boolean result = logic.setInputItems(
+                inputInventory.getStacks()
+                              .toArray(new ItemStack[0]))
+                              .setCurrentOutputItems(
+                                      outputInventory.getStacks()
+                                                     .toArray(new ItemStack[0]))
+                              .process();
         setDuration(logic.getDuration());
         setEut(logic.getEut());
         setItemOutputs(logic.getOutputItems());
@@ -591,7 +598,9 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
         if (isActive() && activitySound != null) {
             if (activitySoundLoop == null) {
                 activitySoundLoop = new GT_SoundLoop(activitySound, this, false, true);
-                Minecraft.getMinecraft().getSoundHandler().playSound(activitySoundLoop);
+                Minecraft.getMinecraft()
+                         .getSoundHandler()
+                         .playSound(activitySoundLoop);
             }
         } else {
             if (activitySoundLoop != null) {

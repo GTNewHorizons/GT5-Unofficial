@@ -43,8 +43,10 @@ public class GT_Cover_WirelessFluidDetector
     @Override
     public FluidTransmitterData doCoverThingsImpl(byte aSide, byte aInputRedstone, int aCoverID,
             FluidTransmitterData aCoverVariable, ICoverable aTileEntity, long aTimer) {
-        byte signal = GT_Cover_LiquidMeter
-                .computeSignalBasedOnFluid(aTileEntity, aCoverVariable.invert, aCoverVariable.threshold);
+        byte signal = GT_Cover_LiquidMeter.computeSignalBasedOnFluid(
+                aTileEntity,
+                aCoverVariable.invert,
+                aCoverVariable.threshold);
         long hash = hashCoverCoords(aTileEntity, aSide);
         setSignalAt(aCoverVariable.getUuid(), aCoverVariable.getFrequency(), hash, signal);
 
@@ -145,7 +147,7 @@ public class GT_Cover_WirelessFluidDetector
             super.addUIWidgets(builder);
             builder.widget(
                     new TextWidget(GT_Utility.trans("222", "Fluid threshold")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                            .setPos(startX + spaceX * 5, 4 + startY));
+                                                                              .setPos(startX + spaceX * 5, 4 + startY));
         }
 
         @Override
@@ -158,8 +160,10 @@ public class GT_Cover_WirelessFluidDetector
                         coverData.threshold = (int) MathExpression.parseMathExpression(state);
                         return coverData;
                     },
-                    widget -> widget.setOnScrollNumbers().setNumbers(0, Integer.MAX_VALUE).setPos(1, 2)
-                            .setSize(spaceX * 5 - 4, 12));
+                    widget -> widget.setOnScrollNumbers()
+                                    .setNumbers(0, Integer.MAX_VALUE)
+                                    .setPos(1, 2)
+                                    .setSize(spaceX * 5 - 4, 12));
         }
     }
 }

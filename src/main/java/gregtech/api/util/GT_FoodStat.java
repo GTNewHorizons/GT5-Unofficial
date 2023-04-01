@@ -72,8 +72,12 @@ public class GT_FoodStat implements IFoodStat {
             aPlayer.dropPlayerItemWithRandomChoice(tStack, true);
 
         new WorldSpawnedEventBuilder.SoundAtEntityEventBuilder().setIdentifier(SoundResource.RANDOM_BURP)
-                .setVolume(0.5F).setPitch(aPlayer.worldObj.rand.nextFloat() * 0.1F + 0.9F).setEntity(aPlayer)
-                .setWorld(aPlayer.worldObj).run();
+                                                                .setVolume(0.5F)
+                                                                .setPitch(
+                                                                        aPlayer.worldObj.rand.nextFloat() * 0.1F + 0.9F)
+                                                                .setEntity(aPlayer)
+                                                                .setWorld(aPlayer.worldObj)
+                                                                .run();
 
         if (!aPlayer.worldObj.isRemote) {
             if (mMilk) {
@@ -90,9 +94,16 @@ public class GT_FoodStat implements IFoodStat {
                 }
             }
             if (mExplosive) {
-                new WorldSpawnedEventBuilder.ExplosionEffectEventBuilder().setSmoking(true).setFlaming(true)
-                        .setStrength(4f).setPosition(aPlayer.posX, aPlayer.posY, aPlayer.posZ).setEntity(aPlayer)
-                        .setWorld(aPlayer.worldObj).run();
+                new WorldSpawnedEventBuilder.ExplosionEffectEventBuilder().setSmoking(true)
+                                                                          .setFlaming(true)
+                                                                          .setStrength(4f)
+                                                                          .setPosition(
+                                                                                  aPlayer.posX,
+                                                                                  aPlayer.posY,
+                                                                                  aPlayer.posZ)
+                                                                          .setEntity(aPlayer)
+                                                                          .setWorld(aPlayer.worldObj)
+                                                                          .run();
                 aPlayer.attackEntityFrom(GT_DamageSources.getExplodingDamage(), Float.MAX_VALUE);
             }
         }

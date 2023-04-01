@@ -23,8 +23,9 @@ import ic2.api.tile.IWrenchable;
 public class Behaviour_Wrench extends Behaviour_None {
 
     private final int mCosts;
-    private final String mTooltip = GT_LanguageManager
-            .addStringLocalization("gt.behaviour.wrench", "Rotates Blocks on Rightclick");
+    private final String mTooltip = GT_LanguageManager.addStringLocalization(
+            "gt.behaviour.wrench",
+            "Rotates Blocks on Rightclick");
 
     public Behaviour_Wrench(int aCosts) {
         this.mCosts = aCosts;
@@ -165,7 +166,7 @@ public class Behaviour_Wrench extends Behaviour_None {
             }
         }
         if ((Arrays.asList(aBlock.getValidRotations(aWorld, aX, aY, aZ))
-                .contains(ForgeDirection.getOrientation(aTargetSide)))
+                   .contains(ForgeDirection.getOrientation(aTargetSide)))
                 && ((aPlayer.capabilities.isCreativeMode) || (!GT_ModHandler.isElectricItem(aStack))
                         || (GT_ModHandler.canUseElectricItem(aStack, this.mCosts)))
                 && (aBlock.rotateBlock(aWorld, aX, aY, aZ, ForgeDirection.getOrientation(aTargetSide)))) {

@@ -84,8 +84,14 @@ public class GT_OreDictUnificator {
         aStack = GT_Utility.copyAmount(1, aStack);
         if (!aAlreadyRegistered) registerOre(aPrefix.get(aMaterial), aStack);
         addAssociation(aPrefix, aMaterial, aStack, isBlacklisted(aStack));
-        if (aOverwrite || GT_Utility.isStackInvalid(sName2StackMap.get(aPrefix.get(aMaterial).toString())))
-            sName2StackMap.put(aPrefix.get(aMaterial).toString(), aStack);
+        if (aOverwrite || GT_Utility.isStackInvalid(
+                sName2StackMap.get(
+                        aPrefix.get(aMaterial)
+                               .toString())))
+            sName2StackMap.put(
+                    aPrefix.get(aMaterial)
+                           .toString(),
+                    aStack);
         isAddingOre--;
     }
 
@@ -342,10 +348,13 @@ public class GT_OreDictUnificator {
             if (mRunThroughTheList) {
                 if (GregTech_API.sLoadStarted) {
                     mRunThroughTheList = false;
-                    for (Entry<GT_ItemStack2, ItemData> tEntry : sItemStack2DataMap.entrySet())
-                        if (!tEntry.getValue().hasValidPrefixData() || tEntry.getValue().mPrefix.mAllowNormalRecycling)
-                            GT_RecipeRegistrator
-                                    .registerMaterialRecycling(tEntry.getKey().toStack(), tEntry.getValue());
+                    for (Entry<GT_ItemStack2, ItemData> tEntry : sItemStack2DataMap.entrySet()) if (!tEntry.getValue()
+                                                                                                           .hasValidPrefixData()
+                            || tEntry.getValue().mPrefix.mAllowNormalRecycling)
+                        GT_RecipeRegistrator.registerMaterialRecycling(
+                                tEntry.getKey()
+                                      .toStack(),
+                                tEntry.getValue());
                 }
             } else {
                 if (!aData.hasValidPrefixData() || aData.mPrefix.mAllowNormalRecycling)

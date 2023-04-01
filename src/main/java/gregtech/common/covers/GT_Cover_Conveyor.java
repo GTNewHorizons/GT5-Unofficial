@@ -223,69 +223,100 @@ public class GT_Cover_Conveyor extends GT_CoverBehavior {
                                             0,
                                             CoverDataFollower_ToggleButtonWidget.ofDisableable(),
                                             widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_EXPORT)
-                                                    .addTooltip(GT_Utility.trans("006", "Export"))
-                                                    .setPos(spaceX * 0, spaceY * 0))
-                                            .addToggleButton(
-                                                    1,
-                                                    CoverDataFollower_ToggleButtonWidget.ofDisableable(),
-                                                    widget -> widget
-                                                            .setStaticTexture(GT_UITextures.OVERLAY_BUTTON_IMPORT)
-                                                            .addTooltip(GT_Utility.trans("007", "Import"))
-                                                            .setPos(spaceX * 1, spaceY * 0))
-                                            .addToggleButton(
-                                                    2,
-                                                    CoverDataFollower_ToggleButtonWidget.ofDisableable(),
-                                                    widget -> widget
-                                                            .setStaticTexture(GT_UITextures.OVERLAY_BUTTON_CHECKMARK)
-                                                            .addTooltip(GT_Utility.trans("224", "Always On"))
-                                                            .setPos(spaceX * 0, spaceY * 1))
-                                            .addToggleButton(
-                                                    3,
-                                                    CoverDataFollower_ToggleButtonWidget.ofDisableable(),
-                                                    widget -> widget
-                                                            .setStaticTexture(GT_UITextures.OVERLAY_BUTTON_REDSTONE_ON)
-                                                            .addTooltip(
-                                                                    GT_Utility.trans(
-                                                                            "225",
-                                                                            "Active with Redstone Signal"))
-                                                            .setPos(spaceX * 1, spaceY * 1))
-                                            .addToggleButton(
-                                                    4,
-                                                    CoverDataFollower_ToggleButtonWidget.ofDisableable(),
-                                                    widget -> widget
-                                                            .setStaticTexture(GT_UITextures.OVERLAY_BUTTON_REDSTONE_OFF)
-                                                            .addTooltip(
-                                                                    GT_Utility.trans(
-                                                                            "226",
-                                                                            "Inactive with Redstone Signal"))
-                                                            .setPos(spaceX * 2, spaceY * 1))
-                                            .addToggleButton(
-                                                    5,
-                                                    CoverDataFollower_ToggleButtonWidget.ofDisableable(),
-                                                    widget -> widget
-                                                            .setStaticTexture(GT_UITextures.OVERLAY_BUTTON_ALLOW_INPUT)
-                                                            .addTooltip(GT_Utility.trans("227", "Allow Input"))
-                                                            .setPos(spaceX * 0, spaceY * 2))
-                                            .addToggleButton(
-                                                    6,
-                                                    CoverDataFollower_ToggleButtonWidget.ofDisableable(),
-                                                    widget -> widget
-                                                            .setStaticTexture(GT_UITextures.OVERLAY_BUTTON_BLOCK_INPUT)
-                                                            .addTooltip(GT_Utility.trans("228", "Block Input"))
-                                                            .setPos(spaceX * 1, spaceY * 2))
-                                            .setPos(startX, startY))
-                    .widget(
-                            new TextWidget(GT_Utility.trans("229", "Import/Export"))
-                                    .setDefaultColor(COLOR_TEXT_GRAY.get())
-                                    .setPos(startX + spaceX * 3, 3 + startY + spaceY * 0))
-                    .widget(
-                            new TextWidget(GT_Utility.trans("230", "Conditional"))
-                                    .setDefaultColor(COLOR_TEXT_GRAY.get())
-                                    .setPos(startX + spaceX * 3, 3 + startY + spaceY * 1))
-                    .widget(
-                            new TextWidget(GT_Utility.trans("231", "Enable Input"))
-                                    .setDefaultColor(COLOR_TEXT_GRAY.get())
-                                    .setPos(startX + spaceX * 3, 3 + startY + spaceY * 2));
+                                                            .addTooltip(GT_Utility.trans("006", "Export"))
+                                                            .setPos(spaceX * 0, spaceY * 0))
+                                                                                 .addToggleButton(
+                                                                                         1,
+                                                                                         CoverDataFollower_ToggleButtonWidget.ofDisableable(),
+                                                                                         widget -> widget.setStaticTexture(
+                                                                                                 GT_UITextures.OVERLAY_BUTTON_IMPORT)
+                                                                                                         .addTooltip(
+                                                                                                                 GT_Utility.trans(
+                                                                                                                         "007",
+                                                                                                                         "Import"))
+                                                                                                         .setPos(
+                                                                                                                 spaceX * 1,
+                                                                                                                 spaceY * 0))
+                                                                                 .addToggleButton(
+                                                                                         2,
+                                                                                         CoverDataFollower_ToggleButtonWidget.ofDisableable(),
+                                                                                         widget -> widget.setStaticTexture(
+                                                                                                 GT_UITextures.OVERLAY_BUTTON_CHECKMARK)
+                                                                                                         .addTooltip(
+                                                                                                                 GT_Utility.trans(
+                                                                                                                         "224",
+                                                                                                                         "Always On"))
+                                                                                                         .setPos(
+                                                                                                                 spaceX * 0,
+                                                                                                                 spaceY * 1))
+                                                                                 .addToggleButton(
+                                                                                         3,
+                                                                                         CoverDataFollower_ToggleButtonWidget.ofDisableable(),
+                                                                                         widget -> widget.setStaticTexture(
+                                                                                                 GT_UITextures.OVERLAY_BUTTON_REDSTONE_ON)
+                                                                                                         .addTooltip(
+                                                                                                                 GT_Utility.trans(
+                                                                                                                         "225",
+                                                                                                                         "Active with Redstone Signal"))
+                                                                                                         .setPos(
+                                                                                                                 spaceX * 1,
+                                                                                                                 spaceY * 1))
+                                                                                 .addToggleButton(
+                                                                                         4,
+                                                                                         CoverDataFollower_ToggleButtonWidget.ofDisableable(),
+                                                                                         widget -> widget.setStaticTexture(
+                                                                                                 GT_UITextures.OVERLAY_BUTTON_REDSTONE_OFF)
+                                                                                                         .addTooltip(
+                                                                                                                 GT_Utility.trans(
+                                                                                                                         "226",
+                                                                                                                         "Inactive with Redstone Signal"))
+                                                                                                         .setPos(
+                                                                                                                 spaceX * 2,
+                                                                                                                 spaceY * 1))
+                                                                                 .addToggleButton(
+                                                                                         5,
+                                                                                         CoverDataFollower_ToggleButtonWidget.ofDisableable(),
+                                                                                         widget -> widget.setStaticTexture(
+                                                                                                 GT_UITextures.OVERLAY_BUTTON_ALLOW_INPUT)
+                                                                                                         .addTooltip(
+                                                                                                                 GT_Utility.trans(
+                                                                                                                         "227",
+                                                                                                                         "Allow Input"))
+                                                                                                         .setPos(
+                                                                                                                 spaceX * 0,
+                                                                                                                 spaceY * 2))
+                                                                                 .addToggleButton(
+                                                                                         6,
+                                                                                         CoverDataFollower_ToggleButtonWidget.ofDisableable(),
+                                                                                         widget -> widget.setStaticTexture(
+                                                                                                 GT_UITextures.OVERLAY_BUTTON_BLOCK_INPUT)
+                                                                                                         .addTooltip(
+                                                                                                                 GT_Utility.trans(
+                                                                                                                         "228",
+                                                                                                                         "Block Input"))
+                                                                                                         .setPos(
+                                                                                                                 spaceX * 1,
+                                                                                                                 spaceY * 2))
+                                                                                 .setPos(startX, startY))
+                   .widget(
+                           new TextWidget(GT_Utility.trans("229", "Import/Export"))
+                                                                                   .setDefaultColor(
+                                                                                           COLOR_TEXT_GRAY.get())
+                                                                                   .setPos(
+                                                                                           startX + spaceX * 3,
+                                                                                           3 + startY + spaceY * 0))
+                   .widget(
+                           new TextWidget(GT_Utility.trans("230", "Conditional")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                                                                                 .setPos(
+                                                                                         startX + spaceX * 3,
+                                                                                         3 + startY + spaceY * 1))
+                   .widget(
+                           new TextWidget(GT_Utility.trans("231", "Enable Input"))
+                                                                                  .setDefaultColor(
+                                                                                          COLOR_TEXT_GRAY.get())
+                                                                                  .setPos(
+                                                                                          startX + spaceX * 3,
+                                                                                          3 + startY + spaceY * 2));
         }
 
         private int getNewCoverVariable(int id, int coverVariable) {

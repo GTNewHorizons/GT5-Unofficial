@@ -57,13 +57,22 @@ public class GT_HatchElementBuilder<T> {
     @SafeVarargs
     public final GT_HatchElementBuilder<T> anyOf(IHatchElement<? super T>... elements) {
         if (elements == null || elements.length == 0) throw new IllegalArgumentException();
-        return adder(Arrays.stream(elements).map(e -> e.adder().rebrand()).reduce(IGT_HatchAdder::orElse).get())
-                .hatchClasses(
-                        Arrays.stream(elements).map(IHatchElement::mteClasses).flatMap(Collection::stream)
-                                .collect(Collectors.toList()))
-                .cacheHint(
-                        () -> Arrays.stream(elements).map(IHatchElement::name).sorted()
-                                .collect(Collectors.joining(" or ", "of type ", "")));
+        return adder(
+                Arrays.stream(elements)
+                      .map(
+                              e -> e.adder()
+                                    .rebrand())
+                      .reduce(IGT_HatchAdder::orElse)
+                      .get()).hatchClasses(
+                              Arrays.stream(elements)
+                                    .map(IHatchElement::mteClasses)
+                                    .flatMap(Collection::stream)
+                                    .collect(Collectors.toList()))
+                             .cacheHint(
+                                     () -> Arrays.stream(elements)
+                                                 .map(IHatchElement::name)
+                                                 .sorted()
+                                                 .collect(Collectors.joining(" or ", "of type ", "")));
     }
 
     /**
@@ -75,8 +84,8 @@ public class GT_HatchElementBuilder<T> {
     public final GT_HatchElementBuilder<T> atLeast(IHatchElement<? super T>... elements) {
         if (elements == null || elements.length == 0) throw new IllegalArgumentException();
         return atLeast(
-                Arrays.stream(elements).collect(
-                        Collectors.groupingBy(Function.identity(), LinkedHashMap::new, Collectors.counting())));
+                Arrays.stream(elements)
+                      .collect(Collectors.groupingBy(Function.identity(), LinkedHashMap::new, Collectors.counting())));
     }
 
     /**
@@ -87,8 +96,9 @@ public class GT_HatchElementBuilder<T> {
     public final GT_HatchElementBuilder<T> atLeastList(List<IHatchElement<? super T>> elements) {
         if (elements == null || elements.isEmpty()) throw new IllegalArgumentException();
         return atLeast(
-                elements.stream().collect(
-                        Collectors.groupingBy(Function.identity(), LinkedHashMap::new, Collectors.counting())));
+                elements.stream()
+                        .collect(
+                                Collectors.groupingBy(Function.identity(), LinkedHashMap::new, Collectors.counting())));
     }
 
     /**
@@ -97,27 +107,58 @@ public class GT_HatchElementBuilder<T> {
     public final GT_HatchElementBuilder<T> atLeast(Map<IHatchElement<? super T>, ? extends Number> elements) {
         if (elements == null || elements.isEmpty() || elements.containsKey(null) || elements.containsValue(null))
             throw new IllegalArgumentException();
-        List<Class<? extends IMetaTileEntity>> list = elements.keySet().stream().map(IHatchElement::mteClasses)
-                .flatMap(Collection::stream).collect(Collectors.toList());
+        List<Class<? extends IMetaTileEntity>> list = elements.keySet()
+                                                              .stream()
+                                                              .map(IHatchElement::mteClasses)
+                                                              .flatMap(Collection::stream)
+                                                              .collect(Collectors.toList());
         // map cannot be null or empty, so assert Optional isPresent
         return adder(
-                elements.keySet().stream().map(e -> e.adder().rebrand()).reduce(IGT_HatchAdder::orElse)
-                        .orElseThrow(AssertionError::new)).hatchItemFilter(
-                                obj -> GT_StructureUtility.filterByMTEClass(
-                                        elements.entrySet().stream().filter(
-                                                entry -> entry.getKey().count(obj) < entry.getValue().longValue())
-                                                .flatMap(entry -> entry.getKey().mteClasses().stream())
-                                                .collect(Collectors.toList())))
-                                .shouldReject(
-                                        obj -> elements.entrySet().stream()
-                                                .allMatch(e -> e.getKey().count(obj) >= e.getValue().longValue()))
-                                .shouldSkip(
-                                        (BiPredicate<? super T, ? super IGregTechTileEntity> & Builtin) (c,
-                                                t) -> t != null && list.stream()
-                                                        .anyMatch(clazz -> clazz.isInstance(t.getMetaTileEntity())))
-                                .cacheHint(
-                                        () -> elements.keySet().stream().map(IHatchElement::name).sorted()
-                                                .collect(Collectors.joining(" or ", "of type ", "")));
+                elements.keySet()
+                        .stream()
+                        .map(
+                                e -> e.adder()
+                                      .rebrand())
+                        .reduce(IGT_HatchAdder::orElse)
+                        .orElseThrow(AssertionError::new))
+                                                          .hatchItemFilter(
+                                                                  obj -> GT_StructureUtility.filterByMTEClass(
+                                                                          elements.entrySet()
+                                                                                  .stream()
+                                                                                  .filter(
+                                                                                          entry -> entry.getKey()
+                                                                                                        .count(obj)
+                                                                                                  < entry.getValue()
+                                                                                                         .longValue())
+                                                                                  .flatMap(
+                                                                                          entry -> entry.getKey()
+                                                                                                        .mteClasses()
+                                                                                                        .stream())
+                                                                                  .collect(Collectors.toList())))
+                                                          .shouldReject(
+                                                                  obj -> elements.entrySet()
+                                                                                 .stream()
+                                                                                 .allMatch(
+                                                                                         e -> e.getKey()
+                                                                                               .count(obj)
+                                                                                                 >= e.getValue()
+                                                                                                     .longValue()))
+                                                          .shouldSkip(
+                                                                  (BiPredicate<? super T, ? super IGregTechTileEntity> & Builtin) (
+                                                                          c, t) -> t != null && list.stream()
+                                                                                                    .anyMatch(
+                                                                                                            clazz -> clazz.isInstance(
+                                                                                                                    t.getMetaTileEntity())))
+                                                          .cacheHint(
+                                                                  () -> elements.keySet()
+                                                                                .stream()
+                                                                                .map(IHatchElement::name)
+                                                                                .sorted()
+                                                                                .collect(
+                                                                                        Collectors.joining(
+                                                                                                " or ",
+                                                                                                "of type ",
+                                                                                                "")));
     }
     // endregion
 
@@ -167,7 +208,8 @@ public class GT_HatchElementBuilder<T> {
             Function<? super T, ? extends Predicate<ItemStack>> aHatchItemFilter) {
         if (aHatchItemFilter == null) throw new IllegalArgumentException();
         BiFunction<? super T, ItemStack, ? extends Predicate<ItemStack>> tOldFilter = mHatchItemFilter;
-        mHatchItemFilter = (t, s) -> tOldFilter.apply(t, s).and(aHatchItemFilter.apply(t));
+        mHatchItemFilter = (t, s) -> tOldFilter.apply(t, s)
+                                               .and(aHatchItemFilter.apply(t));
         return this;
     }
 
@@ -182,7 +224,8 @@ public class GT_HatchElementBuilder<T> {
             BiFunction<? super T, ItemStack, ? extends Predicate<ItemStack>> aHatchItemFilter) {
         if (aHatchItemFilter == null) throw new IllegalArgumentException();
         BiFunction<? super T, ItemStack, ? extends Predicate<ItemStack>> tOldFilter = mHatchItemFilter;
-        mHatchItemFilter = (t, s) -> tOldFilter.apply(t, s).and(aHatchItemFilter.apply(t, s));
+        mHatchItemFilter = (t, s) -> tOldFilter.apply(t, s)
+                                               .and(aHatchItemFilter.apply(t, s));
         return this;
     }
 
@@ -254,10 +297,14 @@ public class GT_HatchElementBuilder<T> {
 
     // region intermediate
     public GT_HatchElementBuilder<T> hatchClass(Class<? extends IMetaTileEntity> clazz) {
-        return hatchItemFilter(c -> is -> clazz.isInstance(GT_Item_Machines.getMetaTileEntity(is)))
-                .cacheHint(() -> "of class " + clazz.getSimpleName()).shouldSkip(
-                        (BiPredicate<? super T, ? super IGregTechTileEntity> & Builtin) (c, t) -> clazz
-                                .isInstance(t.getMetaTileEntity()));
+        return hatchItemFilter(
+                c -> is -> clazz.isInstance(GT_Item_Machines.getMetaTileEntity(is))).cacheHint(
+                        () -> "of class " + clazz.getSimpleName())
+                                                                                    .shouldSkip(
+                                                                                            (BiPredicate<? super T, ? super IGregTechTileEntity> & Builtin) (
+                                                                                                    c,
+                                                                                                    t) -> clazz.isInstance(
+                                                                                                            t.getMetaTileEntity()));
     }
 
     @SafeVarargs
@@ -267,21 +314,27 @@ public class GT_HatchElementBuilder<T> {
 
     public final GT_HatchElementBuilder<T> hatchClasses(List<? extends Class<? extends IMetaTileEntity>> classes) {
         List<? extends Class<? extends IMetaTileEntity>> list = new ArrayList<>(classes);
-        return hatchItemFilter(obj -> GT_StructureUtility.filterByMTEClass(list))
-                .cacheHint(
-                        () -> list.stream().map(Class::getSimpleName).sorted()
-                                .collect(Collectors.joining(" or ", "of class ", "")))
-                .shouldSkip(
-                        (BiPredicate<? super T, ? super IGregTechTileEntity> & Builtin) (c, t) -> t != null
-                                && list.stream().anyMatch(clazz -> clazz.isInstance(t.getMetaTileEntity())));
+        return hatchItemFilter(obj -> GT_StructureUtility.filterByMTEClass(list)).cacheHint(
+                () -> list.stream()
+                          .map(Class::getSimpleName)
+                          .sorted()
+                          .collect(Collectors.joining(" or ", "of class ", "")))
+                                                                                 .shouldSkip(
+                                                                                         (BiPredicate<? super T, ? super IGregTechTileEntity> & Builtin) (
+                                                                                                 c, t) -> t != null
+                                                                                                         && list.stream()
+                                                                                                                .anyMatch(
+                                                                                                                        clazz -> clazz.isInstance(
+                                                                                                                                t.getMetaTileEntity())));
     }
 
     public GT_HatchElementBuilder<T> hatchId(int aId) {
         return hatchItemFilter(
                 c -> is -> GT_Utility.isStackValid(is) && is.getItem() instanceof GT_Item_Machines
-                        && is.getItemDamage() == aId).cacheHint(() -> "of id " + aId).shouldSkip(
-                                (BiPredicate<? super T, ? super IGregTechTileEntity> & Builtin) (c, t) -> t != null
-                                        && t.getMetaTileID() == aId);
+                        && is.getItemDamage() == aId).cacheHint(() -> "of id " + aId)
+                                                     .shouldSkip(
+                                                             (BiPredicate<? super T, ? super IGregTechTileEntity> & Builtin) (
+                                                                     c, t) -> t != null && t.getMetaTileID() == aId);
     }
 
     public GT_HatchElementBuilder<T> hatchIds(int... aIds) {
@@ -290,13 +343,15 @@ public class GT_HatchElementBuilder<T> {
         TIntCollection coll = aIds.length < 16 ? new TIntArrayList(aIds) : new TIntHashSet(aIds);
         return hatchItemFilter(
                 c -> is -> GT_Utility.isStackValid(is) && is.getItem() instanceof GT_Item_Machines
-                        && coll.contains(is.getItemDamage()))
-                                .cacheHint(
-                                        () -> Arrays.stream(coll.toArray()).sorted().mapToObj(String::valueOf)
-                                                .collect(Collectors.joining(" or ", "of id ", "")))
-                                .shouldSkip(
-                                        (BiPredicate<? super T, ? super IGregTechTileEntity> & Builtin) (c,
-                                                t) -> t != null && coll.contains(t.getMetaTileID()));
+                        && coll.contains(is.getItemDamage())).cacheHint(
+                                () -> Arrays.stream(coll.toArray())
+                                            .sorted()
+                                            .mapToObj(String::valueOf)
+                                            .collect(Collectors.joining(" or ", "of id ", "")))
+                                                             .shouldSkip(
+                                                                     (BiPredicate<? super T, ? super IGregTechTileEntity> & Builtin) (
+                                                                             c, t) -> t != null && coll.contains(
+                                                                                     t.getMetaTileID()));
     }
 
     // endregion
@@ -407,10 +462,12 @@ public class GT_HatchElementBuilder<T> {
                 if (!StructureLibAPI.isBlockTriviallyReplaceable(world, x, y, z, env.getActor()))
                     return PlaceResult.REJECT;
                 if (mReject != null && mReject.test(t)) return PlaceResult.REJECT;
-                ItemStack taken = env.getSource().takeOne(mHatchItemFilter.apply(t, trigger), true);
+                ItemStack taken = env.getSource()
+                                     .takeOne(mHatchItemFilter.apply(t, trigger), true);
                 if (GT_Utility.isStackInvalid(taken)) {
                     String type = getHint();
-                    env.getChatter().accept(new ChatComponentTranslation("GT5U.autoplace.error.no_hatch", type));
+                    env.getChatter()
+                       .accept(new ChatComponentTranslation("GT5U.autoplace.error.no_hatch", type));
                     return PlaceResult.REJECT;
                 }
                 if (StructureUtility.survivalPlaceBlock(
@@ -440,7 +497,9 @@ public class GT_HatchElementBuilder<T> {
                         // explicitly rejected, probably obstructed by another slice
                         if (mDisallowedDirection.contains(direction)) continue;
                         ForgeDirection rotated = env.getFacing()
-                                .getWorldDirection(direction.offsetY != 0 ? direction.getOpposite() : direction);
+                                                    .getWorldDirection(
+                                                            direction.offsetY != 0 ? direction.getOpposite()
+                                                                    : direction);
                         allowed.add(rotated);
                     }
                 }

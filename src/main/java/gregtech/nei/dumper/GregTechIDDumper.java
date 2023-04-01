@@ -40,8 +40,8 @@ public abstract class GregTechIDDumper extends DataDumper {
     protected void logWarn() {
         if (!NewHorizonsCoreMod.isModLoaded()) {
             NEIClientUtils.printChatMessage(
-                    new ChatComponentTranslation("nei.options.tools.dump.gt5u.warn_env")
-                            .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.DARK_RED)));
+                    new ChatComponentTranslation("nei.options.tools.dump.gt5u.warn_env").setChatStyle(
+                            new ChatStyle().setColor(EnumChatFormatting.DARK_RED)));
         }
     }
 

@@ -170,8 +170,9 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item
         if (aID >= 0 && aID < 32766 && aID % 2 == 0) {
             GT_LanguageManager.addStringLocalization(getUnlocalizedName() + "." + aID + ".name", aEnglish);
             GT_LanguageManager.addStringLocalization(getUnlocalizedName() + "." + aID + ".tooltip", aToolTip);
-            GT_LanguageManager
-                    .addStringLocalization(getUnlocalizedName() + "." + (aID + 1) + ".name", aEnglish + " (Empty)");
+            GT_LanguageManager.addStringLocalization(
+                    getUnlocalizedName() + "." + (aID + 1) + ".name",
+                    aEnglish + " (Empty)");
             GT_LanguageManager.addStringLocalization(
                     getUnlocalizedName() + "." + (aID + 1) + ".tooltip",
                     "You need to recharge it");
@@ -304,17 +305,16 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item
         GT_Utility.doSoundAtClient(tStats.getEntityHitSound(), 1, 1.0F);
         if (super.onLeftClickEntity(aStack, aPlayer, aEntity)) return true;
         if (aEntity.canAttackWithItem() && !aEntity.hitByEntity(aPlayer)) {
-            float tMagicDamage = tStats
-                    .getMagicDamageAgainstEntity(
-                            aEntity instanceof EntityLivingBase
-                                    ? EnchantmentHelper
-                                            .getEnchantmentModifierLiving(aPlayer, (EntityLivingBase) aEntity)
-                                    : 0.0F,
-                            aEntity,
-                            aStack,
-                            aPlayer),
+            float tMagicDamage = tStats.getMagicDamageAgainstEntity(
+                    aEntity instanceof EntityLivingBase
+                            ? EnchantmentHelper.getEnchantmentModifierLiving(aPlayer, (EntityLivingBase) aEntity)
+                            : 0.0F,
+                    aEntity,
+                    aStack,
+                    aPlayer),
                     tDamage = tStats.getNormalDamageAgainstEntity(
-                            (float) aPlayer.getEntityAttribute(SharedMonsterAttributes.attackDamage).getAttributeValue()
+                            (float) aPlayer.getEntityAttribute(SharedMonsterAttributes.attackDamage)
+                                           .getAttributeValue()
                                     + getToolCombatDamage(aStack),
                             aEntity,
                             aStack,
@@ -352,8 +352,9 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item
                     EnchantmentHelper.func_151385_b(aPlayer, aEntity);
                     if (aEntity instanceof EntityLivingBase)
                         aPlayer.addStat(StatList.damageDealtStat, Math.round(tDamage * 10.0F));
-                    aEntity.hurtResistantTime = Math
-                            .max(1, tStats.getHurtResistanceTime(aEntity.hurtResistantTime, aEntity));
+                    aEntity.hurtResistantTime = Math.max(
+                            1,
+                            tStats.getHurtResistanceTime(aEntity.hurtResistantTime, aEntity));
                     aPlayer.addExhaustion(0.3F);
                     doDamage(aStack, tStats.getToolDamagePerEntityAttack());
                 }
@@ -423,7 +424,8 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item
                 float aBaseEff = (5f + getToolCombatDamage(aStack)) * 1000f;
                 float aOptFlow = (Math.max(
                         Float.MIN_NORMAL,
-                        ((GT_MetaGenerated_Tool) aStack.getItem()).getToolStats(aStack).getSpeedMultiplier()
+                        ((GT_MetaGenerated_Tool) aStack.getItem()).getToolStats(aStack)
+                                                                  .getSpeedMultiplier()
                                 * ((GT_MetaGenerated_Tool) aStack.getItem()).getPrimaryMaterial(aStack).mToolSpeed
                                 * 50F));
                 aList.add(
@@ -434,10 +436,12 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item
                                 " " + formatNumbers(tMaxDamage)) + EnumChatFormatting.GRAY);
                 aList.add(
                         tOffset + 1,
-                        EnumChatFormatting.GRAY + String.format(
-                                transItem("002", "%s lvl %s"),
-                                tMaterial.mLocalizedName + EnumChatFormatting.YELLOW,
-                                "" + getHarvestLevel(aStack, "")) + EnumChatFormatting.GRAY);
+                        EnumChatFormatting.GRAY
+                                + String.format(
+                                        transItem("002", "%s lvl %s"),
+                                        tMaterial.mLocalizedName + EnumChatFormatting.YELLOW,
+                                        "" + getHarvestLevel(aStack, ""))
+                                + EnumChatFormatting.GRAY);
                 aList.add(
                         tOffset + 2,
                         EnumChatFormatting.WHITE
@@ -570,10 +574,12 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item
                                 " " + formatNumbers(tMaxDamage)) + EnumChatFormatting.GRAY);
                 aList.add(
                         tOffset + 1,
-                        EnumChatFormatting.WHITE + String.format(
-                                transItem("002", "%s lvl %s"),
-                                tMaterial.mLocalizedName + EnumChatFormatting.YELLOW,
-                                "" + getHarvestLevel(aStack, "")) + EnumChatFormatting.GRAY);
+                        EnumChatFormatting.WHITE
+                                + String.format(
+                                        transItem("002", "%s lvl %s"),
+                                        tMaterial.mLocalizedName + EnumChatFormatting.YELLOW,
+                                        "" + getHarvestLevel(aStack, ""))
+                                + EnumChatFormatting.GRAY);
                 aList.add(
                         tOffset + 2,
                         EnumChatFormatting.WHITE
@@ -597,7 +603,8 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item
                     aNBT = aNBT.getCompoundTag("GT.ToolStats");
                     if (aNBT != null && aNBT.hasKey("Heat")) {
                         int tHeat = aNBT.getInteger("Heat");
-                        long tWorldTime = aPlayer.getEntityWorld().getWorldTime();
+                        long tWorldTime = aPlayer.getEntityWorld()
+                                                 .getWorldTime();
                         if (aNBT.hasKey("HeatTime")) {
                             long tHeatTime = aNBT.getLong("HeatTime");
                             if (tWorldTime > (tHeatTime + 10)) {
@@ -663,7 +670,9 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item
             return true;
         }
         if (use(aStack, (int) aAmount, null)) {
-            if (java.util.concurrent.ThreadLocalRandom.current().nextInt(0, 25) == 0) {
+            if (java.util.concurrent.ThreadLocalRandom.current()
+                                                      .nextInt(0, 25)
+                    == 0) {
                 long tNewDamage = getToolDamage(aStack) + aAmount;
                 setToolDamage(aStack, tNewDamage);
                 if (tNewDamage >= getToolMaxDamage(aStack)) {

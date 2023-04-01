@@ -123,10 +123,22 @@ public class GT_Block_Ores extends GT_Block_Ores_Abstract {
         Arrays.fill(rTextures, TextureFactory.of(Blocks.stone));
         rTextures[1] = TextureFactory.of(Blocks.netherrack);
         rTextures[2] = TextureFactory.of(Blocks.end_stone);
-        rTextures[3] = TextureFactory.builder().addIcon(GRANITE_BLACK_STONE).stdOrient().build();
-        rTextures[4] = TextureFactory.builder().addIcon(GRANITE_RED_STONE).stdOrient().build();
-        rTextures[5] = TextureFactory.builder().addIcon(MARBLE_STONE).stdOrient().build();
-        rTextures[6] = TextureFactory.builder().addIcon(BASALT_STONE).stdOrient().build();
+        rTextures[3] = TextureFactory.builder()
+                                     .addIcon(GRANITE_BLACK_STONE)
+                                     .stdOrient()
+                                     .build();
+        rTextures[4] = TextureFactory.builder()
+                                     .addIcon(GRANITE_RED_STONE)
+                                     .stdOrient()
+                                     .build();
+        rTextures[5] = TextureFactory.builder()
+                                     .addIcon(MARBLE_STONE)
+                                     .stdOrient()
+                                     .build();
+        rTextures[6] = TextureFactory.builder()
+                                     .addIcon(BASALT_STONE)
+                                     .stdOrient()
+                                     .build();
         return rTextures;
     }
 }

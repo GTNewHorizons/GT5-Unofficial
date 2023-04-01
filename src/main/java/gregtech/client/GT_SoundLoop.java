@@ -61,8 +61,13 @@ public class GT_SoundLoop extends MovingSound {
             volume += VOLUME_RAMP;
         }
         World world = Minecraft.getMinecraft().thePlayer.worldObj;
-        donePlaying = world.provider.dimensionId != worldID || !world
-                .checkChunksExist((int) xPosF, (int) yPosF, (int) zPosF, (int) xPosF, (int) yPosF, (int) zPosF);
+        donePlaying = world.provider.dimensionId != worldID || !world.checkChunksExist(
+                (int) xPosF,
+                (int) yPosF,
+                (int) zPosF,
+                (int) xPosF,
+                (int) yPosF,
+                (int) zPosF);
         if (donePlaying) return;
         TileEntity tile = world.getTileEntity((int) xPosF, (int) yPosF, (int) zPosF);
         if ((tile instanceof IGregTechTileEntity)) {

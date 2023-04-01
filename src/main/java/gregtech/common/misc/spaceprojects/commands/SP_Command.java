@@ -19,8 +19,8 @@ import gregtech.common.misc.spaceprojects.SpaceProjectManager;
  */
 public class SP_Command extends CommandBase {
 
-    private static Set<Pair<EntityPlayerMP, EntityPlayerMP>> invite = Collections
-            .newSetFromMap(new WeakHashMap<Pair<EntityPlayerMP, EntityPlayerMP>, Boolean>());
+    private static Set<Pair<EntityPlayerMP, EntityPlayerMP>> invite = Collections.newSetFromMap(
+            new WeakHashMap<Pair<EntityPlayerMP, EntityPlayerMP>, Boolean>());
     private static Set<EntityPlayerMP> confirm = Collections.newSetFromMap(new WeakHashMap<EntityPlayerMP, Boolean>());
 
     private static final String INVITE = "invite";

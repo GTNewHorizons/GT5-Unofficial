@@ -42,10 +42,12 @@ public class GT_Block_Casings4 extends GT_Block_Casings_Abstract {
 
     public GT_Block_Casings4() {
         super(GT_Item_Casings4.class, "gt.blockcasings4", GT_Material_Casings.INSTANCE, 16);
-        GT_LanguageManager
-                .addStringLocalization(getUnlocalizedName() + ".0.name", "Robust Tungstensteel Machine Casing");
-        GT_LanguageManager
-                .addStringLocalization(getUnlocalizedName() + ".1.name", "Clean Stainless Steel Machine Casing");
+        GT_LanguageManager.addStringLocalization(
+                getUnlocalizedName() + ".0.name",
+                "Robust Tungstensteel Machine Casing");
+        GT_LanguageManager.addStringLocalization(
+                getUnlocalizedName() + ".1.name",
+                "Clean Stainless Steel Machine Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".2.name", "Stable Titanium Machine Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".3.name", "Titanium Firebox Casing");
         // GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".4.name", "Fusion Casing");

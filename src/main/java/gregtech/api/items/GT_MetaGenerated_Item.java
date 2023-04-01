@@ -230,8 +230,9 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements 
             mElectricStats.put(
                     (short) aMetaValue,
                     new Long[] { aMaxCharge, Math.max(0, aTransferLimit), Math.max(-1, aTier), aSpecialData });
-            if (aMetaValue >= mOffset && aUseAnimations) mIconList[aMetaValue - mOffset] = Arrays
-                    .copyOf(mIconList[aMetaValue - mOffset], Math.max(9, mIconList[aMetaValue - mOffset].length));
+            if (aMetaValue >= mOffset && aUseAnimations) mIconList[aMetaValue - mOffset] = Arrays.copyOf(
+                    mIconList[aMetaValue - mOffset],
+                    Math.max(9, mIconList[aMetaValue - mOffset].length));
         }
         return this;
     }
@@ -322,18 +323,18 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements 
         IFoodStat tStat = mFoodStats.get((short) getDamage(aStack));
         if (tStat != null) {
             if (AppleCore.isModLoaded()) {
-                aPlayer.getFoodStats().func_151686_a(
-                        (ItemFood) GT_Utility.callConstructor(
-                                "squeek.applecore.api.food.ItemFoodProxy.ItemFoodProxy",
-                                0,
-                                null,
-                                true,
-                                this),
-                        aStack);
+                aPlayer.getFoodStats()
+                       .func_151686_a(
+                               (ItemFood) GT_Utility.callConstructor(
+                                       "squeek.applecore.api.food.ItemFoodProxy.ItemFoodProxy",
+                                       0,
+                                       null,
+                                       true,
+                                       this),
+                               aStack);
             } else {
-                aPlayer.getFoodStats().addStats(
-                        tStat.getFoodLevel(this, aStack, aPlayer),
-                        tStat.getSaturation(this, aStack, aPlayer));
+                aPlayer.getFoodStats()
+                       .addStats(tStat.getFoodLevel(this, aStack, aPlayer), tStat.getSaturation(this, aStack, aPlayer));
             }
             tStat.onEaten(this, aStack, aPlayer);
         }
@@ -377,8 +378,8 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements 
                 mIconList[i][k] = aIconRegister.registerIcon(
                         RES_PATH_ITEM + (GT_Config.troll ? "troll" : getUnlocalizedName() + "/" + i + "/" + k));
             }
-            mIconList[i][0] = aIconRegister
-                    .registerIcon(RES_PATH_ITEM + (GT_Config.troll ? "troll" : getUnlocalizedName() + "/" + i));
+            mIconList[i][0] = aIconRegister.registerIcon(
+                    RES_PATH_ITEM + (GT_Config.troll ? "troll" : getUnlocalizedName() + "/" + i));
         }
     }
 

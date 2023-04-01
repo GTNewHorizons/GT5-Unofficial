@@ -175,9 +175,10 @@ public class GT_MetaTileEntity_Transformer extends GT_MetaTileEntity_TieredMachi
             for (byte i = 0; i < 6 && aBaseMetaTileEntity.getStoredEU() < aBaseMetaTileEntity.getEUCapacity(); i++)
                 if (aBaseMetaTileEntity.inputEnergyFrom(i)) {
                     TileEntity tTileEntity = aBaseMetaTileEntity.getTileEntityAtSide(i);
-                    if (tTileEntity instanceof IEnergyProvider && ((IEnergyProvider) tTileEntity)
-                            .extractEnergy(ForgeDirection.getOrientation(GT_Utility.getOppositeSide(i)), 1, true)
-                            == 1) {
+                    if (tTileEntity instanceof IEnergyProvider && ((IEnergyProvider) tTileEntity).extractEnergy(
+                            ForgeDirection.getOrientation(GT_Utility.getOppositeSide(i)),
+                            1,
+                            true) == 1) {
                         long tEU = (long) ((IEnergyProvider) tTileEntity).extractEnergy(
                                 ForgeDirection.getOrientation(GT_Utility.getOppositeSide(i)),
                                 GT_Utility.safeInt(maxEUInput() * 100L / GregTech_API.mRFtoEU),
@@ -271,7 +272,8 @@ public class GT_MetaTileEntity_Transformer extends GT_MetaTileEntity_TieredMachi
             IWailaConfigHandler config) {
         final int facing = getBaseMetaTileEntity().getFrontFacing();
         final NBTTagCompound tag = accessor.getNBTData();
-        final int side = (byte) accessor.getSide().ordinal();
+        final int side = (byte) accessor.getSide()
+                                        .ordinal();
         final boolean allowedToWork = tag.getBoolean("isAllowedToWork");
 
         final byte inputTier = GT_Utility.getTier(tag.getLong("maxEUInput"));

@@ -18,6 +18,7 @@ public class GT_PCBFactoryManager {
     }
 
     public static Materials getPlasticMaterialFromTier(int aTier) {
-        return mPlasticTiers.inverse().get(aTier);
+        return mPlasticTiers.inverse()
+                            .get(aTier);
     }
 }

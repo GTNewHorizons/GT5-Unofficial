@@ -74,15 +74,23 @@ public class GT_Network extends MessageToMessageCodec<FMLProxyPacket, GT_Packet>
 
     @Override
     protected void encode(ChannelHandlerContext aContext, GT_Packet aPacket, List<Object> aOutput) throws Exception {
-        final ByteBuf tBuf = Unpooled.buffer().writeByte(aPacket.getPacketID());
+        final ByteBuf tBuf = Unpooled.buffer()
+                                     .writeByte(aPacket.getPacketID());
         aPacket.encode(tBuf);
-        aOutput.add(new FMLProxyPacket(tBuf, aContext.channel().attr(NetworkRegistry.FML_CHANNEL).get()));
+        aOutput.add(
+                new FMLProxyPacket(
+                        tBuf,
+                        aContext.channel()
+                                .attr(NetworkRegistry.FML_CHANNEL)
+                                .get()));
     }
 
     @Override
     protected void decode(ChannelHandlerContext aContext, FMLProxyPacket aPacket, List<Object> aOutput)
             throws Exception {
-        final ByteArrayDataInput aData = ByteStreams.newDataInput(aPacket.payload().array());
+        final ByteArrayDataInput aData = ByteStreams.newDataInput(
+                aPacket.payload()
+                       .array());
         final GT_Packet tPacket = this.mSubChannels[aData.readByte()].decode(aData);
         tPacket.setINetHandler(aPacket.handler());
         aOutput.add(tPacket);
@@ -98,25 +106,35 @@ public class GT_Network extends MessageToMessageCodec<FMLProxyPacket, GT_Packet>
             GT_FML_LOGGER.info("player null");
             return;
         }
-        this.mChannel.get(Side.SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGET)
-                .set(FMLOutboundHandler.OutboundTarget.PLAYER);
-        this.mChannel.get(Side.SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGETARGS).set(aPlayer);
-        this.mChannel.get(Side.SERVER).writeAndFlush(aPacket);
+        this.mChannel.get(Side.SERVER)
+                     .attr(FMLOutboundHandler.FML_MESSAGETARGET)
+                     .set(FMLOutboundHandler.OutboundTarget.PLAYER);
+        this.mChannel.get(Side.SERVER)
+                     .attr(FMLOutboundHandler.FML_MESSAGETARGETARGS)
+                     .set(aPlayer);
+        this.mChannel.get(Side.SERVER)
+                     .writeAndFlush(aPacket);
     }
 
     @Override
     public void sendToAllAround(GT_Packet aPacket, NetworkRegistry.TargetPoint aPosition) {
-        this.mChannel.get(Side.SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGET)
-                .set(FMLOutboundHandler.OutboundTarget.ALLAROUNDPOINT);
-        this.mChannel.get(Side.SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGETARGS).set(aPosition);
-        this.mChannel.get(Side.SERVER).writeAndFlush(aPacket);
+        this.mChannel.get(Side.SERVER)
+                     .attr(FMLOutboundHandler.FML_MESSAGETARGET)
+                     .set(FMLOutboundHandler.OutboundTarget.ALLAROUNDPOINT);
+        this.mChannel.get(Side.SERVER)
+                     .attr(FMLOutboundHandler.FML_MESSAGETARGETARGS)
+                     .set(aPosition);
+        this.mChannel.get(Side.SERVER)
+                     .writeAndFlush(aPacket);
     }
 
     @Override
     public void sendToServer(GT_Packet aPacket) {
-        this.mChannel.get(Side.CLIENT).attr(FMLOutboundHandler.FML_MESSAGETARGET)
-                .set(FMLOutboundHandler.OutboundTarget.TOSERVER);
-        this.mChannel.get(Side.CLIENT).writeAndFlush(aPacket);
+        this.mChannel.get(Side.CLIENT)
+                     .attr(FMLOutboundHandler.FML_MESSAGETARGET)
+                     .set(FMLOutboundHandler.OutboundTarget.TOSERVER);
+        this.mChannel.get(Side.CLIENT)
+                     .writeAndFlush(aPacket);
     }
 
     @Override
@@ -128,8 +146,9 @@ public class GT_Network extends MessageToMessageCodec<FMLProxyPacket, GT_Packet>
                 }
                 EntityPlayerMP tPlayer = (EntityPlayerMP) tObject;
                 Chunk tChunk = aWorld.getChunkFromBlockCoords(aX, aZ);
-                if (tPlayer.getServerForPlayer().getPlayerManager()
-                        .isPlayerWatchingChunk(tPlayer, tChunk.xPosition, tChunk.zPosition)) {
+                if (tPlayer.getServerForPlayer()
+                           .getPlayerManager()
+                           .isPlayerWatchingChunk(tPlayer, tChunk.xPosition, tChunk.zPosition)) {
                     sendToPlayer(aPacket, tPlayer);
                 }
             }

@@ -943,7 +943,7 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
                 if (coverInfo.getCoverID() == 0) {
                     if (GT_Utility.isStackInList(tCurrentItem, GregTech_API.sCovers.keySet())) {
                         if (GregTech_API.getCoverBehaviorNew(tCurrentItem)
-                                .isCoverPlaceable(coverSide, tCurrentItem, this)
+                                        .isCoverPlaceable(coverSide, tCurrentItem, this)
                                 && mMetaTileEntity.allowCoverOnSide(coverSide, new GT_ItemStack(tCurrentItem))) {
                             setCoverItemAtSide(coverSide, tCurrentItem);
                             mMetaTileEntity.markDirty();
@@ -1224,7 +1224,9 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
         if (mTickTimer > 5 && canAccessData()
                 && canMoveFluidOnSide(
                         aSide,
-                        mMetaTileEntity.getFluid() == null ? null : mMetaTileEntity.getFluid().getFluid(),
+                        mMetaTileEntity.getFluid() == null ? null
+                                : mMetaTileEntity.getFluid()
+                                                 .getFluid(),
                         false))
             return mMetaTileEntity.drain(aSide, maxDrain, doDrain);
         return null;

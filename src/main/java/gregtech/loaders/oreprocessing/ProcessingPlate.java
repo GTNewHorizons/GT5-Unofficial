@@ -190,7 +190,8 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
 
             if (GregTech_API.sRecipeFile.get(
                     gregtech.api.enums.ConfigCategories.Tools.hammerdoubleplate,
-                    OrePrefixes.plate.get(aMaterial).toString(),
+                    OrePrefixes.plate.get(aMaterial)
+                                     .toString(),
                     true)) {
 
                 Object aPlateStack = OrePrefixes.plate.get(aMaterial);
@@ -247,7 +248,8 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
 
             if (GregTech_API.sRecipeFile.get(
                     gregtech.api.enums.ConfigCategories.Tools.hammertripleplate,
-                    OrePrefixes.plate.get(aMaterial).toString(),
+                    OrePrefixes.plate.get(aMaterial)
+                                     .toString(),
                     true)) {
 
                 if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
@@ -309,7 +311,8 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
 
             if (GregTech_API.sRecipeFile.get(
                     gregtech.api.enums.ConfigCategories.Tools.hammerquadrupleplate,
-                    OrePrefixes.plate.get(aMaterial).toString(),
+                    OrePrefixes.plate.get(aMaterial)
+                                     .toString(),
                     true)) {
 
                 if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
@@ -358,7 +361,8 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
 
             if (GregTech_API.sRecipeFile.get(
                     gregtech.api.enums.ConfigCategories.Tools.hammerquintupleplate,
-                    OrePrefixes.plate.get(aMaterial).toString(),
+                    OrePrefixes.plate.get(aMaterial)
+                                     .toString(),
                     true)) {
 
                 if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
@@ -547,8 +551,11 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 // If there is an ItemStack of Block for Materials
                 tStack == NI ?
                 // Use Materials mRGBa dyed blocs/materialicons/MATERIALSET/block1 icons
-                        TextureFactory.builder().addIcon(aMaterial.mIconSet.mTextures[TextureSet.INDEX_block1])
-                                .setRGBA(aMaterial.mRGBa).stdOrient().build()
+                        TextureFactory.builder()
+                                      .addIcon(aMaterial.mIconSet.mTextures[TextureSet.INDEX_block1])
+                                      .setRGBA(aMaterial.mRGBa)
+                                      .stdOrient()
+                                      .build()
                         :
                         // or copy Block texture
                         TextureFactory.of(Block.getBlockFromItem(tStack.getItem()), tStack.getItemDamage()),

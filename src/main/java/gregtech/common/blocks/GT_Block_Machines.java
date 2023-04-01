@@ -235,8 +235,14 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
         final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (tTileEntity instanceof IGregTechTileEntity
                 && ((IGregTechTileEntity) tTileEntity).getMetaTileEntity() != null) {
-            ((IGregTechTileEntity) tTileEntity)
-                    .addCollisionBoxesToList(aWorld, aX, aY, aZ, inputAABB, outputAABB, collider);
+            ((IGregTechTileEntity) tTileEntity).addCollisionBoxesToList(
+                    aWorld,
+                    aX,
+                    aY,
+                    aZ,
+                    inputAABB,
+                    outputAABB,
+                    collider);
             return;
         }
         super.addCollisionBoxesToList(aWorld, aX, aY, aZ, inputAABB, outputAABB, collider);
@@ -268,8 +274,11 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
         final TileEntity tTileEntity = blockAccess.getTileEntity(aX, aY, aZ);
         if (tTileEntity instanceof IGregTechTileEntity
                 && (((IGregTechTileEntity) tTileEntity).getMetaTileEntity() != null)) {
-            final AxisAlignedBB bbb = ((IGregTechTileEntity) tTileEntity)
-                    .getCollisionBoundingBoxFromPool(((IGregTechTileEntity) tTileEntity).getWorld(), 0, 0, 0);
+            final AxisAlignedBB bbb = ((IGregTechTileEntity) tTileEntity).getCollisionBoundingBoxFromPool(
+                    ((IGregTechTileEntity) tTileEntity).getWorld(),
+                    0,
+                    0,
+                    0);
             minX = bbb.minX; // This essentially sets block bounds
             minY = bbb.minY;
             minZ = bbb.minZ;
@@ -365,8 +374,12 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
             if ((!aWorld.isRemote) && !((IGregTechTileEntity) tTileEntity).isUseableByPlayer(aPlayer)) {
                 return true;
             }
-            return ((IGregTechTileEntity) tTileEntity)
-                    .onRightclick(aPlayer, (byte) aSide, aOffsetX, aOffsetY, aOffsetZ);
+            return ((IGregTechTileEntity) tTileEntity).onRightclick(
+                    aPlayer,
+                    (byte) aSide,
+                    aOffsetX,
+                    aOffsetY,
+                    aOffsetZ);
         }
         return false;
     }
@@ -424,7 +437,10 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
                                 aZ + XSTR_INSTANCE.nextFloat() * 0.8F + 0.1F,
                                 new ItemStack(tItem.getItem(), tItem.stackSize, tItem.getItemDamage()));
                         if (tItem.hasTagCompound()) {
-                            tItemEntity.getEntityItem().setTagCompound((NBTTagCompound) tItem.getTagCompound().copy());
+                            tItemEntity.getEntityItem()
+                                       .setTagCompound(
+                                               (NBTTagCompound) tItem.getTagCompound()
+                                                                     .copy());
                         }
                         tItemEntity.motionX = (XSTR_INSTANCE.nextGaussian() * 0.05D);
                         tItemEntity.motionY = (XSTR_INSTANCE.nextGaussian() * 0.25D);
@@ -651,13 +667,15 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
             final byte aSide = (byte) side;
             final CoverableTileEntity tile = (CoverableTileEntity) tTileEntity;
             if (side != -1) {
-                final Block facadeBlock = tile.getCoverInfoAtSide(aSide).getFacadeBlock();
+                final Block facadeBlock = tile.getCoverInfoAtSide(aSide)
+                                              .getFacadeBlock();
                 if (facadeBlock != null) return facadeBlock;
             } else {
                 // we do not allow more than one type of facade per block, so no need to check every side
                 // see comment in gregtech.common.covers.GT_Cover_FacadeBase.isCoverPlaceable
                 for (byte tSide : ALL_VALID_SIDES) {
-                    final Block facadeBlock = tile.getCoverInfoAtSide(tSide).getFacadeBlock();
+                    final Block facadeBlock = tile.getCoverInfoAtSide(tSide)
+                                                  .getFacadeBlock();
                     if (facadeBlock != null) {
                         return facadeBlock;
                     }

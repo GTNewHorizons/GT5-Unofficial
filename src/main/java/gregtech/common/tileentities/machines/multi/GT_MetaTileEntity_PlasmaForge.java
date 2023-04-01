@@ -480,19 +480,44 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
     private boolean isMultiChunkloaded = true;
 
     protected static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final IStructureDefinition<GT_MetaTileEntity_PlasmaForge> STRUCTURE_DEFINITION = StructureDefinition
-            .<GT_MetaTileEntity_PlasmaForge>builder().addShape(STRUCTURE_PIECE_MAIN, structure_string)
-            .addElement(
-                    'C',
-                    ofCoil(GT_MetaTileEntity_PlasmaForge::setCoilLevel, GT_MetaTileEntity_PlasmaForge::getCoilLevel))
-            .addElement(
-                    'b',
-                    buildHatchAdder(GT_MetaTileEntity_PlasmaForge.class)
-                            .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Energy, ExoticEnergy, Maintenance)
-                            .casingIndex(DIM_INJECTION_CASING).dot(3)
-                            .buildAndChain(GregTech_API.sBlockCasings1, DIM_INJECTION_CASING))
-            .addElement('N', ofBlock(GregTech_API.sBlockCasings1, DIM_TRANS_CASING))
-            .addElement('s', ofBlock(GregTech_API.sBlockCasings1, DIM_BRIDGE_CASING)).build();
+    private static final IStructureDefinition<GT_MetaTileEntity_PlasmaForge> STRUCTURE_DEFINITION = StructureDefinition.<GT_MetaTileEntity_PlasmaForge>builder()
+                                                                                                                       .addShape(
+                                                                                                                               STRUCTURE_PIECE_MAIN,
+                                                                                                                               structure_string)
+                                                                                                                       .addElement(
+                                                                                                                               'C',
+                                                                                                                               ofCoil(
+                                                                                                                                       GT_MetaTileEntity_PlasmaForge::setCoilLevel,
+                                                                                                                                       GT_MetaTileEntity_PlasmaForge::getCoilLevel))
+                                                                                                                       .addElement(
+                                                                                                                               'b',
+                                                                                                                               buildHatchAdder(
+                                                                                                                                       GT_MetaTileEntity_PlasmaForge.class).atLeast(
+                                                                                                                                               InputHatch,
+                                                                                                                                               OutputHatch,
+                                                                                                                                               InputBus,
+                                                                                                                                               OutputBus,
+                                                                                                                                               Energy,
+                                                                                                                                               ExoticEnergy,
+                                                                                                                                               Maintenance)
+                                                                                                                                                                           .casingIndex(
+                                                                                                                                                                                   DIM_INJECTION_CASING)
+                                                                                                                                                                           .dot(
+                                                                                                                                                                                   3)
+                                                                                                                                                                           .buildAndChain(
+                                                                                                                                                                                   GregTech_API.sBlockCasings1,
+                                                                                                                                                                                   DIM_INJECTION_CASING))
+                                                                                                                       .addElement(
+                                                                                                                               'N',
+                                                                                                                               ofBlock(
+                                                                                                                                       GregTech_API.sBlockCasings1,
+                                                                                                                                       DIM_TRANS_CASING))
+                                                                                                                       .addElement(
+                                                                                                                               's',
+                                                                                                                               ofBlock(
+                                                                                                                                       GregTech_API.sBlockCasings1,
+                                                                                                                                       DIM_BRIDGE_CASING))
+                                                                                                                       .build();
 
     @Override
     protected boolean addBottomHatch(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
@@ -517,87 +542,87 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addInfo("Transcending Dimensional Boundaries.")
-                .addInfo(
-                        "Takes " + EnumChatFormatting.RED
-                                + GT_Utility.formatNumbers(max_efficiency_time_in_ticks / (3600 * 20))
-                                + EnumChatFormatting.GRAY
-                                + " hours of continuous run time to fully breach dimensional")
-                .addInfo("boundaries and achieve maximum efficiency. This reduces fuel")
-                .addInfo(
-                        "consumption by up to " + EnumChatFormatting.RED
-                                + GT_Utility.formatNumbers(100 * maximum_discount)
-                                + "%"
-                                + EnumChatFormatting.GRAY
-                                + ". Supports overclocking beyond MAX voltage.")
-                .addInfo(AuthorColen).addSeparator().beginStructureBlock(33, 24, 33, false)
-                .addStructureInfo("DTPF Structure is too complex! See schematic for details.")
-                .addStructureInfo(
-                        EnumChatFormatting.GOLD + "2,112" + EnumChatFormatting.GRAY + " Heating coils required.")
-                .addStructureInfo(
-                        EnumChatFormatting.GOLD + "120"
-                                + EnumChatFormatting.GRAY
-                                + " Dimensional bridge blocks required.")
-                .addStructureInfo(
-                        EnumChatFormatting.GOLD + "1,270"
-                                + EnumChatFormatting.GRAY
-                                + " Dimensional injection casings required.")
-                .addStructureInfo(
-                        EnumChatFormatting.GOLD + "2,121"
-                                + EnumChatFormatting.GRAY
-                                + " Dimensionally transcendent casings required.")
-                .addStructureInfo("--------------------------------------------")
-                .addStructureInfo(
-                        "Requires " + EnumChatFormatting.GOLD
-                                + "1"
-                                + EnumChatFormatting.GRAY
-                                + "-"
-                                + EnumChatFormatting.GOLD
-                                + "2"
-                                + EnumChatFormatting.GRAY
-                                + " energy hatches or "
-                                + EnumChatFormatting.GOLD
-                                + "1"
-                                + EnumChatFormatting.GRAY
-                                + " TT energy hatch.")
-                .addStructureInfo(
-                        "Requires " + EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " maintenance hatch.")
-                .addStructureInfo(
-                        "Requires " + EnumChatFormatting.GOLD
-                                + min_input_hatch
-                                + EnumChatFormatting.GRAY
-                                + "-"
-                                + EnumChatFormatting.GOLD
-                                + max_input_hatch
-                                + EnumChatFormatting.GRAY
-                                + " input hatches.")
-                .addStructureInfo(
-                        "Requires " + EnumChatFormatting.GOLD
-                                + min_output_hatch
-                                + EnumChatFormatting.GRAY
-                                + "-"
-                                + EnumChatFormatting.GOLD
-                                + max_output_hatch
-                                + EnumChatFormatting.GRAY
-                                + " output hatches.")
-                .addStructureInfo(
-                        "Requires " + EnumChatFormatting.GOLD
-                                + min_input_bus
-                                + EnumChatFormatting.GRAY
-                                + "-"
-                                + EnumChatFormatting.GOLD
-                                + max_input_bus
-                                + EnumChatFormatting.GRAY
-                                + " input busses.")
-                .addStructureInfo(
-                        "Requires " + EnumChatFormatting.GOLD
-                                + min_output_bus
-                                + EnumChatFormatting.GRAY
-                                + "-"
-                                + EnumChatFormatting.GOLD
-                                + max_input_bus
-                                + EnumChatFormatting.GRAY
-                                + " output busses.")
-                .addStructureInfo("--------------------------------------------").toolTipFinisher("Gregtech");
+          .addInfo(
+                  "Takes " + EnumChatFormatting.RED
+                          + GT_Utility.formatNumbers(max_efficiency_time_in_ticks / (3600 * 20))
+                          + EnumChatFormatting.GRAY
+                          + " hours of continuous run time to fully breach dimensional")
+          .addInfo("boundaries and achieve maximum efficiency. This reduces fuel")
+          .addInfo(
+                  "consumption by up to " + EnumChatFormatting.RED
+                          + GT_Utility.formatNumbers(100 * maximum_discount)
+                          + "%"
+                          + EnumChatFormatting.GRAY
+                          + ". Supports overclocking beyond MAX voltage.")
+          .addInfo(AuthorColen)
+          .addSeparator()
+          .beginStructureBlock(33, 24, 33, false)
+          .addStructureInfo("DTPF Structure is too complex! See schematic for details.")
+          .addStructureInfo(EnumChatFormatting.GOLD + "2,112" + EnumChatFormatting.GRAY + " Heating coils required.")
+          .addStructureInfo(
+                  EnumChatFormatting.GOLD + "120" + EnumChatFormatting.GRAY + " Dimensional bridge blocks required.")
+          .addStructureInfo(
+                  EnumChatFormatting.GOLD + "1,270"
+                          + EnumChatFormatting.GRAY
+                          + " Dimensional injection casings required.")
+          .addStructureInfo(
+                  EnumChatFormatting.GOLD + "2,121"
+                          + EnumChatFormatting.GRAY
+                          + " Dimensionally transcendent casings required.")
+          .addStructureInfo("--------------------------------------------")
+          .addStructureInfo(
+                  "Requires " + EnumChatFormatting.GOLD
+                          + "1"
+                          + EnumChatFormatting.GRAY
+                          + "-"
+                          + EnumChatFormatting.GOLD
+                          + "2"
+                          + EnumChatFormatting.GRAY
+                          + " energy hatches or "
+                          + EnumChatFormatting.GOLD
+                          + "1"
+                          + EnumChatFormatting.GRAY
+                          + " TT energy hatch.")
+          .addStructureInfo(
+                  "Requires " + EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " maintenance hatch.")
+          .addStructureInfo(
+                  "Requires " + EnumChatFormatting.GOLD
+                          + min_input_hatch
+                          + EnumChatFormatting.GRAY
+                          + "-"
+                          + EnumChatFormatting.GOLD
+                          + max_input_hatch
+                          + EnumChatFormatting.GRAY
+                          + " input hatches.")
+          .addStructureInfo(
+                  "Requires " + EnumChatFormatting.GOLD
+                          + min_output_hatch
+                          + EnumChatFormatting.GRAY
+                          + "-"
+                          + EnumChatFormatting.GOLD
+                          + max_output_hatch
+                          + EnumChatFormatting.GRAY
+                          + " output hatches.")
+          .addStructureInfo(
+                  "Requires " + EnumChatFormatting.GOLD
+                          + min_input_bus
+                          + EnumChatFormatting.GRAY
+                          + "-"
+                          + EnumChatFormatting.GOLD
+                          + max_input_bus
+                          + EnumChatFormatting.GRAY
+                          + " input busses.")
+          .addStructureInfo(
+                  "Requires " + EnumChatFormatting.GOLD
+                          + min_output_bus
+                          + EnumChatFormatting.GRAY
+                          + "-"
+                          + EnumChatFormatting.GOLD
+                          + max_input_bus
+                          + EnumChatFormatting.GRAY
+                          + " output busses.")
+          .addStructureInfo("--------------------------------------------")
+          .toolTipFinisher("Gregtech");
         return tt;
     }
 
@@ -611,11 +636,20 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
             boolean aActive, boolean aRedstone) {
         if (aSide == aFacing) {
-            if (aActive) return new ITexture[] { casingTexturePages[0][DIM_BRIDGE_CASING],
-                    TextureFactory.builder().addIcon(OVERLAY_DTPF_ON).extFacing().build(),
-                    TextureFactory.builder().addIcon(OVERLAY_FUSION1_GLOW).extFacing().glow().build() };
-            return new ITexture[] { casingTexturePages[0][DIM_BRIDGE_CASING],
-                    TextureFactory.builder().addIcon(OVERLAY_DTPF_OFF).extFacing().build() };
+            if (aActive) return new ITexture[] { casingTexturePages[0][DIM_BRIDGE_CASING], TextureFactory.builder()
+                                                                                                         .addIcon(
+                                                                                                                 OVERLAY_DTPF_ON)
+                                                                                                         .extFacing()
+                                                                                                         .build(),
+                    TextureFactory.builder()
+                                  .addIcon(OVERLAY_FUSION1_GLOW)
+                                  .extFacing()
+                                  .glow()
+                                  .build() };
+            return new ITexture[] { casingTexturePages[0][DIM_BRIDGE_CASING], TextureFactory.builder()
+                                                                                            .addIcon(OVERLAY_DTPF_OFF)
+                                                                                            .extFacing()
+                                                                                            .build() };
         }
         return new ITexture[] { casingTexturePages[0][DIM_BRIDGE_CASING] };
     }
@@ -658,8 +692,12 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
         long tTotalEU = GT_ExoticEnergyInputHelper.getTotalEuMulti(getExoticAndNormalEnergyHatchList());
 
         // Look up recipe. If not found it will return null.
-        GT_Recipe tRecipe_0 = GT_Recipe.GT_Recipe_Map.sPlasmaForgeRecipes
-                .findRecipe(getBaseMetaTileEntity(), false, tTotalEU, tFluids, tItems);
+        GT_Recipe tRecipe_0 = GT_Recipe.GT_Recipe_Map.sPlasmaForgeRecipes.findRecipe(
+                getBaseMetaTileEntity(),
+                false,
+                tTotalEU,
+                tFluids,
+                tItems);
 
         // Check if recipe found.
         if (tRecipe_0 == null) return false;
@@ -808,8 +846,10 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
 
         for (GT_MetaTileEntity_Hatch tHatch : mExoticEnergyHatches) {
             if (isValidMetaTileEntity(tHatch)) {
-                storedEnergy += tHatch.getBaseMetaTileEntity().getStoredEU();
-                maxEnergy += tHatch.getBaseMetaTileEntity().getEUCapacity();
+                storedEnergy += tHatch.getBaseMetaTileEntity()
+                                      .getStoredEU();
+                maxEnergy += tHatch.getBaseMetaTileEntity()
+                                   .getEUCapacity();
             }
         }
 
@@ -840,14 +880,14 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
                 StatCollector.translateToLocal("GT5U.multiblock.mei") + ": "
                         + EnumChatFormatting.YELLOW
                         + GT_Utility.formatNumbers(
-                                GT_ExoticEnergyInputHelper
-                                        .getAverageInputVoltageMulti(getExoticAndNormalEnergyHatchList()))
+                                GT_ExoticEnergyInputHelper.getAverageInputVoltageMulti(
+                                        getExoticAndNormalEnergyHatchList()))
                         + EnumChatFormatting.RESET
                         + " EU/t(*"
                         + EnumChatFormatting.YELLOW
                         + GT_Utility.formatNumbers(
-                                GT_ExoticEnergyInputHelper
-                                        .getMaxWorkingInputAmpsMulti(getExoticAndNormalEnergyHatchList()))
+                                GT_ExoticEnergyInputHelper.getMaxWorkingInputAmpsMulti(
+                                        getExoticAndNormalEnergyHatchList()))
                         + EnumChatFormatting.RESET
                         + "A) "
                         + StatCollector.translateToLocal("GT5U.machines.tier")

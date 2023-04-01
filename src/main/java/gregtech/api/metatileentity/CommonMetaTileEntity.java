@@ -34,7 +34,8 @@ public abstract class CommonMetaTileEntity extends CoverableTileEntity implement
             GT_Log.err.println("MetaID " + aID + " not loadable => locking TileEntity!");
         } else {
             if (hasValidMetaTileEntity()) getMetaTileEntity().setBaseMetaTileEntity(null);
-            GregTech_API.METATILEENTITIES[aID].newMetaEntity(this).setBaseMetaTileEntity(this);
+            GregTech_API.METATILEENTITIES[aID].newMetaEntity(this)
+                                              .setBaseMetaTileEntity(this);
             mTickTimer = 0;
             mID = aID;
             return true;

@@ -34,28 +34,52 @@ public class GT_MetaTileEntity_PotionBrewer extends GT_MetaTileEntity_BasicMachi
                 "",
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_SIDE_POTIONBREWER_ACTIVE),
-                        TextureFactory.builder().addIcon(OVERLAY_SIDE_POTIONBREWER_ACTIVE_GLOW).glow().build()),
+                        TextureFactory.builder()
+                                      .addIcon(OVERLAY_SIDE_POTIONBREWER_ACTIVE_GLOW)
+                                      .glow()
+                                      .build()),
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_SIDE_POTIONBREWER),
-                        TextureFactory.builder().addIcon(OVERLAY_SIDE_POTIONBREWER_GLOW).glow().build()),
+                        TextureFactory.builder()
+                                      .addIcon(OVERLAY_SIDE_POTIONBREWER_GLOW)
+                                      .glow()
+                                      .build()),
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_FRONT_POTIONBREWER_ACTIVE),
-                        TextureFactory.builder().addIcon(OVERLAY_FRONT_POTIONBREWER_ACTIVE_GLOW).glow().build()),
+                        TextureFactory.builder()
+                                      .addIcon(OVERLAY_FRONT_POTIONBREWER_ACTIVE_GLOW)
+                                      .glow()
+                                      .build()),
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_FRONT_POTIONBREWER),
-                        TextureFactory.builder().addIcon(OVERLAY_FRONT_POTIONBREWER_GLOW).glow().build()),
+                        TextureFactory.builder()
+                                      .addIcon(OVERLAY_FRONT_POTIONBREWER_GLOW)
+                                      .glow()
+                                      .build()),
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_TOP_POTIONBREWER_ACTIVE),
-                        TextureFactory.builder().addIcon(OVERLAY_TOP_POTIONBREWER_ACTIVE_GLOW).glow().build()),
+                        TextureFactory.builder()
+                                      .addIcon(OVERLAY_TOP_POTIONBREWER_ACTIVE_GLOW)
+                                      .glow()
+                                      .build()),
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_TOP_POTIONBREWER),
-                        TextureFactory.builder().addIcon(OVERLAY_TOP_POTIONBREWER_GLOW).glow().build()),
+                        TextureFactory.builder()
+                                      .addIcon(OVERLAY_TOP_POTIONBREWER_GLOW)
+                                      .glow()
+                                      .build()),
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_BOTTOM_POTIONBREWER_ACTIVE),
-                        TextureFactory.builder().addIcon(OVERLAY_BOTTOM_POTIONBREWER_ACTIVE_GLOW).glow().build()),
+                        TextureFactory.builder()
+                                      .addIcon(OVERLAY_BOTTOM_POTIONBREWER_ACTIVE_GLOW)
+                                      .glow()
+                                      .build()),
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_BOTTOM_POTIONBREWER),
-                        TextureFactory.builder().addIcon(OVERLAY_BOTTOM_POTIONBREWER_GLOW).glow().build()));
+                        TextureFactory.builder()
+                                      .addIcon(OVERLAY_BOTTOM_POTIONBREWER_GLOW)
+                                      .glow()
+                                      .build()));
     }
 
     public GT_MetaTileEntity_PotionBrewer(String aName, int aTier, String aDescription, ITexture[][][] aTextures,
@@ -98,7 +122,8 @@ public class GT_MetaTileEntity_PotionBrewer extends GT_MetaTileEntity_BasicMachi
 
         FluidStack aFluid = getFillableStack();
         if ((getDrainableStack() == null) && (aFluid != null) && (getInputAt(0) != null)) {
-            String tInputName = aFluid.getFluid().getName();
+            String tInputName = aFluid.getFluid()
+                                      .getName();
             if (tInputName.startsWith("potion.")) {
                 tInputName = tInputName.replaceFirst("potion.", "");
                 int tFirstDot = tInputName.indexOf('.') + 1;
@@ -194,7 +219,10 @@ public class GT_MetaTileEntity_PotionBrewer extends GT_MetaTileEntity_BasicMachi
 
     @Override
     public boolean isFluidInputAllowed(FluidStack aFluid) {
-        return (aFluid.getFluid().getName().startsWith("potion.")) || (super.isFluidInputAllowed(aFluid));
+        return (aFluid.getFluid()
+                      .getName()
+                      .startsWith("potion."))
+                || (super.isFluidInputAllowed(aFluid));
     }
 
     @Override

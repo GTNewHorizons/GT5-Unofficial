@@ -134,7 +134,8 @@ public class GT_Forestry_Compat {
                 int i = 0;
                 for (Map.Entry<ItemStack, Float> entry : outputs.entrySet()) {
                     tChances[i] = (int) (entry.getValue() * 10000);
-                    tOutputs[i] = entry.getKey().copy();
+                    tOutputs[i] = entry.getKey()
+                                       .copy();
                     i++;
                 }
                 GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes.addRecipe(

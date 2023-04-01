@@ -52,8 +52,14 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                     }
                 }
                 GT_RecipeRegistrator.registerReverseFluidSmelting(aStack, aMaterial, aPrefix.mMaterialAmount, null);
-                GT_RecipeRegistrator
-                        .registerReverseMacerating(aStack, aMaterial, aPrefix.mMaterialAmount, null, null, null, false);
+                GT_RecipeRegistrator.registerReverseMacerating(
+                        aStack,
+                        aMaterial,
+                        aPrefix.mMaterialAmount,
+                        null,
+                        null,
+                        null,
+                        false);
                 if (aMaterial.mSmeltInto.mArcSmeltInto != aMaterial) {
                     GT_RecipeRegistrator.registerReverseArcSmelting(
                             GT_Utility.copyAmount(1L, aStack),
@@ -141,8 +147,10 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
 
                     // Enable crafting with hammer if tier is < IV.
                     if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
-                        if (aSpecialRecipeReq && GregTech_API.sRecipeFile
-                                .get(ConfigCategories.Tools.hammermultiingot, aMaterial.toString(), true)) {
+                        if (aSpecialRecipeReq && GregTech_API.sRecipeFile.get(
+                                ConfigCategories.Tools.hammermultiingot,
+                                aMaterial.toString(),
+                                true)) {
                             GT_ModHandler.addCraftingRecipe(
                                     GT_OreDictUnificator.get(OrePrefixes.ingotDouble, aMaterial, 1L),
                                     GT_Proxy.tBits,
@@ -164,8 +172,10 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                             (int) Math.max(aMaterialMass * 3L, 1L),
                             calculateRecipeEU(aMaterial, 96));
                     if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
-                        if (aSpecialRecipeReq && GregTech_API.sRecipeFile
-                                .get(ConfigCategories.Tools.hammermultiingot, aMaterial.toString(), true)) {
+                        if (aSpecialRecipeReq && GregTech_API.sRecipeFile.get(
+                                ConfigCategories.Tools.hammermultiingot,
+                                aMaterial.toString(),
+                                true)) {
                             GT_ModHandler.addCraftingRecipe(
                                     GT_OreDictUnificator.get(OrePrefixes.ingotTriple, aMaterial, 1L),
                                     GT_Proxy.tBits,
@@ -185,8 +195,10 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
 
                     // If tier < IV add manual crafting.
                     if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
-                        if (aSpecialRecipeReq && GregTech_API.sRecipeFile
-                                .get(ConfigCategories.Tools.hammermultiingot, aMaterial.toString(), true)) {
+                        if (aSpecialRecipeReq && GregTech_API.sRecipeFile.get(
+                                ConfigCategories.Tools.hammermultiingot,
+                                aMaterial.toString(),
+                                true)) {
                             GT_ModHandler.addCraftingRecipe(
                                     GT_OreDictUnificator.get(OrePrefixes.ingotQuadruple, aMaterial, 1L),
                                     GT_Proxy.tBits,
@@ -205,8 +217,10 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                             calculateRecipeEU(aMaterial, 96));
 
                     if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
-                        if (aSpecialRecipeReq && GregTech_API.sRecipeFile
-                                .get(ConfigCategories.Tools.hammermultiingot, aMaterial.toString(), true)) {
+                        if (aSpecialRecipeReq && GregTech_API.sRecipeFile.get(
+                                ConfigCategories.Tools.hammermultiingot,
+                                aMaterial.toString(),
+                                true)) {
                             GT_ModHandler.addCraftingRecipe(
                                     GT_OreDictUnificator.get(OrePrefixes.ingotQuintuple, aMaterial, 1L),
                                     GT_Proxy.tBits,

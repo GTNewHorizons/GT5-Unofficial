@@ -141,8 +141,8 @@ public class FluidDisplaySlotWidget extends SlotWidget {
         ItemStack ret = null;
         if (actionRealClick == Action.TRANSFER) {
             if (fluidAccessConstructor == null) {
-                GT_Mod.GT_FML_LOGGER
-                        .warn("FluidDisplaySlotWidget is asked to transfer fluid, but fluidAccessConstructor is null!");
+                GT_Mod.GT_FML_LOGGER.warn(
+                        "FluidDisplaySlotWidget is asked to transfer fluid, but fluidAccessConstructor is null!");
                 return null;
             }
             ret = transferFluid(
@@ -238,7 +238,9 @@ public class FluidDisplaySlotWidget extends SlotWidget {
     protected static ItemStack fillFluid(IFluidAccess aFluidAccess, EntityPlayer aPlayer, FluidStack aFluidHeld,
             boolean aProcessFullStack) {
         // we are not using aMachine.fill() here any more, so we need to check for fluid type here ourselves
-        if (aFluidAccess.get() != null && !aFluidAccess.get().isFluidEqual(aFluidHeld)) return null;
+        if (aFluidAccess.get() != null && !aFluidAccess.get()
+                                                       .isFluidEqual(aFluidHeld))
+            return null;
         ItemStack tStackHeld = aPlayer.inventory.getItemStack();
         ItemStack tStackSizedOne = GT_Utility.copyAmount(1, tStackHeld);
         if (tStackSizedOne == null) return null;

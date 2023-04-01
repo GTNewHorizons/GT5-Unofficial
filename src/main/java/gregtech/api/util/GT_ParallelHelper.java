@@ -319,7 +319,8 @@ public class GT_ParallelHelper {
                         if (mRecipe.getOutput(i) == null) {
                             mItemOutputs[i] = null;
                         } else {
-                            ItemStack tItem = mRecipe.getOutput(i).copy();
+                            ItemStack tItem = mRecipe.getOutput(i)
+                                                     .copy();
                             tItem.stackSize *= mCurrentParallel;
                             mItemOutputs[i] = tItem;
                         }
@@ -332,7 +333,8 @@ public class GT_ParallelHelper {
                     if (mRecipe.getFluidOutput(i) == null) {
                         mFluidOutputs[i] = null;
                     } else {
-                        FluidStack tFluid = mRecipe.getFluidOutput(i).copy();
+                        FluidStack tFluid = mRecipe.getFluidOutput(i)
+                                                   .copy();
                         tFluid.amount *= mCurrentParallel;
                         mFluidOutputs[i] = tFluid;
                     }
@@ -392,7 +394,9 @@ public class GT_ParallelHelper {
                             continue;
                         }
                         if (tHatch.isFluidLocked() && tLockedFluidName != null
-                                && !tLockedFluidName.equals(tFluidOutput.getFluid().getName())) {
+                                && !tLockedFluidName.equals(
+                                        tFluidOutput.getFluid()
+                                                    .getName())) {
                             continue;
                         }
                     }

@@ -66,7 +66,10 @@ public class GT_MetaTileEntity_Regulator extends GT_MetaTileEntity_Buffer implem
     public ITexture getOverlayIcon() {
         return TextureFactory.of(
                 TextureFactory.of(AUTOMATION_REGULATOR),
-                TextureFactory.builder().addIcon(AUTOMATION_REGULATOR_GLOW).glow().build());
+                TextureFactory.builder()
+                              .addIcon(AUTOMATION_REGULATOR_GLOW)
+                              .glow()
+                              .build());
     }
 
     @Override
@@ -171,21 +174,33 @@ public class GT_MetaTileEntity_Regulator extends GT_MetaTileEntity_Buffer implem
         addEmitEnergyButton(builder);
         builder.widget(createChargerSlot(43, 62));
         builder.widget(
-                new DrawableWidget().setDrawable(GT_UITextures.PICTURE_ARROW_22_RED.apply(84, true)).setPos(65, 60)
-                        .setSize(84, 22))
-                .widget(SlotGroup.ofItemHandler(inventoryHandler, 3).startFromSlot(0).endAtSlot(8).build().setPos(7, 5))
-                .widget(
-                        new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SLOTS_HOLO_3BY3).setPos(62, 5)
-                                .setSize(54, 54))
-                .widget(
-                        SlotGroup.ofItemHandler(inventoryHandler, 3).phantom(true).startFromSlot(9).endAtSlot(17)
+                new DrawableWidget().setDrawable(GT_UITextures.PICTURE_ARROW_22_RED.apply(84, true))
+                                    .setPos(65, 60)
+                                    .setSize(84, 22))
+               .widget(
+                       SlotGroup.ofItemHandler(inventoryHandler, 3)
+                                .startFromSlot(0)
+                                .endAtSlot(8)
+                                .build()
+                                .setPos(7, 5))
+               .widget(
+                       new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SLOTS_HOLO_3BY3)
+                                           .setPos(62, 5)
+                                           .setSize(54, 54))
+               .widget(
+                       SlotGroup.ofItemHandler(inventoryHandler, 3)
+                                .phantom(true)
+                                .startFromSlot(9)
+                                .endAtSlot(17)
                                 .applyForWidget(
                                         widget -> widget.setControlsAmount(true)
-                                                .setBackground(GT_UITextures.TRANSPARENT))
-                                .build().setPos(62, 5))
-                .widget(
-                        new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SLOTS_HOLO_3BY3).setPos(117, 5)
-                                .setSize(54, 54));
+                                                        .setBackground(GT_UITextures.TRANSPARENT))
+                                .build()
+                                .setPos(62, 5))
+               .widget(
+                       new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SLOTS_HOLO_3BY3)
+                                           .setPos(117, 5)
+                                           .setSize(54, 54));
 
         int xBase = 117, yBase = 5;
         for (int i = 0; i < mTargetSlots.length; i++) {
@@ -202,10 +217,12 @@ public class GT_MetaTileEntity_Regulator extends GT_MetaTileEntity_Buffer implem
                                     mTargetSlots[index]
                                             + (clickData.mouseButton == 0 ? -1 : 1) * (clickData.shift ? 16 : 1)));
                 }
-            }.setBackground(GT_UITextures.TRANSPARENT).setPos(xPos, yPos)).widget(
-                    TextWidget.dynamicString(() -> String.valueOf(mTargetSlots[index]))
-                            .setDefaultColor(COLOR_TEXT_WHITE.get())
-                            .setPos(xPos + 2 + (i % 3 == 0 ? 1 : 0), yPos + 3 + (i / 3 == 0 ? 1 : 0)));
+            }.setBackground(GT_UITextures.TRANSPARENT)
+             .setPos(xPos, yPos))
+                   .widget(
+                           TextWidget.dynamicString(() -> String.valueOf(mTargetSlots[index]))
+                                     .setDefaultColor(COLOR_TEXT_WHITE.get())
+                                     .setPos(xPos + 2 + (i % 3 == 0 ? 1 : 0), yPos + 3 + (i / 3 == 0 ? 1 : 0)));
         }
     }
 }

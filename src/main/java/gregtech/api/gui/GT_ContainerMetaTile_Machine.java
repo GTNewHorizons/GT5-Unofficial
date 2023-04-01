@@ -265,8 +265,9 @@ public class GT_ContainerMetaTile_Machine extends GT_Container {
                     List<ItemStack> tCircuits = ccs.getConfigurationCircuits();
                     int index = GT_Utility.findMatchingStackInList(tCircuits, cursorStack);
                     if (index < 0) {
-                        int curIndex = GT_Utility
-                                .findMatchingStackInList(tCircuits, machine.getStackInSlot(ccs.getCircuitSlot())) + 1;
+                        int curIndex = GT_Utility.findMatchingStackInList(
+                                tCircuits,
+                                machine.getStackInSlot(ccs.getCircuitSlot())) + 1;
                         if (aMouseclick == 0) {
                             curIndex += 1;
                         } else {

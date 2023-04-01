@@ -1499,8 +1499,10 @@ public class Textures {
                         BLOCK_TRANSCENDENTMETAL, BLOCK_ORIHARUKON, BLOCK_WHITEDWARFMATTER, BLOCK_BLACKDWARFMATTER,
                         BLOCK_UNIVERSIUM };
 
-        public static final ITexture[] HIDDEN_TEXTURE = {
-                TextureFactory.builder().addIcon(HIDDEN_FACE).stdOrient().build() };
+        public static final ITexture[] HIDDEN_TEXTURE = { TextureFactory.builder()
+                                                                        .addIcon(HIDDEN_FACE)
+                                                                        .stdOrient()
+                                                                        .build() };
         public static final ITexture[] ERROR_RENDERING = { TextureFactory.of(RENDERING_ERROR) };
         public static final ITexture[] OVERLAYS_ENERGY_IN = {
                 TextureFactory.of(OVERLAY_ENERGY_IN, new short[] { 180, 180, 180, 0 }),

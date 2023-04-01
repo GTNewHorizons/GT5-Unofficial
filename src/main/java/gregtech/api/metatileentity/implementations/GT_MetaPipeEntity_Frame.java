@@ -19,8 +19,9 @@ import gregtech.api.util.GT_OreDictUnificator;
 
 public class GT_MetaPipeEntity_Frame extends MetaPipeEntity {
 
-    private static final String localizedDescFormat = GT_LanguageManager
-            .addStringLocalization("gt.blockmachines.gt_frame.desc.format", "Just something you can put covers on.");
+    private static final String localizedDescFormat = GT_LanguageManager.addStringLocalization(
+            "gt.blockmachines.gt_frame.desc.format",
+            "Just something you can put covers on.");
     public final Materials mMaterial;
 
     public GT_MetaPipeEntity_Frame(int aID, String aName, String aNameRegional, Materials aMaterial) {

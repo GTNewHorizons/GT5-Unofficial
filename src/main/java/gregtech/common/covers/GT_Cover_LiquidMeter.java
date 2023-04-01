@@ -66,10 +66,9 @@ public class GT_Cover_LiquidMeter extends GT_CoverBehaviorBase<GT_Cover_LiquidMe
             if (tanks != null) {
                 for (FluidTankInfo tank : tanks) {
                     if (tank != null) {
-                        if (tileEntity instanceof BaseMetaTileEntity && ((BaseMetaTileEntity) tileEntity)
-                                .getMetaTileEntity() instanceof GT_MetaTileEntity_DigitalTankBase) {
-                            max += ((GT_MetaTileEntity_DigitalTankBase) ((BaseMetaTileEntity) tileEntity)
-                                    .getMetaTileEntity()).getRealCapacity();
+                        if (tileEntity instanceof BaseMetaTileEntity
+                                && ((BaseMetaTileEntity) tileEntity).getMetaTileEntity() instanceof GT_MetaTileEntity_DigitalTankBase) {
+                            max += ((GT_MetaTileEntity_DigitalTankBase) ((BaseMetaTileEntity) tileEntity).getMetaTileEntity()).getRealCapacity();
                         } else max += tank.capacity;
                         FluidStack tLiquid = tank.fluid;
                         if (tLiquid != null) {
@@ -196,60 +195,75 @@ public class GT_Cover_LiquidMeter extends GT_CoverBehaviorBase<GT_Cover_LiquidMe
             final int maxCapacity;
 
             if (getUIBuildContext().getTile() instanceof IFluidHandler) {
-                FluidTankInfo[] tanks = ((IFluidHandler) getUIBuildContext().getTile())
-                        .getTankInfo(ForgeDirection.UNKNOWN);
-                maxCapacity = Arrays.stream(tanks).mapToInt(tank -> tank.capacity).sum();
+                FluidTankInfo[] tanks = ((IFluidHandler) getUIBuildContext().getTile()).getTankInfo(
+                        ForgeDirection.UNKNOWN);
+                maxCapacity = Arrays.stream(tanks)
+                                    .mapToInt(tank -> tank.capacity)
+                                    .sum();
             } else {
                 maxCapacity = -1;
             }
 
             builder.widget(
-                    new CoverDataControllerWidget<>(this::getCoverData, this::setCoverData, GT_Cover_LiquidMeter.this)
-                            .addFollower(
+                    new CoverDataControllerWidget<>(
+                            this::getCoverData,
+                            this::setCoverData,
+                            GT_Cover_LiquidMeter.this).addFollower(
                                     CoverDataFollower_ToggleButtonWidget.ofRedstone(),
                                     coverData -> coverData.inverted,
                                     (coverData, state) -> {
                                         coverData.inverted = state;
                                         return coverData;
                                     },
-                                    widget -> widget.addTooltip(0, NORMAL).addTooltip(1, INVERTED)
-                                            .setPos(spaceX * 0, spaceY * 0))
-                            .addFollower(
-                                    CoverDataFollower_ToggleButtonWidget.ofRedstone(),
-                                    coverData -> coverData.strong,
-                                    (coverData, state) -> {
-                                        coverData.strong = state;
-                                        return coverData;
-                                    },
-                                    widget -> widget.addTooltip(0, WEAK).addTooltip(1, STRONG)
-                                            .setPos(spaceX * 0, spaceY * 1))
-                            .addFollower(
-                                    new CoverDataFollower_TextFieldWidget<>(),
-                                    coverData -> String.valueOf(coverData.threshold),
-                                    (coverData, state) -> {
-                                        coverData.threshold = (int) MathExpression.parseMathExpression(state);
-                                        return coverData;
-                                    },
-                                    widget -> widget.setOnScrollNumbers(1000, 100, 100000)
-                                            .setNumbers(0, maxCapacity > 0 ? maxCapacity : Integer.MAX_VALUE)
-                                            .setFocusOnGuiOpen(true).setPos(spaceX * 0, spaceY * 2 + 2)
-                                            .setSize(spaceX * 4 + 5, 12))
-                            .setPos(startX, startY))
-                    .widget(
-                            TextWidget.dynamicString(
-                                    () -> getCoverData() != null ? getCoverData().inverted ? INVERTED : NORMAL : "")
-                                    .setSynced(false).setDefaultColor(COLOR_TEXT_GRAY.get())
-                                    .setPos(startX + spaceX * 1, 4 + startY + spaceY * 0))
-                    .widget(
-                            TextWidget
-                                    .dynamicString(
-                                            () -> getCoverData() != null ? getCoverData().strong ? STRONG : WEAK : "")
-                                    .setSynced(false).setDefaultColor(COLOR_TEXT_GRAY.get())
-                                    .setPos(startX + spaceX * 1, 4 + startY + spaceY * 1))
-                    .widget(
-                            new TextWidget(GT_Utility.trans("222", "Fluid threshold"))
-                                    .setDefaultColor(COLOR_TEXT_GRAY.get())
-                                    .setPos(startX + spaceX * 5 - 10, startY + spaceY * 2 + 4));
+                                    widget -> widget.addTooltip(0, NORMAL)
+                                                    .addTooltip(1, INVERTED)
+                                                    .setPos(spaceX * 0, spaceY * 0))
+                                                      .addFollower(
+                                                              CoverDataFollower_ToggleButtonWidget.ofRedstone(),
+                                                              coverData -> coverData.strong,
+                                                              (coverData, state) -> {
+                                                                  coverData.strong = state;
+                                                                  return coverData;
+                                                              },
+                                                              widget -> widget.addTooltip(0, WEAK)
+                                                                              .addTooltip(1, STRONG)
+                                                                              .setPos(spaceX * 0, spaceY * 1))
+                                                      .addFollower(
+                                                              new CoverDataFollower_TextFieldWidget<>(),
+                                                              coverData -> String.valueOf(coverData.threshold),
+                                                              (coverData, state) -> {
+                                                                  coverData.threshold = (int) MathExpression.parseMathExpression(
+                                                                          state);
+                                                                  return coverData;
+                                                              },
+                                                              widget -> widget.setOnScrollNumbers(1000, 100, 100000)
+                                                                              .setNumbers(
+                                                                                      0,
+                                                                                      maxCapacity > 0 ? maxCapacity
+                                                                                              : Integer.MAX_VALUE)
+                                                                              .setFocusOnGuiOpen(true)
+                                                                              .setPos(spaceX * 0, spaceY * 2 + 2)
+                                                                              .setSize(spaceX * 4 + 5, 12))
+                                                      .setPos(startX, startY))
+                   .widget(
+                           TextWidget.dynamicString(
+                                   () -> getCoverData() != null ? getCoverData().inverted ? INVERTED : NORMAL : "")
+                                     .setSynced(false)
+                                     .setDefaultColor(COLOR_TEXT_GRAY.get())
+                                     .setPos(startX + spaceX * 1, 4 + startY + spaceY * 0))
+                   .widget(
+                           TextWidget.dynamicString(
+                                   () -> getCoverData() != null ? getCoverData().strong ? STRONG : WEAK : "")
+                                     .setSynced(false)
+                                     .setDefaultColor(COLOR_TEXT_GRAY.get())
+                                     .setPos(startX + spaceX * 1, 4 + startY + spaceY * 1))
+                   .widget(
+                           new TextWidget(GT_Utility.trans("222", "Fluid threshold"))
+                                                                                     .setDefaultColor(
+                                                                                             COLOR_TEXT_GRAY.get())
+                                                                                     .setPos(
+                                                                                             startX + spaceX * 5 - 10,
+                                                                                             startY + spaceY * 2 + 4));
         }
     }
 

@@ -63,7 +63,8 @@ public class GT_RenderedTexture extends GT_TextureBase implements ITexture, ICol
             lighting.setLightnessOverride(1.0F);
             if (enableAO) lighting.setBrightnessOverride(MAX_BRIGHTNESS);
         }
-        lighting.setupLightingXPos(aBlock, aX, aY, aZ).setupColor(ForgeDirection.EAST.ordinal(), mRGBa);
+        lighting.setupLightingXPos(aBlock, aX, aY, aZ)
+                .setupColor(ForgeDirection.EAST.ordinal(), mRGBa);
         final ExtendedFacing rotation = getExtendedFacing(aX, aY, aZ);
         renderFaceXPos(aRenderer, aX, aY, aZ, mIconContainer.getIcon(), rotation);
         if (mIconContainer.getOverlayIcon() != null) {
@@ -88,7 +89,8 @@ public class GT_RenderedTexture extends GT_TextureBase implements ITexture, ICol
             lighting.setLightnessOverride(1.0F);
             lighting.setBrightnessOverride(MAX_BRIGHTNESS);
         }
-        lighting.setupLightingXNeg(aBlock, aX, aY, aZ).setupColor(ForgeDirection.WEST.ordinal(), mRGBa);
+        lighting.setupLightingXNeg(aBlock, aX, aY, aZ)
+                .setupColor(ForgeDirection.WEST.ordinal(), mRGBa);
         final ExtendedFacing rotation = getExtendedFacing(aX, aY, aZ);
         renderFaceXNeg(aRenderer, aX, aY, aZ, mIconContainer.getIcon(), rotation);
         if (mIconContainer.getOverlayIcon() != null) {
@@ -113,7 +115,8 @@ public class GT_RenderedTexture extends GT_TextureBase implements ITexture, ICol
             lighting.setLightnessOverride(1.0F);
             lighting.setBrightnessOverride(MAX_BRIGHTNESS);
         }
-        lighting.setupLightingYPos(aBlock, aX, aY, aZ).setupColor(ForgeDirection.UP.ordinal(), mRGBa);
+        lighting.setupLightingYPos(aBlock, aX, aY, aZ)
+                .setupColor(ForgeDirection.UP.ordinal(), mRGBa);
         final ExtendedFacing rotation = getExtendedFacing(aX, aY, aZ);
         renderFaceYPos(aRenderer, aX, aY, aZ, mIconContainer.getIcon(), rotation);
         if (mIconContainer.getOverlayIcon() != null) {
@@ -138,7 +141,8 @@ public class GT_RenderedTexture extends GT_TextureBase implements ITexture, ICol
             lighting.setLightnessOverride(1.0F);
             lighting.setBrightnessOverride(MAX_BRIGHTNESS);
         }
-        lighting.setupLightingYNeg(aBlock, aX, aY, aZ).setupColor(ForgeDirection.DOWN.ordinal(), mRGBa);
+        lighting.setupLightingYNeg(aBlock, aX, aY, aZ)
+                .setupColor(ForgeDirection.DOWN.ordinal(), mRGBa);
         final ExtendedFacing rotation = getExtendedFacing(aX, aY, aZ);
         renderFaceYNeg(aRenderer, aX, aY, aZ, mIconContainer.getIcon(), rotation);
         if (mIconContainer.getOverlayIcon() != null) {
@@ -163,7 +167,8 @@ public class GT_RenderedTexture extends GT_TextureBase implements ITexture, ICol
             lighting.setLightnessOverride(1.0F);
             lighting.setBrightnessOverride(MAX_BRIGHTNESS);
         }
-        lighting.setupLightingZPos(aBlock, aX, aY, aZ).setupColor(ForgeDirection.SOUTH.ordinal(), mRGBa);
+        lighting.setupLightingZPos(aBlock, aX, aY, aZ)
+                .setupColor(ForgeDirection.SOUTH.ordinal(), mRGBa);
         final ExtendedFacing rotation = getExtendedFacing(aX, aY, aZ);
         renderFaceZPos(aRenderer, aX, aY, aZ, mIconContainer.getIcon(), rotation);
         if (mIconContainer.getOverlayIcon() != null) {
@@ -188,7 +193,8 @@ public class GT_RenderedTexture extends GT_TextureBase implements ITexture, ICol
             lighting.setLightnessOverride(1.0F);
             lighting.setBrightnessOverride(MAX_BRIGHTNESS);
         }
-        lighting.setupLightingZNeg(aBlock, aX, aY, aZ).setupColor(ForgeDirection.NORTH.ordinal(), mRGBa);
+        lighting.setupLightingZNeg(aBlock, aX, aY, aZ)
+                .setupColor(ForgeDirection.NORTH.ordinal(), mRGBa);
         final ExtendedFacing rotation = getExtendedFacing(aX, aY, aZ);
         renderFaceZNeg(aRenderer, aX, aY, aZ, mIconContainer.getIcon(), rotation);
         if (mIconContainer.getOverlayIcon() != null) {
@@ -427,7 +433,10 @@ public class GT_RenderedTexture extends GT_TextureBase implements ITexture, ICol
             if (meta instanceof IAlignmentProvider) {
                 alignment = ((IAlignmentProvider) meta).getAlignment();
             } else if (meta != null) {
-                return ExtendedFacing.of(ForgeDirection.getOrientation(meta.getBaseMetaTileEntity().getFrontFacing()));
+                return ExtendedFacing.of(
+                        ForgeDirection.getOrientation(
+                                meta.getBaseMetaTileEntity()
+                                    .getFrontFacing()));
             }
         } else if (te instanceof IAlignmentProvider) {
             alignment = ((IAlignmentProvider) te).getAlignment();

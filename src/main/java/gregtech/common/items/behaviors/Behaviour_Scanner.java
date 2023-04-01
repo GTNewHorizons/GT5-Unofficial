@@ -19,8 +19,9 @@ import gregtech.api.util.GT_Utility;
 public class Behaviour_Scanner extends Behaviour_None {
 
     public static final IItemBehaviour<GT_MetaBase_Item> INSTANCE = new Behaviour_Scanner();
-    private final String mTooltip = GT_LanguageManager
-            .addStringLocalization("gt.behaviour.scanning", "Can scan Blocks in World");
+    private final String mTooltip = GT_LanguageManager.addStringLocalization(
+            "gt.behaviour.scanning",
+            "Can scan Blocks in World");
 
     @Override
     public boolean onItemUseFirst(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,

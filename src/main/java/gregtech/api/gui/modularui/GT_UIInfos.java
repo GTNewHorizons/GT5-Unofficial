@@ -36,28 +36,46 @@ public class GT_UIInfos {
      * Do NOT run {@link UIBuilder#build} on-the-fly, otherwise MP client won't register UIs. Instead, store to static
      * field, just like {@link #GTTileEntityDefaultUI}. Such mistake can be easily overlooked by testing only SP.
      */
-    public static final Function<ContainerConstructor, UIInfo<?, ?>> GTTileEntityUIFactory = containerConstructor -> UIBuilder
-            .of().container((player, world, x, y, z) -> {
-                TileEntity te = world.getTileEntity(x, y, z);
-                if (te instanceof ITileWithModularUI) {
-                    return createTileEntityContainer(
-                            player,
-                            ((ITileWithModularUI) te)::createWindow,
-                            te::markDirty,
-                            containerConstructor);
-                }
-                return null;
-            }).gui(((player, world, x, y, z) -> {
-                if (!world.isRemote) return null;
-                TileEntity te = world.getTileEntity(x, y, z);
-                if (te instanceof ITileWithModularUI) {
-                    return createTileEntityGuiContainer(
-                            player,
-                            ((ITileWithModularUI) te)::createWindow,
-                            containerConstructor);
-                }
-                return null;
-            })).build();
+    public static final Function<ContainerConstructor, UIInfo<?, ?>> GTTileEntityUIFactory = containerConstructor -> UIBuilder.of()
+                                                                                                                              .container(
+                                                                                                                                      (player, world,
+                                                                                                                                              x,
+                                                                                                                                              y,
+                                                                                                                                              z) -> {
+                                                                                                                                          TileEntity te = world.getTileEntity(
+                                                                                                                                                  x,
+                                                                                                                                                  y,
+                                                                                                                                                  z);
+                                                                                                                                          if (te instanceof ITileWithModularUI) {
+                                                                                                                                              return createTileEntityContainer(
+                                                                                                                                                      player,
+                                                                                                                                                      ((ITileWithModularUI) te)::createWindow,
+                                                                                                                                                      te::markDirty,
+                                                                                                                                                      containerConstructor);
+                                                                                                                                          }
+                                                                                                                                          return null;
+                                                                                                                                      })
+                                                                                                                              .gui(
+                                                                                                                                      ((player,
+                                                                                                                                              world,
+                                                                                                                                              x,
+                                                                                                                                              y,
+                                                                                                                                              z) -> {
+                                                                                                                                          if (!world.isRemote)
+                                                                                                                                              return null;
+                                                                                                                                          TileEntity te = world.getTileEntity(
+                                                                                                                                                  x,
+                                                                                                                                                  y,
+                                                                                                                                                  z);
+                                                                                                                                          if (te instanceof ITileWithModularUI) {
+                                                                                                                                              return createTileEntityGuiContainer(
+                                                                                                                                                      player,
+                                                                                                                                                      ((ITileWithModularUI) te)::createWindow,
+                                                                                                                                                      containerConstructor);
+                                                                                                                                          }
+                                                                                                                                          return null;
+                                                                                                                                      }))
+                                                                                                                              .build();
 
     private static final UIInfo<?, ?> GTTileEntityDefaultUI = GTTileEntityUIFactory.apply(ModularUIContainer::new);
 
@@ -66,31 +84,36 @@ public class GT_UIInfos {
     static {
         for (byte i = 0; i < ForgeDirection.VALID_DIRECTIONS.length; i++) {
             final byte side = i;
-            coverUI.put(side, UIBuilder.of().container((player, world, x, y, z) -> {
-                final TileEntity te = world.getTileEntity(x, y, z);
-                if (!(te instanceof ICoverable)) return null;
-                final ICoverable gtTileEntity = (ICoverable) te;
-                GT_CoverBehaviorBase<?> cover = gtTileEntity.getCoverBehaviorAtSideNew(side);
-                return createCoverContainer(
-                        player,
-                        cover::createWindow,
-                        te::markDirty,
-                        gtTileEntity.getCoverIDAtSide(side),
-                        side,
-                        gtTileEntity);
-            }).gui((player, world, x, y, z) -> {
-                if (!world.isRemote) return null;
-                final TileEntity te = world.getTileEntity(x, y, z);
-                if (!(te instanceof ICoverable)) return null;
-                final ICoverable gtTileEntity = (ICoverable) te;
-                final GT_CoverBehaviorBase<?> cover = gtTileEntity.getCoverBehaviorAtSideNew(side);
-                return createCoverGuiContainer(
-                        player,
-                        cover::createWindow,
-                        gtTileEntity.getCoverIDAtSide(side),
-                        side,
-                        gtTileEntity);
-            }).build());
+            coverUI.put(
+                    side,
+                    UIBuilder.of()
+                             .container((player, world, x, y, z) -> {
+                                 final TileEntity te = world.getTileEntity(x, y, z);
+                                 if (!(te instanceof ICoverable)) return null;
+                                 final ICoverable gtTileEntity = (ICoverable) te;
+                                 GT_CoverBehaviorBase<?> cover = gtTileEntity.getCoverBehaviorAtSideNew(side);
+                                 return createCoverContainer(
+                                         player,
+                                         cover::createWindow,
+                                         te::markDirty,
+                                         gtTileEntity.getCoverIDAtSide(side),
+                                         side,
+                                         gtTileEntity);
+                             })
+                             .gui((player, world, x, y, z) -> {
+                                 if (!world.isRemote) return null;
+                                 final TileEntity te = world.getTileEntity(x, y, z);
+                                 if (!(te instanceof ICoverable)) return null;
+                                 final ICoverable gtTileEntity = (ICoverable) te;
+                                 final GT_CoverBehaviorBase<?> cover = gtTileEntity.getCoverBehaviorAtSideNew(side);
+                                 return createCoverGuiContainer(
+                                         player,
+                                         cover::createWindow,
+                                         gtTileEntity.getCoverIDAtSide(side),
+                                         side,
+                                         gtTileEntity);
+                             })
+                             .build());
         }
     }
 
@@ -121,12 +144,13 @@ public class GT_UIInfos {
                         tileEntity),
                 (EntityPlayerMP) player);
 
-        coverUI.get(side).open(
-                player,
-                tileEntity.getWorld(),
-                tileEntity.getXCoord(),
-                tileEntity.getYCoord(),
-                tileEntity.getZCoord());
+        coverUI.get(side)
+               .open(
+                       player,
+                       tileEntity.getWorld(),
+                       tileEntity.getXCoord(),
+                       tileEntity.getYCoord(),
+                       tileEntity.getZCoord());
     }
 
     /**

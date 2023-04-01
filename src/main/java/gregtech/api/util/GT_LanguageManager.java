@@ -36,13 +36,17 @@ public class GT_LanguageManager {
 
     static {
         try {
-            Field fieldStringTranslateLanguageList = ReflectionHelper
-                    .findField(net.minecraft.util.StringTranslate.class, "languageList", "field_74816_c");
-            Field fieldStringTranslateInstance = ReflectionHelper
-                    .findField(net.minecraft.util.StringTranslate.class, "instance", "field_74817_a");
+            Field fieldStringTranslateLanguageList = ReflectionHelper.findField(
+                    net.minecraft.util.StringTranslate.class,
+                    "languageList",
+                    "field_74816_c");
+            Field fieldStringTranslateInstance = ReflectionHelper.findField(
+                    net.minecraft.util.StringTranslate.class,
+                    "instance",
+                    "field_74817_a");
             // noinspection unchecked
-            stringTranslateLanguageList = (Map<String, String>) fieldStringTranslateLanguageList
-                    .get(fieldStringTranslateInstance.get(null));
+            stringTranslateLanguageList = (Map<String, String>) fieldStringTranslateLanguageList.get(
+                    fieldStringTranslateInstance.get(null));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -62,7 +66,8 @@ public class GT_LanguageManager {
             }
         }
         TEMPMAP.put(aKey.trim(), aEnglish);
-        LanguageRegistry.instance().injectLanguage(sLanguage, TEMPMAP);
+        LanguageRegistry.instance()
+                        .injectLanguage(sLanguage, TEMPMAP);
         TEMPMAP.clear();
         if (sUseEnglishFile && !aWriteIntoLangFile) {
             if (!LANGMAP.containsKey(aKey)) {
@@ -89,7 +94,8 @@ public class GT_LanguageManager {
             }
             Property tProperty = sEnglishFile.get("LanguageFile", aKey.trim(), aEnglish);
             if (!tProperty.wasRead() && GregTech_API.sPostloadFinished) sEnglishFile.save();
-            if (sEnglishFile.get("EnableLangFile", "UseThisFileAsLanguageFile", false).getBoolean(false)) {
+            if (sEnglishFile.get("EnableLangFile", "UseThisFileAsLanguageFile", false)
+                            .getBoolean(false)) {
                 aEnglish = tProperty.getString();
                 sUseEnglishFile = true;
             }
@@ -101,7 +107,8 @@ public class GT_LanguageManager {
         if (aKey == null) return E;
         String tTrimmedKey = aKey.trim(), rTranslation;
         if (sUseEnglishFile) {
-            rTranslation = LanguageRegistry.instance().getStringLocalization(tTrimmedKey);
+            rTranslation = LanguageRegistry.instance()
+                                           .getStringLocalization(tTrimmedKey);
         } else {
             rTranslation = StatCollector.translateToLocal(tTrimmedKey);
         }
@@ -140,7 +147,8 @@ public class GT_LanguageManager {
         if (GT_Utility.isStackInvalid(aStack)) return "null";
         NBTTagCompound tNBT = aStack.getTagCompound();
         if (tNBT != null && tNBT.hasKey("display")) {
-            String tName = tNBT.getCompoundTag("display").getString("Name");
+            String tName = tNBT.getCompoundTag("display")
+                               .getString("Name");
             if (GT_Utility.isStringValid(tName)) {
                 return tName;
             }

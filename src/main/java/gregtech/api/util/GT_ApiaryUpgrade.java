@@ -140,7 +140,8 @@ public enum GT_ApiaryUpgrade {
         SIEVE_UPGRADE,;
 
         void apply(Consumer<GT_ApiaryUpgrade> fn) {
-            UNIQUE_UPGRADE_LIST.get(this).forEach(fn);
+            UNIQUE_UPGRADE_LIST.get(this)
+                               .forEach(fn);
         }
     }
 
@@ -209,7 +210,8 @@ public enum GT_ApiaryUpgrade {
     private static final HashMap<Integer, GT_ApiaryUpgrade> quickLookup = new HashMap<>();
 
     static {
-        EnumSet.allOf(GT_ApiaryUpgrade.class).forEach(GT_ApiaryUpgrade::setup_static_variables);
+        EnumSet.allOf(GT_ApiaryUpgrade.class)
+               .forEach(GT_ApiaryUpgrade::setup_static_variables);
         speed8upgraded.blacklistedUpgrades.add(production.id);
         production.blacklistedUpgrades.add(speed8upgraded.id);
     }

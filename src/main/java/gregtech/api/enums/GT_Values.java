@@ -86,9 +86,13 @@ public class GT_Values {
      * tier. These leave a bit of headroom for cable and transformer losses, but not enough to make it a great gain.
      */
     // this will correctly map ULV to 7.
-    public static final long[] VP = Arrays.stream(V).map(
-            i -> BigInteger.valueOf(i).multiply(BigInteger.valueOf(30)).divide(BigInteger.valueOf(32)).longValueExact())
-            .toArray();
+    public static final long[] VP = Arrays.stream(V)
+                                          .map(
+                                                  i -> BigInteger.valueOf(i)
+                                                                 .multiply(BigInteger.valueOf(30))
+                                                                 .divide(BigInteger.valueOf(32))
+                                                                 .longValueExact())
+                                          .toArray();
     // Why -7? Mystery of the universe. Something may break if you change this so please do not without extensive
     // testing.
     // TODO:Adding that in coremod!!!

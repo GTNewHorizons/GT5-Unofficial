@@ -85,13 +85,20 @@ public class InventoryUpgrade extends UpgradeCasing {
 
     @Override
     public void addUIWidgets(Builder builder, UIBuildContext buildContext) {
-        builder.widget(new TextFieldWidget().setGetter(() -> mInventoryName).setSetter((val) -> {
-            mInventoryName = val;
-            final IMultiBlockController controller = getTarget(false);
-            if (controller != null) {
-                controller.changeInventoryName(mInventoryName, mInventoryID.toString(), mType);
-            }
-        }).setSize(100, 25).setPos(50, 30));
+        builder.widget(
+                new TextFieldWidget().setGetter(() -> mInventoryName)
+                                     .setSetter((val) -> {
+                                         mInventoryName = val;
+                                         final IMultiBlockController controller = getTarget(false);
+                                         if (controller != null) {
+                                             controller.changeInventoryName(
+                                                     mInventoryName,
+                                                     mInventoryID.toString(),
+                                                     mType);
+                                         }
+                                     })
+                                     .setSize(100, 25)
+                                     .setPos(50, 30));
     }
 
     @Override

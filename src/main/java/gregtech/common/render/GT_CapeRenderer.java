@@ -50,34 +50,51 @@ public class GT_CapeRenderer extends RenderPlayer {
         }
         try {
             ResourceLocation tResource = aPlayer.getLocationCape();
-            if (aPlayer.getDisplayName().equalsIgnoreCase("Friedi4321")) {
+            if (aPlayer.getDisplayName()
+                       .equalsIgnoreCase("Friedi4321")) {
                 tResource = this.mCapes[0];
             }
-            if (this.mCapeList.contains(aPlayer.getDisplayName().toLowerCase())) {
+            if (this.mCapeList.contains(
+                    aPlayer.getDisplayName()
+                           .toLowerCase())) {
                 tResource = this.mCapes[1];
             }
-            if (aPlayer.getDisplayName().equalsIgnoreCase("Mr_Brain")) {
+            if (aPlayer.getDisplayName()
+                       .equalsIgnoreCase("Mr_Brain")) {
                 tResource = this.mCapes[2];
             }
-            if (aPlayer.getDisplayName().equalsIgnoreCase("GregoriusT")) {
+            if (aPlayer.getDisplayName()
+                       .equalsIgnoreCase("GregoriusT")) {
                 tResource = this.mCapes[3];
             }
-            if (this.mCapeList.contains(aPlayer.getDisplayName().toLowerCase() + ":capedonor")) {
+            if (this.mCapeList.contains(
+                    aPlayer.getDisplayName()
+                           .toLowerCase() + ":capedonor")) {
                 tResource = this.mCapes[4];
             }
-            if (this.mCapeList.contains(aPlayer.getDisplayName().toLowerCase() + ":capedev")) {
+            if (this.mCapeList.contains(
+                    aPlayer.getDisplayName()
+                           .toLowerCase() + ":capedev")) {
                 tResource = this.mCapes[5];
             }
-            if (this.mCapeList.contains(aPlayer.getDisplayName().toLowerCase() + ":cape_steam")) {
+            if (this.mCapeList.contains(
+                    aPlayer.getDisplayName()
+                           .toLowerCase() + ":cape_steam")) {
                 tResource = this.mCapes[6];
             }
-            if (this.mCapeList.contains(aPlayer.getDisplayName().toLowerCase() + ":cape_titanium")) {
+            if (this.mCapeList.contains(
+                    aPlayer.getDisplayName()
+                           .toLowerCase() + ":cape_titanium")) {
                 tResource = this.mCapes[7];
             }
-            if (this.mCapeList.contains(aPlayer.getDisplayName().toLowerCase() + ":cape_neutronium")) {
+            if (this.mCapeList.contains(
+                    aPlayer.getDisplayName()
+                           .toLowerCase() + ":cape_neutronium")) {
                 tResource = this.mCapes[8];
             }
-            if (this.mCapeList.contains(aPlayer.getDisplayName().toLowerCase() + ":cape_stargate")) {
+            if (this.mCapeList.contains(
+                    aPlayer.getDisplayName()
+                           .toLowerCase() + ":cape_stargate")) {
                 tResource = this.mCapes[9];
             }
 

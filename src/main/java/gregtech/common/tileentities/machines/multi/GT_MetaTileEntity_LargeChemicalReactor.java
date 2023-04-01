@@ -43,32 +43,64 @@ public class GT_MetaTileEntity_LargeChemicalReactor
 
     private static final int CASING_INDEX = 176;
     private static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final IStructureDefinition<GT_MetaTileEntity_LargeChemicalReactor> STRUCTURE_DEFINITION = StructureDefinition
-            .<GT_MetaTileEntity_LargeChemicalReactor>builder()
-            .addShape(
-                    STRUCTURE_PIECE_MAIN,
-                    transpose(
-                            new String[][] { { "ccc", "cxc", "ccc" }, { "c~c", "xPx", "cxc" },
-                                    { "ccc", "cxc", "ccc" }, }))
-            .addElement('P', ofBlock(GregTech_API.sBlockCasings8, 1))
-            .addElement(
-                    'c',
-                    buildHatchAdder(GT_MetaTileEntity_LargeChemicalReactor.class)
-                            .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy)
-                            .casingIndex(CASING_INDEX).dot(1).buildAndChain(
-                                    onElementPass(
-                                            GT_MetaTileEntity_LargeChemicalReactor::onCasingAdded,
-                                            ofBlock(GregTech_API.sBlockCasings8, 0))))
-            .addElement(
-                    'x',
-                    buildHatchAdder(GT_MetaTileEntity_LargeChemicalReactor.class)
-                            .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy)
-                            .casingIndex(CASING_INDEX).dot(1).buildAndChain(
-                                    CoilStructureElement.INSTANCE,
-                                    onElementPass(
-                                            GT_MetaTileEntity_LargeChemicalReactor::onCasingAdded,
-                                            ofBlock(GregTech_API.sBlockCasings8, 0))))
-            .build();
+    private static final IStructureDefinition<GT_MetaTileEntity_LargeChemicalReactor> STRUCTURE_DEFINITION = StructureDefinition.<GT_MetaTileEntity_LargeChemicalReactor>builder()
+                                                                                                                                .addShape(
+                                                                                                                                        STRUCTURE_PIECE_MAIN,
+                                                                                                                                        transpose(
+                                                                                                                                                new String[][] {
+                                                                                                                                                        { "ccc", "cxc",
+                                                                                                                                                                "ccc" },
+                                                                                                                                                        { "c~c", "xPx",
+                                                                                                                                                                "cxc" },
+                                                                                                                                                        { "ccc", "cxc",
+                                                                                                                                                                "ccc" }, }))
+                                                                                                                                .addElement(
+                                                                                                                                        'P',
+                                                                                                                                        ofBlock(
+                                                                                                                                                GregTech_API.sBlockCasings8,
+                                                                                                                                                1))
+                                                                                                                                .addElement(
+                                                                                                                                        'c',
+                                                                                                                                        buildHatchAdder(
+                                                                                                                                                GT_MetaTileEntity_LargeChemicalReactor.class).atLeast(
+                                                                                                                                                        InputHatch,
+                                                                                                                                                        OutputHatch,
+                                                                                                                                                        InputBus,
+                                                                                                                                                        OutputBus,
+                                                                                                                                                        Maintenance,
+                                                                                                                                                        Energy)
+                                                                                                                                                                                             .casingIndex(
+                                                                                                                                                                                                     CASING_INDEX)
+                                                                                                                                                                                             .dot(
+                                                                                                                                                                                                     1)
+                                                                                                                                                                                             .buildAndChain(
+                                                                                                                                                                                                     onElementPass(
+                                                                                                                                                                                                             GT_MetaTileEntity_LargeChemicalReactor::onCasingAdded,
+                                                                                                                                                                                                             ofBlock(
+                                                                                                                                                                                                                     GregTech_API.sBlockCasings8,
+                                                                                                                                                                                                                     0))))
+                                                                                                                                .addElement(
+                                                                                                                                        'x',
+                                                                                                                                        buildHatchAdder(
+                                                                                                                                                GT_MetaTileEntity_LargeChemicalReactor.class).atLeast(
+                                                                                                                                                        InputHatch,
+                                                                                                                                                        OutputHatch,
+                                                                                                                                                        InputBus,
+                                                                                                                                                        OutputBus,
+                                                                                                                                                        Maintenance,
+                                                                                                                                                        Energy)
+                                                                                                                                                                                             .casingIndex(
+                                                                                                                                                                                                     CASING_INDEX)
+                                                                                                                                                                                             .dot(
+                                                                                                                                                                                                     1)
+                                                                                                                                                                                             .buildAndChain(
+                                                                                                                                                                                                     CoilStructureElement.INSTANCE,
+                                                                                                                                                                                                     onElementPass(
+                                                                                                                                                                                                             GT_MetaTileEntity_LargeChemicalReactor::onCasingAdded,
+                                                                                                                                                                                                             ofBlock(
+                                                                                                                                                                                                                     GregTech_API.sBlockCasings8,
+                                                                                                                                                                                                                     0))))
+                                                                                                                                .build();
 
     private int mCasingAmount;
     private int mCoilAmount;
@@ -89,16 +121,24 @@ public class GT_MetaTileEntity_LargeChemicalReactor
     @Override
     public GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType("Chemical Reactor").addInfo("Controller block for the Large Chemical Reactor")
-                .addInfo("Does not lose efficiency when overclocked").addInfo("Accepts fluids instead of fluid cells")
-                .addSeparator().beginStructureBlock(3, 3, 3, false).addController("Front center")
-                .addCasingInfoRange("Chemically Inert Machine Casing", 8, 22, false)
-                .addOtherStructurePart("PTFE Pipe Machine Casing", "Center")
-                .addOtherStructurePart("Heating Coil", "Adjacent to the PTFE Pipe Machine Casing", 1)
-                .addEnergyHatch("Any casing", 1, 2).addMaintenanceHatch("Any casing", 1, 2)
-                .addInputBus("Any casing", 1, 2).addInputHatch("Any casing", 1, 2).addOutputBus("Any casing", 1, 2)
-                .addOutputHatch("Any casing", 1, 2).addStructureInfo("You can have multiple hatches/busses")
-                .toolTipFinisher("Gregtech");
+        tt.addMachineType("Chemical Reactor")
+          .addInfo("Controller block for the Large Chemical Reactor")
+          .addInfo("Does not lose efficiency when overclocked")
+          .addInfo("Accepts fluids instead of fluid cells")
+          .addSeparator()
+          .beginStructureBlock(3, 3, 3, false)
+          .addController("Front center")
+          .addCasingInfoRange("Chemically Inert Machine Casing", 8, 22, false)
+          .addOtherStructurePart("PTFE Pipe Machine Casing", "Center")
+          .addOtherStructurePart("Heating Coil", "Adjacent to the PTFE Pipe Machine Casing", 1)
+          .addEnergyHatch("Any casing", 1, 2)
+          .addMaintenanceHatch("Any casing", 1, 2)
+          .addInputBus("Any casing", 1, 2)
+          .addInputHatch("Any casing", 1, 2)
+          .addOutputBus("Any casing", 1, 2)
+          .addOutputHatch("Any casing", 1, 2)
+          .addStructureInfo("You can have multiple hatches/busses")
+          .toolTipFinisher("Gregtech");
         return tt;
     }
 
@@ -106,14 +146,26 @@ public class GT_MetaTileEntity_LargeChemicalReactor
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
             boolean aActive, boolean aRedstone) {
         if (aSide == aFacing) {
-            if (aActive) return new ITexture[] { casingTexturePages[1][48],
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE).extFacing().build(),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE_GLOW).extFacing()
-                            .glow().build() };
-            return new ITexture[] { casingTexturePages[1][48],
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR).extFacing().build(),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_GLOW).extFacing().glow()
-                            .build() };
+            if (aActive) return new ITexture[] { casingTexturePages[1][48], TextureFactory.builder()
+                                                                                          .addIcon(
+                                                                                                  OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE)
+                                                                                          .extFacing()
+                                                                                          .build(),
+                    TextureFactory.builder()
+                                  .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE_GLOW)
+                                  .extFacing()
+                                  .glow()
+                                  .build() };
+            return new ITexture[] { casingTexturePages[1][48], TextureFactory.builder()
+                                                                             .addIcon(
+                                                                                     OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR)
+                                                                             .extFacing()
+                                                                             .build(),
+                    TextureFactory.builder()
+                                  .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_GLOW)
+                                  .extFacing()
+                                  .glow()
+                                  .build() };
         }
         return new ITexture[] { casingTexturePages[1][48] };
     }
@@ -159,7 +211,8 @@ public class GT_MetaTileEntity_LargeChemicalReactor
             if (mLockedToSingleRecipe) {
                 // We're locked to a single recipe, but haven't built the recipe checker yet.
                 // Build the checker on next successful recipe.
-                tSingleRecipeCheckBuilder = GT_Single_Recipe_Check.builder(this).setBefore();
+                tSingleRecipeCheckBuilder = GT_Single_Recipe_Check.builder(this)
+                                                                  .setBefore();
             }
 
             tRecipe = GT_Recipe.GT_Recipe_Map.sMultiblockChemicalRecipes.findRecipe(
@@ -175,7 +228,9 @@ public class GT_MetaTileEntity_LargeChemicalReactor
             }
 
             if (mLockedToSingleRecipe) {
-                mSingleRecipeCheck = tSingleRecipeCheckBuilder.setAfter().setRecipe(tRecipe).build();
+                mSingleRecipeCheck = tSingleRecipeCheckBuilder.setAfter()
+                                                              .setRecipe(tRecipe)
+                                                              .build();
             }
         }
 
@@ -288,8 +343,9 @@ public class GT_MetaTileEntity_LargeChemicalReactor
                 GT_MetaTileEntity_LargeChemicalReactor gt_metaTileEntity_largeChemicalReactor, World world, int x,
                 int y, int z, ItemStack trigger, AutoPlaceEnvironment env) {
             return BlocksToPlace.create(
-                    IntStream.range(0, 8).mapToObj(i -> new ItemStack(GregTech_API.sBlockCasings5, 1, i))
-                            .collect(Collectors.toList()));
+                    IntStream.range(0, 8)
+                             .mapToObj(i -> new ItemStack(GregTech_API.sBlockCasings5, 1, i))
+                             .collect(Collectors.toList()));
         }
 
         @Override
@@ -298,7 +354,8 @@ public class GT_MetaTileEntity_LargeChemicalReactor
             if (t.mCoilAmount > 0) return PlaceResult.SKIP;
             if (check(t, world, x, y, z)) return PlaceResult.SKIP;
             if (!StructureLibAPI.isBlockTriviallyReplaceable(world, x, y, z, env.getActor())) return PlaceResult.REJECT;
-            ItemStack result = env.getSource().takeOne(ItemStackPredicate.from(GregTech_API.sBlockCasings5), true);
+            ItemStack result = env.getSource()
+                                  .takeOne(ItemStackPredicate.from(GregTech_API.sBlockCasings5), true);
             if (result == null) return PlaceResult.REJECT;
             PlaceResult ret = StructureUtility.survivalPlaceBlock(
                     result,

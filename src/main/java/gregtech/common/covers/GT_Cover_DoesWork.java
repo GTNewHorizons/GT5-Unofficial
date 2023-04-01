@@ -170,34 +170,37 @@ public class GT_Cover_DoesWork extends GT_CoverBehavior {
                                             0,
                                             CoverDataFollower_ToggleButtonWidget.ofDisableable(),
                                             widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_PROGRESS)
-                                                    .setPos(spaceX * 0, spaceY * 0))
-                                            .addToggleButton(
-                                                    1,
-                                                    CoverDataFollower_ToggleButtonWidget.ofDisableable(),
-                                                    widget -> widget
-                                                            .setStaticTexture(GT_UITextures.OVERLAY_BUTTON_CHECKMARK)
-                                                            .setPos(spaceX * 1, spaceY * 0))
-                                            .addToggleButton(
-                                                    2,
-                                                    CoverDataFollower_ToggleButtonWidget.ofRedstone(),
-                                                    widget -> widget.setPos(spaceX * 0, spaceY * 1))
-                                            .setPos(startX, startY))
-                    .widget(
-                            TextWidget
-                                    .dynamicString(
-                                            () -> ((convert(getCoverData()) & 0x2) > 0)
-                                                    ? GT_Utility.trans("242", "Machine idle")
-                                                    : GT_Utility.trans("241", "Recipe progress"))
-                                    .setSynced(false).setDefaultColor(COLOR_TEXT_GRAY.get())
-                                    .setPos(startX + spaceX * 3, 4 + startY + spaceY * 0))
-                    .widget(
-                            TextWidget
-                                    .dynamicString(
-                                            () -> ((convert(getCoverData()) & 0x1) > 0)
-                                                    ? GT_Utility.trans("INVERTED", "Inverted")
-                                                    : GT_Utility.trans("NORMAL", "Normal"))
-                                    .setSynced(false).setDefaultColor(COLOR_TEXT_GRAY.get())
-                                    .setPos(startX + spaceX * 3, 4 + startY + spaceY * 1));
+                                                            .setPos(spaceX * 0, spaceY * 0))
+                                                                                 .addToggleButton(
+                                                                                         1,
+                                                                                         CoverDataFollower_ToggleButtonWidget.ofDisableable(),
+                                                                                         widget -> widget.setStaticTexture(
+                                                                                                 GT_UITextures.OVERLAY_BUTTON_CHECKMARK)
+                                                                                                         .setPos(
+                                                                                                                 spaceX * 1,
+                                                                                                                 spaceY * 0))
+                                                                                 .addToggleButton(
+                                                                                         2,
+                                                                                         CoverDataFollower_ToggleButtonWidget.ofRedstone(),
+                                                                                         widget -> widget.setPos(
+                                                                                                 spaceX * 0,
+                                                                                                 spaceY * 1))
+                                                                                 .setPos(startX, startY))
+                   .widget(
+                           TextWidget.dynamicString(
+                                   () -> ((convert(getCoverData()) & 0x2) > 0) ? GT_Utility.trans("242", "Machine idle")
+                                           : GT_Utility.trans("241", "Recipe progress"))
+                                     .setSynced(false)
+                                     .setDefaultColor(COLOR_TEXT_GRAY.get())
+                                     .setPos(startX + spaceX * 3, 4 + startY + spaceY * 0))
+                   .widget(
+                           TextWidget.dynamicString(
+                                   () -> ((convert(getCoverData()) & 0x1) > 0)
+                                           ? GT_Utility.trans("INVERTED", "Inverted")
+                                           : GT_Utility.trans("NORMAL", "Normal"))
+                                     .setSynced(false)
+                                     .setDefaultColor(COLOR_TEXT_GRAY.get())
+                                     .setPos(startX + spaceX * 3, 4 + startY + spaceY * 1));
         }
 
         private int getNewCoverVariable(int id, int coverVariable) {
