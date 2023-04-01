@@ -40,7 +40,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import gregtech.api.util.WorldSpawnedEventBuilder;
 import gregtech.api.util.WorldSpawnedEventBuilder.ParticleEventBuilder;
 import ic2.core.Ic2Items;
 
@@ -678,40 +677,46 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
                 return false;
             }
             case 1 -> {
-                if (this.getFillableStack() == null)
-                    return !this.mRequiresFluidForFiltering && this.getRecipeList().containsInput(aStack);
-                else return this.getRecipeList().findRecipe(
-                        this.getBaseMetaTileEntity(),
-                        this.mLastRecipe,
-                        true,
-                        true,
-                        V[this.mTier],
-                        new FluidStack[] { this.getFillableStack() },
-                        this.getSpecialSlot(),
-                        appendSelectedCircuit(aStack)) != null;
+                if (this.getFillableStack() == null) return !this.mRequiresFluidForFiltering && this.getRecipeList()
+                                                                                                    .containsInput(
+                                                                                                            aStack);
+                else return this.getRecipeList()
+                                .findRecipe(
+                                        this.getBaseMetaTileEntity(),
+                                        this.mLastRecipe,
+                                        true,
+                                        true,
+                                        V[this.mTier],
+                                        new FluidStack[] { this.getFillableStack() },
+                                        this.getSpecialSlot(),
+                                        appendSelectedCircuit(aStack))
+                        != null;
             }
             case 2 -> {
                 return (!this.mRequiresFluidForFiltering || this.getFillableStack() != null) && (((this.getInputAt(0)
-                        != null && this.getInputAt(1) != null) || (this.getInputAt(0) == null
-                        && this.getInputAt(1) == null
-                        ? this.getRecipeList().containsInput(aStack)
-                        : (this.getRecipeList().containsInput(aStack) && this.getRecipeList().findRecipe(
-                                this.getBaseMetaTileEntity(),
-                                this.mLastRecipe,
-                                true,
-                                true,
-                                V[this.mTier],
-                                new FluidStack[] { this.getFillableStack() },
-                                this.getSpecialSlot(),
-                                aIndex == this.getInputSlot()
-                                        ? appendSelectedCircuit(aStack, this.getInputAt(1))
-                                        : appendSelectedCircuit(this.getInputAt(0), aStack)) != null))));
+                        != null && this.getInputAt(1) != null)
+                        || (this.getInputAt(0) == null && this.getInputAt(1) == null ? this.getRecipeList()
+                                                                                           .containsInput(aStack)
+                                : (this.getRecipeList()
+                                       .containsInput(aStack)
+                                        && this.getRecipeList()
+                                               .findRecipe(
+                                                       this.getBaseMetaTileEntity(),
+                                                       this.mLastRecipe,
+                                                       true,
+                                                       true,
+                                                       V[this.mTier],
+                                                       new FluidStack[] { this.getFillableStack() },
+                                                       this.getSpecialSlot(),
+                                                       aIndex == this.getInputSlot()
+                                                               ? appendSelectedCircuit(aStack, this.getInputAt(1))
+                                                               : appendSelectedCircuit(this.getInputAt(0), aStack))
+                                                != null))));
             }
             default -> {
-                int tID = this.getBaseMetaTileEntity().getMetaTileID();
-                if (tID >= 211 && tID <= 218
-                        || tID >= 1180 && tID <= 1187
-                        || tID >= 10780 && tID <= 10786) { // assembler
+                int tID = this.getBaseMetaTileEntity()
+                              .getMetaTileID();
+                if (tID >= 211 && tID <= 218 || tID >= 1180 && tID <= 1187 || tID >= 10780 && tID <= 10786) { // assembler
                     // lv-iv;
                     // circuit
                     // asseblers
@@ -720,10 +725,13 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
                     // assemblers
                     // luv-uev
                     if (GT_Utility.isStackValid(aStack)) for (int oreID : OreDictionary.getOreIDs(aStack)) {
-                        if (OreDictionary.getOreName(oreID).startsWith("circuit")) return true;
+                        if (OreDictionary.getOreName(oreID)
+                                         .startsWith("circuit"))
+                            return true;
                     }
                 }
-                return this.getRecipeList().containsInput(aStack);
+                return this.getRecipeList()
+                           .containsInput(aStack);
             }
         }
     }
@@ -745,16 +753,20 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
                             && aBaseMetaTileEntity.getCoverIDAtSide(topFacing) == 0
                             && !aBaseMetaTileEntity.getOpacityAtSide(topFacing)) {
 
-                        new ParticleEventBuilder().setMotion(0.0D, 0.0D, 0.0D).setIdentifier(ParticleFX.SMOKE)
-                                .setPosition(
-                                        aBaseMetaTileEntity.getXCoord() + 0.8F - XSTR_INSTANCE.nextFloat() * 0.6F,
-                                        aBaseMetaTileEntity.getYCoord() + 0.9F + XSTR_INSTANCE.nextFloat() * 0.2F,
-                                        aBaseMetaTileEntity.getZCoord() + 0.8F - XSTR_INSTANCE.nextFloat() * 0.6F)
-                                .setWorld(aBaseMetaTileEntity.getWorld()).run();
+                        new ParticleEventBuilder().setMotion(0.0D, 0.0D, 0.0D)
+                                                  .setIdentifier(ParticleFX.SMOKE)
+                                                  .setPosition(
+                                                          aBaseMetaTileEntity.getXCoord() + 0.8F
+                                                                  - XSTR_INSTANCE.nextFloat() * 0.6F,
+                                                          aBaseMetaTileEntity.getYCoord() + 0.9F
+                                                                  + XSTR_INSTANCE.nextFloat() * 0.2F,
+                                                          aBaseMetaTileEntity.getZCoord() + 0.8F
+                                                                  - XSTR_INSTANCE.nextFloat() * 0.6F)
+                                                  .setWorld(aBaseMetaTileEntity.getWorld())
+                                                  .run();
                     }
                 }
-                default -> {
-                }
+                default -> {}
             }
         }
     }
@@ -776,8 +788,7 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
 
                     final byte mainFacing = (byte) this.mMainFacing;
 
-                    if (mainFacing > 1
-                            && aBaseMetaTileEntity.getCoverIDAtSide(mainFacing) == 0
+                    if (mainFacing > 1 && aBaseMetaTileEntity.getCoverIDAtSide(mainFacing) == 0
                             && !aBaseMetaTileEntity.getOpacityAtSide(mainFacing)) {
 
                         final double oX = aBaseMetaTileEntity.getXCoord();
@@ -814,13 +825,15 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
                         }
 
                         ParticleEventBuilder particleEventBuilder = (new ParticleEventBuilder()).setMotion(mX, 0, mZ)
-                                .setPosition(x, y, z).setWorld(getBaseMetaTileEntity().getWorld());
-                        particleEventBuilder.setIdentifier(ParticleFX.LAVA).run();
+                                                                                                .setPosition(x, y, z)
+                                                                                                .setWorld(
+                                                                                                        getBaseMetaTileEntity().getWorld());
+                        particleEventBuilder.setIdentifier(ParticleFX.LAVA)
+                                            .run();
                     }
                 }
             }
-            default -> {
-            }
+            default -> {}
         }
     }
 

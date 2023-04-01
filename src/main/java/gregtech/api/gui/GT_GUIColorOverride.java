@@ -26,12 +26,16 @@ public class GT_GUIColorOverride {
                                                                                     .build(new CacheLoader<>() {
 
                                                                                         @Override
-                                                                                        public Object load(@Nonnull ResourceLocation key)
-                                                                                            throws Exception {
+                                                                                        public Object load(
+                                                                                                @Nonnull ResourceLocation key)
+                                                                                                throws Exception {
                                                                                             IResource ir = Minecraft.getMinecraft()
-                                                                                                .getResourceManager().getResource(key);
-                                                                                            if (ir.hasMetadata()) return ir.getMetadata(
-                                                                                                "colors");
+                                                                                                                    .getResourceManager()
+                                                                                                                    .getResource(
+                                                                                                                            key);
+                                                                                            if (ir.hasMetadata())
+                                                                                                return ir.getMetadata(
+                                                                                                        "colors");
                                                                                             // return a dummy
                                                                                             // object because
                                                                                             // LoadingCache

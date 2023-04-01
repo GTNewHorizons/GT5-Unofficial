@@ -2,7 +2,6 @@ package gregtech.api.gui.widgets;
 
 import java.awt.Rectangle;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 

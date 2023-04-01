@@ -2974,7 +2974,7 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
                 tAlts[i] = null;
                 tPersistentHash = tPersistentHash * 31 + GT_Utility.persistentHash(tInputs[i], true, false);
                 continue;
-            } else if (obj instanceof ItemStack[] aStacks) {
+            } else if (obj instanceof ItemStack[]aStacks) {
                 if (aStacks.length > 0) {
                     tInputs[i] = aStacks[0];
                     tAlts[i] = Arrays.copyOf(aStacks, aStacks.length);
@@ -2984,7 +2984,7 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
                     tPersistentHash *= 31;
                     continue;
                 }
-            } else if (obj instanceof Object[] objs) {
+            } else if (obj instanceof Object[]objs) {
                 List<ItemStack> tList;
                 if (objs.length >= 2 && !(tList = GT_OreDictUnificator.getOres(objs[0])).isEmpty()) {
                     try {

@@ -366,27 +366,27 @@ public class GT_MetaTileEntity_Teleporter extends GT_MetaTileEntity_BasicTank
                         }
                     }
                     List<Entity> entities_in_box = getBaseMetaTileEntity().getWorld()
-                                                                  .getEntitiesWithinAABB(
-                                                                          Entity.class,
-                                                                          AxisAlignedBB.getBoundingBox(
-                                                                                  getBaseMetaTileEntity().getOffsetX(
-                                                                                          getBaseMetaTileEntity().getFrontFacing(),
-                                                                                          2) - 1,
-                                                                                  getBaseMetaTileEntity().getOffsetY(
-                                                                                          getBaseMetaTileEntity().getFrontFacing(),
-                                                                                          2) - 1,
-                                                                                  getBaseMetaTileEntity().getOffsetZ(
-                                                                                          getBaseMetaTileEntity().getFrontFacing(),
-                                                                                          2) - 1,
-                                                                                  getBaseMetaTileEntity().getOffsetX(
-                                                                                          getBaseMetaTileEntity().getFrontFacing(),
-                                                                                          2) + 2,
-                                                                                  getBaseMetaTileEntity().getOffsetY(
-                                                                                          getBaseMetaTileEntity().getFrontFacing(),
-                                                                                          2) + 2,
-                                                                                  getBaseMetaTileEntity().getOffsetZ(
-                                                                                          getBaseMetaTileEntity().getFrontFacing(),
-                                                                                          2) + 2));
+                                                                          .getEntitiesWithinAABB(
+                                                                                  Entity.class,
+                                                                                  AxisAlignedBB.getBoundingBox(
+                                                                                          getBaseMetaTileEntity().getOffsetX(
+                                                                                                  getBaseMetaTileEntity().getFrontFacing(),
+                                                                                                  2) - 1,
+                                                                                          getBaseMetaTileEntity().getOffsetY(
+                                                                                                  getBaseMetaTileEntity().getFrontFacing(),
+                                                                                                  2) - 1,
+                                                                                          getBaseMetaTileEntity().getOffsetZ(
+                                                                                                  getBaseMetaTileEntity().getFrontFacing(),
+                                                                                                  2) - 1,
+                                                                                          getBaseMetaTileEntity().getOffsetX(
+                                                                                                  getBaseMetaTileEntity().getFrontFacing(),
+                                                                                                  2) + 2,
+                                                                                          getBaseMetaTileEntity().getOffsetY(
+                                                                                                  getBaseMetaTileEntity().getFrontFacing(),
+                                                                                                  2) + 2,
+                                                                                          getBaseMetaTileEntity().getOffsetZ(
+                                                                                                  getBaseMetaTileEntity().getFrontFacing(),
+                                                                                                  2) + 2));
 
                     for (Object tObject : entities_in_box) {
                         if (((tObject instanceof Entity tEntity)) && (!((Entity) tObject).isDead)) {

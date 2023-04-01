@@ -16,7 +16,7 @@ public abstract class GT_Worldgen {
     public final boolean mEnabled;
     private final Map<String, Boolean> mDimensionMap = new ConcurrentHashMap<>();
 
-    @SuppressWarnings({"unchecked", "rawtypes"}) // The adding of "this" needs a List<this> which does not exist
+    @SuppressWarnings({ "unchecked", "rawtypes" }) // The adding of "this" needs a List<this> which does not exist
     public GT_Worldgen(String aName, List aList, boolean aDefault) {
         mWorldGenName = aName;
         mEnabled = GregTech_API.sWorldgenFile.get("worldgen", mWorldGenName, aDefault);

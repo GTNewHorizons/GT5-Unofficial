@@ -1671,8 +1671,9 @@ public enum GT_BeeDefinition implements IBeeDefinition {
                 @Override
                 public void accept(GT_BeeDefinition dis) {
                     IBeeMutationCustom tMutation = dis.registerMutation(CALLISTO, getSpecies(EXTRABEES, "freezing"), 7);
-                    if (NewHorizonsCoreMod.isModLoaded()) tMutation.requireResource(GameRegistry.findBlock(NewHorizonsCoreMod.modID,
-                            "tile.CallistoColdIce"), 0);
+                    if (NewHorizonsCoreMod.isModLoaded()) tMutation.requireResource(
+                            GameRegistry.findBlock(NewHorizonsCoreMod.modID, "tile.CallistoColdIce"),
+                            0);
                     tMutation.addMutationCondition(new GT_Bees.DimensionMutationCondition(45, "Callisto")); // Callisto
                     // Dim
                 }
@@ -1737,15 +1738,16 @@ public enum GT_BeeDefinition implements IBeeDefinition {
                 beeSpecies.setHasEffect();
             }, template -> {}, new Consumer<>() {
 
-        @Override
-        public void accept(GT_BeeDefinition dis) {
-            IBeeMutationCustom tMutation = dis.registerMutation(ENCELADUS, EMERALD, 3);
-            if (NewHorizonsCoreMod.isModLoaded())
-                tMutation.requireResource(GameRegistry.findBlock(NewHorizonsCoreMod.modID, "tile.MysteriousCrystal"), 0);
-            tMutation.addMutationCondition(new GT_Bees.DimensionMutationCondition(41, "Enceladus")); // Enceladus
-            // Dim
-        }
-    }),
+                @Override
+                public void accept(GT_BeeDefinition dis) {
+                    IBeeMutationCustom tMutation = dis.registerMutation(ENCELADUS, EMERALD, 3);
+                    if (NewHorizonsCoreMod.isModLoaded()) tMutation.requireResource(
+                            GameRegistry.findBlock(NewHorizonsCoreMod.modID, "tile.MysteriousCrystal"),
+                            0);
+                    tMutation.addMutationCondition(new GT_Bees.DimensionMutationCondition(41, "Enceladus")); // Enceladus
+                    // Dim
+                }
+            }),
     BLACKPLUTONIUM(GT_BranchDefinition.SPACE, "BlackPlutonium", false, new Color(0x000000), new Color(0x323232),
             beeSpecies -> {
                 beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.SPACE), 0.68f);
@@ -1756,14 +1758,15 @@ public enum GT_BeeDefinition implements IBeeDefinition {
                 beeSpecies.setHasEffect();
             }, template -> {}, new Consumer<>() {
 
-        @Override
-        public void accept(GT_BeeDefinition dis) {
-            IBeeMutationCustom tMutation = dis.registerMutation(PLUTO, PLUTONIUM, 2);
-            if (NewHorizonsCoreMod.isModLoaded())
-                tMutation.requireResource(GameRegistry.findBlock(NewHorizonsCoreMod.modID, "tile.BlackPlutonium"), 0);
-            tMutation.addMutationCondition(new GT_Bees.DimensionMutationCondition(49, "Pluto")); // Pluto Dim
-        }
-    }),
+                @Override
+                public void accept(GT_BeeDefinition dis) {
+                    IBeeMutationCustom tMutation = dis.registerMutation(PLUTO, PLUTONIUM, 2);
+                    if (NewHorizonsCoreMod.isModLoaded()) tMutation.requireResource(
+                            GameRegistry.findBlock(NewHorizonsCoreMod.modID, "tile.BlackPlutonium"),
+                            0);
+                    tMutation.addMutationCondition(new GT_Bees.DimensionMutationCondition(49, "Pluto")); // Pluto Dim
+                }
+            }),
     TRINIUM(GT_BranchDefinition.SPACE, "Trinium", false, new Color(0xB0E0E6), new Color(0xC8C8D2), beeSpecies -> {
         beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.TRINIUM), 0.75f);
         beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.QUANTIUM), 0.10f);

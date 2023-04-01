@@ -34,7 +34,7 @@ public class GT_Item_Stones_Abstract extends ItemBlock {
     }
 
     @Override
-    public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List <String>aList, boolean aF3_H) {
+    public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
         super.addInformation(aStack, aPlayer, aList, aF3_H);
         if (aStack.getItemDamage() % 8 >= 3) {
             aList.add(this.mNoMobsToolTip);

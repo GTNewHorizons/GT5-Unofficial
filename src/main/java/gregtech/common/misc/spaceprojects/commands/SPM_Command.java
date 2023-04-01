@@ -136,8 +136,7 @@ public class SPM_Command extends CommandBase {
             }
             case 3 -> {
                 filter = arguments.length == 2 ? "" : arguments[2].trim();
-                if (arguments[1].equals(ALL)) {
-                } else if (arguments[0].equals(LIST)) {
+                if (arguments[1].equals(ALL)) {} else if (arguments[0].equals(LIST)) {
                     autoComplete.addAll(Arrays.asList(getPlayers()));
                 } else {
                     autoComplete.addAll(Arrays.asList(getLocations()));
@@ -206,7 +205,8 @@ public class SPM_Command extends CommandBase {
         UUID tID = SpaceProjectManager.getPlayerUUIDFromName(playerName);
         switch (argument) {
             case ALL -> {
-                for (String project : SpaceProjectManager.getProjectsMap().keySet()) {
+                for (String project : SpaceProjectManager.getProjectsMap()
+                                                         .keySet()) {
                     sender.addChatMessage(new ChatComponentText(project));
                 }
             }

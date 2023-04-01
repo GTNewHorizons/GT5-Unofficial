@@ -95,8 +95,7 @@ public class ProcessingCrate implements gregtech.api.interfaces.IOreRecipeRegist
                         GT_Proxy.tBits,
                         new Object[] { "Xc", 'X', OrePrefixes.crateGtPlate.get(aMaterial) });
             }
-            default -> {
-            }
+            default -> {}
         }
     }
 }

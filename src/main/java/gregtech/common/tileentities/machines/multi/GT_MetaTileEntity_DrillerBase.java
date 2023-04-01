@@ -62,15 +62,42 @@ public abstract class GT_MetaTileEntity_DrillerBase
 
         @Override
         protected IStructureDefinition<GT_MetaTileEntity_DrillerBase> computeValue(Class<?> type) {
-            return StructureDefinition.<GT_MetaTileEntity_DrillerBase>builder().addShape(STRUCTURE_PIECE_MAIN,
-                            transpose(new String[][] { { "   ", " f ", "   " }, { "   ", " f ", "   " }, { "   ", " f ", "   " }, { " f ", "fcf", " f " },
-                                    { " f ", "fcf", " f " }, { " f ", "fcf", " f " }, { "b~b", "bbb", "bbb" }, }))
-                    .addElement('f', lazy(t -> ofFrame(t.getFrameMaterial()))).addElement('c',
-                            lazy(t -> ofBlock(t.getCasingBlockItem().getBlock(), t.getCasingBlockItem().get(0).getItemDamage()))).addElement('b',
-                            lazy(t -> buildHatchAdder(GT_MetaTileEntity_DrillerBase.class).atLeastList(t.getAllowedHatches())
-                                    .adder(GT_MetaTileEntity_DrillerBase::addToMachineList).casingIndex(t.casingTextureIndex).dot(1)
-                                    .buildAndChain(t.getCasingBlockItem().getBlock(),
-                                            t.getCasingBlockItem().get(0).getItemDamage()))).build();
+            return StructureDefinition.<GT_MetaTileEntity_DrillerBase>builder()
+                                      .addShape(
+                                              STRUCTURE_PIECE_MAIN,
+                                              transpose(
+                                                      new String[][] { { "   ", " f ", "   " }, { "   ", " f ", "   " },
+                                                              { "   ", " f ", "   " }, { " f ", "fcf", " f " },
+                                                              { " f ", "fcf", " f " }, { " f ", "fcf", " f " },
+                                                              { "b~b", "bbb", "bbb" }, }))
+                                      .addElement('f', lazy(t -> ofFrame(t.getFrameMaterial())))
+                                      .addElement(
+                                              'c',
+                                              lazy(
+                                                      t -> ofBlock(
+                                                              t.getCasingBlockItem()
+                                                               .getBlock(),
+                                                              t.getCasingBlockItem()
+                                                               .get(0)
+                                                               .getItemDamage())))
+                                      .addElement(
+                                              'b',
+                                              lazy(
+                                                      t -> buildHatchAdder(
+                                                              GT_MetaTileEntity_DrillerBase.class).atLeastList(
+                                                                      t.getAllowedHatches())
+                                                                                                  .adder(
+                                                                                                          GT_MetaTileEntity_DrillerBase::addToMachineList)
+                                                                                                  .casingIndex(
+                                                                                                          t.casingTextureIndex)
+                                                                                                  .dot(1)
+                                                                                                  .buildAndChain(
+                                                                                                          t.getCasingBlockItem()
+                                                                                                           .getBlock(),
+                                                                                                          t.getCasingBlockItem()
+                                                                                                           .get(0)
+                                                                                                           .getItemDamage())))
+                                      .build();
         }
     };
 

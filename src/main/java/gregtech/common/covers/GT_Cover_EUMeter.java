@@ -107,10 +107,12 @@ public class GT_Cover_EUMeter extends GT_CoverBehaviorBase<GT_Cover_EUMeter.EUMe
             case 7 -> GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("038", "Inverted Average Electric Input"));
             case 8 -> GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("039", "Normal Average Electric Output"));
             case 9 -> GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("040", "Inverted Average Electric Output"));
-            case 10 -> GT_Utility.sendChatToPlayer(aPlayer,
-                GT_Utility.trans("041", "Normal Electricity Storage(Including Batteries)"));
-            case 11 -> GT_Utility.sendChatToPlayer(aPlayer,
-                GT_Utility.trans("042", "Inverted Electricity Storage(Including Batteries)"));
+            case 10 -> GT_Utility.sendChatToPlayer(
+                    aPlayer,
+                    GT_Utility.trans("041", "Normal Electricity Storage(Including Batteries)"));
+            case 11 -> GT_Utility.sendChatToPlayer(
+                    aPlayer,
+                    GT_Utility.trans("042", "Inverted Electricity Storage(Including Batteries)"));
         }
         aCoverVariable.setNum(num);
         return aCoverVariable;

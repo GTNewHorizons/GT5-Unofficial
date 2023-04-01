@@ -21,7 +21,8 @@ public class ProcessingFood implements gregtech.api.interfaces.IOreRecipeRegistr
             ItemStack aStack) {
         switch (aOreDictName) {
             case "foodCheese" -> {
-                GT_Values.RA.addSlicerRecipe(aStack,
+                GT_Values.RA.addSlicerRecipe(
+                        aStack,
                         ItemList.Shape_Slicer_Flat.get(0L),
                         ItemList.Food_Sliced_Cheese.get(4L),
                         64,
@@ -30,11 +31,13 @@ public class ProcessingFood implements gregtech.api.interfaces.IOreRecipeRegistr
             }
             case "foodDough" -> {
                 GT_ModHandler.removeFurnaceSmelting(aStack);
-                GT_Values.RA.addBenderRecipe(GT_Utility.copyAmount(1L, aStack),
+                GT_Values.RA.addBenderRecipe(
+                        GT_Utility.copyAmount(1L, aStack),
                         ItemList.Food_Flat_Dough.get(1L),
                         16,
                         4);
-                GT_Values.RA.addMixerRecipe(aStack,
+                GT_Values.RA.addMixerRecipe(
+                        aStack,
                         GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sugar, 1L),
                         null,
                         null,
@@ -43,7 +46,8 @@ public class ProcessingFood implements gregtech.api.interfaces.IOreRecipeRegistr
                         ItemList.Food_Dough_Sugar.get(2L),
                         32,
                         8);
-                GT_Values.RA.addMixerRecipe(aStack,
+                GT_Values.RA.addMixerRecipe(
+                        aStack,
                         GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Cocoa, 1L),
                         null,
                         null,
@@ -52,7 +56,8 @@ public class ProcessingFood implements gregtech.api.interfaces.IOreRecipeRegistr
                         ItemList.Food_Dough_Chocolate.get(2L),
                         32,
                         8);
-                GT_Values.RA.addMixerRecipe(aStack,
+                GT_Values.RA.addMixerRecipe(
+                        aStack,
                         GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Chocolate, 1L),
                         null,
                         null,
@@ -61,17 +66,20 @@ public class ProcessingFood implements gregtech.api.interfaces.IOreRecipeRegistr
                         ItemList.Food_Dough_Chocolate.get(2L),
                         32,
                         8);
-                GT_Values.RA.addFormingPressRecipe(GT_Utility.copyAmount(1L, aStack),
+                GT_Values.RA.addFormingPressRecipe(
+                        GT_Utility.copyAmount(1L, aStack),
                         ItemList.Shape_Mold_Bun.get(0L),
                         ItemList.Food_Raw_Bun.get(1L),
                         128,
                         4);
-                GT_Values.RA.addFormingPressRecipe(GT_Utility.copyAmount(2L, aStack),
+                GT_Values.RA.addFormingPressRecipe(
+                        GT_Utility.copyAmount(2L, aStack),
                         ItemList.Shape_Mold_Bread.get(0L),
                         ItemList.Food_Raw_Bread.get(1L),
                         256,
                         4);
-                GT_Values.RA.addFormingPressRecipe(GT_Utility.copyAmount(3L, aStack),
+                GT_Values.RA.addFormingPressRecipe(
+                        GT_Utility.copyAmount(3L, aStack),
                         ItemList.Shape_Mold_Baguette.get(0L),
                         ItemList.Food_Raw_Baguette.get(1L),
                         384,

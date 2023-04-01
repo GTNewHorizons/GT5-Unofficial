@@ -35,10 +35,10 @@ public class Behaviour_Scoop extends Behaviour_None {
                     || (((GT_MetaGenerated_Tool) aItem).doDamage(aStack, this.mCosts))) {
                 IButterfly tButterfly = ((IEntityButterfly) aEntity).getButterfly();
                 tButterfly.getGenome()
-                                         .getPrimary()
-                                         .getRoot()
-                                         .getBreedingTracker(aEntity.worldObj, aPlayer.getGameProfile())
-                                         .registerCatch(tButterfly);
+                          .getPrimary()
+                          .getRoot()
+                          .getBreedingTracker(aEntity.worldObj, aPlayer.getGameProfile())
+                          .registerCatch(tButterfly);
                 aPlayer.worldObj.spawnEntityInWorld(
                         new EntityItem(
                                 aPlayer.worldObj,
@@ -46,11 +46,9 @@ public class Behaviour_Scoop extends Behaviour_None {
                                 aEntity.posY,
                                 aEntity.posZ,
                                 tButterfly.getGenome()
-                                                         .getPrimary()
-                                                         .getRoot()
-                                                         .getMemberStack(
-                                                                 tButterfly.copy(),
-                                                                 EnumFlutterType.BUTTERFLY.ordinal())));
+                                          .getPrimary()
+                                          .getRoot()
+                                          .getMemberStack(tButterfly.copy(), EnumFlutterType.BUTTERFLY.ordinal())));
                 aEntity.setDead();
             }
             return true;

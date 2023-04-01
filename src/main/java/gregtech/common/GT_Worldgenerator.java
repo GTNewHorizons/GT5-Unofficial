@@ -212,11 +212,10 @@ public class GT_Worldgenerator implements IWorldGenerator {
             // bits of the chunk so we have bits for dimension.
             // ( (long)oreseedZ & 0x000000000fffffffL )) Puts the chunk Z in the bits 0-27. Cuts off the top few bits
             // of the chunk so we have bits for dimension.
-            long oreveinSeed = (this.mWorld.getSeed() << 16)
-                    ^ (((this.mWorld.provider.dimensionId & 0xffL) << 56)
-                            | (((long) oreseedX & 0x000000000fffffffL) << 28)
-                            | ((long) oreseedZ & 0x000000000fffffffL)); // Use an RNG that is identical every time it is
-                                                                        // called for
+            long oreveinSeed = (this.mWorld.getSeed() << 16) ^ (((this.mWorld.provider.dimensionId & 0xffL) << 56)
+                    | (((long) oreseedX & 0x000000000fffffffL) << 28)
+                    | ((long) oreseedZ & 0x000000000fffffffL)); // Use an RNG that is identical every time it is
+                                                                // called for
             // this oreseed.
             XSTR oreveinRNG = new XSTR(oreveinSeed);
             int oreveinPercentageRoll = oreveinRNG.nextInt(100); // Roll the dice, see if we get an orevein here at all
@@ -279,16 +278,16 @@ public class GT_Worldgenerator implements IWorldGenerator {
                                             this.mChunkProvider);
                                     switch (placementResult) {
                                         case GT_Worldgen_GT_Ore_Layer.ORE_PLACED -> {
-                                            if (debugOrevein) GT_Log.out.println(" Added near oreveinSeed="
-                                                + oreveinSeed
-                                                + " "
-                                                + (tWorldGen).mWorldGenName
-                                                + " tries at oremix="
-                                                + i
-                                                + " placementAttempts="
-                                                + placementAttempts
-                                                + " dimensionName="
-                                                + tDimensionName);
+                                            if (debugOrevein) GT_Log.out.println(
+                                                    " Added near oreveinSeed=" + oreveinSeed
+                                                            + " "
+                                                            + (tWorldGen).mWorldGenName
+                                                            + " tries at oremix="
+                                                            + i
+                                                            + " placementAttempts="
+                                                            + placementAttempts
+                                                            + " dimensionName="
+                                                            + tDimensionName);
                                             validOreveins.put(oreveinSeed, tWorldGen);
                                             oreveinFound = true;
                                         }
@@ -296,31 +295,30 @@ public class GT_Worldgenerator implements IWorldGenerator {
 
                                         // SHould do retry in this case until out of chances
                                         case GT_Worldgen_GT_Ore_Layer.NO_OVERLAP -> {
-                                            if (debugOrevein) GT_Log.out.println(" Added far oreveinSeed="
-                                                + oreveinSeed
-                                                + " "
-                                                + (tWorldGen).mWorldGenName
-                                                + " tries at oremix="
-                                                + i
-                                                + " placementAttempts="
-                                                + placementAttempts
-                                                + " dimensionName="
-                                                + tDimensionName);
+                                            if (debugOrevein) GT_Log.out.println(
+                                                    " Added far oreveinSeed=" + oreveinSeed
+                                                            + " "
+                                                            + (tWorldGen).mWorldGenName
+                                                            + " tries at oremix="
+                                                            + i
+                                                            + " placementAttempts="
+                                                            + placementAttempts
+                                                            + " dimensionName="
+                                                            + tDimensionName);
                                             validOreveins.put(oreveinSeed, tWorldGen);
                                             oreveinFound = true;
                                         }
                                         case GT_Worldgen_GT_Ore_Layer.NO_OVERLAP_AIR_BLOCK -> {
-                                            if (debugOrevein)
-                                                GT_Log.out.println(" No overlap and air block in test spot="
-                                                    + oreveinSeed
-                                                    + " "
-                                                    + (tWorldGen).mWorldGenName
-                                                    + " tries at oremix="
-                                                    + i
-                                                    + " placementAttempts="
-                                                    + placementAttempts
-                                                    + " dimensionName="
-                                                    + tDimensionName);
+                                            if (debugOrevein) GT_Log.out.println(
+                                                    " No overlap and air block in test spot=" + oreveinSeed
+                                                            + " "
+                                                            + (tWorldGen).mWorldGenName
+                                                            + " tries at oremix="
+                                                            + i
+                                                            + " placementAttempts="
+                                                            + placementAttempts
+                                                            + " dimensionName="
+                                                            + tDimensionName);
                                             // SHould do retry in this case until out of chances
                                             placementAttempts++;
                                         }

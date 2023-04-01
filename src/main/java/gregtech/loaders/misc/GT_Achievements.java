@@ -389,8 +389,9 @@ public class GT_Achievements {
         if (GT_Mod.gregtechproxy.mAchievements) {
             AchievementPage.registerAchievementPage(
                     new AchievementPage(
-                            "GregTech 5", this.achievementList.values()
-                                                                .toArray(new Achievement[0])));
+                            "GregTech 5",
+                            this.achievementList.values()
+                                                .toArray(new Achievement[0])));
             MinecraftForge.EVENT_BUS.register(this);
             FMLCommonHandler.instance()
                             .bus()
@@ -529,7 +530,8 @@ public class GT_Achievements {
         if (player == null || fluid == null) {
             return;
         }
-        switch (fluid.getFluid().getUnlocalizedName()) {
+        switch (fluid.getFluid()
+                     .getUnlocalizedName()) {
             case "fluid.plasma.helium" -> issueAchievement(player, "fusion");
             case "fluid.molten.europium" -> issueAchievement(player, "advancing");
             case "fluid.molten.naquadah" -> issueAchievement(player, "stargateliquid");

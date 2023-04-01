@@ -115,13 +115,17 @@ public class GT_Cover_NeedMaintainance extends GT_CoverBehavior {
             case 9 -> GT_Utility.sendChatToPlayer(
                     aPlayer,
                     GT_Utility.trans("065", "Emit if 5 Maintenance Needed(inverted)"));
-            case 10 -> GT_Utility.sendChatToPlayer(aPlayer,
+            case 10 -> GT_Utility.sendChatToPlayer(
+                    aPlayer,
                     GT_Utility.trans("066", "Emit if rotor needs maintenance low accuracy mod"));
-            case 11 -> GT_Utility.sendChatToPlayer(aPlayer,
+            case 11 -> GT_Utility.sendChatToPlayer(
+                    aPlayer,
                     GT_Utility.trans("067", "Emit if rotor needs maintenance low accuracy mod(inverted)"));
-            case 12 -> GT_Utility.sendChatToPlayer(aPlayer,
+            case 12 -> GT_Utility.sendChatToPlayer(
+                    aPlayer,
                     GT_Utility.trans("068", "Emit if rotor needs maintenance high accuracy mod"));
-            case 13 -> GT_Utility.sendChatToPlayer(aPlayer,
+            case 13 -> GT_Utility.sendChatToPlayer(
+                    aPlayer,
                     GT_Utility.trans("069", "Emit if rotor needs maintenance high accuracy mod(inverted)"));
         }
         return aCoverVariable;

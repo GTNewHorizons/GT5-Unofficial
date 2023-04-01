@@ -120,12 +120,15 @@ public class GT_Cover_Pump extends GT_CoverBehavior {
             case 6 -> GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("012", "Export allow Input"));
             case 7 -> GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("013", "Import allow Output"));
             case 8 -> GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("014", "Export allow Input (conditional)"));
-            case 9 ->
-                    GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("015", "Import allow Output (conditional)"));
-            case 10 ->
-                    GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("016", "Export allow Input (invert cond)"));
-            case 11 ->
-                    GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("017", "Import allow Output (invert cond)"));
+            case 9 -> GT_Utility.sendChatToPlayer(
+                    aPlayer,
+                    GT_Utility.trans("015", "Import allow Output (conditional)"));
+            case 10 -> GT_Utility.sendChatToPlayer(
+                    aPlayer,
+                    GT_Utility.trans("016", "Export allow Input (invert cond)"));
+            case 11 -> GT_Utility.sendChatToPlayer(
+                    aPlayer,
+                    GT_Utility.trans("017", "Import allow Output (invert cond)"));
         }
         return aCoverVariable;
     }

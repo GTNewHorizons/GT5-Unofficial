@@ -65,8 +65,7 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                             200,
                             calculateRecipeEU(aMaterial, 8));
                 }
-                if (aMaterial.mUnificatable
-                        && (aMaterial.mMaterialInto == aMaterial)
+                if (aMaterial.mUnificatable && (aMaterial.mMaterialInto == aMaterial)
                         && !aMaterial.contains(SubTag.NO_WORKING)) {
                     if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
                         GT_ModHandler.addCraftingRecipe(
@@ -185,10 +184,10 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                 }
             }
             default -> {
-                GT_Log.err.println("OrePrefix "
-                        + aPrefix.name()
-                        + " cannot be registered as a cable for Material "
-                        + aMaterial.mName);
+                GT_Log.err.println(
+                        "OrePrefix " + aPrefix.name()
+                                + " cannot be registered as a cable for Material "
+                                + aMaterial.mName);
                 return;
             }
         }

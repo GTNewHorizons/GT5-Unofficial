@@ -122,8 +122,7 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
                     case EAST -> {
                         return mTextures[ARROW_LEFT_INDEX][colorIndex]; // ARROW_LEFT
                     }
-                    default -> {
-                    }
+                    default -> {}
                 }
             }
             case SOUTH -> {
@@ -137,8 +136,7 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
                     case EAST -> {
                         return mTextures[ARROW_RIGHT_INDEX][colorIndex]; // ARROW_RIGHT
                     }
-                    default -> {
-                    }
+                    default -> {}
                 }
             }
             case WEST -> {
@@ -149,8 +147,7 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
                     case DOWN, NORTH -> {
                         return mTextures[ARROW_LEFT_INDEX][colorIndex]; // ARROW_LEFT
                     }
-                    default -> {
-                    }
+                    default -> {}
                 }
             }
             case EAST -> {
@@ -161,12 +158,10 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
                     case DOWN, NORTH -> {
                         return mTextures[ARROW_RIGHT_INDEX][colorIndex]; // ARROW_RIGHT
                     }
-                    default -> {
-                    }
+                    default -> {}
                 }
             }
-            default -> {
-            }
+            default -> {}
         }
         return mTextures[FRONT_INDEX][colorIndex];
     }

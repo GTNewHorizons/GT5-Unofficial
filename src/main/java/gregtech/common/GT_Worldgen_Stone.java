@@ -96,8 +96,7 @@ public class GT_Worldgen_Stone extends GT_Worldgen_Ore {
         // Check stone seeds to see if they have been added
         for (int x = aChunkX / 16 - windowWidth; x < (aChunkX / 16 + windowWidth + 1); x++) {
             for (int z = aChunkZ / 16 - windowWidth; z < (aChunkZ / 16 + windowWidth + 1); z++) {
-                long hash = (((aWorld.provider.dimensionId & 0xffL) << 56)
-                        | (((long) x & 0x000000000fffffffL) << 28)
+                long hash = (((aWorld.provider.dimensionId & 0xffL) << 56) | (((long) x & 0x000000000fffffffL) << 28)
                         | ((long) z & 0x000000000fffffffL));
                 if (!validStoneSeeds.containsKey(hash)) {
                     // Determine if RNG says to add stone at this chunk
@@ -139,11 +138,11 @@ public class GT_Worldgen_Stone extends GT_Worldgen_Ore {
             int z = stones.get(0).mZ * 16;
 
             stoneRNG.setSeed(
-                    aWorld.getSeed() ^ (((aWorld.provider.dimensionId & 0xffL) << 56)
-                            | (((long) x & 0x000000000fffffffL) << 28)
-                            | ((long) z & 0x000000000fffffffL)) + Math.abs(mBlockMeta)
-                            + Math.abs(mSize)
-                            + ((GregTech_API.sBlockGranites == mBlock) ? (32768) : (0))); // Don't judge me
+                    aWorld.getSeed()
+                            ^ (((aWorld.provider.dimensionId & 0xffL) << 56) | (((long) x & 0x000000000fffffffL) << 28)
+                                    | ((long) z & 0x000000000fffffffL)) + Math.abs(mBlockMeta)
+                                    + Math.abs(mSize)
+                                    + ((GregTech_API.sBlockGranites == mBlock) ? (32768) : (0))); // Don't judge me
             for (int i = 0; i < this.mAmount; i++) { // Not sure why you would want more than one in a chunk! Left alone
                                                      // though.
                 // Locate the stoneseed XYZ. Original code would request an isAir at the seed location, causing a chunk

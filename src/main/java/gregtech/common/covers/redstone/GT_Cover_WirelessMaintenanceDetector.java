@@ -56,8 +56,8 @@ public class GT_Cover_WirelessMaintenanceDetector extends
 
                 switch (coverVariable.mode) {
                     case NO_ISSUE -> signal = ideal == real;
-                    case ONE_ISSUE, TWO_ISSUES, THREE_ISSUES, FOUR_ISSUES, FIVE_ISSUES ->
-                            signal = ideal - real >= coverVariable.mode.ordinal();
+                    case ONE_ISSUE, TWO_ISSUES, THREE_ISSUES, FOUR_ISSUES, FIVE_ISSUES -> signal = ideal - real
+                            >= coverVariable.mode.ordinal();
                     case ROTOR_80, ROTOR_100 -> {
                         ItemStack rotor = multiTE.getRealInventory()[1];
                         if (GT_Cover_NeedMaintainance.isRotor(rotor)) {
@@ -67,9 +67,10 @@ public class GT_Cover_WirelessMaintenanceDetector extends
                             if (coverVariable.mode == MaintenanceMode.ROTOR_80) {
                                 signal = current >= max * 8 / 10;
                             } else {
-                                long expectedDamage = Math.round(Math.min(
-                                        (double) multiTE.mEUt / multiTE.damageFactorLow,
-                                        Math.pow(multiTE.mEUt, multiTE.damageFactorHigh)));
+                                long expectedDamage = Math.round(
+                                        Math.min(
+                                                (double) multiTE.mEUt / multiTE.damageFactorLow,
+                                                Math.pow(multiTE.mEUt, multiTE.damageFactorHigh)));
                                 signal = current + expectedDamage * 2 >= max;
                             }
                         } else {

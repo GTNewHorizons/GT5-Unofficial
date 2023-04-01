@@ -706,12 +706,12 @@ public class GT_ModHandler {
                                                  .contains("ic2.itemPurifiedCrushed"))))
                                     continue;
                                 switch (aGTRecipeMap.mUnlocalizedName) {
-                                    case "gt.recipe.macerator", "gt.recipe.extractor", "gt.recipe.compressor" ->
-                                        aGTRecipeMap.addRecipe(
+                                    case "gt.recipe.macerator", "gt.recipe.extractor", "gt.recipe.compressor" -> aGTRecipeMap.addRecipe(
                                             true,
-                                            new ItemStack[] {
-                                                GT_Utility.copyAmount(iRecipeInputRecipeOutputEntry.getKey()
-                                                    .getAmount(), tStack) },
+                                            new ItemStack[] { GT_Utility.copyAmount(
+                                                    iRecipeInputRecipeOutputEntry.getKey()
+                                                                                 .getAmount(),
+                                                    tStack) },
                                             iRecipeInputRecipeOutputEntry.getValue().items.toArray(new ItemStack[0]),
                                             null,
                                             null,
@@ -721,18 +721,19 @@ public class GT_ModHandler {
                                             2,
                                             0);
                                     case "gt.recipe.thermalcentrifuge" -> aGTRecipeMap.addRecipe(
-                                        true,
-                                        new ItemStack[] {
-                                            GT_Utility.copyAmount(iRecipeInputRecipeOutputEntry.getKey().getAmount(),
-                                                tStack) },
-                                        iRecipeInputRecipeOutputEntry.getValue().items.toArray(new ItemStack[0]),
-                                        null,
-                                        null,
-                                        null,
-                                        null,
-                                        500,
-                                        48,
-                                        0);
+                                            true,
+                                            new ItemStack[] { GT_Utility.copyAmount(
+                                                    iRecipeInputRecipeOutputEntry.getKey()
+                                                                                 .getAmount(),
+                                                    tStack) },
+                                            iRecipeInputRecipeOutputEntry.getValue().items.toArray(new ItemStack[0]),
+                                            null,
+                                            null,
+                                            null,
+                                            null,
+                                            500,
+                                            48,
+                                            0);
                                 }
                             } catch (Exception e) {
                                 System.err.println(e);
@@ -1405,8 +1406,8 @@ public class GT_ModHandler {
     public static boolean removeFurnaceSmelting(ItemStack aInput) {
         if (aInput != null) {
             for (ItemStack tInput : FurnaceRecipes.smelting()
-                                               .getSmeltingList()
-                                               .keySet()) {
+                                                  .getSmeltingList()
+                                                  .keySet()) {
                 if (GT_Utility.isStackValid(tInput) && GT_Utility.areStacksEqual(aInput, tInput, true)) {
                     FurnaceRecipes.smelting()
                                   .getSmeltingList()
@@ -1748,7 +1749,7 @@ public class GT_ModHandler {
             sSingleNonBlockDamagableRecipeList.clear();
         if (sSingleNonBlockDamagableRecipeList.isEmpty()) {
             for (IRecipe tRecipe : CraftingManager.getInstance()
-                                                                       .getRecipeList()) {
+                                                  .getRecipeList()) {
                 ItemStack tStack = tRecipe.getRecipeOutput();
                 if (GT_Utility.isStackValid(tStack) && tStack.getMaxStackSize() == 1
                         && tStack.getMaxDamage() > 0
@@ -1824,26 +1825,25 @@ public class GT_ModHandler {
     public static List<ItemStack> getRecipeOutputsBuffered(ItemStack... aRecipe) {
 
         if (bufferedRecipes == null) bufferedRecipes = CraftingManager.getInstance()
-                                                                                      .getRecipeList()
-                                                                                      .stream()
-                                                                                      .filter(
-                                                                                              tRecipe -> !(tRecipe instanceof ShapelessRecipes)
-                                                                                                      && !(tRecipe instanceof ShapelessOreRecipe)
-                                                                                                      && !(tRecipe instanceof IGT_CraftingRecipe))
-                                                                                      .filter(tRecipe -> {
-                                                                                          try {
-                                                                                              ItemStack tOutput = tRecipe.getRecipeOutput();
-                                                                                              if (tOutput.stackSize == 1
-                                                                                                      && tOutput.getMaxDamage()
-                                                                                                              > 0
-                                                                                                      && tOutput.getMaxStackSize()
-                                                                                                              == 1) {
-                                                                                                  return true;
-                                                                                              }
-                                                                                          } catch (Exception ignored) {}
-                                                                                          return false;
-                                                                                      })
-                                                                                      .collect(Collectors.toList());
+                                                                      .getRecipeList()
+                                                                      .stream()
+                                                                      .filter(
+                                                                              tRecipe -> !(tRecipe instanceof ShapelessRecipes)
+                                                                                      && !(tRecipe instanceof ShapelessOreRecipe)
+                                                                                      && !(tRecipe instanceof IGT_CraftingRecipe))
+                                                                      .filter(tRecipe -> {
+                                                                          try {
+                                                                              ItemStack tOutput = tRecipe.getRecipeOutput();
+                                                                              if (tOutput.stackSize == 1
+                                                                                      && tOutput.getMaxDamage() > 0
+                                                                                      && tOutput.getMaxStackSize()
+                                                                                              == 1) {
+                                                                                  return true;
+                                                                              }
+                                                                          } catch (Exception ignored) {}
+                                                                          return false;
+                                                                      })
+                                                                      .collect(Collectors.toList());
         return getRecipeOutputs(bufferedRecipes, false, aRecipe);
     }
 

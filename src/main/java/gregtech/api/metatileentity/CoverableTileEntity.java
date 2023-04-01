@@ -702,18 +702,17 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
              .setSize(COVER_TAB_WIDTH, COVER_TAB_HEIGHT))
                                                         .addChild(
                                                                 new ItemDrawable(
-                                                                        () -> getCoverItemAtSide(side))
-                                                                                                                   .asWidget()
-                                                                                                                   .setPos(
-                                                                                                                           (COVER_TAB_WIDTH
-                                                                                                                                   - ICON_SIZE)
-                                                                                                                                   / 2
-                                                                                                                                   + (flipHorizontally
-                                                                                                                                           ? -1
-                                                                                                                                           : 1),
-                                                                                                                           (COVER_TAB_HEIGHT
-                                                                                                                                   - ICON_SIZE)
-                                                                                                                                   / 2))
+                                                                        () -> getCoverItemAtSide(side)).asWidget()
+                                                                                                       .setPos(
+                                                                                                               (COVER_TAB_WIDTH
+                                                                                                                       - ICON_SIZE)
+                                                                                                                       / 2
+                                                                                                                       + (flipHorizontally
+                                                                                                                               ? -1
+                                                                                                                               : 1),
+                                                                                                               (COVER_TAB_HEIGHT
+                                                                                                                       - ICON_SIZE)
+                                                                                                                       / 2))
                                                         .setEnabled(widget -> getCoverItemAtSide(side) != null));
         }
     }

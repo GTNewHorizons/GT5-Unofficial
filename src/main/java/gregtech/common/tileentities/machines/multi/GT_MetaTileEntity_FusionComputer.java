@@ -66,35 +66,85 @@ public abstract class GT_MetaTileEntity_FusionComputer
 
         @Override
         protected IStructureDefinition<GT_MetaTileEntity_FusionComputer> computeValue(Class<?> type) {
-            return StructureDefinition.<GT_MetaTileEntity_FusionComputer>builder().addShape(STRUCTURE_PIECE_MAIN,
-                            transpose(new String[][] {
-                                    { "               ", "      ihi      ", "    hh   hh    ", "   h       h   ",
-                                            "  h         h  ", "  h         h  ", " i           i ", " h           h ",
-                                            " i           i ", "  h         h  ", "  h         h  ", "   h       h   ",
-                                            "    hh   hh    ", "      ihi      ", "               ", },
-                                    { "      xhx      ", "    hhccchh    ", "   eccxhxcce   ", "  eceh   hece  ",
-                                            " hce       ech ", " hch       hch ", "xcx         xcx", "hch         hch",
-                                            "xcx         xcx", " hch       hch ", " hce       ech ", "  eceh   hece  ",
-                                            "   eccx~xcce   ", "    hhccchh    ", "      xhx      ", },
-                                    { "               ", "      ihi      ", "    hh   hh    ", "   h       h   ",
-                                            "  h         h  ", "  h         h  ", " i           i ", " h           h ",
-                                            " i           i ", "  h         h  ", "  h         h  ", "   h       h   ",
-                                            "    hh   hh    ", "      ihi      ", "               ", } }))
-                    .addElement('c', lazy(t -> ofBlock(t.getFusionCoil(), t.getFusionCoilMeta()))).addElement('h', lazy(t -> ofBlock(t.getCasing(), t.getCasingMeta()))).addElement('i',
-                            lazy(t -> buildHatchAdder(GT_MetaTileEntity_FusionComputer.class).atLeast(ImmutableMap.of(
-                                    InputHatch.withAdder(GT_MetaTileEntity_FusionComputer::addInjector),
-                                    2)).hatchItemFilterAnd(t2 -> filterByMTETier(t2.tier(),
-                                    Integer.MAX_VALUE)).casingIndex(53).dot(1).buildAndChain(t.getCasing(), t.getCasingMeta())))
-                    .addElement('e',
-                            lazy(t -> buildHatchAdder(GT_MetaTileEntity_FusionComputer.class).atLeast(ImmutableMap.of(
-                                    Energy.withAdder(GT_MetaTileEntity_FusionComputer::addEnergyInjector),
-                                    16)).hatchItemFilterAnd(t2 -> filterByMTETier(t2.tier(),
-                                    Integer.MAX_VALUE)).casingIndex(53).dot(2).buildAndChain(t.getCasing(), t.getCasingMeta())))
-                    .addElement('x',
-                            lazy(t -> buildHatchAdder(GT_MetaTileEntity_FusionComputer.class).atLeast(OutputHatch.withAdder(
-                                            GT_MetaTileEntity_FusionComputer::addExtractor))
-                                    .hatchItemFilterAnd(t2 -> filterByMTETier(t2.tier(), Integer.MAX_VALUE)).casingIndex(53).dot(3).buildAndChain(t.getCasing(),
-                                            t.getCasingMeta()))).build();
+            return StructureDefinition.<GT_MetaTileEntity_FusionComputer>builder()
+                                      .addShape(
+                                              STRUCTURE_PIECE_MAIN,
+                                              transpose(
+                                                      new String[][] { { "               ", "      ihi      ",
+                                                              "    hh   hh    ", "   h       h   ", "  h         h  ",
+                                                              "  h         h  ", " i           i ", " h           h ",
+                                                              " i           i ", "  h         h  ", "  h         h  ",
+                                                              "   h       h   ", "    hh   hh    ", "      ihi      ",
+                                                              "               ", },
+                                                              { "      xhx      ", "    hhccchh    ", "   eccxhxcce   ",
+                                                                      "  eceh   hece  ", " hce       ech ",
+                                                                      " hch       hch ", "xcx         xcx",
+                                                                      "hch         hch", "xcx         xcx",
+                                                                      " hch       hch ", " hce       ech ",
+                                                                      "  eceh   hece  ", "   eccx~xcce   ",
+                                                                      "    hhccchh    ", "      xhx      ", },
+                                                              { "               ", "      ihi      ", "    hh   hh    ",
+                                                                      "   h       h   ", "  h         h  ",
+                                                                      "  h         h  ", " i           i ",
+                                                                      " h           h ", " i           i ",
+                                                                      "  h         h  ", "  h         h  ",
+                                                                      "   h       h   ", "    hh   hh    ",
+                                                                      "      ihi      ", "               ", } }))
+                                      .addElement('c', lazy(t -> ofBlock(t.getFusionCoil(), t.getFusionCoilMeta())))
+                                      .addElement('h', lazy(t -> ofBlock(t.getCasing(), t.getCasingMeta())))
+                                      .addElement(
+                                              'i',
+                                              lazy(
+                                                      t -> buildHatchAdder(
+                                                              GT_MetaTileEntity_FusionComputer.class).atLeast(
+                                                                      ImmutableMap.of(
+                                                                              InputHatch.withAdder(
+                                                                                      GT_MetaTileEntity_FusionComputer::addInjector),
+                                                                              2))
+                                                                                                     .hatchItemFilterAnd(
+                                                                                                             t2 -> filterByMTETier(
+                                                                                                                     t2.tier(),
+                                                                                                                     Integer.MAX_VALUE))
+                                                                                                     .casingIndex(53)
+                                                                                                     .dot(1)
+                                                                                                     .buildAndChain(
+                                                                                                             t.getCasing(),
+                                                                                                             t.getCasingMeta())))
+                                      .addElement(
+                                              'e',
+                                              lazy(
+                                                      t -> buildHatchAdder(
+                                                              GT_MetaTileEntity_FusionComputer.class).atLeast(
+                                                                      ImmutableMap.of(
+                                                                              Energy.withAdder(
+                                                                                      GT_MetaTileEntity_FusionComputer::addEnergyInjector),
+                                                                              16))
+                                                                                                     .hatchItemFilterAnd(
+                                                                                                             t2 -> filterByMTETier(
+                                                                                                                     t2.tier(),
+                                                                                                                     Integer.MAX_VALUE))
+                                                                                                     .casingIndex(53)
+                                                                                                     .dot(2)
+                                                                                                     .buildAndChain(
+                                                                                                             t.getCasing(),
+                                                                                                             t.getCasingMeta())))
+                                      .addElement(
+                                              'x',
+                                              lazy(
+                                                      t -> buildHatchAdder(
+                                                              GT_MetaTileEntity_FusionComputer.class).atLeast(
+                                                                      OutputHatch.withAdder(
+                                                                              GT_MetaTileEntity_FusionComputer::addExtractor))
+                                                                                                     .hatchItemFilterAnd(
+                                                                                                             t2 -> filterByMTETier(
+                                                                                                                     t2.tier(),
+                                                                                                                     Integer.MAX_VALUE))
+                                                                                                     .casingIndex(53)
+                                                                                                     .dot(3)
+                                                                                                     .buildAndChain(
+                                                                                                             t.getCasing(),
+                                                                                                             t.getCasingMeta())))
+                                      .build();
         }
     };
     public GT_Recipe mLastRecipe;

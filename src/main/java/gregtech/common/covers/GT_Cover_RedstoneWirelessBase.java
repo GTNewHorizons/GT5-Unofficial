@@ -90,8 +90,8 @@ public abstract class GT_Cover_RedstoneWirelessBase extends GT_CoverBehavior {
             GregTech_API.sWirelessRedstone.put(aCoverVariable, (byte) 0);
             float[] tCoords = GT_Utility.getClickedFacingCoords(aSide, aX, aY, aZ);
 
-            short tAdjustVal = switch ((byte) ((byte) (int) (tCoords[0] * 2.0F) + 2 * (byte) (int) (tCoords[1]
-                    * 2.0F))) {
+            short tAdjustVal = switch ((byte) ((byte) (int) (tCoords[0] * 2.0F)
+                    + 2 * (byte) (int) (tCoords[1] * 2.0F))) {
                 case 0 -> -32;
                 case 1 -> 32;
                 case 2 -> -1024;

@@ -863,43 +863,67 @@ public enum OrePrefixes {
         itemCasing.mGeneratedItems.addAll(itemCasing.mGeneratedItems);
         // -----
 
-        toolHeadFile.mCondition = new ICondition.And<>(new ICondition.Not<>(SubTag.NO_SMASHING), new ICondition.Not<>(SubTag.BOUNCY));
-        toolHeadSaw.mCondition = new ICondition.And<>(new ICondition.Not<>(SubTag.NO_SMASHING), new ICondition.Not<>(SubTag.BOUNCY));
-        toolHeadDrill.mCondition = new ICondition.And<>(new ICondition.Not<>(SubTag.NO_SMASHING), new ICondition.Not<>(SubTag.BOUNCY));
-        toolHeadChainsaw.mCondition = new ICondition.And<>(new ICondition.Not<>(SubTag.NO_SMASHING),
-            new ICondition.Not<>(SubTag.BOUNCY));
-        toolHeadWrench.mCondition = new ICondition.And<>(new ICondition.Not<>(SubTag.NO_SMASHING), new ICondition.Not<>(SubTag.BOUNCY));
-        toolHeadBuzzSaw.mCondition = new ICondition.And<>(new ICondition.Not<>(SubTag.NO_SMASHING),
-            new ICondition.Not<>(SubTag.BOUNCY));
-        turbineBlade.mCondition = new ICondition.And<>(new ICondition.Not<>(SubTag.NO_SMASHING), new ICondition.Not<>(SubTag.BOUNCY));
+        toolHeadFile.mCondition = new ICondition.And<>(
+                new ICondition.Not<>(SubTag.NO_SMASHING),
+                new ICondition.Not<>(SubTag.BOUNCY));
+        toolHeadSaw.mCondition = new ICondition.And<>(
+                new ICondition.Not<>(SubTag.NO_SMASHING),
+                new ICondition.Not<>(SubTag.BOUNCY));
+        toolHeadDrill.mCondition = new ICondition.And<>(
+                new ICondition.Not<>(SubTag.NO_SMASHING),
+                new ICondition.Not<>(SubTag.BOUNCY));
+        toolHeadChainsaw.mCondition = new ICondition.And<>(
+                new ICondition.Not<>(SubTag.NO_SMASHING),
+                new ICondition.Not<>(SubTag.BOUNCY));
+        toolHeadWrench.mCondition = new ICondition.And<>(
+                new ICondition.Not<>(SubTag.NO_SMASHING),
+                new ICondition.Not<>(SubTag.BOUNCY));
+        toolHeadBuzzSaw.mCondition = new ICondition.And<>(
+                new ICondition.Not<>(SubTag.NO_SMASHING),
+                new ICondition.Not<>(SubTag.BOUNCY));
+        turbineBlade.mCondition = new ICondition.And<>(
+                new ICondition.Not<>(SubTag.NO_SMASHING),
+                new ICondition.Not<>(SubTag.BOUNCY));
 
         rotor.mCondition = new ICondition.Nor<>(SubTag.CRYSTAL, SubTag.STONE, SubTag.BOUNCY);
 
-        spring.mCondition = new ICondition.Or<>(SubTag.STRETCHY, SubTag.BOUNCY, new ICondition.Not<>(SubTag.NO_SMASHING));
-        springSmall.mCondition = new ICondition.Or<>(SubTag.STRETCHY, SubTag.BOUNCY, new ICondition.Not<>(SubTag.NO_SMASHING));
+        spring.mCondition = new ICondition.Or<>(
+                SubTag.STRETCHY,
+                SubTag.BOUNCY,
+                new ICondition.Not<>(SubTag.NO_SMASHING));
+        springSmall.mCondition = new ICondition.Or<>(
+                SubTag.STRETCHY,
+                SubTag.BOUNCY,
+                new ICondition.Not<>(SubTag.NO_SMASHING));
 
-        gemChipped.mCondition = new ICondition.And<>(SubTag.TRANSPARENT,
-            SubTag.CRYSTAL,
-            new ICondition.Not<>(SubTag.QUARTZ),
-            new ICondition.Not<>(SubTag.PEARL),
-            new ICondition.Not<>(SubTag.MAGICAL));
-        gemFlawed.mCondition = new ICondition.And<>(SubTag.TRANSPARENT,
-            SubTag.CRYSTAL,
-            new ICondition.Not<>(SubTag.QUARTZ),
-            new ICondition.Not<>(SubTag.PEARL),
-            new ICondition.Not<>(SubTag.MAGICAL));
-        gemFlawless.mCondition = new ICondition.And<>(SubTag.TRANSPARENT,
-            SubTag.CRYSTAL,
-            new ICondition.Not<>(SubTag.QUARTZ),
-            new ICondition.Not<>(SubTag.PEARL),
-            new ICondition.Not<>(SubTag.MAGICAL));
-        gemExquisite.mCondition = new ICondition.And<>(SubTag.TRANSPARENT,
-            SubTag.CRYSTAL,
-            new ICondition.Not<>(SubTag.QUARTZ),
-            new ICondition.Not<>(SubTag.PEARL),
-            new ICondition.Not<>(SubTag.MAGICAL));
+        gemChipped.mCondition = new ICondition.And<>(
+                SubTag.TRANSPARENT,
+                SubTag.CRYSTAL,
+                new ICondition.Not<>(SubTag.QUARTZ),
+                new ICondition.Not<>(SubTag.PEARL),
+                new ICondition.Not<>(SubTag.MAGICAL));
+        gemFlawed.mCondition = new ICondition.And<>(
+                SubTag.TRANSPARENT,
+                SubTag.CRYSTAL,
+                new ICondition.Not<>(SubTag.QUARTZ),
+                new ICondition.Not<>(SubTag.PEARL),
+                new ICondition.Not<>(SubTag.MAGICAL));
+        gemFlawless.mCondition = new ICondition.And<>(
+                SubTag.TRANSPARENT,
+                SubTag.CRYSTAL,
+                new ICondition.Not<>(SubTag.QUARTZ),
+                new ICondition.Not<>(SubTag.PEARL),
+                new ICondition.Not<>(SubTag.MAGICAL));
+        gemExquisite.mCondition = new ICondition.And<>(
+                SubTag.TRANSPARENT,
+                SubTag.CRYSTAL,
+                new ICondition.Not<>(SubTag.QUARTZ),
+                new ICondition.Not<>(SubTag.PEARL),
+                new ICondition.Not<>(SubTag.MAGICAL));
 
-        lens.mCondition = new ICondition.Or<>(SubTag.MAGICAL, new ICondition.And<>(SubTag.TRANSPARENT, SubTag.HAS_COLOR));
+        lens.mCondition = new ICondition.Or<>(
+                SubTag.MAGICAL,
+                new ICondition.And<>(SubTag.TRANSPARENT, SubTag.HAS_COLOR));
 
         plateDouble.mCondition = new ICondition.Or<>(SubTag.PAPER, new ICondition.Not<>(SubTag.NO_SMASHING));
         plateTriple.mCondition = new ICondition.Or<>(SubTag.PAPER, new ICondition.Not<>(SubTag.NO_SMASHING));
@@ -974,9 +998,8 @@ public enum OrePrefixes {
      */
     public final long mMaterialAmount;
 
-    public final Collection<Materials> mDisabledItems = new HashSet<>(),
-            mNotGeneratedItems = new HashSet<>(), mIgnoredMaterials = new HashSet<>(),
-            mGeneratedItems = new HashSet<>();
+    public final Collection<Materials> mDisabledItems = new HashSet<>(), mNotGeneratedItems = new HashSet<>(),
+            mIgnoredMaterials = new HashSet<>(), mGeneratedItems = new HashSet<>();
     private final ArrayList<IOreRecipeRegistrator> mOreProcessing = new ArrayList<>();
     public ItemStack mContainerItem = null;
     public ICondition<ISubTagContainer> mCondition = null;

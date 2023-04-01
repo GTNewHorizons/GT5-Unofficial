@@ -51,17 +51,47 @@ public abstract class GT_MetaTileEntity_LargeBoiler extends
 
         @Override
         protected IStructureDefinition<GT_MetaTileEntity_LargeBoiler> computeValue(Class<?> type) {
-            return StructureDefinition.<GT_MetaTileEntity_LargeBoiler>builder().addShape(STRUCTURE_PIECE_MAIN,
-                    transpose(new String[][] { { "ccc", "ccc", "ccc" }, { "ccc", "cPc", "ccc" }, { "ccc", "cPc", "ccc" }, { "ccc", "cPc", "ccc" },
-                            { "f~f", "fff", "fff" }, })).addElement('P', lazy(t -> ofBlock(t.getPipeBlock(), t.getPipeMeta()))).addElement('c',
-                    lazy(t -> buildHatchAdder(GT_MetaTileEntity_LargeBoiler.class).atLeast(OutputHatch).casingIndex(t.getCasingTextureIndex()).dot(2).buildAndChain(onElementPass(
-                            GT_MetaTileEntity_LargeBoiler::onCasingAdded,
-                            ofBlock(t.getCasingBlock(), t.getCasingMeta()))))).addElement('f',
-                    lazy(t -> buildHatchAdder(GT_MetaTileEntity_LargeBoiler.class).atLeast(Maintenance,
-                            InputHatch,
-                            InputBus,
-                            Muffler).casingIndex(t.getFireboxTextureIndex()).dot(1).buildAndChain(onElementPass(GT_MetaTileEntity_LargeBoiler::onFireboxAdded,
-                            ofBlock(t.getFireboxBlock(), t.getFireboxMeta()))))).build();
+            return StructureDefinition.<GT_MetaTileEntity_LargeBoiler>builder()
+                                      .addShape(
+                                              STRUCTURE_PIECE_MAIN,
+                                              transpose(
+                                                      new String[][] { { "ccc", "ccc", "ccc" }, { "ccc", "cPc", "ccc" },
+                                                              { "ccc", "cPc", "ccc" }, { "ccc", "cPc", "ccc" },
+                                                              { "f~f", "fff", "fff" }, }))
+                                      .addElement('P', lazy(t -> ofBlock(t.getPipeBlock(), t.getPipeMeta())))
+                                      .addElement(
+                                              'c',
+                                              lazy(
+                                                      t -> buildHatchAdder(
+                                                              GT_MetaTileEntity_LargeBoiler.class).atLeast(OutputHatch)
+                                                                                                  .casingIndex(
+                                                                                                          t.getCasingTextureIndex())
+                                                                                                  .dot(2)
+                                                                                                  .buildAndChain(
+                                                                                                          onElementPass(
+                                                                                                                  GT_MetaTileEntity_LargeBoiler::onCasingAdded,
+                                                                                                                  ofBlock(
+                                                                                                                          t.getCasingBlock(),
+                                                                                                                          t.getCasingMeta())))))
+                                      .addElement(
+                                              'f',
+                                              lazy(
+                                                      t -> buildHatchAdder(
+                                                              GT_MetaTileEntity_LargeBoiler.class).atLeast(
+                                                                      Maintenance,
+                                                                      InputHatch,
+                                                                      InputBus,
+                                                                      Muffler)
+                                                                                                  .casingIndex(
+                                                                                                          t.getFireboxTextureIndex())
+                                                                                                  .dot(1)
+                                                                                                  .buildAndChain(
+                                                                                                          onElementPass(
+                                                                                                                  GT_MetaTileEntity_LargeBoiler::onFireboxAdded,
+                                                                                                                  ofBlock(
+                                                                                                                          t.getFireboxBlock(),
+                                                                                                                          t.getFireboxMeta())))))
+                                      .build();
         }
     };
     private boolean firstRun = true;

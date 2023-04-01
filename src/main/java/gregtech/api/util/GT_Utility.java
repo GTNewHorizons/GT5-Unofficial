@@ -31,8 +31,6 @@ import java.util.stream.Stream;
 
 import javax.annotation.Nullable;
 
-import buildcraft.api.transport.IPipeTile;
-import cofh.api.energy.IEnergyReceiver;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -84,6 +82,8 @@ import net.minecraftforge.fluids.IFluidContainerItem;
 import net.minecraftforge.fluids.IFluidHandler;
 import net.minecraftforge.oredict.OreDictionary;
 
+import buildcraft.api.transport.IPipeTile;
+import cofh.api.energy.IEnergyReceiver;
 import cofh.api.transport.IItemDuct;
 
 import com.google.auto.value.AutoValue;
@@ -3104,8 +3104,8 @@ public class GT_Utility {
 
         World startWorld = entity.worldObj;
         WorldServer destinationWorld = FMLCommonHandler.instance()
-                                                 .getMinecraftServerInstance()
-                                                 .worldServerForDimension(aDimension);
+                                                       .getMinecraftServerInstance()
+                                                       .worldServerForDimension(aDimension);
 
         if (destinationWorld == null) {
             return false;
@@ -4068,16 +4068,16 @@ public class GT_Utility {
                 if (tOils != null) fillBookWithList(tNBTList, "Oils%s\n\n", "\n", 9, tOils);
 
                 tPageText = """
-                    Oil notes
+                        Oil notes
 
-                    Prospects from NW to SE 576 chunks(9 8x8 oilfields)
-                     around and gives min-max amount
+                        Prospects from NW to SE 576 chunks(9 8x8 oilfields)
+                         around and gives min-max amount
 
-                    [1][2][3]
-                    [4][5][6]
-                    [7][8][9]
+                        [1][2][3]
+                        [4][5][6]
+                        [7][8][9]
 
-                    [5] - Prospector in this 8x8 area""";
+                        [5] - Prospector in this 8x8 area""";
                 tNBTList.appendTag(new NBTTagString(tPageText));
 
                 tPageText = "Corners of [5] are \n" + tOilsPosStr + "\n" + "P - Prospector in 8x8 field";

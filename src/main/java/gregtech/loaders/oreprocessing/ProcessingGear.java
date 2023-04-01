@@ -33,8 +33,7 @@ public class ProcessingGear implements gregtech.api.interfaces.IOreRecipeRegistr
                                 128,
                                 calculateRecipeEU(aMaterial, 8));
                     }
-                if (aMaterial.mUnificatable
-                        && (aMaterial.mMaterialInto == aMaterial)
+                if (aMaterial.mUnificatable && (aMaterial.mMaterialInto == aMaterial)
                         && !aMaterial.contains(SubTag.NO_WORKING)) {
                     switch (aMaterial.mName) {
                         case "Wood" -> GT_ModHandler.addCraftingRecipe(
@@ -69,8 +68,7 @@ public class ProcessingGear implements gregtech.api.interfaces.IOreRecipeRegistr
                                 16,
                                 calculateRecipeEU(aMaterial, 8));
                     }
-                if (aMaterial.mUnificatable
-                        && (aMaterial.mMaterialInto == aMaterial)
+                if (aMaterial.mUnificatable && (aMaterial.mMaterialInto == aMaterial)
                         && !aMaterial.contains(SubTag.NO_WORKING)) {
                     switch (aMaterial.mName) {
                         case "Wood" -> GT_ModHandler.addCraftingRecipe(
@@ -93,8 +91,7 @@ public class ProcessingGear implements gregtech.api.interfaces.IOreRecipeRegistr
                     }
                 }
             }
-            default -> {
-            }
+            default -> {}
         }
     }
 }

@@ -63,8 +63,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
             case plateDense -> registerPlateDense(aMaterial, aStack, aNoSmashing, aMaterialMass);
             case itemCasing -> registerItemCasing(aPrefix, aMaterial, aStack, aNoSmashing);
             case plateAlloy -> registerPlateAlloy(aOreDictName, aStack);
-            default -> {
-            }
+            default -> {}
         }
     }
 
@@ -503,9 +502,8 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
             case "plateAlloyIridium" ->
 
                 // Remove IC2 Shaped recipe for Iridium Reinforced Plate
-                    GT_ModHandler.removeRecipeByOutputDelayed(aStack);
-            default -> {
-            }
+                GT_ModHandler.removeRecipeByOutputDelayed(aStack);
+            default -> {}
         }
     }
 

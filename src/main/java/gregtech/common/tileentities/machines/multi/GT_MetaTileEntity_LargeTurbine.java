@@ -48,21 +48,35 @@ public abstract class GT_MetaTileEntity_LargeTurbine extends
 
         @Override
         protected IStructureDefinition<GT_MetaTileEntity_LargeTurbine> computeValue(Class<?> type) {
-            return StructureDefinition.<GT_MetaTileEntity_LargeTurbine>builder().addShape(STRUCTURE_PIECE_MAIN,
-                            transpose(new String[][] { { "     ", "     ", "     ", "     ", "     ", },
-                                    { " --- ", " ccc ", " hhh ", " hhh ", " hhh ", },
-                                    { " --- ", " c~c ", " h-h ", " h-h ", " hdh ", },
-                                    { " --- ", " ccc ", " hhh ", " hhh ", " hhh ", },
-                                    { "     ", "     ", "     ", "     ", "     ", }, }))
-                    .addElement('c', lazy(t -> ofBlock(t.getCasingBlock(), t.getCasingMeta())))
-                    .addElement('d', lazy(t -> Dynamo.newAny(t.getCasingTextureIndex(), 1))).addElement('h',
-                            lazy(t -> buildHatchAdder(GT_MetaTileEntity_LargeTurbine.class).atLeast(Maintenance,
-                                            InputHatch,
-                                            OutputHatch,
-                                            OutputBus,
-                                            InputBus,
-                                            Muffler).casingIndex(t.getCasingTextureIndex()).dot(2)
-                                    .buildAndChain(t.getCasingBlock(), t.getCasingMeta()))).build();
+            return StructureDefinition.<GT_MetaTileEntity_LargeTurbine>builder()
+                                      .addShape(
+                                              STRUCTURE_PIECE_MAIN,
+                                              transpose(
+                                                      new String[][] { { "     ", "     ", "     ", "     ", "     ", },
+                                                              { " --- ", " ccc ", " hhh ", " hhh ", " hhh ", },
+                                                              { " --- ", " c~c ", " h-h ", " h-h ", " hdh ", },
+                                                              { " --- ", " ccc ", " hhh ", " hhh ", " hhh ", },
+                                                              { "     ", "     ", "     ", "     ", "     ", }, }))
+                                      .addElement('c', lazy(t -> ofBlock(t.getCasingBlock(), t.getCasingMeta())))
+                                      .addElement('d', lazy(t -> Dynamo.newAny(t.getCasingTextureIndex(), 1)))
+                                      .addElement(
+                                              'h',
+                                              lazy(
+                                                      t -> buildHatchAdder(
+                                                              GT_MetaTileEntity_LargeTurbine.class).atLeast(
+                                                                      Maintenance,
+                                                                      InputHatch,
+                                                                      OutputHatch,
+                                                                      OutputBus,
+                                                                      InputBus,
+                                                                      Muffler)
+                                                                                                   .casingIndex(
+                                                                                                           t.getCasingTextureIndex())
+                                                                                                   .dot(2)
+                                                                                                   .buildAndChain(
+                                                                                                           t.getCasingBlock(),
+                                                                                                           t.getCasingMeta())))
+                                      .build();
         }
     };
 

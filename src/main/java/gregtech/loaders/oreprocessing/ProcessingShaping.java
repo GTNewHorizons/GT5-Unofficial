@@ -465,12 +465,12 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                                 1 * tVoltageMultiplier);
                     }
                     case "Polytetrafluoroethylene" -> // Recipe for cells from PTFE, why is it here?
-                            GT_Values.RA.addExtruderRecipe(
-                                    GT_Utility.copyAmount(1L, aStack),
-                                    ItemList.Shape_Extruder_Cell.get(0L),
-                                    ItemList.Cell_Empty.get(tAmount * 4),
-                                    tAmount * 128,
-                                    30);
+                        GT_Values.RA.addExtruderRecipe(
+                                GT_Utility.copyAmount(1L, aStack),
+                                ItemList.Shape_Extruder_Cell.get(0L),
+                                ItemList.Cell_Empty.get(tAmount * 4),
+                                tAmount * 128,
+                                30);
                 }
             }
         }

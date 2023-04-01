@@ -150,7 +150,7 @@ public class GT_FluidDisplayItem extends GT_Generic_Item {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubItems(Item aItem, CreativeTabs aTab,List<ItemStack> aList) {
+    public void getSubItems(Item aItem, CreativeTabs aTab, List<ItemStack> aList) {
         if (GT_Values.D1) {
             int i = 0;
             for (int j = FluidRegistry.getMaxID(); i < j; i++) {

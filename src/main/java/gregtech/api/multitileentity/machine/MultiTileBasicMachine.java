@@ -573,8 +573,13 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
                 if (getProcessStartSound() != null)
                     GT_Utility.doSoundAtClient(getProcessStartSound(), getTimeBetweenProcessSounds(), 1.0F, aX, aY, aZ);
             }
-            case INTERRUPT_SOUND_INDEX ->
-                    GT_Utility.doSoundAtClient(SoundResource.IC2_MACHINES_INTERRUPT_ONE, 100, 1.0F, aX, aY, aZ);
+            case INTERRUPT_SOUND_INDEX -> GT_Utility.doSoundAtClient(
+                    SoundResource.IC2_MACHINES_INTERRUPT_ONE,
+                    100,
+                    1.0F,
+                    aX,
+                    aY,
+                    aZ);
         }
     }
 
@@ -854,14 +859,16 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
         if (isClientSide()) {
             switch (soundEventValue) {
                 case PROCESS_START_SOUND_INDEX -> {
-                    if (getProcessStartSound() != null) GT_Utility.doSoundAtClient(getProcessStartSound(),
+                    if (getProcessStartSound() != null) GT_Utility.doSoundAtClient(
+                            getProcessStartSound(),
                             getTimeBetweenProcessSounds(),
                             1.0F,
                             getXCoord(),
                             getYCoord(),
                             getZCoord());
                 }
-                case INTERRUPT_SOUND_INDEX -> GT_Utility.doSoundAtClient(SoundResource.IC2_MACHINES_INTERRUPT_ONE,
+                case INTERRUPT_SOUND_INDEX -> GT_Utility.doSoundAtClient(
+                        SoundResource.IC2_MACHINES_INTERRUPT_ONE,
                         100,
                         1.0F,
                         getXCoord(),

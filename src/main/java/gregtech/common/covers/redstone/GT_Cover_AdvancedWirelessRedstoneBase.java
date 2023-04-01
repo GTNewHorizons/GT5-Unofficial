@@ -44,26 +44,37 @@ public abstract class GT_Cover_AdvancedWirelessRedstoneBase<T extends GT_Cover_A
 
         switch (mode) {
             case AND -> {
-                return (byte) (signals.values().stream().map(signal -> signal > 0)
-                        .reduce(true, (signalA, signalB) -> signalA && signalB) ? 15 : 0);
+                return (byte) (signals.values()
+                                      .stream()
+                                      .map(signal -> signal > 0)
+                                      .reduce(true, (signalA, signalB) -> signalA && signalB) ? 15 : 0);
             }
             case NAND -> {
-                return (byte) (signals.values().stream().map(signal -> signal > 0)
-                        .reduce(true, (signalA, signalB) -> signalA && signalB) ? 0 : 15);
+                return (byte) (signals.values()
+                                      .stream()
+                                      .map(signal -> signal > 0)
+                                      .reduce(true, (signalA, signalB) -> signalA && signalB) ? 0 : 15);
             }
             case OR -> {
-                return (byte) (signals.values().stream().map(signal -> signal > 0)
-                        .reduce(false, (signalA, signalB) -> signalA || signalB) ? 15 : 0);
+                return (byte) (signals.values()
+                                      .stream()
+                                      .map(signal -> signal > 0)
+                                      .reduce(false, (signalA, signalB) -> signalA || signalB) ? 15 : 0);
             }
             case NOR -> {
-                return (byte) (signals.values().stream().map(signal -> signal > 0)
-                        .reduce(false, (signalA, signalB) -> signalA || signalB) ? 0 : 15);
+                return (byte) (signals.values()
+                                      .stream()
+                                      .map(signal -> signal > 0)
+                                      .reduce(false, (signalA, signalB) -> signalA || signalB) ? 0 : 15);
             }
             case SINGLE_SOURCE -> {
-                if (signals.values().isEmpty()) {
+                if (signals.values()
+                           .isEmpty()) {
                     return 0;
                 }
-                return signals.values().iterator().next();
+                return signals.values()
+                              .iterator()
+                              .next();
             }
             default -> {
                 return 0;

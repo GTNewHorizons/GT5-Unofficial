@@ -292,12 +292,19 @@ public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch impl
                             "115.3",
                             "currently none, will be locked to the next that is put in (or use fluid cell to lock)");
                 } else {
-                    this.setLockedFluidName(this.getDrainableStack().getFluid().getName());
-                    inBrackets = this.getDrainableStack().getLocalizedName();
+                    this.setLockedFluidName(
+                            this.getDrainableStack()
+                                .getFluid()
+                                .getName());
+                    inBrackets = this.getDrainableStack()
+                                     .getLocalizedName();
                 }
-                GT_Utility.sendChatToPlayer(aPlayer, String.format("%s (%s)",
-                        GT_Utility.trans("151.1", "Outputs items and 1 specific Fluid"),
-                        inBrackets));
+                GT_Utility.sendChatToPlayer(
+                        aPlayer,
+                        String.format(
+                                "%s (%s)",
+                                GT_Utility.trans("151.1", "Outputs items and 1 specific Fluid"),
+                                inBrackets));
             }
             case 9 -> {
                 playerThatLockedfluid = new WeakReference<>(aPlayer);
@@ -307,10 +314,15 @@ public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch impl
                             "115.3",
                             "currently none, will be locked to the next that is put in (or use fluid cell to lock)");
                 } else {
-                    this.setLockedFluidName(this.getDrainableStack().getFluid().getName());
-                    inBrackets = this.getDrainableStack().getLocalizedName();
+                    this.setLockedFluidName(
+                            this.getDrainableStack()
+                                .getFluid()
+                                .getName());
+                    inBrackets = this.getDrainableStack()
+                                     .getLocalizedName();
                 }
-                GT_Utility.sendChatToPlayer(aPlayer,
+                GT_Utility.sendChatToPlayer(
+                        aPlayer,
                         String.format("%s (%s)", GT_Utility.trans("151.2", "Outputs 1 specific Fluid"), inBrackets));
             }
         }

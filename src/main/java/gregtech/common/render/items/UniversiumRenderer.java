@@ -111,8 +111,9 @@ public class UniversiumRenderer extends GT_GeneratedMaterial_Renderer {
                 if (fluidDisplay) {
                     // this somehow makes shader render correctly
                     ResourceLocation resourcelocation = mc.getTextureManager()
-                            .getResourceLocation(aStack.getItemSpriteNumber());
-                    mc.getTextureManager().bindTexture(resourcelocation);
+                                                          .getResourceLocation(aStack.getItemSpriteNumber());
+                    mc.getTextureManager()
+                      .bindTexture(resourcelocation);
                 } else {
                     r.renderItemIntoGUI(mc.fontRenderer, mc.getTextureManager(), aStack, 0, 0, true);
                 }
@@ -159,8 +160,7 @@ public class UniversiumRenderer extends GT_GeneratedMaterial_Renderer {
                 GL11.glDisable(GL11.GL_BLEND);
                 GL11.glPopMatrix();
             }
-            default -> {
-            }
+            default -> {}
         }
     }
 

@@ -351,7 +351,7 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements 
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubItems(Item aItem, CreativeTabs aCreativeTab,List<ItemStack> aList) {
+    public void getSubItems(Item aItem, CreativeTabs aCreativeTab, List<ItemStack> aList) {
         int j = mEnabledItems.length();
         for (int i = 0; i < j; i++) if (mVisibleItems.get(i) || (D1 && mEnabledItems.get(i))) {
             Long[] tStats = mElectricStats.get((short) (mOffset + i));

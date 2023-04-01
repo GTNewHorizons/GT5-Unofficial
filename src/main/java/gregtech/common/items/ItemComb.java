@@ -58,7 +58,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubItems(Item item, CreativeTabs tabs,List<ItemStack> list) {
+    public void getSubItems(Item item, CreativeTabs tabs, List<ItemStack> list) {
         for (CombType type : CombType.values()) {
             if (type.showInList) {
                 list.add(this.getStackForType(type));
@@ -1596,8 +1596,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
                 (fluid.getFluid()
                       .getDensity() * 128 > 0
                               ? (fluid.getFluid()
-                                            .getDensity()
-                                      * 100)
+                                      .getDensity() * 100)
                               : 128),
                 volt.getSimpleEnergy() / 2);
     }
@@ -1618,59 +1617,59 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
                 switch (comb) {
                     case NEUTRONIUM:
                         RA.addChemicalRecipe(
-                            GT_Utility.copyAmount(4, tComb),
-                            null,
-                            volt.getFluidAccordingToCombTier(),
-                            Materials.Neutronium.getMolten(576l),
-                            Materials.Neutronium.getNuggets(1),
-                            NI,
-                            volt.getComplexTime() * 17,
-                            volt.getChemicalEnergy(),
-                            volt.compareTo(Voltage.IV) > 0);
+                                GT_Utility.copyAmount(4, tComb),
+                                null,
+                                volt.getFluidAccordingToCombTier(),
+                                Materials.Neutronium.getMolten(576l),
+                                Materials.Neutronium.getNuggets(1),
+                                NI,
+                                volt.getComplexTime() * 17,
+                                volt.getChemicalEnergy(),
+                                volt.compareTo(Voltage.IV) > 0);
                     case OSMIUM:
                         RA.addChemicalRecipe(
-                            GT_Utility.copyAmount(4, tComb),
-                            null,
-                            volt.getFluidAccordingToCombTier(),
-                            Materials.Osmium.getMolten(288l),
-                            Materials.Osmium.getNuggets(1),
-                            NI,
-                            volt.getComplexTime() * 17,
-                            volt.getChemicalEnergy(),
-                            volt.compareTo(Voltage.IV) > 0);
+                                GT_Utility.copyAmount(4, tComb),
+                                null,
+                                volt.getFluidAccordingToCombTier(),
+                                Materials.Osmium.getMolten(288l),
+                                Materials.Osmium.getNuggets(1),
+                                NI,
+                                volt.getComplexTime() * 17,
+                                volt.getChemicalEnergy(),
+                                volt.compareTo(Voltage.IV) > 0);
                     case PLATINUM:
                         RA.addChemicalRecipe(
-                            GT_Utility.copyAmount(4, tComb),
-                            null,
-                            volt.getFluidAccordingToCombTier(),
-                            Materials.Platinum.getMolten(288l),
-                            Materials.Platinum.getNuggets(1),
-                            NI,
-                            volt.getComplexTime() * 10,
-                            volt.getChemicalEnergy(),
-                            volt.compareTo(Voltage.HV) > 0);
+                                GT_Utility.copyAmount(4, tComb),
+                                null,
+                                volt.getFluidAccordingToCombTier(),
+                                Materials.Platinum.getMolten(288l),
+                                Materials.Platinum.getNuggets(1),
+                                NI,
+                                volt.getComplexTime() * 10,
+                                volt.getChemicalEnergy(),
+                                volt.compareTo(Voltage.HV) > 0);
                     case IRIDIUM:
                         RA.addChemicalRecipe(
-                            GT_Utility.copyAmount(4, tComb),
-                            null,
-                            volt.getFluidAccordingToCombTier(),
-                            Materials.Iridium.getMolten(288l),
-                            Materials.Iridium.getNuggets(1),
-                            NI,
-                            volt.getComplexTime() * 14,
-                            volt.getChemicalEnergy(),
-                            volt.compareTo(Voltage.EV) > 0);
+                                GT_Utility.copyAmount(4, tComb),
+                                null,
+                                volt.getFluidAccordingToCombTier(),
+                                Materials.Iridium.getMolten(288l),
+                                Materials.Iridium.getNuggets(1),
+                                NI,
+                                volt.getComplexTime() * 14,
+                                volt.getChemicalEnergy(),
+                                volt.compareTo(Voltage.EV) > 0);
                     default:
                         RA.addChemicalRecipe(
-                            GT_Utility.copyAmount(4, tComb),
-                            null,
-                            volt.getFluidAccordingToCombTier(),
-                            null,
-                            GT_OreDictUnificator.get(OrePrefixes.crushedPurified, materials, 4),
-                            NI,
-                            volt.getComplexTime(),
-                            volt.getChemicalEnergy(),
-                            volt.compareTo(Voltage.IV) > 0);
+                                GT_Utility.copyAmount(4, tComb),
+                                null,
+                                volt.getFluidAccordingToCombTier(),
+                                null,
+                                GT_OreDictUnificator.get(OrePrefixes.crushedPurified, materials, 4),
+                                NI,
+                                volt.getComplexTime(),
+                                volt.getChemicalEnergy(),
+                                volt.compareTo(Voltage.IV) > 0);
                         break;
                 }
             }
@@ -1838,20 +1837,20 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
             int fluidAmount = this.getFluidAmount();
             return switch (this.getVoltageFromEU()) {
                 case 0 ->
-                /** ULV **/
-                        Materials.Water.getFluid(fluidAmount);
+                    /** ULV **/
+                    Materials.Water.getFluid(fluidAmount);
                 case 1 ->
-                /** LV **/
-                        Materials.SulfuricAcid.getFluid(fluidAmount);
+                    /** LV **/
+                    Materials.SulfuricAcid.getFluid(fluidAmount);
                 case 2 ->
-                /** MV **/
-                        Materials.HydrochloricAcid.getFluid(fluidAmount);
+                    /** MV **/
+                    Materials.HydrochloricAcid.getFluid(fluidAmount);
                 case 3 ->
-                /** HV **/
-                        Materials.PhosphoricAcid.getFluid(fluidAmount);
+                    /** HV **/
+                    Materials.PhosphoricAcid.getFluid(fluidAmount);
                 case 4 ->
-                /** EV **/
-                        Materials.HydrofluoricAcid.getFluid(this.getFluidAmount());
+                    /** EV **/
+                    Materials.HydrofluoricAcid.getFluid(this.getFluidAmount());
                 default -> Materials.PhthalicAcid.getFluid(fluidAmount);
             };
         }

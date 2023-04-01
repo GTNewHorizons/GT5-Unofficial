@@ -270,11 +270,11 @@ public class GT_MetaTileEntity_DistillationTower
         FluidStack[] tFluids = tFluidList.toArray(new FluidStack[0]);
         for (FluidStack tFluid : tFluids) {
             tRecipe = GT_Recipe.GT_Recipe_Map.sDistillationRecipes.findRecipe(
-                getBaseMetaTileEntity(),
-                false,
-                gregtech.api.enums.GT_Values.V[tTier],
-                new FluidStack[] { tFluid },
-                inputs);
+                    getBaseMetaTileEntity(),
+                    false,
+                    gregtech.api.enums.GT_Values.V[tTier],
+                    new FluidStack[] { tFluid },
+                    inputs);
             if (tRecipe != null) {
                 if (tRecipe.isRecipeInputEqual(true, tFluids, inputs)) {
                     this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);

@@ -517,8 +517,13 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
                 if (getProcessStartSound() != null)
                     GT_Utility.doSoundAtClient(getProcessStartSound(), getTimeBetweenProcessSounds(), 1.0F, aX, aY, aZ);
             }
-            case INTERRUPT_SOUND_INDEX ->
-                GT_Utility.doSoundAtClient(SoundResource.IC2_MACHINES_INTERRUPT_ONE, 100, 1.0F, aX, aY, aZ);
+            case INTERRUPT_SOUND_INDEX -> GT_Utility.doSoundAtClient(
+                    SoundResource.IC2_MACHINES_INTERRUPT_ONE,
+                    100,
+                    1.0F,
+                    aX,
+                    aY,
+                    aZ);
         }
     }
 

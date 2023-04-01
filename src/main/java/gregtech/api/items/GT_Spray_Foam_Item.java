@@ -106,11 +106,8 @@ public class GT_Spray_Foam_Item extends GT_Tool_Item {
             }
             switch (0) {
                 case 0 -> {
-                    if (GT_Utility.isBlockAir(aWorld, aX, aY, aZ) && GT_ModHandler.damageOrDechargeItem(
-                            aStack,
-                            1,
-                            1000,
-                            aPlayer)) {
+                    if (GT_Utility.isBlockAir(aWorld, aX, aY, aZ)
+                            && GT_ModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer)) {
                         GT_Utility.sendSoundToPlayers(aWorld, SoundResource.IC2_TOOLS_PAINTER, 1.0F, -1, aX, aY, aZ);
                         aWorld.setBlock(aX, aY, aZ, GT_Utility.getBlockFromStack(tStack), tStack.getItemDamage(), 3);
                         return true;
@@ -118,19 +115,18 @@ public class GT_Spray_Foam_Item extends GT_Tool_Item {
                 }
                 case 1 -> {
                     for (byte i = 0; i < 4; i++) {
-                        if (GT_Utility.isBlockAir(aWorld, aX, aY, aZ) && GT_ModHandler.damageOrDechargeItem(
-                                aStack,
-                                1,
-                                1000,
-                                aPlayer)) {
-                            GT_Utility.sendSoundToPlayers(aWorld,
+                        if (GT_Utility.isBlockAir(aWorld, aX, aY, aZ)
+                                && GT_ModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer)) {
+                            GT_Utility.sendSoundToPlayers(
+                                    aWorld,
                                     SoundResource.IC2_TOOLS_PAINTER,
                                     1.0F,
                                     -1,
                                     aX,
                                     aY,
                                     aZ);
-                            aWorld.setBlock(aX,
+                            aWorld.setBlock(
+                                    aX,
                                     aY,
                                     aZ,
                                     GT_Utility.getBlockFromStack(tStack),
@@ -147,38 +143,40 @@ public class GT_Spray_Foam_Item extends GT_Tool_Item {
                     return true;
                 }
                 case 2 -> {
-                    boolean temp = false, tXFactor = (ForgeDirection.getOrientation(tSide).offsetX == 0), tYFactor = (
-                            ForgeDirection.getOrientation(tSide).offsetY
-                                    == 0), tZFactor = (ForgeDirection.getOrientation(tSide).offsetZ == 0);
+                    boolean temp = false, tXFactor = (ForgeDirection.getOrientation(tSide).offsetX == 0),
+                            tYFactor = (ForgeDirection.getOrientation(tSide).offsetY == 0),
+                            tZFactor = (ForgeDirection.getOrientation(tSide).offsetZ == 0);
                     aX -= (tXFactor ? 1 : 0);
                     aY -= (tYFactor ? 1 : 0);
                     aZ -= (tZFactor ? 1 : 0);
-                    for (byte i = 0; i < 3; i++)
-                        for (byte j = 0; j < 3; j++) {
-                            if (GT_Utility.isBlockAir(aWorld,
-                                    aX + (tXFactor ? i : 0),
-                                    aY + (!tXFactor && tYFactor ? i : 0) + (!tZFactor && tYFactor ? j : 0),
-                                    aZ + (tZFactor ? j : 0))) {
-                                if (GT_ModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer)) {
-                                    GT_Utility.sendSoundToPlayers(aWorld,
-                                            SoundResource.IC2_TOOLS_PAINTER,
-                                            1.0F,
-                                            -1,
-                                            aX,
-                                            aY,
-                                            aZ);
-                                    aWorld.setBlock(aX + (tXFactor ? i : 0),
-                                            aY + (!tXFactor && tYFactor ? i : 0) + (!tZFactor && tYFactor ? j : 0),
-                                            aZ + (tZFactor ? j : 0),
-                                            GT_Utility.getBlockFromStack(tStack),
-                                            tStack.getItemDamage(),
-                                            3);
-                                    temp = true;
-                                } else {
-                                    break;
-                                }
+                    for (byte i = 0; i < 3; i++) for (byte j = 0; j < 3; j++) {
+                        if (GT_Utility.isBlockAir(
+                                aWorld,
+                                aX + (tXFactor ? i : 0),
+                                aY + (!tXFactor && tYFactor ? i : 0) + (!tZFactor && tYFactor ? j : 0),
+                                aZ + (tZFactor ? j : 0))) {
+                            if (GT_ModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer)) {
+                                GT_Utility.sendSoundToPlayers(
+                                        aWorld,
+                                        SoundResource.IC2_TOOLS_PAINTER,
+                                        1.0F,
+                                        -1,
+                                        aX,
+                                        aY,
+                                        aZ);
+                                aWorld.setBlock(
+                                        aX + (tXFactor ? i : 0),
+                                        aY + (!tXFactor && tYFactor ? i : 0) + (!tZFactor && tYFactor ? j : 0),
+                                        aZ + (tZFactor ? j : 0),
+                                        GT_Utility.getBlockFromStack(tStack),
+                                        tStack.getItemDamage(),
+                                        3);
+                                temp = true;
+                            } else {
+                                break;
                             }
                         }
+                    }
                     return temp;
                 }
             }

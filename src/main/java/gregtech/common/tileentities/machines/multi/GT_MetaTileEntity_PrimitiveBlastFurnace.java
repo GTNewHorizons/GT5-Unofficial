@@ -51,10 +51,21 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
 
         @Override
         protected IStructureDefinition<GT_MetaTileEntity_PrimitiveBlastFurnace> computeValue(Class<?> type) {
-            return IStructureDefinition.<GT_MetaTileEntity_PrimitiveBlastFurnace>builder().addShape("main",
-                    transpose(new String[][] { { "ccc", "c-c", "ccc" }, { "ccc", "clc", "ccc" }, { "c~c", "clc", "ccc" },
-                            { "ccc", "ccc", "ccc" }, })).addElement('c', lazy(t -> ofBlock(t.getCasingBlock(), t.getCasingMetaID()))).addElement('l',
-                    ofChain(isAir(), ofBlockAnyMeta(Blocks.lava, 1), ofBlockAnyMeta(Blocks.flowing_lava, 1))).build();
+            return IStructureDefinition.<GT_MetaTileEntity_PrimitiveBlastFurnace>builder()
+                                       .addShape(
+                                               "main",
+                                               transpose(
+                                                       new String[][] { { "ccc", "c-c", "ccc" },
+                                                               { "ccc", "clc", "ccc" }, { "c~c", "clc", "ccc" },
+                                                               { "ccc", "ccc", "ccc" }, }))
+                                       .addElement('c', lazy(t -> ofBlock(t.getCasingBlock(), t.getCasingMetaID())))
+                                       .addElement(
+                                               'l',
+                                               ofChain(
+                                                       isAir(),
+                                                       ofBlockAnyMeta(Blocks.lava, 1),
+                                                       ofBlockAnyMeta(Blocks.flowing_lava, 1)))
+                                       .build();
         }
     };
 
