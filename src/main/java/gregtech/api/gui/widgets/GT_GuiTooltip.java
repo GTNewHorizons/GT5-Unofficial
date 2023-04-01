@@ -44,10 +44,10 @@ public class GT_GuiTooltip {
 
     private TooltipData sanitizeTooltipData(TooltipData data) {
         if (data.text == null) {
-            data.text = List.of();
+            data.text = Collections.emptyList();
         }
         if (data.shiftText == null) {
-            data.shiftText = List.of();
+            data.shiftText = Collections.emptyList();
         }
         return data;
     }
