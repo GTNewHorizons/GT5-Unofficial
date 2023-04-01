@@ -34,7 +34,7 @@ public class GT_GuiTabLine {
     /**
      * Controls the rendering style of the tab line
      */
-    public static enum DisplayStyle {
+    public enum DisplayStyle {
 
         NONE((byte) 0),
         NORMAL((byte) 1),

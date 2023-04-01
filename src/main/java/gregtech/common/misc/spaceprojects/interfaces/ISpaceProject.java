@@ -205,7 +205,7 @@ public interface ISpaceProject {
 
     /**
      * Checks if the project meets all requirements with its current location
-     * 
+     *
      * @param team Team wanting said project and checking their projects
      * @return true if all requirements met, false otherwise
      */
@@ -214,7 +214,7 @@ public interface ISpaceProject {
     /**
      * Checks if the project meets requirements if it requires other projects, unless {@code checkLocation} is true,
      * then it also checks for the location
-     * 
+     *
      * @param team          Team wanting said project and checking their projects
      * @param checkLocation If the location position should be checked
      * @return true if all requirements met, false otherwise
@@ -228,7 +228,7 @@ public interface ISpaceProject {
 
     /**
      * Checks if the project has a certain upgrade installed or not
-     * 
+     *
      * @param upgradeName Upgrade being searched for
      * @return True if that upgrade has been installed, false otherwise
      */
@@ -237,7 +237,7 @@ public interface ISpaceProject {
     /**
      * @author BlueWeabo
      */
-    public interface ISP_Upgrade {
+    interface ISP_Upgrade {
 
         /**
          * @return internal name of the upgrade
@@ -373,14 +373,14 @@ public interface ISpaceProject {
 
         /**
          * Sets the current stage of the upgrade
-         * 
+         *
          * @param stage
          */
         void setUpgradeCurrentStage(int stage);
 
         /**
          * Checks if the team has met all requirements to be able to build said upgrade
-         * 
+         *
          * @param team The one starting the upgrade
          * @return true if all requirements are met, false otherwise
          */
@@ -405,7 +405,7 @@ public interface ISpaceProject {
     /**
      * @author BlueWeabo
      */
-    public interface ISP_Requirements {
+    interface ISP_Requirements {
 
         /**
          * @return Space Body Type required by the project/upgrade

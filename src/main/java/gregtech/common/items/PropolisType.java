@@ -23,7 +23,7 @@ public enum PropolisType {
     public int chance;
     private String name;
 
-    private PropolisType(String pName, boolean show) {
+    PropolisType(String pName, boolean show) {
         this.name = pName;
         this.showInList = show;
     }

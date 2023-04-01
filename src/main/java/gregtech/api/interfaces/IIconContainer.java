@@ -37,12 +37,12 @@ public interface IIconContainer {
     ResourceLocation getTextureFile();
 
     @SideOnly(Side.CLIENT)
-    public default short[] getIconColor(int aRenderPass) {
+    default short[] getIconColor(int aRenderPass) {
         return UNCOLORED_RBGA;
     }
 
     @SideOnly(Side.CLIENT)
-    public default boolean isUsingColorModulation(int aRenderPass) {
+    default boolean isUsingColorModulation(int aRenderPass) {
         return aRenderPass == 0;
     }
 }

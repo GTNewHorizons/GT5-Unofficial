@@ -17,7 +17,7 @@ public enum StarType {
     private double solarLuminosity;
     private float costMultiplier;
 
-    private StarType(double solarLuminosity, float costMultiplier) {
+    StarType(double solarLuminosity, float costMultiplier) {
         this.solarLuminosity = solarLuminosity;
         this.costMultiplier = costMultiplier;
     }
