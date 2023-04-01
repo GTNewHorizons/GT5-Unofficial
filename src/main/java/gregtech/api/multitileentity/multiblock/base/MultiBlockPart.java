@@ -674,18 +674,16 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
         DropDownWidget dropDown = new DropDownWidget();
         dropDown.addDropDownItemsSimple(
                 controller.getInventoryNames(this),
-                (buttonWidget, index, label, setSelected) -> {
-                    buttonWidget.setOnClick((clickData, widget) -> {
-                        if (getNameOfInventoryFromIndex(controller, index).equals("all")) {
-                            mLockedInventory = GT_Values.E;
-                            mLockedInventoryIndex = 0;
-                        } else {
-                            mLockedInventory = getNameOfInventoryFromIndex(controller, index);
-                            mLockedInventoryIndex = index;
-                        }
-                        setSelected.run();
-                    });
-                },
+                (buttonWidget, index, label, setSelected) -> buttonWidget.setOnClick((clickData, widget) -> {
+                    if (getNameOfInventoryFromIndex(controller, index).equals("all")) {
+                        mLockedInventory = GT_Values.E;
+                        mLockedInventoryIndex = 0;
+                    } else {
+                        mLockedInventory = getNameOfInventoryFromIndex(controller, index);
+                        mLockedInventoryIndex = index;
+                    }
+                    setSelected.run();
+                }),
                 true);
         builder.widget(
                 dropDown.setSelected(mLockedInventoryIndex)

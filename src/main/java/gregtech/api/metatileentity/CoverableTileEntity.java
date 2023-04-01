@@ -702,7 +702,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
              .setSize(COVER_TAB_WIDTH, COVER_TAB_HEIGHT))
                                                         .addChild(
                                                                 new ItemDrawable(
-                                                                        () -> { return getCoverItemAtSide(side); })
+                                                                        () -> getCoverItemAtSide(side))
                                                                                                                    .asWidget()
                                                                                                                    .setPos(
                                                                                                                            (COVER_TAB_WIDTH
