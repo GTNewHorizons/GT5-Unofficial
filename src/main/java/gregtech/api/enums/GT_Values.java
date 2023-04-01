@@ -170,13 +170,13 @@ public class GT_Values {
             EnumChatFormatting.DARK_GREEN.toString(), // UV, 8
             EnumChatFormatting.DARK_RED.toString(), // UHV, 9
             EnumChatFormatting.DARK_PURPLE.toString(), // UEV, 10
-            EnumChatFormatting.DARK_BLUE.toString() + EnumChatFormatting.BOLD.toString(), // UIV, 11
-            EnumChatFormatting.RED.toString() + EnumChatFormatting.BOLD.toString()
-                    + EnumChatFormatting.UNDERLINE.toString(), // UMV, 12
-            EnumChatFormatting.DARK_RED.toString() + EnumChatFormatting.BOLD.toString()
-                    + EnumChatFormatting.UNDERLINE.toString(), // UXV, 13
-            EnumChatFormatting.WHITE.toString() + EnumChatFormatting.BOLD.toString()
-                    + EnumChatFormatting.UNDERLINE.toString(), // MAX, 14
+            EnumChatFormatting.DARK_BLUE.toString() + EnumChatFormatting.BOLD, // UIV, 11
+            EnumChatFormatting.RED.toString() + EnumChatFormatting.BOLD
+                    + EnumChatFormatting.UNDERLINE, // UMV, 12
+            EnumChatFormatting.DARK_RED.toString() + EnumChatFormatting.BOLD
+                    + EnumChatFormatting.UNDERLINE, // UXV, 13
+            EnumChatFormatting.WHITE.toString() + EnumChatFormatting.BOLD
+                    + EnumChatFormatting.UNDERLINE, // MAX, 14
             EnumChatFormatting.OBFUSCATED.toString() // ~~~, 15
     };
 
