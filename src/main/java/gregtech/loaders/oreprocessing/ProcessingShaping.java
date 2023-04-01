@@ -243,55 +243,55 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
 
                 GT_Values.RA.addExtruderRecipe(
                         GT_Utility.copyAmount(2L, aStack),
-                        ItemList.Shape_Extruder_Sword.get(0L, new Object[0]),
+                        ItemList.Shape_Extruder_Sword.get(0L),
                         GT_OreDictUnificator.get(OrePrefixes.toolHeadSword, aMaterial.mSmeltInto, tAmount),
                         (int) Math.max(aMaterialMass * 2L * tAmount, tAmount),
                         calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier));
                 GT_Values.RA.addExtruderRecipe(
                         GT_Utility.copyAmount(3L, aStack),
-                        ItemList.Shape_Extruder_Pickaxe.get(0L, new Object[0]),
+                        ItemList.Shape_Extruder_Pickaxe.get(0L),
                         GT_OreDictUnificator.get(OrePrefixes.toolHeadPickaxe, aMaterial.mSmeltInto, tAmount),
                         (int) Math.max(aMaterialMass * 3L * tAmount, tAmount),
                         calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier));
                 GT_Values.RA.addExtruderRecipe(
                         GT_Utility.copyAmount(1L, aStack),
-                        ItemList.Shape_Extruder_Shovel.get(0L, new Object[0]),
+                        ItemList.Shape_Extruder_Shovel.get(0L),
                         GT_OreDictUnificator.get(OrePrefixes.toolHeadShovel, aMaterial.mSmeltInto, tAmount),
                         (int) Math.max(aMaterialMass * 1L * tAmount, tAmount),
                         calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier));
                 GT_Values.RA.addExtruderRecipe(
                         GT_Utility.copyAmount(3L, aStack),
-                        ItemList.Shape_Extruder_Axe.get(0L, new Object[0]),
+                        ItemList.Shape_Extruder_Axe.get(0L),
                         GT_OreDictUnificator.get(OrePrefixes.toolHeadAxe, aMaterial.mSmeltInto, tAmount),
                         (int) Math.max(aMaterialMass * 3L * tAmount, tAmount),
                         calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier));
                 GT_Values.RA.addExtruderRecipe(
                         GT_Utility.copyAmount(2L, aStack),
-                        ItemList.Shape_Extruder_Hoe.get(0L, new Object[0]),
+                        ItemList.Shape_Extruder_Hoe.get(0L),
                         GT_OreDictUnificator.get(OrePrefixes.toolHeadHoe, aMaterial.mSmeltInto, tAmount),
                         (int) Math.max(aMaterialMass * 2L * tAmount, tAmount),
                         calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier));
                 GT_Values.RA.addExtruderRecipe(
                         GT_Utility.copyAmount(6L, aStack),
-                        ItemList.Shape_Extruder_Hammer.get(0L, new Object[0]),
+                        ItemList.Shape_Extruder_Hammer.get(0L),
                         GT_OreDictUnificator.get(OrePrefixes.toolHeadHammer, aMaterial.mSmeltInto, tAmount),
                         (int) Math.max(aMaterialMass * 6L * tAmount, tAmount),
                         calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier));
                 GT_Values.RA.addExtruderRecipe(
                         GT_Utility.copyAmount(2L, aStack),
-                        ItemList.Shape_Extruder_File.get(0L, new Object[0]),
+                        ItemList.Shape_Extruder_File.get(0L),
                         GT_OreDictUnificator.get(OrePrefixes.toolHeadFile, aMaterial.mSmeltInto, tAmount),
                         (int) Math.max(aMaterialMass * 2L * tAmount, tAmount),
                         calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier));
                 GT_Values.RA.addExtruderRecipe(
                         GT_Utility.copyAmount(2L, aStack),
-                        ItemList.Shape_Extruder_Saw.get(0L, new Object[0]),
+                        ItemList.Shape_Extruder_Saw.get(0L),
                         GT_OreDictUnificator.get(OrePrefixes.toolHeadSaw, aMaterial.mSmeltInto, tAmount),
                         (int) Math.max(aMaterialMass * 2L * tAmount, tAmount),
                         calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier));
                 GT_Values.RA.addExtruderRecipe(
                         GT_Utility.copyAmount(4L, aStack),
-                        ItemList.Shape_Extruder_Gear.get(0L, new Object[0]),
+                        ItemList.Shape_Extruder_Gear.get(0L),
                         GT_OreDictUnificator.get(OrePrefixes.gearGt, aMaterial.mSmeltInto, tAmount),
                         (int) Math.max(aMaterialMass * 5L * tAmount, tAmount),
                         calculateRecipeEU(aMaterial, 8 * tVoltageMultiplier));

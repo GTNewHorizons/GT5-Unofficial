@@ -138,7 +138,7 @@ public class ElectrolyzerRecipes implements Runnable {
                             GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Zinc, 1),
                             GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sulfur, 1),
                             GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Gallium, 1))
-                    .outputChances(new int[] { 10000, 10000, 917 })
+                    .outputChances(10000, 10000, 917)
                     .noFluidInputs()
                     .noFluidOutputs()
                     .duration(10 * SECONDS)
@@ -161,7 +161,7 @@ public class ElectrolyzerRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
                     .itemInputs(Materials.SodiumHydroxide.getDust(3), Materials.Empty.getCells(1))
                     .itemOutputs(Materials.Sodium.getDust(1), Materials.Hydrogen.getCells(1))
-                    .outputChances(new int[] { 10000, 10000 })
+                    .outputChances(10000, 10000)
                     .noFluidInputs()
                     .fluidOutputs(Materials.Oxygen.getGas(1000))
                     .duration(50 * SECONDS)

@@ -510,7 +510,7 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
     public void addDefaultPolymerizationRecipes(Fluid aBasicMaterial, ItemStack aBasicMaterialCell, Fluid aPolymer) {
         // Oxygen/Titaniumtetrafluoride -> +50% Output each
         addChemicalRecipe(
-                ItemList.Cell_Air.get(1, new Object[0]),
+                ItemList.Cell_Air.get(1),
                 GT_Utility.getIntegratedCircuit(1),
                 new GT_FluidStack(aBasicMaterial, 144),
                 new GT_FluidStack(aPolymer, 144),
@@ -1278,7 +1278,7 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         if (tGunpowder < 65) {
             GT_Recipe.GT_Recipe_Map.sImplosionRecipes.addRecipe(
                     true,
-                    new ItemStack[] { aInput1, ItemList.Block_Powderbarrel.get(tGunpowder, new Object[0]) },
+                    new ItemStack[] { aInput1, ItemList.Block_Powderbarrel.get(tGunpowder) },
                     new ItemStack[] { aOutput1, aOutput2 },
                     null,
                     null,
@@ -2854,7 +2854,7 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         }
         GT_Recipe.GT_Recipe_Map.sPyrolyseRecipes.addRecipe(
                 false,
-                new ItemStack[] { aInput, ItemList.Circuit_Integrated.getWithDamage(0L, intCircuit, new Object[0]) },
+                new ItemStack[] { aInput, ItemList.Circuit_Integrated.getWithDamage(0L, intCircuit) },
                 new ItemStack[] { aOutput },
                 null,
                 null,
@@ -2921,7 +2921,7 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
                 false,
                 new ItemStack[] { aResearchItem },
                 new ItemStack[] { aOutput },
-                new ItemStack[] { ItemList.Tool_DataStick.getWithName(1L, "Writes Research result", new Object[0]) },
+                new ItemStack[] { ItemList.Tool_DataStick.getWithName(1L, "Writes Research result") },
                 null,
                 null,
                 aResearchTime,
@@ -2931,7 +2931,7 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
                 false,
                 aInputs,
                 new ItemStack[] { aOutput },
-                new ItemStack[] { ItemList.Tool_DataStick.getWithName(1L, "Reads Research result", new Object[0]) },
+                new ItemStack[] { ItemList.Tool_DataStick.getWithName(1L, "Reads Research result") },
                 aFluidInputs,
                 null,
                 aDuration,
@@ -3030,7 +3030,7 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
                 false,
                 new ItemStack[] { aResearchItem },
                 new ItemStack[] { aOutput },
-                new ItemStack[] { ItemList.Tool_DataStick.getWithName(1L, "Writes Research result", new Object[0]) },
+                new ItemStack[] { ItemList.Tool_DataStick.getWithName(1L, "Writes Research result") },
                 null,
                 null,
                 aResearchTime,
@@ -3040,7 +3040,7 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
                 false,
                 tInputs,
                 new ItemStack[] { aOutput },
-                new ItemStack[] { ItemList.Tool_DataStick.getWithName(1L, "Reads Research result", new Object[0]) },
+                new ItemStack[] { ItemList.Tool_DataStick.getWithName(1L, "Reads Research result") },
                 aFluidInputs,
                 null,
                 aDuration,
