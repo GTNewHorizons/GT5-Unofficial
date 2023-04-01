@@ -391,8 +391,7 @@ public class GT_Achievements {
                     new AchievementPage(
                             "GregTech 5",
                             (Achievement[]) this.achievementList.values()
-                                                                .toArray(
-                                                                        new Achievement[this.achievementList.size()])));
+                                                                .toArray(new Achievement[0])));
             MinecraftForge.EVENT_BUS.register(this);
             FMLCommonHandler.instance()
                             .bus()

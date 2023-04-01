@@ -44,7 +44,7 @@ public class ItemData {
             for (MaterialStack aByProduct : aByProducts)
                 if (aByProduct != null && aByProduct.mMaterial != null) tByProducts[j++] = aByProduct.clone();
             mByProducts = j > 0 ? new MaterialStack[j] : EMPTY_MATERIALSTACK_ARRAY;
-            for (int i = 0; i < mByProducts.length; i++) mByProducts[i] = tByProducts[i];
+            System.arraycopy(tByProducts, 0, mByProducts, 0, mByProducts.length);
         }
     }
 
@@ -86,7 +86,7 @@ public class ItemData {
             rList.remove(0);
         }
 
-        mByProducts = rList.toArray(new MaterialStack[rList.size()]);
+        mByProducts = rList.toArray(new MaterialStack[0]);
     }
 
     public final boolean hasValidPrefixMaterialData() {

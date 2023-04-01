@@ -203,7 +203,7 @@ public class GT_ThaumcraftCompat implements IThaumcraftCompat {
                 }
             }
             if (tParentResearches.size() > 0) {
-                rResearch.setParents((String[]) tParentResearches.toArray(new String[tParentResearches.size()]));
+                rResearch.setParents((String[]) tParentResearches.toArray(new String[0]));
                 rResearch.setConcealed();
             }
         }
@@ -211,7 +211,7 @@ public class GT_ThaumcraftCompat implements IThaumcraftCompat {
             rResearch.setItemTriggers(aResearchTriggers);
             rResearch.setHidden();
         }
-        rResearch.setPages((ResearchPage[]) tPages.toArray(new ResearchPage[tPages.size()]));
+        rResearch.setPages((ResearchPage[]) tPages.toArray(new ResearchPage[0]));
         return rResearch.registerResearchItem();
     }
 
