@@ -1711,13 +1711,13 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 true).setSlotOverlay(false, false, GT_UITextures.OVERLAY_SLOT_MOLD)
                         .setRecipeConfigFile("fluidsolidifier", FIRST_ITEM_OUTPUT).setRecipeSpecialHandler(r -> {
                             if (ArrayUtils.isNotEmpty(r.mFluidInputs)) {
-                    if (Materials.PhasedGold.getMolten(1).isFluidEqual(r.mFluidInputs[0]))
-                        r.mFluidInputs = new FluidStack[]{
-                            Materials.VibrantAlloy.getMolten(r.mFluidInputs[0].amount)};
-                    else if (Materials.PhasedIron.getMolten(1).isFluidEqual(r.mFluidInputs[0]))
-                        r.mFluidInputs = new FluidStack[]{
-                            Materials.PulsatingIron.getMolten(r.mFluidInputs[0].amount)};
-                }
+                                if (Materials.PhasedGold.getMolten(1).isFluidEqual(r.mFluidInputs[0]))
+                                    r.mFluidInputs = new FluidStack[] {
+                                            Materials.VibrantAlloy.getMolten(r.mFluidInputs[0].amount) };
+                                else if (Materials.PhasedIron.getMolten(1).isFluidEqual(r.mFluidInputs[0]))
+                                    r.mFluidInputs = new FluidStack[] {
+                                            Materials.PulsatingIron.getMolten(r.mFluidInputs[0].amount) };
+                            }
                         }).setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT);
         public static final GT_Recipe_Map sFluidExtractionRecipes = new GT_Recipe_Map(
                 new HashSet<>(15000),
@@ -1736,13 +1736,13 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 true,
                 true).setSlotOverlay(false, false, GT_UITextures.OVERLAY_SLOT_CENTRIFUGE)
                         .setRecipeConfigFile("fluidextractor", FIRST_ITEM_INPUT).setRecipeSpecialHandler(r -> {
-                            if(ArrayUtils.isNotEmpty(r.mFluidInputs)) {
+                            if (ArrayUtils.isNotEmpty(r.mFluidInputs)) {
                                 if (Materials.PhasedGold.getMolten(1).isFluidEqual(r.mFluidInputs[0]))
-                                    r.mFluidInputs = new FluidStack[]{
-                                        Materials.VibrantAlloy.getMolten(r.mFluidInputs[0].amount)};
+                                    r.mFluidInputs = new FluidStack[] {
+                                            Materials.VibrantAlloy.getMolten(r.mFluidInputs[0].amount) };
                                 else if (Materials.PhasedIron.getMolten(1).isFluidEqual(r.mFluidInputs[0]))
-                                    r.mFluidInputs = new FluidStack[]{
-                                        Materials.PulsatingIron.getMolten(r.mFluidInputs[0].amount)};
+                                    r.mFluidInputs = new FluidStack[] {
+                                            Materials.PulsatingIron.getMolten(r.mFluidInputs[0].amount) };
                             }
                         }).setProgressBar(GT_UITextures.PROGRESSBAR_EXTRACT, ProgressBar.Direction.RIGHT);
         public static final GT_Recipe_Map sBoxinatorRecipes = new GT_Recipe_Map(
