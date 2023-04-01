@@ -499,6 +499,8 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
             } else {
                 stopMachine();
             }
+        } else {
+            doActivitySound(getActivitySoundLoop());
         }
     }
 
