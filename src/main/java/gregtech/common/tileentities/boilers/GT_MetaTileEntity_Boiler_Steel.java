@@ -24,7 +24,7 @@ public class GT_MetaTileEntity_Boiler_Steel extends GT_MetaTileEntity_Boiler_Bro
                 aName,
                 aNameRegional,
                 new String[] { "Faster than the Bronze Boiler", "Produces 300L of Steam per second",
-                        "Causes " + Integer.toString(GT_Mod.gregtechproxy.mPollutionHighPressureCoalBoilerPerSecond)
+                        "Causes " + GT_Mod.gregtechproxy.mPollutionHighPressureCoalBoilerPerSecond
                                 + " Pollution per second" });
     }
 

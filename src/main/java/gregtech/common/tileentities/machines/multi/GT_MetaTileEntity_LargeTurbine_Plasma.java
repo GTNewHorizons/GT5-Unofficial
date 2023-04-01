@@ -347,7 +347,7 @@ public class GT_MetaTileEntity_LargeTurbine_Plasma extends GT_MetaTileEntity_Lar
                         + "L", /* 6 */
                 StatCollector.translateToLocal("GT5U.turbine.dmg") + ": "
                         + EnumChatFormatting.RED
-                        + Integer.toString(tDura)
+                        + tDura
                         + EnumChatFormatting.RESET
                         + "%", /* 7 */
                 StatCollector.translateToLocal("GT5U.multiblock.pollution") + ": "

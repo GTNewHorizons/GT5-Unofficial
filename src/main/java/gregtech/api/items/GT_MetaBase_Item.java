@@ -223,8 +223,7 @@ public abstract class GT_MetaBase_Item extends GT_Generic_Item
                             EnumChatFormatting.AQUA + transItem("010", "Empty. You should recycle it properly.")
                                     + EnumChatFormatting.GRAY);
                 } else {
-                    aList.add(
-                            String.valueOf(EnumChatFormatting.AQUA)
+                    aList.add(EnumChatFormatting.AQUA
                                     + String.format(
                                             transItem("011", "%s / %s EU - Voltage: %s"),
                                             formatNumbers(tCharge),

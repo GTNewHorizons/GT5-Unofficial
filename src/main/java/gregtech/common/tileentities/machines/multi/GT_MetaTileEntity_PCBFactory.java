@@ -1049,7 +1049,7 @@ public class GT_MetaTileEntity_PCBFactory extends
                         + StatCollector.translateToLocal("GT5U.multiblock.efficiency")
                         + ": "
                         + EnumChatFormatting.YELLOW
-                        + Float.toString(mEfficiency / 100.0F)
+                        + mEfficiency / 100.0F
                         + EnumChatFormatting.RESET
                         + " %",
                 /* 6 */ StatCollector.translateToLocal("GT5U.multiblock.pollution") + ": "
