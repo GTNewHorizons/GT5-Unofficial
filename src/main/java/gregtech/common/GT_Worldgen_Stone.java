@@ -38,7 +38,7 @@ public class GT_Worldgen_Stone extends GT_Worldgen_Ore {
 
     public Hashtable<Long, StoneSeeds> validStoneSeeds = new Hashtable<>(1024);
 
-    class StoneSeeds {
+    static class StoneSeeds {
 
         public boolean mExists;
 
@@ -47,7 +47,7 @@ public class GT_Worldgen_Stone extends GT_Worldgen_Ore {
         }
     }
 
-    class ValidSeeds {
+    static class ValidSeeds {
 
         public int mX;
         public int mZ;

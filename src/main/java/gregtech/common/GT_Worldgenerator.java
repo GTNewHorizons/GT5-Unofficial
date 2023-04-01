@@ -136,7 +136,7 @@ public class GT_Worldgenerator implements IWorldGenerator {
         // static int test=0;
 
         // Local class to track which orevein seeds must be checked when doing chunkified worldgen
-        class NearbySeeds {
+        static class NearbySeeds {
 
             public int mX;
             public int mZ;
@@ -458,7 +458,7 @@ public class GT_Worldgenerator implements IWorldGenerator {
                     // Determine if this X/Z is an orevein seed
                     if (((Math.abs(x) % 3) == 1) && ((Math.abs(z) % 3) == 1)) {
                         if (debugWorldGen) GT_Log.out.println("Adding seed x=" + x + " z=" + z);
-                        seedList.add(new GT_Worldgenerator.WorldGenContainer.NearbySeeds(x, z));
+                        seedList.add(new NearbySeeds(x, z));
                     }
                 }
             }
