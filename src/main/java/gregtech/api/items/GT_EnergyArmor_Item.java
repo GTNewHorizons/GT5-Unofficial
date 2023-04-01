@@ -237,7 +237,7 @@ public class GT_EnergyArmor_Item extends ItemArmor implements ISpecialArmor {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubItems(Item aItem, CreativeTabs creativeTab, List outputSubItems) {
+    public void getSubItems(Item aItem, CreativeTabs creativeTab,List<ItemStack> outputSubItems) {
         ItemStack tCharged = new ItemStack(this, 1), tUncharged = new ItemStack(this, 1, getMaxDamage());
         GT_ModHandler.chargeElectricItem(tCharged, Integer.MAX_VALUE, Integer.MAX_VALUE, true, false);
         outputSubItems.add(tCharged);

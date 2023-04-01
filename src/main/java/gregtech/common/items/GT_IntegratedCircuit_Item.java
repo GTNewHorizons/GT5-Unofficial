@@ -215,7 +215,7 @@ public class GT_IntegratedCircuit_Item extends GT_Generic_Item implements INetwo
 
     @Override
     @SideOnly(Side.CLIENT)
-    public final void getSubItems(Item aItem, CreativeTabs aCreativeTab, List aList) {
+    public final void getSubItems(Item aItem, CreativeTabs aCreativeTab,List<ItemStack> aList) {
         aList.add(new ItemStack(this, 1, 0));
     }
 

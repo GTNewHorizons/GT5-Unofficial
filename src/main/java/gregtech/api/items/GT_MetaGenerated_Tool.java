@@ -384,7 +384,7 @@ public abstract class GT_MetaGenerated_Tool extends GT_MetaBase_Item
 
     @Override
     @SideOnly(Side.CLIENT)
-    public final void getSubItems(Item aItem, CreativeTabs aCreativeTab, List aList) {
+    public final void getSubItems(Item aItem, CreativeTabs aCreativeTab,List<ItemStack> aList) {
         for (int i = 0; i < 32766; i += 2) {
             if (getToolStats(new ItemStack(this, 1, i)) != null) {
                 ItemStack tStack = new ItemStack(this, 1, i);

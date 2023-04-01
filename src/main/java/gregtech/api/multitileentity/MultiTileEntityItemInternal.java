@@ -71,7 +71,7 @@ public class MultiTileEntityItemInternal extends ItemBlock implements IFluidCont
     @Override
     @SideOnly(Side.CLIENT)
     @SuppressWarnings("unchecked")
-    public void getSubItems(Item aItem, CreativeTabs aTab, List aList) {
+    public void getSubItems(Item aItem, CreativeTabs aTab,List<ItemStack> aList) {
         for (MultiTileEntityClassContainer tClass : mBlock.mMultiTileEntityRegistry.mRegistrations) {
             if (!tClass.mHidden) {
                 if (((IMultiTileEntity) tClass.mCanonicalTileEntity).getSubItems(

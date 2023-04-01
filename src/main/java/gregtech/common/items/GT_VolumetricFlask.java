@@ -226,7 +226,7 @@ public class GT_VolumetricFlask extends GT_Generic_Item implements IFluidContain
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubItems(Item item, CreativeTabs creativeTabs, List itemList) {
+    public void getSubItems(Item item, CreativeTabs creativeTabs,List<ItemStack> itemList) {
         itemList.add(new ItemStack(this));
         for (Fluid fluid : FluidRegistry.getRegisteredFluids()
                                         .values()) {

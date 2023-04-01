@@ -102,5 +102,5 @@ public class GT_SensorCard_Item extends GT_Generic_Item implements IRemoteSensor
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubItems(Item aItem, CreativeTabs aCreativeTab, List aOutputSubItems) {}
+    public void getSubItems(Item aItem, CreativeTabs aCreativeTab,List<ItemStack> aOutputSubItems) {}
 }
