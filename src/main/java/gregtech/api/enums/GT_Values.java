@@ -7,7 +7,6 @@ import java.util.*;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
@@ -548,22 +547,15 @@ public class GT_Values {
 
     private static final long[] EXPLOSION_LOOKUP_V = new long[] { V[0], V[1], V[2], V[3], V[4], V[4] * 2, V[5], V[6],
             V[7], V[8], V[8] * 2, V[9], V[10], V[11], V[12], V[12] * 2, V[13], V[14], V[15] };
-
-    // This must have 1 more element than EXPLOSION_LOOKUP_V
     private static final float[] EXPLOSION_LOOKUP_POWER = new float[] { 1.0F, 2.0F, 3.0F, 4.0F, 5.0F, 6.0F, 7.0F, 8.0F,
             9.0F, 10.0F, 11.0F, 12.0F, 13.0F, 14.0F, 15.0F, 16.0F, 17.0F, 18.0F, 19.0F, 20.0F };
 
     public static float getExplosionPowerForVoltage(long voltage) {
-        int lookupIdx = Arrays.binarySearch(EXPLOSION_LOOKUP_V, voltage);
-        if (lookupIdx >= 0) {
-            // found in the array, the original condition was voltage < X so we look at the next position
-            lookupIdx = lookupIdx + 1;
-        } else {
-            // the result is (-(insertion point)-1)
-            final int insertionIdx = -lookupIdx - 1;
-            // The value we're looking for is exactly where the exact voltage value would be inserted into the array
-            lookupIdx = insertionIdx;
+        for (int i = 0; i < EXPLOSION_LOOKUP_V.length; i++) {
+            if (voltage < EXPLOSION_LOOKUP_V[i]) {
+                return EXPLOSION_LOOKUP_POWER[i];
+            }
         }
-        return EXPLOSION_LOOKUP_POWER[MathHelper.clamp_int(lookupIdx, 0, EXPLOSION_LOOKUP_POWER.length - 1)];
+        return EXPLOSION_LOOKUP_POWER[EXPLOSION_LOOKUP_POWER.length - 1];
     }
 }
