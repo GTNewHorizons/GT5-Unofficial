@@ -1,17 +1,23 @@
 package com.gtnewhorizons.gtnhintergalactic.tile.multi.elevatormodules;
 
+import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static net.minecraft.util.EnumChatFormatting.DARK_PURPLE;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.github.technus.tectech.TecTech;
+import com.github.technus.tectech.thing.gui.TecTechUITextures;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.INameFunction;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.IStatusFunction;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus;
@@ -20,10 +26,10 @@ import com.gtnewhorizons.gtnhintergalactic.Tags;
 import com.gtnewhorizons.gtnhintergalactic.recipe.IG_Recipe;
 import com.gtnewhorizons.gtnhintergalactic.recipe.IG_RecipeAdder;
 import com.gtnewhorizons.gtnhintergalactic.spaceprojects.ProjectAsteroidOutpost;
-import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
-import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
+import com.gtnewhorizons.modularui.api.drawable.IDrawable;
+import com.gtnewhorizons.modularui.api.drawable.UITexture;
+import com.gtnewhorizons.modularui.api.widget.Widget;
+import com.gtnewhorizons.modularui.common.widget.*;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
@@ -32,6 +38,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.XSTR;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_ParallelHelper;
+import gregtech.api.util.GT_Utility;
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 import gregtech.common.misc.spaceprojects.enums.SolarSystem;
 import gregtech.common.misc.spaceprojects.interfaces.ISpaceProject;
@@ -55,6 +62,9 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase {
     protected static int PLASMA_BISMUTH_USAGE = 500;
     /** Usage of radon plasma per mining operation */
     protected static int PLASMA_RADON_USAGE = 300;
+
+    /** String of the NBT tag that saves if whitelist mode is enabled */
+    protected static String WHITELIST_NBT_TAG = "isWhitelisted";
 
     protected static final ISpaceProject ASTEROID_OUTPOST = SpaceProjectManager.getProject("AsteroidOutput");
 
@@ -111,6 +121,11 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase {
     /** Asteroid outpost that the player can additionally build */
     protected ProjectAsteroidOutpost asteroidOutpost;
 
+    /** Flag if the module has a whitelist to generate ores, else it will use a blacklist */
+    protected boolean isWhitelisted = false;
+    /** List for ore generation. Can either be a white- or blacklist */
+    protected HashSet<String> configuredOres;
+
     /**
      * Create new Space Mining module
      *
@@ -146,6 +161,28 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase {
     @Override
     public Power getPower() {
         return power;
+    }
+
+    /**
+     * Load additional NBT data
+     *
+     * @param aNBT NBT data from which will be loaded
+     */
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+        isWhitelisted = aNBT.getBoolean(WHITELIST_NBT_TAG);
+    }
+
+    /**
+     * Save additional NBT data
+     *
+     * @param aNBT NBT data to which will be written
+     */
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+        aNBT.setBoolean(WHITELIST_NBT_TAG, isWhitelisted);
     }
 
     /**
@@ -279,7 +316,11 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase {
                     for (int j = 0; j < tRecipe.mChances.length; j++) {
                         currentChance += tRecipe.mChances[j];
                         if (random <= currentChance) {
-                            outputs[i] = tRecipe.mOutputs[j].copy();
+                            ItemStack generatedOre = tRecipe.mOutputs[j];
+                            if (configuredOres == null || configuredOres.isEmpty()
+                                    || isWhitelisted == configuredOres.contains(getOreString(generatedOre))) {
+                                outputs[i] = generatedOre.copy();
+                            }
                             break;
                         }
                     }
@@ -364,6 +405,37 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase {
     }
 
     /**
+     * Generate configured ore list from input ore block stacks
+     */
+    protected void generateOreConfigurationList() {
+        if (configuredOres == null) {
+            configuredOres = new HashSet<>();
+        } else {
+            configuredOres.clear();
+        }
+        for (ItemStack item : getStoredInputs()) {
+            if (GT_Utility.isOre(item)) {
+                configuredOres.add(getOreString(item));
+            }
+        }
+    }
+
+    /**
+     * Get the string that represents the input ore stack (name:itemDamage)
+     *
+     * @param oreStack Ore stack of which the string will be gotten
+     * @return String that represents the input ore stack
+     */
+    protected String getOreString(ItemStack oreStack) {
+        // For GT ores we want to save the ore independent of its stone type
+        if (oreStack.getUnlocalizedName().startsWith("gt.blockores")) {
+            return oreStack.getUnlocalizedName() + ":" + oreStack.getItemDamage() % 1000;
+        } else {
+            return oreStack.getUnlocalizedName() + ":" + oreStack.getItemDamage();
+        }
+    }
+
+    /**
      * Get the number of parallels that this module can handle
      *
      * @return Number of possible parallels
@@ -434,6 +506,35 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase {
     }
 
     /**
+     * @return Button that will be generated in place of the safe void button
+     */
+    @Override
+    protected ButtonWidget createSafeVoidButton() {
+        Widget button = new ButtonWidget().setOnClick((clickData, widget) -> {
+            if (isSafeVoidButtonEnabled()) {
+                TecTech.proxy.playSound(getBaseMetaTileEntity(), "fx_click");
+                isWhitelisted = !isWhitelisted;
+                if (!widget.isClient()) {
+                    generateOreConfigurationList();
+                }
+            }
+        }).setPlayClickSound(false).setBackground(() -> {
+            List<UITexture> ret = new ArrayList<>();
+            ret.add(TecTechUITextures.BUTTON_STANDARD_16x16);
+            if (isWhitelisted) {
+                ret.add(TecTechUITextures.OVERLAY_BUTTON_SAFE_VOID_ON);
+            } else {
+                ret.add(TecTechUITextures.OVERLAY_BUTTON_SAFE_VOID_OFF);
+            }
+            return ret.toArray(new IDrawable[0]);
+        }).setPos(174, 132).setSize(16, 16);
+        if (isSafeVoidButtonEnabled()) {
+            button.addTooltip("Whitelist").setTooltipShowUpDelay(TOOLTIP_DELAY);
+        }
+        return (ButtonWidget) button;
+    }
+
+    /**
      * Draw texts on the project module GUI
      *
      * @param screenElements Column that holds all screen elements
@@ -476,6 +577,8 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase {
                 asteroidOutpost = (ProjectAsteroidOutpost) proj;
             }
         }
+        // Update ore map here to save some performance
+        generateOreConfigurationList();
         return true;
     }
 
@@ -596,8 +699,9 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase {
                     .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc3"))
                     .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc4"))
                     .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.t1.desc5"))
-                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.motorT1")).addSeparator()
-                    .beginStructureBlock(1, 5, 2, false)
+                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.motorT1"))
+                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc6"))
+                    .addSeparator().beginStructureBlock(1, 5, 2, false)
                     .addCasingInfoRange(GCCoreUtil.translate("gt.blockcasings.ig.0.name"), 0, 9, false)
                     .addInputBus(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
                     .addOutputBus(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
@@ -688,8 +792,9 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase {
                     .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc3"))
                     .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc4"))
                     .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.t2.desc5"))
-                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.motorT2")).addSeparator()
-                    .beginStructureBlock(1, 5, 2, false)
+                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.motorT2"))
+                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc6"))
+                    .addSeparator().beginStructureBlock(1, 5, 2, false)
                     .addCasingInfoRange(GCCoreUtil.translate("gt.blockcasings.ig.0.name"), 0, 9, false)
                     .addInputBus(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
                     .addOutputBus(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
@@ -780,8 +885,9 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase {
                     .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc3"))
                     .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc4"))
                     .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.t3.desc5"))
-                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.motorT3")).addSeparator()
-                    .beginStructureBlock(1, 5, 2, false)
+                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.motorT3"))
+                    .addInfo(GCCoreUtil.translate("gt.blockmachines.multimachine.project.ig.miner.desc6"))
+                    .addSeparator().beginStructureBlock(1, 5, 2, false)
                     .addCasingInfoRange(GCCoreUtil.translate("gt.blockcasings.ig.0.name"), 0, 9, false)
                     .addInputBus(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
                     .addOutputBus(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
