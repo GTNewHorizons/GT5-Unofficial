@@ -195,15 +195,21 @@ public class GT_IntegratedCircuit_Item extends GT_Generic_Item implements INetwo
         super.addAdditionalToolTips(aList, aStack, aPlayer);
         aList.add(
                 GT_LanguageManager.addStringLocalization(
-                        new StringBuilder().append(getUnlocalizedName()).append(".configuration").toString(),
+                        new StringBuilder().append(getUnlocalizedName())
+                                           .append(".configuration")
+                                           .toString(),
                         "Configuration: ") + getConfigurationString(getDamage(aStack)));
         aList.add(
                 GT_LanguageManager.addStringLocalization(
-                        new StringBuilder().append(getUnlocalizedName()).append(".tooltip.0").toString(),
+                        new StringBuilder().append(getUnlocalizedName())
+                                           .append(".tooltip.0")
+                                           .toString(),
                         "Right click to reconfigure"));
         aList.add(
                 GT_LanguageManager.addStringLocalization(
-                        new StringBuilder().append(getUnlocalizedName()).append(".tooltip.1").toString(),
+                        new StringBuilder().append(getUnlocalizedName())
+                                           .append(".tooltip.1")
+                                           .toString(),
                         "Needs a screwdriver or circuit programming tool"));
     }
 
@@ -223,8 +229,8 @@ public class GT_IntegratedCircuit_Item extends GT_Generic_Item implements INetwo
     public void registerIcons(IIconRegister aIconRegister) {
         super.registerIcons(aIconRegister);
         for (int i = 0; i < mIconDamage.length; i++) {
-            mIconDamage[i] = aIconRegister
-                    .registerIcon(RES_PATH_ITEM + (GT_Config.troll ? "troll" : getUnlocalizedName() + "/" + i));
+            mIconDamage[i] = aIconRegister.registerIcon(
+                    RES_PATH_ITEM + (GT_Config.troll ? "troll" : getUnlocalizedName() + "/" + i));
         }
         if (GregTech_API.sPostloadFinished) {
             GT_Log.out.println("GT_Mod: Starting Item Icon Load Phase");
@@ -258,7 +264,8 @@ public class GT_IntegratedCircuit_Item extends GT_Generic_Item implements INetwo
             if (toolIndex == null) return true;
 
             ItemStack[] mainInventory = player.inventory.mainInventory;
-            mainInventory[toolIndex.getKey()] = toolIndex.getValue().apply(mainInventory[toolIndex.getKey()], player);
+            mainInventory[toolIndex.getKey()] = toolIndex.getValue()
+                                                         .apply(mainInventory[toolIndex.getKey()], player);
         }
         stack.setItemDamage(meta);
 
@@ -324,9 +331,10 @@ public class GT_IntegratedCircuit_Item extends GT_Generic_Item implements INetwo
 
             if (!GT_Utility.isStackValid(toolStack)) continue;
 
-            for (Map.Entry<Predicate<ItemStack>, BiFunction<ItemStack, EntityPlayerMP, ItemStack>> p : GregTech_API.sCircuitProgrammerList
-                    .entrySet())
-                if (p.getKey().test(toolStack)) return Pair.of(j, p.getValue());
+            for (Map.Entry<Predicate<ItemStack>, BiFunction<ItemStack, EntityPlayerMP, ItemStack>> p : GregTech_API.sCircuitProgrammerList.entrySet())
+                if (p.getKey()
+                     .test(toolStack))
+                    return Pair.of(j, p.getValue());
         }
         return null;
     }

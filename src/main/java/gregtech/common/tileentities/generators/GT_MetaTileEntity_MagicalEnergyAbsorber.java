@@ -119,8 +119,11 @@ public class GT_MetaTileEntity_MagicalEnergyAbsorber extends GT_MetaTileEntity_B
                 // noinspection UnstableApiUsage
                 sAspectsEnergy.put(
                         tAspect,
-                        Enums.getIfPresent(TC_Aspects.class, tAspect.getTag().toUpperCase(Locale.ENGLISH))
-                                .or(TC_Aspects.AER).mValue * sEnergyPerEssentia);
+                        Enums.getIfPresent(
+                                TC_Aspects.class,
+                                tAspect.getTag()
+                                       .toUpperCase(Locale.ENGLISH))
+                             .or(TC_Aspects.AER).mValue * sEnergyPerEssentia);
             }
         }
     }
@@ -251,20 +254,29 @@ public class GT_MetaTileEntity_MagicalEnergyAbsorber extends GT_MetaTileEntity_B
     @Override
     public ITexture[] getFront(byte aColor) {
         return new ITexture[] { super.getFront(aColor)[0], TextureFactory.of(MACHINE_CASING_MAGIC),
-                TextureFactory.builder().addIcon(MACHINE_CASING_MAGIC_GLOW).glow().build(),
+                TextureFactory.builder()
+                              .addIcon(MACHINE_CASING_MAGIC_GLOW)
+                              .glow()
+                              .build(),
                 OVERLAYS_ENERGY_OUT[mTier] };
     }
 
     @Override
     public ITexture[] getBack(byte aColor) {
         return new ITexture[] { super.getBack(aColor)[0], TextureFactory.of(MACHINE_CASING_MAGIC_FRONT),
-                TextureFactory.builder().addIcon(MACHINE_CASING_MAGIC_FRONT_GLOW).glow().build() };
+                TextureFactory.builder()
+                              .addIcon(MACHINE_CASING_MAGIC_FRONT_GLOW)
+                              .glow()
+                              .build() };
     }
 
     @Override
     public ITexture[] getBottom(byte aColor) {
         return new ITexture[] { super.getBottom(aColor)[0], TextureFactory.of(MACHINE_CASING_MAGIC),
-                TextureFactory.builder().addIcon(MACHINE_CASING_MAGIC_GLOW).glow().build() };
+                TextureFactory.builder()
+                              .addIcon(MACHINE_CASING_MAGIC_GLOW)
+                              .glow()
+                              .build() };
     }
 
     @Override
@@ -275,38 +287,56 @@ public class GT_MetaTileEntity_MagicalEnergyAbsorber extends GT_MetaTileEntity_B
     @Override
     public ITexture[] getSides(byte aColor) {
         return new ITexture[] { super.getSides(aColor)[0], TextureFactory.of(MACHINE_CASING_MAGIC),
-                TextureFactory.builder().addIcon(MACHINE_CASING_MAGIC_GLOW).glow().build() };
+                TextureFactory.builder()
+                              .addIcon(MACHINE_CASING_MAGIC_GLOW)
+                              .glow()
+                              .build() };
     }
 
     @Override
     public ITexture[] getFrontActive(byte aColor) {
         return new ITexture[] { super.getFrontActive(aColor)[0], TextureFactory.of(MACHINE_CASING_MAGIC_ACTIVE),
-                TextureFactory.builder().addIcon(MACHINE_CASING_MAGIC_ACTIVE_GLOW).glow().build(),
+                TextureFactory.builder()
+                              .addIcon(MACHINE_CASING_MAGIC_ACTIVE_GLOW)
+                              .glow()
+                              .build(),
                 OVERLAYS_ENERGY_OUT[mTier] };
     }
 
     @Override
     public ITexture[] getBackActive(byte aColor) {
         return new ITexture[] { super.getBackActive(aColor)[0], TextureFactory.of(MACHINE_CASING_MAGIC_FRONT_ACTIVE),
-                TextureFactory.builder().addIcon(MACHINE_CASING_MAGIC_FRONT_ACTIVE_GLOW).glow().build() };
+                TextureFactory.builder()
+                              .addIcon(MACHINE_CASING_MAGIC_FRONT_ACTIVE_GLOW)
+                              .glow()
+                              .build() };
     }
 
     @Override
     public ITexture[] getBottomActive(byte aColor) {
         return new ITexture[] { super.getBottomActive(aColor)[0], TextureFactory.of(MACHINE_CASING_MAGIC_ACTIVE),
-                TextureFactory.builder().addIcon(MACHINE_CASING_MAGIC_ACTIVE_GLOW).glow().build() };
+                TextureFactory.builder()
+                              .addIcon(MACHINE_CASING_MAGIC_ACTIVE_GLOW)
+                              .glow()
+                              .build() };
     }
 
     @Override
     public ITexture[] getTopActive(byte aColor) {
         return new ITexture[] { super.getTopActive(aColor)[0], TextureFactory.of(MACHINE_CASING_DRAGONEGG),
-                TextureFactory.builder().addIcon(MACHINE_CASING_DRAGONEGG_GLOW).glow().build() };
+                TextureFactory.builder()
+                              .addIcon(MACHINE_CASING_DRAGONEGG_GLOW)
+                              .glow()
+                              .build() };
     }
 
     @Override
     public ITexture[] getSidesActive(byte aColor) {
         return new ITexture[] { super.getSidesActive(aColor)[0], TextureFactory.of(MACHINE_CASING_MAGIC_ACTIVE),
-                TextureFactory.builder().addIcon(MACHINE_CASING_MAGIC_ACTIVE_GLOW).glow().build() };
+                TextureFactory.builder()
+                              .addIcon(MACHINE_CASING_MAGIC_ACTIVE_GLOW)
+                              .glow()
+                              .build() };
     }
 
     @Override
@@ -373,8 +403,10 @@ public class GT_MetaTileEntity_MagicalEnergyAbsorber extends GT_MetaTileEntity_B
                 final double oY = aBaseMetaTileEntity.getYCoord() + 17D / 32D;
                 final double oZ = aBaseMetaTileEntity.getZCoord() + 8D / 16D;
 
-                final ParticleEventBuilder particleEventBuilder = new ParticleEventBuilder()
-                        .setWorld(getBaseMetaTileEntity().getWorld()).setIdentifier(ParticleFX.PORTAL);
+                final ParticleEventBuilder particleEventBuilder = new ParticleEventBuilder().setWorld(
+                        getBaseMetaTileEntity().getWorld())
+                                                                                            .setIdentifier(
+                                                                                                    ParticleFX.PORTAL);
 
                 for (int i = 0; i < 9; i++) {
                     final double dX = (XSTR_INSTANCE.nextFloat() - 0.5D) / 2D;
@@ -390,7 +422,9 @@ public class GT_MetaTileEntity_MagicalEnergyAbsorber extends GT_MetaTileEntity_B
                     final double mY = -(dXZ * dY) / 4D;
                     final double mZ = dZ * 4D;
 
-                    particleEventBuilder.setMotion(mX, mY, mZ).setPosition(x, y, z).run();
+                    particleEventBuilder.setMotion(mX, mY, mZ)
+                                        .setPosition(x, y, z)
+                                        .run();
                 }
             }
         }
@@ -423,7 +457,9 @@ public class GT_MetaTileEntity_MagicalEnergyAbsorber extends GT_MetaTileEntity_B
     }
 
     private boolean isDisenchantableItem(ItemStack aStack) {
-        return ((aStack.isItemEnchanted()) && (aStack.getItem().getItemEnchantability() > 0));
+        return ((aStack.isItemEnchanted()) && (aStack.getItem()
+                                                     .getItemEnchantability()
+                > 0));
     }
 
     private boolean isEnchantedBook(ItemStack aStack) {
@@ -489,7 +525,8 @@ public class GT_MetaTileEntity_MagicalEnergyAbsorber extends GT_MetaTileEntity_B
         if (!sAllowMultipleEggs) {
             if (sActiveSiphon != null && sActiveSiphon != this
                     && sActiveSiphon.getBaseMetaTileEntity() != null
-                    && !sActiveSiphon.getBaseMetaTileEntity().isInvalidTileEntity()
+                    && !sActiveSiphon.getBaseMetaTileEntity()
+                                     .isInvalidTileEntity()
                     && sActiveSiphon.isChunkLoaded()
                     && sActiveSiphon.hasEgg()) {
                 getBaseMetaTileEntity().doExplosion(Integer.MAX_VALUE);
@@ -500,9 +537,10 @@ public class GT_MetaTileEntity_MagicalEnergyAbsorber extends GT_MetaTileEntity_B
         Block egg = getBaseMetaTileEntity().getBlockOffset(0, 1, 0);
         if (egg == Blocks.dragon_egg) {
             return sDragonEggEnergyPerTick;
-        } else if (egg.getUnlocalizedName().contains("creeperEgg")) {
-            return sCreeperEggEnergyPerTick;
-        }
+        } else if (egg.getUnlocalizedName()
+                      .contains("creeperEgg")) {
+                          return sCreeperEggEnergyPerTick;
+                      }
         return 0;
     }
 
@@ -569,7 +607,8 @@ public class GT_MetaTileEntity_MagicalEnergyAbsorber extends GT_MetaTileEntity_B
         if (aBlock == Blocks.air) return false;
         if (aBlock == Blocks.dragon_egg) return true;
         if (aBlock instanceof BlockDragonEgg) return true;
-        return (aBlock.getUnlocalizedName().equals("tile.dragonEgg"));
+        return (aBlock.getUnlocalizedName()
+                      .equals("tile.dragonEgg"));
     }
 
     private boolean isChunkLoaded() {
@@ -678,12 +717,18 @@ public class GT_MetaTileEntity_MagicalEnergyAbsorber extends GT_MetaTileEntity_B
             double tX = tBaseMetaTileEntity.getXCoord();
             double tY = tBaseMetaTileEntity.getYCoord();
             double tZ = tBaseMetaTileEntity.getZCoord();
-            return AxisAlignedBB
-                    .getBoundingBox(tX - tRange, tY - tRange, tZ - tRange, tX + tRange, tY + tRange, tZ + tRange);
+            return AxisAlignedBB.getBoundingBox(
+                    tX - tRange,
+                    tY - tRange,
+                    tZ - tRange,
+                    tX + tRange,
+                    tY + tRange,
+                    tZ + tRange);
         }
 
         private void scanLivingCrystals() {
-            World tWorld = mAbsorber.getBaseMetaTileEntity().getWorld();
+            World tWorld = mAbsorber.getBaseMetaTileEntity()
+                                    .getWorld();
             mLivingCrystalIDs.clear();
             for (Object o : tWorld.getEntitiesWithinAABB(EntityEnderCrystal.class, getAxisAlignedBB())) {
                 if (((EntityEnderCrystal) o).isEntityAlive()) {
@@ -698,7 +743,9 @@ public class GT_MetaTileEntity_MagicalEnergyAbsorber extends GT_MetaTileEntity_B
             if (tBaseMetaTileEntity.isInvalidTileEntity()) return;
             int tRange = getRange();
             int tY = tBaseMetaTileEntity.getYCoord();
-            int tMaxY = tBaseMetaTileEntity.getWorld().getHeight() - 1;
+            int tMaxY = tBaseMetaTileEntity.getWorld()
+                                           .getHeight()
+                    - 1;
             // Make sure relative Y range stays between 0 and world max Y
             int rYMin = (tY - tRange >= 0) ? -tRange : -(tY);
             int rYMax = (((tY + tRange) <= tMaxY) ? tRange : tMaxY - tY);
@@ -739,8 +786,13 @@ public class GT_MetaTileEntity_MagicalEnergyAbsorber extends GT_MetaTileEntity_B
         void update() {
             if (mAbsorber == null) return;
             if (mAbsorber.getBaseMetaTileEntity() == null) return;
-            if (mAbsorber.getBaseMetaTileEntity().isInvalidTileEntity()) return;
-            if (mAbsorber.getBaseMetaTileEntity().getWorld() == null) return;
+            if (mAbsorber.getBaseMetaTileEntity()
+                         .isInvalidTileEntity())
+                return;
+            if (mAbsorber.getBaseMetaTileEntity()
+                         .getWorld()
+                    == null)
+                return;
             scanLivingCrystals();
             scanAvailableAspects();
             if (mListener != null) {

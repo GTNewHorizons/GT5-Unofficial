@@ -116,7 +116,9 @@ public class GT_MetaTileEntity_LongDistancePipelineFluid extends GT_MetaTileEnti
         else if (aSide == GT_Utility.getOppositeSide(aFacing)) return new ITexture[] {
                 MACHINE_CASINGS[mTier][aColorIndex + 1], TextureFactory.of(OVERLAY_PIPELINE_FLUID_BACK) };
         else return new ITexture[] { MACHINE_CASINGS[mTier][aColorIndex + 1],
-                TextureFactory.of(OVERLAY_PIPELINE_FLUID_SIDE),
-                TextureFactory.builder().addIcon(OVERLAY_PIPELINE_FLUID_SIDE_GLOW).glow().build() };
+                TextureFactory.of(OVERLAY_PIPELINE_FLUID_SIDE), TextureFactory.builder()
+                                                                              .addIcon(OVERLAY_PIPELINE_FLUID_SIDE_GLOW)
+                                                                              .glow()
+                                                                              .build() };
     }
 }

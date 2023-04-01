@@ -17,8 +17,9 @@ import gregtech.api.util.GT_LanguageManager;
 public class Behaviour_Scoop extends Behaviour_None {
 
     private final int mCosts;
-    private final String mTooltip = GT_LanguageManager
-            .addStringLocalization("gt.behaviour.scoop", "Catches Butterflies on Leftclick");
+    private final String mTooltip = GT_LanguageManager.addStringLocalization(
+            "gt.behaviour.scoop",
+            "Catches Butterflies on Leftclick");
 
     public Behaviour_Scoop(int aCosts) {
         this.mCosts = aCosts;
@@ -33,18 +34,23 @@ public class Behaviour_Scoop extends Behaviour_None {
             if ((aPlayer.capabilities.isCreativeMode)
                     || (((GT_MetaGenerated_Tool) aItem).doDamage(aStack, this.mCosts))) {
                 Object tButterfly = ((IEntityButterfly) aEntity).getButterfly();
-                ((IButterfly) tButterfly).getGenome().getPrimary().getRoot()
-                        .getBreedingTracker(aEntity.worldObj, aPlayer.getGameProfile())
-                        .registerCatch((IButterfly) tButterfly);
+                ((IButterfly) tButterfly).getGenome()
+                                         .getPrimary()
+                                         .getRoot()
+                                         .getBreedingTracker(aEntity.worldObj, aPlayer.getGameProfile())
+                                         .registerCatch((IButterfly) tButterfly);
                 aPlayer.worldObj.spawnEntityInWorld(
                         new EntityItem(
                                 aPlayer.worldObj,
                                 aEntity.posX,
                                 aEntity.posY,
                                 aEntity.posZ,
-                                ((IButterfly) tButterfly).getGenome().getPrimary().getRoot().getMemberStack(
-                                        ((IButterfly) tButterfly).copy(),
-                                        EnumFlutterType.BUTTERFLY.ordinal())));
+                                ((IButterfly) tButterfly).getGenome()
+                                                         .getPrimary()
+                                                         .getRoot()
+                                                         .getMemberStack(
+                                                                 ((IButterfly) tButterfly).copy(),
+                                                                 EnumFlutterType.BUTTERFLY.ordinal())));
                 aEntity.setDead();
             }
             return true;

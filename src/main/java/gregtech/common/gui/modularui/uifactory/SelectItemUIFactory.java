@@ -116,15 +116,21 @@ public class SelectItemUIFactory {
     }
 
     public ModularWindow createWindow(UIBuildContext buildContext) {
-        ModularWindow.Builder builder = ModularWindow
-                .builder(getGUIWidth(), 53 + 18 * ((stacks.size() - 1) / cols + 1));
+        ModularWindow.Builder builder = ModularWindow.builder(
+                getGUIWidth(),
+                53 + 18 * ((stacks.size() - 1) / cols + 1));
         builder.setBackground(ModularUITextures.VANILLA_BACKGROUND);
         builder.setGuiTint(guiTint);
 
         if (headerItem != null) {
-            builder.widget(new ItemDrawable(headerItem).asWidget().setPos(5, 5).setSize(16, 16));
+            builder.widget(
+                    new ItemDrawable(headerItem).asWidget()
+                                                .setPos(5, 5)
+                                                .setSize(16, 16));
         }
-        builder.widget(new TextWidget(header).setDefaultColor(COLOR_TITLE.get()).setPos(25, 9));
+        builder.widget(
+                new TextWidget(header).setDefaultColor(COLOR_TITLE.get())
+                                      .setPos(25, 9));
 
         builder.widget(new SlotWidget(BaseSlot.phantom(currentDisplayItemHandler, 0)) {
 
@@ -137,12 +143,18 @@ public class SelectItemUIFactory {
                 }
                 super.draw(partialTicks);
             }
-        }.disableInteraction().setBackground(GT_UITextures.SLOT_DARK_GRAY).setPos(
-                9 + getFontRenderer().getStringWidth(StatCollector.translateToLocal("GT5U.gui.select.current")),
-                24)).widget(
-                        new TextWidget(StatCollector.translateToLocal("GT5U.gui.select.current"))
-                                .setDefaultColor(COLOR_TEXT_GRAY.get())
-                                .setPos(8, 25 + (18 - getFontRenderer().FONT_HEIGHT) / 2));
+        }.disableInteraction()
+         .setBackground(GT_UITextures.SLOT_DARK_GRAY)
+         .setPos(9 + getFontRenderer().getStringWidth(StatCollector.translateToLocal("GT5U.gui.select.current")), 24))
+               .widget(
+                       new TextWidget(
+                               StatCollector.translateToLocal("GT5U.gui.select.current"))
+                                                                                         .setDefaultColor(
+                                                                                                 COLOR_TEXT_GRAY.get())
+                                                                                         .setPos(
+                                                                                                 8,
+                                                                                                 25 + (18 - getFontRenderer().FONT_HEIGHT)
+                                                                                                         / 2));
 
         for (int i = 0; i < stacks.size(); i++) {
             final int index = i;
@@ -167,7 +179,8 @@ public class SelectItemUIFactory {
                             return new IDrawable[] {
                                     index == selected ? GT_UITextures.SLOT_DARK_GRAY : ModularUITextures.ITEM_SLOT };
                         }
-                    }.disableInteraction().setPos(7 + 18 * (index % cols), 43 + 18 * (index / cols)));
+                    }.disableInteraction()
+                     .setPos(7 + 18 * (index % cols), 43 + 18 * (index / cols)));
         }
 
         if (anotherWindow) {
@@ -178,9 +191,12 @@ public class SelectItemUIFactory {
                 public void onDestroy() {
                     dialogOpened.set(false);
                 }
-            }.setOnClick((clickData, widget) -> widget.getWindow().tryClose())
-                    .setBackground(ModularUITextures.VANILLA_BACKGROUND, new Text("x")).setPos(getGUIWidth() - 15, 3)
-                    .setSize(12, 12));
+            }.setOnClick(
+                    (clickData, widget) -> widget.getWindow()
+                                                 .tryClose())
+             .setBackground(ModularUITextures.VANILLA_BACKGROUND, new Text("x"))
+             .setPos(getGUIWidth() - 15, 3)
+             .setSize(12, 12));
         }
 
         return builder.build();

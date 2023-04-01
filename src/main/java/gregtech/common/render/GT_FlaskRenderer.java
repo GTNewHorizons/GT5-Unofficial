@@ -56,8 +56,10 @@ public final class GT_FlaskRenderer implements IItemRenderer {
         FluidStack fs = cell.getFluid(item);
         if (fs != null) {
             IIcon iconWindow = cell.iconWindow;
-            IIcon fluidicon = fs.getFluid().getIcon(fs);
-            int fluidColor = fs.getFluid().getColor(fs);
+            IIcon fluidicon = fs.getFluid()
+                                .getIcon(fs);
+            int fluidColor = fs.getFluid()
+                               .getColor(fs);
             Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.locationItemsTexture);
             GL11.glBlendFunc(GL11.GL_ZERO, GL11.GL_ONE);
             if (type.equals(ItemRenderType.INVENTORY)) {

@@ -18,11 +18,16 @@ public class Enchantment_Radioactivity extends EnchantmentDamage {
     public Enchantment_Radioactivity() {
         super(GT_Config.addIDConfig(ConfigCategories.IDs.enchantments, "Radioactivity", 14), 0, -1);
         GT_LanguageManager.addStringLocalization(getName(), "Radioactivity");
-        Materials.Plutonium.setEnchantmentForTools(this, 1).setEnchantmentForArmors(this, 1);
-        Materials.Uranium235.setEnchantmentForTools(this, 2).setEnchantmentForArmors(this, 2);
-        Materials.Plutonium241.setEnchantmentForTools(this, 3).setEnchantmentForArmors(this, 3);
-        Materials.NaquadahEnriched.setEnchantmentForTools(this, 4).setEnchantmentForArmors(this, 4);
-        Materials.Naquadria.setEnchantmentForTools(this, 5).setEnchantmentForArmors(this, 5);
+        Materials.Plutonium.setEnchantmentForTools(this, 1)
+                           .setEnchantmentForArmors(this, 1);
+        Materials.Uranium235.setEnchantmentForTools(this, 2)
+                            .setEnchantmentForArmors(this, 2);
+        Materials.Plutonium241.setEnchantmentForTools(this, 3)
+                              .setEnchantmentForArmors(this, 3);
+        Materials.NaquadahEnriched.setEnchantmentForTools(this, 4)
+                                  .setEnchantmentForArmors(this, 4);
+        Materials.Naquadria.setEnchantmentForTools(this, 5)
+                           .setEnchantmentForArmors(this, 5);
         INSTANCE = this;
     }
 

@@ -129,7 +129,8 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
         } else {
             throw new IllegalArgumentException("MetaMachine-Slot Nr. " + aID + " is already occupied!");
         }
-        mName = aBasicName.replace(" ", "_").toLowerCase(Locale.ENGLISH);
+        mName = aBasicName.replace(" ", "_")
+                          .toLowerCase(Locale.ENGLISH);
         setBaseMetaTileEntity(GregTech_API.constructBaseMetaTileEntity());
         getBaseMetaTileEntity().setMetaTileID((short) aID);
         GT_LanguageManager.addStringLocalization("gt.blockmachines." + mName + ".name", aRegionalName);
@@ -165,7 +166,8 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
     @Override
     public void setBaseMetaTileEntity(IGregTechTileEntity aBaseMetaTileEntity) {
         if (mBaseMetaTileEntity != null && aBaseMetaTileEntity == null) {
-            mBaseMetaTileEntity.getMetaTileEntity().inValidate();
+            mBaseMetaTileEntity.getMetaTileEntity()
+                               .inValidate();
             mBaseMetaTileEntity.setMetaTileEntity(null);
         }
         mBaseMetaTileEntity = aBaseMetaTileEntity;
@@ -245,7 +247,13 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
                 && (((IGregTechTileEntity) tTileEntity).getMetaTileEntity() instanceof GT_MetaPipeEntity_Cable)) {
             // The tile entity we're facing is a cable, let's try to connect to it
             return ((IGregTechTileEntity) tTileEntity).getMetaTileEntity()
-                    .onWireCutterRightClick(aWrenchingSide, tSide, aPlayer, aX, aY, aZ);
+                                                      .onWireCutterRightClick(
+                                                              aWrenchingSide,
+                                                              tSide,
+                                                              aPlayer,
+                                                              aX,
+                                                              aY,
+                                                              aZ);
         }
         return false;
     }
@@ -260,7 +268,13 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
                 && (((IGregTechTileEntity) tTileEntity).getMetaTileEntity() instanceof GT_MetaPipeEntity_Cable)) {
             // The tile entity we're facing is a cable, let's try to connect to it
             return ((IGregTechTileEntity) tTileEntity).getMetaTileEntity()
-                    .onSolderingToolRightClick(aWrenchingSide, tSide, aPlayer, aX, aY, aZ);
+                                                      .onSolderingToolRightClick(
+                                                              aWrenchingSide,
+                                                              tSide,
+                                                              aPlayer,
+                                                              aX,
+                                                              aY,
+                                                              aZ);
         }
         return false;
     }
@@ -268,13 +282,17 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
     @Override
     public void onExplosion() {
         GT_Log.exp.println(
-                "Machine at " + this.getBaseMetaTileEntity().getXCoord()
+                "Machine at " + this.getBaseMetaTileEntity()
+                                    .getXCoord()
                         + " | "
-                        + this.getBaseMetaTileEntity().getYCoord()
+                        + this.getBaseMetaTileEntity()
+                              .getYCoord()
                         + " | "
-                        + this.getBaseMetaTileEntity().getZCoord()
+                        + this.getBaseMetaTileEntity()
+                              .getZCoord()
                         + " DIMID: "
-                        + this.getBaseMetaTileEntity().getWorld().provider.dimensionId
+                        + this.getBaseMetaTileEntity()
+                              .getWorld().provider.dimensionId
                         + " exploded.");
     }
 
@@ -1180,7 +1198,8 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
         currenttip.add(
                 String.format(
                         "Facing: %s",
-                        ForgeDirection.getOrientation(mBaseMetaTileEntity.getFrontFacing()).name()));
+                        ForgeDirection.getOrientation(mBaseMetaTileEntity.getFrontFacing())
+                                      .name()));
 
         if (this instanceof IPowerChannelState) {
             // adapted from PowerStateWailaDataProvider
@@ -1221,11 +1240,20 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
         try {
             if (getProxy() == null) return "(proxy)";
             if (getProxy().getNode() == null) return "(node)";
-            if (getProxy().getNode().getGrid() == null) return "(grid)";
-            if (!getProxy().getNode().meetsChannelRequirements()) return "(channels)";
-            IPathingGrid pg = getProxy().getNode().getGrid().getCache(IPathingGrid.class);
+            if (getProxy().getNode()
+                          .getGrid()
+                    == null)
+                return "(grid)";
+            if (!getProxy().getNode()
+                           .meetsChannelRequirements())
+                return "(channels)";
+            IPathingGrid pg = getProxy().getNode()
+                                        .getGrid()
+                                        .getCache(IPathingGrid.class);
             if (!pg.isNetworkBooting()) return "(booting)";
-            IEnergyGrid eg = getProxy().getNode().getGrid().getCache(IEnergyGrid.class);
+            IEnergyGrid eg = getProxy().getNode()
+                                       .getGrid()
+                                       .getCache(IEnergyGrid.class);
             if (!eg.isNetworkPowered()) return "(power)";
         } catch (Throwable ex) {
             ex.printStackTrace();

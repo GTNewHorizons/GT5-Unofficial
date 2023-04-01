@@ -81,7 +81,8 @@ public class GT_Cover_FluidStorageMonitor extends GT_CoverBehaviorBase<GT_Cover_
             FluidStorageData aCoverVariable, ICoverable aTileEntity, long aTimer) {
         final FluidTankInfo[] tanks = getValidFluidTankInfos(aTileEntity, aCoverVariable.side);
         if (tanks == null) {
-            return aCoverVariable.disable().issueCoverUpdateIfNeeded(aTileEntity, aSide);
+            return aCoverVariable.disable()
+                                 .issueCoverUpdateIfNeeded(aTileEntity, aSide);
         }
         assert 0 < tanks.length;
 
@@ -91,11 +92,13 @@ public class GT_Cover_FluidStorageMonitor extends GT_CoverBehaviorBase<GT_Cover_
 
         final FluidTankInfo tank = tanks[aCoverVariable.slot];
         if (tank == null) {
-            return aCoverVariable.setNullTank().issueCoverUpdateIfNeeded(aTileEntity, aSide);
+            return aCoverVariable.setNullTank()
+                                 .issueCoverUpdateIfNeeded(aTileEntity, aSide);
         }
 
-        return aCoverVariable.setFluid(tank.fluid).setScale(getTankScale(tank))
-                .issueCoverUpdateIfNeeded(aTileEntity, aSide);
+        return aCoverVariable.setFluid(tank.fluid)
+                             .setScale(getTankScale(tank))
+                             .issueCoverUpdateIfNeeded(aTileEntity, aSide);
     }
 
     @Override
@@ -129,7 +132,9 @@ public class GT_Cover_FluidStorageMonitor extends GT_CoverBehaviorBase<GT_Cover_
         };
 
         final short[] fluidRGBA = colorToRGBA(aCoverVariable.fluid.getColor());
-        final ITextureBuilder fluidTextureBuilder = TextureFactory.builder().addIcon(fluidIcon).setRGBA(fluidRGBA);
+        final ITextureBuilder fluidTextureBuilder = TextureFactory.builder()
+                                                                  .addIcon(fluidIcon)
+                                                                  .setRGBA(fluidRGBA);
         if (aCoverVariable.fluid.getLuminosity() > 0) fluidTextureBuilder.glow();
         return TextureFactory.of(fluidTextureBuilder.build(), TextureFactory.of(icons[aCoverVariable.scale]));
     }
@@ -221,7 +226,9 @@ public class GT_Cover_FluidStorageMonitor extends GT_CoverBehaviorBase<GT_Cover_
                                     side,
                                     new FluidStack(tankInfo.fluid.getFluid(), containerItem.getCapacity(container)),
                                     false))
-                            .filter(fs -> GT_Utility.areFluidsEqual(fs, tankInfo.fluid)).map(fs -> fs.amount).orElse(0),
+                            .filter(fs -> GT_Utility.areFluidsEqual(fs, tankInfo.fluid))
+                            .map(fs -> fs.amount)
+                            .orElse(0),
                     containerItem.fill(
                             container,
                             new FluidStack(tankInfo.fluid.getFluid(), containerItem.getCapacity(container)),
@@ -242,7 +249,9 @@ public class GT_Cover_FluidStorageMonitor extends GT_CoverBehaviorBase<GT_Cover_
                 return null;
             }
             if (Optional.ofNullable(tank.drain(side, filledFluid, false))
-                    .filter(fs -> GT_Utility.areFluidsEqual(fs, filledFluid)).map(fs -> fs.amount).orElse(0)
+                        .filter(fs -> GT_Utility.areFluidsEqual(fs, filledFluid))
+                        .map(fs -> fs.amount)
+                        .orElse(0)
                     != filledFluid.amount) {
                 return null;
             }
@@ -264,7 +273,7 @@ public class GT_Cover_FluidStorageMonitor extends GT_CoverBehaviorBase<GT_Cover_
         if (aPlayer.isSneaking()) {
             aCoverVariable.setSide(
                     ForgeDirection.values()[(aCoverVariable.side.ordinal() + 1) % ForgeDirection.values().length])
-                    .setSlot(0);
+                          .setSlot(0);
             GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("SIDE", "Side: ") + aCoverVariable.side.name());
             return aCoverVariable;
         }
@@ -276,8 +285,8 @@ public class GT_Cover_FluidStorageMonitor extends GT_CoverBehaviorBase<GT_Cover_
         if (aCoverVariable.slot < 0 || tanks.length <= aCoverVariable.slot) {
             aCoverVariable.setSlot(0);
         } else {
-            aCoverVariable
-                    .setSlot((aCoverVariable.slot + tanks.length + (aPlayer.isSneaking() ? -1 : 1)) % tanks.length);
+            aCoverVariable.setSlot(
+                    (aCoverVariable.slot + tanks.length + (aPlayer.isSneaking() ? -1 : 1)) % tanks.length);
         }
         GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("053", "Slot: ") + aCoverVariable.slot);
         return aCoverVariable;
@@ -397,7 +406,8 @@ public class GT_Cover_FluidStorageMonitor extends GT_CoverBehaviorBase<GT_Cover_
         }
 
         public FluidStorageData setNullTank() {
-            return this.setFluid((Fluid) null).setScale(0);
+            return this.setFluid((Fluid) null)
+                       .setScale(0);
         }
 
         public FluidStorageData issueCoverUpdateIfNeeded(ICoverable tileEntity, byte side) {

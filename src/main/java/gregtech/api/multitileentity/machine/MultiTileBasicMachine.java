@@ -116,8 +116,9 @@ public class MultiTileBasicMachine extends BaseTickableMultiTileEntity {
 
         // TODO: See if we need the adjustable map here `.setCapacity(mRecipes, mParallel * 2L)` in place of the
         // `setCapacityMultiplier`
-        for (int i = 0; i < mTanksInput.length; i++) mTanksInput[i] = new FluidTankGT(tCapacity)
-                .setCapacityMultiplier(mParallel * 2L).readFromNBT(aNBT, NBT.TANK_IN + i);
+        for (int i = 0; i < mTanksInput.length; i++)
+            mTanksInput[i] = new FluidTankGT(tCapacity).setCapacityMultiplier(mParallel * 2L)
+                                                       .readFromNBT(aNBT, NBT.TANK_IN + i);
         for (int i = 0; i < mTanksOutput.length; i++)
             mTanksOutput[i] = new FluidTankGT().readFromNBT(aNBT, NBT.TANK_OUT + i);
         for (int i = 0; i < mOutputFluids.length; i++)
@@ -163,8 +164,9 @@ public class MultiTileBasicMachine extends BaseTickableMultiTileEntity {
     @Override
     public void copyTextures() {
         // Loading an instance
-        final TileEntity tCanonicalTileEntity = MultiTileEntityRegistry
-                .getCanonicalTileEntity(getMultiTileEntityRegistryID(), getMultiTileEntityID());
+        final TileEntity tCanonicalTileEntity = MultiTileEntityRegistry.getCanonicalTileEntity(
+                getMultiTileEntityRegistryID(),
+                getMultiTileEntityID());
         if (tCanonicalTileEntity instanceof MultiTileBasicMachine) {
             mTextures = ((MultiTileBasicMachine) tCanonicalTileEntity).mTextures;
             mTexturesInactive = ((MultiTileBasicMachine) tCanonicalTileEntity).mTexturesInactive;

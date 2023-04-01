@@ -232,8 +232,11 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                         16);
                 break;
             case gemFlawed:
-                if (aFuelPower) GT_Values.RA
-                        .addFuel(GT_Utility.copyAmount(1L, aStack), null, aMaterial.mFuelPower, aMaterial.mFuelType);
+                if (aFuelPower) GT_Values.RA.addFuel(
+                        GT_Utility.copyAmount(1L, aStack),
+                        null,
+                        aMaterial.mFuelPower,
+                        aMaterial.mFuelType);
                 if (!aNoWorking) {
                     GT_Values.RA.addLatheRecipe(
                             GT_Utility.copyAmount(1L, aStack),
@@ -305,8 +308,11 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                                 new Object[] { "X", "m", 'X', OrePrefixes.gemFlawless.get(aMaterial) });
                     }
                 }
-                GT_Values.RA
-                        .addForgeHammerRecipe(aStack, GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, 2L), 64, 16);
+                GT_Values.RA.addForgeHammerRecipe(
+                        aStack,
+                        GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, 2L),
+                        64,
+                        16);
                 for (ItemStack is : OreDictionary.getOres("craftingLens" + aMaterial.mColor.mName.replace(" ", ""))) { // Engraver
                                                                                                                        // Recipe
                                                                                                                        // adder

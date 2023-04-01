@@ -76,7 +76,10 @@ public class GT_MetaTileEntity_RecipeFilter extends GT_MetaTileEntity_SpecialFil
     public ITexture getOverlayIcon() {
         return TextureFactory.of(
                 TextureFactory.of(AUTOMATION_RECIPEFILTER),
-                TextureFactory.builder().addIcon(AUTOMATION_RECIPEFILTER_GLOW).glow().build());
+                TextureFactory.builder()
+                              .addIcon(AUTOMATION_RECIPEFILTER_GLOW)
+                              .glow()
+                              .build());
     }
 
     @Override

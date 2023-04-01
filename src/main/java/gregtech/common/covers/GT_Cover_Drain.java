@@ -47,15 +47,18 @@ public class GT_Cover_Drain extends GT_CoverBehavior {
         if (aSide != 6) {
             Block tBlock = aTileEntity.getBlockAtSide(aSide);
             if ((aCoverVariable < 3) && ((aTileEntity instanceof IFluidHandler))) {
-                if ((aSide == 1) && (aTileEntity.getWorld().isRaining())
+                if ((aSide == 1) && (aTileEntity.getWorld()
+                                                .isRaining())
                         && (aTileEntity.getWorld()
-                                .getPrecipitationHeight(aTileEntity.getXCoord(), aTileEntity.getZCoord()) - 2
-                                < aTileEntity.getYCoord())) {
+                                       .getPrecipitationHeight(aTileEntity.getXCoord(), aTileEntity.getZCoord())
+                                - 2 < aTileEntity.getYCoord())) {
                     int tAmount = (int) (aTileEntity.getBiome().rainfall * 10.0F);
                     if (tAmount > 0) {
                         ((IFluidHandler) aTileEntity).fill(
                                 ForgeDirection.getOrientation(aSide),
-                                Materials.Water.getFluid(aTileEntity.getWorld().isThundering() ? tAmount * 2 : tAmount),
+                                Materials.Water.getFluid(
+                                        aTileEntity.getWorld()
+                                                   .isThundering() ? tAmount * 2 : tAmount),
                                 true);
                     }
                 }
@@ -77,15 +80,20 @@ public class GT_Cover_Drain extends GT_CoverBehavior {
                                     false);
                         }
                     if ((tLiquid != null) && (tLiquid.getFluid() != null)
-                            && ((aSide > 1) || ((aSide == 0) && (tLiquid.getFluid().getDensity() <= 0))
-                                    || ((aSide == 1) && (tLiquid.getFluid().getDensity() >= 0)))
+                            && ((aSide > 1) || ((aSide == 0) && (tLiquid.getFluid()
+                                                                        .getDensity()
+                                    <= 0))
+                                    || ((aSide == 1) && (tLiquid.getFluid()
+                                                                .getDensity()
+                                            >= 0)))
                             && (((IFluidHandler) aTileEntity).fill(ForgeDirection.getOrientation(aSide), tLiquid, false)
                                     == tLiquid.amount)) {
                         ((IFluidHandler) aTileEntity).fill(ForgeDirection.getOrientation(aSide), tLiquid, true);
-                        aTileEntity.getWorld().setBlockToAir(
-                                aTileEntity.getXCoord() + ForgeDirection.getOrientation(aSide).offsetX,
-                                aTileEntity.getYCoord() + ForgeDirection.getOrientation(aSide).offsetY,
-                                aTileEntity.getZCoord() + ForgeDirection.getOrientation(aSide).offsetZ);
+                        aTileEntity.getWorld()
+                                   .setBlockToAir(
+                                           aTileEntity.getXCoord() + ForgeDirection.getOrientation(aSide).offsetX,
+                                           aTileEntity.getYCoord() + ForgeDirection.getOrientation(aSide).offsetY,
+                                           aTileEntity.getZCoord() + ForgeDirection.getOrientation(aSide).offsetZ);
                     }
                 }
             }
@@ -94,13 +102,14 @@ public class GT_Cover_Drain extends GT_CoverBehavior {
                             || (tBlock == Blocks.water)
                             || (tBlock == Blocks.flowing_water)
                             || ((tBlock instanceof IFluidBlock)))) {
-                aTileEntity.getWorld().setBlock(
-                        aTileEntity.getOffsetX(aSide, 1),
-                        aTileEntity.getOffsetY(aSide, 1),
-                        aTileEntity.getOffsetZ(aSide, 1),
-                        Blocks.air,
-                        0,
-                        0);
+                aTileEntity.getWorld()
+                           .setBlock(
+                                   aTileEntity.getOffsetX(aSide, 1),
+                                   aTileEntity.getOffsetY(aSide, 1),
+                                   aTileEntity.getOffsetZ(aSide, 1),
+                                   Blocks.air,
+                                   0,
+                                   0);
             }
         }
         return aCoverVariable;

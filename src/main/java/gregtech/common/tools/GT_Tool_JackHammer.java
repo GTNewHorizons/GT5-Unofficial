@@ -77,12 +77,20 @@ public class GT_Tool_JackHammer extends GT_Tool_Drill_LV {
     public int convertBlockDrops(List<ItemStack> aDrops, ItemStack aStack, EntityPlayer aPlayer, Block aBlock, int aX,
             int aY, int aZ, byte aMetaData, int aFortune, boolean aSilkTouch, BlockEvent.HarvestDropsEvent aEvent) {
         int rConversions = 0;
-        GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sHammerRecipes
-                .findRecipe(null, true, 2147483647L, null, new ItemStack(aBlock, 1, aMetaData));
+        GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sHammerRecipes.findRecipe(
+                null,
+                true,
+                2147483647L,
+                null,
+                new ItemStack(aBlock, 1, aMetaData));
         if ((tRecipe == null) || (aBlock.hasTileEntity(aMetaData))) {
             for (ItemStack tDrop : aDrops) {
-                tRecipe = GT_Recipe.GT_Recipe_Map.sHammerRecipes
-                        .findRecipe(null, true, 2147483647L, null, GT_Utility.copyAmount(1L, new Object[] { tDrop }));
+                tRecipe = GT_Recipe.GT_Recipe_Map.sHammerRecipes.findRecipe(
+                        null,
+                        true,
+                        2147483647L,
+                        null,
+                        GT_Utility.copyAmount(1L, new Object[] { tDrop }));
                 if (tRecipe != null) {
                     ItemStack tHammeringOutput = tRecipe.getOutput(0);
                     if (tHammeringOutput != null) {

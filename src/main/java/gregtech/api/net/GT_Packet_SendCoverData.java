@@ -88,7 +88,9 @@ public class GT_Packet_SendCoverData extends GT_Packet_New {
                 aData.readInt(),
                 aData.readByte(),
                 coverId = aData.readInt(),
-                GregTech_API.getCoverBehaviorNew(coverId).createDataObject().readFromPacket(aData, null));
+                GregTech_API.getCoverBehaviorNew(coverId)
+                            .createDataObject()
+                            .readFromPacket(aData, null));
     }
 
     @Override

@@ -61,48 +61,90 @@ public class AlloySmelterRecipes implements Runnable {
         for (MaterialStack[] materials : mAlloySmelterList) {
             ItemStack dust1 = GT_OreDictUnificator.get(OrePrefixes.dust, materials[0].mMaterial, materials[0].mAmount);
             ItemStack dust2 = GT_OreDictUnificator.get(OrePrefixes.dust, materials[1].mMaterial, materials[1].mAmount);
-            ItemStack ingot1 = GT_OreDictUnificator
-                    .get(OrePrefixes.ingot, materials[0].mMaterial, materials[0].mAmount);
-            ItemStack ingot2 = GT_OreDictUnificator
-                    .get(OrePrefixes.ingot, materials[1].mMaterial, materials[1].mAmount);
-            ItemStack outputIngot = GT_OreDictUnificator
-                    .get(OrePrefixes.ingot, materials[2].mMaterial, materials[2].mAmount);
+            ItemStack ingot1 = GT_OreDictUnificator.get(
+                    OrePrefixes.ingot,
+                    materials[0].mMaterial,
+                    materials[0].mAmount);
+            ItemStack ingot2 = GT_OreDictUnificator.get(
+                    OrePrefixes.ingot,
+                    materials[1].mMaterial,
+                    materials[1].mAmount);
+            ItemStack outputIngot = GT_OreDictUnificator.get(
+                    OrePrefixes.ingot,
+                    materials[2].mMaterial,
+                    materials[2].mAmount);
             if (outputIngot != GT_Values.NI) {
-                GT_Values.RA.stdBuilder().itemInputs(ingot1, dust2).itemOutputs(outputIngot).noFluidInputs()
-                        .noFluidOutputs().duration((int) materials[2].mAmount * 50).eut(16).addTo(sAlloySmelterRecipes);
+                GT_Values.RA.stdBuilder()
+                            .itemInputs(ingot1, dust2)
+                            .itemOutputs(outputIngot)
+                            .noFluidInputs()
+                            .noFluidOutputs()
+                            .duration((int) materials[2].mAmount * 50)
+                            .eut(16)
+                            .addTo(sAlloySmelterRecipes);
 
-                GT_Values.RA.stdBuilder().itemInputs(ingot1, ingot2).itemOutputs(outputIngot).noFluidInputs()
-                        .noFluidOutputs().duration((int) materials[2].mAmount * 50).eut(16).addTo(sAlloySmelterRecipes);
+                GT_Values.RA.stdBuilder()
+                            .itemInputs(ingot1, ingot2)
+                            .itemOutputs(outputIngot)
+                            .noFluidInputs()
+                            .noFluidOutputs()
+                            .duration((int) materials[2].mAmount * 50)
+                            .eut(16)
+                            .addTo(sAlloySmelterRecipes);
 
-                GT_Values.RA.stdBuilder().itemInputs(dust1, ingot2).itemOutputs(outputIngot).noFluidInputs()
-                        .noFluidOutputs().duration((int) materials[2].mAmount * 50).eut(16).addTo(sAlloySmelterRecipes);
+                GT_Values.RA.stdBuilder()
+                            .itemInputs(dust1, ingot2)
+                            .itemOutputs(outputIngot)
+                            .noFluidInputs()
+                            .noFluidOutputs()
+                            .duration((int) materials[2].mAmount * 50)
+                            .eut(16)
+                            .addTo(sAlloySmelterRecipes);
 
-                GT_Values.RA.stdBuilder().itemInputs(dust1, dust2).itemOutputs(outputIngot).noFluidInputs()
-                        .noFluidOutputs().duration((int) materials[2].mAmount * 50).eut(16).addTo(sAlloySmelterRecipes);
+                GT_Values.RA.stdBuilder()
+                            .itemInputs(dust1, dust2)
+                            .itemOutputs(outputIngot)
+                            .noFluidInputs()
+                            .noFluidOutputs()
+                            .duration((int) materials[2].mAmount * 50)
+                            .eut(16)
+                            .addTo(sAlloySmelterRecipes);
 
             }
         }
 
         GT_Values.RA.stdBuilder()
-                .itemInputs(
-                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lead, 1L),
-                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Obsidian, 2L))
-                .itemOutputs(ItemList.TE_Hardened_Glass.get(2L)).noFluidInputs().noFluidOutputs().duration(10 * SECONDS)
-                .eut(16).addTo(sAlloySmelterRecipes);
+                    .itemInputs(
+                            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lead, 1L),
+                            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Obsidian, 2L))
+                    .itemOutputs(ItemList.TE_Hardened_Glass.get(2L))
+                    .noFluidInputs()
+                    .noFluidOutputs()
+                    .duration(10 * SECONDS)
+                    .eut(16)
+                    .addTo(sAlloySmelterRecipes);
 
         GT_Values.RA.stdBuilder()
-                .itemInputs(
-                        GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Lead, 1L),
-                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Obsidian, 2L))
-                .itemOutputs(ItemList.TE_Hardened_Glass.get(2L)).noFluidInputs().noFluidOutputs().duration(10 * SECONDS)
-                .eut(16).addTo(sAlloySmelterRecipes);
+                    .itemInputs(
+                            GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Lead, 1L),
+                            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Obsidian, 2L))
+                    .itemOutputs(ItemList.TE_Hardened_Glass.get(2L))
+                    .noFluidInputs()
+                    .noFluidOutputs()
+                    .duration(10 * SECONDS)
+                    .eut(16)
+                    .addTo(sAlloySmelterRecipes);
 
         // We use rubber
         GT_Values.RA.stdBuilder()
-                .itemInputs(
-                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.RawRubber, 3L),
-                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sulfur, 1L))
-                .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Rubber, 1L)).noFluidInputs()
-                .noFluidOutputs().duration(10 * SECONDS).eut(8).addTo(sAlloySmelterRecipes);
+                    .itemInputs(
+                            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.RawRubber, 3L),
+                            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sulfur, 1L))
+                    .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Rubber, 1L))
+                    .noFluidInputs()
+                    .noFluidOutputs()
+                    .duration(10 * SECONDS)
+                    .eut(8)
+                    .addTo(sAlloySmelterRecipes);
     }
 }

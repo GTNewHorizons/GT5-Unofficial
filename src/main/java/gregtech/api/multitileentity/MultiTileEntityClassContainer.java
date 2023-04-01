@@ -42,8 +42,11 @@ public class MultiTileEntityClassContainer {
         /* End and register the Builder with the registry */
         final MultiTileEntityRegistry registry = mRegistry.get();
 
-        if (mParameters.hasKey(NBT.MATERIAL) && !mParameters.hasKey(NBT.COLOR)) mParameters
-                .setInteger(NBT.COLOR, GT_Util.getRGBInt(Materials.get(mParameters.getString(NBT.MATERIAL)).getRGBA()));
+        if (mParameters.hasKey(NBT.MATERIAL) && !mParameters.hasKey(NBT.COLOR)) mParameters.setInteger(
+                NBT.COLOR,
+                GT_Util.getRGBInt(
+                        Materials.get(mParameters.getString(NBT.MATERIAL))
+                                 .getRGBA()));
 
         try {
             mCanonicalTileEntity = mClass.newInstance();

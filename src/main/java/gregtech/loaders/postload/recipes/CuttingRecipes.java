@@ -242,29 +242,62 @@ public class CuttingRecipes implements Runnable {
     public void recipeWithClassicFluids(ItemStack[] inputs, ItemStack[] outputs, int duration, long eut,
             boolean cleanroomRequired) {
         if (cleanroomRequired) {
-            GT_Values.RA.stdBuilder().itemInputs(inputs).itemOutputs(outputs)
-                    .fluidInputs(Materials.Water.getFluid(Math.max(4, Math.min(1000, duration * eut / 320))))
-                    .noFluidOutputs().duration(2 * duration).eut(eut).requiresCleanRoom().addTo(sCutterRecipes);
+            GT_Values.RA.stdBuilder()
+                        .itemInputs(inputs)
+                        .itemOutputs(outputs)
+                        .fluidInputs(Materials.Water.getFluid(Math.max(4, Math.min(1000, duration * eut / 320))))
+                        .noFluidOutputs()
+                        .duration(2 * duration)
+                        .eut(eut)
+                        .requiresCleanRoom()
+                        .addTo(sCutterRecipes);
 
-            GT_Values.RA.stdBuilder().itemInputs(inputs).itemOutputs(outputs)
-                    .fluidInputs(GT_ModHandler.getDistilledWater(Math.max(3, Math.min(750, duration * eut / 426))))
-                    .noFluidOutputs().duration(2 * duration).eut(eut).requiresCleanRoom().addTo(sCutterRecipes);
+            GT_Values.RA.stdBuilder()
+                        .itemInputs(inputs)
+                        .itemOutputs(outputs)
+                        .fluidInputs(GT_ModHandler.getDistilledWater(Math.max(3, Math.min(750, duration * eut / 426))))
+                        .noFluidOutputs()
+                        .duration(2 * duration)
+                        .eut(eut)
+                        .requiresCleanRoom()
+                        .addTo(sCutterRecipes);
 
-            GT_Values.RA.stdBuilder().itemInputs(inputs).itemOutputs(outputs)
-                    .fluidInputs(Materials.Lubricant.getFluid(Math.max(1, Math.min(250, duration * eut / 1280))))
-                    .noFluidOutputs().duration(duration).eut(eut).requiresCleanRoom().addTo(sCutterRecipes);
+            GT_Values.RA.stdBuilder()
+                        .itemInputs(inputs)
+                        .itemOutputs(outputs)
+                        .fluidInputs(Materials.Lubricant.getFluid(Math.max(1, Math.min(250, duration * eut / 1280))))
+                        .noFluidOutputs()
+                        .duration(duration)
+                        .eut(eut)
+                        .requiresCleanRoom()
+                        .addTo(sCutterRecipes);
         } else {
-            GT_Values.RA.stdBuilder().itemInputs(inputs).itemOutputs(outputs)
-                    .fluidInputs(Materials.Water.getFluid(Math.max(4, Math.min(1000, duration * eut / 320))))
-                    .noFluidOutputs().duration(2 * duration).eut(eut).addTo(sCutterRecipes);
+            GT_Values.RA.stdBuilder()
+                        .itemInputs(inputs)
+                        .itemOutputs(outputs)
+                        .fluidInputs(Materials.Water.getFluid(Math.max(4, Math.min(1000, duration * eut / 320))))
+                        .noFluidOutputs()
+                        .duration(2 * duration)
+                        .eut(eut)
+                        .addTo(sCutterRecipes);
 
-            GT_Values.RA.stdBuilder().itemInputs(inputs).itemOutputs(outputs)
-                    .fluidInputs(GT_ModHandler.getDistilledWater(Math.max(3, Math.min(750, duration * eut / 426))))
-                    .noFluidOutputs().duration(2 * duration).eut(eut).addTo(sCutterRecipes);
+            GT_Values.RA.stdBuilder()
+                        .itemInputs(inputs)
+                        .itemOutputs(outputs)
+                        .fluidInputs(GT_ModHandler.getDistilledWater(Math.max(3, Math.min(750, duration * eut / 426))))
+                        .noFluidOutputs()
+                        .duration(2 * duration)
+                        .eut(eut)
+                        .addTo(sCutterRecipes);
 
-            GT_Values.RA.stdBuilder().itemInputs(inputs).itemOutputs(outputs)
-                    .fluidInputs(Materials.Lubricant.getFluid(Math.max(1, Math.min(250, duration * eut / 1280))))
-                    .noFluidOutputs().duration(duration).eut(eut).addTo(sCutterRecipes);
+            GT_Values.RA.stdBuilder()
+                        .itemInputs(inputs)
+                        .itemOutputs(outputs)
+                        .fluidInputs(Materials.Lubricant.getFluid(Math.max(1, Math.min(250, duration * eut / 1280))))
+                        .noFluidOutputs()
+                        .duration(duration)
+                        .eut(eut)
+                        .addTo(sCutterRecipes);
         }
     }
 }

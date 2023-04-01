@@ -64,22 +64,43 @@ public class ImplosionCompressorRecipes implements Runnable {
         int tITNT = Math.max(1, tExplosives >> 2); // the best
 
         if (tGunpowder < 65) {
-            GT_Values.RA.stdBuilder().itemInputs(input, ItemList.Block_Powderbarrel.get(tGunpowder))
-                    .itemOutputs(outputs).noFluidInputs().noFluidOutputs().duration(1 * SECONDS).eut(TierEU.RECIPE_LV)
-                    .addTo(sImplosionRecipes);
+            GT_Values.RA.stdBuilder()
+                        .itemInputs(input, ItemList.Block_Powderbarrel.get(tGunpowder))
+                        .itemOutputs(outputs)
+                        .noFluidInputs()
+                        .noFluidOutputs()
+                        .duration(1 * SECONDS)
+                        .eut(TierEU.RECIPE_LV)
+                        .addTo(sImplosionRecipes);
         }
 
         if (tDynamite < 17) {
-            GT_Values.RA.stdBuilder().itemInputs(input, GT_ModHandler.getIC2Item("dynamite", tDynamite, null))
-                    .itemOutputs(outputs).noFluidInputs().noFluidOutputs().duration(1 * SECONDS).eut(TierEU.RECIPE_LV)
-                    .addTo(sImplosionRecipes);
+            GT_Values.RA.stdBuilder()
+                        .itemInputs(input, GT_ModHandler.getIC2Item("dynamite", tDynamite, null))
+                        .itemOutputs(outputs)
+                        .noFluidInputs()
+                        .noFluidOutputs()
+                        .duration(1 * SECONDS)
+                        .eut(TierEU.RECIPE_LV)
+                        .addTo(sImplosionRecipes);
         }
 
-        GT_Values.RA.stdBuilder().itemInputs(input, new ItemStack(Blocks.tnt, tTNT)).itemOutputs(outputs)
-                .noFluidInputs().noFluidOutputs().duration(1 * SECONDS).eut(TierEU.RECIPE_LV).addTo(sImplosionRecipes);
+        GT_Values.RA.stdBuilder()
+                    .itemInputs(input, new ItemStack(Blocks.tnt, tTNT))
+                    .itemOutputs(outputs)
+                    .noFluidInputs()
+                    .noFluidOutputs()
+                    .duration(1 * SECONDS)
+                    .eut(TierEU.RECIPE_LV)
+                    .addTo(sImplosionRecipes);
 
-        GT_Values.RA.stdBuilder().itemInputs(input, GT_ModHandler.getIC2Item("industrialTnt", tITNT))
-                .itemOutputs(outputs).noFluidInputs().noFluidOutputs().duration(1 * SECONDS).eut(TierEU.RECIPE_LV)
-                .addTo(sImplosionRecipes);
+        GT_Values.RA.stdBuilder()
+                    .itemInputs(input, GT_ModHandler.getIC2Item("industrialTnt", tITNT))
+                    .itemOutputs(outputs)
+                    .noFluidInputs()
+                    .noFluidOutputs()
+                    .duration(1 * SECONDS)
+                    .eut(TierEU.RECIPE_LV)
+                    .addTo(sImplosionRecipes);
     }
 }

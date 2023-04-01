@@ -126,7 +126,9 @@ public abstract class GT_Block_Casings_Abstract extends GT_Generic_Block
     public void getSubBlocks(Item aItem, CreativeTabs aCreativeTab, List aList) {
         for (int i = 0; i < 16; i++) {
             ItemStack aStack = new ItemStack(aItem, 1, i);
-            if (!aStack.getDisplayName().contains(".name")) aList.add(aStack);
+            if (!aStack.getDisplayName()
+                       .contains(".name"))
+                aList.add(aStack);
         }
     }
 

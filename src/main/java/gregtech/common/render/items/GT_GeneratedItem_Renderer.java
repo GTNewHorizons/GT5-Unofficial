@@ -148,8 +148,10 @@ public class GT_GeneratedItem_Renderer implements IItemRenderer {
         FluidStack fluidStack = GT_Utility.getFluidForFilledItem(stack, true);
 
         if (fluidStack != null && fluidStack.getFluid() != null) {
-            IIcon fluidIcon = fluidStack.getFluid().getIcon(fluidStack);
-            int fluidColor = fluidStack.getFluid().getColor(fluidStack);
+            IIcon fluidIcon = fluidStack.getFluid()
+                                        .getIcon(fluidStack);
+            int fluidColor = fluidStack.getFluid()
+                                       .getColor(fluidStack);
 
             Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.locationBlocksTexture);
             markNeedsAnimationUpdate(fluidIcon);

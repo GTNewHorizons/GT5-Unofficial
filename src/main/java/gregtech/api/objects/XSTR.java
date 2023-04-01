@@ -39,7 +39,9 @@ public class XSTR extends Random {
 
         @Override
         public synchronized void setSeed(long seed) {
-            if (!Thread.currentThread().getStackTrace()[2].getClassName().equals(Random.class.getName()))
+            if (!Thread.currentThread()
+                       .getStackTrace()[2].getClassName()
+                                          .equals(Random.class.getName()))
                 throw new NoSuchMethodError("This is meant to be shared!, leave seed state alone!");
         }
     };

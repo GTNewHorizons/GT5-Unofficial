@@ -236,7 +236,10 @@ public enum CombType {
         this.color = new int[] { color1, color2 };
         this.localizedName = GT_LanguageManager.addStringLocalization(
                 "comb." + this.name,
-                this.name.substring(0, 1).toUpperCase() + this.name.substring(1) + " Comb");
+                this.name.substring(0, 1)
+                         .toUpperCase()
+                        + this.name.substring(1)
+                        + " Comb");
     }
 
     public void setHidden() {
@@ -265,7 +268,10 @@ public enum CombType {
         private static final CombType[] VALUES;
 
         static {
-            int biggestId = Arrays.stream(CombType.values()).mapToInt(CombType::getId).max().getAsInt();
+            int biggestId = Arrays.stream(CombType.values())
+                                  .mapToInt(CombType::getId)
+                                  .max()
+                                  .getAsInt();
             VALUES = new CombType[biggestId + 1];
             Arrays.fill(VALUES, _NULL);
             for (CombType type : CombType.values()) {

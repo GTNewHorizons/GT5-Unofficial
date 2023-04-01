@@ -152,20 +152,25 @@ public class SPM_Command extends CommandBase {
                 break;
         }
         String finalFilter = filter;
-        return autoComplete.stream().filter(s -> finalFilter.isEmpty() || s.startsWith(finalFilter))
-                .collect(Collectors.toList());
+        return autoComplete.stream()
+                           .filter(s -> finalFilter.isEmpty() || s.startsWith(finalFilter))
+                           .collect(Collectors.toList());
     }
 
     private String[] getPlayers() {
-        return MinecraftServer.getServer().getAllUsernames();
+        return MinecraftServer.getServer()
+                              .getAllUsernames();
     }
 
     private String[] getLocations() {
-        return SpaceProjectManager.getLocationNames().toArray(new String[0]);
+        return SpaceProjectManager.getLocationNames()
+                                  .toArray(new String[0]);
     }
 
     private String[] getProjects() {
-        return SpaceProjectManager.getProjectsMap().keySet().toArray(new String[0]);
+        return SpaceProjectManager.getProjectsMap()
+                                  .keySet()
+                                  .toArray(new String[0]);
     }
 
     private String[] getSubCommands() {
@@ -204,7 +209,8 @@ public class SPM_Command extends CommandBase {
         UUID tID = SpaceProjectManager.getPlayerUUIDFromName(playerName);
         switch (argument) {
             case ALL:
-                for (String project : SpaceProjectManager.getProjectsMap().keySet()) {
+                for (String project : SpaceProjectManager.getProjectsMap()
+                                                         .keySet()) {
                     sender.addChatMessage(new ChatComponentText(project));
                 }
                 break;

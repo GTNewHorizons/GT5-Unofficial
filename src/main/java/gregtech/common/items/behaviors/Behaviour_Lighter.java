@@ -24,12 +24,15 @@ public class Behaviour_Lighter extends Behaviour_None {
     private final ItemStack mUsedLighter;
     private final ItemStack mFullLighter;
     private final long mFuelAmount;
-    private final String mTooltip = GT_LanguageManager
-            .addStringLocalization("gt.behaviour.lighter.tooltip", "Can light things on Fire");
-    private final String mTooltipUses = GT_LanguageManager
-            .addStringLocalization("gt.behaviour.lighter.uses", "Remaining Uses:");
-    private final String mTooltipUnstackable = GT_LanguageManager
-            .addStringLocalization("gt.behaviour.unstackable", "Not usable when stacked!");
+    private final String mTooltip = GT_LanguageManager.addStringLocalization(
+            "gt.behaviour.lighter.tooltip",
+            "Can light things on Fire");
+    private final String mTooltipUses = GT_LanguageManager.addStringLocalization(
+            "gt.behaviour.lighter.uses",
+            "Remaining Uses:");
+    private final String mTooltipUnstackable = GT_LanguageManager.addStringLocalization(
+            "gt.behaviour.unstackable",
+            "Not usable when stacked!");
 
     public Behaviour_Lighter(ItemStack aEmptyLighter, ItemStack aUsedLighter, ItemStack aFullLighter,
             long aFuelAmount) {

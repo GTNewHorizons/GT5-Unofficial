@@ -106,7 +106,8 @@ public class GT_GuiCoverTabLine extends GT_GuiTabLine {
      * @param cover
      */
     private void addCoverToTabs(byte side, ItemStack cover) {
-        final boolean enabled = this.tile.getCoverBehaviorAtSideNew(side).hasCoverGUI();
+        final boolean enabled = this.tile.getCoverBehaviorAtSideNew(side)
+                                         .hasCoverGUI();
         this.setTab(side, cover, null, getTooltipForCoverTab(side, cover, enabled));
         this.setTabEnabled(side, enabled);
     }
@@ -159,7 +160,8 @@ public class GT_GuiCoverTabLine extends GT_GuiTabLine {
                     return false;
                 }
                 for (int i = 0; i < tabLine.mTabs.length; i++) {
-                    if (tabLine.mTabs[i] != null && tabLine.mTabs[i].getBounds().intersects(neiSlotArea)) {
+                    if (tabLine.mTabs[i] != null && tabLine.mTabs[i].getBounds()
+                                                                    .intersects(neiSlotArea)) {
                         return true;
                     }
                 }

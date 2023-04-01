@@ -33,8 +33,12 @@ public class ColorsMetadataSectionSerializer extends BaseMetadataSectionSerializ
         if (jsonObject.has("textColor")) {
             JsonObject textColors = JsonUtils.func_152754_s(jsonObject, "textColor");
             for (Map.Entry<String, JsonElement> entry : textColors.entrySet()) {
-                if (entry.getValue().isJsonPrimitive()) {
-                    hexTextColorMap.put(entry.getKey(), entry.getValue().getAsString());
+                if (entry.getValue()
+                         .isJsonPrimitive()) {
+                    hexTextColorMap.put(
+                            entry.getKey(),
+                            entry.getValue()
+                                 .getAsString());
                 } else {
                     GT_Mod.GT_FML_LOGGER.warn("ColorOverride expects primitive value for key `textColor`");
                 }
@@ -43,8 +47,10 @@ public class ColorsMetadataSectionSerializer extends BaseMetadataSectionSerializ
 
         if (jsonObject.has("guiTint")) {
             JsonObject guiTints = JsonUtils.func_152754_s(jsonObject, "guiTint");
-            enableGuiTint = JsonUtils
-                    .getJsonObjectBooleanFieldValueOrDefault(guiTints, "enableGuiTintWhenPainted", true);
+            enableGuiTint = JsonUtils.getJsonObjectBooleanFieldValueOrDefault(
+                    guiTints,
+                    "enableGuiTintWhenPainted",
+                    true);
 
             for (Dyes dye : Dyes.values()) {
                 hexGuiTintMap.put(dye.mName, GT_Util.toHexString(dye.getRGBA()));

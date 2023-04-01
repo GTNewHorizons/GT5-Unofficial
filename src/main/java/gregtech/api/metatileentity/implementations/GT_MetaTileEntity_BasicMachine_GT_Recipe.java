@@ -81,84 +81,92 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
                                         "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH)
                                                 + "/OVERLAY_SIDE_ACTIVE")),
                         TextureFactory.builder()
-                                .addIcon(
-                                        (new CustomIcon(
-                                                "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH)
-                                                        + "/OVERLAY_SIDE_ACTIVE_GLOW")))
-                                .glow().build()),
+                                      .addIcon(
+                                              (new CustomIcon(
+                                                      "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH)
+                                                              + "/OVERLAY_SIDE_ACTIVE_GLOW")))
+                                      .glow()
+                                      .build()),
                 TextureFactory.of(
                         TextureFactory.of(
                                 new CustomIcon(
                                         "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_SIDE")),
                         TextureFactory.builder()
-                                .addIcon(
-                                        (new CustomIcon(
-                                                "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH)
-                                                        + "/OVERLAY_SIDE_GLOW")))
-                                .glow().build()),
+                                      .addIcon(
+                                              (new CustomIcon(
+                                                      "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH)
+                                                              + "/OVERLAY_SIDE_GLOW")))
+                                      .glow()
+                                      .build()),
                 TextureFactory.of(
                         TextureFactory.of(
                                 new CustomIcon(
                                         "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH)
                                                 + "/OVERLAY_FRONT_ACTIVE")),
                         TextureFactory.builder()
-                                .addIcon(
-                                        (new CustomIcon(
-                                                "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH)
-                                                        + "/OVERLAY_FRONT_ACTIVE_GLOW")))
-                                .glow().build()),
+                                      .addIcon(
+                                              (new CustomIcon(
+                                                      "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH)
+                                                              + "/OVERLAY_FRONT_ACTIVE_GLOW")))
+                                      .glow()
+                                      .build()),
                 TextureFactory.of(
                         TextureFactory.of(
                                 new CustomIcon(
                                         "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_FRONT")),
                         TextureFactory.builder()
-                                .addIcon(
-                                        (new CustomIcon(
-                                                "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH)
-                                                        + "/OVERLAY_FRONT_GLOW")))
-                                .glow().build()),
+                                      .addIcon(
+                                              (new CustomIcon(
+                                                      "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH)
+                                                              + "/OVERLAY_FRONT_GLOW")))
+                                      .glow()
+                                      .build()),
                 TextureFactory.of(
                         TextureFactory.of(
                                 new CustomIcon(
                                         "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH)
                                                 + "/OVERLAY_TOP_ACTIVE")),
                         TextureFactory.builder()
-                                .addIcon(
-                                        (new CustomIcon(
-                                                "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH)
-                                                        + "/OVERLAY_TOP_ACTIVE_GLOW")))
-                                .glow().build()),
+                                      .addIcon(
+                                              (new CustomIcon(
+                                                      "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH)
+                                                              + "/OVERLAY_TOP_ACTIVE_GLOW")))
+                                      .glow()
+                                      .build()),
                 TextureFactory.of(
                         TextureFactory.of(
                                 new CustomIcon(
                                         "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_TOP")),
                         TextureFactory.builder()
-                                .addIcon(
-                                        (new CustomIcon(
-                                                "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH)
-                                                        + "/OVERLAY_TOP_GLOW")))
-                                .glow().build()),
+                                      .addIcon(
+                                              (new CustomIcon(
+                                                      "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH)
+                                                              + "/OVERLAY_TOP_GLOW")))
+                                      .glow()
+                                      .build()),
                 TextureFactory.of(
                         TextureFactory.of(
                                 new CustomIcon(
                                         "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH)
                                                 + "/OVERLAY_BOTTOM_ACTIVE")),
                         TextureFactory.builder()
-                                .addIcon(
-                                        (new CustomIcon(
-                                                "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH)
-                                                        + "/OVERLAY_BOTTOM_ACTIVE_GLOW")))
-                                .glow().build()),
+                                      .addIcon(
+                                              (new CustomIcon(
+                                                      "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH)
+                                                              + "/OVERLAY_BOTTOM_ACTIVE_GLOW")))
+                                      .glow()
+                                      .build()),
                 TextureFactory.of(
                         TextureFactory.of(
                                 new CustomIcon(
                                         "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH) + "/OVERLAY_BOTTOM")),
                         TextureFactory.builder()
-                                .addIcon(
-                                        (new CustomIcon(
-                                                "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH)
-                                                        + "/OVERLAY_BOTTOM_GLOW")))
-                                .glow().build()));
+                                      .addIcon(
+                                              (new CustomIcon(
+                                                      "basicmachines/" + aOverlays.toLowerCase(Locale.ENGLISH)
+                                                              + "/OVERLAY_BOTTOM_GLOW")))
+                                      .glow()
+                                      .build()));
         this.mSharedTank = aSharedTank;
         this.mTankCapacity = aTankCapacity;
         this.mSpecialEffect = aSpecialEffect;
@@ -1058,23 +1066,11 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
             case 0:
                 return false;
             case 1:
-                if (this.getFillableStack() == null)
-                    return !this.mRequiresFluidForFiltering && this.getRecipeList().containsInput(aStack);
-                else return this.getRecipeList().findRecipe(
-                        this.getBaseMetaTileEntity(),
-                        this.mLastRecipe,
-                        true,
-                        true,
-                        V[this.mTier],
-                        new FluidStack[] { this.getFillableStack() },
-                        this.getSpecialSlot(),
-                        appendSelectedCircuit(aStack)) != null;
-            case 2:
-                return (!this.mRequiresFluidForFiltering || this.getFillableStack() != null) && (((this.getInputAt(0)
-                        != null && this.getInputAt(1) != null)
-                        || (this.getInputAt(0) == null && this.getInputAt(1) == null
-                                ? this.getRecipeList().containsInput(aStack)
-                                : (this.getRecipeList().containsInput(aStack) && this.getRecipeList().findRecipe(
+                if (this.getFillableStack() == null) return !this.mRequiresFluidForFiltering && this.getRecipeList()
+                                                                                                    .containsInput(
+                                                                                                            aStack);
+                else return this.getRecipeList()
+                                .findRecipe(
                                         this.getBaseMetaTileEntity(),
                                         this.mLastRecipe,
                                         true,
@@ -1082,12 +1078,31 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
                                         V[this.mTier],
                                         new FluidStack[] { this.getFillableStack() },
                                         this.getSpecialSlot(),
-                                        aIndex == this.getInputSlot()
-                                                ? appendSelectedCircuit(aStack, this.getInputAt(1))
-                                                : appendSelectedCircuit(this.getInputAt(0), aStack))
-                                        != null))));
+                                        appendSelectedCircuit(aStack))
+                        != null;
+            case 2:
+                return (!this.mRequiresFluidForFiltering || this.getFillableStack() != null) && (((this.getInputAt(0)
+                        != null && this.getInputAt(1) != null)
+                        || (this.getInputAt(0) == null && this.getInputAt(1) == null ? this.getRecipeList()
+                                                                                           .containsInput(aStack)
+                                : (this.getRecipeList()
+                                       .containsInput(aStack)
+                                        && this.getRecipeList()
+                                               .findRecipe(
+                                                       this.getBaseMetaTileEntity(),
+                                                       this.mLastRecipe,
+                                                       true,
+                                                       true,
+                                                       V[this.mTier],
+                                                       new FluidStack[] { this.getFillableStack() },
+                                                       this.getSpecialSlot(),
+                                                       aIndex == this.getInputSlot()
+                                                               ? appendSelectedCircuit(aStack, this.getInputAt(1))
+                                                               : appendSelectedCircuit(this.getInputAt(0), aStack))
+                                                != null))));
             default: {
-                int tID = this.getBaseMetaTileEntity().getMetaTileID();
+                int tID = this.getBaseMetaTileEntity()
+                              .getMetaTileID();
                 if (tID >= 211 && tID <= 218 || tID >= 1180 && tID <= 1187 || tID >= 10780 && tID <= 10786) { // assembler
                                                                                                               // lv-iv;
                                                                                                               // circuit
@@ -1097,10 +1112,13 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
                                                                                                               // assemblers
                                                                                                               // luv-uev
                     if (GT_Utility.isStackValid(aStack)) for (int oreID : OreDictionary.getOreIDs(aStack)) {
-                        if (OreDictionary.getOreName(oreID).startsWith("circuit")) return true;
+                        if (OreDictionary.getOreName(oreID)
+                                         .startsWith("circuit"))
+                            return true;
                     }
                 }
-                return this.getRecipeList().containsInput(aStack);
+                return this.getRecipeList()
+                           .containsInput(aStack);
             }
         }
     }
@@ -1124,12 +1142,22 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
                             && !aBaseMetaTileEntity.getOpacityAtSide(topFacing)) {
 
                         new WorldSpawnedEventBuilder.ParticleEventBuilder().setMotion(0.0D, 0.0D, 0.0D)
-                                .setIdentifier(ParticleFX.SMOKE)
-                                .setPosition(
-                                        aBaseMetaTileEntity.getXCoord() + 0.8F - XSTR_INSTANCE.nextFloat() * 0.6F,
-                                        aBaseMetaTileEntity.getYCoord() + 0.9F + XSTR_INSTANCE.nextFloat() * 0.2F,
-                                        aBaseMetaTileEntity.getZCoord() + 0.8F - XSTR_INSTANCE.nextFloat() * 0.6F)
-                                .setWorld(aBaseMetaTileEntity.getWorld()).run();
+                                                                           .setIdentifier(ParticleFX.SMOKE)
+                                                                           .setPosition(
+                                                                                   aBaseMetaTileEntity.getXCoord()
+                                                                                           + 0.8F
+                                                                                           - XSTR_INSTANCE.nextFloat()
+                                                                                                   * 0.6F,
+                                                                                   aBaseMetaTileEntity.getYCoord()
+                                                                                           + 0.9F
+                                                                                           + XSTR_INSTANCE.nextFloat()
+                                                                                                   * 0.2F,
+                                                                                   aBaseMetaTileEntity.getZCoord()
+                                                                                           + 0.8F
+                                                                                           - XSTR_INSTANCE.nextFloat()
+                                                                                                   * 0.6F)
+                                                                           .setWorld(aBaseMetaTileEntity.getWorld())
+                                                                           .run();
                     }
                     break;
                 default:
@@ -1192,8 +1220,11 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
                         }
 
                         ParticleEventBuilder particleEventBuilder = (new ParticleEventBuilder()).setMotion(mX, 0, mZ)
-                                .setPosition(x, y, z).setWorld(getBaseMetaTileEntity().getWorld());
-                        particleEventBuilder.setIdentifier(ParticleFX.LAVA).run();
+                                                                                                .setPosition(x, y, z)
+                                                                                                .setWorld(
+                                                                                                        getBaseMetaTileEntity().getWorld());
+                        particleEventBuilder.setIdentifier(ParticleFX.LAVA)
+                                            .run();
                     }
                 }
                 break;
@@ -1253,8 +1284,9 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
     @Override
     protected ProgressBar createProgressBar(UITexture texture, int imageSize, ProgressBar.Direction direction,
             Pos2d pos, Size size) {
-        return super.createProgressBar(texture, imageSize, direction, pos, size)
-                .setTexture(progressBarTexture.get(), mRecipes.getProgressBarImageSize());
+        return super.createProgressBar(texture, imageSize, direction, pos, size).setTexture(
+                progressBarTexture.get(),
+                mRecipes.getProgressBarImageSize());
     }
 
     public enum X {

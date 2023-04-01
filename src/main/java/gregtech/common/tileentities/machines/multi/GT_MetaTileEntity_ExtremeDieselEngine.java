@@ -37,21 +37,28 @@ public class GT_MetaTileEntity_ExtremeDieselEngine extends GT_MetaTileEntity_Die
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType("Combustion Generator").addInfo("Controller block for the Extreme Combustion Engine")
-                .addInfo("Supply high rating fuel and 8000L of Lubricant per hour to run")
-                .addInfo("Supply 40L/s of Liquid Oxygen to boost output (optional)")
-                .addInfo("Default: Produces 10900EU/t at 100% fuel efficiency")
-                .addInfo("Boosted: Produces 32700EU/t at 150% fuel efficiency")
-                .addInfo("You need to wait for it to reach 300% to output full power")
-                .addPollutionAmount(getPollutionPerSecond(null)).addSeparator().beginStructureBlock(3, 3, 4, false)
-                .addController("Front center").addCasingInfoRange("Robust Tungstensteel Machine Casing", 16, 22, false)
-                .addOtherStructurePart("Titanium Gear Box Machine Casing", "Inner 2 blocks")
-                .addOtherStructurePart("Extreme Engine Intake Machine Casing", "8x, ring around controller")
-                .addStructureInfo("Extreme Engine Intake Casings must not be obstructed in front (only air blocks)")
-                .addDynamoHatch("Back center", 2).addMaintenanceHatch("One of the casings next to a Gear Box", 1)
-                .addMufflerHatch("Top middle back, above the rear Gear Box", 1)
-                .addInputHatch("HOG, next to a Gear Box", 1).addInputHatch("Lubricant, next to a Gear Box", 1)
-                .addInputHatch("Liquid Oxygen, optional, next to a Gear Box", 1).toolTipFinisher("Gregtech");
+        tt.addMachineType("Combustion Generator")
+          .addInfo("Controller block for the Extreme Combustion Engine")
+          .addInfo("Supply high rating fuel and 8000L of Lubricant per hour to run")
+          .addInfo("Supply 40L/s of Liquid Oxygen to boost output (optional)")
+          .addInfo("Default: Produces 10900EU/t at 100% fuel efficiency")
+          .addInfo("Boosted: Produces 32700EU/t at 150% fuel efficiency")
+          .addInfo("You need to wait for it to reach 300% to output full power")
+          .addPollutionAmount(getPollutionPerSecond(null))
+          .addSeparator()
+          .beginStructureBlock(3, 3, 4, false)
+          .addController("Front center")
+          .addCasingInfoRange("Robust Tungstensteel Machine Casing", 16, 22, false)
+          .addOtherStructurePart("Titanium Gear Box Machine Casing", "Inner 2 blocks")
+          .addOtherStructurePart("Extreme Engine Intake Machine Casing", "8x, ring around controller")
+          .addStructureInfo("Extreme Engine Intake Casings must not be obstructed in front (only air blocks)")
+          .addDynamoHatch("Back center", 2)
+          .addMaintenanceHatch("One of the casings next to a Gear Box", 1)
+          .addMufflerHatch("Top middle back, above the rear Gear Box", 1)
+          .addInputHatch("HOG, next to a Gear Box", 1)
+          .addInputHatch("Lubricant, next to a Gear Box", 1)
+          .addInputHatch("Liquid Oxygen, optional, next to a Gear Box", 1)
+          .toolTipFinisher("Gregtech");
         return tt;
     }
 
@@ -64,14 +71,26 @@ public class GT_MetaTileEntity_ExtremeDieselEngine extends GT_MetaTileEntity_Die
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
             boolean aActive, boolean aRedstone) {
         if (aSide == aFacing) {
-            if (aActive) return new ITexture[] { casingTexturePages[0][60],
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_EXTREME_DIESEL_ENGINE_ACTIVE).extFacing().build(),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_EXTREME_DIESEL_ENGINE_ACTIVE_GLOW).extFacing().glow()
-                            .build() };
-            return new ITexture[] { casingTexturePages[0][60],
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_EXTREME_DIESEL_ENGINE).extFacing().build(),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_EXTREME_DIESEL_ENGINE_GLOW).extFacing().glow()
-                            .build() };
+            if (aActive) return new ITexture[] { casingTexturePages[0][60], TextureFactory.builder()
+                                                                                          .addIcon(
+                                                                                                  OVERLAY_FRONT_EXTREME_DIESEL_ENGINE_ACTIVE)
+                                                                                          .extFacing()
+                                                                                          .build(),
+                    TextureFactory.builder()
+                                  .addIcon(OVERLAY_FRONT_EXTREME_DIESEL_ENGINE_ACTIVE_GLOW)
+                                  .extFacing()
+                                  .glow()
+                                  .build() };
+            return new ITexture[] { casingTexturePages[0][60], TextureFactory.builder()
+                                                                             .addIcon(
+                                                                                     OVERLAY_FRONT_EXTREME_DIESEL_ENGINE)
+                                                                             .extFacing()
+                                                                             .build(),
+                    TextureFactory.builder()
+                                  .addIcon(OVERLAY_FRONT_EXTREME_DIESEL_ENGINE_GLOW)
+                                  .extFacing()
+                                  .glow()
+                                  .build() };
         }
         return new ITexture[] { casingTexturePages[0][60] };
     }
@@ -164,8 +183,10 @@ public class GT_MetaTileEntity_ExtremeDieselEngine extends GT_MetaTileEntity_Die
         long maxEnergy = 0;
         for (GT_MetaTileEntity_Hatch_Dynamo tHatch : mDynamoHatches) {
             if (isValidMetaTileEntity(tHatch)) {
-                storedEnergy += tHatch.getBaseMetaTileEntity().getStoredEU();
-                maxEnergy += tHatch.getBaseMetaTileEntity().getEUCapacity();
+                storedEnergy += tHatch.getBaseMetaTileEntity()
+                                      .getStoredEU();
+                maxEnergy += tHatch.getBaseMetaTileEntity()
+                                   .getEUCapacity();
             }
         }
 

@@ -47,13 +47,22 @@ public class GT_Tool_Sense extends GT_Tool {
             for (int i = -2; i < 3; i++) {
                 for (int j = -2; j < 3; j++) {
                     for (int k = -2; k < 3; k++) {
-                        if (((i != 0) || (j != 0) || (k != 0))
-                                && (aStack.getItem().getDigSpeed(
-                                        aStack,
-                                        aPlayer.worldObj.getBlock(aX + i, aY + j, aZ + k),
-                                        aPlayer.worldObj.getBlockMetadata(aX + i, aY + j, aZ + k)) > 0.0F)
-                                && (((EntityPlayerMP) aPlayer).theItemInWorldManager
-                                        .tryHarvestBlock(aX + i, aY + j, aZ + k))) {
+                        if (((i != 0) || (j != 0) || (k != 0)) && (aStack.getItem()
+                                                                         .getDigSpeed(
+                                                                                 aStack,
+                                                                                 aPlayer.worldObj.getBlock(
+                                                                                         aX + i,
+                                                                                         aY + j,
+                                                                                         aZ + k),
+                                                                                 aPlayer.worldObj.getBlockMetadata(
+                                                                                         aX + i,
+                                                                                         aY + j,
+                                                                                         aZ + k))
+                                > 0.0F)
+                                && (((EntityPlayerMP) aPlayer).theItemInWorldManager.tryHarvestBlock(
+                                        aX + i,
+                                        aY + j,
+                                        aZ + k))) {
                             rConversions++;
                         }
                     }

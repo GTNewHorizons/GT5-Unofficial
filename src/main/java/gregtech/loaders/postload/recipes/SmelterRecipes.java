@@ -26,11 +26,13 @@ public class SmelterRecipes implements Runnable {
 
         GT_ModHandler.addSmeltingRecipe(ItemList.Food_Raw_Baguette.get(1L), ItemList.Food_Baked_Baguette.get(1L));
 
-        GT_ModHandler
-                .addSmeltingRecipe(ItemList.Food_Raw_Pizza_Veggie.get(1L), ItemList.Food_Baked_Pizza_Veggie.get(1L));
+        GT_ModHandler.addSmeltingRecipe(
+                ItemList.Food_Raw_Pizza_Veggie.get(1L),
+                ItemList.Food_Baked_Pizza_Veggie.get(1L));
 
-        GT_ModHandler
-                .addSmeltingRecipe(ItemList.Food_Raw_Pizza_Cheese.get(1L), ItemList.Food_Baked_Pizza_Cheese.get(1L));
+        GT_ModHandler.addSmeltingRecipe(
+                ItemList.Food_Raw_Pizza_Cheese.get(1L),
+                ItemList.Food_Baked_Pizza_Cheese.get(1L));
 
         GT_ModHandler.addSmeltingRecipe(ItemList.Food_Raw_Pizza_Meat.get(1L), ItemList.Food_Baked_Pizza_Meat.get(1L));
 

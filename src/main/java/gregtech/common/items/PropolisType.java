@@ -36,7 +36,10 @@ public enum PropolisType {
         // return "gt.comb."+this.name;
         return GT_LanguageManager.addStringLocalization(
                 "propolis." + this.name,
-                this.name.substring(0, 1).toUpperCase() + this.name.substring(1) + " Propolis");
+                this.name.substring(0, 1)
+                         .toUpperCase()
+                        + this.name.substring(1)
+                        + " Propolis");
     }
 
     public int getColours() {

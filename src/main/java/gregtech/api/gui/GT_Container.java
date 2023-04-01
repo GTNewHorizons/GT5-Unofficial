@@ -139,7 +139,10 @@ public class GT_Container extends Container {
                         aPlayerInventory.setItemStack(null);
                     }
                     if (aMouseclick == 1) {
-                        aPlayer.dropPlayerItemWithRandomChoice(aPlayerInventory.getItemStack().splitStack(1), true);
+                        aPlayer.dropPlayerItemWithRandomChoice(
+                                aPlayerInventory.getItemStack()
+                                                .splitStack(1),
+                                true);
                         if (aPlayerInventory.getItemStack().stackSize == 0) {
                             aPlayerInventory.setItemStack(null);
                         }
@@ -151,7 +154,9 @@ public class GT_Container extends Container {
                     tTempStack = this.transferStackInSlot(aPlayer, aSlotIndex);
                     if (tTempStack != null) {
                         rStack = GT_Utility.copyOrNull(tTempStack);
-                        if (aSlot.getStack() != null && aSlot.getStack().getItem() == tTempStack.getItem()) {
+                        if (aSlot.getStack() != null && aSlot.getStack()
+                                                             .getItem()
+                                == tTempStack.getItem()) {
                             slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
                         }
                     }
@@ -667,7 +672,9 @@ public class GT_Container extends Container {
     protected static ItemStack fillFluid(IFluidAccess aFluidAccess, EntityPlayer aPlayer, FluidStack aFluidHeld,
             boolean aProcessFullStack) {
         // we are not using aMachine.fill() here any more, so we need to check for fluid type here ourselves
-        if (aFluidAccess.get() != null && !aFluidAccess.get().isFluidEqual(aFluidHeld)) return null;
+        if (aFluidAccess.get() != null && !aFluidAccess.get()
+                                                       .isFluidEqual(aFluidHeld))
+            return null;
         ItemStack tStackHeld = aPlayer.inventory.getItemStack();
         ItemStack tStackSizedOne = GT_Utility.copyAmount(1, tStackHeld);
         if (tStackSizedOne == null) return null;

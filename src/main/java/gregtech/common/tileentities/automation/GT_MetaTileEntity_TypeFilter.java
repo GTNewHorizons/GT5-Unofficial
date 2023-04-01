@@ -78,7 +78,10 @@ public class GT_MetaTileEntity_TypeFilter extends GT_MetaTileEntity_SpecialFilte
     public ITexture getOverlayIcon() {
         return TextureFactory.of(
                 TextureFactory.of(AUTOMATION_TYPEFILTER),
-                TextureFactory.builder().addIcon(AUTOMATION_TYPEFILTER_GLOW).glow().build());
+                TextureFactory.builder()
+                              .addIcon(AUTOMATION_TYPEFILTER_GLOW)
+                              .glow()
+                              .build());
     }
 
     @Override
@@ -128,8 +131,8 @@ public class GT_MetaTileEntity_TypeFilter extends GT_MetaTileEntity_SpecialFilte
         }
         this.mInventory[SPECIAL_SLOT_INDEX] = GT_Utility.copyAmount(
                 1L,
-                this.mPrefix.mPrefixedItems
-                        .get(this.mRotationIndex = (this.mRotationIndex + 1) % this.mPrefix.mPrefixedItems.size()));
+                this.mPrefix.mPrefixedItems.get(
+                        this.mRotationIndex = (this.mRotationIndex + 1) % this.mPrefix.mPrefixedItems.size()));
         if (this.mInventory[SPECIAL_SLOT_INDEX] == null) return;
         if (this.mInventory[SPECIAL_SLOT_INDEX].getItemDamage() == W) this.mInventory[9].setItemDamage(0);
         this.mInventory[SPECIAL_SLOT_INDEX].setStackDisplayName(this.mPrefix.toString());

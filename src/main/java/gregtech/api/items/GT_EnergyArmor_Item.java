@@ -116,8 +116,10 @@ public class GT_EnergyArmor_Item extends ItemArmor implements ISpecialArmor {
         }
 
         if (!aPlayer.worldObj.isRemote && (mSpecials & 4) != 0) {
-            if (GT_ModHandler.canUseElectricItem(aStack, 50000) && aPlayer.getFoodStats().needFood()) {
-                aPlayer.getFoodStats().addStats(1, 0.0F);
+            if (GT_ModHandler.canUseElectricItem(aStack, 50000) && aPlayer.getFoodStats()
+                                                                          .needFood()) {
+                aPlayer.getFoodStats()
+                       .addStats(1, 0.0F);
                 GT_ModHandler.useElectricItem(aStack, 50000, aPlayer);
             }
         }
@@ -296,8 +298,13 @@ public class GT_EnergyArmor_Item extends ItemArmor implements ISpecialArmor {
                 if (armor != null && armor.getItem() == this && (mSpecials & 2) != 0) {
                     int distanceFactor = (int) event.distance - 3;
                     int energyCost = (this.mDamageEnergyCost * distanceFactor) / 4;
-                    if (energyCost <= GT_ModHandler
-                            .dischargeElectricItem(armor, Integer.MAX_VALUE, Integer.MAX_VALUE, true, true, true)) {
+                    if (energyCost <= GT_ModHandler.dischargeElectricItem(
+                            armor,
+                            Integer.MAX_VALUE,
+                            Integer.MAX_VALUE,
+                            true,
+                            true,
+                            true)) {
                         GT_ModHandler.dischargeElectricItem(armor, energyCost, Integer.MAX_VALUE, true, false, true);
                         event.setCanceled(true);
                         break;
@@ -313,10 +320,15 @@ public class GT_EnergyArmor_Item extends ItemArmor implements ISpecialArmor {
         return new ISpecialArmor.ArmorProperties(
                 (source == DamageSource.fall && (mSpecials & 2) != 0) ? 10 : 0,
                 getBaseAbsorptionRatio() * mArmorAbsorbtionPercentage,
-                mDamageEnergyCost > 0 ? 25
-                        * GT_ModHandler
-                                .dischargeElectricItem(armor, Integer.MAX_VALUE, Integer.MAX_VALUE, true, true, true)
-                        / mDamageEnergyCost : 0);
+                mDamageEnergyCost > 0
+                        ? 25 * GT_ModHandler.dischargeElectricItem(
+                                armor,
+                                Integer.MAX_VALUE,
+                                Integer.MAX_VALUE,
+                                true,
+                                true,
+                                true) / mDamageEnergyCost
+                        : 0);
     }
 
     @Override
@@ -327,8 +339,13 @@ public class GT_EnergyArmor_Item extends ItemArmor implements ISpecialArmor {
     @Override
     public void damageArmor(EntityLivingBase entity, ItemStack itemStack, DamageSource source, int damage,
             int slotIndex) {
-        GT_ModHandler
-                .dischargeElectricItem(itemStack, damage * mDamageEnergyCost, Integer.MAX_VALUE, true, false, true);
+        GT_ModHandler.dischargeElectricItem(
+                itemStack,
+                damage * mDamageEnergyCost,
+                Integer.MAX_VALUE,
+                true,
+                false,
+                true);
     }
 
     private double getBaseAbsorptionRatio() {

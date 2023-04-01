@@ -28,29 +28,46 @@ public class GUITextureSet {
     private AdaptableUITexture titleTabAngular;
     private UITexture gregtechLogo;
 
-    public static final GUITextureSet DEFAULT = new GUITextureSet()
-            .setMainBackground(GT_UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT).setItemSlot(ModularUITextures.ITEM_SLOT)
-            .setFluidSlot(ModularUITextures.FLUID_SLOT)
-            .setCoverTab(
-                    GT_UITextures.TAB_COVER_NORMAL,
-                    GT_UITextures.TAB_COVER_HIGHLIGHT,
-                    GT_UITextures.TAB_COVER_DISABLED)
-            .setTitleTab(GT_UITextures.TAB_TITLE, GT_UITextures.TAB_TITLE_DARK, GT_UITextures.TAB_TITLE_ANGULAR)
-            .setGregTechLogo(GT_UITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT);
+    public static final GUITextureSet DEFAULT = new GUITextureSet().setMainBackground(
+            GT_UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT)
+                                                                   .setItemSlot(ModularUITextures.ITEM_SLOT)
+                                                                   .setFluidSlot(ModularUITextures.FLUID_SLOT)
+                                                                   .setCoverTab(
+                                                                           GT_UITextures.TAB_COVER_NORMAL,
+                                                                           GT_UITextures.TAB_COVER_HIGHLIGHT,
+                                                                           GT_UITextures.TAB_COVER_DISABLED)
+                                                                   .setTitleTab(
+                                                                           GT_UITextures.TAB_TITLE,
+                                                                           GT_UITextures.TAB_TITLE_DARK,
+                                                                           GT_UITextures.TAB_TITLE_ANGULAR)
+                                                                   .setGregTechLogo(
+                                                                           GT_UITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT);
 
-    public static final Function<SteamVariant, GUITextureSet> STEAM = steamVariant -> new GUITextureSet()
-            .setMainBackground(GT_UITextures.BACKGROUND_STEAM.get(steamVariant))
-            .setItemSlot(GT_UITextures.SLOT_ITEM_STEAM.get(steamVariant))
-            .setFluidSlot(GT_UITextures.SLOT_FLUID_STEAM.get(steamVariant))
-            .setCoverTab(
-                    GT_UITextures.TAB_COVER_STEAM_NORMAL.get(steamVariant),
-                    GT_UITextures.TAB_COVER_STEAM_HIGHLIGHT.get(steamVariant),
-                    GT_UITextures.TAB_COVER_STEAM_DISABLED.get(steamVariant))
-            .setTitleTab(
-                    GT_UITextures.TAB_TITLE_STEAM.getAdaptable(steamVariant),
-                    GT_UITextures.TAB_TITLE_DARK_STEAM.getAdaptable(steamVariant),
-                    GT_UITextures.TAB_TITLE_ANGULAR_STEAM.getAdaptable(steamVariant))
-            .setGregTechLogo(GT_UITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT_STEAM.get(steamVariant));
+    public static final Function<SteamVariant, GUITextureSet> STEAM = steamVariant -> new GUITextureSet().setMainBackground(
+            GT_UITextures.BACKGROUND_STEAM.get(steamVariant))
+                                                                                                         .setItemSlot(
+                                                                                                                 GT_UITextures.SLOT_ITEM_STEAM.get(
+                                                                                                                         steamVariant))
+                                                                                                         .setFluidSlot(
+                                                                                                                 GT_UITextures.SLOT_FLUID_STEAM.get(
+                                                                                                                         steamVariant))
+                                                                                                         .setCoverTab(
+                                                                                                                 GT_UITextures.TAB_COVER_STEAM_NORMAL.get(
+                                                                                                                         steamVariant),
+                                                                                                                 GT_UITextures.TAB_COVER_STEAM_HIGHLIGHT.get(
+                                                                                                                         steamVariant),
+                                                                                                                 GT_UITextures.TAB_COVER_STEAM_DISABLED.get(
+                                                                                                                         steamVariant))
+                                                                                                         .setTitleTab(
+                                                                                                                 GT_UITextures.TAB_TITLE_STEAM.getAdaptable(
+                                                                                                                         steamVariant),
+                                                                                                                 GT_UITextures.TAB_TITLE_DARK_STEAM.getAdaptable(
+                                                                                                                         steamVariant),
+                                                                                                                 GT_UITextures.TAB_TITLE_ANGULAR_STEAM.getAdaptable(
+                                                                                                                         steamVariant))
+                                                                                                         .setGregTechLogo(
+                                                                                                                 GT_UITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT_STEAM.get(
+                                                                                                                         steamVariant));
 
     public GUITextureSet() {}
 

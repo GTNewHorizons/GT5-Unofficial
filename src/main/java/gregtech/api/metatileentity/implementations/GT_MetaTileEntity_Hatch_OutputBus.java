@@ -160,8 +160,8 @@ public class GT_MetaTileEntity_Hatch_OutputBus extends GT_MetaTileEntity_Hatch i
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isServerSide() && aBaseMetaTileEntity.isAllowedToWork() && (aTick & 0x7) == 0) {
-            final IInventory tTileEntity = aBaseMetaTileEntity
-                    .getIInventoryAtSide(aBaseMetaTileEntity.getFrontFacing());
+            final IInventory tTileEntity = aBaseMetaTileEntity.getIInventoryAtSide(
+                    aBaseMetaTileEntity.getFrontFacing());
             if (tTileEntity != null) {
                 moveMultipleItemStacks(
                         aBaseMetaTileEntity,

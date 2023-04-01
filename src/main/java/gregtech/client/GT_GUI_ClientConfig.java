@@ -31,8 +31,11 @@ public class GT_GUI_ClientConfig extends GuiConfig {
     private static List<IConfigElement> getConfigElements() {
         final Configuration config = GregTech_API.sClientDataFile.mConfig;
         setLanguageKeys(config);
-        return config.getCategoryNames().stream().filter(name -> name.indexOf('.') == -1)
-                .map(name -> new ConfigElement(config.getCategory(name))).collect(Collectors.toList());
+        return config.getCategoryNames()
+                     .stream()
+                     .filter(name -> name.indexOf('.') == -1)
+                     .map(name -> new ConfigElement(config.getCategory(name)))
+                     .collect(Collectors.toList());
     }
 
     private static void setLanguageKeys(Configuration config) {
@@ -44,7 +47,8 @@ public class GT_GUI_ClientConfig extends GuiConfig {
                 String name = entry.getKey();
                 int defaultStart = name.lastIndexOf('_');
                 String realName = defaultStart >= 0 ? name.substring(0, defaultStart) : name;
-                entry.getValue().setLanguageKey(String.format("%s.%s", category.getLanguagekey(), realName));
+                entry.getValue()
+                     .setLanguageKey(String.format("%s.%s", category.getLanguagekey(), realName));
             }
         }
     }

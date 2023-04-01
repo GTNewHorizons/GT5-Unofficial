@@ -247,69 +247,93 @@ public class GT_Cover_NeedMaintainance extends GT_CoverBehavior {
                                     getNewCoverVariable(index, convert(coverData)))).addToggleButton(
                                             0,
                                             CoverDataFollower_ToggleButtonWidget.ofCheck(),
-                                            widget -> widget.addTooltip(tooltipText[0]).setPos(spaceX * 0, spaceY * 0))
-                                            .addToggleButton(
-                                                    1,
-                                                    CoverDataFollower_ToggleButtonWidget.ofCheck(),
-                                                    widget -> widget.addTooltip(tooltipText[1])
-                                                            .setPos(spaceX * 0, spaceY * 1))
-                                            .addToggleButton(
-                                                    2,
-                                                    CoverDataFollower_ToggleButtonWidget.ofCheck(),
-                                                    widget -> widget.addTooltip(tooltipText[2])
-                                                            .setPos(spaceX * 0, spaceY * 2))
-                                            .addToggleButton(
-                                                    3,
-                                                    CoverDataFollower_ToggleButtonWidget.ofCheck(),
-                                                    widget -> widget.addTooltip(tooltipText[3])
-                                                            .setPos(spaceX * 0, spaceY * 3))
-                                            .addToggleButton(
-                                                    4,
-                                                    CoverDataFollower_ToggleButtonWidget.ofCheck(),
-                                                    widget -> widget.addTooltip(tooltipText[4])
-                                                            .setPos(spaceX * 4 + 4, spaceY * 0))
-                                            .addToggleButton(
-                                                    5,
-                                                    CoverDataFollower_ToggleButtonWidget.ofCheck(),
-                                                    widget -> widget.addTooltip(tooltipText[5])
-                                                            .setPos(spaceX * 4 + 4, spaceY * 1))
-                                            .addToggleButton(
-                                                    6,
-                                                    CoverDataFollower_ToggleButtonWidget.ofCheck(),
-                                                    widget -> widget.addTooltip(tooltipText[6])
-                                                            .setPos(spaceX * 4 + 4, spaceY * 2))
-                                            .addToggleButton(
-                                                    7,
-                                                    CoverDataFollower_ToggleButtonWidget.ofRedstone(),
-                                                    widget -> widget.setPos(spaceX * 4 + 4, spaceY * 3))
-                                            .setPos(startX, startY))
-                    .widget(
-                            new TextWidget(buttonText[0]).setDefaultColor(COLOR_TEXT_GRAY.get())
-                                    .setPos(startX + spaceX * 1, 4 + startY + spaceY * 0))
-                    .widget(
-                            new TextWidget(buttonText[1]).setDefaultColor(COLOR_TEXT_GRAY.get())
-                                    .setPos(startX + spaceX * 1, 4 + startY + spaceY * 1))
-                    .widget(
-                            new TextWidget(buttonText[2]).setDefaultColor(COLOR_TEXT_GRAY.get())
-                                    .setPos(startX + spaceX * 1, 4 + startY + spaceY * 2))
-                    .widget(
-                            new TextWidget(buttonText[3]).setDefaultColor(COLOR_TEXT_GRAY.get())
-                                    .setPos(startX + spaceX * 1, 4 + startY + spaceY * 3))
-                    .widget(
-                            new TextWidget(buttonText[4]).setDefaultColor(COLOR_TEXT_GRAY.get())
-                                    .setPos(startX + spaceX * 5 + 4, 4 + startY + spaceY * 0))
-                    .widget(
-                            new TextWidget(buttonText[5]).setDefaultColor(COLOR_TEXT_GRAY.get())
-                                    .setPos(startX + spaceX * 5 + 4, 4 + startY + spaceY * 1))
-                    .widget(
-                            new TextWidget(buttonText[6]).setDefaultColor(COLOR_TEXT_GRAY.get())
-                                    .setPos(startX + spaceX * 5 + 4, 4 + startY + spaceY * 2))
-                    .widget(
-                            TextWidget
-                                    .dynamicString(
-                                            () -> isEnabled(7, convert(getCoverData())) ? buttonText[7] : buttonText[8])
-                                    .setSynced(false).setDefaultColor(COLOR_TEXT_GRAY.get())
-                                    .setPos(startX + spaceX * 5 + 4, 4 + startY + spaceY * 3));
+                                            widget -> widget.addTooltip(tooltipText[0])
+                                                            .setPos(spaceX * 0, spaceY * 0))
+                                                                                    .addToggleButton(
+                                                                                            1,
+                                                                                            CoverDataFollower_ToggleButtonWidget.ofCheck(),
+                                                                                            widget -> widget.addTooltip(
+                                                                                                    tooltipText[1])
+                                                                                                            .setPos(
+                                                                                                                    spaceX * 0,
+                                                                                                                    spaceY * 1))
+                                                                                    .addToggleButton(
+                                                                                            2,
+                                                                                            CoverDataFollower_ToggleButtonWidget.ofCheck(),
+                                                                                            widget -> widget.addTooltip(
+                                                                                                    tooltipText[2])
+                                                                                                            .setPos(
+                                                                                                                    spaceX * 0,
+                                                                                                                    spaceY * 2))
+                                                                                    .addToggleButton(
+                                                                                            3,
+                                                                                            CoverDataFollower_ToggleButtonWidget.ofCheck(),
+                                                                                            widget -> widget.addTooltip(
+                                                                                                    tooltipText[3])
+                                                                                                            .setPos(
+                                                                                                                    spaceX * 0,
+                                                                                                                    spaceY * 3))
+                                                                                    .addToggleButton(
+                                                                                            4,
+                                                                                            CoverDataFollower_ToggleButtonWidget.ofCheck(),
+                                                                                            widget -> widget.addTooltip(
+                                                                                                    tooltipText[4])
+                                                                                                            .setPos(
+                                                                                                                    spaceX * 4
+                                                                                                                            + 4,
+                                                                                                                    spaceY * 0))
+                                                                                    .addToggleButton(
+                                                                                            5,
+                                                                                            CoverDataFollower_ToggleButtonWidget.ofCheck(),
+                                                                                            widget -> widget.addTooltip(
+                                                                                                    tooltipText[5])
+                                                                                                            .setPos(
+                                                                                                                    spaceX * 4
+                                                                                                                            + 4,
+                                                                                                                    spaceY * 1))
+                                                                                    .addToggleButton(
+                                                                                            6,
+                                                                                            CoverDataFollower_ToggleButtonWidget.ofCheck(),
+                                                                                            widget -> widget.addTooltip(
+                                                                                                    tooltipText[6])
+                                                                                                            .setPos(
+                                                                                                                    spaceX * 4
+                                                                                                                            + 4,
+                                                                                                                    spaceY * 2))
+                                                                                    .addToggleButton(
+                                                                                            7,
+                                                                                            CoverDataFollower_ToggleButtonWidget.ofRedstone(),
+                                                                                            widget -> widget.setPos(
+                                                                                                    spaceX * 4 + 4,
+                                                                                                    spaceY * 3))
+                                                                                    .setPos(startX, startY))
+                   .widget(
+                           new TextWidget(buttonText[0]).setDefaultColor(COLOR_TEXT_GRAY.get())
+                                                        .setPos(startX + spaceX * 1, 4 + startY + spaceY * 0))
+                   .widget(
+                           new TextWidget(buttonText[1]).setDefaultColor(COLOR_TEXT_GRAY.get())
+                                                        .setPos(startX + spaceX * 1, 4 + startY + spaceY * 1))
+                   .widget(
+                           new TextWidget(buttonText[2]).setDefaultColor(COLOR_TEXT_GRAY.get())
+                                                        .setPos(startX + spaceX * 1, 4 + startY + spaceY * 2))
+                   .widget(
+                           new TextWidget(buttonText[3]).setDefaultColor(COLOR_TEXT_GRAY.get())
+                                                        .setPos(startX + spaceX * 1, 4 + startY + spaceY * 3))
+                   .widget(
+                           new TextWidget(buttonText[4]).setDefaultColor(COLOR_TEXT_GRAY.get())
+                                                        .setPos(startX + spaceX * 5 + 4, 4 + startY + spaceY * 0))
+                   .widget(
+                           new TextWidget(buttonText[5]).setDefaultColor(COLOR_TEXT_GRAY.get())
+                                                        .setPos(startX + spaceX * 5 + 4, 4 + startY + spaceY * 1))
+                   .widget(
+                           new TextWidget(buttonText[6]).setDefaultColor(COLOR_TEXT_GRAY.get())
+                                                        .setPos(startX + spaceX * 5 + 4, 4 + startY + spaceY * 2))
+                   .widget(
+                           TextWidget.dynamicString(
+                                   () -> isEnabled(7, convert(getCoverData())) ? buttonText[7] : buttonText[8])
+                                     .setSynced(false)
+                                     .setDefaultColor(COLOR_TEXT_GRAY.get())
+                                     .setPos(startX + spaceX * 5 + 4, 4 + startY + spaceY * 3));
         }
 
         private int getNewCoverVariable(int id, int coverVariable) {

@@ -34,28 +34,52 @@ public class GT_MetaTileEntity_Boxinator extends GT_MetaTileEntity_BasicMachine 
                 "",
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_SIDE_BOXINATOR_ACTIVE),
-                        TextureFactory.builder().addIcon(OVERLAY_SIDE_BOXINATOR_ACTIVE_GLOW).glow().build()),
+                        TextureFactory.builder()
+                                      .addIcon(OVERLAY_SIDE_BOXINATOR_ACTIVE_GLOW)
+                                      .glow()
+                                      .build()),
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_SIDE_BOXINATOR),
-                        TextureFactory.builder().addIcon(OVERLAY_SIDE_BOXINATOR_GLOW).glow().build()),
+                        TextureFactory.builder()
+                                      .addIcon(OVERLAY_SIDE_BOXINATOR_GLOW)
+                                      .glow()
+                                      .build()),
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_FRONT_BOXINATOR_ACTIVE),
-                        TextureFactory.builder().addIcon(OVERLAY_FRONT_BOXINATOR_ACTIVE_GLOW).glow().build()),
+                        TextureFactory.builder()
+                                      .addIcon(OVERLAY_FRONT_BOXINATOR_ACTIVE_GLOW)
+                                      .glow()
+                                      .build()),
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_FRONT_BOXINATOR),
-                        TextureFactory.builder().addIcon(OVERLAY_FRONT_BOXINATOR_GLOW).glow().build()),
+                        TextureFactory.builder()
+                                      .addIcon(OVERLAY_FRONT_BOXINATOR_GLOW)
+                                      .glow()
+                                      .build()),
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_TOP_BOXINATOR_ACTIVE),
-                        TextureFactory.builder().addIcon(OVERLAY_TOP_BOXINATOR_ACTIVE_GLOW).glow().build()),
+                        TextureFactory.builder()
+                                      .addIcon(OVERLAY_TOP_BOXINATOR_ACTIVE_GLOW)
+                                      .glow()
+                                      .build()),
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_TOP_BOXINATOR),
-                        TextureFactory.builder().addIcon(OVERLAY_TOP_BOXINATOR_GLOW).glow().build()),
+                        TextureFactory.builder()
+                                      .addIcon(OVERLAY_TOP_BOXINATOR_GLOW)
+                                      .glow()
+                                      .build()),
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_BOTTOM_BOXINATOR_ACTIVE),
-                        TextureFactory.builder().addIcon(OVERLAY_BOTTOM_BOXINATOR_ACTIVE_GLOW).glow().build()),
+                        TextureFactory.builder()
+                                      .addIcon(OVERLAY_BOTTOM_BOXINATOR_ACTIVE_GLOW)
+                                      .glow()
+                                      .build()),
                 TextureFactory.of(
                         TextureFactory.of(OVERLAY_BOTTOM_BOXINATOR),
-                        TextureFactory.builder().addIcon(OVERLAY_BOTTOM_BOXINATOR_GLOW).glow().build()));
+                        TextureFactory.builder()
+                                      .addIcon(OVERLAY_BOTTOM_BOXINATOR_GLOW)
+                                      .glow()
+                                      .build()));
     }
 
     public GT_MetaTileEntity_Boxinator(String aName, int aTier, String aDescription, ITexture[][][] aTextures,
@@ -203,8 +227,16 @@ public class GT_MetaTileEntity_Boxinator extends GT_MetaTileEntity_BasicMachine 
                     && GT_ModHandler.getRecipeOutput(aStack, aStack, null, aStack, aStack) != null) {
                 return true;
             }
-            return ItemList.Schematic_3by3.isStackEqual(getInputAt(1)) && (GT_ModHandler
-                    .getRecipeOutput(aStack, aStack, aStack, aStack, aStack, aStack, aStack, aStack, aStack) != null);
+            return ItemList.Schematic_3by3.isStackEqual(getInputAt(1)) && (GT_ModHandler.getRecipeOutput(
+                    aStack,
+                    aStack,
+                    aStack,
+                    aStack,
+                    aStack,
+                    aStack,
+                    aStack,
+                    aStack,
+                    aStack) != null);
         } else {
             return GT_Recipe.GT_Recipe_Map.sBoxinatorRecipes.containsInput(aStack);
         }

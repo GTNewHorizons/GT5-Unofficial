@@ -145,10 +145,10 @@ public class GT_Tool_Axe extends GT_Tool {
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
         return aIsToolHead
-                ? GT_MetaGenerated_Tool
-                        .getPrimaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.toolHeadAxe.mTextureIndex]
-                : GT_MetaGenerated_Tool
-                        .getSecondaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.stick.mTextureIndex];
+                ? GT_MetaGenerated_Tool.getPrimaryMaterial(
+                        aStack).mIconSet.mTextures[OrePrefixes.toolHeadAxe.mTextureIndex]
+                : GT_MetaGenerated_Tool.getSecondaryMaterial(
+                        aStack).mIconSet.mTextures[OrePrefixes.stick.mTextureIndex];
     }
 
     @Override

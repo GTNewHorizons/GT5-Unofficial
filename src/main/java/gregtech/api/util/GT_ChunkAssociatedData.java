@@ -64,8 +64,13 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 public abstract class GT_ChunkAssociatedData<T extends GT_ChunkAssociatedData.IData> {
 
     private static final Map<String, GT_ChunkAssociatedData<?>> instances = new ConcurrentHashMap<>();
-    private static final int IO_PARALLELISM = Math
-            .min(8, Math.max(1, Runtime.getRuntime().availableProcessors() * 2 / 3));
+    private static final int IO_PARALLELISM = Math.min(
+            8,
+            Math.max(
+                    1,
+                    Runtime.getRuntime()
+                           .availableProcessors() * 2
+                            / 3));
     private static final ExecutorService IO_WORKERS = Executors.newWorkStealingPool(IO_PARALLELISM);
     private static final Pattern FILE_PATTERN = Pattern.compile("(.+)\\.(-?\\d+)\\.(-?\\d+)\\.dat");
 
@@ -131,13 +136,13 @@ public abstract class GT_ChunkAssociatedData<T extends GT_ChunkAssociatedData.ID
 
     public final T get(World world, int chunkX, int chunkZ) {
         SuperRegion region = masterMap.computeIfAbsent(world.provider.dimensionId, ignored -> new ConcurrentHashMap<>())
-                .computeIfAbsent(getRegionID(chunkX, chunkZ), c -> new SuperRegion(world, c));
+                                      .computeIfAbsent(getRegionID(chunkX, chunkZ), c -> new SuperRegion(world, c));
         return region.get(Math.floorMod(chunkX, regionLength), Math.floorMod(chunkZ, regionLength));
     }
 
     protected final void set(World world, int chunkX, int chunkZ, T data) {
         SuperRegion region = masterMap.computeIfAbsent(world.provider.dimensionId, ignored -> new ConcurrentHashMap<>())
-                .computeIfAbsent(getRegionID(chunkX, chunkZ), c -> new SuperRegion(world, c));
+                                      .computeIfAbsent(getRegionID(chunkX, chunkZ), c -> new SuperRegion(world, c));
         region.set(Math.floorMod(chunkX, regionLength), Math.floorMod(chunkZ, regionLength), data);
     }
 
@@ -153,8 +158,13 @@ public abstract class GT_ChunkAssociatedData<T extends GT_ChunkAssociatedData.ID
 
     public void clear() {
         if (GT_Values.debugWorldData) {
-            long dirtyRegionCount = masterMap.values().stream().flatMap(m -> m.values().stream())
-                    .filter(SuperRegion::isDirty).count();
+            long dirtyRegionCount = masterMap.values()
+                                             .stream()
+                                             .flatMap(
+                                                     m -> m.values()
+                                                           .stream())
+                                             .filter(SuperRegion::isDirty)
+                                             .count();
             if (dirtyRegionCount > 0) GT_Log.out.println(
                     "Clearing ChunkAssociatedData with " + dirtyRegionCount
                             + " regions dirty. Data might have been lost!");
@@ -163,24 +173,34 @@ public abstract class GT_ChunkAssociatedData<T extends GT_ChunkAssociatedData.ID
     }
 
     public void save() {
-        saveRegions(masterMap.values().stream().flatMap(m -> m.values().stream()));
+        saveRegions(
+                masterMap.values()
+                         .stream()
+                         .flatMap(
+                                 m -> m.values()
+                                       .stream()));
     }
 
     public void save(World world) {
         Map<ChunkCoordIntPair, SuperRegion> map = masterMap.get(world.provider.dimensionId);
-        if (map != null) saveRegions(map.values().stream());
+        if (map != null) saveRegions(
+                map.values()
+                   .stream());
     }
 
     private void saveRegions(Stream<SuperRegion> stream) {
-        stream.filter(r -> r.isDirty()).map(c -> (Runnable) c::save).map(r -> CompletableFuture.runAsync(r, IO_WORKERS))
-                .reduce(CompletableFuture::allOf).ifPresent(f -> {
-                    try {
-                        f.get();
-                    } catch (Exception e) {
-                        GT_Log.err.println("Data save error: " + mId);
-                        e.printStackTrace(GT_Log.err);
-                    }
-                });
+        stream.filter(r -> r.isDirty())
+              .map(c -> (Runnable) c::save)
+              .map(r -> CompletableFuture.runAsync(r, IO_WORKERS))
+              .reduce(CompletableFuture::allOf)
+              .ifPresent(f -> {
+                  try {
+                      f.get();
+                  } catch (Exception e) {
+                      GT_Log.err.println("Data save error: " + mId);
+                      e.printStackTrace(GT_Log.err);
+                  }
+              });
     }
 
     protected abstract void writeElement(DataOutput output, T element, World world, int chunkX, int chunkZ)
@@ -222,21 +242,34 @@ public abstract class GT_ChunkAssociatedData<T extends GT_ChunkAssociatedData.ID
             return;
         try (Stream<Path> stream = Files.list(getSaveDirectory(w).toPath())) {
             Map<ChunkCoordIntPair, SuperRegion> worldData = stream.map(f -> {
-                Matcher matcher = FILE_PATTERN.matcher(f.getFileName().toString());
+                Matcher matcher = FILE_PATTERN.matcher(
+                        f.getFileName()
+                         .toString());
                 return matcher.matches() ? matcher : null;
-            }).filter(Objects::nonNull).filter(m -> mId.equals(m.group(1))).map(
-                    m -> CompletableFuture.supplyAsync(
-                            () -> new SuperRegion(w, Integer.parseInt(m.group(2)), Integer.parseInt(m.group(3))),
-                            IO_WORKERS))
-                    .map(f -> {
-                        try {
-                            return f.get();
-                        } catch (Exception e) {
-                            GT_Log.err.println("Error loading region");
-                            e.printStackTrace(GT_Log.err);
-                            return null;
-                        }
-                    }).filter(Objects::nonNull).collect(Collectors.toMap(SuperRegion::getCoord, Function.identity()));
+            })
+                                                                  .filter(Objects::nonNull)
+                                                                  .filter(m -> mId.equals(m.group(1)))
+                                                                  .map(
+                                                                          m -> CompletableFuture.supplyAsync(
+                                                                                  () -> new SuperRegion(
+                                                                                          w,
+                                                                                          Integer.parseInt(m.group(2)),
+                                                                                          Integer.parseInt(m.group(3))),
+                                                                                  IO_WORKERS))
+                                                                  .map(f -> {
+                                                                      try {
+                                                                          return f.get();
+                                                                      } catch (Exception e) {
+                                                                          GT_Log.err.println("Error loading region");
+                                                                          e.printStackTrace(GT_Log.err);
+                                                                          return null;
+                                                                      }
+                                                                  })
+                                                                  .filter(Objects::nonNull)
+                                                                  .collect(
+                                                                          Collectors.toMap(
+                                                                                  SuperRegion::getCoord,
+                                                                                  Function.identity()));
             masterMap.put(w.provider.dimensionId, worldData);
         } catch (IOException | UncheckedIOException e) {
             GT_Log.err.println("Error loading all region");
@@ -246,8 +279,12 @@ public abstract class GT_ChunkAssociatedData<T extends GT_ChunkAssociatedData.ID
 
     protected File getSaveDirectory(World w) {
         File base;
-        if (w.provider.getSaveFolder() == null) base = w.getSaveHandler().getWorldDirectory();
-        else base = new File(w.getSaveHandler().getWorldDirectory(), w.provider.getSaveFolder());
+        if (w.provider.getSaveFolder() == null) base = w.getSaveHandler()
+                                                        .getWorldDirectory();
+        else base = new File(
+                w.getSaveHandler()
+                 .getWorldDirectory(),
+                w.provider.getSaveFolder());
         return new File(base, "gregtech");
     }
 
@@ -347,7 +384,8 @@ public abstract class GT_ChunkAssociatedData<T extends GT_ChunkAssociatedData.ID
 
         private void save0() throws IOException {
             // noinspection ResultOfMethodCallIgnored
-            backingStorage.getParentFile().mkdirs();
+            backingStorage.getParentFile()
+                          .mkdirs();
             File tmpFile = getTmpFile();
             World world = Objects.requireNonNull(this.world.get(), "Attempting to save region of another world!");
             try (DataOutputStream output = new DataOutputStream(new FileOutputStream(tmpFile))) {

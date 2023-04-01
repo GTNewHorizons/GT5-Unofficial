@@ -23,8 +23,9 @@ import gregtech.api.util.*;
 public class Behaviour_Cover_Tool extends Behaviour_None {
 
     public static final IItemBehaviour<GT_MetaBase_Item> INSTANCE = new Behaviour_Cover_Tool();
-    private final String mTooltip = GT_LanguageManager
-            .addStringLocalization("gt.behaviour.cover_copy_paste", "Can copy/paste cover data.");
+    private final String mTooltip = GT_LanguageManager.addStringLocalization(
+            "gt.behaviour.cover_copy_paste",
+            "Can copy/paste cover data.");
 
     private ISerializableObject mStoredData = GregTech_API.sNoBehavior.createDataObject();
     private int mCoverType;
@@ -113,11 +114,13 @@ public class Behaviour_Cover_Tool extends Behaviour_None {
                 mCoverType = tCoverable.getCoverIDAtSide((byte) tSide);
                 aList.add(
                         "Block Side: " + EnumChatFormatting.AQUA
-                                + ForgeDirection.getOrientation(tSide).name()
+                                + ForgeDirection.getOrientation(tSide)
+                                                .name()
                                 + EnumChatFormatting.RESET);
                 aList.add(
                         "Cover Type: " + EnumChatFormatting.GREEN
-                                + tCoverable.getCoverItemAtSide((byte) tSide).getDisplayName()
+                                + tCoverable.getCoverItemAtSide((byte) tSide)
+                                            .getDisplayName()
                                 + EnumChatFormatting.RESET);
             } else {
                 mStoredData = GregTech_API.sNoBehavior.createDataObject();

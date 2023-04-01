@@ -214,37 +214,46 @@ public class GT_Cover_ItemFilter extends GT_CoverBehaviorBase<GT_Cover_ItemFilte
                 filterInvHandler.setStackInSlot(0, setStackSize1(getCoverData().mFilter));
             }
             builder.widget(
-                    new CoverDataControllerWidget<>(this::getCoverData, this::setCoverData, GT_Cover_ItemFilter.this)
-                            .addFollower(
+                    new CoverDataControllerWidget<>(
+                            this::getCoverData,
+                            this::setCoverData,
+                            GT_Cover_ItemFilter.this).addFollower(
                                     new CoverDataFollower_ToggleButtonWidget<>(),
                                     coverData -> coverData.mWhitelist,
                                     (coverData, state) -> {
                                         coverData.mWhitelist = state;
                                         return coverData;
                                     },
-                                    widget -> widget
-                                            .setToggleTexture(
-                                                    GT_UITextures.OVERLAY_BUTTON_WHITELIST,
-                                                    GT_UITextures.OVERLAY_BUTTON_BLACKLIST)
-                                            .addTooltip(0, GT_Utility.trans("124.1", "Blacklist Mode"))
-                                            .addTooltip(1, GT_Utility.trans("125.1", "Whitelist Mode"))
-                                            .setPos(spaceX * 0, spaceY * 0))
-                            .addFollower(
-                                    new CoverDataFollower_SlotWidget<>(filterInvHandler, 0, true),
-                                    coverData -> setStackSize1(coverData.mFilter),
-                                    (coverData, stack) -> {
-                                        coverData.mFilter = setStackSize1(stack);
-                                        return coverData;
-                                    },
-                                    widget -> widget.setBackground(GT_UITextures.SLOT_DARK_GRAY)
-                                            .setPos(spaceX * 0, spaceY * 2))
-                            .setPos(startX, startY))
-                    .widget(
-                            new TextWidget(GT_Utility.trans("317", "Filter: ")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                                    .setPos(startX + spaceX * 0, 3 + startY + spaceY * 1))
-                    .widget(
-                            new TextWidget(GT_Utility.trans("318", "Check Mode")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                                    .setPos(startX + spaceX * 2, 3 + startY + spaceY * 0));
+                                    widget -> widget.setToggleTexture(
+                                            GT_UITextures.OVERLAY_BUTTON_WHITELIST,
+                                            GT_UITextures.OVERLAY_BUTTON_BLACKLIST)
+                                                    .addTooltip(0, GT_Utility.trans("124.1", "Blacklist Mode"))
+                                                    .addTooltip(1, GT_Utility.trans("125.1", "Whitelist Mode"))
+                                                    .setPos(spaceX * 0, spaceY * 0))
+                                                     .addFollower(
+                                                             new CoverDataFollower_SlotWidget<>(
+                                                                     filterInvHandler,
+                                                                     0,
+                                                                     true),
+                                                             coverData -> setStackSize1(coverData.mFilter),
+                                                             (coverData, stack) -> {
+                                                                 coverData.mFilter = setStackSize1(stack);
+                                                                 return coverData;
+                                                             },
+                                                             widget -> widget.setBackground(
+                                                                     GT_UITextures.SLOT_DARK_GRAY)
+                                                                             .setPos(spaceX * 0, spaceY * 2))
+                                                     .setPos(startX, startY))
+                   .widget(
+                           new TextWidget(GT_Utility.trans("317", "Filter: ")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                                                                              .setPos(
+                                                                                      startX + spaceX * 0,
+                                                                                      3 + startY + spaceY * 1))
+                   .widget(
+                           new TextWidget(GT_Utility.trans("318", "Check Mode")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                                                                                .setPos(
+                                                                                        startX + spaceX * 2,
+                                                                                        3 + startY + spaceY * 0));
         }
 
         private ItemStack setStackSize1(ItemStack stack) {

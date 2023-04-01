@@ -41,8 +41,9 @@ public class ProcessingRound implements gregtech.api.interfaces.IOreRecipeRegist
             }
         }
         if (GT_Mod.gregtechproxy.mAE2Integration) {
-            Api.INSTANCE.registries().matterCannon()
-                    .registerAmmo(GT_OreDictUnificator.get(OrePrefixes.round, aMaterial, 1L), aMaterial.getMass());
+            Api.INSTANCE.registries()
+                        .matterCannon()
+                        .registerAmmo(GT_OreDictUnificator.get(OrePrefixes.round, aMaterial, 1L), aMaterial.getMass());
         }
     }
 }

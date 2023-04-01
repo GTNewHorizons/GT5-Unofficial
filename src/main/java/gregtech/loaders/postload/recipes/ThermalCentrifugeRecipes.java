@@ -13,12 +13,16 @@ public class ThermalCentrifugeRecipes implements Runnable {
 
     @Override
     public void run() {
-        GT_Values.RA.stdBuilder().itemInputs(ItemList.SunnariumCell.get(1))
-                .itemOutputs(
-                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sunnarium, 1),
-                        new ItemStack(Items.glowstone_dust, 2),
-                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 1))
-                .noFluidInputs().noFluidOutputs().duration(25 * SECONDS).eut(TierEU.RECIPE_LV)
-                .addTo(sThermalCentrifugeRecipes);
+        GT_Values.RA.stdBuilder()
+                    .itemInputs(ItemList.SunnariumCell.get(1))
+                    .itemOutputs(
+                            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sunnarium, 1),
+                            new ItemStack(Items.glowstone_dust, 2),
+                            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 1))
+                    .noFluidInputs()
+                    .noFluidOutputs()
+                    .duration(25 * SECONDS)
+                    .eut(TierEU.RECIPE_LV)
+                    .addTo(sThermalCentrifugeRecipes);
     }
 }

@@ -35,7 +35,8 @@ public class UniversiumRenderer extends GT_GeneratedMaterial_Renderer {
         magicRenderMethod(
                 type,
                 ItemList.Emitter_UEV.get(1), // hack to make it render correctly
-                aStack.getItem().getIconFromDamage(aStack.getItemDamage()),
+                aStack.getItem()
+                      .getIconFromDamage(aStack.getItemDamage()),
                 true,
                 data);
         return true;
@@ -114,8 +115,9 @@ public class UniversiumRenderer extends GT_GeneratedMaterial_Renderer {
                 if (fluidDisplay) {
                     // this somehow makes shader render correctly
                     ResourceLocation resourcelocation = mc.getTextureManager()
-                            .getResourceLocation(aStack.getItemSpriteNumber());
-                    mc.getTextureManager().bindTexture(resourcelocation);
+                                                          .getResourceLocation(aStack.getItemSpriteNumber());
+                    mc.getTextureManager()
+                      .bindTexture(resourcelocation);
                 } else {
                     r.renderItemIntoGUI(mc.fontRenderer, mc.getTextureManager(), aStack, 0, 0, true);
                 }
@@ -185,8 +187,15 @@ public class UniversiumRenderer extends GT_GeneratedMaterial_Renderer {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
         // RENDER ITEM IN HAND
-        ItemRenderer
-                .renderItemIn2D(Tessellator.instance, f1, f2, f, f3, icon.getIconWidth(), icon.getIconHeight(), scale);
+        ItemRenderer.renderItemIn2D(
+                Tessellator.instance,
+                f1,
+                f2,
+                f,
+                f3,
+                icon.getIconWidth(),
+                icon.getIconHeight(),
+                scale);
 
         GL11.glDisable(GL11.GL_ALPHA_TEST);
         GL11.glDepthFunc(GL11.GL_EQUAL);

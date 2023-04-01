@@ -64,10 +64,15 @@ public class GT_MetaTileEntity_MonsterRepellent extends GT_MetaTileEntity_Tiered
             boolean aActive, boolean aRedstone) {
         if (aSide != ForgeDirection.UP.ordinal()) return new ITexture[] { MACHINE_CASINGS[mTier][aColorIndex + 1] };
         if (aActive) return new ITexture[] { MACHINE_CASINGS[mTier][aColorIndex + 1],
-                TextureFactory.of(OVERLAY_TELEPORTER_ACTIVE),
-                TextureFactory.builder().addIcon(OVERLAY_TELEPORTER_ACTIVE_GLOW).glow().build() };
+                TextureFactory.of(OVERLAY_TELEPORTER_ACTIVE), TextureFactory.builder()
+                                                                            .addIcon(OVERLAY_TELEPORTER_ACTIVE_GLOW)
+                                                                            .glow()
+                                                                            .build() };
         return new ITexture[] { MACHINE_CASINGS[mTier][aColorIndex + 1], TextureFactory.of(OVERLAY_TELEPORTER),
-                TextureFactory.builder().addIcon(OVERLAY_TELEPORTER_GLOW).glow().build() };
+                TextureFactory.builder()
+                              .addIcon(OVERLAY_TELEPORTER_GLOW)
+                              .glow()
+                              .build() };
     }
 
     @Override
@@ -96,9 +101,14 @@ public class GT_MetaTileEntity_MonsterRepellent extends GT_MetaTileEntity_Tiered
 
     @Override
     public void onRemoval() {
-        int[] tCoords = { this.getBaseMetaTileEntity().getXCoord(), this.getBaseMetaTileEntity().getYCoord(),
-                this.getBaseMetaTileEntity().getZCoord(),
-                this.getBaseMetaTileEntity().getWorld().provider.dimensionId };
+        int[] tCoords = { this.getBaseMetaTileEntity()
+                              .getXCoord(),
+                this.getBaseMetaTileEntity()
+                    .getYCoord(),
+                this.getBaseMetaTileEntity()
+                    .getZCoord(),
+                this.getBaseMetaTileEntity()
+                    .getWorld().provider.dimensionId };
         GT_SpawnEventHandler.mobReps.removeIf(coords -> Arrays.equals(coords, tCoords));
     }
 

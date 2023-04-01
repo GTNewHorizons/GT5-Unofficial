@@ -136,15 +136,19 @@ public class MultiTileEntityRegistry {
         if (tFailed) {
             GT_FML_LOGGER.error("MULTI-TILE REGISTRY ERROR: STACKTRACE START");
             int i = 0;
-            for (StackTraceElement tElement : new Exception().getStackTrace())
-                if (i++ < 5 && !tElement.getClassName().startsWith("sun")) GT_FML_LOGGER.error("\tat " + tElement);
-                else break;
+            for (StackTraceElement tElement : new Exception().getStackTrace()) if (i++ < 5 && !tElement.getClassName()
+                                                                                                       .startsWith(
+                                                                                                               "sun"))
+                GT_FML_LOGGER.error("\tat " + tElement);
+            else break;
             GT_FML_LOGGER.error("MULTI-TILE REGISTRY ERROR: STACKTRACE END");
             return null;
         }
 
-        GT_LanguageManager
-                .addStringLocalization(mNameInternal + "." + aClassContainer.mID + ".name", aLocalised, false);
+        GT_LanguageManager.addStringLocalization(
+                mNameInternal + "." + aClassContainer.mID + ".name",
+                aLocalised,
+                false);
         mRegistry.put(aClassContainer.mID, aClassContainer);
         mLastRegisteredID = aClassContainer.mID;
         mRegistrations.add(aClassContainer);

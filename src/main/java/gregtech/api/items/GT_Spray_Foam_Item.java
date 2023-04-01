@@ -58,8 +58,11 @@ public class GT_Spray_Foam_Item extends GT_Tool_Item {
         TileEntity aTileEntity = aWorld.getTileEntity(aX, aY, aZ);
 
         try {
-            if (GT_Utility.getClassName(aTileEntity).startsWith("TileEntityCable")) {
-                if (GT_Utility.getPublicField(aTileEntity, "foamed").getByte(aTileEntity) == 0) {
+            if (GT_Utility.getClassName(aTileEntity)
+                          .startsWith("TileEntityCable")) {
+                if (GT_Utility.getPublicField(aTileEntity, "foamed")
+                              .getByte(aTileEntity)
+                        == 0) {
                     if (GT_ModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer)) {
                         GT_Utility.sendSoundToPlayers(aWorld, SoundResource.IC2_TOOLS_PAINTER, 1.0F, -1, aX, aY, aZ);
                         GT_Utility.callPublicMethod(aTileEntity, "changeFoam", (byte) 1);
@@ -121,8 +124,14 @@ public class GT_Spray_Foam_Item extends GT_Tool_Item {
                     for (byte i = 0; i < 4; i++) {
                         if (GT_Utility.isBlockAir(aWorld, aX, aY, aZ)
                                 && GT_ModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer)) {
-                            GT_Utility
-                                    .sendSoundToPlayers(aWorld, SoundResource.IC2_TOOLS_PAINTER, 1.0F, -1, aX, aY, aZ);
+                            GT_Utility.sendSoundToPlayers(
+                                    aWorld,
+                                    SoundResource.IC2_TOOLS_PAINTER,
+                                    1.0F,
+                                    -1,
+                                    aX,
+                                    aY,
+                                    aZ);
                             aWorld.setBlock(
                                     aX,
                                     aY,

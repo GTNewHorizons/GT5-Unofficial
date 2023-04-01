@@ -155,8 +155,14 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
         super.writeMultiTileNBT(aNBT);
 
         aNBT.setBoolean(NBT.STRUCTURE_OK, mStructureOkay);
-        aNBT.setByte(NBT.ROTATION, (byte) mExtendedFacing.getRotation().getIndex());
-        aNBT.setByte(NBT.FLIP, (byte) mExtendedFacing.getFlip().getIndex());
+        aNBT.setByte(
+                NBT.ROTATION,
+                (byte) mExtendedFacing.getRotation()
+                                      .getIndex());
+        aNBT.setByte(
+                NBT.FLIP,
+                (byte) mExtendedFacing.getFlip()
+                                      .getIndex());
 
         saveUpgradeInventoriesToNBT(aNBT);
         saveItemsToOutput(aNBT);
@@ -717,8 +723,13 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
             @Override
             public boolean placeBlock(S t, World world, int x, int y, int z, ItemStack trigger) {
                 final MultiTileEntityRegistry tRegistry = MultiTileEntityRegistry.getRegistry(aRegistryID);
-                final MultiTileEntityContainer tContainer = tRegistry
-                        .getNewTileEntityContainer(world, x, y, z, aBlockMeta, null);
+                final MultiTileEntityContainer tContainer = tRegistry.getNewTileEntityContainer(
+                        world,
+                        x,
+                        y,
+                        z,
+                        aBlockMeta,
+                        null);
                 if (tContainer == null) {
                     GT_FML_LOGGER.error("NULL CONTAINER");
                     return false;
@@ -781,7 +792,8 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
         final IFluidTank tTank = getFluidTankDrainable(aPart, (byte) aDirection.ordinal(), aFluid);
         if (tTank == null || tTank.getFluid() == null
                 || tTank.getFluidAmount() == 0
-                || !tTank.getFluid().isFluidEqual(aFluid))
+                || !tTank.getFluid()
+                         .isFluidEqual(aFluid))
             return null;
         final FluidStack rDrained = tTank.drain(aFluid.amount, aDoDrain);
         if (rDrained != null && aDoDrain) markInventoryBeenModified();
@@ -802,14 +814,18 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
     public boolean canFill(MultiBlockPart aPart, ForgeDirection aDirection, Fluid aFluid) {
         if (aFluid == null) return false;
         final IFluidTank tTank = getFluidTankFillable(aPart, (byte) aDirection.ordinal(), new FluidStack(aFluid, 0));
-        return tTank != null && (tTank.getFluid() == null || tTank.getFluid().getFluid() == aFluid);
+        return tTank != null && (tTank.getFluid() == null || tTank.getFluid()
+                                                                  .getFluid()
+                == aFluid);
     }
 
     @Override
     public boolean canDrain(MultiBlockPart aPart, ForgeDirection aDirection, Fluid aFluid) {
         if (aFluid == null) return false;
         final IFluidTank tTank = getFluidTankDrainable(aPart, (byte) aDirection.ordinal(), new FluidStack(aFluid, 0));
-        return tTank != null && (tTank.getFluid() != null && tTank.getFluid().getFluid() == aFluid);
+        return tTank != null && (tTank.getFluid() != null && tTank.getFluid()
+                                                                  .getFluid()
+                == aFluid);
     }
 
     @Override
@@ -1190,7 +1206,9 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
         }
         final String lockedInventory = aPart.getLockedInventory();
         if (lockedInventory != null && !lockedInventory.equals("")) {
-            str.append(" [Locked: ").append(lockedInventory).append("]");
+            str.append(" [Locked: ")
+               .append(lockedInventory)
+               .append("]");
         }
 
         return str.toString();
@@ -1240,13 +1258,20 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
      */
 
     protected ItemStack[] getAllItemInputs() {
-        return getInventoriesForInput().getStacks().toArray(new ItemStack[0]);
+        return getInventoriesForInput().getStacks()
+                                       .toArray(new ItemStack[0]);
     }
 
     protected Iterable<Pair<ItemStack[], String>> getItemInputsForEachInventory() {
-        return multiBlockInputInventory.entrySet().stream()
-                .map((entry) -> Pair.of(entry.getValue().getStacks().toArray(new ItemStack[0]), entry.getKey()))
-                .collect(Collectors.toList());
+        return multiBlockInputInventory.entrySet()
+                                       .stream()
+                                       .map(
+                                               (entry) -> Pair.of(
+                                                       entry.getValue()
+                                                            .getStacks()
+                                                            .toArray(new ItemStack[0]),
+                                                       entry.getKey()))
+                                       .collect(Collectors.toList());
     }
 
     protected void setItemOutputs(ItemStack[] aItemOutputs, String aInventory) {
@@ -1262,7 +1287,7 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
         if (mInventory != null) {
             for (ItemStack tItem : mItemsToOutput) {
                 multiBlockOutputInventory.getOrDefault(mInventory, getInventoriesForOutput())
-                        .insertItem(index++, tItem.copy(), false);
+                                         .insertItem(index++, tItem.copy(), false);
             }
         } else {
             for (ItemStack tItem : mItemsToOutput) {
@@ -1299,7 +1324,9 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
     @Override
     public void addGregTechLogo(ModularWindow.Builder builder) {
         builder.widget(
-                new DrawableWidget().setDrawable(getGUITextureSet().getGregTechLogo()).setSize(17, 17).setPos(148, 60));
+                new DrawableWidget().setDrawable(getGUITextureSet().getGregTechLogo())
+                                    .setSize(17, 17)
+                                    .setPos(148, 60));
     }
 
     @Override
@@ -1311,74 +1338,97 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
             }
         }
         builder.widget(
-                new TabContainer()
-                        .setButtonSize(
-                                20,
-                                24)
-                        .addTabButton(
-                                new TabButton(0)
-                                        .setBackground(
-                                                false,
-                                                ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0, 1f, 0.5f))
-                                        .setBackground(
-                                                true,
-                                                ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0.5f, 1f, 1f))
-                                        .addTooltip(getLocalName()).setPos(0, -20))
-                        .addTabButton(
-                                new TabButton(1)
-                                        .setBackground(
-                                                false,
-                                                ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0, 1f, 0.5f))
-                                        .setBackground(
-                                                true,
-                                                ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0.5f, 1f, 1f))
-                                        .setPos(20, -20))
-                        .addTabButton(
-                                new TabButton(2)
-                                        .setBackground(
-                                                false,
-                                                ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0, 1f, 0.5f))
-                                        .setBackground(
-                                                true,
-                                                ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0.5f, 1f, 1f))
-                                        .setPos(40, -20))
-                        .addTabButton(
-                                new TabButton(3)
-                                        .setBackground(
-                                                false,
-                                                ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0, 1f, 0.5f))
-                                        .setBackground(
-                                                true,
-                                                ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0.5f, 1f, 1f))
-                                        .setPos(60, -20))
-                        .addTabButton(
-                                new TabButton(4)
-                                        .setBackground(
-                                                false,
-                                                ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0, 1f, 0.5f))
-                                        .setBackground(
-                                                true,
-                                                ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0.5f, 1f, 1f))
-                                        .setPos(80, -20))
-                        .addPage(
-                                new MultiChildWidget().addChild(
-                                        new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
-                                                .setPos(7, 4).setSize(160, 75)))
-                        .addPage(new MultiChildWidget().addChild(getItemInventoryInputGUI()))
-                        .addPage(new MultiChildWidget().addChild(getItemInventoryOutputGUI()))
-                        .addPage(new MultiChildWidget().addChild(getFluidInventoryInputGUI()))
-                        .addPage(new MultiChildWidget().addChild(getFluidInventoryOutputGUI())))
-                .widget(new ItemDrawable(getStackForm(1)).asWidget().setSize(16, 16).setPos(2, -16))
-                .widget(new DrawableWidget().setDrawable(GT_UITextures.PICTURE_ITEM_IN).setSize(16, 16).setPos(22, -16))
-                .widget(
-                        new DrawableWidget().setDrawable(GT_UITextures.PICTURE_ITEM_OUT).setSize(16, 16)
-                                .setPos(42, -16))
-                .widget(
-                        new DrawableWidget().setDrawable(GT_UITextures.PICTURE_FLUID_IN).setSize(16, 16)
-                                .setPos(62, -16))
-                .widget(
-                        new DrawableWidget().setDrawable(GT_UITextures.PICTURE_FLUID_OUT).setSize(16, 16)
-                                .setPos(82, -16));
+                new TabContainer().setButtonSize(20, 24)
+                                  .addTabButton(
+                                          new TabButton(0).setBackground(
+                                                  false,
+                                                  ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0, 1f, 0.5f))
+                                                          .setBackground(
+                                                                  true,
+                                                                  ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(
+                                                                          0,
+                                                                          0.5f,
+                                                                          1f,
+                                                                          1f))
+                                                          .addTooltip(getLocalName())
+                                                          .setPos(0, -20))
+                                  .addTabButton(
+                                          new TabButton(1).setBackground(
+                                                  false,
+                                                  ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0, 1f, 0.5f))
+                                                          .setBackground(
+                                                                  true,
+                                                                  ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(
+                                                                          0,
+                                                                          0.5f,
+                                                                          1f,
+                                                                          1f))
+                                                          .setPos(20, -20))
+                                  .addTabButton(
+                                          new TabButton(2).setBackground(
+                                                  false,
+                                                  ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0, 1f, 0.5f))
+                                                          .setBackground(
+                                                                  true,
+                                                                  ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(
+                                                                          0,
+                                                                          0.5f,
+                                                                          1f,
+                                                                          1f))
+                                                          .setPos(40, -20))
+                                  .addTabButton(
+                                          new TabButton(3).setBackground(
+                                                  false,
+                                                  ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0, 1f, 0.5f))
+                                                          .setBackground(
+                                                                  true,
+                                                                  ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(
+                                                                          0,
+                                                                          0.5f,
+                                                                          1f,
+                                                                          1f))
+                                                          .setPos(60, -20))
+                                  .addTabButton(
+                                          new TabButton(4).setBackground(
+                                                  false,
+                                                  ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0, 1f, 0.5f))
+                                                          .setBackground(
+                                                                  true,
+                                                                  ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(
+                                                                          0,
+                                                                          0.5f,
+                                                                          1f,
+                                                                          1f))
+                                                          .setPos(80, -20))
+                                  .addPage(
+                                          new MultiChildWidget().addChild(
+                                                  new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
+                                                                      .setPos(7, 4)
+                                                                      .setSize(160, 75)))
+                                  .addPage(new MultiChildWidget().addChild(getItemInventoryInputGUI()))
+                                  .addPage(new MultiChildWidget().addChild(getItemInventoryOutputGUI()))
+                                  .addPage(new MultiChildWidget().addChild(getFluidInventoryInputGUI()))
+                                  .addPage(new MultiChildWidget().addChild(getFluidInventoryOutputGUI())))
+               .widget(
+                       new ItemDrawable(getStackForm(1)).asWidget()
+                                                        .setSize(16, 16)
+                                                        .setPos(2, -16))
+               .widget(
+                       new DrawableWidget().setDrawable(GT_UITextures.PICTURE_ITEM_IN)
+                                           .setSize(16, 16)
+                                           .setPos(22, -16))
+               .widget(
+                       new DrawableWidget().setDrawable(GT_UITextures.PICTURE_ITEM_OUT)
+                                           .setSize(16, 16)
+                                           .setPos(42, -16))
+               .widget(
+                       new DrawableWidget().setDrawable(GT_UITextures.PICTURE_FLUID_IN)
+                                           .setSize(16, 16)
+                                           .setPos(62, -16))
+               .widget(
+                       new DrawableWidget().setDrawable(GT_UITextures.PICTURE_FLUID_OUT)
+                                           .setSize(16, 16)
+                                           .setPos(82, -16));
     }
 
     protected Widget getItemInventoryInputGUI() {
@@ -1387,11 +1437,13 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
         for (int rows = 0; rows * 4 < Math.min(inv.getSlots(), 128); rows++) {
             final int columnsToMake = Math.min(Math.min(inv.getSlots(), 128) - rows * 4, 4);
             for (int column = 0; column < columnsToMake; column++) {
-                scrollable
-                        .widget(new SlotWidget(inv, rows * 4 + column).setPos(column * 18, rows * 18).setSize(18, 18));
+                scrollable.widget(
+                        new SlotWidget(inv, rows * 4 + column).setPos(column * 18, rows * 18)
+                                                              .setSize(18, 18));
             }
         }
-        return scrollable.setSize(18 * 4 + 4, 18 * 4).setPos(52, 7);
+        return scrollable.setSize(18 * 4 + 4, 18 * 4)
+                         .setPos(52, 7);
     }
 
     protected Widget getItemInventoryOutputGUI() {
@@ -1400,11 +1452,13 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
         for (int rows = 0; rows * 4 < Math.min(inv.getSlots(), 128); rows++) {
             final int columnsToMake = Math.min(Math.min(inv.getSlots(), 128) - rows * 4, 4);
             for (int column = 0; column < columnsToMake; column++) {
-                scrollable
-                        .widget(new SlotWidget(inv, rows * 4 + column).setPos(column * 18, rows * 18).setSize(18, 18));
+                scrollable.widget(
+                        new SlotWidget(inv, rows * 4 + column).setPos(column * 18, rows * 18)
+                                                              .setSize(18, 18));
             }
         }
-        return scrollable.setSize(18 * 4 + 4, 18 * 4).setPos(52, 7);
+        return scrollable.setSize(18 * 4 + 4, 18 * 4)
+                         .setPos(52, 7);
     }
 
     protected IItemHandlerModifiable getInventoriesForInput() {
@@ -1422,10 +1476,13 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
             final int columnsToMake = Math.min(tanks.length - rows * 4, 4);
             for (int column = 0; column < columnsToMake; column++) {
                 final FluidSlotWidget fluidSlot = new FluidSlotWidget(tanks[rows * 4 + column]);
-                scrollable.widget(fluidSlot.setPos(column * 18, rows * 18).setSize(18, 18));
+                scrollable.widget(
+                        fluidSlot.setPos(column * 18, rows * 18)
+                                 .setSize(18, 18));
             }
         }
-        return scrollable.setSize(18 * 4 + 4, 18 * 4).setPos(52, 7);
+        return scrollable.setSize(18 * 4 + 4, 18 * 4)
+                         .setPos(52, 7);
     }
 
     protected Widget getFluidInventoryOutputGUI() {
@@ -1436,9 +1493,12 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
             for (int column = 0; column < columnsToMake; column++) {
                 final FluidSlotWidget fluidSlot = new FluidSlotWidget(tanks[rows * 4 + column]);
                 fluidSlot.setInteraction(true, false);
-                scrollable.widget(fluidSlot.setPos(column * 18, rows * 18).setSize(18, 18));
+                scrollable.widget(
+                        fluidSlot.setPos(column * 18, rows * 18)
+                                 .setSize(18, 18));
             }
         }
-        return scrollable.setSize(18 * 4 + 4, 18 * 4).setPos(52, 7);
+        return scrollable.setSize(18 * 4 + 4, 18 * 4)
+                         .setPos(52, 7);
     }
 }

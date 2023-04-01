@@ -249,17 +249,26 @@ public class GT_StructureUtility {
                 Class<? extends IMetaTileEntity> clazz = aMetaId.apply(t);
                 if (clazz == null) return REJECT;
                 ItemStack taken = env.getSource()
-                        .takeOne(is -> clazz.isInstance(GT_Item_Machines.getMetaTileEntity(is)), true);
+                                     .takeOne(is -> clazz.isInstance(GT_Item_Machines.getMetaTileEntity(is)), true);
                 if (GT_Utility.isStackInvalid(taken)) {
-                    env.getChatter().accept(
-                            new ChatComponentTranslation(
-                                    "GT5U.autoplace.error.no_mte.class_name",
-                                    clazz.getSimpleName()));
+                    env.getChatter()
+                       .accept(
+                               new ChatComponentTranslation(
+                                       "GT5U.autoplace.error.no_mte.class_name",
+                                       clazz.getSimpleName()));
                     return REJECT;
                 }
-                if (StructureUtility
-                        .survivalPlaceBlock(taken, EXACT, null, true, world, x, y, z, env.getSource(), env.getActor())
-                        == ACCEPT)
+                if (StructureUtility.survivalPlaceBlock(
+                        taken,
+                        EXACT,
+                        null,
+                        true,
+                        world,
+                        x,
+                        y,
+                        z,
+                        env.getSource(),
+                        env.getActor()) == ACCEPT)
                     return acceptType;
                 return REJECT;
             }
@@ -298,7 +307,9 @@ public class GT_StructureUtility {
                 GT_Item_Machines item = (GT_Item_Machines) Item.getItemFromBlock(GregTech_API.sBlockMachines);
                 int meta = aMetaId.applyAsInt(t);
                 if (meta < 0) return BlocksToPlace.createEmpty();
-                return BlocksToPlace.create(ItemStackPredicate.from(item).setMeta(meta));
+                return BlocksToPlace.create(
+                        ItemStackPredicate.from(item)
+                                          .setMeta(meta));
             }
 
             @Override
@@ -327,14 +338,27 @@ public class GT_StructureUtility {
                 GT_Item_Machines item = (GT_Item_Machines) Item.getItemFromBlock(GregTech_API.sBlockMachines);
                 int meta = aMetaId.applyAsInt(t);
                 if (meta < 0) return REJECT;
-                ItemStack taken = env.getSource().takeOne(ItemStackPredicate.from(item).setMeta(meta), true);
+                ItemStack taken = env.getSource()
+                                     .takeOne(
+                                             ItemStackPredicate.from(item)
+                                                               .setMeta(meta),
+                                             true);
                 if (GT_Utility.isStackInvalid(taken)) {
-                    env.getChatter().accept(new ChatComponentTranslation("GT5U.autoplace.error.no_mte.id", meta));
+                    env.getChatter()
+                       .accept(new ChatComponentTranslation("GT5U.autoplace.error.no_mte.id", meta));
                     return REJECT;
                 }
-                return StructureUtility
-                        .survivalPlaceBlock(taken, EXACT, null, true, world, x, y, z, env.getSource(), env.getActor())
-                        == ACCEPT ? ACCEPT_STOP : REJECT;
+                return StructureUtility.survivalPlaceBlock(
+                        taken,
+                        EXACT,
+                        null,
+                        true,
+                        world,
+                        x,
+                        y,
+                        z,
+                        env.getSource(),
+                        env.getActor()) == ACCEPT ? ACCEPT_STOP : REJECT;
             }
         };
     }
@@ -382,8 +406,16 @@ public class GT_StructureUtility {
             public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger,
                     IItemSource s, EntityPlayerMP actor, Consumer<IChatComponent> chatter) {
                 if (check(t, world, x, y, z)) return SKIP;
-                return StructureUtility
-                        .survivalPlaceBlock(placeCasing, placeCasingMeta, world, x, y, z, s, actor, chatter);
+                return StructureUtility.survivalPlaceBlock(
+                        placeCasing,
+                        placeCasingMeta,
+                        world,
+                        x,
+                        y,
+                        z,
+                        s,
+                        actor,
+                        chatter);
             }
         };
     }
@@ -494,7 +526,8 @@ public class GT_StructureUtility {
     public static Predicate<ItemStack> filterByMTEClass(List<? extends Class<? extends IMetaTileEntity>> list) {
         return is -> {
             IMetaTileEntity tile = GT_Item_Machines.getMetaTileEntity(is);
-            return tile != null && list.stream().anyMatch(c -> c.isInstance(tile));
+            return tile != null && list.stream()
+                                       .anyMatch(c -> c.isInstance(tile));
         };
     }
 

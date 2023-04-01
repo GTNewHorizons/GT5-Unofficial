@@ -176,7 +176,8 @@ public class GT_Worldgen_Stone extends GT_Worldgen_Ore {
                 int tMaxZ = tZ + (int) (realSize / zSize + 2.0);
 
                 // If the (tY-ySize) of the stoneseed is air in the current chunk, mark the seed empty and move on.
-                if (aWorld.getBlock(aChunkX + 8, tMinY, aChunkZ + 8).isAir(aWorld, aChunkX + 8, tMinY, aChunkZ + 8)) {
+                if (aWorld.getBlock(aChunkX + 8, tMinY, aChunkZ + 8)
+                          .isAir(aWorld, aChunkX + 8, tMinY, aChunkZ + 8)) {
                     if (debugStones) GT_Log.out.println(
                             mWorldGenName + " tX="
                                     + tX
@@ -271,25 +272,42 @@ public class GT_Worldgen_Stone extends GT_Worldgen_Ore {
                                         if (tTargetedBlock != GregTech_API.sBlockOres1) {
                                             ((GT_TileEntity_Ores) tTileEntity).convertOreBlock(aWorld, iX, iY, iZ);
                                         }
-                                        ((GT_TileEntity_Ores) tTileEntity)
-                                                .overrideOreBlockMaterial(this.mBlock, (byte) this.mBlockMeta);
+                                        ((GT_TileEntity_Ores) tTileEntity).overrideOreBlockMaterial(
+                                                this.mBlock,
+                                                (byte) this.mBlockMeta);
                                     }
-                                } else if (((this.mAllowToGenerateinVoid)
-                                        && (aWorld.getBlock(iX, iY, iZ).isAir(aWorld, iX, iY, iZ)))
-                                        || ((tTargetedBlock != null) && ((tTargetedBlock
-                                                .isReplaceableOreGen(aWorld, iX, iY, iZ, Blocks.stone))
+                                } else if (((this.mAllowToGenerateinVoid) && (aWorld.getBlock(iX, iY, iZ)
+                                                                                    .isAir(aWorld, iX, iY, iZ)))
+                                        || ((tTargetedBlock != null) && ((tTargetedBlock.isReplaceableOreGen(
+                                                aWorld,
+                                                iX,
+                                                iY,
+                                                iZ,
+                                                Blocks.stone))
                                                 || (tTargetedBlock.isReplaceableOreGen(
                                                         aWorld,
                                                         iX,
                                                         iY,
                                                         iZ,
                                                         Blocks.stained_hardened_clay))
-                                                || (tTargetedBlock
-                                                        .isReplaceableOreGen(aWorld, iX, iY, iZ, Blocks.cobblestone))
-                                                || (tTargetedBlock
-                                                        .isReplaceableOreGen(aWorld, iX, iY, iZ, Blocks.end_stone))
-                                                || (tTargetedBlock
-                                                        .isReplaceableOreGen(aWorld, iX, iY, iZ, Blocks.netherrack))
+                                                || (tTargetedBlock.isReplaceableOreGen(
+                                                        aWorld,
+                                                        iX,
+                                                        iY,
+                                                        iZ,
+                                                        Blocks.cobblestone))
+                                                || (tTargetedBlock.isReplaceableOreGen(
+                                                        aWorld,
+                                                        iX,
+                                                        iY,
+                                                        iZ,
+                                                        Blocks.end_stone))
+                                                || (tTargetedBlock.isReplaceableOreGen(
+                                                        aWorld,
+                                                        iX,
+                                                        iY,
+                                                        iZ,
+                                                        Blocks.netherrack))
                                                 || (tTargetedBlock.isReplaceableOreGen(
                                                         aWorld,
                                                         iX,

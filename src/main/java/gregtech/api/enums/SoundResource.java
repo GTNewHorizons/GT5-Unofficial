@@ -304,9 +304,10 @@ public enum SoundResource {
     private static final Map<String, SoundResource> RESOURCE_STR_SOUND_MAP = new ConcurrentHashMap<>();
 
     static {
-        EnumSet.allOf(SoundResource.class).forEach(sound -> { if (sound.id >= 0) ID_SOUND_MAP.put(sound.id, sound); });
         EnumSet.allOf(SoundResource.class)
-                .forEach(sound -> RESOURCE_STR_SOUND_MAP.put(sound.resourceLocation.toString(), sound));
+               .forEach(sound -> { if (sound.id >= 0) ID_SOUND_MAP.put(sound.id, sound); });
+        EnumSet.allOf(SoundResource.class)
+               .forEach(sound -> RESOURCE_STR_SOUND_MAP.put(sound.resourceLocation.toString(), sound));
     }
 
     /**

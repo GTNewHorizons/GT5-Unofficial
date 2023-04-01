@@ -101,14 +101,16 @@ public final class GT_Command extends CommandBase implements IGlobalWirelessEner
     public List addTabCompletionOptions(ICommandSender sender, String[] ss) {
         List<String> l = new ArrayList<>();
         String test = ss.length == 0 ? "" : ss[0].trim();
-        if (ss.length == 0 || ss.length == 1 && (test.isEmpty() || Stream.of(
-                "toggle",
-                "chunks",
-                "pollution",
-                "global_energy_add",
-                "global_energy_set",
-                "global_energy_join",
-                "global_energy_display").anyMatch(s -> s.startsWith(test)))) {
+        if (ss.length == 0 || ss.length == 1 && (test.isEmpty() || Stream
+                                                                         .of(
+                                                                                 "toggle",
+                                                                                 "chunks",
+                                                                                 "pollution",
+                                                                                 "global_energy_add",
+                                                                                 "global_energy_set",
+                                                                                 "global_energy_join",
+                                                                                 "global_energy_display")
+                                                                         .anyMatch(s -> s.startsWith(test)))) {
             Stream.of(
                     "toggle",
                     "chunks",
@@ -116,7 +118,9 @@ public final class GT_Command extends CommandBase implements IGlobalWirelessEner
                     "global_energy_add",
                     "global_energy_set",
                     "global_energy_join",
-                    "global_energy_display").filter(s -> test.isEmpty() || s.startsWith(test)).forEach(l::add);
+                    "global_energy_display")
+                  .filter(s -> test.isEmpty() || s.startsWith(test))
+                  .forEach(l::add);
         } else if (test.equals("toggle")) {
             String test1 = ss[1].trim();
             Stream.of(
@@ -133,7 +137,9 @@ public final class GT_Command extends CommandBase implements IGlobalWirelessEner
                     "debugStones",
                     "debugChunkloaders",
                     "debugMulti",
-                    "debugWorldData").filter(s -> test1.isEmpty() || s.startsWith(test1)).forEach(l::add);
+                    "debugWorldData")
+                  .filter(s -> test1.isEmpty() || s.startsWith(test1))
+                  .forEach(l::add);
         }
         return l;
     }
@@ -178,7 +184,8 @@ public final class GT_Command extends CommandBase implements IGlobalWirelessEner
                 int amount = (strings.length < 2) ? GT_Mod.gregtechproxy.mPollutionSmogLimit
                         : Integer.parseInt(strings[1]);
                 GT_Pollution.addPollution(
-                        sender.getEntityWorld().getChunkFromBlockCoords(coordinates.posX, coordinates.posZ),
+                        sender.getEntityWorld()
+                              .getChunkFromBlockCoords(coordinates.posX, coordinates.posZ),
                         amount);
                 break;
             case "global_energy_add": {

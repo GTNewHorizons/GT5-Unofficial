@@ -228,10 +228,9 @@ public class GT_MetaPipeEntity_Item extends MetaPipeEntity implements IMetaTileE
                 for (boolean temp = true; temp && !isInventoryEmpty() && pipeCapacityCheck();) {
                     temp = false;
                     tPipeList.clear();
-                    for (IMetaTileEntityItemPipe tTileEntity : GT_Utility
-                            .sortMapByValuesAcending(
-                                    IMetaTileEntityItemPipe.Util.scanPipes(this, new HashMap<>(), 0, false, false))
-                            .keySet()) {
+                    for (IMetaTileEntityItemPipe tTileEntity : GT_Utility.sortMapByValuesAcending(
+                            IMetaTileEntityItemPipe.Util.scanPipes(this, new HashMap<>(), 0, false, false))
+                                                                         .keySet()) {
                         if (temp) break;
                         tPipeList.add(tTileEntity);
                         while (!temp && !isInventoryEmpty() && tTileEntity.sendItemStack(aBaseMetaTileEntity))
@@ -308,7 +307,9 @@ public class GT_MetaPipeEntity_Item extends MetaPipeEntity implements IMetaTileE
                 : null;
         if (gTileEntity != null) {
             if (gTileEntity.getMetaTileEntity() == null) return false;
-            if (gTileEntity.getMetaTileEntity().connectsToItemPipe(tSide)) return true;
+            if (gTileEntity.getMetaTileEntity()
+                           .connectsToItemPipe(tSide))
+                return true;
             connectable = true;
         }
 
@@ -355,7 +356,8 @@ public class GT_MetaPipeEntity_Item extends MetaPipeEntity implements IMetaTileE
 
     @Override
     public boolean insertItemStackIntoTileEntity(Object aSender, byte aSide) {
-        if (getBaseMetaTileEntity().getCoverInfoAtSide(aSide).letsItemsOut(-1)) {
+        if (getBaseMetaTileEntity().getCoverInfoAtSide(aSide)
+                                   .letsItemsOut(-1)) {
             final TileEntity tInventory = getBaseMetaTileEntity().getTileEntityAtSide(aSide);
             if (tInventory != null && !(tInventory instanceof BaseMetaPipeEntity)) {
                 if ((!(tInventory instanceof TileEntityHopper) && !(tInventory instanceof TileEntityDispenser))
@@ -510,8 +512,13 @@ public class GT_MetaPipeEntity_Item extends MetaPipeEntity implements IMetaTileE
         if ((tConn & (1 << ForgeDirection.WEST.ordinal())) != 0) tSide4 = 0f;
         if ((tConn & (1 << ForgeDirection.EAST.ordinal())) != 0) tSide5 = 1f;
 
-        return AxisAlignedBB
-                .getBoundingBox(aX + tSide4, aY + tSide0, aZ + tSide2, aX + tSide5, aY + tSide1, aZ + tSide3);
+        return AxisAlignedBB.getBoundingBox(
+                aX + tSide4,
+                aY + tSide0,
+                aZ + tSide2,
+                aX + tSide5,
+                aY + tSide1,
+                aZ + tSide3);
     }
 
     @Override

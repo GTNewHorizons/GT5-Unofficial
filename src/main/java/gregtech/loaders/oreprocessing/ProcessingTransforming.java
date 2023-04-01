@@ -26,8 +26,8 @@ public class ProcessingTransforming implements IOreRecipeRegistrator {
             case "Wood":
                 GT_Values.RA.addChemicalBathRecipe(
                         GT_Utility.copyAmount(1L, aStack),
-                        Materials.SeedOil
-                                .getFluid(GT_Utility.translateMaterialToAmount(aPrefix.mMaterialAmount, 120L, true)),
+                        Materials.SeedOil.getFluid(
+                                GT_Utility.translateMaterialToAmount(aPrefix.mMaterialAmount, 120L, true)),
                         GT_OreDictUnificator.get(aPrefix, Materials.WoodSealed, 1L),
                         GT_Values.NI,
                         GT_Values.NI,
@@ -36,8 +36,8 @@ public class ProcessingTransforming implements IOreRecipeRegistrator {
                         8);
                 GT_Values.RA.addChemicalBathRecipe(
                         GT_Utility.copyAmount(1L, aStack),
-                        Materials.SeedOilLin
-                                .getFluid(GT_Utility.translateMaterialToAmount(aPrefix.mMaterialAmount, 80L, true)),
+                        Materials.SeedOilLin.getFluid(
+                                GT_Utility.translateMaterialToAmount(aPrefix.mMaterialAmount, 80L, true)),
                         GT_OreDictUnificator.get(aPrefix, Materials.WoodSealed, 1L),
                         GT_Values.NI,
                         GT_Values.NI,
@@ -46,8 +46,8 @@ public class ProcessingTransforming implements IOreRecipeRegistrator {
                         8);
                 GT_Values.RA.addChemicalBathRecipe(
                         GT_Utility.copyAmount(1L, aStack),
-                        Materials.SeedOilHemp
-                                .getFluid(GT_Utility.translateMaterialToAmount(aPrefix.mMaterialAmount, 80L, true)),
+                        Materials.SeedOilHemp.getFluid(
+                                GT_Utility.translateMaterialToAmount(aPrefix.mMaterialAmount, 80L, true)),
                         GT_OreDictUnificator.get(aPrefix, Materials.WoodSealed, 1L),
                         GT_Values.NI,
                         GT_Values.NI,
@@ -58,8 +58,8 @@ public class ProcessingTransforming implements IOreRecipeRegistrator {
             case "Iron":
                 GT_Values.RA.addChemicalBathRecipe(
                         GT_Utility.copyAmount(1L, aStack),
-                        Materials.FierySteel
-                                .getFluid(GT_Utility.translateMaterialToAmount(aPrefix.mMaterialAmount, 250L, true)),
+                        Materials.FierySteel.getFluid(
+                                GT_Utility.translateMaterialToAmount(aPrefix.mMaterialAmount, 250L, true)),
                         GT_OreDictUnificator.get(aPrefix, Materials.FierySteel, 1L),
                         GT_Values.NI,
                         GT_Values.NI,
@@ -75,8 +75,8 @@ public class ProcessingTransforming implements IOreRecipeRegistrator {
             case "WroughtIron":
                 GT_Values.RA.addChemicalBathRecipe(
                         GT_Utility.copyAmount(1L, aStack),
-                        Materials.FierySteel
-                                .getFluid(GT_Utility.translateMaterialToAmount(aPrefix.mMaterialAmount, 225L, true)),
+                        Materials.FierySteel.getFluid(
+                                GT_Utility.translateMaterialToAmount(aPrefix.mMaterialAmount, 225L, true)),
                         GT_OreDictUnificator.get(aPrefix, Materials.FierySteel, 1L),
                         GT_Values.NI,
                         GT_Values.NI,
@@ -92,8 +92,8 @@ public class ProcessingTransforming implements IOreRecipeRegistrator {
             case "Steel":
                 GT_Values.RA.addChemicalBathRecipe(
                         GT_Utility.copyAmount(1L, aStack),
-                        Materials.FierySteel
-                                .getFluid(GT_Utility.translateMaterialToAmount(aPrefix.mMaterialAmount, 200L, true)),
+                        Materials.FierySteel.getFluid(
+                                GT_Utility.translateMaterialToAmount(aPrefix.mMaterialAmount, 200L, true)),
                         GT_OreDictUnificator.get(aPrefix, Materials.FierySteel, 1L),
                         GT_Values.NI,
                         GT_Values.NI,

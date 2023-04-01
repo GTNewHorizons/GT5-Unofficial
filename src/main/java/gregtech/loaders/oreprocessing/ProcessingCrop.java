@@ -26,7 +26,8 @@ public class ProcessingCrop implements gregtech.api.interfaces.IOreRecipeRegistr
                 GT_Values.RA.addBrewingRecipe(aStack, FluidRegistry.WATER, FluidRegistry.getFluid("potion.tea"), false);
                 GT_Values.RA.addBrewingRecipe(
                         aStack,
-                        GT_ModHandler.getDistilledWater(1L).getFluid(),
+                        GT_ModHandler.getDistilledWater(1L)
+                                     .getFluid(),
                         FluidRegistry.getFluid("potion.tea"),
                         false);
                 break;
@@ -38,7 +39,8 @@ public class ProcessingCrop implements gregtech.api.interfaces.IOreRecipeRegistr
                         false);
                 GT_Values.RA.addBrewingRecipe(
                         aStack,
-                        GT_ModHandler.getDistilledWater(1L).getFluid(),
+                        GT_ModHandler.getDistilledWater(1L)
+                                     .getFluid(),
                         FluidRegistry.getFluid("potion.grapejuice"),
                         false);
                 break;
@@ -72,7 +74,8 @@ public class ProcessingCrop implements gregtech.api.interfaces.IOreRecipeRegistr
                         true);
                 GT_Values.RA.addBrewingRecipe(
                         aStack,
-                        GT_ModHandler.getDistilledWater(1L).getFluid(),
+                        GT_ModHandler.getDistilledWater(1L)
+                                     .getFluid(),
                         FluidRegistry.getFluid("potion.potatojuice"),
                         true);
                 break;
@@ -90,7 +93,8 @@ public class ProcessingCrop implements gregtech.api.interfaces.IOreRecipeRegistr
                         false);
                 GT_Values.RA.addBrewingRecipe(
                         aStack,
-                        GT_ModHandler.getDistilledWater(1L).getFluid(),
+                        GT_ModHandler.getDistilledWater(1L)
+                                     .getFluid(),
                         FluidRegistry.getFluid("potion.lemonjuice"),
                         false);
                 GT_Values.RA.addBrewingRecipe(

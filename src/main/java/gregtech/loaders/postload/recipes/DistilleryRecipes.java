@@ -26,338 +26,641 @@ public class DistilleryRecipes implements Runnable {
         distillationTowerRecipes();
         universalDistillationTowerRecipes();
 
-        GT_Values.RA.stdBuilder().itemInputs(GT_Utility.getIntegratedCircuit(24)).noItemOutputs()
-                .fluidInputs(Materials.Creosote.getFluid(100L)).fluidOutputs(Materials.Lubricant.getFluid(32L))
-                .duration(12 * SECONDS).eut(30).addTo(sDistilleryRecipes);
+        GT_Values.RA.stdBuilder()
+                    .itemInputs(GT_Utility.getIntegratedCircuit(24))
+                    .noItemOutputs()
+                    .fluidInputs(Materials.Creosote.getFluid(100L))
+                    .fluidOutputs(Materials.Lubricant.getFluid(32L))
+                    .duration(12 * SECONDS)
+                    .eut(30)
+                    .addTo(sDistilleryRecipes);
 
-        GT_Values.RA.stdBuilder().itemInputs(GT_Utility.getIntegratedCircuit(24)).noItemOutputs()
-                .fluidInputs(Materials.SeedOil.getFluid(32L)).fluidOutputs(Materials.Lubricant.getFluid(8L))
-                .duration(4 * SECONDS).eut(30).addTo(sDistilleryRecipes);
+        GT_Values.RA.stdBuilder()
+                    .itemInputs(GT_Utility.getIntegratedCircuit(24))
+                    .noItemOutputs()
+                    .fluidInputs(Materials.SeedOil.getFluid(32L))
+                    .fluidOutputs(Materials.Lubricant.getFluid(8L))
+                    .duration(4 * SECONDS)
+                    .eut(30)
+                    .addTo(sDistilleryRecipes);
 
-        GT_Values.RA.stdBuilder().itemInputs(GT_Utility.getIntegratedCircuit(24)).noItemOutputs()
-                .fluidInputs(Materials.FishOil.getFluid(32L)).fluidOutputs(Materials.Lubricant.getFluid(8L))
-                .duration(4 * SECONDS).eut(30).addTo(sDistilleryRecipes);
+        GT_Values.RA.stdBuilder()
+                    .itemInputs(GT_Utility.getIntegratedCircuit(24))
+                    .noItemOutputs()
+                    .fluidInputs(Materials.FishOil.getFluid(32L))
+                    .fluidOutputs(Materials.Lubricant.getFluid(8L))
+                    .duration(4 * SECONDS)
+                    .eut(30)
+                    .addTo(sDistilleryRecipes);
 
-        GT_Values.RA.stdBuilder().itemInputs(GT_Utility.getIntegratedCircuit(24)).noItemOutputs()
-                .fluidInputs(Materials.Oil.getFluid(120L)).fluidOutputs(Materials.Lubricant.getFluid(60L))
-                .duration(8 * SECONDS).eut(30).addTo(sDistilleryRecipes);
+        GT_Values.RA.stdBuilder()
+                    .itemInputs(GT_Utility.getIntegratedCircuit(24))
+                    .noItemOutputs()
+                    .fluidInputs(Materials.Oil.getFluid(120L))
+                    .fluidOutputs(Materials.Lubricant.getFluid(60L))
+                    .duration(8 * SECONDS)
+                    .eut(30)
+                    .addTo(sDistilleryRecipes);
 
-        GT_Values.RA.stdBuilder().itemInputs(GT_Utility.getIntegratedCircuit(24)).noItemOutputs()
-                .fluidInputs(Materials.OilLight.getFluid(120L)).fluidOutputs(Materials.Lubricant.getFluid(30L))
-                .duration(8 * SECONDS).eut(30).addTo(sDistilleryRecipes);
+        GT_Values.RA.stdBuilder()
+                    .itemInputs(GT_Utility.getIntegratedCircuit(24))
+                    .noItemOutputs()
+                    .fluidInputs(Materials.OilLight.getFluid(120L))
+                    .fluidOutputs(Materials.Lubricant.getFluid(30L))
+                    .duration(8 * SECONDS)
+                    .eut(30)
+                    .addTo(sDistilleryRecipes);
 
-        GT_Values.RA.stdBuilder().itemInputs(GT_Utility.getIntegratedCircuit(24)).noItemOutputs()
-                .fluidInputs(Materials.OilMedium.getFluid(120L)).fluidOutputs(Materials.Lubricant.getFluid(60L))
-                .duration(8 * SECONDS).eut(30).addTo(sDistilleryRecipes);
+        GT_Values.RA.stdBuilder()
+                    .itemInputs(GT_Utility.getIntegratedCircuit(24))
+                    .noItemOutputs()
+                    .fluidInputs(Materials.OilMedium.getFluid(120L))
+                    .fluidOutputs(Materials.Lubricant.getFluid(60L))
+                    .duration(8 * SECONDS)
+                    .eut(30)
+                    .addTo(sDistilleryRecipes);
 
-        GT_Values.RA.stdBuilder().itemInputs(GT_Utility.getIntegratedCircuit(24)).noItemOutputs()
-                .fluidInputs(Materials.OilHeavy.getFluid(120L)).fluidOutputs(Materials.Lubricant.getFluid(90L))
-                .duration(8 * SECONDS).eut(30).addTo(sDistilleryRecipes);
+        GT_Values.RA.stdBuilder()
+                    .itemInputs(GT_Utility.getIntegratedCircuit(24))
+                    .noItemOutputs()
+                    .fluidInputs(Materials.OilHeavy.getFluid(120L))
+                    .fluidOutputs(Materials.Lubricant.getFluid(90L))
+                    .duration(8 * SECONDS)
+                    .eut(30)
+                    .addTo(sDistilleryRecipes);
 
-        GT_Values.RA.stdBuilder().itemInputs(GT_Utility.getIntegratedCircuit(1)).noItemOutputs()
-                .fluidInputs(Materials.Biomass.getFluid(40L)).fluidOutputs(Materials.Ethanol.getFluid(12L))
-                .duration(16 * TICKS).eut(24).addTo(sDistilleryRecipes);
+        GT_Values.RA.stdBuilder()
+                    .itemInputs(GT_Utility.getIntegratedCircuit(1))
+                    .noItemOutputs()
+                    .fluidInputs(Materials.Biomass.getFluid(40L))
+                    .fluidOutputs(Materials.Ethanol.getFluid(12L))
+                    .duration(16 * TICKS)
+                    .eut(24)
+                    .addTo(sDistilleryRecipes);
 
-        GT_Values.RA.stdBuilder().itemInputs(GT_Utility.getIntegratedCircuit(5)).noItemOutputs()
-                .fluidInputs(Materials.Biomass.getFluid(40L)).fluidOutputs(Materials.Water.getFluid(12L))
-                .duration(16 * TICKS).eut(24).addTo(sDistilleryRecipes);
+        GT_Values.RA.stdBuilder()
+                    .itemInputs(GT_Utility.getIntegratedCircuit(5))
+                    .noItemOutputs()
+                    .fluidInputs(Materials.Biomass.getFluid(40L))
+                    .fluidOutputs(Materials.Water.getFluid(12L))
+                    .duration(16 * TICKS)
+                    .eut(24)
+                    .addTo(sDistilleryRecipes);
 
-        GT_Values.RA.stdBuilder().itemInputs(GT_Utility.getIntegratedCircuit(5)).noItemOutputs()
-                .fluidInputs(Materials.Water.getFluid(5L)).fluidOutputs(GT_ModHandler.getDistilledWater(5L))
-                .duration(16 * TICKS).eut(10).addTo(sDistilleryRecipes);
+        GT_Values.RA.stdBuilder()
+                    .itemInputs(GT_Utility.getIntegratedCircuit(5))
+                    .noItemOutputs()
+                    .fluidInputs(Materials.Water.getFluid(5L))
+                    .fluidOutputs(GT_ModHandler.getDistilledWater(5L))
+                    .duration(16 * TICKS)
+                    .eut(10)
+                    .addTo(sDistilleryRecipes);
 
-        GT_Values.RA.stdBuilder().itemInputs(GT_Utility.getIntegratedCircuit(1)).noItemOutputs()
-                .fluidInputs(getFluidStack("potion.potatojuice", 2)).fluidOutputs(getFluidStack("potion.vodka", 1))
-                .duration(16 * TICKS).eut(16).addTo(sDistilleryRecipes);
+        GT_Values.RA.stdBuilder()
+                    .itemInputs(GT_Utility.getIntegratedCircuit(1))
+                    .noItemOutputs()
+                    .fluidInputs(getFluidStack("potion.potatojuice", 2))
+                    .fluidOutputs(getFluidStack("potion.vodka", 1))
+                    .duration(16 * TICKS)
+                    .eut(16)
+                    .addTo(sDistilleryRecipes);
 
-        GT_Values.RA.stdBuilder().itemInputs(GT_Utility.getIntegratedCircuit(1)).noItemOutputs()
-                .fluidInputs(getFluidStack("potion.lemonade", 2)).fluidOutputs(getFluidStack("potion.alcopops", 1))
-                .duration(16 * TICKS).eut(16).addTo(sDistilleryRecipes);
+        GT_Values.RA.stdBuilder()
+                    .itemInputs(GT_Utility.getIntegratedCircuit(1))
+                    .noItemOutputs()
+                    .fluidInputs(getFluidStack("potion.lemonade", 2))
+                    .fluidOutputs(getFluidStack("potion.alcopops", 1))
+                    .duration(16 * TICKS)
+                    .eut(16)
+                    .addTo(sDistilleryRecipes);
 
-        GT_Values.RA.stdBuilder().itemInputs(GT_Utility.getIntegratedCircuit(4)).noItemOutputs()
-                .fluidInputs(Materials.OilLight.getFluid(300L)).fluidOutputs(Materials.Oil.getFluid(100L))
-                .duration(16 * TICKS).eut(24).addTo(sDistilleryRecipes);
+        GT_Values.RA.stdBuilder()
+                    .itemInputs(GT_Utility.getIntegratedCircuit(4))
+                    .noItemOutputs()
+                    .fluidInputs(Materials.OilLight.getFluid(300L))
+                    .fluidOutputs(Materials.Oil.getFluid(100L))
+                    .duration(16 * TICKS)
+                    .eut(24)
+                    .addTo(sDistilleryRecipes);
 
-        GT_Values.RA.stdBuilder().itemInputs(GT_Utility.getIntegratedCircuit(4)).noItemOutputs()
-                .fluidInputs(Materials.OilMedium.getFluid(200L)).fluidOutputs(Materials.Oil.getFluid(100L))
-                .duration(16 * TICKS).eut(24).addTo(sDistilleryRecipes);
+        GT_Values.RA.stdBuilder()
+                    .itemInputs(GT_Utility.getIntegratedCircuit(4))
+                    .noItemOutputs()
+                    .fluidInputs(Materials.OilMedium.getFluid(200L))
+                    .fluidOutputs(Materials.Oil.getFluid(100L))
+                    .duration(16 * TICKS)
+                    .eut(24)
+                    .addTo(sDistilleryRecipes);
 
-        GT_Values.RA.stdBuilder().itemInputs(GT_Utility.getIntegratedCircuit(4)).noItemOutputs()
-                .fluidInputs(Materials.OilHeavy.getFluid(100L)).fluidOutputs(Materials.Oil.getFluid(100L))
-                .duration(16 * TICKS).eut(24).addTo(sDistilleryRecipes);
+        GT_Values.RA.stdBuilder()
+                    .itemInputs(GT_Utility.getIntegratedCircuit(4))
+                    .noItemOutputs()
+                    .fluidInputs(Materials.OilHeavy.getFluid(100L))
+                    .fluidOutputs(Materials.Oil.getFluid(100L))
+                    .duration(16 * TICKS)
+                    .eut(24)
+                    .addTo(sDistilleryRecipes);
 
-        GT_Values.RA.stdBuilder().noItemInputs().itemOutputs(MaterialsOreAlum.SluiceSand.getDust(1))
-                .fluidInputs(MaterialsOreAlum.SluiceJuice.getFluid(1000)).fluidOutputs(Materials.Water.getFluid(500))
-                .duration(5 * SECONDS).eut(16).addTo(sDistilleryRecipes);
+        GT_Values.RA.stdBuilder()
+                    .noItemInputs()
+                    .itemOutputs(MaterialsOreAlum.SluiceSand.getDust(1))
+                    .fluidInputs(MaterialsOreAlum.SluiceJuice.getFluid(1000))
+                    .fluidOutputs(Materials.Water.getFluid(500))
+                    .duration(5 * SECONDS)
+                    .eut(16)
+                    .addTo(sDistilleryRecipes);
 
-        GT_Values.RA.stdBuilder().itemInputs(6).noItemOutputs().fluidInputs(Materials.WoodTar.getFluid(200))
-                .fluidOutputs(MaterialsKevlar.IIIDimethylbenzene.getFluid(30)).duration(16 * TICKS).eut(64)
-                .addTo(sDistilleryRecipes);
+        GT_Values.RA.stdBuilder()
+                    .itemInputs(6)
+                    .noItemOutputs()
+                    .fluidInputs(Materials.WoodTar.getFluid(200))
+                    .fluidOutputs(MaterialsKevlar.IIIDimethylbenzene.getFluid(30))
+                    .duration(16 * TICKS)
+                    .eut(64)
+                    .addTo(sDistilleryRecipes);
 
-        GT_Values.RA.stdBuilder().itemInputs(6).noItemOutputs().fluidInputs(Materials.CharcoalByproducts.getGas(200))
-                .fluidOutputs(MaterialsKevlar.IIIDimethylbenzene.getFluid(20)).duration(5 * SECONDS).eut(64)
-                .addTo(sDistilleryRecipes);
+        GT_Values.RA.stdBuilder()
+                    .itemInputs(6)
+                    .noItemOutputs()
+                    .fluidInputs(Materials.CharcoalByproducts.getGas(200))
+                    .fluidOutputs(MaterialsKevlar.IIIDimethylbenzene.getFluid(20))
+                    .duration(5 * SECONDS)
+                    .eut(64)
+                    .addTo(sDistilleryRecipes);
 
-        GT_Values.RA.stdBuilder().itemInputs(7).noItemOutputs().fluidInputs(Materials.WoodTar.getFluid(200))
-                .fluidOutputs(MaterialsKevlar.IVDimethylbenzene.getFluid(30)).duration(16 * TICKS).eut(64)
-                .addTo(sDistilleryRecipes);
+        GT_Values.RA.stdBuilder()
+                    .itemInputs(7)
+                    .noItemOutputs()
+                    .fluidInputs(Materials.WoodTar.getFluid(200))
+                    .fluidOutputs(MaterialsKevlar.IVDimethylbenzene.getFluid(30))
+                    .duration(16 * TICKS)
+                    .eut(64)
+                    .addTo(sDistilleryRecipes);
 
-        GT_Values.RA.stdBuilder().itemInputs(7).noItemOutputs().fluidInputs(Materials.CharcoalByproducts.getGas(200))
-                .fluidOutputs(MaterialsKevlar.IVDimethylbenzene.getFluid(20)).duration(5 * SECONDS).eut(64)
-                .addTo(sDistilleryRecipes);
+        GT_Values.RA.stdBuilder()
+                    .itemInputs(7)
+                    .noItemOutputs()
+                    .fluidInputs(Materials.CharcoalByproducts.getGas(200))
+                    .fluidOutputs(MaterialsKevlar.IVDimethylbenzene.getFluid(20))
+                    .duration(5 * SECONDS)
+                    .eut(64)
+                    .addTo(sDistilleryRecipes);
         // (NaCl·H2O) = NaCl + H2O
 
-        GT_Values.RA.stdBuilder().noItemInputs().itemOutputs(Materials.Salt.getDust(2))
-                .fluidInputs(Materials.SaltWater.getFluid(1000)).fluidOutputs(GT_ModHandler.getDistilledWater(1000))
-                .duration(1 * MINUTES + 20 * SECONDS).eut(30).addTo(sDistilleryRecipes);
+        GT_Values.RA.stdBuilder()
+                    .noItemInputs()
+                    .itemOutputs(Materials.Salt.getDust(2))
+                    .fluidInputs(Materials.SaltWater.getFluid(1000))
+                    .fluidOutputs(GT_ModHandler.getDistilledWater(1000))
+                    .duration(1 * MINUTES + 20 * SECONDS)
+                    .eut(30)
+                    .addTo(sDistilleryRecipes);
 
-        GT_Values.RA.stdBuilder().noItemInputs().itemOutputs(ItemList.IC2_Fertilizer.get(1))
-                .fluidInputs(Materials.FermentedBiomass.getFluid(1000)).fluidOutputs(Materials.AceticAcid.getFluid(25))
-                .duration(1 * MINUTES + 15 * SECONDS).eut(8).addTo(sDistilleryRecipes);
+        GT_Values.RA.stdBuilder()
+                    .noItemInputs()
+                    .itemOutputs(ItemList.IC2_Fertilizer.get(1))
+                    .fluidInputs(Materials.FermentedBiomass.getFluid(1000))
+                    .fluidOutputs(Materials.AceticAcid.getFluid(25))
+                    .duration(1 * MINUTES + 15 * SECONDS)
+                    .eut(8)
+                    .addTo(sDistilleryRecipes);
 
-        GT_Values.RA.stdBuilder().noItemInputs().itemOutputs(ItemList.IC2_Fertilizer.get(1))
-                .fluidInputs(Materials.FermentedBiomass.getFluid(1000)).fluidOutputs(Materials.Water.getFluid(375))
-                .duration(1 * MINUTES + 15 * SECONDS).eut(8).addTo(sDistilleryRecipes);
+        GT_Values.RA.stdBuilder()
+                    .noItemInputs()
+                    .itemOutputs(ItemList.IC2_Fertilizer.get(1))
+                    .fluidInputs(Materials.FermentedBiomass.getFluid(1000))
+                    .fluidOutputs(Materials.Water.getFluid(375))
+                    .duration(1 * MINUTES + 15 * SECONDS)
+                    .eut(8)
+                    .addTo(sDistilleryRecipes);
 
-        GT_Values.RA.stdBuilder().noItemInputs().itemOutputs(ItemList.IC2_Fertilizer.get(1))
-                .fluidInputs(Materials.FermentedBiomass.getFluid(1000)).fluidOutputs(Materials.Ethanol.getFluid(150))
-                .duration(1 * MINUTES + 15 * SECONDS).eut(8).addTo(sDistilleryRecipes);
+        GT_Values.RA.stdBuilder()
+                    .noItemInputs()
+                    .itemOutputs(ItemList.IC2_Fertilizer.get(1))
+                    .fluidInputs(Materials.FermentedBiomass.getFluid(1000))
+                    .fluidOutputs(Materials.Ethanol.getFluid(150))
+                    .duration(1 * MINUTES + 15 * SECONDS)
+                    .eut(8)
+                    .addTo(sDistilleryRecipes);
 
-        GT_Values.RA.stdBuilder().noItemInputs().itemOutputs(ItemList.IC2_Fertilizer.get(1))
-                .fluidInputs(Materials.FermentedBiomass.getFluid(1000)).fluidOutputs(Materials.Methanol.getFluid(150))
-                .duration(1 * MINUTES + 15 * SECONDS).eut(8).addTo(sDistilleryRecipes);
+        GT_Values.RA.stdBuilder()
+                    .noItemInputs()
+                    .itemOutputs(ItemList.IC2_Fertilizer.get(1))
+                    .fluidInputs(Materials.FermentedBiomass.getFluid(1000))
+                    .fluidOutputs(Materials.Methanol.getFluid(150))
+                    .duration(1 * MINUTES + 15 * SECONDS)
+                    .eut(8)
+                    .addTo(sDistilleryRecipes);
 
-        GT_Values.RA.stdBuilder().noItemInputs().itemOutputs(ItemList.IC2_Fertilizer.get(1))
-                .fluidInputs(Materials.FermentedBiomass.getFluid(1000)).fluidOutputs(Materials.Ammonia.getGas(100))
-                .duration(1 * MINUTES + 15 * SECONDS).eut(8).addTo(sDistilleryRecipes);
+        GT_Values.RA.stdBuilder()
+                    .noItemInputs()
+                    .itemOutputs(ItemList.IC2_Fertilizer.get(1))
+                    .fluidInputs(Materials.FermentedBiomass.getFluid(1000))
+                    .fluidOutputs(Materials.Ammonia.getGas(100))
+                    .duration(1 * MINUTES + 15 * SECONDS)
+                    .eut(8)
+                    .addTo(sDistilleryRecipes);
 
-        GT_Values.RA.stdBuilder().noItemInputs().itemOutputs(ItemList.IC2_Fertilizer.get(1))
-                .fluidInputs(Materials.FermentedBiomass.getFluid(1000))
-                .fluidOutputs(Materials.CarbonDioxide.getGas(400)).duration(1 * MINUTES + 15 * SECONDS).eut(8)
-                .addTo(sDistilleryRecipes);
+        GT_Values.RA.stdBuilder()
+                    .noItemInputs()
+                    .itemOutputs(ItemList.IC2_Fertilizer.get(1))
+                    .fluidInputs(Materials.FermentedBiomass.getFluid(1000))
+                    .fluidOutputs(Materials.CarbonDioxide.getGas(400))
+                    .duration(1 * MINUTES + 15 * SECONDS)
+                    .eut(8)
+                    .addTo(sDistilleryRecipes);
 
-        GT_Values.RA.stdBuilder().noItemInputs().itemOutputs(ItemList.IC2_Fertilizer.get(1))
-                .fluidInputs(Materials.FermentedBiomass.getFluid(1000)).fluidOutputs(Materials.Methane.getGas(600))
-                .duration(1 * MINUTES + 15 * SECONDS).eut(8).addTo(sDistilleryRecipes);
+        GT_Values.RA.stdBuilder()
+                    .noItemInputs()
+                    .itemOutputs(ItemList.IC2_Fertilizer.get(1))
+                    .fluidInputs(Materials.FermentedBiomass.getFluid(1000))
+                    .fluidOutputs(Materials.Methane.getGas(600))
+                    .duration(1 * MINUTES + 15 * SECONDS)
+                    .eut(8)
+                    .addTo(sDistilleryRecipes);
 
-        GT_Values.RA.stdBuilder().noItemInputs().itemOutputs(ItemList.IC2_Fertilizer.get(1))
-                .fluidInputs(Materials.FermentedBiomass.getFluid(1000))
-                .fluidOutputs(new FluidStack(FluidRegistry.getFluid("ic2biogas"), 1800))
-                .duration(1 * MINUTES + 20 * SECONDS).eut(8).addTo(sDistilleryRecipes);
+        GT_Values.RA.stdBuilder()
+                    .noItemInputs()
+                    .itemOutputs(ItemList.IC2_Fertilizer.get(1))
+                    .fluidInputs(Materials.FermentedBiomass.getFluid(1000))
+                    .fluidOutputs(new FluidStack(FluidRegistry.getFluid("ic2biogas"), 1800))
+                    .duration(1 * MINUTES + 20 * SECONDS)
+                    .eut(8)
+                    .addTo(sDistilleryRecipes);
 
-        GT_Values.RA.stdBuilder().noItemInputs().noItemOutputs().fluidInputs(Materials.Methane.getGas(1000))
-                .fluidOutputs(new FluidStack(FluidRegistry.getFluid("ic2biogas"), 3000)).duration(8 * SECONDS).eut(8)
-                .addTo(sDistilleryRecipes);
+        GT_Values.RA.stdBuilder()
+                    .noItemInputs()
+                    .noItemOutputs()
+                    .fluidInputs(Materials.Methane.getGas(1000))
+                    .fluidOutputs(new FluidStack(FluidRegistry.getFluid("ic2biogas"), 3000))
+                    .duration(8 * SECONDS)
+                    .eut(8)
+                    .addTo(sDistilleryRecipes);
 
-        GT_Values.RA.stdBuilder().itemInputs(2).noItemOutputs().fluidInputs(Materials.HeavyFuel.getFluid(100))
-                .fluidOutputs(Materials.Benzene.getFluid(40)).duration(8 * SECONDS).eut(24).addTo(sDistilleryRecipes);
+        GT_Values.RA.stdBuilder()
+                    .itemInputs(2)
+                    .noItemOutputs()
+                    .fluidInputs(Materials.HeavyFuel.getFluid(100))
+                    .fluidOutputs(Materials.Benzene.getFluid(40))
+                    .duration(8 * SECONDS)
+                    .eut(24)
+                    .addTo(sDistilleryRecipes);
 
-        GT_Values.RA.stdBuilder().itemInputs(3).noItemOutputs().fluidInputs(Materials.HeavyFuel.getFluid(100))
-                .fluidOutputs(Materials.Phenol.getFluid(25)).duration(8 * SECONDS).eut(24).addTo(sDistilleryRecipes);
+        GT_Values.RA.stdBuilder()
+                    .itemInputs(3)
+                    .noItemOutputs()
+                    .fluidInputs(Materials.HeavyFuel.getFluid(100))
+                    .fluidOutputs(Materials.Phenol.getFluid(25))
+                    .duration(8 * SECONDS)
+                    .eut(24)
+                    .addTo(sDistilleryRecipes);
         // Dimethylbenzene
 
-        GT_Values.RA.stdBuilder().itemInputs(5).noItemOutputs().fluidInputs(Materials.WoodTar.getFluid(200))
-                .fluidOutputs(Materials.Dimethylbenzene.getFluid(30)).duration(5 * SECONDS).eut(TierEU.RECIPE_MV)
-                .addTo(sDistilleryRecipes);
+        GT_Values.RA.stdBuilder()
+                    .itemInputs(5)
+                    .noItemOutputs()
+                    .fluidInputs(Materials.WoodTar.getFluid(200))
+                    .fluidOutputs(Materials.Dimethylbenzene.getFluid(30))
+                    .duration(5 * SECONDS)
+                    .eut(TierEU.RECIPE_MV)
+                    .addTo(sDistilleryRecipes);
 
-        GT_Values.RA.stdBuilder().itemInputs(5).noItemOutputs().fluidInputs(Materials.CharcoalByproducts.getGas(200))
-                .fluidOutputs(Materials.Dimethylbenzene.getFluid(20)).duration(5 * SECONDS).eut(TierEU.RECIPE_MV)
-                .addTo(sDistilleryRecipes);
+        GT_Values.RA.stdBuilder()
+                    .itemInputs(5)
+                    .noItemOutputs()
+                    .fluidInputs(Materials.CharcoalByproducts.getGas(200))
+                    .fluidOutputs(Materials.Dimethylbenzene.getFluid(20))
+                    .duration(5 * SECONDS)
+                    .eut(TierEU.RECIPE_MV)
+                    .addTo(sDistilleryRecipes);
 
-        GT_Values.RA.stdBuilder().itemInputs(GT_Utility.getIntegratedCircuit(1)).noItemOutputs()
-                .fluidInputs(new FluidStack(ItemList.sOilExtraHeavy, 10)).fluidOutputs(Materials.OilHeavy.getFluid(15))
-                .duration(16 * TICKS).eut(24).addTo(sDistilleryRecipes);
+        GT_Values.RA.stdBuilder()
+                    .itemInputs(GT_Utility.getIntegratedCircuit(1))
+                    .noItemOutputs()
+                    .fluidInputs(new FluidStack(ItemList.sOilExtraHeavy, 10))
+                    .fluidOutputs(Materials.OilHeavy.getFluid(15))
+                    .duration(16 * TICKS)
+                    .eut(24)
+                    .addTo(sDistilleryRecipes);
 
-        GT_Values.RA.stdBuilder().itemInputs(GT_Utility.getIntegratedCircuit(1)).noItemOutputs()
-                .fluidInputs(Materials.HeavyFuel.getFluid(10L)).fluidOutputs(new FluidStack(ItemList.sToluene, 4))
-                .duration(16 * TICKS).eut(24).addTo(sDistilleryRecipes);
+        GT_Values.RA.stdBuilder()
+                    .itemInputs(GT_Utility.getIntegratedCircuit(1))
+                    .noItemOutputs()
+                    .fluidInputs(Materials.HeavyFuel.getFluid(10L))
+                    .fluidOutputs(new FluidStack(ItemList.sToluene, 4))
+                    .duration(16 * TICKS)
+                    .eut(24)
+                    .addTo(sDistilleryRecipes);
 
-        GT_Values.RA.stdBuilder().itemInputs(GT_Utility.getIntegratedCircuit(1)).noItemOutputs()
-                .fluidInputs(new FluidStack(ItemList.sToluene, 30)).fluidOutputs(Materials.LightFuel.getFluid(30L))
-                .duration(16 * TICKS).eut(24).addTo(sDistilleryRecipes);
+        GT_Values.RA.stdBuilder()
+                    .itemInputs(GT_Utility.getIntegratedCircuit(1))
+                    .noItemOutputs()
+                    .fluidInputs(new FluidStack(ItemList.sToluene, 30))
+                    .fluidOutputs(Materials.LightFuel.getFluid(30L))
+                    .duration(16 * TICKS)
+                    .eut(24)
+                    .addTo(sDistilleryRecipes);
 
         if (TinkerConstruct.isModLoaded()) {
 
-            GT_Values.RA.stdBuilder().itemInputs(GT_Utility.getIntegratedCircuit(1)).noItemOutputs()
-                    .fluidInputs(Materials.Glue.getFluid(8L)).fluidOutputs(getFluidStack("glue", 8)).duration(1 * TICKS)
-                    .eut(24).addTo(sDistilleryRecipes);
+            GT_Values.RA.stdBuilder()
+                        .itemInputs(GT_Utility.getIntegratedCircuit(1))
+                        .noItemOutputs()
+                        .fluidInputs(Materials.Glue.getFluid(8L))
+                        .fluidOutputs(getFluidStack("glue", 8))
+                        .duration(1 * TICKS)
+                        .eut(24)
+                        .addTo(sDistilleryRecipes);
 
-            GT_Values.RA.stdBuilder().itemInputs(GT_Utility.getIntegratedCircuit(1)).noItemOutputs()
-                    .fluidInputs(getFluidStack("glue", 8)).fluidOutputs(Materials.Glue.getFluid(4L)).duration(1 * TICKS)
-                    .eut(24).addTo(sDistilleryRecipes);
+            GT_Values.RA.stdBuilder()
+                        .itemInputs(GT_Utility.getIntegratedCircuit(1))
+                        .noItemOutputs()
+                        .fluidInputs(getFluidStack("glue", 8))
+                        .fluidOutputs(Materials.Glue.getFluid(4L))
+                        .duration(1 * TICKS)
+                        .eut(24)
+                        .addTo(sDistilleryRecipes);
 
         }
 
         if (!GregTech_API.mIC2Classic) {
 
-            GT_Values.RA.stdBuilder().itemInputs(GT_Utility.getIntegratedCircuit(1)).noItemOutputs()
-                    .fluidInputs(new FluidStack(FluidRegistry.getFluid("ic2biomass"), 20))
-                    .fluidOutputs(new FluidStack(FluidRegistry.getFluid("ic2biogas"), 32)).duration(2 * SECONDS).eut(16)
-                    .addTo(sDistilleryRecipes);
+            GT_Values.RA.stdBuilder()
+                        .itemInputs(GT_Utility.getIntegratedCircuit(1))
+                        .noItemOutputs()
+                        .fluidInputs(new FluidStack(FluidRegistry.getFluid("ic2biomass"), 20))
+                        .fluidOutputs(new FluidStack(FluidRegistry.getFluid("ic2biogas"), 32))
+                        .duration(2 * SECONDS)
+                        .eut(16)
+                        .addTo(sDistilleryRecipes);
 
-            GT_Values.RA.stdBuilder().itemInputs(GT_Utility.getIntegratedCircuit(2)).noItemOutputs()
-                    .fluidInputs(new FluidStack(FluidRegistry.getFluid("ic2biomass"), 4))
-                    .fluidOutputs(Materials.Water.getFluid(2)).duration(4 * SECONDS).eut(30).addTo(sDistilleryRecipes);
+            GT_Values.RA.stdBuilder()
+                        .itemInputs(GT_Utility.getIntegratedCircuit(2))
+                        .noItemOutputs()
+                        .fluidInputs(new FluidStack(FluidRegistry.getFluid("ic2biomass"), 4))
+                        .fluidOutputs(Materials.Water.getFluid(2))
+                        .duration(4 * SECONDS)
+                        .eut(30)
+                        .addTo(sDistilleryRecipes);
 
         }
     }
 
     public void distillationTowerRecipes() {
-        GT_Values.RA.stdBuilder().noItemInputs().noItemOutputs().fluidInputs(Materials.Creosote.getFluid(1000L))
-                .fluidOutputs(Materials.Lubricant.getFluid(500L)).duration(20 * SECONDS).eut(TierEU.RECIPE_MV)
-                .addTo(sDistillationRecipes);
+        GT_Values.RA.stdBuilder()
+                    .noItemInputs()
+                    .noItemOutputs()
+                    .fluidInputs(Materials.Creosote.getFluid(1000L))
+                    .fluidOutputs(Materials.Lubricant.getFluid(500L))
+                    .duration(20 * SECONDS)
+                    .eut(TierEU.RECIPE_MV)
+                    .addTo(sDistillationRecipes);
 
-        GT_Values.RA.stdBuilder().noItemInputs().noItemOutputs().fluidInputs(Materials.SeedOil.getFluid(1400L))
-                .fluidOutputs(Materials.Lubricant.getFluid(500L)).duration(20 * SECONDS).eut(TierEU.RECIPE_MV)
-                .addTo(sDistillationRecipes);
+        GT_Values.RA.stdBuilder()
+                    .noItemInputs()
+                    .noItemOutputs()
+                    .fluidInputs(Materials.SeedOil.getFluid(1400L))
+                    .fluidOutputs(Materials.Lubricant.getFluid(500L))
+                    .duration(20 * SECONDS)
+                    .eut(TierEU.RECIPE_MV)
+                    .addTo(sDistillationRecipes);
 
-        GT_Values.RA.stdBuilder().noItemInputs().noItemOutputs().fluidInputs(Materials.FishOil.getFluid(1200L))
-                .fluidOutputs(Materials.Lubricant.getFluid(500L)).duration(20 * SECONDS).eut(TierEU.RECIPE_MV)
-                .addTo(sDistillationRecipes);
+        GT_Values.RA.stdBuilder()
+                    .noItemInputs()
+                    .noItemOutputs()
+                    .fluidInputs(Materials.FishOil.getFluid(1200L))
+                    .fluidOutputs(Materials.Lubricant.getFluid(500L))
+                    .duration(20 * SECONDS)
+                    .eut(TierEU.RECIPE_MV)
+                    .addTo(sDistillationRecipes);
 
-        GT_Values.RA.stdBuilder().noItemInputs()
-                .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Wood, 2L))
-                .fluidInputs(Materials.Biomass.getFluid(1000L))
-                .fluidOutputs(Materials.Ethanol.getFluid(600L), Materials.Water.getFluid(300L))
-                .duration(1 * SECONDS + 12 * TICKS).eut(400).addTo(sDistillationRecipes);
+        GT_Values.RA.stdBuilder()
+                    .noItemInputs()
+                    .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Wood, 2L))
+                    .fluidInputs(Materials.Biomass.getFluid(1000L))
+                    .fluidOutputs(Materials.Ethanol.getFluid(600L), Materials.Water.getFluid(300L))
+                    .duration(1 * SECONDS + 12 * TICKS)
+                    .eut(400)
+                    .addTo(sDistillationRecipes);
 
-        GT_Values.RA.stdBuilder().noItemInputs().noItemOutputs().fluidInputs(Materials.Water.getFluid(1000L))
-                .fluidOutputs(GT_ModHandler.getDistilledWater(1000L)).duration(1 * SECONDS + 12 * TICKS)
-                .eut(TierEU.RECIPE_MV).addTo(sDistillationRecipes);
+        GT_Values.RA.stdBuilder()
+                    .noItemInputs()
+                    .noItemOutputs()
+                    .fluidInputs(Materials.Water.getFluid(1000L))
+                    .fluidOutputs(GT_ModHandler.getDistilledWater(1000L))
+                    .duration(1 * SECONDS + 12 * TICKS)
+                    .eut(TierEU.RECIPE_MV)
+                    .addTo(sDistillationRecipes);
 
-        GT_Values.RA.stdBuilder().noItemInputs().noItemOutputs().fluidInputs(Materials.OilLight.getFluid(1000L))
-                .fluidOutputs(Materials.Lubricant.getFluid(250L)).duration(20 * SECONDS).eut(TierEU.RECIPE_MV)
-                .addTo(sDistillationRecipes);
+        GT_Values.RA.stdBuilder()
+                    .noItemInputs()
+                    .noItemOutputs()
+                    .fluidInputs(Materials.OilLight.getFluid(1000L))
+                    .fluidOutputs(Materials.Lubricant.getFluid(250L))
+                    .duration(20 * SECONDS)
+                    .eut(TierEU.RECIPE_MV)
+                    .addTo(sDistillationRecipes);
 
-        GT_Values.RA.stdBuilder().noItemInputs().noItemOutputs().fluidInputs(Materials.OilMedium.getFluid(1000L))
-                .fluidOutputs(Materials.Lubricant.getFluid(500L)).duration(20 * SECONDS).eut(TierEU.RECIPE_MV)
-                .addTo(sDistillationRecipes);
+        GT_Values.RA.stdBuilder()
+                    .noItemInputs()
+                    .noItemOutputs()
+                    .fluidInputs(Materials.OilMedium.getFluid(1000L))
+                    .fluidOutputs(Materials.Lubricant.getFluid(500L))
+                    .duration(20 * SECONDS)
+                    .eut(TierEU.RECIPE_MV)
+                    .addTo(sDistillationRecipes);
 
-        GT_Values.RA.stdBuilder().noItemInputs().noItemOutputs().fluidInputs(Materials.OilHeavy.getFluid(1000L))
-                .fluidOutputs(Materials.Lubricant.getFluid(750L)).duration(20 * SECONDS).eut(TierEU.RECIPE_MV)
-                .addTo(sDistillationRecipes);
+        GT_Values.RA.stdBuilder()
+                    .noItemInputs()
+                    .noItemOutputs()
+                    .fluidInputs(Materials.OilHeavy.getFluid(1000L))
+                    .fluidOutputs(Materials.Lubricant.getFluid(750L))
+                    .duration(20 * SECONDS)
+                    .eut(TierEU.RECIPE_MV)
+                    .addTo(sDistillationRecipes);
         // C15H10N2O2(5HCl) = C15H10N2O2 + 5HCl
 
-        GT_Values.RA.stdBuilder().noItemInputs()
-                .itemOutputs(
-                        GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsKevlar.DiphenylmethaneDiisocyanate, 29L))
-                .fluidInputs(MaterialsKevlar.DiphenylmethaneDiisocyanateMixture.getFluid(1000L))
-                .fluidOutputs(Materials.HydrochloricAcid.getFluid(5000L)).duration(2 * MINUTES + 5 * SECONDS)
-                .eut(TierEU.RECIPE_EV).addTo(sDistillationRecipes);
+        GT_Values.RA.stdBuilder()
+                    .noItemInputs()
+                    .itemOutputs(
+                            GT_OreDictUnificator.get(
+                                    OrePrefixes.dust,
+                                    MaterialsKevlar.DiphenylmethaneDiisocyanate,
+                                    29L))
+                    .fluidInputs(MaterialsKevlar.DiphenylmethaneDiisocyanateMixture.getFluid(1000L))
+                    .fluidOutputs(Materials.HydrochloricAcid.getFluid(5000L))
+                    .duration(2 * MINUTES + 5 * SECONDS)
+                    .eut(TierEU.RECIPE_EV)
+                    .addTo(sDistillationRecipes);
 
-        GT_Values.RA.stdBuilder().noItemInputs().itemOutputs(Materials.Charcoal.getDustSmall(1))
-                .fluidInputs(Materials.CharcoalByproducts.getGas(1000))
-                .fluidOutputs(
-                        Materials.WoodTar.getFluid(250),
-                        Materials.WoodVinegar.getFluid(400),
-                        Materials.WoodGas.getGas(250),
-                        MaterialsKevlar.IIIDimethylbenzene.getFluid(100))
-                .duration(2 * SECONDS).eut(256).addTo(sDistillationRecipes);
+        GT_Values.RA.stdBuilder()
+                    .noItemInputs()
+                    .itemOutputs(Materials.Charcoal.getDustSmall(1))
+                    .fluidInputs(Materials.CharcoalByproducts.getGas(1000))
+                    .fluidOutputs(
+                            Materials.WoodTar.getFluid(250),
+                            Materials.WoodVinegar.getFluid(400),
+                            Materials.WoodGas.getGas(250),
+                            MaterialsKevlar.IIIDimethylbenzene.getFluid(100))
+                    .duration(2 * SECONDS)
+                    .eut(256)
+                    .addTo(sDistillationRecipes);
 
-        GT_Values.RA.stdBuilder().noItemInputs().itemOutputs(GT_Values.NI).fluidInputs(Materials.WoodTar.getFluid(1000))
-                .fluidOutputs(
-                        Materials.Creosote.getFluid(250),
-                        Materials.Phenol.getFluid(100),
-                        Materials.Benzene.getFluid(400),
-                        Materials.Toluene.getFluid(100),
-                        MaterialsKevlar.IIIDimethylbenzene.getFluid(150))
-                .duration(2 * SECONDS).eut(256).addTo(sDistillationRecipes);
+        GT_Values.RA.stdBuilder()
+                    .noItemInputs()
+                    .itemOutputs(GT_Values.NI)
+                    .fluidInputs(Materials.WoodTar.getFluid(1000))
+                    .fluidOutputs(
+                            Materials.Creosote.getFluid(250),
+                            Materials.Phenol.getFluid(100),
+                            Materials.Benzene.getFluid(400),
+                            Materials.Toluene.getFluid(100),
+                            MaterialsKevlar.IIIDimethylbenzene.getFluid(150))
+                    .duration(2 * SECONDS)
+                    .eut(256)
+                    .addTo(sDistillationRecipes);
 
-        GT_Values.RA.stdBuilder().noItemInputs().itemOutputs(Materials.Charcoal.getDustSmall(1))
-                .fluidInputs(Materials.CharcoalByproducts.getGas(1000))
-                .fluidOutputs(
-                        Materials.WoodTar.getFluid(250),
-                        Materials.WoodVinegar.getFluid(400),
-                        Materials.WoodGas.getGas(250),
-                        MaterialsKevlar.IVDimethylbenzene.getFluid(100))
-                .duration(2 * SECONDS).eut(256).addTo(sDistillationRecipes);
+        GT_Values.RA.stdBuilder()
+                    .noItemInputs()
+                    .itemOutputs(Materials.Charcoal.getDustSmall(1))
+                    .fluidInputs(Materials.CharcoalByproducts.getGas(1000))
+                    .fluidOutputs(
+                            Materials.WoodTar.getFluid(250),
+                            Materials.WoodVinegar.getFluid(400),
+                            Materials.WoodGas.getGas(250),
+                            MaterialsKevlar.IVDimethylbenzene.getFluid(100))
+                    .duration(2 * SECONDS)
+                    .eut(256)
+                    .addTo(sDistillationRecipes);
 
-        GT_Values.RA.stdBuilder().noItemInputs().itemOutputs(Materials.Charcoal.getDustSmall(1))
-                .fluidInputs(Materials.CharcoalByproducts.getGas(1000))
-                .fluidOutputs(
-                        Materials.WoodTar.getFluid(250),
-                        Materials.WoodVinegar.getFluid(400),
-                        Materials.WoodGas.getGas(250),
-                        Materials.Dimethylbenzene.getFluid(20),
-                        MaterialsKevlar.IIIDimethylbenzene.getFluid(60),
-                        MaterialsKevlar.IVDimethylbenzene.getFluid(20))
-                .duration(2 * SECONDS).eut(256).addTo(sDistillationRecipes);
+        GT_Values.RA.stdBuilder()
+                    .noItemInputs()
+                    .itemOutputs(Materials.Charcoal.getDustSmall(1))
+                    .fluidInputs(Materials.CharcoalByproducts.getGas(1000))
+                    .fluidOutputs(
+                            Materials.WoodTar.getFluid(250),
+                            Materials.WoodVinegar.getFluid(400),
+                            Materials.WoodGas.getGas(250),
+                            Materials.Dimethylbenzene.getFluid(20),
+                            MaterialsKevlar.IIIDimethylbenzene.getFluid(60),
+                            MaterialsKevlar.IVDimethylbenzene.getFluid(20))
+                    .duration(2 * SECONDS)
+                    .eut(256)
+                    .addTo(sDistillationRecipes);
 
-        GT_Values.RA.stdBuilder().noItemInputs().itemOutputs(GT_Values.NI).fluidInputs(Materials.WoodTar.getFluid(1000))
-                .fluidOutputs(
-                        Materials.Creosote.getFluid(250),
-                        Materials.Phenol.getFluid(100),
-                        Materials.Benzene.getFluid(400),
-                        Materials.Toluene.getFluid(100),
-                        Materials.Dimethylbenzene.getFluid(30),
-                        MaterialsKevlar.IIIDimethylbenzene.getFluid(90),
-                        MaterialsKevlar.IVDimethylbenzene.getFluid(30))
-                .duration(2 * SECONDS).eut(256).addTo(sDistillationRecipes);
+        GT_Values.RA.stdBuilder()
+                    .noItemInputs()
+                    .itemOutputs(GT_Values.NI)
+                    .fluidInputs(Materials.WoodTar.getFluid(1000))
+                    .fluidOutputs(
+                            Materials.Creosote.getFluid(250),
+                            Materials.Phenol.getFluid(100),
+                            Materials.Benzene.getFluid(400),
+                            Materials.Toluene.getFluid(100),
+                            Materials.Dimethylbenzene.getFluid(30),
+                            MaterialsKevlar.IIIDimethylbenzene.getFluid(90),
+                            MaterialsKevlar.IVDimethylbenzene.getFluid(30))
+                    .duration(2 * SECONDS)
+                    .eut(256)
+                    .addTo(sDistillationRecipes);
 
-        GT_Values.RA.stdBuilder().noItemInputs().noItemOutputs().fluidInputs(Materials.OilLight.getFluid(1500))
-                .fluidOutputs(
-                        Materials.SulfuricHeavyFuel.getFluid(100),
-                        Materials.SulfuricLightFuel.getFluid(200),
-                        Materials.SulfuricNaphtha.getFluid(300),
-                        MaterialsKevlar.NaphthenicAcid.getFluid(25),
-                        Materials.SulfuricGas.getGas(2400))
-                .duration(1 * SECONDS + 12 * TICKS).eut(TierEU.RECIPE_HV).addTo(sDistillationRecipes);
+        GT_Values.RA.stdBuilder()
+                    .noItemInputs()
+                    .noItemOutputs()
+                    .fluidInputs(Materials.OilLight.getFluid(1500))
+                    .fluidOutputs(
+                            Materials.SulfuricHeavyFuel.getFluid(100),
+                            Materials.SulfuricLightFuel.getFluid(200),
+                            Materials.SulfuricNaphtha.getFluid(300),
+                            MaterialsKevlar.NaphthenicAcid.getFluid(25),
+                            Materials.SulfuricGas.getGas(2400))
+                    .duration(1 * SECONDS + 12 * TICKS)
+                    .eut(TierEU.RECIPE_HV)
+                    .addTo(sDistillationRecipes);
 
-        GT_Values.RA.stdBuilder().noItemInputs().noItemOutputs().fluidInputs(Materials.OilMedium.getFluid(1000))
-                .fluidOutputs(
-                        Materials.SulfuricHeavyFuel.getFluid(100),
-                        Materials.SulfuricLightFuel.getFluid(500),
-                        Materials.SulfuricNaphtha.getFluid(1500),
-                        MaterialsKevlar.NaphthenicAcid.getFluid(25),
-                        Materials.SulfuricGas.getGas(600))
-                .duration(1 * SECONDS + 12 * TICKS).eut(TierEU.RECIPE_HV).addTo(sDistillationRecipes);
+        GT_Values.RA.stdBuilder()
+                    .noItemInputs()
+                    .noItemOutputs()
+                    .fluidInputs(Materials.OilMedium.getFluid(1000))
+                    .fluidOutputs(
+                            Materials.SulfuricHeavyFuel.getFluid(100),
+                            Materials.SulfuricLightFuel.getFluid(500),
+                            Materials.SulfuricNaphtha.getFluid(1500),
+                            MaterialsKevlar.NaphthenicAcid.getFluid(25),
+                            Materials.SulfuricGas.getGas(600))
+                    .duration(1 * SECONDS + 12 * TICKS)
+                    .eut(TierEU.RECIPE_HV)
+                    .addTo(sDistillationRecipes);
 
-        GT_Values.RA.stdBuilder().noItemInputs().noItemOutputs().fluidInputs(Materials.Oil.getFluid(500L))
-                .fluidOutputs(
-                        Materials.SulfuricHeavyFuel.getFluid(150),
-                        Materials.SulfuricLightFuel.getFluid(500),
-                        Materials.SulfuricNaphtha.getFluid(200),
-                        MaterialsKevlar.NaphthenicAcid.getFluid(25),
-                        Materials.SulfuricGas.getGas(600))
-                .duration(1 * SECONDS + 12 * TICKS).eut(TierEU.RECIPE_HV).addTo(sDistillationRecipes);
+        GT_Values.RA.stdBuilder()
+                    .noItemInputs()
+                    .noItemOutputs()
+                    .fluidInputs(Materials.Oil.getFluid(500L))
+                    .fluidOutputs(
+                            Materials.SulfuricHeavyFuel.getFluid(150),
+                            Materials.SulfuricLightFuel.getFluid(500),
+                            Materials.SulfuricNaphtha.getFluid(200),
+                            MaterialsKevlar.NaphthenicAcid.getFluid(25),
+                            Materials.SulfuricGas.getGas(600))
+                    .duration(1 * SECONDS + 12 * TICKS)
+                    .eut(TierEU.RECIPE_HV)
+                    .addTo(sDistillationRecipes);
 
-        GT_Values.RA.stdBuilder().noItemInputs().noItemOutputs().fluidInputs(Materials.OilHeavy.getFluid(1000))
-                .fluidOutputs(
-                        Materials.SulfuricHeavyFuel.getFluid(2500),
-                        Materials.SulfuricLightFuel.getFluid(450),
-                        Materials.SulfuricNaphtha.getFluid(150),
-                        MaterialsKevlar.NaphthenicAcid.getFluid(50),
-                        Materials.SulfuricGas.getGas(600))
-                .duration(5 * SECONDS).eut(TierEU.RECIPE_HV).addTo(sDistillationRecipes);
+        GT_Values.RA.stdBuilder()
+                    .noItemInputs()
+                    .noItemOutputs()
+                    .fluidInputs(Materials.OilHeavy.getFluid(1000))
+                    .fluidOutputs(
+                            Materials.SulfuricHeavyFuel.getFluid(2500),
+                            Materials.SulfuricLightFuel.getFluid(450),
+                            Materials.SulfuricNaphtha.getFluid(150),
+                            MaterialsKevlar.NaphthenicAcid.getFluid(50),
+                            Materials.SulfuricGas.getGas(600))
+                    .duration(5 * SECONDS)
+                    .eut(TierEU.RECIPE_HV)
+                    .addTo(sDistillationRecipes);
         // 9C5H12O = 4C6H14O + 5CH4O + 4C4H8
 
-        GT_Values.RA.stdBuilder().noItemInputs().noItemOutputs().fluidInputs(Materials.MTBEMixture.getGas(900L))
-                .fluidOutputs(
-                        Materials.AntiKnock.getFluid(400L),
-                        Materials.Methanol.getFluid(500L),
-                        Materials.Butene.getGas(400L))
-                .duration(2 * SECONDS).eut(TierEU.RECIPE_MV).addTo(sDistillationRecipes);
+        GT_Values.RA.stdBuilder()
+                    .noItemInputs()
+                    .noItemOutputs()
+                    .fluidInputs(Materials.MTBEMixture.getGas(900L))
+                    .fluidOutputs(
+                            Materials.AntiKnock.getFluid(400L),
+                            Materials.Methanol.getFluid(500L),
+                            Materials.Butene.getGas(400L))
+                    .duration(2 * SECONDS)
+                    .eut(TierEU.RECIPE_MV)
+                    .addTo(sDistillationRecipes);
 
-        GT_Values.RA.stdBuilder().noItemInputs().itemOutputs(ItemList.IC2_Fertilizer.get(1))
-                .fluidInputs(Materials.FermentedBiomass.getFluid(1000))
-                .fluidOutputs(
-                        Materials.AceticAcid.getFluid(25),
-                        Materials.Water.getFluid(375),
-                        Materials.Ethanol.getFluid(150),
-                        Materials.Methanol.getFluid(150),
-                        Materials.Ammonia.getGas(100),
-                        Materials.CarbonDioxide.getGas(400),
-                        Materials.Methane.getGas(600))
-                .duration(3 * SECONDS + 15 * TICKS).eut(TierEU.RECIPE_MV).addTo(sDistillationRecipes);
+        GT_Values.RA.stdBuilder()
+                    .noItemInputs()
+                    .itemOutputs(ItemList.IC2_Fertilizer.get(1))
+                    .fluidInputs(Materials.FermentedBiomass.getFluid(1000))
+                    .fluidOutputs(
+                            Materials.AceticAcid.getFluid(25),
+                            Materials.Water.getFluid(375),
+                            Materials.Ethanol.getFluid(150),
+                            Materials.Methanol.getFluid(150),
+                            Materials.Ammonia.getGas(100),
+                            Materials.CarbonDioxide.getGas(400),
+                            Materials.Methane.getGas(600))
+                    .duration(3 * SECONDS + 15 * TICKS)
+                    .eut(TierEU.RECIPE_MV)
+                    .addTo(sDistillationRecipes);
 
         if (!GregTech_API.mIC2Classic) {
 
-            GT_Values.RA.stdBuilder().noItemInputs().itemOutputs(ItemList.IC2_Fertilizer.get(1))
-                    .fluidInputs(new FluidStack(FluidRegistry.getFluid("ic2biomass"), 3000))
-                    .fluidOutputs(
-                            new FluidStack(FluidRegistry.getFluid("ic2biogas"), 8000),
-                            Materials.Water.getFluid(125L))
-                    .duration(12 * SECONDS + 10 * TICKS).eut(TierEU.RECIPE_HV).addTo(sDistillationRecipes);
+            GT_Values.RA.stdBuilder()
+                        .noItemInputs()
+                        .itemOutputs(ItemList.IC2_Fertilizer.get(1))
+                        .fluidInputs(new FluidStack(FluidRegistry.getFluid("ic2biomass"), 3000))
+                        .fluidOutputs(
+                                new FluidStack(FluidRegistry.getFluid("ic2biogas"), 8000),
+                                Materials.Water.getFluid(125L))
+                        .duration(12 * SECONDS + 10 * TICKS)
+                        .eut(TierEU.RECIPE_HV)
+                        .addTo(sDistillationRecipes);
 
         }
     }
@@ -973,24 +1276,46 @@ public class DistilleryRecipes implements Runnable {
     public void addUniversalDistillationRecipewithCircuit(FluidStack aInput, ItemStack[] aCircuit,
             FluidStack[] aOutputs, ItemStack aOutput2, int aDuration, int aEUt) {
         for (int i = 0; i < Math.min(aOutputs.length, 11); i++) {
-            GT_Values.RA.stdBuilder().itemInputs(GT_Utility.getIntegratedCircuit(i + 1)).itemOutputs(aOutput2)
-                    .fluidInputs(aInput).fluidOutputs(aOutputs[i]).duration(2 * aDuration).eut(aEUt / 4)
-                    .addTo(sDistilleryRecipes);
+            GT_Values.RA.stdBuilder()
+                        .itemInputs(GT_Utility.getIntegratedCircuit(i + 1))
+                        .itemOutputs(aOutput2)
+                        .fluidInputs(aInput)
+                        .fluidOutputs(aOutputs[i])
+                        .duration(2 * aDuration)
+                        .eut(aEUt / 4)
+                        .addTo(sDistilleryRecipes);
         }
 
-        GT_Values.RA.stdBuilder().itemInputs(aCircuit).itemOutputs(aOutput2).fluidInputs(aInput).fluidOutputs(aOutputs)
-                .duration(20 * SECONDS).eut(TierEU.RECIPE_MV).addTo(sDistillationRecipes);
+        GT_Values.RA.stdBuilder()
+                    .itemInputs(aCircuit)
+                    .itemOutputs(aOutput2)
+                    .fluidInputs(aInput)
+                    .fluidOutputs(aOutputs)
+                    .duration(20 * SECONDS)
+                    .eut(TierEU.RECIPE_MV)
+                    .addTo(sDistillationRecipes);
     }
 
     public void addUniversalDistillationRecipe(FluidStack aInput, FluidStack[] aOutputs, ItemStack aOutput2,
             int aDuration, int aEUt) {
         for (int i = 0; i < Math.min(aOutputs.length, 11); i++) {
-            GT_Values.RA.stdBuilder().itemInputs(GT_Utility.getIntegratedCircuit(i + 1)).itemOutputs(aOutput2)
-                    .fluidInputs(aInput).fluidOutputs(aOutputs[i]).duration(2 * aDuration).eut(aEUt / 4)
-                    .addTo(sDistilleryRecipes);
+            GT_Values.RA.stdBuilder()
+                        .itemInputs(GT_Utility.getIntegratedCircuit(i + 1))
+                        .itemOutputs(aOutput2)
+                        .fluidInputs(aInput)
+                        .fluidOutputs(aOutputs[i])
+                        .duration(2 * aDuration)
+                        .eut(aEUt / 4)
+                        .addTo(sDistilleryRecipes);
         }
 
-        GT_Values.RA.stdBuilder().noItemInputs().itemOutputs(aOutput2).fluidInputs(aInput).fluidOutputs(aOutputs)
-                .duration(20 * SECONDS).eut(TierEU.RECIPE_MV).addTo(sDistillationRecipes);
+        GT_Values.RA.stdBuilder()
+                    .noItemInputs()
+                    .itemOutputs(aOutput2)
+                    .fluidInputs(aInput)
+                    .fluidOutputs(aOutputs)
+                    .duration(20 * SECONDS)
+                    .eut(TierEU.RECIPE_MV)
+                    .addTo(sDistillationRecipes);
     }
 }

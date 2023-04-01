@@ -143,8 +143,9 @@ public abstract class BaseMultiTileEntity extends CoverableTileEntity
     @Override
     public void copyTextures() {
         // Loading an instance
-        final TileEntity tCanonicalTileEntity = MultiTileEntityRegistry
-                .getCanonicalTileEntity(getMultiTileEntityRegistryID(), getMultiTileEntityID());
+        final TileEntity tCanonicalTileEntity = MultiTileEntityRegistry.getCanonicalTileEntity(
+                getMultiTileEntityRegistryID(),
+                getMultiTileEntityID());
         if (tCanonicalTileEntity instanceof BaseMultiTileEntity)
             mTextures = ((BaseMultiTileEntity) tCanonicalTileEntity).mTextures;
     }
@@ -172,7 +173,8 @@ public abstract class BaseMultiTileEntity extends CoverableTileEntity
         if (aNBT.hasKey("y")) yCoord = aNBT.getInteger("y");
         if (aNBT.hasKey("z")) zCoord = aNBT.getInteger("z");
         // read the custom Name.
-        if (aNBT.hasKey(NBT.DISPAY)) mCustomName = aNBT.getCompoundTag(NBT.DISPAY).getString(NBT.CUSTOM_NAME);
+        if (aNBT.hasKey(NBT.DISPAY)) mCustomName = aNBT.getCompoundTag(NBT.DISPAY)
+                                                       .getString(NBT.CUSTOM_NAME);
 
         // And now everything else.
         try {
@@ -746,7 +748,8 @@ public abstract class BaseMultiTileEntity extends CoverableTileEntity
             if (!getCoverInfoAtSide(aSide).isGUIClickable()) return false;
         }
         if (isServerSide()) {
-            if (!privateAccess() || aPlayer.getDisplayName().equalsIgnoreCase(getOwnerName())) {
+            if (!privateAccess() || aPlayer.getDisplayName()
+                                           .equalsIgnoreCase(getOwnerName())) {
                 final ItemStack tCurrentItem = aPlayer.inventory.getCurrentItem();
                 final byte wrenchSide = GT_Utility.determineWrenchingSide(aSide, aX, aY, aZ);
 
@@ -773,7 +776,7 @@ public abstract class BaseMultiTileEntity extends CoverableTileEntity
                     if (getCoverIDAtSide(coverSide) == 0) {
                         if (GT_Utility.isStackInList(tCurrentItem, GregTech_API.sCovers.keySet())) {
                             if (GregTech_API.getCoverBehaviorNew(tCurrentItem)
-                                    .isCoverPlaceable(coverSide, tCurrentItem, this)
+                                            .isCoverPlaceable(coverSide, tCurrentItem, this)
                                     && allowCoverOnSide(coverSide, new GT_ItemStack(tCurrentItem))) {
                                 setCoverItemAtSide(coverSide, tCurrentItem);
                                 if (!aPlayer.capabilities.isCreativeMode) tCurrentItem.stackSize--;
@@ -959,7 +962,8 @@ public abstract class BaseMultiTileEntity extends CoverableTileEntity
             if ((mOwnerName.length() == 0) && isServerSide()) {
                 setOwnerName(aPlayer.getDisplayName());
                 setOwnerUuid(aPlayer.getUniqueID());
-            } else return !privateAccess() || aPlayer.getDisplayName().equals("Player")
+            } else return !privateAccess() || aPlayer.getDisplayName()
+                                                     .equals("Player")
                     || mOwnerName.equals("Player")
                     || mOwnerName.equals(aPlayer.getDisplayName());
         return true;
@@ -1090,7 +1094,11 @@ public abstract class BaseMultiTileEntity extends CoverableTileEntity
     public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
             IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currenttip, accessor, config);
-        currenttip.add(String.format("Facing: %s", ForgeDirection.getOrientation(getFrontFacing()).name()));
+        currenttip.add(
+                String.format(
+                        "Facing: %s",
+                        ForgeDirection.getOrientation(getFrontFacing())
+                                      .name()));
     }
 
     @Override
@@ -1165,7 +1173,8 @@ public abstract class BaseMultiTileEntity extends CoverableTileEntity
         final IFluidTank tTank = getFluidTankDrainable((byte) aDirection.ordinal(), aFluid);
         if (tTank == null || tTank.getFluid() == null
                 || tTank.getFluidAmount() == 0
-                || !tTank.getFluid().isFluidEqual(aFluid))
+                || !tTank.getFluid()
+                         .isFluidEqual(aFluid))
             return null;
         return tTank.drain(aFluid.amount, aDoDrain);
     }
@@ -1182,14 +1191,18 @@ public abstract class BaseMultiTileEntity extends CoverableTileEntity
     public boolean canFill(ForgeDirection aDirection, Fluid aFluid) {
         if (aFluid == null) return false;
         final IFluidTank tTank = getFluidTankFillable((byte) aDirection.ordinal(), new FluidStack(aFluid, 0));
-        return tTank != null && (tTank.getFluid() == null || tTank.getFluid().getFluid() == aFluid);
+        return tTank != null && (tTank.getFluid() == null || tTank.getFluid()
+                                                                  .getFluid()
+                == aFluid);
     }
 
     @Override
     public boolean canDrain(ForgeDirection aDirection, Fluid aFluid) {
         if (aFluid == null) return false;
         final IFluidTank tTank = getFluidTankDrainable((byte) aDirection.ordinal(), new FluidStack(aFluid, 0));
-        return tTank != null && (tTank.getFluid() != null && tTank.getFluid().getFluid() == aFluid);
+        return tTank != null && (tTank.getFluid() != null && tTank.getFluid()
+                                                                  .getFluid()
+                == aFluid);
     }
 
     @Override

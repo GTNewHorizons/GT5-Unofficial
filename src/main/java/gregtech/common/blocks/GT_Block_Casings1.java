@@ -33,8 +33,9 @@ public class GT_Block_Casings1 extends GT_Block_Casings_Abstract {
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".9.name", "UHV Machine Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".10.name", "Bronze Plated Bricks");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".11.name", "Heat Proof Machine Casing");
-        GT_LanguageManager
-                .addStringLocalization(getUnlocalizedName() + ".12.name", "Dimensionally Transcendent Casing");
+        GT_LanguageManager.addStringLocalization(
+                getUnlocalizedName() + ".12.name",
+                "Dimensionally Transcendent Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".13.name", "Dimensional Injection Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".14.name", "Dimensional Bridge");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".15.name", "Superconducting Coil Block");

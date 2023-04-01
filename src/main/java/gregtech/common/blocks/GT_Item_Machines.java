@@ -67,8 +67,7 @@ public class GT_Item_Machines extends ItemBlock implements IFluidContainerItem {
                 final IGregTechTileEntity tTileEntity = GregTech_API.METATILEENTITIES[tDamage].getBaseMetaTileEntity();
                 if (!GregTech_API.sPostloadFinished
                         && tTileEntity.getMetaTileEntity() instanceof ISecondaryDescribable) {
-                    final String[] tSecondaryDescription = ((ISecondaryDescribable) tTileEntity.getMetaTileEntity())
-                            .getSecondaryDescription();
+                    final String[] tSecondaryDescription = ((ISecondaryDescribable) tTileEntity.getMetaTileEntity()).getSecondaryDescription();
                     addDescription(null, tSecondaryDescription, tDamage, "_Secondary", true);
                 }
                 {
@@ -133,8 +132,8 @@ public class GT_Item_Machines extends ItemBlock implements IFluidContainerItem {
                 if (GregTech_API.METATILEENTITIES[tDamage] instanceof GT_MetaTileEntity_QuantumTank
                         || GregTech_API.METATILEENTITIES[tDamage] instanceof GT_MetaTileEntity_SuperTank) {
                     if (aStack.hasTagCompound() && aStack.stackTagCompound.hasKey("mFluid")) {
-                        final FluidStack tContents = FluidStack
-                                .loadFluidStackFromNBT(aStack.stackTagCompound.getCompoundTag("mFluid"));
+                        final FluidStack tContents = FluidStack.loadFluidStackFromNBT(
+                                aStack.stackTagCompound.getCompoundTag("mFluid"));
                         if (tContents != null && tContents.amount > 0) {
                             aList.add(
                                     GT_LanguageManager.addStringLocalization(
@@ -156,8 +155,8 @@ public class GT_Item_Machines extends ItemBlock implements IFluidContainerItem {
                 }
                 if (GregTech_API.METATILEENTITIES[tDamage] instanceof GT_MetaTileEntity_DigitalChestBase) {
                     if (aStack.hasTagCompound() && aStack.stackTagCompound.hasKey("mItemStack")) {
-                        final ItemStack tContents = ItemStack
-                                .loadItemStackFromNBT(aStack.stackTagCompound.getCompoundTag("mItemStack"));
+                        final ItemStack tContents = ItemStack.loadItemStackFromNBT(
+                                aStack.stackTagCompound.getCompoundTag("mItemStack"));
                         final int tSize = aStack.stackTagCompound.getInteger("mItemCount");
                         if (tContents != null && tSize > 0) {
                             aList.add(
@@ -244,10 +243,9 @@ public class GT_Item_Machines extends ItemBlock implements IFluidContainerItem {
         if (aDamage >= GregTech_API.METATILEENTITIES.length) return;
         if (GregTech_API.METATILEENTITIES[aDamage] != null) {
             final IMetaTileEntity tMetaTileEntity = GregTech_API.METATILEENTITIES[aDamage].getBaseMetaTileEntity()
-                    .getMetaTileEntity();
+                                                                                          .getMetaTileEntity();
             if (tMetaTileEntity instanceof ISecondaryDescribable) {
-                final String[] tSecondaryDescription = ((ISecondaryDescribable) tMetaTileEntity)
-                        .getSecondaryDescription();
+                final String[] tSecondaryDescription = ((ISecondaryDescribable) tMetaTileEntity).getSecondaryDescription();
                 addDescription(null, tSecondaryDescription, aDamage, "_Secondary", true);
             }
             addDescription(null, tMetaTileEntity.getDescription(), aDamage, "", true);
@@ -332,7 +330,8 @@ public class GT_Item_Machines extends ItemBlock implements IFluidContainerItem {
                     tTileEntity.setOwnerName(aPlayer.getDisplayName());
                     tTileEntity.setOwnerUuid(aPlayer.getUniqueID());
                 }
-                tTileEntity.getMetaTileEntity().initDefaultModes(aStack.getTagCompound());
+                tTileEntity.getMetaTileEntity()
+                           .initDefaultModes(aStack.getTagCompound());
                 final byte aSide = GT_Utility.getOppositeSide(side);
                 if (tTileEntity.getMetaTileEntity() instanceof IConnectable) {
                     // If we're connectable, try connecting to whatever we're up against

@@ -74,8 +74,8 @@ public class GT_Item_Ores extends ItemBlock {
 
     @Override
     public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean aF3_H) {
-        String formula = StatCollector
-                .translateToLocal(field_150939_a.getUnlocalizedName() + '.' + getDamage(aStack) + ".tooltip");
+        String formula = StatCollector.translateToLocal(
+                field_150939_a.getUnlocalizedName() + '.' + getDamage(aStack) + ".tooltip");
         if (!StringUtils.isBlank(formula)) aList.add(formula);
     }
 }
