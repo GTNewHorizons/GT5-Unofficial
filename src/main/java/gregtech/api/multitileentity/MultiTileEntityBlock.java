@@ -516,7 +516,7 @@ public class MultiTileEntityBlock extends Block
     }
 
     @Override
-    public final void getSubBlocks(Item aItem, CreativeTabs aCreativeTab, List aList) {
+    public final void getSubBlocks(Item aItem, CreativeTabs aCreativeTab,List<ItemStack> aList) {
         /**/
     }
 

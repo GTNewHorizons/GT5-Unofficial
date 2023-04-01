@@ -620,7 +620,7 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
     @SideOnly(Side.CLIENT)
     @Override
     @SuppressWarnings("unchecked") // Old API uses raw List type
-    public void getSubBlocks(Item item, CreativeTabs aCreativeTab, List outputSubBlocks) {
+    public void getSubBlocks(Item item, CreativeTabs aCreativeTab,List<ItemStack> outputSubBlocks) {
         for (int i = 1; i < GregTech_API.METATILEENTITIES.length; i++) {
             if (GregTech_API.METATILEENTITIES[i] != null) {
                 outputSubBlocks.add(new ItemStack(item, 1, i));
