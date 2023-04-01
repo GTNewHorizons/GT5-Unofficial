@@ -1674,24 +1674,31 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
                 } else if (aEvent.Name.equals("sheetPlastic")) {
                     GT_OreDictUnificator.registerOre(OrePrefixes.plate, Materials.Plastic, aEvent.Ore);
                 } else if (aEvent.Name.startsWith("shard")) {
-                    if (aEvent.Name.equals("shardAir")) {
-                        GT_OreDictUnificator.registerOre(OrePrefixes.gem, Materials.InfusedAir, aEvent.Ore);
-                        return;
-                    } else if (aEvent.Name.equals("shardWater")) {
-                        GT_OreDictUnificator.registerOre(OrePrefixes.gem, Materials.InfusedWater, aEvent.Ore);
-                        return;
-                    } else if (aEvent.Name.equals("shardFire")) {
-                        GT_OreDictUnificator.registerOre(OrePrefixes.gem, Materials.InfusedFire, aEvent.Ore);
-                        return;
-                    } else if (aEvent.Name.equals("shardEarth")) {
-                        GT_OreDictUnificator.registerOre(OrePrefixes.gem, Materials.InfusedEarth, aEvent.Ore);
-                        return;
-                    } else if (aEvent.Name.equals("shardOrder")) {
-                        GT_OreDictUnificator.registerOre(OrePrefixes.gem, Materials.InfusedOrder, aEvent.Ore);
-                        return;
-                    } else if (aEvent.Name.equals("shardEntropy")) {
-                        GT_OreDictUnificator.registerOre(OrePrefixes.gem, Materials.InfusedEntropy, aEvent.Ore);
-                        return;
+                    switch (aEvent.Name) {
+                        case "shardAir" -> {
+                            GT_OreDictUnificator.registerOre(OrePrefixes.gem, Materials.InfusedAir, aEvent.Ore);
+                            return;
+                        }
+                        case "shardWater" -> {
+                            GT_OreDictUnificator.registerOre(OrePrefixes.gem, Materials.InfusedWater, aEvent.Ore);
+                            return;
+                        }
+                        case "shardFire" -> {
+                            GT_OreDictUnificator.registerOre(OrePrefixes.gem, Materials.InfusedFire, aEvent.Ore);
+                            return;
+                        }
+                        case "shardEarth" -> {
+                            GT_OreDictUnificator.registerOre(OrePrefixes.gem, Materials.InfusedEarth, aEvent.Ore);
+                            return;
+                        }
+                        case "shardOrder" -> {
+                            GT_OreDictUnificator.registerOre(OrePrefixes.gem, Materials.InfusedOrder, aEvent.Ore);
+                            return;
+                        }
+                        case "shardEntropy" -> {
+                            GT_OreDictUnificator.registerOre(OrePrefixes.gem, Materials.InfusedEntropy, aEvent.Ore);
+                            return;
+                        }
                     }
                 } else if (aEvent.Name.equals("fieryIngot")) {
                     GT_OreDictUnificator.registerOre(OrePrefixes.ingot, Materials.FierySteel, aEvent.Ore);
@@ -2065,12 +2072,11 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
                         }
                         break;
                     case crafting:
-                        if (tName.equals("ToolSolderingMetal")) {
-                            GregTech_API.registerSolderingMetal(aEvent.Ore);
-                        } else if (tName.equals("IndustrialDiamond")) {
-                            GT_OreDictUnificator.addToBlacklist(aEvent.Ore);
-                        } else if (tName.equals("WireCopper")) {
-                            GT_OreDictUnificator.registerOre(OrePrefixes.wire, Materials.Copper, aEvent.Ore);
+                        switch (tName) {
+                            case "ToolSolderingMetal" -> GregTech_API.registerSolderingMetal(aEvent.Ore);
+                            case "IndustrialDiamond" -> GT_OreDictUnificator.addToBlacklist(aEvent.Ore);
+                            case "WireCopper" ->
+                                GT_OreDictUnificator.registerOre(OrePrefixes.wire, Materials.Copper, aEvent.Ore);
                         }
                         break;
                     case wood:
