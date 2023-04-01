@@ -27,7 +27,7 @@ import ic2.api.crops.ICropTile;
 
 public class GT_BaseCrop extends CropCard implements ICropCardInfo {
 
-    public static ArrayList<GT_BaseCrop> sCropList = new ArrayList<GT_BaseCrop>();
+    public static ArrayList<GT_BaseCrop> sCropList = new ArrayList<>();
     private String mName = E, mDiscoveredBy = "Gregorius Techneticies", mAttributes[];
     private int mTier = 0, mMaxSize = 0, mAfterHarvestSize = 0, mHarvestSize = 0, mStats[] = new int[5],
             mGrowthSpeed = 0;
@@ -294,7 +294,7 @@ public class GT_BaseCrop extends CropCard implements ICropCardInfo {
     @Override
     public List<String> getCropInformation() {
         if (mBlock != null) {
-            ArrayList<String> result = new ArrayList<String>(1);
+            ArrayList<String> result = new ArrayList<>(1);
             result.add(
                     String.format(
                             "Requires %s Ore or Block of %s as soil block to reach full growth.",

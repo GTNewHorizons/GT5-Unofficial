@@ -628,7 +628,7 @@ public class GT_MetaTileEntity_PCBFactory extends
         GT_Recipe.GT_Recipe_Map aMap = getRecipeMap();
         FluidStack[] tFluidInputs = getStoredFluids().toArray(new FluidStack[0]);
         if (inputSeparation) {
-            ArrayList<ItemStack> tInputList = new ArrayList<ItemStack>();
+            ArrayList<ItemStack> tInputList = new ArrayList<>();
             for (GT_MetaTileEntity_Hatch_InputBus tBus : mInputBusses) {
                 for (int i = tBus.getSizeInventory() - 1; i >= 0; i--) {
                     if (tBus.getStackInSlot(i) != null) tInputList.add(tBus.getStackInSlot(i));
@@ -743,7 +743,7 @@ public class GT_MetaTileEntity_PCBFactory extends
                 }
 
                 mOutputItems = new ItemStack[tRecipe.mOutputs.length];
-                ArrayList<ItemStack> tOutputs = new ArrayList<ItemStack>();
+                ArrayList<ItemStack> tOutputs = new ArrayList<>();
                 int remainingEfficiency = getMaxEfficiency(aStack);
                 for (int j = 0; j < (int) Math.ceil(getMaxEfficiency(aStack) / 10000.0f); j++) {
                     int chanced = getBaseMetaTileEntity().getRandomNumber(10000);

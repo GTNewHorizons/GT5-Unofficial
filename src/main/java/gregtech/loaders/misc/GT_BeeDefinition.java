@@ -1063,7 +1063,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         AlleleHelper.instance.set(template, HUMIDITY_TOLERANCE, Tolerance.BOTH_1);
         AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORT);
         AlleleHelper.instance.set(template, FLOWER_PROVIDER, getFlowers(EXTRABEES, "rock"));
-    }, new Consumer<GT_BeeDefinition>() {
+    }, new Consumer<>() {
 
         @Override
         public void accept(GT_BeeDefinition dis) {
@@ -1633,33 +1633,31 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         beeSpecies.setHumidity(ARID);
         beeSpecies.setTemperature(HOT);
         beeSpecies.setNocturnal();
-    }, template -> AlleleHelper.instance.set(template, EFFECT, AlleleEffect.effectIgnition),
-            new Consumer<GT_BeeDefinition>() {
+    }, template -> AlleleHelper.instance.set(template, EFFECT, AlleleEffect.effectIgnition), new Consumer<>() {
 
-                @Override
-                public void accept(GT_BeeDefinition dis) {
-                    IBeeMutationCustom tMutation = dis.registerMutation(MARS, TITANIUM, 9);
-                    tMutation.requireResource(GregTech_API.sBlockMetal2, 12);
-                    tMutation.addMutationCondition(new GT_Bees.DimensionMutationCondition(29, "Mars")); // Mars Dim
-                }
-            }),
+        @Override
+        public void accept(GT_BeeDefinition dis) {
+            IBeeMutationCustom tMutation = dis.registerMutation(MARS, TITANIUM, 9);
+            tMutation.requireResource(GregTech_API.sBlockMetal2, 12);
+            tMutation.addMutationCondition(new GT_Bees.DimensionMutationCondition(29, "Mars")); // Mars Dim
+        }
+    }),
     LEDOX(GT_BranchDefinition.SPACE, "Ledox", false, new Color(0x0000CD), new Color(0x0074FF), beeSpecies -> {
         beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.SPACE), 0.10f);
         beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.LEDOX), 0.10f);
         beeSpecies.setHumidity(EnumHumidity.NORMAL);
         beeSpecies.setTemperature(COLD);
         beeSpecies.setHasEffect();
-    }, template -> AlleleHelper.instance.set(template, EFFECT, getEffect(EXTRABEES, "freezing")),
-            new Consumer<GT_BeeDefinition>() {
+    }, template -> AlleleHelper.instance.set(template, EFFECT, getEffect(EXTRABEES, "freezing")), new Consumer<>() {
 
-                @Override
-                public void accept(GT_BeeDefinition dis) {
-                    IBeeMutationCustom tMutation = dis.registerMutation(CALLISTO, LEAD, 7);
-                    if (NewHorizonsCoreMod.isModLoaded())
-                        tMutation.requireResource(GameRegistry.findBlock(NewHorizonsCoreMod.modID, "tile.Ledox"), 0);
-                    tMutation.addMutationCondition(new GT_Bees.DimensionMutationCondition(35, "Europa")); // Europa Dim
-                }
-            }),
+        @Override
+        public void accept(GT_BeeDefinition dis) {
+            IBeeMutationCustom tMutation = dis.registerMutation(CALLISTO, LEAD, 7);
+            if (NewHorizonsCoreMod.isModLoaded())
+                tMutation.requireResource(GameRegistry.findBlock(NewHorizonsCoreMod.modID, "tile.Ledox"), 0);
+            tMutation.addMutationCondition(new GT_Bees.DimensionMutationCondition(35, "Europa")); // Europa Dim
+        }
+    }),
     CALLISTOICE(GT_BranchDefinition.SPACE, "CallistoIce", false, new Color(0x0074FF), new Color(0x1EB1FF),
             beeSpecies -> {
                 beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.SPACE), 0.10f);
@@ -1668,16 +1666,15 @@ public enum GT_BeeDefinition implements IBeeDefinition {
                 beeSpecies.setTemperature(ICY);
                 beeSpecies.setHasEffect();
             }, template -> AlleleHelper.instance.set(template, EFFECT, getEffect(EXTRABEES, "freezing")),
-            new Consumer<GT_BeeDefinition>() {
+            new Consumer<>() {
 
                 @Override
                 public void accept(GT_BeeDefinition dis) {
                     IBeeMutationCustom tMutation = dis.registerMutation(CALLISTO, getSpecies(EXTRABEES, "freezing"), 7);
-                    if (NewHorizonsCoreMod.isModLoaded()) tMutation.requireResource(
-                            GameRegistry.findBlock(NewHorizonsCoreMod.modID, "tile.CallistoColdIce"),
-                            0);
+                    if (NewHorizonsCoreMod.isModLoaded()) tMutation.requireResource(GameRegistry.findBlock(NewHorizonsCoreMod.modID,
+                            "tile.CallistoColdIce"), 0);
                     tMutation.addMutationCondition(new GT_Bees.DimensionMutationCondition(45, "Callisto")); // Callisto
-                                                                                                            // Dim
+                    // Dim
                 }
             }),
     MYTRYL(GT_BranchDefinition.SPACE, "Mytryl", false, new Color(0xDAA520), new Color(0xF26404), beeSpecies -> {
@@ -1687,7 +1684,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         beeSpecies.setTemperature(EnumTemperature.NORMAL);
         beeSpecies.setNocturnal();
         beeSpecies.setHasEffect();
-    }, template -> {}, new Consumer<GT_BeeDefinition>() {
+    }, template -> {}, new Consumer<>() {
 
         @Override
         public void accept(GT_BeeDefinition dis) {
@@ -1704,7 +1701,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         beeSpecies.setTemperature(HOT);
         beeSpecies.setNocturnal();
         beeSpecies.setHasEffect();
-    }, template -> {}, new Consumer<GT_BeeDefinition>() {
+    }, template -> {}, new Consumer<>() {
 
         @Override
         public void accept(GT_BeeDefinition dis) {
@@ -1720,7 +1717,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         beeSpecies.setHumidity(DAMP);
         beeSpecies.setTemperature(COLD);
         beeSpecies.setHasEffect();
-    }, template -> {}, new Consumer<GT_BeeDefinition>() {
+    }, template -> {}, new Consumer<>() {
 
         @Override
         public void accept(GT_BeeDefinition dis) {
@@ -1738,18 +1735,17 @@ public enum GT_BeeDefinition implements IBeeDefinition {
                 beeSpecies.setTemperature(ICY);
                 beeSpecies.setNocturnal();
                 beeSpecies.setHasEffect();
-            }, template -> {}, new Consumer<GT_BeeDefinition>() {
+            }, template -> {}, new Consumer<>() {
 
-                @Override
-                public void accept(GT_BeeDefinition dis) {
-                    IBeeMutationCustom tMutation = dis.registerMutation(ENCELADUS, EMERALD, 3);
-                    if (NewHorizonsCoreMod.isModLoaded()) tMutation.requireResource(
-                            GameRegistry.findBlock(NewHorizonsCoreMod.modID, "tile.MysteriousCrystal"),
-                            0);
-                    tMutation.addMutationCondition(new GT_Bees.DimensionMutationCondition(41, "Enceladus")); // Enceladus
-                                                                                                             // Dim
-                }
-            }),
+        @Override
+        public void accept(GT_BeeDefinition dis) {
+            IBeeMutationCustom tMutation = dis.registerMutation(ENCELADUS, EMERALD, 3);
+            if (NewHorizonsCoreMod.isModLoaded())
+                tMutation.requireResource(GameRegistry.findBlock(NewHorizonsCoreMod.modID, "tile.MysteriousCrystal"), 0);
+            tMutation.addMutationCondition(new GT_Bees.DimensionMutationCondition(41, "Enceladus")); // Enceladus
+            // Dim
+        }
+    }),
     BLACKPLUTONIUM(GT_BranchDefinition.SPACE, "BlackPlutonium", false, new Color(0x000000), new Color(0x323232),
             beeSpecies -> {
                 beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.SPACE), 0.68f);
@@ -1758,17 +1754,16 @@ public enum GT_BeeDefinition implements IBeeDefinition {
                 beeSpecies.setTemperature(HELLISH);
                 beeSpecies.setNocturnal();
                 beeSpecies.setHasEffect();
-            }, template -> {}, new Consumer<GT_BeeDefinition>() {
+            }, template -> {}, new Consumer<>() {
 
-                @Override
-                public void accept(GT_BeeDefinition dis) {
-                    IBeeMutationCustom tMutation = dis.registerMutation(PLUTO, PLUTONIUM, 2);
-                    if (NewHorizonsCoreMod.isModLoaded()) tMutation.requireResource(
-                            GameRegistry.findBlock(NewHorizonsCoreMod.modID, "tile.BlackPlutonium"),
-                            0);
-                    tMutation.addMutationCondition(new GT_Bees.DimensionMutationCondition(49, "Pluto")); // Pluto Dim
-                }
-            }),
+        @Override
+        public void accept(GT_BeeDefinition dis) {
+            IBeeMutationCustom tMutation = dis.registerMutation(PLUTO, PLUTONIUM, 2);
+            if (NewHorizonsCoreMod.isModLoaded())
+                tMutation.requireResource(GameRegistry.findBlock(NewHorizonsCoreMod.modID, "tile.BlackPlutonium"), 0);
+            tMutation.addMutationCondition(new GT_Bees.DimensionMutationCondition(49, "Pluto")); // Pluto Dim
+        }
+    }),
     TRINIUM(GT_BranchDefinition.SPACE, "Trinium", false, new Color(0xB0E0E6), new Color(0xC8C8D2), beeSpecies -> {
         beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.TRINIUM), 0.75f);
         beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.QUANTIUM), 0.10f);
@@ -1776,7 +1771,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         beeSpecies.setTemperature(COLD);
         beeSpecies.setNocturnal();
         beeSpecies.setHasEffect();
-    }, template -> AlleleHelper.instance.set(template, SPEED, GT_Bees.speedBlinding), new Consumer<GT_BeeDefinition>() {
+    }, template -> AlleleHelper.instance.set(template, SPEED, GT_Bees.speedBlinding), new Consumer<>() {
 
         @Override
         public void accept(GT_BeeDefinition dis) {
@@ -2137,7 +2132,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
                 0.10f);
         beeSpecies.setHumidity(ARID);
         beeSpecies.setTemperature(HELLISH);
-    }, template -> AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST), new Consumer<GT_BeeDefinition>() {
+    }, template -> AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST), new Consumer<>() {
 
         @Override
         public void accept(GT_BeeDefinition dis) {

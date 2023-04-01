@@ -58,46 +58,19 @@ public abstract class GT_MetaTileEntity_DrillerBase
     private static final Block miningPipeBlock = GT_Utility.getBlockFromStack(miningPipe);
     private static final Block miningPipeTipBlock = GT_Utility.getBlockFromStack(miningPipeTip);
     protected static final String STRUCTURE_PIECE_MAIN = "main";
-    protected static final ClassValue<IStructureDefinition<GT_MetaTileEntity_DrillerBase>> STRUCTURE_DEFINITION = new ClassValue<IStructureDefinition<GT_MetaTileEntity_DrillerBase>>() {
+    protected static final ClassValue<IStructureDefinition<GT_MetaTileEntity_DrillerBase>> STRUCTURE_DEFINITION = new ClassValue<>() {
 
         @Override
         protected IStructureDefinition<GT_MetaTileEntity_DrillerBase> computeValue(Class<?> type) {
-            return StructureDefinition.<GT_MetaTileEntity_DrillerBase>builder()
-                                      .addShape(
-                                              STRUCTURE_PIECE_MAIN,
-                                              transpose(
-                                                      new String[][] { { "   ", " f ", "   " }, { "   ", " f ", "   " },
-                                                              { "   ", " f ", "   " }, { " f ", "fcf", " f " },
-                                                              { " f ", "fcf", " f " }, { " f ", "fcf", " f " },
-                                                              { "b~b", "bbb", "bbb" }, }))
-                                      .addElement('f', lazy(t -> ofFrame(t.getFrameMaterial())))
-                                      .addElement(
-                                              'c',
-                                              lazy(
-                                                      t -> ofBlock(
-                                                              t.getCasingBlockItem()
-                                                               .getBlock(),
-                                                              t.getCasingBlockItem()
-                                                               .get(0)
-                                                               .getItemDamage())))
-                                      .addElement(
-                                              'b',
-                                              lazy(
-                                                      t -> buildHatchAdder(
-                                                              GT_MetaTileEntity_DrillerBase.class).atLeastList(
-                                                                      t.getAllowedHatches())
-                                                                                                  .adder(
-                                                                                                          GT_MetaTileEntity_DrillerBase::addToMachineList)
-                                                                                                  .casingIndex(
-                                                                                                          t.casingTextureIndex)
-                                                                                                  .dot(1)
-                                                                                                  .buildAndChain(
-                                                                                                          t.getCasingBlockItem()
-                                                                                                           .getBlock(),
-                                                                                                          t.getCasingBlockItem()
-                                                                                                           .get(0)
-                                                                                                           .getItemDamage())))
-                                      .build();
+            return StructureDefinition.<GT_MetaTileEntity_DrillerBase>builder().addShape(STRUCTURE_PIECE_MAIN,
+                            transpose(new String[][] { { "   ", " f ", "   " }, { "   ", " f ", "   " }, { "   ", " f ", "   " }, { " f ", "fcf", " f " },
+                                    { " f ", "fcf", " f " }, { " f ", "fcf", " f " }, { "b~b", "bbb", "bbb" }, }))
+                    .addElement('f', lazy(t -> ofFrame(t.getFrameMaterial()))).addElement('c',
+                            lazy(t -> ofBlock(t.getCasingBlockItem().getBlock(), t.getCasingBlockItem().get(0).getItemDamage()))).addElement('b',
+                            lazy(t -> buildHatchAdder(GT_MetaTileEntity_DrillerBase.class).atLeastList(t.getAllowedHatches())
+                                    .adder(GT_MetaTileEntity_DrillerBase::addToMachineList).casingIndex(t.casingTextureIndex).dot(1)
+                                    .buildAndChain(t.getCasingBlockItem().getBlock(),
+                                            t.getCasingBlockItem().get(0).getItemDamage()))).build();
         }
     };
 
@@ -252,7 +225,7 @@ public abstract class GT_MetaTileEntity_DrillerBase
 
     /**
      * Added for compability reasons
-     * 
+     *
      * @return true if the state is 0 false otherwise.
      * @deprecated compatibility reason
      */

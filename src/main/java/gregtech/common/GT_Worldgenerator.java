@@ -35,7 +35,7 @@ public class GT_Worldgenerator implements IWorldGenerator {
     private static int endMaxSize = 200;
     private static boolean endAsteroids = true;
     public static List<Runnable> mList = new ArrayList<>();
-    public static HashSet<Long> ProcChunks = new HashSet<Long>();
+    public static HashSet<Long> ProcChunks = new HashSet<>();
     // This is probably not going to work. Trying to create a fake orevein to put into hashtable when there will be no
     // ores in a vein.
     public static GT_Worldgen_GT_Ore_Layer noOresInVein = new GT_Worldgen_GT_Ore_Layer(

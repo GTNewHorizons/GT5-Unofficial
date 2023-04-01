@@ -23,27 +23,22 @@ public class GT_GUIColorOverride {
     private static final Object NOT_FOUND = new Object();
     private static final LoadingCache<ResourceLocation, Object> cache = CacheBuilder.newBuilder()
                                                                                     .softValues()
-                                                                                    .build(
-                                                                                            new CacheLoader<ResourceLocation, Object>() {
+                                                                                    .build(new CacheLoader<>() {
 
-                                                                                                @Override
-                                                                                                public Object load(
-                                                                                                        @Nonnull ResourceLocation key)
-                                                                                                        throws Exception {
-                                                                                                    IResource ir = Minecraft.getMinecraft()
-                                                                                                                            .getResourceManager()
-                                                                                                                            .getResource(
-                                                                                                                                    key);
-                                                                                                    if (ir.hasMetadata())
-                                                                                                        return ir.getMetadata(
-                                                                                                                "colors");
-                                                                                                    // return a dummy
-                                                                                                    // object because
-                                                                                                    // LoadingCache
-                                                                                                    // doesn't like null
-                                                                                                    return NOT_FOUND;
-                                                                                                }
-                                                                                            });
+                                                                                        @Override
+                                                                                        public Object load(@Nonnull ResourceLocation key)
+                                                                                            throws Exception {
+                                                                                            IResource ir = Minecraft.getMinecraft()
+                                                                                                .getResourceManager().getResource(key);
+                                                                                            if (ir.hasMetadata()) return ir.getMetadata(
+                                                                                                "colors");
+                                                                                            // return a dummy
+                                                                                            // object because
+                                                                                            // LoadingCache
+                                                                                            // doesn't like null
+                                                                                            return NOT_FOUND;
+                                                                                        }
+                                                                                    });
     private static final GT_GUIColorOverride FALLBACK = new GT_GUIColorOverride();
     private ColorsMetadataSection cmSection;
 

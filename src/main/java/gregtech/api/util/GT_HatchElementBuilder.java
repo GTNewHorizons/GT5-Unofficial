@@ -268,7 +268,7 @@ public class GT_HatchElementBuilder<T> {
      * This will clear the sides set by previous call to this or {@link #allowOnly(ForgeDirection...)}
      * <p>
      * Usually mandatory for multis with multiple slices, and otherwise not needed if it contains a single slice only.
-     * 
+     *
      * @param facings disallowed direction in ABC coordinate system
      */
     public GT_HatchElementBuilder<T> disallowOnly(ForgeDirection... facings) {
@@ -284,7 +284,7 @@ public class GT_HatchElementBuilder<T> {
      * This will clear the sides set by previous call to this or {@link #disallowOnly(ForgeDirection...)}
      * <p>
      * Usually mandatory for multis with multiple slices, and otherwise not needed if it contains a single slice only.
-     * 
+     *
      * @param facings allowed direction in ABC coordinate system
      */
     public GT_HatchElementBuilder<T> allowOnly(ForgeDirection... facings) {
@@ -376,13 +376,14 @@ public class GT_HatchElementBuilder<T> {
         }
         if (mHatchItemFilter == null) {
             // no item filter -> no placement
-            return new IStructureElementNoPlacement<T>() {
+            return new IStructureElementNoPlacement<>() {
 
                 @Override
                 public boolean check(T t, World world, int x, int y, int z) {
                     TileEntity tileEntity = world.getTileEntity(x, y, z);
-                    return tileEntity instanceof IGregTechTileEntity
-                            && mAdder.apply(t, (IGregTechTileEntity) tileEntity, (short) mCasingIndex);
+                    return tileEntity instanceof IGregTechTileEntity && mAdder.apply(t,
+                            (IGregTechTileEntity) tileEntity,
+                            (short) mCasingIndex);
                 }
 
                 @Override
@@ -392,15 +393,14 @@ public class GT_HatchElementBuilder<T> {
                 }
             };
         }
-        return new IStructureElement<T>() {
+        return new IStructureElement<>() {
 
             private String mHint = mHatchItemType == null ? "unspecified GT hatch" : mHatchItemType.get();
 
             @Override
             public boolean check(T t, World world, int x, int y, int z) {
                 TileEntity tileEntity = world.getTileEntity(x, y, z);
-                return tileEntity instanceof IGregTechTileEntity
-                        && mAdder.apply(t, (IGregTechTileEntity) tileEntity, (short) mCasingIndex);
+                return tileEntity instanceof IGregTechTileEntity && mAdder.apply(t, (IGregTechTileEntity) tileEntity, (short) mCasingIndex);
             }
 
             @Override
@@ -440,8 +440,7 @@ public class GT_HatchElementBuilder<T> {
             @Override
             public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger,
                     IItemSource s, EntityPlayerMP actor, Consumer<IChatComponent> chatter) {
-                return survivalPlaceBlock(
-                        t,
+                return survivalPlaceBlock(t,
                         world,
                         x,
                         y,
@@ -455,23 +454,19 @@ public class GT_HatchElementBuilder<T> {
                     AutoPlaceEnvironment env) {
                 if (mShouldSkip != null) {
                     TileEntity tileEntity = world.getTileEntity(x, y, z);
-                    if (tileEntity instanceof IGregTechTileEntity
-                            && mShouldSkip.test(t, (IGregTechTileEntity) tileEntity))
+                    if (tileEntity instanceof IGregTechTileEntity && mShouldSkip.test(t, (IGregTechTileEntity) tileEntity))
                         return PlaceResult.SKIP;
                 }
                 if (!StructureLibAPI.isBlockTriviallyReplaceable(world, x, y, z, env.getActor()))
                     return PlaceResult.REJECT;
                 if (mReject != null && mReject.test(t)) return PlaceResult.REJECT;
-                ItemStack taken = env.getSource()
-                                     .takeOne(mHatchItemFilter.apply(t, trigger), true);
+                ItemStack taken = env.getSource().takeOne(mHatchItemFilter.apply(t, trigger), true);
                 if (GT_Utility.isStackInvalid(taken)) {
                     String type = getHint();
-                    env.getChatter()
-                       .accept(new ChatComponentTranslation("GT5U.autoplace.error.no_hatch", type));
+                    env.getChatter().accept(new ChatComponentTranslation("GT5U.autoplace.error.no_hatch", type));
                     return PlaceResult.REJECT;
                 }
-                if (StructureUtility.survivalPlaceBlock(
-                        taken,
+                if (StructureUtility.survivalPlaceBlock(taken,
                         ItemStackPredicate.NBTMode.IGNORE,
                         null,
                         true,
@@ -497,9 +492,7 @@ public class GT_HatchElementBuilder<T> {
                         // explicitly rejected, probably obstructed by another slice
                         if (mDisallowedDirection.contains(direction)) continue;
                         ForgeDirection rotated = env.getFacing()
-                                                    .getWorldDirection(
-                                                            direction.offsetY != 0 ? direction.getOpposite()
-                                                                    : direction);
+                                .getWorldDirection(direction.offsetY != 0 ? direction.getOpposite() : direction);
                         allowed.add(rotated);
                     }
                 }

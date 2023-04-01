@@ -16,10 +16,10 @@ import gregtech.api.enums.MaterialsBotania;
 
 public class GT_Assemblyline_Server {
 
-    public static LinkedHashMap<String, String> lServerNames = new LinkedHashMap<String, String>();
-    private static LinkedHashMap<String, String> internal2 = new LinkedHashMap<String, String>(),
-            internal3 = new LinkedHashMap<String, String>(), internal4 = new LinkedHashMap<String, String>();
-    private static HashMap<String, Property> internal = new HashMap<String, Property>();
+    public static LinkedHashMap<String, String> lServerNames = new LinkedHashMap<>();
+    private static LinkedHashMap<String, String> internal2 = new LinkedHashMap<>(),
+            internal3 = new LinkedHashMap<>(), internal4 = new LinkedHashMap<>();
+    private static HashMap<String, Property> internal = new HashMap<>();
 
     public static void fillMap(FMLPreInitializationEvent aEvent) {
 

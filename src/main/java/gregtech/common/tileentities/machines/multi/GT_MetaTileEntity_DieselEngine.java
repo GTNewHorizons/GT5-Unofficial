@@ -46,38 +46,21 @@ public class GT_MetaTileEntity_DieselEngine extends
         GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_DieselEngine> implements ISurvivalConstructable {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final ClassValue<IStructureDefinition<GT_MetaTileEntity_DieselEngine>> STRUCTURE_DEFINITION = new ClassValue<IStructureDefinition<GT_MetaTileEntity_DieselEngine>>() {
+    private static final ClassValue<IStructureDefinition<GT_MetaTileEntity_DieselEngine>> STRUCTURE_DEFINITION = new ClassValue<>() {
 
         @Override
         protected IStructureDefinition<GT_MetaTileEntity_DieselEngine> computeValue(Class<?> type) {
-            return StructureDefinition.<GT_MetaTileEntity_DieselEngine>builder()
-                                      .addShape(
-                                              STRUCTURE_PIECE_MAIN,
-                                              transpose(
-                                                      new String[][] { { "---", "iii", "chc", "chc", "ccc", },
-                                                              { "---", "i~i", "hgh", "hgh", "cdc", },
-                                                              { "---", "iii", "chc", "chc", "ccc", }, }))
-                                      .addElement('i', lazy(t -> ofBlock(t.getIntakeBlock(), t.getIntakeMeta())))
-                                      .addElement('c', lazy(t -> ofBlock(t.getCasingBlock(), t.getCasingMeta())))
-                                      .addElement('g', lazy(t -> ofBlock(t.getGearboxBlock(), t.getGearboxMeta())))
-                                      .addElement('d', lazy(t -> Dynamo.newAny(t.getCasingTextureIndex(), 2)))
-                                      .addElement(
-                                              'h',
-                                              lazy(
-                                                      t -> buildHatchAdder(
-                                                              GT_MetaTileEntity_DieselEngine.class).atLeast(
-                                                                      InputHatch,
-                                                                      InputHatch,
-                                                                      InputHatch,
-                                                                      Muffler,
-                                                                      Maintenance)
-                                                                                                   .casingIndex(
-                                                                                                           t.getCasingTextureIndex())
-                                                                                                   .dot(1)
-                                                                                                   .buildAndChain(
-                                                                                                           t.getCasingBlock(),
-                                                                                                           t.getCasingMeta())))
-                                      .build();
+            return StructureDefinition.<GT_MetaTileEntity_DieselEngine>builder().addShape(STRUCTURE_PIECE_MAIN,
+                    transpose(new String[][] { { "---", "iii", "chc", "chc", "ccc", }, { "---", "i~i", "hgh", "hgh", "cdc", },
+                        { "---", "iii", "chc", "chc", "ccc", }, })).addElement('i', lazy(t -> ofBlock(t.getIntakeBlock(), t.getIntakeMeta())))
+                .addElement('c', lazy(t -> ofBlock(t.getCasingBlock(), t.getCasingMeta())))
+                .addElement('g', lazy(t -> ofBlock(t.getGearboxBlock(), t.getGearboxMeta())))
+                .addElement('d', lazy(t -> Dynamo.newAny(t.getCasingTextureIndex(), 2))).addElement('h',
+                    lazy(t -> buildHatchAdder(GT_MetaTileEntity_DieselEngine.class).atLeast(InputHatch,
+                        InputHatch,
+                        InputHatch,
+                        Muffler,
+                        Maintenance).casingIndex(t.getCasingTextureIndex()).dot(1).buildAndChain(t.getCasingBlock(), t.getCasingMeta()))).build();
         }
     };
     protected int fuelConsumption = 0;

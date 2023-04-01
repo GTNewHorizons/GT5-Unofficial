@@ -315,7 +315,7 @@ public class GT_Mod implements IGT_Mod {
 
         gregtechproxy.onLoad();
 
-        registerCircuitProgrammer(new Predicate<ItemStack>() {
+        registerCircuitProgrammer(new Predicate<>() {
 
             private final int screwdriverOreId = OreDictionary.getOreID("craftingToolScrewdriver");
 

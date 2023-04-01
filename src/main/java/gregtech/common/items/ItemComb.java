@@ -1742,7 +1742,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
 
     public void addCentrifugeToItemStack(CombType comb, ItemStack[] aItem, int[] chance, Voltage volt, int duration) {
         ItemStack tComb = getStackForType(comb);
-        Builder<ItemStack, Float> Product = new ImmutableMap.Builder<ItemStack, Float>();
+        Builder<ItemStack, Float> Product = new ImmutableMap.Builder<>();
         for (int i = 0; i < aItem.length; i++) {
             if (aItem[i] == NI) {
                 continue;

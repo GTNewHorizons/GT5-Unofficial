@@ -889,7 +889,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
     public static class GT_Recipe_AssemblyLine {
 
-        public static final ArrayList<GT_Recipe_AssemblyLine> sAssemblylineRecipes = new ArrayList<GT_Recipe_AssemblyLine>();
+        public static final ArrayList<GT_Recipe_AssemblyLine> sAssemblylineRecipes = new ArrayList<>();
 
         static {
             if (!Boolean.getBoolean("com.gtnh.gt5u.ignore-invalid-assline-recipe"))

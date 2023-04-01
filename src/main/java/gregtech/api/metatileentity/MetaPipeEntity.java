@@ -115,7 +115,7 @@ public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable {
 
         ItemStack tStack = new ItemStack(GregTech_API.sBlockMachines, 1, aID);
         tStack.getItem()
-              .addInformation(tStack, null, new ArrayList<String>(), true);
+              .addInformation(tStack, null, new ArrayList<>(), true);
     }
 
     /**

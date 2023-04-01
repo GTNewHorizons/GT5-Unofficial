@@ -28,15 +28,15 @@ public class GT_AssemblyLineUtils {
     /**
      * A cache of Recipes using the Output as Key.
      */
-    private static HashMap<GT_ItemStack, GT_Recipe_AssemblyLine> sRecipeCacheByOutput = new HashMap<GT_ItemStack, GT_Recipe_AssemblyLine>();
+    private static HashMap<GT_ItemStack, GT_Recipe_AssemblyLine> sRecipeCacheByOutput = new HashMap<>();
     /**
      * A cache of Recipes using the Recipe Hash String as Key.
      */
-    private static HashMap<String, GT_Recipe_AssemblyLine> sRecipeCacheByRecipeHash = new HashMap<String, GT_Recipe_AssemblyLine>();
+    private static HashMap<String, GT_Recipe_AssemblyLine> sRecipeCacheByRecipeHash = new HashMap<>();
 
     /**
      * Checks the DataStick for deprecated/invalid recipes, updating them as required.
-     * 
+     *
      * @param aDataStick - The DataStick to process
      * @return Is this DataStick now valid with a current recipe?
      */
@@ -57,7 +57,7 @@ public class GT_AssemblyLineUtils {
 
     /**
      * Finds an Assembly Line recipe from a DataStick.
-     * 
+     *
      * @param aDataStick - The DataStick to check.
      * @return The GT_Recipe_AssemblyLine recipe contained on the DataStick, if any.
      */
@@ -67,7 +67,7 @@ public class GT_AssemblyLineUtils {
 
     /**
      * Finds an Assembly Line recipe from a DataStick.
-     * 
+     *
      * @param aDataStick         - The DataStick to check.
      * @param aReturnBuiltRecipe - Do we return a GT_Recipe_AssemblyLine built from the data on the Data Stick instead
      *                           of searching the Recipe Map?
@@ -197,7 +197,7 @@ public class GT_AssemblyLineUtils {
 
     /**
      * Finds a GT_Recipe_AssemblyLine based on the expected output ItemStack.
-     * 
+     *
      * @param aOutput - The Output of a GT_Recipe_AssemblyLine.
      * @return First found GT_Recipe_AssemblyLine with matching output.
      */
@@ -321,7 +321,7 @@ public class GT_AssemblyLineUtils {
 
     /**
      * Get the Output ItemStack from a Data Stick.
-     * 
+     *
      * @param aDataStick - The Data Stick to check.
      * @return Output ItemStack contained on the Data Stick.
      */

@@ -37,7 +37,7 @@ public abstract class GT_MetaBase_Item extends GT_Generic_Item
         implements ISpecialElectricItem, IElectricItemManager, IFluidContainerItem {
 
     /* ---------- CONSTRUCTOR AND MEMBER VARIABLES ---------- */
-    private final ConcurrentHashMap<Short, ArrayList<IItemBehaviour<GT_MetaBase_Item>>> mItemBehaviors = new ConcurrentHashMap<Short, ArrayList<IItemBehaviour<GT_MetaBase_Item>>>();
+    private final ConcurrentHashMap<Short, ArrayList<IItemBehaviour<GT_MetaBase_Item>>> mItemBehaviors = new ConcurrentHashMap<>();
 
     /**
      * Creates the Item using these Parameters.

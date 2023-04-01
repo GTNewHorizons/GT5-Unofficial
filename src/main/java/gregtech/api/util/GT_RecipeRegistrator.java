@@ -40,7 +40,7 @@ public class GT_RecipeRegistrator {
      * List of Materials, which are used in the Creation of Sticks. All Rod Materials are automatically added to this
      * List.
      */
-    public static final List<Materials> sRodMaterialList = new ArrayList<Materials>();
+    public static final List<Materials> sRodMaterialList = new ArrayList<>();
 
     private static final ItemStack sMt1 = new ItemStack(Blocks.dirt, 1, 0), sMt2 = new ItemStack(Blocks.dirt, 1, 0);
     private static final String s_H = "h", s_F = "f", s_I = "I", s_P = "P", s_R = "R";
@@ -628,7 +628,7 @@ public class GT_RecipeRegistrator {
 
     /**
      * Registers wiremill recipes for given material using integrated circuits.
-     * 
+     *
      * @param aMaterial    material to register
      * @param baseDuration base duration ticks for ingot -> 1x wire recipe
      * @param aEUt         EU/t for recipe If you provide a proper EU tier for recipe processing then aEUt will be
@@ -646,7 +646,7 @@ public class GT_RecipeRegistrator {
 
     /**
      * Registers wiremill recipes for given material using integrated circuits.
-     * 
+     *
      * @param aMaterial    material to register
      * @param baseDuration base duration ticks for ingot -> 1x wire recipe
      * @param aEUt         EU/t for recipe
