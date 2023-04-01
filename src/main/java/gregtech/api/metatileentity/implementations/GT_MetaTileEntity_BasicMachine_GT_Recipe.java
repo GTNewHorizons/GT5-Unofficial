@@ -231,673 +231,286 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
 
                 if (aRecipe[i] == GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PLATE) {
                     switch (this.mTier) {
-                        case 0:
-                        case 1:
-                            aRecipe[i] = OrePrefixes.plate.get(Materials.Steel);
-                            break;
-                        case 2:
-                            aRecipe[i] = OrePrefixes.plate.get(Materials.Aluminium);
-                            break;
-                        case 3:
-                            aRecipe[i] = OrePrefixes.plate.get(Materials.StainlessSteel);
-                            break;
-                        case 4:
-                            aRecipe[i] = OrePrefixes.plate.get(Materials.Titanium);
-                            break;
-                        case 5:
-                            aRecipe[i] = OrePrefixes.plate.get(Materials.TungstenSteel);
-                            break;
-                        case 6:
-                            aRecipe[i] = OrePrefixes.plate.get(Materials.HSSG);
-                            break;
-                        case 7:
-                            aRecipe[i] = OrePrefixes.plate.get(Materials.HSSE);
-                            break;
-                        default:
-                            aRecipe[i] = OrePrefixes.plate.get(Materials.Neutronium);
-                            break;
+                        case 0, 1 -> aRecipe[i] = OrePrefixes.plate.get(Materials.Steel);
+                        case 2 -> aRecipe[i] = OrePrefixes.plate.get(Materials.Aluminium);
+                        case 3 -> aRecipe[i] = OrePrefixes.plate.get(Materials.StainlessSteel);
+                        case 4 -> aRecipe[i] = OrePrefixes.plate.get(Materials.Titanium);
+                        case 5 -> aRecipe[i] = OrePrefixes.plate.get(Materials.TungstenSteel);
+                        case 6 -> aRecipe[i] = OrePrefixes.plate.get(Materials.HSSG);
+                        case 7 -> aRecipe[i] = OrePrefixes.plate.get(Materials.HSSE);
+                        default -> aRecipe[i] = OrePrefixes.plate.get(Materials.Neutronium);
                     }
                     continue;
                 }
 
                 if (aRecipe[i] == GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PIPE) {
                     switch (this.mTier) {
-                        case 0:
-                        case 1:
-                            aRecipe[i] = OrePrefixes.pipeMedium.get(Materials.Bronze);
-                            break;
-                        case 2:
-                            aRecipe[i] = OrePrefixes.pipeMedium.get(Materials.Steel);
-                            break;
-                        case 3:
-                            aRecipe[i] = OrePrefixes.pipeMedium.get(Materials.StainlessSteel);
-                            break;
-                        case 4:
-                            aRecipe[i] = OrePrefixes.pipeMedium.get(Materials.Titanium);
-                            break;
-                        case 5:
-                            aRecipe[i] = OrePrefixes.pipeMedium.get(Materials.TungstenSteel);
-                            break;
-                        case 6:
-                            aRecipe[i] = OrePrefixes.pipeSmall.get(Materials.Ultimate);
-                            break;
-                        case 7:
-                            aRecipe[i] = OrePrefixes.pipeMedium.get(Materials.Ultimate);
-                            break;
-                        case 8:
-                            aRecipe[i] = OrePrefixes.pipeLarge.get(Materials.Ultimate);
-                            break;
-                        default:
-                            aRecipe[i] = OrePrefixes.pipeHuge.get(Materials.Ultimate);
-                            break;
+                        case 0, 1 -> aRecipe[i] = OrePrefixes.pipeMedium.get(Materials.Bronze);
+                        case 2 -> aRecipe[i] = OrePrefixes.pipeMedium.get(Materials.Steel);
+                        case 3 -> aRecipe[i] = OrePrefixes.pipeMedium.get(Materials.StainlessSteel);
+                        case 4 -> aRecipe[i] = OrePrefixes.pipeMedium.get(Materials.Titanium);
+                        case 5 -> aRecipe[i] = OrePrefixes.pipeMedium.get(Materials.TungstenSteel);
+                        case 6 -> aRecipe[i] = OrePrefixes.pipeSmall.get(Materials.Ultimate);
+                        case 7 -> aRecipe[i] = OrePrefixes.pipeMedium.get(Materials.Ultimate);
+                        case 8 -> aRecipe[i] = OrePrefixes.pipeLarge.get(Materials.Ultimate);
+                        default -> aRecipe[i] = OrePrefixes.pipeHuge.get(Materials.Ultimate);
                     }
                     continue;
                 }
 
                 if (aRecipe[i] == GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING) {
                     switch (this.mTier) {
-                        case 0:
-                        case 1:
-                            aRecipe[i] = OrePrefixes.wireGt02.get(Materials.AnyCopper);
-                            break;
-                        case 2:
-                            aRecipe[i] = OrePrefixes.wireGt02.get(Materials.Cupronickel);
-                            break;
-                        case 3:
-                            aRecipe[i] = OrePrefixes.wireGt02.get(Materials.Kanthal);
-                            break;
-                        case 4:
-                            aRecipe[i] = OrePrefixes.wireGt02.get(Materials.Nichrome);
-                            break;
-                        case 5:
-                            aRecipe[i] = OrePrefixes.wireGt02.get(Materials.TPV);
-                            break;
-                        case 6:
-                            aRecipe[i] = OrePrefixes.wireGt02.get(Materials.HSSG);
-                            break;
-                        case 7:
-                            aRecipe[i] = OrePrefixes.wireGt02.get(Materials.Naquadah);
-                            break;
-                        case 8:
-                            aRecipe[i] = OrePrefixes.wireGt02.get(Materials.NaquadahAlloy);
-                            break;
-                        case 9:
-                            aRecipe[i] = OrePrefixes.wireGt04.get(Materials.NaquadahAlloy);
-                            break;
-                        default:
-                            aRecipe[i] = OrePrefixes.wireGt08.get(Materials.NaquadahAlloy);
-                            break;
+                        case 0, 1 -> aRecipe[i] = OrePrefixes.wireGt02.get(Materials.AnyCopper);
+                        case 2 -> aRecipe[i] = OrePrefixes.wireGt02.get(Materials.Cupronickel);
+                        case 3 -> aRecipe[i] = OrePrefixes.wireGt02.get(Materials.Kanthal);
+                        case 4 -> aRecipe[i] = OrePrefixes.wireGt02.get(Materials.Nichrome);
+                        case 5 -> aRecipe[i] = OrePrefixes.wireGt02.get(Materials.TPV);
+                        case 6 -> aRecipe[i] = OrePrefixes.wireGt02.get(Materials.HSSG);
+                        case 7 -> aRecipe[i] = OrePrefixes.wireGt02.get(Materials.Naquadah);
+                        case 8 -> aRecipe[i] = OrePrefixes.wireGt02.get(Materials.NaquadahAlloy);
+                        case 9 -> aRecipe[i] = OrePrefixes.wireGt04.get(Materials.NaquadahAlloy);
+                        default -> aRecipe[i] = OrePrefixes.wireGt08.get(Materials.NaquadahAlloy);
                     }
                     continue;
                 }
 
                 if (aRecipe[i] == GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING_DOUBLE) {
                     switch (this.mTier) {
-                        case 0:
-                        case 1:
-                            aRecipe[i] = OrePrefixes.wireGt04.get(Materials.AnyCopper);
-                            break;
-                        case 2:
-                            aRecipe[i] = OrePrefixes.wireGt04.get(Materials.Cupronickel);
-                            break;
-                        case 3:
-                            aRecipe[i] = OrePrefixes.wireGt04.get(Materials.Kanthal);
-                            break;
-                        case 4:
-                            aRecipe[i] = OrePrefixes.wireGt04.get(Materials.Nichrome);
-                            break;
-                        case 5:
-                            aRecipe[i] = OrePrefixes.wireGt04.get(Materials.TPV);
-                            break;
-                        case 6:
-                            aRecipe[i] = OrePrefixes.wireGt04.get(Materials.HSSG);
-                            break;
-                        case 7:
-                            aRecipe[i] = OrePrefixes.wireGt04.get(Materials.Naquadah);
-                            break;
-                        case 8:
-                            aRecipe[i] = OrePrefixes.wireGt04.get(Materials.NaquadahAlloy);
-                            break;
-                        case 9:
-                            aRecipe[i] = OrePrefixes.wireGt08.get(Materials.NaquadahAlloy);
-                            break;
-                        default:
-                            aRecipe[i] = OrePrefixes.wireGt16.get(Materials.NaquadahAlloy);
-                            break;
+                        case 0, 1 -> aRecipe[i] = OrePrefixes.wireGt04.get(Materials.AnyCopper);
+                        case 2 -> aRecipe[i] = OrePrefixes.wireGt04.get(Materials.Cupronickel);
+                        case 3 -> aRecipe[i] = OrePrefixes.wireGt04.get(Materials.Kanthal);
+                        case 4 -> aRecipe[i] = OrePrefixes.wireGt04.get(Materials.Nichrome);
+                        case 5 -> aRecipe[i] = OrePrefixes.wireGt04.get(Materials.TPV);
+                        case 6 -> aRecipe[i] = OrePrefixes.wireGt04.get(Materials.HSSG);
+                        case 7 -> aRecipe[i] = OrePrefixes.wireGt04.get(Materials.Naquadah);
+                        case 8 -> aRecipe[i] = OrePrefixes.wireGt04.get(Materials.NaquadahAlloy);
+                        case 9 -> aRecipe[i] = OrePrefixes.wireGt08.get(Materials.NaquadahAlloy);
+                        default -> aRecipe[i] = OrePrefixes.wireGt16.get(Materials.NaquadahAlloy);
                     }
                     continue;
                 }
 
                 if (aRecipe[i] == GT_MetaTileEntity_BasicMachine_GT_Recipe.X.STICK_DISTILLATION) {
                     switch (this.mTier) {
-                        default:
-                            aRecipe[i] = OrePrefixes.stick.get(Materials.Blaze);
-                            break;
+                        default -> aRecipe[i] = OrePrefixes.stick.get(Materials.Blaze);
                     }
                     continue;
                 }
 
                 if (aRecipe[i] == GT_MetaTileEntity_BasicMachine_GT_Recipe.X.STICK_MAGNETIC) {
                     switch (this.mTier) {
-                        case 0:
-                        case 1:
-                            aRecipe[i] = OrePrefixes.stick.get(Materials.IronMagnetic);
-                            break;
-                        case 2:
-                        case 3:
-                            aRecipe[i] = OrePrefixes.stick.get(Materials.SteelMagnetic);
-                            break;
-                        case 4:
-                        case 5:
-                            aRecipe[i] = OrePrefixes.stick.get(Materials.NeodymiumMagnetic);
-                            break;
-                        case 6:
-                        case 7:
-                            aRecipe[i] = OrePrefixes.stick.get(Materials.SamariumMagnetic);
-                            break;
-                        default:
-                            aRecipe[i] = OrePrefixes.stickLong.get(Materials.SamariumMagnetic);
-                            break;
+                        case 0, 1 -> aRecipe[i] = OrePrefixes.stick.get(Materials.IronMagnetic);
+                        case 2, 3 -> aRecipe[i] = OrePrefixes.stick.get(Materials.SteelMagnetic);
+                        case 4, 5 -> aRecipe[i] = OrePrefixes.stick.get(Materials.NeodymiumMagnetic);
+                        case 6, 7 -> aRecipe[i] = OrePrefixes.stick.get(Materials.SamariumMagnetic);
+                        default -> aRecipe[i] = OrePrefixes.stickLong.get(Materials.SamariumMagnetic);
                     }
                     continue;
                 }
 
                 if (aRecipe[i] == GT_MetaTileEntity_BasicMachine_GT_Recipe.X.STICK_ELECTROMAGNETIC) {
                     switch (this.mTier) {
-                        case 0:
-                        case 1:
-                            aRecipe[i] = OrePrefixes.stick.get(Materials.AnyIron);
-                            break;
-                        case 2:
-                        case 3:
-                            aRecipe[i] = OrePrefixes.stick.get(Materials.Steel);
-                            break;
-                        case 4:
-                            aRecipe[i] = OrePrefixes.stick.get(Materials.Neodymium);
-                            break;
-                        default:
-                            aRecipe[i] = OrePrefixes.stick.get(Materials.VanadiumGallium);
-                            break;
+                        case 0, 1 -> aRecipe[i] = OrePrefixes.stick.get(Materials.AnyIron);
+                        case 2, 3 -> aRecipe[i] = OrePrefixes.stick.get(Materials.Steel);
+                        case 4 -> aRecipe[i] = OrePrefixes.stick.get(Materials.Neodymium);
+                        default -> aRecipe[i] = OrePrefixes.stick.get(Materials.VanadiumGallium);
                     }
                     continue;
                 }
 
                 if (aRecipe[i] == GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_ELECTRIC) {
                     switch (this.mTier) {
-                        case 0:
-                            aRecipe[i] = OrePrefixes.wireGt01.get(Materials.Lead);
-                            break;
-                        case 1:
-                            aRecipe[i] = OrePrefixes.wireGt02.get(Materials.Tin);
-                            break;
-                        case 2:
-                            aRecipe[i] = OrePrefixes.wireGt02.get(Materials.AnyCopper);
-                            break;
-                        case 3:
-                            aRecipe[i] = OrePrefixes.wireGt04.get(Materials.AnyCopper);
-                            break;
-                        case 4:
-                            aRecipe[i] = OrePrefixes.wireGt08.get(Materials.AnnealedCopper);
-                            break;
-                        case 5:
-                            aRecipe[i] = OrePrefixes.wireGt16.get(Materials.AnnealedCopper);
-                            break;
-                        case 6:
-                            aRecipe[i] = OrePrefixes.wireGt04.get(Materials.YttriumBariumCuprate);
-                            break;
-                        case 7:
-                            aRecipe[i] = OrePrefixes.wireGt08.get(Materials.Iridium);
-                            break;
-                        default:
-                            aRecipe[i] = OrePrefixes.wireGt16.get(Materials.Osmium);
-                            break;
+                        case 0 -> aRecipe[i] = OrePrefixes.wireGt01.get(Materials.Lead);
+                        case 1 -> aRecipe[i] = OrePrefixes.wireGt02.get(Materials.Tin);
+                        case 2 -> aRecipe[i] = OrePrefixes.wireGt02.get(Materials.AnyCopper);
+                        case 3 -> aRecipe[i] = OrePrefixes.wireGt04.get(Materials.AnyCopper);
+                        case 4 -> aRecipe[i] = OrePrefixes.wireGt08.get(Materials.AnnealedCopper);
+                        case 5 -> aRecipe[i] = OrePrefixes.wireGt16.get(Materials.AnnealedCopper);
+                        case 6 -> aRecipe[i] = OrePrefixes.wireGt04.get(Materials.YttriumBariumCuprate);
+                        case 7 -> aRecipe[i] = OrePrefixes.wireGt08.get(Materials.Iridium);
+                        default -> aRecipe[i] = OrePrefixes.wireGt16.get(Materials.Osmium);
                     }
                     continue;
                 }
 
                 if (aRecipe[i] == GT_MetaTileEntity_BasicMachine_GT_Recipe.X.ROBOT_ARM) {
                     switch (this.mTier) {
-                        case 0:
-                        case 1:
-                            aRecipe[i] = ItemList.Robot_Arm_LV;
-                            break;
-                        case 2:
-                            aRecipe[i] = ItemList.Robot_Arm_MV;
-                            break;
-                        case 3:
-                            aRecipe[i] = ItemList.Robot_Arm_HV;
-                            break;
-                        case 4:
-                            aRecipe[i] = ItemList.Robot_Arm_EV;
-                            break;
-                        case 5:
-                            aRecipe[i] = ItemList.Robot_Arm_IV;
-                            break;
-                        case 6:
-                            aRecipe[i] = ItemList.Robot_Arm_LuV;
-                            break;
-                        case 7:
-                            aRecipe[i] = ItemList.Robot_Arm_ZPM;
-                            break;
-                        case 8:
-                            aRecipe[i] = ItemList.Robot_Arm_UV;
-                            break;
-                        case 9:
-                            aRecipe[i] = ItemList.Robot_Arm_UHV;
-                            break;
-                        case 10:
-                            aRecipe[i] = ItemList.Robot_Arm_UEV;
-                            break;
-                        case 11:
-                            aRecipe[i] = ItemList.Robot_Arm_UIV;
-                            break;
-                        case 12:
-                            aRecipe[i] = ItemList.Robot_Arm_UMV;
-                            break;
-                        case 13:
-                            aRecipe[i] = ItemList.Robot_Arm_UXV;
-                            break;
-                        case 14:
-                            aRecipe[i] = ItemList.Robot_Arm_MAX;
-                            break;
-                        default:
-                            aRecipe[i] = ItemList.Robot_Arm_MAX;
-                            break;
+                        case 0, 1 -> aRecipe[i] = ItemList.Robot_Arm_LV;
+                        case 2 -> aRecipe[i] = ItemList.Robot_Arm_MV;
+                        case 3 -> aRecipe[i] = ItemList.Robot_Arm_HV;
+                        case 4 -> aRecipe[i] = ItemList.Robot_Arm_EV;
+                        case 5 -> aRecipe[i] = ItemList.Robot_Arm_IV;
+                        case 6 -> aRecipe[i] = ItemList.Robot_Arm_LuV;
+                        case 7 -> aRecipe[i] = ItemList.Robot_Arm_ZPM;
+                        case 8 -> aRecipe[i] = ItemList.Robot_Arm_UV;
+                        case 9 -> aRecipe[i] = ItemList.Robot_Arm_UHV;
+                        case 10 -> aRecipe[i] = ItemList.Robot_Arm_UEV;
+                        case 11 -> aRecipe[i] = ItemList.Robot_Arm_UIV;
+                        case 12 -> aRecipe[i] = ItemList.Robot_Arm_UMV;
+                        case 13 -> aRecipe[i] = ItemList.Robot_Arm_UXV;
+                        case 14 -> aRecipe[i] = ItemList.Robot_Arm_MAX;
+                        default -> aRecipe[i] = ItemList.Robot_Arm_MAX;
                     }
                     continue;
                 }
 
                 if (aRecipe[i] == GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP) {
                     switch (this.mTier) {
-                        case 0:
-                        case 1:
-                            aRecipe[i] = ItemList.Electric_Pump_LV;
-                            break;
-                        case 2:
-                            aRecipe[i] = ItemList.Electric_Pump_MV;
-                            break;
-                        case 3:
-                            aRecipe[i] = ItemList.Electric_Pump_HV;
-                            break;
-                        case 4:
-                            aRecipe[i] = ItemList.Electric_Pump_EV;
-                            break;
-                        case 5:
-                            aRecipe[i] = ItemList.Electric_Pump_IV;
-                            break;
-                        case 6:
-                            aRecipe[i] = ItemList.Electric_Pump_LuV;
-                            break;
-                        case 7:
-                            aRecipe[i] = ItemList.Electric_Pump_ZPM;
-                            break;
-                        case 8:
-                            aRecipe[i] = ItemList.Electric_Pump_UV;
-                            break;
-                        case 9:
-                            aRecipe[i] = ItemList.Electric_Pump_UHV;
-                            break;
-                        case 10:
-                            aRecipe[i] = ItemList.Electric_Pump_UEV;
-                            break;
-                        case 11:
-                            aRecipe[i] = ItemList.Electric_Pump_UIV;
-                            break;
-                        case 12:
-                            aRecipe[i] = ItemList.Electric_Pump_UMV;
-                            break;
-                        case 13:
-                            aRecipe[i] = ItemList.Electric_Pump_UXV;
-                            break;
-                        case 14:
-                            aRecipe[i] = ItemList.Electric_Pump_MAX;
-                            break;
-                        default:
-                            aRecipe[i] = ItemList.Electric_Pump_MAX;
-                            break;
+                        case 0, 1 -> aRecipe[i] = ItemList.Electric_Pump_LV;
+                        case 2 -> aRecipe[i] = ItemList.Electric_Pump_MV;
+                        case 3 -> aRecipe[i] = ItemList.Electric_Pump_HV;
+                        case 4 -> aRecipe[i] = ItemList.Electric_Pump_EV;
+                        case 5 -> aRecipe[i] = ItemList.Electric_Pump_IV;
+                        case 6 -> aRecipe[i] = ItemList.Electric_Pump_LuV;
+                        case 7 -> aRecipe[i] = ItemList.Electric_Pump_ZPM;
+                        case 8 -> aRecipe[i] = ItemList.Electric_Pump_UV;
+                        case 9 -> aRecipe[i] = ItemList.Electric_Pump_UHV;
+                        case 10 -> aRecipe[i] = ItemList.Electric_Pump_UEV;
+                        case 11 -> aRecipe[i] = ItemList.Electric_Pump_UIV;
+                        case 12 -> aRecipe[i] = ItemList.Electric_Pump_UMV;
+                        case 13 -> aRecipe[i] = ItemList.Electric_Pump_UXV;
+                        case 14 -> aRecipe[i] = ItemList.Electric_Pump_MAX;
+                        default -> aRecipe[i] = ItemList.Electric_Pump_MAX;
                     }
                     continue;
                 }
 
                 if (aRecipe[i] == GT_MetaTileEntity_BasicMachine_GT_Recipe.X.ROTOR) {
                     switch (this.mTier) {
-                        case 0:
-                        case 1:
-                            aRecipe[i] = OrePrefixes.rotor.get(Materials.Tin);
-                            break;
-                        case 2:
-                            aRecipe[i] = OrePrefixes.rotor.get(Materials.Bronze);
-                            break;
-                        case 3:
-                            aRecipe[i] = OrePrefixes.rotor.get(Materials.Steel);
-                            break;
-                        case 4:
-                            aRecipe[i] = OrePrefixes.rotor.get(Materials.StainlessSteel);
-                            break;
-                        case 5:
-                            aRecipe[i] = OrePrefixes.rotor.get(Materials.TungstenSteel);
-                            break;
-                        case 6:
-                            aRecipe[i] = OrePrefixes.rotor.get(Materials.Chrome);
-                            break;
-                        case 7:
-                            aRecipe[i] = OrePrefixes.rotor.get(Materials.Iridium);
-                            break;
-                        default:
-                            aRecipe[i] = OrePrefixes.rotor.get(Materials.Osmium);
-                            break;
+                        case 0, 1 -> aRecipe[i] = OrePrefixes.rotor.get(Materials.Tin);
+                        case 2 -> aRecipe[i] = OrePrefixes.rotor.get(Materials.Bronze);
+                        case 3 -> aRecipe[i] = OrePrefixes.rotor.get(Materials.Steel);
+                        case 4 -> aRecipe[i] = OrePrefixes.rotor.get(Materials.StainlessSteel);
+                        case 5 -> aRecipe[i] = OrePrefixes.rotor.get(Materials.TungstenSteel);
+                        case 6 -> aRecipe[i] = OrePrefixes.rotor.get(Materials.Chrome);
+                        case 7 -> aRecipe[i] = OrePrefixes.rotor.get(Materials.Iridium);
+                        default -> aRecipe[i] = OrePrefixes.rotor.get(Materials.Osmium);
                     }
                     continue;
                 }
 
                 if (aRecipe[i] == GT_MetaTileEntity_BasicMachine_GT_Recipe.X.MOTOR) {
                     switch (this.mTier) {
-                        case 0:
-                        case 1:
-                            aRecipe[i] = ItemList.Electric_Motor_LV;
-                            break;
-                        case 2:
-                            aRecipe[i] = ItemList.Electric_Motor_MV;
-                            break;
-                        case 3:
-                            aRecipe[i] = ItemList.Electric_Motor_HV;
-                            break;
-                        case 4:
-                            aRecipe[i] = ItemList.Electric_Motor_EV;
-                            break;
-                        case 5:
-                            aRecipe[i] = ItemList.Electric_Motor_IV;
-                            break;
-                        case 6:
-                            aRecipe[i] = ItemList.Electric_Motor_LuV;
-                            break;
-                        case 7:
-                            aRecipe[i] = ItemList.Electric_Motor_ZPM;
-                            break;
-                        case 8:
-                            aRecipe[i] = ItemList.Electric_Motor_UV;
-                            break;
-                        case 9:
-                            aRecipe[i] = ItemList.Electric_Motor_UHV;
-                            break;
-                        case 10:
-                            aRecipe[i] = ItemList.Electric_Motor_UEV;
-                            break;
-                        case 11:
-                            aRecipe[i] = ItemList.Electric_Motor_UIV;
-                            break;
-                        case 12:
-                            aRecipe[i] = ItemList.Electric_Motor_UMV;
-                            break;
-                        case 13:
-                            aRecipe[i] = ItemList.Electric_Motor_UXV;
-                            break;
-                        case 14:
-                            aRecipe[i] = ItemList.Electric_Motor_MAX;
-                            break;
-                        default:
-                            aRecipe[i] = ItemList.Electric_Motor_MAX;
-                            break;
+                        case 0, 1 -> aRecipe[i] = ItemList.Electric_Motor_LV;
+                        case 2 -> aRecipe[i] = ItemList.Electric_Motor_MV;
+                        case 3 -> aRecipe[i] = ItemList.Electric_Motor_HV;
+                        case 4 -> aRecipe[i] = ItemList.Electric_Motor_EV;
+                        case 5 -> aRecipe[i] = ItemList.Electric_Motor_IV;
+                        case 6 -> aRecipe[i] = ItemList.Electric_Motor_LuV;
+                        case 7 -> aRecipe[i] = ItemList.Electric_Motor_ZPM;
+                        case 8 -> aRecipe[i] = ItemList.Electric_Motor_UV;
+                        case 9 -> aRecipe[i] = ItemList.Electric_Motor_UHV;
+                        case 10 -> aRecipe[i] = ItemList.Electric_Motor_UEV;
+                        case 11 -> aRecipe[i] = ItemList.Electric_Motor_UIV;
+                        case 12 -> aRecipe[i] = ItemList.Electric_Motor_UMV;
+                        case 13 -> aRecipe[i] = ItemList.Electric_Motor_UXV;
+                        case 14 -> aRecipe[i] = ItemList.Electric_Motor_MAX;
+                        default -> aRecipe[i] = ItemList.Electric_Motor_MAX;
                     }
                     continue;
                 }
 
                 if (aRecipe[i] == GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON) {
                     switch (this.mTier) {
-                        case 0:
-                        case 1:
-                            aRecipe[i] = ItemList.Electric_Piston_LV;
-                            break;
-                        case 2:
-                            aRecipe[i] = ItemList.Electric_Piston_MV;
-                            break;
-                        case 3:
-                            aRecipe[i] = ItemList.Electric_Piston_HV;
-                            break;
-                        case 4:
-                            aRecipe[i] = ItemList.Electric_Piston_EV;
-                            break;
-                        case 5:
-                            aRecipe[i] = ItemList.Electric_Piston_IV;
-                            break;
-                        case 6:
-                            aRecipe[i] = ItemList.Electric_Piston_LuV;
-                            break;
-                        case 7:
-                            aRecipe[i] = ItemList.Electric_Piston_ZPM;
-                            break;
-                        case 8:
-                            aRecipe[i] = ItemList.Electric_Piston_UV;
-                            break;
-                        case 9:
-                            aRecipe[i] = ItemList.Electric_Piston_UHV;
-                            break;
-                        case 10:
-                            aRecipe[i] = ItemList.Electric_Piston_UEV;
-                            break;
-                        case 11:
-                            aRecipe[i] = ItemList.Electric_Piston_UIV;
-                            break;
-                        case 12:
-                            aRecipe[i] = ItemList.Electric_Piston_UMV;
-                            break;
-                        case 13:
-                            aRecipe[i] = ItemList.Electric_Piston_UXV;
-                            break;
-                        case 14:
-                            aRecipe[i] = ItemList.Electric_Piston_MAX;
-                            break;
-                        default:
-                            aRecipe[i] = ItemList.Electric_Piston_MAX;
-                            break;
+                        case 0, 1 -> aRecipe[i] = ItemList.Electric_Piston_LV;
+                        case 2 -> aRecipe[i] = ItemList.Electric_Piston_MV;
+                        case 3 -> aRecipe[i] = ItemList.Electric_Piston_HV;
+                        case 4 -> aRecipe[i] = ItemList.Electric_Piston_EV;
+                        case 5 -> aRecipe[i] = ItemList.Electric_Piston_IV;
+                        case 6 -> aRecipe[i] = ItemList.Electric_Piston_LuV;
+                        case 7 -> aRecipe[i] = ItemList.Electric_Piston_ZPM;
+                        case 8 -> aRecipe[i] = ItemList.Electric_Piston_UV;
+                        case 9 -> aRecipe[i] = ItemList.Electric_Piston_UHV;
+                        case 10 -> aRecipe[i] = ItemList.Electric_Piston_UEV;
+                        case 11 -> aRecipe[i] = ItemList.Electric_Piston_UIV;
+                        case 12 -> aRecipe[i] = ItemList.Electric_Piston_UMV;
+                        case 13 -> aRecipe[i] = ItemList.Electric_Piston_UXV;
+                        case 14 -> aRecipe[i] = ItemList.Electric_Piston_MAX;
+                        default -> aRecipe[i] = ItemList.Electric_Piston_MAX;
                     }
                     continue;
                 }
 
                 if (aRecipe[i] == GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CONVEYOR) {
                     switch (this.mTier) {
-                        case 0:
-                        case 1:
-                            aRecipe[i] = ItemList.Conveyor_Module_LV;
-                            break;
-                        case 2:
-                            aRecipe[i] = ItemList.Conveyor_Module_MV;
-                            break;
-                        case 3:
-                            aRecipe[i] = ItemList.Conveyor_Module_HV;
-                            break;
-                        case 4:
-                            aRecipe[i] = ItemList.Conveyor_Module_EV;
-                            break;
-                        case 5:
-                            aRecipe[i] = ItemList.Conveyor_Module_IV;
-                            break;
-                        case 6:
-                            aRecipe[i] = ItemList.Conveyor_Module_LuV;
-                            break;
-                        case 7:
-                            aRecipe[i] = ItemList.Conveyor_Module_ZPM;
-                            break;
-                        case 8:
-                            aRecipe[i] = ItemList.Conveyor_Module_UV;
-                            break;
-                        case 9:
-                            aRecipe[i] = ItemList.Conveyor_Module_UHV;
-                            break;
-                        case 10:
-                            aRecipe[i] = ItemList.Conveyor_Module_UEV;
-                            break;
-                        case 11:
-                            aRecipe[i] = ItemList.Conveyor_Module_UIV;
-                            break;
-                        case 12:
-                            aRecipe[i] = ItemList.Conveyor_Module_UMV;
-                            break;
-                        case 13:
-                            aRecipe[i] = ItemList.Conveyor_Module_UXV;
-                            break;
-                        case 14:
-                            aRecipe[i] = ItemList.Conveyor_Module_MAX;
-                            break;
-                        default:
-                            aRecipe[i] = ItemList.Conveyor_Module_MAX;
-                            break;
+                        case 0, 1 -> aRecipe[i] = ItemList.Conveyor_Module_LV;
+                        case 2 -> aRecipe[i] = ItemList.Conveyor_Module_MV;
+                        case 3 -> aRecipe[i] = ItemList.Conveyor_Module_HV;
+                        case 4 -> aRecipe[i] = ItemList.Conveyor_Module_EV;
+                        case 5 -> aRecipe[i] = ItemList.Conveyor_Module_IV;
+                        case 6 -> aRecipe[i] = ItemList.Conveyor_Module_LuV;
+                        case 7 -> aRecipe[i] = ItemList.Conveyor_Module_ZPM;
+                        case 8 -> aRecipe[i] = ItemList.Conveyor_Module_UV;
+                        case 9 -> aRecipe[i] = ItemList.Conveyor_Module_UHV;
+                        case 10 -> aRecipe[i] = ItemList.Conveyor_Module_UEV;
+                        case 11 -> aRecipe[i] = ItemList.Conveyor_Module_UIV;
+                        case 12 -> aRecipe[i] = ItemList.Conveyor_Module_UMV;
+                        case 13 -> aRecipe[i] = ItemList.Conveyor_Module_UXV;
+                        case 14 -> aRecipe[i] = ItemList.Conveyor_Module_MAX;
+                        default -> aRecipe[i] = ItemList.Conveyor_Module_MAX;
                     }
                     continue;
                 }
 
                 if (aRecipe[i] == GT_MetaTileEntity_BasicMachine_GT_Recipe.X.EMITTER) {
                     switch (this.mTier) {
-                        case 0:
-                        case 1:
-                            aRecipe[i] = ItemList.Emitter_LV;
-                            break;
-                        case 2:
-                            aRecipe[i] = ItemList.Emitter_MV;
-                            break;
-                        case 3:
-                            aRecipe[i] = ItemList.Emitter_HV;
-                            break;
-                        case 4:
-                            aRecipe[i] = ItemList.Emitter_EV;
-                            break;
-                        case 5:
-                            aRecipe[i] = ItemList.Emitter_IV;
-                            break;
-                        case 6:
-                            aRecipe[i] = ItemList.Emitter_LuV;
-                            break;
-                        case 7:
-                            aRecipe[i] = ItemList.Emitter_ZPM;
-                            break;
-                        case 8:
-                            aRecipe[i] = ItemList.Emitter_UV;
-                            break;
-                        case 9:
-                            aRecipe[i] = ItemList.Emitter_UHV;
-                            break;
-                        case 10:
-                            aRecipe[i] = ItemList.Emitter_UEV;
-                            break;
-                        case 11:
-                            aRecipe[i] = ItemList.Emitter_UIV;
-                            break;
-                        case 12:
-                            aRecipe[i] = ItemList.Emitter_UMV;
-                            break;
-                        case 13:
-                            aRecipe[i] = ItemList.Emitter_UXV;
-                            break;
-                        case 14:
-                            aRecipe[i] = ItemList.Emitter_MAX;
-                            break;
-                        default:
-                            aRecipe[i] = ItemList.Emitter_MAX;
-                            break;
+                        case 0, 1 -> aRecipe[i] = ItemList.Emitter_LV;
+                        case 2 -> aRecipe[i] = ItemList.Emitter_MV;
+                        case 3 -> aRecipe[i] = ItemList.Emitter_HV;
+                        case 4 -> aRecipe[i] = ItemList.Emitter_EV;
+                        case 5 -> aRecipe[i] = ItemList.Emitter_IV;
+                        case 6 -> aRecipe[i] = ItemList.Emitter_LuV;
+                        case 7 -> aRecipe[i] = ItemList.Emitter_ZPM;
+                        case 8 -> aRecipe[i] = ItemList.Emitter_UV;
+                        case 9 -> aRecipe[i] = ItemList.Emitter_UHV;
+                        case 10 -> aRecipe[i] = ItemList.Emitter_UEV;
+                        case 11 -> aRecipe[i] = ItemList.Emitter_UIV;
+                        case 12 -> aRecipe[i] = ItemList.Emitter_UMV;
+                        case 13 -> aRecipe[i] = ItemList.Emitter_UXV;
+                        case 14 -> aRecipe[i] = ItemList.Emitter_MAX;
+                        default -> aRecipe[i] = ItemList.Emitter_MAX;
                     }
                     continue;
                 }
 
                 if (aRecipe[i] == GT_MetaTileEntity_BasicMachine_GT_Recipe.X.SENSOR) {
                     switch (this.mTier) {
-                        case 0:
-                        case 1:
-                            aRecipe[i] = ItemList.Sensor_LV;
-                            break;
-                        case 2:
-                            aRecipe[i] = ItemList.Sensor_MV;
-                            break;
-                        case 3:
-                            aRecipe[i] = ItemList.Sensor_HV;
-                            break;
-                        case 4:
-                            aRecipe[i] = ItemList.Sensor_EV;
-                            break;
-                        case 5:
-                            aRecipe[i] = ItemList.Sensor_IV;
-                            break;
-                        case 6:
-                            aRecipe[i] = ItemList.Sensor_LuV;
-                            break;
-                        case 7:
-                            aRecipe[i] = ItemList.Sensor_ZPM;
-                            break;
-                        case 8:
-                            aRecipe[i] = ItemList.Sensor_UV;
-                            break;
-                        case 9:
-                            aRecipe[i] = ItemList.Sensor_UHV;
-                            break;
-                        case 10:
-                            aRecipe[i] = ItemList.Sensor_UEV;
-                            break;
-                        case 11:
-                            aRecipe[i] = ItemList.Sensor_UIV;
-                            break;
-                        case 12:
-                            aRecipe[i] = ItemList.Sensor_UMV;
-                            break;
-                        case 13:
-                            aRecipe[i] = ItemList.Sensor_UXV;
-                            break;
-                        case 14:
-                            aRecipe[i] = ItemList.Sensor_MAX;
-                            break;
-                        default:
-                            aRecipe[i] = ItemList.Sensor_MAX;
-                            break;
+                        case 0, 1 -> aRecipe[i] = ItemList.Sensor_LV;
+                        case 2 -> aRecipe[i] = ItemList.Sensor_MV;
+                        case 3 -> aRecipe[i] = ItemList.Sensor_HV;
+                        case 4 -> aRecipe[i] = ItemList.Sensor_EV;
+                        case 5 -> aRecipe[i] = ItemList.Sensor_IV;
+                        case 6 -> aRecipe[i] = ItemList.Sensor_LuV;
+                        case 7 -> aRecipe[i] = ItemList.Sensor_ZPM;
+                        case 8 -> aRecipe[i] = ItemList.Sensor_UV;
+                        case 9 -> aRecipe[i] = ItemList.Sensor_UHV;
+                        case 10 -> aRecipe[i] = ItemList.Sensor_UEV;
+                        case 11 -> aRecipe[i] = ItemList.Sensor_UIV;
+                        case 12 -> aRecipe[i] = ItemList.Sensor_UMV;
+                        case 13 -> aRecipe[i] = ItemList.Sensor_UXV;
+                        case 14 -> aRecipe[i] = ItemList.Sensor_MAX;
+                        default -> aRecipe[i] = ItemList.Sensor_MAX;
                     }
                     continue;
                 }
 
                 if (aRecipe[i] == GT_MetaTileEntity_BasicMachine_GT_Recipe.X.FIELD_GENERATOR) {
                     switch (this.mTier) {
-                        case 0:
-                        case 1:
-                            aRecipe[i] = ItemList.Field_Generator_LV;
-                            break;
-                        case 2:
-                            aRecipe[i] = ItemList.Field_Generator_MV;
-                            break;
-                        case 3:
-                            aRecipe[i] = ItemList.Field_Generator_HV;
-                            break;
-                        case 4:
-                            aRecipe[i] = ItemList.Field_Generator_EV;
-                            break;
-                        case 5:
-                            aRecipe[i] = ItemList.Field_Generator_IV;
-                            break;
-                        case 6:
-                            aRecipe[i] = ItemList.Field_Generator_LuV;
-                            break;
-                        case 7:
-                            aRecipe[i] = ItemList.Field_Generator_ZPM;
-                            break;
-                        case 8:
-                            aRecipe[i] = ItemList.Field_Generator_UV;
-                            break;
-                        case 9:
-                            aRecipe[i] = ItemList.Field_Generator_UHV;
-                            break;
-                        case 10:
-                            aRecipe[i] = ItemList.Field_Generator_UEV;
-                            break;
-                        case 11:
-                            aRecipe[i] = ItemList.Field_Generator_UIV;
-                            break;
-                        case 12:
-                            aRecipe[i] = ItemList.Field_Generator_UMV;
-                            break;
-                        case 13:
-                            aRecipe[i] = ItemList.Field_Generator_UXV;
-                            break;
-                        case 14:
-                            aRecipe[i] = ItemList.Field_Generator_MAX;
-                            break;
-                        default:
-                            aRecipe[i] = ItemList.Field_Generator_MAX;
-                            break;
+                        case 0, 1 -> aRecipe[i] = ItemList.Field_Generator_LV;
+                        case 2 -> aRecipe[i] = ItemList.Field_Generator_MV;
+                        case 3 -> aRecipe[i] = ItemList.Field_Generator_HV;
+                        case 4 -> aRecipe[i] = ItemList.Field_Generator_EV;
+                        case 5 -> aRecipe[i] = ItemList.Field_Generator_IV;
+                        case 6 -> aRecipe[i] = ItemList.Field_Generator_LuV;
+                        case 7 -> aRecipe[i] = ItemList.Field_Generator_ZPM;
+                        case 8 -> aRecipe[i] = ItemList.Field_Generator_UV;
+                        case 9 -> aRecipe[i] = ItemList.Field_Generator_UHV;
+                        case 10 -> aRecipe[i] = ItemList.Field_Generator_UEV;
+                        case 11 -> aRecipe[i] = ItemList.Field_Generator_UIV;
+                        case 12 -> aRecipe[i] = ItemList.Field_Generator_UMV;
+                        case 13 -> aRecipe[i] = ItemList.Field_Generator_UXV;
+                        case 14 -> aRecipe[i] = ItemList.Field_Generator_MAX;
+                        default -> aRecipe[i] = ItemList.Field_Generator_MAX;
                     }
                     continue;
                 }
@@ -1063,62 +676,56 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
             ItemStack aStack) {
         if (!super.allowPutStackValidated(aBaseMetaTileEntity, aIndex, aSide, aStack)) return false;
         switch (this.mInputSlotCount) {
-            case 0:
+            case 0 -> {
                 return false;
-            case 1:
-                if (this.getFillableStack() == null) return !this.mRequiresFluidForFiltering && this.getRecipeList()
-                                                                                                    .containsInput(
-                                                                                                            aStack);
-                else return this.getRecipeList()
-                                .findRecipe(
-                                        this.getBaseMetaTileEntity(),
-                                        this.mLastRecipe,
-                                        true,
-                                        true,
-                                        V[this.mTier],
-                                        new FluidStack[] { this.getFillableStack() },
-                                        this.getSpecialSlot(),
-                                        appendSelectedCircuit(aStack))
-                        != null;
-            case 2:
+            }
+            case 1 -> {
+                if (this.getFillableStack() == null)
+                    return !this.mRequiresFluidForFiltering && this.getRecipeList().containsInput(aStack);
+                else return this.getRecipeList().findRecipe(
+                        this.getBaseMetaTileEntity(),
+                        this.mLastRecipe,
+                        true,
+                        true,
+                        V[this.mTier],
+                        new FluidStack[] { this.getFillableStack() },
+                        this.getSpecialSlot(),
+                        appendSelectedCircuit(aStack)) != null;
+            }
+            case 2 -> {
                 return (!this.mRequiresFluidForFiltering || this.getFillableStack() != null) && (((this.getInputAt(0)
-                        != null && this.getInputAt(1) != null)
-                        || (this.getInputAt(0) == null && this.getInputAt(1) == null ? this.getRecipeList()
-                                                                                           .containsInput(aStack)
-                                : (this.getRecipeList()
-                                       .containsInput(aStack)
-                                        && this.getRecipeList()
-                                               .findRecipe(
-                                                       this.getBaseMetaTileEntity(),
-                                                       this.mLastRecipe,
-                                                       true,
-                                                       true,
-                                                       V[this.mTier],
-                                                       new FluidStack[] { this.getFillableStack() },
-                                                       this.getSpecialSlot(),
-                                                       aIndex == this.getInputSlot()
-                                                               ? appendSelectedCircuit(aStack, this.getInputAt(1))
-                                                               : appendSelectedCircuit(this.getInputAt(0), aStack))
-                                                != null))));
-            default: {
-                int tID = this.getBaseMetaTileEntity()
-                              .getMetaTileID();
-                if (tID >= 211 && tID <= 218 || tID >= 1180 && tID <= 1187 || tID >= 10780 && tID <= 10786) { // assembler
-                                                                                                              // lv-iv;
-                                                                                                              // circuit
-                                                                                                              // asseblers
-                                                                                                              // lv -
-                                                                                                              // uv;
-                                                                                                              // assemblers
-                                                                                                              // luv-uev
+                        != null && this.getInputAt(1) != null) || (this.getInputAt(0) == null
+                        && this.getInputAt(1) == null
+                        ? this.getRecipeList().containsInput(aStack)
+                        : (this.getRecipeList().containsInput(aStack) && this.getRecipeList().findRecipe(
+                                this.getBaseMetaTileEntity(),
+                                this.mLastRecipe,
+                                true,
+                                true,
+                                V[this.mTier],
+                                new FluidStack[] { this.getFillableStack() },
+                                this.getSpecialSlot(),
+                                aIndex == this.getInputSlot()
+                                        ? appendSelectedCircuit(aStack, this.getInputAt(1))
+                                        : appendSelectedCircuit(this.getInputAt(0), aStack)) != null))));
+            }
+            default -> {
+                int tID = this.getBaseMetaTileEntity().getMetaTileID();
+                if (tID >= 211 && tID <= 218
+                        || tID >= 1180 && tID <= 1187
+                        || tID >= 10780 && tID <= 10786) { // assembler
+                    // lv-iv;
+                    // circuit
+                    // asseblers
+                    // lv -
+                    // uv;
+                    // assemblers
+                    // luv-uev
                     if (GT_Utility.isStackValid(aStack)) for (int oreID : OreDictionary.getOreIDs(aStack)) {
-                        if (OreDictionary.getOreName(oreID)
-                                         .startsWith("circuit"))
-                            return true;
+                        if (OreDictionary.getOreName(oreID).startsWith("circuit")) return true;
                     }
                 }
-                return this.getRecipeList()
-                           .containsInput(aStack);
+                return this.getRecipeList().containsInput(aStack);
             }
         }
     }
@@ -1134,34 +741,22 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
         if (aBaseMetaTileEntity.isClientSide() && aBaseMetaTileEntity.isActive()) {
             // noinspection SwitchStatementWithTooFewBranches
             switch (this.mSpecialEffect) {
-                case TOP_SMOKE:
+                case TOP_SMOKE -> {
                     final byte topFacing = (byte) ForgeDirection.UP.ordinal();
-
                     if (aBaseMetaTileEntity.getFrontFacing() != topFacing
                             && aBaseMetaTileEntity.getCoverIDAtSide(topFacing) == 0
                             && !aBaseMetaTileEntity.getOpacityAtSide(topFacing)) {
 
-                        new WorldSpawnedEventBuilder.ParticleEventBuilder().setMotion(0.0D, 0.0D, 0.0D)
-                                                                           .setIdentifier(ParticleFX.SMOKE)
-                                                                           .setPosition(
-                                                                                   aBaseMetaTileEntity.getXCoord()
-                                                                                           + 0.8F
-                                                                                           - XSTR_INSTANCE.nextFloat()
-                                                                                                   * 0.6F,
-                                                                                   aBaseMetaTileEntity.getYCoord()
-                                                                                           + 0.9F
-                                                                                           + XSTR_INSTANCE.nextFloat()
-                                                                                                   * 0.2F,
-                                                                                   aBaseMetaTileEntity.getZCoord()
-                                                                                           + 0.8F
-                                                                                           - XSTR_INSTANCE.nextFloat()
-                                                                                                   * 0.6F)
-                                                                           .setWorld(aBaseMetaTileEntity.getWorld())
-                                                                           .run();
+                        new ParticleEventBuilder().setMotion(0.0D, 0.0D, 0.0D).setIdentifier(ParticleFX.SMOKE)
+                                .setPosition(
+                                        aBaseMetaTileEntity.getXCoord() + 0.8F - XSTR_INSTANCE.nextFloat() * 0.6F,
+                                        aBaseMetaTileEntity.getYCoord() + 0.9F + XSTR_INSTANCE.nextFloat() * 0.2F,
+                                        aBaseMetaTileEntity.getZCoord() + 0.8F - XSTR_INSTANCE.nextFloat() * 0.6F)
+                                .setWorld(aBaseMetaTileEntity.getWorld()).run();
                     }
-                    break;
-                default:
-                    break;
+                }
+                default -> {
+                }
             }
         }
     }
@@ -1177,13 +772,14 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
 
         // noinspection SwitchStatementWithTooFewBranches
         switch (this.mSpecialEffect) {
-            case MAIN_RANDOM_SPARKS:
+            case MAIN_RANDOM_SPARKS -> {
                 // Random Sparkles at main face
                 if (aBaseMetaTileEntity.isActive() && XSTR_INSTANCE.nextInt(3) == 0) {
 
                     final byte mainFacing = (byte) this.mMainFacing;
 
-                    if (mainFacing > 1 && aBaseMetaTileEntity.getCoverIDAtSide(mainFacing) == 0
+                    if (mainFacing > 1
+                            && aBaseMetaTileEntity.getCoverIDAtSide(mainFacing) == 0
                             && !aBaseMetaTileEntity.getOpacityAtSide(mainFacing)) {
 
                         final double oX = aBaseMetaTileEntity.getXCoord();
@@ -1220,16 +816,13 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
                         }
 
                         ParticleEventBuilder particleEventBuilder = (new ParticleEventBuilder()).setMotion(mX, 0, mZ)
-                                                                                                .setPosition(x, y, z)
-                                                                                                .setWorld(
-                                                                                                        getBaseMetaTileEntity().getWorld());
-                        particleEventBuilder.setIdentifier(ParticleFX.LAVA)
-                                            .run();
+                                .setPosition(x, y, z).setWorld(getBaseMetaTileEntity().getWorld());
+                        particleEventBuilder.setIdentifier(ParticleFX.LAVA).run();
                     }
                 }
-                break;
-            default:
-                break;
+            }
+            default -> {
+            }
         }
     }
 

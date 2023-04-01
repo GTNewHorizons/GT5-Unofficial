@@ -875,43 +875,33 @@ public class GT_MetaTileEntity_PCBFactory extends
 
         if (curDirection == ForgeDirection.UP || curDirection == ForgeDirection.DOWN) {
             switch (curRotation) {
-                case CLOCKWISE:
-                case COUNTER_CLOCKWISE:
+                case CLOCKWISE, COUNTER_CLOCKWISE -> {
                     newFlip = curFlip == Flip.NONE ? Flip.HORIZONTAL : Flip.NONE;
                     newDirection = curDirection == ForgeDirection.UP ? ForgeDirection.NORTH : ForgeDirection.SOUTH;
-                    break;
-                case NORMAL:
+                }
+                case NORMAL -> {
                     newRotation = curDirection == ForgeDirection.UP ? Rotation.CLOCKWISE : Rotation.COUNTER_CLOCKWISE;
                     newDirection = curDirection == ForgeDirection.UP ? ForgeDirection.EAST : ForgeDirection.WEST;
                     newFlip = Flip.NONE;
-                    break;
-                case UPSIDE_DOWN:
+                }
+                case UPSIDE_DOWN -> {
                     newRotation = curDirection == ForgeDirection.UP ? Rotation.COUNTER_CLOCKWISE : Rotation.CLOCKWISE;
                     newDirection = curDirection == ForgeDirection.UP ? ForgeDirection.EAST : ForgeDirection.WEST;
                     newFlip = Flip.NONE;
-                    break;
+                }
             }
         } else if (curRotation == Rotation.CLOCKWISE || curRotation == Rotation.COUNTER_CLOCKWISE) {
             newFlip = curRotation == Rotation.CLOCKWISE ? curFlip == Flip.NONE ? Flip.NONE : Flip.HORIZONTAL
                     : curFlip != Flip.NONE ? Flip.NONE : Flip.HORIZONTAL;
             newDirection = curRotation == Rotation.CLOCKWISE ? ForgeDirection.UP : ForgeDirection.DOWN;
         } else {
-            switch (curDirection) {
-                case EAST:
-                    newDirection = ForgeDirection.SOUTH;
-                    break;
-                case NORTH:
-                    newDirection = ForgeDirection.EAST;
-                    break;
-                case WEST:
-                    newDirection = ForgeDirection.NORTH;
-                    break;
-                case SOUTH:
-                    newDirection = ForgeDirection.WEST;
-                    break;
-                default:
-                    newDirection = curDirection;
-            }
+            newDirection = switch (curDirection) {
+                case EAST -> ForgeDirection.SOUTH;
+                case NORTH -> ForgeDirection.EAST;
+                case WEST -> ForgeDirection.NORTH;
+                case SOUTH -> ForgeDirection.WEST;
+                default -> curDirection;
+            };
         }
 
         if (curRotation == Rotation.UPSIDE_DOWN) {

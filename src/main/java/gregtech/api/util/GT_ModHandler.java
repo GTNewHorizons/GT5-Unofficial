@@ -706,42 +706,33 @@ public class GT_ModHandler {
                                                  .contains("ic2.itemPurifiedCrushed"))))
                                     continue;
                                 switch (aGTRecipeMap.mUnlocalizedName) {
-                                    case "gt.recipe.macerator":
-                                    case "gt.recipe.extractor":
-                                    case "gt.recipe.compressor":
+                                    case "gt.recipe.macerator", "gt.recipe.extractor", "gt.recipe.compressor" ->
                                         aGTRecipeMap.addRecipe(
-                                                true,
-                                                new ItemStack[] { GT_Utility.copyAmount(
-                                                        iRecipeInputRecipeOutputEntry.getKey()
-                                                                                     .getAmount(),
-                                                        tStack) },
-                                                iRecipeInputRecipeOutputEntry.getValue().items.toArray(
-                                                        new ItemStack[0]),
-                                                null,
-                                                null,
-                                                null,
-                                                null,
-                                                300,
-                                                2,
-                                                0);
-                                        break;
-                                    case "gt.recipe.thermalcentrifuge":
-                                        aGTRecipeMap.addRecipe(
-                                                true,
-                                                new ItemStack[] { GT_Utility.copyAmount(
-                                                        iRecipeInputRecipeOutputEntry.getKey()
-                                                                                     .getAmount(),
-                                                        tStack) },
-                                                iRecipeInputRecipeOutputEntry.getValue().items.toArray(
-                                                        new ItemStack[0]),
-                                                null,
-                                                null,
-                                                null,
-                                                null,
-                                                500,
-                                                48,
-                                                0);
-                                        break;
+                                            true,
+                                            new ItemStack[] {
+                                                GT_Utility.copyAmount(iRecipeInputRecipeOutputEntry.getKey()
+                                                    .getAmount(), tStack) },
+                                            iRecipeInputRecipeOutputEntry.getValue().items.toArray(new ItemStack[0]),
+                                            null,
+                                            null,
+                                            null,
+                                            null,
+                                            300,
+                                            2,
+                                            0);
+                                    case "gt.recipe.thermalcentrifuge" -> aGTRecipeMap.addRecipe(
+                                        true,
+                                        new ItemStack[] {
+                                            GT_Utility.copyAmount(iRecipeInputRecipeOutputEntry.getKey().getAmount(),
+                                                tStack) },
+                                        iRecipeInputRecipeOutputEntry.getValue().items.toArray(new ItemStack[0]),
+                                        null,
+                                        null,
+                                        null,
+                                        null,
+                                        500,
+                                        48,
+                                        0);
                                 }
                             } catch (Exception e) {
                                 System.err.println(e);
@@ -1092,62 +1083,62 @@ public class GT_ModHandler {
                 for (char c : s.toString()
                                .toCharArray()) {
                     switch (c) {
-                        case 'b':
+                        case 'b' -> {
                             tRecipeList.add(c);
                             tRecipeList.add(ToolDictNames.craftingToolBlade.name());
-                            break;
-                        case 'c':
+                        }
+                        case 'c' -> {
                             tRecipeList.add(c);
                             tRecipeList.add(ToolDictNames.craftingToolCrowbar.name());
-                            break;
-                        case 'd':
+                        }
+                        case 'd' -> {
                             tRecipeList.add(c);
                             tRecipeList.add(ToolDictNames.craftingToolScrewdriver.name());
-                            break;
-                        case 'f':
+                        }
+                        case 'f' -> {
                             tRecipeList.add(c);
                             tRecipeList.add(ToolDictNames.craftingToolFile.name());
-                            break;
-                        case 'h':
+                        }
+                        case 'h' -> {
                             tRecipeList.add(c);
                             tRecipeList.add(ToolDictNames.craftingToolHardHammer.name());
-                            break;
-                        case 'i':
+                        }
+                        case 'i' -> {
                             tRecipeList.add(c);
                             tRecipeList.add(ToolDictNames.craftingToolSolderingIron.name());
-                            break;
-                        case 'j':
+                        }
+                        case 'j' -> {
                             tRecipeList.add(c);
                             tRecipeList.add(ToolDictNames.craftingToolSolderingMetal.name());
-                            break;
-                        case 'k':
+                        }
+                        case 'k' -> {
                             tRecipeList.add(c);
                             tRecipeList.add(ToolDictNames.craftingToolKnife.name());
-                            break;
-                        case 'm':
+                        }
+                        case 'm' -> {
                             tRecipeList.add(c);
                             tRecipeList.add(ToolDictNames.craftingToolMortar.name());
-                            break;
-                        case 'p':
+                        }
+                        case 'p' -> {
                             tRecipeList.add(c);
                             tRecipeList.add(ToolDictNames.craftingToolDrawplate.name());
-                            break;
-                        case 'r':
+                        }
+                        case 'r' -> {
                             tRecipeList.add(c);
                             tRecipeList.add(ToolDictNames.craftingToolSoftHammer.name());
-                            break;
-                        case 's':
+                        }
+                        case 's' -> {
                             tRecipeList.add(c);
                             tRecipeList.add(ToolDictNames.craftingToolSaw.name());
-                            break;
-                        case 'w':
+                        }
+                        case 'w' -> {
                             tRecipeList.add(c);
                             tRecipeList.add(ToolDictNames.craftingToolWrench.name());
-                            break;
-                        case 'x':
+                        }
+                        case 'x' -> {
                             tRecipeList.add(c);
                             tRecipeList.add(ToolDictNames.craftingToolWireCutter.name());
-                            break;
+                        }
                     }
                 }
             }
@@ -1181,21 +1172,11 @@ public class GT_ModHandler {
                 } else if (in instanceof ItemData) {
                     String tString = in.toString();
                     switch (tString) {
-                        case "plankWood":
-                            tItemDataMap.put(chr, new ItemData(Materials.Wood, M));
-                            break;
-                        case "stoneNetherrack":
-                            tItemDataMap.put(chr, new ItemData(Materials.Netherrack, M));
-                            break;
-                        case "stoneObsidian":
-                            tItemDataMap.put(chr, new ItemData(Materials.Obsidian, M));
-                            break;
-                        case "stoneEndstone":
-                            tItemDataMap.put(chr, new ItemData(Materials.Endstone, M));
-                            break;
-                        default:
-                            tItemDataMap.put(chr, (ItemData) in);
-                            break;
+                        case "plankWood" -> tItemDataMap.put(chr, new ItemData(Materials.Wood, M));
+                        case "stoneNetherrack" -> tItemDataMap.put(chr, new ItemData(Materials.Netherrack, M));
+                        case "stoneObsidian" -> tItemDataMap.put(chr, new ItemData(Materials.Obsidian, M));
+                        case "stoneEndstone" -> tItemDataMap.put(chr, new ItemData(Materials.Endstone, M));
+                        default -> tItemDataMap.put(chr, (ItemData) in);
                     }
                     ItemStack tStack = GT_OreDictUnificator.getFirstOre(in, 1);
                     if (tStack == null) tRemoveRecipe = false;

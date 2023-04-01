@@ -55,32 +55,16 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
         final long aMaterialMass = aMaterial.getMass();
 
         switch (aPrefix) {
-            case plate:
-                registerPlate(aMaterial, aStack, aNoSmashing);
-                break;
-            case plateDouble:
-                registerPlateDouble(aMaterial, aStack, aNoSmashing, aMaterialMass);
-                break;
-            case plateTriple:
-                registerPlateTriple(aMaterial, aStack, aNoSmashing, aMaterialMass);
-                break;
-            case plateQuadruple:
-                registerPlateQuadruple(aMaterial, aStack, aNoSmashing, aMaterialMass, aNoWorking);
-                break;
-            case plateQuintuple:
-                registerPlateQuintuple(aMaterial, aStack, aNoSmashing, aMaterialMass);
-                break;
-            case plateDense:
-                registerPlateDense(aMaterial, aStack, aNoSmashing, aMaterialMass);
-                break;
-            case itemCasing:
-                registerItemCasing(aPrefix, aMaterial, aStack, aNoSmashing);
-                break;
-            case plateAlloy:
-                registerPlateAlloy(aOreDictName, aStack);
-                break;
-            default:
-                break;
+            case plate -> registerPlate(aMaterial, aStack, aNoSmashing);
+            case plateDouble -> registerPlateDouble(aMaterial, aStack, aNoSmashing, aMaterialMass);
+            case plateTriple -> registerPlateTriple(aMaterial, aStack, aNoSmashing, aMaterialMass);
+            case plateQuadruple -> registerPlateQuadruple(aMaterial, aStack, aNoSmashing, aMaterialMass, aNoWorking);
+            case plateQuintuple -> registerPlateQuintuple(aMaterial, aStack, aNoSmashing, aMaterialMass);
+            case plateDense -> registerPlateDense(aMaterial, aStack, aNoSmashing, aMaterialMass);
+            case itemCasing -> registerItemCasing(aPrefix, aMaterial, aStack, aNoSmashing);
+            case plateAlloy -> registerPlateAlloy(aOreDictName, aStack);
+            default -> {
+            }
         }
     }
 
@@ -478,14 +462,13 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
     private void registerPlateAlloy(final String aOreDictName, final ItemStack aStack) {
 
         switch (aOreDictName) {
-            case "plateAlloyCarbon":
+            case "plateAlloyCarbon" -> {
                 RA.addAssemblerRecipe(
                         GT_ModHandler.getIC2Item("generator", 1L),
                         GT_Utility.copyAmount(4L, aStack),
                         GT_ModHandler.getIC2Item("windMill", 1L),
                         6400,
                         8);
-
                 GT_ModHandler.addAlloySmelterRecipe(
                         GT_Utility.copyAmount(1L, aStack),
                         new ItemStack(Blocks.glass, 3, W),
@@ -493,7 +476,6 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                         400,
                         4,
                         false);
-
                 GT_ModHandler.addAlloySmelterRecipe(
                         GT_Utility.copyAmount(1L, aStack),
                         Materials.Glass.getDust(3),
@@ -501,10 +483,8 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                         400,
                         4,
                         false);
-
-                break;
-
-            case "plateAlloyAdvanced":
+            }
+            case "plateAlloyAdvanced" -> {
                 GT_ModHandler.addAlloySmelterRecipe(
                         GT_Utility.copyAmount(1L, aStack),
                         new ItemStack(Blocks.glass, 3, W),
@@ -512,7 +492,6 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                         400,
                         4,
                         false);
-
                 GT_ModHandler.addAlloySmelterRecipe(
                         GT_Utility.copyAmount(1L, aStack),
                         Materials.Glass.getDust(3),
@@ -520,18 +499,13 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                         400,
                         4,
                         false);
-
-                break;
-
-            case "plateAlloyIridium":
+            }
+            case "plateAlloyIridium" ->
 
                 // Remove IC2 Shaped recipe for Iridium Reinforced Plate
-                GT_ModHandler.removeRecipeByOutputDelayed(aStack);
-
-                break;
-
-            default:
-                break;
+                    GT_ModHandler.removeRecipeByOutputDelayed(aStack);
+            default -> {
+            }
         }
     }
 

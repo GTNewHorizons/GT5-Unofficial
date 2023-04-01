@@ -2625,68 +2625,35 @@ public enum GT_BeeDefinition implements IBeeDefinition {
     }
 
     static IAlleleBeeEffect getEffect(byte modid, String name) {
-        String s;
-        switch (modid) {
-            case EXTRABEES:
-                s = "extrabees.effect." + name;
-                break;
-            case GENDUSTRY:
-                s = "gendustry.effect." + name;
-                break;
-            case MAGICBEES:
-                s = "magicbees.effect" + name;
-                break;
-            case GREGTECH:
-                s = "gregtech.effect" + name;
-                break;
-            default:
-                s = "forestry.effect" + name;
-                break;
-        }
+        String s = switch (modid) {
+            case EXTRABEES -> "extrabees.effect." + name;
+            case GENDUSTRY -> "gendustry.effect." + name;
+            case MAGICBEES -> "magicbees.effect" + name;
+            case GREGTECH -> "gregtech.effect" + name;
+            default -> "forestry.effect" + name;
+        };
         return (IAlleleBeeEffect) AlleleManager.alleleRegistry.getAllele(s);
     }
 
     static IAlleleFlowers getFlowers(byte modid, String name) {
-        String s;
-        switch (modid) {
-            case EXTRABEES:
-                s = "extrabees.flower." + name;
-                break;
-            case GENDUSTRY:
-                s = "gendustry.flower." + name;
-                break;
-            case MAGICBEES:
-                s = "magicbees.flower" + name;
-                break;
-            case GREGTECH:
-                s = "gregtech.flower" + name;
-                break;
-            default:
-                s = "forestry.flowers" + name;
-                break;
-        }
+        String s = switch (modid) {
+            case EXTRABEES -> "extrabees.flower." + name;
+            case GENDUSTRY -> "gendustry.flower." + name;
+            case MAGICBEES -> "magicbees.flower" + name;
+            case GREGTECH -> "gregtech.flower" + name;
+            default -> "forestry.flowers" + name;
+        };
         return (IAlleleFlowers) AlleleManager.alleleRegistry.getAllele(s);
     }
 
     private static IAlleleBeeSpecies getSpecies(byte modid, String name) {
-        String s;
-        switch (modid) {
-            case EXTRABEES:
-                s = "extrabees.species." + name;
-                break;
-            case GENDUSTRY:
-                s = "gendustry.bee." + name;
-                break;
-            case MAGICBEES:
-                s = "magicbees.species" + name;
-                break;
-            case GREGTECH:
-                s = "gregtech.species" + name;
-                break;
-            default:
-                s = "forestry.species" + name;
-                break;
-        }
+        String s = switch (modid) {
+            case EXTRABEES -> "extrabees.species." + name;
+            case GENDUSTRY -> "gendustry.bee." + name;
+            case MAGICBEES -> "magicbees.species" + name;
+            case GREGTECH -> "gregtech.species" + name;
+            default -> "forestry.species" + name;
+        };
         IAlleleBeeSpecies ret = (IAlleleBeeSpecies) AlleleManager.alleleRegistry.getAllele(s);
         if (ret == null) {
             ret = NAQUADRIA.species;

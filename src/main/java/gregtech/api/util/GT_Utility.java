@@ -3638,22 +3638,15 @@ public class GT_Utility {
      *         like on the Texture Sheet. return values should always be between [0.0F and 0.99F].
      */
     public static float[] getClickedFacingCoords(byte aSide, float aX, float aY, float aZ) {
-        switch (aSide) {
-            case 0:
-                return new float[] { Math.min(0.99F, Math.max(0, 1 - aX)), Math.min(0.99F, Math.max(0, aZ)) };
-            case 1:
-                return new float[] { Math.min(0.99F, Math.max(0, aX)), Math.min(0.99F, Math.max(0, aZ)) };
-            case 2:
-                return new float[] { Math.min(0.99F, Math.max(0, 1 - aX)), Math.min(0.99F, Math.max(0, 1 - aY)) };
-            case 3:
-                return new float[] { Math.min(0.99F, Math.max(0, aX)), Math.min(0.99F, Math.max(0, 1 - aY)) };
-            case 4:
-                return new float[] { Math.min(0.99F, Math.max(0, aZ)), Math.min(0.99F, Math.max(0, 1 - aY)) };
-            case 5:
-                return new float[] { Math.min(0.99F, Math.max(0, 1 - aZ)), Math.min(0.99F, Math.max(0, 1 - aY)) };
-            default:
-                return new float[] { 0.5F, 0.5F };
-        }
+        return switch (aSide) {
+            case 0 -> new float[] { Math.min(0.99F, Math.max(0, 1 - aX)), Math.min(0.99F, Math.max(0, aZ)) };
+            case 1 -> new float[] { Math.min(0.99F, Math.max(0, aX)), Math.min(0.99F, Math.max(0, aZ)) };
+            case 2 -> new float[] { Math.min(0.99F, Math.max(0, 1 - aX)), Math.min(0.99F, Math.max(0, 1 - aY)) };
+            case 3 -> new float[] { Math.min(0.99F, Math.max(0, aX)), Math.min(0.99F, Math.max(0, 1 - aY)) };
+            case 4 -> new float[] { Math.min(0.99F, Math.max(0, aZ)), Math.min(0.99F, Math.max(0, 1 - aY)) };
+            case 5 -> new float[] { Math.min(0.99F, Math.max(0, 1 - aZ)), Math.min(0.99F, Math.max(0, 1 - aY)) };
+            default -> new float[] { 0.5F, 0.5F };
+        };
     }
 
     /**
@@ -3663,8 +3656,7 @@ public class GT_Utility {
     public static byte determineWrenchingSide(byte aSide, float aX, float aY, float aZ) {
         byte tBack = getOppositeSide(aSide);
         switch (aSide) {
-            case 0:
-            case 1:
+            case 0, 1 -> {
                 if (aX < 0.25) {
                     if (aZ < 0.25) return tBack;
                     if (aZ > 0.75) return tBack;
@@ -3678,8 +3670,8 @@ public class GT_Utility {
                 if (aZ < 0.25) return 2;
                 if (aZ > 0.75) return 3;
                 return aSide;
-            case 2:
-            case 3:
+            }
+            case 2, 3 -> {
                 if (aX < 0.25) {
                     if (aY < 0.25) return tBack;
                     if (aY > 0.75) return tBack;
@@ -3693,8 +3685,8 @@ public class GT_Utility {
                 if (aY < 0.25) return 0;
                 if (aY > 0.75) return 1;
                 return aSide;
-            case 4:
-            case 5:
+            }
+            case 4, 5 -> {
                 if (aZ < 0.25) {
                     if (aY < 0.25) return tBack;
                     if (aY > 0.75) return tBack;
@@ -3708,6 +3700,7 @@ public class GT_Utility {
                 if (aY < 0.25) return 0;
                 if (aY > 0.75) return 1;
                 return aSide;
+            }
         }
         return -1;
     }

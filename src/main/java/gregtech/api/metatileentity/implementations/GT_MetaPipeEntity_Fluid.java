@@ -159,40 +159,24 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
     }
 
     protected static ITexture getRestrictorTexture(byte aMask) {
-        switch (aMask) {
-            case 1:
-                return TextureFactory.of(Textures.BlockIcons.PIPE_RESTRICTOR_UP);
-            case 2:
-                return TextureFactory.of(Textures.BlockIcons.PIPE_RESTRICTOR_DOWN);
-            case 3:
-                return TextureFactory.of(Textures.BlockIcons.PIPE_RESTRICTOR_UD);
-            case 4:
-                return TextureFactory.of(Textures.BlockIcons.PIPE_RESTRICTOR_LEFT);
-            case 5:
-                return TextureFactory.of(Textures.BlockIcons.PIPE_RESTRICTOR_UL);
-            case 6:
-                return TextureFactory.of(Textures.BlockIcons.PIPE_RESTRICTOR_DL);
-            case 7:
-                return TextureFactory.of(Textures.BlockIcons.PIPE_RESTRICTOR_NR);
-            case 8:
-                return TextureFactory.of(Textures.BlockIcons.PIPE_RESTRICTOR_RIGHT);
-            case 9:
-                return TextureFactory.of(Textures.BlockIcons.PIPE_RESTRICTOR_UR);
-            case 10:
-                return TextureFactory.of(Textures.BlockIcons.PIPE_RESTRICTOR_DR);
-            case 11:
-                return TextureFactory.of(Textures.BlockIcons.PIPE_RESTRICTOR_NL);
-            case 12:
-                return TextureFactory.of(Textures.BlockIcons.PIPE_RESTRICTOR_LR);
-            case 13:
-                return TextureFactory.of(Textures.BlockIcons.PIPE_RESTRICTOR_ND);
-            case 14:
-                return TextureFactory.of(Textures.BlockIcons.PIPE_RESTRICTOR_NU);
-            case 15:
-                return TextureFactory.of(Textures.BlockIcons.PIPE_RESTRICTOR);
-            default:
-                return null;
-        }
+        return switch (aMask) {
+            case 1 -> TextureFactory.of(Textures.BlockIcons.PIPE_RESTRICTOR_UP);
+            case 2 -> TextureFactory.of(Textures.BlockIcons.PIPE_RESTRICTOR_DOWN);
+            case 3 -> TextureFactory.of(Textures.BlockIcons.PIPE_RESTRICTOR_UD);
+            case 4 -> TextureFactory.of(Textures.BlockIcons.PIPE_RESTRICTOR_LEFT);
+            case 5 -> TextureFactory.of(Textures.BlockIcons.PIPE_RESTRICTOR_UL);
+            case 6 -> TextureFactory.of(Textures.BlockIcons.PIPE_RESTRICTOR_DL);
+            case 7 -> TextureFactory.of(Textures.BlockIcons.PIPE_RESTRICTOR_NR);
+            case 8 -> TextureFactory.of(Textures.BlockIcons.PIPE_RESTRICTOR_RIGHT);
+            case 9 -> TextureFactory.of(Textures.BlockIcons.PIPE_RESTRICTOR_UR);
+            case 10 -> TextureFactory.of(Textures.BlockIcons.PIPE_RESTRICTOR_DR);
+            case 11 -> TextureFactory.of(Textures.BlockIcons.PIPE_RESTRICTOR_NL);
+            case 12 -> TextureFactory.of(Textures.BlockIcons.PIPE_RESTRICTOR_LR);
+            case 13 -> TextureFactory.of(Textures.BlockIcons.PIPE_RESTRICTOR_ND);
+            case 14 -> TextureFactory.of(Textures.BlockIcons.PIPE_RESTRICTOR_NU);
+            case 15 -> TextureFactory.of(Textures.BlockIcons.PIPE_RESTRICTOR);
+            default -> null;
+        };
     }
 
     @Override

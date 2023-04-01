@@ -23,7 +23,7 @@ public class ProcessingCrate implements gregtech.api.interfaces.IOreRecipeRegist
         boolean aSpecialRecipeReq2 = aMaterial.mUnificatable && (aMaterial.mMaterialInto == aMaterial)
                 && !aMaterial.contains(SubTag.NO_WORKING);
         switch (aPrefix) {
-            case crateGtDust:
+            case crateGtDust -> {
                 GT_Values.RA.addBoxingRecipe(
                         GT_Utility.copyAmount(16L, GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 16L)),
                         ItemList.Crate_Empty.get(1L),
@@ -40,8 +40,8 @@ public class ProcessingCrate implements gregtech.api.interfaces.IOreRecipeRegist
                         GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 16L),
                         GT_Proxy.tBits,
                         new Object[] { "Xc", 'X', OrePrefixes.crateGtDust.get(aMaterial) });
-                break;
-            case crateGtIngot:
+            }
+            case crateGtIngot -> {
                 GT_Values.RA.addBoxingRecipe(
                         GT_Utility.copyAmount(16L, GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 16L)),
                         ItemList.Crate_Empty.get(1L),
@@ -58,8 +58,8 @@ public class ProcessingCrate implements gregtech.api.interfaces.IOreRecipeRegist
                         GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 16L),
                         GT_Proxy.tBits,
                         new Object[] { "Xc", 'X', OrePrefixes.crateGtIngot.get(aMaterial) });
-                break;
-            case crateGtGem:
+            }
+            case crateGtGem -> {
                 GT_Values.RA.addBoxingRecipe(
                         GT_Utility.copyAmount(16L, GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, 16L)),
                         ItemList.Crate_Empty.get(1L),
@@ -76,8 +76,8 @@ public class ProcessingCrate implements gregtech.api.interfaces.IOreRecipeRegist
                         GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, 16L),
                         GT_Proxy.tBits,
                         new Object[] { "Xc", 'X', OrePrefixes.crateGtGem.get(aMaterial) });
-                break;
-            case crateGtPlate:
+            }
+            case crateGtPlate -> {
                 GT_Values.RA.addBoxingRecipe(
                         GT_Utility.copyAmount(16L, GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 16L)),
                         ItemList.Crate_Empty.get(1L),
@@ -94,9 +94,9 @@ public class ProcessingCrate implements gregtech.api.interfaces.IOreRecipeRegist
                         GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 16L),
                         GT_Proxy.tBits,
                         new Object[] { "Xc", 'X', OrePrefixes.crateGtPlate.get(aMaterial) });
-                break;
-            default:
-                break;
+            }
+            default -> {
+            }
         }
     }
 }

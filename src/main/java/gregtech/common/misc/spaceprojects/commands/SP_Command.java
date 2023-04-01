@@ -48,24 +48,20 @@ public class SP_Command extends CommandBase {
             return;
         }
         switch (arguments[0]) {
-            case INVITE:
+            case INVITE -> {
                 if (arguments.length < 2) {
                     return;
                 }
                 processInvite(sender, arguments[1]);
-                break;
-            case ACCEPT:
+            }
+            case ACCEPT -> {
                 if (arguments.length < 2) {
                     return;
                 }
                 processAccept(sender, arguments[1]);
-                break;
-            case LEAVE:
-                processLeave(sender);
-                break;
-            case CONFIRM:
-                processConfirm(sender);
-                break;
+            }
+            case LEAVE -> processLeave(sender);
+            case CONFIRM -> processConfirm(sender);
         }
     }
 

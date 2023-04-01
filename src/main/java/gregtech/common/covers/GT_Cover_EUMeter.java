@@ -97,46 +97,20 @@ public class GT_Cover_EUMeter extends GT_CoverBehaviorBase<GT_Cover_EUMeter.EUMe
         int num = (aCoverVariable.getNum() + (aPlayer.isSneaking() ? -1 : 1) + EnergyType.values().length * 2)
                 % (EnergyType.values().length * 2);
         switch (num) {
-            case 0:
-                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("031", "Normal Universal Storage"));
-                break;
-            case 1:
-                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("032", "Inverted Universal Storage"));
-                break;
-            case 2:
-                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("033", "Normal Electricity Storage"));
-                break;
-            case 3:
-                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("034", "Inverted Electricity Storage"));
-                break;
-            case 4:
-                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("035", "Normal Steam Storage"));
-                break;
-            case 5:
-                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("036", "Inverted Steam Storage"));
-                break;
-            case 6:
-                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("037", "Normal Average Electric Input"));
-                break;
-            case 7:
-                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("038", "Inverted Average Electric Input"));
-                break;
-            case 8:
-                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("039", "Normal Average Electric Output"));
-                break;
-            case 9:
-                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("040", "Inverted Average Electric Output"));
-                break;
-            case 10:
-                GT_Utility.sendChatToPlayer(
-                        aPlayer,
-                        GT_Utility.trans("041", "Normal Electricity Storage(Including Batteries)"));
-                break;
-            case 11:
-                GT_Utility.sendChatToPlayer(
-                        aPlayer,
-                        GT_Utility.trans("042", "Inverted Electricity Storage(Including Batteries)"));
-                break;
+            case 0 -> GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("031", "Normal Universal Storage"));
+            case 1 -> GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("032", "Inverted Universal Storage"));
+            case 2 -> GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("033", "Normal Electricity Storage"));
+            case 3 -> GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("034", "Inverted Electricity Storage"));
+            case 4 -> GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("035", "Normal Steam Storage"));
+            case 5 -> GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("036", "Inverted Steam Storage"));
+            case 6 -> GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("037", "Normal Average Electric Input"));
+            case 7 -> GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("038", "Inverted Average Electric Input"));
+            case 8 -> GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("039", "Normal Average Electric Output"));
+            case 9 -> GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("040", "Inverted Average Electric Output"));
+            case 10 -> GT_Utility.sendChatToPlayer(aPlayer,
+                GT_Utility.trans("041", "Normal Electricity Storage(Including Batteries)"));
+            case 11 -> GT_Utility.sendChatToPlayer(aPlayer,
+                GT_Utility.trans("042", "Inverted Electricity Storage(Including Batteries)"));
         }
         aCoverVariable.setNum(num);
         return aCoverVariable;

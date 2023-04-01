@@ -1710,151 +1710,115 @@ public enum OrePrefixes {
     public String getDefaultLocalNameFormatForItem(Materials aMaterial) {
         // Certain Materials have slightly different Localizations.
         switch (this) {
-            case crateGtDust:
+            case crateGtDust -> {
                 return mLocalizedMaterialPre + OrePrefixes.dust.getDefaultLocalNameFormatForItem(aMaterial);
-            case crateGtIngot:
+            }
+            case crateGtIngot -> {
                 return mLocalizedMaterialPre + OrePrefixes.ingot.getDefaultLocalNameFormatForItem(aMaterial);
-            case crateGtGem:
+            }
+            case crateGtGem -> {
                 return mLocalizedMaterialPre + OrePrefixes.gem.getDefaultLocalNameFormatForItem(aMaterial);
-            case crateGtPlate:
+            }
+            case crateGtPlate -> {
                 return mLocalizedMaterialPre + OrePrefixes.plate.getDefaultLocalNameFormatForItem(aMaterial);
+            }
         }
         switch (aMaterial.mName) {
-            case "Glass":
-            case "BorosilicateGlass":
+            case "Glass", "BorosilicateGlass" -> {
                 if (name().startsWith("gem")) return mLocalizedMaterialPre + "%material" + " Crystal";
                 if (name().startsWith("plate")) return mLocalizedMaterialPre + "%material" + " Pane";
                 if (name().startsWith("ingot")) return mLocalizedMaterialPre + "%material" + " Bar";
                 if (name().startsWith("nugget")) return mLocalizedMaterialPre + "%material" + " Chip";
-                break;
-            case "Wheat":
+            }
+            case "Wheat" -> {
                 if (name().startsWith("dust")) return mLocalizedMaterialPre + "Flour";
-                break;
-            case "Ice":
+            }
+            case "Ice" -> {
                 if (name().startsWith("dust")) return mLocalizedMaterialPre + "Crushed Ice";
-                break;
-            case "Wood":
-            case "WoodSealed":
+            }
+            case "Wood", "WoodSealed" -> {
                 if (name().startsWith("bolt")) return "Short " + "%material" + " Stick";
                 if (name().startsWith("stick")) return mLocalizedMaterialPre + "%material" + " Stick";
                 if (name().startsWith("dust")) return mLocalizedMaterialPre + "%material" + " Pulp";
                 if (name().startsWith("nugget")) return mLocalizedMaterialPre + "%material" + " Chip";
                 if (name().startsWith("plate")) return mLocalizedMaterialPre + "%material" + " Plank";
-                break;
-            case "Plastic":
-            case "Rubber":
-            case "Polyethylene":
-            case "Epoxid":
-            case "EpoxidFiberReinforced":
-            case "Polydimethylsiloxane":
-            case "Silicone":
-            case "Polysiloxane":
-            case "Polycaprolactam":
-            case "Polytetrafluoroethylene":
-            case "PolyvinylChloride":
-            case "Polystyrene":
-            case "StyreneButadieneRubber":
+            }
+            case "Plastic", "Rubber", "Polyethylene", "Epoxid", "EpoxidFiberReinforced", "Polydimethylsiloxane", "Silicone", "Polysiloxane", "Polycaprolactam", "Polytetrafluoroethylene", "PolyvinylChloride", "Polystyrene", "StyreneButadieneRubber" -> {
                 if (name().startsWith("dust")) return mLocalizedMaterialPre + "%material" + " Pulp";
                 if (name().startsWith("plate")) return mLocalizedMaterialPre + "%material" + " Sheet";
                 if (name().startsWith("ingot")) return mLocalizedMaterialPre + "%material" + " Bar";
                 if (name().startsWith("nugget")) return mLocalizedMaterialPre + "%material" + " Chip";
                 if (name().startsWith("foil")) return "Thin " + "%material" + " Sheet";
-                break;
-            case "FierySteel":
+            }
+            case "FierySteel" -> {
                 if (mIsContainer) return mLocalizedMaterialPre + "Fiery Blood" + mLocalizedMaterialPost;
-                break;
-            case "Steeleaf":
+            }
+            case "Steeleaf" -> {
                 if (name().startsWith("ingot")) return mLocalizedMaterialPre + "%material";
-                break;
-            case "Bone":
+            }
+            case "Bone" -> {
                 if (name().startsWith("dust")) return mLocalizedMaterialPre + "Bone Meal";
-                break;
-            case "Blaze":
-            case "Milk":
-            case "Cocoa":
-            case "Chocolate":
-            case "Coffee":
-            case "Chili":
-            case "Cheese":
-            case "Snow":
+            }
+            case "Blaze", "Milk", "Cocoa", "Chocolate", "Coffee", "Chili", "Cheese", "Snow" -> {
                 if (name().startsWith("dust")) return mLocalizedMaterialPre + "%material" + " Powder";
-                break;
-            case "Paper":
+            }
+            case "Paper" -> {
                 if (name().startsWith("dust")) return mLocalizedMaterialPre + "Chad";
                 switch (this) {
-                    case plate:
+                    case plate -> {
                         return "Sheet of Paper";
-                    case plateDouble:
+                    }
+                    case plateDouble -> {
                         return "Paperboard";
-                    case plateTriple:
+                    }
+                    case plateTriple -> {
                         return "Carton";
-                    case plateQuadruple:
+                    }
+                    case plateQuadruple -> {
                         return "Cardboard";
-                    case plateQuintuple:
+                    }
+                    case plateQuintuple -> {
                         return "Thick Cardboard";
-                    case plateDense:
+                    }
+                    case plateDense -> {
                         return "Strong Cardboard";
+                    }
                 }
-                break;
-            case "MeatRaw":
+            }
+            case "MeatRaw" -> {
                 if (name().startsWith("dust")) return mLocalizedMaterialPre + "Mince Meat";
-                break;
-            case "MeatCooked":
+            }
+            case "MeatCooked" -> {
                 if (name().startsWith("dust")) return mLocalizedMaterialPre + "Cooked Mince Meat";
-                break;
-            case "Ash":
-            case "DarkAsh":
-            case "Gunpowder":
-            case "Sugar":
-            case "Salt":
-            case "RockSalt":
-            case "VolcanicAsh":
-            case "RareEarth":
+            }
+            case "Ash", "DarkAsh", "Gunpowder", "Sugar", "Salt", "RockSalt", "VolcanicAsh", "RareEarth" -> {
                 if (name().startsWith("dust")) return mLocalizedMaterialPre + "%material";
-                break;
-            case "Vermiculite":
-            case "Bentonite":
-            case "Kaolinite":
-            case "Talc":
-            case "BasalticMineralSand":
-            case "GraniticMineralSand":
-            case "GlauconiteSand":
-            case "CassiteriteSand":
-            case "GarnetSand":
-            case "QuartzSand":
-            case "Pitchblende":
-            case "FullersEarth":
+            }
+            case "Vermiculite", "Bentonite", "Kaolinite", "Talc", "BasalticMineralSand", "GraniticMineralSand", "GlauconiteSand", "CassiteriteSand", "GarnetSand", "QuartzSand", "Pitchblende", "FullersEarth" -> {
                 if (name().startsWith("dust")) return mLocalizedMaterialPre + "%material";
                 switch (this) {
-                    case crushedCentrifuged:
-                    case crushedPurified:
+                    case crushedCentrifuged, crushedPurified -> {
                         return mLocalizedMaterialPre + "%material";
-                    case crushed:
+                    }
+                    case crushed -> {
                         return "Ground " + "%material";
+                    }
                 }
-                break;
+            }
         }
         if (ProcessingModSupport.aEnableThaumcraftMats) {
             switch (aMaterial.mName) {
-                case "InfusedAir":
-                case "InfusedDull":
-                case "InfusedEarth":
-                case "InfusedEntropy":
-                case "InfusedFire":
-                case "InfusedOrder":
-                case "InfusedVis":
-                case "InfusedWater":
+                case "InfusedAir", "InfusedDull", "InfusedEarth", "InfusedEntropy", "InfusedFire", "InfusedOrder", "InfusedVis", "InfusedWater" -> {
                     if (name().startsWith("gem")) return mLocalizedMaterialPre + "Shard of " + "%material";
                     if (name().startsWith("crystal")) return mLocalizedMaterialPre + "Shard of " + "%material";
                     if (name().startsWith("plate")) return mLocalizedMaterialPre + "%material" + " Crystal Plate";
                     if (name().startsWith("dust")) return mLocalizedMaterialPre + "%material" + " Crystal Powder";
                     switch (this) {
-                        case crushedCentrifuged:
-                        case crushedPurified:
-                        case crushed:
+                        case crushedCentrifuged, crushedPurified, crushed -> {
                             return mLocalizedMaterialPre + "%material" + " Crystals";
+                        }
                     }
-                    break;
+                }
             }
         }
         // Use Standard Localization

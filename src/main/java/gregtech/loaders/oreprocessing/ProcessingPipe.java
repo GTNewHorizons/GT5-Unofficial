@@ -31,112 +31,91 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
             ItemStack aStack) {
         switch (aPrefix) {
-            case pipeHuge:
-            case pipeLarge:
-            case pipeMedium:
-            case pipeSmall:
-            case pipeTiny:
+            case pipeHuge, pipeLarge, pipeMedium, pipeSmall, pipeTiny -> {
                 if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
 
-                    GT_ModHandler.addCraftingRecipe(
-                            GT_OreDictUnificator.get(OrePrefixes.pipeTiny, aMaterial, 8L),
+                    GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.pipeTiny, aMaterial, 8L),
                             GT_ModHandler.RecipeBits.BUFFERED,
                             new Object[] { "PPP", "h w", "PPP", 'P', OrePrefixes.plate.get(aMaterial) });
-                    GT_ModHandler.addCraftingRecipe(
-                            GT_OreDictUnificator.get(OrePrefixes.pipeSmall, aMaterial, 6L),
+                    GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.pipeSmall, aMaterial, 6L),
                             GT_ModHandler.RecipeBits.BUFFERED,
-                            new Object[] { "PWP", "P P", "PHP", 'P',
-                                    aMaterial == Materials.Wood ? OrePrefixes.plank.get(aMaterial)
-                                            : OrePrefixes.plate.get(aMaterial),
-                                    'H',
-                                    aMaterial.contains(SubTag.WOOD) ? ToolDictNames.craftingToolSoftHammer
-                                            : ToolDictNames.craftingToolHardHammer,
-                                    'W', aMaterial.contains(SubTag.WOOD) ? ToolDictNames.craftingToolSaw
-                                            : ToolDictNames.craftingToolWrench });
-                    GT_ModHandler.addCraftingRecipe(
-                            GT_OreDictUnificator.get(OrePrefixes.pipeMedium, aMaterial, 2L),
+                            new Object[] { "PWP", "P P", "PHP", 'P', aMaterial == Materials.Wood
+                                    ? OrePrefixes.plank.get(aMaterial)
+                                    : OrePrefixes.plate.get(aMaterial), 'H', aMaterial.contains(SubTag.WOOD)
+                                    ? ToolDictNames.craftingToolSoftHammer
+                                    : ToolDictNames.craftingToolHardHammer, 'W', aMaterial.contains(SubTag.WOOD)
+                                    ? ToolDictNames.craftingToolSaw
+                                    : ToolDictNames.craftingToolWrench });
+                    GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.pipeMedium, aMaterial, 2L),
                             GT_ModHandler.RecipeBits.BUFFERED,
-                            new Object[] { "PPP", "W H", "PPP", 'P',
-                                    aMaterial == Materials.Wood ? OrePrefixes.plank.get(aMaterial)
-                                            : OrePrefixes.plate.get(aMaterial),
-                                    'H',
-                                    aMaterial.contains(SubTag.WOOD) ? ToolDictNames.craftingToolSoftHammer
-                                            : ToolDictNames.craftingToolHardHammer,
-                                    'W', aMaterial.contains(SubTag.WOOD) ? ToolDictNames.craftingToolSaw
-                                            : ToolDictNames.craftingToolWrench });
-                    GT_ModHandler.addCraftingRecipe(
-                            GT_OreDictUnificator.get(OrePrefixes.pipeLarge, aMaterial, 1L),
+                            new Object[] { "PPP", "W H", "PPP", 'P', aMaterial == Materials.Wood
+                                    ? OrePrefixes.plank.get(aMaterial)
+                                    : OrePrefixes.plate.get(aMaterial), 'H', aMaterial.contains(SubTag.WOOD)
+                                    ? ToolDictNames.craftingToolSoftHammer
+                                    : ToolDictNames.craftingToolHardHammer, 'W', aMaterial.contains(SubTag.WOOD)
+                                    ? ToolDictNames.craftingToolSaw
+                                    : ToolDictNames.craftingToolWrench });
+                    GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.pipeLarge, aMaterial, 1L),
                             GT_ModHandler.RecipeBits.BUFFERED,
-                            new Object[] { "PHP", "P P", "PWP", 'P',
-                                    aMaterial == Materials.Wood ? OrePrefixes.plank.get(aMaterial)
-                                            : OrePrefixes.plate.get(aMaterial),
-                                    'H',
-                                    aMaterial.contains(SubTag.WOOD) ? ToolDictNames.craftingToolSoftHammer
-                                            : ToolDictNames.craftingToolHardHammer,
-                                    'W', aMaterial.contains(SubTag.WOOD) ? ToolDictNames.craftingToolSaw
-                                            : ToolDictNames.craftingToolWrench });
-                    GT_ModHandler.addCraftingRecipe(
-                            GT_OreDictUnificator.get(OrePrefixes.pipeHuge, aMaterial, 1L),
+                            new Object[] { "PHP", "P P", "PWP", 'P', aMaterial == Materials.Wood
+                                    ? OrePrefixes.plank.get(aMaterial)
+                                    : OrePrefixes.plate.get(aMaterial), 'H', aMaterial.contains(SubTag.WOOD)
+                                    ? ToolDictNames.craftingToolSoftHammer
+                                    : ToolDictNames.craftingToolHardHammer, 'W', aMaterial.contains(SubTag.WOOD)
+                                    ? ToolDictNames.craftingToolSaw
+                                    : ToolDictNames.craftingToolWrench });
+                    GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.pipeHuge, aMaterial, 1L),
                             GT_ModHandler.RecipeBits.BUFFERED,
                             new Object[] { "DhD", "D D", "DwD", 'D', OrePrefixes.plateDouble.get(aMaterial) });
                 }
-                break;
-            case pipeRestrictiveHuge:
-            case pipeRestrictiveLarge:
-            case pipeRestrictiveMedium:
-            case pipeRestrictiveSmall:
-            case pipeRestrictiveTiny:
-                RA.addAssemblerRecipe(
-                        GT_OreDictUnificator.get(aOreDictName.replaceFirst("Restrictive", ""), null, 1L, false, true),
-                        GT_OreDictUnificator.get(
-                                OrePrefixes.ring,
-                                Materials.Steel,
-                                aPrefix.mSecondaryMaterial.mAmount / OrePrefixes.ring.mMaterialAmount),
-                        GT_Utility.copyAmount(1L, aStack),
-                        (int) (aPrefix.mSecondaryMaterial.mAmount * 400L / OrePrefixes.ring.mMaterialAmount),
-                        4);
-                break;
-            case pipeQuadruple:
+            }
+            case pipeRestrictiveHuge, pipeRestrictiveLarge, pipeRestrictiveMedium, pipeRestrictiveSmall, pipeRestrictiveTiny ->
+                    RA.addAssemblerRecipe(GT_OreDictUnificator.get(
+                                    aOreDictName.replaceFirst("Restrictive", ""),
+                                    null,
+                                    1L,
+                                    false,
+                                    true),
+                            GT_OreDictUnificator.get(OrePrefixes.ring,
+                                    Materials.Steel,
+                                    aPrefix.mSecondaryMaterial.mAmount / OrePrefixes.ring.mMaterialAmount),
+                            GT_Utility.copyAmount(1L, aStack),
+                            (int) (aPrefix.mSecondaryMaterial.mAmount * 400L / OrePrefixes.ring.mMaterialAmount),
+                            4);
+            case pipeQuadruple -> {
                 if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
 
-                    GT_ModHandler.addCraftingRecipe(
-                            GT_OreDictUnificator.get(OrePrefixes.pipeQuadruple, aMaterial, 1),
+                    GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.pipeQuadruple, aMaterial, 1),
                             GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED,
                             new Object[] { "MM ", "MM ", "   ", 'M',
                                     GT_OreDictUnificator.get(OrePrefixes.pipeMedium, aMaterial, 1) });
                 }
-
-                RA.addAssemblerRecipe(
-                        GT_OreDictUnificator.get(OrePrefixes.pipeMedium, aMaterial, 4),
+                RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.pipeMedium, aMaterial, 4),
                         GT_Utility.getIntegratedCircuit(9),
                         GT_OreDictUnificator.get(OrePrefixes.pipeQuadruple, aMaterial, 1),
                         60,
                         calculateRecipeEU(aMaterial, 4));
-                break;
-            case pipeNonuple:
+            }
+            case pipeNonuple -> {
                 if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
 
-                    GT_ModHandler.addCraftingRecipe(
-                            GT_Utility.copyAmount(1, aStack),
+                    GT_ModHandler.addCraftingRecipe(GT_Utility.copyAmount(1, aStack),
                             GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED,
                             new Object[] { "PPP", "PPP", "PPP", 'P',
-                                    GT_OreDictUnificator.get(
-                                            aOreDictName.replaceFirst("Nonuple", "Small"),
+                                    GT_OreDictUnificator.get(aOreDictName.replaceFirst("Nonuple", "Small"),
                                             null,
                                             1L,
                                             false,
                                             true) });
                 }
-
-                RA.addAssemblerRecipe(
-                        GT_OreDictUnificator.get(OrePrefixes.pipeSmall, aMaterial, 9),
+                RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.pipeSmall, aMaterial, 9),
                         GT_Utility.getIntegratedCircuit(9),
                         GT_OreDictUnificator.get(OrePrefixes.pipeNonuple, aMaterial, 1),
                         60,
                         calculateRecipeEU(aMaterial, 8));
-                break;
-            default:
-                break;
+            }
+            default -> {
+            }
         }
     }
 }

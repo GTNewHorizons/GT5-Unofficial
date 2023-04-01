@@ -89,81 +89,72 @@ public class GT_Block_Casings4 extends GT_Block_Casings_Abstract {
 
     @Override
     public IIcon getIcon(int aSide, int aMeta) {
-        switch (aMeta) {
-            case 0:
-            case 12:
-                return Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();
-            case 1:
-            case 10:
-                return Textures.BlockIcons.MACHINE_CASING_CLEAN_STAINLESSSTEEL.getIcon();
-            case 2:
-            case 11:
-                return Textures.BlockIcons.MACHINE_CASING_STABLE_TITANIUM.getIcon();
-            case 3:
-                return aSide > 1 ? Textures.BlockIcons.MACHINE_CASING_FIREBOX_TITANIUM.getIcon()
-                        : Textures.BlockIcons.MACHINE_CASING_STABLE_TITANIUM.getIcon();
-            case 4:
+        return switch (aMeta) {
+            case 0, 12 -> Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();
+            case 1, 10 -> Textures.BlockIcons.MACHINE_CASING_CLEAN_STAINLESSSTEEL.getIcon();
+            case 2, 11 -> Textures.BlockIcons.MACHINE_CASING_STABLE_TITANIUM.getIcon();
+            case 3 -> aSide > 1
+                ? Textures.BlockIcons.MACHINE_CASING_FIREBOX_TITANIUM.getIcon()
+                : Textures.BlockIcons.MACHINE_CASING_STABLE_TITANIUM.getIcon();
+            case 4 ->
                 // Do not overwrite!
-                return Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS_YELLOW.getIcon();
-            case 5:
+                Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS_YELLOW.getIcon();
+            case 5 ->
                 // Do not overwrite!
-                return Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS.getIcon();
-            case 6:
-                return Textures.BlockIcons.MACHINE_CASING_FUSION.getIcon();
-            case 7:
-                return Textures.BlockIcons.MACHINE_CASING_FUSION_COIL.getIcon();
-            case 8:
-                return Textures.BlockIcons.MACHINE_CASING_FUSION_2.getIcon();
-            case 9:
-                return Textures.BlockIcons.MACHINE_CASING_TURBINE.getIcon();
-            case 13:
-                return Textures.BlockIcons.MACHINE_CASING_ENGINE_INTAKE.getIcon();
-            case 14:
-                return Textures.BlockIcons.MACHINE_CASING_MINING_OSMIRIDIUM.getIcon();
-            case 15:
-                return Textures.BlockIcons.MACHINE_CASING_DENSEBRICKS.getIcon();
-        }
-        return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
+                Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS.getIcon();
+            case 6 -> Textures.BlockIcons.MACHINE_CASING_FUSION.getIcon();
+            case 7 -> Textures.BlockIcons.MACHINE_CASING_FUSION_COIL.getIcon();
+            case 8 -> Textures.BlockIcons.MACHINE_CASING_FUSION_2.getIcon();
+            case 9 -> Textures.BlockIcons.MACHINE_CASING_TURBINE.getIcon();
+            case 13 -> Textures.BlockIcons.MACHINE_CASING_ENGINE_INTAKE.getIcon();
+            case 14 -> Textures.BlockIcons.MACHINE_CASING_MINING_OSMIRIDIUM.getIcon();
+            case 15 -> Textures.BlockIcons.MACHINE_CASING_DENSEBRICKS.getIcon();
+            default -> Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
+        };
     }
 
     @Deprecated
     public IIcon getTurbineCasing(int meta, int iconIndex, boolean active) {
-        switch (meta) {
-            case 10:
-                return active ? Textures.BlockIcons.TURBINE_ACTIVE1[iconIndex].getIcon()
-                        : Textures.BlockIcons.TURBINE1[iconIndex].getIcon();
-            case 11:
-                return active ? Textures.BlockIcons.TURBINE_ACTIVE2[iconIndex].getIcon()
-                        : Textures.BlockIcons.TURBINE2[iconIndex].getIcon();
-            case 12:
-                return active ? Textures.BlockIcons.TURBINE_ACTIVE3[iconIndex].getIcon()
-                        : Textures.BlockIcons.TURBINE3[iconIndex].getIcon();
-            default:
-                return active ? Textures.BlockIcons.TURBINE_ACTIVE[iconIndex].getIcon()
-                        : Textures.BlockIcons.TURBINE[iconIndex].getIcon();
-        }
+        return switch (meta) {
+            case 10 -> active
+                ? Textures.BlockIcons.TURBINE_ACTIVE1[iconIndex].getIcon()
+                : Textures.BlockIcons.TURBINE1[iconIndex].getIcon();
+            case 11 -> active
+                ? Textures.BlockIcons.TURBINE_ACTIVE2[iconIndex].getIcon()
+                : Textures.BlockIcons.TURBINE2[iconIndex].getIcon();
+            case 12 -> active
+                ? Textures.BlockIcons.TURBINE_ACTIVE3[iconIndex].getIcon()
+                : Textures.BlockIcons.TURBINE3[iconIndex].getIcon();
+            default -> active
+                ? Textures.BlockIcons.TURBINE_ACTIVE[iconIndex].getIcon()
+                : Textures.BlockIcons.TURBINE[iconIndex].getIcon();
+        };
     }
 
     @Deprecated
     public IIcon getTurbineCasing(int meta, int iconIndex, boolean active, boolean hasTurbine) {
-        switch (meta) {
-            case 10:
-                return active ? Textures.BlockIcons.TURBINE_ACTIVE1[iconIndex].getIcon()
-                        : hasTurbine ? Textures.BlockIcons.TURBINE1[iconIndex].getIcon()
-                                : Textures.BlockIcons.TURBINE_EMPTY1[iconIndex].getIcon();
-            case 11:
-                return active ? Textures.BlockIcons.TURBINE_ACTIVE2[iconIndex].getIcon()
-                        : hasTurbine ? Textures.BlockIcons.TURBINE2[iconIndex].getIcon()
-                                : Textures.BlockIcons.TURBINE_EMPTY2[iconIndex].getIcon();
-            case 12:
-                return active ? Textures.BlockIcons.TURBINE_ACTIVE3[iconIndex].getIcon()
-                        : hasTurbine ? Textures.BlockIcons.TURBINE3[iconIndex].getIcon()
-                                : Textures.BlockIcons.TURBINE_EMPTY3[iconIndex].getIcon();
-            default:
-                return active ? Textures.BlockIcons.TURBINE_ACTIVE[iconIndex].getIcon()
-                        : hasTurbine ? Textures.BlockIcons.TURBINE[iconIndex].getIcon()
-                                : Textures.BlockIcons.TURBINE_EMPTY[iconIndex].getIcon();
-        }
+        return switch (meta) {
+            case 10 -> active
+                ? Textures.BlockIcons.TURBINE_ACTIVE1[iconIndex].getIcon()
+                : hasTurbine
+                    ? Textures.BlockIcons.TURBINE1[iconIndex].getIcon()
+                    : Textures.BlockIcons.TURBINE_EMPTY1[iconIndex].getIcon();
+            case 11 -> active
+                ? Textures.BlockIcons.TURBINE_ACTIVE2[iconIndex].getIcon()
+                : hasTurbine
+                    ? Textures.BlockIcons.TURBINE2[iconIndex].getIcon()
+                    : Textures.BlockIcons.TURBINE_EMPTY2[iconIndex].getIcon();
+            case 12 -> active
+                ? Textures.BlockIcons.TURBINE_ACTIVE3[iconIndex].getIcon()
+                : hasTurbine
+                    ? Textures.BlockIcons.TURBINE3[iconIndex].getIcon()
+                    : Textures.BlockIcons.TURBINE_EMPTY3[iconIndex].getIcon();
+            default -> active
+                ? Textures.BlockIcons.TURBINE_ACTIVE[iconIndex].getIcon()
+                : hasTurbine
+                    ? Textures.BlockIcons.TURBINE[iconIndex].getIcon()
+                    : Textures.BlockIcons.TURBINE_EMPTY[iconIndex].getIcon();
+        };
     }
 
     private static int isTurbineControllerWithSide(IBlockAccess aWorld, int aX, int aY, int aZ, int aSide) {
@@ -189,61 +180,55 @@ public class GT_Block_Casings4 extends GT_Block_Casings_Abstract {
         if (tMeta > 8 && tMeta < 13) {
             int tInvertLeftRightMod = aSide % 2 * 2 - 1;
             switch (aSide / 2) {
-                case 0:
+                case 0 -> {
                     for (int i = -1; i < 2; i++) {
                         for (int j = -1; j < 2; j++) {
                             if (i == 0 && j == 0) continue;
                             int tState;
                             if ((tState = isTurbineControllerWithSide(aWorld, xCoord + j, yCoord, zCoord + i, aSide))
-                                    != 0) {
+                                != 0) {
                                 return getTurbineCasing(tMeta, 4 - i * 3 - j, tState == 1, tState == 2);
                             }
                         }
                     }
-                    break;
-                case 1:
+                }
+                case 1 -> {
                     for (int i = -1; i < 2; i++) {
                         for (int j = -1; j < 2; j++) {
                             if (i == 0 && j == 0) continue;
                             int tState;
                             if ((tState = isTurbineControllerWithSide(aWorld, xCoord + j, yCoord + i, zCoord, aSide))
-                                    != 0) {
-                                return getTurbineCasing(
-                                        tMeta,
-                                        4 + i * 3 - j * tInvertLeftRightMod,
-                                        tState == 1,
-                                        tState == 2);
+                                != 0) {
+                                return getTurbineCasing(tMeta,
+                                    4 + i * 3 - j * tInvertLeftRightMod,
+                                    tState == 1,
+                                    tState == 2);
                             }
                         }
                     }
-                    break;
-                case 2:
+                }
+                case 2 -> {
                     for (int i = -1; i < 2; i++) {
                         for (int j = -1; j < 2; j++) {
                             if (i == 0 && j == 0) continue;
                             int tState;
                             if ((tState = isTurbineControllerWithSide(aWorld, xCoord, yCoord + i, zCoord + j, aSide))
-                                    != 0) {
-                                return getTurbineCasing(
-                                        tMeta,
-                                        4 + i * 3 + j * tInvertLeftRightMod,
-                                        tState == 1,
-                                        tState == 2);
+                                != 0) {
+                                return getTurbineCasing(tMeta,
+                                    4 + i * 3 + j * tInvertLeftRightMod,
+                                    tState == 1,
+                                    tState == 2);
                             }
                         }
                     }
-                    break;
+                }
             }
-            switch (tMeta) {
-                case 10:
-                    return Textures.BlockIcons.MACHINE_CASING_CLEAN_STAINLESSSTEEL.getIcon();
-                case 11:
-                    return Textures.BlockIcons.MACHINE_CASING_STABLE_TITANIUM.getIcon();
-                case 12:
-                    return Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();
-                default:
-                    return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
-            }
+            return switch (tMeta) {
+                case 10 -> Textures.BlockIcons.MACHINE_CASING_CLEAN_STAINLESSSTEEL.getIcon();
+                case 11 -> Textures.BlockIcons.MACHINE_CASING_STABLE_TITANIUM.getIcon();
+                case 12 -> Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();
+                default -> Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
+            };
         }
         int tStartIndex = tMeta == 6 ? 1 : 13;
         int tIndexIntoMapping = 0;

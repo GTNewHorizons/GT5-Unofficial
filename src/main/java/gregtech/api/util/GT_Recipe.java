@@ -317,31 +317,27 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         if (mInputs.length > 0 && aSpecialValue > 0) {
             switch (aType) {
                 // Diesel Generator
-                case 0:
+                case 0 -> {
                     GT_Recipe_Map.sDieselFuels.addRecipe(this);
                     GT_Recipe_Map.sLargeBoilerFakeFuels.addDieselRecipe(this);
-                    break;
+                }
                 // Gas Turbine
-                case 1:
-                    GT_Recipe_Map.sTurbineFuels.addRecipe(this);
-                    break;
+                case 1 -> GT_Recipe_Map.sTurbineFuels.addRecipe(this);
+
                 // Thermal Generator
-                case 2:
-                    GT_Recipe_Map.sHotFuels.addRecipe(this);
-                    break;
+                case 2 -> GT_Recipe_Map.sHotFuels.addRecipe(this);
+
                 // Plasma Generator
-                case 4:
-                    GT_Recipe_Map.sPlasmaFuels.addRecipe(this);
-                    break;
+                case 4 -> GT_Recipe_Map.sPlasmaFuels.addRecipe(this);
+
                 // Magic Generator
-                case 5:
-                    GT_Recipe_Map.sMagicFuels.addRecipe(this);
-                    break;
+                case 5 -> GT_Recipe_Map.sMagicFuels.addRecipe(this);
+
                 // Fluid Generator. Usually 3. Every wrong Type ends up in the Semifluid Generator
-                default:
+                default -> {
                     GT_Recipe_Map.sDenseLiquidFuels.addRecipe(this);
                     GT_Recipe_Map.sLargeBoilerFakeFuels.addDenseLiquidRecipe(this);
-                    break;
+                }
             }
         }
     }
@@ -1243,13 +1239,12 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             public IDrawable getOverlayForSlot(boolean isFluid, boolean isOutput, int index, boolean isSpecial) {
                 if (isOutput) {
                     switch (index) {
-                        case 0:
-                        case 2:
-                        case 6:
-                        case 8:
+                        case 0, 2, 6, 8 -> {
                             return GT_UITextures.OVERLAY_SLOT_CIRCUIT;
-                        case 4:
+                        }
+                        case 4 -> {
                             return GT_UITextures.OVERLAY_SLOT_WRENCH;
+                        }
                     }
                 }
                 return super.getOverlayForSlot(isFluid, isOutput, index, isSpecial);
@@ -4056,15 +4051,11 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             if (progressBarImageSize != 0) {
                 return progressBarImageSize;
             }
-            switch (progressBarDirection) {
-                case UP:
-                case DOWN:
-                    return progressBarSize.height;
-                case CIRCULAR_CW:
-                    return Math.max(progressBarSize.width, progressBarSize.height);
-                default:
-                    return progressBarSize.width;
-            }
+            return switch (progressBarDirection) {
+                case UP, DOWN -> progressBarSize.height;
+                case CIRCULAR_CW -> Math.max(progressBarSize.width, progressBarSize.height);
+                default -> progressBarSize.width;
+            };
         }
 
         /**

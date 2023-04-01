@@ -1841,25 +1841,24 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
             // cascading from IV to UMV since all recipes use HydrofluiricAcid
             // for later tiers, just add the corresponding tier to a case
             int fluidAmount = this.getFluidAmount();
-            switch (this.getVoltageFromEU()) {
-                case 0:
-                    /** ULV **/
-                    return Materials.Water.getFluid(fluidAmount);
-                case 1:
-                    /** LV **/
-                    return Materials.SulfuricAcid.getFluid(fluidAmount);
-                case 2:
-                    /** MV **/
-                    return Materials.HydrochloricAcid.getFluid(fluidAmount);
-                case 3:
-                    /** HV **/
-                    return Materials.PhosphoricAcid.getFluid(fluidAmount);
-                case 4:
-                    /** EV **/
-                    return Materials.HydrofluoricAcid.getFluid(this.getFluidAmount());
-                default:
-                    return Materials.PhthalicAcid.getFluid(fluidAmount);
-            }
+            return switch (this.getVoltageFromEU()) {
+                case 0 ->
+                /** ULV **/
+                        Materials.Water.getFluid(fluidAmount);
+                case 1 ->
+                /** LV **/
+                        Materials.SulfuricAcid.getFluid(fluidAmount);
+                case 2 ->
+                /** MV **/
+                        Materials.HydrochloricAcid.getFluid(fluidAmount);
+                case 3 ->
+                /** HV **/
+                        Materials.PhosphoricAcid.getFluid(fluidAmount);
+                case 4 ->
+                /** EV **/
+                        Materials.HydrofluoricAcid.getFluid(this.getFluidAmount());
+                default -> Materials.PhthalicAcid.getFluid(fluidAmount);
+            };
         }
 
         /** @return additional required UU-Matter amount for Autoclave process related to the Tier **/

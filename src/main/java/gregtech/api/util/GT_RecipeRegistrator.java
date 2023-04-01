@@ -591,31 +591,23 @@ public class GT_RecipeRegistrator {
                                     true)) {
                                 if (null != (tStack = GT_ModHandler.removeRecipe(tRecipe.shape))) {
                                     switch (sShapesA[i].length) {
-                                        case 2:
-                                            GT_ModHandler.addCraftingRecipe(
-                                                    tStack,
-                                                    GT_ModHandler.RecipeBits.BUFFERED,
-                                                    new Object[] { sShapesA[i][1], s_P.charAt(0), aPlate, s_R.charAt(0),
-                                                            OrePrefixes.stick.get(tMaterial), s_I.charAt(0),
-                                                            aItemData });
-                                            break;
-                                        case 3:
-                                            GT_ModHandler.addCraftingRecipe(
-                                                    tStack,
-                                                    GT_ModHandler.RecipeBits.BUFFERED,
-                                                    new Object[] { sShapesA[i][1], sShapesA[i][2], s_P.charAt(0),
-                                                            aPlate, s_R.charAt(0), OrePrefixes.stick.get(tMaterial),
-                                                            s_I.charAt(0), aItemData });
-                                            break;
-                                        default:
-                                            GT_ModHandler.addCraftingRecipe(
-                                                    tStack,
-                                                    GT_ModHandler.RecipeBits.BUFFERED,
-                                                    new Object[] { sShapesA[i][1], sShapesA[i][2], sShapesA[i][3],
-                                                            s_P.charAt(0), aPlate, s_R.charAt(0),
-                                                            OrePrefixes.stick.get(tMaterial), s_I.charAt(0),
-                                                            aItemData });
-                                            break;
+                                        case 2 -> GT_ModHandler.addCraftingRecipe(
+                                            tStack,
+                                            GT_ModHandler.RecipeBits.BUFFERED,
+                                            new Object[] { sShapesA[i][1], s_P.charAt(0), aPlate, s_R.charAt(0),
+                                                OrePrefixes.stick.get(tMaterial), s_I.charAt(0), aItemData });
+                                        case 3 -> GT_ModHandler.addCraftingRecipe(
+                                            tStack,
+                                            GT_ModHandler.RecipeBits.BUFFERED,
+                                            new Object[] { sShapesA[i][1], sShapesA[i][2], s_P.charAt(0), aPlate,
+                                                s_R.charAt(0), OrePrefixes.stick.get(tMaterial), s_I.charAt(0),
+                                                aItemData });
+                                        default -> GT_ModHandler.addCraftingRecipe(
+                                            tStack,
+                                            GT_ModHandler.RecipeBits.BUFFERED,
+                                            new Object[] { sShapesA[i][1], sShapesA[i][2], sShapesA[i][3],
+                                                s_P.charAt(0), aPlate, s_R.charAt(0), OrePrefixes.stick.get(tMaterial),
+                                                s_I.charAt(0), aItemData });
                                     }
                                 }
                             }

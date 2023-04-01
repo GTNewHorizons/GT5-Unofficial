@@ -171,19 +171,14 @@ public class GT_IntegratedCircuit_Item extends GT_Generic_Item implements INetwo
     }
 
     private static String getModeString(int aMetaData) {
-        switch ((byte) (aMetaData >>> 8)) {
-            case 0:
-                return "==";
-            case 1:
-                return "<=";
-            case 2:
-                return ">=";
-            case 3:
-                return "<";
-            case 4:
-                return ">";
-        }
-        return "";
+        return switch ((byte) (aMetaData >>> 8)) {
+            case 0 -> "==";
+            case 1 -> "<=";
+            case 2 -> ">=";
+            case 3 -> "<";
+            case 4 -> ">";
+            default -> "";
+        };
     }
 
     private static String getConfigurationString(int aMetaData) {

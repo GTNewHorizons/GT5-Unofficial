@@ -20,7 +20,7 @@ public class ProcessingCrushedOre implements gregtech.api.interfaces.IOreRecipeR
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
             ItemStack aStack) {
         switch (aPrefix) {
-            case crushedCentrifuged:
+            case crushedCentrifuged -> {
                 GT_Values.RA.addForgeHammerRecipe(
                         GT_Utility.copyAmount(1L, aStack),
                         GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1L),
@@ -35,8 +35,8 @@ public class ProcessingCrushedOre implements gregtech.api.interfaces.IOreRecipeR
                                 1L),
                         10,
                         false);
-                break;
-            case crushedPurified:
+            }
+            case crushedPurified -> {
                 GT_ModHandler.addThermalCentrifugeRecipe(
                         GT_Utility.copyAmount(1L, aStack),
                         new int[] { 10000, 1111 },
@@ -50,55 +50,38 @@ public class ProcessingCrushedOre implements gregtech.api.interfaces.IOreRecipeR
                                 OrePrefixes.dust,
                                 GT_Utility.selectItemInList(1, aMaterial.mMacerateInto, aMaterial.mOreByProducts),
                                 1L));
-
                 ItemStack tGem = GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L);
                 if (tGem != null) {
                     switch (aMaterial.mName) {
-                        case "Tanzanite":
-                        case "Sapphire":
-                        case "Olivine":
-                        case "GreenSapphire":
-                        case "Opal":
-                        case "Amethyst":
-                        case "Emerald":
-                        case "Ruby":
-                        case "Amber":
-                        case "Diamond":
-                        case "FoolsRuby":
-                        case "BlueTopaz":
-                        case "GarnetRed":
-                        case "Topaz":
-                        case "Jasper":
-                        case "GarnetYellow":
-                            GT_Values.RA.addSifterRecipe(
-                                    GT_Utility.copyAmount(1L, aStack),
-                                    new ItemStack[] {
-                                            GT_OreDictUnificator.get(OrePrefixes.gemExquisite, aMaterial, tGem, 1L),
-                                            GT_OreDictUnificator.get(OrePrefixes.gemFlawless, aMaterial, tGem, 1L),
-                                            tGem, GT_OreDictUnificator.get(OrePrefixes.gemFlawed, aMaterial, tGem, 1L),
-                                            GT_OreDictUnificator.get(OrePrefixes.gemChipped, aMaterial, tGem, 1L),
-                                            GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, tGem, 1L) },
-                                    new int[] { 300, 1200, 4500, 1400, 2800, 3500 },
-                                    800,
-                                    16);
-                            break;
-                        default:
-                            GT_Values.RA.addSifterRecipe(
-                                    GT_Utility.copyAmount(1L, aStack),
-                                    new ItemStack[] {
-                                            GT_OreDictUnificator.get(OrePrefixes.gemExquisite, aMaterial, tGem, 1L),
-                                            GT_OreDictUnificator.get(OrePrefixes.gemFlawless, aMaterial, tGem, 1L),
-                                            tGem, GT_OreDictUnificator.get(OrePrefixes.gemFlawed, aMaterial, tGem, 1L),
-                                            GT_OreDictUnificator.get(OrePrefixes.gemChipped, aMaterial, tGem, 1L),
-                                            GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, tGem, 1L) },
-                                    new int[] { 100, 400, 1500, 2000, 4000, 5000 },
-                                    800,
-                                    16);
+                        case "Tanzanite", "Sapphire", "Olivine", "GreenSapphire", "Opal", "Amethyst", "Emerald", "Ruby", "Amber", "Diamond", "FoolsRuby", "BlueTopaz", "GarnetRed", "Topaz", "Jasper", "GarnetYellow" ->
+                                GT_Values.RA.addSifterRecipe(
+                                        GT_Utility.copyAmount(1L, aStack),
+                                        new ItemStack[] {
+                                                GT_OreDictUnificator.get(OrePrefixes.gemExquisite, aMaterial, tGem, 1L),
+                                                GT_OreDictUnificator.get(OrePrefixes.gemFlawless, aMaterial, tGem, 1L),
+                                                tGem,
+                                                GT_OreDictUnificator.get(OrePrefixes.gemFlawed, aMaterial, tGem, 1L),
+                                                GT_OreDictUnificator.get(OrePrefixes.gemChipped, aMaterial, tGem, 1L),
+                                                GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, tGem, 1L) },
+                                        new int[] { 300, 1200, 4500, 1400, 2800, 3500 },
+                                        800,
+                                        16);
+                        default -> GT_Values.RA.addSifterRecipe(
+                                GT_Utility.copyAmount(1L, aStack),
+                                new ItemStack[] {
+                                        GT_OreDictUnificator.get(OrePrefixes.gemExquisite, aMaterial, tGem, 1L),
+                                        GT_OreDictUnificator.get(OrePrefixes.gemFlawless, aMaterial, tGem, 1L), tGem,
+                                        GT_OreDictUnificator.get(OrePrefixes.gemFlawed, aMaterial, tGem, 1L),
+                                        GT_OreDictUnificator.get(OrePrefixes.gemChipped, aMaterial, tGem, 1L),
+                                        GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, tGem, 1L) },
+                                new int[] { 100, 400, 1500, 2000, 4000, 5000 },
+                                800,
+                                16);
                     }
                 }
-                break;
-            default:
-                break;
+            }
+            default -> {
+            }
         }
     }
 }

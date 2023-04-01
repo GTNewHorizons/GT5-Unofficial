@@ -78,34 +78,48 @@ public class GT_Circuit_BasicLogic extends GT_CircuitryBehavior {
     public String getDataDescription(int[] aCircuitData, int aCircuitDataIndex) {
         if (aCircuitDataIndex == 0) {
             switch (aCircuitData[0]) {
-                case 0:
+                case 0 -> {
                     return "OR";
-                case 1:
+                }
+                case 1 -> {
                     return "NOR";
-                case 2:
+                }
+                case 2 -> {
                     return "XOR";
-                case 3:
+                }
+                case 3 -> {
                     return "XNOR";
-                case 4:
+                }
+                case 4 -> {
                     return "AND";
-                case 5:
+                }
+                case 5 -> {
                     return "NAND";
-                case 6:
+                }
+                case 6 -> {
                     return "INVERT";
-                case 7:
+                }
+                case 7 -> {
                     return "BIT_OR";
-                case 8:
+                }
+                case 8 -> {
                     return "BIT_NOR";
-                case 9:
+                }
+                case 9 -> {
                     return "BIT_XOR";
-                case 10:
+                }
+                case 10 -> {
                     return "BIT_XNOR";
-                case 11:
+                }
+                case 11 -> {
                     return "BIT_AND";
-                case 12:
+                }
+                case 12 -> {
                     return "BIT_NAND";
-                case 13:
+                }
+                case 13 -> {
                     return "BIT_INVERT";
+                }
             }
         }
         return "";

@@ -92,26 +92,17 @@ public class GT_Cover_Fluidfilter extends GT_CoverBehaviorBase<GT_Cover_Fluidfil
     }
 
     public String getFilterMode(int aFilterMode) {
-        switch (aFilterMode) {
-            case FILTER_INPUT_DENY_OUTPUT:
-                return GT_Utility.trans("043", "Filter input, Deny output");
-            case INVERT_INPUT_DENY_OUTPUT:
-                return GT_Utility.trans("044", "Invert input, Deny output");
-            case FILTER_INPUT_ANY_OUTPUT:
-                return GT_Utility.trans("045", "Filter input, Permit any output");
-            case INVERT_INPUT_ANY_OUTPUT:
-                return GT_Utility.trans("046", "Invert input, Permit any output");
-            case DENY_INPUT_FILTER_OUTPUT:
-                return GT_Utility.trans("307", "Deny input, Filter output");
-            case DENY_INPUT_INVERT_OUTPUT:
-                return GT_Utility.trans("308", "Deny input, Invert output");
-            case ANY_INPUT_FILTER_OUTPUT:
-                return GT_Utility.trans("309", "Permit any input, Filter output");
-            case ANY_INPUT_INVERT_OUTPUT:
-                return GT_Utility.trans("310", "Permit any input, Invert output");
-            default:
-                return ("UNKNOWN");
-        }
+        return switch (aFilterMode) {
+            case FILTER_INPUT_DENY_OUTPUT -> GT_Utility.trans("043", "Filter input, Deny output");
+            case INVERT_INPUT_DENY_OUTPUT -> GT_Utility.trans("044", "Invert input, Deny output");
+            case FILTER_INPUT_ANY_OUTPUT -> GT_Utility.trans("045", "Filter input, Permit any output");
+            case INVERT_INPUT_ANY_OUTPUT -> GT_Utility.trans("046", "Invert input, Permit any output");
+            case DENY_INPUT_FILTER_OUTPUT -> GT_Utility.trans("307", "Deny input, Filter output");
+            case DENY_INPUT_INVERT_OUTPUT -> GT_Utility.trans("308", "Deny input, Invert output");
+            case ANY_INPUT_FILTER_OUTPUT -> GT_Utility.trans("309", "Permit any input, Filter output");
+            case ANY_INPUT_INVERT_OUTPUT -> GT_Utility.trans("310", "Permit any input, Invert output");
+            default -> ("UNKNOWN");
+        };
     }
 
     @Override
@@ -371,36 +362,24 @@ public class GT_Cover_Fluidfilter extends GT_CoverBehaviorBase<GT_Cover_Fluidfil
         }
 
         private int getNewFilterMode(int id, FluidFilterData coverVariable) {
-            switch (id) {
-                case 0:
-                    return (coverVariable.mFilterMode & 0x3);
-                case 1:
-                    return (coverVariable.mFilterMode | 0x4);
-                case 2:
-                    return (coverVariable.mFilterMode & 0x5);
-                case 3:
-                    return (coverVariable.mFilterMode | 0x2);
-                case 4:
-                    return (coverVariable.mFilterMode & 0x6);
-                case 5:
-                    return (coverVariable.mFilterMode | 0x1);
-            }
-            return coverVariable.mFilterMode;
+            return switch (id) {
+                case 0 -> (coverVariable.mFilterMode & 0x3);
+                case 1 -> (coverVariable.mFilterMode | 0x4);
+                case 2 -> (coverVariable.mFilterMode & 0x5);
+                case 3 -> (coverVariable.mFilterMode | 0x2);
+                case 4 -> (coverVariable.mFilterMode & 0x6);
+                case 5 -> (coverVariable.mFilterMode | 0x1);
+                default -> coverVariable.mFilterMode;
+            };
         }
 
         private boolean getClickable(int id, FluidFilterData coverVariable) {
-            switch (id) {
-                case 0:
-                case 1:
-                    return (coverVariable.mFilterMode >> 2 & 0x1) != (id & 0x1);
-                case 2:
-                case 3:
-                    return (coverVariable.mFilterMode >> 1 & 0x1) != (id & 0x1);
-                case 4:
-                case 5:
-                    return (coverVariable.mFilterMode & 0x1) != (id & 0x1);
-            }
-            return false;
+            return switch (id) {
+                case 0, 1 -> (coverVariable.mFilterMode >> 2 & 0x1) != (id & 0x1);
+                case 2, 3 -> (coverVariable.mFilterMode >> 1 & 0x1) != (id & 0x1);
+                case 4, 5 -> (coverVariable.mFilterMode & 0x1) != (id & 0x1);
+                default -> false;
+            };
         }
 
         private ItemStack getFluidDisplayItem(FluidFilterData coverData) {

@@ -178,34 +178,28 @@ public class GT_GUIContainer_BasicMachine extends GT_GUIContainerMetaTile_Machin
                         % (tSize + 1);
 
                 switch (mProgressBarDirection) { // yes, my OCD was mad at me before I did the Tabs.
-                    case 0:
-                        drawTexturedModalRect(x + 78, y + 24, 176, 0, tProgress, 18);
-                        break;
-                    case 1:
+                    case 0 -> drawTexturedModalRect(x + 78, y + 24, 176, 0, tProgress, 18);
+                    case 1 ->
                         drawTexturedModalRect(x + 78 + 20 - tProgress, y + 24, 176 + 20 - tProgress, 0, tProgress, 18);
-                        break;
-                    case 2:
-                        drawTexturedModalRect(x + 78, y + 24, 176, 0, 20, tProgress);
-                        break;
-                    case 3:
+                    case 2 -> drawTexturedModalRect(x + 78, y + 24, 176, 0, 20, tProgress);
+                    case 3 ->
                         drawTexturedModalRect(x + 78, y + 24 + 18 - tProgress, 176, 18 - tProgress, 20, tProgress);
-                        break;
-                    case 4:
+                    case 4 -> {
                         tProgress = 20 - tProgress;
                         drawTexturedModalRect(x + 78, y + 24, 176, 0, tProgress, 18);
-                        break;
-                    case 5:
+                    }
+                    case 5 -> {
                         tProgress = 20 - tProgress;
                         drawTexturedModalRect(x + 78 + 20 - tProgress, y + 24, 176 + 20 - tProgress, 0, tProgress, 18);
-                        break;
-                    case 6:
+                    }
+                    case 6 -> {
                         tProgress = 18 - tProgress;
                         drawTexturedModalRect(x + 78, y + 24, 176, 0, 20, tProgress);
-                        break;
-                    case 7:
+                    }
+                    case 7 -> {
                         tProgress = 18 - tProgress;
                         drawTexturedModalRect(x + 78, y + 24 + 18 - tProgress, 176, 18 - tProgress, 20, tProgress);
-                        break;
+                    }
                 }
             }
         }

@@ -42,27 +42,13 @@ public class GT_Cover_RedstoneConductor extends GT_CoverBehavior {
             aCoverVariable = 6;
         }
         switch (aCoverVariable) {
-            case 0:
-                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("071", "Conducts strongest Input"));
-                break;
-            case 1:
-                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("072", "Conducts from bottom Input"));
-                break;
-            case 2:
-                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("073", "Conducts from top Input"));
-                break;
-            case 3:
-                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("074", "Conducts from north Input"));
-                break;
-            case 4:
-                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("075", "Conducts from south Input"));
-                break;
-            case 5:
-                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("076", "Conducts from west Input"));
-                break;
-            case 6:
-                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("077", "Conducts from east Input"));
-                break;
+            case 0 -> GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("071", "Conducts strongest Input"));
+            case 1 -> GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("072", "Conducts from bottom Input"));
+            case 2 -> GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("073", "Conducts from top Input"));
+            case 3 -> GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("074", "Conducts from north Input"));
+            case 4 -> GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("075", "Conducts from south Input"));
+            case 5 -> GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("076", "Conducts from west Input"));
+            case 6 -> GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("077", "Conducts from east Input"));
         }
         return aCoverVariable;
     }

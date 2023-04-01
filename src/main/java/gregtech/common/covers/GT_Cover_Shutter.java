@@ -51,18 +51,10 @@ public class GT_Cover_Shutter extends GT_CoverBehavior {
             aCoverVariable = 3;
         }
         switch (aCoverVariable) {
-            case 0:
-                GT_Utility.sendChatToPlayer(aPlayer, trans("082", "Open if work enabled"));
-                break;
-            case 1:
-                GT_Utility.sendChatToPlayer(aPlayer, trans("083", "Open if work disabled"));
-                break;
-            case 2:
-                GT_Utility.sendChatToPlayer(aPlayer, trans("084", "Only Output allowed"));
-                break;
-            case 3:
-                GT_Utility.sendChatToPlayer(aPlayer, trans("085", "Only Input allowed"));
-                break;
+            case 0 -> GT_Utility.sendChatToPlayer(aPlayer, trans("082", "Open if work enabled"));
+            case 1 -> GT_Utility.sendChatToPlayer(aPlayer, trans("083", "Open if work disabled"));
+            case 2 -> GT_Utility.sendChatToPlayer(aPlayer, trans("084", "Only Output allowed"));
+            case 3 -> GT_Utility.sendChatToPlayer(aPlayer, trans("085", "Only Input allowed"));
         }
         if (aTileEntity instanceof BaseMetaPipeEntity) {
             ((BaseMetaPipeEntity) aTileEntity).reloadLocks();

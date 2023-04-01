@@ -93,15 +93,9 @@ public class GT_Cover_PlayerDetector extends GT_CoverBehavior {
             aCoverVariable = 2;
         }
         switch (aCoverVariable) {
-            case 0:
-                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("068.1", "Emit if any Player is close"));
-                break;
-            case 1:
-                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("069.1", "Emit if other Player is close"));
-                break;
-            case 2:
-                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("070", "Emit if you are close"));
-                break;
+            case 0 -> GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("068.1", "Emit if any Player is close"));
+            case 1 -> GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("069.1", "Emit if other Player is close"));
+            case 2 -> GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("070", "Emit if you are close"));
         }
         return aCoverVariable;
     }

@@ -50,29 +50,21 @@ public class SteamTexture {
     }
 
     public UITexture get(SteamVariant variant) {
-        switch (variant) {
-            case BRONZE:
-                return bronzeTexture;
-            case STEEL:
-                return steelTexture;
-            case PRIMITIVE:
-                return primitiveTexture;
-            default:
-                return null;
-        }
+        return switch (variant) {
+            case BRONZE -> bronzeTexture;
+            case STEEL -> steelTexture;
+            case PRIMITIVE -> primitiveTexture;
+            default -> null;
+        };
     }
 
     public AdaptableUITexture getAdaptable(SteamVariant variant) {
-        switch (variant) {
-            case BRONZE:
-                return (AdaptableUITexture) bronzeTexture;
-            case STEEL:
-                return (AdaptableUITexture) steelTexture;
-            case PRIMITIVE:
-                return (AdaptableUITexture) primitiveTexture;
-            default:
-                return null;
-        }
+        return switch (variant) {
+            case BRONZE -> (AdaptableUITexture) bronzeTexture;
+            case STEEL -> (AdaptableUITexture) steelTexture;
+            case PRIMITIVE -> (AdaptableUITexture) primitiveTexture;
+            default -> null;
+        };
     }
 
     public UITexture get(boolean isHighPressure) {

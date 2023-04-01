@@ -328,7 +328,7 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                 }
 
                 switch (aMaterial.mSmeltInto.mName) {
-                    case "Glass":
+                    case "Glass" -> {
                         GT_Values.RA.addExtruderRecipe(
                                 GT_Utility.copyAmount(1L, aStack),
                                 ItemList.Shape_Extruder_Bottle.get(0L),
@@ -341,8 +341,8 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                                 new ItemStack(Items.glass_bottle, 1),
                                 tAmount * 64,
                                 4);
-                        break;
-                    case "Steel":
+                    }
+                    case "Steel" -> {
                         GT_Values.RA.addExtruderRecipe(
                                 GT_Utility.copyAmount(1L, aStack),
                                 ItemList.Shape_Extruder_Cell.get(0L),
@@ -361,9 +361,8 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                                 GT_ModHandler.getIC2Item("casingadviron", tAmount * 3),
                                 tAmount * 128,
                                 1 * tVoltageMultiplier);
-                        break;
-                    case "Iron":
-                    case "WroughtIron":
+                    }
+                    case "Iron", "WroughtIron" -> {
                         GT_Values.RA.addExtruderRecipe(
                                 GT_Utility.copyAmount(1L, aStack),
                                 ItemList.Shape_Extruder_Cell.get(0L),
@@ -388,8 +387,8 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                                 new ItemStack(Blocks.anvil, 1, 0),
                                 tAmount * 512,
                                 4 * tVoltageMultiplier);
-                        break;
-                    case "Tin":
+                    }
+                    case "Tin" -> {
                         GT_Values.RA.addExtruderRecipe(
                                 GT_Utility.copyAmount(2L, aStack),
                                 ItemList.Shape_Extruder_Cell.get(0L),
@@ -408,8 +407,8 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                                 GT_ModHandler.getIC2Item("casingtin", tAmount * 3),
                                 tAmount * 128,
                                 1 * tVoltageMultiplier);
-                        break;
-                    case "Lead":
+                    }
+                    case "Lead" -> {
                         if (tAmount * 2 <= 64) GT_Values.RA.addExtruderRecipe(
                                 GT_Utility.copyAmount(1L, aStack),
                                 ItemList.Shape_Extruder_Casing.get(0L),
@@ -422,9 +421,8 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                                 GT_ModHandler.getIC2Item("casinglead", tAmount * 3),
                                 tAmount * 128,
                                 1 * tVoltageMultiplier);
-                        break;
-                    case "Copper":
-                    case "AnnealedCopper":
+                    }
+                    case "Copper", "AnnealedCopper" -> {
                         if (tAmount * 2 <= 64) GT_Values.RA.addExtruderRecipe(
                                 GT_Utility.copyAmount(1L, aStack),
                                 ItemList.Shape_Extruder_Casing.get(0L),
@@ -437,8 +435,8 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                                 GT_ModHandler.getIC2Item("casingcopper", tAmount * 3),
                                 tAmount * 128,
                                 1 * tVoltageMultiplier);
-                        break;
-                    case "Bronze":
+                    }
+                    case "Bronze" -> {
                         if (tAmount * 2 <= 64) GT_Values.RA.addExtruderRecipe(
                                 GT_Utility.copyAmount(1L, aStack),
                                 ItemList.Shape_Extruder_Casing.get(0L),
@@ -451,8 +449,8 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                                 GT_ModHandler.getIC2Item("casingbronze", tAmount * 3),
                                 tAmount * 128,
                                 1 * tVoltageMultiplier);
-                        break;
-                    case "Gold":
+                    }
+                    case "Gold" -> {
                         if (tAmount * 2 <= 64) GT_Values.RA.addExtruderRecipe(
                                 GT_Utility.copyAmount(1L, aStack),
                                 ItemList.Shape_Extruder_Casing.get(0L),
@@ -465,15 +463,14 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                                 GT_ModHandler.getIC2Item("casinggold", tAmount * 3),
                                 tAmount * 128,
                                 1 * tVoltageMultiplier);
-                        break;
-                    case "Polytetrafluoroethylene": // Recipe for cells from PTFE, why is it here?
-                        GT_Values.RA.addExtruderRecipe(
-                                GT_Utility.copyAmount(1L, aStack),
-                                ItemList.Shape_Extruder_Cell.get(0L),
-                                ItemList.Cell_Empty.get(tAmount * 4),
-                                tAmount * 128,
-                                30);
-                        break;
+                    }
+                    case "Polytetrafluoroethylene" -> // Recipe for cells from PTFE, why is it here?
+                            GT_Values.RA.addExtruderRecipe(
+                                    GT_Utility.copyAmount(1L, aStack),
+                                    ItemList.Shape_Extruder_Cell.get(0L),
+                                    ItemList.Cell_Empty.get(tAmount * 4),
+                                    tAmount * 128,
+                                    30);
                 }
             }
         }

@@ -278,52 +278,52 @@ public class GT_Worldgenerator implements IWorldGenerator {
                                             this.mChunkGenerator,
                                             this.mChunkProvider);
                                     switch (placementResult) {
-                                        case GT_Worldgen_GT_Ore_Layer.ORE_PLACED:
-                                            if (debugOrevein) GT_Log.out.println(
-                                                    " Added near oreveinSeed=" + oreveinSeed
-                                                            + " "
-                                                            + (tWorldGen).mWorldGenName
-                                                            + " tries at oremix="
-                                                            + i
-                                                            + " placementAttempts="
-                                                            + placementAttempts
-                                                            + " dimensionName="
-                                                            + tDimensionName);
+                                        case GT_Worldgen_GT_Ore_Layer.ORE_PLACED -> {
+                                            if (debugOrevein) GT_Log.out.println(" Added near oreveinSeed="
+                                                + oreveinSeed
+                                                + " "
+                                                + (tWorldGen).mWorldGenName
+                                                + " tries at oremix="
+                                                + i
+                                                + " placementAttempts="
+                                                + placementAttempts
+                                                + " dimensionName="
+                                                + tDimensionName);
                                             validOreveins.put(oreveinSeed, tWorldGen);
                                             oreveinFound = true;
-                                            break;
-                                        case GT_Worldgen_GT_Ore_Layer.NO_ORE_IN_BOTTOM_LAYER:
-                                            placementAttempts++;
-                                            // SHould do retry in this case until out of chances
-                                            break;
-                                        case GT_Worldgen_GT_Ore_Layer.NO_OVERLAP:
-                                            if (debugOrevein) GT_Log.out.println(
-                                                    " Added far oreveinSeed=" + oreveinSeed
-                                                            + " "
-                                                            + (tWorldGen).mWorldGenName
-                                                            + " tries at oremix="
-                                                            + i
-                                                            + " placementAttempts="
-                                                            + placementAttempts
-                                                            + " dimensionName="
-                                                            + tDimensionName);
+                                        }
+                                        case GT_Worldgen_GT_Ore_Layer.NO_ORE_IN_BOTTOM_LAYER -> placementAttempts++;
+
+                                        // SHould do retry in this case until out of chances
+                                        case GT_Worldgen_GT_Ore_Layer.NO_OVERLAP -> {
+                                            if (debugOrevein) GT_Log.out.println(" Added far oreveinSeed="
+                                                + oreveinSeed
+                                                + " "
+                                                + (tWorldGen).mWorldGenName
+                                                + " tries at oremix="
+                                                + i
+                                                + " placementAttempts="
+                                                + placementAttempts
+                                                + " dimensionName="
+                                                + tDimensionName);
                                             validOreveins.put(oreveinSeed, tWorldGen);
                                             oreveinFound = true;
-                                            break;
-                                        case GT_Worldgen_GT_Ore_Layer.NO_OVERLAP_AIR_BLOCK:
-                                            if (debugOrevein) GT_Log.out.println(
-                                                    " No overlap and air block in test spot=" + oreveinSeed
-                                                            + " "
-                                                            + (tWorldGen).mWorldGenName
-                                                            + " tries at oremix="
-                                                            + i
-                                                            + " placementAttempts="
-                                                            + placementAttempts
-                                                            + " dimensionName="
-                                                            + tDimensionName);
+                                        }
+                                        case GT_Worldgen_GT_Ore_Layer.NO_OVERLAP_AIR_BLOCK -> {
+                                            if (debugOrevein)
+                                                GT_Log.out.println(" No overlap and air block in test spot="
+                                                    + oreveinSeed
+                                                    + " "
+                                                    + (tWorldGen).mWorldGenName
+                                                    + " tries at oremix="
+                                                    + i
+                                                    + " placementAttempts="
+                                                    + placementAttempts
+                                                    + " dimensionName="
+                                                    + tDimensionName);
                                             // SHould do retry in this case until out of chances
                                             placementAttempts++;
-                                            break;
+                                        }
                                     }
                                     break; // Try the next orevein
                                 } catch (Throwable e) {
@@ -402,11 +402,12 @@ public class GT_Worldgenerator implements IWorldGenerator {
                         this.mChunkGenerator,
                         this.mChunkProvider);
                 switch (placementResult) {
-                    case GT_Worldgen_GT_Ore_Layer.NO_ORE_IN_BOTTOM_LAYER:
+                    case GT_Worldgen_GT_Ore_Layer.NO_ORE_IN_BOTTOM_LAYER -> {
                         if (debugOrevein) GT_Log.out.println(" No ore in bottom layer");
-                        break;
-                    case GT_Worldgen_GT_Ore_Layer.NO_OVERLAP:
+                    }
+                    case GT_Worldgen_GT_Ore_Layer.NO_OVERLAP -> {
                         if (debugOrevein) GT_Log.out.println(" No overlap");
+                    }
                 }
             }
         }

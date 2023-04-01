@@ -58,109 +58,65 @@ public class GT_Block_Casings5 extends GT_Block_Casings_Abstract implements IHea
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int aSide, int aMeta) {
-        switch (aMeta) {
-            case 0:
-                return Textures.BlockIcons.MACHINE_COIL_CUPRONICKEL.getIcon();
-            case 1:
-                return Textures.BlockIcons.MACHINE_COIL_KANTHAL.getIcon();
-            case 2:
-                return Textures.BlockIcons.MACHINE_COIL_NICHROME.getIcon();
-            case 3:
-                return Textures.BlockIcons.MACHINE_COIL_TUNGSTENSTEEL.getIcon();
-            case 4:
-                return Textures.BlockIcons.MACHINE_COIL_HSSG.getIcon();
-            case 5:
-                return Textures.BlockIcons.MACHINE_COIL_NAQUADAH.getIcon();
-            case 6:
-                return Textures.BlockIcons.MACHINE_COIL_NAQUADAHALLOY.getIcon();
-            case 7:
-                return Textures.BlockIcons.MACHINE_COIL_ELECTRUMFLUX.getIcon();
-            case 8:
-                return Textures.BlockIcons.MACHINE_COIL_AWAKENEDDRACONIUM.getIcon();
-            case 9:
-                return Textures.BlockIcons.MACHINE_COIL_HSSS.getIcon();
-            case 10:
-                return Textures.BlockIcons.MACHINE_COIL_TRINIUM.getIcon();
-            case 11:
-                return Textures.BlockIcons.MACHINE_COIL_INFINITY.getIcon();
-            case 12:
-                return Textures.BlockIcons.MACHINE_COIL_HYPOGEN.getIcon();
-            case 13:
-                return Textures.BlockIcons.MACHINE_COIL_ETERNAL.getIcon();
-        }
-        return Textures.BlockIcons.MACHINE_COIL_CUPRONICKEL.getIcon();
+        return switch (aMeta) {
+            case 0 -> Textures.BlockIcons.MACHINE_COIL_CUPRONICKEL.getIcon();
+            case 1 -> Textures.BlockIcons.MACHINE_COIL_KANTHAL.getIcon();
+            case 2 -> Textures.BlockIcons.MACHINE_COIL_NICHROME.getIcon();
+            case 3 -> Textures.BlockIcons.MACHINE_COIL_TUNGSTENSTEEL.getIcon();
+            case 4 -> Textures.BlockIcons.MACHINE_COIL_HSSG.getIcon();
+            case 5 -> Textures.BlockIcons.MACHINE_COIL_NAQUADAH.getIcon();
+            case 6 -> Textures.BlockIcons.MACHINE_COIL_NAQUADAHALLOY.getIcon();
+            case 7 -> Textures.BlockIcons.MACHINE_COIL_ELECTRUMFLUX.getIcon();
+            case 8 -> Textures.BlockIcons.MACHINE_COIL_AWAKENEDDRACONIUM.getIcon();
+            case 9 -> Textures.BlockIcons.MACHINE_COIL_HSSS.getIcon();
+            case 10 -> Textures.BlockIcons.MACHINE_COIL_TRINIUM.getIcon();
+            case 11 -> Textures.BlockIcons.MACHINE_COIL_INFINITY.getIcon();
+            case 12 -> Textures.BlockIcons.MACHINE_COIL_HYPOGEN.getIcon();
+            case 13 -> Textures.BlockIcons.MACHINE_COIL_ETERNAL.getIcon();
+            default -> Textures.BlockIcons.MACHINE_COIL_CUPRONICKEL.getIcon();
+        };
     }
 
     /*--------------- COIL CHECK IMPL. ------------*/
 
     public static HeatingCoilLevel getCoilHeatFromDamage(int meta) {
-        switch (meta) {
-            case 0:
-                return LV;
-            case 1:
-                return MV;
-            case 2:
-                return HV;
-            case 3:
-                return EV;
-            case 4:
-                return IV;
-            case 5:
-                return ZPM;
-            case 6:
-                return UV;
-            case 7:
-                return UEV;
-            case 8:
-                return UIV;
-            case 9:
-                return LuV;
-            case 10:
-                return UHV;
-            case 11:
-                return UMV;
-            case 12:
-                return UXV;
-            case 13:
-                return MAX;
-            default:
-                return None;
-        }
+        return switch (meta) {
+            case 0 -> LV;
+            case 1 -> MV;
+            case 2 -> HV;
+            case 3 -> EV;
+            case 4 -> IV;
+            case 5 -> ZPM;
+            case 6 -> UV;
+            case 7 -> UEV;
+            case 8 -> UIV;
+            case 9 -> LuV;
+            case 10 -> UHV;
+            case 11 -> UMV;
+            case 12 -> UXV;
+            case 13 -> MAX;
+            default -> None;
+        };
     }
 
     public static int getMetaFromCoilHeat(HeatingCoilLevel level) {
-        switch (level) {
-            case LV:
-                return 0;
-            case MV:
-                return 1;
-            case HV:
-                return 2;
-            case EV:
-                return 3;
-            case IV:
-                return 4;
-            case ZPM:
-                return 5;
-            case UV:
-                return 6;
-            case UEV:
-                return 7;
-            case UIV:
-                return 8;
-            case LuV:
-                return 9;
-            case UHV:
-                return 10;
-            case UMV:
-                return 11;
-            case UXV:
-                return 12;
-            case MAX:
-                return 13;
-            default:
-                return 0;
-        }
+        return switch (level) {
+            case LV -> 0;
+            case MV -> 1;
+            case HV -> 2;
+            case EV -> 3;
+            case IV -> 4;
+            case ZPM -> 5;
+            case UV -> 6;
+            case UEV -> 7;
+            case UIV -> 8;
+            case LuV -> 9;
+            case UHV -> 10;
+            case UMV -> 11;
+            case UXV -> 12;
+            case MAX -> 13;
+            default -> 0;
+        };
     }
 
     @Override

@@ -25,24 +25,30 @@ public class GT_RenderUtil {
     public static void renderBlockIcon(RenderBlocks aRenderer, Block aBlock, double aX, double aY, double aZ,
             IIcon aIcon, byte aSide) {
         switch (aSide) {
-            case 0:
+            case 0 -> {
                 aRenderer.renderFaceYNeg(aBlock, aX, aY, aZ, aIcon);
                 return;
-            case 1:
+            }
+            case 1 -> {
                 aRenderer.renderFaceYPos(aBlock, aX, aY, aZ, aIcon);
                 return;
-            case 2:
+            }
+            case 2 -> {
                 aRenderer.renderFaceZNeg(aBlock, aX, aY, aZ, aIcon);
                 return;
-            case 3:
+            }
+            case 3 -> {
                 aRenderer.renderFaceZPos(aBlock, aX, aY, aZ, aIcon);
                 return;
-            case 4:
+            }
+            case 4 -> {
                 aRenderer.renderFaceXNeg(aBlock, aX, aY, aZ, aIcon);
                 return;
-            case 5:
+            }
+            case 5 -> {
                 aRenderer.renderFaceXPos(aBlock, aX, aY, aZ, aIcon);
                 return;
+            }
         }
     }
 

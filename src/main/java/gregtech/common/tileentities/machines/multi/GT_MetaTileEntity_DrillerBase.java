@@ -247,10 +247,12 @@ public abstract class GT_MetaTileEntity_DrillerBase
     protected int tryLowerPipeState(boolean isSimulating) {
         if (!isHasMiningPipes()) return 2;
         switch (canLowerPipe()) {
-            case 1:
+            case 1 -> {
                 return 1;
-            case 2:
+            }
+            case 2 -> {
                 return 3;
+            }
         }
 
         Block b = getBaseMetaTileEntity().getBlock(xPipe, yHead - 1, zPipe);
@@ -348,29 +350,35 @@ public abstract class GT_MetaTileEntity_DrillerBase
     protected boolean workingDownward(ItemStack aStack, int xDrill, int yDrill, int zDrill, int xPipe, int zPipe,
             int yHead, int oldYHead) {
         switch (tryLowerPipeState()) {
-            case 2:
+            case 2 -> {
                 mMaxProgresstime = 0;
                 return false;
-            case 3:
+            }
+            case 3 -> {
                 workState = STATE_UPWARD;
                 return true;
-            case 1:
+            }
+            case 1 -> {
                 workState = STATE_AT_BOTTOM;
                 return true;
-            default:
+            }
+            default -> {
                 return true;
+            }
         }
     }
 
     protected boolean workingAtBottom(ItemStack aStack, int xDrill, int yDrill, int zDrill, int xPipe, int zPipe,
             int yHead, int oldYHead) {
         switch (tryLowerPipeState(true)) {
-            case 0:
+            case 0 -> {
                 workState = STATE_DOWNWARD;
                 return true;
-            default:
+            }
+            default -> {
                 workState = STATE_UPWARD;
                 return true;
+            }
         }
     }
 
@@ -395,16 +403,12 @@ public abstract class GT_MetaTileEntity_DrillerBase
             return false;
         }
         putMiningPipesFromInputsInController();
-        switch (workState) {
-            case STATE_DOWNWARD:
-                return workingDownward(aStack, xDrill, yDrill, zDrill, xPipe, zPipe, yHead, oldYHead);
-            case STATE_AT_BOTTOM:
-                return workingAtBottom(aStack, xDrill, yDrill, zDrill, xPipe, zPipe, yHead, oldYHead);
-            case STATE_UPWARD:
-                return workingUpward(aStack, xDrill, yDrill, zDrill, xPipe, zPipe, yHead, oldYHead);
-            default:
-                return false;
-        }
+        return switch (workState) {
+            case STATE_DOWNWARD -> workingDownward(aStack, xDrill, yDrill, zDrill, xPipe, zPipe, yHead, oldYHead);
+            case STATE_AT_BOTTOM -> workingAtBottom(aStack, xDrill, yDrill, zDrill, xPipe, zPipe, yHead, oldYHead);
+            case STATE_UPWARD -> workingUpward(aStack, xDrill, yDrill, zDrill, xPipe, zPipe, yHead, oldYHead);
+            default -> false;
+        };
     }
 
     @Override

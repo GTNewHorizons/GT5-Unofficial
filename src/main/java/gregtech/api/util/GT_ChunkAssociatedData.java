@@ -448,11 +448,8 @@ public abstract class GT_ChunkAssociatedData<T extends GT_ChunkAssociatedData.ID
             try (DataInputStream input = new DataInputStream(new FileInputStream(file))) {
                 byte b = input.readByte();
                 switch (b) {
-                    case 0:
-                        loadV0(input, world);
-                        break;
-                    default:
-                        GT_Log.err.printf("Unknown ChunkAssociatedData version %d\n", b);
+                    case 0 -> loadV0(input, world);
+                    default -> GT_Log.err.printf("Unknown ChunkAssociatedData version %d\n", b);
                 }
             }
         }

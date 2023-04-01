@@ -66,13 +66,11 @@ public class GT_Circuit_Pulser extends GT_CircuitryBehavior {
 
     @Override
     public String getDataDescription(int[] aCircuitData, int aCircuitDataIndex) {
-        switch (aCircuitDataIndex) {
-            case 0:
-                return "Length";
-            case 1:
-                return "RS Out";
-        }
-        return "";
+        return switch (aCircuitDataIndex) {
+            case 0 -> "Length";
+            case 1 -> "RS Out";
+            default -> "";
+        };
     }
 
     @Override

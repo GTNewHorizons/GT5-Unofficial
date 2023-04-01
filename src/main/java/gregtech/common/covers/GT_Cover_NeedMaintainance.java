@@ -95,56 +95,34 @@ public class GT_Cover_NeedMaintainance extends GT_CoverBehavior {
             aCoverVariable = 13;
         }
         switch (aCoverVariable) {
-            case 0:
-                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("056", "Emit if 1 Maintenance Needed"));
-                break;
-            case 1:
-                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("057", "Emit if 1 Maintenance Needed(inverted)"));
-                break;
-            case 2:
-                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("058", "Emit if 2 Maintenance Needed"));
-                break;
-            case 3:
-                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("059", "Emit if 2 Maintenance Needed(inverted)"));
-                break;
-            case 4:
-                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("060", "Emit if 3 Maintenance Needed"));
-                break;
-            case 5:
-                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("061", "Emit if 3 Maintenance Needed(inverted)"));
-                break;
-            case 6:
-                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("062", "Emit if 4 Maintenance Needed"));
-                break;
-            case 7:
-                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("063", "Emit if 4 Maintenance Needed(inverted)"));
-                break;
-            case 8:
-                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("064", "Emit if 5 Maintenance Needed"));
-                break;
-            case 9:
-                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("065", "Emit if 5 Maintenance Needed(inverted)"));
-                break;
-            case 10:
-                GT_Utility.sendChatToPlayer(
-                        aPlayer,
-                        GT_Utility.trans("066", "Emit if rotor needs maintenance low accuracy mod"));
-                break;
-            case 11:
-                GT_Utility.sendChatToPlayer(
-                        aPlayer,
-                        GT_Utility.trans("067", "Emit if rotor needs maintenance low accuracy mod(inverted)"));
-                break;
-            case 12:
-                GT_Utility.sendChatToPlayer(
-                        aPlayer,
-                        GT_Utility.trans("068", "Emit if rotor needs maintenance high accuracy mod"));
-                break;
-            case 13:
-                GT_Utility.sendChatToPlayer(
-                        aPlayer,
-                        GT_Utility.trans("069", "Emit if rotor needs maintenance high accuracy mod(inverted)"));
-                break;
+            case 0 -> GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("056", "Emit if 1 Maintenance Needed"));
+            case 1 -> GT_Utility.sendChatToPlayer(
+                    aPlayer,
+                    GT_Utility.trans("057", "Emit if 1 Maintenance Needed(inverted)"));
+            case 2 -> GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("058", "Emit if 2 Maintenance Needed"));
+            case 3 -> GT_Utility.sendChatToPlayer(
+                    aPlayer,
+                    GT_Utility.trans("059", "Emit if 2 Maintenance Needed(inverted)"));
+            case 4 -> GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("060", "Emit if 3 Maintenance Needed"));
+            case 5 -> GT_Utility.sendChatToPlayer(
+                    aPlayer,
+                    GT_Utility.trans("061", "Emit if 3 Maintenance Needed(inverted)"));
+            case 6 -> GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("062", "Emit if 4 Maintenance Needed"));
+            case 7 -> GT_Utility.sendChatToPlayer(
+                    aPlayer,
+                    GT_Utility.trans("063", "Emit if 4 Maintenance Needed(inverted)"));
+            case 8 -> GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("064", "Emit if 5 Maintenance Needed"));
+            case 9 -> GT_Utility.sendChatToPlayer(
+                    aPlayer,
+                    GT_Utility.trans("065", "Emit if 5 Maintenance Needed(inverted)"));
+            case 10 -> GT_Utility.sendChatToPlayer(aPlayer,
+                    GT_Utility.trans("066", "Emit if rotor needs maintenance low accuracy mod"));
+            case 11 -> GT_Utility.sendChatToPlayer(aPlayer,
+                    GT_Utility.trans("067", "Emit if rotor needs maintenance low accuracy mod(inverted)"));
+            case 12 -> GT_Utility.sendChatToPlayer(aPlayer,
+                    GT_Utility.trans("068", "Emit if rotor needs maintenance high accuracy mod"));
+            case 13 -> GT_Utility.sendChatToPlayer(aPlayer,
+                    GT_Utility.trans("069", "Emit if rotor needs maintenance high accuracy mod(inverted)"));
         }
         return aCoverVariable;
     }

@@ -340,22 +340,22 @@ public class GT_MetaTileEntity_Boiler_Lava extends GT_MetaTileEntity_Boiler {
                 y = oY + XSTR_INSTANCE.nextFloat() * 6D / 16D;
 
                 switch (frontDirection) {
-                    case WEST:
+                    case WEST -> {
                         x = oX - offset;
                         z = oZ + horizontal;
-                        break;
-                    case EAST:
+                    }
+                    case EAST -> {
                         x = oX + offset;
                         z = oZ + horizontal;
-                        break;
-                    case NORTH:
+                    }
+                    case NORTH -> {
                         x = oX + horizontal;
                         z = oZ - offset;
-                        break;
-                    default: // case SOUTH:
+                    }
+                    default -> { // case SOUTH:
                         x = oX + horizontal;
                         z = oZ + offset;
-                        break;
+                    }
                 }
 
                 ParticleEventBuilder particleEventBuilder = (new ParticleEventBuilder()).setMotion(0D, 0D, 0D)

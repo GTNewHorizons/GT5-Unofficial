@@ -129,32 +129,13 @@ public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements
     }
 
     public String getLocalizedNameFormat(Materials aMaterial) {
-        switch (aMaterial.mName) {
-            case "InfusedAir":
-            case "InfusedDull":
-            case "InfusedEarth":
-            case "InfusedEntropy":
-            case "InfusedFire":
-            case "InfusedOrder":
-            case "InfusedVis":
-            case "InfusedWater":
-                return "%material Infused Stone";
-            case "Vermiculite":
-            case "Bentonite":
-            case "Kaolinite":
-            case "Talc":
-            case "BasalticMineralSand":
-            case "GraniticMineralSand":
-            case "GlauconiteSand":
-            case "CassiteriteSand":
-            case "GarnetSand":
-            case "QuartzSand":
-            case "Pitchblende":
-            case "FullersEarth":
-                return "%material";
-            default:
-                return "%material" + OrePrefixes.ore.mLocalizedMaterialPost;
-        }
+        return switch (aMaterial.mName) {
+            case "InfusedAir", "InfusedDull", "InfusedEarth", "InfusedEntropy", "InfusedFire", "InfusedOrder", "InfusedVis", "InfusedWater" ->
+                    "%material Infused Stone";
+            case "Vermiculite", "Bentonite", "Kaolinite", "Talc", "BasalticMineralSand", "GraniticMineralSand", "GlauconiteSand", "CassiteriteSand", "GarnetSand", "QuartzSand", "Pitchblende", "FullersEarth" ->
+                    "%material";
+            default -> "%material" + OrePrefixes.ore.mLocalizedMaterialPost;
+        };
     }
 
     public String getLocalizedName(Materials aMaterial) {

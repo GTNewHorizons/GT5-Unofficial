@@ -203,17 +203,19 @@ public class GT_Container_BasicMachine extends GT_Container_BasicTank {
         GT_MetaTileEntity_BasicMachine machine = getMachine();
         if (machine == null) return null;
         switch (aSlotNumber) {
-            case 0:
+            case 0 -> {
                 if (slotFluidTransferToggle.isEnabled()) {
                     machine.mFluidTransfer = !machine.mFluidTransfer;
                 }
                 return null;
-            case 1:
+            }
+            case 1 -> {
                 if (slotItemTransferToggle.isEnabled()) {
                     machine.mItemTransfer = !machine.mItemTransfer;
                 }
                 return null;
-            default:
+            }
+            default -> {
                 if (aSlotNumber == OTHER_SLOT_COUNT + 1 + machine.mInputSlotCount + machine.mOutputItems.length
                         && aMouseclick < 2) {
                     GT_MetaTileEntity_BasicTank tTank = (GT_MetaTileEntity_BasicTank) mTileEntity.getMetaTileEntity();
@@ -236,6 +238,7 @@ public class GT_Container_BasicMachine extends GT_Container_BasicTank {
                 } else {
                     return super.slotClick(aSlotNumber, aMouseclick, aShifthold, aPlayer);
                 }
+            }
         }
     }
 
@@ -266,15 +269,9 @@ public class GT_Container_BasicMachine extends GT_Container_BasicTank {
     public void updateProgressBar(int id, int value) {
         super.updateProgressBar(id, value);
         switch (id) {
-            case 102:
-                mFluidTransfer = (value != 0);
-                break;
-            case 103:
-                mItemTransfer = (value != 0);
-                break;
-            case 104:
-                mStuttering = (value != 0);
-                break;
+            case 102 -> mFluidTransfer = (value != 0);
+            case 103 -> mItemTransfer = (value != 0);
+            case 104 -> mStuttering = (value != 0);
         }
     }
 

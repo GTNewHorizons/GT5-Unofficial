@@ -451,7 +451,7 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
 
     /**
      * Runs only on server side
-     * 
+     *
      * @param tick The current tick of the machine
      */
     protected void runMachine(long tick) {
@@ -483,7 +483,7 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
 
     /**
      * Runs only on server side
-     * 
+     *
      * @param tick The current tick of the machine
      */
     protected void runningTick(long tick) {
@@ -569,13 +569,12 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
 
     public void doSound(byte aIndex, double aX, double aY, double aZ) {
         switch (aIndex) {
-            case PROCESS_START_SOUND_INDEX:
+            case PROCESS_START_SOUND_INDEX -> {
                 if (getProcessStartSound() != null)
                     GT_Utility.doSoundAtClient(getProcessStartSound(), getTimeBetweenProcessSounds(), 1.0F, aX, aY, aZ);
-                break;
-            case INTERRUPT_SOUND_INDEX:
-                GT_Utility.doSoundAtClient(SoundResource.IC2_MACHINES_INTERRUPT_ONE, 100, 1.0F, aX, aY, aZ);
-                break;
+            }
+            case INTERRUPT_SOUND_INDEX ->
+                    GT_Utility.doSoundAtClient(SoundResource.IC2_MACHINES_INTERRUPT_ONE, 100, 1.0F, aX, aY, aZ);
         }
     }
 
@@ -854,24 +853,20 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
         this.soundEventValue = soundEventValue;
         if (isClientSide()) {
             switch (soundEventValue) {
-                case PROCESS_START_SOUND_INDEX:
-                    if (getProcessStartSound() != null) GT_Utility.doSoundAtClient(
-                            getProcessStartSound(),
+                case PROCESS_START_SOUND_INDEX -> {
+                    if (getProcessStartSound() != null) GT_Utility.doSoundAtClient(getProcessStartSound(),
                             getTimeBetweenProcessSounds(),
                             1.0F,
                             getXCoord(),
                             getYCoord(),
                             getZCoord());
-                    break;
-                case INTERRUPT_SOUND_INDEX:
-                    GT_Utility.doSoundAtClient(
-                            SoundResource.IC2_MACHINES_INTERRUPT_ONE,
-                            100,
-                            1.0F,
-                            getXCoord(),
-                            getYCoord(),
-                            getZCoord());
-                    break;
+                }
+                case INTERRUPT_SOUND_INDEX -> GT_Utility.doSoundAtClient(SoundResource.IC2_MACHINES_INTERRUPT_ONE,
+                        100,
+                        1.0F,
+                        getXCoord(),
+                        getYCoord(),
+                        getZCoord());
             }
         }
     }
