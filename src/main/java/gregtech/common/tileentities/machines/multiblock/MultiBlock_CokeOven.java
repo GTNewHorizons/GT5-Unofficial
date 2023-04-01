@@ -8,6 +8,7 @@ import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -147,7 +148,7 @@ public class MultiBlock_CokeOven extends MultiBlockController<MultiBlock_CokeOve
 
     @Override
     public String getLocalName() {
-        return "Coke Oven";
+        return StatCollector.translateToLocal("gt.multiBlock.controller.cokeOven");
     }
 
     @Override

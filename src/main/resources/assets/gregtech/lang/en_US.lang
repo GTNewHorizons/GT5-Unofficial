@@ -1153,3 +1153,5 @@ gt.solar.system.mercury=Mercury
 gt.solar.system.titan=Titan
 gt.solar.system.phobos=Phobos
 gt.specialvalue.stages=Stages:
+
+gt.multiBlock.controller.cokeOven=Coke Oven

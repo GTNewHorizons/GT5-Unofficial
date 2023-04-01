@@ -7,6 +7,7 @@ import static gregtech.api.enums.GT_Values.emptyIconContainerArray;
 import java.util.ArrayList;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -14,14 +15,18 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidTank;
 
 import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.GT_Values.NBT;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TickTime;
 import gregtech.api.fluid.FluidTankGT;
@@ -33,6 +38,7 @@ import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.logic.interfaces.PollutionLogicHost;
 import gregtech.api.logic.interfaces.PowerLogicHost;
 import gregtech.api.logic.interfaces.ProcessingLogicHost;
+import gregtech.api.metatileentity.GregTechTileClientEvents;
 import gregtech.api.multitileentity.MultiTileEntityRegistry;
 import gregtech.api.multitileentity.base.TickableMultiTileEntity;
 import gregtech.api.multitileentity.interfaces.IMultiTileMachine;
@@ -40,6 +46,7 @@ import gregtech.api.net.GT_Packet_MultiTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Util;
 import gregtech.api.util.GT_Utility;
+import gregtech.client.GT_SoundLoop;
 import gregtech.common.GT_Pollution;
 
 public abstract class MultiTileBasicMachine extends TickableMultiTileEntity implements IMultiTileMachine {
@@ -47,6 +54,8 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
     protected static final int ACTIVE = B[0];
     protected static final int TICKS_BETWEEN_RECIPE_CHECKS = 5 * TickTime.SECOND;
     protected static final int POLLUTION_TICK = TickTime.SECOND;
+    protected static final byte INTERRUPT_SOUND_INDEX = 8;
+    protected static final byte PROCESS_START_SOUND_INDEX = 1;
 
     protected static final IItemHandlerModifiable EMPTY_INVENTORY = new ItemStackHandler(0);
 
@@ -57,7 +66,6 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
     protected int maxParallel = 1;
     protected boolean active = false;
     protected long storedEnergy = 0;
-    protected long maximumEnergyStored = 0;
     protected long voltage = 0;
     protected long amperage = 2;
     protected long eut = 0;
@@ -81,6 +89,11 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
     private boolean isSteam = false;
     private boolean acceptsFuel = false;
     private boolean isWireless = false;
+    private byte soundEvent = 0;
+    private int soundEventValue = 0;
+
+    @SideOnly(Side.CLIENT)
+    protected GT_SoundLoop activitySoundLoop;
 
     @Override
     public String getTileEntityName() {
@@ -123,11 +136,7 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
         }
 
         nbt.setInteger(NBT.TIER, tier);
-        nbt.setLong(NBT.VOLTAGE, voltage);
-        nbt.setLong(NBT.AMPERAGE, amperage);
         nbt.setLong(NBT.EUT_CONSUMPTION, eut);
-        nbt.setLong(NBT.STORED_ENERGY, storedEnergy);
-        nbt.setLong(NBT.MAXIMUM_ENERGY, maximumEnergyStored);
         nbt.setLong(NBT.BURN_TIME_LEFT, burnTime);
         nbt.setLong(NBT.TOTAL_BURN_TIME, totalBurnTime);
         nbt.setBoolean(NBT.ALLOWED_WORK, canWork);
@@ -222,11 +231,7 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
         loadItemsToOutput(nbt);
 
         tier = nbt.getInteger(NBT.TIER);
-        voltage = nbt.getLong(NBT.VOLTAGE);
-        amperage = nbt.getLong(NBT.AMPERAGE);
         eut = nbt.getLong(NBT.EUT_CONSUMPTION);
-        storedEnergy = nbt.getLong(NBT.STORED_ENERGY);
-        maximumEnergyStored = nbt.getLong(NBT.MAXIMUM_ENERGY);
         burnTime = nbt.getLong(NBT.BURN_TIME_LEFT);
         totalBurnTime = nbt.getLong(NBT.TOTAL_BURN_TIME);
         canWork = nbt.getBoolean(NBT.ALLOWED_WORK);
@@ -310,6 +315,7 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
         final GT_Packet_MultiTileEntity packet = super.getClientDataPacket();
         int booleans = getBooleans();
         packet.setBooleans(booleans);
+        packet.setSoundEvent(soundEvent, soundEventValue);
         return packet;
     }
 
@@ -436,6 +442,8 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
     public void onPostTick(long tick, boolean isServerSide) {
         if (isServerSide) {
             runMachine(tick);
+        } else {
+            doActivitySound(getActivitySoundLoop());
         }
     }
 
@@ -461,6 +469,7 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
                     wasEnabled = false;
                     if (checkRecipe()) {
                         setActive(true);
+                        setSound(GregTechTileClientEvents.START_SOUND_LOOP, PROCESS_START_SOUND_INDEX);
                         updateSlots();
                         markDirty();
                         issueClientUpdate();
@@ -549,6 +558,50 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
         if (logic.removeEnergyUnsafe(eut)) {
             stopMachine();
         }
+    }
+
+    public void doSound(byte aIndex, double aX, double aY, double aZ) {
+        switch (aIndex) {
+            case PROCESS_START_SOUND_INDEX:
+                if (getProcessStartSound() != null)
+                    GT_Utility.doSoundAtClient(getProcessStartSound(), getTimeBetweenProcessSounds(), 1.0F, aX, aY, aZ);
+                break;
+            case INTERRUPT_SOUND_INDEX:
+                GT_Utility.doSoundAtClient(SoundResource.IC2_MACHINES_INTERRUPT_ONE, 100, 1.0F, aX, aY, aZ);
+                break;
+        }
+    }
+
+    public void startSoundLoop(byte aIndex, double aX, double aY, double aZ) {
+        if (aIndex == PROCESS_START_SOUND_INDEX) {
+            if (getProcessStartSound() != null)
+                GT_Utility.doSoundAtClient(getProcessStartSound(), getTimeBetweenProcessSounds(), 1.0F, aX, aY, aZ);
+        }
+    }
+
+    protected ResourceLocation getProcessStartSound() {
+        return null;
+    }
+
+    protected int getTimeBetweenProcessSounds() {
+        return 1000;
+    }
+
+    protected void doActivitySound(ResourceLocation activitySound) {
+        if (isActive() && activitySound != null) {
+            if (activitySoundLoop == null) {
+                activitySoundLoop = new GT_SoundLoop(activitySound, this, false, true);
+                Minecraft.getMinecraft().getSoundHandler().playSound(activitySoundLoop);
+            }
+        } else {
+            if (activitySoundLoop != null) {
+                activitySoundLoop = null;
+            }
+        }
+    }
+
+    protected ResourceLocation getActivitySoundLoop() {
+        return null;
     }
 
     protected void outputItems() {
@@ -714,6 +767,8 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
         progressTime = 0;
         setActive(false);
         disableWorking();
+        setSound(GregTechTileClientEvents.STOP_SOUND_LOOP, INTERRUPT_SOUND_INDEX);
+        issueClientUpdate();
     }
 
     protected void updateSlots() {
@@ -782,5 +837,33 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
 
     protected void setFluidOutputs(FluidStack... outputs) {
         fluidsToOutput = outputs;
+    }
+
+    @Override
+    public void setSound(byte soundEvent, int soundEventValue) {
+        this.soundEvent = soundEvent;
+        this.soundEventValue = soundEventValue;
+        if (isClientSide()) {
+            switch (soundEventValue) {
+                case PROCESS_START_SOUND_INDEX:
+                    if (getProcessStartSound() != null) GT_Utility.doSoundAtClient(
+                            getProcessStartSound(),
+                            getTimeBetweenProcessSounds(),
+                            1.0F,
+                            getXCoord(),
+                            getYCoord(),
+                            getZCoord());
+                    break;
+                case INTERRUPT_SOUND_INDEX:
+                    GT_Utility.doSoundAtClient(
+                            SoundResource.IC2_MACHINES_INTERRUPT_ONE,
+                            100,
+                            1.0F,
+                            getXCoord(),
+                            getYCoord(),
+                            getZCoord());
+                    break;
+            }
+        }
     }
 }

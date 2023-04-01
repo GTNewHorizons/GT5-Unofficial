@@ -168,9 +168,6 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
         }
         tier = (int) Math.floor(sum / functionalCasings.size());
         // Maximum Energy stores will have a cap of 2 minute work time of current voltage
-        maximumEnergyStored = GT_Values.V[tier] * 2 * 60 * 20;
-        voltage = GT_Values.V[tier];
-        amperage = 2;
         return tier > 0;
     }
 

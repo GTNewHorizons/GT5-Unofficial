@@ -4,7 +4,7 @@ import net.minecraft.item.ItemStack;
 
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
 
-public abstract class MultiBlock_Stackable<T extends MultiBlock_Stackable<T>> extends MultiBlockController<T> {
+public abstract class MultiBlock_Stackable<T extends MultiBlock_Stackable<T>> extends MultiBlockPowerController<T> {
 
     protected static String STACKABLE_TOP = "STACKABLE_TOP";
     protected static String STACKABLE_MIDDLE = "STACKABLE_MIDDLE";

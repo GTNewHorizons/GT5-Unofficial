@@ -16,7 +16,7 @@ import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.NOTHIN
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
 
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -24,24 +24,21 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
 
+import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.logic.PowerLogic;
-import gregtech.api.logic.interfaces.PowerLogicHost;
 import gregtech.api.multitileentity.multiblock.base.MultiBlock_Stackable;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 
-public class MultiBlock_Macerator extends MultiBlock_Stackable<MultiBlock_Macerator> implements PowerLogicHost {
+public class MultiBlock_Macerator extends MultiBlock_Stackable<MultiBlock_Macerator> {
 
     private static IStructureDefinition<MultiBlock_Macerator> STRUCTURE_DEFINITION = null;
-    private PowerLogic power;
 
     public MultiBlock_Macerator() {
         super();
-        power = new PowerLogic().setType(PowerLogic.RECEIVER);
     }
 
     @Override
@@ -204,28 +201,7 @@ public class MultiBlock_Macerator extends MultiBlock_Stackable<MultiBlock_Macera
     }
 
     @Override
-    public PowerLogic getPowerLogic(byte side) {
-        return power;
-    }
-
-    @Override
-    public boolean checkMachine() {
-        boolean result = super.checkMachine();
-        power.setEnergyCapacity(maximumEnergyStored);
-        power.setAmperage(amperage);
-        power.setMaxVoltage(voltage);
-        return result;
-    }
-
-    @Override
-    public void writeMultiTileNBT(NBTTagCompound nbt) {
-        super.writeMultiTileNBT(nbt);
-        power.writeToNBT(nbt);
-    }
-
-    @Override
-    public void readMultiTileNBT(NBTTagCompound nbt) {
-        super.readMultiTileNBT(nbt);
-        power.loadFromNBT(nbt);
+    protected ResourceLocation getActivitySoundLoop() {
+        return SoundResource.IC2_MACHINES_MACERATOR_OP.resourceLocation;
     }
 }

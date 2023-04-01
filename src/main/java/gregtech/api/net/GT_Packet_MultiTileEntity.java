@@ -21,7 +21,7 @@ import io.netty.buffer.ByteBuf;
 public class GT_Packet_MultiTileEntity extends GT_Packet_New {
 
     public static final int COVERS = B[0], REDSTONE = B[1], MODES = B[2], CONTROLLER = B[3], INVENTORY_INDEX = B[4],
-            INVENTORY_NAME = B[5], BOOLEANS = B[6];
+            INVENTORY_NAME = B[5], BOOLEANS = B[6], SOUND = B[7];
 
     private int features = 0;
 
@@ -34,6 +34,8 @@ public class GT_Packet_MultiTileEntity extends GT_Packet_New {
     private String mInventoryName;
     private int mInventoryLength;
     private int booleans;
+    private byte soundEvent;
+    private int soundEventValue;
 
     // MultiBlockPart
     private byte mMode;
@@ -106,6 +108,12 @@ public class GT_Packet_MultiTileEntity extends GT_Packet_New {
         this.booleans = boolToSync;
     }
 
+    public void setSoundEvent(byte soundEvent, int soundEventValue) {
+        features |= SOUND;
+        this.soundEvent = soundEvent;
+        this.soundEventValue = soundEventValue;
+    }
+
     @Override
     public void encode(ByteBuf aOut) {
         // Features
@@ -158,6 +166,11 @@ public class GT_Packet_MultiTileEntity extends GT_Packet_New {
 
         if ((features & BOOLEANS) == BOOLEANS) {
             aOut.writeInt(booleans);
+        }
+
+        if ((features & SOUND) == SOUND) {
+            aOut.writeByte(soundEvent);
+            aOut.writeInt(soundEventValue);
         }
     }
 
@@ -215,6 +228,10 @@ public class GT_Packet_MultiTileEntity extends GT_Packet_New {
             packet.setBooleans(aData.readInt());
         }
 
+        if ((packetFeatures & SOUND) == SOUND) {
+            packet.setSoundEvent(aData.readByte(), aData.readInt());
+        }
+
         return packet;
     }
 
@@ -262,6 +279,11 @@ public class GT_Packet_MultiTileEntity extends GT_Packet_New {
                 if ((features & BOOLEANS) == BOOLEANS && mte instanceof IMultiTileMachine) {
                     final IMultiTileMachine machine = (IMultiTileMachine) mte;
                     machine.setBooleans(booleans);
+                }
+
+                if ((features & SOUND) == SOUND && mte instanceof IMultiTileMachine) {
+                    final IMultiTileMachine machine = (IMultiTileMachine) mte;
+                    machine.setSound(soundEvent, soundEventValue);
                 }
 
             }
