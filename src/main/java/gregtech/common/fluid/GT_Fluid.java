@@ -154,22 +154,11 @@ public class GT_Fluid extends Fluid implements IGT_Fluid, IGT_RegisteredFluid, R
     public IGT_RegisteredFluid configureMaterials(final Materials material) {
         if (material != null) {
             switch (fluidState) {
-                case SLURRY:
-                    material.mSolid = registeredFluid;
-                    break;
-                case GAS:
-                    material.mGas = registeredFluid;
-                    break;
-                case PLASMA:
-                    material.mPlasma = registeredFluid;
-                    break;
-                case MOLTEN:
-                    material.mStandardMoltenFluid = registeredFluid;
-                    break;
-                case LIQUID:
-                default:
-                    material.mFluid = registeredFluid;
-                    break;
+                case SLURRY -> material.mSolid = registeredFluid;
+                case GAS -> material.mGas = registeredFluid;
+                case PLASMA -> material.mPlasma = registeredFluid;
+                case MOLTEN -> material.mStandardMoltenFluid = registeredFluid;
+                default -> material.mFluid = registeredFluid;
             }
             Materials.FLUID_MAP.put(registeredFluid, material);
         }

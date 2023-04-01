@@ -342,37 +342,37 @@ public class GT_Client extends GT_Proxy implements Runnable {
             for (byte tSide : ALL_VALID_SIDES) {
                 if ((tConnections & (1 << tSide)) != 0) {
                     switch (GRID_SWITCH_TABLE[aEvent.target.sideHit][tSide]) {
-                        case 0:
+                        case 0 -> {
                             GL11.glVertex3d(+.25D, .0D, +.25D);
                             GL11.glVertex3d(-.25D, .0D, -.25D);
                             GL11.glVertex3d(-.25D, .0D, +.25D);
                             GL11.glVertex3d(+.25D, .0D, -.25D);
-                            break;
-                        case 1:
+                        }
+                        case 1 -> {
                             GL11.glVertex3d(-.25D, .0D, +.50D);
                             GL11.glVertex3d(+.25D, .0D, +.25D);
                             GL11.glVertex3d(-.25D, .0D, +.25D);
                             GL11.glVertex3d(+.25D, .0D, +.50D);
-                            break;
-                        case 2:
+                        }
+                        case 2 -> {
                             GL11.glVertex3d(-.50D, .0D, -.25D);
                             GL11.glVertex3d(-.25D, .0D, +.25D);
                             GL11.glVertex3d(-.50D, .0D, +.25D);
                             GL11.glVertex3d(-.25D, .0D, -.25D);
-                            break;
-                        case 3:
+                        }
+                        case 3 -> {
                             GL11.glVertex3d(-.25D, .0D, -.50D);
                             GL11.glVertex3d(+.25D, .0D, -.25D);
                             GL11.glVertex3d(-.25D, .0D, -.25D);
                             GL11.glVertex3d(+.25D, .0D, -.50D);
-                            break;
-                        case 4:
+                        }
+                        case 4 -> {
                             GL11.glVertex3d(+.50D, .0D, -.25D);
                             GL11.glVertex3d(+.25D, .0D, +.25D);
                             GL11.glVertex3d(+.50D, .0D, +.25D);
                             GL11.glVertex3d(+.25D, .0D, -.25D);
-                            break;
-                        case 5:
+                        }
+                        case 5 -> {
                             GL11.glVertex3d(+.50D, .0D, +.50D);
                             GL11.glVertex3d(+.25D, .0D, +.25D);
                             GL11.glVertex3d(+.50D, .0D, +.25D);
@@ -389,7 +389,7 @@ public class GT_Client extends GT_Proxy implements Runnable {
                             GL11.glVertex3d(-.25D, .0D, -.25D);
                             GL11.glVertex3d(-.50D, .0D, -.25D);
                             GL11.glVertex3d(-.25D, .0D, -.50D);
-                            break;
+                        }
                     }
                 }
             }
@@ -744,8 +744,7 @@ public class GT_Client extends GT_Proxy implements Runnable {
                             trace.blockX,
                             trace.blockY,
                             trace.blockZ);
-                    if (tileEntity instanceof IGregTechTileEntity) {
-                        final IGregTechTileEntity gtTile = (IGregTechTileEntity) tileEntity;
+                    if (tileEntity instanceof IGregTechTileEntity gtTile) {
                         if (gtTile.getMetaTileEntity() instanceof IHasFluidDisplayItem) {
                             GT_Values.NW.sendToServer(
                                     new MessageUpdateFluidDisplayItem(
@@ -948,59 +947,33 @@ public class GT_Client extends GT_Proxy implements Runnable {
         if (tString.startsWith(SoundResource.RANDOM_EXPLODE.toString()))
             if (aStack.stackSize == 3) tString = SoundResource.RANDOM_FUSE.toString();
             else if (aStack.stackSize == 2) tString = "random.old_explode";
-        if (tString.startsWith("streaming.")) switch (aStack.stackSize) {
-            case 1: // '\001'
-                tString = tString + "13";
-                break;
-
-            case 2: // '\002'
-                tString = tString + "cat";
-                break;
-
-            case 3: // '\003'
-                tString = tString + "blocks";
-                break;
-
-            case 4: // '\004'
-                tString = tString + "chirp";
-                break;
-
-            case 5: // '\005'
-                tString = tString + "far";
-                break;
-
-            case 6: // '\006'
-                tString = tString + "mall";
-                break;
-
-            case 7: // '\007'
-                tString = tString + "mellohi";
-                break;
-
-            case 8: // '\b'
-                tString = tString + "stal";
-                break;
-
-            case 9: // '\t'
-                tString = tString + "strad";
-                break;
-
-            case 10: // '\n'
-                tString = tString + "ward";
-                break;
-
-            case 11: // '\013'
-                tString = tString + "11";
-                break;
-
-            case 12: // '\f'
-                tString = tString + "wait";
-                break;
-
-            default:
-                tString = tString + "wherearewenow";
-                break;
-        }
+        if (tString.startsWith("streaming.")) tString = switch (aStack.stackSize) {
+            case 1 -> // '\001'
+                tString + "13";
+            case 2 -> // '\002'
+                tString + "cat";
+            case 3 -> // '\003'
+                tString + "blocks";
+            case 4 -> // '\004'
+                tString + "chirp";
+            case 5 -> // '\005'
+                tString + "far";
+            case 6 -> // '\006'
+                tString + "mall";
+            case 7 -> // '\007'
+                tString + "mellohi";
+            case 8 -> // '\b'
+                tString + "stal";
+            case 9 -> // '\t'
+                tString + "strad";
+            case 10 -> // '\n'
+                tString + "ward";
+            case 11 -> // '\013'
+                tString + "11";
+            case 12 -> // '\f'
+                tString + "wait";
+            default -> tString + "wherearewenow";
+        };
         if (tString.startsWith("streaming.")) {
             new WorldSpawnedEventBuilder.RecordEffectEventBuilder().setIdentifier(tString.substring(10))
                                                                    .setPosition(aX, aY, aZ)

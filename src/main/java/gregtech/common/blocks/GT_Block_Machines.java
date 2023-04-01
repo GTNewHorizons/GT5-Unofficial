@@ -230,8 +230,8 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
 
     @SuppressWarnings("unchecked") // Old API uses raw List type
     @Override
-    public void addCollisionBoxesToList(World aWorld, int aX, int aY, int aZ, AxisAlignedBB inputAABB, List outputAABB,
-            Entity collider) {
+    public void addCollisionBoxesToList(World aWorld, int aX, int aY, int aZ, AxisAlignedBB inputAABB,
+            List<AxisAlignedBB> outputAABB, Entity collider) {
         final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (tTileEntity instanceof IGregTechTileEntity
                 && ((IGregTechTileEntity) tTileEntity).getMetaTileEntity() != null) {
@@ -420,8 +420,7 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
     public void breakBlock(World aWorld, int aX, int aY, int aZ, Block aBlock, int aMetadata) {
         GregTech_API.causeMachineUpdate(aWorld, aX, aY, aZ);
         final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if (tTileEntity instanceof IGregTechTileEntity) {
-            final IGregTechTileEntity tGregTechTileEntity = (IGregTechTileEntity) tTileEntity;
+        if (tTileEntity instanceof IGregTechTileEntity tGregTechTileEntity) {
             tGregTechTileEntity.onBlockDestroyed();
             mTemporaryTileEntity.set(tGregTechTileEntity);
             if (!(tGregTechTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_QuantumChest)) {
@@ -621,7 +620,7 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
     @SideOnly(Side.CLIENT)
     @Override
     @SuppressWarnings("unchecked") // Old API uses raw List type
-    public void getSubBlocks(Item item, CreativeTabs aCreativeTab, List outputSubBlocks) {
+    public void getSubBlocks(Item item, CreativeTabs aCreativeTab, List<ItemStack> outputSubBlocks) {
         for (int i = 1; i < GregTech_API.METATILEENTITIES.length; i++) {
             if (GregTech_API.METATILEENTITIES[i] != null) {
                 outputSubBlocks.add(new ItemStack(item, 1, i));
@@ -632,8 +631,7 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
     @Override
     public void onBlockPlacedBy(World aWorld, int aX, int aY, int aZ, EntityLivingBase aPlayer, ItemStack aStack) {
         final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if (!(tTileEntity instanceof IGregTechTileEntity)) return;
-        final IGregTechTileEntity iGregTechTileEntity = (IGregTechTileEntity) tTileEntity;
+        if (!(tTileEntity instanceof IGregTechTileEntity iGregTechTileEntity)) return;
         iGregTechTileEntity.setFrontFacing(
                 BaseTileEntity.getSideForPlayerPlacing(aPlayer, SIDE_UP, iGregTechTileEntity.getValidFacings()));
     }
@@ -663,9 +661,8 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
     @Override
     public Block getFacade(IBlockAccess aWorld, int aX, int aY, int aZ, int side) {
         final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if (tTileEntity instanceof CoverableTileEntity) {
+        if (tTileEntity instanceof CoverableTileEntity tile) {
             final byte aSide = (byte) side;
-            final CoverableTileEntity tile = (CoverableTileEntity) tTileEntity;
             if (side != -1) {
                 final Block facadeBlock = tile.getCoverInfoAtSide(aSide)
                                               .getFacadeBlock();
@@ -688,9 +685,8 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
     @Override
     public int getFacadeMetadata(IBlockAccess aWorld, int aX, int aY, int aZ, int side) {
         final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if (tTileEntity instanceof CoverableTileEntity) {
+        if (tTileEntity instanceof CoverableTileEntity tile) {
             final byte aSide = (byte) side;
-            final CoverableTileEntity tile = (CoverableTileEntity) tTileEntity;
             if (side != -1) {
                 final CoverInfo coverInfo = tile.getCoverInfoAtSide(aSide);
                 final Block facadeBlock = coverInfo.getFacadeBlock();

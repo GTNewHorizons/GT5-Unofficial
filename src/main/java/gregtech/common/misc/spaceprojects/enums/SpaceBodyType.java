@@ -13,5 +13,5 @@ public enum SpaceBodyType {
     GasGiant,
     DwarfPlanet,
     IceGiant,
-    NONE;
+    NONE
 }

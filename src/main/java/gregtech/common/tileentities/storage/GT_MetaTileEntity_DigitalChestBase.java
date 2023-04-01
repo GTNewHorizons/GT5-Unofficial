@@ -59,30 +59,19 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
     }
 
     protected static int commonSizeCompute(int tier) {
-        switch (tier) {
-            case 1:
-                return 4000000;
-            case 2:
-                return 8000000;
-            case 3:
-                return 16000000;
-            case 4:
-                return 32000000;
-            case 5:
-                return 64000000;
-            case 6:
-                return 128000000;
-            case 7:
-                return 256000000;
-            case 8:
-                return 512000000;
-            case 9:
-                return 1024000000;
-            case 10:
-                return 2147483640;
-            default:
-                return 0;
-        }
+        return switch (tier) {
+            case 1 -> 4000000;
+            case 2 -> 8000000;
+            case 3 -> 16000000;
+            case 4 -> 32000000;
+            case 5 -> 64000000;
+            case 6 -> 128000000;
+            case 7 -> 256000000;
+            case 8 -> 512000000;
+            case 9 -> 1024000000;
+            case 10 -> 2147483640;
+            default -> 0;
+        };
     }
 
     public GT_MetaTileEntity_DigitalChestBase(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {

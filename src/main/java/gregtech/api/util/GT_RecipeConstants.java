@@ -149,8 +149,7 @@ public class GT_RecipeConstants {
                     tPersistentHash = tPersistentHash * 31 + GT_Utility.persistentHash(alt, true, false);
                 }
                 tPersistentHash *= 31;
-            } else if (input instanceof Object[]) {
-                Object[] objs = (Object[]) input;
+            } else if (input instanceof Object[]objs) {
                 Arrays.sort(
                         alts,
                         Comparator.<ItemStack, String>comparing(

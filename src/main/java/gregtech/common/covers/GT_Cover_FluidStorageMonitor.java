@@ -191,8 +191,7 @@ public class GT_Cover_FluidStorageMonitor extends GT_CoverBehaviorBase<GT_Cover_
             return null;
         }
 
-        if (container.getItem() instanceof IFluidContainerItem) {
-            final IFluidContainerItem containerItem = (IFluidContainerItem) container.getItem();
+        if (container.getItem() instanceof IFluidContainerItem containerItem) {
             final int filled = tank.fill(side, fluidToFill, true);
             if (filled == 0) {
                 return null;
@@ -218,8 +217,7 @@ public class GT_Cover_FluidStorageMonitor extends GT_CoverBehaviorBase<GT_Cover_
             return null;
         }
 
-        if (container.getItem() instanceof IFluidContainerItem) {
-            final IFluidContainerItem containerItem = (IFluidContainerItem) container.getItem();
+        if (container.getItem() instanceof IFluidContainerItem containerItem) {
             final int filled = Math.min(
                     Optional.ofNullable(
                             tank.drain(

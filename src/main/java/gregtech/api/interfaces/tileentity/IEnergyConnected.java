@@ -60,11 +60,10 @@ public interface IEnergyConnected extends IColoredTileEntity {
          */
         public static long emitEnergyToNetwork(long aVoltage, long aAmperage, IEnergyConnected aEmitter) {
             long rUsedAmperes = 0;
-            if (!(aEmitter instanceof IHasWorldObjectAndCoords)) {
+            if (!(aEmitter instanceof IHasWorldObjectAndCoords emitterTile)) {
                 return 0;
             }
 
-            IHasWorldObjectAndCoords emitterTile = (IHasWorldObjectAndCoords) aEmitter;
             for (byte i = 0, j = 0; i < 6 && aAmperage > rUsedAmperes; i++) {
                 if (!aEmitter.outputsEnergyTo(i)) {
                     continue;
@@ -72,8 +71,7 @@ public interface IEnergyConnected extends IColoredTileEntity {
 
                 j = GT_Utility.getOppositeSide(i);
                 final TileEntity tTileEntity = emitterTile.getTileEntityAtSide(i);
-                if (tTileEntity instanceof PowerLogicHost) {
-                    PowerLogicHost host = (PowerLogicHost) tTileEntity;
+                if (tTileEntity instanceof PowerLogicHost host) {
 
                     PowerLogic logic = host.getPowerLogic(j);
                     if (logic == null || logic.isEnergyReceiver()) {

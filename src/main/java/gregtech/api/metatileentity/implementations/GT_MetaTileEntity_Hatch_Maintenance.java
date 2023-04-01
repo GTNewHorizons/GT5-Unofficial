@@ -280,8 +280,7 @@ public class GT_MetaTileEntity_Hatch_Maintenance extends GT_MetaTileEntity_Hatch
             getBaseMetaTileEntity().setActive(false);
             aStack.stackSize--;
         }
-        if (mSolderingTool && aPlayer instanceof EntityPlayerMP) {
-            EntityPlayerMP tPlayer = (EntityPlayerMP) aPlayer;
+        if (mSolderingTool && aPlayer instanceof EntityPlayerMP tPlayer) {
             try {
                 GT_Mod.achievements.issueAchievement(tPlayer, "maintainance");
             } catch (Exception ignored) {}

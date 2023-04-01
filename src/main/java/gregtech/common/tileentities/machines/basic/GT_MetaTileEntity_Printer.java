@@ -47,7 +47,7 @@ public class GT_MetaTileEntity_Printer extends GT_MetaTileEntity_BasicMachine {
                         tList.add(tList.get(0));
                         int i = 0;
                         for (int j = tList.size() - 1; i < j; i++) {
-                            if (GT_Utility.areStacksEqual(getInputAt(0), (ItemStack) tList.get(i))) {
+                            if (GT_Utility.areStacksEqual(getInputAt(0), tList.get(i))) {
                                 this.mOutputItems[0] = GT_Utility.copyAmount(1L, tList.get(i + 1));
                                 calculateOverclockedNess(1, 32);
                                 // In case recipe is too OP for that machine

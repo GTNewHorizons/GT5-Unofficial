@@ -100,7 +100,7 @@ public class GT_Packet_MultiTileEntity extends GT_Packet_New {
     }
 
     /**
-     * 
+     *
      * @param boolToSync each bit of the integer will be a boolean.
      */
     public void setBooleans(int boolToSync) {
@@ -213,11 +213,13 @@ public class GT_Packet_MultiTileEntity extends GT_Packet_New {
         }
         if ((packetFeatures & INVENTORY_NAME) == INVENTORY_NAME) {
             int tLength = aData.readInt();
-            String tName = "";
+            String tName;
             if (tLength > 0) {
+                StringBuilder tNameBuilder = new StringBuilder();
                 for (int i = 0; i < tLength; i++) {
-                    tName += aData.readChar();
+                    tNameBuilder.append(aData.readChar());
                 }
+                tName = tNameBuilder.toString();
             } else {
                 tName = null;
             }
@@ -241,8 +243,7 @@ public class GT_Packet_MultiTileEntity extends GT_Packet_New {
         final TileEntity tTileEntity = aWorld.getTileEntity(mX, mY, mZ);
         try {
             final Block tBlock = aWorld.getBlock(mX, mY, mZ);
-            if (tBlock instanceof MultiTileEntityBlock) {
-                final MultiTileEntityBlock mteBlock = (MultiTileEntityBlock) tBlock;
+            if (tBlock instanceof MultiTileEntityBlock mteBlock) {
                 final IMultiTileEntity mte = mteBlock.receiveMultiTileEntityData(aWorld, mX, mY, mZ, mRID, mID);
                 if (mte == null) return;
                 mte.receiveClientEvent(GregTechTileClientEvents.CHANGE_COMMON_DATA, mCommonData);
@@ -255,8 +256,7 @@ public class GT_Packet_MultiTileEntity extends GT_Packet_New {
                     mte.receiveClientEvent(GregTechTileClientEvents.CHANGE_REDSTONE_OUTPUT, mRedstone);
                 }
 
-                if ((features & MODES) == MODES && mte instanceof IMultiTileEntity.IMTE_HasModes) {
-                    final IMultiTileEntity.IMTE_HasModes mteModes = (IMultiTileEntity.IMTE_HasModes) mte;
+                if ((features & MODES) == MODES && mte instanceof IMultiTileEntity.IMTE_HasModes mteModes) {
                     mteModes.setMode(mMode);
                     mteModes.setAllowedModes(mAllowedModes);
                 }
@@ -271,8 +271,7 @@ public class GT_Packet_MultiTileEntity extends GT_Packet_New {
                     mtePart.setLockedInventoryIndex(mLockedInventoryIndex);
                 }
 
-                if ((features & INVENTORY_NAME) == INVENTORY_NAME && mte instanceof InventoryUpgrade) {
-                    final InventoryUpgrade invUpg = (InventoryUpgrade) mte;
+                if ((features & INVENTORY_NAME) == INVENTORY_NAME && mte instanceof InventoryUpgrade invUpg) {
                     invUpg.setInventoryName(mInventoryName);
                 }
 

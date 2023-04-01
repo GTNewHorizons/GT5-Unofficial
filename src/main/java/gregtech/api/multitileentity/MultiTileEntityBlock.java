@@ -243,8 +243,8 @@ public class MultiTileEntityBlock extends Block
 
     @Override
     @SuppressWarnings("unchecked")
-    public final void addCollisionBoxesToList(World aWorld, int aX, int aY, int aZ, AxisAlignedBB aAABB, List aList,
-            Entity aEntity) {
+    public final void addCollisionBoxesToList(World aWorld, int aX, int aY, int aZ, AxisAlignedBB aAABB,
+            List<AxisAlignedBB> aList, Entity aEntity) {
         final TileEntity aTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (aTileEntity instanceof IMultiTileEntity)
             ((IMultiTileEntity) aTileEntity).addCollisionBoxesToList(aAABB, aList, aEntity);
@@ -444,9 +444,8 @@ public class MultiTileEntityBlock extends Block
     @Override
     public Block getFacade(IBlockAccess aWorld, int aX, int aY, int aZ, int side) {
         final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if (tTileEntity instanceof CoverableTileEntity) {
+        if (tTileEntity instanceof CoverableTileEntity tile) {
             final byte aSide = (byte) side;
-            final CoverableTileEntity tile = (CoverableTileEntity) tTileEntity;
             if (side != -1) {
                 final Block facadeBlock = tile.getCoverInfoAtSide(aSide)
                                               .getFacadeBlock();
@@ -469,9 +468,8 @@ public class MultiTileEntityBlock extends Block
     @Override
     public int getFacadeMetadata(IBlockAccess aWorld, int aX, int aY, int aZ, int side) {
         final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if (tTileEntity instanceof CoverableTileEntity) {
+        if (tTileEntity instanceof CoverableTileEntity tile) {
             final byte aSide = (byte) side;
-            final CoverableTileEntity tile = (CoverableTileEntity) tTileEntity;
             if (side != -1) {
                 final CoverInfo coverInfo = tile.getCoverInfoAtSide(aSide);
                 final Block facadeBlock = coverInfo.getFacadeBlock();
@@ -518,7 +516,7 @@ public class MultiTileEntityBlock extends Block
     }
 
     @Override
-    public final void getSubBlocks(Item aItem, CreativeTabs aCreativeTab, List aList) {
+    public final void getSubBlocks(Item aItem, CreativeTabs aCreativeTab, List<ItemStack> aList) {
         /**/
     }
 

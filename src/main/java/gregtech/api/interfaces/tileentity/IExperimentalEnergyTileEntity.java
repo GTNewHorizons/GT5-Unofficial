@@ -51,14 +51,14 @@ public interface IExperimentalEnergyTileEntity extends IColoredTileEntity, IHasW
         private static void checkAvailabilities() {
             if (CHECK_ALL) {
                 try {
-                    Class tClass = cofh.api.energy.IEnergyReceiver.class;
+                    Class<IEnergyReceiver> tClass = cofh.api.energy.IEnergyReceiver.class;
                     tClass.getCanonicalName();
                     RF_ENERGY = true;
                 } catch (Throwable e) {
                     /**/
                 }
                 try {
-                    Class tClass = ic2.api.energy.tile.IEnergySink.class;
+                    Class<IEnergySink> tClass = ic2.api.energy.tile.IEnergySink.class;
                     tClass.getCanonicalName();
                     IC_ENERGY = true;
                 } catch (Throwable e) {

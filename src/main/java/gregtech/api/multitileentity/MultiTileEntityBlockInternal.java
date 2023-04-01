@@ -74,7 +74,7 @@ public class MultiTileEntityBlockInternal extends Block implements IRenderedBloc
         // TileEntity should not refresh yet! -Greg
         ((IMultiTileEntity) aMTEContainer.mTileEntity).setShouldRefresh(false);
         // Fake-Set the TileEntity first, bypassing a lot of checks. -Greg
-        setTileEntity(aWorld, aX, aY, aZ, (TileEntity) aMTEContainer.mTileEntity, false);
+        setTileEntity(aWorld, aX, aY, aZ, aMTEContainer.mTileEntity, false);
         // Now set the Block with the REAL MetaData. -Greg
         setTileEntity(aWorld, aX, aY, aZ, aMTEContainer.mBlock, aMTEContainer.mBlockMetaData, 0, false);
         // When the TileEntity is set now it SHOULD refresh! -Greg
@@ -85,7 +85,7 @@ public class MultiTileEntityBlockInternal extends Block implements IRenderedBloc
             return false;
         }
         // And finally properly set the TileEntity for real! -Greg
-        setTileEntity(aWorld, aX, aY, aZ, (TileEntity) aMTEContainer.mTileEntity, aCauseBlockUpdates);
+        setTileEntity(aWorld, aX, aY, aZ, aMTEContainer.mTileEntity, aCauseBlockUpdates);
         // Yep, all this just to set one Block and its TileEntity properly... -Greg
 
         try {

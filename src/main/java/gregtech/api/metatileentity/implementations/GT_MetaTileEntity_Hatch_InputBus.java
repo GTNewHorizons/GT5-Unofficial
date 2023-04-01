@@ -269,18 +269,10 @@ public class GT_MetaTileEntity_Hatch_InputBus extends GT_MetaTileEntity_Hatch
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         switch (mTier) {
-            case 0:
-                getBaseMetaTileEntity().add1by1Slot(builder);
-                break;
-            case 1:
-                getBaseMetaTileEntity().add2by2Slots(builder);
-                break;
-            case 2:
-                getBaseMetaTileEntity().add3by3Slots(builder);
-                break;
-            default:
-                getBaseMetaTileEntity().add4by4Slots(builder);
-                break;
+            case 0 -> getBaseMetaTileEntity().add1by1Slot(builder);
+            case 1 -> getBaseMetaTileEntity().add2by2Slots(builder);
+            case 2 -> getBaseMetaTileEntity().add3by3Slots(builder);
+            default -> getBaseMetaTileEntity().add4by4Slots(builder);
         }
     }
 }

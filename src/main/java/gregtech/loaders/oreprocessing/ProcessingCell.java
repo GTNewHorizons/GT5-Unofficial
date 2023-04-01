@@ -25,7 +25,7 @@ public class ProcessingCell implements IOreRecipeRegistrator {
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
             ItemStack aStack) {
         switch (aPrefix) {
-            case cell:
+            case cell -> {
                 if (aMaterial == Materials.Empty) {
                     GT_ModHandler.removeRecipeByOutputDelayed(aStack);
                     if (aModName.equalsIgnoreCase("AtomicScience")) {
@@ -145,8 +145,8 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                         }
                     }
                 }
-                break;
-            case cellPlasma:
+            }
+            case cellPlasma -> {
                 if (aMaterial == Materials.Empty) {
                     GT_ModHandler.removeRecipeByOutputDelayed(aStack);
                 } else {
@@ -159,12 +159,11 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                             4);
                     GT_Values.RA.addVacuumFreezerRecipe(
                             GT_Utility.copyAmount(1L, aStack),
-                            gregtech.api.util.GT_OreDictUnificator.get(OrePrefixes.cell, aMaterial, 1L),
+                            GT_OreDictUnificator.get(OrePrefixes.cell, aMaterial, 1L),
                             (int) Math.max(aMaterial.getMass() * 2L, 1L));
                 }
-                break;
-            default:
-                break;
+            }
+            default -> {}
         }
     }
 }

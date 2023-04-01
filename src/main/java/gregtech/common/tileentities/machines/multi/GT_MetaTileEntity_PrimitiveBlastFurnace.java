@@ -47,7 +47,7 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
         implements IAlignment, ISurvivalConstructable, IAddUIWidgets, IGetTitleColor {
 
     public static final int INPUT_SLOTS = 3, OUTPUT_SLOTS = 3;
-    private static final ClassValue<IStructureDefinition<GT_MetaTileEntity_PrimitiveBlastFurnace>> STRUCTURE_DEFINITION = new ClassValue<IStructureDefinition<GT_MetaTileEntity_PrimitiveBlastFurnace>>() {
+    private static final ClassValue<IStructureDefinition<GT_MetaTileEntity_PrimitiveBlastFurnace>> STRUCTURE_DEFINITION = new ClassValue<>() {
 
         @Override
         protected IStructureDefinition<GT_MetaTileEntity_PrimitiveBlastFurnace> computeValue(Class<?> type) {

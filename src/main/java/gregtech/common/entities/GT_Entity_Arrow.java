@@ -126,13 +126,13 @@ public class GT_Entity_Arrow extends EntityArrow {
                 vec3 = Vec3.createVectorHelper(tVector.hitVec.xCoord, tVector.hitVec.yCoord, tVector.hitVec.zCoord);
             }
             Entity tHitEntity = null;
-            List tAllPotentiallyHitEntities = this.worldObj.getEntitiesWithinAABBExcludingEntity(
+            List<Entity> tAllPotentiallyHitEntities = this.worldObj.getEntitiesWithinAABBExcludingEntity(
                     this,
                     this.boundingBox.addCoord(this.motionX, this.motionY, this.motionZ)
                                     .expand(1.0D, 1.0D, 1.0D));
             double tLargestDistance = Double.MAX_VALUE;
-            for (int i = 0; i < tAllPotentiallyHitEntities.size(); i++) {
-                Entity entity1 = (Entity) tAllPotentiallyHitEntities.get(i);
+            for (Entity tAllPotentiallyHitEntity : tAllPotentiallyHitEntities) {
+                Entity entity1 = tAllPotentiallyHitEntity;
                 if ((entity1.canBeCollidedWith()) && ((entity1 != tShootingEntity) || (this.ticksInAir >= 5))) {
                     AxisAlignedBB axisalignedbb1 = entity1.boundingBox.expand(0.3D, 0.3D, 0.3D);
                     MovingObjectPosition movingobjectposition1 = axisalignedbb1.calculateIntercept(vec31, vec3);
@@ -148,8 +148,7 @@ public class GT_Entity_Arrow extends EntityArrow {
             if (tHitEntity != null) {
                 tVector = new MovingObjectPosition(tHitEntity);
             }
-            if ((tVector != null) && ((tVector.entityHit instanceof EntityPlayer))) {
-                EntityPlayer entityplayer = (EntityPlayer) tVector.entityHit;
+            if ((tVector != null) && ((tVector.entityHit instanceof EntityPlayer entityplayer))) {
                 if ((entityplayer.capabilities.disableDamage) || (((tShootingEntity instanceof EntityPlayer))
                         && (!((EntityPlayer) tShootingEntity).canAttackPlayer(entityplayer)))) {
                     tVector = null;
@@ -209,7 +208,7 @@ public class GT_Entity_Arrow extends EntityArrow {
                                         new GameProfile(
                                                 new UUID(0L, 0L),
                                                 (tShootingEntity instanceof EntityLivingBase)
-                                                        ? ((EntityLivingBase) tShootingEntity).getCommandSenderName()
+                                                        ? tShootingEntity.getCommandSenderName()
                                                         : "Arrow"));
                             }
                             if (tPlayer != null) {
@@ -224,7 +223,7 @@ public class GT_Entity_Arrow extends EntityArrow {
                                 tShootingEntity == null ? this : tShootingEntity);
                         if ((tDamage + tMagicDamage > 0.0F)
                                 && (tVector.entityHit.attackEntityFrom(tDamageSource, tDamage + tMagicDamage))) {
-                            if ((tVector.entityHit instanceof EntityLivingBase)) {
+                            if ((tVector.entityHit instanceof EntityLivingBase tHitLivingEntity)) {
                                 if (tHitTimer >= 0) {
                                     tVector.entityHit.hurtResistantTime = tHitTimer;
                                 }
@@ -234,7 +233,6 @@ public class GT_Entity_Arrow extends EntityArrow {
                                                 this.mArrow) > 0)) {
                                     ((EntityCreeper) tVector.entityHit).func_146079_cb();
                                 }
-                                EntityLivingBase tHitLivingEntity = (EntityLivingBase) tVector.entityHit;
                                 if (!this.worldObj.isRemote) {
                                     tHitLivingEntity.setArrowCountInEntity(
                                             tHitLivingEntity.getArrowCountInEntity() + 1);

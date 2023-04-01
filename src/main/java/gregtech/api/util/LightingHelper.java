@@ -307,22 +307,15 @@ public class LightingHelper {
      * @see #setupLightingZPos(Block, int, int, int)
      */
     public LightingHelper setupLighting(Block block, int x, int y, int z, byte facing) {
-        switch (facing) {
-            case 0:
-                return setupLightingYNeg(block, x, y, z);
-            case 1:
-                return setupLightingYPos(block, x, y, z);
-            case 2:
-                return setupLightingZNeg(block, x, y, z);
-            case 3:
-                return setupLightingZPos(block, x, y, z);
-            case 4:
-                return setupLightingXNeg(block, x, y, z);
-            case 5:
-                return setupLightingXPos(block, x, y, z);
-            default:
-                throw new IllegalArgumentException("Unknown side: " + facing);
-        }
+        return switch (facing) {
+            case 0 -> setupLightingYNeg(block, x, y, z);
+            case 1 -> setupLightingYPos(block, x, y, z);
+            case 2 -> setupLightingZNeg(block, x, y, z);
+            case 3 -> setupLightingZPos(block, x, y, z);
+            case 4 -> setupLightingXNeg(block, x, y, z);
+            case 5 -> setupLightingXPos(block, x, y, z);
+            default -> throw new IllegalArgumentException("Unknown side: " + facing);
+        };
     }
 
     /**

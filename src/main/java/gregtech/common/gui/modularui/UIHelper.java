@@ -83,46 +83,30 @@ public class UIHelper {
      * @return Display positions for GUI, including border (18x18 size)
      */
     public static List<Pos2d> getItemInputPositions(int itemInputCount) {
-        switch (itemInputCount) {
-            case 0:
-                return Collections.emptyList();
-            case 1:
-                return getGridPositions(itemInputCount, 52, 24, 1, 1);
-            case 2:
-                return getGridPositions(itemInputCount, 34, 24, 2, 1);
-            case 3:
-                return getGridPositions(itemInputCount, 16, 24, 3, 1);
-            case 4:
-                return getGridPositions(itemInputCount, 34, 15, 2, 2);
-            case 5:
-            case 6:
-                return getGridPositions(itemInputCount, 16, 15, 3, 2);
-            default:
-                return getGridPositions(itemInputCount, 16, 6, 3);
-        }
+        return switch (itemInputCount) {
+            case 0 -> Collections.emptyList();
+            case 1 -> getGridPositions(itemInputCount, 52, 24, 1, 1);
+            case 2 -> getGridPositions(itemInputCount, 34, 24, 2, 1);
+            case 3 -> getGridPositions(itemInputCount, 16, 24, 3, 1);
+            case 4 -> getGridPositions(itemInputCount, 34, 15, 2, 2);
+            case 5, 6 -> getGridPositions(itemInputCount, 16, 15, 3, 2);
+            default -> getGridPositions(itemInputCount, 16, 6, 3);
+        };
     }
 
     /**
      * @return Display positions for GUI, including border (18x18 size)
      */
     public static List<Pos2d> getItemOutputPositions(int itemOutputCount) {
-        switch (itemOutputCount) {
-            case 0:
-                return Collections.emptyList();
-            case 1:
-                return getGridPositions(itemOutputCount, 106, 24, 1, 1);
-            case 2:
-                return getGridPositions(itemOutputCount, 106, 24, 2, 1);
-            case 3:
-                return getGridPositions(itemOutputCount, 106, 24, 3, 1);
-            case 4:
-                return getGridPositions(itemOutputCount, 106, 15, 2, 2);
-            case 5:
-            case 6:
-                return getGridPositions(itemOutputCount, 106, 15, 3, 2);
-            default:
-                return getGridPositions(itemOutputCount, 106, 6, 3);
-        }
+        return switch (itemOutputCount) {
+            case 0 -> Collections.emptyList();
+            case 1 -> getGridPositions(itemOutputCount, 106, 24, 1, 1);
+            case 2 -> getGridPositions(itemOutputCount, 106, 24, 2, 1);
+            case 3 -> getGridPositions(itemOutputCount, 106, 24, 3, 1);
+            case 4 -> getGridPositions(itemOutputCount, 106, 15, 2, 2);
+            case 5, 6 -> getGridPositions(itemOutputCount, 106, 15, 3, 2);
+            default -> getGridPositions(itemOutputCount, 106, 6, 3);
+        };
     }
 
     /**

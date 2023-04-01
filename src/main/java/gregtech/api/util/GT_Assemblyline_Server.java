@@ -16,10 +16,10 @@ import gregtech.api.enums.MaterialsBotania;
 
 public class GT_Assemblyline_Server {
 
-    public static LinkedHashMap<String, String> lServerNames = new LinkedHashMap<String, String>();
-    private static LinkedHashMap<String, String> internal2 = new LinkedHashMap<String, String>(),
-            internal3 = new LinkedHashMap<String, String>(), internal4 = new LinkedHashMap<String, String>();
-    private static HashMap<String, Property> internal = new HashMap<String, Property>();
+    public static LinkedHashMap<String, String> lServerNames = new LinkedHashMap<>();
+    private static LinkedHashMap<String, String> internal2 = new LinkedHashMap<>(), internal3 = new LinkedHashMap<>(),
+            internal4 = new LinkedHashMap<>();
+    private static HashMap<String, Property> internal = new HashMap<>();
 
     public static void fillMap(FMLPreInitializationEvent aEvent) {
 
@@ -224,71 +224,54 @@ public class GT_Assemblyline_Server {
                                     t = t.substring(0, 1);
                                     int i = Integer.parseInt(t);
                                     switch (i) {
-                                        case 1:
-                                            mMats = new Materials[] { Materials.Adamantium, Materials.Aluminium,
-                                                    Materials.Americium, Materials.AnnealedCopper, Materials.Antimony,
-                                                    Materials.Arsenic, Materials.AstralSilver, Materials.BatteryAlloy,
-                                                    Materials.Beryllium, Materials.Bismuth, Materials.BismuthBronze,
-                                                    Materials.BlackBronze, Materials.BlackSteel, Materials.BlueAlloy,
-                                                    Materials.BlueSteel, Materials.Brass };
-                                            break;
-                                        case 2:
-                                            mMats = new Materials[] { Materials.Bronze, Materials.Caesium,
-                                                    Materials.Cerium, Materials.Chrome, Materials.ChromiumDioxide,
-                                                    Materials.Cobalt, Materials.CobaltBrass, Materials.Copper,
-                                                    Materials.Cupronickel, Materials.DamascusSteel, Materials.DarkIron,
-                                                    Materials.DeepIron, Materials.Desh, Materials.Duranium,
-                                                    Materials.Dysprosium, Materials.Electrum };
-                                            break;
-                                        case 3:
-                                            mMats = new Materials[] { Materials.ElectrumFlux, Materials.Enderium,
-                                                    Materials.Erbium, Materials.Europium, Materials.FierySteel,
-                                                    Materials.Gadolinium, Materials.Gallium, Materials.Holmium,
-                                                    Materials.HSLA, Materials.Indium, Materials.InfusedGold,
-                                                    Materials.Invar, Materials.Iridium, Materials.IronMagnetic,
-                                                    Materials.IronWood, Materials.Kanthal };
-                                            break;
-                                        case 4:
-                                            mMats = new Materials[] { Materials.Knightmetal, Materials.Lanthanum,
-                                                    Materials.Lead, Materials.Lutetium, Materials.Magnalium,
-                                                    Materials.Magnesium, Materials.Manganese, Materials.MeteoricIron,
-                                                    Materials.MeteoricSteel, Materials.Trinium, Materials.Mithril,
-                                                    Materials.Molybdenum, Materials.Naquadah, Materials.NaquadahAlloy,
-                                                    Materials.NaquadahEnriched, Materials.Naquadria };
-                                            break;
-                                        case 5:
-                                            mMats = new Materials[] { Materials.Neodymium, Materials.NeodymiumMagnetic,
-                                                    Materials.Neutronium, Materials.Nichrome, Materials.Nickel,
-                                                    Materials.Niobium, Materials.NiobiumNitride,
-                                                    Materials.NiobiumTitanium, Materials.Osmiridium, Materials.Osmium,
-                                                    Materials.Palladium, Materials.PigIron, Materials.Platinum,
-                                                    Materials.Plutonium, Materials.Plutonium241,
-                                                    Materials.Praseodymium };
-                                            break;
-                                        case 6:
-                                            mMats = new Materials[] { Materials.Promethium, Materials.RedAlloy,
-                                                    Materials.RedSteel, Materials.RoseGold, Materials.Rubidium,
-                                                    Materials.Samarium, Materials.Scandium, Materials.ShadowIron,
-                                                    Materials.ShadowSteel, Materials.Silicon, Materials.Silver,
-                                                    Materials.SolderingAlloy, Materials.StainlessSteel, Materials.Steel,
-                                                    Materials.SteelMagnetic, Materials.SterlingSilver };
-                                            break;
-                                        case 7:
-                                            mMats = new Materials[] { Materials.Sunnarium, Materials.Tantalum,
-                                                    Materials.Tellurium, Materials.Terbium, Materials.Thaumium,
-                                                    Materials.Thorium, Materials.Thulium, Materials.Tin,
-                                                    Materials.TinAlloy, Materials.Titanium, Materials.Tritanium,
-                                                    Materials.Tungsten, Materials.TungstenSteel, Materials.Ultimet,
-                                                    Materials.Uranium, Materials.Uranium235 };
-                                            break;
-                                        case 8:
-                                            mMats = new Materials[] { Materials.Vanadium, Materials.VanadiumGallium,
-                                                    Materials.WroughtIron, Materials.Ytterbium, Materials.Yttrium,
-                                                    Materials.YttriumBariumCuprate, Materials.Zinc,
-                                                    Materials.TungstenCarbide, Materials.VanadiumSteel, Materials.HSSG,
-                                                    Materials.HSSE, Materials.HSSS, Materials.Steeleaf,
-                                                    Materials.Ichorium, Materials.Firestone };
-                                            break;
+                                        case 1 -> mMats = new Materials[] { Materials.Adamantium, Materials.Aluminium,
+                                                Materials.Americium, Materials.AnnealedCopper, Materials.Antimony,
+                                                Materials.Arsenic, Materials.AstralSilver, Materials.BatteryAlloy,
+                                                Materials.Beryllium, Materials.Bismuth, Materials.BismuthBronze,
+                                                Materials.BlackBronze, Materials.BlackSteel, Materials.BlueAlloy,
+                                                Materials.BlueSteel, Materials.Brass };
+                                        case 2 -> mMats = new Materials[] { Materials.Bronze, Materials.Caesium,
+                                                Materials.Cerium, Materials.Chrome, Materials.ChromiumDioxide,
+                                                Materials.Cobalt, Materials.CobaltBrass, Materials.Copper,
+                                                Materials.Cupronickel, Materials.DamascusSteel, Materials.DarkIron,
+                                                Materials.DeepIron, Materials.Desh, Materials.Duranium,
+                                                Materials.Dysprosium, Materials.Electrum };
+                                        case 3 -> mMats = new Materials[] { Materials.ElectrumFlux, Materials.Enderium,
+                                                Materials.Erbium, Materials.Europium, Materials.FierySteel,
+                                                Materials.Gadolinium, Materials.Gallium, Materials.Holmium,
+                                                Materials.HSLA, Materials.Indium, Materials.InfusedGold,
+                                                Materials.Invar, Materials.Iridium, Materials.IronMagnetic,
+                                                Materials.IronWood, Materials.Kanthal };
+                                        case 4 -> mMats = new Materials[] { Materials.Knightmetal, Materials.Lanthanum,
+                                                Materials.Lead, Materials.Lutetium, Materials.Magnalium,
+                                                Materials.Magnesium, Materials.Manganese, Materials.MeteoricIron,
+                                                Materials.MeteoricSteel, Materials.Trinium, Materials.Mithril,
+                                                Materials.Molybdenum, Materials.Naquadah, Materials.NaquadahAlloy,
+                                                Materials.NaquadahEnriched, Materials.Naquadria };
+                                        case 5 -> mMats = new Materials[] { Materials.Neodymium,
+                                                Materials.NeodymiumMagnetic, Materials.Neutronium, Materials.Nichrome,
+                                                Materials.Nickel, Materials.Niobium, Materials.NiobiumNitride,
+                                                Materials.NiobiumTitanium, Materials.Osmiridium, Materials.Osmium,
+                                                Materials.Palladium, Materials.PigIron, Materials.Platinum,
+                                                Materials.Plutonium, Materials.Plutonium241, Materials.Praseodymium };
+                                        case 6 -> mMats = new Materials[] { Materials.Promethium, Materials.RedAlloy,
+                                                Materials.RedSteel, Materials.RoseGold, Materials.Rubidium,
+                                                Materials.Samarium, Materials.Scandium, Materials.ShadowIron,
+                                                Materials.ShadowSteel, Materials.Silicon, Materials.Silver,
+                                                Materials.SolderingAlloy, Materials.StainlessSteel, Materials.Steel,
+                                                Materials.SteelMagnetic, Materials.SterlingSilver };
+                                        case 7 -> mMats = new Materials[] { Materials.Sunnarium, Materials.Tantalum,
+                                                Materials.Tellurium, Materials.Terbium, Materials.Thaumium,
+                                                Materials.Thorium, Materials.Thulium, Materials.Tin, Materials.TinAlloy,
+                                                Materials.Titanium, Materials.Tritanium, Materials.Tungsten,
+                                                Materials.TungstenSteel, Materials.Ultimet, Materials.Uranium,
+                                                Materials.Uranium235 };
+                                        case 8 -> mMats = new Materials[] { Materials.Vanadium,
+                                                Materials.VanadiumGallium, Materials.WroughtIron, Materials.Ytterbium,
+                                                Materials.Yttrium, Materials.YttriumBariumCuprate, Materials.Zinc,
+                                                Materials.TungstenCarbide, Materials.VanadiumSteel, Materials.HSSG,
+                                                Materials.HSSE, Materials.HSSS, Materials.Steeleaf, Materials.Ichorium,
+                                                Materials.Firestone };
                                     }
                                     t = entry.getKey()
                                              .substring(
@@ -307,28 +290,22 @@ public class GT_Assemblyline_Server {
                                  t = t.substring(0, 1);
                                  int i = Integer.parseInt(t);
                                  switch (i) {
-                                     case 1:
-                                         mMats = new Materials[] { Materials.InfusedAir, Materials.Amber,
-                                                 Materials.Amethyst, Materials.InfusedWater, Materials.BlueTopaz,
-                                                 Materials.CertusQuartz, Materials.Dilithium, Materials.EnderEye,
-                                                 Materials.EnderPearl, Materials.FoolsRuby, Materials.Force,
-                                                 Materials.Forcicium, Materials.Forcillium, Materials.GreenSapphire,
-                                                 Materials.InfusedFire, Materials.Jasper, MaterialsBotania.ManaDiamond,
-                                                 MaterialsBotania.BotaniaDragonstone };
-                                         break;
-                                     case 2:
-                                         mMats = new Materials[] { Materials.Lazurite, Materials.Lignite,
-                                                 Materials.Monazite, Materials.Niter, Materials.Olivine, Materials.Opal,
-                                                 Materials.InfusedOrder, Materials.InfusedEntropy, Materials.Phosphorus,
-                                                 Materials.Quartzite, Materials.GarnetRed, Materials.Ruby,
-                                                 Materials.Sapphire, Materials.Sodalite, Materials.Tanzanite,
-                                                 Materials.InfusedEarth };
-                                         break;
-                                     case 3:
-                                         mMats = new Materials[] { Materials.Topaz, Materials.Vinteum,
-                                                 Materials.GarnetYellow, Materials.NetherStar, Materials.Charcoal,
-                                                 Materials.Blaze };
-                                         break;
+                                     case 1 -> mMats = new Materials[] { Materials.InfusedAir, Materials.Amber,
+                                             Materials.Amethyst, Materials.InfusedWater, Materials.BlueTopaz,
+                                             Materials.CertusQuartz, Materials.Dilithium, Materials.EnderEye,
+                                             Materials.EnderPearl, Materials.FoolsRuby, Materials.Force,
+                                             Materials.Forcicium, Materials.Forcillium, Materials.GreenSapphire,
+                                             Materials.InfusedFire, Materials.Jasper, MaterialsBotania.ManaDiamond,
+                                             MaterialsBotania.BotaniaDragonstone };
+                                     case 2 -> mMats = new Materials[] { Materials.Lazurite, Materials.Lignite,
+                                             Materials.Monazite, Materials.Niter, Materials.Olivine, Materials.Opal,
+                                             Materials.InfusedOrder, Materials.InfusedEntropy, Materials.Phosphorus,
+                                             Materials.Quartzite, Materials.GarnetRed, Materials.Ruby,
+                                             Materials.Sapphire, Materials.Sodalite, Materials.Tanzanite,
+                                             Materials.InfusedEarth };
+                                     case 3 -> mMats = new Materials[] { Materials.Topaz, Materials.Vinteum,
+                                             Materials.GarnetYellow, Materials.NetherStar, Materials.Charcoal,
+                                             Materials.Blaze };
                                  }
                                  t = entry.getKey()
                                           .substring(

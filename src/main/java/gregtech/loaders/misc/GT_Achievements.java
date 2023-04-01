@@ -390,9 +390,8 @@ public class GT_Achievements {
             AchievementPage.registerAchievementPage(
                     new AchievementPage(
                             "GregTech 5",
-                            (Achievement[]) this.achievementList.values()
-                                                                .toArray(
-                                                                        new Achievement[this.achievementList.size()])));
+                            this.achievementList.values()
+                                                .toArray(new Achievement[0])));
             MinecraftForge.EVENT_BUS.register(this);
             FMLCommonHandler.instance()
                             .bus()
@@ -425,7 +424,7 @@ public class GT_Achievements {
             boolean special) {
         if (!GT_Mod.gregtechproxy.mAchievements) {
             return null;
-        } ;
+        }
         Achievement achievement = new Achievement(
                 textId,
                 textId,
@@ -481,12 +480,12 @@ public class GT_Achievements {
         if (entityplayer == null || !GT_Mod.gregtechproxy.mAchievements) {
             return;
         }
-        entityplayer.triggerAchievement((StatBase) this.achievementList.get(textId));
+        entityplayer.triggerAchievement(this.achievementList.get(textId));
     }
 
     public Achievement getAchievement(String textId) {
         if (this.achievementList.containsKey(textId)) {
-            return (Achievement) this.achievementList.get(textId);
+            return this.achievementList.get(textId);
         }
         return null;
     }
@@ -533,24 +532,12 @@ public class GT_Achievements {
         }
         switch (fluid.getFluid()
                      .getUnlocalizedName()) {
-            case "fluid.plasma.helium":
-                issueAchievement(player, "fusion");
-                break;
-            case "fluid.molten.europium":
-                issueAchievement(player, "advancing");
-                break;
-            case "fluid.molten.naquadah":
-                issueAchievement(player, "stargateliquid");
-                break;
-            case "fluid.molten.americium":
-                issueAchievement(player, "tothelimit");
-                break;
-            case "fluid.molten.neutronium":
-                issueAchievement(player, "denseaspossible");
-                break;
-            case "fluid.plasma.nitrogen":
-                issueAchievement(player, "higherefficency");
-                break;
+            case "fluid.plasma.helium" -> issueAchievement(player, "fusion");
+            case "fluid.molten.europium" -> issueAchievement(player, "advancing");
+            case "fluid.molten.naquadah" -> issueAchievement(player, "stargateliquid");
+            case "fluid.molten.americium" -> issueAchievement(player, "tothelimit");
+            case "fluid.molten.neutronium" -> issueAchievement(player, "denseaspossible");
+            case "fluid.plasma.nitrogen" -> issueAchievement(player, "higherefficency");
         }
     }
 
@@ -570,34 +557,18 @@ public class GT_Achievements {
         if (stack.getUnlocalizedName()
                  .startsWith("gt.metaitem.")) {
             switch (stack.getUnlocalizedName()) {
-                case "gt.metaitem.01.2300":
-                    issueAchievement(player, "bronze");
-                    break;
-                case "gt.metaitem.01.32700":
-                    issueAchievement(player, "smallparts");
-                    break;
-                case "gt.metaitem.01.32702":
-                    issueAchievement(player, "bettercircuits");
-                    break;
-                case "gt.metaitem.01.23354":
-                    issueAchievement(player, "magneticiron");
-                    break;
-                case "gt.metaitem.01.32600":
+                case "gt.metaitem.01.2300" -> issueAchievement(player, "bronze");
+                case "gt.metaitem.01.32700" -> issueAchievement(player, "smallparts");
+                case "gt.metaitem.01.32702" -> issueAchievement(player, "bettercircuits");
+                case "gt.metaitem.01.23354" -> issueAchievement(player, "magneticiron");
+                case "gt.metaitem.01.32600" -> {
                     issueAchievement(player, "lvmotor");
                     issueAchievement(player, "buildCable");
-                    break;
-                case "gt.metaitem.01.32610":
-                    issueAchievement(player, "pumpcover");
-                    break;
-                case "gt.metaitem.01.32630":
-                    issueAchievement(player, "transport");
-                    break;
-                case "gt.metaitem.01.32650":
-                    issueAchievement(player, "complexmachines");
-                    break;
-                case "gt.metaitem.01.32670":
-                    issueAchievement(player, "hightech");
-                    break;
+                }
+                case "gt.metaitem.01.32610" -> issueAchievement(player, "pumpcover");
+                case "gt.metaitem.01.32630" -> issueAchievement(player, "transport");
+                case "gt.metaitem.01.32650" -> issueAchievement(player, "complexmachines");
+                case "gt.metaitem.01.32670" -> issueAchievement(player, "hightech");
             }
         } else if (stack.getUnlocalizedName()
                         .equals("ic2.blockCrop")) {
@@ -943,87 +914,33 @@ public class GT_Achievements {
         if (stack.getUnlocalizedName()
                  .startsWith("gt.metaitem.")) {
             switch (stack.getUnlocalizedName()) {
-                case "gt.metaitem.02.32500":
-                    issueAchievement(player, "havestlead");
-                    break;
-                case "gt.metaitem.02.32501":
-                    issueAchievement(player, "havestsilver");
-                    break;
-                case "gt.metaitem.02.32503":
-                    issueAchievement(player, "havestiron");
-                    break;
-                case "gt.metaitem.02.32504":
-                    issueAchievement(player, "havestgold");
-                    break;
-                case "gt.metaitem.02.32530":
-                    issueAchievement(player, "havestcopper");
-                    break;
-                case "gt.metaitem.02.32540":
-                    issueAchievement(player, "havesttin");
-                    break;
-                case "gt.metaitem.02.32510":
-                    issueAchievement(player, "havestoil");
-                    break;
-                case "gt.metaitem.02.32511":
-                    issueAchievement(player, "havestemeralds");
-                    break;
-                case "gt.metaitem.03.32082":
-                    issueAchievement(player, "energyflow");
-                    break;
-                case "gt.metaitem.01.32702":
-                    issueAchievement(player, "bettercircuits");
-                    break;
-                case "gt.metaitem.01.32707":
-                    issueAchievement(player, "datasaving");
-                    break;
-                case "gt.metaitem.01.32597":
-                    issueAchievement(player, "orbs");
-                    break;
-                case "gt.metaitem.01.32599":
-                    issueAchievement(player, "thatspower");
-                    break;
-                case "gt.metaitem.01.32598":
-                    issueAchievement(player, "luck");
-                    break;
-                case "gt.metaitem.01.32749":
-                    issueAchievement(player, "closeit");
-                    break;
-                case "gt.metaitem.01.32730":
-                    issueAchievement(player, "manipulation");
-                    break;
-                case "gt.metaitem.01.32729":
-                    issueAchievement(player, "filterregulate");
-                    break;
-                case "gt.metaitem.01.32605":
-                    issueAchievement(player, "whatnow");
-                    break;
-                case "gt.metaitem.01.32736":
-                    issueAchievement(player, "zpmage");
-                    break;
-                case "gt.metaitem.01.32737":
-                    issueAchievement(player, "uvage");
-                    break;
-                case "gt.metaitem.03.32030":
-                    issueAchievement(player, "gtmonosilicon");
-                    break;
-                case "gt.metaitem.03.32036":
-                    issueAchievement(player, "gtlogicwafer");
-                    break;
-                case "gt.metaitem.01.32701":
-                    issueAchievement(player, "gtlogiccircuit");
-                    break;
-                case "gt.metaitem.03.32085":
-                    issueAchievement(player, "gtquantumprocessor");
-                    break;
-                case "gt.metaitem.03.32089":
-                    issueAchievement(player, "gtcrystalprocessor");
-                    break;
-                case "gt.metaitem.03.32092":
-                    issueAchievement(player, "gtwetware");
-                    break;
-                case "gt.metaitem.03.32095":
-                    issueAchievement(player, "gtwetmain");
-                    break;
+                case "gt.metaitem.02.32500" -> issueAchievement(player, "havestlead");
+                case "gt.metaitem.02.32501" -> issueAchievement(player, "havestsilver");
+                case "gt.metaitem.02.32503" -> issueAchievement(player, "havestiron");
+                case "gt.metaitem.02.32504" -> issueAchievement(player, "havestgold");
+                case "gt.metaitem.02.32530" -> issueAchievement(player, "havestcopper");
+                case "gt.metaitem.02.32540" -> issueAchievement(player, "havesttin");
+                case "gt.metaitem.02.32510" -> issueAchievement(player, "havestoil");
+                case "gt.metaitem.02.32511" -> issueAchievement(player, "havestemeralds");
+                case "gt.metaitem.03.32082" -> issueAchievement(player, "energyflow");
+                case "gt.metaitem.01.32702" -> issueAchievement(player, "bettercircuits");
+                case "gt.metaitem.01.32707" -> issueAchievement(player, "datasaving");
+                case "gt.metaitem.01.32597" -> issueAchievement(player, "orbs");
+                case "gt.metaitem.01.32599" -> issueAchievement(player, "thatspower");
+                case "gt.metaitem.01.32598" -> issueAchievement(player, "luck");
+                case "gt.metaitem.01.32749" -> issueAchievement(player, "closeit");
+                case "gt.metaitem.01.32730" -> issueAchievement(player, "manipulation");
+                case "gt.metaitem.01.32729" -> issueAchievement(player, "filterregulate");
+                case "gt.metaitem.01.32605" -> issueAchievement(player, "whatnow");
+                case "gt.metaitem.01.32736" -> issueAchievement(player, "zpmage");
+                case "gt.metaitem.01.32737" -> issueAchievement(player, "uvage");
+                case "gt.metaitem.03.32030" -> issueAchievement(player, "gtmonosilicon");
+                case "gt.metaitem.03.32036" -> issueAchievement(player, "gtlogicwafer");
+                case "gt.metaitem.01.32701" -> issueAchievement(player, "gtlogiccircuit");
+                case "gt.metaitem.03.32085" -> issueAchievement(player, "gtquantumprocessor");
+                case "gt.metaitem.03.32089" -> issueAchievement(player, "gtcrystalprocessor");
+                case "gt.metaitem.03.32092" -> issueAchievement(player, "gtwetware");
+                case "gt.metaitem.03.32095" -> issueAchievement(player, "gtwetmain");
             }
         } else if (stack.getUnlocalizedName()
                         .equals("gt.Thoriumcell")) {

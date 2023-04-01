@@ -118,22 +118,19 @@ public class GT_TextureBuilder implements ITextureBuilder {
         }
         if (worldCoord != null) throw new IllegalStateException("worldCoord without from block");
         if (!textureLayers.isEmpty()) return new GT_MultiTexture(textureLayers.toArray(new ITexture[0]));
-        switch (iconContainerList.size()) {
-            case 1:
-                return new GT_RenderedTexture(iconContainerList.get(0), rgba, allowAlpha, glow, stdOrient, extFacing);
-            case 6:
-                return new GT_SidedTexture(
-                        iconContainerList.get(ForgeDirection.DOWN.ordinal()),
-                        iconContainerList.get(ForgeDirection.UP.ordinal()),
-                        iconContainerList.get(ForgeDirection.NORTH.ordinal()),
-                        iconContainerList.get(ForgeDirection.SOUTH.ordinal()),
-                        iconContainerList.get(ForgeDirection.WEST.ordinal()),
-                        iconContainerList.get(ForgeDirection.EAST.ordinal()),
-                        rgba,
-                        allowAlpha);
-            default:
-                throw new IllegalStateException("Invalid sideIconContainer count");
-        }
+        return switch (iconContainerList.size()) {
+            case 1 -> new GT_RenderedTexture(iconContainerList.get(0), rgba, allowAlpha, glow, stdOrient, extFacing);
+            case 6 -> new GT_SidedTexture(
+                    iconContainerList.get(ForgeDirection.DOWN.ordinal()),
+                    iconContainerList.get(ForgeDirection.UP.ordinal()),
+                    iconContainerList.get(ForgeDirection.NORTH.ordinal()),
+                    iconContainerList.get(ForgeDirection.SOUTH.ordinal()),
+                    iconContainerList.get(ForgeDirection.WEST.ordinal()),
+                    iconContainerList.get(ForgeDirection.EAST.ordinal()),
+                    rgba,
+                    allowAlpha);
+            default -> throw new IllegalStateException("Invalid sideIconContainer count");
+        };
     }
 
     private boolean isCTMBlock(Block fromBlock, int fromMeta) {

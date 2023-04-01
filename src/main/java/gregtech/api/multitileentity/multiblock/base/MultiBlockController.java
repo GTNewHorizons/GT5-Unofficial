@@ -656,9 +656,8 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
             @Override
             public boolean check(S t, World world, int x, int y, int z) {
                 final TileEntity tileEntity = world.getTileEntity(x, y, z);
-                if (!(tileEntity instanceof MultiBlockPart)) return false;
+                if (!(tileEntity instanceof MultiBlockPart part)) return false;
 
-                final MultiBlockPart part = (MultiBlockPart) tileEntity;
                 if (registryID != part.getMultiTileEntityRegistryID() || meta != part.getMultiTileEntityID())
                     return false;
 
@@ -974,7 +973,7 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
         if (tInv == null) return false;
 
         final int tSlot = tInv.getRight();
-        final IItemHandlerModifiable inv = tInv.getLeft();;
+        final IItemHandlerModifiable inv = tInv.getLeft();
 
         return inv.getStackInSlot(tSlot) == null || GT_Utility.areStacksEqual(aStack, inv.getStackInSlot(tSlot)); // &&
                                                                                                                   // allowPutStack(getBaseMetaTileEntity(),
@@ -1441,7 +1440,7 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
         buttons.setSize(16, 167)
                .setPos(7, 86);
         buttons.addChild(createPowerSwitchButton())
-               .addChild(new FakeSyncWidget.BooleanSyncer(() -> isAllowedToWork(), val -> {
+               .addChild(new FakeSyncWidget.BooleanSyncer(this::isAllowedToWork, val -> {
                    if (val) enableWorking();
                    else disableWorking();
                }))

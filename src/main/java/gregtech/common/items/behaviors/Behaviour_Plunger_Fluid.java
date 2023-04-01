@@ -55,11 +55,9 @@ public class Behaviour_Plunger_Fluid extends Behaviour_None {
                 }
             }
         }
-        if (aTileEntity instanceof IGregTechTileEntity) {
-            IGregTechTileEntity tTileEntity = (IGregTechTileEntity) aTileEntity;
+        if (aTileEntity instanceof IGregTechTileEntity tTileEntity) {
             IMetaTileEntity mTileEntity = tTileEntity.getMetaTileEntity();
-            if (mTileEntity instanceof GT_MetaTileEntity_BasicTank) {
-                GT_MetaTileEntity_BasicTank machine = (GT_MetaTileEntity_BasicTank) mTileEntity;
+            if (mTileEntity instanceof GT_MetaTileEntity_BasicTank machine) {
                 if (machine.mFluid != null && machine.mFluid.amount > 0)
                     machine.mFluid.amount = machine.mFluid.amount - Math.min(machine.mFluid.amount, 1000);
                 GT_Utility.sendSoundToPlayers(

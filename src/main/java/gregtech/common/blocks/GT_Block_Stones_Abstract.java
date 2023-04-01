@@ -49,13 +49,13 @@ public class GT_Block_Stones_Abstract extends GT_Generic_Block implements IOreRe
         GT_ModHandler.addSmeltingRecipe(new ItemStack(this, 1, 15), new ItemStack(this, 1, 8));
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack(this, 1, 0),
-                ItemList.Circuit_Integrated.getWithDamage(0L, 4L, new Object[0]),
+                ItemList.Circuit_Integrated.getWithDamage(0L, 4L),
                 new ItemStack(this, 1, 3),
                 50,
                 4);
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack(this, 1, 8),
-                ItemList.Circuit_Integrated.getWithDamage(0L, 4L, new Object[0]),
+                ItemList.Circuit_Integrated.getWithDamage(0L, 4L),
                 new ItemStack(this, 1, 11),
                 50,
                 4);
@@ -111,13 +111,13 @@ public class GT_Block_Stones_Abstract extends GT_Generic_Block implements IOreRe
         if (aOreDictName.equals(OreDictNames.craftingLensWhite.toString())) {
             GT_Values.RA.addLaserEngraverRecipe(
                     new ItemStack(this, 1, 7),
-                    GT_Utility.copyAmount(0L, new Object[] { aStack }),
+                    GT_Utility.copyAmount(0L, aStack),
                     new ItemStack(this, 1, 6),
                     50,
                     16);
             GT_Values.RA.addLaserEngraverRecipe(
                     new ItemStack(this, 1, 15),
-                    GT_Utility.copyAmount(0L, new Object[] { aStack }),
+                    GT_Utility.copyAmount(0L, aStack),
                     new ItemStack(this, 1, 14),
                     50,
                     16);
@@ -188,7 +188,7 @@ public class GT_Block_Stones_Abstract extends GT_Generic_Block implements IOreRe
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item aItem, CreativeTabs aCreativeTab, List aList) {
+    public void getSubBlocks(Item aItem, CreativeTabs aCreativeTab, List<ItemStack> aList) {
         for (int i = 0; i < 16; i++) {
             aList.add(new ItemStack(aItem, 1, i));
         }

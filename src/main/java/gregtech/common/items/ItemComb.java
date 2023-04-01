@@ -58,7 +58,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubItems(Item item, CreativeTabs tabs, List list) {
+    public void getSubItems(Item item, CreativeTabs tabs, List<ItemStack> list) {
         for (CombType type : CombType.values()) {
             if (type.showInList) {
                 list.add(this.getStackForType(type));
@@ -742,13 +742,8 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
         addProcessGT(CombType.SULFUR, new Materials[] { Materials.Sulfur }, Voltage.LV);
         addProcessGT(CombType.GALLIUM, new Materials[] { Materials.Gallium }, Voltage.LV);
         addProcessGT(CombType.ARSENIC, new Materials[] { Materials.Arsenic }, Voltage.LV);
-        if (ProcessingModSupport.aEnableGCMarsMats) {
-            addProcessGT(CombType.IRON, new Materials[] { Materials.Iron }, Voltage.LV);
-            addProcessGT(CombType.STEEL, new Materials[] { Materials.Steel }, Voltage.LV);
-        } else {
-            addProcessGT(CombType.IRON, new Materials[] { Materials.Iron }, Voltage.LV);
-            addProcessGT(CombType.STEEL, new Materials[] { Materials.Steel }, Voltage.LV);
-        }
+        addProcessGT(CombType.IRON, new Materials[] { Materials.Iron }, Voltage.LV);
+        addProcessGT(CombType.STEEL, new Materials[] { Materials.Steel }, Voltage.LV);
         if (GT_Mod.gregtechproxy.mNerfedCombs) {
             addCentrifugeToMaterial(
                     CombType.SLAG,
@@ -1549,7 +1544,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
         addCentrifugeToMaterial(
                 CombType.INFINITYCATALYST,
                 new Materials[] { Materials.InfinityCatalyst, Materials.Neutronium },
-                new int[] { (int) (25 * 100), 20 * 100 },
+                new int[] { 25 * 100, 20 * 100 },
                 new int[] {},
                 Voltage.ZPM,
                 100,
@@ -1600,9 +1595,8 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
                 100 * 100,
                 (fluid.getFluid()
                       .getDensity() * 128 > 0
-                              ? (int) (fluid.getFluid()
-                                            .getDensity()
-                                      * 100)
+                              ? (fluid.getFluid()
+                                      .getDensity() * 100)
                               : 128),
                 volt.getSimpleEnergy() / 2);
     }
@@ -1618,8 +1612,8 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
      **/
     public void addProcessGT(CombType comb, Materials[] aMaterial, Voltage volt) {
         ItemStack tComb = getStackForType(comb);
-        for (int i = 0; i < aMaterial.length; i++) {
-            if (GT_OreDictUnificator.get(OrePrefixes.crushedPurified, aMaterial[i], 4) != NI) {
+        for (Materials materials : aMaterial) {
+            if (GT_OreDictUnificator.get(OrePrefixes.crushedPurified, materials, 4) != NI) {
                 switch (comb) {
                     case NEUTRONIUM:
                         RA.addChemicalRecipe(
@@ -1671,7 +1665,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
                                 null,
                                 volt.getFluidAccordingToCombTier(),
                                 null,
-                                GT_OreDictUnificator.get(OrePrefixes.crushedPurified, aMaterial[i], 4),
+                                GT_OreDictUnificator.get(OrePrefixes.crushedPurified, materials, 4),
                                 NI,
                                 volt.getComplexTime(),
                                 volt.getChemicalEnergy(),
@@ -1742,7 +1736,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
 
     public void addCentrifugeToItemStack(CombType comb, ItemStack[] aItem, int[] chance, Voltage volt, int duration) {
         ItemStack tComb = getStackForType(comb);
-        Builder<ItemStack, Float> Product = new ImmutableMap.Builder<ItemStack, Float>();
+        Builder<ItemStack, Float> Product = new ImmutableMap.Builder<>();
         for (int i = 0; i < aItem.length; i++) {
             if (aItem[i] == NI) {
                 continue;
@@ -1841,25 +1835,24 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
             // cascading from IV to UMV since all recipes use HydrofluiricAcid
             // for later tiers, just add the corresponding tier to a case
             int fluidAmount = this.getFluidAmount();
-            switch (this.getVoltageFromEU()) {
-                case 0:
+            return switch (this.getVoltageFromEU()) {
+                case 0 ->
                     /** ULV **/
-                    return Materials.Water.getFluid(fluidAmount);
-                case 1:
+                    Materials.Water.getFluid(fluidAmount);
+                case 1 ->
                     /** LV **/
-                    return Materials.SulfuricAcid.getFluid(fluidAmount);
-                case 2:
+                    Materials.SulfuricAcid.getFluid(fluidAmount);
+                case 2 ->
                     /** MV **/
-                    return Materials.HydrochloricAcid.getFluid(fluidAmount);
-                case 3:
+                    Materials.HydrochloricAcid.getFluid(fluidAmount);
+                case 3 ->
                     /** HV **/
-                    return Materials.PhosphoricAcid.getFluid(fluidAmount);
-                case 4:
+                    Materials.PhosphoricAcid.getFluid(fluidAmount);
+                case 4 ->
                     /** EV **/
-                    return Materials.HydrofluoricAcid.getFluid(this.getFluidAmount());
-                default:
-                    return Materials.PhthalicAcid.getFluid(fluidAmount);
-            }
+                    Materials.HydrofluoricAcid.getFluid(this.getFluidAmount());
+                default -> Materials.PhthalicAcid.getFluid(fluidAmount);
+            };
         }
 
         /** @return additional required UU-Matter amount for Autoclave process related to the Tier **/
@@ -1892,7 +1885,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
             if (this == Voltage.ULV) {
                 return 5;
             } else {
-                return (int) (this.getVoltage() / 16) * 15;
+                return (this.getVoltage() / 16) * 15;
             }
         }
     }

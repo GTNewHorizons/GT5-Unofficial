@@ -39,16 +39,14 @@ public class GenerateNodeMapPower extends GenerateNodeMap {
     @Override
     protected boolean addConsumer(TileEntity aTileEntity, byte aSide, int aNodeValue,
             ArrayList<ConsumerNode> aConsumers) {
-        if (aTileEntity instanceof BaseMetaTileEntity) {
-            BaseMetaTileEntity tBaseTileEntity = (BaseMetaTileEntity) aTileEntity;
+        if (aTileEntity instanceof BaseMetaTileEntity tBaseTileEntity) {
             if (tBaseTileEntity.inputEnergyFrom(aSide, false)) {
                 ConsumerNode tConsumerNode = new NodeGTBaseMetaTile(aNodeValue, tBaseTileEntity, aSide, aConsumers);
                 aConsumers.add(tConsumerNode);
                 return true;
             }
 
-        } else if (aTileEntity instanceof IEnergyConnected) {
-            IEnergyConnected tTileEntity = (IEnergyConnected) aTileEntity;
+        } else if (aTileEntity instanceof IEnergyConnected tTileEntity) {
             if (tTileEntity.inputEnergyFrom(aSide, false)) {
                 ConsumerNode tConsumerNode = new NodeEnergyConnected(aNodeValue, tTileEntity, aSide, aConsumers);
                 aConsumers.add(tConsumerNode);
@@ -97,8 +95,8 @@ public class GenerateNodeMapPower extends GenerateNodeMap {
     @Override
     protected Node getEmptyNode(int aNodeValue, byte aSide, TileEntity aTileEntity,
             ArrayList<ConsumerNode> aConsumers) {
-        Node tNode = new EmptyPowerConsumer(aNodeValue, aTileEntity, aSide, aConsumers);
-        aConsumers.add((ConsumerNode) tNode);
+        ConsumerNode tNode = new EmptyPowerConsumer(aNodeValue, aTileEntity, aSide, aConsumers);
+        aConsumers.add(tNode);
         return tNode;
     }
 

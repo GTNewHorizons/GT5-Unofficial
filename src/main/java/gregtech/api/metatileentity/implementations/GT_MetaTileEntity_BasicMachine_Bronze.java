@@ -4,8 +4,6 @@ import static gregtech.api.enums.GT_Values.D1;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
-import java.util.ArrayList;
-
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
@@ -173,31 +171,28 @@ public abstract class GT_MetaTileEntity_BasicMachine_Bronze extends GT_MetaTileE
             sendSound((byte) 9);
             mNeedsSteamVenting = false;
             try {
-                for (EntityLivingBase tLiving : (ArrayList<EntityLivingBase>) getBaseMetaTileEntity().getWorld()
-                                                                                                     .getEntitiesWithinAABB(
-                                                                                                             EntityLivingBase.class,
-                                                                                                             AxisAlignedBB.getBoundingBox(
-                                                                                                                     getBaseMetaTileEntity().getOffsetX(
-                                                                                                                             getBaseMetaTileEntity().getFrontFacing(),
-                                                                                                                             1),
-                                                                                                                     getBaseMetaTileEntity().getOffsetY(
-                                                                                                                             getBaseMetaTileEntity().getFrontFacing(),
-                                                                                                                             1),
-                                                                                                                     getBaseMetaTileEntity().getOffsetZ(
-                                                                                                                             getBaseMetaTileEntity().getFrontFacing(),
-                                                                                                                             1),
-                                                                                                                     getBaseMetaTileEntity().getOffsetX(
-                                                                                                                             getBaseMetaTileEntity().getFrontFacing(),
-                                                                                                                             1)
-                                                                                                                             + 1,
-                                                                                                                     getBaseMetaTileEntity().getOffsetY(
-                                                                                                                             getBaseMetaTileEntity().getFrontFacing(),
-                                                                                                                             1)
-                                                                                                                             + 1,
-                                                                                                                     getBaseMetaTileEntity().getOffsetZ(
-                                                                                                                             getBaseMetaTileEntity().getFrontFacing(),
-                                                                                                                             1)
-                                                                                                                             + 1))) {
+                for (EntityLivingBase tLiving : getBaseMetaTileEntity().getWorld()
+                                                                       .getEntitiesWithinAABB(
+                                                                               EntityLivingBase.class,
+                                                                               AxisAlignedBB.getBoundingBox(
+                                                                                       getBaseMetaTileEntity().getOffsetX(
+                                                                                               getBaseMetaTileEntity().getFrontFacing(),
+                                                                                               1),
+                                                                                       getBaseMetaTileEntity().getOffsetY(
+                                                                                               getBaseMetaTileEntity().getFrontFacing(),
+                                                                                               1),
+                                                                                       getBaseMetaTileEntity().getOffsetZ(
+                                                                                               getBaseMetaTileEntity().getFrontFacing(),
+                                                                                               1),
+                                                                                       getBaseMetaTileEntity().getOffsetX(
+                                                                                               getBaseMetaTileEntity().getFrontFacing(),
+                                                                                               1) + 1,
+                                                                                       getBaseMetaTileEntity().getOffsetY(
+                                                                                               getBaseMetaTileEntity().getFrontFacing(),
+                                                                                               1) + 1,
+                                                                                       getBaseMetaTileEntity().getOffsetZ(
+                                                                                               getBaseMetaTileEntity().getFrontFacing(),
+                                                                                               1) + 1))) {
                     GT_Utility.applyHeatDamage(tLiving, getSteamDamage());
                 }
             } catch (Throwable e) {

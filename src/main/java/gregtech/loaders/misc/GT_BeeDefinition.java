@@ -1063,7 +1063,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         AlleleHelper.instance.set(template, HUMIDITY_TOLERANCE, Tolerance.BOTH_1);
         AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORT);
         AlleleHelper.instance.set(template, FLOWER_PROVIDER, getFlowers(EXTRABEES, "rock"));
-    }, new Consumer<GT_BeeDefinition>() {
+    }, new Consumer<>() {
 
         @Override
         public void accept(GT_BeeDefinition dis) {
@@ -1633,33 +1633,31 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         beeSpecies.setHumidity(ARID);
         beeSpecies.setTemperature(HOT);
         beeSpecies.setNocturnal();
-    }, template -> AlleleHelper.instance.set(template, EFFECT, AlleleEffect.effectIgnition),
-            new Consumer<GT_BeeDefinition>() {
+    }, template -> AlleleHelper.instance.set(template, EFFECT, AlleleEffect.effectIgnition), new Consumer<>() {
 
-                @Override
-                public void accept(GT_BeeDefinition dis) {
-                    IBeeMutationCustom tMutation = dis.registerMutation(MARS, TITANIUM, 9);
-                    tMutation.requireResource(GregTech_API.sBlockMetal2, 12);
-                    tMutation.addMutationCondition(new GT_Bees.DimensionMutationCondition(29, "Mars")); // Mars Dim
-                }
-            }),
+        @Override
+        public void accept(GT_BeeDefinition dis) {
+            IBeeMutationCustom tMutation = dis.registerMutation(MARS, TITANIUM, 9);
+            tMutation.requireResource(GregTech_API.sBlockMetal2, 12);
+            tMutation.addMutationCondition(new GT_Bees.DimensionMutationCondition(29, "Mars")); // Mars Dim
+        }
+    }),
     LEDOX(GT_BranchDefinition.SPACE, "Ledox", false, new Color(0x0000CD), new Color(0x0074FF), beeSpecies -> {
         beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.SPACE), 0.10f);
         beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.LEDOX), 0.10f);
         beeSpecies.setHumidity(EnumHumidity.NORMAL);
         beeSpecies.setTemperature(COLD);
         beeSpecies.setHasEffect();
-    }, template -> AlleleHelper.instance.set(template, EFFECT, getEffect(EXTRABEES, "freezing")),
-            new Consumer<GT_BeeDefinition>() {
+    }, template -> AlleleHelper.instance.set(template, EFFECT, getEffect(EXTRABEES, "freezing")), new Consumer<>() {
 
-                @Override
-                public void accept(GT_BeeDefinition dis) {
-                    IBeeMutationCustom tMutation = dis.registerMutation(CALLISTO, LEAD, 7);
-                    if (NewHorizonsCoreMod.isModLoaded())
-                        tMutation.requireResource(GameRegistry.findBlock(NewHorizonsCoreMod.modID, "tile.Ledox"), 0);
-                    tMutation.addMutationCondition(new GT_Bees.DimensionMutationCondition(35, "Europa")); // Europa Dim
-                }
-            }),
+        @Override
+        public void accept(GT_BeeDefinition dis) {
+            IBeeMutationCustom tMutation = dis.registerMutation(CALLISTO, LEAD, 7);
+            if (NewHorizonsCoreMod.isModLoaded())
+                tMutation.requireResource(GameRegistry.findBlock(NewHorizonsCoreMod.modID, "tile.Ledox"), 0);
+            tMutation.addMutationCondition(new GT_Bees.DimensionMutationCondition(35, "Europa")); // Europa Dim
+        }
+    }),
     CALLISTOICE(GT_BranchDefinition.SPACE, "CallistoIce", false, new Color(0x0074FF), new Color(0x1EB1FF),
             beeSpecies -> {
                 beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.SPACE), 0.10f);
@@ -1668,7 +1666,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
                 beeSpecies.setTemperature(ICY);
                 beeSpecies.setHasEffect();
             }, template -> AlleleHelper.instance.set(template, EFFECT, getEffect(EXTRABEES, "freezing")),
-            new Consumer<GT_BeeDefinition>() {
+            new Consumer<>() {
 
                 @Override
                 public void accept(GT_BeeDefinition dis) {
@@ -1677,7 +1675,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
                             GameRegistry.findBlock(NewHorizonsCoreMod.modID, "tile.CallistoColdIce"),
                             0);
                     tMutation.addMutationCondition(new GT_Bees.DimensionMutationCondition(45, "Callisto")); // Callisto
-                                                                                                            // Dim
+                    // Dim
                 }
             }),
     MYTRYL(GT_BranchDefinition.SPACE, "Mytryl", false, new Color(0xDAA520), new Color(0xF26404), beeSpecies -> {
@@ -1687,7 +1685,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         beeSpecies.setTemperature(EnumTemperature.NORMAL);
         beeSpecies.setNocturnal();
         beeSpecies.setHasEffect();
-    }, template -> {}, new Consumer<GT_BeeDefinition>() {
+    }, template -> {}, new Consumer<>() {
 
         @Override
         public void accept(GT_BeeDefinition dis) {
@@ -1704,7 +1702,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         beeSpecies.setTemperature(HOT);
         beeSpecies.setNocturnal();
         beeSpecies.setHasEffect();
-    }, template -> {}, new Consumer<GT_BeeDefinition>() {
+    }, template -> {}, new Consumer<>() {
 
         @Override
         public void accept(GT_BeeDefinition dis) {
@@ -1720,7 +1718,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         beeSpecies.setHumidity(DAMP);
         beeSpecies.setTemperature(COLD);
         beeSpecies.setHasEffect();
-    }, template -> {}, new Consumer<GT_BeeDefinition>() {
+    }, template -> {}, new Consumer<>() {
 
         @Override
         public void accept(GT_BeeDefinition dis) {
@@ -1738,7 +1736,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
                 beeSpecies.setTemperature(ICY);
                 beeSpecies.setNocturnal();
                 beeSpecies.setHasEffect();
-            }, template -> {}, new Consumer<GT_BeeDefinition>() {
+            }, template -> {}, new Consumer<>() {
 
                 @Override
                 public void accept(GT_BeeDefinition dis) {
@@ -1747,7 +1745,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
                             GameRegistry.findBlock(NewHorizonsCoreMod.modID, "tile.MysteriousCrystal"),
                             0);
                     tMutation.addMutationCondition(new GT_Bees.DimensionMutationCondition(41, "Enceladus")); // Enceladus
-                                                                                                             // Dim
+                    // Dim
                 }
             }),
     BLACKPLUTONIUM(GT_BranchDefinition.SPACE, "BlackPlutonium", false, new Color(0x000000), new Color(0x323232),
@@ -1758,7 +1756,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
                 beeSpecies.setTemperature(HELLISH);
                 beeSpecies.setNocturnal();
                 beeSpecies.setHasEffect();
-            }, template -> {}, new Consumer<GT_BeeDefinition>() {
+            }, template -> {}, new Consumer<>() {
 
                 @Override
                 public void accept(GT_BeeDefinition dis) {
@@ -1776,7 +1774,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         beeSpecies.setTemperature(COLD);
         beeSpecies.setNocturnal();
         beeSpecies.setHasEffect();
-    }, template -> AlleleHelper.instance.set(template, SPEED, GT_Bees.speedBlinding), new Consumer<GT_BeeDefinition>() {
+    }, template -> AlleleHelper.instance.set(template, SPEED, GT_Bees.speedBlinding), new Consumer<>() {
 
         @Override
         public void accept(GT_BeeDefinition dis) {
@@ -2137,7 +2135,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
                 0.10f);
         beeSpecies.setHumidity(ARID);
         beeSpecies.setTemperature(HELLISH);
-    }, template -> AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST), new Consumer<GT_BeeDefinition>() {
+    }, template -> AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST), new Consumer<>() {
 
         @Override
         public void accept(GT_BeeDefinition dis) {
@@ -2630,68 +2628,35 @@ public enum GT_BeeDefinition implements IBeeDefinition {
     }
 
     static IAlleleBeeEffect getEffect(byte modid, String name) {
-        String s;
-        switch (modid) {
-            case EXTRABEES:
-                s = "extrabees.effect." + name;
-                break;
-            case GENDUSTRY:
-                s = "gendustry.effect." + name;
-                break;
-            case MAGICBEES:
-                s = "magicbees.effect" + name;
-                break;
-            case GREGTECH:
-                s = "gregtech.effect" + name;
-                break;
-            default:
-                s = "forestry.effect" + name;
-                break;
-        }
+        String s = switch (modid) {
+            case EXTRABEES -> "extrabees.effect." + name;
+            case GENDUSTRY -> "gendustry.effect." + name;
+            case MAGICBEES -> "magicbees.effect" + name;
+            case GREGTECH -> "gregtech.effect" + name;
+            default -> "forestry.effect" + name;
+        };
         return (IAlleleBeeEffect) AlleleManager.alleleRegistry.getAllele(s);
     }
 
     static IAlleleFlowers getFlowers(byte modid, String name) {
-        String s;
-        switch (modid) {
-            case EXTRABEES:
-                s = "extrabees.flower." + name;
-                break;
-            case GENDUSTRY:
-                s = "gendustry.flower." + name;
-                break;
-            case MAGICBEES:
-                s = "magicbees.flower" + name;
-                break;
-            case GREGTECH:
-                s = "gregtech.flower" + name;
-                break;
-            default:
-                s = "forestry.flowers" + name;
-                break;
-        }
+        String s = switch (modid) {
+            case EXTRABEES -> "extrabees.flower." + name;
+            case GENDUSTRY -> "gendustry.flower." + name;
+            case MAGICBEES -> "magicbees.flower" + name;
+            case GREGTECH -> "gregtech.flower" + name;
+            default -> "forestry.flowers" + name;
+        };
         return (IAlleleFlowers) AlleleManager.alleleRegistry.getAllele(s);
     }
 
     private static IAlleleBeeSpecies getSpecies(byte modid, String name) {
-        String s;
-        switch (modid) {
-            case EXTRABEES:
-                s = "extrabees.species." + name;
-                break;
-            case GENDUSTRY:
-                s = "gendustry.bee." + name;
-                break;
-            case MAGICBEES:
-                s = "magicbees.species" + name;
-                break;
-            case GREGTECH:
-                s = "gregtech.species" + name;
-                break;
-            default:
-                s = "forestry.species" + name;
-                break;
-        }
+        String s = switch (modid) {
+            case EXTRABEES -> "extrabees.species." + name;
+            case GENDUSTRY -> "gendustry.bee." + name;
+            case MAGICBEES -> "magicbees.species" + name;
+            case GREGTECH -> "gregtech.species" + name;
+            default -> "forestry.species" + name;
+        };
         IAlleleBeeSpecies ret = (IAlleleBeeSpecies) AlleleManager.alleleRegistry.getAllele(s);
         if (ret == null) {
             ret = NAQUADRIA.species;

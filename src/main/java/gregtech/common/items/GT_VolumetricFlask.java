@@ -226,7 +226,7 @@ public class GT_VolumetricFlask extends GT_Generic_Item implements IFluidContain
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubItems(Item item, CreativeTabs creativeTabs, List itemList) {
+    public void getSubItems(Item item, CreativeTabs creativeTabs, List<ItemStack> itemList) {
         itemList.add(new ItemStack(this));
         for (Fluid fluid : FluidRegistry.getRegisteredFluids()
                                         .values()) {
@@ -244,10 +244,9 @@ public class GT_VolumetricFlask extends GT_Generic_Item implements IFluidContain
             return false;
         }
         TileEntity te = world.getTileEntity(x, y, z);
-        if (!(te instanceof IFluidHandler)) {
+        if (!(te instanceof IFluidHandler handler)) {
             return false;
         }
-        IFluidHandler handler = (IFluidHandler) te;
         ForgeDirection dir = ForgeDirection.getOrientation(side);
         FluidStack fs = this.getFluid(stack);
         int capacity = getCapacity(stack);
@@ -274,8 +273,7 @@ public class GT_VolumetricFlask extends GT_Generic_Item implements IFluidContain
 
     private boolean collectFluidBlock(ItemStack stack, EntityPlayer player, World world, int x, int y, int z) {
         Block block = world.getBlock(x, y, z);
-        if (block instanceof IFluidBlock) {
-            IFluidBlock liquid = (IFluidBlock) block;
+        if (block instanceof IFluidBlock liquid) {
             if (liquid.canDrain(world, x, y, z)) {
                 FluidStack fluid = liquid.drain(world, x, y, z, false);
                 int amount = fillContainerStack(stack, player, fluid, true);

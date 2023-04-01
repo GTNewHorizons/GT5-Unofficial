@@ -105,11 +105,11 @@ public class GT_CLS_Compat {
             if (nextBakingMsgAt < now) {
                 nextBakingMsgAt = now + bakingMsgEvery;
                 GT_Mod.GT_FML_LOGGER.info(
-                        String.format("%s - Baking: %d%%", materialsType, (Integer) (currentStep * 100 / sizeStep)));
+                        String.format("%s - Baking: %d%%", materialsType, currentStep * 100 / sizeStep));
             }
             action.accept(m);
             currentStep += 1;
-        } ;
+        }
         GT_Mod.GT_FML_LOGGER.info(String.format("%s - Baking: Done", materialsType));
         try {
             progressBarStep.set(progressBar, currentStep);
@@ -130,7 +130,7 @@ public class GT_CLS_Compat {
                 mEvents,
                 progressBar,
                 m -> m.mMaterial,
-                m -> GT_Proxy.registerRecipes(m));
+                GT_Proxy::registerRecipes);
         ProgressManager.pop(progressBar);
         isRegisteringGTmaterials.set(null, false);
     }
@@ -147,7 +147,7 @@ public class GT_CLS_Compat {
                 replacedVanillaItemsSet,
                 progressBar,
                 m -> m.mDefaultLocalName,
-                m -> GT_PostLoad.doActualRegistration(m));
+                GT_PostLoad::doActualRegistration);
     }
 
     public static void pushToDisplayProgress() throws InvocationTargetException, IllegalAccessException {

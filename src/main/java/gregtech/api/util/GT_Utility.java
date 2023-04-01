@@ -82,6 +82,8 @@ import net.minecraftforge.fluids.IFluidContainerItem;
 import net.minecraftforge.fluids.IFluidHandler;
 import net.minecraftforge.oredict.OreDictionary;
 
+import buildcraft.api.transport.IPipeTile;
+import cofh.api.energy.IEnergyReceiver;
 import cofh.api.transport.IItemDuct;
 
 import com.google.auto.value.AutoValue;
@@ -212,7 +214,7 @@ public class GT_Utility {
         return rField;
     }
 
-    public static Field getField(Class aObject, String aField) {
+    public static Field getField(Class<?> aObject, String aField) {
         Field rField = null;
         try {
             rField = aObject.getDeclaredField(aField);
@@ -223,7 +225,7 @@ public class GT_Utility {
         return rField;
     }
 
-    public static Method getMethod(Class aObject, String aMethod, Class<?>... aParameterTypes) {
+    public static Method getMethod(Class<?> aObject, String aMethod, Class<?>... aParameterTypes) {
         Method rMethod = null;
         try {
             rMethod = aObject.getMethod(aMethod, aParameterTypes);
@@ -248,7 +250,7 @@ public class GT_Utility {
 
     public static Field getField(Object aObject, String aField, boolean aPrivate, boolean aLogErrors) {
         try {
-            Field tField = (aObject instanceof Class) ? ((Class) aObject).getDeclaredField(aField)
+            Field tField = (aObject instanceof Class) ? ((Class<?>) aObject).getDeclaredField(aField)
                     : (aObject instanceof String) ? Class.forName((String) aObject)
                                                          .getDeclaredField(aField)
                             : aObject.getClass()
@@ -263,7 +265,7 @@ public class GT_Utility {
 
     public static Object getFieldContent(Object aObject, String aField, boolean aPrivate, boolean aLogErrors) {
         try {
-            Field tField = (aObject instanceof Class) ? ((Class) aObject).getDeclaredField(aField)
+            Field tField = (aObject instanceof Class) ? ((Class<?>) aObject).getDeclaredField(aField)
                     : (aObject instanceof String) ? Class.forName((String) aObject)
                                                          .getDeclaredField(aField)
                             : aObject.getClass()
@@ -290,7 +292,7 @@ public class GT_Utility {
             Class<?>[] tParameterTypes = new Class<?>[aParameters.length];
             for (byte i = 0; i < aParameters.length; i++) {
                 if (aParameters[i] instanceof Class) {
-                    tParameterTypes[i] = (Class) aParameters[i];
+                    tParameterTypes[i] = (Class<?>) aParameters[i];
                     aParameters[i] = null;
                 } else {
                     tParameterTypes[i] = aParameters[i].getClass();
@@ -306,7 +308,7 @@ public class GT_Utility {
                 }
             }
 
-            Method tMethod = (aObject instanceof Class) ? ((Class) aObject).getMethod(aMethod, tParameterTypes)
+            Method tMethod = (aObject instanceof Class) ? ((Class<?>) aObject).getMethod(aMethod, tParameterTypes)
                     : aObject.getClass()
                              .getMethod(aMethod, tParameterTypes);
             if (aPrivate) tMethod.setAccessible(true);
@@ -375,7 +377,7 @@ public class GT_Utility {
                 }
             }
 
-            if (tPotionHashmap != null) return ((HashMap) tPotionHashmap.get(aPlayer)).get(aPotionIndex) != null;
+            if (tPotionHashmap != null) return ((HashMap<?, ?>) tPotionHashmap.get(aPlayer)).get(aPotionIndex) != null;
         } catch (Throwable e) {
             if (D1) e.printStackTrace(GT_Log.err);
         }
@@ -406,7 +408,7 @@ public class GT_Utility {
                 }
             }
 
-            if (tPotionHashmap != null) ((HashMap) tPotionHashmap.get(aPlayer)).remove(aPotionIndex);
+            if (tPotionHashmap != null) ((HashMap<?, ?>) tPotionHashmap.get(aPlayer)).remove(aPotionIndex);
         } catch (Throwable e) {
             if (D1) e.printStackTrace(GT_Log.err);
         }
@@ -436,7 +438,7 @@ public class GT_Utility {
 
     public static ItemStack suckOneItemStackAt(World aWorld, double aX, double aY, double aZ, double aL, double aH,
             double aW) {
-        for (EntityItem tItem : (ArrayList<EntityItem>) aWorld.getEntitiesWithinAABB(
+        for (EntityItem tItem : aWorld.getEntitiesWithinAABB(
                 EntityItem.class,
                 AxisAlignedBB.getBoundingBox(aX, aY, aZ, aX + aL, aY + aH, aZ + aW))) {
             if (!tItem.isDead) {
@@ -477,21 +479,21 @@ public class GT_Utility {
     public static void checkAvailabilities() {
         if (CHECK_ALL) {
             try {
-                Class tClass = IItemDuct.class;
+                Class<IItemDuct> tClass = IItemDuct.class;
                 tClass.getCanonicalName();
                 TE_CHECK = true;
             } catch (Throwable e) {
                 /**/
             }
             try {
-                Class tClass = buildcraft.api.transport.IPipeTile.class;
+                Class<IPipeTile> tClass = buildcraft.api.transport.IPipeTile.class;
                 tClass.getCanonicalName();
                 BC_CHECK = true;
             } catch (Throwable e) {
                 /**/
             }
             try {
-                Class tClass = cofh.api.energy.IEnergyReceiver.class;
+                Class<IEnergyReceiver> tClass = cofh.api.energy.IEnergyReceiver.class;
                 tClass.getCanonicalName();
                 RF_CHECK = true;
             } catch (Throwable e) {
@@ -820,8 +822,7 @@ public class GT_Utility {
         }
 
         // if target is an inventory, e.g. chest, machine, drawers...
-        if (aTileEntity2 instanceof IInventory) {
-            final IInventory tPutInventory = (IInventory) aTileEntity2;
+        if (aTileEntity2 instanceof IInventory tPutInventory) {
 
             // partially filled slot spare space mapping.
             // value is the sum of all spare space left not counting completely empty slot
@@ -1261,8 +1262,7 @@ public class GT_Utility {
                 if (tMovedItemCount > 0) return tMovedItemCount;
             }
 
-            if (aDoCheckChests && aTileEntity1 instanceof TileEntityChest) {
-                TileEntityChest tTileEntity1 = (TileEntityChest) aTileEntity1;
+            if (aDoCheckChests && aTileEntity1 instanceof TileEntityChest tTileEntity1) {
                 if (tTileEntity1.adjacentChestChecked) {
                     byte tAmount = 0;
                     if (tTileEntity1.adjacentChestXNeg != null) {
@@ -1321,8 +1321,7 @@ public class GT_Utility {
                     if (tAmount != 0) return tAmount;
                 }
             }
-            if (aDoCheckChests && aTileEntity2 instanceof TileEntityChest) {
-                TileEntityChest tTileEntity2 = (TileEntityChest) aTileEntity2;
+            if (aDoCheckChests && aTileEntity2 instanceof TileEntityChest tTileEntity2) {
                 if (tTileEntity2.adjacentChestChecked) {
                     byte tAmount = 0;
                     if (tTileEntity2.adjacentChestXNeg != null) {
@@ -1566,8 +1565,7 @@ public class GT_Utility {
             }
             if (tMovedItemCount > 0) return tMovedItemCount;
 
-            if (aDoCheckChests && toTile instanceof TileEntityChest) {
-                TileEntityChest tTileEntity2 = (TileEntityChest) toTile;
+            if (aDoCheckChests && toTile instanceof TileEntityChest tTileEntity2) {
                 if (tTileEntity2.adjacentChestChecked) {
                     if (tTileEntity2.adjacentChestXNeg != null) {
                         tMovedItemCount = moveFromSlotToSide(
@@ -2342,11 +2340,12 @@ public class GT_Utility {
         return listContains(aObject, Arrays.asList(aObjects));
     }
 
-    public static boolean listContains(Object aObject, Collection aObjects) {
+    public static boolean listContains(Object aObject, Collection<?> aObjects) {
         if (aObjects == null) return false;
         return aObjects.contains(aObject);
     }
 
+    @SafeVarargs
     public static <T> boolean arrayContainsNonNull(T... aArray) {
         if (aArray != null) for (Object tObject : aArray) if (tObject != null) return true;
         return false;
@@ -2355,6 +2354,7 @@ public class GT_Utility {
     /**
      * Note: use {@link ArrayExt#withoutNulls(Object[], IntFunction)} if you want an array as a result.
      */
+    @SafeVarargs
     public static <T> ArrayList<T> getArrayListWithoutNulls(T... aArray) {
         if (aArray == null) return new ArrayList<>();
         ArrayList<T> rList = new ArrayList<>(Arrays.asList(aArray));
@@ -2365,6 +2365,7 @@ public class GT_Utility {
     /**
      * Note: use {@link ArrayExt#withoutTrailingNulls(Object[], IntFunction)} if you want an array as a result.
      */
+    @SafeVarargs
     public static <T> ArrayList<T> getArrayListWithoutTrailingNulls(T... aArray) {
         if (aArray == null) return new ArrayList<>();
         ArrayList<T> rList = new ArrayList<>(Arrays.asList(aArray));
@@ -2731,7 +2732,7 @@ public class GT_Utility {
         Map<Integer, Integer> tEnchantments = EnchantmentHelper.getEnchantments(aStack);
         Integer tLevel = tEnchantments.get(Enchantment_Hazmat.INSTANCE.effectId);
 
-        if (tLevel != null && tLevel.intValue() >= 1) {
+        if (tLevel != null && tLevel >= 1) {
             return true;
         }
         return false;
@@ -3002,6 +3003,7 @@ public class GT_Utility {
         return aList.get(aIndex);
     }
 
+    @SafeVarargs
     public static <E> E selectItemInList(int aIndex, E aReplacement, E... aList) {
         if (aList == null || aList.length == 0) return aReplacement;
         if (aList.length <= aIndex) return aList[aList.length - 1];
@@ -3053,7 +3055,7 @@ public class GT_Utility {
     /**
      * Why the fuck do neither Java nor Guava have a Function to do this?
      */
-    public static <X, Y extends Comparable> LinkedHashMap<X, Y> sortMapByValuesDescending(Map<X, Y> aMap) {
+    public static <X, Y extends Comparable<Y>> LinkedHashMap<X, Y> sortMapByValuesDescending(Map<X, Y> aMap) {
         List<Map.Entry<X, Y>> tEntrySet = new LinkedList<>(aMap.entrySet());
         tEntrySet.sort((aValue1, aValue2) -> {
             return aValue2.getValue()
@@ -3101,9 +3103,9 @@ public class GT_Utility {
         if (entity.riddenByEntity != null) entity.riddenByEntity.mountEntity(null);
 
         World startWorld = entity.worldObj;
-        World destinationWorld = FMLCommonHandler.instance()
-                                                 .getMinecraftServerInstance()
-                                                 .worldServerForDimension(aDimension);
+        WorldServer destinationWorld = FMLCommonHandler.instance()
+                                                       .getMinecraftServerInstance()
+                                                       .worldServerForDimension(aDimension);
 
         if (destinationWorld == null) {
             return false;
@@ -3143,7 +3145,7 @@ public class GT_Utility {
 
         entity.setLocationAndAngles(aX, aY, aZ, entity.rotationYaw, entity.rotationPitch);
 
-        ((WorldServer) destinationWorld).theChunkProviderServer.loadChunk((int) aX >> 4, (int) aZ >> 4);
+        destinationWorld.theChunkProviderServer.loadChunk((int) aX >> 4, (int) aZ >> 4);
 
         destinationWorld.theProfiler.startSection("placing");
         if (interDimensional) {
@@ -3171,7 +3173,7 @@ public class GT_Utility {
             EntityPlayerMP player = (EntityPlayerMP) entity;
             if (interDimensional) {
                 player.mcServer.getConfigurationManager()
-                               .func_72375_a(player, (WorldServer) destinationWorld);
+                               .func_72375_a(player, destinationWorld);
             }
             player.playerNetServerHandler.setPlayerLocation(aX, aY, aZ, player.rotationYaw, player.rotationPitch);
         }
@@ -3180,13 +3182,13 @@ public class GT_Utility {
 
         if (((entity instanceof EntityPlayerMP)) && interDimensional) {
             EntityPlayerMP player = (EntityPlayerMP) entity;
-            player.theItemInWorldManager.setWorld((WorldServer) destinationWorld);
+            player.theItemInWorldManager.setWorld(destinationWorld);
             player.mcServer.getConfigurationManager()
-                           .updateTimeAndWeatherForPlayer(player, (WorldServer) destinationWorld);
+                           .updateTimeAndWeatherForPlayer(player, destinationWorld);
             player.mcServer.getConfigurationManager()
                            .syncPlayerInventory(player);
 
-            for (PotionEffect potionEffect : (Iterable<PotionEffect>) player.getActivePotionEffects()) {
+            for (PotionEffect potionEffect : player.getActivePotionEffects()) {
                 player.playerNetServerHandler.sendPacket(new S1DPacketEntityEffect(player.getEntityId(), potionEffect));
             }
 
@@ -3500,9 +3502,8 @@ public class GT_Utility {
                 if (D1) e.printStackTrace(GT_Log.err);
             }
             try {
-                if (tTileEntity instanceof ic2.api.crops.ICropTile) {
+                if (tTileEntity instanceof ic2.api.crops.ICropTile crop) {
                     rEUAmount += 1000;
-                    final ic2.api.crops.ICropTile crop = (ic2.api.crops.ICropTile) tTileEntity;
                     if (crop.getScanLevel() < 4) crop.setScanLevel((byte) 4);
                     if (crop.getCrop() != null) {
                         tList.add(
@@ -3548,8 +3549,7 @@ public class GT_Utility {
             }
 
             try {
-                if (tTileEntity instanceof forestry.arboriculture.tiles.TileLeaves) {
-                    final forestry.arboriculture.tiles.TileLeaves tileLeaves = (forestry.arboriculture.tiles.TileLeaves) tTileEntity;
+                if (tTileEntity instanceof forestry.arboriculture.tiles.TileLeaves tileLeaves) {
                     final forestry.api.arboriculture.ITree tree = tileLeaves.getTree();
                     if (tree != null) {
                         rEUAmount += 1000;
@@ -3638,22 +3638,15 @@ public class GT_Utility {
      *         like on the Texture Sheet. return values should always be between [0.0F and 0.99F].
      */
     public static float[] getClickedFacingCoords(byte aSide, float aX, float aY, float aZ) {
-        switch (aSide) {
-            case 0:
-                return new float[] { Math.min(0.99F, Math.max(0, 1 - aX)), Math.min(0.99F, Math.max(0, aZ)) };
-            case 1:
-                return new float[] { Math.min(0.99F, Math.max(0, aX)), Math.min(0.99F, Math.max(0, aZ)) };
-            case 2:
-                return new float[] { Math.min(0.99F, Math.max(0, 1 - aX)), Math.min(0.99F, Math.max(0, 1 - aY)) };
-            case 3:
-                return new float[] { Math.min(0.99F, Math.max(0, aX)), Math.min(0.99F, Math.max(0, 1 - aY)) };
-            case 4:
-                return new float[] { Math.min(0.99F, Math.max(0, aZ)), Math.min(0.99F, Math.max(0, 1 - aY)) };
-            case 5:
-                return new float[] { Math.min(0.99F, Math.max(0, 1 - aZ)), Math.min(0.99F, Math.max(0, 1 - aY)) };
-            default:
-                return new float[] { 0.5F, 0.5F };
-        }
+        return switch (aSide) {
+            case 0 -> new float[] { Math.min(0.99F, Math.max(0, 1 - aX)), Math.min(0.99F, Math.max(0, aZ)) };
+            case 1 -> new float[] { Math.min(0.99F, Math.max(0, aX)), Math.min(0.99F, Math.max(0, aZ)) };
+            case 2 -> new float[] { Math.min(0.99F, Math.max(0, 1 - aX)), Math.min(0.99F, Math.max(0, 1 - aY)) };
+            case 3 -> new float[] { Math.min(0.99F, Math.max(0, aX)), Math.min(0.99F, Math.max(0, 1 - aY)) };
+            case 4 -> new float[] { Math.min(0.99F, Math.max(0, aZ)), Math.min(0.99F, Math.max(0, 1 - aY)) };
+            case 5 -> new float[] { Math.min(0.99F, Math.max(0, 1 - aZ)), Math.min(0.99F, Math.max(0, 1 - aY)) };
+            default -> new float[] { 0.5F, 0.5F };
+        };
     }
 
     /**
@@ -3663,8 +3656,7 @@ public class GT_Utility {
     public static byte determineWrenchingSide(byte aSide, float aX, float aY, float aZ) {
         byte tBack = getOppositeSide(aSide);
         switch (aSide) {
-            case 0:
-            case 1:
+            case 0, 1 -> {
                 if (aX < 0.25) {
                     if (aZ < 0.25) return tBack;
                     if (aZ > 0.75) return tBack;
@@ -3678,8 +3670,8 @@ public class GT_Utility {
                 if (aZ < 0.25) return 2;
                 if (aZ > 0.75) return 3;
                 return aSide;
-            case 2:
-            case 3:
+            }
+            case 2, 3 -> {
                 if (aX < 0.25) {
                     if (aY < 0.25) return tBack;
                     if (aY > 0.75) return tBack;
@@ -3693,8 +3685,8 @@ public class GT_Utility {
                 if (aY < 0.25) return 0;
                 if (aY > 0.75) return 1;
                 return aSide;
-            case 4:
-            case 5:
+            }
+            case 4, 5 -> {
                 if (aZ < 0.25) {
                     if (aY < 0.25) return tBack;
                     if (aY > 0.75) return tBack;
@@ -3708,6 +3700,7 @@ public class GT_Utility {
                 if (aY < 0.25) return 0;
                 if (aY > 0.75) return 1;
                 return aSide;
+            }
         }
         return -1;
     }
@@ -3846,14 +3839,14 @@ public class GT_Utility {
                 return;
             }
             ArrayList<String> tTagsToRemove = new ArrayList<>();
-            for (Object tKey : aNBT.func_150296_c()) {
-                NBTBase tValue = aNBT.getTag((String) tKey);
+            for (String tKey : aNBT.func_150296_c()) {
+                NBTBase tValue = aNBT.getTag(tKey);
                 if (tValue == null || (tValue instanceof NBTPrimitive && ((NBTPrimitive) tValue).func_150291_c() == 0)
                         || (tValue instanceof NBTTagString
                                 && isStringInvalid(((NBTTagString) tValue).func_150285_a_())))
-                    tTagsToRemove.add((String) tKey);
+                    tTagsToRemove.add(tKey);
             }
-            for (Object tKey : tTagsToRemove) aNBT.removeTag((String) tKey);
+            for (String tKey : tTagsToRemove) aNBT.removeTag(tKey);
             aStack.setTagCompound(aNBT.hasNoTags() ? null : aNBT);
         }
 
@@ -4074,17 +4067,17 @@ public class GT_Utility {
 
                 if (tOils != null) fillBookWithList(tNBTList, "Oils%s\n\n", "\n", 9, tOils);
 
-                tPageText = "Oil notes\n\n" + "Prospects from NW to SE 576 chunks"
-                        + "(9 8x8 oilfields)\n around and gives min-max amount"
-                        + "\n\n"
-                        + "[1][2][3]"
-                        + "\n"
-                        + "[4][5][6]"
-                        + "\n"
-                        + "[7][8][9]"
-                        + "\n"
-                        + "\n"
-                        + "[5] - Prospector in this 8x8 area";
+                tPageText = """
+                        Oil notes
+
+                        Prospects from NW to SE 576 chunks(9 8x8 oilfields)
+                         around and gives min-max amount
+
+                        [1][2][3]
+                        [4][5][6]
+                        [7][8][9]
+
+                        [5] - Prospector in this 8x8 area""";
                 tNBTList.appendTag(new NBTTagString(tPageText));
 
                 tPageText = "Corners of [5] are \n" + tOilsPosStr + "\n" + "P - Prospector in 8x8 field";
@@ -4373,8 +4366,7 @@ public class GT_Utility {
                 ItemStack toAdd = ((ItemStack) o.getKey()).copy();
                 toAdd.stackSize = amount;
                 inputs.add(toAdd);
-            } else if (o.getKey() instanceof String) {
-                final String dictName = (String) o.getKey();
+            } else if (o.getKey() instanceof String dictName) {
                 // Do not register tools dictName in inputs
                 if (ToolDictNames.contains(dictName)) continue;
                 ItemStack stack = GT_OreDictUnificator.get(dictName, null, amount, false, true);
@@ -4434,7 +4426,7 @@ public class GT_Utility {
     }
 
     public static int clamp(int val, int lo, int hi) {
-        return val > hi ? hi : val < lo ? lo : val;
+        return MathHelper.clamp_int(val, lo, hi);
     }
 
     public static int ceilDiv(int lhs, int rhs) {

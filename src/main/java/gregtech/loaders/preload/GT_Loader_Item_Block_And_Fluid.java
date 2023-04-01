@@ -1265,8 +1265,8 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                         ItemList.Tool_Lighter_Platinum_Full.get(1L),
                         ItemList.Tool_Lighter_Platinum_Empty.get(1L)));
 
-        Dyes.dyeBlack.addFluidDye((Fluid) GT_FluidFactory.of("squidink", "Squid Ink", LIQUID, 295));
-        Dyes.dyeBlue.addFluidDye((Fluid) GT_FluidFactory.of("indigo", "Indigo Dye", LIQUID, 295));
+        Dyes.dyeBlack.addFluidDye(GT_FluidFactory.of("squidink", "Squid Ink", LIQUID, 295));
+        Dyes.dyeBlue.addFluidDye(GT_FluidFactory.of("indigo", "Indigo Dye", LIQUID, 295));
         for (byte i = 0; i < Dyes.VALUES.length; i = (byte) (i + 1)) {
             Dyes tDye = Dyes.VALUES[i];
             Fluid tFluid;

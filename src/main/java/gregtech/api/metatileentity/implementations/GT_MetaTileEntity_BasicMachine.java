@@ -237,14 +237,37 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
             boolean aActive, boolean aRedstone) {
-        return mTextures[mMainFacing < 2
-                ? aSide == aFacing ? aActive ? 2 : 3
-                        : aSide == 0 ? aActive ? 6 : 7 : aSide == 1 ? aActive ? 4 : 5 : aActive ? 0 : 1
-                : aSide == mMainFacing ? aActive ? 2 : 3
-                        : (showPipeFacing() && aSide == aFacing)
-                                ? aSide == 0 ? aActive ? 8 : 9 : aSide == 1 ? aActive ? 10 : 11 : aActive ? 12 : 13
-                                : aSide == 0 ? aActive ? 6 : 7
-                                        : aSide == 1 ? aActive ? 4 : 5 : aActive ? 0 : 1][aColorIndex + 1];
+        final int textureIndex;
+        if (mMainFacing < 2) {
+            if (aSide == aFacing) {
+                textureIndex = aActive ? 2 : 3;
+            } else {
+                textureIndex = switch (aSide) {
+                    case 0 -> aActive ? 6 : 7;
+                    case 1 -> aActive ? 4 : 5;
+                    default -> aActive ? 0 : 1;
+                };
+            }
+        } else {
+            if (aSide == mMainFacing) {
+                textureIndex = aActive ? 2 : 3;
+            } else {
+                if (showPipeFacing() && aSide == aFacing) {
+                    textureIndex = switch (aSide) {
+                        case 0 -> aActive ? 8 : 9;
+                        case 1 -> aActive ? 10 : 11;
+                        default -> aActive ? 12 : 13;
+                    };
+                } else {
+                    textureIndex = switch (aSide) {
+                        case 0 -> aActive ? 6 : 7;
+                        case 1 -> aActive ? 4 : 5;
+                        default -> aActive ? 0 : 1;
+                    };
+                }
+            }
+        }
+        return mTextures[textureIndex][aColorIndex + 1];
     }
 
     @Override

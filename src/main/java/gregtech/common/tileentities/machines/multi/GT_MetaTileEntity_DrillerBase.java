@@ -58,7 +58,7 @@ public abstract class GT_MetaTileEntity_DrillerBase
     private static final Block miningPipeBlock = GT_Utility.getBlockFromStack(miningPipe);
     private static final Block miningPipeTipBlock = GT_Utility.getBlockFromStack(miningPipeTip);
     protected static final String STRUCTURE_PIECE_MAIN = "main";
-    protected static final ClassValue<IStructureDefinition<GT_MetaTileEntity_DrillerBase>> STRUCTURE_DEFINITION = new ClassValue<IStructureDefinition<GT_MetaTileEntity_DrillerBase>>() {
+    protected static final ClassValue<IStructureDefinition<GT_MetaTileEntity_DrillerBase>> STRUCTURE_DEFINITION = new ClassValue<>() {
 
         @Override
         protected IStructureDefinition<GT_MetaTileEntity_DrillerBase> computeValue(Class<?> type) {
@@ -252,7 +252,7 @@ public abstract class GT_MetaTileEntity_DrillerBase
 
     /**
      * Added for compability reasons
-     * 
+     *
      * @return true if the state is 0 false otherwise.
      * @deprecated compatibility reason
      */
@@ -274,10 +274,12 @@ public abstract class GT_MetaTileEntity_DrillerBase
     protected int tryLowerPipeState(boolean isSimulating) {
         if (!isHasMiningPipes()) return 2;
         switch (canLowerPipe()) {
-            case 1:
+            case 1 -> {
                 return 1;
-            case 2:
+            }
+            case 2 -> {
                 return 3;
+            }
         }
 
         Block b = getBaseMetaTileEntity().getBlock(xPipe, yHead - 1, zPipe);
@@ -375,30 +377,32 @@ public abstract class GT_MetaTileEntity_DrillerBase
     protected boolean workingDownward(ItemStack aStack, int xDrill, int yDrill, int zDrill, int xPipe, int zPipe,
             int yHead, int oldYHead) {
         switch (tryLowerPipeState()) {
-            case 2:
+            case 2 -> {
                 mMaxProgresstime = 0;
                 return false;
-            case 3:
+            }
+            case 3 -> {
                 workState = STATE_UPWARD;
                 return true;
-            case 1:
+            }
+            case 1 -> {
                 workState = STATE_AT_BOTTOM;
                 return true;
-            default:
+            }
+            default -> {
                 return true;
+            }
         }
     }
 
     protected boolean workingAtBottom(ItemStack aStack, int xDrill, int yDrill, int zDrill, int xPipe, int zPipe,
             int yHead, int oldYHead) {
-        switch (tryLowerPipeState(true)) {
-            case 0:
-                workState = STATE_DOWNWARD;
-                return true;
-            default:
-                workState = STATE_UPWARD;
-                return true;
+        if (tryLowerPipeState(true) == 0) {
+            workState = STATE_DOWNWARD;
+            return true;
         }
+        workState = STATE_UPWARD;
+        return true;
     }
 
     protected boolean workingUpward(ItemStack aStack, int xDrill, int yDrill, int zDrill, int xPipe, int zPipe,
@@ -422,16 +426,12 @@ public abstract class GT_MetaTileEntity_DrillerBase
             return false;
         }
         putMiningPipesFromInputsInController();
-        switch (workState) {
-            case STATE_DOWNWARD:
-                return workingDownward(aStack, xDrill, yDrill, zDrill, xPipe, zPipe, yHead, oldYHead);
-            case STATE_AT_BOTTOM:
-                return workingAtBottom(aStack, xDrill, yDrill, zDrill, xPipe, zPipe, yHead, oldYHead);
-            case STATE_UPWARD:
-                return workingUpward(aStack, xDrill, yDrill, zDrill, xPipe, zPipe, yHead, oldYHead);
-            default:
-                return false;
-        }
+        return switch (workState) {
+            case STATE_DOWNWARD -> workingDownward(aStack, xDrill, yDrill, zDrill, xPipe, zPipe, yHead, oldYHead);
+            case STATE_AT_BOTTOM -> workingAtBottom(aStack, xDrill, yDrill, zDrill, xPipe, zPipe, yHead, oldYHead);
+            case STATE_UPWARD -> workingUpward(aStack, xDrill, yDrill, zDrill, xPipe, zPipe, yHead, oldYHead);
+            default -> false;
+        };
     }
 
     @Override

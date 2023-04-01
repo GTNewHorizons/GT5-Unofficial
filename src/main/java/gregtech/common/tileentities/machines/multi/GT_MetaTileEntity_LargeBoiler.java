@@ -47,7 +47,7 @@ public abstract class GT_MetaTileEntity_LargeBoiler extends
         GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_LargeBoiler> implements ISurvivalConstructable {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final ClassValue<IStructureDefinition<GT_MetaTileEntity_LargeBoiler>> STRUCTURE_DEFINITION = new ClassValue<IStructureDefinition<GT_MetaTileEntity_LargeBoiler>>() {
+    private static final ClassValue<IStructureDefinition<GT_MetaTileEntity_LargeBoiler>> STRUCTURE_DEFINITION = new ClassValue<>() {
 
         @Override
         protected IStructureDefinition<GT_MetaTileEntity_LargeBoiler> computeValue(Class<?> type) {

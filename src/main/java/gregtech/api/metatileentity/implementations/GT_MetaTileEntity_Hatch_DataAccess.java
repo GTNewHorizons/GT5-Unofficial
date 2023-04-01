@@ -143,19 +143,16 @@ public class GT_MetaTileEntity_Hatch_DataAccess extends GT_MetaTileEntity_Hatch 
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        switch (mTier) {
-            case 4:
-                getBaseMetaTileEntity().add2by2Slots(
-                        builder,
-                        getGUITextureSet().getItemSlot(),
-                        GT_UITextures.OVERLAY_SLOT_CIRCUIT);
-                break;
-            default:
-                getBaseMetaTileEntity().add4by4Slots(
-                        builder,
-                        getGUITextureSet().getItemSlot(),
-                        GT_UITextures.OVERLAY_SLOT_CIRCUIT);
-                break;
+        if (mTier == 4) {
+            getBaseMetaTileEntity().add2by2Slots(
+                    builder,
+                    getGUITextureSet().getItemSlot(),
+                    GT_UITextures.OVERLAY_SLOT_CIRCUIT);
+        } else {
+            getBaseMetaTileEntity().add4by4Slots(
+                    builder,
+                    getGUITextureSet().getItemSlot(),
+                    GT_UITextures.OVERLAY_SLOT_CIRCUIT);
         }
     }
 }

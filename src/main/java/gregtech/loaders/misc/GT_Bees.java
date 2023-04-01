@@ -72,7 +72,7 @@ public class GT_Bees {
 
         noWork = new AlleleFloat("speedUnproductive", 0, false);
         superSpeed = new AlleleFloat("speedAccelerated", 4F, false);
-        speedBlinding = (IAlleleFloat) AlleleManager.alleleRegistry.getAllele("magicbees.speedBlinding") == null
+        speedBlinding = AlleleManager.alleleRegistry.getAllele("magicbees.speedBlinding") == null
                 ? new AlleleFloat("speedBlinding", 2f, false)
                 : (IAlleleFloat) AlleleManager.alleleRegistry.getAllele("magicbees.speedBlinding");
 

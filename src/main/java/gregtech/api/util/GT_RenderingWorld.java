@@ -3,6 +3,7 @@ package gregtech.api.util;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import net.minecraft.block.Block;
@@ -181,7 +182,7 @@ public class GT_RenderingWorld implements IBlockAccess {
             BlockInfo blockInfo = (BlockInfo) o;
 
             if (meta != blockInfo.meta) return false;
-            return block != null ? block.equals(blockInfo.block) : blockInfo.block == null;
+            return Objects.equals(block, blockInfo.block);
         }
 
         @Override

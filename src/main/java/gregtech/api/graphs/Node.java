@@ -32,7 +32,7 @@ public class Node {
     public int mNodeValue;
     public int mHighestNodeValue;
 
-    public class ReturnPair {
+    public static class ReturnPair {
 
         public NodePath mReturnPath;
         public Lock returnLock;

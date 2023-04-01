@@ -19,22 +19,12 @@ public class ProcessingCircuit implements gregtech.api.interfaces.IOreRecipeRegi
             ItemStack aStack) {
         if (gregtech.api.util.GT_OreDictUnificator.isBlacklisted(aStack) && aModName.equals("gregtech")) return;
         switch (aMaterial.mName) {
-            case "Good":
-            case "Data":
-            case "Elite":
-            case "Master":
-            case "Ultimate":
-            case "Superconductor":
-            case "Infinite":
-            case "Bio":
-                if (!gregtech.api.util.GT_OreDictUnificator.isBlacklisted(aStack) && !aModName.equals("gregtech"))
+            case "Good", "Data", "Elite", "Master", "Ultimate", "Superconductor", "Infinite", "Bio" -> {
+                if (!GT_OreDictUnificator.isBlacklisted(aStack) && !aModName.equals("gregtech"))
                     GT_ModHandler.removeRecipeByOutputDelayed(aStack);
-                break;
-            case "Primitive":
-            case "Advanced":
-                GT_ModHandler.removeRecipeByOutputDelayed(aStack);
-                break;
-            case "Basic":
+            }
+            case "Primitive", "Advanced" -> GT_ModHandler.removeRecipeByOutputDelayed(aStack);
+            case "Basic" -> {
                 GT_ModHandler.removeRecipeByOutputDelayed(aStack);
                 GT_ModHandler.addCraftingRecipe(
                         aStack,
@@ -47,7 +37,7 @@ public class ProcessingCircuit implements gregtech.api.interfaces.IOreRecipeRegi
                 GT_ModHandler.addShapelessCraftingRecipe(
                         GT_ModHandler.getIC2Item("electronicCircuit", 1L),
                         new Object[] { ItemList.Circuit_Integrated.getWildcard(1L) });
-                break;
+            }
         }
     }
 }

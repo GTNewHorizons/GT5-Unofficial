@@ -513,13 +513,17 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
     public void doSound(byte aIndex, double aX, double aY, double aZ) {
         super.doSound(aIndex, aX, aY, aZ);
         switch (aIndex) {
-            case PROCESS_START_SOUND_INDEX:
+            case PROCESS_START_SOUND_INDEX -> {
                 if (getProcessStartSound() != null)
                     GT_Utility.doSoundAtClient(getProcessStartSound(), getTimeBetweenProcessSounds(), 1.0F, aX, aY, aZ);
-                break;
-            case INTERRUPT_SOUND_INDEX:
-                GT_Utility.doSoundAtClient(SoundResource.IC2_MACHINES_INTERRUPT_ONE, 100, 1.0F, aX, aY, aZ);
-                break;
+            }
+            case INTERRUPT_SOUND_INDEX -> GT_Utility.doSoundAtClient(
+                    SoundResource.IC2_MACHINES_INTERRUPT_ONE,
+                    100,
+                    1.0F,
+                    aX,
+                    aY,
+                    aZ);
         }
     }
 
@@ -678,24 +682,12 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             mRuntime = 0;
             if (getBaseMetaTileEntity().getRandomNumber(6000) == 0) {
                 switch (getBaseMetaTileEntity().getRandomNumber(6)) {
-                    case 0:
-                        mWrench = false;
-                        break;
-                    case 1:
-                        mScrewdriver = false;
-                        break;
-                    case 2:
-                        mSoftHammer = false;
-                        break;
-                    case 3:
-                        mHardHammer = false;
-                        break;
-                    case 4:
-                        mSolderingTool = false;
-                        break;
-                    case 5:
-                        mCrowbar = false;
-                        break;
+                    case 0 -> mWrench = false;
+                    case 1 -> mScrewdriver = false;
+                    case 2 -> mSoftHammer = false;
+                    case 3 -> mHardHammer = false;
+                    case 4 -> mSolderingTool = false;
+                    case 5 -> mCrowbar = false;
                 }
             }
             if (mInventory[1] != null && getBaseMetaTileEntity().getRandomNumber(2) == 0
@@ -1184,9 +1176,8 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
         if (aTileEntity == null) return false;
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
-        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch hatch
                 && GT_ExoticEnergyInputHelper.isExoticEnergyInput(aMetaTileEntity)) {
-            GT_MetaTileEntity_Hatch hatch = (GT_MetaTileEntity_Hatch) aMetaTileEntity;
             hatch.updateTexture(aBaseCasingIndex);
             return mExoticEnergyHatches.add(hatch);
         }
@@ -1333,7 +1324,7 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
                         + StatCollector.translateToLocal("GT5U.multiblock.efficiency")
                         + ": "
                         + EnumChatFormatting.YELLOW
-                        + Float.toString(mEfficiency / 100.0F)
+                        + mEfficiency / 100.0F
                         + EnumChatFormatting.RESET
                         + " %",
                 /* 6 */ StatCollector.translateToLocal("GT5U.multiblock.pollution") + ": "

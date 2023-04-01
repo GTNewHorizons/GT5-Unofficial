@@ -47,29 +47,23 @@ public class GT_MetaTileEntity_NaquadahReactor extends GT_MetaTileEntity_BasicGe
     public GT_Recipe.GT_Recipe_Map getRecipes() {
         GT_Recipe.GT_Recipe_Map ret;
         switch (mTier) {
-            case 4: {
+            case 4 -> {
                 ret = GT_Recipe.GT_Recipe_Map.sSmallNaquadahReactorFuels;
-                break;
             }
-            case 5: {
+            case 5 -> {
                 ret = GT_Recipe.GT_Recipe_Map.sLargeNaquadahReactorFuels;
-                break;
             }
-            case 6: {
+            case 6 -> {
                 ret = GT_Recipe.GT_Recipe_Map.sHugeNaquadahReactorFuels;
-                break;
             }
-            case 7: {
+            case 7 -> {
                 ret = GT_Recipe.GT_Recipe_Map.sExtremeNaquadahReactorFuels;
-                break;
             }
-            case 8: {
+            case 8 -> {
                 ret = GT_Recipe.GT_Recipe_Map.sUltraHugeNaquadahReactorFuels;
-                break;
             }
-            default: {
+            default -> {
                 ret = null;
-                break;
             }
         }
         return ret;

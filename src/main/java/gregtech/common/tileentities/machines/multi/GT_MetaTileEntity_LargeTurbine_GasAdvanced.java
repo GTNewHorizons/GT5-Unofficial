@@ -158,13 +158,11 @@ public class GT_MetaTileEntity_LargeTurbine_GasAdvanced extends GT_MetaTileEntit
             if (totalFlow <= 0) return 0;
             tEU = GT_Utility.safeInt((long) totalFlow * fuelValue);
 
-            if (totalFlow == actualOptimalFlow) {
-                tEU = GT_Utility.safeInt((long) tEU * (long) aBaseEff / 10000L);
-            } else {
+            if (totalFlow != actualOptimalFlow) {
                 float efficiency = getOverflowEfficiency(totalFlow, actualOptimalFlow, overflowMultiplier);
                 tEU *= efficiency;
-                tEU = GT_Utility.safeInt((long) tEU * (long) aBaseEff / 10000L);
             }
+            tEU = GT_Utility.safeInt((long) tEU * (long) aBaseEff / 10000L);
 
             // If next output is above the maximum the dynamo can handle, set it to the maximum instead of exploding the
             // turbine

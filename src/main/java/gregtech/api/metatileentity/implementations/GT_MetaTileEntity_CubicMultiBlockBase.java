@@ -39,7 +39,7 @@ public abstract class GT_MetaTileEntity_CubicMultiBlockBase<T extends GT_MetaTil
         extends GT_MetaTileEntity_EnhancedMultiBlockBase<T> implements ISurvivalConstructable {
 
     protected static final String STRUCTURE_PIECE_MAIN = "main";
-    protected static final ClassValue<IStructureDefinition<GT_MetaTileEntity_CubicMultiBlockBase<?>>> STRUCTURE_DEFINITION = new ClassValue<IStructureDefinition<GT_MetaTileEntity_CubicMultiBlockBase<?>>>() {
+    protected static final ClassValue<IStructureDefinition<GT_MetaTileEntity_CubicMultiBlockBase<?>>> STRUCTURE_DEFINITION = new ClassValue<>() {
 
         @Override
         protected IStructureDefinition<GT_MetaTileEntity_CubicMultiBlockBase<?>> computeValue(Class<?> type) {
