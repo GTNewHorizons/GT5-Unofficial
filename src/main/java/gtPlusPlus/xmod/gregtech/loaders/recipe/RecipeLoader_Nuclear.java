@@ -200,7 +200,7 @@ public class RecipeLoader_Nuclear {
                 ItemUtils.getItemStackOfAmountFromOreDict("cellOxygen", 1),
                 ItemUtils.getItemStackOfAmountFromOreDict("dustLithium7", 16),
                 FluidUtils.getFluidStack("water", 1000),
-                FluidUtils.getFluidStack("lithiumhydroxide", 144 * 4),
+                FluidUtils.getFluidStack("lithiumhydroxide", 2000 + 144 * 4),
                 CI.emptyCells(1),
                 300 * 20);
 

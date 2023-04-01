@@ -4,7 +4,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.GT_Values;
-import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.item.chemistry.NuclearChem;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.ELEMENT;
@@ -44,7 +43,7 @@ public class RecipeLoader_NuclearFuelProcessing {
                 null, // Extra 5 inputs
                 FluidUtils.getFluidStack(aLiFBeF2ZrF4U235, 1000),
                 null,
-                90 * 60 * 20, // Duration
+                30 * 60 * 20, // Duration
                 MaterialUtils.getVoltageForTier(4));
 
         // 7LiF - BeF2 - ZrF4 - UF4 - 650C
@@ -60,7 +59,7 @@ public class RecipeLoader_NuclearFuelProcessing {
                 null, // Extra 5 inputs
                 FluidUtils.getFluidStack(aLiFBeF2ZrF4UF4, 1000),
                 null,
-                120 * 60 * 20,
+                40 * 60 * 20,
                 MaterialUtils.getVoltageForTier(5));
 
         // 7liF - BeF2 - ThF4 - UF4 - 566C
@@ -76,7 +75,7 @@ public class RecipeLoader_NuclearFuelProcessing {
                 null, // Extra 5 inputs
                 FluidUtils.getFluidStack(aLiFBeF2ThF4UF4, 1000),
                 null,
-                150 * 60 * 20, // Duration
+                50 * 60 * 20, // Duration
                 MaterialUtils.getVoltageForTier(5));
 
         // Reprocess Fuels
@@ -87,12 +86,9 @@ public class RecipeLoader_NuclearFuelProcessing {
                 ELEMENT.getInstance().FLUORINE.getCell(6),
                 NUCLIDE.LiFThF4.getFluidStack(10000),
                 new ItemStack[] { CI.emptyCells(5), FLUORIDES.LITHIUM_FLUORIDE.getCell(1),
-                        ItemUtils.getSimpleStack(ModItems.dustProtactinium233),
-                        ItemUtils.getSimpleStack(ModItems.dustProtactinium233),
-                        ItemUtils.getSimpleStack(ModItems.dustProtactinium233),
-                        ItemUtils.getSimpleStack(ModItems.dustProtactinium233),
-                        ItemUtils.getSimpleStack(ModItems.dustProtactinium233),
-                        ItemUtils.getSimpleStack(ModItems.dustProtactinium233) },
+                        ELEMENT.getInstance().PROTACTINIUM.getDust(1), ELEMENT.getInstance().PROTACTINIUM.getDust(1),
+                        ELEMENT.getInstance().PROTACTINIUM.getDust(1), ELEMENT.getInstance().PROTACTINIUM.getDust(1),
+                        ELEMENT.getInstance().PROTACTINIUM.getDust(1), ELEMENT.getInstance().PROTACTINIUM.getDust(1) },
                 new int[] { 10000, 10000, 500, 500, 500, 250, 250, 250 },
                 NUCLIDE.UF6F2.getFluidStack(1500),
                 20 * 60 * 10,
@@ -102,12 +98,10 @@ public class RecipeLoader_NuclearFuelProcessing {
                 ELEMENT.getInstance().FLUORINE.getCell(6),
                 NUCLIDE.LiFBeF2ThF4.getFluidStack(10000),
                 new ItemStack[] { CI.emptyCells(4), FLUORIDES.LITHIUM_FLUORIDE.getCell(1),
-                        FLUORIDES.BERYLLIUM_FLUORIDE.getCell(1), ItemUtils.getSimpleStack(ModItems.dustProtactinium233),
-                        ItemUtils.getSimpleStack(ModItems.dustProtactinium233),
-                        ItemUtils.getSimpleStack(ModItems.dustProtactinium233),
-                        ItemUtils.getSimpleStack(ModItems.dustProtactinium233),
-                        ItemUtils.getSimpleStack(ModItems.dustProtactinium233),
-                        ItemUtils.getSimpleStack(ModItems.dustProtactinium233) },
+                        FLUORIDES.BERYLLIUM_FLUORIDE.getCell(1), ELEMENT.getInstance().PROTACTINIUM.getDust(1),
+                        ELEMENT.getInstance().PROTACTINIUM.getDust(1), ELEMENT.getInstance().PROTACTINIUM.getDust(1),
+                        ELEMENT.getInstance().PROTACTINIUM.getDust(1), ELEMENT.getInstance().PROTACTINIUM.getDust(1),
+                        ELEMENT.getInstance().PROTACTINIUM.getDust(1) },
                 new int[] { 10000, 10000, 10000, 1000, 1000, 1000, 500, 500, 500 },
                 NUCLIDE.UF6F2.getFluidStack(3000),
                 20 * 60 * 10,
@@ -119,12 +113,9 @@ public class RecipeLoader_NuclearFuelProcessing {
                 ELEMENT.getInstance().FLUORINE.getCell(6),
                 NUCLIDE.Sparged_LiFThF4.getFluidStack(10000),
                 new ItemStack[] { CI.emptyCells(4), FLUORIDES.LITHIUM_FLUORIDE.getCell(2),
-                        ItemUtils.getSimpleStack(ModItems.dustProtactinium233),
-                        ItemUtils.getSimpleStack(ModItems.dustProtactinium233),
-                        ItemUtils.getSimpleStack(ModItems.dustProtactinium233),
-                        ItemUtils.getSimpleStack(ModItems.dustProtactinium233),
-                        ItemUtils.getSimpleStack(ModItems.dustProtactinium233),
-                        ItemUtils.getSimpleStack(ModItems.dustProtactinium233) },
+                        ELEMENT.getInstance().PROTACTINIUM.getDust(1), ELEMENT.getInstance().PROTACTINIUM.getDust(1),
+                        ELEMENT.getInstance().PROTACTINIUM.getDust(1), ELEMENT.getInstance().PROTACTINIUM.getDust(1),
+                        ELEMENT.getInstance().PROTACTINIUM.getDust(1), ELEMENT.getInstance().PROTACTINIUM.getDust(1) },
                 new int[] { 10000, 10000, 1000, 1000, 1000, 1000, 1000, 1000 },
                 NUCLIDE.UF6F2.getFluidStack(3000),
                 20 * 60 * 5,
@@ -134,12 +125,10 @@ public class RecipeLoader_NuclearFuelProcessing {
                 ELEMENT.getInstance().FLUORINE.getCell(6),
                 NUCLIDE.Sparged_LiFBeF2ThF4.getFluidStack(10000),
                 new ItemStack[] { CI.emptyCells(2), FLUORIDES.LITHIUM_FLUORIDE.getCell(2),
-                        FLUORIDES.BERYLLIUM_FLUORIDE.getCell(2), ItemUtils.getSimpleStack(ModItems.dustProtactinium233),
-                        ItemUtils.getSimpleStack(ModItems.dustProtactinium233),
-                        ItemUtils.getSimpleStack(ModItems.dustProtactinium233),
-                        ItemUtils.getSimpleStack(ModItems.dustProtactinium233),
-                        ItemUtils.getSimpleStack(ModItems.dustProtactinium233),
-                        ItemUtils.getSimpleStack(ModItems.dustProtactinium233) },
+                        FLUORIDES.BERYLLIUM_FLUORIDE.getCell(2), ELEMENT.getInstance().PROTACTINIUM.getDust(1),
+                        ELEMENT.getInstance().PROTACTINIUM.getDust(1), ELEMENT.getInstance().PROTACTINIUM.getDust(1),
+                        ELEMENT.getInstance().PROTACTINIUM.getDust(1), ELEMENT.getInstance().PROTACTINIUM.getDust(1),
+                        ELEMENT.getInstance().PROTACTINIUM.getDust(1) },
                 new int[] { 10000, 10000, 10000, 2000, 2000, 2000, 2000, 2000, 2000 },
                 NUCLIDE.UF6F2.getFluidStack(6000),
                 20 * 60 * 5,

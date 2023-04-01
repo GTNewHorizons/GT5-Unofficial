@@ -2335,7 +2335,7 @@ public class RECIPES_Machines {
                     CI.craftingToolScrewdriver,
                     "plateDoubleHastelloyC276",
                     "gearGtTalonite",
-                    CI.fieldGenerator_MV,
+                    CI.fieldGenerator_LV,
                     "gearGtTalonite",
                     "plateDoubleHastelloyC276",
                     CI.craftingToolHammer_Hard,
@@ -2377,7 +2377,7 @@ public class RECIPES_Machines {
                     "gearGtStellite",
                     GregtechItemList.Industrial_FuelRefinery.get(1));
 
-            ItemStack mInnerTank = ItemList.Quantum_Tank_LV.get(1);
+            ItemStack mInnerTank = ItemList.Super_Tank_IV.get(1);
 
             // Incoloy Casing
             RecipeUtils.addShapedGregtechRecipe(
@@ -3369,7 +3369,7 @@ public class RECIPES_Machines {
         // Sparge Tower Casing
         CORE.RA.addSixSlotAssemblingRecipe(
                 new ItemStack[] { CI.getNumberedAdvancedCircuit(8), CI.getTieredGTPPMachineCasing(3, 1),
-                        ALLOY.HS188A.getPlate(8), ALLOY.HASTELLOY_N.getRing(4),
+                        ALLOY.HS188A.getPlate(2), ALLOY.HASTELLOY_N.getRing(4),
                         CI.getTieredComponentOfMaterial(Materials.TungstenSteel, OrePrefixes.plateDouble, 4),
                         ALLOY.HASTELLOY_N.getScrew(4), },
                 ALLOY.STAINLESS_STEEL.getFluidStack(8 * 144),

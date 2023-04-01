@@ -52,8 +52,13 @@ public class GregtechMetaTileEntity_Refinery extends GregtechMeta_MultiBlockBase
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType(getMachineType()).addInfo("Controller Block for the Fission Fuel Processing Unit")
+                .addInfo("Refines fluorides and Uranium into nuclear fuel for the LFTR")
+                .addInfo("LFTR Fuel 2 and Fuel 3 have alternative, much more efficient recipes")
+                .addInfo("However, they require fission breeding outputs from the LFTR itself")
+                .addInfo("Only one Energy Hatch is allowed per Processing Unit")
+                .addInfo("All recipe times in this multi are very long, watch out!")
                 .addPollutionAmount(getPollutionPerSecond(null)).addSeparator().beginStructureBlock(3, 9, 3, false)
-                .addController("Bottom Center").addCasingInfo("Hastelloy-X Structural Casing", 7)
+                .addController("Bottom Center").addCasingInfo("Hastelloy-X Structural Block", 7)
                 .addCasingInfo("Incoloy-DS Fluid Containment Block", 5).addCasingInfo("Zeron-100 Reactor Shielding", 4)
                 .addCasingInfo("Hastelloy-N Sealant Blocks", 17).addInputHatch("Base platform", 1)
                 .addOutputHatch("Base platform", 1).addOutputBus("Base platform", 1).addMufflerHatch("Base platform", 1)

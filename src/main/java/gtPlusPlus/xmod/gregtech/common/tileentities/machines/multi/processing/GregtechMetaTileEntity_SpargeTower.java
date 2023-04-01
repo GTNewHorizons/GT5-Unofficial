@@ -123,6 +123,9 @@ public class GregtechMetaTileEntity_SpargeTower extends GregtechMeta_MultiBlockB
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Gas Sparge Tower").addInfo("Controller block for the Sparging Tower")
+                .addInfo("Runs gases through depleted molten salts to extract precious fluids")
+                .addInfo("Has a speed bonus of 10x - recipe times are 1/10 of what is shown on NEI")
+                .addInfo("Works the same way as the Distillation Tower, but with a fixed height of 8")
                 .addInfo("Fluids are only put out at the correct height")
                 .addInfo("The correct height equals the slot number in the NEI recipe").addSeparator()
                 .beginStructureBlock(3, 8, 3, true).addController("Front bottom")
