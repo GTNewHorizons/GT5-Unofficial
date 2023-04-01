@@ -7,6 +7,7 @@ import java.util.*;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
@@ -545,47 +546,24 @@ public class GT_Values {
         return maxPlasmaTurbineEfficiency;
     }
 
+    private static final long[] EXPLOSION_LOOKUP_V = new long[] { V[0], V[1], V[2], V[3], V[4], V[4] * 2, V[5], V[6],
+            V[7], V[8], V[8] * 2, V[9], V[10], V[11], V[12], V[12] * 2, V[13], V[14], V[15] };
+
+    // This must have 1 more element than EXPLOSION_LOOKUP_V
+    private static final float[] EXPLOSION_LOOKUP_POWER = new float[] { 1.0F, 2.0F, 3.0F, 4.0F, 5.0F, 6.0F, 7.0F, 8.0F,
+            9.0F, 10.0F, 11.0F, 12.0F, 13.0F, 14.0F, 15.0F, 16.0F, 17.0F, 18.0F, 19.0F, 20.0F };
+
     public static float getExplosionPowerForVoltage(long voltage) {
-        if (voltage < V[0]) {
-            return 1.0F;
-        } else if (voltage < V[1]) {
-            return 2.0F;
-        } else if (voltage < V[2]) {
-            return 3.0F;
-        } else if (voltage < V[3]) {
-            return 4.0F;
-        } else if (voltage < V[4]) {
-            return 5.0F;
-        } else if (voltage < V[4] * 2) {
-            return 6.0F;
-        } else if (voltage < V[5]) {
-            return 7.0F;
-        } else if (voltage < V[6]) {
-            return 8.0F;
-        } else if (voltage < V[7]) {
-            return 9.0F;
-        } else if (voltage < V[8]) {
-            return 10.0F;
-        } else if (voltage < V[8] * 2) {
-            return 11.0F;
-        } else if (voltage < V[9]) {
-            return 12.0F;
-        } else if (voltage < V[10]) {
-            return 13.0F;
-        } else if (voltage < V[11]) {
-            return 14.0F;
-        } else if (voltage < V[12]) {
-            return 15.0F;
-        } else if (voltage < V[12] * 2) {
-            return 16.0F;
-        } else if (voltage < V[13]) {
-            return 17.0F;
-        } else if (voltage < V[14]) {
-            return 18.0F;
-        } else if (voltage < V[15]) {
-            return 19.0F;
+        int lookupIdx = Arrays.binarySearch(EXPLOSION_LOOKUP_V, voltage);
+        if (lookupIdx >= 0) {
+            // found in the array, the original condition was voltage < X so we look at the next position
+            lookupIdx = lookupIdx + 1;
         } else {
-            return 20.0F;
+            // the result is (-(insertion point)-1)
+            final int insertionIdx = -lookupIdx - 1;
+            // The value we're looking for is exactly where the exact voltage value would be inserted into the array
+            lookupIdx = insertionIdx;
         }
+        return EXPLOSION_LOOKUP_POWER[MathHelper.clamp_int(lookupIdx, 0, EXPLOSION_LOOKUP_POWER.length - 1)];
     }
 }
