@@ -77,13 +77,7 @@ public class ItemData {
             if (temp) rList.add(aMaterial.clone());
         }
 
-        Collections.sort(rList, new Comparator<>() {
-
-            @Override
-            public int compare(MaterialStack a, MaterialStack b) {
-                return a.mAmount == b.mAmount ? 0 : a.mAmount > b.mAmount ? -1 : +1;
-            }
-        });
+        Collections.sort(rList, (a, b) -> a.mAmount == b.mAmount ? 0 : a.mAmount > b.mAmount ? -1 : +1);
 
         if (rList.isEmpty()) {
             mMaterial = null;

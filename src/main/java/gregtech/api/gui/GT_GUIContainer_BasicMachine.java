@@ -84,12 +84,7 @@ public class GT_GUIContainer_BasicMachine extends GT_GUIContainerMetaTile_Machin
         if (machine.isSteampowered()) {
             batterySlotTooltipKey = UNUSED_SLOT_TOOLTIP;
             batterySlotTooltipArgs = new String[0];
-            addToolTip(new GT_GuiSmartTooltip(tProblemArea, new TooltipVisibilityProvider() {
-
-                public boolean shouldShowTooltip() {
-                    return hasErrorCode(NEEDS_STEAM_VENTING);
-                }
-            }, mTooltipCache.getData(STALLED_VENT_TOOLTIP)));
+            addToolTip(new GT_GuiSmartTooltip(tProblemArea, () -> hasErrorCode(NEEDS_STEAM_VENTING), mTooltipCache.getData(STALLED_VENT_TOOLTIP)));
         } else {
             String pTier1 = powerTierName(machine.mTier);
             if (machine.mTier == GT_Values.VN.length - 1) {
@@ -130,12 +125,8 @@ public class GT_GUIContainer_BasicMachine extends GT_GUIContainerMetaTile_Machin
                         mTooltipCache.getData(
                                 recipes != null && recipes.usesSpecialSlot() ? SPECIAL_SLOT_TOOLTIP
                                         : UNUSED_SLOT_TOOLTIP)));
-        addToolTip(new GT_GuiSmartTooltip(tProblemArea, new TooltipVisibilityProvider() {
-
-            public boolean shouldShowTooltip() {
-                return container.mStuttering && !hasErrorCode(NEEDS_STEAM_VENTING);
-            }
-        },
+        addToolTip(new GT_GuiSmartTooltip(tProblemArea,
+            () -> container.mStuttering && !hasErrorCode(NEEDS_STEAM_VENTING),
                 mTooltipCache.getData(
                         STALLED_STUTTERING_TOOLTIP,
                         StatCollector.translateToLocal(
@@ -144,7 +135,7 @@ public class GT_GUIContainer_BasicMachine extends GT_GUIContainerMetaTile_Machin
 
     /**
      * Apply proper coloration to a machine's power tier short name
-     * 
+     *
      * @param machineTier
      * @return colored power tier short name
      */
