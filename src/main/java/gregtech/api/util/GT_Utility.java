@@ -2733,7 +2733,7 @@ public class GT_Utility {
         Map<Integer, Integer> tEnchantments = EnchantmentHelper.getEnchantments(aStack);
         Integer tLevel = tEnchantments.get(Enchantment_Hazmat.INSTANCE.effectId);
 
-        if (tLevel != null && tLevel.intValue() >= 1) {
+        if (tLevel != null && tLevel >= 1) {
             return true;
         }
         return false;
