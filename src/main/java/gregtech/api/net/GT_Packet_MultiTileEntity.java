@@ -213,11 +213,13 @@ public class GT_Packet_MultiTileEntity extends GT_Packet_New {
         }
         if ((packetFeatures & INVENTORY_NAME) == INVENTORY_NAME) {
             int tLength = aData.readInt();
-            String tName = "";
+            String tName;
             if (tLength > 0) {
+                StringBuilder tNameBuilder = new StringBuilder();
                 for (int i = 0; i < tLength; i++) {
-                    tName += aData.readChar();
+                    tNameBuilder.append(aData.readChar());
                 }
+                tName = tNameBuilder.toString();
             } else {
                 tName = null;
             }
