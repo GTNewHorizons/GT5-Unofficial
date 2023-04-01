@@ -2349,6 +2349,7 @@ public class GT_Utility {
         return aObjects.contains(aObject);
     }
 
+    @SafeVarargs
     public static <T> boolean arrayContainsNonNull(T... aArray) {
         if (aArray != null) for (Object tObject : aArray) if (tObject != null) return true;
         return false;
@@ -2357,6 +2358,7 @@ public class GT_Utility {
     /**
      * Note: use {@link ArrayExt#withoutNulls(Object[], IntFunction)} if you want an array as a result.
      */
+    @SafeVarargs
     public static <T> ArrayList<T> getArrayListWithoutNulls(T... aArray) {
         if (aArray == null) return new ArrayList<>();
         ArrayList<T> rList = new ArrayList<>(Arrays.asList(aArray));
@@ -2367,6 +2369,7 @@ public class GT_Utility {
     /**
      * Note: use {@link ArrayExt#withoutTrailingNulls(Object[], IntFunction)} if you want an array as a result.
      */
+    @SafeVarargs
     public static <T> ArrayList<T> getArrayListWithoutTrailingNulls(T... aArray) {
         if (aArray == null) return new ArrayList<>();
         ArrayList<T> rList = new ArrayList<>(Arrays.asList(aArray));
@@ -3004,6 +3007,7 @@ public class GT_Utility {
         return aList.get(aIndex);
     }
 
+    @SafeVarargs
     public static <E> E selectItemInList(int aIndex, E aReplacement, E... aList) {
         if (aList == null || aList.length == 0) return aReplacement;
         if (aList.length <= aIndex) return aList[aList.length - 1];

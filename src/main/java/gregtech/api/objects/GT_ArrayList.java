@@ -19,6 +19,7 @@ public class GT_ArrayList<E> extends ArrayList<E> {
         mAllowNulls = aAllowNulls;
     }
 
+    @SafeVarargs
     public GT_ArrayList(boolean aAllowNulls, E... aArray) {
         super(Arrays.asList(aArray));
         mAllowNulls = aAllowNulls;
