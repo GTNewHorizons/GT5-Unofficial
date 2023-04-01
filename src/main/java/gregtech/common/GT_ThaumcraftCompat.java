@@ -123,7 +123,7 @@ public class GT_ThaumcraftCompat implements IThaumcraftCompat {
     private static final AspectList getAspectList(List<TC_Aspects.TC_AspectStack> aAspects) {
         AspectList rAspects = new AspectList();
         TC_Aspects.TC_AspectStack tAspect;
-        for (Iterator i$ = aAspects.iterator(); i$.hasNext(); rAspects.add(
+        for (Iterator<TC_Aspects.TC_AspectStack> i$ = aAspects.iterator(); i$.hasNext(); rAspects.add(
                 (Aspect) tAspect.mAspect.mAspect,
                 (int) tAspect.mAmount)) {
             tAspect = (TC_Aspects.TC_AspectStack) i$.next();
@@ -142,7 +142,7 @@ public class GT_ThaumcraftCompat implements IThaumcraftCompat {
         if (tCategory == null) {
             return null;
         }
-        for (Iterator i$ = tCategory.research.values()
+        for (Iterator<ResearchItem> i$ = tCategory.research.values()
                                              .iterator(); i$.hasNext();) {
             ResearchItem tResearch = (ResearchItem) i$.next();
             if ((tResearch.displayColumn == aX) && (tResearch.displayRow == aY)) {

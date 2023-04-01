@@ -126,7 +126,7 @@ public class GT_Entity_Arrow extends EntityArrow {
                 vec3 = Vec3.createVectorHelper(tVector.hitVec.xCoord, tVector.hitVec.yCoord, tVector.hitVec.zCoord);
             }
             Entity tHitEntity = null;
-            List tAllPotentiallyHitEntities = this.worldObj.getEntitiesWithinAABBExcludingEntity(
+            List<Entity> tAllPotentiallyHitEntities = this.worldObj.getEntitiesWithinAABBExcludingEntity(
                     this,
                     this.boundingBox.addCoord(this.motionX, this.motionY, this.motionZ)
                                     .expand(1.0D, 1.0D, 1.0D));

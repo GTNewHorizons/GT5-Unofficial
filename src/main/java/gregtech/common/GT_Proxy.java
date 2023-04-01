@@ -47,6 +47,7 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.tileentity.TileEntity;
@@ -763,7 +764,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
         try {
             for (String tOreName : OreDictionary.getOreNames()) {
                 ItemStack tOreStack;
-                for (Iterator i$ = OreDictionary.getOres(tOreName)
+                for (Iterator<ItemStack> i$ = OreDictionary.getOres(tOreName)
                                                 .iterator(); i$.hasNext(); registerOre(
                                                         new OreDictionary.OreRegisterEvent(tOreName, tOreStack))) {
                     tOreStack = (ItemStack) i$.next();
@@ -1318,7 +1319,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
 
         GT_Log.out.println(
                 "GT_Mod: Cleaning up all OreDict Crafting Recipes, which have an empty List in them, since they are never meeting any Condition.");
-        List tList = CraftingManager.getInstance()
+        List<IRecipe> tList = CraftingManager.getInstance()
                                     .getRecipeList();
         for (int i = 0; i < tList.size(); i++) {
             if ((tList.get(i) instanceof ShapedOreRecipe)) {
@@ -1778,7 +1779,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
                             }
                             if (aMaterial != Materials._NULL) {
                                 Materials tReRegisteredMaterial;
-                                for (Iterator i$ = aMaterial.mOreReRegistrations.iterator(); i$.hasNext(); GT_OreDictUnificator.registerOre(
+                                for (Iterator<Materials> i$ = aMaterial.mOreReRegistrations.iterator(); i$.hasNext(); GT_OreDictUnificator.registerOre(
                                         aPrefix,
                                         tReRegisteredMaterial,
                                         aEvent.Ore)) {
@@ -2204,13 +2205,13 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
                                 && (!(tEntity instanceof EntityPlayer))
                                 && (tEntity.canBePushed())
                                 && (((EntityLivingBase) tEntity).getHealth() > 0.0F)) {
-                                    List tList = tEntity.worldObj.getEntitiesWithinAABBExcludingEntity(
+                                    List<Entity> tList = tEntity.worldObj.getEntitiesWithinAABBExcludingEntity(
                                             tEntity,
                                             tEntity.boundingBox.expand(
                                                     0.20000000298023224D,
                                                     0.0D,
                                                     0.20000000298023224D));
-                                    Class tClass = tEntity.getClass();
+                                    Class<? extends Entity> tClass = tEntity.getClass();
                                     int tEntityCount = 1;
                                     if (tList != null) {
                                         for (Object o : tList) {

@@ -31,6 +31,8 @@ import java.util.stream.Stream;
 
 import javax.annotation.Nullable;
 
+import buildcraft.api.transport.IPipeTile;
+import cofh.api.energy.IEnergyReceiver;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -477,21 +479,21 @@ public class GT_Utility {
     public static void checkAvailabilities() {
         if (CHECK_ALL) {
             try {
-                Class tClass = IItemDuct.class;
+                Class<IItemDuct> tClass = IItemDuct.class;
                 tClass.getCanonicalName();
                 TE_CHECK = true;
             } catch (Throwable e) {
                 /**/
             }
             try {
-                Class tClass = buildcraft.api.transport.IPipeTile.class;
+                Class<IPipeTile> tClass = buildcraft.api.transport.IPipeTile.class;
                 tClass.getCanonicalName();
                 BC_CHECK = true;
             } catch (Throwable e) {
                 /**/
             }
             try {
-                Class tClass = cofh.api.energy.IEnergyReceiver.class;
+                Class<IEnergyReceiver> tClass = cofh.api.energy.IEnergyReceiver.class;
                 tClass.getCanonicalName();
                 RF_CHECK = true;
             } catch (Throwable e) {

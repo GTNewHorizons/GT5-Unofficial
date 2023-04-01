@@ -366,7 +366,7 @@ public class GT_MetaTileEntity_Teleporter extends GT_MetaTileEntity_BasicTank
                             }
                         }
                     }
-                    List entities_in_box = getBaseMetaTileEntity().getWorld()
+                    List<Entity> entities_in_box = getBaseMetaTileEntity().getWorld()
                                                                   .getEntitiesWithinAABB(
                                                                           Entity.class,
                                                                           AxisAlignedBB.getBoundingBox(
