@@ -129,11 +129,21 @@ public class EyeOfHarmonyRecipe {
         }
         // End item processing.
 
-        // --- Output and process fluids of the recipe.
-        ArrayList<FluidStack> fluidStackArrayList = validPlasmaGenerator(materialList);
+        // --- Fluid handling ---
+        ArrayList<FluidStack> fluidStackArrayList = new ArrayList<>();
+
+        // If DeepDark then it should output all plasmas involved in making exotic catalyst.
+        if (rocketTier == 9) {
+            for (Materials material : VALID_PLASMAS) {
+                fluidStackArrayList.add(material.getPlasma(1));
+            }
+        } else {
+            // --- Output and process fluids of the recipe.
+            fluidStackArrayList.addAll(validPlasmaGenerator(materialList));
+        }
 
         for (FluidStack fluidStack : fluidStackArrayList) {
-            fluidStack.amount = (int) ((this.spacetimeCasingTierRequired + 1) * 1_000_000L);
+            fluidStack.amount = (int) ((this.spacetimeCasingTierRequired + 1) * 8_000_000L);
         }
 
         // Add a bonus fluid of compressed star matter.
@@ -157,7 +167,7 @@ public class EyeOfHarmonyRecipe {
         fluidStackArrayList.add(SPECIAL_FLUIDS[spacetimeTier + 1]);
 
         outputFluids = fluidStackArrayList;
-        // End fluid processing.
+        // --- End fluid handling ---.
 
         this.hydrogenRequirement = hydrogenRequirement;
         this.heliumRequirement = heliumRequirement;

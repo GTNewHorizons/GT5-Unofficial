@@ -1,8 +1,11 @@
 package com.github.technus.tectech.thing.block;
 
+import java.util.ArrayList;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
@@ -58,6 +61,11 @@ public class EyeOfHarmonyBlock extends Block {
     public static void registerOther(Block block) {
         String name = block.getUnlocalizedName().substring(block.getUnlocalizedName().indexOf(".") + 1);
         GameRegistry.registerBlock(block, name.substring(name.indexOf(":") + 1));
+    }
+
+    @Override
+    public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int meta, int fortune) {
+        return new ArrayList<>();
     }
 
 }

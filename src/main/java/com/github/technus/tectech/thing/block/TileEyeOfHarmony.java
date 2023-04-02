@@ -29,8 +29,8 @@ public class TileEyeOfHarmony extends TileEntity {
         this.rotationSpeed = rotationSpeed;
     }
 
-    private float size = 1;
-    private float rotationSpeed = 0;
+    private float size = 10;
+    private float rotationSpeed = 10;
 
     // Fun fact, these methods were entirely written by ChatGPT3... Take that as you will.
     public static <T> ArrayList<T> selectNRandomElements(Collection<T> inputList, long n) {
@@ -58,7 +58,7 @@ public class TileEyeOfHarmony extends TileEntity {
         this.tier = tier;
     }
 
-    private long tier = -1;
+    private long tier = 9;
 
     public void incrementSize() {
         size += 1.5f;
@@ -180,4 +180,5 @@ public class TileEyeOfHarmony extends TileEntity {
     public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
         readFromNBT(pkt.func_148857_g());
     }
+
 }

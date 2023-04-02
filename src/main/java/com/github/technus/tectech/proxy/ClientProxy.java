@@ -1,12 +1,14 @@
 package com.github.technus.tectech.proxy;
 
 import static com.github.technus.tectech.TecTech.RANDOM;
+import static com.github.technus.tectech.thing.casing.TT_Container_Casings.eyeOfHarmonyRenderBlock;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.gui.GuiNewChat;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
@@ -18,6 +20,7 @@ import com.github.technus.tectech.compatibility.openmodularturrets.TT_turret_loa
 import com.github.technus.tectech.thing.block.*;
 import com.github.technus.tectech.thing.item.DebugElementalInstanceContainer_EM;
 import com.github.technus.tectech.thing.item.ElementalDefinitionContainer_EM;
+import com.github.technus.tectech.thing.item.RenderEyeOfHarmonyItem;
 import com.github.technus.tectech.thing.item.renderElemental.RenderElementalName;
 import com.gtnewhorizon.structurelib.entity.fx.WeightlessParticleFX;
 
@@ -38,6 +41,8 @@ public class ClientProxy extends CommonProxy {
                 .registerItemRenderer(ElementalDefinitionContainer_EM.INSTANCE, RenderElementalName.INSTANCE);
         MinecraftForgeClient
                 .registerItemRenderer(DebugElementalInstanceContainer_EM.INSTANCE, RenderElementalName.INSTANCE);
+        MinecraftForgeClient
+                .registerItemRenderer(Item.getItemFromBlock(eyeOfHarmonyRenderBlock), new RenderEyeOfHarmonyItem());
 
         if (Loader.isModLoaded("openmodularturrets")) {
             new TT_turret_loader().run();
