@@ -59,9 +59,10 @@ public interface IGT_RecipeMap {
             @Override
             public Collection<GT_Recipe> doAdd(GT_RecipeBuilder builder) {
                 List<Collection<GT_Recipe>> ret = new ArrayList<>();
-                ret.add(func.apply(builder));
+                Collection<GT_Recipe> out = func.apply(builder);
+                ret.add(out);
                 builder.clearInvalid();
-                if (!ret.get(0).isEmpty()) {
+                if (!out.isEmpty()) {
                     for (IGT_RecipeMap downstream : downstreams) {
                         ret.add(downstream.doAdd(builder));
                     }
