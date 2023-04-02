@@ -1344,6 +1344,9 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 true).setSlotOverlay(false, false, true, true, GT_UITextures.OVERLAY_SLOT_DATA_ORB)
                      .setUsualFluidInputCount(4)
                      .setDisableOptimize(true);
+        /**
+         * Usually, but not always, you should use {@link GT_RecipeConstants#UniversalArcFurnace} instead.
+         */
         public static final GT_Recipe_Map sPlasmaArcFurnaceRecipes = new GT_Recipe_Map(
                 new HashSet<>(20000),
                 "gt.recipe.plasmaarcfurnace",
@@ -1361,6 +1364,9 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 true,
                 true).setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT)
                      .setRecipeConfigFile("arcfurnace", FIRST_ITEM_INPUT);
+        /**
+         * Usually, but not always, you should use {@link GT_RecipeConstants#UniversalArcFurnace} instead.
+         */
         public static final GT_Recipe_Map sArcFurnaceRecipes = new GT_Recipe_Map(
                 new HashSet<>(20000),
                 "gt.recipe.arcfurnace",
@@ -1801,6 +1807,9 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 true).setSlotOverlay(false, false, GT_UITextures.OVERLAY_SLOT_BOXED)
                      .setRecipeConfigFile("unboxing", FIRST_ITEM_OUTPUT)
                      .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT);
+        /**
+         * Usually, but not always, you should use {@link GT_RecipeConstants#Fusion} instead.
+         */
         public static final GT_Recipe_Map sFusionRecipes = new GT_Recipe_Map_FluidOnly(
                 new HashSet<>(50),
                 "gt.recipe.fusionreactor",
@@ -1822,6 +1831,9 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                      .setRecipeConfigFile("fusion", FIRST_FLUID_OUTPUT)
                      .setDisableOptimize(true)
                      .setNEISpecialInfoFormatter(FusionSpecialValueFormatter.INSTANCE);
+        /**
+         * Usually, but not always, you should use {@link GT_RecipeConstants#Fusion} instead.
+         */
         public static final GT_Recipe_Map sComplexFusionRecipes = new GT_Recipe_Map_ComplexFusion(
                 new HashSet<>(50),
                 "gt.recipe.complexfusionreactor",
@@ -1885,7 +1897,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                      .setSlotOverlay(true, false, GT_UITextures.OVERLAY_SLOT_CHARGER_FLUID)
                      .setProgressBar(GT_UITextures.PROGRESSBAR_EXTRACT, ProgressBar.Direction.RIGHT);
         /**
-         * Use special value as coil heat level.
+         * Use {@link GT_RecipeConstants#COIL_HEAT} as heat level.
          */
         public static final GT_Recipe_Map sBlastRecipes = new GT_Recipe_Map(
                 new HashSet<>(800),
@@ -1906,7 +1918,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                      .setRecipeConfigFile("blastfurnace", FIRST_ITEM_INPUT)
                      .setNEISpecialInfoFormatter(HeatingCoilSpecialValueFormatter.INSTANCE);
         /**
-         * Use special value as coil heat level.
+         * Use {@link GT_RecipeConstants#COIL_HEAT} as heat level.
          */
         public static final GT_Recipe_Map sPlasmaForgeRecipes = new GT_Recipe_Map_LargeNEI(
                 new HashSet<>(20),
@@ -2137,6 +2149,9 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
             }
         }
 
+        /**
+         * Uses {@link GT_RecipeConstants#ADDITIVE_AMOUNT} for coal/charcoal amount.
+         */
         public static final GT_Recipe_Map sPrimitiveBlastRecipes = new GT_Recipe_Map(
                 new HashSet<>(200),
                 "gt.recipe.primitiveblastfurnace",
@@ -2231,6 +2246,9 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                          return coll.getAll();
                      })
                      .setRecipeConfigFile("primitiveblastfurnace", FIRST_ITEM_INPUT);
+        /**
+         * Uses {@link GT_RecipeConstants#ADDITIVE_AMOUNT} for TNT/ITNT/... amount. Value is truncated to [0, 64]
+         */
         public static final GT_Recipe_Map sImplosionRecipes = new GT_Recipe_Map(
                 new HashSet<>(900),
                 "gt.recipe.implosioncompressor",
@@ -2326,6 +2344,10 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                          return buildOrEmpty(b);
                      })
                      .setUsualFluidInputCount(2);
+        /**
+         * using {@code .addTo(sChemicalRecipes)} will cause the recipe to be added to single block recipe map ONLY!
+         * use {@link GT_RecipeConstants#UniversalChemical} to add to both.
+         */
         public static final GT_Recipe_Map sChemicalRecipes = new GT_Recipe_Map(
                 new HashSet<>(1170),
                 "gt.recipe.chemicalreactor",
@@ -2348,31 +2370,29 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                      .setSlotOverlay(true, true, GT_UITextures.OVERLAY_SLOT_VIAL_2)
                      .setRecipeConfigFile("chemicalreactor", FIRST_ITEM_OR_FLUID_OUTPUT)
                      .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW_MULTIPLE, ProgressBar.Direction.RIGHT);
-        public static final GT_Recipe_Map sMultiblockChemicalRecipes = new GT_Recipe_Map_LargeChemicalReactor().setProgressBar(
-                GT_UITextures.PROGRESSBAR_ARROW_MULTIPLE,
-                ProgressBar.Direction.RIGHT)
-                                                                                                               .setUsualFluidInputCount(
-                                                                                                                       6)
-                                                                                                               .setUsualFluidOutputCount(
-                                                                                                                       6);
-        public static final GT_Recipe_Map sDistillationRecipes = new GT_Recipe_Map_DistillationTower().setRecipeConfigFile(
-                "distillation",
-                FIRST_FLUIDSTACK_INPUT)
-                                                                                                      .setProgressBar(
-                                                                                                              GT_UITextures.PROGRESSBAR_ARROW_MULTIPLE,
-                                                                                                              ProgressBar.Direction.RIGHT)
-                                                                                                      .setUsualFluidOutputCount(
-                                                                                                              11)
-                                                                                                      .setDisableOptimize(
-                                                                                                              true);
-        public static final GT_Recipe_Map_OilCracker sCrackingRecipes = (GT_Recipe_Map_OilCracker) new GT_Recipe_Map_OilCracker().setRecipeConfigFile(
-                "cracking",
-                FIRST_FLUIDSTACK_INPUT)
-                                                                                                                                 .setProgressBar(
-                                                                                                                                         GT_UITextures.PROGRESSBAR_ARROW_MULTIPLE,
-                                                                                                                                         ProgressBar.Direction.RIGHT)
-                                                                                                                                 .setUsualFluidInputCount(
-                                                                                                                                         2);
+        /**
+         * using {@code .addTo(sChemicalRecipes)} will cause the recipe to be added to multiblock recipe map ONLY!
+         * use {@link GT_RecipeConstants#UniversalChemical} to add to both.
+         */
+        public static final GT_Recipe_Map sMultiblockChemicalRecipes = //
+                new GT_Recipe_Map_LargeChemicalReactor().setProgressBar(
+                        GT_UITextures.PROGRESSBAR_ARROW_MULTIPLE,
+                        ProgressBar.Direction.RIGHT)
+                                                        .setUsualFluidInputCount(6)
+                                                        .setUsualFluidOutputCount(6);
+        public static final GT_Recipe_Map sDistillationRecipes = //
+                new GT_Recipe_Map_DistillationTower().setRecipeConfigFile("distillation", FIRST_FLUIDSTACK_INPUT)
+                                                     .setProgressBar(
+                                                             GT_UITextures.PROGRESSBAR_ARROW_MULTIPLE,
+                                                             ProgressBar.Direction.RIGHT)
+                                                     .setUsualFluidOutputCount(11)
+                                                     .setDisableOptimize(true);
+        public static final GT_Recipe_Map_OilCracker sCrackingRecipes = (GT_Recipe_Map_OilCracker) //
+        new GT_Recipe_Map_OilCracker().setRecipeConfigFile("cracking", FIRST_FLUIDSTACK_INPUT)
+                                      .setProgressBar(
+                                              GT_UITextures.PROGRESSBAR_ARROW_MULTIPLE,
+                                              ProgressBar.Direction.RIGHT)
+                                      .setUsualFluidInputCount(2);
         /**
          * @deprecated Use sCrackingRecipes instead
          */
@@ -3782,6 +3802,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 ret.add(add(r));
             }
             if (!ret.isEmpty()) {
+                builder.clearInvalid();
                 for (IGT_RecipeMap downstream : downstreams) {
                     downstream.doAdd(builder);
                 }

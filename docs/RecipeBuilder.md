@@ -13,6 +13,12 @@ this corresponds to the various int/long parameter on the old recipe adder inter
 See implosion compressor recipe map for a example on its usage.
 the extension also made it possible to use more complicated value, however there is no such use case yet.
 
+`LOW_GRAVITY` and `CLEANROOM` are common metadata that are supported in most recipe maps. They default to false, and is
+required to be set to true if you want your recipe to have such restriction.
+
+Other metadata used by the specific recipe maps MUST to be documented in some way, with javadoc on the recipe map field
+being the preferred choice.
+
 # Coding Conventions
 
 ## Metadata identifiers

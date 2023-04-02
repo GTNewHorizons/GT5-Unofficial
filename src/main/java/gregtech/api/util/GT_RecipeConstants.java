@@ -80,6 +80,10 @@ public class GT_RecipeConstants {
             Object.class,
             "oredict_input");
 
+    /**
+     * Add fusion recipes. Dispatcher between complex fusion (which accepts arbitrarily many input/outputs) and classic
+     * fusion (2 in 1 out).
+     */
     public static final IGT_RecipeMap Fusion = IGT_RecipeMap.newRecipeMap(builder -> {
         if (GT_Utility.isArrayEmptyOrNull(builder.getFluidInputs())
                 || GT_Utility.isArrayEmptyOrNull(builder.getFluidOutputs()))
@@ -89,6 +93,10 @@ public class GT_RecipeConstants {
         return GT_Recipe_Map.sFusionRecipes.doAdd(builder);
     });
 
+    /**
+     * Add a arc furnace recipe. Adds to both normal arc furnace and plasma arc furnace.
+     * Will override the fluid input with oxygen/plasma for the respective recipe maps, so there is no point setting it.
+     */
     public static final IGT_RecipeMap UniversalArcFurnace = IGT_RecipeMap.newRecipeMap(builder -> {
         if (!GT_Utility.isArrayOfLength(builder.getItemInputsBasic(), 1)
                 || GT_Utility.isArrayEmptyOrNull(builder.getItemOutputs()))
@@ -113,6 +121,9 @@ public class GT_RecipeConstants {
         return ret;
     });
 
+    /**
+     * Add a chemical reactor recipe to both LCR and singleblocks.
+     */
     public static final IGT_RecipeMap UniversalChemical = IGT_RecipeMap.newRecipeMap(builder -> {
         for (ItemStack input : builder.getItemInputsBasic()) {
             if (GT_Utility.isAnyIntegratedCircuit(input) && input.getItemDamage() >= 10) return GT_Utility.concat(
@@ -125,6 +136,11 @@ public class GT_RecipeConstants {
         return builder.addTo(GT_Recipe_Map.sChemicalRecipes);
     });
 
+    /**
+     * The one and only :tm: assline recipe adder.
+     * Uses {@link #RESEARCH_ITEM} metadata as research item, and {@link #RESEARCH_TIME} metadata as research time, unit
+     * in ticks.
+     */
     public static final IGT_RecipeMap AssemblyLine = IGT_RecipeMap.newRecipeMap(builder -> {
         Optional<GT_Recipe.GT_Recipe_WithAlt> rr = builder.forceOreDictInput()
                                                           .validateInputCount(4, 16)
@@ -219,6 +235,10 @@ public class GT_RecipeConstants {
         return ret;
     });
 
+    /**
+     * Just like any normal assembler recipe, however it accepts one input item to be oredicted. Pass in the item to
+     * oredict via {@link #OREDICT_INPUT}. It will be used along all other item inputs as input of this recipe.
+     */
     public static IGT_RecipeMap AssemblerOD = IGT_RecipeMap.newRecipeMap(builder -> {
         Collection<GT_Recipe> ret = new ArrayList<>();
         for (ItemStack input : GT_OreDictUnificator.getOresImmutable(builder.getMetadata(OREDICT_INPUT))) {
@@ -230,6 +250,12 @@ public class GT_RecipeConstants {
         return ret;
     });
 
+    /**
+     * A universal fuel adder. It's actually just a dispatcher towards all actual fuel recipe maps.
+     * Dispatch based on {@link #FUEL_TYPE}. Uses {@link #FUEL_VALUE} as fuel value.
+     * Can use {@link FuelType#ordinal()} as a human-readable form of what FUEL_TYPE should be.
+     * You can bypass this and add to relevant fuel maps directly if you wish.
+     */
     public static IGT_RecipeMap Fuel = IGT_RecipeMap.newRecipeMap(builder -> {
         builder.validateInputCount(1, 1)
                .validateNoInputFluid()
