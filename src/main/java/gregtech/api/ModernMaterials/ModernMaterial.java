@@ -78,25 +78,25 @@ public final class ModernMaterial {
         }
 
         public Builder setColor(int red, int green, int blue) {
-            this.materialToBuild.color = new Color(red, green, blue);
+            materialToBuild.color = new Color(red, green, blue);
             return this;
         }
 
         public Builder setMaterialTimeMultiplier(double materialTimeMultiplier) {
-            this.materialToBuild.materialTimeMultiplier = materialTimeMultiplier;
+            materialToBuild.materialTimeMultiplier = materialTimeMultiplier;
             return this;
         }
 
         public Builder addParts(PartsEnum... parts) {
             for (PartsEnum part : parts) {
-                part.addAssociatedMaterial(this.materialToBuild);
+                part.addAssociatedMaterial(materialToBuild);
                 addPart(part);
             }
             return this;
         }
 
         public Builder addPart(PartsEnum part) {
-            this.materialToBuild.existingPartsForMaterial.put(part, new CustomPartInfo(part, this.materialToBuild.textureType));
+            materialToBuild.existingPartsForMaterial.put(part, new CustomPartInfo(part, materialToBuild.textureType));
             return this;
         }
 
@@ -106,40 +106,41 @@ public final class ModernMaterial {
             return this;
         }
 
-        public Builder addFluids(FluidEnum... fluids) {
+        public Builder addFluid(FluidEnum fluidEnum, int temperature) {
 
-            for (FluidEnum fluidEnum : fluids) {
-                ModernMaterialFluid modernMaterialFluid = new ModernMaterialFluid(fluidEnum, this.materialToBuild);
-                modernMaterialFluid.setTemperature(fluidEnum.getTemperature());
-                modernMaterialFluid.setGaseous(fluidEnum.isGas());
+            ModernMaterialFluid modernMaterialFluid = new ModernMaterialFluid(fluidEnum, materialToBuild);
+            modernMaterialFluid.setTemperature(temperature);
+            modernMaterialFluid.setGaseous(fluidEnum.isGas());
+            // Determines fluid texture.
+            modernMaterialFluid.setFluidEnum(fluidEnum);
 
-                this.materialToBuild.existingFluids.add(new ModernMaterialFluid(fluidEnum, this.materialToBuild));
-            }
+            // Add fluid to list in material.
+            materialToBuild.existingFluids.add(new ModernMaterialFluid(fluidEnum, materialToBuild));
 
             return this;
         }
 
-        public Builder addCustomFluid(ModernMaterialFluid modernMaterialFluid) {
-            this.materialToBuild.existingFluids.add(modernMaterialFluid);
+        public Builder addCustomFluid(ModernMaterialFluid.Builder modernMaterialFluidBuilder) {
+            ModernMaterialFluid modernMaterialFluid = modernMaterialFluidBuilder.setMaterial(materialToBuild).build();
+            materialToBuild.existingFluids.add(modernMaterialFluid);
             return this;
         }
 
         public Builder setMaterialTier(long tier) {
-            this.materialToBuild.materialTier = tier;
+            materialToBuild.materialTier = tier;
             return this;
         }
 
         public Builder addPart(CustomPartInfo customPartInfo) {
-            this.materialToBuild.existingPartsForMaterial.put(customPartInfo.part, customPartInfo);
+            materialToBuild.existingPartsForMaterial.put(customPartInfo.part, customPartInfo);
             return this;
         }
 
         public Builder setTextureMode(@NotNull final TextureType textureType) {
-            this.materialToBuild.textureType = textureType;
+            materialToBuild.textureType = textureType;
             return this;
         }
 
     }
-
 
 }

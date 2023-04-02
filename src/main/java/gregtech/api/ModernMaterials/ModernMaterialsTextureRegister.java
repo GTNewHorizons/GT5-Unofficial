@@ -1,6 +1,7 @@
 package gregtech.api.ModernMaterials;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import gregtech.api.ModernMaterials.Fluids.FluidEnum;
 import gregtech.api.ModernMaterials.PartProperties.Rendering.IconWrapper;
 import gregtech.api.ModernMaterials.PartProperties.Textures.TextureType;
 import gregtech.api.ModernMaterials.PartsClasses.PartsEnum;
@@ -21,14 +22,26 @@ public class ModernMaterialsTextureRegister {
     @SubscribeEvent
     public void registerIcons(TextureStitchEvent.Pre event) {
         if (event.map.getTextureType() == 1) {
-             itemTextures(event.map);
+            itemTextures(event.map);
         } else {
-            blockTextures(event.map);
+            otherTextures(event.map);
         }
+    }
+
+    private void otherTextures(TextureMap map) {
+        blockTextures(map);
+        fluidTextures(map);
     }
 
     private void blockTextures(TextureMap map) {
 
+    }
+
+    private void fluidTextures(TextureMap map) {
+        for (FluidEnum fluidEnum : FluidEnum.values()) {
+            fluidEnum.stillIcon = map.registerIcon( RES_PATH_ITEM + "ModernMaterialsIcons/Fluids/still_" + fluidEnum.name().toLowerCase());
+            fluidEnum.flowingIcon = map.registerIcon( RES_PATH_ITEM + "ModernMaterialsIcons/Fluids/flowing_" + fluidEnum.name().toLowerCase());
+        }
     }
 
     private void itemTextures(TextureMap map) {

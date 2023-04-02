@@ -24,12 +24,15 @@ public class ModernMaterialsRegistration {
                 .get(ConfigCategories.ModernMaterials.materialID.name(), "LastMaterialID", 0).getInt();
 
         ModernMaterial copper = new ModernMaterial.Builder("Copper")
-            .setColor(255, 0, 0)
+            .setColor(120, 100, 0)
             .setTextureMode(Metallic)
             .addAllParts()
-            .addFluids(Molten, Plasma)
+            .addFluid(Gas, 1_000)
+            .addFluid(NoPrefix, 3_000)
+            .addFluid(Molten, 10_000)
+            .addFluid(Plasma, 100_000)
             .addCustomFluid(
-                (ModernMaterialFluid) new ModernMaterialFluid(Gas, ModernMaterial.Builder.materialToBuild)
+                new ModernMaterialFluid.Builder("Zebra % Fluid %")
                     .setTemperature(120_000_000)
             ).build();
 
