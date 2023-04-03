@@ -250,20 +250,28 @@ public class GT_Values {
     /**
      * File Paths and Resource Paths
      */
+    @Deprecated
     public static final String TEX_DIR = "textures/";
+    @Deprecated
     public static final String TEX_DIR_GUI = TEX_DIR + "gui/";
+    @Deprecated
     public static final String TEX_DIR_ITEM = TEX_DIR + "items/";
+    @Deprecated
     public static final String TEX_DIR_BLOCK = TEX_DIR + "blocks/";
+    @Deprecated
     public static final String TEX_DIR_ENTITY = TEX_DIR + "entity/";
+    @Deprecated
     public static final String TEX_DIR_ASPECTS = TEX_DIR + "aspects/";
+    private static final String TEXTURES = "textures";
     public static final String RES_PATH = GregTech.getResourcePath(TEX_DIR);
-    public static final String RES_PATH_GUI = GregTech.getResourcePath(TEX_DIR_GUI);
-    public static final String RES_PATH_ITEM = GregTech.getResourcePath("");
-    public static final String RES_PATH_BLOCK = GregTech.getResourcePath("");
-    public static final String RES_PATH_ENTITY = GregTech.getResourcePath(TEX_DIR_ENTITY);
-    public static final String RES_PATH_ASPECTS = GregTech.getResourcePath(TEX_DIR_ASPECTS);
-    public static final String RES_PATH_IC2 = IndustrialCraft2.getResourcePath("");
-    public static final String RES_PATH_MODEL = GregTech.getResourcePath(TEX_DIR + "models/");
+    public static final String RES_PATH_GUI = GregTech.getResourcePath(TEXTURES, "gui/");
+    public static final String RES_PATH_ITEM = GregTech.getResourcePath(TEXTURES, "items/");
+    public static final String RES_PATH_BLOCK = GregTech.getResourcePath(TEXTURES, "blocks/");
+    public static final String RES_PATH_ENTITY = GregTech.getResourcePath(TEXTURES, "entity/");
+    public static final String RES_PATH_ASPECTS = GregTech.getResourcePath(TEXTURES, "aspects/");
+    public static final String RES_PATH_MODEL = GregTech.getResourcePath(TEXTURES, "models/");
+    @Deprecated
+    public static final String RES_PATH_IC2 = IndustrialCraft2.getResourcePath();
 
     /**
      * NBT String Keys
