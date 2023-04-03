@@ -1,6 +1,6 @@
 package gregtech.common.items;
 
-import static gregtech.api.enums.GT_Values.MOD_ID;
+import static gregtech.api.enums.ModIDs.GregTech;
 import static gregtech.api.enums.ModIDs.NewHorizonsCoreMod;
 
 import java.util.List;
@@ -32,7 +32,7 @@ public class ItemPropolis extends Item {
         this.setCreativeTab(Tabs.tabApiculture);
         this.setHasSubtypes(true);
         this.setUnlocalizedName("gt.propolis");
-        GameRegistry.registerItem(this, "gt.propolis", MOD_ID);
+        GameRegistry.registerItem(this, "gt.propolis", GregTech.modID);
     }
 
     public ItemStack getStackForType(PropolisType type) {

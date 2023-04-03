@@ -9,6 +9,7 @@ import java.util.BitSet;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
+import gregtech.api.enums.ModIDs;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -56,7 +57,7 @@ import gregtech.common.render.items.GT_GeneratedMaterial_Renderer;
  *         These Items can also have special RightClick abilities, electric Charge or even be set to become a Food alike
  *         Item.
  */
-@Optional.Interface(iface = "squeek.applecore.api.food.IEdible", modid = MOD_ID_APC)
+@Optional.Interface(iface = "squeek.applecore.api.food.IEdible", modid = ModIDs.Names.APPLE_CORE)
 public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements IGT_ItemWithMaterialRenderer, IEdible {
 
     /**
@@ -342,7 +343,7 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements 
     }
 
     @Override
-    @Optional.Method(modid = MOD_ID_APC)
+    @Optional.Method(modid = ModIDs.Names.APPLE_CORE)
     public FoodValues getFoodValues(ItemStack aStack) {
         IFoodStat tStat = mFoodStats.get((short) getDamage(aStack));
         return tStat == null ? null

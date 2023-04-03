@@ -1,6 +1,6 @@
 package gregtech.common.fluid;
 
-import static gregtech.api.enums.GT_Values.MOD_ID;
+import static gregtech.api.enums.ModIDs.GregTech;
 
 import java.util.Locale;
 
@@ -85,7 +85,7 @@ public class GT_FluidBuilder implements IGT_FluidBuilder {
      */
     @Override
     public IGT_FluidBuilder withTextureName(final String textureName) {
-        this.stillIconResourceLocation = new ResourceLocation(MOD_ID, "fluids/fluid." + textureName);
+        this.stillIconResourceLocation = new ResourceLocation(GregTech.modID, "fluids/fluid." + textureName);
         this.flowingIconResourceLocation = null;
         return this;
     }

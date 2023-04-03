@@ -1,11 +1,10 @@
 package gregtech.api.multitileentity.interfaces;
 
-import static gregtech.api.enums.GT_Values.MOD_ID_APC;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import gregtech.api.enums.ModIDs;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -242,7 +241,7 @@ public interface IMultiTileEntity
 
     interface IMTE_GetFoodValues extends IMultiTileEntity {
 
-        @Optional.Method(modid = MOD_ID_APC)
+        @Optional.Method(modid = ModIDs.Names.APPLE_CORE)
         squeek.applecore.api.food.FoodValues getFoodValues(MultiTileEntityItemInternal aItem, ItemStack aStack);
     }
 
