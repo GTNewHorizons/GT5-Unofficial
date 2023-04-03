@@ -1,7 +1,9 @@
 package gregtech.api.items;
 
-import static gregtech.api.enums.GT_Values.*;
+import static gregtech.api.enums.GT_Values.D1;
+import static gregtech.api.enums.GT_Values.RA;
 import static gregtech.api.enums.Mods.AppleCore;
+import static gregtech.api.enums.Mods.GregTech;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -377,10 +379,10 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements 
         for (short i = 0; i < j; i++) if (mEnabledItems.get(i)) {
             for (byte k = 1; k < mIconList[i].length; k++) {
                 mIconList[i][k] = aIconRegister.registerIcon(
-                        RES_PATH_ITEM + (GT_Config.troll ? "troll" : getUnlocalizedName() + "/" + i + "/" + k));
+                        GregTech.getResourcePath(GT_Config.troll ? "troll" : getUnlocalizedName() + "/" + i + "/" + k));
             }
             mIconList[i][0] = aIconRegister.registerIcon(
-                    RES_PATH_ITEM + (GT_Config.troll ? "troll" : getUnlocalizedName() + "/" + i));
+                    GregTech.getResourcePath(GT_Config.troll ? "troll" : getUnlocalizedName() + "/" + i));
         }
     }
 

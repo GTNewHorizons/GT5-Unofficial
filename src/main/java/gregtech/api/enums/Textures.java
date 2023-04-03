@@ -1,7 +1,6 @@
 package gregtech.api.enums;
 
-import static gregtech.api.enums.GT_Values.RES_PATH_BLOCK;
-import static gregtech.api.enums.GT_Values.RES_PATH_ITEM;
+import static gregtech.api.enums.Mods.GregTech;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -1727,7 +1726,7 @@ public class Textures {
 
         @Override
         public void run() {
-            mIcon = GregTech_API.sBlockIcons.registerIcon(RES_PATH_BLOCK + "iconsets/" + this);
+            mIcon = GregTech_API.sBlockIcons.registerIcon(GregTech.getResourcePath("iconsets", this.toString()));
         }
 
         public static class CustomIcon implements IIconContainer, Runnable {
@@ -1736,7 +1735,7 @@ public class Textures {
             protected String mIconName;
 
             public CustomIcon(String aIconName) {
-                mIconName = !aIconName.contains(":") ? RES_PATH_BLOCK + aIconName : aIconName;
+                mIconName = !aIconName.contains(":") ? GregTech.getResourcePath(aIconName) : aIconName;
                 GregTech_API.sGTBlockIconload.add(this);
             }
 
@@ -1851,8 +1850,8 @@ public class Textures {
 
         @Override
         public void run() {
-            mIcon = GregTech_API.sItemIcons.registerIcon(RES_PATH_ITEM + "iconsets/" + this);
-            mOverlay = GregTech_API.sItemIcons.registerIcon(RES_PATH_ITEM + "iconsets/" + this + "_OVERLAY");
+            mIcon = GregTech_API.sItemIcons.registerIcon(GregTech.getResourcePath("iconsets", this.toString()));
+            mOverlay = GregTech_API.sItemIcons.registerIcon(GregTech.getResourcePath("iconsets", this + "_OVERLAY"));
         }
 
         public static class CustomIcon implements IIconContainer, Runnable {
@@ -1882,8 +1881,8 @@ public class Textures {
 
             @Override
             public void run() {
-                mIcon = GregTech_API.sItemIcons.registerIcon(RES_PATH_ITEM + mIconName);
-                mOverlay = GregTech_API.sItemIcons.registerIcon(RES_PATH_ITEM + mIconName + "_OVERLAY");
+                mIcon = GregTech_API.sItemIcons.registerIcon(GregTech.getResourcePath(mIconName));
+                mOverlay = GregTech_API.sItemIcons.registerIcon(GregTech.getResourcePath(mIconName + "_OVERLAY"));
             }
         }
     }

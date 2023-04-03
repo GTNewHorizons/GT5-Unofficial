@@ -1,6 +1,6 @@
 package gregtech.api.items;
 
-import static gregtech.api.enums.GT_Values.RES_PATH_ITEM;
+import static gregtech.api.enums.Mods.GregTech;
 
 import java.util.List;
 import java.util.Map;
@@ -84,7 +84,7 @@ public class GT_EnergyArmor_Item extends ItemArmor implements ISpecialArmor {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aIconRegister) {
-        this.itemIcon = aIconRegister.registerIcon(RES_PATH_ITEM + getUnlocalizedName());
+        this.itemIcon = aIconRegister.registerIcon(GregTech.getResourcePath(getUnlocalizedName()));
     }
 
     @Override

@@ -262,14 +262,20 @@ public class GT_Values {
     public static final String TEX_DIR_ENTITY = TEX_DIR + "entity/";
     @Deprecated
     public static final String TEX_DIR_ASPECTS = TEX_DIR + "aspects/";
-    private static final String TEXTURES = "textures";
+    @Deprecated
     public static final String RES_PATH = GregTech.getResourcePath(TEX_DIR);
-    public static final String RES_PATH_GUI = GregTech.getResourcePath(TEXTURES, "gui/");
-    public static final String RES_PATH_ITEM = GregTech.getResourcePath(TEXTURES, "items/");
-    public static final String RES_PATH_BLOCK = GregTech.getResourcePath(TEXTURES, "blocks/");
-    public static final String RES_PATH_ENTITY = GregTech.getResourcePath(TEXTURES, "entity/");
-    public static final String RES_PATH_ASPECTS = GregTech.getResourcePath(TEXTURES, "aspects/");
-    public static final String RES_PATH_MODEL = GregTech.getResourcePath(TEXTURES, "models/");
+    @Deprecated
+    public static final String RES_PATH_GUI = GregTech.getResourcePath("textures", "gui/");
+    @Deprecated
+    public static final String RES_PATH_ITEM = GregTech.getResourcePath();
+    @Deprecated
+    public static final String RES_PATH_BLOCK = GregTech.getResourcePath();
+    @Deprecated
+    public static final String RES_PATH_ENTITY = GregTech.getResourcePath("textures", "entity/");
+    @Deprecated
+    public static final String RES_PATH_ASPECTS = GregTech.getResourcePath("textures", "aspects/");
+    @Deprecated
+    public static final String RES_PATH_MODEL = GregTech.getResourcePath("textures", "models/");
     @Deprecated
     public static final String RES_PATH_IC2 = IndustrialCraft2.getResourcePath();
 

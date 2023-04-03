@@ -1,6 +1,6 @@
 package gregtech.api.gui;
 
-import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
+import static gregtech.api.enums.Mods.GregTech;
 
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.StatCollector;
@@ -16,7 +16,9 @@ public class GT_GUIContainer_BasicTank extends GT_GUIContainerMetaTile_Machine {
             textColorValue = this.getTextColorOrDefault("value", 0xFAFAFF);
 
     public GT_GUIContainer_BasicTank(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, String aName) {
-        super(new GT_Container_BasicTank(aInventoryPlayer, aTileEntity), RES_PATH_GUI + "BasicTank.png");
+        super(
+                new GT_Container_BasicTank(aInventoryPlayer, aTileEntity),
+                GregTech.getResourcePath("textures", "gui", "BasicTank.png"));
         mName = aName;
     }
 

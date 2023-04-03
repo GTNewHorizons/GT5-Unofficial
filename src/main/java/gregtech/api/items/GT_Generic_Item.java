@@ -1,6 +1,5 @@
 package gregtech.api.items;
 
-import static gregtech.api.enums.GT_Values.RES_PATH_ITEM;
 import static gregtech.api.enums.Mods.GregTech;
 
 import java.util.List;
@@ -77,7 +76,7 @@ public class GT_Generic_Item extends Item implements IProjectileItem {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aIconRegister) {
-        mIcon = aIconRegister.registerIcon(RES_PATH_ITEM + (GT_Config.troll ? "troll" : mName));
+        mIcon = aIconRegister.registerIcon(GregTech.getResourcePath(GT_Config.troll ? "troll" : mName));
     }
 
     @Override

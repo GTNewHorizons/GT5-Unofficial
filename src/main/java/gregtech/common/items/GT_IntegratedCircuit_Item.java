@@ -1,7 +1,7 @@
 package gregtech.common.items;
 
 import static gregtech.GT_Mod.GT_FML_LOGGER;
-import static gregtech.api.enums.GT_Values.RES_PATH_ITEM;
+import static gregtech.api.enums.Mods.GregTech;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -225,7 +225,7 @@ public class GT_IntegratedCircuit_Item extends GT_Generic_Item implements INetwo
         super.registerIcons(aIconRegister);
         for (int i = 0; i < mIconDamage.length; i++) {
             mIconDamage[i] = aIconRegister.registerIcon(
-                    RES_PATH_ITEM + (GT_Config.troll ? "troll" : getUnlocalizedName() + "/" + i));
+                    GregTech.getResourcePath(GT_Config.troll ? "troll" : getUnlocalizedName() + "/" + i));
         }
         if (GregTech_API.sPostloadFinished) {
             GT_Log.out.println("GT_Mod: Starting Item Icon Load Phase");
