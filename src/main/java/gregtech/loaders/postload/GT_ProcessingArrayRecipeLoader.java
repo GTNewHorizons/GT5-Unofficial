@@ -61,7 +61,7 @@ public class GT_ProcessingArrayRecipeLoader {
         // Distillery
         GT_ProcessingArray_Manager.addRecipeMapToPA("basicmachine.distillery", GT_Recipe_Map.sDistilleryRecipes);
         GT_ProcessingArray_Manager
-                .addSoundResourceToPA("basicmachine.distillery", SoundResource.IC2_MACHINES_EXTRACTOR_OP);
+                .addSoundResourceToPA("basicmachine.distillery", SoundResource.GT_MACHINES_DISTILLERY_LOOP);
         // Electrolyzer
         GT_ProcessingArray_Manager
                 .addRecipeMapToPA("basicmachine.electrolyzer", GT_Recipe_Map.sMultiblockElectrolyzerRecipes);
