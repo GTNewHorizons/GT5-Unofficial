@@ -32,7 +32,6 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.render.items.GT_GeneratedMaterial_Renderer;
-import gregtech.loaders.materialprocessing.ProcessingModSupport;
 import gregtech.loaders.misc.GT_Bees;
 
 public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
@@ -852,45 +851,26 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
                     Voltage.ULV,
                     NI,
                     30 * 100);
-            if (ProcessingModSupport.aEnableGCMarsMats) {
-                addCentrifugeToMaterial(
-                        CombType.IRON,
-                        new Materials[] { Materials.Iron, Materials.Magnetite, Materials.BrownLimonite,
-                                Materials.YellowLimonite, Materials.VanadiumMagnetite, Materials.MeteoricIron },
-                        new int[] { 100 * 100, 90 * 100, 85 * 100, 85 * 100, 80 * 100, 75 * 100 },
-                        new int[] {},
-                        Voltage.ULV,
-                        NI,
-                        30 * 100);
-                addCentrifugeToMaterial(
-                        CombType.LEAD,
-                        new Materials[] { Materials.Steel, Materials.Magnetite, Materials.VanadiumMagnetite,
-                                Materials.Molybdenite, Materials.Molybdenum, Materials.MeteoricIron },
-                        new int[] { 100 * 100, 90 * 100, 80 * 100, 65 * 100, 65 * 100, 75 * 100 },
-                        new int[] {},
-                        Voltage.ULV,
-                        NI,
-                        30 * 100);
-            } else {
-                addCentrifugeToMaterial(
-                        CombType.IRON,
-                        new Materials[] { Materials.Iron, Materials.Magnetite, Materials.BrownLimonite,
-                                Materials.YellowLimonite, Materials.VanadiumMagnetite, Materials.BandedIron },
-                        new int[] { 100 * 100, 90 * 100, 85 * 100, 85 * 100, 80 * 100, 85 * 100 },
-                        new int[] {},
-                        Voltage.ULV,
-                        NI,
-                        30 * 100);
-                addCentrifugeToMaterial(
-                        CombType.STEEL,
-                        new Materials[] { Materials.Steel, Materials.Magnetite, Materials.VanadiumMagnetite,
-                                Materials.BandedIron, Materials.Molybdenite, Materials.Molybdenum },
-                        new int[] { 100 * 100, 90 * 100, 80 * 100, 85 * 100, 65 * 100, 65 * 100 },
-                        new int[] {},
-                        Voltage.ULV,
-                        NI,
-                        30 * 100);
-            }
+
+            addCentrifugeToMaterial(
+                    CombType.IRON,
+                    new Materials[] { Materials.Iron, Materials.Magnetite, Materials.BrownLimonite,
+                            Materials.YellowLimonite, Materials.VanadiumMagnetite, Materials.MeteoricIron },
+                    new int[] { 100 * 100, 90 * 100, 85 * 100, 85 * 100, 80 * 100, 75 * 100 },
+                    new int[] {},
+                    Voltage.ULV,
+                    NI,
+                    30 * 100);
+            addCentrifugeToMaterial(
+                    CombType.LEAD,
+                    new Materials[] { Materials.Steel, Materials.Magnetite, Materials.VanadiumMagnetite,
+                            Materials.Molybdenite, Materials.Molybdenum, Materials.MeteoricIron },
+                    new int[] { 100 * 100, 90 * 100, 80 * 100, 65 * 100, 65 * 100, 75 * 100 },
+                    new int[] {},
+                    Voltage.ULV,
+                    NI,
+                    30 * 100);
+
             addCentrifugeToMaterial(
                     CombType.NICKEL,
                     new Materials[] { Materials.Nickel, Materials.Garnierite, Materials.Pentlandite,

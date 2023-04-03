@@ -2,9 +2,9 @@ package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.enums.ModIDs.Railcraft;
 import static gregtech.api.util.GT_ModHandler.getModItem;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sArcFurnaceRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
+import static gregtech.api.util.GT_RecipeConstants.UniversalArcFurnace;
 
 import gregtech.api.enums.*;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -23,7 +23,7 @@ public class ArcFurnaceRecipes implements Runnable {
                     .noFluidOutputs()
                     .duration(8 * SECONDS)
                     .eut(96)
-                    .addTo(sArcFurnaceRecipes);
+                    .addTo(UniversalArcFurnace);
 
         GT_Values.RA.stdBuilder()
                     .itemInputs(ItemList.Long_Distance_Pipeline_Fluid.get(1L))
@@ -32,7 +32,7 @@ public class ArcFurnaceRecipes implements Runnable {
                     .noFluidOutputs()
                     .duration(9 * SECONDS)
                     .eut((int) TierEU.RECIPE_MV)
-                    .addTo(sArcFurnaceRecipes);
+                    .addTo(UniversalArcFurnace);
 
         GT_Values.RA.stdBuilder()
                     .itemInputs(ItemList.Long_Distance_Pipeline_Item.get(1L))
@@ -43,7 +43,7 @@ public class ArcFurnaceRecipes implements Runnable {
                     .noFluidOutputs()
                     .duration(9 * SECONDS)
                     .eut((int) TierEU.RECIPE_MV)
-                    .addTo(sArcFurnaceRecipes);
+                    .addTo(UniversalArcFurnace);
 
         GT_Values.RA.stdBuilder()
                     .itemInputs(ItemList.Long_Distance_Pipeline_Fluid_Pipe.get(1L))
@@ -52,7 +52,7 @@ public class ArcFurnaceRecipes implements Runnable {
                     .noFluidOutputs()
                     .duration(10 * TICKS)
                     .eut((int) TierEU.RECIPE_MV)
-                    .addTo(sArcFurnaceRecipes);
+                    .addTo(UniversalArcFurnace);
 
         GT_Values.RA.stdBuilder()
                     .itemInputs(ItemList.Long_Distance_Pipeline_Item_Pipe.get(1L))
@@ -63,7 +63,7 @@ public class ArcFurnaceRecipes implements Runnable {
                     .noFluidOutputs()
                     .duration(10 * TICKS)
                     .eut((int) TierEU.RECIPE_MV)
-                    .addTo(sArcFurnaceRecipes);
+                    .addTo(UniversalArcFurnace);
 
         GT_Values.RA.stdBuilder()
                     .itemInputs(ItemList.Casing_Coil_Cupronickel.get(1L))
@@ -75,7 +75,7 @@ public class ArcFurnaceRecipes implements Runnable {
                     .noFluidOutputs()
                     .duration(15 * SECONDS)
                     .eut(TierEU.RECIPE_HV)
-                    .addTo(sArcFurnaceRecipes);
+                    .addTo(UniversalArcFurnace);
 
         GT_Values.RA.stdBuilder()
                     .itemInputs(ItemList.Casing_Coil_Kanthal.get(1L))
@@ -87,7 +87,7 @@ public class ArcFurnaceRecipes implements Runnable {
                     .noFluidOutputs()
                     .duration(15 * SECONDS)
                     .eut(TierEU.RECIPE_HV)
-                    .addTo(sArcFurnaceRecipes);
+                    .addTo(UniversalArcFurnace);
 
         GT_Values.RA.stdBuilder()
                     .itemInputs(ItemList.Casing_Coil_Nichrome.get(1L))
@@ -99,7 +99,7 @@ public class ArcFurnaceRecipes implements Runnable {
                     .noFluidOutputs()
                     .duration(15 * SECONDS)
                     .eut(TierEU.RECIPE_HV)
-                    .addTo(sArcFurnaceRecipes);
+                    .addTo(UniversalArcFurnace);
 
         GT_Values.RA.stdBuilder()
                     .itemInputs(ItemList.Casing_Coil_TungstenSteel.get(1L))
@@ -111,7 +111,7 @@ public class ArcFurnaceRecipes implements Runnable {
                     .noFluidOutputs()
                     .duration(15 * SECONDS)
                     .eut(TierEU.RECIPE_HV)
-                    .addTo(sArcFurnaceRecipes);
+                    .addTo(UniversalArcFurnace);
 
         GT_Values.RA.stdBuilder()
                     .itemInputs(ItemList.Casing_Coil_HSSG.get(1L))
@@ -123,7 +123,7 @@ public class ArcFurnaceRecipes implements Runnable {
                     .noFluidOutputs()
                     .duration(15 * SECONDS)
                     .eut(TierEU.RECIPE_HV)
-                    .addTo(sArcFurnaceRecipes);
+                    .addTo(UniversalArcFurnace);
 
         GT_Values.RA.stdBuilder()
                     .itemInputs(ItemList.Casing_Coil_HSSS.get(1L))
@@ -135,7 +135,7 @@ public class ArcFurnaceRecipes implements Runnable {
                     .noFluidOutputs()
                     .duration(15 * SECONDS)
                     .eut(TierEU.RECIPE_HV)
-                    .addTo(sArcFurnaceRecipes);
+                    .addTo(UniversalArcFurnace);
 
         GT_Values.RA.stdBuilder()
                     .itemInputs(ItemList.Casing_Coil_Naquadah.get(1L))
@@ -147,7 +147,7 @@ public class ArcFurnaceRecipes implements Runnable {
                     .noFluidOutputs()
                     .duration(15 * SECONDS)
                     .eut(TierEU.RECIPE_HV)
-                    .addTo(sArcFurnaceRecipes);
+                    .addTo(UniversalArcFurnace);
 
         GT_Values.RA.stdBuilder()
                     .itemInputs(ItemList.Casing_Coil_NaquadahAlloy.get(1L))
@@ -159,7 +159,7 @@ public class ArcFurnaceRecipes implements Runnable {
                     .noFluidOutputs()
                     .duration(15 * SECONDS)
                     .eut(TierEU.RECIPE_HV)
-                    .addTo(sArcFurnaceRecipes);
+                    .addTo(UniversalArcFurnace);
 
         GT_Values.RA.stdBuilder()
                     .itemInputs(ItemList.Casing_Coil_Trinium.get(1L))
@@ -171,7 +171,7 @@ public class ArcFurnaceRecipes implements Runnable {
                     .noFluidOutputs()
                     .duration(15 * SECONDS)
                     .eut(TierEU.RECIPE_HV)
-                    .addTo(sArcFurnaceRecipes);
+                    .addTo(UniversalArcFurnace);
 
         GT_Values.RA.stdBuilder()
                     .itemInputs(ItemList.Casing_Coil_ElectrumFlux.get(1L))
@@ -183,7 +183,7 @@ public class ArcFurnaceRecipes implements Runnable {
                     .noFluidOutputs()
                     .duration(15 * SECONDS)
                     .eut(TierEU.RECIPE_HV)
-                    .addTo(sArcFurnaceRecipes);
+                    .addTo(UniversalArcFurnace);
 
         GT_Values.RA.stdBuilder()
                     .itemInputs(ItemList.Casing_Coil_AwakenedDraconium.get(1L))
@@ -195,7 +195,7 @@ public class ArcFurnaceRecipes implements Runnable {
                     .noFluidOutputs()
                     .duration(15 * SECONDS)
                     .eut(TierEU.RECIPE_HV)
-                    .addTo(sArcFurnaceRecipes);
+                    .addTo(UniversalArcFurnace);
 
         GT_Values.RA.stdBuilder()
                     .itemInputs(getModItem(Railcraft.modID, "machine.beta", 1L, 0))
@@ -204,7 +204,7 @@ public class ArcFurnaceRecipes implements Runnable {
                     .noFluidOutputs()
                     .duration(7 * SECONDS + 10 * TICKS)
                     .eut(90)
-                    .addTo(sArcFurnaceRecipes);
+                    .addTo(UniversalArcFurnace);
 
         GT_Values.RA.stdBuilder()
                     .itemInputs(getModItem(Railcraft.modID, "machine.beta", 1L, 1))
@@ -215,7 +215,7 @@ public class ArcFurnaceRecipes implements Runnable {
                     .noFluidOutputs()
                     .duration(7 * SECONDS + 10 * TICKS)
                     .eut(90)
-                    .addTo(sArcFurnaceRecipes);
+                    .addTo(UniversalArcFurnace);
 
         GT_Values.RA.stdBuilder()
                     .itemInputs(getModItem(Railcraft.modID, "machine.beta", 1L, 2))
@@ -226,7 +226,7 @@ public class ArcFurnaceRecipes implements Runnable {
                     .noFluidOutputs()
                     .duration(7 * SECONDS + 10 * TICKS)
                     .eut(90)
-                    .addTo(sArcFurnaceRecipes);
+                    .addTo(UniversalArcFurnace);
 
         GT_Values.RA.stdBuilder()
                     .itemInputs(getModItem(Railcraft.modID, "machine.beta", 1L, 13))
@@ -235,7 +235,7 @@ public class ArcFurnaceRecipes implements Runnable {
                     .noFluidOutputs()
                     .duration(9 * SECONDS)
                     .eut((int) TierEU.RECIPE_MV)
-                    .addTo(sArcFurnaceRecipes);
+                    .addTo(UniversalArcFurnace);
 
         GT_Values.RA.stdBuilder()
                     .itemInputs(getModItem(Railcraft.modID, "machine.beta", 1L, 14))
@@ -246,7 +246,7 @@ public class ArcFurnaceRecipes implements Runnable {
                     .noFluidOutputs()
                     .duration(9 * SECONDS)
                     .eut((int) TierEU.RECIPE_MV)
-                    .addTo(sArcFurnaceRecipes);
+                    .addTo(UniversalArcFurnace);
 
         GT_Values.RA.stdBuilder()
                     .itemInputs(getModItem(Railcraft.modID, "machine.beta", 1L, 15))
@@ -257,7 +257,7 @@ public class ArcFurnaceRecipes implements Runnable {
                     .noFluidOutputs()
                     .duration(9 * SECONDS)
                     .eut((int) TierEU.RECIPE_MV)
-                    .addTo(sArcFurnaceRecipes);
+                    .addTo(UniversalArcFurnace);
 
         GT_Values.RA.stdBuilder()
                     .itemInputs(getModItem(Railcraft.modID, "machine.zeta", 1L, 0))
@@ -266,7 +266,7 @@ public class ArcFurnaceRecipes implements Runnable {
                     .noFluidOutputs()
                     .duration(10 * SECONDS + 10 * TICKS)
                     .eut(150)
-                    .addTo(sArcFurnaceRecipes);
+                    .addTo(UniversalArcFurnace);
 
         GT_Values.RA.stdBuilder()
                     .itemInputs(getModItem(Railcraft.modID, "machine.zeta", 1L, 1))
@@ -275,7 +275,7 @@ public class ArcFurnaceRecipes implements Runnable {
                     .noFluidOutputs()
                     .duration(10 * SECONDS + 10 * TICKS)
                     .eut(150)
-                    .addTo(sArcFurnaceRecipes);
+                    .addTo(UniversalArcFurnace);
 
         GT_Values.RA.stdBuilder()
                     .itemInputs(getModItem(Railcraft.modID, "machine.zeta", 1L, 2))
@@ -286,7 +286,7 @@ public class ArcFurnaceRecipes implements Runnable {
                     .noFluidOutputs()
                     .duration(10 * SECONDS + 10 * TICKS)
                     .eut(150)
-                    .addTo(sArcFurnaceRecipes);
+                    .addTo(UniversalArcFurnace);
 
         GT_Values.RA.stdBuilder()
                     .itemInputs(getModItem(Railcraft.modID, "machine.zeta", 1L, 3))
@@ -295,7 +295,7 @@ public class ArcFurnaceRecipes implements Runnable {
                     .noFluidOutputs()
                     .duration(12 * SECONDS)
                     .eut(TierEU.RECIPE_MV)
-                    .addTo(sArcFurnaceRecipes);
+                    .addTo(UniversalArcFurnace);
 
         GT_Values.RA.stdBuilder()
                     .itemInputs(getModItem(Railcraft.modID, "machine.zeta", 1L, 4))
@@ -306,7 +306,7 @@ public class ArcFurnaceRecipes implements Runnable {
                     .noFluidOutputs()
                     .duration(12 * SECONDS)
                     .eut(TierEU.RECIPE_MV)
-                    .addTo(sArcFurnaceRecipes);
+                    .addTo(UniversalArcFurnace);
 
         GT_Values.RA.stdBuilder()
                     .itemInputs(getModItem(Railcraft.modID, "machine.zeta", 1L, 5))
@@ -317,7 +317,7 @@ public class ArcFurnaceRecipes implements Runnable {
                     .noFluidOutputs()
                     .duration(12 * SECONDS)
                     .eut(TierEU.RECIPE_MV)
-                    .addTo(sArcFurnaceRecipes);
+                    .addTo(UniversalArcFurnace);
 
         GT_Values.RA.stdBuilder()
                     .itemInputs(getModItem(Railcraft.modID, "machine.zeta", 1L, 6))
@@ -326,7 +326,7 @@ public class ArcFurnaceRecipes implements Runnable {
                     .noFluidOutputs()
                     .duration(13 * SECONDS + 10 * TICKS)
                     .eut(210)
-                    .addTo(sArcFurnaceRecipes);
+                    .addTo(UniversalArcFurnace);
 
         GT_Values.RA.stdBuilder()
                     .itemInputs(getModItem(Railcraft.modID, "machine.zeta", 1L, 7))
@@ -337,7 +337,7 @@ public class ArcFurnaceRecipes implements Runnable {
                     .noFluidOutputs()
                     .duration(13 * SECONDS + 10 * TICKS)
                     .eut(210)
-                    .addTo(sArcFurnaceRecipes);
+                    .addTo(UniversalArcFurnace);
 
         GT_Values.RA.stdBuilder()
                     .itemInputs(getModItem(Railcraft.modID, "machine.zeta", 1L, 8))
@@ -348,7 +348,7 @@ public class ArcFurnaceRecipes implements Runnable {
                     .noFluidOutputs()
                     .duration(13 * SECONDS + 10 * TICKS)
                     .eut(210)
-                    .addTo(sArcFurnaceRecipes);
+                    .addTo(UniversalArcFurnace);
 
         GT_Values.RA.stdBuilder()
                     .itemInputs(getModItem(Railcraft.modID, "machine.zeta", 1L, 9))
@@ -357,7 +357,7 @@ public class ArcFurnaceRecipes implements Runnable {
                     .noFluidOutputs()
                     .duration(15 * SECONDS)
                     .eut(TierEU.RECIPE_MV)
-                    .addTo(sArcFurnaceRecipes);
+                    .addTo(UniversalArcFurnace);
 
         GT_Values.RA.stdBuilder()
                     .itemInputs(getModItem(Railcraft.modID, "machine.zeta", 1L, 10))
@@ -368,7 +368,7 @@ public class ArcFurnaceRecipes implements Runnable {
                     .noFluidOutputs()
                     .duration(15 * SECONDS)
                     .eut(TierEU.RECIPE_MV)
-                    .addTo(sArcFurnaceRecipes);
+                    .addTo(UniversalArcFurnace);
 
         GT_Values.RA.stdBuilder()
                     .itemInputs(getModItem(Railcraft.modID, "machine.zeta", 1L, 11))
@@ -379,7 +379,7 @@ public class ArcFurnaceRecipes implements Runnable {
                     .noFluidOutputs()
                     .duration(15 * SECONDS)
                     .eut(TierEU.RECIPE_MV)
-                    .addTo(sArcFurnaceRecipes);
+                    .addTo(UniversalArcFurnace);
 
         GT_Values.RA.stdBuilder()
                     .itemInputs(getModItem(Railcraft.modID, "machine.zeta", 1L, 12))
@@ -388,7 +388,7 @@ public class ArcFurnaceRecipes implements Runnable {
                     .noFluidOutputs()
                     .duration(16 * SECONDS + 10 * TICKS)
                     .eut(270)
-                    .addTo(sArcFurnaceRecipes);
+                    .addTo(UniversalArcFurnace);
 
         GT_Values.RA.stdBuilder()
                     .itemInputs(getModItem(Railcraft.modID, "machine.zeta", 1L, 13))
@@ -399,7 +399,7 @@ public class ArcFurnaceRecipes implements Runnable {
                     .noFluidOutputs()
                     .duration(16 * SECONDS + 10 * TICKS)
                     .eut(270)
-                    .addTo(sArcFurnaceRecipes);
+                    .addTo(UniversalArcFurnace);
 
         GT_Values.RA.stdBuilder()
                     .itemInputs(getModItem(Railcraft.modID, "machine.zeta", 1L, 14))
@@ -410,7 +410,7 @@ public class ArcFurnaceRecipes implements Runnable {
                     .noFluidOutputs()
                     .duration(16 * SECONDS + 10 * TICKS)
                     .eut(270)
-                    .addTo(sArcFurnaceRecipes);
+                    .addTo(UniversalArcFurnace);
 
         GT_Values.RA.stdBuilder()
                     .itemInputs(getModItem(Railcraft.modID, "machine.eta", 1L, 0))
@@ -419,7 +419,7 @@ public class ArcFurnaceRecipes implements Runnable {
                     .noFluidOutputs()
                     .duration(18 * SECONDS)
                     .eut(TierEU.RECIPE_HV)
-                    .addTo(sArcFurnaceRecipes);
+                    .addTo(UniversalArcFurnace);
 
         GT_Values.RA.stdBuilder()
                     .itemInputs(getModItem(Railcraft.modID, "machine.eta", 1L, 1))
@@ -430,7 +430,7 @@ public class ArcFurnaceRecipes implements Runnable {
                     .noFluidOutputs()
                     .duration(18 * SECONDS)
                     .eut(TierEU.RECIPE_HV)
-                    .addTo(sArcFurnaceRecipes);
+                    .addTo(UniversalArcFurnace);
 
         GT_Values.RA.stdBuilder()
                     .itemInputs(getModItem(Railcraft.modID, "machine.eta", 1L, 2))
@@ -441,7 +441,7 @@ public class ArcFurnaceRecipes implements Runnable {
                     .noFluidOutputs()
                     .duration(18 * SECONDS)
                     .eut(TierEU.RECIPE_HV)
-                    .addTo(sArcFurnaceRecipes);
+                    .addTo(UniversalArcFurnace);
 
         GT_Values.RA.stdBuilder()
                     .itemInputs(getModItem(Railcraft.modID, "machine.eta", 1L, 3))
@@ -450,7 +450,7 @@ public class ArcFurnaceRecipes implements Runnable {
                     .noFluidOutputs()
                     .duration(18 * SECONDS)
                     .eut(330)
-                    .addTo(sArcFurnaceRecipes);
+                    .addTo(UniversalArcFurnace);
 
         GT_Values.RA.stdBuilder()
                     .itemInputs(getModItem(Railcraft.modID, "machine.eta", 1L, 4))
@@ -461,7 +461,7 @@ public class ArcFurnaceRecipes implements Runnable {
                     .noFluidOutputs()
                     .duration(18 * SECONDS)
                     .eut(330)
-                    .addTo(sArcFurnaceRecipes);
+                    .addTo(UniversalArcFurnace);
 
         GT_Values.RA.stdBuilder()
                     .itemInputs(getModItem(Railcraft.modID, "machine.eta", 1L, 5))
@@ -472,7 +472,7 @@ public class ArcFurnaceRecipes implements Runnable {
                     .noFluidOutputs()
                     .duration(18 * SECONDS)
                     .eut(330)
-                    .addTo(sArcFurnaceRecipes);
+                    .addTo(UniversalArcFurnace);
 
         GT_Values.RA.stdBuilder()
                     .itemInputs(getModItem(Railcraft.modID, "machine.eta", 1L, 6))
@@ -481,7 +481,7 @@ public class ArcFurnaceRecipes implements Runnable {
                     .noFluidOutputs()
                     .duration(18 * SECONDS)
                     .eut(TierEU.RECIPE_HV)
-                    .addTo(sArcFurnaceRecipes);
+                    .addTo(UniversalArcFurnace);
 
         GT_Values.RA.stdBuilder()
                     .itemInputs(getModItem(Railcraft.modID, "machine.eta", 1L, 7))
@@ -492,7 +492,7 @@ public class ArcFurnaceRecipes implements Runnable {
                     .noFluidOutputs()
                     .duration(18 * SECONDS)
                     .eut(TierEU.RECIPE_HV)
-                    .addTo(sArcFurnaceRecipes);
+                    .addTo(UniversalArcFurnace);
 
         GT_Values.RA.stdBuilder()
                     .itemInputs(getModItem(Railcraft.modID, "machine.eta", 1L, 8))
@@ -503,7 +503,7 @@ public class ArcFurnaceRecipes implements Runnable {
                     .noFluidOutputs()
                     .duration(18 * SECONDS)
                     .eut(TierEU.RECIPE_HV)
-                    .addTo(sArcFurnaceRecipes);
+                    .addTo(UniversalArcFurnace);
 
         GT_Values.RA.stdBuilder()
                     .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 1L))
@@ -512,7 +512,7 @@ public class ArcFurnaceRecipes implements Runnable {
                     .noFluidOutputs()
                     .duration(60 * SECONDS)
                     .eut((int) TierEU.RECIPE_LV)
-                    .addTo(sArcFurnaceRecipes);
+                    .addTo(UniversalArcFurnace);
 
     }
 }
