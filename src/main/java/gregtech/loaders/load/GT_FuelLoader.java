@@ -1,5 +1,9 @@
 package gregtech.loaders.load;
 
+import static gregtech.api.enums.ModIDs.BloodMagic;
+import static gregtech.api.enums.ModIDs.EnderIO;
+import static gregtech.api.enums.ModIDs.Thaumcraft;
+
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -13,10 +17,6 @@ import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
-
-import static gregtech.api.enums.ModIDs.BloodMagic;
-import static gregtech.api.enums.ModIDs.EnderIO;
-import static gregtech.api.enums.ModIDs.Thaumcraft;
 
 public class GT_FuelLoader implements Runnable {
 

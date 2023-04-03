@@ -1,5 +1,7 @@
 package gregtech.api.gui.modularui;
 
+import static gregtech.api.enums.ModIDs.GregTech;
+
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -7,10 +9,7 @@ import java.util.stream.IntStream;
 import com.gtnewhorizons.modularui.api.drawable.AdaptableUITexture;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 
-import static gregtech.api.enums.ModIDs.GregTech;
-
 public class GT_UITextures {
-
 
     public static final UITexture TRANSPARENT = UITexture.fullImage(GregTech.modID, "gui/picture/transparent");
 
@@ -56,50 +55,83 @@ public class GT_UITextures {
             20,
             20,
             1);
-    public static final AdaptableUITexture SLOT_UPLIFTED = AdaptableUITexture.of(GregTech.modID, "gui/slot/uplifted", 18, 18, 1);
+    public static final AdaptableUITexture SLOT_UPLIFTED = AdaptableUITexture.of(
+            GregTech.modID,
+            "gui/slot/uplifted",
+            18,
+            18,
+            1);
 
-    public static final UITexture OVERLAY_SLOT_ARROW_ME = UITexture.fullImage(GregTech.modID, "gui/overlay_slot/arrow_me");
-    public static final UITexture OVERLAY_SLOT_BEAKER_1 = UITexture.fullImage(GregTech.modID, "gui/overlay_slot/beaker_1");
-    public static final UITexture OVERLAY_SLOT_BEAKER_2 = UITexture.fullImage(GregTech.modID, "gui/overlay_slot/beaker_2");
-    public static final UITexture OVERLAY_SLOT_BEE_DRONE = UITexture.fullImage(GregTech.modID, "gui/overlay_slot/bee_drone");
-    public static final UITexture OVERLAY_SLOT_BEE_QUEEN = UITexture.fullImage(GregTech.modID, "gui/overlay_slot/bee_queen");
+    public static final UITexture OVERLAY_SLOT_ARROW_ME = UITexture.fullImage(
+            GregTech.modID,
+            "gui/overlay_slot/arrow_me");
+    public static final UITexture OVERLAY_SLOT_BEAKER_1 = UITexture.fullImage(
+            GregTech.modID,
+            "gui/overlay_slot/beaker_1");
+    public static final UITexture OVERLAY_SLOT_BEAKER_2 = UITexture.fullImage(
+            GregTech.modID,
+            "gui/overlay_slot/beaker_2");
+    public static final UITexture OVERLAY_SLOT_BEE_DRONE = UITexture.fullImage(
+            GregTech.modID,
+            "gui/overlay_slot/bee_drone");
+    public static final UITexture OVERLAY_SLOT_BEE_QUEEN = UITexture.fullImage(
+            GregTech.modID,
+            "gui/overlay_slot/bee_queen");
     public static final UITexture OVERLAY_SLOT_BENDER = UITexture.fullImage(GregTech.modID, "gui/overlay_slot/bender");
     public static final UITexture OVERLAY_SLOT_BOX = UITexture.fullImage(GregTech.modID, "gui/overlay_slot/box");
     public static final UITexture OVERLAY_SLOT_BOXED = UITexture.fullImage(GregTech.modID, "gui/overlay_slot/boxed");
-    public static final UITexture OVERLAY_SLOT_CANISTER = UITexture.fullImage(GregTech.modID, "gui/overlay_slot/canister");
+    public static final UITexture OVERLAY_SLOT_CANISTER = UITexture.fullImage(
+            GregTech.modID,
+            "gui/overlay_slot/canister");
     public static final SteamTexture OVERLAY_SLOT_CANISTER_STEAM = SteamTexture.fullImage(
             GregTech.modID,
             "gui/overlay_slot/canister_%s");
     public static final UITexture OVERLAY_SLOT_CANNER = UITexture.fullImage(GregTech.modID, "gui/overlay_slot/canner");
-    public static final UITexture OVERLAY_SLOT_CAULDRON = UITexture.fullImage(GregTech.modID, "gui/overlay_slot/cauldron");
-    public static final UITexture OVERLAY_SLOT_CENTRIFUGE = UITexture.fullImage(GregTech.modID, "gui/overlay_slot/centrifuge");
+    public static final UITexture OVERLAY_SLOT_CAULDRON = UITexture.fullImage(
+            GregTech.modID,
+            "gui/overlay_slot/cauldron");
+    public static final UITexture OVERLAY_SLOT_CENTRIFUGE = UITexture.fullImage(
+            GregTech.modID,
+            "gui/overlay_slot/centrifuge");
     public static final UITexture OVERLAY_SLOT_CENTRIFUGE_FLUID = UITexture.fullImage(
             GregTech.modID,
             "gui/overlay_slot/centrifuge_fluid");
     public static final SteamTexture OVERLAY_SLOT_CENTRIFUGE_STEAM = SteamTexture.fullImage(
             GregTech.modID,
             "gui/overlay_slot/centrifuge_%s");
-    public static final UITexture OVERLAY_SLOT_CHARGER = UITexture.fullImage(GregTech.modID, "gui/overlay_slot/charger");
+    public static final UITexture OVERLAY_SLOT_CHARGER = UITexture.fullImage(
+            GregTech.modID,
+            "gui/overlay_slot/charger");
     public static final UITexture OVERLAY_SLOT_CHARGER_FLUID = UITexture.fullImage(
             GregTech.modID,
             "gui/overlay_slot/charger_fluid");
-    public static final UITexture OVERLAY_SLOT_CIRCUIT = UITexture.fullImage(GregTech.modID, "gui/overlay_slot/circuit");
+    public static final UITexture OVERLAY_SLOT_CIRCUIT = UITexture.fullImage(
+            GregTech.modID,
+            "gui/overlay_slot/circuit");
     public static final SteamTexture OVERLAY_SLOT_COAL_STEAM = SteamTexture.fullImage(
             GregTech.modID,
             "gui/overlay_slot/coal_%s");
-    public static final UITexture OVERLAY_SLOT_COMPRESSOR = UITexture.fullImage(GregTech.modID, "gui/overlay_slot/compressor");
+    public static final UITexture OVERLAY_SLOT_COMPRESSOR = UITexture.fullImage(
+            GregTech.modID,
+            "gui/overlay_slot/compressor");
     public static final SteamTexture OVERLAY_SLOT_COMPRESSOR_STEAM = SteamTexture.fullImage(
             GregTech.modID,
             "gui/overlay_slot/compressor_%s");
-    public static final UITexture OVERLAY_SLOT_CRUSHED_ORE = UITexture.fullImage(GregTech.modID, "gui/overlay_slot/crushed_ore");
+    public static final UITexture OVERLAY_SLOT_CRUSHED_ORE = UITexture.fullImage(
+            GregTech.modID,
+            "gui/overlay_slot/crushed_ore");
     public static final SteamTexture OVERLAY_SLOT_CRUSHED_ORE_STEAM = SteamTexture.fullImage(
             GregTech.modID,
             "gui/overlay_slot/crushed_ore_%s");
     public static final UITexture OVERLAY_SLOT_CUTTER_SLICED = UITexture.fullImage(
             GregTech.modID,
             "gui/overlay_slot/cutter_sliced");
-    public static final UITexture OVERLAY_SLOT_DATA_ORB = UITexture.fullImage(GregTech.modID, "gui/overlay_slot/data_orb");
-    public static final UITexture OVERLAY_SLOT_DATA_STICK = UITexture.fullImage(GregTech.modID, "gui/overlay_slot/data_stick");
+    public static final UITexture OVERLAY_SLOT_DATA_ORB = UITexture.fullImage(
+            GregTech.modID,
+            "gui/overlay_slot/data_orb");
+    public static final UITexture OVERLAY_SLOT_DATA_STICK = UITexture.fullImage(
+            GregTech.modID,
+            "gui/overlay_slot/data_stick");
     public static final UITexture OVERLAY_SLOT_DUST = UITexture.fullImage(GregTech.modID, "gui/overlay_slot/dust");
     public static final SteamTexture OVERLAY_SLOT_DUST_STEAM = SteamTexture.fullImage(
             GregTech.modID,
@@ -107,11 +139,15 @@ public class GT_UITextures {
     public static final SteamTexture OVERLAY_SLOT_BLOCK_STEAM = SteamTexture.fullImage(
             GregTech.modID,
             "gui/overlay_slot/block_%s");
-    public static final UITexture OVERLAY_SLOT_EXPLOSIVE = UITexture.fullImage(GregTech.modID, "gui/overlay_slot/explosive");
+    public static final UITexture OVERLAY_SLOT_EXPLOSIVE = UITexture.fullImage(
+            GregTech.modID,
+            "gui/overlay_slot/explosive");
     public static final UITexture OVERLAY_SLOT_EXTRUDER_SHAPE = UITexture.fullImage(
             GregTech.modID,
             "gui/overlay_slot/extruder_shape");
-    public static final UITexture OVERLAY_SLOT_FURNACE = UITexture.fullImage(GregTech.modID, "gui/overlay_slot/furnace");
+    public static final UITexture OVERLAY_SLOT_FURNACE = UITexture.fullImage(
+            GregTech.modID,
+            "gui/overlay_slot/furnace");
     public static final SteamTexture OVERLAY_SLOT_FURNACE_STEAM = SteamTexture.fullImage(
             GregTech.modID,
             "gui/overlay_slot/furnace_%s");
@@ -120,34 +156,66 @@ public class GT_UITextures {
     public static final SteamTexture OVERLAY_SLOT_HAMMER_STEAM = SteamTexture.fullImage(
             GregTech.modID,
             "gui/overlay_slot/hammer_%s");
-    public static final UITexture OVERLAY_SLOT_HEATER_1 = UITexture.fullImage(GregTech.modID, "gui/overlay_slot/heater_1");
-    public static final UITexture OVERLAY_SLOT_HEATER_2 = UITexture.fullImage(GregTech.modID, "gui/overlay_slot/heater_2");
-    public static final UITexture OVERLAY_SLOT_IMPLOSION = UITexture.fullImage(GregTech.modID, "gui/overlay_slot/implosion");
+    public static final UITexture OVERLAY_SLOT_HEATER_1 = UITexture.fullImage(
+            GregTech.modID,
+            "gui/overlay_slot/heater_1");
+    public static final UITexture OVERLAY_SLOT_HEATER_2 = UITexture.fullImage(
+            GregTech.modID,
+            "gui/overlay_slot/heater_2");
+    public static final UITexture OVERLAY_SLOT_IMPLOSION = UITexture.fullImage(
+            GregTech.modID,
+            "gui/overlay_slot/implosion");
     public static final UITexture OVERLAY_SLOT_IN = UITexture.fullImage(GregTech.modID, "gui/overlay_slot/in");
-    public static final SteamTexture OVERLAY_SLOT_IN_STEAM = SteamTexture.fullImage(GregTech.modID, "gui/overlay_slot/in_%s");
+    public static final SteamTexture OVERLAY_SLOT_IN_STEAM = SteamTexture.fullImage(
+            GregTech.modID,
+            "gui/overlay_slot/in_%s");
     public static final SteamTexture OVERLAY_SLOT_INGOT_STEAM = SteamTexture.fullImage(
             GregTech.modID,
             "gui/overlay_slot/ingot_%s");
-    public static final UITexture OVERLAY_SLOT_INT_CIRCUIT = UITexture.fullImage(GregTech.modID, "gui/overlay_slot/int_circuit");
+    public static final UITexture OVERLAY_SLOT_INT_CIRCUIT = UITexture.fullImage(
+            GregTech.modID,
+            "gui/overlay_slot/int_circuit");
     public static final UITexture OVERLAY_SLOT_LENS = UITexture.fullImage(GregTech.modID, "gui/overlay_slot/lens");
-    public static final UITexture OVERLAY_SLOT_MICROSCOPE = UITexture.fullImage(GregTech.modID, "gui/overlay_slot/microscope");
+    public static final UITexture OVERLAY_SLOT_MICROSCOPE = UITexture.fullImage(
+            GregTech.modID,
+            "gui/overlay_slot/microscope");
     public static final UITexture OVERLAY_SLOT_MOLD = UITexture.fullImage(GregTech.modID, "gui/overlay_slot/mold");
-    public static final UITexture OVERLAY_SLOT_MOLECULAR_1 = UITexture.fullImage(GregTech.modID, "gui/overlay_slot/molecular_1");
-    public static final UITexture OVERLAY_SLOT_MOLECULAR_2 = UITexture.fullImage(GregTech.modID, "gui/overlay_slot/molecular_2");
-    public static final UITexture OVERLAY_SLOT_MOLECULAR_3 = UITexture.fullImage(GregTech.modID, "gui/overlay_slot/molecular_3");
+    public static final UITexture OVERLAY_SLOT_MOLECULAR_1 = UITexture.fullImage(
+            GregTech.modID,
+            "gui/overlay_slot/molecular_1");
+    public static final UITexture OVERLAY_SLOT_MOLECULAR_2 = UITexture.fullImage(
+            GregTech.modID,
+            "gui/overlay_slot/molecular_2");
+    public static final UITexture OVERLAY_SLOT_MOLECULAR_3 = UITexture.fullImage(
+            GregTech.modID,
+            "gui/overlay_slot/molecular_3");
     public static final UITexture OVERLAY_SLOT_OUT = UITexture.fullImage(GregTech.modID, "gui/overlay_slot/out");
-    public static final SteamTexture OVERLAY_SLOT_OUT_STEAM = SteamTexture.fullImage(GregTech.modID, "gui/overlay_slot/out_%s");
-    public static final UITexture OVERLAY_SLOT_PAGE_BLANK = UITexture.fullImage(GregTech.modID, "gui/overlay_slot/page_blank");
+    public static final SteamTexture OVERLAY_SLOT_OUT_STEAM = SteamTexture.fullImage(
+            GregTech.modID,
+            "gui/overlay_slot/out_%s");
+    public static final UITexture OVERLAY_SLOT_PAGE_BLANK = UITexture.fullImage(
+            GregTech.modID,
+            "gui/overlay_slot/page_blank");
     public static final UITexture OVERLAY_SLOT_PAGE_PRINTED = UITexture.fullImage(
             GregTech.modID,
             "gui/overlay_slot/page_printed");
-    public static final UITexture OVERLAY_SLOT_PRESS_1 = UITexture.fullImage(GregTech.modID, "gui/overlay_slot/press_1");
-    public static final UITexture OVERLAY_SLOT_PRESS_2 = UITexture.fullImage(GregTech.modID, "gui/overlay_slot/press_2");
-    public static final UITexture OVERLAY_SLOT_PRESS_3 = UITexture.fullImage(GregTech.modID, "gui/overlay_slot/press_3");
-    public static final UITexture OVERLAY_SLOT_RECYCLE = UITexture.fullImage(GregTech.modID, "gui/overlay_slot/recycle");
+    public static final UITexture OVERLAY_SLOT_PRESS_1 = UITexture.fullImage(
+            GregTech.modID,
+            "gui/overlay_slot/press_1");
+    public static final UITexture OVERLAY_SLOT_PRESS_2 = UITexture.fullImage(
+            GregTech.modID,
+            "gui/overlay_slot/press_2");
+    public static final UITexture OVERLAY_SLOT_PRESS_3 = UITexture.fullImage(
+            GregTech.modID,
+            "gui/overlay_slot/press_3");
+    public static final UITexture OVERLAY_SLOT_RECYCLE = UITexture.fullImage(
+            GregTech.modID,
+            "gui/overlay_slot/recycle");
     public static final UITexture OVERLAY_SLOT_ROD_1 = UITexture.fullImage(GregTech.modID, "gui/overlay_slot/rod_1");
     public static final UITexture OVERLAY_SLOT_ROD_2 = UITexture.fullImage(GregTech.modID, "gui/overlay_slot/rod_2");
-    public static final UITexture OVERLAY_SLOT_SLICE_SHAPE = UITexture.fullImage(GregTech.modID, "gui/overlay_slot/slice_shape");
+    public static final UITexture OVERLAY_SLOT_SLICE_SHAPE = UITexture.fullImage(
+            GregTech.modID,
+            "gui/overlay_slot/slice_shape");
     public static final UITexture OVERLAY_SLOT_SLICER_SLICED = UITexture.fullImage(
             GregTech.modID,
             "gui/overlay_slot/slicer_sliced");
@@ -156,7 +224,9 @@ public class GT_UITextures {
     public static final UITexture OVERLAY_SLOT_UUM = UITexture.fullImage(GregTech.modID, "gui/overlay_slot/uum");
     public static final UITexture OVERLAY_SLOT_VIAL_1 = UITexture.fullImage(GregTech.modID, "gui/overlay_slot/vial_1");
     public static final UITexture OVERLAY_SLOT_VIAL_2 = UITexture.fullImage(GregTech.modID, "gui/overlay_slot/vial_2");
-    public static final UITexture OVERLAY_SLOT_WIREMILL = UITexture.fullImage(GregTech.modID, "gui/overlay_slot/wiremill");
+    public static final UITexture OVERLAY_SLOT_WIREMILL = UITexture.fullImage(
+            GregTech.modID,
+            "gui/overlay_slot/wiremill");
     public static final UITexture OVERLAY_SLOT_WRENCH = UITexture.fullImage(GregTech.modID, "gui/overlay_slot/wrench");
     public static final UITexture[] OVERLAY_SLOTS_NUMBER = IntStream.range(0, 12)
                                                                     .mapToObj(
@@ -176,7 +246,9 @@ public class GT_UITextures {
     public static final UITexture PROGRESSBAR_ARROW_MULTIPLE = UITexture.fullImage(
             GregTech.modID,
             "gui/progressbar/arrow_multiple");
-    public static final UITexture PROGRESSBAR_ASSEMBLE = UITexture.fullImage(GregTech.modID, "gui/progressbar/assemble");
+    public static final UITexture PROGRESSBAR_ASSEMBLE = UITexture.fullImage(
+            GregTech.modID,
+            "gui/progressbar/assemble");
     public static final UITexture PROGRESSBAR_ASSEMBLY_LINE_1 = UITexture.fullImage(
             GregTech.modID,
             "gui/progressbar/assemblyline_1");
@@ -191,14 +263,22 @@ public class GT_UITextures {
     public static final SteamTexture PROGRESSBAR_BOILER_EMPTY_STEAM = SteamTexture.fullImage(
             GregTech.modID,
             "gui/progressbar/boiler_empty_%s");
-    public static final UITexture PROGRESSBAR_BOILER_HEAT = UITexture.fullImage(GregTech.modID, "gui/progressbar/boiler_heat");
-    public static final UITexture PROGRESSBAR_BOILER_STEAM = UITexture.fullImage(GregTech.modID, "gui/progressbar/boiler_steam");
-    public static final UITexture PROGRESSBAR_BOILER_WATER = UITexture.fullImage(GregTech.modID, "gui/progressbar/boiler_water");
+    public static final UITexture PROGRESSBAR_BOILER_HEAT = UITexture.fullImage(
+            GregTech.modID,
+            "gui/progressbar/boiler_heat");
+    public static final UITexture PROGRESSBAR_BOILER_STEAM = UITexture.fullImage(
+            GregTech.modID,
+            "gui/progressbar/boiler_steam");
+    public static final UITexture PROGRESSBAR_BOILER_WATER = UITexture.fullImage(
+            GregTech.modID,
+            "gui/progressbar/boiler_water");
     public static final UITexture PROGRESSBAR_CANNER = UITexture.fullImage(GregTech.modID, "gui/progressbar/canner");
     public static final UITexture PROGRESSBAR_CIRCUIT_ASSEMBLER = UITexture.fullImage(
             GregTech.modID,
             "gui/progressbar/circuit_assembler");
-    public static final UITexture PROGRESSBAR_COMPRESS = UITexture.fullImage(GregTech.modID, "gui/progressbar/compress");
+    public static final UITexture PROGRESSBAR_COMPRESS = UITexture.fullImage(
+            GregTech.modID,
+            "gui/progressbar/compress");
     public static final SteamTexture PROGRESSBAR_COMPRESS_STEAM = SteamTexture.fullImage(
             GregTech.modID,
             "gui/progressbar/compress_%s");
@@ -208,9 +288,13 @@ public class GT_UITextures {
             GregTech.modID,
             "gui/progressbar/extract_%s");
     public static final UITexture PROGRESSBAR_EXTRUDE = UITexture.fullImage(GregTech.modID, "gui/progressbar/extrude");
-    public static final SteamTexture PROGRESSBAR_FUEL_STEAM = SteamTexture.fullImage(GregTech.modID, "gui/progressbar/fuel_%s");
+    public static final SteamTexture PROGRESSBAR_FUEL_STEAM = SteamTexture.fullImage(
+            GregTech.modID,
+            "gui/progressbar/fuel_%s");
     public static final UITexture PROGRESSBAR_HAMMER = UITexture.fullImage(GregTech.modID, "gui/progressbar/hammer");
-    public static final UITexture PROGRESSBAR_HAMMER_BASE = UITexture.fullImage(GregTech.modID, "gui/progressbar/hammer_base");
+    public static final UITexture PROGRESSBAR_HAMMER_BASE = UITexture.fullImage(
+            GregTech.modID,
+            "gui/progressbar/hammer_base");
     public static final SteamTexture PROGRESSBAR_HAMMER_STEAM = SteamTexture.fullImage(
             GregTech.modID,
             "gui/progressbar/hammer_%s");
@@ -218,8 +302,12 @@ public class GT_UITextures {
             GregTech.modID,
             "gui/progressbar/hammer_base_%s");
     public static final UITexture PROGRESSBAR_LATHE = UITexture.fullImage(GregTech.modID, "gui/progressbar/lathe");
-    public static final UITexture PROGRESSBAR_LATHE_BASE = UITexture.fullImage(GregTech.modID, "gui/progressbar/lathe_base");
-    public static final UITexture PROGRESSBAR_MACERATE = UITexture.fullImage(GregTech.modID, "gui/progressbar/macerate");
+    public static final UITexture PROGRESSBAR_LATHE_BASE = UITexture.fullImage(
+            GregTech.modID,
+            "gui/progressbar/lathe_base");
+    public static final UITexture PROGRESSBAR_MACERATE = UITexture.fullImage(
+            GregTech.modID,
+            "gui/progressbar/macerate");
     public static final SteamTexture PROGRESSBAR_MACERATE_STEAM = SteamTexture.fullImage(
             GregTech.modID,
             "gui/progressbar/macerate_%s");
@@ -228,20 +316,31 @@ public class GT_UITextures {
     public static final UITexture PROGRESSBAR_RECYCLE = UITexture.fullImage(GregTech.modID, "gui/progressbar/recycle");
     public static final UITexture PROGRESSBAR_SIFT = UITexture.fullImage(GregTech.modID, "gui/progressbar/sift");
     public static final UITexture PROGRESSBAR_SLICE = UITexture.fullImage(GregTech.modID, "gui/progressbar/slice");
-    public static final UITexture PROGRESSBAR_STORED_EU = UITexture.fullImage(GregTech.modID, "gui/progressbar/stored_eu");
-    public static final UITexture PROGRESSBAR_WIREMILL = UITexture.fullImage(GregTech.modID, "gui/progressbar/wiremill");
+    public static final UITexture PROGRESSBAR_STORED_EU = UITexture.fullImage(
+            GregTech.modID,
+            "gui/progressbar/stored_eu");
+    public static final UITexture PROGRESSBAR_WIREMILL = UITexture.fullImage(
+            GregTech.modID,
+            "gui/progressbar/wiremill");
 
     public static final UITexture TAB_COVER_NORMAL = UITexture.fullImage(GregTech.modID, "gui/tab/cover_normal");
     public static final UITexture TAB_COVER_HIGHLIGHT = UITexture.fullImage(GregTech.modID, "gui/tab/cover_highlight");
     public static final UITexture TAB_COVER_DISABLED = UITexture.fullImage(GregTech.modID, "gui/tab/cover_disabled");
-    public static final SteamTexture TAB_COVER_STEAM_NORMAL = SteamTexture.fullImage(GregTech.modID, "gui/tab/cover_%s_normal");
+    public static final SteamTexture TAB_COVER_STEAM_NORMAL = SteamTexture.fullImage(
+            GregTech.modID,
+            "gui/tab/cover_%s_normal");
     public static final SteamTexture TAB_COVER_STEAM_HIGHLIGHT = SteamTexture.fullImage(
             GregTech.modID,
             "gui/tab/cover_%s_highlight");
     public static final SteamTexture TAB_COVER_STEAM_DISABLED = SteamTexture.fullImage(
             GregTech.modID,
             "gui/tab/cover_%s_disabled");
-    public static final AdaptableUITexture TAB_TITLE = AdaptableUITexture.of(GregTech.modID, "gui/tab/title", 28, 28, 4);
+    public static final AdaptableUITexture TAB_TITLE = AdaptableUITexture.of(
+            GregTech.modID,
+            "gui/tab/title",
+            28,
+            28,
+            4);
     public static final AdaptableUITexture TAB_TITLE_DARK = AdaptableUITexture.of(
             GregTech.modID,
             "gui/tab/title_dark",
@@ -273,7 +372,12 @@ public class GT_UITextures {
             28,
             4);
 
-    public static final UITexture BUTTON_STANDARD = AdaptableUITexture.of(GregTech.modID, "gui/button/standard", 18, 18, 1);
+    public static final UITexture BUTTON_STANDARD = AdaptableUITexture.of(
+            GregTech.modID,
+            "gui/button/standard",
+            18,
+            18,
+            1);
     public static final UITexture BUTTON_STANDARD_DISABLED = AdaptableUITexture.of(
             GregTech.modID,
             "gui/button/standard_disabled",
@@ -300,7 +404,9 @@ public class GT_UITextures {
             GregTech.modID,
             "gui/button/cover_normal_disabled");
 
-    public static final UITexture OVERLAY_BUTTON_DISABLE = UITexture.fullImage(GregTech.modID, "gui/overlay_button/disable");
+    public static final UITexture OVERLAY_BUTTON_DISABLE = UITexture.fullImage(
+            GregTech.modID,
+            "gui/overlay_button/disable");
     public static final UITexture OVERLAY_BUTTON_REDSTONE_OFF = UITexture.fullImage(
             GregTech.modID,
             "gui/overlay_button/redstone_off");
@@ -367,13 +473,27 @@ public class GT_UITextures {
     public static final UITexture OVERLAY_BUTTON_DOWN_TIERING_OFF = UITexture.fullImage(
             GregTech.modID,
             "gui/overlay_button/down_tiering_off");
-    public static final UITexture OVERLAY_BUTTON_CHECKMARK = UITexture.fullImage(GregTech.modID, "gui/overlay_button/checkmark");
-    public static final UITexture OVERLAY_BUTTON_CROSS = UITexture.fullImage(GregTech.modID, "gui/overlay_button/cross");
-    public static final UITexture OVERLAY_BUTTON_WHITELIST = UITexture.fullImage(GregTech.modID, "gui/overlay_button/whitelist");
-    public static final UITexture OVERLAY_BUTTON_BLACKLIST = UITexture.fullImage(GregTech.modID, "gui/overlay_button/blacklist");
-    public static final UITexture OVERLAY_BUTTON_PROGRESS = UITexture.fullImage(GregTech.modID, "gui/overlay_button/progress");
-    public static final UITexture OVERLAY_BUTTON_EXPORT = UITexture.fullImage(GregTech.modID, "gui/overlay_button/export");
-    public static final UITexture OVERLAY_BUTTON_IMPORT = UITexture.fullImage(GregTech.modID, "gui/overlay_button/import");
+    public static final UITexture OVERLAY_BUTTON_CHECKMARK = UITexture.fullImage(
+            GregTech.modID,
+            "gui/overlay_button/checkmark");
+    public static final UITexture OVERLAY_BUTTON_CROSS = UITexture.fullImage(
+            GregTech.modID,
+            "gui/overlay_button/cross");
+    public static final UITexture OVERLAY_BUTTON_WHITELIST = UITexture.fullImage(
+            GregTech.modID,
+            "gui/overlay_button/whitelist");
+    public static final UITexture OVERLAY_BUTTON_BLACKLIST = UITexture.fullImage(
+            GregTech.modID,
+            "gui/overlay_button/blacklist");
+    public static final UITexture OVERLAY_BUTTON_PROGRESS = UITexture.fullImage(
+            GregTech.modID,
+            "gui/overlay_button/progress");
+    public static final UITexture OVERLAY_BUTTON_EXPORT = UITexture.fullImage(
+            GregTech.modID,
+            "gui/overlay_button/export");
+    public static final UITexture OVERLAY_BUTTON_IMPORT = UITexture.fullImage(
+            GregTech.modID,
+            "gui/overlay_button/import");
     public static final UITexture OVERLAY_BUTTON_AUTOOUTPUT_ITEM = UITexture.fullImage(
             GregTech.modID,
             "gui/overlay_button/autooutput_item");
@@ -398,7 +518,9 @@ public class GT_UITextures {
     public static final UITexture OVERLAY_BUTTON_ARROW_GREEN_DOWN = UITexture.fullImage(
             GregTech.modID,
             "gui/overlay_button/arrow_green_down");
-    public static final UITexture OVERLAY_BUTTON_CYCLIC = UITexture.fullImage(GregTech.modID, "gui/overlay_button/cyclic");
+    public static final UITexture OVERLAY_BUTTON_CYCLIC = UITexture.fullImage(
+            GregTech.modID,
+            "gui/overlay_button/cyclic");
     public static final UITexture OVERLAY_BUTTON_EMIT_ENERGY = UITexture.fullImage(
             GregTech.modID,
             "gui/overlay_button/emit_energy");
@@ -415,8 +537,12 @@ public class GT_UITextures {
             GregTech.modID,
             "gui/overlay_button/invert_filter");
     public static final UITexture OVERLAY_BUTTON_NBT = UITexture.fullImage(GregTech.modID, "gui/overlay_button/nbt");
-    public static final UITexture OVERLAY_BUTTON_PRINT = UITexture.fullImage(GregTech.modID, "gui/overlay_button/print");
-    public static final UITexture OVERLAY_BUTTON_TRANSPOSE = UITexture.fullImage(GregTech.modID, "gui/overlay_button/transpose");
+    public static final UITexture OVERLAY_BUTTON_PRINT = UITexture.fullImage(
+            GregTech.modID,
+            "gui/overlay_button/print");
+    public static final UITexture OVERLAY_BUTTON_TRANSPOSE = UITexture.fullImage(
+            GregTech.modID,
+            "gui/overlay_button/transpose");
     public static final UITexture OVERLAY_BUTTON_BOUNDING_BOX = UITexture.fullImage(
             GregTech.modID,
             "gui/overlay_button/bounding_box");
@@ -432,11 +558,21 @@ public class GT_UITextures {
     public static final UITexture OVERLAY_BUTTON_PLUS_LARGE = UITexture.fullImage(
             GregTech.modID,
             "gui/overlay_button/plus_large");
-    public static final UITexture OVERLAY_BUTTON_GATE_AND = UITexture.fullImage(GregTech.modID, "gui/overlay_button/gate_and");
-    public static final UITexture OVERLAY_BUTTON_GATE_NAND = UITexture.fullImage(GregTech.modID, "gui/overlay_button/gate_nand");
-    public static final UITexture OVERLAY_BUTTON_GATE_OR = UITexture.fullImage(GregTech.modID, "gui/overlay_button/gate_or");
-    public static final UITexture OVERLAY_BUTTON_GATE_NOR = UITexture.fullImage(GregTech.modID, "gui/overlay_button/gate_nor");
-    public static final UITexture OVERLAY_BUTTON_ANALOG = UITexture.fullImage(GregTech.modID, "gui/overlay_button/analog");
+    public static final UITexture OVERLAY_BUTTON_GATE_AND = UITexture.fullImage(
+            GregTech.modID,
+            "gui/overlay_button/gate_and");
+    public static final UITexture OVERLAY_BUTTON_GATE_NAND = UITexture.fullImage(
+            GregTech.modID,
+            "gui/overlay_button/gate_nand");
+    public static final UITexture OVERLAY_BUTTON_GATE_OR = UITexture.fullImage(
+            GregTech.modID,
+            "gui/overlay_button/gate_or");
+    public static final UITexture OVERLAY_BUTTON_GATE_NOR = UITexture.fullImage(
+            GregTech.modID,
+            "gui/overlay_button/gate_nor");
+    public static final UITexture OVERLAY_BUTTON_ANALOG = UITexture.fullImage(
+            GregTech.modID,
+            "gui/overlay_button/analog");
     public static final UITexture OVERLAY_BUTTON_LOCK = UITexture.fullImage(GregTech.modID, "gui/overlay_button/lock");
     public static final UITexture OVERLAY_BUTTON_INPUT_FROM_OUTPUT_SIDE = UITexture.fullImage(
             GregTech.modID,
@@ -444,7 +580,9 @@ public class GT_UITextures {
     public static final UITexture OVERLAY_BUTTON_VOID_EXCESS = UITexture.fullImage(
             GregTech.modID,
             "gui/overlay_button/void_excess");
-    public static final UITexture OVERLAY_BUTTON_VOID_ALL = UITexture.fullImage(GregTech.modID, "gui/overlay_button/void_all");
+    public static final UITexture OVERLAY_BUTTON_VOID_ALL = UITexture.fullImage(
+            GregTech.modID,
+            "gui/overlay_button/void_all");
     public static final UITexture OVERLAY_BUTTON_NEI = UITexture.fullImage(GregTech.modID, "gui/overlay_button/nei");
 
     /**
@@ -469,13 +607,19 @@ public class GT_UITextures {
     public static final SteamTexture PICTURE_GT_LOGO_17x17_TRANSPARENT_STEAM = SteamTexture.fullImage(
             GregTech.modID,
             "gui/picture/gt_logo_17x17_transparent_%s");
-    public static final UITexture PICTURE_GT_LOGO_18x18 = UITexture.fullImage(GregTech.modID, "gui/picture/gt_logo_18x18");
-    public static final UITexture PICTURE_GT_LOGO_19x19 = UITexture.fullImage(GregTech.modID, "gui/picture/gt_logo_19x19");
+    public static final UITexture PICTURE_GT_LOGO_18x18 = UITexture.fullImage(
+            GregTech.modID,
+            "gui/picture/gt_logo_18x18");
+    public static final UITexture PICTURE_GT_LOGO_19x19 = UITexture.fullImage(
+            GregTech.modID,
+            "gui/picture/gt_logo_19x19");
     public static final UITexture PICTURE_INFORMATION = UITexture.fullImage(GregTech.modID, "gui/picture/information");
     public static final UITexture PICTURE_STALLED_ELECTRICITY = UITexture.fullImage(
             GregTech.modID,
             "gui/picture/stalled_electricity");
-    public static final UITexture PICTURE_STALLED_STEAM = UITexture.fullImage(GregTech.modID, "gui/picture/stalled_steam");
+    public static final UITexture PICTURE_STALLED_STEAM = UITexture.fullImage(
+            GregTech.modID,
+            "gui/picture/stalled_steam");
     public static final BiFunction<Integer, Boolean, UITexture> PICTURE_ARROW_22_RED = (width,
             fromRight) -> UITexture.partly(
                     GregTech.modID,
@@ -536,11 +680,19 @@ public class GT_UITextures {
                     0,
                     fromRight ? 69 : width,
                     24);
-    public static final UITexture PICTURE_FLUID_WINDOW = UITexture.fullImage(GregTech.modID, "gui/picture/fluid_window");
+    public static final UITexture PICTURE_FLUID_WINDOW = UITexture.fullImage(
+            GregTech.modID,
+            "gui/picture/fluid_window");
     public static final UITexture PICTURE_FLUID_TANK = UITexture.fullImage(GregTech.modID, "gui/picture/fluid_tank");
-    public static final UITexture PICTURE_SLOTS_HOLO_3BY3 = UITexture.fullImage(GregTech.modID, "gui/picture/slots_holo_3by3");
-    public static final UITexture PICTURE_ARROW_DOUBLE = UITexture.fullImage(GregTech.modID, "gui/picture/arrow_double");
-    public static final UITexture PICTURE_SUPER_BUFFER = UITexture.fullImage(GregTech.modID, "gui/picture/super_buffer");
+    public static final UITexture PICTURE_SLOTS_HOLO_3BY3 = UITexture.fullImage(
+            GregTech.modID,
+            "gui/picture/slots_holo_3by3");
+    public static final UITexture PICTURE_ARROW_DOUBLE = UITexture.fullImage(
+            GregTech.modID,
+            "gui/picture/arrow_double");
+    public static final UITexture PICTURE_SUPER_BUFFER = UITexture.fullImage(
+            GregTech.modID,
+            "gui/picture/super_buffer");
     public static final UITexture PICTURE_SQUARE_LIGHT_GRAY = UITexture.fullImage(
             GregTech.modID,
             "gui/picture/square_light_gray");

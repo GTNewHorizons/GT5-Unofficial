@@ -1,5 +1,7 @@
 package gregtech.api.gui.widgets;
 
+import static gregtech.api.enums.ModIDs.GregTech;
+
 import java.util.Arrays;
 
 import net.minecraft.client.Minecraft;
@@ -7,8 +9,6 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.ResourceLocation;
 
 import gregtech.api.interfaces.IGuiIcon;
-
-import static gregtech.api.enums.ModIDs.GregTech;
 
 public enum GT_GuiIcon implements IGuiIcon {
 

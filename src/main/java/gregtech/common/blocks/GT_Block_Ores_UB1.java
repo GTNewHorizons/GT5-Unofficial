@@ -1,5 +1,7 @@
 package gregtech.common.blocks;
 
+import static gregtech.api.enums.ModIDs.UndergroundBiomes;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
@@ -11,8 +13,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.TextureFactory;
-
-import static gregtech.api.enums.ModIDs.UndergroundBiomes;
 
 public class GT_Block_Ores_UB1 extends GT_Block_Ores_Abstract {
 

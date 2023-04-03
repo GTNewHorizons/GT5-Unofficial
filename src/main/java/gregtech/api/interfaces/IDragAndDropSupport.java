@@ -3,7 +3,6 @@ package gregtech.api.interfaces;
 import java.util.Collections;
 import java.util.List;
 
-import gregtech.api.enums.ModIDs;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.item.ItemStack;
 
@@ -12,6 +11,7 @@ import codechicken.nei.VisiblityData;
 import codechicken.nei.api.INEIGuiHandler;
 import codechicken.nei.api.TaggedInventoryArea;
 import cpw.mods.fml.common.Optional;
+import gregtech.api.enums.ModIDs;
 
 /**
  * Implement this interface if your GuiContainer supports Drag-And-Drop behavior on NEI.

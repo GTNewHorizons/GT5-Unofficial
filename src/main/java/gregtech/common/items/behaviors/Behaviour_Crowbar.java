@@ -1,5 +1,7 @@
 package gregtech.common.items.behaviors;
 
+import static gregtech.api.enums.ModIDs.Railcraft;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -10,8 +12,6 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.items.GT_MetaBase_Item;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
-
-import static gregtech.api.enums.ModIDs.Railcraft;
 
 public class Behaviour_Crowbar extends Behaviour_None {
 

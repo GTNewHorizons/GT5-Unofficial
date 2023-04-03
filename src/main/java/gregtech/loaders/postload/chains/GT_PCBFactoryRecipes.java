@@ -609,7 +609,7 @@ public class GT_PCBFactoryRecipes {
                                 GT_PCBFactoryManager.getPlasticMaterialFromTier(tier)
                                                     .getPlates(1),
                                 GT_ModHandler.getModItem(
-                                    BartWorks.modID,
+                                        BartWorks.modID,
                                         "gt.bwMetaGeneratedfoil",
                                         (long) (16 * (Math.sqrt(tier - 6))),
                                         10106),
@@ -643,7 +643,7 @@ public class GT_PCBFactoryRecipes {
                                 GT_PCBFactoryManager.getPlasticMaterialFromTier(tier)
                                                     .getPlates(1),
                                 GT_ModHandler.getModItem(
-                                    BartWorks.modID,
+                                        BartWorks.modID,
                                         "gt.bwMetaGeneratedfoil",
                                         (long) (16 * (Math.sqrt(tier - 6))),
                                         10106),
@@ -677,7 +677,7 @@ public class GT_PCBFactoryRecipes {
                                 GT_PCBFactoryManager.getPlasticMaterialFromTier(tier)
                                                     .getPlates(1),
                                 GT_ModHandler.getModItem(
-                                    BartWorks.modID,
+                                        BartWorks.modID,
                                         "gt.bwMetaGeneratedfoil",
                                         (long) (16 * (Math.sqrt(tier - 6))),
                                         10106),

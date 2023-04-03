@@ -1,5 +1,7 @@
 package gregtech.api.util;
 
+import static gregtech.api.enums.ModIDs.GregTech;
+
 import java.io.DataInput;
 import java.io.DataInputStream;
 import java.io.DataOutput;
@@ -41,8 +43,6 @@ import org.apache.commons.io.FileUtils;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-
-import static gregtech.api.enums.ModIDs.GregTech;
 
 /**
  * A utility to save all kinds of data that is a function of any chunk.

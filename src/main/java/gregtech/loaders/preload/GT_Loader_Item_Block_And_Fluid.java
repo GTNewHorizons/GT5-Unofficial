@@ -632,18 +632,24 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
         GT_Log.out.println("GT_Mod: Registering the BaseMetaTileEntity.");
         GameRegistry.registerTileEntity(tBaseMetaTileEntity.getClass(), "BaseMetaTileEntity");
         FMLInterModComms.sendMessage(
-            AppliedEnergistics2.modID,
+                AppliedEnergistics2.modID,
                 "whitelist-spatial",
                 tBaseMetaTileEntity.getClass()
                                    .getName());
 
         GT_Log.out.println("GT_Mod: Registering the BaseMetaPipeEntity.");
         GameRegistry.registerTileEntity(BaseMetaPipeEntity.class, "BaseMetaPipeEntity");
-        FMLInterModComms.sendMessage(AppliedEnergistics2.modID, "whitelist-spatial", BaseMetaPipeEntity.class.getName());
+        FMLInterModComms.sendMessage(
+                AppliedEnergistics2.modID,
+                "whitelist-spatial",
+                BaseMetaPipeEntity.class.getName());
 
         GT_Log.out.println("GT_Mod: Registering the Ore TileEntity.");
         GameRegistry.registerTileEntity(GT_TileEntity_Ores.class, "GT_TileEntity_Ores");
-        FMLInterModComms.sendMessage(AppliedEnergistics2.modID, "whitelist-spatial", GT_TileEntity_Ores.class.getName());
+        FMLInterModComms.sendMessage(
+                AppliedEnergistics2.modID,
+                "whitelist-spatial",
+                GT_TileEntity_Ores.class.getName());
         if (!GregTech_API.mIC2Classic) {
             GT_Log.out.println("GT_Mod: Registering Fluids.");
             Materials.ConstructionFoam.mFluid = GT_Utility.getFluidForFilledItem(

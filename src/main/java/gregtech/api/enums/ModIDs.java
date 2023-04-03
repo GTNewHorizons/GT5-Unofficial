@@ -244,7 +244,7 @@ public enum ModIDs {
         public static final String WAILA = "Waila";
         public static final String WARP_THEORY = "WarpTheory";
         public static final String WITCHERY = "witchery";
-    public static final String WITCHING_GADGETS = "WitchingGadgets";
+        public static final String WITCHING_GADGETS = "WitchingGadgets";
         public static final String Z_TONES = "Ztones";
 
         // Do we keep compat of those mods?

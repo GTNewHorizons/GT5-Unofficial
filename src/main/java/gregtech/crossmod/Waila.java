@@ -1,9 +1,9 @@
 package gregtech.crossmod;
 
-import gregtech.api.enums.ModIDs;
 import mcp.mobius.waila.api.IWailaDataProvider;
 import mcp.mobius.waila.api.IWailaRegistrar;
 import cpw.mods.fml.common.event.FMLInterModComms;
+import gregtech.api.enums.ModIDs;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.multitileentity.base.MultiTileEntity;
