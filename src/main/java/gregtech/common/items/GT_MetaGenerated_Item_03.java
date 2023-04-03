@@ -236,6 +236,9 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
 
         ItemList.Circuit_Wafer_QPIC.set(addItem(tLastID = 164, "QPIC Wafer", "Raw Circuit", o));
         ItemList.Circuit_Chip_QPIC.set(addItem(tLastID = 165, "Quantum Power IC", "Quantum Power Circuit", o));
+
+        ItemList.Circuit_Wafer_Bioware.set(addItem(tLastID = 188, "Living Bio Wafer", "Raw Circuit", o));
+        ItemList.Circuit_Parts_Chip_Bioware.set(addItem(tLastID = 189, "Living Bio Chip", "Needed for Circuits", o));
         /**
          * Engraved Crystal Chip Engraved Lapotron Chip Crystal CPU SoCrystal stem cells (disassemble eggs)
          */
