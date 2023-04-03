@@ -1,6 +1,6 @@
 package gregtech.api.gui;
 
-import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
+import static gregtech.api.enums.Mods.GregTech;
 
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -28,7 +28,11 @@ public class GT_GUIContainer_MultiMachine extends GT_GUIContainerMetaTile_Machin
             String aTextureFile) {
         super(
                 new GT_Container_MultiMachine(aInventoryPlayer, aTileEntity),
-                RES_PATH_GUI + "multimachines/" + (aTextureFile == null ? "MultiblockDisplay" : aTextureFile));
+                GregTech.getResourcePath(
+                        "textures",
+                        "gui",
+                        "multimachines",
+                        aTextureFile == null ? "MultiblockDisplay" : aTextureFile));
         mName = aName;
     }
 

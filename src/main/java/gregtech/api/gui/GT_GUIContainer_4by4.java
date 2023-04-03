@@ -1,6 +1,6 @@
 package gregtech.api.gui;
 
-import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
+import static gregtech.api.enums.Mods.GregTech;
 
 import net.minecraft.entity.player.InventoryPlayer;
 
@@ -13,13 +13,17 @@ public class GT_GUIContainer_4by4 extends GT_GUIContainerMetaTile_Machine {
     private final int textColor = this.getTextColorOrDefault("title", 0x404040);
 
     public GT_GUIContainer_4by4(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, String aName) {
-        super(new GT_Container_4by4(aInventoryPlayer, aTileEntity), RES_PATH_GUI + "4by4.png");
+        super(
+                new GT_Container_4by4(aInventoryPlayer, aTileEntity),
+                GregTech.getResourcePath("textures", "gui", "4by4.png"));
         mName = aName;
     }
 
     public GT_GUIContainer_4by4(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, String aName,
             String aBackground) {
-        super(new GT_Container_4by4(aInventoryPlayer, aTileEntity), RES_PATH_GUI + aBackground + "4by4.png");
+        super(
+                new GT_Container_4by4(aInventoryPlayer, aTileEntity),
+                GregTech.getResourcePath("textures", "gui", aBackground + "4by4.png"));
         mName = aName;
     }
 

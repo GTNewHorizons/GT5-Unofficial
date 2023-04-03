@@ -1,6 +1,6 @@
 package gregtech.common.items;
 
-import static gregtech.api.enums.GT_Values.RES_PATH_ITEM;
+import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.util.GT_Utility.formatNumbers;
 import static ic2.core.util.LiquidUtil.drainContainerStack;
 import static ic2.core.util.LiquidUtil.fillContainerStack;
@@ -142,7 +142,7 @@ public class GT_VolumetricFlask extends GT_Generic_Item implements IFluidContain
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aIconRegister) {
         super.registerIcons(aIconRegister);
-        iconWindow = aIconRegister.registerIcon(RES_PATH_ITEM + "gt." + unlocalFlaskName + ".window");
+        iconWindow = aIconRegister.registerIcon(GregTech.getResourcePath("gt." + unlocalFlaskName + ".window"));
     }
 
     public void setCapacity(ItemStack stack, int capacity) {
