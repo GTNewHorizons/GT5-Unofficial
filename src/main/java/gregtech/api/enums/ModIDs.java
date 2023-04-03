@@ -124,7 +124,8 @@ public enum ModIDs {
     ThermalFondation(Names.THERMAL_FONDATION),
     UndergroundBiomes(Names.UNDERGROUND_BIOMES);
 
-    public static class Names{
+    public static class Names {
+
         public static final String ADVANCED_SOLAR_PANEL = "AdvancedSolarPanel";
         public static final String ADVENTURE_BACKPACK = "adventurebackpack";
         public static final String A_E2_FLUID_CRAFT = "ae2fc";
