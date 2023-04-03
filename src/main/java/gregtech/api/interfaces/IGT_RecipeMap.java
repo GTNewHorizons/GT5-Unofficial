@@ -18,7 +18,13 @@ public interface IGT_RecipeMap {
 
     /**
      * Add a downstream recipe map that will get to handle the original builder.
-     * 
+     *
+     * Downstream recipe maps got passed the recipe builder after parent recipe map is done with its business. Notice
+     * at this time the original recipe builder might be modified by the parent recipe map in some form, but it will
+     * remain as valid.
+     *
+     * A downstream will only be invoked if parent recipe map added something.
+     *
      * @param downstream
      */
     void addDownstream(IGT_RecipeMap downstream);
@@ -53,9 +59,13 @@ public interface IGT_RecipeMap {
             @Override
             public Collection<GT_Recipe> doAdd(GT_RecipeBuilder builder) {
                 List<Collection<GT_Recipe>> ret = new ArrayList<>();
-                ret.add(func.apply(builder));
-                for (IGT_RecipeMap downstream : downstreams) {
-                    ret.add(downstream.doAdd(builder));
+                Collection<GT_Recipe> out = func.apply(builder);
+                ret.add(out);
+                builder.clearInvalid();
+                if (!out.isEmpty()) {
+                    for (IGT_RecipeMap downstream : downstreams) {
+                        ret.add(downstream.doAdd(builder));
+                    }
                 }
                 return GT_Utility.concat(ret);
             }

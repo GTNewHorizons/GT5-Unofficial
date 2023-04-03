@@ -466,7 +466,7 @@ public class GT_RecipeBuilder {
      * unset. Both bound inclusive. Only supposed to be called by IGT_RecipeMap and not client code.
      */
     public GT_RecipeBuilder validateNoInputFluid() {
-        return GT_Utility.isArrayEmptyOrNull(fluidInputs) ? noItemInputs() : invalidate();
+        return GT_Utility.isArrayEmptyOrNull(fluidInputs) ? noFluidInputs() : invalidate();
     }
 
     /**
@@ -482,7 +482,7 @@ public class GT_RecipeBuilder {
      * unset. Both bound inclusive. Only supposed to be called by IGT_RecipeMap and not client code.
      */
     public GT_RecipeBuilder validateNoOutputFluid() {
-        return GT_Utility.isArrayEmptyOrNull(fluidOutputs) ? noItemInputs() : invalidate();
+        return GT_Utility.isArrayEmptyOrNull(fluidOutputs) ? noFluidOutputs() : invalidate();
     }
 
     /**
