@@ -2,6 +2,8 @@ package gregtech.api.enums;
 
 import cpw.mods.fml.common.Loader;
 
+import java.util.Locale;
+
 public enum Mods {
 
     AdvancedSolarPanel(Names.ADVANCED_SOLAR_PANEL),
@@ -261,10 +263,12 @@ public enum Mods {
     }
 
     public final String ID;
+    public final String path;
     private Boolean modLoaded;
 
     Mods(String ID) {
         this.ID = ID;
+        this.path = ID.toLowerCase(Locale.ENGLISH)+":";
     }
 
     public boolean isModLoaded() {
