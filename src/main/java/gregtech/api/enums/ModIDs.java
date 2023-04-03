@@ -35,6 +35,7 @@ public enum ModIDs {
     Chisel(Names.CHISEL),
     Computronics(Names.COMPUTRONICS),
     CraftTweaker(Names.CRAFT_TWEAKER),
+    CropsPlusPlus(Names.CROPS_PLUS_PLUS),
     DraconicEvolution(Names.DRACONIC_EVOLUTION),
     EnderIO(Names.ENDER_I_O),
     EnderStorage(Names.ENDER_STORAGE),
@@ -71,6 +72,7 @@ public enum ModIDs {
     IronChests(Names.IRON_CHESTS),
     IronTanks(Names.IRON_TANKS),
     JABBA(Names.J_A_B_B_A),
+    MagicBees(Names.MAGIC_BEES),
     MalisisDoors(Names.MALISIS_DOORS),
     Mantle(Names.MANTLE),
     MineAndBladeBattleGear2(Names.MINE_AND_BLADE_BATTLE_GEAR2),
@@ -117,7 +119,9 @@ public enum ModIDs {
 
     // Do we keep compat of those?
     ArsMagica2(Names.ARS_MAGICA2),
+    GanysSurface(Names.GANYS_SURFACE),
     IndustrialCraft2Classic(Names.INDUSTRIAL_CRAFT2_CLASSIC),
+    MagicalCrops(Names.MAGICAL_CROPS),
     Metallurgy(Names.METALLURGY),
     RotaryCraft(Names.ROTARY_CRAFT),
     ThermalExpansion(Names.THERMAL_EXPANSION),
@@ -157,6 +161,7 @@ public enum ModIDs {
         public static final String CHISEL = "chisel";
         public static final String COMPUTRONICS = "computronics";
         public static final String CRAFT_TWEAKER = "MineTweaker3";
+        public static final String CROPS_PLUS_PLUS = "berriespp";
         public static final String DRACONIC_EVOLUTION = "DraconicEvolution";
         public static final String ENDER_I_O = "EnderIO";
         public static final String ENDER_STORAGE = "EnderStorage";
@@ -193,6 +198,7 @@ public enum ModIDs {
         public static final String IRON_CHESTS = "IronChest";
         public static final String IRON_TANKS = "irontank";
         public static final String J_A_B_B_A = "JABBA";
+        public static final String MAGIC_BEES = "MagicBees";
         public static final String MALISIS_DOORS = "malisisdoors";
         public static final String MANTLE = "Mantle";
         public static final String MINE_AND_BLADE_BATTLE_GEAR2 = "battlegear2";
@@ -239,7 +245,9 @@ public enum ModIDs {
 
         // Do we keep compat of those mods?
         public static final String ARS_MAGICA2 = "arsmagica2";
+        public static final String GANYS_SURFACE = "ganyssurface";
         public static final String INDUSTRIAL_CRAFT2_CLASSIC = "IC2-Classic-Spmod";
+        public static final String MAGICAL_CROPS = "magicalcrops";
         public static final String METALLURGY = "Metallurgy";
         public static final String ROTARY_CRAFT = "RotaryCraft";
         public static final String THERMAL_EXPANSION = "ThermalExpansion";

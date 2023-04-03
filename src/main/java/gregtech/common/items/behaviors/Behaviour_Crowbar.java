@@ -11,6 +11,8 @@ import gregtech.api.items.GT_MetaBase_Item;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 
+import static gregtech.api.enums.ModIDs.Railcraft;
+
 public class Behaviour_Crowbar extends Behaviour_None {
 
     private final int mVanillaCosts;
@@ -27,7 +29,7 @@ public class Behaviour_Crowbar extends Behaviour_None {
         if (aWorld.isRemote) {
             return false;
         }
-        if (GT_ModHandler.getModItem("Railcraft", "fluid.creosote.bucket", 1L) != null) {
+        if (GT_ModHandler.getModItem(Railcraft.modID, "fluid.creosote.bucket", 1L) != null) {
             return false;
         }
         Block aBlock = aWorld.getBlock(aX, aY, aZ);

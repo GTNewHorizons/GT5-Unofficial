@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.basic;
 
+import static gregtech.api.enums.ModIDs.IndustrialCraft2;
 import static gregtech.api.enums.ModIDs.Railcraft;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 
@@ -167,20 +168,20 @@ public class GT_MetaTileEntity_Disassembler extends GT_MetaTileEntity_BasicMachi
             addBlacklist(GT_ModHandler.getModItem(Railcraft.modID, "track", 1L, 816));
         }
         addBlacklist(IC2Items.getItem("mixedMetalIngot"));
-        addBlacklist(GT_ModHandler.getModItem("Railcraft", "machine.alpha", 1L, 14));
+        addBlacklist(GT_ModHandler.getModItem(Railcraft.modID, "machine.alpha", 1L, 14));
         // region transformer
         // Temporary solution for cable dupe
         // Maybe we can mark assembler recipes as "cannot disassemble"
         // and only disassemble crafting recipes in the future
         // Also `getIC2Item` doesn't work, maybe loading order?
         addBlacklist(ItemList.Transformer_MV_LV.get(1L));
-        addBlacklist(GT_ModHandler.getModItem("IC2", "blockElectric", 1L, 3));
+        addBlacklist(GT_ModHandler.getModItem(IndustrialCraft2.modID, "blockElectric", 1L, 3));
         addBlacklist(ItemList.Transformer_HV_MV.get(1L));
-        addBlacklist(GT_ModHandler.getModItem("IC2", "blockElectric", 1L, 4));
+        addBlacklist(GT_ModHandler.getModItem(IndustrialCraft2.modID, "blockElectric", 1L, 4));
         addBlacklist(ItemList.Transformer_EV_HV.get(1L));
-        addBlacklist(GT_ModHandler.getModItem("IC2", "blockElectric", 1L, 5));
+        addBlacklist(GT_ModHandler.getModItem(IndustrialCraft2.modID, "blockElectric", 1L, 5));
         addBlacklist(ItemList.Transformer_IV_EV.get(1L));
-        addBlacklist(GT_ModHandler.getModItem("IC2", "blockElectric", 1L, 6));
+        addBlacklist(GT_ModHandler.getModItem(IndustrialCraft2.modID, "blockElectric", 1L, 6));
         // endregion transformer
     }
 

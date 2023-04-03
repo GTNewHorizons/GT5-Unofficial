@@ -1008,9 +1008,9 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
         GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem(Forestry.modID, "frameProven", 1L, 32767));
         GT_ModHandler.sNonReplaceableItems.add(GT_ModHandler.getModItem(Forestry.modID, "waxCast", 1L, 32767));
         GT_ModHandler.sNonReplaceableItems.add(
-                GT_ModHandler.getModItem("GalacticraftCore", "item.sensorGlasses", 1L, 32767));
+                GT_ModHandler.getModItem(GalacticraftCore.modID, "item.sensorGlasses", 1L, 32767));
         GT_ModHandler.sNonReplaceableItems.add(
-                GT_ModHandler.getModItem("IC2NuclearControl", "ItemToolThermometer", 1L, 32767));
+                GT_ModHandler.getModItem(IC2NuclearControl.modID, "ItemToolThermometer", 1L, 32767));
 
         RecipeSorter.register(
                 "gregtech:shaped",
@@ -1032,14 +1032,14 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
         GT_Log.ore.println("GT_Mod: Beginning Load-Phase.");
         GT_OreDictUnificator.registerOre(
                 "cropChilipepper",
-                GT_ModHandler.getModItem("magicalcrops", "magicalcrops_CropProduce", 1L, 2));
+                GT_ModHandler.getModItem(MagicalCrops.modID, "magicalcrops_CropProduce", 1L, 2));
         GT_OreDictUnificator.registerOre(
                 "cropTomato",
-                GT_ModHandler.getModItem("magicalcrops", "magicalcrops_CropProduce", 1L, 8));
+                GT_ModHandler.getModItem(MagicalCrops.modID, "magicalcrops_CropProduce", 1L, 8));
         GT_OreDictUnificator.registerOre(
                 "cropGrape",
-                GT_ModHandler.getModItem("magicalcrops", "magicalcrops_CropProduce", 1L, 4));
-        GT_OreDictUnificator.registerOre("cropTea", GT_ModHandler.getModItem("ganyssurface", "teaLeaves", 1L, 0));
+                GT_ModHandler.getModItem(MagicalCrops.modID, "magicalcrops_CropProduce", 1L, 4));
+        GT_OreDictUnificator.registerOre("cropTea", GT_ModHandler.getModItem(GanysSurface.modID, "teaLeaves", 1L, 0));
 
         // Clay buckets, which don't get registered until Iguana Tweaks pre-init
         if (IguanaTweaksTinkerConstruct.isModLoaded()) {

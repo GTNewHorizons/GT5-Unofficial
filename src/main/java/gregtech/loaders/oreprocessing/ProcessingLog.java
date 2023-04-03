@@ -10,6 +10,8 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 
+import static gregtech.api.enums.ModIDs.Railcraft;
+
 public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
     public ProcessingLog() {
@@ -98,7 +100,7 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
         GT_Values.RA.addChemicalBathRecipe(
                 GT_Utility.copyAmount(1L, aStack),
                 Materials.Creosote.getFluid(1000L),
-                GT_ModHandler.getModItem("Railcraft", "tile.railcraft.cube", 1L, 8),
+                GT_ModHandler.getModItem(Railcraft.modID, "tile.railcraft.cube", 1L, 8),
                 null,
                 null,
                 null,

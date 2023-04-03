@@ -1346,22 +1346,22 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 ItemList.Hatch_Maintenance.get(1L),
                 bitsd,
                 new Object[] { "dwx", "hMC", "fsr", 'M', ItemList.Hull_LV, 'C',
-                        GT_ModHandler.getModItem("Railcraft", "tool.crowbar", 1L, 0) });
+                        GT_ModHandler.getModItem(Railcraft.modID, "tool.crowbar", 1L, 0) });
         GT_ModHandler.addCraftingRecipe(
                 ItemList.Hatch_Maintenance.get(1L),
                 bitsd,
                 new Object[] { "dwx", "hMC", "fsr", 'M', ItemList.Hull_LV, 'C',
-                        GT_ModHandler.getModItem("Railcraft", "tool.crowbar.reinforced", 1L, 0) });
+                        GT_ModHandler.getModItem(Railcraft.modID, "tool.crowbar.reinforced", 1L, 0) });
         GT_ModHandler.addCraftingRecipe(
                 ItemList.Hatch_Maintenance.get(1L),
                 bitsd,
                 new Object[] { "dwx", "hMC", "fsr", 'M', ItemList.Hull_LV, 'C',
-                        GT_ModHandler.getModItem("Railcraft", "tool.crowbar.magic", 1L, 0) });
+                        GT_ModHandler.getModItem(Railcraft.modID, "tool.crowbar.magic", 1L, 0) });
         GT_ModHandler.addCraftingRecipe(
                 ItemList.Hatch_Maintenance.get(1L),
                 bitsd,
                 new Object[] { "dwx", "hMC", "fsr", 'M', ItemList.Hull_LV, 'C',
-                        GT_ModHandler.getModItem("Railcraft", "tool.crowbar.void", 1L, 0) });
+                        GT_ModHandler.getModItem(Railcraft.modID, "tool.crowbar.void", 1L, 0) });
 
         ItemList.Hatch_AutoMaintenance.set(
                 new GT_MetaTileEntity_Hatch_Maintenance(
@@ -1475,7 +1475,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 bitsd,
                 new Object[] { aTextPlate, "PTP", aTextPlateMotor, 'M', ItemList.Hull_HP, 'P',
                         OrePrefixes.plate.get(Materials.Steel), 'T',
-                        GT_ModHandler.getModItem("BuildCraft|Factory", "tankBlock", 1L, 0) });
+                        GT_ModHandler.getModItem(BuildCraftFactory.modID, "tankBlock", 1L, 0) });
         GT_ModHandler.addCraftingRecipe(
                 ItemList.Machine_Bronze_Boiler_Solar.get(1L),
                 bitsd,
@@ -1487,7 +1487,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 bitsd,
                 new Object[] { "GGG", "SSS", aTextPlateMotor, 'M', ItemList.Hull_HP_Bricks, 'P',
                         OrePrefixes.pipeSmall.get(Materials.Steel), 'S', OrePrefixes.plateTriple.get(Materials.Silver),
-                        'G', GT_ModHandler.getModItem("IC2", "blockAlloyGlass", 1L) });
+                        'G', GT_ModHandler.getModItem(IndustrialCraft2.modID, "blockAlloyGlass", 1L) });
 
         ItemList.Machine_Bronze_BlastFurnace.set(
                 new GT_MetaTileEntity_BronzeBlastFurnace(

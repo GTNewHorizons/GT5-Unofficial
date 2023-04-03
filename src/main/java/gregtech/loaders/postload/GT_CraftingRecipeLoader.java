@@ -152,18 +152,18 @@ public class GT_CraftingRecipeLoader implements Runnable {
         GT_ModHandler.removeRecipeByOutputDelayed(GT_ModHandler.getIC2Item("dynamite", 1L));
         GT_ModHandler.removeRecipeByOutputDelayed(GT_ModHandler.getIC2Item("industrialTnt", 1L));
 
-        GT_ModHandler.removeRecipeByOutputDelayed(GT_ModHandler.getModItem("Forestry", "stamps", 1L, 0));
-        GT_ModHandler.removeRecipeByOutputDelayed(GT_ModHandler.getModItem("Forestry", "stamps", 1L, 1));
-        GT_ModHandler.removeRecipeByOutputDelayed(GT_ModHandler.getModItem("Forestry", "stamps", 1L, 2));
-        GT_ModHandler.removeRecipeByOutputDelayed(GT_ModHandler.getModItem("Forestry", "stamps", 1L, 3));
-        GT_ModHandler.removeRecipeByOutputDelayed(GT_ModHandler.getModItem("Forestry", "stamps", 1L, 4));
-        GT_ModHandler.removeRecipeByOutputDelayed(GT_ModHandler.getModItem("Forestry", "stamps", 1L, 5));
-        GT_ModHandler.removeRecipeByOutputDelayed(GT_ModHandler.getModItem("Forestry", "stamps", 1L, 6));
+        GT_ModHandler.removeRecipeByOutputDelayed(GT_ModHandler.getModItem(Forestry.modID, "stamps", 1L, 0));
+        GT_ModHandler.removeRecipeByOutputDelayed(GT_ModHandler.getModItem(Forestry.modID, "stamps", 1L, 1));
+        GT_ModHandler.removeRecipeByOutputDelayed(GT_ModHandler.getModItem(Forestry.modID, "stamps", 1L, 2));
+        GT_ModHandler.removeRecipeByOutputDelayed(GT_ModHandler.getModItem(Forestry.modID, "stamps", 1L, 3));
+        GT_ModHandler.removeRecipeByOutputDelayed(GT_ModHandler.getModItem(Forestry.modID, "stamps", 1L, 4));
+        GT_ModHandler.removeRecipeByOutputDelayed(GT_ModHandler.getModItem(Forestry.modID, "stamps", 1L, 5));
+        GT_ModHandler.removeRecipeByOutputDelayed(GT_ModHandler.getModItem(Forestry.modID, "stamps", 1L, 6));
 
-        GT_ModHandler.removeRecipeByOutputDelayed(GT_ModHandler.getModItem("Forestry", "engine", 1L, 0));
-        GT_ModHandler.removeRecipeByOutputDelayed(GT_ModHandler.getModItem("Forestry", "engine", 1L, 1));
-        GT_ModHandler.removeRecipeByOutputDelayed(GT_ModHandler.getModItem("Forestry", "engine", 1L, 2));
-        GT_ModHandler.removeRecipeByOutputDelayed(GT_ModHandler.getModItem("Forestry", "engine", 1L, 4));
+        GT_ModHandler.removeRecipeByOutputDelayed(GT_ModHandler.getModItem(Forestry.modID, "engine", 1L, 0));
+        GT_ModHandler.removeRecipeByOutputDelayed(GT_ModHandler.getModItem(Forestry.modID, "engine", 1L, 1));
+        GT_ModHandler.removeRecipeByOutputDelayed(GT_ModHandler.getModItem(Forestry.modID, "engine", 1L, 2));
+        GT_ModHandler.removeRecipeByOutputDelayed(GT_ModHandler.getModItem(Forestry.modID, "engine", 1L, 4));
 
         ItemStack tStack = GT_ModHandler.removeRecipe(
                 new ItemStack(Blocks.planks, 1, 0),
@@ -2126,7 +2126,7 @@ public class GT_CraftingRecipeLoader implements Runnable {
                     new Object[] { "CJC", "TNT", "WPW", 'C', OrePrefixes.plateAlloy.get(Materials.Advanced), 'T',
                             OrePrefixes.plate.get(Materials.TungstenSteel), 'J',
                             GT_ModHandler.getModItem(GraviSuite.modID, "advJetpack", 1, GT_Values.W), 'N',
-                            GT_ModHandler.getModItem("IC2", "itemArmorNanoChestplate", 1, GT_Values.W), 'W',
+                            GT_ModHandler.getModItem(IndustrialCraft2.modID, "itemArmorNanoChestplate", 1, GT_Values.W), 'W',
                             OrePrefixes.wireGt12.get(Materials.Platinum), 'P',
                             OrePrefixes.circuit.get(Materials.Elite) });
 
@@ -2136,8 +2136,8 @@ public class GT_CraftingRecipeLoader implements Runnable {
                     GT_ModHandler.getModItem(GraviSuite.modID, "advLappack", 1, GT_Values.W),
                     bits_no_remove_buffered,
                     new Object[] { "CEC", "EJE", "WPW", 'C', OrePrefixes.plateAlloy.get(Materials.Carbon), 'J',
-                            GT_ModHandler.getModItem("IC2", "itemArmorEnergypack", 1L, GT_Values.W), 'E',
-                            GT_ModHandler.getModItem("IC2", "itemBatCrystal", 1L, GT_Values.W), 'W',
+                            GT_ModHandler.getModItem(IndustrialCraft2.modID, "itemArmorEnergypack", 1L, GT_Values.W), 'E',
+                            GT_ModHandler.getModItem(IndustrialCraft2.modID, "itemBatCrystal", 1L, GT_Values.W), 'W',
                             OrePrefixes.wireGt04.get(Materials.Platinum), 'P',
                             OrePrefixes.circuit.get(Materials.Data) });
 
@@ -2147,9 +2147,9 @@ public class GT_CraftingRecipeLoader implements Runnable {
                     GT_ModHandler.getModItem(GraviSuite.modID, "advJetpack", 1, GT_Values.W),
                     bits_no_remove_buffered,
                     new Object[] { "CJC", "EXE", "YZY", 'C', OrePrefixes.plateAlloy.get(Materials.Carbon), 'J',
-                            GT_ModHandler.getModItem("IC2", "itemArmorJetpackElectric", 1, GT_Values.W), 'E',
+                            GT_ModHandler.getModItem(IndustrialCraft2.modID, "itemArmorJetpackElectric", 1, GT_Values.W), 'E',
                             OrePrefixes.plate.get(Materials.Titanium), 'X',
-                            GT_ModHandler.getModItem("IC2", "itemArmorAlloyChestplate", 1L), 'Z',
+                            GT_ModHandler.getModItem(IndustrialCraft2.modID, "itemArmorAlloyChestplate", 1L), 'Z',
                             OrePrefixes.circuit.get(Materials.Data), 'Y',
                             OrePrefixes.wireGt02.get(Materials.Platinum) });
         }

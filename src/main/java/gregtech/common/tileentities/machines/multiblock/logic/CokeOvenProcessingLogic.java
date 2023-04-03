@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.multiblock.logic;
 
+import static gregtech.api.enums.ModIDs.Railcraft;
 import static net.minecraftforge.oredict.OreDictionary.getOreID;
 import static net.minecraftforge.oredict.OreDictionary.getOreIDs;
 
@@ -46,7 +47,7 @@ public class CokeOvenProcessingLogic extends ProcessingLogic {
                 return GT_OreDictUnificator.get("fuelCoke", null, 1);
             } else if (oreId == COAL_BLOCK_ORE_ID) {
                 timeMultiplier = 9;
-                return GT_ModHandler.getModItem("Railcraft", "cube", 1, 0);
+                return GT_ModHandler.getModItem(Railcraft.modID, "cube", 1, 0);
             } else if (oreId == WOOD_ORE_ID) {
                 return new ItemStack(Items.coal, 1, 1);
             } else if (oreId == SUGARCANE_ORE_ID) {

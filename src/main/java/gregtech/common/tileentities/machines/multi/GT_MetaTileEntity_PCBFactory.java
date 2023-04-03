@@ -3,6 +3,9 @@ package gregtech.common.tileentities.machines.multi;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.GT_HatchElement.*;
 import static gregtech.api.enums.GT_Values.*;
+import static gregtech.api.enums.ModIDs.BartWorks;
+import static gregtech.api.enums.ModIDs.IndustrialCraft2;
+import static gregtech.api.enums.ModIDs.Thaumcraft;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE_GLOW;
@@ -218,24 +221,24 @@ public class GT_MetaTileEntity_PCBFactory extends
                                                                                                                               'A',
                                                                                                                               ofChain(
                                                                                                                                       ofBlockUnlocalizedName(
-                                                                                                                                              "IC2",
+                                                                                                                                              IndustrialCraft2.modID,
                                                                                                                                               "blockAlloyGlass",
                                                                                                                                               0,
                                                                                                                                               true),
                                                                                                                                       ofBlockUnlocalizedName(
-                                                                                                                                              "bartworks",
+                                                                                                                                              BartWorks.modID,
                                                                                                                                               "BW_GlasBlocks",
                                                                                                                                               0,
                                                                                                                                               true),
                                                                                                                                       ofBlockUnlocalizedName(
-                                                                                                                                              "bartworks",
+                                                                                                                                              BartWorks.modID,
                                                                                                                                               "BW_GlasBlocks2",
                                                                                                                                               0,
                                                                                                                                               true),
                                                                                                                                       // warded
                                                                                                                                       // glass
                                                                                                                                       ofBlockUnlocalizedName(
-                                                                                                                                              "Thaumcraft",
+                                                                                                                                              Thaumcraft.modID,
                                                                                                                                               "blockCosmeticOpaque",
                                                                                                                                               2,
                                                                                                                                               false)))

@@ -2,6 +2,8 @@ package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.GT_HatchElement.*;
+import static gregtech.api.enums.ModIDs.BartWorks;
+import static gregtech.api.enums.ModIDs.IndustrialCraft2;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofFrame;
@@ -145,17 +147,17 @@ public class GT_MetaTileEntity_IntegratedOreFactory
                                                                                                                                         'g',
                                                                                                                                         ofChain(
                                                                                                                                                 ofBlockUnlocalizedName(
-                                                                                                                                                        "IC2",
+                                                                                                                                                        IndustrialCraft2.modID,
                                                                                                                                                         "blockAlloyGlass",
                                                                                                                                                         0,
                                                                                                                                                         true),
                                                                                                                                                 ofBlockUnlocalizedName(
-                                                                                                                                                        "bartworks",
+                                                                                                                                                        BartWorks.modID,
                                                                                                                                                         "BW_GlasBlocks",
                                                                                                                                                         0,
                                                                                                                                                         true),
                                                                                                                                                 ofBlockUnlocalizedName(
-                                                                                                                                                        "bartworks",
+                                                                                                                                                        BartWorks.modID,
                                                                                                                                                         "BW_GlasBlocks2",
                                                                                                                                                         0,
                                                                                                                                                         true),
