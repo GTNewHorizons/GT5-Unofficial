@@ -3,7 +3,7 @@ package gregtech.loaders.postload.recipes;
 import static gregtech.api.enums.GT_Values.NF;
 import static gregtech.api.enums.GT_Values.NI;
 import static gregtech.api.enums.ModIDs.AppliedEnergistics2;
-import static gregtech.api.enums.ModIDs.BiomesOPlanty;
+import static gregtech.api.enums.ModIDs.BiomesOPlenty;
 import static gregtech.api.enums.ModIDs.Forestry;
 import static gregtech.api.enums.ModIDs.Natura;
 import static gregtech.api.enums.ModIDs.PamsHarvestCraft;
@@ -1305,7 +1305,7 @@ public class MixerRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
                     .itemInputs(
                             new ItemStack(Blocks.dirt, 1, 32767),
-                            getModItem(BiomesOPlanty.modID, "plants", 4, 6),
+                            getModItem(BiomesOPlenty.modID, "plants", 4, 6),
                             GT_Utility.getIntegratedCircuit(2))
                     .itemOutputs(getModItem(Forestry.modID, "fertilizerBio", 1L, 0))
                     .fluidInputs(Materials.Water.getFluid(100))
@@ -1317,7 +1317,7 @@ public class MixerRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
                     .itemInputs(
                             new ItemStack(Blocks.dirt, 1, 2),
-                            getModItem(BiomesOPlanty.modID, "plants", 4, 6),
+                            getModItem(BiomesOPlenty.modID, "plants", 4, 6),
                             GT_Utility.getIntegratedCircuit(2))
                     .itemOutputs(getModItem(Forestry.modID, "fertilizerBio", 1L, 0))
                     .fluidInputs(Materials.Water.getFluid(100))
