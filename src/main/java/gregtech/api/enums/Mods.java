@@ -2,8 +2,9 @@ package gregtech.api.enums;
 
 import java.util.Locale;
 
-import cpw.mods.fml.common.Loader;
 import net.minecraft.util.ResourceLocation;
+
+import cpw.mods.fml.common.Loader;
 
 public enum Mods {
 
@@ -269,7 +270,7 @@ public enum Mods {
 
     Mods(String ID) {
         this.ID = ID;
-        this.resourceDomain = ID.toLowerCase(Locale.ENGLISH) + ":";
+        this.resourceDomain = ID.toLowerCase(Locale.ENGLISH);
     }
 
     public boolean isModLoaded() {
@@ -280,7 +281,8 @@ public enum Mods {
     }
 
     public String getResourcePath(String... path) {
-        return this.getResourceLocation(path).toString();
+        return this.getResourceLocation(path)
+                   .toString();
     }
 
     public ResourceLocation getResourceLocation(String... path) {
