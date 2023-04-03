@@ -250,14 +250,20 @@ public class GT_Values {
     /**
      * File Paths and Resource Paths
      */
-    public static final String TEX_DIR = "textures/", TEX_DIR_GUI = TEX_DIR + "gui/", TEX_DIR_ITEM = TEX_DIR + "items/",
-            TEX_DIR_BLOCK = TEX_DIR + "blocks/", TEX_DIR_ENTITY = TEX_DIR + "entity/",
-            TEX_DIR_ASPECTS = TEX_DIR + "aspects/", RES_PATH = GregTech.ID + ":" + TEX_DIR,
-            RES_PATH_GUI = GregTech.ID + ":" + TEX_DIR_GUI, RES_PATH_ITEM = GregTech.ID + ":",
-            RES_PATH_BLOCK = GregTech.ID + ":", RES_PATH_ENTITY = GregTech.ID + ":" + TEX_DIR_ENTITY,
-            RES_PATH_ASPECTS = GregTech.ID + ":" + TEX_DIR_ASPECTS,
-            RES_PATH_IC2 = IndustrialCraft2.ID.toLowerCase(Locale.ENGLISH) + ":",
-            RES_PATH_MODEL = GregTech.ID + ":" + TEX_DIR + "models/";
+    public static final String TEX_DIR = "textures/";
+    public static final String TEX_DIR_GUI = TEX_DIR + "gui/";
+    public static final String TEX_DIR_ITEM = TEX_DIR + "items/";
+    public static final String TEX_DIR_BLOCK = TEX_DIR + "blocks/";
+    public static final String TEX_DIR_ENTITY = TEX_DIR + "entity/";
+    public static final String TEX_DIR_ASPECTS = TEX_DIR + "aspects/";
+    public static final String RES_PATH = GregTech.getResourcePath(TEX_DIR);
+    public static final String RES_PATH_GUI = GregTech.getResourcePath(TEX_DIR_GUI);
+    public static final String RES_PATH_ITEM = GregTech.getResourcePath("");
+    public static final String RES_PATH_BLOCK = GregTech.getResourcePath("");
+    public static final String RES_PATH_ENTITY = GregTech.getResourcePath(TEX_DIR_ENTITY);
+    public static final String RES_PATH_ASPECTS = GregTech.getResourcePath(TEX_DIR_ASPECTS);
+    public static final String RES_PATH_IC2 = IndustrialCraft2.getResourcePath("");
+    public static final String RES_PATH_MODEL = GregTech.getResourcePath(TEX_DIR + "models/");
 
     /**
      * NBT String Keys

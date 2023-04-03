@@ -4,6 +4,8 @@ import cpw.mods.fml.common.Loader;
 
 import java.util.Locale;
 
+import static gregtech.api.enums.GT_Values.RES_PATH_ASPECTS;
+
 public enum Mods {
 
     AdvancedSolarPanel(Names.ADVANCED_SOLAR_PANEL),
@@ -263,12 +265,12 @@ public enum Mods {
     }
 
     public final String ID;
-    public final String path;
+    public final String namespace;
     private Boolean modLoaded;
 
     Mods(String ID) {
         this.ID = ID;
-        this.path = ID.toLowerCase(Locale.ENGLISH)+":";
+        this.namespace = ID.toLowerCase(Locale.ENGLISH)+":";
     }
 
     public boolean isModLoaded() {
@@ -276,5 +278,9 @@ public enum Mods {
             this.modLoaded = Loader.isModLoaded(ID);
         }
         return this.modLoaded;
+    }
+
+    public String getResourcePath(String path){
+        return this.namespace + path;
     }
 }
