@@ -58,7 +58,7 @@ public class GT_PreLoad {
                 for (short i = 0; i < tModList_sS; i = (short) (i + 1)) {
                     ModContainer tMod = tModList.get(i);
                     if (tMod.getModId()
-                            .equalsIgnoreCase("gregtech")) {
+                            .equalsIgnoreCase(GregTech.modID)) {
                         tGregTech = tMod;
                     } else {
                         tNewModsList.add(tMod);

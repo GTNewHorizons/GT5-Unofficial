@@ -2,6 +2,7 @@ package gregtech;
 
 import static gregtech.api.GregTech_API.registerCircuitProgrammer;
 import static gregtech.api.enums.ModIDs.Forestry;
+import static gregtech.api.enums.ModIDs.GregTech;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -93,7 +94,7 @@ import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeOutput;
 
 @Mod(
-        modid = "gregtech",
+        modid = ModIDs.Names.GREG_TECH,
         name = "GregTech",
         version = "MC1710",
         guiFactory = "gregtech.client.GT_GuiFactory",
@@ -148,10 +149,10 @@ public class GT_Mod implements IGT_Mod {
     @Deprecated
     public static final int REQUIRED_IC2 = 624;
 
-    @Mod.Instance("gregtech")
+    @Mod.Instance(ModIDs.Names.GREG_TECH)
     public static GT_Mod instance;
 
-    @SidedProxy(modId = "gregtech", clientSide = "gregtech.common.GT_Client", serverSide = "gregtech.common.GT_Server")
+    @SidedProxy(modId = ModIDs.Names.GREG_TECH, clientSide = "gregtech.common.GT_Client", serverSide = "gregtech.common.GT_Server")
     public static GT_Proxy gregtechproxy;
 
     public static int MAX_IC2 = 2147483647;

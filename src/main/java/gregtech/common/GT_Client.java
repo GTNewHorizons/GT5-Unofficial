@@ -8,6 +8,7 @@ package gregtech.common;
 import static gregtech.api.enums.GT_Values.ALL_VALID_SIDES;
 import static gregtech.api.enums.GT_Values.calculateMaxPlasmaTurbineEfficiency;
 import static gregtech.api.enums.ModIDs.Forestry;
+import static gregtech.api.enums.ModIDs.GregTech;
 import static org.lwjgl.opengl.GL11.GL_LINE_LOOP;
 
 import java.net.URL;
@@ -761,7 +762,7 @@ public class GT_Client extends GT_Proxy implements Runnable {
 
     @SubscribeEvent
     public void onConfigChange(ConfigChangedEvent.OnConfigChangedEvent e) {
-        if ("gregtech".equals(e.modID) && "client".equals(e.configID)) {
+        if (GregTech.modID.equals(e.modID) && "client".equals(e.configID)) {
             GregTech_API.sClientDataFile.mConfig.save();
             // refresh client preference and send to server, since it's the only config we allow changing at runtime.
             mPreference = new GT_ClientPreference(GregTech_API.sClientDataFile);

@@ -14,13 +14,15 @@ import cpw.mods.fml.client.config.GuiConfig;
 import cpw.mods.fml.client.config.IConfigElement;
 import gregtech.api.GregTech_API;
 
+import static gregtech.api.enums.ModIDs.GregTech;
+
 public class GT_GUI_ClientConfig extends GuiConfig {
 
     public GT_GUI_ClientConfig(GuiScreen parentScreen) {
         super(
                 parentScreen,
                 getConfigElements(),
-                "gregtech",
+                GregTech.modID,
                 "client",
                 false,
                 false,

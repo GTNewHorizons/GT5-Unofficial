@@ -14,6 +14,8 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 
+import static gregtech.api.enums.ModIDs.Railcraft;
+
 public class ProcessingStone implements IOreRecipeRegistrator {
 
     public ProcessingStone() {
@@ -77,7 +79,7 @@ public class ProcessingStone implements IOreRecipeRegistrator {
                 GT_ModHandler.addPulverisationRecipe(
                         GT_Utility.copyAmount(1L, aStack),
                         GT_ModHandler.getModItem(
-                                "Railcraft",
+                            Railcraft.modID,
                                 "cube.crushed.obsidian",
                                 1L,
                                 GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L)),

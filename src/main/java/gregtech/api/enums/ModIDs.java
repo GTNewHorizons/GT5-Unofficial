@@ -37,6 +37,7 @@ public enum ModIDs {
     CraftTweaker(Names.CRAFT_TWEAKER),
     CropsPlusPlus(Names.CROPS_PLUS_PLUS),
     DraconicEvolution(Names.DRACONIC_EVOLUTION),
+    ElectroMagicTools(Names.ELECTRO_MAGIC_TOOLS),
     EnderIO(Names.ENDER_I_O),
     EnderStorage(Names.ENDER_STORAGE),
     EnderZoo(Names.ENDER_ZOO),
@@ -115,6 +116,7 @@ public enum ModIDs {
     Waila(Names.WAILA),
     WarpTheory(Names.WARP_THEORY),
     Witchery(Names.WITCHERY),
+    WitchingGadgets(Names.WITCHING_GADGETS),
     ZTones(Names.Z_TONES),
 
     // Do we keep compat of those?
@@ -163,6 +165,7 @@ public enum ModIDs {
         public static final String CRAFT_TWEAKER = "MineTweaker3";
         public static final String CROPS_PLUS_PLUS = "berriespp";
         public static final String DRACONIC_EVOLUTION = "DraconicEvolution";
+        public static final String ELECTRO_MAGIC_TOOLS = "EMT";
         public static final String ENDER_I_O = "EnderIO";
         public static final String ENDER_STORAGE = "EnderStorage";
         public static final String ENDER_ZOO = "EnderZoo";
@@ -241,6 +244,7 @@ public enum ModIDs {
         public static final String WAILA = "Waila";
         public static final String WARP_THEORY = "WarpTheory";
         public static final String WITCHERY = "witchery";
+    public static final String WITCHING_GADGETS = "WitchingGadgets";
         public static final String Z_TONES = "Ztones";
 
         // Do we keep compat of those mods?

@@ -8,6 +8,8 @@ import net.minecraft.util.ResourceLocation;
 
 import gregtech.api.interfaces.IGuiIcon;
 
+import static gregtech.api.enums.ModIDs.GregTech;
+
 public enum GT_GuiIcon implements IGuiIcon {
 
     BUTTON_NORMAL(0, 0, 0),
@@ -58,9 +60,9 @@ public enum GT_GuiIcon implements IGuiIcon {
     TAB_INFO_BLUE(2, 220 + 18, 0, 18, 20),;
 
     private static final int T_SIZE = 256;
-    private static ResourceLocation[] TEXTURES = { new ResourceLocation("gregtech", "textures/gui/GuiButtons.png"),
-            new ResourceLocation("gregtech", "textures/gui/GuiCover.png"),
-            new ResourceLocation("gregtech", "textures/gui/GuiTabs.png"), };
+    private static ResourceLocation[] TEXTURES = { new ResourceLocation(GregTech.modID, "textures/gui/GuiButtons.png"),
+            new ResourceLocation(GregTech.modID, "textures/gui/GuiCover.png"),
+            new ResourceLocation(GregTech.modID, "textures/gui/GuiTabs.png"), };
 
     public final int x, y, width, height;
     public final IGuiIcon overlay;

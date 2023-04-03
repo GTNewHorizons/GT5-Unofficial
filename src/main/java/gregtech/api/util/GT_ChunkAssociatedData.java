@@ -42,6 +42,8 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 
+import static gregtech.api.enums.ModIDs.GregTech;
+
 /**
  * A utility to save all kinds of data that is a function of any chunk.
  * <p>
@@ -285,7 +287,7 @@ public abstract class GT_ChunkAssociatedData<T extends GT_ChunkAssociatedData.ID
                 w.getSaveHandler()
                  .getWorldDirectory(),
                 w.provider.getSaveFolder());
-        return new File(base, "gregtech");
+        return new File(base, GregTech.modID);
     }
 
     public interface IData {

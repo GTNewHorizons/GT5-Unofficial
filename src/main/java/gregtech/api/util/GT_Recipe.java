@@ -2,6 +2,7 @@ package gregtech.api.util;
 
 import static gregtech.api.enums.GT_Values.*;
 import static gregtech.api.enums.ModIDs.GTPlusPlus;
+import static gregtech.api.enums.ModIDs.GregTech;
 import static gregtech.api.enums.ModIDs.NEICustomDiagrams;
 import static gregtech.api.enums.ModIDs.Railcraft;
 import static gregtech.api.util.GT_RecipeConstants.ADDITIVE_AMOUNT;
@@ -3255,7 +3256,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                     aMinimalInputFluids,
                     aMinimalInputItems);
             progressBarTexture = new FallbackableUITexture(
-                    UITexture.fullImage("gregtech", "gui/progressbar/" + mUnlocalizedName),
+                    UITexture.fullImage(GregTech.modID, "gui/progressbar/" + mUnlocalizedName),
                     GT_UITextures.PROGRESSBAR_ARROW);
             colorOverride = GT_GUIColorOverride.get(ModularUITextures.VANILLA_BACKGROUND.location);
             if (sIndexedMappings.put(mUniqueIdentifier, this) != null)
@@ -3358,7 +3359,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         public GT_Recipe_Map setProgressBar(UITexture progressBarTexture, ProgressBar.Direction progressBarDirection) {
             return setProgressBarWithFallback(
                     new FallbackableUITexture(
-                            UITexture.fullImage("gregtech", "gui/progressbar/" + mUnlocalizedName),
+                            UITexture.fullImage(GregTech.modID, "gui/progressbar/" + mUnlocalizedName),
                             progressBarTexture),
                     progressBarDirection);
         }
@@ -3382,7 +3383,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         public GT_Recipe_Map setProgressBarSteam(SteamTexture progressBarTexture) {
             return setProgressBarSteamWithFallback(
                     new FallbackableSteamTexture(
-                            SteamTexture.fullImage("gregtech", "gui/progressbar/" + mUnlocalizedName + "_%s"),
+                            SteamTexture.fullImage(GregTech.modID, "gui/progressbar/" + mUnlocalizedName + "_%s"),
                             progressBarTexture));
         }
 

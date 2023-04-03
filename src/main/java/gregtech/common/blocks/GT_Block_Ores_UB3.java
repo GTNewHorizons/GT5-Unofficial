@@ -12,9 +12,11 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.TextureFactory;
 
+import static gregtech.api.enums.ModIDs.UndergroundBiomes;
+
 public class GT_Block_Ores_UB3 extends GT_Block_Ores_Abstract {
 
-    Block aUBBlock = GameRegistry.findBlock("UndergroundBiomes", "sedimentaryStone");
+    Block aUBBlock = GameRegistry.findBlock(UndergroundBiomes.modID, "sedimentaryStone");
 
     public GT_Block_Ores_UB3() {
         super("gt.blockores.ub3", 8, true, Material.rock);

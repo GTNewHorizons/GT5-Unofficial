@@ -8,6 +8,8 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 
+import static gregtech.api.enums.ModIDs.GregTech;
+
 public class ProcessingCircuit implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
     public ProcessingCircuit() {
@@ -17,10 +19,10 @@ public class ProcessingCircuit implements gregtech.api.interfaces.IOreRecipeRegi
     @Override
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
             ItemStack aStack) {
-        if (gregtech.api.util.GT_OreDictUnificator.isBlacklisted(aStack) && aModName.equals("gregtech")) return;
+        if (gregtech.api.util.GT_OreDictUnificator.isBlacklisted(aStack) && aModName.equals(GregTech.modID)) return;
         switch (aMaterial.mName) {
             case "Good", "Data", "Elite", "Master", "Ultimate", "Superconductor", "Infinite", "Bio" -> {
-                if (!GT_OreDictUnificator.isBlacklisted(aStack) && !aModName.equals("gregtech"))
+                if (!GT_OreDictUnificator.isBlacklisted(aStack) && !aModName.equals(GregTech.modID))
                     GT_ModHandler.removeRecipeByOutputDelayed(aStack);
             }
             case "Primitive", "Advanced" -> GT_ModHandler.removeRecipeByOutputDelayed(aStack);

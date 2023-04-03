@@ -1,5 +1,6 @@
 package gregtech.loaders.postload.chains;
 
+import static gregtech.api.enums.ModIDs.BartWorks;
 import static gregtech.api.enums.ModIDs.GTPlusPlus;
 
 import java.util.ArrayList;
@@ -608,7 +609,7 @@ public class GT_PCBFactoryRecipes {
                                 GT_PCBFactoryManager.getPlasticMaterialFromTier(tier)
                                                     .getPlates(1),
                                 GT_ModHandler.getModItem(
-                                        "bartworks",
+                                    BartWorks.modID,
                                         "gt.bwMetaGeneratedfoil",
                                         (long) (16 * (Math.sqrt(tier - 6))),
                                         10106),
@@ -642,7 +643,7 @@ public class GT_PCBFactoryRecipes {
                                 GT_PCBFactoryManager.getPlasticMaterialFromTier(tier)
                                                     .getPlates(1),
                                 GT_ModHandler.getModItem(
-                                        "bartworks",
+                                    BartWorks.modID,
                                         "gt.bwMetaGeneratedfoil",
                                         (long) (16 * (Math.sqrt(tier - 6))),
                                         10106),
@@ -676,7 +677,7 @@ public class GT_PCBFactoryRecipes {
                                 GT_PCBFactoryManager.getPlasticMaterialFromTier(tier)
                                                     .getPlates(1),
                                 GT_ModHandler.getModItem(
-                                        "bartworks",
+                                    BartWorks.modID,
                                         "gt.bwMetaGeneratedfoil",
                                         (long) (16 * (Math.sqrt(tier - 6))),
                                         10106),

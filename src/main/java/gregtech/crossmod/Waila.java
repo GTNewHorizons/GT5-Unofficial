@@ -1,5 +1,6 @@
 package gregtech.crossmod;
 
+import gregtech.api.enums.ModIDs;
 import mcp.mobius.waila.api.IWailaDataProvider;
 import mcp.mobius.waila.api.IWailaRegistrar;
 import cpw.mods.fml.common.event.FMLInterModComms;
@@ -26,6 +27,6 @@ public class Waila {
     }
 
     public static void init() {
-        FMLInterModComms.sendMessage("Waila", "register", Waila.class.getName() + ".callbackRegister");
+        FMLInterModComms.sendMessage(ModIDs.Waila.modID, "register", Waila.class.getName() + ".callbackRegister");
     }
 }

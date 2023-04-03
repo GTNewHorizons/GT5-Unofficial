@@ -1090,64 +1090,64 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
         addFullHazmatToIC2Item("quantumBoots");
 
         // GraviSuite Hazmat
-        addFullHazmatToGeneralItem("GraviSuite", "graviChestPlate", 1L);
-        addFullHazmatToGeneralItem("GraviSuite", "advNanoChestPlate", 1L);
+        addFullHazmatToGeneralItem(GraviSuite.modID, "graviChestPlate", 1L);
+        addFullHazmatToGeneralItem(GraviSuite.modID, "advNanoChestPlate", 1L);
 
         // EMT Hazmat
-        addFullHazmatToGeneralItem("EMT", "itemArmorQuantumChestplate", 1L);
-        addFullHazmatToGeneralItem("EMT", "NanoBootsTraveller", 1L);
-        addFullHazmatToGeneralItem("EMT", "NanosuitGogglesRevealing", 1L);
-        addFullHazmatToGeneralItem("EMT", "QuantumBootsTraveller", 1L);
-        addFullHazmatToGeneralItem("EMT", "QuantumGogglesRevealing", 1L);
-        addFullHazmatToGeneralItem("EMT", "SolarHelmetRevealing", 1L);
-        addFullHazmatToGeneralItem("EMT", "NanosuitWing", 1L);
-        addFullHazmatToGeneralItem("EMT", "QuantumWing", 1L);
+        addFullHazmatToGeneralItem(ElectroMagicTools.modID, "itemArmorQuantumChestplate", 1L);
+        addFullHazmatToGeneralItem(ElectroMagicTools.modID, "NanoBootsTraveller", 1L);
+        addFullHazmatToGeneralItem(ElectroMagicTools.modID, "NanosuitGogglesRevealing", 1L);
+        addFullHazmatToGeneralItem(ElectroMagicTools.modID, "QuantumBootsTraveller", 1L);
+        addFullHazmatToGeneralItem(ElectroMagicTools.modID, "QuantumGogglesRevealing", 1L);
+        addFullHazmatToGeneralItem(ElectroMagicTools.modID, "SolarHelmetRevealing", 1L);
+        addFullHazmatToGeneralItem(ElectroMagicTools.modID, "NanosuitWing", 1L);
+        addFullHazmatToGeneralItem(ElectroMagicTools.modID, "QuantumWing", 1L);
 
         // DraconicEvolution Hazmat
-        addFullHazmatToGeneralItem("DraconicEvolution", "draconicBoots", 1L, 0);
-        addFullHazmatToGeneralItem("DraconicEvolution", "draconicHelm", 1L, 0);
-        addFullHazmatToGeneralItem("DraconicEvolution", "draconicLeggs", 1L, 0);
-        addFullHazmatToGeneralItem("DraconicEvolution", "draconicChest", 1L, 0);
-        addFullHazmatToGeneralItem("DraconicEvolution", "wyvernBoots", 1L, 0);
-        addFullHazmatToGeneralItem("DraconicEvolution", "wyvernHelm", 1L, 0);
-        addFullHazmatToGeneralItem("DraconicEvolution", "wyvernLeggs", 1L, 0);
-        addFullHazmatToGeneralItem("DraconicEvolution", "wyvernChest", 1L, 0);
+        addFullHazmatToGeneralItem(DraconicEvolution.modID, "draconicBoots", 1L, 0);
+        addFullHazmatToGeneralItem(DraconicEvolution.modID, "draconicHelm", 1L, 0);
+        addFullHazmatToGeneralItem(DraconicEvolution.modID, "draconicLeggs", 1L, 0);
+        addFullHazmatToGeneralItem(DraconicEvolution.modID, "draconicChest", 1L, 0);
+        addFullHazmatToGeneralItem(DraconicEvolution.modID, "wyvernBoots", 1L, 0);
+        addFullHazmatToGeneralItem(DraconicEvolution.modID, "wyvernHelm", 1L, 0);
+        addFullHazmatToGeneralItem(DraconicEvolution.modID, "wyvernLeggs", 1L, 0);
+        addFullHazmatToGeneralItem(DraconicEvolution.modID, "wyvernChest", 1L, 0);
 
         // AdvancedSolarPanel
-        addFullHazmatToGeneralItem("AdvancedSolarPanel", "advanced_solar_helmet", 1L);
-        addFullHazmatToGeneralItem("AdvancedSolarPanel", "hybrid_solar_helmet", 1L);
-        addFullHazmatToGeneralItem("AdvancedSolarPanel", "ultimate_solar_helmet", 1L);
+        addFullHazmatToGeneralItem(AdvancedSolarPanel.modID, "advanced_solar_helmet", 1L);
+        addFullHazmatToGeneralItem(AdvancedSolarPanel.modID, "hybrid_solar_helmet", 1L);
+        addFullHazmatToGeneralItem(AdvancedSolarPanel.modID, "ultimate_solar_helmet", 1L);
 
         // TaintedMagic Hazmat
-        addFullHazmatToGeneralItem("TaintedMagic", "ItemVoidwalkerBoots", 1L);
-        addFullHazmatToGeneralItem("TaintedMagic", "ItemShadowFortressHelmet", 1L);
-        addFullHazmatToGeneralItem("TaintedMagic", "ItemShadowFortressChestplate", 1L);
-        addFullHazmatToGeneralItem("TaintedMagic", "ItemShadowFortressLeggings", 1L);
-        addFullHazmatToGeneralItem("TaintedMagic", "ItemVoidFortressHelmet", 1L);
-        addFullHazmatToGeneralItem("TaintedMagic", "ItemVoidFortressChestplate", 1L);
-        addFullHazmatToGeneralItem("TaintedMagic", "ItemVoidFortressLeggings", 1L);
-        addFullHazmatToGeneralItem("TaintedMagic", "ItemVoidmetalGoggles", 1L);
+        addFullHazmatToGeneralItem(TaintedMagic.modID, "ItemVoidwalkerBoots", 1L);
+        addFullHazmatToGeneralItem(TaintedMagic.modID, "ItemShadowFortressHelmet", 1L);
+        addFullHazmatToGeneralItem(TaintedMagic.modID, "ItemShadowFortressChestplate", 1L);
+        addFullHazmatToGeneralItem(TaintedMagic.modID, "ItemShadowFortressLeggings", 1L);
+        addFullHazmatToGeneralItem(TaintedMagic.modID, "ItemVoidFortressHelmet", 1L);
+        addFullHazmatToGeneralItem(TaintedMagic.modID, "ItemVoidFortressChestplate", 1L);
+        addFullHazmatToGeneralItem(TaintedMagic.modID, "ItemVoidFortressLeggings", 1L);
+        addFullHazmatToGeneralItem(TaintedMagic.modID, "ItemVoidmetalGoggles", 1L);
 
         // WitchingGadgets Hazmat
-        addFullHazmatToGeneralItem("WitchingGadgets", "item.WG_PrimordialHelm", 1L);
-        addFullHazmatToGeneralItem("WitchingGadgets", "item.WG_PrimordialChest", 1L);
-        addFullHazmatToGeneralItem("WitchingGadgets", "item.WG_PrimordialLegs", 1L);
-        addFullHazmatToGeneralItem("WitchingGadgets", "item.WG_PrimordialBoots", 1L);
+        addFullHazmatToGeneralItem(WitchingGadgets.modID, "item.WG_PrimordialHelm", 1L);
+        addFullHazmatToGeneralItem(WitchingGadgets.modID, "item.WG_PrimordialChest", 1L);
+        addFullHazmatToGeneralItem(WitchingGadgets.modID, "item.WG_PrimordialLegs", 1L);
+        addFullHazmatToGeneralItem(WitchingGadgets.modID, "item.WG_PrimordialBoots", 1L);
 
         // ThaumicTinkerer Hazmat
-        addFullHazmatToGeneralItem("ThaumicTinkerer", "ichorclothChestGem", 1L);
-        addFullHazmatToGeneralItem("ThaumicTinkerer", "ichorclothBootsGem", 1L);
-        addFullHazmatToGeneralItem("ThaumicTinkerer", "ichorclothHelmGem", 1L);
-        addFullHazmatToGeneralItem("ThaumicTinkerer", "ichorclothLegsGem", 1L);
+        addFullHazmatToGeneralItem(ThaumicTinkerer.modID, "ichorclothChestGem", 1L);
+        addFullHazmatToGeneralItem(ThaumicTinkerer.modID, "ichorclothBootsGem", 1L);
+        addFullHazmatToGeneralItem(ThaumicTinkerer.modID, "ichorclothHelmGem", 1L);
+        addFullHazmatToGeneralItem(ThaumicTinkerer.modID, "ichorclothLegsGem", 1L);
 
         // GalaxySpace Hazmat
-        addFullHazmatToGeneralItem("GalaxySpace", "item.spacesuit_helmet", 1L);
-        addFullHazmatToGeneralItem("GalaxySpace", "item.spacesuit_helmetglasses", 1L);
-        addFullHazmatToGeneralItem("GalaxySpace", "item.spacesuit_plate", 1L);
-        addFullHazmatToGeneralItem("GalaxySpace", "item.spacesuit_jetplate", 1L);
-        addFullHazmatToGeneralItem("GalaxySpace", "item.spacesuit_leg", 1L);
-        addFullHazmatToGeneralItem("GalaxySpace", "item.spacesuit_boots", 1L);
-        addFullHazmatToGeneralItem("GalaxySpace", "item.spacesuit_gravityboots", 1L);
+        addFullHazmatToGeneralItem(GalaxySpace.modID, "item.spacesuit_helmet", 1L);
+        addFullHazmatToGeneralItem(GalaxySpace.modID, "item.spacesuit_helmetglasses", 1L);
+        addFullHazmatToGeneralItem(GalaxySpace.modID, "item.spacesuit_plate", 1L);
+        addFullHazmatToGeneralItem(GalaxySpace.modID, "item.spacesuit_jetplate", 1L);
+        addFullHazmatToGeneralItem(GalaxySpace.modID, "item.spacesuit_leg", 1L);
+        addFullHazmatToGeneralItem(GalaxySpace.modID, "item.spacesuit_boots", 1L);
+        addFullHazmatToGeneralItem(GalaxySpace.modID, "item.spacesuit_gravityboots", 1L);
 
         // Extra Hazmat
         GregTech_API.sElectroHazmatList.add(new ItemStack(Items.chainmail_helmet, 1, W));
@@ -1156,20 +1156,20 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
         GregTech_API.sElectroHazmatList.add(new ItemStack(Items.chainmail_boots, 1, W));
 
         // Infinity Hazmat
-        addFullHazmatToGeneralItem("Avaritia", "Infinity_Helm", 1L);
-        addFullHazmatToGeneralItem("Avaritia", "Infinity_Chest", 1L);
-        addFullHazmatToGeneralItem("Avaritia", "Infinity_Pants", 1L);
-        addFullHazmatToGeneralItem("Avaritia", "Infinity_Shoes", 1L);
+        addFullHazmatToGeneralItem(Avaritia.modID, "Infinity_Helm", 1L);
+        addFullHazmatToGeneralItem(Avaritia.modID, "Infinity_Chest", 1L);
+        addFullHazmatToGeneralItem(Avaritia.modID, "Infinity_Pants", 1L);
+        addFullHazmatToGeneralItem(Avaritia.modID, "Infinity_Shoes", 1L);
 
         // EnderIO Hazmat
-        addFullHazmatToGeneralItem("EnderIO", "item.endSteel_helmet", 1L);
-        addFullHazmatToGeneralItem("EnderIO", "item.endSteel_chestplate", 1L);
-        addFullHazmatToGeneralItem("EnderIO", "item.endSteel_leggings", 1L);
-        addFullHazmatToGeneralItem("EnderIO", "item.endSteel_boots", 1L);
-        addFullHazmatToGeneralItem("EnderIO", "item.stellar_helmet", 1L);
-        addFullHazmatToGeneralItem("EnderIO", "item.stellar_chestplate", 1L);
-        addFullHazmatToGeneralItem("EnderIO", "item.stellar_leggings", 1L);
-        addFullHazmatToGeneralItem("EnderIO", "item.stellar_boots", 1L);
+        addFullHazmatToGeneralItem(EnderIO.modID, "item.endSteel_helmet", 1L);
+        addFullHazmatToGeneralItem(EnderIO.modID, "item.endSteel_chestplate", 1L);
+        addFullHazmatToGeneralItem(EnderIO.modID, "item.endSteel_leggings", 1L);
+        addFullHazmatToGeneralItem(EnderIO.modID, "item.endSteel_boots", 1L);
+        addFullHazmatToGeneralItem(EnderIO.modID, "item.stellar_helmet", 1L);
+        addFullHazmatToGeneralItem(EnderIO.modID, "item.stellar_chestplate", 1L);
+        addFullHazmatToGeneralItem(EnderIO.modID, "item.stellar_leggings", 1L);
+        addFullHazmatToGeneralItem(EnderIO.modID, "item.stellar_boots", 1L);
 
         GregTech_API.sLoadStarted = true;
         for (FluidContainerRegistry.FluidContainerData tData : FluidContainerRegistry.getRegisteredFluidContainerData()) {
@@ -1589,8 +1589,8 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
         String aMod = tContainer == null ? "UNKNOWN" : tContainer.getModId();
         String aOriginalMod = aMod;
         if (GT_OreDictUnificator.isRegisteringOres()) {
-            aMod = "gregtech";
-        } else if (aMod.equals("gregtech")) {
+            aMod = GregTech.modID;
+        } else if (aMod.equals(GregTech.modID)) {
             aMod = "UNKNOWN";
         }
         if ((aEvent == null) || (aEvent.Ore == null)
@@ -1600,7 +1600,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
                 || (aEvent.Name.replaceAll("_", "")
                                .length()
                         - aEvent.Name.length() == 9)) {
-            if (aOriginalMod.equals("gregtech")) {
+            if (aOriginalMod.equals(GregTech.modID)) {
                 aOriginalMod = "UNKNOWN";
             }
             GT_Log.ore.println(
@@ -1730,7 +1730,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
                 }
             OrePrefixes aPrefix = OrePrefixes.getOrePrefix(aEvent.Name);
             Materials aMaterial = Materials._NULL;
-            if ((aPrefix == OrePrefixes.nugget) && (aMod.equals("Thaumcraft"))
+            if ((aPrefix == OrePrefixes.nugget) && (aMod.equals(Thaumcraft.modID))
                     && (aEvent.Ore.getItem()
                                   .getUnlocalizedName()
                                   .contains("ItemResource"))) {
