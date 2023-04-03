@@ -45,7 +45,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
         this.setCreativeTab(Tabs.tabApiculture);
         this.setHasSubtypes(true);
         this.setUnlocalizedName("gt.comb");
-        GameRegistry.registerItem(this, "gt.comb", MOD_ID);
+        GameRegistry.registerItem(this, "gt.comb", GregTech.modID);
     }
 
     public ItemStack getStackForType(CombType type) {

@@ -1,6 +1,6 @@
 package gregtech.common.items;
 
-import static gregtech.api.enums.GT_Values.MOD_ID;
+import static gregtech.api.enums.ModIDs.GregTech;
 import static gregtech.api.enums.ModIDs.HardcoreEnderExpansion;
 import static gregtech.api.enums.ModIDs.NewHorizonsCoreMod;
 
@@ -33,7 +33,7 @@ public class ItemDrop extends Item {
         this.setCreativeTab(Tabs.tabApiculture);
         this.setHasSubtypes(true);
         this.setUnlocalizedName("gt.drop");
-        GameRegistry.registerItem(this, "gt.drop", MOD_ID);
+        GameRegistry.registerItem(this, "gt.drop", GregTech.modID);
     }
 
     public ItemStack getStackForType(DropType type) {

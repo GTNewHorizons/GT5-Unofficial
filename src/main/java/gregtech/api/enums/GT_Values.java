@@ -1,5 +1,7 @@
 package gregtech.api.enums;
 
+import static gregtech.api.enums.ModIDs.GraviSuite;
+import static gregtech.api.enums.ModIDs.GregTech;
 import static gregtech.api.enums.ModIDs.IndustrialCraft2;
 
 import java.math.BigInteger;
@@ -251,11 +253,11 @@ public class GT_Values {
      */
     public static final String TEX_DIR = "textures/", TEX_DIR_GUI = TEX_DIR + "gui/", TEX_DIR_ITEM = TEX_DIR + "items/",
             TEX_DIR_BLOCK = TEX_DIR + "blocks/", TEX_DIR_ENTITY = TEX_DIR + "entity/",
-            TEX_DIR_ASPECTS = TEX_DIR + "aspects/", RES_PATH = MOD_ID + ":" + TEX_DIR,
-            RES_PATH_GUI = MOD_ID + ":" + TEX_DIR_GUI, RES_PATH_ITEM = MOD_ID + ":", RES_PATH_BLOCK = MOD_ID + ":",
-            RES_PATH_ENTITY = MOD_ID + ":" + TEX_DIR_ENTITY, RES_PATH_ASPECTS = MOD_ID + ":" + TEX_DIR_ASPECTS,
+            TEX_DIR_ASPECTS = TEX_DIR + "aspects/", RES_PATH = GregTech.modID + ":" + TEX_DIR,
+            RES_PATH_GUI = GregTech.modID + ":" + TEX_DIR_GUI, RES_PATH_ITEM = GregTech.modID + ":", RES_PATH_BLOCK = GregTech.modID + ":",
+            RES_PATH_ENTITY = GregTech.modID + ":" + TEX_DIR_ENTITY, RES_PATH_ASPECTS = GregTech.modID + ":" + TEX_DIR_ASPECTS,
             RES_PATH_IC2 = IndustrialCraft2.modID.toLowerCase(Locale.ENGLISH) + ":",
-            RES_PATH_MODEL = MOD_ID + ":" + TEX_DIR + "models/";
+            RES_PATH_MODEL = GregTech.modID + ":" + TEX_DIR + "models/";
 
     /**
      * NBT String Keys

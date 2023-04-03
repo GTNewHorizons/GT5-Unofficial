@@ -1,6 +1,6 @@
 package gregtech.api.enums;
 
-import static gregtech.api.enums.GT_Values.MOD_ID;
+import static gregtech.api.enums.ModIDs.GregTech;
 import static gregtech.api.enums.ModIDs.IndustrialCraft2;
 
 import java.util.EnumSet;
@@ -56,12 +56,12 @@ public enum SoundResource {
     IC2_MACHINES_KA_CHING(211, IndustrialCraft2.modID, "machines.KaChing"),
     IC2_MACHINES_MAGNETIZER_LOOP(212, IndustrialCraft2.modID, "machines.MagnetizerLoop"),
 
-    GT_MACHINES_FUSION_LOOP(230, MOD_ID, "machines.FusionLoop"),
-    GT_MACHINES_DISTILLERY_LOOP(231, MOD_ID, "machines.DistilleryLoop"),
-    GT_MACHINES_PLASMAFORGE_LOOP(232, MOD_ID, "machines.PlasmaForgeLoop"),
+    GT_MACHINES_FUSION_LOOP(230, GregTech.modID, "machines.FusionLoop"),
+    GT_MACHINES_DISTILLERY_LOOP(231, GregTech.modID, "machines.DistilleryLoop"),
+    GT_MACHINES_PLASMAFORGE_LOOP(232, GregTech.modID, "machines.PlasmaForgeLoop"),
 
-    GUI_BUTTON_DOWN(-1, MOD_ID, "gui.buttonDown"),
-    GUI_BUTTON_UP(-1, MOD_ID, "gui.buttonUp"),
+    GUI_BUTTON_DOWN(-1, GregTech.modID, "gui.buttonDown"),
+    GUI_BUTTON_UP(-1, GregTech.modID, "gui.buttonUp"),
 
     /*
      * Other Minecraft Sounds that were missing
