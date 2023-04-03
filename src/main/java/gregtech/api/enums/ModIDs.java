@@ -116,6 +116,7 @@ public enum ModIDs {
     ZTones("Ztones"),
 
     // Do we keep compat of those?
+    ArsMagica2("arsmagica2"),
     IndustrialCraft2Classic("IC2-Classic-Spmod"),
     Metallurgy("Metallurgy"),
     RotaryCraft("RotaryCraft"),
