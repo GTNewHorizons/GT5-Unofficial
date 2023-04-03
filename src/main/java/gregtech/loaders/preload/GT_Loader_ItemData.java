@@ -437,7 +437,8 @@ public class GT_Loader_ItemData implements Runnable {
                         new ItemData(Materials.MeatRaw, 3628800L, new MaterialStack(Materials.Bone, 403200L)));
             }
         }
-        for (ItemStack tItem : new ItemStack[] { GT_ModHandler.getModItem(TwilightForest.modID, "item.meefSteak", 1L, 0),
+        for (ItemStack tItem : new ItemStack[] {
+                GT_ModHandler.getModItem(TwilightForest.modID, "item.meefSteak", 1L, 0),
                 GT_ModHandler.getModItem(TwilightForest.modID, "item.venisonCooked", 1L, 0),
                 new ItemStack(Items.cooked_porkchop), new ItemStack(Items.cooked_beef),
                 new ItemStack(Items.cooked_chicken), new ItemStack(Items.cooked_fished) }) {

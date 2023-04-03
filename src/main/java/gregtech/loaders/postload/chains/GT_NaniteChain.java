@@ -68,7 +68,8 @@ public class GT_NaniteChain {
 
         // Carbon Nanites - Used to make more Nano Forge Controllers
         GT_Values.RA.addNanoForgeRecipe(
-                new ItemStack[] { aUVTierLens, getModItem(BartWorks.modID, "bw.werkstoffblockscasingadvanced.01", 8, 31776),
+                new ItemStack[] { aUVTierLens,
+                        getModItem(BartWorks.modID, "bw.werkstoffblockscasingadvanced.01", 8, 31776),
                         ItemList.Circuit_Chip_SoC.get(64) },
                 new FluidStack[] { Materials.UUMatter.getFluid(200_000) },
                 new ItemStack[] { Materials.Carbon.getNanite(64), },
@@ -146,7 +147,7 @@ public class GT_NaniteChain {
         // White Dwarf Matter Nanites. Used to make Magnetohydrodynamically constrained star matter.
         GT_Values.RA.addNanoForgeRecipe(
                 new ItemStack[] { aUMVTierLens, getModItem(BartWorks.modID, "gt.bwMetaGeneratedlens", 0, 36), // Magneto
-                                                                                                          // lens
+                        // lens
                         getModItem(GTPlusPlus.modID, "MU-metaitem.01", 0, 32105), // Quantum Anomaly, couldn't find any
                         // better naming
                         Materials.WhiteDwarfMatter.getBlocks(8),
@@ -165,7 +166,7 @@ public class GT_NaniteChain {
         // Black Dwarf Matter Nanites. Used to make Magnetohydrodynamically constrained star matter.
         GT_Values.RA.addNanoForgeRecipe(
                 new ItemStack[] { aUMVTierLens, getModItem(BartWorks.modID, "gt.bwMetaGeneratedlens", 0, 36), // Magneto
-                                                                                                          // lens
+                        // lens
                         getModItem(GTPlusPlus.modID, "MU-metaitem.01", 0, 32105), // Quantum Anomaly, couldn't find any
                         // better naming
                         Materials.BlackDwarfMatter.getBlocks(8),

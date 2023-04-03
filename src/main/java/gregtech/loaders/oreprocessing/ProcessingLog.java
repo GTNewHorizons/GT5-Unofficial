@@ -1,5 +1,7 @@
 package gregtech.loaders.oreprocessing;
 
+import static gregtech.api.enums.ModIDs.Railcraft;
+
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
@@ -9,8 +11,6 @@ import gregtech.api.enums.*;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
-
-import static gregtech.api.enums.ModIDs.Railcraft;
 
 public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
