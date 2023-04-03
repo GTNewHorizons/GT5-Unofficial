@@ -1,10 +1,8 @@
 package gregtech.api.enums;
 
-import cpw.mods.fml.common.Loader;
-
 import java.util.Locale;
 
-import static gregtech.api.enums.GT_Values.RES_PATH_ASPECTS;
+import cpw.mods.fml.common.Loader;
 
 public enum Mods {
 
@@ -270,7 +268,7 @@ public enum Mods {
 
     Mods(String ID) {
         this.ID = ID;
-        this.namespace = ID.toLowerCase(Locale.ENGLISH)+":";
+        this.namespace = ID.toLowerCase(Locale.ENGLISH) + ":";
     }
 
     public boolean isModLoaded() {
@@ -280,7 +278,7 @@ public enum Mods {
         return this.modLoaded;
     }
 
-    public String getResourcePath(String path){
+    public String getResourcePath(String path) {
         return this.namespace + path;
     }
 }
