@@ -1,7 +1,7 @@
 package gregtech;
 
 import static gregtech.api.GregTech_API.registerCircuitProgrammer;
-import static gregtech.api.enums.ModIDs.Forestry;
+import static gregtech.api.enums.Mods.Forestry;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -93,7 +93,7 @@ import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeOutput;
 
 @Mod(
-        modid = ModIDs.Names.GREG_TECH,
+        modid = Mods.Names.GREG_TECH,
         name = "GregTech",
         version = "MC1710",
         guiFactory = "gregtech.client.GT_GuiFactory",
@@ -148,11 +148,11 @@ public class GT_Mod implements IGT_Mod {
     @Deprecated
     public static final int REQUIRED_IC2 = 624;
 
-    @Mod.Instance(ModIDs.Names.GREG_TECH)
+    @Mod.Instance(Mods.Names.GREG_TECH)
     public static GT_Mod instance;
 
     @SidedProxy(
-            modId = ModIDs.Names.GREG_TECH,
+            modId = Mods.Names.GREG_TECH,
             clientSide = "gregtech.common.GT_Client",
             serverSide = "gregtech.common.GT_Server")
     public static GT_Proxy gregtechproxy;
@@ -334,7 +334,7 @@ public class GT_Mod implements IGT_Mod {
             gregtechproxy.registerUnificationEntries();
             new GT_FuelLoader().run();
         }
-        if (ModIDs.Waila.isModLoaded()) {
+        if (Mods.Waila.isModLoaded()) {
             Waila.init();
         }
         IMCForNEI.IMCSender();

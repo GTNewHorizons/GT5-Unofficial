@@ -1,6 +1,6 @@
 package gregtech.client;
 
-import static gregtech.api.enums.ModIDs.GregTech;
+import static gregtech.api.enums.Mods.GregTech;
 
 import java.util.List;
 import java.util.Map;
@@ -22,7 +22,7 @@ public class GT_GUI_ClientConfig extends GuiConfig {
         super(
                 parentScreen,
                 getConfigElements(),
-                GregTech.modID,
+                GregTech.ID,
                 "client",
                 false,
                 false,

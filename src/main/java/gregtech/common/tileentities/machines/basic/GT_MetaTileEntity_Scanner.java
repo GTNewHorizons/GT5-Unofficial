@@ -1,8 +1,8 @@
 package gregtech.common.tileentities.machines.basic;
 
 import static gregtech.api.enums.GT_Values.*;
-import static gregtech.api.enums.ModIDs.GalacticraftCore;
-import static gregtech.api.enums.ModIDs.GalacticraftMars;
+import static gregtech.api.enums.Mods.GalacticraftCore;
+import static gregtech.api.enums.Mods.GalacticraftMars;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sScannerFakeRecipes;
 
@@ -261,13 +261,13 @@ public class GT_MetaTileEntity_Scanner extends GT_MetaTileEntity_BasicMachine {
                     int stackItemDamage = aStack.getItemDamage();
                     if (stackItemID == Item.getIdFromItem(
                             Objects.requireNonNull(
-                                    GT_ModHandler.getModItem(GalacticraftCore.modID, "item.schematic", 1L, 0))
+                                    GT_ModHandler.getModItem(GalacticraftCore.ID, "item.schematic", 1L, 0))
                                    .getItem())) {
                         if (stackItemDamage == 0 && aStack.toString()
                                                           .equals(
                                                                   Objects.requireNonNull(
                                                                           GT_ModHandler.getModItem(
-                                                                                  GalacticraftCore.modID,
+                                                                                  GalacticraftCore.ID,
                                                                                   "item.schematic",
                                                                                   1L,
                                                                                   0))
@@ -278,7 +278,7 @@ public class GT_MetaTileEntity_Scanner extends GT_MetaTileEntity_BasicMachine {
                                                                .equals(
                                                                        Objects.requireNonNull(
                                                                                GT_ModHandler.getModItem(
-                                                                                       GalacticraftCore.modID,
+                                                                                       GalacticraftCore.ID,
                                                                                        "item.schematic",
                                                                                        1L,
                                                                                        1))
@@ -288,13 +288,13 @@ public class GT_MetaTileEntity_Scanner extends GT_MetaTileEntity_BasicMachine {
                     } else {
                         if (stackItemID == Item.getIdFromItem(
                                 Objects.requireNonNull(
-                                        GT_ModHandler.getModItem(GalacticraftMars.modID, "item.schematic", 1L, 0))
+                                        GT_ModHandler.getModItem(GalacticraftMars.ID, "item.schematic", 1L, 0))
                                        .getItem())) {
                             if (stackItemDamage == 0 && aStack.toString()
                                                               .equals(
                                                                       Objects.requireNonNull(
                                                                               GT_ModHandler.getModItem(
-                                                                                      GalacticraftMars.modID,
+                                                                                      GalacticraftMars.ID,
                                                                                       "item.schematic",
                                                                                       1L,
                                                                                       0))
@@ -305,7 +305,7 @@ public class GT_MetaTileEntity_Scanner extends GT_MetaTileEntity_BasicMachine {
                                                                    .equals(
                                                                            Objects.requireNonNull(
                                                                                    GT_ModHandler.getModItem(
-                                                                                           GalacticraftMars.modID,
+                                                                                           GalacticraftMars.ID,
                                                                                            "item.schematic",
                                                                                            1L,
                                                                                            1))
@@ -316,7 +316,7 @@ public class GT_MetaTileEntity_Scanner extends GT_MetaTileEntity_BasicMachine {
                                                                    .equals(
                                                                            Objects.requireNonNull(
                                                                                    GT_ModHandler.getModItem(
-                                                                                           GalacticraftMars.modID,
+                                                                                           GalacticraftMars.ID,
                                                                                            "item.schematic",
                                                                                            1L,
                                                                                            2))

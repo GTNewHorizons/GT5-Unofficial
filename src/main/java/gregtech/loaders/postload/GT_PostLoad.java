@@ -1,7 +1,7 @@
 package gregtech.loaders.postload;
 
 import static gregtech.api.enums.GT_Values.VP;
-import static gregtech.api.enums.ModIDs.*;
+import static gregtech.api.enums.Mods.*;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
@@ -245,7 +245,7 @@ public class GT_PostLoad {
             GT_Recipe.GT_Recipe_Map.sScannerFakeRecipes.addFakeRecipe(
                     false,
                     new ItemStack[] { Objects.requireNonNull(
-                            GT_ModHandler.getModItem(GalacticraftCore.modID, "item.schematic", 1, Short.MAX_VALUE))
+                            GT_ModHandler.getModItem(GalacticraftCore.ID, "item.schematic", 1, Short.MAX_VALUE))
                                              .setStackDisplayName("Any Schematic") },
                     new ItemStack[] { ItemList.Tool_DataStick.getWithName(1L, "Scanned Schematic") },
                     ItemList.Tool_DataStick.getWithName(1L, "Stick to save it to"),
@@ -257,7 +257,7 @@ public class GT_PostLoad {
             if (GalacticraftMars.isModLoaded()) GT_Recipe.GT_Recipe_Map.sScannerFakeRecipes.addFakeRecipe(
                     false,
                     new ItemStack[] { Objects.requireNonNull(
-                            GT_ModHandler.getModItem(GalacticraftMars.modID, "item.schematic", 1, Short.MAX_VALUE))
+                            GT_ModHandler.getModItem(GalacticraftMars.ID, "item.schematic", 1, Short.MAX_VALUE))
                                              .setStackDisplayName("Any Schematic") },
                     new ItemStack[] { ItemList.Tool_DataStick.getWithName(1L, "Scanned Schematic") },
                     ItemList.Tool_DataStick.getWithName(1L, "Stick to save it to"),
@@ -270,7 +270,7 @@ public class GT_PostLoad {
                 for (int i = 4; i < 9; i++) {
                     GT_Recipe.GT_Recipe_Map.sScannerFakeRecipes.addFakeRecipe(
                             false,
-                            new ItemStack[] { GT_ModHandler.getModItem(GalaxySpace.modID, "item.SchematicTier" + i, 1)
+                            new ItemStack[] { GT_ModHandler.getModItem(GalaxySpace.ID, "item.SchematicTier" + i, 1)
                                                            .setStackDisplayName("Any Schematic") },
                             new ItemStack[] { ItemList.Tool_DataStick.getWithName(1L, "Scanned Schematic") },
                             ItemList.Tool_DataStick.getWithName(1L, "Stick to save it to"),
@@ -573,7 +573,7 @@ public class GT_PostLoad {
                 GT_OreDictUnificator.get(OrePrefixes.rod, Materials.Blaze, 1));
         if (Thaumcraft.isModLoaded()) {
             GT_Recipe.GT_Recipe_Map.sLargeBoilerFakeFuels.addSolidRecipe(
-                    GT_ModHandler.getModItem(Thaumcraft.modID, "ItemResource", 1));
+                    GT_ModHandler.getModItem(Thaumcraft.ID, "ItemResource", 1));
         }
     }
 

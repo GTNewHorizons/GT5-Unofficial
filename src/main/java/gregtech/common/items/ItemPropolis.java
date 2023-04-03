@@ -1,8 +1,8 @@
 package gregtech.common.items;
 
-import static gregtech.api.enums.ModIDs.GregTech;
-import static gregtech.api.enums.ModIDs.HardcoreEnderExpansion;
-import static gregtech.api.enums.ModIDs.NewHorizonsCoreMod;
+import static gregtech.api.enums.Mods.GregTech;
+import static gregtech.api.enums.Mods.HardcoreEnderExpansion;
+import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 
 import java.util.List;
 
@@ -33,7 +33,7 @@ public class ItemPropolis extends Item {
         this.setCreativeTab(Tabs.tabApiculture);
         this.setHasSubtypes(true);
         this.setUnlocalizedName("gt.propolis");
-        GameRegistry.registerItem(this, "gt.propolis", GregTech.modID);
+        GameRegistry.registerItem(this, "gt.propolis", GregTech.ID);
     }
 
     public ItemStack getStackForType(PropolisType type) {
@@ -81,23 +81,23 @@ public class ItemPropolis extends Item {
         ItemStack tPropolis;
 
         tPropolis = getStackForType(PropolisType.End);
-        addProcessHV(tPropolis, GT_ModHandler.getModItem(HardcoreEnderExpansion.modID, "end_powder", 1, 0));
+        addProcessHV(tPropolis, GT_ModHandler.getModItem(HardcoreEnderExpansion.ID, "end_powder", 1, 0));
         tPropolis = getStackForType(PropolisType.Stardust);
-        addProcessHV(tPropolis, GT_ModHandler.getModItem(HardcoreEnderExpansion.modID, "stardust", 1, 0));
+        addProcessHV(tPropolis, GT_ModHandler.getModItem(HardcoreEnderExpansion.ID, "stardust", 1, 0));
         tPropolis = getStackForType(PropolisType.Ectoplasma);
-        addProcessEV(tPropolis, GT_ModHandler.getModItem(NewHorizonsCoreMod.modID, "item.EctoplasmaChip", 1, 0));
+        addProcessEV(tPropolis, GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.EctoplasmaChip", 1, 0));
         tPropolis = getStackForType(PropolisType.Arcaneshard);
-        addProcessEV(tPropolis, GT_ModHandler.getModItem(NewHorizonsCoreMod.modID, "item.ArcaneShardChip", 1, 0));
+        addProcessEV(tPropolis, GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.ArcaneShardChip", 1, 0));
         tPropolis = getStackForType(PropolisType.Dragonessence);
-        addProcessIV(tPropolis, GT_ModHandler.getModItem(HardcoreEnderExpansion.modID, "essence", 16, 0));
+        addProcessIV(tPropolis, GT_ModHandler.getModItem(HardcoreEnderExpansion.ID, "essence", 16, 0));
         tPropolis = getStackForType(PropolisType.Enderman);
-        addProcessIV(tPropolis, GT_ModHandler.getModItem(HardcoreEnderExpansion.modID, "enderman_head", 1, 0));
+        addProcessIV(tPropolis, GT_ModHandler.getModItem(HardcoreEnderExpansion.ID, "enderman_head", 1, 0));
         tPropolis = getStackForType(PropolisType.Silverfish);
-        addProcessEV(tPropolis, GT_ModHandler.getModItem(HardcoreEnderExpansion.modID, "silverfish_blood", 1, 0));
+        addProcessEV(tPropolis, GT_ModHandler.getModItem(HardcoreEnderExpansion.ID, "silverfish_blood", 1, 0));
         tPropolis = getStackForType(PropolisType.Endium);
         addProcessHV(tPropolis, GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.HeeEndium, 1));
         tPropolis = getStackForType(PropolisType.Fireessence);
-        addProcessIV(tPropolis, GT_ModHandler.getModItem(HardcoreEnderExpansion.modID, "essence", 16, 1));
+        addProcessIV(tPropolis, GT_ModHandler.getModItem(HardcoreEnderExpansion.ID, "essence", 16, 1));
 
         // addRecipe(tDrop, aOutput, aOutput2, aChance, aDuration, aEUt);
     }

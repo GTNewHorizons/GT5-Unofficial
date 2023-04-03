@@ -1,6 +1,6 @@
 package gregtech.loaders.preload;
 
-import static gregtech.api.enums.ModIDs.*;
+import static gregtech.api.enums.Mods.*;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -1346,22 +1346,22 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 ItemList.Hatch_Maintenance.get(1L),
                 bitsd,
                 new Object[] { "dwx", "hMC", "fsr", 'M', ItemList.Hull_LV, 'C',
-                        GT_ModHandler.getModItem(Railcraft.modID, "tool.crowbar", 1L, 0) });
+                        GT_ModHandler.getModItem(Railcraft.ID, "tool.crowbar", 1L, 0) });
         GT_ModHandler.addCraftingRecipe(
                 ItemList.Hatch_Maintenance.get(1L),
                 bitsd,
                 new Object[] { "dwx", "hMC", "fsr", 'M', ItemList.Hull_LV, 'C',
-                        GT_ModHandler.getModItem(Railcraft.modID, "tool.crowbar.reinforced", 1L, 0) });
+                        GT_ModHandler.getModItem(Railcraft.ID, "tool.crowbar.reinforced", 1L, 0) });
         GT_ModHandler.addCraftingRecipe(
                 ItemList.Hatch_Maintenance.get(1L),
                 bitsd,
                 new Object[] { "dwx", "hMC", "fsr", 'M', ItemList.Hull_LV, 'C',
-                        GT_ModHandler.getModItem(Railcraft.modID, "tool.crowbar.magic", 1L, 0) });
+                        GT_ModHandler.getModItem(Railcraft.ID, "tool.crowbar.magic", 1L, 0) });
         GT_ModHandler.addCraftingRecipe(
                 ItemList.Hatch_Maintenance.get(1L),
                 bitsd,
                 new Object[] { "dwx", "hMC", "fsr", 'M', ItemList.Hull_LV, 'C',
-                        GT_ModHandler.getModItem(Railcraft.modID, "tool.crowbar.void", 1L, 0) });
+                        GT_ModHandler.getModItem(Railcraft.ID, "tool.crowbar.void", 1L, 0) });
 
         ItemList.Hatch_AutoMaintenance.set(
                 new GT_MetaTileEntity_Hatch_Maintenance(
@@ -1475,7 +1475,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 bitsd,
                 new Object[] { aTextPlate, "PTP", aTextPlateMotor, 'M', ItemList.Hull_HP, 'P',
                         OrePrefixes.plate.get(Materials.Steel), 'T',
-                        GT_ModHandler.getModItem(BuildCraftFactory.modID, "tankBlock", 1L, 0) });
+                        GT_ModHandler.getModItem(BuildCraftFactory.ID, "tankBlock", 1L, 0) });
         GT_ModHandler.addCraftingRecipe(
                 ItemList.Machine_Bronze_Boiler_Solar.get(1L),
                 bitsd,
@@ -1487,7 +1487,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                 bitsd,
                 new Object[] { "GGG", "SSS", aTextPlateMotor, 'M', ItemList.Hull_HP_Bricks, 'P',
                         OrePrefixes.pipeSmall.get(Materials.Steel), 'S', OrePrefixes.plateTriple.get(Materials.Silver),
-                        'G', GT_ModHandler.getModItem(IndustrialCraft2.modID, "blockAlloyGlass", 1L) });
+                        'G', GT_ModHandler.getModItem(IndustrialCraft2.ID, "blockAlloyGlass", 1L) });
 
         ItemList.Machine_Bronze_BlastFurnace.set(
                 new GT_MetaTileEntity_BronzeBlastFurnace(
@@ -5747,73 +5747,73 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
             if (Gendustry.isModLoaded()) {
                 GT_ModHandler.addShapelessCraftingRecipe(
                         ItemList.Machine_IndustrialApiary.get(1L),
-                        new Object[] { GT_ModHandler.getModItem(Gendustry.modID, "IndustrialApiary", 1, 0) });
+                        new Object[] { GT_ModHandler.getModItem(Gendustry.ID, "IndustrialApiary", 1, 0) });
                 GT_ModHandler.addShapelessCraftingRecipe(
                         ItemList.IndustrialApiary_Upgrade_Frame.get(1),
-                        new Object[] { GT_ModHandler.getModItem(Gendustry.modID, "UpgradeFrame", 1) });
+                        new Object[] { GT_ModHandler.getModItem(Gendustry.ID, "UpgradeFrame", 1) });
                 GT_ModHandler.addShapelessCraftingRecipe(
                         ItemList.IndustrialApiary_Upgrade_PRODUCTION.get(1L),
-                        new Object[] { GT_ModHandler.getModItem(Gendustry.modID, "ApiaryUpgrade", 1, 0) });
+                        new Object[] { GT_ModHandler.getModItem(Gendustry.ID, "ApiaryUpgrade", 1, 0) });
                 GT_ModHandler.addShapelessCraftingRecipe(
                         ItemList.IndustrialApiary_Upgrade_PLAINS.get(1L),
-                        new Object[] { GT_ModHandler.getModItem(Gendustry.modID, "ApiaryUpgrade", 1, 17) });
+                        new Object[] { GT_ModHandler.getModItem(Gendustry.ID, "ApiaryUpgrade", 1, 17) });
                 GT_ModHandler.addShapelessCraftingRecipe(
                         ItemList.IndustrialApiary_Upgrade_LIGHT.get(1L),
-                        new Object[] { GT_ModHandler.getModItem(Gendustry.modID, "ApiaryUpgrade", 1, 11) });
+                        new Object[] { GT_ModHandler.getModItem(Gendustry.ID, "ApiaryUpgrade", 1, 11) });
                 GT_ModHandler.addShapelessCraftingRecipe(
                         ItemList.IndustrialApiary_Upgrade_FLOWERING.get(1L),
-                        new Object[] { GT_ModHandler.getModItem(Gendustry.modID, "ApiaryUpgrade", 1, 2) });
+                        new Object[] { GT_ModHandler.getModItem(Gendustry.ID, "ApiaryUpgrade", 1, 2) });
                 GT_ModHandler.addShapelessCraftingRecipe(
                         ItemList.IndustrialApiary_Upgrade_WINTER.get(1L),
-                        new Object[] { GT_ModHandler.getModItem(Gendustry.modID, "ApiaryUpgrade", 1, 20) });
+                        new Object[] { GT_ModHandler.getModItem(Gendustry.ID, "ApiaryUpgrade", 1, 20) });
                 GT_ModHandler.addShapelessCraftingRecipe(
                         ItemList.IndustrialApiary_Upgrade_DRYER.get(1L),
-                        new Object[] { GT_ModHandler.getModItem(Gendustry.modID, "ApiaryUpgrade", 1, 5) });
+                        new Object[] { GT_ModHandler.getModItem(Gendustry.ID, "ApiaryUpgrade", 1, 5) });
                 GT_ModHandler.addShapelessCraftingRecipe(
                         ItemList.IndustrialApiary_Upgrade_AUTOMATION.get(1L),
-                        new Object[] { GT_ModHandler.getModItem(Gendustry.modID, "ApiaryUpgrade", 1, 14) });
+                        new Object[] { GT_ModHandler.getModItem(Gendustry.ID, "ApiaryUpgrade", 1, 14) });
                 GT_ModHandler.addShapelessCraftingRecipe(
                         ItemList.IndustrialApiary_Upgrade_HUMIDIFIER.get(1L),
-                        new Object[] { GT_ModHandler.getModItem(Gendustry.modID, "ApiaryUpgrade", 1, 4) });
+                        new Object[] { GT_ModHandler.getModItem(Gendustry.ID, "ApiaryUpgrade", 1, 4) });
                 GT_ModHandler.addShapelessCraftingRecipe(
                         ItemList.IndustrialApiary_Upgrade_HELL.get(1L),
-                        new Object[] { GT_ModHandler.getModItem(Gendustry.modID, "ApiaryUpgrade", 1, 13) });
+                        new Object[] { GT_ModHandler.getModItem(Gendustry.ID, "ApiaryUpgrade", 1, 13) });
                 GT_ModHandler.addShapelessCraftingRecipe(
                         ItemList.IndustrialApiary_Upgrade_POLLEN.get(1L),
-                        new Object[] { GT_ModHandler.getModItem(Gendustry.modID, "ApiaryUpgrade", 1, 22) });
+                        new Object[] { GT_ModHandler.getModItem(Gendustry.ID, "ApiaryUpgrade", 1, 22) });
                 GT_ModHandler.addShapelessCraftingRecipe(
                         ItemList.IndustrialApiary_Upgrade_DESERT.get(1L),
-                        new Object[] { GT_ModHandler.getModItem(Gendustry.modID, "ApiaryUpgrade", 1, 16) });
+                        new Object[] { GT_ModHandler.getModItem(Gendustry.ID, "ApiaryUpgrade", 1, 16) });
                 GT_ModHandler.addShapelessCraftingRecipe(
                         ItemList.IndustrialApiary_Upgrade_COOLER.get(1L),
-                        new Object[] { GT_ModHandler.getModItem(Gendustry.modID, "ApiaryUpgrade", 1, 7) });
+                        new Object[] { GT_ModHandler.getModItem(Gendustry.ID, "ApiaryUpgrade", 1, 7) });
                 GT_ModHandler.addShapelessCraftingRecipe(
                         ItemList.IndustrialApiary_Upgrade_LIFESPAN.get(1L),
-                        new Object[] { GT_ModHandler.getModItem(Gendustry.modID, "ApiaryUpgrade", 1, 1) });
+                        new Object[] { GT_ModHandler.getModItem(Gendustry.ID, "ApiaryUpgrade", 1, 1) });
                 GT_ModHandler.addShapelessCraftingRecipe(
                         ItemList.IndustrialApiary_Upgrade_SEAL.get(1L),
-                        new Object[] { GT_ModHandler.getModItem(Gendustry.modID, "ApiaryUpgrade", 1, 10) });
+                        new Object[] { GT_ModHandler.getModItem(Gendustry.ID, "ApiaryUpgrade", 1, 10) });
                 GT_ModHandler.addShapelessCraftingRecipe(
                         ItemList.IndustrialApiary_Upgrade_STABILIZER.get(1L),
-                        new Object[] { GT_ModHandler.getModItem(Gendustry.modID, "ApiaryUpgrade", 1, 19) });
+                        new Object[] { GT_ModHandler.getModItem(Gendustry.ID, "ApiaryUpgrade", 1, 19) });
                 GT_ModHandler.addShapelessCraftingRecipe(
                         ItemList.IndustrialApiary_Upgrade_JUNGLE.get(1L),
-                        new Object[] { GT_ModHandler.getModItem(Gendustry.modID, "ApiaryUpgrade", 1, 18) });
+                        new Object[] { GT_ModHandler.getModItem(Gendustry.ID, "ApiaryUpgrade", 1, 18) });
                 GT_ModHandler.addShapelessCraftingRecipe(
                         ItemList.IndustrialApiary_Upgrade_TERRITORY.get(1L),
-                        new Object[] { GT_ModHandler.getModItem(Gendustry.modID, "ApiaryUpgrade", 1, 3) });
+                        new Object[] { GT_ModHandler.getModItem(Gendustry.ID, "ApiaryUpgrade", 1, 3) });
                 GT_ModHandler.addShapelessCraftingRecipe(
                         ItemList.IndustrialApiary_Upgrade_OCEAN.get(1L),
-                        new Object[] { GT_ModHandler.getModItem(Gendustry.modID, "ApiaryUpgrade", 1, 21) });
+                        new Object[] { GT_ModHandler.getModItem(Gendustry.ID, "ApiaryUpgrade", 1, 21) });
                 GT_ModHandler.addShapelessCraftingRecipe(
                         ItemList.IndustrialApiary_Upgrade_SKY.get(1L),
-                        new Object[] { GT_ModHandler.getModItem(Gendustry.modID, "ApiaryUpgrade", 1, 12) });
+                        new Object[] { GT_ModHandler.getModItem(Gendustry.ID, "ApiaryUpgrade", 1, 12) });
                 GT_ModHandler.addShapelessCraftingRecipe(
                         ItemList.IndustrialApiary_Upgrade_HEATER.get(1L),
-                        new Object[] { GT_ModHandler.getModItem(Gendustry.modID, "ApiaryUpgrade", 1, 6) });
+                        new Object[] { GT_ModHandler.getModItem(Gendustry.ID, "ApiaryUpgrade", 1, 6) });
                 GT_ModHandler.addShapelessCraftingRecipe(
                         ItemList.IndustrialApiary_Upgrade_SIEVE.get(1L),
-                        new Object[] { GT_ModHandler.getModItem(Gendustry.modID, "ApiaryUpgrade", 1, 15) });
+                        new Object[] { GT_ModHandler.getModItem(Gendustry.ID, "ApiaryUpgrade", 1, 15) });
             }
         }
 

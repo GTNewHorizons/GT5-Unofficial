@@ -1,6 +1,6 @@
 package gregtech.common.blocks;
 
-import static gregtech.api.enums.ModIDs.UndergroundBiomes;
+import static gregtech.api.enums.Mods.UndergroundBiomes;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -16,7 +16,7 @@ import gregtech.api.render.TextureFactory;
 
 public class GT_Block_Ores_UB2 extends GT_Block_Ores_Abstract {
 
-    Block aUBBlock = GameRegistry.findBlock(UndergroundBiomes.modID, "metamorphicStone");
+    Block aUBBlock = GameRegistry.findBlock(UndergroundBiomes.ID, "metamorphicStone");
 
     public GT_Block_Ores_UB2() {
         super("gt.blockores.ub2", 8, true, Material.rock);

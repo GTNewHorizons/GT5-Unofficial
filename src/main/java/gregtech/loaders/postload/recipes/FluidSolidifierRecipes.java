@@ -1,6 +1,6 @@
 package gregtech.loaders.postload.recipes;
 
-import static gregtech.api.enums.ModIDs.*;
+import static gregtech.api.enums.Mods.*;
 import static gregtech.api.util.GT_ModHandler.getModItem;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sFluidSolidficationRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.INGOTS;
@@ -50,7 +50,7 @@ public class FluidSolidifierRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
                     .itemInputs(ItemList.Shape_Mold_Ball.get(0L))
-                    .itemOutputs(getModItem(Thaumcraft.modID, "ItemResource", 1, 3))
+                    .itemOutputs(getModItem(Thaumcraft.ID, "ItemResource", 1, 3))
                     .fluidInputs(Materials.Mercury.getFluid(1000L))
                     .noFluidOutputs()
                     .duration(6 * SECONDS + 8 * TICKS)
@@ -230,7 +230,7 @@ public class FluidSolidifierRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
                     .itemInputs(ItemList.Shape_Mold_Plate.get(0L))
-                    .itemOutputs(getModItem(NewHorizonsCoreMod.modID, "item.ReinforcedGlassPlate", 1L, 0))
+                    .itemOutputs(getModItem(NewHorizonsCoreMod.ID, "item.ReinforcedGlassPlate", 1L, 0))
                     .fluidInputs(Materials.ReinforceGlass.getMolten(72))
                     .noFluidOutputs()
                     .duration(8 * SECONDS)
@@ -239,7 +239,7 @@ public class FluidSolidifierRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
                     .itemInputs(ItemList.Shape_Mold_Block.get(0L))
-                    .itemOutputs(getModItem(IndustrialCraft2.modID, "blockAlloyGlass", 1L))
+                    .itemOutputs(getModItem(IndustrialCraft2.ID, "blockAlloyGlass", 1L))
                     .fluidInputs(Materials.ReinforceGlass.getMolten(144))
                     .noFluidOutputs()
                     .duration(8 * SECONDS)
@@ -347,7 +347,7 @@ public class FluidSolidifierRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
                     .itemInputs(ItemList.Shape_Mold_Anvil.get(0L))
-                    .itemOutputs(getModItem(Railcraft.modID, "tile.railcraft.anvil", 1L, 0))
+                    .itemOutputs(getModItem(Railcraft.ID, "tile.railcraft.anvil", 1L, 0))
                     .fluidInputs(Materials.Steel.getMolten(4464L))
                     .noFluidOutputs()
                     .duration(6 * SECONDS + 8 * TICKS)

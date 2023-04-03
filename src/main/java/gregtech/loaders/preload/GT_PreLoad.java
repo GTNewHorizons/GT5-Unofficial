@@ -1,7 +1,7 @@
 package gregtech.loaders.preload;
 
 import static gregtech.GT_Mod.GT_FML_LOGGER;
-import static gregtech.api.enums.ModIDs.*;
+import static gregtech.api.enums.Mods.*;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -58,7 +58,7 @@ public class GT_PreLoad {
                 for (short i = 0; i < tModList_sS; i = (short) (i + 1)) {
                     ModContainer tMod = tModList.get(i);
                     if (tMod.getModId()
-                            .equalsIgnoreCase(GregTech.modID)) {
+                            .equalsIgnoreCase(GregTech.ID)) {
                         tGregTech = tMod;
                     } else {
                         tNewModsList.add(tMod);

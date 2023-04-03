@@ -1,10 +1,10 @@
 package gregtech.api.util;
 
 import static gregtech.api.enums.GT_Values.*;
-import static gregtech.api.enums.ModIDs.GTPlusPlus;
-import static gregtech.api.enums.ModIDs.GregTech;
-import static gregtech.api.enums.ModIDs.NEICustomDiagrams;
-import static gregtech.api.enums.ModIDs.Railcraft;
+import static gregtech.api.enums.Mods.GTPlusPlus;
+import static gregtech.api.enums.Mods.GregTech;
+import static gregtech.api.enums.Mods.NEICustomDiagrams;
+import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.util.GT_RecipeConstants.ADDITIVE_AMOUNT;
 import static gregtech.api.util.GT_RecipeMapUtil.*;
 import static gregtech.api.util.GT_Utility.formatNumbers;
@@ -2188,11 +2188,11 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                          }
                          if (GTPlusPlus.isModLoaded()) {
                              ItemStack cactusCoke = GT_ModHandler.getModItem(
-                                     GTPlusPlus.modID,
+                                     GTPlusPlus.ID,
                                      "itemCactusCoke",
                                      aCoalAmount * 2L);
                              ItemStack sugarCoke = GT_ModHandler.getModItem(
-                                     GTPlusPlus.modID,
+                                     GTPlusPlus.ID,
                                      "itemSugarCoke",
                                      aCoalAmount * 2L);
                              coll.derive()
@@ -3256,7 +3256,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                     aMinimalInputFluids,
                     aMinimalInputItems);
             progressBarTexture = new FallbackableUITexture(
-                    UITexture.fullImage(GregTech.modID, "gui/progressbar/" + mUnlocalizedName),
+                    UITexture.fullImage(GregTech.ID, "gui/progressbar/" + mUnlocalizedName),
                     GT_UITextures.PROGRESSBAR_ARROW);
             colorOverride = GT_GUIColorOverride.get(ModularUITextures.VANILLA_BACKGROUND.location);
             if (sIndexedMappings.put(mUniqueIdentifier, this) != null)
@@ -3359,7 +3359,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         public GT_Recipe_Map setProgressBar(UITexture progressBarTexture, ProgressBar.Direction progressBarDirection) {
             return setProgressBarWithFallback(
                     new FallbackableUITexture(
-                            UITexture.fullImage(GregTech.modID, "gui/progressbar/" + mUnlocalizedName),
+                            UITexture.fullImage(GregTech.ID, "gui/progressbar/" + mUnlocalizedName),
                             progressBarTexture),
                     progressBarDirection);
         }
@@ -3383,7 +3383,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
         public GT_Recipe_Map setProgressBarSteam(SteamTexture progressBarTexture) {
             return setProgressBarSteamWithFallback(
                     new FallbackableSteamTexture(
-                            SteamTexture.fullImage(GregTech.modID, "gui/progressbar/" + mUnlocalizedName + "_%s"),
+                            SteamTexture.fullImage(GregTech.ID, "gui/progressbar/" + mUnlocalizedName + "_%s"),
                             progressBarTexture));
         }
 

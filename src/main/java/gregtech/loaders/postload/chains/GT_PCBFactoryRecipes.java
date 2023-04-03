@@ -1,7 +1,7 @@
 package gregtech.loaders.postload.chains;
 
-import static gregtech.api.enums.ModIDs.BartWorks;
-import static gregtech.api.enums.ModIDs.GTPlusPlus;
+import static gregtech.api.enums.Mods.BartWorks;
+import static gregtech.api.enums.Mods.GTPlusPlus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,7 +60,7 @@ public class GT_PCBFactoryRecipes {
                 30 * 20,
                 (int) GT_Values.VP[9]);
         GT_Values.RA.addAssemblerRecipe(
-                new ItemStack[] { GT_ModHandler.getModItem(GTPlusPlus.modID, "blockFrameGtCelestialTungsten", 1),
+                new ItemStack[] { GT_ModHandler.getModItem(GTPlusPlus.ID, "blockFrameGtCelestialTungsten", 1),
                         Materials.get("Quantum")
                                  .getPlates(6) },
                 null,
@@ -68,7 +68,7 @@ public class GT_PCBFactoryRecipes {
                 30 * 20,
                 (int) GT_Values.VP[11]);
         GT_Values.RA.addAssemblerRecipe(
-                new ItemStack[] { GT_ModHandler.getModItem(GTPlusPlus.modID, "blockFrameGtHypogen", 1),
+                new ItemStack[] { GT_ModHandler.getModItem(GTPlusPlus.ID, "blockFrameGtHypogen", 1),
                         GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.Infinity, 2),
                         Materials.Thulium.getPlates(6) },
                 Materials.SpaceTime.getMolten(144 * 8),
@@ -609,7 +609,7 @@ public class GT_PCBFactoryRecipes {
                                 GT_PCBFactoryManager.getPlasticMaterialFromTier(tier)
                                                     .getPlates(1),
                                 GT_ModHandler.getModItem(
-                                        BartWorks.modID,
+                                        BartWorks.ID,
                                         "gt.bwMetaGeneratedfoil",
                                         (long) (16 * (Math.sqrt(tier - 6))),
                                         10106),
@@ -643,7 +643,7 @@ public class GT_PCBFactoryRecipes {
                                 GT_PCBFactoryManager.getPlasticMaterialFromTier(tier)
                                                     .getPlates(1),
                                 GT_ModHandler.getModItem(
-                                        BartWorks.modID,
+                                        BartWorks.ID,
                                         "gt.bwMetaGeneratedfoil",
                                         (long) (16 * (Math.sqrt(tier - 6))),
                                         10106),
@@ -677,7 +677,7 @@ public class GT_PCBFactoryRecipes {
                                 GT_PCBFactoryManager.getPlasticMaterialFromTier(tier)
                                                     .getPlates(1),
                                 GT_ModHandler.getModItem(
-                                        BartWorks.modID,
+                                        BartWorks.ID,
                                         "gt.bwMetaGeneratedfoil",
                                         (long) (16 * (Math.sqrt(tier - 6))),
                                         10106),

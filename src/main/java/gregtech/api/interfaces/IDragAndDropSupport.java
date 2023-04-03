@@ -11,12 +11,12 @@ import codechicken.nei.VisiblityData;
 import codechicken.nei.api.INEIGuiHandler;
 import codechicken.nei.api.TaggedInventoryArea;
 import cpw.mods.fml.common.Optional;
-import gregtech.api.enums.ModIDs;
+import gregtech.api.enums.Mods;
 
 /**
  * Implement this interface if your GuiContainer supports Drag-And-Drop behavior on NEI.
  */
-@Optional.Interface(modid = ModIDs.Names.NOT_ENOUGH_ITEMS, iface = "codechicken.nei.api.INEIGuiHandler")
+@Optional.Interface(modid = Mods.Names.NOT_ENOUGH_ITEMS, iface = "codechicken.nei.api.INEIGuiHandler")
 public interface IDragAndDropSupport extends INEIGuiHandler {
 
     /**

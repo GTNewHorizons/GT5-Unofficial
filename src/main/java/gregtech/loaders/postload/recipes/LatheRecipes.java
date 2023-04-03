@@ -1,6 +1,6 @@
 package gregtech.loaders.postload.recipes;
 
-import static gregtech.api.enums.ModIDs.Forestry;
+import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.util.GT_ModHandler.getModItem;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sLatheRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
@@ -31,7 +31,7 @@ public class LatheRecipes implements Runnable {
                     .addTo(sLatheRecipes);
 
         GT_Values.RA.stdBuilder()
-                    .itemInputs(getModItem(Forestry.modID, "slabs", 1L, GT_Values.W))
+                    .itemInputs(getModItem(Forestry.ID, "slabs", 1L, GT_Values.W))
                     .itemOutputs(
                             new ItemStack(Items.bowl, 1),
                             GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Wood, 1))

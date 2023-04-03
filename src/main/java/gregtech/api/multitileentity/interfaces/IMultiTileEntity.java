@@ -19,7 +19,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fluids.IFluidHandler;
 
 import cpw.mods.fml.common.Optional;
-import gregtech.api.enums.ModIDs;
+import gregtech.api.enums.Mods;
 import gregtech.api.interfaces.tileentity.*;
 import gregtech.api.multitileentity.MultiTileEntityBlockInternal;
 import gregtech.api.multitileentity.MultiTileEntityItemInternal;
@@ -241,7 +241,7 @@ public interface IMultiTileEntity
 
     interface IMTE_GetFoodValues extends IMultiTileEntity {
 
-        @Optional.Method(modid = ModIDs.Names.APPLE_CORE)
+        @Optional.Method(modid = Mods.Names.APPLE_CORE)
         squeek.applecore.api.food.FoodValues getFoodValues(MultiTileEntityItemInternal aItem, ItemStack aStack);
     }
 

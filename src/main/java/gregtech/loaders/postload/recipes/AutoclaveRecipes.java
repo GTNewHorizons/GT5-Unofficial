@@ -1,6 +1,6 @@
 package gregtech.loaders.postload.recipes;
 
-import static gregtech.api.enums.ModIDs.AppliedEnergistics2;
+import static gregtech.api.enums.Mods.AppliedEnergistics2;
 import static gregtech.api.util.GT_ModHandler.getModItem;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sAutoclaveRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.*;
@@ -35,8 +35,8 @@ public class AutoclaveRecipes implements Runnable {
                     .addTo(sAutoclaveRecipes);
 
         GT_Values.RA.stdBuilder()
-                    .itemInputs(getModItem(AppliedEnergistics2.modID, "item.ItemCrystalSeed", 1L, 0))
-                    .itemOutputs(getModItem(AppliedEnergistics2.modID, "item.ItemMultiMaterial", 1L, 10))
+                    .itemInputs(getModItem(AppliedEnergistics2.ID, "item.ItemCrystalSeed", 1L, 0))
+                    .itemOutputs(getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 10))
                     .outputChances(8000)
                     .fluidInputs(Materials.Water.getFluid(200L))
                     .noFluidOutputs()
@@ -45,8 +45,8 @@ public class AutoclaveRecipes implements Runnable {
                     .addTo(sAutoclaveRecipes);
 
         GT_Values.RA.stdBuilder()
-                    .itemInputs(getModItem(AppliedEnergistics2.modID, "item.ItemCrystalSeed", 1L, 600))
-                    .itemOutputs(getModItem(AppliedEnergistics2.modID, "item.ItemMultiMaterial", 1L, 11))
+                    .itemInputs(getModItem(AppliedEnergistics2.ID, "item.ItemCrystalSeed", 1L, 600))
+                    .itemOutputs(getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 11))
                     .outputChances(8000)
                     .fluidInputs(Materials.Water.getFluid(200L))
                     .noFluidOutputs()
@@ -55,8 +55,8 @@ public class AutoclaveRecipes implements Runnable {
                     .addTo(sAutoclaveRecipes);
 
         GT_Values.RA.stdBuilder()
-                    .itemInputs(getModItem(AppliedEnergistics2.modID, "item.ItemCrystalSeed", 1L, 1200))
-                    .itemOutputs(getModItem(AppliedEnergistics2.modID, "item.ItemMultiMaterial", 1L, 12))
+                    .itemInputs(getModItem(AppliedEnergistics2.ID, "item.ItemCrystalSeed", 1L, 1200))
+                    .itemOutputs(getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 12))
                     .outputChances(8000)
                     .fluidInputs(Materials.Water.getFluid(200L))
                     .noFluidOutputs()
@@ -65,8 +65,8 @@ public class AutoclaveRecipes implements Runnable {
                     .addTo(sAutoclaveRecipes);
 
         GT_Values.RA.stdBuilder()
-                    .itemInputs(getModItem(AppliedEnergistics2.modID, "item.ItemCrystalSeed", 1L, 0))
-                    .itemOutputs(getModItem(AppliedEnergistics2.modID, "item.ItemMultiMaterial", 1L, 10))
+                    .itemInputs(getModItem(AppliedEnergistics2.ID, "item.ItemCrystalSeed", 1L, 0))
+                    .itemOutputs(getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 10))
                     .outputChances(9000)
                     .fluidInputs(GT_ModHandler.getDistilledWater(100L))
                     .noFluidOutputs()
@@ -75,8 +75,8 @@ public class AutoclaveRecipes implements Runnable {
                     .addTo(sAutoclaveRecipes);
 
         GT_Values.RA.stdBuilder()
-                    .itemInputs(getModItem(AppliedEnergistics2.modID, "item.ItemCrystalSeed", 1L, 600))
-                    .itemOutputs(getModItem(AppliedEnergistics2.modID, "item.ItemMultiMaterial", 1L, 11))
+                    .itemInputs(getModItem(AppliedEnergistics2.ID, "item.ItemCrystalSeed", 1L, 600))
+                    .itemOutputs(getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 11))
                     .outputChances(9000)
                     .fluidInputs(GT_ModHandler.getDistilledWater(100L))
                     .noFluidOutputs()
@@ -85,8 +85,8 @@ public class AutoclaveRecipes implements Runnable {
                     .addTo(sAutoclaveRecipes);
 
         GT_Values.RA.stdBuilder()
-                    .itemInputs(getModItem(AppliedEnergistics2.modID, "item.ItemCrystalSeed", 1L, 1200))
-                    .itemOutputs(getModItem(AppliedEnergistics2.modID, "item.ItemMultiMaterial", 1L, 12))
+                    .itemInputs(getModItem(AppliedEnergistics2.ID, "item.ItemCrystalSeed", 1L, 1200))
+                    .itemOutputs(getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 12))
                     .outputChances(9000)
                     .fluidInputs(GT_ModHandler.getDistilledWater(100L))
                     .noFluidOutputs()
@@ -95,8 +95,8 @@ public class AutoclaveRecipes implements Runnable {
                     .addTo(sAutoclaveRecipes);
 
         GT_Values.RA.stdBuilder()
-                    .itemInputs(getModItem(AppliedEnergistics2.modID, "item.ItemCrystalSeed", 1L, 0))
-                    .itemOutputs(getModItem(AppliedEnergistics2.modID, "item.ItemMultiMaterial", 1L, 10))
+                    .itemInputs(getModItem(AppliedEnergistics2.ID, "item.ItemCrystalSeed", 1L, 0))
+                    .itemOutputs(getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 10))
                     .outputChances(10000)
                     .fluidInputs(Materials.Void.getMolten(36L))
                     .noFluidOutputs()
@@ -105,8 +105,8 @@ public class AutoclaveRecipes implements Runnable {
                     .addTo(sAutoclaveRecipes);
 
         GT_Values.RA.stdBuilder()
-                    .itemInputs(getModItem(AppliedEnergistics2.modID, "item.ItemCrystalSeed", 1L, 600))
-                    .itemOutputs(getModItem(AppliedEnergistics2.modID, "item.ItemMultiMaterial", 1L, 11))
+                    .itemInputs(getModItem(AppliedEnergistics2.ID, "item.ItemCrystalSeed", 1L, 600))
+                    .itemOutputs(getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 11))
                     .outputChances(10000)
                     .fluidInputs(Materials.Void.getMolten(36L))
                     .noFluidOutputs()
@@ -115,8 +115,8 @@ public class AutoclaveRecipes implements Runnable {
                     .addTo(sAutoclaveRecipes);
 
         GT_Values.RA.stdBuilder()
-                    .itemInputs(getModItem(AppliedEnergistics2.modID, "item.ItemCrystalSeed", 1L, 1200))
-                    .itemOutputs(getModItem(AppliedEnergistics2.modID, "item.ItemMultiMaterial", 1L, 12))
+                    .itemInputs(getModItem(AppliedEnergistics2.ID, "item.ItemCrystalSeed", 1L, 1200))
+                    .itemOutputs(getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 12))
                     .outputChances(10000)
                     .fluidInputs(Materials.Void.getMolten(36L))
                     .noFluidOutputs()

@@ -2,7 +2,7 @@ package gregtech.api.enums;
 
 import cpw.mods.fml.common.Loader;
 
-public enum ModIDs {
+public enum Mods {
 
     AdvancedSolarPanel(Names.ADVANCED_SOLAR_PANEL),
     AdventureBackpack(Names.ADVENTURE_BACKPACK),
@@ -260,16 +260,16 @@ public enum ModIDs {
 
     }
 
-    public final String modID;
+    public final String ID;
     private Boolean modLoaded;
 
-    ModIDs(String modID) {
-        this.modID = modID;
+    Mods(String ID) {
+        this.ID = ID;
     }
 
     public boolean isModLoaded() {
         if (this.modLoaded == null) {
-            this.modLoaded = Loader.isModLoaded(modID);
+            this.modLoaded = Loader.isModLoaded(ID);
         }
         return this.modLoaded;
     }

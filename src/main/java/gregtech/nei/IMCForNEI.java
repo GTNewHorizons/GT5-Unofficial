@@ -1,7 +1,7 @@
 package gregtech.nei;
 
-import static gregtech.api.enums.ModIDs.GregTech;
-import static gregtech.api.enums.ModIDs.NotEnoughItems;
+import static gregtech.api.enums.Mods.GregTech;
+import static gregtech.api.enums.Mods.NotEnoughItems;
 
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -43,7 +43,7 @@ public class IMCForNEI {
         NBTTagCompound aNBT = new NBTTagCompound();
         aNBT.setString("handler", aName);
         aNBT.setString("modName", "GregTech");
-        aNBT.setString("modId", GregTech.modID);
+        aNBT.setString("modId", GregTech.ID);
         aNBT.setBoolean("modRequired", true);
         aNBT.setString("itemName", aBlock);
         aNBT.setInteger("handlerHeight", 135);

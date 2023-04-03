@@ -1,6 +1,6 @@
 package gregtech.common.items.behaviors;
 
-import static gregtech.api.enums.ModIDs.Railcraft;
+import static gregtech.api.enums.Mods.Railcraft;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -29,7 +29,7 @@ public class Behaviour_Crowbar extends Behaviour_None {
         if (aWorld.isRemote) {
             return false;
         }
-        if (GT_ModHandler.getModItem(Railcraft.modID, "fluid.creosote.bucket", 1L) != null) {
+        if (GT_ModHandler.getModItem(Railcraft.ID, "fluid.creosote.bucket", 1L) != null) {
             return false;
         }
         Block aBlock = aWorld.getBlock(aX, aY, aZ);

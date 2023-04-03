@@ -1,8 +1,8 @@
 package gregtech.loaders.oreprocessing;
 
-import static gregtech.api.enums.ModIDs.AppliedEnergistics2;
-import static gregtech.api.enums.ModIDs.BuildCraftSilicon;
-import static gregtech.api.enums.ModIDs.NewHorizonsCoreMod;
+import static gregtech.api.enums.Mods.AppliedEnergistics2;
+import static gregtech.api.enums.Mods.BuildCraftSilicon;
+import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -42,13 +42,13 @@ public class ProcessingCrafting implements gregtech.api.interfaces.IOreRecipeReg
                 GT_Values.RA.addLaserEngraverRecipe(
                         GT_OreDictUnificator.get(OrePrefixes.block, Materials.Iron, 1L),
                         GT_Utility.copyAmount(0L, aStack),
-                        GT_ModHandler.getModItem(AppliedEnergistics2.modID, "item.ItemMultiMaterial", 1L, 13),
+                        GT_ModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 13),
                         2000,
                         1920);
                 GT_Values.RA.addLaserEngraverRecipe(
                         GT_OreDictUnificator.get(OrePrefixes.block, Materials.WroughtIron, 1L),
                         GT_Utility.copyAmount(0L, aStack),
-                        GT_ModHandler.getModItem(AppliedEnergistics2.modID, "item.ItemMultiMaterial", 1L, 13),
+                        GT_ModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 13),
                         2000,
                         1920);
                 GT_Values.RA.addLaserEngraverRecipe(
@@ -91,13 +91,13 @@ public class ProcessingCrafting implements gregtech.api.interfaces.IOreRecipeReg
                 GT_Values.RA.addLaserEngraverRecipe(
                         GT_OreDictUnificator.get(OrePrefixes.block, Materials.Iron, 1L),
                         GT_Utility.copyAmount(0L, aStack),
-                        GT_ModHandler.getModItem(AppliedEnergistics2.modID, "item.ItemMultiMaterial", 1L, 14),
+                        GT_ModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 14),
                         2000,
                         1920);
                 GT_Values.RA.addLaserEngraverRecipe(
                         GT_OreDictUnificator.get(OrePrefixes.block, Materials.WroughtIron, 1L),
                         GT_Utility.copyAmount(0L, aStack),
-                        GT_ModHandler.getModItem(AppliedEnergistics2.modID, "item.ItemMultiMaterial", 1L, 14),
+                        GT_ModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 14),
                         2000,
                         1920);
                 GT_Values.RA.addLaserEngraverRecipe(
@@ -170,13 +170,13 @@ public class ProcessingCrafting implements gregtech.api.interfaces.IOreRecipeReg
                 GT_Values.RA.addLaserEngraverRecipe(
                         GT_OreDictUnificator.get(OrePrefixes.block, Materials.Iron, 1L),
                         GT_Utility.copyAmount(0L, aStack),
-                        GT_ModHandler.getModItem(AppliedEnergistics2.modID, "item.ItemMultiMaterial", 1L, 15),
+                        GT_ModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 15),
                         2000,
                         1920);
                 GT_Values.RA.addLaserEngraverRecipe(
                         GT_OreDictUnificator.get(OrePrefixes.block, Materials.WroughtIron, 1L),
                         GT_Utility.copyAmount(0L, aStack),
-                        GT_ModHandler.getModItem(AppliedEnergistics2.modID, "item.ItemMultiMaterial", 1L, 15),
+                        GT_ModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 15),
                         2000,
                         1920);
                 GT_Values.RA.addLaserEngraverRecipe(
@@ -219,13 +219,13 @@ public class ProcessingCrafting implements gregtech.api.interfaces.IOreRecipeReg
                 GT_Values.RA.addLaserEngraverRecipe(
                         GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Redstone, 1L),
                         GT_Utility.copyAmount(0L, aStack),
-                        GT_ModHandler.getModItem(BuildCraftSilicon.modID, "redstoneChipset", 1L, 0),
+                        GT_ModHandler.getModItem(BuildCraftSilicon.ID, "redstoneChipset", 1L, 0),
                         50,
                         120);
                 GT_Values.RA.addLaserEngraverRecipe(
                         GT_OreDictUnificator.get(OrePrefixes.foil, Materials.RedAlloy, 1L),
                         GT_Utility.copyAmount(0L, aStack),
-                        GT_ModHandler.getModItem(NewHorizonsCoreMod.modID, "item.EtchedLowVoltageWiring", 1L, 0),
+                        GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.EtchedLowVoltageWiring", 1L, 0),
                         200,
                         16);
                 GT_Values.RA.addLaserEngraverRecipe(
@@ -319,13 +319,13 @@ public class ProcessingCrafting implements gregtech.api.interfaces.IOreRecipeReg
                 GT_Values.RA.addLaserEngraverRecipe(
                         GT_OreDictUnificator.get(OrePrefixes.block, Materials.Iron, 1L),
                         GT_Utility.copyAmount(0L, aStack),
-                        GT_ModHandler.getModItem(AppliedEnergistics2.modID, "item.ItemMultiMaterial", 1L, 19),
+                        GT_ModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 19),
                         2000,
                         1920);
                 GT_Values.RA.addLaserEngraverRecipe(
                         GT_OreDictUnificator.get(OrePrefixes.block, Materials.WroughtIron, 1L),
                         GT_Utility.copyAmount(0L, aStack),
-                        GT_ModHandler.getModItem(AppliedEnergistics2.modID, "item.ItemMultiMaterial", 1L, 19),
+                        GT_ModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 19),
                         2000,
                         1920);
                 GT_Values.RA.addLaserEngraverRecipe(
@@ -347,9 +347,9 @@ public class ProcessingCrafting implements gregtech.api.interfaces.IOreRecipeReg
                         50,
                         16);
                 GT_Values.RA.addLaserEngraverRecipe(
-                        GT_ModHandler.getModItem(AppliedEnergistics2.modID, "tile.BlockQuartz", 1L),
+                        GT_ModHandler.getModItem(AppliedEnergistics2.ID, "tile.BlockQuartz", 1L),
                         GT_Utility.copyAmount(0L, aStack),
-                        GT_ModHandler.getModItem(AppliedEnergistics2.modID, "tile.BlockQuartzChiseled", 1L),
+                        GT_ModHandler.getModItem(AppliedEnergistics2.ID, "tile.BlockQuartzChiseled", 1L),
                         50,
                         16);
                 GT_Values.RA.addLaserEngraverRecipe(

@@ -1,6 +1,6 @@
 package gregtech.loaders.oreprocessing;
 
-import static gregtech.api.enums.ModIDs.Railcraft;
+import static gregtech.api.enums.Mods.Railcraft;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -79,7 +79,7 @@ public class ProcessingStone implements IOreRecipeRegistrator {
                 GT_ModHandler.addPulverisationRecipe(
                         GT_Utility.copyAmount(1L, aStack),
                         GT_ModHandler.getModItem(
-                                Railcraft.modID,
+                                Railcraft.ID,
                                 "cube.crushed.obsidian",
                                 1L,
                                 GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L)),

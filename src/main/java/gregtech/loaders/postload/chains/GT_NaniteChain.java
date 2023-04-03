@@ -1,9 +1,9 @@
 package gregtech.loaders.postload.chains;
 
-import static gregtech.api.enums.ModIDs.BartWorks;
-import static gregtech.api.enums.ModIDs.GTPlusPlus;
-import static gregtech.api.enums.ModIDs.GoodGenerator;
-import static gregtech.api.enums.ModIDs.NewHorizonsCoreMod;
+import static gregtech.api.enums.Mods.BartWorks;
+import static gregtech.api.enums.Mods.GTPlusPlus;
+import static gregtech.api.enums.Mods.GoodGenerator;
+import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.util.GT_ModHandler.getModItem;
 
 import net.minecraft.item.ItemStack;
@@ -21,9 +21,9 @@ public class GT_NaniteChain {
 
     public static void run() {
 
-        ItemStack aUVTierLens = getModItem(NewHorizonsCoreMod.modID, "item.MysteriousCrystalLens", 0);
-        ItemStack aUHVTierLens = getModItem(NewHorizonsCoreMod.modID, "item.ChromaticLens", 0);
-        ItemStack aUEVTierLens = getModItem(NewHorizonsCoreMod.modID, "item.RadoxPolymerLens", 0);
+        ItemStack aUVTierLens = getModItem(NewHorizonsCoreMod.ID, "item.MysteriousCrystalLens", 0);
+        ItemStack aUHVTierLens = getModItem(NewHorizonsCoreMod.ID, "item.ChromaticLens", 0);
+        ItemStack aUEVTierLens = getModItem(NewHorizonsCoreMod.ID, "item.RadoxPolymerLens", 0);
         ItemStack aUIVTierLens = ItemList.EnergisedTesseract.get(0);
         ItemStack aUMVTierLens = GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Dilithium, 0, false);
 
@@ -69,7 +69,7 @@ public class GT_NaniteChain {
         // Carbon Nanites - Used to make more Nano Forge Controllers
         GT_Values.RA.addNanoForgeRecipe(
                 new ItemStack[] { aUVTierLens,
-                        getModItem(BartWorks.modID, "bw.werkstoffblockscasingadvanced.01", 8, 31776),
+                        getModItem(BartWorks.ID, "bw.werkstoffblockscasingadvanced.01", 8, 31776),
                         ItemList.Circuit_Chip_SoC.get(64) },
                 new FluidStack[] { Materials.UUMatter.getFluid(200_000) },
                 new ItemStack[] { Materials.Carbon.getNanite(64), },
@@ -104,7 +104,7 @@ public class GT_NaniteChain {
 
         // Glowstone Nanites - Used in the optical circuit line
         GT_Values.RA.addNanoForgeRecipe(
-                new ItemStack[] { aUEVTierLens, getModItem(GTPlusPlus.modID, "blockCompressedObsidian", 8, 7), // Double
+                new ItemStack[] { aUEVTierLens, getModItem(GTPlusPlus.ID, "blockCompressedObsidian", 8, 7), // Double
                         // compressed
                         // glowstone
                         // blocks
@@ -146,13 +146,13 @@ public class GT_NaniteChain {
 
         // White Dwarf Matter Nanites. Used to make Magnetohydrodynamically constrained star matter.
         GT_Values.RA.addNanoForgeRecipe(
-                new ItemStack[] { aUMVTierLens, getModItem(BartWorks.modID, "gt.bwMetaGeneratedlens", 0, 36), // Magneto
+                new ItemStack[] { aUMVTierLens, getModItem(BartWorks.ID, "gt.bwMetaGeneratedlens", 0, 36), // Magneto
                         // lens
-                        getModItem(GTPlusPlus.modID, "MU-metaitem.01", 0, 32105), // Quantum Anomaly, couldn't find any
+                        getModItem(GTPlusPlus.ID, "MU-metaitem.01", 0, 32105), // Quantum Anomaly, couldn't find any
                         // better naming
                         Materials.WhiteDwarfMatter.getBlocks(8),
-                        getModItem(NewHorizonsCoreMod.modID, "item.PicoWafer", 32),
-                        getModItem(GoodGenerator.modID, "huiCircuit", 1, 4) // Paradox circuit
+                        getModItem(NewHorizonsCoreMod.ID, "item.PicoWafer", 32),
+                        getModItem(GoodGenerator.ID, "huiCircuit", 1, 4) // Paradox circuit
                 },
                 new FluidStack[] { Materials.UUMatter.getFluid(500_000), Materials.RawStarMatter.getFluid(50_000),
                         Materials.Space.getMolten(720), },
@@ -165,13 +165,13 @@ public class GT_NaniteChain {
 
         // Black Dwarf Matter Nanites. Used to make Magnetohydrodynamically constrained star matter.
         GT_Values.RA.addNanoForgeRecipe(
-                new ItemStack[] { aUMVTierLens, getModItem(BartWorks.modID, "gt.bwMetaGeneratedlens", 0, 36), // Magneto
+                new ItemStack[] { aUMVTierLens, getModItem(BartWorks.ID, "gt.bwMetaGeneratedlens", 0, 36), // Magneto
                         // lens
-                        getModItem(GTPlusPlus.modID, "MU-metaitem.01", 0, 32105), // Quantum Anomaly, couldn't find any
+                        getModItem(GTPlusPlus.ID, "MU-metaitem.01", 0, 32105), // Quantum Anomaly, couldn't find any
                         // better naming
                         Materials.BlackDwarfMatter.getBlocks(8),
-                        getModItem(NewHorizonsCoreMod.modID, "item.PicoWafer", 32),
-                        getModItem(GoodGenerator.modID, "huiCircuit", 1, 4) // Paradox circuit
+                        getModItem(NewHorizonsCoreMod.ID, "item.PicoWafer", 32),
+                        getModItem(GoodGenerator.ID, "huiCircuit", 1, 4) // Paradox circuit
                 },
                 new FluidStack[] { Materials.UUMatter.getFluid(500_000), Materials.RawStarMatter.getFluid(50_000),
                         Materials.Time.getMolten(720), },
@@ -186,10 +186,10 @@ public class GT_NaniteChain {
         GT_Values.RA.addNanoForgeRecipe(
                 new ItemStack[] { aUMVTierLens,
                         // Quantum Anomaly, couldn't find any better naming.
-                        getModItem(GTPlusPlus.modID, "MU-metaitem.01", 0, 32105), Materials.Universium.getBlocks(8),
+                        getModItem(GTPlusPlus.ID, "MU-metaitem.01", 0, 32105), Materials.Universium.getBlocks(8),
 
                         ItemList.Optically_Perfected_CPU.get(16), ItemList.Optically_Compatible_Memory.get(16),
-                        getModItem(GoodGenerator.modID, "huiCircuit", 1, 4) // Paradox circuit
+                        getModItem(GoodGenerator.ID, "huiCircuit", 1, 4) // Paradox circuit
                 },
                 new FluidStack[] { Materials.SpaceTime.getMolten(144), Materials.Infinity.getMolten(576),
                         Materials.UUMatter.getFluid(1_000_000), },

@@ -1,7 +1,7 @@
 package gregtech.api.items;
 
 import static gregtech.api.enums.GT_Values.*;
-import static gregtech.api.enums.ModIDs.AppleCore;
+import static gregtech.api.enums.Mods.AppleCore;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,7 +27,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.ModIDs;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TC_Aspects.TC_AspectStack;
 import gregtech.api.interfaces.IFoodStat;
@@ -57,7 +57,7 @@ import gregtech.common.render.items.GT_GeneratedMaterial_Renderer;
  *         These Items can also have special RightClick abilities, electric Charge or even be set to become a Food alike
  *         Item.
  */
-@Optional.Interface(iface = "squeek.applecore.api.food.IEdible", modid = ModIDs.Names.APPLE_CORE)
+@Optional.Interface(iface = "squeek.applecore.api.food.IEdible", modid = Mods.Names.APPLE_CORE)
 public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements IGT_ItemWithMaterialRenderer, IEdible {
 
     /**
@@ -343,7 +343,7 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements 
     }
 
     @Override
-    @Optional.Method(modid = ModIDs.Names.APPLE_CORE)
+    @Optional.Method(modid = Mods.Names.APPLE_CORE)
     public FoodValues getFoodValues(ItemStack aStack) {
         IFoodStat tStat = mFoodStats.get((short) getDamage(aStack));
         return tStat == null ? null

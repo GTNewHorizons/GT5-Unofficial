@@ -1,7 +1,7 @@
 package gregtech.api.metatileentity.implementations;
 
 import static gregtech.api.enums.GT_Values.ALL_VALID_SIDES;
-import static gregtech.api.enums.ModIDs.GalacticraftCore;
+import static gregtech.api.enums.Mods.GalacticraftCore;
 
 import java.util.ArrayList;
 import java.util.HashSet;

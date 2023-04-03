@@ -1,15 +1,15 @@
 package gregtech.api.util;
 
-import static gregtech.api.enums.ModIDs.GTPlusPlus;
-import static gregtech.api.enums.ModIDs.Railcraft;
+import static gregtech.api.enums.Mods.GTPlusPlus;
+import static gregtech.api.enums.Mods.Railcraft;
 
 import cpw.mods.fml.common.Loader;
 
 @Deprecated // use gregtech.api.enums.ModIDs instead
 public enum GT_ModReference {
 
-    RAILCRAFT(Railcraft.modID),
-    GTPP(GTPlusPlus.modID),;
+    RAILCRAFT(Railcraft.ID),
+    GTPP(GTPlusPlus.ID),;
 
     private final boolean loaded;
     private final String modID;

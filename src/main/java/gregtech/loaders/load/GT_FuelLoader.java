@@ -1,8 +1,8 @@
 package gregtech.loaders.load;
 
-import static gregtech.api.enums.ModIDs.BloodMagic;
-import static gregtech.api.enums.ModIDs.EnderIO;
-import static gregtech.api.enums.ModIDs.Thaumcraft;
+import static gregtech.api.enums.Mods.BloodMagic;
+import static gregtech.api.enums.Mods.EnderIO;
+import static gregtech.api.enums.Mods.Thaumcraft;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -127,8 +127,8 @@ public class GT_FuelLoader implements Runnable {
         // BloodMagic
         GT_Recipe.GT_Recipe_Map.sMagicFuels.addRecipe(
                 true,
-                new ItemStack[] { GT_ModHandler.getModItem(BloodMagic.modID, "reinforcedSlate", 1L) },
-                new ItemStack[] { GT_ModHandler.getModItem(BloodMagic.modID, "blankSlate", 1L) },
+                new ItemStack[] { GT_ModHandler.getModItem(BloodMagic.ID, "reinforcedSlate", 1L) },
+                new ItemStack[] { GT_ModHandler.getModItem(BloodMagic.ID, "blankSlate", 1L) },
                 null,
                 null,
                 null,
@@ -137,8 +137,8 @@ public class GT_FuelLoader implements Runnable {
                 400);
         GT_Recipe.GT_Recipe_Map.sMagicFuels.addRecipe(
                 true,
-                new ItemStack[] { GT_ModHandler.getModItem(BloodMagic.modID, "imbuedSlate", 1L) },
-                new ItemStack[] { GT_ModHandler.getModItem(BloodMagic.modID, "reinforcedSlate", 1L) },
+                new ItemStack[] { GT_ModHandler.getModItem(BloodMagic.ID, "imbuedSlate", 1L) },
+                new ItemStack[] { GT_ModHandler.getModItem(BloodMagic.ID, "reinforcedSlate", 1L) },
                 null,
                 null,
                 null,
@@ -147,8 +147,8 @@ public class GT_FuelLoader implements Runnable {
                 1000);
         GT_Recipe.GT_Recipe_Map.sMagicFuels.addRecipe(
                 true,
-                new ItemStack[] { GT_ModHandler.getModItem(BloodMagic.modID, "demonicSlate", 1L) },
-                new ItemStack[] { GT_ModHandler.getModItem(BloodMagic.modID, "imbuedSlate", 1L) },
+                new ItemStack[] { GT_ModHandler.getModItem(BloodMagic.ID, "demonicSlate", 1L) },
+                new ItemStack[] { GT_ModHandler.getModItem(BloodMagic.ID, "imbuedSlate", 1L) },
                 null,
                 null,
                 null,
@@ -157,8 +157,8 @@ public class GT_FuelLoader implements Runnable {
                 8000);
         GT_Recipe.GT_Recipe_Map.sMagicFuels.addRecipe(
                 true,
-                new ItemStack[] { GT_ModHandler.getModItem(BloodMagic.modID, "bloodMagicBaseItems", 1L, 27) },
-                new ItemStack[] { GT_ModHandler.getModItem(BloodMagic.modID, "demonicSlate", 1L) },
+                new ItemStack[] { GT_ModHandler.getModItem(BloodMagic.ID, "bloodMagicBaseItems", 1L, 27) },
+                new ItemStack[] { GT_ModHandler.getModItem(BloodMagic.ID, "demonicSlate", 1L) },
                 null,
                 null,
                 null,
@@ -166,7 +166,7 @@ public class GT_FuelLoader implements Runnable {
                 0,
                 20000);
 
-        GT_Values.RA.addFuel(GT_ModHandler.getModItem(Thaumcraft.modID, "ItemResource", 1L, 4), null, 4, 5);
+        GT_Values.RA.addFuel(GT_ModHandler.getModItem(Thaumcraft.ID, "ItemResource", 1L, 4), null, 4, 5);
         GT_Values.RA.addFuel(new ItemStack(Items.experience_bottle, 1), null, 10, 5);
         GT_Values.RA.addFuel(new ItemStack(Items.ghast_tear, 1), null, 50, 5);
         GT_Values.RA.addFuel(
@@ -174,6 +174,6 @@ public class GT_FuelLoader implements Runnable {
                 null,
                 Materials.NetherStar.mFuelPower * 2,
                 Materials.NetherStar.mFuelType);
-        GT_Values.RA.addFuel(GT_ModHandler.getModItem(EnderIO.modID, "bucketRocket_fuel", 1), null, 250, 1);
+        GT_Values.RA.addFuel(GT_ModHandler.getModItem(EnderIO.ID, "bucketRocket_fuel", 1), null, 250, 1);
     }
 }

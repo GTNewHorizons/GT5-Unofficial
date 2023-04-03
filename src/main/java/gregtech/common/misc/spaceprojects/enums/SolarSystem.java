@@ -1,6 +1,6 @@
 package gregtech.common.misc.spaceprojects.enums;
 
-import static gregtech.api.enums.ModIDs.GregTech;
+import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.common.misc.spaceprojects.enums.SpaceBodyType.*;
 import static gregtech.common.misc.spaceprojects.enums.StarType.*;
 
@@ -66,7 +66,7 @@ public enum SolarSystem implements ISpaceBody {
     SolarSystem(SpaceBodyType aType, StarType aStarType) {
         star = aStarType;
         spaceBody = aType;
-        texture = UITexture.fullImage(GregTech.modID, "solarsystem/" + getName());
+        texture = UITexture.fullImage(GregTech.ID, "solarsystem/" + getName());
         SpaceProjectManager.addLocation(this);
     }
 

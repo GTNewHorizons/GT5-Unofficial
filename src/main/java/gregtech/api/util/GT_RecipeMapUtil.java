@@ -1,6 +1,6 @@
 package gregtech.api.util;
 
-import static gregtech.api.enums.ModIDs.GregTech;
+import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.util.GT_Config.getStackConfigName;
 import static gregtech.api.util.GT_Utility.isArrayEmptyOrNull;
 
@@ -133,7 +133,7 @@ public class GT_RecipeMapUtil {
         String modId = Loader.instance()
                              .activeModContainer()
                              .getModId();
-        if (GregTech.modID.equals(modId)) throw new IllegalStateException(
+        if (GregTech.ID.equals(modId)) throw new IllegalStateException(
                 "do not register recipe map under the name of gregtech! do it in your own preinit!");
         String id = modId + "@" + identifier;
         addonRecipeMaps.put(id, recipeMap);

@@ -1,6 +1,6 @@
 package gregtech.loaders.postload.recipes;
 
-import static gregtech.api.enums.ModIDs.Railcraft;
+import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.util.GT_ModHandler.getModItem;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sArcFurnaceRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
@@ -198,7 +198,7 @@ public class ArcFurnaceRecipes implements Runnable {
                     .addTo(sArcFurnaceRecipes);
 
         GT_Values.RA.stdBuilder()
-                    .itemInputs(getModItem(Railcraft.modID, "machine.beta", 1L, 0))
+                    .itemInputs(getModItem(Railcraft.ID, "machine.beta", 1L, 0))
                     .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Iron, 2L))
                     .noFluidInputs()
                     .noFluidOutputs()
@@ -207,7 +207,7 @@ public class ArcFurnaceRecipes implements Runnable {
                     .addTo(sArcFurnaceRecipes);
 
         GT_Values.RA.stdBuilder()
-                    .itemInputs(getModItem(Railcraft.modID, "machine.beta", 1L, 1))
+                    .itemInputs(getModItem(Railcraft.ID, "machine.beta", 1L, 1))
                     .itemOutputs(
                             GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Iron, 1L),
                             GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Glass, 3))
@@ -218,7 +218,7 @@ public class ArcFurnaceRecipes implements Runnable {
                     .addTo(sArcFurnaceRecipes);
 
         GT_Values.RA.stdBuilder()
-                    .itemInputs(getModItem(Railcraft.modID, "machine.beta", 1L, 2))
+                    .itemInputs(getModItem(Railcraft.ID, "machine.beta", 1L, 2))
                     .itemOutputs(
                             GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Bronze, 12L),
                             GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Iron, 6))
@@ -229,7 +229,7 @@ public class ArcFurnaceRecipes implements Runnable {
                     .addTo(sArcFurnaceRecipes);
 
         GT_Values.RA.stdBuilder()
-                    .itemInputs(getModItem(Railcraft.modID, "machine.beta", 1L, 13))
+                    .itemInputs(getModItem(Railcraft.ID, "machine.beta", 1L, 13))
                     .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Steel, 2L))
                     .noFluidInputs()
                     .noFluidOutputs()
@@ -238,7 +238,7 @@ public class ArcFurnaceRecipes implements Runnable {
                     .addTo(sArcFurnaceRecipes);
 
         GT_Values.RA.stdBuilder()
-                    .itemInputs(getModItem(Railcraft.modID, "machine.beta", 1L, 14))
+                    .itemInputs(getModItem(Railcraft.ID, "machine.beta", 1L, 14))
                     .itemOutputs(
                             GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Steel, 1L),
                             GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Glass, 3))
@@ -249,7 +249,7 @@ public class ArcFurnaceRecipes implements Runnable {
                     .addTo(sArcFurnaceRecipes);
 
         GT_Values.RA.stdBuilder()
-                    .itemInputs(getModItem(Railcraft.modID, "machine.beta", 1L, 15))
+                    .itemInputs(getModItem(Railcraft.ID, "machine.beta", 1L, 15))
                     .itemOutputs(
                             GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Steel, 12L),
                             GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Steel, 6L))
@@ -260,7 +260,7 @@ public class ArcFurnaceRecipes implements Runnable {
                     .addTo(sArcFurnaceRecipes);
 
         GT_Values.RA.stdBuilder()
-                    .itemInputs(getModItem(Railcraft.modID, "machine.zeta", 1L, 0))
+                    .itemInputs(getModItem(Railcraft.ID, "machine.zeta", 1L, 0))
                     .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Aluminium, 2L))
                     .noFluidInputs()
                     .noFluidOutputs()
@@ -269,7 +269,7 @@ public class ArcFurnaceRecipes implements Runnable {
                     .addTo(sArcFurnaceRecipes);
 
         GT_Values.RA.stdBuilder()
-                    .itemInputs(getModItem(Railcraft.modID, "machine.zeta", 1L, 1))
+                    .itemInputs(getModItem(Railcraft.ID, "machine.zeta", 1L, 1))
                     .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Aluminium, 3))
                     .noFluidInputs()
                     .noFluidOutputs()
@@ -278,7 +278,7 @@ public class ArcFurnaceRecipes implements Runnable {
                     .addTo(sArcFurnaceRecipes);
 
         GT_Values.RA.stdBuilder()
-                    .itemInputs(getModItem(Railcraft.modID, "machine.zeta", 1L, 2))
+                    .itemInputs(getModItem(Railcraft.ID, "machine.zeta", 1L, 2))
                     .itemOutputs(
                             GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Ash, 12L),
                             GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Aluminium, 6L))
@@ -289,7 +289,7 @@ public class ArcFurnaceRecipes implements Runnable {
                     .addTo(sArcFurnaceRecipes);
 
         GT_Values.RA.stdBuilder()
-                    .itemInputs(getModItem(Railcraft.modID, "machine.zeta", 1L, 3))
+                    .itemInputs(getModItem(Railcraft.ID, "machine.zeta", 1L, 3))
                     .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.StainlessSteel, 2L))
                     .noFluidInputs()
                     .noFluidOutputs()
@@ -298,7 +298,7 @@ public class ArcFurnaceRecipes implements Runnable {
                     .addTo(sArcFurnaceRecipes);
 
         GT_Values.RA.stdBuilder()
-                    .itemInputs(getModItem(Railcraft.modID, "machine.zeta", 1L, 4))
+                    .itemInputs(getModItem(Railcraft.ID, "machine.zeta", 1L, 4))
                     .itemOutputs(
                             GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.StainlessSteel, 1L),
                             GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Glass, 3))
@@ -309,7 +309,7 @@ public class ArcFurnaceRecipes implements Runnable {
                     .addTo(sArcFurnaceRecipes);
 
         GT_Values.RA.stdBuilder()
-                    .itemInputs(getModItem(Railcraft.modID, "machine.zeta", 1L, 5))
+                    .itemInputs(getModItem(Railcraft.ID, "machine.zeta", 1L, 5))
                     .itemOutputs(
                             GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.StainlessSteel, 12L),
                             GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.StainlessSteel, 6L))
@@ -320,7 +320,7 @@ public class ArcFurnaceRecipes implements Runnable {
                     .addTo(sArcFurnaceRecipes);
 
         GT_Values.RA.stdBuilder()
-                    .itemInputs(getModItem(Railcraft.modID, "machine.zeta", 1L, 6))
+                    .itemInputs(getModItem(Railcraft.ID, "machine.zeta", 1L, 6))
                     .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Titanium, 2L))
                     .noFluidInputs()
                     .noFluidOutputs()
@@ -329,7 +329,7 @@ public class ArcFurnaceRecipes implements Runnable {
                     .addTo(sArcFurnaceRecipes);
 
         GT_Values.RA.stdBuilder()
-                    .itemInputs(getModItem(Railcraft.modID, "machine.zeta", 1L, 7))
+                    .itemInputs(getModItem(Railcraft.ID, "machine.zeta", 1L, 7))
                     .itemOutputs(
                             GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Titanium, 1L),
                             GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Glass, 3))
@@ -340,7 +340,7 @@ public class ArcFurnaceRecipes implements Runnable {
                     .addTo(sArcFurnaceRecipes);
 
         GT_Values.RA.stdBuilder()
-                    .itemInputs(getModItem(Railcraft.modID, "machine.zeta", 1L, 8))
+                    .itemInputs(getModItem(Railcraft.ID, "machine.zeta", 1L, 8))
                     .itemOutputs(
                             GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Titanium, 12L),
                             GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Titanium, 6L))
@@ -351,7 +351,7 @@ public class ArcFurnaceRecipes implements Runnable {
                     .addTo(sArcFurnaceRecipes);
 
         GT_Values.RA.stdBuilder()
-                    .itemInputs(getModItem(Railcraft.modID, "machine.zeta", 1L, 9))
+                    .itemInputs(getModItem(Railcraft.ID, "machine.zeta", 1L, 9))
                     .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.TungstenSteel, 2L))
                     .noFluidInputs()
                     .noFluidOutputs()
@@ -360,7 +360,7 @@ public class ArcFurnaceRecipes implements Runnable {
                     .addTo(sArcFurnaceRecipes);
 
         GT_Values.RA.stdBuilder()
-                    .itemInputs(getModItem(Railcraft.modID, "machine.zeta", 1L, 10))
+                    .itemInputs(getModItem(Railcraft.ID, "machine.zeta", 1L, 10))
                     .itemOutputs(
                             GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.TungstenSteel, 1L),
                             GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Glass, 3))
@@ -371,7 +371,7 @@ public class ArcFurnaceRecipes implements Runnable {
                     .addTo(sArcFurnaceRecipes);
 
         GT_Values.RA.stdBuilder()
-                    .itemInputs(getModItem(Railcraft.modID, "machine.zeta", 1L, 11))
+                    .itemInputs(getModItem(Railcraft.ID, "machine.zeta", 1L, 11))
                     .itemOutputs(
                             GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.TungstenSteel, 12L),
                             GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.TungstenSteel, 6L))
@@ -382,7 +382,7 @@ public class ArcFurnaceRecipes implements Runnable {
                     .addTo(sArcFurnaceRecipes);
 
         GT_Values.RA.stdBuilder()
-                    .itemInputs(getModItem(Railcraft.modID, "machine.zeta", 1L, 12))
+                    .itemInputs(getModItem(Railcraft.ID, "machine.zeta", 1L, 12))
                     .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Palladium, 2L))
                     .noFluidInputs()
                     .noFluidOutputs()
@@ -391,7 +391,7 @@ public class ArcFurnaceRecipes implements Runnable {
                     .addTo(sArcFurnaceRecipes);
 
         GT_Values.RA.stdBuilder()
-                    .itemInputs(getModItem(Railcraft.modID, "machine.zeta", 1L, 13))
+                    .itemInputs(getModItem(Railcraft.ID, "machine.zeta", 1L, 13))
                     .itemOutputs(
                             GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Palladium, 1L),
                             GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Glass, 3))
@@ -402,7 +402,7 @@ public class ArcFurnaceRecipes implements Runnable {
                     .addTo(sArcFurnaceRecipes);
 
         GT_Values.RA.stdBuilder()
-                    .itemInputs(getModItem(Railcraft.modID, "machine.zeta", 1L, 14))
+                    .itemInputs(getModItem(Railcraft.ID, "machine.zeta", 1L, 14))
                     .itemOutputs(
                             GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.NiobiumTitanium, 12L),
                             GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Chrome, 6L))
@@ -413,7 +413,7 @@ public class ArcFurnaceRecipes implements Runnable {
                     .addTo(sArcFurnaceRecipes);
 
         GT_Values.RA.stdBuilder()
-                    .itemInputs(getModItem(Railcraft.modID, "machine.eta", 1L, 0))
+                    .itemInputs(getModItem(Railcraft.ID, "machine.eta", 1L, 0))
                     .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Iridium, 2L))
                     .noFluidInputs()
                     .noFluidOutputs()
@@ -422,7 +422,7 @@ public class ArcFurnaceRecipes implements Runnable {
                     .addTo(sArcFurnaceRecipes);
 
         GT_Values.RA.stdBuilder()
-                    .itemInputs(getModItem(Railcraft.modID, "machine.eta", 1L, 1))
+                    .itemInputs(getModItem(Railcraft.ID, "machine.eta", 1L, 1))
                     .itemOutputs(
                             GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Iridium, 1L),
                             GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Glass, 3))
@@ -433,7 +433,7 @@ public class ArcFurnaceRecipes implements Runnable {
                     .addTo(sArcFurnaceRecipes);
 
         GT_Values.RA.stdBuilder()
-                    .itemInputs(getModItem(Railcraft.modID, "machine.eta", 1L, 2))
+                    .itemInputs(getModItem(Railcraft.ID, "machine.eta", 1L, 2))
                     .itemOutputs(
                             GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Enderium, 12L),
                             GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Iridium, 6L))
@@ -444,7 +444,7 @@ public class ArcFurnaceRecipes implements Runnable {
                     .addTo(sArcFurnaceRecipes);
 
         GT_Values.RA.stdBuilder()
-                    .itemInputs(getModItem(Railcraft.modID, "machine.eta", 1L, 3))
+                    .itemInputs(getModItem(Railcraft.ID, "machine.eta", 1L, 3))
                     .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Osmium, 2L))
                     .noFluidInputs()
                     .noFluidOutputs()
@@ -453,7 +453,7 @@ public class ArcFurnaceRecipes implements Runnable {
                     .addTo(sArcFurnaceRecipes);
 
         GT_Values.RA.stdBuilder()
-                    .itemInputs(getModItem(Railcraft.modID, "machine.eta", 1L, 4))
+                    .itemInputs(getModItem(Railcraft.ID, "machine.eta", 1L, 4))
                     .itemOutputs(
                             GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Osmium, 1L),
                             GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Glass, 3))
@@ -464,7 +464,7 @@ public class ArcFurnaceRecipes implements Runnable {
                     .addTo(sArcFurnaceRecipes);
 
         GT_Values.RA.stdBuilder()
-                    .itemInputs(getModItem(Railcraft.modID, "machine.eta", 1L, 5))
+                    .itemInputs(getModItem(Railcraft.ID, "machine.eta", 1L, 5))
                     .itemOutputs(
                             GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Naquadah, 12L),
                             GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Osmium, 6L))
@@ -475,7 +475,7 @@ public class ArcFurnaceRecipes implements Runnable {
                     .addTo(sArcFurnaceRecipes);
 
         GT_Values.RA.stdBuilder()
-                    .itemInputs(getModItem(Railcraft.modID, "machine.eta", 1L, 6))
+                    .itemInputs(getModItem(Railcraft.ID, "machine.eta", 1L, 6))
                     .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Neutronium, 2L))
                     .noFluidInputs()
                     .noFluidOutputs()
@@ -484,7 +484,7 @@ public class ArcFurnaceRecipes implements Runnable {
                     .addTo(sArcFurnaceRecipes);
 
         GT_Values.RA.stdBuilder()
-                    .itemInputs(getModItem(Railcraft.modID, "machine.eta", 1L, 7))
+                    .itemInputs(getModItem(Railcraft.ID, "machine.eta", 1L, 7))
                     .itemOutputs(
                             GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Neutronium, 1L),
                             GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Glass, 3))
@@ -495,7 +495,7 @@ public class ArcFurnaceRecipes implements Runnable {
                     .addTo(sArcFurnaceRecipes);
 
         GT_Values.RA.stdBuilder()
-                    .itemInputs(getModItem(Railcraft.modID, "machine.eta", 1L, 8))
+                    .itemInputs(getModItem(Railcraft.ID, "machine.eta", 1L, 8))
                     .itemOutputs(
                             GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Neutronium, 12L),
                             GT_OreDictUnificator.get(OrePrefixes.nugget, Materials.Neutronium, 6L))

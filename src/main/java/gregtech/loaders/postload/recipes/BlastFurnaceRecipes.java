@@ -1,6 +1,6 @@
 package gregtech.loaders.postload.recipes;
 
-import static gregtech.api.enums.ModIDs.*;
+import static gregtech.api.enums.Mods.*;
 import static gregtech.api.util.GT_ModHandler.getModItem;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sBlastRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sPrimitiveBlastRecipes;
@@ -663,7 +663,7 @@ public class BlastFurnaceRecipes implements Runnable {
 
             GT_Values.RA.stdBuilder()
                         .itemInputs(
-                                getModItem(BartWorks.modID, "gt.bwMetaGenerateddust", 1L, 78),
+                                getModItem(BartWorks.ID, "gt.bwMetaGenerateddust", 1L, 78),
                                 GT_Utility.getIntegratedCircuit(2))
                         .itemOutputs(MaterialsKevlar.RhodiumChloride.getDust(4))
                         .fluidInputs(Materials.Chlorine.getGas(3000))
@@ -777,7 +777,7 @@ public class BlastFurnaceRecipes implements Runnable {
                         .itemInputs(
                                 ArrayUtils.add(
                                         inputs,
-                                        GT_ModHandler.getModItem(GTPlusPlus.modID, "itemCactusCoke", coalAmount * 2)))
+                                        GT_ModHandler.getModItem(GTPlusPlus.ID, "itemCactusCoke", coalAmount * 2)))
                         .itemOutputs(ArrayUtils.add(outputs, Materials.Ash.getDustTiny(coalAmount * 2)))
                         .noFluidInputs()
                         .noFluidOutputs()
@@ -790,7 +790,7 @@ public class BlastFurnaceRecipes implements Runnable {
                         .itemInputs(
                                 ArrayUtils.add(
                                         inputs,
-                                        GT_ModHandler.getModItem(GTPlusPlus.modID, "itemSugarCoke", (coalAmount * 2))))
+                                        GT_ModHandler.getModItem(GTPlusPlus.ID, "itemSugarCoke", (coalAmount * 2))))
                         .itemOutputs(ArrayUtils.add(outputs, Materials.Ash.getDustTiny(coalAmount * 2)))
                         .noFluidInputs()
                         .noFluidOutputs()

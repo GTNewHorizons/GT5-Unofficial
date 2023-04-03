@@ -1,6 +1,6 @@
 package gregtech.loaders.materialprocessing;
 
-import static gregtech.api.enums.ModIDs.*;
+import static gregtech.api.enums.Mods.*;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;

@@ -1,6 +1,6 @@
 package gregtech.api.util;
 
-import static gregtech.api.enums.ModIDs.GregTech;
+import static gregtech.api.enums.Mods.GregTech;
 
 import java.io.DataInput;
 import java.io.DataInputStream;
@@ -287,7 +287,7 @@ public abstract class GT_ChunkAssociatedData<T extends GT_ChunkAssociatedData.ID
                 w.getSaveHandler()
                  .getWorldDirectory(),
                 w.provider.getSaveFolder());
-        return new File(base, GregTech.modID);
+        return new File(base, GregTech.ID);
     }
 
     public interface IData {

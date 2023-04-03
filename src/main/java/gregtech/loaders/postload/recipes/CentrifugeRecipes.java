@@ -1,7 +1,7 @@
 package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.enums.GT_Values.NI;
-import static gregtech.api.enums.ModIDs.*;
+import static gregtech.api.enums.Mods.*;
 import static gregtech.api.util.GT_ModHandler.getModItem;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
@@ -28,7 +28,7 @@ public class CentrifugeRecipes implements Runnable {
                     .itemOutputs(
                             GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Gold, 1),
                             GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Gold, 1),
-                            getModItem(Thaumcraft.modID, "ItemResource", 2L, 14))
+                            getModItem(Thaumcraft.ID, "ItemResource", 2L, 14))
                     .outputChances(10000, 10000, 9000)
                     .fluidInputs(Materials.Mercury.getFluid(200))
                     .noFluidOutputs()
@@ -362,7 +362,7 @@ public class CentrifugeRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
                     .itemInputs(
-                            getModItem(TwilightForest.modID, "item.meefRaw", 12L, 32767),
+                            getModItem(TwilightForest.ID, "item.meefRaw", 12L, 32767),
                             GT_Utility.getIntegratedCircuit(1))
                     .noItemOutputs()
                     .noFluidInputs()
@@ -373,7 +373,7 @@ public class CentrifugeRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
                     .itemInputs(
-                            getModItem(TwilightForest.modID, "item.meefSteak", 16L, 32767),
+                            getModItem(TwilightForest.ID, "item.meefSteak", 16L, 32767),
                             GT_Utility.getIntegratedCircuit(1))
                     .noItemOutputs()
                     .noFluidInputs()
@@ -384,7 +384,7 @@ public class CentrifugeRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
                     .itemInputs(
-                            getModItem(TwilightForest.modID, "item.venisonRaw", 12L, 32767),
+                            getModItem(TwilightForest.ID, "item.venisonRaw", 12L, 32767),
                             GT_Utility.getIntegratedCircuit(1))
                     .noItemOutputs()
                     .noFluidInputs()
@@ -395,7 +395,7 @@ public class CentrifugeRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
                     .itemInputs(
-                            getModItem(TwilightForest.modID, "item.venisonCooked", 16L, 32767),
+                            getModItem(TwilightForest.ID, "item.venisonCooked", 16L, 32767),
                             GT_Utility.getIntegratedCircuit(1))
                     .noItemOutputs()
                     .noFluidInputs()
@@ -704,7 +704,7 @@ public class CentrifugeRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
                     .itemInputs(
-                            getModItem(AppliedEnergistics2.modID, "item.ItemMultiMaterial", 1L, 45),
+                            getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 45),
                             GT_Utility.getIntegratedCircuit(1))
                     .itemOutputs(
                             GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.BasalticMineralSand, 1),
@@ -722,7 +722,7 @@ public class CentrifugeRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
                     .itemInputs(
-                            getModItem(AppliedEnergistics2.modID, "item.ItemMultiMaterial", 36L, 45),
+                            getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 36L, 45),
                             GT_Utility.getIntegratedCircuit(2))
                     .itemOutputs(
                             GT_OreDictUnificator.get(OrePrefixes.dust, Materials.BasalticMineralSand, 2),
@@ -844,7 +844,7 @@ public class CentrifugeRecipes implements Runnable {
             // air
 
             GT_Values.RA.stdBuilder()
-                        .itemInputs(getModItem(GregTech.modID, "gt.comb", 1L, 144), GT_Utility.getIntegratedCircuit(1))
+                        .itemInputs(getModItem(GregTech.ID, "gt.comb", 1L, 144), GT_Utility.getIntegratedCircuit(1))
                         .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.gem, Materials.InfusedAir, 1))
                         .noFluidInputs()
                         .noFluidOutputs()
@@ -855,7 +855,7 @@ public class CentrifugeRecipes implements Runnable {
             // fire
 
             GT_Values.RA.stdBuilder()
-                        .itemInputs(getModItem(GregTech.modID, "gt.comb", 1L, 146), GT_Utility.getIntegratedCircuit(1))
+                        .itemInputs(getModItem(GregTech.ID, "gt.comb", 1L, 146), GT_Utility.getIntegratedCircuit(1))
                         .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.gem, Materials.InfusedFire, 1))
                         .noFluidInputs()
                         .noFluidOutputs()
@@ -866,7 +866,7 @@ public class CentrifugeRecipes implements Runnable {
             // aqua
 
             GT_Values.RA.stdBuilder()
-                        .itemInputs(getModItem(GregTech.modID, "gt.comb", 1L, 147), GT_Utility.getIntegratedCircuit(1))
+                        .itemInputs(getModItem(GregTech.ID, "gt.comb", 1L, 147), GT_Utility.getIntegratedCircuit(1))
                         .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.gem, Materials.InfusedWater, 1))
                         .noFluidInputs()
                         .noFluidOutputs()
@@ -877,7 +877,7 @@ public class CentrifugeRecipes implements Runnable {
             // terra
 
             GT_Values.RA.stdBuilder()
-                        .itemInputs(getModItem(GregTech.modID, "gt.comb", 1L, 145), GT_Utility.getIntegratedCircuit(1))
+                        .itemInputs(getModItem(GregTech.ID, "gt.comb", 1L, 145), GT_Utility.getIntegratedCircuit(1))
                         .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.gem, Materials.InfusedEarth, 1))
                         .noFluidInputs()
                         .noFluidOutputs()
@@ -888,7 +888,7 @@ public class CentrifugeRecipes implements Runnable {
             // ordo
 
             GT_Values.RA.stdBuilder()
-                        .itemInputs(getModItem(GregTech.modID, "gt.comb", 1L, 148), GT_Utility.getIntegratedCircuit(1))
+                        .itemInputs(getModItem(GregTech.ID, "gt.comb", 1L, 148), GT_Utility.getIntegratedCircuit(1))
                         .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.gem, Materials.InfusedOrder, 1))
                         .noFluidInputs()
                         .noFluidOutputs()
@@ -899,7 +899,7 @@ public class CentrifugeRecipes implements Runnable {
             // perditio
 
             GT_Values.RA.stdBuilder()
-                        .itemInputs(getModItem(GregTech.modID, "gt.comb", 1L, 149), GT_Utility.getIntegratedCircuit(1))
+                        .itemInputs(getModItem(GregTech.ID, "gt.comb", 1L, 149), GT_Utility.getIntegratedCircuit(1))
                         .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.gem, Materials.InfusedEntropy, 1))
                         .noFluidInputs()
                         .noFluidOutputs()
@@ -910,8 +910,8 @@ public class CentrifugeRecipes implements Runnable {
             // Nethershard
 
             GT_Values.RA.stdBuilder()
-                        .itemInputs(getModItem(GregTech.modID, "gt.comb", 1L, 152), GT_Utility.getIntegratedCircuit(1))
-                        .itemOutputs(getModItem(ThaumicTinkerer.modID, "kamiResource", 1L, 6))
+                        .itemInputs(getModItem(GregTech.ID, "gt.comb", 1L, 152), GT_Utility.getIntegratedCircuit(1))
+                        .itemOutputs(getModItem(ThaumicTinkerer.ID, "kamiResource", 1L, 6))
                         .noFluidInputs()
                         .noFluidOutputs()
                         .duration(6 * SECONDS + 8 * TICKS)
@@ -921,8 +921,8 @@ public class CentrifugeRecipes implements Runnable {
             // Endshard
 
             GT_Values.RA.stdBuilder()
-                        .itemInputs(getModItem(GregTech.modID, "gt.comb", 1L, 153), GT_Utility.getIntegratedCircuit(1))
-                        .itemOutputs(getModItem(ThaumicTinkerer.modID, "kamiResource", 1L, 7))
+                        .itemInputs(getModItem(GregTech.ID, "gt.comb", 1L, 153), GT_Utility.getIntegratedCircuit(1))
+                        .itemOutputs(getModItem(ThaumicTinkerer.ID, "kamiResource", 1L, 7))
                         .noFluidInputs()
                         .noFluidOutputs()
                         .duration(6 * SECONDS + 8 * TICKS)
@@ -934,14 +934,14 @@ public class CentrifugeRecipes implements Runnable {
             // Caelestis red
 
             GT_Values.RA.stdBuilder()
-                        .itemInputs(getModItem(GregTech.modID, "gt.comb", 1L, 154), GT_Utility.getIntegratedCircuit(1))
+                        .itemInputs(getModItem(GregTech.ID, "gt.comb", 1L, 154), GT_Utility.getIntegratedCircuit(1))
                         .itemOutputs(
-                                getModItem(ExtraUtilities.modID, "greenscreen", 1L, 2),
-                                getModItem(ExtraUtilities.modID, "greenscreen", 1L, 10),
-                                getModItem(ExtraUtilities.modID, "greenscreen", 1L, 14),
-                                getModItem(ExtraUtilities.modID, "greenscreen", 1L, 1),
-                                getModItem(ExtraUtilities.modID, "greenscreen", 1L, 12),
-                                getModItem(ExtraUtilities.modID, "greenscreen", 1L, 6))
+                                getModItem(ExtraUtilities.ID, "greenscreen", 1L, 2),
+                                getModItem(ExtraUtilities.ID, "greenscreen", 1L, 10),
+                                getModItem(ExtraUtilities.ID, "greenscreen", 1L, 14),
+                                getModItem(ExtraUtilities.ID, "greenscreen", 1L, 1),
+                                getModItem(ExtraUtilities.ID, "greenscreen", 1L, 12),
+                                getModItem(ExtraUtilities.ID, "greenscreen", 1L, 6))
                         .noFluidInputs()
                         .noFluidOutputs()
                         .duration(25 * SECONDS + 12 * TICKS)
@@ -951,13 +951,13 @@ public class CentrifugeRecipes implements Runnable {
             // Caelestis green
 
             GT_Values.RA.stdBuilder()
-                        .itemInputs(getModItem(GregTech.modID, "gt.comb", 1L, 155), GT_Utility.getIntegratedCircuit(1))
+                        .itemInputs(getModItem(GregTech.ID, "gt.comb", 1L, 155), GT_Utility.getIntegratedCircuit(1))
                         .itemOutputs(
-                                getModItem(ExtraUtilities.modID, "greenscreen", 1L, 13),
-                                getModItem(ExtraUtilities.modID, "greenscreen", 1L, 5),
-                                getModItem(ExtraUtilities.modID, "greenscreen", 1L, 4),
-                                getModItem(ExtraUtilities.modID, "greenscreen", 1L, 8),
-                                getModItem(ExtraUtilities.modID, "greenscreen", 1L, 0),
+                                getModItem(ExtraUtilities.ID, "greenscreen", 1L, 13),
+                                getModItem(ExtraUtilities.ID, "greenscreen", 1L, 5),
+                                getModItem(ExtraUtilities.ID, "greenscreen", 1L, 4),
+                                getModItem(ExtraUtilities.ID, "greenscreen", 1L, 8),
+                                getModItem(ExtraUtilities.ID, "greenscreen", 1L, 0),
                                 NI)
                         .noFluidInputs()
                         .noFluidOutputs()
@@ -968,13 +968,13 @@ public class CentrifugeRecipes implements Runnable {
             // Caelestis blue
 
             GT_Values.RA.stdBuilder()
-                        .itemInputs(getModItem(GregTech.modID, "gt.comb", 1L, 156), GT_Utility.getIntegratedCircuit(1))
+                        .itemInputs(getModItem(GregTech.ID, "gt.comb", 1L, 156), GT_Utility.getIntegratedCircuit(1))
                         .itemOutputs(
-                                getModItem(ExtraUtilities.modID, "greenscreen", 1L, 3),
-                                getModItem(ExtraUtilities.modID, "greenscreen", 1L, 9),
-                                getModItem(ExtraUtilities.modID, "greenscreen", 1L, 11),
-                                getModItem(ExtraUtilities.modID, "greenscreen", 1L, 7),
-                                getModItem(ExtraUtilities.modID, "greenscreen", 1L, 15),
+                                getModItem(ExtraUtilities.ID, "greenscreen", 1L, 3),
+                                getModItem(ExtraUtilities.ID, "greenscreen", 1L, 9),
+                                getModItem(ExtraUtilities.ID, "greenscreen", 1L, 11),
+                                getModItem(ExtraUtilities.ID, "greenscreen", 1L, 7),
+                                getModItem(ExtraUtilities.ID, "greenscreen", 1L, 15),
                                 NI)
                         .noFluidInputs()
                         .noFluidOutputs()

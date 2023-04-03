@@ -1,6 +1,6 @@
 package gregtech.loaders.oreprocessing;
 
-import static gregtech.api.enums.ModIDs.GregTech;
+import static gregtech.api.enums.Mods.GregTech;
 
 import net.minecraft.item.ItemStack;
 
@@ -19,10 +19,10 @@ public class ProcessingCircuit implements gregtech.api.interfaces.IOreRecipeRegi
     @Override
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
             ItemStack aStack) {
-        if (gregtech.api.util.GT_OreDictUnificator.isBlacklisted(aStack) && aModName.equals(GregTech.modID)) return;
+        if (gregtech.api.util.GT_OreDictUnificator.isBlacklisted(aStack) && aModName.equals(GregTech.ID)) return;
         switch (aMaterial.mName) {
             case "Good", "Data", "Elite", "Master", "Ultimate", "Superconductor", "Infinite", "Bio" -> {
-                if (!GT_OreDictUnificator.isBlacklisted(aStack) && !aModName.equals(GregTech.modID))
+                if (!GT_OreDictUnificator.isBlacklisted(aStack) && !aModName.equals(GregTech.ID))
                     GT_ModHandler.removeRecipeByOutputDelayed(aStack);
             }
             case "Primitive", "Advanced" -> GT_ModHandler.removeRecipeByOutputDelayed(aStack);
