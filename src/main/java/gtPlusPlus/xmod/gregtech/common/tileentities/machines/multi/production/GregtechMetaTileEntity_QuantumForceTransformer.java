@@ -239,7 +239,7 @@ public class GregtechMetaTileEntity_QuantumForceTransformer
                 .addInfo("Shielding Cores: Focusing Tier (equal to or higher than recipe tier to allow focus)")
                 .addPollutionAmount(getPollutionPerSecond(null)).addSeparator().beginStructureBlock(15, 21, 15, true)
                 .addController("Bottom Center").addCasingInfo("Bulk Production Frame", 80)
-                .addCasingInfo("Quantum Force Conductor", 177).addCasingInfo("Particle Containment Casing", 224)
+                .addCasingInfo("Quantum Force Conductor", 177).addCasingInfo("Force Field Glass", 224)
                 .addCasingInfo("Neutron Pulse Manipulators", 233).addCasingInfo("Neutron Shielding Cores", 142)
                 .addInputBus("Bottom Layer", 4).addInputHatch("Bottom Layer", 4).addOutputHatch("Top Layer", 5)
                 .addOutputBus("Top Layer", 5).addEnergyHatch("Bottom Layer", 4).addMaintenanceHatch("Bottom Layer", 4)
