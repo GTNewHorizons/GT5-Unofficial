@@ -37,6 +37,7 @@ public enum Mods {
     BuildCraftSilicon(Names.BUILD_CRAFT_SILICON),
     BuildCraftTransport(Names.BUILD_CRAFT_TRANSPORT),
     Chisel(Names.CHISEL),
+    COFHCore(Names.C_O_F_H_CORE),
     Computronics(Names.COMPUTRONICS),
     CraftTweaker(Names.CRAFT_TWEAKER),
     CropsPlusPlus(Names.CROPS_PLUS_PLUS),
@@ -96,16 +97,19 @@ public enum Mods {
     OpenSecurity(Names.OPEN_SECURITY),
     PamsHarvestCraft(Names.PAMS_HARVEST_CRAFT),
     PamsHarvestTheNether(Names.PAMS_HARVEST_THE_NETHER),
+    PlayerAPI(Names.PLAYER_API),
     ProjectRedCore(Names.PROJECT_RED_CORE),
     ProjectRedIllumination(Names.PROJECT_RED_ILLUMINATION),
     Railcraft(Names.RAILCRAFT),
     RandomThings(Names.RANDOM_THINGS),
+    RemoteIO(Names.REMOTE_IO),
     SGCraft(Names.S_G_CRAFT),
     SleepingBags(Names.SLEEPING_BAGS),
     SpiceOfLife(Names.SPICE_OF_LIFE),
     StevesCarts2(Names.STEVES_CARTS2),
     SuperSolarPanels(Names.SUPER_SOLAR_PANELS),
     TaintedMagic(Names.TAINTED_MAGIC),
+    TecTech(Names.TECTECH),
     Thaumcraft(Names.THAUMCRAFT),
     ThaumicBases(Names.THAUMIC_BASES),
     ThaumicEnergistics(Names.THAUMIC_ENERGISTICS),
@@ -165,6 +169,7 @@ public enum Mods {
         public static final String BUILD_CRAFT_SILICON = "BuildCraft|Silicon";
         public static final String BUILD_CRAFT_TRANSPORT = "BuildCraft|Transport";
         public static final String CHISEL = "chisel";
+        public static final String C_O_F_H_CORE = "CoFHCore";
         public static final String COMPUTRONICS = "computronics";
         public static final String CRAFT_TWEAKER = "MineTweaker3";
         public static final String CROPS_PLUS_PLUS = "berriespp";
@@ -224,16 +229,19 @@ public enum Mods {
         public static final String OPEN_SECURITY = "opensecurity";
         public static final String PAMS_HARVEST_CRAFT = "harvestcraft";
         public static final String PAMS_HARVEST_THE_NETHER = "harvestthenether";
+        public static final String PLAYER_API = "PlayerAPI";
         public static final String PROJECT_RED_CORE = "ProjRed|Core";
         public static final String PROJECT_RED_ILLUMINATION = "ProjRed|Illumination";
         public static final String RAILCRAFT = "Railcraft";
         public static final String RANDOM_THINGS = "RandomThings";
+        public static final String REMOTE_IO = "RIO";
         public static final String S_G_CRAFT = "SGCraft";
         public static final String SLEEPING_BAGS = "sleepingbag";
         public static final String SPICE_OF_LIFE = "SpiceOfLife";
         public static final String STEVES_CARTS2 = "StevesCarts";
         public static final String SUPER_SOLAR_PANELS = "supersolarpanel";
         public static final String TAINTED_MAGIC = "TaintedMagic";
+        public static final String TECTECH = "tectech";
         public static final String THAUMCRAFT = "Thaumcraft";
         public static final String THAUMIC_BASES = "thaumicbases";
         public static final String THAUMIC_ENERGISTICS = "thaumicenergistics";
