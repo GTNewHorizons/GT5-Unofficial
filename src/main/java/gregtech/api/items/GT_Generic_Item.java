@@ -1,7 +1,6 @@
 package gregtech.api.items;
 
-import static gregtech.api.enums.GT_Values.MOD_ID;
-import static gregtech.api.enums.GT_Values.RES_PATH_ITEM;
+import static gregtech.api.enums.Mods.GregTech;
 
 import java.util.List;
 
@@ -55,7 +54,7 @@ public class GT_Generic_Item extends Item implements IProjectileItem {
                 aWriteToolTipIntoLangFile);
         else mTooltip = null;
         setCreativeTab(GregTech_API.TAB_GREGTECH);
-        GameRegistry.registerItem(this, mName, MOD_ID);
+        GameRegistry.registerItem(this, mName, GregTech.ID);
         BlockDispenser.dispenseBehaviorRegistry.putObject(this, new GT_Item_Dispense());
     }
 
@@ -77,7 +76,7 @@ public class GT_Generic_Item extends Item implements IProjectileItem {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aIconRegister) {
-        mIcon = aIconRegister.registerIcon(RES_PATH_ITEM + (GT_Config.troll ? "troll" : mName));
+        mIcon = aIconRegister.registerIcon(GregTech.getResourcePath(GT_Config.troll ? "troll" : mName));
     }
 
     @Override

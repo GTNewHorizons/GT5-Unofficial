@@ -1,8 +1,8 @@
 package gregtech.common;
 
 import static gregtech.GT_Mod.GT_FML_LOGGER;
-import static gregtech.api.enums.ModIDs.GTPlusPlus;
-import static gregtech.api.enums.ModIDs.Railcraft;
+import static gregtech.api.enums.Mods.GTPlusPlus;
+import static gregtech.api.enums.Mods.Railcraft;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -678,7 +678,7 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
             GT_Recipe.GT_Recipe_Map.sPrimitiveBlastRecipes.addRecipe(
                     true,
                     new ItemStack[] { aInput1, aInput2,
-                            GT_ModHandler.getModItem(GTPlusPlus.modID, "itemCactusCoke", (aCoalAmount * 2L)) },
+                            GT_ModHandler.getModItem(GTPlusPlus.ID, "itemCactusCoke", (aCoalAmount * 2L)) },
                     new ItemStack[] { aOutput1, aOutput2, Materials.Ash.getDustTiny(aCoalAmount * 2) },
                     null,
                     null,
@@ -690,7 +690,7 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
             GT_Recipe.GT_Recipe_Map.sPrimitiveBlastRecipes.addRecipe(
                     true,
                     new ItemStack[] { aInput1, aInput2,
-                            GT_ModHandler.getModItem(GTPlusPlus.modID, "itemSugarCoke", (aCoalAmount * 2L)) },
+                            GT_ModHandler.getModItem(GTPlusPlus.ID, "itemSugarCoke", (aCoalAmount * 2L)) },
                     new ItemStack[] { aOutput1, aOutput2, Materials.Ash.getDustTiny(aCoalAmount * 2) },
                     null,
                     null,

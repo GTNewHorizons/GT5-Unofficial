@@ -1,6 +1,6 @@
 package gregtech.loaders.misc;
 
-import static gregtech.api.enums.ModIDs.Thaumcraft;
+import static gregtech.api.enums.Mods.Thaumcraft;
 
 import java.util.concurrent.ConcurrentHashMap;
 

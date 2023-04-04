@@ -1,6 +1,6 @@
 package gregtech.loaders.postload.recipes;
 
-import static gregtech.api.enums.ModIDs.*;
+import static gregtech.api.enums.Mods.*;
 import static gregtech.api.util.GT_ModHandler.getModItem;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCutterRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
@@ -93,9 +93,9 @@ public class CuttingRecipes implements Runnable {
 
             if (TinkerConstruct.isModLoaded()) {
                 recipeWithClassicFluids(
-                        new ItemStack[] { getModItem(TinkerConstruct.modID, "GlassBlock", 3L, 0) },
-                        new ItemStack[] { getModItem(TinkerConstruct.modID, "GlassBlock", 3L, 0),
-                                getModItem(TinkerConstruct.modID, "GlassPane", 8L, 0) },
+                        new ItemStack[] { getModItem(TinkerConstruct.ID, "GlassBlock", 3L, 0) },
+                        new ItemStack[] { getModItem(TinkerConstruct.ID, "GlassBlock", 3L, 0),
+                                getModItem(TinkerConstruct.ID, "GlassPane", 8L, 0) },
                         2 * SECONDS + 10 * TICKS,
                         8,
                         false);
@@ -199,8 +199,8 @@ public class CuttingRecipes implements Runnable {
                     ItemList.Plank_Pine.get(2L), ItemList.Plank_Plum.get(2L), ItemList.Plank_Maple.get(2L),
                     ItemList.Plank_Citrus.get(2L) };
             for (int i = 0; i < coverIDs.length; i++) {
-                ItemStack slabWood = getModItem(Forestry.modID, "slabs", 1, i);
-                ItemStack slabWoodFireproof = getModItem(Forestry.modID, "slabsFireproof", 1, i);
+                ItemStack slabWood = getModItem(Forestry.ID, "slabs", 1, i);
+                ItemStack slabWoodFireproof = getModItem(Forestry.ID, "slabsFireproof", 1, i);
 
                 recipeWithClassicFluids(
                         new ItemStack[] { slabWood },
@@ -221,16 +221,11 @@ public class CuttingRecipes implements Runnable {
 
         if (BuildCraftTransport.isModLoaded()) {
             recipeWithClassicFluids(
-                    new ItemStack[] { getModItem(
-                            BuildCraftTransport.modID,
-                            "item.buildcraftPipe.pipestructurecobblestone",
-                            1L,
-                            0) },
-                    new ItemStack[] { getModItem(
-                            BuildCraftTransport.modID,
-                            "item.buildcraftPipe.pipestructurecobblestone",
-                            1L,
-                            0), getModItem(BuildCraftTransport.modID, "pipePlug", 8L, 0) },
+                    new ItemStack[] {
+                            getModItem(BuildCraftTransport.ID, "item.buildcraftPipe.pipestructurecobblestone", 1L, 0) },
+                    new ItemStack[] {
+                            getModItem(BuildCraftTransport.ID, "item.buildcraftPipe.pipestructurecobblestone", 1L, 0),
+                            getModItem(BuildCraftTransport.ID, "pipePlug", 8L, 0) },
                     1 * SECONDS + 12 * TICKS,
                     16,
                     false);

@@ -2,8 +2,8 @@ package gregtech.api.enums;
 
 import static gregtech.api.enums.FluidState.GAS;
 import static gregtech.api.enums.GT_Values.M;
-import static gregtech.api.enums.ModIDs.NewHorizonsCoreMod;
-import static gregtech.api.enums.ModIDs.Thaumcraft;
+import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
+import static gregtech.api.enums.Mods.Thaumcraft;
 
 import java.util.*;
 import java.util.stream.Collectors;

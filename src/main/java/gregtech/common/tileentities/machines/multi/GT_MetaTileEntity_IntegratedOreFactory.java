@@ -2,6 +2,9 @@ package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.GT_HatchElement.*;
+import static gregtech.api.enums.Mods.BartWorks;
+import static gregtech.api.enums.Mods.IndustrialCraft2;
+import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gregtech.api.util.GT_StructureUtility.ofFrame;
@@ -145,24 +148,24 @@ public class GT_MetaTileEntity_IntegratedOreFactory
                                                                                                                                         'g',
                                                                                                                                         ofChain(
                                                                                                                                                 ofBlockUnlocalizedName(
-                                                                                                                                                        "IC2",
+                                                                                                                                                        IndustrialCraft2.ID,
                                                                                                                                                         "blockAlloyGlass",
                                                                                                                                                         0,
                                                                                                                                                         true),
                                                                                                                                                 ofBlockUnlocalizedName(
-                                                                                                                                                        "bartworks",
+                                                                                                                                                        BartWorks.ID,
                                                                                                                                                         "BW_GlasBlocks",
                                                                                                                                                         0,
                                                                                                                                                         true),
                                                                                                                                                 ofBlockUnlocalizedName(
-                                                                                                                                                        "bartworks",
+                                                                                                                                                        BartWorks.ID,
                                                                                                                                                         "BW_GlasBlocks2",
                                                                                                                                                         0,
                                                                                                                                                         true),
                                                                                                                                                 // warded
                                                                                                                                                 // glass
                                                                                                                                                 ofBlockUnlocalizedName(
-                                                                                                                                                        "Thaumcraft",
+                                                                                                                                                        Thaumcraft.ID,
                                                                                                                                                         "blockCosmeticOpaque",
                                                                                                                                                         2,
                                                                                                                                                         false)))

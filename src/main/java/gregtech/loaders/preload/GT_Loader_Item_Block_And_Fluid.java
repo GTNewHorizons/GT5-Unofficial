@@ -4,6 +4,12 @@ import static gregtech.api.enums.FluidState.GAS;
 import static gregtech.api.enums.FluidState.LIQUID;
 import static gregtech.api.enums.FluidState.MOLTEN;
 import static gregtech.api.enums.FluidState.SLURRY;
+import static gregtech.api.enums.Mods.AppliedEnergistics2;
+import static gregtech.api.enums.Mods.BloodArsenal;
+import static gregtech.api.enums.Mods.PamsHarvestCraft;
+import static gregtech.api.enums.Mods.Railcraft;
+import static gregtech.api.enums.Mods.Thaumcraft;
+import static gregtech.api.enums.Mods.TwilightForest;
 
 import java.util.Locale;
 
@@ -626,18 +632,18 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
         GT_Log.out.println("GT_Mod: Registering the BaseMetaTileEntity.");
         GameRegistry.registerTileEntity(tBaseMetaTileEntity.getClass(), "BaseMetaTileEntity");
         FMLInterModComms.sendMessage(
-                "appliedenergistics2",
+                AppliedEnergistics2.ID,
                 "whitelist-spatial",
                 tBaseMetaTileEntity.getClass()
                                    .getName());
 
         GT_Log.out.println("GT_Mod: Registering the BaseMetaPipeEntity.");
         GameRegistry.registerTileEntity(BaseMetaPipeEntity.class, "BaseMetaPipeEntity");
-        FMLInterModComms.sendMessage("appliedenergistics2", "whitelist-spatial", BaseMetaPipeEntity.class.getName());
+        FMLInterModComms.sendMessage(AppliedEnergistics2.ID, "whitelist-spatial", BaseMetaPipeEntity.class.getName());
 
         GT_Log.out.println("GT_Mod: Registering the Ore TileEntity.");
         GameRegistry.registerTileEntity(GT_TileEntity_Ores.class, "GT_TileEntity_Ores");
-        FMLInterModComms.sendMessage("appliedenergistics2", "whitelist-spatial", GT_TileEntity_Ores.class.getName());
+        FMLInterModComms.sendMessage(AppliedEnergistics2.ID, "whitelist-spatial", GT_TileEntity_Ores.class.getName());
         if (!GregTech_API.mIC2Classic) {
             GT_Log.out.println("GT_Mod: Registering Fluids.");
             Materials.ConstructionFoam.mFluid = GT_Utility.getFluidForFilledItem(
@@ -2075,80 +2081,80 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
         GT_OreDictUnificator.set(
                 OrePrefixes.ingot,
                 Materials.FierySteel,
-                GT_ModHandler.getModItem("TwilightForest", "item.fieryIngot", 1L, 0));
+                GT_ModHandler.getModItem(TwilightForest.ID, "item.fieryIngot", 1L, 0));
         GT_OreDictUnificator.set(
                 OrePrefixes.ingot,
                 Materials.Knightmetal,
-                GT_ModHandler.getModItem("TwilightForest", "item.knightMetal", 1L, 0));
+                GT_ModHandler.getModItem(TwilightForest.ID, "item.knightMetal", 1L, 0));
         GT_OreDictUnificator.set(
                 OrePrefixes.ingot,
                 Materials.Steeleaf,
-                GT_ModHandler.getModItem("TwilightForest", "item.steeleafIngot", 1L, 0));
+                GT_ModHandler.getModItem(TwilightForest.ID, "item.steeleafIngot", 1L, 0));
         GT_OreDictUnificator.set(
                 OrePrefixes.ingot,
                 Materials.IronWood,
-                GT_ModHandler.getModItem("TwilightForest", "item.ironwoodIngot", 1L, 0));
+                GT_ModHandler.getModItem(TwilightForest.ID, "item.ironwoodIngot", 1L, 0));
         GT_OreDictUnificator.set(
                 OrePrefixes.gem,
                 Materials.InfusedAir,
-                GT_ModHandler.getModItem("Thaumcraft", "ItemShard", 1L, 0));
+                GT_ModHandler.getModItem(Thaumcraft.ID, "ItemShard", 1L, 0));
         GT_OreDictUnificator.set(
                 OrePrefixes.gem,
                 Materials.InfusedFire,
-                GT_ModHandler.getModItem("Thaumcraft", "ItemShard", 1L, 1));
+                GT_ModHandler.getModItem(Thaumcraft.ID, "ItemShard", 1L, 1));
         GT_OreDictUnificator.set(
                 OrePrefixes.gem,
                 Materials.InfusedWater,
-                GT_ModHandler.getModItem("Thaumcraft", "ItemShard", 1L, 2));
+                GT_ModHandler.getModItem(Thaumcraft.ID, "ItemShard", 1L, 2));
         GT_OreDictUnificator.set(
                 OrePrefixes.gem,
                 Materials.InfusedEarth,
-                GT_ModHandler.getModItem("Thaumcraft", "ItemShard", 1L, 3));
+                GT_ModHandler.getModItem(Thaumcraft.ID, "ItemShard", 1L, 3));
         GT_OreDictUnificator.set(
                 OrePrefixes.gem,
                 Materials.InfusedOrder,
-                GT_ModHandler.getModItem("Thaumcraft", "ItemShard", 1L, 4));
+                GT_ModHandler.getModItem(Thaumcraft.ID, "ItemShard", 1L, 4));
         GT_OreDictUnificator.set(
                 OrePrefixes.gem,
                 Materials.InfusedEntropy,
-                GT_ModHandler.getModItem("Thaumcraft", "ItemShard", 1L, 5));
+                GT_ModHandler.getModItem(Thaumcraft.ID, "ItemShard", 1L, 5));
         GT_OreDictUnificator.set(
                 OrePrefixes.nugget,
                 Materials.Mercury,
-                GT_ModHandler.getModItem("Thaumcraft", "ItemNugget", 1L, 5));
+                GT_ModHandler.getModItem(Thaumcraft.ID, "ItemNugget", 1L, 5));
         GT_OreDictUnificator.set(
                 OrePrefixes.nugget,
                 Materials.Thaumium,
-                GT_ModHandler.getModItem("Thaumcraft", "ItemNugget", 1L, 6));
+                GT_ModHandler.getModItem(Thaumcraft.ID, "ItemNugget", 1L, 6));
         GT_OreDictUnificator.set(
                 OrePrefixes.ingot,
                 Materials.Thaumium,
-                GT_ModHandler.getModItem("Thaumcraft", "ItemResource", 1L, 2));
+                GT_ModHandler.getModItem(Thaumcraft.ID, "ItemResource", 1L, 2));
         GT_OreDictUnificator.set(
                 OrePrefixes.gem,
                 Materials.Mercury,
-                GT_ModHandler.getModItem("Thaumcraft", "ItemResource", 1L, 3));
+                GT_ModHandler.getModItem(Thaumcraft.ID, "ItemResource", 1L, 3));
         GT_OreDictUnificator.set(
                 OrePrefixes.gem,
                 Materials.Amber,
-                GT_ModHandler.getModItem("Thaumcraft", "ItemResource", 1L, 6));
+                GT_ModHandler.getModItem(Thaumcraft.ID, "ItemResource", 1L, 6));
         GT_OreDictUnificator.set(
                 OrePrefixes.gem,
                 Materials.Firestone,
-                GT_ModHandler.getModItem("Railcraft", "firestone.raw", 1L));
+                GT_ModHandler.getModItem(Railcraft.ID, "firestone.raw", 1L));
 
         GT_OreDictUnificator.set(
                 OrePrefixes.nugget,
                 Materials.Void,
-                GT_ModHandler.getModItem("Thaumcraft", "ItemNugget", 1L, 7));
+                GT_ModHandler.getModItem(Thaumcraft.ID, "ItemNugget", 1L, 7));
         GT_OreDictUnificator.set(
                 OrePrefixes.ingot,
                 Materials.Void,
-                GT_ModHandler.getModItem("Thaumcraft", "ItemResource", 1L, 16));
+                GT_ModHandler.getModItem(Thaumcraft.ID, "ItemResource", 1L, 16));
         GT_OreDictUnificator.set(
                 OrePrefixes.ingot,
                 Materials.BloodInfusedIron,
-                GT_ModHandler.getModItem("BloodArsenal", "blood_infused_iron", 1L, 0));
+                GT_ModHandler.getModItem(BloodArsenal.ID, "blood_infused_iron", 1L, 0));
 
         if (GregTech_API.sUnification.get(
                 ConfigCategories.specialunificationtargets + "." + "railcraft",
@@ -2157,12 +2163,12 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             GT_OreDictUnificator.set(
                     OrePrefixes.plate,
                     Materials.Iron,
-                    GT_ModHandler.getModItem("Railcraft", "part.plate", 1L, 0));
+                    GT_ModHandler.getModItem(Railcraft.ID, "part.plate", 1L, 0));
         } else {
             GT_OreDictUnificator.set(
                     OrePrefixes.plate,
                     Materials.Iron,
-                    GT_ModHandler.getModItem("Railcraft", "part.plate", 1L, 0),
+                    GT_ModHandler.getModItem(Railcraft.ID, "part.plate", 1L, 0),
                     false,
                     false);
         }
@@ -2174,12 +2180,12 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             GT_OreDictUnificator.set(
                     OrePrefixes.plate,
                     Materials.Steel,
-                    GT_ModHandler.getModItem("Railcraft", "part.plate", 1L, 1));
+                    GT_ModHandler.getModItem(Railcraft.ID, "part.plate", 1L, 1));
         } else {
             GT_OreDictUnificator.set(
                     OrePrefixes.plate,
                     Materials.Steel,
-                    GT_ModHandler.getModItem("Railcraft", "part.plate", 1L, 1),
+                    GT_ModHandler.getModItem(Railcraft.ID, "part.plate", 1L, 1),
                     false,
                     false);
         }
@@ -2191,12 +2197,12 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             GT_OreDictUnificator.set(
                     OrePrefixes.plate,
                     Materials.TinAlloy,
-                    GT_ModHandler.getModItem("Railcraft", "part.plate", 1L, 2));
+                    GT_ModHandler.getModItem(Railcraft.ID, "part.plate", 1L, 2));
         } else {
             GT_OreDictUnificator.set(
                     OrePrefixes.plate,
                     Materials.TinAlloy,
-                    GT_ModHandler.getModItem("Railcraft", "part.plate", 1L, 2),
+                    GT_ModHandler.getModItem(Railcraft.ID, "part.plate", 1L, 2),
                     false,
                     false);
         }
@@ -2208,12 +2214,12 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             GT_OreDictUnificator.set(
                     OrePrefixes.plate,
                     Materials.Copper,
-                    GT_ModHandler.getModItem("Railcraft", "part.plate", 1L, 3));
+                    GT_ModHandler.getModItem(Railcraft.ID, "part.plate", 1L, 3));
         } else {
             GT_OreDictUnificator.set(
                     OrePrefixes.plate,
                     Materials.Copper,
-                    GT_ModHandler.getModItem("Railcraft", "part.plate", 1L, 3),
+                    GT_ModHandler.getModItem(Railcraft.ID, "part.plate", 1L, 3),
                     false,
                     false);
         }
@@ -2221,7 +2227,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
         GT_OreDictUnificator.set(
                 OrePrefixes.dust,
                 Materials.Cocoa,
-                GT_ModHandler.getModItem("harvestcraft", "cocoapowderItem", 1L, 0));
+                GT_ModHandler.getModItem(PamsHarvestCraft.ID, "cocoapowderItem", 1L, 0));
         GT_OreDictUnificator.set(OrePrefixes.dust, Materials.Coffee, ItemList.IC2_CoffeePowder.get(1L));
 
         GregTech_API.registerMachineBlock(

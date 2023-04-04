@@ -1,7 +1,7 @@
 package gregtech.loaders.postload.recipes;
 
-import static gregtech.api.enums.ModIDs.Forestry;
-import static gregtech.api.enums.ModIDs.NotEnoughItems;
+import static gregtech.api.enums.Mods.Forestry;
+import static gregtech.api.enums.Mods.NotEnoughItems;
 
 import net.minecraft.item.ItemStack;
 

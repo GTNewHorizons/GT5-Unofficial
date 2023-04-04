@@ -1,6 +1,6 @@
 package gregtech.loaders.postload.recipes;
 
-import static gregtech.api.enums.ModIDs.GTPlusPlus;
+import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sVacuumRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.*;
 

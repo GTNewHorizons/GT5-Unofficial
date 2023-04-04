@@ -1,6 +1,6 @@
 package gregtech.loaders.misc;
 
-import static gregtech.api.enums.ModIDs.Forestry;
+import static gregtech.api.enums.Mods.Forestry;
 
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;

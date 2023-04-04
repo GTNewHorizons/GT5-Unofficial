@@ -4,7 +4,8 @@ import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.GT_Values.VN;
 import static gregtech.api.enums.GT_Values.W;
 import static gregtech.api.enums.GT_Values.ticksBetweenSounds;
-import static gregtech.api.enums.ModIDs.BartWorks;
+import static gregtech.api.enums.Mods.BartWorks;
+import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
 import java.util.Locale;
@@ -643,7 +644,7 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
 
     public GT_MetaTileEntity_BasicMachine_GT_Recipe setProgressBarTextureName(String name, UITexture fallback) {
         return setProgressBarTexture(
-                new FallbackableUITexture(UITexture.fullImage("gregtech", "gui/progressbar/" + name), fallback));
+                new FallbackableUITexture(UITexture.fullImage(GregTech.ID, "gui/progressbar/" + name), fallback));
     }
 
     public GT_MetaTileEntity_BasicMachine_GT_Recipe setProgressBarTextureName(String name) {

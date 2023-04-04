@@ -1,7 +1,7 @@
 package gregtech.loaders.postload.recipes;
 
-import static gregtech.api.enums.ModIDs.BuildCraftTransport;
-import static gregtech.api.enums.ModIDs.Railcraft;
+import static gregtech.api.enums.Mods.BuildCraftTransport;
+import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.util.GT_ModHandler.getModItem;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sChemicalBathRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
@@ -240,7 +240,7 @@ public class ChemicalBathRecipes implements Runnable {
         for (int j = 0; j < Dyes.dyeRed.getSizeOfFluidList(); j++) {
             GT_Values.RA.stdBuilder()
                         .itemInputs(GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.RedAlloy, 1))
-                        .itemOutputs(getModItem(BuildCraftTransport.modID, "pipeWire", 4L, 0))
+                        .itemOutputs(getModItem(BuildCraftTransport.ID, "pipeWire", 4L, 0))
                         .fluidInputs(Dyes.dyeRed.getFluidDye(j, 72))
                         .noFluidOutputs()
                         .duration(1 * SECONDS + 12 * TICKS)
@@ -250,7 +250,7 @@ public class ChemicalBathRecipes implements Runnable {
         for (int j = 0; j < Dyes.dyeBlue.getSizeOfFluidList(); j++) {
             GT_Values.RA.stdBuilder()
                         .itemInputs(GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.RedAlloy, 1))
-                        .itemOutputs(getModItem(BuildCraftTransport.modID, "pipeWire", 4L, 1))
+                        .itemOutputs(getModItem(BuildCraftTransport.ID, "pipeWire", 4L, 1))
                         .fluidInputs(Dyes.dyeBlue.getFluidDye(j, 72))
                         .noFluidOutputs()
                         .duration(1 * SECONDS + 12 * TICKS)
@@ -260,7 +260,7 @@ public class ChemicalBathRecipes implements Runnable {
         for (int j = 0; j < Dyes.dyeGreen.getSizeOfFluidList(); j++) {
             GT_Values.RA.stdBuilder()
                         .itemInputs(GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.RedAlloy, 1))
-                        .itemOutputs(getModItem(BuildCraftTransport.modID, "pipeWire", 4L, 2))
+                        .itemOutputs(getModItem(BuildCraftTransport.ID, "pipeWire", 4L, 2))
                         .fluidInputs(Dyes.dyeGreen.getFluidDye(j, 72))
                         .noFluidOutputs()
                         .duration(1 * SECONDS + 12 * TICKS)
@@ -270,7 +270,7 @@ public class ChemicalBathRecipes implements Runnable {
         for (int j = 0; j < Dyes.dyeYellow.getSizeOfFluidList(); j++) {
             GT_Values.RA.stdBuilder()
                         .itemInputs(GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.RedAlloy, 1))
-                        .itemOutputs(getModItem(BuildCraftTransport.modID, "pipeWire", 4L, 3))
+                        .itemOutputs(getModItem(BuildCraftTransport.ID, "pipeWire", 4L, 3))
                         .fluidInputs(Dyes.dyeYellow.getFluidDye(j, 72))
                         .noFluidOutputs()
                         .duration(1 * SECONDS + 12 * TICKS)
@@ -369,7 +369,7 @@ public class ChemicalBathRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
                     .itemInputs(GT_OreDictUnificator.get(OrePrefixes.log, Materials.Wood, 1))
-                    .itemOutputs(getModItem(Railcraft.modID, "cube", 1, 8))
+                    .itemOutputs(getModItem(Railcraft.ID, "cube", 1, 8))
                     .fluidInputs(Materials.Creosote.getFluid(100))
                     .noFluidOutputs()
                     .duration(5 * SECONDS)

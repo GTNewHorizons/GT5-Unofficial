@@ -2,7 +2,7 @@ package gregtech.common.tileentities.generators;
 
 import static gregtech.api.enums.ConfigCategories.machineconfig;
 import static gregtech.api.enums.GT_Values.V;
-import static gregtech.api.enums.ModIDs.Thaumcraft;
+import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 import static net.minecraft.util.EnumChatFormatting.GRAY;

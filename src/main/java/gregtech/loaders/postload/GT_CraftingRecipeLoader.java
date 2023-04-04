@@ -1,7 +1,7 @@
 package gregtech.loaders.postload;
 
-import static gregtech.api.enums.ModIDs.*;
-import static gregtech.api.enums.ModIDs.GraviSuite;
+import static gregtech.api.enums.Mods.*;
+import static gregtech.api.enums.Mods.GraviSuite;
 import static gregtech.api.util.GT_ModHandler.getModItem;
 
 import java.util.Arrays;
@@ -152,18 +152,18 @@ public class GT_CraftingRecipeLoader implements Runnable {
         GT_ModHandler.removeRecipeByOutputDelayed(GT_ModHandler.getIC2Item("dynamite", 1L));
         GT_ModHandler.removeRecipeByOutputDelayed(GT_ModHandler.getIC2Item("industrialTnt", 1L));
 
-        GT_ModHandler.removeRecipeByOutputDelayed(GT_ModHandler.getModItem("Forestry", "stamps", 1L, 0));
-        GT_ModHandler.removeRecipeByOutputDelayed(GT_ModHandler.getModItem("Forestry", "stamps", 1L, 1));
-        GT_ModHandler.removeRecipeByOutputDelayed(GT_ModHandler.getModItem("Forestry", "stamps", 1L, 2));
-        GT_ModHandler.removeRecipeByOutputDelayed(GT_ModHandler.getModItem("Forestry", "stamps", 1L, 3));
-        GT_ModHandler.removeRecipeByOutputDelayed(GT_ModHandler.getModItem("Forestry", "stamps", 1L, 4));
-        GT_ModHandler.removeRecipeByOutputDelayed(GT_ModHandler.getModItem("Forestry", "stamps", 1L, 5));
-        GT_ModHandler.removeRecipeByOutputDelayed(GT_ModHandler.getModItem("Forestry", "stamps", 1L, 6));
+        GT_ModHandler.removeRecipeByOutputDelayed(GT_ModHandler.getModItem(Forestry.ID, "stamps", 1L, 0));
+        GT_ModHandler.removeRecipeByOutputDelayed(GT_ModHandler.getModItem(Forestry.ID, "stamps", 1L, 1));
+        GT_ModHandler.removeRecipeByOutputDelayed(GT_ModHandler.getModItem(Forestry.ID, "stamps", 1L, 2));
+        GT_ModHandler.removeRecipeByOutputDelayed(GT_ModHandler.getModItem(Forestry.ID, "stamps", 1L, 3));
+        GT_ModHandler.removeRecipeByOutputDelayed(GT_ModHandler.getModItem(Forestry.ID, "stamps", 1L, 4));
+        GT_ModHandler.removeRecipeByOutputDelayed(GT_ModHandler.getModItem(Forestry.ID, "stamps", 1L, 5));
+        GT_ModHandler.removeRecipeByOutputDelayed(GT_ModHandler.getModItem(Forestry.ID, "stamps", 1L, 6));
 
-        GT_ModHandler.removeRecipeByOutputDelayed(GT_ModHandler.getModItem("Forestry", "engine", 1L, 0));
-        GT_ModHandler.removeRecipeByOutputDelayed(GT_ModHandler.getModItem("Forestry", "engine", 1L, 1));
-        GT_ModHandler.removeRecipeByOutputDelayed(GT_ModHandler.getModItem("Forestry", "engine", 1L, 2));
-        GT_ModHandler.removeRecipeByOutputDelayed(GT_ModHandler.getModItem("Forestry", "engine", 1L, 4));
+        GT_ModHandler.removeRecipeByOutputDelayed(GT_ModHandler.getModItem(Forestry.ID, "engine", 1L, 0));
+        GT_ModHandler.removeRecipeByOutputDelayed(GT_ModHandler.getModItem(Forestry.ID, "engine", 1L, 1));
+        GT_ModHandler.removeRecipeByOutputDelayed(GT_ModHandler.getModItem(Forestry.ID, "engine", 1L, 2));
+        GT_ModHandler.removeRecipeByOutputDelayed(GT_ModHandler.getModItem(Forestry.ID, "engine", 1L, 4));
 
         ItemStack tStack = GT_ModHandler.removeRecipe(
                 new ItemStack(Blocks.planks, 1, 0),
@@ -2119,37 +2119,37 @@ public class GT_CraftingRecipeLoader implements Runnable {
 
         if (GraviSuite.isModLoaded()) {
             GT_ModHandler.removeRecipeByOutputDelayed(
-                    GT_ModHandler.getModItem(GraviSuite.modID, "advNanoChestPlate", 1, GT_Values.W));
+                    GT_ModHandler.getModItem(GraviSuite.ID, "advNanoChestPlate", 1, GT_Values.W));
             GT_ModHandler.addCraftingRecipe(
-                    GT_ModHandler.getModItem(GraviSuite.modID, "advNanoChestPlate", 1, GT_Values.W),
+                    GT_ModHandler.getModItem(GraviSuite.ID, "advNanoChestPlate", 1, GT_Values.W),
                     bits_no_remove_buffered,
                     new Object[] { "CJC", "TNT", "WPW", 'C', OrePrefixes.plateAlloy.get(Materials.Advanced), 'T',
                             OrePrefixes.plate.get(Materials.TungstenSteel), 'J',
-                            GT_ModHandler.getModItem(GraviSuite.modID, "advJetpack", 1, GT_Values.W), 'N',
-                            GT_ModHandler.getModItem("IC2", "itemArmorNanoChestplate", 1, GT_Values.W), 'W',
-                            OrePrefixes.wireGt12.get(Materials.Platinum), 'P',
+                            GT_ModHandler.getModItem(GraviSuite.ID, "advJetpack", 1, GT_Values.W), 'N',
+                            GT_ModHandler.getModItem(IndustrialCraft2.ID, "itemArmorNanoChestplate", 1, GT_Values.W),
+                            'W', OrePrefixes.wireGt12.get(Materials.Platinum), 'P',
                             OrePrefixes.circuit.get(Materials.Elite) });
 
             GT_ModHandler.removeRecipeByOutputDelayed(
-                    GT_ModHandler.getModItem(GraviSuite.modID, "advLappack", 1, GT_Values.W));
+                    GT_ModHandler.getModItem(GraviSuite.ID, "advLappack", 1, GT_Values.W));
             GT_ModHandler.addCraftingRecipe(
-                    GT_ModHandler.getModItem(GraviSuite.modID, "advLappack", 1, GT_Values.W),
+                    GT_ModHandler.getModItem(GraviSuite.ID, "advLappack", 1, GT_Values.W),
                     bits_no_remove_buffered,
                     new Object[] { "CEC", "EJE", "WPW", 'C', OrePrefixes.plateAlloy.get(Materials.Carbon), 'J',
-                            GT_ModHandler.getModItem("IC2", "itemArmorEnergypack", 1L, GT_Values.W), 'E',
-                            GT_ModHandler.getModItem("IC2", "itemBatCrystal", 1L, GT_Values.W), 'W',
+                            GT_ModHandler.getModItem(IndustrialCraft2.ID, "itemArmorEnergypack", 1L, GT_Values.W), 'E',
+                            GT_ModHandler.getModItem(IndustrialCraft2.ID, "itemBatCrystal", 1L, GT_Values.W), 'W',
                             OrePrefixes.wireGt04.get(Materials.Platinum), 'P',
                             OrePrefixes.circuit.get(Materials.Data) });
 
             GT_ModHandler.removeRecipeByOutputDelayed(
-                    GT_ModHandler.getModItem(GraviSuite.modID, "advJetpack", 1, GT_Values.W));
+                    GT_ModHandler.getModItem(GraviSuite.ID, "advJetpack", 1, GT_Values.W));
             GT_ModHandler.addCraftingRecipe(
-                    GT_ModHandler.getModItem(GraviSuite.modID, "advJetpack", 1, GT_Values.W),
+                    GT_ModHandler.getModItem(GraviSuite.ID, "advJetpack", 1, GT_Values.W),
                     bits_no_remove_buffered,
                     new Object[] { "CJC", "EXE", "YZY", 'C', OrePrefixes.plateAlloy.get(Materials.Carbon), 'J',
-                            GT_ModHandler.getModItem("IC2", "itemArmorJetpackElectric", 1, GT_Values.W), 'E',
-                            OrePrefixes.plate.get(Materials.Titanium), 'X',
-                            GT_ModHandler.getModItem("IC2", "itemArmorAlloyChestplate", 1L), 'Z',
+                            GT_ModHandler.getModItem(IndustrialCraft2.ID, "itemArmorJetpackElectric", 1, GT_Values.W),
+                            'E', OrePrefixes.plate.get(Materials.Titanium), 'X',
+                            GT_ModHandler.getModItem(IndustrialCraft2.ID, "itemArmorAlloyChestplate", 1L), 'Z',
                             OrePrefixes.circuit.get(Materials.Data), 'Y',
                             OrePrefixes.wireGt02.get(Materials.Platinum) });
         }
@@ -2174,7 +2174,7 @@ public class GT_CraftingRecipeLoader implements Runnable {
                     ItemList.Casing_Advanced_Rhodium_Palladium.get(1L),
                     bits,
                     new Object[] { "PhP", "PFP", aTextPlateWrench, 'P',
-                            GT_ModHandler.getModItem(BartWorks.modID, "gt.bwMetaGeneratedplate", 1L, 88), 'F',
+                            GT_ModHandler.getModItem(BartWorks.ID, "gt.bwMetaGeneratedplate", 1L, 88), 'F',
                             OrePrefixes.frameGt.get(Materials.Chrome) });
         }
 
@@ -2189,8 +2189,8 @@ public class GT_CraftingRecipeLoader implements Runnable {
                     ItemList.Plank_Pine.get(2L), ItemList.Plank_Plum.get(2L), ItemList.Plank_Maple.get(2L),
                     ItemList.Plank_Citrus.get(2L) };
             for (int i = 0; i < coverIDs.length; i++) {
-                ItemStack slabWood = getModItem(Forestry.modID, "slabs", 1, i);
-                ItemStack slabWoodFireproof = getModItem(Forestry.modID, "slabsFireproof", 1, i);
+                ItemStack slabWood = getModItem(Forestry.ID, "slabs", 1, i);
+                ItemStack slabWoodFireproof = getModItem(Forestry.ID, "slabsFireproof", 1, i);
 
                 GT_ModHandler.addCraftingRecipe(
                         coverIDs[i],

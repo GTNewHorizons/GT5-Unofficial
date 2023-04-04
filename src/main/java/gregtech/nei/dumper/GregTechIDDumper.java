@@ -1,6 +1,6 @@
 package gregtech.nei.dumper;
 
-import static gregtech.api.enums.ModIDs.NewHorizonsCoreMod;
+import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ChatStyle;

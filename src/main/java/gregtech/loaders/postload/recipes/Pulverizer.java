@@ -1,6 +1,6 @@
 package gregtech.loaders.postload.recipes;
 
-import static gregtech.api.enums.ModIDs.*;
+import static gregtech.api.enums.Mods.*;
 import static gregtech.api.util.GT_ModHandler.getModItem;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sMaceratorRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.*;
@@ -70,7 +70,7 @@ public class Pulverizer implements Runnable {
                     .addTo(sMaceratorRecipes);
 
         GT_Values.RA.stdBuilder()
-                    .itemInputs(getModItem(Thaumcraft.modID, "ItemResource", 1, 18))
+                    .itemInputs(getModItem(Thaumcraft.ID, "ItemResource", 1, 18))
                     .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Gold, 1))
                     .noFluidInputs()
                     .noFluidOutputs()
@@ -224,7 +224,7 @@ public class Pulverizer implements Runnable {
             // Iron
 
             GT_Values.RA.stdBuilder()
-                        .itemInputs(getModItem(Railcraft.modID, "machine.beta", 1L, 0))
+                        .itemInputs(getModItem(Railcraft.ID, "machine.beta", 1L, 0))
                         .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 2))
                         .noFluidInputs()
                         .noFluidOutputs()
@@ -233,7 +233,7 @@ public class Pulverizer implements Runnable {
                         .addTo(sMaceratorRecipes);
 
             GT_Values.RA.stdBuilder()
-                        .itemInputs(getModItem(Railcraft.modID, "machine.beta", 1L, 1))
+                        .itemInputs(getModItem(Railcraft.ID, "machine.beta", 1L, 1))
                         .itemOutputs(
                                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 1),
                                 GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Glass, 3))
@@ -244,7 +244,7 @@ public class Pulverizer implements Runnable {
                         .addTo(sMaceratorRecipes);
 
             GT_Values.RA.stdBuilder()
-                        .itemInputs(getModItem(Railcraft.modID, "machine.beta", 1L, 2))
+                        .itemInputs(getModItem(Railcraft.ID, "machine.beta", 1L, 2))
                         .itemOutputs(
                                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Bronze, 12),
                                 GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Iron, 3))
@@ -257,7 +257,7 @@ public class Pulverizer implements Runnable {
             // Steel
 
             GT_Values.RA.stdBuilder()
-                        .itemInputs(getModItem(Railcraft.modID, "machine.beta", 1L, 13))
+                        .itemInputs(getModItem(Railcraft.ID, "machine.beta", 1L, 13))
                         .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Steel, 2))
                         .noFluidInputs()
                         .noFluidOutputs()
@@ -266,7 +266,7 @@ public class Pulverizer implements Runnable {
                         .addTo(sMaceratorRecipes);
 
             GT_Values.RA.stdBuilder()
-                        .itemInputs(getModItem(Railcraft.modID, "machine.beta", 1L, 14))
+                        .itemInputs(getModItem(Railcraft.ID, "machine.beta", 1L, 14))
                         .itemOutputs(
                                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Steel, 1),
                                 GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Glass, 3))
@@ -277,7 +277,7 @@ public class Pulverizer implements Runnable {
                         .addTo(sMaceratorRecipes);
 
             GT_Values.RA.stdBuilder()
-                        .itemInputs(getModItem(Railcraft.modID, "machine.beta", 1L, 15))
+                        .itemInputs(getModItem(Railcraft.ID, "machine.beta", 1L, 15))
                         .itemOutputs(
                                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Steel, 12),
                                 GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Steel, 3))
@@ -290,7 +290,7 @@ public class Pulverizer implements Runnable {
             // Aluminium
 
             GT_Values.RA.stdBuilder()
-                        .itemInputs(getModItem(Railcraft.modID, "machine.zeta", 1L, 0))
+                        .itemInputs(getModItem(Railcraft.ID, "machine.zeta", 1L, 0))
                         .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Aluminium, 2))
                         .noFluidInputs()
                         .noFluidOutputs()
@@ -299,7 +299,7 @@ public class Pulverizer implements Runnable {
                         .addTo(sMaceratorRecipes);
 
             GT_Values.RA.stdBuilder()
-                        .itemInputs(getModItem(Railcraft.modID, "machine.zeta", 1L, 1))
+                        .itemInputs(getModItem(Railcraft.ID, "machine.zeta", 1L, 1))
                         .itemOutputs(
                                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Aluminium, 1),
                                 GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Glass, 3))
@@ -310,7 +310,7 @@ public class Pulverizer implements Runnable {
                         .addTo(sMaceratorRecipes);
 
             GT_Values.RA.stdBuilder()
-                        .itemInputs(getModItem(Railcraft.modID, "machine.zeta", 1L, 2))
+                        .itemInputs(getModItem(Railcraft.ID, "machine.zeta", 1L, 2))
                         .itemOutputs(
                                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Plastic, 12),
                                 GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Aluminium, 3))
@@ -323,7 +323,7 @@ public class Pulverizer implements Runnable {
             // Stainless Steel
 
             GT_Values.RA.stdBuilder()
-                        .itemInputs(getModItem(Railcraft.modID, "machine.zeta", 1L, 3))
+                        .itemInputs(getModItem(Railcraft.ID, "machine.zeta", 1L, 3))
                         .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.StainlessSteel, 2))
                         .noFluidInputs()
                         .noFluidOutputs()
@@ -332,7 +332,7 @@ public class Pulverizer implements Runnable {
                         .addTo(sMaceratorRecipes);
 
             GT_Values.RA.stdBuilder()
-                        .itemInputs(getModItem(Railcraft.modID, "machine.zeta", 1L, 4))
+                        .itemInputs(getModItem(Railcraft.ID, "machine.zeta", 1L, 4))
                         .itemOutputs(
                                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.StainlessSteel, 1),
                                 GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Glass, 3))
@@ -343,7 +343,7 @@ public class Pulverizer implements Runnable {
                         .addTo(sMaceratorRecipes);
 
             GT_Values.RA.stdBuilder()
-                        .itemInputs(getModItem(Railcraft.modID, "machine.zeta", 1L, 5))
+                        .itemInputs(getModItem(Railcraft.ID, "machine.zeta", 1L, 5))
                         .itemOutputs(
                                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.StainlessSteel, 12),
                                 GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.StainlessSteel, 3))
@@ -356,7 +356,7 @@ public class Pulverizer implements Runnable {
             // Titanium
 
             GT_Values.RA.stdBuilder()
-                        .itemInputs(getModItem(Railcraft.modID, "machine.zeta", 1L, 6))
+                        .itemInputs(getModItem(Railcraft.ID, "machine.zeta", 1L, 6))
                         .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Titanium, 2))
                         .noFluidInputs()
                         .noFluidOutputs()
@@ -365,7 +365,7 @@ public class Pulverizer implements Runnable {
                         .addTo(sMaceratorRecipes);
 
             GT_Values.RA.stdBuilder()
-                        .itemInputs(getModItem(Railcraft.modID, "machine.zeta", 1L, 7))
+                        .itemInputs(getModItem(Railcraft.ID, "machine.zeta", 1L, 7))
                         .itemOutputs(
                                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Titanium, 1),
                                 GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Glass, 3))
@@ -376,7 +376,7 @@ public class Pulverizer implements Runnable {
                         .addTo(sMaceratorRecipes);
 
             GT_Values.RA.stdBuilder()
-                        .itemInputs(getModItem(Railcraft.modID, "machine.zeta", 1L, 8))
+                        .itemInputs(getModItem(Railcraft.ID, "machine.zeta", 1L, 8))
                         .itemOutputs(
                                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Titanium, 12),
                                 GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Titanium, 3))
@@ -389,7 +389,7 @@ public class Pulverizer implements Runnable {
             // Tungesten Steel
 
             GT_Values.RA.stdBuilder()
-                        .itemInputs(getModItem(Railcraft.modID, "machine.zeta", 1L, 9))
+                        .itemInputs(getModItem(Railcraft.ID, "machine.zeta", 1L, 9))
                         .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.TungstenSteel, 2))
                         .noFluidInputs()
                         .noFluidOutputs()
@@ -398,7 +398,7 @@ public class Pulverizer implements Runnable {
                         .addTo(sMaceratorRecipes);
 
             GT_Values.RA.stdBuilder()
-                        .itemInputs(getModItem(Railcraft.modID, "machine.zeta", 1L, 10))
+                        .itemInputs(getModItem(Railcraft.ID, "machine.zeta", 1L, 10))
                         .itemOutputs(
                                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.TungstenSteel, 1),
                                 GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Glass, 3))
@@ -409,7 +409,7 @@ public class Pulverizer implements Runnable {
                         .addTo(sMaceratorRecipes);
 
             GT_Values.RA.stdBuilder()
-                        .itemInputs(getModItem(Railcraft.modID, "machine.zeta", 1L, 11))
+                        .itemInputs(getModItem(Railcraft.ID, "machine.zeta", 1L, 11))
                         .itemOutputs(
                                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.TungstenSteel, 12),
                                 GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.TungstenSteel, 3))
@@ -422,7 +422,7 @@ public class Pulverizer implements Runnable {
             // Palladium
 
             GT_Values.RA.stdBuilder()
-                        .itemInputs(getModItem(Railcraft.modID, "machine.zeta", 1L, 12))
+                        .itemInputs(getModItem(Railcraft.ID, "machine.zeta", 1L, 12))
                         .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Palladium, 2))
                         .noFluidInputs()
                         .noFluidOutputs()
@@ -431,7 +431,7 @@ public class Pulverizer implements Runnable {
                         .addTo(sMaceratorRecipes);
 
             GT_Values.RA.stdBuilder()
-                        .itemInputs(getModItem(Railcraft.modID, "machine.zeta", 1L, 13))
+                        .itemInputs(getModItem(Railcraft.ID, "machine.zeta", 1L, 13))
                         .itemOutputs(
                                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Palladium, 1),
                                 GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Glass, 3))
@@ -442,7 +442,7 @@ public class Pulverizer implements Runnable {
                         .addTo(sMaceratorRecipes);
 
             GT_Values.RA.stdBuilder()
-                        .itemInputs(getModItem(Railcraft.modID, "machine.zeta", 1L, 14))
+                        .itemInputs(getModItem(Railcraft.ID, "machine.zeta", 1L, 14))
                         .itemOutputs(
                                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.NiobiumTitanium, 12),
                                 GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Chrome, 3))
@@ -455,7 +455,7 @@ public class Pulverizer implements Runnable {
             // Iridium
 
             GT_Values.RA.stdBuilder()
-                        .itemInputs(getModItem(Railcraft.modID, "machine.eta", 1L, 0))
+                        .itemInputs(getModItem(Railcraft.ID, "machine.eta", 1L, 0))
                         .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iridium, 2))
                         .noFluidInputs()
                         .noFluidOutputs()
@@ -464,7 +464,7 @@ public class Pulverizer implements Runnable {
                         .addTo(sMaceratorRecipes);
 
             GT_Values.RA.stdBuilder()
-                        .itemInputs(getModItem(Railcraft.modID, "machine.eta", 1L, 1))
+                        .itemInputs(getModItem(Railcraft.ID, "machine.eta", 1L, 1))
                         .itemOutputs(
                                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iridium, 1),
                                 GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Glass, 3))
@@ -475,7 +475,7 @@ public class Pulverizer implements Runnable {
                         .addTo(sMaceratorRecipes);
 
             GT_Values.RA.stdBuilder()
-                        .itemInputs(getModItem(Railcraft.modID, "machine.eta", 1L, 2))
+                        .itemInputs(getModItem(Railcraft.ID, "machine.eta", 1L, 2))
                         .itemOutputs(
                                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Enderium, 12),
                                 GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Iridium, 3))
@@ -488,7 +488,7 @@ public class Pulverizer implements Runnable {
             // Osmium
 
             GT_Values.RA.stdBuilder()
-                        .itemInputs(getModItem(Railcraft.modID, "machine.eta", 1L, 3))
+                        .itemInputs(getModItem(Railcraft.ID, "machine.eta", 1L, 3))
                         .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Osmium, 2))
                         .noFluidInputs()
                         .noFluidOutputs()
@@ -497,7 +497,7 @@ public class Pulverizer implements Runnable {
                         .addTo(sMaceratorRecipes);
 
             GT_Values.RA.stdBuilder()
-                        .itemInputs(getModItem(Railcraft.modID, "machine.eta", 1L, 4))
+                        .itemInputs(getModItem(Railcraft.ID, "machine.eta", 1L, 4))
                         .itemOutputs(
                                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Osmium, 1),
                                 GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Glass, 3))
@@ -508,7 +508,7 @@ public class Pulverizer implements Runnable {
                         .addTo(sMaceratorRecipes);
 
             GT_Values.RA.stdBuilder()
-                        .itemInputs(getModItem(Railcraft.modID, "machine.eta", 1L, 5))
+                        .itemInputs(getModItem(Railcraft.ID, "machine.eta", 1L, 5))
                         .itemOutputs(
                                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 12),
                                 GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Osmium, 3))
@@ -521,7 +521,7 @@ public class Pulverizer implements Runnable {
             // Neutronium
 
             GT_Values.RA.stdBuilder()
-                        .itemInputs(getModItem(Railcraft.modID, "machine.eta", 1L, 6))
+                        .itemInputs(getModItem(Railcraft.ID, "machine.eta", 1L, 6))
                         .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Neutronium, 2))
                         .noFluidInputs()
                         .noFluidOutputs()
@@ -530,7 +530,7 @@ public class Pulverizer implements Runnable {
                         .addTo(sMaceratorRecipes);
 
             GT_Values.RA.stdBuilder()
-                        .itemInputs(getModItem(Railcraft.modID, "machine.eta", 1L, 7))
+                        .itemInputs(getModItem(Railcraft.ID, "machine.eta", 1L, 7))
                         .itemOutputs(
                                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Neutronium, 1),
                                 GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Glass, 3))
@@ -541,7 +541,7 @@ public class Pulverizer implements Runnable {
                         .addTo(sMaceratorRecipes);
 
             GT_Values.RA.stdBuilder()
-                        .itemInputs(getModItem(Railcraft.modID, "machine.eta", 1L, 8))
+                        .itemInputs(getModItem(Railcraft.ID, "machine.eta", 1L, 8))
                         .itemOutputs(
                                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Neutronium, 12),
                                 GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Neutronium, 3))
@@ -552,7 +552,7 @@ public class Pulverizer implements Runnable {
                         .addTo(sMaceratorRecipes);
 
             GT_Values.RA.stdBuilder()
-                        .itemInputs(getModItem(Railcraft.modID, "cube.crushed.obsidian", 1L))
+                        .itemInputs(getModItem(Railcraft.ID, "cube.crushed.obsidian", 1L))
                         .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Obsidian, 1L))
                         .noFluidInputs()
                         .noFluidOutputs()
@@ -563,8 +563,8 @@ public class Pulverizer implements Runnable {
 
         if (AppliedEnergistics2.isModLoaded()) {
             GT_Values.RA.stdBuilder()
-                        .itemInputs(getModItem(AppliedEnergistics2.modID, "tile.BlockSkyStone", 1L, 32767))
-                        .itemOutputs(getModItem(AppliedEnergistics2.modID, "item.ItemMultiMaterial", 1L, 45))
+                        .itemInputs(getModItem(AppliedEnergistics2.ID, "tile.BlockSkyStone", 1L, 32767))
+                        .itemOutputs(getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 45))
                         .noFluidInputs()
                         .noFluidOutputs()
                         .duration(20 * SECONDS)
@@ -572,8 +572,8 @@ public class Pulverizer implements Runnable {
                         .addTo(sMaceratorRecipes);
 
             GT_Values.RA.stdBuilder()
-                        .itemInputs(getModItem(AppliedEnergistics2.modID, "tile.BlockSkyChest", 1L, 32767))
-                        .itemOutputs(getModItem(AppliedEnergistics2.modID, "item.ItemMultiMaterial", 8L, 45))
+                        .itemInputs(getModItem(AppliedEnergistics2.ID, "tile.BlockSkyChest", 1L, 32767))
+                        .itemOutputs(getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 8L, 45))
                         .noFluidInputs()
                         .noFluidOutputs()
                         .duration(20 * SECONDS)
@@ -690,7 +690,7 @@ public class Pulverizer implements Runnable {
 
         if (HardcoreEnderExpansion.isModLoaded()) {
             GT_Values.RA.stdBuilder()
-                        .itemInputs(getModItem(HardcoreEnderExpansion.modID, "endium_ore", 1))
+                        .itemInputs(getModItem(HardcoreEnderExpansion.ID, "endium_ore", 1))
                         .itemOutputs(
                                 GT_OreDictUnificator.get(OrePrefixes.crushed, Materials.HeeEndium, 2),
                                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Endstone, 1))

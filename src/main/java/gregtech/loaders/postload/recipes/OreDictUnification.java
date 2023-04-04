@@ -1,6 +1,6 @@
 package gregtech.loaders.postload.recipes;
 
-import static gregtech.api.enums.ModIDs.HardcoreEnderExpansion;
+import static gregtech.api.enums.Mods.HardcoreEnderExpansion;
 import static gregtech.api.util.GT_ModHandler.getModItem;
 
 import gregtech.api.enums.Materials;
@@ -15,7 +15,7 @@ public class OreDictUnification implements Runnable {
             GT_OreDictUnificator.set(
                     OrePrefixes.ingot,
                     Materials.HeeEndium,
-                    getModItem(HardcoreEnderExpansion.modID, "endium_ingot", 1),
+                    getModItem(HardcoreEnderExpansion.ID, "endium_ingot", 1),
                     true,
                     true);
         }

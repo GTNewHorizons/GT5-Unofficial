@@ -2,6 +2,7 @@ package gregtech.common.tileentities.machines.basic;
 
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.GT_Values.debugBlockMiner;
+import static gregtech.api.enums.Mods.GregTech;
 
 import java.util.ArrayList;
 
@@ -460,7 +461,7 @@ public class GT_MetaTileEntity_Miner extends GT_MetaTileEntity_BasicMachine
     }
 
     private static final FallbackableUITexture progressBarTexture = new FallbackableUITexture(
-            UITexture.fullImage("gregtech", "gui/progressbar/miner"),
+            UITexture.fullImage(GregTech.ID, "gui/progressbar/miner"),
             GT_UITextures.PROGRESSBAR_CANNER);
 
     @Override

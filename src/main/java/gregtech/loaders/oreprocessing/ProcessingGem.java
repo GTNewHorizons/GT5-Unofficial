@@ -1,5 +1,6 @@
 package gregtech.loaders.oreprocessing;
 
+import static gregtech.api.enums.Mods.AppliedEnergistics2;
 import static gregtech.api.util.GT_Utility.calculateRecipeEU;
 
 import net.minecraft.item.ItemStack;
@@ -149,7 +150,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                         GT_Values.RA.addElectrolyzerRecipe(
                                 aStack,
                                 0,
-                                GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 1),
+                                GT_ModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 1),
                                 null,
                                 null,
                                 null,

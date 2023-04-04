@@ -1,6 +1,6 @@
 package gregtech.api.objects;
 
-import static gregtech.api.enums.GT_Values.RES_PATH_BLOCK;
+import static gregtech.api.enums.Mods.GregTech;
 
 import net.minecraftforge.fluids.Fluid;
 
@@ -31,6 +31,6 @@ public class GT_Fluid extends Fluid implements Runnable {
 
     @Override
     public void run() {
-        setIcons(GregTech_API.sBlockIcons.registerIcon(RES_PATH_BLOCK + "fluids/fluid." + mTextureName));
+        setIcons(GregTech_API.sBlockIcons.registerIcon(GregTech.getResourcePath("fluids", "fluid." + mTextureName)));
     }
 }

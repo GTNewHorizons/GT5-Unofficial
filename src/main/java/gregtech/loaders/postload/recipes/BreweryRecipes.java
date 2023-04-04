@@ -1,7 +1,7 @@
 package gregtech.loaders.postload.recipes;
 
-import static gregtech.api.enums.ModIDs.Forestry;
-import static gregtech.api.enums.ModIDs.IndustrialCraft2;
+import static gregtech.api.enums.Mods.Forestry;
+import static gregtech.api.enums.Mods.IndustrialCraft2;
 import static gregtech.api.util.GT_ModHandler.getModItem;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sBrewingRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
@@ -518,7 +518,7 @@ public class BreweryRecipes implements Runnable {
         // biomass recipes
         {
             GT_Values.RA.stdBuilder()
-                        .itemInputs(getModItem(Forestry.modID, "fertilizerBio", 4L, 0))
+                        .itemInputs(getModItem(Forestry.ID, "fertilizerBio", 4L, 0))
                         .noItemOutputs()
                         .fluidInputs(getFluidStack(FluidRegistry.WATER.getUnlocalizedName(), 750))
                         .fluidOutputs(getFluidStack("biomass", 750))
@@ -527,7 +527,7 @@ public class BreweryRecipes implements Runnable {
                         .addTo(sBrewingRecipes);
 
             GT_Values.RA.stdBuilder()
-                        .itemInputs(getModItem(Forestry.modID, "mulch", 16L, 0))
+                        .itemInputs(getModItem(Forestry.ID, "mulch", 16L, 0))
                         .noItemOutputs()
                         .fluidInputs(
                                 getFluidStack(
@@ -541,7 +541,7 @@ public class BreweryRecipes implements Runnable {
                         .addTo(sBrewingRecipes);
 
             GT_Values.RA.stdBuilder()
-                        .itemInputs(getModItem(Forestry.modID, "mulch", 8L, 0))
+                        .itemInputs(getModItem(Forestry.ID, "mulch", 8L, 0))
                         .noItemOutputs()
                         .fluidInputs(getFluidStack("juice", 500))
                         .fluidOutputs(getFluidStack("biomass", 750))

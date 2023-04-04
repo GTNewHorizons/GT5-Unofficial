@@ -1,6 +1,7 @@
 package gregtech.common.tileentities.machines.basic;
 
-import static gregtech.api.enums.ModIDs.Railcraft;
+import static gregtech.api.enums.Mods.IndustrialCraft2;
+import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 
 import java.util.*;
@@ -162,25 +163,25 @@ public class GT_MetaTileEntity_Disassembler extends GT_MetaTileEntity_BasicMachi
         addBlacklist(ItemList.Circuit_Parts_Vacuum_Tube.get(1L));
         addBlacklist(ItemList.Schematic.get(1L));
         if (Railcraft.isModLoaded()) {
-            addBlacklist(GT_ModHandler.getModItem(Railcraft.modID, "track", 1L, 0));
-            addBlacklist(GT_ModHandler.getModItem(Railcraft.modID, "track", 1L, 736));
-            addBlacklist(GT_ModHandler.getModItem(Railcraft.modID, "track", 1L, 816));
+            addBlacklist(GT_ModHandler.getModItem(Railcraft.ID, "track", 1L, 0));
+            addBlacklist(GT_ModHandler.getModItem(Railcraft.ID, "track", 1L, 736));
+            addBlacklist(GT_ModHandler.getModItem(Railcraft.ID, "track", 1L, 816));
         }
         addBlacklist(IC2Items.getItem("mixedMetalIngot"));
-        addBlacklist(GT_ModHandler.getModItem("Railcraft", "machine.alpha", 1L, 14));
+        addBlacklist(GT_ModHandler.getModItem(Railcraft.ID, "machine.alpha", 1L, 14));
         // region transformer
         // Temporary solution for cable dupe
         // Maybe we can mark assembler recipes as "cannot disassemble"
         // and only disassemble crafting recipes in the future
         // Also `getIC2Item` doesn't work, maybe loading order?
         addBlacklist(ItemList.Transformer_MV_LV.get(1L));
-        addBlacklist(GT_ModHandler.getModItem("IC2", "blockElectric", 1L, 3));
+        addBlacklist(GT_ModHandler.getModItem(IndustrialCraft2.ID, "blockElectric", 1L, 3));
         addBlacklist(ItemList.Transformer_HV_MV.get(1L));
-        addBlacklist(GT_ModHandler.getModItem("IC2", "blockElectric", 1L, 4));
+        addBlacklist(GT_ModHandler.getModItem(IndustrialCraft2.ID, "blockElectric", 1L, 4));
         addBlacklist(ItemList.Transformer_EV_HV.get(1L));
-        addBlacklist(GT_ModHandler.getModItem("IC2", "blockElectric", 1L, 5));
+        addBlacklist(GT_ModHandler.getModItem(IndustrialCraft2.ID, "blockElectric", 1L, 5));
         addBlacklist(ItemList.Transformer_IV_EV.get(1L));
-        addBlacklist(GT_ModHandler.getModItem("IC2", "blockElectric", 1L, 6));
+        addBlacklist(GT_ModHandler.getModItem(IndustrialCraft2.ID, "blockElectric", 1L, 6));
         // endregion transformer
     }
 

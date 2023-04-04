@@ -1,6 +1,6 @@
 package gregtech.loaders.postload;
 
-import static gregtech.api.enums.ModIDs.NotEnoughItems;
+import static gregtech.api.enums.Mods.NotEnoughItems;
 
 import gregtech.api.enums.Materials;
 import gregtech.loaders.postload.chains.GT_BauxiteRefineChain;

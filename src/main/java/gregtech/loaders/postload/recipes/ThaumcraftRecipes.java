@@ -1,7 +1,7 @@
 package gregtech.loaders.postload.recipes;
 
-import static gregtech.api.enums.ModIDs.AppliedEnergistics2;
-import static gregtech.api.enums.ModIDs.Thaumcraft;
+import static gregtech.api.enums.Mods.AppliedEnergistics2;
+import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.util.GT_ModHandler.getModItem;
 
 import java.util.Arrays;
@@ -33,8 +33,8 @@ public class ThaumcraftRecipes implements Runnable {
         String tKey = "GT_BALANCE_SHARD_RECIPE";
         GregTech_API.sThaumcraftCompat.addCrucibleRecipe(
                 "TB.SM",
-                getModItem(Thaumcraft.modID, "ItemResource", 1L, 14),
-                getModItem(Thaumcraft.modID, "ItemShard", 1L, 6),
+                getModItem(Thaumcraft.ID, "ItemResource", 1L, 14),
+                getModItem(Thaumcraft.ID, "ItemShard", 1L, 6),
                 Arrays.asList(
                         new TC_Aspects.TC_AspectStack(TC_Aspects.PRAECANTATIO, 2L),
                         new TC_Aspects.TC_AspectStack(TC_Aspects.ORDO, 1L)));
@@ -560,7 +560,7 @@ public class ThaumcraftRecipes implements Runnable {
                 "Transformation of obsidian into skystone",
                 new String[] { "GT_ADVANCEDMETALLURGY" },
                 "ALCHEMY",
-                getModItem(AppliedEnergistics2.modID, "tile.BlockSkyStone", 1),
+                getModItem(AppliedEnergistics2.ID, "tile.BlockSkyStone", 1),
                 4,
                 0,
                 19,
@@ -576,7 +576,7 @@ public class ThaumcraftRecipes implements Runnable {
                         GregTech_API.sThaumcraftCompat.addCrucibleRecipe(
                                 tKey,
                                 new ItemStack(Blocks.obsidian),
-                                getModItem(AppliedEnergistics2.modID, "tile.BlockSkyStone", 1),
+                                getModItem(AppliedEnergistics2.ID, "tile.BlockSkyStone", 1),
                                 Arrays.asList(
                                         new TC_Aspects.TC_AspectStack(TC_Aspects.PERMUTATIO, 2L),
                                         new TC_Aspects.TC_AspectStack(TC_Aspects.VOLATUS, 1L),
@@ -951,11 +951,11 @@ public class ThaumcraftRecipes implements Runnable {
                                         new TC_Aspects.TC_AspectStack(TC_Aspects.RADIO, 16L),
                                         new TC_Aspects.TC_AspectStack(TC_Aspects.TUTAMEN, 32L),
                                         new TC_Aspects.TC_AspectStack(TC_Aspects.VENENUM, 16L)),
-                                new ItemStack[] { getModItem(Thaumcraft.modID, "ItemResource", 1L, 14),
+                                new ItemStack[] { getModItem(Thaumcraft.ID, "ItemResource", 1L, 14),
                                         GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Titanium, 1),
                                         GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Rubber, 1),
                                         GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Lead, 1),
-                                        getModItem(Thaumcraft.modID, "ItemResource", 1L, 14),
+                                        getModItem(Thaumcraft.ID, "ItemResource", 1L, 14),
                                         GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Titanium, 1),
                                         GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Rubber, 1),
                                         GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Lead, 1) }) });

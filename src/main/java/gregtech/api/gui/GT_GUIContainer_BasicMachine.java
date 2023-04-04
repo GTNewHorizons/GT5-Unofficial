@@ -1,8 +1,8 @@
 package gregtech.api.gui;
 
-import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
+import static gregtech.api.enums.Mods.GregTech;
 
-import java.awt.Rectangle;
+import java.awt.*;
 
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.StatCollector;
@@ -61,7 +61,7 @@ public class GT_GUIContainer_BasicMachine extends GT_GUIContainerMetaTile_Machin
             String aTextureFile, String aNEI, byte aProgressBarDirection, byte aProgressBarAmount) {
         super(
                 new GT_Container_BasicMachine(aInventoryPlayer, aTileEntity),
-                RES_PATH_GUI + "basicmachines/" + aTextureFile);
+                GregTech.getResourcePath("textures", "gui", "basicmachines", aTextureFile));
         mProgressBarDirection = aProgressBarDirection;
         mProgressBarAmount = (byte) Math.max(1, aProgressBarAmount);
         mName = aName;

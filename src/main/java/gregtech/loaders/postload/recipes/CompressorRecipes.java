@@ -1,6 +1,6 @@
 package gregtech.loaders.postload.recipes;
 
-import static gregtech.api.enums.ModIDs.*;
+import static gregtech.api.enums.Mods.*;
 import static gregtech.api.util.GT_ModHandler.getModItem;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCompressorRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
@@ -24,7 +24,7 @@ public class CompressorRecipes implements Runnable {
     @Override
     public void run() {
         GT_Values.RA.stdBuilder()
-                    .itemInputs(getModItem(GTPlusPlus.modID, "blockRainforestOakSapling", 8, 0))
+                    .itemInputs(getModItem(GTPlusPlus.ID, "blockRainforestOakSapling", 8, 0))
                     .itemOutputs(ItemList.IC2_Plantball.get(1))
                     .noFluidInputs()
                     .noFluidOutputs()
@@ -106,7 +106,7 @@ public class CompressorRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
                     .itemInputs(GT_OreDictUnificator.get(OrePrefixes.gem, Materials.CertusQuartz, 4))
-                    .itemOutputs(getModItem(AppliedEnergistics2.modID, "tile.BlockQuartz", 1))
+                    .itemOutputs(getModItem(AppliedEnergistics2.ID, "tile.BlockQuartz", 1))
                     .noFluidInputs()
                     .noFluidOutputs()
                     .duration(15 * SECONDS)
@@ -114,8 +114,8 @@ public class CompressorRecipes implements Runnable {
                     .addTo(sCompressorRecipes);
 
         GT_Values.RA.stdBuilder()
-                    .itemInputs(getModItem(AppliedEnergistics2.modID, "item.ItemMultiMaterial", 8L, 10))
-                    .itemOutputs(getModItem(AppliedEnergistics2.modID, "tile.BlockQuartz", 1))
+                    .itemInputs(getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 8L, 10))
+                    .itemOutputs(getModItem(AppliedEnergistics2.ID, "tile.BlockQuartz", 1))
                     .noFluidInputs()
                     .noFluidOutputs()
                     .duration(15 * SECONDS)
@@ -123,7 +123,7 @@ public class CompressorRecipes implements Runnable {
                     .addTo(sCompressorRecipes);
 
         GT_Values.RA.stdBuilder()
-                    .itemInputs(getModItem(AppliedEnergistics2.modID, "item.ItemMultiMaterial", 8L, 11))
+                    .itemInputs(getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 8L, 11))
                     .itemOutputs(new ItemStack(Blocks.quartz_block, 1, 0))
                     .noFluidInputs()
                     .noFluidOutputs()
@@ -132,8 +132,8 @@ public class CompressorRecipes implements Runnable {
                     .addTo(sCompressorRecipes);
 
         GT_Values.RA.stdBuilder()
-                    .itemInputs(getModItem(AppliedEnergistics2.modID, "item.ItemMultiMaterial", 8L, 12))
-                    .itemOutputs(getModItem(AppliedEnergistics2.modID, "tile.BlockFluix", 1))
+                    .itemInputs(getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 8L, 12))
+                    .itemOutputs(getModItem(AppliedEnergistics2.ID, "tile.BlockFluix", 1))
                     .noFluidInputs()
                     .noFluidOutputs()
                     .duration(15 * SECONDS)

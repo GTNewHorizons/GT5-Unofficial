@@ -1,6 +1,6 @@
 package gregtech.common.tools;
 
-import static gregtech.api.enums.ModIDs.Forestry;
+import static gregtech.api.enums.Mods.Forestry;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;

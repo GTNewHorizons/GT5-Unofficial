@@ -1,6 +1,13 @@
 package gregtech.loaders.preload;
 
-import static gregtech.api.enums.ModIDs.NewHorizonsCoreMod;
+import static gregtech.api.enums.Mods.AppliedEnergistics2;
+import static gregtech.api.enums.Mods.Botania;
+import static gregtech.api.enums.Mods.IndustrialCraft2;
+import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
+import static gregtech.api.enums.Mods.Railcraft;
+import static gregtech.api.enums.Mods.Thaumcraft;
+import static gregtech.api.enums.Mods.ThermalExpansion;
+import static gregtech.api.enums.Mods.TwilightForest;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -29,7 +36,7 @@ public class GT_Loader_OreDictionary implements Runnable {
         GT_OreDictUnificator.set(
                 OrePrefixes.cell,
                 Materials.Creosote,
-                GT_ModHandler.getModItem("Railcraft", "fluid.creosote.cell", 1L));
+                GT_ModHandler.getModItem(Railcraft.ID, "fluid.creosote.cell", 1L));
 
         GT_OreDictUnificator.set(OrePrefixes.cell, Materials.UUMatter, GT_ModHandler.getIC2Item("uuMatterCell", 1L));
         GT_OreDictUnificator.set(OrePrefixes.cell, Materials.ConstructionFoam, GT_ModHandler.getIC2Item("CFCell", 1L));
@@ -105,14 +112,14 @@ public class GT_Loader_OreDictionary implements Runnable {
         GT_OreDictUnificator.registerOre(OreDictNames.craftingAnvil, new ItemStack(Blocks.anvil, 1));
         GT_OreDictUnificator.registerOre(
                 OreDictNames.craftingAnvil,
-                GT_ModHandler.getModItem("Railcraft", "anvil", 1L, 0));
+                GT_ModHandler.getModItem(Railcraft.ID, "anvil", 1L, 0));
         GT_OreDictUnificator.registerOre(
                 OreDictNames.craftingIndustrialDiamond,
                 ItemList.IC2_Industrial_Diamond.get(1L));
         GT_OreDictUnificator.registerOre(
                 OrePrefixes.dust,
                 Materials.Wood,
-                GT_ModHandler.getModItem("ThermalExpansion", "sawdust", 1L));
+                GT_ModHandler.getModItem(ThermalExpansion.ID, "sawdust", 1L));
         GT_OreDictUnificator.registerOre(
                 OrePrefixes.glass,
                 Materials.Reinforced,
@@ -120,24 +127,24 @@ public class GT_Loader_OreDictionary implements Runnable {
         GT_OreDictUnificator.registerOre(
                 OrePrefixes.glass,
                 Materials.Reinforced,
-                GT_ModHandler.getModItem("ThermalExpansion", "glassHardened", 1L));
+                GT_ModHandler.getModItem(ThermalExpansion.ID, "glassHardened", 1L));
 
         GT_OreDictUnificator.registerOre(
                 OrePrefixes.stone,
                 Materials.Basalt,
-                GT_ModHandler.getModItem("Railcraft", "cube", 1L, 6));
+                GT_ModHandler.getModItem(Railcraft.ID, "cube", 1L, 6));
         GT_OreDictUnificator.registerOre(
                 OrePrefixes.stone,
                 Materials.Marble,
-                GT_ModHandler.getModItem("Railcraft", "cube", 1L, 7));
+                GT_ModHandler.getModItem(Railcraft.ID, "cube", 1L, 7));
         GT_OreDictUnificator.registerOre(
                 OrePrefixes.stone,
                 Materials.Basalt,
-                GT_ModHandler.getModItem("Railcraft", "brick.abyssal", 1L, 32767));
+                GT_ModHandler.getModItem(Railcraft.ID, "brick.abyssal", 1L, 32767));
         GT_OreDictUnificator.registerOre(
                 OrePrefixes.stone,
                 Materials.Marble,
-                GT_ModHandler.getModItem("Railcraft", "brick.quarried", 1L, 32767));
+                GT_ModHandler.getModItem(Railcraft.ID, "brick.quarried", 1L, 32767));
         GT_OreDictUnificator.registerOre(
                 OrePrefixes.stone,
                 Materials.Obsidian,
@@ -171,25 +178,25 @@ public class GT_Loader_OreDictionary implements Runnable {
 
         GT_OreDictUnificator.registerOre(
                 "paperResearchFragment",
-                GT_ModHandler.getModItem("Thaumcraft", "ItemResource", 1L, 9));
+                GT_ModHandler.getModItem(Thaumcraft.ID, "ItemResource", 1L, 9));
         GT_OreDictUnificator.registerOre(
                 "itemCertusQuartz",
-                GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 1));
+                GT_ModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 1));
         GT_OreDictUnificator.registerOre(
                 "itemCertusQuartz",
-                GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 10));
+                GT_ModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 10));
         GT_OreDictUnificator.registerOre(
                 "itemNetherQuartz",
-                GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 11));
+                GT_ModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 11));
         GT_OreDictUnificator.registerOre(
                 OreDictNames.craftingQuartz,
-                GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 1));
+                GT_ModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 1));
         GT_OreDictUnificator.registerOre(
                 OreDictNames.craftingQuartz,
-                GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 10));
+                GT_ModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 10));
         GT_OreDictUnificator.registerOre(
                 OreDictNames.craftingQuartz,
-                GT_ModHandler.getModItem("appliedenergistics2", "item.ItemMultiMaterial", 1L, 11));
+                GT_ModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 11));
         GT_OreDictUnificator.registerOre("cropLemon", ItemList.FR_Lemon.get(1L));
         GT_OreDictUnificator.registerOre("cropCoffee", ItemList.IC2_CoffeeBeans.get(1L));
         GT_OreDictUnificator.registerOre("cropPotato", ItemList.Food_Raw_Potato.get(1L));
@@ -308,7 +315,7 @@ public class GT_Loader_OreDictionary implements Runnable {
         GT_OreDictUnificator.registerOre(OreDictNames.craftingFeather, new ItemStack(Items.feather, 1, 32767));
         GT_OreDictUnificator.registerOre(
                 OreDictNames.craftingFeather,
-                GT_ModHandler.getModItem("TwilightForest", "item.tfFeather", 1L, 32767));
+                GT_ModHandler.getModItem(TwilightForest.ID, "item.tfFeather", 1L, 32767));
 
         GT_OreDictUnificator.registerOre("itemWheat", new ItemStack(Items.wheat, 1, 32767));
         GT_OreDictUnificator.registerOre("paperEmpty", new ItemStack(Items.paper, 1, 32767));
@@ -335,180 +342,180 @@ public class GT_Loader_OreDictionary implements Runnable {
         GT_OreDictUnificator.registerOre(
                 OrePrefixes.itemCasing,
                 Materials.Copper,
-                GT_ModHandler.getModItem("IC2", "itemCasing", 1L, 0));
+                GT_ModHandler.getModItem(IndustrialCraft2.ID, "itemCasing", 1L, 0));
         GT_OreDictUnificator.registerOre(
                 OrePrefixes.itemCasing,
                 Materials.Tin,
-                GT_ModHandler.getModItem("IC2", "itemCasing", 1L, 1));
+                GT_ModHandler.getModItem(IndustrialCraft2.ID, "itemCasing", 1L, 1));
         GT_OreDictUnificator.registerOre(
                 OrePrefixes.itemCasing,
                 Materials.Bronze,
-                GT_ModHandler.getModItem("IC2", "itemCasing", 1L, 2));
+                GT_ModHandler.getModItem(IndustrialCraft2.ID, "itemCasing", 1L, 2));
         GT_OreDictUnificator.registerOre(
                 OrePrefixes.itemCasing,
                 Materials.Gold,
-                GT_ModHandler.getModItem("IC2", "itemCasing", 1L, 3));
+                GT_ModHandler.getModItem(IndustrialCraft2.ID, "itemCasing", 1L, 3));
         GT_OreDictUnificator.registerOre(
                 OrePrefixes.itemCasing,
                 Materials.Iron,
-                GT_ModHandler.getModItem("IC2", "itemCasing", 1L, 4));
+                GT_ModHandler.getModItem(IndustrialCraft2.ID, "itemCasing", 1L, 4));
         GT_OreDictUnificator.registerOre(
                 OrePrefixes.itemCasing,
                 Materials.Steel,
-                GT_ModHandler.getModItem("IC2", "itemCasing", 1L, 5));
+                GT_ModHandler.getModItem(IndustrialCraft2.ID, "itemCasing", 1L, 5));
         GT_OreDictUnificator.registerOre(
                 OrePrefixes.itemCasing,
                 Materials.Lead,
-                GT_ModHandler.getModItem("IC2", "itemCasing", 1L, 6));
+                GT_ModHandler.getModItem(IndustrialCraft2.ID, "itemCasing", 1L, 6));
 
         GT_OreDictUnificator.registerOre(
                 OrePrefixes.itemCasing,
                 Materials.Osmium,
-                GT_ModHandler.getModItem(NewHorizonsCoreMod.modID, "item.OsmiumItemCasing", 1L, 0));
+                GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.OsmiumItemCasing", 1L, 0));
         GT_OreDictUnificator.registerOre(
                 OrePrefixes.itemCasing,
                 Materials.Aluminium,
-                GT_ModHandler.getModItem(NewHorizonsCoreMod.modID, "item.AluminiumItemCasing", 1L, 0));
+                GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.AluminiumItemCasing", 1L, 0));
         GT_OreDictUnificator.registerOre(
                 OrePrefixes.itemCasing,
                 Materials.StainlessSteel,
-                GT_ModHandler.getModItem(NewHorizonsCoreMod.modID, "item.StainlessSteelItemCasing", 1L, 0));
+                GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.StainlessSteelItemCasing", 1L, 0));
         GT_OreDictUnificator.registerOre(
                 OrePrefixes.itemCasing,
                 Materials.Tungsten,
-                GT_ModHandler.getModItem(NewHorizonsCoreMod.modID, "item.TungstenItemCasing", 1L, 0));
+                GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.TungstenItemCasing", 1L, 0));
         GT_OreDictUnificator.registerOre(
                 OrePrefixes.itemCasing,
                 Materials.Neutronium,
-                GT_ModHandler.getModItem(NewHorizonsCoreMod.modID, "item.NeutroniumItemCasing", 1L, 0));
+                GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.NeutroniumItemCasing", 1L, 0));
         GT_OreDictUnificator.registerOre(
                 OrePrefixes.itemCasing,
                 Materials.TungstenSteel,
-                GT_ModHandler.getModItem(NewHorizonsCoreMod.modID, "item.TungstenSteelItemCasing", 1L, 0));
+                GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.TungstenSteelItemCasing", 1L, 0));
         GT_OreDictUnificator.registerOre(
                 OrePrefixes.itemCasing,
                 Materials.Iridium,
-                GT_ModHandler.getModItem(NewHorizonsCoreMod.modID, "item.IridiumItemCasing", 1L, 0));
+                GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.IridiumItemCasing", 1L, 0));
         GT_OreDictUnificator.registerOre(
                 OrePrefixes.itemCasing,
                 Materials.Titanium,
-                GT_ModHandler.getModItem(NewHorizonsCoreMod.modID, "item.TitaniumItemCasing", 1L, 0));
+                GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.TitaniumItemCasing", 1L, 0));
         GT_OreDictUnificator.registerOre(
                 OrePrefixes.itemCasing,
                 Materials.Chrome,
-                GT_ModHandler.getModItem(NewHorizonsCoreMod.modID, "item.ChromeItemCasing", 1L, 0));
+                GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.ChromeItemCasing", 1L, 0));
 
         // Fake Circuits
         GT_OreDictUnificator.registerOre(
                 OrePrefixes.circuit,
                 Materials.Primitive,
-                GT_ModHandler.getModItem(NewHorizonsCoreMod.modID, "item.CircuitULV", 1L));
+                GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.CircuitULV", 1L));
         // GT_OreDictUnificator.registerOre(OrePrefixes.circuit, Materials.Basic,
         // GT_ModHandler.getModItem(NewHorizonsCoreMod.modID,
         // "item.CircuitLV", 1L));
         GT_OreDictUnificator.registerOre(
                 OrePrefixes.circuit,
                 Materials.Good,
-                GT_ModHandler.getModItem(NewHorizonsCoreMod.modID, "item.CircuitMV", 1L));
+                GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.CircuitMV", 1L));
         // GT_OreDictUnificator.registerOre(OrePrefixes.circuit, Materials.Advanced,
         // GT_ModHandler.getModItem(NewHorizonsCoreMod.modID,
         // "item.CircuitHV", 1L));
         GT_OreDictUnificator.registerOre(
                 OrePrefixes.circuit,
                 Materials.Data,
-                GT_ModHandler.getModItem(NewHorizonsCoreMod.modID, "item.CircuitEV", 1L));
+                GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.CircuitEV", 1L));
         GT_OreDictUnificator.registerOre(
                 OrePrefixes.circuit,
                 Materials.Elite,
-                GT_ModHandler.getModItem(NewHorizonsCoreMod.modID, "item.CircuitIV", 1L));
+                GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.CircuitIV", 1L));
         GT_OreDictUnificator.registerOre(
                 OrePrefixes.circuit,
                 Materials.Master,
-                GT_ModHandler.getModItem(NewHorizonsCoreMod.modID, "item.CircuitLuV", 1L));
+                GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.CircuitLuV", 1L));
         GT_OreDictUnificator.registerOre(
                 OrePrefixes.circuit,
                 Materials.Ultimate,
-                GT_ModHandler.getModItem(NewHorizonsCoreMod.modID, "item.CircuitZPM", 1L));
+                GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.CircuitZPM", 1L));
         GT_OreDictUnificator.registerOre(
                 OrePrefixes.circuit,
                 Materials.Superconductor,
-                GT_ModHandler.getModItem(NewHorizonsCoreMod.modID, "item.CircuitUV", 1L));
+                GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.CircuitUV", 1L));
         GT_OreDictUnificator.registerOre(
                 OrePrefixes.circuit,
                 Materials.Infinite,
-                GT_ModHandler.getModItem(NewHorizonsCoreMod.modID, "item.CircuitUHV", 1L));
+                GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.CircuitUHV", 1L));
         GT_OreDictUnificator.registerOre(
                 OrePrefixes.circuit,
                 Materials.Bio,
-                GT_ModHandler.getModItem(NewHorizonsCoreMod.modID, "item.CircuitUEV", 1L));
+                GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.CircuitUEV", 1L));
         GT_OreDictUnificator.registerOre(
                 OrePrefixes.circuit,
                 Materials.Optical,
-                GT_ModHandler.getModItem(NewHorizonsCoreMod.modID, "item.CircuitUIV", 1L));
+                GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.CircuitUIV", 1L));
         GT_OreDictUnificator.registerOre(
                 OrePrefixes.circuit,
                 Materials.Exotic,
-                GT_ModHandler.getModItem(NewHorizonsCoreMod.modID, "item.CircuitUMV", 1L));
+                GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.CircuitUMV", 1L));
         GT_OreDictUnificator.registerOre(
                 OrePrefixes.circuit,
                 Materials.Cosmic,
-                GT_ModHandler.getModItem(NewHorizonsCoreMod.modID, "item.CircuitUXV", 1L));
+                GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.CircuitUXV", 1L));
         GT_OreDictUnificator.registerOre(
                 OrePrefixes.circuit,
                 Materials.Transcendent,
-                GT_ModHandler.getModItem(NewHorizonsCoreMod.modID, "item.CircuitMAX", 1L));
+                GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.CircuitMAX", 1L));
 
         GT_OreDictUnificator.registerOre(
                 OrePrefixes.block,
                 MaterialsBotania.Manasteel,
-                GT_ModHandler.getModItem("Botania", "storage", 1L));
+                GT_ModHandler.getModItem(Botania.ID, "storage", 1L));
         GT_OreDictUnificator.registerOre(
                 OrePrefixes.block,
                 MaterialsBotania.Terrasteel,
-                GT_ModHandler.getModItem("Botania", "storage", 1L, 1));
+                GT_ModHandler.getModItem(Botania.ID, "storage", 1L, 1));
         GT_OreDictUnificator.registerOre(
                 OrePrefixes.ingot,
                 MaterialsBotania.ElvenElementium,
-                GT_ModHandler.getModItem("Botania", "manaResource", 1L, 7));
+                GT_ModHandler.getModItem(Botania.ID, "manaResource", 1L, 7));
         GT_OreDictUnificator.registerOre(
                 OrePrefixes.nugget,
                 MaterialsBotania.ElvenElementium,
-                GT_ModHandler.getModItem("Botania", "manaResource", 1L, 19));
+                GT_ModHandler.getModItem(Botania.ID, "manaResource", 1L, 19));
         GT_OreDictUnificator.registerOre(
                 OrePrefixes.block,
                 MaterialsBotania.ElvenElementium,
-                GT_ModHandler.getModItem("Botania", "storage", 1L, 2));
+                GT_ModHandler.getModItem(Botania.ID, "storage", 1L, 2));
         GT_OreDictUnificator.registerOre(
                 OrePrefixes.block,
                 MaterialsBotania.Livingrock,
-                GT_ModHandler.getModItem("Botania", "livingrock", 1L));
+                GT_ModHandler.getModItem(Botania.ID, "livingrock", 1L));
         GT_OreDictUnificator.registerOre(
                 OrePrefixes.ingot,
                 MaterialsBotania.GaiaSpirit,
-                GT_ModHandler.getModItem("Botania", "manaResource", 1L, 14));
+                GT_ModHandler.getModItem(Botania.ID, "manaResource", 1L, 14));
         GT_OreDictUnificator.registerOre(
                 OrePrefixes.block,
                 MaterialsBotania.Livingwood,
-                GT_ModHandler.getModItem("Botania", "livingwood", 1L));
+                GT_ModHandler.getModItem(Botania.ID, "livingwood", 1L));
         GT_OreDictUnificator.registerOre(
                 OrePrefixes.block,
                 MaterialsBotania.Dreamwood,
-                GT_ModHandler.getModItem("Botania", "dreamwood", 1L));
+                GT_ModHandler.getModItem(Botania.ID, "dreamwood", 1L));
         GT_OreDictUnificator.registerOre(
                 OrePrefixes.gem,
                 MaterialsBotania.ManaDiamond,
-                GT_ModHandler.getModItem("Botania", "manaResource", 1L, 2));
+                GT_ModHandler.getModItem(Botania.ID, "manaResource", 1L, 2));
         GT_OreDictUnificator.registerOre(
                 OrePrefixes.block,
                 MaterialsBotania.ManaDiamond,
-                GT_ModHandler.getModItem("Botania", "storage", 1L, 3));
+                GT_ModHandler.getModItem(Botania.ID, "storage", 1L, 3));
         GT_OreDictUnificator.registerOre(
                 OrePrefixes.gem,
                 MaterialsBotania.BotaniaDragonstone,
-                GT_ModHandler.getModItem("Botania", "manaResource", 1L, 9));
+                GT_ModHandler.getModItem(Botania.ID, "manaResource", 1L, 9));
         GT_OreDictUnificator.registerOre(
                 OrePrefixes.block,
                 MaterialsBotania.BotaniaDragonstone,
-                GT_ModHandler.getModItem("Botania", "storage", 1L, 4));
+                GT_ModHandler.getModItem(Botania.ID, "storage", 1L, 4));
     }
 }

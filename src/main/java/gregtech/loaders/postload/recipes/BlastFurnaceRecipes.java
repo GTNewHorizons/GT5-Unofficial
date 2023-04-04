@@ -1,6 +1,6 @@
 package gregtech.loaders.postload.recipes;
 
-import static gregtech.api.enums.ModIDs.*;
+import static gregtech.api.enums.Mods.*;
 import static gregtech.api.util.GT_ModHandler.getModItem;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sBlastRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sPrimitiveBlastRecipes;
@@ -658,7 +658,7 @@ public class BlastFurnaceRecipes implements Runnable {
 
             GT_Values.RA.stdBuilder()
                         .itemInputs(
-                                getModItem(BartWorks.modID, "gt.bwMetaGenerateddust", 1L, 78),
+                                getModItem(BartWorks.ID, "gt.bwMetaGenerateddust", 1L, 78),
                                 GT_Utility.getIntegratedCircuit(2))
                         .itemOutputs(MaterialsKevlar.RhodiumChloride.getDust(4))
                         .fluidInputs(Materials.Chlorine.getGas(3000))
@@ -672,7 +672,6 @@ public class BlastFurnaceRecipes implements Runnable {
 
     public void registerPrimitiveBlastFurnaceRecipes() {
         GT_Values.RA.stdBuilder()
-
                     .itemInputs(Materials.Iron.getIngots(1))
                     .itemOutputs(Materials.Steel.getIngots(1))
                     .noFluidInputs()

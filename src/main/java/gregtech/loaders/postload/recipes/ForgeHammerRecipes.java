@@ -1,7 +1,7 @@
 package gregtech.loaders.postload.recipes;
 
-import static gregtech.api.enums.ModIDs.GTPlusPlus;
-import static gregtech.api.enums.ModIDs.HardcoreEnderExpansion;
+import static gregtech.api.enums.Mods.GTPlusPlus;
+import static gregtech.api.enums.Mods.HardcoreEnderExpansion;
 import static gregtech.api.util.GT_ModHandler.getModItem;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sHammerRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
@@ -165,9 +165,7 @@ public class ForgeHammerRecipes implements Runnable {
 
         if (GTPlusPlus.isModLoaded()) {
             GT_Values.RA.stdBuilder()
-                        .itemInputs(
-                                ItemList.Tesseract.get(1L),
-                                getModItem(GTPlusPlus.modID, "MU-metaitem.01", 1, 32105))
+                        .itemInputs(ItemList.Tesseract.get(1L), getModItem(GTPlusPlus.ID, "MU-metaitem.01", 1, 32105))
                         .noItemOutputs()
                         .fluidInputs(Materials.SpaceTime.getMolten(2880L))
                         .fluidOutputs(Materials.Space.getMolten(1440L), Materials.Time.getMolten(1440L))
@@ -178,7 +176,7 @@ public class ForgeHammerRecipes implements Runnable {
 
         if (HardcoreEnderExpansion.isModLoaded()) {
             GT_Values.RA.stdBuilder()
-                        .itemInputs(getModItem(HardcoreEnderExpansion.modID, "endium_ore", 1))
+                        .itemInputs(getModItem(HardcoreEnderExpansion.ID, "endium_ore", 1))
                         .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.crushed, Materials.HeeEndium, 1))
                         .noFluidInputs()
                         .noFluidOutputs()

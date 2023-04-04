@@ -1,6 +1,6 @@
 package gregtech.common.blocks;
 
-import static gregtech.api.enums.ModIDs.NotEnoughItems;
+import static gregtech.api.enums.Mods.NotEnoughItems;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemStack;

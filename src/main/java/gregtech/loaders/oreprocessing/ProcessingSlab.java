@@ -1,6 +1,6 @@
 package gregtech.loaders.oreprocessing;
 
-import static gregtech.api.enums.ModIDs.Railcraft;
+import static gregtech.api.enums.Mods.Railcraft;
 
 import net.minecraft.item.ItemStack;
 

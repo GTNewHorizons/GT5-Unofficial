@@ -1,7 +1,7 @@
 package gregtech.loaders.postload.recipes;
 
-import static gregtech.api.enums.ModIDs.AppliedEnergistics2;
-import static gregtech.api.enums.ModIDs.BuildCraftSilicon;
+import static gregtech.api.enums.Mods.AppliedEnergistics2;
+import static gregtech.api.enums.Mods.BuildCraftSilicon;
 import static gregtech.api.util.GT_ModHandler.getModItem;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sPressRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
@@ -22,8 +22,8 @@ public class FormingPressRecipes implements Runnable {
             GT_Values.RA.stdBuilder()
                         .itemInputs(
                                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 1L),
-                                getModItem(BuildCraftSilicon.modID, "redstoneChipset", 1L, 0))
-                        .itemOutputs(getModItem(BuildCraftSilicon.modID, "redstoneChipset", 1L, 1))
+                                getModItem(BuildCraftSilicon.ID, "redstoneChipset", 1L, 0))
+                        .itemOutputs(getModItem(BuildCraftSilicon.ID, "redstoneChipset", 1L, 1))
                         .noFluidInputs()
                         .noFluidOutputs()
                         .duration(5 * SECONDS)
@@ -33,8 +33,8 @@ public class FormingPressRecipes implements Runnable {
             GT_Values.RA.stdBuilder()
                         .itemInputs(
                                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.WroughtIron, 1L),
-                                getModItem(BuildCraftSilicon.modID, "redstoneChipset", 1L, 0))
-                        .itemOutputs(getModItem(BuildCraftSilicon.modID, "redstoneChipset", 1L, 1))
+                                getModItem(BuildCraftSilicon.ID, "redstoneChipset", 1L, 0))
+                        .itemOutputs(getModItem(BuildCraftSilicon.ID, "redstoneChipset", 1L, 1))
                         .noFluidInputs()
                         .noFluidOutputs()
                         .duration(5 * SECONDS)
@@ -44,8 +44,8 @@ public class FormingPressRecipes implements Runnable {
             GT_Values.RA.stdBuilder()
                         .itemInputs(
                                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Gold, 1L),
-                                getModItem(BuildCraftSilicon.modID, "redstoneChipset", 1L, 0))
-                        .itemOutputs(getModItem(BuildCraftSilicon.modID, "redstoneChipset", 1L, 2))
+                                getModItem(BuildCraftSilicon.ID, "redstoneChipset", 1L, 0))
+                        .itemOutputs(getModItem(BuildCraftSilicon.ID, "redstoneChipset", 1L, 2))
                         .noFluidInputs()
                         .noFluidOutputs()
                         .duration(10 * SECONDS)
@@ -55,8 +55,8 @@ public class FormingPressRecipes implements Runnable {
             GT_Values.RA.stdBuilder()
                         .itemInputs(
                                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Diamond, 1L),
-                                getModItem(BuildCraftSilicon.modID, "redstoneChipset", 1L, 0))
-                        .itemOutputs(getModItem(BuildCraftSilicon.modID, "redstoneChipset", 1L, 3))
+                                getModItem(BuildCraftSilicon.ID, "redstoneChipset", 1L, 0))
+                        .itemOutputs(getModItem(BuildCraftSilicon.ID, "redstoneChipset", 1L, 3))
                         .noFluidInputs()
                         .noFluidOutputs()
                         .duration(5 * SECONDS)
@@ -66,8 +66,8 @@ public class FormingPressRecipes implements Runnable {
             GT_Values.RA.stdBuilder()
                         .itemInputs(
                                 GT_OreDictUnificator.get(OrePrefixes.gem, Materials.EnderPearl, 1L),
-                                getModItem(BuildCraftSilicon.modID, "redstoneChipset", 1L, 0))
-                        .itemOutputs(getModItem(BuildCraftSilicon.modID, "redstoneChipset", 2L, 4))
+                                getModItem(BuildCraftSilicon.ID, "redstoneChipset", 1L, 0))
+                        .itemOutputs(getModItem(BuildCraftSilicon.ID, "redstoneChipset", 2L, 4))
                         .noFluidInputs()
                         .noFluidOutputs()
                         .duration(10 * SECONDS)
@@ -77,8 +77,8 @@ public class FormingPressRecipes implements Runnable {
             GT_Values.RA.stdBuilder()
                         .itemInputs(
                                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.NetherQuartz, 1L),
-                                getModItem(BuildCraftSilicon.modID, "redstoneChipset", 1L, 0))
-                        .itemOutputs(getModItem(BuildCraftSilicon.modID, "redstoneChipset", 1L, 5))
+                                getModItem(BuildCraftSilicon.ID, "redstoneChipset", 1L, 0))
+                        .itemOutputs(getModItem(BuildCraftSilicon.ID, "redstoneChipset", 1L, 5))
                         .noFluidInputs()
                         .noFluidOutputs()
                         .duration(15 * SECONDS)
@@ -88,8 +88,8 @@ public class FormingPressRecipes implements Runnable {
             GT_Values.RA.stdBuilder()
                         .itemInputs(
                                 new ItemStack(Items.comparator, 1, 32767),
-                                getModItem(BuildCraftSilicon.modID, "redstoneChipset", 1L, 0))
-                        .itemOutputs(getModItem(BuildCraftSilicon.modID, "redstoneChipset", 1L, 6))
+                                getModItem(BuildCraftSilicon.ID, "redstoneChipset", 1L, 0))
+                        .itemOutputs(getModItem(BuildCraftSilicon.ID, "redstoneChipset", 1L, 6))
                         .noFluidInputs()
                         .noFluidOutputs()
                         .duration(15 * SECONDS)
@@ -100,9 +100,9 @@ public class FormingPressRecipes implements Runnable {
         if (AppliedEnergistics2.isModLoaded()) {
             GT_Values.RA.stdBuilder()
                         .itemInputs(
-                                getModItem(AppliedEnergistics2.modID, "item.ItemMultiMaterial", 1L, 10),
-                                getModItem(AppliedEnergistics2.modID, "item.ItemMultiMaterial", 0L, 13))
-                        .itemOutputs(getModItem(AppliedEnergistics2.modID, "item.ItemMultiMaterial", 1L, 16))
+                                getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 10),
+                                getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 0L, 13))
+                        .itemOutputs(getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 16))
                         .noFluidInputs()
                         .noFluidOutputs()
                         .duration(10 * SECONDS)
@@ -112,8 +112,8 @@ public class FormingPressRecipes implements Runnable {
             GT_Values.RA.stdBuilder()
                         .itemInputs(
                                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.CertusQuartz, 1L),
-                                getModItem(AppliedEnergistics2.modID, "item.ItemMultiMaterial", 0L, 13))
-                        .itemOutputs(getModItem(AppliedEnergistics2.modID, "item.ItemMultiMaterial", 1L, 16))
+                                getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 0L, 13))
+                        .itemOutputs(getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 16))
                         .noFluidInputs()
                         .noFluidOutputs()
                         .duration(10 * SECONDS)
@@ -123,8 +123,8 @@ public class FormingPressRecipes implements Runnable {
             GT_Values.RA.stdBuilder()
                         .itemInputs(
                                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Diamond, 1L),
-                                getModItem(AppliedEnergistics2.modID, "item.ItemMultiMaterial", 0L, 14))
-                        .itemOutputs(getModItem(AppliedEnergistics2.modID, "item.ItemMultiMaterial", 1L, 17))
+                                getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 0L, 14))
+                        .itemOutputs(getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 17))
                         .noFluidInputs()
                         .noFluidOutputs()
                         .duration(10 * SECONDS)
@@ -134,8 +134,8 @@ public class FormingPressRecipes implements Runnable {
             GT_Values.RA.stdBuilder()
                         .itemInputs(
                                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Gold, 1L),
-                                getModItem(AppliedEnergistics2.modID, "item.ItemMultiMaterial", 0L, 15))
-                        .itemOutputs(getModItem(AppliedEnergistics2.modID, "item.ItemMultiMaterial", 1L, 18))
+                                getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 0L, 15))
+                        .itemOutputs(getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 18))
                         .noFluidInputs()
                         .noFluidOutputs()
                         .duration(10 * SECONDS)
@@ -145,8 +145,8 @@ public class FormingPressRecipes implements Runnable {
             GT_Values.RA.stdBuilder()
                         .itemInputs(
                                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.SiliconSG, 1L),
-                                getModItem(AppliedEnergistics2.modID, "item.ItemMultiMaterial", 0L, 19))
-                        .itemOutputs(getModItem(AppliedEnergistics2.modID, "item.ItemMultiMaterial", 1L, 20))
+                                getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 0L, 19))
+                        .itemOutputs(getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 20))
                         .noFluidInputs()
                         .noFluidOutputs()
                         .duration(10 * SECONDS)

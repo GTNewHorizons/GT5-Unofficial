@@ -1,6 +1,6 @@
 package gregtech.common.items;
 
-import static gregtech.api.enums.GT_Values.MOD_ID;
+import static gregtech.api.enums.Mods.GregTech;
 
 import java.util.List;
 
@@ -25,7 +25,7 @@ public class ItemPollen extends Item {
         this.setCreativeTab(Tabs.tabApiculture);
         this.setHasSubtypes(true);
         this.setUnlocalizedName("gt.pollen");
-        GameRegistry.registerItem(this, "gt.pollen", MOD_ID);
+        GameRegistry.registerItem(this, "gt.pollen", GregTech.ID);
     }
 
     public ItemStack getStackForType(PollenType type) {

@@ -1,5 +1,7 @@
 package gregtech.loaders.postload.recipes;
 
+import static gregtech.api.enums.Mods.ExtraTrees;
+import static gregtech.api.enums.Mods.IndustrialCraft2;
 import static gregtech.api.util.GT_ModHandler.getModItem;
 
 import java.util.Iterator;
@@ -89,16 +91,16 @@ public class RecipeRemover implements Runnable {
         GT_Utility.removeSimpleIC2MachineRecipe(
                 GT_Values.NI,
                 GT_ModHandler.getMaceratorRecipeList(),
-                getModItem("IC2", "itemBiochaff", 1L));
+                getModItem(IndustrialCraft2.ID, "itemBiochaff", 1L));
 
         GT_Utility.removeSimpleIC2MachineRecipe(
                 new ItemStack(Blocks.cactus, 8, 0),
                 GT_ModHandler.getCompressorRecipeList(),
-                getModItem("IC2", "itemFuelPlantBall", 1L));
+                getModItem(IndustrialCraft2.ID, "itemFuelPlantBall", 1L));
         GT_Utility.removeSimpleIC2MachineRecipe(
-                getModItem("ExtraTrees", "food", 8L, 24),
+                getModItem(ExtraTrees.ID, "food", 8L, 24),
                 GT_ModHandler.getCompressorRecipeList(),
-                getModItem("IC2", "itemFuelPlantBall", 1L));
+                getModItem(IndustrialCraft2.ID, "itemFuelPlantBall", 1L));
 
         GT_Utility.removeSimpleIC2MachineRecipe(
                 ItemList.Crop_Drop_BobsYerUncleRanks.get(1L),

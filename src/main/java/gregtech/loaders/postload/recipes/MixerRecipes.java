@@ -2,13 +2,13 @@ package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.enums.GT_Values.NF;
 import static gregtech.api.enums.GT_Values.NI;
-import static gregtech.api.enums.ModIDs.AppliedEnergistics2;
-import static gregtech.api.enums.ModIDs.BiomesOPlanty;
-import static gregtech.api.enums.ModIDs.Forestry;
-import static gregtech.api.enums.ModIDs.Natura;
-import static gregtech.api.enums.ModIDs.PamsHarvestCraft;
-import static gregtech.api.enums.ModIDs.Railcraft;
-import static gregtech.api.enums.ModIDs.Thaumcraft;
+import static gregtech.api.enums.Mods.AppliedEnergistics2;
+import static gregtech.api.enums.Mods.BiomesOPlenty;
+import static gregtech.api.enums.Mods.Forestry;
+import static gregtech.api.enums.Mods.Natura;
+import static gregtech.api.enums.Mods.PamsHarvestCraft;
+import static gregtech.api.enums.Mods.Railcraft;
+import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.util.GT_ModHandler.getModItem;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sMixerRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
@@ -645,7 +645,7 @@ public class MixerRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
                     .itemInputs(
-                            getModItem(AppliedEnergistics2.modID, "item.ItemMultiMaterial", 1L, 1),
+                            getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 1),
                             GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1),
                             GT_OreDictUnificator.get(OrePrefixes.gem, Materials.NetherQuartz, 1))
                     .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Fluix, 2))
@@ -657,7 +657,7 @@ public class MixerRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
                     .itemInputs(
-                            getModItem(AppliedEnergistics2.modID, "item.ItemMultiMaterial", 1L, 1),
+                            getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 1),
                             GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1),
                             GT_OreDictUnificator.get(OrePrefixes.gem, Materials.NetherQuartz, 1))
                     .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Fluix, 2))
@@ -672,7 +672,7 @@ public class MixerRecipes implements Runnable {
                             ItemList.IC2_Fertilizer.get(1),
                             new ItemStack(Blocks.dirt, 8, 32767),
                             GT_Utility.getIntegratedCircuit(1))
-                    .itemOutputs(getModItem(Forestry.modID, "soil", 8L, 0))
+                    .itemOutputs(getModItem(Forestry.ID, "soil", 8L, 0))
                     .fluidInputs(Materials.Water.getFluid(1000))
                     .noFluidOutputs()
                     .duration(3 * SECONDS + 4 * TICKS)
@@ -684,7 +684,7 @@ public class MixerRecipes implements Runnable {
                             ItemList.FR_Fertilizer.get(1),
                             new ItemStack(Blocks.dirt, 8, 32767),
                             GT_Utility.getIntegratedCircuit(1))
-                    .itemOutputs(getModItem(Forestry.modID, "soil", 8L, 0))
+                    .itemOutputs(getModItem(Forestry.ID, "soil", 8L, 0))
                     .fluidInputs(Materials.Water.getFluid(1000))
                     .noFluidOutputs()
                     .duration(3 * SECONDS + 4 * TICKS)
@@ -696,7 +696,7 @@ public class MixerRecipes implements Runnable {
                             ItemList.FR_Compost.get(1),
                             new ItemStack(Blocks.dirt, 8, 32767),
                             GT_Utility.getIntegratedCircuit(1))
-                    .itemOutputs(getModItem(Forestry.modID, "soil", 8L, 0))
+                    .itemOutputs(getModItem(Forestry.ID, "soil", 8L, 0))
                     .fluidInputs(Materials.Water.getFluid(1000))
                     .noFluidOutputs()
                     .duration(3 * SECONDS + 4 * TICKS)
@@ -708,7 +708,7 @@ public class MixerRecipes implements Runnable {
                             ItemList.FR_Mulch.get(8),
                             new ItemStack(Blocks.dirt, 8, 32767),
                             GT_Utility.getIntegratedCircuit(1))
-                    .itemOutputs(getModItem(Forestry.modID, "soil", 8L, 0))
+                    .itemOutputs(getModItem(Forestry.ID, "soil", 8L, 0))
                     .fluidInputs(Materials.Water.getFluid(1000))
                     .noFluidOutputs()
                     .duration(3 * SECONDS + 4 * TICKS)
@@ -720,7 +720,7 @@ public class MixerRecipes implements Runnable {
                             new ItemStack(Blocks.sand, 1, 32767),
                             new ItemStack(Blocks.dirt, 1, 32767),
                             GT_Utility.getIntegratedCircuit(1))
-                    .itemOutputs(getModItem(Forestry.modID, "soil", 2L, 1))
+                    .itemOutputs(getModItem(Forestry.ID, "soil", 2L, 1))
                     .fluidInputs(Materials.Water.getFluid(250))
                     .noFluidOutputs()
                     .duration(16 * TICKS)
@@ -1107,7 +1107,7 @@ public class MixerRecipes implements Runnable {
                             .itemInputs(
                                     GT_OreDictUnificator.get(OrePrefixes.block, Materials.Lignite, 1),
                                     ItemList.MSFMixture.get(6),
-                                    getModItem(Thaumcraft.modID, "ItemResource", 4),
+                                    getModItem(Thaumcraft.ID, "ItemResource", 4),
                                     GT_Utility.getIntegratedCircuit(1))
                             .itemOutputs(ItemList.Block_MSSFUEL.get(1))
                             .fluidInputs(Materials.NitroFuel.getFluid(1000))
@@ -1120,7 +1120,7 @@ public class MixerRecipes implements Runnable {
                             .itemInputs(
                                     GT_OreDictUnificator.get(OrePrefixes.block, Materials.Charcoal, 1),
                                     ItemList.MSFMixture.get(4),
-                                    getModItem(Thaumcraft.modID, "ItemResource", 4),
+                                    getModItem(Thaumcraft.ID, "ItemResource", 4),
                                     GT_Utility.getIntegratedCircuit(1))
                             .itemOutputs(ItemList.Block_MSSFUEL.get(1))
                             .fluidInputs(Materials.NitroFuel.getFluid(750))
@@ -1133,7 +1133,7 @@ public class MixerRecipes implements Runnable {
                             .itemInputs(
                                     GT_OreDictUnificator.get(OrePrefixes.block, Materials.Coal, 1),
                                     ItemList.MSFMixture.get(2),
-                                    getModItem(Thaumcraft.modID, "ItemResource", 4),
+                                    getModItem(Thaumcraft.ID, "ItemResource", 4),
                                     GT_Utility.getIntegratedCircuit(1))
                             .itemOutputs(ItemList.Block_MSSFUEL.get(1))
                             .fluidInputs(Materials.NitroFuel.getFluid(500))
@@ -1146,7 +1146,7 @@ public class MixerRecipes implements Runnable {
                             .itemInputs(
                                     GT_OreDictUnificator.get(OrePrefixes.block, Materials.Lignite, 1),
                                     ItemList.MSFMixture.get(6),
-                                    getModItem(Thaumcraft.modID, "ItemResource", 4),
+                                    getModItem(Thaumcraft.ID, "ItemResource", 4),
                                     GT_Utility.getIntegratedCircuit(1))
                             .itemOutputs(ItemList.Block_MSSFUEL.get(1))
                             .fluidInputs(Materials.GasolinePremium.getFluid(400))
@@ -1159,7 +1159,7 @@ public class MixerRecipes implements Runnable {
                             .itemInputs(
                                     GT_OreDictUnificator.get(OrePrefixes.block, Materials.Charcoal, 1),
                                     ItemList.MSFMixture.get(4),
-                                    getModItem(Thaumcraft.modID, "ItemResource", 4),
+                                    getModItem(Thaumcraft.ID, "ItemResource", 4),
                                     GT_Utility.getIntegratedCircuit(1))
                             .itemOutputs(ItemList.Block_MSSFUEL.get(1))
                             .fluidInputs(Materials.GasolinePremium.getFluid(300))
@@ -1172,7 +1172,7 @@ public class MixerRecipes implements Runnable {
                             .itemInputs(
                                     GT_OreDictUnificator.get(OrePrefixes.block, Materials.Coal, 1),
                                     ItemList.MSFMixture.get(2),
-                                    getModItem(Thaumcraft.modID, "ItemResource", 4),
+                                    getModItem(Thaumcraft.ID, "ItemResource", 4),
                                     GT_Utility.getIntegratedCircuit(1))
                             .itemOutputs(ItemList.Block_MSSFUEL.get(1))
                             .fluidInputs(Materials.GasolinePremium.getFluid(200))
@@ -1283,7 +1283,7 @@ public class MixerRecipes implements Runnable {
                             new ItemStack(Blocks.dirt, 1, 32767),
                             new ItemStack(Items.wheat, 4, 32767),
                             GT_Utility.getIntegratedCircuit(2))
-                    .itemOutputs(getModItem(Forestry.modID, "fertilizerBio", 1L, 0))
+                    .itemOutputs(getModItem(Forestry.ID, "fertilizerBio", 1L, 0))
                     .fluidInputs(Materials.Water.getFluid(100))
                     .noFluidOutputs()
                     .duration(10 * SECONDS)
@@ -1295,7 +1295,7 @@ public class MixerRecipes implements Runnable {
                             new ItemStack(Blocks.dirt, 1, 2),
                             new ItemStack(Items.wheat, 4, 32767),
                             GT_Utility.getIntegratedCircuit(2))
-                    .itemOutputs(getModItem(Forestry.modID, "fertilizerBio", 1L, 0))
+                    .itemOutputs(getModItem(Forestry.ID, "fertilizerBio", 1L, 0))
                     .fluidInputs(Materials.Water.getFluid(100))
                     .noFluidOutputs()
                     .duration(10 * SECONDS)
@@ -1305,9 +1305,9 @@ public class MixerRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
                     .itemInputs(
                             new ItemStack(Blocks.dirt, 1, 32767),
-                            getModItem(BiomesOPlanty.modID, "plants", 4, 6),
+                            getModItem(BiomesOPlenty.ID, "plants", 4, 6),
                             GT_Utility.getIntegratedCircuit(2))
-                    .itemOutputs(getModItem(Forestry.modID, "fertilizerBio", 1L, 0))
+                    .itemOutputs(getModItem(Forestry.ID, "fertilizerBio", 1L, 0))
                     .fluidInputs(Materials.Water.getFluid(100))
                     .noFluidOutputs()
                     .duration(10 * SECONDS)
@@ -1317,9 +1317,9 @@ public class MixerRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
                     .itemInputs(
                             new ItemStack(Blocks.dirt, 1, 2),
-                            getModItem(BiomesOPlanty.modID, "plants", 4, 6),
+                            getModItem(BiomesOPlenty.ID, "plants", 4, 6),
                             GT_Utility.getIntegratedCircuit(2))
-                    .itemOutputs(getModItem(Forestry.modID, "fertilizerBio", 1L, 0))
+                    .itemOutputs(getModItem(Forestry.ID, "fertilizerBio", 1L, 0))
                     .fluidInputs(Materials.Water.getFluid(100))
                     .noFluidOutputs()
                     .duration(10 * SECONDS)
@@ -1329,9 +1329,9 @@ public class MixerRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
                     .itemInputs(
                             new ItemStack(Blocks.dirt, 1, 32767),
-                            getModItem(PamsHarvestCraft.modID, "oatsItem", 4),
+                            getModItem(PamsHarvestCraft.ID, "oatsItem", 4),
                             GT_Utility.getIntegratedCircuit(2))
-                    .itemOutputs(getModItem(Forestry.modID, "fertilizerBio", 1L, 0))
+                    .itemOutputs(getModItem(Forestry.ID, "fertilizerBio", 1L, 0))
                     .fluidInputs(Materials.Water.getFluid(100))
                     .noFluidOutputs()
                     .duration(10 * SECONDS)
@@ -1341,9 +1341,9 @@ public class MixerRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
                     .itemInputs(
                             new ItemStack(Blocks.dirt, 1, 2),
-                            getModItem(PamsHarvestCraft.modID, "oatsItem", 4),
+                            getModItem(PamsHarvestCraft.ID, "oatsItem", 4),
                             GT_Utility.getIntegratedCircuit(2))
-                    .itemOutputs(getModItem(Forestry.modID, "fertilizerBio", 1L, 0))
+                    .itemOutputs(getModItem(Forestry.ID, "fertilizerBio", 1L, 0))
                     .fluidInputs(Materials.Water.getFluid(100))
                     .noFluidOutputs()
                     .duration(10 * SECONDS)
@@ -1353,9 +1353,9 @@ public class MixerRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
                     .itemInputs(
                             new ItemStack(Blocks.dirt, 1, 32767),
-                            getModItem(PamsHarvestCraft.modID, "ryeItem", 4),
+                            getModItem(PamsHarvestCraft.ID, "ryeItem", 4),
                             GT_Utility.getIntegratedCircuit(2))
-                    .itemOutputs(getModItem(Forestry.modID, "fertilizerBio", 1L, 0))
+                    .itemOutputs(getModItem(Forestry.ID, "fertilizerBio", 1L, 0))
                     .fluidInputs(Materials.Water.getFluid(100))
                     .noFluidOutputs()
                     .duration(10 * SECONDS)
@@ -1365,9 +1365,9 @@ public class MixerRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
                     .itemInputs(
                             new ItemStack(Blocks.dirt, 1, 2),
-                            getModItem(PamsHarvestCraft.modID, "ryeItem", 4),
+                            getModItem(PamsHarvestCraft.ID, "ryeItem", 4),
                             GT_Utility.getIntegratedCircuit(2))
-                    .itemOutputs(getModItem(Forestry.modID, "fertilizerBio", 1L, 0))
+                    .itemOutputs(getModItem(Forestry.ID, "fertilizerBio", 1L, 0))
                     .fluidInputs(Materials.Water.getFluid(100))
                     .noFluidOutputs()
                     .duration(10 * SECONDS)
@@ -1377,9 +1377,9 @@ public class MixerRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
                     .itemInputs(
                             new ItemStack(Blocks.dirt, 1, 32767),
-                            getModItem(PamsHarvestCraft.modID, "barleyItem", 4),
+                            getModItem(PamsHarvestCraft.ID, "barleyItem", 4),
                             GT_Utility.getIntegratedCircuit(2))
-                    .itemOutputs(getModItem(Forestry.modID, "fertilizerBio", 1L, 0))
+                    .itemOutputs(getModItem(Forestry.ID, "fertilizerBio", 1L, 0))
                     .fluidInputs(Materials.Water.getFluid(100))
                     .noFluidOutputs()
                     .duration(10 * SECONDS)
@@ -1389,9 +1389,9 @@ public class MixerRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
                     .itemInputs(
                             new ItemStack(Blocks.dirt, 1, 2),
-                            getModItem(PamsHarvestCraft.modID, "barleyItem", 4, 6),
+                            getModItem(PamsHarvestCraft.ID, "barleyItem", 4, 6),
                             GT_Utility.getIntegratedCircuit(2))
-                    .itemOutputs(getModItem(Forestry.modID, "fertilizerBio", 1L, 0))
+                    .itemOutputs(getModItem(Forestry.ID, "fertilizerBio", 1L, 0))
                     .fluidInputs(Materials.Water.getFluid(100))
                     .noFluidOutputs()
                     .duration(10 * SECONDS)
@@ -1401,9 +1401,9 @@ public class MixerRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
                     .itemInputs(
                             new ItemStack(Blocks.dirt, 1, 32767),
-                            getModItem(Natura.modID, "barleyFood", 4),
+                            getModItem(Natura.ID, "barleyFood", 4),
                             GT_Utility.getIntegratedCircuit(2))
-                    .itemOutputs(getModItem(Forestry.modID, "fertilizerBio", 1L, 0))
+                    .itemOutputs(getModItem(Forestry.ID, "fertilizerBio", 1L, 0))
                     .fluidInputs(Materials.Water.getFluid(100))
                     .noFluidOutputs()
                     .duration(10 * SECONDS)
@@ -1413,9 +1413,9 @@ public class MixerRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
                     .itemInputs(
                             new ItemStack(Blocks.dirt, 1, 2),
-                            getModItem(Natura.modID, "barleyFood", 4),
+                            getModItem(Natura.ID, "barleyFood", 4),
                             GT_Utility.getIntegratedCircuit(2))
-                    .itemOutputs(getModItem(Forestry.modID, "fertilizerBio", 1L, 0))
+                    .itemOutputs(getModItem(Forestry.ID, "fertilizerBio", 1L, 0))
                     .fluidInputs(Materials.Water.getFluid(100))
                     .noFluidOutputs()
                     .duration(10 * SECONDS)
@@ -1427,7 +1427,7 @@ public class MixerRecipes implements Runnable {
                             new ItemStack(Blocks.dirt, 1, 32767),
                             GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Ash, 4),
                             GT_Utility.getIntegratedCircuit(3))
-                    .itemOutputs(getModItem(Forestry.modID, "fertilizerBio", 1L, 0))
+                    .itemOutputs(getModItem(Forestry.ID, "fertilizerBio", 1L, 0))
                     .fluidInputs(Materials.Water.getFluid(100))
                     .noFluidOutputs()
                     .duration(10 * SECONDS)
@@ -1439,7 +1439,7 @@ public class MixerRecipes implements Runnable {
                             new ItemStack(Blocks.dirt, 1, 2),
                             GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Ash, 4),
                             GT_Utility.getIntegratedCircuit(3))
-                    .itemOutputs(getModItem(Forestry.modID, "fertilizerBio", 1L, 0))
+                    .itemOutputs(getModItem(Forestry.ID, "fertilizerBio", 1L, 0))
                     .fluidInputs(Materials.Water.getFluid(100))
                     .noFluidOutputs()
                     .duration(10 * SECONDS)
@@ -1733,7 +1733,7 @@ public class MixerRecipes implements Runnable {
                         .itemInputs(
                                 EnumCube.COKE_BLOCK.getItem(),
                                 ItemList.MSFMixture.get(2),
-                                getModItem(Thaumcraft.modID, "ItemResource", 4),
+                                getModItem(Thaumcraft.ID, "ItemResource", 4),
                                 GT_Utility.getIntegratedCircuit(1))
                         .itemOutputs(ItemList.Block_MSSFUEL.get(1))
                         .fluidInputs(Materials.NitroFuel.getFluid(300))
@@ -1746,7 +1746,7 @@ public class MixerRecipes implements Runnable {
                         .itemInputs(
                                 EnumCube.COKE_BLOCK.getItem(),
                                 ItemList.MSFMixture.get(2),
-                                getModItem(Thaumcraft.modID, "ItemResource", 4),
+                                getModItem(Thaumcraft.ID, "ItemResource", 4),
                                 GT_Utility.getIntegratedCircuit(1))
                         .itemOutputs(ItemList.Block_MSSFUEL.get(1))
                         .fluidInputs(Materials.GasolinePremium.getFluid(120))

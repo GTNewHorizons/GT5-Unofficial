@@ -1,6 +1,7 @@
 package gregtech.api.enums;
 
-import static gregtech.api.enums.ModIDs.IndustrialCraft2;
+import static gregtech.api.enums.Mods.GregTech;
+import static gregtech.api.enums.Mods.IndustrialCraft2;
 
 import java.math.BigInteger;
 import java.util.*;
@@ -190,27 +191,93 @@ public class GT_Values {
     /**
      * MOD ID Strings, since they are very common Parameters.
      */
-    public static final String MOD_ID = "gregtech", MOD_ID_IC2 = "IC2", MOD_ID_NC = "IC2NuclearControl",
-            MOD_ID_TC = "Thaumcraft", MOD_ID_TF = "TwilightForest", MOD_ID_RC = "Railcraft",
-            MOD_ID_TE = "ThermalExpansion", MOD_ID_AE = "appliedenergistics2", MOD_ID_TFC = "terrafirmacraft",
-            MOD_ID_PFAA = "PFAAGeologica", MOD_ID_FR = "Forestry", MOD_ID_HaC = "harvestcraft",
-            MOD_ID_APC = "AppleCore", MOD_ID_MaCr = "magicalcrops", MOD_ID_GaEn = "ganysend",
-            MOD_ID_GaSu = "ganyssurface", MOD_ID_GaNe = "ganysnether", MOD_ID_BC_SILICON = "BuildCraft|Silicon",
-            MOD_ID_BC_TRANSPORT = "BuildCraft|Transport", MOD_ID_BC_FACTORY = "BuildCraft|Factory",
-            MOD_ID_BC_ENERGY = "BuildCraft|Energy", MOD_ID_BC_BUILDERS = "BuildCraft|Builders",
-            MOD_ID_BC_CORE = "BuildCraft|Core", MOD_ID_GC_CORE = "GalacticraftCore",
-            MOD_ID_GC_MARS = "GalacticraftMars", MOD_ID_GC_PLANETS = "GalacticraftPlanets", MOD_ID_DC = "dreamcraft",
-            MOD_ID_GTPP = "miscutils";
+    @Deprecated
+    public static final String MOD_ID = "gregtech";
+    @Deprecated
+    public static final String MOD_ID_IC2 = "IC2";
+    @Deprecated
+    public static final String MOD_ID_NC = "IC2NuclearControl";
+    @Deprecated
+    public static final String MOD_ID_TC = "Thaumcraft";
+    @Deprecated
+    public static final String MOD_ID_TF = "TwilightForest";
+    @Deprecated
+    public static final String MOD_ID_RC = "Railcraft";
+    @Deprecated
+    public static final String MOD_ID_TE = "ThermalExpansion";
+    @Deprecated
+    public static final String MOD_ID_AE = "appliedenergistics2";
+    @Deprecated
+    public static final String MOD_ID_TFC = "terrafirmacraft";
+    @Deprecated
+    public static final String MOD_ID_PFAA = "PFAAGeologica";
+    @Deprecated
+    public static final String MOD_ID_FR = "Forestry";
+    @Deprecated
+    public static final String MOD_ID_HaC = "harvestcraft";
+    @Deprecated
+    public static final String MOD_ID_APC = "AppleCore";
+    @Deprecated
+    public static final String MOD_ID_MaCr = "magicalcrops";
+    @Deprecated
+    public static final String MOD_ID_GaEn = "ganysend";
+    @Deprecated
+    public static final String MOD_ID_GaSu = "ganyssurface";
+    @Deprecated
+    public static final String MOD_ID_GaNe = "ganysnether";
+    @Deprecated
+    public static final String MOD_ID_BC_SILICON = "BuildCraft|Silicon";
+    @Deprecated
+    public static final String MOD_ID_BC_TRANSPORT = "BuildCraft|Transport";
+    @Deprecated
+    public static final String MOD_ID_BC_FACTORY = "BuildCraft|Factory";
+    @Deprecated
+    public static final String MOD_ID_BC_ENERGY = "BuildCraft|Energy";
+    @Deprecated
+    public static final String MOD_ID_BC_BUILDERS = "BuildCraft|Builders";
+    @Deprecated
+    public static final String MOD_ID_BC_CORE = "BuildCraft|Core";
+    @Deprecated
+    public static final String MOD_ID_GC_CORE = "GalacticraftCore";
+    @Deprecated
+    public static final String MOD_ID_GC_MARS = "GalacticraftMars";
+    @Deprecated
+    public static final String MOD_ID_GC_PLANETS = "GalacticraftPlanets";
+    @Deprecated
+    public static final String MOD_ID_DC = "dreamcraft";
+    @Deprecated
+    public static final String MOD_ID_GTPP = "miscutils";
     /**
      * File Paths and Resource Paths
      */
-    public static final String TEX_DIR = "textures/", TEX_DIR_GUI = TEX_DIR + "gui/", TEX_DIR_ITEM = TEX_DIR + "items/",
-            TEX_DIR_BLOCK = TEX_DIR + "blocks/", TEX_DIR_ENTITY = TEX_DIR + "entity/",
-            TEX_DIR_ASPECTS = TEX_DIR + "aspects/", RES_PATH = MOD_ID + ":" + TEX_DIR,
-            RES_PATH_GUI = MOD_ID + ":" + TEX_DIR_GUI, RES_PATH_ITEM = MOD_ID + ":", RES_PATH_BLOCK = MOD_ID + ":",
-            RES_PATH_ENTITY = MOD_ID + ":" + TEX_DIR_ENTITY, RES_PATH_ASPECTS = MOD_ID + ":" + TEX_DIR_ASPECTS,
-            RES_PATH_IC2 = IndustrialCraft2.modID.toLowerCase(Locale.ENGLISH) + ":",
-            RES_PATH_MODEL = MOD_ID + ":" + TEX_DIR + "models/";
+    @Deprecated
+    public static final String TEX_DIR = "textures/";
+    @Deprecated
+    public static final String TEX_DIR_GUI = TEX_DIR + "gui/";
+    @Deprecated
+    public static final String TEX_DIR_ITEM = TEX_DIR + "items/";
+    @Deprecated
+    public static final String TEX_DIR_BLOCK = TEX_DIR + "blocks/";
+    @Deprecated
+    public static final String TEX_DIR_ENTITY = TEX_DIR + "entity/";
+    @Deprecated
+    public static final String TEX_DIR_ASPECTS = TEX_DIR + "aspects/";
+    @Deprecated
+    public static final String RES_PATH = GregTech.getResourcePath(TEX_DIR);
+    @Deprecated
+    public static final String RES_PATH_GUI = GregTech.getResourcePath("textures", "gui/");
+    @Deprecated
+    public static final String RES_PATH_ITEM = GregTech.getResourcePath();
+    @Deprecated
+    public static final String RES_PATH_BLOCK = GregTech.getResourcePath();
+    @Deprecated
+    public static final String RES_PATH_ENTITY = GregTech.getResourcePath("textures", "entity/");
+    @Deprecated
+    public static final String RES_PATH_ASPECTS = GregTech.getResourcePath("textures", "aspects/");
+    @Deprecated
+    public static final String RES_PATH_MODEL = GregTech.getResourcePath("textures", "models/");
+    @Deprecated
+    public static final String RES_PATH_IC2 = IndustrialCraft2.getResourcePath();
 
     /**
      * NBT String Keys

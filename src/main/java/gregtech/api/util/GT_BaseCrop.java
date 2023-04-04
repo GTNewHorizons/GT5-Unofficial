@@ -1,7 +1,7 @@
 package gregtech.api.util;
 
 import static gregtech.api.enums.GT_Values.E;
-import static gregtech.api.enums.ModIDs.IC2CropPlugin;
+import static gregtech.api.enums.Mods.IC2CropPlugin;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;

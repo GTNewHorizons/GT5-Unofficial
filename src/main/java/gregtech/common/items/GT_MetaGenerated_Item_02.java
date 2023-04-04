@@ -1,5 +1,6 @@
 package gregtech.common.items;
 
+import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 
 import net.minecraft.dispenser.IBlockSource;
@@ -46,7 +47,6 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
 
     public static GT_MetaGenerated_Item_02 INSTANCE;
     private static final String aTextCover = "Usable as Cover";
-    private static final String aTextForestry = "Forestry";
 
     public GT_MetaGenerated_Item_02() {
         super(
@@ -1868,99 +1868,99 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
         GT_ModHandler.addCraftingRecipe(
                 ItemList.Plank_Larch.get(2L),
                 GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE,
-                new Object[] { "s ", " P", 'P', GT_ModHandler.getModItem(aTextForestry, "slabs1", 1L, 0) });
+                new Object[] { "s ", " P", 'P', GT_ModHandler.getModItem(Forestry.ID, "slabs1", 1L, 0) });
         GT_ModHandler.addCraftingRecipe(
                 ItemList.Plank_Teak.get(2L),
                 GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE,
-                new Object[] { "s ", " P", 'P', GT_ModHandler.getModItem(aTextForestry, "slabs1", 1L, 1) });
+                new Object[] { "s ", " P", 'P', GT_ModHandler.getModItem(Forestry.ID, "slabs1", 1L, 1) });
         GT_ModHandler.addCraftingRecipe(
                 ItemList.Plank_Acacia_Green.get(2L),
                 GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE,
-                new Object[] { "s ", " P", 'P', GT_ModHandler.getModItem(aTextForestry, "slabs1", 1L, 2) });
+                new Object[] { "s ", " P", 'P', GT_ModHandler.getModItem(Forestry.ID, "slabs1", 1L, 2) });
         GT_ModHandler.addCraftingRecipe(
                 ItemList.Plank_Lime.get(2L),
                 GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE,
-                new Object[] { "s ", " P", 'P', GT_ModHandler.getModItem(aTextForestry, "slabs1", 1L, 3) });
+                new Object[] { "s ", " P", 'P', GT_ModHandler.getModItem(Forestry.ID, "slabs1", 1L, 3) });
         GT_ModHandler.addCraftingRecipe(
                 ItemList.Plank_Chestnut.get(2L),
                 GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE,
-                new Object[] { "s ", " P", 'P', GT_ModHandler.getModItem(aTextForestry, "slabs1", 1L, 4) });
+                new Object[] { "s ", " P", 'P', GT_ModHandler.getModItem(Forestry.ID, "slabs1", 1L, 4) });
         GT_ModHandler.addCraftingRecipe(
                 ItemList.Plank_Wenge.get(2L),
                 GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE,
-                new Object[] { "s ", " P", 'P', GT_ModHandler.getModItem(aTextForestry, "slabs1", 1L, 5) });
+                new Object[] { "s ", " P", 'P', GT_ModHandler.getModItem(Forestry.ID, "slabs1", 1L, 5) });
         GT_ModHandler.addCraftingRecipe(
                 ItemList.Plank_Baobab.get(2L),
                 GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE,
-                new Object[] { "s ", " P", 'P', GT_ModHandler.getModItem(aTextForestry, "slabs1", 1L, 6) });
+                new Object[] { "s ", " P", 'P', GT_ModHandler.getModItem(Forestry.ID, "slabs1", 1L, 6) });
         GT_ModHandler.addCraftingRecipe(
                 ItemList.Plank_Sequoia.get(2L),
                 GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE,
-                new Object[] { "s ", " P", 'P', GT_ModHandler.getModItem(aTextForestry, "slabs1", 1L, 7) });
+                new Object[] { "s ", " P", 'P', GT_ModHandler.getModItem(Forestry.ID, "slabs1", 1L, 7) });
         GT_ModHandler.addCraftingRecipe(
                 ItemList.Plank_Kapok.get(2L),
                 GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE,
-                new Object[] { "s ", " P", 'P', GT_ModHandler.getModItem(aTextForestry, "slabs2", 1L, 0) });
+                new Object[] { "s ", " P", 'P', GT_ModHandler.getModItem(Forestry.ID, "slabs2", 1L, 0) });
         GT_ModHandler.addCraftingRecipe(
                 ItemList.Plank_Ebony.get(2L),
                 GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE,
-                new Object[] { "s ", " P", 'P', GT_ModHandler.getModItem(aTextForestry, "slabs2", 1L, 1) });
+                new Object[] { "s ", " P", 'P', GT_ModHandler.getModItem(Forestry.ID, "slabs2", 1L, 1) });
         GT_ModHandler.addCraftingRecipe(
                 ItemList.Plank_Mahagony.get(2L),
                 GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE,
-                new Object[] { "s ", " P", 'P', GT_ModHandler.getModItem(aTextForestry, "slabs2", 1L, 2) });
+                new Object[] { "s ", " P", 'P', GT_ModHandler.getModItem(Forestry.ID, "slabs2", 1L, 2) });
         GT_ModHandler.addCraftingRecipe(
                 ItemList.Plank_Balsa.get(2L),
                 GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE,
-                new Object[] { "s ", " P", 'P', GT_ModHandler.getModItem(aTextForestry, "slabs2", 1L, 3) });
+                new Object[] { "s ", " P", 'P', GT_ModHandler.getModItem(Forestry.ID, "slabs2", 1L, 3) });
         GT_ModHandler.addCraftingRecipe(
                 ItemList.Plank_Willow.get(2L),
                 GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE,
-                new Object[] { "s ", " P", 'P', GT_ModHandler.getModItem(aTextForestry, "slabs2", 1L, 4) });
+                new Object[] { "s ", " P", 'P', GT_ModHandler.getModItem(Forestry.ID, "slabs2", 1L, 4) });
         GT_ModHandler.addCraftingRecipe(
                 ItemList.Plank_Walnut.get(2L),
                 GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE,
-                new Object[] { "s ", " P", 'P', GT_ModHandler.getModItem(aTextForestry, "slabs2", 1L, 5) });
+                new Object[] { "s ", " P", 'P', GT_ModHandler.getModItem(Forestry.ID, "slabs2", 1L, 5) });
         GT_ModHandler.addCraftingRecipe(
                 ItemList.Plank_Greenheart.get(2L),
                 GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE,
-                new Object[] { "s ", " P", 'P', GT_ModHandler.getModItem(aTextForestry, "slabs2", 1L, 6) });
+                new Object[] { "s ", " P", 'P', GT_ModHandler.getModItem(Forestry.ID, "slabs2", 1L, 6) });
         GT_ModHandler.addCraftingRecipe(
                 ItemList.Plank_Cherry.get(2L),
                 GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE,
-                new Object[] { "s ", " P", 'P', GT_ModHandler.getModItem(aTextForestry, "slabs2", 1L, 7) });
+                new Object[] { "s ", " P", 'P', GT_ModHandler.getModItem(Forestry.ID, "slabs2", 1L, 7) });
         GT_ModHandler.addCraftingRecipe(
                 ItemList.Plank_Mahoe.get(2L),
                 GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE,
-                new Object[] { "s ", " P", 'P', GT_ModHandler.getModItem(aTextForestry, "slabs3", 1L, 0) });
+                new Object[] { "s ", " P", 'P', GT_ModHandler.getModItem(Forestry.ID, "slabs3", 1L, 0) });
         GT_ModHandler.addCraftingRecipe(
                 ItemList.Plank_Poplar.get(2L),
                 GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE,
-                new Object[] { "s ", " P", 'P', GT_ModHandler.getModItem(aTextForestry, "slabs3", 1L, 1) });
+                new Object[] { "s ", " P", 'P', GT_ModHandler.getModItem(Forestry.ID, "slabs3", 1L, 1) });
         GT_ModHandler.addCraftingRecipe(
                 ItemList.Plank_Palm.get(2L),
                 GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE,
-                new Object[] { "s ", " P", 'P', GT_ModHandler.getModItem(aTextForestry, "slabs3", 1L, 2) });
+                new Object[] { "s ", " P", 'P', GT_ModHandler.getModItem(Forestry.ID, "slabs3", 1L, 2) });
         GT_ModHandler.addCraftingRecipe(
                 ItemList.Plank_Papaya.get(2L),
                 GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE,
-                new Object[] { "s ", " P", 'P', GT_ModHandler.getModItem(aTextForestry, "slabs3", 1L, 3) });
+                new Object[] { "s ", " P", 'P', GT_ModHandler.getModItem(Forestry.ID, "slabs3", 1L, 3) });
         GT_ModHandler.addCraftingRecipe(
                 ItemList.Plank_Pine.get(2L),
                 GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE,
-                new Object[] { "s ", " P", 'P', GT_ModHandler.getModItem(aTextForestry, "slabs3", 1L, 4) });
+                new Object[] { "s ", " P", 'P', GT_ModHandler.getModItem(Forestry.ID, "slabs3", 1L, 4) });
         GT_ModHandler.addCraftingRecipe(
                 ItemList.Plank_Plum.get(2L),
                 GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE,
-                new Object[] { "s ", " P", 'P', GT_ModHandler.getModItem(aTextForestry, "slabs3", 1L, 5) });
+                new Object[] { "s ", " P", 'P', GT_ModHandler.getModItem(Forestry.ID, "slabs3", 1L, 5) });
         GT_ModHandler.addCraftingRecipe(
                 ItemList.Plank_Maple.get(2L),
                 GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE,
-                new Object[] { "s ", " P", 'P', GT_ModHandler.getModItem(aTextForestry, "slabs3", 1L, 6) });
+                new Object[] { "s ", " P", 'P', GT_ModHandler.getModItem(Forestry.ID, "slabs3", 1L, 6) });
         GT_ModHandler.addCraftingRecipe(
                 ItemList.Plank_Citrus.get(2L),
                 GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE,
-                new Object[] { "s ", " P", 'P', GT_ModHandler.getModItem(aTextForestry, "slabs3", 1L, 7) });
+                new Object[] { "s ", " P", 'P', GT_ModHandler.getModItem(Forestry.ID, "slabs3", 1L, 7) });
 
         GregTech_API.registerCover(ItemList.Plank_Oak.get(1L), TextureFactory.of(Blocks.planks, 0), null);
         GregTech_API.registerCover(ItemList.Plank_Spruce.get(1L), TextureFactory.of(Blocks.planks, 1), null);
@@ -1973,7 +1973,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 TextureFactory.of(
                         GT_Utility.getBlockFromStack(
                                 GT_ModHandler.getModItem(
-                                        aTextForestry,
+                                        Forestry.ID,
                                         "planks",
                                         1L,
                                         0,
@@ -1985,7 +1985,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 TextureFactory.of(
                         GT_Utility.getBlockFromStack(
                                 GT_ModHandler.getModItem(
-                                        aTextForestry,
+                                        Forestry.ID,
                                         "planks",
                                         1L,
                                         1,
@@ -1997,7 +1997,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 TextureFactory.of(
                         GT_Utility.getBlockFromStack(
                                 GT_ModHandler.getModItem(
-                                        aTextForestry,
+                                        Forestry.ID,
                                         "planks",
                                         1L,
                                         2,
@@ -2009,7 +2009,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 TextureFactory.of(
                         GT_Utility.getBlockFromStack(
                                 GT_ModHandler.getModItem(
-                                        aTextForestry,
+                                        Forestry.ID,
                                         "planks",
                                         1L,
                                         3,
@@ -2021,7 +2021,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 TextureFactory.of(
                         GT_Utility.getBlockFromStack(
                                 GT_ModHandler.getModItem(
-                                        aTextForestry,
+                                        Forestry.ID,
                                         "planks",
                                         1L,
                                         4,
@@ -2033,7 +2033,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 TextureFactory.of(
                         GT_Utility.getBlockFromStack(
                                 GT_ModHandler.getModItem(
-                                        aTextForestry,
+                                        Forestry.ID,
                                         "planks",
                                         1L,
                                         5,
@@ -2045,7 +2045,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 TextureFactory.of(
                         GT_Utility.getBlockFromStack(
                                 GT_ModHandler.getModItem(
-                                        aTextForestry,
+                                        Forestry.ID,
                                         "planks",
                                         1L,
                                         6,
@@ -2057,7 +2057,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 TextureFactory.of(
                         GT_Utility.getBlockFromStack(
                                 GT_ModHandler.getModItem(
-                                        aTextForestry,
+                                        Forestry.ID,
                                         "planks",
                                         1L,
                                         7,
@@ -2069,7 +2069,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 TextureFactory.of(
                         GT_Utility.getBlockFromStack(
                                 GT_ModHandler.getModItem(
-                                        aTextForestry,
+                                        Forestry.ID,
                                         "planks",
                                         1L,
                                         8,
@@ -2081,7 +2081,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 TextureFactory.of(
                         GT_Utility.getBlockFromStack(
                                 GT_ModHandler.getModItem(
-                                        aTextForestry,
+                                        Forestry.ID,
                                         "planks",
                                         1L,
                                         9,
@@ -2093,7 +2093,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 TextureFactory.of(
                         GT_Utility.getBlockFromStack(
                                 GT_ModHandler.getModItem(
-                                        aTextForestry,
+                                        Forestry.ID,
                                         "planks",
                                         1L,
                                         10,
@@ -2105,7 +2105,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 TextureFactory.of(
                         GT_Utility.getBlockFromStack(
                                 GT_ModHandler.getModItem(
-                                        aTextForestry,
+                                        Forestry.ID,
                                         "planks",
                                         1L,
                                         11,
@@ -2117,7 +2117,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 TextureFactory.of(
                         GT_Utility.getBlockFromStack(
                                 GT_ModHandler.getModItem(
-                                        aTextForestry,
+                                        Forestry.ID,
                                         "planks",
                                         1L,
                                         12,
@@ -2129,7 +2129,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 TextureFactory.of(
                         GT_Utility.getBlockFromStack(
                                 GT_ModHandler.getModItem(
-                                        aTextForestry,
+                                        Forestry.ID,
                                         "planks",
                                         1L,
                                         13,
@@ -2141,7 +2141,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 TextureFactory.of(
                         GT_Utility.getBlockFromStack(
                                 GT_ModHandler.getModItem(
-                                        aTextForestry,
+                                        Forestry.ID,
                                         "planks",
                                         1L,
                                         14,
@@ -2153,7 +2153,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 TextureFactory.of(
                         GT_Utility.getBlockFromStack(
                                 GT_ModHandler.getModItem(
-                                        aTextForestry,
+                                        Forestry.ID,
                                         "planks",
                                         1L,
                                         15,
@@ -2165,7 +2165,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 TextureFactory.of(
                         GT_Utility.getBlockFromStack(
                                 GT_ModHandler.getModItem(
-                                        aTextForestry,
+                                        Forestry.ID,
                                         "planks",
                                         1L,
                                         16,
@@ -2177,7 +2177,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 TextureFactory.of(
                         GT_Utility.getBlockFromStack(
                                 GT_ModHandler.getModItem(
-                                        aTextForestry,
+                                        Forestry.ID,
                                         "planks",
                                         1L,
                                         17,
@@ -2189,7 +2189,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 TextureFactory.of(
                         GT_Utility.getBlockFromStack(
                                 GT_ModHandler.getModItem(
-                                        aTextForestry,
+                                        Forestry.ID,
                                         "planks",
                                         1L,
                                         18,
@@ -2201,7 +2201,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 TextureFactory.of(
                         GT_Utility.getBlockFromStack(
                                 GT_ModHandler.getModItem(
-                                        aTextForestry,
+                                        Forestry.ID,
                                         "planks",
                                         1L,
                                         19,
@@ -2213,7 +2213,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 TextureFactory.of(
                         GT_Utility.getBlockFromStack(
                                 GT_ModHandler.getModItem(
-                                        aTextForestry,
+                                        Forestry.ID,
                                         "planks",
                                         1L,
                                         20,
@@ -2225,7 +2225,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 TextureFactory.of(
                         GT_Utility.getBlockFromStack(
                                 GT_ModHandler.getModItem(
-                                        aTextForestry,
+                                        Forestry.ID,
                                         "planks",
                                         1L,
                                         21,
@@ -2237,7 +2237,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 TextureFactory.of(
                         GT_Utility.getBlockFromStack(
                                 GT_ModHandler.getModItem(
-                                        aTextForestry,
+                                        Forestry.ID,
                                         "planks",
                                         1L,
                                         22,
@@ -2249,7 +2249,7 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 TextureFactory.of(
                         GT_Utility.getBlockFromStack(
                                 GT_ModHandler.getModItem(
-                                        aTextForestry,
+                                        Forestry.ID,
                                         "planks",
                                         1L,
                                         23,

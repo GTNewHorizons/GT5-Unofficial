@@ -1,7 +1,9 @@
 package gregtech.api.items;
 
-import static gregtech.api.enums.GT_Values.*;
-import static gregtech.api.enums.ModIDs.AppleCore;
+import static gregtech.api.enums.GT_Values.D1;
+import static gregtech.api.enums.GT_Values.RA;
+import static gregtech.api.enums.Mods.AppleCore;
+import static gregtech.api.enums.Mods.GregTech;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,6 +29,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TC_Aspects.TC_AspectStack;
 import gregtech.api.interfaces.IFoodStat;
@@ -56,7 +59,7 @@ import gregtech.common.render.items.GT_GeneratedMaterial_Renderer;
  *         These Items can also have special RightClick abilities, electric Charge or even be set to become a Food alike
  *         Item.
  */
-@Optional.Interface(iface = "squeek.applecore.api.food.IEdible", modid = MOD_ID_APC)
+@Optional.Interface(iface = "squeek.applecore.api.food.IEdible", modid = Mods.Names.APPLE_CORE)
 public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements IGT_ItemWithMaterialRenderer, IEdible {
 
     /**
@@ -342,7 +345,7 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements 
     }
 
     @Override
-    @Optional.Method(modid = MOD_ID_APC)
+    @Optional.Method(modid = Mods.Names.APPLE_CORE)
     public FoodValues getFoodValues(ItemStack aStack) {
         IFoodStat tStat = mFoodStats.get((short) getDamage(aStack));
         return tStat == null ? null
@@ -376,10 +379,10 @@ public abstract class GT_MetaGenerated_Item extends GT_MetaBase_Item implements 
         for (short i = 0; i < j; i++) if (mEnabledItems.get(i)) {
             for (byte k = 1; k < mIconList[i].length; k++) {
                 mIconList[i][k] = aIconRegister.registerIcon(
-                        RES_PATH_ITEM + (GT_Config.troll ? "troll" : getUnlocalizedName() + "/" + i + "/" + k));
+                        GregTech.getResourcePath(GT_Config.troll ? "troll" : getUnlocalizedName() + "/" + i + "/" + k));
             }
             mIconList[i][0] = aIconRegister.registerIcon(
-                    RES_PATH_ITEM + (GT_Config.troll ? "troll" : getUnlocalizedName() + "/" + i));
+                    GregTech.getResourcePath(GT_Config.troll ? "troll" : getUnlocalizedName() + "/" + i));
         }
     }
 

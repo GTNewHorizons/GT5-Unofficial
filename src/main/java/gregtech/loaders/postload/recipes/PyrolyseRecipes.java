@@ -1,7 +1,7 @@
 package gregtech.loaders.postload.recipes;
 
-import static gregtech.api.enums.ModIDs.Forestry;
-import static gregtech.api.enums.ModIDs.Railcraft;
+import static gregtech.api.enums.Mods.Forestry;
+import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.util.GT_ModHandler.getModItem;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sPyrolyseRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
@@ -84,7 +84,7 @@ public class PyrolyseRecipes implements Runnable {
 
         if (Forestry.isModLoaded()) {
             GT_Values.RA.stdBuilder()
-                        .itemInputs(getModItem(Forestry.modID, "fertilizerBio", 4), GT_Utility.getIntegratedCircuit(1))
+                        .itemInputs(getModItem(Forestry.ID, "fertilizerBio", 4), GT_Utility.getIntegratedCircuit(1))
                         .noItemOutputs()
                         .fluidInputs(Materials.Water.getFluid(4000))
                         .fluidOutputs(Materials.Biomass.getFluid(5000))
@@ -93,7 +93,7 @@ public class PyrolyseRecipes implements Runnable {
                         .addTo(sPyrolyseRecipes);
 
             GT_Values.RA.stdBuilder()
-                        .itemInputs(getModItem(Forestry.modID, "mulch", 32), GT_Utility.getIntegratedCircuit(1))
+                        .itemInputs(getModItem(Forestry.ID, "mulch", 32), GT_Utility.getIntegratedCircuit(1))
                         .noItemOutputs()
                         .fluidInputs(Materials.Water.getFluid(4000))
                         .fluidOutputs(Materials.Biomass.getFluid(5000))

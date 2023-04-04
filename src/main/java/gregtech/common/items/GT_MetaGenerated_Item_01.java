@@ -1,6 +1,6 @@
 package gregtech.common.items;
 
-import static gregtech.api.enums.ModIDs.GalacticraftMars;
+import static gregtech.api.enums.Mods.GalacticraftMars;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.client.GT_TooltipHandler.Tier.*;
 import static gregtech.client.GT_TooltipHandler.registerTieredTooltip;
