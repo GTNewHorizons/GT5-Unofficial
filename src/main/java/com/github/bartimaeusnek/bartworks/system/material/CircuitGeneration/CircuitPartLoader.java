@@ -156,5 +156,6 @@ public class CircuitPartLoader implements Runnable {
                     Optically_Perfected_CPU,
                     Optical_Cpu_Containment_Housing,
                     Optically_Compatible_Memory,
-                    Circuit_Parts_Crystal_Chip_Wetware));
+                    Circuit_Parts_Crystal_Chip_Wetware,
+                    Circuit_Parts_Chip_Bioware));
 }
