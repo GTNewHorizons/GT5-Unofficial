@@ -53,7 +53,7 @@ public class ComponentAssemblyLine extends GT_MetaTileEntity_LongPowerUsageBase<
                     new String[][] {
                             { "         ", "   III   ", " HHI~IHH ", "HH III HH", "H       H", "H       H", "H  JJJ  H",
                                     "H  JJJ  H", "H  N N  H", "HHHHHHHHH" },
-                            { "         ", " EHHHHHE ", "E       E", "H       H", "A       A", "A       A", "A       A",
+                            { "         ", " ELHHHLE ", "E       E", "H       H", "A       A", "A       A", "A       A",
                                     "A  HHH  A", "A       A", "MHHHHHHHM" },
                             { "   HBH   ", " EL   LE ", "E       E", "HC     CH", "AC     CA", "AC     CA", "A D   D A",
                                     "A  HHH  A", "A       A", "MHHHHHHHM" },
@@ -110,10 +110,10 @@ public class ComponentAssemblyLine extends GT_MetaTileEntity_LongPowerUsageBase<
                             { "   BBB   ", " EL   LE ", "E GGDGG E", "HGG D GGH", "AG  C  GA", "AG     GA", "AG     GA",
                                     "AG HHH GA", "AG     GA", "MHHHHHHHM" },
                             { "   HBH   ", " EL   LE ", "E       E", "H       H", "A       A", "A       A", "A       A",
-                                    "A  HHH  A", "A  N N  A", "MHHHHHHHM" },
+                                    "A  HHH  A", "A  n n  A", "MHHHHHHHM" },
                             { "   HBH   ", " EL   LE ", "E       E", "HC     CH", "AC     CA", "AC     CA", "A D   D A",
                                     "A  HHH  A", "A       A", "MHHHHHHHM" },
-                            { "         ", " EHHHHHE ", "E       E", "H       H", "A       A", "A       A", "A       A",
+                            { "         ", " ELHHHLE ", "E       E", "H       H", "A       A", "A       A", "A       A",
                                     "A  HHH  A", "A       A", "MHHHHHHHM" },
                             { "         ", "         ", " HHHHHHH ", "HH     HH", "H       H", "H       H", "H       H",
                                     "H       H", "H  KKK  H", "HHHHHHHHH" } })
@@ -145,22 +145,26 @@ public class ComponentAssemblyLine extends GT_MetaTileEntity_LongPowerUsageBase<
                     GT_StructureUtility.buildHatchAdder(ComponentAssemblyLine.class).atLeast(InputBus).dot(1)
                             .casingIndex(183).buildAndChain(GregTech_API.sBlockCasings8, 7))
             .addElement(
+                    'N',
+                    GT_StructureUtility.buildHatchAdder(ComponentAssemblyLine.class).atLeast(InputBus).dot(2)
+                            .casingIndex(183).buildAndChain(GT_StructureUtility.ofFrame(Materials.TungstenSteel)))
+            .addElement(
                     'K',
-                    GT_StructureUtility.buildHatchAdder(ComponentAssemblyLine.class).atLeast(OutputBus).dot(2)
+                    GT_StructureUtility.buildHatchAdder(ComponentAssemblyLine.class).atLeast(OutputBus).dot(3)
                             .casingIndex(183).buildAndChain(GregTech_API.sBlockCasings8, 7))
             .addElement(
                     'L',
                     GT_StructureUtility.buildHatchAdder(ComponentAssemblyLine.class).atLeast(Energy, ExoticEnergy)
-                            .dot(3).casingIndex(183).buildAndChain(GregTech_API.sBlockCasings8, 7))
+                            .dot(4).casingIndex(183).buildAndChain(GregTech_API.sBlockCasings8, 7))
             .addElement(
                     'I',
-                    GT_StructureUtility.buildHatchAdder(ComponentAssemblyLine.class).atLeast(Maintenance).dot(4)
+                    GT_StructureUtility.buildHatchAdder(ComponentAssemblyLine.class).atLeast(Maintenance).dot(5)
                             .casingIndex(183).buildAndChain(GregTech_API.sBlockCasings8, 7))
             .addElement(
                     'M',
-                    GT_StructureUtility.buildHatchAdder(ComponentAssemblyLine.class).atLeast(InputHatch).dot(5)
+                    GT_StructureUtility.buildHatchAdder(ComponentAssemblyLine.class).atLeast(InputHatch).dot(6)
                             .casingIndex(183).buildAndChain(GregTech_API.sBlockCasings8, 7))
-            .addElement('N', GT_StructureUtility.ofFrame(Materials.TungstenSteel)).build();
+            .addElement('n', GT_StructureUtility.ofFrame(Materials.TungstenSteel)).build();
 
     public ComponentAssemblyLine(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
