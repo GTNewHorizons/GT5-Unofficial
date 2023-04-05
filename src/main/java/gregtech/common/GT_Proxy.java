@@ -1082,6 +1082,12 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
         addFullHazmatToIC2Item("quantumLeggings");
         addFullHazmatToIC2Item("quantumBoots");
 
+        // GT++ Hazmat
+        addFullHazmatToGeneralItem(GTPlusPlus.ID, "itemArmorHazmatHelmetEx", 1);
+        addFullHazmatToGeneralItem(GTPlusPlus.ID, "itemArmorHazmatChestplateEx", 1);
+        addFullHazmatToGeneralItem(GTPlusPlus.ID, "itemArmorHazmatLeggingsEx", 1);
+        addFullHazmatToGeneralItem(GTPlusPlus.ID, "itemArmorRubBootsEx", 1);
+
         // GraviSuite Hazmat
         addFullHazmatToGeneralItem(GraviSuite.ID, "graviChestPlate", 1L);
         addFullHazmatToGeneralItem(GraviSuite.ID, "advNanoChestPlate", 1L);
