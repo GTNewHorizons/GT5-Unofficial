@@ -1,5 +1,7 @@
 package gtPlusPlus.xmod.gregtech.common.items;
 
+import static gregtech.client.GT_TooltipHandler.Tier.*;
+import static gregtech.client.GT_TooltipHandler.registerTieredTooltip;
 import static gtPlusPlus.core.util.Utils.getTcAspectStack;
 
 import net.minecraft.item.EnumAction;
@@ -70,6 +72,7 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
                                 getTcAspectStack(TC_Aspects.METALLUM, 2L),
                                 getTcAspectStack(TC_Aspects.POTENTIA, 2L) }));
         this.setElectricStats(32000 + tLastID, 3200000L, GT_Values.V[4], 4L, -3L, true);
+        registerTieredTooltip(GregtechItemList.Battery_RE_EV_Sodium.get(1), EV);
 
         GregtechItemList.Battery_RE_EV_Cadmium.set(
                 this.addItem(
@@ -80,6 +83,7 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
                                 getTcAspectStack(TC_Aspects.METALLUM, 1L),
                                 getTcAspectStack(TC_Aspects.POTENTIA, 1L) }));
         this.setElectricStats(32000 + tLastID, 4800000L, GT_Values.V[4], 4L, -3L, true);
+        registerTieredTooltip(GregtechItemList.Battery_RE_EV_Cadmium.get(1), EV);
 
         GregtechItemList.Battery_RE_EV_Lithium.set(
                 this.addItem(
@@ -90,6 +94,7 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
                                 getTcAspectStack(TC_Aspects.METALLUM, 3L),
                                 getTcAspectStack(TC_Aspects.POTENTIA, 3L) }));
         this.setElectricStats(32000 + tLastID, 6400000L, GT_Values.V[4], 4L, -3L, true);
+        registerTieredTooltip(GregtechItemList.Battery_RE_EV_Lithium.get(1), EV);
 
         /**
          * Power Gems
