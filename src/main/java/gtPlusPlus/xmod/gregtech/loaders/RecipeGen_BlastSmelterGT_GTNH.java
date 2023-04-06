@@ -8,6 +8,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 import gregtech.api.util.*;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.minecraft.ItemStackData;
@@ -73,23 +75,25 @@ public class RecipeGen_BlastSmelterGT_GTNH {
             for (GT_Recipe x : GT_Recipe.GT_Recipe_Map.sFluidExtractionRecipes.mRecipeList) {
                 ItemStack validInput = null;
                 FluidStack validOutput = null;
-                // If we the input is an ingot and it and the output are valid, map it to cache.
-                if (x.mInputs[0] != null) {
-                    for (int tag : OreDictionary.getOreIDs(x.mInputs[0])) {
-                        String oreName = OreDictionary.getOreName(tag).toLowerCase();
-                        String mType = "ingot";
-                        if (oreName.startsWith(mType) && !oreName.contains("double")
-                                && !oreName.contains("triple")
-                                && !oreName.contains("quad")
-                                && !oreName.contains("quintuple")) {
-                            validInput = x.mInputs[0];
-                        }
+                // If there aren't both non empty inputs and outputs, we skip
+                if (ArrayUtils.isEmpty(x.mInputs) || ArrayUtils.isEmpty(x.mFluidOutputs)) {
+                    continue;
+                }
+
+                for (int tag : OreDictionary.getOreIDs(x.mInputs[0])) {
+                    String oreName = OreDictionary.getOreName(tag).toLowerCase();
+                    String mType = "ingot";
+                    if (oreName.startsWith(mType) && !oreName.contains("double")
+                            && !oreName.contains("triple")
+                            && !oreName.contains("quad")
+                            && !oreName.contains("quintuple")) {
+                        validInput = x.mInputs[0];
                     }
                 }
-                if (x.mFluidOutputs[0] != null) {
-                    validOutput = x.mFluidOutputs[0];
-                }
-                if (validInput != null && validOutput != null) {
+
+                validOutput = x.mFluidOutputs[0];
+
+                if (validInput != null) {
                     ItemStackData R = new ItemStackData(validInput);
                     setIngotToFluid(R, validOutput);
                     Logger.MACHINE_INFO(
@@ -110,10 +114,10 @@ public class RecipeGen_BlastSmelterGT_GTNH {
                 ItemStack validInput = null;
                 ItemStack validOutput = null;
                 // If we the input is an ingot and it and the output are valid, map it to cache.
-                if (x.mInputs != null && x.mInputs.length > 0 && x.mInputs[0] != null) {
+                if (ArrayUtils.isNotEmpty(x.mInputs) && x.mInputs[0] != null) {
                     validInput = x.mInputs[0];
                 }
-                if (x.mOutputs != null && x.mOutputs.length > 0 && x.mOutputs[0] != null) {
+                if (ArrayUtils.isNotEmpty(x.mOutputs) && x.mOutputs[0] != null) {
                     validOutput = x.mOutputs[0];
                 }
                 if (validInput != null && validOutput != null) {
