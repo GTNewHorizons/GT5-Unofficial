@@ -29,6 +29,8 @@ import com.gtnewhorizons.gtnhintergalactic.recipe.IG_RecipeAdder;
 import com.gtnewhorizons.gtnhintergalactic.spaceprojects.ProjectAsteroidOutpost;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.widget.*;
 
@@ -529,6 +531,18 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase {
         }).setPos(174, 132).setSize(16, 16);
         button.addTooltip("Whitelist").setTooltipShowUpDelay(TOOLTIP_DELAY);
         return (ButtonWidget) button;
+    }
+
+    /**
+     * Add widgets to the GUI
+     *
+     * @param builder      Used window builder
+     * @param buildContext Context of the GUI
+     */
+    @Override
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        super.addUIWidgets(builder, buildContext);
+        builder.widget(new FakeSyncWidget.BooleanSyncer(() -> isWhitelisted, val -> isWhitelisted = val));
     }
 
     /**
