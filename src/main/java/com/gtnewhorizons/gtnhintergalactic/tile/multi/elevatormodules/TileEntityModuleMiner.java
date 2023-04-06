@@ -512,12 +512,10 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase {
     @Override
     protected ButtonWidget createSafeVoidButton() {
         Widget button = new ButtonWidget().setOnClick((clickData, widget) -> {
-            if (isSafeVoidButtonEnabled()) {
-                TecTech.proxy.playSound(getBaseMetaTileEntity(), "fx_click");
-                isWhitelisted = !isWhitelisted;
-                if (!widget.isClient()) {
-                    generateOreConfigurationList();
-                }
+            TecTech.proxy.playSound(getBaseMetaTileEntity(), "fx_click");
+            isWhitelisted = !isWhitelisted;
+            if (!widget.isClient()) {
+                generateOreConfigurationList();
             }
         }).setPlayClickSound(false).setBackground(() -> {
             List<UITexture> ret = new ArrayList<>();
@@ -529,9 +527,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase {
             }
             return ret.toArray(new IDrawable[0]);
         }).setPos(174, 132).setSize(16, 16);
-        if (isSafeVoidButtonEnabled()) {
-            button.addTooltip("Whitelist").setTooltipShowUpDelay(TOOLTIP_DELAY);
-        }
+        button.addTooltip("Whitelist").setTooltipShowUpDelay(TOOLTIP_DELAY);
         return (ButtonWidget) button;
     }
 
