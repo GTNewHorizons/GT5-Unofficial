@@ -5677,63 +5677,6 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                         OrePrefixes.circuit.get(Materials.Elite), 'W', OrePrefixes.cableGt01.get(Materials.Tungsten),
                         'G', new ItemStack(Blocks.glass, 1) });
 
-        ItemList.Machine_LV_Disassembler.set(
-                new GT_MetaTileEntity_Disassembler(
-                        451,
-                        "basicmachine.disassembler.tier.01",
-                        "Basic Disassembler",
-                        1).getStackForm(1L));
-        ItemList.Machine_MV_Disassembler.set(
-                new GT_MetaTileEntity_Disassembler(
-                        452,
-                        "basicmachine.disassembler.tier.02",
-                        "Advanced Disassembler",
-                        2).getStackForm(1L));
-        ItemList.Machine_HV_Disassembler.set(
-                new GT_MetaTileEntity_Disassembler(
-                        453,
-                        "basicmachine.disassembler.tier.03",
-                        "Advanced Disassembler II",
-                        3).getStackForm(1L));
-        ItemList.Machine_EV_Disassembler.set(
-                new GT_MetaTileEntity_Disassembler(
-                        454,
-                        "basicmachine.disassembler.tier.04",
-                        "Advanced Disassembler III",
-                        4).getStackForm(1L));
-        ItemList.Machine_IV_Disassembler.set(
-                new GT_MetaTileEntity_Disassembler(
-                        455,
-                        "basicmachine.disassembler.tier.05",
-                        "Advanced Disassembler IV",
-                        5).getStackForm(1L));
-
-        GT_ModHandler.addCraftingRecipe(
-                ItemList.Machine_LV_Disassembler.get(1L),
-                bitsd,
-                new Object[] { "ACA", aTextWireHull, "ACA", 'M', ItemList.Hull_LV, 'A', ItemList.Robot_Arm_LV, 'C',
-                        OrePrefixes.circuit.get(Materials.Basic), 'W', OrePrefixes.cableGt01.get(Materials.Tin) });
-        GT_ModHandler.addCraftingRecipe(
-                ItemList.Machine_MV_Disassembler.get(1L),
-                bitsd,
-                new Object[] { "ACA", aTextWireHull, "ACA", 'M', ItemList.Hull_MV, 'A', ItemList.Robot_Arm_MV, 'C',
-                        OrePrefixes.circuit.get(Materials.Good), 'W', OrePrefixes.cableGt01.get(Materials.AnyCopper) });
-        GT_ModHandler.addCraftingRecipe(
-                ItemList.Machine_HV_Disassembler.get(1L),
-                bitsd,
-                new Object[] { "ACA", aTextWireHull, "ACA", 'M', ItemList.Hull_HV, 'A', ItemList.Robot_Arm_HV, 'C',
-                        OrePrefixes.circuit.get(Materials.Advanced), 'W', OrePrefixes.cableGt01.get(Materials.Gold) });
-        GT_ModHandler.addCraftingRecipe(
-                ItemList.Machine_EV_Disassembler.get(1L),
-                bitsd,
-                new Object[] { "ACA", aTextWireHull, "ACA", 'M', ItemList.Hull_EV, 'A', ItemList.Robot_Arm_EV, 'C',
-                        OrePrefixes.circuit.get(Materials.Data), 'W', OrePrefixes.cableGt01.get(Materials.Aluminium) });
-        GT_ModHandler.addCraftingRecipe(
-                ItemList.Machine_IV_Disassembler.get(1L),
-                bitsd,
-                new Object[] { "ACA", aTextWireHull, "ACA", 'M', ItemList.Hull_IV, 'A', ItemList.Robot_Arm_IV, 'C',
-                        OrePrefixes.circuit.get(Materials.Elite), 'W', OrePrefixes.cableGt01.get(Materials.Tungsten) });
-
         if (Forestry.isModLoaded()) {
             ItemList.Machine_IndustrialApiary.set(
                     new GT_MetaTileEntity_IndustrialApiary(

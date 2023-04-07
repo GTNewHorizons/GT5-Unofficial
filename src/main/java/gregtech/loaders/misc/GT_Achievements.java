@@ -124,7 +124,6 @@ public class GT_Achievements {
                         null),
                 "highpowerdrill",
                 false);
-        registerAchievement("repair", 4, 5, ItemList.Machine_HV_Disassembler.get(1), "highpowerdrill", false);
 
         registerAchievement(
                 "unitool",

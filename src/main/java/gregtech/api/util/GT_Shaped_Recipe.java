@@ -9,7 +9,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import gregtech.api.interfaces.internal.IGT_CraftingRecipe;
-import gregtech.api.objects.ReverseShapedRecipe;
 
 public class GT_Shaped_Recipe extends ShapedOreRecipe implements IGT_CraftingRecipe {
 
@@ -24,9 +23,6 @@ public class GT_Shaped_Recipe extends ShapedOreRecipe implements IGT_CraftingRec
         mEnchantmentLevelsAdded = aEnchantmentLevelsAdded;
         mRemovableByGT = aRemovableByGT;
         mKeepingNBT = aKeepingNBT;
-        if (aDismantleAble) {
-            new ReverseShapedRecipe(aResult, aRecipe);
-        }
     }
 
     @Override

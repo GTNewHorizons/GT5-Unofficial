@@ -1219,41 +1219,6 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 false).setSlotOverlay(false, false, GT_UITextures.OVERLAY_SLOT_FURNACE)
                       .setProgressBar(GT_UITextures.PROGRESSBAR_ARROW, ProgressBar.Direction.RIGHT);
 
-        /** Set {@code aSpecialValue = -100} to bypass the disassembler tier check and default recipe duration. */
-        public static final GT_Recipe_Map sDisassemblerRecipes = new GT_Recipe_Map(
-                new HashSet<>(250),
-                "gt.recipe.disassembler",
-                "Disassembler",
-                null,
-                GregTech.getResourcePath(TEXTURES_GUI_BASICMACHINES, "Disassembler"),
-                1,
-                9,
-                1,
-                0,
-                1,
-                E,
-                1,
-                E,
-                true,
-                false) {
-
-            @Override
-            public IDrawable getOverlayForSlot(boolean isFluid, boolean isOutput, int index, boolean isSpecial) {
-                if (isOutput) {
-                    switch (index) {
-                        case 0, 2, 6, 8 -> {
-                            return GT_UITextures.OVERLAY_SLOT_CIRCUIT;
-                        }
-                        case 4 -> {
-                            return GT_UITextures.OVERLAY_SLOT_WRENCH;
-                        }
-                    }
-                }
-                return super.getOverlayForSlot(isFluid, isOutput, index, isSpecial);
-            }
-        }.setSlotOverlay(false, false, GT_UITextures.OVERLAY_SLOT_WRENCH)
-         .setProgressBar(GT_UITextures.PROGRESSBAR_ASSEMBLE, ProgressBar.Direction.RIGHT);
-
         public static final GT_Recipe_Map sScannerFakeRecipes = new GT_Recipe_Map(
                 new HashSet<>(300),
                 "gt.recipe.scanner",
