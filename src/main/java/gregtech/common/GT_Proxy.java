@@ -25,8 +25,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 
@@ -497,7 +499,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
                     "redalloyInsulated",
                     "infusedteslatiteBundled"));
     private final DateFormat mDateFormat = DateFormat.getInstance();
-    public ArrayList<String> mBufferedPlayerActivity = new ArrayList<>();
+    public final BlockingQueue<String> mBufferedPlayerActivity = new LinkedBlockingQueue<>();
     public final GT_BlockMap<Boolean> mCTMBlockCache = new GT_BlockMap<>();
     public boolean mHardcoreCables = false;
     public boolean mDisableVanillaOres = true;
@@ -1188,7 +1190,10 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
         GT_Log.out.println("GT_Mod: Beginning PostLoad-Phase.");
         GT_Log.ore.println("GT_Mod: Beginning PostLoad-Phase.");
         if (GT_Log.pal != null) {
-            new Thread(new GT_PlayerActivityLogger()).start();
+            final Thread playerActivityLogger = new Thread(new GT_PlayerActivityLogger());
+            playerActivityLogger.setDaemon(true);
+            playerActivityLogger.setName("GT5U Player activity logger");
+            playerActivityLogger.start();
         }
         GregTech_API.sPostloadStarted = true;
 
@@ -1487,7 +1492,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
         }
         if ((!aEvent.entityPlayer.worldObj.isRemote) && (aEvent.action != PlayerInteractEvent.Action.RIGHT_CLICK_AIR)
                 && (GT_Log.pal != null)) {
-            this.mBufferedPlayerActivity.add(
+            this.mBufferedPlayerActivity.offer(
                     getDataAndTime() + ";"
                             + aEvent.action.name()
                             + ";"
@@ -1529,7 +1534,7 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
     public void onBlockHarvestingEvent(BlockEvent.HarvestDropsEvent aEvent) {
         if (aEvent.harvester != null) {
             if ((!aEvent.world.isRemote) && (GT_Log.pal != null)) {
-                this.mBufferedPlayerActivity.add(
+                this.mBufferedPlayerActivity.offer(
                         getDataAndTime() + ";HARVEST_BLOCK;"
                                 + aEvent.harvester.getDisplayName()
                                 + ";DIM:"
