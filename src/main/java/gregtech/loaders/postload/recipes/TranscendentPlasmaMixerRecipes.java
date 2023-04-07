@@ -38,10 +38,10 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
                     .itemInputs(GT_Utility.getIntegratedCircuit(1))
                     .noItemOutputs()
                     .fluidInputs(
-                        Materials.Helium.getPlasma(1000),
-                        Materials.Iron.getPlasma(1000),
-                        Materials.Calcium.getPlasma(1000),
-                        Materials.Niobium.getPlasma(1000))
+                            Materials.Helium.getPlasma(1000),
+                            Materials.Iron.getPlasma(1000),
+                            Materials.Calcium.getPlasma(1000),
+                            Materials.Niobium.getPlasma(1000))
                     .fluidOutputs(Materials.ExcitedDTCC.getFluid(1000L))
                     .duration(100)
                     .eut(CRUDE_EU_PER_L)
