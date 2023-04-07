@@ -83,7 +83,7 @@ public class WiremillRecipes implements Runnable {
                     .eut(eut)
                     .addTo(sWiremillRecipes);
 
-        if (!(GT_OreDictUnificator.get(prefix2, materials, 1L) == null)) {
+        if (GT_OreDictUnificator.get(prefix2, materials, 1L) != null) {
             GT_Values.RA.stdBuilder()
                         .itemInputs(
                                 GT_OreDictUnificator.get(prefix2, materials, 2L / multiplier),
@@ -151,7 +151,7 @@ public class WiremillRecipes implements Runnable {
                         .addTo(sWiremillRecipes);
         }
 
-        if (!(GT_OreDictUnificator.get(OrePrefixes.wireFine, materials, 1L) == null)) {
+        if (GT_OreDictUnificator.get(OrePrefixes.wireFine, materials, 1L) != null) {
 
             GT_Values.RA.stdBuilder()
                         .itemInputs(
@@ -163,7 +163,7 @@ public class WiremillRecipes implements Runnable {
                         .duration(baseDuration)
                         .eut(eut)
                         .addTo(sWiremillRecipes);
-            if (!(GT_OreDictUnificator.get(prefix2, materials, 1L) == null)) {
+            if (GT_OreDictUnificator.get(prefix2, materials, 1L) != null) {
                 GT_Values.RA.stdBuilder()
                             .itemInputs(
                                     GT_OreDictUnificator.get(prefix2, materials, 1L),
