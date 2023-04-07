@@ -17,8 +17,8 @@ import gregtech.api.util.*;
 public class WiremillRecipes implements Runnable {
 
     // directly copied from GT code but converted to RA2 format
-    void registerWiremillRecipes(Materials materials, int baseDuration, int eut, OrePrefixes prefix1,
-            OrePrefixes prefix2, int multiplier) {
+    static void registerWiremillRecipes(Materials materials, int baseDuration, int eut, OrePrefixes prefix1,
+                                        OrePrefixes prefix2, int multiplier) {
         GT_Values.RA.stdBuilder()
                     .itemInputs(GT_OreDictUnificator.get(prefix1, materials, 1L), GT_Utility.getIntegratedCircuit(1))
                     .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.wireGt01, materials, multiplier))
@@ -168,7 +168,7 @@ public class WiremillRecipes implements Runnable {
                     .addTo(sWiremillRecipes);
     }
 
-    void registerWiremillRecipes(Materials aMaterial, int baseDuration, int aEUt) {
+    public static void registerWiremillRecipes(Materials aMaterial, int baseDuration, int aEUt) {
         registerWiremillRecipes(
                 aMaterial,
                 baseDuration,

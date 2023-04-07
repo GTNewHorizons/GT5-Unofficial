@@ -1,5 +1,6 @@
 package gregtech.loaders.oreprocessing;
 
+import gregtech.loaders.postload.recipes.WiremillRecipes;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.Materials;
@@ -20,7 +21,7 @@ public class ProcessingFineWire implements gregtech.api.interfaces.IOreRecipeReg
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
             ItemStack aStack) {
         if (!aMaterial.contains(gregtech.api.enums.SubTag.NO_SMASHING)) {
-            GT_RecipeRegistrator.registerWiremillRecipes(aMaterial, 100, 4);
+            WiremillRecipes.registerWiremillRecipes(aMaterial, 100, 4);
         }
         if ((aMaterial.mUnificatable) && (aMaterial.mMaterialInto == aMaterial)
                 && !aMaterial.contains(SubTag.NO_WORKING)) {
