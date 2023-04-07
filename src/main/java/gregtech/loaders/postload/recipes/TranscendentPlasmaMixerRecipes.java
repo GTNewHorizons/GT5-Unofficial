@@ -37,21 +37,21 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
                     .itemInputs(GT_Utility.getIntegratedCircuit(1))
                     .noItemOutputs()
-                    .fluidInputs(Materials.ExcitedDTCC.getFluid(1000L))
-                    .fluidOutputs(
-                            Materials.Helium.getPlasma(1000),
-                            Materials.Iron.getPlasma(1000),
-                            Materials.Calcium.getPlasma(1000),
-                            Materials.Niobium.getPlasma(1000))
+                    .fluidInputs(
+                        Materials.Helium.getPlasma(1000),
+                        Materials.Iron.getPlasma(1000),
+                        Materials.Calcium.getPlasma(1000),
+                        Materials.Niobium.getPlasma(1000))
+                    .fluidOutputs(Materials.ExcitedDTCC.getFluid(1000L))
                     .duration(100)
                     .eut(CRUDE_EU_PER_L)
+                    .noOptimize()
                     .addTo(sTranscendentPlasmaMixerRecipes);
 
         GT_Values.RA.stdBuilder()
                     .itemInputs(GT_Utility.getIntegratedCircuit(2))
                     .noItemOutputs()
-                    .fluidInputs(Materials.ExcitedDTPC.getFluid(1000L))
-                    .fluidOutputs(
+                    .fluidInputs(
                             Materials.Helium.getPlasma(1000),
                             Materials.Iron.getPlasma(1000),
                             Materials.Calcium.getPlasma(1000),
@@ -60,15 +60,16 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
                             Materials.Nickel.getPlasma(1000),
                             Materials.Boron.getPlasma(1000),
                             Materials.Sulfur.getPlasma(1000))
+                    .fluidOutputs(Materials.ExcitedDTPC.getFluid(1000L))
                     .duration(100)
                     .eut(PROSAIC_EU_PER_L)
+                    .noOptimize()
                     .addTo(sTranscendentPlasmaMixerRecipes);
 
         GT_Values.RA.stdBuilder()
                     .itemInputs(GT_Utility.getIntegratedCircuit(3))
                     .noItemOutputs()
-                    .fluidInputs(Materials.ExcitedDTRC.getFluid(1000L))
-                    .fluidOutputs(
+                    .fluidInputs(
                             Materials.Helium.getPlasma(1000),
                             Materials.Iron.getPlasma(1000),
                             Materials.Calcium.getPlasma(1000),
@@ -81,15 +82,16 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
                             Materials.Zinc.getPlasma(1000),
                             Materials.Silver.getPlasma(1000),
                             Materials.Titanium.getPlasma(1000))
+                    .fluidOutputs(Materials.ExcitedDTRC.getFluid(1000L))
                     .duration(100)
                     .eut(RESPLENDENT_EU_PER_L)
+                    .noOptimize()
                     .addTo(sTranscendentPlasmaMixerRecipes);
 
         GT_Values.RA.stdBuilder()
                     .itemInputs(GT_Utility.getIntegratedCircuit(4))
                     .noItemOutputs()
-                    .fluidInputs(Materials.ExcitedDTEC.getFluid(1000L))
-                    .fluidOutputs(
+                    .fluidInputs(
                             Materials.Helium.getPlasma(1000),
                             Materials.Iron.getPlasma(1000),
                             Materials.Calcium.getPlasma(1000),
@@ -106,8 +108,10 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
                             Materials.Bismuth.getPlasma(1000),
                             Materials.Oxygen.getPlasma(1000),
                             Materials.Tin.getPlasma(1000))
+                    .fluidOutputs(Materials.ExcitedDTEC.getFluid(1000L))
                     .duration(100)
                     .eut(EXOTIC_EU_PER_L)
+                    .noOptimize()
                     .addTo(sTranscendentPlasmaMixerRecipes);
 
     }
