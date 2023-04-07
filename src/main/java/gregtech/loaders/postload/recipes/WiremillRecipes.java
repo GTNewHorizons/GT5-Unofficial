@@ -149,23 +149,30 @@ public class WiremillRecipes implements Runnable {
                     .eut(eut)
                     .addTo(sWiremillRecipes);
 
-        GT_Values.RA.stdBuilder()
-                    .itemInputs(GT_OreDictUnificator.get(prefix1, materials, 1L), GT_Utility.getIntegratedCircuit(3))
-                    .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.wireFine, materials, 4L * multiplier))
-                    .noFluidInputs()
-                    .noFluidOutputs()
-                    .duration(baseDuration)
-                    .eut(eut)
-                    .addTo(sWiremillRecipes);
+        if (!(GT_OreDictUnificator.get(OrePrefixes.wireFine, materials, 1L) == null)) {
 
-        GT_Values.RA.stdBuilder()
-                    .itemInputs(GT_OreDictUnificator.get(prefix2, materials, 1L), GT_Utility.getIntegratedCircuit(3))
-                    .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.wireFine, materials, 2L * multiplier))
-                    .noFluidInputs()
-                    .noFluidOutputs()
-                    .duration(baseDuration / 2)
-                    .eut(eut)
-                    .addTo(sWiremillRecipes);
+            GT_Values.RA.stdBuilder()
+                        .itemInputs(
+                                GT_OreDictUnificator.get(prefix1, materials, 1L),
+                                GT_Utility.getIntegratedCircuit(3))
+                        .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.wireFine, materials, 4L * multiplier))
+                        .noFluidInputs()
+                        .noFluidOutputs()
+                        .duration(baseDuration)
+                        .eut(eut)
+                        .addTo(sWiremillRecipes);
+
+            GT_Values.RA.stdBuilder()
+                        .itemInputs(
+                                GT_OreDictUnificator.get(prefix2, materials, 1L),
+                                GT_Utility.getIntegratedCircuit(3))
+                        .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.wireFine, materials, 2L * multiplier))
+                        .noFluidInputs()
+                        .noFluidOutputs()
+                        .duration(baseDuration / 2)
+                        .eut(eut)
+                        .addTo(sWiremillRecipes);
+        }
     }
 
     void registerWiremillRecipes(Materials aMaterial, int baseDuration, int aEUt) {
