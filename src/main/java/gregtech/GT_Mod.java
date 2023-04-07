@@ -52,8 +52,6 @@ import gregtech.api.interfaces.internal.IGT_Mod;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.ItemData;
-import gregtech.api.objects.ReverseShapedRecipe;
-import gregtech.api.objects.ReverseShapelessRecipe;
 import gregtech.api.objects.XSTR;
 import gregtech.api.threads.GT_Runnable_MachineBlockUpdate;
 import gregtech.api.util.GT_Assemblyline_Server;
@@ -540,9 +538,6 @@ public class GT_Mod implements IGT_Mod {
         GT_PostLoad.identifyAnySteam();
 
         achievements = new GT_Achievements();
-
-        ReverseShapedRecipe.runReverseRecipes();
-        ReverseShapelessRecipe.runReverseRecipes();
 
         GT_Recipe.GTppRecipeHelper = true;
         GT_Log.out.println("GT_Mod: Loading finished, de-allocating temporary Init Variables.");

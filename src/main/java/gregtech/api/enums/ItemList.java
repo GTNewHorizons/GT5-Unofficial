@@ -1367,12 +1367,6 @@ public enum ItemList implements IItemContainer {
     Machine_EV_FluidCanner,
     Machine_IV_FluidCanner,
 
-    Machine_LV_Disassembler,
-    Machine_MV_Disassembler,
-    Machine_HV_Disassembler,
-    Machine_EV_Disassembler,
-    Machine_IV_Disassembler,
-
     Machine_LV_Bundler,
     Machine_MV_Bundler,
     Machine_HV_Bundler,
