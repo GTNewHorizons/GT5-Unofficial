@@ -3,7 +3,6 @@ package gregtech.api.util;
 import static gregtech.api.enums.GT_Values.*;
 import static gregtech.api.enums.Materials.*;
 import static gregtech.api.enums.Materials.Void;
-import static gregtech.api.util.GT_Utility.calculateRecipeEU;
 
 import java.lang.reflect.Field;
 import java.util.*;
@@ -626,114 +625,114 @@ public class GT_RecipeRegistrator {
      * @param aEUt         EU/t for recipe If you provide a proper EU tier for recipe processing then aEUt will be
      *                     overriden with it.
      */
-    public static void registerWiremillRecipes(Materials aMaterial, int baseDuration, int aEUt) {
-        registerWiremillRecipes(
-                aMaterial,
-                baseDuration,
-                calculateRecipeEU(aMaterial, aEUt),
-                OrePrefixes.ingot,
-                OrePrefixes.stick,
-                2);
-    }
-
-    /**
+    /*
+     * public static void registerWiremillRecipes(Materials aMaterial, int baseDuration, int aEUt) {
+     * registerWiremillRecipes(
+     * aMaterial,
+     * baseDuration,
+     * calculateRecipeEU(aMaterial, aEUt),
+     * OrePrefixes.ingot,
+     * OrePrefixes.stick,
+     * 2);
+     * }
+     * /**
      * Registers wiremill recipes for given material using integrated circuits.
-     *
-     * @param aMaterial    material to register
+     * @param aMaterial material to register
      * @param baseDuration base duration ticks for ingot -> 1x wire recipe
-     * @param aEUt         EU/t for recipe
-     * @param prefix1      prefix corresponds to ingot
-     * @param prefix2      prefix corresponds to stick
-     * @param multiplier   amount of wires created from 1 ingot
+     * @param aEUt EU/t for recipe
+     * @param prefix1 prefix corresponds to ingot
+     * @param prefix2 prefix corresponds to stick
+     * @param multiplier amount of wires created from 1 ingot
      */
-    public static void registerWiremillRecipes(Materials aMaterial, int baseDuration, int aEUt, OrePrefixes prefix1,
-            OrePrefixes prefix2, int multiplier) {
-        GT_Values.RA.addWiremillRecipe(
-                GT_OreDictUnificator.get(prefix1, aMaterial, 1L),
-                GT_Utility.getIntegratedCircuit(1),
-                GT_OreDictUnificator.get(OrePrefixes.wireGt01, aMaterial, multiplier),
-                baseDuration,
-                aEUt);
-        GT_Values.RA.addWiremillRecipe(
-                GT_OreDictUnificator.get(prefix1, aMaterial, 2L / multiplier),
-                GT_Utility.getIntegratedCircuit(2),
-                GT_OreDictUnificator.get(OrePrefixes.wireGt02, aMaterial, 1L),
-                (int) (baseDuration * 1.5f),
-                aEUt);
-        GT_Values.RA.addWiremillRecipe(
-                GT_OreDictUnificator.get(prefix1, aMaterial, 4L / multiplier),
-                GT_Utility.getIntegratedCircuit(4),
-                GT_OreDictUnificator.get(OrePrefixes.wireGt04, aMaterial, 1L),
-                baseDuration * 2,
-                aEUt);
-        GT_Values.RA.addWiremillRecipe(
-                GT_OreDictUnificator.get(prefix1, aMaterial, 8L / multiplier),
-                GT_Utility.getIntegratedCircuit(8),
-                GT_OreDictUnificator.get(OrePrefixes.wireGt08, aMaterial, 1L),
-                (int) (baseDuration * 2.5f),
-                aEUt);
-        GT_Values.RA.addWiremillRecipe(
-                GT_OreDictUnificator.get(prefix1, aMaterial, 12L / multiplier),
-                GT_Utility.getIntegratedCircuit(12),
-                GT_OreDictUnificator.get(OrePrefixes.wireGt12, aMaterial, 1L),
-                baseDuration * 3,
-                aEUt);
-        GT_Values.RA.addWiremillRecipe(
-                GT_OreDictUnificator.get(prefix1, aMaterial, 16L / multiplier),
-                GT_Utility.getIntegratedCircuit(16),
-                GT_OreDictUnificator.get(OrePrefixes.wireGt16, aMaterial, 1L),
-                (int) (baseDuration * 3.5f),
-                aEUt);
-        GT_Values.RA.addWiremillRecipe(
-                GT_OreDictUnificator.get(prefix2, aMaterial, 2L / multiplier),
-                GT_Utility.getIntegratedCircuit(1),
-                GT_OreDictUnificator.get(OrePrefixes.wireGt01, aMaterial, 1L),
-                baseDuration / 2,
-                aEUt);
-        GT_Values.RA.addWiremillRecipe(
-                GT_OreDictUnificator.get(prefix2, aMaterial, 4L / multiplier),
-                GT_Utility.getIntegratedCircuit(2),
-                GT_OreDictUnificator.get(OrePrefixes.wireGt02, aMaterial, 1L),
-                baseDuration,
-                aEUt);
-        GT_Values.RA.addWiremillRecipe(
-                GT_OreDictUnificator.get(prefix2, aMaterial, 8L / multiplier),
-                GT_Utility.getIntegratedCircuit(4),
-                GT_OreDictUnificator.get(OrePrefixes.wireGt04, aMaterial, 1L),
-                (int) (baseDuration * 1.5f),
-                aEUt);
-        GT_Values.RA.addWiremillRecipe(
-                GT_OreDictUnificator.get(prefix2, aMaterial, 16L / multiplier),
-                GT_Utility.getIntegratedCircuit(8),
-                GT_OreDictUnificator.get(OrePrefixes.wireGt08, aMaterial, 1L),
-                baseDuration * 2,
-                aEUt);
-        GT_Values.RA.addWiremillRecipe(
-                GT_OreDictUnificator.get(prefix2, aMaterial, 24L / multiplier),
-                GT_Utility.getIntegratedCircuit(12),
-                GT_OreDictUnificator.get(OrePrefixes.wireGt12, aMaterial, 1L),
-                (int) (baseDuration * 2.5f),
-                aEUt);
-        GT_Values.RA.addWiremillRecipe(
-                GT_OreDictUnificator.get(prefix2, aMaterial, 32L / multiplier),
-                GT_Utility.getIntegratedCircuit(16),
-                GT_OreDictUnificator.get(OrePrefixes.wireGt16, aMaterial, 1L),
-                baseDuration * 3,
-                aEUt);
-        GT_Values.RA.addWiremillRecipe(
-                GT_OreDictUnificator.get(prefix1, aMaterial, 1L),
-                GT_Utility.getIntegratedCircuit(3),
-                GT_OreDictUnificator.get(OrePrefixes.wireFine, aMaterial, 4L * multiplier),
-                baseDuration,
-                aEUt);
-        GT_Values.RA.addWiremillRecipe(
-                GT_OreDictUnificator.get(prefix2, aMaterial, 1L),
-                GT_Utility.getIntegratedCircuit(3),
-                GT_OreDictUnificator.get(OrePrefixes.wireFine, aMaterial, 2L * multiplier),
-                baseDuration / 2,
-                aEUt);
-    }
-
+    /*
+     * public static void registerWiremillRecipes(Materials aMaterial, int baseDuration, int aEUt, OrePrefixes prefix1,
+     * OrePrefixes prefix2, int multiplier) {
+     * GT_Values.RA.addWiremillRecipe(
+     * GT_OreDictUnificator.get(prefix1, aMaterial, 1L),
+     * GT_Utility.getIntegratedCircuit(1),
+     * GT_OreDictUnificator.get(OrePrefixes.wireGt01, aMaterial, multiplier),
+     * baseDuration,
+     * aEUt);
+     * GT_Values.RA.addWiremillRecipe(
+     * GT_OreDictUnificator.get(prefix1, aMaterial, 2L / multiplier),
+     * GT_Utility.getIntegratedCircuit(2),
+     * GT_OreDictUnificator.get(OrePrefixes.wireGt02, aMaterial, 1L),
+     * (int) (baseDuration * 1.5f),
+     * aEUt);
+     * GT_Values.RA.addWiremillRecipe(
+     * GT_OreDictUnificator.get(prefix1, aMaterial, 4L / multiplier),
+     * GT_Utility.getIntegratedCircuit(4),
+     * GT_OreDictUnificator.get(OrePrefixes.wireGt04, aMaterial, 1L),
+     * baseDuration * 2,
+     * aEUt);
+     * GT_Values.RA.addWiremillRecipe(
+     * GT_OreDictUnificator.get(prefix1, aMaterial, 8L / multiplier),
+     * GT_Utility.getIntegratedCircuit(8),
+     * GT_OreDictUnificator.get(OrePrefixes.wireGt08, aMaterial, 1L),
+     * (int) (baseDuration * 2.5f),
+     * aEUt);
+     * GT_Values.RA.addWiremillRecipe(
+     * GT_OreDictUnificator.get(prefix1, aMaterial, 12L / multiplier),
+     * GT_Utility.getIntegratedCircuit(12),
+     * GT_OreDictUnificator.get(OrePrefixes.wireGt12, aMaterial, 1L),
+     * baseDuration * 3,
+     * aEUt);
+     * GT_Values.RA.addWiremillRecipe(
+     * GT_OreDictUnificator.get(prefix1, aMaterial, 16L / multiplier),
+     * GT_Utility.getIntegratedCircuit(16),
+     * GT_OreDictUnificator.get(OrePrefixes.wireGt16, aMaterial, 1L),
+     * (int) (baseDuration * 3.5f),
+     * aEUt);
+     * GT_Values.RA.addWiremillRecipe(
+     * GT_OreDictUnificator.get(prefix2, aMaterial, 2L / multiplier),
+     * GT_Utility.getIntegratedCircuit(1),
+     * GT_OreDictUnificator.get(OrePrefixes.wireGt01, aMaterial, 1L),
+     * baseDuration / 2,
+     * aEUt);
+     * GT_Values.RA.addWiremillRecipe(
+     * GT_OreDictUnificator.get(prefix2, aMaterial, 4L / multiplier),
+     * GT_Utility.getIntegratedCircuit(2),
+     * GT_OreDictUnificator.get(OrePrefixes.wireGt02, aMaterial, 1L),
+     * baseDuration,
+     * aEUt);
+     * GT_Values.RA.addWiremillRecipe(
+     * GT_OreDictUnificator.get(prefix2, aMaterial, 8L / multiplier),
+     * GT_Utility.getIntegratedCircuit(4),
+     * GT_OreDictUnificator.get(OrePrefixes.wireGt04, aMaterial, 1L),
+     * (int) (baseDuration * 1.5f),
+     * aEUt);
+     * GT_Values.RA.addWiremillRecipe(
+     * GT_OreDictUnificator.get(prefix2, aMaterial, 16L / multiplier),
+     * GT_Utility.getIntegratedCircuit(8),
+     * GT_OreDictUnificator.get(OrePrefixes.wireGt08, aMaterial, 1L),
+     * baseDuration * 2,
+     * aEUt);
+     * GT_Values.RA.addWiremillRecipe(
+     * GT_OreDictUnificator.get(prefix2, aMaterial, 24L / multiplier),
+     * GT_Utility.getIntegratedCircuit(12),
+     * GT_OreDictUnificator.get(OrePrefixes.wireGt12, aMaterial, 1L),
+     * (int) (baseDuration * 2.5f),
+     * aEUt);
+     * GT_Values.RA.addWiremillRecipe(
+     * GT_OreDictUnificator.get(prefix2, aMaterial, 32L / multiplier),
+     * GT_Utility.getIntegratedCircuit(16),
+     * GT_OreDictUnificator.get(OrePrefixes.wireGt16, aMaterial, 1L),
+     * baseDuration * 3,
+     * aEUt);
+     * GT_Values.RA.addWiremillRecipe(
+     * GT_OreDictUnificator.get(prefix1, aMaterial, 1L),
+     * GT_Utility.getIntegratedCircuit(3),
+     * GT_OreDictUnificator.get(OrePrefixes.wireFine, aMaterial, 4L * multiplier),
+     * baseDuration,
+     * aEUt);
+     * GT_Values.RA.addWiremillRecipe(
+     * GT_OreDictUnificator.get(prefix2, aMaterial, 1L),
+     * GT_Utility.getIntegratedCircuit(3),
+     * GT_OreDictUnificator.get(OrePrefixes.wireFine, aMaterial, 2L * multiplier),
+     * baseDuration / 2,
+     * aEUt);
+     * }
+     */
     public static boolean hasVanillaRecipes(Materials materials) {
         return Arrays.stream(VANILLA_MATS)
                      .anyMatch(mat -> mat == materials);
