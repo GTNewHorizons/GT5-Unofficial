@@ -1,15 +1,14 @@
 package gregtech.loaders.oreprocessing;
 
-import gregtech.loaders.postload.recipes.WiremillRecipes;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_RecipeRegistrator;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Proxy;
+import gregtech.loaders.postload.recipes.WiremillRecipes;
 
 public class ProcessingFineWire implements gregtech.api.interfaces.IOreRecipeRegistrator {
 

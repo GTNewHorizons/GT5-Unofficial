@@ -18,7 +18,7 @@ public class WiremillRecipes implements Runnable {
 
     // directly copied from GT code but converted to RA2 format
     static void registerWiremillRecipes(Materials materials, int baseDuration, int eut, OrePrefixes prefix1,
-                                        OrePrefixes prefix2, int multiplier) {
+            OrePrefixes prefix2, int multiplier) {
         GT_Values.RA.stdBuilder()
                     .itemInputs(GT_OreDictUnificator.get(prefix1, materials, 1L), GT_Utility.getIntegratedCircuit(1))
                     .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.wireGt01, materials, multiplier))
