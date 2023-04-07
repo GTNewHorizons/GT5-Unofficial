@@ -7998,6 +7998,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                                 GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                                 GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE4, 'G',
                                 OrePrefixes.cell.get(Materials.Graphite) }).getStackForm(1L));
+
         ItemList.Machine_MV_ArcFurnace.set(
                 new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                         652,
@@ -8048,6 +8049,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                                 GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                                 GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE4, 'G',
                                 OrePrefixes.cell.get(Materials.Graphite) }).getStackForm(1L));
+
         ItemList.Machine_EV_ArcFurnace.set(
                 new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                         654,
@@ -8057,7 +8059,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                         "",
                         GT_Recipe.GT_Recipe_Map.sArcFurnaceRecipes,
                         1,
-                        4,
+                        9,
                         48000,
                         0,
                         1,
@@ -8073,6 +8075,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                                 GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT, 'W',
                                 GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE4, 'G',
                                 OrePrefixes.cell.get(Materials.Graphite) }).getStackForm(1L));
+
         ItemList.Machine_IV_ArcFurnace.set(
                 new GT_MetaTileEntity_BasicMachine_GT_Recipe(
                         655,
@@ -8082,7 +8085,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                         "",
                         GT_Recipe.GT_Recipe_Map.sArcFurnaceRecipes,
                         1,
-                        4,
+                        9,
                         64000,
                         0,
                         1,
@@ -8186,7 +8189,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                         "",
                         GT_Recipe.GT_Recipe_Map.sPlasmaArcFurnaceRecipes,
                         1,
-                        4,
+                        9,
                         8000,
                         0,
                         1,
@@ -8212,7 +8215,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
                         "",
                         GT_Recipe.GT_Recipe_Map.sPlasmaArcFurnaceRecipes,
                         1,
-                        4,
+                        9,
                         16000,
                         0,
                         1,
