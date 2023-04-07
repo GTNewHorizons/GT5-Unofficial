@@ -68,6 +68,7 @@ public enum Mods {
     GregTech(Names.GREG_TECH),
     GTNHLanthanides(Names.G_T_N_H_LANTHANIDES),
     GTPlusPlus(Names.G_T_PLUS_PLUS),
+    GTPlusPlusEverglades(Names.G_T_PLUS_PLUS_EVERGLADES),
     HardcoreEnderExpansion(Names.HARDCORE_ENDER_EXPANSION),
     HodgePodge(Names.HODGE_PODGE),
     HoloInventory(Names.HOLO_INVENTORY),
@@ -200,6 +201,7 @@ public enum Mods {
         public static final String GREG_TECH = "gregtech";
         public static final String G_T_N_H_LANTHANIDES = "gtnhlanth";
         public static final String G_T_PLUS_PLUS = "miscutils";
+        public static final String G_T_PLUS_PLUS_EVERGLADES = "ToxicEverglades";
         public static final String HARDCORE_ENDER_EXPANSION = "HardcoreEnderExpansion";
         public static final String HODGE_PODGE = "hodgepodge";
         public static final String HOLO_INVENTORY = "holoinventory";
