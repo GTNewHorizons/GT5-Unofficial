@@ -74,32 +74,37 @@ public class AlloySmelterRecipes implements Runnable {
                     materials[2].mMaterial,
                     materials[2].mAmount);
             if (outputIngot != GT_Values.NI) {
-                GT_Values.RA.stdBuilder()
-                            .itemInputs(ingot1, dust2)
-                            .itemOutputs(outputIngot)
-                            .noFluidInputs()
-                            .noFluidOutputs()
-                            .duration((int) materials[2].mAmount * 50)
-                            .eut(16)
-                            .addTo(sAlloySmelterRecipes);
+                if (ingot1 != null) {
+                    GT_Values.RA.stdBuilder()
+                                .itemInputs(ingot1, dust2)
+                                .itemOutputs(outputIngot)
+                                .noFluidInputs()
+                                .noFluidOutputs()
+                                .duration((int) materials[2].mAmount * 50)
+                                .eut(16)
+                                .addTo(sAlloySmelterRecipes);
+                    if (ingot2 != null) {
+                        GT_Values.RA.stdBuilder()
+                                    .itemInputs(ingot1, ingot2)
+                                    .itemOutputs(outputIngot)
+                                    .noFluidInputs()
+                                    .noFluidOutputs()
+                                    .duration((int) materials[2].mAmount * 50)
+                                    .eut(16)
+                                    .addTo(sAlloySmelterRecipes);
+                    }
+                }
 
-                GT_Values.RA.stdBuilder()
-                            .itemInputs(ingot1, ingot2)
-                            .itemOutputs(outputIngot)
-                            .noFluidInputs()
-                            .noFluidOutputs()
-                            .duration((int) materials[2].mAmount * 50)
-                            .eut(16)
-                            .addTo(sAlloySmelterRecipes);
-
-                GT_Values.RA.stdBuilder()
-                            .itemInputs(dust1, ingot2)
-                            .itemOutputs(outputIngot)
-                            .noFluidInputs()
-                            .noFluidOutputs()
-                            .duration((int) materials[2].mAmount * 50)
-                            .eut(16)
-                            .addTo(sAlloySmelterRecipes);
+                if (ingot2 != null) {
+                    GT_Values.RA.stdBuilder()
+                                .itemInputs(dust1, ingot2)
+                                .itemOutputs(outputIngot)
+                                .noFluidInputs()
+                                .noFluidOutputs()
+                                .duration((int) materials[2].mAmount * 50)
+                                .eut(16)
+                                .addTo(sAlloySmelterRecipes);
+                }
 
                 GT_Values.RA.stdBuilder()
                             .itemInputs(dust1, dust2)
