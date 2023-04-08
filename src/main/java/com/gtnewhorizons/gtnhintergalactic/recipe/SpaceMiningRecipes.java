@@ -317,7 +317,7 @@ public class SpaceMiningRecipes {
                 null,
                 null,
                 new int[] { 4000, 3500, 2500 },
-                new Materials[] { Materials.Quartzite, Materials.Quartz, Materials.Vanadium },
+                new Materials[] { Materials.Quartzite, Materials.CertusQuartz, Materials.Vanadium },
                 OrePrefixes.oreEndstone,
                 20,
                 80,
