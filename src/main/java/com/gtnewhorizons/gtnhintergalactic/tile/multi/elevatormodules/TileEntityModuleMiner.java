@@ -427,11 +427,14 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase {
      * @return String that represents the input ore stack
      */
     protected String getOreString(ItemStack oreStack) {
+        if (oreStack == null || oreStack.getItem() == null) {
+            return null;
+        }
         // For GT ores we want to save the ore independent of its stone type
         if (oreStack.getUnlocalizedName().startsWith("gt.blockores")) {
-            return oreStack.getUnlocalizedName() + ":" + oreStack.getItemDamage() % 1000;
+            return oreStack.getItem().getUnlocalizedName() + ":" + oreStack.getItemDamage() % 1000;
         } else {
-            return oreStack.getUnlocalizedName() + ":" + oreStack.getItemDamage();
+            return oreStack.getItem().getUnlocalizedName() + ":" + oreStack.getItemDamage();
         }
     }
 
