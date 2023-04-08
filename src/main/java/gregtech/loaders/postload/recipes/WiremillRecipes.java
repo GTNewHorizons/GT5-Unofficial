@@ -83,89 +83,99 @@ public class WiremillRecipes implements Runnable {
                     .eut(eut)
                     .addTo(sWiremillRecipes);
 
-        GT_Values.RA.stdBuilder()
-                    .itemInputs(
-                            GT_OreDictUnificator.get(prefix2, materials, 2L / multiplier),
-                            GT_Utility.getIntegratedCircuit(1))
-                    .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.wireGt01, materials, 1L))
-                    .noFluidInputs()
-                    .noFluidOutputs()
-                    .duration(baseDuration / 2)
-                    .eut(eut)
-                    .addTo(sWiremillRecipes);
+        if (GT_OreDictUnificator.get(prefix2, materials, 1L) != null) {
+            GT_Values.RA.stdBuilder()
+                        .itemInputs(
+                                GT_OreDictUnificator.get(prefix2, materials, 2L / multiplier),
+                                GT_Utility.getIntegratedCircuit(1))
+                        .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.wireGt01, materials, 1L))
+                        .noFluidInputs()
+                        .noFluidOutputs()
+                        .duration(baseDuration / 2)
+                        .eut(eut)
+                        .addTo(sWiremillRecipes);
 
-        GT_Values.RA.stdBuilder()
-                    .itemInputs(
-                            GT_OreDictUnificator.get(prefix2, materials, 4L / multiplier),
-                            GT_Utility.getIntegratedCircuit(2))
-                    .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.wireGt02, materials, 1L))
-                    .noFluidInputs()
-                    .noFluidOutputs()
-                    .duration(baseDuration)
-                    .eut(eut)
-                    .addTo(sWiremillRecipes);
+            GT_Values.RA.stdBuilder()
+                        .itemInputs(
+                                GT_OreDictUnificator.get(prefix2, materials, 4L / multiplier),
+                                GT_Utility.getIntegratedCircuit(2))
+                        .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.wireGt02, materials, 1L))
+                        .noFluidInputs()
+                        .noFluidOutputs()
+                        .duration(baseDuration)
+                        .eut(eut)
+                        .addTo(sWiremillRecipes);
 
-        GT_Values.RA.stdBuilder()
-                    .itemInputs(
-                            GT_OreDictUnificator.get(prefix2, materials, 8L / multiplier),
-                            GT_Utility.getIntegratedCircuit(4))
-                    .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.wireGt04, materials, 1L))
-                    .noFluidInputs()
-                    .noFluidOutputs()
-                    .duration((int) (baseDuration * 1.5f))
-                    .eut(eut)
-                    .addTo(sWiremillRecipes);
+            GT_Values.RA.stdBuilder()
+                        .itemInputs(
+                                GT_OreDictUnificator.get(prefix2, materials, 8L / multiplier),
+                                GT_Utility.getIntegratedCircuit(4))
+                        .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.wireGt04, materials, 1L))
+                        .noFluidInputs()
+                        .noFluidOutputs()
+                        .duration((int) (baseDuration * 1.5f))
+                        .eut(eut)
+                        .addTo(sWiremillRecipes);
 
-        GT_Values.RA.stdBuilder()
-                    .itemInputs(
-                            GT_OreDictUnificator.get(prefix2, materials, 16L / multiplier),
-                            GT_Utility.getIntegratedCircuit(8))
-                    .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.wireGt08, materials, 1L))
-                    .noFluidInputs()
-                    .noFluidOutputs()
-                    .duration(baseDuration * 2)
-                    .eut(eut)
-                    .addTo(sWiremillRecipes);
+            GT_Values.RA.stdBuilder()
+                        .itemInputs(
+                                GT_OreDictUnificator.get(prefix2, materials, 16L / multiplier),
+                                GT_Utility.getIntegratedCircuit(8))
+                        .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.wireGt08, materials, 1L))
+                        .noFluidInputs()
+                        .noFluidOutputs()
+                        .duration(baseDuration * 2)
+                        .eut(eut)
+                        .addTo(sWiremillRecipes);
 
-        GT_Values.RA.stdBuilder()
-                    .itemInputs(
-                            GT_OreDictUnificator.get(prefix2, materials, 24L / multiplier),
-                            GT_Utility.getIntegratedCircuit(12))
-                    .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.wireGt12, materials, 1L))
-                    .noFluidInputs()
-                    .noFluidOutputs()
-                    .duration((int) (baseDuration * 2.5f))
-                    .eut(eut)
-                    .addTo(sWiremillRecipes);
+            GT_Values.RA.stdBuilder()
+                        .itemInputs(
+                                GT_OreDictUnificator.get(prefix2, materials, 24L / multiplier),
+                                GT_Utility.getIntegratedCircuit(12))
+                        .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.wireGt12, materials, 1L))
+                        .noFluidInputs()
+                        .noFluidOutputs()
+                        .duration((int) (baseDuration * 2.5f))
+                        .eut(eut)
+                        .addTo(sWiremillRecipes);
 
-        GT_Values.RA.stdBuilder()
-                    .itemInputs(
-                            GT_OreDictUnificator.get(prefix2, materials, 32L / multiplier),
-                            GT_Utility.getIntegratedCircuit(16))
-                    .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.wireGt16, materials, 1L))
-                    .noFluidInputs()
-                    .noFluidOutputs()
-                    .duration(baseDuration * 3)
-                    .eut(eut)
-                    .addTo(sWiremillRecipes);
+            GT_Values.RA.stdBuilder()
+                        .itemInputs(
+                                GT_OreDictUnificator.get(prefix2, materials, 32L / multiplier),
+                                GT_Utility.getIntegratedCircuit(16))
+                        .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.wireGt16, materials, 1L))
+                        .noFluidInputs()
+                        .noFluidOutputs()
+                        .duration(baseDuration * 3)
+                        .eut(eut)
+                        .addTo(sWiremillRecipes);
+        }
 
-        GT_Values.RA.stdBuilder()
-                    .itemInputs(GT_OreDictUnificator.get(prefix1, materials, 1L), GT_Utility.getIntegratedCircuit(3))
-                    .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.wireFine, materials, 4L * multiplier))
-                    .noFluidInputs()
-                    .noFluidOutputs()
-                    .duration(baseDuration)
-                    .eut(eut)
-                    .addTo(sWiremillRecipes);
+        if (GT_OreDictUnificator.get(OrePrefixes.wireFine, materials, 1L) != null) {
 
-        GT_Values.RA.stdBuilder()
-                    .itemInputs(GT_OreDictUnificator.get(prefix2, materials, 1L), GT_Utility.getIntegratedCircuit(3))
-                    .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.wireFine, materials, 2L * multiplier))
-                    .noFluidInputs()
-                    .noFluidOutputs()
-                    .duration(baseDuration / 2)
-                    .eut(eut)
-                    .addTo(sWiremillRecipes);
+            GT_Values.RA.stdBuilder()
+                        .itemInputs(
+                                GT_OreDictUnificator.get(prefix1, materials, 1L),
+                                GT_Utility.getIntegratedCircuit(3))
+                        .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.wireFine, materials, 4L * multiplier))
+                        .noFluidInputs()
+                        .noFluidOutputs()
+                        .duration(baseDuration)
+                        .eut(eut)
+                        .addTo(sWiremillRecipes);
+            if (GT_OreDictUnificator.get(prefix2, materials, 1L) != null) {
+                GT_Values.RA.stdBuilder()
+                            .itemInputs(
+                                    GT_OreDictUnificator.get(prefix2, materials, 1L),
+                                    GT_Utility.getIntegratedCircuit(3))
+                            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.wireFine, materials, 2L * multiplier))
+                            .noFluidInputs()
+                            .noFluidOutputs()
+                            .duration(baseDuration / 2)
+                            .eut(eut)
+                            .addTo(sWiremillRecipes);
+            }
+        }
     }
 
     void registerWiremillRecipes(Materials aMaterial, int baseDuration, int aEUt) {

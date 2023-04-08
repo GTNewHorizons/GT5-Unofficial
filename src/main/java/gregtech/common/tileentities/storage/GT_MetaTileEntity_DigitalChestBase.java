@@ -37,6 +37,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
 import gregtech.api.objects.AE2DigitalChestHandler;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Utility;
 
 public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEntity_TieredMachineBlock
@@ -81,6 +82,31 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
     public GT_MetaTileEntity_DigitalChestBase(String aName, int aTier, String[] aDescription,
             ITexture[][][] aTextures) {
         super(aName, aTier, 3, aDescription, aTextures);
+    }
+
+    @Override
+    public void addAdditionalTooltipInformation(ItemStack stack, List<String> tooltip) {
+        if (stack.hasTagCompound() && stack.stackTagCompound.hasKey("mItemStack")) {
+            final ItemStack tContents = ItemStack.loadItemStackFromNBT(
+                    stack.stackTagCompound.getCompoundTag("mItemStack"));
+            final int tSize = stack.stackTagCompound.getInteger("mItemCount");
+            if (tContents != null && tSize > 0) {
+                tooltip.add(
+                        GT_LanguageManager.addStringLocalization(
+                                "TileEntity_CHEST_INFO",
+                                "Contains Item: ",
+                                !GregTech_API.sPostloadFinished) + EnumChatFormatting.YELLOW
+                                + tContents.getDisplayName()
+                                + EnumChatFormatting.GRAY);
+                tooltip.add(
+                        GT_LanguageManager.addStringLocalization(
+                                "TileEntity_CHEST_AMOUNT",
+                                "Item Amount: ",
+                                !GregTech_API.sPostloadFinished) + EnumChatFormatting.GREEN
+                                + GT_Utility.formatNumbers(tSize)
+                                + EnumChatFormatting.GRAY);
+            }
+        }
     }
 
     public static void registerAEIntegration() {

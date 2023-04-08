@@ -21,7 +21,6 @@ public class ProcessingModSupport implements gregtech.api.interfaces.IMaterialHa
             Materials.Atlarus.mHasParentMod = false;
             Materials.Carmot.mHasParentMod = false;
             Materials.Celenegil.mHasParentMod = false;
-            Materials.Ceruclase.mHasParentMod = false;
             Materials.Eximite.mHasParentMod = false;
             Materials.Haderoth.mHasParentMod = false;
             Materials.Hepatizon.mHasParentMod = false;
@@ -31,19 +30,9 @@ public class ProcessingModSupport implements gregtech.api.interfaces.IMaterialHa
             Materials.Kalendrite.mHasParentMod = false;
             Materials.Lemurite.mHasParentMod = false;
             Materials.Meutoite.mHasParentMod = false;
-            Materials.Orichalcum.mHasParentMod = false;
             Materials.Oureclase.mHasParentMod = false;
             Materials.Prometheum.mHasParentMod = false;
-            Materials.Rubracium.mHasParentMod = false;
             Materials.Sanguinite.mHasParentMod = false;
-            Materials.Tartarite.mHasParentMod = false;
-            Materials.Vulcanite.mHasParentMod = false;
-            Materials.Vyroxeres.mHasParentMod = false;
-            Materials.DeepIron.mHasParentMod = false;
-            Materials.ShadowIron.mHasParentMod = false;
-            Materials.ShadowSteel.mHasParentMod = false;
-            Materials.AstralSilver.mHasParentMod = false;
-            Materials.Trinium.mHasParentMod = false;
         }
 
         if (!UndergroundBiomes.isModLoaded()) {

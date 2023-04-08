@@ -1,7 +1,6 @@
 package gregtech.common.tileentities.machines.basic;
 
-import static gregtech.api.enums.Mods.IndustrialCraft2;
-import static gregtech.api.enums.Mods.Railcraft;
+import static gregtech.api.enums.Mods.*;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 
 import java.util.*;
@@ -183,6 +182,8 @@ public class GT_MetaTileEntity_Disassembler extends GT_MetaTileEntity_BasicMachi
         addBlacklist(ItemList.Transformer_IV_EV.get(1L));
         addBlacklist(GT_ModHandler.getModItem(IndustrialCraft2.ID, "blockElectric", 1L, 6));
         // endregion transformer
+        addBlacklist(GT_ModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiPart", 1L, 36));
+        addBlacklist(GT_ModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiPart", 1L, 536));
     }
 
     public static void addBlacklist(ItemStack stack) {
@@ -572,6 +573,8 @@ public class GT_MetaTileEntity_Disassembler extends GT_MetaTileEntity_BasicMachi
                                                                                                                            x.mOutputs)
                                                                                                                               .anyMatch(
                                                                                                                                       y -> {
+                                                                                                                                          if (y == null)
+                                                                                                                                              return false;
                                                                                                                                           ItemStack out = is.copy();
                                                                                                                                           out.stackSize = y.stackSize;
                                                                                                                                           boolean isDone = GT_Utility.areStacksEqual(
