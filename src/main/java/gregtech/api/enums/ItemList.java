@@ -2131,7 +2131,7 @@ public enum ItemList implements IItemContainer {
     @Override
     public ItemStack get(long aAmount, Object... aReplacements) {
         sanityCheck();
-        if (GT_Utility.isStackInvalid(mStack)){
+        if (GT_Utility.isStackInvalid(mStack)) {
             GT_Log.out.println("Object in the ItemList is null at:");
             new NullPointerException().printStackTrace(GT_Log.out);
             return GT_Utility.copyAmount(aAmount, aReplacements);
