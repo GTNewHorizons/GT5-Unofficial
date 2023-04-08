@@ -25,6 +25,7 @@ import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -400,6 +401,18 @@ public class GT_TileEntity_CircuitAssemblyLine extends
             if (built >= 0) return built;
         }
         return -1;
+    }
+
+    @Override
+    public void addAdditionalTooltipInformation(ItemStack stack, List<String> tooltip) {
+        if (stack.hasTagCompound() && stack.stackTagCompound.hasKey("Type")) {
+            tooltip.add(
+                    StatCollector.translateToLocal("tooltip.cal.imprintedWith") + " "
+                            + StatCollector.translateToLocal(
+                                    GT_LanguageManager.getTranslateableItemStackName(
+                                            ItemStack.loadItemStackFromNBT(
+                                                    stack.stackTagCompound.getCompoundTag("Type")))));
+        }
     }
 
     @Override

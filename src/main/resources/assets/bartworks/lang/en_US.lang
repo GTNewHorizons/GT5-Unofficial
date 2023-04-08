@@ -178,4 +178,6 @@ BW.NEI.display.radhatch.2=Time: %s s
 
 misc.BatchModeTextOn=Batch recipes
 misc.BatchModeTextOff=Don't batch recipes
+
+tooltip.cal.imprintedWith=Imprinted with:
 #Liquids
