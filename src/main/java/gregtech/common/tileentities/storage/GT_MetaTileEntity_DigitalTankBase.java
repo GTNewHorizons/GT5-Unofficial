@@ -13,6 +13,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -30,6 +31,7 @@ import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
+import gregtech.api.GregTech_API;
 import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.IFluidAccess;
@@ -39,6 +41,7 @@ import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.gui.modularui.widget.FluidDisplaySlotWidget;
 
@@ -106,6 +109,31 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
     @Override
     public ITexture[][][] getTextureSet(ITexture[] aTextures) {
         return new ITexture[0][0][0];
+    }
+
+    @Override
+    public void addAdditionalTooltipInformation(ItemStack stack, List<String> tooltip) {
+        if (stack.hasTagCompound() && stack.stackTagCompound.hasKey("mFluid")) {
+            final FluidStack tContents = FluidStack.loadFluidStackFromNBT(
+                    stack.stackTagCompound.getCompoundTag("mFluid"));
+            if (tContents != null && tContents.amount > 0) {
+                tooltip.add(
+                        GT_LanguageManager.addStringLocalization(
+                                "TileEntity_TANK_INFO",
+                                "Contains Fluid: ",
+                                !GregTech_API.sPostloadFinished) + EnumChatFormatting.YELLOW
+                                + tContents.getLocalizedName()
+                                + EnumChatFormatting.GRAY);
+                tooltip.add(
+                        GT_LanguageManager.addStringLocalization(
+                                "TileEntity_TANK_AMOUNT",
+                                "Fluid Amount: ",
+                                !GregTech_API.sPostloadFinished) + EnumChatFormatting.GREEN
+                                + GT_Utility.formatNumbers(tContents.amount)
+                                + " L"
+                                + EnumChatFormatting.GRAY);
+            }
+        }
     }
 
     @Override

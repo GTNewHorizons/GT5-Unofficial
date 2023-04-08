@@ -513,4 +513,12 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
      * Called before block is destroyed. This is before inventory dropping code has executed.
      */
     default void onBlockDestroyed() {}
+
+    /**
+     * Allows to add additional data to the tooltip, which is specific to an instance of the machine
+     *
+     * @param stack   Item stack of this MTE
+     * @param tooltip Tooltip to which can be added
+     */
+    default void addAdditionalTooltipInformation(ItemStack stack, List<String> tooltip) {}
 }
