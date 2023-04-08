@@ -89,9 +89,12 @@ public class GregtechMetaTileEntity_LargeRocketEngine extends
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType(getMachineType()).addInfo("Controller Block for the Large Rocket Engine")
+                .addInfo("Generating Power from Rocket Fuels - Supports TecTech Multi-Amp Dynamos!")
                 .addInfo("Supply GT++ Rocket Fuels and 1000L of " + mLubricantName + " per hour")
                 .addInfo("Produces as much energy as you put fuel in, with optional boosting")
+                .addInfo("This multi doesn't accept fluids if not enabled - enable it first!")
                 .addInfo("Consumes 2000L/s of air and pollutes 1500 gibbl/s per 16384 eu/t produced")
+                .addInfo("Place 1-8 Air Intake Hatches on the sides to maintain Air input")
                 .addInfo("If it runs out of air, it will shut down and have to be manually restarted")
                 .addInfo("Supply 3L of " + mCoolantName + " per second, per 1000 EU/t to boost")
                 .addInfo("Takes 3x the amount of " + mLubricantName + " and maintains efficiency")
@@ -101,7 +104,7 @@ public class GregtechMetaTileEntity_LargeRocketEngine extends
                 .addInfo("- 75% of max fuel efficiency at 53k or 159k EU/t output energy")
                 .addInfo("- 50% of max fuel efficiency at 69k or 207k EU/t output energy")
                 .addInfo("- 25% of max fuel efficiency at 98k or 294k EU/t output energy")
-                .addInfo("formula: x = input of energy (30K^(1/3)/ x^(1/3)) * (80K^(1/3)/ x^(1/3))").addSeparator()
+                .addInfo("formula: x = input of energy (30000^(1/3)/ x^(1/3)) * (80000^(1/3)/ x^(1/3))").addSeparator()
                 .beginStructureBlock(3, 3, 10, false).addController("Front Center").addCasingInfo(mCasingName, 64)
                 .addCasingInfo(mGearboxName, 8).addStructureHint("Air Intake Hatch", 1)
                 .addInputBus("Side center line", 1).addInputHatch("Side center line", 1)
