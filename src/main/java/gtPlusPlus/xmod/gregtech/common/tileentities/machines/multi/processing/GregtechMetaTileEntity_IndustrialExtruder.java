@@ -209,4 +209,9 @@ public class GregtechMetaTileEntity_IndustrialExtruder extends
     public byte getCasingTextureIndex() {
         return (byte) TAE.GTPP_INDEX(33);
     }
+
+    @Override
+    protected boolean isInputSeparationEnabled() {
+        return true;
+    }
 }

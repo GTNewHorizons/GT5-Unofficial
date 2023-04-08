@@ -425,4 +425,9 @@ public class GregtechMetaTileEntity_IndustrialMultiMachine extends
         this.mInternalMode = aNBT.getInteger("mInternalMode");
         super.loadNBTData(aNBT);
     }
+
+    @Override
+    protected boolean isInputSeparationEnabled() {
+        return true;
+    }
 }

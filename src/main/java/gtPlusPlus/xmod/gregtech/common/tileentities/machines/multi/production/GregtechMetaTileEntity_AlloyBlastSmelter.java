@@ -44,7 +44,6 @@ public class GregtechMetaTileEntity_AlloyBlastSmelter extends
 
     private int mMode = 0;
     private boolean isUsingControllerCircuit = false;
-    private boolean isBussesSeparate = false;
     private static Item circuit;
     private int mCasing;
     private static IStructureDefinition<GregtechMetaTileEntity_AlloyBlastSmelter> STRUCTURE_DEFINITION = null;
@@ -68,15 +67,11 @@ public class GregtechMetaTileEntity_AlloyBlastSmelter extends
     }
 
     @Override
-    public void saveNBTData(NBTTagCompound aNBT) {
-        super.saveNBTData(aNBT);
-        aNBT.setBoolean("isBussesSeparate", isBussesSeparate);
-    }
-
-    @Override
     public void loadNBTData(final NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        isBussesSeparate = aNBT.getBoolean("isBussesSeparate");
+        if (!aNBT.hasKey(INPUT_SEPARATION_NBT_KEY)) {
+            inputSeparation = aNBT.getBoolean("isBussesSeparate");
+        }
     }
 
     @Override
@@ -195,7 +190,7 @@ public class GregtechMetaTileEntity_AlloyBlastSmelter extends
             final FluidStack[] tFluids = getCompactedFluids();
             GT_Recipe tRecipe = null;
 
-            if (isBussesSeparate) {
+            if (inputSeparation) {
                 for (GT_MetaTileEntity_Hatch_InputBus tBus : mInputBusses) {
                     tInputList = new ArrayList<>();
                     tBus.mRecipeMap = getRecipeMap();
@@ -290,10 +285,10 @@ public class GregtechMetaTileEntity_AlloyBlastSmelter extends
 
     @Override
     public void onModeChangeByScrewdriver(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        isBussesSeparate = !isBussesSeparate;
+        inputSeparation = !inputSeparation;
         GT_Utility.sendChatToPlayer(
                 aPlayer,
-                StatCollector.translateToLocal("GT5U.machines.separatebus") + " " + isBussesSeparate);
+                StatCollector.translateToLocal("GT5U.machines.separatebus") + " " + inputSeparation);
     }
 
     @Override
@@ -329,5 +324,10 @@ public class GregtechMetaTileEntity_AlloyBlastSmelter extends
     @Override
     public boolean explodesOnComponentBreak(final ItemStack aStack) {
         return false;
+    }
+
+    @Override
+    protected boolean isInputSeparationButtonEnabled() {
+        return true;
     }
 }

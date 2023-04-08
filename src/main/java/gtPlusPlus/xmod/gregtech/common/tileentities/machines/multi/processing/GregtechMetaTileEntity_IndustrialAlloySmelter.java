@@ -275,4 +275,9 @@ public class GregtechMetaTileEntity_IndustrialAlloySmelter extends
     public void setCoilLevel(HeatingCoilLevel aCoilLevel) {
         mHeatingCapacity = aCoilLevel;
     }
+
+    @Override
+    protected boolean isInputSeparationEnabled() {
+        return true;
+    }
 }

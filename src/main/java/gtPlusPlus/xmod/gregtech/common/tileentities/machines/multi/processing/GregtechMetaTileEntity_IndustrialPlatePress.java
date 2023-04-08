@@ -217,4 +217,9 @@ public class GregtechMetaTileEntity_IndustrialPlatePress extends
         }
         mLastRecipe = null;
     }
+
+    @Override
+    protected boolean isInputSeparationEnabled() {
+        return true;
+    }
 }
