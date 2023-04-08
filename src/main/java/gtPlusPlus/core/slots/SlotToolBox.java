@@ -17,13 +17,6 @@ public class SlotToolBox extends SlotGtTool {
         // Look for Supported custom tool types
         Class temp;
 
-        // IHL Pumps
-        temp = ReflectionUtils.getClass("ihl.handpump.IHLHandPump");
-        if (temp != null) {
-            mSupportedCustomTools.put(temp);
-            temp = null;
-        }
-
         // IC2 Electrics
         temp = ReflectionUtils.getClass("ic2.api.item.IElectricItem");
         if (temp != null) {

@@ -1,5 +1,7 @@
 package gtPlusPlus.core.item.base;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import java.util.List;
 
 import net.minecraft.creativetab.CreativeTabs;
@@ -13,7 +15,6 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.util.GT_LanguageManager;
-import gtPlusPlus.core.lib.CORE;
 
 public class BaseItemColourable extends Item {
 
@@ -35,7 +36,7 @@ public class BaseItemColourable extends Item {
             final int maxDmg, final String description, final EnumRarity regRarity, final EnumChatFormatting colour,
             final boolean Effect, int rgb) {
         this.setUnlocalizedName(unlocalizedName);
-        this.setTextureName(CORE.MODID + ":" + unlocalizedName);
+        this.setTextureName(GTPlusPlus.ID + ":" + unlocalizedName);
         this.setCreativeTab(creativeTab);
         this.setMaxStackSize(stackSize);
         this.setMaxDamage(maxDmg);
@@ -57,7 +58,7 @@ public class BaseItemColourable extends Item {
             final EnumChatFormatting colour, final boolean Effect, int rgb) {
         this.setUnlocalizedName(unlocalizedName);
         GT_LanguageManager.addStringLocalization("gtplusplus." + this.getUnlocalizedName() + ".name", displayName);
-        this.setTextureName(CORE.MODID + ":" + unlocalizedName);
+        this.setTextureName(GTPlusPlus.ID + ":" + unlocalizedName);
         this.setCreativeTab(creativeTab);
         this.setMaxStackSize(stackSize);
         this.setMaxDamage(maxDmg);

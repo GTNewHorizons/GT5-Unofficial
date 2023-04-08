@@ -37,11 +37,6 @@ public class COMPAT_IC2 {
             itemSolarHelmet);
 
     public static void OreDict() {
-        // Get ItemStacks for results
-        /*
-         * itemCropnalyzer = UtilsItems.getItemStack("IC2:itemCropnalyzer", 1); itemSolarHelmet =
-         * UtilsItems.getItemStack("IC2:itemSolarHelmet", 1);
-         */
         run();
     }
 
@@ -58,11 +53,6 @@ public class COMPAT_IC2 {
             RemoveRecipeQueue.add("IC2:itemCable:6");
             RemoveRecipeQueue.add("IC2:itemCable:10");
             RemoveRecipeQueue.add("IC2:itemCable:13");
-            // RemoveRecipeQueue.add(itemCropnalyzer);
-            // RemoveRecipeQueue.add(itemSolarHelmet);
-
-            // AddRecipeQueue.add(Cropnalyzer);
-            // AddRecipeQueue.add(SolarHelmet);
         }
     }
 }

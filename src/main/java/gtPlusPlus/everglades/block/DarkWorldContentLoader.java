@@ -1,6 +1,11 @@
 package gtPlusPlus.everglades.block;
 
-import static gtPlusPlus.everglades.dimension.Dimension_Everglades.*;
+import static gtPlusPlus.everglades.dimension.Dimension_Everglades.blockFluidLakes;
+import static gtPlusPlus.everglades.dimension.Dimension_Everglades.blockPortalFrame;
+import static gtPlusPlus.everglades.dimension.Dimension_Everglades.blockSecondLayer;
+import static gtPlusPlus.everglades.dimension.Dimension_Everglades.blockTopLayer;
+import static gtPlusPlus.everglades.dimension.Dimension_Everglades.portalBlock;
+import static gtPlusPlus.everglades.dimension.Dimension_Everglades.portalItem;
 
 import net.minecraft.init.Blocks;
 import net.minecraftforge.fluids.FluidRegistry;

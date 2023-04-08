@@ -1,5 +1,7 @@
 package gtPlusPlus.everglades.block;
 
+import static gregtech.api.enums.Mods.Minecraft;
+
 import net.minecraft.block.BlockDirt;
 import net.minecraft.world.ColorizerGrass;
 import net.minecraft.world.IBlockAccess;
@@ -15,7 +17,7 @@ public class BlockDarkWorldPollutedDirt extends BlockDirt implements ITileToolti
         this.setCreativeTab(AddToCreativeTab.tabBOP);
         this.setBlockName("blockDarkWorldGround2");
         this.setHardness(0.5F);
-        this.setBlockTextureName("minecraft" + ":" + "dirt");
+        this.setBlockTextureName(Minecraft.ID + ":" + "dirt");
     }
 
     @Override

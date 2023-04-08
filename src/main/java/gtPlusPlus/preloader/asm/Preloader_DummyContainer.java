@@ -1,5 +1,8 @@
 package gtPlusPlus.preloader.asm;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+import static gregtech.api.enums.Mods.GregTech;
+
 import java.io.File;
 import java.util.Arrays;
 
@@ -33,7 +36,7 @@ public class Preloader_DummyContainer extends DummyModContainer {
         meta.updateUrl = "";
         meta.screenshots = new String[0];
         meta.logoFile = "";
-        meta.parent = "miscutils";
+        meta.parent = GTPlusPlus.ID;
         // meta.dependencies = (List<ArtifactVersion>) CORE_Preloader.DEPENDENCIES;
         Preloader_Logger.INFO("Initializing DummyModContainer");
     }
@@ -83,7 +86,7 @@ public class Preloader_DummyContainer extends DummyModContainer {
         // Circuits
         CORE_Preloader.enableOldGTcircuits = config.getBoolean(
                 "enableOldGTcircuits",
-                "gregtech",
+                GregTech.ID,
                 false,
                 "Restores circuits and their recipes from Pre-5.09.28 times.");
     }
@@ -96,7 +99,7 @@ public class Preloader_DummyContainer extends DummyModContainer {
             // Circuits
             CORE_Preloader.enableOldGTcircuits = config.getBoolean(
                     "enableOldGTcircuits",
-                    "gregtech",
+                    GregTech.ID,
                     false,
                     "Restores circuits and their recipes from Pre-5.09.28 times.");
             CORE_Preloader.enableWatchdogBGM = config.getInt(

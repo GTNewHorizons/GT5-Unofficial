@@ -1,9 +1,14 @@
 package gtPlusPlus.xmod.gregtech.common.helpers.tesseract;
 
-import static gtPlusPlus.core.lib.CORE.*;
+import static gtPlusPlus.core.lib.CORE.sTesseractGeneratorOwnershipMap;
+import static gtPlusPlus.core.lib.CORE.sTesseractTerminalOwnershipMap;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
+import java.util.UUID;
 
 import net.minecraft.entity.player.EntityPlayer;
 

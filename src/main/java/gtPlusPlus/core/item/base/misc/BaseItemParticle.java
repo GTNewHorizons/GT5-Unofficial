@@ -1,5 +1,7 @@
 package gtPlusPlus.core.item.base.misc;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,7 +14,6 @@ import net.minecraft.util.EnumChatFormatting;
 
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.item.base.CoreItem;
-import gtPlusPlus.core.lib.CORE;
 
 public abstract class BaseItemParticle extends CoreItem {
 
@@ -31,7 +32,7 @@ public abstract class BaseItemParticle extends CoreItem {
                 EnumChatFormatting.DARK_AQUA,
                 false,
                 null);
-        this.setTextureName(CORE.MODID + ":" + "science/Atom");
+        this.setTextureName(GTPlusPlus.ID + ":" + "science/Atom");
         aMaxCount = aCount;
         this.setHasSubtypes(true);
     }

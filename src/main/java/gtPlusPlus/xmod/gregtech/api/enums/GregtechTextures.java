@@ -1,10 +1,11 @@
 package gtPlusPlus.xmod.gregtech.api.enums;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.interfaces.internal.Interface_IconContainer;
 import gtPlusPlus.xmod.gregtech.api.interfaces.internal.Interface_Texture;
 import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
@@ -62,7 +63,7 @@ public class GregtechTextures {
 
         @Override
         public void run() {
-            this.mIcon = Meta_GT_Proxy.sBlockIcons.registerIcon(CORE.MODID + ":" + "iconsets/" + this);
+            this.mIcon = Meta_GT_Proxy.sBlockIcons.registerIcon(GTPlusPlus.ID + ":" + "iconsets/" + this);
         }
 
         @Override
@@ -92,7 +93,7 @@ public class GregtechTextures {
 
             @Override
             public void run() {
-                this.mIcon = Meta_GT_Proxy.sBlockIcons.registerIcon(CORE.MODID + ":" + this.mIconName);
+                this.mIcon = Meta_GT_Proxy.sBlockIcons.registerIcon(GTPlusPlus.ID + ":" + this.mIconName);
             }
 
             @Override
@@ -146,8 +147,9 @@ public class GregtechTextures {
 
         @Override
         public void run() {
-            this.mIcon = Meta_GT_Proxy.sItemIcons.registerIcon(CORE.MODID + ":" + "iconsets/" + this);
-            this.mOverlay = Meta_GT_Proxy.sItemIcons.registerIcon(CORE.MODID + ":" + "iconsets/" + this + "_OVERLAY");
+            this.mIcon = Meta_GT_Proxy.sItemIcons.registerIcon(GTPlusPlus.ID + ":" + "iconsets/" + this);
+            this.mOverlay = Meta_GT_Proxy.sItemIcons
+                    .registerIcon(GTPlusPlus.ID + ":" + "iconsets/" + this + "_OVERLAY");
         }
 
         public static class CustomIcon implements Interface_IconContainer, Runnable {
@@ -172,8 +174,9 @@ public class GregtechTextures {
 
             @Override
             public void run() {
-                this.mIcon = Meta_GT_Proxy.sItemIcons.registerIcon(CORE.MODID + ":" + this.mIconName);
-                this.mOverlay = Meta_GT_Proxy.sItemIcons.registerIcon(CORE.MODID + ":" + this.mIconName + "_OVERLAY");
+                this.mIcon = Meta_GT_Proxy.sItemIcons.registerIcon(GTPlusPlus.ID + ":" + this.mIconName);
+                this.mOverlay = Meta_GT_Proxy.sItemIcons
+                        .registerIcon(GTPlusPlus.ID + ":" + this.mIconName + "_OVERLAY");
             }
 
             @Override

@@ -1,6 +1,32 @@
 package gtPlusPlus.preloader.asm.transformers;
 
-import static gtPlusPlus.preloader.asm.ClassesToTransform.*;
+import static gtPlusPlus.preloader.asm.ClassesToTransform.COFH_ORE_DICTIONARY_ARBITER;
+import static gtPlusPlus.preloader.asm.ClassesToTransform.FORGE_CHUNK_MANAGER;
+import static gtPlusPlus.preloader.asm.ClassesToTransform.FORGE_ORE_DICTIONARY;
+import static gtPlusPlus.preloader.asm.ClassesToTransform.GALACTICRAFT_ENTITY_AUTO_ROCKET;
+import static gtPlusPlus.preloader.asm.ClassesToTransform.GALACTICRAFT_FLUID_UTILS;
+import static gtPlusPlus.preloader.asm.ClassesToTransform.GALACTICRAFT_TILE_ENTITY_FUEL_LOADER;
+import static gtPlusPlus.preloader.asm.ClassesToTransform.IC2_BLOCK_BASE_TILE_ENTITY;
+import static gtPlusPlus.preloader.asm.ClassesToTransform.IC2_BLOCK_CHARGEPAD;
+import static gtPlusPlus.preloader.asm.ClassesToTransform.IC2_BLOCK_ELECTRIC;
+import static gtPlusPlus.preloader.asm.ClassesToTransform.IC2_BLOCK_GENERATOR;
+import static gtPlusPlus.preloader.asm.ClassesToTransform.IC2_BLOCK_HEAT_GENERATOR;
+import static gtPlusPlus.preloader.asm.ClassesToTransform.IC2_BLOCK_KINETIC_GENERATOR;
+import static gtPlusPlus.preloader.asm.ClassesToTransform.IC2_BLOCK_LUMINATOR;
+import static gtPlusPlus.preloader.asm.ClassesToTransform.IC2_BLOCK_MACHINE1;
+import static gtPlusPlus.preloader.asm.ClassesToTransform.IC2_BLOCK_MACHINE2;
+import static gtPlusPlus.preloader.asm.ClassesToTransform.IC2_BLOCK_MACHINE3;
+import static gtPlusPlus.preloader.asm.ClassesToTransform.IC2_BLOCK_PERSONAL;
+import static gtPlusPlus.preloader.asm.ClassesToTransform.IC2_BLOCK_REACTOR_ACCESS_HATCH;
+import static gtPlusPlus.preloader.asm.ClassesToTransform.IC2_BLOCK_REACTOR_CHAMBER;
+import static gtPlusPlus.preloader.asm.ClassesToTransform.IC2_BLOCK_REACTOR_FLUID_PORT;
+import static gtPlusPlus.preloader.asm.ClassesToTransform.IC2_BLOCK_REACTOR_REDSTONE_PORT;
+import static gtPlusPlus.preloader.asm.ClassesToTransform.IC2_BLOCK_REACTOR_VESSEL;
+import static gtPlusPlus.preloader.asm.ClassesToTransform.LWJGL_KEYBOARD;
+import static gtPlusPlus.preloader.asm.ClassesToTransform.MINECRAFT_GAMESETTINGS;
+import static gtPlusPlus.preloader.asm.ClassesToTransform.MINECRAFT_GAMESETTINGS_OBF;
+import static gtPlusPlus.preloader.asm.ClassesToTransform.THAUMCRAFT_ITEM_WISP_ESSENCE;
+import static gtPlusPlus.preloader.asm.ClassesToTransform.TINKERS_FLUID_BLOCK;
 
 import java.io.File;
 import java.io.IOException;

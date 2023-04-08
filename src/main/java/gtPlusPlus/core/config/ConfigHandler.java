@@ -1,8 +1,121 @@
 package gtPlusPlus.core.config;
 
+import static gregtech.api.enums.Mods.GregTech;
 import static gtPlusPlus.core.item.general.RF2EU_Battery.rfPerEU;
-import static gtPlusPlus.core.lib.CORE.*;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.*;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.MACHINE_INFO;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.baseMaxPollutionPerSecondRocketFuelGenerator;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.baseMinPollutionPerSecondRocketFuelGenerator;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.basePollutionPerSecondBoiler;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.basePollutionPerSecondGeothermalGenerator;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.basePollutionPerSecondSemiFluidGenerator;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.boilerSteamPerSecond;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.chanceToDropDrainedShard;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.chanceToDropFluoriteOre;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.disableEnderIOIngotTooltips;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.disableEnderIOIntegration;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.disableIC2Recipes;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.disableZombieReinforcement;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.dumpItemAndBlockData;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableAlternativeBatteryAlloy;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableAlternativeDivisionSigilRecipe;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableAnimatedTextures;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableCustomCapes;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableCustomCircuits;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableCustom_Cables;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableCustom_Pipes;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMachine_ComponentAssemblers;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMachine_Dehydrators;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMachine_FluidTanks;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMachine_GeothermalEngines;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMachine_Pollution;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMachine_RF_Convetor;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMachine_RocketEngines;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMachine_Safes;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMachine_SimpleWasher;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMachine_SolarGenerators;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMachine_SteamConverter;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMachine_Tesseracts;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMachine_WorldAccelerators;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMultiSizeTools;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMultiblock_AlloyBlastSmelter;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMultiblock_Cyclotron;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMultiblock_IndustrialCentrifuge;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMultiblock_IndustrialCokeOven;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMultiblock_IndustrialCuttingMachine;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMultiblock_IndustrialElectrolyzer;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMultiblock_IndustrialExtrudingMachine;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMultiblock_IndustrialFishingPort;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMultiblock_IndustrialMacerationStack;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMultiblock_IndustrialMultiMachine;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMultiblock_IndustrialPlatePress;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMultiblock_IndustrialSifter;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMultiblock_IndustrialThermalCentrifuge;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMultiblock_IndustrialWashPlant;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMultiblock_IndustrialWireMill;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMultiblock_IronBlastFurnace;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMultiblock_LargeAutoCrafter;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMultiblock_LiquidFluorideThoriumReactor;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMultiblock_MatterFabricator;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMultiblock_MultiTank;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMultiblock_NuclearFuelRefinery;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMultiblock_PowerSubstation;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableMultiblock_ThermalBoiler;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableOldGTcircuits;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableSkookumChoochers;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableSulfuricAcidFix;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableThaumcraftShardUnification;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableWatchdogBGM;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.hideUniversalCells;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.pollutionPerSecondMultiABS;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.pollutionPerSecondMultiAdvDistillationTower_ModeDT;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.pollutionPerSecondMultiAdvDistillationTower_ModeDistillery;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.pollutionPerSecondMultiAdvEBF;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.pollutionPerSecondMultiAdvImplosion;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.pollutionPerSecondMultiAlgaePond;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.pollutionPerSecondMultiAutoCrafter;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.pollutionPerSecondMultiCyclotron;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.pollutionPerSecondMultiFrothFlotationCell;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialAlloySmelter;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialArcFurnace;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialCentrifuge;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialChisel;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialCokeOven;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialCuttingMachine;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialDehydrator;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialElectrolyzer;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialExtruder;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialFishingPond;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialForgeHammer;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialMacerator;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialMixer;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialMultiMachine_ModeFluid;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialMultiMachine_ModeMetal;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialMultiMachine_ModeMisc;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialPlatePress_ModeBending;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialPlatePress_ModeForming;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialRockBreaker;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialSifter;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialThermalCentrifuge;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialVacuumFreezer;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialWashPlant_ModeChemBath;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialWashPlant_ModeWasher;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.pollutionPerSecondMultiIndustrialWireMill;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.pollutionPerSecondMultiIsaMill;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.pollutionPerSecondMultiLargeSemiFluidGenerator;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.pollutionPerSecondMultiMassFabricator;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.pollutionPerSecondMultiMolecularTransformer;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.pollutionPerSecondMultiPackager;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.pollutionPerSecondMultiRefinery;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.pollutionPerSecondMultiThermalBoiler;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.pollutionPerSecondMultiTreeFarm;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.pollutionReleasedByTierBoiler;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.pollutionReleasedByTierGeothermalGenerator;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.pollutionReleasedByTierRocketFuelGenerator;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.pollutionReleasedByTierSemiFluidGenerator;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.showHiddenNEIItems;
+import static gtPlusPlus.core.lib.CORE.EVERGLADESBIOME_ID;
+import static gtPlusPlus.core.lib.CORE.EVERGLADES_ID;
+import static gtPlusPlus.core.lib.CORE.turbineCutoffBase;
 import static gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_WorldAccelerator.BlacklistedTileEntiyClassNames;
 
 import java.io.File;
@@ -75,50 +188,44 @@ public class ConfigHandler {
         // Circuits
         enableCustomCircuits = config.getBoolean(
                 "enableCustomCircuits",
-                "gregtech",
+                GregTech.ID,
                 false,
                 "Adds custom circuits to expand past the Master Tier. Only really recommended to enable if enableOldGTcircuits is enabled.");
         enableOldGTcircuits = config.getBoolean(
                 "enableOldGTcircuits",
-                "gregtech",
+                GregTech.ID,
                 false,
                 "Restores circuits and their recipes from Pre-5.09.28 times.");
 
         // Tools
         enableSkookumChoochers = config.getBoolean(
                 "enableSkookumChoochers",
-                "gregtech",
+                GregTech.ID,
                 true,
                 "Adds Custom GT Tools, called Skookum Choochers, functioning as a hard hammer and a wrench.");
         enableMultiSizeTools = config.getBoolean(
                 "enableMultiSizeTools",
-                "gregtech",
+                GregTech.ID,
                 true,
                 "Adds Custom GT Shovels and Pickaxes which mine in a 3x3 style. One of each whill be generated for each Gregtech Material which has Dense Plates and Long Rods available.");
 
         // GT-Fixes
         enableSulfuricAcidFix = config.getBoolean(
                 "enableSulfuricAcidFix",
-                "gregtech",
+                GregTech.ID,
                 false,
                 "Adds GT6 recipes for Sulfuric Acid. Should remove all pre-existing recipes.");
         turbineCutoffBase = config.getInt(
                 "turbineCutoffBase",
-                "gregtech",
+                GregTech.ID,
                 75000,
                 0,
                 Integer.MAX_VALUE,
                 "Rotors below this durability will be removed, prevents NEI clutter. Minimum Durability is N * x, where N is the new value set and x is the turbine size, where 1 is Tiny and 4 is Huge. Set to 0 to disable.");
 
-        enableHarderRecipesForHighTierCasings = config.getBoolean(
-                "enableHarderRecipesForHighTierCasings",
-                "gregtech",
-                false,
-                "Makes LuV+ Casings and Hulls more difficult to craft.");
-
         // Pipes & Cables
-        enableCustom_Pipes = config.getBoolean("enableCustom_Pipes", "gregtech", true, "Adds Custom GT Fluid Pipes.");
-        enableCustom_Cables = config.getBoolean("enableCustom_Cables", "gregtech", true, "Adds Custom GT Cables.");
+        enableCustom_Pipes = config.getBoolean("enableCustom_Pipes", GregTech.ID, true, "Adds Custom GT Fluid Pipes.");
+        enableCustom_Cables = config.getBoolean("enableCustom_Cables", GregTech.ID, true, "Adds Custom GT Cables.");
 
         // Block Drops
         chanceToDropDrainedShard = config.getInt(
@@ -139,150 +246,150 @@ public class ConfigHandler {
         // Single machines
         enableMachine_SolarGenerators = config.getBoolean(
                 "enableSolarGenerators",
-                "gregtech",
+                GregTech.ID,
                 false,
                 "These may be overpowered, Consult a local electrician.");
         enableMachine_ComponentAssemblers = config
-                .getBoolean("enableComponentAssemblers", "gregtech", true, "These construct machine components.");
+                .getBoolean("enableComponentAssemblers", GregTech.ID, true, "These construct machine components.");
         enableMachine_Safes = config
-                .getBoolean("enableMachineSafes", "gregtech", true, "These protect your goodies/rare stuff.");
+                .getBoolean("enableMachineSafes", GregTech.ID, true, "These protect your goodies/rare stuff.");
         enableMachine_Dehydrators = config
-                .getBoolean("enableMachineDehydrators", "gregtech", true, "These dehydrate stuff.");
+                .getBoolean("enableMachineDehydrators", GregTech.ID, true, "These dehydrate stuff.");
         enableMachine_SteamConverter = config
-                .getBoolean("enableMachineSteamConverter", "gregtech", true, "Converts IC2 steam -> Railcraft steam.");
+                .getBoolean("enableMachineSteamConverter", GregTech.ID, true, "Converts IC2 steam -> Railcraft steam.");
         enableMachine_FluidTanks = config
-                .getBoolean("enableMachineFluidTanks", "gregtech", true, "Portable fluid tanks.");
+                .getBoolean("enableMachineFluidTanks", GregTech.ID, true, "Portable fluid tanks.");
         enableMachine_RocketEngines = config.getBoolean(
                 "enableMachineRocketEngines",
-                "gregtech",
+                GregTech.ID,
                 true,
                 "Diesel egines with different internals, they consume less fuel overall.");
         enableMachine_GeothermalEngines = config.getBoolean(
                 "enableMachineGeothermalEngines",
-                "gregtech",
+                GregTech.ID,
                 true,
                 "These may be overpowered, Consult a local geologist.");
         enableMachine_WorldAccelerators = config.getBoolean(
                 "enableMachineWorldAccelerators",
-                "gregtech",
+                GregTech.ID,
                 true,
                 "These allow boosting Block/TileEntity Tick times [OP].");
         enableMachine_Tesseracts = config.getBoolean(
                 "enableMachineTesseracts",
-                "gregtech",
+                GregTech.ID,
                 true,
                 "Tesseracts for wireless item/fluid movement.");
         enableMachine_SimpleWasher = config.getBoolean(
                 "enableMachineSimpleWasher",
-                "gregtech",
+                GregTech.ID,
                 true,
                 "Very basic automated cauldron for dust washing.");
         enableMachine_Pollution = config
-                .getBoolean("enableMachinePollution", "gregtech", true, "Pollution Detector & Scrubbers.");
+                .getBoolean("enableMachinePollution", GregTech.ID, true, "Pollution Detector & Scrubbers.");
         enableMachine_RF_Convetor = config.getBoolean(
                 "enableMachineRFConvetor",
-                "gregtech",
+                GregTech.ID,
                 true,
                 "Converts RF to GTEU. Requires COFH-Core to be installed.");
 
         // Multi machines
         enableMultiblock_AlloyBlastSmelter = config.getBoolean(
                 "enableMultiblockAlloyBlastSmelter",
-                "gregtech",
+                GregTech.ID,
                 true,
                 "Required to smelt most high tier materials from GT++. Also smelts everything else to molten metal.");
         enableMultiblock_IndustrialCentrifuge = config
-                .getBoolean("enableMultiblockIndustrialCentrifuge", "gregtech", true, "Spin, Spin, Spiiiin.");
+                .getBoolean("enableMultiblockIndustrialCentrifuge", GregTech.ID, true, "Spin, Spin, Spiiiin.");
         enableMultiblock_IndustrialCokeOven = config.getBoolean(
                 "enableMultiblockIndustrialCokeOven",
-                "gregtech",
+                GregTech.ID,
                 true,
                 "Pyro Oven Alternative, older, more realistic, better.");
         enableMultiblock_IndustrialElectrolyzer = config.getBoolean(
                 "enableMultiblockIndustrialElectrolyzer",
-                "gregtech",
+                GregTech.ID,
                 true,
                 "Electrolyzes things with extra bling factor.");
         enableMultiblock_IndustrialMacerationStack = config.getBoolean(
                 "enableMultiblockIndustrialMacerationStack",
-                "gregtech",
+                GregTech.ID,
                 true,
                 "A hyper efficient maceration tower, nets more bonus outputs.");
         enableMultiblock_IndustrialPlatePress = config.getBoolean(
                 "enableMultiblockIndustrialPlatePress",
-                "gregtech",
+                GregTech.ID,
                 true,
                 "Industrial bendering machine thingo.");
         enableMultiblock_IndustrialWireMill = config.getBoolean(
                 "enableMultiblockIndustrialWireMill",
-                "gregtech",
+                GregTech.ID,
                 true,
                 "Produces fine wire and exotic cables.");
         enableMultiblock_IronBlastFurnace = config
-                .getBoolean("enableMultiblockIronBlastFurnace", "gregtech", true, "Skip the Bronze age, very slowly.");
+                .getBoolean("enableMultiblockIronBlastFurnace", GregTech.ID, true, "Skip the Bronze age, very slowly.");
         enableMultiblock_MatterFabricator = config
-                .getBoolean("enableMultiblockMatterFabricator", "gregtech", true, "?FAB?RIC?ATE MA?TT?ER.");
+                .getBoolean("enableMultiblockMatterFabricator", GregTech.ID, true, "?FAB?RIC?ATE MA?TT?ER.");
         enableMultiblock_MultiTank = config.getBoolean(
                 "enableMultiblockMultiTank",
-                "gregtech",
+                GregTech.ID,
                 true,
                 "Tall tanks, each layer adds extra fluid storage.");
         enableMultiblock_PowerSubstation = config
-                .getBoolean("enableMultiblockPowerSubstation", "gregtech", true, "For managing large power grids.");
+                .getBoolean("enableMultiblockPowerSubstation", GregTech.ID, true, "For managing large power grids.");
         enableMultiblock_LiquidFluorideThoriumReactor = config.getBoolean(
                 "enableMultiblockLiquidFluorideThoriumReactor",
-                "gregtech",
+                GregTech.ID,
                 true,
                 "For supplying large power grids.");
         enableMultiblock_NuclearFuelRefinery = config.getBoolean(
                 "enableMultiblock_NuclearFuelRefinery",
-                "gregtech",
+                GregTech.ID,
                 true,
                 "Refines molten chemicals into nuclear fuels.");
         enableMultiblock_IndustrialSifter = config
-                .getBoolean("enableMultiblock_IndustrialSifter", "gregtech", true, "Large scale sifting.");
+                .getBoolean("enableMultiblock_IndustrialSifter", GregTech.ID, true, "Large scale sifting.");
         enableMultiblock_LargeAutoCrafter = config.getBoolean(
                 "enableMultiblock_LargeAutoCrafter",
-                "gregtech",
+                GregTech.ID,
                 true,
                 "Can Assemble, Disassemble and Craft Project data from Data Sticks.");
         enableMultiblock_IndustrialThermalCentrifuge = config.getBoolean(
                 "enableMultiblock_IndustrialThermalCentrifuge",
-                "gregtech",
+                GregTech.ID,
                 true,
                 "Your warm spin for the ore thing.");
         enableMultiblock_IndustrialWashPlant = config.getBoolean(
                 "enableMultiblock_IndustrialWashPlant",
-                "gregtech",
+                GregTech.ID,
                 true,
                 "Used to wash the dirt, riiiiight offff..");
         enableMultiblock_ThermalBoiler = config.getBoolean(
                 "enableMachineThermalBoiler",
-                "gregtech",
+                GregTech.ID,
                 true,
                 "Thermal Boiler from GT4. Can Filter Lava for resources.");
         enableMultiblock_IndustrialCuttingMachine = config.getBoolean(
                 "enableMultiblock_IndustrialCuttingMachine",
-                "gregtech",
+                GregTech.ID,
                 true,
                 "Very fast and efficient Cutting Machine.");
         enableMultiblock_IndustrialFishingPort = config.getBoolean(
                 "enableMultiblock_IndustrialFishingPort",
-                "gregtech",
+                GregTech.ID,
                 true,
                 "Fish the seas, except on land.");
         enableMultiblock_IndustrialExtrudingMachine = config.getBoolean(
                 "enableMultiblock_IndustrialExtrudingMachine",
-                "gregtech",
+                GregTech.ID,
                 true,
                 "Very fast and efficient Extruding Machine.");
         enableMultiblock_IndustrialMultiMachine = config.getBoolean(
                 "enableMultiblock_IndustrialMultiMachine",
-                "gregtech",
+                GregTech.ID,
                 true,
                 "Can run recipes for 9 different types of machines.");
         enableMultiblock_Cyclotron = config
-                .getBoolean("enableMultiblock_Cyclotron", "gregtech", true, "COMET - Scientific Cyclotron.");
+                .getBoolean("enableMultiblock_Cyclotron", GregTech.ID, true, "COMET - Scientific Cyclotron.");
 
         // Options
         rfPerEU = config.getInt(
@@ -320,7 +427,7 @@ public class ConfigHandler {
                 "com.rwtema.extrautils.tileentity.enderquarry.TileEntityEnderQuarry" };
         BlacklistedTileEntiyClassNames = config.getStringList(
                 "BlacklistedTileEntiyClassNames",
-                "gregtech",
+                GregTech.ID,
                 BlacklistedTileEntiyClassNames,
                 "The Canonical Class-Names of TileEntities that should be ignored by the WorldAccelerator");
 

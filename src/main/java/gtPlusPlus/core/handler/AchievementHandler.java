@@ -1,5 +1,8 @@
 package gtPlusPlus.core.handler;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+import static gregtech.api.enums.Mods.GregTech;
+
 import java.util.concurrent.ConcurrentHashMap;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -338,8 +341,8 @@ public class AchievementHandler {
                 return;
             }
 
-            if (aModID != null && (ItemUtils.getModId(aStack).equals(CORE.MODID)
-                    || ItemUtils.getModId(aStack).equalsIgnoreCase("gregtech"))) {
+            if (aModID != null && (ItemUtils.getModId(aStack).equals(GTPlusPlus.ID)
+                    || ItemUtils.getModId(aStack).equalsIgnoreCase(GregTech.ID))) {
                 isValid = true;
             }
             if (!isValid) {
@@ -347,7 +350,7 @@ public class AchievementHandler {
             }
 
             // Should unlock base achievement from *ANY* GT++ item. (Too lazy to special case GT machineBlocks though)
-            if (ItemUtils.getModId(aStack).equals(CORE.MODID)) {
+            if (ItemUtils.getModId(aStack).equals(GTPlusPlus.ID)) {
                 this.issueAchievement(aPlayer, aBaseAchievementName);
             }
 

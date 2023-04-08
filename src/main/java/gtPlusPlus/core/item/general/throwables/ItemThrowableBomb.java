@@ -1,5 +1,7 @@
 package gtPlusPlus.core.item.general.throwables;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import java.util.List;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -20,7 +22,6 @@ import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.entity.projectile.EntityThrowableBomb;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.item.base.CoreItem;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechTools;
 
@@ -93,8 +94,8 @@ public class ItemThrowableBomb extends CoreItem {
 
     @Override
     public void registerIcons(IIconRegister reg) {
-        icons[0] = reg.registerIcon(CORE.MODID + ":" + "bomb");
-        icons[1] = reg.registerIcon(CORE.MODID + ":" + "bomb_lit");
+        icons[0] = reg.registerIcon(GTPlusPlus.ID + ":" + "bomb");
+        icons[1] = reg.registerIcon(GTPlusPlus.ID + ":" + "bomb_lit");
     }
 
     @Override

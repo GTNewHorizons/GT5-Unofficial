@@ -1,5 +1,7 @@
 package gtPlusPlus.core.item.tool.misc.box;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
@@ -12,7 +14,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.item.base.CoreItem;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 
 public class BaseBoxItem extends CoreItem {
@@ -69,6 +70,6 @@ public class BaseBoxItem extends CoreItem {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister iconRegister) {
-        this.itemIcon = iconRegister.registerIcon(CORE.MODID + ":" + this.getUnlocalizedName().substring(5));
+        this.itemIcon = iconRegister.registerIcon(GTPlusPlus.ID + ":" + this.getUnlocalizedName().substring(5));
     }
 }

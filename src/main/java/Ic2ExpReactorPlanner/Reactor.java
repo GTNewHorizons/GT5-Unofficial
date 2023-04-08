@@ -4,7 +4,7 @@
  */
 package Ic2ExpReactorPlanner;
 
-import java.awt.HeadlessException;
+import java.awt.*;
 import java.util.ArrayList;
 
 import Ic2ExpReactorPlanner.components.ReactorItem;

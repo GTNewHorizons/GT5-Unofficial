@@ -1,5 +1,7 @@
 package gtPlusPlus.core.item.base.dusts.decimal;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -9,7 +11,6 @@ import net.minecraft.util.EnumChatFormatting;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.Material;
 
 public class BaseItemDecidust extends Item {
@@ -25,7 +26,7 @@ public class BaseItemDecidust extends Item {
         this.setCreativeTab(AddToCreativeTab.tabMisc);
         this.setUnlocalizedName(this.unlocalName);
         this.setMaxStackSize(10);
-        this.setTextureName(CORE.MODID + ":" + "itemDecidust"); // TODO
+        this.setTextureName(GTPlusPlus.ID + ":" + "itemDecidust"); // TODO
         GameRegistry.registerItem(this, this.unlocalName);
         // GT_OreDictUnificator.registerOre(unlocalName.replace("itemR", "r"), UtilsItems.getSimpleStack(this)); //TODO
     }

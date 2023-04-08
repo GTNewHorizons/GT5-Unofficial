@@ -1,5 +1,7 @@
 package gtPlusPlus.xmod.gregtech.common.items;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import java.util.List;
 
 import net.minecraft.creativetab.CreativeTabs;
@@ -21,7 +23,6 @@ import gregtech.api.objects.GT_MultiTexture;
 import gregtech.api.objects.GT_RenderedTexture;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.sys.KeyboardUtils;
@@ -43,7 +44,7 @@ public class MetaCustomCoverItem extends Item {
         mTextureSetName = Utils.sanitizeString(aTextureSetName);
         mTextures = aTextures;
         mRGB = aRGB;
-        this.setTextureName(CORE.MODID + ":" + "itemPlate");
+        this.setTextureName(GTPlusPlus.ID + ":" + "itemPlate");
         this.setHasSubtypes(true);
         String unlocalizedName = "itemCustomMetaCover." + mModID + "." + mTextureSetName;
         this.setUnlocalizedName(unlocalizedName);

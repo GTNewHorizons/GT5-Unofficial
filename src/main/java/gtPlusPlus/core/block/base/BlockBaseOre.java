@@ -143,9 +143,9 @@ public class BlockBaseOre extends BasicBlock implements ITexturedBlock {
         /*
          * @Override
          * @SideOnly(Side.CLIENT) public void registerBlockIcons(final IIconRegister iIcon) { this.blockIcon =
-         * iIcon.registerIcon(CORE.MODID + ":" + this.thisBlock.getTexture()); //this.base =
-         * iIcon.registerIcon(CORE.MODID + ":" + "blockStone"); //this.overlay = iIcon.registerIcon(CORE.MODID + ":" +
-         * "blockOre_Overlay"); }
+         * iIcon.registerIcon(GTPlusPlus.ID + ":" + this.thisBlock.getTexture()); //this.base =
+         * iIcon.registerIcon(GTPlusPlus.ID + ":" + "blockStone"); //this.overlay = iIcon.registerIcon(GTPlusPlus.ID +
+         * ":" + "blockOre_Overlay"); }
          * @Override public int colorMultiplier(final IBlockAccess par1IBlockAccess, final int par2, final int par3,
          * final int par4){ if (this.blockColour == 0){ return MathUtils.generateSingularRandomHexValue(); } return
          * this.blockColour; }

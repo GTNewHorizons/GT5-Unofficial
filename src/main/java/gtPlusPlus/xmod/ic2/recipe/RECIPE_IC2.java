@@ -1,17 +1,21 @@
 package gtPlusPlus.xmod.ic2.recipe;
 
-import static gtPlusPlus.core.recipe.RECIPES_Tools.*;
+import static gregtech.api.enums.Mods.EnderIO;
+import static gtPlusPlus.core.recipe.RECIPES_Tools.craftingToolHardHammer;
+import static gtPlusPlus.core.recipe.RECIPES_Tools.craftingToolWrench;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
-import gregtech.api.enums.*;
+import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.ALLOY;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.recipe.common.CI;
@@ -65,7 +69,7 @@ public class RECIPE_IC2 {
     private static ItemStack rotor_T4 = ItemUtils.getSimpleStack(IC2_Items.rotor_Material_4.getItem());
 
     private static boolean checkForEnderIO() {
-        if (!LoadedMods.EnderIO) {
+        if (!EnderIO.isModLoaded()) {
             plate_T1 = "plateMagnalium";
             plate_T2 = "plateTungstenSteel";
             plate_T3 = "plateUltimet";

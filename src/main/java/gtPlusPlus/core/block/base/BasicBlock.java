@@ -1,5 +1,7 @@
 package gtPlusPlus.core.block.base;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EnumCreatureType;
@@ -8,7 +10,6 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 
 public class BasicBlock extends BlockContainer {
@@ -26,7 +27,7 @@ public class BasicBlock extends BlockContainer {
         this.setBlockName(Utils.sanitizeString(unlocalizedName));
 
         if (type != BlockTypes.ORE && !unlocalizedName.toLowerCase().contains("ore")) {
-            this.setBlockTextureName(CORE.MODID + ":" + unlocalizedName);
+            this.setBlockTextureName(GTPlusPlus.ID + ":" + unlocalizedName);
         }
 
         this.setCreativeTab(AddToCreativeTab.tabBlock);

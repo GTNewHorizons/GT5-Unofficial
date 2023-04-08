@@ -1,5 +1,7 @@
 package gtPlusPlus.xmod.forestry.bees.items.output;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import java.util.List;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -15,7 +17,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import forestry.api.core.Tabs;
 import gregtech.api.enums.GT_Values;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.forestry.bees.handler.GTPP_DropType;
 import gtPlusPlus.xmod.forestry.bees.registry.GTPP_Bees;
 
@@ -29,7 +30,7 @@ public class GTPP_Drop extends Item {
         this.setCreativeTab(Tabs.tabApiculture);
         this.setHasSubtypes(true);
         this.setUnlocalizedName("gtpp.drop");
-        GameRegistry.registerItem(this, "gtpp.drop", CORE.MODID);
+        GameRegistry.registerItem(this, "gtpp.drop", GTPlusPlus.ID);
     }
 
     public ItemStack getStackForType(GTPP_DropType type) {

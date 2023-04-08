@@ -1,12 +1,13 @@
 package gtPlusPlus.xmod.bop;
 
+import static gregtech.api.enums.Mods.BiomesOPlenty;
+
 import java.lang.reflect.Field;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.bop.blocks.BOP_Block_Registrator;
@@ -33,19 +34,14 @@ public class HANDLER_BiomesOPlenty {
 
     public static void preInit() {
         BOP_Block_Registrator.run();
-        if (LoadedMods.BiomesOPlenty) {
+        if (BiomesOPlenty.isModLoaded()) {
             setFields();
             registerPineconeToOreDict();
         }
     }
 
-    public static void init() {
-        if (LoadedMods.BiomesOPlenty) {}
-    }
-
     public static void postInit() {
         BOP_Block_Registrator.recipes();
-        if (LoadedMods.BiomesOPlenty) {}
     }
 
     private static void registerPineconeToOreDict() {

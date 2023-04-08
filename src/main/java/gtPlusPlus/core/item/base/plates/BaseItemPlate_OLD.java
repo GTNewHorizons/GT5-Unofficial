@@ -1,5 +1,7 @@
 package gtPlusPlus.core.item.base.plates;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import java.util.List;
 
 import net.minecraft.entity.Entity;
@@ -36,7 +38,7 @@ public class BaseItemPlate_OLD extends Item {
         this.setCreativeTab(AddToCreativeTab.tabMisc);
         this.unlocalName = "itemPlate" + unlocalizedName;
         this.setMaxStackSize(64);
-        this.setTextureName(CORE.MODID + ":" + "itemPlate");
+        this.setTextureName(GTPlusPlus.ID + ":" + "itemPlate");
         this.setMaxStackSize(64);
         this.colour = colour;
         this.materialName = materialName;

@@ -1,6 +1,7 @@
 package gtPlusPlus.core.slots;
 
-import static gtPlusPlus.core.tileentities.machines.TileEntityModularityTable.*;
+import static gtPlusPlus.core.tileentities.machines.TileEntityModularityTable.mValidUpgradeList;
+import static gtPlusPlus.core.tileentities.machines.TileEntityModularityTable.mValidUpgradeListFormChange;
 
 import java.util.Iterator;
 import java.util.Map.Entry;

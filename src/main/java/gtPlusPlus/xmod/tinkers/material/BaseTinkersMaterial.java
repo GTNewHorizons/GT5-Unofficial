@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.tinkers.material;
 
+import static gregtech.api.enums.Mods.TinkerConstruct;
 import static gtPlusPlus.core.util.math.MathUtils.safeCast_LongToInt;
 
 import java.util.HashMap;
@@ -170,7 +171,7 @@ public class BaseTinkersMaterial {
 
             if (generate) {
                 Logger.INFO("[TiCon] Sending IMC: addMaterial - " + mLocalName + ".");
-                FMLInterModComms.sendMessage("TConstruct", "addMaterial", tag);
+                FMLInterModComms.sendMessage(TinkerConstruct.ID, "addMaterial", tag);
 
                 ItemStack itemstack = mMaterial.getIngot(1);
                 tag = new NBTTagCompound();
@@ -181,7 +182,7 @@ public class BaseTinkersMaterial {
                 tag.setInteger("Value", 2); // What is value for?
 
                 Logger.INFO("[TiCon] Sending IMC: addPartBuilderMaterial - " + mLocalName + ".");
-                FMLInterModComms.sendMessage("TConstruct", "addPartBuilderMaterial", tag);
+                FMLInterModComms.sendMessage(TinkerConstruct.ID, "addPartBuilderMaterial", tag);
 
                 tag = new NBTTagCompound();
                 tag.setInteger("MaterialId", id);
@@ -191,7 +192,7 @@ public class BaseTinkersMaterial {
                 tag.setTag("Item", item);
 
                 Logger.INFO("[TiCon] Sending IMC: addMaterialItem - " + mLocalName + ".");
-                FMLInterModComms.sendMessage("TConstruct", "addMaterialItem", tag);
+                FMLInterModComms.sendMessage(TinkerConstruct.ID, "addMaterialItem", tag);
             }
         }
     }

@@ -1,6 +1,5 @@
 package gtPlusPlus.core.recipe;
 
-import gregtech.api.enums.*;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;

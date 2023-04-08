@@ -1,5 +1,7 @@
 package gtPlusPlus.core.block.machine;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -18,7 +20,6 @@ import gtPlusPlus.api.interfaces.ITileTooltip;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.item.base.itemblock.ItemBlockBasicTile;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.tileentities.machines.TileEntityModularityTable;
 
 public class Machine_ModularityTable extends BlockContainer implements ITileTooltip {
@@ -64,10 +65,10 @@ public class Machine_ModularityTable extends BlockContainer implements ITileTool
     @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(final IIconRegister p_149651_1_) {
-        this.blockIcon = p_149651_1_.registerIcon(CORE.MODID + ":" + "TileEntities/" + "ModularTable_side");
-        this.textureTop = p_149651_1_.registerIcon(CORE.MODID + ":" + "TileEntities/" + "ModularTable_top");
-        this.textureBottom = p_149651_1_.registerIcon(CORE.MODID + ":" + "TileEntities/" + "ModularTable_output");
-        this.textureFront = p_149651_1_.registerIcon(CORE.MODID + ":" + "TileEntities/" + "ModularTable_side");
+        this.blockIcon = p_149651_1_.registerIcon(GTPlusPlus.ID + ":" + "TileEntities/" + "ModularTable_side");
+        this.textureTop = p_149651_1_.registerIcon(GTPlusPlus.ID + ":" + "TileEntities/" + "ModularTable_top");
+        this.textureBottom = p_149651_1_.registerIcon(GTPlusPlus.ID + ":" + "TileEntities/" + "ModularTable_output");
+        this.textureFront = p_149651_1_.registerIcon(GTPlusPlus.ID + ":" + "TileEntities/" + "ModularTable_side");
     }
 
     /**

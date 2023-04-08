@@ -1,5 +1,7 @@
 package gtPlusPlus.core.item.base;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import java.util.List;
 
 import net.minecraft.creativetab.CreativeTabs;
@@ -14,7 +16,6 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.lib.CORE;
 
 public class BaseItemDamageable extends Item {
 
@@ -27,7 +28,7 @@ public class BaseItemDamageable extends Item {
             final int maxDmg, final String description, final EnumRarity regRarity, final EnumChatFormatting colour,
             final boolean Effect, final ItemStack OverrideItem) {
         this.setUnlocalizedName(unlocalizedName);
-        this.setTextureName(CORE.MODID + ":" + unlocalizedName);
+        this.setTextureName(GTPlusPlus.ID + ":" + unlocalizedName);
         this.setCreativeTab(creativeTab);
         this.setMaxStackSize(1);
         this.setMaxDamage(251);

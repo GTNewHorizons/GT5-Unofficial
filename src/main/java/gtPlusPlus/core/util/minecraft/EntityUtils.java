@@ -7,7 +7,11 @@ import java.util.List;
 import java.util.Map;
 
 import net.minecraft.block.Block;
-import net.minecraft.entity.*;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.EnumCreatureAttribute;
+import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
@@ -114,48 +118,6 @@ public class EntityUtils {
             return true;
         }
         return false;
-    }
-
-    public static boolean isWearingFullFrostHazmat(EntityLivingBase aEntity) {
-        for (byte i = 1; i < 5; i++) if (!HazmatUtils.providesProtetion_Frost(aEntity.getEquipmentInSlot(i))) {
-            return false;
-        }
-        return true;
-    }
-
-    public static boolean isWearingFullHeatHazmat(EntityLivingBase aEntity) {
-        for (byte i = 1; i < 5; i++) if (!HazmatUtils.providesProtetion_Fire(aEntity.getEquipmentInSlot(i))) {
-            return false;
-        }
-        return true;
-    }
-
-    public static boolean isWearingFullBioHazmat(EntityLivingBase aEntity) {
-        for (byte i = 1; i < 5; i++) if (!HazmatUtils.providesProtetion_Biohazard(aEntity.getEquipmentInSlot(i))) {
-            return false;
-        }
-        return true;
-    }
-
-    public static boolean isWearingFullRadioHazmat(EntityLivingBase aEntity) {
-        for (byte i = 1; i < 5; i++) if (!HazmatUtils.providesProtetion_Radiation(aEntity.getEquipmentInSlot(i))) {
-            return false;
-        }
-        return true;
-    }
-
-    public static boolean isWearingFullElectroHazmat(EntityLivingBase aEntity) {
-        for (byte i = 1; i < 5; i++) if (!HazmatUtils.providesProtetion_Electricity(aEntity.getEquipmentInSlot(i))) {
-            return false;
-        }
-        return true;
-    }
-
-    public static boolean isWearingFullGasHazmat(EntityLivingBase aEntity) {
-        for (byte i = 1; i < 5; i++) if (!HazmatUtils.providesProtetion_Gas(aEntity.getEquipmentInSlot(i))) {
-            return false;
-        }
-        return true;
     }
 
     public static boolean applyRadioactivity(EntityLivingBase aEntity, int aLevel, int aAmountOfItems) {

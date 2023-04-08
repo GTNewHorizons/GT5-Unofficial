@@ -1,5 +1,7 @@
 package gtPlusPlus.core.gui.machine;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
@@ -9,14 +11,13 @@ import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.core.container.Container_FishTrap;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.tileentities.general.TileEntityFishTrap;
 
 @SideOnly(Side.CLIENT)
 public class GUI_FishTrap extends GuiContainer {
 
     private static final ResourceLocation craftingTableGuiTextures = new ResourceLocation(
-            CORE.MODID,
+            GTPlusPlus.ID,
             "textures/gui/FishTrap.png");
 
     public GUI_FishTrap(final InventoryPlayer player_inventory, final TileEntityFishTrap te) {
@@ -24,12 +25,7 @@ public class GUI_FishTrap extends GuiContainer {
     }
 
     @Override
-    protected void drawGuiContainerForegroundLayer(final int i, final int j) {
-        // this.fontRendererObj.drawString(I18n.format("Workbench", new Object[0]), 28, 6, 4210752);
-        // this.fontRendererObj.drawString(I18n.format("container.inventory", new Object[0]), 8, this.ySize - 96 + 2,
-        // 4210752);
-
-    }
+    protected void drawGuiContainerForegroundLayer(final int i, final int j) {}
 
     @Override
     protected void drawGuiContainerBackgroundLayer(final float f, final int i, final int j) {

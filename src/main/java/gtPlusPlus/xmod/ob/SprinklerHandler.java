@@ -1,5 +1,7 @@
 package gtPlusPlus.xmod.ob;
 
+import static gregtech.api.enums.Mods.Forestry;
+
 import java.util.HashMap;
 
 import net.minecraft.init.Items;
@@ -8,7 +10,6 @@ import net.minecraft.item.ItemStack;
 import com.google.common.base.Objects;
 
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 /**
@@ -45,7 +46,7 @@ public class SprinklerHandler {
         f = new ItemStack(Items.dye, 1, 15);
         SprinklerHandler.registerSprinklerFertilizer(f);
 
-        if (LoadedMods.Forestry) {
+        if (Forestry.isModLoaded()) {
             f = ItemUtils.getCorrectStacktype("Forestry:fertilizerBio", 1);
             if (f != null) {
                 registerSprinklerFertilizer(f);

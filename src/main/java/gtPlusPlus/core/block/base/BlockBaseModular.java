@@ -1,5 +1,8 @@
 package gtPlusPlus.core.block.base;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+import static gregtech.api.enums.Mods.GregTech;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -65,7 +68,7 @@ public class BlockBaseModular extends BasicBlock {
             final int miningLevel) {
         super(blockType, unlocalizedName, vanillaMaterial, miningLevel);
         this.setHarvestLevel(blockType.getHarvestTool(), miningLevel);
-        this.setBlockTextureName(CORE.MODID + ":" + blockType.getTexture());
+        this.setBlockTextureName(GTPlusPlus.ID + ":" + blockType.getTexture());
         this.blockColour = colour;
         this.thisBlock = blockType;
         this.thisBlockMaterial = blockMaterialString;
@@ -187,7 +190,7 @@ public class BlockBaseModular extends BasicBlock {
     public void registerBlockIcons(final IIconRegister iIcon) {
         if (!CORE.ConfigSwitches.useGregtechTextures || this.blockMaterial == null
                 || this.thisBlock == BlockTypes.ORE) {
-            this.blockIcon = iIcon.registerIcon(CORE.MODID + ":" + this.thisBlock.getTexture());
+            this.blockIcon = iIcon.registerIcon(GTPlusPlus.ID + ":" + this.thisBlock.getTexture());
         }
         String metType = "9j4852jyo3rjmh3owlhw9oe";
         if (this.blockMaterial != null) {
@@ -199,7 +202,7 @@ public class BlockBaseModular extends BasicBlock {
         metType = (metType.equals("9j4852jyo3rjmh3owlhw9oe") ? "METALLIC" : metType);
         int tier = blockMaterial != null ? this.blockMaterial.vTier : 0;
         String aType = (this.thisBlock == BlockTypes.FRAME) ? "frameGt" : (tier <= 4 ? "block1" : "block5");
-        this.blockIcon = iIcon.registerIcon("gregtech" + ":" + "materialicons/" + metType + "/" + aType);
+        this.blockIcon = iIcon.registerIcon(GregTech.ID + ":" + "materialicons/" + metType + "/" + aType);
     }
 
     @Override

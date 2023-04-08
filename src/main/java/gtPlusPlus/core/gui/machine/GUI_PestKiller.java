@@ -1,6 +1,8 @@
 package gtPlusPlus.core.gui.machine;
 
-import java.awt.Color;
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
+import java.awt.*;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.I18n;
@@ -15,7 +17,6 @@ import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.core.container.Container_PestKiller;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.MISC_MATERIALS;
 import gtPlusPlus.core.tileentities.machines.TileEntityPestKiller;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -24,7 +25,7 @@ import gtPlusPlus.core.util.math.MathUtils;
 public class GUI_PestKiller extends GuiContainer {
 
     private static final ResourceLocation craftingTableGuiTextures = new ResourceLocation(
-            CORE.MODID,
+            GTPlusPlus.ID,
             "textures/gui/PestKiller.png");
     private final TileEntityPestKiller mTileKiller;
 

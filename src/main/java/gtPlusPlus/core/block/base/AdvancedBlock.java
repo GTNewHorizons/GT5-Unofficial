@@ -1,5 +1,7 @@
 package gtPlusPlus.core.block.base;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
@@ -8,8 +10,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-import gtPlusPlus.core.lib.CORE;
-
 public class AdvancedBlock extends Block {
 
     protected AdvancedBlock(final String unlocalizedName, final Material material, final CreativeTabs x,
@@ -17,7 +17,7 @@ public class AdvancedBlock extends Block {
             final String blockHarvestTool, final int blockHarvestLevel, final SoundType BlockSound) {
         super(material);
         this.setBlockName(unlocalizedName);
-        this.setBlockTextureName(CORE.MODID + ":" + unlocalizedName);
+        this.setBlockTextureName(GTPlusPlus.ID + ":" + unlocalizedName);
         this.setCreativeTab(x);
         this.setHardness(blockHardness); // block Hardness
         this.setResistance(blockResistance);

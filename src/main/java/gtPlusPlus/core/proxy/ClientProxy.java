@@ -1,5 +1,7 @@
 package gtPlusPlus.core.proxy;
 
+import static gregtech.api.enums.Mods.PlayerAPI;
+
 import java.util.ArrayList;
 
 import net.minecraft.client.Minecraft;
@@ -13,37 +15,61 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.client.MinecraftForgeClient;
-import net.minecraftforge.fluids.*;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.Optional;
-import cpw.mods.fml.common.event.*;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.Mods;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.core.client.model.ModelGiantChicken;
-import gtPlusPlus.core.client.renderer.*;
+import gtPlusPlus.core.client.renderer.CustomItemBlockRenderer;
+import gtPlusPlus.core.client.renderer.CustomOreBlockRenderer;
+import gtPlusPlus.core.client.renderer.RenderBatKing;
+import gtPlusPlus.core.client.renderer.RenderDecayChest;
+import gtPlusPlus.core.client.renderer.RenderGiantChicken;
+import gtPlusPlus.core.client.renderer.RenderMiningExplosivesPrimed;
+import gtPlusPlus.core.client.renderer.RenderPlasmaBolt;
+import gtPlusPlus.core.client.renderer.RenderSickBlaze;
+import gtPlusPlus.core.client.renderer.RenderStaballoyConstruct;
+import gtPlusPlus.core.client.renderer.RenderToxinball;
 import gtPlusPlus.core.common.CommonProxy;
 import gtPlusPlus.core.common.compat.COMPAT_PlayerAPI;
 import gtPlusPlus.core.entity.EntityPrimedMiningExplosive;
 import gtPlusPlus.core.entity.EntityTeslaTowerLightning;
-import gtPlusPlus.core.entity.monster.*;
-import gtPlusPlus.core.entity.projectile.*;
+import gtPlusPlus.core.entity.monster.EntityBatKing;
+import gtPlusPlus.core.entity.monster.EntityGiantChickenBase;
+import gtPlusPlus.core.entity.monster.EntitySickBlaze;
+import gtPlusPlus.core.entity.monster.EntityStaballoyConstruct;
+import gtPlusPlus.core.entity.projectile.EntityHydrofluoricAcidPotion;
+import gtPlusPlus.core.entity.projectile.EntityLightningAttack;
+import gtPlusPlus.core.entity.projectile.EntitySulfuricAcidPotion;
+import gtPlusPlus.core.entity.projectile.EntityThrowableBomb;
+import gtPlusPlus.core.entity.projectile.EntityToxinballSmall;
 import gtPlusPlus.core.handler.render.FirepitRender;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.CORE.ConfigSwitches;
-import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.tileentities.general.TileEntityDecayablesChest;
 import gtPlusPlus.core.tileentities.general.TileEntityFirepit;
 import gtPlusPlus.core.util.minecraft.particles.EntityParticleFXMysterious;
-import gtPlusPlus.xmod.gregtech.common.render.*;
+import gtPlusPlus.xmod.gregtech.common.render.GTPP_CapeRenderer;
+import gtPlusPlus.xmod.gregtech.common.render.GTPP_FlaskRenderer;
+import gtPlusPlus.xmod.gregtech.common.render.GTPP_Render_MachineBlock;
 import ic2.core.item.ItemFluidCell;
 
 public class ClientProxy extends CommonProxy implements Runnable {
@@ -78,14 +104,14 @@ public class ClientProxy extends CommonProxy implements Runnable {
         // Do this weird things for textures.
         GTplusplus.loadTextures();
         // We boot up the sneak manager.
-        if (LoadedMods.PlayerAPI) {
+        if (PlayerAPI.isModLoaded()) {
             this.init_PlayerAPI_PRE();
         }
     }
 
     @Override
     public void init(final FMLInitializationEvent e) {
-        if (LoadedMods.PlayerAPI) {
+        if (PlayerAPI.isModLoaded()) {
             this.init_PlayerAPI_INIT();
         }
 
@@ -176,13 +202,13 @@ public class ClientProxy extends CommonProxy implements Runnable {
     @Override
     public void serverStarting(final FMLServerStartingEvent e) {}
 
-    @Optional.Method(modid = "PlayerAPI")
+    @Optional.Method(modid = Mods.Names.PLAYER_API)
     private void init_PlayerAPI_PRE() {
         // Register player instance
         COMPAT_PlayerAPI.clientProxy.initPre();
     }
 
-    @Optional.Method(modid = "PlayerAPI")
+    @Optional.Method(modid = Mods.Names.PLAYER_API)
     private void init_PlayerAPI_INIT() {
         // Register player instance
         COMPAT_PlayerAPI.clientProxy.Init();

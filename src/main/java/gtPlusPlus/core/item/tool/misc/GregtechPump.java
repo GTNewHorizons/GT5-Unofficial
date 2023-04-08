@@ -1,6 +1,7 @@
 package gtPlusPlus.core.item.tool.misc;
 
 import static gregtech.api.enums.GT_Values.V;
+import static gregtech.api.enums.Mods.GTPlusPlus;
 
 import java.util.ArrayList;
 import java.util.BitSet;
@@ -52,7 +53,6 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.item.ModItems;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.NBTUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
@@ -134,7 +134,7 @@ public class GregtechPump extends Item implements ISpecialElectricItem, IElectri
         this.setUnlocalizedName(unlocalizedName);
         this.setCreativeTab(creativeTab);
         this.setMaxStackSize(1);
-        if (GameRegistry.findItem(CORE.MODID, unlocalizedName) == null) {
+        if (GameRegistry.findItem(GTPlusPlus.ID, unlocalizedName) == null) {
             GameRegistry.registerItem(this, unlocalizedName);
         }
     }
@@ -531,7 +531,7 @@ public class GregtechPump extends Item implements ISpecialElectricItem, IElectri
             if (this.mEnabledItems.get(i)) {
                 mIconMap.put(
                         (int) i,
-                        aIconRegister.registerIcon(CORE.MODID + ":" + (this.getUnlocalizedName() + "/" + i)));
+                        aIconRegister.registerIcon(GTPlusPlus.ID + ":" + (this.getUnlocalizedName() + "/" + i)));
             }
         }
     }

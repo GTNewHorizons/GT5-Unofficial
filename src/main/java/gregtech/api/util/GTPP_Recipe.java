@@ -1,12 +1,19 @@
 package gregtech.api.util;
 
-import static gregtech.api.enums.GT_Values.*;
+import static gregtech.api.enums.GT_Values.E;
+import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
+import static gregtech.api.enums.Mods.GTPlusPlus;
 import static net.minecraft.util.EnumChatFormatting.GRAY;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
 
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.*;
+import net.minecraftforge.fluids.FluidStack;
 
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.common.widget.ProgressBar;
@@ -19,7 +26,6 @@ import gregtech.nei.NEIRecipeInfo;
 import gtPlusPlus.api.interfaces.IComparableRecipe;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.item.ModItems;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.GTPP_UITextures;
@@ -463,7 +469,7 @@ public class GTPP_Recipe extends GT_Recipe implements IComparableRecipe {
                 "gtpp.recipe.fluidchemicaleactor",
                 "Chemical Plant",
                 null,
-                CORE.MODID + ":textures/gui/FluidReactor",
+                GTPlusPlus.ID + ":textures/gui/FluidReactor",
                 4,
                 4,
                 0,

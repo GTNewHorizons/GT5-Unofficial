@@ -1,5 +1,8 @@
 package gtPlusPlus.core.item.base.cell;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+import static gregtech.api.enums.Mods.GregTech;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
@@ -47,11 +50,11 @@ public class BaseItemCell extends BaseItemComponent {
     public void registerIcons(final IIconRegister i) {
 
         if (CORE.ConfigSwitches.useGregtechTextures) {
-            this.base = i.registerIcon("gregtech" + ":" + "materialicons/METALLIC/" + "cell");
-            this.overlay = i.registerIcon("gregtech" + ":" + "materialicons/METALLIC/" + "cell_OVERLAY");
+            this.base = i.registerIcon(GregTech.ID + ":" + "materialicons/METALLIC/" + "cell");
+            this.overlay = i.registerIcon(GregTech.ID + ":" + "materialicons/METALLIC/" + "cell_OVERLAY");
         } else {
-            this.base = i.registerIcon(CORE.MODID + ":" + "item" + this.Cell.getComponent());
-            this.overlay = i.registerIcon(CORE.MODID + ":" + "item" + this.Cell.getComponent() + "_Overlay");
+            this.base = i.registerIcon(GTPlusPlus.ID + ":" + "item" + this.Cell.getComponent());
+            this.overlay = i.registerIcon(GTPlusPlus.ID + ":" + "item" + this.Cell.getComponent() + "_Overlay");
         }
         // this.overlay = cellMaterial.getFluid(1000).getFluid().get
     }

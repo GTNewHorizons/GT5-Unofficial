@@ -1,5 +1,7 @@
 package gtPlusPlus.core.block.general;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import java.util.HashMap;
 import java.util.Random;
 
@@ -23,7 +25,6 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.core.item.base.itemblock.ItemBlockDoor;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.tileentities.general.TileEntityPlayerDoorBase;
 import gtPlusPlus.core.util.Utils;
 
@@ -82,7 +83,7 @@ public class PlayerDoors extends BlockDoor implements ITileEntityProvider {
             setBlockName("playerDoor" + aBlockExtensionName);
             this.setHarvestLevel("axe", 1);
         }
-        this.setBlockTextureName(vanillaType ? aTextureName : CORE.MODID + ":" + aTextureName);
+        this.setBlockTextureName(vanillaType ? aTextureName : GTPlusPlus.ID + ":" + aTextureName);
         GameRegistry.registerBlock(this, ItemBlockDoor.class, Utils.sanitizeString(this.getUnlocalizedName()));
     }
 

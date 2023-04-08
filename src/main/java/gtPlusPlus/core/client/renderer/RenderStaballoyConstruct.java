@@ -1,5 +1,7 @@
 package gtPlusPlus.core.client.renderer;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.texture.TextureMap;
@@ -16,13 +18,12 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.core.client.model.ModelStaballoyConstruct;
 import gtPlusPlus.core.entity.monster.EntityStaballoyConstruct;
-import gtPlusPlus.core.lib.CORE;
 
 @SideOnly(Side.CLIENT)
 public class RenderStaballoyConstruct extends RenderLiving {
 
     private static final ResourceLocation staballoyGolemTextures = new ResourceLocation(
-            CORE.MODID + ":" + "textures/entity/golemStaballoy.png");
+            GTPlusPlus.ID + ":" + "textures/entity/golemStaballoy.png");
     /** Staballoy Golem's Model. */
     private final ModelStaballoyConstruct staballoyGolemModel;
 

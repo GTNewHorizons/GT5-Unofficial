@@ -1,5 +1,7 @@
 package gtPlusPlus.core.block.machine;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -21,7 +23,6 @@ import gtPlusPlus.api.interfaces.ITileTooltip;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.handler.GuiHandler;
 import gtPlusPlus.core.item.base.itemblock.ItemBlockBasicTile;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.tileentities.general.TileEntityEggBox;
 import gtPlusPlus.core.util.minecraft.InventoryUtils;
 
@@ -85,10 +86,10 @@ public class EggBox extends BlockContainer implements ITileTooltip {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(final IIconRegister p_149651_1_) {
-        this.blockIcon = p_149651_1_.registerIcon(CORE.MODID + ":" + "TileEntities/" + "EggBox_top");
-        this.textureTop = p_149651_1_.registerIcon(CORE.MODID + ":" + "TileEntities/" + "EggBox_top");
-        this.textureBottom = p_149651_1_.registerIcon(CORE.MODID + ":" + "TileEntities/" + "EggBox_side");
-        this.textureFront = p_149651_1_.registerIcon(CORE.MODID + ":" + "TileEntities/" + "EggBox_side");
+        this.blockIcon = p_149651_1_.registerIcon(GTPlusPlus.ID + ":" + "TileEntities/" + "EggBox_top");
+        this.textureTop = p_149651_1_.registerIcon(GTPlusPlus.ID + ":" + "TileEntities/" + "EggBox_top");
+        this.textureBottom = p_149651_1_.registerIcon(GTPlusPlus.ID + ":" + "TileEntities/" + "EggBox_side");
+        this.textureFront = p_149651_1_.registerIcon(GTPlusPlus.ID + ":" + "TileEntities/" + "EggBox_side");
     }
 
     /**

@@ -1,5 +1,7 @@
 package gtPlusPlus.core.block.machine;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
@@ -17,7 +19,6 @@ import gtPlusPlus.api.objects.minecraft.CubicObject;
 import gtPlusPlus.core.block.base.BasicTileBlockWithTooltip;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.handler.GuiHandler;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.tileentities.general.TileEntityCircuitProgrammer;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 
@@ -141,12 +142,12 @@ public class CircuitProgrammer extends BasicTileBlockWithTooltip {
 
     @Override
     public CubicObject<String>[] getCustomTextureDirectoryObject() {
-        String[] aTexData = new String[] { CORE.MODID + ":" + "metro/" + "TEXTURE_METAL_PANEL_G",
-                CORE.MODID + ":" + "metro/" + "TEXTURE_TECH_PANEL_B",
-                CORE.MODID + ":" + "metro/" + "TEXTURE_METAL_PANEL_I",
-                CORE.MODID + ":" + "metro/" + "TEXTURE_METAL_PANEL_I",
-                CORE.MODID + ":" + "metro/" + "TEXTURE_METAL_PANEL_I",
-                CORE.MODID + ":" + "metro/" + "TEXTURE_METAL_PANEL_I" };
+        String[] aTexData = new String[] { GTPlusPlus.ID + ":" + "metro/" + "TEXTURE_METAL_PANEL_G",
+                GTPlusPlus.ID + ":" + "metro/" + "TEXTURE_TECH_PANEL_B",
+                GTPlusPlus.ID + ":" + "metro/" + "TEXTURE_METAL_PANEL_I",
+                GTPlusPlus.ID + ":" + "metro/" + "TEXTURE_METAL_PANEL_I",
+                GTPlusPlus.ID + ":" + "metro/" + "TEXTURE_METAL_PANEL_I",
+                GTPlusPlus.ID + ":" + "metro/" + "TEXTURE_METAL_PANEL_I" };
         CubicObject<String>[] aTextureData = new CubicObject[] { new CubicObject<String>(aTexData) };
         return aTextureData;
     }

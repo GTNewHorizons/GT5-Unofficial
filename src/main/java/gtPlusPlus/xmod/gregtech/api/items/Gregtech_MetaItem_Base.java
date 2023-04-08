@@ -1,6 +1,7 @@
 package gtPlusPlus.xmod.gregtech.api.items;
 
-import static gregtech.api.enums.GT_Values.*;
+import static gregtech.api.enums.GT_Values.D1;
+import static gregtech.api.enums.GT_Values.V;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,10 +22,16 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
 
 import gregtech.api.enums.SubTag;
-import gregtech.api.util.*;
+import gregtech.api.util.GT_LanguageManager;
+import gregtech.api.util.GT_Log;
+import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.api.interfaces.internal.Interface_ItemBehaviour;
-import ic2.api.item.*;
+import ic2.api.item.ElectricItem;
+import ic2.api.item.IElectricItem;
+import ic2.api.item.IElectricItemManager;
+import ic2.api.item.ISpecialElectricItem;
 
 public abstract class Gregtech_MetaItem_Base extends Gregtech_Generic_Item
         implements ISpecialElectricItem, IElectricItemManager, IFluidContainerItem {

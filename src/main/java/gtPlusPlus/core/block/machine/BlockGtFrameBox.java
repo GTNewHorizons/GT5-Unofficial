@@ -1,12 +1,13 @@
 package gtPlusPlus.core.block.machine;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.world.IBlockAccess;
 
 import gtPlusPlus.core.block.base.BasicBlock.BlockTypes;
 import gtPlusPlus.core.block.base.MetaBlock;
-import gtPlusPlus.core.lib.CORE;
 
 public class BlockGtFrameBox extends MetaBlock {
 
@@ -16,7 +17,7 @@ public class BlockGtFrameBox extends MetaBlock {
     public BlockGtFrameBox(final String unlocalizedName, final Material material, final BlockTypes blockTypeENUM,
             final boolean recolour, final int... colour) {
         super(unlocalizedName, material, blockTypeENUM.getBlockSoundType());
-        this.setBlockTextureName(CORE.MODID + ":" + "blockGtFrame");
+        this.setBlockTextureName(GTPlusPlus.ID + ":" + "blockGtFrame");
         this.setHarvestLevel(blockTypeENUM.getHarvestTool(), 2);
         if (recolour && ((colour != null) && (colour.length > 0))) {
             this.colours = colour;

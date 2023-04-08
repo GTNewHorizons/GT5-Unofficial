@@ -1,5 +1,7 @@
 package gtPlusPlus.xmod.ic2.item;
 
+import static gregtech.api.enums.Mods.EnderIO;
+
 import java.util.List;
 
 import net.minecraft.client.Minecraft;
@@ -14,7 +16,6 @@ import net.minecraft.util.StatCollector;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gtPlusPlus.core.lib.LoadedMods;
 import ic2.api.item.IKineticRotor;
 import ic2.core.IC2;
 import ic2.core.block.kineticgenerator.gui.GuiWaterKineticGenerator;
@@ -56,7 +57,7 @@ public class CustomKineticRotor extends Item implements IKineticRotor {
         mTier = aTier;
         this.setMaxStackSize(1);
         // Handle Differences if EIO is not loaded
-        if (!LoadedMods.EnderIO && (aTier == 0 || aTier == 2)) {
+        if (!EnderIO.isModLoaded() && (aTier == 0 || aTier == 2)) {
             this.renderTexture = mResourceLocations[(aTier == 0 ? 4 : 5)];
             this.setUnlocalizedName(mUnlocalNames[(aTier == 0 ? 4 : 5)]);
         } else {
@@ -152,7 +153,7 @@ public class CustomKineticRotor extends Item implements IKineticRotor {
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIconFromDamage(int meta) {
-        if (!LoadedMods.EnderIO && (mTier == 0 || mTier == 2)) {
+        if (!EnderIO.isModLoaded() && (mTier == 0 || mTier == 2)) {
             if (mTier == 0) {
                 return mTextures[4];
             } else {
@@ -166,7 +167,7 @@ public class CustomKineticRotor extends Item implements IKineticRotor {
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIconIndex(ItemStack aIndex) {
-        if (!LoadedMods.EnderIO && (mTier == 0 || mTier == 2)) {
+        if (!EnderIO.isModLoaded() && (mTier == 0 || mTier == 2)) {
             if (mTier == 0) {
                 return mTextures[4];
             } else {
@@ -180,7 +181,7 @@ public class CustomKineticRotor extends Item implements IKineticRotor {
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIconFromDamageForRenderPass(int aDmg, int aPass) {
-        if (!LoadedMods.EnderIO && (mTier == 0 || mTier == 2)) {
+        if (!EnderIO.isModLoaded() && (mTier == 0 || mTier == 2)) {
             if (mTier == 0) {
                 return mTextures[4];
             } else {
@@ -209,7 +210,7 @@ public class CustomKineticRotor extends Item implements IKineticRotor {
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining) {
-        if (!LoadedMods.EnderIO && (mTier == 0 || mTier == 2)) {
+        if (!EnderIO.isModLoaded() && (mTier == 0 || mTier == 2)) {
             if (mTier == 0) {
                 return mTextures[4];
             } else {
@@ -223,7 +224,7 @@ public class CustomKineticRotor extends Item implements IKineticRotor {
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(ItemStack stack, int pass) {
-        if (!LoadedMods.EnderIO && (mTier == 0 || mTier == 2)) {
+        if (!EnderIO.isModLoaded() && (mTier == 0 || mTier == 2)) {
             if (mTier == 0) {
                 return mTextures[4];
             } else {

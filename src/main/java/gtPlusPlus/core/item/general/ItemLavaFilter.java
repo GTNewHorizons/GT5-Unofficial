@@ -1,5 +1,7 @@
 package gtPlusPlus.core.item.general;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import java.util.List;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -14,7 +16,6 @@ import net.minecraft.util.StatCollector;
 import gregtech.api.enums.ItemList;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.item.base.CoreItem;
-import gtPlusPlus.core.lib.CORE;
 
 public class ItemLavaFilter extends CoreItem {
 
@@ -41,7 +42,7 @@ public class ItemLavaFilter extends CoreItem {
 
     @Override
     public void registerIcons(IIconRegister reg) {
-        this.mIcon[0] = reg.registerIcon(CORE.MODID + ":" + "itemLavaFilter");
+        this.mIcon[0] = reg.registerIcon(GTPlusPlus.ID + ":" + "itemLavaFilter");
     }
 
     @Override

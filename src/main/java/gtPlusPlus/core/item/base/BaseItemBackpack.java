@@ -1,5 +1,7 @@
 package gtPlusPlus.core.item.base;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -13,7 +15,6 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.handler.GuiHandler;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 
@@ -25,7 +26,7 @@ public class BaseItemBackpack extends Item {
     public BaseItemBackpack(final String unlocalizedName, final int colour) {
         this.unlocalName = unlocalizedName;
         this.setUnlocalizedName(unlocalizedName);
-        this.setTextureName(CORE.MODID + ":" + "itemBackpack");
+        this.setTextureName(GTPlusPlus.ID + ":" + "itemBackpack");
         this.colourValue = colour;
         GameRegistry.registerItem(this, unlocalizedName);
         GT_OreDictUnificator.registerOre("storageBackpack", ItemUtils.getSimpleStack(this));
@@ -69,6 +70,6 @@ public class BaseItemBackpack extends Item {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(final IIconRegister iconRegister) {
-        this.itemIcon = iconRegister.registerIcon(CORE.MODID + ":" + "itemBackpack");
+        this.itemIcon = iconRegister.registerIcon(GTPlusPlus.ID + ":" + "itemBackpack");
     }
 }

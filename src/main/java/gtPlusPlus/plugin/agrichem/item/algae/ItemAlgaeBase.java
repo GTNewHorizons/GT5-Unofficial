@@ -1,5 +1,7 @@
 package gtPlusPlus.plugin.agrichem.item.algae;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import java.util.List;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -16,7 +18,6 @@ import net.minecraft.world.World;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gtPlusPlus.api.objects.data.AutoMap;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.plugin.agrichem.AlgaeDefinition;
 import gtPlusPlus.plugin.agrichem.IAlgalItem;
@@ -161,8 +162,8 @@ public class ItemAlgaeBase extends Item implements IAlgalItem {
 
     @Override
     public void registerIcons(final IIconRegister i) {
-        this.base = i.registerIcon(CORE.MODID + ":" + "bioscience/BasicAlgae");
-        this.overlay = i.registerIcon(CORE.MODID + ":" + "bioscience/BasicAlgae" + "_Overlay");
+        this.base = i.registerIcon(GTPlusPlus.ID + ":" + "bioscience/BasicAlgae");
+        this.overlay = i.registerIcon(GTPlusPlus.ID + ":" + "bioscience/BasicAlgae" + "_Overlay");
     }
 
     public static ItemStack initNBT(ItemStack aFreshAlgae) {

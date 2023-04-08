@@ -1,5 +1,7 @@
 package gtPlusPlus.xmod.ic2.item;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -10,14 +12,13 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.lib.CORE;
 
 public class IC2_ItemIC2 extends Item {
 
     public IC2_ItemIC2(final String internalName) {
         this.setUnlocalizedName(internalName);
         this.setCreativeTab(AddToCreativeTab.tabMachines);
-        this.setTextureName(CORE.MODID + ":" + internalName);
+        this.setTextureName(GTPlusPlus.ID + ":" + internalName);
 
         GameRegistry.registerItem(this, internalName);
     }
@@ -35,7 +36,7 @@ public class IC2_ItemIC2 extends Item {
      * (getTextureName(indexCount) != null) { indexCount++; if (indexCount > 32767) { throw new
      * RuntimeException("More Item Icons than actually possible @ " + getUnlocalizedName()); } } this.textures = new
      * IIcon[indexCount]; for (int index = 0; index < indexCount; index++) { this.textures[index] =
-     * iconRegister.registerIcon(CORE.MODID + ":" + getUnlocalizedName()); } }
+     * iconRegister.registerIcon(GTPlusPlus.ID + ":" + getUnlocalizedName()); } }
      * @Override
      * @SideOnly(Side.CLIENT) public IIcon getIconFromDamage(int meta) { if (meta < this.textures.length) { return
      * this.textures[meta]; } return this.textures.length < 1 ? null : this.textures[0]; }

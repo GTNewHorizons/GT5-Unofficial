@@ -1,5 +1,7 @@
 package gtPlusPlus.core.block.machine;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -21,7 +23,6 @@ import gtPlusPlus.api.interfaces.ITileTooltip;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.handler.GuiHandler;
 import gtPlusPlus.core.item.base.itemblock.ItemBlockBasicTile;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.tileentities.machines.TileEntityPestKiller;
 import gtPlusPlus.core.util.minecraft.InventoryUtils;
 
@@ -69,11 +70,11 @@ public class Machine_PestKiller extends BlockContainer implements ITileTooltip {
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(final IIconRegister p_149651_1_) {
         this.blockIcon = p_149651_1_
-                .registerIcon(CORE.MODID + ":" + "TileEntities/" + "MACHINE_CASING_FARM_MANAGER_STRUCTURAL");
-        this.textureTop = p_149651_1_.registerIcon(CORE.MODID + ":" + "TileEntities/" + "MACHINE_PESTKILLER_TOP");
+                .registerIcon(GTPlusPlus.ID + ":" + "TileEntities/" + "MACHINE_CASING_FARM_MANAGER_STRUCTURAL");
+        this.textureTop = p_149651_1_.registerIcon(GTPlusPlus.ID + ":" + "TileEntities/" + "MACHINE_PESTKILLER_TOP");
         this.textureBottom = p_149651_1_.registerIcon("planks_acacia");
         this.textureFront = p_149651_1_
-                .registerIcon(CORE.MODID + ":" + "TileEntities/" + "MACHINE_CASING_FARM_MANAGER_STRUCTURAL");
+                .registerIcon(GTPlusPlus.ID + ":" + "TileEntities/" + "MACHINE_CASING_FARM_MANAGER_STRUCTURAL");
     }
 
     /**

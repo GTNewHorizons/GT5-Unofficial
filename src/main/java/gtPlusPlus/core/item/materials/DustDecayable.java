@@ -1,5 +1,6 @@
 package gtPlusPlus.core.item.materials;
 
+import static gregtech.api.enums.Mods.GregTech;
 import static gtPlusPlus.core.util.minecraft.ItemUtils.getSimpleStack;
 
 import java.util.List;
@@ -33,9 +34,9 @@ public class DustDecayable extends BaseItemTickable {
 
     @Override
     public void registerIcons(IIconRegister reg) {
-        String gt = "gregtech" + ":" + "materialicons/" + "NUCLEAR" + "/" + "dust";
+        String gt = GregTech.ID + ":" + "materialicons/" + "NUCLEAR" + "/" + "dust";
         this.mIcon[0] = reg.registerIcon(gt);
-        String gt2 = "gregtech" + ":" + "materialicons/" + "NUCLEAR" + "/" + "dust" + "_OVERLAY";
+        String gt2 = GregTech.ID + ":" + "materialicons/" + "NUCLEAR" + "/" + "dust" + "_OVERLAY";
         this.mIcon[1] = reg.registerIcon(gt2);
     }
 

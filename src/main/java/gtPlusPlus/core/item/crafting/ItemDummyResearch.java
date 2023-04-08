@@ -1,5 +1,7 @@
 package gtPlusPlus.core.item.crafting;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -12,7 +14,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.item.general.ItemGenericToken;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 
@@ -85,7 +86,7 @@ public class ItemDummyResearch extends ItemGenericToken {
     @SideOnly(Side.CLIENT)
     public final void registerIcons(final IIconRegister aIconRegister) {
         for (int i = 0, j = mLocalNames.size(); i < j; i++) {
-            mIcons.put(i, aIconRegister.registerIcon(CORE.MODID + ":" + "research" + "/" + "note"));
+            mIcons.put(i, aIconRegister.registerIcon(GTPlusPlus.ID + ":" + "research" + "/" + "note"));
         }
     }
 }

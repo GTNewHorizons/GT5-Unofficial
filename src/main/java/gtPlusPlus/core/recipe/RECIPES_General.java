@@ -1,5 +1,7 @@
 package gtPlusPlus.core.recipe;
 
+import static gregtech.api.enums.Mods.EnderIO;
+import static gregtech.api.enums.Mods.Thaumcraft;
 import static gtPlusPlus.core.recipe.common.CI.bitsd;
 import static gtPlusPlus.core.util.minecraft.ItemUtils.getSimpleStack;
 import static gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechConduits.generatePipeRecipes;
@@ -16,11 +18,13 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.ALLOY;
 import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.recipe.common.CI;
-import gtPlusPlus.core.util.minecraft.*;
+import gtPlusPlus.core.util.minecraft.FluidUtils;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.core.util.minecraft.MaterialUtils;
+import gtPlusPlus.core.util.minecraft.RecipeUtils;
 import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
 import gtPlusPlus.xmod.bop.blocks.BOP_Block_Registrator;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -98,71 +102,6 @@ public class RECIPES_General {
                 CI.getTieredCircuitOreDictName(3),
                 RECIPE_StainlessPlate,
                 OUTPUT_Workbench_Advanced);
-
-        // Generates recipes for the Dull shard when TC is not installed.
-        if (!LoadedMods.Thaumcraft) {
-            // Dull Shard to Aer
-            RecipeUtils.addShapedRecipe(
-                    RECIPE_HydrogenDust,
-                    RECIPE_HydrogenDust,
-                    RECIPE_HydrogenDust,
-                    RECIPE_HydrogenDust,
-                    ItemUtils.getSimpleStack(ModItems.shardDull),
-                    RECIPE_HydrogenDust,
-                    RECIPE_HydrogenDust,
-                    RECIPE_HydrogenDust,
-                    RECIPE_HydrogenDust,
-                    ItemUtils.getSimpleStack(ModItems.shardAer));
-            // Dull Shard to Ignis
-            RecipeUtils.addShapedRecipe(
-                    RECIPE_Obsidian,
-                    RECIPE_Obsidian,
-                    RECIPE_Obsidian,
-                    RECIPE_Obsidian,
-                    ItemUtils.getSimpleStack(ModItems.shardDull),
-                    RECIPE_Obsidian,
-                    RECIPE_Obsidian,
-                    RECIPE_Obsidian,
-                    RECIPE_Obsidian,
-                    ItemUtils.getSimpleStack(ModItems.shardIgnis));
-            // Dull Shard to Terra
-            RecipeUtils.addShapedRecipe(
-                    RECIPE_Dirt,
-                    RECIPE_Dirt,
-                    RECIPE_Dirt,
-                    RECIPE_Dirt,
-                    ItemUtils.getSimpleStack(ModItems.shardDull),
-                    RECIPE_Dirt,
-                    RECIPE_Dirt,
-                    RECIPE_Dirt,
-                    RECIPE_Dirt,
-                    ItemUtils.getSimpleStack(ModItems.shardTerra));
-            // Dull Shard to Aqua
-            RecipeUtils.addShapedRecipe(
-                    RECIPE_LapisDust,
-                    RECIPE_LapisDust,
-                    RECIPE_LapisDust,
-                    RECIPE_LapisDust,
-                    ItemUtils.getSimpleStack(ModItems.shardDull),
-                    RECIPE_LapisDust,
-                    RECIPE_LapisDust,
-                    RECIPE_LapisDust,
-                    RECIPE_LapisDust,
-                    ItemUtils.getSimpleStack(ModItems.shardAqua));
-
-            GT_ModHandler.addPulverisationRecipe(
-                    ItemUtils.getSimpleStack(ModItems.shardAer),
-                    ItemUtils.getSimpleStack(ModItems.dustAer, 2));
-            GT_ModHandler.addPulverisationRecipe(
-                    ItemUtils.getSimpleStack(ModItems.shardIgnis),
-                    ItemUtils.getSimpleStack(ModItems.dustIgnis, 2));
-            GT_ModHandler.addPulverisationRecipe(
-                    ItemUtils.getSimpleStack(ModItems.shardTerra),
-                    ItemUtils.getSimpleStack(ModItems.dustTerra, 2));
-            GT_ModHandler.addPulverisationRecipe(
-                    ItemUtils.getSimpleStack(ModItems.shardAqua),
-                    ItemUtils.getSimpleStack(ModItems.dustAqua, 2));
-        }
 
         // Rainforest oak Sapling
         if (RecipeUtils.addShapedRecipe(
@@ -504,7 +443,7 @@ public class RECIPES_General {
                 GT_Materials.HastelloyX, GT_Materials.TriniumNaquadahCarbonite, };
         for (GT_Materials e : g) {
             if (e == GT_Materials.Void) {
-                if (!LoadedMods.Thaumcraft) {
+                if (!Thaumcraft.isModLoaded()) {
                     continue;
                 }
             }
@@ -517,7 +456,7 @@ public class RECIPES_General {
 
         for (Materials e : h) {
             if (e == Materials.DarkSteel) {
-                if (!LoadedMods.EnderIO) {
+                if (!EnderIO.isModLoaded()) {
                     continue;
                 }
             }

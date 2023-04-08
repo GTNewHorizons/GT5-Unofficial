@@ -1,5 +1,7 @@
 package gtPlusPlus.core.block.machine;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EnumCreatureType;
@@ -15,7 +17,6 @@ import gtPlusPlus.GTplusplus;
 import gtPlusPlus.api.interfaces.ITileTooltip;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.base.BlockBaseNBT;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.tileentities.machines.TileEntityTradeTable;
 
 public class Machine_TradeTable extends BlockBaseNBT implements ITileTooltip {
@@ -46,10 +47,10 @@ public class Machine_TradeTable extends BlockBaseNBT implements ITileTooltip {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(final IIconRegister p_149651_1_) {
-        this.blockIcon = p_149651_1_.registerIcon(CORE.MODID + ":" + "SwirlYellow");
-        this.textureTop = p_149651_1_.registerIcon(CORE.MODID + ":" + "workbench_top");
-        this.textureBottom = p_149651_1_.registerIcon(CORE.MODID + ":" + "SwirlYellow");
-        this.textureFront = p_149651_1_.registerIcon(CORE.MODID + ":" + "SwirlYellow");
+        this.blockIcon = p_149651_1_.registerIcon(GTPlusPlus.ID + ":" + "SwirlYellow");
+        this.textureTop = p_149651_1_.registerIcon(GTPlusPlus.ID + ":" + "workbench_top");
+        this.textureBottom = p_149651_1_.registerIcon(GTPlusPlus.ID + ":" + "SwirlYellow");
+        this.textureFront = p_149651_1_.registerIcon(GTPlusPlus.ID + ":" + "SwirlYellow");
     }
 
     /**

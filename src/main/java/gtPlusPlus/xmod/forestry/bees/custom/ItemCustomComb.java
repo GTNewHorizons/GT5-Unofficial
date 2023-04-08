@@ -1,5 +1,7 @@
 package gtPlusPlus.xmod.forestry.bees.custom;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import java.util.List;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -13,10 +15,12 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import forestry.api.core.Tabs;
 import gregtech.GT_Mod;
-import gregtech.api.enums.*;
+import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class ItemCustomComb extends Item {
@@ -29,7 +33,7 @@ public class ItemCustomComb extends Item {
         this.setCreativeTab(Tabs.tabApiculture);
         this.setHasSubtypes(true);
         this.setUnlocalizedName("gtpp.comb");
-        GameRegistry.registerItem(this, "gtpp.comb", CORE.MODID);
+        GameRegistry.registerItem(this, "gtpp.comb", GTPlusPlus.ID);
     }
 
     public ItemStack getStackForType(CustomCombs type) {

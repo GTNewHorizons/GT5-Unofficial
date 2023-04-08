@@ -1,18 +1,18 @@
 package gtPlusPlus.core.item.base;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-import gtPlusPlus.core.lib.CORE;
-
 public class BaseItemWithDamageValue extends Item {
 
     public BaseItemWithDamageValue(final String unlocalizedName) {
         this.setUnlocalizedName(unlocalizedName);
-        this.setTextureName(CORE.MODID + ":" + unlocalizedName);
+        this.setTextureName(GTPlusPlus.ID + ":" + unlocalizedName);
         this.setMaxStackSize(1);
         this.setMaxDamage(100);
     }

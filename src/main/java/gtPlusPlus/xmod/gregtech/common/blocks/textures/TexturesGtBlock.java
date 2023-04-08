@@ -1,5 +1,8 @@
 package gtPlusPlus.xmod.gregtech.common.blocks.textures;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+import static gregtech.api.enums.Mods.Minecraft;
+
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
@@ -33,7 +36,7 @@ public class TexturesGtBlock {
         protected String mModID;
 
         public CustomIcon(final String aIconName) {
-            this(CORE.MODID, aIconName);
+            this(GTPlusPlus.ID, aIconName);
         }
 
         public CustomIcon(final String aModID, final String aIconName) {
@@ -90,7 +93,7 @@ public class TexturesGtBlock {
 
         @Override
         public void run() {
-            this.mIcon = GregTech_API.sBlockIcons.registerIcon("minecraft" + ":" + this.mIconName);
+            this.mIcon = GregTech_API.sBlockIcons.registerIcon(Minecraft.ID + ":" + this.mIconName);
         }
 
         @Override

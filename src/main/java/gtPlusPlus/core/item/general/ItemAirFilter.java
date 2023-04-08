@@ -1,5 +1,7 @@
 package gtPlusPlus.core.item.general;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import java.util.List;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -13,7 +15,6 @@ import net.minecraft.util.IIcon;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 
 public class ItemAirFilter extends Item {
@@ -32,7 +33,7 @@ public class ItemAirFilter extends Item {
 
     @Override
     public void registerIcons(IIconRegister reg) {
-        this.icons[0] = reg.registerIcon(CORE.MODID + ":" + "itemAirFilter");
+        this.icons[0] = reg.registerIcon(GTPlusPlus.ID + ":" + "itemAirFilter");
     }
 
     @Override

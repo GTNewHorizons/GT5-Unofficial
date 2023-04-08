@@ -9,8 +9,6 @@ public class HANDLER_IC2 {
         IC2_Items.register();
     }
 
-    public static void init() {}
-
     public static void postInit() {
         RECIPE_IC2.initRecipes();
     }

@@ -1,5 +1,7 @@
 package gtPlusPlus.xmod.tinkers.util;
 
+import static gregtech.api.enums.Mods.TinkerConstruct;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -20,7 +22,6 @@ import net.minecraftforge.fluids.FluidStack;
 import gregtech.api.enums.Materials;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
-import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
@@ -69,29 +70,29 @@ public class TinkersUtils {
      * @param aSwitch - The Registry to return
      */
     private static void setTiConDataInstance() {
-        if (!LoadedMods.TiCon) {
+        if (!TinkerConstruct.isModLoaded()) {
             return;
-        } else {
-            if (mSmelteryInstance == null) {
-                if (mClass_Smeltery != null) {
-                    try {
-                        mSmelteryInstance = ReflectionUtils.getField(mClass_Smeltery, "instance").get(null);
-                    } catch (IllegalArgumentException | IllegalAccessException e) {}
-                }
+        }
+
+        if (mSmelteryInstance == null) {
+            if (mClass_Smeltery != null) {
+                try {
+                    mSmelteryInstance = ReflectionUtils.getField(mClass_Smeltery, "instance").get(null);
+                } catch (IllegalArgumentException | IllegalAccessException e) {}
             }
-            if (mTinkersRegistryInstance == null) {
-                if (mClass_TConstructRegistry != null) {
-                    try {
-                        mTinkersRegistryInstance = ReflectionUtils.getField(mClass_TConstructRegistry, "instance")
-                                .get(null);
-                    } catch (IllegalArgumentException | IllegalAccessException e) {}
-                }
+        }
+        if (mTinkersRegistryInstance == null) {
+            if (mClass_TConstructRegistry != null) {
+                try {
+                    mTinkersRegistryInstance = ReflectionUtils.getField(mClass_TConstructRegistry, "instance")
+                            .get(null);
+                } catch (IllegalArgumentException | IllegalAccessException e) {}
             }
         }
     }
 
     public static final boolean isTiConFirstInOD() {
-        if (LoadedMods.TiCon) {
+        if (TinkerConstruct.isModLoaded()) {
             try {
                 return (boolean) ReflectionUtils.getField(ReflectionUtils.getClass("PHConstruct"), "tconComesFirst")
                         .get(null);

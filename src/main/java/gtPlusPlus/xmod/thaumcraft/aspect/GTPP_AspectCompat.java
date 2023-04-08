@@ -1,5 +1,7 @@
 package gtPlusPlus.xmod.thaumcraft.aspect;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -11,7 +13,6 @@ import net.minecraft.util.ResourceLocation;
 import gregtech.api.enums.TC_Aspects;
 import gregtech.common.GT_ThaumcraftCompat;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.thaumcraft.objects.wrapper.aspect.TC_AspectList_Wrapper;
 import gtPlusPlus.xmod.thaumcraft.objects.wrapper.aspect.TC_Aspect_Wrapper;
@@ -72,7 +73,7 @@ public class GTPP_AspectCompat {
                 "Sagrausten",
                 Utils.rgbtoHexValue(125, 125, 125),
                 new TC_Aspect_Wrapper[] { ASPECT_STARBOUND, get(TC_Aspects.RADIO) },
-                new ResourceLocation(CORE.MODID + ":textures/aspects/" + "Sagrausten.png"),
+                new ResourceLocation(GTPlusPlus.ID + ":textures/aspects/" + "Sagrausten.png"),
                 false,
                 1,
                 "Ancient Knowledge");
@@ -81,7 +82,7 @@ public class GTPP_AspectCompat {
                 "Slusium",
                 Utils.rgbtoHexValue(175, 125, 25),
                 new TC_Aspect_Wrapper[] { ASPECT_BALANCE, get(TC_Aspects.NEBRISUM) },
-                new ResourceLocation(CORE.MODID + ":textures/aspects/" + "Slusium.png"),
+                new ResourceLocation(GTPlusPlus.ID + ":textures/aspects/" + "Slusium.png"),
                 false,
                 1,
                 "Warped Thoughts");
@@ -90,7 +91,7 @@ public class GTPP_AspectCompat {
                 "Xenil",
                 Utils.rgbtoHexValue(25, 25, 25),
                 new TC_Aspect_Wrapper[] { get(TC_Aspects.MAGNETO), get(TC_Aspects.RADIO) },
-                new ResourceLocation(CORE.MODID + ":textures/aspects/" + "Xenil.png"),
+                new ResourceLocation(GTPlusPlus.ID + ":textures/aspects/" + "Xenil.png"),
                 false,
                 1,
                 "A beginning to something new");
@@ -99,7 +100,7 @@ public class GTPP_AspectCompat {
                 "Xablum",
                 Utils.rgbtoHexValue(25, 185, 25),
                 new TC_Aspect_Wrapper[] { ASPECT_STARBOUND, ASPECT_LUST },
-                new ResourceLocation(CORE.MODID + ":textures/aspects/" + "Xablum.png"),
+                new ResourceLocation(GTPlusPlus.ID + ":textures/aspects/" + "Xablum.png"),
                 false,
                 1,
                 "Insanity");
@@ -108,7 +109,7 @@ public class GTPP_AspectCompat {
                 "Zetralt",
                 Utils.rgbtoHexValue(225, 225, 225),
                 new TC_Aspect_Wrapper[] { get(TC_Aspects.AURAM), ASPECT_TOXIC },
-                new ResourceLocation(CORE.MODID + ":textures/aspects/" + "Zetralt.png"),
+                new ResourceLocation(GTPlusPlus.ID + ":textures/aspects/" + "Zetralt.png"),
                 false,
                 1,
                 "Control, Respect, Glory");

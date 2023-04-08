@@ -1,6 +1,12 @@
 package gtPlusPlus.core.util.data;
 
-import java.io.*;
+import static gregtech.api.enums.Mods.GTPlusPlus;
+import static gregtech.api.enums.Mods.GTPlusPlusEverglades;
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -16,7 +22,7 @@ public class LocaleUtils {
 
     public static boolean generateFakeLocaleFile() {
         for (ModContainer modcontainer : Loader.instance().getModList()) {
-            if (modcontainer.getModId().toLowerCase().equals("miscutils")) {
+            if (modcontainer.getModId().toLowerCase().equals(GTPlusPlus.ID)) {
                 String S = "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~";
                 writeToFile(S);
                 dumpItemsAndBlocksForModContainer(modcontainer);
@@ -36,7 +42,7 @@ public class LocaleUtils {
                         Item R = (Item) C;
                         ItemStack IS = ItemUtils.getSimpleStack(R);
                         String modid = ItemUtils.getModId(IS);
-                        if (modid.equals("miscutils") || modid.equals("ToxicEverglades")) {
+                        if (modid.equals(GTPlusPlus.ID) || modid.equals(GTPlusPlusEverglades.ID)) {
                             String S = "[" + modid + "] " + IS.getUnlocalizedName() + ".name=";
                             writeToFile(S);
                         }
@@ -55,7 +61,7 @@ public class LocaleUtils {
                         Block R = (Block) B;
                         ItemStack IS = ItemUtils.getSimpleStack(R);
                         String modid = ItemUtils.getModId(IS);
-                        if (modid.equals("miscutils") || modid.equals("ToxicEverglades")) {
+                        if (modid.equals(GTPlusPlus.ID) || modid.equals(GTPlusPlusEverglades.ID)) {
                             String S = "[" + modid + "] " + IS.getUnlocalizedName() + ".name=";
                             writeToFile(S);
                         }

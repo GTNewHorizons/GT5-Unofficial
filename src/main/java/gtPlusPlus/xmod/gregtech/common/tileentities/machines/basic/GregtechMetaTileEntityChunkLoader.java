@@ -1,6 +1,7 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic;
 
 import static gregtech.api.enums.GT_Values.V;
+import static gregtech.api.enums.Mods.GTPlusPlus;
 import static net.minecraftforge.common.ForgeChunkManager.getMaxChunkDepthFor;
 
 import java.util.HashSet;
@@ -54,13 +55,13 @@ public class GregtechMetaTileEntityChunkLoader extends GT_MetaTileEntity_BasicMa
 
     public static int getMaxChunksToLoadForTier(int aTier) {
         if (aTier < 4) {
-            return Math.min(3 * 3, getMaxChunkDepthFor(CORE.MODID));
+            return Math.min(3 * 3, getMaxChunkDepthFor(GTPlusPlus.ID));
         }
         if (aTier < 6) {
-            return Math.min(7 * 7, getMaxChunkDepthFor(CORE.MODID));
+            return Math.min(7 * 7, getMaxChunkDepthFor(GTPlusPlus.ID));
         }
         if (aTier < 8) {
-            return Math.min(15 * 15, getMaxChunkDepthFor(CORE.MODID));
+            return Math.min(15 * 15, getMaxChunkDepthFor(GTPlusPlus.ID));
         } else {
             return 0;
         }
@@ -68,13 +69,13 @@ public class GregtechMetaTileEntityChunkLoader extends GT_MetaTileEntity_BasicMa
 
     public static int getChunkRadiusForTier(int aTier) {
         if (aTier < 4) {
-            return Math.min(1, (int) Math.floor(Math.sqrt(getMaxChunkDepthFor(CORE.MODID))));
+            return Math.min(1, (int) Math.floor(Math.sqrt(getMaxChunkDepthFor(GTPlusPlus.ID))));
         }
         if (aTier < 6) {
-            return Math.min(3, (int) Math.floor(Math.sqrt(getMaxChunkDepthFor(CORE.MODID))));
+            return Math.min(3, (int) Math.floor(Math.sqrt(getMaxChunkDepthFor(GTPlusPlus.ID))));
         }
         if (aTier < 8) {
-            return Math.min(7, (int) Math.floor(Math.sqrt(getMaxChunkDepthFor(CORE.MODID))));
+            return Math.min(7, (int) Math.floor(Math.sqrt(getMaxChunkDepthFor(GTPlusPlus.ID))));
         } else {
             return 0;
         }

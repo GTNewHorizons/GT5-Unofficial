@@ -1,29 +1,22 @@
 package gtPlusPlus.xmod.sol;
 
+import static gregtech.api.enums.Mods.SpiceOfLife;
+
 import java.lang.reflect.Constructor;
 
 import net.minecraft.item.Item;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 
 public class HANDLER_SpiceOfLife {
 
     public static final void preInit() {
-        if (LoadedMods.SpiceOfLife) {
+        if (SpiceOfLife.isModLoaded()) {
             // Add a new Lunch Box with a reasonable amount of slots
             tryRegisterNewLunchBox("foodcrate", 12);
         }
-    }
-
-    public static final void init() {
-        if (LoadedMods.SpiceOfLife) {}
-    }
-
-    public static final void postInit() {
-        if (LoadedMods.SpiceOfLife) {}
     }
 
     private static boolean tryRegisterNewLunchBox(String aItemName, int aSlots) {

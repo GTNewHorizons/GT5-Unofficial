@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.gregtech.common.helpers;
 
+import static gregtech.api.enums.Mods.Forestry;
 import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableTreeFarmerParticles;
 
 import java.util.ArrayList;
@@ -39,6 +40,7 @@ import cpw.mods.fml.common.eventhandler.Event.Result;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import gnu.trove.set.hash.THashSet;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.ToolDictNames;
@@ -50,7 +52,6 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.players.FakeFarmer;
 import gtPlusPlus.core.slots.SlotBuzzSaw.SAWTOOL;
 import gtPlusPlus.core.util.Utils;
@@ -328,7 +329,7 @@ public class TreeFarmHelper {
     public static Block blockHumus;
 
     public static boolean isForestryValid() {
-        if (!LoadedMods.Forestry) {
+        if (!Forestry.isModLoaded()) {
             return false;
         }
         if (ReflectionUtils.doesClassExist("forestry.core.blocks.BlockSoil")) {
@@ -349,7 +350,7 @@ public class TreeFarmHelper {
         return true;
     }
 
-    @Optional.Method(modid = "Forestry")
+    @Optional.Method(modid = Mods.Names.FORESTRY)
     public static Block getHumus() {
         if (blockHumus != null) {
             return blockHumus;

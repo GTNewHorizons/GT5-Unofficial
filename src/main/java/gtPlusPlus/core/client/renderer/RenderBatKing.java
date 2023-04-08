@@ -1,5 +1,7 @@
 package gtPlusPlus.core.client.renderer;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -13,13 +15,12 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.core.client.model.ModelBatKing;
 import gtPlusPlus.core.entity.monster.EntityBatKing;
-import gtPlusPlus.core.lib.CORE;
 
 @SideOnly(Side.CLIENT)
 public class RenderBatKing extends RenderLiving {
 
     private static final ResourceLocation batTextures = new ResourceLocation(
-            CORE.MODID + ":" + "textures/entity/batKing.png");
+            GTPlusPlus.ID + ":" + "textures/entity/batKing.png");
 
     /**
      * not actually sure this is size, is not used as of now, but the model would be recreated if the value changed and

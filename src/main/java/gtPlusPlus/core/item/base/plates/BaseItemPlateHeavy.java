@@ -1,12 +1,13 @@
 package gtPlusPlus.core.item.base.plates;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.util.IIcon;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.core.item.base.BaseItemComponent;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.Material;
 
 public class BaseItemPlateHeavy extends BaseItemComponent {
@@ -19,7 +20,7 @@ public class BaseItemPlateHeavy extends BaseItemComponent {
 
     @Override
     public String getCorrectTextures() {
-        return CORE.MODID + ":" + "itemHeavyPlate";
+        return GTPlusPlus.ID + ":" + "itemHeavyPlate";
     }
 
     @Override
@@ -30,8 +31,8 @@ public class BaseItemPlateHeavy extends BaseItemComponent {
 
     @Override
     public void registerIcons(final IIconRegister i) {
-        this.base = i.registerIcon(CORE.MODID + ":" + "itemHeavyPlate");
-        this.overlay = i.registerIcon(CORE.MODID + ":" + "itemHeavyPlate_Overlay");
+        this.base = i.registerIcon(GTPlusPlus.ID + ":" + "itemHeavyPlate");
+        this.overlay = i.registerIcon(GTPlusPlus.ID + ":" + "itemHeavyPlate_Overlay");
     }
 
     @Override

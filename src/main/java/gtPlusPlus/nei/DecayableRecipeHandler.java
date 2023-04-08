@@ -1,6 +1,8 @@
 package gtPlusPlus.nei;
 
-import java.awt.Rectangle;
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -18,7 +20,6 @@ import gtPlusPlus.core.gui.machine.GUI_DecayablesChest;
 import gtPlusPlus.core.handler.Recipes.DecayableRecipe;
 import gtPlusPlus.core.item.base.dusts.BaseItemDustUnique;
 import gtPlusPlus.core.item.materials.DustDecayable;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.VanillaColours;
 import gtPlusPlus.nei.handlers.NeiTextureHandler;
 
@@ -31,7 +32,7 @@ public class DecayableRecipeHandler extends TemplateRecipeHandler {
     }
 
     public String getGuiTexture() {
-        return CORE.MODID + ":textures/gui/nei/decayables.png";
+        return GTPlusPlus.ID + ":textures/gui/nei/decayables.png";
     }
 
     public Class<? extends GuiContainer> getGuiClass() {

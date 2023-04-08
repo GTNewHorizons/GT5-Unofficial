@@ -17,7 +17,7 @@ import net.minecraftforge.common.ChestGenHooks;
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.registry.GameRegistry;
 import forestry.core.utils.StringUtil;
-import gtPlusPlus.core.lib.LoadedMods;
+import gregtech.api.enums.Mods;
 
 public class FR_ItemRegistry {
 
@@ -45,7 +45,7 @@ public class FR_ItemRegistry {
     public static MB_ItemFrame hiveFrameStalilize;
     public static MB_ItemFrame hiveFrameArborist;
 
-    @Optional.Method(modid = "Forestry")
+    @Optional.Method(modid = Mods.Names.FORESTRY)
     public static void Register() {
 
         // Forestry Frames
@@ -92,15 +92,6 @@ public class FR_ItemRegistry {
         ChestGenHooks.addItem(
                 ChestGenHooks.DUNGEON_CHEST,
                 new WeightedRandomChestContent(new ItemStack(hiveFrameMutagenic), 1, 3, 12));
-
-        // Extra Bee like Frames
-        if (!LoadedMods.ExtraBees) {
-            hiveFrameCocoa = new MB_ItemFrame(MB_FrameType.COCOA, EnumRarity.common, "");
-            hiveFrameCaged = new MB_ItemFrame(MB_FrameType.CAGE, EnumRarity.common, "");
-            hiveFrameSoul = new MB_ItemFrame(MB_FrameType.SOUL, EnumRarity.common, "");
-            hiveFrameClay = new MB_ItemFrame(MB_FrameType.CLAY, EnumRarity.common, "");
-            hiveFrameNova = new MB_ItemFrame(MB_FrameType.NOVA, EnumRarity.epic, "A Creative Only Frame.");
-        }
 
         // Frame Items added by bartimaeusnek
         hiveFrameDecay = new MB_ItemFrame(

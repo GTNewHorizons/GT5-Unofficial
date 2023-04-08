@@ -1,5 +1,7 @@
 package gtPlusPlus.core.item.general.fuelrods;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import java.util.List;
 
 import net.minecraft.entity.Entity;
@@ -11,7 +13,6 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 
 import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.lib.CORE;
 
 public class FuelRod_Base extends Item {
 
@@ -23,7 +24,7 @@ public class FuelRod_Base extends Item {
 
     public FuelRod_Base(final String unlocalizedName, final String type, final int fuelLeft, final int maxFuel) {
         this.setUnlocalizedName(unlocalizedName);
-        this.setTextureName(CORE.MODID + ":" + unlocalizedName);
+        this.setTextureName(GTPlusPlus.ID + ":" + unlocalizedName);
         this.setMaxStackSize(1);
         this.setMaxDamage(maxFuel);
         this.maximumFuel = maxFuel;

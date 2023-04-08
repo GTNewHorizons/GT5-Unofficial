@@ -1,12 +1,13 @@
 package gtPlusPlus.core.block.base;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.util.IIcon;
 
 import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.lib.CORE;
 
 public class MultiTextureBlock extends Block {
 
@@ -15,7 +16,7 @@ public class MultiTextureBlock extends Block {
     protected MultiTextureBlock(final String unlocalizedName, final Material material, final SoundType blockSound) {
         super(material);
         this.setBlockName(unlocalizedName);
-        this.setBlockTextureName(CORE.MODID + ":" + unlocalizedName);
+        this.setBlockTextureName(GTPlusPlus.ID + ":" + unlocalizedName);
         this.setCreativeTab(AddToCreativeTab.tabBlock);
         this.setHardness(2.0F);
         this.setResistance(6.0F);

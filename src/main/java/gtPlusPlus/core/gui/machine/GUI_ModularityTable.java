@@ -1,5 +1,7 @@
 package gtPlusPlus.core.gui.machine;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.I18n;
@@ -11,14 +13,13 @@ import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.core.container.Container_ModularityTable;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.tileentities.machines.TileEntityModularityTable;
 
 @SideOnly(Side.CLIENT)
 public class GUI_ModularityTable extends GuiContainer {
 
     private static final ResourceLocation craftingTableGuiTextures = new ResourceLocation(
-            CORE.MODID,
+            GTPlusPlus.ID,
             "textures/gui/ModularityTable.png");
     private Container_ModularityTable mThisContainer;
     private TileEntityModularityTable mThisTile;

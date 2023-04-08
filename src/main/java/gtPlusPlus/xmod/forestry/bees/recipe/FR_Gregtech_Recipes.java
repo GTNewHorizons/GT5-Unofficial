@@ -1,10 +1,11 @@
 package gtPlusPlus.xmod.forestry.bees.recipe;
 
+import static gregtech.api.enums.Mods.MagicBees;
+
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
-import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
 import gtPlusPlus.xmod.forestry.bees.items.FR_ItemRegistry;
@@ -64,7 +65,7 @@ public class FR_Gregtech_Recipes {
                 rod_Uranium,
                 rod_Uranium,
                 hiveFrameMutagenic);
-        if (LoadedMods.MagicBees) {
+        if (MagicBees.isModLoaded()) {
             RecipeUtils.addShapelessGregtechRecipe(
                     new ItemStack[] { hiveFrameVoid },
                     ItemUtils.getCorrectStacktype("MagicBees:frameOblivion", 1));
@@ -80,57 +81,6 @@ public class FR_Gregtech_Recipes {
                 "stickBlueSteel",
                 "stickBlueSteel",
                 hiveFrameBusy);
-
-        if (!LoadedMods.ExtraBees) {
-            // Extra Bee Like Frames
-            RecipeUtils.addShapedRecipe(
-                    null,
-                    itemCocoaBeans,
-                    null,
-                    itemCocoaBeans,
-                    hiveFrameImpregnated,
-                    itemCocoaBeans,
-                    null,
-                    itemCocoaBeans,
-                    null,
-                    hiveFrameCocoa);
-
-            RecipeUtils.addShapedRecipe(
-                    hiveFrameImpregnated,
-                    blockIronBars,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    hiveFrameCaged);
-
-            RecipeUtils.addShapedRecipe(
-                    hiveFrameImpregnated,
-                    blockSoulSand,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    hiveFrameSoul);
-
-            RecipeUtils.addShapedRecipe(
-                    null,
-                    itemClayDust,
-                    null,
-                    itemClayDust,
-                    hiveFrameImpregnated,
-                    itemClayDust,
-                    null,
-                    itemClayDust,
-                    null,
-                    hiveFrameClay);
-        }
 
         // Frame Items added by bartimaeusnek
         RecipeUtils.addShapedGregtechRecipe(

@@ -1,5 +1,7 @@
 package gtPlusPlus.core.item.base.dusts;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+import static gregtech.api.enums.Mods.GregTech;
 import static gtPlusPlus.core.creative.AddToCreativeTab.tabMisc;
 
 import java.util.HashMap;
@@ -116,17 +118,17 @@ public class BaseItemDustUnique extends Item {
     private String getCorrectTexture(final String pileSize) {
         if (!CORE.ConfigSwitches.useGregtechTextures) {
             if ((pileSize.equals("dust")) || (pileSize.equals("Dust"))) {
-                this.setTextureName(CORE.MODID + ":" + "dust");
+                this.setTextureName(GTPlusPlus.ID + ":" + "dust");
             } else {
-                this.setTextureName(CORE.MODID + ":" + "dust" + pileSize);
+                this.setTextureName(GTPlusPlus.ID + ":" + "dust" + pileSize);
             }
         }
         if (pileSize.toLowerCase().contains("small")) {
-            return "gregtech" + ":" + "materialicons/SHINY/dustSmall";
+            return GregTech.ID + ":" + "materialicons/SHINY/dustSmall";
         } else if (pileSize.toLowerCase().contains("tiny")) {
-            return "gregtech" + ":" + "materialicons/SHINY/dustTiny";
+            return GregTech.ID + ":" + "materialicons/SHINY/dustTiny";
         }
-        return "gregtech" + ":" + "materialicons/SHINY/dust";
+        return GregTech.ID + ":" + "materialicons/SHINY/dust";
     }
 
     @SuppressWarnings({ "rawtypes", "unchecked" })

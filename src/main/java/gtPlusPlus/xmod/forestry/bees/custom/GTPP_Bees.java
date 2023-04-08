@@ -1,5 +1,7 @@
 package gtPlusPlus.xmod.forestry.bees.custom;
 
+import static gregtech.api.enums.Mods.Forestry;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -10,9 +12,6 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
 
-import cpw.mods.fml.common.Loader;
-import forestry.api.genetics.AlleleManager;
-import forestry.api.genetics.IAllele;
 import gregtech.GT_Mod;
 import gregtech.api.enums.Materials;
 import gtPlusPlus.api.objects.Logger;
@@ -48,15 +47,7 @@ public class GTPP_Bees {
     // public static GTPP_Branch_Definition definition;
 
     public GTPP_Bees() {
-        if (Loader.isModLoaded("Forestry") /* && tryGetBeesBoolean() */) {
-
-            for (IAllele o : AlleleManager.alleleRegistry.getRegisteredAlleles().values()) {
-                // Utils.LOG_DEBUG_BEES(" ==================================================");
-                // Utils.LOG_DEBUG_BEES(" Name: "+o.getName());
-                // Utils.LOG_DEBUG_BEES(" Name: "+o.getUnlocalizedName());
-                // Utils.LOG_DEBUG_BEES(" getUID: "+o.getUID());
-                // Utils.LOG_DEBUG_BEES(" isDominant: "+o.isDominant());
-            }
+        if (Forestry.isModLoaded()) {
 
             // Set Materials and Comb stacks from GT via Reflection
             setMaterials();
@@ -75,20 +66,13 @@ public class GTPP_Bees {
 
     private void setCustomItems() {
         dropForceGem = new BaseItemMisc("Force", new short[] { 250, 250, 20 }, 64, MiscTypes.GEM, null);
-        // MaterialUtils.tryEnableMaterial(Materials.Force);
-        // MaterialUtils.tryEnableMaterialPart(OrePrefixes.dust, Materials.Force);
-        // MaterialUtils.tryEnableMaterialPart(OrePrefixes.ingot, Materials.Force);
         dropBiomassBlob = new BaseItemMisc("Biomass", new short[] { 33, 225, 24 }, 64, MiscTypes.DROP, null);
         dropEthanolBlob = new BaseItemMisc("Ethanol", new short[] { 255, 128, 0 }, 64, MiscTypes.DROP, null);
 
         // Nikolite may not exist, so lets make it.
         dropNikoliteDust = ItemUtils
                 .generateSpecialUseDusts("Nikolite", "Nikolite", Utils.rgbtoHexValue(60, 180, 200))[2];
-        // MaterialUtils.tryEnableMaterial(Materials.Nikolite);
-        // MaterialUtils.tryEnableMaterialPart(OrePrefixes.dust, Materials.Nikolite);
-        // MaterialUtils.tryEnableMaterialPart(OrePrefixes.ingot, Materials.Nikolite);
-        // MaterialUtils.tryEnableMaterialPart(OrePrefixes.plate, Materials.Nikolite);
-        // MaterialUtils.tryEnableMaterial(Materials.BlueAlloy);
+
         if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("ingotNikolite", 1) == null) {
             new BaseItemIngot_OLD("itemIngotNikolite", "Nikolite", Utils.rgbtoHexValue(60, 180, 200), 0);
         }
@@ -160,9 +144,6 @@ public class GTPP_Bees {
             if (Comb_Stone == null) {
                 Comb_Stone = (ItemStack) getStackForType.invoke(gtBees, gtCombTypeStone);
             }
-            /*
-             * } else { Utils.LOG_BEES("oCombObject was not an instance of gregtech.common.items.ItemComb"); }
-             */
 
         } catch (NullPointerException | ClassNotFoundException | IllegalArgumentException | IllegalAccessException
                 | NoSuchMethodException | SecurityException | InvocationTargetException e) {

@@ -1,5 +1,7 @@
 package gtPlusPlus.core.item.wearable.armour.tinfoil;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import java.util.List;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -29,7 +31,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.item.wearable.armour.ArmourLoader;
 import gtPlusPlus.core.item.wearable.armour.base.BaseArmourHelm;
-import gtPlusPlus.core.lib.CORE;
 
 public class ArmourTinFoilHat extends BaseArmourHelm {
 
@@ -41,7 +42,7 @@ public class ArmourTinFoilHat extends BaseArmourHelm {
 
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister ir) {
-        this.iconHelm = ir.registerIcon(CORE.MODID + ":itemHatTinFoil");
+        this.iconHelm = ir.registerIcon(GTPlusPlus.ID + ":itemHatTinFoil");
     }
 
     @Override
@@ -55,7 +56,7 @@ public class ArmourTinFoilHat extends BaseArmourHelm {
     }
 
     public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type) {
-        return CORE.MODID + ":textures/models/TinFoil.png";
+        return GTPlusPlus.ID + ":textures/models/TinFoil.png";
     }
 
     public EnumRarity getRarity(ItemStack itemstack) {

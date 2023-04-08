@@ -10,7 +10,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.client.IItemRenderer;
 
-import cpw.mods.fml.common.event.*;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gtPlusPlus.GTplusplus;
@@ -24,12 +28,21 @@ import gtPlusPlus.core.entity.monster.EntityGiantChickenBase;
 import gtPlusPlus.core.entity.monster.EntitySickBlaze;
 import gtPlusPlus.core.entity.monster.EntityStaballoyConstruct;
 import gtPlusPlus.core.fluids.FluidFactory;
-import gtPlusPlus.core.handler.*;
-import gtPlusPlus.core.handler.events.*;
+import gtPlusPlus.core.handler.BookHandler;
+import gtPlusPlus.core.handler.BurnableFuelHandler;
+import gtPlusPlus.core.handler.COMPAT_HANDLER;
+import gtPlusPlus.core.handler.COMPAT_IntermodStaging;
+import gtPlusPlus.core.handler.GuiHandler;
+import gtPlusPlus.core.handler.events.BlockEventHandler;
+import gtPlusPlus.core.handler.events.EnderDragonDeathHandler;
+import gtPlusPlus.core.handler.events.EntityDeathHandler;
+import gtPlusPlus.core.handler.events.GeneralTooltipEventHandler;
+import gtPlusPlus.core.handler.events.PickaxeBlockBreakEventHandler;
+import gtPlusPlus.core.handler.events.PlayerSleepEventHandler;
+import gtPlusPlus.core.handler.events.ZombieBackupSpawnEventHandler;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.CORE.ConfigSwitches;
-import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.ALLOY;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.tileentities.ModTileEntities;
@@ -44,6 +57,7 @@ import gtPlusPlus.preloader.CORE_Preloader;
 import gtPlusPlus.xmod.eio.handler.HandlerTooltip_EIO;
 import gtPlusPlus.xmod.galacticraft.handler.HandlerTooltip_GC;
 import gtPlusPlus.xmod.gregtech.api.util.SpecialBehaviourTooltipHandler;
+import gtPlusPlus.xmod.gregtech.recipes.GregtechRecipeAdder;
 import gtPlusPlus.xmod.ic2.CustomInternalName;
 
 public class CommonProxy {
@@ -55,9 +69,8 @@ public class CommonProxy {
 
     public void preInit(final FMLPreInitializationEvent e) {
         Logger.INFO("Doing some house cleaning.");
-        LoadedMods.checkLoaded();
-        Logger.INFO("Making sure we're ready to party!");
-
+        CORE.RA = new GregtechRecipeAdder();
+        Logger.INFO("Created Gregtech recipe handler.");
         if (!CORE_Preloader.DEBUG_MODE) {
             Logger.WARNING("Development mode not enabled.");
         } else if (CORE_Preloader.DEBUG_MODE) {

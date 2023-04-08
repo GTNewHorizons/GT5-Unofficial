@@ -1,5 +1,7 @@
 package gtPlusPlus.core.item.general;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import java.util.List;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -14,7 +16,6 @@ import net.minecraft.util.StatCollector;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
-import gtPlusPlus.core.lib.CORE;
 
 public class ItemControlCore extends Item {
 
@@ -32,16 +33,16 @@ public class ItemControlCore extends Item {
 
     @Override
     public void registerIcons(IIconRegister reg) {
-        icons[0] = reg.registerIcon(CORE.MODID + ":" + "controlcore/Core_0");
-        icons[1] = reg.registerIcon(CORE.MODID + ":" + "controlcore/Core_1");
-        icons[2] = reg.registerIcon(CORE.MODID + ":" + "controlcore/Core_2");
-        icons[3] = reg.registerIcon(CORE.MODID + ":" + "controlcore/Core_3");
-        icons[4] = reg.registerIcon(CORE.MODID + ":" + "controlcore/Core_4");
-        icons[5] = reg.registerIcon(CORE.MODID + ":" + "controlcore/Core_5");
-        icons[6] = reg.registerIcon(CORE.MODID + ":" + "controlcore/Core_6");
-        icons[7] = reg.registerIcon(CORE.MODID + ":" + "controlcore/Core_7");
-        icons[8] = reg.registerIcon(CORE.MODID + ":" + "controlcore/Core_8");
-        icons[9] = reg.registerIcon(CORE.MODID + ":" + "controlcore/Core_9");
+        icons[0] = reg.registerIcon(GTPlusPlus.ID + ":" + "controlcore/Core_0");
+        icons[1] = reg.registerIcon(GTPlusPlus.ID + ":" + "controlcore/Core_1");
+        icons[2] = reg.registerIcon(GTPlusPlus.ID + ":" + "controlcore/Core_2");
+        icons[3] = reg.registerIcon(GTPlusPlus.ID + ":" + "controlcore/Core_3");
+        icons[4] = reg.registerIcon(GTPlusPlus.ID + ":" + "controlcore/Core_4");
+        icons[5] = reg.registerIcon(GTPlusPlus.ID + ":" + "controlcore/Core_5");
+        icons[6] = reg.registerIcon(GTPlusPlus.ID + ":" + "controlcore/Core_6");
+        icons[7] = reg.registerIcon(GTPlusPlus.ID + ":" + "controlcore/Core_7");
+        icons[8] = reg.registerIcon(GTPlusPlus.ID + ":" + "controlcore/Core_8");
+        icons[9] = reg.registerIcon(GTPlusPlus.ID + ":" + "controlcore/Core_9");
     }
 
     @Override

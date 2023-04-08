@@ -1,5 +1,7 @@
 package gtPlusPlus.core.item.base.dusts;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -7,7 +9,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import gtPlusPlus.core.lib.CORE;
 
 public abstract class BaseItemDustAbstract extends Item {
 
@@ -20,9 +21,9 @@ public abstract class BaseItemDustAbstract extends Item {
         this.setUnlocalizedName(unlocalizedName);
         this.setMaxStackSize(64);
         if (pileSize.equalsIgnoreCase("dust")) {
-            this.setTextureName(CORE.MODID + ":" + "dust");
+            this.setTextureName(GTPlusPlus.ID + ":" + "dust");
         } else {
-            this.setTextureName(CORE.MODID + ":" + "dust" + pileSize);
+            this.setTextureName(GTPlusPlus.ID + ":" + "dust" + pileSize);
         }
         this.setMaxStackSize(64);
         this.colour = colour;

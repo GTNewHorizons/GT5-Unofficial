@@ -1,5 +1,7 @@
 package gtPlusPlus.xmod.bartcrops.abstracts;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -11,7 +13,6 @@ import net.minecraft.util.IIcon;
 import speiger.src.crops.api.ICropCardInfo;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import ic2.api.crops.CropCard;
 import ic2.api.crops.ICropTile;
@@ -22,7 +23,8 @@ public abstract class BaseCrop extends CropCard implements ICropCardInfo {
     public void registerSprites(IIconRegister iconRegister) {
         this.textures = new IIcon[this.maxSize()];
         for (int i = 1; i <= this.textures.length; ++i) {
-            this.textures[i - 1] = iconRegister.registerIcon(CORE.MODID + ":crop/blockCrop." + this.name() + "." + i);
+            this.textures[i - 1] = iconRegister
+                    .registerIcon(GTPlusPlus.ID + ":crop/blockCrop." + this.name() + "." + i);
         }
     }
 

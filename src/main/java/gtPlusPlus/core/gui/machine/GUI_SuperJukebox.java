@@ -1,5 +1,7 @@
 package gtPlusPlus.core.gui.machine;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,13 +15,12 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.core.block.machine.Machine_SuperJukebox.TileEntitySuperJukebox;
 import gtPlusPlus.core.container.Container_SuperJukebox;
 import gtPlusPlus.core.gui.GUI_Base_Tile_Entity;
-import gtPlusPlus.core.lib.CORE;
 
 @SideOnly(Side.CLIENT)
 public class GUI_SuperJukebox extends GUI_Base_Tile_Entity {
 
     private static final ResourceLocation craftingTableGuiTextures = new ResourceLocation(
-            CORE.MODID,
+            GTPlusPlus.ID,
             "textures/gui/SuperJukebox.png");
     private final Container_SuperJukebox mThisContainer;
 

@@ -1,7 +1,8 @@
 package gtPlusPlus.plugin.waila;
 
+import static gregtech.api.enums.Mods.Waila;
+
 import gtPlusPlus.api.interfaces.IPlugin;
-import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.plugin.manager.Core_Manager;
 
 public class Core_WailaPlugin implements IPlugin {
@@ -20,7 +21,7 @@ public class Core_WailaPlugin implements IPlugin {
 
     @Override
     public boolean preInit() {
-        if (LoadedMods.Waila) {
+        if (Waila.isModLoaded()) {
             mActive = true;
         }
         return mActive;

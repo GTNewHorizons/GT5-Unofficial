@@ -1,5 +1,7 @@
 package gtPlusPlus.core.item.general;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import java.util.List;
 
 import net.minecraft.entity.Entity;
@@ -14,15 +16,15 @@ import baubles.api.BaubleType;
 import baubles.api.IBauble;
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.enums.Mods;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.handler.events.CustomMovementHandler;
 import gtPlusPlus.core.handler.events.SneakManager;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 @Optional.InterfaceList(
-        value = { @Optional.Interface(iface = "baubles.api.IBauble", modid = "Baubles"),
-                @Optional.Interface(iface = "baubles.api.BaubleType", modid = "Baubles") })
+        value = { @Optional.Interface(iface = "baubles.api.IBauble", modid = Mods.Names.BAUBLES),
+                @Optional.Interface(iface = "baubles.api.BaubleType", modid = Mods.Names.BAUBLES) })
 public class ItemSlowBuildingRing extends Item implements IBauble {
 
     private final String unlocalizedName = "SlowBuildingRing";
@@ -32,7 +34,7 @@ public class ItemSlowBuildingRing extends Item implements IBauble {
         this.setCreativeTab(AddToCreativeTab.tabMachines);
         this.setUnlocalizedName(this.unlocalizedName);
         this.setMaxStackSize(1);
-        this.setTextureName(CORE.MODID + ":" + "itemSlowBuildersRing");
+        this.setTextureName(GTPlusPlus.ID + ":" + "itemSlowBuildersRing");
         ItemUtils.getSimpleStack(this);
         GameRegistry.registerItem(this, this.unlocalizedName);
     }

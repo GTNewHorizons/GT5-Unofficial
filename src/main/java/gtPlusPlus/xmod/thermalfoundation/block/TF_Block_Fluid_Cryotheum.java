@@ -1,5 +1,7 @@
 package gtPlusPlus.xmod.thermalfoundation.block;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import java.util.Random;
 
 import net.minecraft.block.Block;
@@ -8,7 +10,10 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialLiquid;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.monster.*;
+import net.minecraft.entity.monster.EntityBlaze;
+import net.minecraft.entity.monster.EntityCreeper;
+import net.minecraft.entity.monster.EntitySnowman;
+import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.init.Blocks;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
@@ -21,7 +26,6 @@ import cofh.lib.util.BlockWrapper;
 import cofh.lib.util.helpers.DamageHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.thermalfoundation.fluid.TF_Fluids;
 
 public class TF_Block_Fluid_Cryotheum extends BlockFluidInteractive {
@@ -33,7 +37,7 @@ public class TF_Block_Fluid_Cryotheum extends BlockFluidInteractive {
     private static boolean effect = true;
 
     public TF_Block_Fluid_Cryotheum() {
-        super(CORE.MODID, TF_Fluids.fluidCryotheum, materialFluidCryotheum, "cryotheum");
+        super(GTPlusPlus.ID, TF_Fluids.fluidCryotheum, materialFluidCryotheum, "cryotheum");
         this.setQuantaPerBlock(5);
         this.setTickRate(15);
 

@@ -1,5 +1,7 @@
 package gtPlusPlus.core.gui.item;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -26,7 +28,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.core.container.Container_Grindle;
 import gtPlusPlus.core.inventories.BaseInventoryGrindle;
 import gtPlusPlus.core.item.ModItems;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.NBTUtils;
 import io.netty.buffer.ByteBuf;
@@ -66,7 +67,7 @@ public class GuiScreenGrindle extends GuiContainer {
 
     // Texture
     private static final ResourceLocation iconLocation = new ResourceLocation(
-            CORE.MODID,
+            GTPlusPlus.ID,
             "textures/gui/itemGrindle.png");
 
     /** The inventory to render on screen */

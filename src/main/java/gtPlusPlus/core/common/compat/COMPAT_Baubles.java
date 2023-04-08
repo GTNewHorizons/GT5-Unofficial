@@ -1,6 +1,16 @@
 package gtPlusPlus.core.common.compat;
 
-import static gregtech.client.GT_TooltipHandler.Tier.*;
+import static gregtech.api.enums.Mods.Baubles;
+import static gregtech.api.enums.Mods.PlayerAPI;
+import static gregtech.client.GT_TooltipHandler.Tier.EV;
+import static gregtech.client.GT_TooltipHandler.Tier.HV;
+import static gregtech.client.GT_TooltipHandler.Tier.IV;
+import static gregtech.client.GT_TooltipHandler.Tier.LV;
+import static gregtech.client.GT_TooltipHandler.Tier.LuV;
+import static gregtech.client.GT_TooltipHandler.Tier.MV;
+import static gregtech.client.GT_TooltipHandler.Tier.UHV;
+import static gregtech.client.GT_TooltipHandler.Tier.UV;
+import static gregtech.client.GT_TooltipHandler.Tier.ZPM;
 import static gregtech.client.GT_TooltipHandler.registerTieredTooltip;
 
 import net.minecraft.entity.monster.EntityBlaze;
@@ -23,15 +33,12 @@ import gtPlusPlus.core.item.bauble.MonsterKillerBaseBauble;
 import gtPlusPlus.core.item.general.ItemCloakingDevice;
 import gtPlusPlus.core.item.general.ItemHealingDevice;
 import gtPlusPlus.core.item.general.ItemSlowBuildingRing;
-import gtPlusPlus.core.lib.LoadedMods;
 
 public class COMPAT_Baubles {
 
     public static void run() {
-        if (LoadedMods.Baubles) {
+        if (Baubles.isModLoaded()) {
             baublesLoaded();
-        } else {
-            baublesNotLoaded();
         }
     }
 
@@ -85,12 +92,8 @@ public class COMPAT_Baubles {
                 "Hellish",
                 6);
 
-        if (LoadedMods.PlayerAPI) {
+        if (PlayerAPI.isModLoaded()) {
             ModItems.itemSlowBuildingRing = new ItemSlowBuildingRing();
         }
-    }
-
-    public static void baublesNotLoaded() {
-        Logger.INFO("Baubles Not Found - Skipping Resources.");
     }
 }

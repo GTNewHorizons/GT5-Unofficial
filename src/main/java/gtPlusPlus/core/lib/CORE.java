@@ -1,6 +1,14 @@
 package gtPlusPlus.core.lib;
 
-import java.util.*;
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+import java.util.UUID;
+import java.util.WeakHashMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
 
@@ -15,6 +23,7 @@ import net.minecraftforge.common.util.FakePlayerFactory;
 import com.mojang.authlib.GameProfile;
 
 import cpw.mods.fml.common.FMLCommonHandler;
+import gregtech.api.enums.Mods;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.api.objects.random.XSTR;
@@ -40,7 +49,6 @@ public class CORE {
     // Mod Variables
 
     public static final String name = "GT++";
-    public static final String MODID = "miscutils";
     public static final String VERSION = "GRADLETOKEN_VERSION";
 
     // Tweakables
@@ -61,9 +69,6 @@ public class CORE {
     public static final Supplier<String> GT_Tooltip_Radioactive = () -> StatCollector
             .translateToLocal("GTPP.core.GT_Tooltip_Radioactive");
     public static final String noItem = "";
-
-    // Because I want to be lazy. Beyond Reality Classic Var.
-    public static boolean BRC = false;
 
     public static final String SEPERATOR = "/";
 
@@ -94,10 +99,11 @@ public class CORE {
     public static final String TEX_DIR = "textures/", TEX_DIR_GUI = TEX_DIR + "gui/", TEX_DIR_ITEM = TEX_DIR + "items/",
             TEX_DIR_BLOCK = TEX_DIR + "blocks/", TEX_DIR_ENTITY = TEX_DIR + "entity/",
             TEX_DIR_ASPECTS = TEX_DIR + "aspects/", TEX_DIR_FLUIDS = TEX_DIR_BLOCK + "fluids/",
-            RES_PATH = MODID + ":" + TEX_DIR, RES_PATH_GUI = MODID + ":" + TEX_DIR_GUI,
-            RES_PATH_ITEM = MODID + ":" + TEX_DIR_ITEM, RES_PATH_BLOCK = MODID + ":" + TEX_DIR_BLOCK,
-            RES_PATH_ENTITY = MODID + ":" + TEX_DIR_ENTITY, RES_PATH_ASPECTS = MODID + ":" + TEX_DIR_ASPECTS,
-            RES_PATH_FLUIDS = MODID + ":" + TEX_DIR_FLUIDS;
+            RES_PATH = GTPlusPlus.ID + ":" + TEX_DIR, RES_PATH_GUI = GTPlusPlus.ID + ":" + TEX_DIR_GUI,
+            RES_PATH_ITEM = GTPlusPlus.ID + ":" + TEX_DIR_ITEM, RES_PATH_BLOCK = GTPlusPlus.ID + ":" + TEX_DIR_BLOCK,
+            RES_PATH_ENTITY = GTPlusPlus.ID + ":" + TEX_DIR_ENTITY,
+            RES_PATH_ASPECTS = GTPlusPlus.ID + ":" + TEX_DIR_ASPECTS,
+            RES_PATH_FLUIDS = GTPlusPlus.ID + ":" + TEX_DIR_FLUIDS;
 
     /**
      * Used to create a {@link EntityPlayer} instance from {@link FakePlayerFactory}. If this instance already exists in
@@ -154,7 +160,6 @@ public class CORE {
 
         // GT Fixes
         public static boolean enableSulfuricAcidFix = false;
-        public static boolean enableHarderRecipesForHighTierCasings = true;
 
         // Single Block Machines
         public static boolean enableMachine_SolarGenerators = false;
@@ -265,7 +270,8 @@ public class CORE {
 
     public static class Everglades {
 
-        public static final String MODID = "ToxicEverglades";
+        @Deprecated
+        public static final String MODID = Mods.Names.G_T_PLUS_PLUS_EVERGLADES;
         public static final String NAME = "GT++ Toxic Everglades";
         public static final String VERSION = "GRADLETOKEN_VERSION";
     }

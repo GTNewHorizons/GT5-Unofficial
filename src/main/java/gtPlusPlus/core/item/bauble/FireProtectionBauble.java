@@ -1,5 +1,7 @@
 package gtPlusPlus.core.item.bauble;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -18,7 +20,6 @@ import net.minecraft.world.World;
 import baubles.api.BaubleType;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.preloader.DevHelper;
 
@@ -49,12 +50,12 @@ public class FireProtectionBauble extends BaseBauble {
         super(BaubleType.RING, "GTPP.bauble.fireprotection.0" + ".name", 0);
         String aUnlocalName = "GTPP.bauble.fireprotection.0" + ".name";
         this.setUnlocalizedName(aUnlocalName);
-        this.setTextureName(CORE.MODID + ":" + getTextureNameForBauble());
+        this.setTextureName(GTPlusPlus.ID + ":" + getTextureNameForBauble());
         this.setMaxDamage(100);
         this.setMaxStackSize(1);
         this.setNoRepair();
         this.setCreativeTab(AddToCreativeTab.tabMachines);
-        if (GameRegistry.findItem(CORE.MODID, aUnlocalName) == null) {
+        if (GameRegistry.findItem(GTPlusPlus.ID, aUnlocalName) == null) {
             GameRegistry.registerItem(this, aUnlocalName);
         }
     }

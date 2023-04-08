@@ -1,5 +1,7 @@
 package gtPlusPlus.core.item.general;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import java.util.List;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -22,7 +24,6 @@ import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.block.base.BlockBaseOre;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.item.base.CoreItem;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
 
@@ -45,7 +46,7 @@ public class ItemAreaClear extends CoreItem {
 
     @Override
     public void registerIcons(IIconRegister reg) {
-        this.mIcon[0] = reg.registerIcon(CORE.MODID + ":" + "itemLavaFilter");
+        this.mIcon[0] = reg.registerIcon(GTPlusPlus.ID + ":" + "itemLavaFilter");
     }
 
     @Override

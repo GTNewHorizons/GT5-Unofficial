@@ -1,5 +1,7 @@
 package gtPlusPlus.core.item.general;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import java.util.HashMap;
 import java.util.List;
 
@@ -17,7 +19,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.util.GT_LanguageManager;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.item.base.CoreItem;
-import gtPlusPlus.core.lib.CORE;
 
 public class ItemGenericToken extends CoreItem {
 
@@ -186,7 +187,7 @@ public class ItemGenericToken extends CoreItem {
     @SideOnly(Side.CLIENT)
     public void registerIcons(final IIconRegister aIconRegister) {
         for (int i = 0, j = mLocalNames.size(); i < j; i++) {
-            mIcons.put(i, aIconRegister.registerIcon(CORE.MODID + ":" + mTextureDir + "/" + i));
+            mIcons.put(i, aIconRegister.registerIcon(GTPlusPlus.ID + ":" + mTextureDir + "/" + i));
         }
     }
 

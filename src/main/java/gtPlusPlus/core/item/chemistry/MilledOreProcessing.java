@@ -1,5 +1,8 @@
 package gtPlusPlus.core.item.chemistry;
 
+import static gregtech.api.enums.Mods.BiomesOPlenty;
+import static gregtech.api.enums.Mods.Forestry;
+
 import java.util.HashMap;
 
 import net.minecraft.item.Item;
@@ -17,12 +20,14 @@ import gtPlusPlus.api.objects.data.Quad;
 import gtPlusPlus.api.objects.minecraft.ItemPackage;
 import gtPlusPlus.core.item.base.ore.BaseItemMilledOre;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.NONMATERIAL;
 import gtPlusPlus.core.recipe.common.CI;
-import gtPlusPlus.core.util.minecraft.*;
+import gtPlusPlus.core.util.minecraft.FluidUtils;
+import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.core.util.minecraft.MaterialUtils;
+import gtPlusPlus.core.util.minecraft.NBTUtils;
 import gtPlusPlus.xmod.bop.HANDLER_BiomesOPlenty;
 import gtPlusPlus.xmod.bop.blocks.BOP_Block_Registrator;
 
@@ -558,13 +563,13 @@ public class MilledOreProcessing extends ItemPackage {
         aSaplings.add(ItemUtils.getSimpleStack(BOP_Block_Registrator.sapling_Pine));
         aPinecones.add(ItemUtils.getSimpleStack(AgriculturalChem.mPinecone, 1));
 
-        if (LoadedMods.BiomesOPlenty) {
+        if (BiomesOPlenty.isModLoaded()) {
             aLogs.add(HANDLER_BiomesOPlenty.getStack(HANDLER_BiomesOPlenty.logs4, 0, 1));
             aLeaves.add(HANDLER_BiomesOPlenty.getStack(HANDLER_BiomesOPlenty.colorizedLeaves2, 1, 1));
             aSaplings.add(HANDLER_BiomesOPlenty.getStack(HANDLER_BiomesOPlenty.colorizedSaplings, 5, 1));
             aPinecones.add(ItemUtils.simpleMetaStack(HANDLER_BiomesOPlenty.mPineCone, 13, 1));
         }
-        if (LoadedMods.Forestry) {
+        if (Forestry.isModLoaded()) {
             ItemStack aForestryLog = ItemUtils.getItemStackFromFQRN("Forestry:logs", 1);
             if (aForestryLog != null) {
                 aForestryLog.setItemDamage(20); // Set to Pine

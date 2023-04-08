@@ -1,5 +1,7 @@
 package gtPlusPlus.core.item.general.spawn;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -8,17 +10,27 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.*;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityList;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.*;
-import net.minecraft.util.*;
+import net.minecraft.item.EnumRarity;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemMonsterPlacer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.Facing;
+import net.minecraft.util.IIcon;
+import net.minecraft.util.MathHelper;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.core.item.ModItems;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class ItemCustomSpawnEgg extends ItemMonsterPlacer {
@@ -248,8 +260,8 @@ public class ItemCustomSpawnEgg extends ItemMonsterPlacer {
 
     @Override
     public void registerIcons(final IIconRegister u) {
-        mIconMap.put(0, u.registerIcon(CORE.MODID + ":" + "spawn_egg"));
-        mIconMap.put(1, u.registerIcon(CORE.MODID + ":" + "spawn_egg_overlay"));
+        mIconMap.put(0, u.registerIcon(GTPlusPlus.ID + ":" + "spawn_egg"));
+        mIconMap.put(1, u.registerIcon(GTPlusPlus.ID + ":" + "spawn_egg_overlay"));
     }
 
     @Override
@@ -279,6 +291,6 @@ public class ItemCustomSpawnEgg extends ItemMonsterPlacer {
 
     public static void setEntityToSpawnName(int aMetaID, String parEntityToSpawnName) {
         mEntityNameMap.put(aMetaID, parEntityToSpawnName);
-        mEntityFullNameMap.put(aMetaID, CORE.MODID + "." + parEntityToSpawnName);
+        mEntityFullNameMap.put(aMetaID, GTPlusPlus.ID + "." + parEntityToSpawnName);
     }
 }

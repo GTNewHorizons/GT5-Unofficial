@@ -1,5 +1,7 @@
 package gtPlusPlus.core.item.init;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import net.minecraft.entity.monster.EntityBlaze;
 import net.minecraft.entity.passive.EntityHorse;
 import net.minecraft.entity.passive.EntityOcelot;
@@ -14,7 +16,6 @@ import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.item.base.foods.BaseItemFood;
 import gtPlusPlus.core.item.base.foods.BaseItemHotFood;
 import gtPlusPlus.core.item.food.BaseItemMetaFood;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.RecipeUtils;
@@ -37,7 +38,7 @@ public class ItemsFoods {
                 new PotionEffect(Potion.weakness.id, 40, 1)).setAlwaysEdible();
         GT_OreDictUnificator.registerOre(
                 "foodRaisinBread",
-                ItemUtils.getItemStackFromFQRN(CORE.MODID + ":itemIngotRaisinBread", 1));
+                ItemUtils.getItemStackFromFQRN(GTPlusPlus.ID + ":itemIngotRaisinBread", 1));
         // Hot Raisin Bread
         ModItems.itemHotIngotRaisinBread = new BaseItemHotFood(
                 "itemHotIngotRaisinBread",
@@ -48,13 +49,14 @@ public class ItemsFoods {
                 ModItems.itemIngotRaisinBread);
         GT_OreDictUnificator.registerOre(
                 "foodHotRaisinBread",
-                ItemUtils.getItemStackFromFQRN(CORE.MODID + ":itemHotIngotRaisinBread", 1));
+                ItemUtils.getItemStackFromFQRN(GTPlusPlus.ID + ":itemHotIngotRaisinBread", 1));
 
         // Raisin Bread
         ModItems.itemFoodRaisinToast = new BaseItemFood("itemFoodRaisinToast", "Raisin Toast", 1, 0.5f, false)
                 .setAlwaysEdible();
-        GT_OreDictUnificator
-                .registerOre("foodRaisinToast", ItemUtils.getItemStackFromFQRN(CORE.MODID + ":itemFoodRaisinToast", 1));
+        GT_OreDictUnificator.registerOre(
+                "foodRaisinToast",
+                ItemUtils.getItemStackFromFQRN(GTPlusPlus.ID + ":itemFoodRaisinToast", 1));
         // Hot Raisin Bread
         ModItems.itemHotFoodRaisinToast = new BaseItemHotFood(
                 "itemHotFoodRaisinToast",
@@ -65,7 +67,7 @@ public class ItemsFoods {
                 ModItems.itemFoodRaisinToast);
         GT_OreDictUnificator.registerOre(
                 "foodHotRaisinToast",
-                ItemUtils.getItemStackFromFQRN(CORE.MODID + ":itemHotFoodRaisinToast", 1));
+                ItemUtils.getItemStackFromFQRN(GTPlusPlus.ID + ":itemHotFoodRaisinToast", 1));
 
         // Raisin Bread
         ModItems.itemFoodCurriedSausages = new BaseItemFood(
@@ -76,7 +78,7 @@ public class ItemsFoods {
                 false);
         GT_OreDictUnificator.registerOre(
                 "foodCurriedSausages",
-                ItemUtils.getItemStackFromFQRN(CORE.MODID + ":itemFoodCurriedSausages", 1));
+                ItemUtils.getItemStackFromFQRN(GTPlusPlus.ID + ":itemFoodCurriedSausages", 1));
         // Hot Raisin Bread
         ModItems.itemHotFoodCurriedSausages = new BaseItemHotFood(
                 "itemHotFoodCurriedSausages",
@@ -87,7 +89,7 @@ public class ItemsFoods {
                 ModItems.itemFoodCurriedSausages);
         GT_OreDictUnificator.registerOre(
                 "foodHotCurriedSausages",
-                ItemUtils.getItemStackFromFQRN(CORE.MODID + ":itemHotFoodCurriedSausages", 1));
+                ItemUtils.getItemStackFromFQRN(GTPlusPlus.ID + ":itemHotFoodCurriedSausages", 1));
 
         ModItems.itemMetaFood = new BaseItemMetaFood();
         BaseItemMetaFood.registerFoodsToOreDict();

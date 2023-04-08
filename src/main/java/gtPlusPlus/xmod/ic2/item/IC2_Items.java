@@ -1,11 +1,12 @@
 package gtPlusPlus.xmod.ic2.item;
 
+import static gregtech.api.enums.Mods.EnderIO;
+
 import net.minecraft.item.ItemStack;
 
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.item.base.CoreItem;
 import gtPlusPlus.core.item.wearable.hazmat.ItemArmorHazmatEx;
-import gtPlusPlus.core.lib.LoadedMods;
 
 public class IC2_Items {
 
@@ -34,7 +35,7 @@ public class IC2_Items {
 
     public static void register() {
 
-        int aIndexEIO = (LoadedMods.EnderIO ? 0 : 1);
+        int aIndexEIO = (EnderIO.isModLoaded() ? 0 : 1);
 
         // Rotor Blades
         rotor_Blade_Material_1 = new ItemStack(

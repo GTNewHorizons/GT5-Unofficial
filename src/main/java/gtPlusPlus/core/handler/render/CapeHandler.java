@@ -1,5 +1,7 @@
 package gtPlusPlus.core.handler.render;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import java.util.Collection;
 
 import net.minecraft.client.entity.AbstractClientPlayer;
@@ -20,8 +22,8 @@ import gtPlusPlus.core.lib.CORE;
 
 public class CapeHandler extends RenderPlayer {
 
-    private final ResourceLocation[] mCapes = { new ResourceLocation(CORE.MODID + ":textures/TesterCape.png"),
-            new ResourceLocation(CORE.MODID + ":textures/Draknyte1.png"),
+    private final ResourceLocation[] mCapes = { new ResourceLocation(GTPlusPlus.ID + ":textures/TesterCape.png"),
+            new ResourceLocation(GTPlusPlus.ID + ":textures/Draknyte1.png"),
             new ResourceLocation("gregtech:textures/GregoriusCape.png") };
     private final Collection<String> mCapeList;
 

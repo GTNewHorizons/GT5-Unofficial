@@ -1,5 +1,7 @@
 package gtPlusPlus.core.block.machine;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import java.util.List;
 import java.util.Random;
 
@@ -19,7 +21,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.item.base.itemblock.ItemBlockMeta;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.tileentities.machines.TileEntityAdvPooCollector;
 import gtPlusPlus.core.tileentities.machines.TileEntityBaseFluidCollector;
 import gtPlusPlus.core.tileentities.machines.TileEntityPooCollector;
@@ -67,10 +68,10 @@ public class Machine_PooCollector extends BlockContainer {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(final IIconRegister p_149651_1_) {
-        this.textureTop = p_149651_1_.registerIcon(CORE.MODID + ":" + "TileEntities/" + "sewer_top");
-        this.textureTop2 = p_149651_1_.registerIcon(CORE.MODID + ":" + "TileEntities/" + "sewer_adv_top");
-        this.textureSide = p_149651_1_.registerIcon(CORE.MODID + ":" + "TileEntities/" + "sewer_sides");
-        this.textureSide2 = p_149651_1_.registerIcon(CORE.MODID + ":" + "TileEntities/" + "sewer_adv_sides");
+        this.textureTop = p_149651_1_.registerIcon(GTPlusPlus.ID + ":" + "TileEntities/" + "sewer_top");
+        this.textureTop2 = p_149651_1_.registerIcon(GTPlusPlus.ID + ":" + "TileEntities/" + "sewer_adv_top");
+        this.textureSide = p_149651_1_.registerIcon(GTPlusPlus.ID + ":" + "TileEntities/" + "sewer_sides");
+        this.textureSide2 = p_149651_1_.registerIcon(GTPlusPlus.ID + ":" + "TileEntities/" + "sewer_adv_sides");
     }
 
     /**

@@ -1,5 +1,7 @@
 package gtPlusPlus.core.block.general.antigrief;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -18,7 +20,6 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 
 public class BlockWitherProof extends Block {
@@ -26,7 +27,7 @@ public class BlockWitherProof extends Block {
     public BlockWitherProof() {
         super(Material.redstoneLight);
         this.setBlockName(Utils.sanitizeString("blockBlackGate"));
-        this.setBlockTextureName(CORE.MODID + ":" + "blockFrameGt");
+        this.setBlockTextureName(GTPlusPlus.ID + ":" + "blockFrameGt");
         this.setCreativeTab(AddToCreativeTab.tabBlock);
         this.setHardness(-1F);
         this.setResistance(5000.0F);
@@ -54,7 +55,7 @@ public class BlockWitherProof extends Block {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(final IIconRegister iIcon) {
-        this.blockIcon = iIcon.registerIcon(CORE.MODID + ":" + "blockFrameGt");
+        this.blockIcon = iIcon.registerIcon(GTPlusPlus.ID + ":" + "blockFrameGt");
     }
 
     @Override

@@ -1,5 +1,7 @@
 package gtPlusPlus.core.block.general.redstone;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,7 +16,6 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.tileentities.general.redstone.TileEntityRedstoneHandler;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 
@@ -81,22 +82,24 @@ public class BlockGenericRedstoneDetector extends BlockGenericRedstone {
         int aMeta = 0;
         {
             HashMap<ForgeDirection, IIcon> aTempMap = new HashMap<ForgeDirection, IIcon>();
-            aTempMap.put(ForgeDirection.UP, iicon.registerIcon(CORE.MODID + ":" + "redstone/redstone_meter/" + "top"));
+            aTempMap.put(
+                    ForgeDirection.UP,
+                    iicon.registerIcon(GTPlusPlus.ID + ":" + "redstone/redstone_meter/" + "top"));
             aTempMap.put(
                     ForgeDirection.DOWN,
-                    iicon.registerIcon(CORE.MODID + ":" + "redstone/redstone_meter/" + "top"));
+                    iicon.registerIcon(GTPlusPlus.ID + ":" + "redstone/redstone_meter/" + "top"));
             aTempMap.put(
                     ForgeDirection.NORTH,
-                    iicon.registerIcon(CORE.MODID + ":" + "redstone/redstone_meter/" + "top"));
+                    iicon.registerIcon(GTPlusPlus.ID + ":" + "redstone/redstone_meter/" + "top"));
             aTempMap.put(
                     ForgeDirection.SOUTH,
-                    iicon.registerIcon(CORE.MODID + ":" + "redstone/redstone_meter/" + "top"));
+                    iicon.registerIcon(GTPlusPlus.ID + ":" + "redstone/redstone_meter/" + "top"));
             aTempMap.put(
                     ForgeDirection.EAST,
-                    iicon.registerIcon(CORE.MODID + ":" + "redstone/redstone_meter/" + "top"));
+                    iicon.registerIcon(GTPlusPlus.ID + ":" + "redstone/redstone_meter/" + "top"));
             aTempMap.put(
                     ForgeDirection.WEST,
-                    iicon.registerIcon(CORE.MODID + ":" + "redstone/redstone_meter/" + "top"));
+                    iicon.registerIcon(GTPlusPlus.ID + ":" + "redstone/redstone_meter/" + "top"));
             aTextures.put(aMeta++, aTempMap);
         }
     }

@@ -3,7 +3,6 @@ package gtPlusPlus.core.creative;
 import net.minecraft.creativetab.CreativeTabs;
 
 import gregtech.api.util.GT_CreativeTab;
-import gtPlusPlus.core.creative.tabs.*;
 
 public class AddToCreativeTab {
 

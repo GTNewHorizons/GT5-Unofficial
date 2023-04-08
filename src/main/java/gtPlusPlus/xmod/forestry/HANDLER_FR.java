@@ -1,5 +1,8 @@
 package gtPlusPlus.xmod.forestry;
 
+import static gregtech.api.enums.Mods.ExtraTrees;
+import static gregtech.api.enums.Mods.Forestry;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -13,7 +16,7 @@ import forestry.api.arboriculture.EnumGermlingType;
 import forestry.api.arboriculture.EnumWoodType;
 import forestry.api.arboriculture.TreeManager;
 import forestry.arboriculture.genetics.TreeDefinition;
-import gtPlusPlus.core.lib.LoadedMods;
+import gregtech.api.enums.Mods;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.forestry.bees.items.FR_ItemRegistry;
 import gtPlusPlus.xmod.forestry.bees.recipe.FR_Gregtech_Recipes;
@@ -23,39 +26,35 @@ import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.Gr
 public class HANDLER_FR {
 
     public static void preInit() {
-        if (LoadedMods.Forestry) {
+        if (Forestry.isModLoaded()) {
             FR_ItemRegistry.Register();
         }
     }
 
-    public static void Init() {
-        if (LoadedMods.Forestry) {}
-    }
-
     public static void postInit() {
-        if (LoadedMods.Forestry) {
+        if (Forestry.isModLoaded()) {
             FR_Gregtech_Recipes.registerItems();
             new GTPP_Bees();
             mapForestrySaplingToLog();
         }
 
-        if (LoadedMods.ExtraTrees) {
+        if (ExtraTrees.isModLoaded()) {
             mapExtraTreesSaplingToLog();
         }
     }
 
     public static boolean createBlockBreakParticles(final World world, final int x, final int y, final int z,
             final Block block) {
-        if (LoadedMods.Forestry) {
+        if (Forestry.isModLoaded()) {
             createBlockBreakParticles_INTERNAL(world, x, y, z, block);
         }
         return false;
     }
 
-    @Optional.Method(modid = "Forestry")
+    @Optional.Method(modid = Mods.Names.FORESTRY)
     private static void createBlockBreakParticles_INTERNAL(final World world, final int x, final int y, final int z,
             final Block block) {
-        if (LoadedMods.Forestry) {
+        if (Forestry.isModLoaded()) {
             Class oClass;
             try {
                 oClass = ReflectionUtils.getClass("forestry.core.proxy.ProxyCommon");
@@ -77,7 +76,7 @@ public class HANDLER_FR {
         }
     }
 
-    @Optional.Method(modid = "Forestry")
+    @Optional.Method(modid = Mods.Names.FORESTRY)
     private static void mapForestrySaplingToLog() {
         for (TreeDefinition value : TreeDefinition.values()) {
             ItemStack aSaplingStack = value.getMemberStack(EnumGermlingType.SAPLING);
@@ -100,7 +99,7 @@ public class HANDLER_FR {
         }
     }
 
-    @Optional.Method(modid = "ExtraTrees")
+    @Optional.Method(modid = Mods.Names.EXTRA_TREES)
     private static void mapExtraTreesSaplingToLog() {
         for (ExtraTreeSpecies value : ExtraTreeSpecies.values()) {
             ItemStack aSaplingStack = TreeManager.treeRoot

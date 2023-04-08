@@ -1,5 +1,7 @@
 package gtPlusPlus.everglades.item;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import java.util.List;
 
 import net.minecraft.block.Block;
@@ -13,7 +15,6 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.everglades.dimension.Dimension_Everglades;
 
@@ -24,7 +25,7 @@ public class ItemEvergladesPortalTrigger extends Item {
         this.maxStackSize = 1;
         setMaxDamage(64);
         setCreativeTab(CreativeTabs.tabTools);
-        this.setTextureName(CORE.MODID + ":" + "itemAlkalusDisk");
+        this.setTextureName(GTPlusPlus.ID + ":" + "itemAlkalusDisk");
     }
 
     @Override

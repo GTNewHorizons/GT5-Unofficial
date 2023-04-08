@@ -1,5 +1,7 @@
 package gtPlusPlus.xmod.forestry.bees.items.output;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import java.util.List;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -12,7 +14,6 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import forestry.api.core.Tabs;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.forestry.bees.handler.GTPP_PollenType;
 
 public class GTPP_Pollen extends Item {
@@ -25,7 +26,7 @@ public class GTPP_Pollen extends Item {
         this.setCreativeTab(Tabs.tabApiculture);
         this.setHasSubtypes(true);
         this.setUnlocalizedName("gtpp.pollen");
-        GameRegistry.registerItem(this, "gtpp.pollen", CORE.MODID);
+        GameRegistry.registerItem(this, "gtpp.pollen", GTPlusPlus.ID);
     }
 
     public ItemStack getStackForType(GTPP_PollenType type) {

@@ -1,5 +1,7 @@
 package gtPlusPlus.core.client.renderer;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -10,13 +12,12 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.core.client.model.ModelSickBlaze;
 import gtPlusPlus.core.entity.monster.EntitySickBlaze;
-import gtPlusPlus.core.lib.CORE;
 
 @SideOnly(Side.CLIENT)
 public class RenderSickBlaze extends RenderLiving {
 
     private static final ResourceLocation blazeTextures = new ResourceLocation(
-            CORE.MODID + ":" + "textures/entity/sickBlaze.png");
+            GTPlusPlus.ID + ":" + "textures/entity/sickBlaze.png");
     private int field_77068_a;
 
     public RenderSickBlaze() {

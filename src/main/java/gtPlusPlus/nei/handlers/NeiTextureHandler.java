@@ -1,5 +1,7 @@
 package gtPlusPlus.nei.handlers;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.Tessellator;
@@ -9,8 +11,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
-
-import gtPlusPlus.core.lib.CORE;
 
 /**
  * Based on crazypants.enderio.gui.IconEIO
@@ -50,7 +50,8 @@ public final class NeiTextureHandler {
     public final double width;
     public final double height;
 
-    public static final ResourceLocation TEXTURE = new ResourceLocation(CORE.MODID + ":textures/gui/nei/widgets.png");
+    public static final ResourceLocation TEXTURE = new ResourceLocation(
+            GTPlusPlus.ID + ":textures/gui/nei/widgets.png");
 
     public NeiTextureHandler(int x, int y) {
         this(x, y, 16, 16);

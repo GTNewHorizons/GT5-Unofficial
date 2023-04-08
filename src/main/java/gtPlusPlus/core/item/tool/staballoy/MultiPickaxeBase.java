@@ -1,5 +1,8 @@
 package gtPlusPlus.core.item.tool.staballoy;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+import static gregtech.api.enums.Mods.Minecraft;
+
 import java.util.List;
 
 import net.minecraft.block.Block;
@@ -17,7 +20,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -48,8 +50,8 @@ public class MultiPickaxeBase extends StaballoyPickaxe {
             final int colour, final Object enchant) {
         super(Utils.sanitizeString(unlocalizedName), material);
         this.setUnlocalizedName(Utils.sanitizeString(unlocalizedName));
-        // this.setTextureName(CORE.MODID + ":" + "itemPickaxe");
-        this.setTextureName("minecraft" + ":" + "iron_pickaxe");
+        // this.setTextureName(GTPlusPlus.ID + ":" + "itemPickaxe");
+        this.setTextureName(Minecraft.ID + ":" + "iron_pickaxe");
         this.setMaxStackSize(1);
         if ((materialDurability * 3) <= Integer.MAX_VALUE) {
             this.setMaxDamage((int) (materialDurability * 3));
@@ -77,7 +79,7 @@ public class MultiPickaxeBase extends StaballoyPickaxe {
             this.isValid = this.addRecipe();
         } catch (final Throwable e) {}
         if ((colour != 0) && this.isValid && (materialDurability > 10000)) {
-            if (GameRegistry.findItem(CORE.MODID, Utils.sanitizeString(unlocalizedName)) == null) {
+            if (GameRegistry.findItem(GTPlusPlus.ID, Utils.sanitizeString(unlocalizedName)) == null) {
                 GameRegistry.registerItem(this, Utils.sanitizeString(unlocalizedName));
             }
         }

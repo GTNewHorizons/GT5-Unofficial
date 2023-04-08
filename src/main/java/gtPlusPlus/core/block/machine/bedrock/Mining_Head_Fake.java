@@ -1,5 +1,7 @@
 package gtPlusPlus.core.block.machine.bedrock;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import java.util.Random;
 
 import net.minecraft.block.Block;
@@ -28,7 +30,7 @@ public class Mining_Head_Fake extends Block {
     public Mining_Head_Fake() {
         super(Material.lava);
         this.setBlockName(Utils.sanitizeString("blockMiningHeadFake"));
-        this.setBlockTextureName(CORE.MODID + ":" + "blockFrameGt");
+        this.setBlockTextureName(GTPlusPlus.ID + ":" + "blockFrameGt");
         this.setCreativeTab(AddToCreativeTab.tabBlock);
         this.setHardness(-1F);
         this.setResistance(50000.0F);
@@ -56,7 +58,7 @@ public class Mining_Head_Fake extends Block {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(final IIconRegister iIcon) {
-        this.blockIcon = iIcon.registerIcon(CORE.MODID + ":" + "blockFrameGt");
+        this.blockIcon = iIcon.registerIcon(GTPlusPlus.ID + ":" + "blockFrameGt");
     }
 
     @Override

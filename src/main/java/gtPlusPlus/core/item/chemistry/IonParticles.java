@@ -1,5 +1,7 @@
 package gtPlusPlus.core.item.chemistry;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import java.util.HashMap;
 import java.util.List;
 
@@ -13,7 +15,6 @@ import net.minecraft.util.IIcon;
 
 import gregtech.api.enums.Materials;
 import gtPlusPlus.core.item.base.misc.BaseItemParticle;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.util.Utils;
 
@@ -139,9 +140,9 @@ public class IonParticles extends BaseItemParticle {
     @Override
     public void registerIcons(IIconRegister reg) {
         for (int i = 0; i < IonParticles.overlays.length; i++) {
-            IonParticles.overlays[i] = reg.registerIcon(CORE.MODID + ":" + "ion/" + i);
+            IonParticles.overlays[i] = reg.registerIcon(GTPlusPlus.ID + ":" + "ion/" + i);
         }
-        IonParticles.baseTexture = reg.registerIcon(CORE.MODID + ":" + "ion/IonBase");
+        IonParticles.baseTexture = reg.registerIcon(GTPlusPlus.ID + ":" + "ion/IonBase");
     }
 
     @Override

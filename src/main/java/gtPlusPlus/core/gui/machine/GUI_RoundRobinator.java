@@ -1,5 +1,7 @@
 package gtPlusPlus.core.gui.machine;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import java.lang.reflect.Method;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -14,7 +16,6 @@ import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.core.container.Container_RoundRobinator;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.tileentities.machines.TileEntityRoundRobinator;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -24,7 +25,7 @@ import gtPlusPlus.core.util.reflect.ReflectionUtils;
 public class GUI_RoundRobinator extends GuiContainer {
 
     private static final ResourceLocation craftingTableGuiTextures = new ResourceLocation(
-            CORE.MODID,
+            GTPlusPlus.ID,
             "textures/gui/RoundRobinator.png");
     private TileEntityRoundRobinator mTile;
     private Container_RoundRobinator mContainer;

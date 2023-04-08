@@ -1,11 +1,12 @@
 package gtPlusPlus.core.item.general;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import net.minecraft.item.EnumRarity;
 import net.minecraft.util.EnumChatFormatting;
 
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.item.base.CoreItem;
-import gtPlusPlus.core.lib.CORE;
 
 public class ItemSunnariumBit extends CoreItem {
 
@@ -21,6 +22,6 @@ public class ItemSunnariumBit extends CoreItem {
                 EnumChatFormatting.GOLD,
                 false,
                 null);
-        this.setTextureName(CORE.MODID + ":" + "itemSunnariumBit");
+        this.setTextureName(GTPlusPlus.ID + ":" + "itemSunnariumBit");
     }
 }

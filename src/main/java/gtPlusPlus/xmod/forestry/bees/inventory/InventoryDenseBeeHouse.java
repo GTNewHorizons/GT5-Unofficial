@@ -14,7 +14,11 @@ import java.util.Collection;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-import forestry.api.apiculture.*;
+import forestry.api.apiculture.BeeManager;
+import forestry.api.apiculture.IBee;
+import forestry.api.apiculture.IBeeHousing;
+import forestry.api.apiculture.IBeekeepingMode;
+import forestry.api.apiculture.IHiveFrame;
 import forestry.apiculture.InventoryBeeHousing;
 import forestry.apiculture.inventory.IApiaryInventory;
 import forestry.core.access.IAccessHandler;

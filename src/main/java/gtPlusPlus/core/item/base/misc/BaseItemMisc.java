@@ -1,5 +1,8 @@
 package gtPlusPlus.core.item.base.misc;
 
+import static gregtech.api.enums.Mods.Forestry;
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import java.util.List;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -16,8 +19,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 
@@ -57,7 +58,7 @@ public class BaseItemMisc extends Item {
     }
 
     private String getCorrectTextures() {
-        return CORE.MODID + ":" + "item" + this.miscType.TYPE;
+        return GTPlusPlus.ID + ":" + "item" + this.miscType.TYPE;
     }
 
     @Override
@@ -77,7 +78,7 @@ public class BaseItemMisc extends Item {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister par1IconRegister) {
-        if (this.miscType == MiscTypes.DROP && LoadedMods.Forestry) {
+        if (this.miscType == MiscTypes.DROP && Forestry.isModLoaded()) {
             this.itemIcon = par1IconRegister.registerIcon("forestry:honeyDrop.0");
             this.secondIcon = par1IconRegister.registerIcon("forestry:honeyDrop.1");
         } else {

@@ -1,5 +1,7 @@
 package gtPlusPlus.core.handler.render;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
@@ -13,7 +15,7 @@ import org.lwjgl.opengl.GL11;
 
 public class FirepitRender extends TileEntitySpecialRenderer {
 
-    ResourceLocation texture = new ResourceLocation("miscutils" + ":" + "textures/blocks/FirePit/mossyFirepit.png");
+    ResourceLocation texture = new ResourceLocation(GTPlusPlus.ID + ":" + "textures/blocks/FirePit/mossyFirepit.png");
 
     private final FirepitModel model;
 

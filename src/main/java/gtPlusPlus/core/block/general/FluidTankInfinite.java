@@ -1,5 +1,7 @@
 package gtPlusPlus.core.block.general;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -19,7 +21,6 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.tileentities.general.TileEntityInfiniteFluid;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 
@@ -57,10 +58,12 @@ public class FluidTankInfinite extends BlockContainer {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(final IIconRegister p_149651_1_) {
-        this.blockIcon = p_149651_1_.registerIcon(CORE.MODID + ":" + "TileEntities/" + "Generic_Creative_Texture");
-        this.textureTop = p_149651_1_.registerIcon(CORE.MODID + ":" + "TileEntities/" + "Generic_Creative_Texture");
-        this.textureBottom = p_149651_1_.registerIcon(CORE.MODID + ":" + "TileEntities/" + "Generic_Creative_Texture");
-        this.textureFront = p_149651_1_.registerIcon(CORE.MODID + ":" + "TileEntities/" + "Generic_Creative_Texture");
+        this.blockIcon = p_149651_1_.registerIcon(GTPlusPlus.ID + ":" + "TileEntities/" + "Generic_Creative_Texture");
+        this.textureTop = p_149651_1_.registerIcon(GTPlusPlus.ID + ":" + "TileEntities/" + "Generic_Creative_Texture");
+        this.textureBottom = p_149651_1_
+                .registerIcon(GTPlusPlus.ID + ":" + "TileEntities/" + "Generic_Creative_Texture");
+        this.textureFront = p_149651_1_
+                .registerIcon(GTPlusPlus.ID + ":" + "TileEntities/" + "Generic_Creative_Texture");
     }
 
     /**

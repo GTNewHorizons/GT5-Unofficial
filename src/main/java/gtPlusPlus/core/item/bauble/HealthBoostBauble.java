@@ -1,5 +1,7 @@
 package gtPlusPlus.core.item.bauble;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import java.util.List;
 
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -13,14 +15,13 @@ import net.minecraft.util.StatCollector;
 import baubles.api.BaubleType;
 
 import com.google.common.collect.Multimap;
-import gtPlusPlus.core.lib.CORE;
 
 public class HealthBoostBauble extends BaseBauble {
 
     public HealthBoostBauble() {
         super(BaubleType.AMULET, "The Key to the City");
         addDamageNegation(DamageSource.wither);
-        this.setTextureName(CORE.MODID + ":" + "itemKeyGold");
+        this.setTextureName(GTPlusPlus.ID + ":" + "itemKeyGold");
     }
 
     @Override

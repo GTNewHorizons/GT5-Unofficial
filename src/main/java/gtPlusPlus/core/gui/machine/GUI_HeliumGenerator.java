@@ -1,5 +1,7 @@
 package gtPlusPlus.core.gui.machine;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
@@ -9,14 +11,13 @@ import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.core.container.Container_HeliumGenerator;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.tileentities.general.TileEntityHeliumGenerator;
 
 @SideOnly(Side.CLIENT)
 public class GUI_HeliumGenerator extends GuiContainer {
 
     private static final ResourceLocation guiTexture = new ResourceLocation(
-            CORE.MODID,
+            GTPlusPlus.ID,
             "textures/gui/helium_collector_gui.png");
 
     public GUI_HeliumGenerator(final InventoryPlayer player_inventory, final TileEntityHeliumGenerator te) {

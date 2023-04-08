@@ -1,6 +1,10 @@
 package gtPlusPlus.xmod.eio.material;
 
-import gtPlusPlus.core.material.*;
+import gtPlusPlus.core.material.ALLOY;
+import gtPlusPlus.core.material.ELEMENT;
+import gtPlusPlus.core.material.Material;
+import gtPlusPlus.core.material.MaterialStack;
+import gtPlusPlus.core.material.NONMATERIAL;
 import gtPlusPlus.core.material.state.MaterialState;
 
 public class MaterialEIO {

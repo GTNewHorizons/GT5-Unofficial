@@ -1,5 +1,7 @@
 package gtPlusPlus.core.item.general;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import java.util.List;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -10,7 +12,6 @@ import net.minecraft.util.IIcon;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
-import gtPlusPlus.core.lib.CORE;
 
 public class ItemCreativeTab extends Item {
 
@@ -27,16 +28,16 @@ public class ItemCreativeTab extends Item {
 
     @Override
     public void registerIcons(IIconRegister reg) {
-        this.icons[0] = reg.registerIcon(CORE.MODID + ":" + "controlcore/Core_0");
-        this.icons[1] = reg.registerIcon(CORE.MODID + ":" + "controlcore/Core_1");
-        this.icons[2] = reg.registerIcon(CORE.MODID + ":" + "controlcore/Core_2");
-        this.icons[3] = reg.registerIcon(CORE.MODID + ":" + "controlcore/Core_3");
-        this.icons[4] = reg.registerIcon(CORE.MODID + ":" + "controlcore/Core_4");
-        this.icons[5] = reg.registerIcon(CORE.MODID + ":" + "controlcore/Core_5");
-        this.icons[6] = reg.registerIcon(CORE.MODID + ":" + "controlcore/Core_6");
-        this.icons[7] = reg.registerIcon(CORE.MODID + ":" + "controlcore/Core_7");
-        this.icons[8] = reg.registerIcon(CORE.MODID + ":" + "controlcore/Core_8");
-        this.icons[9] = reg.registerIcon(CORE.MODID + ":" + "controlcore/Core_9");
+        this.icons[0] = reg.registerIcon(GTPlusPlus.ID + ":" + "controlcore/Core_0");
+        this.icons[1] = reg.registerIcon(GTPlusPlus.ID + ":" + "controlcore/Core_1");
+        this.icons[2] = reg.registerIcon(GTPlusPlus.ID + ":" + "controlcore/Core_2");
+        this.icons[3] = reg.registerIcon(GTPlusPlus.ID + ":" + "controlcore/Core_3");
+        this.icons[4] = reg.registerIcon(GTPlusPlus.ID + ":" + "controlcore/Core_4");
+        this.icons[5] = reg.registerIcon(GTPlusPlus.ID + ":" + "controlcore/Core_5");
+        this.icons[6] = reg.registerIcon(GTPlusPlus.ID + ":" + "controlcore/Core_6");
+        this.icons[7] = reg.registerIcon(GTPlusPlus.ID + ":" + "controlcore/Core_7");
+        this.icons[8] = reg.registerIcon(GTPlusPlus.ID + ":" + "controlcore/Core_8");
+        this.icons[9] = reg.registerIcon(GTPlusPlus.ID + ":" + "controlcore/Core_9");
     }
 
     @Override

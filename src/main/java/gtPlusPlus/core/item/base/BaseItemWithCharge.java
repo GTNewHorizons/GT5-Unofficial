@@ -1,5 +1,7 @@
 package gtPlusPlus.core.item.base;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import java.util.List;
 
 import net.minecraft.entity.Entity;
@@ -11,7 +13,6 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 
 import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.lib.CORE;
 
 public class BaseItemWithCharge extends Item {
 
@@ -21,7 +22,7 @@ public class BaseItemWithCharge extends Item {
     public BaseItemWithCharge(final String unlocalizedName, final int constructor_Charge,
             final int constructor_Max_Charge) {
         this.setUnlocalizedName(unlocalizedName);
-        this.setTextureName(CORE.MODID + ":" + unlocalizedName);
+        this.setTextureName(GTPlusPlus.ID + ":" + unlocalizedName);
         this.setMaxStackSize(1);
         this.setCreativeTab(AddToCreativeTab.tabMachines);
         this.int_Charge = constructor_Charge;

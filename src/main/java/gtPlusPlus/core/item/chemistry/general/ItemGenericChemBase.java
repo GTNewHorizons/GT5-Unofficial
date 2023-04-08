@@ -1,5 +1,7 @@
 package gtPlusPlus.core.item.chemistry.general;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import java.util.List;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -17,7 +19,6 @@ import net.minecraft.world.World;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.item.chemistry.GenericChem;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class ItemGenericChemBase extends Item {
@@ -131,7 +132,7 @@ public class ItemGenericChemBase extends Item {
     @Override
     public void registerIcons(final IIconRegister u) {
         for (int i = 0; i < this.aMetaSize; i++) {
-            String aPath = CORE.MODID + ":" + "science/general/MetaItem1/" + i;
+            String aPath = GTPlusPlus.ID + ":" + "science/general/MetaItem1/" + i;
             this.base[i] = u.registerIcon(aPath);
         }
     }

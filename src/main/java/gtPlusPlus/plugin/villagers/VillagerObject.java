@@ -1,10 +1,11 @@
 package gtPlusPlus.plugin.villagers;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import net.minecraft.util.ResourceLocation;
 
 import cpw.mods.fml.common.registry.VillagerRegistry.IVillageTradeHandler;
 import gtPlusPlus.api.objects.data.Pair;
-import gtPlusPlus.core.lib.CORE;
 
 public class VillagerObject {
 
@@ -29,7 +30,7 @@ public class VillagerObject {
 
             if (aSkin instanceof String) {
                 String s = (String) aSkin;
-                aSkin = new ResourceLocation(CORE.MODID + ":" + "textures/entity/villager/" + s + ".png");
+                aSkin = new ResourceLocation(GTPlusPlus.ID + ":" + "textures/entity/villager/" + s + ".png");
             }
             if (aSkin instanceof ResourceLocation) {
                 Core_VillagerAdditions.mVillagerSkins.put(aID, (ResourceLocation) aSkin);

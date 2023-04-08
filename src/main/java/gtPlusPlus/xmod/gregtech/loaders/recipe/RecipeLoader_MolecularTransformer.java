@@ -1,10 +1,12 @@
 package gtPlusPlus.xmod.gregtech.loaders.recipe;
 
 import static advsolar.utils.MTRecipeManager.transformerRecipes;
+import static gregtech.api.enums.Mods.AdvancedSolarPanel;
+import static gregtech.api.enums.Mods.GalaxySpace;
 
 import advsolar.utils.MTRecipeRecord;
-import cpw.mods.fml.common.Loader;
-import gregtech.api.enums.*;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.api.objects.Logger;
@@ -34,41 +36,41 @@ public class RecipeLoader_MolecularTransformer {
         }
 
         transformerRecipes.clear();
-        if (Loader.isModLoaded("AdvancedSolarPanel") && Loader.isModLoaded("GalaxySpace")) {
+        if (AdvancedSolarPanel.isModLoaded() && GalaxySpace.isModLoaded()) {
 
             CORE.RA.addMolecularTransformerRecipe(
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Glowstone, 1L),
-                    GT_ModHandler.getModItem("AdvancedSolarPanel", "asp_crafting_items", 1L, 9),
+                    GT_ModHandler.getModItem(AdvancedSolarPanel.ID, "asp_crafting_items", 1L, 9),
                     600,
                     1920,
                     2);
             CORE.RA.addMolecularTransformerRecipe(
-                    GT_ModHandler.getModItem("GalaxySpace", "item.GlowstoneDusts", 1L, 0),
-                    GT_ModHandler.getModItem("AdvancedSolarPanel", "asp_crafting_items", 1L, 9),
+                    GT_ModHandler.getModItem(GalaxySpace.ID, "item.GlowstoneDusts", 1L, 0),
+                    GT_ModHandler.getModItem(AdvancedSolarPanel.ID, "asp_crafting_items", 1L, 9),
                     150,
                     7680,
                     2);
             CORE.RA.addMolecularTransformerRecipe(
-                    GT_ModHandler.getModItem("GalaxySpace", "item.GlowstoneDusts", 1L, 1),
-                    GT_ModHandler.getModItem("AdvancedSolarPanel", "asp_crafting_items", 1L, 9),
+                    GT_ModHandler.getModItem(GalaxySpace.ID, "item.GlowstoneDusts", 1L, 1),
+                    GT_ModHandler.getModItem(AdvancedSolarPanel.ID, "asp_crafting_items", 1L, 9),
                     38,
                     30720,
                     2);
             CORE.RA.addMolecularTransformerRecipe(
-                    GT_ModHandler.getModItem("GalaxySpace", "item.GlowstoneDusts", 1L, 2),
-                    GT_ModHandler.getModItem("AdvancedSolarPanel", "asp_crafting_items", 1L, 9),
+                    GT_ModHandler.getModItem(GalaxySpace.ID, "item.GlowstoneDusts", 1L, 2),
+                    GT_ModHandler.getModItem(AdvancedSolarPanel.ID, "asp_crafting_items", 1L, 9),
                     10,
                     122880,
                     2);
             CORE.RA.addMolecularTransformerRecipe(
-                    GT_ModHandler.getModItem("GalaxySpace", "item.GlowstoneDusts", 1L, 3),
-                    GT_ModHandler.getModItem("AdvancedSolarPanel", "asp_crafting_items", 1L, 9),
+                    GT_ModHandler.getModItem(GalaxySpace.ID, "item.GlowstoneDusts", 1L, 3),
+                    GT_ModHandler.getModItem(AdvancedSolarPanel.ID, "asp_crafting_items", 1L, 9),
                     3,
                     491520,
                     2);
             CORE.RA.addMolecularTransformerRecipe(
-                    GT_ModHandler.getModItem("GalaxySpace", "item.GlowstoneDusts", 1L, 4),
-                    GT_ModHandler.getModItem("AdvancedSolarPanel", "asp_crafting_items", 1L, 9),
+                    GT_ModHandler.getModItem(GalaxySpace.ID, "item.GlowstoneDusts", 1L, 4),
+                    GT_ModHandler.getModItem(AdvancedSolarPanel.ID, "asp_crafting_items", 1L, 9),
                     1,
                     1996080,
                     2);

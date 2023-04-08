@@ -1,5 +1,7 @@
 package gtPlusPlus.core.block.machine.bedrock;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import java.util.Random;
 
 import net.minecraft.block.Block;
@@ -18,7 +20,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
@@ -28,7 +29,7 @@ public class Mining_Pipe_Fake extends Block {
     public Mining_Pipe_Fake() {
         super(Material.cactus);
         this.setBlockName(Utils.sanitizeString("blockMiningPipeFake"));
-        this.setBlockTextureName(CORE.MODID + ":" + "blockFrameGt");
+        this.setBlockTextureName(GTPlusPlus.ID + ":" + "blockFrameGt");
         this.setCreativeTab(AddToCreativeTab.tabBlock);
         this.setHardness(-1F);
         this.setResistance(50000.0F);
@@ -56,7 +57,7 @@ public class Mining_Pipe_Fake extends Block {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(final IIconRegister iIcon) {
-        this.blockIcon = iIcon.registerIcon(CORE.MODID + ":" + "blockFrameGt");
+        this.blockIcon = iIcon.registerIcon(GTPlusPlus.ID + ":" + "blockFrameGt");
     }
 
     @Override

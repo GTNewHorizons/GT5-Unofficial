@@ -1,6 +1,7 @@
 package gtPlusPlus.xmod.gregtech.common.helpers;
 
 import static gregtech.api.GregTech_API.mEUtoRF;
+import static gregtech.api.enums.Mods.COFHCore;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,7 +24,6 @@ import gregtech.common.items.GT_MetaGenerated_Tool_01;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
-import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.NBTUtils;
@@ -484,7 +484,7 @@ public class ChargingHelper {
     }
 
     public static boolean isItemValidRF(final ItemStack itemStack) {
-        return itemStack != null && LoadedMods.CoFHCore && itemStack.getItem() instanceof IEnergyContainerItem;
+        return itemStack != null && COFHCore.isModLoaded() && itemStack.getItem() instanceof IEnergyContainerItem;
     }
 
     public static boolean accepts(final ItemStack stack) {

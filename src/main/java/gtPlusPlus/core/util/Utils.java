@@ -1,7 +1,6 @@
 package gtPlusPlus.core.util;
 
-import java.awt.Color;
-import java.awt.Graphics;
+import java.awt.*;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;

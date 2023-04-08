@@ -1,5 +1,7 @@
 package gtPlusPlus.xmod.bop.blocks.base;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import java.util.List;
 import java.util.Random;
 
@@ -18,7 +20,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 
@@ -93,7 +94,7 @@ public class LeavesBase extends BlockLeaves {
             this.leafTextures[i] = new IIcon[leafType[i].length];
             for (int j = 0; j < leafType[i].length; ++j) {
                 this.leafTextures[i][j] = iIcon
-                        .registerIcon(CORE.MODID + ":" + "trees/" + "leaves/" + "leaves_" + leafType[i][j]);
+                        .registerIcon(GTPlusPlus.ID + ":" + "trees/" + "leaves/" + "leaves_" + leafType[i][j]);
             }
         }
         setVanillaVariable(this.field_150129_M, this.leafTextures);

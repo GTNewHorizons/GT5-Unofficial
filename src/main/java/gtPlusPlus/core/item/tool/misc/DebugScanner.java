@@ -1,5 +1,7 @@
 package gtPlusPlus.core.item.tool.misc;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -11,7 +13,6 @@ import net.minecraft.world.World;
 
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.item.base.CoreItem;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 
 public class DebugScanner extends CoreItem {
@@ -24,7 +25,7 @@ public class DebugScanner extends CoreItem {
                 0,
                 new String[] { "Used to obtain information from GT/GT++ content", "Right Click to use", },
                 EnumRarity.epic);
-        setTextureName(CORE.MODID + ":itemStickyRubber");
+        setTextureName(GTPlusPlus.ID + ":itemStickyRubber");
     }
 
     @Override

@@ -1,6 +1,12 @@
 package gtPlusPlus.core.block.general;
 
-import static net.minecraftforge.common.util.ForgeDirection.*;
+import static gregtech.api.enums.Mods.GTPlusPlus;
+import static net.minecraftforge.common.util.ForgeDirection.DOWN;
+import static net.minecraftforge.common.util.ForgeDirection.EAST;
+import static net.minecraftforge.common.util.ForgeDirection.NORTH;
+import static net.minecraftforge.common.util.ForgeDirection.SOUTH;
+import static net.minecraftforge.common.util.ForgeDirection.UP;
+import static net.minecraftforge.common.util.ForgeDirection.WEST;
 
 import java.util.IdentityHashMap;
 import java.util.Map.Entry;
@@ -25,7 +31,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.api.objects.random.XSTR;
 import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.math.MathUtils;
 
 public class HellFire extends BlockFire {
@@ -43,7 +48,7 @@ public class HellFire extends BlockFire {
         this.setTickRandomly(true);
         this.setLightLevel(1F);
         this.setLightOpacity(0);
-        // this.setBlockTextureName(CORE.MODID + "hellfire/blockHellFire");
+        // this.setBlockTextureName(GTPlusPlus.ID + "hellfire/blockHellFire");
         this.setBlockName("blockHellFire");
         this.setCreativeTab(AddToCreativeTab.tabBlock);
         GameRegistry.registerBlock(this, "blockHellFire");
@@ -406,8 +411,8 @@ public class HellFire extends BlockFire {
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(final IIconRegister IIconRegister) {
         this.IIconArray = new IIcon[] {
-                IIconRegister.registerIcon(CORE.MODID + ":" + "hellfire/" + "blockHellFire" + "_layer_0"),
-                IIconRegister.registerIcon(CORE.MODID + ":" + "hellfire/" + "blockHellFire" + "_layer_1") };
+                IIconRegister.registerIcon(GTPlusPlus.ID + ":" + "hellfire/" + "blockHellFire" + "_layer_0"),
+                IIconRegister.registerIcon(GTPlusPlus.ID + ":" + "hellfire/" + "blockHellFire" + "_layer_1") };
     }
 
     @Override

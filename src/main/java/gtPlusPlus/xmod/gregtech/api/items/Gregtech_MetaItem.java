@@ -1,8 +1,13 @@
 package gtPlusPlus.xmod.gregtech.api.items;
 
 import static gregtech.api.enums.GT_Values.D1;
+import static gregtech.api.enums.Mods.GTPlusPlus;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.BitSet;
+import java.util.HashMap;
+import java.util.List;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -27,7 +32,6 @@ import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.interfaces.internal.Interface_ItemBehaviour;
 
 public abstract class Gregtech_MetaItem extends Gregtech_MetaItem_Base {
@@ -298,10 +302,10 @@ public abstract class Gregtech_MetaItem extends Gregtech_MetaItem_Base {
             if (this.mEnabledItems.get(i)) {
                 for (byte k = 1; k < this.mIconList[i].length; k++) {
                     this.mIconList[i][k] = aIconRegister
-                            .registerIcon(CORE.MODID + ":" + this.getUnlocalizedName() + "/" + i + "/" + k);
+                            .registerIcon(GTPlusPlus.ID + ":" + this.getUnlocalizedName() + "/" + i + "/" + k);
                 }
                 this.mIconList[i][0] = aIconRegister
-                        .registerIcon(CORE.MODID + ":" + this.getUnlocalizedName() + "/" + i);
+                        .registerIcon(GTPlusPlus.ID + ":" + this.getUnlocalizedName() + "/" + i);
             }
         }
     }

@@ -1,5 +1,7 @@
 package gtPlusPlus.core.block.general;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import java.util.Random;
 
 import net.minecraft.block.Block;
@@ -12,7 +14,6 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.lib.CORE;
 
 /*
  * public class LightGlass extends BlockBreakable {
@@ -33,7 +34,7 @@ public class LightGlass extends BlockAir {
         this.setBlockName("blockMFEffect");
         this.setLightLevel(12F);
         setHardness(0.1F);
-        setBlockTextureName(CORE.MODID + ":" + "blockMFEffect");
+        setBlockTextureName(GTPlusPlus.ID + ":" + "blockMFEffect");
         setStepSound(Block.soundTypeGlass);
         GameRegistry.registerBlock(this, "blockMFEffect");
 
@@ -78,7 +79,7 @@ public class LightGlass extends BlockAir {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(final IIconRegister iIcon) {
-        this.blockIcon = iIcon.registerIcon(CORE.MODID + ":" + "blockMFEffect");
+        this.blockIcon = iIcon.registerIcon(GTPlusPlus.ID + ":" + "blockMFEffect");
     }
 
     @Override

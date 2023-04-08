@@ -3,7 +3,27 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GT_HatchElement.*;
+import static gregtech.api.enums.GT_HatchElement.Energy;
+import static gregtech.api.enums.GT_HatchElement.InputBus;
+import static gregtech.api.enums.GT_HatchElement.InputHatch;
+import static gregtech.api.enums.GT_HatchElement.Maintenance;
+import static gregtech.api.enums.GT_HatchElement.Muffler;
+import static gregtech.api.enums.GT_HatchElement.OutputBus;
+import static gregtech.api.enums.GT_HatchElement.OutputHatch;
+import static gregtech.api.enums.Mods.BiomesOPlenty;
+import static gregtech.api.enums.Mods.ForbiddenMagic;
+import static gregtech.api.enums.Mods.GTPlusPlus;
+import static gregtech.api.enums.Mods.GalaxySpace;
+import static gregtech.api.enums.Mods.IndustrialCraft2;
+import static gregtech.api.enums.Mods.Natura;
+import static gregtech.api.enums.Mods.PamsHarvestCraft;
+import static gregtech.api.enums.Mods.PamsHarvestTheNether;
+import static gregtech.api.enums.Mods.TaintedMagic;
+import static gregtech.api.enums.Mods.Thaumcraft;
+import static gregtech.api.enums.Mods.ThaumicBases;
+import static gregtech.api.enums.Mods.TinkerConstruct;
+import static gregtech.api.enums.Mods.TwilightForest;
+import static gregtech.api.enums.Mods.Witchery;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 import static gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase.GTPPHatchElement.TTEnergy;
 
@@ -341,8 +361,8 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<
     public static void loadMapWoodFromSapling() {
 
         // galaxySpace
-        mapSaplingToLog("GalaxySpace:barnardaCsapling:1", GT_ModHandler.getModItem("GalaxySpace", "barnardaClog", 1)); // barnarda
-                                                                                                                       // c
+        mapSaplingToLog("GalaxySpace:barnardaCsapling:1", GT_ModHandler.getModItem(GalaxySpace.ID, "barnardaClog", 1)); // barnarda
+                                                                                                                        // c
 
         // minecraft
         mapSaplingToLog("minecraft:sapling:0", new ItemStack(Blocks.log, 1, 0)); // oak
@@ -353,85 +373,85 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<
         mapSaplingToLog("minecraft:sapling:5", new ItemStack(Blocks.log2, 1, 1)); // dark oak
 
         // ic2
-        mapSaplingToLog("IC2:blockRubSapling:0", GT_ModHandler.getModItem("IC2", "blockRubWood", 1)); // rubber
+        mapSaplingToLog("IC2:blockRubSapling:0", GT_ModHandler.getModItem(IndustrialCraft2.ID, "blockRubWood", 1)); // rubber
 
         // natura
-        mapSaplingToLog("Natura:florasapling:0", GT_ModHandler.getModItem("Natura", "redwood", 1, 1)); // redwood
-        mapSaplingToLog("Natura:florasapling:1", GT_ModHandler.getModItem("Natura", "tree", 1, 0)); // eucalyptus
-        mapSaplingToLog("Natura:florasapling:2", GT_ModHandler.getModItem("Natura", "tree", 1, 3)); // hopseed
-        mapSaplingToLog("Natura:florasapling:3", GT_ModHandler.getModItem("Natura", "tree", 1, 1)); // sakura
-        mapSaplingToLog("Natura:florasapling:4", GT_ModHandler.getModItem("Natura", "tree", 1, 2)); // ghostwood
-        mapSaplingToLog("Natura:florasapling:5", GT_ModHandler.getModItem("Natura", "bloodwood", 1, 0)); // bloodwood
-        mapSaplingToLog("Natura:florasapling:6", GT_ModHandler.getModItem("Natura", "Dark Tree", 1, 0)); // darkwood
-        mapSaplingToLog("Natura:florasapling:7", GT_ModHandler.getModItem("Natura", "Dark Tree", 1, 1)); // fusewood
+        mapSaplingToLog("Natura:florasapling:0", GT_ModHandler.getModItem(Natura.ID, "redwood", 1, 1)); // redwood
+        mapSaplingToLog("Natura:florasapling:1", GT_ModHandler.getModItem(Natura.ID, "tree", 1, 0)); // eucalyptus
+        mapSaplingToLog("Natura:florasapling:2", GT_ModHandler.getModItem(Natura.ID, "tree", 1, 3)); // hopseed
+        mapSaplingToLog("Natura:florasapling:3", GT_ModHandler.getModItem(Natura.ID, "tree", 1, 1)); // sakura
+        mapSaplingToLog("Natura:florasapling:4", GT_ModHandler.getModItem(Natura.ID, "tree", 1, 2)); // ghostwood
+        mapSaplingToLog("Natura:florasapling:5", GT_ModHandler.getModItem(Natura.ID, "bloodwood", 1, 0)); // bloodwood
+        mapSaplingToLog("Natura:florasapling:6", GT_ModHandler.getModItem(Natura.ID, "Dark Tree", 1, 0)); // darkwood
+        mapSaplingToLog("Natura:florasapling:7", GT_ModHandler.getModItem(Natura.ID, "Dark Tree", 1, 1)); // fusewood
 
-        mapSaplingToLog("Natura:Rare Sapling:0", GT_ModHandler.getModItem("Natura", "Rare Tree", 1, 0)); // maple
-        mapSaplingToLog("Natura:Rare Sapling:1", GT_ModHandler.getModItem("Natura", "Rare Tree", 1, 1)); // silverbell
-        mapSaplingToLog("Natura:Rare Sapling:2", GT_ModHandler.getModItem("Natura", "Rare Tree", 1, 2)); // amaranth
-        mapSaplingToLog("Natura:Rare Sapling:3", GT_ModHandler.getModItem("Natura", "Rare Tree", 1, 3)); // tigerwood
-        mapSaplingToLog("Natura:Rare Sapling:4", GT_ModHandler.getModItem("Natura", "willow", 1, 0)); // willow
+        mapSaplingToLog("Natura:Rare Sapling:0", GT_ModHandler.getModItem(Natura.ID, "Rare Tree", 1, 0)); // maple
+        mapSaplingToLog("Natura:Rare Sapling:1", GT_ModHandler.getModItem(Natura.ID, "Rare Tree", 1, 1)); // silverbell
+        mapSaplingToLog("Natura:Rare Sapling:2", GT_ModHandler.getModItem(Natura.ID, "Rare Tree", 1, 2)); // amaranth
+        mapSaplingToLog("Natura:Rare Sapling:3", GT_ModHandler.getModItem(Natura.ID, "Rare Tree", 1, 3)); // tigerwood
+        mapSaplingToLog("Natura:Rare Sapling:4", GT_ModHandler.getModItem(Natura.ID, "willow", 1, 0)); // willow
 
         // BOP
-        mapSaplingToLog("BiomesOPlenty:colorizedSaplings:0", GT_ModHandler.getModItem("BiomesOPlenty", "logs1", 1, 0)); // Sacred
-                                                                                                                        // Oak
-        mapSaplingToLog("BiomesOPlenty:colorizedSaplings:1", GT_ModHandler.getModItem("BiomesOPlenty", "logs2", 1, 2)); // Mangrove
-        mapSaplingToLog("BiomesOPlenty:colorizedSaplings:2", GT_ModHandler.getModItem("BiomesOPlenty", "logs2", 1, 3)); // Palm
-        mapSaplingToLog("BiomesOPlenty:colorizedSaplings:3", GT_ModHandler.getModItem("BiomesOPlenty", "logs3", 1, 0)); // Redwood
-        mapSaplingToLog("BiomesOPlenty:colorizedSaplings:4", GT_ModHandler.getModItem("BiomesOPlenty", "logs3", 1, 1)); // Willow
-        mapSaplingToLog("BiomesOPlenty:colorizedSaplings:5", GT_ModHandler.getModItem("BiomesOPlenty", "logs4", 1, 0)); // Pine
-        mapSaplingToLog("BiomesOPlenty:colorizedSaplings:6", GT_ModHandler.getModItem("BiomesOPlenty", "logs4", 1, 3)); // Mahogany
-        mapSaplingToLog("BiomesOPlenty:saplings:2", GT_ModHandler.getModItem("BiomesOPlenty", "bamboo", 1, 0)); // Bamboo
-        mapSaplingToLog("BiomesOPlenty:saplings:3", GT_ModHandler.getModItem("BiomesOPlenty", "logs2", 1, 1)); // Magic
-        mapSaplingToLog("BiomesOPlenty:saplings:4", GT_ModHandler.getModItem("BiomesOPlenty", "logs1", 1, 2)); // Dark
-        mapSaplingToLog("BiomesOPlenty:saplings:5", GT_ModHandler.getModItem("BiomesOPlenty", "logs3", 1, 2)); // Dying/Dead
-        mapSaplingToLog("BiomesOPlenty:saplings:6", GT_ModHandler.getModItem("BiomesOPlenty", "logs1", 1, 3)); // Fir
-        mapSaplingToLog("BiomesOPlenty:saplings:7", GT_ModHandler.getModItem("BiomesOPlenty", "logs2", 1, 0)); // Ethereal
-        mapSaplingToLog("BiomesOPlenty:saplings:10", GT_ModHandler.getModItem("BiomesOPlenty", "logs1", 1, 1)); // Pink
-                                                                                                                // Cherry
-        mapSaplingToLog("BiomesOPlenty:saplings:12", GT_ModHandler.getModItem("BiomesOPlenty", "logs1", 1, 1)); // White
-                                                                                                                // Cherry
-        mapSaplingToLog("BiomesOPlenty:saplings:13", GT_ModHandler.getModItem("BiomesOPlenty", "logs4", 1, 1)); // Hellbark
-        mapSaplingToLog("BiomesOPlenty:saplings:14", GT_ModHandler.getModItem("BiomesOPlenty", "logs4", 1, 2)); // Jacaranda
-        mapSaplingToLog("minecraft:yellow_flower:0", GT_ModHandler.getModItem("BiomesOPlenty", "logs3", 1, 3)); // Giant
-                                                                                                                // Flower
-                                                                                                                // Stem
-        mapSaplingToLog("minecraft:red_flower:0", GT_ModHandler.getModItem("BiomesOPlenty", "logs3", 1, 3)); // Giant
-                                                                                                             // Flower
-                                                                                                             // Stem
+        mapSaplingToLog("BiomesOPlenty:colorizedSaplings:0", GT_ModHandler.getModItem(BiomesOPlenty.ID, "logs1", 1, 0)); // Sacred
+                                                                                                                         // Oak
+        mapSaplingToLog("BiomesOPlenty:colorizedSaplings:1", GT_ModHandler.getModItem(BiomesOPlenty.ID, "logs2", 1, 2)); // Mangrove
+        mapSaplingToLog("BiomesOPlenty:colorizedSaplings:2", GT_ModHandler.getModItem(BiomesOPlenty.ID, "logs2", 1, 3)); // Palm
+        mapSaplingToLog("BiomesOPlenty:colorizedSaplings:3", GT_ModHandler.getModItem(BiomesOPlenty.ID, "logs3", 1, 0)); // Redwood
+        mapSaplingToLog("BiomesOPlenty:colorizedSaplings:4", GT_ModHandler.getModItem(BiomesOPlenty.ID, "logs3", 1, 1)); // Willow
+        mapSaplingToLog("BiomesOPlenty:colorizedSaplings:5", GT_ModHandler.getModItem(BiomesOPlenty.ID, "logs4", 1, 0)); // Pine
+        mapSaplingToLog("BiomesOPlenty:colorizedSaplings:6", GT_ModHandler.getModItem(BiomesOPlenty.ID, "logs4", 1, 3)); // Mahogany
+        mapSaplingToLog("BiomesOPlenty:saplings:2", GT_ModHandler.getModItem(BiomesOPlenty.ID, "bamboo", 1, 0)); // Bamboo
+        mapSaplingToLog("BiomesOPlenty:saplings:3", GT_ModHandler.getModItem(BiomesOPlenty.ID, "logs2", 1, 1)); // Magic
+        mapSaplingToLog("BiomesOPlenty:saplings:4", GT_ModHandler.getModItem(BiomesOPlenty.ID, "logs1", 1, 2)); // Dark
+        mapSaplingToLog("BiomesOPlenty:saplings:5", GT_ModHandler.getModItem(BiomesOPlenty.ID, "logs3", 1, 2)); // Dying/Dead
+        mapSaplingToLog("BiomesOPlenty:saplings:6", GT_ModHandler.getModItem(BiomesOPlenty.ID, "logs1", 1, 3)); // Fir
+        mapSaplingToLog("BiomesOPlenty:saplings:7", GT_ModHandler.getModItem(BiomesOPlenty.ID, "logs2", 1, 0)); // Ethereal
+        mapSaplingToLog("BiomesOPlenty:saplings:10", GT_ModHandler.getModItem(BiomesOPlenty.ID, "logs1", 1, 1)); // Pink
+                                                                                                                 // Cherry
+        mapSaplingToLog("BiomesOPlenty:saplings:12", GT_ModHandler.getModItem(BiomesOPlenty.ID, "logs1", 1, 1)); // White
+                                                                                                                 // Cherry
+        mapSaplingToLog("BiomesOPlenty:saplings:13", GT_ModHandler.getModItem(BiomesOPlenty.ID, "logs4", 1, 1)); // Hellbark
+        mapSaplingToLog("BiomesOPlenty:saplings:14", GT_ModHandler.getModItem(BiomesOPlenty.ID, "logs4", 1, 2)); // Jacaranda
+        mapSaplingToLog("minecraft:yellow_flower:0", GT_ModHandler.getModItem(BiomesOPlenty.ID, "logs3", 1, 3)); // Giant
+                                                                                                                 // Flower
+                                                                                                                 // Stem
+        mapSaplingToLog("minecraft:red_flower:0", GT_ModHandler.getModItem(BiomesOPlenty.ID, "logs3", 1, 3)); // Giant
+                                                                                                              // Flower
+                                                                                                              // Stem
 
         // Witchery
-        mapSaplingToLog("witchery:witchsapling:0", GT_ModHandler.getModItem("witchery", "witchlog", 1, 0)); // Rowan
-        mapSaplingToLog("witchery:witchsapling:1", GT_ModHandler.getModItem("witchery", "witchlog", 1, 1)); // Alder
-        mapSaplingToLog("witchery:witchsapling:2", GT_ModHandler.getModItem("witchery", "witchlog", 1, 2)); // Hawthorn
+        mapSaplingToLog("witchery:witchsapling:0", GT_ModHandler.getModItem(Witchery.ID, "witchlog", 1, 0)); // Rowan
+        mapSaplingToLog("witchery:witchsapling:1", GT_ModHandler.getModItem(Witchery.ID, "witchlog", 1, 1)); // Alder
+        mapSaplingToLog("witchery:witchsapling:2", GT_ModHandler.getModItem(Witchery.ID, "witchlog", 1, 2)); // Hawthorn
 
         // TConstruct
-        mapSaplingToLog("TConstruct:slime.sapling:0", GT_ModHandler.getModItem("TConstruct", "slime.gel", 1)); // green
-                                                                                                               // slime
-                                                                                                               // blocks
+        mapSaplingToLog("TConstruct:slime.sapling:0", GT_ModHandler.getModItem(TinkerConstruct.ID, "slime.gel", 1)); // green
+        // slime
+        // blocks
 
         // TaintedMagic
         mapSaplingToLog(
                 "TaintedMagic:BlockWarpwoodSapling:0",
-                GT_ModHandler.getModItem("TaintedMagic", "BlockWarpwoodLog", 1)); // warpwood
+                GT_ModHandler.getModItem(TaintedMagic.ID, "BlockWarpwoodLog", 1)); // warpwood
 
         // Thaumcraft
         mapSaplingToLog(
                 "Thaumcraft:blockCustomPlant:0",
-                GT_ModHandler.getModItem("Thaumcraft", "blockMagicalLog", 1, 0)); // greatwood
+                GT_ModHandler.getModItem(Thaumcraft.ID, "blockMagicalLog", 1, 0)); // greatwood
         mapSaplingToLog(
                 "Thaumcraft:blockCustomPlant:1",
-                GT_ModHandler.getModItem("Thaumcraft", "blockMagicalLog", 1, 1)); // silverwood
+                GT_ModHandler.getModItem(Thaumcraft.ID, "blockMagicalLog", 1, 1)); // silverwood
 
         // gt++
         mapSaplingToLog(
                 "miscutils:blockRainforestOakSapling:0",
-                GT_ModHandler.getModItem("miscutils", "blockRainforestOakLog", 1)); // rainforest
-        mapSaplingToLog("miscutils:blockPineSapling:0", GT_ModHandler.getModItem("miscutils", "blockPineLogLog", 1)); // pine
+                GT_ModHandler.getModItem(GTPlusPlus.ID, "blockRainforestOakLog", 1)); // rainforest
+        mapSaplingToLog("miscutils:blockPineSapling:0", GT_ModHandler.getModItem(GTPlusPlus.ID, "blockPineLogLog", 1)); // pine
 
         // Harvestcraft
         mapSaplingToLog("harvestcraft:pampistachioSapling:0", new ItemStack(Blocks.log, 1, 3)); // Pistachio
         mapSaplingToLog("harvestcraft:pampapayaSapling:0", new ItemStack(Blocks.log, 1, 3)); // Papaya
-        mapSaplingToLog("harvestcraft:pammapleSapling:0", GT_ModHandler.getModItem("harvestcraft", "pamMaple", 1)); // Maple
+        mapSaplingToLog("harvestcraft:pammapleSapling:0", GT_ModHandler.getModItem(PamsHarvestCraft.ID, "pamMaple", 1)); // Maple
         mapSaplingToLog("harvestcraft:pamappleSapling:0", new ItemStack(Blocks.log, 1, 0)); // Apple
         mapSaplingToLog("harvestcraft:pamdateSapling:0", new ItemStack(Blocks.log, 1, 3)); // Date
         mapSaplingToLog("harvestcraft:pamorangeSapling:0", new ItemStack(Blocks.log, 1, 3)); // Orange
@@ -439,7 +459,7 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<
         mapSaplingToLog("harvestcraft:pamnutmegSapling:0", new ItemStack(Blocks.log, 1, 0)); // NutMeg
         mapSaplingToLog(
                 "harvestcraft:pampaperbarkSapling:0",
-                GT_ModHandler.getModItem("harvestcraft", "pamPaperbark", 1)); // Paperbark
+                GT_ModHandler.getModItem(PamsHarvestCraft.ID, "pamPaperbark", 1)); // Paperbark
         mapSaplingToLog("harvestcraft:pammangoSapling:0", new ItemStack(Blocks.log, 1, 3)); // Mango
         mapSaplingToLog("harvestcraft:pamavocadoSapling:0", new ItemStack(Blocks.log, 1, 0)); // Avocado
         mapSaplingToLog("harvestcraft:pamchestnutSapling:0", new ItemStack(Blocks.log, 1, 0)); // Chestnut
@@ -450,7 +470,7 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<
         mapSaplingToLog("harvestcraft:pamoliveSapling:0", new ItemStack(Blocks.log, 1, 3)); // Olive
         mapSaplingToLog(
                 "harvestcraft:pamcinnamonSapling:0",
-                GT_ModHandler.getModItem("harvestcraft", "pamCinnamon", 1)); // Cinnamon
+                GT_ModHandler.getModItem(PamsHarvestCraft.ID, "pamCinnamon", 1)); // Cinnamon
         mapSaplingToLog("harvestcraft:pampeachSapling:0", new ItemStack(Blocks.log, 1, 3)); // Peach
         mapSaplingToLog("harvestcraft:pamlemonSapling:0", new ItemStack(Blocks.log, 1, 3)); // Lemon
         mapSaplingToLog("harvestcraft:pamvanillabeanSapling:0", new ItemStack(Blocks.log, 1, 3)); // Vanilla
@@ -473,48 +493,48 @@ public class GregtechMetaTileEntityTreeFarm extends GregtechMeta_MultiBlockBase<
         // Harvest The Nether
         mapSaplingToLog(
                 "harvestthenether:netherSapling:0",
-                GT_ModHandler.getModItem("harvestthenether", "netherLog", 1)); // Nether
+                GT_ModHandler.getModItem(PamsHarvestTheNether.ID, "netherLog", 1)); // Nether
 
         // The Twilight Forest
         mapSaplingToLog(
                 "TwilightForest:tile.TFSapling:0",
-                GT_ModHandler.getModItem("TwilightForest", "tile.TFLog", 1, 0)); // Sickly Twilight Oak
+                GT_ModHandler.getModItem(TwilightForest.ID, "tile.TFLog", 1, 0)); // Sickly Twilight Oak
         mapSaplingToLog(
                 "TwilightForest:tile.TFSapling:1",
-                GT_ModHandler.getModItem("TwilightForest", "tile.TFLog", 1, 1)); // Canopy Tree
+                GT_ModHandler.getModItem(TwilightForest.ID, "tile.TFLog", 1, 1)); // Canopy Tree
         mapSaplingToLog(
                 "TwilightForest:tile.TFSapling:2",
-                GT_ModHandler.getModItem("TwilightForest", "tile.TFLog", 1, 2)); // Twilight Mangrove
+                GT_ModHandler.getModItem(TwilightForest.ID, "tile.TFLog", 1, 2)); // Twilight Mangrove
         mapSaplingToLog(
                 "TwilightForest:tile.TFSapling:3",
-                GT_ModHandler.getModItem("TwilightForest", "tile.TFLog", 1, 3)); // Darkwood
+                GT_ModHandler.getModItem(TwilightForest.ID, "tile.TFLog", 1, 3)); // Darkwood
         mapSaplingToLog(
                 "TwilightForest:tile.TFSapling:4",
-                GT_ModHandler.getModItem("TwilightForest", "tile.TFLog", 1, 0)); // Robust Twilight Oad
+                GT_ModHandler.getModItem(TwilightForest.ID, "tile.TFLog", 1, 0)); // Robust Twilight Oad
         mapSaplingToLog(
                 "TwilightForest:tile.TFSapling:5",
-                GT_ModHandler.getModItem("TwilightForest", "tile.TFMagicLog", 1, 0)); // Tree of Time
+                GT_ModHandler.getModItem(TwilightForest.ID, "tile.TFMagicLog", 1, 0)); // Tree of Time
         mapSaplingToLog(
                 "TwilightForest:tile.TFSapling:6",
-                GT_ModHandler.getModItem("TwilightForest", "tile.TFMagicLog", 1, 1)); // Tree of Trasformation
+                GT_ModHandler.getModItem(TwilightForest.ID, "tile.TFMagicLog", 1, 1)); // Tree of Trasformation
         mapSaplingToLog(
                 "TwilightForest:tile.TFSapling:7",
-                GT_ModHandler.getModItem("TwilightForest", "tile.TFMagicLog", 1, 2)); // Miner's Tree
+                GT_ModHandler.getModItem(TwilightForest.ID, "tile.TFMagicLog", 1, 2)); // Miner's Tree
         mapSaplingToLog(
                 "TwilightForest:tile.TFSapling:8",
-                GT_ModHandler.getModItem("TwilightForest", "tile.TFMagicLog", 1, 3)); // Sorting Tree
+                GT_ModHandler.getModItem(TwilightForest.ID, "tile.TFMagicLog", 1, 3)); // Sorting Tree
         mapSaplingToLog(
                 "TwilightForest:tile.TFSapling:9",
-                GT_ModHandler.getModItem("TwilightForest", "tile.TFLog", 1, 0)); // Rainbow Oak
+                GT_ModHandler.getModItem(TwilightForest.ID, "tile.TFLog", 1, 0)); // Rainbow Oak
 
         // Thaumic Bases
         mapSaplingToLog("thaumicbases:goldenOakSapling:0", new ItemStack(Blocks.log, 1, 0)); // Golden Oak
-        mapSaplingToLog("thaumicbases:goldenOakSapling:1", GT_ModHandler.getModItem("thaumicbases", "genLogs", 1, 0)); // Peaceful
-        mapSaplingToLog("thaumicbases:goldenOakSapling:2", GT_ModHandler.getModItem("thaumicbases", "genLogs", 1, 1)); // Nether
-        mapSaplingToLog("thaumicbases:goldenOakSapling:3", GT_ModHandler.getModItem("thaumicbases", "genLogs", 1, 2)); // Ender
+        mapSaplingToLog("thaumicbases:goldenOakSapling:1", GT_ModHandler.getModItem(ThaumicBases.ID, "genLogs", 1, 0)); // Peaceful
+        mapSaplingToLog("thaumicbases:goldenOakSapling:2", GT_ModHandler.getModItem(ThaumicBases.ID, "genLogs", 1, 1)); // Nether
+        mapSaplingToLog("thaumicbases:goldenOakSapling:3", GT_ModHandler.getModItem(ThaumicBases.ID, "genLogs", 1, 2)); // Ender
 
         // Forbidden Magic
-        mapSaplingToLog("ForbiddenMagic:TaintSapling:0", GT_ModHandler.getModItem("ForbiddenMagic", "TaintLog", 1)); // Tainted
+        mapSaplingToLog("ForbiddenMagic:TaintSapling:0", GT_ModHandler.getModItem(ForbiddenMagic.ID, "TaintLog", 1)); // Tainted
     }
 
     @Override

@@ -1,9 +1,10 @@
 package gtPlusPlus.api.objects.minecraft;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import net.minecraftforge.fluids.Fluid;
 
 import gregtech.api.GregTech_API;
-import gtPlusPlus.core.lib.CORE;
 
 public class FluidGT6 extends Fluid implements Runnable {
 
@@ -27,6 +28,6 @@ public class FluidGT6 extends Fluid implements Runnable {
 
     @Override
     public void run() {
-        this.setIcons(GregTech_API.sBlockIcons.registerIcon(CORE.MODID + ":" + "fluids/fluid." + this.mTextureName));
+        this.setIcons(GregTech_API.sBlockIcons.registerIcon(GTPlusPlus.ID + ":" + "fluids/fluid." + this.mTextureName));
     }
 }

@@ -1,10 +1,15 @@
 package gtPlusPlus.xmod.gregtech.api.items;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import java.util.List;
 
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.dispenser.*;
+import net.minecraft.dispenser.BehaviorDefaultDispenseItem;
+import net.minecraft.dispenser.BehaviorProjectileDispense;
+import net.minecraft.dispenser.IBlockSource;
+import net.minecraft.dispenser.IPosition;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IProjectile;
 import net.minecraft.entity.player.EntityPlayer;
@@ -24,7 +29,6 @@ import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 
 /**
@@ -53,7 +57,7 @@ public class Gregtech_Generic_Item extends Item implements IProjectileItem {
             this.mTooltip = null;
         }
         this.setCreativeTab(AddToCreativeTab.tabMachines);
-        GameRegistry.registerItem(this, this.mName, CORE.MODID);
+        GameRegistry.registerItem(this, this.mName, GTPlusPlus.ID);
         BlockDispenser.dispenseBehaviorRegistry.putObject(this, new GT_Item_Dispense());
     }
 
@@ -75,7 +79,7 @@ public class Gregtech_Generic_Item extends Item implements IProjectileItem {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(final IIconRegister aIconRegister) {
-        this.mIcon = aIconRegister.registerIcon(CORE.MODID + ":" + this.mName);
+        this.mIcon = aIconRegister.registerIcon(GTPlusPlus.ID + ":" + this.mName);
     }
 
     @Override

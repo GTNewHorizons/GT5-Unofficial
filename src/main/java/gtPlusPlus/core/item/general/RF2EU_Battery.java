@@ -1,5 +1,7 @@
 package gtPlusPlus.core.item.general;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import java.util.List;
 
 import net.minecraft.client.Minecraft;
@@ -38,12 +40,10 @@ public class RF2EU_Battery extends ItemEnergyContainer implements IElectricItem,
     public RF2EU_Battery() {
         super(maxValueRF);
         GameRegistry.registerFuelHandler(this);
-        // this.setMaxDamage(Integer.MAX_VALUE);
-        // this.setDamage(UtilsItems.getSimpleStack(this), 0);
         this.setCreativeTab(AddToCreativeTab.tabMachines);
         this.setUnlocalizedName(this.unlocalizedName);
         this.setMaxStackSize(1);
-        this.setTextureName(CORE.MODID + ":" + "itemIngot");
+        this.setTextureName(GTPlusPlus.ID + ":" + "itemIngot");
         this.thisStack = ItemUtils.getSimpleStack(this);
         GameRegistry.registerItem(this, this.unlocalizedName);
     }

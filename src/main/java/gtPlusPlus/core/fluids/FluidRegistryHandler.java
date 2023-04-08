@@ -1,13 +1,14 @@
 package gtPlusPlus.core.fluids;
 
-import static gtPlusPlus.core.block.ModBlocks.*;
+import static gregtech.api.enums.Mods.GTPlusPlus;
+import static gtPlusPlus.core.block.ModBlocks.blockFluidSludge;
+import static gtPlusPlus.core.block.ModBlocks.fluidSludge;
 
 import net.minecraft.block.material.Material;
 import net.minecraftforge.fluids.FluidRegistry;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gtPlusPlus.core.block.general.fluids.BlockFluidSludge;
-import gtPlusPlus.core.lib.CORE;
 
 public class FluidRegistryHandler {
 
@@ -41,8 +42,9 @@ public class FluidRegistryHandler {
         fluidSludge.setUnlocalizedName("fluid.sludge");
         FluidRegistry.registerFluid(fluidSludge);
         blockFluidSludge = new BlockFluidSludge(fluidSludge, Material.cactus).setBlockName("fluidBlockSludge");
-        GameRegistry
-                .registerBlock(blockFluidSludge, CORE.MODID + "_" + blockFluidSludge.getUnlocalizedName().substring(5));
+        GameRegistry.registerBlock(
+                blockFluidSludge,
+                GTPlusPlus.ID + "_" + blockFluidSludge.getUnlocalizedName().substring(5));
         fluidSludge.setUnlocalizedName(blockFluidSludge.getUnlocalizedName());
     }
 }

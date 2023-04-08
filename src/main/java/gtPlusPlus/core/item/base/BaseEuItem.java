@@ -1,8 +1,13 @@
 package gtPlusPlus.core.item.base;
 
-import static gregtech.api.enums.GT_Values.*;
+import static gregtech.api.enums.GT_Values.D1;
+import static gregtech.api.enums.GT_Values.V;
+import static gregtech.api.enums.Mods.GTPlusPlus;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.BitSet;
+import java.util.HashMap;
+import java.util.List;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -27,11 +32,16 @@ import gregtech.api.enums.TC_Aspects.TC_AspectStack;
 import gregtech.api.interfaces.IItemBehaviour;
 import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.objects.ItemData;
-import gregtech.api.util.*;
+import gregtech.api.util.GT_LanguageManager;
+import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.data.Pair;
 import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.lib.CORE;
-import ic2.api.item.*;
+import ic2.api.item.ElectricItem;
+import ic2.api.item.IElectricItem;
+import ic2.api.item.IElectricItemManager;
+import ic2.api.item.ISpecialElectricItem;
 
 public class BaseEuItem extends Item implements ISpecialElectricItem, IElectricItemManager {
 
@@ -459,10 +469,10 @@ public class BaseEuItem extends Item implements ISpecialElectricItem, IElectricI
             if (this.mEnabledItems.get(i)) {
                 for (byte k = 1; k < this.mIconList[i].length; k++) {
                     this.mIconList[i][k] = aIconRegister
-                            .registerIcon(CORE.MODID + ":" + (this.getUnlocalizedName() + "/" + i + "/" + k));
+                            .registerIcon(GTPlusPlus.ID + ":" + (this.getUnlocalizedName() + "/" + i + "/" + k));
                 }
                 this.mIconList[i][0] = aIconRegister
-                        .registerIcon(CORE.MODID + ":" + (this.getUnlocalizedName() + "/" + i));
+                        .registerIcon(GTPlusPlus.ID + ":" + (this.getUnlocalizedName() + "/" + i));
             }
         }
     }

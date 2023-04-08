@@ -1,5 +1,7 @@
 package gtPlusPlus.xmod.gregtech.common.blocks.textures;
 
+import static gregtech.api.enums.Mods.ZTones;
+
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock.CustomIcon;
 
 public class TexturesGtCutomCovers {
@@ -24,7 +26,7 @@ public class TexturesGtCutomCovers {
         for (CustomIcon[] t : aArrays) {
             for (int s = 0; s < 16; s++) {
                 t[s] = new CustomIcon(
-                        "Ztones",
+                        ZTones.ID,
                         "sets/" + aZtoneCoverTextureNames[aArrayIndex]
                                 + "/"
                                 + aZtoneCoverTextureNames[aArrayIndex]

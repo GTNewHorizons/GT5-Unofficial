@@ -1,5 +1,7 @@
 package gtPlusPlus.everglades.block;
 
+import static gregtech.api.enums.Mods.Minecraft;
+
 import net.minecraft.block.BlockGrass;
 
 import gtPlusPlus.api.interfaces.ITileTooltip;
@@ -11,7 +13,7 @@ public class BlockDarkWorldGround extends BlockGrass implements ITileTooltip {
         this.setCreativeTab(AddToCreativeTab.tabBOP);
         this.setBlockName("blockDarkWorldGround");
         this.setHardness(1.0F);
-        this.setBlockTextureName("minecraft" + ":" + "grass");
+        this.setBlockTextureName(Minecraft.ID + ":" + "grass");
     }
 
     @Override

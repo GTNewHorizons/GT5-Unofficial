@@ -1,5 +1,9 @@
 package gtPlusPlus.core.item.chemistry;
 
+import static gregtech.api.enums.Mods.BiomesOPlenty;
+import static gregtech.api.enums.Mods.Forestry;
+import static gregtech.api.enums.Mods.TinkerConstruct;
+
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +23,6 @@ import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.minecraft.ItemPackage;
 import gtPlusPlus.core.item.circuit.GTPP_IntegratedCircuit_Item;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.Utils;
@@ -281,8 +284,8 @@ public class AgriculturalChem extends ItemPackage {
     public AgriculturalChem() {
         super();
 
-        aBOP = LoadedMods.BiomesOPlenty;
-        aTiCon = LoadedMods.TiCon;
+        aBOP = BiomesOPlenty.isModLoaded();
+        aTiCon = TinkerConstruct.isModLoaded();
 
         Logger.INFO("Adding Agrochemical content");
 
@@ -527,7 +530,7 @@ public class AgriculturalChem extends ItemPackage {
         /**
          * Forestry Support
          */
-        if (LoadedMods.Forestry) {
+        if (Forestry.isModLoaded()) {
             Field aItemField = ReflectionUtils
                     .getField(ReflectionUtils.getClass("forestry.plugins.PluginCore"), "items");
             try {

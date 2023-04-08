@@ -1,6 +1,11 @@
 package gtPlusPlus.core.item.base.dusts;
 
-import java.util.*;
+import static gregtech.api.enums.Mods.GTPlusPlus;
+import static gregtech.api.enums.Mods.GregTech;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -107,7 +112,7 @@ public class BaseItemDustEx extends BaseItemComponent {
     @Override
     public String getCorrectTextures() {
         if (!CORE.ConfigSwitches.useGregtechTextures) {
-            return CORE.MODID + ":" + "item" + this.componentType.getComponent();
+            return GTPlusPlus.ID + ":" + "item" + this.componentType.getComponent();
         }
         String metType = "9j4852jyo3rjmh3owlhw9oe";
         if (this.componentMaterial != null) {
@@ -117,6 +122,6 @@ public class BaseItemDustEx extends BaseItemComponent {
             }
         }
         metType = (metType.equals("9j4852jyo3rjmh3owlhw9oe") ? "METALLIC" : metType);
-        return "gregtech" + ":" + "materialicons/" + metType + "/" + this.componentType.getOreDictName();
+        return GregTech.ID + ":" + "materialicons/" + metType + "/" + this.componentType.getOreDictName();
     }
 }

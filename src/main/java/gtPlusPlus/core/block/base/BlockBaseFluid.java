@@ -1,5 +1,7 @@
 package gtPlusPlus.core.block.base;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import java.util.Random;
 
 import net.minecraft.block.material.Material;
@@ -17,10 +19,10 @@ import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.Mods;
 import gtPlusPlus.core.client.renderer.particle.EntityDropParticleFX;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.item.base.itemblock.ItemBlockMeta;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 
 public class BlockBaseFluid extends BlockFluidClassic {
@@ -71,14 +73,14 @@ public class BlockBaseFluid extends BlockFluidClassic {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister iicon) {
-        this.textureArray[0] = iicon.registerIcon(CORE.MODID + ":" + "fluid/" + "Fluid_" + this.name + "_Still");
-        this.textureArray[1] = iicon.registerIcon(CORE.MODID + ":" + "fluid/" + "Fluid_" + this.name + "_Flow");
+        this.textureArray[0] = iicon.registerIcon(GTPlusPlus.ID + ":" + "fluid/" + "Fluid_" + this.name + "_Still");
+        this.textureArray[1] = iicon.registerIcon(GTPlusPlus.ID + ":" + "fluid/" + "Fluid_" + this.name + "_Flow");
         // IconRegistry.addIcon("Fluid" + this.name, this.modName + ":fluid/Fluid_" + this.name + "_Still", arg0);
         // IconRegistry.addIcon("Fluid" + this.name + "1", this.modName + ":fluid/Fluid_" + this.name + "_Flow", arg0);
     }
 
     @Override
-    @Optional.Method(modid = "CoFHCore")
+    @Optional.Method(modid = Mods.Names.C_O_F_H_CORE)
     @SideOnly(Side.CLIENT)
     public void randomDisplayTick(World arg0, int arg1, int arg2, int arg3, Random arg4) {
         super.randomDisplayTick(arg0, arg1, arg2, arg3, arg4);

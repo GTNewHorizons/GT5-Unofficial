@@ -1,10 +1,11 @@
 package gtPlusPlus.core.tileentities;
 
+import static gregtech.api.enums.Mods.Thaumcraft;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.general.BlockSuperLight.TileEntitySuperLight;
 import gtPlusPlus.core.block.machine.Machine_SuperJukebox.TileEntitySuperJukebox;
-import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.tileentities.general.TileEntityCircuitProgrammer;
 import gtPlusPlus.core.tileentities.general.TileEntityDecayablesChest;
 import gtPlusPlus.core.tileentities.general.TileEntityEggBox;
@@ -50,7 +51,7 @@ public class ModTileEntities {
         GameRegistry.registerTileEntity(TileEntityVolumetricFlaskSetter.class, "TileEntityVolumetricFlaskSetter");
 
         // Mod TEs
-        if (LoadedMods.Thaumcraft) {}
+        if (Thaumcraft.isModLoaded()) {}
 
         blacklistTilesFromAcceleration();
     }

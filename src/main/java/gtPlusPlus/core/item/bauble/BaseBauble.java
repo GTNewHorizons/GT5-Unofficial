@@ -24,6 +24,7 @@ import com.google.common.collect.Multimap;
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.enums.Mods;
 import gregtech.api.util.GT_LanguageManager;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.util.Utils;
@@ -31,8 +32,8 @@ import gtPlusPlus.core.util.minecraft.ModularArmourUtils.BT;
 import gtPlusPlus.core.util.minecraft.NBTUtils;
 
 @Optional.InterfaceList(
-        value = { @Optional.Interface(iface = "baubles.api.IBauble", modid = "Baubles"),
-                @Optional.Interface(iface = "baubles.api.BaubleType", modid = "Baubles") })
+        value = { @Optional.Interface(iface = "baubles.api.IBauble", modid = Mods.Names.BAUBLES),
+                @Optional.Interface(iface = "baubles.api.BaubleType", modid = Mods.Names.BAUBLES) })
 public class BaseBauble extends Item implements IBauble {
 
     /**

@@ -1,5 +1,7 @@
 package gtPlusPlus.core.item.general;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -9,7 +11,6 @@ import net.minecraft.world.World;
 import gtPlusPlus.core.block.general.FirePit;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.item.base.CoreItem;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 
@@ -17,7 +18,7 @@ public class ItemBasicFirestarter extends CoreItem {
 
     public ItemBasicFirestarter() {
         super("itemSimpleFiremaker", AddToCreativeTab.tabTools, 1, 5, "Can probably make you a fire");
-        this.setTextureName(CORE.MODID + ":" + "itemFireStarter");
+        this.setTextureName(GTPlusPlus.ID + ":" + "itemFireStarter");
     }
 
     @Override

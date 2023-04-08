@@ -1,6 +1,38 @@
 package gtPlusPlus.preloader.asm.transformers;
 
-import static org.objectweb.asm.Opcodes.*;
+import static gregtech.api.enums.Mods.TinkerConstruct;
+import static org.objectweb.asm.Opcodes.AALOAD;
+import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
+import static org.objectweb.asm.Opcodes.ALOAD;
+import static org.objectweb.asm.Opcodes.ASM5;
+import static org.objectweb.asm.Opcodes.BIPUSH;
+import static org.objectweb.asm.Opcodes.D2F;
+import static org.objectweb.asm.Opcodes.DADD;
+import static org.objectweb.asm.Opcodes.DDIV;
+import static org.objectweb.asm.Opcodes.DUP;
+import static org.objectweb.asm.Opcodes.DUP_X1;
+import static org.objectweb.asm.Opcodes.GETFIELD;
+import static org.objectweb.asm.Opcodes.GETSTATIC;
+import static org.objectweb.asm.Opcodes.GOTO;
+import static org.objectweb.asm.Opcodes.I2D;
+import static org.objectweb.asm.Opcodes.IADD;
+import static org.objectweb.asm.Opcodes.ICONST_0;
+import static org.objectweb.asm.Opcodes.ICONST_1;
+import static org.objectweb.asm.Opcodes.IFEQ;
+import static org.objectweb.asm.Opcodes.IFLE;
+import static org.objectweb.asm.Opcodes.IFNE;
+import static org.objectweb.asm.Opcodes.IFNONNULL;
+import static org.objectweb.asm.Opcodes.IFNULL;
+import static org.objectweb.asm.Opcodes.IF_ICMPEQ;
+import static org.objectweb.asm.Opcodes.ILOAD;
+import static org.objectweb.asm.Opcodes.INVOKESTATIC;
+import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
+import static org.objectweb.asm.Opcodes.IREM;
+import static org.objectweb.asm.Opcodes.ISTORE;
+import static org.objectweb.asm.Opcodes.ISUB;
+import static org.objectweb.asm.Opcodes.POP;
+import static org.objectweb.asm.Opcodes.PUTFIELD;
+import static org.objectweb.asm.Opcodes.RETURN;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -9,9 +41,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 
 import org.apache.logging.log4j.Level;
-import org.objectweb.asm.*;
+import org.objectweb.asm.ClassReader;
+import org.objectweb.asm.ClassVisitor;
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.Label;
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
 
-import cpw.mods.fml.common.Loader;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.preloader.Preloader_Logger;
 
@@ -104,7 +140,7 @@ public class ClassTransformer_TT_ThaumicRestorer {
                 ReflectionUtils.setField(aTile, mTicksExisted, ticksExisted);
                 boolean aDidRun = false;
                 if (ticksExisted % 10 == 0) {
-                    if (Loader.isModLoaded("TConstruct") && repairTConTools
+                    if (TinkerConstruct.isModLoaded() && repairTConTools
                             && inventorySlots[0] != null
                             && isTConstructTool(inventorySlots[0])) {
                         final int dmg = getDamage(inventorySlots[0]);
@@ -263,7 +299,7 @@ public class ClassTransformer_TT_ThaumicRestorer {
         Label l2 = new Label();
         mv.visitLabel(l2);
         mv.visitLineNumber(60, l2);
-        mv.visitLdcInsn("TConstruct");
+        mv.visitLdcInsn(TinkerConstruct.ID);
         mv.visitMethodInsn(INVOKESTATIC, "cpw/mods/fml/common/Loader", "isModLoaded", "(Ljava/lang/String;)Z", false);
         Label l3 = new Label();
         mv.visitJumpInsn(IFEQ, l3);

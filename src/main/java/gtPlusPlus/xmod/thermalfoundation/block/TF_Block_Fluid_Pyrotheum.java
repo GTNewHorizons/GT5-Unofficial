@@ -1,5 +1,7 @@
 package gtPlusPlus.xmod.thermalfoundation.block;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import java.util.Random;
 
 import net.minecraft.block.Block;
@@ -18,7 +20,6 @@ import cofh.core.fluid.BlockFluidInteractive;
 import cofh.lib.util.BlockWrapper;
 import cofh.lib.util.helpers.ServerHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.thermalfoundation.fluid.TF_Fluids;
 
 public class TF_Block_Fluid_Pyrotheum extends BlockFluidInteractive {
@@ -30,7 +31,7 @@ public class TF_Block_Fluid_Pyrotheum extends BlockFluidInteractive {
     private static boolean enableSourceFall = true;
 
     public TF_Block_Fluid_Pyrotheum() {
-        super(CORE.MODID, TF_Fluids.fluidPyrotheum, Material.lava, "pyrotheum");
+        super(GTPlusPlus.ID, TF_Fluids.fluidPyrotheum, Material.lava, "pyrotheum");
         this.setQuantaPerBlock(5);
         this.setTickRate(10);
 

@@ -1,5 +1,6 @@
 package gtPlusPlus.core.handler.events;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gtPlusPlus.core.item.base.dusts.BaseItemDustEx.mCachedPileLinkages;
 
 import net.minecraft.item.ItemStack;
@@ -10,14 +11,13 @@ import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.event.FMLMissingMappingsEvent;
 import cpw.mods.fml.common.event.FMLMissingMappingsEvent.MissingMapping;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.lib.CORE;
 
 public class MissingMappingsEvent {
 
     @EventHandler
     public void onMissingMapping(FMLMissingMappingsEvent event) {
         for (MissingMapping mapping : event.get()) {
-            boolean bool1 = mapping.name.contains(CORE.MODID);
+            boolean bool1 = mapping.name.contains(GTPlusPlus.ID);
             // Missing Blocks
             if (mapping.type == cpw.mods.fml.common.registry.GameRegistry.Type.BLOCK && bool1) {
 
@@ -30,12 +30,6 @@ public class MissingMappingsEvent {
 
             // Missing Items
             if (mapping.type == cpw.mods.fml.common.registry.GameRegistry.Type.ITEM && bool1) {
-
-                // Example
-                // if(mapping.name.equals("PneumaticCraft:etchingAcidBucket")) {
-                // mapping.remap(Fluids.getBucket(Fluids.etchingAcid));
-                // }
-
                 if (mapping.name.contains("miscutils:itemDustTiny")) {
                     ItemStack stack = null;
                     String missingItemString = StringUtils.remove(mapping.name, "miscutils:itemDustTiny");

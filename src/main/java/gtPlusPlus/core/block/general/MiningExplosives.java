@@ -1,5 +1,7 @@
 package gtPlusPlus.core.block.general;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import java.util.Random;
 
 import net.minecraft.block.Block;
@@ -19,7 +21,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.entity.EntityPrimedMiningExplosive;
-import gtPlusPlus.core.lib.CORE;
 
 public class MiningExplosives extends BlockTNT {
 
@@ -185,14 +186,8 @@ public class MiningExplosives extends BlockTNT {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(final IIconRegister iconRegister) {
-        //
-        /*
-         * this.blockIcon = iconRegister.registerIcon(this.getTextureName() + "_side"); this.textureTop =
-         * iconRegister.registerIcon(this.getTextureName() + "_top"); this.textureBottom =
-         * iconRegister.registerIcon(this.getTextureName() + "_bottom");
-         */
-        this.blockIcon = iconRegister.registerIcon(CORE.MODID + ":" + "chrono/" + "MetalSheet2");
-        this.textureTop = iconRegister.registerIcon(CORE.MODID + ":" + "chrono/" + "MetalFunnel");
-        this.textureBottom = iconRegister.registerIcon(CORE.MODID + ":" + "chrono/" + "MetalPanel");
+        this.blockIcon = iconRegister.registerIcon(GTPlusPlus.ID + ":" + "chrono/" + "MetalSheet2");
+        this.textureTop = iconRegister.registerIcon(GTPlusPlus.ID + ":" + "chrono/" + "MetalFunnel");
+        this.textureBottom = iconRegister.registerIcon(GTPlusPlus.ID + ":" + "chrono/" + "MetalPanel");
     }
 }

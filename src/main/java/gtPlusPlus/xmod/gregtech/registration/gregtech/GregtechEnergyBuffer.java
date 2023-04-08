@@ -1,12 +1,13 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
+import static gregtech.api.enums.Mods.COFHCore;
+
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOreDictNames;
 import gtPlusPlus.xmod.gregtech.common.tileentities.generators.GT_MetaTileEntity_RfConvertor;
@@ -26,7 +27,7 @@ public class GregtechEnergyBuffer {
     private static void run1() {
 
         // itemBufferCore = new
-        // Item().setUnlocalizedName("itemBufferCore").setCreativeTab(AddToCreativeTab.tabMisc).setTextureName(CORE.MODID
+        // Item().setUnlocalizedName("itemBufferCore").setCreativeTab(AddToCreativeTab.tabMisc).setTextureName(GTPlusPlus.ID
         // + ":itemBufferCore");
 
         // Registry
@@ -75,7 +76,7 @@ public class GregtechEnergyBuffer {
                         "",
                         0).getStackForm(1L));
 
-        if (LoadedMods.CoFHCore && CORE.ConfigSwitches.enableMachine_RF_Convetor) {
+        if (COFHCore.isModLoaded() && CORE.ConfigSwitches.enableMachine_RF_Convetor) {
             // RF Convertor Buffer Has Special ID
             GregtechItemList.Energy_Buffer_RF_Convertor.set(
                     new GT_MetaTileEntity_RfConvertor(31022, "energybuffer.rf.tier.01", "RF Energy Convertor", 3, "", 0)

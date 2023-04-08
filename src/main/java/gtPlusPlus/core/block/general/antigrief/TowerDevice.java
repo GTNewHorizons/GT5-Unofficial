@@ -1,5 +1,6 @@
 package gtPlusPlus.core.block.general.antigrief;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gtPlusPlus.core.block.ModBlocks.blockGriefSaver;
 
 import java.util.List;
@@ -24,7 +25,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.tileentities.general.TileEntityReverter;
 
 public class TowerDevice extends Block {
@@ -61,7 +61,7 @@ public class TowerDevice extends Block {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(final IIconRegister par1IconRegister) {
-        TEX_ANTIBUILDER = par1IconRegister.registerIcon(CORE.MODID + ":" + "blockAntiGrief");
+        TEX_ANTIBUILDER = par1IconRegister.registerIcon(GTPlusPlus.ID + ":" + "blockAntiGrief");
     }
 
     @Override

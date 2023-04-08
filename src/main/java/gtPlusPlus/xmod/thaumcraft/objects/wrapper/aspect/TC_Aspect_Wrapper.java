@@ -1,5 +1,7 @@
 package gtPlusPlus.xmod.thaumcraft.objects.wrapper.aspect;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -12,7 +14,6 @@ import net.minecraft.util.ResourceLocation;
 import gregtech.api.enums.TC_Aspects;
 import gregtech.api.util.GT_LanguageManager;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.thaumcraft.util.ThaumcraftUtils;
 
@@ -124,7 +125,7 @@ public class TC_Aspect_Wrapper {
                 color,
                 components,
                 vanilla ? new ResourceLocation("thaumcraft", "textures/aspects/" + tag.toLowerCase() + ".png")
-                        : new ResourceLocation(CORE.MODID, "textures/aspects/" + tag.toLowerCase() + ".png"),
+                        : new ResourceLocation(GTPlusPlus.ID, "textures/aspects/" + tag.toLowerCase() + ".png"),
                 vanilla,
                 blend,
                 aTooltip);

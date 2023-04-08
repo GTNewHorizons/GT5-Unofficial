@@ -1,16 +1,23 @@
 package gtPlusPlus.core.recipe;
 
-import java.util.ArrayList;
+import static gregtech.api.enums.Mods.Backpack;
+import static gregtech.api.enums.Mods.Baubles;
+import static gregtech.api.enums.Mods.PamsHarvestCraft;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.oredict.OreDictionary;
 
-import cpw.mods.fml.common.Loader;
-import gregtech.api.enums.*;
-import gregtech.api.util.*;
+import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.TierEU;
+import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.HotFuel;
+import gregtech.api.util.ThermalFuel;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.ModItems;
@@ -21,15 +28,17 @@ import gtPlusPlus.core.item.chemistry.RocketFuels;
 import gtPlusPlus.core.item.crafting.ItemDummyResearch;
 import gtPlusPlus.core.item.crafting.ItemDummyResearch.ASSEMBLY_LINE_RESEARCH;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.lib.LoadedMods;
-import gtPlusPlus.core.material.*;
+import gtPlusPlus.core.material.ALLOY;
+import gtPlusPlus.core.material.ELEMENT;
+import gtPlusPlus.core.material.MISC_MATERIALS;
+import gtPlusPlus.core.material.ORES;
+import gtPlusPlus.core.material.Particle;
 import gtPlusPlus.core.material.nuclear.FLUORIDES;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.EnchantingUtils;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
-import gtPlusPlus.core.util.reflect.AddGregtechRecipe;
 import gtPlusPlus.xmod.bop.blocks.BOP_Block_Registrator;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
@@ -41,7 +50,6 @@ public class RECIPES_GREGTECH {
     }
 
     private static void execute() {
-        cokeOvenRecipes();
         electrolyzerRecipes();
         assemblerRecipes();
         fluidcannerRecipes();
@@ -52,10 +60,8 @@ public class RECIPES_GREGTECH {
         chemicalReactorRecipes();
         dehydratorRecipes();
         blastFurnaceRecipes();
-
         largeChemReactorRecipes();
         fusionRecipes();
-
         fissionFuelRecipes();
         autoclaveRecipes();
         compressorRecipes();
@@ -65,7 +71,6 @@ public class RECIPES_GREGTECH {
         benderRecipes();
         cyclotronRecipes();
         blastSmelterRecipes();
-        // advancedMixerRecipes();
         sifterRecipes();
         electroMagneticSeperatorRecipes();
         extruderRecipes();
@@ -79,7 +84,6 @@ public class RECIPES_GREGTECH {
         chemplantRecipes();
         packagerRecipes();
         alloySmelterRecipes();
-        implosionRecipes();
 
         /**
          * Special Recipe handlers
@@ -430,7 +434,7 @@ public class RECIPES_GREGTECH {
                     (int) MaterialUtils.getVoltageForTier(j));
         }
 
-        if (LoadedMods.Baubles) {
+        if (Baubles.isModLoaded()) {
             // Nano Healer
             CORE.RA.addAssemblylineRecipe(
                     ItemUtils.simpleMetaStack(Items.golden_apple, 1, 1),
@@ -898,69 +902,6 @@ public class RECIPES_GREGTECH {
                 240);
     }
 
-    private static void cokeOvenRecipes() {
-        Logger.INFO("Loading Recipes for Industrial Coking Oven.");
-        // Wood to Charcoal
-        // Try use all woods found
-        ArrayList<ItemStack> aLogData = OreDictionary.getOres("logWood");
-        for (ItemStack stack : aLogData) {
-            AddGregtechRecipe.addCokeAndPyrolyseRecipes(
-                    ItemUtils.getSimpleStack(stack, 20),
-                    20,
-                    GT_ModHandler.getSteam(1000),
-                    GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Charcoal, 24L),
-                    FluidUtils.getFluidStack("fluid.coalgas", 1440),
-                    60,
-                    30);
-        }
-
-        // Coal to Coke
-        AddGregtechRecipe.addCokeAndPyrolyseRecipes(
-                GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 16L),
-                22,
-                GT_ModHandler.getSteam(1000),
-                ItemUtils.getItemStackOfAmountFromOreDict("fuelCoke", 10),
-                FluidUtils.getFluidStack("fluid.coalgas", 2880),
-                30,
-                120);
-
-        // Coke & Coal
-        CORE.RA.addCokeOvenRecipe(
-                GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 12L),
-                ItemUtils.getItemStackOfAmountFromOreDict("fuelCoke", 6),
-                GT_ModHandler.getSteam(2000),
-                FluidUtils.getFluidStack("fluid.coalgas", 5040),
-                ItemUtils.getItemStackOfAmountFromOreDict("fuelCoke", 14),
-                60 * 20,
-                240);
-    }
-
-    private static void matterFabRecipes() {
-        Logger.INFO("Loading Recipes for Matter Fabricator.");
-
-        try {
-
-            CORE.RA.addMatterFabricatorRecipe(
-                    Materials.UUAmplifier.getFluid(1L), // Fluid
-                    // Input
-                    Materials.UUMatter.getFluid(1L), // Fluid Output
-                    800, // Time in ticks
-                    32); // EU
-        } catch (final NullPointerException e) {
-            Logger.INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");
-        }
-        try {
-
-            CORE.RA.addMatterFabricatorRecipe(
-                    null, // Fluid Input
-                    Materials.UUMatter.getFluid(1L), // Fluid Output
-                    3200, // Time in ticks
-                    32); // EU
-        } catch (final NullPointerException e) {
-            Logger.INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");
-        }
-    }
-
     private static void dehydratorRecipes() {
         Logger.INFO("Loading Recipes for Chemical Dehydrator.");
 
@@ -1008,7 +949,7 @@ public class RECIPES_GREGTECH {
         /*
          * Try Add custom Recipe for drying leather
          */
-        if (LoadedMods.PamsHarvestcraft && Loader.isModLoaded("Backpack")) {
+        if (PamsHarvestCraft.isModLoaded() && Backpack.isModLoaded()) {
             ItemStack aLeather1, aLeather2;
             aLeather1 = ItemUtils.getCorrectStacktype("harvestcraft:hardenedleatherItem", 1);
             aLeather2 = ItemUtils.getCorrectStacktype("Backpack:tannedLeather", 1);
@@ -1320,7 +1261,7 @@ public class RECIPES_GREGTECH {
                     (int) GT_Values.V[i]);
         }
 
-        if (LoadedMods.Baubles) {
+        if (Baubles.isModLoaded()) {
 
             // Turbine Housing Research Page
             CORE.RA.addSixSlotAssemblingRecipe(

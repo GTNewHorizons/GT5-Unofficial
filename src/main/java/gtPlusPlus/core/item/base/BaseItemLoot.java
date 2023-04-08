@@ -1,5 +1,7 @@
 package gtPlusPlus.core.item.base;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import java.util.List;
 
 import net.minecraft.entity.Entity;
@@ -10,7 +12,6 @@ import net.minecraft.world.World;
 
 import gregtech.api.enums.Materials;
 import gtPlusPlus.api.enums.Quality;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 
@@ -29,7 +30,7 @@ public class BaseItemLoot extends Item {
         this.unlocalName = "item" + lootType.LOOT_TYPE + this.materialName;
         this.setUnlocalizedName(this.unlocalName);
         this.setMaxStackSize(1);
-        this.setTextureName(CORE.MODID + ":" + "item" + lootType.LOOT_TYPE);
+        this.setTextureName(GTPlusPlus.ID + ":" + "item" + lootType.LOOT_TYPE);
     }
 
     public ItemStack generateLootStack() {

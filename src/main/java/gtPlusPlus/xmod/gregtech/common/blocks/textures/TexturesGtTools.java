@@ -1,5 +1,7 @@
 package gtPlusPlus.xmod.gregtech.common.blocks.textures;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
@@ -7,7 +9,6 @@ import net.minecraft.util.ResourceLocation;
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.IIconContainer;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.lib.CORE;
 
 public final class TexturesGtTools {
 
@@ -40,9 +41,9 @@ public final class TexturesGtTools {
 
         @Override
         public void run() {
-            this.mIcon = GregTech_API.sItemIcons.registerIcon(CORE.MODID + ":" + this.mIconName);
+            this.mIcon = GregTech_API.sItemIcons.registerIcon(GTPlusPlus.ID + ":" + this.mIconName);
             // Utils.LOG_INFO("Registering a Custom Texture. "+mIcon.g);
-            this.mOverlay = GregTech_API.sItemIcons.registerIcon(CORE.MODID + ":" + this.mIconName + "_OVERLAY");
+            this.mOverlay = GregTech_API.sItemIcons.registerIcon(GTPlusPlus.ID + ":" + this.mIconName + "_OVERLAY");
         }
 
         @Override

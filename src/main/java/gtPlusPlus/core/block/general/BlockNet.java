@@ -1,5 +1,7 @@
 package gtPlusPlus.core.block.general;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import java.util.Random;
 
 import net.minecraft.block.BlockWeb;
@@ -11,7 +13,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.item.ModItems;
-import gtPlusPlus.core.lib.CORE;
 
 public class BlockNet extends BlockWeb {
 
@@ -26,7 +27,7 @@ public class BlockNet extends BlockWeb {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(final IIconRegister iIcon) {
-        this.blockIcon = iIcon.registerIcon(CORE.MODID + ":" + "net");
+        this.blockIcon = iIcon.registerIcon(GTPlusPlus.ID + ":" + "net");
     }
 
     @Override

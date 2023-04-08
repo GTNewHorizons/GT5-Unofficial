@@ -1,5 +1,7 @@
 package gtPlusPlus.core.item.general.chassis;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import java.util.List;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -11,7 +13,6 @@ import net.minecraft.util.StatCollector;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 
 public class ItemBoilerChassis extends Item {
@@ -29,7 +30,7 @@ public class ItemBoilerChassis extends Item {
 
     @Override
     public void registerIcons(IIconRegister reg) {
-        this.icons[0] = reg.registerIcon(CORE.MODID + ":" + "itemBoilerChassis");
+        this.icons[0] = reg.registerIcon(GTPlusPlus.ID + ":" + "itemBoilerChassis");
     }
 
     @Override

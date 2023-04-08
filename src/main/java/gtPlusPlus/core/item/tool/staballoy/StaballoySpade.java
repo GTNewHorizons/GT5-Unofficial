@@ -1,5 +1,7 @@
 package gtPlusPlus.core.item.tool.staballoy;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import java.util.List;
 
 import net.minecraft.block.Block;
@@ -18,7 +20,6 @@ import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.MiningUtils;
 
 public class StaballoySpade extends ItemSpade {
@@ -396,7 +397,7 @@ public class StaballoySpade extends ItemSpade {
     public StaballoySpade(final String unlocalizedName, final ToolMaterial material) {
         super(material);
         this.setUnlocalizedName(unlocalizedName);
-        this.setTextureName(CORE.MODID + ":" + unlocalizedName);
+        this.setTextureName(GTPlusPlus.ID + ":" + unlocalizedName);
         this.setMaxStackSize(1);
         this.setMaxDamage(3200);
     }

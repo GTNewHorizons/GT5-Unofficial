@@ -1,5 +1,8 @@
 package gtPlusPlus.core.item.bauble;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+import static gregtech.api.enums.Mods.Thaumcraft;
+
 import java.util.List;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -22,7 +25,6 @@ import com.google.common.collect.Multimap;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.minecraft.ModularArmourUtils;
 import gtPlusPlus.core.util.minecraft.ModularArmourUtils.BT;
 import gtPlusPlus.core.util.minecraft.ModularArmourUtils.Modifiers;
@@ -448,17 +450,17 @@ public class ModularBauble extends BaseBauble {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister register) {
-        this.mfallback = register.registerIcon("miscutils" + ":" + "itemAmulet");
+        this.mfallback = register.registerIcon(GTPlusPlus.ID + ":" + "itemAmulet");
         // you cannot initialize iconArray when declared nor in the constructor,
         // as it is client-side only, so do it here:
-        if (LoadedMods.Thaumcraft) {
+        if (Thaumcraft.isModLoaded()) {
             iconArray[0] = register.registerIcon("thaumcraft" + ":" + "bauble_amulet");
             iconArray[1] = register.registerIcon("thaumcraft" + ":" + "bauble_ring");
             iconArray[2] = register.registerIcon("thaumcraft" + ":" + "bauble_belt");
         } else {
-            iconArray[0] = register.registerIcon("miscutils" + ":" + "itemAmulet");
-            iconArray[1] = register.registerIcon("miscutils" + ":" + "itemRingWearable");
-            iconArray[2] = register.registerIcon("miscutils" + ":" + "itemBelt");
+            iconArray[0] = register.registerIcon(GTPlusPlus.ID + ":" + "itemAmulet");
+            iconArray[1] = register.registerIcon(GTPlusPlus.ID + ":" + "itemRingWearable");
+            iconArray[2] = register.registerIcon(GTPlusPlus.ID + ":" + "itemBelt");
         }
 
         mTextureAmulet = iconArray[0];

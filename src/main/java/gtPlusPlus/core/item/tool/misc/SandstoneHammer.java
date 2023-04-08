@@ -1,5 +1,7 @@
 package gtPlusPlus.core.item.tool.misc;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -10,7 +12,6 @@ import net.minecraft.util.EnumChatFormatting;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.core.item.base.BaseItemWithDamageValue;
-import gtPlusPlus.core.lib.CORE;
 
 public class SandstoneHammer extends BaseItemWithDamageValue {
 
@@ -27,7 +28,7 @@ public class SandstoneHammer extends BaseItemWithDamageValue {
 
     public SandstoneHammer(final String unlocalizedName) {
         super(unlocalizedName);
-        this.setTextureName(CORE.MODID + ":" + unlocalizedName);
+        this.setTextureName(GTPlusPlus.ID + ":" + unlocalizedName);
         this.setMaxStackSize(1);
         this.setMaxDamage(2500);
     }

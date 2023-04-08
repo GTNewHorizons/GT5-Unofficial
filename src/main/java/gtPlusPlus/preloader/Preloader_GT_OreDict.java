@@ -1,5 +1,7 @@
 package gtPlusPlus.preloader;
 
+import static gregtech.api.enums.Mods.GregTech;
+
 import net.minecraft.item.ItemStack;
 
 import org.apache.logging.log4j.Level;
@@ -7,7 +9,6 @@ import org.apache.logging.log4j.Level;
 import cpw.mods.fml.relauncher.FMLRelaunchLog;
 import gregtech.common.items.GT_MetaGenerated_Item_01;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 
@@ -17,13 +18,13 @@ public class Preloader_GT_OreDict {
 
         if (bannedItem == null) {
             return false;
-        } else if (!CORE_Preloader.enableOldGTcircuits && !LoadedMods.Mekanism) {
+        } else if (!CORE_Preloader.enableOldGTcircuits) {
             return false;
         }
 
         try {
             if (CORE_Preloader.enableOldGTcircuits) {
-                if ((bannedItem != null) && ItemUtils.getModId(bannedItem).toLowerCase().equals("gregtech")) {
+                if ((bannedItem != null) && ItemUtils.getModId(bannedItem).toLowerCase().equals(GregTech.ID)) {
                     final int damageValue = bannedItem.getItemDamage() - 32000;
                     if (bannedItem.getItem() instanceof GT_MetaGenerated_Item_01) { // 700-720
                         if ((damageValue >= 700) && (damageValue <= 720)) {
@@ -51,127 +52,6 @@ public class Preloader_GT_OreDict {
                                     return true;
                                 }
                             }
-                        }
-                    }
-                }
-            }
-
-            // Mekanism Support - Let's not make Mek Osmium useful in GT anymore.
-            if ((((bannedItem != null) && !LoadedMods.RedTech
-                    && (ItemUtils.getModId(bannedItem).toLowerCase().equals("mekanism"))) || (LoadedMods.Mekanism))
-                    && !LoadedMods.RedTech) {
-                // Circuits
-                if (ReflectionUtils.doesClassExist("mekanism.common.item.ItemControlCircuit")) {
-                    final Class<?> MekCircuit = ReflectionUtils.getClass("mekanism.common.item.ItemControlCircuit");
-                    if (isInstanceOf(MekCircuit, bannedItem.getItem())) {
-                        for (int r = 0; r < 4; r++) {
-                            if (bannedItem.getItemDamage() == r) {
-                                FMLRelaunchLog.log(
-                                        "[GT++ ASM] OreDictTransformer",
-                                        Level.INFO,
-                                        "Removing %s from the OreDictionary to balance Mekanism.",
-                                        bannedItem.getDisplayName());
-                                return true;
-                            }
-                        }
-                    }
-                }
-                // Ingots
-                if (ReflectionUtils.doesClassExist("mekanism.common.item.ItemIngot")) {
-                    final Class<?> MekIngot = ReflectionUtils.getClass("mekanism.common.item.ItemIngot");
-                    if (isInstanceOf(MekIngot, bannedItem.getItem())) {
-                        if (bannedItem.getItemDamage() == 1) {
-                            FMLRelaunchLog.log(
-                                    "[GT++ ASM] OreDictTransformer",
-                                    Level.INFO,
-                                    "Removing %s from the OreDictionary to balance Mekanism.",
-                                    bannedItem.getDisplayName());
-                            return true;
-                        }
-                    }
-                }
-                // Dirty Dust
-                if (ReflectionUtils.doesClassExist("mekanism.common.item.ItemDirtyDust")) {
-                    final Class<?> MekIngot = ReflectionUtils.getClass("mekanism.common.item.ItemDirtyDust");
-                    if (isInstanceOf(MekIngot, bannedItem.getItem())) {
-                        if (bannedItem.getItemDamage() == 2) {
-                            FMLRelaunchLog.log(
-                                    "[GT++ ASM] OreDictTransformer",
-                                    Level.INFO,
-                                    "Removing %s from the OreDictionary to balance Mekanism.",
-                                    bannedItem.getDisplayName());
-                            return true;
-                        }
-                    }
-                }
-                // Dust
-                if (ReflectionUtils.doesClassExist("mekanism.common.item.ItemDust")) {
-                    final Class<?> MekIngot = ReflectionUtils.getClass("mekanism.common.item.ItemDust");
-                    if (isInstanceOf(MekIngot, bannedItem.getItem())) {
-                        if (bannedItem.getItemDamage() == 2) {
-                            FMLRelaunchLog.log(
-                                    "[GT++ ASM] OreDictTransformer",
-                                    Level.INFO,
-                                    "Removing %s from the OreDictionary to balance Mekanism.",
-                                    bannedItem.getDisplayName());
-                            return true;
-                        }
-                    }
-                }
-                // Crystal
-                if (ReflectionUtils.doesClassExist("mekanism.common.item.ItemCrystal")) {
-                    final Class<?> MekIngot = ReflectionUtils.getClass("mekanism.common.item.ItemCrystal");
-                    if (isInstanceOf(MekIngot, bannedItem.getItem())) {
-                        if (bannedItem.getItemDamage() == 2) {
-                            FMLRelaunchLog.log(
-                                    "[GT++ ASM] OreDictTransformer",
-                                    Level.INFO,
-                                    "Removing %s from the OreDictionary to balance Mekanism.",
-                                    bannedItem.getDisplayName());
-                            return true;
-                        }
-                    }
-                }
-                // Shard
-                if (ReflectionUtils.doesClassExist("mekanism.common.item.ItemShard")) {
-                    final Class<?> MekIngot = ReflectionUtils.getClass("mekanism.common.item.ItemShard");
-                    if (isInstanceOf(MekIngot, bannedItem.getItem())) {
-                        if (bannedItem.getItemDamage() == 2) {
-                            FMLRelaunchLog.log(
-                                    "[GT++ ASM] OreDictTransformer",
-                                    Level.INFO,
-                                    "Removing %s from the OreDictionary to balance Mekanism.",
-                                    bannedItem.getDisplayName());
-                            return true;
-                        }
-                    }
-                }
-                // Clump
-                if (ReflectionUtils.doesClassExist("mekanism.common.item.ItemClump")) {
-                    final Class<?> MekIngot = ReflectionUtils.getClass("mekanism.common.item.ItemClump");
-                    if (isInstanceOf(MekIngot, bannedItem.getItem())) {
-                        if (bannedItem.getItemDamage() == 2) {
-                            FMLRelaunchLog.log(
-                                    "[GT++ ASM] OreDictTransformer",
-                                    Level.INFO,
-                                    "Removing %s from the OreDictionary to balance Mekanism.",
-                                    bannedItem.getDisplayName());
-                            return true;
-                        }
-                    }
-                }
-                // Ores
-                if (ReflectionUtils.doesClassExist("mekanism.common.item.ItemBlockOre")) {
-                    final Class<?> MekOre = ReflectionUtils.getClass("mekanism.common.item.ItemBlockOre");
-                    if (isInstanceOf(MekOre, bannedItem.getItem())
-                            || (bannedItem == ItemUtils.simpleMetaStack("Mekanism:OreBlock", 0, 1))) {
-                        if (bannedItem.getItemDamage() == 0) {
-                            FMLRelaunchLog.log(
-                                    "[GT++ ASM] OreDictTransformer",
-                                    Level.INFO,
-                                    "Removing %s from the OreDictionary to balance Mekanism.",
-                                    bannedItem.getDisplayName());
-                            return true;
                         }
                     }
                 }

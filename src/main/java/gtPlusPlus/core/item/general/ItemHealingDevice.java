@@ -1,5 +1,7 @@
 package gtPlusPlus.core.item.general;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import java.util.List;
 
 import net.minecraft.entity.Entity;
@@ -8,7 +10,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.*;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.FoodStats;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import baubles.api.BaubleType;
@@ -16,19 +20,21 @@ import baubles.api.IBauble;
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.Mods;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.core.util.sys.KeyboardUtils;
 import gtPlusPlus.xmod.gregtech.common.helpers.ChargingHelper;
-import ic2.api.item.*;
+import ic2.api.item.ElectricItem;
+import ic2.api.item.IElectricItem;
+import ic2.api.item.IElectricItemManager;
 
 @Optional.InterfaceList(
-        value = { @Optional.Interface(iface = "baubles.api.IBauble", modid = "Baubles"),
-                @Optional.Interface(iface = "baubles.api.BaubleType", modid = "Baubles") })
+        value = { @Optional.Interface(iface = "baubles.api.IBauble", modid = Mods.Names.BAUBLES),
+                @Optional.Interface(iface = "baubles.api.BaubleType", modid = Mods.Names.BAUBLES) })
 public class ItemHealingDevice extends Item implements IElectricItem, IElectricItemManager, IBauble {
 
     private final String unlocalizedName = "personalHealingDevice";
@@ -39,7 +45,7 @@ public class ItemHealingDevice extends Item implements IElectricItem, IElectricI
         this.setCreativeTab(AddToCreativeTab.tabMachines);
         this.setUnlocalizedName(this.unlocalizedName);
         this.setMaxStackSize(1);
-        this.setTextureName(CORE.MODID + ":" + "personalCloakingDevice");
+        this.setTextureName(GTPlusPlus.ID + ":" + "personalCloakingDevice");
         GameRegistry.registerItem(this, this.unlocalizedName);
     }
 

@@ -1,5 +1,7 @@
 package gtPlusPlus.core.item.general;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import java.util.List;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -16,7 +18,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.handler.GuiHandler;
-import gtPlusPlus.core.lib.CORE;
 
 public class BaseItemGrindle extends Item {
 
@@ -25,7 +26,7 @@ public class BaseItemGrindle extends Item {
     public BaseItemGrindle() {
         this.unlocalName = "itemGrindleTablet";
         this.setUnlocalizedName("itemGrindleTablet");
-        this.setTextureName(CORE.MODID + ":" + "itemTablet");
+        this.setTextureName(GTPlusPlus.ID + ":" + "itemTablet");
         GameRegistry.registerItem(this, "itemGrindleTablet");
         this.setMaxStackSize(1);
         this.setCreativeTab(AddToCreativeTab.tabOther);
@@ -49,7 +50,7 @@ public class BaseItemGrindle extends Item {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(final IIconRegister iconRegister) {
-        this.itemIcon = iconRegister.registerIcon(CORE.MODID + ":" + "itemTablet");
+        this.itemIcon = iconRegister.registerIcon(GTPlusPlus.ID + ":" + "itemTablet");
     }
 
     @Override

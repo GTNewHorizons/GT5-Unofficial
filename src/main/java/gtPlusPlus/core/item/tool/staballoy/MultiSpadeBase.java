@@ -1,5 +1,8 @@
 package gtPlusPlus.core.item.tool.staballoy;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+import static gregtech.api.enums.Mods.Minecraft;
+
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 
@@ -7,7 +10,6 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -36,8 +38,8 @@ public class MultiSpadeBase extends StaballoySpade {
             final int colour) {
         super(Utils.sanitizeString(unlocalizedName), material);
         this.setUnlocalizedName(Utils.sanitizeString(unlocalizedName));
-        // this.setTextureName(CORE.MODID + ":" + "itemShovel");
-        this.setTextureName("minecraft" + ":" + "iron_shovel");
+        // this.setTextureName(GTPlusPlus.ID + ":" + "itemShovel");
+        this.setTextureName(Minecraft.ID + ":" + "iron_shovel");
         this.setMaxStackSize(1);
         this.setMaxDamage(materialDurability * 3);
         this.colour = colour;
@@ -48,7 +50,7 @@ public class MultiSpadeBase extends StaballoySpade {
             this.isValid = this.addRecipe();
         } catch (final Throwable e) {}
         if ((colour != 0) && this.isValid) {
-            if (GameRegistry.findItem(CORE.MODID, Utils.sanitizeString(unlocalizedName)) == null) {
+            if (GameRegistry.findItem(GTPlusPlus.ID, Utils.sanitizeString(unlocalizedName)) == null) {
                 GameRegistry.registerItem(this, Utils.sanitizeString(unlocalizedName));
             }
         }

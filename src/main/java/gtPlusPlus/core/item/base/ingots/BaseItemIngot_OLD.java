@@ -1,5 +1,7 @@
 package gtPlusPlus.core.item.base.ingots;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -10,7 +12,6 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -27,7 +28,7 @@ public class BaseItemIngot_OLD extends Item {
         this.setCreativeTab(AddToCreativeTab.tabMisc);
         this.unlocalName = unlocalizedName;
         this.setMaxStackSize(64);
-        this.setTextureName(CORE.MODID + ":" + "itemIngot");
+        this.setTextureName(GTPlusPlus.ID + ":" + "itemIngot");
         this.colour = colour;
         this.materialName = materialName;
         this.sRadiation = sRadioactivity;

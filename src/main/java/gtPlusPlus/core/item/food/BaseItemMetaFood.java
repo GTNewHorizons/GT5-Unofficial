@@ -1,5 +1,7 @@
 package gtPlusPlus.core.item.food;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,7 +23,6 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.item.ModItems;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -367,7 +368,7 @@ public class BaseItemMetaFood extends ItemFood {
     @Override
     public void registerIcons(final IIconRegister u) {
         for (int i = 0; i < mTotalMetaItems; i++) {
-            String aPath = CORE.MODID + ":" + "food/MetaItem1/" + i;
+            String aPath = GTPlusPlus.ID + ":" + "food/MetaItem1/" + i;
             mIconMap.put(i, u.registerIcon(aPath));
         }
     }

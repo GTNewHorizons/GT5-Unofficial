@@ -1,12 +1,13 @@
 package gtPlusPlus.core.item.wearable.armour;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraftforge.common.util.EnumHelper;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gtPlusPlus.core.item.wearable.armour.tinfoil.ArmourTinFoilHat;
-import gtPlusPlus.core.lib.CORE;
 
 public class ArmourLoader {
 
@@ -28,13 +29,10 @@ public class ArmourLoader {
         tinfoilArmour();
     }
 
-    private static void glassArmour() {
-        // RenderingRegistry.addNewArmourRendererPrefix("ClearGlassArmor"); This needs to be client side only TODO
-        // ClearGlassHelmet = new ClearGlassArmor(2055, ClearGlassArmor, 5, 0).setUnlocalizedName("amethyst_helmet");
-    }
+    private static void glassArmour() {}
 
     private static void tinfoilArmour() {
         TinFoilHat = new ArmourTinFoilHat().setUnlocalizedName("itemHatTinFoil");
-        GameRegistry.registerItem(TinFoilHat, "itemHatTinFoil", CORE.MODID);
+        GameRegistry.registerItem(TinFoilHat, "itemHatTinFoil", GTPlusPlus.ID);
     }
 }

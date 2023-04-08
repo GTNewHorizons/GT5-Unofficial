@@ -1,5 +1,7 @@
 package gtPlusPlus.xmod.gregtech.common.computer;
 
+import static gregtech.api.enums.Mods.BartWorks;
+import static gregtech.api.enums.Mods.GoodGenerator;
 import static gtPlusPlus.xmod.gregtech.common.tileentities.misc.GT_TileEntity_ComputerCube.sReactorList;
 
 import java.util.ArrayList;
@@ -12,7 +14,6 @@ import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.GT_ModHandler;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.bartworks.BW_Utils;
 import gtPlusPlus.xmod.goodgenerator.GG_Utils;
@@ -60,14 +61,14 @@ public class GT_ComputerCube_Setup {
                 sReactorList.add(new GT_ItemStack(aItem.get(1)));
             }
 
-            if (LoadedMods.BartWorks) {
+            if (BartWorks.isModLoaded()) {
                 ArrayList<ItemStack> aBartReactorItems = BW_Utils.getAll(1);
                 for (ItemStack aReactorItem : aBartReactorItems) {
                     sReactorList.add(new GT_ItemStack(aReactorItem));
                 }
             }
 
-            if (LoadedMods.GoodGenerator) {
+            if (GoodGenerator.isModLoaded()) {
                 ArrayList<ItemStack> aGlodReactorItems = GG_Utils.getAll(1);
                 for (ItemStack aReactorItem : aGlodReactorItems) {
                     sReactorList.add(new GT_ItemStack(aReactorItem));

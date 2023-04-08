@@ -1,5 +1,8 @@
 package gtPlusPlus.xmod.forestry.bees.items.output;
 
+import static gregtech.api.enums.Mods.Forestry;
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import java.util.List;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -31,7 +34,7 @@ public class GTPP_Comb extends Item {
         this.setCreativeTab(Tabs.tabApiculture);
         this.setHasSubtypes(true);
         this.setUnlocalizedName("gtpp.comb");
-        GameRegistry.registerItem(this, "gtpp.comb", CORE.MODID);
+        GameRegistry.registerItem(this, "gtpp.comb", GTPlusPlus.ID);
     }
 
     public ItemStack getStackForType(GTPP_CombType type) {
@@ -96,13 +99,13 @@ public class GTPP_Comb extends Item {
 
         addChemicalRecipe(
                 GTPP_CombType.DRAGONBLOOD,
-                new ItemStack[] { GT_ModHandler.getModItem("Forestry", "refractoryWax", 1L, 0),
+                new ItemStack[] { GT_ModHandler.getModItem(Forestry.ID, "refractoryWax", 1L, 0),
                         GTPP_Bees.propolis.getStackForType(GTPP_PropolisType.DRAGONBLOOD),
                         GTPP_Bees.drop.getStackForType(GTPP_DropType.DRAGONBLOOD) },
                 new int[] { 3000, 1500, 500 });
         addChemicalRecipe(
                 GTPP_CombType.FORCE,
-                new ItemStack[] { GT_ModHandler.getModItem("Forestry", "beeswax", 1L, 0),
+                new ItemStack[] { GT_ModHandler.getModItem(Forestry.ID, "beeswax", 1L, 0),
                         GTPP_Bees.propolis.getStackForType(GTPP_PropolisType.FORCE),
                         GTPP_Bees.drop.getStackForType(GTPP_DropType.FORCE) },
                 new int[] { 5000, 3000, 1000 });

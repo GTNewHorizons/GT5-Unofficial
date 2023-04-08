@@ -1,5 +1,7 @@
 package gtPlusPlus.core.block.machine;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -13,7 +15,6 @@ import gtPlusPlus.api.objects.minecraft.CubicObject;
 import gtPlusPlus.core.block.base.BasicTileBlockWithTooltip;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.item.base.itemblock.ItemBlockRoundRobinator;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.tileentities.machines.TileEntityRoundRobinator;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
@@ -107,12 +108,12 @@ public class Machine_RoundRobinator extends BasicTileBlockWithTooltip {
     public CubicObject<String>[] getCustomTextureDirectoryObject() {
         AutoMap<String[]> aTemp = new AutoMap<String[]>();
         for (int i = 0; i < 5; i++) {
-            String[] aTexData = new String[] { CORE.MODID + ":" + "TileEntities/RoundRobinator/Top_" + i,
-                    CORE.MODID + ":" + "TileEntities/RoundRobinator/Top_" + i,
-                    CORE.MODID + ":" + "TileEntities/RoundRobinator/Side_" + i,
-                    CORE.MODID + ":" + "TileEntities/RoundRobinator/Side_" + i,
-                    CORE.MODID + ":" + "TileEntities/RoundRobinator/Side_" + i,
-                    CORE.MODID + ":" + "TileEntities/RoundRobinator/Side_" + i, };
+            String[] aTexData = new String[] { GTPlusPlus.ID + ":" + "TileEntities/RoundRobinator/Top_" + i,
+                    GTPlusPlus.ID + ":" + "TileEntities/RoundRobinator/Top_" + i,
+                    GTPlusPlus.ID + ":" + "TileEntities/RoundRobinator/Side_" + i,
+                    GTPlusPlus.ID + ":" + "TileEntities/RoundRobinator/Side_" + i,
+                    GTPlusPlus.ID + ":" + "TileEntities/RoundRobinator/Side_" + i,
+                    GTPlusPlus.ID + ":" + "TileEntities/RoundRobinator/Side_" + i, };
             aTemp.put(aTexData);
         }
         AutoMap<CubicObject<String>> aTemp2 = new AutoMap<CubicObject<String>>();

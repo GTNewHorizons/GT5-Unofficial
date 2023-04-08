@@ -4,6 +4,8 @@
  */
 package Ic2ExpReactorPlanner.components;
 
+import static gregtech.api.enums.Mods.IndustrialCraft2;
+
 import java.util.HashMap;
 
 import Ic2ExpReactorPlanner.Reactor;
@@ -219,7 +221,7 @@ public class ReactorItem {
             automationThreshold = (int) (maxDamage * 1.1);
         }
         if (sourceMod == null) {
-            sourceMod = "IC2";
+            sourceMod = IndustrialCraft2.ID;
         }
         this.sourceMod = sourceMod;
         sComponentMap.put(sourceMod + "." + aItem.mItem.getUnlocalizedName() + "." + aItem.mMetaData, this);

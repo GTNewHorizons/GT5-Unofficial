@@ -1,6 +1,7 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.automation;
 
-import static gtPlusPlus.core.lib.CORE.*;
+import static gtPlusPlus.core.lib.CORE.sTesseractGeneratorOwnershipMap;
+import static gtPlusPlus.core.lib.CORE.sTesseractTerminalOwnershipMap;
 
 import java.util.UUID;
 
@@ -13,7 +14,10 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.*;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.IFluidHandler;
 
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;

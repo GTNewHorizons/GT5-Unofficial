@@ -1,5 +1,6 @@
 package gtPlusPlus.core.item.general.books;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gtPlusPlus.core.handler.BookHandler.mBookMap;
 import static gtPlusPlus.core.util.Utils.addBookTitleLocalization;
 
@@ -22,7 +23,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.handler.BookHandler;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.NBTUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
@@ -32,7 +32,7 @@ public class ItemBaseBook extends ItemWritableBook {
     public ItemBaseBook() {
         this.setCreativeTab(AddToCreativeTab.tabMisc);
         this.setMaxStackSize(1);
-        this.setTextureName(CORE.MODID + ":" + "itemBook");
+        this.setTextureName(GTPlusPlus.ID + ":" + "itemBook");
         this.setUnlocalizedName("itembookgt");
         GameRegistry.registerItem(this, "bookGT");
     }

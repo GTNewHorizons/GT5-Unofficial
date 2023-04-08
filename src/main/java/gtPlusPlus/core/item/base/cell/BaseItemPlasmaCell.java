@@ -1,5 +1,7 @@
 package gtPlusPlus.core.item.base.cell;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
@@ -10,7 +12,6 @@ import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.core.item.base.BaseItemComponent;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
 
@@ -36,8 +37,8 @@ public class BaseItemPlasmaCell extends BaseItemComponent {
 
     @Override
     public void registerIcons(final IIconRegister i) {
-        this.base = i.registerIcon(CORE.MODID + ":" + "item" + this.PlasmaCell.getComponent());
-        this.overlay = i.registerIcon(CORE.MODID + ":" + "item" + this.PlasmaCell.getComponent() + "_Overlay");
+        this.base = i.registerIcon(GTPlusPlus.ID + ":" + "item" + this.PlasmaCell.getComponent());
+        this.overlay = i.registerIcon(GTPlusPlus.ID + ":" + "item" + this.PlasmaCell.getComponent() + "_Overlay");
         // this.overlay = cellMaterial.getFluid(1000).getFluid().get
     }
 

@@ -1,5 +1,7 @@
 package gtPlusPlus.core.block.machine;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
@@ -19,7 +21,6 @@ import gtPlusPlus.core.block.base.BasicTileBlockWithTooltip;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.handler.GuiHandler;
 import gtPlusPlus.core.item.base.itemblock.ItemBlockBasicTile;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.tileentities.general.TileEntityVolumetricFlaskSetter;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 
@@ -146,12 +147,12 @@ public class VolumetricFlaskSetter extends BasicTileBlockWithTooltip {
 
     @Override
     public CubicObject<String>[] getCustomTextureDirectoryObject() {
-        String[] aTexData = new String[] { CORE.MODID + ":" + "metro/" + "TEXTURE_METAL_PANEL_A",
-                CORE.MODID + ":" + "metro/" + "TEXTURE_TECH_PANEL_C",
-                CORE.MODID + ":" + "metro/" + "TEXTURE_METAL_PANEL_H",
-                CORE.MODID + ":" + "metro/" + "TEXTURE_METAL_PANEL_H",
-                CORE.MODID + ":" + "metro/" + "TEXTURE_METAL_PANEL_H",
-                CORE.MODID + ":" + "metro/" + "TEXTURE_METAL_PANEL_H" };
+        String[] aTexData = new String[] { GTPlusPlus.ID + ":" + "metro/" + "TEXTURE_METAL_PANEL_A",
+                GTPlusPlus.ID + ":" + "metro/" + "TEXTURE_TECH_PANEL_C",
+                GTPlusPlus.ID + ":" + "metro/" + "TEXTURE_METAL_PANEL_H",
+                GTPlusPlus.ID + ":" + "metro/" + "TEXTURE_METAL_PANEL_H",
+                GTPlusPlus.ID + ":" + "metro/" + "TEXTURE_METAL_PANEL_H",
+                GTPlusPlus.ID + ":" + "metro/" + "TEXTURE_METAL_PANEL_H" };
         CubicObject<String>[] aTextureData = new CubicObject[] { new CubicObject<String>(aTexData) };
         return aTextureData;
     }

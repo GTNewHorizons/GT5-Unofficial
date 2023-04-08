@@ -1,21 +1,37 @@
 package gtPlusPlus.xmod.gregtech.api.enums;
 
-import static gregtech.api.enums.GT_Values.*;
+import static gregtech.api.enums.GT_Values.B;
+import static gregtech.api.enums.GT_Values.D2;
+import static gregtech.api.enums.GT_Values.M;
 import static gtPlusPlus.core.util.Utils.getTcAspectStack;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
 
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
-import gregtech.api.enums.*;
+import gregtech.api.enums.ConfigCategories;
+import gregtech.api.enums.Dyes;
+import gregtech.api.enums.Element;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.SubTag;
+import gregtech.api.enums.TC_Aspects;
 import gregtech.api.enums.TC_Aspects.TC_AspectStack;
-import gregtech.api.interfaces.*;
+import gregtech.api.enums.TextureSet;
+import gregtech.api.interfaces.IColorModulationContainer;
+import gregtech.api.interfaces.ICondition;
+import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.objects.GT_FluidStack;
 import gregtech.api.objects.MaterialStack;
-import gregtech.api.util.*;
+import gregtech.api.util.GT_Config;
+import gregtech.api.util.GT_Log;
+import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.interfaces.internal.Interface_OreRecipeRegistrator;
 import gtPlusPlus.xmod.gregtech.api.objects.GregtechItemData;
@@ -948,12 +964,6 @@ public enum GregtechOrePrefixes {
                         ConfigCategories.Materials.blastinductionsmelter,
                         tString,
                         tMaterial.mBlastFurnaceTemp < 1500)) {}
-                // GT_ModHandler.ThermalExpansion.addSmelterBlastOre(tMaterial);
-                // tMaterial.mHandleMaterial = (tMaterial == Desh ? tMaterial.mHandleMaterial : tMaterial == Diamond ||
-                // tMaterial == Thaumium ? Wood : tMaterial.contains(SubTag.BURNING) ? Blaze :
-                // tMaterial.contains(SubTag.MAGICAL) && tMaterial.contains(SubTag.CRYSTAL) &&
-                // Loader.isModLoaded(MOD_ID_TC) ? Thaumium : tMaterial.getMass() > Element.Tc.getMass() * 2 ?
-                // TungstenSteel : tMaterial.getMass() > Element.Tc.getMass() ? Steel : Wood);
             }
         }
 

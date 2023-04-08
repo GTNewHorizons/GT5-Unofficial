@@ -6,7 +6,10 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
 import gregtech.api.interfaces.IDescribable;
-import gregtech.api.interfaces.tileentity.*;
+import gregtech.api.interfaces.tileentity.IBasicEnergyContainer;
+import gregtech.api.interfaces.tileentity.IGearEnergyTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
+import gregtech.api.interfaces.tileentity.ITurnable;
 
 public abstract interface IGregtechPower
         extends IGearEnergyTileEntity, ITurnable, IGregTechDeviceInformation, IDescribable, IBasicEnergyContainer {

@@ -1,11 +1,19 @@
 package gtPlusPlus.core.item.general;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import java.lang.ref.WeakReference;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.WeakHashMap;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.*;
+import net.minecraft.item.EnumRarity;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityBeacon;
 import net.minecraft.world.World;
@@ -22,7 +30,6 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.item.base.CoreItem;
-import gtPlusPlus.core.lib.CORE;
 
 public class ItemMagicFeather extends CoreItem {
 
@@ -42,7 +49,7 @@ public class ItemMagicFeather extends CoreItem {
                 false,
                 null);
         setMaxStackSize(1);
-        setUnlocalizedName(CORE.MODID + ":" + NAME);
+        setUnlocalizedName(GTPlusPlus.ID + ":" + NAME);
         MinecraftForge.EVENT_BUS.register(this);
     }
 

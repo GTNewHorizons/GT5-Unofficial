@@ -1,5 +1,7 @@
 package gtPlusPlus.xmod.forestry.bees.items.output;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import java.util.List;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -27,7 +29,7 @@ public class GTPP_Propolis extends Item {
         this.setCreativeTab(Tabs.tabApiculture);
         this.setHasSubtypes(true);
         this.setUnlocalizedName("gtpp.propolis");
-        GameRegistry.registerItem(this, "gtpp.propolis", CORE.MODID);
+        GameRegistry.registerItem(this, "gtpp.propolis", GTPlusPlus.ID);
     }
 
     public ItemStack getStackForType(GTPP_PropolisType type) {

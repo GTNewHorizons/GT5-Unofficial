@@ -1,5 +1,10 @@
 package gtPlusPlus.core.util.minecraft;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+import static gregtech.api.enums.Mods.GregTech;
+import static gregtech.api.enums.Mods.IndustrialCraft2;
+import static gregtech.api.enums.Mods.Minecraft;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -114,7 +119,7 @@ public class ItemUtils {
 
         if (moreTemp == null) {
             final int cellID = 0;
-            final ItemStack temp = GT_ModHandler.getModItem("IC2", "itemCellEmpty", 1L, cellID);
+            final ItemStack temp = GT_ModHandler.getModItem(IndustrialCraft2.ID, "itemCellEmpty", 1L, cellID);
             return temp != null ? temp : null;
         }
 
@@ -122,7 +127,7 @@ public class ItemUtils {
     }
 
     public static ItemStack getIC2Cell(final int meta) {
-        final ItemStack temp = GT_ModHandler.getModItem("IC2", "itemCellEmpty", 1L, meta);
+        final ItemStack temp = GT_ModHandler.getModItem(IndustrialCraft2.ID, "itemCellEmpty", 1L, meta);
         return temp != null ? temp : null;
     }
 
@@ -134,7 +139,7 @@ public class ItemUtils {
         if (ItemList.Cell_Empty.hasBeenSet()) {
             return ItemList.Cell_Empty.get(i);
         }
-        final ItemStack temp = GT_ModHandler.getModItem("IC2", "itemCellEmpty", i, 0);
+        final ItemStack temp = GT_ModHandler.getModItem(IndustrialCraft2.ID, "itemCellEmpty", i, 0);
         return temp != null ? temp : null;
     }
 
@@ -316,7 +321,7 @@ public class ItemUtils {
             final int colourOverlay) {
         final Item itemSpawnEgg = new BasicSpawnEgg(entityModID, parSpawnName, colourEgg, colourOverlay)
                 .setUnlocalizedName("spawn_egg_" + parSpawnName.toLowerCase())
-                .setTextureName(CORE.MODID + ":spawn_egg");
+                .setTextureName(GTPlusPlus.ID + ":spawn_egg");
         GameRegistry.registerItem(itemSpawnEgg, "spawnEgg" + parSpawnName);
     }
 
@@ -893,14 +898,14 @@ public class ItemUtils {
             final GameRegistry.UniqueIdentifier id = GameRegistry.findUniqueIdentifierFor(item);
             if (id != null) {
                 final String modname = (id.modId == null ? id.name : id.modId);
-                value = ((id == null) || id.modId.equals("")) ? "minecraft" : modname;
+                value = ((id == null) || id.modId.equals("")) ? Minecraft.ID : modname;
             }
         } catch (final Throwable t) {
             try {
                 final UniqueIdentifier t2 = GameRegistry.findUniqueIdentifierFor(Block.getBlockFromItem(item));
                 if (t2 != null) {
                     final String modname = (t2.modId == null ? t2.name : t2.modId);
-                    value = ((t2 == null) || t2.modId.equals("")) ? "minecraft" : modname;
+                    value = ((t2 == null) || t2.modId.equals("")) ? Minecraft.ID : modname;
                 }
             } catch (final Throwable t3) {
                 t3.printStackTrace();
@@ -924,7 +929,7 @@ public class ItemUtils {
             ItemStack returnvalue;
             for (int xrc = 0; xrc < oreDictList.size(); xrc++) {
                 final String modid = getModId(oreDictList.get(xrc).getItem());
-                if (modid != null && (modid.equals("gregtech") || modid.equals(CORE.MODID))) {
+                if (modid != null && (modid.equals(GregTech.ID) || modid.equals(GTPlusPlus.ID))) {
                     returnvalue = oreDictList.get(xrc).copy();
                     returnvalue.stackSize = amount;
                     return returnvalue;

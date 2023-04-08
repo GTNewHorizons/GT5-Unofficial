@@ -1,6 +1,9 @@
 package gtPlusPlus.api.objects.data;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 public class ReverseAutoMap<N> extends AutoMap<N> {
 

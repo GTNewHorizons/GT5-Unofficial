@@ -1,5 +1,8 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.bedrock;
 
+import static gregtech.api.enums.Mods.Railcraft;
+import static gregtech.api.enums.Mods.Thaumcraft;
+
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -17,7 +20,6 @@ import gregtech.common.GT_Worldgen_GT_Ore_Layer;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.data.Pair;
-import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.ORES;
@@ -466,12 +468,12 @@ public abstract class GregtechMetaTileEntity_BedrockMiningPlatformBase extends G
         mMixedOreData.put(new Pair<String, Integer>("oreLapis", 40));
         mMixedOreData.put(new Pair<String, Integer>("oreRedstone", 40));
 
-        if (LoadedMods.Thaumcraft || (OreDictUtils.containsValidEntries("oreAmber")
+        if (Thaumcraft.isModLoaded() || (OreDictUtils.containsValidEntries("oreAmber")
                 && OreDictUtils.containsValidEntries("oreCinnabar"))) {
             mMixedOreData.put(new Pair<String, Integer>("oreAmber", 20));
             mMixedOreData.put(new Pair<String, Integer>("oreCinnabar", 20));
         }
-        if (LoadedMods.Railcraft || OreDictUtils.containsValidEntries("oreSaltpeter")) {
+        if (Railcraft.isModLoaded() || OreDictUtils.containsValidEntries("oreSaltpeter")) {
             mMixedOreData.put(new Pair<String, Integer>("oreSaltpeter", 10));
         }
         mMixedOreData.put(new Pair<String, Integer>("oreUranium", 10));

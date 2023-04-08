@@ -1,5 +1,7 @@
 package gtPlusPlus.core.item.general;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -10,7 +12,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GT_Values;
 import gtPlusPlus.core.item.base.BaseItemWithDamageValue;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
 
@@ -20,7 +21,7 @@ public class BufferCore extends BaseItemWithDamageValue {
 
     public BufferCore(final String unlocalizedName, final int i) {
         super(unlocalizedName + i);
-        this.setTextureName(CORE.MODID + ":" + unlocalizedName);
+        this.setTextureName(GTPlusPlus.ID + ":" + unlocalizedName);
         this.setMaxStackSize(32);
         this.coreTier = i;
     }

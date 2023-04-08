@@ -1,5 +1,7 @@
 package gtPlusPlus.xmod.forestry.bees.items;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import java.util.List;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -12,9 +14,12 @@ import net.minecraft.util.EnumChatFormatting;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import forestry.api.apiculture.*;
+import forestry.api.apiculture.IBee;
+import forestry.api.apiculture.IBeeGenome;
+import forestry.api.apiculture.IBeeHousing;
+import forestry.api.apiculture.IBeeModifier;
+import forestry.api.apiculture.IHiveFrame;
 import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.lib.CORE;
 
 public class MB_ItemFrame extends Item implements IHiveFrame {
 
@@ -49,7 +54,7 @@ public class MB_ItemFrame extends Item implements IHiveFrame {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(final IIconRegister par1IconRegister) {
-        this.itemIcon = par1IconRegister.registerIcon(CORE.MODID + ":frame" + this.type.getName());
+        this.itemIcon = par1IconRegister.registerIcon(GTPlusPlus.ID + ":frame" + this.type.getName());
     }
 
     // --------- IHiveFrame functions -----------------------------------------

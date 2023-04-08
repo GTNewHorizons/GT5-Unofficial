@@ -1,5 +1,7 @@
 package gtPlusPlus.plugin.agrichem.item.algae;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
@@ -19,7 +21,6 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gtPlusPlus.core.item.chemistry.general.ItemGenericChemBase;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.OreDictUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
@@ -149,7 +150,7 @@ public class ItemAgrichemBase extends Item {
     @Override
     public void registerIcons(final IIconRegister u) {
         for (int i = 0; i < this.base.length; i++) {
-            String aPath = CORE.MODID + ":" + "bioscience/MetaItem1/" + i;
+            String aPath = GTPlusPlus.ID + ":" + "bioscience/MetaItem1/" + i;
             this.base[i] = u.registerIcon(aPath);
         }
     }

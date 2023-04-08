@@ -1,12 +1,12 @@
 package gtPlusPlus.xmod.gregtech.common.covers;
 
+import static gregtech.api.enums.Mods.ZTones;
 import static gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtCutomCovers.TEXTURE_ZTONES_AGON;
 import static gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtCutomCovers.TEXTURE_ZTONES_BITT;
 import static gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtCutomCovers.TEXTURE_ZTONES_ISZM;
 import static gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtCutomCovers.TEXTURE_ZTONES_JELT;
 import static gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtCutomCovers.TEXTURE_ZTONES_KORP;
 
-import cpw.mods.fml.common.Loader;
 import gtPlusPlus.core.lib.VanillaColours;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock.CustomIcon;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtCutomCovers;
@@ -33,7 +33,7 @@ public class CoverManager {
         // GT Machine Casings
         Cover_Gt_Machine_Casing = new MetaItemCoverCasings();
 
-        if (Loader.isModLoaded("Ztones")) {
+        if (ZTones.isModLoaded()) {
             String[] aZtoneCoverTextureNames = new String[] { "agon", "iszm", "korp", "jelt", "bitt" };
             MetaCustomCoverItem[] aZtoneCoverItems = new MetaCustomCoverItem[] { Cover_Agon, Cover_Iszm, Cover_Korp,
                     Cover_Jelt, Cover_Bitt };
@@ -43,7 +43,7 @@ public class CoverManager {
                     ZTONES.RGB_BITT };
             for (int y = 0; y < aZtoneCoverTextureNames.length; y++) {
                 aZtoneCoverItems[y] = new MetaCustomCoverItem(
-                        "Ztones",
+                        ZTones.ID,
                         16,
                         aZtoneCoverTextureNames[y],
                         aArrays[y],

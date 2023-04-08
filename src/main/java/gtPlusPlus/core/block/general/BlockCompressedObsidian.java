@@ -1,5 +1,7 @@
 package gtPlusPlus.core.block.general;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -18,7 +20,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.item.base.itemblock.ItemBlockMeta;
-import gtPlusPlus.core.lib.CORE;
 
 public class BlockCompressedObsidian extends BlockObsidian {
 
@@ -48,17 +49,17 @@ public class BlockCompressedObsidian extends BlockObsidian {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(final IIconRegister iicon) {
-        this.textureArray[0] = iicon.registerIcon(CORE.MODID + ":" + "compressed/" + "obsidian1");
-        this.textureArray[1] = iicon.registerIcon(CORE.MODID + ":" + "compressed/" + "obsidian2");
-        this.textureArray[2] = iicon.registerIcon(CORE.MODID + ":" + "compressed/" + "obsidian3");
-        this.textureArray[3] = iicon.registerIcon(CORE.MODID + ":" + "compressed/" + "obsidian4");
-        this.textureArray[4] = iicon.registerIcon(CORE.MODID + ":" + "compressed/" + "obsidian5");
-        this.textureArray[5] = iicon.registerIcon(CORE.MODID + ":" + "compressed/" + "obsidian_invert");
-        this.textureArray[6] = iicon.registerIcon(CORE.MODID + ":" + "compressed/" + "glowstone1");
-        this.textureArray[7] = iicon.registerIcon(CORE.MODID + ":" + "compressed/" + "glowstone2");
-        this.textureArray[8] = iicon.registerIcon(CORE.MODID + ":" + "compressed/" + "glowstone3");
-        this.textureArray[9] = iicon.registerIcon(CORE.MODID + ":" + "compressed/" + "glowstone4");
-        this.textureArray[10] = iicon.registerIcon(CORE.MODID + ":" + "compressed/" + "glowstone5");
+        this.textureArray[0] = iicon.registerIcon(GTPlusPlus.ID + ":" + "compressed/" + "obsidian1");
+        this.textureArray[1] = iicon.registerIcon(GTPlusPlus.ID + ":" + "compressed/" + "obsidian2");
+        this.textureArray[2] = iicon.registerIcon(GTPlusPlus.ID + ":" + "compressed/" + "obsidian3");
+        this.textureArray[3] = iicon.registerIcon(GTPlusPlus.ID + ":" + "compressed/" + "obsidian4");
+        this.textureArray[4] = iicon.registerIcon(GTPlusPlus.ID + ":" + "compressed/" + "obsidian5");
+        this.textureArray[5] = iicon.registerIcon(GTPlusPlus.ID + ":" + "compressed/" + "obsidian_invert");
+        this.textureArray[6] = iicon.registerIcon(GTPlusPlus.ID + ":" + "compressed/" + "glowstone1");
+        this.textureArray[7] = iicon.registerIcon(GTPlusPlus.ID + ":" + "compressed/" + "glowstone2");
+        this.textureArray[8] = iicon.registerIcon(GTPlusPlus.ID + ":" + "compressed/" + "glowstone3");
+        this.textureArray[9] = iicon.registerIcon(GTPlusPlus.ID + ":" + "compressed/" + "glowstone4");
+        this.textureArray[10] = iicon.registerIcon(GTPlusPlus.ID + ":" + "compressed/" + "glowstone5");
     }
 
     /**

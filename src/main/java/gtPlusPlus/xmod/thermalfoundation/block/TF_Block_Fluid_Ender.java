@@ -1,5 +1,7 @@
 package gtPlusPlus.xmod.thermalfoundation.block;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialLiquid;
@@ -10,7 +12,6 @@ import net.minecraft.world.World;
 import cofh.core.fluid.BlockFluidCoFHBase;
 import cofh.core.util.CoreUtils;
 import cpw.mods.fml.common.registry.GameRegistry;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.thermalfoundation.fluid.TF_Fluids;
 
 public class TF_Block_Fluid_Ender extends BlockFluidCoFHBase {
@@ -20,7 +21,7 @@ public class TF_Block_Fluid_Ender extends BlockFluidCoFHBase {
     private static boolean effect = true;
 
     public TF_Block_Fluid_Ender() {
-        super(CORE.MODID, TF_Fluids.fluidEnder, materialFluidEnder, "ender");
+        super(GTPlusPlus.ID, TF_Fluids.fluidEnder, materialFluidEnder, "ender");
         setQuantaPerBlock(4);
         setTickRate(20);
 

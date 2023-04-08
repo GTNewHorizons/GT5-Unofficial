@@ -1,5 +1,7 @@
 package gtPlusPlus.core.item.circuit;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -35,7 +37,6 @@ import gregtech.api.objects.XSTR;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.gui.modularui.uifactory.SelectItemUIFactory;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class GTPP_IntegratedCircuit_Item extends Item implements INetworkUpdatableItem {
@@ -110,7 +111,7 @@ public class GTPP_IntegratedCircuit_Item extends Item implements INetworkUpdatab
 
     @Override
     public void registerIcons(final IIconRegister u) {
-        this.base = u.registerIcon(CORE.MODID + ":" + iconLocation);
+        this.base = u.registerIcon(GTPlusPlus.ID + ":" + iconLocation);
     }
 
     @Override

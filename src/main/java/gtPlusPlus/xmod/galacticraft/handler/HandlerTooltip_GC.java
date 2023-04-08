@@ -1,5 +1,7 @@
 package gtPlusPlus.xmod.galacticraft.handler;
 
+import static gregtech.api.enums.Mods.GalacticraftCore;
+
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -11,7 +13,6 @@ import net.minecraftforge.fluids.Fluid;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import gtPlusPlus.core.item.chemistry.RocketFuels;
-import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.preloader.asm.AsmConfig;
 
@@ -29,7 +30,7 @@ public class HandlerTooltip_GC {
 
     @SubscribeEvent
     public void onItemTooltip(ItemTooltipEvent event) {
-        if (LoadedMods.GalacticraftCore && AsmConfig.enableGcFuelChanges) {
+        if (GalacticraftCore.isModLoaded() && AsmConfig.enableGcFuelChanges) {
 
             if (mBlock == null) {
                 try {

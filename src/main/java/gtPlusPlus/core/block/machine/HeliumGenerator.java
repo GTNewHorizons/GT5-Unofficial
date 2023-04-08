@@ -1,5 +1,7 @@
 package gtPlusPlus.core.block.machine;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -13,7 +15,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.tileentities.general.TileEntityHeliumGenerator;
 
 public class HeliumGenerator extends BlockContainer {
@@ -49,10 +50,10 @@ public class HeliumGenerator extends BlockContainer {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(final IIconRegister p_149651_1_) {
-        this.blockIcon = p_149651_1_.registerIcon(CORE.MODID + ":" + "Chrono/" + "CyberPanel");
-        this.textureTop = p_149651_1_.registerIcon(CORE.MODID + ":" + "Chrono/" + "CyberPanel");
-        this.textureBottom = p_149651_1_.registerIcon(CORE.MODID + ":" + "Chrono/" + "CyberPanel");
-        this.textureFront = p_149651_1_.registerIcon(CORE.MODID + ":" + "Chrono/" + "CyberPanel");
+        this.blockIcon = p_149651_1_.registerIcon(GTPlusPlus.ID + ":" + "Chrono/" + "CyberPanel");
+        this.textureTop = p_149651_1_.registerIcon(GTPlusPlus.ID + ":" + "Chrono/" + "CyberPanel");
+        this.textureBottom = p_149651_1_.registerIcon(GTPlusPlus.ID + ":" + "Chrono/" + "CyberPanel");
+        this.textureFront = p_149651_1_.registerIcon(GTPlusPlus.ID + ":" + "Chrono/" + "CyberPanel");
     }
 
     /**

@@ -1,5 +1,7 @@
 package gtPlusPlus.xmod.bop.blocks.base;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import java.util.List;
 import java.util.Random;
 
@@ -23,7 +25,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 
@@ -180,7 +181,7 @@ public class SaplingBase extends BlockSapling {
     public void registerBlockIcons(IIconRegister iIcon) {
         for (int i = 0; i < saplingTextures.length; ++i) {
             saplingTextures[i] = iIcon
-                    .registerIcon(CORE.MODID + ":" + "trees/" + "saplings/" + "sapling_" + saplingTypes[i]);
+                    .registerIcon(GTPlusPlus.ID + ":" + "trees/" + "saplings/" + "sapling_" + saplingTypes[i]);
         }
     }
 }

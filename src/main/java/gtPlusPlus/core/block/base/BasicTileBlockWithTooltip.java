@@ -1,5 +1,7 @@
 package gtPlusPlus.core.block.base;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -183,7 +185,7 @@ public abstract class BasicTileBlockWithTooltip extends BlockContainer implement
         // DOWN, UP, NORTH, SOUTH, WEST, EAST
 
         // Default Path Name, this will make us look inside 'miscutils\textures\blocks'
-        final String aPrefixTexPath = CORE.MODID + ":";
+        final String aPrefixTexPath = GTPlusPlus.ID + ":";
         // Default Path Name, this will make us look in the sub-directory for this Tile Entity.
         final String aTexPathMid = "TileEntities" + CORE.SEPERATOR
                 + getTileEntityNameForTexturePathing()
@@ -276,7 +278,7 @@ public abstract class BasicTileBlockWithTooltip extends BlockContainer implement
     @Override
     @SideOnly(Side.CLIENT)
     public final void registerBlockIcons(final IIconRegister aRegisterer) {
-        this.blockIcon = aRegisterer.registerIcon(CORE.MODID + ":" + "net");
+        this.blockIcon = aRegisterer.registerIcon(GTPlusPlus.ID + ":" + "net");
     }
 
     @Override

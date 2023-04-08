@@ -1,5 +1,7 @@
 package gtPlusPlus.core.gui.item;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -24,7 +26,6 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.core.container.Container_Grindle;
 import gtPlusPlus.core.inventories.BaseInventoryGrindle;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -41,7 +42,7 @@ public class GuiBaseGrindle extends GuiContainer {
     private short mCurrentPage = 0;
 
     private static final ResourceLocation iconLocation = new ResourceLocation(
-            CORE.MODID,
+            GTPlusPlus.ID,
             "textures/gui/itemGrindle.png");
 
     /** The inventory to render on screen */

@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.sc2.modules;
 
+import static gregtech.api.enums.Mods.Forestry;
 import static net.minecraft.init.Blocks.farmland;
 
 import java.lang.reflect.Field;
@@ -14,7 +15,6 @@ import net.minecraft.world.World;
 import vswe.stevescarts.Carts.MinecartModular;
 import vswe.stevescarts.Modules.Addons.ModuleAddon;
 import vswe.stevescarts.Modules.ICropModule;
-import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 
 public class ModuleExoticSeeds extends ModuleAddon implements ICropModule {
@@ -56,8 +56,8 @@ public class ModuleExoticSeeds extends ModuleAddon implements ICropModule {
 
         // If Forestry is loaded, let's make this upgrade convert farmland to Humus.
         /*
-         * if (LoadedMods.Forestry) { Block mFarmLand = world.getBlock(x, y-1, z); if (mFarmLand == farmland) { Block h
-         * = tryGetHumus(); if (h != farmland) { world.setBlock(x, y-1, z, h); } } }
+         * if (Forestry.isModLoaded()) { Block mFarmLand = world.getBlock(x, y-1, z); if (mFarmLand == farmland) { Block
+         * h = tryGetHumus(); if (h != farmland) { world.setBlock(x, y-1, z, h); } } }
          */
 
         return b instanceof BlockCrops && m == 7;
@@ -73,35 +73,36 @@ public class ModuleExoticSeeds extends ModuleAddon implements ICropModule {
     private static Block mForestryHumusBlock;
 
     private synchronized Block tryGetHumus() {
-        if (!LoadedMods.Forestry) {
+        if (!Forestry.isModLoaded()) {
             return farmland;
-        } else {
-            if (mForestryHumusBlockClass == null || mForestryHumusBlock == null) {
-                try {
-                    mForestryHumusBlockClass = ReflectionUtils.getClass("forestry.plugins.PluginCore");
-                    Field blocks = ReflectionUtils.getField(mForestryHumusBlockClass, "blocks");
-                    if (blocks != null) {
-                        Object blockRegistryCoreObject = blocks.get(null);
-                        mForestryBlockRegistryCoreClass = ReflectionUtils
-                                .getClass("forestry.core.blocks.BlockRegistryCore");
-                        if (mForestryBlockRegistryCoreClass != null && blockRegistryCoreObject != null) {
-                            Field soil = ReflectionUtils.getField(mForestryBlockRegistryCoreClass, "soil");
-                            if (soil != null) {
-                                Block testHumus = (Block) soil.get(blockRegistryCoreObject);
-                                if (testHumus != null) {
-                                    mForestryHumusBlock = testHumus;
-                                }
+        }
+
+        if (mForestryHumusBlockClass == null || mForestryHumusBlock == null) {
+            try {
+                mForestryHumusBlockClass = ReflectionUtils.getClass("forestry.plugins.PluginCore");
+                Field blocks = ReflectionUtils.getField(mForestryHumusBlockClass, "blocks");
+                if (blocks != null) {
+                    Object blockRegistryCoreObject = blocks.get(null);
+                    mForestryBlockRegistryCoreClass = ReflectionUtils
+                            .getClass("forestry.core.blocks.BlockRegistryCore");
+                    if (mForestryBlockRegistryCoreClass != null && blockRegistryCoreObject != null) {
+                        Field soil = ReflectionUtils.getField(mForestryBlockRegistryCoreClass, "soil");
+                        if (soil != null) {
+                            Block testHumus = (Block) soil.get(blockRegistryCoreObject);
+                            if (testHumus != null) {
+                                mForestryHumusBlock = testHumus;
                             }
                         }
                     }
-                } catch (Throwable t) {
-                    t.printStackTrace();
                 }
-            }
-            if (mForestryHumusBlock != null) {
-                return mForestryHumusBlock;
+            } catch (Throwable t) {
+                t.printStackTrace();
             }
         }
+        if (mForestryHumusBlock != null) {
+            return mForestryHumusBlock;
+        }
+
         return farmland;
     }
 }

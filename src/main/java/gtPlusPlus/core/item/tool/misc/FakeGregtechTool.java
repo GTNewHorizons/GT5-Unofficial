@@ -1,5 +1,7 @@
 package gtPlusPlus.core.item.tool.misc;
 
+import static gregtech.api.enums.Mods.GregTech;
+
 import java.util.List;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -30,23 +32,23 @@ public class FakeGregtechTool extends CoreItem {
     @Override
     public void registerIcons(final IIconRegister i) {
         // ScrewDriver
-        this.base[0] = i.registerIcon("gregtech" + ":" + "materialicons/METALLIC/" + "toolHeadScrewdriver");
-        this.overlay[0] = i.registerIcon("gregtech" + ":" + "iconsets/" + "HANDLE_SCREWDRIVER");
+        this.base[0] = i.registerIcon(GregTech.ID + ":" + "materialicons/METALLIC/" + "toolHeadScrewdriver");
+        this.overlay[0] = i.registerIcon(GregTech.ID + ":" + "iconsets/" + "HANDLE_SCREWDRIVER");
         // Soldering iron
-        this.base[1] = i.registerIcon("gregtech" + ":" + "materialicons/METALLIC/" + "toolHeadSoldering");
-        this.overlay[1] = i.registerIcon("gregtech" + ":" + "iconsets/" + "HANDLE_SOLDERING");
+        this.base[1] = i.registerIcon(GregTech.ID + ":" + "materialicons/METALLIC/" + "toolHeadSoldering");
+        this.overlay[1] = i.registerIcon(GregTech.ID + ":" + "iconsets/" + "HANDLE_SOLDERING");
         // Mallet
-        this.base[2] = i.registerIcon("gregtech" + ":" + "materialicons/METALLIC/" + "handleMallet");
-        this.overlay[2] = i.registerIcon("gregtech" + ":" + "materialicons/METALLIC/" + "toolHeadMallet");
+        this.base[2] = i.registerIcon(GregTech.ID + ":" + "materialicons/METALLIC/" + "handleMallet");
+        this.overlay[2] = i.registerIcon(GregTech.ID + ":" + "materialicons/METALLIC/" + "toolHeadMallet");
         // Hammer
-        this.base[3] = i.registerIcon("gregtech" + ":" + "materialicons/METALLIC/" + "stick");
-        this.overlay[3] = i.registerIcon("gregtech" + ":" + "materialicons/METALLIC/" + "toolHeadHammer");
+        this.base[3] = i.registerIcon(GregTech.ID + ":" + "materialicons/METALLIC/" + "stick");
+        this.overlay[3] = i.registerIcon(GregTech.ID + ":" + "materialicons/METALLIC/" + "toolHeadHammer");
         // Wrench
-        this.base[4] = i.registerIcon("gregtech" + ":" + "iconsets/" + "WRENCH");
-        this.overlay[4] = i.registerIcon("gregtech" + ":" + "iconsets/" + "WRENCH_OVERLAY");
+        this.base[4] = i.registerIcon(GregTech.ID + ":" + "iconsets/" + "WRENCH");
+        this.overlay[4] = i.registerIcon(GregTech.ID + ":" + "iconsets/" + "WRENCH_OVERLAY");
         // Crowbar
-        this.base[5] = i.registerIcon("gregtech" + ":" + "iconsets/" + "CROWBAR");
-        this.overlay[5] = i.registerIcon("gregtech" + ":" + "iconsets/" + "CROWBAR_OVERLAY");
+        this.base[5] = i.registerIcon(GregTech.ID + ":" + "iconsets/" + "CROWBAR");
+        this.overlay[5] = i.registerIcon(GregTech.ID + ":" + "iconsets/" + "CROWBAR_OVERLAY");
     }
 
     @Override

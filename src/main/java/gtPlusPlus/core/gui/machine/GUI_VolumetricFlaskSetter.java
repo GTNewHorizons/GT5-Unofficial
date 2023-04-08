@@ -1,5 +1,7 @@
 package gtPlusPlus.core.gui.machine;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ResourceLocation;
@@ -13,7 +15,6 @@ import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.container.Container_VolumetricFlaskSetter;
 import gtPlusPlus.core.gui.widget.GuiValueField;
 import gtPlusPlus.core.handler.PacketHandler;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.network.packet.Packet_VolumetricFlaskGui;
 import gtPlusPlus.core.tileentities.general.TileEntityVolumetricFlaskSetter;
 
@@ -21,7 +22,7 @@ import gtPlusPlus.core.tileentities.general.TileEntityVolumetricFlaskSetter;
 public class GUI_VolumetricFlaskSetter extends GuiContainer {
 
     private static final ResourceLocation mGuiTextures = new ResourceLocation(
-            CORE.MODID,
+            GTPlusPlus.ID,
             "textures/gui/VolumetricFlaskSetter.png");
     private Container_VolumetricFlaskSetter mContainer;
     private boolean mIsOpen = false;

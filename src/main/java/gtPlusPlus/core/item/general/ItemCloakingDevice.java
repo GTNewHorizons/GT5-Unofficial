@@ -1,5 +1,8 @@
 package gtPlusPlus.core.item.general;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+import static gregtech.api.enums.Mods.Names;
+
 import java.util.List;
 
 import net.minecraft.entity.Entity;
@@ -17,7 +20,6 @@ import baubles.api.IBauble;
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import ic2.api.item.ElectricItem;
@@ -25,8 +27,8 @@ import ic2.api.item.IElectricItem;
 import ic2.api.item.IElectricItemManager;
 
 @Optional.InterfaceList(
-        value = { @Optional.Interface(iface = "baubles.api.IBauble", modid = "Baubles"),
-                @Optional.Interface(iface = "baubles.api.BaubleType", modid = "Baubles") })
+        value = { @Optional.Interface(iface = "baubles.api.IBauble", modid = Names.BAUBLES),
+                @Optional.Interface(iface = "baubles.api.BaubleType", modid = Names.BAUBLES) })
 public class ItemCloakingDevice extends Item implements IElectricItem, IElectricItemManager, IBauble {
 
     private final String unlocalizedName = "personalCloakingDevice";
@@ -39,7 +41,7 @@ public class ItemCloakingDevice extends Item implements IElectricItem, IElectric
         this.setCreativeTab(AddToCreativeTab.tabMachines);
         this.setUnlocalizedName(this.unlocalizedName);
         this.setMaxStackSize(1);
-        this.setTextureName(CORE.MODID + ":" + "personalCloakingDevice");
+        this.setTextureName(GTPlusPlus.ID + ":" + "personalCloakingDevice");
         this.thisStack = ItemUtils.getSimpleStack(this);
         this.charge(this.thisStack, charge, 3, true, false);
         if (charge == (10000 * 20 * 500)) {

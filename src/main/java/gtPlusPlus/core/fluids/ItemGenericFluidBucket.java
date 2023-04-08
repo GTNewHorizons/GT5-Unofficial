@@ -1,5 +1,7 @@
 package gtPlusPlus.core.fluids;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -298,7 +300,7 @@ public class ItemGenericFluidBucket extends ItemBucket {
     @Override
     public void registerIcons(final IIconRegister i) {
         mBaseBucketTexture = i.registerIcon("bucket_empty");
-        mOverlayBucketTexture = i.registerIcon(CORE.MODID + ":bucket.generic.overlay");
+        mOverlayBucketTexture = i.registerIcon(GTPlusPlus.ID + ":bucket.generic.overlay");
     }
 
     @Override

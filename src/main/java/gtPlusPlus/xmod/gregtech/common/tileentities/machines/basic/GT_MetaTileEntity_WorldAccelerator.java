@@ -1,6 +1,7 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic;
 
 import static gregtech.api.enums.GT_Values.V;
+import static gregtech.api.enums.Mods.GregTech;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -247,7 +248,7 @@ public class GT_MetaTileEntity_WorldAccelerator extends GT_MetaTileEntity_Tiered
         if (tSimpleClassName.contains("conduit") || tSimpleClassName.contains("wire")
                 || tSimpleClassName.contains("cable"))
             return true;
-        if (tCanonicalName.contains("appeng") || tCanonicalName.contains("gregtech"))
+        if (tCanonicalName.contains("appeng") || tCanonicalName.contains(GregTech.ID))
             // Don't accelerate ANY Gregtech machines!
             return true;
         for (String tS : BlacklistedTileEntiyClassNames) {

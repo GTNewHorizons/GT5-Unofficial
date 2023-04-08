@@ -1,5 +1,7 @@
 package gtPlusPlus.core.item.bauble;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import java.util.List;
 
 import net.minecraft.creativetab.CreativeTabs;
@@ -19,16 +21,16 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.Mods;
 import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.math.MathUtils;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
 import ic2.api.item.IElectricItemManager;
 
 @Optional.InterfaceList(
-        value = { @Optional.Interface(iface = "baubles.api.IBauble", modid = "Baubles"),
-                @Optional.Interface(iface = "baubles.api.BaubleType", modid = "Baubles") })
+        value = { @Optional.Interface(iface = "baubles.api.IBauble", modid = Mods.Names.BAUBLES),
+                @Optional.Interface(iface = "baubles.api.BaubleType", modid = Mods.Names.BAUBLES) })
 public abstract class ElectricBaseBauble extends BaseBauble implements IElectricItem, IElectricItemManager, IBauble {
 
     public final int mTier;
@@ -41,12 +43,12 @@ public abstract class ElectricBaseBauble extends BaseBauble implements IElectric
         mTier = aTier;
         maxValueEU = aMaxEU;
         this.setUnlocalizedName(aUnlocalName);
-        this.setTextureName(CORE.MODID + ":" + getTextureNameForBauble());
+        this.setTextureName(GTPlusPlus.ID + ":" + getTextureNameForBauble());
         this.setMaxDamage(27);
         this.setMaxStackSize(1);
         this.setNoRepair();
         this.setCreativeTab(AddToCreativeTab.tabMachines);
-        if (GameRegistry.findItem(CORE.MODID, aUnlocalName) == null) {
+        if (GameRegistry.findItem(GTPlusPlus.ID, aUnlocalName) == null) {
             GameRegistry.registerItem(this, aUnlocalName);
         }
     }

@@ -1,9 +1,14 @@
 package gtPlusPlus.core.item.general.capture;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import java.util.List;
 import java.util.UUID;
 
-import net.minecraft.entity.*;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityList;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -17,7 +22,6 @@ import gtPlusPlus.api.interfaces.IEntityCatcher;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.NBTUtils;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
@@ -31,7 +35,7 @@ public class ItemEntityCatcher extends Item implements IEntityCatcher {
         // Probably won't ever need this event handler.
         // Utils.registerEvent(this);
         this.setUnlocalizedName("itemDragonJar");
-        this.setTextureName(CORE.MODID + ":" + getUnlocalizedName());
+        this.setTextureName(GTPlusPlus.ID + ":" + getUnlocalizedName());
         this.setCreativeTab(AddToCreativeTab.tabMisc);
         this.setMaxStackSize(16);
         this.setMaxDamage(0);

@@ -1,5 +1,9 @@
 package gtPlusPlus.core.block.machine;
 
+import static gregtech.api.enums.Mods.BuildCraftCore;
+import static gregtech.api.enums.Mods.EnderIO;
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -15,19 +19,18 @@ import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.Mods;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.api.interfaces.ITileTooltip;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.item.base.itemblock.ItemBlockBasicTile;
-import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.tileentities.machines.TileEntityProjectTable;
 import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import ic2.core.item.tool.ItemToolWrench;
 
-@Optional.Interface(iface = "crazypants.enderio.api.tool.ITool", modid = "EnderIO")
+@Optional.Interface(iface = "crazypants.enderio.api.tool.ITool", modid = Mods.Names.ENDER_I_O)
 public class Machine_ProjectTable extends BlockContainer implements ITileTooltip {
 
     @SideOnly(Side.CLIENT)
@@ -71,10 +74,10 @@ public class Machine_ProjectTable extends BlockContainer implements ITileTooltip
     @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(final IIconRegister p_149651_1_) {
-        this.blockIcon = p_149651_1_.registerIcon(CORE.MODID + ":" + "TileEntities/" + "machine_top");
-        this.textureTop = p_149651_1_.registerIcon(CORE.MODID + ":" + "TileEntities/" + "cover_crafting");
-        this.textureBottom = p_149651_1_.registerIcon(CORE.MODID + ":" + "TileEntities/" + "machine_top");
-        this.textureFront = p_149651_1_.registerIcon(CORE.MODID + ":" + "TileEntities/" + "machine_top");
+        this.blockIcon = p_149651_1_.registerIcon(GTPlusPlus.ID + ":" + "TileEntities/" + "machine_top");
+        this.textureTop = p_149651_1_.registerIcon(GTPlusPlus.ID + ":" + "TileEntities/" + "cover_crafting");
+        this.textureBottom = p_149651_1_.registerIcon(GTPlusPlus.ID + ":" + "TileEntities/" + "machine_top");
+        this.textureFront = p_149651_1_.registerIcon(GTPlusPlus.ID + ":" + "TileEntities/" + "machine_top");
     }
 
     /**
@@ -119,16 +122,16 @@ public class Machine_ProjectTable extends BlockContainer implements ITileTooltip
         if (item.getItem() instanceof ItemToolWrench) {
             return true;
         }
-        if (LoadedMods.BuildCraft) {
+        if (BuildCraftCore.isModLoaded()) {
             return checkBuildcraftWrench(item);
         }
-        if (LoadedMods.EnderIO) {
+        if (EnderIO.isModLoaded()) {
             return checkEnderIOWrench(item);
         }
         return false;
     }
 
-    @Optional.Method(modid = "EnderIO")
+    @Optional.Method(modid = Mods.Names.ENDER_I_O)
     private static boolean checkEnderIOWrench(final ItemStack item) {
         if (ReflectionUtils.doesClassExist("crazypants.enderio.api.tool.ITool")) {
             Class<?> wrenchClass;

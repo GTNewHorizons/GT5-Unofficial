@@ -1,5 +1,7 @@
 package gtPlusPlus.core.client.renderer;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
@@ -19,7 +21,7 @@ import gtPlusPlus.core.tileentities.general.TileEntityDecayablesChest;
 public class RenderDecayChest extends TileEntitySpecialRenderer {
 
     private static final ResourceLocation mChestTexture = new ResourceLocation(
-            CORE.MODID,
+            GTPlusPlus.ID,
             "textures/blocks/TileEntities/DecayablesChest_full.png");
     private ModelDecayChest mChestModel = new ModelDecayChest();
 

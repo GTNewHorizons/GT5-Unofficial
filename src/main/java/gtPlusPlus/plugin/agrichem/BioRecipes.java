@@ -1,5 +1,8 @@
 package gtPlusPlus.plugin.agrichem;
 
+import static gregtech.api.enums.Mods.Forestry;
+import static gregtech.api.enums.Mods.Railcraft;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -26,7 +29,6 @@ import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.item.base.BaseItemComponent;
 import gtPlusPlus.core.item.chemistry.AgriculturalChem;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.ALLOY;
 import gtPlusPlus.core.material.MISC_MATERIALS;
 import gtPlusPlus.core.recipe.common.CI;
@@ -378,7 +380,7 @@ public class BioRecipes {
                 30);
 
         // Add Charcoal Recipe
-        if (LoadedMods.Railcraft) {
+        if (Railcraft.isModLoaded()) {
             RailcraftUtils.addCokeOvenRecipe(
                     ItemUtils.getSimpleStack(AgriculturalChem.mWoodPellet, 2),
                     true,
@@ -957,7 +959,7 @@ public class BioRecipes {
 
     private static void recipeCompost() {
         ItemStack aFert;
-        if (LoadedMods.Forestry) {
+        if (Forestry.isModLoaded()) {
             aFert = ItemUtils.getSimpleStack(AgriculturalChem.aFertForestry, 32);
             CORE.RA.addChemicalPlantRecipe(
                     new ItemStack[] { getBioChip(11),

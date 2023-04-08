@@ -9,11 +9,11 @@ import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import advsolar.common.AdvancedSolarPanel;
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import gregtech.api.enums.Mods;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.GTplusplus.INIT_PHASE;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -90,12 +90,12 @@ public class GeneralTooltipEventHandler {
             event.toolTip.add("Max Capacity: " + MathUtils.formatNumbers(32000) + "L");
         }
 
-        if (LoadedMods.AdvancedSolarPanel) {
+        if (Mods.AdvancedSolarPanel.isModLoaded()) {
             molecularTransformer(event);
         }
     }
 
-    @Optional.Method(modid = "AdvancedSolarPanel")
+    @Optional.Method(modid = Mods.Names.ADVANCED_SOLAR_PANEL)
     public static void molecularTransformer(ItemTooltipEvent event) {
         if (event.itemStack.getItem() == Item.getItemFromBlock(AdvancedSolarPanel.blockMolecularTransformer)) {
             event.toolTip.add("" + EnumChatFormatting.RED + "Disabled, Use the multiblock");

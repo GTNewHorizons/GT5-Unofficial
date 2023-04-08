@@ -1,5 +1,8 @@
 package gtPlusPlus.core.item.base.ore;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+import static gregtech.api.enums.Mods.GregTech;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,7 +23,6 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
@@ -55,14 +57,6 @@ public class BaseOreComponent extends Item {
         GT_OreDictUnificator.registerOre(
                 componentType.getComponent() + material.getUnlocalizedName(),
                 ItemUtils.getSimpleStack(this));
-        if (LoadedMods.Thaumcraft) {
-            // ThaumcraftUtils.addAspectToItem(ItemUtils.getSimpleStack(this),
-            // TC_Aspect_Wrapper.generate(TC_Aspects.METALLUM.mAspect), 1);
-            if (componentMaterial.isRadioactive) {
-                // ThaumcraftUtils.addAspectToItem(ItemUtils.getSimpleStack(this),
-                // TC_Aspect_Wrapper.generate(TC_Aspects.RADIO.mAspect), componentMaterial.vRadiationLevel);
-            }
-        }
     }
 
     public boolean registerComponent() {
@@ -186,28 +180,29 @@ public class BaseOreComponent extends Item {
     @SideOnly(Side.CLIENT)
     public void registerIcons(final IIconRegister par1IconRegister) {
         if (this.componentType == ComponentTypes.MILLED) {
-            this.base = par1IconRegister.registerIcon(CORE.MODID + ":" + "processing/MilledOre/milled");
+            this.base = par1IconRegister.registerIcon(GTPlusPlus.ID + ":" + "processing/MilledOre/milled");
             if (this.componentType.hasOverlay()) {
-                this.overlay = par1IconRegister.registerIcon(CORE.MODID + ":" + "processing/MilledOre/milled_OVERLAY");
+                this.overlay = par1IconRegister
+                        .registerIcon(GTPlusPlus.ID + ":" + "processing/MilledOre/milled_OVERLAY");
             }
         } else if (CORE.ConfigSwitches.useGregtechTextures) {
             // Logger.MATERIALS(this.componentType.getPrefix()+this.componentMaterial.getLocalizedName()+this.componentType.DISPLAY_NAME+"
-            // is using `"+"gregtech" + ":" + "materialicons/METALLIC/" + this.componentType.COMPONENT_NAME+"' as the
+            // is using `"+GregTech.ID + ":" + "materialicons/METALLIC/" + this.componentType.COMPONENT_NAME+"' as the
             // layer 0 texture path.");
             this.base = par1IconRegister
-                    .registerIcon("gregtech" + ":" + "materialicons/METALLIC/" + this.componentType.COMPONENT_NAME);
+                    .registerIcon(GregTech.ID + ":" + "materialicons/METALLIC/" + this.componentType.COMPONENT_NAME);
             if (this.componentType.hasOverlay()) {
                 // Logger.MATERIALS(this.componentType.getPrefix()+this.componentMaterial.getLocalizedName()+this.componentType.DISPLAY_NAME+"
-                // is using `"+"gregtech" + ":" + "materialicons/METALLIC/" +
+                // is using `"+GregTech.ID + ":" + "materialicons/METALLIC/" +
                 // this.componentType.COMPONENT_NAME+"_OVERLAY"+"' as the layer 1 texture path.");
                 this.overlay = par1IconRegister.registerIcon(
-                        "gregtech" + ":" + "materialicons/METALLIC/" + this.componentType.COMPONENT_NAME + "_OVERLAY");
+                        GregTech.ID + ":" + "materialicons/METALLIC/" + this.componentType.COMPONENT_NAME + "_OVERLAY");
             }
         } else {
-            this.base = par1IconRegister.registerIcon(CORE.MODID + ":" + "item" + this.componentType.getComponent());
+            this.base = par1IconRegister.registerIcon(GTPlusPlus.ID + ":" + "item" + this.componentType.getComponent());
             if (this.componentType.hasOverlay()) {
                 this.overlay = par1IconRegister
-                        .registerIcon(CORE.MODID + ":" + "item" + this.componentType.getComponent() + "_Overlay");
+                        .registerIcon(GTPlusPlus.ID + ":" + "item" + this.componentType.getComponent() + "_Overlay");
             }
         }
     }

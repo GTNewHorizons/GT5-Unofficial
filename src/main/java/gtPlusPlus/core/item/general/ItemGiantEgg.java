@@ -1,5 +1,6 @@
 package gtPlusPlus.core.item.general;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gtPlusPlus.core.lib.CORE.RANDOM;
 
 import java.util.List;
@@ -49,7 +50,7 @@ public class ItemGiantEgg extends BaseItemTickable {
 
     private ItemGiantEgg(int colour, int maxTicks, String[] desc1) {
         super(true, false, "itemBigEgg", colour, maxTicks, desc1);
-        setTextureName(CORE.MODID + ":itemBigEgg");
+        setTextureName(GTPlusPlus.ID + ":itemBigEgg");
         this.setMaxStackSize(1);
         registerFuel(5000);
         registerOrdictionary("fuelLargeChickenEgg");
@@ -95,7 +96,7 @@ public class ItemGiantEgg extends BaseItemTickable {
 
     @Override
     public void registerIcons(final IIconRegister i) {
-        this.mIcon[0] = i.registerIcon(CORE.MODID + ":" + "itemBigEgg");
+        this.mIcon[0] = i.registerIcon(GTPlusPlus.ID + ":" + "itemBigEgg");
     }
 
     @Override

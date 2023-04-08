@@ -4,6 +4,9 @@
  */
 package Ic2ExpReactorPlanner;
 
+import static gregtech.api.enums.Mods.BartWorks;
+import static gregtech.api.enums.Mods.GoodGenerator;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -24,7 +27,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.GT_ModHandler;
 import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.xmod.goodgenerator.GG_Utils;
 import gtPlusPlus.xmod.goodgenerator.GG_Utils.GG_Fuel_Rod;
 
@@ -558,7 +560,7 @@ public class ComponentFactory {
                         true));
 
         aID = 51;
-        if (LoadedMods.BartWorks) {
+        if (BartWorks.isModLoaded()) {
             ITEM_LIST.put(
                     aID++,
                     new FuelRod(
@@ -567,7 +569,7 @@ public class ComponentFactory {
                             new GT_ItemStack(BW_NonMeta_MaterialItems.TiberiumCell_1.get(1)),
                             50e3,
                             1,
-                            "Bartworks",
+                            BartWorks.ID,
                             100,
                             1,
                             1,
@@ -580,7 +582,7 @@ public class ComponentFactory {
                             new GT_ItemStack(BW_NonMeta_MaterialItems.TiberiumCell_2.get(1)),
                             50e3,
                             1,
-                            "Bartworks",
+                            BartWorks.ID,
                             200,
                             2,
                             2,
@@ -593,7 +595,7 @@ public class ComponentFactory {
                             new GT_ItemStack(BW_NonMeta_MaterialItems.TiberiumCell_4.get(1)),
                             50e3,
                             1,
-                            "Bartworks",
+                            BartWorks.ID,
                             400,
                             4,
                             4,
@@ -606,7 +608,7 @@ public class ComponentFactory {
                             new GT_ItemStack(BW_NonMeta_MaterialItems.TheCoreCell.get(1)),
                             100e3,
                             1,
-                            "Bartworks",
+                            BartWorks.ID,
                             72534,
                             816,
                             32,
@@ -652,7 +654,7 @@ public class ComponentFactory {
                         "GTNH"));
 
         aID = 59;
-        if (LoadedMods.GoodGenerator) {
+        if (GoodGenerator.isModLoaded()) {
             ITEM_LIST.put(
                     aID++,
                     new FuelRod(
@@ -661,7 +663,7 @@ public class ComponentFactory {
                             new GT_ItemStack(GG_Utils.getGG_Fuel_Rod(GG_Fuel_Rod.rodCompressedUranium, 1)),
                             50e3,
                             1,
-                            "GoodGenerator",
+                            GoodGenerator.ID,
                             100,
                             1,
                             1,
@@ -674,7 +676,7 @@ public class ComponentFactory {
                             new GT_ItemStack(GG_Utils.getGG_Fuel_Rod(GG_Fuel_Rod.rodCompressedUranium_2, 1)),
                             50e3,
                             1,
-                            "GoodGenerator",
+                            GoodGenerator.ID,
                             100,
                             1,
                             2,
@@ -687,7 +689,7 @@ public class ComponentFactory {
                             new GT_ItemStack(GG_Utils.getGG_Fuel_Rod(GG_Fuel_Rod.rodCompressedUranium_4, 1)),
                             50e3,
                             1,
-                            "GoodGenerator",
+                            GoodGenerator.ID,
                             100,
                             1,
                             4,
@@ -700,7 +702,7 @@ public class ComponentFactory {
                             new GT_ItemStack(GG_Utils.getGG_Fuel_Rod(GG_Fuel_Rod.rodCompressedPlutonium, 1)),
                             50e3,
                             1,
-                            "GoodGenerator",
+                            GoodGenerator.ID,
                             50,
                             1,
                             1,
@@ -713,7 +715,7 @@ public class ComponentFactory {
                             new GT_ItemStack(GG_Utils.getGG_Fuel_Rod(GG_Fuel_Rod.rodCompressedPlutonium_2, 1)),
                             50e3,
                             1,
-                            "GoodGenerator",
+                            GoodGenerator.ID,
                             50,
                             1,
                             2,
@@ -726,7 +728,7 @@ public class ComponentFactory {
                             new GT_ItemStack(GG_Utils.getGG_Fuel_Rod(GG_Fuel_Rod.rodCompressedPlutonium_4, 1)),
                             50e3,
                             1,
-                            "GoodGenerator",
+                            GoodGenerator.ID,
                             50,
                             1,
                             4,

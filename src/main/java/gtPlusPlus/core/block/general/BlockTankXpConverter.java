@@ -1,5 +1,7 @@
 package gtPlusPlus.core.block.general;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import java.util.Random;
 
 import net.minecraft.block.BlockContainer;
@@ -17,7 +19,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.item.base.itemblock.ItemBlockEntityBase;
-import gtPlusPlus.core.lib.CORE;
 
 public class BlockTankXpConverter extends BlockContainer {
 
@@ -56,10 +57,10 @@ public class BlockTankXpConverter extends BlockContainer {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(final IIconRegister p_149651_1_) {
-        this.blockIcon = p_149651_1_.registerIcon(CORE.MODID + ":" + "SwirlGray");
-        this.textureTop = p_149651_1_.registerIcon(CORE.MODID + ":" + "SwirlGray");
-        this.textureBottom = p_149651_1_.registerIcon(CORE.MODID + ":" + "SwirlGray");
-        this.textureFront = p_149651_1_.registerIcon(CORE.MODID + ":" + "SwirlGray");
+        this.blockIcon = p_149651_1_.registerIcon(GTPlusPlus.ID + ":" + "SwirlGray");
+        this.textureTop = p_149651_1_.registerIcon(GTPlusPlus.ID + ":" + "SwirlGray");
+        this.textureBottom = p_149651_1_.registerIcon(GTPlusPlus.ID + ":" + "SwirlGray");
+        this.textureFront = p_149651_1_.registerIcon(GTPlusPlus.ID + ":" + "SwirlGray");
     }
 
     /**

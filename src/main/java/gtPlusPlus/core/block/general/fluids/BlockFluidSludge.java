@@ -1,5 +1,7 @@
 package gtPlusPlus.core.block.general.fluids;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EnumCreatureType;
@@ -12,7 +14,6 @@ import net.minecraftforge.fluids.Fluid;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.lib.CORE;
 
 public class BlockFluidSludge extends BlockFluidClassic {
 
@@ -35,8 +36,8 @@ public class BlockFluidSludge extends BlockFluidClassic {
     @SideOnly(Side.CLIENT)
     @Override
     public void registerBlockIcons(final IIconRegister register) {
-        this.stillIcon = register.registerIcon(CORE.MODID + ":fluids/fluid.jackdaniels");
-        this.flowingIcon = register.registerIcon(CORE.MODID + ":fluids/fluid.jackdaniels");
+        this.stillIcon = register.registerIcon(GTPlusPlus.ID + ":fluids/fluid.jackdaniels");
+        this.flowingIcon = register.registerIcon(GTPlusPlus.ID + ":fluids/fluid.jackdaniels");
     }
 
     @Override

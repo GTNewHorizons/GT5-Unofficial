@@ -1,5 +1,7 @@
 package gtPlusPlus.core.gui.item;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -13,7 +15,6 @@ import org.lwjgl.opengl.GL12;
 
 import gtPlusPlus.core.container.Container_BackpackBase;
 import gtPlusPlus.core.inventories.BaseInventoryBackpack;
-import gtPlusPlus.core.lib.CORE;
 
 public class GuiBaseBackpack extends GuiContainer {
 
@@ -35,7 +36,7 @@ public class GuiBaseBackpack extends GuiContainer {
      * Forge_Tutorials/textures/gui/
      */
     private static final ResourceLocation iconLocation = new ResourceLocation(
-            CORE.MODID,
+            GTPlusPlus.ID,
             "textures/gui/itemBackpack.png");
 
     /** The inventory to render on screen */

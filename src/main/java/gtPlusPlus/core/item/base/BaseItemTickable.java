@@ -1,5 +1,7 @@
 package gtPlusPlus.core.item.base;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import java.util.List;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -16,7 +18,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 
 public class BaseItemTickable extends CoreItem {
@@ -114,10 +115,10 @@ public class BaseItemTickable extends CoreItem {
     public void registerIcons(final IIconRegister i) {
 
         if (this.twoRenderPasses) {
-            this.mIcon[0] = i.registerIcon(CORE.MODID + ":" + this.getUnlocalizedName());
-            this.mIcon[1] = i.registerIcon(CORE.MODID + ":" + this.getUnlocalizedName() + "_OVERLAY");
+            this.mIcon[0] = i.registerIcon(GTPlusPlus.ID + ":" + this.getUnlocalizedName());
+            this.mIcon[1] = i.registerIcon(GTPlusPlus.ID + ":" + this.getUnlocalizedName() + "_OVERLAY");
         } else {
-            this.mIcon[0] = i.registerIcon(CORE.MODID + ":" + this.getUnlocalizedName());
+            this.mIcon[0] = i.registerIcon(GTPlusPlus.ID + ":" + this.getUnlocalizedName());
             // this.overlay = i.registerIcon(getCorrectTextures() + "_OVERLAY");
         }
     }

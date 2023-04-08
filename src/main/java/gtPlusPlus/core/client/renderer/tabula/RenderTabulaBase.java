@@ -1,5 +1,7 @@
 package gtPlusPlus.core.client.renderer.tabula;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
@@ -8,7 +10,6 @@ import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.core.client.model.tabula.ModelTabulaBase;
-import gtPlusPlus.core.lib.CORE;
 
 @SideOnly(Side.CLIENT)
 public class RenderTabulaBase extends TileEntitySpecialRenderer {
@@ -22,7 +23,7 @@ public class RenderTabulaBase extends TileEntitySpecialRenderer {
 
     public RenderTabulaBase(ModelTabulaBase aModel, String aTexturePath, Class aTileClass) {
         mModel = aModel;
-        mTexture = new ResourceLocation(CORE.MODID, aTexturePath);
+        mTexture = new ResourceLocation(GTPlusPlus.ID, aTexturePath);
         mTileClass = aTileClass;
         this.mRenderID = RenderingRegistry.getNextAvailableRenderId();
         mInstance = this;

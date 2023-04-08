@@ -1,5 +1,7 @@
 package gtPlusPlus.xmod.bop.blocks.base;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import java.util.List;
 
 import net.minecraft.block.BlockLog;
@@ -15,7 +17,6 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 
@@ -74,9 +75,9 @@ public abstract class LogBase extends BlockLog {
         this.textureTop = new IIcon[treeType.length];
 
         for (int i = 0; i < this.textureSide.length; ++i) {
-            this.textureSide[i] = iIcon.registerIcon(CORE.MODID + ":" + "trees/" + "logs/" + "log_" + treeType[i]);
+            this.textureSide[i] = iIcon.registerIcon(GTPlusPlus.ID + ":" + "trees/" + "logs/" + "log_" + treeType[i]);
             this.textureTop[i] = iIcon
-                    .registerIcon(CORE.MODID + ":" + "trees/" + "logs/" + "log_" + treeType[i] + "_top");
+                    .registerIcon(GTPlusPlus.ID + ":" + "trees/" + "logs/" + "log_" + treeType[i] + "_top");
         }
 
         setVanillaVariable(this.field_150167_a, this.textureSide);

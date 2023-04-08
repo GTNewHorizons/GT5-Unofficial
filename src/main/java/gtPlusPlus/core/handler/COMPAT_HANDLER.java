@@ -1,5 +1,11 @@
 package gtPlusPlus.core.handler;
 
+import static gregtech.api.enums.Mods.EnderIO;
+import static gregtech.api.enums.Mods.ExtraUtilities;
+import static gregtech.api.enums.Mods.OpenBlocks;
+import static gregtech.api.enums.Mods.Thaumcraft;
+import static gregtech.api.enums.Mods.Witchery;
+
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Set;
@@ -13,24 +19,15 @@ import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.data.AutoMap;
 import gtPlusPlus.api.objects.minecraft.ItemPackage;
-import gtPlusPlus.core.common.compat.COMPAT_BigReactors;
-import gtPlusPlus.core.common.compat.COMPAT_CompactWindmills;
 import gtPlusPlus.core.common.compat.COMPAT_EnderIO;
 import gtPlusPlus.core.common.compat.COMPAT_ExtraUtils;
-import gtPlusPlus.core.common.compat.COMPAT_HarvestCraft;
 import gtPlusPlus.core.common.compat.COMPAT_IC2;
-import gtPlusPlus.core.common.compat.COMPAT_MorePlanets;
 import gtPlusPlus.core.common.compat.COMPAT_OpenBlocks;
-import gtPlusPlus.core.common.compat.COMPAT_PneumaticCraft;
-import gtPlusPlus.core.common.compat.COMPAT_RFTools;
-import gtPlusPlus.core.common.compat.COMPAT_Railcraft;
-import gtPlusPlus.core.common.compat.COMPAT_SimplyJetpacks;
 import gtPlusPlus.core.common.compat.COMPAT_Thaumcraft;
 import gtPlusPlus.core.common.compat.COMPAT_Witchery;
 import gtPlusPlus.core.handler.Recipes.LateRegistrationHandler;
 import gtPlusPlus.core.handler.Recipes.RegistrationHandler;
 import gtPlusPlus.core.item.ModItems;
-import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialGenerator;
 import gtPlusPlus.core.recipe.RECIPES_GREGTECH;
@@ -46,7 +43,73 @@ import gtPlusPlus.xmod.gregtech.loaders.recipe.RecipeLoader_ChemicalSkips;
 import gtPlusPlus.xmod.gregtech.loaders.recipe.RecipeLoader_GTNH;
 import gtPlusPlus.xmod.gregtech.loaders.recipe.RecipeLoader_GlueLine;
 import gtPlusPlus.xmod.gregtech.loaders.recipe.RecipeLoader_Nuclear;
-import gtPlusPlus.xmod.gregtech.registration.gregtech.*;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.Gregtech4Content;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechAdvancedBoilers;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechAlgaeContent;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechAmazonWarehouse;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechBufferDynamos;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechComponentAssembler;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechCustomHatches;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechCyclotron;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechDehydrator;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechEnergyBuffer;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechFactoryGradeReplacementMultis;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechFluidReactor;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechGeneratorsULV;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechGeothermalThermalGenerator;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechHiAmpTransformer;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIndustrialAlloySmelter;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIndustrialArcFurnace;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIndustrialBlastSmelter;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIndustrialCentrifuge;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIndustrialChisel;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIndustrialCokeOven;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIndustrialCuttingFactory;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIndustrialElectrolyzer;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIndustrialElementDuplicator;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIndustrialExtruder;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIndustrialFishPond;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIndustrialFluidHeater;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIndustrialForgeHammer;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIndustrialFuelRefinery;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIndustrialGeneratorArray;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIndustrialMacerator;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIndustrialMassFabricator;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIndustrialMixer;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIndustrialMultiMachine;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIndustrialPlatePress;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIndustrialRockBreaker;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIndustrialSifter;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIndustrialThermalCentrifuge;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIndustrialTreeFarm;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIndustrialWashPlant;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIndustrialWiremill;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIronBlastFurnace;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIsaMill;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechLFTR;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechLargeTurbinesAndHeatExchanger;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechMolecularTransformer;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechPollutionDevices;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechPowerBreakers;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechPowerSubStation;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechQuantumForceTransformer;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechRTG;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechRocketFuelGenerator;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechSafeBlock;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechSemiFluidgenerators;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechSimpleWasher;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechSolarGenerators;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechSolarTower;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechSteamCondenser;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechSteamMultis;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechSuperChests;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechTeslaTower;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechThaumcraftDevices;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechThreadedBuffers;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechTieredChunkloaders;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechTieredFluidTanks;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechTreeFarmerTE;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechWirelessChargers;
 
 public class COMPAT_HANDLER {
 
@@ -105,7 +168,6 @@ public class COMPAT_HANDLER {
         GregtechAdvancedBoilers.run();
         GregtechPollutionDevices.run();
         GregtechTieredFluidTanks.run();
-        // GregtechIndustrialMultiTank.run();
         GregtechGeothermalThermalGenerator.run();
         Gregtech4Content.run();
         GregtechIndustrialFuelRefinery.run();
@@ -122,7 +184,6 @@ public class COMPAT_HANDLER {
         GregtechWirelessChargers.run();
         GregtechIndustrialGeneratorArray.run();
         GregtechIndustrialCuttingFactory.run();
-        // GregtechMiniRaFusion.run();
         GregtechComponentAssembler.run();
         GregtechTeslaTower.run();
         GregtechSuperChests.run();
@@ -130,7 +191,6 @@ public class COMPAT_HANDLER {
         GregtechTieredChunkloaders.run();
         GregtechIndustrialExtruder.run();
         GregtechIndustrialMultiMachine.run();
-        // GregtechBedrockPlatforms.run();
         GregtechBufferDynamos.run();
         GregtechAmazonWarehouse.run();
         GregtechFactoryGradeReplacementMultis.run();
@@ -138,7 +198,6 @@ public class COMPAT_HANDLER {
         GregtechThreadedBuffers.run();
         GregtechIndustrialMixer.run();
         GregtechCustomHatches.run();
-        // GregtechNaqReactor.run();
         GregtechIndustrialArcFurnace.run();
         GregtechSolarTower.run();
         GregtechLargeTurbinesAndHeatExchanger.run();
@@ -159,44 +218,21 @@ public class COMPAT_HANDLER {
     // InterMod
     public static void intermodOreDictionarySupport() {
 
-        if (LoadedMods.Big_Reactors) {
-            COMPAT_BigReactors.OreDict();
-        }
-        if (LoadedMods.EnderIO) {
+        if (EnderIO.isModLoaded()) {
             COMPAT_EnderIO.OreDict();
         }
-        if (LoadedMods.MorePlanets) {
-            COMPAT_MorePlanets.OreDict();
-        }
-        if (LoadedMods.OpenBlocks) {
+        if (OpenBlocks.isModLoaded()) {
             COMPAT_OpenBlocks.OreDict();
         }
-        if (LoadedMods.Railcraft) {
-            COMPAT_Railcraft.OreDict();
-        }
-        if (LoadedMods.Simply_Jetpacks) {
-            COMPAT_SimplyJetpacks.OreDict();
-        }
-        if (LoadedMods.RFTools) {
-            COMPAT_RFTools.OreDict();
-        }
-        if (LoadedMods.Thaumcraft) {
+        if (Thaumcraft.isModLoaded()) {
             COMPAT_Thaumcraft.OreDict();
         }
-        if (LoadedMods.Extra_Utils) {
+        if (ExtraUtilities.isModLoaded()) {
             COMPAT_ExtraUtils.OreDict();
         }
-        if (LoadedMods.PneumaticCraft) {
-            COMPAT_PneumaticCraft.OreDict();
-        }
-        if (LoadedMods.CompactWindmills) {
-            COMPAT_CompactWindmills.OreDict();
-        }
         COMPAT_IC2.OreDict();
-        if (LoadedMods.PamsHarvestcraft) {
-            COMPAT_HarvestCraft.OreDict();
-        }
-        if (LoadedMods.Witchery) {
+
+        if (Witchery.isModLoaded()) {
             COMPAT_Witchery.OreDict();
         }
     }
