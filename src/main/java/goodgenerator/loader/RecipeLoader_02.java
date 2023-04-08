@@ -17,22 +17,14 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.*;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_Disassembler;
 import ic2.core.Ic2Items;
 
 @SuppressWarnings("deprecation")
 public class RecipeLoader_02 {
 
     public static void RecipeLoad() {
-        // Fix exploit with disassembler
-        // Superconducting Coil is already blacklisted
-        GT_MetaTileEntity_Disassembler.getBlackList()
-                .add(new GT_ItemStack(GT_ModHandler.getModItem("miscutils", "gtplusplus.blockcasings.3", 1, 13)));
-        GT_MetaTileEntity_Disassembler.getBlackList().add(new GT_ItemStack(ItemList.Casing_Fusion_Coil.get(1)));
-
         GT_Values.RA.addAssemblerRecipe(
                 new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.StainlessSteel, 1),
                         GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.BlueAlloy, 1),
