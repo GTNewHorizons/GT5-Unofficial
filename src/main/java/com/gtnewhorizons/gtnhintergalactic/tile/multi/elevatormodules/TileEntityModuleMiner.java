@@ -29,6 +29,8 @@ import com.gtnewhorizons.gtnhintergalactic.recipe.IG_RecipeAdder;
 import com.gtnewhorizons.gtnhintergalactic.spaceprojects.ProjectAsteroidOutpost;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.widget.*;
 
@@ -39,7 +41,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.XSTR;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_ParallelHelper;
-import gregtech.api.util.GT_Utility;
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 import gregtech.common.misc.spaceprojects.enums.SolarSystem;
 import gregtech.common.misc.spaceprojects.interfaces.ISpaceProject;
@@ -415,9 +416,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase {
             configuredOres.clear();
         }
         for (ItemStack item : getStoredInputs()) {
-            if (GT_Utility.isOre(item)) {
-                configuredOres.add(getOreString(item));
-            }
+            configuredOres.add(getOreString(item));
         }
     }
 
@@ -428,11 +427,14 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase {
      * @return String that represents the input ore stack
      */
     protected String getOreString(ItemStack oreStack) {
+        if (oreStack == null || oreStack.getItem() == null) {
+            return null;
+        }
         // For GT ores we want to save the ore independent of its stone type
         if (oreStack.getUnlocalizedName().startsWith("gt.blockores")) {
-            return oreStack.getUnlocalizedName() + ":" + oreStack.getItemDamage() % 1000;
+            return oreStack.getItem().getUnlocalizedName() + ":" + oreStack.getItemDamage() % 1000;
         } else {
-            return oreStack.getUnlocalizedName() + ":" + oreStack.getItemDamage();
+            return oreStack.getItem().getUnlocalizedName() + ":" + oreStack.getItemDamage();
         }
     }
 
@@ -512,12 +514,10 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase {
     @Override
     protected ButtonWidget createSafeVoidButton() {
         Widget button = new ButtonWidget().setOnClick((clickData, widget) -> {
-            if (isSafeVoidButtonEnabled()) {
-                TecTech.proxy.playSound(getBaseMetaTileEntity(), "fx_click");
-                isWhitelisted = !isWhitelisted;
-                if (!widget.isClient()) {
-                    generateOreConfigurationList();
-                }
+            TecTech.proxy.playSound(getBaseMetaTileEntity(), "fx_click");
+            isWhitelisted = !isWhitelisted;
+            if (!widget.isClient()) {
+                generateOreConfigurationList();
             }
         }).setPlayClickSound(false).setBackground(() -> {
             List<UITexture> ret = new ArrayList<>();
@@ -529,10 +529,20 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase {
             }
             return ret.toArray(new IDrawable[0]);
         }).setPos(174, 132).setSize(16, 16);
-        if (isSafeVoidButtonEnabled()) {
-            button.addTooltip("Whitelist").setTooltipShowUpDelay(TOOLTIP_DELAY);
-        }
+        button.addTooltip("Whitelist").setTooltipShowUpDelay(TOOLTIP_DELAY);
         return (ButtonWidget) button;
+    }
+
+    /**
+     * Add widgets to the GUI
+     *
+     * @param builder      Used window builder
+     * @param buildContext Context of the GUI
+     */
+    @Override
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        super.addUIWidgets(builder, buildContext);
+        builder.widget(new FakeSyncWidget.BooleanSyncer(() -> isWhitelisted, val -> isWhitelisted = val));
     }
 
     /**
