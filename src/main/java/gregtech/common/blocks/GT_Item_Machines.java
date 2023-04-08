@@ -81,6 +81,7 @@ public class GT_Item_Machines extends ItemBlock implements IFluidContainerItem {
                             tDamage,
                             tSuffix,
                             !GregTech_API.sPostloadFinished);
+                    tMetaTileEntity.addAdditionalTooltipInformation(aStack, aList);
                 }
                 if (tTileEntity.getEUCapacity() > 0L) {
                     if (tTileEntity.getInputVoltage() > 0L) {
@@ -128,53 +129,6 @@ public class GT_Item_Machines extends ItemBlock implements IFluidContainerItem {
                                     + GT_Utility.formatNumbers(tTileEntity.getEUCapacity())
                                     + EnumChatFormatting.GRAY
                                     + " EU");
-                }
-                if (GregTech_API.METATILEENTITIES[tDamage] instanceof GT_MetaTileEntity_QuantumTank
-                        || GregTech_API.METATILEENTITIES[tDamage] instanceof GT_MetaTileEntity_SuperTank) {
-                    if (aStack.hasTagCompound() && aStack.stackTagCompound.hasKey("mFluid")) {
-                        final FluidStack tContents = FluidStack.loadFluidStackFromNBT(
-                                aStack.stackTagCompound.getCompoundTag("mFluid"));
-                        if (tContents != null && tContents.amount > 0) {
-                            aList.add(
-                                    GT_LanguageManager.addStringLocalization(
-                                            "TileEntity_TANK_INFO",
-                                            "Contains Fluid: ",
-                                            !GregTech_API.sPostloadFinished) + EnumChatFormatting.YELLOW
-                                            + tContents.getLocalizedName()
-                                            + EnumChatFormatting.GRAY);
-                            aList.add(
-                                    GT_LanguageManager.addStringLocalization(
-                                            "TileEntity_TANK_AMOUNT",
-                                            "Fluid Amount: ",
-                                            !GregTech_API.sPostloadFinished) + EnumChatFormatting.GREEN
-                                            + GT_Utility.formatNumbers(tContents.amount)
-                                            + " L"
-                                            + EnumChatFormatting.GRAY);
-                        }
-                    }
-                }
-                if (GregTech_API.METATILEENTITIES[tDamage] instanceof GT_MetaTileEntity_DigitalChestBase) {
-                    if (aStack.hasTagCompound() && aStack.stackTagCompound.hasKey("mItemStack")) {
-                        final ItemStack tContents = ItemStack.loadItemStackFromNBT(
-                                aStack.stackTagCompound.getCompoundTag("mItemStack"));
-                        final int tSize = aStack.stackTagCompound.getInteger("mItemCount");
-                        if (tContents != null && tSize > 0) {
-                            aList.add(
-                                    GT_LanguageManager.addStringLocalization(
-                                            "TileEntity_CHEST_INFO",
-                                            "Contains Item: ",
-                                            !GregTech_API.sPostloadFinished) + EnumChatFormatting.YELLOW
-                                            + tContents.getDisplayName()
-                                            + EnumChatFormatting.GRAY);
-                            aList.add(
-                                    GT_LanguageManager.addStringLocalization(
-                                            "TileEntity_CHEST_AMOUNT",
-                                            "Item Amount: ",
-                                            !GregTech_API.sPostloadFinished) + EnumChatFormatting.GREEN
-                                            + GT_Utility.formatNumbers(tSize)
-                                            + EnumChatFormatting.GRAY);
-                        }
-                    }
                 }
             }
             final NBTTagCompound aNBT = aStack.getTagCompound();
