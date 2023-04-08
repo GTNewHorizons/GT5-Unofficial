@@ -15,7 +15,9 @@ import gregtech.api.util.extensions.ArrayExt;
 
 public class GT_RecipeBuilder {
 
+    // debug mode expose problems. panic mode help you check nothing is wrong-ish without you actively monitoring
     private static final boolean DEBUG_MODE;
+    private static final boolean PANIC_MODE;
 
     public static final int WILDCARD = 32767;
 
@@ -35,14 +37,15 @@ public class GT_RecipeBuilder {
 
     static {
         boolean tmp;
-        try {
-            tmp = Boolean.parseBoolean(System.getProperty("gt.recipebuilder.debug"));
-        } catch (IllegalArgumentException | NullPointerException e) {
+        if (System.getProperties()
+                  .containsKey("gt.recipebuilder.debug")) {
+            tmp = Boolean.getBoolean("gt.recipebuilder.debug");
+        } else {
             // turn on debug by default in dev mode
-            // this will be overridden if above property is present and set to false
             tmp = (Boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
         }
         DEBUG_MODE = tmp;
+        PANIC_MODE = DEBUG_MODE && Boolean.getBoolean("gt.recipebuilder.panic");
     }
 
     protected ItemStack[] inputsBasic;
@@ -109,10 +112,27 @@ public class GT_RecipeBuilder {
         return new GT_RecipeBuilder();
     }
 
+    private static boolean containsNull(Object[] arr) {
+        return arr == null || Arrays.stream(arr)
+                                    .anyMatch(Objects::isNull);
+    }
+
+    private static void handleNullRecipeComponents(String componentType) {
+        if (PANIC_MODE) {
+            throw new IllegalArgumentException("null in argument");
+        } else {
+            // place a breakpoint here to catch all these issues
+            GT_Log.err.print("null detected in ");
+            GT_Log.err.println(componentType);
+            new NullPointerException().printStackTrace(GT_Log.err);
+        }
+    }
+
     /**
      * Non-OreDicted item inputs. Assumes input is unified.
      */
     public GT_RecipeBuilder itemInputsUnified(ItemStack... inputs) {
+        if (DEBUG_MODE && containsNull(inputs)) handleNullRecipeComponents("itemInputUnified");
         inputsBasic = ArrayExt.withoutTrailingNulls(inputs, ItemStack[]::new);
         inputsOreDict = null;
         alts = null;
@@ -123,6 +143,7 @@ public class GT_RecipeBuilder {
      * Non-OreDicted item inputs. Assumes input is not unified.
      */
     public GT_RecipeBuilder itemInputs(ItemStack... inputs) {
+        if (DEBUG_MODE && containsNull(inputs)) handleNullRecipeComponents("itemInputs");
         inputsBasic = fix(inputs);
         inputsOreDict = null;
         alts = null;
@@ -151,14 +172,8 @@ public class GT_RecipeBuilder {
                               .filter(GT_Utility::isStackValid)
                               .toArray(ItemStack[]::new);
             } else if (input == null) {
-                if (DEBUG_MODE) {
-                    throw new NullPointerException();
-                } else {
-                    GT_Log.err.printf(
-                            "null detected in recipe oredict input. ignoring. %s%n",
-                            new NullPointerException());
-                    alts[i] = new ItemStack[0];
-                }
+                handleNullRecipeComponents("recipe oredict input");
+                alts[i] = new ItemStack[0];
             } else {
                 throw new IllegalArgumentException("index " + i + ", unexpected type: " + input.getClass());
             }
@@ -182,6 +197,7 @@ public class GT_RecipeBuilder {
     }
 
     public GT_RecipeBuilder itemOutputs(ItemStack... outputs) {
+        if (DEBUG_MODE && containsNull(outputs)) handleNullRecipeComponents("itemOutputs");
         this.outputs = outputs;
         if (chances != null && chances.length != outputs.length) {
             throw new IllegalArgumentException("Output chances array and items array length differs");
@@ -194,6 +210,7 @@ public class GT_RecipeBuilder {
     }
 
     public GT_RecipeBuilder fluidInputs(FluidStack... fluidInputs) {
+        if (DEBUG_MODE && containsNull(fluidInputs)) handleNullRecipeComponents("fluidInputs");
         this.fluidInputs = fix(fluidInputs);
         return this;
     }
@@ -203,6 +220,7 @@ public class GT_RecipeBuilder {
     }
 
     public GT_RecipeBuilder fluidOutputs(FluidStack... fluidOutputs) {
+        if (DEBUG_MODE && containsNull(fluidOutputs)) handleNullRecipeComponents("fluidOutputs");
         this.fluidOutputs = fix(fluidOutputs);
         return this;
     }
