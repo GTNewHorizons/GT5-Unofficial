@@ -41,7 +41,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.XSTR;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_ParallelHelper;
-import gregtech.api.util.GT_Utility;
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 import gregtech.common.misc.spaceprojects.enums.SolarSystem;
 import gregtech.common.misc.spaceprojects.interfaces.ISpaceProject;
@@ -417,9 +416,7 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase {
             configuredOres.clear();
         }
         for (ItemStack item : getStoredInputs()) {
-            if (GT_Utility.isOre(item)) {
-                configuredOres.add(getOreString(item));
-            }
+            configuredOres.add(getOreString(item));
         }
     }
 
