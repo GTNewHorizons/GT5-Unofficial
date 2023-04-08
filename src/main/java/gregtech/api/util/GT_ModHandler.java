@@ -393,8 +393,34 @@ public class GT_ModHandler {
      * Gets an Item from the specified mod, and returns a Replacement Item if not possible
      */
     public static ItemStack getModItem(String aModID, String aItem, long aAmount, ItemStack aReplacement) {
-        if (GT_Utility.isStringInvalid(aItem) || !GregTech_API.sPreloadStarted) return null;
-        return GT_Utility.copyAmount(aAmount, GameRegistry.findItemStack(aModID, aItem, (int) aAmount), aReplacement);
+        ItemStack result;
+        if (GT_Utility.isStringInvalid(aItem) || !GregTech_API.sPreloadStarted) {
+            result = null;
+        } else {
+            result = GT_Utility.copyAmount(
+                    aAmount,
+                    GameRegistry.findItemStack(aModID, aItem, (int) aAmount),
+                    aReplacement);
+        }
+
+        if (result == null) {
+            String reason;
+            if (GT_Utility.isStringInvalid(aItem)) {
+                reason = "the name of the item is an invalid string";
+            } else if (!GregTech_API.sPreloadStarted) {
+                reason = "the GT5U preloading phase has not yet started";
+            } else {
+                reason = "the item was not found in the game registry";
+            }
+            String log_message = "getModItem call: object \"" + aItem
+                    + "\" with mod id \""
+                    + aModID
+                    + "\" has returned null because "
+                    + reason;
+            GT_Log.out.println(log_message);
+            new Exception().printStackTrace(GT_Log.out);
+        }
+        return result;
     }
 
     /**
