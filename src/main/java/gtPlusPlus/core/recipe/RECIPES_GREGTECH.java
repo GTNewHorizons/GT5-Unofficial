@@ -540,17 +540,6 @@ public class RECIPES_GREGTECH {
                     aTransParts[i].get(1),
                     20 * 5,
                     MaterialUtils.getVoltageForTier(i));
-            GT_Recipe.GT_Recipe_Map.sDisassemblerRecipes.addRecipe(
-                    false,
-                    new ItemStack[] { aTransParts[i].get(1) },
-                    new ItemStack[] { CI.getEmitter(i, 2), CI.getSensor(i, 2) },
-                    null,
-                    null,
-                    new FluidStack[] { GT_Values.NF },
-                    new FluidStack[] { GT_Values.NF },
-                    Math.max(300 >> Math.max(i - 1, 0), 1),
-                    MaterialUtils.getVoltageForTier(i),
-                    0);
         }
 
         GT_Values.RA.addLaserEngraverRecipe(

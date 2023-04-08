@@ -24,17 +24,6 @@ public class AC_Helper_Utils {
         return 0;
     }
 
-    // Remove Crafter
-    public static final boolean removeCrafter(int frequency) {
-        if (!sAutocrafterMap.isEmpty()) {
-            if (sAutocrafterMap.containsKey(frequency)) {
-                sAutocrafterMap.remove(frequency);
-                return true;
-            }
-        }
-        return false;
-    }
-
     public static final boolean removeCrafter(GT4Entity_AutoCrafter AC) {
         if (!sAutocrafterMap.isEmpty()) {
             if (sAutocrafterMap.containsValue(AC)) {
@@ -43,22 +32,6 @@ public class AC_Helper_Utils {
             }
         }
         return false;
-    }
-
-    // Get Crafter
-    public static final GT4Entity_AutoCrafter getCrafterByID(int ID) {
-        if (!sAutocrafterMap.isEmpty()) {
-            Set<Entry<Integer, GT4Entity_AutoCrafter>> players = sAutocrafterMap.entrySet();
-            Iterator<Entry<Integer, GT4Entity_AutoCrafter>> i = players.iterator();
-            while (i.hasNext()) {
-                Entry<Integer, GT4Entity_AutoCrafter> current = i.next();
-                if (current.getKey().equals(ID)) {
-                    return current.getValue();
-                }
-            }
-        }
-        Logger.WARNING("Failed. [getCrafterByID]");
-        return null;
     }
 
     public static final int getIDByCrafter(GT4Entity_AutoCrafter AC) {
