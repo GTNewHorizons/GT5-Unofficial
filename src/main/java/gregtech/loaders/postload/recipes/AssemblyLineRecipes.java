@@ -101,9 +101,7 @@ public class AssemblyLineRecipes implements Runnable {
                                 new FluidStack(solderIndalloy, 1296),
                                 Materials.Lubricant.getFluid(2000))
                         .noFluidOutputs()
-                        .itemOutputs(
-
-                        )
+                        .itemOutputs(ItemList.Electric_Motor_UV.get(1))
                         .eut(TierEU.RECIPE_ZPM)
                         .duration(30 * SECONDS)
                         .addTo(AssemblyLine);
