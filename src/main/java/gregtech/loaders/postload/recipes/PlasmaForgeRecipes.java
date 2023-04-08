@@ -5,7 +5,6 @@ import static gregtech.api.util.GT_ModHandler.getModItem;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sPlasmaForgeRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeConstants.COIL_HEAT;
-import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
 
 import gregtech.api.enums.*;
 
@@ -35,9 +34,7 @@ public class PlasmaForgeRecipes implements Runnable {
                             getModItem(GTPlusPlus.ID, "particleBase", 1, 24),
                             getModItem(NewHorizonsCoreMod.ID, "item.ChromaticLens", 0),
                             getModItem(GoodGenerator.ID, "huiCircuit", 0, 4))
-                    .fluidInputs(
-                            Materials.ExcitedDTRC.getFluid(92),
-                            Materials.Duranium.getMolten(144))
+                    .fluidInputs(Materials.ExcitedDTRC.getFluid(92), Materials.Duranium.getMolten(144))
                     .itemOutputs(getModItem(GTPlusPlus.ID, "MU-metaitem.01", 1, 32105))
                     .noFluidOutputs()
                     .duration(60 * SECONDS)
