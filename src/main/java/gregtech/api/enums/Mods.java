@@ -40,6 +40,7 @@ public enum Mods {
     COFHCore(Names.C_O_F_H_CORE),
     Computronics(Names.COMPUTRONICS),
     CraftTweaker(Names.CRAFT_TWEAKER),
+    CropLoadCore(Names.CROP_LOAD_CORE),
     CropsPlusPlus(Names.CROPS_PLUS_PLUS),
     DraconicEvolution(Names.DRACONIC_EVOLUTION),
     ElectroMagicTools(Names.ELECTRO_MAGIC_TOOLS),
@@ -104,6 +105,7 @@ public enum Mods {
     Railcraft(Names.RAILCRAFT),
     RandomThings(Names.RANDOM_THINGS),
     RemoteIO(Names.REMOTE_IO),
+    RWG(Names.RWG),
     SGCraft(Names.S_G_CRAFT),
     SleepingBags(Names.SLEEPING_BAGS),
     SpiceOfLife(Names.SPICE_OF_LIFE),
@@ -122,6 +124,7 @@ public enum Mods {
     Translocator(Names.TRANSLOCATOR),
     TravellersGear(Names.TRAVELLERS_GEAR),
     TwilightForest(Names.TWILIGHT_FOREST),
+    UniversalSingularities(Names.UNIVERSAL_SINGULARITIES),
     Waila(Names.WAILA),
     WarpTheory(Names.WARP_THEORY),
     Witchery(Names.WITCHERY),
@@ -173,6 +176,7 @@ public enum Mods {
         public static final String C_O_F_H_CORE = "CoFHCore";
         public static final String COMPUTRONICS = "computronics";
         public static final String CRAFT_TWEAKER = "MineTweaker3";
+        public static final String CROP_LOAD_CORE = "croploadcore";
         public static final String CROPS_PLUS_PLUS = "berriespp";
         public static final String DRACONIC_EVOLUTION = "DraconicEvolution";
         public static final String ELECTRO_MAGIC_TOOLS = "EMT";
@@ -237,6 +241,7 @@ public enum Mods {
         public static final String RAILCRAFT = "Railcraft";
         public static final String RANDOM_THINGS = "RandomThings";
         public static final String REMOTE_IO = "RIO";
+        public static final String RWG = "RWG";
         public static final String S_G_CRAFT = "SGCraft";
         public static final String SLEEPING_BAGS = "sleepingbag";
         public static final String SPICE_OF_LIFE = "SpiceOfLife";
@@ -255,6 +260,7 @@ public enum Mods {
         public static final String TRANSLOCATOR = "Translocator";
         public static final String TRAVELLERS_GEAR = "TravellersGear";
         public static final String TWILIGHT_FOREST = "TwilightForest";
+        public static final String UNIVERSAL_SINGULARITIES = "universalsingularities";
         public static final String WAILA = "Waila";
         public static final String WARP_THEORY = "WarpTheory";
         public static final String WITCHERY = "witchery";
