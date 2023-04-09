@@ -11,9 +11,12 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import gregtech.api.GregTech_API;
+import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.SoundResource;
@@ -43,6 +46,13 @@ public class Behaviour_Spray_Color extends Behaviour_None {
     private final String mTooltipUnstackable = GT_LanguageManager.addStringLocalization(
             "gt.behaviour.unstackable",
             "Not usable when stacked!");
+    private final String mTooltipChain = GT_LanguageManager.addStringLocalization(
+            "gt.behaviour.paintspray.chain",
+            "If used while sneaking it will paint a chain of blocks");
+
+    private final String mTooltipChainAmount = GT_LanguageManager.addStringLocalization(
+            "gt.behaviour.paintspray.chain",
+            "Paints up to %d blocks, in the direction you're looking at");
 
     public Behaviour_Spray_Color(ItemStack aEmpty, ItemStack aUsed, ItemStack aFull, long aUses, int aColor) {
         this.mEmpty = aEmpty;
@@ -75,12 +85,37 @@ public class Behaviour_Spray_Color extends Behaviour_None {
             Items.feather.setDamage(aStack, Items.feather.getDamage(this.mUsed));
             tUses = this.mUses;
         }
-        if ((GT_Utility.areStacksEqual(aStack, this.mUsed, true)) && (colorize(aWorld, aX, aY, aZ, aSide))) {
+        int painted = 0;
+        int maxPainted = GregTech_API.sSpecialFile.get(ConfigCategories.general, "SprayCanChainRange", 256);
+        ForgeDirection lookSide;
+        Vec3 look = aPlayer.getLookVec();
+        double absX = Math.abs(look.xCoord);
+        double absY = Math.abs(look.yCoord);
+        double absZ = Math.abs(look.zCoord);
+        if (absX > absY && absX > absZ) {
+            lookSide = look.xCoord > 0 ? ForgeDirection.EAST : ForgeDirection.WEST;
+        } else if (absY > absX && absY > absZ) {
+            lookSide = look.yCoord > 0 ? ForgeDirection.UP : ForgeDirection.DOWN;
+        } else {
+            lookSide = look.zCoord > 0 ? ForgeDirection.SOUTH : ForgeDirection.NORTH;
+        }
+        while ((GT_Utility.areStacksEqual(aStack, this.mUsed, true)) && (colorize(aWorld, aX, aY, aZ, aSide))) {
             GT_Utility.sendSoundToPlayers(aWorld, SoundResource.IC2_TOOLS_PAINTER, 1.0F, 1.0F, aX, aY, aZ);
             if (!aPlayer.capabilities.isCreativeMode) {
                 tUses -= 1L;
             }
             rOutput = true;
+            painted++;
+            if (painted >= maxPainted && maxPainted != -1) break;
+            if (!aPlayer.isSneaking() || tUses <= 0) break;
+            switch (lookSide) {
+                case UP -> aY += 1;
+                case DOWN -> aY -= 1;
+                case NORTH -> aZ -= 1;
+                case SOUTH -> aZ += 1;
+                case WEST -> aX -= 1;
+                case EAST -> aX += 1;
+            }
         }
         tNBT.removeTag("GT.RemainingPaint");
         if (tUses > 0L) {
@@ -130,6 +165,11 @@ public class Behaviour_Spray_Color extends Behaviour_None {
     @Override
     public List<String> getAdditionalToolTips(GT_MetaBase_Item aItem, List<String> aList, ItemStack aStack) {
         aList.add(this.mTooltip);
+        aList.add(this.mTooltipChain);
+        aList.add(
+                String.format(
+                        this.mTooltipChainAmount,
+                        GregTech_API.sSpecialFile.get(ConfigCategories.general, "SprayCanChainRange", 256)));
         NBTTagCompound tNBT = aStack.getTagCompound();
         long tRemainingPaint = tNBT == null ? this.mUses
                 : GT_Utility.areStacksEqual(aStack, this.mFull, true) ? this.mUses : tNBT.getLong("GT.RemainingPaint");
