@@ -4498,9 +4498,9 @@ public class AssemblerRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
                     .itemInputs(
-                            new ItemStack[] { new ItemStack(Blocks.stone_slab, 1, 0), ItemList.RC_Rebar.get(1),
-                                    GT_Utility.getIntegratedCircuit(1) },
-                            GT_Values.NF)
+                            new ItemStack(Blocks.stone_slab, 1, 0),
+                            ItemList.RC_Rebar.get(1),
+                            GT_Utility.getIntegratedCircuit(1))
                     .itemOutputs(ItemList.RC_Tie_Stone.get(1))
                     .noFluidInputs()
                     .noFluidOutputs()
@@ -4510,9 +4510,9 @@ public class AssemblerRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
                     .itemInputs(
-                            new ItemStack[] { new ItemStack(Blocks.stone_slab, 1, 7), ItemList.RC_Rebar.get(1),
-                                    GT_Utility.getIntegratedCircuit(1) },
-                            GT_Values.NF)
+                            new ItemStack(Blocks.stone_slab, 1, 7),
+                            ItemList.RC_Rebar.get(1),
+                            GT_Utility.getIntegratedCircuit(1))
                     .itemOutputs(ItemList.RC_Tie_Stone.get(1))
                     .noFluidInputs()
                     .noFluidOutputs()
