@@ -40,7 +40,6 @@ public class GT_MetaTileEntity_ElectricBlastFurnace
         implements ISurvivalConstructable {
 
     private int mHeatingCapacity = 0;
-    private boolean isBussesSeparate = false;
     protected final ArrayList<GT_MetaTileEntity_Hatch_Output> mPollutionOutputHatches = new ArrayList<>();
     protected final FluidStack[] pollutionFluidStacks = { Materials.CarbonDioxide.getGas(1000),
             Materials.CarbonMonoxide.getGas(1000), Materials.SulfurDioxide.getGas(1000) };
@@ -197,7 +196,7 @@ public class GT_MetaTileEntity_ElectricBlastFurnace
 
     @Override
     public boolean checkRecipe(ItemStack aStack) {
-        if (isBussesSeparate) {
+        if (inputSeparation) {
             FluidStack[] tFluids = getStoredFluids().toArray(new FluidStack[0]);
             for (GT_MetaTileEntity_Hatch_InputBus tBus : mInputBusses) {
                 ArrayList<ItemStack> tInputs = new ArrayList<>();
@@ -458,21 +457,22 @@ public class GT_MetaTileEntity_ElectricBlastFurnace
 
     @Override
     public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        isBussesSeparate = !isBussesSeparate;
+        inputSeparation = !inputSeparation;
         GT_Utility.sendChatToPlayer(
                 aPlayer,
-                StatCollector.translateToLocal("GT5U.machines.separatebus") + " " + isBussesSeparate);
-    }
-
-    @Override
-    public void saveNBTData(NBTTagCompound aNBT) {
-        super.saveNBTData(aNBT);
-        aNBT.setBoolean("isBussesSeparate", isBussesSeparate);
+                StatCollector.translateToLocal("GT5U.machines.separatebus") + " " + inputSeparation);
     }
 
     @Override
     public void loadNBTData(final NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        isBussesSeparate = aNBT.getBoolean("isBussesSeparate");
+        if (aNBT.hasKey("isBussesSeparate")) {
+            inputSeparation = aNBT.getBoolean("isBussesSeparate");
+        }
+    }
+
+    @Override
+    protected boolean isInputSeparationButtonEnabled() {
+        return true;
     }
 }
