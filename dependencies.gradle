@@ -2,7 +2,7 @@
 
 dependencies {
     shadowImplementation('com.github.GTNewHorizons:AVRcore:1.0.1')
-    api("com.github.GTNewHorizons:GT5-Unofficial:5.09.42.09:dev")
+    api("com.github.GTNewHorizons:GT5-Unofficial:5.09.42.48:dev")
     api('com.github.GTNewHorizons:Yamcl:0.5.84:dev')
     api('com.github.GTNewHorizons:ModularUI:1.0.67:dev')
     implementation('com.github.GTNewHorizons:GTNEIOrePlugin:1.0.27:dev')
