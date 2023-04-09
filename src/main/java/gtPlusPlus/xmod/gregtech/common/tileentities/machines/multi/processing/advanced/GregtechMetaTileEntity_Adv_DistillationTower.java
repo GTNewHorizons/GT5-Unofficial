@@ -21,6 +21,7 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -431,6 +432,15 @@ public class GregtechMetaTileEntity_Adv_DistillationTower extends
     public void setItemNBT(NBTTagCompound aNBT) {
         aNBT.setBoolean("mUpgraded", mUpgraded);
         super.setItemNBT(aNBT);
+    }
+
+    @Override
+    public void addAdditionalTooltipInformation(ItemStack stack, List<String> tooltip) {
+        super.addAdditionalTooltipInformation(stack, tooltip);
+        NBTTagCompound aNBT = stack.getTagCompound();
+        if (aNBT != null && aNBT.hasKey("mUpgraded")) {
+            tooltip.add(StatCollector.translateToLocal("tooltip.large_distill_tower.upgraded"));
+        }
     }
 
     private enum Mode {

@@ -11,10 +11,12 @@ import static gregtech.api.enums.GT_HatchElement.Muffler;
 import static gregtech.api.enums.GT_HatchElement.OutputBus;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
+import java.util.List;
 import java.util.Random;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -341,6 +343,19 @@ public class GregtechMetaTileEntity_IndustrialMacerator extends
     public void setItemNBT(NBTTagCompound aNBT) {
         super.setItemNBT(aNBT);
         aNBT.setByte("mTier", (byte) controllerTier);
+    }
+
+    @Override
+    public void addAdditionalTooltipInformation(ItemStack stack, List<String> tooltip) {
+        super.addAdditionalTooltipInformation(stack, tooltip);
+        NBTTagCompound aNBT = stack.getTagCompound();
+        int tier;
+        if (aNBT == null || !aNBT.hasKey("mTier")) {
+            tier = 1;
+        } else {
+            tier = 2;
+        }
+        tooltip.add(StatCollector.translateToLocalFormatted("tooltip.large_macerator.tier", tier));
     }
 
     @Override

@@ -228,3 +228,5 @@ achievement.gt.blockmachines.industrialalloysmelter.controller.tier.mega=Fast Pi
 
 //2023-4-8
 tooltip.flotationCell.lockedTo=Locked to:
+tooltip.large_macerator.tier=Tier: §6%s
+tooltip.large_distill_tower.upgraded=§6Upgraded
