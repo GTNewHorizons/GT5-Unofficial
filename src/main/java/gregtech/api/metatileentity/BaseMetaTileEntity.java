@@ -141,7 +141,6 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity implements IGregTec
             aNBT.setBoolean("mInputDisabled", mInputDisabled);
             aNBT.setBoolean("mOutputDisabled", mOutputDisabled);
             aNBT.setTag("GT.CraftingComponents", mRecipeStuff);
-            aNBT.setInteger("nbtVersion", GT_Mod.TOTAL_VERSION);
         } catch (Throwable e) {
             GT_FML_LOGGER.error("Encountered CRITICAL ERROR while saving MetaTileEntity.", e);
         }
@@ -2268,6 +2267,8 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity implements IGregTec
         final int chemistryUpdateVersion = GT_Mod.calculateTotalGTVersion(509, 31);
         final int configCircuitAdditionVersion = GT_Mod.calculateTotalGTVersion(509, 40);
         final int wireAdditionVersion = GT_Mod.calculateTotalGTVersion(509, 41);
+        final int disassemblerRemoveVersion = GT_Mod.calculateTotalGTVersion(509, 42, 44);
+        if (nbtVersion < 1000000) nbtVersion *= 1000;
         // 4 is old GT_MetaTileEntity_BasicMachine.OTHER_SLOT_COUNT
         if (nbtVersion < configCircuitAdditionVersion && getMetaTileEntity() instanceof GT_MetaTileEntity_BasicMachine
                 && slotIndex >= 4)
@@ -2320,6 +2321,16 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity implements IGregTec
             }
             newInputSize = 2;
             newOutputSize = 1;
+
+        } else if (mID >= 654 && mID <= 655 || mID >= 11070 && mID <= 11076) { // arc furnace
+            if (nbtVersion < disassemblerRemoveVersion) {
+                oldInputSize = 1;
+                oldOutputSize = 4;
+            } else {
+                return slotIndex;
+            }
+            newInputSize = 1;
+            newOutputSize = 9;
 
         } else {
             return slotIndex;

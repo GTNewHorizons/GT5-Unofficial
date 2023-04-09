@@ -1,5 +1,8 @@
 package gregtech;
 
+import static gregtech.GT_Version.VERSION_MAJOR;
+import static gregtech.GT_Version.VERSION_MINOR;
+import static gregtech.GT_Version.VERSION_PATCH;
 import static gregtech.api.GregTech_API.registerCircuitProgrammer;
 import static gregtech.api.enums.Mods.Forestry;
 
@@ -137,11 +140,11 @@ import ic2.api.recipe.RecipeOutput;
 public class GT_Mod implements IGT_Mod {
 
     @Deprecated // Keep for use in BaseMetaTileEntity
-    public static final int VERSION = 509, SUBVERSION = 42;
+    public static final int VERSION = VERSION_MAJOR, SUBVERSION = VERSION_MINOR;
 
-    @SuppressWarnings("DeprecatedIsStillUsed") // Need initialization until it is deleted
     @Deprecated
     public static final int TOTAL_VERSION = calculateTotalGTVersion(VERSION, SUBVERSION);
+    public static final int NBT_VERSION = calculateTotalGTVersion(VERSION_MAJOR, VERSION_MINOR, VERSION_PATCH);
 
     @Deprecated
     public static final int REQUIRED_IC2 = 624;
@@ -203,7 +206,11 @@ public class GT_Mod implements IGT_Mod {
     }
 
     public static int calculateTotalGTVersion(int majorVersion, int minorVersion) {
-        return majorVersion * 1000 + minorVersion;
+        return calculateTotalGTVersion(majorVersion, minorVersion, 0);
+    }
+
+    public static int calculateTotalGTVersion(int majorVersion, int minorVersion, int patchVersion) {
+        return majorVersion * 1000000 + minorVersion * 1000 + patchVersion;
     }
 
     @Mod.EventHandler
