@@ -4618,10 +4618,9 @@ public class AssemblerRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
                     .itemInputs(
-                            new ItemStack[] { ItemList.RC_Rail_Standard.get(1),
-                                    GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Copper, 1),
-                                    GT_Utility.getIntegratedCircuit(1) },
-                            GT_Values.NF)
+                            ItemList.RC_Rail_Standard.get(1),
+                            GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Copper, 1),
+                            GT_Utility.getIntegratedCircuit(1))
                     .itemOutputs(ItemList.RC_Rail_Electric.get(1))
                     .noFluidInputs()
                     .noFluidOutputs()
@@ -4631,10 +4630,9 @@ public class AssemblerRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
                     .itemInputs(
-                            new ItemStack[] { ItemList.RC_Rail_Standard.get(1),
-                                    GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.AnnealedCopper, 1),
-                                    GT_Utility.getIntegratedCircuit(1) },
-                            GT_Values.NF)
+                            ItemList.RC_Rail_Standard.get(1),
+                            GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.AnnealedCopper, 1),
+                            GT_Utility.getIntegratedCircuit(1))
                     .itemOutputs(ItemList.RC_Rail_Electric.get(1))
                     .noFluidInputs()
                     .noFluidOutputs()
@@ -4644,10 +4642,9 @@ public class AssemblerRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
                     .itemInputs(
-                            new ItemStack[] { ItemList.RC_Rail_Standard.get(1),
-                                    GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Gold, 1),
-                                    GT_Utility.getIntegratedCircuit(1) },
-                            GT_Values.NF)
+                            ItemList.RC_Rail_Standard.get(1),
+                            GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Gold, 1),
+                            GT_Utility.getIntegratedCircuit(1))
                     .itemOutputs(ItemList.RC_Rail_Electric.get(2))
                     .noFluidInputs()
                     .noFluidOutputs()
@@ -4657,10 +4654,9 @@ public class AssemblerRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
                     .itemInputs(
-                            new ItemStack[] { ItemList.RC_Rail_Standard.get(1),
-                                    GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Electrum, 1),
-                                    GT_Utility.getIntegratedCircuit(1) },
-                            GT_Values.NF)
+                            ItemList.RC_Rail_Standard.get(1),
+                            GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Electrum, 1),
+                            GT_Utility.getIntegratedCircuit(1))
                     .itemOutputs(ItemList.RC_Rail_Electric.get(4))
                     .noFluidInputs()
                     .noFluidOutputs()
@@ -4670,10 +4666,9 @@ public class AssemblerRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
                     .itemInputs(
-                            new ItemStack[] { ItemList.RC_Rail_Standard.get(1),
-                                    GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Titanium, 1),
-                                    GT_Utility.getIntegratedCircuit(1) },
-                            GT_Values.NF)
+                            ItemList.RC_Rail_Standard.get(1),
+                            GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Titanium, 1),
+                            GT_Utility.getIntegratedCircuit(1))
                     .itemOutputs(ItemList.RC_Rail_Electric.get(8))
                     .noFluidInputs()
                     .noFluidOutputs()
@@ -4683,10 +4678,9 @@ public class AssemblerRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
                     .itemInputs(
-                            new ItemStack[] { ItemList.RC_Rail_Standard.get(1),
-                                    GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.TungstenSteel, 1),
-                                    GT_Utility.getIntegratedCircuit(1) },
-                            GT_Values.NF)
+                            ItemList.RC_Rail_Standard.get(1),
+                            GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.TungstenSteel, 1),
+                            GT_Utility.getIntegratedCircuit(1))
                     .itemOutputs(ItemList.RC_Rail_Electric.get(16))
                     .noFluidInputs()
                     .noFluidOutputs()
@@ -4696,10 +4690,9 @@ public class AssemblerRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
                     .itemInputs(
-                            new ItemStack[] { ItemList.RC_Rail_Standard.get(1),
-                                    GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.HSSG, 1),
-                                    GT_Utility.getIntegratedCircuit(1) },
-                            GT_Values.NF)
+                            ItemList.RC_Rail_Standard.get(1),
+                            GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.HSSG, 1),
+                            GT_Utility.getIntegratedCircuit(1))
                     .itemOutputs(ItemList.RC_Rail_Electric.get(32))
                     .noFluidInputs()
                     .noFluidOutputs()
@@ -4709,10 +4702,9 @@ public class AssemblerRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
                     .itemInputs(
-                            new ItemStack[] { ItemList.RC_Rail_Standard.get(1),
-                                    GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Naquadah, 1),
-                                    GT_Utility.getIntegratedCircuit(1) },
-                            GT_Values.NF)
+                            ItemList.RC_Rail_Standard.get(1),
+                            GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Naquadah, 1),
+                            GT_Utility.getIntegratedCircuit(1))
                     .itemOutputs(ItemList.RC_Rail_Electric.get(64))
                     .noFluidInputs()
                     .noFluidOutputs()
@@ -4722,10 +4714,9 @@ public class AssemblerRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
                     .itemInputs(
-                            new ItemStack[] { ItemList.RC_Tie_Wood.get(1),
-                                    GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Iron, 1),
-                                    GT_Utility.getIntegratedCircuit(10) },
-                            GT_Values.NF)
+                            ItemList.RC_Tie_Wood.get(1),
+                            GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Iron, 1),
+                            GT_Utility.getIntegratedCircuit(10))
                     .itemOutputs(ItemList.RC_Rail_Wooden.get(8))
                     .noFluidInputs()
                     .noFluidOutputs()
@@ -4735,10 +4726,9 @@ public class AssemblerRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
                     .itemInputs(
-                            new ItemStack[] { ItemList.RC_Tie_Wood.get(1),
-                                    GT_OreDictUnificator.get(OrePrefixes.stick, Materials.WroughtIron, 1),
-                                    GT_Utility.getIntegratedCircuit(11) },
-                            GT_Values.NF)
+                            ItemList.RC_Tie_Wood.get(1),
+                            GT_OreDictUnificator.get(OrePrefixes.stick, Materials.WroughtIron, 1),
+                            GT_Utility.getIntegratedCircuit(11))
                     .itemOutputs(ItemList.RC_Rail_Wooden.get(8))
                     .noFluidInputs()
                     .noFluidOutputs()
@@ -4748,10 +4738,9 @@ public class AssemblerRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
                     .itemInputs(
-                            new ItemStack[] { ItemList.RC_Tie_Wood.get(1),
-                                    GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Steel, 1),
-                                    GT_Utility.getIntegratedCircuit(11) },
-                            GT_Values.NF)
+                            ItemList.RC_Tie_Wood.get(1),
+                            GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Steel, 1),
+                            GT_Utility.getIntegratedCircuit(11))
                     .itemOutputs(ItemList.RC_Rail_Wooden.get(16))
                     .noFluidInputs()
                     .noFluidOutputs()
@@ -4761,10 +4750,9 @@ public class AssemblerRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
                     .itemInputs(
-                            new ItemStack[] { ItemList.RC_Tie_Wood.get(1),
-                                    GT_OreDictUnificator.get(OrePrefixes.stick, Materials.StainlessSteel, 1),
-                                    GT_Utility.getIntegratedCircuit(11) },
-                            GT_Values.NF)
+                            ItemList.RC_Tie_Wood.get(1),
+                            GT_OreDictUnificator.get(OrePrefixes.stick, Materials.StainlessSteel, 1),
+                            GT_Utility.getIntegratedCircuit(11))
                     .itemOutputs(ItemList.RC_Rail_Wooden.get(32))
                     .noFluidInputs()
                     .noFluidOutputs()
@@ -4774,10 +4762,9 @@ public class AssemblerRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
                     .itemInputs(
-                            new ItemStack[] { ItemList.RC_Tie_Wood.get(1),
-                                    GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Titanium, 1),
-                                    GT_Utility.getIntegratedCircuit(11) },
-                            GT_Values.NF)
+                            ItemList.RC_Tie_Wood.get(1),
+                            GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Titanium, 1),
+                            GT_Utility.getIntegratedCircuit(11))
                     .itemOutputs(ItemList.RC_Rail_Wooden.get(64))
                     .noFluidInputs()
                     .noFluidOutputs()
