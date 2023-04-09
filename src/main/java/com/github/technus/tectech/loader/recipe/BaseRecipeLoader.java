@@ -117,8 +117,6 @@ public class BaseRecipeLoader {
 
         if (Loader.isModLoaded(Reference.DREAMCRAFT)) {
             new DreamCraftRecipeLoader().run(transformationInfo); // init recipes for GTNH version
-        }  else {
-            new BloodyRecipeLoader().run(transformationInfo); // init recipes for NON-GTNH version
         }
     }
 }

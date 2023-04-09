@@ -7,8 +7,6 @@ import static com.github.technus.tectech.util.CommonValues.V;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
-import com.github.technus.tectech.Reference;
-import com.github.technus.tectech.compatibility.dreamcraft.NoDreamCraftMachineLoader;
 import com.github.technus.tectech.compatibility.thaumcraft.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_essentiaDequantizer;
 import com.github.technus.tectech.compatibility.thaumcraft.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_essentiaQuantizer;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.*;
@@ -17,7 +15,6 @@ import com.github.technus.tectech.thing.metaTileEntity.multi.em_collider.GT_Meta
 import com.github.technus.tectech.thing.metaTileEntity.multi.em_machine.GT_MetaTileEntity_EM_machine;
 import com.github.technus.tectech.thing.metaTileEntity.pipe.*;
 import com.github.technus.tectech.thing.metaTileEntity.single.*;
-import cpw.mods.fml.common.Loader;
 
 /**
  * Created by danie_000 on 16.11.2016.
@@ -2101,9 +2098,5 @@ public class MachineLoader implements Runnable {
         GT_MetaTileEntity_Hatch_Rack.run();
 
         GT_MetaTileEntity_Hatch_Capacitor.run();
-
-        if (!Loader.isModLoaded(Reference.DREAMCRAFT)) {
-            new NoDreamCraftMachineLoader().run();
-        }
     }
 }
