@@ -1,5 +1,7 @@
 package gregtech.api.util;
 
+import static gregtech.api.util.GT_RecipeMapUtil.convertCellToFluid;
+
 import java.util.*;
 
 import net.minecraft.init.Items;
@@ -135,9 +137,10 @@ public class GT_RecipeConstants {
         return GT_Utility.concat(
                 builder.copy()
                        .addTo(GT_Recipe_Map.sChemicalRecipes),
-                // LCR does not need cleanroom, for now.
-                builder.metadata(CLEANROOM, false)
-                       .addTo(GT_Recipe_Map.sMultiblockChemicalRecipes));
+                convertCellToFluid(builder, false)
+                                                  // LCR does not need cleanroom, for now.
+                                                  .metadata(CLEANROOM, false)
+                                                  .addTo(GT_Recipe_Map.sMultiblockChemicalRecipes));
     });
 
     /**

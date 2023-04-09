@@ -2347,7 +2347,8 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                         GT_UITextures.PROGRESSBAR_ARROW_MULTIPLE,
                         ProgressBar.Direction.RIGHT)
                                                         .setUsualFluidInputCount(6)
-                                                        .setUsualFluidOutputCount(6);
+                                                        .setUsualFluidOutputCount(6)
+                                                        .setDisableOptimize(true);
         public static final GT_Recipe_Map sDistillationRecipes = //
                 new GT_Recipe_Map_DistillationTower().setRecipeConfigFile("distillation", FIRST_FLUIDSTACK_INPUT)
                                                      .setProgressBar(
@@ -3780,10 +3781,15 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
         public final Iterable<? extends GT_Recipe> defaultBuildRecipe(GT_RecipeBuilder builder) {
             // TODO sensible validation
-            if (!downstreams.isEmpty() && disableOptimize && !builder.optimize) return buildOrEmpty(
-                    builder.copy()
-                           .noOptimize());
-            return buildOrEmpty(builder);
+            GT_RecipeBuilder b = builder;
+            if (disableOptimize && builder.optimize) {
+                b = copy(builder, b).noOptimize();
+            }
+            return buildOrEmpty(b);
+        }
+
+        private static GT_RecipeBuilder copy(GT_RecipeBuilder original, GT_RecipeBuilder b) {
+            return b == original ? b.copy() : b;
         }
 
         public GT_Recipe add(GT_Recipe aRecipe) {
