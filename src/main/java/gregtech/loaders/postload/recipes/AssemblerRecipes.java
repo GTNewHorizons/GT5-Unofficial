@@ -112,7 +112,7 @@ public class AssemblerRecipes implements Runnable {
                             GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Zinc, 16),
                             GT_Utility.getIntegratedCircuit(1))
                     .itemOutputs(ItemList.Component_Filter.get(1))
-                    .fluidInputs(Materials.Plastic.getFluid(144))
+                    .fluidInputs(Materials.Plastic.getMolten(144))
                     .noFluidOutputs()
                     .duration(1 * MINUTES + 20 * SECONDS)
                     .eut(16)
