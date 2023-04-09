@@ -7284,7 +7284,7 @@ public class AssemblerRecipes implements Runnable {
                             GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Data, 4),
                             ItemList.Shape_Extruder_Wire.get(16))
                     .itemOutputs(ItemList.Spinneret.get(1))
-                    .fluidInputs(Materials.SolderingAlloy.getGas(144))
+                    .fluidInputs(Materials.SolderingAlloy.getMolten(144))
                     .noFluidOutputs()
                     .duration(2 * MINUTES)
                     .eut(TierEU.RECIPE_EV)
