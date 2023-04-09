@@ -104,6 +104,7 @@ public enum Mods {
     Railcraft(Names.RAILCRAFT),
     RandomThings(Names.RANDOM_THINGS),
     RemoteIO(Names.REMOTE_IO),
+    RWG(Names.RWG),
     SGCraft(Names.S_G_CRAFT),
     SleepingBags(Names.SLEEPING_BAGS),
     SpiceOfLife(Names.SPICE_OF_LIFE),
@@ -237,6 +238,7 @@ public enum Mods {
         public static final String RAILCRAFT = "Railcraft";
         public static final String RANDOM_THINGS = "RandomThings";
         public static final String REMOTE_IO = "RIO";
+        public static final String RWG = "RWG";
         public static final String S_G_CRAFT = "SGCraft";
         public static final String SLEEPING_BAGS = "sleepingbag";
         public static final String SPICE_OF_LIFE = "SpiceOfLife";
