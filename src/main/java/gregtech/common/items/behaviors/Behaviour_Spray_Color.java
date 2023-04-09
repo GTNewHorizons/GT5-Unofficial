@@ -46,6 +46,13 @@ public class Behaviour_Spray_Color extends Behaviour_None {
     private final String mTooltipUnstackable = GT_LanguageManager.addStringLocalization(
             "gt.behaviour.unstackable",
             "Not usable when stacked!");
+    private final String mTooltipChain = GT_LanguageManager.addStringLocalization(
+            "gt.behaviour.paintspray.chain",
+            "If used while sneaking it will paint a chain of blocks");
+
+    private final String mTooltipChainAmount = GT_LanguageManager.addStringLocalization(
+            "gt.behaviour.paintspray.chain",
+            "Paints up to %d blocks, in the direction you're looking at");
 
     public Behaviour_Spray_Color(ItemStack aEmpty, ItemStack aUsed, ItemStack aFull, long aUses, int aColor) {
         this.mEmpty = aEmpty;
@@ -158,6 +165,11 @@ public class Behaviour_Spray_Color extends Behaviour_None {
     @Override
     public List<String> getAdditionalToolTips(GT_MetaBase_Item aItem, List<String> aList, ItemStack aStack) {
         aList.add(this.mTooltip);
+        aList.add(this.mTooltipChain);
+        aList.add(
+                String.format(
+                        this.mTooltipChainAmount,
+                        GregTech_API.sSpecialFile.get(ConfigCategories.general, "SprayCanChainRange", 256)));
         NBTTagCompound tNBT = aStack.getTagCompound();
         long tRemainingPaint = tNBT == null ? this.mUses
                 : GT_Utility.areStacksEqual(aStack, this.mFull, true) ? this.mUses : tNBT.getLong("GT.RemainingPaint");
