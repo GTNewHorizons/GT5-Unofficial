@@ -3,6 +3,8 @@ package com.github.technus.tectech.thing.metaTileEntity.hatch;
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 import static com.github.technus.tectech.util.CommonValues.MULTI_CHECK_AT;
 import static com.github.technus.tectech.util.TT_Utility.getUniqueIdentifier;
+import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
+import static gregtech.api.enums.Mods.OpenComputers;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
@@ -390,7 +392,7 @@ public class GT_MetaTileEntity_Hatch_Rack extends GT_MetaTileEntity_Hatch implem
         new RackComponent("IC2:ic2.reactorVentGold", 0, -1, 40f, 5000, false);
         new RackComponent("IC2:ic2.reactorVentDiamond", 0, -1, 80f, 10000, false); // 2x oc
 
-        if (Loader.isModLoaded(Reference.DREAMCRAFT)) {
+        if (NewHorizonsCoreMod.isModLoaded()) {
             // GTNH-GT5u circuits
             // these components causes crashes when used with the original GT5u
             new RackComponent(ItemList.NandChip.get(1), 2, 6, 0, 750, true); // Primitive Circuit
@@ -406,7 +408,7 @@ public class GT_MetaTileEntity_Hatch_Rack extends GT_MetaTileEntity_Hatch implem
             new RackComponent("dreamcraft:item.QuantumCircuit", 128, 48, -.6f, 9000, true);
         }
 
-        if (Loader.isModLoaded("OpenComputers")) {
+        if (OpenComputers.isModLoaded()) {
             new RackComponent("OpenComputers:item.oc.Transistor", 0, 1, 0f, 100, true); // Transistor
             new RackComponent("OpenComputers:item.oc.Microchip0", 7, 12, -.05f, 1500, true); // chip t1
             new RackComponent("OpenComputers:item.oc.Microchip1", 18, 20, -.1f, 3000, true); // chip t2

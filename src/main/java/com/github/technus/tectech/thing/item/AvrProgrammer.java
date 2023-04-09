@@ -9,6 +9,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
 
+import gregtech.api.enums.Mods;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -34,7 +35,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 
 @Optional.InterfaceList({ @Optional.Interface(iface = "dan200.computercraft.api.media.IMedia", modid = "ComputerCraft"),
-        @Optional.Interface(iface = "li.cil.oc.api.fs.FileSystem", modid = "OpenComputers") })
+        @Optional.Interface(iface = "li.cil.oc.api.fs.FileSystem", modid = Mods.Names.OPEN_COMPUTERS) })
 public class AvrProgrammer extends Item implements IMedia {
 
     public static AvrProgrammer INSTANCE = new AvrProgrammer();

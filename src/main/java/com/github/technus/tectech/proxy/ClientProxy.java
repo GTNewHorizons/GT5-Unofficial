@@ -2,6 +2,7 @@ package com.github.technus.tectech.proxy;
 
 import static com.github.technus.tectech.TecTech.RANDOM;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.eyeOfHarmonyRenderBlock;
+import static gregtech.api.enums.Mods.OpenModularTurrets;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
@@ -44,7 +45,7 @@ public class ClientProxy extends CommonProxy {
         MinecraftForgeClient
                 .registerItemRenderer(Item.getItemFromBlock(eyeOfHarmonyRenderBlock), new RenderEyeOfHarmonyItem());
 
-        if (Loader.isModLoaded("openmodularturrets")) {
+        if (OpenModularTurrets.isModLoaded()) {
             new TT_turret_loader().run();
         }
 

@@ -1,5 +1,6 @@
 package com.github.technus.tectech.compatibility.openmodularturrets.tileentity.turretbase;
 
+import gregtech.api.enums.Mods;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
@@ -21,7 +22,7 @@ public class TileTurretBaseEM extends TurretBaseTierFiveTileEntity {
     }
 
     @Override
-    @Optional.Method(modid = "OpenComputers")
+    @Optional.Method(modid = Mods.Names.OPEN_COMPUTERS)
     public String getComponentName() {
         return "turretBaseEM";
     }

@@ -10,6 +10,9 @@ import static com.github.technus.tectech.compatibility.thaumcraft.elementalMatte
 import static com.github.technus.tectech.compatibility.thaumcraft.thing.metaTileEntity.multi.EssentiaCompat.essentiaContainerCompat;
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 import static gregtech.api.enums.GT_Values.W;
+import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
+import static gregtech.api.enums.Mods.Thaumcraft;
+import static gregtech.api.enums.Mods.TwilightForest;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -80,7 +83,7 @@ public final class MainLoader {
         LOGGER.info("Elemental Init Done");
 
         progressBarLoad.step("Thaumcraft Compatibility");
-        if (Loader.isModLoaded(Reference.THAUMCRAFT)) {
+        if (Thaumcraft.isModLoaded()) {
             essentiaContainerCompat = new EssentiaCompatEnabled();
         } else {
             essentiaContainerCompat = new EssentiaCompat();
@@ -126,7 +129,7 @@ public final class MainLoader {
         ProgressManager.ProgressBar progressBarPostLoad = ProgressManager.push("TecTech Post Loader", 4);
 
         progressBarPostLoad.step("Dreamcraft Compatibility");
-        if (Loader.isModLoaded(Reference.DREAMCRAFT)) {
+        if (NewHorizonsCoreMod.isModLoaded()) {
             try {
                 Class<?> clazz = Class.forName("com.dreammaster.gthandler.casings.GT_Container_CasingsNH");
                 TT_Container_Casings.sBlockCasingsNH = (Block) clazz.getField("sBlockCasingsNH").get(null);
@@ -140,7 +143,7 @@ public final class MainLoader {
         }
 
         progressBarPostLoad.step("Thaumcraft Compatibility");
-        if (Loader.isModLoaded(Reference.THAUMCRAFT)) {
+        if (Thaumcraft.isModLoaded()) {
             aspectDefinitionCompat = new AspectDefinitionCompatEnabled();
             aspectDefinitionCompat.run(definitionsRegistry);
         } else {
@@ -318,7 +321,7 @@ public final class MainLoader {
     }
 
     private static void adjustTwilightBlockResistance() {
-        if (Loader.isModLoaded("TwilightForest")) {
+        if (TwilightForest.isModLoaded()) {
             safeSetResistance(GameRegistry.findBlock("TwilightForest", "tile.TFShield"), 30);
             safeSetResistance(GameRegistry.findBlock("TwilightForest", "tile.TFThorns"), 10);
             safeSetResistance(GameRegistry.findBlock("TwilightForest", "tile.TFTowerTranslucent"), 30);

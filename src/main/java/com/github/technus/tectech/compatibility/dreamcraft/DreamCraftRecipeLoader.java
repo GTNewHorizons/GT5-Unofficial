@@ -2,6 +2,15 @@ package com.github.technus.tectech.compatibility.dreamcraft;
 
 import static com.github.technus.tectech.loader.recipe.BaseRecipeLoader.getOrDefault;
 import static com.google.common.math.LongMath.pow;
+import static gregtech.api.enums.Mods.BartWorks;
+import static gregtech.api.enums.Mods.BloodMagic;
+import static gregtech.api.enums.Mods.DraconicEvolution;
+import static gregtech.api.enums.Mods.ElectroMagicTools;
+import static gregtech.api.enums.Mods.EternalSingularity;
+import static gregtech.api.enums.Mods.GTPlusPlus;
+import static gregtech.api.enums.Mods.GTPlusPlusEverglades;
+import static gregtech.api.enums.Mods.SGCraft;
+import static gregtech.api.enums.Mods.TinkersGregworks;
 import static gregtech.api.util.GT_ModHandler.getModItem;
 
 import java.lang.reflect.Method;
@@ -294,7 +303,7 @@ public class DreamCraftRecipeLoader {
                 60 * 20,
                 8_000_000);
 
-        if (Loader.isModLoaded(Reference.GTPLUSPLUS)) {
+        if (GTPlusPlus.isModLoaded()) {
             // Hypogen Coil
             TT_recipeAdder.addResearchableAssemblylineRecipe(
                     ItemList.Casing_Coil_Infinity.get(1),
@@ -923,7 +932,7 @@ public class DreamCraftRecipeLoader {
                 32000000);
 
         // Buck Converter IV-UIV
-        if (Loader.isModLoaded("bartworks")) {
+        if (BartWorks.isModLoaded()) {
             GT_Values.RA.addAssemblerRecipe(
                     new ItemStack[] { ItemList.Transformer_LuV_IV.get(1), getItemContainer("Display").get(1),
                             GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Elite, 2),
@@ -2503,7 +2512,7 @@ public class DreamCraftRecipeLoader {
 
         addWirelessEnergyRecipes();
 
-        if (Loader.isModLoaded("TGregworks")) {
+        if (TinkersGregworks.isModLoaded()) {
             addEOHRecipes();
         }
 
@@ -2955,7 +2964,7 @@ public class DreamCraftRecipeLoader {
                 32_000_000);
 
         // Stargate Recipes
-        if (Loader.isModLoaded("eternalsingularity") && Loader.isModLoaded("SGCraft")) {
+        if (EternalSingularity.isModLoaded() && SGCraft.isModLoaded()) {
 
             final int baseStargateTime = 125_000 * 20;
 
@@ -3063,7 +3072,7 @@ public class DreamCraftRecipeLoader {
 
         // Dimensionally Transcendent Plasma Forge (DTPF)
 
-        if (Loader.isModLoaded("eternalsingularity")) {
+        if (EternalSingularity.isModLoaded()) {
 
             // DTPF Controller.
             TT_recipeAdder.addResearchableAssemblylineRecipe(
@@ -3329,7 +3338,7 @@ public class DreamCraftRecipeLoader {
                 250 * 20,
                 6_400_000);
 
-        if (Loader.isModLoaded(Reference.GTPLUSPLUS)) {
+        if (GTPlusPlusEverglades.isModLoaded()) {
             // Insanely Ultimate Battery
             TT_recipeAdder.addResearchableAssemblylineRecipe(
                     ItemList.ZPM4.get(1),
@@ -3444,7 +3453,7 @@ public class DreamCraftRecipeLoader {
         }
 
         // Draconic Evolution Fusion Crafter Controller
-        if (Loader.isModLoaded("AWWayofTime") && Loader.isModLoaded("EMT")) {
+        if (BloodMagic.isModLoaded() && ElectroMagicTools.isModLoaded()) {
             TT_recipeAdder.addResearchableAssemblylineRecipe(
                     getModItem("EMT", "EMT_GTBLOCK_CASEING", 1, 8),
                     16_777_216,
@@ -3466,7 +3475,7 @@ public class DreamCraftRecipeLoader {
                     getModItem("gregtech", "gt.blockmachines", 1, 5001),
                     1500,
                     8_000_000);
-            if (Loader.isModLoaded("DraconicEvolution")) {
+            if (DraconicEvolution.isModLoaded()) {
                 // DE Schematics Cores Tier 1
                 TT_recipeAdder.addResearchableAssemblylineRecipe(
                         getModItem("EMT", "EMT_GTBLOCK_CASEING", 1, 9),
@@ -5393,7 +5402,7 @@ public class DreamCraftRecipeLoader {
                 ? FluidRegistry.getFluid("molten.mutatedlivingsolder")
                 : FluidRegistry.getFluid("molten.solderingalloy");
 
-        ItemStack largeShirabonPlate = Loader.isModLoaded("TGregworks")
+        ItemStack largeShirabonPlate = TinkersGregworks.isModLoaded()
                 ? TGregUtils.newItemStack(Materials.get("Shirabon"), PartTypes.LargePlate, 1)
                 : GT_OreDictUnificator.get("plateDenseShirabon", 1);
 

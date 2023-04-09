@@ -18,6 +18,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 import eu.usrv.yamcore.network.client.AbstractClientMessageHandler;
 import io.netty.buffer.ByteBuf;
 
+import static gregtech.api.enums.Mods.Thaumcraft;
+
 // TODO Re-work how sparks are distributed
 public class RendererMessage implements IMessage {
 
@@ -86,7 +88,7 @@ public class RendererMessage implements IMessage {
     @SideOnly(Side.CLIENT)
     private static void thaumLightning(int tX, int tY, int tZ, int tXN, int tYN, int tZN, int wID) {
         // This is enough to check for thaum, since it only ever matters for client side effects (Tested not to crash)
-        if (Loader.isModLoaded("Thaumcraft")) {
+        if (Thaumcraft.isModLoaded()) {
             World world = Minecraft.getMinecraft().theWorld;
             if (world.provider.dimensionId == wID) {
                 FXLightningBolt bolt = new FXLightningBolt(

@@ -1,6 +1,8 @@
 package com.github.technus.tectech.loader.recipe;
 
 import static gregtech.api.enums.GT_Values.RA;
+import static gregtech.api.enums.Mods.GTPlusPlus;
+import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -38,7 +40,7 @@ public class BaseRecipeLoader {
     public void run(EMTransformationRegistry transformationInfo) {
         EMAtomDefinition.setTransformations(transformationInfo);
         EMHadronDefinition.setTransformations(transformationInfo);
-        if (Loader.isModLoaded(Reference.GTPLUSPLUS)) {
+        if (GTPlusPlus.isModLoaded()) {
             new GtppAtomLoader().setTransformations(transformationInfo);
         }
 
@@ -115,7 +117,7 @@ public class BaseRecipeLoader {
                 2048,
                 12000);
 
-        if (Loader.isModLoaded(Reference.DREAMCRAFT)) {
+        if (NewHorizonsCoreMod.isModLoaded()) {
             new DreamCraftRecipeLoader().run(transformationInfo); // init recipes for GTNH version
         }
     }

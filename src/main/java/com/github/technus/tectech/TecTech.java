@@ -1,6 +1,7 @@
 package com.github.technus.tectech;
 
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
+import static gregtech.api.enums.Mods.COFHCore;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -132,7 +133,7 @@ public class TecTech {
 
     @Mod.EventHandler
     public void Load(FMLInitializationEvent event) {
-        hasCOFH = Loader.isModLoaded(Reference.COFHCORE);
+        hasCOFH = COFHCore.isModLoaded();
 
         if (configTecTech.DISABLE_MATERIAL_LOADING_FFS) {
             try {
