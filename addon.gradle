@@ -7,3 +7,11 @@ test {
         events "passed", "skipped", "failed"
     }
 }
+
+minecraft {
+    String version = project.version
+    def (five,major,minor,patch)= version.split("[.-]", 5)
+    injectedTags.put 'VERSION_MAJOR', 500 + major.toInteger()
+    injectedTags.put 'VERSION_MINOR', minor.toInteger()
+    injectedTags.put 'VERSION_PATCH', patch.toInteger()
+}

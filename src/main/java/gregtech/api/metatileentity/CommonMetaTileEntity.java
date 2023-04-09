@@ -46,6 +46,7 @@ public abstract class CommonMetaTileEntity extends CoverableTileEntity implement
     protected void saveMetaTileNBT(NBTTagCompound aNBT) {
         try {
             if (hasValidMetaTileEntity()) {
+                aNBT.setInteger("nbtVersion", GT_Mod.NBT_VERSION);
                 final NBTTagList tItemList = new NBTTagList();
                 for (int i = 0; i < getMetaTileEntity().getRealInventory().length; i++) {
                     final ItemStack tStack = getMetaTileEntity().getRealInventory()[i];
