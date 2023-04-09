@@ -67,6 +67,7 @@ public enum Mods {
     GoodGenerator(Names.GOOD_GENERATOR),
     GraviSuite(Names.GRAVI_SUITE),
     GregTech(Names.GREG_TECH),
+    GTNHIntergalactic(Names.G_T_N_H_INTERGALACTIC),
     GTNHLanthanides(Names.G_T_N_H_LANTHANIDES),
     GTPlusPlus(Names.G_T_PLUS_PLUS),
     GTPlusPlusEverglades(Names.G_T_PLUS_PLUS_EVERGLADES),
@@ -80,6 +81,7 @@ public enum Mods {
     IronChests(Names.IRON_CHESTS),
     IronTanks(Names.IRON_TANKS),
     JABBA(Names.J_A_B_B_A),
+    KekzTech(Names.KEKZ_TECH),
     MagicBees(Names.MAGIC_BEES),
     MalisisDoors(Names.MALISIS_DOORS),
     Mantle(Names.MANTLE),
@@ -203,6 +205,7 @@ public enum Mods {
         public static final String GOOD_GENERATOR = "GoodGenerator";
         public static final String GRAVI_SUITE = "GraviSuite";
         public static final String GREG_TECH = "gregtech";
+        public static final String G_T_N_H_INTERGALACTIC = "gtnhintergalactic";
         public static final String G_T_N_H_LANTHANIDES = "gtnhlanth";
         public static final String G_T_PLUS_PLUS = "miscutils";
         public static final String G_T_PLUS_PLUS_EVERGLADES = "ToxicEverglades";
@@ -216,6 +219,7 @@ public enum Mods {
         public static final String IRON_CHESTS = "IronChest";
         public static final String IRON_TANKS = "irontank";
         public static final String J_A_B_B_A = "JABBA";
+        public static final String KEKZ_TECH = "kekztech";
         public static final String MAGIC_BEES = "MagicBees";
         public static final String MALISIS_DOORS = "malisisdoors";
         public static final String MANTLE = "Mantle";
