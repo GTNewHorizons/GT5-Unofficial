@@ -117,29 +117,7 @@ public class AlloySmelterRecipes implements Runnable {
 
             }
         }
-
-        GT_Values.RA.stdBuilder()
-                    .itemInputs(
-                            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lead, 1L),
-                            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Obsidian, 2L))
-                    .itemOutputs(ItemList.TE_Hardened_Glass.get(2L))
-                    .noFluidInputs()
-                    .noFluidOutputs()
-                    .duration(10 * SECONDS)
-                    .eut(16)
-                    .addTo(sAlloySmelterRecipes);
-
-        GT_Values.RA.stdBuilder()
-                    .itemInputs(
-                            GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Lead, 1L),
-                            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Obsidian, 2L))
-                    .itemOutputs(ItemList.TE_Hardened_Glass.get(2L))
-                    .noFluidInputs()
-                    .noFluidOutputs()
-                    .duration(10 * SECONDS)
-                    .eut(16)
-                    .addTo(sAlloySmelterRecipes);
-
+		
         // We use rubber
         GT_Values.RA.stdBuilder()
                     .itemInputs(
