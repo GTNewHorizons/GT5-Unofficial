@@ -40,6 +40,7 @@ public enum Mods {
     COFHCore(Names.C_O_F_H_CORE),
     Computronics(Names.COMPUTRONICS),
     CraftTweaker(Names.CRAFT_TWEAKER),
+    CropLoadCore(Names.CROP_LOAD_CORE),
     CropsPlusPlus(Names.CROPS_PLUS_PLUS),
     DraconicEvolution(Names.DRACONIC_EVOLUTION),
     ElectroMagicTools(Names.ELECTRO_MAGIC_TOOLS),
@@ -175,6 +176,7 @@ public enum Mods {
         public static final String C_O_F_H_CORE = "CoFHCore";
         public static final String COMPUTRONICS = "computronics";
         public static final String CRAFT_TWEAKER = "MineTweaker3";
+        public static final String CROP_LOAD_CORE = "croploadcore";
         public static final String CROPS_PLUS_PLUS = "berriespp";
         public static final String DRACONIC_EVOLUTION = "DraconicEvolution";
         public static final String ELECTRO_MAGIC_TOOLS = "EMT";
