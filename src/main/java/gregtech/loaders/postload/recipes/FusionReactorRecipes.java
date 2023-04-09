@@ -53,16 +53,6 @@ public class FusionReactorRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
                     .noItemInputs()
                     .noItemOutputs()
-                    .fluidInputs(Materials.Carbon.getMolten(125), Materials.Helium_3.getGas(125))
-                    .fluidOutputs(Materials.Oxygen.getPlasma(125))
-                    .duration(1 * SECONDS + 12 * TICKS)
-                    .eut(4096)
-                    .metadata(FUSION_THRESHOLD, 80000000)
-                    .addTo(sFusionRecipes); // FT1 Expensive //
-
-        GT_Values.RA.stdBuilder()
-                    .noItemInputs()
-                    .noItemOutputs()
                     .fluidInputs(Materials.Aluminium.getMolten(16), Materials.Lithium.getMolten(16))
                     .fluidOutputs(Materials.Sulfur.getPlasma(144))
                     .duration(1 * SECONDS + 12 * TICKS)
@@ -271,17 +261,6 @@ public class FusionReactorRecipes implements Runnable {
                     .metadata(FUSION_THRESHOLD, 380000000)
                     .addTo(sFusionRecipes); //
 
-        // NEW RECIPES FOR FUSION
-        GT_Values.RA.stdBuilder()
-                    .noItemInputs()
-                    .noItemOutputs()
-                    .fluidInputs(Materials.Magnesium.getMolten(144), Materials.Carbon.getMolten(144))
-                    .fluidOutputs(Materials.Argon.getPlasma(125))
-                    .duration(1 * SECONDS + 12 * TICKS)
-                    .eut(24576)
-                    .metadata(FUSION_THRESHOLD, 180000000)
-                    .addTo(sFusionRecipes); // FT1+ - utility
-
         GT_Values.RA.stdBuilder()
                     .noItemInputs()
                     .noItemOutputs()
@@ -325,32 +304,12 @@ public class FusionReactorRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
                     .noItemInputs()
                     .noItemOutputs()
-                    .fluidInputs(Materials.Tungsten.getMolten(144), Materials.Carbon.getMolten(144))
-                    .fluidOutputs(Materials.Mercury.getPlasma(144))
-                    .duration(16 * TICKS)
-                    .eut(49152)
-                    .metadata(FUSION_THRESHOLD, 300000000)
-                    .addTo(sFusionRecipes); // FT2
-
-        GT_Values.RA.stdBuilder()
-                    .noItemInputs()
-                    .noItemOutputs()
                     .fluidInputs(Materials.Tantalum.getMolten(144), Materials.Zinc.getPlasma(72))
                     .fluidOutputs(Materials.Bismuth.getPlasma(144))
                     .duration(16 * TICKS)
                     .eut(98304)
                     .metadata(FUSION_THRESHOLD, 350000000)
                     .addTo(sFusionRecipes); // FT3 - farmable
-
-        GT_Values.RA.stdBuilder()
-                    .noItemInputs()
-                    .noItemOutputs()
-                    .fluidInputs(Materials.Caesium.getMolten(144), Materials.Carbon.getMolten(144))
-                    .fluidOutputs(Materials.Promethium.getMolten(144))
-                    .duration(3 * SECONDS + 4 * TICKS)
-                    .eut(49152)
-                    .metadata(FUSION_THRESHOLD, 400000000)
-                    .addTo(sFusionRecipes); // FT3
 
         GT_Values.RA.stdBuilder()
                     .noItemInputs()
