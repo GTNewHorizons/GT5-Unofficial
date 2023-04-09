@@ -225,3 +225,6 @@ achievement.gt.blockmachines.gtpp.multimachine.isamill.desc=[AL] Pickup this ite
 
 //2023-1-13
 achievement.gt.blockmachines.industrialalloysmelter.controller.tier.mega=Fast Pikachu-Alloy at last
+
+//2023-4-8
+tooltip.flotationCell.lockedTo=Locked to:

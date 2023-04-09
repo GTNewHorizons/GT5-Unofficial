@@ -9,10 +9,12 @@ import static gregtech.api.enums.GT_HatchElement.Maintenance;
 import static gregtech.api.enums.GT_HatchElement.OutputHatch;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
+import java.util.List;
 import java.util.Objects;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -283,6 +285,15 @@ public class GregtechMTE_FrothFlotationCell extends GregtechMeta_MultiBlockBase<
         super.loadNBTData(aNBT);
         if (aNBT.hasKey("lockedMaterialName", Constants.NBT.TAG_STRING)) {
             lockedMaterialName = aNBT.getString("lockedMaterialName");
+        }
+    }
+
+    @Override
+    public void addAdditionalTooltipInformation(ItemStack stack, List<String> tooltip) {
+        if (stack.hasTagCompound() && stack.getTagCompound().hasKey("lockedMaterialName")) {
+            tooltip.add(
+                    StatCollector.translateToLocal("tooltip.flotationCell.lockedTo") + " "
+                            + StatCollector.translateToLocal(stack.getTagCompound().getString("lockedMaterialName")));
         }
     }
 

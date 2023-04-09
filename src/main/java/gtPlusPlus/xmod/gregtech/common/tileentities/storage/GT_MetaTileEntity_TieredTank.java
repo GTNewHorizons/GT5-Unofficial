@@ -1,8 +1,14 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.storage;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
+import java.util.List;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.fluids.FluidStack;
+
+import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GT_UIInfos;
@@ -11,6 +17,8 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.util.GT_LanguageManager;
+import gregtech.api.util.GT_Utility;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.lib.CORE;
 
@@ -54,6 +62,31 @@ public class GT_MetaTileEntity_TieredTank extends GT_MetaTileEntity_BasicTank {
                         new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_SIDE_POTIONBREWER_ACTIVE) }
                 : new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColorIndex + 1],
                         new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_SIDE_POTIONBREWER) };
+    }
+
+    @Override
+    public void addAdditionalTooltipInformation(ItemStack stack, List<String> tooltip) {
+        if (stack.hasTagCompound() && stack.stackTagCompound.hasKey("mFluid")) {
+            final FluidStack tContents = FluidStack
+                    .loadFluidStackFromNBT(stack.stackTagCompound.getCompoundTag("mFluid"));
+            if (tContents != null && tContents.amount > 0) {
+                tooltip.add(
+                        GT_LanguageManager.addStringLocalization(
+                                "TileEntity_TANK_INFO",
+                                "Contains Fluid: ",
+                                !GregTech_API.sPostloadFinished) + EnumChatFormatting.YELLOW
+                                + tContents.getLocalizedName()
+                                + EnumChatFormatting.GRAY);
+                tooltip.add(
+                        GT_LanguageManager.addStringLocalization(
+                                "TileEntity_TANK_AMOUNT",
+                                "Fluid Amount: ",
+                                !GregTech_API.sPostloadFinished) + EnumChatFormatting.GREEN
+                                + GT_Utility.formatNumbers(tContents.amount)
+                                + " L"
+                                + EnumChatFormatting.GRAY);
+            }
+        }
     }
 
     @Override
