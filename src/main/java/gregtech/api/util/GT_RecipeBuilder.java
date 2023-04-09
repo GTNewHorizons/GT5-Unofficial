@@ -205,6 +205,20 @@ public class GT_RecipeBuilder {
         return this;
     }
 
+    /**
+     * Not intended to be used by recipe authors.
+     * Intended for recipe rewrite middlewares.
+     */
+    public GT_RecipeBuilder itemOutputs(ItemStack[] outputs, int[] chances) {
+        if (DEBUG_MODE && containsNull(outputs)) handleNullRecipeComponents("itemOutputs");
+        this.outputs = outputs;
+        this.chances = chances;
+        if (chances != null && chances.length != outputs.length) {
+            throw new IllegalArgumentException("Output chances array and items array length differs");
+        }
+        return this;
+    }
+
     public GT_RecipeBuilder noItemOutputs() {
         return itemOutputs();
     }
@@ -443,6 +457,10 @@ public class GT_RecipeBuilder {
 
     public int getDuration() {
         return duration;
+    }
+
+    public int[] getChances() {
+        return chances;
     }
 
     public int getEUt() {

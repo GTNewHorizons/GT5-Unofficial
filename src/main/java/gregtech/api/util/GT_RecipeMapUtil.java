@@ -15,6 +15,8 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 
 import cpw.mods.fml.common.Loader;
+import gnu.trove.list.TIntList;
+import gnu.trove.list.array.TIntArrayList;
 import gregtech.api.interfaces.IGT_RecipeMap;
 
 /**
@@ -74,40 +76,37 @@ public class GT_RecipeMapUtil {
     }
 
     public static List<GT_Recipe> buildRecipeForMultiblock(GT_RecipeBuilder b) {
-        List<ItemStack> itemInputs = new ArrayList<>(Arrays.asList(b.getItemInputsBasic()));
-        List<ItemStack> itemOutputs = new ArrayList<>(Arrays.asList(b.getItemOutputs()));
-        List<FluidStack> fluidInputs = new ArrayList<>(Arrays.asList(b.getFluidInputs()));
-        List<FluidStack> fluidOutputs = new ArrayList<>(Arrays.asList(b.getFluidOutputs()));
-        cellToFluid(itemInputs, fluidInputs, true);
-        cellToFluid(itemInputs, fluidInputs, false);
-        return buildOrEmpty(
-                b.itemInputs(itemInputs.toArray(new ItemStack[0]))
-                 .itemOutputs(itemOutputs.toArray(new ItemStack[0]))
-                 .fluidInputs(fluidInputs.toArray(new FluidStack[0]))
-                 .fluidOutputs(fluidOutputs.toArray(new FluidStack[0])));
+        return buildOrEmpty(convertCellToFluid(b, true));
+
     }
 
     public static List<GT_Recipe> buildRecipeForMultiblockNoCircuit(GT_RecipeBuilder b) {
+        return buildOrEmpty(convertCellToFluid(b, false));
+    }
+
+    public static GT_RecipeBuilder convertCellToFluid(GT_RecipeBuilder b, boolean removeIntegratedCircuit) {
         List<ItemStack> itemInputs = new ArrayList<>(Arrays.asList(b.getItemInputsBasic()));
         List<ItemStack> itemOutputs = new ArrayList<>(Arrays.asList(b.getItemOutputs()));
         List<FluidStack> fluidInputs = new ArrayList<>(Arrays.asList(b.getFluidInputs()));
         List<FluidStack> fluidOutputs = new ArrayList<>(Arrays.asList(b.getFluidOutputs()));
-        cellToFluid(itemInputs, fluidInputs, false);
-        cellToFluid(itemInputs, fluidInputs, false);
-        return buildOrEmpty(
-                b.itemInputs(itemInputs.toArray(new ItemStack[0]))
-                 .itemOutputs(itemOutputs.toArray(new ItemStack[0]))
-                 .fluidInputs(fluidInputs.toArray(new FluidStack[0]))
-                 .fluidOutputs(fluidOutputs.toArray(new FluidStack[0])));
+        TIntList chances = b.getChances() != null ? new TIntArrayList(b.getChances()) : null;
+        cellToFluid(itemInputs, fluidInputs, removeIntegratedCircuit, null);
+        cellToFluid(itemOutputs, fluidOutputs, removeIntegratedCircuit, chances);
+        return b.itemInputs(itemInputs.toArray(new ItemStack[0]))
+                .itemOutputs(itemOutputs.toArray(new ItemStack[0]), chances != null ? chances.toArray() : null)
+                .fluidInputs(fluidInputs.toArray(new FluidStack[0]))
+                .fluidOutputs(fluidOutputs.toArray(new FluidStack[0]));
     }
 
-    private static void cellToFluid(List<ItemStack> items, List<FluidStack> fluids, boolean removeIntegratedCircuit) {
-        for (ListIterator<ItemStack> iterator = items.listIterator(items.size()); iterator.hasPrevious();) {
-            ItemStack item = iterator.previous();
+    private static void cellToFluid(List<ItemStack> items, List<FluidStack> fluids, boolean removeIntegratedCircuit,
+            TIntList chances) {
+        for (int i = items.size() - 1; i >= 0; i--) {
+            ItemStack item = items.get(i);
             if (GT_Utility.getFluidForFilledItem(item, true) != null || GT_Utility.isCellEmpty(item)
                     || (removeIntegratedCircuit && GT_Utility.isAnyIntegratedCircuit(item))) {
                 fluids.add(GT_Utility.convertCellToFluid(item));
-                iterator.remove();
+                items.remove(i);
+                if (chances != null) chances.removeAt(i);
             }
         }
     }
