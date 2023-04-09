@@ -464,11 +464,6 @@ public class GT_MetaTileEntity_ElectricBlastFurnace
     }
 
     @Override
-    public void saveNBTData(NBTTagCompound aNBT) {
-        super.saveNBTData(aNBT);
-    }
-
-    @Override
     public void loadNBTData(final NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         if (!aNBT.hasKey(INPUT_SEPARATION_NBT_KEY)) {
