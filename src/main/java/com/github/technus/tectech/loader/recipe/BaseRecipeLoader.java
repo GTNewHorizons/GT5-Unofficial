@@ -9,7 +9,6 @@ import net.minecraftforge.fluids.FluidStack;
 import com.github.technus.tectech.Reference;
 import com.github.technus.tectech.compatibility.dreamcraft.DreamCraftRecipeLoader;
 import com.github.technus.tectech.compatibility.gtpp.GtppAtomLoader;
-import com.github.technus.tectech.compatibility.spartakcore.SpartakCoreRecipeLoader;
 import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationRegistry;
 import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.EMAtomDefinition;
 import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.EMHadronDefinition;
@@ -118,9 +117,7 @@ public class BaseRecipeLoader {
 
         if (Loader.isModLoaded(Reference.DREAMCRAFT)) {
             new DreamCraftRecipeLoader().run(transformationInfo); // init recipes for GTNH version
-        } else if (Loader.isModLoaded(Reference.SPARTAKCORE)) {
-            new SpartakCoreRecipeLoader().run(transformationInfo); // init recipes for SpartakCore version
-        } else {
+        }  else {
             new BloodyRecipeLoader().run(transformationInfo); // init recipes for NON-GTNH version
         }
     }
