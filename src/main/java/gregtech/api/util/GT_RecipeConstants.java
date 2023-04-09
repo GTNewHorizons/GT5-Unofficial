@@ -126,14 +126,18 @@ public class GT_RecipeConstants {
      */
     public static final IGT_RecipeMap UniversalChemical = IGT_RecipeMap.newRecipeMap(builder -> {
         for (ItemStack input : builder.getItemInputsBasic()) {
-            if (GT_Utility.isAnyIntegratedCircuit(input) && input.getItemDamage() >= 10) return GT_Utility.concat(
-                    builder.copy()
-                           .addTo(GT_Recipe_Map.sChemicalRecipes),
-                    // LCR does not need cleanroom, for now.
-                    builder.metadata(CLEANROOM, false)
-                           .addTo(GT_Recipe_Map.sMultiblockChemicalRecipes));
+            // config >= 10 -> this is a special chemical recipe that output fluid/canned fluid variant.
+            // it doesn't belong to multiblocks
+            if (GT_Utility.isAnyIntegratedCircuit(input) && input.getItemDamage() >= 10) {
+                return builder.addTo(GT_Recipe_Map.sChemicalRecipes);
+            }
         }
-        return builder.addTo(GT_Recipe_Map.sChemicalRecipes);
+        return GT_Utility.concat(
+                builder.copy()
+                       .addTo(GT_Recipe_Map.sChemicalRecipes),
+                // LCR does not need cleanroom, for now.
+                builder.metadata(CLEANROOM, false)
+                       .addTo(GT_Recipe_Map.sMultiblockChemicalRecipes));
     });
 
     /**
