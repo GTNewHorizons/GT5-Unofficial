@@ -4,7 +4,9 @@ import static com.github.technus.tectech.recipe.EyeOfHarmonyRecipe.processHelper
 import static com.github.technus.tectech.recipe.TT_recipe.GT_Recipe_MapTT.sEyeofHarmonyRecipes;
 import static java.lang.Math.pow;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;

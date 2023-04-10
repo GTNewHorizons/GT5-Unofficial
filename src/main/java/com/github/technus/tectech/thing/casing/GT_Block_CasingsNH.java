@@ -1,7 +1,9 @@
 package com.github.technus.tectech.thing.casing;
 
 import static com.github.technus.tectech.TecTech.creativeTabTecTech;
-import static com.github.technus.tectech.thing.metaTileEntity.Textures.*;
+import static com.github.technus.tectech.thing.metaTileEntity.Textures.MACHINECASINGS_BOTTOM_TT;
+import static com.github.technus.tectech.thing.metaTileEntity.Textures.MACHINECASINGS_SIDE_TT;
+import static com.github.technus.tectech.thing.metaTileEntity.Textures.MACHINECASINGS_TOP_TT;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;

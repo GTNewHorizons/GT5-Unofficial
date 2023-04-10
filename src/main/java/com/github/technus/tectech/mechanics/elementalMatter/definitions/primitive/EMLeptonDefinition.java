@@ -2,7 +2,12 @@ package com.github.technus.tectech.mechanics.elementalMatter.definitions.primiti
 
 import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMGaugeBosonDefinition.boson_Y__;
 import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMGaugeBosonDefinition.deadEnd;
-import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMNeutrinoDefinition.*;
+import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMNeutrinoDefinition.lepton_Ve;
+import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMNeutrinoDefinition.lepton_Ve_;
+import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMNeutrinoDefinition.lepton_Vm;
+import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMNeutrinoDefinition.lepton_Vm_;
+import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMNeutrinoDefinition.lepton_Vt;
+import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMNeutrinoDefinition.lepton_Vt_;
 import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMScalarBosonDefinition.boson_H__;
 import static net.minecraft.util.StatCollector.translateToLocal;
 

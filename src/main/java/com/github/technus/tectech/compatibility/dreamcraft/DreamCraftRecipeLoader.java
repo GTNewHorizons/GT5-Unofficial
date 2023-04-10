@@ -38,7 +38,6 @@ import net.minecraftforge.fluids.FluidStack;
 import vexatos.tgregworks.reference.PartTypes;
 import vexatos.tgregworks.util.TGregUtils;
 
-import com.github.technus.tectech.Reference;
 import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationRegistry;
 import com.github.technus.tectech.recipe.TT_recipeAdder;
 import com.github.technus.tectech.thing.CustomItemList;
@@ -48,8 +47,13 @@ import com.github.technus.tectech.thing.metaTileEntity.multi.em_machine.Behaviou
 import com.github.technus.tectech.thing.metaTileEntity.multi.em_machine.Behaviour_Recycler;
 import com.github.technus.tectech.thing.metaTileEntity.multi.em_machine.GT_MetaTileEntity_EM_machine;
 
-import cpw.mods.fml.common.Loader;
-import gregtech.api.enums.*;
+import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.MaterialsBotania;
+import gregtech.api.enums.MaterialsKevlar;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -2854,7 +2858,8 @@ public class DreamCraftRecipeLoader {
                         ItemList.Circuit_Parts_InductorXSMD.get(16L), ItemList.Circuit_Parts_CapacitorXSMD.get(20L),
                         ItemList.Circuit_Parts_ResistorXSMD.get(20L), ItemList.Circuit_Chip_NOR.get(32L),
                         ItemList.Circuit_Chip_Ram.get(64L),
-                        GT_ModHandler.getModItem(BartWorks.ID, "gt.bwMetaGeneratedwireFine", 24L, 10101), // Fine Lumiium
+                        GT_ModHandler.getModItem(BartWorks.ID, "gt.bwMetaGeneratedwireFine", 24L, 10101), // Fine
+                                                                                                          // Lumiium
                         // Wire
                         new Object[] { OrePrefixes.foil.get(Materials.AnySyntheticRubber), 64L }, },
                 new FluidStack[] { new FluidStack(solderUEV, 1440), Materials.Radon.getPlasma(1440L),
@@ -2875,7 +2880,8 @@ public class DreamCraftRecipeLoader {
                         ItemList.Circuit_Parts_TransistorXSMD.get(24L), ItemList.Circuit_Parts_ResistorXSMD.get(24L),
                         ItemList.Circuit_Parts_CapacitorXSMD.get(24L), ItemList.Circuit_Parts_DiodeXSMD.get(24L),
                         ItemList.Circuit_Chip_NOR.get(64L), ItemList.Circuit_Chip_SoC2.get(32L),
-                        GT_ModHandler.getModItem(BartWorks.ID, "gt.bwMetaGeneratedwireFine", 32L, 10101), // Fine Lumiium
+                        GT_ModHandler.getModItem(BartWorks.ID, "gt.bwMetaGeneratedwireFine", 32L, 10101), // Fine
+                                                                                                          // Lumiium
                         // Wire
                         new Object[] { OrePrefixes.foil.get(Materials.AnySyntheticRubber), 64L },
                         GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Polybenzimidazole, 64), },
@@ -2999,7 +3005,8 @@ public class DreamCraftRecipeLoader {
                             GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Universium, 8L),
                             GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Infinity, 8L),
                             GT_OreDictUnificator.get("plateDenseShirabon", 8L), ItemList.Sensor_UXV.get(16L),
-                            ItemList.Emitter_UXV.get(16L), getModItem(EternalSingularity.ID, "eternal_singularity", 16L),
+                            ItemList.Emitter_UXV.get(16L),
+                            getModItem(EternalSingularity.ID, "eternal_singularity", 16L),
                             Materials.Universium.getNanite(16), Materials.BlackDwarfMatter.getNanite(16),
                             Materials.WhiteDwarfMatter.getNanite(16) },
                     new FluidStack[] { Materials.Neutronium.getMolten(32_768_000L),
@@ -3127,7 +3134,8 @@ public class DreamCraftRecipeLoader {
                             new Object[] { OrePrefixes.circuit.get(Materials.Superconductor), 2L },
                             getModItem(Avaritia.ID, "Singularity", 2L, 0),
                             GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUHV, 6),
-                            getModItem(NewHorizonsCoreMod.ID, "item.PicoWafer", 2, 0), ItemList.Field_Generator_UHV.get(1L) },
+                            getModItem(NewHorizonsCoreMod.ID, "item.PicoWafer", 2, 0),
+                            ItemList.Field_Generator_UHV.get(1L) },
                     new FluidStack[] { new FluidStack(FluidRegistry.getFluid("oganesson"), 8000),
                             new FluidStack(solderUEV, 1152 * 8), Materials.NaquadahEnriched.getMolten(1296L) },
                     ItemList.Casing_Dim_Bridge.get(1),
@@ -3144,7 +3152,8 @@ public class DreamCraftRecipeLoader {
                     new Object[] { GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Osmiridium, 4),
                             GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Ledox, 1),
                             GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.CallistoIce, 1),
-                            ItemList.Reactor_Coolant_Sp_6.get(1L), getModItem(GTPlusPlus.ID, "itemScrewLaurenium", 12, 0),
+                            ItemList.Reactor_Coolant_Sp_6.get(1L),
+                            getModItem(GTPlusPlus.ID, "itemScrewLaurenium", 12, 0),
                             new Object[] { OrePrefixes.circuit.get(Materials.Elite), 2L },
                             GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUHV, 2),
                             ItemList.Super_Chest_IV.get(1), ItemList.Super_Tank_IV.get(1),
@@ -3163,7 +3172,8 @@ public class DreamCraftRecipeLoader {
                     32_000_000,
                     1,
                     new Object[] { GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Osmiridium, 6),
-                            getModItem(GTPlusPlus.ID, "itemScrewLaurenium", 12, 0), ItemList.Reactor_Coolant_Sp_6.get(1L),
+                            getModItem(GTPlusPlus.ID, "itemScrewLaurenium", 12, 0),
+                            ItemList.Reactor_Coolant_Sp_6.get(1L),
                             GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUHV, 1), },
                     new FluidStack[] { new FluidStack(FluidRegistry.getFluid("oganesson"), 500),
                             new FluidStack(solderUEV, 288), Materials.NaquadahEnriched.getMolten(144L) },
@@ -5499,7 +5509,8 @@ public class DreamCraftRecipeLoader {
                             getModItem(TinkerConstruct.ID, "heavyPlate", 1, 501),
 
                             // UV Solar panel
-                            getModItem(SuperSolarPanels.ID, "PhotonicSolarPanel", 1, 0), ItemList.Quantum_Chest_IV.get(1),
+                            getModItem(SuperSolarPanels.ID, "PhotonicSolarPanel", 1, 0),
+                            ItemList.Quantum_Chest_IV.get(1),
                             // Gravitation Engine
                             getModItem(GraviSuite.ID, "itemSimpleItem", 64, 3), ItemList.EnergisedTesseract.get(1) },
 

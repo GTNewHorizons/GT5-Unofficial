@@ -1,8 +1,18 @@
 package com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive;
 
 import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMGaugeBosonDefinition.deadEnd;
-import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMLeptonDefinition.*;
-import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMNeutrinoDefinition.*;
+import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMLeptonDefinition.lepton_e;
+import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMLeptonDefinition.lepton_e_;
+import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMLeptonDefinition.lepton_m;
+import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMLeptonDefinition.lepton_m_;
+import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMLeptonDefinition.lepton_t;
+import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMLeptonDefinition.lepton_t_;
+import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMNeutrinoDefinition.lepton_Ve;
+import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMNeutrinoDefinition.lepton_Ve_;
+import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMNeutrinoDefinition.lepton_Vm;
+import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMNeutrinoDefinition.lepton_Vm_;
+import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMNeutrinoDefinition.lepton_Vt;
+import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMNeutrinoDefinition.lepton_Vt_;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 import com.github.technus.tectech.mechanics.elementalMatter.core.decay.EMDecay;

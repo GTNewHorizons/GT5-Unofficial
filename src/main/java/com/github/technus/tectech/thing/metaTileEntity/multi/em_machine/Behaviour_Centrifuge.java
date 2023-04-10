@@ -2,9 +2,14 @@ package com.github.technus.tectech.thing.metaTileEntity.multi.em_machine;
 
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationRegistry.EM_COUNT_PER_MATERIAL_AMOUNT_DIMINISHED;
-import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus.*;
+import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus.STATUS_OK;
+import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus.STATUS_TOO_HIGH;
+import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus.STATUS_TOO_LOW;
+import static com.github.technus.tectech.thing.metaTileEntity.multi.base.LedStatus.STATUS_WRONG;
 import static com.github.technus.tectech.util.CommonValues.V;
-import static com.github.technus.tectech.util.DoubleCount.*;
+import static com.github.technus.tectech.util.DoubleCount.div;
+import static com.github.technus.tectech.util.DoubleCount.mul;
+import static com.github.technus.tectech.util.DoubleCount.sub;
 
 import java.util.Arrays;
 

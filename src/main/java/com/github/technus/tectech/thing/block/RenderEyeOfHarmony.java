@@ -1,7 +1,7 @@
 package com.github.technus.tectech.thing.block;
 
 import static com.github.technus.tectech.Reference.MODID;
-import static java.lang.Math.*;
+import static java.lang.Math.pow;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.Tessellator;

@@ -1,7 +1,11 @@
 package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
-import static com.github.technus.tectech.thing.metaTileEntity.Textures.*;
-import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.*;
+import static com.github.technus.tectech.thing.metaTileEntity.Textures.OVERLAYS_ENERGY_IN_WIRELESS_MULTI_16A;
+import static com.github.technus.tectech.thing.metaTileEntity.Textures.OVERLAYS_ENERGY_IN_WIRELESS_MULTI_4A;
+import static com.github.technus.tectech.thing.metaTileEntity.Textures.OVERLAYS_ENERGY_IN_WIRELESS_MULTI_64A;
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.BLUE;
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.BOLD;
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.GRAY;
 import static gregtech.api.enums.GT_Values.AuthorColen;
 import static gregtech.api.enums.GT_Values.V;
 import static net.minecraft.util.StatCollector.translateToLocal;

@@ -1,12 +1,10 @@
 package com.github.technus.tectech.loader;
 
+import static gregtech.api.enums.Mods.OpenModularTurrets;
+
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.compatibility.openmodularturrets.entity.projectiles.projectileEM;
-
-import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.EntityRegistry;
-
-import static gregtech.api.enums.Mods.OpenModularTurrets;
 
 /**
  * Created by Tec on 30.07.2017.

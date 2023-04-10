@@ -1,8 +1,19 @@
 package com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive;
 
-import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMGaugeBosonDefinition.*;
-import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMLeptonDefinition.*;
-import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMQuarkDefinition.*;
+import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMGaugeBosonDefinition.boson_W;
+import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMGaugeBosonDefinition.boson_W_;
+import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMGaugeBosonDefinition.boson_Y__;
+import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMGaugeBosonDefinition.boson_Z;
+import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMGaugeBosonDefinition.boson_g__;
+import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMGaugeBosonDefinition.deadEnd;
+import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMLeptonDefinition.lepton_m;
+import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMLeptonDefinition.lepton_m_;
+import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMLeptonDefinition.lepton_t;
+import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMLeptonDefinition.lepton_t_;
+import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMQuarkDefinition.quark_b;
+import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMQuarkDefinition.quark_b_;
+import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMQuarkDefinition.quark_c;
+import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMQuarkDefinition.quark_c_;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 import com.github.technus.tectech.mechanics.elementalMatter.core.decay.EMDecay;

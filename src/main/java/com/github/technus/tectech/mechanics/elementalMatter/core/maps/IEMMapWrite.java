@@ -1,7 +1,9 @@
 package com.github.technus.tectech.mechanics.elementalMatter.core.maps;
 
 import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationRegistry.EM_COUNT_EPSILON;
-import static com.github.technus.tectech.util.DoubleCount.*;
+import static com.github.technus.tectech.util.DoubleCount.add;
+import static com.github.technus.tectech.util.DoubleCount.sub;
+import static com.github.technus.tectech.util.DoubleCount.ulpSigned;
 
 import java.util.Map;
 

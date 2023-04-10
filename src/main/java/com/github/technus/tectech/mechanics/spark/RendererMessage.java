@@ -1,6 +1,13 @@
 package com.github.technus.tectech.mechanics.spark;
 
-import java.io.*;
+import static gregtech.api.enums.Mods.Thaumcraft;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Random;
@@ -10,15 +17,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 
 import thaumcraft.client.fx.bolt.FXLightningBolt;
-import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import eu.usrv.yamcore.network.client.AbstractClientMessageHandler;
 import io.netty.buffer.ByteBuf;
-
-import static gregtech.api.enums.Mods.Thaumcraft;
 
 // TODO Re-work how sparks are distributed
 public class RendererMessage implements IMessage {
