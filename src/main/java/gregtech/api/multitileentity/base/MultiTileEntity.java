@@ -2,7 +2,6 @@ package gregtech.api.multitileentity.base;
 
 import static gregtech.GT_Mod.GT_FML_LOGGER;
 import static gregtech.api.enums.GT_Values.NBT;
-import static gregtech.api.enums.GT_Values.OPOS;
 import static gregtech.api.enums.GT_Values.SIDE_WEST;
 import static gregtech.api.enums.GT_Values.VALID_SIDES;
 import static gregtech.api.enums.GT_Values.emptyIconContainerArray;
@@ -293,15 +292,15 @@ public abstract class MultiTileEntity extends CoverableTileEntity implements IMu
         if (this instanceof IMTE_IsProvidingStrongPower) for (byte tSide : GT_Values.ALL_VALID_SIDES) {
             if (getBlockAtSide(tSide).isNormalCube(
                 worldObj,
-                xCoord + GT_Values.OFFX[tSide],
-                yCoord + GT_Values.OFFY[tSide],
-                zCoord + GT_Values.OFFZ[tSide])) {
+                xCoord + ForgeDirection.VALID_DIRECTIONS[tSide].offsetX,
+                yCoord + ForgeDirection.VALID_DIRECTIONS[tSide].offsetY,
+                zCoord + ForgeDirection.VALID_DIRECTIONS[tSide].offsetZ)) {
                 worldObj.notifyBlocksOfNeighborChange(
-                    xCoord + GT_Values.OFFX[tSide],
-                    yCoord + GT_Values.OFFY[tSide],
-                    zCoord + GT_Values.OFFZ[tSide],
+                    xCoord + ForgeDirection.VALID_DIRECTIONS[tSide].offsetX,
+                    yCoord + ForgeDirection.VALID_DIRECTIONS[tSide].offsetY,
+                    zCoord + ForgeDirection.VALID_DIRECTIONS[tSide].offsetZ,
                     tBlock,
-                    OPOS[tSide]);
+                    ForgeDirection.OPPOSITES[tSide]);
             }
         }
         needsBlockUpdate = false;
@@ -312,7 +311,8 @@ public abstract class MultiTileEntity extends CoverableTileEntity implements IMu
         final TileEntity tTileEntity = getTileEntityAtSideAndDistance(aSide, 1);
         // TODO: check to an interface
         // if (getBlockAtSide(aSide) == Blocks.glass) return false;
-        return tTileEntity instanceof IMultiTileEntity ? !((IMultiTileEntity) tTileEntity).isSurfaceOpaque(OPOS[aSide])
+        return tTileEntity instanceof IMultiTileEntity
+            ? !((IMultiTileEntity) tTileEntity).isSurfaceOpaque((byte) ForgeDirection.OPPOSITES[aSide])
             : !getBlockAtSide(aSide).isOpaqueCube();
     }
 

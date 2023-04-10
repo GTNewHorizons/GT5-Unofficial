@@ -2,6 +2,7 @@ package gregtech.api.interfaces.tileentity;
 
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.util.GT_CoverBehavior;
 import gregtech.api.util.GT_CoverBehaviorBase;
@@ -43,7 +44,15 @@ public interface ICoverable extends IRedstoneTileEntity, IHasInventory, IBasicEn
         return new ISerializableObject.LegacyCoverData(getCoverDataAtSide(aSide));
     }
 
+    /**
+     * @deprecated use {@link #getCoverIDAtDirection(ForgeDirection)}
+     */
+    @Deprecated
     int getCoverIDAtSide(byte aSide);
+
+    default int getCoverIDAtDirection(ForgeDirection direction) {
+        return getCoverIDAtSide((byte) direction.ordinal());
+    }
 
     ItemStack getCoverItemAtSide(byte aSide);
 

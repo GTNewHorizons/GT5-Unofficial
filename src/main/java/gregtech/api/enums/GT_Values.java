@@ -9,6 +9,7 @@ import java.util.*;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidTank;
@@ -377,22 +378,63 @@ public class GT_Values {
 
     /**
      * Side->Offset Mappings.
+     * 
+     * @deprecated Use {@link ForgeDirection#VALID_DIRECTIONS} {@link ForgeDirection#offsetX}
      */
-    public static final byte[] OFFX = { 0, 0, 0, 0, -1, +1, 0 }, OFFY = { -1, +1, 0, 0, 0, 0, 0 },
-        OFFZ = { 0, 0, -1, +1, 0, 0, 0 };
+    @Deprecated
+    // spotless:off
+    public static final byte[]
+            OFFX = {
+                (byte) ForgeDirection.DOWN.offsetX,     (byte) ForgeDirection.UP.offsetX,
+                (byte) ForgeDirection.NORTH.offsetX,    (byte) ForgeDirection.SOUTH.offsetX,
+                (byte) ForgeDirection.WEST.offsetX,     (byte) ForgeDirection.EAST.offsetX,
+                (byte) ForgeDirection.UNKNOWN.offsetX },
+    /**
+     * @deprecated Use {@link ForgeDirection#VALID_DIRECTIONS} {@link ForgeDirection#offsetY}
+     */
+            OFFY = {
+                (byte) ForgeDirection.DOWN.offsetY,     (byte) ForgeDirection.UP.offsetY,
+                (byte) ForgeDirection.NORTH.offsetY,    (byte) ForgeDirection.SOUTH.offsetY,
+                (byte) ForgeDirection.WEST.offsetY,     (byte) ForgeDirection.EAST.offsetY,
+                (byte) ForgeDirection.UNKNOWN.offsetY },
+    /**
+     * @deprecated Use {@link ForgeDirection#VALID_DIRECTIONS} {@link ForgeDirection#offsetZ}
+     */
+            OFFZ = {
+                (byte) ForgeDirection.DOWN.offsetZ,     (byte) ForgeDirection.UP.offsetZ,
+                (byte) ForgeDirection.NORTH.offsetZ,    (byte) ForgeDirection.SOUTH.offsetZ,
+                (byte) ForgeDirection.WEST.offsetZ,     (byte) ForgeDirection.EAST.offsetZ,
+                (byte) ForgeDirection.UNKNOWN.offsetZ };
 
     /**
      * Side->Opposite Mappings.
+     * 
+     * @deprecated Use {@link ForgeDirection#OPPOSITES}
      **/
-    public static final byte[] OPOS = { 1, 0, 3, 2, 5, 4, 6 };
+    public static final byte[] OPOS = {
+            (byte) ForgeDirection.OPPOSITES[ForgeDirection.DOWN.ordinal()],
+            (byte) ForgeDirection.OPPOSITES[ForgeDirection.UP.ordinal()],
+            (byte) ForgeDirection.OPPOSITES[ForgeDirection.NORTH.ordinal()],
+            (byte) ForgeDirection.OPPOSITES[ForgeDirection.SOUTH.ordinal()],
+            (byte) ForgeDirection.OPPOSITES[ForgeDirection.WEST.ordinal()],
+            (byte) ForgeDirection.OPPOSITES[ForgeDirection.EAST.ordinal()],
+            (byte) ForgeDirection.OPPOSITES[ForgeDirection.UNKNOWN.ordinal()] };
 
+    // spotless:off
     /**
      * [Facing,Side]->Side Mappings for Blocks, which don't face up- and downwards. 0 = bottom, 1 = top, 2 = left, 3 =
      * front, 4 = right, 5 = back, 6 = undefined.
      */
-    public static final byte[][] FACING_ROTATIONS = { { 0, 1, 2, 3, 4, 5, 6 }, { 0, 1, 2, 3, 4, 5, 6 },
-        { 0, 1, 3, 5, 4, 2, 6 }, { 0, 1, 5, 3, 2, 4, 6 }, { 0, 1, 2, 4, 3, 5, 6 }, { 0, 1, 4, 2, 5, 3, 6 },
-        { 0, 1, 2, 3, 4, 5, 6 } };
+    public static final byte[][] FACING_ROTATIONS = {
+            { 0, 1, 2, 3, 4, 5, 6 }, // bottom
+            { 0, 1, 2, 3, 4, 5, 6 }, // top
+            { 0, 1, 3, 5, 4, 2, 6 }, // left
+            { 0, 1, 5, 3, 2, 4, 6 }, // front
+            { 0, 1, 2, 4, 3, 5, 6 }, // right
+            { 0, 1, 4, 2, 5, 3, 6 }, // back
+            { 0, 1, 2, 3, 4, 5, 6 }  // undefined
+    };
+    // spotless:on
 
     /**
      * The Mod Object itself. That is the GT_Mod-Object. It's needed to open GUI's and similar.

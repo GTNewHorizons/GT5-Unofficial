@@ -19,13 +19,13 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.GT_Values;
 import gregtech.api.metatileentity.CoverableTileEntity;
 import gregtech.api.multitileentity.interfaces.IItemUpdatable;
 import gregtech.api.multitileentity.interfaces.IMultiTileEntity;
@@ -93,9 +93,9 @@ public class MultiTileEntityItemInternal extends ItemBlock implements IFluidCont
             } else if (tClickedBlock != Blocks.vine && tClickedBlock != Blocks.tallgrass
                 && tClickedBlock != Blocks.deadbush
                 && !tClickedBlock.isReplaceable(aWorld, aX, aY, aZ)) {
-                    aX += GT_Values.OFFX[aSide];
-                    aY += GT_Values.OFFY[aSide];
-                    aZ += GT_Values.OFFZ[aSide];
+                    aX += ForgeDirection.VALID_DIRECTIONS[aSide].offsetX;
+                    aY += ForgeDirection.VALID_DIRECTIONS[aSide].offsetY;
+                    aZ += ForgeDirection.VALID_DIRECTIONS[aSide].offsetZ;
                 }
             final Block tReplacedBlock = aWorld.getBlock(aX, aY, aZ);
 

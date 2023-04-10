@@ -236,8 +236,27 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         if (worldObj == null || (isServerSide() && coverInfo.isDataNeededOnClient())) coverInfo.setNeedsUpdate(true);
     }
 
+    /**
+     * Gets the cover texture for the given side
+     * 
+     * @deprecated use {@link #getCoverTexture(ForgeDirection)}
+     *
+     * @param aSide the {@code byte} ordinal side direction
+     * @return the {@link ITexture} of the cover at this side
+     */
+    @Deprecated
     public final ITexture getCoverTexture(byte aSide) {
-        final CoverInfo coverInfo = getCoverInfoAtSide(aSide);
+        return getCoverTexture(ForgeDirection.getOrientation(aSide));
+    }
+
+    /**
+     * Gets the cover texture for the given side
+     *
+     * @param dir the {@link ForgeDirection} of the side
+     * @return the {@link ITexture} of the cover at this side
+     */
+    public final ITexture getCoverTexture(ForgeDirection dir) {
+        final CoverInfo coverInfo = getCoverInfoAtSide((byte) dir.ordinal());
         if (!coverInfo.isValid()) return null;
         if (GT_Mod.instance.isClientSide() && (GT_Client.hideValue & 0x1) != 0) {
             return Textures.BlockIcons.HIDDEN_TEXTURE[0]; // See through
@@ -246,7 +265,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
             : coverInfo.getSpecialCoverTexture();
 
         return coverTexture != null ? coverTexture
-            : GregTech_API.sCovers.get(new GT_ItemStack(getCoverIDAtSide(aSide)));
+            : GregTech_API.sCovers.get(new GT_ItemStack(getCoverIDAtSide((byte) dir.ordinal())));
     }
 
     protected void requestCoverDataIfNeeded() {

@@ -4,11 +4,14 @@ import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.ILayeredTexture;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.render.TextureFactory;
 
 public interface IRenderedBlock {
 
@@ -18,6 +21,12 @@ public interface IRenderedBlock {
 
     @SideOnly(Side.CLIENT)
     ITexture[] getTexture(Block aBlock, byte aSide, boolean isActive, int aRenderPass);
+
+    @SideOnly(Side.CLIENT)
+    default ILayeredTexture getTexture(Block block, ForgeDirection sideDirection, boolean isActive, int renderPass) {
+        return (ILayeredTexture) TextureFactory
+            .of(getTexture(block, (byte) sideDirection.ordinal(), isActive, renderPass));
+    }
 
     /** gets the Amount of Render Passes for this TileEntity or similar Handler. Only gets called once per Rendering. */
     @SideOnly(Side.CLIENT)

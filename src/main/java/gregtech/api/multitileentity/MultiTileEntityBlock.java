@@ -1,9 +1,6 @@
 package gregtech.api.multitileentity;
 
 import static gregtech.api.enums.GT_Values.ALL_VALID_SIDES;
-import static gregtech.api.enums.GT_Values.OFFX;
-import static gregtech.api.enums.GT_Values.OFFY;
-import static gregtech.api.enums.GT_Values.OFFZ;
 import static gregtech.api.util.GT_Util.LAST_BROKEN_TILEENTITY;
 import static gregtech.api.util.GT_Util.getTileEntity;
 import static gregtech.api.util.GT_Util.setTileEntity;
@@ -425,7 +422,11 @@ public class MultiTileEntityBlock extends Block
 
     @Override
     public final boolean shouldSideBeRendered(IBlockAccess aWorld, int aX, int aY, int aZ, int aSide) {
-        final TileEntity aTileEntity = aWorld.getTileEntity(aX - OFFX[aSide], aY - OFFY[aSide], aZ - OFFZ[aSide]);
+        final TileEntity aTileEntity = aWorld.getTileEntity(
+            aX - ForgeDirection.VALID_DIRECTIONS[aSide].offsetX,
+            aY - ForgeDirection.VALID_DIRECTIONS[aSide].offsetY,
+            aZ - ForgeDirection.VALID_DIRECTIONS[aSide].offsetZ);
+
         return aTileEntity instanceof IMultiTileEntity
             ? ((IMultiTileEntity) aTileEntity).shouldSideBeRendered((byte) aSide)
             : super.shouldSideBeRendered(aWorld, aX, aY, aZ, aSide);

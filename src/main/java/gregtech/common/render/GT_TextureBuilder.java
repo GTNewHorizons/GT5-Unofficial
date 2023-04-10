@@ -11,6 +11,7 @@ import gregtech.GT_Mod;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.interfaces.ILayeredTexture;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.ITextureBuilder;
 
@@ -18,7 +19,7 @@ import gregtech.api.interfaces.ITextureBuilder;
 public class GT_TextureBuilder implements ITextureBuilder {
 
     private final List<IIconContainer> iconContainerList;
-    private final List<ITexture> textureLayers;
+    private final ILayeredTexture textureLayers;
     private Block fromBlock;
     private int fromMeta;
     private ForgeDirection fromSide;
@@ -30,7 +31,7 @@ public class GT_TextureBuilder implements ITextureBuilder {
     private Boolean worldCoord = null;
 
     public GT_TextureBuilder() {
-        textureLayers = new ArrayList<>();
+        textureLayers = new GT_MultiTexture();
         iconContainerList = new ArrayList<>();
         rgba = Dyes._NULL.mRGBa;
         allowAlpha = true;
@@ -66,7 +67,7 @@ public class GT_TextureBuilder implements ITextureBuilder {
 
     @Override
     public ITextureBuilder addLayer(final ITexture... iTextures) {
-        this.textureLayers.addAll(Arrays.asList(iTextures));
+        this.textureLayers.addAll(iTextures);
         return this;
     }
 
@@ -117,18 +118,10 @@ public class GT_TextureBuilder implements ITextureBuilder {
             else return new GT_CopiedBlockTexture(fromBlock, fromSide.ordinal(), fromMeta, rgba, allowAlpha);
         }
         if (worldCoord != null) throw new IllegalStateException("worldCoord without from block");
-        if (!textureLayers.isEmpty()) return new GT_MultiTexture(textureLayers.toArray(new ITexture[0]));
+        if (!textureLayers.isEmpty()) return textureLayers;
         return switch (iconContainerList.size()) {
             case 1 -> new GT_RenderedTexture(iconContainerList.get(0), rgba, allowAlpha, glow, stdOrient, extFacing);
-            case 6 -> new GT_SidedTexture(
-                iconContainerList.get(ForgeDirection.DOWN.ordinal()),
-                iconContainerList.get(ForgeDirection.UP.ordinal()),
-                iconContainerList.get(ForgeDirection.NORTH.ordinal()),
-                iconContainerList.get(ForgeDirection.SOUTH.ordinal()),
-                iconContainerList.get(ForgeDirection.WEST.ordinal()),
-                iconContainerList.get(ForgeDirection.EAST.ordinal()),
-                rgba,
-                allowAlpha);
+            case 6 -> new GT_SidedTexture(iconContainerList, rgba, allowAlpha);
             default -> throw new IllegalStateException("Invalid sideIconContainer count");
         };
     }

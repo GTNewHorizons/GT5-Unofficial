@@ -3,7 +3,11 @@ package gregtech.api.metatileentity;
 import static gregtech.GT_Mod.GT_FML_LOGGER;
 import static gregtech.api.enums.GT_Values.NW;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -36,6 +40,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IPipeRenderedTileEntity;
 import gregtech.api.net.GT_Packet_TileEntity;
 import gregtech.api.objects.GT_ItemStack;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -707,6 +712,7 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
     }
 
     @Override
+    @Deprecated
     public ITexture[] getTextureCovered(byte aSide) {
         final ITexture coverTexture = getCoverTexture(aSide);
         final ITexture[] textureUncovered = getTextureUncovered(aSide);
@@ -721,24 +727,41 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
     }
 
     @Override
+    public ITexture getTextureCovered(ForgeDirection dir) {
+        final ITexture textureUncovered = getTextureUncovered(dir);
+        final ITexture coverTexture = getCoverTexture(dir);
+        if (coverTexture == null) {
+            return textureUncovered;
+        } else {
+            return TextureFactory.of(textureUncovered, coverTexture);
+        }
+    }
+
+    @Override
     public ITexture[] getTextureUncovered(byte aSide) {
         if ((mConnections & IConnectable.HAS_FRESHFOAM) != 0) return Textures.BlockIcons.FRESHFOAM;
         if ((mConnections & IConnectable.HAS_HARDENEDFOAM) != 0) return Textures.BlockIcons.HARDENEDFOAMS[mColor];
-        if ((mConnections & IConnectable.HAS_FOAM) != 0) return Textures.BlockIcons.ERROR_RENDERING;
-        byte tConnections = mConnections;
-        if (tConnections == IConnectable.CONNECTED_WEST || tConnections == IConnectable.CONNECTED_EAST)
-            tConnections = (byte) (IConnectable.CONNECTED_WEST | IConnectable.CONNECTED_EAST);
-        else if (tConnections == IConnectable.CONNECTED_DOWN || tConnections == IConnectable.CONNECTED_UP)
-            tConnections = (byte) (IConnectable.CONNECTED_DOWN | IConnectable.CONNECTED_UP);
-        else if (tConnections == IConnectable.CONNECTED_NORTH || tConnections == IConnectable.CONNECTED_SOUTH)
-            tConnections = (byte) (IConnectable.CONNECTED_NORTH | IConnectable.CONNECTED_SOUTH);
-        if (hasValidMetaTileEntity()) return mMetaTileEntity.getTexture(
-            this,
-            aSide,
-            tConnections,
-            (byte) (mColor - 1),
-            tConnections == 0 || (tConnections & (1 << aSide)) != 0,
-            getOutputRedstoneSignal(aSide) > 0);
+        if ((mConnections & IConnectable.HAS_FOAM) == 0) {
+            byte tConnections = (byte) switch (mConnections) {
+                case IConnectable.CONNECTED_WEST, IConnectable.CONNECTED_EAST -> (IConnectable.CONNECTED_WEST
+                    | IConnectable.CONNECTED_EAST);
+                case IConnectable.CONNECTED_DOWN, IConnectable.CONNECTED_UP -> (IConnectable.CONNECTED_DOWN
+                    | IConnectable.CONNECTED_UP);
+                case IConnectable.CONNECTED_NORTH, IConnectable.CONNECTED_SOUTH -> (IConnectable.CONNECTED_NORTH
+                    | IConnectable.CONNECTED_SOUTH);
+                default -> mConnections;
+            };
+            if (hasValidMetaTileEntity()) {
+                return mMetaTileEntity.getTexture(
+                    this,
+                    aSide,
+                    tConnections,
+                    (byte) (mColor - 1),
+                    tConnections == 0 || (tConnections & (1 << aSide)) != 0,
+                    getOutputRedstoneSignal(aSide) > 0);
+            }
+            return Textures.BlockIcons.ERROR_RENDERING;
+        }
         return Textures.BlockIcons.ERROR_RENDERING;
     }
 
