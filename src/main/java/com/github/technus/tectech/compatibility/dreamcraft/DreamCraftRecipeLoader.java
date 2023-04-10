@@ -215,7 +215,7 @@ public class DreamCraftRecipeLoader {
                         GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Copper, 16),
                         GT_OreDictUnificator.get(
                                 OrePrefixes.wireGt01,
-                                getOrDefault("SuperconductorIV", Materials.Superconductor),
+                                getOrDefault("SuperconductorIV", Materials.SuperconductorUHV),
                                 1) },
                 Materials.SolderingAlloy.getMolten(1296),
                 CustomItemList.eM_Computer_Vent.get(1),
@@ -230,7 +230,7 @@ public class DreamCraftRecipeLoader {
                         GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Electrum, 64),
                         GT_OreDictUnificator.get(
                                 OrePrefixes.wireGt02,
-                                getOrDefault("SuperconductorLuV", Materials.Superconductor),
+                                getOrDefault("SuperconductorLuV", Materials.SuperconductorUHV),
                                 4) },
                 Materials.Iridium.getMolten(1296),
                 CustomItemList.eM_Computer_Bus.get(1),
@@ -986,7 +986,7 @@ public class DreamCraftRecipeLoader {
                     122880);
             GT_Values.RA.addAssemblerRecipe(
                     new ItemStack[] { ItemList.Transformer_MAX_UV.get(1), getItemContainer("Display").get(1),
-                            GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Superconductor, 2),
+                            GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.SuperconductorUHV, 2),
                             GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Osmium, 2),
                             GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.Naquadah, 4),
                             getModItem(BartWorks.ID, "BW_GlasBlocks", 2L, 5) },
@@ -2213,7 +2213,7 @@ public class DreamCraftRecipeLoader {
                 10000,
                 new Object[] { ItemList.Hatch_Input_Bus_ZPM.get(1), CustomItemList.eM_Computer_Bus.get(1),
                         ItemList.Emitter_ZPM.get(8), ItemList.Robot_Arm_ZPM.get(1), ItemList.Electric_Motor_ZPM.get(2),
-                        new Object[] { OrePrefixes.circuit.get(Materials.Superconductor), 1 },
+                        new Object[] { OrePrefixes.circuit.get(Materials.SuperconductorUHV), 1 },
                         new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.cableGt02, Materials.Naquadah, 2) },
                         new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Naquadah, 16) },
                         CustomItemList.DATApipe.get(2), },
@@ -2352,7 +2352,7 @@ public class DreamCraftRecipeLoader {
                         getItemContainer("HighEnergyFlowCircuit").get(1),
                         GT_OreDictUnificator.get(
                                 OrePrefixes.wireGt01,
-                                getOrDefault("SuperconductorLuV", Materials.Superconductor),
+                                getOrDefault("SuperconductorLuV", Materials.SuperconductorUHV),
                                 16),
                         ItemList.valueOf("Circuit_Chip_UHPIC").get(2), },
                 Materials.TungstenSteel.getMolten(576),
@@ -2377,7 +2377,7 @@ public class DreamCraftRecipeLoader {
                 ItemList.Tool_DataOrb.get(1),
                 20000,
                 new Object[] { CustomItemList.Machine_Multi_Switch.get(1),
-                        new Object[] { OrePrefixes.circuit.get(Materials.Superconductor), 2 },
+                        new Object[] { OrePrefixes.circuit.get(Materials.SuperconductorUHV), 2 },
                         ItemList.Tool_DataOrb.get(1), ItemList.Cover_Screen.get(1),
                         new ItemStack[] {
                                 GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUV, 8) },
@@ -2393,7 +2393,7 @@ public class DreamCraftRecipeLoader {
                 getItemContainer("ScannerZPM").get(1),
                 80000,
                 new Object[] { CustomItemList.Machine_Multi_Switch.get(1), ItemList.Sensor_ZPM.get(8),
-                        new Object[] { OrePrefixes.circuit.get(Materials.Superconductor), 4 },
+                        new Object[] { OrePrefixes.circuit.get(Materials.SuperconductorUHV), 4 },
                         ItemList.Field_Generator_ZPM.get(1), ItemList.Electric_Motor_ZPM.get(2),
                         new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.cableGt02, Materials.Naquadah, 4) },
                         new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Naquadah, 32) },
@@ -3131,7 +3131,7 @@ public class DreamCraftRecipeLoader {
                     32_000_000,
                     1,
                     new Object[] { ItemList.Casing_Dim_Trans.get(1), ItemList.MicroTransmitter_UV.get(1),
-                            new Object[] { OrePrefixes.circuit.get(Materials.Superconductor), 2L },
+                            new Object[] { OrePrefixes.circuit.get(Materials.SuperconductorUHV), 2L },
                             getModItem(Avaritia.ID, "Singularity", 2L, 0),
                             GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUHV, 6),
                             getModItem(NewHorizonsCoreMod.ID, "item.PicoWafer", 2, 0),
@@ -3214,7 +3214,7 @@ public class DreamCraftRecipeLoader {
                 6,
                 new Object[] { ItemList.Hatch_AutoMaintenance.get(1L), ItemList.Robot_Arm_UV.get(1L),
                         ItemList.Electric_Pump_UV.get(1L), ItemList.Conveyor_Module_UV.get(1L),
-                        new Object[] { OrePrefixes.circuit.get(Materials.Superconductor), 4L },
+                        new Object[] { OrePrefixes.circuit.get(Materials.SuperconductorUHV), 4L },
                         ItemList.Energy_LapotronicOrb2.get(1L), ItemList.Duct_Tape.get(64L),
                         ItemList.Duct_Tape.get(64L),
                         GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Americium, 64L), },
@@ -3258,7 +3258,7 @@ public class DreamCraftRecipeLoader {
                 32,
                 new Object[] { ItemList.Circuit_Board_Bio_Ultra.get(1),
                         new Object[] { OrePrefixes.foil.get(Materials.CosmicNeutronium), 64L },
-                        new Object[] { OrePrefixes.circuit.get(Materials.Superconductor), 4L },
+                        new Object[] { OrePrefixes.circuit.get(Materials.SuperconductorUHV), 4L },
                         ItemList.Circuit_Parts_Crystal_Chip_Master.get(64L),
                         ItemList.Circuit_Parts_Crystal_Chip_Master.get(64L),
                         ItemList.Circuit_Parts_Crystal_Chip_Master.get(64L),
@@ -3445,7 +3445,7 @@ public class DreamCraftRecipeLoader {
                     1,
                     new Object[] { ItemList.Energy_LapotronicOrb2.get(16L),
                             new Object[] { OrePrefixes.circuit.get(Materials.Master), 16L },
-                            new Object[] { OrePrefixes.circuit.get(Materials.Superconductor), 8L },
+                            new Object[] { OrePrefixes.circuit.get(Materials.SuperconductorUHV), 8L },
                             GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 8),
                             ItemList.Emitter_UHV.get(1), ItemList.Sensor_UHV.get(1),
                             ItemList.Casing_Fusion_Coil.get(1L), },
@@ -4364,7 +4364,7 @@ public class DreamCraftRecipeLoader {
                         GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.CosmicNeutronium, 6L),
                         ItemList.Electric_Motor_UHV.get(2L), ItemList.Electric_Piston_UHV.get(1L),
                         new Object[] { OrePrefixes.circuit.get(Materials.Infinite), 2L },
-                        new Object[] { OrePrefixes.circuit.get(Materials.Superconductor), 4L },
+                        new Object[] { OrePrefixes.circuit.get(Materials.SuperconductorUHV), 4L },
                         new Object[] { OrePrefixes.circuit.get(Materials.Ultimate), 8L },
                         GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.Bedrockium, 6L) },
                 new FluidStack[] { fluid_0, fluid_1, fluid_2 },
@@ -4581,7 +4581,7 @@ public class DreamCraftRecipeLoader {
                         ItemList.Electric_Motor_UEV.get(2L), ItemList.Electric_Piston_UEV.get(1L),
                         new Object[] { OrePrefixes.circuit.get(Materials.Bio), 2L },
                         new Object[] { OrePrefixes.circuit.get(Materials.Infinite), 4L },
-                        new Object[] { OrePrefixes.circuit.get(Materials.Superconductor), 8L },
+                        new Object[] { OrePrefixes.circuit.get(Materials.SuperconductorUHV), 8L },
                         GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.Draconium, 6L) },
                 new FluidStack[] { fluid_0, fluid_1, fluid_2 },
                 ItemList.Robot_Arm_UEV.get(1L),
@@ -6102,7 +6102,7 @@ public class DreamCraftRecipeLoader {
                 new Object[] { OrePrefixes.circuit.get(Materials.Elite), 1L }, // IV
                 new Object[] { OrePrefixes.circuit.get(Materials.Master), 1L }, // LuV
                 new Object[] { OrePrefixes.circuit.get(Materials.Ultimate), 1L }, // ZPM
-                new Object[] { OrePrefixes.circuit.get(Materials.Superconductor), 1L }, // UV
+                new Object[] { OrePrefixes.circuit.get(Materials.SuperconductorUHV), 1L }, // UV
                 new Object[] { OrePrefixes.circuit.get(Materials.Infinite), 1L }, // UHV
                 new Object[] { OrePrefixes.circuit.get(Materials.Bio), 1L }, // UEV
                 new Object[] { OrePrefixes.circuit.get(Materials.Optical), 1L }, // UIV
