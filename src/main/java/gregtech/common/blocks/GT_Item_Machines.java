@@ -23,6 +23,7 @@ import net.minecraftforge.fluids.IFluidContainerItem;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ISecondaryDescribable;
 import gregtech.api.interfaces.metatileentity.IConnectable;
@@ -158,6 +159,15 @@ public class GT_Item_Machines extends ItemBlock implements IFluidContainerItem {
                 }
 
                 CoverableTileEntity.addInstalledCoversInformation(aNBT, aList);
+                if (aNBT.hasKey("mColor") && aNBT.getByte("mColor") != -1) {
+                    aList.add(
+                            GT_LanguageManager.addStringLocalization(
+                                    "GT_TileEntity_COLORED",
+                                    "Colored",
+                                    !GregTech_API.sPostloadFinished) + " ("
+                                    + Dyes.get(aNBT.getByte("mColor") - 1).mName
+                                    + ")");
+                }
             }
         } catch (Throwable e) {
             GT_FML_LOGGER.error("addInformation", e);
