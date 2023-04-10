@@ -19,7 +19,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class Block_ItemProxyCable extends Block {
 
-    private static Block_ItemProxyCable instance = new Block_ItemProxyCable();
+    private static final Block_ItemProxyCable instance = new Block_ItemProxyCable();
 
     private Block_ItemProxyCable() {
         super(Material.glass);

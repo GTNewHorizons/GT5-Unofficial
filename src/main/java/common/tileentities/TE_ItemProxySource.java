@@ -7,7 +7,7 @@ import net.minecraft.tileentity.TileEntity;
 
 public class TE_ItemProxySource extends TileEntity implements IInventory {
 
-    private ItemStack[] slots = new ItemStack[16];
+    private final ItemStack[] slots = new ItemStack[16];
     private String idCache = null;
 
     /**

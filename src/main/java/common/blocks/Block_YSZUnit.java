@@ -10,7 +10,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 
 public class Block_YSZUnit extends BaseGTUpdateableBlock {
 
-    private static Block_YSZUnit instance = new Block_YSZUnit();
+    private static final Block_YSZUnit instance = new Block_YSZUnit();
 
     private Block_YSZUnit() {
         super(Material.iron);
