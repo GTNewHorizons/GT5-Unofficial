@@ -6,7 +6,6 @@ import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.objects.MaterialStack;
@@ -117,28 +116,6 @@ public class AlloySmelterRecipes implements Runnable {
 
             }
         }
-
-        GT_Values.RA.stdBuilder()
-                    .itemInputs(
-                            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lead, 1L),
-                            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Obsidian, 2L))
-                    .itemOutputs(ItemList.TE_Hardened_Glass.get(2L))
-                    .noFluidInputs()
-                    .noFluidOutputs()
-                    .duration(10 * SECONDS)
-                    .eut(16)
-                    .addTo(sAlloySmelterRecipes);
-
-        GT_Values.RA.stdBuilder()
-                    .itemInputs(
-                            GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Lead, 1L),
-                            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Obsidian, 2L))
-                    .itemOutputs(ItemList.TE_Hardened_Glass.get(2L))
-                    .noFluidInputs()
-                    .noFluidOutputs()
-                    .duration(10 * SECONDS)
-                    .eut(16)
-                    .addTo(sAlloySmelterRecipes);
 
         // We use rubber
         GT_Values.RA.stdBuilder()

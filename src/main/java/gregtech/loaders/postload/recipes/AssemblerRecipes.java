@@ -112,7 +112,7 @@ public class AssemblerRecipes implements Runnable {
                             GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Zinc, 16),
                             GT_Utility.getIntegratedCircuit(1))
                     .itemOutputs(ItemList.Component_Filter.get(1))
-                    .fluidInputs(Materials.Plastic.getFluid(144))
+                    .fluidInputs(Materials.Plastic.getMolten(144))
                     .noFluidOutputs()
                     .duration(1 * MINUTES + 20 * SECONDS)
                     .eut(16)
@@ -3226,7 +3226,7 @@ public class AssemblerRecipes implements Runnable {
                                 getModItem(NewHorizonsCoreMod.ID, "BabyChest", 1),
                                 GT_Utility.getIntegratedCircuit(1))
                         .itemOutputs(ItemList.Hatch_Input_Bus_ULV.get(1))
-                        .fluidInputs(Materials.Plastic.getFluid(1 * HALF_INGOT))
+                        .fluidInputs(Materials.Plastic.getMolten(1 * HALF_INGOT))
                         .noFluidOutputs()
                         .duration(24 * SECONDS)
                         .eut(TierEU.RECIPE_ULV)
@@ -3238,7 +3238,7 @@ public class AssemblerRecipes implements Runnable {
                                 getModItem(NewHorizonsCoreMod.ID, "BabyChest", 1),
                                 GT_Utility.getIntegratedCircuit(1))
                         .itemOutputs(ItemList.Hatch_Input_Bus_ULV.get(1))
-                        .fluidInputs(Materials.Polytetrafluoroethylene.getFluid(1 * EIGHTH_INGOT))
+                        .fluidInputs(Materials.Polytetrafluoroethylene.getMolten(1 * EIGHTH_INGOT))
                         .noFluidOutputs()
                         .duration(24 * SECONDS)
                         .eut(TierEU.RECIPE_ULV)
@@ -3250,7 +3250,7 @@ public class AssemblerRecipes implements Runnable {
                                 getModItem(NewHorizonsCoreMod.ID, "BabyChest", 1),
                                 GT_Utility.getIntegratedCircuit(1))
                         .itemOutputs(ItemList.Hatch_Input_Bus_ULV.get(1))
-                        .fluidInputs(Materials.Polybenzimidazole.getFluid(4))
+                        .fluidInputs(Materials.Polybenzimidazole.getMolten(4))
                         .noFluidOutputs()
                         .duration(24 * SECONDS)
                         .eut(TierEU.RECIPE_ULV)
@@ -3277,7 +3277,7 @@ public class AssemblerRecipes implements Runnable {
                                 new ItemStack(Blocks.chest),
                                 GT_Utility.getIntegratedCircuit(1))
                         .itemOutputs(ItemList.Hatch_Input_Bus_LV.get(1))
-                        .fluidInputs(Materials.Plastic.getFluid(1 * INGOTS))
+                        .fluidInputs(Materials.Plastic.getMolten(1 * INGOTS))
                         .noFluidOutputs()
                         .duration(24 * SECONDS)
                         .eut(TierEU.RECIPE_LV)
@@ -3289,7 +3289,7 @@ public class AssemblerRecipes implements Runnable {
                                 new ItemStack(Blocks.chest),
                                 GT_Utility.getIntegratedCircuit(1))
                         .itemOutputs(ItemList.Hatch_Input_Bus_LV.get(1))
-                        .fluidInputs(Materials.Polytetrafluoroethylene.getFluid(1 * HALF_INGOT))
+                        .fluidInputs(Materials.Polytetrafluoroethylene.getMolten(1 * HALF_INGOT))
                         .noFluidOutputs()
                         .duration(24 * SECONDS)
                         .eut(TierEU.RECIPE_LV)
@@ -3301,7 +3301,7 @@ public class AssemblerRecipes implements Runnable {
                                 new ItemStack(Blocks.chest),
                                 GT_Utility.getIntegratedCircuit(1))
                         .itemOutputs(ItemList.Hatch_Input_Bus_LV.get(1))
-                        .fluidInputs(Materials.Polybenzimidazole.getFluid(9))
+                        .fluidInputs(Materials.Polybenzimidazole.getMolten(9))
                         .noFluidOutputs()
                         .duration(24 * SECONDS)
                         .eut(TierEU.RECIPE_LV)
@@ -3316,7 +3316,7 @@ public class AssemblerRecipes implements Runnable {
                                 getModItem(IronChests.ID, "BlockIronChest", 1, 3),
                                 GT_Utility.getIntegratedCircuit(1))
                         .itemOutputs(ItemList.Hatch_Input_Bus_MV.get(1))
-                        .fluidInputs(Materials.Plastic.getFluid(2 * INGOTS))
+                        .fluidInputs(Materials.Plastic.getMolten(2 * INGOTS))
                         .noFluidOutputs()
                         .duration(24 * SECONDS)
                         .eut(TierEU.RECIPE_MV)
@@ -3328,7 +3328,7 @@ public class AssemblerRecipes implements Runnable {
                                 getModItem(IronChests.ID, "BlockIronChest", 1, 3),
                                 GT_Utility.getIntegratedCircuit(1))
                         .itemOutputs(ItemList.Hatch_Input_Bus_MV.get(1))
-                        .fluidInputs(Materials.Polytetrafluoroethylene.getFluid(1 * INGOTS))
+                        .fluidInputs(Materials.Polytetrafluoroethylene.getMolten(1 * INGOTS))
                         .noFluidOutputs()
                         .duration(24 * SECONDS)
                         .eut(TierEU.RECIPE_MV)
@@ -3340,7 +3340,7 @@ public class AssemblerRecipes implements Runnable {
                                 getModItem(IronChests.ID, "BlockIronChest", 1, 3),
                                 GT_Utility.getIntegratedCircuit(1))
                         .itemOutputs(ItemList.Hatch_Input_Bus_MV.get(1))
-                        .fluidInputs(Materials.Polybenzimidazole.getFluid(1 * EIGHTH_INGOT))
+                        .fluidInputs(Materials.Polybenzimidazole.getMolten(1 * EIGHTH_INGOT))
                         .noFluidOutputs()
                         .duration(24 * SECONDS)
                         .eut(TierEU.RECIPE_MV)
@@ -3355,7 +3355,7 @@ public class AssemblerRecipes implements Runnable {
                                 getModItem(IronChests.ID, "BlockIronChest", 1, 0),
                                 GT_Utility.getIntegratedCircuit(1))
                         .itemOutputs(ItemList.Hatch_Input_Bus_HV.get(1))
-                        .fluidInputs(Materials.Plastic.getFluid(3 * INGOTS))
+                        .fluidInputs(Materials.Plastic.getMolten(3 * INGOTS))
                         .noFluidOutputs()
                         .duration(24 * SECONDS)
                         .eut(TierEU.RECIPE_HV)
@@ -3367,7 +3367,7 @@ public class AssemblerRecipes implements Runnable {
                                 getModItem(IronChests.ID, "BlockIronChest", 1, 0),
                                 GT_Utility.getIntegratedCircuit(1))
                         .itemOutputs(ItemList.Hatch_Input_Bus_HV.get(1))
-                        .fluidInputs(Materials.Polytetrafluoroethylene.getFluid(2 * INGOTS))
+                        .fluidInputs(Materials.Polytetrafluoroethylene.getMolten(2 * INGOTS))
                         .noFluidOutputs()
                         .duration(24 * SECONDS)
                         .eut(TierEU.RECIPE_HV)
@@ -3379,7 +3379,7 @@ public class AssemblerRecipes implements Runnable {
                                 getModItem(IronChests.ID, "BlockIronChest", 1, 0),
                                 GT_Utility.getIntegratedCircuit(1))
                         .itemOutputs(ItemList.Hatch_Input_Bus_HV.get(1))
-                        .fluidInputs(Materials.Polybenzimidazole.getFluid(1 * QUARTER_INGOT))
+                        .fluidInputs(Materials.Polybenzimidazole.getMolten(1 * QUARTER_INGOT))
                         .noFluidOutputs()
                         .duration(24 * SECONDS)
                         .eut(TierEU.RECIPE_HV)
@@ -3394,7 +3394,7 @@ public class AssemblerRecipes implements Runnable {
                                 getModItem(IronChests.ID, "BlockIronChest", 1, 4),
                                 GT_Utility.getIntegratedCircuit(1))
                         .itemOutputs(ItemList.Hatch_Input_Bus_EV.get(1))
-                        .fluidInputs(Materials.Polytetrafluoroethylene.getFluid(4 * INGOTS))
+                        .fluidInputs(Materials.Polytetrafluoroethylene.getMolten(4 * INGOTS))
                         .noFluidOutputs()
                         .duration(24 * SECONDS)
                         .eut(TierEU.RECIPE_EV)
@@ -3406,7 +3406,7 @@ public class AssemblerRecipes implements Runnable {
                                 getModItem(IronChests.ID, "BlockIronChest", 1, 4),
                                 GT_Utility.getIntegratedCircuit(1))
                         .itemOutputs(ItemList.Hatch_Input_Bus_EV.get(1))
-                        .fluidInputs(Materials.Polybenzimidazole.getFluid(1 * HALF_INGOT))
+                        .fluidInputs(Materials.Polybenzimidazole.getMolten(1 * HALF_INGOT))
                         .noFluidOutputs()
                         .duration(24 * SECONDS)
                         .eut(TierEU.RECIPE_EV)
@@ -3421,7 +3421,7 @@ public class AssemblerRecipes implements Runnable {
                                 getModItem(IronChests.ID, "BlockIronChest", 1, 1),
                                 GT_Utility.getIntegratedCircuit(1))
                         .itemOutputs(ItemList.Hatch_Input_Bus_IV.get(1))
-                        .fluidInputs(Materials.Polytetrafluoroethylene.getFluid(8 * INGOTS))
+                        .fluidInputs(Materials.Polytetrafluoroethylene.getMolten(8 * INGOTS))
                         .noFluidOutputs()
                         .duration(24 * SECONDS)
                         .eut(TierEU.RECIPE_IV)
@@ -3433,7 +3433,7 @@ public class AssemblerRecipes implements Runnable {
                                 getModItem(IronChests.ID, "BlockIronChest", 1, 1),
                                 GT_Utility.getIntegratedCircuit(1))
                         .itemOutputs(ItemList.Hatch_Input_Bus_IV.get(1))
-                        .fluidInputs(Materials.Polybenzimidazole.getFluid(1 * INGOTS))
+                        .fluidInputs(Materials.Polybenzimidazole.getMolten(1 * INGOTS))
                         .noFluidOutputs()
                         .duration(24 * SECONDS)
                         .eut(TierEU.RECIPE_IV)
@@ -3448,7 +3448,7 @@ public class AssemblerRecipes implements Runnable {
                                 getModItem(IronChests.ID, "BlockIronChest", 1, 2),
                                 GT_Utility.getIntegratedCircuit(1))
                         .itemOutputs(ItemList.Hatch_Input_Bus_LuV.get(1))
-                        .fluidInputs(Materials.Polytetrafluoroethylene.getFluid(16 * INGOTS))
+                        .fluidInputs(Materials.Polytetrafluoroethylene.getMolten(16 * INGOTS))
                         .noFluidOutputs()
                         .duration(24 * SECONDS)
                         .eut(TierEU.RECIPE_LuV)
@@ -3460,7 +3460,7 @@ public class AssemblerRecipes implements Runnable {
                                 getModItem(IronChests.ID, "BlockIronChest", 1, 2),
                                 GT_Utility.getIntegratedCircuit(1))
                         .itemOutputs(ItemList.Hatch_Input_Bus_LuV.get(1))
-                        .fluidInputs(Materials.Polybenzimidazole.getFluid(2 * INGOTS))
+                        .fluidInputs(Materials.Polybenzimidazole.getMolten(2 * INGOTS))
                         .noFluidOutputs()
                         .duration(24 * SECONDS)
                         .eut(TierEU.RECIPE_LuV)
@@ -3475,7 +3475,7 @@ public class AssemblerRecipes implements Runnable {
                                 getModItem(IronChests.ID, "BlockIronChest", 2, 5),
                                 GT_Utility.getIntegratedCircuit(1))
                         .itemOutputs(ItemList.Hatch_Input_Bus_ZPM.get(1))
-                        .fluidInputs(Materials.Polybenzimidazole.getFluid(4 * INGOTS))
+                        .fluidInputs(Materials.Polybenzimidazole.getMolten(4 * INGOTS))
                         .noFluidOutputs()
                         .duration(24 * SECONDS)
                         .eut(TierEU.RECIPE_ZPM)
@@ -3490,7 +3490,7 @@ public class AssemblerRecipes implements Runnable {
                                 getModItem(IronChests.ID, "BlockIronChest", 2, 6),
                                 GT_Utility.getIntegratedCircuit(1))
                         .itemOutputs(ItemList.Hatch_Input_Bus_UV.get(1))
-                        .fluidInputs(Materials.Polybenzimidazole.getFluid(8 * INGOTS))
+                        .fluidInputs(Materials.Polybenzimidazole.getMolten(8 * INGOTS))
                         .noFluidOutputs()
                         .duration(24 * SECONDS)
                         .eut(TierEU.RECIPE_UV)
@@ -3505,7 +3505,7 @@ public class AssemblerRecipes implements Runnable {
                                 getModItem(AvaritiaAddons.ID, "CompressedChest", 1),
                                 GT_Utility.getIntegratedCircuit(1))
                         .itemOutputs(ItemList.Hatch_Input_Bus_MAX.get(1))
-                        .fluidInputs(Materials.Polybenzimidazole.getFluid(16 * INGOTS))
+                        .fluidInputs(Materials.Polybenzimidazole.getMolten(16 * INGOTS))
                         .noFluidOutputs()
                         .duration(24 * SECONDS)
                         .eut(TierEU.RECIPE_UHV)
@@ -3547,7 +3547,7 @@ public class AssemblerRecipes implements Runnable {
                                 getModItem(NewHorizonsCoreMod.ID, "BabyChest", 1),
                                 GT_Utility.getIntegratedCircuit(2))
                         .itemOutputs(ItemList.Hatch_Output_Bus_ULV.get(1))
-                        .fluidInputs(Materials.Plastic.getFluid(1 * HALF_INGOT))
+                        .fluidInputs(Materials.Plastic.getMolten(1 * HALF_INGOT))
                         .noFluidOutputs()
                         .duration(24 * SECONDS)
                         .eut(TierEU.RECIPE_ULV)
@@ -3559,7 +3559,7 @@ public class AssemblerRecipes implements Runnable {
                                 getModItem(NewHorizonsCoreMod.ID, "BabyChest", 1),
                                 GT_Utility.getIntegratedCircuit(2))
                         .itemOutputs(ItemList.Hatch_Output_Bus_ULV.get(1))
-                        .fluidInputs(Materials.Polytetrafluoroethylene.getFluid(1 * EIGHTH_INGOT))
+                        .fluidInputs(Materials.Polytetrafluoroethylene.getMolten(1 * EIGHTH_INGOT))
                         .noFluidOutputs()
                         .duration(24 * SECONDS)
                         .eut(TierEU.RECIPE_ULV)
@@ -3571,7 +3571,7 @@ public class AssemblerRecipes implements Runnable {
                                 getModItem(NewHorizonsCoreMod.ID, "BabyChest", 1),
                                 GT_Utility.getIntegratedCircuit(2))
                         .itemOutputs(ItemList.Hatch_Output_Bus_ULV.get(1))
-                        .fluidInputs(Materials.Polybenzimidazole.getFluid(4))
+                        .fluidInputs(Materials.Polybenzimidazole.getMolten(4))
                         .noFluidOutputs()
                         .duration(24 * SECONDS)
                         .eut(TierEU.RECIPE_ULV)
@@ -3598,7 +3598,7 @@ public class AssemblerRecipes implements Runnable {
                                 new ItemStack(Blocks.chest),
                                 GT_Utility.getIntegratedCircuit(2))
                         .itemOutputs(ItemList.Hatch_Output_Bus_LV.get(1))
-                        .fluidInputs(Materials.Plastic.getFluid(1 * INGOTS))
+                        .fluidInputs(Materials.Plastic.getMolten(1 * INGOTS))
                         .noFluidOutputs()
                         .duration(24 * SECONDS)
                         .eut(TierEU.RECIPE_LV)
@@ -3610,7 +3610,7 @@ public class AssemblerRecipes implements Runnable {
                                 new ItemStack(Blocks.chest),
                                 GT_Utility.getIntegratedCircuit(2))
                         .itemOutputs(ItemList.Hatch_Output_Bus_LV.get(1))
-                        .fluidInputs(Materials.Polytetrafluoroethylene.getFluid(1 * HALF_INGOT))
+                        .fluidInputs(Materials.Polytetrafluoroethylene.getMolten(1 * HALF_INGOT))
                         .noFluidOutputs()
                         .duration(24 * SECONDS)
                         .eut(TierEU.RECIPE_LV)
@@ -3622,7 +3622,7 @@ public class AssemblerRecipes implements Runnable {
                                 new ItemStack(Blocks.chest),
                                 GT_Utility.getIntegratedCircuit(2))
                         .itemOutputs(ItemList.Hatch_Output_Bus_LV.get(1))
-                        .fluidInputs(Materials.Polybenzimidazole.getFluid(9))
+                        .fluidInputs(Materials.Polybenzimidazole.getMolten(9))
                         .noFluidOutputs()
                         .duration(24 * SECONDS)
                         .eut(TierEU.RECIPE_LV)
@@ -3641,7 +3641,7 @@ public class AssemblerRecipes implements Runnable {
                                 getModItem(IronChests.ID, "BlockIronChest", 1, 3),
                                 GT_Utility.getIntegratedCircuit(2))
                         .itemOutputs(ItemList.Hatch_Output_Bus_MV.get(1))
-                        .fluidInputs(Materials.Plastic.getFluid(2 * INGOTS))
+                        .fluidInputs(Materials.Plastic.getMolten(2 * INGOTS))
                         .noFluidOutputs()
                         .duration(24 * SECONDS)
                         .eut(TierEU.RECIPE_MV)
@@ -3653,7 +3653,7 @@ public class AssemblerRecipes implements Runnable {
                                 getModItem(IronChests.ID, "BlockIronChest", 1, 3),
                                 GT_Utility.getIntegratedCircuit(2))
                         .itemOutputs(ItemList.Hatch_Output_Bus_MV.get(1))
-                        .fluidInputs(Materials.Polytetrafluoroethylene.getFluid(1 * INGOTS))
+                        .fluidInputs(Materials.Polytetrafluoroethylene.getMolten(1 * INGOTS))
                         .noFluidOutputs()
                         .duration(24 * SECONDS)
                         .eut(TierEU.RECIPE_MV)
@@ -3665,7 +3665,7 @@ public class AssemblerRecipes implements Runnable {
                                 getModItem(IronChests.ID, "BlockIronChest", 1, 3),
                                 GT_Utility.getIntegratedCircuit(2))
                         .itemOutputs(ItemList.Hatch_Output_Bus_MV.get(1))
-                        .fluidInputs(Materials.Polybenzimidazole.getFluid(1 * EIGHTH_INGOT))
+                        .fluidInputs(Materials.Polybenzimidazole.getMolten(1 * EIGHTH_INGOT))
                         .noFluidOutputs()
                         .duration(24 * SECONDS)
                         .eut(TierEU.RECIPE_MV)
@@ -3680,7 +3680,7 @@ public class AssemblerRecipes implements Runnable {
                                 getModItem(IronChests.ID, "BlockIronChest", 1, 0),
                                 GT_Utility.getIntegratedCircuit(2))
                         .itemOutputs(ItemList.Hatch_Output_Bus_HV.get(1))
-                        .fluidInputs(Materials.Plastic.getFluid(3 * INGOTS))
+                        .fluidInputs(Materials.Plastic.getMolten(3 * INGOTS))
                         .noFluidOutputs()
                         .duration(24 * SECONDS)
                         .eut(TierEU.RECIPE_HV)
@@ -3692,7 +3692,7 @@ public class AssemblerRecipes implements Runnable {
                                 getModItem(IronChests.ID, "BlockIronChest", 1, 0),
                                 GT_Utility.getIntegratedCircuit(2))
                         .itemOutputs(ItemList.Hatch_Output_Bus_HV.get(1))
-                        .fluidInputs(Materials.Polytetrafluoroethylene.getFluid(2 * INGOTS))
+                        .fluidInputs(Materials.Polytetrafluoroethylene.getMolten(2 * INGOTS))
                         .noFluidOutputs()
                         .duration(24 * SECONDS)
                         .eut(TierEU.RECIPE_HV)
@@ -3704,7 +3704,7 @@ public class AssemblerRecipes implements Runnable {
                                 getModItem(IronChests.ID, "BlockIronChest", 1, 0),
                                 GT_Utility.getIntegratedCircuit(2))
                         .itemOutputs(ItemList.Hatch_Output_Bus_HV.get(1))
-                        .fluidInputs(Materials.Polybenzimidazole.getFluid(1 * QUARTER_INGOT))
+                        .fluidInputs(Materials.Polybenzimidazole.getMolten(1 * QUARTER_INGOT))
                         .noFluidOutputs()
                         .duration(24 * SECONDS)
                         .eut(TierEU.RECIPE_HV)
@@ -3719,7 +3719,7 @@ public class AssemblerRecipes implements Runnable {
                                 getModItem(IronChests.ID, "BlockIronChest", 1, 4),
                                 GT_Utility.getIntegratedCircuit(2))
                         .itemOutputs(ItemList.Hatch_Output_Bus_EV.get(1))
-                        .fluidInputs(Materials.Polytetrafluoroethylene.getFluid(4 * INGOTS))
+                        .fluidInputs(Materials.Polytetrafluoroethylene.getMolten(4 * INGOTS))
                         .noFluidOutputs()
                         .duration(24 * SECONDS)
                         .eut(TierEU.RECIPE_EV)
@@ -3731,7 +3731,7 @@ public class AssemblerRecipes implements Runnable {
                                 getModItem(IronChests.ID, "BlockIronChest", 1, 4),
                                 GT_Utility.getIntegratedCircuit(2))
                         .itemOutputs(ItemList.Hatch_Output_Bus_EV.get(1))
-                        .fluidInputs(Materials.Polybenzimidazole.getFluid(1 * HALF_INGOT))
+                        .fluidInputs(Materials.Polybenzimidazole.getMolten(1 * HALF_INGOT))
                         .noFluidOutputs()
                         .duration(24 * SECONDS)
                         .eut(TierEU.RECIPE_EV)
@@ -3746,7 +3746,7 @@ public class AssemblerRecipes implements Runnable {
                                 getModItem(IronChests.ID, "BlockIronChest", 1, 1),
                                 GT_Utility.getIntegratedCircuit(2))
                         .itemOutputs(ItemList.Hatch_Output_Bus_IV.get(1))
-                        .fluidInputs(Materials.Polytetrafluoroethylene.getFluid(8 * INGOTS))
+                        .fluidInputs(Materials.Polytetrafluoroethylene.getMolten(8 * INGOTS))
                         .noFluidOutputs()
                         .duration(24 * SECONDS)
                         .eut(TierEU.RECIPE_IV)
@@ -3758,7 +3758,7 @@ public class AssemblerRecipes implements Runnable {
                                 getModItem(IronChests.ID, "BlockIronChest", 1, 1),
                                 GT_Utility.getIntegratedCircuit(2))
                         .itemOutputs(ItemList.Hatch_Output_Bus_IV.get(1))
-                        .fluidInputs(Materials.Polybenzimidazole.getFluid(1 * INGOTS))
+                        .fluidInputs(Materials.Polybenzimidazole.getMolten(1 * INGOTS))
                         .noFluidOutputs()
                         .duration(24 * SECONDS)
                         .eut(TierEU.RECIPE_IV)
@@ -3773,7 +3773,7 @@ public class AssemblerRecipes implements Runnable {
                                 getModItem(IronChests.ID, "BlockIronChest", 1, 2),
                                 GT_Utility.getIntegratedCircuit(2))
                         .itemOutputs(ItemList.Hatch_Output_Bus_LuV.get(1))
-                        .fluidInputs(Materials.Polytetrafluoroethylene.getFluid(16 * INGOTS))
+                        .fluidInputs(Materials.Polytetrafluoroethylene.getMolten(16 * INGOTS))
                         .noFluidOutputs()
                         .duration(24 * SECONDS)
                         .eut(TierEU.RECIPE_LuV)
@@ -3785,7 +3785,7 @@ public class AssemblerRecipes implements Runnable {
                                 getModItem(IronChests.ID, "BlockIronChest", 1, 2),
                                 GT_Utility.getIntegratedCircuit(2))
                         .itemOutputs(ItemList.Hatch_Output_Bus_LuV.get(1))
-                        .fluidInputs(Materials.Polybenzimidazole.getFluid(2 * INGOTS))
+                        .fluidInputs(Materials.Polybenzimidazole.getMolten(2 * INGOTS))
                         .noFluidOutputs()
                         .duration(24 * SECONDS)
                         .eut(TierEU.RECIPE_LuV)
@@ -3800,7 +3800,7 @@ public class AssemblerRecipes implements Runnable {
                                 getModItem(IronChests.ID, "BlockIronChest", 2, 5),
                                 GT_Utility.getIntegratedCircuit(2))
                         .itemOutputs(ItemList.Hatch_Output_Bus_ZPM.get(1))
-                        .fluidInputs(Materials.Polybenzimidazole.getFluid(4 * INGOTS))
+                        .fluidInputs(Materials.Polybenzimidazole.getMolten(4 * INGOTS))
                         .noFluidOutputs()
                         .duration(24 * SECONDS)
                         .eut(TierEU.RECIPE_ZPM)
@@ -3815,7 +3815,7 @@ public class AssemblerRecipes implements Runnable {
                                 getModItem(IronChests.ID, "BlockIronChest", 2, 6),
                                 GT_Utility.getIntegratedCircuit(2))
                         .itemOutputs(ItemList.Hatch_Output_Bus_UV.get(1))
-                        .fluidInputs(Materials.Polybenzimidazole.getFluid(8 * INGOTS))
+                        .fluidInputs(Materials.Polybenzimidazole.getMolten(8 * INGOTS))
                         .noFluidOutputs()
                         .duration(24 * SECONDS)
                         .eut(TierEU.RECIPE_UV)
@@ -3834,7 +3834,7 @@ public class AssemblerRecipes implements Runnable {
                                 getModItem(AvaritiaAddons.ID, "CompressedChest", 1),
                                 GT_Utility.getIntegratedCircuit(2))
                         .itemOutputs(ItemList.Hatch_Output_Bus_MAX.get(1))
-                        .fluidInputs(Materials.Polybenzimidazole.getFluid(16 * INGOTS))
+                        .fluidInputs(Materials.Polybenzimidazole.getMolten(16 * INGOTS))
                         .noFluidOutputs()
                         .duration(24 * SECONDS)
                         .eut(TierEU.RECIPE_UHV)
@@ -3866,7 +3866,7 @@ public class AssemblerRecipes implements Runnable {
                                 GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1),
                                 GT_Utility.getIntegratedCircuit(1))
                         .itemOutputs(ItemList.Hatch_Input_ULV.get(1))
-                        .fluidInputs(Materials.Plastic.getFluid(1 * HALF_INGOT))
+                        .fluidInputs(Materials.Plastic.getMolten(1 * HALF_INGOT))
                         .noFluidOutputs()
                         .duration(24 * SECONDS)
                         .eut(TierEU.RECIPE_ULV)
@@ -3878,7 +3878,7 @@ public class AssemblerRecipes implements Runnable {
                                 GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1),
                                 GT_Utility.getIntegratedCircuit(1))
                         .itemOutputs(ItemList.Hatch_Input_ULV.get(1))
-                        .fluidInputs(Materials.Polytetrafluoroethylene.getFluid(1 * EIGHTH_INGOT))
+                        .fluidInputs(Materials.Polytetrafluoroethylene.getMolten(1 * EIGHTH_INGOT))
                         .noFluidOutputs()
                         .duration(24 * SECONDS)
                         .eut(TierEU.RECIPE_ULV)
@@ -3890,7 +3890,7 @@ public class AssemblerRecipes implements Runnable {
                                 GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1),
                                 GT_Utility.getIntegratedCircuit(1))
                         .itemOutputs(ItemList.Hatch_Input_ULV.get(1))
-                        .fluidInputs(Materials.Polybenzimidazole.getFluid(4))
+                        .fluidInputs(Materials.Polybenzimidazole.getMolten(4))
                         .noFluidOutputs()
                         .duration(24 * SECONDS)
                         .eut(TierEU.RECIPE_ULV)
@@ -3926,7 +3926,7 @@ public class AssemblerRecipes implements Runnable {
                                 getModItem(BuildCraftFactory.ID, "tankBlock", 1),
                                 GT_Utility.getIntegratedCircuit(1))
                         .itemOutputs(ItemList.Hatch_Input_LV.get(1))
-                        .fluidInputs(Materials.Plastic.getFluid(1 * INGOTS))
+                        .fluidInputs(Materials.Plastic.getMolten(1 * INGOTS))
                         .noFluidOutputs()
                         .duration(24 * SECONDS)
                         .eut(TierEU.RECIPE_LV)
@@ -3938,7 +3938,7 @@ public class AssemblerRecipes implements Runnable {
                                 getModItem(BuildCraftFactory.ID, "tankBlock", 1),
                                 GT_Utility.getIntegratedCircuit(1))
                         .itemOutputs(ItemList.Hatch_Input_LV.get(1))
-                        .fluidInputs(Materials.Polytetrafluoroethylene.getFluid(1 * HALF_INGOT))
+                        .fluidInputs(Materials.Polytetrafluoroethylene.getMolten(1 * HALF_INGOT))
                         .noFluidOutputs()
                         .duration(24 * SECONDS)
                         .eut(TierEU.RECIPE_LV)
@@ -3950,7 +3950,7 @@ public class AssemblerRecipes implements Runnable {
                                 getModItem(BuildCraftFactory.ID, "tankBlock", 1),
                                 GT_Utility.getIntegratedCircuit(1))
                         .itemOutputs(ItemList.Hatch_Input_LV.get(1))
-                        .fluidInputs(Materials.Polybenzimidazole.getFluid(9))
+                        .fluidInputs(Materials.Polybenzimidazole.getMolten(9))
                         .noFluidOutputs()
                         .duration(24 * SECONDS)
                         .eut(TierEU.RECIPE_LV)
@@ -3969,7 +3969,7 @@ public class AssemblerRecipes implements Runnable {
                                 getModItem(IronTanks.ID, "copperTank", 1),
                                 GT_Utility.getIntegratedCircuit(1))
                         .itemOutputs(ItemList.Hatch_Input_MV.get(1))
-                        .fluidInputs(Materials.Plastic.getFluid(2 * INGOTS))
+                        .fluidInputs(Materials.Plastic.getMolten(2 * INGOTS))
                         .noFluidOutputs()
                         .duration(24 * SECONDS)
                         .eut(TierEU.RECIPE_MV)
@@ -3981,7 +3981,7 @@ public class AssemblerRecipes implements Runnable {
                                 getModItem(IronTanks.ID, "copperTank", 1),
                                 GT_Utility.getIntegratedCircuit(1))
                         .itemOutputs(ItemList.Hatch_Input_MV.get(1))
-                        .fluidInputs(Materials.Polytetrafluoroethylene.getFluid(1 * INGOTS))
+                        .fluidInputs(Materials.Polytetrafluoroethylene.getMolten(1 * INGOTS))
                         .noFluidOutputs()
                         .duration(24 * SECONDS)
                         .eut(TierEU.RECIPE_MV)
@@ -3993,7 +3993,7 @@ public class AssemblerRecipes implements Runnable {
                                 getModItem(IronTanks.ID, "copperTank", 1),
                                 GT_Utility.getIntegratedCircuit(1))
                         .itemOutputs(ItemList.Hatch_Input_MV.get(1))
-                        .fluidInputs(Materials.Polybenzimidazole.getFluid(1 * EIGHTH_INGOT))
+                        .fluidInputs(Materials.Polybenzimidazole.getMolten(1 * EIGHTH_INGOT))
                         .noFluidOutputs()
                         .duration(24 * SECONDS)
                         .eut(TierEU.RECIPE_MV)
@@ -4008,7 +4008,7 @@ public class AssemblerRecipes implements Runnable {
                                 getModItem(IronTanks.ID, "ironTank", 1),
                                 GT_Utility.getIntegratedCircuit(1))
                         .itemOutputs(ItemList.Hatch_Input_HV.get(1))
-                        .fluidInputs(Materials.Plastic.getFluid(3 * INGOTS))
+                        .fluidInputs(Materials.Plastic.getMolten(3 * INGOTS))
                         .noFluidOutputs()
                         .duration(24 * SECONDS)
                         .eut(TierEU.RECIPE_HV)
@@ -4020,7 +4020,7 @@ public class AssemblerRecipes implements Runnable {
                                 getModItem(IronTanks.ID, "ironTank", 1),
                                 GT_Utility.getIntegratedCircuit(1))
                         .itemOutputs(ItemList.Hatch_Input_HV.get(1))
-                        .fluidInputs(Materials.Polytetrafluoroethylene.getFluid(2 * INGOTS))
+                        .fluidInputs(Materials.Polytetrafluoroethylene.getMolten(2 * INGOTS))
                         .noFluidOutputs()
                         .duration(24 * SECONDS)
                         .eut(TierEU.RECIPE_HV)
@@ -4032,7 +4032,7 @@ public class AssemblerRecipes implements Runnable {
                                 getModItem(IronTanks.ID, "ironTank", 1),
                                 GT_Utility.getIntegratedCircuit(1))
                         .itemOutputs(ItemList.Hatch_Input_HV.get(1))
-                        .fluidInputs(Materials.Polybenzimidazole.getFluid(1 * QUARTER_INGOT))
+                        .fluidInputs(Materials.Polybenzimidazole.getMolten(1 * QUARTER_INGOT))
                         .noFluidOutputs()
                         .duration(24 * SECONDS)
                         .eut(TierEU.RECIPE_HV)
@@ -4047,7 +4047,7 @@ public class AssemblerRecipes implements Runnable {
                                 getModItem(IronTanks.ID, "silverTank", 1),
                                 GT_Utility.getIntegratedCircuit(1))
                         .itemOutputs(ItemList.Hatch_Input_EV.get(1))
-                        .fluidInputs(Materials.Polytetrafluoroethylene.getFluid(4 * INGOTS))
+                        .fluidInputs(Materials.Polytetrafluoroethylene.getMolten(4 * INGOTS))
                         .noFluidOutputs()
                         .duration(24 * SECONDS)
                         .eut(TierEU.RECIPE_EV)
@@ -4059,7 +4059,7 @@ public class AssemblerRecipes implements Runnable {
                                 getModItem(IronTanks.ID, "silverTank", 1),
                                 GT_Utility.getIntegratedCircuit(1))
                         .itemOutputs(ItemList.Hatch_Input_EV.get(1))
-                        .fluidInputs(Materials.Polybenzimidazole.getFluid(1 * HALF_INGOT))
+                        .fluidInputs(Materials.Polybenzimidazole.getMolten(1 * HALF_INGOT))
                         .noFluidOutputs()
                         .duration(24 * SECONDS)
                         .eut(TierEU.RECIPE_EV)
@@ -4074,7 +4074,7 @@ public class AssemblerRecipes implements Runnable {
                                 getModItem(IronTanks.ID, "goldTank", 1),
                                 GT_Utility.getIntegratedCircuit(1))
                         .itemOutputs(ItemList.Hatch_Input_IV.get(1))
-                        .fluidInputs(Materials.Polytetrafluoroethylene.getFluid(8 * INGOTS))
+                        .fluidInputs(Materials.Polytetrafluoroethylene.getMolten(8 * INGOTS))
                         .noFluidOutputs()
                         .duration(24 * SECONDS)
                         .eut(TierEU.RECIPE_IV)
@@ -4086,7 +4086,7 @@ public class AssemblerRecipes implements Runnable {
                                 getModItem(IronTanks.ID, "goldTank", 1),
                                 GT_Utility.getIntegratedCircuit(1))
                         .itemOutputs(ItemList.Hatch_Input_IV.get(1))
-                        .fluidInputs(Materials.Polybenzimidazole.getFluid(1 * INGOTS))
+                        .fluidInputs(Materials.Polybenzimidazole.getMolten(1 * INGOTS))
                         .noFluidOutputs()
                         .duration(24 * SECONDS)
                         .eut(TierEU.RECIPE_IV)
@@ -4101,7 +4101,7 @@ public class AssemblerRecipes implements Runnable {
                                 getModItem(IronTanks.ID, "diamondTank", 1),
                                 GT_Utility.getIntegratedCircuit(1))
                         .itemOutputs(ItemList.Hatch_Input_LuV.get(1))
-                        .fluidInputs(Materials.Polytetrafluoroethylene.getFluid(16 * INGOTS))
+                        .fluidInputs(Materials.Polytetrafluoroethylene.getMolten(16 * INGOTS))
                         .noFluidOutputs()
                         .duration(24 * SECONDS)
                         .eut(TierEU.RECIPE_LuV)
@@ -4113,7 +4113,7 @@ public class AssemblerRecipes implements Runnable {
                                 getModItem(IronTanks.ID, "diamondTank", 1),
                                 GT_Utility.getIntegratedCircuit(1))
                         .itemOutputs(ItemList.Hatch_Input_LuV.get(1))
-                        .fluidInputs(Materials.Polybenzimidazole.getFluid(2 * INGOTS))
+                        .fluidInputs(Materials.Polybenzimidazole.getMolten(2 * INGOTS))
                         .noFluidOutputs()
                         .duration(24 * SECONDS)
                         .eut(TierEU.RECIPE_LuV)
@@ -4128,7 +4128,7 @@ public class AssemblerRecipes implements Runnable {
                                 getModItem(IronTanks.ID, "obsidianTank", 1),
                                 GT_Utility.getIntegratedCircuit(1))
                         .itemOutputs(ItemList.Hatch_Input_ZPM.get(1))
-                        .fluidInputs(Materials.Polybenzimidazole.getFluid(4 * INGOTS))
+                        .fluidInputs(Materials.Polybenzimidazole.getMolten(4 * INGOTS))
                         .noFluidOutputs()
                         .duration(24 * SECONDS)
                         .eut(TierEU.RECIPE_ZPM)
@@ -4143,7 +4143,7 @@ public class AssemblerRecipes implements Runnable {
                                 ItemList.Super_Tank_LV.get(1),
                                 GT_Utility.getIntegratedCircuit(1))
                         .itemOutputs(ItemList.Hatch_Input_UV.get(1))
-                        .fluidInputs(Materials.Polybenzimidazole.getFluid(8 * INGOTS))
+                        .fluidInputs(Materials.Polybenzimidazole.getMolten(8 * INGOTS))
                         .noFluidOutputs()
                         .duration(24 * SECONDS)
                         .eut(TierEU.RECIPE_UV)
@@ -4158,7 +4158,7 @@ public class AssemblerRecipes implements Runnable {
                                 ItemList.Super_Tank_MV.get(1),
                                 GT_Utility.getIntegratedCircuit(1))
                         .itemOutputs(ItemList.Hatch_Input_MAX.get(1))
-                        .fluidInputs(Materials.Polybenzimidazole.getFluid(16 * INGOTS))
+                        .fluidInputs(Materials.Polybenzimidazole.getMolten(16 * INGOTS))
                         .noFluidOutputs()
                         .duration(24 * SECONDS)
                         .eut(TierEU.RECIPE_UHV)
@@ -4177,7 +4177,7 @@ public class AssemblerRecipes implements Runnable {
                                 ItemList.Hull_ULV.get(1),
                                 GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1),
                                 GT_Utility.getIntegratedCircuit(2))
-                        .itemOutputs(ItemList.Hatch_Output_Bus_ULV.get(1))
+                        .itemOutputs(ItemList.Hatch_Output_ULV.get(1))
                         .fluidInputs(Materials.Glue.getFluid(1 * INGOTS))
                         .noFluidOutputs()
                         .duration(24 * SECONDS)
@@ -4189,8 +4189,8 @@ public class AssemblerRecipes implements Runnable {
                                 ItemList.Hull_ULV.get(1),
                                 GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1),
                                 GT_Utility.getIntegratedCircuit(2))
-                        .itemOutputs(ItemList.Hatch_Output_Bus_ULV.get(1))
-                        .fluidInputs(Materials.Plastic.getFluid(1 * HALF_INGOT))
+                        .itemOutputs(ItemList.Hatch_Output_ULV.get(1))
+                        .fluidInputs(Materials.Plastic.getMolten(1 * HALF_INGOT))
                         .noFluidOutputs()
                         .duration(24 * SECONDS)
                         .eut(TierEU.RECIPE_ULV)
@@ -4201,8 +4201,8 @@ public class AssemblerRecipes implements Runnable {
                                 ItemList.Hull_ULV.get(1),
                                 GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1),
                                 GT_Utility.getIntegratedCircuit(2))
-                        .itemOutputs(ItemList.Hatch_Output_Bus_ULV.get(1))
-                        .fluidInputs(Materials.Polytetrafluoroethylene.getFluid(1 * EIGHTH_INGOT))
+                        .itemOutputs(ItemList.Hatch_Output_ULV.get(1))
+                        .fluidInputs(Materials.Polytetrafluoroethylene.getMolten(1 * EIGHTH_INGOT))
                         .noFluidOutputs()
                         .duration(24 * SECONDS)
                         .eut(TierEU.RECIPE_ULV)
@@ -4213,8 +4213,8 @@ public class AssemblerRecipes implements Runnable {
                                 ItemList.Hull_ULV.get(1),
                                 GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1),
                                 GT_Utility.getIntegratedCircuit(2))
-                        .itemOutputs(ItemList.Hatch_Output_Bus_ULV.get(1))
-                        .fluidInputs(Materials.Polybenzimidazole.getFluid(4))
+                        .itemOutputs(ItemList.Hatch_Output_ULV.get(1))
+                        .fluidInputs(Materials.Polybenzimidazole.getMolten(4))
                         .noFluidOutputs()
                         .duration(24 * SECONDS)
                         .eut(TierEU.RECIPE_ULV)
@@ -4237,7 +4237,7 @@ public class AssemblerRecipes implements Runnable {
                                 ItemList.Hull_LV.get(1),
                                 getModItem(BuildCraftFactory.ID, "tankBlock", 1),
                                 GT_Utility.getIntegratedCircuit(2))
-                        .itemOutputs(ItemList.Hatch_Output_Bus_LV.get(1))
+                        .itemOutputs(ItemList.Hatch_Output_LV.get(1))
                         .fluidInputs(Materials.Glue.getFluid(5 * INGOTS))
                         .noFluidOutputs()
                         .duration(24 * SECONDS)
@@ -4249,8 +4249,8 @@ public class AssemblerRecipes implements Runnable {
                                 ItemList.Hull_LV.get(1),
                                 getModItem(BuildCraftFactory.ID, "tankBlock", 1),
                                 GT_Utility.getIntegratedCircuit(2))
-                        .itemOutputs(ItemList.Hatch_Output_Bus_LV.get(1))
-                        .fluidInputs(Materials.Plastic.getFluid(1 * INGOTS))
+                        .itemOutputs(ItemList.Hatch_Output_LV.get(1))
+                        .fluidInputs(Materials.Plastic.getMolten(1 * INGOTS))
                         .noFluidOutputs()
                         .duration(24 * SECONDS)
                         .eut(TierEU.RECIPE_LV)
@@ -4261,8 +4261,8 @@ public class AssemblerRecipes implements Runnable {
                                 ItemList.Hull_LV.get(1),
                                 getModItem(BuildCraftFactory.ID, "tankBlock", 1),
                                 GT_Utility.getIntegratedCircuit(2))
-                        .itemOutputs(ItemList.Hatch_Output_Bus_LV.get(1))
-                        .fluidInputs(Materials.Polytetrafluoroethylene.getFluid(1 * HALF_INGOT))
+                        .itemOutputs(ItemList.Hatch_Output_LV.get(1))
+                        .fluidInputs(Materials.Polytetrafluoroethylene.getMolten(1 * HALF_INGOT))
                         .noFluidOutputs()
                         .duration(24 * SECONDS)
                         .eut(TierEU.RECIPE_LV)
@@ -4273,8 +4273,8 @@ public class AssemblerRecipes implements Runnable {
                                 ItemList.Hull_LV.get(1),
                                 getModItem(BuildCraftFactory.ID, "tankBlock", 1),
                                 GT_Utility.getIntegratedCircuit(2))
-                        .itemOutputs(ItemList.Hatch_Output_Bus_LV.get(1))
-                        .fluidInputs(Materials.Polybenzimidazole.getFluid(9))
+                        .itemOutputs(ItemList.Hatch_Output_LV.get(1))
+                        .fluidInputs(Materials.Polybenzimidazole.getMolten(9))
                         .noFluidOutputs()
                         .duration(24 * SECONDS)
                         .eut(TierEU.RECIPE_LV)
@@ -4292,8 +4292,8 @@ public class AssemblerRecipes implements Runnable {
                                 ItemList.Hull_MV.get(1),
                                 getModItem(IronTanks.ID, "copperTank", 1),
                                 GT_Utility.getIntegratedCircuit(2))
-                        .itemOutputs(ItemList.Hatch_Output_Bus_MV.get(1))
-                        .fluidInputs(Materials.Plastic.getFluid(2 * INGOTS))
+                        .itemOutputs(ItemList.Hatch_Output_MV.get(1))
+                        .fluidInputs(Materials.Plastic.getMolten(2 * INGOTS))
                         .noFluidOutputs()
                         .duration(24 * SECONDS)
                         .eut(TierEU.RECIPE_MV)
@@ -4304,8 +4304,8 @@ public class AssemblerRecipes implements Runnable {
                                 ItemList.Hull_MV.get(1),
                                 getModItem(IronTanks.ID, "copperTank", 1),
                                 GT_Utility.getIntegratedCircuit(2))
-                        .itemOutputs(ItemList.Hatch_Output_Bus_MV.get(1))
-                        .fluidInputs(Materials.Polytetrafluoroethylene.getFluid(1 * INGOTS))
+                        .itemOutputs(ItemList.Hatch_Output_MV.get(1))
+                        .fluidInputs(Materials.Polytetrafluoroethylene.getMolten(1 * INGOTS))
                         .noFluidOutputs()
                         .duration(24 * SECONDS)
                         .eut(TierEU.RECIPE_MV)
@@ -4316,8 +4316,8 @@ public class AssemblerRecipes implements Runnable {
                                 ItemList.Hull_MV.get(1),
                                 getModItem(IronTanks.ID, "copperTank", 1),
                                 GT_Utility.getIntegratedCircuit(2))
-                        .itemOutputs(ItemList.Hatch_Output_Bus_MV.get(1))
-                        .fluidInputs(Materials.Polybenzimidazole.getFluid(1 * EIGHTH_INGOT))
+                        .itemOutputs(ItemList.Hatch_Output_MV.get(1))
+                        .fluidInputs(Materials.Polybenzimidazole.getMolten(1 * EIGHTH_INGOT))
                         .noFluidOutputs()
                         .duration(24 * SECONDS)
                         .eut(TierEU.RECIPE_MV)
@@ -4331,8 +4331,8 @@ public class AssemblerRecipes implements Runnable {
                                 ItemList.Hull_HV.get(1),
                                 getModItem(IronTanks.ID, "ironTank", 1),
                                 GT_Utility.getIntegratedCircuit(2))
-                        .itemOutputs(ItemList.Hatch_Output_Bus_HV.get(1))
-                        .fluidInputs(Materials.Plastic.getFluid(3 * INGOTS))
+                        .itemOutputs(ItemList.Hatch_Output_HV.get(1))
+                        .fluidInputs(Materials.Plastic.getMolten(3 * INGOTS))
                         .noFluidOutputs()
                         .duration(24 * SECONDS)
                         .eut(TierEU.RECIPE_HV)
@@ -4343,8 +4343,8 @@ public class AssemblerRecipes implements Runnable {
                                 ItemList.Hull_HV.get(1),
                                 getModItem(IronTanks.ID, "ironTank", 1),
                                 GT_Utility.getIntegratedCircuit(2))
-                        .itemOutputs(ItemList.Hatch_Output_Bus_HV.get(1))
-                        .fluidInputs(Materials.Polytetrafluoroethylene.getFluid(2 * INGOTS))
+                        .itemOutputs(ItemList.Hatch_Output_HV.get(1))
+                        .fluidInputs(Materials.Polytetrafluoroethylene.getMolten(2 * INGOTS))
                         .noFluidOutputs()
                         .duration(24 * SECONDS)
                         .eut(TierEU.RECIPE_HV)
@@ -4355,8 +4355,8 @@ public class AssemblerRecipes implements Runnable {
                                 ItemList.Hull_HV.get(1),
                                 getModItem(IronTanks.ID, "ironTank", 1),
                                 GT_Utility.getIntegratedCircuit(2))
-                        .itemOutputs(ItemList.Hatch_Output_Bus_HV.get(1))
-                        .fluidInputs(Materials.Polybenzimidazole.getFluid(1 * QUARTER_INGOT))
+                        .itemOutputs(ItemList.Hatch_Output_HV.get(1))
+                        .fluidInputs(Materials.Polybenzimidazole.getMolten(1 * QUARTER_INGOT))
                         .noFluidOutputs()
                         .duration(24 * SECONDS)
                         .eut(TierEU.RECIPE_HV)
@@ -4370,8 +4370,8 @@ public class AssemblerRecipes implements Runnable {
                                 ItemList.Hull_EV.get(1),
                                 getModItem(IronTanks.ID, "silverTank", 1),
                                 GT_Utility.getIntegratedCircuit(2))
-                        .itemOutputs(ItemList.Hatch_Output_Bus_EV.get(1))
-                        .fluidInputs(Materials.Polytetrafluoroethylene.getFluid(4 * INGOTS))
+                        .itemOutputs(ItemList.Hatch_Output_EV.get(1))
+                        .fluidInputs(Materials.Polytetrafluoroethylene.getMolten(4 * INGOTS))
                         .noFluidOutputs()
                         .duration(24 * SECONDS)
                         .eut(TierEU.RECIPE_EV)
@@ -4382,8 +4382,8 @@ public class AssemblerRecipes implements Runnable {
                                 ItemList.Hull_EV.get(1),
                                 getModItem(IronTanks.ID, "silverTank", 1),
                                 GT_Utility.getIntegratedCircuit(2))
-                        .itemOutputs(ItemList.Hatch_Output_Bus_EV.get(1))
-                        .fluidInputs(Materials.Polybenzimidazole.getFluid(1 * HALF_INGOT))
+                        .itemOutputs(ItemList.Hatch_Output_EV.get(1))
+                        .fluidInputs(Materials.Polybenzimidazole.getMolten(1 * HALF_INGOT))
                         .noFluidOutputs()
                         .duration(24 * SECONDS)
                         .eut(TierEU.RECIPE_EV)
@@ -4397,8 +4397,8 @@ public class AssemblerRecipes implements Runnable {
                                 ItemList.Hull_IV.get(1),
                                 getModItem(IronTanks.ID, "goldTank", 1),
                                 GT_Utility.getIntegratedCircuit(2))
-                        .itemOutputs(ItemList.Hatch_Output_Bus_IV.get(1))
-                        .fluidInputs(Materials.Polytetrafluoroethylene.getFluid(8 * INGOTS))
+                        .itemOutputs(ItemList.Hatch_Output_IV.get(1))
+                        .fluidInputs(Materials.Polytetrafluoroethylene.getMolten(8 * INGOTS))
                         .noFluidOutputs()
                         .duration(24 * SECONDS)
                         .eut(TierEU.RECIPE_IV)
@@ -4409,8 +4409,8 @@ public class AssemblerRecipes implements Runnable {
                                 ItemList.Hull_IV.get(1),
                                 getModItem(IronTanks.ID, "goldTank", 1),
                                 GT_Utility.getIntegratedCircuit(2))
-                        .itemOutputs(ItemList.Hatch_Output_Bus_IV.get(1))
-                        .fluidInputs(Materials.Polybenzimidazole.getFluid(1 * INGOTS))
+                        .itemOutputs(ItemList.Hatch_Output_IV.get(1))
+                        .fluidInputs(Materials.Polybenzimidazole.getMolten(1 * INGOTS))
                         .noFluidOutputs()
                         .duration(24 * SECONDS)
                         .eut(TierEU.RECIPE_IV)
@@ -4424,8 +4424,8 @@ public class AssemblerRecipes implements Runnable {
                                 ItemList.Hull_LuV.get(1),
                                 getModItem(IronTanks.ID, "diamondTank", 1),
                                 GT_Utility.getIntegratedCircuit(2))
-                        .itemOutputs(ItemList.Hatch_Output_Bus_LuV.get(1))
-                        .fluidInputs(Materials.Polytetrafluoroethylene.getFluid(16 * INGOTS))
+                        .itemOutputs(ItemList.Hatch_Output_LuV.get(1))
+                        .fluidInputs(Materials.Polytetrafluoroethylene.getMolten(16 * INGOTS))
                         .noFluidOutputs()
                         .duration(24 * SECONDS)
                         .eut(TierEU.RECIPE_LuV)
@@ -4436,8 +4436,8 @@ public class AssemblerRecipes implements Runnable {
                                 ItemList.Hull_LuV.get(1),
                                 getModItem(IronTanks.ID, "diamondTank", 1),
                                 GT_Utility.getIntegratedCircuit(2))
-                        .itemOutputs(ItemList.Hatch_Output_Bus_LuV.get(1))
-                        .fluidInputs(Materials.Polybenzimidazole.getFluid(2 * INGOTS))
+                        .itemOutputs(ItemList.Hatch_Output_LuV.get(1))
+                        .fluidInputs(Materials.Polybenzimidazole.getMolten(2 * INGOTS))
                         .noFluidOutputs()
                         .duration(24 * SECONDS)
                         .eut(TierEU.RECIPE_LuV)
@@ -4451,8 +4451,8 @@ public class AssemblerRecipes implements Runnable {
                                 ItemList.Hull_ZPM.get(1),
                                 getModItem(IronTanks.ID, "obsidianTank", 1),
                                 GT_Utility.getIntegratedCircuit(2))
-                        .itemOutputs(ItemList.Hatch_Output_Bus_ZPM.get(1))
-                        .fluidInputs(Materials.Polybenzimidazole.getFluid(4 * INGOTS))
+                        .itemOutputs(ItemList.Hatch_Output_ZPM.get(1))
+                        .fluidInputs(Materials.Polybenzimidazole.getMolten(4 * INGOTS))
                         .noFluidOutputs()
                         .duration(24 * SECONDS)
                         .eut(TierEU.RECIPE_ZPM)
@@ -4466,8 +4466,8 @@ public class AssemblerRecipes implements Runnable {
                                 ItemList.Hull_UV.get(1),
                                 ItemList.Super_Tank_LV.get(1),
                                 GT_Utility.getIntegratedCircuit(2))
-                        .itemOutputs(ItemList.Hatch_Output_Bus_UV.get(1))
-                        .fluidInputs(Materials.Polybenzimidazole.getFluid(8 * INGOTS))
+                        .itemOutputs(ItemList.Hatch_Output_UV.get(1))
+                        .fluidInputs(Materials.Polybenzimidazole.getMolten(8 * INGOTS))
                         .noFluidOutputs()
                         .duration(24 * SECONDS)
                         .eut(TierEU.RECIPE_UV)
@@ -4481,8 +4481,8 @@ public class AssemblerRecipes implements Runnable {
                                 ItemList.Hull_MAX.get(1),
                                 ItemList.Super_Tank_MV.get(1),
                                 GT_Utility.getIntegratedCircuit(2))
-                        .itemOutputs(ItemList.Hatch_Output_Bus_MAX.get(1))
-                        .fluidInputs(Materials.Polybenzimidazole.getFluid(16 * INGOTS))
+                        .itemOutputs(ItemList.Hatch_Output_MAX.get(1))
+                        .fluidInputs(Materials.Polybenzimidazole.getMolten(16 * INGOTS))
                         .noFluidOutputs()
                         .duration(24 * SECONDS)
                         .eut(TierEU.RECIPE_UHV)
@@ -4498,9 +4498,9 @@ public class AssemblerRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
                     .itemInputs(
-                            new ItemStack[] { new ItemStack(Blocks.stone_slab, 1, 0), ItemList.RC_Rebar.get(1),
-                                    GT_Utility.getIntegratedCircuit(1) },
-                            GT_Values.NF)
+                            new ItemStack(Blocks.stone_slab, 1, 0),
+                            ItemList.RC_Rebar.get(1),
+                            GT_Utility.getIntegratedCircuit(1))
                     .itemOutputs(ItemList.RC_Tie_Stone.get(1))
                     .noFluidInputs()
                     .noFluidOutputs()
@@ -4510,9 +4510,9 @@ public class AssemblerRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
                     .itemInputs(
-                            new ItemStack[] { new ItemStack(Blocks.stone_slab, 1, 7), ItemList.RC_Rebar.get(1),
-                                    GT_Utility.getIntegratedCircuit(1) },
-                            GT_Values.NF)
+                            new ItemStack(Blocks.stone_slab, 1, 7),
+                            ItemList.RC_Rebar.get(1),
+                            GT_Utility.getIntegratedCircuit(1))
                     .itemOutputs(ItemList.RC_Tie_Stone.get(1))
                     .noFluidInputs()
                     .noFluidOutputs()
@@ -4618,10 +4618,9 @@ public class AssemblerRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
                     .itemInputs(
-                            new ItemStack[] { ItemList.RC_Rail_Standard.get(1),
-                                    GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Copper, 1),
-                                    GT_Utility.getIntegratedCircuit(1) },
-                            GT_Values.NF)
+                            ItemList.RC_Rail_Standard.get(1),
+                            GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Copper, 1),
+                            GT_Utility.getIntegratedCircuit(1))
                     .itemOutputs(ItemList.RC_Rail_Electric.get(1))
                     .noFluidInputs()
                     .noFluidOutputs()
@@ -4631,10 +4630,9 @@ public class AssemblerRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
                     .itemInputs(
-                            new ItemStack[] { ItemList.RC_Rail_Standard.get(1),
-                                    GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.AnnealedCopper, 1),
-                                    GT_Utility.getIntegratedCircuit(1) },
-                            GT_Values.NF)
+                            ItemList.RC_Rail_Standard.get(1),
+                            GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.AnnealedCopper, 1),
+                            GT_Utility.getIntegratedCircuit(1))
                     .itemOutputs(ItemList.RC_Rail_Electric.get(1))
                     .noFluidInputs()
                     .noFluidOutputs()
@@ -4644,10 +4642,9 @@ public class AssemblerRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
                     .itemInputs(
-                            new ItemStack[] { ItemList.RC_Rail_Standard.get(1),
-                                    GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Gold, 1),
-                                    GT_Utility.getIntegratedCircuit(1) },
-                            GT_Values.NF)
+                            ItemList.RC_Rail_Standard.get(1),
+                            GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Gold, 1),
+                            GT_Utility.getIntegratedCircuit(1))
                     .itemOutputs(ItemList.RC_Rail_Electric.get(2))
                     .noFluidInputs()
                     .noFluidOutputs()
@@ -4657,10 +4654,9 @@ public class AssemblerRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
                     .itemInputs(
-                            new ItemStack[] { ItemList.RC_Rail_Standard.get(1),
-                                    GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Electrum, 1),
-                                    GT_Utility.getIntegratedCircuit(1) },
-                            GT_Values.NF)
+                            ItemList.RC_Rail_Standard.get(1),
+                            GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Electrum, 1),
+                            GT_Utility.getIntegratedCircuit(1))
                     .itemOutputs(ItemList.RC_Rail_Electric.get(4))
                     .noFluidInputs()
                     .noFluidOutputs()
@@ -4670,10 +4666,9 @@ public class AssemblerRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
                     .itemInputs(
-                            new ItemStack[] { ItemList.RC_Rail_Standard.get(1),
-                                    GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Titanium, 1),
-                                    GT_Utility.getIntegratedCircuit(1) },
-                            GT_Values.NF)
+                            ItemList.RC_Rail_Standard.get(1),
+                            GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Titanium, 1),
+                            GT_Utility.getIntegratedCircuit(1))
                     .itemOutputs(ItemList.RC_Rail_Electric.get(8))
                     .noFluidInputs()
                     .noFluidOutputs()
@@ -4683,10 +4678,9 @@ public class AssemblerRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
                     .itemInputs(
-                            new ItemStack[] { ItemList.RC_Rail_Standard.get(1),
-                                    GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.TungstenSteel, 1),
-                                    GT_Utility.getIntegratedCircuit(1) },
-                            GT_Values.NF)
+                            ItemList.RC_Rail_Standard.get(1),
+                            GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.TungstenSteel, 1),
+                            GT_Utility.getIntegratedCircuit(1))
                     .itemOutputs(ItemList.RC_Rail_Electric.get(16))
                     .noFluidInputs()
                     .noFluidOutputs()
@@ -4696,10 +4690,9 @@ public class AssemblerRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
                     .itemInputs(
-                            new ItemStack[] { ItemList.RC_Rail_Standard.get(1),
-                                    GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.HSSG, 1),
-                                    GT_Utility.getIntegratedCircuit(1) },
-                            GT_Values.NF)
+                            ItemList.RC_Rail_Standard.get(1),
+                            GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.HSSG, 1),
+                            GT_Utility.getIntegratedCircuit(1))
                     .itemOutputs(ItemList.RC_Rail_Electric.get(32))
                     .noFluidInputs()
                     .noFluidOutputs()
@@ -4709,10 +4702,9 @@ public class AssemblerRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
                     .itemInputs(
-                            new ItemStack[] { ItemList.RC_Rail_Standard.get(1),
-                                    GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Naquadah, 1),
-                                    GT_Utility.getIntegratedCircuit(1) },
-                            GT_Values.NF)
+                            ItemList.RC_Rail_Standard.get(1),
+                            GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Naquadah, 1),
+                            GT_Utility.getIntegratedCircuit(1))
                     .itemOutputs(ItemList.RC_Rail_Electric.get(64))
                     .noFluidInputs()
                     .noFluidOutputs()
@@ -4722,10 +4714,9 @@ public class AssemblerRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
                     .itemInputs(
-                            new ItemStack[] { ItemList.RC_Tie_Wood.get(1),
-                                    GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Iron, 1),
-                                    GT_Utility.getIntegratedCircuit(10) },
-                            GT_Values.NF)
+                            ItemList.RC_Tie_Wood.get(1),
+                            GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Iron, 1),
+                            GT_Utility.getIntegratedCircuit(10))
                     .itemOutputs(ItemList.RC_Rail_Wooden.get(8))
                     .noFluidInputs()
                     .noFluidOutputs()
@@ -4735,10 +4726,9 @@ public class AssemblerRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
                     .itemInputs(
-                            new ItemStack[] { ItemList.RC_Tie_Wood.get(1),
-                                    GT_OreDictUnificator.get(OrePrefixes.stick, Materials.WroughtIron, 1),
-                                    GT_Utility.getIntegratedCircuit(11) },
-                            GT_Values.NF)
+                            ItemList.RC_Tie_Wood.get(1),
+                            GT_OreDictUnificator.get(OrePrefixes.stick, Materials.WroughtIron, 1),
+                            GT_Utility.getIntegratedCircuit(11))
                     .itemOutputs(ItemList.RC_Rail_Wooden.get(8))
                     .noFluidInputs()
                     .noFluidOutputs()
@@ -4748,10 +4738,9 @@ public class AssemblerRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
                     .itemInputs(
-                            new ItemStack[] { ItemList.RC_Tie_Wood.get(1),
-                                    GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Steel, 1),
-                                    GT_Utility.getIntegratedCircuit(11) },
-                            GT_Values.NF)
+                            ItemList.RC_Tie_Wood.get(1),
+                            GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Steel, 1),
+                            GT_Utility.getIntegratedCircuit(11))
                     .itemOutputs(ItemList.RC_Rail_Wooden.get(16))
                     .noFluidInputs()
                     .noFluidOutputs()
@@ -4761,10 +4750,9 @@ public class AssemblerRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
                     .itemInputs(
-                            new ItemStack[] { ItemList.RC_Tie_Wood.get(1),
-                                    GT_OreDictUnificator.get(OrePrefixes.stick, Materials.StainlessSteel, 1),
-                                    GT_Utility.getIntegratedCircuit(11) },
-                            GT_Values.NF)
+                            ItemList.RC_Tie_Wood.get(1),
+                            GT_OreDictUnificator.get(OrePrefixes.stick, Materials.StainlessSteel, 1),
+                            GT_Utility.getIntegratedCircuit(11))
                     .itemOutputs(ItemList.RC_Rail_Wooden.get(32))
                     .noFluidInputs()
                     .noFluidOutputs()
@@ -4774,10 +4762,9 @@ public class AssemblerRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
                     .itemInputs(
-                            new ItemStack[] { ItemList.RC_Tie_Wood.get(1),
-                                    GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Titanium, 1),
-                                    GT_Utility.getIntegratedCircuit(11) },
-                            GT_Values.NF)
+                            ItemList.RC_Tie_Wood.get(1),
+                            GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Titanium, 1),
+                            GT_Utility.getIntegratedCircuit(11))
                     .itemOutputs(ItemList.RC_Rail_Wooden.get(64))
                     .noFluidInputs()
                     .noFluidOutputs()
@@ -7297,7 +7284,7 @@ public class AssemblerRecipes implements Runnable {
                             GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Data, 4),
                             ItemList.Shape_Extruder_Wire.get(16))
                     .itemOutputs(ItemList.Spinneret.get(1))
-                    .fluidInputs(Materials.SolderingAlloy.getGas(144))
+                    .fluidInputs(Materials.SolderingAlloy.getMolten(144))
                     .noFluidOutputs()
                     .duration(2 * MINUTES)
                     .eut(TierEU.RECIPE_EV)
