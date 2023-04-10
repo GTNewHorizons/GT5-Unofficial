@@ -2,15 +2,6 @@ package common;
 
 import java.util.HashMap;
 
-import common.recipeLoaders.AlloySmelter;
-import common.recipeLoaders.Assembler;
-import common.recipeLoaders.AssemblyLine;
-import common.recipeLoaders.ChemicalReactor;
-import common.recipeLoaders.Crafting;
-import common.recipeLoaders.FormingPress;
-import common.recipeLoaders.Mixer;
-import common.recipeLoaders.ResearchableAssemblyLine;
-import common.recipeLoaders.Unpackager;
 import kekztech.KekzCore;
 
 import net.minecraft.item.ItemStack;
@@ -20,8 +11,20 @@ import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.crafting.InfusionRecipe;
+
+import common.recipeLoaders.AlloySmelter;
+import common.recipeLoaders.Assembler;
+import common.recipeLoaders.AssemblyLine;
+import common.recipeLoaders.ChemicalReactor;
+import common.recipeLoaders.Crafting;
+import common.recipeLoaders.FormingPress;
+import common.recipeLoaders.Mixer;
+import common.recipeLoaders.ResearchableAssemblyLine;
+import common.recipeLoaders.Unpackager;
+
 import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.enums.*;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 

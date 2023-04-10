@@ -100,7 +100,7 @@ public class Block_IchorJar extends BlockJar {
 
     /**
      * Handle compatibility with Essentia Phials
-     * 
+     *
      * @param world  Pass through from onBlockActivated()
      * @param player Pass through from onBlockActivated()
      * @param x      Pass through from onBlockActivated()
