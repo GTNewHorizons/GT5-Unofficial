@@ -37,7 +37,7 @@ public class Assembler implements Runnable {
                         GT_OreDictUnificator.get(OrePrefixes.plate, Materials.EnderPearl, 3))
                 .itemOutputs(new ItemStack(Blocks.tfftStorageField, 1))
                 .fluidInputs(Materials.Polytetrafluoroethylene.getMolten(144)).noFluidOutputs().duration(5 * SECONDS)
-                .eut((int) TierEU.RECIPE_HV).addTo(sAssemblerRecipes);
+                .eut(TierEU.RECIPE_HV).addTo(sAssemblerRecipes);
         // TFFT Multi Hatch
 
         GT_Values.RA.stdBuilder()
@@ -47,7 +47,7 @@ public class Assembler implements Runnable {
                         ItemList.Field_Generator_LV.get(4),
                         GT_OreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Polytetrafluoroethylene, 25))
                 .itemOutputs(TileEntities.tfftHatch.getStackForm(1)).fluidInputs(Materials.Plastic.getMolten(432))
-                .noFluidOutputs().duration(20 * SECONDS).eut((int) TierEU.RECIPE_HV).addTo(sAssemblerRecipes);
+                .noFluidOutputs().duration(20 * SECONDS).eut(TierEU.RECIPE_HV).addTo(sAssemblerRecipes);
         // TFFTStorageField1
 
         GT_Values.RA.stdBuilder()
@@ -58,7 +58,7 @@ public class Assembler implements Runnable {
                         GT_OreDictUnificator.get(OrePrefixes.pipeNonuple, Materials.Steel, 3),
                         ItemList.FluidRegulator_LV.get(1))
                 .itemOutputs(new ItemStack(Blocks.tfftStorageField, 1, 1)).fluidInputs(Materials.Glass.getMolten(144))
-                .noFluidOutputs().duration(5 * SECONDS).eut((int) TierEU.RECIPE_HV).addTo(sAssemblerRecipes);
+                .noFluidOutputs().duration(5 * SECONDS).eut(TierEU.RECIPE_HV).addTo(sAssemblerRecipes);
         // TFFTStorageField2
 
         GT_Values.RA.stdBuilder()
@@ -69,7 +69,7 @@ public class Assembler implements Runnable {
                         GT_OreDictUnificator.get(OrePrefixes.pipeNonuple, Materials.Plastic, 3),
                         ItemList.FluidRegulator_MV.get(1))
                 .itemOutputs(new ItemStack(Blocks.tfftStorageField, 1, 2)).fluidInputs(Materials.Plastic.getMolten(288))
-                .noFluidOutputs().duration(10 * SECONDS).eut((int) TierEU.RECIPE_HV).addTo(sAssemblerRecipes);
+                .noFluidOutputs().duration(10 * SECONDS).eut(TierEU.RECIPE_HV).addTo(sAssemblerRecipes);
         // TFFTStorageField3
 
         GT_Values.RA.stdBuilder()
@@ -81,7 +81,7 @@ public class Assembler implements Runnable {
                         ItemList.Field_Generator_LV.get(1),
                         ItemList.FluidRegulator_HV.get(1))
                 .itemOutputs(new ItemStack(Blocks.tfftStorageField, 1, 3)).fluidInputs(Materials.Plastic.getMolten(432))
-                .noFluidOutputs().duration(20 * SECONDS).eut((int) TierEU.RECIPE_HV).addTo(sAssemblerRecipes);
+                .noFluidOutputs().duration(20 * SECONDS).eut(TierEU.RECIPE_HV).addTo(sAssemblerRecipes);
         // TFFTStorageField4
 
         GT_Values.RA.stdBuilder()
@@ -93,7 +93,7 @@ public class Assembler implements Runnable {
                         ItemList.Field_Generator_MV.get(2),
                         ItemList.FluidRegulator_EV.get(1))
                 .itemOutputs(new ItemStack(Blocks.tfftStorageField, 1, 4)).fluidInputs(Materials.Epoxid.getMolten(864))
-                .noFluidOutputs().duration(20 * SECONDS).eut((int) TierEU.RECIPE_EV).addTo(sAssemblerRecipes);
+                .noFluidOutputs().duration(20 * SECONDS).eut(TierEU.RECIPE_EV).addTo(sAssemblerRecipes);
         // TFFTStorageField5
 
         GT_Values.RA.stdBuilder()
@@ -105,7 +105,7 @@ public class Assembler implements Runnable {
                         ItemList.Field_Generator_HV.get(4),
                         ItemList.FluidRegulator_IV.get(1))
                 .itemOutputs(new ItemStack(Blocks.tfftStorageField, 1, 5)).fluidInputs(Materials.Epoxid.getMolten(1152))
-                .noFluidOutputs().duration(20 * SECONDS).eut((int) TierEU.RECIPE_IV).addTo(sAssemblerRecipes);
+                .noFluidOutputs().duration(20 * SECONDS).eut(TierEU.RECIPE_IV).addTo(sAssemblerRecipes);
         // LSC Casing
 
         GT_Values.RA.stdBuilder()
@@ -124,7 +124,7 @@ public class Assembler implements Runnable {
                         GT_ModHandler.getIC2Item("lapotronCrystal", 1L, GT_Values.W),
                         GT_Utility.getIntegratedCircuit(7))
                 .itemOutputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 7)).noFluidInputs().noFluidOutputs()
-                .duration(10 * SECONDS).eut((int) TierEU.RECIPE_HV).addTo(sAssemblerRecipes);
+                .duration(10 * SECONDS).eut(TierEU.RECIPE_HV).addTo(sAssemblerRecipes);
         // IV Capacitor alt recipe
 
         GT_Values.RA.stdBuilder()
@@ -133,7 +133,7 @@ public class Assembler implements Runnable {
                         ItemList.Energy_LapotronicOrb.get(1L),
                         GT_Utility.getIntegratedCircuit(1))
                 .itemOutputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 1)).noFluidInputs().noFluidOutputs()
-                .duration(20 * SECONDS).eut((int) TierEU.RECIPE_EV).addTo(sAssemblerRecipes);
+                .duration(20 * SECONDS).eut(TierEU.RECIPE_EV).addTo(sAssemblerRecipes);
         // LuV Capacitor alt recipe
 
         GT_Values.RA.stdBuilder()
@@ -143,7 +143,7 @@ public class Assembler implements Runnable {
                         GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Osmiridium, 24),
                         GT_Utility.getIntegratedCircuit(6))
                 .itemOutputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 2)).noFluidInputs().noFluidOutputs()
-                .duration(40 * SECONDS).eut((int) TierEU.RECIPE_IV).addTo(sAssemblerRecipes);
+                .duration(40 * SECONDS).eut(TierEU.RECIPE_IV).addTo(sAssemblerRecipes);
         // ZPM Capacitor alt recipe
 
         GT_Values.RA.stdBuilder()
@@ -153,7 +153,7 @@ public class Assembler implements Runnable {
                         GT_OreDictUnificator.get(OrePrefixes.screw, Materials.NaquadahAlloy, 24),
                         GT_Utility.getIntegratedCircuit(6))
                 .itemOutputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 3)).noFluidInputs().noFluidOutputs()
-                .duration(1 * MINUTES + 20 * SECONDS).eut((int) TierEU.RECIPE_LuV).addTo(sAssemblerRecipes);
+                .duration(1 * MINUTES + 20 * SECONDS).eut(TierEU.RECIPE_LuV).addTo(sAssemblerRecipes);
         // UV Capacitor alt recipe
 
         GT_Values.RA.stdBuilder()
@@ -163,7 +163,7 @@ public class Assembler implements Runnable {
                         GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Neutronium, 24),
                         GT_Utility.getIntegratedCircuit(6))
                 .itemOutputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 4)).noFluidInputs().noFluidOutputs()
-                .duration(2 * MINUTES + 40 * SECONDS).eut((int) TierEU.RECIPE_ZPM).addTo(sAssemblerRecipes);
+                .duration(2 * MINUTES + 40 * SECONDS).eut(TierEU.RECIPE_ZPM).addTo(sAssemblerRecipes);
         // UHV Capacitor alt recipe
 
         GT_Values.RA.stdBuilder()
@@ -173,7 +173,7 @@ public class Assembler implements Runnable {
                         GT_OreDictUnificator.get(OrePrefixes.screw, Materials.CosmicNeutronium, 24),
                         GT_Utility.getIntegratedCircuit(6))
                 .itemOutputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 5)).noFluidInputs().noFluidOutputs()
-                .duration(5 * MINUTES + 20 * SECONDS).eut((int) TierEU.RECIPE_UV).addTo(sAssemblerRecipes);
+                .duration(5 * MINUTES + 20 * SECONDS).eut(TierEU.RECIPE_UV).addTo(sAssemblerRecipes);
         // UEV Capacitor alt recipe
 
         GT_Values.RA.stdBuilder()
@@ -183,7 +183,7 @@ public class Assembler implements Runnable {
                         GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Infinity, 24),
                         GT_Utility.getIntegratedCircuit(6))
                 .itemOutputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 8)).noFluidInputs().noFluidOutputs()
-                .duration(10 * MINUTES + 40 * SECONDS).eut((int) TierEU.RECIPE_UHV).addTo(sAssemblerRecipes);
+                .duration(10 * MINUTES + 40 * SECONDS).eut(TierEU.RECIPE_UHV).addTo(sAssemblerRecipes);
         // UIV Capacitor alt recipe
 
         GT_Values.RA.stdBuilder()
@@ -193,7 +193,7 @@ public class Assembler implements Runnable {
                         GT_OreDictUnificator.get(OrePrefixes.screw, Materials.TranscendentMetal, 24),
                         GT_Utility.getIntegratedCircuit(6))
                 .itemOutputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 9)).noFluidInputs().noFluidOutputs()
-                .duration(10 * MINUTES + 40 * SECONDS).eut((int) TierEU.RECIPE_UEV).addTo(sAssemblerRecipes);
+                .duration(10 * MINUTES + 40 * SECONDS).eut(TierEU.RECIPE_UEV).addTo(sAssemblerRecipes);
         // UMV Capacitor alt recipe
 
         GT_Values.RA.stdBuilder()
@@ -203,7 +203,7 @@ public class Assembler implements Runnable {
                         GT_OreDictUnificator.get(OrePrefixes.screw, Materials.SpaceTime, 24),
                         GT_Utility.getIntegratedCircuit(6))
                 .itemOutputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 10)).noFluidInputs().noFluidOutputs()
-                .duration(10 * MINUTES + 40 * SECONDS).eut((int) TierEU.RECIPE_UIV).addTo(sAssemblerRecipes);
+                .duration(10 * MINUTES + 40 * SECONDS).eut(TierEU.RECIPE_UIV).addTo(sAssemblerRecipes);
 
         final MetaItem_CraftingComponent craftingItem = MetaItem_CraftingComponent.getInstance();
 
