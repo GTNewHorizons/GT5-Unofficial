@@ -146,11 +146,15 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
         .addShape(
             STRUCTURE_PIECE_MAIN,
             transpose(
-                new String[][] { { "ccccc", "ccccc", "ccccc", "ccccc", "ccccc" },
-                    { "fgggf", "g---g", "g---g", "g---g", "fgggf" }, { "fgggf", "g---g", "g---g", "g---g", "fgggf" },
-                    { "fgggf", "g---g", "g---g", "g---g", "fgggf" }, { "fgggf", "g---g", "g---g", "g---g", "fgggf" },
+                new String[][] { // spotless:off
+                    { "ccccc", "ccccc", "ccccc", "ccccc", "ccccc" },
+                    { "fgggf", "g---g", "g---g", "g---g", "fgggf" },
+                    { "fgggf", "g---g", "g---g", "g---g", "fgggf" },
+                    { "fgggf", "g---g", "g---g", "g---g", "fgggf" },
+                    { "fgggf", "g---g", "g---g", "g---g", "fgggf" },
                     { "fgggf", "gsssg", "gsssg", "gsssg", "fgggf" },
-                    { "CC~CC", "CCCCC", "CCCCC", "CCCCC", "CCCCC" }, }))
+                    { "CC~CC", "CCCCC", "CCCCC", "CCCCC", "CCCCC" },
+                })) // spotless:on
         .addElement('c', onElementPass(t -> t.mCasing++, ofBlock(GregTech_API.sBlockCasings2, 0)))
         .addElement(
             'C',
