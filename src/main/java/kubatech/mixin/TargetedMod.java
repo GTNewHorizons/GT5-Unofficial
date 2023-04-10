@@ -21,7 +21,8 @@ public enum TargetedMod {
     @SuppressWarnings("UnstableApiUsage")
     public boolean isMatchingJar(Path path) {
         final String pathString = path.toString();
-        final String nameLowerCase = Files.getNameWithoutExtension(pathString).toLowerCase();
+        final String nameLowerCase = Files.getNameWithoutExtension(pathString)
+            .toLowerCase();
         final String fileExtension = Files.getFileExtension(pathString);
 
         return nameLowerCase.startsWith(jarNamePrefixLowercase) && "jar".equals(fileExtension);
@@ -30,11 +31,11 @@ public enum TargetedMod {
     @Override
     public String toString() {
         return "TargetedMod{" + "modName='"
-                + modName
-                + '\''
-                + ", jarNamePrefixLowercase='"
-                + jarNamePrefixLowercase
-                + '\''
-                + '}';
+            + modName
+            + '\''
+            + ", jarNamePrefixLowercase='"
+            + jarNamePrefixLowercase
+            + '\''
+            + '}';
     }
 }

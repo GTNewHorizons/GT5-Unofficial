@@ -50,7 +50,7 @@ public class MobDrop {
     private MobDrop() {}
 
     public MobDrop(ItemStack stack, DropType type, int chance, Integer enchantable, HashMap<Integer, Integer> damages,
-            boolean lootable, boolean playerOnly) {
+        boolean lootable, boolean playerOnly) {
         this.stack = stack;
         this.reconstructableStack = new ConstructableItemStack(stack);
         this.type = type;

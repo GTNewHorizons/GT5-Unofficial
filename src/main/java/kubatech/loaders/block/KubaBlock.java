@@ -44,26 +44,29 @@ import com.gtnewhorizons.modularui.common.internal.wrapper.ModularUIContainer;
 public class KubaBlock extends Block {
 
     public static final Function<IModularUIContainerCreator, UIInfo<?, ?>> TileEntityUIFactory = containerConstructor -> UIBuilder
-            .of().container((player, world, x, y, z) -> {
-                TileEntity te = world.getTileEntity(x, y, z);
-                if (te instanceof ITileWithModularUI) {
-                    final UIBuildContext buildContext = new UIBuildContext(player);
-                    final ModularWindow window = ((ITileWithModularUI) te).createWindow(buildContext);
-                    return containerConstructor
-                            .createUIContainer(new ModularUIContext(buildContext, te::markDirty), window);
-                }
-                return null;
-            }).gui(((player, world, x, y, z) -> {
-                if (!world.isRemote) return null;
-                TileEntity te = world.getTileEntity(x, y, z);
-                if (te instanceof ITileWithModularUI) {
-                    final UIBuildContext buildContext = new UIBuildContext(player);
-                    final ModularWindow window = ((ITileWithModularUI) te).createWindow(buildContext);
-                    return new ModularGui(
-                            containerConstructor.createUIContainer(new ModularUIContext(buildContext, null), window));
-                }
-                return null;
-            })).build();
+        .of()
+        .container((player, world, x, y, z) -> {
+            TileEntity te = world.getTileEntity(x, y, z);
+            if (te instanceof ITileWithModularUI) {
+                final UIBuildContext buildContext = new UIBuildContext(player);
+                final ModularWindow window = ((ITileWithModularUI) te).createWindow(buildContext);
+                return containerConstructor
+                    .createUIContainer(new ModularUIContext(buildContext, te::markDirty), window);
+            }
+            return null;
+        })
+        .gui(((player, world, x, y, z) -> {
+            if (!world.isRemote) return null;
+            TileEntity te = world.getTileEntity(x, y, z);
+            if (te instanceof ITileWithModularUI) {
+                final UIBuildContext buildContext = new UIBuildContext(player);
+                final ModularWindow window = ((ITileWithModularUI) te).createWindow(buildContext);
+                return new ModularGui(
+                    containerConstructor.createUIContainer(new ModularUIContext(buildContext, null), window));
+            }
+            return null;
+        }))
+        .build();
 
     public static final UIInfo<?, ?> defaultTileEntityUI = TileEntityUIFactory.apply(ModularUIContainer::new);
 
@@ -113,12 +116,14 @@ public class KubaBlock extends Block {
 
     @Override
     public void registerBlockIcons(IIconRegister p_149651_1_) {
-        blocks.values().forEach(b -> b.registerIcon(p_149651_1_));
+        blocks.values()
+            .forEach(b -> b.registerIcon(p_149651_1_));
     }
 
     @Override
     public IIcon getIcon(int p_149691_1_, int p_149691_2_) {
-        return blocks.get(p_149691_2_).getIcon(p_149691_1_);
+        return blocks.get(p_149691_2_)
+            .getIcon(p_149691_1_);
     }
 
     @Override
@@ -134,16 +139,16 @@ public class KubaBlock extends Block {
 
     @Override
     public boolean onBlockActivated(World p_149727_1_, int p_149727_2_, int p_149727_3_, int p_149727_4_,
-            EntityPlayer p_149727_5_, int p_149727_6_, float p_149727_7_, float p_149727_8_, float p_149727_9_) {
+        EntityPlayer p_149727_5_, int p_149727_6_, float p_149727_7_, float p_149727_8_, float p_149727_9_) {
         return getBlock(p_149727_1_.getBlockMetadata(p_149727_2_, p_149727_3_, p_149727_4_))
-                .onActivated(p_149727_1_, p_149727_2_, p_149727_3_, p_149727_4_, p_149727_5_);
+            .onActivated(p_149727_1_, p_149727_2_, p_149727_3_, p_149727_4_, p_149727_5_);
     }
 
     @Override
     public void onBlockPlacedBy(World p_149689_1_, int p_149689_2_, int p_149689_3_, int p_149689_4_,
-            EntityLivingBase p_149689_5_, ItemStack p_149689_6_) {
+        EntityLivingBase p_149689_5_, ItemStack p_149689_6_) {
         getBlock(p_149689_6_.getItemDamage())
-                .onBlockPlaced(p_149689_1_, p_149689_2_, p_149689_3_, p_149689_4_, p_149689_5_, p_149689_6_);
+            .onBlockPlaced(p_149689_1_, p_149689_2_, p_149689_3_, p_149689_4_, p_149689_5_, p_149689_6_);
     }
 
     @Override
@@ -165,7 +170,7 @@ public class KubaBlock extends Block {
 
     @Override
     public float getExplosionResistance(Entity par1Entity, World world, int x, int y, int z, double explosionX,
-            double explosionY, double explosionZ) {
+        double explosionY, double explosionZ) {
         return getBlock(world.getBlockMetadata(x, y, z)).getResistance();
     }
 

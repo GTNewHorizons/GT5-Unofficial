@@ -71,8 +71,14 @@ public class PlayerDataManager extends WorldSavedData {
         int i = 0;
         for (Map.Entry<UUID, PlayerData> playerDataEntry : players.entrySet()) {
             NBTTagCompound playerNBTData = new NBTTagCompound();
-            playerNBTData.setString("uuid", playerDataEntry.getKey().toString());
-            playerNBTData.setTag("data", playerDataEntry.getValue().toNBTData());
+            playerNBTData.setString(
+                "uuid",
+                playerDataEntry.getKey()
+                    .toString());
+            playerNBTData.setTag(
+                "data",
+                playerDataEntry.getValue()
+                    .toNBTData());
             NBTData.setTag("Player." + (i++), playerNBTData);
         }
     }

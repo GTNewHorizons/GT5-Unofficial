@@ -30,7 +30,7 @@ public class ConstructableItemStack {
     public final NBTTagCompound tagCompound;
 
     private ConstructableItemStack(GameRegistry.UniqueIdentifier itemIdentifier, int meta, int size,
-            NBTTagCompound tagCompound) {
+        NBTTagCompound tagCompound) {
         this.itemIdentifier = itemIdentifier;
         this.meta = meta;
         this.size = size;
@@ -104,9 +104,9 @@ public class ConstructableItemStack {
             } catch (Exception ignored) {}
         }
         return new ConstructableItemStack(
-                new GameRegistry.UniqueIdentifier(modid + ":" + name),
-                meta,
-                stacksize,
-                nbtTagCompound);
+            new GameRegistry.UniqueIdentifier(modid + ":" + name),
+            meta,
+            stacksize,
+            nbtTagCompound);
     }
 }

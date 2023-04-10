@@ -67,7 +67,7 @@ public class ItemLoader {
         PartiallyOxidizedTeaLeaf.set(kubaitems.registerProxyItem(new TeaIngredient("partially_oxidized_tea_leaf")));
 
         TeaAcceptorResearchNote
-                .set(kubaitems.registerProxyItem(new ItemProxy("tea_acceptor_research_note", "research_note")));
+            .set(kubaitems.registerProxyItem(new ItemProxy("tea_acceptor_research_note", "research_note")));
         Beeeeee.set(kubaitems.registerProxyItem(new ItemProxy("beeeeee", "beeeeee")));
     }
 }

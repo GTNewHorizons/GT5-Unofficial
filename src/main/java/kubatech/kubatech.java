@@ -33,24 +33,24 @@ import cpw.mods.fml.relauncher.Side;
 
 @SuppressWarnings("unused")
 @Mod(
-        modid = Tags.MODID,
-        version = Tags.VERSION,
-        name = Tags.MODNAME,
-        acceptedMinecraftVersions = "[1.7.10]",
-        dependencies = "required-after: gregtech; " + "required-after: gtnhmixins@[2.0.1,); "
-                + "required-after: modularui; "
-                + "after: EnderIO; "
-                + "after: AWWayofTime; "
-                + "after: ExtraUtilities; "
-                + "after: InfernalMobs; "
-                + "after: Thaumcraft; "
-                + "after: MineTweaker3; "
-                + "after: miscutils; "
-                + "after: harvestcraft; "
-                + "after: Forestry; "
-                + "after: DraconicEvolution; "
-                + "after: Avaritia; "
-                + " after: dreamcraft; ")
+    modid = Tags.MODID,
+    version = Tags.VERSION,
+    name = Tags.MODNAME,
+    acceptedMinecraftVersions = "[1.7.10]",
+    dependencies = "required-after: gregtech; " + "required-after: gtnhmixins@[2.0.1,); "
+        + "required-after: modularui; "
+        + "after: EnderIO; "
+        + "after: AWWayofTime; "
+        + "after: ExtraUtilities; "
+        + "after: InfernalMobs; "
+        + "after: Thaumcraft; "
+        + "after: MineTweaker3; "
+        + "after: miscutils; "
+        + "after: harvestcraft; "
+        + "after: Forestry; "
+        + "after: DraconicEvolution; "
+        + "after: Avaritia; "
+        + " after: dreamcraft; ")
 public class kubatech {
 
     public static kubatech instance = null;

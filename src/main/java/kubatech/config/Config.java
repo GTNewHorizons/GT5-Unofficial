@@ -62,41 +62,45 @@ public class Config {
 
         private static void load(Configuration configuration) {
             Category category = Category.MOB_HANDLER;
-            mobHandlerEnabled = configuration.get(
-                    category.get(),
-                    "Enabled",
-                    true,
-                    "Enable \"Mob Drops\" NEI page and Extreme Extermination Chamber").getBoolean();
+            mobHandlerEnabled = configuration
+                .get(category.get(), "Enabled", true, "Enable \"Mob Drops\" NEI page and Extreme Extermination Chamber")
+                .getBoolean();
             StringBuilder c = new StringBuilder("When will cache regeneration trigger? ");
-            for (_CacheRegenerationTrigger value : _CacheRegenerationTrigger.values())
-                c.append(value.ordinal()).append(" - ").append(value.name()).append(", ");
+            for (_CacheRegenerationTrigger value : _CacheRegenerationTrigger.values()) c.append(value.ordinal())
+                .append(" - ")
+                .append(value.name())
+                .append(", ");
             regenerationTrigger = _CacheRegenerationTrigger.get(
-                    configuration.get(
-                            category.get(),
-                            "CacheRegenerationTrigger",
-                            _CacheRegenerationTrigger.ModAdditionRemovalChange.ordinal(),
-                            c.toString()).getInt());
+                configuration
+                    .get(
+                        category.get(),
+                        "CacheRegenerationTrigger",
+                        _CacheRegenerationTrigger.ModAdditionRemovalChange.ordinal(),
+                        c.toString())
+                    .getInt());
             includeEmptyMobs = configuration
-                    .get(category.get(), "IncludeEmptyMobs", true, "Include mobs that have no drops in NEI")
-                    .getBoolean();
-            mobBlacklist = configuration.get(
+                .get(category.get(), "IncludeEmptyMobs", true, "Include mobs that have no drops in NEI")
+                .getBoolean();
+            mobBlacklist = configuration
+                .get(
                     category.get(),
                     "MobBlacklist",
                     new String[] { "Giant", "Thaumcraft.TravelingTrunk", "chisel.snowman", "OpenBlocks.Luggage",
-                            "OpenBlocks.MiniMe", "SpecialMobs.SpecialCreeper", "SpecialMobs.SpecialZombie",
-                            "SpecialMobs.SpecialPigZombie", "SpecialMobs.SpecialSlime", "SpecialMobs.SpecialSkeleton",
-                            "SpecialMobs.SpecialEnderman", "SpecialMobs.SpecialCaveSpider", "SpecialMobs.SpecialGhast",
-                            "SpecialMobs.SpecialWitch", "SpecialMobs.SpecialSpider", "TwilightForest.HydraHead",
-                            "TwilightForest.RovingCube", "TwilightForest.Harbinger Cube", "TwilightForest.Adherent",
-                            "SpecialMobs.SpecialSilverfish", },
-                    "These mobs will be skipped when generating recipe map").getStringList();
+                        "OpenBlocks.MiniMe", "SpecialMobs.SpecialCreeper", "SpecialMobs.SpecialZombie",
+                        "SpecialMobs.SpecialPigZombie", "SpecialMobs.SpecialSlime", "SpecialMobs.SpecialSkeleton",
+                        "SpecialMobs.SpecialEnderman", "SpecialMobs.SpecialCaveSpider", "SpecialMobs.SpecialGhast",
+                        "SpecialMobs.SpecialWitch", "SpecialMobs.SpecialSpider", "TwilightForest.HydraHead",
+                        "TwilightForest.RovingCube", "TwilightForest.Harbinger Cube", "TwilightForest.Adherent",
+                        "SpecialMobs.SpecialSilverfish", },
+                    "These mobs will be skipped when generating recipe map")
+                .getStringList();
             playerOnlyDropsModifier = configuration
-                    .get(
-                            category.get(),
-                            "PlayerOnlyDropsModifier",
-                            .1d,
-                            "Hard player only loot (such as core mod drops) will be multiplied by this number")
-                    .getDouble();
+                .get(
+                    category.get(),
+                    "PlayerOnlyDropsModifier",
+                    .1d,
+                    "Hard player only loot (such as core mod drops) will be multiplied by this number")
+                .getDouble();
         }
     }
 
@@ -106,7 +110,8 @@ public class Config {
 
         private static void load(Configuration configuration) {
             Category category = Category.DEBUG;
-            showRenderErrors = configuration.get(category.get(), "ShowRenderErrors", false).getBoolean();
+            showRenderErrors = configuration.get(category.get(), "ShowRenderErrors", false)
+                .getBoolean();
         }
     }
 

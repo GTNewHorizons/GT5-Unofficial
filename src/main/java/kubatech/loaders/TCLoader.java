@@ -42,9 +42,9 @@ public class TCLoader {
 
     public static void init() {
         ResearchCategories.registerCategory(
-                TCCategoryKey,
-                new ResourceLocation(Tags.MODID, "textures/gui/green_tea.png"),
-                new ResourceLocation("thaumcraft", "textures/gui/gui_researchback.png"));
+            TCCategoryKey,
+            new ResourceLocation(Tags.MODID, "textures/gui/green_tea.png"),
+            new ResourceLocation("thaumcraft", "textures/gui/gui_researchback.png"));
         if (!LoaderReference.GTNHCoreMod || !LoaderReference.DraconicEvolution) return;
         registerRecipe();
         registerResearch();
@@ -55,48 +55,50 @@ public class TCLoader {
     private static void registerRecipe() {
         if (ultimateTeaRecipe != null) return;
         final ItemStack[] components = new ItemStack[] {
-                // ItemList.LegendaryBlackTea.get(1),
-                // ItemList.LegendaryButterflyTea.get(1),
-                ItemList.LegendaryEarlGrayTea.get(1), // MApiary
-                ItemList.LegendaryGreenTea.get(1), // EIG
-                // ItemList.LegendaryLemonTea.get(1),
-                // ItemList.LegendaryMilkTea.get(1),
-                // ItemList.LegendaryOolongTea.get(1),
-                ItemList.LegendaryPeppermintTea.get(1), // HTGR
-                ItemList.LegendaryPuerhTea.get(1), // EEC
-                // ItemList.LegendaryRedTea.get(1),
-                // ItemList.LegendaryWhiteTea.get(1),
-                ItemList.LegendaryYellowTea.get(1), // IApiary
-                ItemList.BlackTea.get(1), ItemList.EarlGrayTea.get(1), ItemList.GreenTea.get(1),
-                ItemList.LemonTea.get(1), ItemList.MilkTea.get(1), ItemList.OolongTea.get(1),
-                ItemList.PeppermintTea.get(1), ItemList.PuerhTea.get(1), ItemList.WhiteTea.get(1),
-                ItemList.YellowTea.get(1) };
+            // ItemList.LegendaryBlackTea.get(1),
+            // ItemList.LegendaryButterflyTea.get(1),
+            ItemList.LegendaryEarlGrayTea.get(1), // MApiary
+            ItemList.LegendaryGreenTea.get(1), // EIG
+            // ItemList.LegendaryLemonTea.get(1),
+            // ItemList.LegendaryMilkTea.get(1),
+            // ItemList.LegendaryOolongTea.get(1),
+            ItemList.LegendaryPeppermintTea.get(1), // HTGR
+            ItemList.LegendaryPuerhTea.get(1), // EEC
+            // ItemList.LegendaryRedTea.get(1),
+            // ItemList.LegendaryWhiteTea.get(1),
+            ItemList.LegendaryYellowTea.get(1), // IApiary
+            ItemList.BlackTea.get(1), ItemList.EarlGrayTea.get(1), ItemList.GreenTea.get(1), ItemList.LemonTea.get(1),
+            ItemList.MilkTea.get(1), ItemList.OolongTea.get(1), ItemList.PeppermintTea.get(1), ItemList.PuerhTea.get(1),
+            ItemList.WhiteTea.get(1), ItemList.YellowTea.get(1) };
 
         final HashSet<ItemID> componentsHashed = Arrays.stream(components)
-                .map(stack -> ItemID.create_NoCopy(stack, true, false, true))
-                .collect(Collectors.toCollection(HashSet::new));
+            .map(stack -> ItemID.create_NoCopy(stack, true, false, true))
+            .collect(Collectors.toCollection(HashSet::new));
 
         // noinspection unchecked
-        ThaumcraftApi.getCraftingRecipes().add(
+        ThaumcraftApi.getCraftingRecipes()
+            .add(
                 ultimateTeaRecipe = new InfusionRecipe(
-                        "KT_UltimateTea",
-                        ItemList.LegendaryUltimateTea.get(1),
-                        10,
-                        new AspectList().add(Aspect.MAGIC, 100).add(Aspect.HEAL, 100).add(Aspect.PLANT, 100)
-                                .add(Aspect.EXCHANGE, 100),
-                        GameRegistry.findItemStack("DraconicEvolution", "dezilsMarshmallow", 1),
-                        components) {
+                    "KT_UltimateTea",
+                    ItemList.LegendaryUltimateTea.get(1),
+                    10,
+                    new AspectList().add(Aspect.MAGIC, 100)
+                        .add(Aspect.HEAL, 100)
+                        .add(Aspect.PLANT, 100)
+                        .add(Aspect.EXCHANGE, 100),
+                    GameRegistry.findItemStack("DraconicEvolution", "dezilsMarshmallow", 1),
+                    components) {
 
                     @Override
                     public boolean matches(ArrayList<ItemStack> input, ItemStack central, World world,
-                            EntityPlayer player) {
+                        EntityPlayer player) {
                         if (!central.isItemEqual(getRecipeInput())) return false;
                         if (!ThaumcraftApiHelper.isResearchComplete(player.getCommandSenderName(), this.research))
                             return false;
                         if (componentsHashed.size() > input.size()) return false;
                         HashSet<ItemID> hashedInputs = input.stream()
-                                .map(stack -> ItemID.create_NoCopy(stack, true, false, true))
-                                .collect(Collectors.toCollection(HashSet::new));
+                            .map(stack -> ItemID.create_NoCopy(stack, true, false, true))
+                            .collect(Collectors.toCollection(HashSet::new));
                         return hashedInputs.containsAll(componentsHashed);
                     }
                 });
@@ -107,14 +109,16 @@ public class TCLoader {
     private static void registerResearch() {
         if (ultimateTeaResearch == null) {
             ultimateTeaResearch = new ResearchItem(
-                    "KT_UltimateTea",
-                    TCCategoryKey,
-                    new AspectList().add(Aspect.MAGIC, 1).add(Aspect.HEAL, 1).add(Aspect.PLANT, 1)
-                            .add(Aspect.EXCHANGE, 1),
-                    -2,
-                    4,
-                    2,
-                    ItemList.LegendaryUltimateTea.get(1)) {
+                "KT_UltimateTea",
+                TCCategoryKey,
+                new AspectList().add(Aspect.MAGIC, 1)
+                    .add(Aspect.HEAL, 1)
+                    .add(Aspect.PLANT, 1)
+                    .add(Aspect.EXCHANGE, 1),
+                -2,
+                4,
+                2,
+                ItemList.LegendaryUltimateTea.get(1)) {
 
                 @Override
                 public String getName() {

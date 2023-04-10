@@ -100,7 +100,8 @@ public class ReflectionHelper {
         Class<?>[] argsTypes = new Class<?>[args.length];
         for (int i = 0; i < args.length; i++) {
             Class<?> arg = args[i].getClass();
-            builder.append(";").append(arg.getSimpleName());
+            builder.append(";")
+                .append(arg.getSimpleName());
             argsTypes[i] = arg;
         }
         String methodNameUnique = builder.toString();

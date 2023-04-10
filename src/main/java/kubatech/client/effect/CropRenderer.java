@@ -44,20 +44,19 @@ public class CropRenderer extends EntityFX {
 
     @Override
     public void renderParticle(Tessellator p_70539_1_, float p_70539_2_, float p_70539_3_, float p_70539_4_,
-            float p_70539_5_, float p_70539_6_, float p_70539_7_) {
+        float p_70539_5_, float p_70539_6_, float p_70539_7_) {
         Tessellator tessellator = Tessellator.instance;
-        Minecraft.getMinecraft().getTextureManager().bindTexture(TextureMap.locationBlocksTexture);
+        Minecraft.getMinecraft()
+            .getTextureManager()
+            .bindTexture(TextureMap.locationBlocksTexture);
         tessellator.startDrawingQuads();
         tessellator.disableColor();
         GL11.glColor4f(1.f, 1.f, 1.f, 1.f);
         GL11.glEnable(GL11.GL_ALPHA_TEST);
         GL11.glDepthMask(true);
         tessellator.setBrightness(
-                Blocks.wheat.getMixedBrightnessForBlock(
-                        this.worldObj,
-                        (int) this.posX + 1,
-                        (int) this.posY,
-                        (int) this.posZ));
+            Blocks.wheat
+                .getMixedBrightnessForBlock(this.worldObj, (int) this.posX + 1, (int) this.posY, (int) this.posZ));
         tessellator.setColorRGBA(255, 255, 255, 255);
         double f12 = this.posY - interpPosY;
         int i = 0;
@@ -65,7 +64,8 @@ public class CropRenderer extends EntityFX {
             if (x == 0 && z == 0) continue;
             double f11 = (this.posX + (double) x) - interpPosX;
             double f13 = (this.posZ + (double) z) - interpPosZ;
-            RenderBlocks.getInstance().renderBlockCropsImpl(Blocks.wheat, meta[i++], f11, f12, f13);
+            RenderBlocks.getInstance()
+                .renderBlockCropsImpl(Blocks.wheat, meta[i++], f11, f12, f13);
         }
         tessellator.draw();
     }

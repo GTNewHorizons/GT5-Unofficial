@@ -20,27 +20,30 @@ import net.minecraft.util.EnumChatFormatting;
 public class Variables {
 
     public static final String Author = "Author: "
-            + StringUtils.applyRainbow("kuba6000", 0, EnumChatFormatting.BOLD.toString());
+        + StringUtils.applyRainbow("kuba6000", 0, EnumChatFormatting.BOLD.toString());
 
     public static String buildAuthorList(String... authors) {
         if (authors.length == 0) return "Author: Unknown";
         StringBuilder b = new StringBuilder("Author: ")
-                .append(StringUtils.applyRainbow(authors[0], 0, EnumChatFormatting.BOLD.toString()));
+            .append(StringUtils.applyRainbow(authors[0], 0, EnumChatFormatting.BOLD.toString()));
         for (int i = 1; i < authors.length; i++) {
             String author = authors[i];
-            b.append(EnumChatFormatting.RESET).append(" & ").append(EnumChatFormatting.GOLD).append(author);
+            b.append(EnumChatFormatting.RESET)
+                .append(" & ")
+                .append(EnumChatFormatting.GOLD)
+                .append(author);
         }
         return b.toString();
     }
 
     public static final String StructureHologram = "To see the structure, use a " + EnumChatFormatting.BLUE
-            + "Structure"
-            + EnumChatFormatting.DARK_BLUE
-            + "Lib"
-            + EnumChatFormatting.RESET
-            + ""
-            + EnumChatFormatting.GRAY
-            + " Hologram Projector on the Controller!";
+        + "Structure"
+        + EnumChatFormatting.DARK_BLUE
+        + "Lib"
+        + EnumChatFormatting.RESET
+        + ""
+        + EnumChatFormatting.GRAY
+        + " Hologram Projector on the Controller!";
 
     public static final double ln4 = Math.log(4d);
     public static final double ln2 = Math.log(2d);

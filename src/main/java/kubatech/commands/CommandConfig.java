@@ -35,7 +35,8 @@ public class CommandConfig extends CommandBase {
         final String key;
 
         Translations() {
-            key = "command.config." + this.name().toLowerCase();
+            key = "command.config." + this.name()
+                .toLowerCase();
         }
 
         public String get() {
@@ -80,11 +81,12 @@ public class CommandConfig extends CommandBase {
         }
         Config.synchronizeConfiguration();
         MobRecipeLoader.processMobRecipeMap();
-        MinecraftServer.getServer().getConfigurationManager().playerEntityList.forEach(p -> {
-            if (!(p instanceof EntityPlayerMP)) return;
-            kubatech.info("Sending config to " + ((EntityPlayerMP) p).getDisplayName());
-            kubatech.NETWORK.sendTo(LoadConfigPacket.instance, (EntityPlayerMP) p);
-        });
+        MinecraftServer.getServer()
+            .getConfigurationManager().playerEntityList.forEach(p -> {
+                if (!(p instanceof EntityPlayerMP)) return;
+                kubatech.info("Sending config to " + ((EntityPlayerMP) p).getDisplayName());
+                kubatech.NETWORK.sendTo(LoadConfigPacket.instance, (EntityPlayerMP) p);
+            });
         p_71515_1_.addChatMessage(new ChatComponentText(SUCCESS.get()));
     }
 }

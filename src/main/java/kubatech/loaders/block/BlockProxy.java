@@ -54,8 +54,8 @@ public class BlockProxy {
             TileEntity te = world.getTileEntity(x, y, z);
             if (te instanceof ITileWithModularUI) {
                 if (world.isRemote) return true;
-                if (te instanceof KubaBlock.IModularUIProvider)
-                    ((KubaBlock.IModularUIProvider) te).getUI().open(player, world, x, y, z);
+                if (te instanceof KubaBlock.IModularUIProvider) ((KubaBlock.IModularUIProvider) te).getUI()
+                    .open(player, world, x, y, z);
                 else defaultTileEntityUI.open(player, world, x, y, z);
                 return true;
             }
@@ -81,7 +81,8 @@ public class BlockProxy {
     }
 
     public String getDisplayName(ItemStack stack) {
-        return StatCollector.translateToLocal(this.unlocalizedName + ".name").trim();
+        return StatCollector.translateToLocal(this.unlocalizedName + ".name")
+            .trim();
     }
 
     public void addInformation(ItemStack stack, EntityPlayer entity, List<String> tooltipList, boolean showDebugInfo) {}

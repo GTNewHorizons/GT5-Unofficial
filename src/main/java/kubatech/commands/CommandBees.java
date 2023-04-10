@@ -52,9 +52,10 @@ public class CommandBees extends CommandBase {
     @Override
     public void processCommand(ICommandSender p_71515_1_, String[] p_71515_2_) {
 
-        if (!Minecraft.getMinecraft().isSingleplayer()) {
-            p_71515_1_.addChatMessage(
-                    new ChatComponentText(EnumChatFormatting.RED + "This command is single-player only!"));
+        if (!Minecraft.getMinecraft()
+            .isSingleplayer()) {
+            p_71515_1_
+                .addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "This command is single-player only!"));
             return;
         }
 
@@ -65,7 +66,7 @@ public class CommandBees extends CommandBase {
             String delimer = ",";
 
             writer.write(
-                    "Bee,CHANCE,OLD_0.6S_0UP,OLD_0.6S_8UP,OLD_1.7S_0UP,OLD_1.7S_8UP,NEW_0.6S_0UP_1T,NEW_0.6S_8UP_1T,NEW_1.7S_0UP_1T,NEW_1.7S_8UP_1T,NEW_1.7S_0UP_8T,NEW_1.7S_8UP_8T\n");
+                "Bee,CHANCE,OLD_0.6S_0UP,OLD_0.6S_8UP,OLD_1.7S_0UP,OLD_1.7S_8UP,NEW_0.6S_0UP_1T,NEW_0.6S_8UP_1T,NEW_1.7S_0UP_1T,NEW_1.7S_8UP_1T,NEW_1.7S_0UP_8T,NEW_1.7S_8UP_8T\n");
 
             List<IBee> bees = beeRoot.getIndividualTemplates();
             for (IBee bee : bees) {
@@ -75,9 +76,12 @@ public class CommandBees extends CommandBase {
                 IBeeGenome genome = bee.getGenome();
                 IAlleleBeeSpecies primary = genome.getPrimary();
                 IAlleleBeeSpecies secondary = genome.getSecondary();
-                primary.getProductChances().forEach((k, v) -> printData("[PRIMARY]", k, v, delimer, b));
-                secondary.getProductChances().forEach((k, v) -> printData("[SECONDARY]", k, v / 2f, delimer, b));
-                primary.getSpecialtyChances().forEach((k, v) -> printData("[SPECIALITY]", k, v, delimer, b));
+                primary.getProductChances()
+                    .forEach((k, v) -> printData("[PRIMARY]", k, v, delimer, b));
+                secondary.getProductChances()
+                    .forEach((k, v) -> printData("[SECONDARY]", k, v / 2f, delimer, b));
+                primary.getSpecialtyChances()
+                    .forEach((k, v) -> printData("[SPECIALITY]", k, v, delimer, b));
                 writer.write(b.toString());
             }
 
@@ -125,8 +129,8 @@ public class CommandBees extends CommandBase {
         chance *= 100f;
         float productionModifier = (float) upgradeCount * 0.25f;
         return (float) (((1f + t / 6f) * Math.sqrt(chance) * 2f * (1f + beeSpeed)
-                + Math.pow(productionModifier, Math.cbrt(chance))
-                - 3f) / 100f);
+            + Math.pow(productionModifier, Math.cbrt(chance))
+            - 3f) / 100f);
     }
 
     private double productChanceOld(int upgradeCount, double beeSpeed, double chance) {

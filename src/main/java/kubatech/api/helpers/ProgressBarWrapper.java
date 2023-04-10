@@ -37,14 +37,14 @@ public class ProgressBarWrapper {
         else {
             steps++;
             try {
-                ProgressDisplayer.displayProgress(
-                        Tags.MODNAME + ": " + name + " -> " + message,
-                        (float) steps / (float) maxSteps);
+                ProgressDisplayer
+                    .displayProgress(Tags.MODNAME + ": " + name + " -> " + message, (float) steps / (float) maxSteps);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
             // Prevent game freeze
-            FMLCommonHandler.instance().processWindowMessages();
+            FMLCommonHandler.instance()
+                .processWindowMessages();
         }
     }
 

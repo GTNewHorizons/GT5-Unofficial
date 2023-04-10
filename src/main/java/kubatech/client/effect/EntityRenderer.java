@@ -85,7 +85,7 @@ public class EntityRenderer extends EntityFX {
 
     @Override
     public void renderParticle(Tessellator p_70539_1_, float p_70539_2_, float p_70539_3_, float p_70539_4_,
-            float p_70539_5_, float p_70539_6_, float p_70539_7_) {
+        float p_70539_5_, float p_70539_6_, float p_70539_7_) {
         if (entityToRender == null) return;
 
         GL11.glEnable(GL11.GL_LIGHTING);
@@ -128,7 +128,7 @@ public class EntityRenderer extends EntityFX {
         float p_147936_2_ = 0.5f;
 
         float f1 = entityToRender.prevRotationYaw
-                + (entityToRender.rotationYaw - entityToRender.prevRotationYaw) * p_147936_2_;
+            + (entityToRender.rotationYaw - entityToRender.prevRotationYaw) * p_147936_2_;
         int i = entityToRender.getBrightnessForRender(p_147936_2_);
 
         if (entityToRender.isBurning()) {
@@ -147,9 +147,9 @@ public class EntityRenderer extends EntityFX {
         int stackdepth = GL11.glGetInteger(GL11.GL_MODELVIEW_STACK_DEPTH);
         GL11.glPushMatrix();
         GL11.glTranslatef(
-                (float) (this.posX - renderPosX),
-                (float) (this.posY - renderPosY),
-                (float) (this.posZ - renderPosZ));
+            (float) (this.posX - renderPosX),
+            (float) (this.posY - renderPosY),
+            (float) (this.posZ - renderPosZ));
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);
         float desiredScale = MobUtils.getDesiredScale(entityToRender, 2f);
         if (desiredScale < 1f) GL11.glScalef(desiredScale, desiredScale, desiredScale);
@@ -182,7 +182,7 @@ public class EntityRenderer extends EntityFX {
 
         int err;
         while ((err = GL11.glGetError()) != GL11.GL_NO_ERROR) if (Config.Debug.showRenderErrors) LOG.error(
-                EntityList.getEntityString(entityToRender) + " | GL ERROR: " + err + " / " + GLU.gluErrorString(err));
+            EntityList.getEntityString(entityToRender) + " | GL ERROR: " + err + " / " + GLU.gluErrorString(err));
 
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glDisable(GL11.GL_COLOR_MATERIAL);

@@ -99,8 +99,8 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
 
 public class GT_MetaTileEntity_ExtremeExterminationChamber
-        extends KubaTechGTMultiBlockBase<GT_MetaTileEntity_ExtremeExterminationChamber>
-        implements CustomTileEntityPacketHandler, ISurvivalConstructable {
+    extends KubaTechGTMultiBlockBase<GT_MetaTileEntity_ExtremeExterminationChamber>
+    implements CustomTileEntityPacketHandler, ISurvivalConstructable {
 
     public static final HashMap<String, MobRecipeLoader.MobRecipe> MobNameToRecipeMap = new HashMap<>();
     public static final double DIAMOND_SPIKES_DAMAGE = 9d;
@@ -132,36 +132,34 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
     private static final int CASING_INDEX = 16;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<GT_MetaTileEntity_ExtremeExterminationChamber> STRUCTURE_DEFINITION = StructureDefinition
-            .<GT_MetaTileEntity_ExtremeExterminationChamber>builder()
-            .addShape(
-                    STRUCTURE_PIECE_MAIN,
-                    transpose(
-                            new String[][] { { "ccccc", "ccccc", "ccccc", "ccccc", "ccccc" },
-                                    { "fgggf", "g---g", "g---g", "g---g", "fgggf" },
-                                    { "fgggf", "g---g", "g---g", "g---g", "fgggf" },
-                                    { "fgggf", "g---g", "g---g", "g---g", "fgggf" },
-                                    { "fgggf", "g---g", "g---g", "g---g", "fgggf" },
-                                    { "fgggf", "gsssg", "gsssg", "gsssg", "fgggf" },
-                                    { "CC~CC", "CCCCC", "CCCCC", "CCCCC", "CCCCC" }, }))
-            .addElement('c', onElementPass(t -> t.mCasing++, ofBlock(GregTech_API.sBlockCasings2, 0)))
-            .addElement(
-                    'C',
-                    buildHatchAdder(GT_MetaTileEntity_ExtremeExterminationChamber.class)
-                            .atLeast(InputBus, OutputBus, OutputHatch, Energy, Maintenance).casingIndex(CASING_INDEX)
-                            .dot(1)
-                            .buildAndChain(onElementPass(t -> t.mCasing++, ofBlock(GregTech_API.sBlockCasings2, 0))))
-            .addElement(
-                    'g',
-                    LoaderReference.Bartworks
-                            ? BorosilicateGlass.ofBoroGlass((byte) 0, (t, v) -> t.mGlassTier = v, t -> t.mGlassTier)
-                            : onElementPass(t -> t.mGlassTier = 100, ofBlock(Blocks.glass, 0)))
-            .addElement('f', ofFrame(Materials.Steel))
-            .addElement(
-                    's',
-                    LoaderReference.ExtraUtilities
-                            ? ofBlock(Block.getBlockFromName("ExtraUtilities:spike_base_diamond"), 0)
-                            : isAir())
-            .build();
+        .<GT_MetaTileEntity_ExtremeExterminationChamber>builder()
+        .addShape(
+            STRUCTURE_PIECE_MAIN,
+            transpose(
+                new String[][] { { "ccccc", "ccccc", "ccccc", "ccccc", "ccccc" },
+                    { "fgggf", "g---g", "g---g", "g---g", "fgggf" }, { "fgggf", "g---g", "g---g", "g---g", "fgggf" },
+                    { "fgggf", "g---g", "g---g", "g---g", "fgggf" }, { "fgggf", "g---g", "g---g", "g---g", "fgggf" },
+                    { "fgggf", "gsssg", "gsssg", "gsssg", "fgggf" },
+                    { "CC~CC", "CCCCC", "CCCCC", "CCCCC", "CCCCC" }, }))
+        .addElement('c', onElementPass(t -> t.mCasing++, ofBlock(GregTech_API.sBlockCasings2, 0)))
+        .addElement(
+            'C',
+            buildHatchAdder(GT_MetaTileEntity_ExtremeExterminationChamber.class)
+                .atLeast(InputBus, OutputBus, OutputHatch, Energy, Maintenance)
+                .casingIndex(CASING_INDEX)
+                .dot(1)
+                .buildAndChain(onElementPass(t -> t.mCasing++, ofBlock(GregTech_API.sBlockCasings2, 0))))
+        .addElement(
+            'g',
+            LoaderReference.Bartworks
+                ? BorosilicateGlass.ofBoroGlass((byte) 0, (t, v) -> t.mGlassTier = v, t -> t.mGlassTier)
+                : onElementPass(t -> t.mGlassTier = 100, ofBlock(Blocks.glass, 0)))
+        .addElement('f', ofFrame(Materials.Steel))
+        .addElement(
+            's',
+            LoaderReference.ExtraUtilities ? ofBlock(Block.getBlockFromName("ExtraUtilities:spike_base_diamond"), 0)
+                : isAir())
+        .build();
 
     private TileEntity masterStoneRitual = null;
     private TileEntity tileAltar = null;
@@ -191,7 +189,7 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
         mAnimationEnabled = !aNBT.hasKey("mAnimationEnabled") || aNBT.getBoolean("mAnimationEnabled");
         mGlassTier = aNBT.getByte("mGlassTier");
         mIsProducingInfernalDrops = !aNBT.hasKey("mIsProducingInfernalDrops")
-                || aNBT.getBoolean("mIsProducingInfernalDrops");
+            || aNBT.getBoolean("mIsProducingInfernalDrops");
     }
 
     @Override
@@ -217,35 +215,44 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
-        tt.addMachineType("Powered Spawner").addInfo("Controller block for Extreme Extermination Chamber")
-                .addInfo(Author).addInfo("Spawns and Exterminates monsters for you")
-                .addInfo("You have to insert the powered spawner in controller")
-                .addInfo("Base energy usage: 2,000 EU/t")
-                .addInfo("Supports perfect OC, minimum time: 20 ticks, after that multiplies the outputs")
-                .addInfo("Recipe time is based on mob health")
-                .addInfo("You can additionally put a weapon to the ULV input bus")
-                .addInfo("It will speed up the process and apply looting level from the weapon (maximum 4 levels)")
-                .addInfo(EnumChatFormatting.RED + "Enchanting the spikes inside does nothing!")
-                .addInfo("Also produces 120 Liquid XP per operation").addInfo("If the mob spawns infernal")
-                .addInfo("it will drain 8 times more power")
-                .addInfo("You can prevent infernal spawns by shift clicking with a screwdriver")
-                .addInfo("Note: If the mob has forced infernal spawn, it will do it anyway")
-                .addInfo("You can enable ritual mode with a screwdriver")
-                .addInfo("When in ritual mode and Well Of Suffering ritual is built directly on the machine in center")
-                .addInfo("The mobs will start to buffer and die very slowly by a ritual")
-                .addInfo("You can disable mob animation with a soldering iron").addInfo(StructureHologram)
-                .addSeparator().beginStructureBlock(5, 7, 5, true).addController("Front Bottom Center")
-                .addCasingInfoMin("Solid Steel Machine Casing", 10, false)
-                .addOtherStructurePart("Borosilicate Glass", "All walls without corners")
-                .addStructureInfo("The glass tier limits the Energy Input tier")
-                .addOtherStructurePart("Steel Frame Box", "All vertical corners (except top and bottom)")
-                .addOtherStructurePart("Diamond spikes", "Inside second layer").addOutputBus("Any bottom casing", 1)
-                .addOtherStructurePart(
-                        "1x ULV " + StatCollector.translateToLocal("GT5U.MBTT.InputBus"),
-                        "Any bottom casing",
-                        1)
-                .addOutputHatch("Any bottom casing", 1).addEnergyHatch("Any bottom casing", 1)
-                .addMaintenanceHatch("Any bottom casing", 1).toolTipFinisher(Tags.MODNAME);
+        tt.addMachineType("Powered Spawner")
+            .addInfo("Controller block for Extreme Extermination Chamber")
+            .addInfo(Author)
+            .addInfo("Spawns and Exterminates monsters for you")
+            .addInfo("You have to insert the powered spawner in controller")
+            .addInfo("Base energy usage: 2,000 EU/t")
+            .addInfo("Supports perfect OC, minimum time: 20 ticks, after that multiplies the outputs")
+            .addInfo("Recipe time is based on mob health")
+            .addInfo("You can additionally put a weapon to the ULV input bus")
+            .addInfo("It will speed up the process and apply looting level from the weapon (maximum 4 levels)")
+            .addInfo(EnumChatFormatting.RED + "Enchanting the spikes inside does nothing!")
+            .addInfo("Also produces 120 Liquid XP per operation")
+            .addInfo("If the mob spawns infernal")
+            .addInfo("it will drain 8 times more power")
+            .addInfo("You can prevent infernal spawns by shift clicking with a screwdriver")
+            .addInfo("Note: If the mob has forced infernal spawn, it will do it anyway")
+            .addInfo("You can enable ritual mode with a screwdriver")
+            .addInfo("When in ritual mode and Well Of Suffering ritual is built directly on the machine in center")
+            .addInfo("The mobs will start to buffer and die very slowly by a ritual")
+            .addInfo("You can disable mob animation with a soldering iron")
+            .addInfo(StructureHologram)
+            .addSeparator()
+            .beginStructureBlock(5, 7, 5, true)
+            .addController("Front Bottom Center")
+            .addCasingInfoMin("Solid Steel Machine Casing", 10, false)
+            .addOtherStructurePart("Borosilicate Glass", "All walls without corners")
+            .addStructureInfo("The glass tier limits the Energy Input tier")
+            .addOtherStructurePart("Steel Frame Box", "All vertical corners (except top and bottom)")
+            .addOtherStructurePart("Diamond spikes", "Inside second layer")
+            .addOutputBus("Any bottom casing", 1)
+            .addOtherStructurePart(
+                "1x ULV " + StatCollector.translateToLocal("GT5U.MBTT.InputBus"),
+                "Any bottom casing",
+                1)
+            .addOutputHatch("Any bottom casing", 1)
+            .addEnergyHatch("Any bottom casing", 1)
+            .addMaintenanceHatch("Any bottom casing", 1)
+            .toolTipFinisher(Tags.MODNAME);
         return tt;
     }
 
@@ -266,16 +273,27 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-            boolean aActive, boolean aRedstone) {
+        boolean aActive, boolean aRedstone) {
         if (aSide == aFacing) {
             if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE).extFacing().build(),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW).extFacing().glow()
-                            .build() };
-            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_DISTILLATION_TOWER).extFacing().build(),
-                    TextureFactory.builder().addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_GLOW).extFacing().glow()
-                            .build() };
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE)
+                    .extFacing()
+                    .build(),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW)
+                    .extFacing()
+                    .glow()
+                    .build() };
+            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX), TextureFactory.builder()
+                .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER)
+                .extFacing()
+                .build(),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_GLOW)
+                    .extFacing()
+                    .glow()
+                    .build() };
         }
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX) };
     }
@@ -283,10 +301,12 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
     @SideOnly(Side.CLIENT)
     private void setupEntityRenderer(IGregTechTileEntity aBaseMetaTileEntity, int time) {
         if (entityRenderer == null) {
-            ChunkCoordinates coords = this.getBaseMetaTileEntity().getCoords();
+            ChunkCoordinates coords = this.getBaseMetaTileEntity()
+                .getCoords();
             int[] abc = new int[] { 0, -2, 2 };
             int[] xyz = new int[] { 0, 0, 0 };
-            this.getExtendedFacing().getWorldOffset(abc, xyz);
+            this.getExtendedFacing()
+                .getWorldOffset(abc, xyz);
             xyz[0] += coords.posX;
             xyz[1] += coords.posY;
             xyz[2] += coords.posZ;
@@ -355,7 +375,7 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
 
     @Override
     public boolean onSolderingToolRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY,
-            float aZ) {
+        float aZ) {
         if (super.onSolderingToolRightClick(aSide, aWrenchingSide, aPlayer, aX, aY, aZ)) return true;
         mAnimationEnabled = !mAnimationEnabled;
         GT_Utility.sendChatToPlayer(aPlayer, "Animations are " + (mAnimationEnabled ? "enabled" : "disabled"));
@@ -396,18 +416,18 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
                 }
 
                 ((IBloodAltar) tileAltar).sacrificialDaggerCall(
-                        100 * RitualEffectWellOfSuffering.amount
-                                * (effect.canDrainReagent(
-                                        event.mrs,
-                                        ReagentRegistry.offensaReagent,
-                                        ReflectionHelper.getField(effect, "offensaDrain", 3),
-                                        true) ? 2 : 1)
-                                * (effect.canDrainReagent(
-                                        event.mrs,
-                                        ReagentRegistry.tenebraeReagent,
-                                        ReflectionHelper.getField(effect, "tennebraeDrain", 5),
-                                        true) ? 2 : 1),
-                        true);
+                    100 * RitualEffectWellOfSuffering.amount
+                        * (effect.canDrainReagent(
+                            event.mrs,
+                            ReagentRegistry.offensaReagent,
+                            ReflectionHelper.getField(effect, "offensaDrain", 3),
+                            true) ? 2 : 1)
+                        * (effect.canDrainReagent(
+                            event.mrs,
+                            ReagentRegistry.tenebraeReagent,
+                            ReflectionHelper.getField(effect, "tennebraeDrain", 5),
+                            true) ? 2 : 1),
+                    true);
 
                 SoulNetworkHandler.syphonFromNetwork(owner, effect.getCostPerRefresh() * 100);
             }
@@ -434,19 +454,18 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
         if (aStack.getItem() != poweredSpawnerItem) return false;
 
         if (aStack.getTagCompound() == null) return false;
-        String mobType = aStack.getTagCompound().getString("mobType");
+        String mobType = aStack.getTagCompound()
+            .getString("mobType");
         if (mobType.isEmpty()) return false;
 
         if (mobType.equals("Skeleton") && getBaseMetaTileEntity().getWorld().provider instanceof WorldProviderHell
-                && rand.nextInt(5) > 0)
-            mobType = "witherSkeleton";
+            && rand.nextInt(5) > 0) mobType = "witherSkeleton";
 
         MobRecipeLoader.MobRecipe recipe = MobNameToRecipeMap.get(mobType);
 
         if (recipe == null) return false;
-        if (!recipe.isPeacefulAllowed
-                && this.getBaseMetaTileEntity().getWorld().difficultySetting == EnumDifficulty.PEACEFUL)
-            return false;
+        if (!recipe.isPeacefulAllowed && this.getBaseMetaTileEntity()
+            .getWorld().difficultySetting == EnumDifficulty.PEACEFUL) return false;
 
         if (isInRitualMode && isRitualValid()) {
             if (getMaxInputEu() < recipe.mEUt / 4) return false;
@@ -471,28 +490,29 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
                 try {
                     // noinspection unchecked
                     weaponCache.attackDamage = ((Multimap<String, AttributeModifier>) lootingHolder
-                            .getAttributeModifiers())
-                                    .get(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName()).stream()
-                                    .mapToDouble(
-                                            attr -> attr.getAmount() + (double) EnchantmentHelper
-                                                    .func_152377_a(lootingHolder, EnumCreatureAttribute.UNDEFINED))
-                                    .sum();
+                        .getAttributeModifiers())
+                            .get(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName())
+                            .stream()
+                            .mapToDouble(
+                                attr -> attr.getAmount() + (double) EnchantmentHelper
+                                    .func_152377_a(lootingHolder, EnumCreatureAttribute.UNDEFINED))
+                            .sum();
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
                 weaponCache.isValid = true;
                 weaponCache.looting = Math
-                        .min(4, EnchantmentHelper.getEnchantmentLevel(Enchantment.looting.effectId, lootingHolder));
+                    .min(4, EnchantmentHelper.getEnchantmentLevel(Enchantment.looting.effectId, lootingHolder));
                 weaponCache.id = ItemID.create_NoCopy(lootingHolder, true, true);
             }
             if (weaponCache.isValid) attackDamage += weaponCache.attackDamage;
 
             this.mOutputItems = recipe.generateOutputs(
-                    rand,
-                    this,
-                    attackDamage,
-                    weaponCache.isValid ? weaponCache.looting : 0,
-                    mIsProducingInfernalDrops);
+                rand,
+                this,
+                attackDamage,
+                weaponCache.isValid ? weaponCache.looting : 0,
+                mIsProducingInfernalDrops);
             this.mOutputFluids = new FluidStack[] { FluidRegistry.getFluidStack("xpjuice", 120) };
             int times = this.calculatePerfectOverclock(this.lEUt, this.mMaxProgresstime);
             // noinspection ConstantConditions
@@ -529,8 +549,8 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
     private boolean isRitualValid() {
         if (!isInRitualMode) return false;
         if (masterStoneRitual == null) return false;
-        if (masterStoneRitual.isInvalid()
-                || !(((TEMasterStone) masterStoneRitual).getCurrentRitual().equals(WellOfSufferingRitualName))) {
+        if (masterStoneRitual.isInvalid() || !(((TEMasterStone) masterStoneRitual).getCurrentRitual()
+            .equals(WellOfSufferingRitualName))) {
             masterStoneRitual = null;
             return false;
         }
@@ -539,16 +559,20 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
 
     private boolean connectToRitual() {
         if (!LoaderReference.BloodMagic) return false;
-        ChunkCoordinates coords = this.getBaseMetaTileEntity().getCoords();
+        ChunkCoordinates coords = this.getBaseMetaTileEntity()
+            .getCoords();
         int[] abc = new int[] { 0, -8, 2 };
         int[] xyz = new int[] { 0, 0, 0 };
-        this.getExtendedFacing().getWorldOffset(abc, xyz);
+        this.getExtendedFacing()
+            .getWorldOffset(abc, xyz);
         xyz[0] += coords.posX;
         xyz[1] += coords.posY;
         xyz[2] += coords.posZ;
-        TileEntity te = this.getBaseMetaTileEntity().getTileEntity(xyz[0], xyz[1], xyz[2]);
+        TileEntity te = this.getBaseMetaTileEntity()
+            .getTileEntity(xyz[0], xyz[1], xyz[2]);
         if (te instanceof TEMasterStone) {
-            if (((TEMasterStone) te).getCurrentRitual().equals(WellOfSufferingRitualName)) {
+            if (((TEMasterStone) te).getCurrentRitual()
+                .equals(WellOfSufferingRitualName)) {
                 masterStoneRitual = te;
                 return true;
             }
@@ -561,8 +585,8 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
         mGlassTier = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 6, 0)) return false;
         if (mCasing < 10 || mMaintenanceHatches.size() != 1
-                || mEnergyHatches.size() == 0
-                || !(mInputBusses.size() == 0 || (mInputBusses.size() == 1 && mInputBusses.get(0).mTier == 0)))
+            || mEnergyHatches.size() == 0
+            || !(mInputBusses.size() == 0 || (mInputBusses.size() == 1 && mInputBusses.get(0).mTier == 0)))
             return false;
         if (mGlassTier < 8)
             for (GT_MetaTileEntity_Hatch_Energy hatch : mEnergyHatches) if (hatch.mTier > mGlassTier) return false;
@@ -575,20 +599,20 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
         ArrayList<String> info = new ArrayList<>(Arrays.asList(super.getInfoData()));
         info.add("Animations: " + EnumChatFormatting.YELLOW + (mAnimationEnabled ? "Enabled" : "Disabled"));
         info.add(
-                "Is allowed to produce infernal drops: " + EnumChatFormatting.YELLOW
-                        + (mIsProducingInfernalDrops ? "Yes" : "No"));
+            "Is allowed to produce infernal drops: " + EnumChatFormatting.YELLOW
+                + (mIsProducingInfernalDrops ? "Yes" : "No"));
         info.add("Is in ritual mode: " + EnumChatFormatting.YELLOW + (isInRitualMode ? "Yes" : "No"));
         if (isInRitualMode) info.add(
-                "Is connected to ritual: "
-                        + (isRitualValid() ? EnumChatFormatting.GREEN + "Yes" : EnumChatFormatting.RED + "No"));
+            "Is connected to ritual: "
+                + (isRitualValid() ? EnumChatFormatting.GREEN + "Yes" : EnumChatFormatting.RED + "No"));
         else {
             info.add("Inserted weapon: " + EnumChatFormatting.YELLOW + (weaponCache.isValid ? "Yes" : "No"));
             if (weaponCache.isValid) {
                 info.add("Weapon attack damage: " + EnumChatFormatting.YELLOW + weaponCache.attackDamage);
                 info.add("Weapon looting level: " + EnumChatFormatting.YELLOW + weaponCache.looting);
                 info.add(
-                        "Total attack damage: " + EnumChatFormatting.YELLOW
-                                + (DIAMOND_SPIKES_DAMAGE + weaponCache.attackDamage));
+                    "Total attack damage: " + EnumChatFormatting.YELLOW
+                        + (DIAMOND_SPIKES_DAMAGE + weaponCache.attackDamage));
             } else info.add("Total attack damage: " + EnumChatFormatting.YELLOW + DIAMOND_SPIKES_DAMAGE);
         }
         return info.toArray(new String[0]);
@@ -611,44 +635,51 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
 
     @Override
     public void bindPlayerInventoryUI(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        builder.bindPlayerInventory(buildContext.getPlayer(), new Pos2d(7, 83), this.getGUITextureSet().getItemSlot());
+        builder.bindPlayerInventory(
+            buildContext.getPlayer(),
+            new Pos2d(7, 83),
+            this.getGUITextureSet()
+                .getItemSlot());
     }
 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.widget(
-                new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK).setPos(7, 4).setSize(143, 75)
-                        .setEnabled(widget -> !isFixed.apply(widget)));
+            new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
+                .setPos(7, 4)
+                .setSize(143, 75)
+                .setEnabled(widget -> !isFixed.apply(widget)));
         final SlotWidget inventorySlot = new SlotWidget(inventoryHandler, 1)
-                .setFilter(stack -> stack.getItem() == poweredSpawnerItem);
+            .setFilter(stack -> stack.getItem() == poweredSpawnerItem);
 
         DynamicPositionedColumn configurationElements = new DynamicPositionedColumn();
         addConfigurationWidgets(configurationElements, buildContext, inventorySlot);
 
         builder.widget(
-                new DynamicPositionedColumn().setSynced(false).widget(inventorySlot).widget(
-                        new CycleButtonWidget().setToggle(() -> getBaseMetaTileEntity().isAllowedToWork(), works -> {
-                            if (works) getBaseMetaTileEntity().enableWorking();
-                            else getBaseMetaTileEntity().disableWorking();
+            new DynamicPositionedColumn().setSynced(false)
+                .widget(inventorySlot)
+                .widget(new CycleButtonWidget().setToggle(() -> getBaseMetaTileEntity().isAllowedToWork(), works -> {
+                    if (works) getBaseMetaTileEntity().enableWorking();
+                    else getBaseMetaTileEntity().disableWorking();
 
-                            if (!(buildContext.getPlayer() instanceof EntityPlayerMP)) return;
-                            String tChat = GT_Utility.trans("090", "Machine Processing: ")
-                                    + (works ? GT_Utility.trans("088", "Enabled")
-                                            : GT_Utility.trans("087", "Disabled"));
-                            if (hasAlternativeModeText()) tChat = getAlternativeModeText();
-                            GT_Utility.sendChatToPlayer(buildContext.getPlayer(), tChat);
-                        }).addTooltip(0, new Text("Disabled").color(Color.RED.dark(3)))
-                                .addTooltip(1, new Text("Enabled").color(Color.GREEN.dark(3)))
-                                .setVariableBackgroundGetter(toggleButtonBackgroundGetter).setSize(18, 18)
-                                .addTooltip("Working status"))
-                        .widget(configurationElements.setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
-                        .widget(
-                                new DrawableWidget().setDrawable(GT_UITextures.OVERLAY_BUTTON_CROSS).setSize(18, 18)
-                                        .addTooltip(
-                                                new Text("Please stop the machine to configure it")
-                                                        .color(Color.RED.dark(3)))
-                                        .setEnabled(widget -> getBaseMetaTileEntity().isActive()))
-                        .setPos(151, 4));
+                    if (!(buildContext.getPlayer() instanceof EntityPlayerMP)) return;
+                    String tChat = GT_Utility.trans("090", "Machine Processing: ")
+                        + (works ? GT_Utility.trans("088", "Enabled") : GT_Utility.trans("087", "Disabled"));
+                    if (hasAlternativeModeText()) tChat = getAlternativeModeText();
+                    GT_Utility.sendChatToPlayer(buildContext.getPlayer(), tChat);
+                })
+                    .addTooltip(0, new Text("Disabled").color(Color.RED.dark(3)))
+                    .addTooltip(1, new Text("Enabled").color(Color.GREEN.dark(3)))
+                    .setVariableBackgroundGetter(toggleButtonBackgroundGetter)
+                    .setSize(18, 18)
+                    .addTooltip("Working status"))
+                .widget(configurationElements.setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
+                .widget(
+                    new DrawableWidget().setDrawable(GT_UITextures.OVERLAY_BUTTON_CROSS)
+                        .setSize(18, 18)
+                        .addTooltip(new Text("Please stop the machine to configure it").color(Color.RED.dark(3)))
+                        .setEnabled(widget -> getBaseMetaTileEntity().isActive()))
+                .setPos(151, 4));
 
         final DynamicPositionedColumn screenElements = new DynamicPositionedColumn();
         drawTexts(screenElements, inventorySlot);
@@ -656,7 +687,7 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
     }
 
     private void addConfigurationWidgets(DynamicPositionedColumn configurationElements, UIBuildContext buildContext,
-            SlotWidget inventorySlot) {
+        SlotWidget inventorySlot) {
         configurationElements.setSynced(false);
         configurationElements.widget(new CycleButtonWidget().setToggle(() -> isInRitualMode, v -> {
             if (this.mMaxProgresstime > 0) {
@@ -675,7 +706,10 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
                     GT_Utility.sendChatToPlayer(buildContext.getPlayer(), "Successfully connected to the ritual");
                 else GT_Utility.sendChatToPlayer(buildContext.getPlayer(), "Can't connect to the ritual");
             }
-        }).setVariableBackgroundGetter(toggleButtonBackgroundGetter).setSize(18, 18).addTooltip("Ritual mode"));
+        })
+            .setVariableBackgroundGetter(toggleButtonBackgroundGetter)
+            .setSize(18, 18)
+            .addTooltip("Ritual mode"));
         configurationElements.widget(new CycleButtonWidget().setToggle(() -> mIsProducingInfernalDrops, v -> {
             if (this.mMaxProgresstime > 0) {
                 GT_Utility.sendChatToPlayer(buildContext.getPlayer(), "Can't change mode when running !");
@@ -686,29 +720,33 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
 
             if (!(buildContext.getPlayer() instanceof EntityPlayerMP)) return;
             if (!mIsProducingInfernalDrops) GT_Utility
-                    .sendChatToPlayer(buildContext.getPlayer(), "Mobs will now be prevented from spawning infernal");
+                .sendChatToPlayer(buildContext.getPlayer(), "Mobs will now be prevented from spawning infernal");
             else GT_Utility.sendChatToPlayer(buildContext.getPlayer(), "Mobs can spawn infernal now");
-        }).setVariableBackgroundGetter(toggleButtonBackgroundGetter).setSize(18, 18)
-                .addTooltip("Is allowed to spawn infernal mobs")
-                .addTooltip(new Text("Does not affect mobs that are always infernal !").color(Color.GRAY.normal)));
+        })
+            .setVariableBackgroundGetter(toggleButtonBackgroundGetter)
+            .setSize(18, 18)
+            .addTooltip("Is allowed to spawn infernal mobs")
+            .addTooltip(new Text("Does not affect mobs that are always infernal !").color(Color.GRAY.normal)));
     }
 
     @Override
     protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
-        screenElements.setSynced(false).setSpace(0).setPos(10, 7);
+        screenElements.setSynced(false)
+            .setSpace(0)
+            .setPos(10, 7);
 
         screenElements.widget(
-                new DynamicPositionedRow().setSynced(false)
-                        .widget(new TextWidget("Status: ").setDefaultColor(COLOR_TEXT_GRAY.get()))
-                        .widget(new DynamicTextWidget(() -> {
-                            if (getBaseMetaTileEntity().isActive())
-                                return new Text("Working !").color(Color.GREEN.dark(3));
-                            else if (getBaseMetaTileEntity().isAllowedToWork())
-                                return new Text("Enabled").color(Color.GREEN.dark(3));
-                            else if (getBaseMetaTileEntity().wasShutdown())
-                                return new Text("Shutdown (CRITICAL)").color(Color.RED.dark(3));
-                            else return new Text("Disabled").color(Color.RED.dark(3));
-                        })).setEnabled(isFixed));
+            new DynamicPositionedRow().setSynced(false)
+                .widget(new TextWidget("Status: ").setDefaultColor(COLOR_TEXT_GRAY.get()))
+                .widget(new DynamicTextWidget(() -> {
+                    if (getBaseMetaTileEntity().isActive()) return new Text("Working !").color(Color.GREEN.dark(3));
+                    else if (getBaseMetaTileEntity().isAllowedToWork())
+                        return new Text("Enabled").color(Color.GREEN.dark(3));
+                    else if (getBaseMetaTileEntity().wasShutdown())
+                        return new Text("Shutdown (CRITICAL)").color(Color.RED.dark(3));
+                    else return new Text("Disabled").color(Color.RED.dark(3));
+                }))
+                .setEnabled(isFixed));
         screenElements.widget(new DynamicTextWidget(() -> {
             ItemStack aStack = mInventory[1];
             if (aStack == null) return new Text("Insert Powered Spawner").color(Color.RED.dark(3));
@@ -717,51 +755,53 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
                 if (aStack.getItem() != poweredSpawnerItem) return invalid;
 
                 if (aStack.getTagCompound() == null) return invalid;
-                String mobType = aStack.getTagCompound().getString("mobType");
+                String mobType = aStack.getTagCompound()
+                    .getString("mobType");
                 if (mobType.isEmpty()) return invalid;
 
                 if (!MobNameToRecipeMap.containsKey(mobType)) return invalid;
 
                 return new Text(StatCollector.translateToLocal("entity." + mobType + ".name"))
-                        .color(Color.GREEN.dark(3));
+                    .color(Color.GREEN.dark(3));
             }
         }).setEnabled(isFixed));
 
         screenElements
-                .widget(
-                        new TextWidget(GT_Utility.trans("132", "Pipe is loose."))
-                                .setDefaultColor(COLOR_TEXT_WHITE.get()).setEnabled(widget -> !mWrench))
-                .widget(new FakeSyncWidget.BooleanSyncer(() -> mWrench, val -> mWrench = val));
+            .widget(
+                new TextWidget(GT_Utility.trans("132", "Pipe is loose.")).setDefaultColor(COLOR_TEXT_WHITE.get())
+                    .setEnabled(widget -> !mWrench))
+            .widget(new FakeSyncWidget.BooleanSyncer(() -> mWrench, val -> mWrench = val));
         screenElements
-                .widget(
-                        new TextWidget(GT_Utility.trans("133", "Screws are loose."))
-                                .setDefaultColor(COLOR_TEXT_WHITE.get()).setEnabled(widget -> !mScrewdriver))
-                .widget(new FakeSyncWidget.BooleanSyncer(() -> mScrewdriver, val -> mScrewdriver = val));
+            .widget(
+                new TextWidget(GT_Utility.trans("133", "Screws are loose.")).setDefaultColor(COLOR_TEXT_WHITE.get())
+                    .setEnabled(widget -> !mScrewdriver))
+            .widget(new FakeSyncWidget.BooleanSyncer(() -> mScrewdriver, val -> mScrewdriver = val));
         screenElements
-                .widget(
-                        new TextWidget(GT_Utility.trans("134", "Something is stuck."))
-                                .setDefaultColor(COLOR_TEXT_WHITE.get()).setEnabled(widget -> !mSoftHammer))
-                .widget(new FakeSyncWidget.BooleanSyncer(() -> mSoftHammer, val -> mSoftHammer = val));
+            .widget(
+                new TextWidget(GT_Utility.trans("134", "Something is stuck.")).setDefaultColor(COLOR_TEXT_WHITE.get())
+                    .setEnabled(widget -> !mSoftHammer))
+            .widget(new FakeSyncWidget.BooleanSyncer(() -> mSoftHammer, val -> mSoftHammer = val));
         screenElements
-                .widget(
-                        new TextWidget(GT_Utility.trans("135", "Platings are dented."))
-                                .setDefaultColor(COLOR_TEXT_WHITE.get()).setEnabled(widget -> !mHardHammer))
-                .widget(new FakeSyncWidget.BooleanSyncer(() -> mHardHammer, val -> mHardHammer = val));
+            .widget(
+                new TextWidget(GT_Utility.trans("135", "Platings are dented.")).setDefaultColor(COLOR_TEXT_WHITE.get())
+                    .setEnabled(widget -> !mHardHammer))
+            .widget(new FakeSyncWidget.BooleanSyncer(() -> mHardHammer, val -> mHardHammer = val));
         screenElements
-                .widget(
-                        new TextWidget(GT_Utility.trans("136", "Circuitry burned out."))
-                                .setDefaultColor(COLOR_TEXT_WHITE.get()).setEnabled(widget -> !mSolderingTool))
-                .widget(new FakeSyncWidget.BooleanSyncer(() -> mSolderingTool, val -> mSolderingTool = val));
+            .widget(
+                new TextWidget(GT_Utility.trans("136", "Circuitry burned out.")).setDefaultColor(COLOR_TEXT_WHITE.get())
+                    .setEnabled(widget -> !mSolderingTool))
+            .widget(new FakeSyncWidget.BooleanSyncer(() -> mSolderingTool, val -> mSolderingTool = val));
         screenElements
-                .widget(
-                        new TextWidget(GT_Utility.trans("137", "That doesn't belong there."))
-                                .setDefaultColor(COLOR_TEXT_WHITE.get()).setEnabled(widget -> !mCrowbar))
-                .widget(new FakeSyncWidget.BooleanSyncer(() -> mCrowbar, val -> mCrowbar = val));
+            .widget(
+                new TextWidget(GT_Utility.trans("137", "That doesn't belong there."))
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
+                    .setEnabled(widget -> !mCrowbar))
+            .widget(new FakeSyncWidget.BooleanSyncer(() -> mCrowbar, val -> mCrowbar = val));
         screenElements
-                .widget(
-                        new TextWidget(GT_Utility.trans("138", "Incomplete Structure."))
-                                .setDefaultColor(COLOR_TEXT_WHITE.get()).setEnabled(widget -> !mMachine))
-                .widget(new FakeSyncWidget.BooleanSyncer(() -> mMachine, val -> mMachine = val));
+            .widget(
+                new TextWidget(GT_Utility.trans("138", "Incomplete Structure.")).setDefaultColor(COLOR_TEXT_WHITE.get())
+                    .setEnabled(widget -> !mMachine))
+            .widget(new FakeSyncWidget.BooleanSyncer(() -> mMachine, val -> mMachine = val));
     }
 
     private static class EECFakePlayer extends FakePlayer {
@@ -771,10 +811,11 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
 
         public EECFakePlayer(GT_MetaTileEntity_ExtremeExterminationChamber mte) {
             super(
-                    (WorldServer) mte.getBaseMetaTileEntity().getWorld(),
-                    new GameProfile(
-                            UUID.nameUUIDFromBytes("[EEC Fake Player]".getBytes(StandardCharsets.UTF_8)),
-                            "[EEC Fake Player]"));
+                (WorldServer) mte.getBaseMetaTileEntity()
+                    .getWorld(),
+                new GameProfile(
+                    UUID.nameUUIDFromBytes("[EEC Fake Player]".getBytes(StandardCharsets.UTF_8)),
+                    "[EEC Fake Player]"));
             this.mte = mte;
         }
 

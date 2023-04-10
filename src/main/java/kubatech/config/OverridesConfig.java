@@ -139,15 +139,16 @@ public class OverridesConfig {
             reader = Files.newReader(overrideFile, StandardCharsets.UTF_8);
             overrides = gson.fromJson(reader, new TypeToken<Map<String, MobOverride>>() {}.getType());
             overrides.remove("ExampleMob");
-            overrides.values().forEach(o -> o.additions.forEach(MobDrop::reconstructStack));
+            overrides.values()
+                .forEach(o -> o.additions.forEach(MobDrop::reconstructStack));
             if (LoaderReference.GTNHCoreMod) {
                 LOG.info("Detected GTNH Core Mod, parsing custom drops from there.");
                 CustomDrops coredrops = ReflectionHelper
-                        .getField(MainRegistry.Module_CustomDrops, "_mCustomDrops", null);
+                    .getField(MainRegistry.Module_CustomDrops, "_mCustomDrops", null);
                 if (coredrops != null) {
                     @SuppressWarnings("unchecked")
                     ArrayList<CustomDrops.CustomDrop> customdrops = (ArrayList<CustomDrops.CustomDrop>) ((ArrayList<CustomDrops.CustomDrop>) coredrops
-                            .getCustomDrops()).clone();
+                        .getCustomDrops()).clone();
                     for (CustomDrops.CustomDrop customdrop : customdrops) {
                         try {
                             Class<?> eclass = Class.forName(customdrop.getEntityName());
@@ -156,7 +157,8 @@ public class OverridesConfig {
                             if (ename == null) continue;
                             MobOverride override = overrides.computeIfAbsent(ename, k -> new MobOverride());
                             for (CustomDrops.CustomDrop.Drop drop : customdrop.getDrops()) {
-                                String[] parts = drop.getItemName().split(":");
+                                String[] parts = drop.getItemName()
+                                    .split(":");
                                 ItemStack stack = GameRegistry.findItemStack(parts[0], parts[1], 1);
                                 if (stack == null) continue;
                                 if (parts.length > 2) stack.setItemDamage(Integer.parseInt(parts[2]));
@@ -181,8 +183,8 @@ public class OverridesConfig {
                                 }
                                 stack.stackSize = amount;
                                 // Drops from coremod are player only
-                                override.additions.add(
-                                        new MobDrop(stack, MobDrop.DropType.Normal, chance, null, null, false, true));
+                                override.additions
+                                    .add(new MobDrop(stack, MobDrop.DropType.Normal, chance, null, null, false, true));
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -213,14 +215,14 @@ public class OverridesConfig {
             exdamages.put(2, 5);
             exdamages.put(3, 10);
             ex1.additions.add(
-                    new MobDrop(
-                            new ItemStack(Items.diamond_sword),
-                            MobDrop.DropType.Rare,
-                            500,
-                            20,
-                            exdamages,
-                            true,
-                            false));
+                new MobDrop(
+                    new ItemStack(Items.diamond_sword),
+                    MobDrop.DropType.Rare,
+                    500,
+                    20,
+                    exdamages,
+                    true,
+                    false));
             example.put("ExampleMob", ex1);
             gson.toJson(example, writer);
             writer.flush();

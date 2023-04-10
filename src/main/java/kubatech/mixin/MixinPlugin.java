@@ -53,8 +53,8 @@ public class MixinPlugin implements IMixinConfigPlugin {
         final boolean isDevelopmentEnvironment = (boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
 
         List<TargetedMod> loadedMods = Arrays.stream(TargetedMod.values())
-                .filter(mod -> mod == VANILLA || (mod.loadInDevelopment && isDevelopmentEnvironment) || loadJarOf(mod))
-                .collect(Collectors.toList());
+            .filter(mod -> mod == VANILLA || (mod.loadInDevelopment && isDevelopmentEnvironment) || loadJarOf(mod))
+            .collect(Collectors.toList());
 
         for (TargetedMod mod : TargetedMod.values()) {
             if (loadedMods.contains(mod)) {
@@ -96,7 +96,10 @@ public class MixinPlugin implements IMixinConfigPlugin {
 
     public static File findJarOf(final TargetedMod mod) {
         try (Stream<Path> stream = walk(MODS_DIRECTORY_PATH)) {
-            return stream.filter(mod::isMatchingJar).map(Path::toFile).findFirst().orElse(null);
+            return stream.filter(mod::isMatchingJar)
+                .map(Path::toFile)
+                .findFirst()
+                .orElse(null);
         } catch (IOException e) {
             e.printStackTrace();
             return null;

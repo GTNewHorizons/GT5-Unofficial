@@ -59,9 +59,9 @@ public class TeaUltimate extends TeaCollection implements IItemProxyGUI {
         if (current - timeCounter > 100) {
             timeCounter = current;
             name = StringUtils.applyRainbow(
-                    "ULTIMATE",
-                    colorCounter++,
-                    EnumChatFormatting.BOLD.toString() + EnumChatFormatting.OBFUSCATED);
+                "ULTIMATE",
+                colorCounter++,
+                EnumChatFormatting.BOLD.toString() + EnumChatFormatting.OBFUSCATED);
         }
         return String.format(displayName, name + EnumChatFormatting.RESET);
     }
@@ -86,125 +86,89 @@ public class TeaUltimate extends TeaCollection implements IItemProxyGUI {
         AtomicReference<BigInteger> teaAmount = new AtomicReference<>(BigInteger.ZERO);
         AtomicReference<BigInteger> teaLimit = new AtomicReference<>(BigInteger.ZERO);
         builder.widget(
-                new TabContainer()
-                        .setButtonSize(
-                                28,
-                                32)
-                        .addTabButton(
-                                new TabButton(0)
-                                        .setBackground(
-                                                false,
-                                                ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0, 1f, 0.5f),
-                                                tab1)
-                                        .setBackground(
-                                                true,
-                                                ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0.5f, 1f, 1f),
-                                                tab1)
-                                        .setPos(0, -28))
-                        .addTabButton(
-                                new TabButton(1)
-                                        .setBackground(
-                                                false,
-                                                ModularUITextures.VANILLA_TAB_TOP_MIDDLE.getSubArea(0, 0, 1f, 0.5f),
-                                                tab2)
-                                        .setBackground(
-                                                true,
-                                                ModularUITextures.VANILLA_TAB_TOP_MIDDLE.getSubArea(0, 0.5f, 1f, 1f),
-                                                tab2)
-                                        .setPos(28, -28))
-                        .addTabButton(
-                                new TabButton(2)
-                                        .setBackground(
-                                                false,
-                                                ModularUITextures.VANILLA_TAB_TOP_MIDDLE.getSubArea(0, 0, 1f, 0.5f),
-                                                tab3)
-                                        .setBackground(
-                                                true,
-                                                ModularUITextures.VANILLA_TAB_TOP_MIDDLE.getSubArea(0, 0.5f, 1f, 1f),
-                                                tab3)
-                                        .setPos(56, -28))
-                        .addPage(
-                                new MultiChildWidget()
-                                        .addChild(
-                                                new TextWidget(
-                                                        new Text("STATUS").format(EnumChatFormatting.BOLD)
-                                                                .format(EnumChatFormatting.GOLD).shadow())
-                                                                        .setPos(10, 5))
-                                        .addChild(
-                                                new DynamicTextWidget(
-                                                        () -> new Text(
-                                                                "Tea: " + (NEIClientUtils.shiftKey()
-                                                                        ? numberFormat.format(teaAmount.get())
-                                                                        : numberFormatScientific
-                                                                                .format(teaAmount.get())))
-                                                                                        .color(Color.GREEN.dark(3)))
-                                                                                                .setSynced(false)
-                                                                                                .setPos(20, 20)
-                                                                                                .attachSyncer(
-                                                                                                        new FakeSyncWidget.BigIntegerSyncer(
-                                                                                                                () -> teaNetwork.teaAmount,
-                                                                                                                teaAmount::set),
-                                                                                                        builder))
-                                        .addChild(
-                                                new DynamicTextWidget(
-                                                        () -> new Text(
-                                                                "Tea limit: " + (NEIClientUtils.shiftKey()
-                                                                        ? numberFormat.format(teaLimit.get())
-                                                                        : numberFormatScientific
-                                                                                .format(teaLimit.get())))
-                                                                                        .color(Color.GREEN.dark(3)))
-                                                                                                .setSynced(false)
-                                                                                                .setPos(20, 30)
-                                                                                                .attachSyncer(
-                                                                                                        new FakeSyncWidget.BigIntegerSyncer(
-                                                                                                                () -> teaNetwork.teaLimit,
-                                                                                                                teaLimit::set),
-                                                                                                        builder)))
-                        .addPage(
-                                new MultiChildWidget()
-                                        .addChild(
-                                                new TextWidget(
-                                                        new Text("EXCHANGE").format(EnumChatFormatting.BOLD)
-                                                                .format(EnumChatFormatting.GOLD).shadow())
-                                                                        .setPos(10, 5))
-                                        .addChild(
-                                                new ButtonWidget()
-                                                        .setOnClick((Widget.ClickData clickData, Widget widget) -> {
-                                                            if (!(player instanceof EntityPlayerMP)) return;
-                                                            if (!teaNetwork.canAfford(50_000, true)) return;
-                                                            if (player.inventory.addItemStackToInventory(
-                                                                    ItemList.TeaAcceptorResearchNote.get(1)))
-                                                                return;
-                                                            player.entityDropItem(
-                                                                    ItemList.TeaAcceptorResearchNote.get(1),
-                                                                    0.5f);
-                                                        })
-                                                        .setBackground(
-                                                                new ItemDrawable().setItem(
-                                                                        ItemList.TeaAcceptorResearchNote.get(1)))
-                                                        .addTooltip("Tea Acceptor Research Note")
-                                                        .addTooltip(
-                                                                new Text(
-                                                                        "Cost: " + NumberFormat.getInstance()
-                                                                                .format(50_000) + " Tea")
-                                                                                        .color(Color.GRAY.normal))
-                                                        .setPos(20, 20)))
-                        .addPage(
-                                new MultiChildWidget().addChild(
-                                        new TextWidget(
-                                                new Text("BENEFITS").format(EnumChatFormatting.BOLD)
-                                                        .format(EnumChatFormatting.GOLD).shadow()).setPos(10, 5))
-                        /*
-                         * .addChild(new ButtonWidget() .setOnClick((Widget.ClickData clickData, Widget widget) -> { if
-                         * (!(player instanceof EntityPlayerMP)) return; if (playerData == null) return;
-                         * playerData.autoRegen = !playerData.autoRegen; playerData.markDirty(); }) .setBackground(new
-                         * ItemDrawable().setItem(new ItemStack(Items.potionitem, 1, 8193)))
-                         * .addTooltip("Regeneration I") .addTooltip("For 1 minute") .addTooltip(new Text("Cost: " +
-                         * NumberFormat.getInstance().format(75_000) + " Tea") .color(Color.GRAY.normal)) //
-                         * .addTooltip( //Find a way to run that on server, or different approach // new
-                         * Text("Autobuy: " + (playerData == null ? "ERROR" : playerData.autoRegen)) //
-                         * .color(Color.GREY.normal)) .setPos(20, 20))
-                         */ ));
+            new TabContainer().setButtonSize(28, 32)
+                .addTabButton(
+                    new TabButton(0)
+                        .setBackground(false, ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0, 1f, 0.5f), tab1)
+                        .setBackground(true, ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0.5f, 1f, 1f), tab1)
+                        .setPos(0, -28))
+                .addTabButton(
+                    new TabButton(1)
+                        .setBackground(false, ModularUITextures.VANILLA_TAB_TOP_MIDDLE.getSubArea(0, 0, 1f, 0.5f), tab2)
+                        .setBackground(true, ModularUITextures.VANILLA_TAB_TOP_MIDDLE.getSubArea(0, 0.5f, 1f, 1f), tab2)
+                        .setPos(28, -28))
+                .addTabButton(
+                    new TabButton(2)
+                        .setBackground(false, ModularUITextures.VANILLA_TAB_TOP_MIDDLE.getSubArea(0, 0, 1f, 0.5f), tab3)
+                        .setBackground(true, ModularUITextures.VANILLA_TAB_TOP_MIDDLE.getSubArea(0, 0.5f, 1f, 1f), tab3)
+                        .setPos(56, -28))
+                .addPage(
+                    new MultiChildWidget().addChild(
+                        new TextWidget(
+                            new Text("STATUS").format(EnumChatFormatting.BOLD)
+                                .format(EnumChatFormatting.GOLD)
+                                .shadow()).setPos(10, 5))
+                        .addChild(
+                            new DynamicTextWidget(
+                                () -> new Text(
+                                    "Tea: " + (NEIClientUtils.shiftKey() ? numberFormat.format(teaAmount.get())
+                                        : numberFormatScientific.format(teaAmount.get()))).color(Color.GREEN.dark(3)))
+                                            .setSynced(false)
+                                            .setPos(20, 20)
+                                            .attachSyncer(
+                                                new FakeSyncWidget.BigIntegerSyncer(
+                                                    () -> teaNetwork.teaAmount,
+                                                    teaAmount::set),
+                                                builder))
+                        .addChild(
+                            new DynamicTextWidget(
+                                () -> new Text(
+                                    "Tea limit: " + (NEIClientUtils.shiftKey() ? numberFormat.format(teaLimit.get())
+                                        : numberFormatScientific.format(teaLimit.get()))).color(Color.GREEN.dark(3)))
+                                            .setSynced(false)
+                                            .setPos(20, 30)
+                                            .attachSyncer(
+                                                new FakeSyncWidget.BigIntegerSyncer(
+                                                    () -> teaNetwork.teaLimit,
+                                                    teaLimit::set),
+                                                builder)))
+                .addPage(
+                    new MultiChildWidget().addChild(
+                        new TextWidget(
+                            new Text("EXCHANGE").format(EnumChatFormatting.BOLD)
+                                .format(EnumChatFormatting.GOLD)
+                                .shadow()).setPos(10, 5))
+                        .addChild(new ButtonWidget().setOnClick((Widget.ClickData clickData, Widget widget) -> {
+                            if (!(player instanceof EntityPlayerMP)) return;
+                            if (!teaNetwork.canAfford(50_000, true)) return;
+                            if (player.inventory.addItemStackToInventory(ItemList.TeaAcceptorResearchNote.get(1)))
+                                return;
+                            player.entityDropItem(ItemList.TeaAcceptorResearchNote.get(1), 0.5f);
+                        })
+                            .setBackground(new ItemDrawable().setItem(ItemList.TeaAcceptorResearchNote.get(1)))
+                            .addTooltip("Tea Acceptor Research Note")
+                            .addTooltip(
+                                new Text(
+                                    "Cost: " + NumberFormat.getInstance()
+                                        .format(50_000) + " Tea").color(Color.GRAY.normal))
+                            .setPos(20, 20)))
+                .addPage(
+                    new MultiChildWidget().addChild(
+                        new TextWidget(
+                            new Text("BENEFITS").format(EnumChatFormatting.BOLD)
+                                .format(EnumChatFormatting.GOLD)
+                                .shadow()).setPos(10, 5))
+                /*
+                 * .addChild(new ButtonWidget() .setOnClick((Widget.ClickData clickData, Widget widget) -> { if
+                 * (!(player instanceof EntityPlayerMP)) return; if (playerData == null) return;
+                 * playerData.autoRegen = !playerData.autoRegen; playerData.markDirty(); }) .setBackground(new
+                 * ItemDrawable().setItem(new ItemStack(Items.potionitem, 1, 8193)))
+                 * .addTooltip("Regeneration I") .addTooltip("For 1 minute") .addTooltip(new Text("Cost: " +
+                 * NumberFormat.getInstance().format(75_000) + " Tea") .color(Color.GRAY.normal)) //
+                 * .addTooltip( //Find a way to run that on server, or different approach // new
+                 * Text("Autobuy: " + (playerData == null ? "ERROR" : playerData.autoRegen)) //
+                 * .color(Color.GREY.normal)) .setPos(20, 20))
+                 */ ));
         return builder.build();
     }
 

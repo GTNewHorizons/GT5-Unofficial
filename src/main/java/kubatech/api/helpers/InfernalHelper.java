@@ -44,7 +44,7 @@ public class InfernalHelper {
         try {
             if (checkEntityClassForced == null) {
                 checkEntityClassForced = InfernalMobsCore.class
-                        .getDeclaredMethod("checkEntityClassForced", EntityLivingBase.class);
+                    .getDeclaredMethod("checkEntityClassForced", EntityLivingBase.class);
                 checkEntityClassForced.setAccessible(true);
             }
             return (boolean) checkEntityClassForced.invoke(InfernalMobsCore.instance(), e);

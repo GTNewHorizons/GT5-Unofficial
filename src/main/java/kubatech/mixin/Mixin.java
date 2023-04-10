@@ -31,9 +31,11 @@ public enum Mixin {
     }
 
     public boolean shouldLoad(List<TargetedMod> loadedMods) {
-        return (side == Side.BOTH || side == Side.SERVER && FMLLaunchHandler.side().isServer()
-                || side == Side.CLIENT && FMLLaunchHandler.side().isClient())
-                && new HashSet<>(loadedMods).containsAll(targetedMods);
+        return (side == Side.BOTH || side == Side.SERVER && FMLLaunchHandler.side()
+            .isServer()
+            || side == Side.CLIENT && FMLLaunchHandler.side()
+                .isClient())
+            && new HashSet<>(loadedMods).containsAll(targetedMods);
     }
 }
 

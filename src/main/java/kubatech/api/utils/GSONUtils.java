@@ -57,7 +57,8 @@ public class GSONUtils {
         try {
             if (!(json instanceof JsonArray)) return null;
             byte[] bytes = new byte[((JsonArray) json).size()];
-            for (int i = 0; i < bytes.length; i++) bytes[i] = ((JsonArray) json).get(i).getAsByte();
+            for (int i = 0; i < bytes.length; i++) bytes[i] = ((JsonArray) json).get(i)
+                .getAsByte();
             return CompressedStreamTools.func_152457_a(bytes, new NBTSizeTracker(2097152L));
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -65,11 +66,15 @@ public class GSONUtils {
     };
 
     public static final GsonBuilder GSON_BUILDER = new GsonBuilder().addSerializationExclusionStrategy(GSONStrategy)
-            .addDeserializationExclusionStrategy(GSONStrategy)
-            .registerTypeAdapter(NBTTagCompound.class, NBTTagCompoundDeserializer)
-            .registerTypeAdapter(NBTTagCompound.class, NBTTagCompoundSerializer).serializeNulls();
+        .addDeserializationExclusionStrategy(GSONStrategy)
+        .registerTypeAdapter(NBTTagCompound.class, NBTTagCompoundDeserializer)
+        .registerTypeAdapter(NBTTagCompound.class, NBTTagCompoundSerializer)
+        .serializeNulls();
     public static final GsonBuilder GSON_BUILDER_PRETTY = new GsonBuilder()
-            .addSerializationExclusionStrategy(GSONStrategy).addDeserializationExclusionStrategy(GSONStrategy)
-            .registerTypeAdapter(NBTTagCompound.class, NBTTagCompoundDeserializer)
-            .registerTypeAdapter(NBTTagCompound.class, NBTTagCompoundSerializer).serializeNulls().setPrettyPrinting();
+        .addSerializationExclusionStrategy(GSONStrategy)
+        .addDeserializationExclusionStrategy(GSONStrategy)
+        .registerTypeAdapter(NBTTagCompound.class, NBTTagCompoundDeserializer)
+        .registerTypeAdapter(NBTTagCompound.class, NBTTagCompoundSerializer)
+        .serializeNulls()
+        .setPrettyPrinting();
 }

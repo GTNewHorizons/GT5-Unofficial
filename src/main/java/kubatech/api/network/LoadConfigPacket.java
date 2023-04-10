@@ -45,9 +45,8 @@ public class LoadConfigPacket implements IMessage {
             for (int i = 0; i < overridessize; i++) {
                 byte[] sbytes = new byte[buf.readInt()];
                 buf.readBytes(sbytes);
-                mobsOverrides.put(
-                        new String(sbytes, StandardCharsets.UTF_8),
-                        OverridesConfig.MobOverride.readFromByteBuf(buf));
+                mobsOverrides
+                    .put(new String(sbytes, StandardCharsets.UTF_8), OverridesConfig.MobOverride.readFromByteBuf(buf));
             }
         }
     }

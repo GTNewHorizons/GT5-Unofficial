@@ -37,7 +37,8 @@ public class CommandTea extends CommandBase {
         final String key;
 
         Translations() {
-            key = "command.tea." + this.name().toLowerCase();
+            key = "command.tea." + this.name()
+                .toLowerCase();
         }
 
         public String get() {

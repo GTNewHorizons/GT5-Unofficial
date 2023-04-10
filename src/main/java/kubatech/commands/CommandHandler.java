@@ -34,7 +34,8 @@ public class CommandHandler extends CommandBase {
         final String key;
 
         Translations() {
-            key = "commandhandler." + this.name().toLowerCase();
+            key = "commandhandler." + this.name()
+                .toLowerCase();
         }
 
         public String get() {
@@ -90,12 +91,13 @@ public class CommandHandler extends CommandBase {
         ICommand cmd = commands.get(p_71515_2_[0]);
         if (!cmd.canCommandSenderUseCommand(p_71515_1_)) {
             ChatComponentTranslation chatcomponenttranslation2 = new ChatComponentTranslation(
-                    "commands.generic.permission");
-            chatcomponenttranslation2.getChatStyle().setColor(EnumChatFormatting.RED);
+                "commands.generic.permission");
+            chatcomponenttranslation2.getChatStyle()
+                .setColor(EnumChatFormatting.RED);
             p_71515_1_.addChatMessage(chatcomponenttranslation2);
         } else cmd.processCommand(
-                p_71515_1_,
-                p_71515_2_.length > 1 ? Arrays.copyOfRange(p_71515_2_, 1, p_71515_2_.length) : new String[0]);
+            p_71515_1_,
+            p_71515_2_.length > 1 ? Arrays.copyOfRange(p_71515_2_, 1, p_71515_2_.length) : new String[0]);
     }
 
     @Override

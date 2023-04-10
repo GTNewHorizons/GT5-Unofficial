@@ -46,28 +46,37 @@ public class TeaCollection extends ItemProxy {
     }
 
     private static final int[][] achievement_poses = new int[][] { { 0, 0 }, { 2, 0 }, { 3, 1 }, { 4, 2 }, { 4, 4 },
-            { 3, 5 }, { 2, 6 }, { 0, 6 }, { -1, 5 }, { -2, 4 }, { -2, 2 }, { -1, 1 }, { 1, 3 } };
+        { 3, 5 }, { 2, 6 }, { 0, 6 }, { -1, 5 }, { -2, 4 }, { -2, 2 }, { -1, 1 }, { 1, 3 } };
 
     boolean checkTeaOwner(ItemStack stack, UUID player) {
         NBTTagCompound tag = stack.stackTagCompound;
         if (tag == null || !stack.stackTagCompound.hasKey("TeaOwnerUUID")) return true;
-        return stack.stackTagCompound.getString("TeaOwnerUUID").equals(player.toString());
+        return stack.stackTagCompound.getString("TeaOwnerUUID")
+            .equals(player.toString());
     }
 
     boolean checkTeaOwner(ItemStack stack, String player) {
         NBTTagCompound tag = stack.stackTagCompound;
         if (tag == null || !stack.stackTagCompound.hasKey("TeaOwner")) return true;
-        return stack.stackTagCompound.getString("TeaOwner").equals(player);
+        return stack.stackTagCompound.getString("TeaOwner")
+            .equals(player);
     }
 
     private boolean checkOrSetTeaOwner(ItemStack stack, EntityPlayer player) {
         NBTTagCompound tag = stack.stackTagCompound;
         if (tag == null || !stack.stackTagCompound.hasKey("TeaOwnerUUID")) {
-            stack.setTagInfo("TeaOwnerUUID", new NBTTagString(player.getPersistentID().toString()));
+            stack.setTagInfo(
+                "TeaOwnerUUID",
+                new NBTTagString(
+                    player.getPersistentID()
+                        .toString()));
             stack.setTagInfo("TeaOwner", new NBTTagString(player.getCommandSenderName()));
             return true;
         }
-        if (stack.stackTagCompound.getString("TeaOwnerUUID").equals(player.getPersistentID().toString())) {
+        if (stack.stackTagCompound.getString("TeaOwnerUUID")
+            .equals(
+                player.getPersistentID()
+                    .toString())) {
             stack.setTagInfo("TeaOwner", new NBTTagString(player.getCommandSenderName()));
             return true;
         } else return false;
@@ -82,35 +91,35 @@ public class TeaCollection extends ItemProxy {
             achievements = teapage.getAchievementsOriginal();
         }
         achievements.add(
-                achievement = new Achievement(
-                        achievementname,
-                        achievementname,
-                        achievement_poses[index][0],
-                        achievement_poses[index][1],
-                        new ItemStack(ItemLoader.kubaitems, 1, index),
-                        null).registerStat());
+            achievement = new Achievement(
+                achievementname,
+                achievementname,
+                achievement_poses[index][0],
+                achievement_poses[index][1],
+                new ItemStack(ItemLoader.kubaitems, 1, index),
+                null).registerStat());
     }
 
     @Override
     public void addInformation(ItemStack stack, EntityPlayer entity, List<String> tooltipList, boolean showDebugInfo) {
         if (!checkTeaOwner(stack, entity.getCommandSenderName())) {
             tooltipList.add(
-                    EnumChatFormatting.GRAY + ""
-                            + EnumChatFormatting.BOLD
-                            + ""
-                            + EnumChatFormatting.ITALIC
-                            + StatCollector.translateToLocal("kubaitem.notyours"));
+                EnumChatFormatting.GRAY + ""
+                    + EnumChatFormatting.BOLD
+                    + ""
+                    + EnumChatFormatting.ITALIC
+                    + StatCollector.translateToLocal("kubaitem.notyours"));
             return;
         }
         tooltipList.add(EnumChatFormatting.GRAY + StatCollector.translateToLocal("kubaitem.fromcollection"));
         tooltipList.add(
-                EnumChatFormatting.GRAY + ""
-                        + EnumChatFormatting.BOLD
-                        + ""
-                        + EnumChatFormatting.ITALIC
-                        + ""
-                        + EnumChatFormatting.UNDERLINE
-                        + StatCollector.translateToLocal("kubaitem.teacollection"));
+            EnumChatFormatting.GRAY + ""
+                + EnumChatFormatting.BOLD
+                + ""
+                + EnumChatFormatting.ITALIC
+                + ""
+                + EnumChatFormatting.UNDERLINE
+                + StatCollector.translateToLocal("kubaitem.teacollection"));
     }
 
     @Override
@@ -130,8 +139,8 @@ public class TeaCollection extends ItemProxy {
         if (world.isRemote) return stack;
         if (!(entity instanceof EntityPlayerMP)) return stack;
         entity.addChatComponentMessage(
-                new ChatComponentText(
-                        EnumChatFormatting.GREEN + StatCollector.translateToLocal("kubaitem.teacollection.mmm")));
+            new ChatComponentText(
+                EnumChatFormatting.GREEN + StatCollector.translateToLocal("kubaitem.teacollection.mmm")));
         entity.triggerAchievement(achievement);
         return stack;
     }
@@ -174,13 +183,12 @@ public class TeaCollection extends ItemProxy {
         public List<Achievement> getAchievements() {
             if (!ModUtils.isClientSided) return super.getAchievements();
 
-            if (new Throwable().getStackTrace()[1].getMethodName().equals("isAchievementInPages"))
-                return super.getAchievements(); // 5HEAD FIX
+            if (new Throwable().getStackTrace()[1].getMethodName()
+                .equals("isAchievementInPages")) return super.getAchievements(); // 5HEAD FIX
 
             unlockedAchievements.clear();
-            for (Achievement achievement : achievements)
-                if (Minecraft.getMinecraft().thePlayer.getStatFileWriter().hasAchievementUnlocked(achievement))
-                    unlockedAchievements.add(achievement);
+            for (Achievement achievement : achievements) if (Minecraft.getMinecraft().thePlayer.getStatFileWriter()
+                .hasAchievementUnlocked(achievement)) unlockedAchievements.add(achievement);
             return unlockedAchievements;
         }
 

@@ -63,7 +63,7 @@ public class KubaItems extends Item {
 
     @Override
     public boolean onItemUse(ItemStack p_77648_1_, EntityPlayer p_77648_2_, World p_77648_3_, int p_77648_4_,
-            int p_77648_5_, int p_77648_6_, int p_77648_7_, float p_77648_8_, float p_77648_9_, float p_77648_10_) {
+        int p_77648_5_, int p_77648_6_, int p_77648_7_, float p_77648_8_, float p_77648_9_, float p_77648_10_) {
         return false;
     }
 
@@ -111,7 +111,8 @@ public class KubaItems extends Item {
     @SideOnly(Side.CLIENT)
     @Override
     public void registerIcons(IIconRegister p_94581_1_) {
-        items.values().forEach(t -> t.registerIcon(p_94581_1_));
+        items.values()
+            .forEach(t -> t.registerIcon(p_94581_1_));
     }
 
     @SideOnly(Side.CLIENT)
@@ -128,7 +129,7 @@ public class KubaItems extends Item {
 
     @Override
     public void onUpdate(ItemStack p_77663_1_, World p_77663_2_, Entity p_77663_3_, int p_77663_4_,
-            boolean p_77663_5_) {
+        boolean p_77663_5_) {
         getItem(p_77663_1_).onUpdate(p_77663_1_, p_77663_2_, p_77663_3_, p_77663_4_, p_77663_5_);
     }
 }

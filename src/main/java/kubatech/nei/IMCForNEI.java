@@ -27,7 +27,7 @@ public class IMCForNEI {
     }
 
     private static void sendHandler(String aName, String aBlock, int width, int height, int maxrecipesperpage,
-            int yshift) {
+        int yshift) {
         NBTTagCompound aNBT = new NBTTagCompound();
         aNBT.setString("handler", aName);
         aNBT.setString("modName", Tags.MODNAME);

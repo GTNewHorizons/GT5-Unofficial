@@ -52,7 +52,7 @@ public class MegaApiaryBeesRenderer extends EntityFX {
 
     @Override
     public void renderParticle(Tessellator p_70539_1_, float p_70539_2_, float p_70539_3_, float p_70539_4_,
-            float p_70539_5_, float p_70539_6_, float p_70539_7_) {
+        float p_70539_5_, float p_70539_6_, float p_70539_7_) {
 
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glEnable(GL11.GL_BLEND);
@@ -60,13 +60,15 @@ public class MegaApiaryBeesRenderer extends EntityFX {
 
         GL11.glPushMatrix();
         GL11.glTranslatef(
-                (float) (this.posX - renderPosX),
-                (float) (this.posY - renderPosY),
-                (float) (this.posZ - renderPosZ));
+            (float) (this.posX - renderPosX),
+            (float) (this.posY - renderPosY),
+            (float) (this.posZ - renderPosZ));
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);
         GL11.glRotatef(180f, 1f, 0f, 0f);
 
-        Minecraft.getMinecraft().getTextureManager().bindTexture(TextureMap.locationItemsTexture);
+        Minecraft.getMinecraft()
+            .getTextureManager()
+            .bindTexture(TextureMap.locationItemsTexture);
 
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glEnable(GL11.GL_ALPHA_TEST);
@@ -74,33 +76,38 @@ public class MegaApiaryBeesRenderer extends EntityFX {
 
         GL11.glColor4f(1f, 1f, 1f, 1F);
 
-        IIcon icon = ItemList.Beeeeee.get(1).getIconIndex();
+        IIcon icon = ItemList.Beeeeee.get(1)
+            .getIconIndex();
 
         GL11.glPushMatrix();
         GL11.glTranslatef(0f, 0f, -4f);
         GL11.glScalef(0.1f, 0.1f, 0.1f);
-        RenderItem.getInstance().renderIcon(0, 0, icon, 16, 16);
+        RenderItem.getInstance()
+            .renderIcon(0, 0, icon, 16, 16);
         GL11.glPopMatrix();
 
         GL11.glPushMatrix();
         GL11.glTranslatef(1f, 0f, 3f);
         GL11.glRotatef(180f, 0f, 1f, 0f);
         GL11.glScalef(0.1f, 0.1f, 0.1f);
-        RenderItem.getInstance().renderIcon(0, 0, icon, 16, 16);
+        RenderItem.getInstance()
+            .renderIcon(0, 0, icon, 16, 16);
         GL11.glPopMatrix();
 
         GL11.glPushMatrix();
         GL11.glTranslatef(4f, 0f, -1f);
         GL11.glRotatef(-90f, 0f, 1f, 0f);
         GL11.glScalef(0.1f, 0.1f, 0.1f);
-        RenderItem.getInstance().renderIcon(0, 0, icon, 16, 16);
+        RenderItem.getInstance()
+            .renderIcon(0, 0, icon, 16, 16);
         GL11.glPopMatrix();
 
         GL11.glPushMatrix();
         GL11.glTranslatef(-3f, 0f, 1f);
         GL11.glRotatef(90f, 0f, 1f, 0f);
         GL11.glScalef(0.1f, 0.1f, 0.1f);
-        RenderItem.getInstance().renderIcon(0, 0, icon, 16, 16);
+        RenderItem.getInstance()
+            .renderIcon(0, 0, icon, 16, 16);
         GL11.glPopMatrix();
 
         GL11.glPopMatrix();

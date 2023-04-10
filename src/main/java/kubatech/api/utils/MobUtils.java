@@ -42,7 +42,7 @@ public class MobUtils {
         try {
             if (mainmodelfield == null) {
                 mainmodelfield = RendererLivingEntity.class
-                        .getDeclaredField(ModUtils.isDeobfuscatedEnvironment ? "mainModel" : "field_77045_g");
+                    .getDeclaredField(ModUtils.isDeobfuscatedEnvironment ? "mainModel" : "field_77045_g");
                 mainmodelfield.setAccessible(true);
             }
             float eheight = e.height;

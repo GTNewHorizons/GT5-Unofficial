@@ -30,37 +30,40 @@ import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
 
 public abstract class KubaTechGTMultiBlockBase<T extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<T>>
-        extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<T> {
+    extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<T> {
 
     @Deprecated
     public final int mEUt = 0;
 
     @SuppressWarnings("unchecked")
     protected static <K extends KubaTechGTMultiBlockBase<?>> UIInfo<?, ?> createKTMetaTileEntityUI(
-            KTContainerConstructor<K> containerConstructor) {
-        return UIBuilder.of().container((player, world, x, y, z) -> {
-            TileEntity te = world.getTileEntity(x, y, z);
-            if (te instanceof BaseMetaTileEntity) {
-                IMetaTileEntity mte = ((BaseMetaTileEntity) te).getMetaTileEntity();
-                if (!(mte instanceof KubaTechGTMultiBlockBase)) return null;
-                final UIBuildContext buildContext = new UIBuildContext(player);
-                final ModularWindow window = ((ITileWithModularUI) te).createWindow(buildContext);
-                return containerConstructor.of(new ModularUIContext(buildContext, te::markDirty), window, (K) mte);
-            }
-            return null;
-        }).gui(((player, world, x, y, z) -> {
-            if (!world.isRemote) return null;
-            TileEntity te = world.getTileEntity(x, y, z);
-            if (te instanceof BaseMetaTileEntity) {
-                IMetaTileEntity mte = ((BaseMetaTileEntity) te).getMetaTileEntity();
-                if (!(mte instanceof KubaTechGTMultiBlockBase)) return null;
-                final UIBuildContext buildContext = new UIBuildContext(player);
-                final ModularWindow window = ((ITileWithModularUI) te).createWindow(buildContext);
-                return new ModularGui(
+        KTContainerConstructor<K> containerConstructor) {
+        return UIBuilder.of()
+            .container((player, world, x, y, z) -> {
+                TileEntity te = world.getTileEntity(x, y, z);
+                if (te instanceof BaseMetaTileEntity) {
+                    IMetaTileEntity mte = ((BaseMetaTileEntity) te).getMetaTileEntity();
+                    if (!(mte instanceof KubaTechGTMultiBlockBase)) return null;
+                    final UIBuildContext buildContext = new UIBuildContext(player);
+                    final ModularWindow window = ((ITileWithModularUI) te).createWindow(buildContext);
+                    return containerConstructor.of(new ModularUIContext(buildContext, te::markDirty), window, (K) mte);
+                }
+                return null;
+            })
+            .gui(((player, world, x, y, z) -> {
+                if (!world.isRemote) return null;
+                TileEntity te = world.getTileEntity(x, y, z);
+                if (te instanceof BaseMetaTileEntity) {
+                    IMetaTileEntity mte = ((BaseMetaTileEntity) te).getMetaTileEntity();
+                    if (!(mte instanceof KubaTechGTMultiBlockBase)) return null;
+                    final UIBuildContext buildContext = new UIBuildContext(player);
+                    final ModularWindow window = ((ITileWithModularUI) te).createWindow(buildContext);
+                    return new ModularGui(
                         containerConstructor.of(new ModularUIContext(buildContext, null), window, (K) mte));
-            }
-            return null;
-        })).build();
+                }
+                return null;
+            }))
+            .build();
     }
 
     @FunctionalInterface
@@ -96,7 +99,7 @@ public abstract class KubaTechGTMultiBlockBase<T extends GT_MetaTileEntity_Exten
 
     @Override
     protected void calculateOverclockedNessMultiInternal(long aEUt, int aDuration, int mAmperage, long maxInputVoltage,
-            boolean perfectOC) {
+        boolean perfectOC) {
         calculateOverclock(aEUt, aDuration, getMaxInputEu(), perfectOC);
     }
 
@@ -116,7 +119,7 @@ public abstract class KubaTechGTMultiBlockBase<T extends GT_MetaTileEntity_Exten
             return 0;
         }
         int durationTiers = (int) Math
-                .ceil(Math.log((double) aDuration / (double) minDuration) / (isPerfect ? ln4 : ln2));
+            .ceil(Math.log((double) aDuration / (double) minDuration) / (isPerfect ? ln4 : ln2));
         if (durationTiers < 0) durationTiers = 0; // We do not support downclocks (yet)
         if (durationTiers > tiers) durationTiers = tiers;
         if (!isOverclockingInfinite()) {

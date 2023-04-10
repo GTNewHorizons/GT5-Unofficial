@@ -33,7 +33,9 @@ public class CommonProxy {
 
         Config.init(event.getModConfigurationDirectory());
         Config.synchronizeConfiguration();
-        FMLCommonHandler.instance().bus().register(new FMLEventHandler());
+        FMLCommonHandler.instance()
+            .bus()
+            .register(new FMLEventHandler());
         MinecraftForge.EVENT_BUS.register(new PlayerDataManager());
         registerItems();
         registerBlocks();
