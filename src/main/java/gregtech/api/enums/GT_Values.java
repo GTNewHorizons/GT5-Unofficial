@@ -346,7 +346,7 @@ public class GT_Values {
     }
 
     /** The Color White as RGB Short Array. */
-    public static final short[] UNCOLORED_RBGA = { 255, 255, 255, 255 };
+    public static final short[] UNCOLORED_RGBA = { 255, 255, 255, 255 };
     /** The Color White as simple Integer (0x00ffffff). */
     public static final int UNCOLORED = 0x00ffffff;
 
