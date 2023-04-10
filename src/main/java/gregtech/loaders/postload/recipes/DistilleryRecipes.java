@@ -16,6 +16,7 @@ import gregtech.api.GregTech_API;
 import gregtech.api.enums.*;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_RecipeBuilder;
 import gregtech.api.util.GT_Utility;
 
 public class DistilleryRecipes implements Runnable {
@@ -504,7 +505,7 @@ public class DistilleryRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
             .noItemInputs()
-            .itemOutputs(GT_Values.NI)
+            .noItemOutputs()
             .fluidInputs(Materials.WoodTar.getFluid(1000))
             .fluidOutputs(
                 Materials.Creosote.getFluid(250),
@@ -546,7 +547,7 @@ public class DistilleryRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
             .noItemInputs()
-            .itemOutputs(GT_Values.NI)
+            .noItemOutputs()
             .fluidInputs(Materials.WoodTar.getFluid(1000))
             .fluidOutputs(
                 Materials.Creosote.getFluid(250),
@@ -1268,20 +1269,27 @@ public class DistilleryRecipes implements Runnable {
     public void addUniversalDistillationRecipewithCircuit(FluidStack aInput, ItemStack[] aCircuit,
         FluidStack[] aOutputs, ItemStack aOutput2, int aDuration, int aEUt) {
         for (int i = 0; i < Math.min(aOutputs.length, 11); i++) {
-            GT_Values.RA.stdBuilder()
-                .itemInputs(GT_Utility.getIntegratedCircuit(i + 1))
-                .itemOutputs(aOutput2)
-                .fluidInputs(aInput)
+            GT_RecipeBuilder buildDistillation = GT_Values.RA.stdBuilder()
+                .itemInputs(GT_Utility.getIntegratedCircuit(i + 1));
+            if (aOutput2 == GT_Values.NI) {
+                buildDistillation.noItemOutputs();
+            } else {
+                buildDistillation.itemOutputs(aOutput2);
+            }
+            buildDistillation.fluidInputs(aInput)
                 .fluidOutputs(aOutputs[i])
                 .duration(2 * aDuration)
                 .eut(aEUt / 4)
                 .addTo(sDistilleryRecipes);
         }
-
-        GT_Values.RA.stdBuilder()
-            .itemInputs(aCircuit)
-            .itemOutputs(aOutput2)
-            .fluidInputs(aInput)
+        GT_RecipeBuilder buildDT = GT_Values.RA.stdBuilder()
+            .itemInputs(aCircuit);
+        if (aOutput2 == GT_Values.NI) {
+            buildDT.noItemOutputs();
+        } else {
+            buildDT.itemOutputs(aOutput2);
+        }
+        buildDT.fluidInputs(aInput)
             .fluidOutputs(aOutputs)
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_MV)
