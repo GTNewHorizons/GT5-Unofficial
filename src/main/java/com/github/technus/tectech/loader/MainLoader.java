@@ -10,6 +10,8 @@ import static com.github.technus.tectech.compatibility.thaumcraft.elementalMatte
 import static com.github.technus.tectech.compatibility.thaumcraft.thing.metaTileEntity.multi.EssentiaCompat.essentiaContainerCompat;
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 import static gregtech.api.enums.GT_Values.W;
+import static gregtech.api.enums.Mods.ElectroMagicTools;
+import static gregtech.api.enums.Mods.GraviSuite;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.enums.Mods.TwilightForest;
@@ -172,9 +174,9 @@ public final class MainLoader {
     }
 
     private static void registerExtraHazmats() {
-        ItemStack EMT_iqC = GT_ModHandler.getModItem("EMT", "itemArmorQuantumChestplate", 1, W);
-        ItemStack GRAVI_gC = GT_ModHandler.getModItem("GraviSuite", "graviChestPlate", 1, W);
-        ItemStack GRAVI_anC = GT_ModHandler.getModItem("GraviSuite", "advNanoChestPlate", 1, W);
+        ItemStack EMT_iqC = GT_ModHandler.getModItem(ElectroMagicTools.ID, "itemArmorQuantumChestplate", 1, W);
+        ItemStack GRAVI_gC = GT_ModHandler.getModItem(GraviSuite.ID, "graviChestPlate", 1, W);
+        ItemStack GRAVI_anC = GT_ModHandler.getModItem(GraviSuite.ID, "advNanoChestPlate", 1, W);
 
         ItemStack IC2_qH = GT_ModHandler.getIC2Item("quantumHelmet", 1L, W);
         ItemStack IC2_qC = GT_ModHandler.getIC2Item("quantumBodyarmor", 1L, W);
