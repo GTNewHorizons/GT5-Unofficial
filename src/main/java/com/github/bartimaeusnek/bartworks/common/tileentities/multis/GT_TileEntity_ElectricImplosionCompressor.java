@@ -519,4 +519,8 @@ public class GT_TileEntity_ElectricImplosionCompressor
 
         return false;
     }
+    @Override
+    protected boolean isBatchModeButtonEnabled() {
+        return true;
+    }
 }
