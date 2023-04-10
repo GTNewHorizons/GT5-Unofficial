@@ -16,6 +16,14 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 
+import static gregtech.api.enums.Mods.Avaritia;
+import static gregtech.api.enums.Mods.EnderIO;
+import static gregtech.api.enums.Mods.EternalSingularity;
+import static gregtech.api.enums.Mods.GTPlusPlus;
+import static gregtech.api.enums.Mods.GoodGenerator;
+import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
+import static gregtech.api.enums.Mods.UniversalSingularities;
+
 public class AssemblyLine implements Runnable {
 
     @Override
@@ -39,10 +47,10 @@ public class AssemblyLine implements Runnable {
                 new ItemStack[] { ItemList.Casing_Tank_7.get(4),
                         GT_OreDictUnificator.get(OrePrefixes.plateQuadruple, Materials.CrystallinePinkSlime, 6),
                         GT_OreDictUnificator.get(OrePrefixes.pipeNonuple, Materials.Naquadah, 3),
-                        GT_ModHandler.getModItem("dreamcraft", "item.ChromeBars", 6),
+                        GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.ChromeBars", 6),
                         GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.Quantium, 6),
                         ItemList.Field_Generator_EV.get(8), ItemList.FluidRegulator_LuV.get(1),
-                        GT_ModHandler.getModItem("dreamcraft", "item.EngineeringProcessorFluidEmeraldCore", 4) },
+                        GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.EngineeringProcessorFluidEmeraldCore", 4) },
                 new FluidStack[] { Materials.Enderium.getMolten(1440), Materials.Polybenzimidazole.getMolten(1584) },
                 new ItemStack(Blocks.tfftStorageField, 1, 6),
                 600,
@@ -55,11 +63,11 @@ public class AssemblyLine implements Runnable {
                 new ItemStack[] { ItemList.Casing_Tank_10.get(16),
                         GT_OreDictUnificator.get(OrePrefixes.plateQuadruple, Materials.MelodicAlloy, 6),
                         GT_OreDictUnificator.get(OrePrefixes.pipeNonuple, Materials.NetherStar, 3),
-                        GT_ModHandler.getModItem("dreamcraft", "item.OsmiumBars", 6),
+                        GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.OsmiumBars", 6),
                         GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.MysteriousCrystal, 6),
                         ItemList.Field_Generator_IV.get(16), ItemList.Field_Generator_LuV.get(4),
                         ItemList.FluidRegulator_UV.get(1),
-                        GT_ModHandler.getModItem("dreamcraft", "item.EngineeringProcessorFluidEmeraldCore", 16) },
+                        GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.EngineeringProcessorFluidEmeraldCore", 16) },
                 new FluidStack[] { Materials.CrystallineAlloy.getMolten(2880),
                         Materials.Polybenzimidazole.getMolten(2016) },
                 new ItemStack(Blocks.tfftStorageField, 1, 7),
@@ -71,16 +79,16 @@ public class AssemblyLine implements Runnable {
                 new ItemStack(Blocks.tfftStorageField, 1, 7),
                 120000,
                 new ItemStack[] { ItemList.Quantum_Tank_IV.get(1),
-                        GT_ModHandler.getModItem("Avaritia", "Neutronium_Compressor", 1),
+                        GT_ModHandler.getModItem(Avaritia.ID, "Neutronium_Compressor", 1),
                         GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.StellarAlloy, 6),
                         GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.StellarAlloy, 6),
                         GT_OreDictUnificator.get(OrePrefixes.pipeNonuple, Materials.DraconiumAwakened, 3),
-                        GT_ModHandler.getModItem("dreamcraft", "item.NeutroniumBars", 6),
+                        GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.NeutroniumBars", 6),
                         GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.InfinityCatalyst, 6),
                         ItemList.Field_Generator_ZPM.get(16), ItemList.Field_Generator_UV.get(4),
-                        GT_ModHandler.getModItem("GoodGenerator", "huiCircuit", 4, 2),
+                        GT_ModHandler.getModItem(GoodGenerator.ID, "huiCircuit", 4, 2),
                         GT_ModHandler
-                                .getModItem("universalsingularities", "universal.tinkersConstruct.singularity", 1, 4) },
+                                .getModItem(UniversalSingularities.ID, "universal.tinkersConstruct.singularity", 1, 4) },
                 new FluidStack[] { Materials.CrystallinePinkSlime.getMolten(4320), new FluidStack(radoxPoly, 2880) },
                 new ItemStack(Blocks.tfftStorageField, 1, 8),
                 600,
@@ -91,16 +99,15 @@ public class AssemblyLine implements Runnable {
                 new ItemStack(Blocks.tfftStorageField, 1, 8),
                 160000,
                 new ItemStack[] { ItemList.Quantum_Tank_IV.get(4),
-                        GT_ModHandler.getModItem("Avaritia", "Neutronium_Compressor", 2),
+                        GT_ModHandler.getModItem(Avaritia.ID, "Neutronium_Compressor", 2),
                         GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.TranscendentMetal, 6),
                         GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.TranscendentMetal, 6),
                         GT_OreDictUnificator.get(OrePrefixes.pipeNonuple, Materials.Infinity, 3),
                         ItemList.EnergisedTesseract.get(1),
-                        GT_ModHandler.getModItem("miscutils", "itemRotorHypogen", 6),
+                        GT_ModHandler.getModItem(GTPlusPlus.ID, "itemRotorHypogen", 6),
                         ItemList.Field_Generator_UHV.get(16), ItemList.Field_Generator_UEV.get(4),
-                        GT_ModHandler.getModItem("GoodGenerator", "huiCircuit", 4, 3),
-                        GT_ModHandler
-                                .getModItem("universalsingularities", "universal.tinkersConstruct.singularity", 1, 4) },
+                        GT_ModHandler.getModItem(GoodGenerator.ID, "huiCircuit", 4, 3),
+                        GT_ModHandler.getModItem(UniversalSingularities.ID, "universal.tinkersConstruct.singularity", 1, 4) },
                 new FluidStack[] { Materials.MelodicAlloy.getMolten(5760), new FluidStack(radoxPoly, 3456) },
                 new ItemStack(Blocks.tfftStorageField, 1, 9),
                 600,
@@ -111,17 +118,17 @@ public class AssemblyLine implements Runnable {
                 new ItemStack(Blocks.tfftStorageField, 1, 9),
                 200000,
                 new ItemStack[] { ItemList.Quantum_Tank_IV.get(16),
-                        GT_ModHandler.getModItem("Avaritia", "Neutronium_Compressor", 4),
+                        GT_ModHandler.getModItem(Avaritia.ID, "Neutronium_Compressor", 4),
                         GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.SpaceTime, 6),
                         GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.SpaceTime, 6),
                         GT_OreDictUnificator.get(OrePrefixes.pipeNonuple, Materials.SpaceTime, 3),
                         ItemList.EnergisedTesseract.get(6),
                         GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.SpaceTime, 6),
                         ItemList.Field_Generator_UEV.get(16), ItemList.Field_Generator_UIV.get(4),
-                        GT_ModHandler.getModItem("GoodGenerator", "huiCircuit", 4, 4),
-                        GT_ModHandler.getModItem("GoodGenerator", "huiCircuit", 4, 4),
-                        GT_ModHandler.getModItem("EnderIO", "itemBasicCapacitor", 64, 6),
-                        GT_ModHandler.getModItem("eternalsingularity", "eternal_singularity", 1) },
+                        GT_ModHandler.getModItem(GoodGenerator.ID, "huiCircuit", 4, 4),
+                        GT_ModHandler.getModItem(GoodGenerator.ID, "huiCircuit", 4, 4),
+                        GT_ModHandler.getModItem(EnderIO.ID, "itemBasicCapacitor", 64, 6),
+                        GT_ModHandler.getModItem(EternalSingularity.ID, "eternal_singularity", 1) },
                 new FluidStack[] { Materials.StellarAlloy.getMolten(7200), new FluidStack(radoxPoly, 4608) },
                 new ItemStack(Blocks.tfftStorageField, 1, 10),
                 600,

@@ -8,6 +8,8 @@ import cpw.mods.fml.common.Loader;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 
+import static gregtech.api.enums.Mods.BartWorks;
+
 public class AlloySmelter implements Runnable {
 
     @Override
@@ -18,7 +20,7 @@ public class AlloySmelter implements Runnable {
         GT_Values.RA.addAlloySmelterRecipe(
                 craftingItem.getStackOfAmountFromDamage(
                         Items.YSZCeramicDust.getMetaID(),
-                        Loader.isModLoaded("bartworks") ? 3 : 10),
+                        BartWorks.isModLoaded() ? 3 : 10),
                 ItemList.Shape_Mold_Plate.get(0),
                 craftingItem.getStackOfAmountFromDamage(Items.YSZCeramicPlate.getMetaID(), 1),
                 400,

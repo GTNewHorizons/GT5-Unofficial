@@ -16,6 +16,9 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
+
 public class ResearchableAssemblyLine implements Runnable {
 
     @Override
@@ -49,7 +52,7 @@ public class ResearchableAssemblyLine implements Runnable {
                 250 * 20,
                 (int) TierEU.RECIPE_UEV);
 
-        if (Loader.isModLoaded("miscutils")) {
+        if (GTPlusPlus.isModLoaded()) {
             // Insanely Ultimate Capacitor (UIV)
             TT_recipeAdder.addResearchableAssemblylineRecipe(
                     new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 8),
@@ -59,15 +62,15 @@ public class ResearchableAssemblyLine implements Runnable {
                     32,
                     new Object[] { GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.TranscendentMetal, 4),
                             GT_OreDictUnificator.get(OrePrefixes.screw, Materials.TranscendentMetal, 24),
-                            GT_ModHandler.getModItem("miscutils", "itemPlateDoubleHypogen", 32),
-                            GT_ModHandler.getModItem("miscutils", "itemPlateDoubleHypogen", 32),
+                            GT_ModHandler.getModItem(GTPlusPlus.ID, "itemPlateDoubleHypogen", 32),
+                            GT_ModHandler.getModItem(GTPlusPlus.ID, "itemPlateDoubleHypogen", 32),
                             new Object[] { OrePrefixes.circuit.get(Materials.Piko), 1 },
                             new Object[] { OrePrefixes.circuit.get(Materials.Piko), 1 },
                             new Object[] { OrePrefixes.circuit.get(Materials.Piko), 1 },
                             new Object[] { OrePrefixes.circuit.get(Materials.Piko), 1 }, ItemList.ZPM4.get(8L),
                             ItemList.Field_Generator_UIV.get(4), ItemList.Circuit_Wafer_QPIC.get(64),
                             ItemList.Circuit_Wafer_QPIC.get(64),
-                            GT_ModHandler.getModItem("dreamcraft", "item.RawPicoWafer", 64),
+                            GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.RawPicoWafer", 64),
                             ItemList.Circuit_Parts_DiodeXSMD.get(64), ItemList.Circuit_Parts_InductorXSMD.get(32),
                             GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.SuperconductorUIV, 64) },
                     new FluidStack[] { new FluidStack(solderUEV, 18_432),
@@ -86,15 +89,15 @@ public class ResearchableAssemblyLine implements Runnable {
                     64,
                     new Object[] { GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.SpaceTime, 4),
                             GT_OreDictUnificator.get(OrePrefixes.screw, Materials.SpaceTime, 24),
-                            GT_ModHandler.getModItem("miscutils", "itemPlateDoubleDragonblood", 32),
-                            GT_ModHandler.getModItem("miscutils", "itemPlateDoubleDragonblood", 32),
+                            GT_ModHandler.getModItem(GTPlusPlus.ID, "itemPlateDoubleDragonblood", 32),
+                            GT_ModHandler.getModItem(GTPlusPlus.ID, "itemPlateDoubleDragonblood", 32),
                             new Object[] { OrePrefixes.circuit.get(Materials.Quantum), 1 },
                             new Object[] { OrePrefixes.circuit.get(Materials.Quantum), 1 },
                             new Object[] { OrePrefixes.circuit.get(Materials.Quantum), 1 },
                             new Object[] { OrePrefixes.circuit.get(Materials.Quantum), 1 }, ItemList.ZPM5.get(8L),
                             ItemList.Field_Generator_UMV.get(4), ItemList.Circuit_Wafer_QPIC.get(64),
                             ItemList.Circuit_Wafer_QPIC.get(64),
-                            GT_ModHandler.getModItem("dreamcraft", "item.PicoWafer", 64),
+                            GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.PicoWafer", 64),
                             ItemList.Circuit_Parts_DiodeXSMD.get(64), ItemList.Circuit_Parts_InductorXSMD.get(64),
                             GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUMV, 64) },
                     new FluidStack[] { new FluidStack(solderUEV, 36_864),

@@ -28,6 +28,8 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 
+import static gregtech.api.enums.Mods.ThaumicTinkerer;
+
 public class Recipes {
 
     public static final HashMap<String, InfusionRecipe> infusionRecipes = new HashMap<>();
@@ -92,7 +94,7 @@ public class Recipes {
                         new ItemStack(Blocks.jarThaumiumReinforced, 1, 0),
                         recipe_voidjarupgrade));
 
-        final ItemStack[] recipe_jarichor = { GT_ModHandler.getModItem("ThaumicTinkerer", "kamiResource", 1, 0),
+        final ItemStack[] recipe_jarichor = { GT_ModHandler.getModItem(ThaumicTinkerer.ID, "kamiResource", 1, 0),
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Diamond, 1),
                 new ItemStack(net.minecraft.init.Blocks.glass_pane),
                 GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Osmiridium, 1),

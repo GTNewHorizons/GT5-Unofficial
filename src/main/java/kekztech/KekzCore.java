@@ -3,6 +3,7 @@ package kekztech;
 import java.util.List;
 import java.util.Set;
 
+import gregtech.api.enums.Mods;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -34,12 +35,12 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 public class KekzCore {
 
     public static final String NAME = "KekzTech";
-    public static final String MODID = "kekztech";
+    public static final String MODID = Mods.Names.KEKZ_TECH;
     public static final String VERSION = "GRADLETOKEN_VERSION";
 
     public static final Logger LOGGER = LogManager.getLogger(NAME);
 
-    @Mod.Instance("kekztech")
+    @Mod.Instance(Mods.Names.KEKZ_TECH)
     public static KekzCore instance;
 
     @SidedProxy(clientSide = "client.ClientProxy", serverSide = "kekztech.ServerProxy")
