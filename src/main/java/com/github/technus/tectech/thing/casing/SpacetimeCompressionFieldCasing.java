@@ -1,7 +1,8 @@
 package com.github.technus.tectech.thing.casing;
 
 import static com.github.technus.tectech.util.CommonValues.EOH_TIER_FANCY_NAMES;
-import static net.minecraft.util.EnumChatFormatting.*;
+import static net.minecraft.util.EnumChatFormatting.RESET;
+import static net.minecraft.util.EnumChatFormatting.WHITE;
 
 import java.util.List;
 

@@ -1,16 +1,16 @@
 package com.github.technus.tectech.nei;
 
 import static com.github.technus.tectech.Reference.MODID;
+import static gregtech.api.enums.Mods.NotEnoughItems;
 
 import net.minecraft.nbt.NBTTagCompound;
 
-import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.event.FMLInterModComms;
 
 public class IMCForNEI {
 
     public static void IMCSender() {
-        if (!Loader.isModLoaded("NotEnoughItems")) {
+        if (!NotEnoughItems.isModLoaded()) {
             return;
         }
         sendHandler("gt.recipe.eyeofharmony", "gregtech:gt.blockmachines:15410", 1);

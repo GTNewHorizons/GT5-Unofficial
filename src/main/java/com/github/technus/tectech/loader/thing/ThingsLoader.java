@@ -2,18 +2,32 @@ package com.github.technus.tectech.loader.thing;
 
 import static com.github.technus.tectech.Reference.MODID;
 import static com.github.technus.tectech.TecTech.tectechTexturePage1;
+import static gregtech.api.enums.Mods.OpenModularTurrets;
 
-import com.github.technus.tectech.Reference;
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.compatibility.openmodularturrets.blocks.turretbases.TurretBaseEM;
 import com.github.technus.tectech.compatibility.openmodularturrets.blocks.turretheads.TurretHeadEM;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
 import com.github.technus.tectech.thing.block.ReactorSimBlock;
 import com.github.technus.tectech.thing.block.TileEyeOfHarmony;
-import com.github.technus.tectech.thing.casing.*;
-import com.github.technus.tectech.thing.item.*;
+import com.github.technus.tectech.thing.casing.GT_Block_CasingsBA0;
+import com.github.technus.tectech.thing.casing.GT_Block_CasingsTT;
+import com.github.technus.tectech.thing.casing.SpacetimeCompressionFieldCasing;
+import com.github.technus.tectech.thing.casing.StabilisationFieldCasing;
+import com.github.technus.tectech.thing.casing.TT_Container_Casings;
+import com.github.technus.tectech.thing.casing.TimeAccelerationFieldCasing;
+import com.github.technus.tectech.thing.item.DebugElementalInstanceContainer_EM;
+import com.github.technus.tectech.thing.item.ElementalDefinitionContainer_EM;
+import com.github.technus.tectech.thing.item.ElementalDefinitionScanStorage_EM;
+import com.github.technus.tectech.thing.item.EnderFluidLinkCover;
+import com.github.technus.tectech.thing.item.EuMeterGT;
+import com.github.technus.tectech.thing.item.ParametrizerMemoryCard;
+import com.github.technus.tectech.thing.item.PowerPassUpgradeCover;
+import com.github.technus.tectech.thing.item.TeslaCoilCapacitor;
+import com.github.technus.tectech.thing.item.TeslaCoilComponent;
+import com.github.technus.tectech.thing.item.TeslaCoilCover;
+import com.github.technus.tectech.thing.item.TeslaStaff;
 
-import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -37,10 +51,7 @@ public class ThingsLoader implements Runnable {
         }
 
         TecTech.LOGGER.info("Added texture page if was null");
-        if (!Loader.isModLoaded(Reference.DREAMCRAFT)) {
-            TT_Container_Casings.sBlockCasingsNH = new GT_Block_CasingsNH();
-            TecTech.LOGGER.info("Adding basic casings");
-        }
+
         TT_Container_Casings.sBlockCasingsTT = new GT_Block_CasingsTT();
         TecTech.LOGGER.info("Elemental Casing registered");
         TT_Container_Casings.sBlockCasingsBA0 = new GT_Block_CasingsBA0();
@@ -57,7 +68,7 @@ public class ThingsLoader implements Runnable {
         QuantumGlassBlock.run();
         TecTech.LOGGER.info("Quantum Glass registered");
 
-        if (Loader.isModLoaded("openmodularturrets")) {
+        if (OpenModularTurrets.isModLoaded()) {
             TurretHeadEM.run();
             TecTech.LOGGER.info("TurretHeadEM registered");
             TurretBaseEM.run();

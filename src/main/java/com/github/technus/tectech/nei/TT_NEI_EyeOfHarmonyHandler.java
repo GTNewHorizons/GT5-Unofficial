@@ -1,7 +1,6 @@
 package com.github.technus.tectech.nei;
 
 import static com.github.technus.tectech.Reference.MODID;
-import static net.minecraft.util.EnumChatFormatting.*;
 
 import codechicken.nei.recipe.GuiCraftingRecipe;
 import codechicken.nei.recipe.GuiUsageRecipe;

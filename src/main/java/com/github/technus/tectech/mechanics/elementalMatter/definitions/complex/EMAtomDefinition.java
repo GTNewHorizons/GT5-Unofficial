@@ -5,12 +5,94 @@ import static com.github.technus.tectech.mechanics.elementalMatter.core.transfor
 import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMGaugeBosonDefinition.boson_Y__;
 import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMGaugeBosonDefinition.deadEnd;
 import static com.github.technus.tectech.util.XSTR.XSTR_INSTANCE;
-import static gregtech.api.enums.Materials.*;
+import static gregtech.api.enums.Materials.Aluminium;
+import static gregtech.api.enums.Materials.Americium;
+import static gregtech.api.enums.Materials.Antimony;
+import static gregtech.api.enums.Materials.Argon;
+import static gregtech.api.enums.Materials.Arsenic;
+import static gregtech.api.enums.Materials.Barium;
+import static gregtech.api.enums.Materials.Beryllium;
+import static gregtech.api.enums.Materials.Bismuth;
+import static gregtech.api.enums.Materials.Boron;
+import static gregtech.api.enums.Materials.Cadmium;
+import static gregtech.api.enums.Materials.Caesium;
+import static gregtech.api.enums.Materials.Calcium;
+import static gregtech.api.enums.Materials.Carbon;
+import static gregtech.api.enums.Materials.Cerium;
+import static gregtech.api.enums.Materials.Chrome;
+import static gregtech.api.enums.Materials.Cobalt;
+import static gregtech.api.enums.Materials.Copper;
+import static gregtech.api.enums.Materials.Deuterium;
+import static gregtech.api.enums.Materials.Dysprosium;
+import static gregtech.api.enums.Materials.Erbium;
+import static gregtech.api.enums.Materials.Europium;
+import static gregtech.api.enums.Materials.Fluorine;
+import static gregtech.api.enums.Materials.Gadolinium;
+import static gregtech.api.enums.Materials.Gallium;
+import static gregtech.api.enums.Materials.Gold;
+import static gregtech.api.enums.Materials.Helium;
+import static gregtech.api.enums.Materials.Helium_3;
+import static gregtech.api.enums.Materials.Holmium;
+import static gregtech.api.enums.Materials.Hydrogen;
+import static gregtech.api.enums.Materials.Indium;
+import static gregtech.api.enums.Materials.Iridium;
+import static gregtech.api.enums.Materials.Iron;
+import static gregtech.api.enums.Materials.Lanthanum;
+import static gregtech.api.enums.Materials.Lead;
+import static gregtech.api.enums.Materials.Lithium;
+import static gregtech.api.enums.Materials.Lutetium;
+import static gregtech.api.enums.Materials.Magnesium;
+import static gregtech.api.enums.Materials.Manganese;
+import static gregtech.api.enums.Materials.Mercury;
+import static gregtech.api.enums.Materials.Molybdenum;
+import static gregtech.api.enums.Materials.Neodymium;
+import static gregtech.api.enums.Materials.Nickel;
+import static gregtech.api.enums.Materials.Niobium;
+import static gregtech.api.enums.Materials.Nitrogen;
+import static gregtech.api.enums.Materials.Osmium;
+import static gregtech.api.enums.Materials.Oxygen;
+import static gregtech.api.enums.Materials.Palladium;
+import static gregtech.api.enums.Materials.Phosphorus;
+import static gregtech.api.enums.Materials.Platinum;
+import static gregtech.api.enums.Materials.Plutonium;
+import static gregtech.api.enums.Materials.Plutonium241;
+import static gregtech.api.enums.Materials.Potassium;
+import static gregtech.api.enums.Materials.Praseodymium;
+import static gregtech.api.enums.Materials.Promethium;
+import static gregtech.api.enums.Materials.Radon;
+import static gregtech.api.enums.Materials.Rubidium;
+import static gregtech.api.enums.Materials.Samarium;
+import static gregtech.api.enums.Materials.Scandium;
+import static gregtech.api.enums.Materials.Silicon;
+import static gregtech.api.enums.Materials.Silver;
+import static gregtech.api.enums.Materials.Sodium;
+import static gregtech.api.enums.Materials.Strontium;
+import static gregtech.api.enums.Materials.Sulfur;
+import static gregtech.api.enums.Materials.Tantalum;
+import static gregtech.api.enums.Materials.Tellurium;
+import static gregtech.api.enums.Materials.Terbium;
+import static gregtech.api.enums.Materials.Thorium;
+import static gregtech.api.enums.Materials.Thulium;
+import static gregtech.api.enums.Materials.Tin;
+import static gregtech.api.enums.Materials.Titanium;
+import static gregtech.api.enums.Materials.Tritium;
+import static gregtech.api.enums.Materials.Tungsten;
+import static gregtech.api.enums.Materials.Uranium;
+import static gregtech.api.enums.Materials.Uranium235;
+import static gregtech.api.enums.Materials.Vanadium;
+import static gregtech.api.enums.Materials.Ytterbium;
+import static gregtech.api.enums.Materials.Yttrium;
+import static gregtech.api.enums.Materials.Zinc;
 import static gregtech.api.enums.OrePrefixes.dust;
 import static java.lang.Math.abs;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
+import java.util.TreeMap;
+import java.util.TreeSet;
 
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.mechanics.elementalMatter.core.EMException;
@@ -1563,21 +1645,6 @@ public class EMAtomDefinition extends EMComplexTemplate {
         return new EMDecay[] { new EMDecay(0.75D, decaysInto.toArray(new EMDefinitionStack[0])), deadEnd };
     }
 
-    // @Override
-    // public iElementalDefinition getAnti() {
-    // EMDefinitionStack[] stacks = this.elementalStacks.values();
-    // EMDefinitionStack[] antiElements = new EMDefinitionStack[stacks.length];
-    // for (int i = 0; i < antiElements.length; i++) {
-    // antiElements[i] = new EMDefinitionStack(stacks[i].definition.getAnti(), stacks[i].amount);
-    // }
-    // try {
-    // return new dAtomDefinition(false, antiElements);
-    // } catch (tElementalException e) {
-    // if (DEBUG_MODE) e.printStackTrace();
-    // return null;
-    // }
-    // }
-
     @Override
     public EMAtomDefinition getAnti() {
         EMDefinitionStackMap anti = new EMDefinitionStackMap();
@@ -1853,8 +1920,7 @@ public class EMAtomDefinition extends EMComplexTemplate {
                 new EMDefinitionStack(getFirstStableIsotope(9), EM_COUNT_PER_MATERIAL_AMOUNT_DIMINISHED),
                 Fluorine.mGas,
                 144);
-        // transformationInfo.addFluid(new EMDefinitionStack(getFirstStableIsotope(10),
-        // AVOGADRO_CONSTANT_144),Neon.mGas.getID(), 144);
+
         transformationInfo.addOredict(
                 new EMDefinitionStack(getFirstStableIsotope(11), EM_COUNT_PER_MATERIAL_AMOUNT_DIMINISHED),
                 dust,
@@ -1954,19 +2020,13 @@ public class EMAtomDefinition extends EMComplexTemplate {
                 dust,
                 Gallium,
                 1);
-        // transformationInfo.addOredict(new EMDefinitionStack(getFirstStableIsotope(32), AVOGADRO_CONSTANT_144),dust,
-        // Germanium,1);
+
         transformationInfo.addOredict(
                 new EMDefinitionStack(getFirstStableIsotope(33), EM_COUNT_PER_MATERIAL_AMOUNT_DIMINISHED),
                 dust,
                 Arsenic,
                 1);
-        // transformationInfo.addOredict(new EMDefinitionStack(getFirstStableIsotope(34), AVOGADRO_CONSTANT_144),dust,
-        // Selenium,1);
-        // transformationInfo.addOredict(new EMDefinitionStack(getFirstStableIsotope(35), AVOGADRO_CONSTANT_144),dust,
-        // Bromine,1);
-        // transformationInfo.addOredict(new EMDefinitionStack(getFirstStableIsotope(36), AVOGADRO_CONSTANT_144),dust,
-        // Krypton,1);
+
         transformationInfo.addOredict(
                 new EMDefinitionStack(getFirstStableIsotope(37), EM_COUNT_PER_MATERIAL_AMOUNT_DIMINISHED),
                 dust,
@@ -1982,8 +2042,7 @@ public class EMAtomDefinition extends EMComplexTemplate {
                 dust,
                 Yttrium,
                 1);
-        // transformationInfo.addOredict(new EMDefinitionStack(getFirstStableIsotope(40), AVOGADRO_CONSTANT_144),dust,
-        // Zirconium,1);
+
         transformationInfo.addOredict(
                 new EMDefinitionStack(getFirstStableIsotope(41), EM_COUNT_PER_MATERIAL_AMOUNT_DIMINISHED),
                 dust,
@@ -1994,12 +2053,7 @@ public class EMAtomDefinition extends EMComplexTemplate {
                 dust,
                 Molybdenum,
                 1);
-        // transformationInfo.addOredict(new EMDefinitionStack(getFirstStableIsotope(43), AVOGADRO_CONSTANT_144),dust,
-        // Technetium,1);
-        // transformationInfo.addOredict(new EMDefinitionStack(getFirstStableIsotope(44), AVOGADRO_CONSTANT_144),dust,
-        // Ruthenium,1);
-        // transformationInfo.addOredict(new EMDefinitionStack(getFirstStableIsotope(45), AVOGADRO_CONSTANT_144),dust,
-        // Rhodium,1);
+
         transformationInfo.addOredict(
                 new EMDefinitionStack(getFirstStableIsotope(46), EM_COUNT_PER_MATERIAL_AMOUNT_DIMINISHED),
                 dust,
@@ -2035,10 +2089,7 @@ public class EMAtomDefinition extends EMComplexTemplate {
                 dust,
                 Tellurium,
                 1);
-        // transformationInfo.addOredict(new EMDefinitionStack(getFirstStableIsotope(53), AVOGADRO_CONSTANT_144),dust,
-        // Iodine,1);
-        // transformationInfo.addFluid(new EMDefinitionStack(getFirstStableIsotope(54),
-        // AVOGADRO_CONSTANT_144),Xenon.mGas.getID(), 144);
+
         transformationInfo.addOredict(
                 new EMDefinitionStack(getFirstStableIsotope(55), EM_COUNT_PER_MATERIAL_AMOUNT_DIMINISHED),
                 dust,
@@ -2119,8 +2170,7 @@ public class EMAtomDefinition extends EMComplexTemplate {
                 dust,
                 Lutetium,
                 1);
-        // transformationInfo.addOredict(new EMDefinitionStack(getFirstStableIsotope(72), AVOGADRO_CONSTANT_144),dust,
-        // Hafnum,1);
+
         transformationInfo.addOredict(
                 new EMDefinitionStack(getFirstStableIsotope(73), EM_COUNT_PER_MATERIAL_AMOUNT_DIMINISHED),
                 dust,
@@ -2131,8 +2181,7 @@ public class EMAtomDefinition extends EMComplexTemplate {
                 dust,
                 Tungsten,
                 1);
-        // transformationInfo.addOredict(new EMDefinitionStack(getFirstStableIsotope(75), AVOGADRO_CONSTANT_144),dust,
-        // Rhenium,1);
+
         transformationInfo.addOredict(
                 new EMDefinitionStack(getFirstStableIsotope(76), EM_COUNT_PER_MATERIAL_AMOUNT_DIMINISHED),
                 dust,
@@ -2157,8 +2206,7 @@ public class EMAtomDefinition extends EMComplexTemplate {
                 new EMDefinitionStack(getFirstStableIsotope(80), EM_COUNT_PER_MATERIAL_AMOUNT_DIMINISHED),
                 Mercury.mFluid,
                 144);
-        // transformationInfo.addOredict(new EMDefinitionStack(getFirstStableIsotope(81), AVOGADRO_CONSTANT_144),dust,
-        // Thallium,1);
+
         transformationInfo.addOredict(
                 new EMDefinitionStack(getFirstStableIsotope(82), EM_COUNT_PER_MATERIAL_AMOUNT_DIMINISHED),
                 dust,
@@ -2178,33 +2226,18 @@ public class EMAtomDefinition extends EMComplexTemplate {
                 dust,
                 Bismuth,
                 1);
-        // transformationInfo.addOredict(new EMDefinitionStack(getBestUnstableIsotope(84),AVOGADRO_CONSTANT_144),dust,
-        // Polonium,1);
-        // transformationInfo.addFluid(new
-        // EMDefinitionStack(getBestUnstableIsotope(85),AVOGADRO_CONSTANT_144),Astatine.mPlasma.getID(), 144);
+
         transformationInfo.addFluid(
                 new EMDefinitionStack(getBestUnstableIsotope(86), EM_COUNT_PER_MATERIAL_AMOUNT_DIMINISHED),
                 Radon.mGas,
                 144);
-        // transformationInfo.addOredict(new EMDefinitionStack(getBestUnstableIsotope(87),AVOGADRO_CONSTANT_144),dust,
-        // Francium,1);
-        // transformationInfo.addOredict(new EMDefinitionStack(getBestUnstableIsotope(88),AVOGADRO_CONSTANT_144),dust,
-        // Radium,1);
-        // transformationInfo.addOredict(new EMDefinitionStack(getBestUnstableIsotope(89),AVOGADRO_CONSTANT_144),dust,
-        // Actinium,1);
+
         transformationInfo.addOredict(
                 new EMDefinitionStack(getBestUnstableIsotope(90), EM_COUNT_PER_MATERIAL_AMOUNT_DIMINISHED),
                 dust,
                 Thorium,
                 1);
-        // transformationInfo.addOredict(new EMDefinitionStack(getBestUnstableIsotope(91),AVOGADRO_CONSTANT_144),dust,
-        // Protactinium,1);
-        //// transformationInfo.addOredict(new EMDefinitionStack(getBestUnstableIsotope(92),AVOGADRO_CONSTANT_144),
-        // dust, Uranium,1);
-        // transformationInfo.addOredict(new EMDefinitionStack(getBestUnstableIsotope(93),AVOGADRO_CONSTANT_144),dust,
-        // Neptunium,1);
-        //// transformationInfo.addOredict(new EMDefinitionStack(getBestUnstableIsotope(94),AVOGADRO_CONSTANT_144),
-        // dust, Plutonium,1);
+
         transformationInfo.addOredict(
                 new EMDefinitionStack(getBestUnstableIsotope(95), EM_COUNT_PER_MATERIAL_AMOUNT_DIMINISHED),
                 dust,

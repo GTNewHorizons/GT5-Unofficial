@@ -1,6 +1,10 @@
 package com.github.technus.tectech.thing.metaTileEntity.single;
 
-import static com.github.technus.tectech.thing.metaTileEntity.Textures.*;
+import static com.github.technus.tectech.thing.metaTileEntity.Textures.MACHINE_CASINGS_TT;
+import static com.github.technus.tectech.thing.metaTileEntity.Textures.OVERLAYS_ENERGY_IN_LASER_TT;
+import static com.github.technus.tectech.thing.metaTileEntity.Textures.OVERLAYS_ENERGY_IN_POWER_TT;
+import static com.github.technus.tectech.thing.metaTileEntity.Textures.OVERLAYS_ENERGY_OUT_LASER_TT;
+import static com.github.technus.tectech.thing.metaTileEntity.Textures.OVERLAYS_ENERGY_OUT_POWER_TT;
 import static com.github.technus.tectech.util.CommonValues.TRANSFER_AT;
 import static com.github.technus.tectech.util.CommonValues.VN;
 import static net.minecraft.util.StatCollector.translateToLocal;

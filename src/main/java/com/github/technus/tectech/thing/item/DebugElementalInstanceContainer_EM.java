@@ -3,7 +3,9 @@ package com.github.technus.tectech.thing.item;
 import static com.github.technus.tectech.Reference.MODID;
 import static com.github.technus.tectech.TecTech.creativeTabEM;
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
-import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationRegistry.*;
+import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationRegistry.EM_COUNT_PER_1k;
+import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationRegistry.EM_COUNT_PER_ITEM;
+import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationRegistry.EM_COUNT_PER_MATERIAL_AMOUNT;
 import static cpw.mods.fml.relauncher.Side.CLIENT;
 import static net.minecraft.util.StatCollector.translateToLocal;
 

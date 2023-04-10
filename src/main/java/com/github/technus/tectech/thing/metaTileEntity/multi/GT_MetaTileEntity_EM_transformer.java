@@ -5,7 +5,8 @@ import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texture
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
 import static com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM.HatchElement.DynamoMulti;
 import static com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM.HatchElement.EnergyMulti;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static gregtech.api.GregTech_API.sBlockCasings1;
 import static gregtech.api.enums.GT_HatchElement.Dynamo;
 import static gregtech.api.enums.GT_HatchElement.Energy;

@@ -3,10 +3,22 @@ package com.github.technus.tectech.thing.metaTileEntity.multi.base;
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 import static com.github.technus.tectech.loader.TecTechConfig.POWERLESS_MODE;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
-import static com.github.technus.tectech.util.CommonValues.*;
+import static com.github.technus.tectech.util.CommonValues.MOVE_AT;
+import static com.github.technus.tectech.util.CommonValues.MULTI_CHECK_AT;
+import static com.github.technus.tectech.util.CommonValues.MULTI_PURGE_1_AT;
+import static com.github.technus.tectech.util.CommonValues.MULTI_PURGE_2_AT;
+import static com.github.technus.tectech.util.CommonValues.RECIPE_AT;
+import static com.github.technus.tectech.util.CommonValues.TEC_MARK_GENERAL;
+import static com.github.technus.tectech.util.CommonValues.V;
+import static com.github.technus.tectech.util.CommonValues.VN;
 import static com.github.technus.tectech.util.DoubleCount.div;
 import static com.github.technus.tectech.util.TT_Utility.getTier;
-import static gregtech.api.enums.GT_HatchElement.*;
+import static gregtech.api.enums.GT_HatchElement.InputBus;
+import static gregtech.api.enums.GT_HatchElement.InputHatch;
+import static gregtech.api.enums.GT_HatchElement.Maintenance;
+import static gregtech.api.enums.GT_HatchElement.Muffler;
+import static gregtech.api.enums.GT_HatchElement.OutputBus;
+import static gregtech.api.enums.GT_HatchElement.OutputHatch;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static java.lang.Math.min;
 
@@ -33,7 +45,17 @@ import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMInstance
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.EMDefinitionStack;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.EMInstanceStack;
 import com.github.technus.tectech.thing.gui.TecTechUITextures;
-import com.github.technus.tectech.thing.metaTileEntity.hatch.*;
+import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DataConnector;
+import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DynamoMulti;
+import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_ElementalContainer;
+import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
+import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_InputData;
+import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_InputElemental;
+import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_OutputData;
+import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_OutputElemental;
+import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_OverflowElemental;
+import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_Param;
+import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_Uncertainty;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedExtendedFacingTexture;
 import com.github.technus.tectech.util.TT_Utility;
 import com.google.common.collect.Iterables;
@@ -52,7 +74,12 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.api.widget.Widget;
 import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
-import com.gtnewhorizons.modularui.common.widget.*;
+import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
+import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
+import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
+import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
+import com.gtnewhorizons.modularui.common.widget.SlotWidget;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
 
 import cpw.mods.fml.relauncher.Side;
@@ -66,8 +93,22 @@ import gregtech.api.interfaces.modularui.IBindPlayerInventoryUI;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.*;
-import gregtech.api.util.*;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynamo;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Maintenance;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBus;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
+import gregtech.api.util.GT_HatchElementBuilder;
+import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GT_Utility;
+import gregtech.api.util.IGT_HatchAdder;
 import gregtech.common.GT_Pollution;
 
 /**
@@ -977,8 +1018,6 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM
         mProgresstime = 0;
         mMaxProgresstime = 0;
         eAvailableData = 0;
-        // getBaseMetaTileEntity().disableWorking(); //can add in override
-        // hatchesStatusUpdate_EM(); //called always after recipe checks
     }
 
     private void cleanOrExplode() {
@@ -1752,19 +1791,6 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM
         }
         return true;
     }
-
-    // public final boolean energyFlowWithoutEffieciencyComputation(int eu,long ampere) {
-    // long temp = eu * ampere;//quick scope sign
-    // if (temp > 0) {
-    // this.addEnergyOutput_EM(eu, ampere);
-    // } else if (temp < 0) {
-    // if (!this.drainEnergyInput_EM(eu,eu, ampere)) {
-    // stopMachine();
-    // return false;
-    // }
-    // }
-    // return true;
-    // }
 
     @Override
     public long maxEUStore() {

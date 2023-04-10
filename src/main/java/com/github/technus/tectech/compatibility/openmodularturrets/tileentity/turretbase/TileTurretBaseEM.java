@@ -9,6 +9,7 @@ import com.github.technus.tectech.mechanics.elementalMatter.core.maps.EMInstance
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_InputElemental;
 
 import cpw.mods.fml.common.Optional;
+import gregtech.api.enums.Mods;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 
 /**
@@ -21,7 +22,7 @@ public class TileTurretBaseEM extends TurretBaseTierFiveTileEntity {
     }
 
     @Override
-    @Optional.Method(modid = "OpenComputers")
+    @Optional.Method(modid = Mods.Names.OPEN_COMPUTERS)
     public String getComponentName() {
         return "turretBaseEM";
     }

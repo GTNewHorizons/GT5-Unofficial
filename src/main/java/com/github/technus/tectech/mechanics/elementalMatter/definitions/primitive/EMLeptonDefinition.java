@@ -2,7 +2,12 @@ package com.github.technus.tectech.mechanics.elementalMatter.definitions.primiti
 
 import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMGaugeBosonDefinition.boson_Y__;
 import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMGaugeBosonDefinition.deadEnd;
-import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMNeutrinoDefinition.*;
+import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMNeutrinoDefinition.lepton_Ve;
+import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMNeutrinoDefinition.lepton_Ve_;
+import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMNeutrinoDefinition.lepton_Vm;
+import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMNeutrinoDefinition.lepton_Vm_;
+import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMNeutrinoDefinition.lepton_Vt;
+import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMNeutrinoDefinition.lepton_Vt_;
 import static com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMScalarBosonDefinition.boson_H__;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
@@ -37,8 +42,6 @@ public class EMLeptonDefinition extends EMFermionDefinition {
 
     protected EMLeptonDefinition(String name, String symbol, int type, double mass, int charge, int ID, String bind) {
         super(name, TT_Utility.toSuperscript(symbol), type, mass, charge, -1, ID, bind);
-        // this.itemThing=null;
-        // this.fluidThing=null;
     }
 
     public static void run(EMDefinitionsRegistry registry) {

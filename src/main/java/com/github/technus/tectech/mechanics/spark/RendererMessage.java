@@ -1,6 +1,13 @@
 package com.github.technus.tectech.mechanics.spark;
 
-import java.io.*;
+import static gregtech.api.enums.Mods.Thaumcraft;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Random;
@@ -10,7 +17,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 
 import thaumcraft.client.fx.bolt.FXLightningBolt;
-import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import cpw.mods.fml.relauncher.Side;
@@ -86,7 +92,7 @@ public class RendererMessage implements IMessage {
     @SideOnly(Side.CLIENT)
     private static void thaumLightning(int tX, int tY, int tZ, int tXN, int tYN, int tZN, int wID) {
         // This is enough to check for thaum, since it only ever matters for client side effects (Tested not to crash)
-        if (Loader.isModLoaded("Thaumcraft")) {
+        if (Thaumcraft.isModLoaded()) {
             World world = Minecraft.getMinecraft().theWorld;
             if (world.provider.dimensionId == wID) {
                 FXLightningBolt bolt = new FXLightningBolt(

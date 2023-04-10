@@ -20,7 +20,10 @@ import org.lwjgl.opengl.GL11;
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.ItemList;
 import codechicken.nei.PositionedStack;
-import codechicken.nei.recipe.*;
+import codechicken.nei.recipe.GuiCraftingRecipe;
+import codechicken.nei.recipe.GuiRecipe;
+import codechicken.nei.recipe.GuiUsageRecipe;
+import codechicken.nei.recipe.TemplateRecipeHandler;
 
 import com.github.technus.tectech.Reference;
 import com.github.technus.tectech.TecTech;

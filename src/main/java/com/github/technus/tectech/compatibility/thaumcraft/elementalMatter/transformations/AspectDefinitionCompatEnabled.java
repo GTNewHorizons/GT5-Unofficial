@@ -1,6 +1,11 @@
 package com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.transformations;
 
-import static com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.definitions.EMPrimalAspectDefinition.*;
+import static com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.definitions.EMPrimalAspectDefinition.magic_air;
+import static com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.definitions.EMPrimalAspectDefinition.magic_earth;
+import static com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.definitions.EMPrimalAspectDefinition.magic_entropy;
+import static com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.definitions.EMPrimalAspectDefinition.magic_fire;
+import static com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.definitions.EMPrimalAspectDefinition.magic_order;
+import static com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.definitions.EMPrimalAspectDefinition.magic_water;
 
 import java.util.ArrayList;
 

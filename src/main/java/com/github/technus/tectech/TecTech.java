@@ -1,6 +1,7 @@
 package com.github.technus.tectech;
 
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
+import static gregtech.api.enums.Mods.COFHCore;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -32,10 +33,14 @@ import com.github.technus.tectech.recipe.EyeOfHarmonyRecipeStorage;
 import com.github.technus.tectech.util.XSTR;
 
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.*;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.event.FMLServerAboutToStartEvent;
+import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import eu.usrv.yamcore.auxiliary.IngameErrorLog;
 import eu.usrv.yamcore.auxiliary.LogHelper;
 import gregtech.GT_Mod;
@@ -132,7 +137,7 @@ public class TecTech {
 
     @Mod.EventHandler
     public void Load(FMLInitializationEvent event) {
-        hasCOFH = Loader.isModLoaded(Reference.COFHCORE);
+        hasCOFH = COFHCore.isModLoaded();
 
         if (configTecTech.DISABLE_MATERIAL_LOADING_FFS) {
             try {

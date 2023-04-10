@@ -22,11 +22,6 @@ public class GT_MetaTileEntity_Hatch_OutputElemental extends GT_MetaTileEntity_H
         TT_Utility.setTier(aTier, this);
     }
 
-    // public GT_MetaTileEntity_Hatch_OutputElemental(String aName, int aTier, String aDescription, ITexture[][][]
-    // aTextures) {
-    // super(aName, aTier, aDescription, aTextures);
-    // }
-
     public GT_MetaTileEntity_Hatch_OutputElemental(String aName, int aTier, String aDescription,
             ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);

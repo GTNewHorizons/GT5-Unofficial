@@ -1,6 +1,8 @@
 package com.github.technus.tectech.thing.casing;
 
-import static com.github.technus.tectech.util.CommonValues.*;
+import static com.github.technus.tectech.util.CommonValues.COSMIC_MARK;
+import static com.github.technus.tectech.util.CommonValues.THETA_MOVEMENT;
+import static com.github.technus.tectech.util.CommonValues.V;
 import static gregtech.api.util.GT_Utility.formatNumbers;
 import static net.minecraft.util.EnumChatFormatting.AQUA;
 import static net.minecraft.util.EnumChatFormatting.GRAY;

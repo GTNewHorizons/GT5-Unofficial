@@ -171,24 +171,12 @@ public class GT_MetaTileEntity_Pipe_EM extends MetaPipeEntity implements IConnec
                         connectionCount++;
                     } else if (tTileEntity instanceof IGregTechTileEntity && ((IGregTechTileEntity) tTileEntity)
                             .getMetaTileEntity() instanceof IConnectsToElementalPipe) {
-                                if ( // ((IGregTechTileEntity)
-                                     // tTileEntity).getCoverBehaviorAtSide(b1).alwaysLookConnected(b1,
-                                // ((IGregTechTileEntity) tTileEntity).getCoverIDAtSide(b1), ((IGregTechTileEntity)
-                                // tTileEntity).getCoverDataAtSide(b1), ((IGregTechTileEntity) tTileEntity)) ||
-                                ((IConnectsToElementalPipe) ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())
+                                if (((IConnectsToElementalPipe) ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())
                                         .canConnect(b1)) {
                                     mConnections |= 1 << b0;
                                     connectionCount++;
                                 }
                             }
-                    // }
-                    // else {
-                    // mConnections |= (1 << b0);
-                    // if (mOld != mConnections) {
-                    // connectionCount++;
-                    // mOld = mConnections;
-                    // }
-                    // }
                 }
             }
         } else if (aBaseMetaTileEntity.isClientSide() && GT_Client.changeDetected == 4) {

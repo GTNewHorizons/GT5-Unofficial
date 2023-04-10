@@ -3,8 +3,6 @@ package com.github.technus.tectech.thing.metaTileEntity.single;
 import static com.github.technus.tectech.thing.metaTileEntity.Textures.MACHINE_CASINGS_TT;
 import static com.github.technus.tectech.util.CommonValues.V;
 
-import java.util.*;
-
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumChatFormatting;

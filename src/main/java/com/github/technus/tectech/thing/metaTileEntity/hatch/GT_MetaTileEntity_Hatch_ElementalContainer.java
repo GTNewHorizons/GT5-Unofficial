@@ -2,7 +2,11 @@ package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 import static com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationRegistry.EM_COUNT_PER_MATERIAL_AMOUNT_DIMINISHED;
-import static com.github.technus.tectech.util.CommonValues.*;
+import static com.github.technus.tectech.util.CommonValues.DECAY_AT;
+import static com.github.technus.tectech.util.CommonValues.MOVE_AT;
+import static com.github.technus.tectech.util.CommonValues.OVERFLOW_AT;
+import static com.github.technus.tectech.util.CommonValues.TEC_MARK_EM;
+import static com.github.technus.tectech.util.CommonValues.V;
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
 import static gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity;
 import static net.minecraft.util.StatCollector.translateToLocal;

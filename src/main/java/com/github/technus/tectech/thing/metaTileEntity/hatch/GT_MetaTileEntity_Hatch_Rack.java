@@ -3,6 +3,8 @@ package com.github.technus.tectech.thing.metaTileEntity.hatch;
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
 import static com.github.technus.tectech.util.CommonValues.MULTI_CHECK_AT;
 import static com.github.technus.tectech.util.TT_Utility.getUniqueIdentifier;
+import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
+import static gregtech.api.enums.Mods.OpenComputers;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
@@ -18,7 +20,6 @@ import net.minecraft.util.EnumChatFormatting;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
 
-import com.github.technus.tectech.Reference;
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.thing.gui.TecTechUITextures;
 import com.github.technus.tectech.util.CommonValues;
@@ -31,7 +32,6 @@ import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
-import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.ItemList;
@@ -252,13 +252,6 @@ public class GT_MetaTileEntity_Hatch_Rack extends GT_MetaTileEntity_Hatch implem
         }
     }
 
-    // @Override
-    // public void onRemoval() {
-    // if(mInventory!=null && (heat>0 || (getBaseMetaTileEntity()!=null && getBaseMetaTileEntity().isActive())))
-    // for(int i=0;i<mInventory.length;i++)
-    // mInventory[i]=null;
-    // }
-
     @Override
     public int getSizeInventory() { // HACK TO NOT DROP CONTENTS!!!
         return heat > 500 || getBaseMetaTileEntity().isActive() ? 0 : mInventory.length;
@@ -390,7 +383,7 @@ public class GT_MetaTileEntity_Hatch_Rack extends GT_MetaTileEntity_Hatch implem
         new RackComponent("IC2:ic2.reactorVentGold", 0, -1, 40f, 5000, false);
         new RackComponent("IC2:ic2.reactorVentDiamond", 0, -1, 80f, 10000, false); // 2x oc
 
-        if (Loader.isModLoaded(Reference.DREAMCRAFT)) {
+        if (NewHorizonsCoreMod.isModLoaded()) {
             // GTNH-GT5u circuits
             // these components causes crashes when used with the original GT5u
             new RackComponent(ItemList.NandChip.get(1), 2, 6, 0, 750, true); // Primitive Circuit
@@ -406,17 +399,7 @@ public class GT_MetaTileEntity_Hatch_Rack extends GT_MetaTileEntity_Hatch implem
             new RackComponent("dreamcraft:item.QuantumCircuit", 128, 48, -.6f, 9000, true);
         }
 
-        if (Loader.isModLoaded(Reference.SPARTAKCORE)) {
-            // CustomGT5u circuits
-            // these components causes crashes when used with the original GT5u
-            new RackComponent(ItemList.NandChip.get(1), 2, 6, 0, 750, true); // Primitive Circuit
-            new RackComponent(ItemList.Circuit_Biowarecomputer.get(1), 40, 26, -.35F, 5900, true);
-            new RackComponent(ItemList.Circuit_Biowaresupercomputer.get(1), 42, 30, -.4F, 6200, true);
-            new RackComponent(ItemList.Circuit_Biomainframe.get(1), 40, 28, -.4F, 6000, true); // UHV Circuit
-            new RackComponent(ItemList.Circuit_Bioprocessor.get(1), 34, 20, -.35F, 5800, true);
-        }
-
-        if (Loader.isModLoaded("OpenComputers")) {
+        if (OpenComputers.isModLoaded()) {
             new RackComponent("OpenComputers:item.oc.Transistor", 0, 1, 0f, 100, true); // Transistor
             new RackComponent("OpenComputers:item.oc.Microchip0", 7, 12, -.05f, 1500, true); // chip t1
             new RackComponent("OpenComputers:item.oc.Microchip1", 18, 20, -.1f, 3000, true); // chip t2

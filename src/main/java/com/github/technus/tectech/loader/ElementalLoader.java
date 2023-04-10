@@ -5,7 +5,12 @@ import com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.defin
 import com.github.technus.tectech.mechanics.elementalMatter.core.definitions.registry.EMDefinitionsRegistry;
 import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.EMAtomDefinition;
 import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.EMHadronDefinition;
-import com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.*;
+import com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMGaugeBosonDefinition;
+import com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMLeptonDefinition;
+import com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMNeutrinoDefinition;
+import com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMPrimitiveDefinition;
+import com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMQuarkDefinition;
+import com.github.technus.tectech.mechanics.elementalMatter.definitions.primitive.EMScalarBosonDefinition;
 
 /**
  * Created by danie_000 on 16.11.2016.

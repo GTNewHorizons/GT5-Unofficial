@@ -1,6 +1,11 @@
 package com.github.technus.tectech.mechanics.elementalMatter.core.definitions;
 
-import static com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_scanner.*;
+import static com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_scanner.SCAN_GET_CHARGE;
+import static com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_scanner.SCAN_GET_CLASS_TYPE;
+import static com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_scanner.SCAN_GET_COLORABLE;
+import static com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_scanner.SCAN_GET_MASS;
+import static com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_scanner.SCAN_GET_NOMENCLATURE;
+import static com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_scanner.SCAN_GET_TIMESPAN_INFO;
 import static com.github.technus.tectech.util.TT_Utility.areBitsSet;
 import static net.minecraft.util.StatCollector.translateToLocal;
 

@@ -7,7 +7,11 @@ import static com.github.technus.tectech.util.TT_Utility.packNBT;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.lang.reflect.Array;
-import java.util.*;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.NavigableMap;
+import java.util.Set;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
