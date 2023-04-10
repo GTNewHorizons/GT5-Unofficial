@@ -1271,7 +1271,7 @@ public class DistilleryRecipes implements Runnable {
         for (int i = 0; i < Math.min(aOutputs.length, 11); i++) {
             GT_RecipeBuilder buildDistillation = GT_Values.RA.stdBuilder()
                 .itemInputs(GT_Utility.getIntegratedCircuit(i + 1));
-            if (aOutput2 == GT_Values.NI) {
+            if (aOutput2 == GT_Values.NI || aOutput2 == null) {
                 buildDistillation.noItemOutputs();
             } else {
                 buildDistillation.itemOutputs(aOutput2);
@@ -1284,7 +1284,7 @@ public class DistilleryRecipes implements Runnable {
         }
         GT_RecipeBuilder buildDT = GT_Values.RA.stdBuilder()
             .itemInputs(aCircuit);
-        if (aOutput2 == GT_Values.NI) {
+        if (aOutput2 == GT_Values.NI || aOutput2 == null) {
             buildDT.noItemOutputs();
         } else {
             buildDT.itemOutputs(aOutput2);
@@ -1298,34 +1298,28 @@ public class DistilleryRecipes implements Runnable {
 
     public void addUniversalDistillationRecipe(FluidStack aInput, FluidStack[] aOutputs, ItemStack aOutput2,
         int aDuration, int aEUt) {
-        if (aOutput2 == null) {
-            for (int i = 0; i < Math.min(aOutputs.length, 11); i++) {
-                GT_Values.RA.stdBuilder()
-                    .itemInputs(GT_Utility.getIntegratedCircuit(i + 1))
-                    .noItemOutputs()
-                    .fluidInputs(aInput)
-                    .fluidOutputs(aOutputs[i])
-                    .duration(2 * aDuration)
-                    .eut(aEUt / 4)
-                    .addTo(sDistilleryRecipes);
+        for (int i = 0; i < Math.min(aOutputs.length, 11); i++) {
+            GT_RecipeBuilder buildDistillation = GT_Values.RA.stdBuilder()
+                .itemInputs(GT_Utility.getIntegratedCircuit(i + 1));
+            if (aOutput2 == GT_Values.NI || aOutput2 == null) {
+                buildDistillation.noItemOutputs();
+            } else {
+                buildDistillation.itemOutputs(aOutput2);
             }
-        } else {
-            for (int i = 0; i < Math.min(aOutputs.length, 11); i++) {
-                GT_Values.RA.stdBuilder()
-                    .itemInputs(GT_Utility.getIntegratedCircuit(i + 1))
-                    .itemOutputs(aOutput2)
-                    .fluidInputs(aInput)
-                    .fluidOutputs(aOutputs[i])
-                    .duration(2 * aDuration)
-                    .eut(aEUt / 4)
-                    .addTo(sDistilleryRecipes);
-            }
+            buildDistillation.fluidInputs(aInput)
+                .fluidOutputs(aOutputs[i])
+                .duration(2 * aDuration)
+                .eut(aEUt / 4)
+                .addTo(sDistilleryRecipes);
         }
-
-        GT_Values.RA.stdBuilder()
-            .noItemInputs()
-            .itemOutputs(aOutput2)
-            .fluidInputs(aInput)
+        GT_RecipeBuilder buildDT = GT_Values.RA.stdBuilder()
+            .noItemInputs();
+        if (aOutput2 == GT_Values.NI || aOutput2 == null) {
+            buildDT.noItemOutputs();
+        } else {
+            buildDT.itemOutputs(aOutput2);
+        }
+        buildDT.fluidInputs(aInput)
             .fluidOutputs(aOutputs)
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_MV)
