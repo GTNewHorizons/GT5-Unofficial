@@ -26,21 +26,21 @@ public class GT_MetaTileEntity_RecipeFilter extends GT_MetaTileEntity_SpecialFil
 
     public GT_MetaTileEntity_RecipeFilter(int aID, String aName, String aNameRegional, int aTier) {
         super(
-                aID,
-                aName,
-                aNameRegional,
-                aTier,
-                new String[] { "Filters 1 Recipe Type", "Use Screwdriver to regulate output stack size",
-                        "Does not consume energy to move Item" });
+            aID,
+            aName,
+            aNameRegional,
+            aTier,
+            new String[] { "Filters 1 Recipe Type", "Use Screwdriver to regulate output stack size",
+                "Does not consume energy to move Item" });
     }
 
     public GT_MetaTileEntity_RecipeFilter(String aName, int aTier, int aInvSlotCount, String aDescription,
-            ITexture[][][] aTextures) {
+        ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
     public GT_MetaTileEntity_RecipeFilter(String aName, int aTier, int aInvSlotCount, String[] aDescription,
-            ITexture[][][] aTextures) {
+        ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
@@ -64,21 +64,21 @@ public class GT_MetaTileEntity_RecipeFilter extends GT_MetaTileEntity_SpecialFil
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_RecipeFilter(
-                this.mName,
-                this.mTier,
-                this.mInventory.length,
-                this.mDescriptionArray,
-                this.mTextures);
+            this.mName,
+            this.mTier,
+            this.mInventory.length,
+            this.mDescriptionArray,
+            this.mTextures);
     }
 
     @Override
     public ITexture getOverlayIcon() {
         return TextureFactory.of(
-                TextureFactory.of(AUTOMATION_RECIPEFILTER),
-                TextureFactory.builder()
-                              .addIcon(AUTOMATION_RECIPEFILTER_GLOW)
-                              .glow()
-                              .build());
+            TextureFactory.of(AUTOMATION_RECIPEFILTER),
+            TextureFactory.builder()
+                .addIcon(AUTOMATION_RECIPEFILTER_GLOW)
+                .glow()
+                .build());
     }
 
     @Override

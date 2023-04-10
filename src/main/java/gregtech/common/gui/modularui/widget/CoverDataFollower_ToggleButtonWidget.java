@@ -10,7 +10,7 @@ import gregtech.api.gui.modularui.IDataFollowerWidget;
 import gregtech.api.util.ISerializableObject;
 
 public class CoverDataFollower_ToggleButtonWidget<T extends ISerializableObject> extends CoverCycleButtonWidget
-        implements IDataFollowerWidget<T, Boolean> {
+    implements IDataFollowerWidget<T, Boolean> {
 
     private Function<T, Boolean> dataToStateGetter;
 
@@ -44,21 +44,18 @@ public class CoverDataFollower_ToggleButtonWidget<T extends ISerializableObject>
     }
 
     public static <T extends ISerializableObject> CoverDataFollower_ToggleButtonWidget<T> ofCheckAndCross() {
-        return new CoverDataFollower_ToggleButtonWidget<T>().setToggleTexture(
-                GT_UITextures.OVERLAY_BUTTON_CHECKMARK,
-                GT_UITextures.OVERLAY_BUTTON_CROSS);
+        return new CoverDataFollower_ToggleButtonWidget<T>()
+            .setToggleTexture(GT_UITextures.OVERLAY_BUTTON_CHECKMARK, GT_UITextures.OVERLAY_BUTTON_CROSS);
     }
 
     public static <T extends ISerializableObject> CoverDataFollower_ToggleButtonWidget<T> ofCheck() {
-        return new CoverDataFollower_ToggleButtonWidget<T>().setToggleTexture(
-                GT_UITextures.OVERLAY_BUTTON_CHECKMARK,
-                GT_UITextures.TRANSPARENT);
+        return new CoverDataFollower_ToggleButtonWidget<T>()
+            .setToggleTexture(GT_UITextures.OVERLAY_BUTTON_CHECKMARK, GT_UITextures.TRANSPARENT);
     }
 
     public static <T extends ISerializableObject> CoverDataFollower_ToggleButtonWidget<T> ofRedstone() {
-        return new CoverDataFollower_ToggleButtonWidget<T>().setToggleTexture(
-                GT_UITextures.OVERLAY_BUTTON_REDSTONE_ON,
-                GT_UITextures.OVERLAY_BUTTON_REDSTONE_OFF);
+        return new CoverDataFollower_ToggleButtonWidget<T>()
+            .setToggleTexture(GT_UITextures.OVERLAY_BUTTON_REDSTONE_ON, GT_UITextures.OVERLAY_BUTTON_REDSTONE_OFF);
     }
 
     public static <T extends ISerializableObject> CoverDataFollower_ToggleButtonWidget<T> ofDisableable() {
@@ -69,7 +66,7 @@ public class CoverDataFollower_ToggleButtonWidget<T extends ISerializableObject>
      * Disables clicking if button is already pressed.
      */
     public static class CoverDataFollower_DisableableToggleButtonWidget<T extends ISerializableObject>
-            extends CoverDataFollower_ToggleButtonWidget<T> {
+        extends CoverDataFollower_ToggleButtonWidget<T> {
 
         public CoverDataFollower_DisableableToggleButtonWidget() {
             super();

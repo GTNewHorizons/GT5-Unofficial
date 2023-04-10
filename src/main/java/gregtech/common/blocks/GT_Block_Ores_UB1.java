@@ -31,7 +31,7 @@ public class GT_Block_Ores_UB1 extends GT_Block_Ores_Abstract {
     @Override
     public OrePrefixes[] getProcessingPrefix() { // Must have 8 entries.
         return new OrePrefixes[] { OrePrefixes.oreRedgranite, OrePrefixes.oreBlackgranite, OrePrefixes.ore,
-                OrePrefixes.ore, OrePrefixes.ore, OrePrefixes.oreBasalt, OrePrefixes.ore, OrePrefixes.ore };
+            OrePrefixes.ore, OrePrefixes.ore, OrePrefixes.oreBasalt, OrePrefixes.ore, OrePrefixes.ore };
     }
 
     @Override
@@ -52,7 +52,7 @@ public class GT_Block_Ores_UB1 extends GT_Block_Ores_Abstract {
     @Override
     public Materials[] getDroppedDusts() { // Must have 8 entries; can be null.
         return new Materials[] { Materials.Stone, Materials.Stone, Materials.Stone, Materials.Stone, Materials.Stone,
-                Materials.Stone, Materials.Stone, Materials.Stone };
+            Materials.Stone, Materials.Stone, Materials.Stone };
     }
 
     @Override
@@ -63,10 +63,10 @@ public class GT_Block_Ores_UB1 extends GT_Block_Ores_Abstract {
     @Override
     public ITexture[] getTextureSet() { // Must have 16 entries.
         return new ITexture[] { TextureFactory.of(aUBBlock, 0), TextureFactory.of(aUBBlock, 1),
-                TextureFactory.of(aUBBlock, 2), TextureFactory.of(aUBBlock, 3), TextureFactory.of(aUBBlock, 4),
-                TextureFactory.of(aUBBlock, 5), TextureFactory.of(aUBBlock, 6), TextureFactory.of(aUBBlock, 7),
-                TextureFactory.of(aUBBlock, 0), TextureFactory.of(aUBBlock, 1), TextureFactory.of(aUBBlock, 2),
-                TextureFactory.of(aUBBlock, 3), TextureFactory.of(aUBBlock, 4), TextureFactory.of(aUBBlock, 5),
-                TextureFactory.of(aUBBlock, 6), TextureFactory.of(aUBBlock, 7) };
+            TextureFactory.of(aUBBlock, 2), TextureFactory.of(aUBBlock, 3), TextureFactory.of(aUBBlock, 4),
+            TextureFactory.of(aUBBlock, 5), TextureFactory.of(aUBBlock, 6), TextureFactory.of(aUBBlock, 7),
+            TextureFactory.of(aUBBlock, 0), TextureFactory.of(aUBBlock, 1), TextureFactory.of(aUBBlock, 2),
+            TextureFactory.of(aUBBlock, 3), TextureFactory.of(aUBBlock, 4), TextureFactory.of(aUBBlock, 5),
+            TextureFactory.of(aUBBlock, 6), TextureFactory.of(aUBBlock, 7) };
     }
 }

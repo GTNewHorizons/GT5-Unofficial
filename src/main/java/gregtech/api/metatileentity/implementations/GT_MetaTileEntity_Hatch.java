@@ -28,22 +28,22 @@ public abstract class GT_MetaTileEntity_Hatch extends GT_MetaTileEntity_BasicTan
     private byte actualTexture = 0;
 
     public GT_MetaTileEntity_Hatch(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount,
-            String aDescription, ITexture... aTextures) {
+        String aDescription, ITexture... aTextures) {
         super(aID, aName, aNameRegional, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
     public GT_MetaTileEntity_Hatch(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount,
-            String[] aDescription, ITexture... aTextures) {
+        String[] aDescription, ITexture... aTextures) {
         super(aID, aName, aNameRegional, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
     public GT_MetaTileEntity_Hatch(String aName, int aTier, int aInvSlotCount, String aDescription,
-            ITexture[][][] aTextures) {
+        ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
     public GT_MetaTileEntity_Hatch(String aName, int aTier, int aInvSlotCount, String[] aDescription,
-            ITexture[][][] aTextures) {
+        ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
@@ -62,7 +62,7 @@ public abstract class GT_MetaTileEntity_Hatch extends GT_MetaTileEntity_BasicTan
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-            boolean aActive, boolean aRedstone) {
+        boolean aActive, boolean aRedstone) {
         int texturePointer = (byte) (actualTexture & 0x7F); // just to be sure, from my testing the 8th bit cannot be
                                                             // set clientside
         int textureIndex = texturePointer | (mTexturePage << 7); // Shift seven since one page is 128 textures!
@@ -76,7 +76,7 @@ public abstract class GT_MetaTileEntity_Hatch extends GT_MetaTileEntity_BasicTan
                     if (aActive)
                         return getTexturesActive(Textures.BlockIcons.casingTexturePages[mTexturePage][texturePointer]);
                     else return getTexturesInactive(
-                            Textures.BlockIcons.casingTexturePages[mTexturePage][texturePointer]);
+                        Textures.BlockIcons.casingTexturePages[mTexturePage][texturePointer]);
                 } else {
                     if (aActive) return getTexturesActive(Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1]);
                     else return getTexturesInactive(Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1]);

@@ -25,7 +25,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_LanguageManager;
 
 public abstract class GT_Block_Casings_Abstract extends GT_Generic_Block
-        implements gregtech.api.interfaces.IHasIndexedTexture {
+    implements gregtech.api.interfaces.IHasIndexedTexture {
 
     public GT_Block_Casings_Abstract(Class<? extends ItemBlock> aItemClass, String aName, Material aMaterial) {
         super(aItemClass, aName, aMaterial);
@@ -36,7 +36,7 @@ public abstract class GT_Block_Casings_Abstract extends GT_Generic_Block
     }
 
     public GT_Block_Casings_Abstract(Class<? extends ItemBlock> aItemClass, String aName, Material aMaterial,
-            int aMaxMeta) {
+        int aMaxMeta) {
         this(aItemClass, aName, aMaterial);
         for (int i = 0; i < aMaxMeta; i++) {
             Textures.BlockIcons.setCasingTextureForId(getTextureIndex(i), TextureFactory.of(this, i));
@@ -127,8 +127,7 @@ public abstract class GT_Block_Casings_Abstract extends GT_Generic_Block
         for (int i = 0; i < 16; i++) {
             ItemStack aStack = new ItemStack(aItem, 1, i);
             if (!aStack.getDisplayName()
-                       .contains(".name"))
-                aList.add(aStack);
+                .contains(".name")) aList.add(aStack);
         }
     }
 

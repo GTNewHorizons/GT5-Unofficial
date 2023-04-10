@@ -35,7 +35,7 @@ public abstract class GT_MetaTileEntity_TieredMachineBlock extends MetaTileEntit
     public final ITexture[][][] mTextures;
 
     public GT_MetaTileEntity_TieredMachineBlock(int aID, String aName, String aNameRegional, int aTier,
-            int aInvSlotCount, String aDescription, ITexture... aTextures) {
+        int aInvSlotCount, String aDescription, ITexture... aTextures) {
         super(aID, aName, aNameRegional, aInvSlotCount);
         mTier = (byte) Math.max(0, Math.min(aTier, 14));
         mDescriptionArray = aDescription == null ? new String[0] : new String[] { aDescription };
@@ -46,7 +46,7 @@ public abstract class GT_MetaTileEntity_TieredMachineBlock extends MetaTileEntit
     }
 
     public GT_MetaTileEntity_TieredMachineBlock(int aID, String aName, String aNameRegional, int aTier,
-            int aInvSlotCount, String[] aDescription, ITexture... aTextures) {
+        int aInvSlotCount, String[] aDescription, ITexture... aTextures) {
         super(aID, aName, aNameRegional, aInvSlotCount);
         mTier = (byte) Math.max(0, Math.min(aTier, 15));
         mDescriptionArray = aDescription == null ? new String[0] : aDescription;
@@ -63,7 +63,7 @@ public abstract class GT_MetaTileEntity_TieredMachineBlock extends MetaTileEntit
     }
 
     public GT_MetaTileEntity_TieredMachineBlock(String aName, int aTier, int aInvSlotCount, String aDescription,
-            ITexture[][][] aTextures) {
+        ITexture[][][] aTextures) {
         super(aName, aInvSlotCount);
         mTier = (byte) aTier;
         mDescriptionArray = aDescription == null ? new String[0] : new String[] { aDescription };
@@ -72,7 +72,7 @@ public abstract class GT_MetaTileEntity_TieredMachineBlock extends MetaTileEntit
     }
 
     public GT_MetaTileEntity_TieredMachineBlock(String aName, int aTier, int aInvSlotCount, String[] aDescription,
-            ITexture[][][] aTextures) {
+        ITexture[][][] aTextures) {
         super(aName, aInvSlotCount);
         mTier = (byte) aTier;
         mDescriptionArray = aDescription == null ? new String[0] : aDescription;
@@ -124,15 +124,9 @@ public abstract class GT_MetaTileEntity_TieredMachineBlock extends MetaTileEntit
 
     protected SlotWidget createChargerSlot(int x, int y, String tooltipKey, Object[] tooltipArgs) {
         return (SlotWidget) new SlotWidget(inventoryHandler, rechargerSlotStartIndex()).disableShiftInsert()
-                                                                                       .setGTTooltip(
-                                                                                               () -> mTooltipCache.getData(
-                                                                                                       tooltipKey,
-                                                                                                       tooltipArgs))
-                                                                                       .setTooltipShowUpDelay(
-                                                                                               TOOLTIP_DELAY)
-                                                                                       .setBackground(
-                                                                                               getGUITextureSet().getItemSlot(),
-                                                                                               GT_UITextures.OVERLAY_SLOT_CHARGER)
-                                                                                       .setPos(x, y);
+            .setGTTooltip(() -> mTooltipCache.getData(tooltipKey, tooltipArgs))
+            .setTooltipShowUpDelay(TOOLTIP_DELAY)
+            .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_CHARGER)
+            .setPos(x, y);
     }
 }

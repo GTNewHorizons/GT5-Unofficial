@@ -21,7 +21,7 @@ import gregtech.api.util.GT_Utility;
  * Multiblock base class that allows machine to use power over int.
  */
 public abstract class GT_MetaTileEntity_ExtendedPowerMultiBlockBase<T extends GT_MetaTileEntity_EnhancedMultiBlockBase<T>>
-        extends GT_MetaTileEntity_EnhancedMultiBlockBase<T> {
+    extends GT_MetaTileEntity_EnhancedMultiBlockBase<T> {
 
     public long lEUt;
 
@@ -48,7 +48,7 @@ public abstract class GT_MetaTileEntity_ExtendedPowerMultiBlockBase<T extends GT
 
     @Override
     protected void calculateOverclockedNessMultiInternal(long aEUt, int aDuration, int mAmperage, long maxInputVoltage,
-            boolean perfectOC) {
+        boolean perfectOC) {
         // 5% space for cable loss
         long zMaxInputVoltage = maxInputVoltage / 100L * 95L;
         long zTime = aDuration;
@@ -114,7 +114,7 @@ public abstract class GT_MetaTileEntity_ExtendedPowerMultiBlockBase<T extends GT
 
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-            int z) {
+        int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
 
         final IGregTechTileEntity tileEntity = getBaseMetaTileEntity();
@@ -140,66 +140,66 @@ public abstract class GT_MetaTileEntity_ExtendedPowerMultiBlockBase<T extends GT
         for (GT_MetaTileEntity_Hatch tHatch : getExoticAndNormalEnergyHatchList()) {
             if (isValidMetaTileEntity(tHatch)) {
                 storedEnergy += tHatch.getBaseMetaTileEntity()
-                                      .getStoredEU();
+                    .getStoredEU();
                 maxEnergy += tHatch.getBaseMetaTileEntity()
-                                   .getEUCapacity();
+                    .getEUCapacity();
             }
         }
         long voltage = getAverageInputVoltage();
         long amps = getMaxInputAmps();
 
         return new String[] {
-                /* 1 */ StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
-                        + EnumChatFormatting.GREEN
-                        + GT_Utility.formatNumbers(mProgresstime / 20)
-                        + EnumChatFormatting.RESET
-                        + " s / "
-                        + EnumChatFormatting.YELLOW
-                        + GT_Utility.formatNumbers(mMaxProgresstime / 20)
-                        + EnumChatFormatting.RESET
-                        + " s",
-                /* 2 */ StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
-                        + EnumChatFormatting.GREEN
-                        + GT_Utility.formatNumbers(storedEnergy)
-                        + EnumChatFormatting.RESET
-                        + " EU / "
-                        + EnumChatFormatting.YELLOW
-                        + GT_Utility.formatNumbers(maxEnergy)
-                        + EnumChatFormatting.RESET
-                        + " EU",
-                /* 3 */ StatCollector.translateToLocal("GT5U.multiblock.usage") + ": "
-                        + EnumChatFormatting.RED
-                        + GT_Utility.formatNumbers(getActualEnergyUsage())
-                        + EnumChatFormatting.RESET
-                        + " EU/t",
-                /* 4 */ StatCollector.translateToLocal("GT5U.multiblock.mei") + ": "
-                        + EnumChatFormatting.YELLOW
-                        + GT_Utility.formatNumbers(voltage)
-                        + EnumChatFormatting.RESET
-                        + " EU/t(*"
-                        + amps
-                        + " A)"
-                        + StatCollector.translateToLocal("GT5U.machines.tier")
-                        + ": "
-                        + EnumChatFormatting.YELLOW
-                        + VN[GT_Utility.getTier(voltage)]
-                        + EnumChatFormatting.RESET,
-                /* 5 */ StatCollector.translateToLocal("GT5U.multiblock.problems") + ": "
-                        + EnumChatFormatting.RED
-                        + (getIdealStatus() - getRepairStatus())
-                        + EnumChatFormatting.RESET
-                        + " "
-                        + StatCollector.translateToLocal("GT5U.multiblock.efficiency")
-                        + ": "
-                        + EnumChatFormatting.YELLOW
-                        + mEfficiency / 100.0F
-                        + EnumChatFormatting.RESET
-                        + " %",
-                /* 6 */ StatCollector.translateToLocal("GT5U.multiblock.pollution") + ": "
-                        + EnumChatFormatting.GREEN
-                        + mPollutionReduction
-                        + EnumChatFormatting.RESET
-                        + " %" };
+            /* 1 */ StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
+                + EnumChatFormatting.GREEN
+                + GT_Utility.formatNumbers(mProgresstime / 20)
+                + EnumChatFormatting.RESET
+                + " s / "
+                + EnumChatFormatting.YELLOW
+                + GT_Utility.formatNumbers(mMaxProgresstime / 20)
+                + EnumChatFormatting.RESET
+                + " s",
+            /* 2 */ StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
+                + EnumChatFormatting.GREEN
+                + GT_Utility.formatNumbers(storedEnergy)
+                + EnumChatFormatting.RESET
+                + " EU / "
+                + EnumChatFormatting.YELLOW
+                + GT_Utility.formatNumbers(maxEnergy)
+                + EnumChatFormatting.RESET
+                + " EU",
+            /* 3 */ StatCollector.translateToLocal("GT5U.multiblock.usage") + ": "
+                + EnumChatFormatting.RED
+                + GT_Utility.formatNumbers(getActualEnergyUsage())
+                + EnumChatFormatting.RESET
+                + " EU/t",
+            /* 4 */ StatCollector.translateToLocal("GT5U.multiblock.mei") + ": "
+                + EnumChatFormatting.YELLOW
+                + GT_Utility.formatNumbers(voltage)
+                + EnumChatFormatting.RESET
+                + " EU/t(*"
+                + amps
+                + " A)"
+                + StatCollector.translateToLocal("GT5U.machines.tier")
+                + ": "
+                + EnumChatFormatting.YELLOW
+                + VN[GT_Utility.getTier(voltage)]
+                + EnumChatFormatting.RESET,
+            /* 5 */ StatCollector.translateToLocal("GT5U.multiblock.problems") + ": "
+                + EnumChatFormatting.RED
+                + (getIdealStatus() - getRepairStatus())
+                + EnumChatFormatting.RESET
+                + " "
+                + StatCollector.translateToLocal("GT5U.multiblock.efficiency")
+                + ": "
+                + EnumChatFormatting.YELLOW
+                + mEfficiency / 100.0F
+                + EnumChatFormatting.RESET
+                + " %",
+            /* 6 */ StatCollector.translateToLocal("GT5U.multiblock.pollution") + ": "
+                + EnumChatFormatting.GREEN
+                + mPollutionReduction
+                + EnumChatFormatting.RESET
+                + " %" };
     }
 
     @Override

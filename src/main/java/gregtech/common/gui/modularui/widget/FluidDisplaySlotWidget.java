@@ -141,16 +141,16 @@ public class FluidDisplaySlotWidget extends SlotWidget {
         ItemStack ret = null;
         if (actionRealClick == Action.TRANSFER) {
             if (fluidAccessConstructor == null) {
-                GT_Mod.GT_FML_LOGGER.warn(
-                        "FluidDisplaySlotWidget is asked to transfer fluid, but fluidAccessConstructor is null!");
+                GT_Mod.GT_FML_LOGGER
+                    .warn("FluidDisplaySlotWidget is asked to transfer fluid, but fluidAccessConstructor is null!");
                 return null;
             }
             ret = transferFluid(
-                    fluidAccessConstructor.get(),
-                    getContext().getPlayer(),
-                    clickData.mouseButton == 0,
-                    canDrainGetter != null ? canDrainGetter.get() : true,
-                    canFillGetter != null ? canFillGetter.get() : true);
+                fluidAccessConstructor.get(),
+                getContext().getPlayer(),
+                clickData.mouseButton == 0,
+                canDrainGetter != null ? canDrainGetter.get() : true,
+                canFillGetter != null ? canFillGetter.get() : true);
         } else if (actionRealClick == Action.LOCK) {
             lockFluid(getContext().getPlayer().inventory.getItemStack());
         }
@@ -160,7 +160,7 @@ public class FluidDisplaySlotWidget extends SlotWidget {
     }
 
     protected ItemStack transferFluid(IFluidAccess aFluidAccess, EntityPlayer aPlayer, boolean aProcessFullStack,
-            boolean aCanDrain, boolean aCanFill) {
+        boolean aCanDrain, boolean aCanFill) {
         ItemStack tStackHeld = aPlayer.inventory.getItemStack();
         ItemStack tStackSizedOne = GT_Utility.copyAmount(1, tStackHeld);
         if (tStackSizedOne == null || tStackHeld.stackSize == 0) return null;
@@ -235,11 +235,10 @@ public class FluidDisplaySlotWidget extends SlotWidget {
     }
 
     protected static ItemStack fillFluid(IFluidAccess aFluidAccess, EntityPlayer aPlayer, FluidStack aFluidHeld,
-            boolean aProcessFullStack) {
+        boolean aProcessFullStack) {
         // we are not using aMachine.fill() here any more, so we need to check for fluid type here ourselves
         if (aFluidAccess.get() != null && !aFluidAccess.get()
-                                                       .isFluidEqual(aFluidHeld))
-            return null;
+            .isFluidEqual(aFluidHeld)) return null;
         ItemStack tStackHeld = aPlayer.inventory.getItemStack();
         ItemStack tStackSizedOne = GT_Utility.copyAmount(1, tStackHeld);
         if (tStackSizedOne == null) return null;
@@ -340,10 +339,10 @@ public class FluidDisplaySlotWidget extends SlotWidget {
             mteToLock.lockFluid(true);
             mteToLock.setLockedFluidName(tFluid.getName());
             GT_Utility.sendChatToPlayer(
-                    getContext().getPlayer(),
-                    String.format(
-                            GT_Utility.trans("151.4", "Successfully locked Fluid to %s"),
-                            new FluidStack(tFluid, 1).getLocalizedName()));
+                getContext().getPlayer(),
+                String.format(
+                    GT_Utility.trans("151.4", "Successfully locked Fluid to %s"),
+                    new FluidStack(tFluid, 1).getLocalizedName()));
 
             if (!isClient()) {
                 mteToLock.onFluidLockPacketReceived(tFluid.getName());
@@ -418,7 +417,7 @@ public class FluidDisplaySlotWidget extends SlotWidget {
      * @param beforeRealClick (click data, this widget) -> if allow click
      */
     public FluidDisplaySlotWidget setBeforeRealClick(
-            BiFunction<ClickData, FluidDisplaySlotWidget, Boolean> beforeRealClick) {
+        BiFunction<ClickData, FluidDisplaySlotWidget, Boolean> beforeRealClick) {
         this.beforeRealClick = beforeRealClick;
         return this;
     }
@@ -429,7 +428,7 @@ public class FluidDisplaySlotWidget extends SlotWidget {
      * @param beforeDragAndDrop (click data, this widget) -> if allow click
      */
     public FluidDisplaySlotWidget setBeforeDragAndDrop(
-            BiFunction<ClickData, FluidDisplaySlotWidget, Boolean> beforeDragAndDrop) {
+        BiFunction<ClickData, FluidDisplaySlotWidget, Boolean> beforeDragAndDrop) {
         this.beforeDragAndDrop = beforeDragAndDrop;
         return this;
     }

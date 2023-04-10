@@ -7,7 +7,7 @@ import gregtech.api.interfaces.ITexture;
 
 @Deprecated
 public class GT_RenderedTexture extends gregtech.common.render.GT_RenderedTexture
-        implements ITexture, IColorModulationContainer {
+    implements ITexture, IColorModulationContainer {
 
     @Deprecated
     public short[] mRGBa;

@@ -20,13 +20,13 @@ public class GT_Cover_RedstoneTransmitterInternal extends GT_Cover_RedstoneWirel
 
     @Override
     public boolean isRedstoneSensitive(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
-            long aTimer) {
+        long aTimer) {
         return false;
     }
 
     @Override
     public int doCoverThings(byte aSide, byte aInputRedstone, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
-            long aTimer) {
+        long aTimer) {
         GregTech_API.sWirelessRedstone.put(aCoverVariable, aTileEntity.getOutputRedstoneSignal(aSide));
         return aCoverVariable;
     }
@@ -43,7 +43,7 @@ public class GT_Cover_RedstoneTransmitterInternal extends GT_Cover_RedstoneWirel
 
     @Override
     public boolean manipulatesSidedRedstoneOutput(byte aSide, int aCoverID, int aCoverVariable,
-            ICoverable aTileEntity) {
+        ICoverable aTileEntity) {
         return true;
     }
 }

@@ -51,33 +51,21 @@ public class SpaceProjectWorldSavedData extends WorldSavedData {
     public static SpaceProjectWorldSavedData INSTANCE;
 
     private static final Gson GSON_SPACE_PROJECT = new GsonBuilder().serializeNulls()
-                                                                    .enableComplexMapKeySerialization()
-                                                                    .registerTypeAdapter(
-                                                                            spaceTeamProjects.getClass(),
-                                                                            new SpaceTeamProjectsMapAdapter())
-                                                                    .registerTypeAdapter(
-                                                                            Map.class,
-                                                                            new SpaceTeamProjectsMapAdapter())
-                                                                    .registerTypeAdapter(
-                                                                            Pair.of((ISpaceBody) SolarSystem.Ariel, "")
-                                                                                .getClass(),
-                                                                            new PairAdapter())
-                                                                    .registerTypeAdapter(Pair.class, new PairAdapter())
-                                                                    .registerTypeAdapter(
-                                                                            ISpaceProject.class,
-                                                                            new SpaceProjectAdapter())
-                                                                    .registerTypeAdapter(
-                                                                            ISP_Upgrade.class,
-                                                                            new SP_UpgradeAdapter())
-                                                                    .registerTypeHierarchyAdapter(
-                                                                            ISpaceProject.class,
-                                                                            new SpaceProjectAdapter())
-                                                                    .registerTypeHierarchyAdapter(
-                                                                            ISP_Upgrade.class,
-                                                                            new SP_UpgradeAdapter())
-                                                                    .create();
+        .enableComplexMapKeySerialization()
+        .registerTypeAdapter(spaceTeamProjects.getClass(), new SpaceTeamProjectsMapAdapter())
+        .registerTypeAdapter(Map.class, new SpaceTeamProjectsMapAdapter())
+        .registerTypeAdapter(
+            Pair.of((ISpaceBody) SolarSystem.Ariel, "")
+                .getClass(),
+            new PairAdapter())
+        .registerTypeAdapter(Pair.class, new PairAdapter())
+        .registerTypeAdapter(ISpaceProject.class, new SpaceProjectAdapter())
+        .registerTypeAdapter(ISP_Upgrade.class, new SP_UpgradeAdapter())
+        .registerTypeHierarchyAdapter(ISpaceProject.class, new SpaceProjectAdapter())
+        .registerTypeHierarchyAdapter(ISP_Upgrade.class, new SP_UpgradeAdapter())
+        .create();
     private static final Gson GSON_TEAMS = new GsonBuilder().serializeNulls()
-                                                            .create();
+        .create();
 
     private static final String DATA_NAME = "GT_SpaceProjectData";
 
@@ -146,13 +134,13 @@ public class SpaceProjectWorldSavedData extends WorldSavedData {
             spaceTeams = new HashMap<>();
         }
         spaceTeamsFile = new File(
-                aWorld.getSaveHandler()
-                      .getWorldDirectory(),
-                SPACE_TEAMS_JSON);
+            aWorld.getSaveHandler()
+                .getWorldDirectory(),
+            SPACE_TEAMS_JSON);
         teamProjectsFile = new File(
-                aWorld.getSaveHandler()
-                      .getWorldDirectory(),
-                SPACE_TEAM_PROJECTS_JSON);
+            aWorld.getSaveHandler()
+                .getWorldDirectory(),
+            SPACE_TEAM_PROJECTS_JSON);
         MapStorage tStorage = aWorld.mapStorage;
         INSTANCE = (SpaceProjectWorldSavedData) tStorage.loadData(SpaceProjectWorldSavedData.class, DATA_NAME);
         if (INSTANCE == null) {
@@ -170,31 +158,31 @@ public class SpaceProjectWorldSavedData extends WorldSavedData {
     }
 
     private static class PairAdapter
-            implements JsonSerializer<Pair<ISpaceBody, String>>, JsonDeserializer<Pair<ISpaceBody, String>> {
+        implements JsonSerializer<Pair<ISpaceBody, String>>, JsonDeserializer<Pair<ISpaceBody, String>> {
 
         @Override
         public JsonElement serialize(Pair<ISpaceBody, String> src, Type typeOfSrc, JsonSerializationContext context) {
             JsonObject pair = new JsonObject();
             pair.addProperty(
-                    PAIR_LEFT,
-                    src.getLeft()
-                       .getName());
+                PAIR_LEFT,
+                src.getLeft()
+                    .getName());
             pair.addProperty(PAIR_RIGHT, src.getRight());
             return pair;
         }
 
         @Override
         public Pair<ISpaceBody, String> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
-                throws JsonParseException {
+            throws JsonParseException {
             Pair<ISpaceBody, String> pair = null;
             if (json.isJsonObject()) {
                 JsonObject obj = json.getAsJsonObject();
                 pair = Pair.of(
-                        SpaceProjectManager.getLocation(
-                                obj.get(PAIR_LEFT)
-                                   .getAsString()),
-                        obj.get(PAIR_RIGHT)
-                           .getAsString());
+                    SpaceProjectManager.getLocation(
+                        obj.get(PAIR_LEFT)
+                            .getAsString()),
+                    obj.get(PAIR_RIGHT)
+                        .getAsString());
             }
             return pair;
         }
@@ -208,9 +196,9 @@ public class SpaceProjectWorldSavedData extends WorldSavedData {
             obj.addProperty(PROJECT_NAME, src.getProjectName());
             obj.addProperty(PROJECT_CURRENT_STAGE, src.getCurrentStage());
             obj.addProperty(
-                    PROJECT_LOCATION,
-                    src.getProjectLocation()
-                       .getName());
+                PROJECT_LOCATION,
+                src.getProjectLocation()
+                    .getName());
             obj.add(PROJECT_CURRENT_UPGRADE, context.serialize(src.getUpgradeBeingBuilt()));
             obj.add(PROJECT_UPGRADES_BUILT, context.serialize(src.getAllBuiltUpgrades()));
             return obj;
@@ -218,26 +206,24 @@ public class SpaceProjectWorldSavedData extends WorldSavedData {
 
         @Override
         public ISpaceProject deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
-                throws JsonParseException {
+            throws JsonParseException {
             if (!json.isJsonObject()) {
                 return null;
             }
             JsonObject obj = json.getAsJsonObject();
             String projectName = obj.get(PROJECT_NAME)
-                                    .getAsString();
+                .getAsString();
             ISpaceProject project = SpaceProjectManager.getProject(projectName);
             int projectCurrentStage = obj.get(PROJECT_CURRENT_STAGE)
-                                         .getAsInt();
+                .getAsInt();
             ISP_Upgrade[] projectUpgradesBuilt = new ISP_Upgrade[0];
-            projectUpgradesBuilt = context.deserialize(
-                    obj.get(PROJECT_UPGRADES_BUILT),
-                    projectUpgradesBuilt.getClass());
-            ISP_Upgrade projectCurrentUpgrade = context.deserialize(
-                    obj.get(PROJECT_CURRENT_UPGRADE),
-                    ISP_Upgrade.class);
+            projectUpgradesBuilt = context
+                .deserialize(obj.get(PROJECT_UPGRADES_BUILT), projectUpgradesBuilt.getClass());
+            ISP_Upgrade projectCurrentUpgrade = context
+                .deserialize(obj.get(PROJECT_CURRENT_UPGRADE), ISP_Upgrade.class);
             ISpaceBody projectLocation = SpaceProjectManager.getLocation(
-                    obj.get(PROJECT_LOCATION)
-                       .getAsString());
+                obj.get(PROJECT_LOCATION)
+                    .getAsString());
             project.setBuiltUpgrade(projectUpgradesBuilt);
             project.setProjectLocation(projectLocation);
             project.setProjectCurrentStage(projectCurrentStage);
@@ -253,51 +239,51 @@ public class SpaceProjectWorldSavedData extends WorldSavedData {
             JsonObject obj = new JsonObject();
             obj.addProperty(UPGRADE_NAME, src.getUpgradeName());
             obj.addProperty(
-                    UPGRADE_PROJECT_PARENT,
-                    src.getParentProject()
-                       .getProjectName());
+                UPGRADE_PROJECT_PARENT,
+                src.getParentProject()
+                    .getProjectName());
             obj.addProperty(UPGRADE_CURRENT_STAGE, src.getCurrentStage());
             return obj;
         }
 
         @Override
         public ISP_Upgrade deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
-                throws JsonParseException {
+            throws JsonParseException {
             if (!json.isJsonObject()) {
                 return null;
             }
             JsonObject obj = json.getAsJsonObject();
             String projectName = obj.get(UPGRADE_PROJECT_PARENT)
-                                    .getAsString();
+                .getAsString();
             ISpaceProject project = SpaceProjectManager.getProject(projectName);
             ISP_Upgrade upgrade = project.getUpgrade(
-                    obj.get(UPGRADE_NAME)
-                       .getAsString());
+                obj.get(UPGRADE_NAME)
+                    .getAsString());
             if (upgrade == null) {
                 return null;
             }
             upgrade = upgrade.copy();
             upgrade.setUpgradeCurrentStage(
-                    obj.get(UPGRADE_CURRENT_STAGE)
-                       .getAsInt());
+                obj.get(UPGRADE_CURRENT_STAGE)
+                    .getAsInt());
             return upgrade;
         }
     }
 
     private static class SpaceTeamProjectsMapAdapter
-            implements JsonSerializer<Map<UUID, Map<Pair<ISpaceBody, String>, ISpaceProject>>>,
-            JsonDeserializer<Map<UUID, Map<Pair<ISpaceBody, String>, ISpaceProject>>> {
+        implements JsonSerializer<Map<UUID, Map<Pair<ISpaceBody, String>, ISpaceProject>>>,
+        JsonDeserializer<Map<UUID, Map<Pair<ISpaceBody, String>, ISpaceProject>>> {
 
         @Override
         public JsonElement serialize(Map<UUID, Map<Pair<ISpaceBody, String>, ISpaceProject>> src, Type typeOfSrc,
-                JsonSerializationContext context) {
+            JsonSerializationContext context) {
             JsonArray map = new JsonArray();
             for (Entry<UUID, Map<Pair<ISpaceBody, String>, ISpaceProject>> firstEntry : src.entrySet()) {
                 JsonObject teamMap = new JsonObject();
                 teamMap.add(MAP_UUID, context.serialize(firstEntry.getKey()));
                 JsonArray teamProjectMap = new JsonArray();
                 for (Entry<Pair<ISpaceBody, String>, ISpaceProject> secondEntry : firstEntry.getValue()
-                                                                                            .entrySet()) {
+                    .entrySet()) {
                     JsonObject projectMap = new JsonObject();
                     projectMap.add(MAP_PAIR, context.serialize(secondEntry.getKey()));
                     projectMap.add(MAP_PROJECT, context.serialize(secondEntry.getValue()));
@@ -311,7 +297,7 @@ public class SpaceProjectWorldSavedData extends WorldSavedData {
 
         @Override
         public Map<UUID, Map<Pair<ISpaceBody, String>, ISpaceProject>> deserialize(JsonElement json, Type typeOfT,
-                JsonDeserializationContext context) throws JsonParseException {
+            JsonDeserializationContext context) throws JsonParseException {
             JsonArray mapArray = json.getAsJsonArray();
             Map<UUID, Map<Pair<ISpaceBody, String>, ISpaceProject>> map = new HashMap<>();
             for (JsonElement teamMapElement : mapArray) {
@@ -319,7 +305,7 @@ public class SpaceProjectWorldSavedData extends WorldSavedData {
                 UUID uuid = context.deserialize(teamMap.get(MAP_UUID), UUID.class);
                 Map<Pair<ISpaceBody, String>, ISpaceProject> projectMap = new HashMap<>();
                 for (JsonElement teamProjectMapElement : teamMap.get(MAP_MAP)
-                                                                .getAsJsonArray()) {
+                    .getAsJsonArray()) {
                     JsonObject teamProjectMap = teamProjectMapElement.getAsJsonObject();
                     Pair<ISpaceBody, String> pair = context.deserialize(teamProjectMap.get(MAP_PAIR), Pair.class);
                     ISpaceProject project = context.deserialize(teamProjectMap.get(MAP_PROJECT), ISpaceProject.class);

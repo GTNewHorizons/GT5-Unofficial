@@ -16,7 +16,7 @@ public class GT_CoolantCellIC_Item extends GT_CoolantCell_Item implements IReact
 
     @Override
     public boolean acceptUraniumPulse(IReactor aReactor, ItemStack aStack, ItemStack pulsingStack, int youX, int youY,
-            int pulseX, int pulseY, boolean aHeatRun) {
+        int pulseX, int pulseY, boolean aHeatRun) {
         return false;
     }
 

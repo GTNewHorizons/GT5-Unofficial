@@ -46,7 +46,7 @@ public class GT_Cover_FluidLimiter extends GT_CoverBehaviorBase<GT_Cover_FluidLi
 
     @Override
     protected FluidLimiterData onCoverScrewdriverClickImpl(byte aSide, int aCoverID, FluidLimiterData aCoverVariable,
-            ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (aTileEntity instanceof IFluidHandler) {
             adjustThreshold(aCoverVariable, !aPlayer.isSneaking());
             GT_Utility.sendChatToPlayer(aPlayer, String.format("Threshold: %f", aCoverVariable.threshold));
@@ -56,13 +56,13 @@ public class GT_Cover_FluidLimiter extends GT_CoverBehaviorBase<GT_Cover_FluidLi
 
     @Override
     protected boolean letsFluidInImpl(byte aSide, int aCoverID, FluidLimiterData aCoverVariable, Fluid aFluid,
-            ICoverable aTileEntity) {
+        ICoverable aTileEntity) {
         return allowsFluidIn(aCoverVariable, aTileEntity);
     }
 
     @Override
     protected boolean alwaysLookConnectedImpl(byte aSide, int aCoverID, FluidLimiterData aCoverVariable,
-            ICoverable aTileEntity) {
+        ICoverable aTileEntity) {
         return true;
     }
 
@@ -196,23 +196,21 @@ public class GT_Cover_FluidLimiter extends GT_CoverBehaviorBase<GT_Cover_FluidLi
         @Override
         protected void addUIWidgets(ModularWindow.Builder builder) {
             builder.widget(
-                    new CoverDataControllerWidget<>(
-                            this::getCoverData,
-                            this::setCoverData,
-                            GT_Cover_FluidLimiter.this).addFollower(
-                                    new CoverDataFollower_TextFieldWidget<>(),
-                                    coverData -> String.valueOf(Math.round(coverData.threshold * 100)),
-                                    (coverData, val) -> {
-                                        coverData.threshold = (float) (MathExpression.parseMathExpression(val) / 100);
-                                        return coverData;
-                                    },
-                                    widget -> widget.setNumbers(0, 100)
-                                                    .setFocusOnGuiOpen(true)
-                                                    .setPos(startX, startY + spaceY * 2 - 24)
-                                                    .setSize(spaceX * 4 - 3, 12)))
-                   .widget(
-                           new TextWidget("Percent threshold").setDefaultColor(COLOR_TEXT_GRAY.get())
-                                                              .setPos(startX, startY + spaceY * 2 - 35));
+                new CoverDataControllerWidget<>(this::getCoverData, this::setCoverData, GT_Cover_FluidLimiter.this)
+                    .addFollower(
+                        new CoverDataFollower_TextFieldWidget<>(),
+                        coverData -> String.valueOf(Math.round(coverData.threshold * 100)),
+                        (coverData, val) -> {
+                            coverData.threshold = (float) (MathExpression.parseMathExpression(val) / 100);
+                            return coverData;
+                        },
+                        widget -> widget.setNumbers(0, 100)
+                            .setFocusOnGuiOpen(true)
+                            .setPos(startX, startY + spaceY * 2 - 24)
+                            .setSize(spaceX * 4 - 3, 12)))
+                .widget(
+                    new TextWidget("Percent threshold").setDefaultColor(COLOR_TEXT_GRAY.get())
+                        .setPos(startX, startY + spaceY * 2 - 35));
         }
     }
 }

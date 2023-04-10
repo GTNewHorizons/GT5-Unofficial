@@ -36,74 +36,41 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
 
 public class GT_MetaTileEntity_HeatExchanger extends
-        GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_HeatExchanger> implements ISurvivalConstructable {
+    GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_HeatExchanger> implements ISurvivalConstructable {
 
     private int dryHeatCounter = 0; // Counts up to dryHeatMaximum to check for explosion conditions
     private static final int dryHeatMaximum = 2000; // 2000 ticks = 100 seconds
     private static final int CASING_INDEX = 50;
     private static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final IStructureDefinition<GT_MetaTileEntity_HeatExchanger> STRUCTURE_DEFINITION = StructureDefinition.<GT_MetaTileEntity_HeatExchanger>builder()
-                                                                                                                         .addShape(
-                                                                                                                                 STRUCTURE_PIECE_MAIN,
-                                                                                                                                 transpose(
-                                                                                                                                         new String[][] {
-                                                                                                                                                 { "ccc", "cCc",
-                                                                                                                                                         "ccc" },
-                                                                                                                                                 { "ccc", "cPc",
-                                                                                                                                                         "ccc" },
-                                                                                                                                                 { "ccc", "cPc",
-                                                                                                                                                         "ccc" },
-                                                                                                                                                 { "c~c", "cHc",
-                                                                                                                                                         "ccc" }, }))
-                                                                                                                         .addElement(
-                                                                                                                                 'P',
-                                                                                                                                 ofBlock(
-                                                                                                                                         GregTech_API.sBlockCasings2,
-                                                                                                                                         14))
-                                                                                                                         .addElement(
-                                                                                                                                 'C',
-                                                                                                                                 OutputHatch.withAdder(
-                                                                                                                                         GT_MetaTileEntity_HeatExchanger::addColdFluidOutputToMachineList)
-                                                                                                                                            .withCount(
-                                                                                                                                                    t -> isValidMetaTileEntity(
-                                                                                                                                                            t.mOutputColdFluidHatch)
-                                                                                                                                                                    ? 1
-                                                                                                                                                                    : 0)
-                                                                                                                                            .newAny(
-                                                                                                                                                    CASING_INDEX,
-                                                                                                                                                    3))
-                                                                                                                         .addElement(
-                                                                                                                                 'H',
-                                                                                                                                 OutputHatch.withAdder(
-                                                                                                                                         GT_MetaTileEntity_HeatExchanger::addHotFluidInputToMachineList)
-                                                                                                                                            .withCount(
-                                                                                                                                                    t -> isValidMetaTileEntity(
-                                                                                                                                                            t.mInputHotFluidHatch)
-                                                                                                                                                                    ? 1
-                                                                                                                                                                    : 0)
-                                                                                                                                            .newAny(
-                                                                                                                                                    CASING_INDEX,
-                                                                                                                                                    3))
-                                                                                                                         .addElement(
-                                                                                                                                 'c',
-                                                                                                                                 buildHatchAdder(
-                                                                                                                                         GT_MetaTileEntity_HeatExchanger.class).atLeast(
-                                                                                                                                                 InputBus,
-                                                                                                                                                 InputHatch,
-                                                                                                                                                 OutputBus,
-                                                                                                                                                 OutputHatch,
-                                                                                                                                                 Maintenance)
-                                                                                                                                                                               .casingIndex(
-                                                                                                                                                                                       CASING_INDEX)
-                                                                                                                                                                               .dot(
-                                                                                                                                                                                       1)
-                                                                                                                                                                               .buildAndChain(
-                                                                                                                                                                                       onElementPass(
-                                                                                                                                                                                               GT_MetaTileEntity_HeatExchanger::onCasingAdded,
-                                                                                                                                                                                               ofBlock(
-                                                                                                                                                                                                       GregTech_API.sBlockCasings4,
-                                                                                                                                                                                                       (byte) 2))))
-                                                                                                                         .build();
+    private static final IStructureDefinition<GT_MetaTileEntity_HeatExchanger> STRUCTURE_DEFINITION = StructureDefinition
+        .<GT_MetaTileEntity_HeatExchanger>builder()
+        .addShape(
+            STRUCTURE_PIECE_MAIN,
+            transpose(
+                new String[][] { { "ccc", "cCc", "ccc" }, { "ccc", "cPc", "ccc" }, { "ccc", "cPc", "ccc" },
+                    { "c~c", "cHc", "ccc" }, }))
+        .addElement('P', ofBlock(GregTech_API.sBlockCasings2, 14))
+        .addElement(
+            'C',
+            OutputHatch.withAdder(GT_MetaTileEntity_HeatExchanger::addColdFluidOutputToMachineList)
+                .withCount(t -> isValidMetaTileEntity(t.mOutputColdFluidHatch) ? 1 : 0)
+                .newAny(CASING_INDEX, 3))
+        .addElement(
+            'H',
+            OutputHatch.withAdder(GT_MetaTileEntity_HeatExchanger::addHotFluidInputToMachineList)
+                .withCount(t -> isValidMetaTileEntity(t.mInputHotFluidHatch) ? 1 : 0)
+                .newAny(CASING_INDEX, 3))
+        .addElement(
+            'c',
+            buildHatchAdder(GT_MetaTileEntity_HeatExchanger.class)
+                .atLeast(InputBus, InputHatch, OutputBus, OutputHatch, Maintenance)
+                .casingIndex(CASING_INDEX)
+                .dot(1)
+                .buildAndChain(
+                    onElementPass(
+                        GT_MetaTileEntity_HeatExchanger::onCasingAdded,
+                        ofBlock(GregTech_API.sBlockCasings4, (byte) 2))))
+        .build();
     public static float penalty_per_config = 0.015f; // penalize 1.5% efficiency per circuitry level (1-25)
 
     private GT_MetaTileEntity_Hatch_Input mInputHotFluidHatch;
@@ -129,23 +96,23 @@ public class GT_MetaTileEntity_HeatExchanger extends
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Heat Exchanger")
-          .addInfo("Controller Block for the Large Heat Exchanger")
-          .addInfo("More complicated than a Fusion Reactor. Seriously")
-          .addInfo("Inputs are Hot Coolant or Lava")
-          .addInfo("Outputs Coolant or Pahoehoe Lava and SH Steam/Steam")
-          .addInfo("Read the wiki article to understand how it works")
-          .addInfo("Then go to the Discord to understand the wiki")
-          .addSeparator()
-          .beginStructureBlock(3, 4, 3, false)
-          .addController("Front bottom")
-          .addCasingInfoRange("Stable Titanium Machine Casing", 20, 32, false)
-          .addOtherStructurePart("Titanium Pipe Casing", "Center 2 blocks")
-          .addMaintenanceHatch("Any casing", 1)
-          .addInputHatch("Hot fluid, bottom center", 2)
-          .addInputHatch("Distilled water, any casing", 1)
-          .addOutputHatch("Cold fluid, top center", 3)
-          .addOutputHatch("Steam/SH Steam, any casing", 1)
-          .toolTipFinisher("Gregtech");
+            .addInfo("Controller Block for the Large Heat Exchanger")
+            .addInfo("More complicated than a Fusion Reactor. Seriously")
+            .addInfo("Inputs are Hot Coolant or Lava")
+            .addInfo("Outputs Coolant or Pahoehoe Lava and SH Steam/Steam")
+            .addInfo("Read the wiki article to understand how it works")
+            .addInfo("Then go to the Discord to understand the wiki")
+            .addSeparator()
+            .beginStructureBlock(3, 4, 3, false)
+            .addController("Front bottom")
+            .addCasingInfoRange("Stable Titanium Machine Casing", 20, 32, false)
+            .addOtherStructurePart("Titanium Pipe Casing", "Center 2 blocks")
+            .addMaintenanceHatch("Any casing", 1)
+            .addInputHatch("Hot fluid, bottom center", 2)
+            .addInputHatch("Distilled water, any casing", 1)
+            .addOutputHatch("Cold fluid, top center", 3)
+            .addOutputHatch("Steam/SH Steam, any casing", 1)
+            .toolTipFinisher("Gregtech");
         return tt;
     }
 
@@ -165,28 +132,26 @@ public class GT_MetaTileEntity_HeatExchanger extends
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-            boolean aActive, boolean aRedstone) {
+        boolean aActive, boolean aRedstone) {
         if (aSide == aFacing) {
             if (aActive) return new ITexture[] { casingTexturePages[0][CASING_INDEX], TextureFactory.builder()
-                                                                                                    .addIcon(
-                                                                                                            OVERLAY_FRONT_HEAT_EXCHANGER_ACTIVE)
-                                                                                                    .extFacing()
-                                                                                                    .build(),
-                    TextureFactory.builder()
-                                  .addIcon(OVERLAY_FRONT_HEAT_EXCHANGER_ACTIVE_GLOW)
-                                  .extFacing()
-                                  .glow()
-                                  .build() };
+                .addIcon(OVERLAY_FRONT_HEAT_EXCHANGER_ACTIVE)
+                .extFacing()
+                .build(),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_HEAT_EXCHANGER_ACTIVE_GLOW)
+                    .extFacing()
+                    .glow()
+                    .build() };
             return new ITexture[] { casingTexturePages[0][CASING_INDEX], TextureFactory.builder()
-                                                                                       .addIcon(
-                                                                                               OVERLAY_FRONT_HEAT_EXCHANGER)
-                                                                                       .extFacing()
-                                                                                       .build(),
-                    TextureFactory.builder()
-                                  .addIcon(OVERLAY_FRONT_HEAT_EXCHANGER_GLOW)
-                                  .extFacing()
-                                  .glow()
-                                  .build() };
+                .addIcon(OVERLAY_FRONT_HEAT_EXCHANGER)
+                .extFacing()
+                .build(),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_HEAT_EXCHANGER_GLOW)
+                    .extFacing()
+                    .glow()
+                    .build() };
         }
         return new ITexture[] { casingTexturePages[0][CASING_INDEX] };
     }
@@ -218,7 +183,7 @@ public class GT_MetaTileEntity_HeatExchanger extends
 
         // Do we have an integrated circuit with a valid configuration?
         if (mInventory[1] != null && mInventory[1].getUnlocalizedName()
-                                                  .startsWith("gt.integrated_circuit")) {
+            .startsWith("gt.integrated_circuit")) {
             int circuit_config = mInventory[1].getItemDamage();
             if (circuit_config >= 1 && circuit_config <= 25) {
                 // If so, apply the penalty and reduced threshold.
@@ -234,25 +199,24 @@ public class GT_MetaTileEntity_HeatExchanger extends
             superheated_threshold /= 4f; // unchanged
             do_lava = true;
         } else if (mInputHotFluidHatch.getFluid()
-                                      .isFluidEqual(FluidRegistry.getFluidStack("ic2hotcoolant", 1))) {
-                                          steam_output_multiplier /= 2f; // was boosted x2 on top of x5 -> total x10 ->
-                                                                         // nerf with this code back to 5x
-                                          superheated_threshold /= 5f; // 10x smaller since the Hot Things production in
-                                                                       // reactor is the same.
-                                          do_coolant = true;
-                                      } else
-            if (mInputHotFluidHatch.getFluid()
-                                   .isFluidEqual(FluidRegistry.getFluidStack("molten.solarsalthot", 1))) {
-                                       steam_output_multiplier *= 2.5f; // Solar Salt:Steam value is 5x higher than Hot
-                                                                        // Coolant's value
-                                       superheated_threshold /= 25f; // Given that, multiplier is 5x higher and
-                                                                     // threshold is 5x lower
-                                       do_solarSalt = true;
-                                   } else {
-                                       // If we're working with neither, fail out
-                                       superheated_threshold = 0;
-                                       return false;
-                                   }
+            .isFluidEqual(FluidRegistry.getFluidStack("ic2hotcoolant", 1))) {
+                steam_output_multiplier /= 2f; // was boosted x2 on top of x5 -> total x10 ->
+                                               // nerf with this code back to 5x
+                superheated_threshold /= 5f; // 10x smaller since the Hot Things production in
+                                             // reactor is the same.
+                do_coolant = true;
+            } else if (mInputHotFluidHatch.getFluid()
+                .isFluidEqual(FluidRegistry.getFluidStack("molten.solarsalthot", 1))) {
+                    steam_output_multiplier *= 2.5f; // Solar Salt:Steam value is 5x higher than Hot
+                                                     // Coolant's value
+                    superheated_threshold /= 25f; // Given that, multiplier is 5x higher and
+                                                  // threshold is 5x lower
+                    do_solarSalt = true;
+                } else {
+                    // If we're working with neither, fail out
+                    superheated_threshold = 0;
+                    return false;
+                }
 
         superheated = fluidAmountToConsume >= superheated_threshold; // set the internal superheated flag if we have
                                                                      // enough hot fluid. Used in the
@@ -391,43 +355,43 @@ public class GT_MetaTileEntity_HeatExchanger extends
     @Override
     public String[] getInfoData() {
         return new String[] {
-                StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
-                        + EnumChatFormatting.GREEN
-                        + GT_Utility.formatNumbers(mProgresstime / 20)
-                        + EnumChatFormatting.RESET
-                        + " s / "
-                        + EnumChatFormatting.YELLOW
-                        + GT_Utility.formatNumbers(mMaxProgresstime / 20)
-                        + EnumChatFormatting.RESET
-                        + " s",
-                StatCollector.translateToLocal("GT5U.multiblock.usage") + " "
-                        + StatCollector.translateToLocal("GT5U.LHE.steam")
-                        + ": "
-                        + (superheated ? EnumChatFormatting.RED : EnumChatFormatting.YELLOW)
-                        + GT_Utility.formatNumbers(superheated ? -2 * mEUt : -mEUt)
-                        + EnumChatFormatting.RESET
-                        + " EU/t",
-                StatCollector.translateToLocal("GT5U.multiblock.problems") + ": "
-                        + EnumChatFormatting.RED
-                        + (getIdealStatus() - getRepairStatus())
-                        + EnumChatFormatting.RESET
-                        + " "
-                        + StatCollector.translateToLocal("GT5U.multiblock.efficiency")
-                        + ": "
-                        + EnumChatFormatting.YELLOW
-                        + mEfficiency / 100.0F
-                        + EnumChatFormatting.RESET
-                        + " %",
-                StatCollector.translateToLocal("GT5U.LHE.superheated") + ": "
-                        + (superheated ? EnumChatFormatting.RED : EnumChatFormatting.BLUE)
-                        + superheated
-                        + EnumChatFormatting.RESET,
-                StatCollector.translateToLocal("GT5U.LHE.superheated") + " "
-                        + StatCollector.translateToLocal("GT5U.LHE.threshold")
-                        + ": "
-                        + EnumChatFormatting.GREEN
-                        + GT_Utility.formatNumbers(superheated_threshold)
-                        + EnumChatFormatting.RESET };
+            StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
+                + EnumChatFormatting.GREEN
+                + GT_Utility.formatNumbers(mProgresstime / 20)
+                + EnumChatFormatting.RESET
+                + " s / "
+                + EnumChatFormatting.YELLOW
+                + GT_Utility.formatNumbers(mMaxProgresstime / 20)
+                + EnumChatFormatting.RESET
+                + " s",
+            StatCollector.translateToLocal("GT5U.multiblock.usage") + " "
+                + StatCollector.translateToLocal("GT5U.LHE.steam")
+                + ": "
+                + (superheated ? EnumChatFormatting.RED : EnumChatFormatting.YELLOW)
+                + GT_Utility.formatNumbers(superheated ? -2 * mEUt : -mEUt)
+                + EnumChatFormatting.RESET
+                + " EU/t",
+            StatCollector.translateToLocal("GT5U.multiblock.problems") + ": "
+                + EnumChatFormatting.RED
+                + (getIdealStatus() - getRepairStatus())
+                + EnumChatFormatting.RESET
+                + " "
+                + StatCollector.translateToLocal("GT5U.multiblock.efficiency")
+                + ": "
+                + EnumChatFormatting.YELLOW
+                + mEfficiency / 100.0F
+                + EnumChatFormatting.RESET
+                + " %",
+            StatCollector.translateToLocal("GT5U.LHE.superheated") + ": "
+                + (superheated ? EnumChatFormatting.RED : EnumChatFormatting.BLUE)
+                + superheated
+                + EnumChatFormatting.RESET,
+            StatCollector.translateToLocal("GT5U.LHE.superheated") + " "
+                + StatCollector.translateToLocal("GT5U.LHE.threshold")
+                + ": "
+                + EnumChatFormatting.GREEN
+                + GT_Utility.formatNumbers(superheated_threshold)
+                + EnumChatFormatting.RESET };
     }
 
     @Override

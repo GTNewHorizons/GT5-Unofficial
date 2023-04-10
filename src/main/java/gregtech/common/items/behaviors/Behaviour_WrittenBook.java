@@ -19,11 +19,11 @@ public class Behaviour_WrittenBook extends Behaviour_None {
     @Override
     @SideOnly(Side.CLIENT)
     public boolean onItemUse(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,
-            int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
+        int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
         if ((GT_Utility.isStringValid(GT_Utility.ItemNBT.getBookTitle(aStack)))
-                && ((aPlayer instanceof EntityPlayerSP))) {
+            && ((aPlayer instanceof EntityPlayerSP))) {
             Minecraft.getMinecraft()
-                     .displayGuiScreen(new GuiScreenBook(aPlayer, aStack, false));
+                .displayGuiScreen(new GuiScreenBook(aPlayer, aStack, false));
         }
         return true;
     }

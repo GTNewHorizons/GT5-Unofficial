@@ -30,58 +30,58 @@ public class GT_MetaTileEntity_TypeFilter extends GT_MetaTileEntity_SpecialFilte
     public OrePrefixes mPrefix = OrePrefixes.ore;
 
     public static ImmutableList<OrePrefixes> OREBLOCK_PREFIXES = ImmutableList.of(
-            OrePrefixes.oreBlackgranite,
-            OrePrefixes.oreDense,
-            OrePrefixes.oreEnd,
-            OrePrefixes.oreEndstone,
-            OrePrefixes.oreNether,
-            OrePrefixes.oreNetherrack,
-            OrePrefixes.oreNormal,
-            OrePrefixes.orePoor,
-            OrePrefixes.oreRedgranite,
-            OrePrefixes.oreRich,
-            OrePrefixes.oreSmall,
-            OrePrefixes.oreBasalt,
-            OrePrefixes.oreMarble);
+        OrePrefixes.oreBlackgranite,
+        OrePrefixes.oreDense,
+        OrePrefixes.oreEnd,
+        OrePrefixes.oreEndstone,
+        OrePrefixes.oreNether,
+        OrePrefixes.oreNetherrack,
+        OrePrefixes.oreNormal,
+        OrePrefixes.orePoor,
+        OrePrefixes.oreRedgranite,
+        OrePrefixes.oreRich,
+        OrePrefixes.oreSmall,
+        OrePrefixes.oreBasalt,
+        OrePrefixes.oreMarble);
 
     public GT_MetaTileEntity_TypeFilter(int aID, String aName, String aNameRegional, int aTier) {
         super(
-                aID,
-                aName,
-                aNameRegional,
-                aTier,
-                new String[] { "Filters 1 Item Type", "Use Screwdriver to regulate output stack size",
-                        "Does not consume energy to move Item" });
+            aID,
+            aName,
+            aNameRegional,
+            aTier,
+            new String[] { "Filters 1 Item Type", "Use Screwdriver to regulate output stack size",
+                "Does not consume energy to move Item" });
     }
 
     public GT_MetaTileEntity_TypeFilter(String aName, int aTier, int aInvSlotCount, String aDescription,
-            ITexture[][][] aTextures) {
+        ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
     public GT_MetaTileEntity_TypeFilter(String aName, int aTier, int aInvSlotCount, String[] aDescription,
-            ITexture[][][] aTextures) {
+        ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_TypeFilter(
-                this.mName,
-                this.mTier,
-                this.mInventory.length,
-                this.mDescriptionArray,
-                this.mTextures);
+            this.mName,
+            this.mTier,
+            this.mInventory.length,
+            this.mDescriptionArray,
+            this.mTextures);
     }
 
     @Override
     public ITexture getOverlayIcon() {
         return TextureFactory.of(
-                TextureFactory.of(AUTOMATION_TYPEFILTER),
-                TextureFactory.builder()
-                              .addIcon(AUTOMATION_TYPEFILTER_GLOW)
-                              .glow()
-                              .build());
+            TextureFactory.of(AUTOMATION_TYPEFILTER),
+            TextureFactory.builder()
+                .addIcon(AUTOMATION_TYPEFILTER_GLOW)
+                .glow()
+                .build());
     }
 
     @Override
@@ -112,7 +112,7 @@ public class GT_MetaTileEntity_TypeFilter extends GT_MetaTileEntity_SpecialFilte
                             } while (OrePrefixes.values()[i].mPrefixedItems.isEmpty());
                         }
                         if (!OrePrefixes.values()[i].mPrefixedItems.isEmpty()
-                                && OrePrefixes.values()[i].mPrefixInto == OrePrefixes.values()[i])
+                            && OrePrefixes.values()[i].mPrefixInto == OrePrefixes.values()[i])
                             mPrefix = OrePrefixes.values()[i];
                     }
                 }
@@ -130,9 +130,9 @@ public class GT_MetaTileEntity_TypeFilter extends GT_MetaTileEntity_SpecialFilte
             return;
         }
         this.mInventory[SPECIAL_SLOT_INDEX] = GT_Utility.copyAmount(
-                1L,
-                this.mPrefix.mPrefixedItems.get(
-                        this.mRotationIndex = (this.mRotationIndex + 1) % this.mPrefix.mPrefixedItems.size()));
+            1L,
+            this.mPrefix.mPrefixedItems
+                .get(this.mRotationIndex = (this.mRotationIndex + 1) % this.mPrefix.mPrefixedItems.size()));
         if (this.mInventory[SPECIAL_SLOT_INDEX] == null) return;
         if (this.mInventory[SPECIAL_SLOT_INDEX].getItemDamage() == W) this.mInventory[9].setItemDamage(0);
         this.mInventory[SPECIAL_SLOT_INDEX].setStackDisplayName(this.mPrefix.toString());
@@ -164,9 +164,9 @@ public class GT_MetaTileEntity_TypeFilter extends GT_MetaTileEntity_SpecialFilte
     @Override
     protected List<String> getItemExtraTooltip() {
         return Arrays.asList(
-                EnumChatFormatting.DARK_GRAY
-                        + StatCollector.translateToLocal("GT5U.type_filter.representation_slot.tooltip.0"),
-                EnumChatFormatting.DARK_GRAY
-                        + StatCollector.translateToLocal("GT5U.type_filter.representation_slot.tooltip.1"));
+            EnumChatFormatting.DARK_GRAY
+                + StatCollector.translateToLocal("GT5U.type_filter.representation_slot.tooltip.0"),
+            EnumChatFormatting.DARK_GRAY
+                + StatCollector.translateToLocal("GT5U.type_filter.representation_slot.tooltip.1"));
     }
 }

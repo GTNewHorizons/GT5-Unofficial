@@ -27,8 +27,7 @@ public class BlockScanningEvent extends WorldEvent {
     public int mEUCost = 0;
 
     public BlockScanningEvent(World aWorld, EntityPlayer aPlayer, int aX, int aY, int aZ, byte aSide, int aScanLevel,
-            Block aBlock, TileEntity aTileEntity, ArrayList<String> aList, float aClickX, float aClickY,
-            float aClickZ) {
+        Block aBlock, TileEntity aTileEntity, ArrayList<String> aList, float aClickX, float aClickY, float aClickZ) {
         super(aWorld);
         mPlayer = aPlayer;
         mScanLevel = aScanLevel;

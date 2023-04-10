@@ -24,31 +24,29 @@ public class GT_MetaTileEntity_LightningRod extends GT_MetaTileEntity_TieredMach
     }
 
     public GT_MetaTileEntity_LightningRod(String aName, int aTier, int aInvSlotCount, String aDescription,
-            ITexture[][][] aTextures) {
+        ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
     public GT_MetaTileEntity_LightningRod(String aName, int aTier, int aInvSlotCount, String[] aDescription,
-            ITexture[][][] aTextures) {
+        ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-            boolean aActive, boolean aRedstone) {
+        boolean aActive, boolean aRedstone) {
         if (aSide != ForgeDirection.UP.ordinal()) {
             return new ITexture[] { BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1],
-                    BlockIcons.OVERLAYS_ENERGY_OUT_POWER[mTier] };
+                BlockIcons.OVERLAYS_ENERGY_OUT_POWER[mTier] };
         }
         if (!aActive) return new ITexture[] { BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1],
-                TextureFactory.of(BlockIcons.MACHINE_CASING_FUSION_GLASS) };
-        return new ITexture[] {
-                BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1], TextureFactory.of(
-                        BlockIcons.MACHINE_CASING_FUSION_GLASS_YELLOW),
-                TextureFactory.builder()
-                              .addIcon(BlockIcons.MACHINE_CASING_FUSION_GLASS_YELLOW_GLOW)
-                              .glow()
-                              .build() };
+            TextureFactory.of(BlockIcons.MACHINE_CASING_FUSION_GLASS) };
+        return new ITexture[] { BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1],
+            TextureFactory.of(BlockIcons.MACHINE_CASING_FUSION_GLASS_YELLOW), TextureFactory.builder()
+                .addIcon(BlockIcons.MACHINE_CASING_FUSION_GLASS_YELLOW_GLOW)
+                .glow()
+                .build() };
     }
 
     @Override
@@ -59,11 +57,11 @@ public class GT_MetaTileEntity_LightningRod extends GT_MetaTileEntity_TieredMach
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_LightningRod(
-                this.mName,
-                this.mTier,
-                this.mInventory.length,
-                this.mDescriptionArray,
-                this.mTextures);
+            this.mName,
+            this.mTier,
+            this.mInventory.length,
+            this.mDescriptionArray,
+            this.mTextures);
     }
 
     @Override
@@ -86,8 +84,8 @@ public class GT_MetaTileEntity_LightningRod extends GT_MetaTileEntity_TieredMach
 
                 for (int i = aBaseMetaTileEntity.getYCoord() + 1; i < aWorld.getHeight() - 1; i++) {
                     if (isRodValid && aBaseMetaTileEntity.getBlock(aX, i, aZ)
-                                                         .getUnlocalizedName()
-                                                         .equals("blockFenceIron")) {
+                        .getUnlocalizedName()
+                        .equals("blockFenceIron")) {
                         aRodValue++;
                     } else {
                         isRodValid = false;
@@ -99,9 +97,8 @@ public class GT_MetaTileEntity_LightningRod extends GT_MetaTileEntity_TieredMach
                 }
                 if (!aWorld.isThundering() && ((aY + aRodValue) < 128)) aRodValue = 0;
                 if (XSTR_INSTANCE.nextInt(4 * aWorld.getHeight()) < (aRodValue * (aY + aRodValue))) {
-                    aBaseMetaTileEntity.increaseStoredEnergyUnits(
-                            maxEUStore() - aBaseMetaTileEntity.getStoredEU(),
-                            false);
+                    aBaseMetaTileEntity
+                        .increaseStoredEnergyUnits(maxEUStore() - aBaseMetaTileEntity.getStoredEU(), false);
                     aWorld.addWeatherEffect(new EntityLightningBolt(aWorld, aX, aY + aRodValue, aZ));
                 }
             }

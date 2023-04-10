@@ -21,30 +21,29 @@ public class GT_Cover_SolarPanel extends GT_CoverBehavior {
 
     @Override
     public boolean isRedstoneSensitive(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
-            long aTimer) {
+        long aTimer) {
         return false;
     }
 
     @Override
     public int doCoverThings(byte aSide, byte aInputRedstone, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
-            long aTimer) {
+        long aTimer) {
         if (aSide != 1) return 0;
         int coverState = aCoverVariable & 0x3;
         int coverNum = aCoverVariable >> 2;
         if (aTimer % 100L == 0L) {
             if (aTileEntity.getWorld()
-                           .isThundering()) {
+                .isThundering()) {
                 return aTileEntity.getBiome().rainfall > 0.0F && aTileEntity.getSkyAtSide(aSide)
-                        ? Math.min(20, coverNum) << 2
-                        : coverNum << 2;
+                    ? Math.min(20, coverNum) << 2
+                    : coverNum << 2;
             } else {
                 if (aTileEntity.getWorld()
-                               .isRaining()
-                        && aTileEntity.getBiome().rainfall > 0.0F) { // really rains
+                    .isRaining() && aTileEntity.getBiome().rainfall > 0.0F) { // really rains
                     if (aTileEntity.getSkyAtSide(aSide)) coverNum = Math.min(30, coverNum);
                     if (aTileEntity.getWorld().skylightSubtracted >= 4) {
                         if (aTileEntity.getWorld()
-                                       .isDaytime()) {
+                            .isDaytime()) {
                             coverState = 2;
                         } else {
                             return coverNum << 2;
@@ -52,7 +51,7 @@ public class GT_Cover_SolarPanel extends GT_CoverBehavior {
                     }
                 } else { // not rains
                     if (aTileEntity.getWorld()
-                                   .isDaytime()) {
+                        .isDaytime()) {
                         coverState = 1;
                     } else {
                         coverState = 2;
@@ -69,8 +68,8 @@ public class GT_Cover_SolarPanel extends GT_CoverBehavior {
 
     @Override
     protected boolean onCoverRightClickImpl(byte aSide, int aCoverID,
-            ISerializableObject.LegacyCoverData aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, float aX,
-            float aY, float aZ) {
+        ISerializableObject.LegacyCoverData aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, float aX,
+        float aY, float aZ) {
         if (aPlayer.capabilities.isCreativeMode) {
             GT_Utility.sendChatToPlayer(aPlayer, "Cleaned solar panel from " + (aCoverVariable.get() >> 2) + "% dirt");
             aCoverVariable.set(aCoverVariable.get() & 0x3);
@@ -80,12 +79,11 @@ public class GT_Cover_SolarPanel extends GT_CoverBehavior {
             ItemStack is = aPlayer.inventory.mainInventory[i];
             if (is == null) continue;
             if (is.getUnlocalizedName()
-                  .equals(new ItemStack(Items.water_bucket).getUnlocalizedName())) {
+                .equals(new ItemStack(Items.water_bucket).getUnlocalizedName())) {
                 aPlayer.inventory.mainInventory[i] = new ItemStack(Items.bucket);
                 if (aPlayer.inventoryContainer != null) aPlayer.inventoryContainer.detectAndSendChanges();
-                GT_Utility.sendChatToPlayer(
-                        aPlayer,
-                        "Cleaned solar panel from " + (aCoverVariable.get() >> 2) + "% dirt");
+                GT_Utility
+                    .sendChatToPlayer(aPlayer, "Cleaned solar panel from " + (aCoverVariable.get() >> 2) + "% dirt");
                 aCoverVariable.set(aCoverVariable.get() & 0x3);
                 return true;
             }
@@ -97,7 +95,7 @@ public class GT_Cover_SolarPanel extends GT_CoverBehavior {
     @Override
     @SuppressWarnings("deprecation")
     public boolean onCoverRightclick(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
-            EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (aPlayer.capabilities.isCreativeMode) {
             GT_Utility.sendChatToPlayer(aPlayer, "Cleaned solar panel from " + (aCoverVariable >> 2) + "% dirt");
             aTileEntity.setCoverDataAtSide(aSide, (aCoverVariable & 0x3));
@@ -107,7 +105,7 @@ public class GT_Cover_SolarPanel extends GT_CoverBehavior {
             ItemStack is = aPlayer.inventory.mainInventory[i];
             if (is == null) continue;
             if (is.getUnlocalizedName()
-                  .equals(new ItemStack(Items.water_bucket).getUnlocalizedName())) {
+                .equals(new ItemStack(Items.water_bucket).getUnlocalizedName())) {
                 aPlayer.inventory.mainInventory[i] = new ItemStack(Items.bucket);
                 if (aPlayer.inventoryContainer != null) aPlayer.inventoryContainer.detectAndSendChanges();
                 GT_Utility.sendChatToPlayer(aPlayer, "Cleaned solar panel from " + (aCoverVariable >> 2) + "% dirt");

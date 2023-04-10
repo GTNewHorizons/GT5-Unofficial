@@ -22,53 +22,53 @@ public class GT_MetaTileEntity_ChestBuffer extends GT_MetaTileEntity_Buffer impl
 
     public GT_MetaTileEntity_ChestBuffer(int aID, String aName, String aNameRegional, int aTier) {
         super(
-                aID,
-                aName,
-                aNameRegional,
-                aTier,
-                28,
-                new String[] { "Buffers up to 27 Item Stacks", "Use Screwdriver to regulate output stack size",
-                        "Does not consume energy to move Item", getTickRateDesc(aTier) });
+            aID,
+            aName,
+            aNameRegional,
+            aTier,
+            28,
+            new String[] { "Buffers up to 27 Item Stacks", "Use Screwdriver to regulate output stack size",
+                "Does not consume energy to move Item", getTickRateDesc(aTier) });
     }
 
     public GT_MetaTileEntity_ChestBuffer(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount,
-            String aDescription) {
+        String aDescription) {
         super(aID, aName, aNameRegional, aTier, aInvSlotCount, aDescription);
     }
 
     public GT_MetaTileEntity_ChestBuffer(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount,
-            String[] aDescription) {
+        String[] aDescription) {
         super(aID, aName, aNameRegional, aTier, aInvSlotCount, aDescription);
     }
 
     public GT_MetaTileEntity_ChestBuffer(String aName, int aTier, int aInvSlotCount, String aDescription,
-            ITexture[][][] aTextures) {
+        ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
     public GT_MetaTileEntity_ChestBuffer(String aName, int aTier, int aInvSlotCount, String[] aDescription,
-            ITexture[][][] aTextures) {
+        ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_ChestBuffer(
-                this.mName,
-                this.mTier,
-                this.mInventory.length,
-                this.mDescriptionArray,
-                this.mTextures);
+            this.mName,
+            this.mTier,
+            this.mInventory.length,
+            this.mDescriptionArray,
+            this.mTextures);
     }
 
     @Override
     public ITexture getOverlayIcon() {
         return TextureFactory.of(
-                TextureFactory.of(AUTOMATION_CHESTBUFFER),
-                TextureFactory.builder()
-                              .addIcon(AUTOMATION_CHESTBUFFER_GLOW)
-                              .glow()
-                              .build());
+            TextureFactory.of(AUTOMATION_CHESTBUFFER),
+            TextureFactory.builder()
+                .addIcon(AUTOMATION_CHESTBUFFER_GLOW)
+                .glow()
+                .build());
     }
 
     @Override
@@ -125,9 +125,9 @@ public class GT_MetaTileEntity_ChestBuffer extends GT_MetaTileEntity_Buffer impl
         addInvertRedstoneButton(builder);
         addStockingModeButton(builder);
         builder.widget(
-                new DrawableWidget().setDrawable(GT_UITextures.PICTURE_ARROW_22_RED.apply(69, true))
-                                    .setPos(80, 60)
-                                    .setSize(69, 22));
+            new DrawableWidget().setDrawable(GT_UITextures.PICTURE_ARROW_22_RED.apply(69, true))
+                .setPos(80, 60)
+                .setSize(69, 22));
         addMainUI(builder);
     }
 

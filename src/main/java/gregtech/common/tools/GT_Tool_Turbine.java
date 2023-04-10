@@ -33,14 +33,14 @@ public abstract class GT_Tool_Turbine extends GT_Tool {
     @Override
     public IChatComponent getDeathMessage(EntityLivingBase aPlayer, EntityLivingBase aEntity) {
         return new ChatComponentText(
-                EnumChatFormatting.GREEN + aPlayer.getCommandSenderName()
-                        + EnumChatFormatting.WHITE
-                        + " put "
-                        + EnumChatFormatting.RED
-                        + aEntity.getCommandSenderName()
-                        + "s"
-                        + EnumChatFormatting.WHITE
-                        + " head into a turbine");
+            EnumChatFormatting.GREEN + aPlayer.getCommandSenderName()
+                + EnumChatFormatting.WHITE
+                + " put "
+                + EnumChatFormatting.RED
+                + aEntity.getCommandSenderName()
+                + "s"
+                + EnumChatFormatting.WHITE
+                + " head into a turbine");
     }
 
     public abstract IIconContainer getTurbineIcon();

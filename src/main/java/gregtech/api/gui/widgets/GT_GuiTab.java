@@ -43,7 +43,7 @@ public class GT_GuiTab {
      * @param flipHorizontally whether to draw this tab on the right side of the IGregTechTileEntity
      */
     public GT_GuiTab(GT_ITabRenderer gui, int id, Rectangle bounds, GT_GuiTabIconSet tabBackground, ItemStack item,
-            IGuiIcon overlay, String[] tooltipText, boolean flipHorizontally) {
+        IGuiIcon overlay, String[] tooltipText, boolean flipHorizontally) {
         this.gui = gui;
         this.bounds = bounds;
         this.item = item;
@@ -92,14 +92,14 @@ public class GT_GuiTab {
     public void drawBackground(int mouseX, int mouseY, float parTicks) {
         if (this.visible) {
             GT_GuiIcon.render(
-                    getBackgroundTexture(),
-                    bounds.x,
-                    bounds.y,
-                    bounds.width,
-                    bounds.height,
-                    1,
-                    true,
-                    this.flipHorizontally);
+                getBackgroundTexture(),
+                bounds.x,
+                bounds.y,
+                bounds.width,
+                bounds.height,
+                1,
+                true,
+                this.flipHorizontally);
         }
     }
 
@@ -131,13 +131,13 @@ public class GT_GuiTab {
                 }
                 int margin = (bounds.height - SLOT_SIZE);
                 gui.getItemRenderer()
-                   .renderItemAndEffectIntoGUI(
-                           gui.getFontRenderer(),
-                           Minecraft.getMinecraft()
-                                    .getTextureManager(),
-                           item,
-                           bounds.x + (this.flipHorizontally ? 0 : margin),
-                           bounds.y + margin);
+                    .renderItemAndEffectIntoGUI(
+                        gui.getFontRenderer(),
+                        Minecraft.getMinecraft()
+                            .getTextureManager(),
+                        item,
+                        bounds.x + (this.flipHorizontally ? 0 : margin),
+                        bounds.y + margin);
 
                 if (item.getItem() instanceof ItemBlock) GL11.glPopAttrib();
 

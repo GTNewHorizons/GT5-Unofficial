@@ -16,7 +16,7 @@ public class GT_Slot_Holo extends Slot {
     public int mMaxStacksize = 127;
 
     public GT_Slot_Holo(IInventory inventory, int slotIndex, int xPos, int yPos, boolean aCanInsertItem,
-            boolean aCanStackItem, int aMaxStacksize) {
+        boolean aCanStackItem, int aMaxStacksize) {
         super(inventory, slotIndex, xPos, yPos);
         mCanInsertItem = aCanInsertItem;
         mCanStackItem = aCanStackItem;

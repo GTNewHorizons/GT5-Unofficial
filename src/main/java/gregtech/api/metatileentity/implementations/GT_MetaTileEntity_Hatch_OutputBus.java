@@ -29,23 +29,23 @@ public class GT_MetaTileEntity_Hatch_OutputBus extends GT_MetaTileEntity_Hatch i
 
     public GT_MetaTileEntity_Hatch_OutputBus(int id, String name, String nameRegional, int tier, int slots) {
         super(
-                id,
-                name,
-                nameRegional,
-                tier,
-                slots,
-                ArrayExt.of(
-                        "Item Output for Multiblocks",
-                        "Capacity: " + getSlots(tier) + " stack" + (getSlots(tier) >= 2 ? "s" : "")));
+            id,
+            name,
+            nameRegional,
+            tier,
+            slots,
+            ArrayExt.of(
+                "Item Output for Multiblocks",
+                "Capacity: " + getSlots(tier) + " stack" + (getSlots(tier) >= 2 ? "s" : "")));
     }
 
     public GT_MetaTileEntity_Hatch_OutputBus(int aID, String aName, String aNameRegional, int aTier,
-            String[] aDescription) {
+        String[] aDescription) {
         super(aID, aName, aNameRegional, aTier, getSlots(aTier), aDescription);
     }
 
     public GT_MetaTileEntity_Hatch_OutputBus(int aID, String aName, String aNameRegional, int aTier,
-            String[] aDescription, int inventorySize) {
+        String[] aDescription, int inventorySize) {
         super(aID, aName, aNameRegional, aTier, inventorySize, aDescription);
     }
 
@@ -61,22 +61,22 @@ public class GT_MetaTileEntity_Hatch_OutputBus extends GT_MetaTileEntity_Hatch i
     }
 
     public GT_MetaTileEntity_Hatch_OutputBus(String name, int tier, int slots, String[] description,
-            ITexture[][][] textures) {
+        ITexture[][][] textures) {
         super(name, tier, slots, description, textures);
     }
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
         return GT_Mod.gregtechproxy.mRenderIndicatorsOnHatch
-                ? new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_OUT), TextureFactory.of(ITEM_OUT_SIGN) }
-                : new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_OUT) };
+            ? new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_OUT), TextureFactory.of(ITEM_OUT_SIGN) }
+            : new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_OUT) };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
         return GT_Mod.gregtechproxy.mRenderIndicatorsOnHatch
-                ? new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_OUT), TextureFactory.of(ITEM_OUT_SIGN) }
-                : new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_OUT) };
+            ? new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_OUT), TextureFactory.of(ITEM_OUT_SIGN) }
+            : new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_OUT) };
     }
 
     @Override
@@ -131,7 +131,7 @@ public class GT_MetaTileEntity_Hatch_OutputBus extends GT_MetaTileEntity_Hatch i
             } else {
                 int tRealStackLimit = Math.min(getInventoryStackLimit(), tSlot.getMaxStackSize());
                 if (tSlot.stackSize < tRealStackLimit && tSlot.isItemEqual(aStack)
-                        && ItemStack.areItemStackTagsEqual(tSlot, aStack)) {
+                    && ItemStack.areItemStackTagsEqual(tSlot, aStack)) {
                     if (aStack.stackSize + tSlot.stackSize <= tRealStackLimit) {
                         mInventory[i].stackSize += aStack.stackSize;
                         return true;
@@ -160,21 +160,21 @@ public class GT_MetaTileEntity_Hatch_OutputBus extends GT_MetaTileEntity_Hatch i
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isServerSide() && aBaseMetaTileEntity.isAllowedToWork() && (aTick & 0x7) == 0) {
-            final IInventory tTileEntity = aBaseMetaTileEntity.getIInventoryAtSide(
-                    aBaseMetaTileEntity.getFrontFacing());
+            final IInventory tTileEntity = aBaseMetaTileEntity
+                .getIInventoryAtSide(aBaseMetaTileEntity.getFrontFacing());
             if (tTileEntity != null) {
                 moveMultipleItemStacks(
-                        aBaseMetaTileEntity,
-                        tTileEntity,
-                        aBaseMetaTileEntity.getFrontFacing(),
-                        aBaseMetaTileEntity.getBackFacing(),
-                        null,
-                        false,
-                        (byte) 64,
-                        (byte) 1,
-                        (byte) 64,
-                        (byte) 1,
-                        mInventory.length);
+                    aBaseMetaTileEntity,
+                    tTileEntity,
+                    aBaseMetaTileEntity.getFrontFacing(),
+                    aBaseMetaTileEntity.getBackFacing(),
+                    null,
+                    false,
+                    (byte) 64,
+                    (byte) 1,
+                    (byte) 64,
+                    (byte) 1,
+                    mInventory.length);
                 for (int i = 0; i < mInventory.length; i++)
                     if (mInventory[i] != null && mInventory[i].stackSize <= 0) mInventory[i] = null;
                 // GT_Utility.moveOneItemStack(aBaseMetaTileEntity, tTileEntity,

@@ -18,7 +18,7 @@ public class ColorsMetadataSection implements IMetadataSection {
     private final boolean guiTintEnabled;
 
     public ColorsMetadataSection(Map<String, String> hexTextColorMap, Map<String, String> hexGuiTintMap,
-            boolean guiTintEnabled) {
+        boolean guiTintEnabled) {
         this.hexTextColors = hexTextColorMap;
         this.textColors = convertHexMapToIntMap(hexTextColorMap);
 
@@ -54,7 +54,7 @@ public class ColorsMetadataSection implements IMetadataSection {
 
     private boolean isColorInMap(String key, Map<String, String> hexMap) {
         return hexMap.containsKey(key) && !hexMap.get(key)
-                                                 .isEmpty();
+            .isEmpty();
     }
 
     public boolean sGuiTintingEnabled() {

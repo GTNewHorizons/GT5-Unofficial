@@ -28,8 +28,8 @@ import gregtech.common.blocks.GT_Block_Machines;
  * It can cause Problems to include this Interface!
  */
 public interface IGregTechTileEntity extends ITexturedTileEntity, IGearEnergyTileEntity, ICoverable, IFluidHandler,
-        ITurnable, IGregTechDeviceInformation, IUpgradableMachine, IDigitalChest, IDescribable, IMachineBlockUpdateable,
-        IGregtechWailaProvider, IGetGUITextureSet, IAddInventorySlots {
+    ITurnable, IGregTechDeviceInformation, IUpgradableMachine, IDigitalChest, IDescribable, IMachineBlockUpdateable,
+    IGregtechWailaProvider, IGetGUITextureSet, IAddInventorySlots {
 
     /**
      * gets the Error displayed on the GUI
@@ -150,7 +150,7 @@ public interface IGregTechTileEntity extends ITexturedTileEntity, IGearEnergyTil
     int getLightOpacity();
 
     void addCollisionBoxesToList(World aWorld, int aX, int aY, int aZ, AxisAlignedBB inputAABB,
-            List<AxisAlignedBB> outputAABB, Entity collider);
+        List<AxisAlignedBB> outputAABB, Entity collider);
 
     AxisAlignedBB getCollisionBoundingBoxFromPool(World aWorld, int aX, int aY, int aZ);
 
@@ -172,8 +172,8 @@ public interface IGregTechTileEntity extends ITexturedTileEntity, IGearEnergyTil
     @Override
     default boolean isMachineBlockUpdateRecursive() {
         return !isDead() && getMetaTileEntity() != null
-                && getMetaTileEntity().getBaseMetaTileEntity() == this
-                && getMetaTileEntity().isMachineBlockUpdateRecursive();
+            && getMetaTileEntity().getBaseMetaTileEntity() == this
+            && getMetaTileEntity().isMachineBlockUpdateRecursive();
     }
 
     default void setShutdownStatus(boolean newStatus) {

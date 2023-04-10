@@ -17,35 +17,35 @@ public class SifterRecipes implements Runnable {
     @Override
     public void run() {
         GT_Values.RA.stdBuilder()
-                    .itemInputs(new ItemStack(Blocks.gravel, 1, 0))
-                    .itemOutputs(
-                            new ItemStack(Items.flint, 1, 0),
-                            new ItemStack(Items.flint, 1, 0),
-                            new ItemStack(Items.flint, 1, 0),
-                            new ItemStack(Items.flint, 1, 0),
-                            new ItemStack(Items.flint, 1, 0),
-                            new ItemStack(Items.flint, 1, 0))
-                    .outputChances(10000, 9000, 8000, 6000, 3300, 2500)
-                    .noFluidInputs()
-                    .noFluidOutputs()
-                    .duration(30 * SECONDS)
-                    .eut(16)
-                    .addTo(sSifterRecipes);
+            .itemInputs(new ItemStack(Blocks.gravel, 1, 0))
+            .itemOutputs(
+                new ItemStack(Items.flint, 1, 0),
+                new ItemStack(Items.flint, 1, 0),
+                new ItemStack(Items.flint, 1, 0),
+                new ItemStack(Items.flint, 1, 0),
+                new ItemStack(Items.flint, 1, 0),
+                new ItemStack(Items.flint, 1, 0))
+            .outputChances(10000, 9000, 8000, 6000, 3300, 2500)
+            .noFluidInputs()
+            .noFluidOutputs()
+            .duration(30 * SECONDS)
+            .eut(16)
+            .addTo(sSifterRecipes);
 
         GT_Values.RA.stdBuilder()
-                    .itemInputs(GT_OreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Coal, 1L))
-                    .itemOutputs(
-                            new ItemStack(Items.coal, 1, 0),
-                            new ItemStack(Items.coal, 1, 0),
-                            new ItemStack(Items.coal, 1, 0),
-                            new ItemStack(Items.coal, 1, 0),
-                            new ItemStack(Items.coal, 1, 0),
-                            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Coal, 1L))
-                    .outputChances(10000, 9000, 8000, 7000, 6000, 5000)
-                    .noFluidInputs()
-                    .noFluidOutputs()
-                    .duration(30 * SECONDS)
-                    .eut(16)
-                    .addTo(sSifterRecipes);
+            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Coal, 1L))
+            .itemOutputs(
+                new ItemStack(Items.coal, 1, 0),
+                new ItemStack(Items.coal, 1, 0),
+                new ItemStack(Items.coal, 1, 0),
+                new ItemStack(Items.coal, 1, 0),
+                new ItemStack(Items.coal, 1, 0),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Coal, 1L))
+            .outputChances(10000, 9000, 8000, 7000, 6000, 5000)
+            .noFluidInputs()
+            .noFluidOutputs()
+            .duration(30 * SECONDS)
+            .eut(16)
+            .addTo(sSifterRecipes);
     }
 }

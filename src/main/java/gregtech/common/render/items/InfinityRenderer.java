@@ -61,7 +61,7 @@ public class InfinityRenderer extends GT_GeneratedMaterial_Renderer {
 
             if (tOverlay != null && aFluid != null && aFluid.getFluid() != null) {
                 IIcon fluidIcon = aFluid.getFluid()
-                                        .getIcon(aFluid);
+                    .getIcon(aFluid);
                 if (fluidIcon != null) {
                     markNeedsAnimationUpdate(fluidIcon);
                     // Adds colour to a cells fluid. Does not colour full fluid icons as shown in NEI etc.

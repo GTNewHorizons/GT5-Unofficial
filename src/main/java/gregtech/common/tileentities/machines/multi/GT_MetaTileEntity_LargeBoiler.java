@@ -43,8 +43,8 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 
-public abstract class GT_MetaTileEntity_LargeBoiler extends
-        GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_LargeBoiler> implements ISurvivalConstructable {
+public abstract class GT_MetaTileEntity_LargeBoiler
+    extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_LargeBoiler> implements ISurvivalConstructable {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final ClassValue<IStructureDefinition<GT_MetaTileEntity_LargeBoiler>> STRUCTURE_DEFINITION = new ClassValue<>() {
@@ -52,46 +52,34 @@ public abstract class GT_MetaTileEntity_LargeBoiler extends
         @Override
         protected IStructureDefinition<GT_MetaTileEntity_LargeBoiler> computeValue(Class<?> type) {
             return StructureDefinition.<GT_MetaTileEntity_LargeBoiler>builder()
-                                      .addShape(
-                                              STRUCTURE_PIECE_MAIN,
-                                              transpose(
-                                                      new String[][] { { "ccc", "ccc", "ccc" }, { "ccc", "cPc", "ccc" },
-                                                              { "ccc", "cPc", "ccc" }, { "ccc", "cPc", "ccc" },
-                                                              { "f~f", "fff", "fff" }, }))
-                                      .addElement('P', lazy(t -> ofBlock(t.getPipeBlock(), t.getPipeMeta())))
-                                      .addElement(
-                                              'c',
-                                              lazy(
-                                                      t -> buildHatchAdder(
-                                                              GT_MetaTileEntity_LargeBoiler.class).atLeast(OutputHatch)
-                                                                                                  .casingIndex(
-                                                                                                          t.getCasingTextureIndex())
-                                                                                                  .dot(2)
-                                                                                                  .buildAndChain(
-                                                                                                          onElementPass(
-                                                                                                                  GT_MetaTileEntity_LargeBoiler::onCasingAdded,
-                                                                                                                  ofBlock(
-                                                                                                                          t.getCasingBlock(),
-                                                                                                                          t.getCasingMeta())))))
-                                      .addElement(
-                                              'f',
-                                              lazy(
-                                                      t -> buildHatchAdder(
-                                                              GT_MetaTileEntity_LargeBoiler.class).atLeast(
-                                                                      Maintenance,
-                                                                      InputHatch,
-                                                                      InputBus,
-                                                                      Muffler)
-                                                                                                  .casingIndex(
-                                                                                                          t.getFireboxTextureIndex())
-                                                                                                  .dot(1)
-                                                                                                  .buildAndChain(
-                                                                                                          onElementPass(
-                                                                                                                  GT_MetaTileEntity_LargeBoiler::onFireboxAdded,
-                                                                                                                  ofBlock(
-                                                                                                                          t.getFireboxBlock(),
-                                                                                                                          t.getFireboxMeta())))))
-                                      .build();
+                .addShape(
+                    STRUCTURE_PIECE_MAIN,
+                    transpose(
+                        new String[][] { { "ccc", "ccc", "ccc" }, { "ccc", "cPc", "ccc" }, { "ccc", "cPc", "ccc" },
+                            { "ccc", "cPc", "ccc" }, { "f~f", "fff", "fff" }, }))
+                .addElement('P', lazy(t -> ofBlock(t.getPipeBlock(), t.getPipeMeta())))
+                .addElement(
+                    'c',
+                    lazy(
+                        t -> buildHatchAdder(GT_MetaTileEntity_LargeBoiler.class).atLeast(OutputHatch)
+                            .casingIndex(t.getCasingTextureIndex())
+                            .dot(2)
+                            .buildAndChain(
+                                onElementPass(
+                                    GT_MetaTileEntity_LargeBoiler::onCasingAdded,
+                                    ofBlock(t.getCasingBlock(), t.getCasingMeta())))))
+                .addElement(
+                    'f',
+                    lazy(
+                        t -> buildHatchAdder(GT_MetaTileEntity_LargeBoiler.class)
+                            .atLeast(Maintenance, InputHatch, InputBus, Muffler)
+                            .casingIndex(t.getFireboxTextureIndex())
+                            .dot(1)
+                            .buildAndChain(
+                                onElementPass(
+                                    GT_MetaTileEntity_LargeBoiler::onFireboxAdded,
+                                    ofBlock(t.getFireboxBlock(), t.getFireboxMeta())))))
+                .build();
         }
     };
     private boolean firstRun = true;
@@ -117,46 +105,46 @@ public abstract class GT_MetaTileEntity_LargeBoiler extends
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
 
         tt.addMachineType("Boiler")
-          .addInfo("Controller block for the Large " + getCasingMaterial() + " Boiler");
+            .addInfo("Controller block for the Large " + getCasingMaterial() + " Boiler");
         // Tooltip differs between the boilers that output Superheated Steam (Titanium and Tungstensteel) and the ones
         // that do not (Bronze and Steel)
         if (isSuperheated()) {
             tt.addInfo(
-                    "Produces " + formatNumbers((getEUt() * 40) * ((runtimeBoost(20) / (20f)) / superToNormalSteam))
-                            + "L of Superheated Steam with 1 Coal at "
-                            + formatNumbers((getEUt() * 40L) / superToNormalSteam)
-                            + "L/s") // ?
-              .addInfo("A programmed circuit in the main block throttles the boiler (-1000L/s per config)")
-              .addInfo("Only some solid fuels are allowed (check the NEI Large Boiler tab for details)")
-              .addInfo("If there are any disallowed fuels in the input bus, the boiler won't run!");
+                "Produces " + formatNumbers((getEUt() * 40) * ((runtimeBoost(20) / (20f)) / superToNormalSteam))
+                    + "L of Superheated Steam with 1 Coal at "
+                    + formatNumbers((getEUt() * 40L) / superToNormalSteam)
+                    + "L/s") // ?
+                .addInfo("A programmed circuit in the main block throttles the boiler (-1000L/s per config)")
+                .addInfo("Only some solid fuels are allowed (check the NEI Large Boiler tab for details)")
+                .addInfo("If there are any disallowed fuels in the input bus, the boiler won't run!");
         } else {
             tt.addInfo(
-                    "Produces " + formatNumbers((getEUt() * 40) * (runtimeBoost(20) / 20f))
-                            + "L of Steam with 1 Coal at "
-                            + formatNumbers(getEUt() * 40)
-                            + "L/s") // ?
-              .addInfo("A programmed circuit in the main block throttles the boiler (-1000L/s per config)")
-              .addInfo("Solid Fuels with a burn value that is too high or too low will not work");
+                "Produces " + formatNumbers((getEUt() * 40) * (runtimeBoost(20) / 20f))
+                    + "L of Steam with 1 Coal at "
+                    + formatNumbers(getEUt() * 40)
+                    + "L/s") // ?
+                .addInfo("A programmed circuit in the main block throttles the boiler (-1000L/s per config)")
+                .addInfo("Solid Fuels with a burn value that is too high or too low will not work");
         }
         tt.addInfo(
-                String.format(
-                        "Diesel fuels have 1/4 efficiency - Takes %s seconds to heat up",
-                        formatNumbers(500.0 / getEfficiencyIncrease()))) // ? check semifluid again
-          .addPollutionAmount(getPollutionPerSecond(null))
-          .addSeparator()
-          .beginStructureBlock(3, 5, 3, false)
-          .addController("Front bottom")
-          .addCasingInfoRange(getCasingMaterial() + " " + getCasingBlockType() + " Casing", 24, 31, false) // ?
-          .addOtherStructurePart(getCasingMaterial() + " Fire Boxes", "Bottom layer, 3 minimum")
-          .addOtherStructurePart(getCasingMaterial() + " Pipe Casing Blocks", "Inner 3 blocks")
-          .addMaintenanceHatch("Any firebox", 1)
-          .addMufflerHatch("Any firebox", 1)
-          .addInputBus("Solid fuel, Any firebox", 1)
-          .addInputHatch("Liquid fuel, Any firebox", 1)
-          .addStructureInfo("You can use either, or both")
-          .addInputHatch("Water, Any firebox", 1)
-          .addOutputHatch("Steam, any casing", 2)
-          .toolTipFinisher("Gregtech");
+            String.format(
+                "Diesel fuels have 1/4 efficiency - Takes %s seconds to heat up",
+                formatNumbers(500.0 / getEfficiencyIncrease()))) // ? check semifluid again
+            .addPollutionAmount(getPollutionPerSecond(null))
+            .addSeparator()
+            .beginStructureBlock(3, 5, 3, false)
+            .addController("Front bottom")
+            .addCasingInfoRange(getCasingMaterial() + " " + getCasingBlockType() + " Casing", 24, 31, false) // ?
+            .addOtherStructurePart(getCasingMaterial() + " Fire Boxes", "Bottom layer, 3 minimum")
+            .addOtherStructurePart(getCasingMaterial() + " Pipe Casing Blocks", "Inner 3 blocks")
+            .addMaintenanceHatch("Any firebox", 1)
+            .addMufflerHatch("Any firebox", 1)
+            .addInputBus("Solid fuel, Any firebox", 1)
+            .addInputHatch("Liquid fuel, Any firebox", 1)
+            .addStructureInfo("You can use either, or both")
+            .addInputHatch("Water, Any firebox", 1)
+            .addOutputHatch("Steam, any casing", 2)
+            .toolTipFinisher("Gregtech");
 
         return tt;
     }
@@ -193,35 +181,34 @@ public abstract class GT_MetaTileEntity_LargeBoiler extends
     public int getPollutionPerSecond(ItemStack aStack) {
         // allows for 0 pollution if circuit throttle is too high
         return Math.max(
-                0,
-                (int) (pollutionPerSecond
-                        * (1 - GT_Mod.gregtechproxy.mPollutionReleasedByThrottle * getIntegratedCircuitConfig())));
+            0,
+            (int) (pollutionPerSecond
+                * (1 - GT_Mod.gregtechproxy.mPollutionReleasedByThrottle * getIntegratedCircuitConfig())));
     }
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-            boolean aActive, boolean aRedstone) {
+        boolean aActive, boolean aRedstone) {
         if (aSide == aFacing) {
             if (aActive) return new ITexture[] { BlockIcons.getCasingTextureForId(getCasingTextureIndex()),
-                    TextureFactory.builder()
-                                  .addIcon(OVERLAY_FRONT_LARGE_BOILER_ACTIVE)
-                                  .extFacing()
-                                  .build(),
-                    TextureFactory.builder()
-                                  .addIcon(OVERLAY_FRONT_LARGE_BOILER_ACTIVE_GLOW)
-                                  .extFacing()
-                                  .glow()
-                                  .build() };
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_LARGE_BOILER_ACTIVE)
+                    .extFacing()
+                    .build(),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_LARGE_BOILER_ACTIVE_GLOW)
+                    .extFacing()
+                    .glow()
+                    .build() };
             return new ITexture[] { BlockIcons.getCasingTextureForId(getCasingTextureIndex()), TextureFactory.builder()
-                                                                                                             .addIcon(
-                                                                                                                     OVERLAY_FRONT_LARGE_BOILER)
-                                                                                                             .extFacing()
-                                                                                                             .build(),
-                    TextureFactory.builder()
-                                  .addIcon(OVERLAY_FRONT_LARGE_BOILER_GLOW)
-                                  .extFacing()
-                                  .glow()
-                                  .build() };
+                .addIcon(OVERLAY_FRONT_LARGE_BOILER)
+                .extFacing()
+                .build(),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_LARGE_BOILER_GLOW)
+                    .extFacing()
+                    .glow()
+                    .build() };
         }
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(getCasingTextureIndex()) };
     }
@@ -235,7 +222,7 @@ public abstract class GT_MetaTileEntity_LargeBoiler extends
         if (!isSuperheated()) return true;
         for (ItemStack input : getStoredInputs()) {
             if (!GT_Recipe.GT_Recipe_Map_LargeBoilerFakeFuels.isAllowedSolidFuel(input)
-                    && !Circuit_Integrated.isStackEqual(input, true, true)) {
+                && !Circuit_Integrated.isStackEqual(input, true, true)) {
                 // if any item is not in ALLOWED_SOLID_FUELS, operation cannot be allowed because it might still be
                 // consumed
                 this.mMaxProgresstime = 0;
@@ -281,7 +268,7 @@ public abstract class GT_MetaTileEntity_LargeBoiler extends
                     tFluid.amount = 1000;
                     if (depleteInput(tFluid)) {
                         this.mMaxProgresstime = adjustBurnTimeForConfig(
-                                Math.max(1, runtimeBoost(tRecipe.mSpecialValue * 2)));
+                            Math.max(1, runtimeBoost(tRecipe.mSpecialValue * 2)));
                         this.mEUt = adjustEUtForConfig(getEUt());
                         this.mEfficiencyIncrease = this.mMaxProgresstime * getEfficiencyIncrease();
                         return true;
@@ -296,7 +283,7 @@ public abstract class GT_MetaTileEntity_LargeBoiler extends
                 for (ItemStack tInput : tInputList) {
                     if (tInput != GT_OreDictUnificator.get(OrePrefixes.bucket, Materials.Lava, 1)) {
                         if (GT_Utility.getFluidForFilledItem(tInput, true) == null
-                                && (this.mMaxProgresstime = GT_ModHandler.getFuelValue(tInput) / 80) > 0) {
+                            && (this.mMaxProgresstime = GT_ModHandler.getFuelValue(tInput) / 80) > 0) {
                             this.excessFuel += GT_ModHandler.getFuelValue(tInput) % 80;
                             this.mMaxProgresstime += this.excessFuel / 80;
                             this.excessFuel %= 80;
@@ -320,9 +307,9 @@ public abstract class GT_MetaTileEntity_LargeBoiler extends
                         // Solid fuels with burn values below getEUt are ignored (mostly items like sticks), and also
                         // those with very high fuel values that would cause an overflow error.
                         if (GT_Utility.getFluidForFilledItem(tInput, true) == null
-                                && (this.mMaxProgresstime = GT_ModHandler.getFuelValue(tInput) / 80) > 0
-                                && (GT_ModHandler.getFuelValue(tInput) * 2 / this.getEUt()) > 1
-                                && GT_ModHandler.getFuelValue(tInput) < 100000000) {
+                            && (this.mMaxProgresstime = GT_ModHandler.getFuelValue(tInput) / 80) > 0
+                            && (GT_ModHandler.getFuelValue(tInput) * 2 / this.getEUt()) > 1
+                            && GT_ModHandler.getFuelValue(tInput) < 100000000) {
                             this.excessFuel += GT_ModHandler.getFuelValue(tInput) % 80;
                             this.mMaxProgresstime += this.excessFuel / 80;
                             this.excessFuel %= 80;
@@ -357,10 +344,10 @@ public abstract class GT_MetaTileEntity_LargeBoiler extends
     public boolean onRunningTick(ItemStack aStack) {
         if (this.mEUt > 0) {
             if (this.mSuperEfficencyIncrease > 0) mEfficiency = Math.max(
-                    0,
-                    Math.min(
-                            mEfficiency + mSuperEfficencyIncrease,
-                            getMaxEfficiency(mInventory[1]) - ((getIdealStatus() - getRepairStatus()) * 1000)));
+                0,
+                Math.min(
+                    mEfficiency + mSuperEfficencyIncrease,
+                    getMaxEfficiency(mInventory[1]) - ((getIdealStatus() - getRepairStatus()) * 1000)));
             int tGeneratedEU = (int) (this.mEUt * 2L * this.mEfficiency / 10000L);
             if (tGeneratedEU > 0) {
                 long amount = (tGeneratedEU + STEAM_PER_WATER) / STEAM_PER_WATER;
@@ -371,18 +358,18 @@ public abstract class GT_MetaTileEntity_LargeBoiler extends
                     // Consumes only one third of the water if producing Superheated Steam, to maintain water in the
                     // chain.
                     if (depleteInput(Materials.Water.getFluid(amount / superToNormalSteam))
-                            || depleteInput(GT_ModHandler.getDistilledWater(amount / superToNormalSteam))) {
+                        || depleteInput(GT_ModHandler.getDistilledWater(amount / superToNormalSteam))) {
                         // Outputs Superheated Steam instead of Steam, at one third of the amount (equivalent in power
                         // output to the normal Steam amount).
                         addOutput(
-                                FluidRegistry.getFluidStack("ic2superheatedsteam", tGeneratedEU / superToNormalSteam));
+                            FluidRegistry.getFluidStack("ic2superheatedsteam", tGeneratedEU / superToNormalSteam));
                     } else {
                         GT_Log.exp.println("Boiler " + this.mName + " had no Water!");
                         explodeMultiblock();
                     }
                 } else {
                     if (depleteInput(Materials.Water.getFluid(amount))
-                            || depleteInput(GT_ModHandler.getDistilledWater(amount))) {
+                        || depleteInput(GT_ModHandler.getDistilledWater(amount))) {
                         addOutput(GT_ModHandler.getSteam(tGeneratedEU));
                     } else {
                         GT_Log.exp.println("Boiler " + this.mName + " had no Water!");
@@ -416,9 +403,9 @@ public abstract class GT_MetaTileEntity_LargeBoiler extends
         if (mProgresstime > 0 && firstRun) {
             firstRun = false;
             GT_Mod.achievements.issueAchievement(
-                    aBaseMetaTileEntity.getWorld()
-                                       .getPlayerEntityByName(aBaseMetaTileEntity.getOwnerName()),
-                    "extremepressure");
+                aBaseMetaTileEntity.getWorld()
+                    .getPlayerEntityByName(aBaseMetaTileEntity.getOwnerName()),
+                "extremepressure");
         }
         super.onPostTick(aBaseMetaTileEntity, aTick);
     }
@@ -441,9 +428,9 @@ public abstract class GT_MetaTileEntity_LargeBoiler extends
         mCasingAmount = 0;
         mFireboxAmount = 0;
         return checkPiece(STRUCTURE_PIECE_MAIN, 1, 4, 0) && mCasingAmount >= 24
-                && mFireboxAmount >= 3
-                && mMaintenanceHatches.size() == 1
-                && !mMufflerHatches.isEmpty();
+            && mFireboxAmount >= 3
+            && mMaintenanceHatches.size() == 1
+            && !mMufflerHatches.isEmpty();
     }
 
     @Override

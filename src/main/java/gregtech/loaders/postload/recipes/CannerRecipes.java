@@ -21,66 +21,66 @@ public class CannerRecipes implements Runnable {
         if (IndustrialCraft2.isModLoaded()) {
             // todo: remove tiny dust in this recipe
             GT_Values.RA.stdBuilder()
-                        .itemInputs(
-                                GT_ModHandler.getIC2Item("fuelRod", 1),
-                                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Lithium, 1L))
-                        .itemOutputs(GT_ModHandler.getIC2Item("reactorLithiumCell", 1, 1))
-                        .noFluidInputs()
-                        .noFluidOutputs()
-                        .duration(16 * TICKS)
-                        .eut(64)
-                        .addTo(sCannerRecipes);
+                .itemInputs(
+                    GT_ModHandler.getIC2Item("fuelRod", 1),
+                    GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Lithium, 1L))
+                .itemOutputs(GT_ModHandler.getIC2Item("reactorLithiumCell", 1, 1))
+                .noFluidInputs()
+                .noFluidOutputs()
+                .duration(16 * TICKS)
+                .eut(64)
+                .addTo(sCannerRecipes);
 
             GT_Values.RA.stdBuilder()
-                        .itemInputs(
-                                GT_ModHandler.getIC2Item("fuelRod", 1),
-                                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Thorium, 3))
-                        .itemOutputs(ItemList.ThoriumCell_1.get(1L))
-                        .noFluidInputs()
-                        .noFluidOutputs()
-                        .duration(1 * SECONDS + 10 * TICKS)
-                        .eut(16)
-                        .addTo(sCannerRecipes);
+                .itemInputs(
+                    GT_ModHandler.getIC2Item("fuelRod", 1),
+                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Thorium, 3))
+                .itemOutputs(ItemList.ThoriumCell_1.get(1L))
+                .noFluidInputs()
+                .noFluidOutputs()
+                .duration(1 * SECONDS + 10 * TICKS)
+                .eut(16)
+                .addTo(sCannerRecipes);
 
             GT_Values.RA.stdBuilder()
-                        .itemInputs(GT_ModHandler.getIC2Item("fuelRod", 1), GT_ModHandler.getIC2Item("UranFuel", 1))
-                        .itemOutputs(ItemList.Uraniumcell_1.get(1))
-                        .noFluidInputs()
-                        .noFluidOutputs()
-                        .duration(1 * SECONDS + 10 * TICKS)
-                        .eut(16)
-                        .addTo(sCannerRecipes);
+                .itemInputs(GT_ModHandler.getIC2Item("fuelRod", 1), GT_ModHandler.getIC2Item("UranFuel", 1))
+                .itemOutputs(ItemList.Uraniumcell_1.get(1))
+                .noFluidInputs()
+                .noFluidOutputs()
+                .duration(1 * SECONDS + 10 * TICKS)
+                .eut(16)
+                .addTo(sCannerRecipes);
 
             GT_Values.RA.stdBuilder()
-                        .itemInputs(GT_ModHandler.getIC2Item("fuelRod", 1), GT_ModHandler.getIC2Item("MOXFuel", 1))
-                        .itemOutputs(ItemList.Moxcell_1.get(1))
-                        .noFluidInputs()
-                        .noFluidOutputs()
-                        .duration(1 * SECONDS + 10 * TICKS)
-                        .eut(16)
-                        .addTo(sCannerRecipes);
+                .itemInputs(GT_ModHandler.getIC2Item("fuelRod", 1), GT_ModHandler.getIC2Item("MOXFuel", 1))
+                .itemOutputs(ItemList.Moxcell_1.get(1))
+                .noFluidInputs()
+                .noFluidOutputs()
+                .duration(1 * SECONDS + 10 * TICKS)
+                .eut(16)
+                .addTo(sCannerRecipes);
         }
 
         GT_Values.RA.stdBuilder()
-                    .itemInputs(
-                            ItemList.Large_Fluid_Cell_TungstenSteel.get(1L),
-                            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.NaquadahEnriched, 3))
-                    .itemOutputs(ItemList.NaquadahCell_1.get(1L))
-                    .noFluidInputs()
-                    .noFluidOutputs()
-                    .duration(1 * SECONDS + 10 * TICKS)
-                    .eut(16)
-                    .addTo(sCannerRecipes);
+            .itemInputs(
+                ItemList.Large_Fluid_Cell_TungstenSteel.get(1L),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.NaquadahEnriched, 3))
+            .itemOutputs(ItemList.NaquadahCell_1.get(1L))
+            .noFluidInputs()
+            .noFluidOutputs()
+            .duration(1 * SECONDS + 10 * TICKS)
+            .eut(16)
+            .addTo(sCannerRecipes);
 
         GT_Values.RA.stdBuilder()
-                    .itemInputs(
-                            ItemList.Large_Fluid_Cell_TungstenSteel.get(1L),
-                            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadria, 3))
-                    .itemOutputs(ItemList.MNqCell_1.get(1L))
-                    .noFluidInputs()
-                    .noFluidOutputs()
-                    .duration(1 * SECONDS + 10 * TICKS)
-                    .eut(16)
-                    .addTo(sCannerRecipes);
+            .itemInputs(
+                ItemList.Large_Fluid_Cell_TungstenSteel.get(1L),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadria, 3))
+            .itemOutputs(ItemList.MNqCell_1.get(1L))
+            .noFluidInputs()
+            .noFluidOutputs()
+            .duration(1 * SECONDS + 10 * TICKS)
+            .eut(16)
+            .addTo(sCannerRecipes);
     }
 }

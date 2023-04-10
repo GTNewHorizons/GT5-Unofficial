@@ -32,47 +32,30 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.common.items.GT_IntegratedCircuit_Item;
 
 public class GT_MetaTileEntity_TranscendentPlasmaMixer
-        extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_TranscendentPlasmaMixer>
-        implements IGlobalWirelessEnergy, ISurvivalConstructable {
+    extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_TranscendentPlasmaMixer>
+    implements IGlobalWirelessEnergy, ISurvivalConstructable {
 
     private static final String[][] structure = new String[][] {
-            { " CAC ", " ABA ", " ABA ", " A~A ", " ABA ", " ABA ", " CAC " },
-            { "CBBBC", "A   A", "A   A", "A   A", "A   A", "A   A", "CBBBC" },
-            { "ABBBA", "B   B", "B   B", "B   B", "B   B", "B   B", "ABBBA" },
-            { "CBBBC", "A   A", "A   A", "A   A", "A   A", "A   A", "CBBBC" },
-            { " CAC ", " ABA ", " ABA ", " ABA ", " ABA ", " ABA ", " CAC " } };
+        { " CAC ", " ABA ", " ABA ", " A~A ", " ABA ", " ABA ", " CAC " },
+        { "CBBBC", "A   A", "A   A", "A   A", "A   A", "A   A", "CBBBC" },
+        { "ABBBA", "B   B", "B   B", "B   B", "B   B", "B   B", "ABBBA" },
+        { "CBBBC", "A   A", "A   A", "A   A", "A   A", "A   A", "CBBBC" },
+        { " CAC ", " ABA ", " ABA ", " ABA ", " ABA ", " ABA ", " CAC " } };
 
     private static final String STRUCTURE_PIECE_MAIN = "MAIN";
-    private static final IStructureDefinition<GT_MetaTileEntity_TranscendentPlasmaMixer> STRUCTURE_DEFINITION = StructureDefinition.<GT_MetaTileEntity_TranscendentPlasmaMixer>builder()
-                                                                                                                                   .addShape(
-                                                                                                                                           STRUCTURE_PIECE_MAIN,
-                                                                                                                                           structure)
-                                                                                                                                   .addElement(
-                                                                                                                                           'B',
-                                                                                                                                           buildHatchAdder(
-                                                                                                                                                   GT_MetaTileEntity_TranscendentPlasmaMixer.class).atLeast(
-                                                                                                                                                           InputHatch,
-                                                                                                                                                           OutputHatch,
-                                                                                                                                                           InputBus,
-                                                                                                                                                           Maintenance)
-                                                                                                                                                                                                   .casingIndex(
-                                                                                                                                                                                                           DIM_INJECTION_CASING)
-                                                                                                                                                                                                   .dot(
-                                                                                                                                                                                                           1)
-                                                                                                                                                                                                   .buildAndChain(
-                                                                                                                                                                                                           GregTech_API.sBlockCasings1,
-                                                                                                                                                                                                           DIM_INJECTION_CASING))
-                                                                                                                                   .addElement(
-                                                                                                                                           'A',
-                                                                                                                                           ofBlock(
-                                                                                                                                                   GregTech_API.sBlockCasings1,
-                                                                                                                                                   DIM_TRANS_CASING))
-                                                                                                                                   .addElement(
-                                                                                                                                           'C',
-                                                                                                                                           ofBlock(
-                                                                                                                                                   GregTech_API.sBlockCasings1,
-                                                                                                                                                   DIM_BRIDGE_CASING))
-                                                                                                                                   .build();
+    private static final IStructureDefinition<GT_MetaTileEntity_TranscendentPlasmaMixer> STRUCTURE_DEFINITION = StructureDefinition
+        .<GT_MetaTileEntity_TranscendentPlasmaMixer>builder()
+        .addShape(STRUCTURE_PIECE_MAIN, structure)
+        .addElement(
+            'B',
+            buildHatchAdder(GT_MetaTileEntity_TranscendentPlasmaMixer.class)
+                .atLeast(InputHatch, OutputHatch, InputBus, Maintenance)
+                .casingIndex(DIM_INJECTION_CASING)
+                .dot(1)
+                .buildAndChain(GregTech_API.sBlockCasings1, DIM_INJECTION_CASING))
+        .addElement('A', ofBlock(GregTech_API.sBlockCasings1, DIM_TRANS_CASING))
+        .addElement('C', ofBlock(GregTech_API.sBlockCasings1, DIM_BRIDGE_CASING))
+        .build();
 
     private String ownerUUID;
 
@@ -93,19 +76,19 @@ public class GT_MetaTileEntity_TranscendentPlasmaMixer
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Transcendent Mixer")
-          .addInfo("Assisting in all your DTPF needs.")
-          .addInfo("This multiblock will run in parallel according to the circuit provided to the")
-          .addInfo("controller slot. E.g. 3x Circuit #16 = 48x parallel. All inputs will scale,")
-          .addInfo("except time. All EU is deducted from wireless EU networks only.")
-          .addInfo(AuthorColen)
-          .addInfo("Controller slot and circuit slot are separate.")
-          .addSeparator()
-          .beginStructureBlock(5, 7, 5, false)
-          .addStructureInfo(GOLD + "1+ " + GRAY + "Input Hatch")
-          .addStructureInfo(GOLD + "1+ " + GRAY + "Output Hatch")
-          .addStructureInfo(GOLD + "1+ " + GRAY + "Input Bus")
-          .addStructureInfo(GOLD + "1 " + GRAY + "Maintenance Hatch")
-          .toolTipFinisher("Gregtech");
+            .addInfo("Assisting in all your DTPF needs.")
+            .addInfo("This multiblock will run in parallel according to the circuit provided to the")
+            .addInfo("controller slot. E.g. 3x Circuit #16 = 48x parallel. All inputs will scale,")
+            .addInfo("except time. All EU is deducted from wireless EU networks only.")
+            .addInfo(AuthorColen)
+            .addInfo("Controller slot and circuit slot are separate.")
+            .addSeparator()
+            .beginStructureBlock(5, 7, 5, false)
+            .addStructureInfo(GOLD + "1+ " + GRAY + "Input Hatch")
+            .addStructureInfo(GOLD + "1+ " + GRAY + "Output Hatch")
+            .addStructureInfo(GOLD + "1+ " + GRAY + "Input Bus")
+            .addStructureInfo(GOLD + "1 " + GRAY + "Maintenance Hatch")
+            .toolTipFinisher("Gregtech");
         return tt;
     }
 
@@ -116,22 +99,21 @@ public class GT_MetaTileEntity_TranscendentPlasmaMixer
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-            boolean aActive, boolean aRedstone) {
+        boolean aActive, boolean aRedstone) {
         if (aSide == aFacing) {
             if (aActive) return new ITexture[] { casingTexturePages[0][DIM_TRANS_CASING], TextureFactory.builder()
-                                                                                                        .addIcon(
-                                                                                                                OVERLAY_DTPF_ON)
-                                                                                                        .extFacing()
-                                                                                                        .build(),
-                    TextureFactory.builder()
-                                  .addIcon(OVERLAY_FUSION1_GLOW)
-                                  .extFacing()
-                                  .glow()
-                                  .build() };
+                .addIcon(OVERLAY_DTPF_ON)
+                .extFacing()
+                .build(),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FUSION1_GLOW)
+                    .extFacing()
+                    .glow()
+                    .build() };
             return new ITexture[] { casingTexturePages[0][DIM_TRANS_CASING], TextureFactory.builder()
-                                                                                           .addIcon(OVERLAY_DTPF_OFF)
-                                                                                           .extFacing()
-                                                                                           .build() };
+                .addIcon(OVERLAY_DTPF_OFF)
+                .extFacing()
+                .build() };
         }
 
         return new ITexture[] { casingTexturePages[0][DIM_TRANS_CASING] };
@@ -156,12 +138,8 @@ public class GT_MetaTileEntity_TranscendentPlasmaMixer
 
     boolean processRecipe(ItemStack[] items, FluidStack[] fluids) {
 
-        GT_Recipe originalRecipe = GT_Recipe.GT_Recipe_Map.sTranscendentPlasmaMixerRecipes.findRecipe(
-                getBaseMetaTileEntity(),
-                false,
-                Long.MAX_VALUE,
-                fluids,
-                items);
+        GT_Recipe originalRecipe = GT_Recipe.GT_Recipe_Map.sTranscendentPlasmaMixerRecipes
+            .findRecipe(getBaseMetaTileEntity(), false, Long.MAX_VALUE, fluids, items);
 
         if (originalRecipe == null) {
             return false;
@@ -217,15 +195,15 @@ public class GT_MetaTileEntity_TranscendentPlasmaMixer
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         return survivialBuildPiece(
-                STRUCTURE_PIECE_MAIN,
-                stackSize,
-                HORIZONTAL_OFFSET,
-                VERTICAL_OFFSET,
-                DEPTH_OFFSET,
-                elementBudget,
-                env,
-                false,
-                true);
+            STRUCTURE_PIECE_MAIN,
+            stackSize,
+            HORIZONTAL_OFFSET,
+            VERTICAL_OFFSET,
+            DEPTH_OFFSET,
+            elementBudget,
+            env,
+            false,
+            true);
     }
 
     @Override

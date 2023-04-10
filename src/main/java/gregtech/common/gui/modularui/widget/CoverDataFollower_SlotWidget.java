@@ -15,7 +15,7 @@ import gregtech.api.gui.modularui.IDataFollowerWidget;
 import gregtech.api.util.ISerializableObject;
 
 public class CoverDataFollower_SlotWidget<T extends ISerializableObject> extends SlotWidget
-        implements IDataFollowerWidget<T, ItemStack> {
+    implements IDataFollowerWidget<T, ItemStack> {
 
     private Function<T, ItemStack> dataToStateGetter;
     private Consumer<ItemStack> dataSetter;

@@ -28,8 +28,8 @@ public class GT_MetaGenerated_Item_Renderer implements IItemRenderer {
     @Override
     public boolean handleRenderType(ItemStack aStack, ItemRenderType aType) {
         if ((GT_Utility.isStackInvalid(aStack)) || (aStack.getItemDamage() < 0)
-                || !(aStack.getItem() instanceof IGT_ItemWithMaterialRenderer)
-                || !((IGT_ItemWithMaterialRenderer) aStack.getItem()).shouldUseCustomRenderer(aStack.getItemDamage())) {
+            || !(aStack.getItem() instanceof IGT_ItemWithMaterialRenderer)
+            || !((IGT_ItemWithMaterialRenderer) aStack.getItem()).shouldUseCustomRenderer(aStack.getItemDamage())) {
             return false;
         }
         return getRendererForItemStack(aStack).handleRenderType(aStack, aType);

@@ -57,25 +57,25 @@ public class GT_Tool_BuzzSaw extends GT_Tool_Saw {
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
         return !aIsToolHead
-                ? GT_MetaGenerated_Tool.getPrimaryMaterial(
-                        aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.toolHeadBuzzSaw.mTextureIndex]
-                : Textures.ItemIcons.HANDLE_BUZZSAW;
+            ? GT_MetaGenerated_Tool.getPrimaryMaterial(
+                aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.toolHeadBuzzSaw.mTextureIndex]
+            : Textures.ItemIcons.HANDLE_BUZZSAW;
     }
 
     @Override
     public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
         return !aIsToolHead ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mRGBa
-                : GT_MetaGenerated_Tool.getSecondaryMaterial(aStack).mRGBa;
+            : GT_MetaGenerated_Tool.getSecondaryMaterial(aStack).mRGBa;
     }
 
     @Override
     public IChatComponent getDeathMessage(EntityLivingBase aPlayer, EntityLivingBase aEntity) {
         return new ChatComponentText(
-                EnumChatFormatting.RED + aEntity.getCommandSenderName()
-                        + EnumChatFormatting.WHITE
-                        + " got buzzed by "
-                        + EnumChatFormatting.GREEN
-                        + aPlayer.getCommandSenderName()
-                        + EnumChatFormatting.WHITE);
+            EnumChatFormatting.RED + aEntity.getCommandSenderName()
+                + EnumChatFormatting.WHITE
+                + " got buzzed by "
+                + EnumChatFormatting.GREEN
+                + aPlayer.getCommandSenderName()
+                + EnumChatFormatting.WHITE);
     }
 }

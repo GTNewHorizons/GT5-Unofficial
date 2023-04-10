@@ -23,7 +23,7 @@ public class GT_RenderUtil {
     }
 
     public static void renderBlockIcon(RenderBlocks aRenderer, Block aBlock, double aX, double aY, double aZ,
-            IIcon aIcon, byte aSide) {
+        IIcon aIcon, byte aSide) {
         switch (aSide) {
             case 0 -> {
                 aRenderer.renderFaceYNeg(aBlock, aX, aY, aZ, aIcon);
@@ -57,7 +57,7 @@ public class GT_RenderUtil {
     }
 
     public static void renderItemIcon(IIcon icon, double xStart, double yStart, double xEnd, double yEnd, double z,
-            float nx, float ny, float nz) {
+        float nx, float ny, float nz) {
         if (icon == null) {
             return;
         }

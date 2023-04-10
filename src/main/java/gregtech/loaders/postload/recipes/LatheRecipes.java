@@ -20,25 +20,25 @@ public class LatheRecipes implements Runnable {
     @Override
     public void run() {
         GT_Values.RA.stdBuilder()
-                    .itemInputs(new ItemStack(Blocks.wooden_slab, 1, GT_Values.W))
-                    .itemOutputs(
-                            new ItemStack(Items.bowl, 1),
-                            GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Wood, 1))
-                    .noFluidInputs()
-                    .noFluidOutputs()
-                    .duration(2 * SECONDS + 10 * TICKS)
-                    .eut(8)
-                    .addTo(sLatheRecipes);
+            .itemInputs(new ItemStack(Blocks.wooden_slab, 1, GT_Values.W))
+            .itemOutputs(
+                new ItemStack(Items.bowl, 1),
+                GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Wood, 1))
+            .noFluidInputs()
+            .noFluidOutputs()
+            .duration(2 * SECONDS + 10 * TICKS)
+            .eut(8)
+            .addTo(sLatheRecipes);
 
         GT_Values.RA.stdBuilder()
-                    .itemInputs(getModItem(Forestry.ID, "slabs", 1L, GT_Values.W))
-                    .itemOutputs(
-                            new ItemStack(Items.bowl, 1),
-                            GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Wood, 1))
-                    .noFluidInputs()
-                    .noFluidOutputs()
-                    .duration(2 * SECONDS + 10 * TICKS)
-                    .eut(8)
-                    .addTo(sLatheRecipes);
+            .itemInputs(getModItem(Forestry.ID, "slabs", 1L, GT_Values.W))
+            .itemOutputs(
+                new ItemStack(Items.bowl, 1),
+                GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Wood, 1))
+            .noFluidInputs()
+            .noFluidOutputs()
+            .duration(2 * SECONDS + 10 * TICKS)
+            .eut(8)
+            .addTo(sLatheRecipes);
     }
 }

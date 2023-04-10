@@ -26,10 +26,10 @@ public class MetaTileEntityDumper extends GregTechIDDumper {
                 list.add(new String[] { String.valueOf(i), "", "", });
             } else if (mode == Mode.USED && mte != null) {
                 list.add(
-                        new String[] { String.valueOf(i), mte.getStackForm(1)
-                                                             .getDisplayName(),
-                                mte.getClass()
-                                   .getSimpleName() });
+                    new String[] { String.valueOf(i), mte.getStackForm(1)
+                        .getDisplayName(),
+                        mte.getClass()
+                            .getSimpleName() });
             }
         }
         return list;

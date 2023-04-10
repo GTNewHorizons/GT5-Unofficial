@@ -43,39 +43,39 @@ public class MaterialBuilder {
         this.metaItemSubID = metaItemSubID;
         this.iconSet = iconSet;
         this.name = defaultLocalName.replace(" ", "")
-                                    .replace("-", "");
+            .replace("-", "");
         this.defaultLocalName = defaultLocalName;
     }
 
     public Materials constructMaterial() {
         return new Materials(
-                metaItemSubID,
-                iconSet,
-                toolSpeed,
-                durability,
-                toolQuality,
-                types,
-                r,
-                g,
-                b,
-                a,
-                name,
-                defaultLocalName,
-                fuelType,
-                fuelPower,
-                meltingPoint,
-                blastFurnaceTemp,
-                blastFurnaceRequired,
-                transparent,
-                oreValue,
-                densityMultiplier,
-                densityDivider,
-                color,
-                extraData,
-                materialList,
-                aspects).setHasCorrespondingFluid(hasCorrespondingFluid)
-                        .setHasCorrespondingGas(hasCorrespondingGas)
-                        .setCanBeCracked(canBeCracked);
+            metaItemSubID,
+            iconSet,
+            toolSpeed,
+            durability,
+            toolQuality,
+            types,
+            r,
+            g,
+            b,
+            a,
+            name,
+            defaultLocalName,
+            fuelType,
+            fuelPower,
+            meltingPoint,
+            blastFurnaceTemp,
+            blastFurnaceRequired,
+            transparent,
+            oreValue,
+            densityMultiplier,
+            densityDivider,
+            color,
+            extraData,
+            materialList,
+            aspects).setHasCorrespondingFluid(hasCorrespondingFluid)
+                .setHasCorrespondingGas(hasCorrespondingGas)
+                .setCanBeCracked(canBeCracked);
     }
 
     public MaterialBuilder setName(String name) {

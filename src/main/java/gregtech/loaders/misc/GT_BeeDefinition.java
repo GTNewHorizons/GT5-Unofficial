@@ -72,10 +72,8 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         AlleleHelper.instance.set(template, HUMIDITY_TOLERANCE, Tolerance.NONE);
         AlleleHelper.instance.set(template, FLOWER_PROVIDER, Flowers.VANILLA);
     }, dis -> {
-        IBeeMutationCustom tMutation = dis.registerMutation(
-                getSpecies(FORESTRY, "Industrious"),
-                getSpecies(FORESTRY, "Diligent"),
-                10);
+        IBeeMutationCustom tMutation = dis
+            .registerMutation(getSpecies(FORESTRY, "Industrious"), getSpecies(FORESTRY, "Diligent"), 10);
         tMutation.requireResource(Blocks.clay, 0); // blockStainedHardenedClay
     }),
     SLIMEBALL(GT_BranchDefinition.ORGANIC, "SlimeBall", true, new Color(0x4E9E55), new Color(0x00FF15), beeSpecies -> {
@@ -114,19 +112,19 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         AlleleHelper.instance.set(template, HUMIDITY_TOLERANCE, Tolerance.NONE);
     }, dis -> dis.registerMutation(getSpecies(FORESTRY, "Rural"), CLAY, 10)),
     STICKYRESIN(GT_BranchDefinition.ORGANIC, "StickyResin", true, new Color(0x2E8F5B), new Color(0xDCC289),
-            beeSpecies -> {
-                beeSpecies.addProduct(GT_ModHandler.getModItem(Forestry.ID, "beeCombs", 1, 0), 0.30f);
-                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.STICKY), 0.15f);
-                beeSpecies.addSpecialty(ItemList.IC2_Resin.get(1), 0.15f);
-                beeSpecies.setHumidity(EnumHumidity.NORMAL);
-                beeSpecies.setTemperature(EnumTemperature.NORMAL);
-            }, template -> {
-                AlleleHelper.instance.set(template, FLOWERING, Flowering.SLOWER);
-                AlleleHelper.instance.set(template, HUMIDITY_TOLERANCE, Tolerance.NONE);
-            }, dis -> {
-                IBeeMutationCustom tMutation = dis.registerMutation(SLIMEBALL, PEAT, 15);
-                tMutation.requireResource("logRubber");
-            }),
+        beeSpecies -> {
+            beeSpecies.addProduct(GT_ModHandler.getModItem(Forestry.ID, "beeCombs", 1, 0), 0.30f);
+            beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.STICKY), 0.15f);
+            beeSpecies.addSpecialty(ItemList.IC2_Resin.get(1), 0.15f);
+            beeSpecies.setHumidity(EnumHumidity.NORMAL);
+            beeSpecies.setTemperature(EnumTemperature.NORMAL);
+        }, template -> {
+            AlleleHelper.instance.set(template, FLOWERING, Flowering.SLOWER);
+            AlleleHelper.instance.set(template, HUMIDITY_TOLERANCE, Tolerance.NONE);
+        }, dis -> {
+            IBeeMutationCustom tMutation = dis.registerMutation(SLIMEBALL, PEAT, 15);
+            tMutation.requireResource("logRubber");
+        }),
     COAL(GT_BranchDefinition.ORGANIC, "Coal", true, new Color(0x666666), new Color(0x525252), beeSpecies -> {
         beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.LIGNIE), 0.30f);
         beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.COAL), 0.15f);
@@ -209,43 +207,43 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         tMutation.requireResource("blockApatite");
     }),
     FERTILIZER(GT_BranchDefinition.ORGANIC, "Fertilizer", true, new Color(0x7fcef5), new Color(0x654525),
-            beeSpecies -> {
-                beeSpecies.addProduct(GT_ModHandler.getModItem(ExtraBees.ID, "honeyComb", 1, 9), 0.15f);
-                beeSpecies.addSpecialty(GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Ash, 1), 0.2f);
-                beeSpecies.addSpecialty(GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 1), 0.2f);
-                beeSpecies.addSpecialty(ItemList.FR_Fertilizer.get(1), 0.3f);
-                beeSpecies.addSpecialty(ItemList.IC2_Fertilizer.get(1), 0.3f);
-                beeSpecies.setHumidity(DAMP);
-                beeSpecies.setTemperature(WARM);
-            }, template -> {
-                AlleleHelper.instance.set(template, SPEED, Speed.FASTEST);
-                AlleleHelper.instance.set(template, LIFESPAN, Lifespan.LONGER);
-                AlleleHelper.instance.set(template, FLOWER_PROVIDER, Flowers.WHEAT);
-                AlleleHelper.instance.set(template, FLOWERING, Flowering.FASTER);
-            }, dis -> dis.registerMutation(ASH, APATITE, 8)),
+        beeSpecies -> {
+            beeSpecies.addProduct(GT_ModHandler.getModItem(ExtraBees.ID, "honeyComb", 1, 9), 0.15f);
+            beeSpecies.addSpecialty(GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Ash, 1), 0.2f);
+            beeSpecies.addSpecialty(GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 1), 0.2f);
+            beeSpecies.addSpecialty(ItemList.FR_Fertilizer.get(1), 0.3f);
+            beeSpecies.addSpecialty(ItemList.IC2_Fertilizer.get(1), 0.3f);
+            beeSpecies.setHumidity(DAMP);
+            beeSpecies.setTemperature(WARM);
+        }, template -> {
+            AlleleHelper.instance.set(template, SPEED, Speed.FASTEST);
+            AlleleHelper.instance.set(template, LIFESPAN, Lifespan.LONGER);
+            AlleleHelper.instance.set(template, FLOWER_PROVIDER, Flowers.WHEAT);
+            AlleleHelper.instance.set(template, FLOWERING, Flowering.FASTER);
+        }, dis -> dis.registerMutation(ASH, APATITE, 8)),
     // Phosphorus bee, Humidity: normal, Temperature: Hot, Parents: Apatite & Ash, Mutationrate: 12%, Combrate: 55%
     PHOSPHORUS(GT_BranchDefinition.ORGANIC, "Phosphorus", false, new Color(0xFFC826), new Color(0xC1C1F6),
-            beeSpecies -> {
-                beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.PHOSPHORUS), 0.55f);
-                beeSpecies.setHumidity(EnumHumidity.NORMAL);
-                beeSpecies.setTemperature(HOT);
-                beeSpecies.setNocturnal();
-                beeSpecies.setHasEffect();
-            }, template -> AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST), dis -> {
-                IBeeMutationCustom tMutation = dis.registerMutation(APATITE, ASH, 12);
-                tMutation.restrictTemperature(HOT);
-                tMutation.requireResource(GameRegistry.findBlock(GregTech.ID, "gt.blockgem2"), 8);
-            }),
+        beeSpecies -> {
+            beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.PHOSPHORUS), 0.55f);
+            beeSpecies.setHumidity(EnumHumidity.NORMAL);
+            beeSpecies.setTemperature(HOT);
+            beeSpecies.setNocturnal();
+            beeSpecies.setHasEffect();
+        }, template -> AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST), dis -> {
+            IBeeMutationCustom tMutation = dis.registerMutation(APATITE, ASH, 12);
+            tMutation.restrictTemperature(HOT);
+            tMutation.requireResource(GameRegistry.findBlock(GregTech.ID, "gt.blockgem2"), 8);
+        }),
     // Tea bee, Humidity: normal, Parents: Ash and Fertilizer, Mutationrate: 10%, combrate: 10%
     TEA(GT_BranchDefinition.ORGANIC, "Tea", false, new Color(0x65D13A), new Color(0x9a9679), beeSpecies -> {
         beeSpecies.addProduct(
-                GT_ModHandler.getModItem(PamsHarvestCraft.ID, "tealeafItem", 1, ItemList.Crop_Drop_TeaLeaf.get(1)),
-                0.10f);
+            GT_ModHandler.getModItem(PamsHarvestCraft.ID, "tealeafItem", 1, ItemList.Crop_Drop_TeaLeaf.get(1)),
+            0.10f);
         beeSpecies.setHumidity(EnumHumidity.NORMAL);
         beeSpecies.setTemperature(NORMAL);
         beeSpecies.setHasEffect();
     }, template -> AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST),
-            dis -> dis.registerMutation(FERTILIZER, ASH, 10)),
+        dis -> dis.registerMutation(FERTILIZER, ASH, 10)),
     // Mica bee, Humidity: normal, Parents: Silicon & PEAT, Mutationrate: 15%, Combrate: 25%
     MICA(GT_BranchDefinition.ORGANIC, "Mica", false, new Color(0xFFC826), new Color(0xC1C1F6), beeSpecies -> {
         beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.MICA), 0.25f);
@@ -266,10 +264,8 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         beeSpecies.setHumidity(EnumHumidity.NORMAL);
         beeSpecies.setTemperature(EnumTemperature.NORMAL);
     }, template -> AlleleHelper.instance.set(template, SPEED, Speed.SLOWER), dis -> {
-        IBeeMutationCustom tMutation = dis.registerMutation(
-                getSpecies(FORESTRY, "Industrious"),
-                getSpecies(FORESTRY, "Demonic"),
-                10);
+        IBeeMutationCustom tMutation = dis
+            .registerMutation(getSpecies(FORESTRY, "Industrious"), getSpecies(FORESTRY, "Demonic"), 10);
         tMutation.requireResource("blockRedstone");
     }),
     LAPIS(GT_BranchDefinition.GEM, "Lapis", true, new Color(0x1947D1), new Color(0x476CDA), beeSpecies -> {
@@ -278,10 +274,8 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         beeSpecies.setHumidity(EnumHumidity.NORMAL);
         beeSpecies.setTemperature(EnumTemperature.NORMAL);
     }, template -> AlleleHelper.instance.set(template, SPEED, Speed.SLOWER), dis -> {
-        IBeeMutationCustom tMutation = dis.registerMutation(
-                getSpecies(FORESTRY, "Demonic"),
-                getSpecies(FORESTRY, "Imperial"),
-                10);
+        IBeeMutationCustom tMutation = dis
+            .registerMutation(getSpecies(FORESTRY, "Demonic"), getSpecies(FORESTRY, "Imperial"), 10);
         tMutation.requireResource("blockLapis");
     }),
     CERTUS(GT_BranchDefinition.GEM, "CertusQuartz", true, new Color(0x57CFFB), new Color(0xBBEEFF), beeSpecies -> {
@@ -338,7 +332,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         beeSpecies.setHumidity(EnumHumidity.NORMAL);
         beeSpecies.setTemperature(EnumTemperature.NORMAL);
     }, template -> AlleleHelper.instance.set(template, SPEED, Speed.SLOWER),
-            dis -> dis.registerMutation(CERTUS, getSpecies(FORESTRY, "Ended"), 5)),
+        dis -> dis.registerMutation(CERTUS, getSpecies(FORESTRY, "Ended"), 5)),
     EMERALD(GT_BranchDefinition.GEM, "Emerald", false, new Color(0x248F24), new Color(0x2EB82E), beeSpecies -> {
         beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.STONE), 0.30f);
         beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.EMERALD), 0.15f);
@@ -365,20 +359,20 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         tMutation.requireResource("blockGarnetRed");
     }),
     YELLOWGARNET(GT_BranchDefinition.GEM, "YellowGarnet", false, new Color(0xA3A341), new Color(0xEDEDCE),
-            beeSpecies -> {
-                beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.STONE), 0.30f);
-                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.YELLOWGARNET), 0.15f);
-                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.GROSSULAR), 0.05f);
-                beeSpecies.setHumidity(DAMP);
-                beeSpecies.setTemperature(WARM);
-                beeSpecies.setHasEffect();
-            }, template -> {
-                AlleleHelper.instance.set(template, SPEED, Speed.FAST);
-                AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST);
-            }, dis -> {
-                IBeeMutationCustom tMutation = dis.registerMutation(EMERALD, REDGARNET, 3);
-                tMutation.requireResource("blockGarnetYellow");
-            }),
+        beeSpecies -> {
+            beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.STONE), 0.30f);
+            beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.YELLOWGARNET), 0.15f);
+            beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.GROSSULAR), 0.05f);
+            beeSpecies.setHumidity(DAMP);
+            beeSpecies.setTemperature(WARM);
+            beeSpecies.setHasEffect();
+        }, template -> {
+            AlleleHelper.instance.set(template, SPEED, Speed.FAST);
+            AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST);
+        }, dis -> {
+            IBeeMutationCustom tMutation = dis.registerMutation(EMERALD, REDGARNET, 3);
+            tMutation.requireResource("blockGarnetYellow");
+        }),
     FIRESTONE(GT_BranchDefinition.GEM, "Firestone", false, new Color(0xC00000), new Color(0xFF0000), beeSpecies -> {
         beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.STONE), 0.30f);
         beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.FIRESTONE), 0.15f);
@@ -508,16 +502,16 @@ public enum GT_BeeDefinition implements IBeeDefinition {
 
     // Rare Metals
     ALUMINIUM(GT_BranchDefinition.RAREMETAL, "Aluminium", true, new Color(0xB8B8FF), new Color(0xD6D6FF),
-            beeSpecies -> {
-                beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.SLAG), 0.30f);
-                beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.ALUMINIUM), 0.15f);
-                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.BAUXITE), 0.05f);
-                beeSpecies.setHumidity(ARID);
-                beeSpecies.setTemperature(HOT);
-            }, template -> AlleleHelper.instance.set(template, SPEED, Speed.SLOWER), dis -> {
-                IBeeMutationCustom tMutation = dis.registerMutation(NICKEL, ZINC, 9);
-                tMutation.requireResource("blockAluminium");
-            }),
+        beeSpecies -> {
+            beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.SLAG), 0.30f);
+            beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.ALUMINIUM), 0.15f);
+            beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.BAUXITE), 0.05f);
+            beeSpecies.setHumidity(ARID);
+            beeSpecies.setTemperature(HOT);
+        }, template -> AlleleHelper.instance.set(template, SPEED, Speed.SLOWER), dis -> {
+            IBeeMutationCustom tMutation = dis.registerMutation(NICKEL, ZINC, 9);
+            tMutation.requireResource("blockAluminium");
+        }),
     TITANIUM(GT_BranchDefinition.RAREMETAL, "Titanium", true, new Color(0xCC99FF), new Color(0xDBB8FF), beeSpecies -> {
         beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.SLAG), 0.30f);
         beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.TITANIUM), 0.15f);
@@ -529,24 +523,24 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         tMutation.requireResource(GregTech_API.sBlockMetal7, 9);
     }),
     GLOWSTONE(GT_BranchDefinition.RAREMETAL, "Glowstone", false, new Color(0xE5CA2A), new Color(0xFFBC5E),
-            beeSpecies -> {
-                beeSpecies.addSpecialty(Materials.Glowstone.getDust(1), 0.20f);
-                beeSpecies.setHumidity(EnumHumidity.NORMAL);
-                beeSpecies.setNocturnal();
-                beeSpecies.setHasEffect();
-            }, template -> AlleleHelper.instance.set(template, LIFESPAN, Lifespan.NORMAL),
-            dis -> dis.registerMutation(REDSTONE, GOLD, 10)),
+        beeSpecies -> {
+            beeSpecies.addSpecialty(Materials.Glowstone.getDust(1), 0.20f);
+            beeSpecies.setHumidity(EnumHumidity.NORMAL);
+            beeSpecies.setNocturnal();
+            beeSpecies.setHasEffect();
+        }, template -> AlleleHelper.instance.set(template, LIFESPAN, Lifespan.NORMAL),
+        dis -> dis.registerMutation(REDSTONE, GOLD, 10)),
     SUNNARIUM(GT_BranchDefinition.RAREMETAL, "Sunnarium", false, new Color(0xFFBC5E), new Color(0xE5CA2A),
-            beeSpecies -> {
-                beeSpecies.addProduct(Materials.Glowstone.getDust(1), 0.40f);
-                beeSpecies.addSpecialty(Materials.Sunnarium.getDust(1), 0.20f);
-                beeSpecies.setHumidity(EnumHumidity.NORMAL);
-                beeSpecies.setNocturnal();
-                beeSpecies.setHasEffect();
-            }, template -> AlleleHelper.instance.set(template, LIFESPAN, Lifespan.LONGEST), dis -> {
-                IBeeMutationCustom tMutation = dis.registerMutation(GLOWSTONE, GOLD, 5);
-                tMutation.requireResource(GameRegistry.findBlock(GregTech.ID, "gt.blockcasings"), 15);
-            }),
+        beeSpecies -> {
+            beeSpecies.addProduct(Materials.Glowstone.getDust(1), 0.40f);
+            beeSpecies.addSpecialty(Materials.Sunnarium.getDust(1), 0.20f);
+            beeSpecies.setHumidity(EnumHumidity.NORMAL);
+            beeSpecies.setNocturnal();
+            beeSpecies.setHasEffect();
+        }, template -> AlleleHelper.instance.set(template, LIFESPAN, Lifespan.LONGEST), dis -> {
+            IBeeMutationCustom tMutation = dis.registerMutation(GLOWSTONE, GOLD, 5);
+            tMutation.requireResource(GameRegistry.findBlock(GregTech.ID, "gt.blockcasings"), 15);
+        }),
     CHROME(GT_BranchDefinition.RAREMETAL, "Chrome", true, new Color(0xEBA1EB), new Color(0xF2C3F2), beeSpecies -> {
         beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.SLAG), 0.30f);
         beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.CHROME), 0.15f);
@@ -558,16 +552,16 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         tMutation.requireResource(GregTech_API.sBlockMetal2, 3);
     }),
     MANGANESE(GT_BranchDefinition.RAREMETAL, "Manganese", true, new Color(0xD5D5D5), new Color(0xAAAAAA),
-            beeSpecies -> {
-                beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.SLAG), 0.30f);
-                beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.MANGANESE), 0.15f);
-                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.IRON), 0.05f);
-                beeSpecies.setHumidity(ARID);
-                beeSpecies.setTemperature(HOT);
-            }, template -> AlleleHelper.instance.set(template, SPEED, Speed.SLOWER), dis -> {
-                IBeeMutationCustom tMutation = dis.registerMutation(TITANIUM, ALUMINIUM, 5);
-                tMutation.requireResource(GregTech_API.sBlockMetal4, 6);
-            }),
+        beeSpecies -> {
+            beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.SLAG), 0.30f);
+            beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.MANGANESE), 0.15f);
+            beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.IRON), 0.05f);
+            beeSpecies.setHumidity(ARID);
+            beeSpecies.setTemperature(HOT);
+        }, template -> AlleleHelper.instance.set(template, SPEED, Speed.SLOWER), dis -> {
+            IBeeMutationCustom tMutation = dis.registerMutation(TITANIUM, ALUMINIUM, 5);
+            tMutation.requireResource(GregTech_API.sBlockMetal4, 6);
+        }),
     TUNGSTEN(GT_BranchDefinition.RAREMETAL, "Tungsten", false, new Color(0x5C5C8A), new Color(0x7D7DA1), beeSpecies -> {
         beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.SLAG), 0.30f);
         beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.TUNGSTEN), 0.15f);
@@ -631,16 +625,16 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         tMutation.requireResource("frameGtLithium");
     }),
     ELECTROTINE(GT_BranchDefinition.RAREMETAL, "Electrotine", false, new Color(0x1E90FF), new Color(0x3CB4C8),
-            beeSpecies -> {
-                beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.SLAG), 0.30f);
-                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.ELECTROTINE), 0.15f);
-                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.REDSTONE), 0.05f);
-                beeSpecies.setHumidity(EnumHumidity.NORMAL);
-                beeSpecies.setTemperature(HOT);
-            }, template -> AlleleHelper.instance.set(template, SPEED, Speed.SLOWER), dis -> {
-                IBeeMutationCustom tMutation = dis.registerMutation(REDSTONE, GOLD, 5);
-                tMutation.requireResource("blockElectrotine");
-            }),
+        beeSpecies -> {
+            beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.SLAG), 0.30f);
+            beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.ELECTROTINE), 0.15f);
+            beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.REDSTONE), 0.05f);
+            beeSpecies.setHumidity(EnumHumidity.NORMAL);
+            beeSpecies.setTemperature(HOT);
+        }, template -> AlleleHelper.instance.set(template, SPEED, Speed.SLOWER), dis -> {
+            IBeeMutationCustom tMutation = dis.registerMutation(REDSTONE, GOLD, 5);
+            tMutation.requireResource("blockElectrotine");
+        }),
     // Sulfur bee, Humidity: normal, Temperature: Hot, Parents: PEAT & Ash, Mutationrate: 15%, Combrate: 80%
     SULFUR(GT_BranchDefinition.RAREMETAL, "Sulfur", false, new Color(0x1E90FF), new Color(0x3CB4C8), beeSpecies -> {
         beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.SULFUR), 0.70f);
@@ -648,7 +642,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         beeSpecies.setHumidity(EnumHumidity.NORMAL);
         beeSpecies.setTemperature(HOT);
     }, template -> AlleleHelper.instance.set(template, SPEED, Speed.NORMAL),
-            dis -> dis.registerMutation(ASH, PEAT, 15)),
+        dis -> dis.registerMutation(ASH, PEAT, 15)),
 
     INDIUM(GT_BranchDefinition.RAREMETAL, "Indium", false, new Color(0xFFA9FF), new Color(0x8F5D99), beeSpecies -> {
         beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.INDIUM), 0.05f);
@@ -675,15 +669,13 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         AlleleHelper.instance.set(template, FLOWER_PROVIDER, Flowers.SNOW);
         AlleleHelper.instance.set(template, EFFECT, AlleleEffect.effectGlacial);
     }, dis -> {
-        IBeeMutationCustom tMutation = dis.registerMutation(
-                getSpecies(FORESTRY, "Icy"),
-                getSpecies(FORESTRY, "Glacial"),
-                10);
+        IBeeMutationCustom tMutation = dis
+            .registerMutation(getSpecies(FORESTRY, "Icy"), getSpecies(FORESTRY, "Glacial"), 10);
         tMutation.requireResource(
-                Block.getBlockFromItem(
-                        GT_ModHandler.getModItem(IndustrialCraft2.ID, "fluidCoolant", 1)
-                                     .getItem()),
-                0);
+            Block.getBlockFromItem(
+                GT_ModHandler.getModItem(IndustrialCraft2.ID, "fluidCoolant", 1)
+                    .getItem()),
+            0);
         tMutation.restrictTemperature(ICY);
     }),
     ENERGY(GT_BranchDefinition.IC2, "Energy", false, new Color(0xC11F1F), new Color(0xEBB9B9), beeSpecies -> {
@@ -701,15 +693,13 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         AlleleHelper.instance.set(template, FLOWER_PROVIDER, Flowers.NETHER);
         AlleleHelper.instance.set(template, FLOWERING, Flowering.AVERAGE);
     }, dis -> {
-        IBeeMutationCustom tMutation = dis.registerMutation(
-                getSpecies(FORESTRY, "Demonic"),
-                getSpecies(EXTRABEES, "volcanic"),
-                10);
+        IBeeMutationCustom tMutation = dis
+            .registerMutation(getSpecies(FORESTRY, "Demonic"), getSpecies(EXTRABEES, "volcanic"), 10);
         tMutation.requireResource(
-                Block.getBlockFromItem(
-                        GT_ModHandler.getModItem(IndustrialCraft2.ID, "fluidHotCoolant", 1)
-                                     .getItem()),
-                0);
+            Block.getBlockFromItem(
+                GT_ModHandler.getModItem(IndustrialCraft2.ID, "fluidHotCoolant", 1)
+                    .getItem()),
+            0);
         tMutation.addMutationCondition(new GT_Bees.BiomeIDMutationCondition(128, "Boneyard Biome")); // Boneyard Biome
     }),
     LAPOTRON(GT_BranchDefinition.IC2, "Lapotron", false, new Color(0x6478FF), new Color(0x1414FF), beeSpecies -> {
@@ -800,77 +790,74 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         tMutation.requireResource("blockRedAlloy");
     }),
     REDSTONEALLOY(GT_BranchDefinition.GTALLOY, "RedStoneAlloy", false, new Color(0xA50808), new Color(0xE80000),
-            beeSpecies -> {
-                beeSpecies.addProduct(GT_ModHandler.getModItem(Forestry.ID, "beeCombs", 1, 7), 0.30f);
-                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.REDSTONEALLOY), 0.15f);
-                beeSpecies.setHumidity(EnumHumidity.NORMAL);
-                beeSpecies.setTemperature(EnumTemperature.NORMAL);
-            }, template -> {
-                AlleleHelper.instance.set(template, SPEED, Speed.SLOWER);
-                AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTER);
-            }, dis -> {
-                IBeeMutationCustom tMutation = dis.registerMutation(REDSTONE, REDALLOY, 8);
-                tMutation.requireResource("blockRedstoneAlloy");
-            }),
+        beeSpecies -> {
+            beeSpecies.addProduct(GT_ModHandler.getModItem(Forestry.ID, "beeCombs", 1, 7), 0.30f);
+            beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.REDSTONEALLOY), 0.15f);
+            beeSpecies.setHumidity(EnumHumidity.NORMAL);
+            beeSpecies.setTemperature(EnumTemperature.NORMAL);
+        }, template -> {
+            AlleleHelper.instance.set(template, SPEED, Speed.SLOWER);
+            AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTER);
+        }, dis -> {
+            IBeeMutationCustom tMutation = dis.registerMutation(REDSTONE, REDALLOY, 8);
+            tMutation.requireResource("blockRedstoneAlloy");
+        }),
     CONDUCTIVEIRON(GT_BranchDefinition.GTALLOY, "ConductiveIron", false, new Color(0xCEADA3), new Color(0x817671),
-            beeSpecies -> {
-                beeSpecies.addProduct(GT_ModHandler.getModItem(Forestry.ID, "beeCombs", 1, 7), 0.30f);
-                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.CONDUCTIVEIRON), 0.15f);
-                beeSpecies.setHumidity(DAMP);
-                beeSpecies.setTemperature(WARM);
-                beeSpecies.setHasEffect();
-            }, template -> {
-                AlleleHelper.instance.set(template, SPEED, Speed.FAST);
-                AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST);
-            }, dis -> {
-                IBeeMutationCustom tMutation = dis.registerMutation(REDSTONEALLOY, IRON, 8);
-                tMutation.requireResource("blockConductiveIron");
-            }),
+        beeSpecies -> {
+            beeSpecies.addProduct(GT_ModHandler.getModItem(Forestry.ID, "beeCombs", 1, 7), 0.30f);
+            beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.CONDUCTIVEIRON), 0.15f);
+            beeSpecies.setHumidity(DAMP);
+            beeSpecies.setTemperature(WARM);
+            beeSpecies.setHasEffect();
+        }, template -> {
+            AlleleHelper.instance.set(template, SPEED, Speed.FAST);
+            AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST);
+        }, dis -> {
+            IBeeMutationCustom tMutation = dis.registerMutation(REDSTONEALLOY, IRON, 8);
+            tMutation.requireResource("blockConductiveIron");
+        }),
     ENERGETICALLOY(GT_BranchDefinition.GTALLOY, "EnergeticAlloy", false, new Color(0xFF9933), new Color(0xFFAD5C),
-            beeSpecies -> {
-                beeSpecies.addProduct(GT_ModHandler.getModItem(Forestry.ID, "beeCombs", 1, 7), 0.30f);
-                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.ENERGETICALLOY), 0.15f);
-                beeSpecies.setHumidity(DAMP);
-                beeSpecies.setTemperature(EnumTemperature.NORMAL);
-            }, template -> {
-                AlleleHelper.instance.set(template, SPEED, Speed.FAST);
-                AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST);
-            }, dis -> {
-                IBeeMutationCustom tMutation = dis.registerMutation(REDSTONEALLOY, getSpecies(FORESTRY, "Demonic"), 9);
-                tMutation.requireResource("blockEnergeticAlloy");
-            }),
+        beeSpecies -> {
+            beeSpecies.addProduct(GT_ModHandler.getModItem(Forestry.ID, "beeCombs", 1, 7), 0.30f);
+            beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.ENERGETICALLOY), 0.15f);
+            beeSpecies.setHumidity(DAMP);
+            beeSpecies.setTemperature(EnumTemperature.NORMAL);
+        }, template -> {
+            AlleleHelper.instance.set(template, SPEED, Speed.FAST);
+            AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST);
+        }, dis -> {
+            IBeeMutationCustom tMutation = dis.registerMutation(REDSTONEALLOY, getSpecies(FORESTRY, "Demonic"), 9);
+            tMutation.requireResource("blockEnergeticAlloy");
+        }),
     VIBRANTALLOY(GT_BranchDefinition.GTALLOY, "VibrantAlloy", false, new Color(0x86A12D), new Color(0xC4F2AE),
-            beeSpecies -> {
-                beeSpecies.addProduct(GT_ModHandler.getModItem(Forestry.ID, "beeCombs", 1, 7), 0.30f);
-                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.VIBRANTALLOY), 0.15f);
-                beeSpecies.setHumidity(DAMP);
-                beeSpecies.setTemperature(EnumTemperature.NORMAL);
-                beeSpecies.setHasEffect();
-            }, template -> {
-                AlleleHelper.instance.set(template, SPEED, Speed.SLOWER);
-                AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST);
-                AlleleHelper.instance.set(template, FLOWERING, Flowering.FAST);
-            }, dis -> {
-                IBeeMutationCustom tMutation = dis.registerMutation(
-                        ENERGETICALLOY,
-                        getSpecies(FORESTRY, "Phantasmal"),
-                        6);
-                tMutation.requireResource("blockVibrantAlloy");
-                tMutation.restrictTemperature(HOT, HELLISH);
-            }),
+        beeSpecies -> {
+            beeSpecies.addProduct(GT_ModHandler.getModItem(Forestry.ID, "beeCombs", 1, 7), 0.30f);
+            beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.VIBRANTALLOY), 0.15f);
+            beeSpecies.setHumidity(DAMP);
+            beeSpecies.setTemperature(EnumTemperature.NORMAL);
+            beeSpecies.setHasEffect();
+        }, template -> {
+            AlleleHelper.instance.set(template, SPEED, Speed.SLOWER);
+            AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST);
+            AlleleHelper.instance.set(template, FLOWERING, Flowering.FAST);
+        }, dis -> {
+            IBeeMutationCustom tMutation = dis.registerMutation(ENERGETICALLOY, getSpecies(FORESTRY, "Phantasmal"), 6);
+            tMutation.requireResource("blockVibrantAlloy");
+            tMutation.restrictTemperature(HOT, HELLISH);
+        }),
     ELECTRICALSTEEL(GT_BranchDefinition.GTALLOY, "ElectricalSteel", false, new Color(0x787878), new Color(0xD8D8D8),
-            beeSpecies -> {
-                beeSpecies.addProduct(GT_ModHandler.getModItem(Forestry.ID, "beeCombs", 1, 7), 0.30f);
-                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.ELECTRICALSTEEL), 0.15f);
-                beeSpecies.setHumidity(DAMP);
-                beeSpecies.setTemperature(EnumTemperature.NORMAL);
-            }, template -> {
-                AlleleHelper.instance.set(template, SPEED, Speed.SLOWER);
-                AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTER);
-            }, dis -> {
-                IBeeMutationCustom tMutation = dis.registerMutation(STEEL, getSpecies(FORESTRY, "Demonic"), 9);
-                tMutation.requireResource("blockElectricalSteel");
-            }),
+        beeSpecies -> {
+            beeSpecies.addProduct(GT_ModHandler.getModItem(Forestry.ID, "beeCombs", 1, 7), 0.30f);
+            beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.ELECTRICALSTEEL), 0.15f);
+            beeSpecies.setHumidity(DAMP);
+            beeSpecies.setTemperature(EnumTemperature.NORMAL);
+        }, template -> {
+            AlleleHelper.instance.set(template, SPEED, Speed.SLOWER);
+            AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTER);
+        }, dis -> {
+            IBeeMutationCustom tMutation = dis.registerMutation(STEEL, getSpecies(FORESTRY, "Demonic"), 9);
+            tMutation.requireResource("blockElectricalSteel");
+        }),
     DARKSTEEL(GT_BranchDefinition.GTALLOY, "DarkSteel", false, new Color(0x252525), new Color(0x443B44), beeSpecies -> {
         beeSpecies.addProduct(GT_ModHandler.getModItem(Forestry.ID, "beeCombs", 1, 7), 0.30f);
         beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.DARKSTEEL), 0.15f);
@@ -884,34 +871,34 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         tMutation.requireResource("blockDarkSteel");
     }),
     PULSATINGIRON(GT_BranchDefinition.GTALLOY, "PulsatingIron", false, new Color(0x6DD284), new Color(0x006600),
-            beeSpecies -> {
-                beeSpecies.addProduct(GT_ModHandler.getModItem(Forestry.ID, "beeCombs", 1, 7), 0.30f);
-                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.PULSATINGIRON), 0.15f);
-                beeSpecies.setHumidity(DAMP);
-                beeSpecies.setTemperature(EnumTemperature.NORMAL);
-            }, template -> {
-                AlleleHelper.instance.set(template, SPEED, Speed.FAST);
-                AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST);
-            }, dis -> {
-                IBeeMutationCustom tMutation = dis.registerMutation(REDALLOY, getSpecies(FORESTRY, "Ended"), 9);
-                tMutation.requireResource("blockPulsatingIron");
-            }),
+        beeSpecies -> {
+            beeSpecies.addProduct(GT_ModHandler.getModItem(Forestry.ID, "beeCombs", 1, 7), 0.30f);
+            beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.PULSATINGIRON), 0.15f);
+            beeSpecies.setHumidity(DAMP);
+            beeSpecies.setTemperature(EnumTemperature.NORMAL);
+        }, template -> {
+            AlleleHelper.instance.set(template, SPEED, Speed.FAST);
+            AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST);
+        }, dis -> {
+            IBeeMutationCustom tMutation = dis.registerMutation(REDALLOY, getSpecies(FORESTRY, "Ended"), 9);
+            tMutation.requireResource("blockPulsatingIron");
+        }),
     STAINLESSSTEEL(GT_BranchDefinition.GTALLOY, "StainlessSteel", false, new Color(0xC8C8DC), new Color(0x778899),
-            beeSpecies -> {
-                beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.SLAG), 0.30f);
-                beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.STEEL), 0.10f);
-                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.STAINLESSSTEEL), 0.15f);
-                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.CHROME), 0.05f);
-                beeSpecies.setHumidity(EnumHumidity.NORMAL);
-                beeSpecies.setTemperature(HOT);
-            }, template -> {
-                AlleleHelper.instance.set(template, SPEED, Speed.FAST);
-                AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST);
-                AlleleHelper.instance.set(template, EFFECT, AlleleEffect.effectIgnition);
-            }, dis -> {
-                IBeeMutationCustom tMutation = dis.registerMutation(CHROME, STEEL, 9);
-                tMutation.requireResource("blockStainlessSteel");
-            }),
+        beeSpecies -> {
+            beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.SLAG), 0.30f);
+            beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.STEEL), 0.10f);
+            beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.STAINLESSSTEEL), 0.15f);
+            beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.CHROME), 0.05f);
+            beeSpecies.setHumidity(EnumHumidity.NORMAL);
+            beeSpecies.setTemperature(HOT);
+        }, template -> {
+            AlleleHelper.instance.set(template, SPEED, Speed.FAST);
+            AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST);
+            AlleleHelper.instance.set(template, EFFECT, AlleleEffect.effectIgnition);
+        }, dis -> {
+            IBeeMutationCustom tMutation = dis.registerMutation(CHROME, STEEL, 9);
+            tMutation.requireResource("blockStainlessSteel");
+        }),
     ENDERIUM(GT_BranchDefinition.GTALLOY, "Enderium", false, new Color(0x599087), new Color(0x2E8B57), beeSpecies -> {
         beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.SLAG), 0.30f);
         beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.ENDERIUM), 0.15f);
@@ -927,63 +914,61 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         tMutation.requireResource("blockEnderium");
     }),
     BEDROCKIUM(GT_BranchDefinition.GTALLOY, "Bedrockium", false, new Color(0x0C0C0C), new Color(0xC6C6C6),
-            beeSpecies -> {
-                beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.SLAG), 0.20f);
-                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.BEDROCKIUM), 0.55f);
-                beeSpecies.setHumidity(EnumHumidity.NORMAL);
-                beeSpecies.setTemperature(HOT);
-            }, template -> {
-                AlleleHelper.instance.set(template, SPEED, Speed.SLOW);
-                AlleleHelper.instance.set(template, EFFECT, getEffect(EXTRABEES, "gravity"));
-                AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST);
-            }, dis -> {
-                IBeeMutationCustom tMutation = dis.registerMutation(Explosive, DIAMOND, 2);
-                if (ExtraUtilities.isModLoaded())
-                    tMutation.requireResource(GameRegistry.findBlock(ExtraUtilities.ID, "block_bedrockium"), 0);
-            }),
+        beeSpecies -> {
+            beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.SLAG), 0.20f);
+            beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.BEDROCKIUM), 0.55f);
+            beeSpecies.setHumidity(EnumHumidity.NORMAL);
+            beeSpecies.setTemperature(HOT);
+        }, template -> {
+            AlleleHelper.instance.set(template, SPEED, Speed.SLOW);
+            AlleleHelper.instance.set(template, EFFECT, getEffect(EXTRABEES, "gravity"));
+            AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST);
+        }, dis -> {
+            IBeeMutationCustom tMutation = dis.registerMutation(Explosive, DIAMOND, 2);
+            if (ExtraUtilities.isModLoaded())
+                tMutation.requireResource(GameRegistry.findBlock(ExtraUtilities.ID, "block_bedrockium"), 0);
+        }),
 
     // thaumic
     THAUMIUMDUST(GT_BranchDefinition.THAUMIC, "ThaumiumDust", true, new Color(0x7A007A), new Color(0x5C005C),
-            beeSpecies -> {
-                beeSpecies.addProduct(GT_ModHandler.getModItem(Forestry.ID, "beeCombs", 1, 3), 0.30f);
-                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.THAUMIUMDUST), 0.20f);
-                beeSpecies.setHumidity(EnumHumidity.NORMAL);
-                beeSpecies.setTemperature(EnumTemperature.NORMAL);
-            }, template -> {
-                AlleleHelper.instance.set(template, SPEED, Speed.SLOWEST);
-                AlleleHelper.instance.set(template, LIFESPAN, Lifespan.LONGER);
-                AlleleHelper.instance.set(template, TEMPERATURE_TOLERANCE, Tolerance.BOTH_2);
-                AlleleHelper.instance.set(template, EFFECT, AlleleEffect.effectExploration);
-                AlleleHelper.instance.set(template, HUMIDITY_TOLERANCE, Tolerance.UP_1);
-                AlleleHelper.instance.set(template, FLOWER_PROVIDER, Flowers.JUNGLE);
-            }, dis -> {
-                IBeeMutationCustom tMutation = dis.registerMutation(
-                        getSpecies(MAGICBEES, "TCFire"),
-                        getSpecies(FORESTRY, "Edenic"),
-                        10);
-                tMutation.requireResource("blockThaumium");
-                tMutation.addMutationCondition(new GT_Bees.BiomeIDMutationCondition(192, "Magical Forest")); // magical
-                                                                                                             // forest
-            }),
+        beeSpecies -> {
+            beeSpecies.addProduct(GT_ModHandler.getModItem(Forestry.ID, "beeCombs", 1, 3), 0.30f);
+            beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.THAUMIUMDUST), 0.20f);
+            beeSpecies.setHumidity(EnumHumidity.NORMAL);
+            beeSpecies.setTemperature(EnumTemperature.NORMAL);
+        }, template -> {
+            AlleleHelper.instance.set(template, SPEED, Speed.SLOWEST);
+            AlleleHelper.instance.set(template, LIFESPAN, Lifespan.LONGER);
+            AlleleHelper.instance.set(template, TEMPERATURE_TOLERANCE, Tolerance.BOTH_2);
+            AlleleHelper.instance.set(template, EFFECT, AlleleEffect.effectExploration);
+            AlleleHelper.instance.set(template, HUMIDITY_TOLERANCE, Tolerance.UP_1);
+            AlleleHelper.instance.set(template, FLOWER_PROVIDER, Flowers.JUNGLE);
+        }, dis -> {
+            IBeeMutationCustom tMutation = dis
+                .registerMutation(getSpecies(MAGICBEES, "TCFire"), getSpecies(FORESTRY, "Edenic"), 10);
+            tMutation.requireResource("blockThaumium");
+            tMutation.addMutationCondition(new GT_Bees.BiomeIDMutationCondition(192, "Magical Forest")); // magical
+                                                                                                         // forest
+        }),
     THAUMIUMSHARD(GT_BranchDefinition.THAUMIC, "ThaumiumShard", true, new Color(0x9966FF), new Color(0xAD85FF),
-            beeSpecies -> {
-                beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.THAUMIUMDUST), 0.30f);
-                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.THAUMIUMSHARD), 0.20f);
-                beeSpecies.setHumidity(EnumHumidity.NORMAL);
-                beeSpecies.setTemperature(EnumTemperature.NORMAL);
-                beeSpecies.setHasEffect();
-            }, template -> {
-                AlleleHelper.instance.set(template, SPEED, Speed.SLOWER);
-                AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORT);
-                AlleleHelper.instance.set(template, TEMPERATURE_TOLERANCE, Tolerance.UP_1);
-                AlleleHelper.instance.set(template, HUMIDITY_TOLERANCE, Tolerance.BOTH_1);
-                AlleleHelper.instance.set(template, FLOWER_PROVIDER, Flowers.SNOW);
-                AlleleHelper.instance.set(template, EFFECT, AlleleEffect.effectGlacial);
-            }, dis -> {
-                IBeeMutationCustom tMutation = dis.registerMutation(THAUMIUMDUST, getSpecies(MAGICBEES, "TCWater"), 10);
-                tMutation.addMutationCondition(new GT_Bees.BiomeIDMutationCondition(192, "Magical Forest")); // magical
-                                                                                                             // forest
-            }),
+        beeSpecies -> {
+            beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.THAUMIUMDUST), 0.30f);
+            beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.THAUMIUMSHARD), 0.20f);
+            beeSpecies.setHumidity(EnumHumidity.NORMAL);
+            beeSpecies.setTemperature(EnumTemperature.NORMAL);
+            beeSpecies.setHasEffect();
+        }, template -> {
+            AlleleHelper.instance.set(template, SPEED, Speed.SLOWER);
+            AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORT);
+            AlleleHelper.instance.set(template, TEMPERATURE_TOLERANCE, Tolerance.UP_1);
+            AlleleHelper.instance.set(template, HUMIDITY_TOLERANCE, Tolerance.BOTH_1);
+            AlleleHelper.instance.set(template, FLOWER_PROVIDER, Flowers.SNOW);
+            AlleleHelper.instance.set(template, EFFECT, AlleleEffect.effectGlacial);
+        }, dis -> {
+            IBeeMutationCustom tMutation = dis.registerMutation(THAUMIUMDUST, getSpecies(MAGICBEES, "TCWater"), 10);
+            tMutation.addMutationCondition(new GT_Bees.BiomeIDMutationCondition(192, "Magical Forest")); // magical
+                                                                                                         // forest
+        }),
     AMBER(GT_BranchDefinition.THAUMIC, "Amber", true, new Color(0xEE7700), new Color(0x774B15), beeSpecies -> {
         beeSpecies.addProduct(GT_ModHandler.getModItem(Forestry.ID, "beeCombs", 1, 3), 0.30f);
         beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.AMBER), 0.20f);
@@ -999,37 +984,37 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         tMutation.requireResource("blockAmber");
     }),
     QUICKSILVER(GT_BranchDefinition.THAUMIC, "Quicksilver", true, new Color(0x7A007A), new Color(0x5C005C),
-            beeSpecies -> {
-                beeSpecies.addProduct(GT_ModHandler.getModItem(Forestry.ID, "beeCombs", 1, 3), 0.30f);
-                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.QUICKSILVER), 0.20f);
-                beeSpecies.setHumidity(EnumHumidity.NORMAL);
-                beeSpecies.setTemperature(EnumTemperature.NORMAL);
-                beeSpecies.setHasEffect();
-            }, template -> {
-                AlleleHelper.instance.set(template, TEMPERATURE_TOLERANCE, Tolerance.UP_1);
-                AlleleHelper.instance.set(template, HUMIDITY_TOLERANCE, Tolerance.UP_1);
-                AlleleHelper.instance.set(template, FLOWER_PROVIDER, Flowers.JUNGLE);
-                AlleleHelper.instance.set(template, EFFECT, AlleleEffect.effectMiasmic);
-            }, dis -> dis.registerMutation(THAUMIUMDUST, SILVER, 10)),
+        beeSpecies -> {
+            beeSpecies.addProduct(GT_ModHandler.getModItem(Forestry.ID, "beeCombs", 1, 3), 0.30f);
+            beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.QUICKSILVER), 0.20f);
+            beeSpecies.setHumidity(EnumHumidity.NORMAL);
+            beeSpecies.setTemperature(EnumTemperature.NORMAL);
+            beeSpecies.setHasEffect();
+        }, template -> {
+            AlleleHelper.instance.set(template, TEMPERATURE_TOLERANCE, Tolerance.UP_1);
+            AlleleHelper.instance.set(template, HUMIDITY_TOLERANCE, Tolerance.UP_1);
+            AlleleHelper.instance.set(template, FLOWER_PROVIDER, Flowers.JUNGLE);
+            AlleleHelper.instance.set(template, EFFECT, AlleleEffect.effectMiasmic);
+        }, dis -> dis.registerMutation(THAUMIUMDUST, SILVER, 10)),
     SALISMUNDUS(GT_BranchDefinition.THAUMIC, "SalisMundus", true, new Color(0xF7ADDE), new Color(0x592582),
-            beeSpecies -> {
-                beeSpecies.addProduct(GT_ModHandler.getModItem(Forestry.ID, "beeCombs", 1, 3), 0.30f);
-                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.SALISMUNDUS), 0.20f);
-                beeSpecies.setHumidity(EnumHumidity.NORMAL);
-                beeSpecies.setTemperature(EnumTemperature.NORMAL);
-                beeSpecies.setHasEffect();
-            }, template -> {
-                AlleleHelper.instance.set(template, TEMPERATURE_TOLERANCE, Tolerance.UP_1);
-                AlleleHelper.instance.set(template, HUMIDITY_TOLERANCE, Tolerance.UP_1);
-                AlleleHelper.instance.set(template, FLOWER_PROVIDER, Flowers.JUNGLE);
-                AlleleHelper.instance.set(template, EFFECT, AlleleEffect.effectMiasmic);
-                AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORT);
-                AlleleHelper.instance.set(template, SPEED, Speed.SLOWER);
-            }, dis -> {
-                IBeeMutationCustom tMutation = dis.registerMutation(THAUMIUMDUST, THAUMIUMSHARD, 8);
-                tMutation.addMutationCondition(new GT_Bees.BiomeIDMutationCondition(192, "Magical Forest")); // magical
-                                                                                                             // forest
-            }),
+        beeSpecies -> {
+            beeSpecies.addProduct(GT_ModHandler.getModItem(Forestry.ID, "beeCombs", 1, 3), 0.30f);
+            beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.SALISMUNDUS), 0.20f);
+            beeSpecies.setHumidity(EnumHumidity.NORMAL);
+            beeSpecies.setTemperature(EnumTemperature.NORMAL);
+            beeSpecies.setHasEffect();
+        }, template -> {
+            AlleleHelper.instance.set(template, TEMPERATURE_TOLERANCE, Tolerance.UP_1);
+            AlleleHelper.instance.set(template, HUMIDITY_TOLERANCE, Tolerance.UP_1);
+            AlleleHelper.instance.set(template, FLOWER_PROVIDER, Flowers.JUNGLE);
+            AlleleHelper.instance.set(template, EFFECT, AlleleEffect.effectMiasmic);
+            AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORT);
+            AlleleHelper.instance.set(template, SPEED, Speed.SLOWER);
+        }, dis -> {
+            IBeeMutationCustom tMutation = dis.registerMutation(THAUMIUMDUST, THAUMIUMSHARD, 8);
+            tMutation.addMutationCondition(new GT_Bees.BiomeIDMutationCondition(192, "Magical Forest")); // magical
+                                                                                                         // forest
+        }),
     TAINTED(GT_BranchDefinition.THAUMIC, "Tainted", true, new Color(0x904BB8), new Color(0xE800FF), beeSpecies -> {
         beeSpecies.addProduct(GT_ModHandler.getModItem(Forestry.ID, "beeCombs", 1, 3), 0.30f);
         beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.TAINTED), 0.20f);
@@ -1073,64 +1058,62 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         }
     }),
     ASTRALSILVER(GT_BranchDefinition.THAUMIC, "AstralSilver", true, new Color(0xAFEEEE), new Color(0xE6E6FF),
-            beeSpecies -> {
-                beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.SILVER), 0.20f);
-                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.ASTRALSILVER), 0.125f);
-                beeSpecies.setHumidity(EnumHumidity.NORMAL);
-                beeSpecies.setTemperature(EnumTemperature.NORMAL);
-            }, template -> {
-                AlleleHelper.instance.set(template, NOCTURNAL, true);
-                AlleleHelper.instance.set(template, CAVE_DWELLING, true);
-                AlleleHelper.instance.set(template, TOLERANT_FLYER, true);
-                AlleleHelper.instance.set(template, FERTILITY, Fertility.LOW);
-                AlleleHelper.instance.set(template, TEMPERATURE_TOLERANCE, Tolerance.BOTH_1);
-                AlleleHelper.instance.set(template, HUMIDITY_TOLERANCE, Tolerance.BOTH_1);
-                AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORT);
-                AlleleHelper.instance.set(template, FLOWER_PROVIDER, getFlowers(EXTRABEES, "rock"));
-            }, dis -> {
-                IBeeMutationCustom tMutation = dis.registerMutation(SILVER, IRON, 3);
-                tMutation.requireResource(GregTech_API.sBlockMetal1, 6);
-            }),
+        beeSpecies -> {
+            beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.SILVER), 0.20f);
+            beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.ASTRALSILVER), 0.125f);
+            beeSpecies.setHumidity(EnumHumidity.NORMAL);
+            beeSpecies.setTemperature(EnumTemperature.NORMAL);
+        }, template -> {
+            AlleleHelper.instance.set(template, NOCTURNAL, true);
+            AlleleHelper.instance.set(template, CAVE_DWELLING, true);
+            AlleleHelper.instance.set(template, TOLERANT_FLYER, true);
+            AlleleHelper.instance.set(template, FERTILITY, Fertility.LOW);
+            AlleleHelper.instance.set(template, TEMPERATURE_TOLERANCE, Tolerance.BOTH_1);
+            AlleleHelper.instance.set(template, HUMIDITY_TOLERANCE, Tolerance.BOTH_1);
+            AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORT);
+            AlleleHelper.instance.set(template, FLOWER_PROVIDER, getFlowers(EXTRABEES, "rock"));
+        }, dis -> {
+            IBeeMutationCustom tMutation = dis.registerMutation(SILVER, IRON, 3);
+            tMutation.requireResource(GregTech_API.sBlockMetal1, 6);
+        }),
     THAUMINITE(GT_BranchDefinition.THAUMIC, "Thauminite", true, new Color(0x2E2D79), new Color(0x7581E0),
-            beeSpecies -> {
-                beeSpecies.addProduct(GT_ModHandler.getModItem(MagicBees.ID, "comb", 1, 19), 0.20f);
-                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.THAUMINITE), 0.125f);
-                beeSpecies.setHumidity(EnumHumidity.NORMAL);
-                beeSpecies.setTemperature(EnumTemperature.NORMAL);
-                beeSpecies.setHasEffect();
-            }, template -> {
-                AlleleHelper.instance.set(template, SPEED, Speed.SLOWER);
-                AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORT);
-                AlleleHelper.instance.set(template, FLOWERING, Flowering.SLOW);
-                AlleleHelper.instance.set(template, NOCTURNAL, true);
-            }, dis -> {
-                IBeeMutationCustom tMutation = dis.registerMutation(getSpecies(MAGICBEES, "TCOrder"), THAUMIUMDUST, 8);
-                if (ThaumicBases.isModLoaded())
-                    tMutation.requireResource(GameRegistry.findBlock(ThaumicBases.ID, "thauminiteBlock"), 0);
-            }),
+        beeSpecies -> {
+            beeSpecies.addProduct(GT_ModHandler.getModItem(MagicBees.ID, "comb", 1, 19), 0.20f);
+            beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.THAUMINITE), 0.125f);
+            beeSpecies.setHumidity(EnumHumidity.NORMAL);
+            beeSpecies.setTemperature(EnumTemperature.NORMAL);
+            beeSpecies.setHasEffect();
+        }, template -> {
+            AlleleHelper.instance.set(template, SPEED, Speed.SLOWER);
+            AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORT);
+            AlleleHelper.instance.set(template, FLOWERING, Flowering.SLOW);
+            AlleleHelper.instance.set(template, NOCTURNAL, true);
+        }, dis -> {
+            IBeeMutationCustom tMutation = dis.registerMutation(getSpecies(MAGICBEES, "TCOrder"), THAUMIUMDUST, 8);
+            if (ThaumicBases.isModLoaded())
+                tMutation.requireResource(GameRegistry.findBlock(ThaumicBases.ID, "thauminiteBlock"), 0);
+        }),
     SHADOWMETAL(GT_BranchDefinition.THAUMIC, "ShadowMetal", true, new Color(0x100322), new Color(0x100342),
-            beeSpecies -> {
-                beeSpecies.addProduct(GT_ModHandler.getModItem(MagicBees.ID, "comb", 1, 20), 0.20f);
-                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.SHADOWMETAL), 0.125f);
-                beeSpecies.setHumidity(EnumHumidity.NORMAL);
-                beeSpecies.setTemperature(EnumTemperature.NORMAL);
-                beeSpecies.setHasEffect();
-            }, template -> {
-                AlleleHelper.instance.set(template, SPEED, Speed.SLOWER);
-                AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORT);
-                AlleleHelper.instance.set(template, FLOWERING, Flowering.SLOW);
-                AlleleHelper.instance.set(template, TEMPERATURE_TOLERANCE, Tolerance.NONE);
-                AlleleHelper.instance.set(template, HUMIDITY_TOLERANCE, Tolerance.NONE);
-                AlleleHelper.instance.set(template, NOCTURNAL, true);
-            }, dis -> {
-                IBeeMutationCustom tMutation = dis.registerMutation(
-                        getSpecies(MAGICBEES, "TCChaos"),
-                        getSpecies(MAGICBEES, "TCVoid"),
-                        6);
-                if (TaintedMagic.isModLoaded()) {
-                    tMutation.requireResource("blockShadow");
-                }
-            }),
+        beeSpecies -> {
+            beeSpecies.addProduct(GT_ModHandler.getModItem(MagicBees.ID, "comb", 1, 20), 0.20f);
+            beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.SHADOWMETAL), 0.125f);
+            beeSpecies.setHumidity(EnumHumidity.NORMAL);
+            beeSpecies.setTemperature(EnumTemperature.NORMAL);
+            beeSpecies.setHasEffect();
+        }, template -> {
+            AlleleHelper.instance.set(template, SPEED, Speed.SLOWER);
+            AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORT);
+            AlleleHelper.instance.set(template, FLOWERING, Flowering.SLOW);
+            AlleleHelper.instance.set(template, TEMPERATURE_TOLERANCE, Tolerance.NONE);
+            AlleleHelper.instance.set(template, HUMIDITY_TOLERANCE, Tolerance.NONE);
+            AlleleHelper.instance.set(template, NOCTURNAL, true);
+        }, dis -> {
+            IBeeMutationCustom tMutation = dis
+                .registerMutation(getSpecies(MAGICBEES, "TCChaos"), getSpecies(MAGICBEES, "TCVoid"), 6);
+            if (TaintedMagic.isModLoaded()) {
+                tMutation.requireResource("blockShadow");
+            }
+        }),
     DIVIDED(GT_BranchDefinition.THAUMIC, "Unstable", true, new Color(0xF0F0F0), new Color(0xDCDCDC), beeSpecies -> {
         beeSpecies.addProduct(GT_ModHandler.getModItem(ExtraBees.ID, "honeyComb", 1, 61), 0.20f);
         beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.DIVIDED), 0.125f);
@@ -1161,27 +1144,25 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         AlleleHelper.instance.set(template, NOCTURNAL, true);
     }, dis -> dis.registerMutation(DIAMOND, DIVIDED, 10)),
     SPARKELING(GT_BranchDefinition.THAUMIC, "NetherStar", true, new Color(0x7A007A), new Color(0xFFFFFF),
-            beeSpecies -> {
-                beeSpecies.addProduct(GT_ModHandler.getModItem(MagicBees.ID, "miscResources", 1, 3), 0.20f);
-                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.SPARKELING), 0.125f);
-                beeSpecies.setHumidity(EnumHumidity.NORMAL);
-                beeSpecies.setTemperature(EnumTemperature.NORMAL);
-            }, template -> {
-                AlleleHelper.instance.set(template, TEMPERATURE_TOLERANCE, Tolerance.DOWN_2);
-                AlleleHelper.instance.set(template, NOCTURNAL, true);
-                AlleleHelper.instance.set(template, CAVE_DWELLING, true);
-                AlleleHelper.instance.set(template, FLOWER_PROVIDER, Flowers.NETHER);
-                AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORT);
-                AlleleHelper.instance.set(template, EFFECT, AlleleEffect.effectAggressive);
-                AlleleHelper.instance.set(template, FLOWERING, Flowering.AVERAGE);
-            }, dis -> {
-                IBeeMutationCustom tMutation = dis.registerMutation(
-                        getSpecies(MAGICBEES, "Withering"),
-                        getSpecies(MAGICBEES, "Draconic"),
-                        1);
-                tMutation.requireResource(GregTech_API.sBlockGem3, 3);
-                tMutation.addMutationCondition(new GT_Bees.BiomeIDMutationCondition(9, "END Biome")); // sky end biome
-            }),
+        beeSpecies -> {
+            beeSpecies.addProduct(GT_ModHandler.getModItem(MagicBees.ID, "miscResources", 1, 3), 0.20f);
+            beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.SPARKELING), 0.125f);
+            beeSpecies.setHumidity(EnumHumidity.NORMAL);
+            beeSpecies.setTemperature(EnumTemperature.NORMAL);
+        }, template -> {
+            AlleleHelper.instance.set(template, TEMPERATURE_TOLERANCE, Tolerance.DOWN_2);
+            AlleleHelper.instance.set(template, NOCTURNAL, true);
+            AlleleHelper.instance.set(template, CAVE_DWELLING, true);
+            AlleleHelper.instance.set(template, FLOWER_PROVIDER, Flowers.NETHER);
+            AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORT);
+            AlleleHelper.instance.set(template, EFFECT, AlleleEffect.effectAggressive);
+            AlleleHelper.instance.set(template, FLOWERING, Flowering.AVERAGE);
+        }, dis -> {
+            IBeeMutationCustom tMutation = dis
+                .registerMutation(getSpecies(MAGICBEES, "Withering"), getSpecies(MAGICBEES, "Draconic"), 1);
+            tMutation.requireResource(GregTech_API.sBlockGem3, 3);
+            tMutation.addMutationCondition(new GT_Bees.BiomeIDMutationCondition(9, "END Biome")); // sky end biome
+        }),
 
     ESSENTIA(GT_BranchDefinition.THAUMIC, "Essentia", true, new Color(0x7A007A), new Color(0xFFFFFF), beeSpecies -> {
         beeSpecies.addProduct(GT_ModHandler.getModItem(MagicBees.ID, "miscResources", 1, 3), 0.20f);
@@ -1213,51 +1194,51 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         tMutation.requireResource(GregTech_API.sBlockMetal7, 14);
     }),
     PLUTONIUM(GT_BranchDefinition.RADIOACTIVE, "Plutonium", true, new Color(0x570000), new Color(0x240000),
-            beeSpecies -> {
-                beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.SLAG), 0.30f);
-                beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.LEAD), 0.15f);
-                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.PLUTONIUM), 0.15f);
-                beeSpecies.setHumidity(EnumHumidity.NORMAL);
-                beeSpecies.setTemperature(ICY);
-                beeSpecies.setNocturnal();
-            }, template -> {
-                AlleleHelper.instance.set(template, SPEED, Speed.SLOWEST);
-                AlleleHelper.instance.set(template, LIFESPAN, Lifespan.LONGEST);
-            }, dis -> {
-                IBeeMutationCustom tMutation = dis.registerMutation(URANIUM, EMERALD, 3);
-                tMutation.requireResource(GregTech_API.sBlockMetal5, 13);
-            }),
+        beeSpecies -> {
+            beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.SLAG), 0.30f);
+            beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.LEAD), 0.15f);
+            beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.PLUTONIUM), 0.15f);
+            beeSpecies.setHumidity(EnumHumidity.NORMAL);
+            beeSpecies.setTemperature(ICY);
+            beeSpecies.setNocturnal();
+        }, template -> {
+            AlleleHelper.instance.set(template, SPEED, Speed.SLOWEST);
+            AlleleHelper.instance.set(template, LIFESPAN, Lifespan.LONGEST);
+        }, dis -> {
+            IBeeMutationCustom tMutation = dis.registerMutation(URANIUM, EMERALD, 3);
+            tMutation.requireResource(GregTech_API.sBlockMetal5, 13);
+        }),
     NAQUADAH(GT_BranchDefinition.RADIOACTIVE, "Naquadah", false, new Color(0x003300), new Color(0x002400),
-            beeSpecies -> {
-                beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.SLAG), 0.30f);
-                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.NAQUADAH), 0.15f);
-                beeSpecies.setHumidity(ARID);
-                beeSpecies.setTemperature(ICY);
-                beeSpecies.setNocturnal();
-                beeSpecies.setHasEffect();
-            }, template -> {
-                AlleleHelper.instance.set(template, SPEED, Speed.SLOWEST);
-                AlleleHelper.instance.set(template, LIFESPAN, Lifespan.LONGEST);
-            }, dis -> {
-                IBeeMutationCustom tMutation = dis.registerMutation(PLUTONIUM, IRIDIUM, 3);
-                tMutation.requireResource(GregTech_API.sBlockMetal4, 12);
-            }),
+        beeSpecies -> {
+            beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.SLAG), 0.30f);
+            beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.NAQUADAH), 0.15f);
+            beeSpecies.setHumidity(ARID);
+            beeSpecies.setTemperature(ICY);
+            beeSpecies.setNocturnal();
+            beeSpecies.setHasEffect();
+        }, template -> {
+            AlleleHelper.instance.set(template, SPEED, Speed.SLOWEST);
+            AlleleHelper.instance.set(template, LIFESPAN, Lifespan.LONGEST);
+        }, dis -> {
+            IBeeMutationCustom tMutation = dis.registerMutation(PLUTONIUM, IRIDIUM, 3);
+            tMutation.requireResource(GregTech_API.sBlockMetal4, 12);
+        }),
     NAQUADRIA(GT_BranchDefinition.RADIOACTIVE, "Naquadria", false, new Color(0x000000), new Color(0x002400),
-            beeSpecies -> {
-                beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.SLAG), 0.30f);
-                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.NAQUADAH), 0.20f);
-                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.NAQUADRIA), 0.15f);
-                beeSpecies.setHumidity(ARID);
-                beeSpecies.setTemperature(ICY);
-                beeSpecies.setNocturnal();
-                beeSpecies.setHasEffect();
-            }, template -> {
-                AlleleHelper.instance.set(template, SPEED, Speed.SLOWEST);
-                AlleleHelper.instance.set(template, LIFESPAN, Lifespan.LONGEST);
-            }, dis -> {
-                IBeeMutationCustom tMutation = dis.registerMutation(PLUTONIUM, IRIDIUM, 8, 10);
-                tMutation.requireResource(GregTech_API.sBlockMetal4, 15);
-            }),
+        beeSpecies -> {
+            beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.SLAG), 0.30f);
+            beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.NAQUADAH), 0.20f);
+            beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.NAQUADRIA), 0.15f);
+            beeSpecies.setHumidity(ARID);
+            beeSpecies.setTemperature(ICY);
+            beeSpecies.setNocturnal();
+            beeSpecies.setHasEffect();
+        }, template -> {
+            AlleleHelper.instance.set(template, SPEED, Speed.SLOWEST);
+            AlleleHelper.instance.set(template, LIFESPAN, Lifespan.LONGEST);
+        }, dis -> {
+            IBeeMutationCustom tMutation = dis.registerMutation(PLUTONIUM, IRIDIUM, 8, 10);
+            tMutation.requireResource(GregTech_API.sBlockMetal4, 15);
+        }),
     DOB(GT_BranchDefinition.RADIOACTIVE, "DOB", false, new Color(0x003300), new Color(0x002400), beeSpecies -> {
         beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.DOB), 0.75f);
         beeSpecies.setHumidity(EnumHumidity.NORMAL);
@@ -1283,56 +1264,56 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         AlleleHelper.instance.set(template, LIFESPAN, Lifespan.LONGEST);
     }, dis -> {
         IMutationCustom tMutation = dis.registerMutation(COAL, URANIUM, 3)
-                                       .setIsSecret();
+            .setIsSecret();
         tMutation.requireResource(GregTech_API.sBlockMetal7, 5);
     }),
     LUTETIUM(GT_BranchDefinition.RADIOACTIVE, "Lutetium", false, new Color(0xE6FFE6), new Color(0xFFFFFF),
-            beeSpecies -> {
-                beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.LUTETIUM), 0.15f);
-                beeSpecies.setHumidity(EnumHumidity.NORMAL);
-                beeSpecies.setTemperature(EnumTemperature.NORMAL);
-                beeSpecies.setNocturnal();
-                beeSpecies.setHasEffect();
-            }, template -> {
-                AlleleHelper.instance.set(template, SPEED, Speed.SLOWEST);
-                AlleleHelper.instance.set(template, LIFESPAN, Lifespan.LONGEST);
-            }, dis -> {
-                IMutationCustom tMutation = dis.registerMutation(THORIUM, getSpecies(EXTRABEES, "rotten"), 1)
-                                               .setIsSecret();
-                tMutation.requireResource(GregTech_API.sBlockMetal4, 3);
-            }),
+        beeSpecies -> {
+            beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.LUTETIUM), 0.15f);
+            beeSpecies.setHumidity(EnumHumidity.NORMAL);
+            beeSpecies.setTemperature(EnumTemperature.NORMAL);
+            beeSpecies.setNocturnal();
+            beeSpecies.setHasEffect();
+        }, template -> {
+            AlleleHelper.instance.set(template, SPEED, Speed.SLOWEST);
+            AlleleHelper.instance.set(template, LIFESPAN, Lifespan.LONGEST);
+        }, dis -> {
+            IMutationCustom tMutation = dis.registerMutation(THORIUM, getSpecies(EXTRABEES, "rotten"), 1)
+                .setIsSecret();
+            tMutation.requireResource(GregTech_API.sBlockMetal4, 3);
+        }),
     AMERICIUM(GT_BranchDefinition.RADIOACTIVE, "Americium", false, new Color(0xE6E6FF), new Color(0xC8C8C8),
-            beeSpecies -> {
-                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.AMERICIUM), 0.075f);
-                beeSpecies.setHumidity(EnumHumidity.NORMAL);
-                beeSpecies.setTemperature(EnumTemperature.NORMAL);
-                beeSpecies.setNocturnal();
-                beeSpecies.setHasEffect();
-                // Makes it only work in the Mega Apiary NOTE: COMB MUST BE SPECIALITY COMB
-                beeSpecies.setJubilanceProvider(GT_JubilanceMegaApiary.instance);
-            }, template -> {
-                AlleleHelper.instance.set(template, SPEED, Speed.SLOWEST);
-                AlleleHelper.instance.set(template, LIFESPAN, Lifespan.LONGEST);
-            }, dis -> {
-                IMutationCustom tMutation = dis.registerMutation(LUTETIUM, CHROME, 5, 4)
-                                               .setIsSecret();
-                tMutation.requireResource(GregTech_API.sBlockMetal1, 2);
-            }),
+        beeSpecies -> {
+            beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.AMERICIUM), 0.075f);
+            beeSpecies.setHumidity(EnumHumidity.NORMAL);
+            beeSpecies.setTemperature(EnumTemperature.NORMAL);
+            beeSpecies.setNocturnal();
+            beeSpecies.setHasEffect();
+            // Makes it only work in the Mega Apiary NOTE: COMB MUST BE SPECIALITY COMB
+            beeSpecies.setJubilanceProvider(GT_JubilanceMegaApiary.instance);
+        }, template -> {
+            AlleleHelper.instance.set(template, SPEED, Speed.SLOWEST);
+            AlleleHelper.instance.set(template, LIFESPAN, Lifespan.LONGEST);
+        }, dis -> {
+            IMutationCustom tMutation = dis.registerMutation(LUTETIUM, CHROME, 5, 4)
+                .setIsSecret();
+            tMutation.requireResource(GregTech_API.sBlockMetal1, 2);
+        }),
     NEUTRONIUM(GT_BranchDefinition.RADIOACTIVE, "Neutronium", false, new Color(0xFFF0F0), new Color(0xFAFAFA),
-            beeSpecies -> {
-                beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.NEUTRONIUM), 0.02f);
-                beeSpecies.setHumidity(DAMP);
-                beeSpecies.setTemperature(HELLISH);
-                beeSpecies.setHasEffect();
-            }, template -> {
-                AlleleHelper.instance.set(template, SPEED, Speed.SLOWEST);
-                AlleleHelper.instance.set(template, LIFESPAN, Lifespan.LONGEST);
-                AlleleHelper.instance.set(template, NOCTURNAL, true);
-            }, dis -> {
-                IMutationCustom tMutation = dis.registerMutation(NAQUADRIA, AMERICIUM, 2, 2)
-                                               .setIsSecret();
-                tMutation.requireResource(GregTech_API.sBlockMetal5, 2);
-            }),
+        beeSpecies -> {
+            beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.NEUTRONIUM), 0.02f);
+            beeSpecies.setHumidity(DAMP);
+            beeSpecies.setTemperature(HELLISH);
+            beeSpecies.setHasEffect();
+        }, template -> {
+            AlleleHelper.instance.set(template, SPEED, Speed.SLOWEST);
+            AlleleHelper.instance.set(template, LIFESPAN, Lifespan.LONGEST);
+            AlleleHelper.instance.set(template, NOCTURNAL, true);
+        }, dis -> {
+            IMutationCustom tMutation = dis.registerMutation(NAQUADRIA, AMERICIUM, 2, 2)
+                .setIsSecret();
+            tMutation.requireResource(GregTech_API.sBlockMetal5, 2);
+        }),
     // Twilight
     NAGA(GT_BranchDefinition.TWILIGHT, "Naga", true, new Color(0x0D5A0D), new Color(0x28874B), beeSpecies -> {
         beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.SALISMUNDUS), 0.02f);
@@ -1344,10 +1325,8 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         AlleleHelper.instance.set(template, SPEED, Speed.FAST);
         AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST);
     }, dis -> {
-        IBeeMutationCustom tMutation = dis.registerMutation(
-                getSpecies(MAGICBEES, "Eldritch"),
-                getSpecies(FORESTRY, "Imperial"),
-                8);
+        IBeeMutationCustom tMutation = dis
+            .registerMutation(getSpecies(MAGICBEES, "Eldritch"), getSpecies(FORESTRY, "Imperial"), 8);
         tMutation.restrictHumidity(DAMP);
     }),
     LICH(GT_BranchDefinition.TWILIGHT, "Lich", true, new Color(0xC5C5C5), new Color(0x5C605E), beeSpecies -> {
@@ -1469,42 +1448,42 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         tMutation.addMutationCondition(new GT_Bees.DimensionMutationCondition(1, "End")); // End Dim
     }),
     ARCANESHARDS(GT_BranchDefinition.HEE, "Arcane Shards", true, new Color(0x9010AD), new Color(0x333D82),
-            beeSpecies -> {
-                beeSpecies.addProduct(GT_ModHandler.getModItem(Forestry.ID, "beeCombs", 1, 8), 0.30f);
-                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.ARCANESHARD), 0.10f);
-                beeSpecies.setHumidity(ARID);
-                beeSpecies.setTemperature(EnumTemperature.NORMAL);
-                beeSpecies.setHasEffect();
-            }, template -> {
-                AlleleHelper.instance.set(template, LIFESPAN, Lifespan.LONG);
-                AlleleHelper.instance.set(template, TEMPERATURE_TOLERANCE, Tolerance.BOTH_1);
-                AlleleHelper.instance.set(template, HUMIDITY_TOLERANCE, Tolerance.BOTH_1);
-            }, dis -> {
-                IBeeMutationCustom tMutation = dis.registerMutation(THAUMIUMSHARD, ENDDUST, 5);
-                tMutation.restrictHumidity(ARID);
-                if (HardcoreEnderExpansion.isModLoaded())
-                    tMutation.requireResource(GameRegistry.findBlock(HardcoreEnderExpansion.ID, "laboratory_floor"), 0);
-                tMutation.addMutationCondition(new GT_Bees.DimensionMutationCondition(1, "End")); // End Dim
-            }),
+        beeSpecies -> {
+            beeSpecies.addProduct(GT_ModHandler.getModItem(Forestry.ID, "beeCombs", 1, 8), 0.30f);
+            beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.ARCANESHARD), 0.10f);
+            beeSpecies.setHumidity(ARID);
+            beeSpecies.setTemperature(EnumTemperature.NORMAL);
+            beeSpecies.setHasEffect();
+        }, template -> {
+            AlleleHelper.instance.set(template, LIFESPAN, Lifespan.LONG);
+            AlleleHelper.instance.set(template, TEMPERATURE_TOLERANCE, Tolerance.BOTH_1);
+            AlleleHelper.instance.set(template, HUMIDITY_TOLERANCE, Tolerance.BOTH_1);
+        }, dis -> {
+            IBeeMutationCustom tMutation = dis.registerMutation(THAUMIUMSHARD, ENDDUST, 5);
+            tMutation.restrictHumidity(ARID);
+            if (HardcoreEnderExpansion.isModLoaded())
+                tMutation.requireResource(GameRegistry.findBlock(HardcoreEnderExpansion.ID, "laboratory_floor"), 0);
+            tMutation.addMutationCondition(new GT_Bees.DimensionMutationCondition(1, "End")); // End Dim
+        }),
     DRAGONESSENCE(GT_BranchDefinition.HEE, "Dragonessence", true, new Color(0xFFA12B), new Color(0x911ECE),
-            beeSpecies -> {
-                beeSpecies.addProduct(GT_ModHandler.getModItem(Forestry.ID, "beeCombs", 1, 8), 0.30f);
-                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.DRAGONESSENCE), 0.10f);
-                beeSpecies.setHumidity(ARID);
-                beeSpecies.setTemperature(EnumTemperature.NORMAL);
-                beeSpecies.setHasEffect();
-            }, template -> {
-                AlleleHelper.instance.set(template, LIFESPAN, Lifespan.LONGER);
-                AlleleHelper.instance.set(template, EFFECT, AlleleEffect.effectBeatific);
-                AlleleHelper.instance.set(template, TEMPERATURE_TOLERANCE, Tolerance.BOTH_3);
-                AlleleHelper.instance.set(template, HUMIDITY_TOLERANCE, Tolerance.BOTH_3);
-            }, dis -> {
-                IBeeMutationCustom tMutation = dis.registerMutation(ECTOPLASMA, ARCANESHARDS, 4);
-                tMutation.restrictHumidity(ARID);
-                if (HardcoreEnderExpansion.isModLoaded())
-                    tMutation.requireResource(GameRegistry.findBlock(HardcoreEnderExpansion.ID, "essence_altar"), 1);
-                tMutation.addMutationCondition(new GT_Bees.DimensionMutationCondition(1, "End")); // End Dim
-            }),
+        beeSpecies -> {
+            beeSpecies.addProduct(GT_ModHandler.getModItem(Forestry.ID, "beeCombs", 1, 8), 0.30f);
+            beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.DRAGONESSENCE), 0.10f);
+            beeSpecies.setHumidity(ARID);
+            beeSpecies.setTemperature(EnumTemperature.NORMAL);
+            beeSpecies.setHasEffect();
+        }, template -> {
+            AlleleHelper.instance.set(template, LIFESPAN, Lifespan.LONGER);
+            AlleleHelper.instance.set(template, EFFECT, AlleleEffect.effectBeatific);
+            AlleleHelper.instance.set(template, TEMPERATURE_TOLERANCE, Tolerance.BOTH_3);
+            AlleleHelper.instance.set(template, HUMIDITY_TOLERANCE, Tolerance.BOTH_3);
+        }, dis -> {
+            IBeeMutationCustom tMutation = dis.registerMutation(ECTOPLASMA, ARCANESHARDS, 4);
+            tMutation.restrictHumidity(ARID);
+            if (HardcoreEnderExpansion.isModLoaded())
+                tMutation.requireResource(GameRegistry.findBlock(HardcoreEnderExpansion.ID, "essence_altar"), 1);
+            tMutation.addMutationCondition(new GT_Bees.DimensionMutationCondition(1, "End")); // End Dim
+        }),
     FIREESSENCE(GT_BranchDefinition.HEE, "Fireessence", true, new Color(0xD41238), new Color(0xFFA157), beeSpecies -> {
         beeSpecies.addProduct(GT_ModHandler.getModItem(Forestry.ID, "beeCombs", 1, 8), 0.30f);
         beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.FIREESSENSE), 0.10f);
@@ -1573,7 +1552,7 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         AlleleHelper.instance.set(template, HUMIDITY_TOLERANCE, Tolerance.NONE);
     }, dis -> {
         IMutationCustom tMutation = dis.registerMutation(DRAGONESSENCE, STARDUST, 2)
-                                       .setIsSecret();
+            .setIsSecret();
         tMutation.restrictHumidity(ARID);
         if (EnderStorage.isModLoaded())
             tMutation.requireResource(GameRegistry.findBlock(EnderStorage.ID, "enderChest"), 0);
@@ -1592,11 +1571,8 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         AlleleHelper.instance.set(template, HUMIDITY_TOLERANCE, Tolerance.BOTH_1);
         AlleleHelper.instance.set(template, NOCTURNAL, true);
     }, dis -> {
-        IBeeMutationCustom tMutation = dis.registerMutation(
-                getSpecies(MAGICBEES, "Watery"),
-                getSpecies(MAGICBEES, "Catty"),
-                45,
-                2);
+        IBeeMutationCustom tMutation = dis
+            .registerMutation(getSpecies(MAGICBEES, "Watery"), getSpecies(MAGICBEES, "Catty"), 45, 2);
         if (ExtraCells2.isModLoaded()) {
             tMutation.requireResource(GameRegistry.findBlock(ExtraCells2.ID, "walrus"), 0);
         }
@@ -1608,24 +1584,22 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         beeSpecies.setTemperature(ICY);
         beeSpecies.setNocturnal();
     }, template -> {}, dis -> {
-        IBeeMutationCustom tMutation = dis.registerMutation(
-                getSpecies(FORESTRY, "Industrious"),
-                getSpecies(FORESTRY, "Heroic"),
-                10);
+        IBeeMutationCustom tMutation = dis
+            .registerMutation(getSpecies(FORESTRY, "Industrious"), getSpecies(FORESTRY, "Heroic"), 10);
         tMutation.restrictTemperature(ICY);
     }),
     METEORICIRON(GT_BranchDefinition.SPACE, "MeteoricIron", true, new Color(0x321928), new Color(0x643250),
-            beeSpecies -> {
-                beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.SPACE), 0.04f);
-                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.METEORICIRON), 0.10f);
-                beeSpecies.setHumidity(ARID);
-                beeSpecies.setTemperature(HOT);
-                beeSpecies.setNocturnal();
-            }, template -> {}, dis -> {
-                IBeeMutationCustom tMutation = dis.registerMutation(SPACE, IRON, 9);
-                tMutation.requireResource(GregTech_API.sBlockMetal4, 7);
-                tMutation.addMutationCondition(new GT_Bees.DimensionMutationCondition(28, "Moon")); // Moon Dim
-            }),
+        beeSpecies -> {
+            beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.SPACE), 0.04f);
+            beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.METEORICIRON), 0.10f);
+            beeSpecies.setHumidity(ARID);
+            beeSpecies.setTemperature(HOT);
+            beeSpecies.setNocturnal();
+        }, template -> {}, dis -> {
+            IBeeMutationCustom tMutation = dis.registerMutation(SPACE, IRON, 9);
+            tMutation.requireResource(GregTech_API.sBlockMetal4, 7);
+            tMutation.addMutationCondition(new GT_Bees.DimensionMutationCondition(28, "Moon")); // Moon Dim
+        }),
     DESH(GT_BranchDefinition.SPACE, "Desh", false, new Color(0x323232), new Color(0x282828), beeSpecies -> {
         beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.SPACE), 0.06f);
         beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.DESH), 0.10f);
@@ -1658,25 +1632,23 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         }
     }),
     CALLISTOICE(GT_BranchDefinition.SPACE, "CallistoIce", false, new Color(0x0074FF), new Color(0x1EB1FF),
-            beeSpecies -> {
-                beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.SPACE), 0.10f);
-                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.CALLISTOICE), 0.10f);
-                beeSpecies.setHumidity(EnumHumidity.NORMAL);
-                beeSpecies.setTemperature(ICY);
-                beeSpecies.setHasEffect();
-            }, template -> AlleleHelper.instance.set(template, EFFECT, getEffect(EXTRABEES, "freezing")),
-            new Consumer<>() {
+        beeSpecies -> {
+            beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.SPACE), 0.10f);
+            beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.CALLISTOICE), 0.10f);
+            beeSpecies.setHumidity(EnumHumidity.NORMAL);
+            beeSpecies.setTemperature(ICY);
+            beeSpecies.setHasEffect();
+        }, template -> AlleleHelper.instance.set(template, EFFECT, getEffect(EXTRABEES, "freezing")), new Consumer<>() {
 
-                @Override
-                public void accept(GT_BeeDefinition dis) {
-                    IBeeMutationCustom tMutation = dis.registerMutation(CALLISTO, getSpecies(EXTRABEES, "freezing"), 7);
-                    if (NewHorizonsCoreMod.isModLoaded()) tMutation.requireResource(
-                            GameRegistry.findBlock(NewHorizonsCoreMod.ID, "tile.CallistoColdIce"),
-                            0);
-                    tMutation.addMutationCondition(new GT_Bees.DimensionMutationCondition(45, "Callisto")); // Callisto
-                    // Dim
-                }
-            }),
+            @Override
+            public void accept(GT_BeeDefinition dis) {
+                IBeeMutationCustom tMutation = dis.registerMutation(CALLISTO, getSpecies(EXTRABEES, "freezing"), 7);
+                if (NewHorizonsCoreMod.isModLoaded())
+                    tMutation.requireResource(GameRegistry.findBlock(NewHorizonsCoreMod.ID, "tile.CallistoColdIce"), 0);
+                tMutation.addMutationCondition(new GT_Bees.DimensionMutationCondition(45, "Callisto")); // Callisto
+                // Dim
+            }
+        }),
     MYTRYL(GT_BranchDefinition.SPACE, "Mytryl", false, new Color(0xDAA520), new Color(0xF26404), beeSpecies -> {
         beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.SPACE), 0.16f);
         beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.MYTRYL), 0.10f);
@@ -1728,44 +1700,42 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         }
     }),
     MYSTERIOUSCRYSTAL(GT_BranchDefinition.SPACE, "MysteriousCrystal", false, new Color(0x3CB371), new Color(0x16856C),
-            beeSpecies -> {
-                beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.SPACE), 0.42f);
-                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.MYSTERIOUSCRYSTAL), 0.30f);
-                beeSpecies.setHumidity(ARID);
-                beeSpecies.setTemperature(ICY);
-                beeSpecies.setNocturnal();
-                beeSpecies.setHasEffect();
-            }, template -> {}, new Consumer<>() {
+        beeSpecies -> {
+            beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.SPACE), 0.42f);
+            beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.MYSTERIOUSCRYSTAL), 0.30f);
+            beeSpecies.setHumidity(ARID);
+            beeSpecies.setTemperature(ICY);
+            beeSpecies.setNocturnal();
+            beeSpecies.setHasEffect();
+        }, template -> {}, new Consumer<>() {
 
-                @Override
-                public void accept(GT_BeeDefinition dis) {
-                    IBeeMutationCustom tMutation = dis.registerMutation(ENCELADUS, EMERALD, 3);
-                    if (NewHorizonsCoreMod.isModLoaded()) tMutation.requireResource(
-                            GameRegistry.findBlock(NewHorizonsCoreMod.ID, "tile.MysteriousCrystal"),
-                            0);
-                    tMutation.addMutationCondition(new GT_Bees.DimensionMutationCondition(41, "Enceladus")); // Enceladus
-                    // Dim
-                }
-            }),
+            @Override
+            public void accept(GT_BeeDefinition dis) {
+                IBeeMutationCustom tMutation = dis.registerMutation(ENCELADUS, EMERALD, 3);
+                if (NewHorizonsCoreMod.isModLoaded()) tMutation
+                    .requireResource(GameRegistry.findBlock(NewHorizonsCoreMod.ID, "tile.MysteriousCrystal"), 0);
+                tMutation.addMutationCondition(new GT_Bees.DimensionMutationCondition(41, "Enceladus")); // Enceladus
+                // Dim
+            }
+        }),
     BLACKPLUTONIUM(GT_BranchDefinition.SPACE, "BlackPlutonium", false, new Color(0x000000), new Color(0x323232),
-            beeSpecies -> {
-                beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.SPACE), 0.68f);
-                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.BLACKPLUTONIUM), 0.10f);
-                beeSpecies.setHumidity(ARID);
-                beeSpecies.setTemperature(HELLISH);
-                beeSpecies.setNocturnal();
-                beeSpecies.setHasEffect();
-            }, template -> {}, new Consumer<>() {
+        beeSpecies -> {
+            beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.SPACE), 0.68f);
+            beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.BLACKPLUTONIUM), 0.10f);
+            beeSpecies.setHumidity(ARID);
+            beeSpecies.setTemperature(HELLISH);
+            beeSpecies.setNocturnal();
+            beeSpecies.setHasEffect();
+        }, template -> {}, new Consumer<>() {
 
-                @Override
-                public void accept(GT_BeeDefinition dis) {
-                    IBeeMutationCustom tMutation = dis.registerMutation(PLUTO, PLUTONIUM, 2);
-                    if (NewHorizonsCoreMod.isModLoaded()) tMutation.requireResource(
-                            GameRegistry.findBlock(NewHorizonsCoreMod.ID, "tile.BlackPlutonium"),
-                            0);
-                    tMutation.addMutationCondition(new GT_Bees.DimensionMutationCondition(49, "Pluto")); // Pluto Dim
-                }
-            }),
+            @Override
+            public void accept(GT_BeeDefinition dis) {
+                IBeeMutationCustom tMutation = dis.registerMutation(PLUTO, PLUTONIUM, 2);
+                if (NewHorizonsCoreMod.isModLoaded())
+                    tMutation.requireResource(GameRegistry.findBlock(NewHorizonsCoreMod.ID, "tile.BlackPlutonium"), 0);
+                tMutation.addMutationCondition(new GT_Bees.DimensionMutationCondition(49, "Pluto")); // Pluto Dim
+            }
+        }),
     TRINIUM(GT_BranchDefinition.SPACE, "Trinium", false, new Color(0xB0E0E6), new Color(0xC8C8D2), beeSpecies -> {
         beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.TRINIUM), 0.75f);
         beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.QUANTIUM), 0.10f);
@@ -1814,9 +1784,8 @@ public enum GT_BeeDefinition implements IBeeDefinition {
     }),
     PHOBOS(GT_BranchDefinition.PLANET, "Phobos", true, new Color(0x220D05), new Color(0x7a5706), beeSpecies -> {
         beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.MARS), 0.25f);
-        if (NewHorizonsCoreMod.isModLoaded()) beeSpecies.addSpecialty(
-                GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.PhobosStoneDust", 1, 0),
-                0.10f);
+        if (NewHorizonsCoreMod.isModLoaded()) beeSpecies
+            .addSpecialty(GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.PhobosStoneDust", 1, 0), 0.10f);
         beeSpecies.setHumidity(ARID);
         beeSpecies.setTemperature(HOT);
         beeSpecies.setNocturnal();
@@ -1920,9 +1889,8 @@ public enum GT_BeeDefinition implements IBeeDefinition {
     SATURN(GT_BranchDefinition.PLANET, "Saturn", false, new Color(0xD2A472), new Color(0xF8C37B), beeSpecies -> {
         beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.SATURN), 0.35f);
         beeSpecies.addSpecialty(GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.TitanStoneDust", 1, 0), 0.05f);
-        beeSpecies.addSpecialty(
-                GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.EnceladusStoneDust", 1, 0),
-                0.05f);
+        beeSpecies
+            .addSpecialty(GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.EnceladusStoneDust", 1, 0), 0.05f);
         beeSpecies.addSpecialty(GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.EnceladusIceDust", 1, 0), 0.05f);
         beeSpecies.setHumidity(EnumHumidity.NORMAL);
         beeSpecies.setTemperature(COLD);
@@ -1935,9 +1903,8 @@ public enum GT_BeeDefinition implements IBeeDefinition {
     }),
     ENCELADUS(GT_BranchDefinition.PLANET, "Enceladus", true, new Color(0xD2A472), new Color(0x193fa0), beeSpecies -> {
         beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.SATURN), 0.25f);
-        beeSpecies.addSpecialty(
-                GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.EnceladusStoneDust", 1, 0),
-                0.10f);
+        beeSpecies
+            .addSpecialty(GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.EnceladusStoneDust", 1, 0), 0.10f);
         beeSpecies.addSpecialty(GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.EnceladusIceDust", 1, 0), 0.10f);
         beeSpecies.setHumidity(EnumHumidity.NORMAL);
         beeSpecies.setTemperature(ICY);
@@ -2071,9 +2038,8 @@ public enum GT_BeeDefinition implements IBeeDefinition {
     }),
     CENTAURI(GT_BranchDefinition.PLANET, "Centauri", false, new Color(0x2F2A14), new Color(0xB06B32), beeSpecies -> {
         beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.CENTAURI), 0.35f);
-        beeSpecies.addSpecialty(
-                GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.CentauriASurfaceDust", 1, 0),
-                0.05f);
+        beeSpecies
+            .addSpecialty(GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.CentauriASurfaceDust", 1, 0), 0.05f);
         beeSpecies.setHumidity(ARID);
         beeSpecies.setTemperature(HELLISH);
         beeSpecies.setHasEffect();
@@ -2085,9 +2051,8 @@ public enum GT_BeeDefinition implements IBeeDefinition {
     }),
     ACENTAURI(GT_BranchDefinition.PLANET, "aCentauri", false, new Color(0x2F2A14), new Color(0xa01e14), beeSpecies -> {
         beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.CENTAURI), 0.25f);
-        beeSpecies.addSpecialty(
-                GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.CentauriASurfaceDust", 1, 0),
-                0.10f);
+        beeSpecies
+            .addSpecialty(GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.CentauriASurfaceDust", 1, 0), 0.10f);
         beeSpecies.setHumidity(ARID);
         beeSpecies.setTemperature(HELLISH);
     }, template -> AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST), new Consumer<>() {
@@ -2148,12 +2113,10 @@ public enum GT_BeeDefinition implements IBeeDefinition {
 
     BARNARDA(GT_BranchDefinition.PLANET, "Barnarda", false, new Color(0x0D5A0D), new Color(0xE6C18D), beeSpecies -> {
         beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.BARNARDA), 0.35f);
-        beeSpecies.addSpecialty(
-                GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.BarnardaEStoneDust", 1, 0),
-                0.05f);
-        beeSpecies.addSpecialty(
-                GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.BarnardaFStoneDust", 1, 0),
-                0.05f);
+        beeSpecies
+            .addSpecialty(GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.BarnardaEStoneDust", 1, 0), 0.05f);
+        beeSpecies
+            .addSpecialty(GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.BarnardaFStoneDust", 1, 0), 0.05f);
         beeSpecies.setHumidity(ARID);
         beeSpecies.setTemperature(HOT);
         beeSpecies.setHasEffect();
@@ -2176,9 +2139,8 @@ public enum GT_BeeDefinition implements IBeeDefinition {
     }),
     BARNARDAE(GT_BranchDefinition.PLANET, "BarnardaE", false, new Color(0x0D5A0D), new Color(0x4c1f0a), beeSpecies -> {
         beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.BARNARDA), 0.25f);
-        beeSpecies.addSpecialty(
-                GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.BarnardaEStoneDust", 1, 0),
-                0.10f);
+        beeSpecies
+            .addSpecialty(GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.BarnardaEStoneDust", 1, 0), 0.10f);
         beeSpecies.setHumidity(ARID);
         beeSpecies.setTemperature(HOT);
     }, template -> AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST), dis -> {
@@ -2190,9 +2152,8 @@ public enum GT_BeeDefinition implements IBeeDefinition {
     }),
     BARNARDAF(GT_BranchDefinition.PLANET, "BarnardaF", false, new Color(0x0D5A0D), new Color(0x1e0b49), beeSpecies -> {
         beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.BARNARDA), 0.25f);
-        beeSpecies.addSpecialty(
-                GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.BarnardaFStoneDust", 1, 0),
-                0.10f);
+        beeSpecies
+            .addSpecialty(GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.BarnardaFStoneDust", 1, 0), 0.10f);
         beeSpecies.setHumidity(ARID);
         beeSpecies.setTemperature(HOT);
     }, template -> AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST), dis -> {
@@ -2218,9 +2179,8 @@ public enum GT_BeeDefinition implements IBeeDefinition {
     }),
     VEGAB(GT_BranchDefinition.PLANET, "VegaB", false, new Color(0x1A2036), new Color(0x81e261), beeSpecies -> {
         beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.VEGA), 0.35f);
-        if (NewHorizonsCoreMod.isModLoaded()) beeSpecies.addSpecialty(
-                GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.VegaBStoneDust", 1, 0),
-                0.10f);
+        if (NewHorizonsCoreMod.isModLoaded()) beeSpecies
+            .addSpecialty(GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.VegaBStoneDust", 1, 0), 0.10f);
         beeSpecies.setHumidity(ARID);
         beeSpecies.setTemperature(COLD);
     }, template -> AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST), dis -> {
@@ -2255,38 +2215,38 @@ public enum GT_BeeDefinition implements IBeeDefinition {
 
     // Infinity Line
     COSMICNEUTRONIUM(GT_BranchDefinition.PLANET, "CosmicNeutronium", false, new Color(0x484848), new Color(0x323232),
-            beeSpecies -> {
-                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.COSMICNEUTRONIUM), 0.375f);
-                beeSpecies.setHumidity(DAMP);
-                beeSpecies.setTemperature(ICY);
-                beeSpecies.setNocturnal();
-                beeSpecies.setHasEffect();
-                // Makes it only work in the Mega Apiary NOTE: COMB MUST BE SPECIALITY COMB
-                beeSpecies.setJubilanceProvider(GT_JubilanceMegaApiary.instance);
-            }, template -> AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST), dis -> {
-                IBeeMutationCustom tMutation = dis.registerMutation(NEUTRONIUM, BARNARDAF, 7, 10);
-                if (Avaritia.isModLoaded())
-                    tMutation.requireResource(GameRegistry.findBlock(Avaritia.ID, "Resource_Block"), 0);
-            }),
+        beeSpecies -> {
+            beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.COSMICNEUTRONIUM), 0.375f);
+            beeSpecies.setHumidity(DAMP);
+            beeSpecies.setTemperature(ICY);
+            beeSpecies.setNocturnal();
+            beeSpecies.setHasEffect();
+            // Makes it only work in the Mega Apiary NOTE: COMB MUST BE SPECIALITY COMB
+            beeSpecies.setJubilanceProvider(GT_JubilanceMegaApiary.instance);
+        }, template -> AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST), dis -> {
+            IBeeMutationCustom tMutation = dis.registerMutation(NEUTRONIUM, BARNARDAF, 7, 10);
+            if (Avaritia.isModLoaded())
+                tMutation.requireResource(GameRegistry.findBlock(Avaritia.ID, "Resource_Block"), 0);
+        }),
     INFINITYCATALYST(GT_BranchDefinition.PLANET, "InfinityCatalyst", false, new Color(0xFFFFFF), new Color(0xFFFFFF),
-            beeSpecies -> {
-                beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.INFINITYCATALYST), 0.015f);
-                beeSpecies.setHumidity(DAMP);
-                beeSpecies.setTemperature(HELLISH);
-                beeSpecies.setNocturnal();
-                beeSpecies.setHasEffect();
-                // Makes it only work in the Mega Apiary NOTE: COMB MUST BE SPECIALITY COMB
-                beeSpecies.setJubilanceProvider(GT_JubilanceMegaApiary.instance);
-            }, template -> {
-                AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST);
-                AlleleHelper.instance.set(template, EFFECT, getEffect(EXTRABEES, "blindness"));
-            }, dis -> {
-                IMutationCustom tMutation = dis.registerMutation(DOB, COSMICNEUTRONIUM, 3, 10)
-                                               .setIsSecret();
-                if (Avaritia.isModLoaded()) {
-                    tMutation.requireResource(GameRegistry.findBlock(Avaritia.ID, "Resource_Block"), 1);
-                }
-            }),
+        beeSpecies -> {
+            beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.INFINITYCATALYST), 0.015f);
+            beeSpecies.setHumidity(DAMP);
+            beeSpecies.setTemperature(HELLISH);
+            beeSpecies.setNocturnal();
+            beeSpecies.setHasEffect();
+            // Makes it only work in the Mega Apiary NOTE: COMB MUST BE SPECIALITY COMB
+            beeSpecies.setJubilanceProvider(GT_JubilanceMegaApiary.instance);
+        }, template -> {
+            AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST);
+            AlleleHelper.instance.set(template, EFFECT, getEffect(EXTRABEES, "blindness"));
+        }, dis -> {
+            IMutationCustom tMutation = dis.registerMutation(DOB, COSMICNEUTRONIUM, 3, 10)
+                .setIsSecret();
+            if (Avaritia.isModLoaded()) {
+                tMutation.requireResource(GameRegistry.findBlock(Avaritia.ID, "Resource_Block"), 1);
+            }
+        }),
     INFINITY(GT_BranchDefinition.PLANET, "Infinity", false, new Color(0xFFFFFF), new Color(0xFFFFFF), beeSpecies -> {
         beeSpecies.addSpecialty(GT_Bees.combs.getStackForType(CombType.INFINITY), 0.015f);
         beeSpecies.setHumidity(EnumHumidity.NORMAL);
@@ -2429,10 +2389,8 @@ public enum GT_BeeDefinition implements IBeeDefinition {
         beeSpecies.setHumidity(DAMP);
         beeSpecies.setHasEffect();
     }, template -> AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST), dis -> {
-        IBeeMutationCustom tMutation = dis.registerMutation(
-                getSpecies(MAGICBEES, "Supernatural"),
-                getSpecies(MAGICBEES, "Windy"),
-                15);
+        IBeeMutationCustom tMutation = dis
+            .registerMutation(getSpecies(MAGICBEES, "Supernatural"), getSpecies(MAGICBEES, "Windy"), 15);
         tMutation.restrictTemperature(HOT);
         if (Thaumcraft.isModLoaded())
             tMutation.requireResource(GameRegistry.findBlock(Thaumcraft.ID, "blockCrystal"), 0);
@@ -2488,48 +2446,48 @@ public enum GT_BeeDefinition implements IBeeDefinition {
             tMutation.requireResource(GameRegistry.findBlock(Thaumcraft.ID, "blockCrystal"), 5);
     }),
     NETHERSHARD(GT_BranchDefinition.INFUSEDSHARD, "Nethershard", false, new Color(0xBE0135), new Color(0x350211),
-            beeSpecies -> {
-                beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.NETHERSHARD), 0.30f);
-                beeSpecies.setHumidity(ARID);
-                beeSpecies.setTemperature(HOT);
-                beeSpecies.setHasEffect();
-            }, template -> AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST), dis -> {
-                IBeeMutationCustom tMutation = dis.registerMutation(CHAOS, FIRE, 15);
-                tMutation.requireResource(GameRegistry.findBlock(GregTech.ID, "gt.blockgem3"), 3);
-            }),
+        beeSpecies -> {
+            beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.NETHERSHARD), 0.30f);
+            beeSpecies.setHumidity(ARID);
+            beeSpecies.setTemperature(HOT);
+            beeSpecies.setHasEffect();
+        }, template -> AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST), dis -> {
+            IBeeMutationCustom tMutation = dis.registerMutation(CHAOS, FIRE, 15);
+            tMutation.requireResource(GameRegistry.findBlock(GregTech.ID, "gt.blockgem3"), 3);
+        }),
     ENDSHARD(GT_BranchDefinition.INFUSEDSHARD, "Endshard", false, new Color(0x2E2E41), new Color(0x232129),
-            beeSpecies -> {
-                beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.ENDSHARD), 0.30f);
-                beeSpecies.setHumidity(EnumHumidity.NORMAL);
-                beeSpecies.setNocturnal();
-                beeSpecies.setHasEffect();
-            }, template -> AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST), dis -> {
-                IBeeMutationCustom tMutation = dis.registerMutation(NETHERSHARD, ENDDUST, 15);
-                tMutation.restrictTemperature(ICY);
-                tMutation.requireResource(GameRegistry.findBlock(GregTech.ID, "gt.blockgem1"), 7);
-            }),
+        beeSpecies -> {
+            beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.ENDSHARD), 0.30f);
+            beeSpecies.setHumidity(EnumHumidity.NORMAL);
+            beeSpecies.setNocturnal();
+            beeSpecies.setHasEffect();
+        }, template -> AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST), dis -> {
+            IBeeMutationCustom tMutation = dis.registerMutation(NETHERSHARD, ENDDUST, 15);
+            tMutation.restrictTemperature(ICY);
+            tMutation.requireResource(GameRegistry.findBlock(GregTech.ID, "gt.blockgem1"), 7);
+        }),
     // Organic branch 2.0
     UNKNOWNWATER(GT_BranchDefinition.ORGANIC, "UnknownWater", false, new Color(0x4333A5), new Color(0x36ABFF),
-            beeSpecies -> {
-                beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.UNKNOWNWATER), 0.20f);
-                beeSpecies.setHumidity(EnumHumidity.NORMAL);
-                beeSpecies.setNocturnal();
-                beeSpecies.setHasEffect();
-            }, template -> AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST),
-            dis -> dis.registerMutation(INFINITYCATALYST, MYSTERIOUSCRYSTAL, 5)),
+        beeSpecies -> {
+            beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.UNKNOWNWATER), 0.20f);
+            beeSpecies.setHumidity(EnumHumidity.NORMAL);
+            beeSpecies.setNocturnal();
+            beeSpecies.setHasEffect();
+        }, template -> AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST),
+        dis -> dis.registerMutation(INFINITYCATALYST, MYSTERIOUSCRYSTAL, 5)),
     // Endgame bees
     JAEGERMEISTER(GT_BranchDefinition.ENDGAME, "JaegerMeister", false, new Color(0x05AD18), new Color(0xE7DAC3),
-            beeSpecies -> {
-                beeSpecies.addProduct(GT_ModHandler.getModItem(CropsPlusPlus.ID, "BppPotions", 1L, 8), 0.01f);
-                beeSpecies.setHumidity(EnumHumidity.NORMAL);
-                beeSpecies.setNocturnal();
-                beeSpecies.setHasEffect();
-            }, template -> AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST), dis -> {
-                IBeeMutationCustom tMutation = dis.registerMutation(INFINITYCATALYST, NAQUADRIA, 5);
-                tMutation.requireResource(GameRegistry.findBlock(GregTech.ID, "gt.blockmachines"), 4684);
-                tMutation.addMutationCondition(new GT_Bees.DimensionMutationCondition(100, "Deep Dark")); // Deep Dark
-                                                                                                          // dim
-            });
+        beeSpecies -> {
+            beeSpecies.addProduct(GT_ModHandler.getModItem(CropsPlusPlus.ID, "BppPotions", 1L, 8), 0.01f);
+            beeSpecies.setHumidity(EnumHumidity.NORMAL);
+            beeSpecies.setNocturnal();
+            beeSpecies.setHasEffect();
+        }, template -> AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST), dis -> {
+            IBeeMutationCustom tMutation = dis.registerMutation(INFINITYCATALYST, NAQUADRIA, 5);
+            tMutation.requireResource(GameRegistry.findBlock(GregTech.ID, "gt.blockmachines"), 4684);
+            tMutation.addMutationCondition(new GT_Bees.DimensionMutationCondition(100, "Deep Dark")); // Deep Dark
+                                                                                                      // dim
+        });
 
     private final GT_BranchDefinition branch;
     private final GT_AlleleBeeSpecies species;
@@ -2540,13 +2498,13 @@ public enum GT_BeeDefinition implements IBeeDefinition {
     private IBeeGenome genome;
 
     GT_BeeDefinition(GT_BranchDefinition branch, String binomial, boolean dominant, Color primary, Color secondary,
-            Consumer<GT_AlleleBeeSpecies> aSpeciesProperties, Consumer<IAllele[]> aAlleles,
-            Consumer<GT_BeeDefinition> aMutations) {
+        Consumer<GT_AlleleBeeSpecies> aSpeciesProperties, Consumer<IAllele[]> aAlleles,
+        Consumer<GT_BeeDefinition> aMutations) {
         this.mAlleles = aAlleles;
         this.mMutations = aMutations;
         this.mSpeciesProperties = aSpeciesProperties;
         String lowercaseName = this.toString()
-                                   .toLowerCase(Locale.ENGLISH);
+            .toLowerCase(Locale.ENGLISH);
         String species = WordUtils.capitalize(lowercaseName);
 
         String uid = "gregtech.bee.species" + species;
@@ -2556,15 +2514,15 @@ public enum GT_BeeDefinition implements IBeeDefinition {
 
         this.branch = branch;
         this.species = new GT_AlleleBeeSpecies(
-                uid,
-                dominant,
-                name,
-                "GTNH",
-                description,
-                branch.getBranch(),
-                binomial,
-                primary,
-                secondary);
+            uid,
+            dominant,
+            name,
+            "GTNH",
+            description,
+            branch.getBranch(),
+            binomial,
+            primary,
+            secondary);
     }
 
     public static void initBees() {
@@ -2660,22 +2618,22 @@ public enum GT_BeeDefinition implements IBeeDefinition {
      * chanceDivider
      */
     private IBeeMutationCustom registerMutation(IAlleleBeeSpecies parent1, IAlleleBeeSpecies parent2, int chance,
-            float chanceDivider) {
+        float chanceDivider) {
         return new GT_Bee_Mutation(parent1, parent2, this.getTemplate(), chance, chanceDivider);
     }
 
     private IBeeMutationCustom registerMutation(GT_BeeDefinition parent1, IAlleleBeeSpecies parent2, int chance,
-            float chanceDivider) {
+        float chanceDivider) {
         return registerMutation(parent1.species, parent2, chance, chanceDivider);
     }
 
     private IBeeMutationCustom registerMutation(IAlleleBeeSpecies parent1, GT_BeeDefinition parent2, int chance,
-            float chanceDivider) {
+        float chanceDivider) {
         return registerMutation(parent1, parent2.species, chance, chanceDivider);
     }
 
     private IBeeMutationCustom registerMutation(GT_BeeDefinition parent1, GT_BeeDefinition parent2, int chance,
-            float chanceDivider) {
+        float chanceDivider) {
         return registerMutation(parent1.species, parent2, chance, chanceDivider);
     }
 

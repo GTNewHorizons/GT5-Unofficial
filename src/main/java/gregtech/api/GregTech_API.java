@@ -108,8 +108,8 @@ public class GregTech_API {
      * My Creative Tab
      */
     public static final CreativeTabs TAB_GREGTECH = new GT_CreativeTab("Main", "Main"),
-            TAB_GREGTECH_MATERIALS = new GT_CreativeTab("Materials", "Materials"),
-            TAB_GREGTECH_ORES = new GT_CreativeTab("Ores", "Ores");
+        TAB_GREGTECH_MATERIALS = new GT_CreativeTab("Materials", "Materials"),
+        TAB_GREGTECH_ORES = new GT_CreativeTab("Ores", "Ores");
     /**
      * A List of all registered MetaTileEntities
      * <p/>
@@ -173,25 +173,23 @@ public class GregTech_API {
      * The List of Tools, which can be used. Accepts regular damageable Items and Electric Items
      */
     public static final GT_HashSet<GT_ItemStack> sToolList = new GT_HashSet<>(), sCrowbarList = new GT_HashSet<>(),
-            sScrewdriverList = new GT_HashSet<>(), sWrenchList = new GT_HashSet<>(),
-            sSoftHammerList = new GT_HashSet<>(), sHardHammerList = new GT_HashSet<>(),
-            sWireCutterList = new GT_HashSet<>(), sSolderingToolList = new GT_HashSet<>(),
-            sSolderingMetalList = new GT_HashSet<>();
+        sScrewdriverList = new GT_HashSet<>(), sWrenchList = new GT_HashSet<>(), sSoftHammerList = new GT_HashSet<>(),
+        sHardHammerList = new GT_HashSet<>(), sWireCutterList = new GT_HashSet<>(),
+        sSolderingToolList = new GT_HashSet<>(), sSolderingMetalList = new GT_HashSet<>();
     /**
      * The List of Hazmat Armors
      */
     public static final GT_HashSet<GT_ItemStack> sGasHazmatList = new GT_HashSet<>(),
-            sBioHazmatList = new GT_HashSet<>(), sFrostHazmatList = new GT_HashSet<>(),
-            sHeatHazmatList = new GT_HashSet<>(), sRadioHazmatList = new GT_HashSet<>(),
-            sElectroHazmatList = new GT_HashSet<>();
+        sBioHazmatList = new GT_HashSet<>(), sFrostHazmatList = new GT_HashSet<>(),
+        sHeatHazmatList = new GT_HashSet<>(), sRadioHazmatList = new GT_HashSet<>(),
+        sElectroHazmatList = new GT_HashSet<>();
 
-    private static final Multimap<Integer, ItemStack> sRealConfigurationList = Multimaps.newListMultimap(
-            new TreeMap<>(),
-            ArrayList::new);
+    private static final Multimap<Integer, ItemStack> sRealConfigurationList = Multimaps
+        .newListMultimap(new TreeMap<>(), ArrayList::new);
     private static final Map<Integer, List<ItemStack>> sConfigurationLists = new ConcurrentHashMap<>();
     private static final Map<Predicate<ItemStack>, BiFunction<ItemStack, EntityPlayerMP, ItemStack>> sRealCircuitProgrammerList = new LinkedHashMap<>();
-    public static final Map<Predicate<ItemStack>, BiFunction<ItemStack, EntityPlayerMP, ItemStack>> sCircuitProgrammerList = Collections.unmodifiableMap(
-            sRealCircuitProgrammerList);
+    public static final Map<Predicate<ItemStack>, BiFunction<ItemStack, EntityPlayerMP, ItemStack>> sCircuitProgrammerList = Collections
+        .unmodifiableMap(sRealCircuitProgrammerList);
 
     /**
      * The List of Dimensions, which are Whitelisted for the Teleporter. This list should not contain other Planets.
@@ -233,11 +231,11 @@ public class GregTech_API {
      * Implement just the Method run() and everything should work
      */
     public static List<Runnable> sBeforeGTPreload = new ArrayList<>(), sAfterGTPreload = new ArrayList<>(),
-            sBeforeGTLoad = new ArrayList<>(), sAfterGTLoad = new ArrayList<>(), sBeforeGTPostload = new ArrayList<>(),
-            sAfterGTPostload = new ArrayList<>(), sFirstWorldTick = new ArrayList<>(),
-            sBeforeGTServerstart = new ArrayList<>(), sAfterGTServerstart = new ArrayList<>(),
-            sBeforeGTServerstop = new ArrayList<>(), sAfterGTServerstop = new ArrayList<>(),
-            sGTBlockIconload = new ArrayList<>(), sGTItemIconload = new ArrayList<>();
+        sBeforeGTLoad = new ArrayList<>(), sAfterGTLoad = new ArrayList<>(), sBeforeGTPostload = new ArrayList<>(),
+        sAfterGTPostload = new ArrayList<>(), sFirstWorldTick = new ArrayList<>(),
+        sBeforeGTServerstart = new ArrayList<>(), sAfterGTServerstart = new ArrayList<>(),
+        sBeforeGTServerstop = new ArrayList<>(), sAfterGTServerstop = new ArrayList<>(),
+        sGTBlockIconload = new ArrayList<>(), sGTItemIconload = new ArrayList<>();
     /**
      * The Icon Registers from Blocks and Items. They will get set right before the corresponding Icon Load Phase as
      * executed in the Runnable List above.
@@ -248,7 +246,7 @@ public class GregTech_API {
      * The Configuration Objects
      */
     public static GT_Config sRecipeFile = null, sMachineFile = null, sWorldgenFile = null, sMaterialProperties = null,
-            sMaterialComponents = null, sUnification = null, sSpecialFile = null, sClientDataFile, sOPStuff = null;
+        sMaterialComponents = null, sUnification = null, sSpecialFile = null, sClientDataFile, sOPStuff = null;
 
     public static int TICKS_FOR_LAG_AVERAGING = 25, MILLISECOND_THRESHOLD_UNTIL_LAG_WARNING = 100;
     /**
@@ -257,24 +255,24 @@ public class GregTech_API {
     public static Block sBlockMachines;
 
     public static Block sBlockOres1, sBlockOresUb1, sBlockOresUb2, sBlockOresUb3,
-            /* sBlockGem, */
-            sBlockMetal1, sBlockMetal2, sBlockMetal3, sBlockMetal4, sBlockMetal5, sBlockMetal6, sBlockMetal7,
-            sBlockMetal8, sBlockMetal9, sBlockGem1, sBlockGem2, sBlockGem3, sBlockReinforced;
+        /* sBlockGem, */
+        sBlockMetal1, sBlockMetal2, sBlockMetal3, sBlockMetal4, sBlockMetal5, sBlockMetal6, sBlockMetal7, sBlockMetal8,
+        sBlockMetal9, sBlockGem1, sBlockGem2, sBlockGem3, sBlockReinforced;
     public static Block sBlockGranites, sBlockConcretes, sBlockStones;
     public static Block sBlockCasings1, sBlockCasings2, sBlockCasings3, sBlockCasings4, sBlockCasings5, sBlockCasings6,
-            sBlockCasings8, sBlockCasings9, sSolenoidCoilCasings;
+        sBlockCasings8, sBlockCasings9, sSolenoidCoilCasings;
     public static Block sBlockLongDistancePipes;
     /**
      * Getting assigned by the Config
      */
     public static boolean sTimber = true, sDrinksAlwaysDrinkable = false, sMultiThreadedSounds = false,
-            sDoShowAllItemsInCreative = false, sColoredGUI = true, sMachineMetalGUI = false, sConstantEnergy = true,
-            sMachineExplosions = true, sMachineFlammable = true, sMachineNonWrenchExplosions = true,
-            sMachineRainExplosions = true, sMachineThunderExplosions = true, sMachineFireExplosions = true,
-            sMachineWireFire = true, mOutputRF = false, mInputRF = false, meIOLoaded = false, mRFExplosions = false,
-            mServerStarted = false, mIC2Classic = false, mMagneticraft = false, mImmersiveEngineering = false,
-            mGTPlusPlus = false, mTranslocator = false, mTConstruct = false, mGalacticraft = false, mAE2 = false,
-            mHodgepodge = false, mEternalSingularity = false;
+        sDoShowAllItemsInCreative = false, sColoredGUI = true, sMachineMetalGUI = false, sConstantEnergy = true,
+        sMachineExplosions = true, sMachineFlammable = true, sMachineNonWrenchExplosions = true,
+        sMachineRainExplosions = true, sMachineThunderExplosions = true, sMachineFireExplosions = true,
+        sMachineWireFire = true, mOutputRF = false, mInputRF = false, meIOLoaded = false, mRFExplosions = false,
+        mServerStarted = false, mIC2Classic = false, mMagneticraft = false, mImmersiveEngineering = false,
+        mGTPlusPlus = false, mTranslocator = false, mTConstruct = false, mGalacticraft = false, mAE2 = false,
+        mHodgepodge = false, mEternalSingularity = false;
 
     public static int mEUtoRF = 360, mRFtoEU = 20;
 
@@ -290,7 +288,7 @@ public class GregTech_API {
      * Getting assigned by the Mod loading
      */
     public static boolean sUnificationEntriesRegistered = false, sPreloadStarted = false, sPreloadFinished = false,
-            sLoadStarted = false, sLoadFinished = false, sPostloadStarted = false, sPostloadFinished = false;
+        sLoadStarted = false, sLoadFinished = false, sPostloadStarted = false, sPostloadFinished = false;
 
     private static Class<BaseMetaTileEntity> sBaseMetaTileEntityClass = null;
 
@@ -348,10 +346,10 @@ public class GregTech_API {
      */
     public static ItemStack getUnificatedOreDictStack(ItemStack aOreStack) {
         if (!GregTech_API.sPreloadFinished) GT_Log.err.println(
-                "GregTech_API ERROR: " + aOreStack.getItem()
-                        + "."
-                        + aOreStack.getItemDamage()
-                        + " - OreDict Unification Entries are not registered now, please call it in the postload phase.");
+            "GregTech_API ERROR: " + aOreStack.getItem()
+                + "."
+                + aOreStack.getItemDamage()
+                + " - OreDict Unification Entries are not registered now, please call it in the postload phase.");
         return GT_OreDictUnificator.get(true, aOreStack);
     }
 
@@ -443,335 +441,285 @@ public class GregTech_API {
             /* Do nothing */
         }
         return new gregtech.api.items.GT_Generic_Item(
-                aUnlocalized,
-                aEnglish,
-                "Doesn't work as intended, this is a Bug",
-                false);
+            aUnlocalized,
+            aEnglish,
+            "Doesn't work as intended, this is a Bug",
+            false);
     }
 
     /**
      * Creates a new Energy Armor Item
      */
     public static Item constructElectricArmorItem(String aUnlocalized, String aEnglish, int aCharge, int aTransfer,
-            int aTier, int aDamageEnergyCost, int aSpecials, double aArmorAbsorbtionPercentage, boolean aChargeProvider,
-            int aType, int aArmorIndex) {
+        int aTier, int aDamageEnergyCost, int aSpecials, double aArmorAbsorbtionPercentage, boolean aChargeProvider,
+        int aType, int aArmorIndex) {
         try {
             return (Item) Class.forName("gregtechmod.api.items.GT_EnergyArmorIC_Item")
-                               .getConstructors()[0].newInstance(
-                                       aUnlocalized,
-                                       aEnglish,
-                                       aCharge,
-                                       aTransfer,
-                                       aTier,
-                                       aDamageEnergyCost,
-                                       aSpecials,
-                                       aArmorAbsorbtionPercentage,
-                                       aChargeProvider,
-                                       aType,
-                                       aArmorIndex);
+                .getConstructors()[0].newInstance(
+                    aUnlocalized,
+                    aEnglish,
+                    aCharge,
+                    aTransfer,
+                    aTier,
+                    aDamageEnergyCost,
+                    aSpecials,
+                    aArmorAbsorbtionPercentage,
+                    aChargeProvider,
+                    aType,
+                    aArmorIndex);
         } catch (Throwable e) {
             /* Do nothing */
         }
         try {
             return (Item) Class.forName("gregtechmod.api.items.GT_EnergyArmor_Item")
-                               .getConstructors()[0].newInstance(
-                                       aUnlocalized,
-                                       aEnglish,
-                                       aCharge,
-                                       aTransfer,
-                                       aTier,
-                                       aDamageEnergyCost,
-                                       aSpecials,
-                                       aArmorAbsorbtionPercentage,
-                                       aChargeProvider,
-                                       aType,
-                                       aArmorIndex);
+                .getConstructors()[0].newInstance(
+                    aUnlocalized,
+                    aEnglish,
+                    aCharge,
+                    aTransfer,
+                    aTier,
+                    aDamageEnergyCost,
+                    aSpecials,
+                    aArmorAbsorbtionPercentage,
+                    aChargeProvider,
+                    aType,
+                    aArmorIndex);
         } catch (Throwable e) {
             /* Do nothing */
         }
         return new gregtech.api.items.GT_Generic_Item(
-                aUnlocalized,
-                aEnglish,
-                "Doesn't work as intended, this is a Bug",
-                false);
+            aUnlocalized,
+            aEnglish,
+            "Doesn't work as intended, this is a Bug",
+            false);
     }
 
     /**
      * Creates a new Energy Battery Item
      */
     public static Item constructElectricEnergyStorageItem(String aUnlocalized, String aEnglish, int aCharge,
-            int aTransfer, int aTier, int aEmptyID, int aFullID) {
+        int aTransfer, int aTier, int aEmptyID, int aFullID) {
         try {
             return (Item) Class.forName("gregtechmod.api.items.GT_EnergyStoreIC_Item")
-                               .getConstructors()[0].newInstance(
-                                       aUnlocalized,
-                                       aEnglish,
-                                       aCharge,
-                                       aTransfer,
-                                       aTier,
-                                       aEmptyID,
-                                       aFullID);
+                .getConstructors()[0].newInstance(aUnlocalized, aEnglish, aCharge, aTransfer, aTier, aEmptyID, aFullID);
         } catch (Throwable e) {
             /* Do nothing */
         }
         try {
             return (Item) Class.forName("gregtechmod.api.items.GT_EnergyStore_Item")
-                               .getConstructors()[0].newInstance(
-                                       aUnlocalized,
-                                       aEnglish,
-                                       aCharge,
-                                       aTransfer,
-                                       aTier,
-                                       aEmptyID,
-                                       aFullID);
+                .getConstructors()[0].newInstance(aUnlocalized, aEnglish, aCharge, aTransfer, aTier, aEmptyID, aFullID);
         } catch (Throwable e) {
             /* Do nothing */
         }
         return new gregtech.api.items.GT_Generic_Item(
-                aUnlocalized,
-                aEnglish,
-                "Doesn't work as intended, this is a Bug",
-                false);
+            aUnlocalized,
+            aEnglish,
+            "Doesn't work as intended, this is a Bug",
+            false);
     }
 
     /**
      * Creates a new Hard Hammer Item
      */
     public static GT_Tool_Item constructHardHammerItem(String aUnlocalized, String aEnglish, int aMaxDamage,
-            int aEntityDamage) {
+        int aEntityDamage) {
         try {
             return (GT_Tool_Item) Class.forName("gregtechmod.api.items.GT_HardHammer_Item")
-                                       .getConstructors()[0].newInstance(
-                                               aUnlocalized,
-                                               aEnglish,
-                                               aMaxDamage,
-                                               aEntityDamage);
+                .getConstructors()[0].newInstance(aUnlocalized, aEnglish, aMaxDamage, aEntityDamage);
         } catch (Throwable e) {
             /* Do nothing */
         }
         return new gregtech.api.items.GT_Tool_Item(
-                aUnlocalized,
-                aEnglish,
-                "Doesn't work as intended, this is a Bug",
-                aMaxDamage,
-                aEntityDamage,
-                false);
+            aUnlocalized,
+            aEnglish,
+            "Doesn't work as intended, this is a Bug",
+            aMaxDamage,
+            aEntityDamage,
+            false);
     }
 
     /**
      * Creates a new Crowbar Item
      */
     public static GT_Tool_Item constructCrowbarItem(String aUnlocalized, String aEnglish, int aMaxDamage,
-            int aEntityDamage) {
+        int aEntityDamage) {
         try {
             return (GT_Tool_Item) Class.forName("gregtechmod.api.items.GT_CrowbarRC_Item")
-                                       .getConstructors()[0].newInstance(
-                                               aUnlocalized,
-                                               aEnglish,
-                                               aMaxDamage,
-                                               aEntityDamage);
+                .getConstructors()[0].newInstance(aUnlocalized, aEnglish, aMaxDamage, aEntityDamage);
         } catch (Throwable e) {
             /* Do nothing */
         }
         try {
             return (GT_Tool_Item) Class.forName("gregtechmod.api.items.GT_Crowbar_Item")
-                                       .getConstructors()[0].newInstance(
-                                               aUnlocalized,
-                                               aEnglish,
-                                               aMaxDamage,
-                                               aEntityDamage);
+                .getConstructors()[0].newInstance(aUnlocalized, aEnglish, aMaxDamage, aEntityDamage);
         } catch (Throwable e) {
             /* Do nothing */
         }
         return new gregtech.api.items.GT_Tool_Item(
-                aUnlocalized,
-                aEnglish,
-                "Doesn't work as intended, this is a Bug",
-                aMaxDamage,
-                aEntityDamage,
-                false);
+            aUnlocalized,
+            aEnglish,
+            "Doesn't work as intended, this is a Bug",
+            aMaxDamage,
+            aEntityDamage,
+            false);
     }
 
     /**
      * Creates a new Wrench Item
      */
     public static GT_Tool_Item constructWrenchItem(String aUnlocalized, String aEnglish, int aMaxDamage,
-            int aEntityDamage, int aDisChargedGTID) {
+        int aEntityDamage, int aDisChargedGTID) {
         try {
             return (GT_Tool_Item) Class.forName("gregtechmod.api.items.GT_Wrench_Item")
-                                       .getConstructors()[0].newInstance(
-                                               aUnlocalized,
-                                               aEnglish,
-                                               aMaxDamage,
-                                               aEntityDamage,
-                                               aDisChargedGTID);
+                .getConstructors()[0].newInstance(aUnlocalized, aEnglish, aMaxDamage, aEntityDamage, aDisChargedGTID);
         } catch (Throwable e) {
             /* Do nothing */
         }
         return new gregtech.api.items.GT_Tool_Item(
-                aUnlocalized,
-                aEnglish,
-                "Doesn't work as intended, this is a Bug",
-                aMaxDamage,
-                aEntityDamage,
-                false);
+            aUnlocalized,
+            aEnglish,
+            "Doesn't work as intended, this is a Bug",
+            aMaxDamage,
+            aEntityDamage,
+            false);
     }
 
     /**
      * Creates a new electric Screwdriver Item
      */
     public static GT_Tool_Item constructElectricScrewdriverItem(String aUnlocalized, String aEnglish, int aMaxDamage,
-            int aEntityDamage, int aDisChargedGTID) {
+        int aEntityDamage, int aDisChargedGTID) {
         try {
             return (GT_Tool_Item) Class.forName("gregtechmod.api.items.GT_ScrewdriverIC_Item")
-                                       .getConstructors()[0].newInstance(
-                                               aUnlocalized,
-                                               aEnglish,
-                                               aMaxDamage,
-                                               aEntityDamage,
-                                               aDisChargedGTID);
+                .getConstructors()[0].newInstance(aUnlocalized, aEnglish, aMaxDamage, aEntityDamage, aDisChargedGTID);
         } catch (Throwable e) {
             /* Do nothing */
         }
         return new gregtech.api.items.GT_Tool_Item(
-                aUnlocalized,
-                aEnglish,
-                "Doesn't work as intended, this is a Bug",
-                aMaxDamage,
-                aEntityDamage,
-                false);
+            aUnlocalized,
+            aEnglish,
+            "Doesn't work as intended, this is a Bug",
+            aMaxDamage,
+            aEntityDamage,
+            false);
     }
 
     /**
      * Creates a new electric Wrench Item
      */
     public static GT_Tool_Item constructElectricWrenchItem(String aUnlocalized, String aEnglish, int aMaxDamage,
-            int aEntityDamage, int aDisChargedGTID) {
+        int aEntityDamage, int aDisChargedGTID) {
         try {
             return (GT_Tool_Item) Class.forName("gregtechmod.api.items.GT_WrenchIC_Item")
-                                       .getConstructors()[0].newInstance(
-                                               aUnlocalized,
-                                               aEnglish,
-                                               aMaxDamage,
-                                               aEntityDamage,
-                                               aDisChargedGTID);
+                .getConstructors()[0].newInstance(aUnlocalized, aEnglish, aMaxDamage, aEntityDamage, aDisChargedGTID);
         } catch (Throwable e) {
             /* Do nothing */
         }
         return new gregtech.api.items.GT_Tool_Item(
-                aUnlocalized,
-                aEnglish,
-                "Doesn't work as intended, this is a Bug",
-                aMaxDamage,
-                aEntityDamage,
-                false);
+            aUnlocalized,
+            aEnglish,
+            "Doesn't work as intended, this is a Bug",
+            aMaxDamage,
+            aEntityDamage,
+            false);
     }
 
     /**
      * Creates a new electric Saw Item
      */
     public static GT_Tool_Item constructElectricSawItem(String aUnlocalized, String aEnglish, int aMaxDamage,
-            int aEntityDamage, int aToolQuality, float aToolStrength, int aEnergyConsumptionPerBlockBreak,
-            int aDisChargedGTID) {
+        int aEntityDamage, int aToolQuality, float aToolStrength, int aEnergyConsumptionPerBlockBreak,
+        int aDisChargedGTID) {
         try {
             return (GT_Tool_Item) Class.forName("gregtechmod.api.items.GT_SawIC_Item")
-                                       .getConstructors()[0].newInstance(
-                                               aUnlocalized,
-                                               aEnglish,
-                                               aMaxDamage,
-                                               aEntityDamage,
-                                               aToolQuality,
-                                               aToolStrength,
-                                               aEnergyConsumptionPerBlockBreak,
-                                               aDisChargedGTID);
+                .getConstructors()[0].newInstance(
+                    aUnlocalized,
+                    aEnglish,
+                    aMaxDamage,
+                    aEntityDamage,
+                    aToolQuality,
+                    aToolStrength,
+                    aEnergyConsumptionPerBlockBreak,
+                    aDisChargedGTID);
         } catch (Throwable e) {
             /* Do nothing */
         }
         return new gregtech.api.items.GT_Tool_Item(
-                aUnlocalized,
-                aEnglish,
-                "Doesn't work as intended, this is a Bug",
-                aMaxDamage,
-                aEntityDamage,
-                false);
+            aUnlocalized,
+            aEnglish,
+            "Doesn't work as intended, this is a Bug",
+            aMaxDamage,
+            aEntityDamage,
+            false);
     }
 
     /**
      * Creates a new electric Drill Item
      */
     public static GT_Tool_Item constructElectricDrillItem(String aUnlocalized, String aEnglish, int aMaxDamage,
-            int aEntityDamage, int aToolQuality, float aToolStrength, int aEnergyConsumptionPerBlockBreak,
-            int aDisChargedGTID) {
+        int aEntityDamage, int aToolQuality, float aToolStrength, int aEnergyConsumptionPerBlockBreak,
+        int aDisChargedGTID) {
         try {
             return (GT_Tool_Item) Class.forName("gregtechmod.api.items.GT_DrillIC_Item")
-                                       .getConstructors()[0].newInstance(
-                                               aUnlocalized,
-                                               aEnglish,
-                                               aMaxDamage,
-                                               aEntityDamage,
-                                               aToolQuality,
-                                               aToolStrength,
-                                               aEnergyConsumptionPerBlockBreak,
-                                               aDisChargedGTID);
+                .getConstructors()[0].newInstance(
+                    aUnlocalized,
+                    aEnglish,
+                    aMaxDamage,
+                    aEntityDamage,
+                    aToolQuality,
+                    aToolStrength,
+                    aEnergyConsumptionPerBlockBreak,
+                    aDisChargedGTID);
         } catch (Throwable e) {
             /* Do nothing */
         }
         return new gregtech.api.items.GT_Tool_Item(
-                aUnlocalized,
-                aEnglish,
-                "Doesn't work as intended, this is a Bug",
-                aMaxDamage,
-                aEntityDamage,
-                false);
+            aUnlocalized,
+            aEnglish,
+            "Doesn't work as intended, this is a Bug",
+            aMaxDamage,
+            aEntityDamage,
+            false);
     }
 
     /**
      * Creates a new electric Soldering Tool
      */
     public static GT_Tool_Item constructElectricSolderingToolItem(String aUnlocalized, String aEnglish, int aMaxDamage,
-            int aEntityDamage, int aDisChargedGTID) {
+        int aEntityDamage, int aDisChargedGTID) {
         try {
             return (GT_Tool_Item) Class.forName("gregtechmod.api.items.GT_SolderingToolIC_Item")
-                                       .getConstructors()[0].newInstance(
-                                               aUnlocalized,
-                                               aEnglish,
-                                               aMaxDamage,
-                                               aEntityDamage,
-                                               aDisChargedGTID);
+                .getConstructors()[0].newInstance(aUnlocalized, aEnglish, aMaxDamage, aEntityDamage, aDisChargedGTID);
         } catch (Throwable e) {
             /* Do nothing */
         }
         return new gregtech.api.items.GT_Tool_Item(
-                aUnlocalized,
-                aEnglish,
-                "Doesn't work as intended, this is a Bug",
-                aMaxDamage,
-                aEntityDamage,
-                false);
+            aUnlocalized,
+            aEnglish,
+            "Doesn't work as intended, this is a Bug",
+            aMaxDamage,
+            aEntityDamage,
+            false);
     }
 
     /**
      * Creates a new empty electric Tool
      */
     public static GT_Tool_Item constructEmptyElectricToolItem(String aUnlocalized, String aEnglish, int aMaxDamage,
-            int aChargedGTID) {
+        int aChargedGTID) {
         try {
             return (GT_Tool_Item) Class.forName("gregtechmod.api.items.GT_EmptyToolIC_Item")
-                                       .getConstructors()[0].newInstance(
-                                               aUnlocalized,
-                                               aEnglish,
-                                               aMaxDamage,
-                                               aChargedGTID);
+                .getConstructors()[0].newInstance(aUnlocalized, aEnglish, aMaxDamage, aChargedGTID);
         } catch (Throwable e) {
             /* Do nothing */
         }
         return new gregtech.api.items.GT_Tool_Item(
-                aUnlocalized,
-                aEnglish,
-                "Doesn't work as intended, this is a Bug",
-                aMaxDamage,
-                0,
-                false);
+            aUnlocalized,
+            aEnglish,
+            "Doesn't work as intended, this is a Bug",
+            aMaxDamage,
+            0,
+            false);
     }
 
     /**
@@ -818,9 +766,9 @@ public class GregTech_API {
         for (Map.Entry<Integer, List<ItemStack>> e : sConfigurationLists.entrySet()) {
             if (e.getKey() >= minTier) {
                 e.getValue()
-                 .add(stack);
+                    .add(stack);
                 e.getValue()
-                 .sort(getConfigurationCircuitsComparator());
+                    .sort(getConfigurationCircuitsComparator());
             }
         }
     }
@@ -834,14 +782,14 @@ public class GregTech_API {
      */
     public static List<ItemStack> getConfigurationCircuitList(int machineTier) {
         return Collections.unmodifiableList(
-                sConfigurationLists.computeIfAbsent(
-                        machineTier,
-                        (t) -> sRealConfigurationList.entries()
-                                                     .stream()
-                                                     .filter(e -> e.getKey() <= machineTier)
-                                                     .map(Map.Entry::getValue)
-                                                     .sorted(getConfigurationCircuitsComparator())
-                                                     .collect(Collectors.toList())));
+            sConfigurationLists.computeIfAbsent(
+                machineTier,
+                (t) -> sRealConfigurationList.entries()
+                    .stream()
+                    .filter(e -> e.getKey() <= machineTier)
+                    .map(Map.Entry::getValue)
+                    .sorted(getConfigurationCircuitsComparator())
+                    .collect(Collectors.toList())));
     }
 
     public static Comparator<ItemStack> getConfigurationCircuitsComparator() {
@@ -850,12 +798,11 @@ public class GregTech_API {
             // player is exposed
             if (GT_Mod.gregtechproxy.mCircuitsOrder.isEmpty())
                 return is.getItem() instanceof GT_IntegratedCircuit_Item ? 0 : 1;
-            return GT_Mod.gregtechproxy.mCircuitsOrder.getOrDefault(
-                    String.valueOf(GameRegistry.findUniqueIdentifierFor(is.getItem())),
-                    Integer.MAX_VALUE);
+            return GT_Mod.gregtechproxy.mCircuitsOrder
+                .getOrDefault(String.valueOf(GameRegistry.findUniqueIdentifierFor(is.getItem())), Integer.MAX_VALUE);
         })
-                         .thenComparing(ItemStack::getUnlocalizedName)
-                         .thenComparing(ItemStack::getItemDamage);
+            .thenComparing(ItemStack::getUnlocalizedName)
+            .thenComparing(ItemStack::getItemDamage);
     }
 
     public static void registerCircuitProgrammer(ItemStack stack, boolean ignoreNBT, boolean useContainer) {
@@ -864,14 +811,13 @@ public class GregTech_API {
 
     public static void registerCircuitProgrammer(Predicate<ItemStack> predicate, boolean useContainer) {
         sRealCircuitProgrammerList.put(
-                predicate,
-                useContainer ? (s, p) -> s.getItem()
-                                          .getContainerItem(s)
-                        : (s, p) -> s);
+            predicate,
+            useContainer ? (s, p) -> s.getItem()
+                .getContainerItem(s) : (s, p) -> s);
     }
 
     public static void registerCircuitProgrammer(Predicate<ItemStack> predicate,
-            BiFunction<ItemStack, EntityPlayerMP, ItemStack> doDamage) {
+        BiFunction<ItemStack, EntityPlayerMP, ItemStack> doDamage) {
         sRealCircuitProgrammerList.put(predicate, doDamage);
     }
 
@@ -881,8 +827,8 @@ public class GregTech_API {
 
     public static void registerCover(ItemStack aStack, ITexture aCover, GT_CoverBehaviorBase<?> aBehavior) {
         if (!sCovers.containsKey(new GT_ItemStack(aStack))) sCovers.put(
-                new GT_ItemStack(aStack),
-                aCover == null || !aCover.isValidTexture() ? Textures.BlockIcons.ERROR_RENDERING[0] : aCover);
+            new GT_ItemStack(aStack),
+            aCover == null || !aCover.isValidTexture() ? Textures.BlockIcons.ERROR_RENDERING[0] : aCover);
         if (aBehavior != null) sCoverBehaviors.put(new GT_ItemStack(aStack), aBehavior);
     }
 
@@ -909,7 +855,7 @@ public class GregTech_API {
      * @param aBehavior can be null
      */
     public static void registerCover(Collection<ItemStack> aStackList, ITexture aCover,
-            GT_CoverBehaviorBase<?> aBehavior) {
+        GT_CoverBehaviorBase<?> aBehavior) {
         if (aCover.isValidTexture())
             aStackList.forEach(tStack -> GregTech_API.registerCover(tStack, aCover, aBehavior));
     }
@@ -1058,10 +1004,9 @@ public class GregTech_API {
      */
     public static boolean registerTool(ItemStack aTool, Collection<GT_ItemStack> aToolList) {
         if (aTool == null || GT_Utility.isStackInList(aTool, sToolList)
-                || (!aTool.getItem()
-                          .isDamageable()
-                        && !GT_ModHandler.isElectricItem(aTool)
-                        && !(aTool.getItem() instanceof IDamagableItem)))
+            || (!aTool.getItem()
+                .isDamageable() && !GT_ModHandler.isElectricItem(aTool)
+                && !(aTool.getItem() instanceof IDamagableItem)))
             return false;
         aToolList.add(new GT_ItemStack(GT_Utility.copyAmount(1, aTool)));
         sToolList.add(new GT_ItemStack(GT_Utility.copyAmount(1, aTool)));
@@ -1091,7 +1036,7 @@ public class GregTech_API {
     public static void registerTileEntityConstructor(int meta, IntFunction<TileEntity> constructor) {
         if (meta < 0 || meta > 15 || constructor == null) throw new IllegalArgumentException();
         if (teCreators[meta] != null) throw new IllegalStateException(
-                "previous constructor: " + teCreators[meta] + " new constructor: " + constructor + " meta:" + meta);
+            "previous constructor: " + teCreators[meta] + " new constructor: " + constructor + " meta:" + meta);
         teCreators[meta] = constructor;
     }
 

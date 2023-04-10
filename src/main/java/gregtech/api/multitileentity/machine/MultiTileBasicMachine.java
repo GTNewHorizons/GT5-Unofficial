@@ -218,7 +218,7 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
         // `setCapacityMultiplier`
         for (int i = 0; i < inputTanks.length; i++) {
             inputTanks[i] = new FluidTankGT(capacity).setCapacityMultiplier(maxParallel * 2L)
-                                                     .readFromNBT(nbt, NBT.TANK_IN + i);
+                .readFromNBT(nbt, NBT.TANK_IN + i);
         }
         for (int i = 0; i < outputTanks.length; i++) {
             outputTanks[i] = new FluidTankGT().readFromNBT(nbt, NBT.TANK_OUT + i);
@@ -262,34 +262,33 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
         // Loading the registry
         final String textureName = aNBT.getString(NBT.TEXTURE);
         textures = new IIconContainer[] {
-                new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/bottom"),
-                new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/top"),
-                new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/left"),
-                new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/front"),
-                new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/right"),
-                new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/side") };
+            new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/bottom"),
+            new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/top"),
+            new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/left"),
+            new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/front"),
+            new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/right"),
+            new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/side") };
         texturesInactive = new IIconContainer[] {
-                new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/overlay/inactive/bottom"),
-                new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/overlay/inactive/top"),
-                new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/overlay/inactive/left"),
-                new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/overlay/inactive/front"),
-                new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/overlay/inactive/right"),
-                new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/overlay/inactive/back") };
+            new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/overlay/inactive/bottom"),
+            new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/overlay/inactive/top"),
+            new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/overlay/inactive/left"),
+            new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/overlay/inactive/front"),
+            new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/overlay/inactive/right"),
+            new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/overlay/inactive/back") };
         texturesActive = new IIconContainer[] {
-                new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/overlay/active/bottom"),
-                new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/overlay/active/top"),
-                new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/overlay/active/left"),
-                new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/overlay/active/front"),
-                new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/overlay/active/right"),
-                new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/overlay/active/back") };
+            new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/overlay/active/bottom"),
+            new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/overlay/active/top"),
+            new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/overlay/active/left"),
+            new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/overlay/active/front"),
+            new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/overlay/active/right"),
+            new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/overlay/active/back") };
     }
 
     @Override
     public void copyTextures() {
         // Loading an instance
-        final TileEntity tCanonicalTileEntity = MultiTileEntityRegistry.getCanonicalTileEntity(
-                getMultiTileEntityRegistryID(),
-                getMultiTileEntityID());
+        final TileEntity tCanonicalTileEntity = MultiTileEntityRegistry
+            .getCanonicalTileEntity(getMultiTileEntityRegistryID(), getMultiTileEntityID());
         if (tCanonicalTileEntity instanceof MultiTileBasicMachine) {
             textures = ((MultiTileBasicMachine) tCanonicalTileEntity).textures;
             texturesInactive = ((MultiTileBasicMachine) tCanonicalTileEntity).texturesInactive;
@@ -302,14 +301,13 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
     @Override
     public ITexture[] getTexture(Block aBlock, byte aSide, boolean isActive, int aRenderPass) {
         if (aSide != facing) {
-            return new ITexture[] { TextureFactory.of(
-                    textures[GT_Values.FACING_ROTATIONS[facing][aSide]],
-                    GT_Util.getRGBaArray(rgba)) };
+            return new ITexture[] {
+                TextureFactory.of(textures[GT_Values.FACING_ROTATIONS[facing][aSide]], GT_Util.getRGBaArray(rgba)) };
         }
         return new ITexture[] {
-                TextureFactory.of(textures[GT_Values.FACING_ROTATIONS[facing][aSide]], GT_Util.getRGBaArray(rgba)),
-                TextureFactory.of(
-                        (active ? texturesActive : texturesInactive)[GT_Values.FACING_ROTATIONS[facing][aSide]]) };
+            TextureFactory.of(textures[GT_Values.FACING_ROTATIONS[facing][aSide]], GT_Util.getRGBaArray(rgba)),
+            TextureFactory
+                .of((active ? texturesActive : texturesInactive)[GT_Values.FACING_ROTATIONS[facing][aSide]]) };
     }
 
     @Override
@@ -353,9 +351,9 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
     @Override
     public boolean isUseableByPlayer(EntityPlayer aPlayer) {
         return playerOwnsThis(aPlayer, false) && mTickTimer > 40
-                && getTileEntityOffset(0, 0, 0) == this
-                && aPlayer.getDistanceSq(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5) < 64
-                && allowInteraction(aPlayer);
+            && getTileEntityOffset(0, 0, 0) == this
+            && aPlayer.getDistanceSq(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5) < 64
+            && allowInteraction(aPlayer);
     }
 
     @Override
@@ -521,12 +519,12 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
         ProcessingLogic logic = ((ProcessingLogicHost) this).getProcessingLogic();
         logic.clear();
         boolean result = logic.setInputItems(
-                inputInventory.getStacks()
-                              .toArray(new ItemStack[0]))
-                              .setCurrentOutputItems(
-                                      outputInventory.getStacks()
-                                                     .toArray(new ItemStack[0]))
-                              .process();
+            inputInventory.getStacks()
+                .toArray(new ItemStack[0]))
+            .setCurrentOutputItems(
+                outputInventory.getStacks()
+                    .toArray(new ItemStack[0]))
+            .process();
         setDuration(logic.getDuration());
         setEut(logic.getEut());
         setItemOutputs(logic.getOutputItems());
@@ -573,13 +571,8 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
                 if (getProcessStartSound() != null)
                     GT_Utility.doSoundAtClient(getProcessStartSound(), getTimeBetweenProcessSounds(), 1.0F, aX, aY, aZ);
             }
-            case INTERRUPT_SOUND_INDEX -> GT_Utility.doSoundAtClient(
-                    SoundResource.IC2_MACHINES_INTERRUPT_ONE,
-                    100,
-                    1.0F,
-                    aX,
-                    aY,
-                    aZ);
+            case INTERRUPT_SOUND_INDEX -> GT_Utility
+                .doSoundAtClient(SoundResource.IC2_MACHINES_INTERRUPT_ONE, 100, 1.0F, aX, aY, aZ);
         }
     }
 
@@ -603,8 +596,8 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
             if (activitySoundLoop == null) {
                 activitySoundLoop = new GT_SoundLoop(activitySound, this, false, true);
                 Minecraft.getMinecraft()
-                         .getSoundHandler()
-                         .playSound(activitySoundLoop);
+                    .getSoundHandler()
+                    .playSound(activitySoundLoop);
             }
         } else {
             if (activitySoundLoop != null) {
@@ -765,10 +758,7 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
     protected void addDebugInfo(EntityPlayer player, int logLevel, ArrayList<String> list) {
         if (isElectric()) {
             list.add(
-                    "Energy: " + EnumChatFormatting.GOLD
-                            + getUniversalEnergyStored()
-                            + "/"
-                            + getUniversalEnergyCapacity());
+                "Energy: " + EnumChatFormatting.GOLD + getUniversalEnergyStored() + "/" + getUniversalEnergyCapacity());
         }
 
         if (acceptsFuel()) {
@@ -860,20 +850,20 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
             switch (soundEventValue) {
                 case PROCESS_START_SOUND_INDEX -> {
                     if (getProcessStartSound() != null) GT_Utility.doSoundAtClient(
-                            getProcessStartSound(),
-                            getTimeBetweenProcessSounds(),
-                            1.0F,
-                            getXCoord(),
-                            getYCoord(),
-                            getZCoord());
-                }
-                case INTERRUPT_SOUND_INDEX -> GT_Utility.doSoundAtClient(
-                        SoundResource.IC2_MACHINES_INTERRUPT_ONE,
-                        100,
+                        getProcessStartSound(),
+                        getTimeBetweenProcessSounds(),
                         1.0F,
                         getXCoord(),
                         getYCoord(),
                         getZCoord());
+                }
+                case INTERRUPT_SOUND_INDEX -> GT_Utility.doSoundAtClient(
+                    SoundResource.IC2_MACHINES_INTERRUPT_ONE,
+                    100,
+                    1.0F,
+                    getXCoord(),
+                    getYCoord(),
+                    getZCoord());
             }
         }
     }

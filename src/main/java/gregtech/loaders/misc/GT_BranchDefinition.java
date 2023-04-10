@@ -148,9 +148,9 @@ public enum GT_BranchDefinition {
 
     GT_BranchDefinition(String scientific, Consumer<IAllele[]> aBranchProperties) {
         this.branch = BeeManager.beeFactory.createBranch(
-                this.name()
-                    .toLowerCase(),
-                scientific);
+            this.name()
+                .toLowerCase(),
+            scientific);
         this.mBranchProperties = aBranchProperties;
     }
 

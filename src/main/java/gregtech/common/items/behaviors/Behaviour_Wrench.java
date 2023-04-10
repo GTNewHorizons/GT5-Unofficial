@@ -23,9 +23,8 @@ import ic2.api.tile.IWrenchable;
 public class Behaviour_Wrench extends Behaviour_None {
 
     private final int mCosts;
-    private final String mTooltip = GT_LanguageManager.addStringLocalization(
-            "gt.behaviour.wrench",
-            "Rotates Blocks on Rightclick");
+    private final String mTooltip = GT_LanguageManager
+        .addStringLocalization("gt.behaviour.wrench", "Rotates Blocks on Rightclick");
 
     public Behaviour_Wrench(int aCosts) {
         this.mCosts = aCosts;
@@ -33,7 +32,7 @@ public class Behaviour_Wrench extends Behaviour_None {
 
     @Override
     public boolean onItemUseFirst(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,
-            int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
+        int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
         if (aWorld.isRemote) {
             return false;
         }
@@ -48,7 +47,7 @@ public class Behaviour_Wrench extends Behaviour_None {
             if (((aTileEntity instanceof IWrenchable))) {
                 if (((IWrenchable) aTileEntity).wrenchCanSetFacing(aPlayer, aTargetSide)) {
                     if ((aPlayer.capabilities.isCreativeMode)
-                            || (((GT_MetaGenerated_Tool) aItem).doDamage(aStack, this.mCosts))) {
+                        || (((GT_MetaGenerated_Tool) aItem).doDamage(aStack, this.mCosts))) {
                         ((IWrenchable) aTileEntity).setFacing(aTargetSide);
                         GT_Utility.sendSoundToPlayers(aWorld, SoundResource.IC2_TOOLS_WRENCH, 1.0F, -1.0F, aX, aY, aZ);
                     }
@@ -57,15 +56,15 @@ public class Behaviour_Wrench extends Behaviour_None {
                 if (((IWrenchable) aTileEntity).wrenchCanRemove(aPlayer)) {
                     int tDamage = ((IWrenchable) aTileEntity).getWrenchDropRate() < 1.0F ? 10 : 3;
                     if ((aPlayer.capabilities.isCreativeMode)
-                            || (((GT_MetaGenerated_Tool) aItem).doDamage(aStack, (long) tDamage * this.mCosts))) {
+                        || (((GT_MetaGenerated_Tool) aItem).doDamage(aStack, (long) tDamage * this.mCosts))) {
                         ItemStack tOutput = ((IWrenchable) aTileEntity).getWrenchDrop(aPlayer);
                         for (ItemStack tStack : aBlock.getDrops(aWorld, aX, aY, aZ, aMeta, 0)) {
                             if (tOutput == null) {
                                 aWorld.spawnEntityInWorld(
-                                        new EntityItem(aWorld, aX + 0.5D, aY + 0.5D, aZ + 0.5D, tStack));
+                                    new EntityItem(aWorld, aX + 0.5D, aY + 0.5D, aZ + 0.5D, tStack));
                             } else {
                                 aWorld.spawnEntityInWorld(
-                                        new EntityItem(aWorld, aX + 0.5D, aY + 0.5D, aZ + 0.5D, tOutput));
+                                    new EntityItem(aWorld, aX + 0.5D, aY + 0.5D, aZ + 0.5D, tOutput));
                                 tOutput = null;
                             }
                         }
@@ -79,7 +78,7 @@ public class Behaviour_Wrench extends Behaviour_None {
         } catch (Throwable ignored) {}
         if ((aBlock == Blocks.log) || (aBlock == Blocks.log2) || (aBlock == Blocks.hay_block)) {
             if ((aPlayer.capabilities.isCreativeMode)
-                    || (((GT_MetaGenerated_Tool) aItem).doDamage(aStack, this.mCosts))) {
+                || (((GT_MetaGenerated_Tool) aItem).doDamage(aStack, this.mCosts))) {
                 aWorld.setBlockMetadataWithNotify(aX, aY, aZ, (aMeta + 4) % 12, 3);
                 GT_Utility.sendSoundToPlayers(aWorld, SoundResource.IC2_TOOLS_WRENCH, 1.0F, -1.0F, aX, aY, aZ);
             }
@@ -87,7 +86,7 @@ public class Behaviour_Wrench extends Behaviour_None {
         }
         if ((aBlock == Blocks.powered_repeater) || (aBlock == Blocks.unpowered_repeater)) {
             if ((aPlayer.capabilities.isCreativeMode)
-                    || (((GT_MetaGenerated_Tool) aItem).doDamage(aStack, this.mCosts))) {
+                || (((GT_MetaGenerated_Tool) aItem).doDamage(aStack, this.mCosts))) {
                 aWorld.setBlockMetadataWithNotify(aX, aY, aZ, aMeta / 4 * 4 + (aMeta % 4 + 1) % 4, 3);
                 GT_Utility.sendSoundToPlayers(aWorld, SoundResource.IC2_TOOLS_WRENCH, 1.0F, -1.0F, aX, aY, aZ);
             }
@@ -95,7 +94,7 @@ public class Behaviour_Wrench extends Behaviour_None {
         }
         if ((aBlock == Blocks.powered_comparator) || (aBlock == Blocks.unpowered_comparator)) {
             if ((aPlayer.capabilities.isCreativeMode)
-                    || (((GT_MetaGenerated_Tool) aItem).doDamage(aStack, this.mCosts))) {
+                || (((GT_MetaGenerated_Tool) aItem).doDamage(aStack, this.mCosts))) {
                 aWorld.setBlockMetadataWithNotify(aX, aY, aZ, aMeta / 4 * 4 + (aMeta % 4 + 1) % 4, 3);
                 GT_Utility.sendSoundToPlayers(aWorld, SoundResource.IC2_TOOLS_WRENCH, 1.0F, -1.0F, aX, aY, aZ);
             }
@@ -103,9 +102,9 @@ public class Behaviour_Wrench extends Behaviour_None {
         }
         if ((aBlock == Blocks.crafting_table) || (aBlock == Blocks.bookshelf)) {
             if ((aPlayer.capabilities.isCreativeMode)
-                    || (((GT_MetaGenerated_Tool) aItem).doDamage(aStack, this.mCosts))) {
+                || (((GT_MetaGenerated_Tool) aItem).doDamage(aStack, this.mCosts))) {
                 aWorld.spawnEntityInWorld(
-                        new EntityItem(aWorld, aX + 0.5D, aY + 0.5D, aZ + 0.5D, new ItemStack(aBlock, 1, aMeta)));
+                    new EntityItem(aWorld, aX + 0.5D, aY + 0.5D, aZ + 0.5D, new ItemStack(aBlock, 1, aMeta)));
                 aWorld.setBlockToAir(aX, aY, aZ);
                 GT_Utility.sendSoundToPlayers(aWorld, SoundResource.IC2_TOOLS_WRENCH, 1.0F, -1.0F, aX, aY, aZ);
             }
@@ -113,20 +112,20 @@ public class Behaviour_Wrench extends Behaviour_None {
         }
         if (aMeta == aTargetSide) {
             if ((aBlock == Blocks.pumpkin) || (aBlock == Blocks.lit_pumpkin)
-                    || (aBlock == Blocks.piston)
-                    || (aBlock == Blocks.sticky_piston)
-                    || (aBlock == Blocks.dispenser)
-                    || (aBlock == Blocks.dropper)
-                    || (aBlock == Blocks.furnace)
-                    || (aBlock == Blocks.lit_furnace)
-                    || (aBlock == Blocks.chest)
-                    || (aBlock == Blocks.trapped_chest)
-                    || (aBlock == Blocks.ender_chest)
-                    || (aBlock == Blocks.hopper)) {
+                || (aBlock == Blocks.piston)
+                || (aBlock == Blocks.sticky_piston)
+                || (aBlock == Blocks.dispenser)
+                || (aBlock == Blocks.dropper)
+                || (aBlock == Blocks.furnace)
+                || (aBlock == Blocks.lit_furnace)
+                || (aBlock == Blocks.chest)
+                || (aBlock == Blocks.trapped_chest)
+                || (aBlock == Blocks.ender_chest)
+                || (aBlock == Blocks.hopper)) {
                 if ((aPlayer.capabilities.isCreativeMode)
-                        || (((GT_MetaGenerated_Tool) aItem).doDamage(aStack, this.mCosts))) {
+                    || (((GT_MetaGenerated_Tool) aItem).doDamage(aStack, this.mCosts))) {
                     aWorld.spawnEntityInWorld(
-                            new EntityItem(aWorld, aX + 0.5D, aY + 0.5D, aZ + 0.5D, new ItemStack(aBlock, 1, 0)));
+                        new EntityItem(aWorld, aX + 0.5D, aY + 0.5D, aZ + 0.5D, new ItemStack(aBlock, 1, 0)));
                     aWorld.setBlockToAir(aX, aY, aZ);
                     GT_Utility.sendSoundToPlayers(aWorld, SoundResource.IC2_TOOLS_WRENCH, 1.0F, -1.0F, aX, aY, aZ);
                 }
@@ -134,23 +133,23 @@ public class Behaviour_Wrench extends Behaviour_None {
             }
         } else {
             if ((aBlock == Blocks.piston) || (aBlock == Blocks.sticky_piston)
-                    || (aBlock == Blocks.dispenser)
-                    || (aBlock == Blocks.dropper)) {
+                || (aBlock == Blocks.dispenser)
+                || (aBlock == Blocks.dropper)) {
                 if ((aMeta < 6) && ((aPlayer.capabilities.isCreativeMode)
-                        || (((GT_MetaGenerated_Tool) aItem).doDamage(aStack, this.mCosts)))) {
+                    || (((GT_MetaGenerated_Tool) aItem).doDamage(aStack, this.mCosts)))) {
                     aWorld.setBlockMetadataWithNotify(aX, aY, aZ, aTargetSide, 3);
                     GT_Utility.sendSoundToPlayers(aWorld, SoundResource.IC2_TOOLS_WRENCH, 1.0F, -1.0F, aX, aY, aZ);
                 }
                 return true;
             }
             if ((aBlock == Blocks.pumpkin) || (aBlock == Blocks.lit_pumpkin)
-                    || (aBlock == Blocks.furnace)
-                    || (aBlock == Blocks.lit_furnace)
-                    || (aBlock == Blocks.chest)
-                    || (aBlock == Blocks.ender_chest)
-                    || (aBlock == Blocks.trapped_chest)) {
+                || (aBlock == Blocks.furnace)
+                || (aBlock == Blocks.lit_furnace)
+                || (aBlock == Blocks.chest)
+                || (aBlock == Blocks.ender_chest)
+                || (aBlock == Blocks.trapped_chest)) {
                 if ((aTargetSide > 1) && ((aPlayer.capabilities.isCreativeMode)
-                        || (((GT_MetaGenerated_Tool) aItem).doDamage(aStack, this.mCosts)))) {
+                    || (((GT_MetaGenerated_Tool) aItem).doDamage(aStack, this.mCosts)))) {
                     aWorld.setBlockMetadataWithNotify(aX, aY, aZ, aTargetSide, 3);
                     GT_Utility.sendSoundToPlayers(aWorld, SoundResource.IC2_TOOLS_WRENCH, 1.0F, -1.0F, aX, aY, aZ);
                 }
@@ -158,7 +157,7 @@ public class Behaviour_Wrench extends Behaviour_None {
             }
             if (aBlock == Blocks.hopper) {
                 if ((aTargetSide != 1) && ((aPlayer.capabilities.isCreativeMode)
-                        || (((GT_MetaGenerated_Tool) aItem).doDamage(aStack, this.mCosts)))) {
+                    || (((GT_MetaGenerated_Tool) aItem).doDamage(aStack, this.mCosts)))) {
                     aWorld.setBlockMetadataWithNotify(aX, aY, aZ, aTargetSide, 3);
                     GT_Utility.sendSoundToPlayers(aWorld, SoundResource.IC2_TOOLS_WRENCH, 1.0F, -1.0F, aX, aY, aZ);
                 }
@@ -166,10 +165,10 @@ public class Behaviour_Wrench extends Behaviour_None {
             }
         }
         if ((Arrays.asList(aBlock.getValidRotations(aWorld, aX, aY, aZ))
-                   .contains(ForgeDirection.getOrientation(aTargetSide)))
-                && ((aPlayer.capabilities.isCreativeMode) || (!GT_ModHandler.isElectricItem(aStack))
-                        || (GT_ModHandler.canUseElectricItem(aStack, this.mCosts)))
-                && (aBlock.rotateBlock(aWorld, aX, aY, aZ, ForgeDirection.getOrientation(aTargetSide)))) {
+            .contains(ForgeDirection.getOrientation(aTargetSide)))
+            && ((aPlayer.capabilities.isCreativeMode) || (!GT_ModHandler.isElectricItem(aStack))
+                || (GT_ModHandler.canUseElectricItem(aStack, this.mCosts)))
+            && (aBlock.rotateBlock(aWorld, aX, aY, aZ, ForgeDirection.getOrientation(aTargetSide)))) {
             if (!aPlayer.capabilities.isCreativeMode) {
                 ((GT_MetaGenerated_Tool) aItem).doDamage(aStack, this.mCosts);
             }

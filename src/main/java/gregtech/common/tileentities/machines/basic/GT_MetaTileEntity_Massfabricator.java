@@ -32,75 +32,75 @@ public class GT_MetaTileEntity_Massfabricator extends GT_MetaTileEntity_BasicMac
 
     public GT_MetaTileEntity_Massfabricator(int aID, String aName, String aNameRegional, int aTier) {
         super(
-                aID,
-                aName,
-                aNameRegional,
-                aTier,
-                1,
-                "UUM = Matter * Fabrication Squared",
-                1,
-                1,
-                "Massfabricator.png",
-                "",
-                TextureFactory.of(
-                        TextureFactory.of(OVERLAY_SIDE_MASSFAB_ACTIVE),
-                        TextureFactory.builder()
-                                      .addIcon(OVERLAY_SIDE_MASSFAB_ACTIVE_GLOW)
-                                      .glow()
-                                      .build()),
-                TextureFactory.of(
-                        TextureFactory.of(OVERLAY_SIDE_MASSFAB),
-                        TextureFactory.builder()
-                                      .addIcon(OVERLAY_SIDE_MASSFAB_GLOW)
-                                      .glow()
-                                      .build()),
-                TextureFactory.of(
-                        TextureFactory.of(OVERLAY_FRONT_MASSFAB_ACTIVE),
-                        TextureFactory.builder()
-                                      .addIcon(OVERLAY_FRONT_MASSFAB_ACTIVE_GLOW)
-                                      .glow()
-                                      .build()),
-                TextureFactory.of(
-                        TextureFactory.of(OVERLAY_FRONT_MASSFAB),
-                        TextureFactory.builder()
-                                      .addIcon(OVERLAY_FRONT_MASSFAB_GLOW)
-                                      .glow()
-                                      .build()),
-                TextureFactory.of(
-                        TextureFactory.of(OVERLAY_TOP_MASSFAB_ACTIVE),
-                        TextureFactory.builder()
-                                      .addIcon(OVERLAY_TOP_MASSFAB_ACTIVE_GLOW)
-                                      .glow()
-                                      .build()),
-                TextureFactory.of(
-                        TextureFactory.of(OVERLAY_TOP_MASSFAB),
-                        TextureFactory.builder()
-                                      .addIcon(OVERLAY_TOP_MASSFAB_GLOW)
-                                      .glow()
-                                      .build()),
-                TextureFactory.of(
-                        TextureFactory.of(OVERLAY_BOTTOM_MASSFAB_ACTIVE),
-                        TextureFactory.builder()
-                                      .addIcon(OVERLAY_BOTTOM_MASSFAB_ACTIVE_GLOW)
-                                      .glow()
-                                      .build()),
-                TextureFactory.of(
-                        TextureFactory.of(OVERLAY_BOTTOM_MASSFAB),
-                        TextureFactory.builder()
-                                      .addIcon(OVERLAY_BOTTOM_MASSFAB_GLOW)
-                                      .glow()
-                                      .build()));
+            aID,
+            aName,
+            aNameRegional,
+            aTier,
+            1,
+            "UUM = Matter * Fabrication Squared",
+            1,
+            1,
+            "Massfabricator.png",
+            "",
+            TextureFactory.of(
+                TextureFactory.of(OVERLAY_SIDE_MASSFAB_ACTIVE),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_SIDE_MASSFAB_ACTIVE_GLOW)
+                    .glow()
+                    .build()),
+            TextureFactory.of(
+                TextureFactory.of(OVERLAY_SIDE_MASSFAB),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_SIDE_MASSFAB_GLOW)
+                    .glow()
+                    .build()),
+            TextureFactory.of(
+                TextureFactory.of(OVERLAY_FRONT_MASSFAB_ACTIVE),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_MASSFAB_ACTIVE_GLOW)
+                    .glow()
+                    .build()),
+            TextureFactory.of(
+                TextureFactory.of(OVERLAY_FRONT_MASSFAB),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_MASSFAB_GLOW)
+                    .glow()
+                    .build()),
+            TextureFactory.of(
+                TextureFactory.of(OVERLAY_TOP_MASSFAB_ACTIVE),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_TOP_MASSFAB_ACTIVE_GLOW)
+                    .glow()
+                    .build()),
+            TextureFactory.of(
+                TextureFactory.of(OVERLAY_TOP_MASSFAB),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_TOP_MASSFAB_GLOW)
+                    .glow()
+                    .build()),
+            TextureFactory.of(
+                TextureFactory.of(OVERLAY_BOTTOM_MASSFAB_ACTIVE),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_BOTTOM_MASSFAB_ACTIVE_GLOW)
+                    .glow()
+                    .build()),
+            TextureFactory.of(
+                TextureFactory.of(OVERLAY_BOTTOM_MASSFAB),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_BOTTOM_MASSFAB_GLOW)
+                    .glow()
+                    .build()));
         EUt = V[1] * (long) Math.pow(2, mTier + 2);
     }
 
     public GT_MetaTileEntity_Massfabricator(String aName, int aTier, String aDescription, ITexture[][][] aTextures,
-            String aGUIName, String aNEIName) {
+        String aGUIName, String aNEIName) {
         super(aName, aTier, 1, aDescription, aTextures, 1, 1, aGUIName, aNEIName);
         EUt = V[1] * (long) Math.pow(2, mTier + 2);
     }
 
     public GT_MetaTileEntity_Massfabricator(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures,
-            String aGUIName, String aNEIName) {
+        String aGUIName, String aNEIName) {
         super(aName, aTier, 1, aDescription, aTextures, 1, 1, aGUIName, aNEIName);
         EUt = V[1] * (long) Math.pow(2, mTier + 2);
     }
@@ -108,12 +108,12 @@ public class GT_MetaTileEntity_Massfabricator extends GT_MetaTileEntity_BasicMac
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_Massfabricator(
-                this.mName,
-                this.mTier,
-                this.mDescriptionArray,
-                this.mTextures,
-                this.mGUIName,
-                this.mNEIName);
+            this.mName,
+            this.mTier,
+            this.mDescriptionArray,
+            this.mTextures,
+            this.mGUIName,
+            this.mNEIName);
     }
 
     @Override
@@ -129,10 +129,8 @@ public class GT_MetaTileEntity_Massfabricator extends GT_MetaTileEntity_BasicMac
     @Override
     public void onConfigLoad(GT_Config aConfig) {
         super.onConfigLoad(aConfig);
-        sDurationMultiplier = aConfig.get(
-                ConfigCategories.machineconfig,
-                "Massfabricator.UUM_Duration_Multiplier",
-                sDurationMultiplier);
+        sDurationMultiplier = aConfig
+            .get(ConfigCategories.machineconfig, "Massfabricator.UUM_Duration_Multiplier", sDurationMultiplier);
         sUUAperUUM = aConfig.get(ConfigCategories.machineconfig, "Massfabricator.UUA_per_UUM", sUUAperUUM);
         sUUASpeedBonus = aConfig.get(ConfigCategories.machineconfig, "Massfabricator.UUA_Speed_Bonus", sUUASpeedBonus);
         sRequiresUUA = aConfig.get(ConfigCategories.machineconfig, "Massfabricator.UUA_Requirement", sRequiresUUA);
@@ -155,8 +153,8 @@ public class GT_MetaTileEntity_Massfabricator extends GT_MetaTileEntity_BasicMac
         if ((tFluid == null) || (tFluid.amount < getCapacity())) {
             this.mOutputFluid = Materials.UUMatter.getFluid(1L);
             calculateOverclockedNess(
-                    (int) EUt,
-                    containsUUA(getFillableStack()) ? sDurationMultiplier / sUUASpeedBonus : sDurationMultiplier);
+                (int) EUt,
+                containsUUA(getFillableStack()) ? sDurationMultiplier / sUUASpeedBonus : sDurationMultiplier);
             // In case recipe is too OP for that machine
             if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1)
                 return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
@@ -165,9 +163,9 @@ public class GT_MetaTileEntity_Massfabricator extends GT_MetaTileEntity_BasicMac
                 return FOUND_AND_SUCCESSFULLY_USED_RECIPE;
             }
             return sRequiresUUA || Arrays.stream(getAllInputs())
-                                         .anyMatch(s -> ItemList.Circuit_Integrated.isStackEqual(s, true, true))
-                                                 ? FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS
-                                                 : FOUND_AND_SUCCESSFULLY_USED_RECIPE;
+                .anyMatch(s -> ItemList.Circuit_Integrated.isStackEqual(s, true, true))
+                    ? FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS
+                    : FOUND_AND_SUCCESSFULLY_USED_RECIPE;
         }
         return DID_NOT_FIND_RECIPE;
     }

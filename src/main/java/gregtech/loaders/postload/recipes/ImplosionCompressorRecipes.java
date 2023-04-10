@@ -22,36 +22,36 @@ public class ImplosionCompressorRecipes implements Runnable {
     @Override
     public void run() {
         addImplosionRecipe(
-                ItemList.IC2_Compressed_Coal_Chunk.get(1L),
-                8,
-                new ItemStack[] { ItemList.IC2_Industrial_Diamond.get(1L),
-                        GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 4L) });
+            ItemList.IC2_Compressed_Coal_Chunk.get(1L),
+            8,
+            new ItemStack[] { ItemList.IC2_Industrial_Diamond.get(1L),
+                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 4L) });
 
         addImplosionRecipe(
-                ItemList.Ingot_IridiumAlloy.get(1L),
-                8,
-                new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.plateAlloy, Materials.Iridium, 1L),
-                        GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 4L) });
+            ItemList.Ingot_IridiumAlloy.get(1L),
+            8,
+            new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.plateAlloy, Materials.Iridium, 1L),
+                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 4L) });
 
         if (GalacticraftMars.isModLoaded()) {
 
             addImplosionRecipe(
-                    ItemList.Ingot_Heavy1.get(1L),
-                    8,
-                    new ItemStack[] { getModItem(GalacticraftCore.ID, "item.heavyPlating", 1L),
-                            GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.StainlessSteel, 1L) });
+                ItemList.Ingot_Heavy1.get(1L),
+                8,
+                new ItemStack[] { getModItem(GalacticraftCore.ID, "item.heavyPlating", 1L),
+                    GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.StainlessSteel, 1L) });
 
             addImplosionRecipe(
-                    ItemList.Ingot_Heavy2.get(1L),
-                    16,
-                    new ItemStack[] { getModItem(GalacticraftMars.ID, "item.null", 1L, 3),
-                            GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.TungstenSteel, 2L) });
+                ItemList.Ingot_Heavy2.get(1L),
+                16,
+                new ItemStack[] { getModItem(GalacticraftMars.ID, "item.null", 1L, 3),
+                    GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.TungstenSteel, 2L) });
 
             addImplosionRecipe(
-                    ItemList.Ingot_Heavy3.get(1L),
-                    24,
-                    new ItemStack[] { getModItem(GalacticraftMars.ID, "item.itemBasicAsteroids", 1L),
-                            GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Platinum, 3L) });
+                ItemList.Ingot_Heavy3.get(1L),
+                24,
+                new ItemStack[] { getModItem(GalacticraftMars.ID, "item.itemBasicAsteroids", 1L),
+                    GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Platinum, 3L) });
         }
     }
 
@@ -65,42 +65,42 @@ public class ImplosionCompressorRecipes implements Runnable {
 
         if (tGunpowder < 65) {
             GT_Values.RA.stdBuilder()
-                        .itemInputs(input, ItemList.Block_Powderbarrel.get(tGunpowder))
-                        .itemOutputs(outputs)
-                        .noFluidInputs()
-                        .noFluidOutputs()
-                        .duration(1 * SECONDS)
-                        .eut(TierEU.RECIPE_LV)
-                        .addTo(sImplosionRecipes);
+                .itemInputs(input, ItemList.Block_Powderbarrel.get(tGunpowder))
+                .itemOutputs(outputs)
+                .noFluidInputs()
+                .noFluidOutputs()
+                .duration(1 * SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(sImplosionRecipes);
         }
 
         if (tDynamite < 17) {
             GT_Values.RA.stdBuilder()
-                        .itemInputs(input, GT_ModHandler.getIC2Item("dynamite", tDynamite, null))
-                        .itemOutputs(outputs)
-                        .noFluidInputs()
-                        .noFluidOutputs()
-                        .duration(1 * SECONDS)
-                        .eut(TierEU.RECIPE_LV)
-                        .addTo(sImplosionRecipes);
+                .itemInputs(input, GT_ModHandler.getIC2Item("dynamite", tDynamite, null))
+                .itemOutputs(outputs)
+                .noFluidInputs()
+                .noFluidOutputs()
+                .duration(1 * SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(sImplosionRecipes);
         }
 
         GT_Values.RA.stdBuilder()
-                    .itemInputs(input, new ItemStack(Blocks.tnt, tTNT))
-                    .itemOutputs(outputs)
-                    .noFluidInputs()
-                    .noFluidOutputs()
-                    .duration(1 * SECONDS)
-                    .eut(TierEU.RECIPE_LV)
-                    .addTo(sImplosionRecipes);
+            .itemInputs(input, new ItemStack(Blocks.tnt, tTNT))
+            .itemOutputs(outputs)
+            .noFluidInputs()
+            .noFluidOutputs()
+            .duration(1 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(sImplosionRecipes);
 
         GT_Values.RA.stdBuilder()
-                    .itemInputs(input, GT_ModHandler.getIC2Item("industrialTnt", tITNT))
-                    .itemOutputs(outputs)
-                    .noFluidInputs()
-                    .noFluidOutputs()
-                    .duration(1 * SECONDS)
-                    .eut(TierEU.RECIPE_LV)
-                    .addTo(sImplosionRecipes);
+            .itemInputs(input, GT_ModHandler.getIC2Item("industrialTnt", tITNT))
+            .itemOutputs(outputs)
+            .noFluidInputs()
+            .noFluidOutputs()
+            .duration(1 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(sImplosionRecipes);
     }
 }

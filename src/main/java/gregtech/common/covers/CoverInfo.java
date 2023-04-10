@@ -49,7 +49,7 @@ public final class CoverInfo {
         coverID = aNBT.getInteger(NBT_ID);
         coverBehavior = GregTech_API.getCoverBehaviorNew(coverID);
         coverData = aNBT.hasKey(NBT_DATA) ? coverBehavior.createDataObject(aNBT.getTag(NBT_DATA))
-                : coverBehavior.createDataObject();
+            : coverBehavior.createDataObject();
         coveredTile = new WeakReference<>(aTile);
     }
 
@@ -136,13 +136,8 @@ public final class CoverInfo {
     }
 
     public ISerializableObject doCoverThings(long aTickTimer, byte aRedstone) {
-        return getCoverBehavior().doCoverThings(
-                coverSide,
-                aRedstone,
-                coverID,
-                coverData,
-                coveredTile.get(),
-                aTickTimer);
+        return getCoverBehavior()
+            .doCoverThings(coverSide, aRedstone, coverID, coverData, coveredTile.get(), aTickTimer);
     }
 
     public void onBaseTEDestroyed() {
@@ -167,11 +162,11 @@ public final class CoverInfo {
 
     public ModularWindow createWindow(EntityPlayer player) {
         final GT_CoverUIBuildContext buildContext = new GT_CoverUIBuildContext(
-                player,
-                coverID,
-                coverSide,
-                coveredTile.get(),
-                true);
+            player,
+            coverID,
+            coverSide,
+            coveredTile.get(),
+            true);
         return getCoverBehavior().createWindow(buildContext);
     }
 
@@ -224,15 +219,8 @@ public final class CoverInfo {
     }
 
     public boolean onCoverRightClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        return getCoverBehavior().onCoverRightClick(
-                coverSide,
-                coverID,
-                coverData,
-                coveredTile.get(),
-                aPlayer,
-                aX,
-                aY,
-                aZ);
+        return getCoverBehavior()
+            .onCoverRightClick(coverSide, coverID, coverData, coveredTile.get(), aPlayer, aX, aY, aZ);
     }
 
     public boolean onCoverShiftRightClick(EntityPlayer aPlayer) {
@@ -240,15 +228,8 @@ public final class CoverInfo {
     }
 
     public ISerializableObject onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        return getCoverBehavior().onCoverScrewdriverClick(
-                coverSide,
-                coverID,
-                coverData,
-                coveredTile.get(),
-                aPlayer,
-                aX,
-                aY,
-                aZ);
+        return getCoverBehavior()
+            .onCoverScrewdriverClick(coverSide, coverID, coverData, coveredTile.get(), aPlayer, aX, aY, aZ);
     }
 
     public Block getFacadeBlock() {

@@ -26,21 +26,21 @@ public class ExtraIcons {
         TextureMap reg = event.map;
         if (reg.getTextureType() == 1) { // are for items
             steelLargeCellInner = reg.registerIcon(GregTech.getResourcePath(LARGE_FLUID_CELL_CUSTOM, "steel_inner"));
-            aluminiumLargeCellInner = reg.registerIcon(
-                    GregTech.getResourcePath(LARGE_FLUID_CELL_CUSTOM, "aluminium_inner"));
-            stainlesssteelLargeCellInner = reg.registerIcon(
-                    GregTech.getResourcePath(LARGE_FLUID_CELL_CUSTOM, "stainlesssteel_inner"));
-            tungstensteelLargeCellInner = reg.registerIcon(
-                    GregTech.getResourcePath(LARGE_FLUID_CELL_CUSTOM, "tungstensteel_inner"));
-            titaniumLargeCellInner = reg.registerIcon(
-                    GregTech.getResourcePath(LARGE_FLUID_CELL_CUSTOM, "titanium_inner"));
-            chromiumLargeCellInner = reg.registerIcon(
-                    GregTech.getResourcePath(LARGE_FLUID_CELL_CUSTOM, "chromium_inner"));
-            iridiumLargeCellInner = reg.registerIcon(
-                    GregTech.getResourcePath(LARGE_FLUID_CELL_CUSTOM, "iridium_inner"));
+            aluminiumLargeCellInner = reg
+                .registerIcon(GregTech.getResourcePath(LARGE_FLUID_CELL_CUSTOM, "aluminium_inner"));
+            stainlesssteelLargeCellInner = reg
+                .registerIcon(GregTech.getResourcePath(LARGE_FLUID_CELL_CUSTOM, "stainlesssteel_inner"));
+            tungstensteelLargeCellInner = reg
+                .registerIcon(GregTech.getResourcePath(LARGE_FLUID_CELL_CUSTOM, "tungstensteel_inner"));
+            titaniumLargeCellInner = reg
+                .registerIcon(GregTech.getResourcePath(LARGE_FLUID_CELL_CUSTOM, "titanium_inner"));
+            chromiumLargeCellInner = reg
+                .registerIcon(GregTech.getResourcePath(LARGE_FLUID_CELL_CUSTOM, "chromium_inner"));
+            iridiumLargeCellInner = reg
+                .registerIcon(GregTech.getResourcePath(LARGE_FLUID_CELL_CUSTOM, "iridium_inner"));
             osmiumLargeCellInner = reg.registerIcon(GregTech.getResourcePath(LARGE_FLUID_CELL_CUSTOM, "osmium_inner"));
-            neutroniumLargeCellInner = reg.registerIcon(
-                    GregTech.getResourcePath(LARGE_FLUID_CELL_CUSTOM, "neutronium_inner"));
+            neutroniumLargeCellInner = reg
+                .registerIcon(GregTech.getResourcePath(LARGE_FLUID_CELL_CUSTOM, "neutronium_inner"));
         }
     }
 }

@@ -16,17 +16,10 @@ public class GT_NeutronReflector_Item extends GT_Generic_Item implements IReacto
 
     @Override
     public boolean acceptUraniumPulse(IReactor reactor, ItemStack yourStack, ItemStack pulsingStack, int youX, int youY,
-            int pulseX, int pulseY, boolean heatrun) {
+        int pulseX, int pulseY, boolean heatrun) {
         if (!heatrun) {
-            ((IReactorComponent) pulsingStack.getItem()).acceptUraniumPulse(
-                    reactor,
-                    pulsingStack,
-                    yourStack,
-                    pulseX,
-                    pulseY,
-                    youX,
-                    youY,
-                    heatrun);
+            ((IReactorComponent) pulsingStack.getItem())
+                .acceptUraniumPulse(reactor, pulsingStack, yourStack, pulseX, pulseY, youX, youY, heatrun);
         }
         return true;
     }

@@ -12,10 +12,10 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
  * A multiblock with tooltip {@link GT_Multiblock_Tooltip_Builder}
  */
 public abstract class GT_MetaTileEntity_TooltipMultiBlockBase extends GT_MetaTileEntity_MultiBlockBase
-        implements ISecondaryDescribable {
+    implements ISecondaryDescribable {
 
     private static final AtomicReferenceArray<GT_Multiblock_Tooltip_Builder> tooltips = new AtomicReferenceArray<>(
-            GregTech_API.METATILEENTITIES.length);
+        GregTech_API.METATILEENTITIES.length);
 
     public GT_MetaTileEntity_TooltipMultiBlockBase(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);

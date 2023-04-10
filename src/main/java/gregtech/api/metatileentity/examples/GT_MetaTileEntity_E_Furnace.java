@@ -20,73 +20,73 @@ public class GT_MetaTileEntity_E_Furnace extends GT_MetaTileEntity_BasicMachine 
 
     public GT_MetaTileEntity_E_Furnace(int aID, String aName, String aNameRegional, int aTier) {
         super(
-                aID,
-                aName,
-                aNameRegional,
-                aTier,
-                1,
-                "Not like using a Commodore 64",
-                1,
-                1,
-                "E_Furnace.png",
-                "smelting",
-                TextureFactory.of(
-                        TextureFactory.of(OVERLAY_SIDE_STEAM_FURNACE_ACTIVE),
-                        TextureFactory.builder()
-                                      .addIcon(OVERLAY_SIDE_STEAM_FURNACE_ACTIVE_GLOW)
-                                      .glow()
-                                      .build()),
-                TextureFactory.of(
-                        TextureFactory.of(OVERLAY_SIDE_STEAM_FURNACE),
-                        TextureFactory.builder()
-                                      .addIcon(OVERLAY_SIDE_STEAM_FURNACE_GLOW)
-                                      .glow()
-                                      .build()),
-                TextureFactory.of(
-                        TextureFactory.of(OVERLAY_FRONT_STEAM_FURNACE_ACTIVE),
-                        TextureFactory.builder()
-                                      .addIcon(OVERLAY_FRONT_STEAM_FURNACE_ACTIVE_GLOW)
-                                      .glow()
-                                      .build()),
-                TextureFactory.of(
-                        TextureFactory.of(OVERLAY_FRONT_STEAM_FURNACE),
-                        TextureFactory.builder()
-                                      .addIcon(OVERLAY_FRONT_STEAM_FURNACE_GLOW)
-                                      .glow()
-                                      .build()),
-                TextureFactory.of(
-                        TextureFactory.of(OVERLAY_TOP_STEAM_FURNACE_ACTIVE),
-                        TextureFactory.builder()
-                                      .addIcon(OVERLAY_TOP_STEAM_FURNACE_ACTIVE_GLOW)
-                                      .glow()
-                                      .build()),
-                TextureFactory.of(
-                        TextureFactory.of(OVERLAY_TOP_STEAM_FURNACE),
-                        TextureFactory.builder()
-                                      .addIcon(OVERLAY_TOP_STEAM_FURNACE_GLOW)
-                                      .glow()
-                                      .build()),
-                TextureFactory.of(
-                        TextureFactory.of(OVERLAY_BOTTOM_STEAM_FURNACE_ACTIVE),
-                        TextureFactory.builder()
-                                      .addIcon(OVERLAY_BOTTOM_STEAM_FURNACE_ACTIVE_GLOW)
-                                      .glow()
-                                      .build()),
-                TextureFactory.of(
-                        TextureFactory.of(OVERLAY_BOTTOM_STEAM_FURNACE),
-                        TextureFactory.builder()
-                                      .addIcon(OVERLAY_BOTTOM_STEAM_FURNACE_GLOW)
-                                      .glow()
-                                      .build()));
+            aID,
+            aName,
+            aNameRegional,
+            aTier,
+            1,
+            "Not like using a Commodore 64",
+            1,
+            1,
+            "E_Furnace.png",
+            "smelting",
+            TextureFactory.of(
+                TextureFactory.of(OVERLAY_SIDE_STEAM_FURNACE_ACTIVE),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_SIDE_STEAM_FURNACE_ACTIVE_GLOW)
+                    .glow()
+                    .build()),
+            TextureFactory.of(
+                TextureFactory.of(OVERLAY_SIDE_STEAM_FURNACE),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_SIDE_STEAM_FURNACE_GLOW)
+                    .glow()
+                    .build()),
+            TextureFactory.of(
+                TextureFactory.of(OVERLAY_FRONT_STEAM_FURNACE_ACTIVE),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_STEAM_FURNACE_ACTIVE_GLOW)
+                    .glow()
+                    .build()),
+            TextureFactory.of(
+                TextureFactory.of(OVERLAY_FRONT_STEAM_FURNACE),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_STEAM_FURNACE_GLOW)
+                    .glow()
+                    .build()),
+            TextureFactory.of(
+                TextureFactory.of(OVERLAY_TOP_STEAM_FURNACE_ACTIVE),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_TOP_STEAM_FURNACE_ACTIVE_GLOW)
+                    .glow()
+                    .build()),
+            TextureFactory.of(
+                TextureFactory.of(OVERLAY_TOP_STEAM_FURNACE),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_TOP_STEAM_FURNACE_GLOW)
+                    .glow()
+                    .build()),
+            TextureFactory.of(
+                TextureFactory.of(OVERLAY_BOTTOM_STEAM_FURNACE_ACTIVE),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_BOTTOM_STEAM_FURNACE_ACTIVE_GLOW)
+                    .glow()
+                    .build()),
+            TextureFactory.of(
+                TextureFactory.of(OVERLAY_BOTTOM_STEAM_FURNACE),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_BOTTOM_STEAM_FURNACE_GLOW)
+                    .glow()
+                    .build()));
     }
 
     public GT_MetaTileEntity_E_Furnace(String aName, int aTier, String aDescription, ITexture[][][] aTextures,
-            String aGUIName, String aNEIName) {
+        String aGUIName, String aNEIName) {
         super(aName, aTier, 1, aDescription, aTextures, 1, 1, aGUIName, aNEIName);
     }
 
     public GT_MetaTileEntity_E_Furnace(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures,
-            String aGUIName, String aNEIName) {
+        String aGUIName, String aNEIName) {
         super(aName, aTier, 1, aDescription, aTextures, 1, 1, aGUIName, aNEIName);
     }
 
@@ -108,9 +108,9 @@ public class GT_MetaTileEntity_E_Furnace extends GT_MetaTileEntity_BasicMachine 
 
     @Override
     protected boolean allowPutStackValidated(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide,
-            ItemStack aStack) {
+        ItemStack aStack) {
         return super.allowPutStackValidated(aBaseMetaTileEntity, aIndex, aSide, aStack)
-                && GT_ModHandler.getSmeltingOutput(GT_Utility.copyAmount(64, aStack), false, null) != null;
+            && GT_ModHandler.getSmeltingOutput(GT_Utility.copyAmount(64, aStack), false, null) != null;
     }
 
     @Override

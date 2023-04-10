@@ -7,7 +7,7 @@ import gregtech.api.logic.PowerLogic;
 import gregtech.api.logic.interfaces.PowerLogicHost;
 
 public abstract class MultiBlockPowerController<T extends MultiBlockPowerController<T>> extends MultiBlockController<T>
-        implements PowerLogicHost {
+    implements PowerLogicHost {
 
     public MultiBlockPowerController() {
         super();

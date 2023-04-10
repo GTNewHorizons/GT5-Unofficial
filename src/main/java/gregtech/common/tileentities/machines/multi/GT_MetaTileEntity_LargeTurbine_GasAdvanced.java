@@ -31,39 +31,39 @@ public class GT_MetaTileEntity_LargeTurbine_GasAdvanced extends GT_MetaTileEntit
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-            boolean aActive, boolean aRedstone) {
-        return new ITexture[] { MACHINE_CASINGS[1][aColorIndex + 1], aFacing
-                == aSide ? (aActive ? TextureFactory.builder()
-                                                    .addIcon(LARGETURBINE_NEW_ACTIVE5)
-                                                    .build()
-                        : hasTurbine() ? TextureFactory.builder()
-                                                       .addIcon(LARGETURBINE_NEW5)
-                                                       .build()
-                                : TextureFactory.builder()
-                                                .addIcon(LARGETURBINE_NEW_EMPTY5)
-                                                .build())
-                        : casingTexturePages[1][57] };
+        boolean aActive, boolean aRedstone) {
+        return new ITexture[] { MACHINE_CASINGS[1][aColorIndex + 1],
+            aFacing == aSide ? (aActive ? TextureFactory.builder()
+                .addIcon(LARGETURBINE_NEW_ACTIVE5)
+                .build()
+                : hasTurbine() ? TextureFactory.builder()
+                    .addIcon(LARGETURBINE_NEW5)
+                    .build()
+                    : TextureFactory.builder()
+                        .addIcon(LARGETURBINE_NEW_EMPTY5)
+                        .build())
+                : casingTexturePages[1][57] };
     }
 
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Gas Turbine")
-          .addInfo("Warning: This is an experimental multiblock, subject to changes ")
-          .addInfo("Controller block for the Large Advanced Gas Turbine")
-          .addInfo("Needs a Turbine, place inside controller")
-          .addInfo("Only accepts gases above 800k EU/bucket")
-          .addInfo("Has no maximum EU/t output, only depends on the Dynamo Hatch")
-          .addPollutionAmount(getPollutionPerSecond(null))
-          .addSeparator()
-          .beginStructureBlock(3, 3, 4, true)
-          .addController("Front center")
-          .addCasingInfoRange("Advanced Gas Turbine Casing", 8, 30, false)
-          .addDynamoHatch("Back center", 1)
-          .addMaintenanceHatch("Side centered", 2)
-          .addMufflerHatch("Side centered", 2)
-          .addInputHatch("Gas Fuel, Side centered", 2)
-          .toolTipFinisher("Gregtech");
+            .addInfo("Warning: This is an experimental multiblock, subject to changes ")
+            .addInfo("Controller block for the Large Advanced Gas Turbine")
+            .addInfo("Needs a Turbine, place inside controller")
+            .addInfo("Only accepts gases above 800k EU/bucket")
+            .addInfo("Has no maximum EU/t output, only depends on the Dynamo Hatch")
+            .addPollutionAmount(getPollutionPerSecond(null))
+            .addSeparator()
+            .beginStructureBlock(3, 3, 4, true)
+            .addController("Front center")
+            .addCasingInfoRange("Advanced Gas Turbine Casing", 8, 30, false)
+            .addDynamoHatch("Back center", 1)
+            .addMaintenanceHatch("Side centered", 2)
+            .addMufflerHatch("Side centered", 2)
+            .addInputHatch("Gas Fuel, Side centered", 2)
+            .toolTipFinisher("Gregtech");
         return tt;
     }
 
@@ -106,7 +106,7 @@ public class GT_MetaTileEntity_LargeTurbine_GasAdvanced extends GT_MetaTileEntit
 
     @Override
     int fluidIntoPower(ArrayList<FluidStack> aFluids, int aOptFlow, int aBaseEff, int overflowMultiplier,
-            float[] flowMultipliers) {
+        float[] flowMultipliers) {
         if (aFluids.size() >= 1) {
             int tEU = 0;
             int actualOptimalFlow = 0;
@@ -187,7 +187,7 @@ public class GT_MetaTileEntity_LargeTurbine_GasAdvanced extends GT_MetaTileEntit
 
         if (totalFlow > actualOptimalFlow) {
             efficiency = 1.0f - Math.abs((totalFlow - actualOptimalFlow))
-                    / ((float) actualOptimalFlow * ((overflowMultiplier * 3) - 1));
+                / ((float) actualOptimalFlow * ((overflowMultiplier * 3) - 1));
         } else {
             efficiency = 1.0f - Math.abs((totalFlow - actualOptimalFlow) / (float) actualOptimalFlow);
         }

@@ -19,7 +19,7 @@ public interface IGT_RegisteredFluid {
      */
     @SuppressWarnings("UnusedReturnValue") // Last call in chain, may not use this returned value
     IGT_RegisteredFluid registerContainers(final ItemStack fullContainer, final ItemStack emptyContainer,
-            final int containerSize);
+        final int containerSize);
 
     /**
      * Registers the bucket-sized 1000L containers in the {@link FluidContainerRegistry} for this

@@ -28,13 +28,13 @@ public class Behaviour_None implements IItemBehaviour<GT_MetaBase_Item> {
 
     @Override
     public boolean onItemUse(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,
-            int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
+        int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
         return false;
     }
 
     @Override
     public boolean onItemUseFirst(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,
-            int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
+        int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
         return false;
     }
 
@@ -50,7 +50,7 @@ public class Behaviour_None implements IItemBehaviour<GT_MetaBase_Item> {
 
     @Override
     public void onUpdate(GT_MetaBase_Item aItem, ItemStack aStack, World aWorld, Entity aPlayer, int aTimer,
-            boolean aIsInHand) {}
+        boolean aIsInHand) {}
 
     @Override
     public boolean isItemStackUsable(GT_MetaBase_Item aItem, ItemStack aStack) {
@@ -78,13 +78,13 @@ public class Behaviour_None implements IItemBehaviour<GT_MetaBase_Item> {
 
     @Override
     public EntityArrow getProjectile(GT_MetaBase_Item aItem, SubTag aProjectileType, ItemStack aStack, World aWorld,
-            double aX, double aY, double aZ) {
+        double aX, double aY, double aZ) {
         return null;
     }
 
     @Override
     public EntityArrow getProjectile(GT_MetaBase_Item aItem, SubTag aProjectileType, ItemStack aStack, World aWorld,
-            EntityLivingBase aEntity, float aSpeed) {
+        EntityLivingBase aEntity, float aSpeed) {
         return null;
     }
 

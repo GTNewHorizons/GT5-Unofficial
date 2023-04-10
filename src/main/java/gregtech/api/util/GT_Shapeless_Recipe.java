@@ -17,7 +17,7 @@ public class GT_Shapeless_Recipe extends ShapelessOreRecipe implements IGT_Craft
     private final int[] mEnchantmentLevelsAdded;
 
     public GT_Shapeless_Recipe(ItemStack aResult, boolean aDismantleAble, boolean aRemovableByGT, boolean aKeepingNBT,
-            Enchantment[] aEnchantmentsAdded, int[] aEnchantmentLevelsAdded, Object... aRecipe) {
+        Enchantment[] aEnchantmentsAdded, int[] aEnchantmentLevelsAdded, Object... aRecipe) {
         super(aResult, aRecipe);
         mEnchantmentsAdded = aEnchantmentsAdded;
         mEnchantmentLevelsAdded = aEnchantmentLevelsAdded;
@@ -33,11 +33,11 @@ public class GT_Shapeless_Recipe extends ShapelessOreRecipe implements IGT_Craft
                 if (aGrid.getStackInSlot(i) != null) {
                     if (tStack != null) {
                         if ((tStack.hasTagCompound() != aGrid.getStackInSlot(i)
-                                                             .hasTagCompound())
-                                || (tStack.hasTagCompound() && !tStack.getTagCompound()
-                                                                      .equals(
-                                                                              aGrid.getStackInSlot(i)
-                                                                                   .getTagCompound())))
+                            .hasTagCompound()) || (tStack.hasTagCompound()
+                                && !tStack.getTagCompound()
+                                    .equals(
+                                        aGrid.getStackInSlot(i)
+                                            .getTagCompound())))
                             return false;
                     }
                     tStack = aGrid.getStackInSlot(i);
@@ -57,11 +57,11 @@ public class GT_Shapeless_Recipe extends ShapelessOreRecipe implements IGT_Craft
             // Keeping NBT
             if (mKeepingNBT) for (int i = 0; i < aGrid.getSizeInventory(); i++) {
                 if (aGrid.getStackInSlot(i) != null && aGrid.getStackInSlot(i)
-                                                            .hasTagCompound()) {
+                    .hasTagCompound()) {
                     rStack.setTagCompound(
-                            (NBTTagCompound) aGrid.getStackInSlot(i)
-                                                  .getTagCompound()
-                                                  .copy());
+                        (NBTTagCompound) aGrid.getStackInSlot(i)
+                            .getTagCompound()
+                            .copy());
                     break;
                 }
             }
@@ -71,21 +71,21 @@ public class GT_Shapeless_Recipe extends ShapelessOreRecipe implements IGT_Craft
                 GT_ModHandler.dischargeElectricItem(rStack, Integer.MAX_VALUE, Integer.MAX_VALUE, true, false, true);
                 int tCharge = 0;
                 for (int i = 0; i < aGrid.getSizeInventory(); i++) tCharge += GT_ModHandler.dischargeElectricItem(
-                        aGrid.getStackInSlot(i),
-                        Integer.MAX_VALUE,
-                        Integer.MAX_VALUE,
-                        true,
-                        true,
-                        true);
+                    aGrid.getStackInSlot(i),
+                    Integer.MAX_VALUE,
+                    Integer.MAX_VALUE,
+                    true,
+                    true,
+                    true);
                 if (tCharge > 0) GT_ModHandler.chargeElectricItem(rStack, tCharge, Integer.MAX_VALUE, true, false);
             }
 
             // Add Enchantments
             for (int i = 0; i < mEnchantmentsAdded.length; i++) GT_Utility.ItemNBT.addEnchantment(
-                    rStack,
-                    mEnchantmentsAdded[i],
-                    EnchantmentHelper.getEnchantmentLevel(mEnchantmentsAdded[i].effectId, rStack)
-                            + mEnchantmentLevelsAdded[i]);
+                rStack,
+                mEnchantmentsAdded[i],
+                EnchantmentHelper.getEnchantmentLevel(mEnchantmentsAdded[i].effectId, rStack)
+                    + mEnchantmentLevelsAdded[i]);
 
             // Update the Stack again
             GT_Utility.updateItemStack(rStack);

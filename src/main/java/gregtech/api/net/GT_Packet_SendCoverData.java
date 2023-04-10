@@ -30,7 +30,7 @@ public class GT_Packet_SendCoverData extends GT_Packet_New {
     }
 
     public GT_Packet_SendCoverData(int mX, short mY, int mZ, byte coverSide, int coverID,
-            ISerializableObject coverData) {
+        ISerializableObject coverData) {
         super(false);
         this.mX = mX;
         this.mY = mY;
@@ -83,14 +83,14 @@ public class GT_Packet_SendCoverData extends GT_Packet_New {
     public GT_Packet_New decode(ByteArrayDataInput aData) {
         final int coverId;
         return new GT_Packet_SendCoverData(
-                aData.readInt(),
-                aData.readShort(),
-                aData.readInt(),
-                aData.readByte(),
-                coverId = aData.readInt(),
-                GregTech_API.getCoverBehaviorNew(coverId)
-                            .createDataObject()
-                            .readFromPacket(aData, null));
+            aData.readInt(),
+            aData.readShort(),
+            aData.readInt(),
+            aData.readByte(),
+            coverId = aData.readInt(),
+            GregTech_API.getCoverBehaviorNew(coverId)
+                .createDataObject()
+                .readFromPacket(aData, null));
     }
 
     @Override

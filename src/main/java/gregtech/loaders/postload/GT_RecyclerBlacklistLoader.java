@@ -30,16 +30,8 @@ public class GT_RecyclerBlacklistLoader implements Runnable {
             ItemStack tStack = new ItemStack(Blocks.cobblestone, 1, 0);
             while (tStack != null) {
                 GT_ModHandler.addToRecyclerBlackList(tStack);
-                tStack = GT_ModHandler.getRecipeOutput(
-                        tStack,
-                        tStack,
-                        tStack,
-                        tStack,
-                        tStack,
-                        tStack,
-                        tStack,
-                        tStack,
-                        tStack);
+                tStack = GT_ModHandler
+                    .getRecipeOutput(tStack, tStack, tStack, tStack, tStack, tStack, tStack, tStack, tStack);
             }
             GT_ModHandler.addToRecyclerBlackList(new ItemStack(Blocks.gravel, 1, 32767));
             GT_ModHandler.addToRecyclerBlackList(new ItemStack(Items.flint, 1, 32767));
@@ -48,65 +40,57 @@ public class GT_RecyclerBlacklistLoader implements Runnable {
             GT_ModHandler.addToRecyclerBlackList(new ItemStack(Blocks.stone_stairs, 1, 32767));
             GT_ModHandler.addToRecyclerBlackList(new ItemStack(Blocks.stone_brick_stairs, 1, 32767));
             GT_ModHandler.addToRecyclerBlackList(
-                    GT_ModHandler.getSmeltingOutput(new ItemStack(Blocks.stone, 1, 0), false, null));
+                GT_ModHandler.getSmeltingOutput(new ItemStack(Blocks.stone, 1, 0), false, null));
             GT_ModHandler.addToRecyclerBlackList(
-                    GT_ModHandler.getRecipeOutput(
-                            new ItemStack(Blocks.glass, 1, 0),
-                            null,
-                            null,
-                            new ItemStack(Blocks.glass, 1, 0)));
+                GT_ModHandler
+                    .getRecipeOutput(new ItemStack(Blocks.glass, 1, 0), null, null, new ItemStack(Blocks.glass, 1, 0)));
             GT_ModHandler.addToRecyclerBlackList(
-                    GT_ModHandler.getRecipeOutput(
-                            new ItemStack(Blocks.stone, 1, 0),
-                            null,
-                            null,
-                            new ItemStack(Blocks.stone, 1, 0)));
+                GT_ModHandler
+                    .getRecipeOutput(new ItemStack(Blocks.stone, 1, 0), null, null, new ItemStack(Blocks.stone, 1, 0)));
             GT_ModHandler.addToRecyclerBlackList(
-                    GT_ModHandler.getRecipeOutput(
-                            new ItemStack(Blocks.cobblestone, 1, 0),
-                            null,
-                            null,
-                            new ItemStack(Blocks.cobblestone, 1, 0)));
+                GT_ModHandler.getRecipeOutput(
+                    new ItemStack(Blocks.cobblestone, 1, 0),
+                    null,
+                    null,
+                    new ItemStack(Blocks.cobblestone, 1, 0)));
             GT_ModHandler.addToRecyclerBlackList(
-                    GT_ModHandler.getRecipeOutput(
-                            new ItemStack(Blocks.stone, 1, 0),
-                            null,
-                            new ItemStack(Blocks.stone, 1, 0),
-                            null,
-                            new ItemStack(Blocks.stone, 1, 0)));
+                GT_ModHandler.getRecipeOutput(
+                    new ItemStack(Blocks.stone, 1, 0),
+                    null,
+                    new ItemStack(Blocks.stone, 1, 0),
+                    null,
+                    new ItemStack(Blocks.stone, 1, 0)));
             GT_ModHandler.addToRecyclerBlackList(
-                    GT_ModHandler.getRecipeOutput(
-                            new ItemStack(Blocks.stone, 1, 0),
-                            new ItemStack(Blocks.glass, 1, 0),
-                            new ItemStack(Blocks.stone, 1, 0)));
+                GT_ModHandler.getRecipeOutput(
+                    new ItemStack(Blocks.stone, 1, 0),
+                    new ItemStack(Blocks.glass, 1, 0),
+                    new ItemStack(Blocks.stone, 1, 0)));
             GT_ModHandler.addToRecyclerBlackList(
-                    GT_ModHandler.getRecipeOutput(
-                            new ItemStack(Blocks.cobblestone, 1, 0),
-                            new ItemStack(Blocks.glass, 1, 0),
-                            new ItemStack(Blocks.cobblestone, 1, 0)));
+                GT_ModHandler.getRecipeOutput(
+                    new ItemStack(Blocks.cobblestone, 1, 0),
+                    new ItemStack(Blocks.glass, 1, 0),
+                    new ItemStack(Blocks.cobblestone, 1, 0)));
             GT_ModHandler.addToRecyclerBlackList(
-                    GT_ModHandler.getRecipeOutput(
-                            new ItemStack(Blocks.sandstone, 1, 0),
-                            new ItemStack(Blocks.glass, 1, 0),
-                            new ItemStack(Blocks.sandstone, 1, 0)));
+                GT_ModHandler.getRecipeOutput(
+                    new ItemStack(Blocks.sandstone, 1, 0),
+                    new ItemStack(Blocks.glass, 1, 0),
+                    new ItemStack(Blocks.sandstone, 1, 0)));
             GT_ModHandler.addToRecyclerBlackList(
-                    GT_ModHandler.getRecipeOutput(
-                            new ItemStack(Blocks.sand, 1, 0),
-                            new ItemStack(Blocks.glass, 1, 0),
-                            new ItemStack(Blocks.sand, 1, 0)));
+                GT_ModHandler.getRecipeOutput(
+                    new ItemStack(Blocks.sand, 1, 0),
+                    new ItemStack(Blocks.glass, 1, 0),
+                    new ItemStack(Blocks.sand, 1, 0)));
             GT_ModHandler.addToRecyclerBlackList(
-                    GT_ModHandler.getRecipeOutput(
-                            new ItemStack(Blocks.sandstone, 1, 0),
-                            new ItemStack(Blocks.sandstone, 1, 0),
-                            new ItemStack(Blocks.sandstone, 1, 0),
-                            new ItemStack(Blocks.sandstone, 1, 0),
-                            new ItemStack(Blocks.sandstone, 1, 0),
-                            new ItemStack(Blocks.sandstone, 1, 0)));
+                GT_ModHandler.getRecipeOutput(
+                    new ItemStack(Blocks.sandstone, 1, 0),
+                    new ItemStack(Blocks.sandstone, 1, 0),
+                    new ItemStack(Blocks.sandstone, 1, 0),
+                    new ItemStack(Blocks.sandstone, 1, 0),
+                    new ItemStack(Blocks.sandstone, 1, 0),
+                    new ItemStack(Blocks.sandstone, 1, 0)));
             GT_ModHandler.addToRecyclerBlackList(GT_ModHandler.getRecipeOutput(new ItemStack(Blocks.glass, 1, 0)));
             GT_ModHandler.addToRecyclerBlackList(
-                    GT_ModHandler.getRecipeOutput(
-                            new ItemStack(Blocks.glass, 1, 0),
-                            new ItemStack(Blocks.glass, 1, 0)));
+                GT_ModHandler.getRecipeOutput(new ItemStack(Blocks.glass, 1, 0), new ItemStack(Blocks.glass, 1, 0)));
         }
     }
 }

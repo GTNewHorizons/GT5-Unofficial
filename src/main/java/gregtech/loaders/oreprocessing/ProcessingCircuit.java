@@ -18,7 +18,7 @@ public class ProcessingCircuit implements gregtech.api.interfaces.IOreRecipeRegi
 
     @Override
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
-            ItemStack aStack) {
+        ItemStack aStack) {
         if (gregtech.api.util.GT_OreDictUnificator.isBlacklisted(aStack) && aModName.equals(GregTech.ID)) return;
         switch (aMaterial.mName) {
             case "Good", "Data", "Elite", "Master", "Ultimate", "Superconductor", "Infinite", "Bio" -> {
@@ -29,16 +29,15 @@ public class ProcessingCircuit implements gregtech.api.interfaces.IOreRecipeRegi
             case "Basic" -> {
                 GT_ModHandler.removeRecipeByOutputDelayed(aStack);
                 GT_ModHandler.addCraftingRecipe(
-                        aStack,
-                        GT_ModHandler.RecipeBits.BUFFERED,
-                        new Object[] { "RIR", "VBV", "CCC", 'R', ItemList.Circuit_Parts_Resistor.get(1), 'C',
-                                GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.RedAlloy, 1), 'V',
-                                ItemList.Circuit_Parts_Vacuum_Tube.get(1), 'B',
-                                ItemList.Circuit_Board_Coated_Basic.get(1), 'I',
-                                ItemList.IC2_Item_Casing_Steel.get(1) });
+                    aStack,
+                    GT_ModHandler.RecipeBits.BUFFERED,
+                    new Object[] { "RIR", "VBV", "CCC", 'R', ItemList.Circuit_Parts_Resistor.get(1), 'C',
+                        GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.RedAlloy, 1), 'V',
+                        ItemList.Circuit_Parts_Vacuum_Tube.get(1), 'B', ItemList.Circuit_Board_Coated_Basic.get(1), 'I',
+                        ItemList.IC2_Item_Casing_Steel.get(1) });
                 GT_ModHandler.addShapelessCraftingRecipe(
-                        GT_ModHandler.getIC2Item("electronicCircuit", 1L),
-                        new Object[] { ItemList.Circuit_Integrated.getWildcard(1L) });
+                    GT_ModHandler.getIC2Item("electronicCircuit", 1L),
+                    new Object[] { ItemList.Circuit_Integrated.getWildcard(1L) });
             }
         }
     }

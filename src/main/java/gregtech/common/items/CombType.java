@@ -29,7 +29,7 @@ public enum CombType {
     VIBRANTALLOY(14, "vibrantalloy", true, Materials.VibrantAlloy, 50, 0x86A12D, 0xC4F2AE, ItemComb.Voltage.HV),
     ENERGETICALLOY(15, "energeticalloy", true, Materials.EnergeticAlloy, 70, 0xFF9933, 0xFFAD5C, ItemComb.Voltage.HV),
     ELECTRICALSTEEL(16, "electricalsteel", true, Materials.ElectricalSteel, 90, 0x787878, 0xD8D8D8,
-            ItemComb.Voltage.LV),
+        ItemComb.Voltage.LV),
     DARKSTEEL(17, "darksteel", true, Materials.DarkSteel, 80, 0x252525, 0x443B44, ItemComb.Voltage.MV),
     PULSATINGIRON(18, "pulsatingiron", true, Materials.PulsatingIron, 80, 0x006600, 0x6DD284, ItemComb.Voltage.HV),
     STAINLESSSTEEL(19, "stainlesssteel", true, Materials.StainlessSteel, 75, 0x778899, 0xC8C8DC, ItemComb.Voltage.HV),
@@ -127,7 +127,7 @@ public enum CombType {
     QUANTIUM(97, "quantium", true, Materials.Quantium, 50, 0x00FF00, 0x00D10B, ItemComb.Voltage.IV),
     ORIHARUKON(98, "oriharukon", true, Materials.Oriharukon, 50, 0x228B22, 0x677D68, ItemComb.Voltage.IV),
     MYSTERIOUSCRYSTAL(99, "mysteriouscrystal", true, Materials.MysteriousCrystal, 45, 0x3CB371, 0x16856C,
-            ItemComb.Voltage.LuV),
+        ItemComb.Voltage.LuV),
     BLACKPLUTONIUM(100, "blackplutonium", true, Materials.Quantium, 25, 0x000000, 0x323232, ItemComb.Voltage.LuV),
     TRINIUM(101, "trinium", true, Materials.Trinium, 25, 0xB0E0E6, 0xC8C8D2, ItemComb.Voltage.ZPM),
 
@@ -150,9 +150,9 @@ public enum CombType {
 
     // Infinity
     COSMICNEUTRONIUM(117, "cosmicneutronium", true, Materials.CosmicNeutronium, 5, 0x484848, 0x323232,
-            ItemComb.Voltage.UV),
+        ItemComb.Voltage.UV),
     INFINITYCATALYST(118, "infinitycatalyst", true, Materials.InfinityCatalyst, 2, 0xFFFFFF, 0xFFFFFF,
-            ItemComb.Voltage.UHV),
+        ItemComb.Voltage.UHV),
     INFINITY(119, "infinity", true, Materials.Infinity, 1, 0xFFFFFF, 0xFFFFFF, ItemComb.Voltage.UEV),
 
     // HEE
@@ -225,7 +225,7 @@ public enum CombType {
     }
 
     CombType(int id, String pName, boolean show, Materials material, int chance, int color1, int color2,
-            ItemComb.Voltage voltage) {
+        ItemComb.Voltage voltage) {
         if (id < 0 && !"INVALIDCOMB".equals(pName)) throw new IllegalArgumentException();
         this.id = id;
         this.name = pName;
@@ -235,11 +235,9 @@ public enum CombType {
         this.showInList = show;
         this.color = new int[] { color1, color2 };
         this.localizedName = GT_LanguageManager.addStringLocalization(
-                "comb." + this.name,
-                this.name.substring(0, 1)
-                         .toUpperCase()
-                        + this.name.substring(1)
-                        + " Comb");
+            "comb." + this.name,
+            this.name.substring(0, 1)
+                .toUpperCase() + this.name.substring(1) + " Comb");
     }
 
     public void setHidden() {
@@ -269,9 +267,9 @@ public enum CombType {
 
         static {
             int biggestId = Arrays.stream(CombType.values())
-                                  .mapToInt(CombType::getId)
-                                  .max()
-                                  .getAsInt();
+                .mapToInt(CombType::getId)
+                .max()
+                .getAsInt();
             VALUES = new CombType[biggestId + 1];
             Arrays.fill(VALUES, _NULL);
             for (CombType type : CombType.values()) {

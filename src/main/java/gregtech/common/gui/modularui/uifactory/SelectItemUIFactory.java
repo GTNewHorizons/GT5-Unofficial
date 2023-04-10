@@ -58,12 +58,12 @@ public class SelectItemUIFactory {
     private final Supplier<Integer> COLOR_TEXT_GRAY = () -> getTextColorOrDefault("text_gray", 0x555555);
 
     public SelectItemUIFactory(String header, ItemStack headerItem, Consumer<ItemStack> selectedCallback,
-            List<ItemStack> stacks) {
+        List<ItemStack> stacks) {
         this(header, headerItem, selectedCallback, stacks, UNSELECTED);
     }
 
     public SelectItemUIFactory(String header, ItemStack headerItem, Consumer<ItemStack> selectedCallback,
-            List<ItemStack> stacks, int selected) {
+        List<ItemStack> stacks, int selected) {
         this(header, headerItem, selectedCallback, stacks, selected, false);
     }
 
@@ -81,7 +81,7 @@ public class SelectItemUIFactory {
      *                         is guaranteed to be called with a nonnull stack
      */
     public SelectItemUIFactory(String header, ItemStack headerItem, Consumer<ItemStack> selectedCallback,
-            List<ItemStack> stacks, int selected, boolean noDeselect) {
+        List<ItemStack> stacks, int selected, boolean noDeselect) {
         this.header = header;
         this.headerItem = headerItem;
         this.selectedCallback = selectedCallback;
@@ -116,21 +116,20 @@ public class SelectItemUIFactory {
     }
 
     public ModularWindow createWindow(UIBuildContext buildContext) {
-        ModularWindow.Builder builder = ModularWindow.builder(
-                getGUIWidth(),
-                53 + 18 * ((stacks.size() - 1) / cols + 1));
+        ModularWindow.Builder builder = ModularWindow
+            .builder(getGUIWidth(), 53 + 18 * ((stacks.size() - 1) / cols + 1));
         builder.setBackground(ModularUITextures.VANILLA_BACKGROUND);
         builder.setGuiTint(guiTint);
 
         if (headerItem != null) {
             builder.widget(
-                    new ItemDrawable(headerItem).asWidget()
-                                                .setPos(5, 5)
-                                                .setSize(16, 16));
+                new ItemDrawable(headerItem).asWidget()
+                    .setPos(5, 5)
+                    .setSize(16, 16));
         }
         builder.widget(
-                new TextWidget(header).setDefaultColor(COLOR_TITLE.get())
-                                      .setPos(25, 9));
+            new TextWidget(header).setDefaultColor(COLOR_TITLE.get())
+                .setPos(25, 9));
 
         builder.widget(new SlotWidget(BaseSlot.phantom(currentDisplayItemHandler, 0)) {
 
@@ -144,43 +143,40 @@ public class SelectItemUIFactory {
                 super.draw(partialTicks);
             }
         }.disableInteraction()
-         .setBackground(GT_UITextures.SLOT_DARK_GRAY)
-         .setPos(9 + getFontRenderer().getStringWidth(StatCollector.translateToLocal("GT5U.gui.select.current")), 24))
-               .widget(
-                       new TextWidget(
-                               StatCollector.translateToLocal("GT5U.gui.select.current"))
-                                                                                         .setDefaultColor(
-                                                                                                 COLOR_TEXT_GRAY.get())
-                                                                                         .setPos(
-                                                                                                 8,
-                                                                                                 25 + (18 - getFontRenderer().FONT_HEIGHT)
-                                                                                                         / 2));
+            .setBackground(GT_UITextures.SLOT_DARK_GRAY)
+            .setPos(
+                9 + getFontRenderer().getStringWidth(StatCollector.translateToLocal("GT5U.gui.select.current")),
+                24))
+            .widget(
+                new TextWidget(StatCollector.translateToLocal("GT5U.gui.select.current"))
+                    .setDefaultColor(COLOR_TEXT_GRAY.get())
+                    .setPos(8, 25 + (18 - getFontRenderer().FONT_HEIGHT) / 2));
 
         for (int i = 0; i < stacks.size(); i++) {
             final int index = i;
             builder.widget(
-                    new SlotWidget(new BaseSlot(new ItemStackHandler(new ItemStack[] { stacks.get(index) }), 0, true)) {
+                new SlotWidget(new BaseSlot(new ItemStackHandler(new ItemStack[] { stacks.get(index) }), 0, true)) {
 
-                        @Override
-                        public ClickResult onClick(int buttonId, boolean doubleClick) {
-                            if (buttonId == 0) {
-                                setSelected(index);
-                            } else if (buttonId == 1) {
-                                setSelected(UNSELECTED);
-                            } else {
-                                return ClickResult.ACCEPT;
-                            }
-                            selectedCallback.accept(getCandidate(getSelected()));
-                            return ClickResult.SUCCESS;
+                    @Override
+                    public ClickResult onClick(int buttonId, boolean doubleClick) {
+                        if (buttonId == 0) {
+                            setSelected(index);
+                        } else if (buttonId == 1) {
+                            setSelected(UNSELECTED);
+                        } else {
+                            return ClickResult.ACCEPT;
                         }
+                        selectedCallback.accept(getCandidate(getSelected()));
+                        return ClickResult.SUCCESS;
+                    }
 
-                        @Override
-                        public IDrawable[] getBackground() {
-                            return new IDrawable[] {
-                                    index == selected ? GT_UITextures.SLOT_DARK_GRAY : ModularUITextures.ITEM_SLOT };
-                        }
-                    }.disableInteraction()
-                     .setPos(7 + 18 * (index % cols), 43 + 18 * (index / cols)));
+                    @Override
+                    public IDrawable[] getBackground() {
+                        return new IDrawable[] {
+                            index == selected ? GT_UITextures.SLOT_DARK_GRAY : ModularUITextures.ITEM_SLOT };
+                    }
+                }.disableInteraction()
+                    .setPos(7 + 18 * (index % cols), 43 + 18 * (index / cols)));
         }
 
         if (anotherWindow) {
@@ -192,11 +188,11 @@ public class SelectItemUIFactory {
                     dialogOpened.set(false);
                 }
             }.setOnClick(
-                    (clickData, widget) -> widget.getWindow()
-                                                 .tryClose())
-             .setBackground(ModularUITextures.VANILLA_BACKGROUND, new Text("x"))
-             .setPos(getGUIWidth() - 15, 3)
-             .setSize(12, 12));
+                (clickData, widget) -> widget.getWindow()
+                    .tryClose())
+                .setBackground(ModularUITextures.VANILLA_BACKGROUND, new Text("x"))
+                .setPos(getGUIWidth() - 15, 3)
+                .setSize(12, 12));
         }
 
         return builder.build();

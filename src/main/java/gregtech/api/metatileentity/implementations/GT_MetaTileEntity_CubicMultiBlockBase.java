@@ -36,7 +36,7 @@ import gregtech.api.util.GT_StructureUtility;
  * @param <T>
  */
 public abstract class GT_MetaTileEntity_CubicMultiBlockBase<T extends GT_MetaTileEntity_CubicMultiBlockBase<T>>
-        extends GT_MetaTileEntity_EnhancedMultiBlockBase<T> implements ISurvivalConstructable {
+    extends GT_MetaTileEntity_EnhancedMultiBlockBase<T> implements ISurvivalConstructable {
 
     protected static final String STRUCTURE_PIECE_MAIN = "main";
     protected static final ClassValue<IStructureDefinition<GT_MetaTileEntity_CubicMultiBlockBase<?>>> STRUCTURE_DEFINITION = new ClassValue<>() {
@@ -44,27 +44,23 @@ public abstract class GT_MetaTileEntity_CubicMultiBlockBase<T extends GT_MetaTil
         @Override
         protected IStructureDefinition<GT_MetaTileEntity_CubicMultiBlockBase<?>> computeValue(Class<?> type) {
             return StructureDefinition.<GT_MetaTileEntity_CubicMultiBlockBase<?>>builder()
-                                      .addShape(
-                                              STRUCTURE_PIECE_MAIN,
-                                              transpose(
-                                                      new String[][] { { "hhh", "hhh", "hhh" }, { "h~h", "h-h", "hhh" },
-                                                              { "hhh", "hhh", "hhh" }, }))
-                                      .addElement(
-                                              'h',
-                                              ofChain(
-                                                      lazy(
-                                                              t -> GT_StructureUtility.<GT_MetaTileEntity_CubicMultiBlockBase<?>>buildHatchAdder()
-                                                                                      .atLeastList(
-                                                                                              t.getAllowedHatches())
-                                                                                      .casingIndex(
-                                                                                              t.getHatchTextureIndex())
-                                                                                      .dot(1)
-                                                                                      .build()),
-                                                      onElementPass(
-                                                              GT_MetaTileEntity_CubicMultiBlockBase::onCorrectCasingAdded,
-                                                              lazy(
-                                                                      GT_MetaTileEntity_CubicMultiBlockBase::getCasingElement))))
-                                      .build();
+                .addShape(
+                    STRUCTURE_PIECE_MAIN,
+                    transpose(
+                        new String[][] { { "hhh", "hhh", "hhh" }, { "h~h", "h-h", "hhh" }, { "hhh", "hhh", "hhh" }, }))
+                .addElement(
+                    'h',
+                    ofChain(
+                        lazy(
+                            t -> GT_StructureUtility.<GT_MetaTileEntity_CubicMultiBlockBase<?>>buildHatchAdder()
+                                .atLeastList(t.getAllowedHatches())
+                                .casingIndex(t.getHatchTextureIndex())
+                                .dot(1)
+                                .build()),
+                        onElementPass(
+                            GT_MetaTileEntity_CubicMultiBlockBase::onCorrectCasingAdded,
+                            lazy(GT_MetaTileEntity_CubicMultiBlockBase::getCasingElement))))
+                .build();
         }
     };
     private int mCasingAmount = 0;
@@ -104,7 +100,7 @@ public abstract class GT_MetaTileEntity_CubicMultiBlockBase<T extends GT_MetaTil
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         mCasingAmount = 0;
         return checkPiece(STRUCTURE_PIECE_MAIN, 1, 1, 0) && mCasingAmount >= getRequiredCasingCount()
-                && checkHatches(aBaseMetaTileEntity, aStack);
+            && checkHatches(aBaseMetaTileEntity, aStack);
     }
 
     /**

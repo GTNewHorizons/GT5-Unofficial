@@ -84,7 +84,7 @@ public class GT_ModHandler {
     private static final Map<String, ItemStack> sIC2ItemMap = new HashMap<>();
 
     private static final List<IRecipe> sAllRecipeList = new ArrayList<>(5000),
-            sBufferRecipeList = new ArrayList<>(1000);
+        sBufferRecipeList = new ArrayList<>(1000);
     private static final List<ItemStack> delayedRemovalByOutput = new ArrayList<>();
     private static final List<InventoryCrafting> delayedRemovalByRecipe = new ArrayList<>();
 
@@ -106,50 +106,50 @@ public class GT_ModHandler {
     private static final ItemStack sMt1 = new ItemStack(Blocks.dirt, 1, 0), sMt2 = new ItemStack(Blocks.dirt, 1, 0);
     private static final String s_H = "h", s_F = "f", s_I = "I", s_P = "P", s_R = "R";
     private static final ItemStack[][] sShapes1 = new ItemStack[][] {
-            { sMt1, null, sMt1, sMt1, sMt1, sMt1, null, sMt1, null },
-            { sMt1, null, sMt1, sMt1, null, sMt1, sMt1, sMt1, sMt1 },
-            { null, sMt1, null, sMt1, sMt1, sMt1, sMt1, null, sMt1 },
-            { sMt1, sMt1, sMt1, sMt1, null, sMt1, null, null, null },
-            { sMt1, null, sMt1, sMt1, sMt1, sMt1, sMt1, sMt1, sMt1 },
-            { sMt1, sMt1, sMt1, sMt1, null, sMt1, sMt1, null, sMt1 },
-            { null, null, null, sMt1, null, sMt1, sMt1, null, sMt1 },
-            { null, sMt1, null, null, sMt1, null, null, sMt2, null },
-            { sMt1, sMt1, sMt1, null, sMt2, null, null, sMt2, null },
-            { null, sMt1, null, null, sMt2, null, null, sMt2, null },
-            { sMt1, sMt1, null, sMt1, sMt2, null, null, sMt2, null },
-            { null, sMt1, sMt1, null, sMt2, sMt1, null, sMt2, null },
-            { sMt1, sMt1, null, null, sMt2, null, null, sMt2, null },
-            { null, sMt1, sMt1, null, sMt2, null, null, sMt2, null },
-            { null, sMt1, null, sMt1, null, null, null, sMt1, sMt2 },
-            { null, sMt1, null, null, null, sMt1, sMt2, sMt1, null },
-            { null, sMt1, null, sMt1, null, sMt1, null, null, sMt2 },
-            { null, sMt1, null, sMt1, null, sMt1, sMt2, null, null },
-            { null, sMt2, null, null, sMt1, null, null, sMt1, null },
-            { null, sMt2, null, null, sMt2, null, sMt1, sMt1, sMt1 },
-            { null, sMt2, null, null, sMt2, null, null, sMt1, null },
-            { null, sMt2, null, sMt1, sMt2, null, sMt1, sMt1, null },
-            { null, sMt2, null, null, sMt2, sMt1, null, sMt1, sMt1 },
-            { null, sMt2, null, null, sMt2, null, sMt1, sMt1, null },
-            { sMt1, null, null, null, sMt2, null, null, null, sMt2 },
-            { null, null, sMt1, null, sMt2, null, sMt2, null, null },
-            { sMt1, null, null, null, sMt2, null, null, null, null },
-            { null, null, sMt1, null, sMt2, null, null, null, null },
-            { sMt1, sMt2, null, null, null, null, null, null, null },
-            { sMt2, sMt1, null, null, null, null, null, null, null },
-            { sMt1, null, null, sMt2, null, null, null, null, null },
-            { sMt2, null, null, sMt1, null, null, null, null, null },
-            { sMt1, sMt1, sMt1, sMt1, sMt1, sMt1, null, sMt2, null },
-            { sMt1, sMt1, null, sMt1, sMt1, sMt2, sMt1, sMt1, null },
-            { null, sMt1, sMt1, sMt2, sMt1, sMt1, null, sMt1, sMt1 },
-            { null, sMt2, null, sMt1, sMt1, sMt1, sMt1, sMt1, sMt1 },
-            { sMt1, sMt1, sMt1, sMt1, sMt2, sMt1, null, sMt2, null },
-            { sMt1, sMt1, null, sMt1, sMt2, sMt2, sMt1, sMt1, null },
-            { null, sMt1, sMt1, sMt2, sMt2, sMt1, null, sMt1, sMt1 },
-            { null, sMt2, null, sMt1, sMt2, sMt1, sMt1, sMt1, sMt1 },
-            { sMt1, null, null, null, sMt1, null, null, null, null },
-            { null, sMt1, null, sMt1, null, null, null, null, null },
-            { sMt1, sMt1, null, sMt2, null, sMt1, sMt2, null, null },
-            { null, sMt1, sMt1, sMt1, null, sMt2, null, null, sMt2 } };
+        { sMt1, null, sMt1, sMt1, sMt1, sMt1, null, sMt1, null },
+        { sMt1, null, sMt1, sMt1, null, sMt1, sMt1, sMt1, sMt1 },
+        { null, sMt1, null, sMt1, sMt1, sMt1, sMt1, null, sMt1 },
+        { sMt1, sMt1, sMt1, sMt1, null, sMt1, null, null, null },
+        { sMt1, null, sMt1, sMt1, sMt1, sMt1, sMt1, sMt1, sMt1 },
+        { sMt1, sMt1, sMt1, sMt1, null, sMt1, sMt1, null, sMt1 },
+        { null, null, null, sMt1, null, sMt1, sMt1, null, sMt1 },
+        { null, sMt1, null, null, sMt1, null, null, sMt2, null },
+        { sMt1, sMt1, sMt1, null, sMt2, null, null, sMt2, null },
+        { null, sMt1, null, null, sMt2, null, null, sMt2, null },
+        { sMt1, sMt1, null, sMt1, sMt2, null, null, sMt2, null },
+        { null, sMt1, sMt1, null, sMt2, sMt1, null, sMt2, null },
+        { sMt1, sMt1, null, null, sMt2, null, null, sMt2, null },
+        { null, sMt1, sMt1, null, sMt2, null, null, sMt2, null },
+        { null, sMt1, null, sMt1, null, null, null, sMt1, sMt2 },
+        { null, sMt1, null, null, null, sMt1, sMt2, sMt1, null },
+        { null, sMt1, null, sMt1, null, sMt1, null, null, sMt2 },
+        { null, sMt1, null, sMt1, null, sMt1, sMt2, null, null },
+        { null, sMt2, null, null, sMt1, null, null, sMt1, null },
+        { null, sMt2, null, null, sMt2, null, sMt1, sMt1, sMt1 },
+        { null, sMt2, null, null, sMt2, null, null, sMt1, null },
+        { null, sMt2, null, sMt1, sMt2, null, sMt1, sMt1, null },
+        { null, sMt2, null, null, sMt2, sMt1, null, sMt1, sMt1 },
+        { null, sMt2, null, null, sMt2, null, sMt1, sMt1, null },
+        { sMt1, null, null, null, sMt2, null, null, null, sMt2 },
+        { null, null, sMt1, null, sMt2, null, sMt2, null, null },
+        { sMt1, null, null, null, sMt2, null, null, null, null },
+        { null, null, sMt1, null, sMt2, null, null, null, null },
+        { sMt1, sMt2, null, null, null, null, null, null, null },
+        { sMt2, sMt1, null, null, null, null, null, null, null },
+        { sMt1, null, null, sMt2, null, null, null, null, null },
+        { sMt2, null, null, sMt1, null, null, null, null, null },
+        { sMt1, sMt1, sMt1, sMt1, sMt1, sMt1, null, sMt2, null },
+        { sMt1, sMt1, null, sMt1, sMt1, sMt2, sMt1, sMt1, null },
+        { null, sMt1, sMt1, sMt2, sMt1, sMt1, null, sMt1, sMt1 },
+        { null, sMt2, null, sMt1, sMt1, sMt1, sMt1, sMt1, sMt1 },
+        { sMt1, sMt1, sMt1, sMt1, sMt2, sMt1, null, sMt2, null },
+        { sMt1, sMt1, null, sMt1, sMt2, sMt2, sMt1, sMt1, null },
+        { null, sMt1, sMt1, sMt2, sMt2, sMt1, null, sMt1, sMt1 },
+        { null, sMt2, null, sMt1, sMt2, sMt1, sMt1, sMt1, sMt1 },
+        { sMt1, null, null, null, sMt1, null, null, null, null },
+        { null, sMt1, null, sMt1, null, null, null, null, null },
+        { sMt1, sMt1, null, sMt2, null, sMt1, sMt2, null, null },
+        { null, sMt1, sMt1, sMt1, null, sMt2, null, null, sMt2 } };
     public static List<Integer> sSingleNonBlockDamagableRecipeList_validsShapes1 = new ArrayList<>(44);
     public static boolean sSingleNonBlockDamagableRecipeList_validsShapes1_update = false;
     public static List<Integer> sSingleNonBlockDamagableRecipeList_warntOutput = new ArrayList<>(50);
@@ -397,10 +397,8 @@ public class GT_ModHandler {
         if (GT_Utility.isStringInvalid(aItem) || !GregTech_API.sPreloadStarted) {
             result = null;
         } else {
-            result = GT_Utility.copyAmount(
-                    aAmount,
-                    GameRegistry.findItemStack(aModID, aItem, (int) aAmount),
-                    aReplacement);
+            result = GT_Utility
+                .copyAmount(aAmount, GameRegistry.findItemStack(aModID, aItem, (int) aAmount), aReplacement);
         }
 
         if (result == null) {
@@ -413,10 +411,10 @@ public class GT_ModHandler {
                 reason = "the item was not found in the game registry";
             }
             String log_message = "getModItem call: object \"" + aItem
-                    + "\" with mod id \""
-                    + aModID
-                    + "\" has returned null because "
-                    + reason;
+                + "\" with mod id \""
+                + aModID
+                + "\" has returned null because "
+                + reason;
             GT_Log.out.println(log_message);
             new Exception().printStackTrace(GT_Log.out);
         }
@@ -472,8 +470,8 @@ public class GT_ModHandler {
         if (aValue <= 0) return false;
         try {
             Class.forName("ic2.core.IC2")
-                 .getMethod("addValuableOre", IRecipeInput.class, int.class)
-                 .invoke(null, new RecipeInputItemStack(new ItemStack(aBlock, 1, aMeta)), aValue);
+                .getMethod("addValuableOre", IRecipeInput.class, int.class)
+                .invoke(null, new RecipeInputItemStack(new ItemStack(aBlock, 1, aMeta)), aValue);
         } catch (Throwable e) {
             /* Do nothing */
         }
@@ -492,21 +490,21 @@ public class GT_ModHandler {
         if (aChance <= 0) return false;
         try {
             GT_Utility.callMethod(
-                    GT_Utility.getFieldContent("ic2.api.recipe.Recipes", "scrapboxDrops", true, true),
-                    "addDrop",
-                    true,
-                    false,
-                    true,
-                    GT_Utility.copyOrNull(aOutput),
-                    aChance);
+                GT_Utility.getFieldContent("ic2.api.recipe.Recipes", "scrapboxDrops", true, true),
+                "addDrop",
+                true,
+                false,
+                true,
+                GT_Utility.copyOrNull(aOutput),
+                aChance);
             GT_Utility.callMethod(
-                    GT_Utility.getFieldContent("ic2.api.recipe.Recipes", "scrapboxDrops", true, true),
-                    "addRecipe",
-                    true,
-                    true,
-                    false,
-                    GT_Utility.copyOrNull(aOutput),
-                    aChance);
+                GT_Utility.getFieldContent("ic2.api.recipe.Recipes", "scrapboxDrops", true, true),
+                "addRecipe",
+                true,
+                true,
+                false,
+                GT_Utility.copyOrNull(aOutput),
+                aChance);
         } catch (Throwable e) {
             /* Do nothing */
         }
@@ -534,7 +532,7 @@ public class GT_ModHandler {
         if (aInput == null || aOutput == null || GT_Utility.getContainerItem(aInput, false) != null) return false;
         if (!GregTech_API.sRecipeFile.get(ConfigCategories.Machines.smelting, aInput, true)) return false;
         FurnaceRecipes.smelting()
-                      .func_151394_a(aInput, GT_Utility.copyOrNull(aOutput), 0.0F);
+            .func_151394_a(aInput, GT_Utility.copyOrNull(aOutput), 0.0F);
         return true;
     }
 
@@ -546,21 +544,21 @@ public class GT_ModHandler {
         boolean temp = false;
         if (aInput.stackSize == 1 && addSmeltingRecipe(aInput, aOutput)) temp = true;
         return (RA.addAlloySmelterRecipe(
-                aInput,
-                OrePrefixes.ingot.contains(aOutput) ? ItemList.Shape_Mold_Ingot.get(0)
-                        : OrePrefixes.block.contains(aOutput) ? ItemList.Shape_Mold_Block.get(0)
-                                : OrePrefixes.nugget.contains(aOutput) ? ItemList.Shape_Mold_Nugget.get(0) : null,
-                aOutput,
-                130,
-                3,
-                hidden));
+            aInput,
+            OrePrefixes.ingot.contains(aOutput) ? ItemList.Shape_Mold_Ingot.get(0)
+                : OrePrefixes.block.contains(aOutput) ? ItemList.Shape_Mold_Block.get(0)
+                    : OrePrefixes.nugget.contains(aOutput) ? ItemList.Shape_Mold_Nugget.get(0) : null,
+            aOutput,
+            130,
+            3,
+            hidden));
     }
 
     /**
      * LiquidTransposer Recipe for both directions
      */
     public static boolean addLiquidTransposerRecipe(ItemStack aEmptyContainer, FluidStack aLiquid,
-            ItemStack aFullContainer, int aMJ) {
+        ItemStack aFullContainer, int aMJ) {
         return true;
     }
 
@@ -568,7 +566,7 @@ public class GT_ModHandler {
      * LiquidTransposer Recipe for filling Containers
      */
     public static boolean addLiquidTransposerFillRecipe(ItemStack aEmptyContainer, FluidStack aLiquid,
-            ItemStack aFullContainer, int aMJ) {
+        ItemStack aFullContainer, int aMJ) {
         return true;
     }
 
@@ -576,7 +574,7 @@ public class GT_ModHandler {
      * LiquidTransposer Recipe for emptying Containers
      */
     public static boolean addLiquidTransposerEmptyRecipe(ItemStack aFullContainer, FluidStack aLiquid,
-            ItemStack aEmptyContainer, int aMJ) {
+        ItemStack aEmptyContainer, int aMJ) {
         return true;
     }
 
@@ -608,7 +606,7 @@ public class GT_ModHandler {
     }
 
     public static boolean addPulverisationRecipe(ItemStack aInput, ItemStack aOutput1, ItemStack aOutput2,
-            int aChance) {
+        int aChance) {
         return addPulverisationRecipe(aInput, aOutput1, aOutput2, aChance, false);
     }
 
@@ -617,12 +615,12 @@ public class GT_ModHandler {
     }
 
     public static boolean addPulverisationRecipe(ItemStack aInput, ItemStack aOutput1, ItemStack aOutput2,
-            boolean aOverwrite) {
+        boolean aOverwrite) {
         return addPulverisationRecipe(aInput, aOutput1, aOutput2, 100, aOverwrite);
     }
 
     public static boolean addPulverisationRecipe(ItemStack aInput, ItemStack aOutput1, ItemStack aOutput2, int aChance,
-            boolean aOverwrite) {
+        boolean aOverwrite) {
         return addPulverisationRecipe(aInput, aOutput1, aOutput2, aChance, null, 0, aOverwrite);
     }
 
@@ -630,24 +628,24 @@ public class GT_ModHandler {
      * Adds Several Pulverizer-Type Recipes.
      */
     public static boolean addPulverisationRecipe(ItemStack aInput, ItemStack aOutput1, ItemStack aOutput2, int aChance2,
-            ItemStack aOutput3, int aChance3, boolean aOverwrite) {
+        ItemStack aOutput3, int aChance3, boolean aOverwrite) {
         aOutput1 = GT_OreDictUnificator.get(true, aOutput1);
         aOutput2 = GT_OreDictUnificator.get(true, aOutput2);
         if (GT_Utility.isStackInvalid(aInput) || GT_Utility.isStackInvalid(aOutput1)) return false;
 
         if (GT_Utility.getContainerItem(aInput, false) == null) {
             RA.addPulveriserRecipe(
-                    aInput,
-                    new ItemStack[] { aOutput1, aOutput2, aOutput3 },
-                    new int[] { 10000, aChance2 <= 0 ? 1000 : 100 * aChance2, aChance3 <= 0 ? 1000 : 100 * aChance3 },
-                    400,
-                    2);
+                aInput,
+                new ItemStack[] { aOutput1, aOutput2, aOutput3 },
+                new int[] { 10000, aChance2 <= 0 ? 1000 : 100 * aChance2, aChance3 <= 0 ? 1000 : 100 * aChance3 },
+                400,
+                2);
         }
         return true;
     }
 
     public static boolean addPulverisationRecipe(ItemStack aInputItem, ItemStack[] aOutputArray, int[] aChanceArray,
-            int aEUt, int aRecipeDurationInTicks) {
+        int aEUt, int aRecipeDurationInTicks) {
 
         ItemStack[] aUnifiedOutputArray = new ItemStack[aOutputArray.length];
         int counter = 0;
@@ -663,12 +661,12 @@ public class GT_ModHandler {
     }
 
     public static boolean addImmersiveEngineeringRecipe(ItemStack aInput, ItemStack aOutput1, ItemStack aOutput2,
-            int aChance2, ItemStack aOutput3, int aChance3) {
+        int aChance2, ItemStack aOutput3, int aChance3) {
         return true;
     }
 
     public static boolean addMagneticraftRecipe(ItemStack aInput, ItemStack aOutput1, ItemStack aOutput2, int aChance2,
-            ItemStack aOutput3, int aChance3) {
+        ItemStack aOutput3, int aChance3) {
         return true;
     }
 
@@ -683,7 +681,7 @@ public class GT_ModHandler {
      * Induction Smelter Recipes and Alloy Smelter Recipes
      */
     public static boolean addAlloySmelterRecipe(ItemStack aInput1, ItemStack aInput2, ItemStack aOutput1, int aDuration,
-            int aEUt, boolean aAllowSecondaryInputEmpty) {
+        int aEUt, boolean aAllowSecondaryInputEmpty) {
         if (aInput1 == null || (aInput2 == null && !aAllowSecondaryInputEmpty) || aOutput1 == null) return false;
         aOutput1 = GT_OreDictUnificator.get(true, aOutput1);
         return RA.addAlloySmelterRecipe(aInput1, aInput2, aOutput1, aDuration, aEUt);
@@ -693,7 +691,7 @@ public class GT_ModHandler {
      * Induction Smelter Recipes for TE
      */
     public static boolean addInductionSmelterRecipe(ItemStack aInput1, ItemStack aInput2, ItemStack aOutput1,
-            ItemStack aOutput2, int aEnergy, int aChance) {
+        ItemStack aOutput2, int aEnergy, int aChance) {
         return true;
     }
 
@@ -704,7 +702,7 @@ public class GT_ModHandler {
         aOutput = GT_OreDictUnificator.get(true, aOutput);
         if (aInput == null || aOutput == null) return false;
         FurnaceRecipes.smelting()
-                      .func_151394_a(aInput, GT_Utility.copyOrNull(aOutput), 0.0F);
+            .func_151394_a(aInput, GT_Utility.copyOrNull(aOutput), 0.0F);
         return true;
     }
 
@@ -712,32 +710,33 @@ public class GT_ModHandler {
      * Adds GT versions of the IC2 recipes from the supplied IC2RecipeList.
      */
     public static void addIC2RecipesToGT(Map<IRecipeInput, RecipeOutput> aIC2RecipeList,
-            GT_Recipe.GT_Recipe_Map aGTRecipeMap, boolean aAddGTRecipe, boolean aRemoveIC2Recipe,
-            boolean aExcludeGTIC2Items) {
+        GT_Recipe.GT_Recipe_Map aGTRecipeMap, boolean aAddGTRecipe, boolean aRemoveIC2Recipe,
+        boolean aExcludeGTIC2Items) {
         Map<ItemStack, ItemStack> aRecipesToRemove = new HashMap<>();
         for (Entry<IRecipeInput, RecipeOutput> iRecipeInputRecipeOutputEntry : aIC2RecipeList.entrySet()) {
             if (!iRecipeInputRecipeOutputEntry.getValue().items.isEmpty()) {
                 for (ItemStack tStack : (iRecipeInputRecipeOutputEntry.getKey()).getInputs()) {
                     if (GT_Utility.isStackValid(tStack)) {
                         if (aAddGTRecipe
-                                && (aGTRecipeMap.findRecipe(null, false, Long.MAX_VALUE, null, tStack) == null)) {
+                            && (aGTRecipeMap.findRecipe(null, false, Long.MAX_VALUE, null, tStack) == null)) {
                             try {
                                 if (aExcludeGTIC2Items && ((tStack.getUnlocalizedName()
-                                                                  .contains("gt.metaitem.01")
-                                        || tStack.getUnlocalizedName()
-                                                 .contains("gt.blockores")
-                                        || tStack.getUnlocalizedName()
-                                                 .contains("ic2.itemCrushed")
-                                        || tStack.getUnlocalizedName()
-                                                 .contains("ic2.itemPurifiedCrushed"))))
+                                    .contains("gt.metaitem.01")
+                                    || tStack.getUnlocalizedName()
+                                        .contains("gt.blockores")
+                                    || tStack.getUnlocalizedName()
+                                        .contains("ic2.itemCrushed")
+                                    || tStack.getUnlocalizedName()
+                                        .contains("ic2.itemPurifiedCrushed"))))
                                     continue;
                                 switch (aGTRecipeMap.mUnlocalizedName) {
-                                    case "gt.recipe.macerator", "gt.recipe.extractor", "gt.recipe.compressor" -> aGTRecipeMap.addRecipe(
+                                    case "gt.recipe.macerator", "gt.recipe.extractor", "gt.recipe.compressor" -> aGTRecipeMap
+                                        .addRecipe(
                                             true,
                                             new ItemStack[] { GT_Utility.copyAmount(
-                                                    iRecipeInputRecipeOutputEntry.getKey()
-                                                                                 .getAmount(),
-                                                    tStack) },
+                                                iRecipeInputRecipeOutputEntry.getKey()
+                                                    .getAmount(),
+                                                tStack) },
                                             iRecipeInputRecipeOutputEntry.getValue().items.toArray(new ItemStack[0]),
                                             null,
                                             null,
@@ -747,19 +746,19 @@ public class GT_ModHandler {
                                             2,
                                             0);
                                     case "gt.recipe.thermalcentrifuge" -> aGTRecipeMap.addRecipe(
-                                            true,
-                                            new ItemStack[] { GT_Utility.copyAmount(
-                                                    iRecipeInputRecipeOutputEntry.getKey()
-                                                                                 .getAmount(),
-                                                    tStack) },
-                                            iRecipeInputRecipeOutputEntry.getValue().items.toArray(new ItemStack[0]),
-                                            null,
-                                            null,
-                                            null,
-                                            null,
-                                            500,
-                                            48,
-                                            0);
+                                        true,
+                                        new ItemStack[] { GT_Utility.copyAmount(
+                                            iRecipeInputRecipeOutputEntry.getKey()
+                                                .getAmount(),
+                                            tStack) },
+                                        iRecipeInputRecipeOutputEntry.getValue().items.toArray(new ItemStack[0]),
+                                        null,
+                                        null,
+                                        null,
+                                        null,
+                                        500,
+                                        48,
+                                        0);
                                 }
                             } catch (Exception e) {
                                 System.err.println(e);
@@ -835,13 +834,13 @@ public class GT_ModHandler {
         if (aInput == null || aOutput == null || aOutput.length <= 0 || aOutput[0] == null) return false;
         if (!GregTech_API.sRecipeFile.get(ConfigCategories.Machines.thermalcentrifuge, aInput, true)) return false;
         RA.addThermalCentrifugeRecipe(
-                aInput,
-                aOutput.length >= 1 ? (ItemStack) aOutput[0] : null,
-                aOutput.length >= 2 ? (ItemStack) aOutput[1] : null,
-                aOutput.length >= 3 ? (ItemStack) aOutput[2] : null,
-                aChances,
-                500,
-                48);
+            aInput,
+            aOutput.length >= 1 ? (ItemStack) aOutput[0] : null,
+            aOutput.length >= 2 ? (ItemStack) aOutput[1] : null,
+            aOutput.length >= 3 ? (ItemStack) aOutput[2] : null,
+            aChances,
+            500,
+            48);
         return true;
     }
 
@@ -849,12 +848,12 @@ public class GT_ModHandler {
         if (aInput == null || aOutput == null || aOutput.length <= 0 || aOutput[0] == null) return false;
         if (!GregTech_API.sRecipeFile.get(ConfigCategories.Machines.thermalcentrifuge, aInput, true)) return false;
         RA.addThermalCentrifugeRecipe(
-                aInput,
-                aOutput.length >= 1 ? (ItemStack) aOutput[0] : null,
-                aOutput.length >= 2 ? (ItemStack) aOutput[1] : null,
-                aOutput.length >= 3 ? (ItemStack) aOutput[2] : null,
-                500,
-                48);
+            aInput,
+            aOutput.length >= 1 ? (ItemStack) aOutput[0] : null,
+            aOutput.length >= 2 ? (ItemStack) aOutput[1] : null,
+            aOutput.length >= 3 ? (ItemStack) aOutput[2] : null,
+            500,
+            48);
         return true;
     }
 
@@ -865,23 +864,23 @@ public class GT_ModHandler {
         if (aInput == null || aOutput == null || aOutput.length <= 0 || aOutput[0] == null) return false;
         if (!GregTech_API.sRecipeFile.get(ConfigCategories.Machines.orewashing, aInput, true)) return false;
         RA.addOreWasherRecipe(
-                aInput,
-                (ItemStack) aOutput[0],
-                (ItemStack) aOutput[1],
-                (ItemStack) aOutput[2],
-                GT_ModHandler.getWater(aWaterAmount),
-                aChances,
-                500,
-                16);
+            aInput,
+            (ItemStack) aOutput[0],
+            (ItemStack) aOutput[1],
+            (ItemStack) aOutput[2],
+            GT_ModHandler.getWater(aWaterAmount),
+            aChances,
+            500,
+            16);
         RA.addOreWasherRecipe(
-                aInput,
-                (ItemStack) aOutput[0],
-                (ItemStack) aOutput[1],
-                (ItemStack) aOutput[2],
-                GT_ModHandler.getDistilledWater(aWaterAmount / 5),
-                aChances,
-                300,
-                16);
+            aInput,
+            (ItemStack) aOutput[0],
+            (ItemStack) aOutput[1],
+            (ItemStack) aOutput[2],
+            GT_ModHandler.getDistilledWater(aWaterAmount / 5),
+            aChances,
+            300,
+            16);
         return true;
     }
 
@@ -889,21 +888,21 @@ public class GT_ModHandler {
         if (aInput == null || aOutput == null || aOutput.length <= 0 || aOutput[0] == null) return false;
         if (!GregTech_API.sRecipeFile.get(ConfigCategories.Machines.orewashing, aInput, true)) return false;
         RA.addOreWasherRecipe(
-                aInput,
-                (ItemStack) aOutput[0],
-                (ItemStack) aOutput[1],
-                (ItemStack) aOutput[2],
-                GT_ModHandler.getWater(aWaterAmount),
-                500,
-                16);
+            aInput,
+            (ItemStack) aOutput[0],
+            (ItemStack) aOutput[1],
+            (ItemStack) aOutput[2],
+            GT_ModHandler.getWater(aWaterAmount),
+            500,
+            16);
         RA.addOreWasherRecipe(
-                aInput,
-                (ItemStack) aOutput[0],
-                (ItemStack) aOutput[1],
-                (ItemStack) aOutput[2],
-                GT_ModHandler.getDistilledWater(aWaterAmount / 5),
-                300,
-                16);
+            aInput,
+            (ItemStack) aOutput[0],
+            (ItemStack) aOutput[1],
+            (ItemStack) aOutput[2],
+            GT_ModHandler.getDistilledWater(aWaterAmount / 5),
+            300,
+            16);
         return true;
     }
 
@@ -934,14 +933,8 @@ public class GT_ModHandler {
         try {
             NBTTagCompound tNBT = new NBTTagCompound();
             tNBT.setInteger("amplification", aValue);
-            GT_Utility.callMethod(
-                    ic2.api.recipe.Recipes.matterAmplifier,
-                    "addRecipe",
-                    false,
-                    false,
-                    false,
-                    aAmplifier,
-                    tNBT);
+            GT_Utility
+                .callMethod(ic2.api.recipe.Recipes.matterAmplifier, "addRecipe", false, false, false, aAmplifier, tNBT);
         } catch (Throwable e) {
             /* Do nothing */
         }
@@ -956,11 +949,7 @@ public class GT_ModHandler {
         if (aResult == null || aRecipe == null || aResult.stackSize <= 0) return false;
         try {
             mods.railcraft.api.crafting.RailcraftCraftingManager.rollingMachine.getRecipeList()
-                                                                               .add(
-                                                                                       new ShapedOreRecipe(
-                                                                                               GT_Utility.copyOrNull(
-                                                                                                       aResult),
-                                                                                               aRecipe));
+                .add(new ShapedOreRecipe(GT_Utility.copyOrNull(aResult), aRecipe));
         } catch (Throwable e) {
             return addCraftingRecipe(GT_Utility.copyOrNull(aResult), aRecipe);
         }
@@ -983,25 +972,25 @@ public class GT_ModHandler {
      * Shapeless Crafting Recipes. Deletes conflicting Recipes too.
      */
     public static boolean addCraftingRecipe(ItemStack aResult, Enchantment[] aEnchantmentsAdded,
-            int[] aEnchantmentLevelsAdded, Object[] aRecipe) {
+        int[] aEnchantmentLevelsAdded, Object[] aRecipe) {
         return addCraftingRecipe(
-                aResult,
-                aEnchantmentsAdded,
-                aEnchantmentLevelsAdded,
-                false,
-                true,
-                false,
-                false,
-                false,
-                false,
-                false,
-                false,
-                false,
-                false,
-                false,
-                false,
-                true,
-                aRecipe);
+            aResult,
+            aEnchantmentsAdded,
+            aEnchantmentLevelsAdded,
+            false,
+            true,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            true,
+            aRecipe);
     }
 
     /**
@@ -1046,34 +1035,34 @@ public class GT_ModHandler {
      */
     public static boolean addCraftingRecipe(ItemStack aResult, long aBitMask, Object[] aRecipe) {
         return addCraftingRecipe(
-                aResult,
-                new Enchantment[0],
-                new int[0],
-                (aBitMask & RecipeBits.MIRRORED) != 0,
-                (aBitMask & RecipeBits.BUFFERED) != 0,
-                (aBitMask & RecipeBits.KEEPNBT) != 0,
-                (aBitMask & RecipeBits.DISMANTLEABLE) != 0,
-                (aBitMask & RecipeBits.NOT_REMOVABLE) == 0,
-                (aBitMask & RecipeBits.REVERSIBLE) != 0,
-                (aBitMask & RecipeBits.DELETE_ALL_OTHER_RECIPES) != 0,
-                (aBitMask & RecipeBits.DELETE_ALL_OTHER_RECIPES_IF_SAME_NBT) != 0,
-                (aBitMask & RecipeBits.DELETE_ALL_OTHER_SHAPED_RECIPES) != 0,
-                (aBitMask & RecipeBits.DELETE_ALL_OTHER_NATIVE_RECIPES) != 0,
-                (aBitMask & RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS) == 0,
-                (aBitMask & RecipeBits.ONLY_ADD_IF_THERE_IS_ANOTHER_RECIPE_FOR_IT) != 0,
-                (aBitMask & RecipeBits.ONLY_ADD_IF_RESULT_IS_NOT_NULL) != 0,
-                aRecipe);
+            aResult,
+            new Enchantment[0],
+            new int[0],
+            (aBitMask & RecipeBits.MIRRORED) != 0,
+            (aBitMask & RecipeBits.BUFFERED) != 0,
+            (aBitMask & RecipeBits.KEEPNBT) != 0,
+            (aBitMask & RecipeBits.DISMANTLEABLE) != 0,
+            (aBitMask & RecipeBits.NOT_REMOVABLE) == 0,
+            (aBitMask & RecipeBits.REVERSIBLE) != 0,
+            (aBitMask & RecipeBits.DELETE_ALL_OTHER_RECIPES) != 0,
+            (aBitMask & RecipeBits.DELETE_ALL_OTHER_RECIPES_IF_SAME_NBT) != 0,
+            (aBitMask & RecipeBits.DELETE_ALL_OTHER_SHAPED_RECIPES) != 0,
+            (aBitMask & RecipeBits.DELETE_ALL_OTHER_NATIVE_RECIPES) != 0,
+            (aBitMask & RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS) == 0,
+            (aBitMask & RecipeBits.ONLY_ADD_IF_THERE_IS_ANOTHER_RECIPE_FOR_IT) != 0,
+            (aBitMask & RecipeBits.ONLY_ADD_IF_RESULT_IS_NOT_NULL) != 0,
+            aRecipe);
     }
 
     /**
      * Internal realisation of the Crafting Recipe adding Process.
      */
     private static boolean addCraftingRecipe(ItemStack aResult, Enchantment[] aEnchantmentsAdded,
-            int[] aEnchantmentLevelsAdded, boolean aMirrored, boolean aBuffered, boolean aKeepNBT,
-            boolean aDismantleable, boolean aRemovable, boolean aReversible, boolean aRemoveAllOthersWithSameOutput,
-            boolean aRemoveAllOthersWithSameOutputIfTheyHaveSameNBT, boolean aRemoveAllOtherShapedsWithSameOutput,
-            boolean aRemoveAllOtherNativeRecipes, boolean aCheckForCollisions,
-            boolean aOnlyAddIfThereIsAnyRecipeOutputtingThis, boolean aOnlyAddIfResultIsNotNull, Object[] aRecipe) {
+        int[] aEnchantmentLevelsAdded, boolean aMirrored, boolean aBuffered, boolean aKeepNBT, boolean aDismantleable,
+        boolean aRemovable, boolean aReversible, boolean aRemoveAllOthersWithSameOutput,
+        boolean aRemoveAllOthersWithSameOutputIfTheyHaveSameNBT, boolean aRemoveAllOtherShapedsWithSameOutput,
+        boolean aRemoveAllOtherNativeRecipes, boolean aCheckForCollisions,
+        boolean aOnlyAddIfThereIsAnyRecipeOutputtingThis, boolean aOnlyAddIfResultIsNotNull, Object[] aRecipe) {
         aResult = GT_OreDictUnificator.get(true, aResult);
         if (aOnlyAddIfResultIsNotNull && aResult == null) return false;
         if (aResult != null && Items.feather.getDamage(aResult) == W) Items.feather.setDamage(aResult, 0);
@@ -1086,10 +1075,9 @@ public class GT_ModHandler {
             if (aRecipe[i] instanceof IItemContainer) aRecipe[i] = ((IItemContainer) aRecipe[i]).get(1);
             else if (aRecipe[i] instanceof Enum) aRecipe[i] = ((Enum<?>) aRecipe[i]).name();
             else if (!(aRecipe[i] == null || aRecipe[i] instanceof ItemStack
-                    || aRecipe[i] instanceof ItemData
-                    || aRecipe[i] instanceof String
-                    || aRecipe[i] instanceof Character))
-                aRecipe[i] = aRecipe[i].toString();
+                || aRecipe[i] instanceof ItemData
+                || aRecipe[i] instanceof String
+                || aRecipe[i] instanceof Character)) aRecipe[i] = aRecipe[i].toString();
         }
 
         try {
@@ -1108,7 +1096,7 @@ public class GT_ModHandler {
                 if (s.length() > 3) throw new IllegalArgumentException();
 
                 for (char c : s.toString()
-                               .toCharArray()) {
+                    .toCharArray()) {
                     switch (c) {
                         case 'b' -> {
                             tRecipeList.add(c);
@@ -1185,8 +1173,8 @@ public class GT_ModHandler {
                 if (aRecipe[idx] == null || aRecipe[idx + 1] == null) {
                     if (D1) {
                         GT_Log.err.println(
-                                "WARNING: Missing Item for shaped Recipe: "
-                                        + (aResult == null ? "null" : aResult.getDisplayName()));
+                            "WARNING: Missing Item for shaped Recipe: "
+                                + (aResult == null ? "null" : aResult.getDisplayName()));
                         for (Object tContent : aRecipe) GT_Log.err.println(tContent);
                     }
                     return false;
@@ -1234,8 +1222,7 @@ public class GT_ModHandler {
                 ItemData[] tData = new ItemData[9];
                 int x = -1;
                 for (char chr : shape.toString()
-                                     .toCharArray())
-                    tData[++x] = tItemDataMap.get(chr);
+                    .toCharArray()) tData[++x] = tItemDataMap.get(chr);
                 if (GT_Utility.arrayContainsNonNull(tData))
                     GT_OreDictUnificator.addItemData(aResult, new ItemData(tData));
             }
@@ -1244,7 +1231,7 @@ public class GT_ModHandler {
                 ItemStack[] tRecipe = new ItemStack[9];
                 int x = -1;
                 for (char chr : shape.toString()
-                                     .toCharArray()) {
+                    .toCharArray()) {
                     tRecipe[++x] = tItemStackMap.get(chr);
                     if (tRecipe[x] != null && Items.feather.getDamage(tRecipe[x]) == W)
                         Items.feather.setDamage(tRecipe[x], 0);
@@ -1260,25 +1247,25 @@ public class GT_ModHandler {
         if (aResult == null || aResult.stackSize <= 0) return false;
 
         if (aRemoveAllOthersWithSameOutput || aRemoveAllOthersWithSameOutputIfTheyHaveSameNBT
-                || aRemoveAllOtherShapedsWithSameOutput
-                || aRemoveAllOtherNativeRecipes) {
+            || aRemoveAllOtherShapedsWithSameOutput
+            || aRemoveAllOtherNativeRecipes) {
             if (tDoWeCareIfThereWasARecipe || !aBuffered) tThereWasARecipe = removeRecipeByOutput(
-                    aResult,
-                    !aRemoveAllOthersWithSameOutputIfTheyHaveSameNBT,
-                    aRemoveAllOtherShapedsWithSameOutput,
-                    aRemoveAllOtherNativeRecipes) || tThereWasARecipe;
+                aResult,
+                !aRemoveAllOthersWithSameOutputIfTheyHaveSameNBT,
+                aRemoveAllOtherShapedsWithSameOutput,
+                aRemoveAllOtherNativeRecipes) || tThereWasARecipe;
             else removeRecipeByOutputDelayed(aResult);
         }
 
         if (aOnlyAddIfThereIsAnyRecipeOutputtingThis && !tDoWeCareIfThereWasARecipe && !tThereWasARecipe) {
             ArrayList<IRecipe> tList = (ArrayList<IRecipe>) CraftingManager.getInstance()
-                                                                           .getRecipeList();
+                .getRecipeList();
             int tList_sS = tList.size();
             for (int i = 0; i < tList_sS && !tThereWasARecipe; i++) {
                 IRecipe tRecipe = tList.get(i);
                 if (sSpecialRecipeClasses.contains(
-                        tRecipe.getClass()
-                               .getName()))
+                    tRecipe.getClass()
+                        .getName()))
                     continue;
                 if (GT_Utility.areStacksEqual(GT_OreDictUnificator.get(tRecipe.getRecipeOutput()), aResult, true)) {
                     tList.remove(i--);
@@ -1295,23 +1282,23 @@ public class GT_ModHandler {
 
         if (tThereWasARecipe || !aOnlyAddIfThereIsAnyRecipeOutputtingThis) {
             if (sBufferCraftingRecipes && aBuffered) sBufferRecipeList.add(
-                    new GT_Shaped_Recipe(
-                            GT_Utility.copyOrNull(aResult),
-                            aDismantleable,
-                            aRemovable,
-                            aKeepNBT,
-                            aEnchantmentsAdded,
-                            aEnchantmentLevelsAdded,
-                            aRecipe).setMirrored(aMirrored));
+                new GT_Shaped_Recipe(
+                    GT_Utility.copyOrNull(aResult),
+                    aDismantleable,
+                    aRemovable,
+                    aKeepNBT,
+                    aEnchantmentsAdded,
+                    aEnchantmentLevelsAdded,
+                    aRecipe).setMirrored(aMirrored));
             else GameRegistry.addRecipe(
-                    new GT_Shaped_Recipe(
-                            GT_Utility.copyOrNull(aResult),
-                            aDismantleable,
-                            aRemovable,
-                            aKeepNBT,
-                            aEnchantmentsAdded,
-                            aEnchantmentLevelsAdded,
-                            aRecipe).setMirrored(aMirrored));
+                new GT_Shaped_Recipe(
+                    GT_Utility.copyOrNull(aResult),
+                    aDismantleable,
+                    aRemovable,
+                    aKeepNBT,
+                    aEnchantmentsAdded,
+                    aEnchantmentLevelsAdded,
+                    aRecipe).setMirrored(aMirrored));
         }
         return true;
     }
@@ -1320,16 +1307,16 @@ public class GT_ModHandler {
      * Shapeless Crafting Recipes. Deletes conflicting Recipes too.
      */
     public static boolean addShapelessEnchantingRecipe(ItemStack aResult, Enchantment[] aEnchantmentsAdded,
-            int[] aEnchantmentLevelsAdded, Object[] aRecipe) {
+        int[] aEnchantmentLevelsAdded, Object[] aRecipe) {
         return addShapelessCraftingRecipe(
-                aResult,
-                aEnchantmentsAdded,
-                aEnchantmentLevelsAdded,
-                true,
-                false,
-                false,
-                false,
-                aRecipe);
+            aResult,
+            aEnchantmentsAdded,
+            aEnchantmentLevelsAdded,
+            true,
+            false,
+            false,
+            false,
+            aRecipe);
     }
 
     /**
@@ -1337,9 +1324,9 @@ public class GT_ModHandler {
      */
     public static boolean addShapelessCraftingRecipe(ItemStack aResult, Object[] aRecipe) {
         return addShapelessCraftingRecipe(
-                aResult,
-                RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | RecipeBits.BUFFERED,
-                aRecipe);
+            aResult,
+            RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | RecipeBits.BUFFERED,
+            aRecipe);
     }
 
     /**
@@ -1347,31 +1334,30 @@ public class GT_ModHandler {
      */
     public static boolean addShapelessCraftingRecipe(ItemStack aResult, long aBitMask, Object[] aRecipe) {
         return addShapelessCraftingRecipe(
-                aResult,
-                new Enchantment[0],
-                new int[0],
-                (aBitMask & RecipeBits.BUFFERED) != 0,
-                (aBitMask & RecipeBits.KEEPNBT) != 0,
-                (aBitMask & RecipeBits.DISMANTLEABLE) != 0,
-                (aBitMask & RecipeBits.NOT_REMOVABLE) == 0,
-                aRecipe);
+            aResult,
+            new Enchantment[0],
+            new int[0],
+            (aBitMask & RecipeBits.BUFFERED) != 0,
+            (aBitMask & RecipeBits.KEEPNBT) != 0,
+            (aBitMask & RecipeBits.DISMANTLEABLE) != 0,
+            (aBitMask & RecipeBits.NOT_REMOVABLE) == 0,
+            aRecipe);
     }
 
     /**
      * Shapeless Crafting Recipes. Deletes conflicting Recipes too.
      */
     private static boolean addShapelessCraftingRecipe(ItemStack aResult, Enchantment[] aEnchantmentsAdded,
-            int[] aEnchantmentLevelsAdded, boolean aBuffered, boolean aKeepNBT, boolean aDismantleable,
-            boolean aRemovable, Object[] aRecipe) {
+        int[] aEnchantmentLevelsAdded, boolean aBuffered, boolean aKeepNBT, boolean aDismantleable, boolean aRemovable,
+        Object[] aRecipe) {
         aResult = GT_OreDictUnificator.get(true, aResult);
         if (aRecipe == null || aRecipe.length <= 0) return false;
         for (byte i = 0; i < aRecipe.length; i++) {
             if (aRecipe[i] instanceof IItemContainer) aRecipe[i] = ((IItemContainer) aRecipe[i]).get(1);
             else if (aRecipe[i] instanceof Enum) aRecipe[i] = ((Enum<?>) aRecipe[i]).name();
             else if (!(aRecipe[i] == null || aRecipe[i] instanceof ItemStack
-                    || aRecipe[i] instanceof String
-                    || aRecipe[i] instanceof Character))
-                aRecipe[i] = aRecipe[i].toString();
+                || aRecipe[i] instanceof String
+                || aRecipe[i] instanceof Character)) aRecipe[i] = aRecipe[i].toString();
         }
         try {
             ItemStack[] tRecipe = new ItemStack[9];
@@ -1379,8 +1365,8 @@ public class GT_ModHandler {
             for (Object tObject : aRecipe) {
                 if (tObject == null) {
                     if (D1) GT_Log.err.println(
-                            "WARNING: Missing Item for shapeless Recipe: "
-                                    + (aResult == null ? "null" : aResult.getDisplayName()));
+                        "WARNING: Missing Item for shapeless Recipe: "
+                            + (aResult == null ? "null" : aResult.getDisplayName()));
                     for (Object tContent : aRecipe) GT_Log.err.println(tContent);
                     return false;
                 }
@@ -1406,23 +1392,23 @@ public class GT_ModHandler {
         GT_Utility.updateItemStack(aResult);
 
         if (sBufferCraftingRecipes && aBuffered) sBufferRecipeList.add(
-                new GT_Shapeless_Recipe(
-                        GT_Utility.copyOrNull(aResult),
-                        aDismantleable,
-                        aRemovable,
-                        aKeepNBT,
-                        aEnchantmentsAdded,
-                        aEnchantmentLevelsAdded,
-                        aRecipe));
+            new GT_Shapeless_Recipe(
+                GT_Utility.copyOrNull(aResult),
+                aDismantleable,
+                aRemovable,
+                aKeepNBT,
+                aEnchantmentsAdded,
+                aEnchantmentLevelsAdded,
+                aRecipe));
         else GameRegistry.addRecipe(
-                new GT_Shapeless_Recipe(
-                        GT_Utility.copyOrNull(aResult),
-                        aDismantleable,
-                        aRemovable,
-                        aKeepNBT,
-                        aEnchantmentsAdded,
-                        aEnchantmentLevelsAdded,
-                        aRecipe));
+            new GT_Shapeless_Recipe(
+                GT_Utility.copyOrNull(aResult),
+                aDismantleable,
+                aRemovable,
+                aKeepNBT,
+                aEnchantmentsAdded,
+                aEnchantmentLevelsAdded,
+                aRecipe));
         return true;
     }
 
@@ -1432,12 +1418,12 @@ public class GT_ModHandler {
     public static boolean removeFurnaceSmelting(ItemStack aInput) {
         if (aInput != null) {
             for (ItemStack tInput : FurnaceRecipes.smelting()
-                                                  .getSmeltingList()
-                                                  .keySet()) {
+                .getSmeltingList()
+                .keySet()) {
                 if (GT_Utility.isStackValid(tInput) && GT_Utility.areStacksEqual(aInput, tInput, true)) {
                     FurnaceRecipes.smelting()
-                                  .getSmeltingList()
-                                  .remove(tInput);
+                        .getSmeltingList()
+                        .remove(tInput);
                     return true;
                 }
             }
@@ -1451,11 +1437,10 @@ public class GT_ModHandler {
     public static boolean removeFurnaceSmeltingByOutput(ItemStack aOutput) {
         if (aOutput != null) {
             return FurnaceRecipes.smelting()
-                                 .getSmeltingList()
-                                 .values()
-                                 .removeIf(
-                                         tOutput -> GT_Utility.isStackValid(tOutput)
-                                                 && GT_Utility.areStacksEqual(aOutput, tOutput, true));
+                .getSmeltingList()
+                .values()
+                .removeIf(
+                    tOutput -> GT_Utility.isStackValid(tOutput) && GT_Utility.areStacksEqual(aOutput, tOutput, true));
         }
         return false;
     }
@@ -1469,8 +1454,7 @@ public class GT_ModHandler {
     public static ItemStack removeRecipe(ItemStack... aRecipe) {
         if (aRecipe == null) return null;
         if (Arrays.stream(aRecipe)
-                  .noneMatch(Objects::nonNull))
-            return null;
+            .noneMatch(Objects::nonNull)) return null;
 
         ItemStack rReturn = null;
         InventoryCrafting aCrafting = new InventoryCrafting(new Container() {
@@ -1482,16 +1466,16 @@ public class GT_ModHandler {
         }, 3, 3);
         for (int i = 0; i < aRecipe.length && i < 9; i++) aCrafting.setInventorySlotContents(i, aRecipe[i]);
         ArrayList<IRecipe> tList = (ArrayList<IRecipe>) CraftingManager.getInstance()
-                                                                       .getRecipeList();
+            .getRecipeList();
         int tList_sS = tList.size();
         try {
             for (int i = 0; i < tList_sS; i++) {
                 for (; i < tList_sS; i++) {
                     if ((!(tList.get(i) instanceof IGT_CraftingRecipe)
-                            || ((IGT_CraftingRecipe) tList.get(i)).isRemovable()) && tList.get(i)
-                                                                                          .matches(aCrafting, DW)) {
+                        || ((IGT_CraftingRecipe) tList.get(i)).isRemovable()) && tList.get(i)
+                            .matches(aCrafting, DW)) {
                         rReturn = tList.get(i)
-                                       .getCraftingResult(aCrafting);
+                            .getCraftingResult(aCrafting);
                         if (rReturn != null) tList.remove(i--);
                         tList_sS = tList.size();
                     }
@@ -1511,8 +1495,7 @@ public class GT_ModHandler {
 
         if (aRecipe == null) return;
         if (Arrays.stream(aRecipe)
-                  .noneMatch(Objects::nonNull))
-            return;
+            .noneMatch(Objects::nonNull)) return;
 
         InventoryCrafting aCrafting = new InventoryCrafting(new Container() {
 
@@ -1528,18 +1511,17 @@ public class GT_ModHandler {
     @SuppressWarnings("unchecked")
     public static void bulkRemoveByRecipe(List<InventoryCrafting> toRemove) {
         ArrayList<IRecipe> tList = (ArrayList<IRecipe>) CraftingManager.getInstance()
-                                                                       .getRecipeList();
+            .getRecipeList();
         GT_FML_LOGGER.info("BulkRemoveByRecipe: tList: " + tList.size() + " toRemove: " + toRemove.size());
 
         Set<IRecipe> tListToRemove = tList.parallelStream()
-                                          .filter(tRecipe -> {
-                                              if ((tRecipe instanceof IGT_CraftingRecipe)
-                                                      && !((IGT_CraftingRecipe) tRecipe).isRemovable())
-                                                  return false;
-                                              return toRemove.stream()
-                                                             .anyMatch(aCrafting -> tRecipe.matches(aCrafting, DW));
-                                          })
-                                          .collect(Collectors.toSet());
+            .filter(tRecipe -> {
+                if ((tRecipe instanceof IGT_CraftingRecipe) && !((IGT_CraftingRecipe) tRecipe).isRemovable())
+                    return false;
+                return toRemove.stream()
+                    .anyMatch(aCrafting -> tRecipe.matches(aCrafting, DW));
+            })
+            .collect(Collectors.toSet());
 
         tList.removeIf(tListToRemove::contains);
     }
@@ -1550,7 +1532,7 @@ public class GT_ModHandler {
     }
 
     public static boolean removeRecipeByOutputDelayed(ItemStack aOutput, boolean aIgnoreNBT,
-            boolean aNotRemoveShapelessRecipes, boolean aOnlyRemoveNativeHandlers) {
+        boolean aNotRemoveShapelessRecipes, boolean aOnlyRemoveNativeHandlers) {
         if (sBufferCraftingRecipes && (aIgnoreNBT && !aNotRemoveShapelessRecipes && !aOnlyRemoveNativeHandlers))
             // Too lazy to handle deferred versions of the parameters that aren't used very often
             return delayedRemovalByOutput.add(aOutput);
@@ -1568,32 +1550,31 @@ public class GT_ModHandler {
      * @return if it has removed at least one Recipe.
      */
     public static boolean removeRecipeByOutput(ItemStack aOutput, boolean aIgnoreNBT,
-            boolean aNotRemoveShapelessRecipes, boolean aOnlyRemoveNativeHandlers) {
+        boolean aNotRemoveShapelessRecipes, boolean aOnlyRemoveNativeHandlers) {
         if (aOutput == null) return false;
         boolean rReturn = false;
         ArrayList<IRecipe> tList = (ArrayList<IRecipe>) CraftingManager.getInstance()
-                                                                       .getRecipeList();
+            .getRecipeList();
         aOutput = GT_OreDictUnificator.get(aOutput);
         int tList_sS = tList.size();
         for (int i = 0; i < tList_sS; i++) {
             IRecipe tRecipe = tList.get(i);
             if (aNotRemoveShapelessRecipes
-                    && (tRecipe instanceof ShapelessRecipes || tRecipe instanceof ShapelessOreRecipe))
-                continue;
+                && (tRecipe instanceof ShapelessRecipes || tRecipe instanceof ShapelessOreRecipe)) continue;
             if (aOnlyRemoveNativeHandlers) {
                 if (!sNativeRecipeClasses.contains(
-                        tRecipe.getClass()
-                               .getName()))
+                    tRecipe.getClass()
+                        .getName()))
                     continue;
             } else {
                 if (sSpecialRecipeClasses.contains(
-                        tRecipe.getClass()
-                               .getName()))
+                    tRecipe.getClass()
+                        .getName()))
                     continue;
             }
             ItemStack tStack = tRecipe.getRecipeOutput();
             if ((!(tRecipe instanceof IGT_CraftingRecipe) || ((IGT_CraftingRecipe) tRecipe).isRemovable())
-                    && GT_Utility.areStacksEqual(GT_OreDictUnificator.get(tStack), aOutput, aIgnoreNBT)) {
+                && GT_Utility.areStacksEqual(GT_OreDictUnificator.get(tStack), aOutput, aIgnoreNBT)) {
                 tList.remove(i--);
                 tList_sS = tList.size();
                 rReturn = true;
@@ -1604,33 +1585,27 @@ public class GT_ModHandler {
 
     public static boolean bulkRemoveRecipeByOutput(List<ItemStack> toRemove) {
         ArrayList<IRecipe> tList = (ArrayList<IRecipe>) CraftingManager.getInstance()
-                                                                       .getRecipeList();
+            .getRecipeList();
 
         Set<ItemStack> setToRemove = toRemove.parallelStream()
-                                             .map(GT_OreDictUnificator::get_nocopy)
-                                             .collect(Collectors.toSet());
+            .map(GT_OreDictUnificator::get_nocopy)
+            .collect(Collectors.toSet());
 
         GT_FML_LOGGER.info("BulkRemoveRecipeByOutput: tList: " + tList.size() + " setToRemove: " + setToRemove.size());
 
         Set<IRecipe> tListToRemove = tList.parallelStream()
-                                          .filter(tRecipe -> {
-                                              if ((tRecipe instanceof IGT_CraftingRecipe)
-                                                      && !((IGT_CraftingRecipe) tRecipe).isRemovable())
-                                                  return false;
-                                              if (sSpecialRecipeClasses.contains(
-                                                      tRecipe.getClass()
-                                                             .getName()))
-                                                  return false;
-                                              final ItemStack tStack = GT_OreDictUnificator.get_nocopy(
-                                                      tRecipe.getRecipeOutput());
-                                              return setToRemove.stream()
-                                                                .anyMatch(
-                                                                        aOutput -> GT_Utility.areStacksEqual(
-                                                                                tStack,
-                                                                                aOutput,
-                                                                                true));
-                                          })
-                                          .collect(Collectors.toSet());
+            .filter(tRecipe -> {
+                if ((tRecipe instanceof IGT_CraftingRecipe) && !((IGT_CraftingRecipe) tRecipe).isRemovable())
+                    return false;
+                if (sSpecialRecipeClasses.contains(
+                    tRecipe.getClass()
+                        .getName()))
+                    return false;
+                final ItemStack tStack = GT_OreDictUnificator.get_nocopy(tRecipe.getRecipeOutput());
+                return setToRemove.stream()
+                    .anyMatch(aOutput -> GT_Utility.areStacksEqual(tStack, aOutput, true));
+            })
+            .collect(Collectors.toSet());
 
         tList.removeIf(tListToRemove::contains);
         return true;
@@ -1661,7 +1636,7 @@ public class GT_ModHandler {
         }, 3, 3);
         for (int i = 0; i < 9 && i < aRecipe.length; i++) aCrafting.setInventorySlotContents(i, aRecipe[i]);
         List<IRecipe> tList = CraftingManager.getInstance()
-                                             .getRecipeList();
+            .getRecipeList();
         synchronized (sAllRecipeList) {
             if (sAllRecipeList.size() != tList.size()) {
                 sAllRecipeList.clear();
@@ -1693,12 +1668,12 @@ public class GT_ModHandler {
         if (tIndex == 2) {
             assert tStack1 != null && tStack2 != null;
             if (tStack1.getItem() == tStack2.getItem() && tStack1.stackSize == 1
-                    && tStack2.stackSize == 1
-                    && tStack1.getItem()
-                              .isRepairable()) {
+                && tStack2.stackSize == 1
+                && tStack1.getItem()
+                    .isRepairable()) {
                 int tNewDamage = tStack1.getMaxDamage() + tStack1.getItemDamage()
-                        - tStack2.getItemDamage()
-                        + tStack1.getMaxDamage() / 20;
+                    - tStack2.getItemDamage()
+                    + tStack1.getMaxDamage() / 20;
                 return new ItemStack(tStack1.getItem(), 1, Math.max(tNewDamage, 0));
             }
         }
@@ -1727,8 +1702,7 @@ public class GT_ModHandler {
     @SuppressWarnings("unchecked")
     public static ItemStack getRecipeOutput(boolean aUncopiedStack, boolean allowOreDict, ItemStack... aRecipe) {
         if (aRecipe == null || Arrays.stream(aRecipe)
-                                     .noneMatch(Objects::nonNull))
-            return null;
+            .noneMatch(Objects::nonNull)) return null;
 
         InventoryCrafting aCrafting = new InventoryCrafting(new Container() {
 
@@ -1739,7 +1713,7 @@ public class GT_ModHandler {
         }, 3, 3);
         for (int i = 0; i < 9 && i < aRecipe.length; i++) aCrafting.setInventorySlotContents(i, aRecipe[i]);
         ArrayList<IRecipe> tList = (ArrayList<IRecipe>) CraftingManager.getInstance()
-                                                                       .getRecipeList();
+            .getRecipeList();
         boolean found = false;
 
         for (IRecipe iRecipe : tList) {
@@ -1756,7 +1730,7 @@ public class GT_ModHandler {
                 if (tOutput == null || tOutput.stackSize <= 0) {
                     // Seriously, who would ever do that shit?
                     if (!GregTech_API.sPostloadFinished) throw new GT_ItsNotMyFaultException(
-                            "Seems another Mod added a Crafting Recipe with null Output. Tell the Developer of said Mod to fix that.");
+                        "Seems another Mod added a Crafting Recipe with null Output. Tell the Developer of said Mod to fix that.");
                 } else {
                     if (aUncopiedStack) return tOutput;
                     return GT_Utility.copyOrNull(tOutput);
@@ -1775,22 +1749,22 @@ public class GT_ModHandler {
             sSingleNonBlockDamagableRecipeList.clear();
         if (sSingleNonBlockDamagableRecipeList.isEmpty()) {
             for (IRecipe tRecipe : CraftingManager.getInstance()
-                                                  .getRecipeList()) {
+                .getRecipeList()) {
                 ItemStack tStack = tRecipe.getRecipeOutput();
                 if (GT_Utility.isStackValid(tStack) && tStack.getMaxStackSize() == 1
-                        && tStack.getMaxDamage() > 0
-                        && !(tStack.getItem() instanceof ItemBlock)
-                        && !(tStack.getItem() instanceof IReactorComponent)
-                        && !isElectricItem(tStack)
-                        && !GT_Utility.isStackInList(tStack, sNonReplaceableItems)) {
+                    && tStack.getMaxDamage() > 0
+                    && !(tStack.getItem() instanceof ItemBlock)
+                    && !(tStack.getItem() instanceof IReactorComponent)
+                    && !isElectricItem(tStack)
+                    && !GT_Utility.isStackInList(tStack, sNonReplaceableItems)) {
                     if (!(tRecipe instanceof ShapelessRecipes || tRecipe instanceof ShapelessOreRecipe)) {
                         if (tRecipe instanceof ShapedOreRecipe) {
                             boolean temp = true;
                             for (Object tObject : ((ShapedOreRecipe) tRecipe).getInput()) if (tObject != null) {
                                 if (tObject instanceof ItemStack && (((ItemStack) tObject).getItem() == null
-                                        || ((ItemStack) tObject).getMaxStackSize() < 2
-                                        || ((ItemStack) tObject).getMaxDamage() > 0
-                                        || ((ItemStack) tObject).getItem() instanceof ItemBlock)) {
+                                    || ((ItemStack) tObject).getMaxStackSize() < 2
+                                    || ((ItemStack) tObject).getMaxDamage() > 0
+                                    || ((ItemStack) tObject).getItem() instanceof ItemBlock)) {
                                     temp = false;
                                     break;
                                 }
@@ -1804,8 +1778,8 @@ public class GT_ModHandler {
                             boolean temp = true;
                             for (ItemStack tObject : ((ShapedRecipes) tRecipe).recipeItems) {
                                 if (tObject != null && (tObject.getItem() == null || tObject.getMaxStackSize() < 2
-                                        || tObject.getMaxDamage() > 0
-                                        || tObject.getItem() instanceof ItemBlock)) {
+                                    || tObject.getMaxDamage() > 0
+                                    || tObject.getItem() instanceof ItemBlock)) {
                                     temp = false;
                                     break;
                                 }
@@ -1818,11 +1792,11 @@ public class GT_ModHandler {
                 }
             }
             GT_Log.out.println(
-                    "GT_Mod: Created a List of Tool Recipes containing " + sSingleNonBlockDamagableRecipeList.size()
-                            + " Recipes for recycling."
-                            + (sSingleNonBlockDamagableRecipeList.size() > 1024
-                                    ? " Scanning all these Recipes is the reason for the startup Lag you receive right now."
-                                    : E));
+                "GT_Mod: Created a List of Tool Recipes containing " + sSingleNonBlockDamagableRecipeList.size()
+                    + " Recipes for recycling."
+                    + (sSingleNonBlockDamagableRecipeList.size() > 1024
+                        ? " Scanning all these Recipes is the reason for the startup Lag you receive right now."
+                        : E));
         }
         List<ItemStack> rList = getRecipeOutputs(sSingleNonBlockDamagableRecipeList, true, aRecipe);
         if (!GregTech_API.sPostloadStarted || GregTech_API.sPostloadFinished)
@@ -1836,10 +1810,10 @@ public class GT_ModHandler {
      */
     public static List<ItemStack> getRecipeOutputs(ItemStack... aRecipe) {
         return getRecipeOutputs(
-                CraftingManager.getInstance()
-                               .getRecipeList(),
-                false,
-                aRecipe);
+            CraftingManager.getInstance()
+                .getRecipeList(),
+            false,
+            aRecipe);
     }
 
     private static List<IRecipe> bufferedRecipes = null;
@@ -1851,25 +1825,21 @@ public class GT_ModHandler {
     public static List<ItemStack> getRecipeOutputsBuffered(ItemStack... aRecipe) {
 
         if (bufferedRecipes == null) bufferedRecipes = CraftingManager.getInstance()
-                                                                      .getRecipeList()
-                                                                      .stream()
-                                                                      .filter(
-                                                                              tRecipe -> !(tRecipe instanceof ShapelessRecipes)
-                                                                                      && !(tRecipe instanceof ShapelessOreRecipe)
-                                                                                      && !(tRecipe instanceof IGT_CraftingRecipe))
-                                                                      .filter(tRecipe -> {
-                                                                          try {
-                                                                              ItemStack tOutput = tRecipe.getRecipeOutput();
-                                                                              if (tOutput.stackSize == 1
-                                                                                      && tOutput.getMaxDamage() > 0
-                                                                                      && tOutput.getMaxStackSize()
-                                                                                              == 1) {
-                                                                                  return true;
-                                                                              }
-                                                                          } catch (Exception ignored) {}
-                                                                          return false;
-                                                                      })
-                                                                      .collect(Collectors.toList());
+            .getRecipeList()
+            .stream()
+            .filter(
+                tRecipe -> !(tRecipe instanceof ShapelessRecipes) && !(tRecipe instanceof ShapelessOreRecipe)
+                    && !(tRecipe instanceof IGT_CraftingRecipe))
+            .filter(tRecipe -> {
+                try {
+                    ItemStack tOutput = tRecipe.getRecipeOutput();
+                    if (tOutput.stackSize == 1 && tOutput.getMaxDamage() > 0 && tOutput.getMaxStackSize() == 1) {
+                        return true;
+                    }
+                } catch (Exception ignored) {}
+                return false;
+            })
+            .collect(Collectors.toList());
         return getRecipeOutputs(bufferedRecipes, false, aRecipe);
     }
 
@@ -1880,8 +1850,7 @@ public class GT_ModHandler {
     public static List<ItemStack> getRecipeOutputs(List<IRecipe> aList, boolean aDeleteFromList, ItemStack... aRecipe) {
         List<ItemStack> rList = new ArrayList<>();
         if (aRecipe == null || Arrays.stream(aRecipe)
-                                     .noneMatch(Objects::nonNull))
-            return rList;
+            .noneMatch(Objects::nonNull)) return rList;
         InventoryCrafting aCrafting = new InventoryCrafting(new Container() {
 
             @Override
@@ -1893,23 +1862,21 @@ public class GT_ModHandler {
         if (!aDeleteFromList) {
             HashSet<ItemStack> stacks = new HashSet<>();
             aList.stream()
-                 .filter(tRecipe -> {
-                     if (tRecipe instanceof ShapelessRecipes || tRecipe instanceof ShapelessOreRecipe
-                             || tRecipe instanceof IGT_CraftingRecipe)
-                         return false;
-                     try {
-                         return tRecipe.matches(aCrafting, DW);
-                     } catch (Throwable e) {
-                         e.printStackTrace(GT_Log.err);
-                         return false;
-                     }
-                 })
-                 .forEach(tRecipe -> stacks.add(tRecipe.getCraftingResult(aCrafting)));
+                .filter(tRecipe -> {
+                    if (tRecipe instanceof ShapelessRecipes || tRecipe instanceof ShapelessOreRecipe
+                        || tRecipe instanceof IGT_CraftingRecipe) return false;
+                    try {
+                        return tRecipe.matches(aCrafting, DW);
+                    } catch (Throwable e) {
+                        e.printStackTrace(GT_Log.err);
+                        return false;
+                    }
+                })
+                .forEach(tRecipe -> stacks.add(tRecipe.getCraftingResult(aCrafting)));
             rList = stacks.stream()
-                          .filter(
-                                  tOutput -> tOutput.stackSize == 1 && tOutput.getMaxDamage() > 0
-                                          && tOutput.getMaxStackSize() == 1)
-                          .collect(Collectors.toList());
+                .filter(
+                    tOutput -> tOutput.stackSize == 1 && tOutput.getMaxDamage() > 0 && tOutput.getMaxStackSize() == 1)
+                .collect(Collectors.toList());
         } else for (Iterator<IRecipe> iterator = aList.iterator(); iterator.hasNext();) {
             IRecipe tRecipe = iterator.next();
             boolean matched = false;
@@ -1925,7 +1892,7 @@ public class GT_ModHandler {
                 if (tOutput == null || tOutput.stackSize <= 0) {
                     // Seriously, who would ever do that shit?
                     if (!GregTech_API.sPostloadFinished) throw new GT_ItsNotMyFaultException(
-                            "Seems another Mod added a Crafting Recipe with null Output. Tell the Developer of said Mod to fix that.");
+                        "Seems another Mod added a Crafting Recipe with null Output. Tell the Developer of said Mod to fix that.");
                     continue;
                 }
                 if (tOutput.stackSize != 1) continue;
@@ -1947,7 +1914,7 @@ public class GT_ModHandler {
     @Deprecated
     public static ItemStack getMaceratorOutput(ItemStack aInput, boolean aRemoveInput, ItemStack aOutputSlot) {
         return GT_Utility.copyOrNull(
-                getMachineOutput(aInput, getMaceratorRecipeList(), aRemoveInput, new NBTTagCompound(), aOutputSlot)[0]);
+            getMachineOutput(aInput, getMaceratorRecipeList(), aRemoveInput, new NBTTagCompound(), aOutputSlot)[0]);
     }
 
     /**
@@ -1956,7 +1923,7 @@ public class GT_ModHandler {
     @Deprecated
     public static ItemStack getExtractorOutput(ItemStack aInput, boolean aRemoveInput, ItemStack aOutputSlot) {
         return GT_Utility.copyOrNull(
-                getMachineOutput(aInput, getExtractorRecipeList(), aRemoveInput, new NBTTagCompound(), aOutputSlot)[0]);
+            getMachineOutput(aInput, getExtractorRecipeList(), aRemoveInput, new NBTTagCompound(), aOutputSlot)[0]);
     }
 
     /**
@@ -1965,12 +1932,7 @@ public class GT_ModHandler {
     @Deprecated
     public static ItemStack getCompressorOutput(ItemStack aInput, boolean aRemoveInput, ItemStack aOutputSlot) {
         return GT_Utility.copyOrNull(
-                getMachineOutput(
-                        aInput,
-                        getCompressorRecipeList(),
-                        aRemoveInput,
-                        new NBTTagCompound(),
-                        aOutputSlot)[0]);
+            getMachineOutput(aInput, getCompressorRecipeList(), aRemoveInput, new NBTTagCompound(), aOutputSlot)[0]);
     }
 
     /**
@@ -1979,11 +1941,11 @@ public class GT_ModHandler {
     public static ItemStack getSmeltingOutput(ItemStack aInput, boolean aRemoveInput, ItemStack aOutputSlot) {
         if (aInput == null || aInput.stackSize < 1) return null;
         ItemStack rStack = GT_OreDictUnificator.get(
-                FurnaceRecipes.smelting()
-                              .getSmeltingResult(aInput));
+            FurnaceRecipes.smelting()
+                .getSmeltingResult(aInput));
 
         if (rStack != null && (aOutputSlot == null || (GT_Utility.areStacksEqual(rStack, aOutputSlot)
-                && rStack.stackSize + aOutputSlot.stackSize <= aOutputSlot.getMaxStackSize()))) {
+            && rStack.stackSize + aOutputSlot.stackSize <= aOutputSlot.getMaxStackSize()))) {
             if (aRemoveInput) aInput.stackSize--;
             return rStack;
         }
@@ -1996,16 +1958,15 @@ public class GT_ModHandler {
      * Checks also if there is enough Space in the Output Slots.
      */
     public static ItemStack[] getMachineOutput(ItemStack aInput, Map<IRecipeInput, RecipeOutput> aRecipeList,
-            boolean aRemoveInput, NBTTagCompound rRecipeMetaData, ItemStack... aOutputSlots) {
+        boolean aRemoveInput, NBTTagCompound rRecipeMetaData, ItemStack... aOutputSlots) {
         if (aOutputSlots == null || aOutputSlots.length <= 0) return new ItemStack[0];
         if (aInput == null) return new ItemStack[aOutputSlots.length];
         try {
             for (Entry<IRecipeInput, RecipeOutput> tEntry : aRecipeList.entrySet()) {
                 if (tEntry.getKey()
-                          .matches(aInput)) {
+                    .matches(aInput)) {
                     if (tEntry.getKey()
-                              .getAmount()
-                            <= aInput.stackSize) {
+                        .getAmount() <= aInput.stackSize) {
                         ItemStack[] tList = tEntry.getValue().items.toArray(new ItemStack[0]);
                         if (tList.length == 0) break;
                         ItemStack[] rList = new ItemStack[aOutputSlots.length];
@@ -2013,8 +1974,8 @@ public class GT_ModHandler {
                         for (byte i = 0; i < aOutputSlots.length && i < tList.length; i++) {
                             if (tList[i] != null) {
                                 if (aOutputSlots[i] == null || (GT_Utility.areStacksEqual(tList[i], aOutputSlots[i])
-                                        && tList[i].stackSize + aOutputSlots[i].stackSize
-                                                <= aOutputSlots[i].getMaxStackSize())) {
+                                    && tList[i].stackSize + aOutputSlots[i].stackSize
+                                        <= aOutputSlots[i].getMaxStackSize())) {
                                     rList[i] = GT_Utility.copyOrNull(tList[i]);
                                 } else {
                                     return new ItemStack[aOutputSlots.length];
@@ -2023,7 +1984,7 @@ public class GT_ModHandler {
                         }
 
                         if (aRemoveInput) aInput.stackSize -= tEntry.getKey()
-                                                                    .getAmount();
+                            .getAmount();
                         return rList;
                     }
                     break;
@@ -2073,7 +2034,7 @@ public class GT_ModHandler {
      * @return the actually used Energy.
      */
     public static int chargeElectricItem(ItemStack aStack, int aCharge, int aTier, boolean aIgnoreLimit,
-            boolean aSimulate) {
+        boolean aSimulate) {
         try {
             if (isElectricItem(aStack)) {
                 int tTier = ((ic2.api.item.IElectricItem) aStack.getItem()).getTier(aStack);
@@ -2082,8 +2043,8 @@ public class GT_ModHandler {
                         aCharge = (int) Math.min(aCharge, V[Math.max(0, Math.min(V.length - 1, tTier))]);
                     if (aCharge > 0) {
                         int rCharge = (int) Math.max(
-                                0.0,
-                                ic2.api.item.ElectricItem.manager.charge(aStack, aCharge, tTier, true, aSimulate));
+                            0.0,
+                            ic2.api.item.ElectricItem.manager.charge(aStack, aCharge, tTier, true, aSimulate));
                         return rCharge + (rCharge * 4 > aTier ? aTier : 0);
                     }
                 }
@@ -2102,7 +2063,7 @@ public class GT_ModHandler {
      * @return the Energy got from the Item.
      */
     public static int dischargeElectricItem(ItemStack aStack, int aCharge, int aTier, boolean aIgnoreLimit,
-            boolean aSimulate, boolean aIgnoreDischargability) {
+        boolean aSimulate, boolean aIgnoreDischargability) {
         try {
             // if (isElectricItem(aStack) && (aIgnoreDischargability ||
             // ((ic2.api.item.IElectricItem)aStack.getItem()).canProvideEnergy(aStack))) {
@@ -2110,21 +2071,20 @@ public class GT_ModHandler {
                 int tTier = ((ic2.api.item.IElectricItem) aStack.getItem()).getTier(aStack);
                 if (tTier < 0 || tTier == aTier || aTier == Integer.MAX_VALUE) {
                     if (!aIgnoreLimit && tTier >= 0) aCharge = (int) Math.min(
-                            aCharge,
-                            V[Math.max(0, Math.min(V.length - 1, tTier))]
-                                    + B[Math.max(0, Math.min(V.length - 1, tTier))]);
+                        aCharge,
+                        V[Math.max(0, Math.min(V.length - 1, tTier))] + B[Math.max(0, Math.min(V.length - 1, tTier))]);
                     if (aCharge > 0) {
                         // int rCharge = Math.max(0, ic2.api.item.ElectricItem.manager.discharge(aStack, aCharge +
                         // (aCharge * 4 > aTier ? aTier : 0), tTier, T, aSimulate));
                         int rCharge = (int) Math.max(
-                                0,
-                                ic2.api.item.ElectricItem.manager.discharge(
-                                        aStack,
-                                        aCharge + (aCharge * 4 > aTier ? aTier : 0),
-                                        tTier,
-                                        true,
-                                        !aIgnoreDischargability,
-                                        aSimulate));
+                            0,
+                            ic2.api.item.ElectricItem.manager.discharge(
+                                aStack,
+                                aCharge + (aCharge * 4 > aTier ? aTier : 0),
+                                tTier,
+                                true,
+                                !aIgnoreDischargability,
+                                aSimulate));
                         return rCharge - (rCharge * 4 > aTier ? aTier : 0);
                     }
                 }
@@ -2185,27 +2145,27 @@ public class GT_ModHandler {
                     return GT_ModHandler.useElectricItem(aStack, aDecharge, (EntityPlayer) aPlayer);
                 }
                 return GT_ModHandler.dischargeElectricItem(aStack, aDecharge, Integer.MAX_VALUE, true, false, true)
-                        >= aDecharge;
+                    >= aDecharge;
             }
         } else if (aStack.getItem()
-                         .isDamageable()) {
-                             if (aPlayer == null) {
-                                 aStack.setItemDamage(aStack.getItemDamage() + aDamage);
-                             } else {
-                                 aStack.damageItem(aDamage, aPlayer);
-                             }
-                             if (aStack.getItemDamage() >= aStack.getMaxDamage()) {
-                                 aStack.setItemDamage(aStack.getMaxDamage() + 1);
-                                 ItemStack tStack = GT_Utility.getContainerItem(aStack, true);
-                                 if (tStack != null) {
-                                     aStack.func_150996_a(tStack.getItem());
-                                     aStack.setItemDamage(tStack.getItemDamage());
-                                     aStack.stackSize = tStack.stackSize;
-                                     aStack.setTagCompound(tStack.getTagCompound());
-                                 }
-                             }
-                             return true;
-                         }
+            .isDamageable()) {
+                if (aPlayer == null) {
+                    aStack.setItemDamage(aStack.getItemDamage() + aDamage);
+                } else {
+                    aStack.damageItem(aDamage, aPlayer);
+                }
+                if (aStack.getItemDamage() >= aStack.getMaxDamage()) {
+                    aStack.setItemDamage(aStack.getMaxDamage() + 1);
+                    ItemStack tStack = GT_Utility.getContainerItem(aStack, true);
+                    if (tStack != null) {
+                        aStack.func_150996_a(tStack.getItem());
+                        aStack.setItemDamage(tStack.getItemDamage());
+                        aStack.stackSize = tStack.stackSize;
+                        aStack.setTagCompound(tStack.getTagCompound());
+                    }
+                }
+                return true;
+            }
         return false;
     }
 
@@ -2219,14 +2179,14 @@ public class GT_ModHandler {
                 if (tPlayer.capabilities.isCreativeMode) return true;
                 if (isElectricItem(aStack) && ic2.api.item.ElectricItem.manager.getCharge(aStack) > 1000.0d) {
                     if (consumeSolderingMaterial(tPlayer)
-                            || (aExternalInventory != null && consumeSolderingMaterial(aExternalInventory))) {
+                        || (aExternalInventory != null && consumeSolderingMaterial(aExternalInventory))) {
                         if (canUseElectricItem(aStack, 10000)) {
                             return GT_ModHandler.useElectricItem(aStack, 10000, (EntityPlayer) aPlayer);
                         }
                         GT_ModHandler.useElectricItem(
-                                aStack,
-                                (int) ic2.api.item.ElectricItem.manager.getCharge(aStack),
-                                (EntityPlayer) aPlayer);
+                            aStack,
+                            (int) ic2.api.item.ElectricItem.manager.getCharge(aStack),
+                            (EntityPlayer) aPlayer);
                         return false;
                     }
                 }
@@ -2294,7 +2254,7 @@ public class GT_ModHandler {
     public static boolean isElectricItem(ItemStack aStack) {
         try {
             return aStack != null && aStack.getItem() instanceof ic2.api.item.IElectricItem
-                    && ((IElectricItem) aStack.getItem()).getTier(aStack) < Integer.MAX_VALUE;
+                && ((IElectricItem) aStack.getItem()).getTier(aStack) < Integer.MAX_VALUE;
         } catch (Throwable e) {
             /* Do nothing */
         }
@@ -2304,7 +2264,7 @@ public class GT_ModHandler {
     public static boolean isElectricItem(ItemStack aStack, byte aTier) {
         try {
             return aStack != null && aStack.getItem() instanceof ic2.api.item.IElectricItem
-                    && ((IElectricItem) aStack.getItem()).getTier(aStack) == aTier;
+                && ((IElectricItem) aStack.getItem()).getTier(aStack) == aTier;
         } catch (Throwable e) {
             /* Do nothing */
         }
@@ -2429,37 +2389,37 @@ public class GT_ModHandler {
         public static void addPulverizerRecipe(int energy, ItemStack input, ItemStack primaryOutput) {}
 
         public static void addPulverizerRecipe(int energy, ItemStack input, ItemStack primaryOutput,
-                ItemStack secondaryOutput) {}
+            ItemStack secondaryOutput) {}
 
         public static void addPulverizerRecipe(int energy, ItemStack input, ItemStack primaryOutput,
-                ItemStack secondaryOutput, int secondaryChance) {}
+            ItemStack secondaryOutput, int secondaryChance) {}
 
         public static void addSawmillRecipe(int energy, ItemStack input, ItemStack primaryOutput) {}
 
         public static void addSawmillRecipe(int energy, ItemStack input, ItemStack primaryOutput,
-                ItemStack secondaryOutput) {}
+            ItemStack secondaryOutput) {}
 
         public static void addSawmillRecipe(int energy, ItemStack input, ItemStack primaryOutput,
-                ItemStack secondaryOutput, int secondaryChance) {}
+            ItemStack secondaryOutput, int secondaryChance) {}
 
         public static void addSmelterRecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput,
-                ItemStack primaryOutput) {}
+            ItemStack primaryOutput) {}
 
         public static void addSmelterRecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput,
-                ItemStack primaryOutput, ItemStack secondaryOutput) {}
+            ItemStack primaryOutput, ItemStack secondaryOutput) {}
 
         public static void addSmelterRecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput,
-                ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance) {}
+            ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance) {}
 
         public static void addSmelterBlastOre(Materials aMaterial) {}
 
         public static void addCrucibleRecipe(int energy, ItemStack input, FluidStack output) {}
 
         public static void addTransposerFill(int energy, ItemStack input, ItemStack output, FluidStack fluid,
-                boolean reversible) {}
+            boolean reversible) {}
 
         public static void addTransposerExtract(int energy, ItemStack input, ItemStack output, FluidStack fluid,
-                int chance, boolean reversible) {}
+            int chance, boolean reversible) {}
 
         public static void addMagmaticFuel(String fluidName, int energy) {}
 

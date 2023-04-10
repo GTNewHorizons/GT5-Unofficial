@@ -23,14 +23,14 @@ public class GT_Cover_Default extends GT_CoverBehavior {
 
     @Override
     public int onCoverScrewdriverclick(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
-            EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        EntityPlayer aPlayer, float aX, float aY, float aZ) {
         aCoverVariable = ((aCoverVariable + 1) & 15);
         GT_Utility.sendChatToPlayer(
-                aPlayer,
-                ((aCoverVariable & 1) != 0 ? GT_Utility.trans("128.1", "Redstone ") : "")
-                        + ((aCoverVariable & 2) != 0 ? GT_Utility.trans("129.1", "Energy ") : "")
-                        + ((aCoverVariable & 4) != 0 ? GT_Utility.trans("130.1", "Fluids ") : "")
-                        + ((aCoverVariable & 8) != 0 ? GT_Utility.trans("131.1", "Items ") : ""));
+            aPlayer,
+            ((aCoverVariable & 1) != 0 ? GT_Utility.trans("128.1", "Redstone ") : "")
+                + ((aCoverVariable & 2) != 0 ? GT_Utility.trans("129.1", "Energy ") : "")
+                + ((aCoverVariable & 4) != 0 ? GT_Utility.trans("130.1", "Fluids ") : "")
+                + ((aCoverVariable & 8) != 0 ? GT_Utility.trans("131.1", "Items ") : ""));
         return aCoverVariable;
     }
 

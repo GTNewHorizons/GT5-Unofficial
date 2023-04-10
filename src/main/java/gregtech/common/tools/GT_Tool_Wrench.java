@@ -24,15 +24,14 @@ import gregtech.common.items.behaviors.Behaviour_Wrench;
 
 public class GT_Tool_Wrench extends GT_Tool {
 
-    public static final List<String> mEffectiveList = Arrays.asList(
-            EntityIronGolem.class.getName(),
-            "EntityTowerGuardian");
+    public static final List<String> mEffectiveList = Arrays
+        .asList(EntityIronGolem.class.getName(), "EntityTowerGuardian");
 
     @Override
     public float getNormalDamageAgainstEntity(float aOriginalDamage, Entity aEntity, ItemStack aStack,
-            EntityPlayer aPlayer) {
+        EntityPlayer aPlayer) {
         String tName = aEntity.getClass()
-                              .getName();
+            .getName();
         tName = tName.substring(tName.lastIndexOf('.') + 1);
         return (mEffectiveList.contains(tName)) || (tName.contains("Golem")) ? aOriginalDamage * 2.0F : aOriginalDamage;
     }
@@ -115,8 +114,8 @@ public class GT_Tool_Wrench extends GT_Tool {
     @Override
     public boolean isMinableBlock(Block aBlock, byte aMetaData) {
         return GT_ToolHarvestHelper.isAppropriateTool(aBlock, aMetaData, "wrench")
-                || GT_ToolHarvestHelper.isAppropriateMaterial(aBlock, Material.piston)
-                || GT_ToolHarvestHelper.isSpecialBlock(aBlock, Blocks.hopper, Blocks.dispenser, Blocks.dropper);
+            || GT_ToolHarvestHelper.isAppropriateMaterial(aBlock, Material.piston)
+            || GT_ToolHarvestHelper.isSpecialBlock(aBlock, Blocks.hopper, Blocks.dispenser, Blocks.dropper);
     }
 
     @Override
@@ -142,11 +141,11 @@ public class GT_Tool_Wrench extends GT_Tool {
     @Override
     public IChatComponent getDeathMessage(EntityLivingBase aPlayer, EntityLivingBase aEntity) {
         return new ChatComponentText(
-                EnumChatFormatting.GREEN + aPlayer.getCommandSenderName()
-                        + EnumChatFormatting.WHITE
-                        + " threw a Monkey Wrench into the Plans of "
-                        + EnumChatFormatting.RED
-                        + aEntity.getCommandSenderName()
-                        + EnumChatFormatting.WHITE);
+            EnumChatFormatting.GREEN + aPlayer.getCommandSenderName()
+                + EnumChatFormatting.WHITE
+                + " threw a Monkey Wrench into the Plans of "
+                + EnumChatFormatting.RED
+                + aEntity.getCommandSenderName()
+                + EnumChatFormatting.WHITE);
     }
 }

@@ -302,7 +302,7 @@ public enum Mods {
 
     public String getResourcePath(String... path) {
         return this.getResourceLocation(path)
-                   .toString();
+            .toString();
     }
 
     public ResourceLocation getResourceLocation(String... path) {

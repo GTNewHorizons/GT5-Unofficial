@@ -18,18 +18,18 @@ public class ProcessingSlab implements gregtech.api.interfaces.IOreRecipeRegistr
 
     @Override
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
-            ItemStack aStack) {
+        ItemStack aStack) {
         if (aOreDictName.startsWith("slabWood")) {
             if (Railcraft.isModLoaded()) {
                 GT_Values.RA.addChemicalBathRecipe(
-                        GT_Utility.copyAmount(3L, aStack),
-                        Materials.Creosote.getFluid(300L),
-                        ItemList.RC_Tie_Wood.get(3L),
-                        null,
-                        null,
-                        null,
-                        200,
-                        4);
+                    GT_Utility.copyAmount(3L, aStack),
+                    Materials.Creosote.getFluid(300L),
+                    ItemList.RC_Tie_Wood.get(3L),
+                    null,
+                    null,
+                    null,
+                    200,
+                    4);
             }
         }
     }

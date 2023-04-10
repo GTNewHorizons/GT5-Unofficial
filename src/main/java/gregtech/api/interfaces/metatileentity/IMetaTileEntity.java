@@ -42,7 +42,7 @@ import gregtech.common.power.Power;
  * Don't implement this yourself and expect it to work. Extend @MetaTileEntity itself.
  */
 public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHandler, IGearEnergyTileEntity,
-        IMachineBlockUpdateable, IGregtechWailaProvider, IGetGUITextureSet {
+    IMachineBlockUpdateable, IGregtechWailaProvider, IGetGUITextureSet {
 
     /**
      * This determines the BaseMetaTileEntity belonging to this MetaTileEntity by using the Meta ID of the Block itself.
@@ -146,7 +146,7 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
      * When a Player rightclicks the Facing with a soldering iron.
      */
     boolean onSolderingToolRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY,
-            float aZ);
+        float aZ);
 
     /**
      * Called right before this Machine explodes
@@ -266,7 +266,7 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
      * @return
      */
     boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, byte aSide, float aX, float aY,
-            float aZ);
+        float aZ);
 
     /**
      * a Player leftclicks the Machine Sneaky leftclicks are getting passed to this unlike with the rightclicks.
@@ -342,7 +342,7 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
      * returns the DebugLog
      */
     ArrayList<String> getSpecialDebugInfo(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, int aLogLevel,
-            ArrayList<String> aList);
+        ArrayList<String> aList);
 
     /**
      * get a small Description
@@ -374,7 +374,7 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
      *                    mBaseMetaTileEntity.mRedstone!!!)
      */
     ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-            boolean aActive, boolean aRedstone);
+        boolean aActive, boolean aRedstone);
 
     /**
      * The Textures used for the Item rendering. Return null if you want the regular 3D Block Rendering.
@@ -437,7 +437,7 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
     boolean allowGeneralRedstoneOutput();
 
     void addCollisionBoxesToList(World aWorld, int aX, int aY, int aZ, AxisAlignedBB inputAABB,
-            List<AxisAlignedBB> outputAABB, Entity collider);
+        List<AxisAlignedBB> outputAABB, Entity collider);
 
     AxisAlignedBB getCollisionBoundingBoxFromPool(World aWorld, int aX, int aY, int aZ);
 

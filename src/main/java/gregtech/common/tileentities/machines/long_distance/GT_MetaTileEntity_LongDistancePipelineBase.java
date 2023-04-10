@@ -66,12 +66,12 @@ public abstract class GT_MetaTileEntity_LongDistancePipelineBase extends GT_Meta
     protected GT_MetaTileEntity_LongDistancePipelineBase mTooCloseTarget = null, mTooCloseSender = null;
 
     public GT_MetaTileEntity_LongDistancePipelineBase(int aID, String aName, String aNameRegional, int aTier,
-            String aDescription) {
+        String aDescription) {
         super(aID, aName, aNameRegional, aTier, aDescription);
     }
 
     public GT_MetaTileEntity_LongDistancePipelineBase(String aName, int aTier, String aDescription,
-            ITexture[][][] aTextures) {
+        ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
     }
 
@@ -91,9 +91,9 @@ public abstract class GT_MetaTileEntity_LongDistancePipelineBase extends GT_Meta
         super.loadNBTData(aNBT);
         if (aNBT.hasKey("target")) {
             mTargetPos = new ChunkCoordinates(
-                    aNBT.getInteger("target.x"),
-                    aNBT.getInteger("target.y"),
-                    aNBT.getInteger("target.z"));
+                aNBT.getInteger("target.x"),
+                aNBT.getInteger("target.y"),
+                aNBT.getInteger("target.z"));
             if (getDistanceToSelf(mTargetPos) < minimalDistancePoints) mTargetPos = null;
         }
     }
@@ -136,8 +136,9 @@ public abstract class GT_MetaTileEntity_LongDistancePipelineBase extends GT_Meta
                 TileEntity te = world.getTileEntity(mTargetPos.posX, mTargetPos.posY, mTargetPos.posZ);
                 final IMetaTileEntity tMeta;
                 if (te instanceof BaseMetaTileEntity
-                        && ((tMeta = ((BaseMetaTileEntity) te).getMetaTileEntity()) instanceof GT_MetaTileEntity_LongDistancePipelineBase)
-                        && isSameClass((GT_MetaTileEntity_LongDistancePipelineBase) tMeta)) {
+                    && ((tMeta = ((BaseMetaTileEntity) te)
+                        .getMetaTileEntity()) instanceof GT_MetaTileEntity_LongDistancePipelineBase)
+                    && isSameClass((GT_MetaTileEntity_LongDistancePipelineBase) tMeta)) {
                     // It's the right type!
                     mTarget = (GT_MetaTileEntity_LongDistancePipelineBase) tMeta;
                 } else if (te != null) {
@@ -151,8 +152,8 @@ public abstract class GT_MetaTileEntity_LongDistancePipelineBase extends GT_Meta
             mTooCloseSender = null;
         if (mTarget == null || mTarget == this) return false;
         if (mTarget.mSender == null || mTarget.mSender.isDead()
-                || mTarget.mSender.mTarget == null
-                || mTarget.mSender.mTarget.isDead()) {
+            || mTarget.mSender.mTarget == null
+            || mTarget.mSender.mTarget.isDead()) {
             mTarget.mSender = this;
             mTarget.mTooCloseSender = null;
         }
@@ -162,22 +163,22 @@ public abstract class GT_MetaTileEntity_LongDistancePipelineBase extends GT_Meta
 
     @Override
     public ArrayList<String> getSpecialDebugInfo(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer,
-            int aLogLevel, ArrayList<String> aList) {
+        int aLogLevel, ArrayList<String> aList) {
         if (mSender != null && !mSender.isDead() && mSender.mTarget == this) {
             final ChunkCoordinates coords = mSender.getCoords();
             aList.addAll(
-                    Arrays.asList(
-                            "Is the Target",
-                            "Sender is at: X: " + coords.posX + " Y: " + coords.posY + " Z: " + coords.posZ));
+                Arrays.asList(
+                    "Is the Target",
+                    "Sender is at: X: " + coords.posX + " Y: " + coords.posY + " Z: " + coords.posZ));
         } else {
             aList.addAll(
-                    Arrays.asList(
-                            checkTarget() ? "Has Target" : "Has no loaded Target",
-                            "Target should be around: X: " + mTargetPos.posX
-                                    + " Y: "
-                                    + mTargetPos.posY
-                                    + " Z: "
-                                    + mTargetPos.posZ));
+                Arrays.asList(
+                    checkTarget() ? "Has Target" : "Has no loaded Target",
+                    "Target should be around: X: " + mTargetPos.posX
+                        + " Y: "
+                        + mTargetPos.posY
+                        + " Z: "
+                        + mTargetPos.posZ));
         }
 
         return aList;
@@ -208,15 +209,15 @@ public abstract class GT_MetaTileEntity_LongDistancePipelineBase extends GT_Meta
             if (aMetaData != getPipeMeta()) return;
 
             HashSet<ChunkCoordinates> tVisited = new HashSet<>(Collections.singletonList(getCoords())),
-                    tWires = new HashSet<>();
+                tWires = new HashSet<>();
             Queue<ChunkCoordinates> tQueue = new LinkedList<>(
-                    Collections.singletonList(getFacingOffset(gtTile, gtTile.getBackFacing())));
+                Collections.singletonList(getFacingOffset(gtTile, gtTile.getBackFacing())));
 
             while (!tQueue.isEmpty()) {
                 final ChunkCoordinates aCoords = tQueue.poll();
 
                 if (world.getBlock(aCoords.posX, aCoords.posY, aCoords.posZ) == aBlock
-                        && world.getBlockMetadata(aCoords.posX, aCoords.posY, aCoords.posZ) == aMetaData) {
+                    && world.getBlockMetadata(aCoords.posX, aCoords.posY, aCoords.posZ) == aMetaData) {
                     // We've got another pipe/wire block
                     // TODO: Make sure it's the right type of pipe/wire via meta
                     ChunkCoordinates tCoords;
@@ -240,11 +241,12 @@ public abstract class GT_MetaTileEntity_LongDistancePipelineBase extends GT_Meta
                     // It's not a block - let's see if it's a tile entity
                     TileEntity tTileEntity = world.getTileEntity(aCoords.posX, aCoords.posY, aCoords.posZ);
                     if (tTileEntity != gtTile && tTileEntity instanceof BaseMetaTileEntity
-                            && ((BaseMetaTileEntity) tTileEntity).getMetaTileEntity() instanceof GT_MetaTileEntity_LongDistancePipelineBase tGtTile) {
+                        && ((BaseMetaTileEntity) tTileEntity)
+                            .getMetaTileEntity() instanceof GT_MetaTileEntity_LongDistancePipelineBase tGtTile) {
                         if (isSameClass(tGtTile) && tWires.contains(
-                                tGtTile.getFacingOffset(
-                                        (BaseMetaTileEntity) tTileEntity,
-                                        ((BaseMetaTileEntity) tTileEntity).getFrontFacing()))) {
+                            tGtTile.getFacingOffset(
+                                (BaseMetaTileEntity) tTileEntity,
+                                ((BaseMetaTileEntity) tTileEntity).getFrontFacing()))) {
                             // If it's the same class, and we've scanned a wire in front of it (the input side), we've
                             // found our target
                             // still need to check if it's distant enough
@@ -273,15 +275,15 @@ public abstract class GT_MetaTileEntity_LongDistancePipelineBase extends GT_Meta
 
     protected int getDistanceToSelf(ChunkCoordinates aCoords) {
         return Math.abs(getBaseMetaTileEntity().getXCoord() - aCoords.posX)
-                + Math.abs(getBaseMetaTileEntity().getYCoord() - aCoords.posY) / 2
-                + Math.abs(getBaseMetaTileEntity().getZCoord() - aCoords.posZ);
+            + Math.abs(getBaseMetaTileEntity().getYCoord() - aCoords.posY) / 2
+            + Math.abs(getBaseMetaTileEntity().getZCoord() - aCoords.posZ);
     }
 
     public ChunkCoordinates getFacingOffset(IGregTechTileEntity gt_tile, byte aSide) {
         return new ChunkCoordinates(
-                gt_tile.getOffsetX(aSide, 1),
-                gt_tile.getOffsetY(aSide, 1),
-                gt_tile.getOffsetZ(aSide, 1));
+            gt_tile.getOffsetX(aSide, 1),
+            gt_tile.getOffsetY(aSide, 1),
+            gt_tile.getOffsetZ(aSide, 1));
     }
 
     public ChunkCoordinates getCoords() {
@@ -308,11 +310,11 @@ public abstract class GT_MetaTileEntity_LongDistancePipelineBase extends GT_Meta
 
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
-            IWailaConfigHandler config) {
+        IWailaConfigHandler config) {
         final NBTTagCompound tag = accessor.getNBTData();
         final int facing = getBaseMetaTileEntity().getFrontFacing();
         final int side = (byte) accessor.getSide()
-                                        .ordinal();
+            .ordinal();
 
         if (side == facing) currentTip.add(GOLD + "Pipeline Input" + RESET);
         else if (side == ForgeDirection.OPPOSITES[facing]) currentTip.add(BLUE + "Pipeline Output" + RESET);
@@ -333,7 +335,7 @@ public abstract class GT_MetaTileEntity_LongDistancePipelineBase extends GT_Meta
 
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-            int z) {
+        int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
 
         tag.setBoolean("hasSender", mSender != null);

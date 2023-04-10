@@ -130,19 +130,19 @@ public abstract class GT_Tool implements IToolStats {
     @Override
     public DamageSource getDamageSource(EntityLivingBase aPlayer, Entity aEntity) {
         return GT_DamageSources.getCombatDamage(
-                (aPlayer instanceof EntityPlayer) ? "player" : "mob",
-                aPlayer,
-                (aEntity instanceof EntityLivingBase) ? getDeathMessage(aPlayer, (EntityLivingBase) aEntity) : null);
+            (aPlayer instanceof EntityPlayer) ? "player" : "mob",
+            aPlayer,
+            (aEntity instanceof EntityLivingBase) ? getDeathMessage(aPlayer, (EntityLivingBase) aEntity) : null);
     }
 
     public IChatComponent getDeathMessage(EntityLivingBase aPlayer, EntityLivingBase aEntity) {
-        return new EntityDamageSource((aPlayer instanceof EntityPlayer) ? "player" : "mob", aPlayer).func_151519_b(
-                aEntity);
+        return new EntityDamageSource((aPlayer instanceof EntityPlayer) ? "player" : "mob", aPlayer)
+            .func_151519_b(aEntity);
     }
 
     @Override
     public int convertBlockDrops(List<ItemStack> aDrops, ItemStack aStack, EntityPlayer aPlayer, Block aBlock, int aX,
-            int aY, int aZ, byte aMetaData, int aFortune, boolean aSilkTouch, BlockEvent.HarvestDropsEvent aEvent) {
+        int aY, int aZ, byte aMetaData, int aFortune, boolean aSilkTouch, BlockEvent.HarvestDropsEvent aEvent) {
         return 0;
     }
 
@@ -173,19 +173,19 @@ public abstract class GT_Tool implements IToolStats {
 
     @Override
     public float getNormalDamageAgainstEntity(float aOriginalDamage, Entity aEntity, ItemStack aStack,
-            EntityPlayer aPlayer) {
+        EntityPlayer aPlayer) {
         return aOriginalDamage;
     }
 
     @Override
     public float getMagicDamageAgainstEntity(float aOriginalDamage, Entity aEntity, ItemStack aStack,
-            EntityPlayer aPlayer) {
+        EntityPlayer aPlayer) {
         return aOriginalDamage;
     }
 
     @Override
     public float getMiningSpeed(Block aBlock, byte aMetaData, float aDefault, EntityPlayer aPlayer, World worldObj,
-            int aX, int aY, int aZ) {
+        int aX, int aY, int aZ) {
         return aDefault;
     }
 }

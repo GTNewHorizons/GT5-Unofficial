@@ -153,7 +153,7 @@ public interface IToolStats {
      * @return the Amount of modified Items.
      */
     int convertBlockDrops(List<ItemStack> aDrops, ItemStack aStack, EntityPlayer aPlayer, Block aBlock, int aX, int aY,
-            int aZ, byte aMetaData, int aFortune, boolean aSilkTouch, BlockEvent.HarvestDropsEvent aEvent);
+        int aZ, byte aMetaData, int aFortune, boolean aSilkTouch, BlockEvent.HarvestDropsEvent aEvent);
 
     /**
      * @return Returns a broken Version of the Item.
@@ -175,5 +175,5 @@ public interface IToolStats {
     short[] getRGBa(boolean aIsToolHead, ItemStack aStack);
 
     float getMiningSpeed(Block aBlock, byte aMetaData, float aDefault, EntityPlayer aPlayer, World worldObj, int aX,
-            int aY, int aZ);
+        int aY, int aZ);
 }

@@ -23,7 +23,7 @@ public class GT_Cover_Screen extends GT_CoverBehavior {
 
     @Override
     public boolean isRedstoneSensitive(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
-            long aTimer) {
+        long aTimer) {
         return false;
     }
 
@@ -79,25 +79,25 @@ public class GT_Cover_Screen extends GT_CoverBehavior {
 
     @Override
     public boolean manipulatesSidedRedstoneOutput(byte aSide, int aCoverID, int aCoverVariable,
-            ICoverable aTileEntity) {
+        ICoverable aTileEntity) {
         return false;
     }
 
     @Override
     public boolean onCoverRightclick(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
-            EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        EntityPlayer aPlayer, float aX, float aY, float aZ) {
         return false;
     }
 
     @Override
     public boolean onCoverRemoval(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
-            boolean aForced) {
+        boolean aForced) {
         return true;
     }
 
     @Override
     public int doCoverThings(byte aSide, byte aInputRedstone, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
-            long aTimer) {
+        long aTimer) {
         return 0;
     }
 }

@@ -20,62 +20,61 @@ public class UIHelper {
      * Iterates over candidates for slot placement.
      */
     public static void forEachSlots(ForEachSlot forEachItemInputSlot, ForEachSlot forEachItemOutputSlot,
-            ForEachSlot forEachSpecialSlot, ForEachSlot forEachFluidInputSlot, ForEachSlot forEachFluidOutputSlot,
-            IDrawable itemSlotBackground, IDrawable fluidSlotBackground, @Nullable GT_Recipe.GT_Recipe_Map recipeMap,
-            int itemInputCount, int itemOutputCount, int fluidInputCount, int fluidOutputCount,
-            SteamVariant steamVariant, Pos2d offset) {
+        ForEachSlot forEachSpecialSlot, ForEachSlot forEachFluidInputSlot, ForEachSlot forEachFluidOutputSlot,
+        IDrawable itemSlotBackground, IDrawable fluidSlotBackground, @Nullable GT_Recipe.GT_Recipe_Map recipeMap,
+        int itemInputCount, int itemOutputCount, int fluidInputCount, int fluidOutputCount, SteamVariant steamVariant,
+        Pos2d offset) {
         List<Pos2d> itemInputPositions = recipeMap != null ? recipeMap.getItemInputPositions(itemInputCount)
-                : UIHelper.getItemInputPositions(itemInputCount);
+            : UIHelper.getItemInputPositions(itemInputCount);
         itemInputPositions = itemInputPositions.stream()
-                                               .map(p -> p.add(offset))
-                                               .collect(Collectors.toList());
+            .map(p -> p.add(offset))
+            .collect(Collectors.toList());
         for (int i = 0; i < itemInputPositions.size(); i++) {
             forEachItemInputSlot.accept(
-                    i,
-                    getBackgroundsForSlot(itemSlotBackground, recipeMap, false, false, i, false, steamVariant),
-                    itemInputPositions.get(i));
+                i,
+                getBackgroundsForSlot(itemSlotBackground, recipeMap, false, false, i, false, steamVariant),
+                itemInputPositions.get(i));
         }
 
         List<Pos2d> itemOutputPositions = recipeMap != null ? recipeMap.getItemOutputPositions(itemOutputCount)
-                : UIHelper.getItemOutputPositions(itemOutputCount);
+            : UIHelper.getItemOutputPositions(itemOutputCount);
         itemOutputPositions = itemOutputPositions.stream()
-                                                 .map(p -> p.add(offset))
-                                                 .collect(Collectors.toList());
+            .map(p -> p.add(offset))
+            .collect(Collectors.toList());
         for (int i = 0; i < itemOutputPositions.size(); i++) {
             forEachItemOutputSlot.accept(
-                    i,
-                    getBackgroundsForSlot(itemSlotBackground, recipeMap, false, true, i, false, steamVariant),
-                    itemOutputPositions.get(i));
+                i,
+                getBackgroundsForSlot(itemSlotBackground, recipeMap, false, true, i, false, steamVariant),
+                itemOutputPositions.get(i));
         }
 
         forEachSpecialSlot.accept(
-                0,
-                getBackgroundsForSlot(itemSlotBackground, recipeMap, false, false, 0, true, steamVariant),
-                (recipeMap != null ? recipeMap.getSpecialItemPosition() : UIHelper.getSpecialItemPosition()).add(
-                        offset));
+            0,
+            getBackgroundsForSlot(itemSlotBackground, recipeMap, false, false, 0, true, steamVariant),
+            (recipeMap != null ? recipeMap.getSpecialItemPosition() : UIHelper.getSpecialItemPosition()).add(offset));
 
         List<Pos2d> fluidInputPositions = recipeMap != null ? recipeMap.getFluidInputPositions(fluidInputCount)
-                : UIHelper.getFluidInputPositions(fluidInputCount);
+            : UIHelper.getFluidInputPositions(fluidInputCount);
         fluidInputPositions = fluidInputPositions.stream()
-                                                 .map(p -> p.add(offset))
-                                                 .collect(Collectors.toList());
+            .map(p -> p.add(offset))
+            .collect(Collectors.toList());
         for (int i = 0; i < fluidInputPositions.size(); i++) {
             forEachFluidInputSlot.accept(
-                    i,
-                    getBackgroundsForSlot(fluidSlotBackground, recipeMap, true, false, i, false, steamVariant),
-                    fluidInputPositions.get(i));
+                i,
+                getBackgroundsForSlot(fluidSlotBackground, recipeMap, true, false, i, false, steamVariant),
+                fluidInputPositions.get(i));
         }
 
         List<Pos2d> fluidOutputPositions = recipeMap != null ? recipeMap.getFluidOutputPositions(fluidOutputCount)
-                : UIHelper.getFluidOutputPositions(fluidOutputCount);
+            : UIHelper.getFluidOutputPositions(fluidOutputCount);
         fluidOutputPositions = fluidOutputPositions.stream()
-                                                   .map(p -> p.add(offset))
-                                                   .collect(Collectors.toList());
+            .map(p -> p.add(offset))
+            .collect(Collectors.toList());
         for (int i = 0; i < fluidOutputPositions.size(); i++) {
             forEachFluidOutputSlot.accept(
-                    i,
-                    getBackgroundsForSlot(fluidSlotBackground, recipeMap, true, true, i, false, steamVariant),
-                    fluidOutputPositions.get(i));
+                i,
+                getBackgroundsForSlot(fluidSlotBackground, recipeMap, true, true, i, false, steamVariant),
+                fluidOutputPositions.get(i));
         }
     }
 
@@ -143,7 +142,7 @@ public class UIHelper {
     }
 
     public static List<Pos2d> getGridPositions(int totalCount, int xOrigin, int yOrigin, int xDirMaxCount,
-            int yDirMaxCount) {
+        int yDirMaxCount) {
         // 18 pixels to get to a new grid for placing an item tile since they are 16x16 and have 1 pixel buffers
         // around them.
         int distance = 18;
@@ -169,12 +168,12 @@ public class UIHelper {
      */
     @Deprecated
     public static List<Pos2d> getItemGridPositions(int itemCount, int xOrigin, int yOrigin, int xDirMaxCount,
-            int yDirMaxCount) {
+        int yDirMaxCount) {
         return getGridPositions(itemCount, xOrigin, yOrigin, xDirMaxCount, yDirMaxCount);
     }
 
     private static IDrawable[] getBackgroundsForSlot(IDrawable base, GT_Recipe.GT_Recipe_Map recipeMap, boolean isFluid,
-            boolean isOutput, int index, boolean isSpecial, SteamVariant steamVariant) {
+        boolean isOutput, int index, boolean isSpecial, SteamVariant steamVariant) {
         if (recipeMap != null) {
             IDrawable overlay;
             if (steamVariant != SteamVariant.NONE) {

@@ -33,7 +33,7 @@ public class Behaviour_Arrow extends Behaviour_None {
     }
 
     public Behaviour_Arrow(Class<? extends GT_Entity_Arrow> aArrow, float aSpeed, float aPrecision,
-            Enchantment aEnchantment, int aLevel) {
+        Enchantment aEnchantment, int aLevel) {
         this.mArrow = aArrow;
         this.mSpeedMultiplier = aSpeed;
         this.mPrecision = aPrecision;
@@ -81,20 +81,20 @@ public class Behaviour_Arrow extends Behaviour_None {
         IPosition tPosition = BlockDispenser.func_149939_a(aSource);
         EnumFacing tFacing = BlockDispenser.func_149937_b(aSource.getBlockMetadata());
         GT_Entity_Arrow tEntityArrow = (GT_Entity_Arrow) getProjectile(
-                aItem,
-                SubTag.PROJECTILE_ARROW,
-                aStack,
-                aWorld,
-                tPosition.getX(),
-                tPosition.getY(),
-                tPosition.getZ());
+            aItem,
+            SubTag.PROJECTILE_ARROW,
+            aStack,
+            aWorld,
+            tPosition.getX(),
+            tPosition.getY(),
+            tPosition.getZ());
         if (tEntityArrow != null) {
             tEntityArrow.setThrowableHeading(
-                    tFacing.getFrontOffsetX(),
-                    tFacing.getFrontOffsetY() + 0.1F,
-                    tFacing.getFrontOffsetZ(),
-                    this.mSpeedMultiplier * 1.1F,
-                    this.mPrecision);
+                tFacing.getFrontOffsetX(),
+                tFacing.getFrontOffsetY() + 0.1F,
+                tFacing.getFrontOffsetZ(),
+                this.mSpeedMultiplier * 1.1F,
+                this.mPrecision);
             tEntityArrow.setArrowItem(aStack);
             tEntityArrow.canBePickedUp = 1;
             aWorld.spawnEntityInWorld(tEntityArrow);
@@ -113,32 +113,28 @@ public class Behaviour_Arrow extends Behaviour_None {
 
     @Override
     public EntityArrow getProjectile(GT_MetaBase_Item aItem, SubTag aProjectileType, ItemStack aStack, World aWorld,
-            double aX, double aY, double aZ) {
+        double aX, double aY, double aZ) {
         if (!hasProjectile(aItem, aProjectileType, aStack)) {
             return null;
         }
-        GT_Entity_Arrow rArrow = (GT_Entity_Arrow) GT_Utility.callConstructor(
-                this.mArrow.getName(),
-                -1,
-                null,
-                true,
-                new Object[] { aWorld, aX, aY, aZ });
+        GT_Entity_Arrow rArrow = (GT_Entity_Arrow) GT_Utility
+            .callConstructor(this.mArrow.getName(), -1, null, true, new Object[] { aWorld, aX, aY, aZ });
         rArrow.setArrowItem(aStack);
         return rArrow;
     }
 
     @Override
     public EntityArrow getProjectile(GT_MetaBase_Item aItem, SubTag aProjectileType, ItemStack aStack, World aWorld,
-            EntityLivingBase aEntity, float aSpeed) {
+        EntityLivingBase aEntity, float aSpeed) {
         if (!hasProjectile(aItem, aProjectileType, aStack)) {
             return null;
         }
         GT_Entity_Arrow rArrow = (GT_Entity_Arrow) GT_Utility.callConstructor(
-                this.mArrow.getName(),
-                -1,
-                null,
-                true,
-                new Object[] { aWorld, aEntity, this.mSpeedMultiplier * aSpeed });
+            this.mArrow.getName(),
+            -1,
+            null,
+            true,
+            new Object[] { aWorld, aEntity, this.mSpeedMultiplier * aSpeed });
         rArrow.setArrowItem(aStack);
         return rArrow;
     }

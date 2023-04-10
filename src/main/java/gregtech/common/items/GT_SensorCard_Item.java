@@ -42,11 +42,11 @@ public class GT_SensorCard_Item extends GT_Generic_Item implements IRemoteSensor
             } else {
                 aList.add(transItem("015", "Device at:"));
                 aList.add(
-                        String.format(
-                                "x: %d, y: %d, z: %d",
-                                tNBT.getInteger("x"),
-                                tNBT.getInteger("y"),
-                                tNBT.getInteger("z")));
+                    String.format(
+                        "x: %d, y: %d, z: %d",
+                        tNBT.getInteger("x"),
+                        tNBT.getInteger("y"),
+                        tNBT.getInteger("z")));
             }
         }
     }
@@ -62,7 +62,7 @@ public class GT_SensorCard_Item extends GT_Generic_Item implements IRemoteSensor
 
         TileEntity tTileEntity = world.getTileEntity(target.posX, target.posY, target.posZ);
         if (((tTileEntity instanceof IGregTechDeviceInformation))
-                && (((IGregTechDeviceInformation) tTileEntity).isGivingInformation())) {
+            && (((IGregTechDeviceInformation) tTileEntity).isGivingInformation())) {
             String[] tInfoData = ((IGregTechDeviceInformation) tTileEntity).getInfoData();
             for (int i = 0; i < tInfoData.length; i++) {
                 aCard.setString("mString" + i, tInfoData[i]);

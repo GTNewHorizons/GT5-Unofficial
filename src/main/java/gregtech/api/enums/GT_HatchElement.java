@@ -28,7 +28,7 @@ public enum GT_HatchElement implements IHatchElement<GT_MetaTileEntity_MultiBloc
         }
     },
     Maintenance(GT_MetaTileEntity_MultiBlockBase::addMaintenanceToMachineList,
-            GT_MetaTileEntity_Hatch_Maintenance.class) {
+        GT_MetaTileEntity_Hatch_Maintenance.class) {
 
         @Override
         public long count(GT_MetaTileEntity_MultiBlockBase t) {
@@ -87,7 +87,7 @@ public enum GT_HatchElement implements IHatchElement<GT_MetaTileEntity_MultiBloc
         @Override
         public long count(GT_MetaTileEntity_MultiBlockBase t) {
             return t.getExoticEnergyHatches()
-                    .size();
+                .size();
         }
     },;
 
@@ -96,7 +96,7 @@ public enum GT_HatchElement implements IHatchElement<GT_MetaTileEntity_MultiBloc
 
     @SafeVarargs
     GT_HatchElement(IGT_HatchAdder<GT_MetaTileEntity_MultiBlockBase> adder,
-            Class<? extends IMetaTileEntity>... mteClasses) {
+        Class<? extends IMetaTileEntity>... mteClasses) {
         this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
         this.adder = adder;
     }

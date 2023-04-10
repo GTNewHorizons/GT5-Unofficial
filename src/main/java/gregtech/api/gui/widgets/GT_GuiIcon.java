@@ -61,8 +61,8 @@ public enum GT_GuiIcon implements IGuiIcon {
 
     private static final int T_SIZE = 256;
     private static ResourceLocation[] TEXTURES = { new ResourceLocation(GregTech.ID, "textures/gui/GuiButtons.png"),
-            new ResourceLocation(GregTech.ID, "textures/gui/GuiCover.png"),
-            new ResourceLocation(GregTech.ID, "textures/gui/GuiTabs.png"), };
+        new ResourceLocation(GregTech.ID, "textures/gui/GuiCover.png"),
+        new ResourceLocation(GregTech.ID, "textures/gui/GuiTabs.png"), };
 
     public final int x, y, width, height;
     public final IGuiIcon overlay;
@@ -86,12 +86,12 @@ public enum GT_GuiIcon implements IGuiIcon {
     }
 
     public static void render(IGuiIcon icon, double x, double y, double width, double height, double zLevel,
-            boolean doDraw) {
+        boolean doDraw) {
         render(icon, x, y, width, height, zLevel, doDraw, false);
     }
 
     public static void render(IGuiIcon icon, double x, double y, double width, double height, double zLevel,
-            boolean doDraw, boolean flipHoritontally) {
+        boolean doDraw, boolean flipHoritontally) {
         Tessellator tess = Tessellator.instance;
         if (doDraw) {
             Minecraft.getMinecraft().renderEngine.bindTexture(TEXTURES[icon.getTexId()]);

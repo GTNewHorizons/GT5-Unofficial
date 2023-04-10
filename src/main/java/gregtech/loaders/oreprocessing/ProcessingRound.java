@@ -21,29 +21,29 @@ public class ProcessingRound implements gregtech.api.interfaces.IOreRecipeRegist
 
     @Override
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
-            ItemStack aStack) {
+        ItemStack aStack) {
         if (!aMaterial.contains(SubTag.NO_WORKING)) {
             GT_Values.RA.addLatheRecipe(
-                    GT_OreDictUnificator.get(OrePrefixes.nugget, aMaterial, 1L),
-                    GT_Utility.copyAmount(1L, aStack),
-                    null,
-                    (int) Math.max(aMaterial.getMass() / 4L, 1L),
-                    8);
+                GT_OreDictUnificator.get(OrePrefixes.nugget, aMaterial, 1L),
+                GT_Utility.copyAmount(1L, aStack),
+                null,
+                (int) Math.max(aMaterial.getMass() / 4L, 1L),
+                8);
             if ((aMaterial.mUnificatable) && (aMaterial.mMaterialInto == aMaterial)) {
                 GT_ModHandler.addCraftingRecipe(
-                        GT_OreDictUnificator.get(OrePrefixes.round, aMaterial, 1L),
-                        GT_Proxy.tBits,
-                        new Object[] { "fX", "Xh", 'X', OrePrefixes.nugget.get(aMaterial) });
+                    GT_OreDictUnificator.get(OrePrefixes.round, aMaterial, 1L),
+                    GT_Proxy.tBits,
+                    new Object[] { "fX", "Xh", 'X', OrePrefixes.nugget.get(aMaterial) });
                 GT_ModHandler.addCraftingRecipe(
-                        GT_OreDictUnificator.get(OrePrefixes.round, aMaterial, 4L),
-                        GT_Proxy.tBits,
-                        new Object[] { "fXh", 'X', OrePrefixes.ingot.get(aMaterial) });
+                    GT_OreDictUnificator.get(OrePrefixes.round, aMaterial, 4L),
+                    GT_Proxy.tBits,
+                    new Object[] { "fXh", 'X', OrePrefixes.ingot.get(aMaterial) });
             }
         }
         if (GT_Mod.gregtechproxy.mAE2Integration) {
             Api.INSTANCE.registries()
-                        .matterCannon()
-                        .registerAmmo(GT_OreDictUnificator.get(OrePrefixes.round, aMaterial, 1L), aMaterial.getMass());
+                .matterCannon()
+                .registerAmmo(GT_OreDictUnificator.get(OrePrefixes.round, aMaterial, 1L), aMaterial.getMass());
         }
     }
 }

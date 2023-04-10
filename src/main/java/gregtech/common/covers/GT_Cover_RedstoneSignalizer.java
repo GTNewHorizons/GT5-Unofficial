@@ -18,24 +18,22 @@ public class GT_Cover_RedstoneSignalizer extends GT_CoverBehavior {
 
     @Override
     public boolean isRedstoneSensitive(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
-            long aTimer) {
+        long aTimer) {
         return false;
     }
 
     @Override
     public int onCoverScrewdriverclick(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
-            EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        EntityPlayer aPlayer, float aX, float aY, float aZ) {
         aCoverVariable = (aCoverVariable + 1) % 48;
         switch (aCoverVariable / 16) {
-            case 0 -> GT_Utility.sendChatToPlayer(
-                    aPlayer,
-                    GT_Utility.trans("078", "Signal = ") + (aCoverVariable & 0xF));
-            case 1 -> GT_Utility.sendChatToPlayer(
-                    aPlayer,
-                    GT_Utility.trans("079", "Conditional Signal = ") + (aCoverVariable & 0xF));
+            case 0 -> GT_Utility
+                .sendChatToPlayer(aPlayer, GT_Utility.trans("078", "Signal = ") + (aCoverVariable & 0xF));
+            case 1 -> GT_Utility
+                .sendChatToPlayer(aPlayer, GT_Utility.trans("079", "Conditional Signal = ") + (aCoverVariable & 0xF));
             case 2 -> GT_Utility.sendChatToPlayer(
-                    aPlayer,
-                    GT_Utility.trans("080", "Inverted Conditional Signal = ") + (aCoverVariable & 0xF));
+                aPlayer,
+                GT_Utility.trans("080", "Inverted Conditional Signal = ") + (aCoverVariable & 0xF));
         }
         return aCoverVariable;
     }
@@ -77,7 +75,7 @@ public class GT_Cover_RedstoneSignalizer extends GT_CoverBehavior {
 
     @Override
     public byte getRedstoneInput(byte aSide, byte aInputRedstone, int aCoverID, int aCoverVariable,
-            ICoverable aTileEntity) {
+        ICoverable aTileEntity) {
         if (aCoverVariable < 16) {
             return (byte) (aCoverVariable & 0xF);
         }

@@ -14,13 +14,13 @@ import gregtech.api.interfaces.tileentity.IWirelessEnergyHatchInformation;
 import gregtech.api.metatileentity.MetaTileEntity;
 
 public class GT_MetaTileEntity_Wireless_Dynamo extends GT_MetaTileEntity_Hatch_Dynamo
-        implements IGlobalWirelessEnergy, IWirelessEnergyHatchInformation {
+    implements IGlobalWirelessEnergy, IWirelessEnergyHatchInformation {
 
     private String owner_uuid;
     private String owner_name;
 
     public GT_MetaTileEntity_Wireless_Dynamo(String aName, byte aTier, String[] aDescription,
-            ITexture[][][] aTextures) {
+        ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
     }
 
@@ -86,8 +86,8 @@ public class GT_MetaTileEntity_Wireless_Dynamo extends GT_MetaTileEntity_Hatch_D
     @Override
     public String[] getDescription() {
         return new String[] { EnumChatFormatting.GRAY + "Stores energy globally in a network, up to 2^(2^31) EU.",
-                EnumChatFormatting.GRAY + "Does not connect to wires. This block accepts EU into the network.",
-                AuthorColen };
+            EnumChatFormatting.GRAY + "Does not connect to wires. This block accepts EU into the network.",
+            AuthorColen };
     }
 
     @Override
@@ -126,7 +126,7 @@ public class GT_MetaTileEntity_Wireless_Dynamo extends GT_MetaTileEntity_Hatch_D
 
                 // UUID and username of the owner.
                 owner_uuid = aBaseMetaTileEntity.getOwnerUuid()
-                                                .toString();
+                    .toString();
                 owner_name = aBaseMetaTileEntity.getOwnerName();
 
                 strongCheckOrAddUser(owner_uuid, owner_name);

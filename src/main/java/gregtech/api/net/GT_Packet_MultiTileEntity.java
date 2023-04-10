@@ -21,7 +21,7 @@ import io.netty.buffer.ByteBuf;
 public class GT_Packet_MultiTileEntity extends GT_Packet_New {
 
     public static final int COVERS = B[0], REDSTONE = B[1], MODES = B[2], CONTROLLER = B[3], INVENTORY_INDEX = B[4],
-            INVENTORY_NAME = B[5], BOOLEANS = B[6], SOUND = B[7];
+        INVENTORY_NAME = B[5], BOOLEANS = B[6], SOUND = B[7];
 
     private int features = 0;
 
@@ -47,7 +47,7 @@ public class GT_Packet_MultiTileEntity extends GT_Packet_New {
 
     // For multi tiles
     public GT_Packet_MultiTileEntity(int aFeatures, int aX, short aY, int aZ, short aRID, short aID, byte aCommonData,
-            byte aColor) {
+        byte aColor) {
         super(false);
         features = aFeatures;
 
@@ -179,25 +179,25 @@ public class GT_Packet_MultiTileEntity extends GT_Packet_New {
         final int packetFeatures = aData.readInt();
 
         final GT_Packet_MultiTileEntity packet = new GT_Packet_MultiTileEntity(
-                packetFeatures,
-                // Coords
-                aData.readInt(),
-                aData.readShort(),
-                aData.readInt(),
-                // Registry & ID
-                aData.readShort(),
-                aData.readShort(),
-                // Common Data
-                aData.readByte(),
-                aData.readByte());
+            packetFeatures,
+            // Coords
+            aData.readInt(),
+            aData.readShort(),
+            aData.readInt(),
+            // Registry & ID
+            aData.readShort(),
+            aData.readShort(),
+            // Common Data
+            aData.readByte(),
+            aData.readByte());
         if ((packetFeatures & COVERS) == COVERS) {
             packet.setCoverData(
-                    aData.readInt(),
-                    aData.readInt(),
-                    aData.readInt(),
-                    aData.readInt(),
-                    aData.readInt(),
-                    aData.readInt());
+                aData.readInt(),
+                aData.readInt(),
+                aData.readInt(),
+                aData.readInt(),
+                aData.readInt(),
+                aData.readInt());
         }
         if ((packetFeatures & REDSTONE) == REDSTONE) {
             packet.setRedstoneData(aData.readByte());
@@ -288,11 +288,11 @@ public class GT_Packet_MultiTileEntity extends GT_Packet_New {
             }
         } catch (Exception e) {
             GT_Mod.GT_FML_LOGGER.error(
-                    "Exception setting tile entity data for tile entity {} at ({}, {}, {})",
-                    tTileEntity,
-                    mX,
-                    mY,
-                    mZ);
+                "Exception setting tile entity data for tile entity {} at ({}, {}, {})",
+                tTileEntity,
+                mX,
+                mY,
+                mZ);
         }
     }
 

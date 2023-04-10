@@ -33,7 +33,7 @@ import gregtech.api.util.WorldSpawnedEventBuilder;
 import gregtech.common.GT_Pollution;
 
 public class GT_MetaTileEntity_Charcoal_Pit extends GT_MetaTileEntity_TooltipMultiBlockBase
-        implements ISecondaryDescribable {
+    implements ISecondaryDescribable {
 
     private boolean running = false;
 
@@ -110,16 +110,16 @@ public class GT_MetaTileEntity_Charcoal_Pit extends GT_MetaTileEntity_TooltipMul
         if (running) {
             for (ChunkPosition tPos : tList1) {
                 if (isWoodLog(
-                        getBaseMetaTileEntity().getBlockOffset(tPos.chunkPosX, tPos.chunkPosY, tPos.chunkPosZ),
-                        getBaseMetaTileEntity().getMetaIDOffset(tPos.chunkPosX, tPos.chunkPosY, tPos.chunkPosZ)))
+                    getBaseMetaTileEntity().getBlockOffset(tPos.chunkPosX, tPos.chunkPosY, tPos.chunkPosZ),
+                    getBaseMetaTileEntity().getMetaIDOffset(tPos.chunkPosX, tPos.chunkPosY, tPos.chunkPosZ)))
                     getBaseMetaTileEntity().getWorld()
-                                           .setBlock(
-                                                   getBaseMetaTileEntity().getXCoord() + tPos.chunkPosX,
-                                                   getBaseMetaTileEntity().getYCoord() + tPos.chunkPosY,
-                                                   getBaseMetaTileEntity().getZCoord() + tPos.chunkPosZ,
-                                                   GregTech_API.sBlockReinforced,
-                                                   4,
-                                                   3);
+                        .setBlock(
+                            getBaseMetaTileEntity().getXCoord() + tPos.chunkPosX,
+                            getBaseMetaTileEntity().getYCoord() + tPos.chunkPosY,
+                            getBaseMetaTileEntity().getZCoord() + tPos.chunkPosZ,
+                            GregTech_API.sBlockReinforced,
+                            4,
+                            3);
             }
             running = false;
             return false;
@@ -133,16 +133,15 @@ public class GT_MetaTileEntity_Charcoal_Pit extends GT_MetaTileEntity_TooltipMul
     private boolean isWoodLog(Block log, int meta) {
         for (int id : OreDictionary.getOreIDs(new ItemStack(log, 1, meta))) {
             if (OreDictionary.getOreName(id)
-                             .equals("logWood"))
-                return true;
+                .equals("logWood")) return true;
         }
         String tTool = log.getHarvestTool(meta);
         return OrePrefixes.log.contains(new ItemStack(log, 1, meta)) && ("axe".equals(tTool))
-                && (log.getMaterial() == Material.wood);
+            && (log.getMaterial() == Material.wood);
     }
 
     private boolean checkAllBlockSides(int aX, int aY, int aZ, ArrayList<? super ChunkPosition> aList1,
-            ArrayList<? super ChunkPosition> aList2) {
+        ArrayList<? super ChunkPosition> aList2) {
         boolean expandToChunkXPos = false;
         boolean expandToChunkXNeg = false;
         boolean expandToChunkYPos = false;
@@ -153,8 +152,7 @@ public class GT_MetaTileEntity_Charcoal_Pit extends GT_MetaTileEntity_TooltipMul
         Block blockXPos = getBaseMetaTileEntity().getBlockOffset(aX + 1, aY, aZ);
         if (aX + 1 < 6 && (isWoodLog(blockXPos, getBaseMetaTileEntity().getMetaIDOffset(aX + 1, aY, aZ)))) {
             if (!aList1.contains(new ChunkPosition(aX + 1, aY, aZ))
-                    && (!aList2.contains(new ChunkPosition(aX + 1, aY, aZ))))
-                expandToChunkXPos = true;
+                && (!aList2.contains(new ChunkPosition(aX + 1, aY, aZ)))) expandToChunkXPos = true;
         } else if (!(blockXPos == Blocks.dirt || blockXPos == Blocks.grass)) {
             return false;
         }
@@ -162,8 +160,7 @@ public class GT_MetaTileEntity_Charcoal_Pit extends GT_MetaTileEntity_TooltipMul
         Block blockXNeg = getBaseMetaTileEntity().getBlockOffset(aX - 1, aY, aZ);
         if (aX - 1 > -6 && (isWoodLog(blockXNeg, getBaseMetaTileEntity().getMetaIDOffset(aX - 1, aY, aZ)))) {
             if (!aList1.contains(new ChunkPosition(aX - 1, aY, aZ))
-                    && (!aList2.contains(new ChunkPosition(aX - 1, aY, aZ))))
-                expandToChunkXNeg = true;
+                && (!aList2.contains(new ChunkPosition(aX - 1, aY, aZ)))) expandToChunkXNeg = true;
         } else if (!(blockXNeg == Blocks.dirt || blockXNeg == Blocks.grass)) {
             return false;
         }
@@ -171,18 +168,16 @@ public class GT_MetaTileEntity_Charcoal_Pit extends GT_MetaTileEntity_TooltipMul
         Block blockYPos = getBaseMetaTileEntity().getBlockOffset(aX, aY + 1, aZ);
         if (aY + 1 < 1 && (isWoodLog(blockYPos, getBaseMetaTileEntity().getMetaIDOffset(aX, aY + 1, aZ)))) {
             if (!aList1.contains(new ChunkPosition(aX, aY + 1, aZ))
-                    && (!aList2.contains(new ChunkPosition(aX, aY + 1, aZ))))
-                expandToChunkYPos = true;
+                && (!aList2.contains(new ChunkPosition(aX, aY + 1, aZ)))) expandToChunkYPos = true;
         } else if (!(blockYPos == Blocks.dirt || blockYPos == Blocks.grass
-                || (aX == 0 && aY == -1 && aZ == 0 && blockYPos == GregTech_API.sBlockMachines))) {
-                    return false;
-                }
+            || (aX == 0 && aY == -1 && aZ == 0 && blockYPos == GregTech_API.sBlockMachines))) {
+                return false;
+            }
 
         Block blockYNeg = getBaseMetaTileEntity().getBlockOffset(aX, aY - 1, aZ);
         if (aY - 1 > -6 && (isWoodLog(blockYNeg, getBaseMetaTileEntity().getMetaIDOffset(aX, aY - 1, aZ)))) {
             if (!aList1.contains(new ChunkPosition(aX, aY - 1, aZ))
-                    && (!aList2.contains(new ChunkPosition(aX, aY - 1, aZ))))
-                expandToChunkYNeg = true;
+                && (!aList2.contains(new ChunkPosition(aX, aY - 1, aZ)))) expandToChunkYNeg = true;
         } else if (blockYNeg != Blocks.brick_block) {
             return false;
         }
@@ -190,8 +185,7 @@ public class GT_MetaTileEntity_Charcoal_Pit extends GT_MetaTileEntity_TooltipMul
         Block blockZPos = getBaseMetaTileEntity().getBlockOffset(aX, aY, aZ + 1);
         if (aZ + 1 < 6 && (isWoodLog(blockZPos, getBaseMetaTileEntity().getMetaIDOffset(aX, aY, aZ + 1)))) {
             if (!aList1.contains(new ChunkPosition(aX, aY, aZ + 1))
-                    && (!aList2.contains(new ChunkPosition(aX, aY, aZ + 1))))
-                expandToChunkZPos = true;
+                && (!aList2.contains(new ChunkPosition(aX, aY, aZ + 1)))) expandToChunkZPos = true;
         } else if (!(blockZPos == Blocks.dirt || blockZPos == Blocks.grass)) {
             return false;
         }
@@ -199,8 +193,7 @@ public class GT_MetaTileEntity_Charcoal_Pit extends GT_MetaTileEntity_TooltipMul
         Block blockZNeg = getBaseMetaTileEntity().getBlockOffset(aX, aY, aZ - 1);
         if (aZ - 1 > -6 && (isWoodLog(blockZNeg, getBaseMetaTileEntity().getMetaIDOffset(aX, aY, aZ - 1)))) {
             if (!aList1.contains(new ChunkPosition(aX, aY, aZ - 1))
-                    && (!aList2.contains(new ChunkPosition(aX, aY, aZ - 1))))
-                expandToChunkZNeg = true;
+                && (!aList2.contains(new ChunkPosition(aX, aY, aZ - 1)))) expandToChunkZNeg = true;
         } else if (!(blockZNeg == Blocks.dirt || blockZNeg == Blocks.grass)) {
             return false;
         }
@@ -258,36 +251,35 @@ public class GT_MetaTileEntity_Charcoal_Pit extends GT_MetaTileEntity_TooltipMul
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Charcoal Pile Igniter")
-          .addInfo("Controller for the Charcoal Pit")
-          .addInfo("Converts Logs into Brittle Charcoal blocks")
-          .addInfo("Will automatically start when valid")
-          .addPollutionAmount(getPollutionPerSecond(null))
-          .addSeparator()
-          .beginVariableStructureBlock(3, 11, 3, 6, 3, 11, false)
-          .addStructureInfo("Can be up to 11x6x11 in size, shape doesn't matter")
-          .addOtherStructurePart("Bricks", "Bottom layer, under all wood logs")
-          .addOtherStructurePart("Dirt/Grass", "All logs must be covered by these, the controller, or bricks")
-          .addOtherStructurePart("Wood Logs", "Inside the previously mentioned blocks")
-          .addStructureInfo("No air between logs allowed")
-          .toolTipFinisher("Gregtech");
+            .addInfo("Controller for the Charcoal Pit")
+            .addInfo("Converts Logs into Brittle Charcoal blocks")
+            .addInfo("Will automatically start when valid")
+            .addPollutionAmount(getPollutionPerSecond(null))
+            .addSeparator()
+            .beginVariableStructureBlock(3, 11, 3, 6, 3, 11, false)
+            .addStructureInfo("Can be up to 11x6x11 in size, shape doesn't matter")
+            .addOtherStructurePart("Bricks", "Bottom layer, under all wood logs")
+            .addOtherStructurePart("Dirt/Grass", "All logs must be covered by these, the controller, or bricks")
+            .addOtherStructurePart("Wood Logs", "Inside the previously mentioned blocks")
+            .addStructureInfo("No air between logs allowed")
+            .toolTipFinisher("Gregtech");
         return tt;
     }
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-            boolean aActive, boolean aRedstone) {
+        boolean aActive, boolean aRedstone) {
         if (aSide == 1) {
-            if (aActive)
-                return new ITexture[] { casingTexturePages[0][10], TextureFactory.of(OVERLAY_FRONT_ROCK_BREAKER_ACTIVE),
-                        TextureFactory.builder()
-                                      .addIcon(OVERLAY_FRONT_ROCK_BREAKER_ACTIVE_GLOW)
-                                      .glow()
-                                      .build() };
+            if (aActive) return new ITexture[] { casingTexturePages[0][10],
+                TextureFactory.of(OVERLAY_FRONT_ROCK_BREAKER_ACTIVE), TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_ROCK_BREAKER_ACTIVE_GLOW)
+                    .glow()
+                    .build() };
             return new ITexture[] { casingTexturePages[0][10], TextureFactory.of(OVERLAY_FRONT_ROCK_BREAKER),
-                    TextureFactory.builder()
-                                  .addIcon(OVERLAY_FRONT_ROCK_BREAKER_GLOW)
-                                  .glow()
-                                  .build(), };
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_ROCK_BREAKER_GLOW)
+                    .glow()
+                    .build(), };
         }
         return new ITexture[] { casingTexturePages[0][10] };
     }
@@ -305,15 +297,13 @@ public class GT_MetaTileEntity_Charcoal_Pit extends GT_MetaTileEntity_TooltipMul
         if ((aBaseMetaTileEntity.isClientSide()) && (aBaseMetaTileEntity.isActive())) {
 
             new WorldSpawnedEventBuilder.ParticleEventBuilder().setMotion(0D, 0.3D, 0D)
-                                                               .setIdentifier(ParticleFX.LARGE_SMOKE)
-                                                               .setPosition(
-                                                                       aBaseMetaTileEntity.getOffsetX((byte) 1, 1)
-                                                                               + XSTR_INSTANCE.nextFloat(),
-                                                                       aBaseMetaTileEntity.getOffsetY((byte) 1, 1),
-                                                                       aBaseMetaTileEntity.getOffsetZ((byte) 1, 1)
-                                                                               + XSTR_INSTANCE.nextFloat())
-                                                               .setWorld(getBaseMetaTileEntity().getWorld())
-                                                               .run();
+                .setIdentifier(ParticleFX.LARGE_SMOKE)
+                .setPosition(
+                    aBaseMetaTileEntity.getOffsetX((byte) 1, 1) + XSTR_INSTANCE.nextFloat(),
+                    aBaseMetaTileEntity.getOffsetY((byte) 1, 1),
+                    aBaseMetaTileEntity.getOffsetZ((byte) 1, 1) + XSTR_INSTANCE.nextFloat())
+                .setWorld(getBaseMetaTileEntity().getWorld())
+                .run();
         }
     }
 }

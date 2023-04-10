@@ -29,8 +29,8 @@ import gregtech.api.multitileentity.MultiTileEntityRegistry;
  * Heavily inspired by GT6
  */
 public interface IMultiTileEntity
-        extends IHasWorldObjectAndCoords, ICoverable, ITurnable, IHasInventory, IEnergyConnected, IBasicEnergyContainer,
-        IFluidHandler, ITexturedTileEntity, IDebugableTileEntity, IColoredTileEntity {
+    extends IHasWorldObjectAndCoords, ICoverable, ITurnable, IHasInventory, IEnergyConnected, IBasicEnergyContainer,
+    IFluidHandler, ITexturedTileEntity, IDebugableTileEntity, IColoredTileEntity {
 
     /**
      * Those two IDs HAVE to be saved inside the NBT of the TileEntity itself. They get set by the Registry itself, when
@@ -173,7 +173,7 @@ public interface IMultiTileEntity
 
     /** Adds to the Creative Tab. return false to prevent it from being added. */
     boolean getSubItems(MultiTileEntityBlockInternal aBlock, Item aItem, CreativeTabs aTab, List<ItemStack> aList,
-            short aID);
+        short aID);
 
     ItemStack getPickBlock(MovingObjectPosition aTarget);
 
@@ -182,7 +182,7 @@ public interface IMultiTileEntity
     boolean isSurfaceOpaque(byte aSide);
 
     boolean onPlaced(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, byte aSide,
-            float aHitX, float aHitY, float aHitZ);
+        float aHitX, float aHitY, float aHitZ);
 
     // ItemStack getPickBlock(MovingObjectPosition aTarget);
 
@@ -258,14 +258,14 @@ public interface IMultiTileEntity
          * pipes/wires.
          */
         boolean ignoreEntityCollisionWhenPlacing(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY,
-                int aZ, byte aSide, float aHitX, float aHitY, float aHitZ);
+            int aZ, byte aSide, float aHitX, float aHitY, float aHitZ);
     }
 
     interface IMTE_CanPlace extends IMultiTileEntity {
 
         /** Return false if this TileEntity cannot be placed at that Location. */
         boolean canPlace(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, byte aSide,
-                float aHitX, float aHitY, float aHitZ);
+            float aHitX, float aHitY, float aHitZ);
     }
 
     interface IMTE_GetMaxStackSize extends IMultiTileEntity {

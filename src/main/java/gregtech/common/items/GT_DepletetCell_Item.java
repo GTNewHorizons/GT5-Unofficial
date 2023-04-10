@@ -13,11 +13,11 @@ public class GT_DepletetCell_Item extends GT_RadioactiveCellIC_Item {
 
     @Override
     public void processChamber(IReactor paramIReactor, ItemStack paramItemStack, int paramInt1, int paramInt2,
-            boolean paramBoolean) {}
+        boolean paramBoolean) {}
 
     @Override
     public boolean acceptUraniumPulse(IReactor paramIReactor, ItemStack paramItemStack1, ItemStack paramItemStack2,
-            int paramInt1, int paramInt2, int paramInt3, int paramInt4, boolean paramBoolean) {
+        int paramInt1, int paramInt2, int paramInt3, int paramInt4, boolean paramBoolean) {
         return false;
     }
 
@@ -38,7 +38,7 @@ public class GT_DepletetCell_Item extends GT_RadioactiveCellIC_Item {
 
     @Override
     public int alterHeat(IReactor paramIReactor, ItemStack paramItemStack, int paramInt1, int paramInt2,
-            int paramInt3) {
+        int paramInt3) {
         return 0;
     }
 

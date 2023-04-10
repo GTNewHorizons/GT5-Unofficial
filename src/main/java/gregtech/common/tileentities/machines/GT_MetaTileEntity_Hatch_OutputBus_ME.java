@@ -43,14 +43,13 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
 
 public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatch_OutputBus
-        implements IPowerChannelState {
+    implements IPowerChannelState {
 
     private BaseActionSource requestSource = null;
     private AENetworkProxy gridProxy = null;
     IItemList<IAEItemStack> itemCache = GregTech_API.mAE2 ? AEApi.instance()
-                                                                 .storage()
-                                                                 .createItemList()
-            : null;
+        .storage()
+        .createItemList() : null;
     long lastOutputTick = 0;
     long tickCounter = 0;
     boolean lastOutputFailed = false;
@@ -58,16 +57,16 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
 
     public GT_MetaTileEntity_Hatch_OutputBus_ME(int aID, String aName, String aNameRegional) {
         super(
-                aID,
-                aName,
-                aNameRegional,
-                1,
-                new String[] { "Item Output for Multiblocks", "Stores directly into ME", },
-                0);
+            aID,
+            aName,
+            aNameRegional,
+            1,
+            new String[] { "Item Output for Multiblocks", "Stores directly into ME", },
+            0);
     }
 
     public GT_MetaTileEntity_Hatch_OutputBus_ME(String aName, int aTier, String[] aDescription,
-            ITexture[][][] aTextures) {
+        ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
     }
 
@@ -108,9 +107,9 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
     public int store(final ItemStack stack) {
         if (!infiniteCache && lastOutputFailed) return stack.stackSize;
         itemCache.add(
-                AEApi.instance()
-                     .storage()
-                     .createItemStack(stack));
+            AEApi.instance()
+                .storage()
+                .createItemStack(stack));
         return 0;
     }
 
@@ -132,12 +131,10 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
     @Override
     public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (!getBaseMetaTileEntity().getCoverInfoAtSide(aSide)
-                                    .isGUIClickable())
-            return;
+            .isGUIClickable()) return;
         infiniteCache = !infiniteCache;
-        GT_Utility.sendChatToPlayer(
-                aPlayer,
-                StatCollector.translateToLocal("GT5U.hatch.infiniteCache." + infiniteCache));
+        GT_Utility
+            .sendChatToPlayer(aPlayer, StatCollector.translateToLocal("GT5U.hatch.infiniteCache." + infiniteCache));
     }
 
     @Override
@@ -145,14 +142,14 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
         if (gridProxy == null) {
             if (getBaseMetaTileEntity() instanceof IGridProxyable) {
                 gridProxy = new AENetworkProxy(
-                        (IGridProxyable) getBaseMetaTileEntity(),
-                        "proxy",
-                        ItemList.Hatch_Output_Bus_ME.get(1),
-                        true);
+                    (IGridProxyable) getBaseMetaTileEntity(),
+                    "proxy",
+                    ItemList.Hatch_Output_Bus_ME.get(1),
+                    true);
                 gridProxy.setFlags(GridFlags.REQUIRE_CHANNEL);
                 if (getBaseMetaTileEntity().getWorld() != null) gridProxy.setOwner(
-                        getBaseMetaTileEntity().getWorld()
-                                               .getPlayerEntityByName(getBaseMetaTileEntity().getOwnerName()));
+                    getBaseMetaTileEntity().getWorld()
+                        .getPlayerEntityByName(getBaseMetaTileEntity().getOwnerName()));
             }
         }
         return this.gridProxy;
@@ -170,7 +167,7 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
         }
         try {
             IMEMonitor<IAEItemStack> sg = proxy.getStorage()
-                                               .getItemInventory();
+                .getItemInventory();
             for (IAEItemStack s : itemCache) {
                 if (s.getStackSize() == 0) continue;
                 IAEItemStack rest = Platform.poweredInsert(proxy.getEnergy(), sg, s, getRequest());
@@ -217,7 +214,7 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
                 NBTTagCompound tag = new NBTTagCompound();
                 NBTTagCompound tagItemStack = new NBTTagCompound();
                 s.getItemStack()
-                 .writeToNBT(tagItemStack);
+                    .writeToNBT(tagItemStack);
                 tag.setTag("itemStack", tagItemStack);
                 tag.setLong("size", s.getStackSize());
                 items.appendTag(tag);
@@ -234,30 +231,30 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
         if (GregTech_API.mAE2) {
             NBTBase t = aNBT.getTag("cachedStack"); // legacy
             if (t instanceof NBTTagCompound) itemCache.add(
-                    AEApi.instance()
-                         .storage()
-                         .createItemStack(GT_Utility.loadItem((NBTTagCompound) t)));
+                AEApi.instance()
+                    .storage()
+                    .createItemStack(GT_Utility.loadItem((NBTTagCompound) t)));
             t = aNBT.getTag("cachedItems");
             if (t instanceof NBTTagList l) {
                 for (int i = 0; i < l.tagCount(); ++i) {
                     NBTTagCompound tag = l.getCompoundTagAt(i);
                     if (!tag.hasKey("itemStack")) { // legacy #868
                         itemCache.add(
-                                AEApi.instance()
-                                     .storage()
-                                     .createItemStack(GT_Utility.loadItem(l.getCompoundTagAt(i))));
+                            AEApi.instance()
+                                .storage()
+                                .createItemStack(GT_Utility.loadItem(l.getCompoundTagAt(i))));
                         continue;
                     }
                     NBTTagCompound tagItemStack = tag.getCompoundTag("itemStack");
                     final IAEItemStack s = AEApi.instance()
-                                                .storage()
-                                                .createItemStack(GT_Utility.loadItem(tagItemStack));
+                        .storage()
+                        .createItemStack(GT_Utility.loadItem(tagItemStack));
                     if (s != null) {
                         s.setStackSize(tag.getLong("size"));
                         itemCache.add(s);
                     } else {
                         GT_Mod.GT_FML_LOGGER.warn(
-                                "An error occurred while loading contents of ME Output Bus, some items have been voided");
+                            "An error occurred while loading contents of ME Output Bus, some items have been voided");
                     }
                 }
             }
@@ -279,8 +276,8 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
         if (!GregTech_API.mAE2) return new String[] {};
         List<String> ss = new ArrayList<>();
         ss.add(
-                "The bus is " + ((getProxy() != null && getProxy().isActive()) ? EnumChatFormatting.GREEN + "online"
-                        : EnumChatFormatting.RED + "offline" + getAEDiagnostics()) + EnumChatFormatting.RESET);
+            "The bus is " + ((getProxy() != null && getProxy().isActive()) ? EnumChatFormatting.GREEN + "online"
+                : EnumChatFormatting.RED + "offline" + getAEDiagnostics()) + EnumChatFormatting.RESET);
         if (itemCache.isEmpty()) {
             ss.add("The bus has no cached items");
         } else {
@@ -289,11 +286,11 @@ public class GT_MetaTileEntity_Hatch_OutputBus_ME extends GT_MetaTileEntity_Hatc
             int counter = 0;
             for (IAEItemStack s : itemCache) {
                 ss.add(
-                        s.getItem()
-                         .getItemStackDisplayName(s.getItemStack()) + ": "
-                                + EnumChatFormatting.GOLD
-                                + nc.toWideReadableForm(s.getStackSize())
-                                + EnumChatFormatting.RESET);
+                    s.getItem()
+                        .getItemStackDisplayName(s.getItemStack()) + ": "
+                        + EnumChatFormatting.GOLD
+                        + nc.toWideReadableForm(s.getStackSize())
+                        + EnumChatFormatting.RESET);
                 if (++counter > 100) break;
             }
         }

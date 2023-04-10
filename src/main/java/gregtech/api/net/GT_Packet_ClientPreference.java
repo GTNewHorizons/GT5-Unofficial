@@ -52,6 +52,6 @@ public class GT_Packet_ClientPreference extends GT_Packet_New {
     @Override
     public GT_Packet_New decode(ByteArrayDataInput aData) {
         return new GT_Packet_ClientPreference(
-                new GT_ClientPreference(aData.readBoolean(), aData.readBoolean(), aData.readBoolean()));
+            new GT_ClientPreference(aData.readBoolean(), aData.readBoolean(), aData.readBoolean()));
     }
 }

@@ -34,10 +34,7 @@ abstract class RecipeMapHandler extends TemplateRecipeHandler {
     }
 
     protected void drawText(int aX, int aY, String aString, int aColor) {
-        Minecraft.getMinecraft().fontRenderer.drawString(
-                aString,
-                aX,
-                aY,
-                overrideTextColor != -1 ? overrideTextColor : aColor);
+        Minecraft.getMinecraft().fontRenderer
+            .drawString(aString, aX, aY, overrideTextColor != -1 ? overrideTextColor : aColor);
     }
 }

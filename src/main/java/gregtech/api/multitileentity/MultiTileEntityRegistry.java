@@ -47,7 +47,7 @@ public class MultiTileEntityRegistry {
     public final MultiTileEntityBlockInternal mBlock;
 
     private static MultiTileEntityBlockInternal regblock(String aNameInternal, MultiTileEntityBlockInternal aBlock,
-            Class<? extends ItemBlock> aItemClass) {
+        Class<? extends ItemBlock> aItemClass) {
         GameRegistry.registerBlock(aBlock, aItemClass == null ? ItemBlock.class : aItemClass, aNameInternal);
         return aBlock;
     }
@@ -63,7 +63,7 @@ public class MultiTileEntityRegistry {
      * @param aNameInternal the internal Name of the Item
      */
     public MultiTileEntityRegistry(String aNameInternal, MultiTileEntityBlockInternal aBlock,
-            Class<? extends ItemBlock> aItemClass) {
+        Class<? extends ItemBlock> aItemClass) {
         this(aNameInternal, regblock(aNameInternal, aBlock, aItemClass));
     }
 
@@ -72,7 +72,7 @@ public class MultiTileEntityRegistry {
      */
     public MultiTileEntityRegistry(String aNameInternal, MultiTileEntityBlockInternal aBlock) {
         if (!GregTech_API.sPreloadStarted || GregTech_API.sPreloadFinished) throw new IllegalStateException(
-                "The MultiTileEntity Registry must be initialised during Preload Phase and not before");
+            "The MultiTileEntity Registry must be initialised during Preload Phase and not before");
         mNameInternal = aNameInternal;
         mBlock = aBlock;
         GT_FML_LOGGER.info(aNameInternal + " " + Block.getIdFromBlock(aBlock) + "This is the answer");
@@ -129,8 +129,7 @@ public class MultiTileEntityRegistry {
             }
             if (mRegistry.containsKey(aClassContainer.mID)) {
                 GT_FML_LOGGER.error(
-                        "MULTI-TILE REGISTRY ERROR: Class Container uses occupied MetaData! (" + aClassContainer.mID
-                                + ")");
+                    "MULTI-TILE REGISTRY ERROR: Class Container uses occupied MetaData! (" + aClassContainer.mID + ")");
                 tFailed = true;
             }
         }
@@ -138,18 +137,14 @@ public class MultiTileEntityRegistry {
             GT_FML_LOGGER.error("MULTI-TILE REGISTRY ERROR: STACKTRACE START");
             int i = 0;
             for (StackTraceElement tElement : new Exception().getStackTrace()) if (i++ < 5 && !tElement.getClassName()
-                                                                                                       .startsWith(
-                                                                                                               "sun"))
-                GT_FML_LOGGER.error("\tat " + tElement);
+                .startsWith("sun")) GT_FML_LOGGER.error("\tat " + tElement);
             else break;
             GT_FML_LOGGER.error("MULTI-TILE REGISTRY ERROR: STACKTRACE END");
             return null;
         }
 
-        GT_LanguageManager.addStringLocalization(
-                mNameInternal + "." + aClassContainer.mID + ".name",
-                aLocalised,
-                false);
+        GT_LanguageManager
+            .addStringLocalization(mNameInternal + "." + aClassContainer.mID + ".name", aLocalised, false);
         mRegistry.put(aClassContainer.mID, aClassContainer);
         mLastRegisteredID = aClassContainer.mID;
         mRegistrations.add(aClassContainer);
@@ -223,22 +218,22 @@ public class MultiTileEntityRegistry {
     }
 
     public MultiTileEntityContainer getNewTileEntityContainer(World aWorld, int aX, int aY, int aZ, int aID,
-            NBTTagCompound aNBT) {
+        NBTTagCompound aNBT) {
         final MultiTileEntityClassContainer tClass = mRegistry.get((short) aID);
         if (tClass == null || tClass.mBlock == null) return null;
         final MultiTileEntityContainer rContainer = new MultiTileEntityContainer(
-                (TileEntity) GT_Utility.callConstructor(tClass.mClass, -1, null, true),
-                tClass.mBlock,
-                tClass.mBlockMetaData);
+            (TileEntity) GT_Utility.callConstructor(tClass.mClass, -1, null, true),
+            tClass.mBlock,
+            tClass.mBlockMetaData);
         if (rContainer.mTileEntity == null) return null;
         rContainer.mTileEntity.setWorldObj(aWorld);
         rContainer.mTileEntity.xCoord = aX;
         rContainer.mTileEntity.yCoord = aY;
         rContainer.mTileEntity.zCoord = aZ;
         ((IMultiTileEntity) rContainer.mTileEntity).initFromNBT(
-                aNBT == null || aNBT.hasNoTags() ? tClass.mParameters : GT_Util.fuseNBT(aNBT, tClass.mParameters),
-                (short) aID,
-                (short) Block.getIdFromBlock(mBlock));
+            aNBT == null || aNBT.hasNoTags() ? tClass.mParameters : GT_Util.fuseNBT(aNBT, tClass.mParameters),
+            (short) aID,
+            (short) Block.getIdFromBlock(mBlock));
         return rContainer;
     }
 
@@ -249,23 +244,23 @@ public class MultiTileEntityRegistry {
 
     public TileEntity getNewTileEntity(ItemStack aStack) {
         final MultiTileEntityContainer tContainer = getNewTileEntityContainer(
-                null,
-                0,
-                0,
-                0,
-                Items.feather.getDamage(aStack),
-                aStack.getTagCompound());
+            null,
+            0,
+            0,
+            0,
+            Items.feather.getDamage(aStack),
+            aStack.getTagCompound());
         return tContainer == null ? null : tContainer.mTileEntity;
     }
 
     public TileEntity getNewTileEntity(World aWorld, int aX, int aY, int aZ, ItemStack aStack) {
         final MultiTileEntityContainer tContainer = getNewTileEntityContainer(
-                aWorld,
-                aX,
-                aY,
-                aZ,
-                Items.feather.getDamage(aStack),
-                aStack.getTagCompound());
+            aWorld,
+            aX,
+            aY,
+            aZ,
+            Items.feather.getDamage(aStack),
+            aStack.getTagCompound());
         return tContainer == null ? null : tContainer.mTileEntity;
     }
 

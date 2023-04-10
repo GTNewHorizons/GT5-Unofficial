@@ -25,7 +25,7 @@ public class GT_Item_Ores extends ItemBlock {
 
     @Override
     public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side,
-            float hitX, float hitY, float hitZ) {
+        float hitX, float hitY, float hitZ) {
         return false;
     }
 
@@ -45,18 +45,18 @@ public class GT_Item_Ores extends ItemBlock {
 
     @Override
     public boolean placeBlockAt(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int side,
-            float hitX, float hitY, float hitZ, int aMeta) {
+        float hitX, float hitY, float hitZ, int aMeta) {
         short tDamage = (short) getDamage(aStack);
         if (tDamage > 0) {
             if (!aWorld.setBlock(
-                    aX,
-                    aY,
-                    aZ,
-                    this.field_150939_a,
-                    GT_TileEntity_Ores.getHarvestData(
-                            tDamage,
-                            ((GT_Block_Ores_Abstract) field_150939_a).getBaseBlockHarvestLevel(aMeta % 16000 / 1000)),
-                    3)) {
+                aX,
+                aY,
+                aZ,
+                this.field_150939_a,
+                GT_TileEntity_Ores.getHarvestData(
+                    tDamage,
+                    ((GT_Block_Ores_Abstract) field_150939_a).getBaseBlockHarvestLevel(aMeta % 16000 / 1000)),
+                3)) {
                 return false;
             }
             GT_TileEntity_Ores tTileEntity = (GT_TileEntity_Ores) aWorld.getTileEntity(aX, aY, aZ);
@@ -74,8 +74,8 @@ public class GT_Item_Ores extends ItemBlock {
 
     @Override
     public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
-        String formula = StatCollector.translateToLocal(
-                field_150939_a.getUnlocalizedName() + '.' + getDamage(aStack) + ".tooltip");
+        String formula = StatCollector
+            .translateToLocal(field_150939_a.getUnlocalizedName() + '.' + getDamage(aStack) + ".tooltip");
         if (!StringUtils.isBlank(formula)) aList.add(formula);
     }
 }

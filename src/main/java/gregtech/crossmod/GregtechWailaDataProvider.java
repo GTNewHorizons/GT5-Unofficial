@@ -23,13 +23,13 @@ public class GregtechWailaDataProvider implements IWailaDataProvider {
 
     @Override
     public List<String> getWailaHead(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
-            IWailaConfigHandler config) {
+        IWailaConfigHandler config) {
         return currenttip;
     }
 
     @Override
     public List<String> getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
-            IWailaConfigHandler config) {
+        IWailaConfigHandler config) {
         final TileEntity tile = accessor.getTileEntity();
         if (tile instanceof IGregtechWailaProvider) {
             ((IGregtechWailaProvider) tile).getWailaBody(itemStack, currenttip, accessor, config);
@@ -40,14 +40,14 @@ public class GregtechWailaDataProvider implements IWailaDataProvider {
 
     @Override
     public List<String> getWailaTail(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
-            IWailaConfigHandler config) {
+        IWailaConfigHandler config) {
         final TileEntity tile = accessor.getTileEntity();
         return currenttip;
     }
 
     @Override
     public NBTTagCompound getNBTData(final EntityPlayerMP player, final TileEntity tile, final NBTTagCompound tag,
-            final World world, int x, int y, int z) {
+        final World world, int x, int y, int z) {
         if (tile instanceof IGregtechWailaProvider) {
             ((IGregtechWailaProvider) tile).getWailaNBTData(player, tile, tag, world, x, y, z);
         }
