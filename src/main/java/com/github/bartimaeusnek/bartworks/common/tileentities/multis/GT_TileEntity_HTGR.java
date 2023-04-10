@@ -10,7 +10,10 @@
 package com.github.bartimaeusnek.bartworks.common.tileentities.multis;
 
 import static com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference.MULTIBLOCK_ADDED_VIA_BARTWORKS;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.GT_Values.AuthorKuba;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 
@@ -47,7 +50,10 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMul
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBus;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.*;
+import gregtech.api.util.GT_LanguageManager;
+import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GT_Utility;
 
 public class GT_TileEntity_HTGR extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_TileEntity_HTGR> {
 
@@ -130,7 +136,7 @@ public class GT_TileEntity_HTGR extends GT_MetaTileEntity_EnhancedMultiBlockBase
             false,
             true).useModularUI(true);
     private static final int HELIUM_NEEDED = 730000;
-    private static final int powerUsage = BW_Util.getMachineVoltageFromTier(6);
+    public static final int powerUsage = BW_Util.getMachineVoltageFromTier(6);
     private static final int maxcapacity = 720000;
     private static final int mincapacity = maxcapacity / 10;
     private int HeliumSupply;
@@ -480,7 +486,7 @@ public class GT_TileEntity_HTGR extends GT_MetaTileEntity_EnhancedMultiBlockBase
             }
         }
 
-        static class Fuel_ {
+        public static class Fuel_ {
 
             public String sName;
             public String sEnglish;
@@ -516,15 +522,15 @@ public class GT_TileEntity_HTGR extends GT_MetaTileEntity_EnhancedMultiBlockBase
             }
         }
 
-        static final Base_[] sHTGR_Bases = new Base_[] { new Base_("HTGRFuelMixture", "HTGR fuel mixture"),
+        public static final Base_[] sHTGR_Bases = new Base_[] { new Base_("HTGRFuelMixture", "HTGR fuel mixture"),
                 new Base_("BISOPebbleCompound", "BISO pebble compound"),
                 new Base_("TRISOPebbleCompound", "TRISO pebble compound"), new Base_("TRISOBall", "TRISO ball"),
                 new Base_("TRISOPebble", "TRISO pebble"), new Base_("BurnedOutTRISOBall", "Burned out TRISO Ball"),
                 new Base_("BurnedOutTRISOPebble", "Burned out TRISO Pebble"), };
-        static final int MATERIALS_PER_FUEL = sHTGR_Bases.length;
+        public static final int MATERIALS_PER_FUEL = sHTGR_Bases.length;
         static final int USABLE_FUEL_INDEX = 4;
         static final int BURNED_OUT_FUEL_INDEX = 5;
-        static final Fuel_[] sHTGR_Fuel = new Fuel_[] {
+        public static final Fuel_[] sHTGR_Fuel = new Fuel_[] {
                 new Fuel_(
                         "Thorium",
                         "Thorium",
@@ -557,7 +563,7 @@ public class GT_TileEntity_HTGR extends GT_MetaTileEntity_EnhancedMultiBlockBase
                                 Materials.Plutonium.getDust(1) },
                         new int[] { 9900 / 4, 9900 / 4, 9900 / 4, 5000 / 4, 5000 / 4 },
                         "Multiplies coolant by 2"), };
-        static final CustomHTGRSimpleSubItemClass aHTGR_Materials;
+        public static final CustomHTGRSimpleSubItemClass aHTGR_Materials;
         static final ArrayList<LangEntry_> aHTGR_Localizations = new ArrayList<>();
 
         static {
@@ -584,69 +590,11 @@ public class GT_TileEntity_HTGR extends GT_MetaTileEntity_EnhancedMultiBlockBase
             GameRegistry.registerItem(GT_TileEntity_HTGR.HTGRMaterials.aHTGR_Materials, "bw.HTGRMaterials");
         }
 
-        public static void registerTHR_Recipes() {
-            GT_Values.RA.addAssemblerRecipe(
-                    new ItemStack[] { new ItemStack(GregTech_API.sBlockCasings3, 1, 12),
-                            GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Europium, 6),
-                            GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Europium, 24) },
-                    Materials.Lead.getMolten(864),
-                    new ItemStack(GregTech_API.sBlockCasings8, 1, 5),
-                    200,
-                    BW_Util.getMachineVoltageFromTier(6));
+        public static void register_fake_THR_Recipes() {
+
             int i = 0;
             for (Fuel_ fuel : sHTGR_Fuel) {
-                GT_Values.RA.addMixerRecipe(
-                        new ItemStack[] { fuel.mainItem, fuel.secondaryItem, GT_Utility.getIntegratedCircuit(1) },
-                        null,
-                        new ItemStack[] { new ItemStack(GT_TileEntity_HTGR.HTGRMaterials.aHTGR_Materials, 1, i) },
-                        null,
-                        400,
-                        30);
-                GT_Values.RA.addFormingPressRecipe(
-                        new ItemStack(GT_TileEntity_HTGR.HTGRMaterials.aHTGR_Materials, 1, i),
-                        Materials.Carbon.getDust(64),
-                        new ItemStack(GT_TileEntity_HTGR.HTGRMaterials.aHTGR_Materials, 1, i + 1),
-                        40,
-                        30);
-                GT_Values.RA.addFormingPressRecipe(
-                        new ItemStack(GT_TileEntity_HTGR.HTGRMaterials.aHTGR_Materials, 1, i + 1),
-                        Materials.Silicon.getDust(64),
-                        new ItemStack(GT_TileEntity_HTGR.HTGRMaterials.aHTGR_Materials, 1, i + 2),
-                        40,
-                        30);
-                GT_Values.RA.addFormingPressRecipe(
-                        new ItemStack(GT_TileEntity_HTGR.HTGRMaterials.aHTGR_Materials, 1, i + 2),
-                        Materials.Graphite.getDust(64),
-                        new ItemStack(GT_TileEntity_HTGR.HTGRMaterials.aHTGR_Materials, 1, i + 3),
-                        40,
-                        30);
-                GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes.addRecipe(
-                        false,
-                        new ItemStack[] { new ItemStack(GT_TileEntity_HTGR.HTGRMaterials.aHTGR_Materials, 1, i + 3),
-                                GT_Utility.getIntegratedCircuit(17) },
-                        new ItemStack[] { new ItemStack(GT_TileEntity_HTGR.HTGRMaterials.aHTGR_Materials, 64, i + 4),
-                                new ItemStack(GT_TileEntity_HTGR.HTGRMaterials.aHTGR_Materials, 64, i + 4),
-                                new ItemStack(GT_TileEntity_HTGR.HTGRMaterials.aHTGR_Materials, 64, i + 4),
-                                new ItemStack(GT_TileEntity_HTGR.HTGRMaterials.aHTGR_Materials, 64, i + 4) },
-                        null,
-                        null,
-                        null,
-                        null,
-                        12000,
-                        30,
-                        0);
-                GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes.addRecipe(
-                        false,
-                        new ItemStack[] { new ItemStack(GT_TileEntity_HTGR.HTGRMaterials.aHTGR_Materials, 1, i + 5),
-                                GT_Utility.getIntegratedCircuit(17) },
-                        new ItemStack[] { new ItemStack(GT_TileEntity_HTGR.HTGRMaterials.aHTGR_Materials, 64, i + 6) },
-                        null,
-                        null,
-                        null,
-                        null,
-                        3000,
-                        30,
-                        0);
+
                 fakeRecipeMap.addFakeRecipe(
                         false,
                         new ItemStack[] { new ItemStack(GT_TileEntity_HTGR.HTGRMaterials.aHTGR_Materials, 64, i + 4) },
@@ -657,21 +605,8 @@ public class GT_TileEntity_HTGR extends GT_MetaTileEntity_EnhancedMultiBlockBase
                         72000,
                         powerUsage,
                         0);
-                GT_Values.RA.addCentrifugeRecipe(
-                        new ItemStack(GT_TileEntity_HTGR.HTGRMaterials.aHTGR_Materials, 1, i + 6),
-                        GT_Values.NI,
-                        GT_Values.NF,
-                        fuel.recycledFluid,
-                        fuel.recycledItems[0],
-                        fuel.recycledItems[1],
-                        fuel.recycledItems[2],
-                        fuel.recycledItems[3],
-                        fuel.recycledItems[4],
-                        fuel.recycledItems[5],
-                        fuel.recycleChances,
-                        1200,
-                        30);
-                i += sHTGR_Bases.length;
+
+                i += MATERIALS_PER_FUEL;
             }
         }
     }

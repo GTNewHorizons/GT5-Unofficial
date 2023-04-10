@@ -13,22 +13,87 @@
 
 package com.github.bartimaeusnek.bartworks.system.material.GT_Enhancement;
 
-import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.*;
-import static gregtech.api.enums.OrePrefixes.*;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.AcidicIridiumSolution;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.AcidicOsmiumSolution;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.AmmoniumChloride;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.AquaRegia;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.CalciumChloride;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.CrudeRhMetall;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.FormicAcid;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.HotRutheniumTetroxideSollution;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.IrLeachResidue;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.IrOsLeachResidue;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.IridiumChloride;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.IridiumDioxide;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.LeachResidue;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.OsmiumSolution;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.PDAmmonia;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.PDMetallicPowder;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.PDRawPowder;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.PDSalt;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.PGSDResidue;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.PGSDResidue2;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.PTConcentrate;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.PTMetallicPowder;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.PTRawPowder;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.PTResidue;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.PTSaltCrude;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.PTSaltRefined;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.PotassiumDisulfate;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.RHFilterCakeSolution;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.RHNitrate;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.RHSalt;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.RHSaltSolution;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.RHSulfate;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.RHSulfateSolution;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.ReRh;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.RhFilterCake;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.Rhodium;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.Ruthenium;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.RutheniumTetroxide;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.RutheniumTetroxideSollution;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.SodiumNitrate;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.SodiumRuthenate;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.Sodiumformate;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.Sodiumsulfate;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.ZincSulfate;
+import static gregtech.api.enums.Mods.GTPlusPlus;
+import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
+import static gregtech.api.enums.OrePrefixes.cell;
+import static gregtech.api.enums.OrePrefixes.crateGtDust;
+import static gregtech.api.enums.OrePrefixes.crushed;
+import static gregtech.api.enums.OrePrefixes.crushedCentrifuged;
+import static gregtech.api.enums.OrePrefixes.crushedPurified;
+import static gregtech.api.enums.OrePrefixes.dust;
+import static gregtech.api.enums.OrePrefixes.dustImpure;
+import static gregtech.api.enums.OrePrefixes.dustPure;
+import static gregtech.api.enums.OrePrefixes.dustRefined;
+import static gregtech.api.enums.OrePrefixes.dustSmall;
+import static gregtech.api.enums.OrePrefixes.dustTiny;
+import static gregtech.api.enums.OrePrefixes.ingot;
+import static gregtech.api.enums.OrePrefixes.nugget;
 
 import java.lang.reflect.Field;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.*;
+import net.minecraft.item.crafting.CraftingManager;
+import net.minecraft.item.crafting.FurnaceRecipes;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.ShapedRecipes;
+import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
 
-import com.github.bartimaeusnek.bartworks.API.LoaderReference;
 import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.system.material.BW_MetaGenerated_Items;
 import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
@@ -881,7 +946,7 @@ public class PlatinumSludgeOverHaul {
             if (obj instanceof ShapedRecipes || (obj instanceof ShapelessRecipes)) {
                 inputName = "recipeOutput";
                 inputItemName = "recipeItems";
-            } else if (LoaderReference.miscutils) {
+            } else if (GTPlusPlus.isModLoaded()) {
                 try {
                     if (Class.forName("gtPlusPlus.api.objects.minecraft.ShapedRecipe").isAssignableFrom(obj.getClass()))
                         obj = CachedReflectionUtils.getField(obj.getClass(), "mRecipe").get(obj);
@@ -992,7 +1057,7 @@ public class PlatinumSludgeOverHaul {
 
         if (GameRegistry.findUniqueIdentifierFor(stack.getItem()).modId.equals(BartWorksCrossmod.MOD_ID)) return true;
 
-        if (GameRegistry.findUniqueIdentifierFor(stack.getItem()).modId.equals("dreamcraft")
+        if (GameRegistry.findUniqueIdentifierFor(stack.getItem()).modId.equals(NewHorizonsCoreMod.ID)
                 && !stack.getUnlocalizedName().contains("dust")
                 && !stack.getUnlocalizedName().contains("Dust"))
             return true;
@@ -1013,7 +1078,7 @@ public class PlatinumSludgeOverHaul {
                             .contains(GT_OreDictUnificator.getAssociation(stack).mMaterial.mMaterial);
         }
 
-        if (LoaderReference.miscutils) {
+        if (GTPlusPlus.isModLoaded()) {
             try {
                 if (Class.forName("gtPlusPlus.core.item.base.BaseItemComponent")
                         .isAssignableFrom(stack.getItem().getClass())

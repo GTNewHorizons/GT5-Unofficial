@@ -72,8 +72,6 @@ public class RendererGlasBlock implements ISimpleBlockRenderingHandler {
     @Override
     public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId,
             RenderBlocks renderer) {
-        // renderer.setRenderBounds(0.001,0.001,0.001,0.999,0.999,0.999);
-        // renderer.setRenderBounds(0,0,0,1,1,1);
         if (block instanceof BW_GlasBlocks) {
             renderer.renderStandardBlock(ItemRegistry.bw_fake_glasses, x, y, z);
             renderer.renderStandardBlockWithColorMultiplier(

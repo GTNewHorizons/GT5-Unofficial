@@ -13,6 +13,10 @@
 
 package com.github.bartimaeusnek.crossmod;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+import static gregtech.api.enums.Mods.GalacticraftCore;
+import static gregtech.api.enums.Mods.TecTech;
+
 import java.io.StringReader;
 
 import net.minecraft.util.StringTranslate;
@@ -21,12 +25,10 @@ import org.apache.commons.io.input.ReaderInputStream;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.github.bartimaeusnek.bartworks.API.LoaderReference;
 import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.crossmod.GTpp.loader.RadioHatchCompat;
 import com.github.bartimaeusnek.crossmod.galacticraft.GalacticraftProxy;
 import com.github.bartimaeusnek.crossmod.tectech.TecTechResearchLoader;
-import com.github.bartimaeusnek.crossmod.thaumcraft.CustomAspects;
 
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -58,46 +60,37 @@ public class BartWorksCrossmod {
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent preinit) {
-        // if (LoaderReference.appliedenergistics2)
-        // new ItemSingleItemStorageCell("singleItemStorageCell");
-        if (LoaderReference.GalacticraftCore) GalacticraftProxy.preInit(preinit);
-        if (LoaderReference.Thaumcraft) new CustomAspects();
+        if (GalacticraftCore.isModLoaded()) {
+            GalacticraftProxy.preInit(preinit);
+        }
     }
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent init) {
-        if (LoaderReference.GalacticraftCore) GalacticraftProxy.init(init);
+        if (GalacticraftCore.isModLoaded()) {
+            GalacticraftProxy.init(init);
+        }
     }
 
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent init) {
-        if (LoaderReference.GalacticraftCore) GalacticraftProxy.postInit(init);
-        if (LoaderReference.miscutils) RadioHatchCompat.run();
-        if (LoaderReference.tectech) TecTechResearchLoader.runResearches();
+        if (GalacticraftCore.isModLoaded()) {
+            GalacticraftProxy.postInit(init);
+        }
+        if (GTPlusPlus.isModLoaded()) {
+            RadioHatchCompat.run();
+        }
+        if (TecTech.isModLoaded()) {
+            TecTechResearchLoader.runResearches();
+        }
     }
-
-    // @Mod.EventHandler
-    // public void onFMLMissingMappingsEvent(FMLMissingMappingsEvent event){
-    // for (FMLMissingMappingsEvent.MissingMapping mapping : event.getAll()){
-    // if (mapping.name.equalsIgnoreCase())
-    // }
-    // }
-
-    // @Mod.EventHandler
-    // public void onServerStarted(FMLServerStartedEvent event) {
-    // if (LoaderReference.EMT){
-    // try {
-    // TCRecipeHandler.init();
-    // } catch (IllegalAccessException | InvocationTargetException e) {
-    // e.printStackTrace();
-    // }
-    // }
-    // }
 
     @Mod.EventHandler
     public void onFMLServerStart(FMLServerStartingEvent event) {
-        if (LoaderReference.miscutils) for (Object s : RadioHatchCompat.TranslateSet) {
-            StringTranslate.inject(new ReaderInputStream(new StringReader((String) s)));
+        if (GTPlusPlus.isModLoaded()) {
+            for (Object s : RadioHatchCompat.TranslateSet) {
+                StringTranslate.inject(new ReaderInputStream(new StringReader((String) s)));
+            }
         }
     }
 }

@@ -13,7 +13,12 @@
 
 package com.github.bartimaeusnek.bartworks.client.renderer;
 
-import static gregtech.common.render.GT_Renderer_Block.*;
+import static gregtech.common.render.GT_Renderer_Block.renderNegativeXFacing;
+import static gregtech.common.render.GT_Renderer_Block.renderNegativeYFacing;
+import static gregtech.common.render.GT_Renderer_Block.renderNegativeZFacing;
+import static gregtech.common.render.GT_Renderer_Block.renderPositiveXFacing;
+import static gregtech.common.render.GT_Renderer_Block.renderPositiveYFacing;
+import static gregtech.common.render.GT_Renderer_Block.renderPositiveZFacing;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;

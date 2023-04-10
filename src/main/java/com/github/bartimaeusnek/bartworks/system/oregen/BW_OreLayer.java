@@ -27,7 +27,11 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 
 import com.github.bartimaeusnek.bartworks.MainMod;
-import com.github.bartimaeusnek.bartworks.system.material.*;
+import com.github.bartimaeusnek.bartworks.system.material.BW_MetaGeneratedOreTE;
+import com.github.bartimaeusnek.bartworks.system.material.BW_MetaGenerated_Ores;
+import com.github.bartimaeusnek.bartworks.system.material.BW_MetaGenerated_SmallOres;
+import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
+import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import com.github.bartimaeusnek.bartworks.util.MurmurHash3;
 import com.github.bartimaeusnek.bartworks.util.Pair;
 import com.google.common.collect.ArrayListMultimap;

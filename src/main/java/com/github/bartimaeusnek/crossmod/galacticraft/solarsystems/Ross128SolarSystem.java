@@ -13,17 +13,23 @@
 
 package com.github.bartimaeusnek.crossmod.galacticraft.solarsystems;
 
+import static gregtech.api.enums.Mods.GalaxySpace;
+
 import java.util.Arrays;
 
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
-import micdoodle8.mods.galacticraft.api.galaxies.*;
+import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
+import micdoodle8.mods.galacticraft.api.galaxies.GalaxyRegistry;
+import micdoodle8.mods.galacticraft.api.galaxies.Moon;
+import micdoodle8.mods.galacticraft.api.galaxies.Planet;
+import micdoodle8.mods.galacticraft.api.galaxies.SolarSystem;
+import micdoodle8.mods.galacticraft.api.galaxies.Star;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IAtmosphericGas;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 
 import net.minecraft.util.ResourceLocation;
 
-import com.github.bartimaeusnek.bartworks.API.LoaderReference;
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
 import com.github.bartimaeusnek.crossmod.BartWorksCrossmod;
 import com.github.bartimaeusnek.crossmod.galacticraft.UniversalTeleportType;
@@ -69,7 +75,7 @@ public class Ross128SolarSystem {
                 new ResourceLocation(BartWorksCrossmod.MOD_ID + ":galacticraft/Ross128b/MapObjs/Ross128ba.png"));
         Ross128SolarSystem.Ross128ba.setDimensionInfo(ConfigHandler.ross128BAID, WorldProviderRoss128ba.class);
         Ross128SolarSystem.Ross128ba
-                .setTierRequired(LoaderReference.GalaxySpace ? Math.min(ConfigHandler.ross128btier + 2, 8) : 3);
+                .setTierRequired(GalaxySpace.isModLoaded() ? Math.min(ConfigHandler.ross128btier + 2, 8) : 3);
 
         GalaxyRegistry.registerSolarSystem(Ross128SolarSystem.Ross128System);
         GalaxyRegistry.registerPlanet(Ross128SolarSystem.Ross128b);

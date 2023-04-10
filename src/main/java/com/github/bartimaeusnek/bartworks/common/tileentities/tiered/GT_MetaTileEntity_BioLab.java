@@ -13,19 +13,26 @@
 
 package com.github.bartimaeusnek.bartworks.common.tileentities.tiered;
 
+import static gregtech.api.enums.Mods.Gendustry;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
-import com.github.bartimaeusnek.bartworks.API.LoaderReference;
 import com.github.bartimaeusnek.bartworks.common.items.LabModule;
 import com.github.bartimaeusnek.bartworks.common.items.LabParts;
 import com.github.bartimaeusnek.bartworks.common.loaders.BioCultureLoader;
 import com.github.bartimaeusnek.bartworks.common.loaders.BioItemList;
 import com.github.bartimaeusnek.bartworks.common.loaders.FluidLoader;
-import com.github.bartimaeusnek.bartworks.util.*;
+import com.github.bartimaeusnek.bartworks.util.BWRecipes;
+import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
+import com.github.bartimaeusnek.bartworks.util.BW_Util;
+import com.github.bartimaeusnek.bartworks.util.BioCulture;
+import com.github.bartimaeusnek.bartworks.util.BioDNA;
+import com.github.bartimaeusnek.bartworks.util.BioData;
+import com.github.bartimaeusnek.bartworks.util.BioPlasmid;
 
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -151,7 +158,7 @@ public class GT_MetaTileEntity_BioLab extends GT_MetaTileEntity_BasicMachine {
     public int checkRecipe(boolean skipOC) {
 
         int rTier = 3;
-        FluidStack dnaFluid = LoaderReference.gendustry ? FluidRegistry.getFluidStack("liquiddna", 1000)
+        FluidStack dnaFluid = Gendustry.isModLoaded() ? FluidRegistry.getFluidStack("liquiddna", 1000)
                 : Materials.Biomass.getFluid(1000L);
 
         if (this.getSpecialSlot() != null && this.getSpecialSlot().getItem() instanceof LabModule) {

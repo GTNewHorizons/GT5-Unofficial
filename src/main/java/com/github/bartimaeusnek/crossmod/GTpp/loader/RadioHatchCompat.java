@@ -13,10 +13,20 @@
 
 package com.github.bartimaeusnek.crossmod.GTpp.loader;
 
+import static gregtech.api.enums.Mods.GTPlusPlus;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Queue;
+import java.util.Set;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -116,7 +126,7 @@ public class RadioHatchCompat {
             for (ModContainer container : Loader.instance().getModList()) {
                 if (gtpp != null && bartworks != null) break;
                 else if (container.getModId().equalsIgnoreCase(BartWorksCrossmod.MOD_ID)) bartworks = container;
-                else if (container.getModId().equalsIgnoreCase("miscutils")) gtpp = container;
+                else if (container.getModId().equalsIgnoreCase(GTPlusPlus.ID)) gtpp = container;
             }
 
             for (Object mats : (Set) RadioHatchCompat.materialClass.getField("mMaterialMap").get(null)) {

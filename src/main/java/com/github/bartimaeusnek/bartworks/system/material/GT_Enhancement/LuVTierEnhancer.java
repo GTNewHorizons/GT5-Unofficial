@@ -14,11 +14,23 @@
 package com.github.bartimaeusnek.bartworks.system.material.GT_Enhancement;
 
 import static com.github.bartimaeusnek.bartworks.MainMod.MOD_ID;
-import static gregtech.api.enums.OrePrefixes.*;
+import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
+import static gregtech.api.enums.OrePrefixes.dust;
+import static gregtech.api.enums.OrePrefixes.ingot;
+import static gregtech.api.enums.OrePrefixes.plate;
+import static gregtech.api.enums.OrePrefixes.plateDense;
+import static gregtech.api.enums.OrePrefixes.plateDouble;
+import static gregtech.api.enums.OrePrefixes.rotor;
+import static gregtech.api.enums.OrePrefixes.stick;
+import static gregtech.api.enums.OrePrefixes.stickLong;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
@@ -31,7 +43,6 @@ import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.apache.commons.lang3.reflect.MethodUtils;
 
-import com.github.bartimaeusnek.bartworks.API.LoaderReference;
 import com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry;
 import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
@@ -42,9 +53,13 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.objects.ItemData;
-import gregtech.api.util.*;
+import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_AssemblyLine;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
+import gregtech.api.util.GT_Shaped_Recipe;
+import gregtech.api.util.GT_Utility;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
 
 @SuppressWarnings("ALL")
@@ -86,7 +101,7 @@ public class LuVTierEnhancer implements Runnable {
         Arrays.stream(ItemList.values()).filter(item -> item.toString().contains("LuV") && item.hasBeenSet())
                 .forEach(item -> LuVMachines.add(item.get(1)));
 
-        if (LoaderReference.dreamcraft) {
+        if (NewHorizonsCoreMod.isModLoaded()) {
             addDreamcraftItemListItems(LuVMachines);
         }
 

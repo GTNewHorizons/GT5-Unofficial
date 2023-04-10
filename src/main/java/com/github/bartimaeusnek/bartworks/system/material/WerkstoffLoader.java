@@ -15,10 +15,68 @@ package com.github.bartimaeusnek.bartworks.system.material;
 
 import static com.github.bartimaeusnek.bartworks.util.BW_Util.subscriptNumbers;
 import static com.github.bartimaeusnek.bartworks.util.BW_Util.superscriptNumbers;
-import static gregtech.api.enums.OrePrefixes.*;
+import static gregtech.api.enums.Mods.BetterLoadingScreen;
+import static gregtech.api.enums.Mods.Forestry;
+import static gregtech.api.enums.OrePrefixes.block;
+import static gregtech.api.enums.OrePrefixes.bolt;
+import static gregtech.api.enums.OrePrefixes.bottle;
+import static gregtech.api.enums.OrePrefixes.capsule;
+import static gregtech.api.enums.OrePrefixes.cell;
+import static gregtech.api.enums.OrePrefixes.cellPlasma;
+import static gregtech.api.enums.OrePrefixes.crushed;
+import static gregtech.api.enums.OrePrefixes.crushedCentrifuged;
+import static gregtech.api.enums.OrePrefixes.crushedPurified;
+import static gregtech.api.enums.OrePrefixes.dust;
+import static gregtech.api.enums.OrePrefixes.dustImpure;
+import static gregtech.api.enums.OrePrefixes.dustPure;
+import static gregtech.api.enums.OrePrefixes.dustSmall;
+import static gregtech.api.enums.OrePrefixes.dustTiny;
+import static gregtech.api.enums.OrePrefixes.foil;
+import static gregtech.api.enums.OrePrefixes.gearGt;
+import static gregtech.api.enums.OrePrefixes.gearGtSmall;
+import static gregtech.api.enums.OrePrefixes.gem;
+import static gregtech.api.enums.OrePrefixes.gemChipped;
+import static gregtech.api.enums.OrePrefixes.gemExquisite;
+import static gregtech.api.enums.OrePrefixes.gemFlawed;
+import static gregtech.api.enums.OrePrefixes.gemFlawless;
+import static gregtech.api.enums.OrePrefixes.ingot;
+import static gregtech.api.enums.OrePrefixes.ingotDouble;
+import static gregtech.api.enums.OrePrefixes.ingotHot;
+import static gregtech.api.enums.OrePrefixes.ingotQuadruple;
+import static gregtech.api.enums.OrePrefixes.ingotQuintuple;
+import static gregtech.api.enums.OrePrefixes.ingotTriple;
+import static gregtech.api.enums.OrePrefixes.lens;
+import static gregtech.api.enums.OrePrefixes.nugget;
+import static gregtech.api.enums.OrePrefixes.ore;
+import static gregtech.api.enums.OrePrefixes.oreSmall;
+import static gregtech.api.enums.OrePrefixes.plate;
+import static gregtech.api.enums.OrePrefixes.plateDense;
+import static gregtech.api.enums.OrePrefixes.plateDouble;
+import static gregtech.api.enums.OrePrefixes.plateQuadruple;
+import static gregtech.api.enums.OrePrefixes.plateQuintuple;
+import static gregtech.api.enums.OrePrefixes.plateTriple;
+import static gregtech.api.enums.OrePrefixes.ring;
+import static gregtech.api.enums.OrePrefixes.rotor;
+import static gregtech.api.enums.OrePrefixes.screw;
+import static gregtech.api.enums.OrePrefixes.spring;
+import static gregtech.api.enums.OrePrefixes.springSmall;
+import static gregtech.api.enums.OrePrefixes.stick;
+import static gregtech.api.enums.OrePrefixes.stickLong;
+import static gregtech.api.enums.OrePrefixes.toolHeadHammer;
+import static gregtech.api.enums.OrePrefixes.toolHeadSaw;
+import static gregtech.api.enums.OrePrefixes.toolHeadWrench;
+import static gregtech.api.enums.OrePrefixes.turbineBlade;
+import static gregtech.api.enums.OrePrefixes.values;
+import static gregtech.api.enums.OrePrefixes.wireFine;
 
 import java.lang.reflect.Field;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -29,7 +87,6 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import org.apache.logging.log4j.Level;
 
-import com.github.bartimaeusnek.bartworks.API.LoaderReference;
 import com.github.bartimaeusnek.bartworks.API.SideReference;
 import com.github.bartimaeusnek.bartworks.API.WerkstoffAdderRegistry;
 import com.github.bartimaeusnek.bartworks.MainMod;
@@ -39,7 +96,20 @@ import com.github.bartimaeusnek.bartworks.system.material.CircuitGeneration.BW_C
 import com.github.bartimaeusnek.bartworks.system.material.GT_Enhancement.GTMetaItemEnhancer;
 import com.github.bartimaeusnek.bartworks.system.material.processingLoaders.AdditionalRecipes;
 import com.github.bartimaeusnek.bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
-import com.github.bartimaeusnek.bartworks.system.material.werkstoff_loaders.recipe.*;
+import com.github.bartimaeusnek.bartworks.system.material.werkstoff_loaders.recipe.AspectLoader;
+import com.github.bartimaeusnek.bartworks.system.material.werkstoff_loaders.recipe.BlockLoader;
+import com.github.bartimaeusnek.bartworks.system.material.werkstoff_loaders.recipe.CasingLoader;
+import com.github.bartimaeusnek.bartworks.system.material.werkstoff_loaders.recipe.CellLoader;
+import com.github.bartimaeusnek.bartworks.system.material.werkstoff_loaders.recipe.CraftingMaterialLoader;
+import com.github.bartimaeusnek.bartworks.system.material.werkstoff_loaders.recipe.CrushedLoader;
+import com.github.bartimaeusnek.bartworks.system.material.werkstoff_loaders.recipe.DustLoader;
+import com.github.bartimaeusnek.bartworks.system.material.werkstoff_loaders.recipe.GemLoader;
+import com.github.bartimaeusnek.bartworks.system.material.werkstoff_loaders.recipe.MetalLoader;
+import com.github.bartimaeusnek.bartworks.system.material.werkstoff_loaders.recipe.MoltenCellLoader;
+import com.github.bartimaeusnek.bartworks.system.material.werkstoff_loaders.recipe.MultipleMetalLoader;
+import com.github.bartimaeusnek.bartworks.system.material.werkstoff_loaders.recipe.OreLoader;
+import com.github.bartimaeusnek.bartworks.system.material.werkstoff_loaders.recipe.SimpleMetalLoader;
+import com.github.bartimaeusnek.bartworks.system.material.werkstoff_loaders.recipe.ToolLoader;
 import com.github.bartimaeusnek.bartworks.system.material.werkstoff_loaders.registration.AssociationLoader;
 import com.github.bartimaeusnek.bartworks.system.material.werkstoff_loaders.registration.BridgeMaterialsLoader;
 import com.github.bartimaeusnek.bartworks.system.material.werkstoff_loaders.registration.CasingRegistrator;
@@ -54,7 +124,13 @@ import com.google.common.collect.HashBiMap;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.ProgressManager;
 import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.enums.*;
+import gregtech.api.enums.Element;
+import gregtech.api.enums.FluidState;
+import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.SubTag;
+import gregtech.api.enums.TextureSet;
 import gregtech.api.fluid.GT_FluidFactory;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -1412,7 +1488,7 @@ public class WerkstoffLoader {
             DebugLog.log("Loading Recipes" + (System.nanoTime() - timepre));
             Integer[] clsArr = new Integer[0];
             int size = 0;
-            if (LoaderReference.betterloadingscreen) clsArr = CLSCompat.initCls();
+            if (BetterLoadingScreen.isModLoaded()) clsArr = CLSCompat.initCls();
 
             IWerkstoffRunnable[] werkstoffRunnables = new IWerkstoffRunnable[] { new ToolLoader(), new DustLoader(),
                     new GemLoader(), new SimpleMetalLoader(), new CasingLoader(), new AspectLoader(), new OreLoader(),
@@ -1430,7 +1506,7 @@ public class WerkstoffLoader {
                     progressBar.step("");
                     continue;
                 }
-                if (LoaderReference.betterloadingscreen) size = CLSCompat.invokeStepSize(werkstoff, clsArr, size);
+                if (BetterLoadingScreen.isModLoaded()) size = CLSCompat.invokeStepSize(werkstoff, clsArr, size);
                 DebugLog.log("Werkstoff: " + werkstoff.getDefaultName() + " " + (System.nanoTime() - timepreone));
                 for (IWerkstoffRunnable runnable : werkstoffRunnables) {
                     String loaderName = runnable.getClass().getSimpleName();
@@ -1444,7 +1520,9 @@ public class WerkstoffLoader {
             DebugLog.log("Loading New Circuits" + " " + (System.nanoTime() - timepreone));
             BW_CircuitsLoader.initNewCircuits();
 
-            if (LoaderReference.betterloadingscreen) CLSCompat.disableCls();
+            if (BetterLoadingScreen.isModLoaded()) {
+                CLSCompat.disableCls();
+            }
 
             progressBar.step("Load Additional Recipes");
             AdditionalRecipes.run();
@@ -1596,15 +1674,14 @@ public class WerkstoffLoader {
         }
         if ((WerkstoffLoader.toGenerateGlobal & 0b10000) != 0) {
             WerkstoffLoader.items.put(cell, new BW_MetaGenerated_Items(cell));
-            // WerkstoffLoader.items.put(bottle, new BW_MetaGenerated_Items(bottle));
-            if (LoaderReference.Forestry) WerkstoffLoader.items.put(capsule, new BW_MetaGenerated_Items(capsule));
+            if (Forestry.isModLoaded()) WerkstoffLoader.items.put(capsule, new BW_MetaGenerated_Items(capsule));
         }
         if ((WerkstoffLoader.toGenerateGlobal & 0b100000) != 0) {
             WerkstoffLoader.items.put(cellPlasma, new BW_MetaGenerated_Items(cellPlasma));
         }
         if ((WerkstoffLoader.toGenerateGlobal & 0b1000000) != 0) {
             WerkstoffLoader.items.put(OrePrefixes.cellMolten, new BW_MetaGenerated_Items(OrePrefixes.cellMolten));
-            if (LoaderReference.Forestry) WerkstoffLoader.items
+            if (Forestry.isModLoaded()) WerkstoffLoader.items
                     .put(OrePrefixes.capsuleMolten, new BW_MetaGenerated_Items(OrePrefixes.capsuleMolten));
         }
         if ((WerkstoffLoader.toGenerateGlobal & 0b10000000) != 0) {

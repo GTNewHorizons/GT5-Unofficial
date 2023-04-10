@@ -13,19 +13,26 @@
 
 package com.github.bartimaeusnek.bartworks.system.material.werkstoff_loaders.registration;
 
-import static gregtech.api.enums.OrePrefixes.*;
+import static gregtech.api.enums.Mods.Thaumcraft;
+import static gregtech.api.enums.OrePrefixes.cell;
+import static gregtech.api.enums.OrePrefixes.cellMolten;
+import static gregtech.api.enums.OrePrefixes.dust;
+import static gregtech.api.enums.OrePrefixes.values;
 
 import java.util.ArrayList;
 
 import net.minecraft.item.ItemStack;
 
-import com.github.bartimaeusnek.bartworks.API.LoaderReference;
 import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
 import com.github.bartimaeusnek.bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
 import com.github.bartimaeusnek.bartworks.util.BWRecipes;
 
 import gregtech.api.enchants.Enchantment_Radioactivity;
-import gregtech.api.enums.*;
+import gregtech.api.enums.Element;
+import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.SubTag;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
@@ -113,17 +120,10 @@ public class BridgeMaterialsLoader implements IWerkstoffRunnable {
                                 break;
                             }
                         }
-                        if (!ElementSet) continue;
-                        // try {
-                        // Field f = Materials.class.getDeclaredField("MATERIALS_MAP");
-                        // f.setAccessible(true);
-                        // Map<String, Materials> MATERIALS_MAP = (Map<String,
-                        // Materials>) f.get(null);
-                        // MATERIALS_MAP.remove(werkstoffBridgeMaterial.mName);
-                        // } catch (NoSuchFieldException | IllegalAccessException |
-                        // ClassCastException e) {
-                        // e.printStackTrace();
-                        // }
+                        if (!ElementSet) {
+                            continue;
+                        }
+
                         if (werkstoff.hasItemType(dust)) {
                             ItemStack scannerOutput = ItemList.Tool_DataOrb.get(1L);
                             Behaviour_DataOrb.setDataTitle(scannerOutput, "Elemental-Scan");
@@ -141,11 +141,6 @@ public class BridgeMaterialsLoader implements IWerkstoffRunnable {
                                             (int) (werkstoffBridgeMaterial.getMass() * 8192L),
                                             30,
                                             0));
-                            // GT_Recipe.GT_Recipe_Map.sReplicatorFakeRecipes.addFakeRecipe(false, new
-                            // BWRecipes.DynamicGTRecipe(false, null, new ItemStack[]{werkstoff.get(prefixes)},
-                            // scannerOutput, null, new
-                            // FluidStack[]{Materials.UUMatter.getFluid(werkstoffBridgeMaterial.getMass())}, null, (int)
-                            // (werkstoffBridgeMaterial.getMass() * 512L), 30, 0));
                         }
                     }
                 }
@@ -168,7 +163,9 @@ public class BridgeMaterialsLoader implements IWerkstoffRunnable {
                     werkstoffBridgeMaterial.mLocalizedName = GT_LanguageManager.addStringLocalization(
                             "Material." + werkstoffBridgeMaterial.mName.toLowerCase(),
                             werkstoffBridgeMaterial.mDefaultLocalName);
-                if (LoaderReference.Thaumcraft) werkstoffBridgeMaterial.mAspects = werkstoff.getGTWrappedTCAspects();
+                if (Thaumcraft.isModLoaded()) {
+                    werkstoffBridgeMaterial.mAspects = werkstoff.getGTWrappedTCAspects();
+                }
                 werkstoffBridgeMaterial.mMaterialInto = werkstoffBridgeMaterial;
                 werkstoffBridgeMaterial.mHandleMaterial = werkstoff.contains(SubTag.BURNING) ? Materials.Blaze
                         : werkstoff.contains(SubTag.MAGICAL) ? Materials.Thaumium

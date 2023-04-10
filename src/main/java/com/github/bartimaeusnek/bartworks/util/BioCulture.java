@@ -165,13 +165,6 @@ public class BioCulture extends BioData implements IColorModulationContainer {
         this.color = color;
     }
 
-    // public static BioCulture createAndRegisterBioCulture(Color color, String name, long ID, BioPlasmid plasmid,
-    // BioDNA dDNA,EnumRarity rarity){
-    // BioCulture ret =new BioCulture(color,name,ID,plasmid,dDNA,rarity);
-    // BIO_CULTURE_ARRAY_LIST.add(ret);
-    // return ret;
-    // }
-
     public BioPlasmid getPlasmid() {
         return this.plasmid;
     }

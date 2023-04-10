@@ -15,7 +15,8 @@ package com.github.bartimaeusnek.bartworks.common.loaders;
 
 import static com.github.bartimaeusnek.bartworks.MainMod.BWT;
 import static com.github.bartimaeusnek.bartworks.MainMod.GT2;
-import static com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler.newStuff;
+import static gregtech.api.enums.Mods.GalactiGreg;
+import static gregtech.api.enums.Mods.TecTech;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -24,18 +25,42 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 
-import com.github.bartimaeusnek.bartworks.API.LoaderReference;
 import com.github.bartimaeusnek.bartworks.MainMod;
-import com.github.bartimaeusnek.bartworks.common.blocks.*;
+import com.github.bartimaeusnek.bartworks.common.blocks.BW_Blocks;
+import com.github.bartimaeusnek.bartworks.common.blocks.BW_GlasBlocks;
+import com.github.bartimaeusnek.bartworks.common.blocks.BW_GlasBlocks2;
+import com.github.bartimaeusnek.bartworks.common.blocks.BW_TileEntityContainer;
+import com.github.bartimaeusnek.bartworks.common.blocks.BW_TileEntityContainer_MachineBlock;
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
-import com.github.bartimaeusnek.bartworks.common.items.*;
+import com.github.bartimaeusnek.bartworks.common.items.BW_ItemBlocks;
+import com.github.bartimaeusnek.bartworks.common.items.BW_SimpleWindMeter;
+import com.github.bartimaeusnek.bartworks.common.items.BW_Stonage_Rotors;
+import com.github.bartimaeusnek.bartworks.common.items.Circuit_Programmer;
+import com.github.bartimaeusnek.bartworks.common.items.GT_Destructopack_Item;
+import com.github.bartimaeusnek.bartworks.common.items.GT_Rockcutter_Item;
+import com.github.bartimaeusnek.bartworks.common.items.GT_Teslastaff_Item;
+import com.github.bartimaeusnek.bartworks.common.items.SimpleIconItem;
+import com.github.bartimaeusnek.bartworks.common.items.SimpleSubItemClass;
 import com.github.bartimaeusnek.bartworks.common.tileentities.classic.BW_RotorBlock;
 import com.github.bartimaeusnek.bartworks.common.tileentities.classic.BW_TileEntity_ExperimentalFloodGate;
 import com.github.bartimaeusnek.bartworks.common.tileentities.classic.BW_TileEntity_HeatedWaterPump;
 import com.github.bartimaeusnek.bartworks.common.tileentities.debug.CreativeScanner;
-import com.github.bartimaeusnek.bartworks.common.tileentities.multis.*;
-import com.github.bartimaeusnek.bartworks.common.tileentities.multis.mega.*;
-import com.github.bartimaeusnek.bartworks.common.tileentities.tiered.*;
+import com.github.bartimaeusnek.bartworks.common.tileentities.multis.GT_TileEntity_CircuitAssemblyLine;
+import com.github.bartimaeusnek.bartworks.common.tileentities.multis.GT_TileEntity_DEHP;
+import com.github.bartimaeusnek.bartworks.common.tileentities.multis.GT_TileEntity_ElectricImplosionCompressor;
+import com.github.bartimaeusnek.bartworks.common.tileentities.multis.GT_TileEntity_HTGR;
+import com.github.bartimaeusnek.bartworks.common.tileentities.multis.GT_TileEntity_THTR;
+import com.github.bartimaeusnek.bartworks.common.tileentities.multis.mega.GT_TileEntity_MegaBlastFurnace;
+import com.github.bartimaeusnek.bartworks.common.tileentities.multis.mega.GT_TileEntity_MegaChemicalReactor;
+import com.github.bartimaeusnek.bartworks.common.tileentities.multis.mega.GT_TileEntity_MegaDistillTower;
+import com.github.bartimaeusnek.bartworks.common.tileentities.multis.mega.GT_TileEntity_MegaOilCracker;
+import com.github.bartimaeusnek.bartworks.common.tileentities.multis.mega.GT_TileEntity_MegaVacuumFreezer;
+import com.github.bartimaeusnek.bartworks.common.tileentities.tiered.GT_MetaTileEntity_AcidGenerator;
+import com.github.bartimaeusnek.bartworks.common.tileentities.tiered.GT_MetaTileEntity_CompressedFluidHatch;
+import com.github.bartimaeusnek.bartworks.common.tileentities.tiered.GT_MetaTileEntity_Diode;
+import com.github.bartimaeusnek.bartworks.common.tileentities.tiered.GT_MetaTileEntity_EnergyDistributor;
+import com.github.bartimaeusnek.bartworks.common.tileentities.tiered.GT_MetaTileEntity_GiantOutputHatch;
+import com.github.bartimaeusnek.bartworks.common.tileentities.tiered.GT_MetaTileEntity_HumongousInputHatch;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import com.github.bartimaeusnek.crossmod.galacticgreg.GT_TileEntity_VoidMiners;
 import com.github.bartimaeusnek.crossmod.tectech.tileentites.tiered.TT_MetaTileEntity_LowPowerLaserBox;
@@ -218,24 +243,22 @@ public class ItemRegistry {
     public static ItemStack TecTechPipeEnergyLowPower;
 
     public static void run() {
-        if (newStuff) {
-            GameRegistry.registerBlock(ItemRegistry.bw_fake_glasses, "BW_FakeGlasBlock");
-            GameRegistry.registerBlock(ItemRegistry.bw_fake_glasses2, "BW_FakeGlasBlocks2");
-            GameRegistry.registerBlock(ItemRegistry.BW_BLOCKS[2], BW_ItemBlocks.class, "BW_Machinery_Casings");
-            GameRegistry.registerItem(ItemRegistry.LEATHER_ROTOR, "BW_LeatherRotor");
-            GameRegistry.registerItem(ItemRegistry.WOOL_ROTOR, "BW_WoolRotor");
-            GameRegistry.registerItem(ItemRegistry.PAPER_ROTOR, "BW_PaperRotor");
-            GameRegistry.registerItem(ItemRegistry.COMBINED_ROTOR, "BW_CombinedRotor");
-            GameRegistry.registerItem(ItemRegistry.CRAFTING_PARTS, "craftingParts");
-            GameRegistry.registerTileEntity(BW_RotorBlock.class, "BWRotorBlockTE");
-            GameRegistry.registerBlock(ItemRegistry.ROTORBLOCK, BW_ItemBlocks.class, "BWRotorBlock");
-            GameRegistry.registerTileEntity(BW_TileEntity_HeatedWaterPump.class, "BWHeatedWaterPumpTE");
-            GameRegistry.registerBlock(ItemRegistry.PUMPBLOCK, BW_ItemBlocks.class, "BWHeatedWaterPumpBlock");
-            GameRegistry.registerItem(ItemRegistry.PUMPPARTS, "BWPumpParts");
-            GameRegistry.registerItem(ItemRegistry.WINDMETER, "BW_SimpleWindMeter");
-            GameRegistry.registerTileEntity(BW_TileEntity_ExperimentalFloodGate.class, "BWExpReversePump");
-            GameRegistry.registerBlock(ItemRegistry.EXPPUMP, BW_ItemBlocks.class, "BWExpReversePumpBlock");
-        }
+        GameRegistry.registerBlock(ItemRegistry.bw_fake_glasses, "BW_FakeGlasBlock");
+        GameRegistry.registerBlock(ItemRegistry.bw_fake_glasses2, "BW_FakeGlasBlocks2");
+        GameRegistry.registerBlock(ItemRegistry.BW_BLOCKS[2], BW_ItemBlocks.class, "BW_Machinery_Casings");
+        GameRegistry.registerItem(ItemRegistry.LEATHER_ROTOR, "BW_LeatherRotor");
+        GameRegistry.registerItem(ItemRegistry.WOOL_ROTOR, "BW_WoolRotor");
+        GameRegistry.registerItem(ItemRegistry.PAPER_ROTOR, "BW_PaperRotor");
+        GameRegistry.registerItem(ItemRegistry.COMBINED_ROTOR, "BW_CombinedRotor");
+        GameRegistry.registerItem(ItemRegistry.CRAFTING_PARTS, "craftingParts");
+        GameRegistry.registerTileEntity(BW_RotorBlock.class, "BWRotorBlockTE");
+        GameRegistry.registerBlock(ItemRegistry.ROTORBLOCK, BW_ItemBlocks.class, "BWRotorBlock");
+        GameRegistry.registerTileEntity(BW_TileEntity_HeatedWaterPump.class, "BWHeatedWaterPumpTE");
+        GameRegistry.registerBlock(ItemRegistry.PUMPBLOCK, BW_ItemBlocks.class, "BWHeatedWaterPumpBlock");
+        GameRegistry.registerItem(ItemRegistry.PUMPPARTS, "BWPumpParts");
+        GameRegistry.registerItem(ItemRegistry.WINDMETER, "BW_SimpleWindMeter");
+        GameRegistry.registerTileEntity(BW_TileEntity_ExperimentalFloodGate.class, "BWExpReversePump");
+        GameRegistry.registerBlock(ItemRegistry.EXPPUMP, BW_ItemBlocks.class, "BWExpReversePumpBlock");
 
         // GT2 stuff
         GameRegistry.registerBlock(ItemRegistry.BW_BLOCKS[0], BW_ItemBlocks.class, "BW_ItemBlocks");
@@ -247,177 +270,172 @@ public class ItemRegistry {
         GameRegistry.registerItem(ItemRegistry.ROCKCUTTER_MV, ItemRegistry.ROCKCUTTER_MV.getUnlocalizedName());
         GameRegistry.registerItem(ItemRegistry.ROCKCUTTER_HV, ItemRegistry.ROCKCUTTER_HV.getUnlocalizedName());
         GameRegistry.registerItem(ItemRegistry.TAB, "tabIconGT2");
-        if (newStuff) {
-            if (ConfigHandler.creativeScannerID != 0) new CreativeScanner(
-                    ConfigHandler.creativeScannerID,
-                    "Creative Debug Scanner",
-                    "Creative Debug Scanner",
-                    20);
-            ItemRegistry.eic = new GT_TileEntity_ElectricImplosionCompressor(
-                    ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 6,
-                    "ElectricImplosionCompressor",
-                    "Electric Implosion Compressor").getStackForm(1L);
-            // EIC depend on neutronium block to pass on structure updates
-            int bitmask = GregTech_API.sMachineIDs.getOrDefault(GregTech_API.sBlockMetal5, 0) | (1 << 2);
-            GregTech_API.registerMachineBlock(GregTech_API.sBlockMetal5, bitmask);
-            ItemRegistry.THTR = new GT_TileEntity_THTR(
-                    ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 5,
-                    "THTR",
-                    "Thorium High Temperature Reactor").getStackForm(1L);
-            GT_TileEntity_THTR.THTRMaterials.registeraTHR_Materials();
-            ItemRegistry.HTGR = new GT_TileEntity_HTGR(
-                    ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 15 + 48,
-                    "HTGR",
-                    "High Temperature Gas-cooled Reactor").getStackForm(1L);
-            GT_TileEntity_HTGR.HTGRMaterials.registeraTHR_Materials();
 
-            // ID ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 15 + 49 IS TAKEN !!! (12792)
+        if (ConfigHandler.creativeScannerID != 0) new CreativeScanner(
+                ConfigHandler.creativeScannerID,
+                "Creative Debug Scanner",
+                "Creative Debug Scanner",
+                20);
+        ItemRegistry.eic = new GT_TileEntity_ElectricImplosionCompressor(
+                ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 6,
+                "ElectricImplosionCompressor",
+                "Electric Implosion Compressor").getStackForm(1L);
+        // EIC depend on neutronium block to pass on structure updates
+        int bitmask = GregTech_API.sMachineIDs.getOrDefault(GregTech_API.sBlockMetal5, 0) | (1 << 2);
+        GregTech_API.registerMachineBlock(GregTech_API.sBlockMetal5, bitmask);
+        ItemRegistry.THTR = new GT_TileEntity_THTR(
+                ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 5,
+                "THTR",
+                "Thorium High Temperature Reactor").getStackForm(1L);
+        GT_TileEntity_THTR.THTRMaterials.registeraTHR_Materials();
+        ItemRegistry.HTGR = new GT_TileEntity_HTGR(
+                ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 15 + 48,
+                "HTGR",
+                "High Temperature Gas-cooled Reactor").getStackForm(1L);
+        GT_TileEntity_HTGR.HTGRMaterials.registeraTHR_Materials();
 
-            GT_OreDictUnificator.add(
-                    OrePrefixes.block,
-                    Materials.BorosilicateGlass,
-                    new ItemStack(ItemRegistry.bw_glasses[0], 1, 0));
-            GT_OreDictUnificator.registerOre(
-                    OrePrefixes.block,
-                    Materials.NickelZincFerrite,
-                    new ItemStack(ItemRegistry.BW_BLOCKS[2]));
-            for (int i = 0; i < GT_Values.VN.length - 1; i++) {
-                ItemRegistry.diode2A[i] = new GT_MetaTileEntity_Diode(
-                        ConfigHandler.IDOffset + GT_Values.VN.length + 1 + i,
-                        "diode" + "2A" + GT_Values.VN[i],
-                        StatCollector.translateToLocal("tile.diode.name") + " 2A " + GT_Values.VN[i],
-                        i).getStackForm(1L);
-                ItemRegistry.diode4A[i] = new GT_MetaTileEntity_Diode(
-                        ConfigHandler.IDOffset + GT_Values.VN.length * 2 + 1 + i,
-                        "diode" + "4A" + GT_Values.VN[i],
-                        StatCollector.translateToLocal("tile.diode.name") + " 4A " + GT_Values.VN[i],
-                        i).getStackForm(1L);
-                ItemRegistry.diode8A[i] = new GT_MetaTileEntity_Diode(
-                        ConfigHandler.IDOffset + GT_Values.VN.length * 3 + 1 + i,
-                        "diode" + "8A" + GT_Values.VN[i],
-                        StatCollector.translateToLocal("tile.diode.name") + " 8A " + GT_Values.VN[i],
-                        i).getStackForm(1L);
-                ItemRegistry.diode12A[i] = new GT_MetaTileEntity_Diode(
-                        ConfigHandler.IDOffset + GT_Values.VN.length * 4 + 1 + i,
-                        "diode" + "12A" + GT_Values.VN[i],
-                        StatCollector.translateToLocal("tile.diode.name") + " 12A " + GT_Values.VN[i],
-                        i).getStackForm(1L);
-                ItemRegistry.diode16A[i] = new GT_MetaTileEntity_Diode(
-                        ConfigHandler.IDOffset + GT_Values.VN.length * 5 + 1 + i,
-                        "diode" + "16A" + GT_Values.VN[i],
-                        StatCollector.translateToLocal("tile.diode.name") + " 16A " + GT_Values.VN[i],
-                        i).getStackForm(1L);
-                ItemRegistry.energyDistributor[i] = new GT_MetaTileEntity_EnergyDistributor(
-                        ConfigHandler.IDOffset + 1 + i,
-                        "energydistributor" + GT_Values.VN[i],
-                        StatCollector.translateToLocal("tile.energydistributor.name") + " " + GT_Values.VN[i],
-                        i).getStackForm(1L);
-            }
-            for (int i = 0; i < 3; i++) {
-                ItemRegistry.acidGens[i] = new GT_MetaTileEntity_AcidGenerator(
-                        ConfigHandler.IDOffset + GT_Values.VN.length * 8 - 2 + i,
-                        "acidgenerator" + GT_Values.VN[i + 2],
-                        StatCollector.translateToLocal("tile.acidgenerator.name") + " " + GT_Values.VN[i + 2],
-                        i + 2).getStackForm(1);
-            }
+        // ID ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 15 + 49 IS TAKEN !!! (12792)
 
-            ItemRegistry.acidGensLV = new GT_MetaTileEntity_AcidGenerator(
-                    ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 65,
-                    "acidgenerator" + GT_Values.VN[1],
-                    StatCollector.translateToLocal("tile.acidgenerator.name") + " " + GT_Values.VN[1],
-                    +1).getStackForm(1L);
+        GT_OreDictUnificator
+                .add(OrePrefixes.block, Materials.BorosilicateGlass, new ItemStack(ItemRegistry.bw_glasses[0], 1, 0));
+        GT_OreDictUnificator
+                .registerOre(OrePrefixes.block, Materials.NickelZincFerrite, new ItemStack(ItemRegistry.BW_BLOCKS[2]));
+        for (int i = 0; i < GT_Values.VN.length - 1; i++) {
+            ItemRegistry.diode2A[i] = new GT_MetaTileEntity_Diode(
+                    ConfigHandler.IDOffset + GT_Values.VN.length + 1 + i,
+                    "diode" + "2A" + GT_Values.VN[i],
+                    StatCollector.translateToLocal("tile.diode.name") + " 2A " + GT_Values.VN[i],
+                    i).getStackForm(1L);
+            ItemRegistry.diode4A[i] = new GT_MetaTileEntity_Diode(
+                    ConfigHandler.IDOffset + GT_Values.VN.length * 2 + 1 + i,
+                    "diode" + "4A" + GT_Values.VN[i],
+                    StatCollector.translateToLocal("tile.diode.name") + " 4A " + GT_Values.VN[i],
+                    i).getStackForm(1L);
+            ItemRegistry.diode8A[i] = new GT_MetaTileEntity_Diode(
+                    ConfigHandler.IDOffset + GT_Values.VN.length * 3 + 1 + i,
+                    "diode" + "8A" + GT_Values.VN[i],
+                    StatCollector.translateToLocal("tile.diode.name") + " 8A " + GT_Values.VN[i],
+                    i).getStackForm(1L);
+            ItemRegistry.diode12A[i] = new GT_MetaTileEntity_Diode(
+                    ConfigHandler.IDOffset + GT_Values.VN.length * 4 + 1 + i,
+                    "diode" + "12A" + GT_Values.VN[i],
+                    StatCollector.translateToLocal("tile.diode.name") + " 12A " + GT_Values.VN[i],
+                    i).getStackForm(1L);
+            ItemRegistry.diode16A[i] = new GT_MetaTileEntity_Diode(
+                    ConfigHandler.IDOffset + GT_Values.VN.length * 5 + 1 + i,
+                    "diode" + "16A" + GT_Values.VN[i],
+                    StatCollector.translateToLocal("tile.diode.name") + " 16A " + GT_Values.VN[i],
+                    i).getStackForm(1L);
+            ItemRegistry.energyDistributor[i] = new GT_MetaTileEntity_EnergyDistributor(
+                    ConfigHandler.IDOffset + 1 + i,
+                    "energydistributor" + GT_Values.VN[i],
+                    StatCollector.translateToLocal("tile.energydistributor.name") + " " + GT_Values.VN[i],
+                    i).getStackForm(1L);
+        }
+        for (int i = 0; i < 3; i++) {
+            ItemRegistry.acidGens[i] = new GT_MetaTileEntity_AcidGenerator(
+                    ConfigHandler.IDOffset + GT_Values.VN.length * 8 - 2 + i,
+                    "acidgenerator" + GT_Values.VN[i + 2],
+                    StatCollector.translateToLocal("tile.acidgenerator.name") + " " + GT_Values.VN[i + 2],
+                    i + 2).getStackForm(1);
+        }
 
-            ItemRegistry.dehp = new GT_TileEntity_DEHP(
-                    ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 1,
-                    1,
-                    "DEHP",
-                    "Deep Earth Heating Pump").getStackForm(1L);
-            ItemRegistry.megaMachines[0] = new GT_TileEntity_MegaBlastFurnace(
-                    ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 2,
-                    "MegaBlastFurnace",
-                    StatCollector.translateToLocal("tile.bw.mbf.name")).getStackForm(1L);
-            ItemRegistry.megaMachines[1] = new GT_TileEntity_MegaVacuumFreezer(
-                    ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 3,
-                    "MegaVacuumFreezer",
-                    StatCollector.translateToLocal("tile.bw.mvf.name")).getStackForm(1L);
-            ItemRegistry.cal = new GT_TileEntity_CircuitAssemblyLine(
-                    ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 7,
-                    "CircuitAssemblyLine",
-                    "Circuit Assembly Line").getStackForm(1L);
-            ItemRegistry.compressedHatch = new GT_MetaTileEntity_CompressedFluidHatch(
-                    ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 8,
-                    "CompressedFluidHatch",
-                    "Liquid Air Fluid Hatch").getStackForm(1L);
-            ItemRegistry.giantOutputHatch = new GT_MetaTileEntity_GiantOutputHatch(
-                    ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 9,
-                    "GiantOutputHatch",
-                    "Giant Output Hatch").getStackForm(1L);
-            ItemRegistry.humongousInputHatch = new GT_MetaTileEntity_HumongousInputHatch(
-                    ConfigHandler.IDOffset + GT_Values.VN.length * 9 + 55,
-                    "HumongousInputHatch",
-                    "Humongous Input Hatch").getStackForm(1L);
-            ItemRegistry.megaMachines[2] = new GT_TileEntity_MegaDistillTower(
-                    ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 10,
-                    "MegaDistillationTower",
-                    "Mega Distillation Tower").getStackForm(1L);
-            ItemRegistry.megaMachines[3] = new GT_TileEntity_MegaChemicalReactor(
-                    ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 638,
-                    "MegaChemicalReactor",
-                    "Mega Chemical Reactor").getStackForm(1L);
-            ItemRegistry.megaMachines[4] = new GT_TileEntity_MegaOilCracker(
-                    ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 639,
-                    "MegaOilCracker",
-                    "Mega Oil Cracker").getStackForm(1L);
+        ItemRegistry.acidGensLV = new GT_MetaTileEntity_AcidGenerator(
+                ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 65,
+                "acidgenerator" + GT_Values.VN[1],
+                StatCollector.translateToLocal("tile.acidgenerator.name") + " " + GT_Values.VN[1],
+                +1).getStackForm(1L);
 
-            if (LoaderReference.galacticgreg) {
-                ItemRegistry.voidminer[2] = new GT_TileEntity_VoidMiners.VMUV(
-                        ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 11,
-                        "VoidMiner3",
-                        "Void Miner III").getStackForm(1L);
-                ItemRegistry.voidminer[1] = new GT_TileEntity_VoidMiners.VMZPM(
-                        ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 12,
-                        "VoidMiner2",
-                        "Void Miner II").getStackForm(1L);
-                ItemRegistry.voidminer[0] = new GT_TileEntity_VoidMiners.VMLUV(
-                        ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 13,
-                        "VoidMiner1",
-                        "Void Miner I").getStackForm(1L);
-            }
-            if (LoaderReference.tectech) {
-                TecTechPipeEnergyLowPower = new TT_MetaTileEntity_Pipe_Energy_LowPower(
-                        ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 14,
-                        "pipe.lowpowerlaser",
-                        "Low Power Laser Pipe").getStackForm(1L);
-                int startID = ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 15;
-                for (int amps = 32; amps <= 128; amps += 32) {
-                    for (int tier = 4; tier < 8; tier++) {
-                        TecTechLaserAdditions[0][amps / 32 - 1][tier - 4] = new TT_MetaTileEntity_LowPowerLaserBox(
-                                startID++,
-                                GT_Values.VN[tier] + "_LPLaser_Converter_" + amps,
-                                GT_Values.VN[tier] + " " + amps + "A/t" + " Low Power Laser Converter",
-                                tier,
-                                amps).getStackForm(1L);
-                    }
+        ItemRegistry.dehp = new GT_TileEntity_DEHP(
+                ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 1,
+                1,
+                "DEHP",
+                "Deep Earth Heating Pump").getStackForm(1L);
+        ItemRegistry.megaMachines[0] = new GT_TileEntity_MegaBlastFurnace(
+                ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 2,
+                "MegaBlastFurnace",
+                StatCollector.translateToLocal("tile.bw.mbf.name")).getStackForm(1L);
+        ItemRegistry.megaMachines[1] = new GT_TileEntity_MegaVacuumFreezer(
+                ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 3,
+                "MegaVacuumFreezer",
+                StatCollector.translateToLocal("tile.bw.mvf.name")).getStackForm(1L);
+        ItemRegistry.cal = new GT_TileEntity_CircuitAssemblyLine(
+                ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 7,
+                "CircuitAssemblyLine",
+                "Circuit Assembly Line").getStackForm(1L);
+        ItemRegistry.compressedHatch = new GT_MetaTileEntity_CompressedFluidHatch(
+                ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 8,
+                "CompressedFluidHatch",
+                "Liquid Air Fluid Hatch").getStackForm(1L);
+        ItemRegistry.giantOutputHatch = new GT_MetaTileEntity_GiantOutputHatch(
+                ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 9,
+                "GiantOutputHatch",
+                "Giant Output Hatch").getStackForm(1L);
+        ItemRegistry.humongousInputHatch = new GT_MetaTileEntity_HumongousInputHatch(
+                ConfigHandler.IDOffset + GT_Values.VN.length * 9 + 55,
+                "HumongousInputHatch",
+                "Humongous Input Hatch").getStackForm(1L);
+        ItemRegistry.megaMachines[2] = new GT_TileEntity_MegaDistillTower(
+                ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 10,
+                "MegaDistillationTower",
+                "Mega Distillation Tower").getStackForm(1L);
+        ItemRegistry.megaMachines[3] = new GT_TileEntity_MegaChemicalReactor(
+                ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 638,
+                "MegaChemicalReactor",
+                "Mega Chemical Reactor").getStackForm(1L);
+        ItemRegistry.megaMachines[4] = new GT_TileEntity_MegaOilCracker(
+                ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 639,
+                "MegaOilCracker",
+                "Mega Oil Cracker").getStackForm(1L);
+
+        if (GalactiGreg.isModLoaded()) {
+            ItemRegistry.voidminer[2] = new GT_TileEntity_VoidMiners.VMUV(
+                    ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 11,
+                    "VoidMiner3",
+                    "Void Miner III").getStackForm(1L);
+            ItemRegistry.voidminer[1] = new GT_TileEntity_VoidMiners.VMZPM(
+                    ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 12,
+                    "VoidMiner2",
+                    "Void Miner II").getStackForm(1L);
+            ItemRegistry.voidminer[0] = new GT_TileEntity_VoidMiners.VMLUV(
+                    ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 13,
+                    "VoidMiner1",
+                    "Void Miner I").getStackForm(1L);
+        }
+        if (TecTech.isModLoaded()) {
+            TecTechPipeEnergyLowPower = new TT_MetaTileEntity_Pipe_Energy_LowPower(
+                    ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 14,
+                    "pipe.lowpowerlaser",
+                    "Low Power Laser Pipe").getStackForm(1L);
+            int startID = ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 15;
+            for (int amps = 32; amps <= 128; amps += 32) {
+                for (int tier = 4; tier < 8; tier++) {
+                    TecTechLaserAdditions[0][amps / 32 - 1][tier - 4] = new TT_MetaTileEntity_LowPowerLaserBox(
+                            startID++,
+                            GT_Values.VN[tier] + "_LPLaser_Converter_" + amps,
+                            GT_Values.VN[tier] + " " + amps + "A/t" + " Low Power Laser Converter",
+                            tier,
+                            amps).getStackForm(1L);
                 }
-                for (int amps = 32; amps <= 128; amps += 32) {
-                    for (int tier = 4; tier < 8; tier++) {
-                        TecTechLaserAdditions[1][amps / 32 - 1][tier - 4] = new TT_MetaTileEntity_LowPowerLaserHatch(
-                                startID++,
-                                GT_Values.VN[tier] + "_LPLaser_Hatch_" + amps,
-                                GT_Values.VN[tier] + " " + amps + "A/t" + " Low Power Laser Target Hatch",
-                                tier,
-                                amps).getStackForm(1L);
-                    }
+            }
+            for (int amps = 32; amps <= 128; amps += 32) {
+                for (int tier = 4; tier < 8; tier++) {
+                    TecTechLaserAdditions[1][amps / 32 - 1][tier - 4] = new TT_MetaTileEntity_LowPowerLaserHatch(
+                            startID++,
+                            GT_Values.VN[tier] + "_LPLaser_Hatch_" + amps,
+                            GT_Values.VN[tier] + " " + amps + "A/t" + " Low Power Laser Target Hatch",
+                            tier,
+                            amps).getStackForm(1L);
                 }
-                for (int amps = 32; amps <= 128; amps += 32) {
-                    for (int tier = 4; tier < 8; tier++) {
-                        TecTechLaserAdditions[2][amps / 32 - 1][tier - 4] = new TT_MetaTileEntity_LowPowerLaserDynamo(
-                                startID++,
-                                GT_Values.VN[tier] + "_LPLaser_Dynamo_" + amps,
-                                GT_Values.VN[tier] + " " + amps + "A/t" + " Low Power Laser Source Hatch",
-                                tier,
-                                amps).getStackForm(1L);
-                    }
+            }
+            for (int amps = 32; amps <= 128; amps += 32) {
+                for (int tier = 4; tier < 8; tier++) {
+                    TecTechLaserAdditions[2][amps / 32 - 1][tier - 4] = new TT_MetaTileEntity_LowPowerLaserDynamo(
+                            startID++,
+                            GT_Values.VN[tier] + "_LPLaser_Dynamo_" + amps,
+                            GT_Values.VN[tier] + " " + amps + "A/t" + " Low Power Laser Source Hatch",
+                            tier,
+                            amps).getStackForm(1L);
                 }
             }
         }

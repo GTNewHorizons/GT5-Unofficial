@@ -13,7 +13,10 @@
 
 package com.github.bartimaeusnek.bartworks.system.material.werkstoff_loaders.recipe;
 
-import static gregtech.api.enums.OrePrefixes.*;
+import static gregtech.api.enums.Mods.Forestry;
+import static gregtech.api.enums.OrePrefixes.capsule;
+import static gregtech.api.enums.OrePrefixes.cell;
+import static gregtech.api.enums.OrePrefixes.dust;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,14 +27,17 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
-import com.github.bartimaeusnek.bartworks.API.LoaderReference;
 import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import com.github.bartimaeusnek.bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
 import com.github.bartimaeusnek.bartworks.util.BWRecipes;
 import com.github.bartimaeusnek.bartworks.util.Pair;
 
-import gregtech.api.enums.*;
+import gregtech.api.enums.Element;
+import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.TextureSet;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -184,11 +190,11 @@ public class CellLoader implements IWerkstoffRunnable {
                 GT_Values.NF,
                 new FluidStack(Objects.requireNonNull(WerkstoffLoader.fluids.get(werkstoff)), 1000));
 
-        if (LoaderReference.Forestry) {
+        if (Forestry.isModLoaded()) {
             FluidContainerRegistry.FluidContainerData emptyData = new FluidContainerRegistry.FluidContainerData(
                     new FluidStack(Objects.requireNonNull(WerkstoffLoader.fluids.get(werkstoff)), 1000),
                     werkstoff.get(capsule),
-                    GT_ModHandler.getModItem("Forestry", "waxCapsule", 1),
+                    GT_ModHandler.getModItem(Forestry.ID, "waxCapsule", 1),
                     true);
             GT_Utility.addFluidContainerData(emptyData);
             FluidContainerRegistry.registerFluidContainer(emptyData);
@@ -240,14 +246,7 @@ public class CellLoader implements IWerkstoffRunnable {
             if (!ElementSet) return;
 
             GT_OreDictUnificator.addAssociation(cell, werkstoffBridgeMaterial, werkstoff.get(cell), false);
-            // try {
-            // Field f = Materials.class.getDeclaredField("MATERIALS_MAP");
-            // f.setAccessible(true);
-            // Map<String, Materials> MATERIALS_MAP = (Map<String, Materials>) f.get(null);
-            // MATERIALS_MAP.remove(werkstoffBridgeMaterial.mName);
-            // } catch (NoSuchFieldException | IllegalAccessException | ClassCastException e) {
-            // e.printStackTrace();
-            // }
+
             ItemStack scannerOutput = ItemList.Tool_DataOrb.get(1L);
             Behaviour_DataOrb.setDataTitle(scannerOutput, "Elemental-Scan");
             Behaviour_DataOrb.setDataName(scannerOutput, werkstoff.getToolTip());
@@ -264,10 +263,6 @@ public class CellLoader implements IWerkstoffRunnable {
                             (int) (werkstoffBridgeMaterial.getMass() * 8192L),
                             30,
                             0));
-            // GT_Recipe.GT_Recipe_Map.sReplicatorFakeRecipes.addFakeRecipe(false, new BWRecipes.DynamicGTRecipe(false,
-            // new ItemStack[]{Materials.Empty.getCells(1)}, new ItemStack[]{werkstoff.get(cell)}, scannerOutput, null,
-            // new FluidStack[]{Materials.UUMatter.getFluid(werkstoffBridgeMaterial.getMass())}, null, (int)
-            // (werkstoffBridgeMaterial.getMass() * 512L), 30, 0));
         }
     }
 }

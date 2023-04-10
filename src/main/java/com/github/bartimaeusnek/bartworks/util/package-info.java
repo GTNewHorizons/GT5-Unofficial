@@ -10,8 +10,10 @@
  * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-@API(owner = "bartworks", apiVersion = API_REFERENCE.VERSION, provides = "bartworks util")
+@API(owner = Mods.Names.BART_WORKS, apiVersion = API_REFERENCE.VERSION, provides = "bartworks util")
 package com.github.bartimaeusnek.bartworks.util;
 
 import com.github.bartimaeusnek.bartworks.API.API_REFERENCE;
+
 import cpw.mods.fml.common.API;
+import gregtech.api.enums.Mods;

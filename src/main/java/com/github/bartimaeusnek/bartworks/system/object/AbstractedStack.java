@@ -13,7 +13,12 @@
 
 package com.github.bartimaeusnek.bartworks.system.object;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;

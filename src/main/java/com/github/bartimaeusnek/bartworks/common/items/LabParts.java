@@ -13,7 +13,9 @@
 
 package com.github.bartimaeusnek.bartworks.common.items;
 
-import static com.github.bartimaeusnek.bartworks.common.loaders.BioItemList.*;
+import static com.github.bartimaeusnek.bartworks.common.loaders.BioItemList.getAllDNASampleFlasks;
+import static com.github.bartimaeusnek.bartworks.common.loaders.BioItemList.getAllPetriDishes;
+import static com.github.bartimaeusnek.bartworks.common.loaders.BioItemList.getAllPlasmidCells;
 
 import java.util.List;
 

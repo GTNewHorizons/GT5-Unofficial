@@ -13,6 +13,8 @@
 
 package com.github.bartimaeusnek.crossmod.galacticraft;
 
+import static gregtech.api.enums.Mods.GalacticraftMars;
+
 import java.util.Random;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
@@ -25,8 +27,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
-
-import com.github.bartimaeusnek.bartworks.API.LoaderReference;
 
 public class UniversalTeleportType implements ITeleportType {
 
@@ -63,7 +63,7 @@ public class UniversalTeleportType implements ITeleportType {
             }
 
             EntityLanderBase elb;
-            if (LoaderReference.GalacticraftMars) elb = PlanetsHelperClass.getLanderType(player);
+            if (GalacticraftMars.isModLoaded()) elb = PlanetsHelperClass.getLanderType(player);
             else elb = new EntityLander(player);
 
             if (!newWorld.isRemote) {

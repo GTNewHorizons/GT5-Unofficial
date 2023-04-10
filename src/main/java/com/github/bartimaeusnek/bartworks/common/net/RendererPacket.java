@@ -63,21 +63,6 @@ public class RendererPacket extends GT_Packet {
                 .array();
     }
 
-    // /**
-    // * only use in a debug enviroment, does not do anything on its own.
-    // * @param buffer
-    // */
-    // public void decodetest (byte[] buffer){
-    // this.coords=new
-    // Coords(ByteBuffer.wrap(buffer).getInt(0),ByteBuffer.wrap(buffer).getShort(4),ByteBuffer.wrap(buffer).getInt(6),ByteBuffer.wrap(buffer).getInt(10));
-    // int[] rgb = {ByteBuffer.wrap(buffer).get(14)-Byte.MIN_VALUE,
-    // ByteBuffer.wrap(buffer).get(15)-Byte.MIN_VALUE, ByteBuffer.wrap(buffer).get(16)-Byte.MIN_VALUE};
-    // this.integer= BW_Util.getColorFromRGBArray(rgb);
-    // this.removal=ByteBuffer.wrap(buffer).get(17);
-    //
-    // byte checksum = (byte) (coords.x%25+coords.y%25+coords.z%25+coords.wID%25+integer%25+removal);
-    // }
-
     @Override
     public GT_Packet decode(ByteArrayDataInput dataInput) {
 

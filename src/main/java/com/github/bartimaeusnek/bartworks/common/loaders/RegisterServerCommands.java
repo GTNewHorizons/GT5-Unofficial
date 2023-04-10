@@ -13,7 +13,12 @@
 
 package com.github.bartimaeusnek.bartworks.common.loaders;
 
-import com.github.bartimaeusnek.bartworks.common.commands.*;
+import com.github.bartimaeusnek.bartworks.common.commands.ChangeConfig;
+import com.github.bartimaeusnek.bartworks.common.commands.ClearCraftingCache;
+import com.github.bartimaeusnek.bartworks.common.commands.GetWorkingDirectory;
+import com.github.bartimaeusnek.bartworks.common.commands.PrintRecipeListToFile;
+import com.github.bartimaeusnek.bartworks.common.commands.RunGC;
+import com.github.bartimaeusnek.bartworks.common.commands.SummonRuin;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 
 public class RegisterServerCommands {

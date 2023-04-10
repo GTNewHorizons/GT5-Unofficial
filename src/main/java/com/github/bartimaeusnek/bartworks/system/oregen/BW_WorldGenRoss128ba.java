@@ -13,9 +13,36 @@
 
 package com.github.bartimaeusnek.bartworks.system.oregen;
 
-import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.*;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.BArTiMaEuSNeK;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.Bornite;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.ChromoAluminoPovondrait;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.Djurleit;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.Fayalit;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.Ferberite;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.FluorBuergerit;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.Fluorspar;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.FuchsitAL;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.FuchsitCR;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.Hedenbergit;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.Huebnerit;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.Loellingit;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.Olenit;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.Prasiolite;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.RedZircon;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.Tiberium;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.VanadioOxyDravit;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.Wittichenit;
 import static com.github.bartimaeusnek.crossmod.galacticraft.GalacticraftProxy.uo_dimensionList;
-import static gregtech.api.enums.Materials.*;
+import static gregtech.api.enums.Materials.Amethyst;
+import static gregtech.api.enums.Materials.Barite;
+import static gregtech.api.enums.Materials.Galena;
+import static gregtech.api.enums.Materials.Helium_3;
+import static gregtech.api.enums.Materials.NaquadahEnriched;
+import static gregtech.api.enums.Materials.Olivine;
+import static gregtech.api.enums.Materials.SaltWater;
+import static gregtech.api.enums.Materials.Scheelite;
+import static gregtech.api.enums.Materials.Sphalerite;
+import static gregtech.api.enums.Materials.Tetrahedrite;
 
 import net.minecraft.block.Block;
 import net.minecraft.util.StatCollector;

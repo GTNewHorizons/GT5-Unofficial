@@ -2,6 +2,7 @@ package com.github.bartimaeusnek.bartworks.common.tileentities.multis.mega;
 
 import static gregtech.api.enums.GT_HatchElement.Energy;
 import static gregtech.api.enums.GT_Values.V;
+import static gregtech.api.enums.Mods.TecTech;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -14,7 +15,6 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
-import com.github.bartimaeusnek.bartworks.API.LoaderReference;
 import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
 import com.github.bartimaeusnek.bartworks.util.MegaUtils;
@@ -28,16 +28,21 @@ import com.gtnewhorizon.structurelib.structure.AutoPlaceEnvironment;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
 
 import cpw.mods.fml.common.Optional;
+import gregtech.api.enums.Mods;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.*;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.IGT_HatchAdder;
 
 @Optional.Interface(
         iface = "com.github.bartimaeusnek.crossmod.tectech.TecTechEnabledMulti",
-        modid = "tectech",
+        modid = Mods.Names.TECTECH,
         striprefs = true)
 public abstract class GT_TileEntity_MegaMultiBlockBase<T extends GT_TileEntity_MegaMultiBlockBase<T>>
         extends GT_MetaTileEntity_EnhancedMultiBlockBase<T> implements TecTechEnabledMulti {
@@ -75,7 +80,7 @@ public abstract class GT_TileEntity_MegaMultiBlockBase<T extends GT_TileEntity_M
     }
 
     @SuppressWarnings("rawtypes")
-    @Optional.Method(modid = "tectech")
+    @Optional.Method(modid = Mods.Names.TECTECH)
     boolean areLazorsLowPowa() {
         Collection collection = this.getTecTechEnergyTunnels();
         if (!collection.isEmpty()) for (Object tecTechEnergyMulti : collection)
@@ -84,34 +89,34 @@ public abstract class GT_TileEntity_MegaMultiBlockBase<T extends GT_TileEntity_M
     }
 
     @Override
-    @Optional.Method(modid = "tectech")
+    @Optional.Method(modid = Mods.Names.TECTECH)
     public List<GT_MetaTileEntity_Hatch_Energy> getVanillaEnergyHatches() {
         return this.mEnergyHatches;
     }
 
     @Override
     @SuppressWarnings({ "rawtypes", "unchecked" })
-    @Optional.Method(modid = "tectech")
+    @Optional.Method(modid = Mods.Names.TECTECH)
     public List getTecTechEnergyTunnels() {
         return TTTunnels;
     }
 
     @Override
     @SuppressWarnings({ "rawtypes", "unchecked" })
-    @Optional.Method(modid = "tectech")
+    @Optional.Method(modid = Mods.Names.TECTECH)
     public List getTecTechEnergyMultis() {
         return TTMultiAmp;
     }
 
     @Override
     public boolean drainEnergyInput(long aEU) {
-        if (LoaderReference.tectech) return TecTechUtils.drainEnergyMEBFTecTech(this, aEU);
+        if (TecTech.isModLoaded()) return TecTechUtils.drainEnergyMEBFTecTech(this, aEU);
         return MegaUtils.drainEnergyMegaVanilla(this, aEU);
     }
 
     @Override
     public long getMaxInputVoltage() {
-        if (LoaderReference.tectech) return TecTechUtils.getMaxInputVoltage(this);
+        if (TecTech.isModLoaded()) return TecTechUtils.getMaxInputVoltage(this);
         return super.getMaxInputVoltage();
     }
 
@@ -129,7 +134,7 @@ public abstract class GT_TileEntity_MegaMultiBlockBase<T extends GT_TileEntity_M
 
     @Override
     public String[] getInfoData() {
-        return LoaderReference.tectech ? this.getInfoDataArray(this) : super.getInfoData();
+        return TecTech.isModLoaded() ? this.getInfoDataArray(this) : super.getInfoData();
     }
 
     @Override
@@ -153,7 +158,7 @@ public abstract class GT_TileEntity_MegaMultiBlockBase<T extends GT_TileEntity_M
             }
         }
 
-        long nominalV = LoaderReference.tectech ? TecTechUtils.getnominalVoltageTT(this)
+        long nominalV = TecTech.isModLoaded() ? TecTechUtils.getnominalVoltageTT(this)
                 : BW_Util.getnominalVoltage(this);
         String tName = BW_Util.getTierNameFromVoltage(nominalV);
         if (tName.equals("MAX+")) tName = EnumChatFormatting.OBFUSCATED + "MAX+";
@@ -217,7 +222,7 @@ public abstract class GT_TileEntity_MegaMultiBlockBase<T extends GT_TileEntity_M
 
     /**
      * Calculates the overclock for megas. Will set this.mMaxProgressTime and this.lEUt automatically
-     * 
+     *
      * @deprecated Use GT_OverclockCalculator instead
      *
      * @param aEUt            EUt of the recipe
@@ -280,7 +285,7 @@ public abstract class GT_TileEntity_MegaMultiBlockBase<T extends GT_TileEntity_M
 
     /**
      * Calculates the overclock for megas. Will set this.mMaxProgressTime and this.lEUt automatically
-     * 
+     *
      * @deprecated Use GT_OverclockCalculator instead
      *
      * @param aEUt            EUt of the recipe
@@ -293,7 +298,7 @@ public abstract class GT_TileEntity_MegaMultiBlockBase<T extends GT_TileEntity_M
 
     /**
      * Calculates the overclock for megas. Will set this.mMaxProgressTime and this.lEUt automatically
-     * 
+     *
      * @deprecated Use GT_OverclockCalculator instead
      *
      * @param aEUt            EUt of the recipe
@@ -307,7 +312,7 @@ public abstract class GT_TileEntity_MegaMultiBlockBase<T extends GT_TileEntity_M
 
     @Override
     public boolean addEnergyInputToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-        if (LoaderReference.tectech) {
+        if (TecTech.isModLoaded()) {
             int tier = TecTechUtils.addEnergyInputToMachineList(this, aTileEntity, aBaseCasingIndex, energyTier);
             if (energyTier == -1) energyTier = tier;
             return tier != -1;
@@ -379,7 +384,7 @@ public abstract class GT_TileEntity_MegaMultiBlockBase<T extends GT_TileEntity_M
         static {
             ImmutableList.Builder<Class<? extends IMetaTileEntity>> builder = ImmutableList
                     .<Class<? extends IMetaTileEntity>>builder().addAll(Energy.mteClasses());
-            if (LoaderReference.tectech) builder.add(GT_MetaTileEntity_Hatch_EnergyMulti.class);
+            if (TecTech.isModLoaded()) builder.add(GT_MetaTileEntity_Hatch_EnergyMulti.class);
             mteClasses = builder.build();
         }
 

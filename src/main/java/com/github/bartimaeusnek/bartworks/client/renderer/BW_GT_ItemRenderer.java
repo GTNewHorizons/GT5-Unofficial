@@ -112,15 +112,6 @@ public class BW_GT_ItemRenderer implements IItemRenderer {
                             tIcon.getIconWidth(),
                             tIcon.getIconHeight(),
                             0.0625F);
-                    // else {
-                    // for (int i = 0; i < 4; i++) {
-                    // ItemRenderer.renderItemIn2D(Tessellator.instance,
-                    // 0.0F+i*2F,0.0F+i*2F,10.0F+i*2F,10.0F+i*2F, tIcon.getIconWidth(), tIcon.getIconHeight(),0.0625F);
-                    // }
-                    // }
-                    // ItemRenderer.renderItemIn2D(Tessellator.instance, tIcon.getMaxU(),
-                    // tIcon.getMinV(), tIcon.getMinU(), tIcon.getMaxV(), tIcon.getIconWidth(), tIcon.getIconHeight(),
-                    // 0.0625F);
                 }
 
                 IIcon tOverlay = (IIcon) BW_Util.get2DCoordFrom1DArray(aMetaData, 1, 2, aItem.mIconList);

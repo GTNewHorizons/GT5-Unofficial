@@ -13,7 +13,15 @@
 
 package com.github.bartimaeusnek.bartworks.system.material.werkstoff_loaders.recipe;
 
-import static gregtech.api.enums.OrePrefixes.*;
+import static gregtech.api.enums.OrePrefixes.block;
+import static gregtech.api.enums.OrePrefixes.cell;
+import static gregtech.api.enums.OrePrefixes.dust;
+import static gregtech.api.enums.OrePrefixes.dustSmall;
+import static gregtech.api.enums.OrePrefixes.dustTiny;
+import static gregtech.api.enums.OrePrefixes.gem;
+import static gregtech.api.enums.OrePrefixes.ingot;
+import static gregtech.api.enums.OrePrefixes.ingotHot;
+import static gregtech.api.enums.OrePrefixes.nugget;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -376,8 +384,6 @@ public class DustLoader implements IWerkstoffRunnable {
                                         null,
                                         (int) Math.max(werkstoff.getStats().getMass() / 40L, 1L)
                                                 * werkstoff.getStats().getMeltingPoint());
-                                // GT_ModHandler.addRCBlastFurnaceRecipe(werkstoff.get(ingot), werkstoff.get(dust),
-                                // werkstoff.getStats().getMeltingPoint());
                             }
                         }
                     }

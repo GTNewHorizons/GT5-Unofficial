@@ -13,9 +13,40 @@
 
 package com.github.bartimaeusnek.bartworks.system.oregen;
 
-import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.*;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.Arsenopyrite;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.Bismuthinit;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.Bismutite;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.Bornite;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.ChromoAluminoPovondrait;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.DescloiziteCUVO4;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.DescloiziteZNVO4;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.Djurleit;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.Fayalit;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.Ferberite;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.FluorBuergerit;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.Forsterit;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.FuchsitAL;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.FuchsitCR;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.Hedenbergit;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.Huebnerit;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.Loellingit;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.Olenit;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.RedZircon;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.Roquesit;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.Thorianit;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.VanadioOxyDravit;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.Wittichenit;
 import static com.github.bartimaeusnek.crossmod.galacticraft.GalacticraftProxy.uo_dimensionList;
-import static gregtech.api.enums.Materials.*;
+import static gregtech.api.enums.Materials.Bismuth;
+import static gregtech.api.enums.Materials.Coal;
+import static gregtech.api.enums.Materials.Diamond;
+import static gregtech.api.enums.Materials.Graphite;
+import static gregtech.api.enums.Materials.Lepidolite;
+import static gregtech.api.enums.Materials.Scheelite;
+import static gregtech.api.enums.Materials.Spodumene;
+import static gregtech.api.enums.Materials.Stibnite;
+import static gregtech.api.enums.Materials.Tetrahedrite;
+import static gregtech.api.enums.Materials.Uraninite;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;

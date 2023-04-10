@@ -13,6 +13,7 @@
 
 package com.github.bartimaeusnek.crossmod.galacticraft.planets.ross128b;
 
+import static gregtech.api.enums.Mods.Thaumcraft;
 import static net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate.EventType.ICE;
 import static net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate.EventType.LAKE;
 
@@ -35,7 +36,6 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 import net.minecraftforge.event.terraingen.TerrainGen;
 
-import com.github.bartimaeusnek.bartworks.API.LoaderReference;
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
 import com.github.bartimaeusnek.bartworks.system.oregen.BW_WordGenerator;
 import com.github.bartimaeusnek.bartworks.system.worldgen.MapGenRuins;
@@ -77,7 +77,7 @@ public class ChunkProviderRoss128b extends ChunkProviderGenerate {
             } else if (biomeGenBase.biomeID == BiomeGenBase.mushroomIslandShore.biomeID) {
                 this.biomesForGeneration[i] = BiomeGenBase.stoneBeach;
             }
-            if (LoaderReference.Thaumcraft) {
+            if (Thaumcraft.isModLoaded()) {
                 if (ThaumcraftHandler.isTaintBiome(biomeGenBase.biomeID))
                     this.biomesForGeneration[i] = BiomeGenBase.taiga;
                 else if (ConfigHandler.disableMagicalForest

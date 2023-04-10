@@ -13,12 +13,24 @@
 
 package com.github.bartimaeusnek.bartworks.system.material;
 
+import static gregtech.api.enums.Mods.GalaxySpace;
 import static net.minecraft.util.EnumChatFormatting.DARK_PURPLE;
 import static net.minecraft.util.EnumChatFormatting.GREEN;
 
 import java.lang.reflect.InvocationTargetException;
 import java.nio.ByteBuffer;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -26,14 +38,23 @@ import net.minecraftforge.fluids.FluidStack;
 import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.common.loaders.StaticRecipeChangeLoaders;
 import com.github.bartimaeusnek.bartworks.system.oredict.OreDictHandler;
-import com.github.bartimaeusnek.bartworks.util.*;
+import com.github.bartimaeusnek.bartworks.util.BW_ColorUtil;
+import com.github.bartimaeusnek.bartworks.util.BW_Util;
+import com.github.bartimaeusnek.bartworks.util.MurmurHash3;
+import com.github.bartimaeusnek.bartworks.util.NonNullWrappedHashMap;
+import com.github.bartimaeusnek.bartworks.util.Pair;
 import com.github.bartimaeusnek.crossmod.BartWorksCrossmod;
 import com.github.bartimaeusnek.crossmod.tgregworks.MaterialsInjector;
 import com.github.bartimaeusnek.crossmod.thaumcraft.util.ThaumcraftHandler;
 
 import cpw.mods.fml.common.Loader;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.*;
+import gregtech.api.enums.FluidState;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.SubTag;
+import gregtech.api.enums.TC_Aspects;
+import gregtech.api.enums.TextureSet;
 import gregtech.api.interfaces.IColorModulationContainer;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.util.GT_LanguageManager;
@@ -49,7 +70,7 @@ public class Werkstoff implements IColorModulationContainer, ISubTagContainer {
     public static final Map<String, String> modNameOverrides = new HashMap() {
 
         {
-            put("GalaxySpace", DARK_PURPLE + "GalaxySpace");
+            put(GalaxySpace.ID, DARK_PURPLE + "GalaxySpace");
         }
     };
 

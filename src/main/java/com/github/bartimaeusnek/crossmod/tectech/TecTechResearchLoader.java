@@ -13,11 +13,12 @@
 
 package com.github.bartimaeusnek.crossmod.tectech;
 
+import static gregtech.api.enums.Mods.GalactiGreg;
+
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
-import com.github.bartimaeusnek.bartworks.API.LoaderReference;
 import com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
@@ -36,8 +37,7 @@ public class TecTechResearchLoader {
                 ? FluidRegistry.getFluid("molten.indalloy140")
                 : FluidRegistry.getFluid("molten.solderingalloy");
 
-        if (LoaderReference.galacticgreg) {
-
+        if (GalactiGreg.isModLoaded()) {
             TT_recipeAdder.addResearchableAssemblylineRecipe(
                     ItemRegistry.voidminer[0].copy(),
                     1024000,
@@ -82,7 +82,7 @@ public class TecTechResearchLoader {
                 new Object[] { ItemList.Machine_Multi_ImplosionCompressor.get(1L), Materials.Neutronium.getBlocks(5),
                         GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Osmium, 64),
                         GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Osmium, 64),
-                        GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Superconductor, 64),
+                        GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUHV, 64),
                         ItemList.Electric_Piston_UV.get(64), },
                 new FluidStack[] { new FluidStack(solderIndalloy, 1440), Materials.Osmium.getMolten(1440),
                         Materials.Neutronium.getMolten(1440) },
@@ -90,33 +90,5 @@ public class TecTechResearchLoader {
                 240000,
                 BW_Util.getMachineVoltageFromTier(8));
 
-        // BartWorksCrossmod.LOGGER.info("Nerfing Assembly Lines >= LuV Recipes to run with TecTech!");
-        // HashSet<GT_Recipe.GT_Recipe_AssemblyLine> toRem = new HashSet<>();
-        // for (GT_Recipe.GT_Recipe_AssemblyLine recipe : GT_Recipe.GT_Recipe_AssemblyLine.sAssemblylineRecipes){
-        // if (recipe.mEUt >= BW_Util.getTierVoltage(6) && !GT_Utility.areStacksEqual(recipe.mResearchItem,
-        // CustomItemList.UnusedStuff.get(1L))){
-        // String modId = GameRegistry.findUniqueIdentifierFor(recipe.mOutput.getItem()).modId;
-        // if (!modId.equalsIgnoreCase("tectech"))
-        // if (!modId.equalsIgnoreCase("gregtech") || modId.equalsIgnoreCase("gregtech") &&
-        // (recipe.mOutput.getItemDamage() < 15000 || recipe.mOutput.getItemDamage() > 16999))
-        // toRem.add(recipe);
-        // }
-        // }
-        // HashSet<GT_Recipe> toRemVisualScanner = new HashSet<>();
-        // HashSet<GT_Recipe> toRemVisualAssLine = new HashSet<>();
-        // GT_Recipe.GT_Recipe_AssemblyLine.sAssemblylineRecipes.removeAll(toRem);
-        //
-        // for (GT_Recipe.GT_Recipe_AssemblyLine recipe : toRem){
-        // GT_Recipe.GT_Recipe_Map.sAssemblylineVisualRecipes.mRecipeList.stream().filter(re ->
-        // GT_Utility.areStacksEqual(re.mOutputs[0],recipe.mOutput)).forEach(toRemVisualAssLine::add);
-        // GT_Recipe.GT_Recipe_Map.sScannerFakeRecipes.mRecipeList.stream().filter(re ->
-        // GT_Utility.areStacksEqual(re.mOutputs[0],recipe.mOutput)).forEach(toRemVisualScanner::add);
-        // TT_recipeAdder.addResearchableAssemblylineRecipe(recipe.mResearchItem, recipe.mResearchTime,
-        // recipe.mResearchTime/1000, recipe.mEUt, GT_Utility.getTier(recipe.mEUt)-2, recipe.mInputs,
-        // recipe.mFluidInputs, recipe.mOutput, recipe.mDuration, recipe.mEUt);
-        // }
-        //
-        // GT_Recipe.GT_Recipe_Map.sScannerFakeRecipes.mRecipeList.removeAll(toRemVisualScanner);
-        // GT_Recipe.GT_Recipe_Map.sAssemblylineVisualRecipes.mRecipeList.removeAll(toRemVisualAssLine);
     }
 }

@@ -13,7 +13,21 @@
 
 package com.github.bartimaeusnek.bartworks.system.material.werkstoff_loaders.recipe;
 
-import static gregtech.api.enums.OrePrefixes.*;
+import static gregtech.api.enums.OrePrefixes.bolt;
+import static gregtech.api.enums.OrePrefixes.cellMolten;
+import static gregtech.api.enums.OrePrefixes.gearGtSmall;
+import static gregtech.api.enums.OrePrefixes.gem;
+import static gregtech.api.enums.OrePrefixes.ingot;
+import static gregtech.api.enums.OrePrefixes.plate;
+import static gregtech.api.enums.OrePrefixes.plateDouble;
+import static gregtech.api.enums.OrePrefixes.ring;
+import static gregtech.api.enums.OrePrefixes.screw;
+import static gregtech.api.enums.OrePrefixes.stick;
+import static gregtech.api.enums.OrePrefixes.stickLong;
+import static gregtech.api.enums.OrePrefixes.toolHeadHammer;
+import static gregtech.api.enums.OrePrefixes.toolHeadSaw;
+import static gregtech.api.enums.OrePrefixes.toolHeadWrench;
+import static gregtech.api.enums.OrePrefixes.turbineBlade;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -560,10 +574,5 @@ public class ToolLoader implements IWerkstoffRunnable {
                         ItemList.Electric_Motor_HV.get(1L), 'S', screw.get(Materials.StainlessSteel), 'P',
                         plate.get(Materials.StainlessSteel), 'G', gearGtSmall.get(Materials.StainlessSteel), 'B',
                         ItemList.Battery_RE_HV_Sodium.get(1L) });
-
-        // GT_ModHandler.addCraftingRecipe(GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(16,1,
-        // werkstoff.getBridgeMaterial(),werkstoff.getBridgeMaterial(),null),
-        // GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GT_ModHandler.RecipeBits.BUFFERED, new Object[]{"IhI",
-        // "III", " I ", 'I', werkstoff.get(ingot)});
     }
 }

@@ -13,6 +13,8 @@
 
 package com.github.bartimaeusnek.bartworks.API;
 
+import static gregtech.api.enums.Mods.Gendustry;
+
 import java.awt.*;
 
 import net.minecraft.item.EnumRarity;
@@ -164,7 +166,7 @@ public final class BioObjectAdder {
      * postinit Phase) execute this.
      */
     public static void regenerateBioFluids() {
-        FluidStack dnaFluid = LoaderReference.gendustry ? FluidRegistry.getFluidStack("liquiddna", 100)
+        FluidStack dnaFluid = Gendustry.isModLoaded() ? FluidRegistry.getFluidStack("liquiddna", 100)
                 : Materials.Biomass.getFluid(100L);
         for (BioCulture B : BioCulture.BIO_CULTURE_ARRAY_LIST) {
             if (B.getFluidNotSet()) {

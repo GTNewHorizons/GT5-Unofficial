@@ -88,56 +88,6 @@ public class BartsNoise implements INoiseGen {
     public BartsNoise copy(long seed) {
         return new BartsNoise(this.octaves, this.frequency, this.amplitude, seed);
     }
-    // public static void main(String[] args) throws IOException {
-    //
-    // BartsNoise noiseGen1 = new BartsNoise(2,0.005F,1D,System.nanoTime());
-    //// BartsNoise noiseGen2 = new BartsNoise(1,0.002F,-1D,System.nanoTime());
-    //// BartsNoise noiseGen3 = new BartsNoise(1,0.002F,-1D,System.nanoTime());
-    //
-    // noiseGen1.setUsePhase(false);
-    //// noiseGen2.setUsePhase(false);
-    //// noiseGen3.setUsePhase(false);
-    //
-    //
-    // BufferedImage image = new BufferedImage(640, 640, BufferedImage.TYPE_INT_RGB);
-    //
-    // for (int chunkX = 0; chunkX < 40; chunkX++) {
-    // for (int chunkZ = 0; chunkZ < 40; chunkZ++) {
-    // for (int x = 0; x < 16; ++x) {
-    // for (int z = 0; z < 16; ++z) {
-    // double d = noiseGen1.getNoise(x + chunkX * 16, z + chunkZ * 16) * 2D;
-    //// double d2 = noiseGen2.getNoise(x + chunkX * 16, z + chunkZ * 16) * 2D;
-    //// double d3 = (noiseGen3.getNoise(x + chunkX * 16, z + chunkZ * 16) - 0.5D);
-    //// d3 *= 2;
-    // double yDev;
-    //// if (d3 < 0.0D) {
-    //// yDev = d;
-    //// } else if (d3 > 1.0D) {
-    //// yDev = d2;
-    //// } else {
-    // yDev = d*4;
-    //// }
-    // yDev=wrap(yDev,1);
-    // image.setRGB(x + chunkX * 16,z + chunkZ * 16,new
-    // Color((float)(1f*yDev),(float)(1f*yDev),(float)(1f*yDev)).getRGB());
-    // }
-    // }
-    // }
-    // }
-    // File file = new File("myimage.png");
-    // ImageIO.write(image, "png", file);
-    //// BartsNoise redNoise = NoiseColor.Blue.getColoredNoise();
-    //// redNoise.setOctaves(1);
-    //// redNoise.setFrequency(0.05F);
-    //// for (int i = 40; i < 50; i++) {
-    //// String line = "";
-    //// for (int j = 0; j < 10; j++) {
-    //// double num = (redNoise.getNoise(i,j)-0.5D);
-    //// line += num+",";
-    //// }
-    //// System.out.println(line);
-    //// }
-    // }
 
     public double getCosNoise(double x, double y) {
         double pr = x * this.frequency;

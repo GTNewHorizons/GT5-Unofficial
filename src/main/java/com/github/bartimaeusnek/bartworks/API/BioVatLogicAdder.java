@@ -14,6 +14,7 @@
 package com.github.bartimaeusnek.bartworks.API;
 
 import static cpw.mods.fml.common.registry.GameRegistry.findBlock;
+import static gregtech.api.enums.Mods.IndustrialCraft2;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -79,33 +80,33 @@ public final class BioVatLogicAdder {
             giveItemStackRadioHatchAbilites(ItemList.Depleted_Naquadah_4.get(1), Materials.Naquadah, 12, 10);
 
             giveItemStackRadioHatchAbilites(
-                    GT_ModHandler.getModItem("IC2", "reactorMOXSimpledepleted", 1),
+                    GT_ModHandler.getModItem(IndustrialCraft2.ID, "reactorMOXSimpledepleted", 1),
                     Materials.Plutonium,
                     3,
                     10);
             giveItemStackRadioHatchAbilites(
-                    GT_ModHandler.getModItem("IC2", "reactorMOXDualdepleted", 1),
+                    GT_ModHandler.getModItem(IndustrialCraft2.ID, "reactorMOXDualdepleted", 1),
                     Materials.Plutonium,
                     6,
                     10);
             giveItemStackRadioHatchAbilites(
-                    GT_ModHandler.getModItem("IC2", "reactorMOXQuaddepleted", 1),
+                    GT_ModHandler.getModItem(IndustrialCraft2.ID, "reactorMOXQuaddepleted", 1),
                     Materials.Plutonium,
                     12,
                     10);
 
             giveItemStackRadioHatchAbilites(
-                    GT_ModHandler.getModItem("IC2", "reactorUraniumSimpledepleted", 1),
+                    GT_ModHandler.getModItem(IndustrialCraft2.ID, "reactorUraniumSimpledepleted", 1),
                     Materials.Uranium,
                     3,
                     10);
             giveItemStackRadioHatchAbilites(
-                    GT_ModHandler.getModItem("IC2", "reactorUraniumDualdepleted", 1),
+                    GT_ModHandler.getModItem(IndustrialCraft2.ID, "reactorUraniumDualdepleted", 1),
                     Materials.Uranium,
                     6,
                     10);
             giveItemStackRadioHatchAbilites(
-                    GT_ModHandler.getModItem("IC2", "reactorUraniumQuaddepleted", 1),
+                    GT_ModHandler.getModItem(IndustrialCraft2.ID, "reactorUraniumQuaddepleted", 1),
                     Materials.Uranium,
                     12,
                     10);

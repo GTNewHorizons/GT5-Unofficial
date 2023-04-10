@@ -14,11 +14,23 @@
 package com.github.bartimaeusnek.bartworks.common.loaders;
 
 import static com.github.bartimaeusnek.bartworks.common.tileentities.multis.GT_TileEntity_ElectricImplosionCompressor.eicMap;
-import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.*;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.ANAEROBE_GAS;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.NOBLE_GAS;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.Oganesson;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.fluids;
+import static com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader.molten;
 import static gregtech.api.enums.GT_Values.VN;
+import static gregtech.api.enums.Mods.TinkerConstruct;
 
 import java.lang.reflect.Field;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import net.minecraft.init.Blocks;
@@ -43,7 +55,11 @@ import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gnu.trove.map.hash.TObjectDoubleHashMap;
-import gregtech.api.enums.*;
+import gregtech.api.enums.Element;
+import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.SubTag;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.GT_ModHandler;
@@ -58,8 +74,8 @@ public class StaticRecipeChangeLoaders {
     private static TObjectDoubleHashMap<Materials> gtEbfGasRecipeConsumptionMultipliers = null;
 
     public static final List<ItemStack> whitelistForEBFNoGasRecipeDontCheckItemData = Arrays
-            .asList(GT_ModHandler.getModItem("TConstruct", "materials", 1L, 12) // Raw Aluminum -> Aluminium Ingot
-                                                                                // (coremod)
+            .asList(GT_ModHandler.getModItem(TinkerConstruct.ID, "materials", 1L, 12) // Raw Aluminum -> Aluminium Ingot
+            // (coremod)
             );
 
     private StaticRecipeChangeLoaders() {}

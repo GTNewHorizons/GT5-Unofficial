@@ -36,10 +36,11 @@ import com.google.common.collect.HashBiMap;
 
 import cpw.mods.fml.common.Optional;
 import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Mods;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.items.behaviors.Behaviour_DataOrb;
 
-@Optional.Interface(iface = "li.cil.oc.api.network.SimpleComponent", modid = "OpenComputers")
+@Optional.Interface(iface = "li.cil.oc.api.network.SimpleComponent", modid = Mods.Names.OPEN_COMPUTERS)
 public class TileEntity_GTDataServer extends TileEntity
         implements ISidedInventory, ITileAddsInformation, ITileHasDifferentTextureSides, SimpleComponent {
 
@@ -48,12 +49,12 @@ public class TileEntity_GTDataServer extends TileEntity
     private ItemStack[] mItems = new ItemStack[2];
     private byte TickTimer;
 
-    @Optional.Method(modid = "OpenComputers")
+    @Optional.Method(modid = Mods.Names.OPEN_COMPUTERS)
     public String getComponentName() {
         return "GT-Data Server";
     }
 
-    @Optional.Method(modid = "OpenComputers")
+    @Optional.Method(modid = Mods.Names.OPEN_COMPUTERS)
     @Callback
     public Object[] listData(Context context, Arguments args) {
         Set<String> ret = new HashSet<>();
@@ -63,7 +64,7 @@ public class TileEntity_GTDataServer extends TileEntity
         return ret.toArray(new String[0]);
     }
 
-    @Optional.Method(modid = "OpenComputers")
+    @Optional.Method(modid = Mods.Names.OPEN_COMPUTERS)
     @Callback
     public Object[] imprintOrb(Context context, Arguments args) {
         return new Object[] { false };

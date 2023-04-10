@@ -13,7 +13,14 @@
 
 package com.github.bartimaeusnek.bartworks.system.material.werkstoff_loaders.recipe;
 
-import static gregtech.api.enums.OrePrefixes.*;
+import static gregtech.api.enums.OrePrefixes.blockCasing;
+import static gregtech.api.enums.OrePrefixes.blockCasingAdvanced;
+import static gregtech.api.enums.OrePrefixes.gearGt;
+import static gregtech.api.enums.OrePrefixes.gearGtSmall;
+import static gregtech.api.enums.OrePrefixes.plank;
+import static gregtech.api.enums.OrePrefixes.plate;
+import static gregtech.api.enums.OrePrefixes.plateDouble;
+import static gregtech.api.enums.OrePrefixes.screw;
 
 import net.minecraft.item.ItemStack;
 

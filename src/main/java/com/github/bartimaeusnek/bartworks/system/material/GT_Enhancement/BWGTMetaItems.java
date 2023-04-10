@@ -61,9 +61,7 @@ public class BWGTMetaItems extends BW_MetaGenerated_Items {
                     || ((material.getFluid(1) == null && material.getGas(1) == null)
                             && (orePrefixes == OrePrefixes.capsule || orePrefixes == OrePrefixes.bottle))))
                 continue;
-            // for (Werkstoff werkstoff : Werkstoff.werkstoffHashSet)
-            // if (material.mDefaultLocalName.equalsIgnoreCase(werkstoff.getDefaultName()))
-            // continue materialloop;
+
             if (OreDictionary
                     .doesOreNameExist(this.orePrefixes.name() + material.mDefaultLocalName.replaceAll(" ", ""))) {
                 hiddenThings.add(i);
@@ -83,9 +81,7 @@ public class BWGTMetaItems extends BW_MetaGenerated_Items {
                         || ((w.getFluid(1) == null && w.getGas(1) == null)
                                 && (orePrefixes == OrePrefixes.capsule || orePrefixes == OrePrefixes.bottle))))
                     continue;
-                // for (Werkstoff werkstoff : Werkstoff.werkstoffHashSet)
-                // if (w.mDefaultLocalName.equalsIgnoreCase(werkstoff.getDefaultName()))
-                // continue materialloop;
+
                 if (OreDictionary.doesOreNameExist(this.orePrefixes.name() + w.mDefaultLocalName.replaceAll(" ", ""))) {
                     hiddenThings.add(i);
                     continue;

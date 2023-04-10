@@ -14,10 +14,11 @@
 package com.github.bartimaeusnek.bartworks.common.tileentities.multis;
 
 import static com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference.MULTIBLOCK_ADDED_BY_BARTWORKS;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
-
-import java.util.Arrays;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -26,7 +27,6 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.github.bartimaeusnek.bartworks.common.items.SimpleSubItemClass;
-import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
 import com.github.bartimaeusnek.bartworks.util.MathUtils;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
@@ -35,9 +35,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -46,8 +44,6 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMul
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 
 public class GT_TileEntity_THTR extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_TileEntity_THTR> {
@@ -388,7 +384,7 @@ public class GT_TileEntity_THTR extends GT_MetaTileEntity_EnhancedMultiBlockBase
 
     public static class THTRMaterials {
 
-        static final SimpleSubItemClass aTHTR_Materials = new SimpleSubItemClass(
+        public static final SimpleSubItemClass aTHTR_Materials = new SimpleSubItemClass(
                 "BISOPelletCompound", // 0
                 "BISOPelletBall", // 1
                 "TRISOPelletCompound", // 2
@@ -402,98 +398,6 @@ public class GT_TileEntity_THTR extends GT_MetaTileEntity_EnhancedMultiBlockBase
 
         public static void registeraTHR_Materials() {
             GameRegistry.registerItem(GT_TileEntity_THTR.THTRMaterials.aTHTR_Materials, "bw.THTRMaterials");
-        }
-
-        public static void registerTHR_Recipes() {
-            GT_Values.RA.addCentrifugeRecipe(
-                    Materials.Thorium.getDust(1),
-                    GT_Values.NI,
-                    GT_Values.NF,
-                    GT_Values.NF,
-                    Materials.Thorium.getDust(1),
-                    Materials.Thorium.getDust(1),
-                    WerkstoffLoader.Thorium232.get(OrePrefixes.dust, 1),
-                    WerkstoffLoader.Thorium232.get(OrePrefixes.dust, 1),
-                    WerkstoffLoader.Thorium232.get(OrePrefixes.dust, 1),
-                    GT_Values.NI,
-                    new int[] { 800, 375, 22, 22, 5 },
-                    10000,
-                    BW_Util.getMachineVoltageFromTier(4));
-            GT_Values.RA.addAssemblerRecipe(
-                    new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Lead, 6),
-                            GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.TungstenSteel, 1) },
-                    Materials.Concrete.getMolten(1296),
-                    new ItemStack(GregTech_API.sBlockCasings3, 1, 12),
-                    40,
-                    BW_Util.getMachineVoltageFromTier(5));
-            GT_Values.RA.addMixerRecipe(
-                    WerkstoffLoader.Thorium232.get(OrePrefixes.dust, 10),
-                    Materials.Uranium235.getDust(1),
-                    GT_Utility.getIntegratedCircuit(2),
-                    null,
-                    null,
-                    null,
-                    new ItemStack(GT_TileEntity_THTR.THTRMaterials.aTHTR_Materials),
-                    400,
-                    30);
-            GT_Values.RA.addFormingPressRecipe(
-                    new ItemStack(GT_TileEntity_THTR.THTRMaterials.aTHTR_Materials),
-                    Materials.Graphite.getDust(64),
-                    new ItemStack(GT_TileEntity_THTR.THTRMaterials.aTHTR_Materials, 1, 1),
-                    40,
-                    30);
-            GT_Values.RA.addFormingPressRecipe(
-                    new ItemStack(GT_TileEntity_THTR.THTRMaterials.aTHTR_Materials, 1, 1),
-                    Materials.Silicon.getDust(64),
-                    new ItemStack(GT_TileEntity_THTR.THTRMaterials.aTHTR_Materials, 1, 2),
-                    40,
-                    30);
-            GT_Values.RA.addFormingPressRecipe(
-                    new ItemStack(GT_TileEntity_THTR.THTRMaterials.aTHTR_Materials, 1, 2),
-                    Materials.Graphite.getDust(64),
-                    new ItemStack(GT_TileEntity_THTR.THTRMaterials.aTHTR_Materials, 1, 3),
-                    40,
-                    30);
-            ItemStack[] pellets = new ItemStack[6];
-            Arrays.fill(pellets, new ItemStack(GT_TileEntity_THTR.THTRMaterials.aTHTR_Materials, 64, 4));
-            GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes.addRecipe(
-                    false,
-                    new ItemStack[] { new ItemStack(GT_TileEntity_THTR.THTRMaterials.aTHTR_Materials, 1, 3),
-                            GT_Utility.getIntegratedCircuit(17) },
-                    pellets,
-                    null,
-                    null,
-                    null,
-                    null,
-                    48000,
-                    30,
-                    0);
-            GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes.addRecipe(
-                    false,
-                    new ItemStack[] { new ItemStack(GT_TileEntity_THTR.THTRMaterials.aTHTR_Materials, 1, 5),
-                            GT_Utility.getIntegratedCircuit(17) },
-                    new ItemStack[] { new ItemStack(GT_TileEntity_THTR.THTRMaterials.aTHTR_Materials, 64, 6) },
-                    null,
-                    null,
-                    null,
-                    null,
-                    48000,
-                    30,
-                    0);
-            GT_Values.RA.addCentrifugeRecipe(
-                    new ItemStack(GT_TileEntity_THTR.THTRMaterials.aTHTR_Materials, 1, 6),
-                    GT_Values.NI,
-                    GT_Values.NF,
-                    GT_Values.NF,
-                    Materials.Lead.getDust(1),
-                    GT_Values.NI,
-                    GT_Values.NI,
-                    GT_Values.NI,
-                    GT_Values.NI,
-                    GT_Values.NI,
-                    new int[] { 300 },
-                    1200,
-                    30);
         }
     }
 }

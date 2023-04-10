@@ -1,5 +1,7 @@
 package com.github.bartimaeusnek.bartworks.common.loaders;
 
+import static gregtech.api.enums.Mods.IndustrialCraft2;
+
 import com.github.bartimaeusnek.bartworks.system.material.BW_NonMeta_MaterialItems;
 import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
@@ -154,33 +156,33 @@ public class RadioHatchMaterialLoader {
                 .addRadHatch(ItemList.Depleted_Naquadah_4.get(1), 140 / 10, 12, Materials.NaquadahEnriched.mRGBa);
 
         BWRecipes.instance.addRadHatch(
-                GT_ModHandler.getModItem("IC2", "reactorMOXSimpledepleted", 1),
+                GT_ModHandler.getModItem(IndustrialCraft2.ID, "reactorMOXSimpledepleted", 1),
                 (int) Materials.Plutonium.getProtons() / 10,
                 3,
                 Materials.Plutonium.mRGBa);
         BWRecipes.instance.addRadHatch(
-                GT_ModHandler.getModItem("IC2", "reactorMOXDualdepleted", 1),
+                GT_ModHandler.getModItem(IndustrialCraft2.ID, "reactorMOXDualdepleted", 1),
                 (int) Materials.Plutonium.getProtons() / 10,
                 6,
                 Materials.Plutonium.mRGBa);
         BWRecipes.instance.addRadHatch(
-                GT_ModHandler.getModItem("IC2", "reactorMOXQuaddepleted", 1),
+                GT_ModHandler.getModItem(IndustrialCraft2.ID, "reactorMOXQuaddepleted", 1),
                 (int) Materials.Plutonium.getProtons() / 10,
                 12,
                 Materials.Plutonium.mRGBa);
 
         BWRecipes.instance.addRadHatch(
-                GT_ModHandler.getModItem("IC2", "reactorUraniumSimpledepleted", 1),
+                GT_ModHandler.getModItem(IndustrialCraft2.ID, "reactorUraniumSimpledepleted", 1),
                 (int) Materials.Uranium.getProtons() / 10,
                 3,
                 Materials.Uranium.mRGBa);
         BWRecipes.instance.addRadHatch(
-                GT_ModHandler.getModItem("IC2", "reactorUraniumDualdepleted", 1),
+                GT_ModHandler.getModItem(IndustrialCraft2.ID, "reactorUraniumDualdepleted", 1),
                 (int) Materials.Uranium.getProtons() / 10,
                 6,
                 Materials.Uranium.mRGBa);
         BWRecipes.instance.addRadHatch(
-                GT_ModHandler.getModItem("IC2", "reactorUraniumQuaddepleted", 1),
+                GT_ModHandler.getModItem(IndustrialCraft2.ID, "reactorUraniumQuaddepleted", 1),
                 (int) Materials.Uranium.getProtons() / 10,
                 12,
                 Materials.Uranium.mRGBa);

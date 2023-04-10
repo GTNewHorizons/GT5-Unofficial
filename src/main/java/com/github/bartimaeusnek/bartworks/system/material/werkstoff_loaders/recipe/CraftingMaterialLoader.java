@@ -13,11 +13,24 @@
 
 package com.github.bartimaeusnek.bartworks.system.material.werkstoff_loaders.recipe;
 
-import static gregtech.api.enums.OrePrefixes.*;
+import static gregtech.api.enums.OrePrefixes.bolt;
+import static gregtech.api.enums.OrePrefixes.cellMolten;
+import static gregtech.api.enums.OrePrefixes.dust;
+import static gregtech.api.enums.OrePrefixes.dustSmall;
+import static gregtech.api.enums.OrePrefixes.dustTiny;
+import static gregtech.api.enums.OrePrefixes.gearGt;
+import static gregtech.api.enums.OrePrefixes.gearGtSmall;
+import static gregtech.api.enums.OrePrefixes.gem;
+import static gregtech.api.enums.OrePrefixes.ingot;
+import static gregtech.api.enums.OrePrefixes.plate;
+import static gregtech.api.enums.OrePrefixes.ring;
+import static gregtech.api.enums.OrePrefixes.rotor;
+import static gregtech.api.enums.OrePrefixes.screw;
+import static gregtech.api.enums.OrePrefixes.stick;
+import static gregtech.api.enums.OrePrefixes.wireFine;
 
 import net.minecraft.item.ItemStack;
 
-import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
 import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import com.github.bartimaeusnek.bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
@@ -127,14 +140,11 @@ public class CraftingMaterialLoader implements IWerkstoffRunnable {
                     werkstoff.get(gearGtSmall),
                     (int) werkstoff.getStats().getMass(),
                     8 * tVoltageMultiplier);
-            if (ConfigHandler.hardmode) GT_ModHandler.addCraftingRecipe(
+
+            GT_ModHandler.addCraftingRecipe(
                     werkstoff.get(gearGtSmall),
                     GT_Proxy.tBits,
                     new Object[] { " S ", "hPx", " S ", 'S', werkstoff.get(stick), 'P', werkstoff.get(plate) });
-            else GT_ModHandler.addCraftingRecipe(
-                    werkstoff.get(gearGtSmall),
-                    GT_Proxy.tBits,
-                    new Object[] { "P  ", " h ", 'P', werkstoff.get(plate) });
 
             // Rotor
             GT_ModHandler.addCraftingRecipe(

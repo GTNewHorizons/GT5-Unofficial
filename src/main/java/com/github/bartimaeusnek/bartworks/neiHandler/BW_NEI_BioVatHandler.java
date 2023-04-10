@@ -13,7 +13,6 @@
 
 package com.github.bartimaeusnek.bartworks.neiHandler;
 
-import java.awt.*;
 import java.util.Collections;
 
 import net.minecraft.item.ItemStack;

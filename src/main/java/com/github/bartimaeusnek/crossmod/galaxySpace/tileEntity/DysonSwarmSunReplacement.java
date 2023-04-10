@@ -40,15 +40,12 @@ public class DysonSwarmSunReplacement extends MetaTileEntity {
     }
 
     public void toggle() {
-        if (!wasBuild) {
-            GalacticraftCore.solarSystemSol.getMainStar().setBodyIcon(
-                    new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/celestialbodies/moon.png"));
-            wasBuild = !wasBuild;
-        } else {
-            GalacticraftCore.solarSystemSol.getMainStar().setBodyIcon(
-                    new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/celestialbodies/sun.png"));
-            wasBuild = !wasBuild;
-        }
+        ResourceLocation resourceLocation = wasBuild
+                ? new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/celestialbodies/sun.png")
+                : new ResourceLocation(GalacticraftCore.ASSET_PREFIX, "textures/gui/celestialbodies/moon.png");
+        GalacticraftCore.solarSystemSol.getMainStar().setBodyIcon(resourceLocation);
+        wasBuild = !wasBuild;
+
     }
 
     @Override

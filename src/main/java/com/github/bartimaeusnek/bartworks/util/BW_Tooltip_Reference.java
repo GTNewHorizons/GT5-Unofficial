@@ -13,7 +13,10 @@
 
 package com.github.bartimaeusnek.bartworks.util;
 
-import static net.minecraft.util.EnumChatFormatting.*;
+import static net.minecraft.util.EnumChatFormatting.BLUE;
+import static net.minecraft.util.EnumChatFormatting.DARK_BLUE;
+import static net.minecraft.util.EnumChatFormatting.GRAY;
+import static net.minecraft.util.EnumChatFormatting.GREEN;
 
 import java.util.function.Function;
 import java.util.function.Supplier;

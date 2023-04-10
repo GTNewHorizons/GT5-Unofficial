@@ -126,9 +126,6 @@ public class BW_MetaGenerated_Items extends GT_MetaGenerated_Item implements IRa
     @Override
     @SuppressWarnings("unchecked")
     protected void addAdditionalToolTips(List aList, ItemStack aStack, EntityPlayer aPlayer) {
-        // String tooltip = GT_LanguageManager.getTranslation(this.getUnlocalizedName(aStack) + ".tooltip");
-        // if (!tooltip.isEmpty())
-        // aList.add(tooltip);
         if (this.orePrefixes == OrePrefixes.dustImpure || this.orePrefixes == OrePrefixes.dustPure) {
             aList.add(GT_LanguageManager.getTranslation("metaitem.01.tooltip.purify"));
         }

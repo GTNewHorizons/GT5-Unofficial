@@ -1,6 +1,10 @@
 package com.github.bartimaeusnek.bartworks.API;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAdder;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAnyMeta;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
+import static gregtech.api.enums.Mods.BartWorks;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,12 +48,16 @@ public class BorosilicateGlass {
     }
 
     private static Block getGlassBlock() {
-        if (block == null) block = GameRegistry.findBlock("bartworks", "BW_GlasBlocks");
+        if (block == null) {
+            block = GameRegistry.findBlock(BartWorks.ID, "BW_GlasBlocks");
+        }
         return block;
     }
 
     private static Block getGlassBlock2() {
-        if (block2 == null) block2 = GameRegistry.findBlock("bartworks", "BW_GlasBlocks2");
+        if (block2 == null) {
+            block2 = GameRegistry.findBlock(BartWorks.ID, "BW_GlasBlocks2");
+        }
         return block2;
     }
 

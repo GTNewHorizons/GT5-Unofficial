@@ -1,5 +1,7 @@
 package com.github.bartimaeusnek.bartworks.neiHandler;
 
+import static gregtech.api.enums.Mods.NotEnoughItems;
+
 import net.minecraft.nbt.NBTTagCompound;
 
 import com.github.bartimaeusnek.bartworks.MainMod;
@@ -38,7 +40,7 @@ public class IMCForNEI {
         aNBT.setInteger("handlerWidth", 166);
         aNBT.setInteger("maxRecipesPerPage", 2);
         aNBT.setInteger("yShift", 6);
-        FMLInterModComms.sendMessage("NotEnoughItems", "registerHandlerInfo", aNBT);
+        FMLInterModComms.sendMessage(NotEnoughItems.ID, "registerHandlerInfo", aNBT);
     }
 
     private static void sendCatalyst(String aName, String aStack, int aPriority) {
@@ -46,7 +48,7 @@ public class IMCForNEI {
         aNBT.setString("handlerID", aName);
         aNBT.setString("itemName", aStack);
         aNBT.setInteger("priority", aPriority);
-        FMLInterModComms.sendMessage("NotEnoughItems", "registerCatalystInfo", aNBT);
+        FMLInterModComms.sendMessage(NotEnoughItems.ID, "registerCatalystInfo", aNBT);
     }
 
     private static void sendCatalyst(String aName, String aStack) {

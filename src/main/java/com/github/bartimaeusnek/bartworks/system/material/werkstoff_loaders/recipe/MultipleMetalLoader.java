@@ -13,7 +13,10 @@
 
 package com.github.bartimaeusnek.bartworks.system.material.werkstoff_loaders.recipe;
 
-import static gregtech.api.enums.OrePrefixes.*;
+import static gregtech.api.enums.OrePrefixes.dust;
+import static gregtech.api.enums.OrePrefixes.ingot;
+import static gregtech.api.enums.OrePrefixes.plateDense;
+import static gregtech.api.enums.OrePrefixes.plateDouble;
 
 import net.minecraft.item.ItemStack;
 
