@@ -165,7 +165,9 @@ public class GT_Item_Machines extends ItemBlock implements IFluidContainerItem {
                                     "GT_TileEntity_COLORED",
                                     "Colored",
                                     !GregTech_API.sPostloadFinished) + " ("
+                                    + Dyes.get(aNBT.getByte("mColor") - 1).formatting
                                     + Dyes.get(aNBT.getByte("mColor") - 1).mName
+                                    + EnumChatFormatting.GRAY
                                     + ")");
                 }
             }
