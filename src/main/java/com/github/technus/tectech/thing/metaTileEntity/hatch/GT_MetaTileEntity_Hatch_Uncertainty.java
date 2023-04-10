@@ -337,14 +337,6 @@ public class GT_MetaTileEntity_Hatch_Uncertainty extends GT_MetaTileEntity_Hatch
         return status;
     }
 
-    // @Override
-    // public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-    // if(aSide == this.getBaseMetaTileEntity().getFrontFacing()) {
-    // changeMode(++mode);
-    // GT_Utility.sendChatToPlayer(aPlayer, "Equation mode: "+mode);
-    // }
-    // }
-
     @Override
     public boolean useModularUI() {
         return true;

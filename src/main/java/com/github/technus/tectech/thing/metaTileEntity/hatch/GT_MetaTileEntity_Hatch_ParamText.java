@@ -50,20 +50,6 @@ public class GT_MetaTileEntity_Hatch_ParamText extends GT_MetaTileEntity_Hatch_P
         super(aName, aTier, aDescription, aTextures);
     }
 
-    // @Override
-    // public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-    // if (aBaseMetaTileEntity.isClientSide() && (aTick % 20L == 0L)) {
-    // //refresh casing on state change
-    // int Xpos = aBaseMetaTileEntity.getXCoord();
-    // int Ypos = aBaseMetaTileEntity.getYCoord();
-    // int Zpos = aBaseMetaTileEntity.getZCoord();
-    // try {
-    // aBaseMetaTileEntity.getWorld().markBlockRangeForRenderUpdate(Xpos , Ypos, Zpos , Xpos , Ypos, Zpos );
-    // } catch (Exception e) {}
-    // }
-    // super.onPostTick(aBaseMetaTileEntity, aTick);
-    // }
-
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity iGregTechTileEntity) {
         return new GT_MetaTileEntity_Hatch_ParamText(mName, mTier, mDescription, mTextures);

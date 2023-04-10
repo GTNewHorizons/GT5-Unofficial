@@ -132,11 +132,6 @@ public final class EMNuclideIAEA {
     }
 
     private void getMoreData(String[] cells) {
-        // if(DEBUG_MODE) {
-        // if (add(cells[14])) System.out.println(N + " " + Z);
-        // if (add(cells[17])) System.out.println(N + " " + Z);
-        // if (add(cells[20])) System.out.println(N + " " + Z);
-        // }
         new energeticState(
                 this,
                 getHalfTime(),
@@ -249,11 +244,6 @@ public final class EMNuclideIAEA {
                 nuclide.energeticStates = new TreeMap<>();
             }
             nuclide.energeticStates.put(energy, this);
-            // if(DEBUG_MODE) {
-            // if (add(cells[12])) System.out.println(nuclide.N + " " + nuclide.Z);
-            // if (add(cells[15])) System.out.println(nuclide.N + " " + nuclide.Z);
-            // if (add(cells[18])) System.out.println(nuclide.N + " " + nuclide.Z);
-            // }
             decaymodes = getDecaysFixed(
                     cells[12],
                     doubleOrNaN(cells[13], "chance 1", nuclide),

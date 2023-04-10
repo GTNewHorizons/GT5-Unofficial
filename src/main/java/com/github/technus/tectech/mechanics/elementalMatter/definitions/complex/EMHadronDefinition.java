@@ -57,8 +57,7 @@ public class EMHadronDefinition extends EMComplexTemplate { // TODO Optimize map
     private final int amount;
     // generation max present inside - minus if contains any antiquark
     private final byte type;
-    // private final FluidStack fluidThing;
-    // private final ItemStack itemThing;
+
 
     private final EMConstantStackMap quarkStacks;
 
@@ -345,21 +344,6 @@ public class EMHadronDefinition extends EMComplexTemplate { // TODO Optimize map
     public int getGeneration() {
         return type;
     }
-
-    // @Override
-    // public iElementalDefinition getAnti() {
-    // cElementalDefinitionStack[] stacks = this.quarkStacks.values();
-    // cElementalDefinitionStack[] antiElements = new cElementalDefinitionStack[stacks.length];
-    // for (int i = 0; i < antiElements.length; i++) {
-    // antiElements[i] = new cElementalDefinitionStack(stacks[i].definition.getAnti(), stacks[i].amount);
-    // }
-    // try {
-    // return new dHadronDefinition(false, antiElements);
-    // } catch (tElementalException e) {
-    // if (DEBUG_MODE) e.printStackTrace();
-    // return null;
-    // }
-    // }
 
     @Override
     public IEMDefinition getAnti() {

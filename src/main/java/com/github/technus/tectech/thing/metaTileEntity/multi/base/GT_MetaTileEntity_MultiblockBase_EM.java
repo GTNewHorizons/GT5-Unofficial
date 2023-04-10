@@ -1018,8 +1018,6 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM
         mProgresstime = 0;
         mMaxProgresstime = 0;
         eAvailableData = 0;
-        // getBaseMetaTileEntity().disableWorking(); //can add in override
-        // hatchesStatusUpdate_EM(); //called always after recipe checks
     }
 
     private void cleanOrExplode() {
@@ -1793,19 +1791,6 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM
         }
         return true;
     }
-
-    // public final boolean energyFlowWithoutEffieciencyComputation(int eu,long ampere) {
-    // long temp = eu * ampere;//quick scope sign
-    // if (temp > 0) {
-    // this.addEnergyOutput_EM(eu, ampere);
-    // } else if (temp < 0) {
-    // if (!this.drainEnergyInput_EM(eu,eu, ampere)) {
-    // stopMachine();
-    // return false;
-    // }
-    // }
-    // return true;
-    // }
 
     @Override
     public long maxEUStore() {

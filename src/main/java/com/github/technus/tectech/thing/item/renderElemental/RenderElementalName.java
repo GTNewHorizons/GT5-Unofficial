@@ -42,8 +42,6 @@ public class RenderElementalName implements IItemRenderer {
             tessellator.addVertexWithUV(16, 16, 0.0, icon.getMaxU(), icon.getMaxV());
             tessellator.addVertexWithUV(16, 0.0, 0.0, icon.getMaxU(), icon.getMinV());
             tessellator.draw();
-            // ItemRenderer.renderItemIn2D(Tessellator.instance, icon.getMaxU(), icon.getMinV(), icon.getMinU(),
-            // icon.getMaxV(), icon.getIconWidth(), icon.getIconHeight(), 0.0625f);
         }
         String sym = ((IElementalItem) item).getSymbol(itemStack, (int) (System.currentTimeMillis() / 1000));
         if (sym != null) {

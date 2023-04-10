@@ -42,8 +42,6 @@ public class EMLeptonDefinition extends EMFermionDefinition {
 
     protected EMLeptonDefinition(String name, String symbol, int type, double mass, int charge, int ID, String bind) {
         super(name, TT_Utility.toSuperscript(symbol), type, mass, charge, -1, ID, bind);
-        // this.itemThing=null;
-        // this.fluidThing=null;
     }
 
     public static void run(EMDefinitionsRegistry registry) {

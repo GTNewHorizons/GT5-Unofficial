@@ -625,11 +625,6 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
         holdItem = null;
     }
 
-    // @Override
-    // public boolean isFacingValid(byte aFacing) {
-    // return aFacing >= 2;
-    // }
-
     @Override
     public void onFirstTick_EM(IGregTechTileEntity aBaseMetaTileEntity) {
         if (aBaseMetaTileEntity.isServerSide()) {

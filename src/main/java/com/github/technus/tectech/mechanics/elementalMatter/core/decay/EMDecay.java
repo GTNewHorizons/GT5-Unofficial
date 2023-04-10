@@ -69,8 +69,7 @@ public final class EMDecay {
         if (empty) {
             return decayResult;
         }
-        // newEnergyLevel /= qtty;
-        // lifeMult /= (float) qtty;
+
         for (EMDefinitionStack stack : getOutputStacks().valuesToArray()) {
             decayResult.putUnify(
                     new EMInstanceStack(

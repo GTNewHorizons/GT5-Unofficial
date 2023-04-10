@@ -252,13 +252,6 @@ public class GT_MetaTileEntity_Hatch_Rack extends GT_MetaTileEntity_Hatch implem
         }
     }
 
-    // @Override
-    // public void onRemoval() {
-    // if(mInventory!=null && (heat>0 || (getBaseMetaTileEntity()!=null && getBaseMetaTileEntity().isActive())))
-    // for(int i=0;i<mInventory.length;i++)
-    // mInventory[i]=null;
-    // }
-
     @Override
     public int getSizeInventory() { // HACK TO NOT DROP CONTENTS!!!
         return heat > 500 || getBaseMetaTileEntity().isActive() ? 0 : mInventory.length;

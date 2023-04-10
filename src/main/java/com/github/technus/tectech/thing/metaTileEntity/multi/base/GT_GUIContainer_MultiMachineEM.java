@@ -265,17 +265,7 @@ public class GT_GUIContainer_MultiMachineEM extends GT_GUIContainerMetaTile_Mach
                 break;
             case STATUS_UNUSED:
             default:
-                // if (GregTech_API.sColoredGUI && this.mContainer.mTileEntity != null) {
-                // int tColor = this.mContainer.mTileEntity.getColorization() & 15;
-                // if (tColor < ItemDye.field_150922_c.length) {
-                // tColor = ItemDye.field_150922_c[tColor];
-                // GL11.glColor4f((float)(tColor >> 16 & 255) / 255.0F, (float)(tColor >> 8 & 255) / 255.0F,
-                // (float)(tColor & 255) / 255.0F, 1F);
-                // }
-                // }
-                // drawTexturedModalRect(x + su * i, y + sv * j, 212, 96, su+2, sv+2);
-                // GL11.glColor4f(1f, 1f, 1f, 1f);
-                // break;
+
         }
     }
 
@@ -300,9 +290,7 @@ public class GT_GUIContainer_MultiMachineEM extends GT_GUIContainerMetaTile_Mach
                     for (int param = 0; param < 2; param++) {
                         if (x < (u += su)) {
                             if (y < v) {
-                                // if(mContainer.eParamsInStatus[hatch + (10*param)]==STATUS_UNUSED){
-                                // return;
-                                // }
+
                                 hoveringText(
                                         ((GT_MetaTileEntity_MultiblockBase_EM) mte)
                                                 .getFullLedDescriptionIn(hatch, param),
@@ -311,9 +299,7 @@ public class GT_GUIContainer_MultiMachineEM extends GT_GUIContainerMetaTile_Mach
                                         fontRendererObj);
                                 return;
                             } else if (y >= v && y < v + sv) {
-                                // if(mContainer.eParamsOutStatus[hatch + (10*param)]==STATUS_UNUSED){
-                                // return;
-                                // }
+
                                 hoveringText(
                                         ((GT_MetaTileEntity_MultiblockBase_EM) mte)
                                                 .getFullLedDescriptionOut(hatch, param),
@@ -362,8 +348,6 @@ public class GT_GUIContainer_MultiMachineEM extends GT_GUIContainerMetaTile_Mach
                 y2 = this.height - i1 - 6;
             }
 
-            // this.zLevel = 300.0F;
-            // itemRender.zLevel = 300.0F;
             int j1 = 0xf0001040; // bg
             this.drawGradientRect(x2 - 3, y2 - 4, x2 + k + 3, y2 - 3, j1, j1);
             this.drawGradientRect(x2 - 3, y2 + i1 + 3, x2 + k + 3, y2 + i1 + 4, j1, j1);
@@ -388,11 +372,8 @@ public class GT_GUIContainer_MultiMachineEM extends GT_GUIContainerMetaTile_Mach
                 y2 += 10;
             }
 
-            // this.zLevel = 0.0F;
-            // itemRender.zLevel = 0.0F;
             GL11.glEnable(GL11.GL_LIGHTING);
             GL11.glEnable(GL11.GL_DEPTH_TEST);
-            // RenderHelper.enableStandardItemLighting();
             GL11.glEnable(GL12.GL_RESCALE_NORMAL);
         }
     }

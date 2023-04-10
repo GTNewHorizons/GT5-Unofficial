@@ -19,11 +19,6 @@ public class GT_MetaTileEntity_Hatch_InputElemental extends GT_MetaTileEntity_Ha
         TT_Utility.setTier(aTier, this);
     }
 
-    // public GT_MetaTileEntity_Hatch_InputElemental(String aName, int aTier, String aDescription, ITexture[][][]
-    // aTextures) {
-    // super(aName, aTier, aDescription, aTextures);
-    // }
-
     public GT_MetaTileEntity_Hatch_InputElemental(String aName, int aTier, String aDescription,
             ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);

@@ -123,8 +123,6 @@ public class AnomalyHandler implements IChunkMetaDataHandler {
                     if (absDifference != 0) {
                         if (player.getDistanceSqToEntity(other) < 1) {
                             double avg = (fieldOther + field) / 2;
-                            // addAnomaly(other.worldObj.provider.dimensionId, new ChunkCoordIntPair(other.chunkCoordX,
-                            // other.chunkCoordZ), Math.min(SWAP_THRESHOLD, PER_PARTICLE * absDifference));
                             if (TecTech.configTecTech.BOOM_ENABLE) {
                                 other.worldObj.createExplosion(
                                         other,

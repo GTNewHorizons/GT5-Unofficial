@@ -154,11 +154,6 @@ public final class MainLoader {
         new BaseRecipeLoader().run(transformationInfo);
         TecTech.LOGGER.info("Recipe Init Done");
 
-        // Hazmat moved to GT5U
-        // progressBarPostLoad.step("Register Extra Hazmat Suits");
-        // registerExtraHazmats();
-        // TecTech.LOGGER.info("Hazmat additions done");
-
         if (!configTecTech.DISABLE_BLOCK_HARDNESS_NERF) {
             progressBarPostLoad.step("Nerf blocks blast resistance");
             adjustTwilightBlockResistance();

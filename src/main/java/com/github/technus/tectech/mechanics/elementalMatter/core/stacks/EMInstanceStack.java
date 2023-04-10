@@ -270,16 +270,6 @@ public final class EMInstanceStack implements IEMStack {
             long newEnergyLevel) {
         double newAmount = div(getAmount(), Math.pow(2D, 1D /* 1 second */ / lifeTime));
 
-        // if(definition.getSymbol().startsWith("U ")) {
-        // System.out.println("newAmount = " + newAmount);
-        // System.out.println("amountRemaining = " + amountRemaining);
-        // for(cElementalDecay decay:decays){
-        // System.out.println("prob = "+decay.probability);
-        // for(cElementalDefinitionStack stack:decay.outputStacks.values()){
-        // System.out.println("stack = " + stack.getDefinition().getSymbol() + " " + stack.amount);
-        // }
-        // }
-        // }
         if (newAmount == getAmount()) {
             newAmount -= ulpSigned(newAmount);
         } else if (newAmount < 1) {
@@ -355,50 +345,6 @@ public final class EMInstanceStack implements IEMStack {
                 Minecraft.getMinecraft().crashed(new CrashReport("Decay failed for: " + this, e));
                 return null;
             }
-            // long amountRemaining = this.amount, amount = this.amount;
-            // float remainingProbability = 1D;
-            //
-            // for (int i = 0; i < differentDecays; i++) {
-            // if (decays[i].probability >= 1D) {
-            // long thisDecayAmount = (long) Math.floor(remainingProbability * (double) amount);
-            // if (thisDecayAmount > 0) {
-            // if (thisDecayAmount <= amountRemaining) {
-            // amountRemaining -= thisDecayAmount;
-            // qttyOfDecay[i] += thisDecayAmount;
-            // }else {//in case too much was made
-            // qttyOfDecay[i] += amountRemaining;
-            // amountRemaining = 0;
-            // //remainingProbability=0;
-            // }
-            // }
-            // break;
-            // }
-            // long thisDecayAmount = (long) Math.floor(decays[i].probability * (double) amount);
-            // if (thisDecayAmount <= amountRemaining && thisDecayAmount > 0) {//some was made
-            // amountRemaining -= thisDecayAmount;
-            // qttyOfDecay[i] += thisDecayAmount;
-            // } else if (thisDecayAmount > amountRemaining) {//too much was made
-            // qttyOfDecay[i] += amountRemaining;
-            // amountRemaining = 0;
-            // //remainingProbability=0;
-            // break;
-            // }
-            // remainingProbability -= decays[i].probability;
-            // if(remainingProbability<=0) {
-            // break;
-            // }
-            // }
-
-            // for (int i = 0; i < amountRemaining; i++) {
-            // double rand = TecTech.RANDOM.nextDouble();
-            // for (int j = 0; j < differentDecays; j++) {//looking for the thing it decayed into
-            // rand -= decays[j].probability;
-            // if (rand <= 0D) {
-            // qttyOfDecay[j]++;
-            // break;
-            // }
-            // }
-            // }
 
             if (getDefinition().decayMakesEnergy(energy)) {
                 for (int i = differentDecays - 1; i >= 0; i--) {
