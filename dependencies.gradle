@@ -1,20 +1,20 @@
 // Add your dependencies here
 
 dependencies {
-    api('com.github.GTNewHorizons:GT5-Unofficial:5.09.41.297-pre:dev')
-    api("com.github.GTNewHorizons:EnderCore:0.2.11:dev")
-    api("com.github.GTNewHorizons:EnderIO:2.3.1.47:dev")
+    api('com.github.GTNewHorizons:GT5-Unofficial:5.09.42.48:dev')
+    api("com.github.GTNewHorizons:EnderCore:0.2.13:dev")
+    api("com.github.GTNewHorizons:EnderIO:2.4.9:dev")
     api("com.github.GTNewHorizons:Infernal-Mobs:1.7.5-GTNH:dev")
-    api("com.github.GTNewHorizons:ForestryMC:4.5.6:dev")
+    api("com.github.GTNewHorizons:ForestryMC:4.6.5:dev")
     api("com.github.GTNewHorizons:ModularUI:1.1.0:dev")
     //compileOnly("curse.maven:extrautilities-225561:2264384") {
     //    transitive = false
     //}
-    compileOnly("com.github.GTNewHorizons:GTplusplus:1.7.134:dev")
+    compileOnly("com.github.GTNewHorizons:GTplusplus:1.8.31:dev")
     {
         transitive = false
     }
-    compileOnly("com.github.GTNewHorizons:BloodMagic:1.3.18:dev")
+    compileOnly("com.github.GTNewHorizons:BloodMagic:1.3.25:dev")
     {
         transitive = false
     }
@@ -22,23 +22,23 @@ dependencies {
     {
         transitive = false
     }
-    compileOnly("com.github.GTNewHorizons:CraftTweaker:3.2.9:dev")
+    compileOnly("com.github.GTNewHorizons:CraftTweaker:3.2.11:dev")
     {
         transitive = false
     }
-    compileOnly("com.github.GTNewHorizons:bartworks:0.6.1:dev")
+    compileOnly("com.github.GTNewHorizons:bartworks:0.6.7:dev")
     {
         transitive = false
     }
-    compileOnly("com.github.GTNewHorizons:NewHorizonsCoreMod:1.9.103:dev")
+    compileOnly("com.github.GTNewHorizons:NewHorizonsCoreMod:2.0.15:dev")
     {
         transitive = false
     }
-    compileOnly("com.github.GTNewHorizons:BetterLoadingScreen:1.3.39-GTNH:dev")
+    compileOnly("com.github.GTNewHorizons:BetterLoadingScreen:1.4.0-GTNH:dev")
     {
         transitive = false
     }
-    runtimeOnly("com.github.GTNewHorizons:Baubles:1.0.1.14:dev")
+    runtimeOnly("com.github.GTNewHorizons:Baubles:1.0.1.16:dev")
     runtimeOnly("curse.maven:cofh-core-69162:2388751")
     /*
     {
@@ -48,17 +48,17 @@ dependencies {
     */
 
     // For testing
-    //runtimeOnly("com.github.GTNewHorizons:BetterLoadingScreen:1.3.39-GTNH:dev")
-    //runtimeOnly("com.github.GTNewHorizons:GTplusplus:1.7.134:dev")
+    //runtimeOnly("com.github.GTNewHorizons:BetterLoadingScreen:1.4.0-GTNH:dev")
+    //runtimeOnly("com.github.GTNewHorizons:GTplusplus:1.8.31:dev")
     //runtimeOnly("com.github.GTNewHorizons:harvestcraft:1.0.18-GTNH:dev")
-    //runtimeOnly("com.github.GTNewHorizons:NewHorizonsCoreMod:1.9.103:dev")
+    //runtimeOnly("com.github.GTNewHorizons:NewHorizonsCoreMod:2.0.15:dev")
     //runtimeOnly("com.github.GTNewHorizons:OpenBlocks:1.6.9-GTNH:dev")
-    //runtimeOnly("com.github.GTNewHorizons:bartworks:0.6.1:dev")
-    //runtimeOnly("com.github.GTNewHorizons:CraftTweaker:3.2.9:dev")
+    //runtimeOnly("com.github.GTNewHorizons:bartworks:0.6.7:dev")
+    //runtimeOnly("com.github.GTNewHorizons:CraftTweaker:3.2.11:dev")
     //api("com.github.GTNewHorizons:SpecialMobs:3.3.13:dev")
     //api("com.github.GTNewHorizons:twilightforest:2.3.8.17:dev")
     //api("com.github.GTNewHorizons:EnderZoo:1.0.23:dev")
     //runtimeOnly("thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev")
-    //runtimeOnly("com.github.GTNewHorizons:BloodMagic:1.3.18:dev")
+    //runtimeOnly("com.github.GTNewHorizons:BloodMagic:1.3.25:dev")
     //api("curse.maven:witchery-69673:2234410")
 }

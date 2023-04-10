@@ -10,13 +10,12 @@
 
 package kubatech.client.effect;
 
-import java.lang.reflect.Field;
-
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.init.Blocks;
-import net.minecraft.launchwrapper.Launch;
 import net.minecraft.world.World;
 
 import org.lwjgl.opengl.GL11;
@@ -28,7 +27,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class CropRenderer extends EntityFX {
 
     int[] meta = new int[8];
-    static Field tessellatorHasBrightnessField = null;
 
     public CropRenderer(World world, int x, int y, int z, int age) {
         super(world, (double) x, ((double) y - 0.0625d), (double) z);
@@ -48,19 +46,18 @@ public class CropRenderer extends EntityFX {
     public void renderParticle(Tessellator p_70539_1_, float p_70539_2_, float p_70539_3_, float p_70539_4_,
             float p_70539_5_, float p_70539_6_, float p_70539_7_) {
         Tessellator tessellator = Tessellator.instance;
-        GL11.glDisable(GL11.GL_CULL_FACE);
-        GL11.glDepthMask(false);
-        try {
-            if (tessellatorHasBrightnessField == null) {
-                tessellatorHasBrightnessField = Tessellator.class.getDeclaredField(
-                        (boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment") ? "hasBrightness"
-                                : "field_78414_p");
-                tessellatorHasBrightnessField.setAccessible(true);
-            }
-            tessellatorHasBrightnessField.set(tessellator, false);
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
+        Minecraft.getMinecraft().getTextureManager().bindTexture(TextureMap.locationBlocksTexture);
+        tessellator.startDrawingQuads();
+        tessellator.disableColor();
+        GL11.glColor4f(1.f, 1.f, 1.f, 1.f);
+        GL11.glEnable(GL11.GL_ALPHA_TEST);
+        GL11.glDepthMask(true);
+        tessellator.setBrightness(
+                Blocks.wheat.getMixedBrightnessForBlock(
+                        this.worldObj,
+                        (int) this.posX + 1,
+                        (int) this.posY,
+                        (int) this.posZ));
         tessellator.setColorRGBA(255, 255, 255, 255);
         double f12 = this.posY - interpPosY;
         int i = 0;
@@ -70,18 +67,16 @@ public class CropRenderer extends EntityFX {
             double f13 = (this.posZ + (double) z) - interpPosZ;
             RenderBlocks.getInstance().renderBlockCropsImpl(Blocks.wheat, meta[i++], f11, f12, f13);
         }
-
-        GL11.glEnable(GL11.GL_CULL_FACE);
-        GL11.glDepthMask(true);
+        tessellator.draw();
     }
 
     @Override
     public int getFXLayer() {
-        return 1;
+        return 3;
     }
 
     @Override
     public boolean shouldRenderInPass(int pass) {
-        return pass == 2;
+        return pass == 3;
     }
 }

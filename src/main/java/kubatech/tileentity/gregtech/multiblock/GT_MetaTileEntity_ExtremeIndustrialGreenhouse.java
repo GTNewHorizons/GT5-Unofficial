@@ -152,7 +152,7 @@ public class GT_MetaTileEntity_ExtremeIndustrialGreenhouse
                     'l',
                     LoaderReference.ProjRedIllumination
                             ? ofBlock(Block.getBlockFromName("ProjRed|Illumination:projectred.illumination.lamp"), 10)
-                            : ofBlock(Blocks.redstone_lamp, 0))
+                            : ofChain(ofBlock(Blocks.redstone_lamp, 0), ofBlock(Blocks.lit_redstone_lamp, 0)))
             .addElement(
                     'g',
                     LoaderReference.Bartworks ? BorosilicateGlass.ofBoroGlass(
