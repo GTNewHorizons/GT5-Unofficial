@@ -326,24 +326,6 @@ public class FermenterRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
             .noItemInputs()
             .noItemOutputs()
-            .fluidInputs(getFluidStack("potion.speed.strong", 50))
-            .fluidOutputs(getFluidStack("potion.slowness.strong", 10))
-            .duration(1 * MINUTES + 42 * SECONDS + 8 * TICKS)
-            .eut(2)
-            .addTo(sFermentingRecipes);
-
-        GT_Values.RA.stdBuilder()
-            .noItemInputs()
-            .noItemOutputs()
-            .fluidInputs(getFluidStack("potion.strength.strong", 50))
-            .fluidOutputs(getFluidStack("potion.weakness.strong", 10))
-            .duration(1 * MINUTES + 42 * SECONDS + 8 * TICKS)
-            .eut(2)
-            .addTo(sFermentingRecipes);
-
-        GT_Values.RA.stdBuilder()
-            .noItemInputs()
-            .noItemOutputs()
             .fluidInputs(getFluidStack("potion.nightvision.long", 50))
             .fluidOutputs(getFluidStack("potion.invisibility.long", 10))
             .duration(1 * MINUTES + 42 * SECONDS + 8 * TICKS)
@@ -355,24 +337,6 @@ public class FermenterRecipes implements Runnable {
             .noItemOutputs()
             .fluidInputs(getFluidStack("potion.regen.strong", 50))
             .fluidOutputs(getFluidStack("potion.poison.strong", 10))
-            .duration(1 * MINUTES + 42 * SECONDS + 8 * TICKS)
-            .eut(2)
-            .addTo(sFermentingRecipes);
-
-        GT_Values.RA.stdBuilder()
-            .noItemInputs()
-            .noItemOutputs()
-            .fluidInputs(getFluidStack("potion.poison.long", 50))
-            .fluidOutputs(getFluidStack("potion.damage.long", 10))
-            .duration(1 * MINUTES + 42 * SECONDS + 8 * TICKS)
-            .eut(2)
-            .addTo(sFermentingRecipes);
-
-        GT_Values.RA.stdBuilder()
-            .noItemInputs()
-            .noItemOutputs()
-            .fluidInputs(getFluidStack("potion.waterbreathing.long", 50))
-            .fluidOutputs(getFluidStack("potion.damage.long", 10))
             .duration(1 * MINUTES + 42 * SECONDS + 8 * TICKS)
             .eut(2)
             .addTo(sFermentingRecipes);

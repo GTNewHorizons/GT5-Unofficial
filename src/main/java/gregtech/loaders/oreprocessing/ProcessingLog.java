@@ -100,7 +100,7 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
         GT_Values.RA.addChemicalBathRecipe(
             GT_Utility.copyAmount(1L, aStack),
             Materials.Creosote.getFluid(1000L),
-            GT_ModHandler.getModItem(Railcraft.ID, "tile.railcraft.cube", 1L, 8),
+            GT_ModHandler.getModItem(Railcraft.ID, "cube", 1L, 8),
             null,
             null,
             null,
