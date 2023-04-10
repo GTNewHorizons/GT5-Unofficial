@@ -967,7 +967,7 @@ public class GT_MetaTileEntity_PCBFactory extends
             .addInfo("1x->1, 2x->2, 4x->3, 8x->4 with no limit.")
             .addInfo("Recipes require a cooling upgrade to be overclocked.")
             .addInfo("Liquid Cooling uses 10 L/s of distilled water and enables default overclocks.")
-            .addInfo("Thermosink uses 10 L/s of Space Coolant and enables perfect overclocks.")
+            .addInfo("Thermosink uses 10 L/s of Super Coolant and enables perfect overclocks.")
             .addInfo("Trace size can be changed to modify the material usage and machine speed.")
             .addInfo(AuthorBlueWeabo)
             .beginStructureBlock(30, 38, 13, false)
@@ -1260,7 +1260,7 @@ public class GT_MetaTileEntity_PCBFactory extends
                         .setVariableBackground(GT_UITextures.BUTTON_STANDARD_TOGGLE)
                         .setSize(90, 18)
                         .addTooltip(
-                            "Enables perfect overclocking by allowing nanites to work with extreme speed and efficiency. Uses 10 L/s of space coolant."))
+                            "Enables perfect overclocking by allowing nanites to work with extreme speed and efficiency. Uses 10 L/s of Super Coolant."))
                         .addChild(
                             new DrawableWidget().setDrawable(GT_UITextures.OVERLAY_BUTTON_CYCLIC)
                                 .setSize(18, 18))
