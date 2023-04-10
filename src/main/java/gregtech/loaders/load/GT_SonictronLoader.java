@@ -112,8 +112,8 @@ public class GT_SonictronLoader implements Runnable {
         GT_Mod.gregtechproxy.mSoundItems.add(new ItemStack(Items.glass_bottle, 1));
         GT_Mod.gregtechproxy.mSoundNames.add(SoundResource.RANDOM_BURP.toString());
         GT_Mod.gregtechproxy.mSoundCounts.add(1);
-        GT_Mod.gregtechproxy.mSoundItems.add(
-                new ItemStack(Blocks.ender_chest == null ? Blocks.obsidian : Blocks.ender_chest, 1));
+        GT_Mod.gregtechproxy.mSoundItems
+            .add(new ItemStack(Blocks.ender_chest == null ? Blocks.obsidian : Blocks.ender_chest, 1));
         GT_Mod.gregtechproxy.mSoundNames.add(SoundResource.RANDOM_CHESTOPEN.toString());
         GT_Mod.gregtechproxy.mSoundCounts.add(1);
         GT_Mod.gregtechproxy.mSoundItems.add(new ItemStack(Blocks.chest, 1));

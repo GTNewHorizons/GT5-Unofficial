@@ -19,20 +19,20 @@ public class GT_Spray_Hardener_Item extends GT_Tool_Item {
 
     public GT_Spray_Hardener_Item(String aUnlocalized, String aEnglish, int aMaxDamage, int aEntityDamage) {
         super(
-                aUnlocalized,
-                aEnglish,
-                "Construction Foam Hardener",
-                aMaxDamage,
-                aEntityDamage,
-                true); /*
-                        * setCraftingSound(Sounds.IC2_TOOLS_PAINTER); setBreakingSound(Sounds.IC2_TOOLS_PAINTER);
-                        * setEntityHitSound(Sounds.IC2_TOOLS_PAINTER); setUsageAmounts(16, 3, 1);
-                        */
+            aUnlocalized,
+            aEnglish,
+            "Construction Foam Hardener",
+            aMaxDamage,
+            aEntityDamage,
+            true); /*
+                    * setCraftingSound(Sounds.IC2_TOOLS_PAINTER); setBreakingSound(Sounds.IC2_TOOLS_PAINTER);
+                    * setEntityHitSound(Sounds.IC2_TOOLS_PAINTER); setUsageAmounts(16, 3, 1);
+                    */
     }
 
     @Override
     public boolean onItemUseFirst(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ,
-            int aSide, float hitX, float hitY, float hitZ) {
+        int aSide, float hitX, float hitY, float hitZ) {
         super.onItemUseFirst(aStack, aPlayer, aWorld, aX, aY, aZ, aSide, hitX, hitY, hitZ);
         if (aWorld.isRemote) {
             return false;
@@ -44,10 +44,9 @@ public class GT_Spray_Hardener_Item extends GT_Tool_Item {
 
         try {
             if (GT_Utility.getClassName(aTileEntity)
-                          .startsWith("TileEntityCable")) {
+                .startsWith("TileEntityCable")) {
                 if (GT_Utility.getPublicField(aTileEntity, "foamed")
-                              .getByte(aTileEntity)
-                        == 1) {
+                    .getByte(aTileEntity) == 1) {
                     if (GT_ModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer)) {
                         GT_Utility.sendSoundToPlayers(aWorld, SoundResource.IC2_TOOLS_PAINTER, 1.0F, -1, aX, aY, aZ);
                         GT_Utility.callPublicMethod(aTileEntity, "changeFoam", (byte) 2);
@@ -61,10 +60,10 @@ public class GT_Spray_Hardener_Item extends GT_Tool_Item {
         }
 
         ItemStack tStack1 = GT_ModHandler.getIC2Item("constructionFoam", 1),
-                tStack2 = GT_ModHandler.getIC2Item("constructionFoamWall", 1);
+            tStack2 = GT_ModHandler.getIC2Item("constructionFoamWall", 1);
         if (tStack1 != null && tStack1.isItemEqual(new ItemStack(aBlock))
-                && tStack2 != null
-                && tStack2.getItem() instanceof ItemBlock) {
+            && tStack2 != null
+            && tStack2.getItem() instanceof ItemBlock) {
             if (GT_ModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer)) {
                 GT_Utility.sendSoundToPlayers(aWorld, SoundResource.IC2_TOOLS_PAINTER, 1.0F, -1, aX, aY, aZ);
                 aWorld.setBlock(aX, aY, aZ, GT_Utility.getBlockFromStack(tStack2), 7, 3);
@@ -73,11 +72,11 @@ public class GT_Spray_Hardener_Item extends GT_Tool_Item {
         }
 
         if (aTileEntity instanceof BaseMetaPipeEntity
-                && (((BaseMetaPipeEntity) aTileEntity).mConnections & -64) == 64) {
+            && (((BaseMetaPipeEntity) aTileEntity).mConnections & -64) == 64) {
             if (GT_ModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer)) {
                 GT_Utility.sendSoundToPlayers(aWorld, SoundResource.IC2_TOOLS_PAINTER, 1.0F, -1, aX, aY, aZ);
                 ((BaseMetaPipeEntity) aTileEntity).mConnections = (byte) ((((BaseMetaPipeEntity) aTileEntity).mConnections
-                        & ~64) | -128);
+                    & ~64) | -128);
             }
             return true;
         }

@@ -76,7 +76,7 @@ public interface IGT_FluidBuilder {
      */
     @SuppressWarnings("UnusedReturnValue") // Last call in chain, may not use this returned value
     IGT_FluidBuilder withTextures(final ResourceLocation stillIconResourceLocation,
-            final ResourceLocation flowingIconResourceLocation);
+        final ResourceLocation flowingIconResourceLocation);
 
     /**
      * Builds the {@link IGT_Fluid}

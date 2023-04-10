@@ -305,9 +305,9 @@ public enum SoundResource {
 
     static {
         EnumSet.allOf(SoundResource.class)
-               .forEach(sound -> { if (sound.id >= 0) ID_SOUND_MAP.put(sound.id, sound); });
+            .forEach(sound -> { if (sound.id >= 0) ID_SOUND_MAP.put(sound.id, sound); });
         EnumSet.allOf(SoundResource.class)
-               .forEach(sound -> RESOURCE_STR_SOUND_MAP.put(sound.resourceLocation.toString(), sound));
+            .forEach(sound -> RESOURCE_STR_SOUND_MAP.put(sound.resourceLocation.toString(), sound));
     }
 
     /**

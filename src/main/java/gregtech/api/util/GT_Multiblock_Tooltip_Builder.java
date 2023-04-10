@@ -75,10 +75,8 @@ public class GT_Multiblock_Tooltip_Builder {
     private static final String TT_mod = StatCollector.translateToLocal("GT5U.MBTT.Mod");
     private static final String TT_air = StatCollector.translateToLocal("GT5U.MBTT.Air");
     private static final String[] TT_dots = IntStream.range(0, 16)
-                                                     .mapToObj(
-                                                             i -> StatCollector.translateToLocal(
-                                                                     "structurelib.blockhint." + i + ".name"))
-                                                     .toArray(String[]::new);
+        .mapToObj(i -> StatCollector.translateToLocal("structurelib.blockhint." + i + ".name"))
+        .toArray(String[]::new);
 
     public GT_Multiblock_Tooltip_Builder() {
         iLines = new LinkedList<>();
@@ -132,12 +130,7 @@ public class GT_Multiblock_Tooltip_Builder {
      */
     public GT_Multiblock_Tooltip_Builder addPollutionAmount(int pollution) {
         iLines.add(
-                TT_causes + COLON
-                        + EnumChatFormatting.DARK_PURPLE
-                        + pollution
-                        + " "
-                        + EnumChatFormatting.GRAY
-                        + TT_pps);
+            TT_causes + COLON + EnumChatFormatting.DARK_PURPLE + pollution + " " + EnumChatFormatting.GRAY + TT_pps);
         return this;
     }
 
@@ -175,19 +168,19 @@ public class GT_Multiblock_Tooltip_Builder {
      * @return Instance this method was called on.
      */
     public GT_Multiblock_Tooltip_Builder beginVariableStructureBlock(int wmin, int wmax, int hmin, int hmax, int lmin,
-            int lmax, boolean hollow) {
+        int lmax, boolean hollow) {
         sLines.add(
-                TT_dimensions + COLON
-                        + wmin
-                        + (wmin != wmax ? "-" + wmax : "")
-                        + "x"
-                        + hmin
-                        + (hmin != hmax ? "-" + hmax : "")
-                        + "x"
-                        + lmin
-                        + (lmin != lmax ? "-" + lmax : "")
-                        + " (WxHxL) "
-                        + (hollow ? TT_hollow : ""));
+            TT_dimensions + COLON
+                + wmin
+                + (wmin != wmax ? "-" + wmax : "")
+                + "x"
+                + hmin
+                + (hmin != hmax ? "-" + hmax : "")
+                + "x"
+                + lmin
+                + (lmin != lmax ? "-" + lmax : "")
+                + " (WxHxL) "
+                + (hollow ? TT_hollow : ""));
         sLines.add(TT_structure + COLON);
         return this;
     }
@@ -258,7 +251,7 @@ public class GT_Multiblock_Tooltip_Builder {
      * @return Instance this method was called on.
      */
     public GT_Multiblock_Tooltip_Builder addCasingInfoRange(String casingName, int minCount, int maxCount,
-            boolean isTiered) {
+        boolean isTiered) {
         sLines.add(TAB + minCount + "x - " + maxCount + "x " + casingName + (isTiered ? " " + TT_tiered : ""));
         return this;
     }
@@ -557,25 +550,25 @@ public class GT_Multiblock_Tooltip_Builder {
      */
     public void toolTipFinisher(String mod) {
         iLines.add(
-                TT_hold + " "
-                        + EnumChatFormatting.BOLD
-                        + "[LSHIFT]"
-                        + EnumChatFormatting.RESET
-                        + EnumChatFormatting.GRAY
-                        + " "
-                        + TT_todisplay);
+            TT_hold + " "
+                + EnumChatFormatting.BOLD
+                + "[LSHIFT]"
+                + EnumChatFormatting.RESET
+                + EnumChatFormatting.GRAY
+                + " "
+                + TT_todisplay);
         iLines.add(TT_mod + COLON + EnumChatFormatting.GREEN + mod + EnumChatFormatting.GRAY);
         hLines.add(TT_structurehint);
         iArray = iLines.toArray(new String[0]);
         sArray = sLines.toArray(new String[0]);
         // e.getKey() - 1 because 1 dot is meta 0.
         hArray = Stream.concat(
-                hLines.stream(),
-                hBlocks.asMap()
-                       .entrySet()
-                       .stream()
-                       .map(e -> TT_dots[e.getKey() - 1] + COLON + String.join(SEPARATOR, e.getValue())))
-                       .toArray(String[]::new);
+            hLines.stream(),
+            hBlocks.asMap()
+                .entrySet()
+                .stream()
+                .map(e -> TT_dots[e.getKey() - 1] + COLON + String.join(SEPARATOR, e.getValue())))
+            .toArray(String[]::new);
     }
 
     public String[] getInformation() {

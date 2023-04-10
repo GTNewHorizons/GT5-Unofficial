@@ -14,20 +14,20 @@ public class GT_Spray_Bug_Item extends GT_Tool_Item {
 
     public GT_Spray_Bug_Item(String aUnlocalized, String aEnglish, int aMaxDamage, int aEntityDamage) {
         super(
-                aUnlocalized,
-                aEnglish,
-                "A very 'buggy' Spray",
-                aMaxDamage,
-                aEntityDamage,
-                true); /*
-                        * addToEffectiveList(EntityCaveSpider.class.getName());
-                        * addToEffectiveList(EntitySpider.class.getName()); addToEffectiveList("EntityTFHedgeSpider");
-                        * addToEffectiveList("EntityTFKingSpider"); addToEffectiveList("EntityTFSwarmSpider");
-                        * addToEffectiveList("EntityTFTowerBroodling"); addToEffectiveList("EntityTFFireBeetle");
-                        * addToEffectiveList("EntityTFSlimeBeetle"); setCraftingSound(Sounds.IC2_TOOLS_PAINTER);
-                        * setBreakingSound(Sounds.IC2_TOOLS_PAINTER); setEntityHitSound(Sounds.IC2_TOOLS_PAINTER);
-                        * setUsageAmounts(8, 4, 1);
-                        */
+            aUnlocalized,
+            aEnglish,
+            "A very 'buggy' Spray",
+            aMaxDamage,
+            aEntityDamage,
+            true); /*
+                    * addToEffectiveList(EntityCaveSpider.class.getName());
+                    * addToEffectiveList(EntitySpider.class.getName()); addToEffectiveList("EntityTFHedgeSpider");
+                    * addToEffectiveList("EntityTFKingSpider"); addToEffectiveList("EntityTFSwarmSpider");
+                    * addToEffectiveList("EntityTFTowerBroodling"); addToEffectiveList("EntityTFFireBeetle");
+                    * addToEffectiveList("EntityTFSlimeBeetle"); setCraftingSound(Sounds.IC2_TOOLS_PAINTER);
+                    * setBreakingSound(Sounds.IC2_TOOLS_PAINTER); setEntityHitSound(Sounds.IC2_TOOLS_PAINTER);
+                    * setUsageAmounts(8, 4, 1);
+                    */
     }
 
     /*
@@ -38,7 +38,7 @@ public class GT_Spray_Bug_Item extends GT_Tool_Item {
      */
     @Override
     public boolean onItemUseFirst(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ,
-            int aSide, float hitX, float hitY, float hitZ) {
+        int aSide, float hitX, float hitY, float hitZ) {
         super.onItemUseFirst(aStack, aPlayer, aWorld, aX, aY, aZ, aSide, hitX, hitY, hitZ);
         if (aWorld.isRemote) {
             return false;

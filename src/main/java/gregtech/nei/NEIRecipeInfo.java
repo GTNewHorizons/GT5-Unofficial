@@ -35,7 +35,7 @@ public class NEIRecipeInfo {
     public int yPos;
 
     public NEIRecipeInfo(GT_Recipe recipe, GT_Recipe.GT_Recipe_Map recipeMap,
-            GT_NEI_DefaultHandler.CachedDefaultRecipe neiCachedRecipe, Power power, int descriptionYOffset) {
+        GT_NEI_DefaultHandler.CachedDefaultRecipe neiCachedRecipe, Power power, int descriptionYOffset) {
         this.recipe = recipe;
         this.recipeMap = recipeMap;
         this.neiCachedRecipe = neiCachedRecipe;

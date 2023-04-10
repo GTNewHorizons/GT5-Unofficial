@@ -51,7 +51,7 @@ public abstract class GT_MetaGenerated_Item_X01 extends GT_MetaGenerated_Item {
         super(aUnlocalized, (short) 32000, (short) 766);
         mPrefix = aGeneratedPrefix;
         mIconSetIndex = aIconSetIndex >= 0 ? aIconSetIndex
-                : aGeneratedPrefix.mTextureIndex >= 0 ? aGeneratedPrefix.mTextureIndex : 0;
+            : aGeneratedPrefix.mTextureIndex >= 0 ? aGeneratedPrefix.mTextureIndex : 0;
 
         for (int i = 0; i < GregTech_API.sGeneratedMaterials.length; i++) {
             OrePrefixes tPrefix = mPrefix;
@@ -61,12 +61,12 @@ public abstract class GT_MetaGenerated_Item_X01 extends GT_MetaGenerated_Item {
             if (mPrefix.doGenerateItem(tMaterial)) {
                 ItemStack tStack = new ItemStack(this, 1, i);
                 GT_LanguageManager.addStringLocalization(
-                        getUnlocalizedName(tStack) + ".name",
-                        GT_LanguageManager.i18nPlaceholder ? getDefaultLocalizationFormat(tPrefix, tMaterial, i)
-                                : getDefaultLocalization(tPrefix, tMaterial, i));
+                    getUnlocalizedName(tStack) + ".name",
+                    GT_LanguageManager.i18nPlaceholder ? getDefaultLocalizationFormat(tPrefix, tMaterial, i)
+                        : getDefaultLocalization(tPrefix, tMaterial, i));
                 GT_LanguageManager.addStringLocalization(
-                        getUnlocalizedName(tStack) + ".tooltip",
-                        tMaterial.getToolTip(tPrefix.mMaterialAmount / M));
+                    getUnlocalizedName(tStack) + ".tooltip",
+                    tMaterial.getToolTip(tPrefix.mMaterialAmount / M));
                 String tOreName = getOreDictString(tPrefix, tMaterial);
                 tPrefix = OrePrefixes.getOrePrefix(tOreName);
                 if (tPrefix != null && tPrefix.mIsUnificatable) {
@@ -116,7 +116,7 @@ public abstract class GT_MetaGenerated_Item_X01 extends GT_MetaGenerated_Item {
      */
     public String getOreDictString(OrePrefixes aPrefix, Materials aMaterial) {
         return aPrefix.get(aMaterial)
-                      .toString();
+            .toString();
     }
 
     public IIconContainer getIconContainer(int aMetaData, Materials aMaterial) {
@@ -149,17 +149,16 @@ public abstract class GT_MetaGenerated_Item_X01 extends GT_MetaGenerated_Item {
     public short[] getRGBa(ItemStack aStack) {
         int aMetaData = getDamage(aStack);
         return aMetaData < GregTech_API.sGeneratedMaterials.length
-                && GregTech_API.sGeneratedMaterials[aMetaData] != null
-                        ? GregTech_API.sGeneratedMaterials[aMetaData].mRGBa
-                        : Materials._NULL.mRGBa;
+            && GregTech_API.sGeneratedMaterials[aMetaData] != null ? GregTech_API.sGeneratedMaterials[aMetaData].mRGBa
+                : Materials._NULL.mRGBa;
     }
 
     @Override
     public final IIconContainer getIconContainer(int aMetaData) {
         return aMetaData < GregTech_API.sGeneratedMaterials.length
-                && GregTech_API.sGeneratedMaterials[aMetaData] != null
-                        ? getIconContainer(aMetaData, GregTech_API.sGeneratedMaterials[aMetaData])
-                        : null;
+            && GregTech_API.sGeneratedMaterials[aMetaData] != null
+                ? getIconContainer(aMetaData, GregTech_API.sGeneratedMaterials[aMetaData])
+                : null;
     }
 
     @Override
@@ -167,13 +166,13 @@ public abstract class GT_MetaGenerated_Item_X01 extends GT_MetaGenerated_Item {
     public final void getSubItems(Item aItem, CreativeTabs aCreativeTab, List<ItemStack> aList) {
         for (int i = 0; i < GregTech_API.sGeneratedMaterials.length; i++)
             if (mPrefix.doGenerateItem(GregTech_API.sGeneratedMaterials[i]) && doesShowInCreative(
-                    mPrefix,
-                    GregTech_API.sGeneratedMaterials[i],
-                    GregTech_API.sDoShowAllItemsInCreative)) {
-                        ItemStack tStack = new ItemStack(this, 1, i);
-                        isItemStackUsable(tStack);
-                        aList.add(tStack);
-                    }
+                mPrefix,
+                GregTech_API.sGeneratedMaterials[i],
+                GregTech_API.sDoShowAllItemsInCreative)) {
+                    ItemStack tStack = new ItemStack(this, 1, i);
+                    isItemStackUsable(tStack);
+                    aList.add(tStack);
+                }
         super.getSubItems(aItem, aCreativeTab, aList);
     }
 
@@ -188,13 +187,13 @@ public abstract class GT_MetaGenerated_Item_X01 extends GT_MetaGenerated_Item {
             return null;
         }
         return aMetaData >= mOffset && aMetaData - mOffset < mIconList.length ? mIconList[aMetaData - mOffset][0]
-                : null;
+            : null;
     }
 
     @Override
     public int getItemStackLimit(ItemStack aStack) {
         return getDamage(aStack) < mOffset ? Math.min(super.getItemStackLimit(aStack), mPrefix.mDefaultStackSize)
-                : super.getItemStackLimit(aStack);
+            : super.getItemStackLimit(aStack);
     }
 
     @Override

@@ -121,23 +121,21 @@ public class GT_TextureBuilder implements ITextureBuilder {
         return switch (iconContainerList.size()) {
             case 1 -> new GT_RenderedTexture(iconContainerList.get(0), rgba, allowAlpha, glow, stdOrient, extFacing);
             case 6 -> new GT_SidedTexture(
-                    iconContainerList.get(ForgeDirection.DOWN.ordinal()),
-                    iconContainerList.get(ForgeDirection.UP.ordinal()),
-                    iconContainerList.get(ForgeDirection.NORTH.ordinal()),
-                    iconContainerList.get(ForgeDirection.SOUTH.ordinal()),
-                    iconContainerList.get(ForgeDirection.WEST.ordinal()),
-                    iconContainerList.get(ForgeDirection.EAST.ordinal()),
-                    rgba,
-                    allowAlpha);
+                iconContainerList.get(ForgeDirection.DOWN.ordinal()),
+                iconContainerList.get(ForgeDirection.UP.ordinal()),
+                iconContainerList.get(ForgeDirection.NORTH.ordinal()),
+                iconContainerList.get(ForgeDirection.SOUTH.ordinal()),
+                iconContainerList.get(ForgeDirection.WEST.ordinal()),
+                iconContainerList.get(ForgeDirection.EAST.ordinal()),
+                rgba,
+                allowAlpha);
             default -> throw new IllegalStateException("Invalid sideIconContainer count");
         };
     }
 
     private boolean isCTMBlock(Block fromBlock, int fromMeta) {
-        return GT_Mod.gregtechproxy.mCTMBlockCache.computeIfAbsent(
-                fromBlock,
-                (byte) fromMeta,
-                GT_TextureBuilder::apply);
+        return GT_Mod.gregtechproxy.mCTMBlockCache
+            .computeIfAbsent(fromBlock, (byte) fromMeta, GT_TextureBuilder::apply);
     }
 
     private static Boolean apply(Block b, Byte m) {

@@ -34,7 +34,7 @@ public interface IDragAndDropSupport extends INEIGuiHandler {
      * @return True if success
      */
     boolean handleDragAndDropGT(GuiContainer gui, int mousex, int mousey, ItemStack draggedStack, int button,
-            boolean isGhost);
+        boolean isGhost);
 
     default boolean handleDragNDrop(GuiContainer gui, int mousex, int mousey, ItemStack draggedStack, int button) {
         return handleDragAndDropGT(gui, mousex, mousey, draggedStack, button, NEIClientUtils.getHeldItem() == null);

@@ -32,27 +32,25 @@ public class Behaviour_Spray_Color extends Behaviour_None {
     private final long mUses;
     private final byte mColor;
     private final Collection<Block> mAllowedVanillaBlocks = Arrays.asList(
-            Blocks.glass,
-            Blocks.glass_pane,
-            Blocks.stained_glass,
-            Blocks.stained_glass_pane,
-            Blocks.carpet,
-            Blocks.hardened_clay,
-            ItemList.TE_Rockwool.getBlock());
+        Blocks.glass,
+        Blocks.glass_pane,
+        Blocks.stained_glass,
+        Blocks.stained_glass_pane,
+        Blocks.carpet,
+        Blocks.hardened_clay,
+        ItemList.TE_Rockwool.getBlock());
     private final String mTooltip;
-    private final String mTooltipUses = GT_LanguageManager.addStringLocalization(
-            "gt.behaviour.paintspray.uses",
-            "Remaining Uses:");
-    private final String mTooltipUnstackable = GT_LanguageManager.addStringLocalization(
-            "gt.behaviour.unstackable",
-            "Not usable when stacked!");
+    private final String mTooltipUses = GT_LanguageManager
+        .addStringLocalization("gt.behaviour.paintspray.uses", "Remaining Uses:");
+    private final String mTooltipUnstackable = GT_LanguageManager
+        .addStringLocalization("gt.behaviour.unstackable", "Not usable when stacked!");
     private final String mTooltipChain = GT_LanguageManager.addStringLocalization(
-            "gt.behaviour.paintspray.chain",
-            "If used while sneaking it will paint a chain of blocks");
+        "gt.behaviour.paintspray.chain",
+        "If used while sneaking it will paint a chain of blocks");
 
     private final String mTooltipChainAmount = GT_LanguageManager.addStringLocalization(
-            "gt.behaviour.paintspray.chain",
-            "Paints up to %d blocks, in the direction you're looking at");
+        "gt.behaviour.paintspray.chain",
+        "Paints up to %d blocks, in the direction you're looking at");
 
     public Behaviour_Spray_Color(ItemStack aEmpty, ItemStack aUsed, ItemStack aFull, long aUses, int aColor) {
         this.mEmpty = aEmpty;
@@ -61,13 +59,13 @@ public class Behaviour_Spray_Color extends Behaviour_None {
         this.mUses = aUses;
         this.mColor = ((byte) aColor);
         this.mTooltip = GT_LanguageManager.addStringLocalization(
-                "gt.behaviour.paintspray." + this.mColor + ".tooltip",
-                "Can Color things in " + Dyes.get(this.mColor).mName);
+            "gt.behaviour.paintspray." + this.mColor + ".tooltip",
+            "Can Color things in " + Dyes.get(this.mColor).mName);
     }
 
     @Override
     public boolean onItemUseFirst(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,
-            int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
+        int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
         if ((aWorld.isRemote) || (aStack.stackSize != 1)) {
             return false;
         }
@@ -140,7 +138,7 @@ public class Behaviour_Spray_Color extends Behaviour_None {
     private boolean colorize(World aWorld, int aX, int aY, int aZ, int aSide) {
         Block aBlock = aWorld.getBlock(aX, aY, aZ);
         if ((aBlock != Blocks.air)
-                && ((this.mAllowedVanillaBlocks.contains(aBlock)) || ((aBlock instanceof BlockColored)))) {
+            && ((this.mAllowedVanillaBlocks.contains(aBlock)) || ((aBlock instanceof BlockColored)))) {
             if (aBlock == Blocks.hardened_clay) {
                 aWorld.setBlock(aX, aY, aZ, Blocks.stained_hardened_clay, (~this.mColor) & 0xF, 3);
                 return true;
@@ -167,12 +165,12 @@ public class Behaviour_Spray_Color extends Behaviour_None {
         aList.add(this.mTooltip);
         aList.add(this.mTooltipChain);
         aList.add(
-                String.format(
-                        this.mTooltipChainAmount,
-                        GregTech_API.sSpecialFile.get(ConfigCategories.general, "SprayCanChainRange", 256)));
+            String.format(
+                this.mTooltipChainAmount,
+                GregTech_API.sSpecialFile.get(ConfigCategories.general, "SprayCanChainRange", 256)));
         NBTTagCompound tNBT = aStack.getTagCompound();
         long tRemainingPaint = tNBT == null ? this.mUses
-                : GT_Utility.areStacksEqual(aStack, this.mFull, true) ? this.mUses : tNBT.getLong("GT.RemainingPaint");
+            : GT_Utility.areStacksEqual(aStack, this.mFull, true) ? this.mUses : tNBT.getLong("GT.RemainingPaint");
         aList.add(this.mTooltipUses + " " + tRemainingPaint);
         aList.add(this.mTooltipUnstackable);
         return aList;

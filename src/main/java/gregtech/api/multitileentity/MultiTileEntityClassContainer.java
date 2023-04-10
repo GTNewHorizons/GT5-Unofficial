@@ -32,7 +32,7 @@ public class MultiTileEntityClassContainer {
     public boolean mHidden = false;
 
     public MultiTileEntityClassContainer(MultiTileEntityRegistry aRegistry, int aID,
-            Class<? extends MultiTileEntity> aClass) {
+        Class<? extends MultiTileEntity> aClass) {
         /* Start the Builder */
         mRegistry = new WeakReference<>(aRegistry);
         mID = (short) aID;
@@ -45,10 +45,10 @@ public class MultiTileEntityClassContainer {
         final MultiTileEntityRegistry registry = mRegistry.get();
 
         if (mParameters.hasKey(NBT.MATERIAL) && !mParameters.hasKey(NBT.COLOR)) mParameters.setInteger(
-                NBT.COLOR,
-                GT_Util.getRGBInt(
-                        Materials.get(mParameters.getString(NBT.MATERIAL))
-                                 .getRGBA()));
+            NBT.COLOR,
+            GT_Util.getRGBInt(
+                Materials.get(mParameters.getString(NBT.MATERIAL))
+                    .getRGBA()));
 
         try {
             mCanonicalTileEntity = mClass.newInstance();
@@ -162,7 +162,7 @@ public class MultiTileEntityClassContainer {
         // Check if cls is extended by mClass
         if (!cls.isAssignableFrom(mClass)) {
             throw new IllegalArgumentException(
-                    "Expected a descendent of " + cls.getName() + " got " + mClass.getName() + " instead.");
+                "Expected a descendent of " + cls.getName() + " got " + mClass.getName() + " instead.");
         }
     }
 
@@ -183,7 +183,7 @@ public class MultiTileEntityClassContainer {
 
         if (!atLeastOne) {
             throw new IllegalArgumentException(
-                    "Expected a descendent of any of these " + classNames + " got " + mClass.getName() + " instead.");
+                "Expected a descendent of any of these " + classNames + " got " + mClass.getName() + " instead.");
         }
     }
 }

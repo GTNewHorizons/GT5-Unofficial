@@ -24,7 +24,7 @@ public class CollectorUtils {
     }
 
     public static <K, V, E extends Map.Entry<K, V>, M extends Map<K, V>> Collector<E, ?, M> entriesToMap(
-            Supplier<M> mapSupplier) {
+        Supplier<M> mapSupplier) {
         return Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, CollectorUtils.throwingMerger(), mapSupplier);
     }
 }

@@ -45,7 +45,7 @@ public class GT_HashSet<E extends GT_ItemStack> extends AbstractSet<E> {
     @Override
     public Iterator<E> iterator() {
         return (Iterator<E>) map.keySet()
-                                .iterator();
+            .iterator();
     }
 
     @Override

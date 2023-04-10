@@ -99,7 +99,7 @@ public class Behaviour_Sonictron extends Behaviour_None {
 
     @Override
     public boolean onItemUseFirst(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,
-            int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
+        int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
         setCurrentIndex(aStack, -1);
         return false;
     }
@@ -112,17 +112,17 @@ public class Behaviour_Sonictron extends Behaviour_None {
 
     @Override
     public void onUpdate(GT_MetaBase_Item aItem, ItemStack aStack, World aWorld, Entity aPlayer, int aTimer,
-            boolean aIsInHand) {
+        boolean aIsInHand) {
         int tTickTimer = getTickTimer(aStack);
         int tCurrentIndex = getCurrentIndex(aStack);
         if ((tTickTimer++ % 2 == 0) && (tCurrentIndex > -1)) {
             ItemStack[] tInventory = getNBTInventory(aStack);
             GT_Values.GT.doSonictronSound(
-                    tInventory[tCurrentIndex],
-                    aPlayer.worldObj,
-                    aPlayer.posX,
-                    aPlayer.posY,
-                    aPlayer.posZ);
+                tInventory[tCurrentIndex],
+                aPlayer.worldObj,
+                aPlayer.posX,
+                aPlayer.posY,
+                aPlayer.posZ);
             tCurrentIndex++;
             if (tCurrentIndex > 63) {
                 tCurrentIndex = -1;

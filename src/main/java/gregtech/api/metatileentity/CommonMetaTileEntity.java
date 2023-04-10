@@ -35,7 +35,7 @@ public abstract class CommonMetaTileEntity extends CoverableTileEntity implement
         } else {
             if (hasValidMetaTileEntity()) getMetaTileEntity().setBaseMetaTileEntity(null);
             GregTech_API.METATILEENTITIES[aID].newMetaEntity(this)
-                                              .setBaseMetaTileEntity(this);
+                .setBaseMetaTileEntity(this);
             mTickTimer = 0;
             mID = aID;
             return true;

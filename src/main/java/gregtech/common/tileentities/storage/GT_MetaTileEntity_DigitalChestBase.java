@@ -41,7 +41,7 @@ import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Utility;
 
 public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEntity_TieredMachineBlock
-        implements appeng.api.storage.IMEMonitor<appeng.api.storage.data.IAEItemStack>, IAddUIWidgets {
+    implements appeng.api.storage.IMEMonitor<appeng.api.storage.data.IAEItemStack>, IAddUIWidgets {
 
     protected boolean mVoidOverflow = false;
     protected boolean mDisableFilter;
@@ -49,14 +49,13 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
 
     public GT_MetaTileEntity_DigitalChestBase(int aID, String aName, String aNameRegional, int aTier) {
         super(
-                aID,
-                aName,
-                aNameRegional,
-                aTier,
-                3,
-                new String[] { "This Chest stores " + GT_Utility.formatNumbers(commonSizeCompute(aTier)) + " Blocks",
-                        "Use a screwdriver to enable", "voiding items on overflow",
-                        "Will keep its contents when harvested", });
+            aID,
+            aName,
+            aNameRegional,
+            aTier,
+            3,
+            new String[] { "This Chest stores " + GT_Utility.formatNumbers(commonSizeCompute(aTier)) + " Blocks",
+                "Use a screwdriver to enable", "voiding items on overflow", "Will keep its contents when harvested", });
     }
 
     protected static int commonSizeCompute(int tier) {
@@ -80,53 +79,53 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
     }
 
     public GT_MetaTileEntity_DigitalChestBase(String aName, int aTier, String[] aDescription,
-            ITexture[][][] aTextures) {
+        ITexture[][][] aTextures) {
         super(aName, aTier, 3, aDescription, aTextures);
     }
 
     @Override
     public void addAdditionalTooltipInformation(ItemStack stack, List<String> tooltip) {
         if (stack.hasTagCompound() && stack.stackTagCompound.hasKey("mItemStack")) {
-            final ItemStack tContents = ItemStack.loadItemStackFromNBT(
-                    stack.stackTagCompound.getCompoundTag("mItemStack"));
+            final ItemStack tContents = ItemStack
+                .loadItemStackFromNBT(stack.stackTagCompound.getCompoundTag("mItemStack"));
             final int tSize = stack.stackTagCompound.getInteger("mItemCount");
             if (tContents != null && tSize > 0) {
                 tooltip.add(
-                        GT_LanguageManager.addStringLocalization(
-                                "TileEntity_CHEST_INFO",
-                                "Contains Item: ",
-                                !GregTech_API.sPostloadFinished) + EnumChatFormatting.YELLOW
-                                + tContents.getDisplayName()
-                                + EnumChatFormatting.GRAY);
+                    GT_LanguageManager.addStringLocalization(
+                        "TileEntity_CHEST_INFO",
+                        "Contains Item: ",
+                        !GregTech_API.sPostloadFinished) + EnumChatFormatting.YELLOW
+                        + tContents.getDisplayName()
+                        + EnumChatFormatting.GRAY);
                 tooltip.add(
-                        GT_LanguageManager.addStringLocalization(
-                                "TileEntity_CHEST_AMOUNT",
-                                "Item Amount: ",
-                                !GregTech_API.sPostloadFinished) + EnumChatFormatting.GREEN
-                                + GT_Utility.formatNumbers(tSize)
-                                + EnumChatFormatting.GRAY);
+                    GT_LanguageManager.addStringLocalization(
+                        "TileEntity_CHEST_AMOUNT",
+                        "Item Amount: ",
+                        !GregTech_API.sPostloadFinished) + EnumChatFormatting.GREEN
+                        + GT_Utility.formatNumbers(tSize)
+                        + EnumChatFormatting.GRAY);
             }
         }
     }
 
     public static void registerAEIntegration() {
         appeng.api.AEApi.instance()
-                        .registries()
-                        .externalStorage()
-                        .addExternalStorageInterface(new AE2DigitalChestHandler());
+            .registries()
+            .externalStorage()
+            .addExternalStorageInterface(new AE2DigitalChestHandler());
     }
 
     @Override
     public void addListener(
-            appeng.api.storage.IMEMonitorHandlerReceiver<appeng.api.storage.data.IAEItemStack> imeMonitorHandlerReceiver,
-            Object o) {
+        appeng.api.storage.IMEMonitorHandlerReceiver<appeng.api.storage.data.IAEItemStack> imeMonitorHandlerReceiver,
+        Object o) {
         if (listeners == null) listeners = new HashMap<>();
         listeners.put(imeMonitorHandlerReceiver, o);
     }
 
     @Override
     public void removeListener(
-            appeng.api.storage.IMEMonitorHandlerReceiver<appeng.api.storage.data.IAEItemStack> imeMonitorHandlerReceiver) {
+        appeng.api.storage.IMEMonitorHandlerReceiver<appeng.api.storage.data.IAEItemStack> imeMonitorHandlerReceiver) {
         if (listeners == null) listeners = new HashMap<>();
         listeners.remove(imeMonitorHandlerReceiver);
     }
@@ -171,7 +170,7 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
 
     @Override
     public appeng.api.storage.data.IItemList<appeng.api.storage.data.IAEItemStack> getAvailableItems(
-            final appeng.api.storage.data.IItemList out) {
+        final appeng.api.storage.data.IItemList out) {
         ItemStack storedStack = getItemStack();
         if (storedStack != null) {
             appeng.util.item.AEItemStack s = appeng.util.item.AEItemStack.create(storedStack);
@@ -210,7 +209,7 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
 
     @Override
     public appeng.api.storage.data.IAEItemStack injectItems(final appeng.api.storage.data.IAEItemStack input,
-            final appeng.api.config.Actionable mode, final appeng.api.networking.security.BaseActionSource src) {
+        final appeng.api.config.Actionable mode, final appeng.api.networking.security.BaseActionSource src) {
         final ItemStack inputStack = input.getItemStack();
         if (inputStack == null) return null;
         if (getBaseMetaTileEntity() == null) return input;
@@ -246,7 +245,7 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
 
     @Override
     public appeng.api.storage.data.IAEItemStack extractItems(final appeng.api.storage.data.IAEItemStack request,
-            final appeng.api.config.Actionable mode, final appeng.api.networking.security.BaseActionSource src) {
+        final appeng.api.config.Actionable mode, final appeng.api.networking.security.BaseActionSource src) {
         if (request.isSameType(getItemStack())) {
             if (getBaseMetaTileEntity() == null) return null;
             if (mode != appeng.api.config.Actionable.SIMULATE) getBaseMetaTileEntity().markDirty();
@@ -273,22 +272,22 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
     public final void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         mVoidOverflow = !mVoidOverflow;
         GT_Utility.sendChatToPlayer(
-                aPlayer,
-                StatCollector.translateToLocal(
-                        mVoidOverflow ? "GT5U.machines.digitalchest.voidoverflow.enabled"
-                                : "GT5U.machines.digitalchest.voidoverflow.disabled"));
+            aPlayer,
+            StatCollector.translateToLocal(
+                mVoidOverflow ? "GT5U.machines.digitalchest.voidoverflow.enabled"
+                    : "GT5U.machines.digitalchest.voidoverflow.disabled"));
     }
 
     @Override
     public boolean onSolderingToolRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY,
-            float aZ) {
+        float aZ) {
         if (super.onSolderingToolRightClick(aSide, aWrenchingSide, aPlayer, aX, aY, aZ)) return true;
         mDisableFilter = !mDisableFilter;
         GT_Utility.sendChatToPlayer(
-                aPlayer,
-                StatCollector.translateToLocal(
-                        mDisableFilter ? "GT5U.machines.digitalchest.inputfilter.disabled"
-                                : "GT5U.machines.digitalchest.inputfilter.enabled"));
+            aPlayer,
+            StatCollector.translateToLocal(
+                mDisableFilter ? "GT5U.machines.digitalchest.inputfilter.disabled"
+                    : "GT5U.machines.digitalchest.inputfilter.enabled"));
         return true;
     }
 
@@ -308,7 +307,7 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
             int savedCount = count;
 
             if ((mInventory[0] != null) && ((count < getMaxItemCount()) || mVoidOverflow)
-                    && GT_Utility.areStacksEqual(mInventory[0], stack)) {
+                && GT_Utility.areStacksEqual(mInventory[0], stack)) {
                 count += mInventory[0].stackSize;
                 if (count <= getMaxItemCount()) {
                     mInventory[0] = null;
@@ -326,11 +325,11 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
                 mInventory[1].stackSize = Math.min(stack.getMaxStackSize(), count);
                 count -= mInventory[1].stackSize;
             } else if ((count > 0) && GT_Utility.areStacksEqual(mInventory[1], stack)
-                    && mInventory[1].getMaxStackSize() > mInventory[1].stackSize) {
-                        int tmp = Math.min(count, mInventory[1].getMaxStackSize() - mInventory[1].stackSize);
-                        mInventory[1].stackSize += tmp;
-                        count -= tmp;
-                    }
+                && mInventory[1].getMaxStackSize() > mInventory[1].stackSize) {
+                    int tmp = Math.min(count, mInventory[1].getMaxStackSize() - mInventory[1].stackSize);
+                    mInventory[1].stackSize += tmp;
+                    count -= tmp;
+                }
             setItemCount(count);
             if (stack != null) {
                 mInventory[2] = stack.copy();
@@ -373,7 +372,7 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
     @Override
     public int getProgresstime() {
         return getItemCount() + (mInventory[0] == null ? 0 : mInventory[0].stackSize)
-                + (mInventory[1] == null ? 0 : mInventory[1].stackSize);
+            + (mInventory[1] == null ? 0 : mInventory[1].stackSize);
     }
 
     @Override
@@ -391,22 +390,22 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
 
         if (getItemStack() == null) {
             return new String[] { EnumChatFormatting.BLUE + chestName() + EnumChatFormatting.RESET, "Stored Items:",
-                    EnumChatFormatting.GOLD + "No Items" + EnumChatFormatting.RESET,
-                    EnumChatFormatting.GREEN + "0"
-                            + EnumChatFormatting.RESET
-                            + " "
-                            + EnumChatFormatting.YELLOW
-                            + GT_Utility.formatNumbers(getMaxItemCount())
-                            + EnumChatFormatting.RESET };
+                EnumChatFormatting.GOLD + "No Items" + EnumChatFormatting.RESET,
+                EnumChatFormatting.GREEN + "0"
+                    + EnumChatFormatting.RESET
+                    + " "
+                    + EnumChatFormatting.YELLOW
+                    + GT_Utility.formatNumbers(getMaxItemCount())
+                    + EnumChatFormatting.RESET };
         }
         return new String[] { EnumChatFormatting.BLUE + chestName() + EnumChatFormatting.RESET, "Stored Items:",
-                EnumChatFormatting.GOLD + getItemStack().getDisplayName() + EnumChatFormatting.RESET,
-                EnumChatFormatting.GREEN + GT_Utility.formatNumbers(getItemCount())
-                        + EnumChatFormatting.RESET
-                        + " "
-                        + EnumChatFormatting.YELLOW
-                        + GT_Utility.formatNumbers(getMaxItemCount())
-                        + EnumChatFormatting.RESET };
+            EnumChatFormatting.GOLD + getItemStack().getDisplayName() + EnumChatFormatting.RESET,
+            EnumChatFormatting.GREEN + GT_Utility.formatNumbers(getItemCount())
+                + EnumChatFormatting.RESET
+                + " "
+                + EnumChatFormatting.YELLOW
+                + GT_Utility.formatNumbers(getMaxItemCount())
+                + EnumChatFormatting.RESET };
     }
 
     @Override
@@ -434,7 +433,8 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
 
     private boolean hasActiveMEConnection() {
         if (listeners == null || listeners.isEmpty()) return false;
-        for (Map.Entry<appeng.api.storage.IMEMonitorHandlerReceiver<appeng.api.storage.data.IAEItemStack>, Object> e : listeners.entrySet()) {
+        for (Map.Entry<appeng.api.storage.IMEMonitorHandlerReceiver<appeng.api.storage.data.IAEItemStack>, Object> e : listeners
+            .entrySet()) {
             if ((e.getKey() instanceof appeng.api.parts.IPart)) {
                 appeng.api.networking.IGridNode n = ((appeng.api.parts.IPart) e.getKey()).getGridNode();
                 if (n != null && n.isActive()) return true;
@@ -480,25 +480,25 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-            boolean aActive, boolean aRedstone) {
+        boolean aActive, boolean aRedstone) {
         if (aSide != aFacing) return new ITexture[] { MACHINE_CASINGS[mTier][aColorIndex + 1] };
         return new ITexture[] { MACHINE_CASINGS[mTier][aColorIndex + 1], TextureFactory.of(OVERLAY_SCHEST),
-                TextureFactory.builder()
-                              .addIcon(OVERLAY_SCHEST_GLOW)
-                              .glow()
-                              .build() };
+            TextureFactory.builder()
+                .addIcon(OVERLAY_SCHEST_GLOW)
+                .glow()
+                .build() };
     }
 
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
-            IWailaConfigHandler config) {
+        IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currenttip, accessor, config);
         NBTTagCompound tag = accessor.getNBTData();
         if (tag.hasKey("itemType", Constants.NBT.TAG_COMPOUND)) {
             currenttip.add("Item Count: " + GT_Utility.parseNumberToString(tag.getInteger("itemCount")));
             currenttip.add(
-                    "Item Type: " + ItemStack.loadItemStackFromNBT(tag.getCompoundTag("itemType"))
-                                             .getDisplayName());
+                "Item Type: " + ItemStack.loadItemStackFromNBT(tag.getCompoundTag("itemType"))
+                    .getDisplayName());
         } else {
             currenttip.add("Chest Empty");
         }
@@ -506,7 +506,7 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
 
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-            int z) {
+        int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         ItemStack is = getItemStack();
         if (GT_Utility.isStackInvalid(is)) return;
@@ -525,36 +525,33 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         builder.widget(
-                new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
-                                    .setPos(7, 16)
-                                    .setSize(71, 45))
-               .widget(
-                       new SlotWidget(inventoryHandler, 0)
-                                                          .setBackground(
-                                                                  getGUITextureSet().getItemSlot(),
-                                                                  GT_UITextures.OVERLAY_SLOT_IN)
-                                                          .setPos(79, 16))
-               .widget(
-                       new SlotWidget(inventoryHandler, 1).setAccess(true, false)
-                                                          .setBackground(
-                                                                  getGUITextureSet().getItemSlot(),
-                                                                  GT_UITextures.OVERLAY_SLOT_OUT)
-                                                          .setPos(79, 52))
-               .widget(
-                       SlotWidget.phantom(inventoryHandler, 2)
-                                 .disableInteraction()
-                                 .setBackground(GT_UITextures.TRANSPARENT)
-                                 .setPos(59, 42))
-               .widget(
-                       new TextWidget("Item Amount").setDefaultColor(COLOR_TEXT_WHITE.get())
-                                                    .setPos(10, 20))
-               .widget(
-                       TextWidget.dynamicString(
-                               () -> GT_Utility.parseNumberToString(
-                                       this instanceof GT_MetaTileEntity_QuantumChest
-                                               ? ((GT_MetaTileEntity_QuantumChest) this).mItemCount
-                                               : 0))
-                                 .setDefaultColor(COLOR_TEXT_WHITE.get())
-                                 .setPos(10, 30));
+            new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
+                .setPos(7, 16)
+                .setSize(71, 45))
+            .widget(
+                new SlotWidget(inventoryHandler, 0)
+                    .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_IN)
+                    .setPos(79, 16))
+            .widget(
+                new SlotWidget(inventoryHandler, 1).setAccess(true, false)
+                    .setBackground(getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_OUT)
+                    .setPos(79, 52))
+            .widget(
+                SlotWidget.phantom(inventoryHandler, 2)
+                    .disableInteraction()
+                    .setBackground(GT_UITextures.TRANSPARENT)
+                    .setPos(59, 42))
+            .widget(
+                new TextWidget("Item Amount").setDefaultColor(COLOR_TEXT_WHITE.get())
+                    .setPos(10, 20))
+            .widget(
+                TextWidget
+                    .dynamicString(
+                        () -> GT_Utility.parseNumberToString(
+                            this instanceof GT_MetaTileEntity_QuantumChest
+                                ? ((GT_MetaTileEntity_QuantumChest) this).mItemCount
+                                : 0))
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
+                    .setPos(10, 30));
     }
 }

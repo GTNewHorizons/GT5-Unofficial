@@ -129,7 +129,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
             throw new IllegalArgumentException("MetaMachine-Slot Nr. " + aID + " is already occupied!");
         }
         mName = aBasicName.replace(" ", "_")
-                          .toLowerCase(Locale.ENGLISH);
+            .toLowerCase(Locale.ENGLISH);
         setBaseMetaTileEntity(GregTech_API.constructBaseMetaTileEntity());
         getBaseMetaTileEntity().setMetaTileID((short) aID);
         GT_LanguageManager.addStringLocalization("gt.blockmachines." + mName + ".name", aRegionalName);
@@ -166,7 +166,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
     public void setBaseMetaTileEntity(IGregTechTileEntity aBaseMetaTileEntity) {
         if (mBaseMetaTileEntity != null && aBaseMetaTileEntity == null) {
             mBaseMetaTileEntity.getMetaTileEntity()
-                               .inValidate();
+                .inValidate();
             mBaseMetaTileEntity.setMetaTileEntity(null);
         }
         mBaseMetaTileEntity = aBaseMetaTileEntity;
@@ -228,7 +228,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
 
     @Override
     public boolean onWrenchRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY,
-            float aZ) {
+        float aZ) {
         if (getBaseMetaTileEntity().isValidFacing(aWrenchingSide)) {
             getBaseMetaTileEntity().setFrontFacing(aWrenchingSide);
             return true;
@@ -238,42 +238,30 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
 
     @Override
     public boolean onWireCutterRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY,
-            float aZ) {
+        float aZ) {
         if (!aPlayer.isSneaking()) return false;
         byte tSide = GT_Utility.getOppositeSide(aWrenchingSide);
         TileEntity tTileEntity = getBaseMetaTileEntity().getTileEntityAtSide(aWrenchingSide);
         if ((tTileEntity instanceof IGregTechTileEntity)
-                && (((IGregTechTileEntity) tTileEntity).getMetaTileEntity() instanceof GT_MetaPipeEntity_Cable)) {
+            && (((IGregTechTileEntity) tTileEntity).getMetaTileEntity() instanceof GT_MetaPipeEntity_Cable)) {
             // The tile entity we're facing is a cable, let's try to connect to it
             return ((IGregTechTileEntity) tTileEntity).getMetaTileEntity()
-                                                      .onWireCutterRightClick(
-                                                              aWrenchingSide,
-                                                              tSide,
-                                                              aPlayer,
-                                                              aX,
-                                                              aY,
-                                                              aZ);
+                .onWireCutterRightClick(aWrenchingSide, tSide, aPlayer, aX, aY, aZ);
         }
         return false;
     }
 
     @Override
     public boolean onSolderingToolRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY,
-            float aZ) {
+        float aZ) {
         if (!aPlayer.isSneaking()) return false;
         byte tSide = GT_Utility.getOppositeSide(aWrenchingSide);
         TileEntity tTileEntity = getBaseMetaTileEntity().getTileEntityAtSide(aWrenchingSide);
         if ((tTileEntity instanceof IGregTechTileEntity)
-                && (((IGregTechTileEntity) tTileEntity).getMetaTileEntity() instanceof GT_MetaPipeEntity_Cable)) {
+            && (((IGregTechTileEntity) tTileEntity).getMetaTileEntity() instanceof GT_MetaPipeEntity_Cable)) {
             // The tile entity we're facing is a cable, let's try to connect to it
             return ((IGregTechTileEntity) tTileEntity).getMetaTileEntity()
-                                                      .onSolderingToolRightClick(
-                                                              aWrenchingSide,
-                                                              tSide,
-                                                              aPlayer,
-                                                              aX,
-                                                              aY,
-                                                              aZ);
+                .onSolderingToolRightClick(aWrenchingSide, tSide, aPlayer, aX, aY, aZ);
         }
         return false;
     }
@@ -281,18 +269,18 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
     @Override
     public void onExplosion() {
         GT_Log.exp.println(
-                "Machine at " + this.getBaseMetaTileEntity()
-                                    .getXCoord()
-                        + " | "
-                        + this.getBaseMetaTileEntity()
-                              .getYCoord()
-                        + " | "
-                        + this.getBaseMetaTileEntity()
-                              .getZCoord()
-                        + " DIMID: "
-                        + this.getBaseMetaTileEntity()
-                              .getWorld().provider.dimensionId
-                        + " exploded.");
+            "Machine at " + this.getBaseMetaTileEntity()
+                .getXCoord()
+                + " | "
+                + this.getBaseMetaTileEntity()
+                    .getYCoord()
+                + " | "
+                + this.getBaseMetaTileEntity()
+                    .getZCoord()
+                + " DIMID: "
+                + this.getBaseMetaTileEntity()
+                    .getWorld().provider.dimensionId
+                + " exploded.");
     }
 
     @Override
@@ -355,7 +343,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, byte aSide, float aX,
-            float aY, float aZ) {
+        float aY, float aZ) {
         return onRightclick(aBaseMetaTileEntity, aPlayer);
     }
 
@@ -647,7 +635,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
 
     @Override
     public ArrayList<String> getSpecialDebugInfo(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer,
-            int aLogLevel, ArrayList<String> aList) {
+        int aLogLevel, ArrayList<String> aList) {
         return aList;
     }
 
@@ -770,7 +758,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
      */
     public boolean isTeleporterCompatible() {
         return isEnetOutput() && getBaseMetaTileEntity().getOutputVoltage() >= 128
-                && getBaseMetaTileEntity().getUniversalEnergyCapacity() >= 500000;
+            && getBaseMetaTileEntity().getUniversalEnergyCapacity() >= 500000;
     }
 
     /**
@@ -907,16 +895,16 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
     @Override
     public boolean canInsertItem(int aIndex, ItemStack aStack, int aSide) {
         return isValidSlot(aIndex) && aStack != null
-                && aIndex < mInventory.length
-                && (mInventory[aIndex] == null || GT_Utility.areStacksEqual(aStack, mInventory[aIndex]))
-                && allowPutStack(getBaseMetaTileEntity(), aIndex, (byte) aSide, aStack);
+            && aIndex < mInventory.length
+            && (mInventory[aIndex] == null || GT_Utility.areStacksEqual(aStack, mInventory[aIndex]))
+            && allowPutStack(getBaseMetaTileEntity(), aIndex, (byte) aSide, aStack);
     }
 
     @Override
     public boolean canExtractItem(int aIndex, ItemStack aStack, int aSide) {
         return isValidSlot(aIndex) && aStack != null
-                && aIndex < mInventory.length
-                && allowPullStack(getBaseMetaTileEntity(), aIndex, (byte) aSide, aStack);
+            && aIndex < mInventory.length
+            && allowPullStack(getBaseMetaTileEntity(), aIndex, (byte) aSide, aStack);
     }
 
     @Override
@@ -944,10 +932,10 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
     public int fill(ForgeDirection aSide, FluidStack aFluid, boolean doFill) {
         if (getBaseMetaTileEntity().hasSteamEngineUpgrade() && GT_ModHandler.isSteam(aFluid) && aFluid.amount > 1) {
             int tSteam = (int) Math.min(
-                    Integer.MAX_VALUE,
-                    Math.min(
-                            aFluid.amount / 2,
-                            getBaseMetaTileEntity().getSteamCapacity() - getBaseMetaTileEntity().getStoredSteam()));
+                Integer.MAX_VALUE,
+                Math.min(
+                    aFluid.amount / 2,
+                    getBaseMetaTileEntity().getSteamCapacity() - getBaseMetaTileEntity().getStoredSteam()));
             if (tSteam > 0) {
                 markDirty();
                 if (doFill) getBaseMetaTileEntity().increaseStoredSteam(tSteam, true);
@@ -1106,7 +1094,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
 
     @Override
     public void addCollisionBoxesToList(World aWorld, int aX, int aY, int aZ, AxisAlignedBB inputAABB,
-            List<AxisAlignedBB> outputAABB, Entity collider) {
+        List<AxisAlignedBB> outputAABB, Entity collider) {
         AxisAlignedBB axisalignedbb1 = getCollisionBoundingBoxFromPool(aWorld, aX, aY, aZ);
         if (axisalignedbb1 != null && inputAABB.intersectsWith(axisalignedbb1)) outputAABB.add(axisalignedbb1);
     }
@@ -1171,12 +1159,12 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
 
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
-            IWailaConfigHandler config) {
+        IWailaConfigHandler config) {
         currenttip.add(
-                String.format(
-                        "Facing: %s",
-                        ForgeDirection.getOrientation(mBaseMetaTileEntity.getFrontFacing())
-                                      .name()));
+            String.format(
+                "Facing: %s",
+                ForgeDirection.getOrientation(mBaseMetaTileEntity.getFrontFacing())
+                    .name()));
 
         if (this instanceof IPowerChannelState state) {
             // adapted from PowerStateWailaDataProvider
@@ -1199,7 +1187,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
 
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-            int z) {
+        int z) {
         if (this instanceof IPowerChannelState state) {
             // adapted from PowerStateWailaDataProvider
             final boolean isActive = state.isActive();
@@ -1216,19 +1204,16 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
             if (getProxy() == null) return "(proxy)";
             if (getProxy().getNode() == null) return "(node)";
             if (getProxy().getNode()
-                          .getGrid()
-                    == null)
-                return "(grid)";
+                .getGrid() == null) return "(grid)";
             if (!getProxy().getNode()
-                           .meetsChannelRequirements())
-                return "(channels)";
+                .meetsChannelRequirements()) return "(channels)";
             IPathingGrid pg = getProxy().getNode()
-                                        .getGrid()
-                                        .getCache(IPathingGrid.class);
+                .getGrid()
+                .getCache(IPathingGrid.class);
             if (!pg.isNetworkBooting()) return "(booting)";
             IEnergyGrid eg = getProxy().getNode()
-                                       .getGrid()
-                                       .getCache(IEnergyGrid.class);
+                .getGrid()
+                .getCache(IEnergyGrid.class);
             if (!eg.isNetworkPowered()) return "(power)";
         } catch (Throwable ex) {
             ex.printStackTrace();

@@ -24,7 +24,7 @@ import gregtech.common.gui.modularui.widget.CoverDataFollower_TextFieldWidget;
 import io.netty.buffer.ByteBuf;
 
 public class GT_Cover_WirelessFluidDetector
-        extends GT_Cover_AdvancedRedstoneTransmitterBase<GT_Cover_WirelessFluidDetector.FluidTransmitterData> {
+    extends GT_Cover_AdvancedRedstoneTransmitterBase<GT_Cover_WirelessFluidDetector.FluidTransmitterData> {
 
     public GT_Cover_WirelessFluidDetector(ITexture coverTexture) {
         super(FluidTransmitterData.class, coverTexture);
@@ -42,11 +42,9 @@ public class GT_Cover_WirelessFluidDetector
 
     @Override
     public FluidTransmitterData doCoverThingsImpl(byte aSide, byte aInputRedstone, int aCoverID,
-            FluidTransmitterData aCoverVariable, ICoverable aTileEntity, long aTimer) {
-        byte signal = GT_Cover_LiquidMeter.computeSignalBasedOnFluid(
-                aTileEntity,
-                aCoverVariable.invert,
-                aCoverVariable.threshold);
+        FluidTransmitterData aCoverVariable, ICoverable aTileEntity, long aTimer) {
+        byte signal = GT_Cover_LiquidMeter
+            .computeSignalBasedOnFluid(aTileEntity, aCoverVariable.invert, aCoverVariable.threshold);
         long hash = hashCoverCoords(aTileEntity, aSide);
         setSignalAt(aCoverVariable.getUuid(), aCoverVariable.getFrequency(), hash, signal);
 
@@ -55,13 +53,13 @@ public class GT_Cover_WirelessFluidDetector
 
     @Override
     public boolean letsRedstoneGoOutImpl(byte aSide, int aCoverID, FluidTransmitterData aCoverVariable,
-            ICoverable aTileEntity) {
+        ICoverable aTileEntity) {
         return true;
     }
 
     @Override
     protected boolean manipulatesSidedRedstoneOutputImpl(byte aSide, int aCoverID, FluidTransmitterData aCoverVariable,
-            ICoverable aTileEntity) {
+        ICoverable aTileEntity) {
         return true;
     }
 
@@ -146,24 +144,24 @@ public class GT_Cover_WirelessFluidDetector
         protected void addUIWidgets(ModularWindow.Builder builder) {
             super.addUIWidgets(builder);
             builder.widget(
-                    new TextWidget(GT_Utility.trans("222", "Fluid threshold")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                                                                              .setPos(startX + spaceX * 5, 4 + startY));
+                new TextWidget(GT_Utility.trans("222", "Fluid threshold")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                    .setPos(startX + spaceX * 5, 4 + startY));
         }
 
         @Override
         protected void addUIForDataController(CoverDataControllerWidget<FluidTransmitterData> controller) {
             super.addUIForDataController(controller);
             controller.addFollower(
-                    new CoverDataFollower_TextFieldWidget<>(),
-                    coverData -> String.valueOf(coverData.threshold),
-                    (coverData, state) -> {
-                        coverData.threshold = (int) MathExpression.parseMathExpression(state);
-                        return coverData;
-                    },
-                    widget -> widget.setOnScrollNumbers()
-                                    .setNumbers(0, Integer.MAX_VALUE)
-                                    .setPos(1, 2)
-                                    .setSize(spaceX * 5 - 4, 12));
+                new CoverDataFollower_TextFieldWidget<>(),
+                coverData -> String.valueOf(coverData.threshold),
+                (coverData, state) -> {
+                    coverData.threshold = (int) MathExpression.parseMathExpression(state);
+                    return coverData;
+                },
+                widget -> widget.setOnScrollNumbers()
+                    .setNumbers(0, Integer.MAX_VALUE)
+                    .setPos(1, 2)
+                    .setSize(spaceX * 5 - 4, 12));
         }
     }
 }

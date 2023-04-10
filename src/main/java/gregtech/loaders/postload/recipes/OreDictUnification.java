@@ -13,11 +13,11 @@ public class OreDictUnification implements Runnable {
     public void run() {
         if (HardcoreEnderExpansion.isModLoaded()) {
             GT_OreDictUnificator.set(
-                    OrePrefixes.ingot,
-                    Materials.HeeEndium,
-                    getModItem(HardcoreEnderExpansion.ID, "endium_ingot", 1),
-                    true,
-                    true);
+                OrePrefixes.ingot,
+                Materials.HeeEndium,
+                getModItem(HardcoreEnderExpansion.ID, "endium_ingot", 1),
+                true,
+                true);
         }
     }
 }

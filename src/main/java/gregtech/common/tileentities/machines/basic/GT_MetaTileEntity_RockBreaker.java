@@ -20,85 +20,85 @@ public class GT_MetaTileEntity_RockBreaker extends GT_MetaTileEntity_BasicMachin
 
     public GT_MetaTileEntity_RockBreaker(int aID, String aName, String aNameRegional, int aTier) {
         super(
-                aID,
-                aName,
-                aNameRegional,
-                aTier,
-                1,
-                "Put Lava and Water adjacent",
-                1,
-                1,
-                "RockBreaker.png",
-                "",
-                TextureFactory.of(
-                        TextureFactory.of(OVERLAY_SIDE_ROCK_BREAKER_ACTIVE),
-                        TextureFactory.builder()
-                                      .addIcon(OVERLAY_SIDE_ROCK_BREAKER_ACTIVE_GLOW)
-                                      .glow()
-                                      .build()),
-                TextureFactory.of(
-                        TextureFactory.of(OVERLAY_SIDE_ROCK_BREAKER),
-                        TextureFactory.builder()
-                                      .addIcon(OVERLAY_SIDE_ROCK_BREAKER_GLOW)
-                                      .glow()
-                                      .build()),
-                TextureFactory.of(
-                        TextureFactory.of(OVERLAY_FRONT_ROCK_BREAKER_ACTIVE),
-                        TextureFactory.builder()
-                                      .addIcon(OVERLAY_FRONT_ROCK_BREAKER_ACTIVE_GLOW)
-                                      .glow()
-                                      .build()),
-                TextureFactory.of(
-                        TextureFactory.of(OVERLAY_FRONT_ROCK_BREAKER),
-                        TextureFactory.builder()
-                                      .addIcon(OVERLAY_FRONT_ROCK_BREAKER_GLOW)
-                                      .glow()
-                                      .build()),
-                TextureFactory.of(
-                        TextureFactory.of(OVERLAY_TOP_ROCK_BREAKER_ACTIVE),
-                        TextureFactory.builder()
-                                      .addIcon(OVERLAY_TOP_ROCK_BREAKER_ACTIVE_GLOW)
-                                      .glow()
-                                      .build()),
-                TextureFactory.of(
-                        TextureFactory.of(OVERLAY_TOP_ROCK_BREAKER),
-                        TextureFactory.builder()
-                                      .addIcon(OVERLAY_TOP_ROCK_BREAKER_GLOW)
-                                      .glow()
-                                      .build()),
-                TextureFactory.of(
-                        TextureFactory.of(OVERLAY_BOTTOM_ROCK_BREAKER_ACTIVE),
-                        TextureFactory.builder()
-                                      .addIcon(OVERLAY_BOTTOM_ROCK_BREAKER_ACTIVE_GLOW)
-                                      .glow()
-                                      .build()),
-                TextureFactory.of(
-                        TextureFactory.of(OVERLAY_BOTTOM_ROCK_BREAKER),
-                        TextureFactory.builder()
-                                      .addIcon(OVERLAY_BOTTOM_ROCK_BREAKER_GLOW)
-                                      .glow()
-                                      .build()));
+            aID,
+            aName,
+            aNameRegional,
+            aTier,
+            1,
+            "Put Lava and Water adjacent",
+            1,
+            1,
+            "RockBreaker.png",
+            "",
+            TextureFactory.of(
+                TextureFactory.of(OVERLAY_SIDE_ROCK_BREAKER_ACTIVE),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_SIDE_ROCK_BREAKER_ACTIVE_GLOW)
+                    .glow()
+                    .build()),
+            TextureFactory.of(
+                TextureFactory.of(OVERLAY_SIDE_ROCK_BREAKER),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_SIDE_ROCK_BREAKER_GLOW)
+                    .glow()
+                    .build()),
+            TextureFactory.of(
+                TextureFactory.of(OVERLAY_FRONT_ROCK_BREAKER_ACTIVE),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_ROCK_BREAKER_ACTIVE_GLOW)
+                    .glow()
+                    .build()),
+            TextureFactory.of(
+                TextureFactory.of(OVERLAY_FRONT_ROCK_BREAKER),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_ROCK_BREAKER_GLOW)
+                    .glow()
+                    .build()),
+            TextureFactory.of(
+                TextureFactory.of(OVERLAY_TOP_ROCK_BREAKER_ACTIVE),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_TOP_ROCK_BREAKER_ACTIVE_GLOW)
+                    .glow()
+                    .build()),
+            TextureFactory.of(
+                TextureFactory.of(OVERLAY_TOP_ROCK_BREAKER),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_TOP_ROCK_BREAKER_GLOW)
+                    .glow()
+                    .build()),
+            TextureFactory.of(
+                TextureFactory.of(OVERLAY_BOTTOM_ROCK_BREAKER_ACTIVE),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_BOTTOM_ROCK_BREAKER_ACTIVE_GLOW)
+                    .glow()
+                    .build()),
+            TextureFactory.of(
+                TextureFactory.of(OVERLAY_BOTTOM_ROCK_BREAKER),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_BOTTOM_ROCK_BREAKER_GLOW)
+                    .glow()
+                    .build()));
     }
 
     public GT_MetaTileEntity_RockBreaker(String aName, int aTier, String aDescription, ITexture[][][] aTextures,
-            String aGUIName, String aNEIName) {
+        String aGUIName, String aNEIName) {
         super(aName, aTier, 1, aDescription, aTextures, 1, 1, aGUIName, aNEIName);
     }
 
     public GT_MetaTileEntity_RockBreaker(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures,
-            String aGUIName, String aNEIName) {
+        String aGUIName, String aNEIName) {
         super(aName, aTier, 1, aDescription, aTextures, 1, 1, aGUIName, aNEIName);
     }
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_RockBreaker(
-                this.mName,
-                this.mTier,
-                this.mDescriptionArray,
-                this.mTextures,
-                this.mGUIName,
-                this.mNEIName);
+            this.mName,
+            this.mTier,
+            this.mDescriptionArray,
+            this.mTextures,
+            this.mGUIName,
+            this.mNEIName);
     }
 
     @Override
@@ -108,9 +108,9 @@ public class GT_MetaTileEntity_RockBreaker extends GT_MetaTileEntity_BasicMachin
 
     @Override
     protected boolean allowPutStackValidated(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide,
-            ItemStack aStack) {
+        ItemStack aStack) {
         return super.allowPutStackValidated(aBaseMetaTileEntity, aIndex, aSide, aStack)
-                && getRecipeList().containsInput(aStack);
+            && getRecipeList().containsInput(aStack);
     }
 
     @Override
@@ -122,23 +122,23 @@ public class GT_MetaTileEntity_RockBreaker extends GT_MetaTileEntity_BasicMachin
     public int checkRecipe() {
         IGregTechTileEntity aBaseMetaTileEntity = getBaseMetaTileEntity();
         if ((aBaseMetaTileEntity.getBlockOffset(0, 0, 1) == Blocks.water)
-                || (aBaseMetaTileEntity.getBlockOffset(0, 0, -1) == Blocks.water)
-                || (aBaseMetaTileEntity.getBlockOffset(-1, 0, 0) == Blocks.water)
-                || (aBaseMetaTileEntity.getBlockOffset(1, 0, 0) == Blocks.water)) {
+            || (aBaseMetaTileEntity.getBlockOffset(0, 0, -1) == Blocks.water)
+            || (aBaseMetaTileEntity.getBlockOffset(-1, 0, 0) == Blocks.water)
+            || (aBaseMetaTileEntity.getBlockOffset(1, 0, 0) == Blocks.water)) {
             ItemStack tOutput = null;
             if (aBaseMetaTileEntity.getBlockOffset(0, 1, 0) == Blocks.lava) {
                 tOutput = new ItemStack(Blocks.stone, 1);
             } else if ((aBaseMetaTileEntity.getBlockOffset(0, 0, 1) == Blocks.lava)
-                    || (aBaseMetaTileEntity.getBlockOffset(0, 0, -1) == Blocks.lava)
-                    || (aBaseMetaTileEntity.getBlockOffset(-1, 0, 0) == Blocks.lava)
-                    || (aBaseMetaTileEntity.getBlockOffset(1, 0, 0) == Blocks.lava)) {
-                        tOutput = new ItemStack(Blocks.cobblestone, 1);
-                    }
+                || (aBaseMetaTileEntity.getBlockOffset(0, 0, -1) == Blocks.lava)
+                || (aBaseMetaTileEntity.getBlockOffset(-1, 0, 0) == Blocks.lava)
+                || (aBaseMetaTileEntity.getBlockOffset(1, 0, 0) == Blocks.lava)) {
+                    tOutput = new ItemStack(Blocks.cobblestone, 1);
+                }
             if (tOutput != null) {
                 if (GT_Utility.areStacksEqual(getStackInSlot(getCircuitSlot()), GT_Utility.getIntegratedCircuit(1))) {
                     if (GT_Utility.areStacksEqual(
-                            getInputAt(0),
-                            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L))) {
+                        getInputAt(0),
+                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L))) {
                         tOutput = new ItemStack(Blocks.obsidian, 1);
                         if (canOutput(tOutput)) {
                             getInputAt(0).stackSize -= 1;

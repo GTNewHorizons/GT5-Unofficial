@@ -14,16 +14,16 @@ public class GT_GUIContainer_3by3 extends GT_GUIContainerMetaTile_Machine {
 
     public GT_GUIContainer_3by3(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, String aName) {
         super(
-                new GT_Container_3by3(aInventoryPlayer, aTileEntity),
-                GregTech.getResourcePath("textures", "gui", "3by3.png"));
+            new GT_Container_3by3(aInventoryPlayer, aTileEntity),
+            GregTech.getResourcePath("textures", "gui", "3by3.png"));
         mName = aName;
     }
 
     public GT_GUIContainer_3by3(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, String aName,
-            String aBackground) {
+        String aBackground) {
         super(
-                new GT_Container_3by3(aInventoryPlayer, aTileEntity),
-                GregTech.getResourcePath("textures", "gui", aBackground + "3by3.png"));
+            new GT_Container_3by3(aInventoryPlayer, aTileEntity),
+            GregTech.getResourcePath("textures", "gui", aBackground + "3by3.png"));
         mName = aName;
     }
 

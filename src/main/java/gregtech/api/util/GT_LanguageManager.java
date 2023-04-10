@@ -20,15 +20,15 @@ import gregtech.api.GregTech_API;
 public class GT_LanguageManager {
 
     public static final HashMap<String, String> TEMPMAP = new HashMap<>(), BUFFERMAP = new HashMap<>(),
-            LANGMAP = new HashMap<>();
+        LANGMAP = new HashMap<>();
     public static Configuration sEnglishFile;
     public static String sLanguage = "en_US";
     public static boolean sUseEnglishFile = false;
     public static boolean i18nPlaceholder = true;
 
     public static String FACE_ANY = "gt.lang.face.any", FACE_BOTTOM = "gt.lang.face.bottom",
-            FACE_TOP = "gt.lang.face.top", FACE_LEFT = "gt.lang.face.left", FACE_FRONT = "gt.lang.face.front",
-            FACE_RIGHT = "gt.lang.face.right", FACE_BACK = "gt.lang.face.back", FACE_NONE = "gt.lang.face.none";
+        FACE_TOP = "gt.lang.face.top", FACE_LEFT = "gt.lang.face.left", FACE_FRONT = "gt.lang.face.front",
+        FACE_RIGHT = "gt.lang.face.right", FACE_BACK = "gt.lang.face.back", FACE_NONE = "gt.lang.face.none";
 
     public static String[] FACES = { FACE_BOTTOM, FACE_TOP, FACE_LEFT, FACE_FRONT, FACE_RIGHT, FACE_BACK, FACE_NONE };
 
@@ -36,17 +36,13 @@ public class GT_LanguageManager {
 
     static {
         try {
-            Field fieldStringTranslateLanguageList = ReflectionHelper.findField(
-                    net.minecraft.util.StringTranslate.class,
-                    "languageList",
-                    "field_74816_c");
-            Field fieldStringTranslateInstance = ReflectionHelper.findField(
-                    net.minecraft.util.StringTranslate.class,
-                    "instance",
-                    "field_74817_a");
+            Field fieldStringTranslateLanguageList = ReflectionHelper
+                .findField(net.minecraft.util.StringTranslate.class, "languageList", "field_74816_c");
+            Field fieldStringTranslateInstance = ReflectionHelper
+                .findField(net.minecraft.util.StringTranslate.class, "instance", "field_74817_a");
             // noinspection unchecked
-            stringTranslateLanguageList = (Map<String, String>) fieldStringTranslateLanguageList.get(
-                    fieldStringTranslateInstance.get(null));
+            stringTranslateLanguageList = (Map<String, String>) fieldStringTranslateLanguageList
+                .get(fieldStringTranslateInstance.get(null));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -67,7 +63,7 @@ public class GT_LanguageManager {
         }
         TEMPMAP.put(aKey.trim(), aEnglish);
         LanguageRegistry.instance()
-                        .injectLanguage(sLanguage, TEMPMAP);
+            .injectLanguage(sLanguage, TEMPMAP);
         TEMPMAP.clear();
         if (sUseEnglishFile && !aWriteIntoLangFile) {
             if (!LANGMAP.containsKey(aKey)) {
@@ -95,7 +91,7 @@ public class GT_LanguageManager {
             Property tProperty = sEnglishFile.get("LanguageFile", aKey.trim(), aEnglish);
             if (!tProperty.wasRead() && GregTech_API.sPostloadFinished) sEnglishFile.save();
             if (sEnglishFile.get("EnableLangFile", "UseThisFileAsLanguageFile", false)
-                            .getBoolean(false)) {
+                .getBoolean(false)) {
                 aEnglish = tProperty.getString();
                 sUseEnglishFile = true;
             }
@@ -108,7 +104,7 @@ public class GT_LanguageManager {
         String tTrimmedKey = aKey.trim(), rTranslation;
         if (sUseEnglishFile) {
             rTranslation = LanguageRegistry.instance()
-                                           .getStringLocalization(tTrimmedKey);
+                .getStringLocalization(tTrimmedKey);
         } else {
             rTranslation = StatCollector.translateToLocal(tTrimmedKey);
         }
@@ -148,7 +144,7 @@ public class GT_LanguageManager {
         NBTTagCompound tNBT = aStack.getTagCompound();
         if (tNBT != null && tNBT.hasKey("display")) {
             String tName = tNBT.getCompoundTag("display")
-                               .getString("Name");
+                .getString("Name");
             if (GT_Utility.isStringValid(tName)) {
                 return tName;
             }
@@ -219,13 +215,13 @@ public class GT_LanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_065", "Emit if 5 Maintenance Needed(inverted)");
         addStringLocalization("Interaction_DESCRIPTION_Index_066", "Emit if rotor needs maintenance low accuracy mod");
         addStringLocalization(
-                "Interaction_DESCRIPTION_Index_067",
-                "Emit if rotor needs maintenance low accuracy mod(inverted)");
+            "Interaction_DESCRIPTION_Index_067",
+            "Emit if rotor needs maintenance low accuracy mod(inverted)");
         addStringLocalization("Interaction_DESCRIPTION_Index_068", "Emit if rotor needs maintenance high accuracy mod");
         addStringLocalization("Interaction_DESCRIPTION_Index_068.1", "Emit if any Player is close");
         addStringLocalization(
-                "Interaction_DESCRIPTION_Index_069",
-                "Emit if rotor needs maintenance high accuracy mod(inverted)");
+            "Interaction_DESCRIPTION_Index_069",
+            "Emit if rotor needs maintenance high accuracy mod(inverted)");
         addStringLocalization("Interaction_DESCRIPTION_Index_069.1", "Emit if other Player is close");
         addStringLocalization("Interaction_DESCRIPTION_Index_070", "Emit if you are close");
         addStringLocalization("Interaction_DESCRIPTION_Index_071", "Conducts strongest Input");
@@ -373,8 +369,8 @@ public class GT_LanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_204", "No Pollution in Chunk! HAYO!");
         addStringLocalization("Interaction_DESCRIPTION_Index_206", "Scan for Assembly Line");
         addStringLocalization(
-                "Interaction_DESCRIPTION_Index_207",
-                "Pump speed: %dL every %d ticks, %.2f L/sec on average");
+            "Interaction_DESCRIPTION_Index_207",
+            "Pump speed: %dL every %d ticks, %.2f L/sec on average");
         addStringLocalization("Interaction_DESCRIPTION_Index_208", " L");
         addStringLocalization("Interaction_DESCRIPTION_Index_209", " ticks");
         addStringLocalization("Interaction_DESCRIPTION_Index_209.1", " tick");
@@ -391,8 +387,8 @@ public class GT_LanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_222", "Fluid threshold");
         addStringLocalization("Interaction_DESCRIPTION_Index_222.1", "Energy threshold");
         addStringLocalization(
-                "Interaction_DESCRIPTION_Index_223",
-                "Single recipe locking enabled. Will lock to next recipe.");
+            "Interaction_DESCRIPTION_Index_223",
+            "Single recipe locking enabled. Will lock to next recipe.");
         addStringLocalization("Interaction_DESCRIPTION_Index_224", "Always On");
         addStringLocalization("Interaction_DESCRIPTION_Index_225", "Active with Redstone Signal");
         addStringLocalization("Interaction_DESCRIPTION_Index_226", "Inactive with Redstone Signal");
@@ -436,8 +432,8 @@ public class GT_LanguageManager {
         addStringLocalization("Interaction_DESCRIPTION_Index_262", "Fluid Auto Output Disabled");
         addStringLocalization("Interaction_DESCRIPTION_Index_263", "Fluid Auto Output Enabled");
         addStringLocalization(
-                "Interaction_DESCRIPTION_Index_264",
-                "currently none, will be locked to the next that is put in");
+            "Interaction_DESCRIPTION_Index_264",
+            "currently none, will be locked to the next that is put in");
         addStringLocalization("Interaction_DESCRIPTION_Index_265", "1 specific Fluid");
         addStringLocalization("Interaction_DESCRIPTION_Index_266", "Lock Fluid Mode Disabled");
         addStringLocalization("Interaction_DESCRIPTION_Index_267", "Overflow Voiding Mode Disabled");

@@ -10,7 +10,7 @@ import gregtech.api.util.ISerializableObject;
  * Determines button state with cover data.
  */
 public class CoverDataFollower_CycleButtonWidget<T extends ISerializableObject> extends CoverCycleButtonWidget
-        implements IDataFollowerWidget<T, Integer> {
+    implements IDataFollowerWidget<T, Integer> {
 
     private Function<T, Integer> dataToStateGetter;
 

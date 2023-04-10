@@ -47,8 +47,8 @@ public class GT_Values {
      */
     @SuppressWarnings("PointlessBitwiseExpression") // Nicer source layout this way
     public static final int[] B = new int[] { 1 << 0, 1 << 1, 1 << 2, 1 << 3, 1 << 4, 1 << 5, 1 << 6, 1 << 7, 1 << 8,
-            1 << 9, 1 << 10, 1 << 11, 1 << 12, 1 << 13, 1 << 14, 1 << 15, 1 << 16, 1 << 17, 1 << 18, 1 << 19, 1 << 20,
-            1 << 21, 1 << 22, 1 << 23, 1 << 24, 1 << 25, 1 << 26, 1 << 27, 1 << 28, 1 << 29, 1 << 30, 1 << 31 };
+        1 << 9, 1 << 10, 1 << 11, 1 << 12, 1 << 13, 1 << 14, 1 << 15, 1 << 16, 1 << 17, 1 << 18, 1 << 19, 1 << 20,
+        1 << 21, 1 << 22, 1 << 23, 1 << 24, 1 << 25, 1 << 26, 1 << 27, 1 << 28, 1 << 29, 1 << 30, 1 << 31 };
 
     /**
      * Renamed from "MATERIAL_UNIT" to just "M"
@@ -78,9 +78,9 @@ public class GT_Values {
      * The Voltage Tiers. Use this Array instead of the old named Voltage Variables
      */
     public static final long[] V = new long[] { 8L, 32L, 128L, 512L, 2048L, 8192L, 32_768L, 131_072L, 524_288L,
-            2_097_152L, 8_388_608L, 33_554_432L, 134_217_728L, 536_870_912L, Integer.MAX_VALUE - 7,
-            // Error tier to prevent out of bounds errors. Not really a real tier (for now).
-            8_589_934_592L };
+        2_097_152L, 8_388_608L, 33_554_432L, 134_217_728L, 536_870_912L, Integer.MAX_VALUE - 7,
+        // Error tier to prevent out of bounds errors. Not really a real tier (for now).
+        8_589_934_592L };
 
     /**
      * The Voltage Practical. These are recipe voltage you should use if you expect the recipe to use a full amp of that
@@ -88,12 +88,12 @@ public class GT_Values {
      */
     // this will correctly map ULV to 7.
     public static final long[] VP = Arrays.stream(V)
-                                          .map(
-                                                  i -> BigInteger.valueOf(i)
-                                                                 .multiply(BigInteger.valueOf(30))
-                                                                 .divide(BigInteger.valueOf(32))
-                                                                 .longValueExact())
-                                          .toArray();
+        .map(
+            i -> BigInteger.valueOf(i)
+                .multiply(BigInteger.valueOf(30))
+                .divide(BigInteger.valueOf(32))
+                .longValueExact())
+        .toArray();
     // Why -7? Mystery of the universe. Something may break if you change this so please do not without extensive
     // testing.
     // TODO:Adding that in coremod!!!
@@ -117,65 +117,65 @@ public class GT_Values {
      * </p>
      */
     public static final long[] AatV = new long[] { 268435455, 67108863, 16777215, 4194303, 1048575, 262143, 65535,
-            16383, 4095, 1023, 255, 63, 15, 3, 1, 1 };
+        16383, 4095, 1023, 255, 63, 15, 3, 1, 1 };
     /**
      * The short Names for the Voltages
      */
     public static final String[] VN = new String[] { "ULV", // 0
-            "LV", // 1
-            "MV", // 2
-            "HV", // 3
-            "EV", // 4
-            "IV", // 5
-            "LuV", // 6
-            "ZPM", // 7
-            "UV", // 8
-            "UHV", // 9
-            "UEV", // 10
-            "UIV", // 11
-            "UMV", // 12
-            "UXV", // 13
-            "MAX", // 14
-            "ERROR VOLTAGE" // 15
+        "LV", // 1
+        "MV", // 2
+        "HV", // 3
+        "EV", // 4
+        "IV", // 5
+        "LuV", // 6
+        "ZPM", // 7
+        "UV", // 8
+        "UHV", // 9
+        "UEV", // 10
+        "UIV", // 11
+        "UMV", // 12
+        "UXV", // 13
+        "MAX", // 14
+        "ERROR VOLTAGE" // 15
     };
 
     /**
      * The long Names for the Voltages
      */
     public static final String[] VOLTAGE_NAMES = new String[] { "Ultra Low Voltage", // 0
-            "Low Voltage", // 1
-            "Medium Voltage", // 2
-            "High Voltage", // 3
-            "Extreme Voltage", // 4
-            "Insane Voltage", // 5
-            "Ludicrous Voltage", // 6
-            "ZPM Voltage", // 7
-            "Ultimate Voltage", // 8
-            "Ultimate High Voltage", // 9
-            "Ultimate Extreme Voltage", // 10
-            "Ultimate Insane Voltage", // 11
-            "Ultimate Mega Voltage", // 12
-            "Ultimate Extended Mega Voltage", // 13
-            "Maximum Voltage", // 14
-            "Error Voltage, report this" // 15
+        "Low Voltage", // 1
+        "Medium Voltage", // 2
+        "High Voltage", // 3
+        "Extreme Voltage", // 4
+        "Insane Voltage", // 5
+        "Ludicrous Voltage", // 6
+        "ZPM Voltage", // 7
+        "Ultimate Voltage", // 8
+        "Ultimate High Voltage", // 9
+        "Ultimate Extreme Voltage", // 10
+        "Ultimate Insane Voltage", // 11
+        "Ultimate Mega Voltage", // 12
+        "Ultimate Extended Mega Voltage", // 13
+        "Maximum Voltage", // 14
+        "Error Voltage, report this" // 15
     };
 
     public static final String[] TIER_COLORS = new String[] { EnumChatFormatting.RED.toString(), // ULV, 0
-            EnumChatFormatting.GRAY.toString(), // LV, 1
-            EnumChatFormatting.GOLD.toString(), // MV, 2
-            EnumChatFormatting.YELLOW.toString(), // HV, 3
-            EnumChatFormatting.DARK_GRAY.toString(), // EV, 4
-            EnumChatFormatting.GREEN.toString(), // IV, 5
-            EnumChatFormatting.LIGHT_PURPLE.toString(), // LuV, 6
-            EnumChatFormatting.AQUA.toString(), // ZPM, 7
-            EnumChatFormatting.DARK_GREEN.toString(), // UV, 8
-            EnumChatFormatting.DARK_RED.toString(), // UHV, 9
-            EnumChatFormatting.DARK_PURPLE.toString(), // UEV, 10
-            EnumChatFormatting.DARK_BLUE.toString() + EnumChatFormatting.BOLD, // UIV, 11
-            EnumChatFormatting.RED.toString() + EnumChatFormatting.BOLD + EnumChatFormatting.UNDERLINE, // UMV, 12
-            EnumChatFormatting.DARK_RED.toString() + EnumChatFormatting.BOLD + EnumChatFormatting.UNDERLINE, // UXV, 13
-            EnumChatFormatting.WHITE.toString() + EnumChatFormatting.BOLD + EnumChatFormatting.UNDERLINE, // MAX, 14
-            EnumChatFormatting.OBFUSCATED.toString() // ~~~, 15
+        EnumChatFormatting.GRAY.toString(), // LV, 1
+        EnumChatFormatting.GOLD.toString(), // MV, 2
+        EnumChatFormatting.YELLOW.toString(), // HV, 3
+        EnumChatFormatting.DARK_GRAY.toString(), // EV, 4
+        EnumChatFormatting.GREEN.toString(), // IV, 5
+        EnumChatFormatting.LIGHT_PURPLE.toString(), // LuV, 6
+        EnumChatFormatting.AQUA.toString(), // ZPM, 7
+        EnumChatFormatting.DARK_GREEN.toString(), // UV, 8
+        EnumChatFormatting.DARK_RED.toString(), // UHV, 9
+        EnumChatFormatting.DARK_PURPLE.toString(), // UEV, 10
+        EnumChatFormatting.DARK_BLUE.toString() + EnumChatFormatting.BOLD, // UIV, 11
+        EnumChatFormatting.RED.toString() + EnumChatFormatting.BOLD + EnumChatFormatting.UNDERLINE, // UMV, 12
+        EnumChatFormatting.DARK_RED.toString() + EnumChatFormatting.BOLD + EnumChatFormatting.UNDERLINE, // UXV, 13
+        EnumChatFormatting.WHITE.toString() + EnumChatFormatting.BOLD + EnumChatFormatting.UNDERLINE, // MAX, 14
+        EnumChatFormatting.OBFUSCATED.toString() // ~~~, 15
     };
 
     /**
@@ -285,64 +285,64 @@ public class GT_Values {
     public static final class NBT {
 
         public static final String COLOR = "gt.color", // Integer
-                COVERS = "gt.covers", // String
-                CUSTOM_NAME = "name", // String
-                DISPAY = "gt.display", // String
-                TIER = "gt.tier", // Number
-                FACING = "gt.facing", // Byte
-                LOCK_UPGRADE = "gt.locked", // Boolean
-                MATERIAL = "gt.material", // String containing the Material Name.
-                MODE = "gt.mode", // Number
-                ALLOWED_MODES = "gt.amode", // Number
-                MTE_ID = "gt.mte.id", // Containing the MTE ID
-                MTE_REG = "gt.mte.reg", // Containing the MTE Registry ID
-                OWNER = "gt.owner", // String
-                OWNER_UUID = "gt.ownerUuid", // UUID (String)
+            COVERS = "gt.covers", // String
+            CUSTOM_NAME = "name", // String
+            DISPAY = "gt.display", // String
+            TIER = "gt.tier", // Number
+            FACING = "gt.facing", // Byte
+            LOCK_UPGRADE = "gt.locked", // Boolean
+            MATERIAL = "gt.material", // String containing the Material Name.
+            MODE = "gt.mode", // Number
+            ALLOWED_MODES = "gt.amode", // Number
+            MTE_ID = "gt.mte.id", // Containing the MTE ID
+            MTE_REG = "gt.mte.reg", // Containing the MTE Registry ID
+            OWNER = "gt.owner", // String
+            OWNER_UUID = "gt.ownerUuid", // UUID (String)
 
-                // Machines
-                ACTIVE = "gt.active", // Boolean
-                FLUID_OUT = "gt.fluidout", // Output Fluid
-                ITEM_OUT = "gt.itemout", // Output Item
-                PARALLEL = "gt.parallel", // Number
-                TANK_CAPACITY = "gt.tankcap", // Number
-                TANK_IN = "gt.tank.in.", // FluidStack
-                TANK_OUT = "gt.tank.out.", // FluidStack
-                TEXTURE = "gt.texture", // String
-                INV_INPUT_SIZE = "gt.invsize.in", // Number
-                INV_OUTPUT_SIZE = "gt.invsize.out", // Number
-                INV_INPUT_LIST = "gt.invlist.in", // NBT List
-                INV_OUTPUT_LIST = "gt.invlist.out", // NBT List
-                VOLTAGE = "gt.voltage", // Number
-                AMPERAGE = "gt.amperage", // Number
-                STORED_ENERGY = "gt.stored.energy", // Number
-                MAXIMUM_ENERGY = "gt.maximum.energy", // Number
-                EUT_CONSUMPTION = "gt.eut.consumption", // Number
-                BURN_TIME_LEFT = "gt.burn.time.left", // Number
-                TOTAL_BURN_TIME = "gt.total.burn.time", // Number
-                ALLOWED_WORK = "gt.allowed.work", // Boolean
+            // Machines
+            ACTIVE = "gt.active", // Boolean
+            FLUID_OUT = "gt.fluidout", // Output Fluid
+            ITEM_OUT = "gt.itemout", // Output Item
+            PARALLEL = "gt.parallel", // Number
+            TANK_CAPACITY = "gt.tankcap", // Number
+            TANK_IN = "gt.tank.in.", // FluidStack
+            TANK_OUT = "gt.tank.out.", // FluidStack
+            TEXTURE = "gt.texture", // String
+            INV_INPUT_SIZE = "gt.invsize.in", // Number
+            INV_OUTPUT_SIZE = "gt.invsize.out", // Number
+            INV_INPUT_LIST = "gt.invlist.in", // NBT List
+            INV_OUTPUT_LIST = "gt.invlist.out", // NBT List
+            VOLTAGE = "gt.voltage", // Number
+            AMPERAGE = "gt.amperage", // Number
+            STORED_ENERGY = "gt.stored.energy", // Number
+            MAXIMUM_ENERGY = "gt.maximum.energy", // Number
+            EUT_CONSUMPTION = "gt.eut.consumption", // Number
+            BURN_TIME_LEFT = "gt.burn.time.left", // Number
+            TOTAL_BURN_TIME = "gt.total.burn.time", // Number
+            ALLOWED_WORK = "gt.allowed.work", // Boolean
 
-                // MultiBlock
-                STRUCTURE_OK = "gt.structure.ok", ROTATION = "gt.eRotation", FLIP = "gt.eFlip", TARGET = "gt.target", // Boolean
-                TARGET_X = "gt.target.x", // Number
-                TARGET_Y = "gt.target.y", // Number
-                TARGET_Z = "gt.target.z", // Number
-                LOCKED_INVENTORY = "gt.locked.inventory", // String
-                LOCKED_INVENTORY_INDEX = "gt.locked.inventory.index", // Number
-                UPGRADE_INVENTORY_SIZE = "gt.invsize.upg", // String
-                UPGRADE_INVENTORY_UUID = "gt.invuuid.upg", // String
-                UPGRADE_INVENTORY_NAME = "gt.invname.upg", // String
-                UPGRADE_INVENTORIES_INPUT = "gt.invlist.upg.in", // NBT List
-                UPGRADE_INVENTORIES_OUTPUT = "gt.invlist.upg.out", // NBT List
-                SEPARATE_INPUTS = "gt.separate.inputs", // Boolean
+            // MultiBlock
+            STRUCTURE_OK = "gt.structure.ok", ROTATION = "gt.eRotation", FLIP = "gt.eFlip", TARGET = "gt.target", // Boolean
+            TARGET_X = "gt.target.x", // Number
+            TARGET_Y = "gt.target.y", // Number
+            TARGET_Z = "gt.target.z", // Number
+            LOCKED_INVENTORY = "gt.locked.inventory", // String
+            LOCKED_INVENTORY_INDEX = "gt.locked.inventory.index", // Number
+            UPGRADE_INVENTORY_SIZE = "gt.invsize.upg", // String
+            UPGRADE_INVENTORY_UUID = "gt.invuuid.upg", // String
+            UPGRADE_INVENTORY_NAME = "gt.invname.upg", // String
+            UPGRADE_INVENTORIES_INPUT = "gt.invlist.upg.in", // NBT List
+            UPGRADE_INVENTORIES_OUTPUT = "gt.invlist.upg.out", // NBT List
+            SEPARATE_INPUTS = "gt.separate.inputs", // Boolean
 
-                // Logic
-                POWER_LOGIC = "gt.power.logic", // NBT Tag
-                POWER_LOGIC_STORED_ENERGY = "gt.power.logic.stored.energy", // Number
-                POWER_LOGIC_ENERGY_CAPACITY = "gt.power.logic.energy.capacity", // Number
-                POWER_LOGIC_VOLTAGE = "gt.power.logic.voltage", // Number
-                POWER_LOGIC_AMPERAGE = "gt.power.logic.voltage", // Number
-                POWER_LOGIC_TYPE = "gt.power.logic.type", // Number
-                empty_ = "";
+            // Logic
+            POWER_LOGIC = "gt.power.logic", // NBT Tag
+            POWER_LOGIC_STORED_ENERGY = "gt.power.logic.stored.energy", // Number
+            POWER_LOGIC_ENERGY_CAPACITY = "gt.power.logic.energy.capacity", // Number
+            POWER_LOGIC_VOLTAGE = "gt.power.logic.voltage", // Number
+            POWER_LOGIC_AMPERAGE = "gt.power.logic.voltage", // Number
+            POWER_LOGIC_TYPE = "gt.power.logic.type", // Number
+            empty_ = "";
     }
 
     /** The Color White as RGB Short Array. */
@@ -358,8 +358,8 @@ public class GT_Values {
                                                                                                         // stupidly
                                                                                                         // mirrored
                                                                                                         // Texture
-            SIDE_SOUTH = 3, SIDE_WEST = 4, SIDE_EAST = 5, // Also a Side with a stupidly mirrored Texture
-            SIDE_ANY = 6, SIDE_UNKNOWN = 6, SIDE_INVALID = 6, SIDE_INSIDE = 6, SIDE_UNDEFINED = 6;
+        SIDE_SOUTH = 3, SIDE_WEST = 4, SIDE_EAST = 5, // Also a Side with a stupidly mirrored Texture
+        SIDE_ANY = 6, SIDE_UNKNOWN = 6, SIDE_INVALID = 6, SIDE_INSIDE = 6, SIDE_UNDEFINED = 6;
 
     /** Compass alike Array for the proper ordering of North, East, South and West. */
     public static final byte[] COMPASS_DIRECTIONS = { SIDE_NORTH, SIDE_EAST, SIDE_SOUTH, SIDE_WEST };
@@ -373,13 +373,13 @@ public class GT_Values {
      * For Facing Checks.
      */
     public static final boolean[] INVALID_SIDES = { false, false, false, false, false, false, true },
-            VALID_SIDES = { true, true, true, true, true, true, false };
+        VALID_SIDES = { true, true, true, true, true, true, false };
 
     /**
      * Side->Offset Mappings.
      */
     public static final byte[] OFFX = { 0, 0, 0, 0, -1, +1, 0 }, OFFY = { -1, +1, 0, 0, 0, 0, 0 },
-            OFFZ = { 0, 0, -1, +1, 0, 0, 0 };
+        OFFZ = { 0, 0, -1, +1, 0, 0, 0 };
 
     /**
      * Side->Opposite Mappings.
@@ -391,8 +391,8 @@ public class GT_Values {
      * front, 4 = right, 5 = back, 6 = undefined.
      */
     public static final byte[][] FACING_ROTATIONS = { { 0, 1, 2, 3, 4, 5, 6 }, { 0, 1, 2, 3, 4, 5, 6 },
-            { 0, 1, 3, 5, 4, 2, 6 }, { 0, 1, 5, 3, 2, 4, 6 }, { 0, 1, 2, 4, 3, 5, 6 }, { 0, 1, 4, 2, 5, 3, 6 },
-            { 0, 1, 2, 3, 4, 5, 6 } };
+        { 0, 1, 3, 5, 4, 2, 6 }, { 0, 1, 5, 3, 2, 4, 6 }, { 0, 1, 2, 4, 3, 5, 6 }, { 0, 1, 4, 2, 5, 3, 6 },
+        { 0, 1, 2, 3, 4, 5, 6 } };
 
     /**
      * The Mod Object itself. That is the GT_Mod-Object. It's needed to open GUI's and similar.
@@ -530,63 +530,63 @@ public class GT_Values {
      * Pretty formatting for author names.
      */
     public static final String Colen = "" + EnumChatFormatting.DARK_RED
-            + EnumChatFormatting.BOLD
-            + EnumChatFormatting.ITALIC
-            + EnumChatFormatting.UNDERLINE
-            + "C"
-            + EnumChatFormatting.GOLD
-            + EnumChatFormatting.BOLD
-            + EnumChatFormatting.ITALIC
-            + EnumChatFormatting.UNDERLINE
-            + "o"
-            + EnumChatFormatting.GREEN
-            + EnumChatFormatting.BOLD
-            + EnumChatFormatting.ITALIC
-            + EnumChatFormatting.UNDERLINE
-            + "l"
-            + EnumChatFormatting.DARK_AQUA
-            + EnumChatFormatting.BOLD
-            + EnumChatFormatting.ITALIC
-            + EnumChatFormatting.UNDERLINE
-            + "e"
-            + EnumChatFormatting.DARK_PURPLE
-            + EnumChatFormatting.BOLD
-            + EnumChatFormatting.ITALIC
-            + EnumChatFormatting.UNDERLINE
-            + "n";
+        + EnumChatFormatting.BOLD
+        + EnumChatFormatting.ITALIC
+        + EnumChatFormatting.UNDERLINE
+        + "C"
+        + EnumChatFormatting.GOLD
+        + EnumChatFormatting.BOLD
+        + EnumChatFormatting.ITALIC
+        + EnumChatFormatting.UNDERLINE
+        + "o"
+        + EnumChatFormatting.GREEN
+        + EnumChatFormatting.BOLD
+        + EnumChatFormatting.ITALIC
+        + EnumChatFormatting.UNDERLINE
+        + "l"
+        + EnumChatFormatting.DARK_AQUA
+        + EnumChatFormatting.BOLD
+        + EnumChatFormatting.ITALIC
+        + EnumChatFormatting.UNDERLINE
+        + "e"
+        + EnumChatFormatting.DARK_PURPLE
+        + EnumChatFormatting.BOLD
+        + EnumChatFormatting.ITALIC
+        + EnumChatFormatting.UNDERLINE
+        + "n";
 
     public static final String AuthorColen = "Author: " + Colen;
     public static final String AuthorKuba = "Author: " + EnumChatFormatting.DARK_RED
-            + EnumChatFormatting.BOLD
-            + "k"
-            + EnumChatFormatting.RED
-            + EnumChatFormatting.BOLD
-            + "u"
-            + EnumChatFormatting.GOLD
-            + EnumChatFormatting.BOLD
-            + "b"
-            + EnumChatFormatting.YELLOW
-            + EnumChatFormatting.BOLD
-            + "a"
-            + EnumChatFormatting.DARK_GREEN
-            + EnumChatFormatting.BOLD
-            + "6"
-            + EnumChatFormatting.GREEN
-            + EnumChatFormatting.BOLD
-            + "0"
-            + EnumChatFormatting.AQUA
-            + EnumChatFormatting.BOLD
-            + "0"
-            + EnumChatFormatting.DARK_AQUA
-            + EnumChatFormatting.BOLD
-            + "0";
+        + EnumChatFormatting.BOLD
+        + "k"
+        + EnumChatFormatting.RED
+        + EnumChatFormatting.BOLD
+        + "u"
+        + EnumChatFormatting.GOLD
+        + EnumChatFormatting.BOLD
+        + "b"
+        + EnumChatFormatting.YELLOW
+        + EnumChatFormatting.BOLD
+        + "a"
+        + EnumChatFormatting.DARK_GREEN
+        + EnumChatFormatting.BOLD
+        + "6"
+        + EnumChatFormatting.GREEN
+        + EnumChatFormatting.BOLD
+        + "0"
+        + EnumChatFormatting.AQUA
+        + EnumChatFormatting.BOLD
+        + "0"
+        + EnumChatFormatting.DARK_AQUA
+        + EnumChatFormatting.BOLD
+        + "0";
 
     public static final String AuthorBlueWeabo = "Author: " + EnumChatFormatting.BLUE
-            + EnumChatFormatting.BOLD
-            + "Blue"
-            + EnumChatFormatting.AQUA
-            + EnumChatFormatting.BOLD
-            + "Weabo";
+        + EnumChatFormatting.BOLD
+        + "Blue"
+        + EnumChatFormatting.AQUA
+        + EnumChatFormatting.BOLD
+        + "Weabo";
 
     // 7.5F comes from GT_Tool_Turbine_Large#getBaseDamage() given huge turbines are the most efficient now.
     public static double getMaxPlasmaTurbineEfficiencyFromMaterial(Materials material) {
@@ -613,9 +613,9 @@ public class GT_Values {
     }
 
     private static final long[] EXPLOSION_LOOKUP_V = new long[] { V[0], V[1], V[2], V[3], V[4], V[4] * 2, V[5], V[6],
-            V[7], V[8], V[8] * 2, V[9], V[10], V[11], V[12], V[12] * 2, V[13], V[14], V[15] };
+        V[7], V[8], V[8] * 2, V[9], V[10], V[11], V[12], V[12] * 2, V[13], V[14], V[15] };
     private static final float[] EXPLOSION_LOOKUP_POWER = new float[] { 1.0F, 2.0F, 3.0F, 4.0F, 5.0F, 6.0F, 7.0F, 8.0F,
-            9.0F, 10.0F, 11.0F, 12.0F, 13.0F, 14.0F, 15.0F, 16.0F, 17.0F, 18.0F, 19.0F, 20.0F };
+        9.0F, 10.0F, 11.0F, 12.0F, 13.0F, 14.0F, 15.0F, 16.0F, 17.0F, 18.0F, 19.0F, 20.0F };
 
     public static float getExplosionPowerForVoltage(long voltage) {
         for (int i = 0; i < EXPLOSION_LOOKUP_V.length; i++) {

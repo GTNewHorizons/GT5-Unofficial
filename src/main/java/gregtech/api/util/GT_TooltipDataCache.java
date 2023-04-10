@@ -58,10 +58,9 @@ public class GT_TooltipDataCache {
             lines.add(key); // Fallback in case no lines could be found at all
         }
         return new TooltipData(
-                lines.subList(0, getVerbosityIndex(GT_Mod.gregtechproxy.mTooltipVerbosity, normalLines, lines.size())),
-                lines.subList(
-                        0,
-                        getVerbosityIndex(GT_Mod.gregtechproxy.mTooltipShiftVerbosity, normalLines, lines.size())));
+            lines.subList(0, getVerbosityIndex(GT_Mod.gregtechproxy.mTooltipVerbosity, normalLines, lines.size())),
+            lines
+                .subList(0, getVerbosityIndex(GT_Mod.gregtechproxy.mTooltipShiftVerbosity, normalLines, lines.size())));
     }
 
     /**

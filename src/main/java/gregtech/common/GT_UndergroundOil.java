@@ -42,9 +42,9 @@ public class GT_UndergroundOil {
      */
     public static FluidStack undergroundOilReadInformation(IGregTechTileEntity te) {
         return undergroundOil(
-                te.getWorld()
-                  .getChunkFromBlockCoords(te.getXCoord(), te.getZCoord()),
-                -1);
+            te.getWorld()
+                .getChunkFromBlockCoords(te.getXCoord(), te.getZCoord()),
+            -1);
     }
 
     /**
@@ -59,9 +59,9 @@ public class GT_UndergroundOil {
     /** @see #undergroundOil(World, int, int, float) */
     public static FluidStack undergroundOil(IGregTechTileEntity te, float readOrDrainCoefficient) {
         return undergroundOil(
-                te.getWorld()
-                  .getChunkFromBlockCoords(te.getXCoord(), te.getZCoord()),
-                readOrDrainCoefficient);
+            te.getWorld()
+                .getChunkFromBlockCoords(te.getXCoord(), te.getZCoord()),
+            readOrDrainCoefficient);
     }
 
     // Returns whole content for information purposes -> when drainSpeedCoefficient < 0
@@ -112,8 +112,8 @@ public class GT_UndergroundOil {
                 chunkData.setAmount(0);
             } else {
                 // get the expected current output
-                fluidInChunk.amount = (int) Math.floor(
-                        chunkData.getAmount() * (double) -readOrDrainCoefficient / DIVIDER);
+                fluidInChunk.amount = (int) Math
+                    .floor(chunkData.getAmount() * (double) -readOrDrainCoefficient / DIVIDER);
             }
         }
         return fluidInChunk;
@@ -145,18 +145,17 @@ public class GT_UndergroundOil {
 
     static void migrate(ChunkDataEvent.Load e) {
         if (e.getData()
-             .hasKey("GTOIL")
-                && e.getData()
-                    .hasKey("GTOILFLUID")) {
+            .hasKey("GTOIL")
+            && e.getData()
+                .hasKey("GTOILFLUID")) {
             ChunkData chunkData = STORAGE.get(e.getChunk());
             Fluid fluid = chunkData.getFluid();
             if (fluid != null && fluid.getID() == e.getData()
-                                                   .getInteger("GTOILFLUID"))
-                chunkData.setAmount(
-                        Math.min(
-                                chunkData.getAmount(),
-                                e.getData()
-                                 .getInteger("GTOIL")));
+                .getInteger("GTOILFLUID")) chunkData.setAmount(
+                    Math.min(
+                        chunkData.getAmount(),
+                        e.getData()
+                            .getInteger("GTOIL")));
         }
     }
 
@@ -199,7 +198,7 @@ public class GT_UndergroundOil {
 
         @Override
         protected void writeElement(DataOutput output, ChunkData element, World world, int chunkX, int chunkZ)
-                throws IOException {
+            throws IOException {
             /* see class javadoc for explanation */
             output.writeInt(element.getVeinHash());
             if (element.getVeinKey() == null) return;
@@ -213,7 +212,7 @@ public class GT_UndergroundOil {
 
         @Override
         protected GT_UndergroundOil.ChunkData readElement(DataInput input, int version, World world, int chunkX,
-                int chunkZ) throws IOException {
+            int chunkZ) throws IOException {
             /* see class javadoc for explanation */
             if (version != 0) throw new IOException("Region file corrupted");
             GT_UndergroundOil.ChunkData pristine = createElement(world, chunkX, chunkZ);
@@ -226,10 +225,10 @@ public class GT_UndergroundOil {
             }
             if (hash == 0) return NIL_FLUID_STACK;
             return new GT_UndergroundOil.ChunkData(
-                    amount,
-                    GT_Mod.gregtechproxy.mUndergroundOil.GetDimension(world.provider.dimensionId)
-                                                        .getUOFluid(veinKey),
-                    veinKey);
+                amount,
+                GT_Mod.gregtechproxy.mUndergroundOil.GetDimension(world.provider.dimensionId)
+                    .getUOFluid(veinKey),
+                veinKey);
         }
 
         @Override
@@ -239,10 +238,10 @@ public class GT_UndergroundOil {
             int dimensionId = world.provider.dimensionId;
             GT_UO_Dimension dimension = GT_Mod.gregtechproxy.mUndergroundOil.GetDimension(dimensionId);
             return new GT_UndergroundOil.ChunkData(
-                    pristine.getRight(),
-                    pristine.getLeft(),
-                    dimension.getUOFluidKey(pristine.getLeft()),
-                    false);
+                pristine.getRight(),
+                pristine.getLeft(),
+                dimension.getUOFluidKey(pristine.getLeft()),
+                false);
         }
 
         private static int hash(@Nullable GT_UO_Fluid fluid) {

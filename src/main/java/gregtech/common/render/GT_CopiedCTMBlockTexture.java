@@ -43,9 +43,7 @@ class GT_CopiedCTMBlockTexture extends GT_TextureBase implements ITexture, IBloc
         aRenderer.field_152631_f = true;
         startDrawingQuads(aRenderer, 1.0f, 0.0f, 0.0f);
         new LightingHelper(aRenderer).setupLightingXPos(aBlock, aX, aY, aZ)
-                                     .setupColor(
-                                             ForgeDirection.EAST.ordinal(),
-                                             mBlock.colorMultiplier(getBlockAccess(aRenderer), aX, aY, aZ));
+            .setupColor(ForgeDirection.EAST.ordinal(), mBlock.colorMultiplier(getBlockAccess(aRenderer), aX, aY, aZ));
         aRenderer.renderFaceXPos(aBlock, aX, aY, aZ, aIcon);
         draw(aRenderer);
         aRenderer.field_152631_f = false;
@@ -56,9 +54,7 @@ class GT_CopiedCTMBlockTexture extends GT_TextureBase implements ITexture, IBloc
         startDrawingQuads(aRenderer, -1.0f, 0.0f, 0.0f);
         final IIcon aIcon = getIcon(ForgeDirection.WEST.ordinal(), aX, aY, aZ, aRenderer);
         new LightingHelper(aRenderer).setupLightingXNeg(aBlock, aX, aY, aZ)
-                                     .setupColor(
-                                             ForgeDirection.WEST.ordinal(),
-                                             mBlock.colorMultiplier(getBlockAccess(aRenderer), aX, aY, aZ));
+            .setupColor(ForgeDirection.WEST.ordinal(), mBlock.colorMultiplier(getBlockAccess(aRenderer), aX, aY, aZ));
         aRenderer.renderFaceXNeg(aBlock, aX, aY, aZ, aIcon);
         draw(aRenderer);
     }
@@ -68,9 +64,7 @@ class GT_CopiedCTMBlockTexture extends GT_TextureBase implements ITexture, IBloc
         startDrawingQuads(aRenderer, 0.0f, 1.0f, 0.0f);
         final IIcon aIcon = getIcon(ForgeDirection.UP.ordinal(), aX, aY, aZ, aRenderer);
         new LightingHelper(aRenderer).setupLightingYPos(aBlock, aX, aY, aZ)
-                                     .setupColor(
-                                             ForgeDirection.UP.ordinal(),
-                                             mBlock.colorMultiplier(getBlockAccess(aRenderer), aX, aY, aZ));
+            .setupColor(ForgeDirection.UP.ordinal(), mBlock.colorMultiplier(getBlockAccess(aRenderer), aX, aY, aZ));
         aRenderer.renderFaceYPos(aBlock, aX, aY, aZ, aIcon);
         draw(aRenderer);
     }
@@ -80,9 +74,7 @@ class GT_CopiedCTMBlockTexture extends GT_TextureBase implements ITexture, IBloc
         startDrawingQuads(aRenderer, 0.0f, -1.0f, 0.0f);
         final IIcon aIcon = getIcon(ForgeDirection.DOWN.ordinal(), aX, aY, aZ, aRenderer);
         new LightingHelper(aRenderer).setupLightingYNeg(aBlock, aX, aY, aZ)
-                                     .setupColor(
-                                             ForgeDirection.DOWN.ordinal(),
-                                             mBlock.colorMultiplier(getBlockAccess(aRenderer), aX, aY, aZ));
+            .setupColor(ForgeDirection.DOWN.ordinal(), mBlock.colorMultiplier(getBlockAccess(aRenderer), aX, aY, aZ));
         aRenderer.renderFaceYNeg(aBlock, aX, aY, aZ, aIcon);
         draw(aRenderer);
     }
@@ -92,9 +84,7 @@ class GT_CopiedCTMBlockTexture extends GT_TextureBase implements ITexture, IBloc
         startDrawingQuads(aRenderer, 0.0f, 0.0f, 1.0f);
         final IIcon aIcon = getIcon(ForgeDirection.SOUTH.ordinal(), aX, aY, aZ, aRenderer);
         new LightingHelper(aRenderer).setupLightingZPos(aBlock, aX, aY, aZ)
-                                     .setupColor(
-                                             ForgeDirection.SOUTH.ordinal(),
-                                             mBlock.colorMultiplier(getBlockAccess(aRenderer), aX, aY, aZ));
+            .setupColor(ForgeDirection.SOUTH.ordinal(), mBlock.colorMultiplier(getBlockAccess(aRenderer), aX, aY, aZ));
         aRenderer.renderFaceZPos(aBlock, aX, aY, aZ, aIcon);
         draw(aRenderer);
     }
@@ -105,9 +95,7 @@ class GT_CopiedCTMBlockTexture extends GT_TextureBase implements ITexture, IBloc
         final IIcon aIcon = getIcon(ForgeDirection.NORTH.ordinal(), aX, aY, aZ, aRenderer);
         aRenderer.field_152631_f = true;
         new LightingHelper(aRenderer).setupLightingZNeg(aBlock, aX, aY, aZ)
-                                     .setupColor(
-                                             ForgeDirection.NORTH.ordinal(),
-                                             mBlock.colorMultiplier(getBlockAccess(aRenderer), aX, aY, aZ));
+            .setupColor(ForgeDirection.NORTH.ordinal(), mBlock.colorMultiplier(getBlockAccess(aRenderer), aX, aY, aZ));
         aRenderer.renderFaceZNeg(aBlock, aX, aY, aZ, aIcon);
         draw(aRenderer);
         aRenderer.field_152631_f = false;

@@ -39,46 +39,46 @@ public class GT_Util {
             if (t.getSecond() == null) continue;
 
             if (t.getSecond() instanceof Boolean) rNBT.setBoolean(
-                    t.getFirst()
-                     .toString(),
-                    (Boolean) t.getSecond());
+                t.getFirst()
+                    .toString(),
+                (Boolean) t.getSecond());
             else if (t.getSecond() instanceof Byte) rNBT.setByte(
-                    t.getFirst()
-                     .toString(),
-                    (Byte) t.getSecond());
+                t.getFirst()
+                    .toString(),
+                (Byte) t.getSecond());
             else if (t.getSecond() instanceof Short) rNBT.setShort(
-                    t.getFirst()
-                     .toString(),
-                    (Short) t.getSecond());
+                t.getFirst()
+                    .toString(),
+                (Short) t.getSecond());
             else if (t.getSecond() instanceof Integer) rNBT.setInteger(
-                    t.getFirst()
-                     .toString(),
-                    (Integer) t.getSecond());
+                t.getFirst()
+                    .toString(),
+                (Integer) t.getSecond());
             else if (t.getSecond() instanceof Long) rNBT.setLong(
-                    t.getFirst()
-                     .toString(),
-                    (Long) t.getSecond());
+                t.getFirst()
+                    .toString(),
+                (Long) t.getSecond());
             else if (t.getSecond() instanceof Float) rNBT.setFloat(
-                    t.getFirst()
-                     .toString(),
-                    (Float) t.getSecond());
+                t.getFirst()
+                    .toString(),
+                (Float) t.getSecond());
             else if (t.getSecond() instanceof Double) rNBT.setDouble(
-                    t.getFirst()
-                     .toString(),
-                    (Double) t.getSecond());
+                t.getFirst()
+                    .toString(),
+                (Double) t.getSecond());
             else if (t.getSecond() instanceof String) rNBT.setString(
-                    t.getFirst()
-                     .toString(),
-                    (String) t.getSecond());
+                t.getFirst()
+                    .toString(),
+                (String) t.getSecond());
             else if (t.getSecond() instanceof NBTBase) rNBT.setTag(
-                    t.getFirst()
-                     .toString(),
-                    (NBTBase) t.getSecond());
+                t.getFirst()
+                    .toString(),
+                (NBTBase) t.getSecond());
             else rNBT.setString(
-                    t.getFirst()
-                     .toString(),
-                    t.getSecond()
-                     .toString());
+                t.getFirst()
+                    .toString(),
+                t.getSecond()
+                    .toString());
         }
 
         return rNBT;
@@ -101,7 +101,7 @@ public class GT_Util {
 
     /** Sets the TileEntity at the passed position, with the option of turning adjacent TileEntity updates off. */
     public static TileEntity setTileEntity(World aWorld, int aX, int aY, int aZ, TileEntity aTileEntity,
-            boolean aCauseTileEntityUpdates) {
+        boolean aCauseTileEntityUpdates) {
         if (aCauseTileEntityUpdates) aWorld.setTileEntity(aX, aY, aZ, aTileEntity);
         else {
             Chunk tChunk = aWorld.getChunkFromChunkCoords(aX >> 4, aZ >> 4);
@@ -115,7 +115,7 @@ public class GT_Util {
     }
 
     public static boolean setTileEntity(World aWorld, int aX, int aY, int aZ, Block aBlock, short aMeta, long aFlags,
-            boolean aRemoveGrassBelow) {
+        boolean aRemoveGrassBelow) {
         if (aRemoveGrassBelow) {
             final Block tBlock = aWorld.getBlock(aX, aY - 1, aZ);
             if (tBlock == Blocks.grass || tBlock == Blocks.mycelium)
@@ -137,9 +137,7 @@ public class GT_Util {
             aChunk = aWorld.getChunkFromBlockCoords(aX, aZ);
             if (aChunk == null) {
                 GT_Log.err.println(
-                        "Some important Chunk does not exist for some reason at Coordinates X: " + aX
-                                + " and Z: "
-                                + aZ);
+                    "Some important Chunk does not exist for some reason at Coordinates X: " + aX + " and Z: " + aZ);
                 return false;
             }
         }
@@ -150,15 +148,15 @@ public class GT_Util {
     /** Marks a Chunk dirty so it is saved */
     public static boolean markChunkDirty(Object aTileEntity) {
         return aTileEntity instanceof TileEntity && markChunkDirty(
-                ((TileEntity) aTileEntity).getWorldObj(),
-                ((TileEntity) aTileEntity).xCoord,
-                ((TileEntity) aTileEntity).zCoord);
+            ((TileEntity) aTileEntity).getWorldObj(),
+            ((TileEntity) aTileEntity).xCoord,
+            ((TileEntity) aTileEntity).zCoord);
     }
 
     public static int mixRGBInt(int aRGB1, int aRGB2) {
         return getRGBInt(
-                new short[] { (short) ((getR(aRGB1) + getR(aRGB2)) >> 1), (short) ((getG(aRGB1) + getG(aRGB2)) >> 1),
-                        (short) ((getB(aRGB1) + getB(aRGB2)) >> 1) });
+            new short[] { (short) ((getR(aRGB1) + getR(aRGB2)) >> 1), (short) ((getG(aRGB1) + getG(aRGB2)) >> 1),
+                (short) ((getB(aRGB1) + getB(aRGB2)) >> 1) });
     }
 
     public static int getRGBInt(short[] aColors) {
@@ -183,7 +181,7 @@ public class GT_Util {
 
     public static short[] getRGBaArray(int aColors) {
         return new short[] { (short) ((aColors >>> 16) & 255), (short) ((aColors >>> 8) & 255), (short) (aColors & 255),
-                (short) ((aColors >>> 24) & 255) };
+            (short) ((aColors >>> 24) & 255) };
     }
 
     public static short getR(int aColors) {

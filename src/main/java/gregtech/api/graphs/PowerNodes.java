@@ -16,7 +16,7 @@ public class PowerNodes {
 
     // check if the looked for node is next to or get the next node that is closer to it
     public static long powerNode(Node aCurrentNode, Node aPreviousNode, NodeList aConsumers, long aVoltage,
-            long aMaxAmps) {
+        long aMaxAmps) {
         long tAmpsUsed = 0;
         ConsumerNode tConsumer = (ConsumerNode) aConsumers.getNode();
         int tLoopProtection = 0;
@@ -33,12 +33,12 @@ public class PowerNodes {
                         } else {
                             if (aPreviousNode == tNextNode) return tAmpsUsed;
                             tAmpsUsed += processNextNode(
-                                    aCurrentNode,
-                                    tNextNode,
-                                    aConsumers,
-                                    j,
-                                    aMaxAmps - tAmpsUsed,
-                                    aVoltage);
+                                aCurrentNode,
+                                tNextNode,
+                                aConsumers,
+                                j,
+                                aMaxAmps - tAmpsUsed,
+                                aVoltage);
                             tConsumer = (ConsumerNode) aConsumers.getNode();
                         }
                         break;
@@ -52,12 +52,12 @@ public class PowerNodes {
                     if (tNextNode.mNodeValue > aCurrentNode.mNodeValue && tNextNode.mNodeValue < tTargetNodeValue) {
                         if (tNextNode == aPreviousNode) return tAmpsUsed;
                         tAmpsUsed += processNextNodeAbove(
-                                aCurrentNode,
-                                tNextNode,
-                                aConsumers,
-                                side,
-                                aMaxAmps - tAmpsUsed,
-                                aVoltage);
+                            aCurrentNode,
+                            tNextNode,
+                            aConsumers,
+                            side,
+                            aMaxAmps - tAmpsUsed,
+                            aVoltage);
                         tConsumer = (ConsumerNode) aConsumers.getNode();
                         break;
                     } else if (tNextNode.mNodeValue == tTargetNodeValue) {
@@ -80,7 +80,7 @@ public class PowerNodes {
     // checking if target node is next to it or has a higher value then current node value
     // these functions are different to either go down or up the stack
     protected static long powerNodeAbove(Node aCurrentNode, Node aPreviousNode, NodeList aConsumers, long aVoltage,
-            long aMaxAmps) {
+        long aMaxAmps) {
         long tAmpsUsed = 0;
         int tLoopProtection = 0;
         ConsumerNode tConsumer = (ConsumerNode) aConsumers.getNode();
@@ -95,12 +95,12 @@ public class PowerNodes {
                     if (tNextNode.mNodeValue > aCurrentNode.mNodeValue && tNextNode.mNodeValue < tTargetNodeValue) {
                         if (tNextNode == aPreviousNode) return tAmpsUsed;
                         tAmpsUsed += processNextNodeAbove(
-                                aCurrentNode,
-                                tNextNode,
-                                aConsumers,
-                                side,
-                                aMaxAmps - tAmpsUsed,
-                                aVoltage);
+                            aCurrentNode,
+                            tNextNode,
+                            aConsumers,
+                            side,
+                            aMaxAmps - tAmpsUsed,
+                            aVoltage);
                         tConsumer = (ConsumerNode) aConsumers.getNode();
                         break;
                     } else if (tNextNode.mNodeValue == tTargetNodeValue) {
@@ -121,7 +121,7 @@ public class PowerNodes {
     }
 
     protected static long processNextNode(Node aCurrentNode, Node aNextNode, NodeList aConsumers, int aSide,
-            long aMaxAmps, long aVoltage) {
+        long aMaxAmps, long aVoltage) {
         if (aCurrentNode.locks[aSide].isLocked()) {
             aConsumers.getNextNode();
             return 0;
@@ -142,7 +142,7 @@ public class PowerNodes {
     }
 
     protected static long processNextNodeAbove(Node aCurrentNode, Node aNextNode, NodeList aConsumers, int aSide,
-            long aMaxAmps, long aVoltage) {
+        long aMaxAmps, long aVoltage) {
         if (aCurrentNode.locks[aSide].isLocked()) {
             aConsumers.getNextNode();
             return 0;
@@ -163,7 +163,7 @@ public class PowerNodes {
     }
 
     protected static long processNodeInject(Node aCurrentNode, ConsumerNode aConsumer, int aSide, long aMaxAmps,
-            long aVoltage) {
+        long aVoltage) {
         if (aCurrentNode.locks[aSide].isLocked()) return 0;
         final PowerNodePath tPath = (PowerNodePath) aCurrentNode.mNodePaths[aSide];
         final PowerNodePath tSelfPath = (PowerNodePath) aCurrentNode.mSelfPath;

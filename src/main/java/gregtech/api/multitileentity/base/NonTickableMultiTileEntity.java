@@ -50,7 +50,7 @@ public abstract class NonTickableMultiTileEntity extends MultiTileEntity {
 
     @Override
     public void receiveCoverData(byte aCoverSide, int aCoverID, ISerializableObject aCoverData,
-            EntityPlayerMP aPlayer) {
+        EntityPlayerMP aPlayer) {
         super.receiveCoverData(aCoverSide, aCoverID, aCoverData, aPlayer);
         // We don't get ticked so issue the texture update right away
         issueTextureUpdate();

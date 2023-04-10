@@ -33,7 +33,7 @@ public class GT_Bee_Mutation extends BeeMutation {
 
     @Override
     public float getChance(IBeeHousing housing, IAlleleBeeSpecies allele0, IAlleleBeeSpecies allele1,
-            IBeeGenome genome0, IBeeGenome genome1) {
+        IBeeGenome genome0, IBeeGenome genome1) {
         World world = housing != null ? housing.getWorld() : null;
         ChunkCoordinates housingCoordinates = housing != null ? housing.getCoordinates() : null;
         int x = housingCoordinates != null ? housingCoordinates.posX : 0;
@@ -48,7 +48,7 @@ public class GT_Bee_Mutation extends BeeMutation {
 
         IBeeModifier beeHousingModifier = BeeManager.beeRoot.createBeeHousingModifier(housing);
         IBeeModifier beeModeModifier = BeeManager.beeRoot.getBeekeepingMode(world)
-                                                         .getBeeModifier();
+            .getBeeModifier();
 
         processedChance *= beeHousingModifier.getMutationModifier(genome0, genome1, processedChance);
         processedChance *= beeModeModifier.getMutationModifier(genome0, genome1, processedChance);
@@ -58,7 +58,7 @@ public class GT_Bee_Mutation extends BeeMutation {
 
     @SuppressWarnings("unchecked")
     private float getBasicChance(World world, int x, int y, int z, IAllele allele0, IAllele allele1, IGenome genome0,
-            IGenome genome1, IClimateProvider climate) {
+        IGenome genome1, IClimateProvider climate) {
         float mutationChance = this.getBaseChance();
         List<IMutationCondition> mutationConditions = null;
         Field f = FieldUtils.getDeclaredField(Mutation.class, "mutationConditions", true);

@@ -33,12 +33,12 @@ public class UniversiumRenderer extends GT_GeneratedMaterial_Renderer {
     @Override
     public boolean renderFluidDisplayItem(ItemRenderType type, ItemStack aStack, Object... data) {
         magicRenderMethod(
-                type,
-                ItemList.Emitter_UEV.get(1), // hack to make it render correctly
-                aStack.getItem()
-                      .getIconFromDamage(aStack.getItemDamage()),
-                true,
-                data);
+            type,
+            ItemList.Emitter_UEV.get(1), // hack to make it render correctly
+            aStack.getItem()
+                .getIconFromDamage(aStack.getItemDamage()),
+            true,
+            data);
         return true;
     }
 
@@ -79,7 +79,7 @@ public class UniversiumRenderer extends GT_GeneratedMaterial_Renderer {
     }
 
     private void magicRenderMethod(ItemRenderType type, ItemStack aStack, IIcon tIcon, boolean fluidDisplay,
-            Object... data) {
+        Object... data) {
         if (!GregTech_API.mEternalSingularity) return;
 
         RenderItem r = RenderItem.getInstance();
@@ -111,9 +111,9 @@ public class UniversiumRenderer extends GT_GeneratedMaterial_Renderer {
                 if (fluidDisplay) {
                     // this somehow makes shader render correctly
                     ResourceLocation resourcelocation = mc.getTextureManager()
-                                                          .getResourceLocation(aStack.getItemSpriteNumber());
+                        .getResourceLocation(aStack.getItemSpriteNumber());
                     mc.getTextureManager()
-                      .bindTexture(resourcelocation);
+                        .bindTexture(resourcelocation);
                 } else {
                     r.renderItemIntoGUI(mc.fontRenderer, mc.getTextureManager(), aStack, 0, 0, true);
                 }
@@ -181,15 +181,8 @@ public class UniversiumRenderer extends GT_GeneratedMaterial_Renderer {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
         // RENDER ITEM IN HAND
-        ItemRenderer.renderItemIn2D(
-                Tessellator.instance,
-                f1,
-                f2,
-                f,
-                f3,
-                icon.getIconWidth(),
-                icon.getIconHeight(),
-                scale);
+        ItemRenderer
+            .renderItemIn2D(Tessellator.instance, f1, f2, f, f3, icon.getIconWidth(), icon.getIconHeight(), scale);
 
         GL11.glDisable(GL11.GL_ALPHA_TEST);
         GL11.glDepthFunc(GL11.GL_EQUAL);
@@ -203,14 +196,14 @@ public class UniversiumRenderer extends GT_GeneratedMaterial_Renderer {
 
         // RENDER COSMIC OVERLAY IN HAND
         ItemRenderer.renderItemIn2D(
-                Tessellator.instance,
-                maxu,
-                minv,
-                minu,
-                maxv,
-                icon.getIconWidth(),
-                icon.getIconHeight(),
-                scale);
+            Tessellator.instance,
+            maxu,
+            minv,
+            minu,
+            maxv,
+            icon.getIconWidth(),
+            icon.getIconHeight(),
+            scale);
         CosmicRenderStuffs.releaseShader();
         GL11.glDepthFunc(GL11.GL_LEQUAL);
         GL11.glEnable(GL11.GL_ALPHA_TEST);
@@ -227,20 +220,20 @@ public class UniversiumRenderer extends GT_GeneratedMaterial_Renderer {
                 EntityItem ent = (EntityItem) (data[1]);
                 if (ent != null) {
                     CosmicRenderStuffs.setLightFromLocation(
-                            ent.worldObj,
-                            MathHelper.floor_double(ent.posX),
-                            MathHelper.floor_double(ent.posY),
-                            MathHelper.floor_double(ent.posZ));
+                        ent.worldObj,
+                        MathHelper.floor_double(ent.posX),
+                        MathHelper.floor_double(ent.posY),
+                        MathHelper.floor_double(ent.posZ));
                 }
             }
             case EQUIPPED, EQUIPPED_FIRST_PERSON -> {
                 EntityLivingBase ent = (EntityLivingBase) (data[1]);
                 if (ent != null) {
                     CosmicRenderStuffs.setLightFromLocation(
-                            ent.worldObj,
-                            MathHelper.floor_double(ent.posX),
-                            MathHelper.floor_double(ent.posY),
-                            MathHelper.floor_double(ent.posZ));
+                        ent.worldObj,
+                        MathHelper.floor_double(ent.posX),
+                        MathHelper.floor_double(ent.posY),
+                        MathHelper.floor_double(ent.posZ));
                 }
             }
             case INVENTORY -> {

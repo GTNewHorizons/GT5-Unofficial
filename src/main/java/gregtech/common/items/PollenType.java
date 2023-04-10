@@ -24,11 +24,9 @@ public enum PollenType {
 
     public String getName() {
         return GT_LanguageManager.addStringLocalization(
-                "pollen." + this.name,
-                this.name.substring(0, 1)
-                         .toUpperCase()
-                        + this.name.substring(1)
-                        + " Pollen");
+            "pollen." + this.name,
+            this.name.substring(0, 1)
+                .toUpperCase() + this.name.substring(1) + " Pollen");
     }
 
     public int[] getColours() {

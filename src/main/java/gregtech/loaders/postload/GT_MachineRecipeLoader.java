@@ -18,7 +18,7 @@ public class GT_MachineRecipeLoader implements Runnable {
     public static final Boolean isAE2Loaded = true;
 
     public static final Materials[] solderingMats = new Materials[] { Materials.Lead, Materials.SolderingAlloy,
-            Materials.Tin };
+        Materials.Tin };
 
     @Override
     public void run() {

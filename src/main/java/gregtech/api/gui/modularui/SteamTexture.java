@@ -21,32 +21,20 @@ public class SteamTexture {
 
     public static SteamTexture fullImage(String mod, String location) {
         return new SteamTexture(
-                UITexture.fullImage(mod, String.format(location, SteamVariant.BRONZE)),
-                UITexture.fullImage(mod, String.format(location, SteamVariant.STEEL)),
-                UITexture.fullImage(mod, String.format(location, SteamVariant.PRIMITIVE)));
+            UITexture.fullImage(mod, String.format(location, SteamVariant.BRONZE)),
+            UITexture.fullImage(mod, String.format(location, SteamVariant.STEEL)),
+            UITexture.fullImage(mod, String.format(location, SteamVariant.PRIMITIVE)));
     }
 
     public static SteamTexture adaptableTexture(String mod, String location, int imageWidth, int imageHeight,
-            int borderWidthPixel) {
+        int borderWidthPixel) {
         return new SteamTexture(
-                AdaptableUITexture.of(
-                        mod,
-                        String.format(location, SteamVariant.BRONZE),
-                        imageWidth,
-                        imageHeight,
-                        borderWidthPixel),
-                AdaptableUITexture.of(
-                        mod,
-                        String.format(location, SteamVariant.STEEL),
-                        imageWidth,
-                        imageHeight,
-                        borderWidthPixel),
-                AdaptableUITexture.of(
-                        mod,
-                        String.format(location, SteamVariant.PRIMITIVE),
-                        imageWidth,
-                        imageHeight,
-                        borderWidthPixel));
+            AdaptableUITexture
+                .of(mod, String.format(location, SteamVariant.BRONZE), imageWidth, imageHeight, borderWidthPixel),
+            AdaptableUITexture
+                .of(mod, String.format(location, SteamVariant.STEEL), imageWidth, imageHeight, borderWidthPixel),
+            AdaptableUITexture
+                .of(mod, String.format(location, SteamVariant.PRIMITIVE), imageWidth, imageHeight, borderWidthPixel));
     }
 
     public UITexture get(SteamVariant variant) {

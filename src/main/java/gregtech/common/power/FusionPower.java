@@ -21,7 +21,7 @@ public class FusionPower extends BasicMachineEUPower {
         // It's safe to assume fusion is above ULV. We put this as safety check here anyway
         if (tier > 0) {
             int maxPossibleOverclocks = FusionSpecialValueFormatter.getFusionTier(this.specialValue, V[tier - 1])
-                    - FusionSpecialValueFormatter.getFusionTier(specialValue, euPerTick);
+                - FusionSpecialValueFormatter.getFusionTier(specialValue, euPerTick);
             // Isn't too low EUt check?
             long tempEUt = Math.max(euPerTick, V[1]);
 
@@ -46,7 +46,7 @@ public class FusionPower extends BasicMachineEUPower {
     @Override
     public String getTierString() {
         return GT_Values.TIER_COLORS[tier] + "MK "
-                + FusionSpecialValueFormatter.getFusionTier(specialValue, recipeEuPerTick)
-                + EnumChatFormatting.RESET;
+            + FusionSpecialValueFormatter.getFusionTier(specialValue, recipeEuPerTick)
+            + EnumChatFormatting.RESET;
     }
 }

@@ -56,8 +56,8 @@ public class FallbackableSteamTexture {
                 } else {
                     try {
                         Minecraft.getMinecraft()
-                                 .getResourceManager()
-                                 .getResource(candidate.get(steamVariant).location);
+                            .getResourceManager()
+                            .getResource(candidate.get(steamVariant).location);
                         useFallback = false;
                     } catch (IOException e) {
                         useFallback = true;

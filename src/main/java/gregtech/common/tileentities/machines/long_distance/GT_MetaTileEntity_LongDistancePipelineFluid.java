@@ -46,7 +46,7 @@ public class GT_MetaTileEntity_LongDistancePipelineFluid extends GT_MetaTileEnti
     }
 
     public GT_MetaTileEntity_LongDistancePipelineFluid(String aName, int aTier, String aDescription,
-            ITexture[][][] aTextures) {
+        ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
     }
 
@@ -110,15 +110,15 @@ public class GT_MetaTileEntity_LongDistancePipelineFluid extends GT_MetaTileEnti
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-            boolean aActive, boolean aRedstone) {
+        boolean aActive, boolean aRedstone) {
         if (aSide == aFacing) return new ITexture[] { MACHINE_CASINGS[mTier][aColorIndex + 1],
-                TextureFactory.of(OVERLAY_PIPELINE_FLUID_FRONT) };
+            TextureFactory.of(OVERLAY_PIPELINE_FLUID_FRONT) };
         else if (aSide == GT_Utility.getOppositeSide(aFacing)) return new ITexture[] {
-                MACHINE_CASINGS[mTier][aColorIndex + 1], TextureFactory.of(OVERLAY_PIPELINE_FLUID_BACK) };
+            MACHINE_CASINGS[mTier][aColorIndex + 1], TextureFactory.of(OVERLAY_PIPELINE_FLUID_BACK) };
         else return new ITexture[] { MACHINE_CASINGS[mTier][aColorIndex + 1],
-                TextureFactory.of(OVERLAY_PIPELINE_FLUID_SIDE), TextureFactory.builder()
-                                                                              .addIcon(OVERLAY_PIPELINE_FLUID_SIDE_GLOW)
-                                                                              .glow()
-                                                                              .build() };
+            TextureFactory.of(OVERLAY_PIPELINE_FLUID_SIDE), TextureFactory.builder()
+                .addIcon(OVERLAY_PIPELINE_FLUID_SIDE_GLOW)
+                .glow()
+                .build() };
     }
 }

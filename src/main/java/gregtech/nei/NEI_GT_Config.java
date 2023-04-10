@@ -34,25 +34,21 @@ public class NEI_GT_Config implements IConfigureNEI {
      * will be assigned a value of 0. Negative values are fine.
      */
     private static final ImmutableMap<GT_Recipe.GT_Recipe_Map, Integer> RECIPE_MAP_ORDERING = ImmutableMap.<GT_Recipe.GT_Recipe_Map, Integer>builder()
-                                                                                                          .put(
-                                                                                                                  GT_Recipe.GT_Recipe_Map.sAssemblylineVisualRecipes,
-                                                                                                                  1)
-                                                                                                          .put(
-                                                                                                                  GT_Recipe.GT_Recipe_Map.sScannerFakeRecipes,
-                                                                                                                  2)
-                                                                                                          .build();
+        .put(GT_Recipe.GT_Recipe_Map.sAssemblylineVisualRecipes, 1)
+        .put(GT_Recipe.GT_Recipe_Map.sScannerFakeRecipes, 2)
+        .build();
 
-    private static final Comparator<RecipeMapHandler> RECIPE_MAP_HANDLER_COMPARATOR = Comparator.comparingInt(
-            handler -> RECIPE_MAP_ORDERING.getOrDefault(handler.getRecipeMap(), 0));
+    private static final Comparator<RecipeMapHandler> RECIPE_MAP_HANDLER_COMPARATOR = Comparator
+        .comparingInt(handler -> RECIPE_MAP_ORDERING.getOrDefault(handler.getRecipeMap(), 0));
 
     public static boolean sIsAdded = true;
 
     private static void addHandler(TemplateRecipeHandler handler) {
         FMLInterModComms.sendRuntimeMessage(
-                GT_Values.GT,
-                "NEIPlugins",
-                "register-crafting-handler",
-                "gregtech@" + handler.getRecipeName() + "@" + handler.getOverlayIdentifier());
+            GT_Values.GT,
+            "NEIPlugins",
+            "register-crafting-handler",
+            "gregtech@" + handler.getRecipeName() + "@" + handler.getOverlayIdentifier());
         GuiCraftingRecipe.craftinghandlers.add(handler);
         GuiUsageRecipe.usagehandlers.add(handler);
     }
@@ -61,8 +57,8 @@ public class NEI_GT_Config implements IConfigureNEI {
     public void loadConfig() {
         sIsAdded = false;
         if (FMLCommonHandler.instance()
-                            .getEffectiveSide()
-                            .isClient()) {
+            .getEffectiveSide()
+            .isClient()) {
             List<RecipeMapHandler> handlers = new ArrayList<>();
 
             for (GT_Recipe.GT_Recipe_Map tMap : GT_Recipe.GT_Recipe_Map.sMappings) {

@@ -9,7 +9,7 @@ public interface IMetaTileEntityCable extends IMetaTileEntity {
 
     @Deprecated
     long transferElectricity(byte aSide, long aVoltage, long aAmperage,
-            ArrayList<TileEntity> aAlreadyPassedTileEntityList);
+        ArrayList<TileEntity> aAlreadyPassedTileEntityList);
 
     default long transferElectricity(byte aSide, long aVoltage, long aAmperage, HashSet<TileEntity> aAlreadyPassedSet) {
         return transferElectricity(aSide, aVoltage, aAmperage, new ArrayList<>(aAlreadyPassedSet));

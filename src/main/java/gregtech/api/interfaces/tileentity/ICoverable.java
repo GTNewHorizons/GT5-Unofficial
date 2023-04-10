@@ -82,7 +82,7 @@ public interface ICoverable extends IRedstoneTileEntity, IHasInventory, IBasicEn
      * @param aPlayer the player who made the change
      */
     default void receiveCoverData(byte aCoverSide, int aCoverID, ISerializableObject aCoverData,
-            EntityPlayerMP aPlayer) {
+        EntityPlayerMP aPlayer) {
         if (aCoverData instanceof ISerializableObject.LegacyCoverData)
             receiveCoverData(aCoverSide, aCoverID, ((ISerializableObject.LegacyCoverData) aCoverData).get());
     }

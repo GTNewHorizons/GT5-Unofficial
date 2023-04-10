@@ -104,8 +104,8 @@ public class GT_GuiTabLine {
      * @param tabBackground the set of textures used to draw this tab line's tab backgrounds
      */
     public GT_GuiTabLine(GT_ITabRenderer gui, int numTabs, int tabLineLeft, int tabLineTop, int tabHeight, int tabWidth,
-            int tabSpacing, DisplayStyle xDir, DisplayStyle yDir, DisplayStyle displayMode,
-            GT_GuiTabIconSet tabBackground) {
+        int tabSpacing, DisplayStyle xDir, DisplayStyle yDir, DisplayStyle displayMode,
+        GT_GuiTabIconSet tabBackground) {
         this.gui = gui;
         this.mTabs = new GT_GuiTab[numTabs];
         this.tabLineLeft = tabLineLeft;
@@ -130,14 +130,14 @@ public class GT_GuiTabLine {
      */
     public void setTab(int tabId, ItemStack item, IGuiIcon overlay, String[] text) {
         mTabs[tabId] = new GT_GuiTab(
-                this.gui,
-                tabId,
-                getBoundsForTab(tabId),
-                this.tabBackground,
-                item,
-                overlay,
-                text,
-                this.flipHorizontally);
+            this.gui,
+            tabId,
+            getBoundsForTab(tabId),
+            this.tabBackground,
+            item,
+            overlay,
+            text,
+            this.flipHorizontally);
     }
 
     /**
@@ -221,7 +221,7 @@ public class GT_GuiTabLine {
     public void onMouseClicked(int mouseX, int mouseY, int mouseButton) {
         for (int tabId = 0; tabId < mTabs.length; tabId++) {
             if (mTabs[tabId] != null && mTabs[tabId].getBounds()
-                                                    .contains(mouseX, mouseY)) {
+                .contains(mouseX, mouseY)) {
                 tabClicked(tabId, mouseButton);
                 return;
             }
@@ -255,7 +255,7 @@ public class GT_GuiTabLine {
      */
     private int getTabX(int tabId) {
         return this.gui.getGuiLeft() + (flipHorizontally ? (gui.getXSize() - tabLineLeft - tabWidth) : tabLineLeft)
-                + (tabId * (tabWidth + tabSpacing) * xDir.getValue());
+            + (tabId * (tabWidth + tabSpacing) * xDir.getValue());
     }
 
     /**

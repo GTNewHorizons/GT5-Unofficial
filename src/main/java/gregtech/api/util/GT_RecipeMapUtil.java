@@ -31,31 +31,31 @@ public class GT_RecipeMapUtil {
     };
 
     public static final Function<GT_Recipe, String> FIRST_FLUID_INPUT = r -> isArrayEmptyOrNull(r.mFluidInputs) ? null
-            : r.mFluidInputs[0].getFluid()
-                               .getName();
+        : r.mFluidInputs[0].getFluid()
+            .getName();
     public static final Function<GT_Recipe, String> FIRST_FLUID_OUTPUT = r -> isArrayEmptyOrNull(r.mFluidInputs) ? null
-            : r.mFluidOutputs[0].getFluid()
-                                .getName();
+        : r.mFluidOutputs[0].getFluid()
+            .getName();
     public static final Function<GT_Recipe, String> FIRST_FLUIDSTACK_INPUT = r -> isArrayEmptyOrNull(r.mFluidInputs)
-            ? null
-            : r.mFluidInputs[0].getUnlocalizedName();
+        ? null
+        : r.mFluidInputs[0].getUnlocalizedName();
     public static final Function<GT_Recipe, String> FIRST_FLUIDSTACK_OUTPUT = r -> isArrayEmptyOrNull(r.mFluidOutputs)
-            ? null
-            : r.mFluidOutputs[0].getUnlocalizedName();
+        ? null
+        : r.mFluidOutputs[0].getUnlocalizedName();
     public static final Function<GT_Recipe, String> FIRST_ITEM_INPUT = r -> isArrayEmptyOrNull(r.mInputs) ? null
-            : getStackConfigName(r.mInputs[0]);
+        : getStackConfigName(r.mInputs[0]);
     public static final Function<GT_Recipe, String> FIRST_ITEM_OUTPUT = r -> isArrayEmptyOrNull(r.mOutputs) ? null
-            : getStackConfigName(r.mOutputs[0]);
+        : getStackConfigName(r.mOutputs[0]);
     public static final Function<GT_Recipe, String> FIRST_ITEM_OR_FLUID_INPUT = r -> isArrayEmptyOrNull(r.mInputs)
-            ? isArrayEmptyOrNull(r.mFluidInputs) ? null
-                    : r.mFluidInputs[0].getFluid()
-                                       .getName()
-            : getStackConfigName(r.mInputs[0]);
+        ? isArrayEmptyOrNull(r.mFluidInputs) ? null
+            : r.mFluidInputs[0].getFluid()
+                .getName()
+        : getStackConfigName(r.mInputs[0]);
     public static final Function<GT_Recipe, String> FIRST_ITEM_OR_FLUID_OUTPUT = r -> isArrayEmptyOrNull(r.mOutputs)
-            ? isArrayEmptyOrNull(r.mFluidOutputs) ? null
-                    : r.mFluidOutputs[0].getFluid()
-                                        .getName()
-            : getStackConfigName(r.mOutputs[0]);
+        ? isArrayEmptyOrNull(r.mFluidOutputs) ? null
+            : r.mFluidOutputs[0].getFluid()
+                .getName()
+        : getStackConfigName(r.mOutputs[0]);
     private static final Map<String, IGT_RecipeMap> addonRecipeMaps = new HashMap<>();
     private static final Multimap<String, Consumer<IGT_RecipeMap>> delayedActions = ArrayListMultimap.create();
 
@@ -93,17 +93,17 @@ public class GT_RecipeMapUtil {
         cellToFluid(itemInputs, fluidInputs, removeIntegratedCircuit, null);
         cellToFluid(itemOutputs, fluidOutputs, removeIntegratedCircuit, chances);
         return b.itemInputs(itemInputs.toArray(new ItemStack[0]))
-                .itemOutputs(itemOutputs.toArray(new ItemStack[0]), chances != null ? chances.toArray() : null)
-                .fluidInputs(fluidInputs.toArray(new FluidStack[0]))
-                .fluidOutputs(fluidOutputs.toArray(new FluidStack[0]));
+            .itemOutputs(itemOutputs.toArray(new ItemStack[0]), chances != null ? chances.toArray() : null)
+            .fluidInputs(fluidInputs.toArray(new FluidStack[0]))
+            .fluidOutputs(fluidOutputs.toArray(new FluidStack[0]));
     }
 
     private static void cellToFluid(List<ItemStack> items, List<FluidStack> fluids, boolean removeIntegratedCircuit,
-            TIntList chances) {
+        TIntList chances) {
         for (int i = items.size() - 1; i >= 0; i--) {
             ItemStack item = items.get(i);
             if (GT_Utility.getFluidForFilledItem(item, true) != null || GT_Utility.isCellEmpty(item)
-                    || (removeIntegratedCircuit && GT_Utility.isAnyIntegratedCircuit(item))) {
+                || (removeIntegratedCircuit && GT_Utility.isAnyIntegratedCircuit(item))) {
                 fluids.add(GT_Utility.convertCellToFluid(item));
                 items.remove(i);
                 if (chances != null) chances.removeAt(i);
@@ -113,8 +113,8 @@ public class GT_RecipeMapUtil {
 
     public static List<GT_Recipe> buildOrEmpty(GT_RecipeBuilder builder) {
         return builder.build()
-                      .map(Collections::singletonList)
-                      .orElse(Collections.emptyList());
+            .map(Collections::singletonList)
+            .orElse(Collections.emptyList());
     }
 
     /**
@@ -128,12 +128,12 @@ public class GT_RecipeMapUtil {
      *                     end up with a bunch of weird concurrency bugs.
      */
     public static void registerRecipeMap(String identifier, IGT_RecipeMap recipeMap,
-            RecipeMapDependency... dependencies) {
+        RecipeMapDependency... dependencies) {
         String modId = Loader.instance()
-                             .activeModContainer()
-                             .getModId();
+            .activeModContainer()
+            .getModId();
         if (GregTech.ID.equals(modId)) throw new IllegalStateException(
-                "do not register recipe map under the name of gregtech! do it in your own preinit!");
+            "do not register recipe map under the name of gregtech! do it in your own preinit!");
         String id = modId + "@" + identifier;
         addonRecipeMaps.put(id, recipeMap);
         for (Consumer<IGT_RecipeMap> action : delayedActions.get(id)) {

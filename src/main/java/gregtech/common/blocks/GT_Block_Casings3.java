@@ -67,11 +67,11 @@ public class GT_Block_Casings3 extends GT_Block_Casings_Abstract {
             case 11 -> Textures.BlockIcons.MACHINE_CASING_VENT.getIcon();
             case 12 -> Textures.BlockIcons.MACHINE_CASING_RADIATIONPROOF.getIcon();
             case 13 -> aSide > 1 ? Textures.BlockIcons.MACHINE_CASING_FIREBOX_BRONZE.getIcon()
-                    : Textures.BlockIcons.MACHINE_BRONZEPLATEDBRICKS.getIcon();
+                : Textures.BlockIcons.MACHINE_BRONZEPLATEDBRICKS.getIcon();
             case 14 -> aSide > 1 ? Textures.BlockIcons.MACHINE_CASING_FIREBOX_STEEL.getIcon()
-                    : Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
+                : Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
             case 15 -> aSide > 1 ? Textures.BlockIcons.MACHINE_CASING_FIREBOX_TUNGSTENSTEEL.getIcon()
-                    : Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();
+                : Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();
             default -> Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
         };
     }

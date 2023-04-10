@@ -209,7 +209,7 @@ public class GT_ParallelHelper {
     public ItemStack[] getItemOutputs() {
         if (!mBuilt || !mCalculateOutputs) {
             throw new IllegalStateException(
-                    "Tried to get item outputs before building or without enabling calculation of outputs");
+                "Tried to get item outputs before building or without enabling calculation of outputs");
         }
         return mItemOutputs;
     }
@@ -220,7 +220,7 @@ public class GT_ParallelHelper {
     public FluidStack[] getFluidOutputs() {
         if (!mBuilt || !mCalculateOutputs) {
             throw new IllegalStateException(
-                    "Tried to get fluid outputs before building or without enabling calculation of outputs");
+                "Tried to get fluid outputs before building or without enabling calculation of outputs");
         }
         return mFluidOutputs;
     }
@@ -290,7 +290,7 @@ public class GT_ParallelHelper {
         float tRecipeEUt = mRecipe.mEUt * mEUtModifier;
         // Consume inputs to determine normal parallel
         for (; mCurrentParallel < mMaxParallel / mBatchModifier
-                && tCurrentUsage < (mAvailableEUt - tRecipeEUt); mCurrentParallel++) {
+            && tCurrentUsage < (mAvailableEUt - tRecipeEUt); mCurrentParallel++) {
             if (mRecipe.isRecipeInputEqual(true, false, tFluidInputs, tItemInputs)) {
                 tCurrentUsage += tRecipeEUt;
             } else {
@@ -302,7 +302,7 @@ public class GT_ParallelHelper {
         if (mBatchMode) {
             int tExtraParallels = 0;
             while (tExtraParallels < mCurrentParallel * (mBatchModifier - 1)
-                    && mRecipe.isRecipeInputEqual(false, false, tFluidInputs, tItemInputs)) {
+                && mRecipe.isRecipeInputEqual(false, false, tFluidInputs, tItemInputs)) {
                 mRecipe.isRecipeInputEqual(true, false, tFluidInputs, tItemInputs);
                 tExtraParallels++;
             }
@@ -320,7 +320,7 @@ public class GT_ParallelHelper {
                             mItemOutputs[i] = null;
                         } else {
                             ItemStack tItem = mRecipe.getOutput(i)
-                                                     .copy();
+                                .copy();
                             tItem.stackSize *= mCurrentParallel;
                             mItemOutputs[i] = tItem;
                         }
@@ -334,7 +334,7 @@ public class GT_ParallelHelper {
                         mFluidOutputs[i] = null;
                     } else {
                         FluidStack tFluid = mRecipe.getFluidOutput(i)
-                                                   .copy();
+                            .copy();
                         tFluid.amount *= mCurrentParallel;
                         mFluidOutputs[i] = tFluid;
                     }
@@ -394,9 +394,9 @@ public class GT_ParallelHelper {
                             continue;
                         }
                         if (tHatch.isFluidLocked() && tLockedFluidName != null
-                                && !tLockedFluidName.equals(
-                                        tFluidOutput.getFluid()
-                                                    .getName())) {
+                            && !tLockedFluidName.equals(
+                                tFluidOutput.getFluid()
+                                    .getName())) {
                             continue;
                         }
                     }
@@ -412,7 +412,7 @@ public class GT_ParallelHelper {
             // now that all partial/restricted hatches have been counted, create a priority queue for our outputs
             // the lowest priority fluid is the number of complete parallel crafts we can support
             PriorityQueue<MutableTriple<Integer, Integer, FluidStack>> aParallelQueue = new PriorityQueue<>(
-                    Comparator.comparing(MutableTriple::getLeft));
+                Comparator.comparing(MutableTriple::getLeft));
             for (Entry<FluidStack, MutablePair<Integer, Integer>> entry : tParallels.entrySet()) {
                 aParallelQueue.add(new MutableTriple<>(entry.getValue().left, entry.getValue().right, entry.getKey()));
             }
@@ -491,7 +491,7 @@ public class GT_ParallelHelper {
             // now that all partial stacks have been counted, create a priority queue for our outputs
             // the lowest priority item is the number of complete parallel crafts we can support
             PriorityQueue<MutableTriple<Integer, Integer, ItemStack>> aParallelQueue = new PriorityQueue<>(
-                    Comparator.comparing(MutableTriple::getLeft));
+                Comparator.comparing(MutableTriple::getLeft));
             for (Entry<ItemStack, MutablePair<Integer, Integer>> entry : tParallels.entrySet()) {
                 aParallelQueue.add(new MutableTriple<>(entry.getValue().left, entry.getValue().right, entry.getKey()));
             }

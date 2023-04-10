@@ -13,32 +13,28 @@ public class GT_Spray_Pepper_Item extends GT_Tool_Item {
 
     public GT_Spray_Pepper_Item(String aUnlocalized, String aEnglish, int aMaxDamage, int aEntityDamage) {
         super(
-                aUnlocalized,
-                aEnglish,
-                "To defend yourself against Bears",
-                aMaxDamage,
-                aEntityDamage,
-                true); /*
-                        * setCraftingSound(GregTech_API.sSoundList.get(102));
-                        * setBreakingSound(GregTech_API.sSoundList.get(102));
-                        * setEntityHitSound(GregTech_API.sSoundList.get(102)); setUsageAmounts(1, 8, 1);
-                        */
+            aUnlocalized,
+            aEnglish,
+            "To defend yourself against Bears",
+            aMaxDamage,
+            aEntityDamage,
+            true); /*
+                    * setCraftingSound(GregTech_API.sSoundList.get(102));
+                    * setBreakingSound(GregTech_API.sSoundList.get(102));
+                    * setEntityHitSound(GregTech_API.sSoundList.get(102)); setUsageAmounts(1, 8, 1);
+                    */
     }
 
     @Override
     public void addAdditionalToolTips(List<String> aList, ItemStack aStack, EntityPlayer aPlayer) {
         aList.add(
-                GT_LanguageManager.addStringLocalization(
-                        getUnlocalizedName() + ".tooltip_1",
-                        "especially Pedobears, Care Bears,"));
+            GT_LanguageManager
+                .addStringLocalization(getUnlocalizedName() + ".tooltip_1", "especially Pedobears, Care Bears,"));
         aList.add(
-                GT_LanguageManager.addStringLocalization(
-                        getUnlocalizedName() + ".tooltip_2",
-                        "Confession Bears, Bear Grylls"));
+            GT_LanguageManager
+                .addStringLocalization(getUnlocalizedName() + ".tooltip_2", "Confession Bears, Bear Grylls"));
         aList.add(
-                GT_LanguageManager.addStringLocalization(
-                        getUnlocalizedName() + ".tooltip_3",
-                        "And ofcourse Man-Bear-Pig"));
+            GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".tooltip_3", "And ofcourse Man-Bear-Pig"));
     }
     /*
      * @Override public void onHitEntity(Entity aEntity) { if (aEntity instanceof EntityLiving) {
@@ -50,7 +46,7 @@ public class GT_Spray_Pepper_Item extends GT_Tool_Item {
 
     @Override
     public boolean onItemUseFirst(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ,
-            int aSide, float hitX, float hitY, float hitZ) {
+        int aSide, float hitX, float hitY, float hitZ) {
         super.onItemUseFirst(aStack, aPlayer, aWorld, aX, aY, aZ, aSide, hitX, hitY, hitZ);
         if (aWorld.isRemote) {
             return false;

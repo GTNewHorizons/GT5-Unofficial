@@ -58,7 +58,7 @@ public class GT_Cover_EUMeter extends GT_CoverBehaviorBase<GT_Cover_EUMeter.EUMe
 
     @Override
     protected EUMeterData doCoverThingsImpl(byte aSide, byte aInputRedstone, int aCoverID, EUMeterData aCoverVariable,
-            ICoverable aTileEntity, long aTimer) {
+        ICoverable aTileEntity, long aTimer) {
         final long stored = aCoverVariable.type.getTileEntityStoredEnergy(aTileEntity);
         final long capacity = aCoverVariable.type.getTileEntityEnergyCapacity(aTileEntity);
 
@@ -93,9 +93,9 @@ public class GT_Cover_EUMeter extends GT_CoverBehaviorBase<GT_Cover_EUMeter.EUMe
 
     @Override
     protected EUMeterData onCoverScrewdriverClickImpl(byte aSide, int aCoverID, EUMeterData aCoverVariable,
-            ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         int num = (aCoverVariable.getNum() + (aPlayer.isSneaking() ? -1 : 1) + EnergyType.values().length * 2)
-                % (EnergyType.values().length * 2);
+            % (EnergyType.values().length * 2);
         switch (num) {
             case 0 -> GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("031", "Normal Universal Storage"));
             case 1 -> GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("032", "Inverted Universal Storage"));
@@ -107,12 +107,11 @@ public class GT_Cover_EUMeter extends GT_CoverBehaviorBase<GT_Cover_EUMeter.EUMe
             case 7 -> GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("038", "Inverted Average Electric Input"));
             case 8 -> GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("039", "Normal Average Electric Output"));
             case 9 -> GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("040", "Inverted Average Electric Output"));
-            case 10 -> GT_Utility.sendChatToPlayer(
-                    aPlayer,
-                    GT_Utility.trans("041", "Normal Electricity Storage(Including Batteries)"));
+            case 10 -> GT_Utility
+                .sendChatToPlayer(aPlayer, GT_Utility.trans("041", "Normal Electricity Storage(Including Batteries)"));
             case 11 -> GT_Utility.sendChatToPlayer(
-                    aPlayer,
-                    GT_Utility.trans("042", "Inverted Electricity Storage(Including Batteries)"));
+                aPlayer,
+                GT_Utility.trans("042", "Inverted Electricity Storage(Including Batteries)"));
         }
         aCoverVariable.setNum(num);
         return aCoverVariable;
@@ -121,7 +120,7 @@ public class GT_Cover_EUMeter extends GT_CoverBehaviorBase<GT_Cover_EUMeter.EUMe
     // region Static Result Methods
     @Override
     protected boolean isRedstoneSensitiveImpl(byte aSide, int aCoverID, EUMeterData aCoverVariable,
-            ICoverable aTileEntity, long aTimer) {
+        ICoverable aTileEntity, long aTimer) {
         return false;
     }
 
@@ -137,31 +136,31 @@ public class GT_Cover_EUMeter extends GT_CoverBehaviorBase<GT_Cover_EUMeter.EUMe
 
     @Override
     protected boolean letsFluidInImpl(byte aSide, int aCoverID, EUMeterData aCoverVariable, Fluid aFluid,
-            ICoverable aTileEntity) {
+        ICoverable aTileEntity) {
         return true;
     }
 
     @Override
     protected boolean letsFluidOutImpl(byte aSide, int aCoverID, EUMeterData aCoverVariable, Fluid aFluid,
-            ICoverable aTileEntity) {
+        ICoverable aTileEntity) {
         return true;
     }
 
     @Override
     protected boolean letsItemsInImpl(byte aSide, int aCoverID, EUMeterData aCoverVariable, int aSlot,
-            ICoverable aTileEntity) {
+        ICoverable aTileEntity) {
         return true;
     }
 
     @Override
     protected boolean letsItemsOutImpl(byte aSide, int aCoverID, EUMeterData aCoverVariable, int aSlot,
-            ICoverable aTileEntity) {
+        ICoverable aTileEntity) {
         return true;
     }
 
     @Override
     protected boolean manipulatesSidedRedstoneOutputImpl(byte aSide, int aCoverID, EUMeterData aCoverVariable,
-            ICoverable aTileEntity) {
+        ICoverable aTileEntity) {
         return true;
     }
 
@@ -205,67 +204,57 @@ public class GT_Cover_EUMeter extends GT_CoverBehaviorBase<GT_Cover_EUMeter.EUMe
             final String NORMAL = GT_Utility.trans("NORMAL", "Normal");
 
             builder.widget(
-                    new CoverDataControllerWidget<>(
-                            this::getCoverData,
-                            this::setCoverData,
-                            GT_Cover_EUMeter.this).addFollower(
-                                    new CoverDataFollower_CycleButtonWidget<>(),
-                                    coverData -> coverData.type.ordinal(),
-                                    (coverData, state) -> {
-                                        coverData.type = EnergyType.getEnergyType(state);
-                                        return coverData;
-                                    },
-                                    widget -> widget.setLength(EnergyType.values().length)
-                                                    .addTooltip(
-                                                            state -> EnergyType.getEnergyType(state)
-                                                                               .getTooltip())
-                                                    .setStaticTexture(GT_UITextures.OVERLAY_BUTTON_CYCLIC)
-                                                    .setPos(spaceX * 0, spaceY * 0))
-                                                  .addFollower(
-                                                          CoverDataFollower_ToggleButtonWidget.ofRedstone(),
-                                                          coverData -> coverData.inverted,
-                                                          (coverData, state) -> {
-                                                              coverData.inverted = state;
-                                                              return coverData;
-                                                          },
-                                                          widget -> widget.addTooltip(0, NORMAL)
-                                                                          .addTooltip(1, INVERTED)
-                                                                          .setPos(spaceX * 0, spaceY * 1))
-                                                  .addFollower(
-                                                          new CoverDataFollower_TextFieldWidget<>(),
-                                                          coverData -> String.valueOf(coverData.threshold),
-                                                          (coverData, state) -> {
-                                                              coverData.threshold = (long) MathExpression.parseMathExpression(
-                                                                      state);
-                                                              return coverData;
-                                                          },
-                                                          widget -> widget.setOnScrollNumbersLong(1000, 100, 100000)
-                                                                          .setNumbersLong(
-                                                                                  () -> 0L,
-                                                                                  () -> Long.MAX_VALUE)
-                                                                          .setFocusOnGuiOpen(true)
-                                                                          .setPos(spaceX * 0, spaceY * 2 + 2)
-                                                                          .setSize(spaceX * 8, 12))
-                                                  .setPos(startX, startY))
-                   .widget(
-                           TextWidget.dynamicString(() -> getCoverData() != null ? getCoverData().type.getTitle() : "")
-                                     .setSynced(false)
-                                     .setDefaultColor(COLOR_TEXT_GRAY.get())
-                                     .setPos(startX + spaceX, 4 + startY))
-                   .widget(
-                           TextWidget.dynamicString(
-                                   () -> getCoverData() != null ? getCoverData().inverted ? INVERTED : NORMAL : "")
-                                     .setSynced(false)
-                                     .setDefaultColor(COLOR_TEXT_GRAY.get())
-                                     .setPos(startX + spaceX, 4 + startY + spaceY))
-                   .widget(
-                           new TextWidget(GT_Utility.trans("222.1", "Energy threshold"))
-                                                                                        .setDefaultColor(
-                                                                                                COLOR_TEXT_GRAY.get())
-                                                                                        .setPos(
-                                                                                                startX,
-                                                                                                startY + spaceY * 3
-                                                                                                        + 4));
+                new CoverDataControllerWidget<>(this::getCoverData, this::setCoverData, GT_Cover_EUMeter.this)
+                    .addFollower(
+                        new CoverDataFollower_CycleButtonWidget<>(),
+                        coverData -> coverData.type.ordinal(),
+                        (coverData, state) -> {
+                            coverData.type = EnergyType.getEnergyType(state);
+                            return coverData;
+                        },
+                        widget -> widget.setLength(EnergyType.values().length)
+                            .addTooltip(
+                                state -> EnergyType.getEnergyType(state)
+                                    .getTooltip())
+                            .setStaticTexture(GT_UITextures.OVERLAY_BUTTON_CYCLIC)
+                            .setPos(spaceX * 0, spaceY * 0))
+                    .addFollower(
+                        CoverDataFollower_ToggleButtonWidget.ofRedstone(),
+                        coverData -> coverData.inverted,
+                        (coverData, state) -> {
+                            coverData.inverted = state;
+                            return coverData;
+                        },
+                        widget -> widget.addTooltip(0, NORMAL)
+                            .addTooltip(1, INVERTED)
+                            .setPos(spaceX * 0, spaceY * 1))
+                    .addFollower(
+                        new CoverDataFollower_TextFieldWidget<>(),
+                        coverData -> String.valueOf(coverData.threshold),
+                        (coverData, state) -> {
+                            coverData.threshold = (long) MathExpression.parseMathExpression(state);
+                            return coverData;
+                        },
+                        widget -> widget.setOnScrollNumbersLong(1000, 100, 100000)
+                            .setNumbersLong(() -> 0L, () -> Long.MAX_VALUE)
+                            .setFocusOnGuiOpen(true)
+                            .setPos(spaceX * 0, spaceY * 2 + 2)
+                            .setSize(spaceX * 8, 12))
+                    .setPos(startX, startY))
+                .widget(
+                    TextWidget.dynamicString(() -> getCoverData() != null ? getCoverData().type.getTitle() : "")
+                        .setSynced(false)
+                        .setDefaultColor(COLOR_TEXT_GRAY.get())
+                        .setPos(startX + spaceX, 4 + startY))
+                .widget(
+                    TextWidget
+                        .dynamicString(() -> getCoverData() != null ? getCoverData().inverted ? INVERTED : NORMAL : "")
+                        .setSynced(false)
+                        .setDefaultColor(COLOR_TEXT_GRAY.get())
+                        .setPos(startX + spaceX, 4 + startY + spaceY))
+                .widget(
+                    new TextWidget(GT_Utility.trans("222.1", "Energy threshold")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                        .setPos(startX, startY + spaceY * 3 + 4));
         }
     }
 
@@ -353,34 +342,34 @@ public class GT_Cover_EUMeter extends GT_CoverBehaviorBase<GT_Cover_EUMeter.EUMe
     private enum EnergyType {
 
         UNIVERSAL_STORAGE(GT_Utility.trans("301", "Universal"), GT_Utility.trans("256", "Universal Storage"),
-                ICoverable::getUniversalEnergyStored, ICoverable::getUniversalEnergyCapacity),
+            ICoverable::getUniversalEnergyStored, ICoverable::getUniversalEnergyCapacity),
         ELECTRICITY_STORAGE(GT_Utility.trans("302", "Int. EU"), GT_Utility.trans("257", "Electricity Storage"),
-                ICoverable::getStoredEU, ICoverable::getEUCapacity),
+            ICoverable::getStoredEU, ICoverable::getEUCapacity),
         STEAM_STORAGE(GT_Utility.trans("303", "Steam"), GT_Utility.trans("258", "Steam Storage"),
-                ICoverable::getStoredSteam, ICoverable::getSteamCapacity),
+            ICoverable::getStoredSteam, ICoverable::getSteamCapacity),
         AVERAGE_ELECTRIC_INPUT(GT_Utility.trans("304", "Avg. Input"), GT_Utility.trans("259", "Average Electric Input"),
-                ICoverable::getAverageElectricInput, (te) -> te.getInputVoltage() * te.getInputAmperage()),
+            ICoverable::getAverageElectricInput, (te) -> te.getInputVoltage() * te.getInputAmperage()),
         AVERAGE_ELECTRIC_OUTPUT(GT_Utility.trans("305", "Avg. Output"),
-                GT_Utility.trans("260", "Average Electric Output"), ICoverable::getAverageElectricOutput,
-                (te) -> te.getOutputVoltage() * te.getOutputAmperage()),
+            GT_Utility.trans("260", "Average Electric Output"), ICoverable::getAverageElectricOutput,
+            (te) -> te.getOutputVoltage() * te.getOutputAmperage()),
         ELECTRICITY_STORAGE_INCLUDING_BATTERIES(GT_Utility.trans("306", "EU stored"),
-                GT_Utility.trans("261", "Electricity Storage(Including Batteries)"), (te) -> {
-                    if (te instanceof IGregTechTileEntity) {
-                        IMetaTileEntity mte = ((IGregTechTileEntity) te).getMetaTileEntity();
-                        if (mte instanceof GT_MetaTileEntity_BasicBatteryBuffer buffer) {
-                            return buffer.getStoredEnergy()[0];
-                        }
+            GT_Utility.trans("261", "Electricity Storage(Including Batteries)"), (te) -> {
+                if (te instanceof IGregTechTileEntity) {
+                    IMetaTileEntity mte = ((IGregTechTileEntity) te).getMetaTileEntity();
+                    if (mte instanceof GT_MetaTileEntity_BasicBatteryBuffer buffer) {
+                        return buffer.getStoredEnergy()[0];
                     }
-                    return te.getStoredEU();
-                }, (te) -> {
-                    if (te instanceof IGregTechTileEntity) {
-                        IMetaTileEntity mte = ((IGregTechTileEntity) te).getMetaTileEntity();
-                        if (mte instanceof GT_MetaTileEntity_BasicBatteryBuffer buffer) {
-                            return buffer.getStoredEnergy()[1];
-                        }
+                }
+                return te.getStoredEU();
+            }, (te) -> {
+                if (te instanceof IGregTechTileEntity) {
+                    IMetaTileEntity mte = ((IGregTechTileEntity) te).getMetaTileEntity();
+                    if (mte instanceof GT_MetaTileEntity_BasicBatteryBuffer buffer) {
+                        return buffer.getStoredEnergy()[1];
                     }
-                    return te.getEUCapacity();
-                });
+                }
+                return te.getEUCapacity();
+            });
 
         private final String title;
         private final String tooltip;
@@ -388,7 +377,7 @@ public class GT_Cover_EUMeter extends GT_CoverBehaviorBase<GT_Cover_EUMeter.EUMe
         private final Function<ICoverable, Long> getTileEntityEnergyCapacityFunc;
 
         EnergyType(String title, String tooltip, Function<ICoverable, Long> getTileEntityStoredEnergyFunc,
-                Function<ICoverable, Long> getTileEntityEnergyCapacityFunc) {
+            Function<ICoverable, Long> getTileEntityEnergyCapacityFunc) {
             this.title = title;
             this.tooltip = tooltip;
             this.getTileEntityStoredEnergyFunc = getTileEntityStoredEnergyFunc;

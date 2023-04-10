@@ -29,13 +29,13 @@ public class GT_Cover_Vent extends GT_CoverBehavior {
 
     @Override
     public boolean isRedstoneSensitive(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
-            long aTimer) {
+        long aTimer) {
         return false;
     }
 
     @Override
     public int doCoverThings(byte aSide, byte aInputRedstone, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
-            long aTimer) {
+        long aTimer) {
         if (aSide == SIDE_UNKNOWN) return 0;
         int ret = 0;
         if (aTileEntity instanceof IFluidHandler) {
@@ -63,7 +63,7 @@ public class GT_Cover_Vent extends GT_CoverBehavior {
         final int offsetZ = aTileEntity.getOffsetZ(aSide, 1);
         final World world = aTileEntity.getWorld();
         if (aTileEntity.hasThingsToDo() && aCoverVariable != aTileEntity.getProgress()
-                && !GT_Utility.hasBlockHitBox(world, offsetX, offsetY, offsetZ)) {
+            && !GT_Utility.hasBlockHitBox(world, offsetX, offsetY, offsetZ)) {
             aTileEntity.increaseProgress(this.mEfficiency);
         }
         return aTileEntity.getProgress();

@@ -26,7 +26,7 @@ public class GT_Cover_RedstoneTransmitterExternal extends GT_Cover_RedstoneWirel
 
     @Override
     public int doCoverThings(byte aSide, byte aInputRedstone, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
-            long aTimer) {
+        long aTimer) {
         // TODO remove next line after 2.3.0
         if (!IControlsWorkCover.makeSureOnlyOne(aSide, aTileEntity)) return aCoverVariable;
         GregTech_API.sWirelessRedstone.put(aCoverVariable, aInputRedstone);
@@ -35,7 +35,7 @@ public class GT_Cover_RedstoneTransmitterExternal extends GT_Cover_RedstoneWirel
 
     @Override
     protected boolean isRedstoneSensitiveImpl(byte aSide, int aCoverID,
-            ISerializableObject.LegacyCoverData aCoverVariable, ICoverable aTileEntity, long aTimer) {
+        ISerializableObject.LegacyCoverData aCoverVariable, ICoverable aTileEntity, long aTimer) {
         return true;
     }
 

@@ -77,12 +77,12 @@ public class GT_Runnable_MachineBlockUpdate implements Runnable {
 
     public static void initExecutorService() {
         EXECUTOR_SERVICE = Executors.newFixedThreadPool(
-                Math.max(
-                        1,
-                        (Runtime.getRuntime()
-                                .availableProcessors() * 2
-                                / 3)),
-                THREAD_FACTORY);
+            Math.max(
+                1,
+                (Runtime.getRuntime()
+                    .availableProcessors() * 2
+                    / 3)),
+            THREAD_FACTORY);
     }
 
     public static void shutdownExecutorService() {
@@ -95,7 +95,7 @@ public class GT_Runnable_MachineBlockUpdate implements Runnable {
                 // Wait a while for tasks to respond to being cancelled
                 if (!EXECUTOR_SERVICE.awaitTermination(60, TimeUnit.SECONDS)) {
                     GT_Mod.GT_FML_LOGGER.error(
-                            "Well this didn't terminated well... GT_Runnable_MachineBlockUpdate.shutdownExecutorService");
+                        "Well this didn't terminated well... GT_Runnable_MachineBlockUpdate.shutdownExecutorService");
                 }
             }
         } catch (InterruptedException ie) {
@@ -104,7 +104,7 @@ public class GT_Runnable_MachineBlockUpdate implements Runnable {
             EXECUTOR_SERVICE.shutdownNow();
             // Preserve interrupt status
             Thread.currentThread()
-                  .interrupt();
+                .interrupt();
         } catch (Exception e) {
             GT_Mod.GT_FML_LOGGER.error("Well this didn't terminated well...", e);
             // (Re-)Cancel in case
@@ -130,8 +130,8 @@ public class GT_Runnable_MachineBlockUpdate implements Runnable {
                 try {
                     tTileEntity = world.getTileEntity(aCoords.posX, aCoords.posY, aCoords.posZ);
                     isMachineBlock = GregTech_API.isMachineBlock(
-                            world.getBlock(aCoords.posX, aCoords.posY, aCoords.posZ),
-                            world.getBlockMetadata(aCoords.posX, aCoords.posY, aCoords.posZ));
+                        world.getBlock(aCoords.posX, aCoords.posY, aCoords.posZ),
+                        world.getBlockMetadata(aCoords.posX, aCoords.posY, aCoords.posZ));
                 } finally {
                     GT_Proxy.TICK_LOCK.unlock();
                 }
@@ -145,9 +145,9 @@ public class GT_Runnable_MachineBlockUpdate implements Runnable {
                 // 2) If the tile says we should recursively updated (pipes don't, machine blocks do)
                 // 3) If the block at the coordinates is marked as a machine block
                 if (visited.size() < 5
-                        || (tTileEntity instanceof IMachineBlockUpdateable
-                                && ((IMachineBlockUpdateable) tTileEntity).isMachineBlockUpdateRecursive())
-                        || isMachineBlock) {
+                    || (tTileEntity instanceof IMachineBlockUpdateable
+                        && ((IMachineBlockUpdateable) tTileEntity).isMachineBlockUpdateRecursive())
+                    || isMachineBlock) {
                     ChunkCoordinates tCoords;
 
                     if (visited.add(tCoords = new ChunkCoordinates(aCoords.posX + 1, aCoords.posY, aCoords.posZ)))
@@ -166,13 +166,13 @@ public class GT_Runnable_MachineBlockUpdate implements Runnable {
             }
         } catch (Exception e) {
             GT_Mod.GT_FML_LOGGER.error(
-                    "Well this update was broken... " + mCoords
-                            + ", mWorld={"
-                            + world.getProviderName()
-                            + " @dimId "
-                            + world.provider.dimensionId
-                            + "}",
-                    e);
+                "Well this update was broken... " + mCoords
+                    + ", mWorld={"
+                    + world.getProviderName()
+                    + " @dimId "
+                    + world.provider.dimensionId
+                    + "}",
+                e);
         }
     }
 }

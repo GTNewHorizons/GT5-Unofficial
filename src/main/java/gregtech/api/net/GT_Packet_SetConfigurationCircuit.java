@@ -84,10 +84,10 @@ public class GT_Packet_SetConfigurationCircuit extends GT_Packet_New {
     @Override
     public GT_Packet_New decode(ByteArrayDataInput aData) {
         return new GT_Packet_SetConfigurationCircuit(
-                aData.readInt(),
-                aData.readShort(),
-                aData.readInt(),
-                ISerializableObject.readItemStackFromGreggyByteBuf(aData));
+            aData.readInt(),
+            aData.readShort(),
+            aData.readInt(),
+            ISerializableObject.readItemStackFromGreggyByteBuf(aData));
     }
 
     @Override
@@ -102,9 +102,9 @@ public class GT_Packet_SetConfigurationCircuit extends GT_Packet_New {
         if (machine == null) return;
         if (!machine.allowSelectCircuit()) return;
         machine.getConfigurationCircuits()
-               .stream()
-               .filter(stack -> GT_Utility.areStacksEqual(stack, circuit))
-               .findFirst()
-               .ifPresent(stack -> ((IHasInventory) tile).setInventorySlotContents(machine.getCircuitSlot(), stack));
+            .stream()
+            .filter(stack -> GT_Utility.areStacksEqual(stack, circuit))
+            .findFirst()
+            .ifPresent(stack -> ((IHasInventory) tile).setInventorySlotContents(machine.getCircuitSlot(), stack));
     }
 }

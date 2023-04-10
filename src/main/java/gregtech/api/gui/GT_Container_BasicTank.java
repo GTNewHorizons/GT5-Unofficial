@@ -56,11 +56,11 @@ public class GT_Container_BasicTank extends GT_ContainerMetaTile_Machine {
             }
             IFluidAccess tDrainableAccess = constructFluidAccess(tTank, false);
             return handleFluidSlotClick(
-                    tDrainableAccess,
-                    aPlayer,
-                    aMouseclick == 0,
-                    true,
-                    !tTank.isDrainableStackSeparate());
+                tDrainableAccess,
+                aPlayer,
+                aMouseclick == 0,
+                true,
+                !tTank.isDrainableStackSeparate());
         }
         return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
     }

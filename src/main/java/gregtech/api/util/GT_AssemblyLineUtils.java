@@ -137,9 +137,9 @@ public class GT_AssemblyLineUtils {
             }
         }
         if (!aTag.hasKey("output") || !aTag.hasKey("time")
-                || aTag.getInteger("time") <= 0
-                || !aTag.hasKey("eu")
-                || !GT_Utility.isStackValid(aOutput)) {
+            || aTag.getInteger("time") <= 0
+            || !aTag.hasKey("eu")
+            || !GT_Utility.isStackValid(aOutput)) {
             return LookupResultType.INVALID_STICK.getResult();
         }
         if (GT_Values.D1) {
@@ -152,14 +152,14 @@ public class GT_AssemblyLineUtils {
         // Try build a recipe instance
         if (aReturnBuiltRecipe) {
             return LookupResultType.VALID_STACK_AND_VALID_HASH.getResult(
-                    new GT_Recipe_AssemblyLine(
-                            null,
-                            0,
-                            aInputs.toArray(new ItemStack[0]),
-                            aFluidInputs.toArray(new FluidStack[0]),
-                            aOutput,
-                            aTime,
-                            aEU));
+                new GT_Recipe_AssemblyLine(
+                    null,
+                    0,
+                    aInputs.toArray(new ItemStack[0]),
+                    aFluidInputs.toArray(new FluidStack[0]),
+                    aOutput,
+                    aTime,
+                    aEU));
         }
 
         for (GT_Recipe_AssemblyLine aRecipe : GT_Recipe.GT_Recipe_AssemblyLine.sAssemblylineRecipes) {
@@ -192,7 +192,7 @@ public class GT_AssemblyLineUtils {
 
     private static boolean areStacksEqual(ItemStack[] lhs, List<ItemStack> rhs) {
         return lhs == null ? rhs.isEmpty()
-                : !rhs.isEmpty() && GT_Utility.areStackListsEqual(Arrays.asList(lhs), rhs, false, true);
+            : !rhs.isEmpty() && GT_Utility.areStackListsEqual(Arrays.asList(lhs), rhs, false, true);
     }
 
     /**
@@ -279,8 +279,8 @@ public class GT_AssemblyLineUtils {
      */
     public static boolean doesDataStickHaveOutput(ItemStack aDataStick) {
         if (isItemDataStick(aDataStick) && aDataStick.hasTagCompound()
-                && aDataStick.getTagCompound()
-                             .hasKey("output")) {
+            && aDataStick.getTagCompound()
+                .hasKey("output")) {
             return true;
         }
         return false;
@@ -312,7 +312,7 @@ public class GT_AssemblyLineUtils {
         if (isItemDataStick(aDataStick) && aDataStick.hasTagCompound()) {
             NBTTagCompound aNBT = aDataStick.getTagCompound();
             if (aNBT.hasKey("Data.Recipe.Hash") && !aNBT.getString("Data.Recipe.Hash")
-                                                        .equals("Hash.0")) {
+                .equals("Hash.0")) {
                 return true;
             }
         }
@@ -378,8 +378,8 @@ public class GT_AssemblyLineUtils {
         if (isItemDataStick(aDataStick)) {
             String s = aNewRecipe.mOutput.getDisplayName();
             if (FMLCommonHandler.instance()
-                                .getEffectiveSide()
-                                .isServer()) {
+                .getEffectiveSide()
+                .isServer()) {
                 s = GT_Assemblyline_Server.lServerNames.get(aNewRecipe.mOutput.getDisplayName());
                 if (s == null) {
                     s = aNewRecipe.mOutput.getDisplayName();
@@ -390,11 +390,11 @@ public class GT_AssemblyLineUtils {
             if (GT_Values.D1) {
                 GT_Recipe_AssemblyLine aOldRecipe = findAssemblyLineRecipeFromDataStick(aDataStick, true).recipe;
                 GT_FML_LOGGER.info(
-                        "Updating data stick: " + aDataStick.getDisplayName()
-                                + " | Old Recipe Hash: "
-                                + generateRecipeHash(aOldRecipe)
-                                + ", New Recipe Hash: "
-                                + aHash);
+                    "Updating data stick: " + aDataStick.getDisplayName()
+                        + " | Old Recipe Hash: "
+                        + generateRecipeHash(aOldRecipe)
+                        + ", New Recipe Hash: "
+                        + aHash);
             }
 
             String author = "Assembling Line Recipe Generator";
@@ -445,20 +445,20 @@ public class GT_AssemblyLineUtils {
             NBTTagList tNBTList = new NBTTagList();
             s = aNewRecipe.mOutput.getDisplayName();
             if (FMLCommonHandler.instance()
-                                .getEffectiveSide()
-                                .isServer()) {
+                .getEffectiveSide()
+                .isServer()) {
                 s = GT_Assemblyline_Server.lServerNames.get(aNewRecipe.mOutput.getDisplayName());
                 if (s == null) s = aNewRecipe.mOutput.getDisplayName();
             }
             tNBTList.appendTag(
-                    new NBTTagString(
-                            "Construction plan for " + aNewRecipe.mOutput.stackSize
-                                    + " "
-                                    + s
-                                    + ". Needed EU/t: "
-                                    + aNewRecipe.mEUt
-                                    + " Production time: "
-                                    + (aNewRecipe.mDuration / 20)));
+                new NBTTagString(
+                    "Construction plan for " + aNewRecipe.mOutput.stackSize
+                        + " "
+                        + s
+                        + ". Needed EU/t: "
+                        + aNewRecipe.mEUt
+                        + " Production time: "
+                        + (aNewRecipe.mDuration / 20)));
             for (int i = 0; i < aNewRecipe.mInputs.length; i++) {
                 if (aNewRecipe.mOreDictAlt[i] != null) {
                     int count = 0;
@@ -467,16 +467,16 @@ public class GT_AssemblyLineUtils {
                         if (tStack != null) {
                             s = tStack.getDisplayName();
                             if (FMLCommonHandler.instance()
-                                                .getEffectiveSide()
-                                                .isServer()) {
+                                .getEffectiveSide()
+                                .isServer()) {
                                 s = GT_Assemblyline_Server.lServerNames.get(tStack.getDisplayName());
                                 if (s == null) s = tStack.getDisplayName();
                             }
 
                             tBuilder.append(count == 0 ? "" : "\nOr ")
-                                    .append(tStack.stackSize)
-                                    .append(" ")
-                                    .append(s);
+                                .append(tStack.stackSize)
+                                .append(" ")
+                                .append(s);
                             count++;
                         }
                     }
@@ -484,28 +484,27 @@ public class GT_AssemblyLineUtils {
                 } else if (aNewRecipe.mInputs[i] != null) {
                     s = aNewRecipe.mInputs[i].getDisplayName();
                     if (FMLCommonHandler.instance()
-                                        .getEffectiveSide()
-                                        .isServer()) {
+                        .getEffectiveSide()
+                        .isServer()) {
                         s = GT_Assemblyline_Server.lServerNames.get(aNewRecipe.mInputs[i].getDisplayName());
                         if (s == null) s = aNewRecipe.mInputs[i].getDisplayName();
                     }
                     tNBTList.appendTag(
-                            new NBTTagString(
-                                    "Input Bus " + (i + 1) + ": " + aNewRecipe.mInputs[i].stackSize + " " + s));
+                        new NBTTagString("Input Bus " + (i + 1) + ": " + aNewRecipe.mInputs[i].stackSize + " " + s));
                 }
             }
             for (int i = 0; i < aNewRecipe.mFluidInputs.length; i++) {
                 if (aNewRecipe.mFluidInputs[i] != null) {
                     s = aNewRecipe.mFluidInputs[i].getLocalizedName();
                     if (FMLCommonHandler.instance()
-                                        .getEffectiveSide()
-                                        .isServer()) {
+                        .getEffectiveSide()
+                        .isServer()) {
                         s = GT_Assemblyline_Server.lServerNames.get(aNewRecipe.mFluidInputs[i].getLocalizedName());
                         if (s == null) s = aNewRecipe.mFluidInputs[i].getLocalizedName();
                     }
                     tNBTList.appendTag(
-                            new NBTTagString(
-                                    "Input Hatch " + (i + 1) + ": " + aNewRecipe.mFluidInputs[i].amount + "L " + s));
+                        new NBTTagString(
+                            "Input Hatch " + (i + 1) + ": " + aNewRecipe.mFluidInputs[i].amount + "L " + s));
                 }
             }
             tNBT.setTag("pages", tNBTList);

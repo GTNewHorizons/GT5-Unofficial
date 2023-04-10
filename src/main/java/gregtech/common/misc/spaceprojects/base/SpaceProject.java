@@ -369,14 +369,14 @@ public class SpaceProject implements ISpaceProject {
     @Override
     public ISpaceProject copy() {
         SpaceProject copy = new SpaceProject().setProjectName(name)
-                                              .setProjectUnlocalizedName(unlocalizedName)
-                                              .setProjectVoltage(voltage)
-                                              .setProjectBuildTime(buildTime)
-                                              .setProjectItemsCost(itemsCost)
-                                              .setProjectFluidsCost(fluidsCost)
-                                              .setProjectStages(totalStage)
-                                              .setProjectTexture(texture)
-                                              .setProjectRequirements(requirements);
+            .setProjectUnlocalizedName(unlocalizedName)
+            .setProjectVoltage(voltage)
+            .setProjectBuildTime(buildTime)
+            .setProjectItemsCost(itemsCost)
+            .setProjectFluidsCost(fluidsCost)
+            .setProjectStages(totalStage)
+            .setProjectTexture(texture)
+            .setProjectRequirements(requirements);
         if (upgradesAvailable != null) {
             ISP_Upgrade[] upgrades = new SP_Upgrade[upgradesAvailable.size()];
             int index = 0;
@@ -406,14 +406,14 @@ public class SpaceProject implements ISpaceProject {
 
         if (requirements.getBodyType() != null && checkLocation) {
             if (!requirements.getBodyType()
-                             .equals(location.getType())) {
+                .equals(location.getType())) {
                 return false;
             }
         }
 
         if (requirements.getStarType() != null && checkLocation) {
             if (!requirements.getStarType()
-                             .equals(location.getStarType())) {
+                .equals(location.getStarType())) {
                 return false;
             }
         }

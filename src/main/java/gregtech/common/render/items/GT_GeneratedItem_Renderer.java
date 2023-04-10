@@ -31,8 +31,8 @@ public class GT_GeneratedItem_Renderer implements IItemRenderer {
     @Override
     public boolean handleRenderType(ItemStack item, ItemRenderType type) {
         return type == ItemRenderType.EQUIPPED || type == ItemRenderType.EQUIPPED_FIRST_PERSON
-                || type == ItemRenderType.INVENTORY
-                || type == ItemRenderType.ENTITY;
+            || type == ItemRenderType.INVENTORY
+            || type == ItemRenderType.ENTITY;
     }
 
     @Override
@@ -62,7 +62,7 @@ public class GT_GeneratedItem_Renderer implements IItemRenderer {
                         tIcon = aItem.mIconList[(aMetaData - aItem.mOffset)][8];
                     } else {
                         tIcon = aItem.mIconList[(aMetaData - aItem.mOffset)][(7
-                                - (int) Math.max(0L, Math.min(5L, (tStats[0] - tCharge) * 6L / tStats[0])))];
+                            - (int) Math.max(0L, Math.min(5L, (tStats[0] - tCharge) * 6L / tStats[0])))];
                     }
                 }
             } else {
@@ -87,14 +87,14 @@ public class GT_GeneratedItem_Renderer implements IItemRenderer {
             GT_RenderUtil.renderItemIcon(tIcon, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
         } else {
             ItemRenderer.renderItemIn2D(
-                    Tessellator.instance,
-                    tIcon.getMaxU(),
-                    tIcon.getMinV(),
-                    tIcon.getMinU(),
-                    tIcon.getMaxV(),
-                    tIcon.getIconWidth(),
-                    tIcon.getIconHeight(),
-                    0.0625F);
+                Tessellator.instance,
+                tIcon.getMaxU(),
+                tIcon.getMinV(),
+                tIcon.getMinU(),
+                tIcon.getMaxV(),
+                tIcon.getIconWidth(),
+                tIcon.getIconHeight(),
+                0.0625F);
         }
         GL11.glDisable(GL11.GL_BLEND);
     }
@@ -134,23 +134,23 @@ public class GT_GeneratedItem_Renderer implements IItemRenderer {
             GT_RenderUtil.renderItemIcon(inner, 16.0D, -0.001D, 0.0F, 0.0F, -1.0F);
         } else {
             ItemRenderer.renderItemIn2D(
-                    Tessellator.instance,
-                    inner.getMaxU(),
-                    inner.getMinV(),
-                    inner.getMinU(),
-                    inner.getMaxV(),
-                    inner.getIconWidth(),
-                    inner.getIconHeight(),
-                    0.0625F);
+                Tessellator.instance,
+                inner.getMaxU(),
+                inner.getMinV(),
+                inner.getMinU(),
+                inner.getMaxV(),
+                inner.getIconWidth(),
+                inner.getIconHeight(),
+                0.0625F);
         }
 
         FluidStack fluidStack = GT_Utility.getFluidForFilledItem(stack, true);
 
         if (fluidStack != null && fluidStack.getFluid() != null) {
             IIcon fluidIcon = fluidStack.getFluid()
-                                        .getIcon(fluidStack);
+                .getIcon(fluidStack);
             int fluidColor = fluidStack.getFluid()
-                                       .getColor(fluidStack);
+                .getColor(fluidStack);
 
             Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.locationBlocksTexture);
             markNeedsAnimationUpdate(fluidIcon);
@@ -161,14 +161,14 @@ public class GT_GeneratedItem_Renderer implements IItemRenderer {
                 GT_RenderUtil.renderItemIcon(fluidIcon, 16.0D, -0.001D, 0.0F, 0.0F, -1.0F);
             } else {
                 ItemRenderer.renderItemIn2D(
-                        Tessellator.instance,
-                        fluidIcon.getMaxU(),
-                        fluidIcon.getMinV(),
-                        fluidIcon.getMinU(),
-                        fluidIcon.getMaxV(),
-                        fluidIcon.getIconWidth(),
-                        fluidIcon.getIconHeight(),
-                        0.0625F);
+                    Tessellator.instance,
+                    fluidIcon.getMaxU(),
+                    fluidIcon.getMinV(),
+                    fluidIcon.getMinU(),
+                    fluidIcon.getMaxV(),
+                    fluidIcon.getIconWidth(),
+                    fluidIcon.getIconHeight(),
+                    0.0625F);
             }
 
             GL11.glColor3ub((byte) -1, (byte) -1, (byte) -1);

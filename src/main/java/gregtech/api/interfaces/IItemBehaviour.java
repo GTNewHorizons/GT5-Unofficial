@@ -19,10 +19,10 @@ public interface IItemBehaviour<E extends Item> {
     boolean onLeftClickEntity(E aItem, ItemStack aStack, EntityPlayer aPlayer, Entity aEntity);
 
     boolean onItemUse(E aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int aSide,
-            float hitX, float hitY, float hitZ);
+        float hitX, float hitY, float hitZ);
 
     boolean onItemUseFirst(E aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ,
-            int aSide, float hitX, float hitY, float hitZ);
+        int aSide, float hitX, float hitY, float hitZ);
 
     ItemStack onItemRightClick(E aItem, ItemStack aStack, World aWorld, EntityPlayer aPlayer);
 
@@ -39,8 +39,8 @@ public interface IItemBehaviour<E extends Item> {
     boolean hasProjectile(GT_MetaBase_Item aItem, SubTag aProjectileType, ItemStack aStack);
 
     EntityArrow getProjectile(E aItem, SubTag aProjectileType, ItemStack aStack, World aWorld, double aX, double aY,
-            double aZ);
+        double aZ);
 
     EntityArrow getProjectile(E aItem, SubTag aProjectileType, ItemStack aStack, World aWorld, EntityLivingBase aEntity,
-            float aSpeed);
+        float aSpeed);
 }

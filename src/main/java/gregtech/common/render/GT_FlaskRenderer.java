@@ -57,9 +57,9 @@ public final class GT_FlaskRenderer implements IItemRenderer {
         if (fs != null) {
             IIcon iconWindow = cell.iconWindow;
             IIcon fluidicon = fs.getFluid()
-                                .getIcon(fs);
+                .getIcon(fs);
             int fluidColor = fs.getFluid()
-                               .getColor(fs);
+                .getColor(fs);
             Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.locationItemsTexture);
             GL11.glBlendFunc(GL11.GL_ZERO, GL11.GL_ONE);
             if (type.equals(ItemRenderType.INVENTORY)) {
@@ -90,14 +90,14 @@ public final class GT_FlaskRenderer implements IItemRenderer {
             DrawUtil.renderIcon(icon, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
         } else {
             ItemRenderer.renderItemIn2D(
-                    Tessellator.instance,
-                    icon.getMaxU(),
-                    icon.getMinV(),
-                    icon.getMinU(),
-                    icon.getMaxV(),
-                    icon.getIconWidth(),
-                    icon.getIconHeight(),
-                    0.0625F);
+                Tessellator.instance,
+                icon.getMaxU(),
+                icon.getMinV(),
+                icon.getMinU(),
+                icon.getMaxV(),
+                icon.getIconWidth(),
+                icon.getIconHeight(),
+                0.0625F);
         }
         GL11.glDisable(GL11.GL_ALPHA_TEST);
         GL11.glDisable(GL11.GL_BLEND);

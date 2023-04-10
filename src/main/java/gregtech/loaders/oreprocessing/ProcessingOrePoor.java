@@ -20,7 +20,7 @@ public class ProcessingOrePoor implements gregtech.api.interfaces.IOreRecipeRegi
 
     @Override
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
-            ItemStack aStack) {
+        ItemStack aStack) {
         int aMultiplier = 1;
         switch (aPrefix) {
             case oreSmall:
@@ -39,24 +39,22 @@ public class ProcessingOrePoor implements gregtech.api.interfaces.IOreRecipeRegi
         }
         if (aMaterial != null) {
             GT_Values.RA.addForgeHammerRecipe(
-                    GT_Utility.copyAmount(1L, aStack),
-                    GT_OreDictUnificator.get(OrePrefixes.dustTiny, aMaterial, aMultiplier),
-                    16,
-                    10);
+                GT_Utility.copyAmount(1L, aStack),
+                GT_OreDictUnificator.get(OrePrefixes.dustTiny, aMaterial, aMultiplier),
+                16,
+                10);
             GT_ModHandler.addPulverisationRecipe(
-                    GT_Utility.copyAmount(1L, aStack),
-                    GT_OreDictUnificator.get(OrePrefixes.dustTiny, aMaterial, 2 * aMultiplier),
-                    GT_OreDictUnificator.get(
-                            OrePrefixes.dustTiny,
-                            GT_Utility.selectItemInList(0, aMaterial, aMaterial.mOreByProducts),
-                            1L),
-                    5 * aMultiplier,
-                    GT_OreDictUnificator.getDust(aPrefix.mSecondaryMaterial),
-                    100,
-                    true);
+                GT_Utility.copyAmount(1L, aStack),
+                GT_OreDictUnificator.get(OrePrefixes.dustTiny, aMaterial, 2 * aMultiplier),
+                GT_OreDictUnificator
+                    .get(OrePrefixes.dustTiny, GT_Utility.selectItemInList(0, aMaterial, aMaterial.mOreByProducts), 1L),
+                5 * aMultiplier,
+                GT_OreDictUnificator.getDust(aPrefix.mSecondaryMaterial),
+                100,
+                true);
             if (aMaterial.contains(gregtech.api.enums.SubTag.NO_SMELTING)) GT_ModHandler.addSmeltingRecipe(
-                    GT_Utility.copyAmount(1L, aStack),
-                    GT_OreDictUnificator.get(OrePrefixes.nugget, aMaterial.mDirectSmelting, aMultiplier));
+                GT_Utility.copyAmount(1L, aStack),
+                GT_OreDictUnificator.get(OrePrefixes.nugget, aMaterial.mDirectSmelting, aMultiplier));
         }
     }
 }

@@ -15,7 +15,7 @@ public class GT_Runnable_Sound implements Runnable {
     private final float mSoundStrength, mSoundModulation;
 
     public GT_Runnable_Sound(World aWorld, double aX, double aY, double aZ, int aTimeUntilNextSound,
-            ResourceLocation aSoundResourceLocation, float aSoundStrength, float aSoundModulation) {
+        ResourceLocation aSoundResourceLocation, float aSoundStrength, float aSoundModulation) {
         mWorld = aWorld;
         mX = aX;
         mY = aY;
@@ -30,16 +30,16 @@ public class GT_Runnable_Sound implements Runnable {
      * @deprecated Use {@link #GT_Runnable_Sound(World, double, double, double, int, ResourceLocation, float, float)}
      */
     public GT_Runnable_Sound(World aWorld, int aX, int aY, int aZ, int aTimeUntilNextSound,
-            ResourceLocation aSoundResourceLocation, float aSoundStrength, float aSoundModulation) {
+        ResourceLocation aSoundResourceLocation, float aSoundStrength, float aSoundModulation) {
         this(
-                aWorld,
-                (double) aX + 0.5D,
-                (double) aY + 0.5D,
-                (double) aZ + 0.5D,
-                aTimeUntilNextSound,
-                aSoundResourceLocation,
-                aSoundStrength,
-                aSoundModulation);
+            aWorld,
+            (double) aX + 0.5D,
+            (double) aY + 0.5D,
+            (double) aZ + 0.5D,
+            aTimeUntilNextSound,
+            aSoundResourceLocation,
+            aSoundStrength,
+            aSoundModulation);
     }
 
     /**
@@ -47,16 +47,16 @@ public class GT_Runnable_Sound implements Runnable {
      */
     @Deprecated
     public GT_Runnable_Sound(World aWorld, int aX, int aY, int aZ, int aTimeUntilNextSound, String aSoundName,
-            float aSoundStrength, float aSoundModulation) {
+        float aSoundStrength, float aSoundModulation) {
         this(
-                aWorld,
-                (double) aX + 0.5D,
-                (double) aY + 0.5D,
-                (double) aZ + 0.5D,
-                aTimeUntilNextSound,
-                new ResourceLocation(aSoundName),
-                aSoundStrength,
-                aSoundModulation);
+            aWorld,
+            (double) aX + 0.5D,
+            (double) aY + 0.5D,
+            (double) aZ + 0.5D,
+            aTimeUntilNextSound,
+            new ResourceLocation(aSoundName),
+            aSoundStrength,
+            aSoundModulation);
     }
 
     @Override

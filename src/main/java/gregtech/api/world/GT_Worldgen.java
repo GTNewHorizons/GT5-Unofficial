@@ -33,12 +33,12 @@ public abstract class GT_Worldgen {
      * @return if the Worldgeneration has been successfully completed
      */
     public boolean executeWorldgen(World aWorld, Random aRandom, String aBiome, int aDimensionType, int aChunkX,
-            int aChunkZ, IChunkProvider aChunkGenerator, IChunkProvider aChunkProvider) {
+        int aChunkZ, IChunkProvider aChunkGenerator, IChunkProvider aChunkProvider) {
         return false;
     }
 
     public int executeWorldgenChunkified(World aWorld, Random aRandom, String aBiome, int aDimensionType, int aChunkX,
-            int aChunkZ, int seedX, int seedZ, IChunkProvider aChunkGenerator, IChunkProvider aChunkProvider) {
+        int aChunkZ, int seedX, int seedZ, IChunkProvider aChunkGenerator, IChunkProvider aChunkProvider) {
         return 4; // This is for the empty Orevein
     }
 
@@ -52,7 +52,7 @@ public abstract class GT_Worldgen {
      * @return if the Worldgeneration has been successfully completed
      */
     public boolean executeCavegen(World aWorld, Random aRandom, String aBiome, int aDimensionType, int aChunkX,
-            int aChunkZ, IChunkProvider aChunkGenerator, IChunkProvider aChunkProvider) {
+        int aChunkZ, IChunkProvider aChunkGenerator, IChunkProvider aChunkProvider) {
         return false;
     }
 
@@ -67,24 +67,22 @@ public abstract class GT_Worldgen {
     public boolean isGenerationAllowed(World aWorld, int aDimensionType, int aAllowedDimensionType) {
 
         if (!((aWorld.provider.getDimensionName()
-                              .equalsIgnoreCase("Overworld"))
-                || (aWorld.provider.getDimensionName()
-                                   .equalsIgnoreCase("Nether"))
-                || (aWorld.provider.getDimensionName()
-                                   .equalsIgnoreCase("The End"))
-                || (aWorld.provider.getDimensionName()
-                                   .equalsIgnoreCase("Twilight Forest"))
-                || (aWorld.provider.getDimensionName()
-                                   .equalsIgnoreCase("Underdark"))))
+            .equalsIgnoreCase("Overworld"))
+            || (aWorld.provider.getDimensionName()
+                .equalsIgnoreCase("Nether"))
+            || (aWorld.provider.getDimensionName()
+                .equalsIgnoreCase("The End"))
+            || (aWorld.provider.getDimensionName()
+                .equalsIgnoreCase("Twilight Forest"))
+            || (aWorld.provider.getDimensionName()
+                .equalsIgnoreCase("Underdark"))))
             return false;
 
         String aDimName = aWorld.provider.getDimensionName();
         Boolean tAllowed = mDimensionMap.get(aDimName);
         if (tAllowed == null) {
-            boolean tValue = GregTech_API.sWorldgenFile.get(
-                    "worldgen." + mWorldGenName,
-                    aDimName,
-                    aDimensionType == aAllowedDimensionType);
+            boolean tValue = GregTech_API.sWorldgenFile
+                .get("worldgen." + mWorldGenName, aDimName, aDimensionType == aAllowedDimensionType);
             mDimensionMap.put(aDimName, tValue);
             return tValue;
         }

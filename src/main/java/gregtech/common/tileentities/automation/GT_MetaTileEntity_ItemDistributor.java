@@ -29,49 +29,48 @@ public class GT_MetaTileEntity_ItemDistributor extends GT_MetaTileEntity_Buffer 
 
     public GT_MetaTileEntity_ItemDistributor(int aID, String aName, String aNameRegional, int aTier) {
         super(
-                aID,
-                aName,
-                aNameRegional,
-                aTier,
-                28,
-                new String[] { "Distributes Items between different Machine Sides", "Default Items per Machine Side: 0",
-                        "Use Screwdriver to increase/decrease Items per Side",
-                        "Does not consume energy to move Item" });
+            aID,
+            aName,
+            aNameRegional,
+            aTier,
+            28,
+            new String[] { "Distributes Items between different Machine Sides", "Default Items per Machine Side: 0",
+                "Use Screwdriver to increase/decrease Items per Side", "Does not consume energy to move Item" });
     }
 
     public GT_MetaTileEntity_ItemDistributor(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount,
-            String aDescription) {
+        String aDescription) {
         super(aID, aName, aNameRegional, aTier, aInvSlotCount, aDescription);
     }
 
     public GT_MetaTileEntity_ItemDistributor(String aName, int aTier, int aInvSlotCount, String aDescription,
-            ITexture[][][] aTextures) {
+        ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
     public GT_MetaTileEntity_ItemDistributor(String aName, int aTier, int aInvSlotCount, String[] aDescription,
-            ITexture[][][] aTextures) {
+        ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_ItemDistributor(
-                this.mName,
-                this.mTier,
-                this.mInventory.length,
-                this.mDescriptionArray,
-                this.mTextures);
+            this.mName,
+            this.mTier,
+            this.mInventory.length,
+            this.mDescriptionArray,
+            this.mTextures);
     }
 
     @Override
     public ITexture getOverlayIcon() {
         return TextureFactory.of(
-                TextureFactory.of(AUTOMATION_ITEMDISTRIBUTOR),
-                TextureFactory.builder()
-                              .addIcon(AUTOMATION_ITEMDISTRIBUTOR_GLOW)
-                              .glow()
-                              .build());
+            TextureFactory.of(AUTOMATION_ITEMDISTRIBUTOR),
+            TextureFactory.builder()
+                .addIcon(AUTOMATION_ITEMDISTRIBUTOR_GLOW)
+                .glow()
+                .build());
     }
 
     @Override
@@ -81,7 +80,7 @@ public class GT_MetaTileEntity_ItemDistributor extends GT_MetaTileEntity_Buffer 
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-            boolean aActive, boolean aRedstone) {
+        boolean aActive, boolean aRedstone) {
         if (aSide == aFacing) {
             return mTextures[0][aColorIndex + 1];
         } else {
@@ -142,16 +141,16 @@ public class GT_MetaTileEntity_ItemDistributor extends GT_MetaTileEntity_Buffer 
             }
         }
         movedItems = GT_Utility.moveOneItemStack(
-                aBaseMetaTileEntity,
-                adjacentTileEntity,
-                currentSide,
-                GT_Utility.getOppositeSide(currentSide),
-                null,
-                false,
-                (byte) 64,
-                (byte) 1,
-                (byte) (itemsPerSide[currentSide] - currentSideItemCount),
-                (byte) 1);
+            aBaseMetaTileEntity,
+            adjacentTileEntity,
+            currentSide,
+            GT_Utility.getOppositeSide(currentSide),
+            null,
+            false,
+            (byte) 64,
+            (byte) 1,
+            (byte) (itemsPerSide[currentSide] - currentSideItemCount),
+            (byte) 1);
         currentSideItemCount += movedItems;
         if (currentSideItemCount >= itemsPerSide[currentSide]) {
             currentSide = (byte) ((currentSide + 1) % 6);
@@ -191,9 +190,9 @@ public class GT_MetaTileEntity_ItemDistributor extends GT_MetaTileEntity_Buffer 
         addEmitRedstoneButton(builder);
         addInvertRedstoneButton(builder);
         builder.widget(
-                new DrawableWidget().setDrawable(GT_UITextures.PICTURE_ARROW_22_RED.apply(87, true))
-                                    .setPos(62, 60)
-                                    .setSize(87, 22));
+            new DrawableWidget().setDrawable(GT_UITextures.PICTURE_ARROW_22_RED.apply(87, true))
+                .setPos(62, 60)
+                .setSize(87, 22));
         addInventorySlots(builder);
     }
 }

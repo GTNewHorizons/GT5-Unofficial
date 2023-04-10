@@ -28,7 +28,7 @@ public class PowerNodePath extends NodePath {
 
     public void applyVoltage(long aVoltage, boolean aCountUp) {
         int tNewTime = MinecraftServer.getServer()
-                                      .getTickCounter();
+            .getTickCounter();
         if (mTick != tNewTime) {
             reset(tNewTime - mTick);
             mTick = tNewTime;
@@ -78,8 +78,7 @@ public class PowerNodePath extends NodePath {
     // but still allow the player to see if activity is happening
     public long getAmps() {
         int tTime = MinecraftServer.getServer()
-                                   .getTickCounter()
-                - 10;
+            .getTickCounter() - 10;
         if (mTick < tTime) {
             reset(tTime - mTick);
             mTick = tTime;

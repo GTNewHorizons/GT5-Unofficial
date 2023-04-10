@@ -34,8 +34,8 @@ public final class GT_Command extends CommandBase implements IGlobalWirelessEner
 
     private void printHelp(ICommandSender sender) {
         sender.addChatMessage(
-                new ChatComponentText(
-                        "Usage: gt <toggle|chunks|pollution|global_energy_add|global_energy_set|global_energy_join>"));
+            new ChatComponentText(
+                "Usage: gt <toggle|chunks|pollution|global_energy_add|global_energy_set|global_energy_join>"));
         sender.addChatMessage(new ChatComponentText("\"toggle D1\" - toggles general.Debug (D1)"));
         sender.addChatMessage(new ChatComponentText("\"toggle D2\" - toggles general.Debug2 (D2)"));
         sender.addChatMessage(new ChatComponentText("\"toggle debugCleanroom\" - toggles cleanroom debug log"));
@@ -43,8 +43,7 @@ public final class GT_Command extends CommandBase implements IGlobalWirelessEner
         sender.addChatMessage(new ChatComponentText("\"toggle debugBlockPump\" - Possible issues with pumps"));
         sender.addChatMessage(new ChatComponentText("\"toggle debugBlockMiner\" - Possible issues with miners"));
         sender.addChatMessage(
-                new ChatComponentText(
-                        "\"toggle debugEntityCramming\" - How long it takes and how many entities it finds"));
+            new ChatComponentText("\"toggle debugEntityCramming\" - How long it takes and how many entities it finds"));
         sender.addChatMessage(new ChatComponentText("\"toggle debugWorldGen\" - toggles generic worldgen debug"));
         sender.addChatMessage(new ChatComponentText("\"toggle debugOrevein\" - toggles worldgen ore vein debug"));
         sender.addChatMessage(new ChatComponentText("\"toggle debugSmallOres\" - toggles worldgen small vein debug"));
@@ -53,48 +52,44 @@ public final class GT_Command extends CommandBase implements IGlobalWirelessEner
         sender.addChatMessage(new ChatComponentText("\"toggle debugMulti\" - toggles structurelib debug"));
         sender.addChatMessage(new ChatComponentText("\"chunks\" - print a list of the force loaded chunks"));
         sender.addChatMessage(
-                new ChatComponentText(
-                        "\"pollution <amount>\" - adds the <amount> of the pollution to the current chunk, "
-                                + "\n if <amount> isnt specified, will add"
-                                + GT_Mod.gregtechproxy.mPollutionSmogLimit
-                                + "gibbl."));
+            new ChatComponentText(
+                "\"pollution <amount>\" - adds the <amount> of the pollution to the current chunk, "
+                    + "\n if <amount> isnt specified, will add"
+                    + GT_Mod.gregtechproxy.mPollutionSmogLimit
+                    + "gibbl."));
         sender.addChatMessage(new ChatComponentText(EnumChatFormatting.GOLD + " --- Global wireless EU controls ---"));
         sender.addChatMessage(new ChatComponentText("Allows you to set the amount of EU in a users wireless network."));
         sender.addChatMessage(
-                new ChatComponentText(
-                        "Usage:" + EnumChatFormatting.RED
-                                + " global_energy_set "
-                                + EnumChatFormatting.BLUE
-                                + "[Name] "
-                                + EnumChatFormatting.LIGHT_PURPLE
-                                + "[EU]"));
+            new ChatComponentText(
+                "Usage:" + EnumChatFormatting.RED
+                    + " global_energy_set "
+                    + EnumChatFormatting.BLUE
+                    + "[Name] "
+                    + EnumChatFormatting.LIGHT_PURPLE
+                    + "[EU]"));
         sender.addChatMessage(
-                new ChatComponentText(
-                        "Allows you to add EU to a users wireless network. Also accepts negative numbers."));
+            new ChatComponentText("Allows you to add EU to a users wireless network. Also accepts negative numbers."));
         sender.addChatMessage(
-                new ChatComponentText(
-                        "Usage:" + EnumChatFormatting.RED
-                                + " global_energy_add "
-                                + EnumChatFormatting.BLUE
-                                + "[Name] "
-                                + EnumChatFormatting.LIGHT_PURPLE
-                                + "[EU]"));
+            new ChatComponentText(
+                "Usage:" + EnumChatFormatting.RED
+                    + " global_energy_add "
+                    + EnumChatFormatting.BLUE
+                    + "[Name] "
+                    + EnumChatFormatting.LIGHT_PURPLE
+                    + "[EU]"));
         sender.addChatMessage(
-                new ChatComponentText(
-                        "Allows you to join two users together into one network. Can be undone by writing the users name twice."));
+            new ChatComponentText(
+                "Allows you to join two users together into one network. Can be undone by writing the users name twice."));
         sender.addChatMessage(
-                new ChatComponentText(
-                        "Usage:" + EnumChatFormatting.RED
-                                + " global_energy_join "
-                                + EnumChatFormatting.BLUE
-                                + "[User joining] [User to join]"));
+            new ChatComponentText(
+                "Usage:" + EnumChatFormatting.RED
+                    + " global_energy_join "
+                    + EnumChatFormatting.BLUE
+                    + "[User joining] [User to join]"));
         sender.addChatMessage(new ChatComponentText("Shows the amount of EU in a users energy network."));
         sender.addChatMessage(
-                new ChatComponentText(
-                        "Usage:" + EnumChatFormatting.RED
-                                + " global_energy_display "
-                                + EnumChatFormatting.BLUE
-                                + "[Name]"));
+            new ChatComponentText(
+                "Usage:" + EnumChatFormatting.RED + " global_energy_display " + EnumChatFormatting.BLUE + "[Name]"));
     }
 
     @Override
@@ -102,16 +97,17 @@ public final class GT_Command extends CommandBase implements IGlobalWirelessEner
         List<String> l = new ArrayList<>();
         String test = ss.length == 0 ? "" : ss[0].trim();
         if (ss.length == 0 || ss.length == 1 && (test.isEmpty() || Stream
-                                                                         .of(
-                                                                                 "toggle",
-                                                                                 "chunks",
-                                                                                 "pollution",
-                                                                                 "global_energy_add",
-                                                                                 "global_energy_set",
-                                                                                 "global_energy_join",
-                                                                                 "global_energy_display")
-                                                                         .anyMatch(s -> s.startsWith(test)))) {
-            Stream.of(
+            .of(
+                "toggle",
+                "chunks",
+                "pollution",
+                "global_energy_add",
+                "global_energy_set",
+                "global_energy_join",
+                "global_energy_display")
+            .anyMatch(s -> s.startsWith(test)))) {
+            Stream
+                .of(
                     "toggle",
                     "chunks",
                     "pollution",
@@ -119,11 +115,12 @@ public final class GT_Command extends CommandBase implements IGlobalWirelessEner
                     "global_energy_set",
                     "global_energy_join",
                     "global_energy_display")
-                  .filter(s -> test.isEmpty() || s.startsWith(test))
-                  .forEach(l::add);
+                .filter(s -> test.isEmpty() || s.startsWith(test))
+                .forEach(l::add);
         } else if (test.equals("toggle")) {
             String test1 = ss[1].trim();
-            Stream.of(
+            Stream
+                .of(
                     "D1",
                     "D2",
                     "debugCleanroom",
@@ -138,8 +135,8 @@ public final class GT_Command extends CommandBase implements IGlobalWirelessEner
                     "debugChunkloaders",
                     "debugMulti",
                     "debugWorldData")
-                  .filter(s -> test1.isEmpty() || s.startsWith(test1))
-                  .forEach(l::add);
+                .filter(s -> test1.isEmpty() || s.startsWith(test1))
+                .forEach(l::add);
         }
         return l;
     }
@@ -159,7 +156,7 @@ public final class GT_Command extends CommandBase implements IGlobalWirelessEner
                 if ("debugMulti".equals(strings[1])) {
                     StructureLib.DEBUG_MODE = !StructureLib.DEBUG_MODE;
                     sender.addChatMessage(
-                            new ChatComponentText(strings[1] + " = " + (StructureLib.DEBUG_MODE ? "true" : "false")));
+                        new ChatComponentText(strings[1] + " = " + (StructureLib.DEBUG_MODE ? "true" : "false")));
                     return;
                 }
                 try {
@@ -182,11 +179,11 @@ public final class GT_Command extends CommandBase implements IGlobalWirelessEner
             case "pollution" -> {
                 ChunkCoordinates coordinates = sender.getPlayerCoordinates();
                 int amount = (strings.length < 2) ? GT_Mod.gregtechproxy.mPollutionSmogLimit
-                        : Integer.parseInt(strings[1]);
+                    : Integer.parseInt(strings[1]);
                 GT_Pollution.addPollution(
-                        sender.getEntityWorld()
-                              .getChunkFromBlockCoords(coordinates.posX, coordinates.posZ),
-                        amount);
+                    sender.getEntityWorld()
+                        .getChunkFromBlockCoords(coordinates.posX, coordinates.posZ),
+                    amount);
             }
             case "global_energy_add" -> {
                 String username = strings[1];
@@ -199,34 +196,34 @@ public final class GT_Command extends CommandBase implements IGlobalWirelessEner
 
                 if (uuid.equals("")) {
                     sender.addChatMessage(
-                            new ChatComponentText("User " + formatted_username + " has no global energy network."));
+                        new ChatComponentText("User " + formatted_username + " has no global energy network."));
                     break;
                 }
 
                 String EU_string_formatted = EnumChatFormatting.RED
-                        + GT_Utility.formatNumbers(new BigInteger(EU_String))
-                        + EnumChatFormatting.RESET;
+                    + GT_Utility.formatNumbers(new BigInteger(EU_String))
+                    + EnumChatFormatting.RESET;
 
                 if (addEUToGlobalEnergyMap(uuid, new BigInteger(EU_String))) sender.addChatMessage(
-                        new ChatComponentText(
-                                "Successfully added " + EU_string_formatted
-                                        + "EU to the global energy network of "
-                                        + formatted_username
-                                        + "."));
+                    new ChatComponentText(
+                        "Successfully added " + EU_string_formatted
+                            + "EU to the global energy network of "
+                            + formatted_username
+                            + "."));
                 else sender.addChatMessage(
-                        new ChatComponentText(
-                                "Failed to add " + EU_string_formatted
-                                        + "EU to the global energy map of "
-                                        + formatted_username
-                                        + ". Insufficient energy in network. "));
+                    new ChatComponentText(
+                        "Failed to add " + EU_string_formatted
+                            + "EU to the global energy map of "
+                            + formatted_username
+                            + ". Insufficient energy in network. "));
 
                 sender.addChatMessage(
-                        new ChatComponentText(
-                                formatted_username + " currently has "
-                                        + EnumChatFormatting.RED
-                                        + GT_Utility.formatNumbers(new BigInteger(getUserEU(uuid).toString()))
-                                        + EnumChatFormatting.RESET
-                                        + "EU in their network."));
+                    new ChatComponentText(
+                        formatted_username + " currently has "
+                            + EnumChatFormatting.RED
+                            + GT_Utility.formatNumbers(new BigInteger(getUserEU(uuid).toString()))
+                            + EnumChatFormatting.RESET
+                            + "EU in their network."));
 
             }
             case "global_energy_set" -> {
@@ -239,7 +236,7 @@ public final class GT_Command extends CommandBase implements IGlobalWirelessEner
 
                 if (uuid.equals("")) {
                     sender.addChatMessage(
-                            new ChatComponentText("User " + formatted_username + " has no global energy network."));
+                        new ChatComponentText("User " + formatted_username + " has no global energy network."));
                     break;
                 }
 
@@ -247,20 +244,20 @@ public final class GT_Command extends CommandBase implements IGlobalWirelessEner
 
                 if ((new BigInteger(EU_String_0).compareTo(BigInteger.ZERO)) < 0) {
                     sender.addChatMessage(
-                            new ChatComponentText("Cannot set a users energy network to a negative value."));
+                        new ChatComponentText("Cannot set a users energy network to a negative value."));
                     break;
                 }
 
                 setUserEU(uuid, new BigInteger(EU_String_0));
 
                 sender.addChatMessage(
-                        new ChatComponentText(
-                                "Successfully set " + formatted_username
-                                        + "'s global energy network to "
-                                        + EnumChatFormatting.RED
-                                        + GT_Utility.formatNumbers(new BigInteger(EU_String_0))
-                                        + EnumChatFormatting.RESET
-                                        + "EU."));
+                    new ChatComponentText(
+                        "Successfully set " + formatted_username
+                            + "'s global energy network to "
+                            + EnumChatFormatting.RED
+                            + GT_Utility.formatNumbers(new BigInteger(EU_String_0))
+                            + EnumChatFormatting.RESET
+                            + "EU."));
 
             }
             case "global_energy_join" -> {
@@ -279,51 +276,50 @@ public final class GT_Command extends CommandBase implements IGlobalWirelessEner
                 if (uuid_1.equals("") && uuid_0.equals("")) {
                     if (username_0.equals(username_1)) {
                         sender.addChatMessage(
-                                new ChatComponentText(
-                                        "User " + formatted_username_0 + " has no global energy network."));
+                            new ChatComponentText("User " + formatted_username_0 + " has no global energy network."));
                     } else {
                         sender.addChatMessage(
-                                new ChatComponentText(
-                                        "User " + formatted_username_0
-                                                + " and "
-                                                + formatted_username_1
-                                                + " have no global energy networks."));
+                            new ChatComponentText(
+                                "User " + formatted_username_0
+                                    + " and "
+                                    + formatted_username_1
+                                    + " have no global energy networks."));
                     }
                     break;
                 }
 
                 if (uuid_0.equals("")) {
                     sender.addChatMessage(
-                            new ChatComponentText("User " + formatted_username_0 + " has no global energy network."));
+                        new ChatComponentText("User " + formatted_username_0 + " has no global energy network."));
                     break;
                 }
 
                 if (uuid_1.equals("")) {
                     sender.addChatMessage(
-                            new ChatComponentText("User " + formatted_username_1 + " has no global energy network."));
+                        new ChatComponentText("User " + formatted_username_1 + " has no global energy network."));
                     break;
                 }
 
                 if (uuid_0.equals(uuid_1)) {
                     joinUserNetwork(uuid_0, uuid_1);
                     sender.addChatMessage(
-                            new ChatComponentText(
-                                    "User " + formatted_username_0 + " has rejoined their own global energy network."));
+                        new ChatComponentText(
+                            "User " + formatted_username_0 + " has rejoined their own global energy network."));
                     break;
                 }
 
                 joinUserNetwork(uuid_0, uuid_1);
 
                 sender.addChatMessage(
-                        new ChatComponentText(
-                                "Success! " + formatted_username_0 + " has joined " + formatted_username_1 + "."));
+                    new ChatComponentText(
+                        "Success! " + formatted_username_0 + " has joined " + formatted_username_1 + "."));
                 sender.addChatMessage(
-                        new ChatComponentText(
-                                "To undo this simply join your own network again with /gt global_energy_join "
-                                        + formatted_username_0
-                                        + " "
-                                        + formatted_username_0
-                                        + "."));
+                    new ChatComponentText(
+                        "To undo this simply join your own network again with /gt global_energy_join "
+                            + formatted_username_0
+                            + " "
+                            + formatted_username_0
+                            + "."));
 
             }
             case "global_energy_display" -> {
@@ -336,23 +332,23 @@ public final class GT_Command extends CommandBase implements IGlobalWirelessEner
 
                 if (uuid.equals("")) {
                     sender.addChatMessage(
-                            new ChatComponentText("User " + formatted_username + " has no global energy network."));
+                        new ChatComponentText("User " + formatted_username + " has no global energy network."));
                     break;
                 }
 
                 sender.addChatMessage(
-                        new ChatComponentText(
-                                "User " + formatted_username
-                                        + " has "
-                                        + EnumChatFormatting.RED
-                                        + GT_Utility.formatNumbers(getUserEU(uuid))
-                                        + EnumChatFormatting.RESET
-                                        + "EU in their network."));
+                    new ChatComponentText(
+                        "User " + formatted_username
+                            + " has "
+                            + EnumChatFormatting.RED
+                            + GT_Utility.formatNumbers(getUserEU(uuid))
+                            + EnumChatFormatting.RESET
+                            + "EU in their network."));
 
             }
             default -> {
-                sender.addChatMessage(
-                        new ChatComponentText(EnumChatFormatting.RED + "Invalid command/syntax detected."));
+                sender
+                    .addChatMessage(new ChatComponentText(EnumChatFormatting.RED + "Invalid command/syntax detected."));
                 printHelp(sender);
             }
         }

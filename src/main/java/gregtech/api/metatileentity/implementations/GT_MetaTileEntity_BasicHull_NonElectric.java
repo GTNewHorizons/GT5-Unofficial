@@ -6,23 +6,23 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 public abstract class GT_MetaTileEntity_BasicHull_NonElectric extends GT_MetaTileEntity_BasicHull {
 
     public GT_MetaTileEntity_BasicHull_NonElectric(int aID, String aName, String aNameRegional, int aTier,
-            String aDescription) {
+        String aDescription) {
         super(aID, aName, aNameRegional, aTier, aDescription);
     }
 
     public GT_MetaTileEntity_BasicHull_NonElectric(String aName, int aTier, String aDescription,
-            ITexture[][][] aTextures) {
+        ITexture[][][] aTextures) {
         super(aName, aTier, 1, aDescription, aTextures);
     }
 
     public GT_MetaTileEntity_BasicHull_NonElectric(String aName, int aTier, String[] aDescription,
-            ITexture[][][] aTextures) {
+        ITexture[][][] aTextures) {
         super(aName, aTier, 1, aDescription, aTextures);
     }
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aConnections,
-            byte aColorIndex, boolean aConnected, boolean aRedstone) {
+        byte aColorIndex, boolean aConnected, boolean aRedstone) {
         return mTextures[Math.min(2, aSide)][aColorIndex + 1];
     }
 

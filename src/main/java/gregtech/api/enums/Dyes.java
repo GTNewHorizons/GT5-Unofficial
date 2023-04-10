@@ -43,7 +43,7 @@ public enum Dyes implements IColorModulationContainer {
     MACHINE_METAL(-1, 210, 220, 255, "Machine Metal");
 
     public static final Dyes[] VALUES = { dyeBlack, dyeRed, dyeGreen, dyeBrown, dyeBlue, dyePurple, dyeCyan,
-            dyeLightGray, dyeGray, dyePink, dyeLime, dyeYellow, dyeLightBlue, dyeMagenta, dyeOrange, dyeWhite };
+        dyeLightGray, dyeGray, dyePink, dyeLime, dyeYellow, dyeLightBlue, dyeMagenta, dyeOrange, dyeWhite };
 
     public final byte mIndex;
     public final String mName;

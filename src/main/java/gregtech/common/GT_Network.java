@@ -39,26 +39,26 @@ public class GT_Network extends MessageToMessageCodec<FMLProxyPacket, GT_Packet>
 
     public GT_Network() {
         this(
-                "GregTech",
-                new GT_Packet_TileEntity(), // 0
-                new GT_Packet_Sound(), // 1
-                new GT_Packet_Block_Event(), // 2
-                new GT_Packet_Ores(), // 3
-                new GT_Packet_Pollution(), // 4
-                new MessageSetFlaskCapacity(), // 5
-                new GT_Packet_TileEntityCover(), // 6
-                new GT_Packet_TileEntityCoverGUI(), // 7
-                new MessageUpdateFluidDisplayItem(), // 8
-                new GT_Packet_ClientPreference(), // 9
-                new GT_Packet_WirelessRedstoneCover(), // 10
-                new GT_Packet_TileEntityCoverNew(), // 11
-                new GT_Packet_SetConfigurationCircuit(), // 12
-                new GT_Packet_UpdateItem(), // 13
-                new GT_Packet_SetLockedFluid(), // 14
-                new GT_Packet_GtTileEntityGuiRequest(), // 15
-                new GT_Packet_SendCoverData(), // 16
-                new GT_Packet_RequestCoverData(), // 17
-                new GT_Packet_MultiTileEntity() // 18
+            "GregTech",
+            new GT_Packet_TileEntity(), // 0
+            new GT_Packet_Sound(), // 1
+            new GT_Packet_Block_Event(), // 2
+            new GT_Packet_Ores(), // 3
+            new GT_Packet_Pollution(), // 4
+            new MessageSetFlaskCapacity(), // 5
+            new GT_Packet_TileEntityCover(), // 6
+            new GT_Packet_TileEntityCoverGUI(), // 7
+            new MessageUpdateFluidDisplayItem(), // 8
+            new GT_Packet_ClientPreference(), // 9
+            new GT_Packet_WirelessRedstoneCover(), // 10
+            new GT_Packet_TileEntityCoverNew(), // 11
+            new GT_Packet_SetConfigurationCircuit(), // 12
+            new GT_Packet_UpdateItem(), // 13
+            new GT_Packet_SetLockedFluid(), // 14
+            new GT_Packet_GtTileEntityGuiRequest(), // 15
+            new GT_Packet_SendCoverData(), // 16
+            new GT_Packet_RequestCoverData(), // 17
+            new GT_Packet_MultiTileEntity() // 18
         );
     }
 
@@ -75,22 +75,22 @@ public class GT_Network extends MessageToMessageCodec<FMLProxyPacket, GT_Packet>
     @Override
     protected void encode(ChannelHandlerContext aContext, GT_Packet aPacket, List<Object> aOutput) throws Exception {
         final ByteBuf tBuf = Unpooled.buffer()
-                                     .writeByte(aPacket.getPacketID());
+            .writeByte(aPacket.getPacketID());
         aPacket.encode(tBuf);
         aOutput.add(
-                new FMLProxyPacket(
-                        tBuf,
-                        aContext.channel()
-                                .attr(NetworkRegistry.FML_CHANNEL)
-                                .get()));
+            new FMLProxyPacket(
+                tBuf,
+                aContext.channel()
+                    .attr(NetworkRegistry.FML_CHANNEL)
+                    .get()));
     }
 
     @Override
     protected void decode(ChannelHandlerContext aContext, FMLProxyPacket aPacket, List<Object> aOutput)
-            throws Exception {
+        throws Exception {
         final ByteArrayDataInput aData = ByteStreams.newDataInput(
-                aPacket.payload()
-                       .array());
+            aPacket.payload()
+                .array());
         final GT_Packet tPacket = this.mSubChannels[aData.readByte()].decode(aData);
         tPacket.setINetHandler(aPacket.handler());
         aOutput.add(tPacket);
@@ -107,34 +107,34 @@ public class GT_Network extends MessageToMessageCodec<FMLProxyPacket, GT_Packet>
             return;
         }
         this.mChannel.get(Side.SERVER)
-                     .attr(FMLOutboundHandler.FML_MESSAGETARGET)
-                     .set(FMLOutboundHandler.OutboundTarget.PLAYER);
+            .attr(FMLOutboundHandler.FML_MESSAGETARGET)
+            .set(FMLOutboundHandler.OutboundTarget.PLAYER);
         this.mChannel.get(Side.SERVER)
-                     .attr(FMLOutboundHandler.FML_MESSAGETARGETARGS)
-                     .set(aPlayer);
+            .attr(FMLOutboundHandler.FML_MESSAGETARGETARGS)
+            .set(aPlayer);
         this.mChannel.get(Side.SERVER)
-                     .writeAndFlush(aPacket);
+            .writeAndFlush(aPacket);
     }
 
     @Override
     public void sendToAllAround(GT_Packet aPacket, NetworkRegistry.TargetPoint aPosition) {
         this.mChannel.get(Side.SERVER)
-                     .attr(FMLOutboundHandler.FML_MESSAGETARGET)
-                     .set(FMLOutboundHandler.OutboundTarget.ALLAROUNDPOINT);
+            .attr(FMLOutboundHandler.FML_MESSAGETARGET)
+            .set(FMLOutboundHandler.OutboundTarget.ALLAROUNDPOINT);
         this.mChannel.get(Side.SERVER)
-                     .attr(FMLOutboundHandler.FML_MESSAGETARGETARGS)
-                     .set(aPosition);
+            .attr(FMLOutboundHandler.FML_MESSAGETARGETARGS)
+            .set(aPosition);
         this.mChannel.get(Side.SERVER)
-                     .writeAndFlush(aPacket);
+            .writeAndFlush(aPacket);
     }
 
     @Override
     public void sendToServer(GT_Packet aPacket) {
         this.mChannel.get(Side.CLIENT)
-                     .attr(FMLOutboundHandler.FML_MESSAGETARGET)
-                     .set(FMLOutboundHandler.OutboundTarget.TOSERVER);
+            .attr(FMLOutboundHandler.FML_MESSAGETARGET)
+            .set(FMLOutboundHandler.OutboundTarget.TOSERVER);
         this.mChannel.get(Side.CLIENT)
-                     .writeAndFlush(aPacket);
+            .writeAndFlush(aPacket);
     }
 
     @Override
@@ -146,8 +146,8 @@ public class GT_Network extends MessageToMessageCodec<FMLProxyPacket, GT_Packet>
                 }
                 Chunk tChunk = aWorld.getChunkFromBlockCoords(aX, aZ);
                 if (tPlayer.getServerForPlayer()
-                           .getPlayerManager()
-                           .isPlayerWatchingChunk(tPlayer, tChunk.xPosition, tChunk.zPosition)) {
+                    .getPlayerManager()
+                    .isPlayerWatchingChunk(tPlayer, tChunk.xPosition, tChunk.zPosition)) {
                     sendToPlayer(aPacket, tPlayer);
                 }
             }

@@ -25,10 +25,9 @@ public class GT_UO_DimensionList {
             return fDimensionList.get(Integer.toString(aDimension));
         for (BiMap.Entry<String, GT_UO_Dimension> dl : fDimensionList.entrySet())
             if (DimensionManager.getProvider(aDimension)
-                                .getClass()
-                                .getName()
-                                .contains(dl.getValue().Dimension))
-                return dl.getValue();
+                .getClass()
+                .getName()
+                .contains(dl.getValue().Dimension)) return dl.getValue();
         return fDimensionList.get("Default");
     }
 
@@ -42,21 +41,21 @@ public class GT_UO_DimensionList {
     }
 
     public void SetConfigValues(String aDimensionName, String aDimension, String aName, String aRegistry,
-            int aMinAmount, int aMaxAmount, int aChance, int aDecreasePerOperationAmount) {
+        int aMinAmount, int aMaxAmount, int aChance, int aDecreasePerOperationAmount) {
         String Category = fCategory + "." + aDimensionName;
         fConfig.get(Category, "Dimension", aDimension)
-               .getString();
+            .getString();
         Category += "." + aName;
         fConfig.get(Category, "Registry", aRegistry)
-               .getString();
+            .getString();
         fConfig.get(Category, "MinAmount", aMinAmount)
-               .getInt(aMinAmount);
+            .getInt(aMinAmount);
         fConfig.get(Category, "MaxAmount", aMaxAmount)
-               .getInt(aMaxAmount);
+            .getInt(aMaxAmount);
         fConfig.get(Category, "Chance", aChance)
-               .getInt(aChance);
+            .getInt(aChance);
         fConfig.get(Category, "DecreasePerOperationAmount", aDecreasePerOperationAmount)
-               .getInt(aDecreasePerOperationAmount);
+            .getInt(aDecreasePerOperationAmount);
         // IT IS IN BUCKETS!!!
     }
 
@@ -76,23 +75,23 @@ public class GT_UO_DimensionList {
 
         fConfig.setCategoryComment(fCategory, "Config Underground Fluids (Delete this Category for regenerate)");
         fConfig.setCategoryComment(
-                fCategory + ".Default",
-                "Set Default Generating (Use this Category for Default settings)");
+            fCategory + ".Default",
+            "Set Default Generating (Use this Category for Default settings)");
         fConfig.setCategoryComment(fCategory + ".Overworld", "Set Overworld Generating");
         fConfig.setCategoryComment(fCategory + ".Moon", "Set Moon Generating");
 
         blackList = new int[] { -1, 1 };
         blackList = aConfig.get(fCategory, "DimBlackList", blackList, "Dimension IDs Black List")
-                           .getIntList();
+            .getIntList();
         java.util.Arrays.sort(blackList);
 
         for (int i = 0; i < fConfig.getCategory(fCategory)
-                                   .getChildren()
-                                   .size(); i++) {
+            .getChildren()
+            .size(); i++) {
             GT_UO_Dimension Dimension = new GT_UO_Dimension(
-                    (ConfigCategory) fConfig.getCategory(fCategory)
-                                            .getChildren()
-                                            .toArray()[i]);
+                (ConfigCategory) fConfig.getCategory(fCategory)
+                    .getChildren()
+                    .toArray()[i]);
             fDimensionList.put(Dimension.Dimension, Dimension);
         }
     }

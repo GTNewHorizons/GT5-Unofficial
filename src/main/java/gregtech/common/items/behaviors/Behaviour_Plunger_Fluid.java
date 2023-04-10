@@ -21,9 +21,8 @@ import gregtech.api.util.GT_Utility;
 public class Behaviour_Plunger_Fluid extends Behaviour_None {
 
     private final int mCosts;
-    private final String mTooltip = GT_LanguageManager.addStringLocalization(
-            "gt.behaviour.plunger.fluid",
-            "Clears 1000 Liters of Fluid from Tanks");
+    private final String mTooltip = GT_LanguageManager
+        .addStringLocalization("gt.behaviour.plunger.fluid", "Clears 1000 Liters of Fluid from Tanks");
 
     public Behaviour_Plunger_Fluid(int aCosts) {
         this.mCosts = aCosts;
@@ -31,7 +30,7 @@ public class Behaviour_Plunger_Fluid extends Behaviour_None {
 
     @Override
     public boolean onItemUseFirst(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,
-            int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
+        int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
         if (aWorld.isRemote) {
             return false;
         }
@@ -40,16 +39,16 @@ public class Behaviour_Plunger_Fluid extends Behaviour_None {
             for (ForgeDirection tDirection : ForgeDirection.VALID_DIRECTIONS) {
                 if (((IFluidHandler) aTileEntity).drain(tDirection, 1000, false) != null) {
                     if ((aPlayer.capabilities.isCreativeMode)
-                            || (((GT_MetaGenerated_Tool) aItem).doDamage(aStack, this.mCosts))) {
+                        || (((GT_MetaGenerated_Tool) aItem).doDamage(aStack, this.mCosts))) {
                         ((IFluidHandler) aTileEntity).drain(tDirection, 1000, true);
                         GT_Utility.sendSoundToPlayers(
-                                aWorld,
-                                SoundResource.IC2_TOOLS_RUBBER_TRAMPOLINE,
-                                1.0F,
-                                -1.0F,
-                                aX,
-                                aY,
-                                aZ);
+                            aWorld,
+                            SoundResource.IC2_TOOLS_RUBBER_TRAMPOLINE,
+                            1.0F,
+                            -1.0F,
+                            aX,
+                            aY,
+                            aZ);
                         return true;
                     }
                 }
@@ -60,14 +59,8 @@ public class Behaviour_Plunger_Fluid extends Behaviour_None {
             if (mTileEntity instanceof GT_MetaTileEntity_BasicTank machine) {
                 if (machine.mFluid != null && machine.mFluid.amount > 0)
                     machine.mFluid.amount = machine.mFluid.amount - Math.min(machine.mFluid.amount, 1000);
-                GT_Utility.sendSoundToPlayers(
-                        aWorld,
-                        SoundResource.IC2_TOOLS_RUBBER_TRAMPOLINE,
-                        1.0F,
-                        -1.0F,
-                        aX,
-                        aY,
-                        aZ);
+                GT_Utility
+                    .sendSoundToPlayers(aWorld, SoundResource.IC2_TOOLS_RUBBER_TRAMPOLINE, 1.0F, -1.0F, aX, aY, aZ);
                 return true;
             }
         }

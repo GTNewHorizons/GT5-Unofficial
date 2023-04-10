@@ -48,11 +48,10 @@ public class GT_Circuit_BitAnd extends GT_CircuitryBehavior {
     @Override
     public void onTick(int[] aCircuitData, IRedstoneCircuitBlock aRedstoneCircuitBlock) {
         aRedstoneCircuitBlock.setRedstone(
-                (byte) ((getStrongestRedstone(aRedstoneCircuitBlock)
-                        & (aCircuitData[0] | aCircuitData[1] << 1 | aCircuitData[2] << 2 | aCircuitData[3] << 3)) != 0
-                                ? 15
-                                : 0),
-                aRedstoneCircuitBlock.getOutputFacing());
+            (byte) ((getStrongestRedstone(aRedstoneCircuitBlock)
+                & (aCircuitData[0] | aCircuitData[1] << 1 | aCircuitData[2] << 2 | aCircuitData[3] << 3)) != 0 ? 15
+                    : 0),
+            aRedstoneCircuitBlock.getOutputFacing());
     }
 
     @Override

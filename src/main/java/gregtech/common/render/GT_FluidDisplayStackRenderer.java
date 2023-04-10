@@ -47,9 +47,9 @@ public class GT_FluidDisplayStackRenderer implements IItemRenderer {
 
         Materials associatedFluidMaterial = Materials.get(item.stackTagCompound.getString("mFluidMaterialName"));
         if (associatedFluidMaterial.renderer == null
-                || !associatedFluidMaterial.renderer.renderFluidDisplayItem(type, item, data)) {
+            || !associatedFluidMaterial.renderer.renderFluidDisplayItem(type, item, data)) {
             IIcon icon = item.getItem()
-                             .getIconFromDamage(item.getItemDamage());
+                .getIconFromDamage(item.getItemDamage());
             Tessellator tess = Tessellator.instance;
             tess.startDrawingQuads();
             // draw a simple rectangle for the inventory icon
@@ -72,9 +72,9 @@ public class GT_FluidDisplayStackRenderer implements IItemRenderer {
 
         // Render Fluid amount text
         long fluidAmount = item.getTagCompound()
-                               .getLong("mFluidDisplayAmount");
+            .getLong("mFluidDisplayAmount");
         if (fluidAmount > 0L && !item.getTagCompound()
-                                     .getBoolean("mHideStackSize")) {
+            .getBoolean("mHideStackSize")) {
             String amountString;
 
             if (fluidAmount < 10_000) {
@@ -89,12 +89,8 @@ public class GT_FluidDisplayStackRenderer implements IItemRenderer {
             GL11.glPushMatrix();
             GL11.glScalef(smallTextScale, smallTextScale, 1.0f);
 
-            fontRender.drawString(
-                    amountString,
-                    0,
-                    (int) (16 / smallTextScale) - fontRender.FONT_HEIGHT + 1,
-                    0xFFFFFF,
-                    true);
+            fontRender
+                .drawString(amountString, 0, (int) (16 / smallTextScale) - fontRender.FONT_HEIGHT + 1, 0xFFFFFF, true);
             GL11.glPopMatrix();
             GL11.glDisable(GL11.GL_ALPHA_TEST);
         }

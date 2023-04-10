@@ -26,9 +26,9 @@ public interface IGlobalWirelessEnergy {
 
     default void strongCheckOrAddUser(EntityPlayer user) {
         strongCheckOrAddUser(
-                user.getUniqueID()
-                    .toString(),
-                user.getDisplayName());
+            user.getUniqueID()
+                .toString(),
+            user.getDisplayName());
     }
 
     default void strongCheckOrAddUser(UUID user_uuid, String user_name) {
@@ -46,7 +46,7 @@ public interface IGlobalWirelessEnergy {
         // If the username linked to the users fixed uuid is not equal to their current name then remove it.
         // This indicates that their username has changed.
         if (!(GlobalEnergyName.getOrDefault(user_uuid, "")
-                              .equals(user_name))) {
+            .equals(user_name))) {
             String old_name = GlobalEnergyName.get(user_uuid);
             GlobalEnergyName.remove(old_name);
         }
@@ -146,7 +146,7 @@ public interface IGlobalWirelessEnergy {
 
         // UUID and username of the owner.
         final String UUID = machine.getOwnerUuid()
-                                   .toString();
+            .toString();
         final String name = machine.getOwnerName();
 
         strongCheckOrAddUser(UUID, name);

@@ -144,12 +144,12 @@ public class GT_RadioactiveCell_Item extends GT_Generic_Item implements IBoxable
             default -> EnumChatFormatting.DARK_GRAY;
         };
         EnumChatFormatting color1 = this instanceof GT_DepletetCell_Item ? color2 = EnumChatFormatting.DARK_GRAY
-                : EnumChatFormatting.WHITE;
+            : EnumChatFormatting.WHITE;
         aList.add(
-                color1 + String.format(
-                        transItem("001", "Durability: %s/%s"),
-                        "" + color2 + formatNumbers(this.maxDmg - getDurabilityOfStack(aStack)) + color1,
-                        "" + formatNumbers(this.maxDmg)));
+            color1 + String.format(
+                transItem("001", "Durability: %s/%s"),
+                "" + color2 + formatNumbers(this.maxDmg - getDurabilityOfStack(aStack)) + color1,
+                "" + formatNumbers(this.maxDmg)));
     }
 
     @Override

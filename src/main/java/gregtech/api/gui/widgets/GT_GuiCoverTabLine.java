@@ -26,8 +26,8 @@ public class GT_GuiCoverTabLine extends GT_GuiTabLine {
 
     // Names of the block a cover could be on
     private static final String[] SIDES = new String[] { "GT5U.interface.coverTabs.down", "GT5U.interface.coverTabs.up",
-            "GT5U.interface.coverTabs.north", "GT5U.interface.coverTabs.south", "GT5U.interface.coverTabs.west",
-            "GT5U.interface.coverTabs.east" };
+        "GT5U.interface.coverTabs.north", "GT5U.interface.coverTabs.south", "GT5U.interface.coverTabs.west",
+        "GT5U.interface.coverTabs.east" };
 
     // Not sure there's a point in JIT translation but that's what this is
     private String[] translatedSides;
@@ -53,8 +53,8 @@ public class GT_GuiCoverTabLine extends GT_GuiTabLine {
      * @param colorization  The colorization of the GUI we are adding tabs to
      */
     public GT_GuiCoverTabLine(GT_GUIContainerMetaTile_Machine gui, int tabLineLeft, int tabLineTop, int tabHeight,
-            int tabWidth, int tabSpacing, DisplayStyle xDir, DisplayStyle yDir, DisplayStyle displayMode,
-            GT_GuiTabIconSet tabBackground, IGregTechTileEntity tile, int colorization) {
+        int tabWidth, int tabSpacing, DisplayStyle xDir, DisplayStyle yDir, DisplayStyle displayMode,
+        GT_GuiTabIconSet tabBackground, IGregTechTileEntity tile, int colorization) {
         super(gui, 6, tabLineLeft, tabLineTop, tabHeight, tabWidth, tabSpacing, xDir, yDir, displayMode, tabBackground);
         this.tile = tile;
         this.colorization = colorization;
@@ -78,9 +78,9 @@ public class GT_GuiCoverTabLine extends GT_GuiTabLine {
     protected void drawBackground(float parTicks, int mouseX, int mouseY) {
         // Apply this tile's coloration to draw the background
         GL11.glColor3ub(
-                (byte) ((colorization >> 16) & 0xFF),
-                (byte) ((colorization >> 8) & 0xFF),
-                (byte) (colorization & 0xFF));
+            (byte) ((colorization >> 16) & 0xFF),
+            (byte) ((colorization >> 8) & 0xFF),
+            (byte) (colorization & 0xFF));
         super.drawBackground(parTicks, mouseX, mouseY);
     }
 
@@ -88,14 +88,14 @@ public class GT_GuiCoverTabLine extends GT_GuiTabLine {
     protected void tabClicked(int tabId, int mouseButton) {
         if (mouseButton == 0 && mTabs[tabId].enabled) {
             GT_Values.NW.sendToServer(
-                    new GT_Packet_GtTileEntityGuiRequest(
-                            this.tile.getXCoord(),
-                            this.tile.getYCoord(),
-                            this.tile.getZCoord(),
-                            tabId + GT_Proxy.GUI_ID_COVER_SIDE_BASE,
-                            this.tile.getWorld().provider.dimensionId,
-                            Minecraft.getMinecraft().thePlayer.getEntityId(),
-                            0));
+                new GT_Packet_GtTileEntityGuiRequest(
+                    this.tile.getXCoord(),
+                    this.tile.getYCoord(),
+                    this.tile.getZCoord(),
+                    tabId + GT_Proxy.GUI_ID_COVER_SIDE_BASE,
+                    this.tile.getWorld().provider.dimensionId,
+                    Minecraft.getMinecraft().thePlayer.getEntityId(),
+                    0));
         }
     }
 
@@ -107,7 +107,7 @@ public class GT_GuiCoverTabLine extends GT_GuiTabLine {
      */
     private void addCoverToTabs(byte side, ItemStack cover) {
         final boolean enabled = this.tile.getCoverBehaviorAtSideNew(side)
-                                         .hasCoverGUI();
+            .hasCoverGUI();
         this.setTab(side, cover, null, getTooltipForCoverTab(side, cover, enabled));
         this.setTabEnabled(side, enabled);
     }
@@ -123,10 +123,10 @@ public class GT_GuiCoverTabLine extends GT_GuiTabLine {
     private String[] getTooltipForCoverTab(byte side, ItemStack cover, boolean enabled) {
         final List<String> tooltip = cover.getTooltip(Minecraft.getMinecraft().thePlayer, true);
         tooltip.set(
-                0,
-                (enabled ? EnumChatFormatting.UNDERLINE : EnumChatFormatting.DARK_GRAY) + getSideDescription(side)
-                        + (enabled ? EnumChatFormatting.RESET + ": " : ": " + EnumChatFormatting.RESET)
-                        + tooltip.get(0));
+            0,
+            (enabled ? EnumChatFormatting.UNDERLINE : EnumChatFormatting.DARK_GRAY) + getSideDescription(side)
+                + (enabled ? EnumChatFormatting.RESET + ": " : ": " + EnumChatFormatting.RESET)
+                + tooltip.get(0));
         return tooltip.toArray(new String[0]);
     }
 
@@ -161,7 +161,7 @@ public class GT_GuiCoverTabLine extends GT_GuiTabLine {
                 }
                 for (int i = 0; i < tabLine.mTabs.length; i++) {
                     if (tabLine.mTabs[i] != null && tabLine.mTabs[i].getBounds()
-                                                                    .intersects(neiSlotArea)) {
+                        .intersects(neiSlotArea)) {
                         return true;
                     }
                 }

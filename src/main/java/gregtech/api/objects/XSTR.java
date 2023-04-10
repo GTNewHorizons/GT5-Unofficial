@@ -40,8 +40,8 @@ public class XSTR extends Random {
         @Override
         public synchronized void setSeed(long seed) {
             if (!Thread.currentThread()
-                       .getStackTrace()[2].getClassName()
-                                          .equals(Random.class.getName()))
+                .getStackTrace()[2].getClassName()
+                    .equals(Random.class.getName()))
                 throw new NoSuchMethodError("This is meant to be shared!, leave seed state alone!");
         }
     };
@@ -245,7 +245,6 @@ public class XSTR extends Random {
     public void nextBytes(byte[] bytes_arr) {
         for (int iba = 0, lenba = bytes_arr.length; iba < lenba;)
             for (int rndba = nextInt(), nba = Math.min(lenba - iba, Integer.SIZE / Byte.SIZE); nba--
-                    > 0; rndba >>= Byte.SIZE)
-                bytes_arr[iba++] = (byte) rndba;
+                > 0; rndba >>= Byte.SIZE) bytes_arr[iba++] = (byte) rndba;
     }
 }

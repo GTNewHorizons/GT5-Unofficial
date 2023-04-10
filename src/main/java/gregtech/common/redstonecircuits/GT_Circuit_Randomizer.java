@@ -46,9 +46,8 @@ public class GT_Circuit_Randomizer extends GT_CircuitryBehavior {
         }
         if (aCircuitData[4] >= aCircuitData[0]) {
             aCircuitData[4] = 0;
-            aRedstoneCircuitBlock.setRedstone(
-                    (byte) aRedstoneCircuitBlock.getRandom(16),
-                    aRedstoneCircuitBlock.getOutputFacing());
+            aRedstoneCircuitBlock
+                .setRedstone((byte) aRedstoneCircuitBlock.getRandom(16), aRedstoneCircuitBlock.getOutputFacing());
         }
     }
 

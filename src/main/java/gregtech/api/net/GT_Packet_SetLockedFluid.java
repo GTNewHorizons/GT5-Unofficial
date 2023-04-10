@@ -88,13 +88,13 @@ public class GT_Packet_SetLockedFluid extends GT_Packet_New {
         mteToLock.lockFluid(true);
         mteToLock.setLockedFluidName(tFluid.getName());
         GT_Utility.sendChatToPlayer(
-                mPlayer,
-                String.format(
-                        GT_LanguageManager.addStringLocalization(
-                                "Interaction_DESCRIPTION_Index_151.4",
-                                "Successfully locked Fluid to %s",
-                                false),
-                        new FluidStack(tFluid, 1).getLocalizedName()));
+            mPlayer,
+            String.format(
+                GT_LanguageManager.addStringLocalization(
+                    "Interaction_DESCRIPTION_Index_151.4",
+                    "Successfully locked Fluid to %s",
+                    false),
+                new FluidStack(tFluid, 1).getLocalizedName()));
 
         mteToLock.onFluidLockPacketReceived(tFluid.getName());
     }

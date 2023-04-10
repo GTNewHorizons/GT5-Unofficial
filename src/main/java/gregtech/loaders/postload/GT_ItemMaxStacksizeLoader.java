@@ -16,7 +16,7 @@ public class GT_ItemMaxStacksizeLoader implements Runnable {
         GT_Log.out.println("GT_Mod: Changing maximum Stacksizes if configured.");
 
         ItemList.Upgrade_Overclocker.getItem()
-                                    .setMaxStackSize(GT_Mod.gregtechproxy.mUpgradeCount);
+            .setMaxStackSize(GT_Mod.gregtechproxy.mUpgradeCount);
         Items.cake.setMaxStackSize(64);
         Items.wooden_door.setMaxStackSize(8);
         Items.iron_door.setMaxStackSize(8);

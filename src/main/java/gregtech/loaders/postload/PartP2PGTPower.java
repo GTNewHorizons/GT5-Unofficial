@@ -71,7 +71,7 @@ public class PartP2PGTPower extends PartP2PIC2Power implements IGridTickable {
                 voltage = (long) getOfferedEnergy();
             }
             if (((IEnergyConnected) t).injectEnergyUnits(GT_Utility.getOppositeSide(getSide().ordinal()), voltage, 1)
-                    > 0) {
+                > 0) {
                 drawEnergy(voltage);
                 return true;
             }

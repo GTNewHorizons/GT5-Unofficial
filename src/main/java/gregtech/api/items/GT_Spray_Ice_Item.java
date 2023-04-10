@@ -21,27 +21,27 @@ public class GT_Spray_Ice_Item extends GT_Tool_Item {
 
     public GT_Spray_Ice_Item(String aUnlocalized, String aEnglish, int aMaxDamage, int aEntityDamage) {
         super(
-                aUnlocalized,
-                aEnglish,
-                "Very effective against Slimes",
-                aMaxDamage,
-                aEntityDamage,
-                true); /*
-                        * addToEffectiveList(EntitySlime.class.getName()); addToEffectiveList("BlueSlime");
-                        * addToEffectiveList("SlimeClone"); addToEffectiveList("MetalSlime");
-                        * addToEffectiveList("EntityTFFireBeetle"); addToEffectiveList("EntityTFMazeSlime");
-                        * addToEffectiveList("EntityTFSlimeBeetle"); setCraftingSound(Sounds.IC2_TOOLS_PAINTER);
-                        * setBreakingSound(Sounds.IC2_TOOLS_PAINTER); setEntityHitSound(Sounds.IC2_TOOLS_PAINTER);
-                        * setUsageAmounts(4, 16, 1);
-                        */
+            aUnlocalized,
+            aEnglish,
+            "Very effective against Slimes",
+            aMaxDamage,
+            aEntityDamage,
+            true); /*
+                    * addToEffectiveList(EntitySlime.class.getName()); addToEffectiveList("BlueSlime");
+                    * addToEffectiveList("SlimeClone"); addToEffectiveList("MetalSlime");
+                    * addToEffectiveList("EntityTFFireBeetle"); addToEffectiveList("EntityTFMazeSlime");
+                    * addToEffectiveList("EntityTFSlimeBeetle"); setCraftingSound(Sounds.IC2_TOOLS_PAINTER);
+                    * setBreakingSound(Sounds.IC2_TOOLS_PAINTER); setEntityHitSound(Sounds.IC2_TOOLS_PAINTER);
+                    * setUsageAmounts(4, 16, 1);
+                    */
 
         for (Object tName : Arrays.asList(
-                OrePrefixes.bucket.get(Materials.Water),
-                OrePrefixes.cell.get(Materials.Water),
-                OrePrefixes.capsule.get(Materials.Water))) {
+            OrePrefixes.bucket.get(Materials.Water),
+            OrePrefixes.cell.get(Materials.Water),
+            OrePrefixes.capsule.get(Materials.Water))) {
             GT_ModHandler.addShapelessCraftingRecipe(
-                    new ItemStack(Blocks.ice, 1, 0),
-                    new Object[] { new ItemStack(this, 1, W), tName });
+                new ItemStack(Blocks.ice, 1, 0),
+                new Object[] { new ItemStack(this, 1, W), tName });
         }
     }
     /*
@@ -52,7 +52,7 @@ public class GT_Spray_Ice_Item extends GT_Tool_Item {
 
     @Override
     public boolean onItemUseFirst(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ,
-            int aSide, float hitX, float hitY, float hitZ) {
+        int aSide, float hitX, float hitY, float hitZ) {
         super.onItemUseFirst(aStack, aPlayer, aWorld, aX, aY, aZ, aSide, hitX, hitY, hitZ);
         if (aWorld.isRemote) {
             return false;

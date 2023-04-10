@@ -13,22 +13,22 @@ import gregtech.api.metatileentity.MetaTileEntity;
 public class GT_MetaTileEntity_Hatch_Energy extends GT_MetaTileEntity_Hatch {
 
     public GT_MetaTileEntity_Hatch_Energy(int aID, String aName, String aNameRegional, int aTier,
-            String[] aDescription) {
+        String[] aDescription) {
         super(aID, aName, aNameRegional, aTier, 0, aDescription);
     }
 
     public GT_MetaTileEntity_Hatch_Energy(int aID, String aName, String aNameRegional, int aTier) {
         super(
-                aID,
-                aName,
-                aNameRegional,
-                aTier,
-                0,
-                new String[] { "Energy Injector for Multiblocks", "Accepts up to 2 Amps" });
+            aID,
+            aName,
+            aNameRegional,
+            aTier,
+            0,
+            new String[] { "Energy Injector for Multiblocks", "Accepts up to 2 Amps" });
     }
 
     public GT_MetaTileEntity_Hatch_Energy(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount,
-            String[] aDescription, ITexture... aTextures) {
+        String[] aDescription, ITexture... aTextures) {
         super(aID, aName, aNameRegional, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
@@ -41,7 +41,7 @@ public class GT_MetaTileEntity_Hatch_Energy extends GT_MetaTileEntity_Hatch {
     }
 
     public GT_MetaTileEntity_Hatch_Energy(String aName, int aTier, int aInvSlotCount, String[] aDescription,
-            ITexture[][][] aTextures) {
+        ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
 

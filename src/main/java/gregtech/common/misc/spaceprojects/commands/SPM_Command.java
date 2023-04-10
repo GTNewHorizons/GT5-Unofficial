@@ -56,7 +56,7 @@ public class SPM_Command extends CommandBase {
             case RESET:
                 if (!sender.canCommandSenderUseCommand(4, getCommandName())) {
                     sender.addChatMessage(
-                            new ChatComponentText("You don't have the permissions to execute this command"));
+                        new ChatComponentText("You don't have the permissions to execute this command"));
                     return;
                 }
                 processReset(sender, arguments.length >= 2 ? arguments[1] : sender.getCommandSenderName());
@@ -64,41 +64,41 @@ public class SPM_Command extends CommandBase {
             case UNLOCK:
                 if (!sender.canCommandSenderUseCommand(4, getCommandName())) {
                     sender.addChatMessage(
-                            new ChatComponentText("You don't have the permissions to execute this command"));
+                        new ChatComponentText("You don't have the permissions to execute this command"));
                     return;
                 }
                 if (arguments.length < 3) {
                     sender.addChatMessage(
-                            new ChatComponentText("Not enough arguments. Needs to mention a project and a location"));
+                        new ChatComponentText("Not enough arguments. Needs to mention a project and a location"));
                     return;
                 }
                 processUnlock(
-                        sender,
-                        arguments[1],
-                        arguments[2],
-                        arguments.length >= 4 ? arguments[3] : sender.getCommandSenderName());
+                    sender,
+                    arguments[1],
+                    arguments[2],
+                    arguments.length >= 4 ? arguments[3] : sender.getCommandSenderName());
                 break;
             case LOCK:
                 if (!sender.canCommandSenderUseCommand(4, getCommandName())) {
                     sender.addChatMessage(
-                            new ChatComponentText("You don't have the permissions to execute this command"));
+                        new ChatComponentText("You don't have the permissions to execute this command"));
                     return;
                 }
                 if (arguments.length < 3) {
                     sender.addChatMessage(
-                            new ChatComponentText("Not enough arguments. Needs to mention a project and a location"));
+                        new ChatComponentText("Not enough arguments. Needs to mention a project and a location"));
                     return;
                 }
                 processLock(
-                        sender,
-                        arguments[1],
-                        arguments[2],
-                        arguments.length >= 4 ? arguments[3] : sender.getCommandSenderName());
+                    sender,
+                    arguments[1],
+                    arguments[2],
+                    arguments.length >= 4 ? arguments[3] : sender.getCommandSenderName());
             case LIST:
                 if (arguments.length < 2) {
                     sender.addChatMessage(
-                            new ChatComponentText(
-                                    "No Argument for list subCommand. Usage /spm list -all, -available or -unlocked"));
+                        new ChatComponentText(
+                            "No Argument for list subCommand. Usage /spm list -all, -available or -unlocked"));
                     return;
                 }
                 processList(sender, arguments[1], arguments.length >= 3 ? arguments[2] : sender.getCommandSenderName());
@@ -106,7 +106,7 @@ public class SPM_Command extends CommandBase {
             case COPY:
                 if (!sender.canCommandSenderUseCommand(4, getCommandName())) {
                     sender.addChatMessage(
-                            new ChatComponentText("You don't have the permissions to execute this command"));
+                        new ChatComponentText("You don't have the permissions to execute this command"));
                     return;
                 }
                 if (arguments.length < 3) {
@@ -149,24 +149,24 @@ public class SPM_Command extends CommandBase {
         }
         String finalFilter = filter;
         return autoComplete.stream()
-                           .filter(s -> finalFilter.isEmpty() || s.startsWith(finalFilter))
-                           .collect(Collectors.toList());
+            .filter(s -> finalFilter.isEmpty() || s.startsWith(finalFilter))
+            .collect(Collectors.toList());
     }
 
     private String[] getPlayers() {
         return MinecraftServer.getServer()
-                              .getAllUsernames();
+            .getAllUsernames();
     }
 
     private String[] getLocations() {
         return SpaceProjectManager.getLocationNames()
-                                  .toArray(new String[0]);
+            .toArray(new String[0]);
     }
 
     private String[] getProjects() {
         return SpaceProjectManager.getProjectsMap()
-                                  .keySet()
-                                  .toArray(new String[0]);
+            .keySet()
+            .toArray(new String[0]);
     }
 
     private String[] getSubCommands() {
@@ -206,7 +206,7 @@ public class SPM_Command extends CommandBase {
         switch (argument) {
             case ALL -> {
                 for (String project : SpaceProjectManager.getProjectsMap()
-                                                         .keySet()) {
+                    .keySet()) {
                     sender.addChatMessage(new ChatComponentText(project));
                 }
             }

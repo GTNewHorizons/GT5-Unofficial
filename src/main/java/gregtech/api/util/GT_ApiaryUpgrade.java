@@ -141,12 +141,12 @@ public enum GT_ApiaryUpgrade {
 
         void apply(Consumer<GT_ApiaryUpgrade> fn) {
             UNIQUE_UPGRADE_LIST.get(this)
-                               .forEach(fn);
+                .forEach(fn);
         }
     }
 
     private static final EnumMap<UNIQUE_INDEX, ArrayList<GT_ApiaryUpgrade>> UNIQUE_UPGRADE_LIST = new EnumMap<>(
-            UNIQUE_INDEX.class);
+        UNIQUE_INDEX.class);
 
     private int meta = 0;
     private int maxnumber = 1;
@@ -158,7 +158,7 @@ public enum GT_ApiaryUpgrade {
     private final HashSet<GT_Utility.ItemId> blacklistedUpgrades = new HashSet<>();
 
     GT_ApiaryUpgrade(UNIQUE_INDEX unique_index, int meta, int maxnumber,
-            BiConsumer<GT_ApiaryModifier, Integer> applier) {
+        BiConsumer<GT_ApiaryModifier, Integer> applier) {
         this.unique_index = unique_index;
         this.meta = meta;
         this.maxnumber = maxnumber;
@@ -211,7 +211,7 @@ public enum GT_ApiaryUpgrade {
 
     static {
         EnumSet.allOf(GT_ApiaryUpgrade.class)
-               .forEach(GT_ApiaryUpgrade::setup_static_variables);
+            .forEach(GT_ApiaryUpgrade::setup_static_variables);
         speed8upgraded.blacklistedUpgrades.add(production.id);
         production.blacklistedUpgrades.add(speed8upgraded.id);
     }

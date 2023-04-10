@@ -33,7 +33,7 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 
 public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_TooltipMultiBlockBase
-        implements IConstructable, ISecondaryDescribable {
+    implements IConstructable, ISecondaryDescribable {
 
     private int mHeight = -1;
 
@@ -54,29 +54,29 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_TooltipMultiB
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Cleanroom")
-          .addInfo("Controller block for the Cleanroom")
-          .addInfo("Consumes 40 EU/t when first turned on")
-          .addInfo("and 4 EU/t once at 100% efficiency when not overclocked") // ?
-          .addInfo("An energy hatch accepts up to 2A, so you can use 2A LV or 1A MV")
-          .addInfo("2 LV batteries + 1 LV generator or 1 MV generator") // ?
-          .addInfo("Time required to reach full efficiency is proportional to")
-          .addInfo("the height of empty space within")
-          .addInfo("Make sure your Energy Hatch matches! ?")
-          .addInfo("Machines that cause pollution aren't allowed to be put in.")
-          .addSeparator()
-          .beginVariableStructureBlock(3, 15, 4, 15, 3, 15, true)
-          .addController("Top center")
-          .addCasingInfoRange("Plascrete", 20, 1007, false)
-          .addStructureInfo(GT_Values.cleanroomGlass + "% of the Plascrete can be replaced with Reinforced Glass") // check
-          .addStructureInfo("Other material can be used in place of Plascrete. See config for detail") // check
-          .addOtherStructurePart("Filter Machine Casing", "Top besides controller and edges")
-          .addEnergyHatch("Any casing. Exactly one.") // check
-          .addMaintenanceHatch("Any casing")
-          .addStructureInfo("1x Reinforced Door (keep closed or efficiency will reduce)")
-          .addStructureInfo("Up to 10 Machine Hulls for Item & Energy transfer through walls")
-          .addStructureInfo("You can also use Diodes for more power")
-          .addStructureInfo("Diodes also count towards 10 Machine Hulls count limit")
-          .toolTipFinisher("Gregtech");
+            .addInfo("Controller block for the Cleanroom")
+            .addInfo("Consumes 40 EU/t when first turned on")
+            .addInfo("and 4 EU/t once at 100% efficiency when not overclocked") // ?
+            .addInfo("An energy hatch accepts up to 2A, so you can use 2A LV or 1A MV")
+            .addInfo("2 LV batteries + 1 LV generator or 1 MV generator") // ?
+            .addInfo("Time required to reach full efficiency is proportional to")
+            .addInfo("the height of empty space within")
+            .addInfo("Make sure your Energy Hatch matches! ?")
+            .addInfo("Machines that cause pollution aren't allowed to be put in.")
+            .addSeparator()
+            .beginVariableStructureBlock(3, 15, 4, 15, 3, 15, true)
+            .addController("Top center")
+            .addCasingInfoRange("Plascrete", 20, 1007, false)
+            .addStructureInfo(GT_Values.cleanroomGlass + "% of the Plascrete can be replaced with Reinforced Glass") // check
+            .addStructureInfo("Other material can be used in place of Plascrete. See config for detail") // check
+            .addOtherStructurePart("Filter Machine Casing", "Top besides controller and edges")
+            .addEnergyHatch("Any casing. Exactly one.") // check
+            .addMaintenanceHatch("Any casing")
+            .addStructureInfo("1x Reinforced Door (keep closed or efficiency will reduce)")
+            .addStructureInfo("Up to 10 Machine Hulls for Item & Energy transfer through walls")
+            .addStructureInfo("You can also use Diodes for more power")
+            .addStructureInfo("Diodes also count towards 10 Machine Hulls count limit")
+            .toolTipFinisher("Gregtech");
         return tt;
     }
 
@@ -190,7 +190,7 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_TooltipMultiB
                                 if (tBlock != GregTech_API.sBlockCasings3 || tMeta != 11) {
                                     if (debugCleanroom) {
                                         GT_Log.out.println(
-                                                "Cleanroom: Non reinforced block on top face interior? tMeta != 11");
+                                            "Cleanroom: Non reinforced block on top face interior? tMeta != 11");
                                     }
                                     return false;
                                 }
@@ -198,12 +198,10 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_TooltipMultiB
                         } else if (tBlock == GregTech_API.sBlockReinforced && tMeta == 2) {
                             mPlascreteCount++;
                         } else {
-                            final IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(
-                                    dX,
-                                    dY,
-                                    dZ);
+                            final IGregTechTileEntity tTileEntity = aBaseMetaTileEntity
+                                .getIGregTechTileEntityOffset(dX, dY, dZ);
                             if ((!this.addMaintenanceToMachineList(tTileEntity, 210))
-                                    && (!this.addEnergyInputToMachineList(tTileEntity, 210))) {
+                                && (!this.addEnergyInputToMachineList(tTileEntity, 210))) {
                                 if (tBlock instanceof ic2.core.block.BlockIC2Door) {
                                     if ((tMeta & 8) == 0) {
                                         // let's not fiddle with bits anymore.
@@ -228,8 +226,7 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_TooltipMultiB
                                         } else {
                                             if (debugCleanroom) {
                                                 GT_Log.out.println(
-                                                        "Cleanroom: Incorrect GT block? "
-                                                                + tBlock.getUnlocalizedName());
+                                                    "Cleanroom: Incorrect GT block? " + tBlock.getUnlocalizedName());
                                             }
                                             return false;
                                         }
@@ -243,7 +240,7 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_TooltipMultiB
                                                 otherBlocks.compute(key, (k, v) -> v == null ? 1 : v + 1);
                                             } else {
                                                 if (debugCleanroom) GT_Log.out.println(
-                                                        "Cleanroom: not allowed block " + tBlock.getUnlocalizedName());
+                                                    "Cleanroom: not allowed block " + tBlock.getUnlocalizedName());
                                                 return false;
                                             }
                                         }
@@ -256,8 +253,8 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_TooltipMultiB
             }
         }
         if (this.mMaintenanceHatches.size() != 1 || this.mEnergyHatches.size() != 1
-                || mDoorCount > 4
-                || mHullCount > 10) {
+            || mDoorCount > 4
+            || mHullCount > 10) {
             return false;
         }
         if (mPlascreteCount < 20) return false;
@@ -310,8 +307,8 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_TooltipMultiB
     @SuppressWarnings("unchecked")
     private void checkAndSetCallback(IMachineCallback<?> iMachineCallback) {
         if (debugCleanroom) GT_Log.out.println(
-                "Cleanroom: IMachineCallback detected, checking for cleanroom: "
-                        + (iMachineCallback.getType() == this.getClass()));
+            "Cleanroom: IMachineCallback detected, checking for cleanroom: "
+                + (iMachineCallback.getType() == this.getClass()));
         if (iMachineCallback.getType() == this.getClass())
             ((IMachineCallback<GT_MetaTileEntity_Cleanroom>) iMachineCallback).setCallbackBase(this);
     }
@@ -323,21 +320,21 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_TooltipMultiB
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-            boolean aActive, boolean aRedstone) {
+        boolean aActive, boolean aRedstone) {
         if (aSide == ForgeDirection.DOWN.ordinal() || aSide == ForgeDirection.UP.ordinal()) {
             return new ITexture[] { TextureFactory.of(BLOCK_PLASCRETE), aActive
-                    ? TextureFactory.of(
-                            TextureFactory.of(OVERLAY_TOP_CLEANROOM_ACTIVE),
-                            TextureFactory.builder()
-                                          .addIcon(OVERLAY_TOP_CLEANROOM_ACTIVE_GLOW)
-                                          .glow()
-                                          .build())
-                    : TextureFactory.of(
-                            TextureFactory.of(OVERLAY_TOP_CLEANROOM),
-                            TextureFactory.builder()
-                                          .addIcon(OVERLAY_TOP_CLEANROOM_GLOW)
-                                          .glow()
-                                          .build()) };
+                ? TextureFactory.of(
+                    TextureFactory.of(OVERLAY_TOP_CLEANROOM_ACTIVE),
+                    TextureFactory.builder()
+                        .addIcon(OVERLAY_TOP_CLEANROOM_ACTIVE_GLOW)
+                        .glow()
+                        .build())
+                : TextureFactory.of(
+                    TextureFactory.of(OVERLAY_TOP_CLEANROOM),
+                    TextureFactory.builder()
+                        .addIcon(OVERLAY_TOP_CLEANROOM_GLOW)
+                        .glow()
+                        .build()) };
         }
         return new ITexture[] { TextureFactory.of(BLOCK_PLASCRETE) };
     }
@@ -426,45 +423,45 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_TooltipMultiB
     public static void loadConfig(Configuration cfg) {
         if (!cfg.hasCategory(category)) setDefaultConfigValues(cfg);
         for (ConfigCategory cc : cfg.getCategory(category)
-                                    .getChildren()) {
+            .getChildren()) {
             final String name = cc.get("Name")
-                                  .getString();
+                .getString();
             if (cc.containsKey("Count")) {
                 if (cc.containsKey("Meta")) config.put(
-                        name + ":"
-                                + cc.get("Meta")
-                                    .getInt(),
-                        new ConfigEntry(
-                                0,
-                                cc.get("Count")
-                                  .getInt(),
-                                cc.get("Meta")
-                                  .getInt()));
+                    name + ":"
+                        + cc.get("Meta")
+                            .getInt(),
+                    new ConfigEntry(
+                        0,
+                        cc.get("Count")
+                            .getInt(),
+                        cc.get("Meta")
+                            .getInt()));
                 else config.put(
-                        name,
-                        new ConfigEntry(
-                                0,
-                                cc.get("Count")
-                                  .getInt(),
-                                wildcard_meta));
+                    name,
+                    new ConfigEntry(
+                        0,
+                        cc.get("Count")
+                            .getInt(),
+                        wildcard_meta));
             } else if (cc.containsKey("Percentage")) {
                 if (cc.containsKey("Meta")) config.put(
-                        name + ":"
-                                + cc.get("Meta")
-                                    .getInt(),
-                        new ConfigEntry(
-                                cc.get("Percentage")
-                                  .getInt(),
-                                0,
-                                cc.get("Meta")
-                                  .getInt()));
+                    name + ":"
+                        + cc.get("Meta")
+                            .getInt(),
+                    new ConfigEntry(
+                        cc.get("Percentage")
+                            .getInt(),
+                        0,
+                        cc.get("Meta")
+                            .getInt()));
                 else config.put(
-                        name,
-                        new ConfigEntry(
-                                cc.get("Percentage")
-                                  .getInt(),
-                                0,
-                                wildcard_meta));
+                    name,
+                    new ConfigEntry(
+                        cc.get("Percentage")
+                            .getInt(),
+                        0,
+                        wildcard_meta));
             }
         }
     }

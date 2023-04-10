@@ -68,26 +68,24 @@ public class GT_Cover_Fluidfilter extends GT_CoverBehaviorBase<GT_Cover_Fluidfil
 
     @Override
     protected String getDescriptionImpl(byte aSide, int aCoverID, FluidFilterData aCoverVariable,
-            ICoverable aTileEntity) {
+        ICoverable aTileEntity) {
         final Fluid fluid = FluidRegistry.getFluid(aCoverVariable.mFluidID);
         if (fluid == null) return E;
 
         final FluidStack sFluid = new FluidStack(fluid, 1000);
-        return (String.format(
-                "Filtering Fluid: %s - %s",
-                sFluid.getLocalizedName(),
-                getFilterMode(aCoverVariable.mFilterMode)));
+        return (String
+            .format("Filtering Fluid: %s - %s", sFluid.getLocalizedName(), getFilterMode(aCoverVariable.mFilterMode)));
     }
 
     @Override
     protected boolean isRedstoneSensitiveImpl(byte aSide, int aCoverID, FluidFilterData aCoverVariable,
-            ICoverable aTileEntity, long aTimer) {
+        ICoverable aTileEntity, long aTimer) {
         return false;
     }
 
     @Override
     protected FluidFilterData doCoverThingsImpl(byte aSide, byte aInputRedstone, int aCoverID,
-            FluidFilterData aCoverVariable, ICoverable aTileEntity, long aTimer) {
+        FluidFilterData aCoverVariable, ICoverable aTileEntity, long aTimer) {
         return aCoverVariable;
     }
 
@@ -107,7 +105,7 @@ public class GT_Cover_Fluidfilter extends GT_CoverBehaviorBase<GT_Cover_Fluidfil
 
     @Override
     protected FluidFilterData onCoverScrewdriverClickImpl(byte aSide, int aCoverID, FluidFilterData aCoverVariable,
-            ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         aCoverVariable.mFilterMode = (aCoverVariable.mFilterMode + (aPlayer.isSneaking() ? -1 : 1)) % 8;
         if (aCoverVariable.mFilterMode < 0) {
             aCoverVariable.mFilterMode = 7;
@@ -120,11 +118,11 @@ public class GT_Cover_Fluidfilter extends GT_CoverBehaviorBase<GT_Cover_Fluidfil
 
     @Override
     protected boolean onCoverRightClickImpl(byte aSide, int aCoverID, FluidFilterData aCoverVariable,
-            ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (((aX > 0.375D) && (aX < 0.625D)) || ((aSide > 3) && ((aY > 0.375D) && (aY < 0.625D)))
-                || ((aSide < 2) && ((aZ > 0.375D) && (aZ < 0.625D)))
-                || (aSide == 2)
-                || (aSide == 3)) {
+            || ((aSide < 2) && ((aZ > 0.375D) && (aZ < 0.625D)))
+            || (aSide == 2)
+            || (aSide == 3)) {
             ItemStack tStack = aPlayer.inventory.getCurrentItem();
             if (tStack == null) return true;
 
@@ -134,9 +132,8 @@ public class GT_Cover_Fluidfilter extends GT_CoverBehaviorBase<GT_Cover_Fluidfil
                 aCoverVariable.mFluidID = aFluid;
                 aTileEntity.setCoverDataAtSide(aSide, aCoverVariable);
                 FluidStack sFluid = new FluidStack(FluidRegistry.getFluid(aFluid), 1000);
-                GT_Utility.sendChatToPlayer(
-                        aPlayer,
-                        GT_Utility.trans("047", "Filter Fluid: ") + sFluid.getLocalizedName());
+                GT_Utility
+                    .sendChatToPlayer(aPlayer, GT_Utility.trans("047", "Filter Fluid: ") + sFluid.getLocalizedName());
             }
             return true;
         }
@@ -145,43 +142,43 @@ public class GT_Cover_Fluidfilter extends GT_CoverBehaviorBase<GT_Cover_Fluidfil
 
     @Override
     protected boolean letsRedstoneGoInImpl(byte aSide, int aCoverID,
-            GT_Cover_Fluidfilter.FluidFilterData aCoverVariable, ICoverable aTileEntity) {
+        GT_Cover_Fluidfilter.FluidFilterData aCoverVariable, ICoverable aTileEntity) {
         return true;
     }
 
     @Override
     protected boolean letsRedstoneGoOutImpl(byte aSide, int aCoverID,
-            GT_Cover_Fluidfilter.FluidFilterData aCoverVariable, ICoverable aTileEntity) {
+        GT_Cover_Fluidfilter.FluidFilterData aCoverVariable, ICoverable aTileEntity) {
         return true;
     }
 
     @Override
     protected boolean letsEnergyInImpl(byte aSide, int aCoverID, GT_Cover_Fluidfilter.FluidFilterData aCoverVariable,
-            ICoverable aTileEntity) {
+        ICoverable aTileEntity) {
         return true;
     }
 
     @Override
     protected boolean letsEnergyOutImpl(byte aSide, int aCoverID, GT_Cover_Fluidfilter.FluidFilterData aCoverVariable,
-            ICoverable aTileEntity) {
+        ICoverable aTileEntity) {
         return true;
     }
 
     @Override
     public boolean letsItemsInImpl(byte aSide, int aCoverID, GT_Cover_Fluidfilter.FluidFilterData aCoverVariable,
-            int aSlot, ICoverable aTileEntity) {
+        int aSlot, ICoverable aTileEntity) {
         return true;
     }
 
     @Override
     public boolean letsItemsOutImpl(byte aSide, int aCoverID, GT_Cover_Fluidfilter.FluidFilterData aCoverVariable,
-            int aSlot, ICoverable aTileEntity) {
+        int aSlot, ICoverable aTileEntity) {
         return true;
     }
 
     @Override
     protected boolean letsFluidInImpl(byte aSide, int aCoverID, FluidFilterData aCoverVariable, Fluid aFluid,
-            ICoverable aTileEntity) {
+        ICoverable aTileEntity) {
         if (aFluid == null) return true;
 
         int aFilterMode = aCoverVariable.mFilterMode;
@@ -196,7 +193,7 @@ public class GT_Cover_Fluidfilter extends GT_CoverBehaviorBase<GT_Cover_Fluidfil
 
     @Override
     protected boolean letsFluidOutImpl(byte aSide, int aCoverID, FluidFilterData aCoverVariable, Fluid aFluid,
-            ICoverable aTileEntity) {
+        ICoverable aTileEntity) {
         if (aFluid == null) return true;
 
         int aFilterMode = aCoverVariable.mFilterMode;
@@ -211,7 +208,7 @@ public class GT_Cover_Fluidfilter extends GT_CoverBehaviorBase<GT_Cover_Fluidfil
 
     @Override
     protected boolean alwaysLookConnectedImpl(byte aSide, int aCoverID, FluidFilterData aCoverVariable,
-            ICoverable aTileEntity) {
+        ICoverable aTileEntity) {
         return true;
     }
 
@@ -252,113 +249,101 @@ public class GT_Cover_Fluidfilter extends GT_CoverBehaviorBase<GT_Cover_Fluidfil
         @Override
         protected void addUIWidgets(ModularWindow.Builder builder) {
             builder.widget(
-                    new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
-                            this::getCoverData,
-                            this::setCoverData,
-                            GT_Cover_Fluidfilter.this,
-                            (id, coverData) -> !getClickable(id, coverData),
-                            (id, coverData) -> {
-                                coverData.mFilterMode = getNewFilterMode(id, coverData);
-                                return coverData;
-                            }).addToggleButton(
-                                    0,
-                                    CoverDataFollower_ToggleButtonWidget.ofDisableable(),
-                                    widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_IMPORT)
-                                                    .addTooltip(GT_Utility.trans("232", "Filter Input"))
-                                                    .setPos(spaceX * 0, spaceY * 0))
-                              .addToggleButton(
-                                      1,
-                                      CoverDataFollower_ToggleButtonWidget.ofDisableable(),
-                                      widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_EXPORT)
-                                                      .addTooltip(GT_Utility.trans("233", "Filter Output"))
-                                                      .setPos(spaceX * 1, spaceY * 0))
-                              .addToggleButton(
-                                      2,
-                                      CoverDataFollower_ToggleButtonWidget.ofDisableable(),
-                                      widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_BLOCK_INPUT)
-                                                      .addTooltip(GT_Utility.trans("234", "Block Output"))
-                                                      .setPos(spaceX * 0, spaceY * 2))
-                              .addToggleButton(
-                                      3,
-                                      CoverDataFollower_ToggleButtonWidget.ofDisableable(),
-                                      widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_ALLOW_INPUT)
-                                                      .addTooltip(GT_Utility.trans("235", "Allow Output"))
-                                                      .setPos(spaceX * 1, spaceY * 2))
-                              .addToggleButton(
-                                      4,
-                                      CoverDataFollower_ToggleButtonWidget.ofDisableable(),
-                                      widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_WHITELIST)
-                                                      .addTooltip(GT_Utility.trans("236", "Whitelist Fluid"))
-                                                      .setPos(spaceX * 0, spaceY * 1))
-                              .addToggleButton(
-                                      5,
-                                      CoverDataFollower_ToggleButtonWidget.ofDisableable(),
-                                      widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_BLACKLIST)
-                                                      .addTooltip(GT_Utility.trans("237", "Blacklist Fluid"))
-                                                      .setPos(spaceX * 1, spaceY * 1))
-                              .addFollower(
-                                      new CoverDataFollower_SlotWidget<FluidFilterData>(
-                                              new ItemStackHandler(),
-                                              0,
-                                              true) {
+                new CoverDataControllerWidget.CoverDataIndexedControllerWidget_ToggleButtons<>(
+                    this::getCoverData,
+                    this::setCoverData,
+                    GT_Cover_Fluidfilter.this,
+                    (id, coverData) -> !getClickable(id, coverData),
+                    (id, coverData) -> {
+                        coverData.mFilterMode = getNewFilterMode(id, coverData);
+                        return coverData;
+                    }).addToggleButton(
+                        0,
+                        CoverDataFollower_ToggleButtonWidget.ofDisableable(),
+                        widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_IMPORT)
+                            .addTooltip(GT_Utility.trans("232", "Filter Input"))
+                            .setPos(spaceX * 0, spaceY * 0))
+                        .addToggleButton(
+                            1,
+                            CoverDataFollower_ToggleButtonWidget.ofDisableable(),
+                            widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_EXPORT)
+                                .addTooltip(GT_Utility.trans("233", "Filter Output"))
+                                .setPos(spaceX * 1, spaceY * 0))
+                        .addToggleButton(
+                            2,
+                            CoverDataFollower_ToggleButtonWidget.ofDisableable(),
+                            widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_BLOCK_INPUT)
+                                .addTooltip(GT_Utility.trans("234", "Block Output"))
+                                .setPos(spaceX * 0, spaceY * 2))
+                        .addToggleButton(
+                            3,
+                            CoverDataFollower_ToggleButtonWidget.ofDisableable(),
+                            widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_ALLOW_INPUT)
+                                .addTooltip(GT_Utility.trans("235", "Allow Output"))
+                                .setPos(spaceX * 1, spaceY * 2))
+                        .addToggleButton(
+                            4,
+                            CoverDataFollower_ToggleButtonWidget.ofDisableable(),
+                            widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_WHITELIST)
+                                .addTooltip(GT_Utility.trans("236", "Whitelist Fluid"))
+                                .setPos(spaceX * 0, spaceY * 1))
+                        .addToggleButton(
+                            5,
+                            CoverDataFollower_ToggleButtonWidget.ofDisableable(),
+                            widget -> widget.setStaticTexture(GT_UITextures.OVERLAY_BUTTON_BLACKLIST)
+                                .addTooltip(GT_Utility.trans("237", "Blacklist Fluid"))
+                                .setPos(spaceX * 1, spaceY * 1))
+                        .addFollower(
+                            new CoverDataFollower_SlotWidget<FluidFilterData>(new ItemStackHandler(), 0, true) {
 
-                                          @Override
-                                          protected void putClickedStack(ItemStack stack, int mouseButton) {
-                                              if (stack != null
-                                                      && GT_Utility.getFluidFromContainerOrFluidDisplay(stack) == null)
-                                                  return;
-                                              super.putClickedStack(
-                                                      GT_Utility.getFluidDisplayStack(
-                                                              GT_Utility.getFluidFromContainerOrFluidDisplay(stack),
-                                                              false),
-                                                      mouseButton);
-                                          }
-                                      },
-                                      this::getFluidDisplayItem,
-                                      (coverData, stack) -> {
-                                          if (stack == null) {
-                                              coverData.mFluidID = -1;
-                                          } else {
-                                              FluidStack fluid = GT_Utility.getFluidFromDisplayStack(stack);
-                                              if (fluid != null && fluid.getFluid() != null) {
-                                                  coverData.mFluidID = fluid.getFluid()
-                                                                            .getID();
-                                              }
-                                          }
-                                          return coverData;
-                                      },
-                                      widget -> widget.setBackground(ModularUITextures.FLUID_SLOT)
-                                                      .setPos(0, spaceY * 3 + 2))
-                              .setPos(startX, startY))
-                   .widget(
-                           new TextWidget(GT_Utility.trans("238", "Filter Direction"))
-                                                                                      .setDefaultColor(
-                                                                                              COLOR_TEXT_GRAY.get())
-                                                                                      .setPos(
-                                                                                              startX + spaceX * 2,
-                                                                                              3 + startY + spaceY * 0))
-                   .widget(
-                           new TextWidget(GT_Utility.trans("239", "Filter Type")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                                                                                 .setPos(
-                                                                                         startX + spaceX * 2,
-                                                                                         3 + startY + spaceY * 1))
-                   .widget(
-                           new TextWidget(GT_Utility.trans("240", "Block Flow")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                                                                                .setPos(
-                                                                                        startX + spaceX * 2,
-                                                                                        3 + startY + spaceY * 2))
-                   .widget(TextWidget.dynamicString(() -> {
-                       if (getCoverData() != null) {
-                           ItemStack fluidDisplay = getFluidDisplayItem(getCoverData());
-                           if (fluidDisplay != null) {
-                               return fluidDisplay.getDisplayName();
-                           }
-                       }
-                       return GT_Utility.trans("315", "Filter Empty");
-                   })
-                                     .setSynced(false)
-                                     .setDefaultColor(COLOR_TITLE.get())
-                                     .setPos(startX + spaceX + 3, 4 + startY + spaceY * 3));
+                                @Override
+                                protected void putClickedStack(ItemStack stack, int mouseButton) {
+                                    if (stack != null && GT_Utility.getFluidFromContainerOrFluidDisplay(stack) == null)
+                                        return;
+                                    super.putClickedStack(
+                                        GT_Utility.getFluidDisplayStack(
+                                            GT_Utility.getFluidFromContainerOrFluidDisplay(stack),
+                                            false),
+                                        mouseButton);
+                                }
+                            },
+                            this::getFluidDisplayItem,
+                            (coverData, stack) -> {
+                                if (stack == null) {
+                                    coverData.mFluidID = -1;
+                                } else {
+                                    FluidStack fluid = GT_Utility.getFluidFromDisplayStack(stack);
+                                    if (fluid != null && fluid.getFluid() != null) {
+                                        coverData.mFluidID = fluid.getFluid()
+                                            .getID();
+                                    }
+                                }
+                                return coverData;
+                            },
+                            widget -> widget.setBackground(ModularUITextures.FLUID_SLOT)
+                                .setPos(0, spaceY * 3 + 2))
+                        .setPos(startX, startY))
+                .widget(
+                    new TextWidget(GT_Utility.trans("238", "Filter Direction")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                        .setPos(startX + spaceX * 2, 3 + startY + spaceY * 0))
+                .widget(
+                    new TextWidget(GT_Utility.trans("239", "Filter Type")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                        .setPos(startX + spaceX * 2, 3 + startY + spaceY * 1))
+                .widget(
+                    new TextWidget(GT_Utility.trans("240", "Block Flow")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                        .setPos(startX + spaceX * 2, 3 + startY + spaceY * 2))
+                .widget(TextWidget.dynamicString(() -> {
+                    if (getCoverData() != null) {
+                        ItemStack fluidDisplay = getFluidDisplayItem(getCoverData());
+                        if (fluidDisplay != null) {
+                            return fluidDisplay.getDisplayName();
+                        }
+                    }
+                    return GT_Utility.trans("315", "Filter Empty");
+                })
+                    .setSynced(false)
+                    .setDefaultColor(COLOR_TITLE.get())
+                    .setPos(startX + spaceX + 3, 4 + startY + spaceY * 3));
         }
 
         private int getNewFilterMode(int id, FluidFilterData coverVariable) {
@@ -410,9 +395,9 @@ public class GT_Cover_Fluidfilter extends GT_CoverBehaviorBase<GT_Cover_Fluidfil
             NBTTagCompound tNBT = new NBTTagCompound();
             tNBT.setInteger("mFilterMode", mFilterMode);
             if (mFluidID >= 0) tNBT.setString(
-                    "mFluid",
-                    FluidRegistry.getFluid(mFluidID)
-                                 .getName());
+                "mFluid",
+                FluidRegistry.getFluid(mFluidID)
+                    .getName());
             return tNBT;
         }
 

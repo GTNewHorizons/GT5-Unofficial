@@ -32,7 +32,7 @@ public final class SubTag implements ICondition<ISubTagContainer> {
      * listed are: Iron, Pyrite, PigIron, DeepIron, ShadowIron, WroughtIron and MeteoricIron.
      */
     public static final SubTag BLASTFURNACE_CALCITE_DOUBLE = getNewSubTag("BLASTFURNACE_CALCITE_DOUBLE"),
-            BLASTFURNACE_CALCITE_TRIPLE = getNewSubTag("BLASTFURNACE_CALCITE_TRIPLE");
+        BLASTFURNACE_CALCITE_TRIPLE = getNewSubTag("BLASTFURNACE_CALCITE_TRIPLE");
 
     /**
      * Add this to a material with Direct Smelting to prevent the automatic generation of a Bricked/Bronze Blast Furnace
@@ -72,7 +72,7 @@ public final class SubTag implements ICondition<ISubTagContainer> {
      * Add this to your Material if you want to have its Ore electromagnetically separated to give Neodymium.
      */
     public static final SubTag ELECTROMAGNETIC_SEPERATION_NEODYMIUM = getNewSubTag(
-            "ELECTROMAGNETIC_SEPERATION_NEODYMIUM");
+        "ELECTROMAGNETIC_SEPERATION_NEODYMIUM");
     /**
      * Add this to your Material if you want to have its Ore giving Cinnabar Crystals on Pulverization. Already listed
      * are: Redstone

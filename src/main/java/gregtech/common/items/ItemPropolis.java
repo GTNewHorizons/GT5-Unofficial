@@ -103,32 +103,27 @@ public class ItemPropolis extends Item {
     }
 
     public void addProcessHV(ItemStack tPropolis, ItemStack aOutput2) {
-        GT_Values.RA.addFluidExtractionRecipe(
-                tPropolis,
-                aOutput2,
-                FluidRegistry.getFluidStack("endergoo", 100),
-                5000,
-                50,
-                480);
+        GT_Values.RA
+            .addFluidExtractionRecipe(tPropolis, aOutput2, FluidRegistry.getFluidStack("endergoo", 100), 5000, 50, 480);
     }
 
     public void addProcessEV(ItemStack tPropolis, ItemStack aOutput2) {
         GT_Values.RA.addFluidExtractionRecipe(
-                tPropolis,
-                aOutput2,
-                FluidRegistry.getFluidStack("endergoo", 200),
-                2500,
-                100,
-                1920);
+            tPropolis,
+            aOutput2,
+            FluidRegistry.getFluidStack("endergoo", 200),
+            2500,
+            100,
+            1920);
     }
 
     public void addProcessIV(ItemStack tPropolis, ItemStack aOutput2) {
         GT_Values.RA.addFluidExtractionRecipe(
-                tPropolis,
-                aOutput2,
-                FluidRegistry.getFluidStack("endergoo", 300),
-                1500,
-                150,
-                7680);
+            tPropolis,
+            aOutput2,
+            FluidRegistry.getFluidStack("endergoo", 300),
+            1500,
+            150,
+            7680);
     }
 }

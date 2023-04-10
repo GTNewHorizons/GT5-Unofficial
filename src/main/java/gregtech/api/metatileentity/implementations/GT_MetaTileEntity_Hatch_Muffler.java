@@ -27,14 +27,14 @@ import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_Cleanroom;
 public class GT_MetaTileEntity_Hatch_Muffler extends GT_MetaTileEntity_Hatch {
 
     private static final String localizedDescFormat = GT_LanguageManager.addStringLocalization(
-            "gt.blockmachines.hatch.muffler.desc.format",
-            "Outputs the Pollution (Might cause ... things)%n" + "DO NOT OBSTRUCT THE OUTPUT!%n"
-                    + "Reduces Pollution to %d%%%n"
-                    + "Recovers %d%% of CO2/CO/SO2");
+        "gt.blockmachines.hatch.muffler.desc.format",
+        "Outputs the Pollution (Might cause ... things)%n" + "DO NOT OBSTRUCT THE OUTPUT!%n"
+            + "Reduces Pollution to %d%%%n"
+            + "Recovers %d%% of CO2/CO/SO2");
     private final int pollutionReduction = calculatePollutionReduction(100);
     private final int pollutionRecover = 100 - pollutionReduction;
     private final String[] description = String.format(localizedDescFormat, pollutionReduction, pollutionRecover)
-                                               .split("\\R");
+        .split("\\R");
     private final boolean[] facings = new boolean[ForgeDirection.VALID_DIRECTIONS.length];
 
     public GT_MetaTileEntity_Hatch_Muffler(int aID, String aName, String aNameRegional, int aTier) {
@@ -42,7 +42,7 @@ public class GT_MetaTileEntity_Hatch_Muffler extends GT_MetaTileEntity_Hatch {
     }
 
     public GT_MetaTileEntity_Hatch_Muffler(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount,
-            String[] aDescription, ITexture... aTextures) {
+        String[] aDescription, ITexture... aTextures) {
         super(aID, aName, aNameRegional, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
@@ -55,7 +55,7 @@ public class GT_MetaTileEntity_Hatch_Muffler extends GT_MetaTileEntity_Hatch {
     }
 
     public GT_MetaTileEntity_Hatch_Muffler(String aName, int aTier, int aInvSlotCount, String[] aDescription,
-            ITexture[][][] aTextures) {
+        ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
         setInValidFacings(ForgeDirection.DOWN);
     }
@@ -104,11 +104,11 @@ public class GT_MetaTileEntity_Hatch_Muffler extends GT_MetaTileEntity_Hatch {
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isClientSide() && this.getBaseMetaTileEntity()
-                                                      .isActive()) {
+            .isActive()) {
             pollutionParticles(
-                    this.getBaseMetaTileEntity()
-                        .getWorld(),
-                    ParticleFX.LARGE_SMOKE.toString());
+                this.getBaseMetaTileEntity()
+                    .getWorld(),
+                ParticleFX.LARGE_SMOKE.toString());
         }
     }
 
@@ -163,35 +163,34 @@ public class GT_MetaTileEntity_Hatch_Muffler extends GT_MetaTileEntity_Hatch {
             zSpd = aDir.offsetZ * (0.1F + 0.2F * XSTR_INSTANCE.nextFloat());
         }
 
-        WorldSpawnedEventBuilder.ParticleEventBuilder events = new WorldSpawnedEventBuilder.ParticleEventBuilder().setIdentifier(
-                name)
-                                                                                                                  .setWorld(
-                                                                                                                          aWorld)
-                                                                                                                  .setMotion(
-                                                                                                                          xSpd,
-                                                                                                                          ySpd,
-                                                                                                                          zSpd);
+        WorldSpawnedEventBuilder.ParticleEventBuilder events = new WorldSpawnedEventBuilder.ParticleEventBuilder()
+            .setIdentifier(name)
+            .setWorld(aWorld)
+            .setMotion(xSpd, ySpd, zSpd);
 
         if (chk1) {
-            events.setPosition(
+            events
+                .setPosition(
                     xPos + ran1 * 0.5F,
                     yPos + XSTR_INSTANCE.nextFloat() * 0.5F,
                     zPos + XSTR_INSTANCE.nextFloat() * 0.5F)
-                  .run();
+                .run();
         }
         if (chk2) {
-            events.setPosition(
+            events
+                .setPosition(
                     xPos + ran2 * 0.5F,
                     yPos + XSTR_INSTANCE.nextFloat() * 0.5F,
                     zPos + XSTR_INSTANCE.nextFloat() * 0.5F)
-                  .run();
+                .run();
         }
         if (chk3) {
-            events.setPosition(
+            events
+                .setPosition(
                     xPos + ran3 * 0.5F,
                     yPos + XSTR_INSTANCE.nextFloat() * 0.5F,
                     zPos + XSTR_INSTANCE.nextFloat() * 0.5F)
-                  .run();
+                .run();
         }
     }
 
@@ -231,6 +230,6 @@ public class GT_MetaTileEntity_Hatch_Muffler extends GT_MetaTileEntity_Hatch {
     public void setInValidFacings(ForgeDirection... aFacings) {
         Arrays.fill(facings, true);
         Arrays.stream(aFacings)
-              .forEach(face -> facings[face.ordinal()] = false);
+            .forEach(face -> facings[face.ordinal()] = false);
     }
 }

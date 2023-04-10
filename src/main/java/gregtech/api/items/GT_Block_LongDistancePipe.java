@@ -42,7 +42,7 @@ public class GT_Block_LongDistancePipe extends GT_Generic_Block {
         ItemList.Long_Distance_Pipeline_Fluid_Pipe.set(new ItemStack(this, 1, 0));
         ItemList.Long_Distance_Pipeline_Item_Pipe.set(new ItemStack(this, 1, 1));
         mIcons = new IIconContainer[] { Textures.BlockIcons.LONG_DISTANCE_PIPE_FLUID,
-                Textures.BlockIcons.LONG_DISTANCE_PIPE_ITEM };
+            Textures.BlockIcons.LONG_DISTANCE_PIPE_ITEM };
     }
 
     @Override
@@ -119,8 +119,7 @@ public class GT_Block_LongDistancePipe extends GT_Generic_Block {
         for (int i = 0; i < 3; i++) {
             ItemStack aStack = new ItemStack(aItem, 1, i);
             if (!aStack.getDisplayName()
-                       .contains(".name"))
-                aList.add(aStack);
+                .contains(".name")) aList.add(aStack);
         }
     }
 }
