@@ -1,5 +1,6 @@
 package common.recipeLoaders;
 
+import gregtech.api.enums.TierEU;
 import kekztech.Items;
 
 import net.minecraft.item.ItemStack;
@@ -13,6 +14,9 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sMixerRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+
 public class Mixer implements Runnable {
 
     @Override
@@ -20,28 +24,35 @@ public class Mixer implements Runnable {
         final MetaItem_CraftingComponent craftingItem = MetaItem_CraftingComponent.getInstance();
 
         // YSZ Ceramic Dust
-        GT_Values.RA.addMixerRecipe(
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
                 Items.YttriaDust.getOreDictedItemStack(1),
                 Items.ZirconiaDust.getOreDictedItemStack(5),
-                GT_Utility.getIntegratedCircuit(6),
-                null,
-                null,
-                null,
-                craftingItem.getStackOfAmountFromDamage(Items.YSZCeramicDust.getMetaID(), 6),
-                400,
-                96);
+                GT_Utility.getIntegratedCircuit(6)
+            )
+            .itemOutputs(
+                craftingItem.getStackOfAmountFromDamage(Items.YSZCeramicDust.getMetaID(), 6)
+            )
+            .noFluidInputs()
+            .noFluidOutputs()
+            .duration(20*SECONDS)
+            .eut(96)
+            .addTo(sMixerRecipes);
 
         // GDC Ceramic Dust
-        GT_Values.RA.addMixerRecipe(
-                GT_OreDictUnificator
-                        .get(OrePrefixes.dust, Materials.Gadolinium, new ItemStack(ErrorItem.getInstance(), 1), 1),
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Gadolinium, new ItemStack(ErrorItem.getInstance(), 1), 1),
                 craftingItem.getStackOfAmountFromDamage(Items.CeriaDust.getMetaID(), 9),
-                GT_Utility.getIntegratedCircuit(6),
-                null,
-                null,
-                null,
-                craftingItem.getStackOfAmountFromDamage(Items.GDCCeramicDust.getMetaID(), 10),
-                400,
-                1920);
+                GT_Utility.getIntegratedCircuit(6)
+            )
+            .itemOutputs(
+                craftingItem.getStackOfAmountFromDamage(Items.GDCCeramicDust.getMetaID(), 10)
+            )
+            .noFluidInputs()
+            .noFluidOutputs()
+            .duration(20*SECONDS)
+            .eut(TierEU.RECIPE_EV)
+            .addTo(sMixerRecipes);
     }
 }
