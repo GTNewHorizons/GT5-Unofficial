@@ -1,6 +1,8 @@
 package com.github.technus.tectech.loader.recipe;
 
+import static com.github.technus.tectech.TecTech.LOGGER;
 import static gregtech.api.enums.Mods.GTPlusPlus;
+import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 
 import com.github.technus.tectech.compatibility.gtpp.GtppAtomLoader;
 import com.github.technus.tectech.mechanics.elementalMatter.core.transformations.EMTransformationRegistry;
@@ -22,7 +24,7 @@ public class BaseRecipeLoader {
         try {
             CUSTOM_ITEM_LIST = Class.forName("com.dreammaster.gthandler.CustomItemList");
         } catch (Exception e) {
-            throw new Error(e);
+            LOGGER.error("NHCoreMod not present. Disabling all the recipes");
         }
     }
 
@@ -43,13 +45,16 @@ public class BaseRecipeLoader {
         if (GTPlusPlus.isModLoaded()) {
             new GtppAtomLoader().setTransformations(transformationInfo);
         }
+        // todo: Move those recipes in NHCore
+        if (NewHorizonsCoreMod.isModLoaded()) {
+            new Assembler().run();
+            new AssemblyLine().run();
+            new CircuitAssembler().run();
+            new Crafting().run();
+            new Extractor().run();
+            new ResearchStationAssemblyLine().run();
+        }
 
-        new Assembler().run();
-        new AssemblyLine().run();
-        new CircuitAssembler().run();
-        new Crafting().run();
-        new Extractor().run();
         new MachineEMBehaviours();
-        new ResearchStationAssemblyLine().run();
     }
 }
