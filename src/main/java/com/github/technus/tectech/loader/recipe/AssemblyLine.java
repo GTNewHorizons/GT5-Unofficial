@@ -1,20 +1,23 @@
 package com.github.technus.tectech.loader.recipe;
 
+import static com.github.technus.tectech.loader.recipe.BaseRecipeLoader.getItemContainer;
+import static com.github.technus.tectech.loader.recipe.BaseRecipeLoader.getOrDefault;
+import static gregtech.api.enums.GT_Values.RA;
+
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+
 import com.github.technus.tectech.thing.CustomItemList;
+
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_OreDictUnificator;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
 
-import static com.github.technus.tectech.loader.recipe.BaseRecipeLoader.getItemContainer;
-import static com.github.technus.tectech.loader.recipe.BaseRecipeLoader.getOrDefault;
-import static gregtech.api.enums.GT_Values.RA;
+public class AssemblyLine implements Runnable {
 
-public class AssemblyLine implements Runnable{
     @Override
     public void run() {
         // Data Bank
@@ -83,14 +86,14 @@ public class AssemblyLine implements Runnable{
         GT_Values.RA.addAssemblylineRecipe(
                 ItemList.Tool_DataOrb.get(1),
                 20000,
-                new Object[]{CustomItemList.Machine_Multi_Switch.get(1),
-                        new Object[]{OrePrefixes.circuit.get(Materials.SuperconductorUHV), 2},
+                new Object[] { CustomItemList.Machine_Multi_Switch.get(1),
+                        new Object[] { OrePrefixes.circuit.get(Materials.SuperconductorUHV), 2 },
                         ItemList.Tool_DataOrb.get(1), ItemList.Cover_Screen.get(1),
-                        new ItemStack[]{
-                                GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUV, 8)},
-                        CustomItemList.DATApipe.get(8),},
-                new FluidStack[]{Materials.UUMatter.getFluid(1000), Materials.Iridium.getMolten(1296),
-                        new FluidStack(FluidRegistry.getFluid("ic2coolant"), 2000), Materials.Hydrogen.getGas(1000),},
+                        new ItemStack[] {
+                                GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUV, 8) },
+                        CustomItemList.DATApipe.get(8), },
+                new FluidStack[] { Materials.UUMatter.getFluid(1000), Materials.Iridium.getMolten(1296),
+                        new FluidStack(FluidRegistry.getFluid("ic2coolant"), 2000), Materials.Hydrogen.getGas(1000), },
                 CustomItemList.Machine_Multi_Computer.get(1),
                 12000,
                 100000);
@@ -99,14 +102,14 @@ public class AssemblyLine implements Runnable{
         GT_Values.RA.addAssemblylineRecipe(
                 getItemContainer("ScannerZPM").get(1),
                 80000,
-                new Object[]{CustomItemList.Machine_Multi_Switch.get(1), ItemList.Sensor_ZPM.get(8),
-                        new Object[]{OrePrefixes.circuit.get(Materials.SuperconductorUHV), 4},
+                new Object[] { CustomItemList.Machine_Multi_Switch.get(1), ItemList.Sensor_ZPM.get(8),
+                        new Object[] { OrePrefixes.circuit.get(Materials.SuperconductorUHV), 4 },
                         ItemList.Field_Generator_ZPM.get(1), ItemList.Electric_Motor_ZPM.get(2),
-                        new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.cableGt02, Materials.Naquadah, 4)},
-                        new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Naquadah, 32)},
-                        CustomItemList.DATApipe.get(16),},
-                new FluidStack[]{Materials.UUMatter.getFluid(1000), Materials.Iridium.getMolten(1296),
-                        new FluidStack(FluidRegistry.getFluid("ic2coolant"), 2000), Materials.Osmium.getMolten(1296),},
+                        new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.cableGt02, Materials.Naquadah, 4) },
+                        new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Naquadah, 32) },
+                        CustomItemList.DATApipe.get(16), },
+                new FluidStack[] { Materials.UUMatter.getFluid(1000), Materials.Iridium.getMolten(1296),
+                        new FluidStack(FluidRegistry.getFluid("ic2coolant"), 2000), Materials.Osmium.getMolten(1296), },
                 CustomItemList.Machine_Multi_Research.get(1),
                 12000,
                 100000);
@@ -115,11 +118,11 @@ public class AssemblyLine implements Runnable{
         GT_Values.RA.addAssemblylineRecipe(
                 CustomItemList.Machine_Multi_Transformer.get(1),
                 7500,
-                new ItemStack[]{CustomItemList.Machine_Multi_Transformer.get(1), CustomItemList.eM_Coil.get(8),
+                new ItemStack[] { CustomItemList.Machine_Multi_Transformer.get(1), CustomItemList.eM_Coil.get(8),
                         CustomItemList.eM_Power.get(8),
-                        GT_OreDictUnificator.get(OrePrefixes.screw, Materials.NeodymiumMagnetic, 16),},
-                new FluidStack[]{Materials.Electrum.getMolten(2592), Materials.Europium.getMolten(1872),
-                        new FluidStack(FluidRegistry.getFluid("ic2coolant"), 2000),},
+                        GT_OreDictUnificator.get(OrePrefixes.screw, Materials.NeodymiumMagnetic, 16), },
+                new FluidStack[] { Materials.Electrum.getMolten(2592), Materials.Europium.getMolten(1872),
+                        new FluidStack(FluidRegistry.getFluid("ic2coolant"), 2000), },
                 CustomItemList.Machine_Multi_Infuser.get(1),
                 8000,
                 200000);

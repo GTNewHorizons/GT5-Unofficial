@@ -171,7 +171,8 @@ public class GT_MetaTileEntity_Pipe_EM extends MetaPipeEntity implements IConnec
                         connectionCount++;
                     } else if (tTileEntity instanceof IGregTechTileEntity && ((IGregTechTileEntity) tTileEntity)
                             .getMetaTileEntity() instanceof IConnectsToElementalPipe) {
-                                if (((IConnectsToElementalPipe) ((IGregTechTileEntity) tTileEntity).getMetaTileEntity()).canConnect(b1)) {
+                                if (((IConnectsToElementalPipe) ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())
+                                        .canConnect(b1)) {
                                     mConnections |= 1 << b0;
                                     connectionCount++;
                                 }

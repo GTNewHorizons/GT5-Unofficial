@@ -1,14 +1,15 @@
 package com.github.technus.tectech.loader.recipe;
 
+import static com.github.technus.tectech.loader.recipe.BaseRecipeLoader.getItemContainer;
+
 import com.github.technus.tectech.thing.metaTileEntity.multi.em_machine.Behaviour_Centrifuge;
 import com.github.technus.tectech.thing.metaTileEntity.multi.em_machine.Behaviour_ElectromagneticSeparator;
 import com.github.technus.tectech.thing.metaTileEntity.multi.em_machine.Behaviour_Recycler;
 import com.github.technus.tectech.thing.metaTileEntity.multi.em_machine.GT_MetaTileEntity_EM_machine;
 import gregtech.api.enums.ItemList;
 
-import static com.github.technus.tectech.loader.recipe.BaseRecipeLoader.getItemContainer;
+public class MachineEMBehaviours implements Runnable {
 
-public class MachineEMBehaviours implements Runnable{
     @Override
     public void run() {
         registerMachineEMBehaviours();

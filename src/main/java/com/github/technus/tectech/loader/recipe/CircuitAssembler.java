@@ -1,17 +1,20 @@
 package com.github.technus.tectech.loader.recipe;
 
-import com.github.technus.tectech.thing.CustomItemList;
-import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GT_OreDictUnificator;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
-public class CircuitAssembler implements Runnable{
+import com.github.technus.tectech.thing.CustomItemList;
+
+import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.util.GT_OreDictUnificator;
+
+public class CircuitAssembler implements Runnable {
+
     @Override
     public void run() {
         Fluid solderUEV = FluidRegistry.getFluid("molten.mutatedlivingsolder") != null

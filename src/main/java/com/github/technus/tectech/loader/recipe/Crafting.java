@@ -1,19 +1,21 @@
 package com.github.technus.tectech.loader.recipe;
 
+import net.minecraft.item.ItemStack;
+
 import com.github.technus.tectech.thing.CustomItemList;
 import com.github.technus.tectech.thing.item.EuMeterGT;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
+
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
-import net.minecraft.item.ItemStack;
 
-public class Crafting implements Runnable{
+public class Crafting implements Runnable {
+
     @Override
     public void run() {
-
 
         // Front Rotation Tool
         GT_ModHandler.addCraftingRecipe(

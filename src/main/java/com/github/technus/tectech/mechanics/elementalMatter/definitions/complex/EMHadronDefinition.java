@@ -58,7 +58,6 @@ public class EMHadronDefinition extends EMComplexTemplate { // TODO Optimize map
     // generation max present inside - minus if contains any antiquark
     private final byte type;
 
-
     private final EMConstantStackMap quarkStacks;
 
     public EMHadronDefinition(EMDefinitionStack... quarks) throws EMException {

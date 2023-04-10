@@ -166,7 +166,8 @@ public class GT_MetaTileEntity_Pipe_Energy extends MetaPipeEntity implements ICo
                         connectionCount++;
                     } else if (tTileEntity instanceof IGregTechTileEntity && ((IGregTechTileEntity) tTileEntity)
                             .getMetaTileEntity() instanceof IConnectsToEnergyTunnel) {
-                                if (((IConnectsToEnergyTunnel) ((IGregTechTileEntity) tTileEntity).getMetaTileEntity()).canConnect(b1)) {
+                                if (((IConnectsToEnergyTunnel) ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())
+                                        .canConnect(b1)) {
                                     mConnections |= 1 << b0;
                                     connectionCount++;
                                 }

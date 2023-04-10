@@ -1,12 +1,14 @@
 package com.github.technus.tectech.loader.recipe;
 
 import com.github.technus.tectech.thing.CustomItemList;
+
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_OreDictUnificator;
 
-public class Extractor implements Runnable{
+public class Extractor implements Runnable {
+
     @Override
     public void run() {
         // LV Tesla Capacitor
