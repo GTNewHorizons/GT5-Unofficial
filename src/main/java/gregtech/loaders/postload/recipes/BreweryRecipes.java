@@ -595,24 +595,28 @@ public class BreweryRecipes implements Runnable {
                     .addTo(sBrewingRecipes);
 
         // strong
-        GT_Values.RA.stdBuilder()
-                    .itemInputs(aItem)
-                    .noItemOutputs()
-                    .fluidInputs(getFluidStack("potion.thick", 750))
-                    .fluidOutputs(getFluidStack("potion." + aName + ".strong", 750))
-                    .duration(6 * SECONDS + 8 * TICKS)
-                    .eut(4)
-                    .addTo(sBrewingRecipes);
+        if (aName == "regen" || aName == "speed" || aName == "health" || aName == "strength" || aName == "poison") {
+            GT_Values.RA.stdBuilder()
+                        .itemInputs(aItem)
+                        .noItemOutputs()
+                        .fluidInputs(getFluidStack("potion.thick", 750))
+                        .fluidOutputs(getFluidStack("potion." + aName + ".strong", 750))
+                        .duration(6 * SECONDS + 8 * TICKS)
+                        .eut(4)
+                        .addTo(sBrewingRecipes);
+        }
 
         // long
-        GT_Values.RA.stdBuilder()
-                    .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L))
-                    .noItemOutputs()
-                    .fluidInputs(getFluidStack("potion." + aName, 750))
-                    .fluidOutputs(getFluidStack("potion." + aName + ".long", 750))
-                    .duration(6 * SECONDS + 8 * TICKS)
-                    .eut(4)
-                    .addTo(sBrewingRecipes);
+        if (aName != "health") {
+            GT_Values.RA.stdBuilder()
+                        .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L))
+                        .noItemOutputs()
+                        .fluidInputs(getFluidStack("potion." + aName, 750))
+                        .fluidOutputs(getFluidStack("potion." + aName + ".long", 750))
+                        .duration(6 * SECONDS + 8 * TICKS)
+                        .eut(4)
+                        .addTo(sBrewingRecipes);
+        }
 
         MixerRecipes.addMixerPotionRecipes(aName);
     }
