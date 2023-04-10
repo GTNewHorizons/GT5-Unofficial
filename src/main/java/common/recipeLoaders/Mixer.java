@@ -1,6 +1,8 @@
 package common.recipeLoaders;
 
-import gregtech.api.enums.TierEU;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sMixerRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+
 import kekztech.Items;
 
 import net.minecraft.item.ItemStack;
@@ -11,11 +13,9 @@ import common.items.MetaItem_CraftingComponent;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
-
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sMixerRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 
 public class Mixer implements Runnable {
 
@@ -25,34 +25,20 @@ public class Mixer implements Runnable {
 
         // YSZ Ceramic Dust
         GT_Values.RA.stdBuilder()
-            .itemInputs(
-                Items.YttriaDust.getOreDictedItemStack(1),
-                Items.ZirconiaDust.getOreDictedItemStack(5),
-                GT_Utility.getIntegratedCircuit(6)
-            )
-            .itemOutputs(
-                craftingItem.getStackOfAmountFromDamage(Items.YSZCeramicDust.getMetaID(), 6)
-            )
-            .noFluidInputs()
-            .noFluidOutputs()
-            .duration(20*SECONDS)
-            .eut(96)
-            .addTo(sMixerRecipes);
+                .itemInputs(
+                        Items.YttriaDust.getOreDictedItemStack(1),
+                        Items.ZirconiaDust.getOreDictedItemStack(5),
+                        GT_Utility.getIntegratedCircuit(6))
+                .itemOutputs(craftingItem.getStackOfAmountFromDamage(Items.YSZCeramicDust.getMetaID(), 6))
+                .noFluidInputs().noFluidOutputs().duration(20 * SECONDS).eut(96).addTo(sMixerRecipes);
 
         // GDC Ceramic Dust
-        GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Gadolinium, new ItemStack(ErrorItem.getInstance(), 1), 1),
+        GT_Values.RA.stdBuilder().itemInputs(
+                GT_OreDictUnificator
+                        .get(OrePrefixes.dust, Materials.Gadolinium, new ItemStack(ErrorItem.getInstance(), 1), 1),
                 craftingItem.getStackOfAmountFromDamage(Items.CeriaDust.getMetaID(), 9),
-                GT_Utility.getIntegratedCircuit(6)
-            )
-            .itemOutputs(
-                craftingItem.getStackOfAmountFromDamage(Items.GDCCeramicDust.getMetaID(), 10)
-            )
-            .noFluidInputs()
-            .noFluidOutputs()
-            .duration(20*SECONDS)
-            .eut(TierEU.RECIPE_EV)
-            .addTo(sMixerRecipes);
+                GT_Utility.getIntegratedCircuit(6))
+                .itemOutputs(craftingItem.getStackOfAmountFromDamage(Items.GDCCeramicDust.getMetaID(), 10))
+                .noFluidInputs().noFluidOutputs().duration(20 * SECONDS).eut(TierEU.RECIPE_EV).addTo(sMixerRecipes);
     }
 }

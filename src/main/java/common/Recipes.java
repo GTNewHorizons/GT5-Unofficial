@@ -1,8 +1,9 @@
 package common;
 
+import static gregtech.api.enums.Mods.ThaumicTinkerer;
+
 import java.util.HashMap;
 
-import com.github.bartimaeusnek.bartworks.system.material.GT_Enhancement.LuVTierEnhancer;
 import kekztech.KekzCore;
 
 import net.minecraft.item.ItemStack;
@@ -13,6 +14,7 @@ import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.crafting.InfusionRecipe;
 
+import com.github.bartimaeusnek.bartworks.system.material.GT_Enhancement.LuVTierEnhancer;
 import common.recipeLoaders.AlloySmelter;
 import common.recipeLoaders.Assembler;
 import common.recipeLoaders.AssemblyLine;
@@ -28,8 +30,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
-
-import static gregtech.api.enums.Mods.ThaumicTinkerer;
 
 public class Recipes {
 
