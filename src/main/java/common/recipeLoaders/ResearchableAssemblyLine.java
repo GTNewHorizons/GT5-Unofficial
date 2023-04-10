@@ -108,5 +108,30 @@ public class ResearchableAssemblyLine implements Runnable {
                     350 * 20,
                     (int) TierEU.RECIPE_UMV);
         }
+
+        // Ultimate Capacitor (UHV)
+        TT_recipeAdder.addResearchableAssemblylineRecipe(
+            new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 4),
+            12000,
+            16,
+            300000,
+            3,
+            new Object[] { GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.CosmicNeutronium, 4),
+                GT_OreDictUnificator.get(OrePrefixes.screw, Materials.CosmicNeutronium, 24),
+                GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Neutronium, 32L),
+                GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Neutronium, 32L),
+                new Object[] { OrePrefixes.circuit.get(Materials.Bio), 1 },
+                new Object[] { OrePrefixes.circuit.get(Materials.Bio), 1 },
+                new Object[] { OrePrefixes.circuit.get(Materials.Bio), 1 },
+                new Object[] { OrePrefixes.circuit.get(Materials.Bio), 1 }, ItemList.ZPM2.get(8L),
+                ItemList.Field_Generator_UHV.get(4), ItemList.Circuit_Wafer_UHPIC.get(64),
+                ItemList.Circuit_Wafer_UHPIC.get(64), ItemList.Circuit_Wafer_SoC2.get(32),
+                ItemList.Circuit_Parts_DiodeASMD.get(64),
+                GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorUHV, 64) },
+            new FluidStack[] { new FluidStack(solderUEV, 4608), Materials.Naquadria.getMolten(9216),
+                new FluidStack(FluidRegistry.getFluid("ic2coolant"), 32000) },
+            new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 5),
+            4000,
+            1600000);
     }
 }
