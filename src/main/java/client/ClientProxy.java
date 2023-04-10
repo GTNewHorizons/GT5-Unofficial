@@ -27,7 +27,5 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void init(final FMLInitializationEvent e) {
         super.init(e);
-        // Register Simple Block Renderers
-        // RenderingRegistry.registerBlockHandler(ConduitRenderer.getInstance());
     }
 }

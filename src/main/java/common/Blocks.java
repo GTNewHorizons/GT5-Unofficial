@@ -42,11 +42,8 @@ public class Blocks {
 
         registerBlocks_SOFC();
         registerBlocks_TFFT();
-        // registerBlocks_Nuclear();
-        // registerBlocks_ItemProxy();
         registerBlocks_Jars();
         registerBlocks_LSC();
-        // registerBlocks_SpaceElevator();
         registerBlocks_Cosmetics();
 
         KekzCore.LOGGER.info("Finished registering blocks");
