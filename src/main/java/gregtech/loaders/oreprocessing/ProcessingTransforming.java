@@ -20,9 +20,15 @@ public class ProcessingTransforming implements IOreRecipeRegistrator {
     @Override
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
         ItemStack aStack) {
-        if (aPrefix == OrePrefixes.plank) aPrefix = OrePrefixes.plate;
+
+        if (aPrefix == OrePrefixes.plank) {
+            aPrefix = OrePrefixes.plate;
+        }
+
         switch (aMaterial.mName) {
             case "Wood":
+            // Chemical bath recipes
+            {
                 GT_Values.RA.addChemicalBathRecipe(
                     GT_Utility.copyAmount(1L, aStack),
                     Materials.SeedOil
@@ -53,8 +59,13 @@ public class ProcessingTransforming implements IOreRecipeRegistrator {
                     null,
                     100,
                     8);
+            }
+
                 break;
+
             case "Iron":
+            // Chemical bath recipes
+            {
                 GT_Values.RA.addChemicalBathRecipe(
                     GT_Utility.copyAmount(1L, aStack),
                     Materials.FierySteel
@@ -65,13 +76,22 @@ public class ProcessingTransforming implements IOreRecipeRegistrator {
                     null,
                     100,
                     8);
+            }
+
+            // Polarizer recipes
+            {
                 GT_Values.RA.addPolarizerRecipe(
                     GT_Utility.copyAmount(1L, aStack),
                     GT_OreDictUnificator.get(aPrefix, Materials.IronMagnetic, 1L),
                     (int) Math.max(16L, aPrefix.mMaterialAmount * 128L / 3628800L),
                     16);
+            }
+
                 break;
+
             case "WroughtIron":
+            // Chemical bath recipes
+            {
                 GT_Values.RA.addChemicalBathRecipe(
                     GT_Utility.copyAmount(1L, aStack),
                     Materials.FierySteel
@@ -82,13 +102,22 @@ public class ProcessingTransforming implements IOreRecipeRegistrator {
                     null,
                     100,
                     8);
+            }
+
+            // Polarizer recipes
+            {
                 GT_Values.RA.addPolarizerRecipe(
                     GT_Utility.copyAmount(1L, aStack),
                     GT_OreDictUnificator.get(aPrefix, Materials.IronMagnetic, 1L),
                     (int) Math.max(16L, aPrefix.mMaterialAmount * 128L / 3628800L),
                     16);
+            }
+
                 break;
+
             case "Steel":
+            // Chemical Bath recipes
+            {
                 GT_Values.RA.addChemicalBathRecipe(
                     GT_Utility.copyAmount(1L, aStack),
                     Materials.FierySteel
@@ -99,24 +128,38 @@ public class ProcessingTransforming implements IOreRecipeRegistrator {
                     null,
                     100,
                     8);
+            }
+
+            // polarizer recipes
+            {
                 GT_Values.RA.addPolarizerRecipe(
                     GT_Utility.copyAmount(1L, aStack),
                     GT_OreDictUnificator.get(aPrefix, Materials.SteelMagnetic, 1L),
                     (int) Math.max(16L, aPrefix.mMaterialAmount * 128L / 3628800L),
                     16);
+            }
+
                 break;
+
             case "Neodymium":
+            // Polarizer recipes
+            {
                 GT_Values.RA.addPolarizerRecipe(
                     GT_Utility.copyAmount(1L, aStack),
                     GT_OreDictUnificator.get(aPrefix, Materials.NeodymiumMagnetic, 1L),
                     (int) Math.max(16L, aPrefix.mMaterialAmount * 128L / 3628800L),
                     256);
+            }
+
             case "Samarium":
+            // Polarizer recipes
+            {
                 GT_Values.RA.addPolarizerRecipe(
                     GT_Utility.copyAmount(1L, aStack),
                     GT_OreDictUnificator.get(aPrefix, Materials.SamariumMagnetic, 1L),
                     (int) Math.max(16L, aPrefix.mMaterialAmount * 128L / 3628800L),
                     4096);
+            }
         }
     }
 }

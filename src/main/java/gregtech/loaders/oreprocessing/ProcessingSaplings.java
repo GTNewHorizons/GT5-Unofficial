@@ -10,6 +10,9 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCompressorRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+
 public class ProcessingSaplings implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
     public ProcessingSaplings() {
@@ -25,7 +28,20 @@ public class ProcessingSaplings implements gregtech.api.interfaces.IOreRecipeReg
             new int[] { 10000 },
             100,
             2);
-        GT_ModHandler.addCompressionRecipe(GT_Utility.copyAmount(8L, aStack), ItemList.IC2_Plantball.get(1L));
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.copyAmount(8L, aStack)
+            )
+            .itemOutputs(
+                ItemList.IC2_Plantball.get(1L)
+            )
+            .noFluidInputs()
+            .noFluidOutputs()
+            .duration(15*SECONDS)
+            .eut(2)
+            .addTo(sCompressorRecipes);
+
         GT_Values.RA.addLatheRecipe(
             GT_Utility.copyAmount(1L, aStack),
             GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 1L),

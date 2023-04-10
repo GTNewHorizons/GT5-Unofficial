@@ -45,6 +45,7 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         return false;
     }
 
+    @Deprecated
     @Override // Really?
     public boolean addFusionReactorRecipe(FluidStack aInput1, FluidStack aInput2, FluidStack aOutput1, int aDuration,
         int aEUt, int aStartEU) {
@@ -68,6 +69,7 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         return true;
     }
 
+    @Deprecated
     @Override
     public boolean addFusionReactorRecipe(FluidStack[] FluidInputArray, FluidStack[] FluidOutputArray,
         int aFusionDurationInTicks, int aFusionEnergyPerTick, int aEnergyNeededForStartingFusion) {
@@ -230,6 +232,7 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         return true;
     }
 
+    @Deprecated
     @Override
     public boolean addCompressorRecipe(ItemStack aInput1, ItemStack aOutput1, int aDuration, int aEUt) {
         if ((aInput1 == null) || (aOutput1 == null)) {
@@ -251,6 +254,7 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         return true;
     }
 
+    @Deprecated
     @Override
     public boolean addElectrolyzerRecipe(ItemStack aInput1, int aInput2, ItemStack aOutput1, ItemStack aOutput2,
         ItemStack aOutput3, ItemStack aOutput4, ItemStack aOutput5, ItemStack aOutput6, int aDuration, int aEUt) {
@@ -270,6 +274,7 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
             aEUt);
     }
 
+    @Deprecated
     @Override
     public boolean addElectrolyzerRecipe(ItemStack aInput1, ItemStack aInput2, FluidStack aFluidInput,
         FluidStack aFluidOutput, ItemStack aOutput1, ItemStack aOutput2, ItemStack aOutput3, ItemStack aOutput4,
@@ -1119,6 +1124,7 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         return true;
     }
 
+    @Deprecated
     @Override
     public boolean addBenderRecipe(ItemStack aInput1, ItemStack aOutput1, int aDuration, int aEUt) {
         if ((aInput1 == null) || (aOutput1 == null)) {
@@ -1131,6 +1137,7 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         return true;
     }
 
+    @Deprecated
     @Override
     public boolean addBenderRecipe(ItemStack aInput1, ItemStack aCircuit, ItemStack aOutput1, int aDuration, int aEUt) {
         if ((aInput1 == null) || (aOutput1 == null)) {
@@ -2286,6 +2293,7 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         return true;
     }
 
+    @Deprecated
     @Override
     public boolean addMixerRecipe(ItemStack[] ItemInputArray, FluidStack[] FluidInputArray, ItemStack[] ItemOutputArray,
         FluidStack[] FluidOutputArray, int aDuration, int aEUt) {
@@ -2465,6 +2473,7 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         return true;
     }
 
+    @Deprecated
     @Override
     public boolean addLaserEngraverRecipe(ItemStack[] ItemInputArray, FluidStack[] FluidInputArray,
         ItemStack[] OutputItemArray, FluidStack[] FluidOutputArray, int aDuration, int aEUt, boolean aCleanroom) {
@@ -2482,6 +2491,7 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         return true;
     }
 
+    @Deprecated
     @Override
     public boolean addFormingPressRecipe(ItemStack aItemToImprint, ItemStack aForm, ItemStack aImprintedItem,
         int aDuration, int aEUt) {
@@ -2504,6 +2514,7 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         return true;
     }
 
+    @Deprecated
     @Override
     public boolean addFormingPressRecipe(ItemStack[] ItemInputArray, ItemStack[] OutputItemArray, int aDuration,
         int aEUt) {
@@ -2515,6 +2526,7 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         return true;
     }
 
+    @Deprecated
     @Override
     public boolean addFluidHeaterRecipe(ItemStack aItem, FluidStack aOutput, int aDuration, int aEUt) {
         if ((aItem == null) || (aOutput == null)) {
@@ -2540,6 +2552,7 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         return true;
     }
 
+    @Deprecated
     @Override
     public boolean addFluidHeaterRecipe(ItemStack aCircuit, FluidStack aInput, FluidStack aOutput, int aDuration,
         int aEUt) {
@@ -2566,6 +2579,7 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         return true;
     }
 
+    @Deprecated
     @Override
     public boolean addSifterRecipe(ItemStack aItemToSift, ItemStack[] aSiftedItems, int[] aChances, int aDuration,
         int aEUt) {
@@ -2594,6 +2608,7 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         return false;
     }
 
+    @Deprecated
     @Override
     public boolean addSifterRecipe(ItemStack[] ItemInputArray, FluidStack[] FluidInputArray,
         ItemStack[] OutputItemArray, FluidStack[] FluidOutputArray, int[] aChances, int aDuration, int aEUt,
@@ -2612,12 +2627,14 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         return true;
     }
 
+    @Deprecated
     @Override
     public boolean addArcFurnaceRecipe(ItemStack aInput, ItemStack[] aOutputs, int[] aChances, int aDuration,
         int aEUt) {
         return addArcFurnaceRecipe(aInput, aOutputs, aChances, aDuration, aEUt, false);
     }
 
+    @Deprecated
     @Override
     public boolean addArcFurnaceRecipe(ItemStack aInput, ItemStack[] aOutputs, int[] aChances, int aDuration, int aEUt,
         boolean hidden) {
@@ -2752,12 +2769,14 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         return false;
     }
 
+    @Deprecated
     @Override
     public boolean addPulveriserRecipe(ItemStack aInput, ItemStack[] aOutputs, int[] aChances, int aDuration,
         int aEUt) {
         return addPulveriserRecipe(aInput, aOutputs, aChances, aDuration, aEUt, false);
     }
 
+    @Deprecated
     @Override
     public boolean addPulveriserRecipe(ItemStack aInput, ItemStack[] aOutputs, int[] aChances, int aDuration, int aEUt,
         boolean hidden) {

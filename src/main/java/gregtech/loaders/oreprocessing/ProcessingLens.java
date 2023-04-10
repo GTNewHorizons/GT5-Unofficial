@@ -1,5 +1,6 @@
 package gregtech.loaders.oreprocessing;
 
+import gregtech.api.enums.TierEU;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.GregTech_API;
@@ -10,6 +11,9 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_OreDictUnificator;
+
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCompressorRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 
 public class ProcessingLens implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
@@ -35,11 +39,20 @@ public class ProcessingLens implements gregtech.api.interfaces.IOreRecipeRegistr
                     2400,
                     16);
             }
-            case "ChromaticGlass" -> GT_Values.RA.addCompressorRecipe(
-                GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 16L),
-                GT_OreDictUnificator.get(OrePrefixes.lens, aMaterial, 1L),
-                600 * 20,
-                1966080);
+            case "ChromaticGlass" -> {
+                GT_Values.RA.stdBuilder()
+                    .itemInputs(
+                        GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 16L)
+                    )
+                    .itemOutputs(
+                        GT_OreDictUnificator.get(OrePrefixes.lens, aMaterial, 1L)
+                    )
+                    .noFluidInputs()
+                    .noFluidOutputs()
+                    .duration(600*SECONDS)
+                    .eut(TierEU.RECIPE_UHV)
+                    .addTo(sCompressorRecipes);
+            }
             default -> {
                 GT_Values.RA.addLatheRecipe(
                     GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L),

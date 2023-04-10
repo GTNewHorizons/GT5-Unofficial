@@ -1,5 +1,9 @@
 package gregtech.common.blocks;
 
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sLaserEngraverRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.GT_RecipeBuilder.TICKS;
+
 import java.util.List;
 
 import net.minecraft.block.material.Material;
@@ -109,18 +113,25 @@ public class GT_Block_Stones_Abstract extends GT_Generic_Block implements IOreRe
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
         ItemStack aStack) {
         if (aOreDictName.equals(OreDictNames.craftingLensWhite.toString())) {
-            GT_Values.RA.addLaserEngraverRecipe(
-                new ItemStack(this, 1, 7),
-                GT_Utility.copyAmount(0L, aStack),
-                new ItemStack(this, 1, 6),
-                50,
-                16);
-            GT_Values.RA.addLaserEngraverRecipe(
-                new ItemStack(this, 1, 15),
-                GT_Utility.copyAmount(0L, aStack),
-                new ItemStack(this, 1, 14),
-                50,
-                16);
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(new ItemStack(this, 1, 7), GT_Utility.copyAmount(0L, aStack))
+                .itemOutputs(new ItemStack(this, 1, 6))
+                .noFluidInputs()
+                .noFluidOutputs()
+                .duration(2 * SECONDS + 10 * TICKS)
+                .eut(16)
+                .addTo(sLaserEngraverRecipes);
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(new ItemStack(this, 1, 15), GT_Utility.copyAmount(0L, aStack))
+                .itemOutputs(new ItemStack(this, 1, 14))
+                .noFluidInputs()
+                .noFluidOutputs()
+                .duration(2 * SECONDS + 10 * TICKS)
+                .eut(16)
+                .addTo(sLaserEngraverRecipes);
+
         }
     }
 

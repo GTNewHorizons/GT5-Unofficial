@@ -1,5 +1,7 @@
 package gregtech.loaders.oreprocessing;
 
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sBenderRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_Utility.calculateRecipeEU;
 
 import net.minecraft.item.ItemStack;
@@ -53,11 +55,18 @@ public class ProcessingStick implements gregtech.api.interfaces.IOreRecipeRegist
             }
         }
         if (!aMaterial.contains(gregtech.api.enums.SubTag.NO_SMASHING)) {
-            GT_Values.RA.addBenderRecipe(
-                GT_Utility.copyAmount(1L, aStack),
-                GT_OreDictUnificator.get(OrePrefixes.springSmall, aMaterial, 2L),
-                100,
-                calculateRecipeEU(aMaterial, 8));
+            // bender recipe
+            {
+                GT_Values.RA.stdBuilder()
+                    .itemInputs(GT_Utility.copyAmount(1L, aStack))
+                    .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.springSmall, aMaterial, 2L))
+                    .noFluidInputs()
+                    .noFluidOutputs()
+                    .duration(5 * SECONDS)
+                    .eut(calculateRecipeEU(aMaterial, 8))
+                    .addTo(sBenderRecipes);
+            }
+
             GT_Values.RA.addForgeHammerRecipe(
                 GT_Utility.copyAmount(2L, aStack),
                 GT_OreDictUnificator.get(OrePrefixes.stickLong, aMaterial, 1L),

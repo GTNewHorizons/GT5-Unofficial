@@ -1,5 +1,8 @@
 package gregtech.loaders.postload.chains;
 
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sMixerRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -12,27 +15,31 @@ public class GT_BauxiteRefineChain {
 
     public static void run() {
 
-        GT_Values.RA.addMixerRecipe(
-            GT_OreDictUnificator.get(OrePrefixes.crushed, Materials.Bauxite, 32),
-            Materials.SodiumHydroxide.getDust(9),
-            Materials.Quicklime.getDust(4),
-            GT_Utility.getIntegratedCircuit(8),
-            Materials.Water.getFluid(5000),
-            MaterialsOreAlum.BauxiteSlurry.getFluid(8000),
-            GT_Values.NI,
-            200,
-            120);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.crushed, Materials.Bauxite, 32),
+                Materials.SodiumHydroxide.getDust(9),
+                Materials.Quicklime.getDust(4),
+                GT_Utility.getIntegratedCircuit(8))
+            .noItemOutputs()
+            .fluidInputs(Materials.Water.getFluid(5000))
+            .fluidOutputs(MaterialsOreAlum.BauxiteSlurry.getFluid(8000))
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(sMixerRecipes);
 
-        GT_Values.RA.addMixerRecipe(
-            GT_OreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Bauxite, 32),
-            Materials.SodiumHydroxide.getDust(9),
-            Materials.Quicklime.getDust(4),
-            GT_Utility.getIntegratedCircuit(8),
-            Materials.Water.getFluid(5000),
-            MaterialsOreAlum.BauxiteSlurry.getFluid(8000),
-            GT_Values.NI,
-            200,
-            120);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Bauxite, 32),
+                Materials.SodiumHydroxide.getDust(9),
+                Materials.Quicklime.getDust(4),
+                GT_Utility.getIntegratedCircuit(8))
+            .noItemOutputs()
+            .fluidInputs(Materials.Water.getFluid(5000))
+            .fluidOutputs(MaterialsOreAlum.BauxiteSlurry.getFluid(8000))
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(sMixerRecipes);
 
         GT_Values.RA.addCrackingRecipe(
             1,
@@ -109,38 +116,41 @@ public class GT_BauxiteRefineChain {
             OrePrefixes.dustImpure, OrePrefixes.dustPure };
 
         for (OrePrefixes ore : washable) {
-            GT_Values.RA.addMixerRecipe(
-                GT_OreDictUnificator.get(ore, Materials.Sapphire, 1),
-                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.SodiumHydroxide, 1),
-                GT_Utility.getIntegratedCircuit(1),
-                null,
-                Materials.HydrochloricAcid.getFluid(1000),
-                MaterialsOreAlum.SapphireJuice.getFluid(1000),
-                null,
-                40,
-                100);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    GT_OreDictUnificator.get(ore, Materials.Sapphire, 1),
+                    GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.SodiumHydroxide, 1),
+                    GT_Utility.getIntegratedCircuit(1))
+                .noItemOutputs()
+                .fluidInputs(Materials.HydrochloricAcid.getFluid(1000))
+                .fluidOutputs(MaterialsOreAlum.SapphireJuice.getFluid(1000))
+                .duration(2 * SECONDS)
+                .eut(100)
+                .addTo(sMixerRecipes);
 
-            GT_Values.RA.addMixerRecipe(
-                GT_OreDictUnificator.get(ore, Materials.GreenSapphire, 1),
-                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.SodiumHydroxide, 1),
-                GT_Utility.getIntegratedCircuit(1),
-                null,
-                Materials.HydrochloricAcid.getFluid(1000),
-                MaterialsOreAlum.GreenSapphireJuice.getFluid(1000),
-                null,
-                40,
-                100);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    GT_OreDictUnificator.get(ore, Materials.GreenSapphire, 1),
+                    GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.SodiumHydroxide, 1),
+                    GT_Utility.getIntegratedCircuit(1))
+                .noItemOutputs()
+                .fluidInputs(Materials.HydrochloricAcid.getFluid(1000))
+                .fluidOutputs(MaterialsOreAlum.GreenSapphireJuice.getFluid(1000))
+                .duration(2 * SECONDS)
+                .eut(100)
+                .addTo(sMixerRecipes);
 
-            GT_Values.RA.addMixerRecipe(
-                GT_OreDictUnificator.get(ore, Materials.Ruby, 1),
-                GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.SodiumHydroxide, 1),
-                GT_Utility.getIntegratedCircuit(1),
-                null,
-                Materials.HydrochloricAcid.getFluid(1000),
-                MaterialsOreAlum.RubyJuice.getFluid(1000),
-                null,
-                40,
-                100);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    GT_OreDictUnificator.get(ore, Materials.Ruby, 1),
+                    GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.SodiumHydroxide, 1),
+                    GT_Utility.getIntegratedCircuit(1))
+                .noItemOutputs()
+                .fluidInputs(Materials.HydrochloricAcid.getFluid(1000))
+                .fluidOutputs(MaterialsOreAlum.RubyJuice.getFluid(1000))
+                .duration(2 * SECONDS)
+                .eut(100)
+                .addTo(sMixerRecipes);
         }
 
         GT_Values.RA.addCentrifugeRecipe(

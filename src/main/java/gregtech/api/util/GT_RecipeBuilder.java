@@ -273,6 +273,11 @@ public class GT_RecipeBuilder {
         return this;
     }
 
+    public GT_RecipeBuilder duration(long duration) {
+        this.duration = (int) duration;
+        return this;
+    }
+
     public GT_RecipeBuilder eut(int eut) {
         this.eut = eut;
         return this;

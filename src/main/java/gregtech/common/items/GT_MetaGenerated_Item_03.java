@@ -389,7 +389,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 tLastID = 91,
                 "Crystalprocessor Mainframe",
                 "A Super Circuit",
-                OrePrefixes.circuit.get(Materials.Superconductor),
+                OrePrefixes.circuit.get(Materials.SuperconductorUHV),
                 SubTag.NO_UNIFICATION));
         registerTieredTooltip(ItemList.Circuit_Crystalmainframe.get(1), UV);
 
@@ -418,7 +418,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 tLastID = 94,
                 "Wetware Supercomputer",
                 "A Super Circuit",
-                OrePrefixes.circuit.get(Materials.Superconductor),
+                OrePrefixes.circuit.get(Materials.SuperconductorUHV),
                 SubTag.NO_UNIFICATION));
         registerTieredTooltip(ItemList.Circuit_Wetwaresupercomputer.get(1), UV);
         ItemList.Circuit_Wetwaremainframe.set(
@@ -444,7 +444,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 tLastID = 98,
                 "Biowareprocessor Assembly",
                 "A Super Circuit",
-                OrePrefixes.circuit.get(Materials.Superconductor),
+                OrePrefixes.circuit.get(Materials.SuperconductorUHV),
                 SubTag.NO_UNIFICATION));
         registerTieredTooltip(ItemList.Circuit_Biowarecomputer.get(1), UV);
         ItemList.Circuit_Biowaresupercomputer.set(
@@ -487,7 +487,7 @@ public class GT_MetaGenerated_Item_03 extends GT_MetaGenerated_Item_X32 {
                 tLastID = 154,
                 "Optical Processor",
                 "An Optical Circuit",
-                OrePrefixes.circuit.get(Materials.Superconductor),
+                OrePrefixes.circuit.get(Materials.SuperconductorUHV),
                 SubTag.NO_UNIFICATION));
         registerTieredTooltip(ItemList.Circuit_OpticalProcessor.get(1), UV);
         ItemList.Circuit_OpticalAssembly.set(

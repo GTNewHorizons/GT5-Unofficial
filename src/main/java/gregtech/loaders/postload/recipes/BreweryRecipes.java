@@ -11,9 +11,7 @@ import static net.minecraftforge.fluids.FluidRegistry.getFluidStack;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.*;
 import gregtech.api.util.GT_ModHandler;
@@ -90,23 +88,25 @@ public class BreweryRecipes implements Runnable {
 
         // water based recipe input
         {
-            Fluid[] waterArray;
+            String[] waterArray;
 
             /*
              * if IC2 isn't loaded, getDistilledWater returns the base minecraft water, so no need to do the recipe
              * loading twice.
              */
             if (IndustrialCraft2.isModLoaded()) {
-                waterArray = new Fluid[] { FluidRegistry.WATER, GT_ModHandler.getDistilledWater(1L)
-                    .getFluid() };
+                waterArray = new String[] { FluidRegistry.WATER.getUnlocalizedName(),
+                    GT_ModHandler.getDistilledWater(1L)
+                        .getFluid()
+                        .getUnlocalizedName() };
             } else {
-                waterArray = new Fluid[] { FluidRegistry.WATER };
+                waterArray = new String[] { FluidRegistry.WATER.getUnlocalizedName(), };
             }
-            for (Fluid tFluid : waterArray) {
+            for (String fluid : waterArray) {
                 GT_Values.RA.stdBuilder()
                     .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Milk, 1L))
                     .noItemOutputs()
-                    .fluidInputs(new FluidStack(tFluid, 750))
+                    .fluidInputs(getFluidStack(fluid, 750))
                     .fluidOutputs(getFluidStack("milk", 750))
                     .duration(6 * SECONDS + 8 * TICKS)
                     .eut(4)
@@ -115,7 +115,7 @@ public class BreweryRecipes implements Runnable {
                 GT_Values.RA.stdBuilder()
                     .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wheat, 1L))
                     .noItemOutputs()
-                    .fluidInputs(new FluidStack(tFluid, 750))
+                    .fluidInputs(getFluidStack(fluid, 750))
                     .fluidOutputs(getFluidStack("potion.wheatyjuice", 750))
                     .duration(6 * SECONDS + 8 * TICKS)
                     .eut(4)
@@ -124,7 +124,7 @@ public class BreweryRecipes implements Runnable {
                 GT_Values.RA.stdBuilder()
                     .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Potassium, 1L))
                     .noItemOutputs()
-                    .fluidInputs(new FluidStack(tFluid, 750))
+                    .fluidInputs(getFluidStack(fluid, 750))
                     .fluidOutputs(getFluidStack("potion.mineralwater", 750))
                     .duration(6 * SECONDS + 8 * TICKS)
                     .eut(4)
@@ -133,7 +133,7 @@ public class BreweryRecipes implements Runnable {
                 GT_Values.RA.stdBuilder()
                     .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sodium, 1L))
                     .noItemOutputs()
-                    .fluidInputs(new FluidStack(tFluid, 750))
+                    .fluidInputs(getFluidStack(fluid, 750))
                     .fluidOutputs(getFluidStack("potion.mineralwater", 750))
                     .duration(6 * SECONDS + 8 * TICKS)
                     .eut(4)
@@ -142,7 +142,7 @@ public class BreweryRecipes implements Runnable {
                 GT_Values.RA.stdBuilder()
                     .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Calcium, 1L))
                     .noItemOutputs()
-                    .fluidInputs(new FluidStack(tFluid, 750))
+                    .fluidInputs(getFluidStack(fluid, 750))
                     .fluidOutputs(getFluidStack("potion.mineralwater", 750))
                     .duration(6 * SECONDS + 8 * TICKS)
                     .eut(4)
@@ -151,7 +151,7 @@ public class BreweryRecipes implements Runnable {
                 GT_Values.RA.stdBuilder()
                     .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Magnesium, 1L))
                     .noItemOutputs()
-                    .fluidInputs(new FluidStack(tFluid, 750))
+                    .fluidInputs(getFluidStack(fluid, 750))
                     .fluidOutputs(getFluidStack("potion.mineralwater", 750))
                     .duration(6 * SECONDS + 8 * TICKS)
                     .eut(4)
@@ -160,7 +160,7 @@ public class BreweryRecipes implements Runnable {
                 GT_Values.RA.stdBuilder()
                     .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Glowstone, 1L))
                     .noItemOutputs()
-                    .fluidInputs(new FluidStack(tFluid, 750))
+                    .fluidInputs(getFluidStack(fluid, 750))
                     .fluidOutputs(getFluidStack("potion.thick", 750))
                     .duration(6 * SECONDS + 8 * TICKS)
                     .eut(4)
@@ -169,7 +169,7 @@ public class BreweryRecipes implements Runnable {
                 GT_Values.RA.stdBuilder()
                     .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L))
                     .noItemOutputs()
-                    .fluidInputs(new FluidStack(tFluid, 750))
+                    .fluidInputs(getFluidStack(fluid, 750))
                     .fluidOutputs(getFluidStack("potion.mundane", 750))
                     .duration(6 * SECONDS + 8 * TICKS)
                     .eut(4)
@@ -178,7 +178,7 @@ public class BreweryRecipes implements Runnable {
                 GT_Values.RA.stdBuilder()
                     .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sugar, 1L))
                     .noItemOutputs()
-                    .fluidInputs(new FluidStack(tFluid, 750))
+                    .fluidInputs(getFluidStack(fluid, 750))
                     .fluidOutputs(getFluidStack("potion.mundane", 750))
                     .duration(6 * SECONDS + 8 * TICKS)
                     .eut(4)
@@ -187,7 +187,7 @@ public class BreweryRecipes implements Runnable {
                 GT_Values.RA.stdBuilder()
                     .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Blaze, 1L))
                     .noItemOutputs()
-                    .fluidInputs(new FluidStack(tFluid, 750))
+                    .fluidInputs(getFluidStack(fluid, 750))
                     .fluidOutputs(getFluidStack("potion.mundane", 750))
                     .duration(6 * SECONDS + 8 * TICKS)
                     .eut(4)
@@ -196,7 +196,7 @@ public class BreweryRecipes implements Runnable {
                 GT_Values.RA.stdBuilder()
                     .itemInputs(new ItemStack(Items.magma_cream, 1, 0))
                     .noItemOutputs()
-                    .fluidInputs(new FluidStack(tFluid, 750))
+                    .fluidInputs(getFluidStack(fluid, 750))
                     .fluidOutputs(getFluidStack("potion.mundane", 750))
                     .duration(6 * SECONDS + 8 * TICKS)
                     .eut(4)
@@ -205,7 +205,7 @@ public class BreweryRecipes implements Runnable {
                 GT_Values.RA.stdBuilder()
                     .itemInputs(new ItemStack(Items.fermented_spider_eye, 1, 0))
                     .noItemOutputs()
-                    .fluidInputs(new FluidStack(tFluid, 750))
+                    .fluidInputs(getFluidStack(fluid, 750))
                     .fluidOutputs(getFluidStack("potion.mundane", 750))
                     .duration(6 * SECONDS + 8 * TICKS)
                     .eut(4)
@@ -214,7 +214,7 @@ public class BreweryRecipes implements Runnable {
                 GT_Values.RA.stdBuilder()
                     .itemInputs(new ItemStack(Items.spider_eye, 1, 0))
                     .noItemOutputs()
-                    .fluidInputs(new FluidStack(tFluid, 750))
+                    .fluidInputs(getFluidStack(fluid, 750))
                     .fluidOutputs(getFluidStack("potion.mundane", 750))
                     .duration(6 * SECONDS + 8 * TICKS)
                     .eut(4)
@@ -223,7 +223,7 @@ public class BreweryRecipes implements Runnable {
                 GT_Values.RA.stdBuilder()
                     .itemInputs(new ItemStack(Items.speckled_melon, 1, 0))
                     .noItemOutputs()
-                    .fluidInputs(new FluidStack(tFluid, 750))
+                    .fluidInputs(getFluidStack(fluid, 750))
                     .fluidOutputs(getFluidStack("potion.mundane", 750))
                     .duration(6 * SECONDS + 8 * TICKS)
                     .eut(4)
@@ -232,7 +232,7 @@ public class BreweryRecipes implements Runnable {
                 GT_Values.RA.stdBuilder()
                     .itemInputs(new ItemStack(Items.ghast_tear, 1, 0))
                     .noItemOutputs()
-                    .fluidInputs(new FluidStack(tFluid, 750))
+                    .fluidInputs(getFluidStack(fluid, 750))
                     .fluidOutputs(getFluidStack("potion.mundane", 750))
                     .duration(6 * SECONDS + 8 * TICKS)
                     .eut(4)
@@ -241,7 +241,7 @@ public class BreweryRecipes implements Runnable {
                 GT_Values.RA.stdBuilder()
                     .itemInputs(new ItemStack(Items.nether_wart, 1, 0))
                     .noItemOutputs()
-                    .fluidInputs(new FluidStack(tFluid, 750))
+                    .fluidInputs(getFluidStack(fluid, 750))
                     .fluidOutputs(getFluidStack("potion.awkward", 750))
                     .duration(6 * SECONDS + 8 * TICKS)
                     .eut(4)
@@ -250,7 +250,7 @@ public class BreweryRecipes implements Runnable {
                 GT_Values.RA.stdBuilder()
                     .itemInputs(new ItemStack(Blocks.red_mushroom, 1, 0))
                     .noItemOutputs()
-                    .fluidInputs(new FluidStack(tFluid, 750))
+                    .fluidInputs(getFluidStack(fluid, 750))
                     .fluidOutputs(getFluidStack("potion.poison", 750))
                     .duration(6 * SECONDS + 8 * TICKS)
                     .eut(4)
@@ -259,7 +259,7 @@ public class BreweryRecipes implements Runnable {
                 GT_Values.RA.stdBuilder()
                     .itemInputs(new ItemStack(Items.fish, 1, 3))
                     .noItemOutputs()
-                    .fluidInputs(new FluidStack(tFluid, 750))
+                    .fluidInputs(getFluidStack(fluid, 750))
                     .fluidOutputs(getFluidStack("potion.poison.strong", 750))
                     .duration(6 * SECONDS + 8 * TICKS)
                     .eut(4)
@@ -269,7 +269,7 @@ public class BreweryRecipes implements Runnable {
                 GT_Values.RA.stdBuilder()
                     .itemInputs(ItemList.IC2_Grin_Powder.get(1L))
                     .noItemOutputs()
-                    .fluidInputs(new FluidStack(tFluid, 750))
+                    .fluidInputs(getFluidStack(fluid, 750))
                     .fluidOutputs(getFluidStack("potion.poison.strong", 750))
                     .duration(6 * SECONDS + 8 * TICKS)
                     .eut(4)
@@ -278,7 +278,7 @@ public class BreweryRecipes implements Runnable {
                 GT_Values.RA.stdBuilder()
                     .itemInputs(new ItemStack(Items.reeds, 1, 0))
                     .noItemOutputs()
-                    .fluidInputs(new FluidStack(tFluid, 750))
+                    .fluidInputs(getFluidStack(fluid, 750))
                     .fluidOutputs(getFluidStack("potion.reedwater", 750))
                     .duration(6 * SECONDS + 8 * TICKS)
                     .eut(4)
@@ -287,7 +287,7 @@ public class BreweryRecipes implements Runnable {
                 GT_Values.RA.stdBuilder()
                     .itemInputs(new ItemStack(Items.apple, 1, 0))
                     .noItemOutputs()
-                    .fluidInputs(new FluidStack(tFluid, 750))
+                    .fluidInputs(getFluidStack(fluid, 750))
                     .fluidOutputs(getFluidStack("potion.applejuice", 750))
                     .duration(6 * SECONDS + 8 * TICKS)
                     .eut(4)
@@ -296,7 +296,7 @@ public class BreweryRecipes implements Runnable {
                 GT_Values.RA.stdBuilder()
                     .itemInputs(new ItemStack(Items.golden_apple, 1, 0))
                     .noItemOutputs()
-                    .fluidInputs(new FluidStack(tFluid, 750))
+                    .fluidInputs(getFluidStack(fluid, 750))
                     .fluidOutputs(getFluidStack("potion.goldenapplejuice", 750))
                     .duration(6 * SECONDS + 8 * TICKS)
                     .eut(4)
@@ -306,7 +306,7 @@ public class BreweryRecipes implements Runnable {
                 GT_Values.RA.stdBuilder()
                     .itemInputs(new ItemStack(Items.golden_apple, 1, 1))
                     .noItemOutputs()
-                    .fluidInputs(new FluidStack(tFluid, 750))
+                    .fluidInputs(getFluidStack(fluid, 750))
                     .fluidOutputs(getFluidStack("potion.idunsapplejuice", 750))
                     .duration(6 * SECONDS + 8 * TICKS)
                     .eut(4)
@@ -316,7 +316,7 @@ public class BreweryRecipes implements Runnable {
                 GT_Values.RA.stdBuilder()
                     .itemInputs(ItemList.IC2_Hops.get(1L))
                     .noItemOutputs()
-                    .fluidInputs(new FluidStack(tFluid, 750))
+                    .fluidInputs(getFluidStack(fluid, 750))
                     .fluidOutputs(getFluidStack("potion.hopsjuice", 750))
                     .duration(6 * SECONDS + 8 * TICKS)
                     .eut(4)
@@ -325,7 +325,7 @@ public class BreweryRecipes implements Runnable {
                 GT_Values.RA.stdBuilder()
                     .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Coffee, 1L))
                     .noItemOutputs()
-                    .fluidInputs(new FluidStack(tFluid, 750))
+                    .fluidInputs(getFluidStack(fluid, 750))
                     .fluidOutputs(getFluidStack("potion.darkcoffee", 750))
                     .duration(6 * SECONDS + 8 * TICKS)
                     .eut(4)
@@ -334,7 +334,7 @@ public class BreweryRecipes implements Runnable {
                 GT_Values.RA.stdBuilder()
                     .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Chili, 1L))
                     .noItemOutputs()
-                    .fluidInputs(new FluidStack(tFluid, 750))
+                    .fluidInputs(getFluidStack(fluid, 750))
                     .fluidOutputs(getFluidStack("potion.chillysauce", 750))
                     .duration(6 * SECONDS + 8 * TICKS)
                     .eut(4)
@@ -520,7 +520,7 @@ public class BreweryRecipes implements Runnable {
             GT_Values.RA.stdBuilder()
                 .itemInputs(getModItem(Forestry.ID, "fertilizerBio", 4L, 0))
                 .noItemOutputs()
-                .fluidInputs(GT_ModHandler.getWater(750L))
+                .fluidInputs(getFluidStack(FluidRegistry.WATER.getUnlocalizedName(), 750))
                 .fluidOutputs(getFluidStack("biomass", 750))
                 .duration(6 * SECONDS + 8 * TICKS)
                 .eut(4)
@@ -529,7 +529,12 @@ public class BreweryRecipes implements Runnable {
             GT_Values.RA.stdBuilder()
                 .itemInputs(getModItem(Forestry.ID, "mulch", 16L, 0))
                 .noItemOutputs()
-                .fluidInputs(GT_ModHandler.getDistilledWater(750L))
+                .fluidInputs(
+                    getFluidStack(
+                        GT_ModHandler.getDistilledWater(750L)
+                            .getFluid()
+                            .getUnlocalizedName(),
+                        750))
                 .fluidOutputs(getFluidStack("biomass", 750))
                 .duration(6 * SECONDS + 8 * TICKS)
                 .eut(4)
@@ -595,28 +600,24 @@ public class BreweryRecipes implements Runnable {
             .addTo(sBrewingRecipes);
 
         // strong
-        if (aName == "regen" || aName == "speed" || aName == "health" || aName == "strength" || aName == "poison") {
-            GT_Values.RA.stdBuilder()
-                .itemInputs(aItem)
-                .noItemOutputs()
-                .fluidInputs(getFluidStack("potion.thick", 750))
-                .fluidOutputs(getFluidStack("potion." + aName + ".strong", 750))
-                .duration(6 * SECONDS + 8 * TICKS)
-                .eut(4)
-                .addTo(sBrewingRecipes);
-        }
+        GT_Values.RA.stdBuilder()
+            .itemInputs(aItem)
+            .noItemOutputs()
+            .fluidInputs(getFluidStack("potion.thick", 750))
+            .fluidOutputs(getFluidStack("potion." + aName + ".strong", 750))
+            .duration(6 * SECONDS + 8 * TICKS)
+            .eut(4)
+            .addTo(sBrewingRecipes);
 
         // long
-        if (aName != "health") {
-            GT_Values.RA.stdBuilder()
-                .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L))
-                .noItemOutputs()
-                .fluidInputs(getFluidStack("potion." + aName, 750))
-                .fluidOutputs(getFluidStack("potion." + aName + ".long", 750))
-                .duration(6 * SECONDS + 8 * TICKS)
-                .eut(4)
-                .addTo(sBrewingRecipes);
-        }
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L))
+            .noItemOutputs()
+            .fluidInputs(getFluidStack("potion." + aName, 750))
+            .fluidOutputs(getFluidStack("potion." + aName + ".long", 750))
+            .duration(6 * SECONDS + 8 * TICKS)
+            .eut(4)
+            .addTo(sBrewingRecipes);
 
         MixerRecipes.addMixerPotionRecipes(aName);
     }

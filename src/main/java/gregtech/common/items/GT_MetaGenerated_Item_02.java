@@ -2,6 +2,8 @@ package gregtech.common.items;
 
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Textures.BlockIcons.*;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCompressorRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 
 import net.minecraft.dispenser.IBlockSource;
 import net.minecraft.enchantment.Enchantment;
@@ -2625,27 +2627,164 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
             ItemList.Crop_Drop_Tine.get(1L),
             GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Tin, 1L));
 
-        GT_ModHandler.addCompressionRecipe(ItemList.Crop_Drop_Coppon.get(4L), new ItemStack(Blocks.wool, 1, 1));
-        GT_ModHandler
-            .addCompressionRecipe(ItemList.Crop_Drop_Plumbilia.get(4L), ItemList.IC2_PlantballCompressed.get(1L));
-        GT_ModHandler
-            .addCompressionRecipe(ItemList.Crop_Drop_Argentia.get(4L), ItemList.IC2_PlantballCompressed.get(1L));
-        GT_ModHandler.addCompressionRecipe(ItemList.Crop_Drop_Indigo.get(4L), ItemList.IC2_PlantballCompressed.get(1L));
-        GT_ModHandler.addCompressionRecipe(ItemList.Crop_Drop_Ferru.get(4L), ItemList.IC2_PlantballCompressed.get(1L));
-        GT_ModHandler
-            .addCompressionRecipe(ItemList.Crop_Drop_Aurelia.get(4L), ItemList.IC2_PlantballCompressed.get(1L));
-        GT_ModHandler
-            .addCompressionRecipe(ItemList.Crop_Drop_OilBerry.get(4L), ItemList.IC2_PlantballCompressed.get(1L));
-        GT_ModHandler.addCompressionRecipe(
-            ItemList.Crop_Drop_BobsYerUncleRanks.get(4L),
-            ItemList.IC2_PlantballCompressed.get(1L));
-        GT_ModHandler.addCompressionRecipe(ItemList.Crop_Drop_Tine.get(4L), ItemList.IC2_PlantballCompressed.get(1L));
-        GT_ModHandler.addCompressionRecipe(ItemList.Crop_Drop_Rape.get(4L), ItemList.IC2_PlantballCompressed.get(1L));
-        GT_ModHandler
-            .addCompressionRecipe(new ItemStack(Blocks.red_flower, 8, 32767), ItemList.IC2_PlantballCompressed.get(1L));
-        GT_ModHandler.addCompressionRecipe(
-            new ItemStack(Blocks.yellow_flower, 8, 32767),
-            ItemList.IC2_PlantballCompressed.get(1L));
+        // Compression recipes
+        {
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Crop_Drop_Coppon.get(4L)
+                )
+                .itemOutputs(
+                    new ItemStack(Blocks.wool, 1, 1)
+                )
+                .noFluidInputs()
+                .noFluidOutputs()
+                .duration(15 * SECONDS)
+                .eut(2)
+                .addTo(sCompressorRecipes);
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Crop_Drop_Plumbilia.get(4L)
+                )
+                .itemOutputs(
+                    ItemList.IC2_PlantballCompressed.get(1L)
+                )
+                .noFluidInputs()
+                .noFluidOutputs()
+                .duration(15 * SECONDS)
+                .eut(2)
+                .addTo(sCompressorRecipes);
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Crop_Drop_Argentia.get(4L)
+                )
+                .itemOutputs(
+                    ItemList.IC2_PlantballCompressed.get(1L)
+                )
+                .noFluidInputs()
+                .noFluidOutputs()
+                .duration(15 * SECONDS)
+                .eut(2)
+                .addTo(sCompressorRecipes);
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Crop_Drop_Indigo.get(4L)
+                )
+                .itemOutputs(
+                    ItemList.IC2_PlantballCompressed.get(1L)
+                )
+                .noFluidInputs()
+                .noFluidOutputs()
+                .duration(15 * SECONDS)
+                .eut(2)
+                .addTo(sCompressorRecipes);
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Crop_Drop_Ferru.get(4L)
+                )
+                .itemOutputs(
+                    ItemList.IC2_PlantballCompressed.get(1L)
+                )
+                .noFluidInputs()
+                .noFluidOutputs()
+                .duration(15 * SECONDS)
+                .eut(2)
+                .addTo(sCompressorRecipes);
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Crop_Drop_Aurelia.get(4L)
+                )
+                .itemOutputs(
+                    ItemList.IC2_PlantballCompressed.get(1L)
+                )
+                .noFluidInputs()
+                .noFluidOutputs()
+                .duration(15 * SECONDS)
+                .eut(2)
+                .addTo(sCompressorRecipes);
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Crop_Drop_OilBerry.get(4L)
+                )
+                .itemOutputs(
+                    ItemList.IC2_PlantballCompressed.get(1L)
+                )
+                .noFluidInputs()
+                .noFluidOutputs()
+                .duration(15 * SECONDS)
+                .eut(2)
+                .addTo(sCompressorRecipes);
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Crop_Drop_BobsYerUncleRanks.get(4L)
+                )
+                .itemOutputs(
+                    ItemList.IC2_PlantballCompressed.get(1L)
+                )
+                .noFluidInputs()
+                .noFluidOutputs()
+                .duration(15 * SECONDS)
+                .eut(2)
+                .addTo(sCompressorRecipes);
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Crop_Drop_Tine.get(4L)
+                )
+                .itemOutputs(
+                    ItemList.IC2_PlantballCompressed.get(1L)
+                )
+                .noFluidInputs()
+                .noFluidOutputs()
+                .duration(15 * SECONDS)
+                .eut(2)
+                .addTo(sCompressorRecipes);
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    ItemList.Crop_Drop_Rape.get(4L)
+                )
+                .itemOutputs(
+                    ItemList.IC2_PlantballCompressed.get(1L)
+                )
+                .noFluidInputs()
+                .noFluidOutputs()
+                .duration(15 * SECONDS)
+                .eut(2)
+                .addTo(sCompressorRecipes);
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    new ItemStack(Blocks.red_flower, 8, 32767)
+                )
+                .itemOutputs(
+                    ItemList.IC2_PlantballCompressed.get(1L)
+                )
+                .noFluidInputs()
+                .noFluidOutputs()
+                .duration(15 * SECONDS)
+                .eut(2)
+                .addTo(sCompressorRecipes);
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    new ItemStack(Blocks.yellow_flower, 8, 32767)
+                )
+                .itemOutputs(
+                    ItemList.IC2_PlantballCompressed.get(1L)
+                )
+                .noFluidInputs()
+                .noFluidOutputs()
+                .duration(15 * SECONDS)
+                .eut(2)
+                .addTo(sCompressorRecipes);
+        }
 
         GT_ModHandler.addPulverisationRecipe(
             ItemList.Food_Sliced_Cheese.get(1L),

@@ -689,8 +689,7 @@ public class GT_PreLoad {
             .get(ConfigCategories.machineconfig, "forceFreeFace", true);
         GT_Mod.gregtechproxy.mBrickedBlastFurnace = tMainConfig.get("general", "BrickedBlastFurnace", true)
             .getBoolean(true);
-        GT_Mod.gregtechproxy.mEasierIVPlusCables = tMainConfig.get("general", "EasierEVPlusCables", false)
-            .getBoolean(false);
+
         GT_Mod.gregtechproxy.mMixedOreOnlyYieldsTwoThirdsOfPureOre = tMainConfig
             .get("general", "MixedOreOnlyYieldsTwoThirdsOfPureOre", false)
             .getBoolean(false);

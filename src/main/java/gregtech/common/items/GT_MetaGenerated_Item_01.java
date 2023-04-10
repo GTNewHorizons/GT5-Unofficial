@@ -2,6 +2,8 @@ package gregtech.common.items;
 
 import static gregtech.api.enums.Mods.GalacticraftMars;
 import static gregtech.api.enums.Textures.BlockIcons.*;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCompressorRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.client.GT_TooltipHandler.Tier.*;
 import static gregtech.client.GT_TooltipHandler.registerTieredTooltip;
 
@@ -105,9 +107,23 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
 
         setBurnValue(17000 + Materials.Wood.mMetaItemSubID, 1600);
         GT_OreDictUnificator.addToBlacklist(new ItemStack(this, 1, 17000 + Materials.Wood.mMetaItemSubID));
-        GT_ModHandler.addCompressionRecipe(
-            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 8L),
-            new ItemStack(this, 1, 17000 + Materials.Wood.mMetaItemSubID));
+
+        // Compressor recipe
+        {
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 8L)
+                )
+                .itemOutputs(
+                    new ItemStack(this, 1, 17000 + Materials.Wood.mMetaItemSubID)
+                )
+                .noFluidInputs()
+                .noFluidOutputs()
+                .duration(15 * SECONDS)
+                .eut(2)
+                .addTo(sCompressorRecipes);
+        }
+
         GregTech_API.registerCover(
             new ItemStack(this, 1, 17000 + Materials.Wood.mMetaItemSubID),
             TextureFactory.of(COVER_WOOD_PLATE),

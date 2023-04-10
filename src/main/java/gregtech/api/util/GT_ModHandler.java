@@ -9,6 +9,7 @@ import static gregtech.api.enums.GT_Values.M;
 import static gregtech.api.enums.GT_Values.RA;
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.GT_Values.W;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sMaceratorRecipes;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -597,28 +598,34 @@ public class GT_ModHandler {
         return true;
     }
 
+    @Deprecated
     public static boolean addPulverisationRecipe(ItemStack aInput, ItemStack aOutput1) {
         return addPulverisationRecipe(aInput, aOutput1, null, 0, false);
     }
 
+    @Deprecated
     public static boolean addPulverisationRecipe(ItemStack aInput, ItemStack aOutput1, ItemStack aOutput2) {
         return addPulverisationRecipe(aInput, aOutput1, aOutput2, 100, false);
     }
 
+    @Deprecated
     public static boolean addPulverisationRecipe(ItemStack aInput, ItemStack aOutput1, ItemStack aOutput2,
         int aChance) {
         return addPulverisationRecipe(aInput, aOutput1, aOutput2, aChance, false);
     }
 
+    @Deprecated
     public static boolean addPulverisationRecipe(ItemStack aInput, ItemStack aOutput1, boolean aOverwrite) {
         return addPulverisationRecipe(aInput, aOutput1, null, 0, aOverwrite);
     }
 
+    @Deprecated
     public static boolean addPulverisationRecipe(ItemStack aInput, ItemStack aOutput1, ItemStack aOutput2,
         boolean aOverwrite) {
         return addPulverisationRecipe(aInput, aOutput1, aOutput2, 100, aOverwrite);
     }
 
+    @Deprecated
     public static boolean addPulverisationRecipe(ItemStack aInput, ItemStack aOutput1, ItemStack aOutput2, int aChance,
         boolean aOverwrite) {
         return addPulverisationRecipe(aInput, aOutput1, aOutput2, aChance, null, 0, aOverwrite);
@@ -627,6 +634,7 @@ public class GT_ModHandler {
     /**
      * Adds Several Pulverizer-Type Recipes.
      */
+    @Deprecated
     public static boolean addPulverisationRecipe(ItemStack aInput, ItemStack aOutput1, ItemStack aOutput2, int aChance2,
         ItemStack aOutput3, int aChance3, boolean aOverwrite) {
         aOutput1 = GT_OreDictUnificator.get(true, aOutput1);
@@ -644,6 +652,7 @@ public class GT_ModHandler {
         return true;
     }
 
+    @Deprecated
     public static boolean addPulverisationRecipe(ItemStack aInputItem, ItemStack[] aOutputArray, int[] aChanceArray,
         int aEUt, int aRecipeDurationInTicks) {
 
@@ -909,6 +918,7 @@ public class GT_ModHandler {
     /**
      * IC2-Compressor Recipe. Overloads old Recipes automatically
      */
+    @Deprecated
     public static boolean addCompressionRecipe(ItemStack aInput, ItemStack aOutput) {
         return addCompressionRecipe(aInput, aOutput, 300, 2);
     }
@@ -916,6 +926,7 @@ public class GT_ModHandler {
     /**
      * IC2-Compressor Recipe. Overloads old Recipes automatically
      */
+    @Deprecated
     public static boolean addCompressionRecipe(ItemStack aInput, ItemStack aOutput, int duration, int EUPerTick) {
         aOutput = GT_OreDictUnificator.get(true, aOutput);
         if (aInput == null || aOutput == null || GT_Utility.areStacksEqual(aInput, aOutput, true)) return false;
