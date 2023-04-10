@@ -34,9 +34,16 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
+
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 
 import com.github.bartimaeusnek.bartworks.system.material.CircuitGeneration.BW_Meta_Items;
 import com.github.bartimaeusnek.bartworks.system.material.CircuitGeneration.CircuitImprintLoader;
@@ -134,6 +141,7 @@ public class GT_TileEntity_CircuitAssemblyLine extends
     }
 
     public String getTypeForDisplay() {
+
         if (this.type.equals(new NBTTagCompound())) return "";
         return GT_LanguageManager.getTranslation(
                 GT_LanguageManager.getTranslateableItemStackName(CircuitImprintLoader.getStackFromTag(this.type)));
@@ -344,8 +352,9 @@ public class GT_TileEntity_CircuitAssemblyLine extends
         String[] oldInfo = super.getInfoData();
         infoDataBuffer = new String[oldInfo.length + 1];
         System.arraycopy(oldInfo, 0, infoDataBuffer, 0, oldInfo.length);
-        infoDataBuffer[oldInfo.length] = "Imprinted with: " + GT_LanguageManager.getTranslation(
-                GT_LanguageManager.getTranslateableItemStackName(CircuitImprintLoader.getStackFromTag(this.type)));
+        infoDataBuffer[oldInfo.length] = StatCollector.translateToLocal("tooltip.cal.imprintedWith") + " "
+                + EnumChatFormatting.YELLOW
+                + getTypeForDisplay();
         return infoDataBuffer;
     }
 
@@ -415,6 +424,7 @@ public class GT_TileEntity_CircuitAssemblyLine extends
         if (stack.hasTagCompound() && stack.stackTagCompound.hasKey("Type")) {
             tooltip.add(
                     StatCollector.translateToLocal("tooltip.cal.imprintedWith") + " "
+                            + EnumChatFormatting.YELLOW
                             + StatCollector.translateToLocal(
                                     GT_LanguageManager.getTranslateableItemStackName(
                                             ItemStack.loadItemStackFromNBT(
@@ -431,5 +441,26 @@ public class GT_TileEntity_CircuitAssemblyLine extends
     @Override
     protected boolean isRecipeLockingEnabled() {
         return imprintedItemName != null && !imprintedItemName.equals("");
+    }
+
+    @Override
+    public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
+            IWailaConfigHandler config) {
+        super.getWailaBody(itemStack, currenttip, accessor, config);
+        NBTTagCompound tag = accessor.getNBTData();
+        if (tag.hasKey("ImprintedWith")) currenttip.add(
+                StatCollector.translateToLocal("tooltip.cal.imprintedWith") + " "
+                        + EnumChatFormatting.YELLOW
+                        + tag.getString("ImprintedWith"));
+
+    }
+
+    @Override
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+            int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        String imprintedWith = getTypeForDisplay();
+        if (imprintedWith != "") tag.setString("ImprintedWith", imprintedWith);
+
     }
 }
