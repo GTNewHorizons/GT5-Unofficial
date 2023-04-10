@@ -58,6 +58,7 @@ dependencies {
     //api("com.github.GTNewHorizons:SpecialMobs:3.3.13:dev")
     //api("com.github.GTNewHorizons:twilightforest:2.3.8.17:dev")
     //api("com.github.GTNewHorizons:EnderZoo:1.0.23:dev")
+    //runtimeOnly("com.github.GTNewHorizons:Draconic-Evolution:1.1.15-GTNH:dev")
     //runtimeOnly("thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev")
     //runtimeOnly("com.github.GTNewHorizons:BloodMagic:1.3.25:dev")
     //api("curse.maven:witchery-69673:2234410")

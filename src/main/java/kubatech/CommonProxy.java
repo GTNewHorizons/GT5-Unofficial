@@ -37,11 +37,11 @@ public class CommonProxy {
         MinecraftForge.EVENT_BUS.register(new PlayerDataManager());
         registerItems();
         registerBlocks();
-        if (LoaderReference.Thaumcraft) TCLoader.load();
     }
 
     public void init(FMLInitializationEvent event) {
         if (LoaderReference.MineTweaker) MTLoader.init();
+        if (LoaderReference.Thaumcraft) TCLoader.init();
     }
 
     public void postInit(FMLPostInitializationEvent event) {

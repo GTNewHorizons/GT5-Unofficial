@@ -12,13 +12,13 @@ package kubatech.loaders.item.items;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.UUID;
 
 import kubatech.api.utils.ModUtils;
 import kubatech.loaders.ItemLoader;
 import kubatech.loaders.item.ItemProxy;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -48,19 +48,29 @@ public class TeaCollection extends ItemProxy {
     private static final int[][] achievement_poses = new int[][] { { 0, 0 }, { 2, 0 }, { 3, 1 }, { 4, 2 }, { 4, 4 },
             { 3, 5 }, { 2, 6 }, { 0, 6 }, { -1, 5 }, { -2, 4 }, { -2, 2 }, { -1, 1 }, { 1, 3 } };
 
-    boolean checkTeaOwner(ItemStack stack, String username) {
+    boolean checkTeaOwner(ItemStack stack, UUID player) {
         NBTTagCompound tag = stack.stackTagCompound;
-        if (tag == null || !stack.stackTagCompound.hasKey("TeaOwner")) return true;
-        return stack.stackTagCompound.getString("TeaOwner").equals(username);
+        if (tag == null || !stack.stackTagCompound.hasKey("TeaOwnerUUID")) return true;
+        return stack.stackTagCompound.getString("TeaOwnerUUID").equals(player.toString());
     }
 
-    private boolean checkOrSetTeaOwner(ItemStack stack, String username) {
+    boolean checkTeaOwner(ItemStack stack, String player) {
         NBTTagCompound tag = stack.stackTagCompound;
-        if (tag == null || !stack.stackTagCompound.hasKey("TeaOwner")) {
-            stack.setTagInfo("TeaOwner", new NBTTagString(username));
+        if (tag == null || !stack.stackTagCompound.hasKey("TeaOwner")) return true;
+        return stack.stackTagCompound.getString("TeaOwner").equals(player);
+    }
+
+    private boolean checkOrSetTeaOwner(ItemStack stack, EntityPlayer player) {
+        NBTTagCompound tag = stack.stackTagCompound;
+        if (tag == null || !stack.stackTagCompound.hasKey("TeaOwnerUUID")) {
+            stack.setTagInfo("TeaOwnerUUID", new NBTTagString(player.getPersistentID().toString()));
+            stack.setTagInfo("TeaOwner", new NBTTagString(player.getCommandSenderName()));
             return true;
         }
-        return stack.stackTagCompound.getString("TeaOwner").equals(username);
+        if (stack.stackTagCompound.getString("TeaOwnerUUID").equals(player.getPersistentID().toString())) {
+            stack.setTagInfo("TeaOwner", new NBTTagString(player.getCommandSenderName()));
+            return true;
+        } else return false;
     }
 
     @Override
@@ -136,6 +146,7 @@ public class TeaCollection extends ItemProxy {
         if (!ModUtils.isClientSided || Minecraft.getMinecraft().thePlayer == null) {
             return super.getDisplayName(stack);
         }
+        // UUID is different on client if in offline mode I think
         if (checkTeaOwner(stack, Minecraft.getMinecraft().thePlayer.getCommandSenderName())) {
             return super.getDisplayName(stack);
         }
@@ -146,7 +157,7 @@ public class TeaCollection extends ItemProxy {
     public void onUpdate(ItemStack stack, World world, Entity entity, int slot, boolean isCurrentItem) {
         if (world.isRemote) return;
         if (!(entity instanceof EntityPlayerMP)) return;
-        checkOrSetTeaOwner(stack, entity.getCommandSenderName());
+        checkOrSetTeaOwner(stack, (EntityPlayer) entity);
         NBTTagCompound tag = stack.stackTagCompound;
         if (tag.hasKey("display")) tag.removeTag("display");
     }
@@ -166,10 +177,9 @@ public class TeaCollection extends ItemProxy {
             if (new Throwable().getStackTrace()[1].getMethodName().equals("isAchievementInPages"))
                 return super.getAchievements(); // 5HEAD FIX
 
-            EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
             unlockedAchievements.clear();
             for (Achievement achievement : achievements)
-                if (player.getStatFileWriter().hasAchievementUnlocked(achievement))
+                if (Minecraft.getMinecraft().thePlayer.getStatFileWriter().hasAchievementUnlocked(achievement))
                     unlockedAchievements.add(achievement);
             return unlockedAchievements;
         }

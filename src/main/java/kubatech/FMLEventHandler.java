@@ -10,7 +10,9 @@
 
 package kubatech;
 
+import kubatech.api.helpers.UUIDFinder;
 import kubatech.api.network.LoadConfigPacket;
+import kubatech.savedata.PlayerDataManager;
 
 import net.minecraft.entity.player.EntityPlayerMP;
 
@@ -23,6 +25,8 @@ public class FMLEventHandler {
     @SubscribeEvent
     public void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
         if (!(event.player instanceof EntityPlayerMP)) return;
+        UUIDFinder.updateMapping(event.player.getCommandSenderName(), event.player.getPersistentID());
+        PlayerDataManager.initializePlayer((EntityPlayerMP) event.player);
         kubatech.info("Sending config to " + event.player.getDisplayName());
         kubatech.NETWORK.sendTo(LoadConfigPacket.instance, (EntityPlayerMP) event.player);
     }

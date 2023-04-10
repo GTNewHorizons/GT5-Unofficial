@@ -10,14 +10,18 @@
 
 package kubatech.loaders.item.items;
 
+import static kubatech.api.Variables.numberFormat;
+import static kubatech.api.Variables.numberFormatScientific;
+
+import java.math.BigInteger;
 import java.text.NumberFormat;
+import java.util.concurrent.atomic.AtomicReference;
 
 import kubatech.api.enums.ItemList;
+import kubatech.api.tea.TeaNetwork;
 import kubatech.api.utils.ModUtils;
 import kubatech.api.utils.StringUtils;
 import kubatech.loaders.item.IItemProxyGUI;
-import kubatech.savedata.PlayerData;
-import kubatech.savedata.PlayerDataManager;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
@@ -26,10 +30,10 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
+
+import codechicken.nei.NEIClientUtils;
 
 import com.gtnewhorizons.modularui.api.ModularUITextures;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
@@ -64,7 +68,7 @@ public class TeaUltimate extends TeaCollection implements IItemProxyGUI {
 
     @Override
     public String getDisplayName(ItemStack stack) {
-        if (!ModUtils.isClientSided) return super.getDisplayName(stack);
+        if (!ModUtils.isClientSided || Minecraft.getMinecraft().thePlayer == null) return super.getDisplayName(stack);
         if (checkTeaOwner(stack, Minecraft.getMinecraft().thePlayer.getCommandSenderName())) {
             return getUltimateTeaDisplayName(super.getDisplayName(stack));
         }
@@ -75,10 +79,12 @@ public class TeaUltimate extends TeaCollection implements IItemProxyGUI {
     public ModularWindow createWindow(ItemStack stack, EntityPlayer player) {
         ModularWindow.Builder builder = ModularWindow.builder(200, 150);
         builder.setBackground(ModularUITextures.VANILLA_BACKGROUND);
-        final PlayerData playerData = PlayerDataManager.getPlayer(player.getCommandSenderName());
+        final TeaNetwork teaNetwork = TeaNetwork.getNetwork(player.getPersistentID());
         IDrawable tab1 = new ItemDrawable(ItemList.LegendaryUltimateTea.get(1)).withFixedSize(18, 18, 4, 6);
         IDrawable tab2 = new ItemDrawable(new ItemStack(Blocks.crafting_table)).withFixedSize(18, 18, 4, 6);
         IDrawable tab3 = new ItemDrawable(new ItemStack(Items.golden_apple)).withFixedSize(18, 18, 4, 6);
+        AtomicReference<BigInteger> teaAmount = new AtomicReference<>(BigInteger.ZERO);
+        AtomicReference<BigInteger> teaLimit = new AtomicReference<>(BigInteger.ZERO);
         builder.widget(
                 new TabContainer()
                         .setButtonSize(
@@ -127,11 +133,33 @@ public class TeaUltimate extends TeaCollection implements IItemProxyGUI {
                                         .addChild(
                                                 new DynamicTextWidget(
                                                         () -> new Text(
-                                                                "Tea: " + (playerData == null ? "ERROR"
-                                                                        : NumberFormat.getInstance()
-                                                                                .format(playerData.teaAmount)))
-                                                                                        .color(Color.GREEN.normal))
-                                                                                                .setPos(20, 20)))
+                                                                "Tea: " + (NEIClientUtils.shiftKey()
+                                                                        ? numberFormat.format(teaAmount.get())
+                                                                        : numberFormatScientific
+                                                                                .format(teaAmount.get())))
+                                                                                        .color(Color.GREEN.dark(3)))
+                                                                                                .setSynced(false)
+                                                                                                .setPos(20, 20)
+                                                                                                .attachSyncer(
+                                                                                                        new FakeSyncWidget.BigIntegerSyncer(
+                                                                                                                () -> teaNetwork.teaAmount,
+                                                                                                                teaAmount::set),
+                                                                                                        builder))
+                                        .addChild(
+                                                new DynamicTextWidget(
+                                                        () -> new Text(
+                                                                "Tea limit: " + (NEIClientUtils.shiftKey()
+                                                                        ? numberFormat.format(teaLimit.get())
+                                                                        : numberFormatScientific
+                                                                                .format(teaLimit.get())))
+                                                                                        .color(Color.GREEN.dark(3)))
+                                                                                                .setSynced(false)
+                                                                                                .setPos(20, 30)
+                                                                                                .attachSyncer(
+                                                                                                        new FakeSyncWidget.BigIntegerSyncer(
+                                                                                                                () -> teaNetwork.teaLimit,
+                                                                                                                teaLimit::set),
+                                                                                                        builder)))
                         .addPage(
                                 new MultiChildWidget()
                                         .addChild(
@@ -143,10 +171,7 @@ public class TeaUltimate extends TeaCollection implements IItemProxyGUI {
                                                 new ButtonWidget()
                                                         .setOnClick((Widget.ClickData clickData, Widget widget) -> {
                                                             if (!(player instanceof EntityPlayerMP)) return;
-                                                            if (playerData == null || playerData.teaAmount < 50_000L)
-                                                                return;
-                                                            playerData.teaAmount -= 50_000L;
-                                                            playerData.markDirty();
+                                                            if (!teaNetwork.canAfford(50_000, true)) return;
                                                             if (player.inventory.addItemStackToInventory(
                                                                     ItemList.TeaAcceptorResearchNote.get(1)))
                                                                 return;
@@ -187,7 +212,7 @@ public class TeaUltimate extends TeaCollection implements IItemProxyGUI {
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer entity) {
         if (world.isRemote) return stack;
         if (!(entity instanceof EntityPlayerMP)) return stack;
-        if (!checkTeaOwner(stack, entity.getCommandSenderName())) return stack;
+        if (!checkTeaOwner(stack, entity.getPersistentID())) return stack;
         openHeldItemGUI(entity);
         return stack;
     }
@@ -197,18 +222,16 @@ public class TeaUltimate extends TeaCollection implements IItemProxyGUI {
         if (world.isRemote) return;
         if (!(entity instanceof EntityPlayerMP)) return;
         super.onUpdate(stack, world, entity, slot, isCurrentItem);
-        if (checkTeaOwner(stack, entity.getCommandSenderName())) {
-            PlayerData playerData = PlayerDataManager.getPlayer(entity.getCommandSenderName());
-            if (playerData == null) return;
-            playerData.teaAmount++;
-            playerData.markDirty();
+        if (checkTeaOwner(stack, entity.getPersistentID())) {
+            TeaNetwork teaNetwork = TeaNetwork.getNetwork(entity.getPersistentID());
+            teaNetwork.addTea(1);
 
-            if (playerData.autoRegen && playerData.teaAmount > 75_000) {
-                if (((EntityPlayerMP) entity).getActivePotionEffect(Potion.regeneration) == null) {
-                    ((EntityPlayerMP) entity).addPotionEffect(new PotionEffect(Potion.regeneration.id, 1200, 0, true));
-                    playerData.teaAmount -= 75_000;
-                }
-            }
+            /*
+             * if (playerData.autoRegen && playerData.teaAmount > 75_000) { if (((EntityPlayerMP)
+             * entity).getActivePotionEffect(Potion.regeneration) == null) { ((EntityPlayerMP)
+             * entity).addPotionEffect(new PotionEffect(Potion.regeneration.id, 1200, 0, true)); playerData.teaAmount -=
+             * 75_000; } }
+             */
         }
     }
 }

@@ -107,6 +107,11 @@ public class KubaBlock extends Block {
     }
 
     @Override
+    public int damageDropped(int meta) {
+        return meta;
+    }
+
+    @Override
     public void registerBlockIcons(IIconRegister p_149651_1_) {
         blocks.values().forEach(b -> b.registerIcon(p_149651_1_));
     }

@@ -26,7 +26,7 @@ import net.minecraft.world.World;
 public class TeaAcceptor extends BlockProxy implements IProxyTileEntityProvider {
 
     public TeaAcceptor() {
-        super("tea_acceptor", "tea_acceptor");
+        super("tea_acceptor", "tea_acceptor", "blank");
     }
 
     @Override
@@ -38,7 +38,7 @@ public class TeaAcceptor extends BlockProxy implements IProxyTileEntityProvider 
     public void onBlockPlaced(World world, int x, int y, int z, EntityLivingBase player, ItemStack stack) {
         if (world.isRemote) return;
         if (!(player instanceof EntityPlayerMP)) return;
-        ((TeaAcceptorTile) world.getTileEntity(x, y, z)).setTeaOwner(player.getCommandSenderName());
+        ((TeaAcceptorTile) world.getTileEntity(x, y, z)).setTeaOwner(player.getPersistentID());
     }
 
     @Override

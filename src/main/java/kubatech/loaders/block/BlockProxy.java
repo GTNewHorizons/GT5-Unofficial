@@ -31,12 +31,20 @@ import com.gtnewhorizons.modularui.api.screen.ITileWithModularUI;
 public class BlockProxy {
 
     private final String unlocalizedName;
-    private final String texturepath;
-    private IIcon icon;
+    private final String sideTexturePath;
+    private final String topBottomTexturePath;
+    private IIcon sideIcon;
+    private IIcon topBottomIcon;
 
     public BlockProxy(String unlocalizedName, String texture) {
         this.unlocalizedName = "kubablock." + unlocalizedName;
-        texturepath = Tags.MODID + ":" + texture;
+        sideTexturePath = topBottomTexturePath = Tags.MODID + ":" + texture;
+    }
+
+    public BlockProxy(String unlocalizedName, String sideTexture, String topBottomTexture) {
+        this.unlocalizedName = "kubablock." + unlocalizedName;
+        sideTexturePath = Tags.MODID + ":" + sideTexture;
+        topBottomTexturePath = Tags.MODID + ":" + topBottomTexture;
     }
 
     public void itemInit(int ID) {}
@@ -58,11 +66,14 @@ public class BlockProxy {
     public void onBlockPlaced(World world, int x, int y, int z, EntityLivingBase player, ItemStack stack) {}
 
     public void registerIcon(IIconRegister iconRegister) {
-        icon = iconRegister.registerIcon(texturepath);
+        sideIcon = iconRegister.registerIcon(sideTexturePath);
+        if (sideTexturePath.equals(topBottomTexturePath)) topBottomIcon = sideIcon;
+        else topBottomIcon = iconRegister.registerIcon(topBottomTexturePath);
     }
 
     public IIcon getIcon(int side) {
-        return icon;
+        if (side <= 1) return topBottomIcon;
+        else return sideIcon;
     }
 
     public String getUnlocalizedName() {

@@ -17,12 +17,19 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
 
 public class KubaItemBlock extends ItemBlock {
 
     public KubaItemBlock(Block p_i45328_1_) {
         super(p_i45328_1_);
         setHasSubtypes(true);
+    }
+
+    @Override
+    public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side,
+            float hitX, float hitY, float hitZ, int metadata) {
+        return super.placeBlockAt(stack, player, world, x, y, z, side, hitX, hitY, hitZ, metadata);
     }
 
     @Override
@@ -44,5 +51,10 @@ public class KubaItemBlock extends ItemBlock {
     @Override
     public void addInformation(ItemStack p_77624_1_, EntityPlayer p_77624_2_, List p_77624_3_, boolean p_77624_4_) {
         KubaBlock.blocks.get(p_77624_1_.getItemDamage()).addInformation(p_77624_1_, p_77624_2_, p_77624_3_, p_77624_4_);
+    }
+
+    @Override
+    public int getMetadata(int p_77647_1_) {
+        return p_77647_1_;
     }
 }

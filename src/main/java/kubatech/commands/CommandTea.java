@@ -12,8 +12,11 @@ package kubatech.commands;
 
 import static kubatech.commands.CommandTea.Translations.*;
 
-import kubatech.savedata.PlayerData;
-import kubatech.savedata.PlayerDataManager;
+import java.math.BigInteger;
+import java.util.UUID;
+
+import kubatech.api.helpers.UUIDFinder;
+import kubatech.api.tea.TeaNetwork;
 
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
@@ -76,43 +79,43 @@ public class CommandTea extends CommandBase {
             p_71515_1_.addChatMessage(new ChatComponentText(INVALID_OPTION.get()));
             return;
         }
-        PlayerData playerData = PlayerDataManager.getPlayer(p_71515_2_[0]);
-        if (playerData == null) {
+        UUID player = UUIDFinder.getUUID(p_71515_2_[0]);
+        if (player == null) {
             p_71515_1_.addChatMessage(new ChatComponentText(PLAYER_NOT_FOUND.get()));
             return;
         }
+        TeaNetwork teaNetwork = TeaNetwork.getNetwork(player);
         if (!p_71515_2_[1].equalsIgnoreCase("get") && p_71515_2_.length < 3) {
             p_71515_1_.addChatMessage(new ChatComponentText(INVALID_OPTION.get()));
             return;
         }
         switch (p_71515_2_[1].toLowerCase()) {
             case "get":
-                p_71515_1_.addChatMessage(new ChatComponentText(SUCCESS_GET.get(p_71515_2_[0], playerData.teaAmount)));
+                p_71515_1_.addChatMessage(new ChatComponentText(SUCCESS_GET.get(p_71515_2_[0], teaNetwork.teaAmount)));
                 break;
             case "set": {
-                long tea;
+                BigInteger tea;
                 try {
-                    tea = Long.parseLong(p_71515_2_[2]);
+                    tea = new BigInteger(p_71515_2_[2]);
                 } catch (NumberFormatException ex) {
                     p_71515_1_.addChatMessage(new ChatComponentText(INVALID_OPTION.get()));
                     return;
                 }
-                playerData.teaAmount = tea;
-                playerData.markDirty();
-                p_71515_1_.addChatMessage(new ChatComponentText(SUCCESS_SET.get(p_71515_2_[0], playerData.teaAmount)));
+                teaNetwork.teaAmount = tea;
+                teaNetwork.markDirty();
+                p_71515_1_.addChatMessage(new ChatComponentText(SUCCESS_SET.get(p_71515_2_[0], teaNetwork.teaAmount)));
                 break;
             }
             case "add": {
-                long tea;
+                BigInteger tea;
                 try {
-                    tea = Long.parseLong(p_71515_2_[2]);
+                    tea = new BigInteger(p_71515_2_[2]);
                 } catch (NumberFormatException ex) {
                     p_71515_1_.addChatMessage(new ChatComponentText(INVALID_OPTION.get()));
                     return;
                 }
-                playerData.teaAmount += tea;
-                playerData.markDirty();
-                p_71515_1_.addChatMessage(new ChatComponentText(SUCCESS_ADD.get(p_71515_2_[0], playerData.teaAmount)));
+                teaNetwork.addTea(tea);
+                p_71515_1_.addChatMessage(new ChatComponentText(SUCCESS_ADD.get(p_71515_2_[0], teaNetwork.teaAmount)));
                 break;
             }
             default:

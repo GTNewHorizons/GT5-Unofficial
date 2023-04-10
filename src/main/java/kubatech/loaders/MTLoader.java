@@ -11,7 +11,6 @@
 package kubatech.loaders;
 
 import kubatech.Tags;
-import kubatech.api.LoaderReference;
 import minetweaker.MineTweakerImplementationAPI;
 
 import org.apache.logging.log4j.LogManager;
@@ -31,6 +30,5 @@ public class MTLoader {
 
     public void MTOnPostReload(MineTweakerImplementationAPI.ReloadEvent reloadEvent) {
         LOG.info("MT Recipes Loaded!");
-        if (LoaderReference.Thaumcraft) TCLoader.register();
     }
 }

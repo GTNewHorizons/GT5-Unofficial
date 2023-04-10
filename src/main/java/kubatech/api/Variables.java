@@ -10,6 +10,9 @@
 
 package kubatech.api;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+
 import kubatech.api.utils.StringUtils;
 
 import net.minecraft.util.EnumChatFormatting;
@@ -41,4 +44,7 @@ public class Variables {
 
     public static final double ln4 = Math.log(4d);
     public static final double ln2 = Math.log(2d);
+
+    public static final NumberFormat numberFormatScientific = new DecimalFormat("0.00E0");
+    public static final NumberFormat numberFormat = NumberFormat.getInstance();
 }

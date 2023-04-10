@@ -14,7 +14,9 @@ import kubatech.api.enums.ItemList;
 import kubatech.loaders.block.KubaBlock;
 import kubatech.loaders.block.KubaItemBlock;
 import kubatech.loaders.block.blocks.TeaAcceptor;
+import kubatech.loaders.block.blocks.TeaStorage;
 import kubatech.tileentity.TeaAcceptorTile;
+import kubatech.tileentity.TeaStorageTile;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemBlock;
@@ -28,9 +30,11 @@ public class BlockLoader {
 
     public static void registerBlocks() {
         GameRegistry.registerTileEntity(TeaAcceptorTile.class, "KT_TeaAcceptor");
+        GameRegistry.registerTileEntity(TeaStorageTile.class, "KT_TeaStorage");
         GameRegistry.registerBlock(kubaBlock, null, "kubablocks");
         GameRegistry.registerItem(kubaItemBlock, "kubablocks");
 
         ItemList.TeaAcceptor.set(kubaBlock.registerProxyBlock(new TeaAcceptor()));
+        ItemList.TeaStorage.set(kubaBlock.registerProxyBlock(new TeaStorage()));
     }
 }

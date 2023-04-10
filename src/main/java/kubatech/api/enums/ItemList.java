@@ -58,6 +58,7 @@ public enum ItemList implements IItemContainer {
     PartiallyOxidizedTeaLeaf,
     TeaAcceptorResearchNote,
     TeaAcceptor,
+    TeaStorage,
     Beeeeee;
 
     private ItemStack mStack;
