@@ -69,6 +69,7 @@ import com.github.bartimaeusnek.crossmod.tectech.tileentites.tiered.TT_MetaTileE
 import com.github.bartimaeusnek.crossmod.tectech.tileentites.tiered.TT_MetaTileEntity_Pipe_Energy_LowPower;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import fox.spiteful.avaritia.blocks.LudicrousBlocks;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
@@ -280,8 +281,19 @@ public class ItemRegistry {
                 ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 6,
                 "ElectricImplosionCompressor",
                 "Electric Implosion Compressor").getStackForm(1L);
+
         // EIC depend on neutronium block to pass on structure updates
         int bitmask = GregTech_API.sMachineIDs.getOrDefault(GregTech_API.sBlockMetal5, 0) | (1 << 2);
+        GregTech_API.registerMachineBlock(GregTech_API.sBlockMetal5, bitmask);
+
+        // Also spacetime, transcendent metal, and universium
+        bitmask = GregTech_API.sMachineIDs.getOrDefault(GregTech_API.sBlockMetal9, 0) | (1 << 3) | (1 << 4) | (1 << 8);
+        GregTech_API.registerMachineBlock(GregTech_API.sBlockMetal9, bitmask);
+
+        // Also infinity
+        bitmask = GregTech_API.sMachineIDs.getOrDefault(LudicrousBlocks.resource_block, 0) | (1 << 1);
+        GregTech_API.registerMachineBlock(LudicrousBlocks.resource_block, bitmask);
+
         GregTech_API.registerMachineBlock(GregTech_API.sBlockMetal5, bitmask);
         ItemRegistry.THTR = new GT_TileEntity_THTR(
                 ConfigHandler.IDOffset + GT_Values.VN.length * 8 + 5,

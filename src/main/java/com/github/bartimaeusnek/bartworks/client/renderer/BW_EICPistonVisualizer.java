@@ -1,11 +1,13 @@
 package com.github.bartimaeusnek.bartworks.client.renderer;
 
+import net.minecraft.block.Block;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.relauncher.Side;
@@ -38,7 +40,20 @@ public class BW_EICPistonVisualizer extends EntityFX {
         RenderBlocks.getInstance().blockAccess = this.worldObj;
         RenderBlocks.getInstance().setRenderFromInside(false);
 
-        IIcon icon = GregTech_API.sBlockMetal5.getIcon(0, 2);
+        // Look at nearby block for correct tiered block to use
+        Pair<Block, Integer> tieredBlock;
+        if (this.worldObj != null) {
+            int nX = (int) posX;
+            int nY = (int) posY + 1;
+            int nZ = (int) posZ;
+            Block neighborBlock = this.worldObj.getBlock(nX, nY, nZ);
+            int neighborMeta = this.worldObj.getBlockMetadata(nX, nY, nZ);
+            tieredBlock = Pair.of(neighborBlock, neighborMeta);
+        } else {
+            tieredBlock = Pair.of(GregTech_API.sBlockMetal5, 2);
+        }
+
+        IIcon icon = tieredBlock.getKey().getIcon(0, tieredBlock.getValue());
 
         double x = this.posX + 1;
         double z = this.posZ;
@@ -48,7 +63,7 @@ public class BW_EICPistonVisualizer extends EntityFX {
         double f13 = z - interpPosZ;
         tessellator.setTranslation(f11 - x, f12 - this.posY, f13 - z);
         RenderBlocks.getInstance()
-                .renderBlockUsingTexture(GregTech_API.sBlockMetal5, (int) x, (int) this.posY, (int) z, icon);
+                .renderBlockUsingTexture(tieredBlock.getKey(), (int) x, (int) this.posY, (int) z, icon);
 
         x = this.posX - 1;
         z = this.posZ;
@@ -57,7 +72,7 @@ public class BW_EICPistonVisualizer extends EntityFX {
         f13 = z - interpPosZ;
         tessellator.setTranslation(f11 - x, f12 - this.posY, f13 - z);
         RenderBlocks.getInstance()
-                .renderBlockUsingTexture(GregTech_API.sBlockMetal5, (int) x, (int) this.posY, (int) z, icon);
+                .renderBlockUsingTexture(tieredBlock.getKey(), (int) x, (int) this.posY, (int) z, icon);
 
         x = this.posX;
         z = this.posZ + 1;
@@ -66,7 +81,7 @@ public class BW_EICPistonVisualizer extends EntityFX {
         f13 = z - interpPosZ;
         tessellator.setTranslation(f11 - x, f12 - this.posY, f13 - z);
         RenderBlocks.getInstance()
-                .renderBlockUsingTexture(GregTech_API.sBlockMetal5, (int) x, (int) this.posY, (int) z, icon);
+                .renderBlockUsingTexture(tieredBlock.getKey(), (int) x, (int) this.posY, (int) z, icon);
 
         x = this.posX;
         z = this.posZ - 1;
@@ -75,7 +90,7 @@ public class BW_EICPistonVisualizer extends EntityFX {
         f13 = z - interpPosZ;
         tessellator.setTranslation(f11 - x, f12 - this.posY, f13 - z);
         RenderBlocks.getInstance()
-                .renderBlockUsingTexture(GregTech_API.sBlockMetal5, (int) x, (int) this.posY, (int) z, icon);
+                .renderBlockUsingTexture(tieredBlock.getKey(), (int) x, (int) this.posY, (int) z, icon);
 
         tessellator.setTranslation(0d, 0d, 0d);
 

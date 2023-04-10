@@ -15,25 +15,27 @@ package com.github.bartimaeusnek.bartworks.common.tileentities.multis;
 
 import static com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry.BW_BLOCKS;
 import static com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference.MULTIBLOCK_ADDED_BY_BARTWORKS;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.isAir;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference.TT;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
+import static gregtech.api.enums.GT_HatchElement.*;
 import static gregtech.api.enums.GT_Values.V;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_IMPLOSION_COMPRESSOR;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_IMPLOSION_COMPRESSOR_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_IMPLOSION_COMPRESSOR_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_IMPLOSION_COMPRESSOR_GLOW;
-import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
+import static gregtech.api.enums.Textures.BlockIcons.*;
+import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
+
+import org.apache.commons.lang3.tuple.Pair;
 
 import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.client.renderer.BW_EICPistonVisualizer;
@@ -42,35 +44,34 @@ import com.github.bartimaeusnek.bartworks.common.net.EICPacket;
 import com.github.bartimaeusnek.bartworks.util.Coords;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
-import com.gtnewhorizon.structurelib.structure.AutoPlaceEnvironment;
-import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
-import com.gtnewhorizon.structurelib.structure.IStructureElement;
-import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.gtnewhorizon.structurelib.structure.*;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import fox.spiteful.avaritia.blocks.LudicrousBlocks;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_ExtendedPowerMultiBlockBase;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.*;
 
 public class GT_TileEntity_ElectricImplosionCompressor
-        extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_TileEntity_ElectricImplosionCompressor> {
+        extends GT_MetaTileEntity_ExtendedPowerMultiBlockBase<GT_TileEntity_ElectricImplosionCompressor>
+        implements ISurvivalConstructable {
 
     public static GT_Recipe.GT_Recipe_Map eicMap;
     private static final boolean pistonEnabled = !ConfigHandler.disablePistonInEIC;
     private Boolean piston = true;
     private static final SoundResource sound = SoundResource.RANDOM_EXPLODE;
     private final ArrayList<ChunkCoordinates> chunkCoordinates = new ArrayList<>(5);
+    private int mBlockTier = 0;
+    private int mCasing;
 
     public GT_TileEntity_ElectricImplosionCompressor(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -92,52 +93,62 @@ public class GT_TileEntity_ElectricImplosionCompressor
                                     { "t~t", "tft", "ttt" }, { "ttt", "tft", "ttt" }, { "CCC", "CeC", "CCC" }, }))
             .addElement('c', ofChain(ofBlock(GregTech_API.sBlockCasings2, 0), ofBlock(GregTech_API.sBlockCasings3, 4)))
             .addElement('t', ofBlock(BW_BLOCKS[2], 1)).addElement('f', ofBlock(BW_BLOCKS[2], 0))
-            .addElement('n', ofBlock(GregTech_API.sBlockMetal5, 2))
+            .addElement(
+                    'n',
+                    StructureUtility.ofBlocksTiered(
+                            tieredBlockConverter(),
+                            getAllBlockTiers(),
+                            0,
+                            GT_TileEntity_ElectricImplosionCompressor::setBlockTier,
+                            GT_TileEntity_ElectricImplosionCompressor::getBlockTier))
             .addElement(
                     'C',
-                    ofChain(
-                            ofHatchAdder(
-                                    GT_TileEntity_ElectricImplosionCompressor::addInputToMachineList,
-                                    CASING_INDEX,
-                                    1),
-                            ofHatchAdder(
-                                    GT_TileEntity_ElectricImplosionCompressor::addOutputToMachineList,
-                                    CASING_INDEX,
-                                    1),
-                            ofHatchAdder(
-                                    GT_TileEntity_ElectricImplosionCompressor::addMaintenanceToMachineList,
-                                    CASING_INDEX,
-                                    1),
-                            ofBlock(GregTech_API.sBlockCasings2, 0),
-                            ofBlock(GregTech_API.sBlockCasings3, 4)))
+                    buildHatchAdder(GT_TileEntity_ElectricImplosionCompressor.class)
+                            .atLeast(InputBus, OutputBus, Maintenance, InputHatch, OutputHatch)
+                            .casingIndex(CASING_INDEX).dot(1).buildAndChain(
+                                    onElementPass(x -> ++x.mCasing, ofBlock(GregTech_API.sBlockCasings2, 0)),
+                                    onElementPass(x -> ++x.mCasing, ofBlock(GregTech_API.sBlockCasings3, 4))))
             .addElement(
                     'e',
-                    ofHatchAdder(
-                            GT_TileEntity_ElectricImplosionCompressor::addEnergyInputToMachineList,
-                            CASING_INDEX,
-                            2))
+                    buildHatchAdder(GT_TileEntity_ElectricImplosionCompressor.class).atLeast(Energy.or(ExoticEnergy))
+                            .casingIndex(CASING_INDEX).dot(2).buildAndChain(
+                                    onElementPass(x -> ++x.mCasing, ofBlock(GregTech_API.sBlockCasings2, 0)),
+                                    onElementPass(x -> ++x.mCasing, ofBlock(GregTech_API.sBlockCasings3, 4))))
             .addElement('N', new IStructureElement<GT_TileEntity_ElectricImplosionCompressor>() {
+
+                // Much of this based on StructureUtility.ofBlocksTiered
+                private final List<Pair<Block, Integer>> tiers = getAllBlockTiers();
 
                 @Override
                 public boolean check(GT_TileEntity_ElectricImplosionCompressor te, World world, int x, int y, int z) {
                     if (!te.piston && !world.isAirBlock(x, y, z)) return false;
-                    if (te.piston && !(world.getBlock(x, y, z) == GregTech_API.sBlockMetal5
-                            && world.getBlockMetadata(x, y, z) == 2))
-                        return false;
+                    if (te.piston) {
+                        Block candidate = world.getBlock(x, y, z);
+                        int candidateMeta = world.getBlockMetadata(x, y, z);
+                        if (getTierOfBlock(candidate, candidateMeta) == -1) {
+                            return false;
+                        }
+                    }
                     return true;
+                }
+
+                private Pair<Block, Integer> getTier(ItemStack trigger) {
+                    return tiers.get(Math.min(Math.max(trigger.stackSize, 1), tiers.size()) - 1);
                 }
 
                 @Override
                 public boolean spawnHint(GT_TileEntity_ElectricImplosionCompressor te, World world, int x, int y, int z,
                         ItemStack itemStack) {
-                    if (te.piston) StructureLibAPI.hintParticle(world, x, y, z, GregTech_API.sBlockMetal5, 2);
+                    Pair<Block, Integer> tier = getTier(itemStack);
+                    if (te.piston) StructureLibAPI.hintParticle(world, x, y, z, tier.getKey(), tier.getValue());
                     return true;
                 }
 
                 @Override
                 public boolean placeBlock(GT_TileEntity_ElectricImplosionCompressor te, World world, int x, int y,
                         int z, ItemStack itemStack) {
-                    if (te.piston) world.setBlock(x, y, z, GregTech_API.sBlockMetal5, 2, 3);
+                    Pair<Block, Integer> tier = getTier(itemStack);
+                    if (te.piston) world.setBlock(x, y, z, tier.getKey(), tier.getValue(), 3);
                     else world.setBlockToAir(x, y, z);
                     return true;
                 }
@@ -155,6 +166,55 @@ public class GT_TileEntity_ElectricImplosionCompressor
                 }
             }).build();
 
+    public static List<Pair<Block, Integer>> getAllBlockTiers() {
+        return new ArrayList<Pair<Block, Integer>>() {
+
+            {
+                add(Pair.of(GregTech_API.sBlockMetal5, 2));
+                add(Pair.of(LudicrousBlocks.resource_block, 1));
+                add(Pair.of(GregTech_API.sBlockMetal9, 4));
+                add(Pair.of(GregTech_API.sBlockMetal9, 3));
+                add(Pair.of(GregTech_API.sBlockMetal9, 8));
+            }
+
+            ;
+        };
+    }
+
+    public static ITierConverter<Integer> tieredBlockConverter() {
+        return GT_TileEntity_ElectricImplosionCompressor::getTierOfBlock;
+    }
+
+    private static int getTierOfBlock(Block block, int meta) {
+        if (block == null) {
+            return -1;
+        }
+        if (block == GregTech_API.sBlockMetal5 && meta == 2) {
+            return 1; // Neutronium
+        } else if (block == LudicrousBlocks.resource_block && meta == 1) {
+            return 2; // Infinity
+        } else if (block == GregTech_API.sBlockMetal9) {
+            switch (meta) {
+                case 4: // Transcendent Metal
+                    return 3;
+                case 3: // SpaceTime
+                    return 4;
+                case 8: // Universium
+                    return 5;
+            }
+        }
+
+        return -1;
+    }
+
+    private void setBlockTier(int tier) {
+        mBlockTier = tier;
+    }
+
+    private int getBlockTier() {
+        return mBlockTier;
+    }
+
     @Override
     public IStructureDefinition<GT_TileEntity_ElectricImplosionCompressor> getStructureDefinition() {
         return STRUCTURE_DEFINITION;
@@ -170,45 +230,87 @@ public class GT_TileEntity_ElectricImplosionCompressor
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Implosion Compressor").addInfo("Explosions are fun")
                 .addInfo("Controller block for the Electric Implosion Compressor")
-                .addInfo("Uses electricity instead of Explosives").addSeparator().beginStructureBlock(3, 9, 3, false)
-                .addController("Front 3rd layer center").addCasingInfo("Solid Steel Machine Casing", 8)
+                .addInfo("Uses electricity instead of Explosives").addInfo("Can parallel up to 4^(Tier - 1)")
+                .addInfo("Tier is determined by containment block")
+                .addInfo("Valid blocks: Neutronium, Infinity, Transcendent Metal, Spacetime, Universium")
+                .addInfo("Requires UHV or better energy hatch to work").addInfo("Supports " + TT + " energy hatches")
+                .addSeparator().beginStructureBlock(3, 9, 3, false).addController("Front 3rd layer center")
+                .addCasingInfo("Solid Steel Machine Casing", 8)
                 .addStructureInfo("Casings can be replaced with Explosion Warning Signs")
                 .addOtherStructurePart("Transformer-Winding Blocks", "Outer layer 2,3,7,8")
                 .addOtherStructurePart("Nickel-Zinc-Ferrite Blocks", "Inner layer 2,3,7,8")
-                .addOtherStructurePart("Neutronium Blocks", "Layer 4,5,6").addMaintenanceHatch("Any bottom casing", 1)
+                .addOtherStructurePart("Containment Blocks", "Layer 4,5,6").addMaintenanceHatch("Any bottom casing", 1)
                 .addInputBus("Any bottom casing", 1).addInputHatch("Any bottom casing", 1)
-                .addOutputBus("Any bottom casing", 1).addEnergyHatch("Bottom and top middle", 2)
+                .addOutputBus("Any bottom casing", 1).addEnergyHatch("Bottom middle and/or top middle", 2)
                 .toolTipFinisher(MULTIBLOCK_ADDED_BY_BARTWORKS);
         return tt;
     }
 
     @Override
     public boolean checkRecipe(ItemStack aStack) {
-
-        if (this.mEnergyHatches.get(0).getEUVar() <= 0 || this.mEnergyHatches.get(1).getEUVar() <= 0) return false;
-
-        ItemStack[] tItemInputs = getCompactedInputs();
-        FluidStack[] tFluidInputs = getCompactedFluids();
+        lEUt = 0;
+        mOutputItems = null;
+        mOutputFluids = null;
+        long tTotalEU = getMaxInputEu();
 
         long tVoltage = getMaxInputVoltage();
         byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
 
+        // Disallow energy hatches below UHV
+        if (tTier < 9) {
+            return false;
+        }
+
+        ItemStack[] tItemInputs = getStoredInputs().toArray(new ItemStack[0]);
+        FluidStack[] tFluidInputs = getStoredFluids().toArray(new FluidStack[0]);
+
         if ((tItemInputs.length > 0) || (tFluidInputs.length > 0)) {
             GT_Recipe tRecipe = eicMap.findRecipe(getBaseMetaTileEntity(), false, V[tTier], tFluidInputs, tItemInputs);
-            if (tRecipe != null && tRecipe.isRecipeInputEqual(true, tFluidInputs, tItemInputs)) {
-                this.mEfficiency = 10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000;
-                this.mEfficiencyIncrease = 10000;
-                calculateOverclockedNessMulti(tRecipe.mEUt, tRecipe.mDuration, 1, tVoltage);
-                // In case recipe is too OP for that machine
-                if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1) return false;
-                if (this.mEUt > 0) {
-                    this.mEUt = -this.mEUt;
-                }
-                this.mOutputItems = tRecipe.mOutputs.clone();
-                this.mOutputFluids = tRecipe.mFluidOutputs.clone();
-                this.updateSlots();
-                return true;
+            if (tRecipe == null) {
+                return false;
             }
+
+            int tCurrentMaxParallel = 1;
+            if (mBlockTier > 1) {
+                tCurrentMaxParallel = (int) Math.pow(4, Math.max(mBlockTier - 1, 0));
+            }
+
+            GT_ParallelHelper helper = new GT_ParallelHelper().setRecipe(tRecipe).setItemInputs(tItemInputs)
+                    .setFluidInputs(tFluidInputs).setAvailableEUt(tTotalEU).setMaxParallel(tCurrentMaxParallel)
+                    .enableConsumption().enableOutputCalculation();
+
+            if (batchMode) {
+                helper.enableBatchMode(128);
+            }
+
+            helper.build();
+
+            if (helper.getCurrentParallel() == 0) {
+                return false;
+            }
+
+            GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(tRecipe.mEUt)
+                    .setEUt(getAverageInputVoltage()).setAmperage(getMaxInputAmps()).setDuration(tRecipe.mDuration)
+                    .setParallel((int) Math.floor(helper.getCurrentParallel() / helper.getDurationMultiplier()))
+                    .calculate();
+
+            lEUt = -calculator.getConsumption();
+            mMaxProgresstime = (int) Math.ceil(calculator.getDuration() * helper.getDurationMultiplier());
+
+            this.mEfficiency = 10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000;
+            this.mEfficiencyIncrease = 10000;
+
+            // In case recipe is too OP for that machine
+            if (mMaxProgresstime == Integer.MAX_VALUE - 1 && lEUt == Long.MAX_VALUE - 1) return false;
+            if (this.lEUt > 0) {
+                this.lEUt = -this.lEUt;
+            }
+
+            this.mOutputItems = helper.getItemOutputs();
+            this.mOutputFluids = helper.getFluidOutputs();
+
+            this.updateSlots();
+            return true;
         }
         return false;
     }
@@ -233,17 +335,6 @@ public class GT_TileEntity_ElectricImplosionCompressor
     public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
         super.onFirstTick(aBaseMetaTileEntity);
         updateChunkCoordinates();
-    }
-
-    @Override
-    public boolean drainEnergyInput(long aEU) {
-        if (aEU <= 0) return true;
-        GT_MetaTileEntity_Hatch_Energy h1 = this.mEnergyHatches.get(0), h2 = this.mEnergyHatches.get(1);
-        if (!isValidMetaTileEntity(h1) || !isValidMetaTileEntity(h2)) return false;
-        if (!h1.getBaseMetaTileEntity().decreaseStoredEnergyUnits(aEU / 2, false)
-                || !h2.getBaseMetaTileEntity().decreaseStoredEnergyUnits(aEU / 2, false))
-            return false;
-        return true;
     }
 
     @Override
@@ -287,9 +378,15 @@ public class GT_TileEntity_ElectricImplosionCompressor
         IGregTechTileEntity aBaseMetaTileEntity = this.getBaseMetaTileEntity();
         if (!aBaseMetaTileEntity.isServerSide()) return;
         if (!this.piston) {
-            chunkCoordinates.forEach(
-                    c -> aBaseMetaTileEntity.getWorld()
-                            .setBlock(c.posX, c.posY, c.posZ, GregTech_API.sBlockMetal5, 2, 3));
+            List<Pair<Block, Integer>> tiers = getAllBlockTiers();
+            Pair<Block, Integer> tieredBlock = tiers.get(Math.min(mBlockTier, tiers.size()) - 1);
+            chunkCoordinates.forEach(c -> {
+                // Don't replace real blocks in case user has placed something (e.g. tier upgrade)
+                if (aBaseMetaTileEntity.getWorld().isAirBlock(c.posX, c.posY, c.posZ)) {
+                    aBaseMetaTileEntity.getWorld()
+                            .setBlock(c.posX, c.posY, c.posZ, tieredBlock.getKey(), tieredBlock.getValue(), 3);
+                }
+            });
             this.piston = !this.piston;
         }
     }
@@ -343,8 +440,10 @@ public class GT_TileEntity_ElectricImplosionCompressor
 
     @Override
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack itemStack) {
+        this.mCasing = 0;
+        setBlockTier(0);
         boolean isOK = checkPiece(STRUCTURE_PIECE_MAIN, 1, 6, 0);
-        isOK = isOK && this.mMaintenanceHatches.size() == 1 && this.mEnergyHatches.size() == 2;
+        isOK = isOK && this.mMaintenanceHatches.size() == 1 && getExoticAndNormalEnergyHatchList().size() >= 1;
         if (isOK) {
             activatePiston();
             return true;
@@ -397,5 +496,27 @@ public class GT_TileEntity_ElectricImplosionCompressor
     @Override
     public void construct(ItemStack itemStack, boolean b) {
         buildPiece(STRUCTURE_PIECE_MAIN, itemStack, b, 1, 6, 0);
+    }
+
+    @Override
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
+        if (mMachine) return -1;
+        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 6, 0, elementBudget, env, false, true);
+    }
+
+    @Override
+    public boolean onWireCutterRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY,
+            float aZ) {
+        if (aPlayer.isSneaking()) {
+            batchMode = !batchMode;
+            if (batchMode) {
+                GT_Utility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
+            } else {
+                GT_Utility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
+            }
+            return true;
+        }
+
+        return false;
     }
 }
