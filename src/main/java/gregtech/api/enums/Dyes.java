@@ -53,11 +53,7 @@ public enum Dyes implements IColorModulationContainer {
     private final ArrayList<Fluid> mFluidDyes = new GT_ArrayList<>(false, 1);
 
     Dyes(int aIndex, int aR, int aG, int aB, String aName) {
-        mIndex = (byte) aIndex;
-        mName = aName;
-        mRGBa = new short[] { (short) aR, (short) aG, (short) aB, 0 };
-        mOriginalRGBa = mRGBa.clone();
-        formatting = EnumChatFormatting.GRAY;
+        this(aIndex, aR, aR, aB, aName, EnumChatFormatting.GRAY);
     }
 
     Dyes(int aIndex, int aR, int aG, int aB, String aName, EnumChatFormatting formatting) {
