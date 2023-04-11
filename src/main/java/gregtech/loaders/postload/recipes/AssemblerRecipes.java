@@ -363,30 +363,41 @@ public class AssemblerRecipes implements Runnable {
             .eut(TierEU.RECIPE_IV)
             .addTo(sAssemblerRecipes);
 
-        GT_Values.RA.addAssemblerRecipe(
-            new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 4L),
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.plate.get(Materials.Steel), 4),
                 GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.Basic), 4),
-                GT_Utility.getIntegratedCircuit(3) },
-            GT_Values.NF,
-            ItemList.Schematic.get(1L),
-            600,
-            16);
-        GT_Values.RA.addAssemblerRecipe(
-            new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Aluminium, 3L),
+                GT_Utility.getIntegratedCircuit(3))
+            .itemOutputs(ItemList.Schematic.get(1L))
+            .noFluidInputs()
+            .noFluidOutputs()
+            .duration(30 * SECONDS)
+            .eut(16)
+            .addTo(sAssemblerRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.plate.get(Materials.Aluminium), 3),
                 GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.Good), 2),
-                GT_Utility.getIntegratedCircuit(3) },
-            GT_Values.NF,
-            ItemList.Schematic.get(1L),
-            300,
-            (int) TierEU.RECIPE_LV);
-        GT_Values.RA.addAssemblerRecipe(
-            new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.plate, Materials.StainlessSteel, 2L),
+                GT_Utility.getIntegratedCircuit(3))
+            .itemOutputs(ItemList.Schematic.get(1L))
+            .noFluidInputs()
+            .noFluidOutputs()
+            .duration(15 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(sAssemblerRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.plate.get(Materials.StainlessSteel), 2),
                 GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.Advanced), 1),
-                GT_Utility.getIntegratedCircuit(3) },
-            GT_Values.NF,
-            ItemList.Schematic.get(1L),
-            150,
-            48);
+                GT_Utility.getIntegratedCircuit(3))
+            .itemOutputs(ItemList.Schematic.get(1L))
+            .noFluidInputs()
+            .noFluidOutputs()
+            .duration(7 * SECONDS + 10 * TICKS)
+            .eut(48)
+            .addTo(sAssemblerRecipes);
 
         GT_Values.RA.addAssemblerRecipe(
             new ItemStack[] { ItemList.Hull_HV.get(1L),
