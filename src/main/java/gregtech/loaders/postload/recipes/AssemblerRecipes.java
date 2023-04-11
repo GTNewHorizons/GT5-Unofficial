@@ -659,7 +659,7 @@ public class AssemblerRecipes implements Runnable {
                 ItemList.Hull_LuV.get(1L),
                 GT_Utility.getIntegratedCircuit(4))
             .itemOutputs(ItemList.Hatch_Input_Multi_2x2_LuV.get(1L))
-            .fluidInputs(Materials.Glass.getMolten(2304L))
+            .fluidInputs(Materials.Polytetrafluoroethylene.getMolten(2304L))
             .noFluidOutputs()
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -671,7 +671,7 @@ public class AssemblerRecipes implements Runnable {
                 ItemList.Hull_ZPM.get(1L),
                 GT_Utility.getIntegratedCircuit(4))
             .itemOutputs(ItemList.Hatch_Input_Multi_2x2_ZPM.get(1L))
-            .fluidInputs(Materials.Glass.getMolten(2304L))
+            .fluidInputs(Materials.Polytetrafluoroethylene.getMolten(2304L))
             .noFluidOutputs()
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -683,7 +683,7 @@ public class AssemblerRecipes implements Runnable {
                 ItemList.Hull_UV.get(1L),
                 GT_Utility.getIntegratedCircuit(4))
             .itemOutputs(ItemList.Hatch_Input_Multi_2x2_UV.get(1L))
-            .fluidInputs(Materials.Glass.getMolten(2304L))
+            .fluidInputs(Materials.Polybenzimidazole.getMolten(2304L))
             .noFluidOutputs()
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_LV)
@@ -695,7 +695,7 @@ public class AssemblerRecipes implements Runnable {
                 ItemList.Hull_MAX.get(1L),
                 GT_Utility.getIntegratedCircuit(4))
             .itemOutputs(ItemList.Hatch_Input_Multi_2x2_UHV.get(1L))
-            .fluidInputs(Materials.Glass.getMolten(2304L))
+            .fluidInputs(Materials.Polybenzimidazole.getMolten(2304L))
             .noFluidOutputs()
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_LV)
