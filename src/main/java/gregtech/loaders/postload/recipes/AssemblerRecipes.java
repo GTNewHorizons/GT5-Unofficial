@@ -489,8 +489,6 @@ public class AssemblerRecipes implements Runnable {
             .eut(TierEU.RECIPE_IV)
             .addTo(sAssemblerRecipes);
 
-        ----
-
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 ItemList.Hull_HV.get(1L),
@@ -581,36 +579,55 @@ public class AssemblerRecipes implements Runnable {
             .eut(TierEU.RECIPE_IV)
             .addTo(sAssemblerRecipes);
 
-        GT_Values.RA.addAssemblerRecipe(
-            new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.pipeHuge, Materials.Steel, 2L),
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.pipeHuge, Materials.Steel, 2L),
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 6L),
-                GT_OreDictUnificator.get(OrePrefixes.gear, Materials.Steel, 2L), GT_Utility.getIntegratedCircuit(2) },
-            Materials.Tin.getMolten(144L),
-            ItemList.Long_Distance_Pipeline_Fluid.get(2L),
-            300,
-            16);
-        GT_Values.RA.addAssemblerRecipe(
-            new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.pipeHuge, Materials.Tin, 2L),
+                GT_OreDictUnificator.get(OrePrefixes.gear, Materials.Steel, 2L),
+                GT_Utility.getIntegratedCircuit(2))
+            .itemOutputs(ItemList.Long_Distance_Pipeline_Fluid.get(2L))
+            .fluidInputs(Materials.Tin.getMolten(144L))
+            .noFluidOutputs()
+            .duration(15 * SECONDS)
+            .eut(16)
+            .addTo(sAssemblerRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.pipeHuge, Materials.Tin, 2L),
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 6L),
-                GT_OreDictUnificator.get(OrePrefixes.gear, Materials.Steel, 2L), GT_Utility.getIntegratedCircuit(2) },
-            Materials.Tin.getMolten(144L),
-            ItemList.Long_Distance_Pipeline_Item.get(2L),
-            300,
-            16);
-        GT_Values.RA.addAssemblerRecipe(
-            new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Steel, 2L),
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 9L), GT_Utility.getIntegratedCircuit(24) },
-            Materials.Tin.getMolten(144L),
-            ItemList.Long_Distance_Pipeline_Fluid_Pipe.get(64L),
-            600,
-            24);
-        GT_Values.RA.addAssemblerRecipe(
-            new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Tin, 2L),
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 9L), GT_Utility.getIntegratedCircuit(24) },
-            Materials.Tin.getMolten(144L),
-            ItemList.Long_Distance_Pipeline_Item_Pipe.get(64L),
-            600,
-            24);
+                GT_OreDictUnificator.get(OrePrefixes.gear, Materials.Steel, 2L),
+                GT_Utility.getIntegratedCircuit(2))
+            .itemOutputs(ItemList.Long_Distance_Pipeline_Item.get(2L))
+            .fluidInputs(Materials.Tin.getMolten(144L))
+            .noFluidOutputs()
+            .duration(15 * SECONDS)
+            .eut(16)
+            .addTo(sAssemblerRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Steel, 2L),
+                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 9L),
+                GT_Utility.getIntegratedCircuit(24))
+            .itemOutputs(ItemList.Long_Distance_Pipeline_Fluid_Pipe.get(64L))
+            .fluidInputs(Materials.Tin.getMolten(144L))
+            .noFluidOutputs()
+            .duration(30 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(sAssemblerRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Tin, 2L),
+                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 9L),
+                GT_Utility.getIntegratedCircuit(24))
+            .itemOutputs(ItemList.Long_Distance_Pipeline_Item_Pipe.get(64L))
+            .fluidInputs(Materials.Tin.getMolten(144L))
+            .noFluidOutputs()
+            .duration(30 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(sAssemblerRecipes);
 
         GT_Values.RA.addAssemblerRecipe(
             new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.pipeQuadruple, Materials.StainlessSteel, 1L),
