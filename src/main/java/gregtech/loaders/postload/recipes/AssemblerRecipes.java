@@ -701,14 +701,18 @@ public class AssemblerRecipes implements Runnable {
             .eut(TierEU.RECIPE_LV)
             .addTo(sAssemblerRecipes);
 
-        GT_Values.RA.addAssemblerRecipe(
-            new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 4L),
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 4L),
                 GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.TungstenSteel, 1L),
-                ItemList.Robot_Arm_IV.get(2L), GT_Utility.getIntegratedCircuit(3) },
-            GT_Values.NF,
-            ItemList.Casing_Gearbox_TungstenSteel.get(1L),
-            200,
-            (int) TierEU.RECIPE_LV);
+                ItemList.Robot_Arm_IV.get(2L),
+                GT_Utility.getIntegratedCircuit(3))
+            .itemOutputs(ItemList.Casing_Gearbox_TungstenSteel.get(1L))
+            .noFluidInputs()
+            .noFluidOutputs()
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(sAssemblerRecipes);
 
         { // limiting lifetime of the variables
             ItemStack flask = ItemList.VOLUMETRIC_FLASK.get(1);
