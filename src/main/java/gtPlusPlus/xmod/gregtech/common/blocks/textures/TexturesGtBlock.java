@@ -417,6 +417,12 @@ public class TexturesGtBlock {
             "iconsets/MACHINE_CASING_FUSION_COIL_II");
     public static final CustomIcon TEXTURE_CASING_FUSION_CASING_ULTRA = new CustomIcon(
             "iconsets/MACHINE_CASING_FUSION_GLASS_ULTRA");
+
+    public static final CustomIcon TEXTURE_CASING_FUSION_COIL_III = new CustomIcon("iconsets/MACHINE_CASING_FUSION_4");
+    public static final CustomIcon TEXTURE_CASING_FUSION_COIL_III_INNER = new CustomIcon(
+            "iconsets/MACHINE_CASING_FUSION_COIL_III");
+    public static final CustomIcon TEXTURE_CASING_FUSION_CASING_HYPER = new CustomIcon(
+            "iconsets/MACHINE_CASING_FUSION_GLASS_HYPER");
     //
     public static final CustomIcon TEXTURE_CASING_FUSION_COIL_II_1 = new CustomIcon("iconsets/FUSIONIII_1");
     public static final CustomIcon TEXTURE_CASING_FUSION_COIL_II_2 = new CustomIcon("iconsets/FUSIONIII_2");
@@ -430,6 +436,20 @@ public class TexturesGtBlock {
     public static final CustomIcon TEXTURE_CASING_FUSION_COIL_II_10 = new CustomIcon("iconsets/FUSIONIII_10");
     public static final CustomIcon TEXTURE_CASING_FUSION_COIL_II_11 = new CustomIcon("iconsets/FUSIONIII_11");
     public static final CustomIcon TEXTURE_CASING_FUSION_COIL_II_12 = new CustomIcon("iconsets/FUSIONIII_12");
+
+    // MK5 Fusion casings
+    public static final CustomIcon TEXTURE_CASING_FUSION_COIL_III_1 = new CustomIcon("iconsets/FUSIONIV_1");
+    public static final CustomIcon TEXTURE_CASING_FUSION_COIL_III_2 = new CustomIcon("iconsets/FUSIONIV_2");
+    public static final CustomIcon TEXTURE_CASING_FUSION_COIL_III_3 = new CustomIcon("iconsets/FUSIONIV_3");
+    public static final CustomIcon TEXTURE_CASING_FUSION_COIL_III_4 = new CustomIcon("iconsets/FUSIONIV_4");
+    public static final CustomIcon TEXTURE_CASING_FUSION_COIL_III_5 = new CustomIcon("iconsets/FUSIONIV_5");
+    public static final CustomIcon TEXTURE_CASING_FUSION_COIL_III_6 = new CustomIcon("iconsets/FUSIONIV_6");
+    public static final CustomIcon TEXTURE_CASING_FUSION_COIL_III_7 = new CustomIcon("iconsets/FUSIONIV_7");
+    public static final CustomIcon TEXTURE_CASING_FUSION_COIL_III_8 = new CustomIcon("iconsets/FUSIONIV_8");
+    public static final CustomIcon TEXTURE_CASING_FUSION_COIL_III_9 = new CustomIcon("iconsets/FUSIONIV_9");
+    public static final CustomIcon TEXTURE_CASING_FUSION_COIL_III_10 = new CustomIcon("iconsets/FUSIONIV_10");
+    public static final CustomIcon TEXTURE_CASING_FUSION_COIL_III_11 = new CustomIcon("iconsets/FUSIONIV_11");
+    public static final CustomIcon TEXTURE_CASING_FUSION_COIL_III_12 = new CustomIcon("iconsets/FUSIONIV_12");
 
     // Overlays
     // Fan Textures
@@ -476,6 +496,10 @@ public class TexturesGtBlock {
     private static final CustomIcon Internal_Casing_Machine_Screen_3 = new CustomIcon(
             "TileEntities/adv_machine_screen_random3");
     public static final CustomIcon Casing_Machine_Screen_3 = Internal_Casing_Machine_Screen_3;
+
+    private static final CustomIcon Internal_Casing_Machine_Screen_Rainbow = new CustomIcon(
+            "TileEntities/overlay_rainbowscreen");
+    public static final CustomIcon Casing_Machine_Screen_Rainbow = Internal_Casing_Machine_Screen_Rainbow;
     private static final CustomIcon Internal_Casing_Machine_Screen_Frequency = new CustomIcon(
             "TileEntities/adv_machine_screen_frequency");
     public static final CustomIcon Casing_Machine_Screen_Frequency = Internal_Casing_Machine_Screen_Frequency;
@@ -847,6 +871,12 @@ public class TexturesGtBlock {
             TEXTURE_CASING_FUSION_COIL_II_5, TEXTURE_CASING_FUSION_COIL_II_6, TEXTURE_CASING_FUSION_COIL_II_7,
             TEXTURE_CASING_FUSION_COIL_II_8, TEXTURE_CASING_FUSION_COIL_II_9, TEXTURE_CASING_FUSION_COIL_II_10,
             TEXTURE_CASING_FUSION_COIL_II_11, TEXTURE_CASING_FUSION_COIL_II_12 };
+
+    public static IIconContainer[] CONNECTED_FUSION_HULLS_MK4 = new IIconContainer[] { TEXTURE_CASING_FUSION_COIL_III_1,
+            TEXTURE_CASING_FUSION_COIL_III_2, TEXTURE_CASING_FUSION_COIL_III_3, TEXTURE_CASING_FUSION_COIL_III_4,
+            TEXTURE_CASING_FUSION_COIL_III_5, TEXTURE_CASING_FUSION_COIL_III_6, TEXTURE_CASING_FUSION_COIL_III_7,
+            TEXTURE_CASING_FUSION_COIL_III_8, TEXTURE_CASING_FUSION_COIL_III_9, TEXTURE_CASING_FUSION_COIL_III_10,
+            TEXTURE_CASING_FUSION_COIL_III_11, TEXTURE_CASING_FUSION_COIL_III_12 };
 
     public static IIconContainer[] TIERED_MACHINE_HULLS = new IIconContainer[] { TEXTURE_CASING_TIERED_ULV,
             TEXTURE_CASING_TIERED_LV, TEXTURE_CASING_TIERED_MV, TEXTURE_CASING_TIERED_HV, TEXTURE_CASING_TIERED_EV,

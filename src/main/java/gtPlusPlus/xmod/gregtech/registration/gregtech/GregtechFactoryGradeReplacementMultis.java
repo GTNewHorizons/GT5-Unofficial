@@ -3,10 +3,7 @@ package gtPlusPlus.xmod.gregtech.registration.gregtech;
 import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.GregtechMetaTileEntity_IndustrialVacuumFreezer;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.advanced.GregtechMetaTileEntity_Adv_DistillationTower;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.advanced.GregtechMetaTileEntity_Adv_EBF;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.advanced.GregtechMetaTileEntity_Adv_Fusion_MK4;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.advanced.GregtechMetaTileEntity_Adv_Implosion;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.advanced.*;
 
 public class GregtechFactoryGradeReplacementMultis {
 
@@ -28,6 +25,9 @@ public class GregtechFactoryGradeReplacementMultis {
                         "Cryogenic Freezer").getStackForm(1L));
         GregtechItemList.FusionComputer_UV2.set(
                 new GregtechMetaTileEntity_Adv_Fusion_MK4(965, "fusioncomputer.tier.09", "FusionTech MK IV")
+                        .getStackForm(1L));
+        GregtechItemList.FusionComputer_UV3.set(
+                new GregtechMetaTileEntity_Adv_Fusion_MK5(975, "fusioncomputer.tier.10", "FusionTech MK V")
                         .getStackForm(1L));
 
         // 31021

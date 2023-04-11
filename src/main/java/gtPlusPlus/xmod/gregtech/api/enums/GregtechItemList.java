@@ -405,6 +405,12 @@ public enum GregtechItemList implements GregtechItemContainer {
     Casing_Fusion_External,
     Casing_Fusion_Internal,
 
+    // FusionTech MK V
+
+    FusionComputer_UV3,
+    Casing_Fusion_External2,
+    Casing_Fusion_Internal2,
+
     // large mixer
     Industrial_Mixer,
 

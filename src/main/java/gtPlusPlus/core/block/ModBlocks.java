@@ -57,6 +57,7 @@ public final class ModBlocks {
     public static Block blockCasings3Misc;
     public static Block blockCasings4Misc;
     public static Block blockCasings5Misc;
+    public static Block blockCasings6Misc;
     public static Block blockCasingsTieredGTPP;
     public static Block blockSpecialMultiCasings;
     public static Block blockSpecialMultiCasings2;
