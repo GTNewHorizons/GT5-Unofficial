@@ -75,7 +75,7 @@ public class GregtechMetaTileEntity_AlloyBlastSmelter extends
     @Override
     public void loadNBTData(final NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        if (!aNBT.hasKey(INPUT_SEPARATION_NBT_KEY)) {
+        if (aNBT.hasKey("isBussesSeparate")) {
             inputSeparation = aNBT.getBoolean("isBussesSeparate");
         }
     }
