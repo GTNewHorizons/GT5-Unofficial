@@ -323,6 +323,268 @@ public class AssemblerRecipes implements Runnable {
             .duration(17 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_MV)
             .addTo(sAssemblerRecipes);
+			
+        GT_Values.RA.addAssemblerRecipe(
+                new ItemStack[] { ItemList.Electric_Pump_HV.get(1L), ItemList.Electric_Motor_HV.get(1L),
+                        GT_OreDictUnificator.get(OrePrefixes.gear.get(Materials.StainlessSteel), 2L),
+                        GT_Utility.getIntegratedCircuit(5) },
+                GT_Values.NF,
+                ItemList.Steam_Valve_HV.get(1L),
+                300,
+                (int) TierEU.RECIPE_HV);
+        GT_Values.RA.addAssemblerRecipe(
+                new ItemStack[] { ItemList.Electric_Pump_EV.get(1L), ItemList.Electric_Motor_EV.get(1L),
+                        GT_OreDictUnificator.get(OrePrefixes.gear.get(Materials.Titanium), 2L),
+                        GT_Utility.getIntegratedCircuit(5) },
+                GT_Values.NF,
+                ItemList.Steam_Valve_EV.get(1L),
+                250,
+                (int) TierEU.RECIPE_EV);
+        GT_Values.RA.addAssemblerRecipe(
+                new ItemStack[] { ItemList.Electric_Pump_IV.get(1L), ItemList.Electric_Motor_IV.get(1L),
+                        GT_OreDictUnificator.get(OrePrefixes.gear.get(Materials.TungstenSteel), 2L),
+                        GT_Utility.getIntegratedCircuit(5) },
+                GT_Values.NF,
+                ItemList.Steam_Valve_IV.get(1L),
+                200,
+                (int) TierEU.RECIPE_IV);
+			
+			GT_Values.RA.addAssemblerRecipe(
+                new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 4L),
+                        GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.Basic), 4),
+                        GT_Utility.getIntegratedCircuit(3) },
+                GT_Values.NF,
+                ItemList.Schematic.get(1L),
+                600,
+                16);
+        GT_Values.RA.addAssemblerRecipe(
+                new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Aluminium, 3L),
+                        GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.Good), 2),
+                        GT_Utility.getIntegratedCircuit(3) },
+                GT_Values.NF,
+                ItemList.Schematic.get(1L),
+                300,
+                (int) TierEU.RECIPE_LV);
+        GT_Values.RA.addAssemblerRecipe(
+                new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.plate, Materials.StainlessSteel, 2L),
+                        GT_OreDictUnificator.get(OrePrefixes.circuit.get(Materials.Advanced), 1),
+                        GT_Utility.getIntegratedCircuit(3) },
+                GT_Values.NF,
+                ItemList.Schematic.get(1L),
+                150,
+                48);
+
+        GT_Values.RA.addAssemblerRecipe(
+                new ItemStack[] { ItemList.Hull_HV.get(1L),
+                        GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Gold, 1L),
+                        ItemList.Circuit_Chip_LPIC.get(2L), ItemList.HV_Coil.get(2L),
+                        ItemList.Reactor_Coolant_He_1.get(1L), ItemList.Electric_Pump_HV.get(1L) },
+                GT_Values.NF,
+                ItemList.Hatch_Energy_HV.get(1L),
+                200,
+                (int) TierEU.RECIPE_HV);
+        GT_Values.RA.addAssemblerRecipe(
+                new ItemStack[] { ItemList.Hull_EV.get(1L),
+                        GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Aluminium, 1L),
+                        ItemList.Circuit_Chip_PIC.get(2L), ItemList.EV_Coil.get(2L),
+                        ItemList.Reactor_Coolant_He_1.get(1L), ItemList.Electric_Pump_EV.get(1L) },
+                GT_Values.NF,
+                ItemList.Hatch_Energy_EV.get(1L),
+                200,
+                (int) TierEU.RECIPE_EV);
+        GT_Values.RA.addAssemblerRecipe(
+                new ItemStack[] { ItemList.Hull_IV.get(1L),
+                        GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorIV, 1L),
+                        ItemList.Circuit_Chip_HPIC.get(2L), ItemList.IV_Coil.get(2L),
+                        ItemList.Reactor_Coolant_He_3.get(1L), ItemList.Electric_Pump_IV.get(1L) },
+                GT_Values.NF,
+                ItemList.Hatch_Energy_IV.get(1L),
+                200,
+                (int) TierEU.RECIPE_IV);
+        GT_Values.RA.addAssemblerRecipe(
+                new ItemStack[] { ItemList.Hull_HV.get(1L),
+                        GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Gold, 1L),
+                        ItemList.Circuit_Chip_LPIC.get(2L), ItemList.HV_Coil.get(2L),
+                        ItemList.Reactor_Coolant_NaK_1.get(1L), ItemList.Electric_Pump_HV.get(1L) },
+                GT_Values.NF,
+                ItemList.Hatch_Energy_HV.get(1L),
+                200,
+                (int) TierEU.RECIPE_HV);
+        GT_Values.RA.addAssemblerRecipe(
+                new ItemStack[] { ItemList.Hull_EV.get(1L),
+                        GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Aluminium, 1L),
+                        ItemList.Circuit_Chip_PIC.get(2L), ItemList.EV_Coil.get(2L),
+                        ItemList.Reactor_Coolant_NaK_1.get(1L), ItemList.Electric_Pump_EV.get(1L) },
+                GT_Values.NF,
+                ItemList.Hatch_Energy_EV.get(1L),
+                200,
+                (int) TierEU.RECIPE_EV);
+        GT_Values.RA.addAssemblerRecipe(
+                new ItemStack[] { ItemList.Hull_IV.get(1L),
+                        GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorIV, 1L),
+                        ItemList.Circuit_Chip_HPIC.get(2L), ItemList.IV_Coil.get(2L),
+                        ItemList.Reactor_Coolant_NaK_3.get(1L), ItemList.Electric_Pump_IV.get(1L) },
+                GT_Values.NF,
+                ItemList.Hatch_Energy_IV.get(1L),
+                200,
+                (int) TierEU.RECIPE_IV);
+
+        GT_Values.RA.addAssemblerRecipe(
+                new ItemStack[] { ItemList.Hull_HV.get(1L),
+                        GT_OreDictUnificator.get(OrePrefixes.spring, Materials.Gold, 1L),
+                        ItemList.Circuit_Chip_LPIC.get(2L), ItemList.HV_Coil.get(2L),
+                        ItemList.Reactor_Coolant_He_1.get(1L), ItemList.Electric_Pump_HV.get(1L) },
+                GT_Values.NF,
+                ItemList.Hatch_Dynamo_HV.get(1L),
+                200,
+                (int) TierEU.RECIPE_HV);
+        GT_Values.RA.addAssemblerRecipe(
+                new ItemStack[] { ItemList.Hull_EV.get(1L),
+                        GT_OreDictUnificator.get(OrePrefixes.spring, Materials.Aluminium, 1L),
+                        ItemList.Circuit_Chip_PIC.get(2L), ItemList.EV_Coil.get(2L),
+                        ItemList.Reactor_Coolant_He_1.get(1L), ItemList.Electric_Pump_EV.get(1L) },
+                GT_Values.NF,
+                ItemList.Hatch_Dynamo_EV.get(1L),
+                200,
+                (int) TierEU.RECIPE_EV);
+        GT_Values.RA.addAssemblerRecipe(
+                new ItemStack[] { ItemList.Hull_IV.get(1L),
+                        GT_OreDictUnificator.get(OrePrefixes.spring, Materials.Vanadiumtriindinid, 1L),
+                        ItemList.Circuit_Chip_HPIC.get(2L), ItemList.IV_Coil.get(2L),
+                        ItemList.Reactor_Coolant_He_3.get(1L), ItemList.Electric_Pump_IV.get(1L) },
+                GT_Values.NF,
+                ItemList.Hatch_Dynamo_IV.get(1L),
+                200,
+                (int) TierEU.RECIPE_IV);
+        GT_Values.RA.addAssemblerRecipe(
+                new ItemStack[] { ItemList.Hull_HV.get(1L),
+                        GT_OreDictUnificator.get(OrePrefixes.spring, Materials.Gold, 1L),
+                        ItemList.Circuit_Chip_LPIC.get(2L), ItemList.HV_Coil.get(2L),
+                        ItemList.Reactor_Coolant_NaK_1.get(1L), ItemList.Electric_Pump_HV.get(1L) },
+                GT_Values.NF,
+                ItemList.Hatch_Dynamo_HV.get(1L),
+                200,
+                (int) TierEU.RECIPE_HV);
+        GT_Values.RA.addAssemblerRecipe(
+                new ItemStack[] { ItemList.Hull_EV.get(1L),
+                        GT_OreDictUnificator.get(OrePrefixes.spring, Materials.Aluminium, 1L),
+                        ItemList.Circuit_Chip_PIC.get(2L), ItemList.EV_Coil.get(2L),
+                        ItemList.Reactor_Coolant_NaK_1.get(1L), ItemList.Electric_Pump_EV.get(1L) },
+                GT_Values.NF,
+                ItemList.Hatch_Dynamo_EV.get(1L),
+                200,
+                (int) TierEU.RECIPE_EV);
+        GT_Values.RA.addAssemblerRecipe(
+                new ItemStack[] { ItemList.Hull_IV.get(1L),
+                        GT_OreDictUnificator.get(OrePrefixes.spring, Materials.Vanadiumtriindinid, 1L),
+                        ItemList.Circuit_Chip_HPIC.get(2L), ItemList.IV_Coil.get(2L),
+                        ItemList.Reactor_Coolant_NaK_3.get(1L), ItemList.Electric_Pump_IV.get(1L) },
+                GT_Values.NF,
+                ItemList.Hatch_Dynamo_IV.get(1L),
+                200,
+                (int) TierEU.RECIPE_IV);
+
+        GT_Values.RA.addAssemblerRecipe(
+                new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.pipeHuge, Materials.Steel, 2L),
+                        GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 6L),
+                        GT_OreDictUnificator.get(OrePrefixes.gear, Materials.Steel, 2L),
+                        GT_Utility.getIntegratedCircuit(2) },
+                Materials.Tin.getMolten(144L),
+                ItemList.Long_Distance_Pipeline_Fluid.get(2L),
+                300,
+                16);
+        GT_Values.RA.addAssemblerRecipe(
+                new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.pipeHuge, Materials.Tin, 2L),
+                        GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 6L),
+                        GT_OreDictUnificator.get(OrePrefixes.gear, Materials.Steel, 2L),
+                        GT_Utility.getIntegratedCircuit(2) },
+                Materials.Tin.getMolten(144L),
+                ItemList.Long_Distance_Pipeline_Item.get(2L),
+                300,
+                16);
+        GT_Values.RA.addAssemblerRecipe(
+                new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Steel, 2L),
+                        GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 9L),
+                        GT_Utility.getIntegratedCircuit(24) },
+                Materials.Tin.getMolten(144L),
+                ItemList.Long_Distance_Pipeline_Fluid_Pipe.get(64L),
+                600,
+                24);
+        GT_Values.RA.addAssemblerRecipe(
+                new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Tin, 2L),
+                        GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 9L),
+                        GT_Utility.getIntegratedCircuit(24) },
+                Materials.Tin.getMolten(144L),
+                ItemList.Long_Distance_Pipeline_Item_Pipe.get(64L),
+                600,
+                24);
+
+        GT_Values.RA.addAssemblerRecipe(
+                new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.pipeQuadruple, Materials.StainlessSteel, 1L),
+                        ItemList.Hull_EV.get(1L), GT_Utility.getIntegratedCircuit(4) },
+                Materials.Glass.getMolten(2304L),
+                ItemList.Hatch_Input_Multi_2x2_EV.get(1L),
+                600,
+                24);
+        GT_Values.RA.addAssemblerRecipe(
+                new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.pipeQuadruple, Materials.Titanium, 1L),
+                        ItemList.Hull_IV.get(1L), GT_Utility.getIntegratedCircuit(4) },
+                Materials.Glass.getMolten(2304L),
+                ItemList.Hatch_Input_Multi_2x2_IV.get(1L),
+                600,
+                24);
+        GT_Values.RA.addAssemblerRecipe(
+                new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.pipeQuadruple, Materials.TungstenSteel, 1L),
+                        ItemList.Hull_LuV.get(1L), GT_Utility.getIntegratedCircuit(4) },
+                Materials.Polytetrafluoroethylene.getMolten(2304L),
+                ItemList.Hatch_Input_Multi_2x2_LuV.get(1L),
+                600,
+                24);
+        GT_Values.RA.addAssemblerRecipe(
+                new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.pipeQuadruple, Materials.NiobiumTitanium, 1L),
+                        ItemList.Hull_ZPM.get(1L), GT_Utility.getIntegratedCircuit(4) },
+                Materials.Polytetrafluoroethylene.getMolten(2304L),
+                ItemList.Hatch_Input_Multi_2x2_ZPM.get(1L),
+                600,
+                24);
+        GT_Values.RA.addAssemblerRecipe(
+                new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.pipeQuadruple, Materials.MysteriousCrystal, 1L),
+                        ItemList.Hull_UV.get(1L), GT_Utility.getIntegratedCircuit(4) },
+                Materials.Polybenzimidazole.getMolten(2304L),
+                ItemList.Hatch_Input_Multi_2x2_UV.get(1L),
+                600,
+                24);
+        GT_Values.RA.addAssemblerRecipe(
+                new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.pipeQuadruple, Materials.Neutronium, 1L),
+                        ItemList.Hull_MAX.get(1L), GT_Utility.getIntegratedCircuit(4) },
+                Materials.Polybenzimidazole.getMolten(2304L),
+                ItemList.Hatch_Input_Multi_2x2_UHV.get(1L),
+                600,
+                24);
+
+        GT_Values.RA.addAssemblerRecipe(
+                new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 4L),
+                        GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.TungstenSteel, 1L),
+                        ItemList.Robot_Arm_IV.get(2L), GT_Utility.getIntegratedCircuit(3) },
+                GT_Values.NF,
+                ItemList.Casing_Gearbox_TungstenSteel.get(1L),
+                200,
+                (int) TierEU.RECIPE_LV);
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
 
         { // limiting lifetime of the variables
             ItemStack flask = ItemList.VOLUMETRIC_FLASK.get(1);
