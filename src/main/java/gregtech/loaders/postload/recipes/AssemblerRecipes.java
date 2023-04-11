@@ -629,48 +629,77 @@ public class AssemblerRecipes implements Runnable {
             .eut(TierEU.RECIPE_LV)
             .addTo(sAssemblerRecipes);
 
-        GT_Values.RA.addAssemblerRecipe(
-            new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.pipeQuadruple, Materials.StainlessSteel, 1L),
-                ItemList.Hull_EV.get(1L), GT_Utility.getIntegratedCircuit(4) },
-            Materials.Glass.getMolten(2304L),
-            ItemList.Hatch_Input_Multi_2x2_EV.get(1L),
-            600,
-            24);
-        GT_Values.RA.addAssemblerRecipe(
-            new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.pipeQuadruple, Materials.Titanium, 1L),
-                ItemList.Hull_IV.get(1L), GT_Utility.getIntegratedCircuit(4) },
-            Materials.Glass.getMolten(2304L),
-            ItemList.Hatch_Input_Multi_2x2_IV.get(1L),
-            600,
-            24);
-        GT_Values.RA.addAssemblerRecipe(
-            new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.pipeQuadruple, Materials.TungstenSteel, 1L),
-                ItemList.Hull_LuV.get(1L), GT_Utility.getIntegratedCircuit(4) },
-            Materials.Polytetrafluoroethylene.getMolten(2304L),
-            ItemList.Hatch_Input_Multi_2x2_LuV.get(1L),
-            600,
-            24);
-        GT_Values.RA.addAssemblerRecipe(
-            new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.pipeQuadruple, Materials.NiobiumTitanium, 1L),
-                ItemList.Hull_ZPM.get(1L), GT_Utility.getIntegratedCircuit(4) },
-            Materials.Polytetrafluoroethylene.getMolten(2304L),
-            ItemList.Hatch_Input_Multi_2x2_ZPM.get(1L),
-            600,
-            24);
-        GT_Values.RA.addAssemblerRecipe(
-            new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.pipeQuadruple, Materials.MysteriousCrystal, 1L),
-                ItemList.Hull_UV.get(1L), GT_Utility.getIntegratedCircuit(4) },
-            Materials.Polybenzimidazole.getMolten(2304L),
-            ItemList.Hatch_Input_Multi_2x2_UV.get(1L),
-            600,
-            24);
-        GT_Values.RA.addAssemblerRecipe(
-            new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.pipeQuadruple, Materials.Neutronium, 1L),
-                ItemList.Hull_MAX.get(1L), GT_Utility.getIntegratedCircuit(4) },
-            Materials.Polybenzimidazole.getMolten(2304L),
-            ItemList.Hatch_Input_Multi_2x2_UHV.get(1L),
-            600,
-            24);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.pipeQuadruple, Materials.StainlessSteel, 1L),
+                ItemList.Hull_EV.get(1L),
+                GT_Utility.getIntegratedCircuit(4))
+            .itemOutputs(ItemList.Hatch_Input_Multi_2x2_EV.get(1L))
+            .fluidInputs(Materials.Glass.getMolten(2304L))
+            .noFluidOutputs()
+            .duration(30 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(sAssemblerRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.pipeQuadruple, Materials.Titanium, 1L),
+                ItemList.Hull_IV.get(1L),
+                GT_Utility.getIntegratedCircuit(4))
+            .itemOutputs(ItemList.Hatch_Input_Multi_2x2_IV.get(1L))
+            .fluidInputs(Materials.Glass.getMolten(2304L))
+            .noFluidOutputs()
+            .duration(30 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(sAssemblerRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.pipeQuadruple, Materials.TungstenSteel, 1L),
+                ItemList.Hull_LuV.get(1L),
+                GT_Utility.getIntegratedCircuit(4))
+            .itemOutputs(ItemList.Hatch_Input_Multi_2x2_LuV.get(1L))
+            .fluidInputs(Materials.Glass.getMolten(2304L))
+            .noFluidOutputs()
+            .duration(30 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(sAssemblerRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.pipeQuadruple, Materials.NiobiumTitanium, 1L),
+                ItemList.Hull_ZPM.get(1L),
+                GT_Utility.getIntegratedCircuit(4))
+            .itemOutputs(ItemList.Hatch_Input_Multi_2x2_ZPM.get(1L))
+            .fluidInputs(Materials.Glass.getMolten(2304L))
+            .noFluidOutputs()
+            .duration(30 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(sAssemblerRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.pipeQuadruple, Materials.MysteriousCrystal, 1L),
+                ItemList.Hull_UV.get(1L),
+                GT_Utility.getIntegratedCircuit(4))
+            .itemOutputs(ItemList.Hatch_Input_Multi_2x2_UV.get(1L))
+            .fluidInputs(Materials.Glass.getMolten(2304L))
+            .noFluidOutputs()
+            .duration(30 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(sAssemblerRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.pipeQuadruple, Materials.Neutronium, 1L),
+                ItemList.Hull_MAX.get(1L),
+                GT_Utility.getIntegratedCircuit(4))
+            .itemOutputs(ItemList.Hatch_Input_Multi_2x2_UHV.get(1L))
+            .fluidInputs(Materials.Glass.getMolten(2304L))
+            .noFluidOutputs()
+            .duration(30 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(sAssemblerRecipes);
 
         GT_Values.RA.addAssemblerRecipe(
             new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 4L),
