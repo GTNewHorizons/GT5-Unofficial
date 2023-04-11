@@ -25,7 +25,7 @@ public class GregtechGeneratorsULV {
                 new GT_MetaTileEntity_ULV_GasTurbine(961, "basicgenerator.gas.tier.00", "Simple Gas Turbine", 0)
                         .getStackForm(1L));
         GregtechItemList.Generator_Steam_Turbine_ULV.set(
-                new GT_MetaTileEntity_ULV_SteamTurbine(962, "basicgenerator.steam.tier.00", "Simple Steam Turbine", 0)
+                new GT_MetaTileEntity_ULV_SteamTurbine(962, "basicgenerator.steam.tier.00", "Simple Steam Turbine")
                         .getStackForm(1L));
 
         GT_ModHandler.addCraftingRecipe(
