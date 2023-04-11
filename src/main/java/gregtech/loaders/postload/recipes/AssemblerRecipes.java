@@ -324,30 +324,44 @@ public class AssemblerRecipes implements Runnable {
             .eut(TierEU.RECIPE_MV)
             .addTo(sAssemblerRecipes);
 
-        GT_Values.RA.addAssemblerRecipe(
-            new ItemStack[] { ItemList.Electric_Pump_HV.get(1L), ItemList.Electric_Motor_HV.get(1L),
-                GT_OreDictUnificator.get(OrePrefixes.gear.get(Materials.StainlessSteel), 2L),
-                GT_Utility.getIntegratedCircuit(5) },
-            GT_Values.NF,
-            ItemList.Steam_Valve_HV.get(1L),
-            300,
-            (int) TierEU.RECIPE_HV);
-        GT_Values.RA.addAssemblerRecipe(
-            new ItemStack[] { ItemList.Electric_Pump_EV.get(1L), ItemList.Electric_Motor_EV.get(1L),
-                GT_OreDictUnificator.get(OrePrefixes.gear.get(Materials.Titanium), 2L),
-                GT_Utility.getIntegratedCircuit(5) },
-            GT_Values.NF,
-            ItemList.Steam_Valve_EV.get(1L),
-            250,
-            (int) TierEU.RECIPE_EV);
-        GT_Values.RA.addAssemblerRecipe(
-            new ItemStack[] { ItemList.Electric_Pump_IV.get(1L), ItemList.Electric_Motor_IV.get(1L),
-                GT_OreDictUnificator.get(OrePrefixes.gear.get(Materials.TungstenSteel), 2L),
-                GT_Utility.getIntegratedCircuit(5) },
-            GT_Values.NF,
-            ItemList.Steam_Valve_IV.get(1L),
-            200,
-            (int) TierEU.RECIPE_IV);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Electric_Pump_HV.get(1),
+                ItemList.Electric_Motor_HV.get(1),
+                GT_OreDictUnificator.get(OrePrefixes.gear.get(Materials.StainlessSteel), 2),
+                GT_Utility.getIntegratedCircuit(5))
+            .itemOutputs(ItemList.Steam_Valve_HV.get(1))
+            .noFluidInputs()
+            .noFluidOutputs()
+            .duration(15 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(sAssemblerRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Electric_Pump_EV.get(1),
+                ItemList.Electric_Motor_EV.get(1),
+                GT_OreDictUnificator.get(OrePrefixes.gear.get(Materials.Titanium), 2),
+                GT_Utility.getIntegratedCircuit(5))
+            .itemOutputs(ItemList.Steam_Valve_EV.get(1))
+            .noFluidInputs()
+            .noFluidOutputs()
+            .duration(12 * SECONDS + 10 * TICKS)
+            .eut(TierEU.RECIPE_EV)
+            .addTo(sAssemblerRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Electric_Pump_IV.get(1),
+                ItemList.Electric_Motor_IV.get(1),
+                GT_OreDictUnificator.get(OrePrefixes.gear.get(Materials.TungstenSteel), 2),
+                GT_Utility.getIntegratedCircuit(5))
+            .itemOutputs(ItemList.Steam_Valve_IV.get(1))
+            .noFluidInputs()
+            .noFluidOutputs()
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_IV)
+            .addTo(sAssemblerRecipes);
 
         GT_Values.RA.addAssemblerRecipe(
             new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 4L),
