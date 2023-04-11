@@ -399,32 +399,51 @@ public class AssemblerRecipes implements Runnable {
             .eut(48)
             .addTo(sAssemblerRecipes);
 
-        GT_Values.RA.addAssemblerRecipe(
-            new ItemStack[] { ItemList.Hull_HV.get(1L),
-                GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Gold, 1L), ItemList.Circuit_Chip_LPIC.get(2L),
-                ItemList.HV_Coil.get(2L), ItemList.Reactor_Coolant_He_1.get(1L), ItemList.Electric_Pump_HV.get(1L) },
-            GT_Values.NF,
-            ItemList.Hatch_Energy_HV.get(1L),
-            200,
-            (int) TierEU.RECIPE_HV);
-        GT_Values.RA.addAssemblerRecipe(
-            new ItemStack[] { ItemList.Hull_EV.get(1L),
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Hull_HV.get(1L),
+                GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Gold, 1L),
+                ItemList.Circuit_Chip_LPIC.get(2L),
+                ItemList.HV_Coil.get(2L),
+                ItemList.Reactor_Coolant_He_1.get(1L),
+                ItemList.Electric_Pump_HV.get(1L))
+            .itemOutputs(ItemList.Hatch_Energy_HV.get(1L))
+            .noFluidInputs()
+            .noFluidOutputs()
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(sAssemblerRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Hull_EV.get(1L),
                 GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Aluminium, 1L),
-                ItemList.Circuit_Chip_PIC.get(2L), ItemList.EV_Coil.get(2L), ItemList.Reactor_Coolant_He_1.get(1L),
-                ItemList.Electric_Pump_EV.get(1L) },
-            GT_Values.NF,
-            ItemList.Hatch_Energy_EV.get(1L),
-            200,
-            (int) TierEU.RECIPE_EV);
-        GT_Values.RA.addAssemblerRecipe(
-            new ItemStack[] { ItemList.Hull_IV.get(1L),
+                ItemList.Circuit_Chip_PIC.get(2L),
+                ItemList.EV_Coil.get(2L),
+                ItemList.Reactor_Coolant_He_1.get(1L),
+                ItemList.Electric_Pump_EV.get(1L))
+            .itemOutputs(ItemList.Hatch_Energy_EV.get(1L))
+            .noFluidInputs()
+            .noFluidOutputs()
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_EV)
+            .addTo(sAssemblerRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Hull_IV.get(1L),
                 GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorIV, 1L),
-                ItemList.Circuit_Chip_HPIC.get(2L), ItemList.IV_Coil.get(2L), ItemList.Reactor_Coolant_He_3.get(1L),
-                ItemList.Electric_Pump_IV.get(1L) },
-            GT_Values.NF,
-            ItemList.Hatch_Energy_IV.get(1L),
-            200,
-            (int) TierEU.RECIPE_IV);
+                ItemList.Circuit_Chip_HPIC.get(2L),
+                ItemList.IV_Coil.get(2L),
+                ItemList.Reactor_Coolant_He_3.get(1L),
+                ItemList.Electric_Pump_IV.get(1L))
+            .itemOutputs(ItemList.Hatch_Energy_IV.get(1L))
+            .noFluidInputs()
+            .noFluidOutputs()
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_IV)
+            .addTo(sAssemblerRecipes);
+
         GT_Values.RA.addAssemblerRecipe(
             new ItemStack[] { ItemList.Hull_HV.get(1L),
                 GT_OreDictUnificator.get(OrePrefixes.cableGt01, Materials.Gold, 1L), ItemList.Circuit_Chip_LPIC.get(2L),
