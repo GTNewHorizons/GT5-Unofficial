@@ -870,7 +870,7 @@ public class AssemblerRecipes implements Runnable {
             .fluidInputs(Materials.Concrete.getMolten(144))
             .noFluidOutputs()
             .duration(4 * SECONDS)
-            .eut(10)
+            .eut(20)
             .addTo(sAssemblerRecipes);
 
         GT_Values.RA.stdBuilder()

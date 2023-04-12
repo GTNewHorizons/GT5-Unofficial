@@ -30,14 +30,14 @@ public class ProcessingCrafting implements gregtech.api.interfaces.IOreRecipeReg
                 GT_Utility.copyAmount(1L, aStack),
                 Materials.Concrete.getMolten(144L),
                 new ItemStack(net.minecraft.init.Items.comparator, 1, 0),
-                800,
-                1);
+                80,
+                20);
             case "craftingWireCopper", "craftingWireTin" -> GT_Values.RA.addAssemblerRecipe(
                 ItemList.Circuit_Basic.get(1L),
                 GT_Utility.copyAmount(1L, aStack),
                 GT_ModHandler.getIC2Item("frequencyTransmitter", 1L),
-                800,
-                1);
+                80,
+                20);
             case "craftingLensBlue" -> {
                 GT_Values.RA.addLaserEngraverRecipe(
                     GT_OreDictUnificator.get(OrePrefixes.block, Materials.Iron, 1L),
