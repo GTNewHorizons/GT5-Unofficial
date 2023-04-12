@@ -6,10 +6,10 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.logic.PowerLogic;
 import gregtech.api.logic.interfaces.PowerLogicHost;
 
-public abstract class MultiBlockPowerController<T extends MultiBlockPowerController<T>> extends MultiBlockController<T>
+public abstract class PowerController<T extends PowerController<T>> extends Controller<T>
     implements PowerLogicHost {
 
-    public MultiBlockPowerController() {
+    public PowerController() {
         super();
         power = new PowerLogic().setType(PowerLogic.RECEIVER);
     }

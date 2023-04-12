@@ -27,17 +27,17 @@ import com.gtnewhorizon.structurelib.util.Vec3Impl;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.multitileentity.multiblock.base.MultiBlock_Stackable;
+import gregtech.api.multitileentity.multiblock.base.StackableController;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 
-public class MultiBlock_Macerator extends MultiBlock_Stackable<MultiBlock_Macerator> {
+public class Macerator extends StackableController<Macerator> {
 
-    private static IStructureDefinition<MultiBlock_Macerator> STRUCTURE_DEFINITION = null;
+    private static IStructureDefinition<Macerator> STRUCTURE_DEFINITION = null;
 
-    public MultiBlock_Macerator() {
+    public Macerator() {
         super();
     }
 
@@ -47,9 +47,9 @@ public class MultiBlock_Macerator extends MultiBlock_Stackable<MultiBlock_Macera
     }
 
     @Override
-    public IStructureDefinition<MultiBlock_Macerator> getStructureDefinition() {
+    public IStructureDefinition<Macerator> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<MultiBlock_Macerator>builder()
+            STRUCTURE_DEFINITION = StructureDefinition.<Macerator>builder()
                 .addShape(STACKABLE_TOP, transpose(new String[][] { { " CCC ", "CCCCC", "CCCCC", "CCCCC", " CCC " }, }))
                 .addShape(
                     STACKABLE_MIDDLE,

@@ -18,7 +18,7 @@ import com.gtnewhorizon.gtnhlib.util.map.ItemStackMap;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
-import gregtech.api.multitileentity.multiblock.base.MultiBlockController;
+import gregtech.api.multitileentity.multiblock.base.Controller;
 import gregtech.api.objects.XSTR;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_OutputBus_ME;
 import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_Output_ME;
@@ -32,7 +32,7 @@ public class GT_ParallelHelper {
     /**
      * @mMachineMulti a MultiTileEntity Controller
      */
-    private MultiBlockController<?> mMachineMulti;
+    private Controller<?> mMachineMulti;
     /**
      * @mRecipe Recipe used when trying to calculate parallels
      */
@@ -87,7 +87,7 @@ public class GT_ParallelHelper {
     /**
      * Enables void protection on a multitile multiblock. Experimental! Still needs to be worked on
      */
-    public GT_ParallelHelper enableVoidProtection(MultiBlockController<?> aMachineMulti) {
+    public GT_ParallelHelper enableVoidProtection(Controller<?> aMachineMulti) {
         mVoidProtection = true;
         mMachineMulti = aMachineMulti;
         return this;

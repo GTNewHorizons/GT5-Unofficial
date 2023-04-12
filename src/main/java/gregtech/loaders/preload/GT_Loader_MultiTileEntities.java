@@ -13,8 +13,8 @@ import gregtech.api.multitileentity.multiblock.base.WallShareablePart;
 import gregtech.api.multitileentity.multiblock.casing.BasicCasing;
 import gregtech.common.tileentities.casings.functional.MotorCasing;
 import gregtech.common.tileentities.casings.upgrade.InventoryUpgrade;
-import gregtech.common.tileentities.machines.multiblock.MultiBlock_CokeOven;
-import gregtech.common.tileentities.machines.multiblock.MultiBlock_Macerator;
+import gregtech.common.tileentities.machines.multiblock.CokeOven;
+import gregtech.common.tileentities.machines.multiblock.Macerator;
 
 public class GT_Loader_MultiTileEntities implements Runnable {
 
@@ -33,7 +33,7 @@ public class GT_Loader_MultiTileEntities implements Runnable {
             .getOrCreate("GregTech", "machine", Material.iron, Block.soundTypeMetal, "wrench", 0, 0, 15, true, true);
         final MultiTileEntityRegistry machineRegistry = new MultiTileEntityRegistry("gt.multitileentity.controllers");
         // Disable for now
-        machineRegistry.create(1000, MultiBlock_Macerator.class)
+        machineRegistry.create(1000, Macerator.class)
             .name("Large Macerator")
             .category("Multiblock Controller")
             .setBlock(machine)
@@ -43,7 +43,7 @@ public class GT_Loader_MultiTileEntities implements Runnable {
             .inputInventorySize(16)
             .outputInventorySize(16)
             .register();
-        machineRegistry.create(0, MultiBlock_CokeOven.class)
+        machineRegistry.create(0, CokeOven.class)
             .name("Coke Oven")
             .category("MultiblockController")
             .setBlock(machine)

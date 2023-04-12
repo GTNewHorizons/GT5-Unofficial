@@ -94,7 +94,7 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.tileentities.casings.upgrade.InventoryUpgrade;
 
-public abstract class MultiBlockController<T extends MultiBlockController<T>> extends MultiTileBasicMachine implements
+public abstract class Controller<T extends Controller<T>> extends MultiTileBasicMachine implements
     IAlignment, IConstructable, IMultiBlockController, IDescribable, IMTE_AddToolTips, ISurvivalConstructable {
 
     private static final Map<Integer, GT_Multiblock_Tooltip_Builder> tooltip = new ConcurrentHashMap<>();
@@ -390,8 +390,8 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
     }
 
     @SuppressWarnings("unchecked")
-    private IStructureDefinition<MultiBlockController<T>> getCastedStructureDefinition() {
-        return (IStructureDefinition<MultiBlockController<T>>) getStructureDefinition();
+    private IStructureDefinition<Controller<T>> getCastedStructureDefinition() {
+        return (IStructureDefinition<Controller<T>>) getStructureDefinition();
     }
 
     @Override
@@ -663,9 +663,9 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
                     return false;
 
                 final IMultiBlockController tTarget = part.getTarget(false);
-                if (tTarget != null && tTarget != MultiBlockController.this) return false;
+                if (tTarget != null && tTarget != Controller.this) return false;
 
-                part.setTarget(MultiBlockController.this, modes);
+                part.setTarget(Controller.this, modes);
 
                 registerSpecialCasings(part);
                 return true;
@@ -703,7 +703,7 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
                 }
                 if (world.setBlock(x, y, z, tContainer.mBlock, 15 - tContainer.mBlockMetaData, 2)) {
                     tContainer.setMultiTile(world, x, y, z);
-                    ((MultiBlockPart) te).setTarget(MultiBlockController.this, modes);
+                    ((MultiBlockPart) te).setTarget(Controller.this, modes);
 
                     registerSpecialCasings((MultiBlockPart) te);
                 }

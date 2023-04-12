@@ -29,20 +29,20 @@ import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.logic.interfaces.PollutionLogicHost;
 import gregtech.api.logic.interfaces.ProcessingLogicHost;
 import gregtech.api.multitileentity.enums.GT_MultiTileCasing;
-import gregtech.api.multitileentity.multiblock.base.MultiBlockController;
+import gregtech.api.multitileentity.multiblock.base.Controller;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.common.tileentities.machines.multiblock.logic.CokeOvenProcessingLogic;
 
-public class MultiBlock_CokeOven extends MultiBlockController<MultiBlock_CokeOven>
+public class CokeOven extends Controller<CokeOven>
     implements PollutionLogicHost, ProcessingLogicHost {
 
-    private static IStructureDefinition<MultiBlock_CokeOven> STRUCTURE_DEFINITION = null;
+    private static IStructureDefinition<CokeOven> STRUCTURE_DEFINITION = null;
     private static final Vec3Impl OFFSET = new Vec3Impl(1, 1, 0);
     private static final String MAIN = "Main";
     private static final PollutionLogic POLLUTION_LOGIC = new PollutionLogic().setPollutionAmount(10);
     private final ProcessingLogic PROCESSING_LOGIC = new CokeOvenProcessingLogic();
 
-    public MultiBlock_CokeOven() {
+    public CokeOven() {
         super();
         setElectric(false);
     }
@@ -93,9 +93,9 @@ public class MultiBlock_CokeOven extends MultiBlockController<MultiBlock_CokeOve
     }
 
     @Override
-    public IStructureDefinition<MultiBlock_CokeOven> getStructureDefinition() {
+    public IStructureDefinition<CokeOven> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<MultiBlock_CokeOven>builder()
+            STRUCTURE_DEFINITION = StructureDefinition.<CokeOven>builder()
                 .addShape(
                     MAIN,
                     new String[][] { { "AAA", "A~A", "AAA" }, { "AAA", "A-A", "AAA" }, { "AAA", "AAA", "AAA" } })
