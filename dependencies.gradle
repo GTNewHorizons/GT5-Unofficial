@@ -1,26 +1,26 @@
 dependencies {
-    api('com.github.GTNewHorizons:GT5-Unofficial:5.09.42.00:dev')
+    api('com.github.GTNewHorizons:GT5-Unofficial:5.09.42.55:dev')
     api('com.github.GTNewHorizons:Galacticraft:3.0.67-GTNH:dev')
-    api('com.github.GTNewHorizons:TecTech:5.0.114:dev')
-    api('com.github.GTNewHorizons:ModularUI:1.0.71:dev')
+    api('com.github.GTNewHorizons:TecTech:5.1.7:dev')
+    api('com.github.GTNewHorizons:ModularUI:1.1.2:dev')
     api('com.github.GTNewHorizons:Galaxy-Space-GTNH:1.1.63-GTNH:dev')
-    implementation("com.github.GTNewHorizons:Hodgepodge:2.0.43:dev") {transitive = false}
-    compileOnly('com.github.GTNewHorizons:GoodGenerator:0.4.88:dev')
-    compileOnly('com.github.GTNewHorizons:bartworks:0.5.164:dev')
-    compileOnly('com.github.GTNewHorizons:GTplusplus:1.8.0:dev')
-    compileOnly("com.github.GTNewHorizons:BuildCraft:7.1.31:dev") {transitive = false}
-    compileOnly('com.github.GTNewHorizons:EnderIO:2.3.1.68:dev') {transitive = false}
-    compileOnly("com.github.GTNewHorizons:ForestryMC:4.5.8:dev") {transitive = false}
-    compileOnly('com.github.GTNewHorizons:Railcraft:9.13.19:dev') {transitive = false}
+    implementation("com.github.GTNewHorizons:Hodgepodge:2.2.6:dev") {transitive = false}
+    compileOnly('com.github.GTNewHorizons:GoodGenerator:0.5.8:dev')
+    compileOnly('com.github.GTNewHorizons:bartworks:0.6.9:dev')
+    compileOnly('com.github.GTNewHorizons:GTplusplus:1.8.31:dev')
+    compileOnly("com.github.GTNewHorizons:BuildCraft:7.1.33:dev") {transitive = false}
+    compileOnly('com.github.GTNewHorizons:EnderIO:2.4.10:dev') {transitive = false}
+    compileOnly("com.github.GTNewHorizons:ForestryMC:4.6.5:dev") {transitive = false}
+    compileOnly('com.github.GTNewHorizons:Railcraft:9.14.0:dev') {transitive = false}
 
     compileOnly('curse.maven:mekanism-268560:2475797')
     compileOnly("com.github.GTNewHorizons:ProjectRed:4.7.9-GTNH:dev") {transitive = false}
 
-    runtimeOnly('com.github.GTNewHorizons:BuildCraft:7.1.31:dev')
+    runtimeOnly('com.github.GTNewHorizons:BuildCraft:7.1.33:dev')
     runtimeOnly('com.github.GTNewHorizons:Electro-Magic-Tools:1.2.8.28:dev')
-    runtimeOnly('com.github.GTNewHorizons:EnderIO:2.3.1.68:dev')
-    runtimeOnly('com.github.GTNewHorizons:GTplusplus:1.8.0:dev')
+    runtimeOnly('com.github.GTNewHorizons:EnderIO:2.4.10:dev')
+    runtimeOnly('com.github.GTNewHorizons:GTplusplus:1.8.31:dev')
 
-    runtimeOnly('com.github.GTNewHorizons:NewHorizonsCoreMod:2.0.0:dev')
+    runtimeOnly('com.github.GTNewHorizons:NewHorizonsCoreMod:2.0.17:dev')
     runtimeOnly('com.github.GTNewHorizons:OpenModularTurrets:2.2.11-247:dev')
 }
