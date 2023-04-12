@@ -85,11 +85,11 @@ public class NEI_IMC_Sender {
         sendCatalyst("crafting", "gregtech:gt.blockmachines:31097", -10);
         sendCatalyst("crafting", "gregtech:gt.blockmachines:31098", -10);
 
-        sendCatalyst("gt.recipe.complexfusionreactor", "gregtech:gt.blockmachines:965", -1);
-
         sendHandler("gtpp.recipe.multidehydrator", "gregtech:gt.blockmachines:995");
         sendCatalyst("gtpp.recipe.multidehydrator", "gregtech:gt.blockmachines:995");
         sendRemoveCatalyst("gtpp.recipe.chemicaldehydrator", "gregtech:gt.blockmachines:995");
+
+        sendCatalyst("gt.recipe.fusionreactor", "gregtech:gt.blockmachines:975");
     }
 
     private static void sendHandler(String aRecipeName, String aBlock) {
