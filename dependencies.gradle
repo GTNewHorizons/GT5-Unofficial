@@ -5,7 +5,7 @@ dependencies {
     api('com.github.GTNewHorizons:ModularUI:1.1.2:dev')
     api('com.github.GTNewHorizons:Galaxy-Space-GTNH:1.1.63-GTNH:dev')
     implementation("com.github.GTNewHorizons:Hodgepodge:2.2.6:dev") {transitive = false}
-    compileOnly('com.github.GTNewHorizons:GoodGenerator:0.5.8:dev')
+    compileOnly('com.github.GTNewHorizons:GoodGenerator:0.5.9:dev')
     compileOnly('com.github.GTNewHorizons:bartworks:0.6.9:dev')
     compileOnly('com.github.GTNewHorizons:GTplusplus:1.8.31:dev')
     compileOnly("com.github.GTNewHorizons:BuildCraft:7.1.33:dev") {transitive = false}
