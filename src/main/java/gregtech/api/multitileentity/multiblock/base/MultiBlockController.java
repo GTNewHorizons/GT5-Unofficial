@@ -1527,7 +1527,9 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
                 enableWorking();
             }
         })
-            .setPlayClickSound(true);
+            .setPlayClickSoundResource(
+                () -> isAllowedToWork() ? SoundResource.GUI_BUTTON_UP.resourceLocation
+                    : SoundResource.GUI_BUTTON_DOWN.resourceLocation);
         button.setBackground(() -> {
             List<UITexture> ret = new ArrayList<>();
             ret.add(GT_UITextures.BUTTON_STANDARD);
