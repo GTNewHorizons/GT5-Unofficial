@@ -41,8 +41,8 @@ public class GregtechMetaCasingBlocks6 extends GregtechMetaCasingBlocksAbstract 
         TAE.registerTexture(3, 5, new GTPP_CopiedBlockTexture(this, 6, 1));
         GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".2.name", "Unnamed");
         TAE.registerTexture(3, 6, new GTPP_CopiedBlockTexture(this, 6, 2));
-        GregtechItemList.Casing_Fusion_External.set(new ItemStack(this, 1, 0));
-        GregtechItemList.Casing_Fusion_Internal.set(new ItemStack(this, 1, 1));
+        GregtechItemList.Casing_Fusion_External2.set(new ItemStack(this, 1, 0));
+        GregtechItemList.Casing_Fusion_Internal2.set(new ItemStack(this, 1, 1));
     }
 
     @Override
