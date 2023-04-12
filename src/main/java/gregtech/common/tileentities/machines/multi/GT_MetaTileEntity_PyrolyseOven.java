@@ -176,7 +176,7 @@ public class GT_MetaTileEntity_PyrolyseOven
                 // We're locked to a single recipe, but haven't built the recipe checker yet.
                 // Build the checker on next successful recipe.
                 tSingleRecipeCheckBuilder = GT_Single_Recipe_Check.builder(this)
-                    .setBefore();
+                    .setBefore(tInputs, tFluids);
             }
 
             tRecipe = GT_Recipe.GT_Recipe_Map.sPyrolyseRecipes
@@ -185,7 +185,7 @@ public class GT_MetaTileEntity_PyrolyseOven
             if (tRecipe == null || !tRecipe.isRecipeInputEqual(true, tFluids, tInputs)) return false;
 
             if (mLockedToSingleRecipe) {
-                mSingleRecipeCheck = tSingleRecipeCheckBuilder.setAfter()
+                mSingleRecipeCheck = tSingleRecipeCheckBuilder.setAfter(tInputs, tFluids)
                     .setRecipe(tRecipe)
                     .build();
             }

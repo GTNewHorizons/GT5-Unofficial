@@ -179,7 +179,7 @@ public class GT_MetaTileEntity_LargeChemicalReactor extends
                 // We're locked to a single recipe, but haven't built the recipe checker yet.
                 // Build the checker on next successful recipe.
                 tSingleRecipeCheckBuilder = GT_Single_Recipe_Check.builder(this)
-                    .setBefore();
+                    .setBefore(inputs, fluids);
             }
 
             tRecipe = GT_Recipe.GT_Recipe_Map.sMultiblockChemicalRecipes.findRecipe(
@@ -195,7 +195,7 @@ public class GT_MetaTileEntity_LargeChemicalReactor extends
             }
 
             if (mLockedToSingleRecipe) {
-                mSingleRecipeCheck = tSingleRecipeCheckBuilder.setAfter()
+                mSingleRecipeCheck = tSingleRecipeCheckBuilder.setAfter(inputs, fluids)
                     .setRecipe(tRecipe)
                     .build();
             }
