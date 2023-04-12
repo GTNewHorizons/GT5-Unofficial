@@ -71,6 +71,7 @@ import gnu.trove.list.array.TIntArrayList;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.GT_Values.NBT;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.fluid.FluidTankGT;
 import gregtech.api.gui.modularui.GT_UITextures;
@@ -402,7 +403,7 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
     public void setExtendedFacing(ExtendedFacing newExtendedFacing) {
         if (extendedFacing != newExtendedFacing) {
             onStructureChange();
-            if (structureOkay) stopMachine();
+            if (structureOkay) stopMachine(false);
             extendedFacing = newExtendedFacing;
             structureOkay = false;
             if (isServerSide()) {
@@ -503,7 +504,7 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
             if (structureOkay) {
                 runMachine(tick);
             } else {
-                stopMachine();
+                stopMachine(false);
             }
         } else {
             doActivitySound(getActivitySoundLoop());
@@ -1526,7 +1527,9 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
                 enableWorking();
             }
         })
-            .setPlayClickSound(true);
+            .setPlayClickSoundResource(
+                () -> isAllowedToWork() ? SoundResource.GUI_BUTTON_UP.resourceLocation
+                    : SoundResource.GUI_BUTTON_DOWN.resourceLocation);
         button.setBackground(() -> {
             List<UITexture> ret = new ArrayList<>();
             ret.add(GT_UITextures.BUTTON_STANDARD);
