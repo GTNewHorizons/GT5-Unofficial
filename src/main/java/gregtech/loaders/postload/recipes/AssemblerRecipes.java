@@ -870,7 +870,7 @@ public class AssemblerRecipes implements Runnable {
             .fluidInputs(Materials.Concrete.getMolten(144))
             .noFluidOutputs()
             .duration(4 * SECONDS)
-            .eut(10)
+            .eut(20)
             .addTo(sAssemblerRecipes);
 
         GT_Values.RA.stdBuilder()
@@ -1108,8 +1108,8 @@ public class AssemblerRecipes implements Runnable {
             .itemOutputs(new ItemStack(Blocks.torch, 6, 0))
             .fluidInputs(Materials.Creosote.getFluid(1000))
             .noFluidOutputs()
-            .duration(20 * SECONDS)
-            .eut(1)
+            .duration(2 * SECONDS)
+            .eut(20)
             .addTo(sAssemblerRecipes);
 
         GT_Values.RA.stdBuilder()
@@ -1697,8 +1697,8 @@ public class AssemblerRecipes implements Runnable {
                 .itemOutputs(new ItemStack(Blocks.torch, 4))
                 .noFluidInputs()
                 .noFluidOutputs()
-                .duration(20 * SECONDS)
-                .eut(1)
+                .duration(2 * SECONDS)
+                .eut(20)
                 .addTo(sAssemblerRecipes);
         }
 
@@ -1863,8 +1863,8 @@ public class AssemblerRecipes implements Runnable {
             .itemOutputs(new ItemStack(Items.minecart, 1))
             .noFluidInputs()
             .noFluidOutputs()
-            .duration(25 * SECONDS)
-            .eut(2)
+            .duration(5 * SECONDS)
+            .eut(20)
             .addTo(sAssemblerRecipes);
 
         GT_Values.RA.stdBuilder()
@@ -1874,8 +1874,8 @@ public class AssemblerRecipes implements Runnable {
             .itemOutputs(new ItemStack(Items.minecart, 1))
             .noFluidInputs()
             .noFluidOutputs()
-            .duration(20 * SECONDS)
-            .eut(2)
+            .duration(4 * SECONDS)
+            .eut(20)
             .addTo(sAssemblerRecipes);
 
         GT_Values.RA.stdBuilder()
@@ -1885,8 +1885,8 @@ public class AssemblerRecipes implements Runnable {
             .itemOutputs(new ItemStack(Items.minecart, 1))
             .noFluidInputs()
             .noFluidOutputs()
-            .duration(15 * SECONDS)
-            .eut(2)
+            .duration(5 * SECONDS)
+            .eut(20)
             .addTo(sAssemblerRecipes);
 
         GT_Values.RA.stdBuilder()
@@ -1896,8 +1896,8 @@ public class AssemblerRecipes implements Runnable {
             .itemOutputs(ItemList.Component_Minecart_Wheels_Iron.get(1))
             .noFluidInputs()
             .noFluidOutputs()
-            .duration(25 * SECONDS)
-            .eut(2)
+            .duration(5 * SECONDS)
+            .eut(20)
             .addTo(sAssemblerRecipes);
 
         GT_Values.RA.stdBuilder()
@@ -1907,8 +1907,8 @@ public class AssemblerRecipes implements Runnable {
             .itemOutputs(ItemList.Component_Minecart_Wheels_Iron.get(1))
             .noFluidInputs()
             .noFluidOutputs()
-            .duration(20 * SECONDS)
-            .eut(2)
+            .duration(4 * SECONDS)
+            .eut(20)
             .addTo(sAssemblerRecipes);
 
         GT_Values.RA.stdBuilder()
@@ -1918,8 +1918,8 @@ public class AssemblerRecipes implements Runnable {
             .itemOutputs(ItemList.Component_Minecart_Wheels_Steel.get(1))
             .noFluidInputs()
             .noFluidOutputs()
-            .duration(15 * SECONDS)
-            .eut(2)
+            .duration(3 * SECONDS)
+            .eut(20)
             .addTo(sAssemblerRecipes);
 
         GT_Values.RA.stdBuilder()
@@ -2576,8 +2576,8 @@ public class AssemblerRecipes implements Runnable {
             .itemOutputs(ItemList.Battery_Hull_LV.get(1))
             .fluidInputs(Materials.Plastic.getMolten(144))
             .noFluidOutputs()
-            .duration(40 * SECONDS)
-            .eut(1)
+            .duration(4 * SECONDS)
+            .eut(20)
             .addTo(sAssemblerRecipes);
 
         GT_Values.RA.stdBuilder()
@@ -2587,8 +2587,8 @@ public class AssemblerRecipes implements Runnable {
             .itemOutputs(ItemList.Battery_Hull_MV.get(1))
             .fluidInputs(Materials.Plastic.getMolten(432))
             .noFluidOutputs()
-            .duration(1 * MINUTES + 20 * SECONDS)
-            .eut(2)
+            .duration(16 * SECONDS)
+            .eut(20)
             .addTo(sAssemblerRecipes);
 
         GT_Values.RA.stdBuilder()
@@ -2598,8 +2598,8 @@ public class AssemblerRecipes implements Runnable {
             .itemOutputs(ItemList.Battery_Hull_MV.get(1))
             .fluidInputs(Materials.Plastic.getMolten(432))
             .noFluidOutputs()
-            .duration(1 * MINUTES + 20 * SECONDS)
-            .eut(2)
+            .duration(16 * SECONDS)
+            .eut(20)
             .addTo(sAssemblerRecipes);
 
         GT_Values.RA.stdBuilder()
@@ -2609,8 +2609,8 @@ public class AssemblerRecipes implements Runnable {
             .itemOutputs(ItemList.Battery_Hull_HV.get(1))
             .fluidInputs(Materials.Plastic.getMolten(1296))
             .noFluidOutputs()
-            .duration(2 * MINUTES + 40 * SECONDS)
-            .eut(4)
+            .duration(1 * MINUTES + 4 * SECONDS)
+            .eut(20)
             .addTo(sAssemblerRecipes);
 
         GT_Values.RA.stdBuilder()
@@ -2618,8 +2618,8 @@ public class AssemblerRecipes implements Runnable {
             .itemOutputs(new ItemStack(Items.lead, 2))
             .noFluidInputs()
             .noFluidOutputs()
-            .duration(10 * SECONDS)
-            .eut(2)
+            .duration(2 * SECONDS)
+            .eut(20)
             .addTo(sAssemblerRecipes);
 
         GT_Values.RA.stdBuilder()
@@ -2654,8 +2654,8 @@ public class AssemblerRecipes implements Runnable {
             .itemOutputs(GT_ModHandler.getIC2Item("carbonMesh", 1))
             .noFluidInputs()
             .noFluidOutputs()
-            .duration(40 * SECONDS)
-            .eut(2)
+            .duration(8 * SECONDS)
+            .eut(20)
             .addTo(sAssemblerRecipes);
 
         GT_Values.RA.stdBuilder()
@@ -2676,8 +2676,8 @@ public class AssemblerRecipes implements Runnable {
             .itemOutputs(new ItemStack(Blocks.hopper))
             .noFluidInputs()
             .noFluidOutputs()
-            .duration(40 * SECONDS)
-            .eut(2)
+            .duration(8 * SECONDS)
+            .eut(20)
             .addTo(sAssemblerRecipes);
 
         GT_Values.RA.stdBuilder()
@@ -2687,8 +2687,8 @@ public class AssemblerRecipes implements Runnable {
             .itemOutputs(new ItemStack(Blocks.hopper))
             .noFluidInputs()
             .noFluidOutputs()
-            .duration(40 * SECONDS)
-            .eut(2)
+            .duration(8 * SECONDS)
+            .eut(20)
             .addTo(sAssemblerRecipes);
 
         GT_Values.RA.stdBuilder()
@@ -2698,8 +2698,8 @@ public class AssemblerRecipes implements Runnable {
             .itemOutputs(new ItemStack(Blocks.hopper))
             .noFluidInputs()
             .noFluidOutputs()
-            .duration(40 * SECONDS)
-            .eut(2)
+            .duration(8 * SECONDS)
+            .eut(20)
             .addTo(sAssemblerRecipes);
 
         GT_Values.RA.stdBuilder()
@@ -2709,8 +2709,8 @@ public class AssemblerRecipes implements Runnable {
             .itemOutputs(new ItemStack(Blocks.hopper))
             .noFluidInputs()
             .noFluidOutputs()
-            .duration(40 * SECONDS)
-            .eut(2)
+            .duration(8 * SECONDS)
+            .eut(20)
             .addTo(sAssemblerRecipes);
 
         GT_Values.RA.stdBuilder()
@@ -2731,8 +2731,8 @@ public class AssemblerRecipes implements Runnable {
             .itemOutputs(new ItemStack(Items.ender_eye, 1, 0))
             .noFluidInputs()
             .noFluidOutputs()
-            .duration(20 * SECONDS)
-            .eut(2)
+            .duration(4 * SECONDS)
+            .eut(20)
             .addTo(sAssemblerRecipes);
 
         GT_Values.RA.stdBuilder()
@@ -2742,8 +2742,8 @@ public class AssemblerRecipes implements Runnable {
             .itemOutputs(new ItemStack(Items.ender_eye, 6, 0))
             .noFluidInputs()
             .noFluidOutputs()
-            .duration(2 * MINUTES + 5 * SECONDS)
-            .eut(2)
+            .duration(25 * SECONDS)
+            .eut(20)
             .addTo(sAssemblerRecipes);
 
         GT_Values.RA.stdBuilder()
@@ -2753,8 +2753,8 @@ public class AssemblerRecipes implements Runnable {
             .itemOutputs(ItemList.Component_Sawblade_Diamond.get(1))
             .noFluidInputs()
             .noFluidOutputs()
-            .duration(1 * MINUTES + 20 * SECONDS)
-            .eut(2)
+            .duration(16 * SECONDS)
+            .eut(20)
             .addTo(sAssemblerRecipes);
 
         GT_Values.RA.stdBuilder()
@@ -2764,8 +2764,8 @@ public class AssemblerRecipes implements Runnable {
             .itemOutputs(new ItemStack(Blocks.redstone_lamp, 1))
             .noFluidInputs()
             .noFluidOutputs()
-            .duration(20 * SECONDS)
-            .eut(1)
+            .duration(2 * SECONDS)
+            .eut(20)
             .addTo(sAssemblerRecipes);
 
         GT_Values.RA.stdBuilder()
@@ -2775,8 +2775,8 @@ public class AssemblerRecipes implements Runnable {
             .itemOutputs(new ItemStack(Blocks.redstone_torch, 1))
             .noFluidInputs()
             .noFluidOutputs()
-            .duration(20 * SECONDS)
-            .eut(1)
+            .duration(1 * SECONDS)
+            .eut(20)
             .addTo(sAssemblerRecipes);
 
         GT_Values.RA.stdBuilder()
@@ -2819,8 +2819,8 @@ public class AssemblerRecipes implements Runnable {
             .itemOutputs(new ItemStack(Blocks.torch, 2))
             .noFluidInputs()
             .noFluidOutputs()
-            .duration(20 * SECONDS)
-            .eut(1)
+            .duration(2 * SECONDS)
+            .eut(20)
             .addTo(sAssemblerRecipes);
 
         GT_Values.RA.stdBuilder()
@@ -2830,8 +2830,8 @@ public class AssemblerRecipes implements Runnable {
             .itemOutputs(new ItemStack(Blocks.torch, 6))
             .noFluidInputs()
             .noFluidOutputs()
-            .duration(20 * SECONDS)
-            .eut(1)
+            .duration(2 * SECONDS)
+            .eut(20)
             .addTo(sAssemblerRecipes);
 
         GT_Values.RA.stdBuilder()
@@ -2839,8 +2839,8 @@ public class AssemblerRecipes implements Runnable {
             .itemOutputs(new ItemStack(Blocks.torch, 6))
             .noFluidInputs()
             .noFluidOutputs()
-            .duration(20 * SECONDS)
-            .eut(1)
+            .duration(2 * SECONDS)
+            .eut(20)
             .addTo(sAssemblerRecipes);
 
         GT_Values.RA.stdBuilder()
@@ -2860,8 +2860,8 @@ public class AssemblerRecipes implements Runnable {
                 .itemOutputs(GT_ModHandler.getIC2Item("insulatedTinCableItem", 1))
                 .noFluidInputs()
                 .noFluidOutputs()
-                .duration(5 * SECONDS)
-                .eut(2)
+                .duration(1 * SECONDS)
+                .eut(20)
                 .addTo(sAssemblerRecipes);
 
             GT_Values.RA.stdBuilder()
@@ -2871,8 +2871,8 @@ public class AssemblerRecipes implements Runnable {
                 .itemOutputs(GT_ModHandler.getIC2Item("insulatedCopperCableItem", 1))
                 .noFluidInputs()
                 .noFluidOutputs()
-                .duration(5 * SECONDS)
-                .eut(2)
+                .duration(1 * SECONDS)
+                .eut(20)
                 .addTo(sAssemblerRecipes);
 
             GT_Values.RA.stdBuilder()
@@ -2882,8 +2882,8 @@ public class AssemblerRecipes implements Runnable {
                 .itemOutputs(GT_ModHandler.getIC2Item("insulatedGoldCableItem", 1))
                 .noFluidInputs()
                 .noFluidOutputs()
-                .duration(10 * SECONDS)
-                .eut(2)
+                .duration(2 * SECONDS)
+                .eut(20)
                 .addTo(sAssemblerRecipes);
 
             GT_Values.RA.stdBuilder()
@@ -2893,8 +2893,8 @@ public class AssemblerRecipes implements Runnable {
                 .itemOutputs(GT_ModHandler.getIC2Item("insulatedIronCableItem", 1))
                 .noFluidInputs()
                 .noFluidOutputs()
-                .duration(15 * SECONDS)
-                .eut(2)
+                .duration(3 * SECONDS)
+                .eut(20)
                 .addTo(sAssemblerRecipes);
         }
         GT_Values.RA.stdBuilder()
