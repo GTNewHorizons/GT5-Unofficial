@@ -26,6 +26,18 @@ public class IG_UITextures {
     public static final UITexture OVERLAY_BUTTON_CROSS = UITexture
             .fullImage(ASSET_PREFIX, "gui/overlay_button/cross.png");
 
+    public static final UITexture OVERLAY_BUTTON_OPTIONS = UITexture
+            .fullImage(ASSET_PREFIX, "gui/overlay_button/options.png");
+
+    public static final UITexture OVERLAY_BUTTON_CONFIGURE = UITexture
+            .fullImage(ASSET_PREFIX, "gui/overlay_button/configure.png");
+
+    public static final UITexture OVERLAY_BUTTON_BLACKLIST = UITexture
+            .fullImage(ASSET_PREFIX, "gui/overlay_button/blacklist.png");
+
+    public static final UITexture OVERLAY_BUTTON_WHITELIST = UITexture
+            .fullImage(ASSET_PREFIX, "gui/overlay_button/whitelist.png");
+
     public static final UITexture OVERLAY_BUTTON_SPACE_ELEVATOR_EXTENSION_ENABLED = UITexture
             .fullImage(ASSET_PREFIX, "gui/overlay_button/space_elevator_extension_enabled.png");
 
