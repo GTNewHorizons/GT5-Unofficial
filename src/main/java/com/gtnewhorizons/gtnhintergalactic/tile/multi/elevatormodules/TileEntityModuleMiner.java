@@ -10,6 +10,7 @@ import java.util.List;
 
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -29,6 +30,7 @@ import com.gtnewhorizons.gtnhintergalactic.recipe.IG_RecipeAdder;
 import com.gtnewhorizons.gtnhintergalactic.spaceprojects.ProjectAsteroidOutpost;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
+import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.api.widget.Widget;
@@ -65,8 +67,15 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase {
     /** Usage of radon plasma per mining operation */
     protected static int PLASMA_RADON_USAGE = 300;
 
+    /* Size of the whitelist in stacks **/
+    protected static int WHITELIST_SIZE = 64;
+    /** ID of the whitelist config window */
+    protected static int WHITELIST_WINDOW_ID = 200;
+
     /** String of the NBT tag that saves if whitelist mode is enabled */
-    protected static String WHITELIST_NBT_TAG = "isWhitelisted";
+    protected static String IS_WHITELISTED_NBT_TAG = "isWhitelisted";
+    /** String of the NBT tag that saves the whitelist */
+    protected static String WHITELIST_NBT_TAG = "whitelist";
 
     protected static final ISpaceProject ASTEROID_OUTPOST = SpaceProjectManager.getProject("AsteroidOutput");
 
@@ -127,6 +136,8 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase {
     protected boolean isWhitelisted = false;
     /** List for ore generation. Can either be a white- or blacklist */
     protected HashSet<String> configuredOres;
+    /** Handler that holds the visual whitelist */
+    protected ItemStackHandler whiteListHandler = new ItemStackHandler(WHITELIST_SIZE);
 
     /**
      * Create new Space Mining module
@@ -173,7 +184,10 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase {
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        isWhitelisted = aNBT.getBoolean(WHITELIST_NBT_TAG);
+        isWhitelisted = aNBT.getBoolean(IS_WHITELISTED_NBT_TAG);
+        if (whiteListHandler != null) {
+            whiteListHandler.deserializeNBT(aNBT.getCompoundTag(WHITELIST_NBT_TAG));
+        }
     }
 
     /**
@@ -184,7 +198,10 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase {
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setBoolean(WHITELIST_NBT_TAG, isWhitelisted);
+        aNBT.setBoolean(IS_WHITELISTED_NBT_TAG, isWhitelisted);
+        if (whiteListHandler != null) {
+            aNBT.setTag(WHITELIST_NBT_TAG, whiteListHandler.serializeNBT());
+        }
     }
 
     /**
@@ -415,8 +432,10 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase {
         } else {
             configuredOres.clear();
         }
-        for (ItemStack item : getStoredInputs()) {
-            configuredOres.add(getOreString(item));
+        if (whiteListHandler != null) {
+            for (ItemStack item : whiteListHandler.getStacks()) {
+                configuredOres.add(getOreString(item));
+            }
         }
     }
 
@@ -515,21 +534,13 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase {
     protected ButtonWidget createSafeVoidButton() {
         Widget button = new ButtonWidget().setOnClick((clickData, widget) -> {
             TecTech.proxy.playSound(getBaseMetaTileEntity(), "fx_click");
-            isWhitelisted = !isWhitelisted;
             if (!widget.isClient()) {
-                generateOreConfigurationList();
+                widget.getContext().openSyncedWindow(WHITELIST_WINDOW_ID);
             }
-        }).setPlayClickSound(false).setBackground(() -> {
-            List<UITexture> ret = new ArrayList<>();
-            ret.add(TecTechUITextures.BUTTON_STANDARD_16x16);
-            if (isWhitelisted) {
-                ret.add(IG_UITextures.OVERLAY_BUTTON_CHECK);
-            } else {
-                ret.add(IG_UITextures.OVERLAY_BUTTON_CROSS);
-            }
-            return ret.toArray(new IDrawable[0]);
-        }).setPos(174, 132).setSize(16, 16);
-        button.addTooltip("Whitelist").setTooltipShowUpDelay(TOOLTIP_DELAY);
+        }).setPlayClickSound(false)
+                .setBackground(TecTechUITextures.BUTTON_STANDARD_16x16, IG_UITextures.OVERLAY_BUTTON_OPTIONS)
+                .setPos(174, 132).setSize(16, 16);
+        button.addTooltip("Configure Filter").setTooltipShowUpDelay(TOOLTIP_DELAY);
         return (ButtonWidget) button;
     }
 
@@ -543,6 +554,71 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase {
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         super.addUIWidgets(builder, buildContext);
         builder.widget(new FakeSyncWidget.BooleanSyncer(() -> isWhitelisted, val -> isWhitelisted = val));
+        buildContext.addSyncedWindow(WHITELIST_WINDOW_ID, this::createWhitelistConfigWindow);
+    }
+
+    /**
+     * Create the window that is used to configure the module white-/blacklist
+     *
+     * @param player Player that opened the window
+     * @return Window object
+     */
+    protected ModularWindow createWhitelistConfigWindow(final EntityPlayer player) {
+        return ModularWindow.builder(158, 180).setBackground(TecTechUITextures.BACKGROUND_SCREEN_BLUE)
+                .setGuiTint(getGUIColorization())
+                // Toggle white-/blacklist
+                .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
+                    TecTech.proxy.playSound(getBaseMetaTileEntity(), "fx_click");
+                    isWhitelisted = !isWhitelisted;
+                    if (!widget.isClient()) {
+                        generateOreConfigurationList();
+                    }
+                }).setPlayClickSound(false).setBackground(() -> {
+                    List<UITexture> ret = new ArrayList<>();
+                    ret.add(TecTechUITextures.BUTTON_STANDARD_16x16);
+                    if (isWhitelisted) {
+                        ret.add(IG_UITextures.OVERLAY_BUTTON_WHITELIST);
+                    } else {
+                        ret.add(IG_UITextures.OVERLAY_BUTTON_BLACKLIST);
+                    }
+                    return ret.toArray(new IDrawable[0]);
+                }).setPos(7, 9).setSize(16, 16).addTooltip("Mode").setTooltipShowUpDelay(TOOLTIP_DELAY))
+                // Clear list
+                .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
+                    TecTech.proxy.playSound(getBaseMetaTileEntity(), "fx_click");
+                    if (!widget.isClient()) {
+                        if (whiteListHandler != null) {
+                            for (int i = 0; i < whiteListHandler.getSlots(); i++) {
+                                whiteListHandler.setStackInSlot(i, null);
+                            }
+                        }
+                        generateOreConfigurationList();
+                    }
+                }).setPlayClickSound(false)
+                        .setBackground(TecTechUITextures.BUTTON_STANDARD_16x16, IG_UITextures.OVERLAY_BUTTON_CROSS)
+                        .setPos(25, 9).setSize(16, 16).addTooltip("Clear").setTooltipShowUpDelay(TOOLTIP_DELAY))
+                // Configure from bus
+                .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
+                    TecTech.proxy.playSound(getBaseMetaTileEntity(), "fx_click");
+                    if (!widget.isClient()) {
+                        int i = 0;
+                        for (ItemStack itemStack : getStoredInputs()) {
+                            if (i < WHITELIST_SIZE) {
+                                ItemStack copy = itemStack.copy();
+                                copy.stackSize = 1;
+                                whiteListHandler.setStackInSlot(i++, copy);
+                            }
+                        }
+                        generateOreConfigurationList();
+                    }
+                }).setPlayClickSound(false)
+                        .setBackground(TecTechUITextures.BUTTON_STANDARD_16x16, IG_UITextures.OVERLAY_BUTTON_CONFIGURE)
+                        .setPos(43, 9).setSize(16, 16).addTooltip("Load from Bus").setTooltipShowUpDelay(TOOLTIP_DELAY))
+                // List
+                .widget(
+                        SlotGroup.ofItemHandler(whiteListHandler, 8).startFromSlot(0).endAtSlot(WHITELIST_SIZE - 1)
+                                .phantom(true).background(getGUITextureSet().getItemSlot()).build().setPos(7, 27))
+                .build();
     }
 
     /**
@@ -588,8 +664,6 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase {
                 asteroidOutpost = (ProjectAsteroidOutpost) proj;
             }
         }
-        // Update ore map here to save some performance
-        generateOreConfigurationList();
         return true;
     }
 
