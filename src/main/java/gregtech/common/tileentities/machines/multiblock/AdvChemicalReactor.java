@@ -1,7 +1,7 @@
 package gregtech.common.tileentities.machines.multiblock;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
+import static gregtech.api.enums.Mods.*;
 import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.*;
 
 import java.util.ArrayList;
@@ -24,6 +24,8 @@ import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotGroup;
 
+import gregtech.api.GregTech_API;
+import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.fluid.FluidTankGT;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.logic.ComplexParallelProcessingLogic;
@@ -31,17 +33,19 @@ import gregtech.api.multitileentity.enums.GT_MultiTileCasing;
 import gregtech.api.multitileentity.multiblock.base.ComplexController;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GT_StructureUtility;
 
 public class AdvChemicalReactor extends ComplexController<AdvChemicalReactor> {
 
     private static IStructureDefinition<AdvChemicalReactor> STRUCTURE_DEFINITION = null;
-    protected static final String STRUCTURE_PIECE_MAIN = "MAIN";
-    protected static final Vec3Impl STRUCTURE_OFFSET = new Vec3Impl(1, 1, 0);
+    protected static final String STRUCTURE_PIECE_T1 = "T1";
+    protected static final Vec3Impl STRUCTURE_OFFSET = new Vec3Impl(3, 1, 0);
     protected static final int PROCESS_WINDOW_BASE_ID = 100;
     protected static final int ITEM_WHITELIST_SLOTS = 8;
     protected static final int FLUID_WHITELIST_SLOTS = 8;
     protected static final int MAX_PROCESSES = 4;
     protected int numberOfProcessors = MAX_PROCESSES; // TODO: Set this value depending on structure
+    protected HeatingCoilLevel coilTier;
     protected final List<ItemStack[]> processItemWhiteLists = new ArrayList<>();
     protected final List<ItemStackHandler> processInventoryHandlers = new ArrayList<>();
     protected final List<List<IFluidTank>> processFluidWhiteLists = new ArrayList<>();
@@ -162,15 +166,16 @@ public class AdvChemicalReactor extends ComplexController<AdvChemicalReactor> {
 
     @Override
     public boolean checkMachine() {
+        setCoilTier(HeatingCoilLevel.None);
         setMaxComplexParallels(MAX_PROCESSES);
         buildState.startBuilding(getStartingStructureOffset());
-        return checkPiece(STRUCTURE_PIECE_MAIN, buildState.stopBuilding());
+        return checkPiece(STRUCTURE_PIECE_T1, buildState.stopBuilding());
     }
 
     @Override
     public void construct(ItemStack trigger, boolean hintsOnly) {
         buildState.startBuilding(getStartingStructureOffset());
-        buildPiece(STRUCTURE_PIECE_MAIN, trigger, hintsOnly, buildState.stopBuilding());
+        buildPiece(STRUCTURE_PIECE_T1, trigger, hintsOnly, buildState.stopBuilding());
     }
 
     @Override
@@ -178,9 +183,10 @@ public class AdvChemicalReactor extends ComplexController<AdvChemicalReactor> {
         if (STRUCTURE_DEFINITION == null) {
             STRUCTURE_DEFINITION = StructureDefinition.<AdvChemicalReactor>builder()
                 .addShape(
-                    STRUCTURE_PIECE_MAIN,
+                    STRUCTURE_PIECE_T1,
                     transpose(
-                        new String[][] { { "CCC", "CCC", "CCC" }, { "C~C", "CCC", "CCC" }, { "CCC", "CCC", "CCC" } }))
+                        new String[][] { { "CPCPC", "CCCCC", "CPCPC" }, { "CGC~C", "GWWWC", "CGCCC" },
+                            { "CPCPC", "CCCCC", "CPCPC" } }))
                 .addElement(
                     'C',
                     ofChain(
@@ -188,6 +194,17 @@ public class AdvChemicalReactor extends ComplexController<AdvChemicalReactor> {
                             "gt.multitileentity.casings",
                             getCasingMeta(),
                             FLUID_IN | ITEM_IN | FLUID_OUT | ITEM_OUT | ENERGY_IN)))
+                .addElement('P', ofBlock(GregTech_API.sBlockCasings8, 1))
+                .addElement(
+                    'W',
+                    GT_StructureUtility.ofCoil(AdvChemicalReactor::setCoilTier, AdvChemicalReactor::getCoilTier))
+                .addElement(
+                    'G',
+                    ofChain(
+                        ofBlockUnlocalizedName(IndustrialCraft2.ID, "blockAlloyGlass", 0, true),
+                        ofBlockUnlocalizedName(BartWorks.ID, "BW_GlasBlocks", 0, true),
+                        ofBlockUnlocalizedName(BartWorks.ID, "BW_GlasBlocks2", 0, true),
+                        ofBlockUnlocalizedName(Thaumcraft.ID, "blockCosmeticOpaque", 2, false)))
                 .build();
         }
         return STRUCTURE_DEFINITION;
@@ -243,5 +260,13 @@ public class AdvChemicalReactor extends ComplexController<AdvChemicalReactor> {
     @Override
     public String getLocalName() {
         return "Advanced Chemical Reactor";
+    }
+
+    public void setCoilTier(HeatingCoilLevel coilTier) {
+        this.coilTier = coilTier;
+    }
+
+    public HeatingCoilLevel getCoilTier() {
+        return coilTier;
     }
 }
