@@ -117,6 +117,9 @@ public abstract class MultiTileEntity extends CoverableTileEntity implements IMu
 
     @Override
     public void initFromNBT(NBTTagCompound nbt, short mteID, short mteRegistry) {
+        if (this.mteID == mteID && this.mteRegistry == mteRegistry) {
+            return;
+        }
         // Set ID and Registry ID.
         this.mteID = mteID;
         this.mteRegistry = mteRegistry;
