@@ -39,7 +39,6 @@ public abstract class TickableMultiTileEntity extends MultiTileEntity implements
                 return;
             }
             onPreTick(timer, isServerSide);
-            timer++;
             super.updateEntity();
             if (!isServerSide && needsUpdate) {
                 worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
