@@ -94,8 +94,8 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.tileentities.casings.upgrade.InventoryUpgrade;
 
-public abstract class Controller<T extends Controller<T>> extends MultiTileBasicMachine implements
-    IAlignment, IConstructable, IMultiBlockController, IDescribable, IMTE_AddToolTips, ISurvivalConstructable {
+public abstract class Controller<T extends Controller<T>> extends MultiTileBasicMachine implements IAlignment,
+    IConstructable, IMultiBlockController, IDescribable, IMTE_AddToolTips, ISurvivalConstructable {
 
     private static final Map<Integer, GT_Multiblock_Tooltip_Builder> tooltip = new ConcurrentHashMap<>();
     private final List<UpgradeCasing> upgradeCasings = new ArrayList<>();

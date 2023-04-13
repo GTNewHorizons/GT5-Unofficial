@@ -6,8 +6,7 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.logic.PowerLogic;
 import gregtech.api.logic.interfaces.PowerLogicHost;
 
-public abstract class PowerController<T extends PowerController<T>> extends Controller<T>
-    implements PowerLogicHost {
+public abstract class PowerController<T extends PowerController<T>> extends Controller<T> implements PowerLogicHost {
 
     public PowerController() {
         super();

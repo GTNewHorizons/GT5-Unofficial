@@ -82,15 +82,15 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
     protected IItemHandlerModifiable inputInventory = EMPTY_INVENTORY;
     protected IItemHandlerModifiable outputInventory = EMPTY_INVENTORY;
     protected boolean outputInventoryChanged = false;
-    private boolean powerShutDown = false;
-    private boolean wasEnabled = false;
-    private boolean canWork = true;
-    private boolean isElectric = true;
-    private boolean isSteam = false;
-    private boolean acceptsFuel = false;
-    private boolean isWireless = false;
-    private byte soundEvent = 0;
-    private int soundEventValue = 0;
+    protected boolean powerShutDown = false;
+    protected boolean wasEnabled = false;
+    protected boolean canWork = true;
+    protected boolean isElectric = true;
+    protected boolean isSteam = false;
+    protected boolean acceptsFuel = false;
+    protected boolean isWireless = false;
+    protected byte soundEvent = 0;
+    protected int soundEventValue = 0;
 
     @SideOnly(Side.CLIENT)
     protected GT_SoundLoop activitySoundLoop;
