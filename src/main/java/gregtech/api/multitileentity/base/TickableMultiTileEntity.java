@@ -67,7 +67,7 @@ public abstract class TickableMultiTileEntity extends MultiTileEntity implements
     @Override
     public void sendClientData(EntityPlayerMP aPlayer) {
         if (sendClientData) {
-            GT_FML_LOGGER.info("Sending client data");
+            // GT_FML_LOGGER.info("Sending client data");
             super.sendClientData(aPlayer);
             sendClientData = false;
         }

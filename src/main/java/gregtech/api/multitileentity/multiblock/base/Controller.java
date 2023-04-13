@@ -1223,8 +1223,13 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
     protected void updateSlots() {
         IItemHandlerModifiable inv = getInventoriesForInput();
         for (int i = 0; i < inv.getSlots(); i++) {
-            if (inv.getStackInSlot(i).stackSize <= 0) {
+            if (inv.getStackInSlot(i) != null && inv.getStackInSlot(i).stackSize <= 0) {
                 inv.setStackInSlot(i, null);
+            }
+        }
+        for (FluidTankGT inputTank : inputTanks) {
+            if (inputTank != null && inputTank.get() != null && inputTank.get().amount <= 0) {
+                inputTank.setEmpty();
             }
         }
     }

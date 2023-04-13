@@ -13,6 +13,7 @@ import gregtech.api.multitileentity.multiblock.base.WallShareablePart;
 import gregtech.api.multitileentity.multiblock.casing.BasicCasing;
 import gregtech.common.tileentities.casings.functional.MotorCasing;
 import gregtech.common.tileentities.casings.upgrade.InventoryUpgrade;
+import gregtech.common.tileentities.machines.multiblock.AdvChemicalReactor;
 import gregtech.common.tileentities.machines.multiblock.CokeOven;
 import gregtech.common.tileentities.machines.multiblock.Macerator;
 
@@ -23,8 +24,8 @@ public class GT_Loader_MultiTileEntities implements Runnable {
     @Override
     public void run() {
         GT_FML_LOGGER.info("GT_Mod: Registering MultiTileEntities");
-        // registerMachines();
-        // registerCasings();
+        registerMachines();
+        registerCasings();
 
     }
 
@@ -51,6 +52,16 @@ public class GT_Loader_MultiTileEntities implements Runnable {
             .inputInventorySize(1)
             .outputInventorySize(1)
             .register();
+        machineRegistry.create(1, AdvChemicalReactor.class)
+            .name("Advanced Chemical Reactor")
+            .category("MultiblockController")
+            .setBlock(machine)
+            // TODO: Texture
+            .texture("cokeOven")
+            .inputInventorySize(16)
+            .outputInventorySize(16)
+            .tankCapacity(128000L)
+            .register();
     }
 
     private static void registerCasings() {
@@ -59,6 +70,12 @@ public class GT_Loader_MultiTileEntities implements Runnable {
             .getOrCreate("GregTech", "casing", Material.iron, Block.soundTypeMetal, "wrench", 0, 0, 15, true, true);
         casingRegistry.create(CokeOven.getId(), WallShareablePart.class)
             .name("Coke Oven Bricks")
+            .category("MultiBlock Casing")
+            .setBlock(casing)
+            .texture("cokeOven")
+            .register();
+        casingRegistry.create(Chemical.getId(), BasicCasing.class)
+            .name("Chemical Casings")
             .category("MultiBlock Casing")
             .setBlock(casing)
             .texture("cokeOven")

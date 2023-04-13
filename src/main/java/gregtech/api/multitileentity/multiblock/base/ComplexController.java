@@ -1,5 +1,7 @@
 package gregtech.api.multitileentity.multiblock.base;
 
+import java.util.stream.LongStream;
+
 import gregtech.api.logic.ComplexParallelProcessingLogic;
 import gregtech.api.logic.interfaces.PollutionLogicHost;
 
@@ -12,7 +14,10 @@ public abstract class ComplexController<T extends ComplexController<T>> extends 
     protected long[] progressTimes = new long[0];
 
     protected void setMaxComplexParallels(int parallel) {
-        this.maxComplexParallels = parallel;
+        if (parallel != maxComplexParallels) {
+            stopMachine(false);
+        }
+        maxComplexParallels = parallel;
         maxProgressTimes = new long[parallel];
         progressTimes = new long[parallel];
     }
@@ -32,7 +37,7 @@ public abstract class ComplexController<T extends ComplexController<T>> extends 
         }
         if ((tick % TICKS_BETWEEN_RECIPE_CHECKS == 0 || hasWorkJustBeenEnabled() || hasInventoryBeenModified())
             && maxComplexParallels != currentComplexParallels) {
-            if (isAllowedToWork()) {
+            if (isAllowedToWork() && maxComplexParallels > currentComplexParallels) {
                 wasEnabled = false;
                 boolean started = false;
                 for (int i = 0; i < maxComplexParallels; i++) {
@@ -53,7 +58,7 @@ public abstract class ComplexController<T extends ComplexController<T>> extends 
 
     @Override
     protected void runningTick(long tick) {
-        consumeEnergy();
+        // consumeEnergy();
         boolean allStopped = true;
         for (int i = 0; i < maxComplexParallels; i++) {
             if (maxProgressTimes[i] > 0 && ++progressTimes[i] >= maxProgressTimes[i]) {
@@ -90,7 +95,9 @@ public abstract class ComplexController<T extends ComplexController<T>> extends 
         processingLogic.clear(index);
         boolean result = processingLogic.setInputItems(index, getInputItems())
             .setInputFluids(index, getInputFluids())
-            .setEut(index, getEutForComplexParallel(index))
+            .setTileEntity(this)
+            // .setEut(index, getEutForComplexParallel(index))
+            .setEut(index, 1000000000)
             .process(index);
         setDuration(index, processingLogic.getDuration(index));
         setEut(processingLogic.getTotalEU());
@@ -113,6 +120,12 @@ public abstract class ComplexController<T extends ComplexController<T>> extends 
 
     protected ComplexParallelProcessingLogic getComplexProcessingLogic() {
         return processingLogic;
+    }
+
+    @Override
+    public boolean hasThingsToDo() {
+        return LongStream.of(maxProgressTimes)
+            .sum() > 0;
     }
 
     protected void setDuration(int index, long duration) {

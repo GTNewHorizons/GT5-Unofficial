@@ -222,7 +222,8 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
                 .readFromNBT(nbt, NBT.TANK_IN + i);
         }
         for (int i = 0; i < outputTanks.length; i++) {
-            outputTanks[i] = new FluidTankGT().readFromNBT(nbt, NBT.TANK_OUT + i);
+            outputTanks[i] = new FluidTankGT(capacity).setCapacityMultiplier(maxParallel * 2L)
+                .readFromNBT(nbt, NBT.TANK_OUT + i);
         }
 
         for (int i = 0; i < fluidsToOutput.length; i++) {
@@ -612,7 +613,7 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
 
     protected ItemStack[] getInputItems() {
         return inputInventory.getStacks()
-            .toArray(ItemStack[]::new);
+            .toArray(new ItemStack[0]);
     }
 
     protected FluidStack[] getInputFluids() {
@@ -655,7 +656,7 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
     protected void tryToFillTanks(FluidStack fluid, FluidTankGT... tanks) {
         for (FluidTankGT tank : tanks) {
             if (tank.canFillAll(fluid)) {
-                tank.add(fluid.amount, fluid);
+                fluid.amount -= tank.add(fluid.amount, fluid);
             }
         }
     }
