@@ -622,6 +622,11 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
     }
 
     protected void outputItems() {
+        outputItems(itemsToOutput);
+        itemsToOutput = null;
+    }
+
+    protected void outputItems(ItemStack... itemsToOutput) {
         if (itemsToOutput == null) {
             return;
         }
@@ -631,10 +636,14 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
                 item = outputInventory.insertItem(index++, item.copy(), false);
             }
         }
-        itemsToOutput = null;
     }
 
     protected void outputFluids() {
+        outputFluids(fluidsToOutput);
+        fluidsToOutput = null;
+    }
+
+    protected void outputFluids(FluidStack... fluidsToOutput) {
         if (fluidsToOutput == null) {
             return;
         }
