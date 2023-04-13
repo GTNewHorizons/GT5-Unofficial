@@ -269,4 +269,9 @@ public class AdvChemicalReactor extends ComplexController<AdvChemicalReactor> {
     public HeatingCoilLevel getCoilTier() {
         return coilTier;
     }
+
+    @Override
+    protected boolean hasPerfectOverclock() {
+        return true;
+    }
 }

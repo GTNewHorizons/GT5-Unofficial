@@ -14,6 +14,7 @@ public class ComplexParallelProcessingLogic {
 
     protected Controller<?> tileEntity;
     protected GT_Recipe.GT_Recipe_Map recipeMap;
+    protected boolean hasPerfectOverclock;
     protected final int maxComplexParallels;
     protected final ItemStack[][] outputItems;
     protected final ItemStack[][] inputItems;
@@ -79,6 +80,11 @@ public class ComplexParallelProcessingLogic {
         return this;
     }
 
+    public ComplexParallelProcessingLogic setPerfectOverclock(boolean shouldOverclockPerfectly) {
+        this.hasPerfectOverclock = shouldOverclockPerfectly;
+        return this;
+    }
+
     public ComplexParallelProcessingLogic clear() {
         for (int i = 0; i < maxComplexParallels; i++) {
             outputItems[i] = null;
@@ -128,8 +134,11 @@ public class ComplexParallelProcessingLogic {
 
         GT_OverclockCalculator calculator = new GT_OverclockCalculator().setRecipeEUt(recipe.mEUt)
             .setDuration(recipe.mDuration)
-            .setEUt(availableEut[index])
-            .calculate();
+            .setEUt(availableEut[index]);
+
+        if (hasPerfectOverclock) {
+            calculator.enablePerfectOC();
+        }
 
         if (calculator.getConsumption() == Long.MAX_VALUE - 1 || calculator.getDuration() == Integer.MAX_VALUE - 1) {
             return false;

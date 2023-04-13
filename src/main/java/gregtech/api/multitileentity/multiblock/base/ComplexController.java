@@ -99,6 +99,7 @@ public abstract class ComplexController<T extends ComplexController<T>> extends 
             .setVoidProtection(index, isVoidProtectionEnabled(index))
             // .setEut(index, getEutForComplexParallel(index))
             .setEut(index, 1000000000)
+            .setPerfectOverclock(hasPerfectOverclock())
             .process(index);
         setDuration(index, processingLogic.getDuration(index));
         setEut(processingLogic.getTotalEU());
@@ -140,6 +141,10 @@ public abstract class ComplexController<T extends ComplexController<T>> extends 
 
     protected boolean isVoidProtectionEnabled(int index) {
         return !voidExcess;
+    }
+
+    protected boolean hasPerfectOverclock() {
+        return false;
     }
 
     protected long getEutForComplexParallel(int index) {
