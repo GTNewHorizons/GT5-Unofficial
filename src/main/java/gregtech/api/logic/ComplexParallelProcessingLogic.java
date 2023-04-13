@@ -114,7 +114,6 @@ public class ComplexParallelProcessingLogic {
             .setFluidInputs(inputFluids[index])
             .setAvailableEUt(availableEut[index])
             .enableConsumption()
-            .enableVoidProtection(tileEntity)
             .enableOutputCalculation();
 
         if (isVoidProtected[index]) {

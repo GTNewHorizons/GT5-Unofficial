@@ -57,7 +57,7 @@ public class GT_Loader_MultiTileEntities implements Runnable {
             .category("MultiblockController")
             .setBlock(machine)
             // TODO: Texture
-            .texture("cokeOven")
+            .texture("chemicalWall")
             .inputInventorySize(16)
             .outputInventorySize(16)
             .tankCapacity(128000L)
@@ -78,7 +78,7 @@ public class GT_Loader_MultiTileEntities implements Runnable {
             .name("Chemical Casings")
             .category("MultiBlock Casing")
             .setBlock(casing)
-            .texture("cokeOven")
+            .texture("chemicalWall")
             .register();
         casingRegistry.create(18000, BasicCasing.class)
             .name("Test Casing")
