@@ -96,6 +96,7 @@ public abstract class ComplexController<T extends ComplexController<T>> extends 
         boolean result = processingLogic.setInputItems(index, getInputItems())
             .setInputFluids(index, getInputFluids())
             .setTileEntity(this)
+            .setVoidProtection(index, isVoidProtectionEnabled(index))
             // .setEut(index, getEutForComplexParallel(index))
             .setEut(index, 1000000000)
             .process(index);
@@ -135,6 +136,10 @@ public abstract class ComplexController<T extends ComplexController<T>> extends 
         if (index >= 0 && index < maxComplexParallels) {
             maxProgressTimes[index] = duration;
         }
+    }
+
+    protected boolean isVoidProtectionEnabled(int index) {
+        return !voidExcess;
     }
 
     protected long getEutForComplexParallel(int index) {
