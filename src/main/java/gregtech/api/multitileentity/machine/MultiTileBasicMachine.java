@@ -5,6 +5,7 @@ import static gregtech.api.enums.GT_Values.B;
 import static gregtech.api.enums.GT_Values.emptyIconContainerArray;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -518,9 +519,8 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
         }
         ProcessingLogic logic = ((ProcessingLogicHost) this).getProcessingLogic();
         logic.clear();
-        boolean result = logic.setInputItems(
-            inputInventory.getStacks()
-                .toArray(new ItemStack[0]))
+        boolean result = logic.setInputItems(getInputItems())
+            .setInputFluids(getInputFluids())
             .setCurrentOutputItems(
                 outputInventory.getStacks()
                     .toArray(new ItemStack[0]))
@@ -608,6 +608,17 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
 
     protected ResourceLocation getActivitySoundLoop() {
         return null;
+    }
+
+    protected ItemStack[] getInputItems() {
+        return inputInventory.getStacks()
+            .toArray(ItemStack[]::new);
+    }
+
+    protected FluidStack[] getInputFluids() {
+        return Arrays.stream(inputTanks)
+            .map(FluidTankGT::get)
+            .toArray(FluidStack[]::new);
     }
 
     protected void outputItems() {
