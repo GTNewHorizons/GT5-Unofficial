@@ -879,6 +879,14 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
     }
 
     @Override
+    public void enableWorking() {
+        super.enableWorking();
+        if (!structureOkay) {
+            checkStructure(true);
+        }
+    }
+
+    @Override
     public IItemHandlerModifiable getInventoryForGUI(MultiBlockPart aPart) {
         if (isServerSide()) {
             for (UpgradeCasing tPart : upgradeCasings) {
