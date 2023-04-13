@@ -19,7 +19,6 @@ public class ComplexParallelProcessingLogic {
     protected final ItemStack[][] inputItems;
     protected final FluidStack[][] inputFluids;
     protected final FluidStack[][] outputFluids;
-    protected ItemStack[] currentOutputInventoryContents;
     protected final long[] availableEut;
     protected final long[] eut;
     protected final long[] durations;
@@ -56,11 +55,6 @@ public class ComplexParallelProcessingLogic {
         if (index >= 0 && index < maxComplexParallels) {
             this.inputFluids[index] = inputFluids;
         }
-        return this;
-    }
-
-    public ComplexParallelProcessingLogic setCurrentOutputInventoryContents(ItemStack... items) {
-        currentOutputInventoryContents = items;
         return this;
     }
 

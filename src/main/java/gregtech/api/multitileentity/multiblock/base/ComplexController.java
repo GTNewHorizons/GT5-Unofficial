@@ -1,7 +1,5 @@
 package gregtech.api.multitileentity.multiblock.base;
 
-import net.minecraft.item.ItemStack;
-
 import gregtech.api.logic.ComplexParallelProcessingLogic;
 import gregtech.api.logic.interfaces.PollutionLogicHost;
 
@@ -92,9 +90,6 @@ public abstract class ComplexController<T extends ComplexController<T>> extends 
         processingLogic.clear(index);
         boolean result = processingLogic.setInputItems(index, getInputItems())
             .setInputFluids(index, getInputFluids())
-            .setCurrentOutputInventoryContents(
-                outputInventory.getStacks()
-                    .toArray(new ItemStack[0]))
             .setEut(index, getEutForComplexParallel(index))
             .process(index);
         setDuration(index, processingLogic.getDuration(index));
