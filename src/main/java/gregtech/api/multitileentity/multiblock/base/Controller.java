@@ -1345,12 +1345,12 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
                 new TabButton(page++)
                     .setBackground(
                         false,
-                        ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0, 1f, 0.5f),
+                        ModularUITextures.VANILLA_TAB_TOP_MIDDLE.getSubArea(0, 0, 1f, 0.5f),
                         GT_UITextures.PICTURE_ITEM_IN.withFixedSize(16, 16)
                             .withOffset(2, 4))
                     .setBackground(
                         true,
-                        ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0.5f, 1f, 1f),
+                        ModularUITextures.VANILLA_TAB_TOP_MIDDLE.getSubArea(0, 0.5f, 1f, 1f),
                         GT_UITextures.PICTURE_ITEM_IN.withFixedSize(16, 16)
                             .withOffset(2, 4))
                     .setPos(20 * (page - 1), -20))
@@ -1365,12 +1365,12 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
                 new TabButton(page++)
                     .setBackground(
                         false,
-                        ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0, 1f, 0.5f),
+                        ModularUITextures.VANILLA_TAB_TOP_MIDDLE.getSubArea(0, 0, 1f, 0.5f),
                         GT_UITextures.PICTURE_ITEM_OUT.withFixedSize(16, 16)
                             .withOffset(2, 4))
                     .setBackground(
                         true,
-                        ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0.5f, 1f, 1f),
+                        ModularUITextures.VANILLA_TAB_TOP_MIDDLE.getSubArea(0, 0.5f, 1f, 1f),
                         GT_UITextures.PICTURE_ITEM_OUT.withFixedSize(16, 16)
                             .withOffset(2, 4))
                     .setPos(20 * (page - 1), -20))
@@ -1385,12 +1385,12 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
                 new TabButton(page++)
                     .setBackground(
                         false,
-                        ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0, 1f, 0.5f),
+                        ModularUITextures.VANILLA_TAB_TOP_MIDDLE.getSubArea(0, 0, 1f, 0.5f),
                         GT_UITextures.PICTURE_FLUID_IN.withFixedSize(16, 16)
                             .withOffset(2, 4))
                     .setBackground(
                         true,
-                        ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0.5f, 1f, 1f),
+                        ModularUITextures.VANILLA_TAB_TOP_MIDDLE.getSubArea(0, 0.5f, 1f, 1f),
                         GT_UITextures.PICTURE_FLUID_IN.withFixedSize(16, 16)
                             .withOffset(2, 4))
                     .setPos(20 * (page - 1), -20))
@@ -1405,12 +1405,12 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
                 new TabButton(page++)
                     .setBackground(
                         false,
-                        ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0, 1f, 0.5f),
+                        ModularUITextures.VANILLA_TAB_TOP_MIDDLE.getSubArea(0, 0, 1f, 0.5f),
                         GT_UITextures.PICTURE_FLUID_OUT.withFixedSize(16, 16)
                             .withOffset(2, 4))
                     .setBackground(
                         true,
-                        ModularUITextures.VANILLA_TAB_TOP_START.getSubArea(0, 0.5f, 1f, 1f),
+                        ModularUITextures.VANILLA_TAB_TOP_MIDDLE.getSubArea(0, 0.5f, 1f, 1f),
                         GT_UITextures.PICTURE_FLUID_OUT.withFixedSize(16, 16)
                             .withOffset(2, 4))
                     .setPos(20 * (page - 1), -20))
