@@ -1,14 +1,13 @@
 package gregtech.api.multitileentity.multiblock.base;
 
 import gregtech.api.logic.interfaces.PollutionLogicHost;
-import gregtech.api.metatileentity.GregTechTileClientEvents;
 
 public abstract class ComplexController<T extends ComplexController<T>> extends PowerController<T> {
 
-    private int maxComplexParallels = 0;
-    private int currentComplexParallels = 0;
-    private long[] maxProgressTimes = new long[0];
-    private long[] progressTimes = new long[0];
+    protected int maxComplexParallels = 0;
+    protected int currentComplexParallels = 0;
+    protected long[] maxProgressTimes = new long[0];
+    protected long[] progressTimes = new long[0];
 
     protected void setMaxComplexParallels(int parallel) {
         this.maxComplexParallels = parallel;
@@ -42,7 +41,6 @@ public abstract class ComplexController<T extends ComplexController<T>> extends 
                 }
                 if (started) {
                     setActive(true);
-                    setSound(GregTechTileClientEvents.START_SOUND_LOOP, PROCESS_START_SOUND_INDEX);
                     updateSlots();
                     markDirty();
                     issueClientUpdate();
@@ -55,7 +53,7 @@ public abstract class ComplexController<T extends ComplexController<T>> extends 
     protected void runningTick(long tick) {
         consumeEnergy();
         boolean allStopped = true;
-        for (int i = 0; i < maxProgressTimes.length; i++) {
+        for (int i = 0; i < maxComplexParallels; i++) {
             if (maxProgressTimes[i] > 0 && ++progressTimes[i] >= maxProgressTimes[i]) {
                 progressTimes[i] = 0;
                 maxProgressTimes[i] = 0;
