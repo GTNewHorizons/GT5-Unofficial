@@ -1165,8 +1165,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                             new Object[] { OrePrefixes.circuit.get(Materials.Bio), 1L },
                             GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Neutronium, 4),
                             ItemList.Field_Generator_UHV.get(2), ItemList.Circuit_Wafer_QPIC.get(64),
-                            GT_OreDictUnificator
-                                    .get(OrePrefixes.wireGt04, Materials.SuperconductorUHV, 32), },
+                            GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUHV, 32) },
                     new FluidStack[] { Materials.UUMatter.getFluid(50000), ALLOY.CINOBITE.getFluidStack(9216),
                             ALLOY.OCTIRON.getFluidStack(9216),
                             ELEMENT.STANDALONE.ASTRAL_TITANIUM.getFluidStack(9216), },
