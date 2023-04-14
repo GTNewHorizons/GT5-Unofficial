@@ -87,14 +87,24 @@ public class GT_Loader_MultiTileEntities implements Runnable {
             .material(Materials.Cobalt)
             .texture("metalwall")
             .register();
-        
+
     }
 
     private static void registerComplexCasings() {
-        final MultiTileEntityRegistry complexCasingRegistry = new MultiTileEntityRegistry("gt.multitileentity.complex.casings");
-        final MultiTileEntityBlock casing = MultiTileEntityBlock
-            .getOrCreate("GregTech", "complexCasing", Material.iron, Block.soundTypeMetal, "wrench", 0, 0, 15, true, true);
-    
+        final MultiTileEntityRegistry complexCasingRegistry = new MultiTileEntityRegistry(
+            "gt.multitileentity.complex.casings");
+        final MultiTileEntityBlock casing = MultiTileEntityBlock.getOrCreate(
+            "GregTech",
+            "complexCasing",
+            Material.iron,
+            Block.soundTypeMetal,
+            "wrench",
+            0,
+            0,
+            15,
+            true,
+            true);
+
         complexCasingRegistry.create(20001, Inventory.class)
             .name("Inventory Upgrade LV")
             .category("MultiBlock Special Casing")

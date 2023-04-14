@@ -862,13 +862,11 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
 
     @Override
     public void unregisterInventory(String aName, String aID, int aType) {
-        if ((aType == Inventory.INPUT || aType == Inventory.BOTH)
-            && multiBlockInputInventory.containsKey(aID)) {
+        if ((aType == Inventory.INPUT || aType == Inventory.BOTH) && multiBlockInputInventory.containsKey(aID)) {
             multiBlockInputInventory.remove(aID, multiBlockInputInventory.get(aID));
             multiBlockInputInventoryNames.remove(aID, aName);
         }
-        if ((aType == Inventory.OUTPUT || aType == Inventory.BOTH)
-            && multiBlockOutputInventory.containsKey(aID)) {
+        if ((aType == Inventory.OUTPUT || aType == Inventory.BOTH) && multiBlockOutputInventory.containsKey(aID)) {
             multiBlockOutputInventory.remove(aID, multiBlockOutputInventory.get(aID));
             multiBlockOutputInventoryNames.remove(aID, aName);
         }
@@ -876,12 +874,10 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
 
     @Override
     public void changeInventoryName(String aName, String aID, int aType) {
-        if ((aType == Inventory.INPUT || aType == Inventory.BOTH)
-            && multiBlockInputInventoryNames.containsKey(aID)) {
+        if ((aType == Inventory.INPUT || aType == Inventory.BOTH) && multiBlockInputInventoryNames.containsKey(aID)) {
             multiBlockInputInventoryNames.put(aID, aName);
         }
-        if ((aType == Inventory.OUTPUT || aType == Inventory.BOTH)
-            && multiBlockOutputInventoryNames.containsKey(aID)) {
+        if ((aType == Inventory.OUTPUT || aType == Inventory.BOTH) && multiBlockOutputInventoryNames.containsKey(aID)) {
             multiBlockOutputInventoryNames.put(aID, aName);
         }
     }
@@ -1256,7 +1252,7 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
                 inv.setStackInSlot(i, null);
             }
         }
-        
+
         for (FluidTankGT inputTank : inputTanks) {
             if (inputTank == null) {
                 continue;

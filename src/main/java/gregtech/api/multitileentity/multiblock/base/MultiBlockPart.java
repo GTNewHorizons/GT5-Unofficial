@@ -400,6 +400,9 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
         if (mAllowedModes == NOTHING) return true;
 
         mMode = getNextAllowedMode(BASIC_MODES);
+        if (aPlayer.isSneaking()) {
+            facing = wrenchSide;
+        }
         GT_Utility.sendChatToPlayer(aPlayer, "Mode set to `" + getModeName(mMode) + "' (" + mMode + ")");
         sendClientData((EntityPlayerMP) aPlayer);
         return true;

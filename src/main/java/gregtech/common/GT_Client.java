@@ -64,6 +64,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.ITurnable;
 import gregtech.api.items.GT_MetaGenerated_Item;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
+import gregtech.api.multitileentity.multiblock.base.MultiBlockPart;
 import gregtech.api.net.GT_Packet_ClientPreference;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.ColorsMetadataSection;
@@ -778,7 +779,9 @@ public class GT_Client extends GT_Proxy implements Runnable {
         if (!(aTileEntity instanceof ICoverable)) return;
 
         if (GT_Utility.isStackInList(aEvent.currentItem, GregTech_API.sWireCutterList)
-            || GT_Utility.isStackInList(aEvent.currentItem, GregTech_API.sSolderingToolList)) {
+            || GT_Utility.isStackInList(aEvent.currentItem, GregTech_API.sSolderingToolList)
+            || (GT_Utility.isStackInList(aEvent.currentItem, GregTech_API.sSoftHammerList)
+                && aTileEntity instanceof MultiBlockPart) && aEvent.player.isSneaking()) {
             if (((ICoverable) aTileEntity).getCoverIDAtSide((byte) aEvent.target.sideHit) == 0)
                 drawGrid(aEvent, false, false, aEvent.player.isSneaking());
             return;
