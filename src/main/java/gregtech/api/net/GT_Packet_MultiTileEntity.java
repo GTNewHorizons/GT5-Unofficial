@@ -271,7 +271,7 @@ public class GT_Packet_MultiTileEntity extends GT_Packet_New {
                     mtePart.setLockedInventoryIndex(mLockedInventoryIndex);
                 }
 
-                if ((features & INVENTORY_NAME) == INVENTORY_NAME && mte instanceof InventoryUpgrade invUpg) {
+                if ((features & INVENTORY_NAME) == INVENTORY_NAME && mte instanceof Inventory invUpg) {
                     invUpg.setInventoryName(mInventoryName);
                 }
 
