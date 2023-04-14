@@ -804,6 +804,25 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
                 inputInventory.setStackInSlot(i, null);
             }
         }
+
+        for (FluidTankGT inputTank : inputTanks) {
+            if (inputTank == null) {
+                continue;
+            }
+
+            if (inputTank.get() != null && inputTank.get().amount <= 0) {
+                inputTank.setEmpty();
+                continue;
+            }
+
+            FluidStack afterRecipe = inputTank.get();
+            FluidStack beforeRecipe = inputTank.get(Integer.MAX_VALUE);
+            if (afterRecipe == null || beforeRecipe == null) {
+                continue;
+            }
+            int difference = beforeRecipe.amount - afterRecipe.amount;
+            inputTank.remove(difference);
+        }
     }
 
     /**

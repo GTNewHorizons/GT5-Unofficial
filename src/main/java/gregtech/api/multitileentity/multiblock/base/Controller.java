@@ -98,7 +98,7 @@ import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.GT_Waila;
-import gregtech.common.tileentities.casings.upgrade.InventoryUpgrade;
+import gregtech.common.tileentities.casings.upgrade.Inventory;
 
 public abstract class Controller<T extends Controller<T>> extends MultiTileBasicMachine implements IAlignment,
     IConstructable, IMultiBlockController, IDescribable, IMTE_AddToolTips, ISurvivalConstructable {
@@ -116,8 +116,8 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
 
     protected Map<String, String> multiBlockInputTankNames = new LinkedHashMap<>();
     protected Map<String, String> multiBlockOutputTankNames = new LinkedHashMap<>();
-    protected Map<String, FluidTankGT> multiBlockInputTank = new LinkedHashMap<>();
-    protected Map<String, FluidTankGT> multiBlockOutputTank = new LinkedHashMap<>();
+    protected Map<String, FluidTankGT[]> multiBlockInputTank = new LinkedHashMap<>();
+    protected Map<String, FluidTankGT[]> multiBlockOutputTank = new LinkedHashMap<>();
 
     private boolean structureOkay = false, structureChanged = false;
     private ExtendedFacing extendedFacing = ExtendedFacing.DEFAULT;
@@ -172,8 +172,11 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
      */
     public boolean checkMachine() {
         double sum = 0;
+        if (functionalCasings == null || functionalCasings.size() == 0) {
+            return false;
+        }
         for (FunctionalCasing casing : functionalCasings) {
-            sum += casing.getPartTier();
+            sum += casing.getPartTier() * casing.getPartModifier();
         }
         tier = (int) Math.floor(sum / functionalCasings.size());
         // Maximum Energy stores will have a cap of 2 minute work time of current voltage
@@ -845,12 +848,12 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
      */
     @Override
     public void registerInventory(String aName, String aID, int aInventorySize, int aType) {
-        if (aType == InventoryUpgrade.INPUT || aType == InventoryUpgrade.BOTH) {
+        if (aType == Inventory.INPUT || aType == Inventory.BOTH) {
             if (multiBlockInputInventory.containsKey(aID)) return;
             multiBlockInputInventory.put(aID, new ItemStackHandler(aInventorySize));
             multiBlockInputInventoryNames.put(aID, aName);
         }
-        if (aType == InventoryUpgrade.OUTPUT || aType == InventoryUpgrade.BOTH) {
+        if (aType == Inventory.OUTPUT || aType == Inventory.BOTH) {
             if (multiBlockOutputInventory.containsKey(aID)) return;
             multiBlockOutputInventory.put(aID, new ItemStackHandler(aInventorySize));
             multiBlockOutputInventoryNames.put(aID, aName);
@@ -859,12 +862,12 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
 
     @Override
     public void unregisterInventory(String aName, String aID, int aType) {
-        if ((aType == InventoryUpgrade.INPUT || aType == InventoryUpgrade.BOTH)
+        if ((aType == Inventory.INPUT || aType == Inventory.BOTH)
             && multiBlockInputInventory.containsKey(aID)) {
             multiBlockInputInventory.remove(aID, multiBlockInputInventory.get(aID));
             multiBlockInputInventoryNames.remove(aID, aName);
         }
-        if ((aType == InventoryUpgrade.OUTPUT || aType == InventoryUpgrade.BOTH)
+        if ((aType == Inventory.OUTPUT || aType == Inventory.BOTH)
             && multiBlockOutputInventory.containsKey(aID)) {
             multiBlockOutputInventory.remove(aID, multiBlockOutputInventory.get(aID));
             multiBlockOutputInventoryNames.remove(aID, aName);
@@ -873,11 +876,11 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
 
     @Override
     public void changeInventoryName(String aName, String aID, int aType) {
-        if ((aType == InventoryUpgrade.INPUT || aType == InventoryUpgrade.BOTH)
+        if ((aType == Inventory.INPUT || aType == Inventory.BOTH)
             && multiBlockInputInventoryNames.containsKey(aID)) {
             multiBlockInputInventoryNames.put(aID, aName);
         }
-        if ((aType == InventoryUpgrade.OUTPUT || aType == InventoryUpgrade.BOTH)
+        if ((aType == Inventory.OUTPUT || aType == Inventory.BOTH)
             && multiBlockOutputInventoryNames.containsKey(aID)) {
             multiBlockOutputInventoryNames.put(aID, aName);
         }
@@ -908,7 +911,7 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
     public IItemHandlerModifiable getInventoryForGUI(MultiBlockPart aPart) {
         if (isServerSide()) {
             for (UpgradeCasing tPart : upgradeCasings) {
-                if (!(tPart instanceof InventoryUpgrade)) continue;
+                if (!(tPart instanceof Inventory)) continue;
                 tPart.issueClientUpdate();
             }
         }
@@ -1234,7 +1237,7 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
             return;
         }
 
-        List<FluidTankGT> tanks = new ArrayList<>(multiBlockOutputTank.values());
+        List<FluidTankGT> tanks = Arrays.asList(outputTanks);
         for (FluidStack fluid : fluidsToOutput) {
             int index = 0;
             while (fluid != null && fluid.amount > 0 && index < tanks.size()) {
@@ -1253,13 +1256,24 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
                 inv.setStackInSlot(i, null);
             }
         }
+        
         for (FluidTankGT inputTank : inputTanks) {
-            if (inputTank != null) {
-                inputTank.update();
-                if (inputTank.get() != null && inputTank.get().amount <= 0) {
-                    inputTank.setEmpty();
-                }
+            if (inputTank == null) {
+                continue;
             }
+
+            if (inputTank.get() != null && inputTank.get().amount <= 0) {
+                inputTank.setEmpty();
+                continue;
+            }
+
+            FluidStack afterRecipe = inputTank.get();
+            FluidStack beforeRecipe = inputTank.get(Integer.MAX_VALUE);
+            if (afterRecipe == null || beforeRecipe == null) {
+                continue;
+            }
+            int difference = beforeRecipe.amount - afterRecipe.amount;
+            inputTank.remove(difference);
         }
     }
 
@@ -1356,7 +1370,7 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         if (isServerSide()) {
             for (UpgradeCasing tPart : upgradeCasings) {
-                if (!(tPart instanceof InventoryUpgrade)) continue;
+                if (!(tPart instanceof Inventory)) continue;
                 tPart.issueClientUpdate();
             }
         }

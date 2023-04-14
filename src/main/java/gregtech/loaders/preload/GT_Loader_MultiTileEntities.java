@@ -11,8 +11,8 @@ import gregtech.api.multitileentity.MultiTileEntityBlock;
 import gregtech.api.multitileentity.MultiTileEntityRegistry;
 import gregtech.api.multitileentity.multiblock.base.WallShareablePart;
 import gregtech.api.multitileentity.multiblock.casing.BasicCasing;
-import gregtech.common.tileentities.casings.functional.MotorCasing;
-import gregtech.common.tileentities.casings.upgrade.InventoryUpgrade;
+import gregtech.common.tileentities.casings.functional.Motor;
+import gregtech.common.tileentities.casings.upgrade.Inventory;
 import gregtech.common.tileentities.machines.multiblock.AdvChemicalReactor;
 import gregtech.common.tileentities.machines.multiblock.CokeOven;
 import gregtech.common.tileentities.machines.multiblock.Macerator;
@@ -26,7 +26,7 @@ public class GT_Loader_MultiTileEntities implements Runnable {
         GT_FML_LOGGER.info("GT_Mod: Registering MultiTileEntities");
         registerMachines();
         registerCasings();
-
+        registerComplexCasings();
     }
 
     private static void registerMachines() {
@@ -87,7 +87,7 @@ public class GT_Loader_MultiTileEntities implements Runnable {
             .material(Materials.Cobalt)
             .texture("metalwall")
             .register();
-        casingRegistry.create(20001, InventoryUpgrade.class)
+        casingRegistry.create(20001, Inventory.class)
             .name("Inventory Upgrade LV")
             .category("MultiBlock Special Casing")
             .setBlock(casing)
@@ -96,7 +96,7 @@ public class GT_Loader_MultiTileEntities implements Runnable {
             .upgradeInventorySize(16)
             .tier(1)
             .register();
-        casingRegistry.create(20002, InventoryUpgrade.class)
+        casingRegistry.create(20002, Inventory.class)
             .name("Inventory Upgrade MV")
             .category("MultiBlock Upgrade Casing")
             .setBlock(casing)
@@ -105,7 +105,7 @@ public class GT_Loader_MultiTileEntities implements Runnable {
             .upgradeInventorySize(24)
             .tier(2)
             .register();
-        casingRegistry.create(10000, MotorCasing.class)
+        casingRegistry.create(10000, Motor.class)
             .name("Motor Casing LV")
             .tier(1)
             .category("MultiBlock Functional Casing")
@@ -113,5 +113,11 @@ public class GT_Loader_MultiTileEntities implements Runnable {
             .material(Materials.Arsenic)
             .texture("metalwall")
             .register();
+    }
+
+    private static void registerComplexCasings() {
+        final MultiTileEntityRegistry complexCasingRegistry = new MultiTileEntityRegistry("gt.multitileentity.complex.casings");
+        final MultiTileEntityBlock casing = MultiTileEntityBlock
+            .getOrCreate("GregTech", "complexCasing", Material.iron, Block.soundTypeMetal, "wrench", 0, 0, 15, true, true);
     }
 }

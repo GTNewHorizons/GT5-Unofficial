@@ -12,7 +12,7 @@ import gregtech.api.multitileentity.base.MultiTileEntity;
 import gregtech.api.multitileentity.multiblock.casing.FunctionalCasing;
 import gregtech.api.multitileentity.multiblock.casing.UpgradeCasing;
 import gregtech.api.util.GT_Util;
-import gregtech.common.tileentities.casings.upgrade.InventoryUpgrade;
+import gregtech.common.tileentities.casings.upgrade.Inventory;
 
 public class MultiTileEntityClassContainer {
 
@@ -138,7 +138,7 @@ public class MultiTileEntityClassContainer {
     }
 
     public MultiTileEntityClassContainer upgradeInventorySize(int aSize) {
-        verifyDescendentOf(InventoryUpgrade.class);
+        verifyDescendentOf(Inventory.class);
 
         mParameters.setInteger(NBT.UPGRADE_INVENTORY_SIZE, aSize);
         return this;

@@ -13,7 +13,7 @@ import gregtech.api.multitileentity.interfaces.IMultiBlockController;
 import gregtech.api.multitileentity.multiblock.casing.UpgradeCasing;
 import gregtech.api.net.GT_Packet_MultiTileEntity;
 
-public class InventoryUpgrade extends UpgradeCasing {
+public class Inventory extends UpgradeCasing {
 
     public UUID mInventoryID;
     public static final int INPUT = 0;
