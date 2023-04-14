@@ -107,7 +107,7 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
     IConstructable, IMultiBlockController, IDescribable, IMTE_AddToolTips, ISurvivalConstructable {
 
     private static final Map<Integer, GT_Multiblock_Tooltip_Builder> tooltip = new ConcurrentHashMap<>();
-    private static final String COMPLEX_CASING_REGISTRY_NAME = "";
+    private static final String COMPLEX_CASING_REGISTRY_NAME = "gt.multitileentity.complex.casings";
     private final List<UpgradeCasing> upgradeCasings = new ArrayList<>();
     private final List<FunctionalCasing> functionalCasings = new ArrayList<>();
     protected BuildState buildState = new BuildState();
