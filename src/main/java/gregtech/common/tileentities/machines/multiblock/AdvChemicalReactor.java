@@ -170,7 +170,8 @@ public class AdvChemicalReactor extends ComplexController<AdvChemicalReactor> {
         setCoilTier(HeatingCoilLevel.None);
         setMaxComplexParallels(MAX_PROCESSES);
         buildState.startBuilding(getStartingStructureOffset());
-        return checkPiece(STRUCTURE_PIECE_T1, buildState.stopBuilding());
+        boolean result = checkPiece(STRUCTURE_PIECE_T1, buildState.stopBuilding());
+        return result && super.checkMachine();
     }
 
     @Override
@@ -187,15 +188,15 @@ public class AdvChemicalReactor extends ComplexController<AdvChemicalReactor> {
                     STRUCTURE_PIECE_T1,
                     transpose(
                         new String[][] { { "CPCPC", "CCCCC", "CPCPC" }, { "CGC~C", "GWWWC", "CGCCC" },
-                            { "CPCPC", "CCCCC", "CPCPC" } }))
+                            { "CPCPC", "CTTTC", "CPCPC" } }))
                 .addElement(
                     'C',
-                    ofChain(
-                        addMultiTileCasing(
-                            "gt.multitileentity.casings",
-                            getCasingMeta(),
-                            FLUID_IN | ITEM_IN | FLUID_OUT | ITEM_OUT | ENERGY_IN)))
+                    addMultiTileCasing(
+                        "gt.multitileentity.casings",
+                        getCasingMeta(),
+                        FLUID_IN | ITEM_IN | FLUID_OUT | ITEM_OUT | ENERGY_IN))
                 .addElement('P', ofBlock(GregTech_API.sBlockCasings8, 1))
+                .addElement('T', addMotorCasings(NOTHING))
                 .addElement(
                     'W',
                     GT_StructureUtility.ofCoil(AdvChemicalReactor::setCoilTier, AdvChemicalReactor::getCoilTier))

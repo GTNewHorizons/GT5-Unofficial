@@ -561,7 +561,7 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
             return;
         }
 
-        if (logic.removeEnergyUnsafe(eut)) {
+        if (!logic.removeEnergyUnsafe(eut)) {
             stopMachine(true);
         }
     }

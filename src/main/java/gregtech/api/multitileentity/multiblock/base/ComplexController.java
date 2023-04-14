@@ -14,6 +14,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
+import gregtech.api.enums.GT_Values;
 import gregtech.api.logic.ComplexParallelProcessingLogic;
 import gregtech.api.logic.interfaces.PollutionLogicHost;
 import gregtech.api.util.GT_Waila;
@@ -75,7 +76,7 @@ public abstract class ComplexController<T extends ComplexController<T>> extends 
 
     @Override
     protected void runningTick(long tick) {
-        // consumeEnergy();
+        consumeEnergy();
         boolean allStopped = true;
         for (int i = 0; i < maxComplexParallels; i++) {
             if (maxProgressTimes[i] > 0 && ++progressTimes[i] >= maxProgressTimes[i]) {
@@ -116,8 +117,7 @@ public abstract class ComplexController<T extends ComplexController<T>> extends 
             .setInputFluids(index, getInputFluids())
             .setTileEntity(this)
             .setVoidProtection(index, isVoidProtectionEnabled(index))
-            // .setEut(index, getEutForComplexParallel(index))
-            .setEut(index, 530000)
+            .setEut(index, getEutForComplexParallel(index))
             .setPerfectOverclock(hasPerfectOverclock())
             .process(index);
         setDuration(index, processingLogic.getDuration(index));
@@ -175,7 +175,8 @@ public abstract class ComplexController<T extends ComplexController<T>> extends 
     }
 
     protected long getEutForComplexParallel(int index) {
-        return eut / maxComplexParallels;
+        // As default behavior we'll give the parallel all remaining EU we have
+        return GT_Values.V[tier] - eut;
     }
 
     @Override
