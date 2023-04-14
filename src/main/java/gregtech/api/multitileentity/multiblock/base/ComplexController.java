@@ -186,16 +186,15 @@ public abstract class ComplexController<T extends ComplexController<T>> extends 
         IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currentTip, accessor, config);
         final NBTTagCompound tag = accessor.getNBTData();
-        boolean isActive = tag.getBoolean("isActive");
         maxComplexParallels = tag.getInteger("maxComplexParallels");
         for (int i = 0; i < maxComplexParallels; i++) {
+            long maxProgress = tag.getLong("maxProgress" + i);
+            long progress = tag.getLong("progress" + i);
             currentTip.add(
                 "Process " + (i + 1)
                     + ": "
-                    + GT_Waila.getMachineProgressString(
-                        isActive,
-                        tag.getInteger("maxProgress" + i),
-                        tag.getInteger("progress" + i)));
+                    + GT_Waila
+                        .getMachineProgressString(maxProgress > 0 && maxProgress >= progress, maxProgress, progress));
         }
     }
 }
