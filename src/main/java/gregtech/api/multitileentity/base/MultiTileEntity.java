@@ -67,7 +67,8 @@ import gregtech.api.util.GT_Utility;
 import gregtech.common.render.GT_MultiTexture;
 import gregtech.common.render.IRenderedBlock;
 
-public abstract class MultiTileEntity extends CoverableTileEntity implements IMultiTileEntity, IRenderedBlock {
+public abstract class MultiTileEntity extends CoverableTileEntity
+    implements IMultiTileEntity, IRenderedBlock, IMultiTileEntity.IMTE_BreakBlock {
 
     public IIconContainer[] textures = emptyIconContainerArray;
     // public IIconContainer[] mTexturesFront = emptyIconContainerArray;
@@ -437,7 +438,7 @@ public abstract class MultiTileEntity extends CoverableTileEntity implements IMu
 
     /**
      * Sets the main facing to {aSide} and update as appropriately
-     * 
+     *
      * @return Whether the facing was changed
      */
     @Override
@@ -926,9 +927,14 @@ public abstract class MultiTileEntity extends CoverableTileEntity implements IMu
         final ArrayList<ItemStack> rList = new ArrayList<>();
         final MultiTileEntityRegistry tRegistry = MultiTileEntityRegistry.getRegistry(getMultiTileEntityRegistryID());
         if (tRegistry != null) rList.add(tRegistry.getItem(getMultiTileEntityID(), writeItemNBT(new NBTTagCompound())));
-
-        onBaseTEDestroyed();
         return rList;
+    }
+
+    @Override
+    public boolean breakBlock() {
+        isDead = true;
+        onBaseTEDestroyed();
+        return false;
     }
 
     @Override

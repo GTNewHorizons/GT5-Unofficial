@@ -688,9 +688,9 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
                     return false;
 
                 final IMultiBlockController tTarget = part.getTarget(false);
-                if (tTarget != null && tTarget != Controller.this) return false;
+                if (tTarget != null && tTarget != t) return false;
 
-                part.setTarget(Controller.this, modes);
+                part.setTarget((IMultiBlockController) t, modes);
 
                 registerSpecialCasings(part);
                 return true;
