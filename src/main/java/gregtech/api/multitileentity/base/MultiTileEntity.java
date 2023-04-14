@@ -185,11 +185,9 @@ public abstract class MultiTileEntity extends CoverableTileEntity implements IMu
             }
             if (nbt.hasKey(NBT.LOCK_UPGRADE)) lockUpgrade = nbt.getBoolean(NBT.LOCK_UPGRADE);
             if (nbt.hasKey(NBT.FACING)) facing = nbt.getByte(NBT.FACING);
-
-            if (isServerSide()) {
-                readCoverNBT(nbt);
-                readMultiTileNBT(nbt);
-            }
+    
+            readCoverNBT(nbt);
+            readMultiTileNBT(nbt);
 
             if (GregTech_API.sBlockIcons == null && nbt.hasKey(NBT.TEXTURE)) {
                 loadTextureNBT(nbt);
@@ -249,6 +247,7 @@ public abstract class MultiTileEntity extends CoverableTileEntity implements IMu
     @Override
     public NBTTagCompound writeItemNBT(NBTTagCompound aNBT) {
         writeCoverNBT(aNBT, true);
+        writeMultiTileNBT(aNBT);
 
         return aNBT;
     }
