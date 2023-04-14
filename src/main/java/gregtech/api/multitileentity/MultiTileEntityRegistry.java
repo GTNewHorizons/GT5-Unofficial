@@ -252,7 +252,7 @@ public class MultiTileEntityRegistry {
             0,
             Items.feather.getDamage(aStack),
             aStack.getTagCompound(),
-            false);
+            true);
         return tContainer == null ? null : tContainer.mTileEntity;
     }
 
@@ -280,7 +280,7 @@ public class MultiTileEntityRegistry {
             aZ,
             Items.feather.getDamage(aStack),
             aStack.getTagCompound(),
-            true);
+            false);
     }
 
     public MultiTileEntityContainer getNewTileEntityContainer(int aID, NBTTagCompound aNBT, boolean onlyTexture) {
