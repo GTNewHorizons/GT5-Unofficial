@@ -784,7 +784,7 @@ public class Assembler implements Runnable {
                                         Materials.MagnetohydrodynamicallyConstrainedStarMatter,
                                         2),
                                 GT_OreDictUnificator.get("plateShirabon", 2L) },
-                        Materials.Silver.getMolten(9216),
+                        Materials.Electrum.getMolten(9216),
                         CustomItemList.eM_energyMulti16_UXV.get(1),
                         200,
                         (int) TierEU.RECIPE_UMV);
@@ -897,7 +897,7 @@ public class Assembler implements Runnable {
                         400,
                         32000000);
 
-                // Energy Hatch UXV 16A
+                // Energy Hatch UXV 64A
                 GT_Values.RA.addAssemblerRecipe(
                         new ItemStack[] { getItemContainer("WetTransformer_MAX_UXV").get(1),
                                 CustomItemList.eM_energyMulti16_UXV.get(1),
@@ -907,7 +907,7 @@ public class Assembler implements Runnable {
                                         Materials.MagnetohydrodynamicallyConstrainedStarMatter,
                                         3),
                                 GT_OreDictUnificator.get("plateShirabon", 3L) },
-                        Materials.Silver.getMolten(9216),
+                        Materials.Tungsten.getMolten(9216),
                         CustomItemList.eM_energyMulti64_UXV.get(1),
                         400,
                         (int) TierEU.RECIPE_UMV);
