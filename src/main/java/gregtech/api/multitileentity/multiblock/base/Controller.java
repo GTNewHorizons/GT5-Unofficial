@@ -1244,8 +1244,11 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
             }
         }
         for (FluidTankGT inputTank : inputTanks) {
-            if (inputTank != null && inputTank.get() != null && inputTank.get().amount <= 0) {
-                inputTank.setEmpty();
+            if (inputTank != null) {
+                inputTank.update();
+                if (inputTank.get() != null && inputTank.get().amount <= 0) {
+                    inputTank.setEmpty();
+                }
             }
         }
     }
@@ -1283,6 +1286,14 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
         setItemOutputs(logic.getOutputItems());
         setFluidOutputs(logic.getOutputFluids());
         return result;
+    }
+
+    public IItemHandlerModifiable getOutputInventory() {
+        return outputInventory;
+    }
+
+    public FluidTankGT[] getOutputTanks() {
+        return outputTanks;
     }
 
     /*

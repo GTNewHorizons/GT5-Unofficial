@@ -58,7 +58,7 @@ public abstract class ComplexController<T extends ComplexController<T>> extends 
                 wasEnabled = false;
                 boolean started = false;
                 for (int i = 0; i < maxComplexParallels; i++) {
-                    if (checkRecipe(i)) {
+                    if (maxProgressTimes[i] <= 0 && checkRecipe(i)) {
                         currentComplexParallels++;
                         started = true;
                     }
@@ -147,6 +147,14 @@ public abstract class ComplexController<T extends ComplexController<T>> extends 
     public boolean hasThingsToDo() {
         return LongStream.of(maxProgressTimes)
             .sum() > 0;
+    }
+
+    @Override
+    protected void stopMachine(boolean powerShutDown) {
+        super.stopMachine(powerShutDown);
+        for (int i = 0; i < maxComplexParallels; i++) {
+            maxProgressTimes[i] = 0;
+        }
     }
 
     protected void setDuration(int index, long duration) {
