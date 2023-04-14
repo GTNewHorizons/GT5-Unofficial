@@ -519,7 +519,7 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
                 // Recheck the structure every 30 seconds or so
                 if (!checkStructure(false)) checkStructure(true);
             }
-            if (structureOkay) {
+            if (checkStructure(false)) {
                 runMachine(tick);
             } else {
                 stopMachine(false);
