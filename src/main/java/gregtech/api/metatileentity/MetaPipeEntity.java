@@ -1,6 +1,12 @@
 package gregtech.api.metatileentity;
 
 import static gregtech.api.enums.GT_Values.GT;
+import static net.minecraftforge.common.util.ForgeDirection.DOWN;
+import static net.minecraftforge.common.util.ForgeDirection.EAST;
+import static net.minecraftforge.common.util.ForgeDirection.NORTH;
+import static net.minecraftforge.common.util.ForgeDirection.SOUTH;
+import static net.minecraftforge.common.util.ForgeDirection.UP;
+import static net.minecraftforge.common.util.ForgeDirection.WEST;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -39,7 +45,14 @@ import gregtech.api.interfaces.tileentity.IColoredTileEntity;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_ItemStack;
-import gregtech.api.util.*;
+import gregtech.api.util.GT_Config;
+import gregtech.api.util.GT_CoverBehavior;
+import gregtech.api.util.GT_CoverBehaviorBase;
+import gregtech.api.util.GT_LanguageManager;
+import gregtech.api.util.GT_Util;
+import gregtech.api.util.GT_Utility;
+import gregtech.api.util.ISerializableObject;
+import gregtech.api.util.WorldSpawnedEventBuilder;
 import gregtech.common.GT_Client;
 import gregtech.common.covers.CoverInfo;
 
@@ -164,38 +177,30 @@ public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable {
     }
 
     public boolean isCoverOnSide(BaseMetaPipeEntity aPipe, EntityLivingBase aEntity) {
-        byte aSide = 6;
-        double difference = aEntity.posY - (double) aPipe.yCoord;
-        if (difference > 0.6 && difference < 0.99) {
-            aSide = 1;
-        }
-        if (difference < -1.5 && difference > -1.99) {
-            aSide = 0;
-        }
-        difference = aEntity.posZ - (double) aPipe.zCoord;
-        if (difference < -0.05 && difference > -0.4) {
-            aSide = 2;
-        }
-        if (difference > 1.05 && difference < 1.4) {
-            aSide = 3;
-        }
-        difference = aEntity.posX - (double) aPipe.xCoord;
-        if (difference < -0.05 && difference > -0.4) {
-            aSide = 4;
-        }
-        if (difference > 1.05 && difference < 1.4) {
-            aSide = 5;
-        }
-        boolean tCovered = false;
-        if (aSide < 6 && mBaseMetaTileEntity.getCoverIDAtSide(aSide) > 0) {
-            tCovered = true;
-        }
-        if (isConnectedAtSide(aSide)) {
-            tCovered = true;
+        final ForgeDirection side;
+        double differenceY = aEntity.posY - (double) aPipe.yCoord;
+        if (differenceY < -1.5 && differenceY > -1.99) {
+            side = DOWN;
+        } else if (differenceY > 0.6 && differenceY < 0.99) {
+            side = UP;
+        } else {
+            double differenceZ = aEntity.posZ - (double) aPipe.zCoord;
+            if (differenceZ < -0.05 && differenceZ > -0.4) {
+                side = NORTH;
+            } else if (differenceZ > 1.05 && differenceZ < 1.4) {
+                side = SOUTH;
+            } else {
+                double differenceX = aEntity.posX - (double) aPipe.xCoord;
+                if (differenceX < -0.05 && differenceX > -0.4) {
+                    side = WEST;
+                } else if (differenceX > 1.05 && differenceX < 1.4) {
+                    side = EAST;
+                } else return false;
+            }
         }
         // GT_FML_LOGGER.info("Cover: "+mBaseMetaTileEntity.getCoverIDAtSide(aSide));
         // toDo: filter cover ids that actually protect against temperature (rubber/plastic maybe?, more like asbestos)
-        return tCovered;
+        return mBaseMetaTileEntity.getCoverIDAtSide(side) > 0 || isConnectedAtSide(side);
     }
 
     @Override
@@ -908,8 +913,8 @@ public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable {
     }
 
     @Override
-    public boolean isConnectedAtSide(int aSide) {
-        return (mConnections & (1 << aSide)) != 0;
+    public boolean isConnectedAtSide(ForgeDirection side) {
+        return (mConnections & 1 << side.ordinal()) != 0;
     }
 
     public boolean letsIn(GT_CoverBehavior coverBehavior, byte aSide, int aCoverID, int aCoverVariable,

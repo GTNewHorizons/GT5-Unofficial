@@ -1,5 +1,7 @@
 package gregtech.api.interfaces.tileentity;
 
+import net.minecraftforge.common.util.ForgeDirection;
+
 /**
  * This File has just internal Information about the Redstone State of a TileEntity
  */
@@ -7,8 +9,21 @@ public interface IRedstoneEmitter extends IHasWorldObjectAndCoords {
 
     /**
      * gets the Redstone Level the TileEntity should emit to the given Output Side
+     * 
+     * @deprecated use {@link #getOutputRedstoneSignal(ForgeDirection)}
      */
-    byte getOutputRedstoneSignal(byte aSide);
+    @Deprecated
+    default byte getOutputRedstoneSignal(byte ignoredASide) {
+        throw new UnsupportedOperationException();
+    }
+
+    /**
+     * gets the Redstone Level the TileEntity should emit to the given Output Side
+     * 
+     * @param side the {@link ForgeDirection} side
+     * @return the Redstone Level the TileEntity
+     */
+    byte getOutputRedstoneSignal(ForgeDirection side);
 
     /**
      * sets the Redstone Level the TileEntity should emit to the given Output Side

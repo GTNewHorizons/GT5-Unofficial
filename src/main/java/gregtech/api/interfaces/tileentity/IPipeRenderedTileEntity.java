@@ -7,7 +7,6 @@ import java.util.EnumMap;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.render.TextureFactory;
 
 public interface IPipeRenderedTileEntity extends ICoverable, ITexturedTileEntity {
 
@@ -23,7 +22,9 @@ public interface IPipeRenderedTileEntity extends ICoverable, ITexturedTileEntity
      * @deprecated {@link #getTextureUncovered(ForgeDirection)}
      */
     @Deprecated
-    ITexture[] getTextureUncovered(byte aSide);
+    default ITexture[] getTextureUncovered(byte aSide) {
+        throw new UnsupportedOperationException();
+    }
 
     /**
      * Gets the texture of a pipe without a cover as an array for side
@@ -31,9 +32,7 @@ public interface IPipeRenderedTileEntity extends ICoverable, ITexturedTileEntity
      * @param side the {@link ForgeDirection} side
      * @return the {@link ITexture} array of layers
      */
-    default ITexture getTextureUncovered(ForgeDirection side) {
-        return TextureFactory.of(getTextureUncovered((byte) side.ordinal()));
-    }
+    ITexture getTextureUncovered(ForgeDirection side);
 
     /**
      * Gets the uncovered textures for all side directions of the pipe
@@ -41,13 +40,7 @@ public interface IPipeRenderedTileEntity extends ICoverable, ITexturedTileEntity
      * @return the <code>{@link EnumMap}&lt;{@link ForgeDirection}, {@link ITexture}&gt;</code>
      *         containing textures for each direction
      */
-    default EnumMap<ForgeDirection, ITexture> getTexturesMapUncovered() {
-        EnumMap<ForgeDirection, ITexture> textureMap = new EnumMap<>(ForgeDirection.class);
-        for (ForgeDirection direction : VALID_DIRECTIONS) {
-            textureMap.put(direction, getTextureUncovered(direction));
-        }
-        return textureMap;
-    }
+    EnumMap<ForgeDirection, ITexture> getTexturesMapUncovered();
 
     /**
      * Gets the {@link ITexture} layers of Pipe with a Cover texture at top layer as an array for Side
@@ -58,12 +51,10 @@ public interface IPipeRenderedTileEntity extends ICoverable, ITexturedTileEntity
      */
     @Deprecated
     default ITexture[] getTextureCovered(byte aSide) {
-        return getTextureUncovered(aSide);
+        throw new UnsupportedOperationException();
     }
 
-    default ITexture getTextureCovered(ForgeDirection direction) {
-        return TextureFactory.of(getTextureCovered((byte) direction.ordinal()));
-    }
+    ITexture getTextureCovered(ForgeDirection side);
 
     default EnumMap<ForgeDirection, ITexture> getTexturesMapCovered() {
         EnumMap<ForgeDirection, ITexture> textureMap = new EnumMap<>(ForgeDirection.class);

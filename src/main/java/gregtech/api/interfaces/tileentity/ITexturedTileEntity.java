@@ -8,6 +8,7 @@ import net.minecraft.block.Block;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.render.TextureFactory;
 
 public interface ITexturedTileEntity {
 
@@ -16,19 +17,19 @@ public interface ITexturedTileEntity {
      * @deprecated use {@link #getTexture(Block, ForgeDirection)
      */
     @Deprecated
-    default ITexture getTexture(Block aBlock, byte aSide) {
-        return getTexture(aBlock, ForgeDirection.getOrientation(aSide));
+    default ITexture[] getTexture(Block aBlock, byte aSide) {
+        throw new UnsupportedOperationException();
     }
 
     /**
      * Gets the texture to be rendered for the block's side at given direction
      *
      * @param block the {@link Block} being textured
-     * @param dir   the {@link ForgeDirection} of the side being textured
+     * @param side  the {@link ForgeDirection} of the side being textured
      * @return the {@link ITexture} to be rendered
      */
-    default ITexture getTexture(Block block, ForgeDirection dir) {
-        return getTexture(block, (byte) dir.ordinal());
+    default ITexture getTexture(Block block, ForgeDirection side) {
+        return TextureFactory.of(getTexture(block, (byte) side.ordinal()));
     }
 
     /**

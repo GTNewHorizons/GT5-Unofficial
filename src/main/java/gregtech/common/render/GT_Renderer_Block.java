@@ -135,7 +135,7 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
         final float pipeMax = blockMax - pipeMin;
         final EnumMap<ForgeDirection, Boolean> directionIsCovered = new EnumMap<>(ForgeDirection.class);
         for (ForgeDirection dir : VALID_DIRECTIONS) {
-            directionIsCovered.put(dir, aTileEntity.getCoverIDAtDirection(dir) != 0);
+            directionIsCovered.put(dir, aTileEntity.getCoverIDAtSide(dir) != 0);
         }
 
         final var coverTextureMap = aTileEntity.getTexturesMap(aBlock);
@@ -147,7 +147,7 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
                 aRenderer.setRenderBoundsFromBlock(aBlock);
                 renderCuboid(aWorld, aRenderer, aBlock, aX, aY, aZ, pipeTextureMap);
             }
-            case CONNECTED_EAST | CONNECTED_WEST -> {
+            case CONNECTED_WEST | CONNECTED_EAST -> {
                 // EAST - WEST Pipe Sides
                 aBlock.setBlockBounds(blockMin, pipeMin, pipeMin, blockMax, pipeMax, pipeMax);
                 aRenderer.setRenderBoundsFromBlock(aBlock);
@@ -633,7 +633,7 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
 
             aBlock.setBlockBounds(blockMin, pipeMin, pipeMin, blockMax, pipeMax, pipeMax);
             aRenderer.setRenderBoundsFromBlock(aBlock);
-            renderNegativeYFacing(
+            renderFace(
                 null,
                 aRenderer,
                 aBlock,
@@ -642,13 +642,13 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
                 0,
                 tMetaTileEntity.getTexture(
                     iGregTechTileEntity,
-                    (byte) DOWN.ordinal(),
+                    DOWN,
                     (byte) (CONNECTED_WEST | CONNECTED_EAST),
                     (byte) -1,
                     false,
                     false),
-                true);
-            renderPositiveYFacing(
+                true, DOWN);
+            renderFace(
                 null,
                 aRenderer,
                 aBlock,
@@ -657,13 +657,13 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
                 0,
                 tMetaTileEntity.getTexture(
                     iGregTechTileEntity,
-                    (byte) UP.ordinal(),
+                    UP,
                     (byte) (CONNECTED_WEST | CONNECTED_EAST),
                     (byte) -1,
                     false,
                     false),
-                true);
-            renderNegativeZFacing(
+                true, UP);
+            renderFace(
                 null,
                 aRenderer,
                 aBlock,
@@ -672,13 +672,13 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
                 0,
                 tMetaTileEntity.getTexture(
                     iGregTechTileEntity,
-                    (byte) NORTH.ordinal(),
+                    NORTH,
                     (byte) (CONNECTED_WEST | CONNECTED_EAST),
                     (byte) -1,
                     false,
                     false),
-                true);
-            renderPositiveZFacing(
+                true, NORTH);
+            renderFace(
                 null,
                 aRenderer,
                 aBlock,
@@ -687,13 +687,13 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
                 0,
                 tMetaTileEntity.getTexture(
                     iGregTechTileEntity,
-                    (byte) SOUTH.ordinal(),
+                        SOUTH,
                     (byte) (CONNECTED_WEST | CONNECTED_EAST),
                     (byte) -1,
                     false,
                     false),
-                true);
-            renderNegativeXFacing(
+                true, SOUTH);
+            renderFace(
                 null,
                 aRenderer,
                 aBlock,
@@ -702,13 +702,13 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
                 0,
                 tMetaTileEntity.getTexture(
                     iGregTechTileEntity,
-                    (byte) WEST.ordinal(),
+                        WEST,
                     (byte) (CONNECTED_WEST | CONNECTED_EAST),
                     (byte) -1,
                     true,
                     false),
-                true);
-            renderPositiveXFacing(
+                true,WEST);
+            renderFace(
                 null,
                 aRenderer,
                 aBlock,
@@ -717,14 +717,14 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
                 0,
                 tMetaTileEntity.getTexture(
                     iGregTechTileEntity,
-                    (byte) EAST.ordinal(),
+                        EAST,
                     (byte) (CONNECTED_WEST | CONNECTED_EAST),
                     (byte) -1,
                     true,
                     false),
-                true);
+                true,EAST);
         } else {
-            renderNegativeYFacing(
+            renderFace(
                 null,
                 aRenderer,
                 aBlock,
@@ -733,12 +733,12 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
                 0,
                 tMetaTileEntity.getTexture(
                     iGregTechTileEntity,
-                    (byte) DOWN.ordinal(),
+                        DOWN,
                     (byte) WEST.ordinal(),
                     (byte) -1,
                     true,
                     false),
-                true);
+                true, DOWN);
             renderPositiveYFacing(
                 null,
                 aRenderer,

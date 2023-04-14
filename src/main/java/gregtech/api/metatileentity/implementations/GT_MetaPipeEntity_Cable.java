@@ -2,6 +2,12 @@ package gregtech.api.metatileentity.implementations;
 
 import static gregtech.api.enums.GT_Values.ALL_VALID_SIDES;
 import static gregtech.api.enums.Mods.GalacticraftCore;
+import static net.minecraftforge.common.util.ForgeDirection.DOWN;
+import static net.minecraftforge.common.util.ForgeDirection.EAST;
+import static net.minecraftforge.common.util.ForgeDirection.NORTH;
+import static net.minecraftforge.common.util.ForgeDirection.SOUTH;
+import static net.minecraftforge.common.util.ForgeDirection.UP;
+import static net.minecraftforge.common.util.ForgeDirection.WEST;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -110,54 +116,52 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aConnections,
-        byte aColorIndex, boolean aConnected, boolean aRedstone) {
-        if (!mInsulated) return new ITexture[] { TextureFactory.of(
-            mMaterial.mIconSet.mTextures[TextureSet.INDEX_wire],
-            Dyes.getModulation(aColorIndex, mMaterial.mRGBa)) };
+    public ITexture getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection aSide,
+        byte aConnections, byte aColorIndex, boolean aConnected, boolean aRedstone) {
+        if (!mInsulated) return TextureFactory
+            .of(mMaterial.mIconSet.mTextures[TextureSet.INDEX_wire], Dyes.getModulation(aColorIndex, mMaterial.mRGBa));
         if (aConnected) {
             float tThickNess = getThickNess();
-            if (tThickNess < 0.124F) return new ITexture[] { TextureFactory.of(
-                Textures.BlockIcons.INSULATION_FULL,
-                Dyes.getModulation(aColorIndex, Dyes.CABLE_INSULATION.mRGBa)) };
+            if (tThickNess < 0.124F) return TextureFactory
+                .of(Textures.BlockIcons.INSULATION_FULL, Dyes.getModulation(aColorIndex, Dyes.CABLE_INSULATION.mRGBa));
             if (tThickNess < 0.374F) // 0.375 x1
-                return new ITexture[] {
+                return TextureFactory.of(
                     TextureFactory.of(mMaterial.mIconSet.mTextures[TextureSet.INDEX_wire], mMaterial.mRGBa),
                     TextureFactory.of(
                         Textures.BlockIcons.INSULATION_TINY,
-                        Dyes.getModulation(aColorIndex, Dyes.CABLE_INSULATION.mRGBa)) };
+                        Dyes.getModulation(aColorIndex, Dyes.CABLE_INSULATION.mRGBa)));
             if (tThickNess < 0.499F) // 0.500 x2
-                return new ITexture[] {
+                return TextureFactory.of(
                     TextureFactory.of(mMaterial.mIconSet.mTextures[TextureSet.INDEX_wire], mMaterial.mRGBa),
                     TextureFactory.of(
                         Textures.BlockIcons.INSULATION_SMALL,
-                        Dyes.getModulation(aColorIndex, Dyes.CABLE_INSULATION.mRGBa)) };
+                        Dyes.getModulation(aColorIndex, Dyes.CABLE_INSULATION.mRGBa)));
             if (tThickNess < 0.624F) // 0.625 x4
-                return new ITexture[] {
+                return TextureFactory.of(
                     TextureFactory.of(mMaterial.mIconSet.mTextures[TextureSet.INDEX_wire], mMaterial.mRGBa),
                     TextureFactory.of(
                         Textures.BlockIcons.INSULATION_MEDIUM,
-                        Dyes.getModulation(aColorIndex, Dyes.CABLE_INSULATION.mRGBa)) };
+                        Dyes.getModulation(aColorIndex, Dyes.CABLE_INSULATION.mRGBa)));
             if (tThickNess < 0.749F) // 0.750 x8
-                return new ITexture[] {
+                return TextureFactory.of(
                     TextureFactory.of(mMaterial.mIconSet.mTextures[TextureSet.INDEX_wire], mMaterial.mRGBa),
                     TextureFactory.of(
                         Textures.BlockIcons.INSULATION_MEDIUM_PLUS,
-                        Dyes.getModulation(aColorIndex, Dyes.CABLE_INSULATION.mRGBa)) };
+                        Dyes.getModulation(aColorIndex, Dyes.CABLE_INSULATION.mRGBa)));
             if (tThickNess < 0.874F) // 0.825 x12
-                return new ITexture[] {
+                return TextureFactory.of(
                     TextureFactory.of(mMaterial.mIconSet.mTextures[TextureSet.INDEX_wire], mMaterial.mRGBa),
                     TextureFactory.of(
                         Textures.BlockIcons.INSULATION_LARGE,
-                        Dyes.getModulation(aColorIndex, Dyes.CABLE_INSULATION.mRGBa)) };
-            return new ITexture[] {
+                        Dyes.getModulation(aColorIndex, Dyes.CABLE_INSULATION.mRGBa)));
+            return TextureFactory.of(
                 TextureFactory.of(mMaterial.mIconSet.mTextures[TextureSet.INDEX_wire], mMaterial.mRGBa),
                 TextureFactory.of(
                     Textures.BlockIcons.INSULATION_HUGE,
-                    Dyes.getModulation(aColorIndex, Dyes.CABLE_INSULATION.mRGBa)) };
+                    Dyes.getModulation(aColorIndex, Dyes.CABLE_INSULATION.mRGBa)));
         }
-        return new ITexture[] { TextureFactory
-            .of(Textures.BlockIcons.INSULATION_FULL, Dyes.getModulation(aColorIndex, Dyes.CABLE_INSULATION.mRGBa)) };
+        return TextureFactory
+            .of(Textures.BlockIcons.INSULATION_FULL, Dyes.getModulation(aColorIndex, Dyes.CABLE_INSULATION.mRGBa));
     }
 
     @Override
@@ -498,10 +502,10 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
     public AxisAlignedBB getCollisionBoundingBoxFromPool(World aWorld, int aX, int aY, int aZ) {
         if (GT_Mod.instance.isClientSide() && (GT_Client.hideValue & 0x2) != 0)
             return AxisAlignedBB.getBoundingBox(aX, aY, aZ, aX + 1, aY + 1, aZ + 1);
-        else return getActualCollisionBoundingBoxFromPool(aWorld, aX, aY, aZ);
+        else return getActualCollisionBoundingBoxFromPool(aX, aY, aZ);
     }
 
-    private AxisAlignedBB getActualCollisionBoundingBoxFromPool(World aWorld, int aX, int aY, int aZ) {
+    private AxisAlignedBB getActualCollisionBoundingBoxFromPool(int aX, int aY, int aZ) {
         float tSpace = (1f - mThickNess) / 2;
         float tSide0 = tSpace;
         float tSide1 = 1f - tSpace;
@@ -510,38 +514,40 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
         float tSide4 = tSpace;
         float tSide5 = 1f - tSpace;
 
-        if (getBaseMetaTileEntity().getCoverIDAtSide((byte) 0) != 0) {
+        if (getBaseMetaTileEntity().getCoverIDAtSide(DOWN) != 0) {
             tSide0 = tSide2 = tSide4 = 0;
             tSide3 = tSide5 = 1;
         }
-        if (getBaseMetaTileEntity().getCoverIDAtSide((byte) 1) != 0) {
+        if (getBaseMetaTileEntity().getCoverIDAtSide(UP) != 0) {
             tSide2 = tSide4 = 0;
             tSide1 = tSide3 = tSide5 = 1;
         }
-        if (getBaseMetaTileEntity().getCoverIDAtSide((byte) 2) != 0) {
+        if (getBaseMetaTileEntity().getCoverIDAtSide(NORTH) != 0) {
             tSide0 = tSide2 = tSide4 = 0;
             tSide1 = tSide5 = 1;
         }
-        if (getBaseMetaTileEntity().getCoverIDAtSide((byte) 3) != 0) {
+        if (getBaseMetaTileEntity().getCoverIDAtSide(SOUTH) != 0) {
             tSide0 = tSide4 = 0;
             tSide1 = tSide3 = tSide5 = 1;
         }
-        if (getBaseMetaTileEntity().getCoverIDAtSide((byte) 4) != 0) {
+        if (getBaseMetaTileEntity().getCoverIDAtSide(WEST) != 0) {
             tSide0 = tSide2 = tSide4 = 0;
             tSide1 = tSide3 = 1;
         }
-        if (getBaseMetaTileEntity().getCoverIDAtSide((byte) 5) != 0) {
+        if (getBaseMetaTileEntity().getCoverIDAtSide(EAST) != 0) {
             tSide0 = tSide2 = 0;
             tSide1 = tSide3 = tSide5 = 1;
         }
 
         byte tConn = ((BaseMetaPipeEntity) getBaseMetaTileEntity()).mConnections;
-        if ((tConn & (1 << ForgeDirection.DOWN.ordinal())) != 0) tSide0 = 0f;
-        if ((tConn & (1 << ForgeDirection.UP.ordinal())) != 0) tSide1 = 1f;
-        if ((tConn & (1 << ForgeDirection.NORTH.ordinal())) != 0) tSide2 = 0f;
-        if ((tConn & (1 << ForgeDirection.SOUTH.ordinal())) != 0) tSide3 = 1f;
-        if ((tConn & (1 << ForgeDirection.WEST.ordinal())) != 0) tSide4 = 0f;
-        if ((tConn & (1 << ForgeDirection.EAST.ordinal())) != 0) tSide5 = 1f;
+        BaseMetaPipeEntity metaPipeEntity = (BaseMetaPipeEntity) getBaseMetaTileEntity();
+        if (metaPipeEntity.isConnectedAtSide(DOWN)) tSide0 = 0f;
+        if ((tConn & CONNECTED_DOWN) != 0) tSide0 = 0f;
+        if ((tConn & CONNECTED_UP) != 0) tSide1 = 1f;
+        if ((tConn & CONNECTED_NORTH) != 0) tSide2 = 0f;
+        if ((tConn & CONNECTED_SOUTH) != 0) tSide3 = 1f;
+        if ((tConn & CONNECTED_WEST) != 0) tSide4 = 0f;
+        if ((tConn & CONNECTED_EAST) != 0) tSide5 = 1f;
 
         return AxisAlignedBB
             .getBoundingBox(aX + tSide4, aY + tSide0, aZ + tSide2, aX + tSide5, aY + tSide1, aZ + tSide3);
@@ -552,7 +558,7 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
         List<AxisAlignedBB> outputAABB, Entity collider) {
         super.addCollisionBoxesToList(aWorld, aX, aY, aZ, inputAABB, outputAABB, collider);
         if (GT_Mod.instance.isClientSide() && (GT_Client.hideValue & 0x2) != 0) {
-            final AxisAlignedBB aabb = getActualCollisionBoundingBoxFromPool(aWorld, aX, aY, aZ);
+            final AxisAlignedBB aabb = getActualCollisionBoundingBoxFromPool(aX, aY, aZ);
             if (inputAABB.intersectsWith(aabb)) outputAABB.add(aabb);
         }
     }

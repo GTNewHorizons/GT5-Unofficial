@@ -2,10 +2,11 @@ package gregtech.api.metatileentity;
 
 import static gregtech.GT_Mod.GT_FML_LOGGER;
 import static gregtech.api.enums.GT_Values.NW;
+import static net.minecraftforge.common.util.ForgeDirection.VALID_DIRECTIONS;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
+import java.util.EnumMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -705,31 +706,16 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
     }
 
     @Override
-    public ITexture[] getTexture(Block aBlock, byte aSide) {
-        final ITexture rIcon = getCoverTexture(aSide);
-        if (rIcon != null) return new ITexture[] { rIcon };
-        return getTextureUncovered(aSide);
+    public ITexture getTexture(Block block, ForgeDirection side) {
+        final ITexture rIcon = getCoverTexture(side);
+        if (rIcon != null) return rIcon;
+        return getTextureUncovered(side);
     }
 
     @Override
-    @Deprecated
-    public ITexture[] getTextureCovered(byte aSide) {
-        final ITexture coverTexture = getCoverTexture(aSide);
-        final ITexture[] textureUncovered = getTextureUncovered(aSide);
-        final ITexture[] textureCovered;
-        if (coverTexture != null) {
-            textureCovered = Arrays.copyOf(textureUncovered, textureUncovered.length + 1);
-            textureCovered[textureUncovered.length] = coverTexture;
-            return textureCovered;
-        } else {
-            return textureUncovered;
-        }
-    }
-
-    @Override
-    public ITexture getTextureCovered(ForgeDirection dir) {
-        final ITexture textureUncovered = getTextureUncovered(dir);
-        final ITexture coverTexture = getCoverTexture(dir);
+    public ITexture getTextureCovered(ForgeDirection side) {
+        final ITexture textureUncovered = getTextureUncovered(side);
+        final ITexture coverTexture = getCoverTexture(side);
         if (coverTexture == null) {
             return textureUncovered;
         } else {
@@ -738,15 +724,33 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
     }
 
     @Override
-    public ITexture[] getTextureUncovered(byte aSide) {
+    public EnumMap<ForgeDirection, ITexture> getTexturesMapUncovered() {
+        EnumMap<ForgeDirection, ITexture> textureMap = new EnumMap<>(ForgeDirection.class);
+        for (ForgeDirection direction : VALID_DIRECTIONS) {
+            textureMap.put(direction, getTextureUncovered(direction));
+        }
+        return textureMap;
+    }
+
+    @Override
+    public EnumMap<ForgeDirection, ITexture> getTexturesMapCovered() {
+        EnumMap<ForgeDirection, ITexture> textureMap = new EnumMap<>(ForgeDirection.class);
+        for (ForgeDirection direction : VALID_DIRECTIONS) {
+            textureMap.put(direction, getTextureCovered(direction));
+        }
+        return textureMap;
+    }
+
+    @Override
+    public ITexture getTextureUncovered(ForgeDirection side) {
         if ((mConnections & IConnectable.HAS_FRESHFOAM) != 0) return Textures.BlockIcons.FRESHFOAM;
         if ((mConnections & IConnectable.HAS_HARDENEDFOAM) != 0) return Textures.BlockIcons.HARDENEDFOAMS[mColor];
         if ((mConnections & IConnectable.HAS_FOAM) == 0) {
-            byte tConnections = (byte) switch (mConnections) {
-                case IConnectable.CONNECTED_WEST, IConnectable.CONNECTED_EAST -> (IConnectable.CONNECTED_WEST
-                    | IConnectable.CONNECTED_EAST);
-                case IConnectable.CONNECTED_DOWN, IConnectable.CONNECTED_UP -> (IConnectable.CONNECTED_DOWN
-                    | IConnectable.CONNECTED_UP);
+            byte tConnections = switch (mConnections) {
+                case IConnectable.CONNECTED_WEST, IConnectable.CONNECTED_EAST -> IConnectable.CONNECTED_WEST
+                    | IConnectable.CONNECTED_EAST;
+                case IConnectable.CONNECTED_DOWN, IConnectable.CONNECTED_UP -> IConnectable.CONNECTED_DOWN
+                    | IConnectable.CONNECTED_UP;
                 case IConnectable.CONNECTED_NORTH, IConnectable.CONNECTED_SOUTH -> (IConnectable.CONNECTED_NORTH
                     | IConnectable.CONNECTED_SOUTH);
                 default -> mConnections;
@@ -754,11 +758,11 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
             if (hasValidMetaTileEntity()) {
                 return mMetaTileEntity.getTexture(
                     this,
-                    aSide,
+                    side,
                     tConnections,
                     (byte) (mColor - 1),
-                    tConnections == 0 || (tConnections & (1 << aSide)) != 0,
-                    getOutputRedstoneSignal(aSide) > 0);
+                    tConnections == 0 || (tConnections & 1 << side.ordinal()) != 0,
+                    getOutputRedstoneSignal(side) > 0);
             }
             return Textures.BlockIcons.ERROR_RENDERING;
         }

@@ -373,6 +373,12 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         return getCoverInfoAtSide(aSide).getCoverBehavior();
     }
 
+    @Override
+    public GT_CoverBehaviorBase<?> getCoverBehaviorAtSideNew(ForgeDirection side) {
+        return getCoverInfoAtSide(side).getCoverBehavior();
+    }
+
+
     public void setCoverInfoAtSide(byte aSide, CoverInfo coverInfo) {
         if (aSide >= 0 && aSide < 6) coverInfos[aSide] = coverInfo;
     }
@@ -504,12 +510,13 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
             .getIndirectPowerLevelTo(getOffsetX(aSide, 1), getOffsetY(aSide, 1), getOffsetZ(aSide, 1), aSide) & 15);
     }
 
+
     @Override
-    public byte getOutputRedstoneSignal(byte aSide) {
-        return getCoverBehaviorAtSideNew(aSide)
-            .manipulatesSidedRedstoneOutput(aSide, getCoverIDAtSide(aSide), getComplexCoverDataAtSide(aSide), this)
-                ? mSidedRedstone[aSide]
-                : getGeneralRS(aSide);
+    public byte getOutputRedstoneSignal(ForgeDirection side) {
+        return getCoverBehaviorAtSideNew((byte) side.ordinal())
+            .manipulatesSidedRedstoneOutput(side, getCoverIDAtSide(side), getComplexCoverDataAtSide(side), this)
+                ? mSidedRedstone[side]
+                : getGeneralRS(side);
     }
 
     protected void updateOutputRedstoneSignal(byte aSide) {

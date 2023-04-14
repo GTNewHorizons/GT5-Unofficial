@@ -16,6 +16,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.IFluidHandler;
 import net.minecraftforge.fluids.IFluidTank;
 
@@ -372,9 +373,16 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
      *                    to something or not.
      * @param aRedstone   if the Machine is currently outputting a RedstoneSignal (use this instead of calling
      *                    mBaseMetaTileEntity.mRedstone!!!)
+     * @deprecated
      */
-    ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-        boolean aActive, boolean aRedstone);
+    @Deprecated
+    default ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
+        boolean aActive, boolean aRedstone) {
+        throw new UnsupportedOperationException();
+    }
+
+    ITexture getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, byte facing,
+        byte colorIndex, boolean active, boolean redstone);
 
     /**
      * The Textures used for the Item rendering. Return null if you want the regular 3D Block Rendering.

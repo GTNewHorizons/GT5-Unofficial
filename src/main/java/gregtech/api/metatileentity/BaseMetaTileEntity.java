@@ -69,6 +69,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachin
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.net.GT_Packet_TileEntity;
 import gregtech.api.objects.GT_ItemStack;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.util.*;
 import gregtech.common.GT_Pollution;
 import gregtech.common.covers.CoverInfo;
@@ -1199,16 +1200,15 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity implements IGregTec
     }
 
     @Override
-    public ITexture[] getTexture(Block aBlock, byte aSide) {
-        final ITexture coverTexture = getCoverTexture(aSide);
-        final ITexture[] textureUncovered = hasValidMetaTileEntity()
+    public ITexture getTexture(Block block, ForgeDirection side) {
+        final ITexture coverTexture = getCoverTexture(side);
+        final ITexture textureUncovered = hasValidMetaTileEntity()
             ? mMetaTileEntity
-                .getTexture(this, aSide, mFacing, (byte) (mColor - 1), mActive, getOutputRedstoneSignal(aSide) > 0)
+                .getTexture(this, side, mFacing, (byte) (mColor - 1), mActive, getOutputRedstoneSignal(side) > 0)
             : Textures.BlockIcons.ERROR_RENDERING;
-        final ITexture[] textureCovered;
+        final ITexture textureCovered;
         if (coverTexture != null) {
-            textureCovered = Arrays.copyOf(textureUncovered, textureUncovered.length + 1);
-            textureCovered[textureUncovered.length] = coverTexture;
+            textureCovered = TextureFactory.of(textureUncovered, coverTexture);
             return textureCovered;
         } else {
             return textureUncovered;

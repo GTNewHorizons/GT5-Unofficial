@@ -1,5 +1,9 @@
 package gregtech.api.interfaces.metatileentity;
 
+import static net.minecraftforge.common.util.ForgeDirection.*;
+
+import net.minecraftforge.common.util.ForgeDirection;
+
 /**
  * For pipes, wires, and other MetaTiles which need to be decided whether they should connect to the block at each side.
  */
@@ -30,5 +34,13 @@ public interface IConnectable {
      */
     void disconnect(byte aSide);
 
-    boolean isConnectedAtSide(int aSide);
+    /**
+     * @deprecated use {@link #isConnectedAtSide(ForgeDirection)}
+     */
+    @Deprecated
+    default boolean isConnectedAtSide(int aSide) {
+        throw new UnsupportedOperationException();
+    }
+
+    boolean isConnectedAtSide(ForgeDirection dir);
 }

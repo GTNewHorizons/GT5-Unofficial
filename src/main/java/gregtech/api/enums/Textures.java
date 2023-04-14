@@ -1349,28 +1349,18 @@ public class Textures {
         /**
          * Icon for Fresh CFoam
          */
-        public static final ITexture[] FRESHFOAM = { TextureFactory.of(CFOAM_FRESH) };
+        public static final ITexture FRESHFOAM = TextureFactory.of(CFOAM_FRESH);
         /**
          * Icons for Hardened CFoam 0 = No Color 1 - 16 = Colors
          */
-        public static final ITexture[][] HARDENEDFOAMS = {
-            new ITexture[] { TextureFactory.of(CFOAM_HARDENED, Dyes.CONSTRUCTION_FOAM.mRGBa) },
-            new ITexture[] { TextureFactory.of(CFOAM_HARDENED, Dyes.VALUES[0].mRGBa) },
-            new ITexture[] { TextureFactory.of(CFOAM_HARDENED, Dyes.VALUES[1].mRGBa) },
-            new ITexture[] { TextureFactory.of(CFOAM_HARDENED, Dyes.VALUES[2].mRGBa) },
-            new ITexture[] { TextureFactory.of(CFOAM_HARDENED, Dyes.VALUES[3].mRGBa) },
-            new ITexture[] { TextureFactory.of(CFOAM_HARDENED, Dyes.VALUES[4].mRGBa) },
-            new ITexture[] { TextureFactory.of(CFOAM_HARDENED, Dyes.VALUES[5].mRGBa) },
-            new ITexture[] { TextureFactory.of(CFOAM_HARDENED, Dyes.VALUES[6].mRGBa) },
-            new ITexture[] { TextureFactory.of(CFOAM_HARDENED, Dyes.VALUES[7].mRGBa) },
-            new ITexture[] { TextureFactory.of(CFOAM_HARDENED, Dyes.VALUES[8].mRGBa) },
-            new ITexture[] { TextureFactory.of(CFOAM_HARDENED, Dyes.VALUES[9].mRGBa) },
-            new ITexture[] { TextureFactory.of(CFOAM_HARDENED, Dyes.VALUES[10].mRGBa) },
-            new ITexture[] { TextureFactory.of(CFOAM_HARDENED, Dyes.VALUES[11].mRGBa) },
-            new ITexture[] { TextureFactory.of(CFOAM_HARDENED, Dyes.VALUES[12].mRGBa) },
-            new ITexture[] { TextureFactory.of(CFOAM_HARDENED, Dyes.VALUES[13].mRGBa) },
-            new ITexture[] { TextureFactory.of(CFOAM_HARDENED, Dyes.VALUES[14].mRGBa) },
-            new ITexture[] { TextureFactory.of(CFOAM_HARDENED, Dyes.VALUES[15].mRGBa) } };
+        public static final ITexture[] HARDENEDFOAMS = new ITexture[1 + Dyes.VALUES.length];
+        static {
+            HARDENEDFOAMS[0] = TextureFactory.of(CFOAM_HARDENED, Dyes.CONSTRUCTION_FOAM.mRGBa);
+            for (Dyes dye : Dyes.VALUES) {
+                HARDENEDFOAMS[dye.ordinal() + 1] = TextureFactory.of(CFOAM_HARDENED, dye.mRGBa);
+            }
+        }
+
         /**
          * Machine Casings by Tier 0 = 8V, 1 = LV, 2 = MV, 3 = HV, 4 = EV, 5 = IV, 6 = IV, 7 = IV, 8 = IV, 9 = IV
          */
@@ -1491,11 +1481,11 @@ public class Textures {
                 BLOCK_TRANSCENDENTMETAL, BLOCK_ORIHARUKON, BLOCK_WHITEDWARFMATTER, BLOCK_BLACKDWARFMATTER,
                 BLOCK_UNIVERSIUM };
 
-        public static final ITexture[] HIDDEN_TEXTURE = { TextureFactory.builder()
+        public static final ITexture HIDDEN_TEXTURE = TextureFactory.builder()
             .addIcon(HIDDEN_FACE)
             .stdOrient()
-            .build() };
-        public static final ITexture[] ERROR_RENDERING = { TextureFactory.of(RENDERING_ERROR) };
+            .build();
+        public static final ITexture ERROR_RENDERING = TextureFactory.of(RENDERING_ERROR);
         public static final ITexture[] OVERLAYS_ENERGY_IN = {
             TextureFactory.of(OVERLAY_ENERGY_IN, new short[] { 180, 180, 180, 0 }),
             TextureFactory.of(OVERLAY_ENERGY_IN, new short[] { 220, 220, 220, 0 }),
@@ -1672,7 +1662,7 @@ public class Textures {
             // adds some known pages, modders also can do it...
             GT_Utility.addTexturePage((byte) 1);
             GT_Utility.addTexturePage((byte) 8);
-            setCasingTextureForId(ERROR_TEXTURE_INDEX, ERROR_RENDERING[0]);
+            setCasingTextureForId(ERROR_TEXTURE_INDEX, ERROR_RENDERING);
         }
 
         protected IIcon mIcon;

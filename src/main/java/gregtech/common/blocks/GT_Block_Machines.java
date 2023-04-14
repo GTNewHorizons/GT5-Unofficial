@@ -485,8 +485,9 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
             return 0;
         }
         final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if (tTileEntity instanceof IGregTechTileEntity) {
-            return ((IGregTechTileEntity) tTileEntity).getOutputRedstoneSignal(GT_Utility.getOppositeSide(aSide));
+        if (tTileEntity instanceof IGregTechTileEntity iGregTechTileEntity) {
+            return iGregTechTileEntity.getOutputRedstoneSignal(ForgeDirection.getOrientation(aSide)
+                    .getOpposite());
         }
         return 0;
     }

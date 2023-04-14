@@ -45,12 +45,12 @@ public interface ICoverable extends IRedstoneTileEntity, IHasInventory, IBasicEn
     }
 
     /**
-     * @deprecated use {@link #getCoverIDAtDirection(ForgeDirection)}
+     * @deprecated use {@link #getCoverIDAtSide(ForgeDirection)}
      */
     @Deprecated
     int getCoverIDAtSide(byte aSide);
 
-    default int getCoverIDAtDirection(ForgeDirection direction) {
+    default int getCoverIDAtSide(ForgeDirection direction) {
         return getCoverIDAtSide((byte) direction.ordinal());
     }
 
@@ -59,9 +59,15 @@ public interface ICoverable extends IRedstoneTileEntity, IHasInventory, IBasicEn
     @Deprecated
     GT_CoverBehavior getCoverBehaviorAtSide(byte aSide);
 
+    @Deprecated
     default GT_CoverBehaviorBase<?> getCoverBehaviorAtSideNew(byte aSide) {
-        return getCoverBehaviorAtSide(aSide);
+        throw new UnsupportedOperationException();
     }
+
+    default GT_CoverBehaviorBase<?> getCoverBehaviorAtSideNew(ForgeDirection side) {
+        return getCoverBehaviorAtSide(side);
+    }
+
 
     /**
      * For use by the regular MetaTileEntities. Returns the Cover Manipulated input Redstone. Don't use this if you are
