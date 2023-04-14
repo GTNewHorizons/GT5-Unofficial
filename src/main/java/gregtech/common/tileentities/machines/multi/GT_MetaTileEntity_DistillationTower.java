@@ -139,7 +139,7 @@ public class GT_MetaTileEntity_DistillationTower extends
             .beginVariableStructureBlock(3, 3, 3, 12, 3, 3, true)
             .addController("Front bottom")
             .addOtherStructurePart("Clean Stainless Steel Machine Casing", "7 x h - 5 (minimum)")
-            .addEnergyHatch("Any casing", 1, 2)
+            .addEnergyHatch("Any casing except top centre", 1, 2)
             .addMaintenanceHatch("Any casing", 1, 2, 3)
             .addInputHatch("Any bottom layer casing", 1)
             .addOutputBus("Any bottom layer casing", 1)
