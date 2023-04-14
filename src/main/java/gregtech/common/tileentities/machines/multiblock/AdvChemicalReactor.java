@@ -22,6 +22,7 @@ import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
+import com.gtnewhorizons.modularui.common.widget.MultiChildWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotGroup;
 
 import gregtech.api.GregTech_API;
@@ -211,14 +212,11 @@ public class AdvChemicalReactor extends ComplexController<AdvChemicalReactor> {
     }
 
     @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        super.addUIWidgets(builder, buildContext);
+    protected MultiChildWidget createMainPage() {
+        MultiChildWidget child = super.createMainPage();
         for (int i = 0; i < MAX_PROCESSES; i++) {
             final int processIndex = i;
-            buildContext.addSyncedWindow(
-                PROCESS_WINDOW_BASE_ID + i,
-                (player) -> createProcessConfigWindow(player, processIndex));
-            builder.widget(
+            child.addChild(
                 new ButtonWidget().setPlayClickSound(true)
                     .setOnClick(
                         (clickData, widget) -> {
@@ -228,6 +226,18 @@ public class AdvChemicalReactor extends ComplexController<AdvChemicalReactor> {
                     .setBackground(GT_UITextures.OVERLAY_BUTTON_BATCH_MODE_ON)
                     .setSize(18, 18)
                     .setPos(20 * i, 18));
+        }
+        return child;
+    }
+
+    @Override
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        super.addUIWidgets(builder, buildContext);
+        for (int i = 0; i < MAX_PROCESSES; i++) {
+            final int processIndex = i;
+            buildContext.addSyncedWindow(
+                PROCESS_WINDOW_BASE_ID + i,
+                (player) -> createProcessConfigWindow(player, processIndex));
         }
     }
 
