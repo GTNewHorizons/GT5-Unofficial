@@ -24,6 +24,8 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.ITexture;
@@ -209,6 +211,7 @@ public class Macerator extends StackableController<Macerator> {
         return true;
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
     protected ResourceLocation getActivitySoundLoop() {
         return SoundResource.IC2_MACHINES_MACERATOR_OP.resourceLocation;

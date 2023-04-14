@@ -592,6 +592,7 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
         return 100;
     }
 
+    @SideOnly(Side.CLIENT)
     protected void doActivitySound(ResourceLocation activitySound) {
         if (isActive() && activitySound != null) {
             if (activitySoundLoop == null) {
@@ -607,6 +608,7 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
         }
     }
 
+    @SideOnly(Side.CLIENT)
     protected ResourceLocation getActivitySoundLoop() {
         return null;
     }
