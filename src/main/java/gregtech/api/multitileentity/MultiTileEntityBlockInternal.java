@@ -36,7 +36,7 @@ public class MultiTileEntityBlockInternal extends Block implements IRenderedBloc
 
     @Override
     public int getRenderType() {
-        return GT_Renderer_Block.INSTANCE == null ? super.getRenderType() : GT_Renderer_Block.INSTANCE.getRenderId();
+        return GT_Renderer_Block.INSTANCE == null ? super.getRenderType() : GT_Renderer_Block.INSTANCE.mRenderID;
     }
 
     @Override
@@ -52,7 +52,7 @@ public class MultiTileEntityBlockInternal extends Block implements IRenderedBloc
     public boolean placeBlock(World aWorld, int aX, int aY, int aZ, byte aSide, short aMetaData, NBTTagCompound aNBT,
         boolean aCauseBlockUpdates, boolean aForcePlacement) {
         final MultiTileEntityContainer aMTEContainer = mMultiTileEntityRegistry
-            .getNewTileEntityContainer(aWorld, aX, aY, aZ, aMetaData, aNBT, false);
+            .getNewTileEntityContainer(aWorld, aX, aY, aZ, aMetaData, aNBT);
         if (aMTEContainer == null) return false;
 
         final Block tReplacedBlock = aWorld.getBlock(aX, aY, aZ);

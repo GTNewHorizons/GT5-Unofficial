@@ -117,6 +117,9 @@ public abstract class MultiTileEntity extends CoverableTileEntity implements IMu
 
     @Override
     public void initFromNBT(NBTTagCompound nbt, short mteID, short mteRegistry) {
+        if (this.mteID == mteID && this.mteRegistry == mteRegistry) {
+            return;
+        }
         // Set ID and Registry ID.
         this.mteID = mteID;
         this.mteRegistry = mteRegistry;
@@ -183,10 +186,8 @@ public abstract class MultiTileEntity extends CoverableTileEntity implements IMu
             if (nbt.hasKey(NBT.LOCK_UPGRADE)) lockUpgrade = nbt.getBoolean(NBT.LOCK_UPGRADE);
             if (nbt.hasKey(NBT.FACING)) facing = nbt.getByte(NBT.FACING);
 
-            if (!nbt.hasKey("onlyTexture")) {
-                readCoverNBT(nbt);
-                readMultiTileNBT(nbt);
-            }
+            readCoverNBT(nbt);
+            readMultiTileNBT(nbt);
 
             if (GregTech_API.sBlockIcons == null && nbt.hasKey(NBT.TEXTURE)) {
                 loadTextureNBT(nbt);
@@ -671,7 +672,7 @@ public abstract class MultiTileEntity extends CoverableTileEntity implements IMu
     @Override
     public ItemStack getPickBlock(MovingObjectPosition aTarget) {
         final MultiTileEntityRegistry tRegistry = MultiTileEntityRegistry.getRegistry(mteRegistry);
-        return tRegistry == null ? null : tRegistry.getItem(mteID, writeItemNBT(new NBTTagCompound()), true);
+        return tRegistry == null ? null : tRegistry.getItem(mteID, writeItemNBT(new NBTTagCompound()));
     }
 
     @Override
@@ -923,8 +924,7 @@ public abstract class MultiTileEntity extends CoverableTileEntity implements IMu
     public ArrayList<ItemStack> getDrops(int aFortune, boolean aSilkTouch) {
         final ArrayList<ItemStack> rList = new ArrayList<>();
         final MultiTileEntityRegistry tRegistry = MultiTileEntityRegistry.getRegistry(getMultiTileEntityRegistryID());
-        if (tRegistry != null)
-            rList.add(tRegistry.getItem(getMultiTileEntityID(), writeItemNBT(new NBTTagCompound()), true));
+        if (tRegistry != null) rList.add(tRegistry.getItem(getMultiTileEntityID(), writeItemNBT(new NBTTagCompound())));
 
         onBaseTEDestroyed();
         return rList;
