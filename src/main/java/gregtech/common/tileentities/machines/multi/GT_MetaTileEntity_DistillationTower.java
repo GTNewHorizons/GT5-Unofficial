@@ -315,8 +315,10 @@ public class GT_MetaTileEntity_DistillationTower extends
             mHeight++;
         }
 
-        // validate final invariants...
-        return mCasing >= 7 * mHeight - 5 && mHeight >= 2 && mTopLayerFound && mMaintenanceHatches.size() == 1;
+        // validate final invariants... (actual height is mHeight+1)
+        return mCasing >= 7 * (mHeight + 1) - 5 && mHeight + 1 >= 3
+            && mTopLayerFound
+            && mMaintenanceHatches.size() == 1;
     }
 
     @Override
