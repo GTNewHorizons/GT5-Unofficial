@@ -691,7 +691,7 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
             public boolean placeBlock(S t, World world, int x, int y, int z, ItemStack trigger) {
                 final MultiTileEntityRegistry tRegistry = MultiTileEntityRegistry.getRegistry(registryID);
                 final MultiTileEntityContainer tContainer = tRegistry
-                    .getNewTileEntityContainer(world, x, y, z, meta, null);
+                    .getNewTileEntityContainer(world, x, y, z, meta, null, false);
                 if (tContainer == null) {
                     GT_FML_LOGGER.error("NULL CONTAINER");
                     return false;
