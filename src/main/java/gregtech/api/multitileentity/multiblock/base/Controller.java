@@ -3,6 +3,7 @@ package gregtech.api.multitileentity.multiblock.base;
 import static gregtech.GT_Mod.GT_FML_LOGGER;
 import static gregtech.api.enums.GT_Values.ALL_VALID_SIDES;
 import static gregtech.api.enums.GT_Values.NBT;
+import static mcp.mobius.waila.api.SpecialChars.*;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -15,8 +16,12 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -92,6 +97,7 @@ import gregtech.api.multitileentity.multiblock.casing.UpgradeCasing;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GT_Waila;
 import gregtech.common.tileentities.casings.upgrade.InventoryUpgrade;
 
 public abstract class Controller<T extends Controller<T>> extends MultiTileBasicMachine implements IAlignment,
@@ -122,6 +128,8 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
     protected boolean voidExcess = false;
     protected boolean batchMode = false;
     protected boolean recipeLock = false;
+    /** If this is set to true, the machine will get default WAILA behavior */
+    protected boolean isSimpleMachine = true;
 
     // A list of sides
     // Each side has a list of parts that have a cover that need to be ticked
@@ -1718,5 +1726,31 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
 
     protected boolean isRecipeLockingEnabled() {
         return recipeLock;
+    }
+
+    @Override
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+        int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        tag.setLong("progress", progressTime);
+        tag.setLong("maxProgress", maxProgressTime);
+        tag.setBoolean("structureOkay", structureOkay);
+    }
+
+    @Override
+    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
+        IWailaConfigHandler config) {
+        super.getWailaBody(itemStack, currentTip, accessor, config);
+        final NBTTagCompound tag = accessor.getNBTData();
+        if (!tag.getBoolean("structureOkay")) {
+            currentTip.add(RED + "** INCOMPLETE STRUCTURE **" + RESET);
+        } else {
+            currentTip.add((GREEN + "Running Fine") + RESET);
+        }
+        if (isSimpleMachine) {
+            boolean isActive = tag.getBoolean("isActive");
+            currentTip
+                .add(GT_Waila.getMachineProgressString(isActive, tag.getLong("maxProgress"), tag.getLong("progress")));
+        }
     }
 }

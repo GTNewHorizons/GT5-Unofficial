@@ -1,9 +1,22 @@
 package gregtech.api.multitileentity.multiblock.base;
 
+import static mcp.mobius.waila.api.SpecialChars.*;
+
+import java.util.List;
 import java.util.stream.LongStream;
+
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
+
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
 
 import gregtech.api.logic.ComplexParallelProcessingLogic;
 import gregtech.api.logic.interfaces.PollutionLogicHost;
+import gregtech.api.util.GT_Waila;
 
 public abstract class ComplexController<T extends ComplexController<T>> extends PowerController<T> {
 
@@ -12,6 +25,10 @@ public abstract class ComplexController<T extends ComplexController<T>> extends 
     protected int currentComplexParallels = 0;
     protected long[] maxProgressTimes = new long[0];
     protected long[] progressTimes = new long[0];
+
+    public ComplexController() {
+        isSimpleMachine = false;
+    }
 
     protected void setMaxComplexParallels(int parallel) {
         if (parallel != maxComplexParallels) {
@@ -74,6 +91,8 @@ public abstract class ComplexController<T extends ComplexController<T>> extends 
                     }
                 }
                 updateSlots();
+            } else if (maxProgressTimes[i] > 0) {
+                allStopped = false;
             }
         }
         if (allStopped) {
@@ -98,7 +117,7 @@ public abstract class ComplexController<T extends ComplexController<T>> extends 
             .setTileEntity(this)
             .setVoidProtection(index, isVoidProtectionEnabled(index))
             // .setEut(index, getEutForComplexParallel(index))
-            .setEut(index, 1000000000)
+            .setEut(index, 530000)
             .setPerfectOverclock(hasPerfectOverclock())
             .process(index);
         setDuration(index, processingLogic.getDuration(index));
@@ -149,5 +168,34 @@ public abstract class ComplexController<T extends ComplexController<T>> extends 
 
     protected long getEutForComplexParallel(int index) {
         return eut / maxComplexParallels;
+    }
+
+    @Override
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+        int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        tag.setInteger("maxComplexParallels", maxComplexParallels);
+        for (int i = 0; i < maxComplexParallels; i++) {
+            tag.setLong("maxProgress" + i, maxProgressTimes[i]);
+            tag.setLong("progress" + i, progressTimes[i]);
+        }
+    }
+
+    @Override
+    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
+        IWailaConfigHandler config) {
+        super.getWailaBody(itemStack, currentTip, accessor, config);
+        final NBTTagCompound tag = accessor.getNBTData();
+        boolean isActive = tag.getBoolean("isActive");
+        maxComplexParallels = tag.getInteger("maxComplexParallels");
+        for (int i = 0; i < maxComplexParallels; i++) {
+            currentTip.add(
+                "Process " + (i + 1)
+                    + ": "
+                    + GT_Waila.getMachineProgressString(
+                        isActive,
+                        tag.getInteger("maxProgress" + i),
+                        tag.getInteger("progress" + i)));
+        }
     }
 }
