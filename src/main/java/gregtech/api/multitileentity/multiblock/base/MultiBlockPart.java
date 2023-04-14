@@ -398,7 +398,9 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
     public boolean onMalletRightClick(EntityPlayer aPlayer, ItemStack tCurrentItem, byte wrenchSide, float aX, float aY,
         float aZ) {
         if (mAllowedModes == NOTHING) return true;
-
+        if (mMode == NOTHING) {
+            facing = wrenchSide;
+        }
         mMode = getNextAllowedMode(BASIC_MODES);
         if (aPlayer.isSneaking()) {
             facing = wrenchSide;
