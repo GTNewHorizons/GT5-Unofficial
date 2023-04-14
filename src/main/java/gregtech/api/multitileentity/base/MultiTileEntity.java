@@ -186,8 +186,10 @@ public abstract class MultiTileEntity extends CoverableTileEntity implements IMu
             if (nbt.hasKey(NBT.LOCK_UPGRADE)) lockUpgrade = nbt.getBoolean(NBT.LOCK_UPGRADE);
             if (nbt.hasKey(NBT.FACING)) facing = nbt.getByte(NBT.FACING);
 
-            readCoverNBT(nbt);
-            readMultiTileNBT(nbt);
+            if (isServerSide()) {
+                readCoverNBT(nbt);
+                readMultiTileNBT(nbt);
+            }
 
             if (GregTech_API.sBlockIcons == null && nbt.hasKey(NBT.TEXTURE)) {
                 loadTextureNBT(nbt);
