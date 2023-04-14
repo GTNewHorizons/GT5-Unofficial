@@ -70,7 +70,7 @@ public class CokeOven extends Controller<CokeOven> implements PollutionLogicHost
     }
 
     @Override
-    public short getCasingMeta() {
+    public int getCasingMeta() {
         return GT_MultiTileCasing.CokeOven.getId();
     }
 

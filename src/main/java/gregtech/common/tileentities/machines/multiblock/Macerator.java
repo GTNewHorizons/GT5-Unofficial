@@ -84,7 +84,7 @@ public class Macerator extends StackableController<Macerator> {
     }
 
     @Override
-    public short getCasingMeta() {
+    public int getCasingMeta() {
         return 18000;
     }
 

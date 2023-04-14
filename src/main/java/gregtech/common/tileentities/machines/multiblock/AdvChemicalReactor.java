@@ -144,7 +144,7 @@ public class AdvChemicalReactor extends ComplexController<AdvChemicalReactor> {
     }
 
     @Override
-    public short getCasingMeta() {
+    public int getCasingMeta() {
         return GT_MultiTileCasing.Chemical.getId();
     }
 
