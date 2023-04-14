@@ -87,7 +87,15 @@ public class GT_Loader_MultiTileEntities implements Runnable {
             .material(Materials.Cobalt)
             .texture("metalwall")
             .register();
-        casingRegistry.create(20001, Inventory.class)
+        
+    }
+
+    private static void registerComplexCasings() {
+        final MultiTileEntityRegistry complexCasingRegistry = new MultiTileEntityRegistry("gt.multitileentity.complex.casings");
+        final MultiTileEntityBlock casing = MultiTileEntityBlock
+            .getOrCreate("GregTech", "complexCasing", Material.iron, Block.soundTypeMetal, "wrench", 0, 0, 15, true, true);
+    
+        complexCasingRegistry.create(20001, Inventory.class)
             .name("Inventory Upgrade LV")
             .category("MultiBlock Special Casing")
             .setBlock(casing)
@@ -96,7 +104,7 @@ public class GT_Loader_MultiTileEntities implements Runnable {
             .upgradeInventorySize(16)
             .tier(1)
             .register();
-        casingRegistry.create(20002, Inventory.class)
+        complexCasingRegistry.create(20002, Inventory.class)
             .name("Inventory Upgrade MV")
             .category("MultiBlock Upgrade Casing")
             .setBlock(casing)
@@ -105,7 +113,7 @@ public class GT_Loader_MultiTileEntities implements Runnable {
             .upgradeInventorySize(24)
             .tier(2)
             .register();
-        casingRegistry.create(10000, Motor.class)
+        complexCasingRegistry.create(0, Motor.class)
             .name("Motor Casing LV")
             .tier(1)
             .category("MultiBlock Functional Casing")
@@ -113,11 +121,5 @@ public class GT_Loader_MultiTileEntities implements Runnable {
             .material(Materials.Arsenic)
             .texture("metalwall")
             .register();
-    }
-
-    private static void registerComplexCasings() {
-        final MultiTileEntityRegistry complexCasingRegistry = new MultiTileEntityRegistry("gt.multitileentity.complex.casings");
-        final MultiTileEntityBlock casing = MultiTileEntityBlock
-            .getOrCreate("GregTech", "complexCasing", Material.iron, Block.soundTypeMetal, "wrench", 0, 0, 15, true, true);
     }
 }
