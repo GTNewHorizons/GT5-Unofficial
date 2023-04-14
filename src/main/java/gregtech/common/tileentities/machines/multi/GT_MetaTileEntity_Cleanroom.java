@@ -58,7 +58,8 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_TooltipMultiB
             .addInfo("Consumes 40 EU/t when first turned on")
             .addInfo("and 4 EU/t once at 100% efficiency")
             .addInfo("If you use an LV energy hatch, it will actually accept 2A instead of just 1A.")
-            .addInfo("MV+ energy hatches just accept 1A as usual. For HV+ the cleanroom will overclock and gain efficiency faster.")
+            .addInfo(
+                "MV+ energy hatches just accept 1A as usual. For HV+ the cleanroom will overclock and gain efficiency faster.")
             .addInfo("Time required to reach full efficiency is proportional to")
             .addInfo("the height of empty space within")
             .addInfo("Machines that cause pollution aren't allowed to be put in.")
@@ -66,10 +67,13 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_TooltipMultiB
             .beginVariableStructureBlock(3, 15, 4, 15, 3, 15, true)
             .addController("Top center")
             .addCasingInfoRange("Plascrete", 20, 1007, false)
-            .addStructureInfo(GT_Values.cleanroomGlass + "% of the Plascrete can be replaced with Reinforced Glass (not counting the top layer)")
-            .addStructureInfo("Other material can be used in place of Plascrete, even in higher percentages. See config for detail")
+            .addStructureInfo(
+                GT_Values.cleanroomGlass
+                    + "% of the Plascrete can be replaced with Reinforced Glass (not counting the top layer)")
+            .addStructureInfo(
+                "Other material can be used in place of Plascrete, even in higher percentages. See config for detail")
             .addOtherStructurePart("Filter Machine Casing", "Top besides controller and edges")
-            .addEnergyHatch("Any casing except top layer. Exactly one.") 
+            .addEnergyHatch("Any casing except top layer. Exactly one.")
             .addMaintenanceHatch("Any casing except top layer")
             .addStructureInfo("0-2x Reinforced Door (keep closed or efficiency will reduce)")
             .addStructureInfo("Up to 1 Elevator, Rotating Elevator, and Travel Anchor each")
