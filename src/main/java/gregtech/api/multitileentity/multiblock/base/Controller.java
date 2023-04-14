@@ -195,6 +195,11 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
                 .getIndex());
 
         saveUpgradeInventoriesToNBT(nbt);
+
+        nbt.setBoolean(NBT.VOID_EXCESS, voidExcess);
+        nbt.setBoolean(NBT.SEPARATE_INPUTS, separateInputs);
+        nbt.setBoolean(NBT.RECIPE_LOCK, recipeLock);
+        nbt.setBoolean(NBT.BATCH_MODE, batchMode);
     }
 
     private void saveUpgradeInventoriesToNBT(NBTTagCompound nbt) {
@@ -240,6 +245,11 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
             Flip.byIndex(nbt.getByte(NBT.FLIP)));
 
         loadUpgradeInventoriesFromNBT(nbt);
+
+        voidExcess = nbt.getBoolean(NBT.VOID_EXCESS);
+        separateInputs = nbt.getBoolean(NBT.SEPARATE_INPUTS);
+        recipeLock = nbt.getBoolean(NBT.RECIPE_LOCK);
+        batchMode = nbt.getBoolean(NBT.BATCH_MODE);
     }
 
     private void loadUpgradeInventoriesFromNBT(NBTTagCompound nbt) {

@@ -334,6 +334,9 @@ public class GT_Values {
             UPGRADE_INVENTORIES_INPUT = "gt.invlist.upg.in", // NBT List
             UPGRADE_INVENTORIES_OUTPUT = "gt.invlist.upg.out", // NBT List
             SEPARATE_INPUTS = "gt.separate.inputs", // Boolean
+            VOID_EXCESS = "gt.void.excess", // Boolean
+            BATCH_MODE = "gt.batch.mode", // Boolean
+            RECIPE_LOCK = "gt.recipe.lock", // Boolean
 
             // Logic
             POWER_LOGIC = "gt.power.logic", // NBT Tag
