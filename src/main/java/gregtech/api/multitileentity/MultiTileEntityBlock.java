@@ -219,7 +219,7 @@ public class MultiTileEntityBlock extends Block
 
     @Override
     public int getRenderType() {
-        return GT_Renderer_Block.INSTANCE == null ? super.getRenderType() : GT_Renderer_Block.INSTANCE.getRenderId();
+        return GT_Renderer_Block.INSTANCE == null ? super.getRenderType() : GT_Renderer_Block.INSTANCE.mRenderID;
     }
 
     @Override

@@ -174,26 +174,26 @@ public class MultiTileEntityRegistry {
     public short mLastRegisteredID = GT_Values.W;
 
     public ItemStack getItem() {
-        return getItem(mLastRegisteredID, 1, null, true);
+        return getItem(mLastRegisteredID, 1, null);
     }
 
     public ItemStack getItem(int aID) {
-        return getItem(aID, 1, null, true);
+        return getItem(aID, 1, null);
     }
 
-    public ItemStack getItem(int aID, NBTTagCompound aNBT, boolean onlyTexture) {
-        return getItem(aID, 1, aNBT, onlyTexture);
+    public ItemStack getItem(int aID, NBTTagCompound aNBT) {
+        return getItem(aID, 1, aNBT);
     }
 
     public ItemStack getItem(int aID, long aAmount) {
-        return getItem(aID, aAmount, null, true);
+        return getItem(aID, aAmount, null);
     }
 
-    public ItemStack getItem(int aID, long aAmount, NBTTagCompound aNBT, boolean onlyTexture) {
+    public ItemStack getItem(int aID, long aAmount, NBTTagCompound aNBT) {
         final ItemStack rStack = new ItemStack(mBlock, (int) aAmount, aID);
         if (aNBT == null || aNBT.hasNoTags()) {
             aNBT = new NBTTagCompound();
-            final MultiTileEntityContainer tTileEntityContainer = getNewTileEntityContainer(aID, aNBT, true);
+            final MultiTileEntityContainer tTileEntityContainer = getNewTileEntityContainer(aID, aNBT);
             if (tTileEntityContainer != null) ((IMultiTileEntity) tTileEntityContainer.mTileEntity).writeItemNBT(aNBT);
         }
         rStack.setTagCompound(aNBT);
@@ -213,12 +213,12 @@ public class MultiTileEntityRegistry {
     }
 
     public TileEntity getNewTileEntity(int aID) {
-        final MultiTileEntityContainer tContainer = getNewTileEntityContainer(null, 0, 0, 0, aID, null, true);
+        final MultiTileEntityContainer tContainer = getNewTileEntityContainer(null, 0, 0, 0, aID, null);
         return tContainer == null ? null : tContainer.mTileEntity;
     }
 
     public MultiTileEntityContainer getNewTileEntityContainer(World aWorld, int aX, int aY, int aZ, int aID,
-        NBTTagCompound aNBT, boolean onlyTexture) {
+        NBTTagCompound aNBT) {
         final MultiTileEntityClassContainer tClass = mRegistry.get((short) aID);
         if (tClass == null || tClass.mBlock == null) return null;
         final MultiTileEntityContainer rContainer = new MultiTileEntityContainer(
@@ -230,17 +230,15 @@ public class MultiTileEntityRegistry {
         rContainer.mTileEntity.xCoord = aX;
         rContainer.mTileEntity.yCoord = aY;
         rContainer.mTileEntity.zCoord = aZ;
-        NBTTagCompound nbt = aNBT == null || aNBT.hasNoTags() ? tClass.mParameters
-            : GT_Util.fuseNBT(aNBT, tClass.mParameters);
-        if (onlyTexture) {
-            nbt.setBoolean("onlyTexture", onlyTexture);
-        }
-        ((IMultiTileEntity) rContainer.mTileEntity).initFromNBT(nbt, (short) aID, (short) Block.getIdFromBlock(mBlock));
+        ((IMultiTileEntity) rContainer.mTileEntity).initFromNBT(
+            aNBT == null || aNBT.hasNoTags() ? tClass.mParameters : GT_Util.fuseNBT(aNBT, tClass.mParameters),
+            (short) aID,
+            (short) Block.getIdFromBlock(mBlock));
         return rContainer;
     }
 
     public TileEntity getNewTileEntity(World aWorld, int aX, int aY, int aZ, int aID) {
-        final MultiTileEntityContainer tContainer = getNewTileEntityContainer(aWorld, aX, aY, aZ, aID, null, false);
+        final MultiTileEntityContainer tContainer = getNewTileEntityContainer(aWorld, aX, aY, aZ, aID, null);
         return tContainer == null ? null : tContainer.mTileEntity;
     }
 
@@ -251,8 +249,7 @@ public class MultiTileEntityRegistry {
             0,
             0,
             Items.feather.getDamage(aStack),
-            aStack.getTagCompound(),
-            false);
+            aStack.getTagCompound());
         return tContainer == null ? null : tContainer.mTileEntity;
     }
 
@@ -263,27 +260,19 @@ public class MultiTileEntityRegistry {
             aY,
             aZ,
             Items.feather.getDamage(aStack),
-            aStack.getTagCompound(),
-            false);
+            aStack.getTagCompound());
         return tContainer == null ? null : tContainer.mTileEntity;
     }
 
     public MultiTileEntityContainer getNewTileEntityContainer(ItemStack aStack) {
-        return getNewTileEntityContainer(null, 0, 0, 0, Items.feather.getDamage(aStack), aStack.getTagCompound(), true);
+        return getNewTileEntityContainer(null, 0, 0, 0, Items.feather.getDamage(aStack), aStack.getTagCompound());
     }
 
     public MultiTileEntityContainer getNewTileEntityContainer(World aWorld, int aX, int aY, int aZ, ItemStack aStack) {
-        return getNewTileEntityContainer(
-            aWorld,
-            aX,
-            aY,
-            aZ,
-            Items.feather.getDamage(aStack),
-            aStack.getTagCompound(),
-            true);
+        return getNewTileEntityContainer(aWorld, aX, aY, aZ, Items.feather.getDamage(aStack), aStack.getTagCompound());
     }
 
-    public MultiTileEntityContainer getNewTileEntityContainer(int aID, NBTTagCompound aNBT, boolean onlyTexture) {
-        return getNewTileEntityContainer(null, 0, 0, 0, aID, aNBT, onlyTexture);
+    public MultiTileEntityContainer getNewTileEntityContainer(int aID, NBTTagCompound aNBT) {
+        return getNewTileEntityContainer(null, 0, 0, 0, aID, aNBT);
     }
 }
