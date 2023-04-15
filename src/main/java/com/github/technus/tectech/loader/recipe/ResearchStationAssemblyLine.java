@@ -1165,8 +1165,7 @@ public class ResearchStationAssemblyLine implements Runnable {
                             new Object[] { OrePrefixes.circuit.get(Materials.Bio), 1L },
                             GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Neutronium, 4),
                             ItemList.Field_Generator_UHV.get(2), ItemList.Circuit_Wafer_QPIC.get(64),
-                            GT_OreDictUnificator
-                                    .get(OrePrefixes.wireGt04, Materials.Longasssuperconductornameforuhvwire, 32), },
+                            GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUHV, 32) },
                     new FluidStack[] { Materials.UUMatter.getFluid(50000), ALLOY.CINOBITE.getFluidStack(9216),
                             ALLOY.OCTIRON.getFluidStack(9216),
                             ELEMENT.STANDALONE.ASTRAL_TITANIUM.getFluidStack(9216), },
@@ -1212,6 +1211,66 @@ public class ResearchStationAssemblyLine implements Runnable {
                     GregtechItemList.Casing_Fusion_External.get(1),
                     300,
                     2000000);
+
+            // MK5 Computer
+            TT_recipeAdder.addResearchableAssemblylineRecipe(
+                    GregtechItemList.FusionComputer_UV2.get(1),
+                    2560000,
+                    4096,
+                    (int) TierEU.RECIPE_UEV,
+                    8,
+                    new Object[] { GregtechItemList.Casing_Fusion_Internal2.get(1),
+                            new Object[] { OrePrefixes.circuit.get(Materials.Optical), 1L },
+                            new Object[] { OrePrefixes.circuit.get(Materials.Optical), 1L },
+                            new Object[] { OrePrefixes.circuit.get(Materials.Optical), 1L },
+                            new Object[] { OrePrefixes.circuit.get(Materials.Optical), 1L },
+                            GT_OreDictUnificator.get("plateDenseMetastableOganesson", 4),
+                            ItemList.Field_Generator_UEV.get(2), getItemContainer("PicoWafer").get(64L),
+                            GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUEV, 32) },
+                    new FluidStack[] { ELEMENT.getInstance().CURIUM.getFluidStack(9216),
+                            ELEMENT.STANDALONE.CHRONOMATIC_GLASS.getFluidStack(9216), ALLOY.ABYSSAL.getFluidStack(9216),
+                            ELEMENT.STANDALONE.DRAGON_METAL.getFluidStack(9216) },
+                    GregtechItemList.FusionComputer_UV3.get(1),
+                    6000,
+                    (int) TierEU.RECIPE_UEV);
+
+            // MK5 Coils
+            TT_recipeAdder.addResearchableAssemblylineRecipe(
+                    GregtechItemList.Casing_Fusion_Internal.get(1),
+                    2560000,
+                    4096,
+                    (int) TierEU.RECIPE_UEV,
+                    8,
+                    new Object[] { ItemList.Energy_Module.get(16),
+                            new Object[] { OrePrefixes.circuit.get(Materials.Ultimate), 16L },
+                            new Object[] { OrePrefixes.circuit.get(Materials.Infinite), 8L },
+                            ELEMENT.STANDALONE.RHUGNOR.getPlate(8), ItemList.Emitter_UEV.get(1),
+                            ItemList.Sensor_UEV.get(1), getModItem(GoodGenerator.ID, "compactFusionCoil", 1, 2) },
+                    new FluidStack[] { ELEMENT.getInstance().NEPTUNIUM.getFluidStack(2304),
+                            ELEMENT.STANDALONE.CHRONOMATIC_GLASS.getFluidStack(2304), ALLOY.ABYSSAL.getFluidStack(2304),
+                            ELEMENT.STANDALONE.DRAGON_METAL.getFluidStack(2304) },
+                    GregtechItemList.Casing_Fusion_Internal2.get(1),
+                    1200,
+                    (int) TierEU.RECIPE_UEV);
+
+            // MK5 Casing
+            TT_recipeAdder.addResearchableAssemblylineRecipe(
+                    GregtechItemList.Casing_Fusion_External.get(1L),
+                    2560000,
+                    4096,
+                    (int) TierEU.RECIPE_UEV,
+                    8,
+                    new Object[] { new Object[] { OrePrefixes.circuit.get(Materials.Elite), 16L },
+                            new Object[] { OrePrefixes.circuit.get(Materials.Master), 8L },
+                            GT_OreDictUnificator.get(OrePrefixes.block, Materials.NaquadahAlloy, 8),
+                            ELEMENT.STANDALONE.CHRONOMATIC_GLASS.getPlate(8), ItemList.Electric_Motor_UEV.get(2),
+                            ItemList.Electric_Piston_UEV.get(1), GregtechItemList.Casing_Fusion_External.get(1L) },
+                    new FluidStack[] { ELEMENT.getInstance().FERMIUM.getFluidStack(1152),
+                            ELEMENT.STANDALONE.CHRONOMATIC_GLASS.getFluidStack(1152), ALLOY.ABYSSAL.getFluidStack(1152),
+                            ELEMENT.STANDALONE.DRAGON_METAL.getFluidStack(1152) },
+                    GregtechItemList.Casing_Fusion_External2.get(1),
+                    300,
+                    (int) TierEU.RECIPE_UEV);
         }
 
         // Draconic Evolution Fusion Crafter Controller
