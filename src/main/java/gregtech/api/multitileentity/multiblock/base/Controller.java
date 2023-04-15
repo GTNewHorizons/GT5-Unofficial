@@ -1922,7 +1922,7 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
                         .setSize(18, 18));
             }
         }
-        return scrollable.setSize(18 * 4 + 4, 18 * 4)
+        return scrollable.setSize(18 * 4 + 4, 18 * 5)
             .setPos(52, 7);
     }
 
