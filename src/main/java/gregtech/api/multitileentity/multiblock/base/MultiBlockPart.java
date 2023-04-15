@@ -794,10 +794,7 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
 
     @Override
     protected int getGUIHeight() {
-        if (modeSelected(ITEM_IN, ITEM_OUT)) {
-            return super.getGUIHeight() + 11;
-        }
-        return super.getGUIHeight();
+        return super.getGUIHeight() + 11;
     }
 
     @Override
