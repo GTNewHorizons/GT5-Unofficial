@@ -691,7 +691,7 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
 
                 part.setTarget((IMultiBlockController) t, modes);
 
-                registerSpecialCasings(part);
+                ((Controller<?>) t).registerSpecialCasings(part);
                 return true;
             }
 
@@ -729,7 +729,7 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
                     tContainer.setMultiTile(world, x, y, z);
                     ((MultiBlockPart) te).setTarget(Controller.this, modes);
 
-                    registerSpecialCasings((MultiBlockPart) te);
+                    ((Controller<?>) t).registerSpecialCasings((MultiBlockPart) te);
                 }
 
                 return false;
