@@ -2,9 +2,6 @@ package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sTranscendentPlasmaMixerRecipes;
 
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
-
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_Utility;
@@ -15,21 +12,6 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
     private static final int PROSAIC_EU_PER_L = 66_768_460;
     private static final int RESPLENDENT_EU_PER_L = 269_326_451;
     private static final int EXOTIC_EU_PER_L = 1_073_007_393;
-
-    @Deprecated
-    private static void addTranscendentPlasmaMixerRecipe(final FluidStack fluidOutput, final int circuitNumber,
-        final FluidStack[] fluidInput, final int EUPerL) {
-        sTranscendentPlasmaMixerRecipes.addRecipe(
-            false,
-            new ItemStack[] { GT_Utility.getIntegratedCircuit(circuitNumber) },
-            null,
-            null,
-            fluidInput,
-            new FluidStack[] { fluidOutput },
-            100,
-            EUPerL, // NOT EU/T, I am simply using the field for this purpose.
-            0);
-    }
 
     @Override
     public void run() {

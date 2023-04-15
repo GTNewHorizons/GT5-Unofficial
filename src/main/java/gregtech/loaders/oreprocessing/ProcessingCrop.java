@@ -1,5 +1,8 @@
 package gregtech.loaders.oreprocessing;
 
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCompressorRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+
 import net.minecraftforge.fluids.FluidRegistry;
 
 import gregtech.api.enums.GT_Values;
@@ -8,9 +11,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
-
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCompressorRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 
 public class ProcessingCrop implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
@@ -24,12 +24,8 @@ public class ProcessingCrop implements gregtech.api.interfaces.IOreRecipeRegistr
         // Compressor recipes
         {
             GT_Values.RA.stdBuilder()
-                .itemInputs(
-                    gregtech.api.util.GT_Utility.copyAmount(8L, aStack)
-                )
-                .itemOutputs(
-                    ItemList.IC2_PlantballCompressed.get(1L)
-                )
+                .itemInputs(gregtech.api.util.GT_Utility.copyAmount(8L, aStack))
+                .itemOutputs(ItemList.IC2_PlantballCompressed.get(1L))
                 .noFluidInputs()
                 .noFluidOutputs()
                 .duration(15 * SECONDS)

@@ -111,12 +111,8 @@ public class GT_MetaGenerated_Item_01 extends GT_MetaGenerated_Item_X32 {
         // Compressor recipe
         {
             GT_Values.RA.stdBuilder()
-                .itemInputs(
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 8L)
-                )
-                .itemOutputs(
-                    new ItemStack(this, 1, 17000 + Materials.Wood.mMetaItemSubID)
-                )
+                .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 8L))
+                .itemOutputs(new ItemStack(this, 1, 17000 + Materials.Wood.mMetaItemSubID))
                 .noFluidInputs()
                 .noFluidOutputs()
                 .duration(15 * SECONDS)

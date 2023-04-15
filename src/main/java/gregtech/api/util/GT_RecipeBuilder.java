@@ -36,15 +36,13 @@ public class GT_RecipeBuilder {
     public static final int BUCKETS = 1000;
 
     static {
-        boolean tmp;
         if (System.getProperties()
             .containsKey("gt.recipebuilder.debug")) {
-            tmp = Boolean.getBoolean("gt.recipebuilder.debug");
+            DEBUG_MODE = Boolean.getBoolean("gt.recipebuilder.debug");
         } else {
             // turn on debug by default in dev mode
-            tmp = (Boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
+            DEBUG_MODE = (Boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
         }
-        DEBUG_MODE = tmp;
         PANIC_MODE = DEBUG_MODE && Boolean.getBoolean("gt.recipebuilder.panic");
     }
 

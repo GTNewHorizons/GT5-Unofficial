@@ -56,15 +56,11 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                     // Compressor recipes
                     {
                         GT_Values.RA.stdBuilder()
-                            .itemInputs(
-                                GT_Utility.copyAmount(9L, aStack)
-                            )
-                            .itemOutputs(
-                                GT_OreDictUnificator.get(OrePrefixes.block, aMaterial, 1L)
-                            )
+                            .itemInputs(GT_Utility.copyAmount(9L, aStack))
+                            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.block, aMaterial, 1L))
                             .noFluidInputs()
                             .noFluidOutputs()
-                            .duration(15*SECONDS)
+                            .duration(15 * SECONDS)
                             .eut(2)
                             .addTo(sCompressorRecipes);
                     }
@@ -223,15 +219,12 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                     // Electrolyzer recipe
                     {
                         GT_Values.RA.stdBuilder()
-                            .itemInputs(
-                                aStack
-                            )
+                            .itemInputs(aStack)
                             .itemOutputs(
-                                GT_ModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 1)
-                            )
+                                GT_ModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 1))
                             .noFluidInputs()
                             .noFluidOutputs()
-                            .duration(100*SECONDS)
+                            .duration(100 * SECONDS)
                             .eut(TierEU.RECIPE_LV)
                             .addTo(sElectrolyzerRecipes);
                     }

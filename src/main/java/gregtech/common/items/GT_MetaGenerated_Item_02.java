@@ -44,6 +44,8 @@ import gregtech.common.covers.redstone.GT_Cover_WirelessFluidDetector;
 import gregtech.common.covers.redstone.GT_Cover_WirelessItemDetector;
 import gregtech.common.covers.redstone.GT_Cover_WirelessMaintenanceDetector;
 import gregtech.common.items.behaviors.Behaviour_Arrow;
+import ic2.api.crops.CropCard;
+import ic2.api.crops.Crops;
 
 public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
 
@@ -2630,12 +2632,8 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
         // Compression recipes
         {
             GT_Values.RA.stdBuilder()
-                .itemInputs(
-                    ItemList.Crop_Drop_Coppon.get(4L)
-                )
-                .itemOutputs(
-                    new ItemStack(Blocks.wool, 1, 1)
-                )
+                .itemInputs(ItemList.Crop_Drop_Coppon.get(4L))
+                .itemOutputs(new ItemStack(Blocks.wool, 1, 1))
                 .noFluidInputs()
                 .noFluidOutputs()
                 .duration(15 * SECONDS)
@@ -2643,12 +2641,8 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 .addTo(sCompressorRecipes);
 
             GT_Values.RA.stdBuilder()
-                .itemInputs(
-                    ItemList.Crop_Drop_Plumbilia.get(4L)
-                )
-                .itemOutputs(
-                    ItemList.IC2_PlantballCompressed.get(1L)
-                )
+                .itemInputs(ItemList.Crop_Drop_Plumbilia.get(4L))
+                .itemOutputs(ItemList.IC2_PlantballCompressed.get(1L))
                 .noFluidInputs()
                 .noFluidOutputs()
                 .duration(15 * SECONDS)
@@ -2656,12 +2650,8 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 .addTo(sCompressorRecipes);
 
             GT_Values.RA.stdBuilder()
-                .itemInputs(
-                    ItemList.Crop_Drop_Argentia.get(4L)
-                )
-                .itemOutputs(
-                    ItemList.IC2_PlantballCompressed.get(1L)
-                )
+                .itemInputs(ItemList.Crop_Drop_Argentia.get(4L))
+                .itemOutputs(ItemList.IC2_PlantballCompressed.get(1L))
                 .noFluidInputs()
                 .noFluidOutputs()
                 .duration(15 * SECONDS)
@@ -2669,12 +2659,8 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 .addTo(sCompressorRecipes);
 
             GT_Values.RA.stdBuilder()
-                .itemInputs(
-                    ItemList.Crop_Drop_Indigo.get(4L)
-                )
-                .itemOutputs(
-                    ItemList.IC2_PlantballCompressed.get(1L)
-                )
+                .itemInputs(ItemList.Crop_Drop_Indigo.get(4L))
+                .itemOutputs(ItemList.IC2_PlantballCompressed.get(1L))
                 .noFluidInputs()
                 .noFluidOutputs()
                 .duration(15 * SECONDS)
@@ -2682,12 +2668,8 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 .addTo(sCompressorRecipes);
 
             GT_Values.RA.stdBuilder()
-                .itemInputs(
-                    ItemList.Crop_Drop_Ferru.get(4L)
-                )
-                .itemOutputs(
-                    ItemList.IC2_PlantballCompressed.get(1L)
-                )
+                .itemInputs(ItemList.Crop_Drop_Ferru.get(4L))
+                .itemOutputs(ItemList.IC2_PlantballCompressed.get(1L))
                 .noFluidInputs()
                 .noFluidOutputs()
                 .duration(15 * SECONDS)
@@ -2695,12 +2677,8 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 .addTo(sCompressorRecipes);
 
             GT_Values.RA.stdBuilder()
-                .itemInputs(
-                    ItemList.Crop_Drop_Aurelia.get(4L)
-                )
-                .itemOutputs(
-                    ItemList.IC2_PlantballCompressed.get(1L)
-                )
+                .itemInputs(ItemList.Crop_Drop_Aurelia.get(4L))
+                .itemOutputs(ItemList.IC2_PlantballCompressed.get(1L))
                 .noFluidInputs()
                 .noFluidOutputs()
                 .duration(15 * SECONDS)
@@ -2708,12 +2686,8 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 .addTo(sCompressorRecipes);
 
             GT_Values.RA.stdBuilder()
-                .itemInputs(
-                    ItemList.Crop_Drop_OilBerry.get(4L)
-                )
-                .itemOutputs(
-                    ItemList.IC2_PlantballCompressed.get(1L)
-                )
+                .itemInputs(ItemList.Crop_Drop_OilBerry.get(4L))
+                .itemOutputs(ItemList.IC2_PlantballCompressed.get(1L))
                 .noFluidInputs()
                 .noFluidOutputs()
                 .duration(15 * SECONDS)
@@ -2721,12 +2695,8 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 .addTo(sCompressorRecipes);
 
             GT_Values.RA.stdBuilder()
-                .itemInputs(
-                    ItemList.Crop_Drop_BobsYerUncleRanks.get(4L)
-                )
-                .itemOutputs(
-                    ItemList.IC2_PlantballCompressed.get(1L)
-                )
+                .itemInputs(ItemList.Crop_Drop_BobsYerUncleRanks.get(4L))
+                .itemOutputs(ItemList.IC2_PlantballCompressed.get(1L))
                 .noFluidInputs()
                 .noFluidOutputs()
                 .duration(15 * SECONDS)
@@ -2734,12 +2704,8 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 .addTo(sCompressorRecipes);
 
             GT_Values.RA.stdBuilder()
-                .itemInputs(
-                    ItemList.Crop_Drop_Tine.get(4L)
-                )
-                .itemOutputs(
-                    ItemList.IC2_PlantballCompressed.get(1L)
-                )
+                .itemInputs(ItemList.Crop_Drop_Tine.get(4L))
+                .itemOutputs(ItemList.IC2_PlantballCompressed.get(1L))
                 .noFluidInputs()
                 .noFluidOutputs()
                 .duration(15 * SECONDS)
@@ -2747,12 +2713,8 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 .addTo(sCompressorRecipes);
 
             GT_Values.RA.stdBuilder()
-                .itemInputs(
-                    ItemList.Crop_Drop_Rape.get(4L)
-                )
-                .itemOutputs(
-                    ItemList.IC2_PlantballCompressed.get(1L)
-                )
+                .itemInputs(ItemList.Crop_Drop_Rape.get(4L))
+                .itemOutputs(ItemList.IC2_PlantballCompressed.get(1L))
                 .noFluidInputs()
                 .noFluidOutputs()
                 .duration(15 * SECONDS)
@@ -2760,12 +2722,8 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 .addTo(sCompressorRecipes);
 
             GT_Values.RA.stdBuilder()
-                .itemInputs(
-                    new ItemStack(Blocks.red_flower, 8, 32767)
-                )
-                .itemOutputs(
-                    ItemList.IC2_PlantballCompressed.get(1L)
-                )
+                .itemInputs(new ItemStack(Blocks.red_flower, 8, 32767))
+                .itemOutputs(ItemList.IC2_PlantballCompressed.get(1L))
                 .noFluidInputs()
                 .noFluidOutputs()
                 .duration(15 * SECONDS)
@@ -2773,12 +2731,8 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
                 .addTo(sCompressorRecipes);
 
             GT_Values.RA.stdBuilder()
-                .itemInputs(
-                    new ItemStack(Blocks.yellow_flower, 8, 32767)
-                )
-                .itemOutputs(
-                    ItemList.IC2_PlantballCompressed.get(1L)
-                )
+                .itemInputs(new ItemStack(Blocks.yellow_flower, 8, 32767))
+                .itemOutputs(ItemList.IC2_PlantballCompressed.get(1L))
                 .noFluidInputs()
                 .noFluidOutputs()
                 .duration(15 * SECONDS)
@@ -2844,10 +2798,10 @@ public class GT_MetaGenerated_Item_02 extends GT_MetaGenerated_Item_X32 {
             32_000_000,
             100);
         try {
-            ic2.api.crops.CropCard tCrop;
-            GT_Utility.getField(tCrop = ic2.api.crops.Crops.instance.getCropList()[13], "mDrop")
+            CropCard tCrop;
+            GT_Utility.getField(tCrop = Crops.instance.getCropList()[13], "mDrop")
                 .set(tCrop, ItemList.Crop_Drop_Ferru.get(1L));
-            GT_Utility.getField(tCrop = ic2.api.crops.Crops.instance.getCropList()[14], "mDrop")
+            GT_Utility.getField(tCrop = Crops.instance.getCropList()[14], "mDrop")
                 .set(tCrop, ItemList.Crop_Drop_Aurelia.get(1L));
         } catch (Throwable e) {
             if (GT_Values.D1) {

@@ -21,7 +21,6 @@ import gregtech.common.GT_Proxy;
 public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
     private final Materials[] dielectrics = { Materials.PolyvinylChloride, Materials.Polydimethylsiloxane };
-    private final Materials[] rubbers = { Materials.Rubber, Materials.StyreneButadieneRubber, Materials.Silicone };
     private final Materials[] syntheticRubbers = { Materials.StyreneButadieneRubber, Materials.Silicone };
 
     private static Object tt;

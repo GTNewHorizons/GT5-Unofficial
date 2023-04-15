@@ -21,6 +21,14 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 
+import appeng.api.storage.IMEMonitor;
+import appeng.api.storage.IMEMonitorHandlerReceiver;
+import appeng.api.storage.StorageChannel;
+import appeng.api.storage.data.IAEItemStack;
+import appeng.api.storage.data.IItemList;
+import appeng.util.item.AEItemStack;
+import appeng.util.item.ItemList;
+
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
@@ -41,11 +49,11 @@ import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Utility;
 
 public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEntity_TieredMachineBlock
-    implements appeng.api.storage.IMEMonitor<appeng.api.storage.data.IAEItemStack>, IAddUIWidgets {
+    implements IMEMonitor<IAEItemStack>, IAddUIWidgets {
 
     protected boolean mVoidOverflow = false;
     protected boolean mDisableFilter;
-    private Map<appeng.api.storage.IMEMonitorHandlerReceiver<appeng.api.storage.data.IAEItemStack>, Object> listeners = null;
+    private Map<IMEMonitorHandlerReceiver<IAEItemStack>, Object> listeners = null;
 
     public GT_MetaTileEntity_DigitalChestBase(int aID, String aName, String aNameRegional, int aTier) {
         super(
@@ -116,16 +124,13 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
     }
 
     @Override
-    public void addListener(
-        appeng.api.storage.IMEMonitorHandlerReceiver<appeng.api.storage.data.IAEItemStack> imeMonitorHandlerReceiver,
-        Object o) {
+    public void addListener(IMEMonitorHandlerReceiver<IAEItemStack> imeMonitorHandlerReceiver, Object o) {
         if (listeners == null) listeners = new HashMap<>();
         listeners.put(imeMonitorHandlerReceiver, o);
     }
 
     @Override
-    public void removeListener(
-        appeng.api.storage.IMEMonitorHandlerReceiver<appeng.api.storage.data.IAEItemStack> imeMonitorHandlerReceiver) {
+    public void removeListener(IMEMonitorHandlerReceiver<IAEItemStack> imeMonitorHandlerReceiver) {
         if (listeners == null) listeners = new HashMap<>();
         listeners.remove(imeMonitorHandlerReceiver);
     }
@@ -136,14 +141,14 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
     }
 
     @Override
-    public boolean isPrioritized(appeng.api.storage.data.IAEItemStack iaeItemStack) {
+    public boolean isPrioritized(IAEItemStack iaeItemStack) {
         ItemStack s = getItemStack();
         if (s == null || iaeItemStack == null) return false;
         return iaeItemStack.isSameType(s);
     }
 
     @Override
-    public boolean canAccept(appeng.api.storage.data.IAEItemStack iaeItemStack) {
+    public boolean canAccept(IAEItemStack iaeItemStack) {
         ItemStack s = getItemStack();
         if (s == null || iaeItemStack == null) return true;
         return iaeItemStack.isSameType(s);
@@ -168,12 +173,12 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
 
     protected abstract void setItemStack(ItemStack s);
 
+    @SuppressWarnings("unchecked")
     @Override
-    public appeng.api.storage.data.IItemList<appeng.api.storage.data.IAEItemStack> getAvailableItems(
-        final appeng.api.storage.data.IItemList out) {
+    public IItemList<IAEItemStack> getAvailableItems(@SuppressWarnings("rawtypes") final IItemList out) {
         ItemStack storedStack = getItemStack();
         if (storedStack != null) {
-            appeng.util.item.AEItemStack s = appeng.util.item.AEItemStack.create(storedStack);
+            AEItemStack s = AEItemStack.create(storedStack);
             s.setStackSize(getItemCount());
             out.add(s);
         }
@@ -181,11 +186,11 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
     }
 
     @Override
-    public appeng.api.storage.data.IItemList<appeng.api.storage.data.IAEItemStack> getStorageList() {
-        appeng.api.storage.data.IItemList<appeng.api.storage.data.IAEItemStack> res = new appeng.util.item.ItemList();
+    public IItemList<IAEItemStack> getStorageList() {
+        IItemList<IAEItemStack> res = new ItemList();
         ItemStack storedStack = getItemStack();
         if (storedStack != null) {
-            appeng.util.item.AEItemStack s = appeng.util.item.AEItemStack.create(storedStack);
+            AEItemStack s = AEItemStack.create(storedStack);
             s.setStackSize(getItemCount());
             res.add(s);
         }
@@ -208,8 +213,8 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
     }
 
     @Override
-    public appeng.api.storage.data.IAEItemStack injectItems(final appeng.api.storage.data.IAEItemStack input,
-        final appeng.api.config.Actionable mode, final appeng.api.networking.security.BaseActionSource src) {
+    public IAEItemStack injectItems(final IAEItemStack input, final appeng.api.config.Actionable mode,
+        final appeng.api.networking.security.BaseActionSource src) {
         final ItemStack inputStack = input.getItemStack();
         if (inputStack == null) return null;
         if (getBaseMetaTileEntity() == null) return input;
@@ -236,21 +241,21 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
         return null;
     }
 
-    private appeng.api.storage.data.IAEItemStack createOverflowStack(long size, appeng.api.config.Actionable mode) {
-        final appeng.api.storage.data.IAEItemStack overflow = appeng.util.item.AEItemStack.create(getItemStack());
+    private IAEItemStack createOverflowStack(long size, appeng.api.config.Actionable mode) {
+        final IAEItemStack overflow = AEItemStack.create(getItemStack());
         overflow.setStackSize(size - getMaxItemCount());
         if (mode != appeng.api.config.Actionable.SIMULATE) setItemCount(getMaxItemCount());
         return overflow;
     }
 
     @Override
-    public appeng.api.storage.data.IAEItemStack extractItems(final appeng.api.storage.data.IAEItemStack request,
-        final appeng.api.config.Actionable mode, final appeng.api.networking.security.BaseActionSource src) {
+    public IAEItemStack extractItems(final IAEItemStack request, final appeng.api.config.Actionable mode,
+        final appeng.api.networking.security.BaseActionSource src) {
         if (request.isSameType(getItemStack())) {
             if (getBaseMetaTileEntity() == null) return null;
             if (mode != appeng.api.config.Actionable.SIMULATE) getBaseMetaTileEntity().markDirty();
             if (request.getStackSize() >= getItemCount()) {
-                appeng.util.item.AEItemStack result = appeng.util.item.AEItemStack.create(getItemStack());
+                AEItemStack result = AEItemStack.create(getItemStack());
                 result.setStackSize(getItemCount());
                 if (mode != appeng.api.config.Actionable.SIMULATE) setItemCount(0);
                 return result;
@@ -264,8 +269,8 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
     }
 
     @Override
-    public appeng.api.storage.StorageChannel getChannel() {
-        return appeng.api.storage.StorageChannel.ITEMS;
+    public StorageChannel getChannel() {
+        return StorageChannel.ITEMS;
     }
 
     @Override
@@ -421,8 +426,8 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
             return;
         }
         if (count == 0 || stack == null) return;
-        appeng.util.item.ItemList change = new appeng.util.item.ItemList();
-        appeng.util.item.AEItemStack s = appeng.util.item.AEItemStack.create(stack);
+        ItemList change = new ItemList();
+        AEItemStack s = AEItemStack.create(stack);
         s.setStackSize(count);
         change.add(s);
         listeners.forEach((l, o) -> {
@@ -433,8 +438,7 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
 
     private boolean hasActiveMEConnection() {
         if (listeners == null || listeners.isEmpty()) return false;
-        for (Map.Entry<appeng.api.storage.IMEMonitorHandlerReceiver<appeng.api.storage.data.IAEItemStack>, Object> e : listeners
-            .entrySet()) {
+        for (Map.Entry<IMEMonitorHandlerReceiver<IAEItemStack>, Object> e : listeners.entrySet()) {
             if ((e.getKey() instanceof appeng.api.parts.IPart)) {
                 appeng.api.networking.IGridNode n = ((appeng.api.parts.IPart) e.getKey()).getGridNode();
                 if (n != null && n.isActive()) return true;
