@@ -430,7 +430,7 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
 
     @Override
     public boolean isItemValidForSlot(int aSlot, ItemStack aStack) {
-        return false;
+        return true;
     }
 
     @Override
