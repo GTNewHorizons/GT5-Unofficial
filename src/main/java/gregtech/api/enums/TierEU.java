@@ -4,8 +4,6 @@ import static gregtech.api.enums.GT_Values.V;
 
 public class TierEU {
 
-    private static final double RECIPE_DISCOUNT = 0.95;
-
     // Do NOT use these for crafting recipes as they are exactly 1A! Use RECIPE_ULV etc.
     public static final long ULV = V[0];
     public static final long LV = V[1];
