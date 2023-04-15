@@ -1909,7 +1909,7 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
     }
 
     protected Widget getFluidInventoryInputGUI() {
-        final IFluidTank[] tanks = inputTanks;
+        final IFluidTank[] tanks = getTanksForInput();
         final Scrollable scrollable = new Scrollable().setVerticalScroll();
         for (int rows = 0; rows * 4 < tanks.length; rows++) {
             final int columnsToMake = Math.min(tanks.length - rows * 4, 4);
