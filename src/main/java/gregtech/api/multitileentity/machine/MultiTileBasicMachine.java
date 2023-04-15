@@ -630,13 +630,17 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
     }
 
     protected void outputItems(ItemStack... itemsToOutput) {
-        if (itemsToOutput == null) {
+        outputItems(outputInventory, itemsToOutput);
+    }
+
+    protected void outputItems(IItemHandlerModifiable inventory, ItemStack... itemsToOutput) {
+        if (itemsToOutput == null || inventory == null) {
             return;
         }
         for (ItemStack item : itemsToOutput) {
             int index = 0;
-            while (item != null && item.stackSize > 0 && index < outputInventory.getSlots()) {
-                item = outputInventory.insertItem(index++, item.copy(), false);
+            while (item != null && item.stackSize > 0 && index < inventory.getSlots()) {
+                item = inventory.insertItem(index++, item.copy(), false);
             }
         }
     }

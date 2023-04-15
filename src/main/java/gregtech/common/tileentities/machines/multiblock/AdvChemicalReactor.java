@@ -5,7 +5,9 @@ import static gregtech.api.enums.Mods.*;
 import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -15,9 +17,12 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidTank;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
+import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
@@ -35,6 +40,7 @@ import gregtech.api.multitileentity.multiblock.base.ComplexController;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_StructureUtility;
+import gregtech.common.tileentities.casings.upgrade.Inventory;
 
 public class AdvChemicalReactor extends ComplexController<AdvChemicalReactor> {
 
@@ -48,14 +54,14 @@ public class AdvChemicalReactor extends ComplexController<AdvChemicalReactor> {
     protected int numberOfProcessors = MAX_PROCESSES; // TODO: Set this value depending on structure
     protected HeatingCoilLevel coilTier;
     protected final List<ItemStack[]> processItemWhiteLists = new ArrayList<>();
-    protected final List<ItemStackHandler> processInventoryHandlers = new ArrayList<>();
+    protected final List<IItemHandlerModifiable> processWhitelistInventoryHandlers = new ArrayList<>();
     protected final List<List<IFluidTank>> processFluidWhiteLists = new ArrayList<>();
 
     public AdvChemicalReactor() {
         super();
         for (int i = 0; i < MAX_PROCESSES; i++) {
             processItemWhiteLists.add(new ItemStack[ITEM_WHITELIST_SLOTS]);
-            processInventoryHandlers.add(new ItemStackHandler(processItemWhiteLists.get(i)));
+            processWhitelistInventoryHandlers.add(new ItemStackHandler(processItemWhiteLists.get(i)));
             List<IFluidTank> processFluidTanks = new ArrayList<>();
             for (int j = 0; j < FLUID_WHITELIST_SLOTS; j++) {
                 processFluidTanks.add(new FluidTankGT());
@@ -71,8 +77,9 @@ public class AdvChemicalReactor extends ComplexController<AdvChemicalReactor> {
     public void readMultiTileNBT(NBTTagCompound nbt) {
         super.readMultiTileNBT(nbt);
         final NBTTagCompound processWhiteLists = nbt.getCompoundTag("whiteLists");
-        if (processWhiteLists != null) {
-            for (int i = 0; i < MAX_PROCESSES; i++) {
+        for (int i = 0; i < MAX_PROCESSES; i++) {
+            registerInventory("processInventory" + i, "processInventory" + i, 8, Inventory.INPUT);
+            if (processWhiteLists != null) {
                 final NBTTagList itemList = processWhiteLists.getTagList("items" + i, Constants.NBT.TAG_COMPOUND);
                 if (itemList != null) {
                     for (int j = 0; j < itemList.tagCount(); j++) {
@@ -213,6 +220,54 @@ public class AdvChemicalReactor extends ComplexController<AdvChemicalReactor> {
     }
 
     @Override
+    protected FluidStack[] getInputFluids(int index) {
+        return super.getInputFluids(index);
+    }
+
+    @Override
+    protected ItemStack[] getInputItems(int index) {
+        if (index < 0 || index >= MAX_PROCESSES) {
+            return null;
+        }
+        if (separateInputs) {
+            return ArrayUtils.addAll(
+                getItemInputsForInventory("processInventory" + index),
+                inputInventory.getStacks()
+                    .toArray(new ItemStack[0]));
+        } else {
+            return super.getInputItems(index);
+        }
+    }
+
+    @Override
+    protected void outputItems(int index) {
+        // TODO: Optimize
+        ComplexParallelProcessingLogic processingLogic = getComplexProcessingLogic();
+        if (processingLogic != null && index >= 0 && index < maxComplexParallels) {
+            for (int i = 0; i < MAX_PROCESSES; i++) {
+                int outputIndex = i;
+                outputItems(
+                    multiBlockInputInventory.get("processInventory" + i),
+                    Arrays.stream(processingLogic.getOutputItems(index))
+                        .filter(itemStack -> {
+                            for (ItemStack item : processItemWhiteLists.get(outputIndex)) {
+                                if (item != null && item.getItem() == itemStack.getItem()
+                                    && item.getItemDamage() == itemStack.getItemDamage()) {
+                                    return true;
+                                }
+                            }
+                            return false;
+                        })
+                        .collect(Collectors.toList())
+                        .toArray(new ItemStack[0]));
+            }
+            if (processingLogic.getOutputItems(index) != null && processingLogic.getOutputItems(index).length > 0) {
+                outputItems(processingLogic.getOutputItems(index));
+            }
+        }
+    }
+
+    @Override
     protected MultiChildWidget createMainPage() {
         MultiChildWidget child = super.createMainPage();
         for (int i = 0; i < MAX_PROCESSES; i++) {
@@ -246,7 +301,7 @@ public class AdvChemicalReactor extends ComplexController<AdvChemicalReactor> {
         ModularWindow.Builder builder = ModularWindow.builder(86, 90);
         builder.setBackground(GT_UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
         builder.widget(
-            SlotGroup.ofItemHandler(processInventoryHandlers.get(processIndex), 4)
+            SlotGroup.ofItemHandler(processWhitelistInventoryHandlers.get(processIndex), 4)
                 .startFromSlot(0)
                 .endAtSlot(ITEM_WHITELIST_SLOTS - 1)
                 .phantom(true)

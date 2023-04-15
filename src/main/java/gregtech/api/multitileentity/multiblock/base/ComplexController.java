@@ -13,6 +13,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.logic.ComplexParallelProcessingLogic;
@@ -113,8 +114,8 @@ public abstract class ComplexController<T extends ComplexController<T>> extends 
             return false;
         }
         processingLogic.clear(index);
-        boolean result = processingLogic.setInputItems(index, getInputItems())
-            .setInputFluids(index, getInputFluids())
+        boolean result = processingLogic.setInputItems(index, getInputItems(index))
+            .setInputFluids(index, getInputFluids(index))
             .setTileEntity(this)
             .setVoidProtection(index, isVoidProtectionEnabled(index))
             .setEut(index, getEutForComplexParallel(index))
@@ -164,6 +165,14 @@ public abstract class ComplexController<T extends ComplexController<T>> extends 
         if (index >= 0 && index < maxComplexParallels) {
             maxProgressTimes[index] = duration;
         }
+    }
+
+    protected ItemStack[] getInputItems(int index) {
+        return getAllItemInputs();
+    }
+
+    protected FluidStack[] getInputFluids(int index) {
+        return getInputFluids();
     }
 
     protected boolean isVoidProtectionEnabled(int index) {

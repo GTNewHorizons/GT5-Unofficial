@@ -1332,6 +1332,15 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
             .collect(Collectors.toList());
     }
 
+    protected ItemStack[] getItemInputsForInventory(String id) {
+        IItemHandlerModifiable inventory = multiBlockInputInventory.get(id);
+        if (inventory != null) {
+            return inventory.getStacks()
+                .toArray(new ItemStack[0]);
+        }
+        return null;
+    }
+
     protected void setItemOutputs(String inventory, ItemStack... itemOutputs) {
         itemsToOutput = itemOutputs;
         inventoryName = inventory;
