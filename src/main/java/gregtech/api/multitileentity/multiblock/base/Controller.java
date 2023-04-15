@@ -311,8 +311,7 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
             int invSize = nbtInv.getInteger(NBT.UPGRADE_INVENTORY_SIZE);
             IItemHandlerModifiable inv = new ItemStackHandler(invSize);
             loadInventory(nbtInv, inv, NBT.INV_INPUT_LIST);
-            multiBlockInputInventory.put(invUUID, inv);
-            multiBlockInputInventoryNames.put(invUUID, invName);
+            registerInventory(invName, invUUID, invSize, Inventory.INPUT);
         }
 
         final NBTTagList listOutputInventories = nbt
@@ -324,8 +323,7 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
             int invSize = nbtInv.getInteger(NBT.UPGRADE_INVENTORY_SIZE);
             IItemHandlerModifiable inv = new ItemStackHandler(invSize);
             loadInventory(nbtInv, inv, NBT.INV_OUTPUT_LIST);
-            multiBlockOutputInventory.put(invUUID, inv);
-            multiBlockOutputInventoryNames.put(invUUID, invName);
+            registerInventory(invName, invUUID, invSize, Inventory.OUTPUT);
         }
     }
 
@@ -343,8 +341,7 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
                 tanks[j] = new FluidTankGT(capacity).setCapacityMultiplier(capacityMultiplier)
                     .readFromNBT(nbtTank, NBT.UPGRADE_TANKS_PREFIX + j);
             }
-            multiBlockInputTank.put(tankUUID, tanks);
-            multiBlockInputTankNames.put(tankUUID, tankName);
+            registerFluidInventory(tankName, tankUUID, count, capacity, capacityMultiplier, Inventory.INPUT);
         }
 
         final NBTTagList listOutputTanks = nbt.getTagList(NBT.UPGRADE_TANKS_INPUT, Constants.NBT.TAG_COMPOUND);
@@ -360,8 +357,7 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
                 tanks[j] = new FluidTankGT(capacity).setCapacityMultiplier(capacityMultiplier)
                     .readFromNBT(nbtTank, NBT.UPGRADE_TANKS_PREFIX + j);
             }
-            multiBlockOutputTank.put(tankUUID, tanks);
-            multiBlockOutputTankNames.put(tankUUID, tankName);
+            registerFluidInventory(tankName, tankUUID, count, capacity, capacityMultiplier, Inventory.OUTPUT);
         }
     }
 
@@ -980,6 +976,14 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
      */
     public void registerFluidInventory(String name, String id, int numberOfSlots, long capacity,
         long capacityMultiplier, int type) {
+        if (name == null || name.equals("")
+            || id == null
+            || id.equals("")
+            || numberOfSlots < 0
+            || capacity < 0
+            || capacityMultiplier < 0) {
+            return;
+        }
         if (type == Inventory.INPUT || type == Inventory.BOTH) {
             if (multiBlockInputTank.containsKey(id)) return;
             FluidTankGT[] tanks = new FluidTankGT[numberOfSlots];
@@ -1133,6 +1137,9 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
      */
     @Override
     public void registerInventory(String aName, String aID, int aInventorySize, int aType) {
+        if (aName == null || aName.equals("") || aID == null || aID.equals("") || aInventorySize < 0) {
+            return;
+        }
         if (aType == Inventory.INPUT || aType == Inventory.BOTH) {
             if (multiBlockInputInventory.containsKey(aID)) return;
             multiBlockInputInventory.put(aID, new ItemStackHandler(aInventorySize));
