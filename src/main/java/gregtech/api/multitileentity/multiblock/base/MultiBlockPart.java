@@ -100,8 +100,8 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
                 }
             }
         } else {
-            if (!getNameOfTankInventoryFromIndex(controller, mLockedInventoryIndex).equals(mLockedInventory)) {
-                mLockedInventory = getNameOfTankInventoryFromIndex(controller, mLockedInventoryIndex);
+            if (!getNameOfTankArrayFromIndex(controller, mLockedInventoryIndex).equals(mLockedInventory)) {
+                mLockedInventory = getNameOfTankArrayFromIndex(controller, mLockedInventoryIndex);
                 if (mLockedInventory.equals("all")) {
                     mLockedInventory = "";
                 }
@@ -710,8 +710,8 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
         return invNames.get(index);
     }
 
-    protected String getNameOfTankInventoryFromIndex(final IMultiBlockController controller, int index) {
-        final List<String> tankNames = controller.getTankInventoryIDs(this);
+    protected String getNameOfTankArrayFromIndex(final IMultiBlockController controller, int index) {
+        final List<String> tankNames = controller.getTankArrayIDs(this);
         if (index > tankNames.size()) {
             return tankNames.get(0);
         }
@@ -742,13 +742,13 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
                 .setPos(52, 18));
         DropDownWidget dropDown = new DropDownWidget();
         dropDown.addDropDownItemsSimple(
-            controller.getTankInventoryNames(this),
+            controller.getTankArrayNames(this),
             (buttonWidget, index, label, setSelected) -> buttonWidget.setOnClick((clickData, widget) -> {
-                if (getNameOfTankInventoryFromIndex(controller, index).equals("all")) {
+                if (getNameOfTankArrayFromIndex(controller, index).equals("all")) {
                     mLockedInventory = GT_Values.E;
                     mLockedInventoryIndex = 0;
                 } else {
-                    mLockedInventory = getNameOfTankInventoryFromIndex(controller, index);
+                    mLockedInventory = getNameOfTankArrayFromIndex(controller, index);
                     mLockedInventoryIndex = index;
                 }
                 setSelected.run();

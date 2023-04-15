@@ -26,7 +26,7 @@ public interface IMultiBlockFluidHandler {
 
     IFluidTank[] getFluidTanksForGUI(MultiBlockPart aPart);
 
-    List<String> getTankInventoryNames(MultiBlockPart aPart);
+    List<String> getTankArrayNames(MultiBlockPart aPart);
 
-    List<String> getTankInventoryIDs(MultiBlockPart aPart);
+    List<String> getTankArrayIDs(MultiBlockPart aPart);
 }

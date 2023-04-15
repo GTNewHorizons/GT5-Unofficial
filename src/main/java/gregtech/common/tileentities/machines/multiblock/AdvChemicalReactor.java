@@ -223,7 +223,7 @@ public class AdvChemicalReactor extends ComplexController<AdvChemicalReactor> {
         }
         if (separateInputs) {
             return ArrayUtils.addAll(
-                getFluidInputsForTankInventory("processInventory" + index),
+                getFluidInputsForTankArray("processInventory" + index),
                 FluidTankGT.getFluidsFromTanks(inputTanks));
         } else {
             return super.getInputFluids(index);
