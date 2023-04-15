@@ -500,7 +500,7 @@ public class GTMTE_LapotronicSuperCapacitor
                         "Center 3x(1-47)x3 above base (9-423 blocks)")
                 .addStructureInfo(
                         "You can also use the Empty Capacitor to save materials if you use it for less than half the blocks")
-                .addOtherStructurePart("Borosilicate Glass (any)", "41-265x, Encase capacitor pillar")
+                .addOtherStructurePart("Borosilicate Glass (any)", "41-777x, Encase capacitor pillar")
                 .addEnergyHatch("Any casing").addDynamoHatch("Any casing")
                 .addOtherStructurePart(
                         "Laser Target/Source Hatches",
