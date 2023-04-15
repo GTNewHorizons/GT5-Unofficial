@@ -22,7 +22,6 @@ import org.apache.commons.lang3.ArrayUtils;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
-import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
@@ -53,15 +52,13 @@ public class AdvChemicalReactor extends ComplexController<AdvChemicalReactor> {
     protected static final int MAX_PROCESSES = 4;
     protected int numberOfProcessors = MAX_PROCESSES; // TODO: Set this value depending on structure
     protected HeatingCoilLevel coilTier;
-    protected final List<ItemStack[]> processItemWhiteLists = new ArrayList<>();
-    protected final List<IItemHandlerModifiable> processWhitelistInventoryHandlers = new ArrayList<>();
+    protected final List<ItemStackHandler> processWhitelistInventoryHandlers = new ArrayList<>();
     protected final List<List<IFluidTank>> processFluidWhiteLists = new ArrayList<>();
 
     public AdvChemicalReactor() {
         super();
         for (int i = 0; i < MAX_PROCESSES; i++) {
-            processItemWhiteLists.add(new ItemStack[ITEM_WHITELIST_SLOTS]);
-            processWhitelistInventoryHandlers.add(new ItemStackHandler(processItemWhiteLists.get(i)));
+            processWhitelistInventoryHandlers.add(new ItemStackHandler(ITEM_WHITELIST_SLOTS));
             List<IFluidTank> processFluidTanks = new ArrayList<>();
             for (int j = 0; j < FLUID_WHITELIST_SLOTS; j++) {
                 processFluidTanks.add(new FluidTankGT());
@@ -80,18 +77,10 @@ public class AdvChemicalReactor extends ComplexController<AdvChemicalReactor> {
         for (int i = 0; i < MAX_PROCESSES; i++) {
             registerInventory("processInventory" + i, "processInventory" + i, 8, Inventory.INPUT);
             if (processWhiteLists != null) {
-                final NBTTagList itemList = processWhiteLists.getTagList("items" + i, Constants.NBT.TAG_COMPOUND);
+                final NBTTagCompound itemList = processWhiteLists.getCompoundTag("items" + i);
                 if (itemList != null) {
-                    for (int j = 0; j < itemList.tagCount(); j++) {
-                        final NBTTagCompound item = itemList.getCompoundTagAt(j);
-                        if (item != null) {
-                            short index = item.getShort("s");
-                            ItemStack itemStack = ItemStack.loadItemStackFromNBT(item);
-                            if (itemStack != null) {
-                                processItemWhiteLists.get(i)[index] = itemStack;
-                            }
-                        }
-                    }
+                    processWhitelistInventoryHandlers.get(i)
+                        .deserializeNBT(itemList);
                 }
                 final NBTTagList fluidList = processWhiteLists.getTagList("fluids" + i, Constants.NBT.TAG_COMPOUND);
                 if (fluidList != null) {
@@ -117,18 +106,11 @@ public class AdvChemicalReactor extends ComplexController<AdvChemicalReactor> {
         super.writeMultiTileNBT(nbt);
         final NBTTagCompound processWhiteLists = new NBTTagCompound();
         for (int i = 0; i < MAX_PROCESSES; i++) {
-            final NBTTagList itemList = new NBTTagList();
+            processWhiteLists.setTag(
+                "items" + i,
+                processWhitelistInventoryHandlers.get(i)
+                    .serializeNBT());
             final NBTTagList fluidList = new NBTTagList();
-            for (int j = 0; j < ITEM_WHITELIST_SLOTS; j++) {
-                final ItemStack itemStack = processItemWhiteLists.get(i)[j];
-                if (itemStack != null) {
-                    final NBTTagCompound tag = new NBTTagCompound();
-                    tag.setByte("s", (byte) j);
-                    itemStack.writeToNBT(tag);
-                    itemList.appendTag(tag);
-                }
-            }
-            processWhiteLists.setTag("items" + i, itemList);
             for (int j = 0; j < FLUID_WHITELIST_SLOTS; j++) {
                 final FluidStack fluidStack = processFluidWhiteLists.get(i)
                     .get(j)
@@ -250,7 +232,8 @@ public class AdvChemicalReactor extends ComplexController<AdvChemicalReactor> {
                     multiBlockInputInventory.get("processInventory" + i),
                     Arrays.stream(processingLogic.getOutputItems(index))
                         .filter(itemStack -> {
-                            for (ItemStack item : processItemWhiteLists.get(outputIndex)) {
+                            for (ItemStack item : processWhitelistInventoryHandlers.get(outputIndex)
+                                .getStacks()) {
                                 if (item != null && item.getItem() == itemStack.getItem()
                                     && item.getItemDamage() == itemStack.getItemDamage()) {
                                     return true;
