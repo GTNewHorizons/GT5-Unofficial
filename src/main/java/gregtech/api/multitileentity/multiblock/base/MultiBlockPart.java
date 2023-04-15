@@ -506,6 +506,14 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
 
     @Override
     public PowerLogic getPowerLogic(byte side) {
+        if (facing != side) {
+            return null;
+        }
+
+        if (!modeSelected(ENERGY_IN, ENERGY_OUT)) {
+            return null;
+        }
+
         final IMultiBlockController controller = getTarget(true);
         if (controller == null) {
             return null;
