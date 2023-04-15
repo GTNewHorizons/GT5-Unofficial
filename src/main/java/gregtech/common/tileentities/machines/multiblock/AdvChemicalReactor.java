@@ -59,6 +59,7 @@ public class AdvChemicalReactor extends ComplexController<AdvChemicalReactor> {
     public AdvChemicalReactor() {
         super();
         for (int i = 0; i < MAX_PROCESSES; i++) {
+            processWhitelists.add(null);
             processWhitelistInventoryHandlers.add(new ItemStackHandler(ITEM_WHITELIST_SLOTS));
             ArrayList<IFluidTank> processFluidTanks = new ArrayList<>(FLUID_WHITELIST_SLOTS);
             for (int j = 0; j < FLUID_WHITELIST_SLOTS; j++) {
