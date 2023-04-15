@@ -611,12 +611,8 @@ public class GT_MetaTileEntity_PCBFactory extends
                         calc.enablePerfectOC();
                     }
                     calc.calculate();
-                    try {
-                        this.lEUt = calc.getConsumption();
-                        this.mMaxProgresstime = calc.getDuration();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                    this.lEUt = calc.getConsumption();
+                    this.mMaxProgresstime = calc.getDuration();
                 }
 
                 if (this.lEUt == Long.MAX_VALUE - 1 || this.mProgresstime == Integer.MAX_VALUE - 1) return false;
@@ -625,7 +621,6 @@ public class GT_MetaTileEntity_PCBFactory extends
                     this.lEUt *= -1;
                 }
 
-                mOutputItems = new ItemStack[tRecipe.mOutputs.length];
                 ArrayList<ItemStack> tOutputs = new ArrayList<>();
                 int remainingEfficiency = getMaxEfficiency(aStack);
                 for (int j = 0; j < (int) Math.ceil(getMaxEfficiency(aStack) / 10000.0f); j++) {
@@ -637,7 +632,7 @@ public class GT_MetaTileEntity_PCBFactory extends
                         if (tOutput == null) {
                             break;
                         }
-                        tOutputs.add(tOutput);
+                        tOutputs.add(tOutput.copy());
                     }
                     remainingEfficiency -= 10000;
                 }
