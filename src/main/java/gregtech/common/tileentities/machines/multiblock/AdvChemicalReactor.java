@@ -7,7 +7,6 @@ import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 import java.util.stream.Collectors;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -53,15 +52,15 @@ public class AdvChemicalReactor extends ComplexController<AdvChemicalReactor> {
     protected static final int MAX_PROCESSES = 4;
     protected int numberOfProcessors = MAX_PROCESSES; // TODO: Set this value depending on structure
     protected HeatingCoilLevel coilTier;
-    protected final ArrayList<HashSet<String>> processWhitelists = new ArrayList<>();
-    protected final List<ItemStackHandler> processWhitelistInventoryHandlers = new ArrayList<>();
-    protected final List<List<IFluidTank>> processFluidWhiteLists = new ArrayList<>();
+    protected final ArrayList<HashSet<String>> processWhitelists = new ArrayList<>(MAX_PROCESSES);
+    protected final ArrayList<ItemStackHandler> processWhitelistInventoryHandlers = new ArrayList<>(MAX_PROCESSES);
+    protected final ArrayList<ArrayList<IFluidTank>> processFluidWhiteLists = new ArrayList<>(MAX_PROCESSES);
 
     public AdvChemicalReactor() {
         super();
         for (int i = 0; i < MAX_PROCESSES; i++) {
             processWhitelistInventoryHandlers.add(new ItemStackHandler(ITEM_WHITELIST_SLOTS));
-            List<IFluidTank> processFluidTanks = new ArrayList<>();
+            ArrayList<IFluidTank> processFluidTanks = new ArrayList<>(FLUID_WHITELIST_SLOTS);
             for (int j = 0; j < FLUID_WHITELIST_SLOTS; j++) {
                 processFluidTanks.add(new FluidTankGT());
             }
