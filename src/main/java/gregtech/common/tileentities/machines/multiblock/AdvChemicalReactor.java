@@ -6,6 +6,7 @@ import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -52,6 +53,7 @@ public class AdvChemicalReactor extends ComplexController<AdvChemicalReactor> {
     protected static final int MAX_PROCESSES = 4;
     protected int numberOfProcessors = MAX_PROCESSES; // TODO: Set this value depending on structure
     protected HeatingCoilLevel coilTier;
+    protected final ArrayList<HashSet<String>> processWhitelists = new ArrayList<>();
     protected final List<ItemStackHandler> processWhitelistInventoryHandlers = new ArrayList<>();
     protected final List<List<IFluidTank>> processFluidWhiteLists = new ArrayList<>();
 
@@ -223,27 +225,25 @@ public class AdvChemicalReactor extends ComplexController<AdvChemicalReactor> {
 
     @Override
     protected void outputItems(int index) {
-        // TODO: Optimize
         ComplexParallelProcessingLogic processingLogic = getComplexProcessingLogic();
         if (processingLogic != null && index >= 0 && index < maxComplexParallels) {
             for (int i = 0; i < MAX_PROCESSES; i++) {
+                // Regenerate whitelist, if it has been reset
+                if (processWhitelists.get(i) == null) {
+                    generateWhitelist(i);
+                }
                 int outputIndex = i;
+                // Output items that are on the whitelist of this process
                 outputItems(
                     multiBlockInputInventory.get("processInventory" + i),
                     Arrays.stream(processingLogic.getOutputItems(index))
-                        .filter(itemStack -> {
-                            for (ItemStack item : processWhitelistInventoryHandlers.get(outputIndex)
-                                .getStacks()) {
-                                if (item != null && item.getItem() == itemStack.getItem()
-                                    && item.getItemDamage() == itemStack.getItemDamage()) {
-                                    return true;
-                                }
-                            }
-                            return false;
-                        })
+                        .filter(
+                            itemStack -> processWhitelists.get(outputIndex)
+                                .contains(getWhitelistString(itemStack)))
                         .collect(Collectors.toList())
                         .toArray(new ItemStack[0]));
             }
+            // Output remaining items
             if (processingLogic.getOutputItems(index) != null && processingLogic.getOutputItems(index).length > 0) {
                 outputItems(processingLogic.getOutputItems(index));
             }
@@ -281,6 +281,8 @@ public class AdvChemicalReactor extends ComplexController<AdvChemicalReactor> {
     }
 
     protected ModularWindow createProcessConfigWindow(final EntityPlayer player, final int processIndex) {
+        // Reset HashSet, we will let it re-generate on next item output
+        processWhitelists.set(processIndex, null);
         ModularWindow.Builder builder = ModularWindow.builder(86, 90);
         builder.setBackground(GT_UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
         builder.widget(
@@ -322,5 +324,30 @@ public class AdvChemicalReactor extends ComplexController<AdvChemicalReactor> {
     @Override
     protected boolean hasPerfectOverclock() {
         return true;
+    }
+
+    protected void generateWhitelist(int processIndex) {
+        HashSet<String> whitelist = new HashSet<>();
+        for (ItemStack itemStack : processWhitelistInventoryHandlers.get(processIndex)
+            .getStacks()) {
+            if (itemStack != null) {
+                whitelist.add(getWhitelistString(itemStack));
+            }
+        }
+        processWhitelists.set(processIndex, whitelist);
+    }
+
+    protected String getWhitelistString(ItemStack itemStack) {
+        if (itemStack != null) {
+            return itemStack.getUnlocalizedName();
+        }
+        return null;
+    }
+
+    protected String getWhitelistString(FluidStack fluidStack) {
+        if (fluidStack != null) {
+            return fluidStack.getUnlocalizedName();
+        }
+        return null;
     }
 }
