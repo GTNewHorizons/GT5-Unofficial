@@ -1905,8 +1905,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Grade4PurifiedWater.mChemicalFormula = "H\u2082O";
         Grade5PurifiedWater.mChemicalFormula = "H\u2082O";
         Grade6PurifiedWater.mChemicalFormula = "H\u2082O";
-        TengamPurified.mChemicalFormula = "M";
-        TengamAttuned.mChemicalFormula = "M";
+        Grade7PurifiedWater.mChemicalFormula = "H\u2082O";
+        Grade8PurifiedWater.mChemicalFormula = "H\u2082O";
     }
 
     private static void initSubTags() {
