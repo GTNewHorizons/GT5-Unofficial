@@ -267,7 +267,7 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
                 for (int i = 0; i < tanks.length; i++) {
                     tanks[i].writeToNBT(tTag, NBT.UPGRADE_TANKS_PREFIX + i);
                 }
-                inputTankList.appendTag(tTag);
+                outputTankList.appendTag(tTag);
             }
         });
         nbt.setTag(NBT.UPGRADE_TANKS_INPUT, inputTankList);
