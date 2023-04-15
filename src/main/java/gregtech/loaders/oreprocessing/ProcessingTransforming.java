@@ -1,10 +1,13 @@
 package gregtech.loaders.oreprocessing;
 
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
@@ -31,8 +34,8 @@ public class ProcessingTransforming implements IOreRecipeRegistrator {
                     GT_Values.NI,
                     GT_Values.NI,
                     null,
-                    100,
-                    8);
+                    5 * SECONDS,
+                    (int) TierEU.ULV);
                 GT_Values.RA.addChemicalBathRecipe(
                     GT_Utility.copyAmount(1L, aStack),
                     Materials.SeedOilLin
@@ -41,8 +44,8 @@ public class ProcessingTransforming implements IOreRecipeRegistrator {
                     GT_Values.NI,
                     GT_Values.NI,
                     null,
-                    100,
-                    8);
+                    5 * SECONDS,
+                    (int) TierEU.ULV);
                 GT_Values.RA.addChemicalBathRecipe(
                     GT_Utility.copyAmount(1L, aStack),
                     Materials.SeedOilHemp
@@ -51,8 +54,8 @@ public class ProcessingTransforming implements IOreRecipeRegistrator {
                     GT_Values.NI,
                     GT_Values.NI,
                     null,
-                    100,
-                    8);
+                    5 * SECONDS,
+                    (int) TierEU.ULV);
                 break;
             case "Iron":
                 GT_Values.RA.addChemicalBathRecipe(
@@ -63,13 +66,13 @@ public class ProcessingTransforming implements IOreRecipeRegistrator {
                     GT_Values.NI,
                     GT_Values.NI,
                     null,
-                    100,
-                    8);
+                    5 * SECONDS,
+                    (int) TierEU.ULV);
                 GT_Values.RA.addPolarizerRecipe(
                     GT_Utility.copyAmount(1L, aStack),
                     GT_OreDictUnificator.get(aPrefix, Materials.IronMagnetic, 1L),
                     (int) Math.max(16L, aPrefix.mMaterialAmount * 128L / 3628800L),
-                    16);
+                    (int) TierEU.LV / 2);
                 break;
             case "WroughtIron":
                 GT_Values.RA.addChemicalBathRecipe(
@@ -80,13 +83,13 @@ public class ProcessingTransforming implements IOreRecipeRegistrator {
                     GT_Values.NI,
                     GT_Values.NI,
                     null,
-                    100,
-                    8);
+                    5 * SECONDS,
+                    (int) TierEU.ULV);
                 GT_Values.RA.addPolarizerRecipe(
                     GT_Utility.copyAmount(1L, aStack),
                     GT_OreDictUnificator.get(aPrefix, Materials.IronMagnetic, 1L),
                     (int) Math.max(16L, aPrefix.mMaterialAmount * 128L / 3628800L),
-                    16);
+                    (int) TierEU.LV / 2);
                 break;
             case "Steel":
                 GT_Values.RA.addChemicalBathRecipe(
@@ -97,26 +100,26 @@ public class ProcessingTransforming implements IOreRecipeRegistrator {
                     GT_Values.NI,
                     GT_Values.NI,
                     null,
-                    100,
-                    8);
+                    5 * SECONDS,
+                    (int) TierEU.ULV);
                 GT_Values.RA.addPolarizerRecipe(
                     GT_Utility.copyAmount(1L, aStack),
                     GT_OreDictUnificator.get(aPrefix, Materials.SteelMagnetic, 1L),
                     (int) Math.max(16L, aPrefix.mMaterialAmount * 128L / 3628800L),
-                    16);
+                    (int) TierEU.LV / 2);
                 break;
             case "Neodymium":
                 GT_Values.RA.addPolarizerRecipe(
                     GT_Utility.copyAmount(1L, aStack),
                     GT_OreDictUnificator.get(aPrefix, Materials.NeodymiumMagnetic, 1L),
                     (int) Math.max(16L, aPrefix.mMaterialAmount * 128L / 3628800L),
-                    256);
+                    (int) TierEU.HV / 2);
             case "Samarium":
                 GT_Values.RA.addPolarizerRecipe(
                     GT_Utility.copyAmount(1L, aStack),
                     GT_OreDictUnificator.get(aPrefix, Materials.SamariumMagnetic, 1L),
                     (int) Math.max(16L, aPrefix.mMaterialAmount * 128L / 3628800L),
-                    4096);
+                    (int) TierEU.IV / 2);
         }
     }
 }

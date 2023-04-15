@@ -6,6 +6,7 @@ import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsOreAlum;
+import gregtech.api.enums.TierEU;
 
 public class ElectromagneticSeparatorRecipes implements Runnable {
 
@@ -18,7 +19,7 @@ public class ElectromagneticSeparatorRecipes implements Runnable {
             .noFluidInputs()
             .noFluidOutputs()
             .duration(10 * SECONDS)
-            .eut(240)
+            .eut(TierEU.RECIPE_HV / 2)
             .addTo(sElectroMagneticSeparatorRecipes);
 
     }
