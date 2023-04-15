@@ -1392,8 +1392,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Sand.setSmeltingInto(Glass);
         Ice.setSmeltingInto(Water);
         Snow.setSmeltingInto(Water);
-            .setMaceratingInto(TengamPurified)
-            .setArcSmeltingInto(TengamPurified);
     }
 
     private static void setOthers() {
@@ -1821,7 +1819,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Cryolite.addOreByProducts(Aluminiumoxide, Sodium);
         Naquadria.addOreByProduct(Naquadria);
         RoastedNickel.addOreByProduct(Nickel);
-        TengamRaw.addOreByProducts(NeodymiumMagnetic, SamariumMagnetic);
     }
 
     private static void setColors() {
