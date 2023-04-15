@@ -1001,13 +1001,13 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
     }
 
     public void unregisterFluidInventory(String aName, String aID, int aType) {
-        if ((aType == Inventory.INPUT || aType == Inventory.BOTH) && multiBlockInputInventory.containsKey(aID)) {
-            multiBlockInputInventory.remove(aID, multiBlockInputInventory.get(aID));
-            multiBlockInputInventoryNames.remove(aID, aName);
+        if ((aType == Inventory.INPUT || aType == Inventory.BOTH) && multiBlockInputTank.containsKey(aID)) {
+            multiBlockInputTank.remove(aID, multiBlockInputTank.get(aID));
+            multiBlockInputTankNames.remove(aID, aName);
         }
-        if ((aType == Inventory.OUTPUT || aType == Inventory.BOTH) && multiBlockOutputInventory.containsKey(aID)) {
-            multiBlockOutputInventory.remove(aID, multiBlockOutputInventory.get(aID));
-            multiBlockOutputInventoryNames.remove(aID, aName);
+        if ((aType == Inventory.OUTPUT || aType == Inventory.BOTH) && multiBlockOutputTank.containsKey(aID)) {
+            multiBlockOutputTank.remove(aID, multiBlockOutputTank.get(aID));
+            multiBlockOutputTankNames.remove(aID, aName);
         }
     }
 
