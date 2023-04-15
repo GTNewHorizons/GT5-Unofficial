@@ -52,9 +52,7 @@ public class GTNHBlocks {
         }
         if (Botania.isModLoaded()) {
             BioVatLogicAdder.BioVatGlass.addCustomGlass(Botania.ID, "manaGlass", 0, 4);
-            BioVatLogicAdder.BioVatGlass.addCustomGlass(Botania.ID, "manaGlassPane", 0, 4);
             BioVatLogicAdder.BioVatGlass.addCustomGlass(Botania.ID, "elfGlass", 0, 5);
-            BioVatLogicAdder.BioVatGlass.addCustomGlass(Botania.ID, "elfGlassPane", 0, 5);
         }
         if (Botany.isModLoaded()) {
             BioVatLogicAdder.BioVatGlass.addCustomGlass(Botany.ID, "stained", 0, 3);
