@@ -170,7 +170,7 @@ public abstract class ComplexController<T extends ComplexController<T>> extends 
     }
 
     protected ItemStack[] getInputItems(int index) {
-        return getAllItemInputs();
+        return getInputItems();
     }
 
     protected FluidStack[] getInputFluids(int index) {

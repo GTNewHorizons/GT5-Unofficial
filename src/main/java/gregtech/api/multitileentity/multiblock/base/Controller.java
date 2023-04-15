@@ -3,7 +3,6 @@ package gregtech.api.multitileentity.multiblock.base;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static gregtech.GT_Mod.GT_FML_LOGGER;
 import static gregtech.api.enums.GT_Values.ALL_VALID_SIDES;
-import static gregtech.api.enums.GT_Values.NBT;
 import static gregtech.api.multitileentity.enums.GT_MultiTileComplexCasing.*;
 import static mcp.mobius.waila.api.SpecialChars.*;
 
@@ -1310,12 +1309,13 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
      * Helper Methods For Recipe checking
      */
 
-    protected ItemStack[] getAllItemInputs() {
+    @Override
+    protected ItemStack[] getInputItems() {
         return getInventoriesForInput().getStacks()
             .toArray(new ItemStack[0]);
     }
 
-    protected ItemStack[] getAllOutputItems() {
+    protected ItemStack[] getOutputItems() {
         return getInventoriesForOutput().getStacks()
             .toArray(new ItemStack[0]);
     }
@@ -1454,8 +1454,8 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
                 logic.clear();
             }
         } else {
-            result = logic.setInputItems(getAllItemInputs())
-                .setCurrentOutputItems(getAllOutputItems())
+            result = logic.setInputItems(getInputItems())
+                .setCurrentOutputItems(getOutputItems())
                 .process();
         }
         setDuration(logic.getDuration());
