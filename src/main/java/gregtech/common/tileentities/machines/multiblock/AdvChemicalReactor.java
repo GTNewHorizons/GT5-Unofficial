@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.multiblock;
 
+import static com.google.common.primitives.Ints.saturatedCast;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.api.enums.Mods.*;
 import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.*;
@@ -30,6 +31,7 @@ import com.gtnewhorizons.modularui.common.widget.MultiChildWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotGroup;
 
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.fluid.FluidTankGT;
 import gregtech.api.gui.modularui.GT_UITextures;
@@ -76,8 +78,19 @@ public class AdvChemicalReactor extends ComplexController<AdvChemicalReactor> {
     public void readMultiTileNBT(NBTTagCompound nbt) {
         super.readMultiTileNBT(nbt);
         final NBTTagCompound processWhiteLists = nbt.getCompoundTag("whiteLists");
+        long capacity = 1000;
+        if (nbt.hasKey(GT_Values.NBT.TANK_CAPACITY)) {
+            capacity = saturatedCast(nbt.getLong(GT_Values.NBT.TANK_CAPACITY));
+        }
         for (int i = 0; i < MAX_PROCESSES; i++) {
             registerInventory("processInventory" + i, "processInventory" + i, 8, Inventory.INPUT);
+            registerFluidInventory(
+                "processInventory" + i,
+                "processInventory" + i,
+                8,
+                capacity,
+                maxParallel * 2L,
+                Inventory.INPUT);
             if (processWhiteLists != null) {
                 final NBTTagCompound itemList = processWhiteLists.getCompoundTag("items" + i);
                 if (itemList != null) {
@@ -205,7 +218,16 @@ public class AdvChemicalReactor extends ComplexController<AdvChemicalReactor> {
 
     @Override
     protected FluidStack[] getInputFluids(int index) {
-        return super.getInputFluids(index);
+        if (index < 0 || index >= MAX_PROCESSES) {
+            return null;
+        }
+        if (separateInputs) {
+            return ArrayUtils.addAll(
+                getFluidInputsForTankInventory("processInventory" + index),
+                FluidTankGT.getFluidsFromTanks(inputTanks));
+        } else {
+            return super.getInputFluids(index);
+        }
     }
 
     @Override
