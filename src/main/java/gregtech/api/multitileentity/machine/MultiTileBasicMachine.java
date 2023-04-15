@@ -651,11 +651,15 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
     }
 
     protected void outputFluids(FluidStack... fluidsToOutput) {
+        outputFluids(outputTanks, fluidsToOutput);
+    }
+
+    protected void outputFluids(FluidTankGT[] tankArray, FluidStack... fluidsToOutput) {
         if (fluidsToOutput == null) {
             return;
         }
         for (FluidStack fluid : fluidsToOutput) {
-            tryToFillTanks(fluid, outputTanks);
+            tryToFillTanks(fluid, tankArray);
         }
     }
 

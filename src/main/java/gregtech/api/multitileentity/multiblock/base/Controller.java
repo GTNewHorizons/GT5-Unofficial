@@ -1615,7 +1615,7 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
             }
         }
 
-        for (FluidTankGT inputTank : inputTanks) {
+        for (FluidTankGT inputTank : getTanksForInput()) {
             if (inputTank == null) {
                 continue;
             }

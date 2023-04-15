@@ -273,6 +273,33 @@ public class AdvChemicalReactor extends ComplexController<AdvChemicalReactor> {
     }
 
     @Override
+    protected void outputFluids(int index) {
+        ComplexParallelProcessingLogic processingLogic = getComplexProcessingLogic();
+        if (processingLogic != null && index >= 0 && index < maxComplexParallels) {
+            for (int i = 0; i < MAX_PROCESSES; i++) {
+                // Regenerate whitelist, if it has been reset
+                if (processWhitelists.get(i) == null) {
+                    generateWhitelist(i);
+                }
+                int outputIndex = i;
+                // Output fluids that are on the whitelist of this process
+                outputFluids(
+                    multiBlockInputTank.get("processInventory" + i),
+                    Arrays.stream(processingLogic.getOutputFluids(index))
+                        .filter(
+                            fluidStack -> processWhitelists.get(outputIndex)
+                                .contains(getWhitelistString(fluidStack)))
+                        .collect(Collectors.toList())
+                        .toArray(new FluidStack[0]));
+            }
+            // Output remaining fluids
+            if (processingLogic.getOutputFluids(index) != null && processingLogic.getOutputFluids(index).length > 0) {
+                outputFluids(processingLogic.getOutputFluids(index));
+            }
+        }
+    }
+
+    @Override
     protected MultiChildWidget createMainPage() {
         MultiChildWidget child = super.createMainPage();
         for (int i = 0; i < MAX_PROCESSES; i++) {
@@ -354,6 +381,11 @@ public class AdvChemicalReactor extends ComplexController<AdvChemicalReactor> {
             .getStacks()) {
             if (itemStack != null) {
                 whitelist.add(getWhitelistString(itemStack));
+            }
+        }
+        for (IFluidTank tank : processFluidWhiteLists.get(processIndex)) {
+            if (tank.getFluid() != null) {
+                whitelist.add(getWhitelistString(tank.getFluid()));
             }
         }
         processWhitelists.set(processIndex, whitelist);

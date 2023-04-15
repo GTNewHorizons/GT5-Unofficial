@@ -97,9 +97,12 @@ public class ComplexParallelProcessingLogic {
 
     public ComplexParallelProcessingLogic clear(int index) {
         if (index >= 0 && index < maxComplexParallels) {
+            inputItems[index] = null;
+            inputFluids[index] = null;
             outputItems[index] = null;
             outputFluids[index] = null;
             durations[index] = 0;
+            availableEut[index] = 0;
             eut[index] = 0;
         }
         return this;
