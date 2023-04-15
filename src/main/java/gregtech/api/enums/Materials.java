@@ -1891,19 +1891,19 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Universium.mChemicalFormula = "A tear into the space beyond space";
         Longasssuperconductornameforuvwire.mChemicalFormula = "Nq*\u2084(Ir\u2083Os)\u2083EuSm";
         Longasssuperconductornameforuhvwire.mChemicalFormula = "D\u2086(SpNt)\u2087Tn\u2085Am\u2086";
-        SuperconductorUEVBase.mChemicalFormula = "D*\u2085If*\u2085(✦◆✦)(⚷⚙⚷ Ni4Ti6)";
-        SuperconductorUIVBase.mChemicalFormula = "(C\u2081\u2084Os\u2081\u2081O\u2087Ag\u2083SpH\u2082O)\u2084?\u2081\u2080(Fs⚶)\u2086(⌘☯☯⌘)\u2085";
-        SuperconductorUMVBase.mChemicalFormula = "?\u2086Or\u2083(Hy⚶)\u2081\u2081(((CW)\u2087Ti\u2083)\u2083???)\u2085۞\u2082";
+        SuperconductorUEVBase.mChemicalFormula = "D*\u2085If*\u2085(\u2726\u25C6\u2726)(\u26B7\u2699\u26B7 Ni4Ti6)";
+        SuperconductorUIVBase.mChemicalFormula = "(C\u2081\u2084Os\u2081\u2081O\u2087Ag\u2083SpH\u2082O)\u2084?\u2081\u2080(Fs\u26B6)\u2086(\u2318\u262F\u262F\u2318)\u2085";
+        SuperconductorUMVBase.mChemicalFormula = "?\u2086Or\u2083(Hy\u26B6)\u2081\u2081(((CW)\u2087Ti\u2083)\u2083???)\u2085\u06DE\u2082";
         Diatomite.mChemicalFormula = "(SiO\u2082)\u2088Fe\u2082O\u2083(Al\u2082O\u2083)";
         EnrichedHolmium.mChemicalFormula = "Nq+\u2088Ho\u2082";
-        Grade1PurifiedWater.mChemicalFormula = "H₂O";
-        Grade2PurifiedWater.mChemicalFormula = "H₂O";
-        Grade3PurifiedWater.mChemicalFormula = "H₂O";
-        Grade4PurifiedWater.mChemicalFormula = "H₂O";
-        Grade5PurifiedWater.mChemicalFormula = "H₂O";
-        Grade6PurifiedWater.mChemicalFormula = "H₂O";
-        Grade7PurifiedWater.mChemicalFormula = "H₂O";
-        Grade8PurifiedWater.mChemicalFormula = "H₂O";
+        Grade1PurifiedWater.mChemicalFormula = "H\u2082O";
+        Grade2PurifiedWater.mChemicalFormula = "H\u2082O";
+        Grade3PurifiedWater.mChemicalFormula = "H\u2082O";
+        Grade4PurifiedWater.mChemicalFormula = "H\u2082O";
+        Grade5PurifiedWater.mChemicalFormula = "H\u2082O";
+        Grade6PurifiedWater.mChemicalFormula = "H\u2082O";
+        Grade7PurifiedWater.mChemicalFormula = "H\u2082O";
+        Grade8PurifiedWater.mChemicalFormula = "H\u2082O";
     }
 
     private static void initSubTags() {
