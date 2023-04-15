@@ -507,6 +507,9 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
     @Override
     public PowerLogic getPowerLogic(byte side) {
         final IMultiBlockController controller = getTarget(true);
+        if (controller == null) {
+            return null;
+        }
         return controller.getPowerLogic(this, side);
     }
 
