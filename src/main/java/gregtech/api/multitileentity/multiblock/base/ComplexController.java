@@ -33,12 +33,14 @@ public abstract class ComplexController<T extends ComplexController<T>> extends 
     }
 
     protected void setMaxComplexParallels(int parallel) {
-        if (parallel != maxComplexParallels && maxComplexParallels != 0) {
-            stopMachine(false);
+        if (parallel != maxComplexParallels) {
+            if (maxComplexParallels != 0) {
+                stopMachine(false);
+            }
+            maxProgressTimes = new long[parallel];
+            progressTimes = new long[parallel];
         }
         maxComplexParallels = parallel;
-        maxProgressTimes = new long[parallel];
-        progressTimes = new long[parallel];
     }
 
     @Override
