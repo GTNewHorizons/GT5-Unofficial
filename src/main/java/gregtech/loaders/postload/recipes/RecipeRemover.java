@@ -42,34 +42,34 @@ public class RecipeRemover implements Runnable {
         try {
             GT_Utility.removeSimpleIC2MachineRecipe(
                 GT_Values.NI,
-                ic2.api.recipe.Recipes.metalformerExtruding.getRecipes(),
+                Recipes.metalformerExtruding.getRecipes(),
                 ItemList.Cell_Empty.get(3L));
             GT_Utility.removeSimpleIC2MachineRecipe(
                 ItemList.IC2_Energium_Dust.get(1L),
-                ic2.api.recipe.Recipes.compressor.getRecipes(),
+                Recipes.compressor.getRecipes(),
                 GT_Values.NI);
             GT_Utility.removeSimpleIC2MachineRecipe(
                 new ItemStack(Items.gunpowder),
-                ic2.api.recipe.Recipes.extractor.getRecipes(),
+                Recipes.extractor.getRecipes(),
                 GT_Values.NI);
             GT_Utility.removeSimpleIC2MachineRecipe(
                 new ItemStack(Blocks.wool, 1, 32767),
-                ic2.api.recipe.Recipes.extractor.getRecipes(),
+                Recipes.extractor.getRecipes(),
                 GT_Values.NI);
             GT_Utility.removeSimpleIC2MachineRecipe(
                 new ItemStack(Blocks.gravel),
-                ic2.api.recipe.Recipes.oreWashing.getRecipes(),
+                Recipes.oreWashing.getRecipes(),
                 GT_Values.NI);
         } catch (Throwable ignored) {}
         GT_Utility.removeIC2BottleRecipe(
             GT_ModHandler.getIC2Item("fuelRod", 1),
             GT_ModHandler.getIC2Item("UranFuel", 1),
-            ic2.api.recipe.Recipes.cannerBottle.getRecipes(),
+            Recipes.cannerBottle.getRecipes(),
             GT_ModHandler.getIC2Item("reactorUraniumSimple", 1, 1));
         GT_Utility.removeIC2BottleRecipe(
             GT_ModHandler.getIC2Item("fuelRod", 1),
             GT_ModHandler.getIC2Item("MOXFuel", 1),
-            ic2.api.recipe.Recipes.cannerBottle.getRecipes(),
+            Recipes.cannerBottle.getRecipes(),
             GT_ModHandler.getIC2Item("reactorMOXSimple", 1, 1));
 
         GT_Utility.removeSimpleIC2MachineRecipe(
@@ -117,7 +117,7 @@ public class RecipeRemover implements Runnable {
 
         if (!GregTech_API.mIC2Classic) {
             try {
-                Map<String, ILiquidHeatExchangerManager.HeatExchangeProperty> tLiqExchange = ic2.api.recipe.Recipes.liquidCooldownManager
+                Map<String, ILiquidHeatExchangerManager.HeatExchangeProperty> tLiqExchange = Recipes.liquidCooldownManager
                     .getHeatExchangeProperties();
                 Iterator<Map.Entry<String, ILiquidHeatExchangerManager.HeatExchangeProperty>> tIterator = tLiqExchange
                     .entrySet()
@@ -135,7 +135,7 @@ public class RecipeRemover implements Runnable {
             }
 
             try {
-                Map<String, ILiquidHeatExchangerManager.HeatExchangeProperty> tLiqExchange = ic2.api.recipe.Recipes.liquidHeatupManager
+                Map<String, ILiquidHeatExchangerManager.HeatExchangeProperty> tLiqExchange = Recipes.liquidHeatupManager
                     .getHeatExchangeProperties();
                 Iterator<Map.Entry<String, ILiquidHeatExchangerManager.HeatExchangeProperty>> tIterator = tLiqExchange
                     .entrySet()

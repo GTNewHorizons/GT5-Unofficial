@@ -10,7 +10,6 @@ import com.gtnewhorizons.modularui.api.math.MathExpression;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.BaseTextFieldWidget;
-import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
 
 import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
 import gregtech.api.gui.modularui.GT_UITextures;
@@ -86,25 +85,23 @@ public class GT_Cover_Arm extends GT_CoverBehavior {
             toSlot = aCoverVariable & SLOT_ID_MASK;
         }
 
-        byte movedItems = 0;
         if (fromSlot > 0 && toSlot > 0) {
-            if (fromTile instanceof IInventory && toTile instanceof IInventory)
-                movedItems = GT_Utility.moveFromSlotToSlot(
-                    (IInventory) fromTile,
-                    (IInventory) toTile,
-                    fromSlot - 1,
-                    toSlot - 1,
-                    null,
-                    false,
-                    (byte) 64,
-                    (byte) 1,
-                    (byte) 64,
-                    (byte) 1);
+            if (fromTile instanceof IInventory && toTile instanceof IInventory) GT_Utility.moveFromSlotToSlot(
+                (IInventory) fromTile,
+                (IInventory) toTile,
+                fromSlot - 1,
+                toSlot - 1,
+                null,
+                false,
+                (byte) 64,
+                (byte) 1,
+                (byte) 64,
+                (byte) 1);
         } else if (toSlot > 0) {
             byte side;
             if ((aCoverVariable & EXPORT_MASK) > 0) side = aSide;
             else side = GT_Utility.getOppositeSide(aSide);
-            movedItems = GT_Utility.moveOneItemStackIntoSlot(
+            GT_Utility.moveOneItemStackIntoSlot(
                 fromTile,
                 toTile,
                 side,
@@ -119,7 +116,7 @@ public class GT_Cover_Arm extends GT_CoverBehavior {
             byte toSide;
             if ((aCoverVariable & EXPORT_MASK) > 0) toSide = aSide;
             else toSide = GT_Utility.getOppositeSide(aSide);
-            if (fromTile instanceof IInventory) movedItems = GT_Utility.moveFromSlotToSide(
+            if (fromTile instanceof IInventory) GT_Utility.moveFromSlotToSide(
                 (IInventory) fromTile,
                 toTile,
                 fromSlot - 1,
@@ -139,7 +136,7 @@ public class GT_Cover_Arm extends GT_CoverBehavior {
                 fromSide = GT_Utility.getOppositeSide(aSide);
                 toSide = aSide;
             }
-            movedItems = GT_Utility.moveOneItemStack(
+            GT_Utility.moveOneItemStack(
                 fromTile,
                 toTile,
                 fromSide,
@@ -348,7 +345,8 @@ public class GT_Cover_Arm extends GT_CoverBehavior {
                             .setValidator(val -> {
                                 final int valSlot = getIntFromText(val);
                                 if (valSlot > -1) {
-                                    return TextFieldWidget.format.format(Math.min(valSlot, maxSlot));
+                                    return widget.getDecimalFormatter()
+                                        .format(Math.min(valSlot, maxSlot));
                                 } else {
                                     return ANY_TEXT;
                                 }
@@ -380,7 +378,8 @@ public class GT_Cover_Arm extends GT_CoverBehavior {
                                 adjacentMaxSlot = -1;
                             }
                             if (valSlot > -1) {
-                                return TextFieldWidget.format.format(Math.min(valSlot, adjacentMaxSlot));
+                                return widget.getDecimalFormatter()
+                                    .format(Math.min(valSlot, adjacentMaxSlot));
                             } else {
                                 return ANY_TEXT;
                             }
@@ -389,7 +388,8 @@ public class GT_Cover_Arm extends GT_CoverBehavior {
                                 final int val = getIntFromText(text);
                                 int step = (GuiScreen.isShiftKeyDown() ? 50 : GuiScreen.isCtrlKeyDown() ? 5 : 1)
                                     * direction;
-                                return TextFieldWidget.format.format(val + step);
+                                return widget.getDecimalFormatter()
+                                    .format(val + step);
                             })
                             .setPattern(BaseTextFieldWidget.NATURAL_NUMS)
                             .setPos(spaceX * 0, spaceY * 2 + 2)

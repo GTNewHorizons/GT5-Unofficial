@@ -99,15 +99,11 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
         if (!OrePrefixes.block.isIgnored(aMaterial)) {
             // 9 ingots -> 1 block
             GT_Values.RA.stdBuilder()
-                .itemInputs(
-                    GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 9L)
-                )
-                .itemOutputs(
-                    GT_OreDictUnificator.get(OrePrefixes.block, aMaterial, 1L)
-                )
+                .itemInputs(GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 9L))
+                .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.block, aMaterial, 1L))
                 .noFluidInputs()
                 .noFluidOutputs()
-                .duration(15*SECONDS)
+                .duration(15 * SECONDS)
                 .eut(calculateRecipeEU(aMaterial, 2))
                 .addTo(sCompressorRecipes);
         }

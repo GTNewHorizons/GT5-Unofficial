@@ -23,7 +23,7 @@ public class GT_MetaTileEntity_SuperTank extends GT_MetaTileEntity_DigitalTankBa
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_SuperTank(mName, mTier, mDescription, mTextures);
+        return new GT_MetaTileEntity_SuperTank(mName, mTier, mDescriptionArray, mTextures);
     }
 
     @Override

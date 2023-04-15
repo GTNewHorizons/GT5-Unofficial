@@ -28,7 +28,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.items.GT_Generic_Item;
 import gregtech.api.util.GT_Utility;
 
-@SuppressWarnings({ "rawtypes", "unchecked" })
 public class GT_FluidDisplayItem extends GT_Generic_Item {
 
     private static final Map<Fluid, String> sFluidTooltips = new HashMap<>();
@@ -132,11 +131,10 @@ public class GT_FluidDisplayItem extends GT_Generic_Item {
                         // For GT++ Fluid Display
                         // GT++ didn't register a Material in GT, so I have too find the Chemical Formula in its cell's
                         // tooltip
-                        List tTooltip = tContainer.getTooltip(null, true);
-                        for (Object tInfo : tTooltip) {
-                            if (!((String) tInfo).contains(" ") && !((String) tInfo).contains(":")
-                                && tTooltip.indexOf(tInfo) != 0) {
-                                return (String) tInfo;
+                        List<String> tTooltip = tContainer.getTooltip(null, true);
+                        for (String tInfo : tTooltip) {
+                            if (!tInfo.contains(" ") && !tInfo.contains(":") && tTooltip.indexOf(tInfo) != 0) {
+                                return tInfo;
                             }
                         }
                     }

@@ -17,7 +17,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 
@@ -1254,7 +1253,6 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
         Dyes.dyeBlue.addFluidDye(GT_FluidFactory.of("indigo", "Indigo Dye", LIQUID, 295));
         for (byte i = 0; i < Dyes.VALUES.length; i = (byte) (i + 1)) {
             Dyes tDye = Dyes.VALUES[i];
-            Fluid tFluid;
             tDye.addFluidDye(
                 GT_FluidFactory.builder(
                     "dye.watermixed." + tDye.name()

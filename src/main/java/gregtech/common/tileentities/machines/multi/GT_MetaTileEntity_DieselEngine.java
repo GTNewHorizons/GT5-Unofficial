@@ -283,13 +283,6 @@ public class GT_MetaTileEntity_DieselEngine
         return 50;
     }
 
-    private boolean addToMachineList(IGregTechTileEntity tTileEntity) {
-        return ((addMaintenanceToMachineList(tTileEntity, getCasingTextureIndex()))
-            || (addInputToMachineList(tTileEntity, getCasingTextureIndex()))
-            || (addOutputToMachineList(tTileEntity, getCasingTextureIndex()))
-            || (addMufflerToMachineList(tTileEntity, getCasingTextureIndex())));
-    }
-
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_DieselEngine(this.mName);

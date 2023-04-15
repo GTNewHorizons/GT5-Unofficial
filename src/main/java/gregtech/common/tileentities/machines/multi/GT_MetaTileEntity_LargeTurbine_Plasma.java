@@ -215,13 +215,13 @@ public class GT_MetaTileEntity_LargeTurbine_Plasma extends GT_MetaTileEntity_Lar
                 counter = 0;
                 baseEff = GT_Utility.safeInt(
                     (long) ((5F + ((GT_MetaGenerated_Tool) aStack.getItem()).getToolCombatDamage(aStack)) * 1000F));
-                optFlow = GT_Utility.safeInt(
-                    (long) Math.max(
-                        Float.MIN_NORMAL,
-                        ((GT_MetaGenerated_Tool) aStack.getItem()).getToolStats(aStack)
-                            .getSpeedMultiplier()
-                            * ((GT_MetaGenerated_Tool) aStack.getItem()).getPrimaryMaterial(aStack).mToolSpeed
-                            * 50));
+                optFlow = GT_Utility
+                    .safeInt(
+                        (long) Math.max(
+                            Float.MIN_NORMAL,
+                            ((GT_MetaGenerated_Tool) aStack.getItem()).getToolStats(aStack)
+                                .getSpeedMultiplier() * GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mToolSpeed
+                                * 50));
                 overflowMultiplier = getOverflowMultiplier(aStack);
 
                 flowMultipliers[0] = GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mSteamMultiplier;

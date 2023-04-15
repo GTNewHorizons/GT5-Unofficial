@@ -1,5 +1,7 @@
 package gregtech.loaders.oreprocessing;
 
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sElectrolyzerRecipes;
+
 import java.util.ArrayList;
 
 import net.minecraft.item.ItemStack;
@@ -13,8 +15,6 @@ import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
-
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sElectrolyzerRecipes;
 
 public class ProcessingCell implements IOreRecipeRegistrator {
 
@@ -100,13 +100,11 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                                 {
                                     if (GT_Utility.getFluidForFilledItem(aStack, true) == null) {
                                         int capsuleCount = tCapsuleCount <= 0L ? 0 : (int) tCapsuleCount;
-                                        ItemStack cells = capsuleCount <= 0 ? null : ItemList.Cell_Empty.get(capsuleCount);
+                                        ItemStack cells = capsuleCount <= 0 ? null
+                                            : ItemList.Cell_Empty.get(capsuleCount);
                                         // dust stuffed cell e.g. Phosphate, Phosphorous Pentoxide
                                         GT_Values.RA.stdBuilder()
-                                            .itemInputs(
-                                                GT_Utility.copyAmount(tItemAmount, aStack),
-                                                cells
-                                            )
+                                            .itemInputs(GT_Utility.copyAmount(tItemAmount, aStack), cells)
                                             .itemOutputs(
                                                 tList.get(0),
                                                 tList.size() >= 2 ? tList.get(1) : null,
@@ -114,24 +112,20 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                                                 tList.size() >= 4 ? tList.get(3) : null,
                                                 tList.size() >= 5 ? tList.get(4) : null,
                                                 tCapsuleCount >= 0L ? tList.size() >= 6 ? tList.get(5) : null
-                                                    : ItemList.Cell_Empty.get(-tCapsuleCount)
-                                            )
+                                                    : ItemList.Cell_Empty.get(-tCapsuleCount))
                                             .noFluidInputs()
                                             .noFluidOutputs()
                                             .duration(Math.max(1L, Math.abs(aMaterial.getProtons() * 2L * tItemAmount)))
                                             .eut(Math.min(4, tList.size()) * 30)
                                             .addTo(sElectrolyzerRecipes);
-                                    }
-                                    else {
+                                    } else {
                                         long tCellBalance = tCapsuleCount + tItemAmount - 1;
                                         int capsuleCount = tCellBalance <= 0L ? 0 : (int) tCellBalance;
-                                        ItemStack cells = capsuleCount <= 0 ? null : ItemList.Cell_Empty.get(capsuleCount);
+                                        ItemStack cells = capsuleCount <= 0 ? null
+                                            : ItemList.Cell_Empty.get(capsuleCount);
 
                                         GT_Values.RA.stdBuilder()
-                                            .itemInputs(
-                                                aStack,
-                                                cells
-                                            )
+                                            .itemInputs(aStack, cells)
                                             .itemOutputs(
                                                 tList.get(0),
                                                 tList.size() >= 2 ? tList.get(1) : null,
@@ -139,8 +133,7 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                                                 tList.size() >= 4 ? tList.get(3) : null,
                                                 tList.size() >= 5 ? tList.get(4) : null,
                                                 tCapsuleCount >= 0L ? tList.size() >= 6 ? tList.get(5) : null
-                                                    : tCellBalance < 0 ? ItemList.Cell_Empty.get(-tCellBalance) : null
-                                            )
+                                                    : tCellBalance < 0 ? ItemList.Cell_Empty.get(-tCellBalance) : null)
                                             .noFluidInputs()
                                             .noFluidOutputs()
                                             .duration(Math.max(1L, Math.abs(aMaterial.getProtons() * 8L * tItemAmount)))

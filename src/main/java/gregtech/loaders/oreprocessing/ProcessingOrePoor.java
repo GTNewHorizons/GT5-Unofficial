@@ -5,6 +5,7 @@ import net.minecraft.item.ItemStack;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.SubTag;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
@@ -52,7 +53,7 @@ public class ProcessingOrePoor implements gregtech.api.interfaces.IOreRecipeRegi
                 GT_OreDictUnificator.getDust(aPrefix.mSecondaryMaterial),
                 100,
                 true);
-            if (aMaterial.contains(gregtech.api.enums.SubTag.NO_SMELTING)) GT_ModHandler.addSmeltingRecipe(
+            if (aMaterial.contains(SubTag.NO_SMELTING)) GT_ModHandler.addSmeltingRecipe(
                 GT_Utility.copyAmount(1L, aStack),
                 GT_OreDictUnificator.get(OrePrefixes.nugget, aMaterial.mDirectSmelting, aMultiplier));
         }

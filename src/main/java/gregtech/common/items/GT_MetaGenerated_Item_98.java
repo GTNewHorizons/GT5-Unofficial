@@ -176,12 +176,10 @@ public class GT_MetaGenerated_Item_98 extends GT_MetaGenerated_Item {
     /** Struct class holding data that we need to properly handle a registered fluid cell item. */
     private static class RegisteredFluidData {
 
-        private final Fluid fluid;
         private final short[] rgba;
         private final IIconContainer iconContainer;
 
-        private RegisteredFluidData(Fluid fluid, short[] rgba, IIconContainer iconContainer) {
-            this.fluid = fluid;
+        private RegisteredFluidData(short[] rgba, IIconContainer iconContainer) {
             this.rgba = rgba;
             this.iconContainer = iconContainer;
         }
@@ -279,7 +277,7 @@ public class GT_MetaGenerated_Item_98 extends GT_MetaGenerated_Item {
         int color = fluid.getColor();
         short[] rgba = GT_Util.getRGBaArray(color);
 
-        registeredFluidDataMap.put(id, new RegisteredFluidData(fluid, rgba, iconContainerMap.get(cellType)));
+        registeredFluidDataMap.put(id, new RegisteredFluidData(rgba, iconContainerMap.get(cellType)));
     }
 
     private void registerOreDict() {
@@ -309,7 +307,6 @@ public class GT_MetaGenerated_Item_98 extends GT_MetaGenerated_Item {
         return ItemList.Cell_Empty.get(1L);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubItems(Item aItem, CreativeTabs aCreativeTab, List<ItemStack> aList) {

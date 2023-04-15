@@ -351,7 +351,7 @@ public class GT_MetaTileEntity_IntegratedOreFactory extends
         this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
         this.mEfficiencyIncrease = 10000;
         this.mOutputItems = sMidProduct;
-        calculateOverclockedNessMulti(30 * tRealUsed, getTime(sMode), 1, getMaxInputVoltage());
+        calculateOverclockedNessMultiInternal(30 * tRealUsed, getTime(sMode), 1, getMaxInputVoltage(), false);
         if (this.mEUt > 0) {
             this.mEUt = -this.mEUt;
         }
