@@ -1,7 +1,23 @@
 package common.tileentities;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
-import static common.itemBlocks.IB_LapotronicEnergyUnit.*;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.onlyIf;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.withChannel;
+import static common.itemBlocks.IB_LapotronicEnergyUnit.EV_cap_storage;
+import static common.itemBlocks.IB_LapotronicEnergyUnit.IV_cap_storage;
+import static common.itemBlocks.IB_LapotronicEnergyUnit.LSC_time_between_wireless_rebalance_in_ticks;
+import static common.itemBlocks.IB_LapotronicEnergyUnit.LSC_wireless_eu_cap;
+import static common.itemBlocks.IB_LapotronicEnergyUnit.LuV_cap_storage;
+import static common.itemBlocks.IB_LapotronicEnergyUnit.UEV_wireless_eu_cap;
+import static common.itemBlocks.IB_LapotronicEnergyUnit.UIV_cap_storage;
+import static common.itemBlocks.IB_LapotronicEnergyUnit.UIV_wireless_eu_cap;
+import static common.itemBlocks.IB_LapotronicEnergyUnit.UMV_cap_storage;
+import static common.itemBlocks.IB_LapotronicEnergyUnit.UMV_wireless_eu_cap;
+import static common.itemBlocks.IB_LapotronicEnergyUnit.UV_cap_storage;
+import static common.itemBlocks.IB_LapotronicEnergyUnit.ZPM_cap_storage;
 import static gregtech.api.enums.GT_HatchElement.Maintenance;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GT_StructureUtility.buildHatchAdder;
@@ -10,7 +26,14 @@ import static java.lang.Math.min;
 
 import java.math.BigInteger;
 import java.text.NumberFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
+import java.util.Set;
 import java.util.function.Consumer;
 
 import net.minecraft.block.Block;
@@ -40,7 +63,6 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
-import com.gtnewhorizon.structurelib.structure.IStructureElement.PlaceResult;
 import com.gtnewhorizon.structurelib.structure.StructureUtility;
 import com.gtnewhorizon.structurelib.util.ItemStackPredicate.NBTMode;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
@@ -60,7 +82,11 @@ import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.*;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_EnhancedMultiBlockBase;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynamo;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Maintenance;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Utility;
@@ -84,10 +110,10 @@ public class GTMTE_LapotronicSuperCapacitor
     private final Queue<Long> energyInputValues = new LinkedList<>();
     private final Queue<Long> energyOutputValues = new LinkedList<>();
 
-    private long max_passive_drain_eu_per_tick_per_uhv_cap = 1_000_000;
-    private long max_passive_drain_eu_per_tick_per_uev_cap = 100_000_000;
-    private long max_passive_drain_eu_per_tick_per_uiv_cap = (long) Math.pow(10, 10);
-    private long max_passive_drain_eu_per_tick_per_umv_cap = (long) Math.pow(10, 12);
+    private final long max_passive_drain_eu_per_tick_per_uhv_cap = 1_000_000;
+    private final long max_passive_drain_eu_per_tick_per_uev_cap = 100_000_000;
+    private final long max_passive_drain_eu_per_tick_per_uiv_cap = (long) Math.pow(10, 10);
+    private final long max_passive_drain_eu_per_tick_per_umv_cap = (long) Math.pow(10, 12);
 
     private enum Capacitor {
 

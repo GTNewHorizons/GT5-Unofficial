@@ -43,28 +43,28 @@ public class IB_LapotronicEnergyUnit extends ItemBlock {
     public static BigInteger LSC_wireless_eu_cap = BigInteger.valueOf(60 * pow(10, 12));
 
     // 10 Billion EU/t
-    private static BigInteger UHV_cap_eu_per_tick = LSC_wireless_eu_cap
+    private static final BigInteger UHV_cap_eu_per_tick = LSC_wireless_eu_cap
             .divide(BigInteger.valueOf(LSC_time_between_wireless_rebalance_in_ticks));
 
     // 6 Quadrillion EU.
     public static BigInteger UEV_wireless_eu_cap = BigInteger.valueOf(100 * 60 * pow(10, 12));
 
     // 1 Trillion EU/t
-    private static BigInteger UEV_cap_eu_per_tick = UEV_wireless_eu_cap
+    private static final BigInteger UEV_cap_eu_per_tick = UEV_wireless_eu_cap
             .divide(BigInteger.valueOf(LSC_time_between_wireless_rebalance_in_ticks));
 
     // 600 Quadrillion EU.
     public static BigInteger UIV_wireless_eu_cap = BigInteger.valueOf(60 * pow(10, 16));
 
     // 100 Trillion EU/t
-    private static BigInteger UIV_cap_eu_per_tick = UIV_wireless_eu_cap
+    private static final BigInteger UIV_cap_eu_per_tick = UIV_wireless_eu_cap
             .divide(BigInteger.valueOf(LSC_time_between_wireless_rebalance_in_ticks));
 
     // 60 Quintillion EU.
     public static BigInteger UMV_wireless_eu_cap = UIV_wireless_eu_cap.multiply(BigInteger.valueOf(100));
 
     // 10 Quadrillion EU/t
-    private static BigInteger UMV_cap_eu_per_tick = UMV_wireless_eu_cap
+    private static final BigInteger UMV_cap_eu_per_tick = UMV_wireless_eu_cap
             .divide(BigInteger.valueOf(LSC_time_between_wireless_rebalance_in_ticks));
 
     public static long EV_cap_storage = 60_000_000L;

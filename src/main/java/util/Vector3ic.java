@@ -2,9 +2,9 @@ package util;
 
 public interface Vector3ic {
 
-    public int x();
+    int x();
 
-    public int y();
+    int y();
 
-    public int z();
+    int z();
 }

@@ -8,7 +8,6 @@ import org.apache.logging.log4j.Logger;
 
 import com.google.common.collect.ImmutableSet;
 import common.CommonProxy;
-import common.tileentities.*;
 
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
@@ -16,6 +15,7 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLMissingMappingsEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import gregtech.api.enums.Mods;
 
 /**
  * My GT-Meta-IDs are: 13101 - 13500
@@ -35,12 +35,12 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 public class KekzCore {
 
     public static final String NAME = "KekzTech";
-    public static final String MODID = "kekztech";
+    public static final String MODID = Mods.Names.KEKZ_TECH;
     public static final String VERSION = "GRADLETOKEN_VERSION";
 
     public static final Logger LOGGER = LogManager.getLogger(NAME);
 
-    @Mod.Instance("kekztech")
+    @Mod.Instance(Mods.Names.KEKZ_TECH)
     public static KekzCore instance;
 
     @SidedProxy(clientSide = "client.ClientProxy", serverSide = "kekztech.ServerProxy")

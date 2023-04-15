@@ -13,7 +13,7 @@ public class TE_BeamTransmitter extends TileEntity {
 
     private final Vector3ic position;
 
-    private Vector3ic target = new Vector3i(10, 20, 10);
+    private final Vector3ic target = new Vector3i(10, 20, 10);
     private double distanceCache;
     private boolean distanceCacheValid = false;
 

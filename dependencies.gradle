@@ -1,10 +1,10 @@
 // Add your dependencies here
 
 dependencies {
-    compile 'com.github.GTNewHorizons:GT5-Unofficial:5.09.42.09:dev'
-    compile 'com.github.GTNewHorizons:TecTech:5.0.89:dev'
-    compile 'com.github.GTNewHorizons:bartworks:0.5.151:dev'
-    compile 'com.github.GTNewHorizons:StructureLib:1.2.1:dev'
+    compile 'com.github.GTNewHorizons:GT5-Unofficial:5.09.42.52:dev'
+    compile 'com.github.GTNewHorizons:TecTech:5.1.7:dev'
+    compile 'com.github.GTNewHorizons:bartworks:0.6.9:dev'
+    compile 'com.github.GTNewHorizons:StructureLib:1.2.6:dev'
     compile 'com.github.GTNewHorizons:ThaumicTinkerer:2.6.11:dev'
 
     compile 'thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev'

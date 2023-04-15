@@ -10,7 +10,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 
 public class Block_ReactorChamber_OFF extends BaseGTUpdateableBlock {
 
-    private static Block_ReactorChamber_OFF instance = new Block_ReactorChamber_OFF();
+    private static final Block_ReactorChamber_OFF instance = new Block_ReactorChamber_OFF();
 
     private Block_ReactorChamber_OFF() {
         super(Material.iron);
