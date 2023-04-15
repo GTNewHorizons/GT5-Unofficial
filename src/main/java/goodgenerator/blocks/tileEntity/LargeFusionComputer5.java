@@ -83,12 +83,12 @@ public class LargeFusionComputer5 extends LargeFusionComputerPP {
 
     @Override
     public Block getCasingBlock() {
-        return ModBlocks.blockCasings3Misc;
+        return ModBlocks.blockCasings6Misc;
     }
 
     @Override
     public int getCasingMeta() {
-        return 12;
+        return 0;
     }
 
     @Override
@@ -123,8 +123,8 @@ public class LargeFusionComputer5 extends LargeFusionComputerPP {
 
     @Override
     public ITexture getTextureOverlay() {
-        if (this.mMaxProgresstime > 0) return TextureFactory
-                .of(TextureFactory.builder().addIcon(TexturesGtBlock.Casing_Machine_Screen_3).extFacing().build());
+        if (this.getBaseMetaTileEntity().isActive()) return TextureFactory.of(
+                TextureFactory.builder().addIcon(TexturesGtBlock.Casing_Machine_Screen_Rainbow).extFacing().build());
         else return TextureFactory
                 .of(TextureFactory.builder().addIcon(TexturesGtBlock.Casing_Machine_Screen_1).extFacing().build());
     }
@@ -164,22 +164,22 @@ public class LargeFusionComputer5 extends LargeFusionComputerPP {
     public boolean turnCasingActive(boolean status) {
         if (this.mEnergyHatches != null) {
             for (GT_MetaTileEntity_Hatch_Energy hatch : this.mEnergyHatches) {
-                hatch.updateTexture(status ? TAE.getIndexFromPage(2, 14) : 53);
+                hatch.updateTexture(status ? TAE.getIndexFromPage(3, 6) : 53);
             }
         }
         if (this.eEnergyMulti != null) {
             for (GT_MetaTileEntity_Hatch_EnergyMulti hatch : this.eEnergyMulti) {
-                hatch.updateTexture(status ? TAE.getIndexFromPage(2, 14) : 53);
+                hatch.updateTexture(status ? TAE.getIndexFromPage(3, 6) : 53);
             }
         }
         if (this.mOutputHatches != null) {
             for (GT_MetaTileEntity_Hatch_Output hatch : this.mOutputHatches) {
-                hatch.updateTexture(status ? TAE.getIndexFromPage(2, 14) : 53);
+                hatch.updateTexture(status ? TAE.getIndexFromPage(3, 6) : 53);
             }
         }
         if (this.mInputHatches != null) {
             for (GT_MetaTileEntity_Hatch_Input hatch : this.mInputHatches) {
-                hatch.updateTexture(status ? TAE.getIndexFromPage(2, 14) : 53);
+                hatch.updateTexture(status ? TAE.getIndexFromPage(3, 6) : 53);
             }
         }
         return true;
@@ -192,7 +192,7 @@ public class LargeFusionComputer5 extends LargeFusionComputerPP {
             return new ITexture[] { TextureFactory.builder().addIcon(MACHINE_CASING_FUSION_GLASS).extFacing().build(),
                     getTextureOverlay() };
         if (!aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(52) };
-        return new ITexture[] { TextureFactory.builder().addIcon(TexturesGtBlock.TEXTURE_CASING_FUSION_CASING_ULTRA)
+        return new ITexture[] { TextureFactory.builder().addIcon(TexturesGtBlock.TEXTURE_CASING_FUSION_CASING_HYPER)
                 .extFacing().build() };
     }
 

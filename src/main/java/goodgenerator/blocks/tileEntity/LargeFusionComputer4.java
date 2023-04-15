@@ -3,8 +3,6 @@ package goodgenerator.blocks.tileEntity;
 import static goodgenerator.util.DescTextLocalization.BLUE_PRINT_INFO;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS;
 
-import java.lang.reflect.Field;
-
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
@@ -43,10 +41,6 @@ public class LargeFusionComputer4 extends LargeFusionComputerPP {
         super(name);
         power = new AdvFusionPower((byte) 9, Integer.MAX_VALUE);
     }
-
-    // Some hacky shit
-    public static Block mMK4Casing = null;
-    public static int mMK4CasingMeta;
 
     @Override
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
@@ -89,25 +83,12 @@ public class LargeFusionComputer4 extends LargeFusionComputerPP {
 
     @Override
     public Block getCasingBlock() {
-        if (mMK4Casing == null) doCasingInit();
-        return mMK4Casing;
+        return ModBlocks.blockCasings3Misc;
     }
 
     @Override
     public int getCasingMeta() {
-        if (mMK4Casing == null) doCasingInit();
-        return mMK4CasingMeta;
-    }
-
-    private void doCasingInit() {
-        try {
-            Field f = ModBlocks.class.getDeclaredField("blockCasings6Misc");
-            mMK4Casing = (Block) f.get(null);
-            mMK4CasingMeta = 0;
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            mMK4Casing = ModBlocks.blockCasings3Misc;
-            mMK4CasingMeta = 12;
-        }
+        return 12;
     }
 
     @Override

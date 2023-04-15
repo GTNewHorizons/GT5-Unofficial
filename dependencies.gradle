@@ -14,7 +14,7 @@ dependencies {
 
     compileOnly('com.github.GTNewHorizons:EnderCore:0.2.13:dev') {transitive = false}
     compileOnly('com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-192-GTNH:dev') {transitive = false}
-    compileOnly('com.github.GTNewHorizons:GTplusplus:1.8.31:dev') {transitive = false}
+    compileOnly('com.github.GTNewHorizons:GTplusplus:1.8.35:dev') {transitive = false}
     compileOnly('com.github.GTNewHorizons:AppleCore:3.2.3:dev') {transitive = false}
     compileOnly('com.github.GTNewHorizons:ForestryMC:4.6.5:dev') {transitive = false}
     compileOnly('com.github.GTNewHorizons:Railcraft:9.14.0:dev') {transitive = false}
@@ -27,7 +27,7 @@ dependencies {
 
     runtimeOnly('com.github.GTNewHorizons:NewHorizonsCoreMod:2.0.17:dev')
     runtimeOnly('com.github.GTNewHorizons:ForestryMC:4.6.5:dev')
-    runtimeOnly('com.github.GTNewHorizons:GTplusplus:1.8.31:dev')
+    runtimeOnly('com.github.GTNewHorizons:GTplusplus:1.8.35:dev')
 
     //compileOnly('com.github.GTNewHorizons:Avaritia:1.35)
 }
