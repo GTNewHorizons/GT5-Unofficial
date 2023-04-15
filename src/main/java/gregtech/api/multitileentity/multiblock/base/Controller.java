@@ -407,6 +407,8 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
     }
 
     public final boolean checkPiece(String piece, Vec3Impl offset) {
+        functionalCasings.clear();
+        upgradeCasings.clear();
         return checkPiece(piece, offset.get0(), offset.get1(), offset.get2());
     }
 
@@ -1925,7 +1927,7 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
     }
 
     protected Widget getFluidInventoryOutputGUI() {
-        final IFluidTank[] tanks = outputTanks;
+        final IFluidTank[] tanks = getTanksForOutput();
         final Scrollable scrollable = new Scrollable().setVerticalScroll();
         for (int rows = 0; rows * 4 < tanks.length; rows++) {
             final int columnsToMake = Math.min(tanks.length - rows * 4, 4);
