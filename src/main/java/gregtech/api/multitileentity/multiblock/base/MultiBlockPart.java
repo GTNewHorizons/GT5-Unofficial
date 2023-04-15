@@ -92,10 +92,19 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
     public String getLockedInventory() {
         issueClientUpdate();
         IMultiBlockController controller = getTarget(false);
-        if (!getNameOfInventoryFromIndex(controller, mLockedInventoryIndex).equals(mLockedInventory)) {
-            mLockedInventory = getNameOfInventoryFromIndex(controller, mLockedInventoryIndex);
-            if (mLockedInventory.equals("all")) {
-                mLockedInventory = "";
+        if (modeSelected(ITEM_IN) || modeSelected(ITEM_OUT)) {
+            if (!getNameOfInventoryFromIndex(controller, mLockedInventoryIndex).equals(mLockedInventory)) {
+                mLockedInventory = getNameOfInventoryFromIndex(controller, mLockedInventoryIndex);
+                if (mLockedInventory.equals("all")) {
+                    mLockedInventory = "";
+                }
+            }
+        } else {
+            if (!getNameOfTankArrayFromIndex(controller, mLockedInventoryIndex).equals(mLockedInventory)) {
+                mLockedInventory = getNameOfTankArrayFromIndex(controller, mLockedInventoryIndex);
+                if (mLockedInventory.equals("all")) {
+                    mLockedInventory = "";
+                }
             }
         }
         return mLockedInventory.equals("") ? null : mLockedInventory;
@@ -712,6 +721,14 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
         return invNames.get(index);
     }
 
+    protected String getNameOfTankArrayFromIndex(final IMultiBlockController controller, int index) {
+        final List<String> tankNames = controller.getTankArrayIDs(this);
+        if (index > tankNames.size()) {
+            return tankNames.get(0);
+        }
+        return tankNames.get(index);
+    }
+
     protected void addFluidInventory(Builder builder, UIBuildContext buildContext) {
         final IMultiBlockController controller = getTarget(false);
         if (controller == null) {
@@ -733,7 +750,27 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
         }
         builder.widget(
             scrollable.setSize(18 * 4 + 4, 18 * 4)
-                .setPos(52, 7));
+                .setPos(52, 18));
+        DropDownWidget dropDown = new DropDownWidget();
+        dropDown.addDropDownItemsSimple(
+            controller.getTankArrayNames(this),
+            (buttonWidget, index, label, setSelected) -> buttonWidget.setOnClick((clickData, widget) -> {
+                if (getNameOfTankArrayFromIndex(controller, index).equals("all")) {
+                    mLockedInventory = GT_Values.E;
+                    mLockedInventoryIndex = 0;
+                } else {
+                    mLockedInventory = getNameOfTankArrayFromIndex(controller, index);
+                    mLockedInventoryIndex = index;
+                }
+                setSelected.run();
+            }),
+            true);
+        builder.widget(
+            dropDown.setSelected(mLockedInventoryIndex)
+                .setExpandedMaxHeight(60)
+                .setDirection(DropDownWidget.Direction.DOWN)
+                .setPos(53, 5)
+                .setSize(70, 11));
     }
 
     @Override

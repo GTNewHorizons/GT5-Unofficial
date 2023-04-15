@@ -30,6 +30,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -201,6 +202,7 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
                 .getIndex());
 
         saveUpgradeInventoriesToNBT(nbt);
+        saveUpgradeTanksToNBT(nbt);
 
         nbt.setBoolean(NBT.VOID_EXCESS, voidExcess);
         nbt.setBoolean(NBT.SEPARATE_INPUTS, separateInputs);
@@ -235,6 +237,43 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
         nbt.setTag(NBT.UPGRADE_INVENTORIES_OUTPUT, outputInvList);
     }
 
+    private void saveUpgradeTanksToNBT(NBTTagCompound nbt) {
+        final NBTTagList inputTankList = new NBTTagList();
+        multiBlockInputTank.forEach((id, tanks) -> {
+            if (!id.equals("controller") && tanks != null && tanks.length > 0) {
+                final NBTTagCompound tTag = new NBTTagCompound();
+                tTag.setString(NBT.UPGRADE_TANK_UUID, id);
+                tTag.setString(NBT.UPGRADE_TANK_NAME, multiBlockInputTankNames.get(id));
+                // We assume all tanks in the tank-array are equally sized
+                tTag.setLong(NBT.UPGRADE_TANK_CAPACITY, tanks[0].capacity());
+                tTag.setLong(NBT.UPGRADE_TANK_CAPACITY_MULTIPLIER, tanks[0].getCapacityMultiplier());
+                tTag.setInteger(NBT.UPGRADE_TANKS_COUNT, tanks.length);
+                for (int i = 0; i < tanks.length; i++) {
+                    tanks[i].writeToNBT(tTag, NBT.UPGRADE_TANKS_PREFIX + i);
+                }
+                inputTankList.appendTag(tTag);
+            }
+        });
+        final NBTTagList outputTankList = new NBTTagList();
+        multiBlockOutputTank.forEach((id, tanks) -> {
+            if (!id.equals("controller") && tanks != null && tanks.length > 0) {
+                final NBTTagCompound tTag = new NBTTagCompound();
+                tTag.setString(NBT.UPGRADE_TANK_UUID, id);
+                tTag.setString(NBT.UPGRADE_TANK_NAME, multiBlockInputTankNames.get(id));
+                // We assume all tanks in the tank-array are equally sized
+                tTag.setLong(NBT.UPGRADE_TANK_CAPACITY, tanks[0].capacity());
+                tTag.setLong(NBT.UPGRADE_TANK_CAPACITY_MULTIPLIER, tanks[0].getCapacityMultiplier());
+                tTag.setInteger(NBT.UPGRADE_TANKS_COUNT, tanks.length);
+                for (int i = 0; i < tanks.length; i++) {
+                    tanks[i].writeToNBT(tTag, NBT.UPGRADE_TANKS_PREFIX + i);
+                }
+                inputTankList.appendTag(tTag);
+            }
+        });
+        nbt.setTag(NBT.UPGRADE_TANKS_INPUT, inputTankList);
+        nbt.setTag(NBT.UPGRADE_TANKS_OUTPUT, outputTankList);
+    }
+
     @Override
     public void readMultiTileNBT(NBTTagCompound nbt) {
         super.readMultiTileNBT(nbt);
@@ -244,6 +283,9 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
         if (inputInventory != null) multiBlockInputInventory.put("controller", inputInventory);
         if (outputInventory != null) multiBlockOutputInventory.put("controller", outputInventory);
 
+        if (inputTanks != null) multiBlockInputTank.put("controller", inputTanks);
+        if (outputTanks != null) multiBlockOutputTank.put("controller", outputTanks);
+
         structureOkay = nbt.getBoolean(NBT.STRUCTURE_OK);
         extendedFacing = ExtendedFacing.of(
             ForgeDirection.getOrientation(getFrontFacing()),
@@ -251,6 +293,7 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
             Flip.byIndex(nbt.getByte(NBT.FLIP)));
 
         loadUpgradeInventoriesFromNBT(nbt);
+        loadUpgradeTanksFromNBT(nbt);
 
         voidExcess = nbt.getBoolean(NBT.VOID_EXCESS);
         separateInputs = nbt.getBoolean(NBT.SEPARATE_INPUTS);
@@ -259,7 +302,8 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
     }
 
     private void loadUpgradeInventoriesFromNBT(NBTTagCompound nbt) {
-        final NBTTagList listInputInventories = nbt.getTagList(NBT.UPGRADE_INVENTORIES_INPUT, 10);
+        final NBTTagList listInputInventories = nbt
+            .getTagList(NBT.UPGRADE_INVENTORIES_INPUT, Constants.NBT.TAG_COMPOUND);
         for (int i = 0; i < listInputInventories.tagCount(); i++) {
             final NBTTagCompound nbtInv = listInputInventories.getCompoundTagAt(i);
             String invUUID = nbtInv.getString(NBT.UPGRADE_INVENTORY_UUID);
@@ -271,7 +315,8 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
             multiBlockInputInventoryNames.put(invUUID, invName);
         }
 
-        final NBTTagList listOutputInventories = nbt.getTagList(NBT.UPGRADE_INVENTORIES_OUTPUT, 10);
+        final NBTTagList listOutputInventories = nbt
+            .getTagList(NBT.UPGRADE_INVENTORIES_OUTPUT, Constants.NBT.TAG_COMPOUND);
         for (int i = 0; i < listOutputInventories.tagCount(); i++) {
             final NBTTagCompound nbtInv = listOutputInventories.getCompoundTagAt(i);
             String invUUID = nbtInv.getString(NBT.UPGRADE_INVENTORY_UUID);
@@ -281,6 +326,42 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
             loadInventory(nbtInv, inv, NBT.INV_OUTPUT_LIST);
             multiBlockOutputInventory.put(invUUID, inv);
             multiBlockOutputInventoryNames.put(invUUID, invName);
+        }
+    }
+
+    private void loadUpgradeTanksFromNBT(NBTTagCompound nbt) {
+        final NBTTagList listInputTanks = nbt.getTagList(NBT.UPGRADE_TANKS_INPUT, Constants.NBT.TAG_COMPOUND);
+        for (int i = 0; i < listInputTanks.tagCount(); i++) {
+            final NBTTagCompound nbtTank = listInputTanks.getCompoundTagAt(i);
+            String tankUUID = nbtTank.getString(NBT.UPGRADE_TANK_UUID);
+            String tankName = nbtTank.getString(NBT.UPGRADE_TANK_NAME);
+            long capacity = nbtTank.getLong(NBT.UPGRADE_TANK_CAPACITY);
+            long capacityMultiplier = nbtTank.getLong(NBT.UPGRADE_TANK_CAPACITY_MULTIPLIER);
+            int count = nbtTank.getInteger(NBT.UPGRADE_TANKS_COUNT);
+            FluidTankGT[] tanks = new FluidTankGT[count];
+            for (int j = 0; j < count; j++) {
+                tanks[j] = new FluidTankGT(capacity).setCapacityMultiplier(capacityMultiplier)
+                    .readFromNBT(nbtTank, NBT.UPGRADE_TANKS_PREFIX + j);
+            }
+            multiBlockInputTank.put(tankUUID, tanks);
+            multiBlockInputTankNames.put(tankUUID, tankName);
+        }
+
+        final NBTTagList listOutputTanks = nbt.getTagList(NBT.UPGRADE_TANKS_INPUT, Constants.NBT.TAG_COMPOUND);
+        for (int i = 0; i < listOutputTanks.tagCount(); i++) {
+            final NBTTagCompound nbtTank = listOutputTanks.getCompoundTagAt(i);
+            String tankUUID = nbtTank.getString(NBT.UPGRADE_TANK_UUID);
+            String tankName = nbtTank.getString(NBT.UPGRADE_TANK_NAME);
+            long capacity = nbtTank.getLong(NBT.UPGRADE_TANK_CAPACITY);
+            long capacityMultiplier = nbtTank.getLong(NBT.UPGRADE_TANK_CAPACITY_MULTIPLIER);
+            int count = nbtTank.getInteger(NBT.UPGRADE_TANKS_COUNT);
+            FluidTankGT[] tanks = new FluidTankGT[count];
+            for (int j = 0; j < count; j++) {
+                tanks[j] = new FluidTankGT(capacity).setCapacityMultiplier(capacityMultiplier)
+                    .readFromNBT(nbtTank, NBT.UPGRADE_TANKS_PREFIX + j);
+            }
+            multiBlockOutputTank.put(tankUUID, tanks);
+            multiBlockOutputTankNames.put(tankUUID, tankName);
         }
     }
 
@@ -897,6 +978,55 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
     /**
      * Fluid - MultiBlock related Fluid Tank behaviour.
      */
+    public void registerFluidInventory(String name, String id, int numberOfSlots, long capacity,
+        long capacityMultiplier, int type) {
+        if (type == Inventory.INPUT || type == Inventory.BOTH) {
+            if (multiBlockInputTank.containsKey(id)) return;
+            FluidTankGT[] tanks = new FluidTankGT[numberOfSlots];
+            for (int i = 0; i < numberOfSlots; i++) {
+                tanks[i] = new FluidTankGT(capacity).setCapacityMultiplier(capacityMultiplier);
+            }
+            multiBlockInputTank.put(id, tanks);
+            multiBlockInputTankNames.put(id, name);
+        }
+        if (type == Inventory.OUTPUT || type == Inventory.BOTH) {
+            if (multiBlockOutputInventory.containsKey(id)) return;
+            FluidTankGT[] tanks = new FluidTankGT[numberOfSlots];
+            for (int i = 0; i < numberOfSlots; i++) {
+                tanks[i] = new FluidTankGT(capacity).setCapacityMultiplier(capacityMultiplier);
+            }
+            multiBlockOutputTank.put(id, tanks);
+            multiBlockOutputTankNames.put(id, name);
+        }
+    }
+
+    public void unregisterFluidInventory(String aName, String aID, int aType) {
+        if ((aType == Inventory.INPUT || aType == Inventory.BOTH) && multiBlockInputTank.containsKey(aID)) {
+            multiBlockInputTank.remove(aID, multiBlockInputTank.get(aID));
+            multiBlockInputTankNames.remove(aID, aName);
+        }
+        if ((aType == Inventory.OUTPUT || aType == Inventory.BOTH) && multiBlockOutputTank.containsKey(aID)) {
+            multiBlockOutputTank.remove(aID, multiBlockOutputTank.get(aID));
+            multiBlockOutputTankNames.remove(aID, aName);
+        }
+    }
+
+    protected FluidTankGT[] getTanksForInput() {
+        List<FluidTankGT> tanks = new ArrayList<>();
+        for (FluidTankGT[] inputTanks : multiBlockInputTank.values()) {
+            tanks.addAll(Arrays.asList(inputTanks));
+        }
+        return tanks.toArray(new FluidTankGT[0]);
+    }
+
+    protected FluidTankGT[] getTanksForOutput() {
+        List<FluidTankGT> tanks = new ArrayList<>();
+        for (FluidTankGT[] outputTanks : multiBlockOutputTank.values()) {
+            tanks.addAll(Arrays.asList(outputTanks));
+        }
+        return tanks.toArray(new FluidTankGT[0]);
+    }
+
     protected IFluidTank getFluidTankFillable(MultiBlockPart aPart, byte aSide, FluidStack aFluidToFill) {
         return getFluidTankFillable(aSide, aFluidToFill);
     }
@@ -970,8 +1100,16 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
 
     @Override
     public IFluidTank[] getFluidTanksForGUI(MultiBlockPart aPart) {
-        if (aPart.modeSelected(MultiBlockPart.FLUID_IN)) return inputTanks;
-        if (aPart.modeSelected(MultiBlockPart.FLUID_OUT)) return outputTanks;
+        final String lockedInventory = aPart.getLockedInventory();
+        if (lockedInventory == null) {
+            if (aPart.modeSelected(MultiBlockPart.FLUID_IN)) return getTanksForInput();
+            else if (aPart.modeSelected(MultiBlockPart.FLUID_OUT)) return getTanksForOutput();
+        } else {
+            final Map<String, FluidTankGT[]> tankMap = getMultiBlockTankArray(aPart);
+            if (tankMap == null) return GT_Values.emptyFluidTank;
+            final FluidTankGT[] tanks = tankMap.get(lockedInventory);
+            return tanks != null ? tanks : GT_Values.emptyFluidTank;
+        }
         return GT_Values.emptyFluidTank;
     }
 
@@ -1078,6 +1216,18 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
     @Override
     public boolean addStackToSlot(MultiBlockPart aPart, int aIndex, ItemStack aStack, int aAmount) {
         return false;
+    }
+
+    protected Map<String, FluidTankGT[]> getMultiBlockTankArray(MultiBlockPart aPart) {
+        if (aPart.modeSelected(MultiBlockPart.FLUID_IN)) return multiBlockInputTank;
+        else if (aPart.modeSelected(MultiBlockPart.FLUID_OUT)) return multiBlockOutputTank;
+        return null;
+    }
+
+    protected Map<String, String> getMultiBlockTankArrayNames(MultiBlockPart aPart) {
+        if (aPart.modeSelected(MultiBlockPart.FLUID_IN)) return multiBlockInputTankNames;
+        else if (aPart.modeSelected(MultiBlockPart.FLUID_OUT)) return multiBlockOutputTankNames;
+        return null;
     }
 
     protected Map<String, IItemHandlerModifiable> getMultiBlockInventory(MultiBlockPart aPart) {
@@ -1267,6 +1417,23 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
     }
 
     @Override
+    public List<String> getTankArrayNames(MultiBlockPart aPart) {
+        final List<String> inventoryNames = new ArrayList<>();
+        inventoryNames.add("all");
+        inventoryNames.add("controller");
+        inventoryNames.addAll(getMultiBlockTankArrayNames(aPart).values());
+        return inventoryNames;
+    }
+
+    @Override
+    public List<String> getTankArrayIDs(MultiBlockPart aPart) {
+        final List<String> inventoryIDs = new ArrayList<>();
+        inventoryIDs.add("all");
+        inventoryIDs.addAll(getMultiBlockTankArray(aPart).keySet());
+        return inventoryIDs;
+    }
+
+    @Override
     public boolean hasCustomInventoryName(MultiBlockPart aPart) {
         return hasCustomInventoryName();
     }
@@ -1339,6 +1506,44 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
                 .toArray(new ItemStack[0]);
         }
         return null;
+    }
+
+    @Override
+    protected FluidStack[] getInputFluids() {
+        List<FluidStack> fluidStacks = new ArrayList<>();
+        for (FluidTankGT[] inputTanks : multiBlockInputTank.values()) {
+            for (FluidTankGT inputTank : inputTanks) {
+                FluidStack fluidStack = inputTank.getFluid();
+                if (fluidStack != null) {
+                    fluidStacks.add(fluidStack);
+                }
+            }
+        }
+        return fluidStacks.toArray(new FluidStack[0]);
+    }
+
+    protected FluidStack[] getOutputFluids() {
+        List<FluidStack> fluidStacks = new ArrayList<>();
+        for (FluidTankGT[] inputTanks : multiBlockInputTank.values()) {
+            for (FluidTankGT inputTank : inputTanks) {
+                FluidStack fluidStack = inputTank.getFluid();
+                if (fluidStack != null) {
+                    fluidStacks.add(fluidStack);
+                }
+            }
+        }
+        return fluidStacks.toArray(new FluidStack[0]);
+    }
+
+    protected Iterable<Pair<FluidStack[], String>> getFluidInputsForEachTankArray() {
+        return multiBlockInputTank.entrySet()
+            .stream()
+            .map((entry) -> Pair.of(FluidTankGT.getFluidsFromTanks(entry.getValue()), entry.getKey()))
+            .collect(Collectors.toList());
+    }
+
+    protected FluidStack[] getFluidInputsForTankArray(String id) {
+        return FluidTankGT.getFluidsFromTanks(multiBlockInputTank.get(id));
     }
 
     protected void setItemOutputs(String inventory, ItemStack... itemOutputs) {
@@ -1439,13 +1644,12 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
         logic.clear();
         boolean result = false;
         if (isSeparateInputs()) {
+            // TODO: Add separation with fluids
             for (Pair<ItemStack[], String> inventory : getItemInputsForEachInventory()) {
                 IItemHandlerModifiable outputInventory = multiBlockOutputInventory
                     .getOrDefault(inventory.getLeft(), null);
                 result = logic.setInputItems(inventory.getLeft())
-                    .setCurrentOutputItems(
-                        outputInventory != null ? outputInventory.getStacks()
-                            .toArray(new ItemStack[0]) : null)
+                    .setCurrentOutputItems(getOutputItems())
                     .process();
                 if (result) {
                     inventoryName = inventory.getRight();
@@ -1456,6 +1660,8 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
         } else {
             result = logic.setInputItems(getInputItems())
                 .setCurrentOutputItems(getOutputItems())
+                .setInputFluids(getInputFluids())
+                .setCurrentOutputFluids(getOutputFluids())
                 .process();
         }
         setDuration(logic.getDuration());
