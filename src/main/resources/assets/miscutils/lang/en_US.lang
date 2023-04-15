@@ -3047,7 +3047,7 @@ tile.blockManaPod.name=Mana Pod Stem
 tile.buildToolBlock.name=Tool Block
 tile.blockRedPlasma.name=Red Plasma Block
 tile.pipeBlock.name=Pipe
-item.null.name=REPORT ERROR TO ALKALUS
+item.null.name=Null Item report it on github
 
 
 //Added 24/8/19
