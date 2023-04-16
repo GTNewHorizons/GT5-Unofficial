@@ -69,12 +69,8 @@ public class Macerator extends StackableController<Macerator> {
                             FLUID_IN | ITEM_IN | FLUID_OUT | ITEM_OUT)))
                 .addElement('C', addMultiTileCasing("gt.multitileentity.casings", getCasingMeta(), NOTHING))
                 .addElement('D', addMultiTileCasing("gt.multitileentity.casings", getCasingMeta(), NOTHING))
-                .addElement(
-                    'F',
-                    ofChain(
-                        addMultiTileCasing("gt.multitileentity.casings", 20001, NOTHING),
-                        addMultiTileCasing("gt.multitileentity.casings", 20002, NOTHING)))
-                .addElement('G', addMultiTileCasing("gt.multitileentity.casings", 10000, NOTHING))
+                .addElement('F', addMotorCasings(NOTHING))
+                .addElement('G', addMultiTileCasing("gt.multitileentity.component.casings", 10000, NOTHING))
                 .build();
         }
         return STRUCTURE_DEFINITION;

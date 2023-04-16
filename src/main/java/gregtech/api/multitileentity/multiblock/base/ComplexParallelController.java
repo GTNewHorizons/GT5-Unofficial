@@ -20,7 +20,7 @@ import gregtech.api.logic.ComplexParallelProcessingLogic;
 import gregtech.api.logic.interfaces.PollutionLogicHost;
 import gregtech.api.util.GT_Waila;
 
-public abstract class ComplexController<T extends ComplexController<T>> extends PowerController<T> {
+public abstract class ComplexParallelController<T extends ComplexParallelController<T>> extends PowerController<T> {
 
     protected ComplexParallelProcessingLogic processingLogic;
     protected int maxComplexParallels = 0;
@@ -28,7 +28,7 @@ public abstract class ComplexController<T extends ComplexController<T>> extends 
     protected long[] maxProgressTimes = new long[0];
     protected long[] progressTimes = new long[0];
 
-    public ComplexController() {
+    public ComplexParallelController() {
         isSimpleMachine = false;
     }
 

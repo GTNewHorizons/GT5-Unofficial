@@ -37,13 +37,13 @@ import gregtech.api.fluid.FluidTankGT;
 import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.logic.ComplexParallelProcessingLogic;
 import gregtech.api.multitileentity.enums.GT_MultiTileCasing;
-import gregtech.api.multitileentity.multiblock.base.ComplexController;
+import gregtech.api.multitileentity.multiblock.base.ComplexParallelController;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_StructureUtility;
 import gregtech.common.tileentities.casings.upgrade.Inventory;
 
-public class AdvChemicalReactor extends ComplexController<AdvChemicalReactor> {
+public class AdvChemicalReactor extends ComplexParallelController<AdvChemicalReactor> {
 
     private static IStructureDefinition<AdvChemicalReactor> STRUCTURE_DEFINITION = null;
     protected static final String STRUCTURE_PIECE_T1 = "T1";

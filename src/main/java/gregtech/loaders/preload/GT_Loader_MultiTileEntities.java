@@ -2,7 +2,7 @@ package gregtech.loaders.preload;
 
 import static gregtech.GT_Mod.GT_FML_LOGGER;
 import static gregtech.api.multitileentity.enums.GT_MultiTileCasing.*;
-import static gregtech.api.multitileentity.enums.GT_MultiTileComplexCasing.*;
+import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.*;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -27,20 +27,22 @@ import gregtech.common.tileentities.machines.multiblock.Macerator;
 
 public class GT_Loader_MultiTileEntities implements Runnable {
 
-    public static int CASING_REGISTRY = 0;
+    public static final String COMPONENT_CASING_REGISTRY = "gt.multitileentity.component.casings";
+    public static final String CASING_REGISTRY = "gt.multitileentity.casings";
+    public static final String MACHINE_REGISTRY = "gt.multitileentity.controllers";
 
     @Override
     public void run() {
         GT_FML_LOGGER.info("GT_Mod: Registering MultiTileEntities");
         registerMachines();
         registerCasings();
-        registerComplexCasings();
+        registerComponentCasings();
     }
 
     private static void registerMachines() {
         final MultiTileEntityBlock machine = MultiTileEntityBlock
             .getOrCreate("GregTech", "machine", Material.iron, Block.soundTypeMetal, "wrench", 0, 0, 15, true, true);
-        final MultiTileEntityRegistry machineRegistry = new MultiTileEntityRegistry("gt.multitileentity.controllers");
+        final MultiTileEntityRegistry machineRegistry = new MultiTileEntityRegistry(MACHINE_REGISTRY);
         // Disable for now
         machineRegistry.create(1000, Macerator.class)
             .name("Large Macerator")
@@ -73,7 +75,7 @@ public class GT_Loader_MultiTileEntities implements Runnable {
     }
 
     private static void registerCasings() {
-        final MultiTileEntityRegistry casingRegistry = new MultiTileEntityRegistry("gt.multitileentity.casings");
+        final MultiTileEntityRegistry casingRegistry = new MultiTileEntityRegistry(CASING_REGISTRY);
         final MultiTileEntityBlock casing = MultiTileEntityBlock
             .getOrCreate("GregTech", "casing", Material.iron, Block.soundTypeMetal, "wrench", 0, 0, 15, true, true);
         casingRegistry.create(CokeOven.getId(), WallShareablePart.class)
@@ -98,12 +100,11 @@ public class GT_Loader_MultiTileEntities implements Runnable {
 
     }
 
-    private static void registerComplexCasings() {
-        final MultiTileEntityRegistry complexCasingRegistry = new MultiTileEntityRegistry(
-            "gt.multitileentity.complex.casings");
-        final MultiTileEntityBlock complexCasing = MultiTileEntityBlock.getOrCreate(
+    private static void registerComponentCasings() {
+        final MultiTileEntityRegistry componentCasingRegistry = new MultiTileEntityRegistry(COMPONENT_CASING_REGISTRY);
+        final MultiTileEntityBlock componentCasing = MultiTileEntityBlock.getOrCreate(
             "GregTech",
-            "complexCasing",
+            "componentCasing",
             Material.iron,
             Block.soundTypeMetal,
             "wrench",
@@ -112,28 +113,28 @@ public class GT_Loader_MultiTileEntities implements Runnable {
             15,
             true,
             true);
-        registerMotorCasings(complexCasingRegistry, complexCasing);
-        registerPumpCasings(complexCasingRegistry, complexCasing);
-        registerPistonCasings(complexCasingRegistry, complexCasing);
-        registerRobotArmCasings(complexCasingRegistry, complexCasing);
-        registerConveyorCasings(complexCasingRegistry, complexCasing);
-        registerEmitterCasings(complexCasingRegistry, complexCasing);
-        registerSensorCasings(complexCasingRegistry, complexCasing);
-        registerFieldGeneratorCasings(complexCasingRegistry, complexCasing);
+        registerMotorCasings(componentCasingRegistry, componentCasing);
+        registerPumpCasings(componentCasingRegistry, componentCasing);
+        registerPistonCasings(componentCasingRegistry, componentCasing);
+        registerRobotArmCasings(componentCasingRegistry, componentCasing);
+        registerConveyorCasings(componentCasingRegistry, componentCasing);
+        registerEmitterCasings(componentCasingRegistry, componentCasing);
+        registerSensorCasings(componentCasingRegistry, componentCasing);
+        registerFieldGeneratorCasings(componentCasingRegistry, componentCasing);
 
-        complexCasingRegistry.create(20001, Inventory.class)
+        componentCasingRegistry.create(20001, Inventory.class)
             .name("Inventory Upgrade LV")
             .category("MultiBlock Upgrade Casing")
-            .setBlock(complexCasing)
+            .setBlock(componentCasing)
             .material(Materials.SpaceTime)
             .texture("metalwall")
             .upgradeInventorySize(16)
             .tier(1)
             .register();
-        complexCasingRegistry.create(20002, Inventory.class)
+        componentCasingRegistry.create(20002, Inventory.class)
             .name("Inventory Upgrade MV")
             .category("MultiBlock Upgrade Casing")
-            .setBlock(complexCasing)
+            .setBlock(componentCasing)
             .material(Materials.Neutronium)
             .texture("metalwall")
             .upgradeInventorySize(24)
@@ -141,790 +142,782 @@ public class GT_Loader_MultiTileEntities implements Runnable {
             .register();
     }
 
-    private static void registerMotorCasings(MultiTileEntityRegistry complexCasingRegistry,
-        MultiTileEntityBlock complexCasing) {
-        complexCasingRegistry.create(LV_Motor.getId(), Motor.class)
+    private static void registerMotorCasings(MultiTileEntityRegistry registry, MultiTileEntityBlock casing) {
+        registry.create(LV_Motor.getId(), Motor.class)
             .name("Motor Casing LV")
             .tier(1)
             .category("MultiBlock Functional Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
-        complexCasingRegistry.create(MV_Motor.getId(), Motor.class)
+        registry.create(MV_Motor.getId(), Motor.class)
             .name("Motor Casing MV")
             .tier(2)
             .category("MultiBlock Functional Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
-        complexCasingRegistry.create(HV_Motor.getId(), Motor.class)
+        registry.create(HV_Motor.getId(), Motor.class)
             .name("Motor Casing HV")
             .tier(3)
             .category("MultiBlock Functional Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
-        complexCasingRegistry.create(EV_Motor.getId(), Motor.class)
+        registry.create(EV_Motor.getId(), Motor.class)
             .name("Motor Casing EV")
             .tier(4)
             .category("MultiBlock Functional Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
-        complexCasingRegistry.create(IV_Motor.getId(), Motor.class)
+        registry.create(IV_Motor.getId(), Motor.class)
             .name("Motor Casing IV")
             .tier(5)
             .category("MultiBlock Functional Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
-        complexCasingRegistry.create(LuV_Motor.getId(), Motor.class)
+        registry.create(LuV_Motor.getId(), Motor.class)
             .name("Motor Casing LuV")
             .tier(6)
             .category("MultiBlock Functional Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
-        complexCasingRegistry.create(ZPM_Motor.getId(), Motor.class)
+        registry.create(ZPM_Motor.getId(), Motor.class)
             .name("Motor Casing ZPM")
             .tier(7)
             .category("MultiBlock Functional Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
-        complexCasingRegistry.create(UV_Motor.getId(), Motor.class)
+        registry.create(UV_Motor.getId(), Motor.class)
             .name("Motor Casing UV")
             .tier(8)
             .category("MultiBlock Functional Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
-        complexCasingRegistry.create(UHV_Motor.getId(), Motor.class)
+        registry.create(UHV_Motor.getId(), Motor.class)
             .name("Motor Casing UHV")
             .tier(9)
             .category("MultiBlock Functional Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
-        complexCasingRegistry.create(UEV_Motor.getId(), Motor.class)
+        registry.create(UEV_Motor.getId(), Motor.class)
             .name("Motor Casing UEV")
             .tier(10)
             .category("MultiBlock Functional Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
-        complexCasingRegistry.create(UIV_Motor.getId(), Motor.class)
+        registry.create(UIV_Motor.getId(), Motor.class)
             .name("Motor Casing UIV")
             .tier(11)
             .category("MultiBlock Functional Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
-        complexCasingRegistry.create(UMV_Motor.getId(), Motor.class)
+        registry.create(UMV_Motor.getId(), Motor.class)
             .name("Motor Casing UMV")
             .tier(12)
             .category("MultiBlock Functional Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
-        complexCasingRegistry.create(UXV_Motor.getId(), Motor.class)
+        registry.create(UXV_Motor.getId(), Motor.class)
             .name("Motor Casing UXV")
             .tier(13)
             .category("MultiBlock Functional Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
-        complexCasingRegistry.create(MAX_Motor.getId(), Motor.class)
+        registry.create(MAX_Motor.getId(), Motor.class)
             .name("Motor Casing MAX")
             .tier(14)
             .category("MultiBlock Functional Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
     }
 
-    private static void registerPumpCasings(MultiTileEntityRegistry complexCasingRegistry,
-        MultiTileEntityBlock complexCasing) {
-        complexCasingRegistry.create(LV_Pump.getId(), Pump.class)
+    private static void registerPumpCasings(MultiTileEntityRegistry registry, MultiTileEntityBlock casing) {
+        registry.create(LV_Pump.getId(), Pump.class)
             .name("Pump Casing LV")
             .tier(1)
             .category("MultiBlock Functional Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
-        complexCasingRegistry.create(MV_Pump.getId(), Pump.class)
+        registry.create(MV_Pump.getId(), Pump.class)
             .name("Pump Casing MV")
             .tier(2)
             .category("MultiBlock Functional Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
-        complexCasingRegistry.create(HV_Pump.getId(), Pump.class)
+        registry.create(HV_Pump.getId(), Pump.class)
             .name("Pump Casing HV")
             .tier(3)
             .category("MultiBlock Functional Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
-        complexCasingRegistry.create(EV_Pump.getId(), Pump.class)
+        registry.create(EV_Pump.getId(), Pump.class)
             .name("Pump Casing EV")
             .tier(4)
             .category("MultiBlock Functional Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
-        complexCasingRegistry.create(IV_Pump.getId(), Pump.class)
+        registry.create(IV_Pump.getId(), Pump.class)
             .name("Pump Casing IV")
             .tier(5)
             .category("MultiBlock Functional Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
-        complexCasingRegistry.create(LuV_Pump.getId(), Pump.class)
+        registry.create(LuV_Pump.getId(), Pump.class)
             .name("Pump Casing LuV")
             .tier(6)
             .category("MultiBlock Functional Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
-        complexCasingRegistry.create(LuV_Pump.getId(), Pump.class)
+        registry.create(LuV_Pump.getId(), Pump.class)
             .name("Pump Casing LuV")
             .tier(6)
             .category("MultiBlock Functional Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
-        complexCasingRegistry.create(ZPM_Pump.getId(), Pump.class)
+        registry.create(ZPM_Pump.getId(), Pump.class)
             .name("Pump Casing ZPM")
             .tier(7)
             .category("MultiBlock Functional Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
-        complexCasingRegistry.create(UV_Pump.getId(), Pump.class)
+        registry.create(UV_Pump.getId(), Pump.class)
             .name("Pump Casing UV")
             .tier(8)
             .category("MultiBlock Functional Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
-        complexCasingRegistry.create(UHV_Pump.getId(), Pump.class)
+        registry.create(UHV_Pump.getId(), Pump.class)
             .name("Pump Casing UHV")
             .tier(9)
             .category("MultiBlock Functional Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
-        complexCasingRegistry.create(UEV_Pump.getId(), Pump.class)
+        registry.create(UEV_Pump.getId(), Pump.class)
             .name("Pump Casing UEV")
             .tier(10)
             .category("MultiBlock Functional Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
-        complexCasingRegistry.create(UIV_Pump.getId(), Pump.class)
+        registry.create(UIV_Pump.getId(), Pump.class)
             .name("Pump Casing UIV")
             .tier(11)
             .category("MultiBlock Functional Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
-        complexCasingRegistry.create(UMV_Pump.getId(), Pump.class)
+        registry.create(UMV_Pump.getId(), Pump.class)
             .name("Pump Casing UMV")
             .tier(12)
             .category("MultiBlock Functional Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
-        complexCasingRegistry.create(UXV_Pump.getId(), Pump.class)
+        registry.create(UXV_Pump.getId(), Pump.class)
             .name("Pump Casing UXV")
             .tier(13)
             .category("MultiBlock Functional Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
-        complexCasingRegistry.create(MAX_Pump.getId(), Pump.class)
+        registry.create(MAX_Pump.getId(), Pump.class)
             .name("Pump Casing MAX")
             .tier(14)
             .category("MultiBlock Functional Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
     }
 
-    private static void registerPistonCasings(MultiTileEntityRegistry complexCasingRegistry,
-        MultiTileEntityBlock complexCasing) {
-        complexCasingRegistry.create(LV_Piston.getId(), Piston.class)
+    private static void registerPistonCasings(MultiTileEntityRegistry registry, MultiTileEntityBlock casing) {
+        registry.create(LV_Piston.getId(), Piston.class)
             .name("Piston Casing LV")
             .tier(1)
             .category("MultiBlock Functional Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
-        complexCasingRegistry.create(MV_Piston.getId(), Piston.class)
+        registry.create(MV_Piston.getId(), Piston.class)
             .name("Piston Casing MV")
             .tier(2)
             .category("MultiBlock Functional Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
-        complexCasingRegistry.create(HV_Piston.getId(), Piston.class)
+        registry.create(HV_Piston.getId(), Piston.class)
             .name("Piston Casing HV")
             .tier(3)
             .category("MultiBlock Functional Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
-        complexCasingRegistry.create(EV_Piston.getId(), Piston.class)
+        registry.create(EV_Piston.getId(), Piston.class)
             .name("Piston Casing EV")
             .tier(4)
             .category("MultiBlock Functional Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
-        complexCasingRegistry.create(IV_Piston.getId(), Piston.class)
+        registry.create(IV_Piston.getId(), Piston.class)
             .name("Piston Casing IV")
             .tier(5)
             .category("MultiBlock Functional Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
-        complexCasingRegistry.create(LuV_Piston.getId(), Piston.class)
+        registry.create(LuV_Piston.getId(), Piston.class)
             .name("Piston Casing LuV")
             .tier(6)
             .category("MultiBlock Functional Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
-        complexCasingRegistry.create(ZPM_Piston.getId(), Piston.class)
+        registry.create(ZPM_Piston.getId(), Piston.class)
             .name("Piston Casing ZPM")
             .tier(7)
             .category("MultiBlock Functional Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
-        complexCasingRegistry.create(UV_Piston.getId(), Piston.class)
+        registry.create(UV_Piston.getId(), Piston.class)
             .name("Piston Casing UV")
             .tier(8)
             .category("MultiBlock Functional Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
-        complexCasingRegistry.create(UHV_Piston.getId(), Piston.class)
+        registry.create(UHV_Piston.getId(), Piston.class)
             .name("Piston Casing UHV")
             .tier(9)
             .category("MultiBlock Functional Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
-        complexCasingRegistry.create(UEV_Piston.getId(), Piston.class)
+        registry.create(UEV_Piston.getId(), Piston.class)
             .name("Piston Casing UEV")
             .tier(10)
             .category("MultiBlock Functional Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
-        complexCasingRegistry.create(UIV_Piston.getId(), Piston.class)
+        registry.create(UIV_Piston.getId(), Piston.class)
             .name("Piston Casing UIV")
             .tier(11)
             .category("MultiBlock Functional Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
-        complexCasingRegistry.create(UMV_Piston.getId(), Piston.class)
+        registry.create(UMV_Piston.getId(), Piston.class)
             .name("Piston Casing UMV")
             .tier(12)
             .category("MultiBlock Functional Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
-        complexCasingRegistry.create(UXV_Piston.getId(), Piston.class)
+        registry.create(UXV_Piston.getId(), Piston.class)
             .name("Piston Casing UXV")
             .tier(13)
             .category("MultiBlock Functional Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
-        complexCasingRegistry.create(MAX_Piston.getId(), Piston.class)
+        registry.create(MAX_Piston.getId(), Piston.class)
             .name("Piston Casing MAX")
             .tier(14)
             .category("MultiBlock Functional Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
     }
 
-    private static void registerConveyorCasings(MultiTileEntityRegistry complexCasingRegistry,
-        MultiTileEntityBlock complexCasing) {
-        complexCasingRegistry.create(LV_Conveyor.getId(), Conveyor.class)
+    private static void registerConveyorCasings(MultiTileEntityRegistry registry, MultiTileEntityBlock casing) {
+        registry.create(LV_Conveyor.getId(), Conveyor.class)
             .name("Conveyor Casing LV")
             .tier(1)
             .category("MultiBlock Structural Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
-        complexCasingRegistry.create(MV_Conveyor.getId(), Conveyor.class)
+        registry.create(MV_Conveyor.getId(), Conveyor.class)
             .name("Conveyor Casing MV")
             .tier(2)
             .category("MultiBlock Structural Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
-        complexCasingRegistry.create(HV_Conveyor.getId(), Conveyor.class)
+        registry.create(HV_Conveyor.getId(), Conveyor.class)
             .name("Conveyor Casing HV")
             .tier(3)
             .category("MultiBlock Structural Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
-        complexCasingRegistry.create(EV_Conveyor.getId(), Conveyor.class)
+        registry.create(EV_Conveyor.getId(), Conveyor.class)
             .name("Conveyor Casing EV")
             .tier(4)
             .category("MultiBlock Structural Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
-        complexCasingRegistry.create(IV_Conveyor.getId(), Conveyor.class)
+        registry.create(IV_Conveyor.getId(), Conveyor.class)
             .name("Conveyor Casing IV")
             .tier(5)
             .category("MultiBlock Structural Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
-        complexCasingRegistry.create(LuV_Conveyor.getId(), Conveyor.class)
+        registry.create(LuV_Conveyor.getId(), Conveyor.class)
             .name("Conveyor Casing LuV")
             .tier(6)
             .category("MultiBlock Structural Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
-        complexCasingRegistry.create(ZPM_Conveyor.getId(), Conveyor.class)
+        registry.create(ZPM_Conveyor.getId(), Conveyor.class)
             .name("Conveyor Casing ZPM")
             .tier(7)
             .category("MultiBlock Structural Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
-        complexCasingRegistry.create(UV_Conveyor.getId(), Conveyor.class)
+        registry.create(UV_Conveyor.getId(), Conveyor.class)
             .name("Conveyor Casing UV")
             .tier(8)
             .category("MultiBlock Structural Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
-        complexCasingRegistry.create(UHV_Conveyor.getId(), Conveyor.class)
+        registry.create(UHV_Conveyor.getId(), Conveyor.class)
             .name("Conveyor Casing UHV")
             .tier(9)
             .category("MultiBlock Structural Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
-        complexCasingRegistry.create(UEV_Conveyor.getId(), Conveyor.class)
+        registry.create(UEV_Conveyor.getId(), Conveyor.class)
             .name("Conveyor Casing UEV")
             .tier(10)
             .category("MultiBlock Structural Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
-        complexCasingRegistry.create(UIV_Conveyor.getId(), Conveyor.class)
+        registry.create(UIV_Conveyor.getId(), Conveyor.class)
             .name("Conveyor Casing UIV")
             .tier(11)
             .category("MultiBlock Structural Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
     }
 
-    private static void registerRobotArmCasings(MultiTileEntityRegistry complexCasingRegistry,
-        MultiTileEntityBlock complexCasing) {
-        complexCasingRegistry.create(LV_RobotArm.getId(), RobotArm.class)
+    private static void registerRobotArmCasings(MultiTileEntityRegistry registry, MultiTileEntityBlock casing) {
+        registry.create(LV_RobotArm.getId(), RobotArm.class)
             .name("Robot Arm Casing LV")
             .tier(1)
             .category("MultiBlock Functional Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
-        complexCasingRegistry.create(MV_RobotArm.getId(), RobotArm.class)
+        registry.create(MV_RobotArm.getId(), RobotArm.class)
             .name("Robot Arm Casing MV")
             .tier(2)
             .category("MultiBlock Functional Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
-        complexCasingRegistry.create(HV_RobotArm.getId(), RobotArm.class)
+        registry.create(HV_RobotArm.getId(), RobotArm.class)
             .name("Robot Arm Casing HV")
             .tier(3)
             .category("MultiBlock Functional Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
-        complexCasingRegistry.create(EV_RobotArm.getId(), RobotArm.class)
+        registry.create(EV_RobotArm.getId(), RobotArm.class)
             .name("Robot Arm Casing EV")
             .tier(4)
             .category("MultiBlock Functional Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
-        complexCasingRegistry.create(IV_RobotArm.getId(), RobotArm.class)
+        registry.create(IV_RobotArm.getId(), RobotArm.class)
             .name("Robot Arm Casing IV")
             .tier(5)
             .category("MultiBlock Functional Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
-        complexCasingRegistry.create(LuV_RobotArm.getId(), RobotArm.class)
+        registry.create(LuV_RobotArm.getId(), RobotArm.class)
             .name("Robot Arm Casing LuV")
             .tier(6)
             .category("MultiBlock Functional Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
-        complexCasingRegistry.create(ZPM_RobotArm.getId(), RobotArm.class)
+        registry.create(ZPM_RobotArm.getId(), RobotArm.class)
             .name("Robot Arm Casing ZPM")
             .tier(7)
             .category("MultiBlock Functional Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
-        complexCasingRegistry.create(UV_RobotArm.getId(), RobotArm.class)
+        registry.create(UV_RobotArm.getId(), RobotArm.class)
             .name("Robot Arm Casing UV")
             .tier(8)
             .category("MultiBlock Functional Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
-        complexCasingRegistry.create(UHV_RobotArm.getId(), RobotArm.class)
+        registry.create(UHV_RobotArm.getId(), RobotArm.class)
             .name("Robot Arm Casing UHV")
             .tier(9)
             .category("MultiBlock Functional Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
-        complexCasingRegistry.create(UEV_RobotArm.getId(), RobotArm.class)
+        registry.create(UEV_RobotArm.getId(), RobotArm.class)
             .name("Robot Arm Casing UEV")
             .tier(10)
             .category("MultiBlock Functional Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
-        complexCasingRegistry.create(UIV_RobotArm.getId(), RobotArm.class)
+        registry.create(UIV_RobotArm.getId(), RobotArm.class)
             .name("Robot Arm Casing UIV")
             .tier(11)
             .category("MultiBlock Functional Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
-        complexCasingRegistry.create(UMV_RobotArm.getId(), RobotArm.class)
+        registry.create(UMV_RobotArm.getId(), RobotArm.class)
             .name("Robot Arm Casing UMV")
             .tier(12)
             .category("MultiBlock Functional Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
-        complexCasingRegistry.create(UXV_RobotArm.getId(), RobotArm.class)
+        registry.create(UXV_RobotArm.getId(), RobotArm.class)
             .name("Robot Arm Casing UXV")
             .tier(13)
             .category("MultiBlock Functional Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
-        complexCasingRegistry.create(MAX_RobotArm.getId(), RobotArm.class)
+        registry.create(MAX_RobotArm.getId(), RobotArm.class)
             .name("Robot Arm Casing MAX")
             .tier(14)
             .category("MultiBlock Functional Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
     }
 
-    private static void registerSensorCasings(MultiTileEntityRegistry complexCasingRegistry,
-        MultiTileEntityBlock complexCasing) {
-        complexCasingRegistry.create(LV_Sensor.getId(), Sensor.class)
+    private static void registerSensorCasings(MultiTileEntityRegistry registry, MultiTileEntityBlock casing) {
+        registry.create(LV_Sensor.getId(), Sensor.class)
             .name("Sensor Casing LV")
             .tier(1)
             .category("MultiBlock Functional Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .register();
-        complexCasingRegistry.create(MV_Sensor.getId(), Sensor.class)
+        registry.create(MV_Sensor.getId(), Sensor.class)
             .name("Sensor Casing MV")
             .tier(2)
             .category("MultiBlock Functional Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .register();
-        complexCasingRegistry.create(HV_Sensor.getId(), Sensor.class)
+        registry.create(HV_Sensor.getId(), Sensor.class)
             .name("Sensor Casing HV")
             .tier(3)
             .category("MultiBlock Functional Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .register();
-        complexCasingRegistry.create(EV_Sensor.getId(), Sensor.class)
+        registry.create(EV_Sensor.getId(), Sensor.class)
             .name("Sensor Casing EV")
             .tier(4)
             .category("MultiBlock Functional Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .register();
-        complexCasingRegistry.create(IV_Sensor.getId(), Sensor.class)
+        registry.create(IV_Sensor.getId(), Sensor.class)
             .name("Sensor Casing IV")
             .tier(5)
             .category("MultiBlock Functional Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .register();
-        complexCasingRegistry.create(LuV_Sensor.getId(), Sensor.class)
+        registry.create(LuV_Sensor.getId(), Sensor.class)
             .name("Sensor Casing LuV")
             .tier(6)
             .category("MultiBlock Functional Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .register();
-        complexCasingRegistry.create(ZPM_Sensor.getId(), Sensor.class)
+        registry.create(ZPM_Sensor.getId(), Sensor.class)
             .name("Sensor Casing ZPM")
             .tier(7)
             .category("MultiBlock Functional Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .register();
-        complexCasingRegistry.create(UV_Sensor.getId(), Sensor.class)
+        registry.create(UV_Sensor.getId(), Sensor.class)
             .name("Sensor Casing UV")
             .tier(8)
             .category("MultiBlock Functional Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .register();
-        complexCasingRegistry.create(UHV_Sensor.getId(), Sensor.class)
+        registry.create(UHV_Sensor.getId(), Sensor.class)
             .name("Sensor Casing UHV")
             .tier(9)
             .category("MultiBlock Functional Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .register();
-        complexCasingRegistry.create(UEV_Sensor.getId(), Sensor.class)
+        registry.create(UEV_Sensor.getId(), Sensor.class)
             .name("Sensor Casing UEV")
             .tier(10)
             .category("MultiBlock Functional Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .register();
-        complexCasingRegistry.create(UIV_Sensor.getId(), Sensor.class)
+        registry.create(UIV_Sensor.getId(), Sensor.class)
             .name("Sensor Casing UIV")
             .tier(11)
             .category("MultiBlock Functional Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .register();
-        complexCasingRegistry.create(UMV_Sensor.getId(), Sensor.class)
+        registry.create(UMV_Sensor.getId(), Sensor.class)
             .name("Sensor Casing UMV")
             .tier(12)
             .category("MultiBlock Functional Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .register();
-        complexCasingRegistry.create(UXV_Sensor.getId(), Sensor.class)
+        registry.create(UXV_Sensor.getId(), Sensor.class)
             .name("Sensor Casing UXV")
             .tier(13)
             .category("MultiBlock Functional Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .register();
-        complexCasingRegistry.create(MAX_Sensor.getId(), Sensor.class)
+        registry.create(MAX_Sensor.getId(), Sensor.class)
             .name("Sensor Casing MAX")
             .tier(14)
             .category("MultiBlock Functional Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .register();
     }
 
-    private static void registerEmitterCasings(MultiTileEntityRegistry complexCasingRegistry,
-        MultiTileEntityBlock complexCasing) {
-        complexCasingRegistry.create(LV_Emitter.getId(), Emitter.class)
+    private static void registerEmitterCasings(MultiTileEntityRegistry registry, MultiTileEntityBlock casing) {
+        registry.create(LV_Emitter.getId(), Emitter.class)
             .name("Emitter Casing LV")
             .tier(1)
             .category("MultiBlock Functional Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
-        complexCasingRegistry.create(MV_Emitter.getId(), Emitter.class)
+        registry.create(MV_Emitter.getId(), Emitter.class)
             .name("Emitter Casing MV")
             .tier(2)
             .category("MultiBlock Functional Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
-        complexCasingRegistry.create(HV_Emitter.getId(), Emitter.class)
+        registry.create(HV_Emitter.getId(), Emitter.class)
             .name("Emitter Casing HV")
             .tier(3)
             .category("MultiBlock Functional Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
-        complexCasingRegistry.create(EV_Emitter.getId(), Emitter.class)
+        registry.create(EV_Emitter.getId(), Emitter.class)
             .name("Emitter Casing EV")
             .tier(4)
             .category("MultiBlock Functional Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
-        complexCasingRegistry.create(IV_Emitter.getId(), Emitter.class)
+        registry.create(IV_Emitter.getId(), Emitter.class)
             .name("Emitter Casing IV")
             .tier(5)
             .category("MultiBlock Functional Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
-        complexCasingRegistry.create(LuV_Emitter.getId(), Emitter.class)
+        registry.create(LuV_Emitter.getId(), Emitter.class)
             .name("Emitter Casing LuV")
             .tier(6)
             .category("MultiBlock Functional Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
-        complexCasingRegistry.create(ZPM_Emitter.getId(), Emitter.class)
+        registry.create(ZPM_Emitter.getId(), Emitter.class)
             .name("Emitter Casing ZPM")
             .tier(7)
             .category("MultiBlock Functional Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
-        complexCasingRegistry.create(UV_Emitter.getId(), Emitter.class)
+        registry.create(UV_Emitter.getId(), Emitter.class)
             .name("Emitter Casing UV")
             .tier(8)
             .category("MultiBlock Functional Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
-        complexCasingRegistry.create(UHV_Emitter.getId(), Emitter.class)
+        registry.create(UHV_Emitter.getId(), Emitter.class)
             .name("Emitter Casing UHV")
             .tier(9)
             .category("MultiBlock Functional Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
-        complexCasingRegistry.create(UEV_Emitter.getId(), Emitter.class)
+        registry.create(UEV_Emitter.getId(), Emitter.class)
             .name("Emitter Casing UEV")
             .tier(10)
             .category("MultiBlock Functional Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
-        complexCasingRegistry.create(UIV_Emitter.getId(), Emitter.class)
+        registry.create(UIV_Emitter.getId(), Emitter.class)
             .name("Emitter Casing UIV")
             .tier(11)
             .category("MultiBlock Functional Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
-        complexCasingRegistry.create(UMV_Emitter.getId(), Emitter.class)
+        registry.create(UMV_Emitter.getId(), Emitter.class)
             .name("Emitter Casing UMV")
             .tier(12)
             .category("MultiBlock Functional Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
-        complexCasingRegistry.create(UXV_Emitter.getId(), Emitter.class)
+        registry.create(UXV_Emitter.getId(), Emitter.class)
             .name("Emitter Casing UXV")
             .tier(13)
             .category("MultiBlock Functional Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
-        complexCasingRegistry.create(MAX_Emitter.getId(), Emitter.class)
+        registry.create(MAX_Emitter.getId(), Emitter.class)
             .name("Emitter Casing MAX")
             .tier(14)
             .category("MultiBlock Functional Casing")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
     }
 
-    private static void registerFieldGeneratorCasings(MultiTileEntityRegistry complexCasingRegistry,
-        MultiTileEntityBlock complexCasing) {
-        complexCasingRegistry.create(LV_FieldGenerator.getId(), FieldGenerator.class)
+    private static void registerFieldGeneratorCasings(MultiTileEntityRegistry registry, MultiTileEntityBlock casing) {
+        registry.create(LV_FieldGenerator.getId(), FieldGenerator.class)
             .name("Field Generator LV")
             .tier(1)
             .category("Multiblock Energy Field")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
-        complexCasingRegistry.create(MV_FieldGenerator.getId(), FieldGenerator.class)
+        registry.create(MV_FieldGenerator.getId(), FieldGenerator.class)
             .name("Field Generator MV")
             .tier(2)
             .category("Multiblock Energy Field")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
-        complexCasingRegistry.create(HV_FieldGenerator.getId(), FieldGenerator.class)
+        registry.create(HV_FieldGenerator.getId(), FieldGenerator.class)
             .name("Field Generator HV")
             .tier(3)
             .category("Multiblock Energy Field")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
-        complexCasingRegistry.create(EV_FieldGenerator.getId(), FieldGenerator.class)
+        registry.create(EV_FieldGenerator.getId(), FieldGenerator.class)
             .name("Field Generator EV")
             .tier(4)
             .category("Multiblock Energy Field")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
-        complexCasingRegistry.create(IV_FieldGenerator.getId(), FieldGenerator.class)
+        registry.create(IV_FieldGenerator.getId(), FieldGenerator.class)
             .name("Field Generator IV")
             .tier(5)
             .category("Multiblock Energy Field")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
-        complexCasingRegistry.create(LuV_FieldGenerator.getId(), FieldGenerator.class)
+        registry.create(LuV_FieldGenerator.getId(), FieldGenerator.class)
             .name("Field Generator LuV")
             .tier(6)
             .category("Multiblock Energy Field")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
-        complexCasingRegistry.create(ZPM_FieldGenerator.getId(), FieldGenerator.class)
+        registry.create(ZPM_FieldGenerator.getId(), FieldGenerator.class)
             .name("Field Generator ZPM")
             .tier(7)
             .category("Multiblock Energy Field")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
-        complexCasingRegistry.create(UV_FieldGenerator.getId(), FieldGenerator.class)
+        registry.create(UV_FieldGenerator.getId(), FieldGenerator.class)
             .name("Field Generator UV")
             .tier(8)
             .category("Multiblock Energy Field")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
-        complexCasingRegistry.create(UHV_FieldGenerator.getId(), FieldGenerator.class)
+        registry.create(UHV_FieldGenerator.getId(), FieldGenerator.class)
             .name("Field Generator UHV")
             .tier(9)
             .category("Multiblock Energy Field")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
-        complexCasingRegistry.create(UEV_FieldGenerator.getId(), FieldGenerator.class)
+        registry.create(UEV_FieldGenerator.getId(), FieldGenerator.class)
             .name("Field Generator UEV")
             .tier(10)
             .category("Multiblock Energy Field")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
-        complexCasingRegistry.create(UIV_FieldGenerator.getId(), FieldGenerator.class)
+        registry.create(UIV_FieldGenerator.getId(), FieldGenerator.class)
             .name("Field Generator UIV")
             .tier(11)
             .category("Multiblock Energy Field")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
-        complexCasingRegistry.create(UMV_FieldGenerator.getId(), FieldGenerator.class)
+        registry.create(UMV_FieldGenerator.getId(), FieldGenerator.class)
             .name("Field Generator UMV")
             .tier(12)
             .category("Multiblock Energy Field")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
-        complexCasingRegistry.create(UXV_FieldGenerator.getId(), FieldGenerator.class)
+        registry.create(UXV_FieldGenerator.getId(), FieldGenerator.class)
             .name("Field Generator UXV")
             .tier(13)
             .category("Multiblock Energy Field")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
-        complexCasingRegistry.create(MAX_FieldGenerator.getId(), FieldGenerator.class)
+        registry.create(MAX_FieldGenerator.getId(), FieldGenerator.class)
             .name("Field Generator MAX")
             .tier(14)
             .category("Multiblock Energy Field")
-            .setBlock(complexCasing)
+            .setBlock(casing)
             .texture("metalwall")
             .register();
     }
