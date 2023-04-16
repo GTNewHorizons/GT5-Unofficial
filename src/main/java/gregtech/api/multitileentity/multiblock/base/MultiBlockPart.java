@@ -678,7 +678,7 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
         if (modeSelected(ENERGY_IN, ENERGY_OUT) && facing == ForgeDirection.getOrientation(aSide)) {
             return false;
         }
-        return true;
+        return getTarget(true) != null;
     }
 
     protected void addItemInventory(Builder builder, UIBuildContext buildContext) {
