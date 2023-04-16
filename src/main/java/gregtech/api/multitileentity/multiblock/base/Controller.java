@@ -389,6 +389,7 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
         GT_Multiblock_Tooltip_Builder builder = tooltip.get(getToolTipID());
         if (builder == null) {
             builder = createTooltip();
+            tooltip.put(getToolTipID(), builder);
         }
         return builder;
     }
