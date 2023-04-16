@@ -344,7 +344,7 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
             registerFluidInventory(tankName, tankUUID, count, capacity, capacityMultiplier, Inventory.INPUT);
         }
 
-        final NBTTagList listOutputTanks = nbt.getTagList(NBT.UPGRADE_TANKS_INPUT, Constants.NBT.TAG_COMPOUND);
+        final NBTTagList listOutputTanks = nbt.getTagList(NBT.UPGRADE_TANKS_OUTPUT, Constants.NBT.TAG_COMPOUND);
         for (int i = 0; i < listOutputTanks.tagCount(); i++) {
             final NBTTagCompound nbtTank = listOutputTanks.getCompoundTagAt(i);
             String tankUUID = nbtTank.getString(NBT.UPGRADE_TANK_UUID);
