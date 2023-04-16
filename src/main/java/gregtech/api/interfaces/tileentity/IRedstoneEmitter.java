@@ -1,5 +1,7 @@
 package gregtech.api.interfaces.tileentity;
 
+import net.minecraftforge.common.util.ForgeDirection;
+
 /**
  * This File has just internal Information about the Redstone State of a TileEntity
  */
@@ -7,8 +9,11 @@ public interface IRedstoneEmitter extends IHasWorldObjectAndCoords {
 
     /**
      * gets the Redstone Level the TileEntity should emit to the given Output Side
+     *
+     * @param side the {@link ForgeDirection} side
+     * @return the Redstone Level the TileEntity
      */
-    byte getOutputRedstoneSignal(byte aSide);
+    byte getOutputRedstoneSignal(ForgeDirection side);
 
     /**
      * sets the Redstone Level the TileEntity should emit to the given Output Side
@@ -17,12 +22,12 @@ public interface IRedstoneEmitter extends IHasWorldObjectAndCoords {
      * internal Output Redstone, so that it doesnt conflict with Cover Redstone. This sets the true Redstone Output
      * Signal. Only Cover Behaviors should use it, not MetaTileEntities.
      */
-    void setOutputRedstoneSignal(byte aSide, byte aStrength);
+    void setOutputRedstoneSignal(ForgeDirection side, byte aStrength);
 
     /**
      * gets the Redstone Level the TileEntity should emit to the given Output Side
      */
-    byte getStrongOutputRedstoneSignal(byte aSide);
+    byte getStrongOutputRedstoneSignal(ForgeDirection side);
 
     /**
      * sets the Redstone Level the TileEntity should emit to the given Output Side
@@ -31,17 +36,17 @@ public interface IRedstoneEmitter extends IHasWorldObjectAndCoords {
      * internal Output Redstone, so that it doesnt conflict with Cover Redstone. This sets the true Redstone Output
      * Signal. Only Cover Behaviors should use it, not MetaTileEntities.
      */
-    void setStrongOutputRedstoneSignal(byte aSide, byte aStrength);
+    void setStrongOutputRedstoneSignal(ForgeDirection side, byte aStrength);
 
     /**
      * Gets the Output for the comparator on the given Side
      */
-    byte getComparatorValue(byte aSide);
+    byte getComparatorValue(ForgeDirection side);
 
     /**
      * Get the redstone output signal strength for a given side
      */
-    default byte getGeneralRS(byte aSide) {
+    default byte getGeneralRS(ForgeDirection side) {
         return 0;
     }
 }

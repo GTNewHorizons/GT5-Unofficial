@@ -8,6 +8,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -30,13 +31,13 @@ public class Behaviour_Plunger_Item extends Behaviour_None {
 
     @Override
     public boolean onItemUseFirst(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,
-        int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
+        int aY, int aZ, ForgeDirection side, float hitX, float hitY, float hitZ) {
         if (aWorld.isRemote) {
             return false;
         }
         TileEntity aTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if ((aTileEntity instanceof IGregTechTileEntity)) {
-            IMetaTileEntity tMetaTileEntity = ((IGregTechTileEntity) aTileEntity).getMetaTileEntity();
+        if (aTileEntity instanceof IGregTechTileEntity gtTE) {
+            IMetaTileEntity tMetaTileEntity = gtTE.getMetaTileEntity();
             if ((tMetaTileEntity instanceof IMetaTileEntityItemPipe)) {
                 for (IMetaTileEntityItemPipe tTileEntity : GT_Utility
                     .sortMapByValuesAcending(
@@ -48,13 +49,13 @@ public class Behaviour_Plunger_Item extends Behaviour_None {
                         if (tTileEntity.isValidSlot(i)) {
                             if ((tTileEntity.getStackInSlot(i) != null) && ((aPlayer.capabilities.isCreativeMode)
                                 || (((GT_MetaGenerated_Tool) aItem).doDamage(aStack, this.mCosts)))) {
-                                ItemStack tStack = tTileEntity.decrStackSize(i, 64);
+                                final ItemStack tStack = tTileEntity.decrStackSize(i, 64);
                                 if (tStack != null) {
-                                    EntityItem tEntity = new EntityItem(
+                                    final EntityItem tEntity = new EntityItem(
                                         aWorld,
-                                        ((IGregTechTileEntity) aTileEntity).getOffsetX((byte) aSide, 1) + 0.5D,
-                                        ((IGregTechTileEntity) aTileEntity).getOffsetY((byte) aSide, 1) + 0.5D,
-                                        ((IGregTechTileEntity) aTileEntity).getOffsetZ((byte) aSide, 1) + 0.5D,
+                                        gtTE.getOffsetX(side, 1) + 0.5D,
+                                        gtTE.getOffsetY(side, 1) + 0.5D,
+                                        gtTE.getOffsetZ(side, 1) + 0.5D,
                                         tStack);
                                     tEntity.motionX = 0.0D;
                                     tEntity.motionY = 0.0D;

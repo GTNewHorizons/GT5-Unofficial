@@ -19,6 +19,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
 
@@ -139,14 +140,14 @@ public abstract class GT_MetaBase_Item extends GT_Generic_Item
     }
 
     @Override
-    public boolean onItemUse(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int aSide,
-        float hitX, float hitY, float hitZ) {
+    public boolean onItemUse(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ,
+        int ordinalSide, float hitX, float hitY, float hitZ) {
         use(aStack, 0, aPlayer);
         isItemStackUsable(aStack);
         ArrayList<IItemBehaviour<GT_MetaBase_Item>> tList = mItemBehaviors.get((short) getDamage(aStack));
         try {
             if (tList != null) for (IItemBehaviour<GT_MetaBase_Item> tBehavior : tList)
-                if (tBehavior.onItemUse(this, aStack, aPlayer, aWorld, aX, aY, aZ, aSide, hitX, hitY, hitZ)) {
+                if (tBehavior.onItemUse(this, aStack, aPlayer, aWorld, aX, aY, aZ, ordinalSide, hitX, hitY, hitZ)) {
                     if (aStack.stackSize <= 0) aPlayer.destroyCurrentEquippedItem();
                     return true;
                 }
@@ -162,13 +163,23 @@ public abstract class GT_MetaBase_Item extends GT_Generic_Item
 
     @Override
     public boolean onItemUseFirst(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ,
-        int aSide, float hitX, float hitY, float hitZ) {
+        int ordinalSide, float hitX, float hitY, float hitZ) {
         use(aStack, 0, aPlayer);
         isItemStackUsable(aStack);
         ArrayList<IItemBehaviour<GT_MetaBase_Item>> tList = mItemBehaviors.get((short) getDamage(aStack));
         try {
-            if (tList != null) for (IItemBehaviour<GT_MetaBase_Item> tBehavior : tList)
-                if (tBehavior.onItemUseFirst(this, aStack, aPlayer, aWorld, aX, aY, aZ, aSide, hitX, hitY, hitZ)) {
+            if (tList != null) for (IItemBehaviour<GT_MetaBase_Item> tBehavior : tList) if (tBehavior.onItemUseFirst(
+                this,
+                aStack,
+                aPlayer,
+                aWorld,
+                aX,
+                aY,
+                aZ,
+                ForgeDirection.getOrientation(ordinalSide),
+                hitX,
+                hitY,
+                hitZ)) {
                     if (aStack.stackSize <= 0) aPlayer.destroyCurrentEquippedItem();
                     return true;
                 }

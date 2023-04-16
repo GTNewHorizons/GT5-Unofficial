@@ -8,6 +8,7 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
 
@@ -66,10 +67,10 @@ public class GT_GuiCoverTabLine extends GT_GuiTabLine {
      * Add a tab for each existing cover on this IGregTechTileEntity at creation time
      */
     private void setupTabs() {
-        for (byte tSide = 0; tSide < 6; tSide++) {
-            final ItemStack cover = tile.getCoverItemAtSide(tSide);
+        for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+            final ItemStack cover = tile.getCoverItemAtSide(side);
             if (cover != null) {
-                addCoverToTabs(tSide, cover);
+                addCoverToTabs(side, cover);
             }
         }
     }
@@ -101,26 +102,27 @@ public class GT_GuiCoverTabLine extends GT_GuiTabLine {
 
     /**
      * Add the cover on this side of the IGregTechTileEntity to the tabs
-     * 
+     *
      * @param side
      * @param cover
      */
-    private void addCoverToTabs(byte side, ItemStack cover) {
+    private void addCoverToTabs(ForgeDirection side, ItemStack cover) {
         final boolean enabled = this.tile.getCoverBehaviorAtSideNew(side)
             .hasCoverGUI();
-        this.setTab(side, cover, null, getTooltipForCoverTab(side, cover, enabled));
-        this.setTabEnabled(side, enabled);
+        final int ordinalSide = side.ordinal();
+        this.setTab(ordinalSide, cover, null, getTooltipForCoverTab(side, cover, enabled));
+        this.setTabEnabled(ordinalSide, enabled);
     }
 
     /**
      * Decorate the cover's tooltips according to the side it's on and on whether the tab is enabled or not
-     * 
+     *
      * @param side
      * @param cover
      * @param enabled
      * @return This cover tab's tooltip
      */
-    private String[] getTooltipForCoverTab(byte side, ItemStack cover, boolean enabled) {
+    private String[] getTooltipForCoverTab(ForgeDirection side, ItemStack cover, boolean enabled) {
         final List<String> tooltip = cover.getTooltip(Minecraft.getMinecraft().thePlayer, true);
         tooltip.set(
             0,
@@ -132,16 +134,17 @@ public class GT_GuiCoverTabLine extends GT_GuiTabLine {
 
     /**
      * Get the translated name for a side of the IGregTechTileEntity
-     * 
+     *
      * @param side
      * @return translated name for a side of the IGregTechTileEntity
      */
-    private String getSideDescription(byte side) {
-        if (side < SIDES.length) {
-            if (this.translatedSides[side] == null) {
-                this.translatedSides[side] = StatCollector.translateToLocal(SIDES[side]);
+    private String getSideDescription(ForgeDirection side) {
+        final int ordinalSide = side.ordinal();
+        if (ordinalSide < SIDES.length) {
+            if (this.translatedSides[ordinalSide] == null) {
+                this.translatedSides[ordinalSide] = StatCollector.translateToLocal(SIDES[ordinalSide]);
             }
-            return this.translatedSides[side];
+            return this.translatedSides[ordinalSide];
         }
         return null;
     }

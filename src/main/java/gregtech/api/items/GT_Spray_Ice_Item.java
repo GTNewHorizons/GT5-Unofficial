@@ -52,14 +52,14 @@ public class GT_Spray_Ice_Item extends GT_Tool_Item {
 
     @Override
     public boolean onItemUseFirst(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ,
-        int aSide, float hitX, float hitY, float hitZ) {
-        super.onItemUseFirst(aStack, aPlayer, aWorld, aX, aY, aZ, aSide, hitX, hitY, hitZ);
+        int ordinalSide, float hitX, float hitY, float hitZ) {
+        super.onItemUseFirst(aStack, aPlayer, aWorld, aX, aY, aZ, ordinalSide, hitX, hitY, hitZ);
         if (aWorld.isRemote) {
             return false;
         }
-        aX += ForgeDirection.getOrientation(aSide).offsetX;
-        aY += ForgeDirection.getOrientation(aSide).offsetY;
-        aZ += ForgeDirection.getOrientation(aSide).offsetZ;
+        aX += ForgeDirection.getOrientation(ordinalSide).offsetX;
+        aY += ForgeDirection.getOrientation(ordinalSide).offsetY;
+        aZ += ForgeDirection.getOrientation(ordinalSide).offsetZ;
         Block aBlock = aWorld.getBlock(aX, aY, aZ);
         if (aBlock == null) return false;
         byte aMeta = (byte) aWorld.getBlockMetadata(aX, aY, aZ);

@@ -140,7 +140,7 @@ public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements
     }
 
     @Override
-    public boolean onBlockActivated(World aWorld, int aX, int aY, int aZ, EntityPlayer aPlayer, int aSide,
+    public boolean onBlockActivated(World aWorld, int aX, int aY, int aZ, EntityPlayer aPlayer, int ordinalSide,
         float aOffsetX, float aOffsetY, float aOffsetZ) {
         if (!aPlayer.isSneaking() || !aPlayer.capabilities.isCreativeMode) {
             return false;
@@ -233,13 +233,13 @@ public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements
 
     @Override
     @SideOnly(Side.CLIENT)
-    public IIcon getIcon(IBlockAccess aIBlockAccess, int aX, int aY, int aZ, int aSide) {
+    public IIcon getIcon(IBlockAccess aIBlockAccess, int aX, int aY, int aZ, int ordinalSide) {
         return Blocks.stone.getIcon(0, 0);
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int aSide, int aMeta) {
+    public IIcon getIcon(int ordinalSide, int aMeta) {
         return Blocks.stone.getIcon(0, 0);
     }
 

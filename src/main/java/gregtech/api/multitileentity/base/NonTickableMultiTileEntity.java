@@ -4,6 +4,7 @@ import static gregtech.api.enums.GT_Values.NW;
 
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.Packet;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.net.GT_Packet_SendCoverData;
 import gregtech.api.util.ISerializableObject;
@@ -34,13 +35,13 @@ public abstract class NonTickableMultiTileEntity extends MultiTileEntity {
     }
 
     @Override
-    public void issueCoverUpdate(byte aSide) {
+    public void issueCoverUpdate(ForgeDirection side) {
         if (!mConstructed) {
             // Queue these up and send them with the description packet
-            super.issueCoverUpdate(aSide);
+            super.issueCoverUpdate(side);
         } else {
             // Otherwise, send the data right away
-            final CoverInfo coverInfo = getCoverInfoAtSide(aSide);
+            final CoverInfo coverInfo = getCoverInfoAtSide(side);
             NW.sendPacketToAllPlayersInRange(worldObj, new GT_Packet_SendCoverData(coverInfo, this), xCoord, zCoord);
 
             // Just in case
@@ -49,9 +50,9 @@ public abstract class NonTickableMultiTileEntity extends MultiTileEntity {
     }
 
     @Override
-    public void receiveCoverData(byte aCoverSide, int aCoverID, ISerializableObject aCoverData,
+    public void receiveCoverData(ForgeDirection coverSide, int aCoverID, ISerializableObject aCoverData,
         EntityPlayerMP aPlayer) {
-        super.receiveCoverData(aCoverSide, aCoverID, aCoverData, aPlayer);
+        super.receiveCoverData(coverSide, aCoverID, aCoverData, aPlayer);
         // We don't get ticked so issue the texture update right away
         issueTextureUpdate();
     }

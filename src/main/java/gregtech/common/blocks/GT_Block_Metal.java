@@ -44,7 +44,7 @@ public class GT_Block_Metal extends GT_Block_Storage {
     }
 
     @Override
-    public IIcon getIcon(int aSide, int aMeta) {
+    public IIcon getIcon(int ordinalSide, int aMeta) {
         if ((aMeta >= 0) && (aMeta < 16) && aMeta < mMats.length) {
             return mBlockIcons[aMeta].getIcon();
         }

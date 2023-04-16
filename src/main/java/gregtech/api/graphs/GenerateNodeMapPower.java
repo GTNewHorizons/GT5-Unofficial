@@ -27,7 +27,7 @@ import ic2.api.energy.tile.IEnergySink;
 public class GenerateNodeMapPower extends GenerateNodeMap {
 
     public GenerateNodeMapPower(BaseMetaPipeEntity aTileEntity) {
-        generateNode(aTileEntity, null, 1, null, -1, new ArrayList<>(), new HashSet<>());
+        generateNode(aTileEntity, null, 1, null, ForgeDirection.UNKNOWN, new ArrayList<>(), new HashSet<>());
     }
 
     @Override
@@ -37,27 +37,27 @@ public class GenerateNodeMapPower extends GenerateNodeMap {
     }
 
     @Override
-    protected boolean addConsumer(TileEntity aTileEntity, byte aSide, int aNodeValue,
+    protected boolean addConsumer(TileEntity aTileEntity, ForgeDirection side, int aNodeValue,
         ArrayList<ConsumerNode> aConsumers) {
         if (aTileEntity instanceof BaseMetaTileEntity tBaseTileEntity) {
-            if (tBaseTileEntity.inputEnergyFrom(aSide, false)) {
-                ConsumerNode tConsumerNode = new NodeGTBaseMetaTile(aNodeValue, tBaseTileEntity, aSide, aConsumers);
+            if (tBaseTileEntity.inputEnergyFrom(side, false)) {
+                ConsumerNode tConsumerNode = new NodeGTBaseMetaTile(aNodeValue, tBaseTileEntity, side, aConsumers);
                 aConsumers.add(tConsumerNode);
                 return true;
             }
 
         } else if (aTileEntity instanceof IEnergyConnected tTileEntity) {
-            if (tTileEntity.inputEnergyFrom(aSide, false)) {
-                ConsumerNode tConsumerNode = new NodeEnergyConnected(aNodeValue, tTileEntity, aSide, aConsumers);
+            if (tTileEntity.inputEnergyFrom(side, false)) {
+                ConsumerNode tConsumerNode = new NodeEnergyConnected(aNodeValue, tTileEntity, side, aConsumers);
                 aConsumers.add(tConsumerNode);
                 return true;
             }
-        } else if (aTileEntity instanceof IEnergySink) {
+        } else if (aTileEntity instanceof IEnergySink sink) {
             // ic2 wants the tilentity next to it of that side not going to add a bunch of arguments just for ic2
             // crossborder checks to not load chuncks just to make sure
-            int dX = aTileEntity.xCoord + ForgeDirection.getOrientation(aSide).offsetX;
-            int dY = aTileEntity.yCoord + ForgeDirection.getOrientation(aSide).offsetY;
-            int dZ = aTileEntity.zCoord + ForgeDirection.getOrientation(aSide).offsetZ;
+            int dX = aTileEntity.xCoord + side.offsetX;
+            int dY = aTileEntity.yCoord + side.offsetY;
+            int dZ = aTileEntity.zCoord + side.offsetZ;
             boolean crossesChuncks = dX >> 4 != aTileEntity.xCoord >> 4 || dZ >> 4 != aTileEntity.zCoord >> 4;
             TileEntity tNextTo = null;
             if (!crossesChuncks || !aTileEntity.getWorldObj()
@@ -65,21 +65,17 @@ public class GenerateNodeMapPower extends GenerateNodeMap {
                 tNextTo = aTileEntity.getWorldObj()
                     .getTileEntity(dX, dY, dZ);
 
-            if (((IEnergySink) aTileEntity).acceptsEnergyFrom(tNextTo, ForgeDirection.getOrientation(aSide))) {
+            if (sink.acceptsEnergyFrom(tNextTo, side)) {
                 ConsumerNode tConsumerNode = new NodeEnergySink(
                     aNodeValue,
                     (IEnergySink) aTileEntity,
-                    aSide,
+                    side,
                     aConsumers);
                 aConsumers.add(tConsumerNode);
                 return true;
             }
-        } else if (GregTech_API.mOutputRF && aTileEntity instanceof IEnergyReceiver) {
-            ConsumerNode tConsumerNode = new NodeEnergyReceiver(
-                aNodeValue,
-                (IEnergyReceiver) aTileEntity,
-                aSide,
-                aConsumers);
+        } else if (GregTech_API.mOutputRF && aTileEntity instanceof IEnergyReceiver receiver) {
+            ConsumerNode tConsumerNode = new NodeEnergyReceiver(aNodeValue, receiver, side, aConsumers);
             aConsumers.add(tConsumerNode);
             return true;
         }
@@ -93,15 +89,16 @@ public class GenerateNodeMapPower extends GenerateNodeMap {
 
     // used to apply voltage on dead ends
     @Override
-    protected Node getEmptyNode(int aNodeValue, byte aSide, TileEntity aTileEntity,
+    protected Node getEmptyNode(int aNodeValue, ForgeDirection side, TileEntity aTileEntity,
         ArrayList<ConsumerNode> aConsumers) {
-        ConsumerNode tNode = new EmptyPowerConsumer(aNodeValue, aTileEntity, aSide, aConsumers);
+        ConsumerNode tNode = new EmptyPowerConsumer(aNodeValue, aTileEntity, side, aConsumers);
         aConsumers.add(tNode);
         return tNode;
     }
 
     @Override
-    protected Node getPipeNode(int aNodeValue, byte aSide, TileEntity aTileEntity, ArrayList<ConsumerNode> aConsumers) {
+    protected Node getPipeNode(int aNodeValue, ForgeDirection side, TileEntity aTileEntity,
+        ArrayList<ConsumerNode> aConsumers) {
         return new PowerNode(aNodeValue, aTileEntity, aConsumers);
     }
 }

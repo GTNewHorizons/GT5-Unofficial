@@ -8,6 +8,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.IFluidHandler;
 
 /**
@@ -43,91 +44,91 @@ public interface IHasWorldObjectAndCoords {
 
     TileEntity getTileEntityOffset(int aX, int aY, int aZ);
 
-    TileEntity getTileEntityAtSide(byte aSide);
+    TileEntity getTileEntityAtSide(ForgeDirection side);
 
-    TileEntity getTileEntityAtSideAndDistance(byte aSide, int aDistance);
+    TileEntity getTileEntityAtSideAndDistance(ForgeDirection side, int aDistance);
 
     IInventory getIInventory(int aX, int aY, int aZ);
 
     IInventory getIInventoryOffset(int aX, int aY, int aZ);
 
-    IInventory getIInventoryAtSide(byte aSide);
+    IInventory getIInventoryAtSide(ForgeDirection side);
 
-    IInventory getIInventoryAtSideAndDistance(byte aSide, int aDistance);
+    IInventory getIInventoryAtSideAndDistance(ForgeDirection side, int aDistance);
 
     IFluidHandler getITankContainer(int aX, int aY, int aZ);
 
     IFluidHandler getITankContainerOffset(int aX, int aY, int aZ);
 
-    IFluidHandler getITankContainerAtSide(byte aSide);
+    IFluidHandler getITankContainerAtSide(ForgeDirection side);
 
-    IFluidHandler getITankContainerAtSideAndDistance(byte aSide, int aDistance);
+    IFluidHandler getITankContainerAtSideAndDistance(ForgeDirection side, int aDistance);
 
     IGregTechTileEntity getIGregTechTileEntity(int aX, int aY, int aZ);
 
     IGregTechTileEntity getIGregTechTileEntityOffset(int aX, int aY, int aZ);
 
-    IGregTechTileEntity getIGregTechTileEntityAtSide(byte aSide);
+    IGregTechTileEntity getIGregTechTileEntityAtSide(ForgeDirection side);
 
-    IGregTechTileEntity getIGregTechTileEntityAtSideAndDistance(byte aSide, int aDistance);
+    IGregTechTileEntity getIGregTechTileEntityAtSideAndDistance(ForgeDirection side, int aDistance);
 
     Block getBlock(int aX, int aY, int aZ);
 
     Block getBlockOffset(int aX, int aY, int aZ);
 
-    Block getBlockAtSide(byte aSide);
+    Block getBlockAtSide(ForgeDirection side);
 
-    Block getBlockAtSideAndDistance(byte aSide, int aDistance);
+    Block getBlockAtSideAndDistance(ForgeDirection side, int aDistance);
 
     byte getMetaID(int aX, int aY, int aZ);
 
     byte getMetaIDOffset(int aX, int aY, int aZ);
 
-    byte getMetaIDAtSide(byte aSide);
+    byte getMetaIDAtSide(ForgeDirection side);
 
-    byte getMetaIDAtSideAndDistance(byte aSide, int aDistance);
+    byte getMetaIDAtSideAndDistance(ForgeDirection side, int aDistance);
 
     byte getLightLevel(int aX, int aY, int aZ);
 
     byte getLightLevelOffset(int aX, int aY, int aZ);
 
-    byte getLightLevelAtSide(byte aSide);
+    byte getLightLevelAtSide(ForgeDirection side);
 
-    byte getLightLevelAtSideAndDistance(byte aSide, int aDistance);
+    byte getLightLevelAtSideAndDistance(ForgeDirection side, int aDistance);
 
     boolean getOpacity(int aX, int aY, int aZ);
 
     boolean getOpacityOffset(int aX, int aY, int aZ);
 
-    boolean getOpacityAtSide(byte aSide);
+    boolean getOpacityAtSide(ForgeDirection side);
 
-    boolean getOpacityAtSideAndDistance(byte aSide, int aDistance);
+    boolean getOpacityAtSideAndDistance(ForgeDirection side, int aDistance);
 
     boolean getSky(int aX, int aY, int aZ);
 
     boolean getSkyOffset(int aX, int aY, int aZ);
 
-    boolean getSkyAtSide(byte aSide);
+    boolean getSkyAtSide(ForgeDirection side);
 
-    boolean getSkyAtSideAndDistance(byte aSide, int aDistance);
+    boolean getSkyAtSideAndDistance(ForgeDirection side, int aDistance);
 
     boolean getAir(int aX, int aY, int aZ);
 
     boolean getAirOffset(int aX, int aY, int aZ);
 
-    boolean getAirAtSide(byte aSide);
+    boolean getAirAtSide(ForgeDirection side);
 
-    boolean getAirAtSideAndDistance(byte aSide, int aDistance);
+    boolean getAirAtSideAndDistance(ForgeDirection side, int aDistance);
 
     BiomeGenBase getBiome();
 
     BiomeGenBase getBiome(int aX, int aZ);
 
-    int getOffsetX(byte aSide, int aMultiplier);
+    int getOffsetX(ForgeDirection side, int aMultiplier);
 
-    short getOffsetY(byte aSide, int aMultiplier);
+    short getOffsetY(ForgeDirection side, int aMultiplier);
 
-    int getOffsetZ(byte aSide, int aMultiplier);
+    int getOffsetZ(ForgeDirection side, int aMultiplier);
 
     /**
      * Checks if the TileEntity is Invalid or Unloaded. Stupid Minecraft cannot do that btw.
@@ -168,7 +169,7 @@ public interface IHasWorldObjectAndCoords {
 
     /**
      * Opens the GUI with this ID of this MetaTileEntity
-     * 
+     *
      * @deprecated Use ModularUI
      */
     @Deprecated
@@ -178,7 +179,7 @@ public interface IHasWorldObjectAndCoords {
 
     /**
      * Opens the GUI with the ID = 0 of this TileEntity
-     * 
+     *
      * @deprecated Use ModularUI
      */
     @Deprecated

@@ -29,13 +29,13 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Utility;
 
 public class GT_MetaTileEntity_LongDistancePipelineItem extends GT_MetaTileEntity_LongDistancePipelineBase {
 
@@ -149,12 +149,13 @@ public class GT_MetaTileEntity_LongDistancePipelineItem extends GT_MetaTileEntit
     //
 
     @Override
-    public int[] getAccessibleSlotsFromSide(int aSide) {
+    public int[] getAccessibleSlotsFromSide(int ordinalSide) {
         if (checkTarget()) {
             final IGregTechTileEntity tTile = mTarget.getBaseMetaTileEntity();
             final IInventory iInventory = getInventory();
-            if (iInventory instanceof ISidedInventory)
-                return ((ISidedInventory) iInventory).getAccessibleSlotsFromSide(tTile.getFrontFacing());
+            if (iInventory instanceof ISidedInventory inv) return inv.getAccessibleSlotsFromSide(
+                tTile.getFrontFacing()
+                    .ordinal());
             if (iInventory != null) {
                 final int[] tReturn = new int[iInventory.getSizeInventory()];
                 for (int i = 0; i < tReturn.length; i++) tReturn[i] = i;
@@ -166,19 +167,22 @@ public class GT_MetaTileEntity_LongDistancePipelineItem extends GT_MetaTileEntit
     }
 
     @Override
-    public boolean canInsertItem(int aSlot, ItemStack aStack, int aSide) {
+    public boolean canInsertItem(int aSlot, ItemStack aStack, int ordinalSide) {
         if (checkTarget()) {
             final IGregTechTileEntity tTile = mTarget.getBaseMetaTileEntity();
             IInventory iInventory = getInventory();
-            if (iInventory instanceof ISidedInventory)
-                return ((ISidedInventory) iInventory).canInsertItem(aSlot, aStack, tTile.getFrontFacing());
+            if (iInventory instanceof ISidedInventory iSidedInventory) return iSidedInventory.canInsertItem(
+                aSlot,
+                aStack,
+                tTile.getFrontFacing()
+                    .ordinal());
             return iInventory != null;
         }
         return false;
     }
 
     @Override
-    public boolean canExtractItem(int aSlot, ItemStack aStack, int aSide) {
+    public boolean canExtractItem(int aSlot, ItemStack aStack, int ordinalSide) {
         return false;
     }
 
@@ -188,13 +192,13 @@ public class GT_MetaTileEntity_LongDistancePipelineItem extends GT_MetaTileEntit
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-        boolean aActive, boolean aRedstone) {
-        if (aSide == aFacing) return new ITexture[] { MACHINE_CASINGS[mTier][aColorIndex + 1],
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side,
+        ForgeDirection facingDirection, int colorIndex, boolean aActive, boolean redstoneLevel) {
+        if (side == facingDirection) return new ITexture[] { MACHINE_CASINGS[mTier][colorIndex + 1],
             TextureFactory.of(OVERLAY_PIPELINE_ITEM_FRONT) };
-        else if (aSide == GT_Utility.getOppositeSide(aFacing)) return new ITexture[] {
-            MACHINE_CASINGS[mTier][aColorIndex + 1], TextureFactory.of(OVERLAY_PIPELINE_ITEM_BACK) };
-        else return new ITexture[] { MACHINE_CASINGS[mTier][aColorIndex + 1],
+        else if (side == facingDirection.getOpposite()) return new ITexture[] { MACHINE_CASINGS[mTier][colorIndex + 1],
+            TextureFactory.of(OVERLAY_PIPELINE_ITEM_BACK) };
+        else return new ITexture[] { MACHINE_CASINGS[mTier][colorIndex + 1],
             TextureFactory.of(OVERLAY_PIPELINE_ITEM_SIDE), TextureFactory.builder()
                 .addIcon(OVERLAY_PIPELINE_ITEM_SIDE_GLOW)
                 .glow()

@@ -54,8 +54,8 @@ public class GT_MetaTileEntity_DieselGenerator extends GT_MetaTileEntity_BasicGe
     }
 
     @Override
-    public boolean isOutputFacing(byte aSide) {
-        return aSide == getBaseMetaTileEntity().getFrontFacing();
+    public boolean isOutputFacing(ForgeDirection side) {
+        return side == getBaseMetaTileEntity().getFrontFacing();
     }
 
     @Override
@@ -124,15 +124,13 @@ public class GT_MetaTileEntity_DieselGenerator extends GT_MetaTileEntity_BasicGe
     public void onRandomDisplayTick(IGregTechTileEntity aBaseMetaTileEntity) {
         if (aBaseMetaTileEntity.isActive()) {
 
-            final byte topFacing = (byte) ForgeDirection.UP.ordinal();
+            if (aBaseMetaTileEntity.getCoverIDAtSide(ForgeDirection.UP) == 0
+                && !aBaseMetaTileEntity.getOpacityAtSide(ForgeDirection.UP)) {
 
-            if (aBaseMetaTileEntity.getCoverIDAtSide(topFacing) == 0
-                && !aBaseMetaTileEntity.getOpacityAtSide(topFacing)) {
-
-                final double x = aBaseMetaTileEntity.getOffsetX(topFacing, 1) + 2D / 16D
+                final double x = aBaseMetaTileEntity.getOffsetX(ForgeDirection.UP, 1) + 2D / 16D
                     + XSTR_INSTANCE.nextFloat() * 14D / 16D;
-                final double y = aBaseMetaTileEntity.getOffsetY(topFacing, 1) + 1D / 32D;
-                final double z = aBaseMetaTileEntity.getOffsetZ(topFacing, 1) + 2D / 16D
+                final double y = aBaseMetaTileEntity.getOffsetY(ForgeDirection.UP, 1) + 1D / 32D;
+                final double z = aBaseMetaTileEntity.getOffsetZ(ForgeDirection.UP, 1) + 2D / 16D
                     + XSTR_INSTANCE.nextFloat() * 14D / 16D;
 
                 new ParticleEventBuilder().setMotion(0D, 0D, 0D)
