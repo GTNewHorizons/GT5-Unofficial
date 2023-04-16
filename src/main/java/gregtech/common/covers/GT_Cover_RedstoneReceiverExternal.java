@@ -1,5 +1,7 @@
 package gregtech.common.covers;
 
+import net.minecraftforge.common.util.ForgeDirection;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
@@ -19,29 +21,29 @@ public class GT_Cover_RedstoneReceiverExternal extends GT_Cover_RedstoneWireless
     }
 
     @Override
-    public boolean isRedstoneSensitive(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
+    public boolean isRedstoneSensitive(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
         long aTimer) {
         return false;
     }
 
     @Override
-    public int doCoverThings(byte aSide, byte aInputRedstone, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
-        long aTimer) {
+    public int doCoverThings(ForgeDirection side, byte aInputRedstone, int aCoverID, int aCoverVariable,
+        ICoverable aTileEntity, long aTimer) {
         aTileEntity.setOutputRedstoneSignal(
-            aSide,
+            side,
             GregTech_API.sWirelessRedstone.get(aCoverVariable) == null ? 0
                 : GregTech_API.sWirelessRedstone.get(aCoverVariable));
         return aCoverVariable;
     }
 
     @Override
-    public boolean manipulatesSidedRedstoneOutput(byte aSide, int aCoverID, int aCoverVariable,
+    public boolean manipulatesSidedRedstoneOutput(ForgeDirection side, int aCoverID, int aCoverVariable,
         ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    public int getTickRate(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public int getTickRate(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
         return 1;
     }
 }

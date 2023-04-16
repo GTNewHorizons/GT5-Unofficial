@@ -1,12 +1,11 @@
 package gregtech.api.multitileentity.multiblock.base;
 
-import static gregtech.api.enums.GT_Values.ALL_VALID_SIDES;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.multitileentity.interfaces.IMultiBlockController;
 
@@ -67,7 +66,7 @@ public class WallShareablePart extends MultiBlockPart {
 
     @Override
     public boolean breakBlock() {
-        for (ChunkCoordinates coordinates : targetPositions) {
+        for (final ChunkCoordinates coordinates : targetPositions) {
             IMultiBlockController target = getTarget(coordinates, false);
             if (target == null) {
                 continue;
@@ -79,13 +78,13 @@ public class WallShareablePart extends MultiBlockPart {
 
     @Override
     public void onBlockAdded() {
-        for (byte tSide : ALL_VALID_SIDES) {
-            final TileEntity te = getTileEntityAtSide(tSide);
-            if (te instanceof MultiBlockPart) {
-                final IMultiBlockController tController = ((MultiBlockPart) te).getTarget(false);
+        for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+            final TileEntity te = getTileEntityAtSide(side);
+            if (te instanceof MultiBlockPart part) {
+                final IMultiBlockController tController = part.getTarget(false);
                 if (tController != null) tController.onStructureChange();
-            } else if (te instanceof IMultiBlockController) {
-                ((IMultiBlockController) te).onStructureChange();
+            } else if (te instanceof IMultiBlockController controller) {
+                controller.onStructureChange();
             }
         }
     }

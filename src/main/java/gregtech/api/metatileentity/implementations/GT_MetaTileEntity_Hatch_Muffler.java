@@ -86,12 +86,14 @@ public class GT_MetaTileEntity_Hatch_Muffler extends GT_MetaTileEntity_Hatch {
     }
 
     @Override
-    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
+        ItemStack aStack) {
         return false;
     }
 
     @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
+        ItemStack aStack) {
         return false;
     }
 
@@ -118,8 +120,8 @@ public class GT_MetaTileEntity_Hatch_Muffler extends GT_MetaTileEntity_Hatch {
     }
 
     @Override
-    public boolean isFacingValid(byte aFacing) {
-        return facings[aFacing];
+    public boolean isFacingValid(ForgeDirection facing) {
+        return facings[facing.ordinal()];
     }
 
     @Override
@@ -144,18 +146,18 @@ public class GT_MetaTileEntity_Hatch_Muffler extends GT_MetaTileEntity_Hatch {
             chk2 = chk3 = false;
         }
 
-        IGregTechTileEntity aMuffler = this.getBaseMetaTileEntity();
-        ForgeDirection aDir = ForgeDirection.getOrientation(aMuffler.getFrontFacing());
-        float xPos = aDir.offsetX * 0.76F + aMuffler.getXCoord() + 0.25F;
-        float yPos = aDir.offsetY * 0.76F + aMuffler.getYCoord() + 0.25F;
-        float zPos = aDir.offsetZ * 0.76F + aMuffler.getZCoord() + 0.25F;
+        final IGregTechTileEntity aMuffler = this.getBaseMetaTileEntity();
+        final ForgeDirection aDir = aMuffler.getFrontFacing();
+        final float xPos = aDir.offsetX * 0.76F + aMuffler.getXCoord() + 0.25F;
+        final float yPos = aDir.offsetY * 0.76F + aMuffler.getYCoord() + 0.25F;
+        final float zPos = aDir.offsetZ * 0.76F + aMuffler.getZCoord() + 0.25F;
 
-        float ySpd = aDir.offsetY * 0.1F + 0.2F + 0.1F * XSTR_INSTANCE.nextFloat();
-        float xSpd;
-        float zSpd;
+        final float ySpd = aDir.offsetY * 0.1F + 0.2F + 0.1F * XSTR_INSTANCE.nextFloat();
+        final float xSpd;
+        final float zSpd;
 
         if (aDir.offsetY == -1) {
-            float temp = XSTR_INSTANCE.nextFloat() * 2 * (float) Math.PI;
+            final float temp = XSTR_INSTANCE.nextFloat() * 2 * (float) Math.PI;
             xSpd = (float) Math.sin(temp) * 0.1F;
             zSpd = (float) Math.cos(temp) * 0.1F;
         } else {
@@ -163,7 +165,7 @@ public class GT_MetaTileEntity_Hatch_Muffler extends GT_MetaTileEntity_Hatch {
             zSpd = aDir.offsetZ * (0.1F + 0.2F * XSTR_INSTANCE.nextFloat());
         }
 
-        WorldSpawnedEventBuilder.ParticleEventBuilder events = new WorldSpawnedEventBuilder.ParticleEventBuilder()
+        final WorldSpawnedEventBuilder.ParticleEventBuilder events = new WorldSpawnedEventBuilder.ParticleEventBuilder()
             .setIdentifier(name)
             .setWorld(aWorld)
             .setMotion(xSpd, ySpd, zSpd);

@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.NoSuchElementException;
 
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.GregTech_API;
@@ -179,9 +180,9 @@ public class GT_MetaTileEntity_Replicator extends GT_MetaTileEntity_BasicMachine
     }
 
     @Override
-    protected boolean allowPutStackValidated(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide,
+    protected boolean allowPutStackValidated(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
-        return super.allowPutStackValidated(aBaseMetaTileEntity, aIndex, aSide, aStack)
+        return super.allowPutStackValidated(aBaseMetaTileEntity, aIndex, side, aStack)
             && ItemList.Cell_Empty.isStackEqual(aStack);
     }
 

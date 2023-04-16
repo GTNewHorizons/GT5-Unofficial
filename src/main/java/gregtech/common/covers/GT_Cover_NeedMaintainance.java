@@ -2,6 +2,7 @@ package gregtech.common.covers;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -41,22 +42,22 @@ public class GT_Cover_NeedMaintainance extends GT_CoverBehavior {
     }
 
     @Override
-    public boolean isRedstoneSensitive(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
+    public boolean isRedstoneSensitive(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
         long aTimer) {
         return false;
     }
 
     @Override
-    public int doCoverThings(byte aSide, byte aInputRedstone, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
-        long aTimer) {
+    public int doCoverThings(ForgeDirection side, byte aInputRedstone, int aCoverID, int aCoverVariable,
+        ICoverable aTileEntity, long aTimer) {
         boolean needsRepair = false;
         if (aTileEntity instanceof IGregTechTileEntity tTileEntity) {
-            IMetaTileEntity mTileEntity = tTileEntity.getMetaTileEntity();
+            final IMetaTileEntity mTileEntity = tTileEntity.getMetaTileEntity();
             if (mTileEntity instanceof GT_MetaTileEntity_MultiBlockBase multi) {
-                int ideal = multi.getIdealStatus();
-                int real = multi.getRepairStatus();
-                ItemStack tRotor = multi.getRealInventory()[1];
-                int coverVar = aCoverVariable >>> 1;
+                final int ideal = multi.getIdealStatus();
+                final int real = multi.getRepairStatus();
+                final ItemStack tRotor = multi.getRealInventory()[1];
+                final int coverVar = aCoverVariable >>> 1;
                 if (coverVar < 5) {
                     if (ideal - real > coverVar) needsRepair = true;
                 } else if (coverVar == 5 || coverVar == 6) {
@@ -82,13 +83,13 @@ public class GT_Cover_NeedMaintainance extends GT_CoverBehavior {
             needsRepair = !needsRepair;
         }
 
-        aTileEntity.setOutputRedstoneSignal(aSide, (byte) (needsRepair ? 0 : 15));
-        aTileEntity.setOutputRedstoneSignal(GT_Utility.getOppositeSide(aSide), (byte) (needsRepair ? 0 : 15));
+        aTileEntity.setOutputRedstoneSignal(side, (byte) (needsRepair ? 0 : 15));
+        aTileEntity.setOutputRedstoneSignal(side.getOpposite(), (byte) (needsRepair ? 0 : 15));
         return aCoverVariable;
     }
 
     @Override
-    public int onCoverScrewdriverclick(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
+    public int onCoverScrewdriverclick(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
         EntityPlayer aPlayer, float aX, float aY, float aZ) {
         aCoverVariable = (aCoverVariable + (aPlayer.isSneaking() ? -1 : 1)) % 14;
         if (aCoverVariable < 0) {
@@ -126,43 +127,47 @@ public class GT_Cover_NeedMaintainance extends GT_CoverBehavior {
     }
 
     @Override
-    public boolean letsEnergyIn(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public boolean letsEnergyIn(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    public boolean letsEnergyOut(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public boolean letsEnergyOut(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    public boolean letsFluidIn(byte aSide, int aCoverID, int aCoverVariable, Fluid aFluid, ICoverable aTileEntity) {
-        return true;
-    }
-
-    @Override
-    public boolean letsFluidOut(byte aSide, int aCoverID, int aCoverVariable, Fluid aFluid, ICoverable aTileEntity) {
-        return true;
-    }
-
-    @Override
-    public boolean letsItemsIn(byte aSide, int aCoverID, int aCoverVariable, int aSlot, ICoverable aTileEntity) {
-        return true;
-    }
-
-    @Override
-    public boolean letsItemsOut(byte aSide, int aCoverID, int aCoverVariable, int aSlot, ICoverable aTileEntity) {
-        return true;
-    }
-
-    @Override
-    public boolean manipulatesSidedRedstoneOutput(byte aSide, int aCoverID, int aCoverVariable,
+    public boolean letsFluidIn(ForgeDirection side, int aCoverID, int aCoverVariable, Fluid aFluid,
         ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    public int getTickRate(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public boolean letsFluidOut(ForgeDirection side, int aCoverID, int aCoverVariable, Fluid aFluid,
+        ICoverable aTileEntity) {
+        return true;
+    }
+
+    @Override
+    public boolean letsItemsIn(ForgeDirection side, int aCoverID, int aCoverVariable, int aSlot,
+        ICoverable aTileEntity) {
+        return true;
+    }
+
+    @Override
+    public boolean letsItemsOut(ForgeDirection side, int aCoverID, int aCoverVariable, int aSlot,
+        ICoverable aTileEntity) {
+        return true;
+    }
+
+    @Override
+    public boolean manipulatesSidedRedstoneOutput(ForgeDirection side, int aCoverID, int aCoverVariable,
+        ICoverable aTileEntity) {
+        return true;
+    }
+
+    @Override
+    public int getTickRate(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
         return 60;
     }
 

@@ -385,10 +385,10 @@ public class GT_MetaTileEntity_PCBFactory extends
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-        boolean aActive, boolean aRedstone) {
-        if (aSide == aFacing) {
-            if (aActive)
+    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
+        ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
+        if (sideDirection == facingDirection) {
+            if (active)
                 return new ITexture[] {
                     BlockIcons.getCasingTextureForId(
                         getTier() < 3 ? GT_Utility.getCasingTextureIndex(GregTech_API.sBlockCasings8, 11)
@@ -854,7 +854,7 @@ public class GT_MetaTileEntity_PCBFactory extends
     }
 
     @Override
-    public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         inputSeparation = !inputSeparation;
         GT_Utility.sendChatToPlayer(
             aPlayer,

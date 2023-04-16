@@ -16,6 +16,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.ChunkPosition;
 import net.minecraftforge.common.util.FakePlayer;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizons.modularui.api.drawable.FallbackableUITexture;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
@@ -152,9 +153,9 @@ public class GT_MetaTileEntity_Miner extends GT_MetaTileEntity_BasicMachine
     }
 
     @Override
-    protected boolean allowPutStackValidated(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide,
+    protected boolean allowPutStackValidated(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
-        return super.allowPutStackValidated(aBaseMetaTileEntity, aIndex, aSide, aStack) //
+        return super.allowPutStackValidated(aBaseMetaTileEntity, aIndex, side, aStack) //
             && aStack.getItem() == GT_DrillingLogicDelegate.MINING_PIPE_STACK.getItem();
     }
 
@@ -169,9 +170,9 @@ public class GT_MetaTileEntity_Miner extends GT_MetaTileEntity_BasicMachine
     }
 
     @Override
-    public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
-        if (aSide != getBaseMetaTileEntity().getFrontFacing() && aSide != mMainFacing) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ);
+        if (side != getBaseMetaTileEntity().getFrontFacing() && side != mMainFacing) {
             if (aPlayer.isSneaking()) {
                 if (radiusConfig >= 0) {
                     radiusConfig--;

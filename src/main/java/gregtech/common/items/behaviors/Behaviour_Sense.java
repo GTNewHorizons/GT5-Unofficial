@@ -6,6 +6,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.items.GT_MetaBase_Item;
 import gregtech.api.items.GT_MetaGenerated_Tool;
@@ -24,7 +25,7 @@ public class Behaviour_Sense extends Behaviour_None {
 
     @Override
     public boolean onItemUseFirst(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,
-        int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
+        int aY, int aZ, ForgeDirection side, float hitX, float hitY, float hitZ) {
         if (aWorld.isRemote) {
             return false;
         }

@@ -4,6 +4,7 @@ import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 
 import java.util.*;
+import java.util.stream.IntStream;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -97,14 +98,12 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-        boolean aActive, boolean aRedstone) {
-        int colorIndex = aColorIndex + 1;
-        ForgeDirection side = ForgeDirection.VALID_DIRECTIONS[aSide];
-        ForgeDirection facing = ForgeDirection.VALID_DIRECTIONS[aFacing];
-        if (side == facing) return mTextures[FRONT_INDEX][colorIndex];
-        if (ForgeDirection.OPPOSITES[aSide] == aFacing) return mTextures[OUTPUT_INDEX][colorIndex];
-        switch (facing) {
+    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
+        ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
+        colorIndex = colorIndex + 1;
+        if (sideDirection == facingDirection) return mTextures[FRONT_INDEX][colorIndex];
+        if (sideDirection.getOpposite() == facingDirection) return mTextures[OUTPUT_INDEX][colorIndex];
+        switch (facingDirection) {
             case DOWN -> {
                 return mTextures[ARROW_UP_INDEX][colorIndex]; // ARROW_UP
             }
@@ -112,7 +111,7 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
                 return mTextures[ARROW_DOWN_INDEX][colorIndex]; // ARROW_DOWN
             }
             case NORTH -> {
-                switch (side) {
+                switch (sideDirection) {
                     case DOWN, UP -> {
                         return mTextures[ARROW_DOWN_INDEX][colorIndex]; // ARROW_DOWN
                     }
@@ -126,7 +125,7 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
                 }
             }
             case SOUTH -> {
-                switch (side) {
+                switch (sideDirection) {
                     case DOWN, UP -> {
                         return mTextures[ARROW_UP_INDEX][colorIndex]; // ARROW_UP
                     }
@@ -140,7 +139,7 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
                 }
             }
             case WEST -> {
-                switch (side) {
+                switch (sideDirection) {
                     case UP, SOUTH -> {
                         return mTextures[ARROW_RIGHT_INDEX][colorIndex]; // ARROW_RIGHT
                     }
@@ -151,7 +150,7 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
                 }
             }
             case EAST -> {
-                switch (side) {
+                switch (sideDirection) {
                     case UP, SOUTH -> {
                         return mTextures[ARROW_LEFT_INDEX][colorIndex]; // ARROW_LEFT
                     }
@@ -177,7 +176,7 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
     }
 
     @Override
-    public boolean isFacingValid(byte aFacing) {
+    public boolean isFacingValid(ForgeDirection facing) {
         return true;
     }
 
@@ -192,13 +191,13 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
     }
 
     @Override
-    public boolean isInputFacing(byte aSide) {
-        return !isOutputFacing(aSide);
+    public boolean isInputFacing(ForgeDirection side) {
+        return !isOutputFacing(side);
     }
 
     @Override
-    public boolean isOutputFacing(byte aSide) {
-        return getBaseMetaTileEntity().getBackFacing() == aSide;
+    public boolean isOutputFacing(ForgeDirection side) {
+        return getBaseMetaTileEntity().getBackFacing() == side;
     }
 
     @Override
@@ -281,8 +280,8 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
     }
 
     @Override
-    public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        if (aSide == getBaseMetaTileEntity().getBackFacing()) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        if (side == getBaseMetaTileEntity().getBackFacing()) {
 
             mTargetStackSize = (byte) ((mTargetStackSize + (aPlayer.isSneaking() ? -1 : 1)) % 65);
             if (mTargetStackSize < 0) {
@@ -299,11 +298,11 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
     }
 
     @Override
-    public boolean onWrenchRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY,
-        float aZ) {
-        aWrenchingSide = GT_Utility.getOppositeSide(aWrenchingSide);
-        if (getBaseMetaTileEntity().isValidFacing(aWrenchingSide)) {
-            getBaseMetaTileEntity().setFrontFacing(aWrenchingSide);
+    public boolean onWrenchRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer entityPlayer,
+        float aX, float aY, float aZ) {
+        wrenchingSide = wrenchingSide.getOpposite();
+        if (getBaseMetaTileEntity().isValidFacing(wrenchingSide)) {
+            getBaseMetaTileEntity().setFrontFacing(wrenchingSide);
             return true;
         }
         return false;
@@ -311,18 +310,15 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
 
     protected void handleRedstoneOutput(IGregTechTileEntity aBaseMetaTileEntity) {
         if (bRedstoneIfFull) {
-            boolean hasEmptySlots = false;
-            for (int i = 0; i < mInventory.length; i++) {
-                if (isValidSlot(i) && mInventory[i] == null) {
-                    hasEmptySlots = true;
-                    break;
-                }
-            }
-            if (bInvert) hasEmptySlots = !hasEmptySlots;
-            for (byte b = 0; b < 6; b++)
-                aBaseMetaTileEntity.setInternalOutputRedstoneSignal(b, hasEmptySlots ? (byte) 0 : (byte) 15);
+            final boolean hasEmptySlots = IntStream.range(0, mInventory.length)
+                .anyMatch(i -> isValidSlot(i) && mInventory[i] == null);
+            Arrays.stream(ForgeDirection.VALID_DIRECTIONS)
+                .forEach(
+                    side -> aBaseMetaTileEntity
+                        .setInternalOutputRedstoneSignal(side, (byte) (bInvert ^ hasEmptySlots ? 0 : 15)));
         } else {
-            for (byte b = 0; b < 6; b++) aBaseMetaTileEntity.setInternalOutputRedstoneSignal(b, (byte) 0);
+            for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS)
+                aBaseMetaTileEntity.setInternalOutputRedstoneSignal(side, (byte) 0);
         }
     }
 
@@ -341,14 +337,15 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
 
     @Override
     public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
-        for (byte b = 0; b < 6; b++) aBaseMetaTileEntity.setInternalOutputRedstoneSignal(b, (byte) 0);
+        for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS)
+            aBaseMetaTileEntity.setInternalOutputRedstoneSignal(side, (byte) 0);
     }
 
     protected void moveItems(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
         moveItems(aBaseMetaTileEntity, aTimer, 1);
     }
 
-    protected void moveItems(IGregTechTileEntity aBaseMetaTileEntity, long aTimer, int stacks) {
+    protected void moveItems(IGregTechTileEntity aBaseMetaTileEntity, long ignoredTimer, int stacks) {
         int tCost;
         if (bStockingMode) tCost = GT_Utility.moveMultipleItemStacks(
             aBaseMetaTileEntity,
@@ -381,13 +378,15 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
     }
 
     @Override
-    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
+        ItemStack aStack) {
         return true;
     }
 
     @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
-        return aSide != aBaseMetaTileEntity.getBackFacing();
+    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
+        ItemStack aStack) {
+        return side != aBaseMetaTileEntity.getBackFacing();
     }
 
     @Override
@@ -432,18 +431,18 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
     }
 
     @Override
-    public boolean onSolderingToolRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY,
-        float aZ) {
-        if (aPlayer.isSneaking()) {
+    public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide,
+        EntityPlayer entityPlayer, float aX, float aY, float aZ) {
+        if (entityPlayer.isSneaking()) {
             // I was so proud of all this but I literally just copied code from OutputBus
             bSortStacks = !bSortStacks;
             GT_Utility.sendChatToPlayer(
-                aPlayer,
+                entityPlayer,
                 GT_Utility.trans("200", "Sort mode: ")
                     + (bSortStacks ? GT_Utility.trans("088", "Enabled") : GT_Utility.trans("087", "Disabled")));
             return true;
         }
-        return super.onSolderingToolRightClick(aSide, aWrenchingSide, aPlayer, aX, aY, aZ);
+        return super.onSolderingToolRightClick(side, wrenchingSide, entityPlayer, aX, aY, aZ);
     }
 
     @Override

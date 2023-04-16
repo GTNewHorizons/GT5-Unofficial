@@ -86,10 +86,10 @@ public class GT_MetaTileEntity_Transformer extends GT_MetaTileEntity_TieredMachi
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-        boolean aActive, boolean aRedstone) {
-        return mTextures[Math.min(2, aSide) + (aSide == aFacing ? 3 : 0)
-            + (aBaseMetaTileEntity.isAllowedToWork() ? 0 : 6)][aColorIndex + 1];
+    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side,
+        ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
+        return mTextures[Math.min(2, side.ordinal()) + (side == facingDirection ? 3 : 0)
+            + (baseMetaTileEntity.isAllowedToWork() ? 0 : 6)][colorIndex + 1];
     }
 
     @Override
@@ -108,7 +108,7 @@ public class GT_MetaTileEntity_Transformer extends GT_MetaTileEntity_TieredMachi
     }
 
     @Override
-    public boolean isFacingValid(byte aFacing) {
+    public boolean isFacingValid(ForgeDirection facing) {
         return true;
     }
 
@@ -123,14 +123,14 @@ public class GT_MetaTileEntity_Transformer extends GT_MetaTileEntity_TieredMachi
     }
 
     @Override
-    public boolean isInputFacing(byte aSide) {
-        return getBaseMetaTileEntity().isAllowedToWork() ? aSide == getBaseMetaTileEntity().getFrontFacing()
-            : aSide != getBaseMetaTileEntity().getFrontFacing();
+    public boolean isInputFacing(ForgeDirection side) {
+        return getBaseMetaTileEntity().isAllowedToWork() ? side == getBaseMetaTileEntity().getFrontFacing()
+            : side != getBaseMetaTileEntity().getFrontFacing();
     }
 
     @Override
-    public boolean isOutputFacing(byte aSide) {
-        return !isInputFacing(aSide);
+    public boolean isOutputFacing(ForgeDirection side) {
+        return !isInputFacing(side);
     }
 
     @Override
@@ -172,50 +172,52 @@ public class GT_MetaTileEntity_Transformer extends GT_MetaTileEntity_TieredMachi
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide() && GregTech_API.mInputRF) {
             aBaseMetaTileEntity.setActive(aBaseMetaTileEntity.isAllowedToWork());
-            for (byte i = 0; i < 6 && aBaseMetaTileEntity.getStoredEU() < aBaseMetaTileEntity.getEUCapacity(); i++)
-                if (aBaseMetaTileEntity.inputEnergyFrom(i)) {
-                    TileEntity tTileEntity = aBaseMetaTileEntity.getTileEntityAtSide(i);
-                    if (tTileEntity instanceof IEnergyProvider && ((IEnergyProvider) tTileEntity)
-                        .extractEnergy(ForgeDirection.getOrientation(GT_Utility.getOppositeSide(i)), 1, true) == 1) {
-                        long tEU = ((IEnergyProvider) tTileEntity).extractEnergy(
-                            ForgeDirection.getOrientation(GT_Utility.getOppositeSide(i)),
-                            GT_Utility.safeInt(maxEUInput() * 100L / GregTech_API.mRFtoEU),
-                            false);
+            for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+                if (aBaseMetaTileEntity.getStoredEU() >= aBaseMetaTileEntity.getEUCapacity()) break;
+                if (!aBaseMetaTileEntity.inputEnergyFrom(side)) continue;
+                final TileEntity tTileEntity = aBaseMetaTileEntity.getTileEntityAtSide(side);
+                if (tTileEntity instanceof IEnergyProvider energyProvider
+                    && energyProvider.extractEnergy(side.getOpposite(), 1, true) == 1) {
+                    long tEU = ((IEnergyProvider) tTileEntity).extractEnergy(
+                        side.getOpposite(),
+                        GT_Utility.safeInt(maxEUInput() * 100L / GregTech_API.mRFtoEU),
+                        false);
+                    tEU = tEU * GregTech_API.mRFtoEU / 100;
+                    aBaseMetaTileEntity.injectEnergyUnits(ForgeDirection.UNKNOWN, Math.min(tEU, maxEUInput()), 1);
+                } else if (tTileEntity instanceof IEnergyStorage energyStorage
+                    && energyStorage.extractEnergy(1, true) == 1) {
+                        long tEU = ((IEnergyStorage) tTileEntity)
+                            .extractEnergy(GT_Utility.safeInt(maxEUInput() * 100L / GregTech_API.mRFtoEU), false);
                         tEU = tEU * GregTech_API.mRFtoEU / 100;
-                        aBaseMetaTileEntity.injectEnergyUnits((byte) 6, Math.min(tEU, maxEUInput()), 1);
-                    } else if (tTileEntity instanceof IEnergyStorage
-                        && ((IEnergyStorage) tTileEntity).extractEnergy(1, true) == 1) {
-                            long tEU = ((IEnergyStorage) tTileEntity)
-                                .extractEnergy(GT_Utility.safeInt(maxEUInput() * 100L / GregTech_API.mRFtoEU), false);
-                            tEU = tEU * GregTech_API.mRFtoEU / 100;
-                            aBaseMetaTileEntity.injectEnergyUnits((byte) 6, Math.min(tEU, maxEUInput()), 1);
-                        } else if (GregTech_API.meIOLoaded && tTileEntity instanceof IPowerContainer
-                            && ((IPowerContainer) tTileEntity).getEnergyStored() > 0) {
-                                int storedRF = ((IPowerContainer) tTileEntity).getEnergyStored();
-                                int extractRF = GT_Utility.safeInt(maxEUInput() * 100L / GregTech_API.mRFtoEU);
-                                long tEU = 0;
-                                if (tTileEntity instanceof TileCapBank) {
-                                    ICapBankNetwork network = ((TileCapBank) tTileEntity).getNetwork();
-                                    if (network != null && network.getEnergyStoredL() > 0) {
-                                        tEU = Math.min(
-                                            (Math.min(
-                                                Math.min(network.getEnergyStoredL(), storedRF - extractRF),
-                                                network.getMaxOutput())) * (long) GregTech_API.mRFtoEU / 100L,
-                                            maxEUInput());
-                                        network.addEnergy(GT_Utility.safeInt(-(tEU * 100 / GregTech_API.mRFtoEU)));
-                                    }
-                                } else {
-                                    if (storedRF > extractRF) {
-                                        ((IPowerContainer) tTileEntity).setEnergyStored(storedRF - extractRF);
-                                        tEU = maxEUInput();
-                                    } else {
-                                        ((IPowerContainer) tTileEntity).setEnergyStored(0);
-                                        tEU = storedRF * (long) GregTech_API.mRFtoEU / 100L;
-                                    }
+                        aBaseMetaTileEntity.injectEnergyUnits(ForgeDirection.UNKNOWN, Math.min(tEU, maxEUInput()), 1);
+                    } else if (GregTech_API.meIOLoaded && tTileEntity instanceof IPowerContainer powerContainer
+                        && powerContainer.getEnergyStored() > 0) {
+                            final int storedRF = powerContainer.getEnergyStored();
+                            final int extractRF = GT_Utility.safeInt(maxEUInput() * 100L / GregTech_API.mRFtoEU);
+                            long tEU = 0;
+                            if (tTileEntity instanceof TileCapBank capBank) {
+                                ICapBankNetwork network = capBank.getNetwork();
+                                if (network != null && network.getEnergyStoredL() > 0) {
+                                    tEU = Math.min(
+                                        (Math.min(
+                                            Math.min(network.getEnergyStoredL(), storedRF - extractRF),
+                                            network.getMaxOutput())) * (long) GregTech_API.mRFtoEU / 100L,
+                                        maxEUInput());
+                                    network.addEnergy(GT_Utility.safeInt(-(tEU * 100 / GregTech_API.mRFtoEU)));
                                 }
-                                aBaseMetaTileEntity.injectEnergyUnits((byte) 6, Math.min(tEU, maxEUInput()), 1);
+                            } else {
+                                if (storedRF > extractRF) {
+                                    powerContainer.setEnergyStored(storedRF - extractRF);
+                                    tEU = maxEUInput();
+                                } else {
+                                    powerContainer.setEnergyStored(0);
+                                    tEU = storedRF * (long) GregTech_API.mRFtoEU / 100L;
+                                }
                             }
-                }
+                            aBaseMetaTileEntity
+                                .injectEnergyUnits(ForgeDirection.UNKNOWN, Math.min(tEU, maxEUInput()), 1);
+                        }
+            }
         }
     }
 
@@ -230,12 +232,14 @@ public class GT_MetaTileEntity_Transformer extends GT_MetaTileEntity_TieredMachi
     }
 
     @Override
-    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
+        ItemStack aStack) {
         return false;
     }
 
     @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
+        ItemStack aStack) {
         return false;
     }
 
@@ -265,10 +269,9 @@ public class GT_MetaTileEntity_Transformer extends GT_MetaTileEntity_TieredMachi
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
         IWailaConfigHandler config) {
-        final int facing = getBaseMetaTileEntity().getFrontFacing();
+        final ForgeDirection facing = getBaseMetaTileEntity().getFrontFacing();
         final NBTTagCompound tag = accessor.getNBTData();
-        final int side = (byte) accessor.getSide()
-            .ordinal();
+        final ForgeDirection side = accessor.getSide();
         final boolean allowedToWork = tag.getBoolean("isAllowedToWork");
 
         final byte inputTier = GT_Utility.getTier(tag.getLong("maxEUInput"));

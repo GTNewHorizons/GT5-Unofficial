@@ -120,13 +120,13 @@ public class PowerNodes {
         return tAmpsUsed;
     }
 
-    protected static long processNextNode(Node aCurrentNode, Node aNextNode, NodeList aConsumers, int aSide,
+    protected static long processNextNode(Node aCurrentNode, Node aNextNode, NodeList aConsumers, int ordinalSide,
         long aMaxAmps, long aVoltage) {
-        if (aCurrentNode.locks[aSide].isLocked()) {
+        if (aCurrentNode.locks[ordinalSide].isLocked()) {
             aConsumers.getNextNode();
             return 0;
         }
-        final PowerNodePath tPath = (PowerNodePath) aCurrentNode.mNodePaths[aSide];
+        final PowerNodePath tPath = (PowerNodePath) aCurrentNode.mNodePaths[ordinalSide];
         final PowerNodePath tSelfPath = (PowerNodePath) aCurrentNode.mSelfPath;
         long tVoltLoss = 0;
         if (tSelfPath != null) {
@@ -141,13 +141,13 @@ public class PowerNodes {
         return tAmps;
     }
 
-    protected static long processNextNodeAbove(Node aCurrentNode, Node aNextNode, NodeList aConsumers, int aSide,
+    protected static long processNextNodeAbove(Node aCurrentNode, Node aNextNode, NodeList aConsumers, int ordinalSide,
         long aMaxAmps, long aVoltage) {
-        if (aCurrentNode.locks[aSide].isLocked()) {
+        if (aCurrentNode.locks[ordinalSide].isLocked()) {
             aConsumers.getNextNode();
             return 0;
         }
-        final PowerNodePath tPath = (PowerNodePath) aCurrentNode.mNodePaths[aSide];
+        final PowerNodePath tPath = (PowerNodePath) aCurrentNode.mNodePaths[ordinalSide];
         final PowerNodePath tSelfPath = (PowerNodePath) aCurrentNode.mSelfPath;
         long tVoltLoss = 0;
         if (tSelfPath != null) {
@@ -162,10 +162,10 @@ public class PowerNodes {
         return tAmps;
     }
 
-    protected static long processNodeInject(Node aCurrentNode, ConsumerNode aConsumer, int aSide, long aMaxAmps,
+    protected static long processNodeInject(Node aCurrentNode, ConsumerNode aConsumer, int ordinalSide, long aMaxAmps,
         long aVoltage) {
-        if (aCurrentNode.locks[aSide].isLocked()) return 0;
-        final PowerNodePath tPath = (PowerNodePath) aCurrentNode.mNodePaths[aSide];
+        if (aCurrentNode.locks[ordinalSide].isLocked()) return 0;
+        final PowerNodePath tPath = (PowerNodePath) aCurrentNode.mNodePaths[ordinalSide];
         final PowerNodePath tSelfPath = (PowerNodePath) aCurrentNode.mSelfPath;
         long tVoltLoss = 0;
         if (tSelfPath != null) {

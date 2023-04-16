@@ -126,8 +126,8 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
     }
 
     @Override
-    public AECableType getCableConnectionType(ForgeDirection forgeDirection) {
-        return isOutputFacing((byte) forgeDirection.ordinal()) ? AECableType.SMART : AECableType.NONE;
+    public AECableType getCableConnectionType(ForgeDirection side) {
+        return isOutputFacing(side) ? AECableType.SMART : AECableType.NONE;
     }
 
     @Override
@@ -149,9 +149,9 @@ public class GT_MetaTileEntity_Hatch_Output_ME extends GT_MetaTileEntity_Hatch_O
     public void updateFluidDisplayItem() {}
 
     @Override
-    public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         // Don't allow to lock fluid in me fluid hatch
-        if (!getBaseMetaTileEntity().getCoverInfoAtSide(aSide)
+        if (!getBaseMetaTileEntity().getCoverInfoAtSide(side)
             .isGUIClickable()) return;
         infiniteCache = !infiniteCache;
         GT_Utility.sendChatToPlayer(

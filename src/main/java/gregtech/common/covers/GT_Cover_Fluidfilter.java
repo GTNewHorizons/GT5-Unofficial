@@ -10,6 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.Constants.NBT;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -67,7 +68,7 @@ public class GT_Cover_Fluidfilter extends GT_CoverBehaviorBase<GT_Cover_Fluidfil
     }
 
     @Override
-    protected String getDescriptionImpl(byte aSide, int aCoverID, FluidFilterData aCoverVariable,
+    protected String getDescriptionImpl(ForgeDirection side, int aCoverID, FluidFilterData aCoverVariable,
         ICoverable aTileEntity) {
         final Fluid fluid = FluidRegistry.getFluid(aCoverVariable.mFluidID);
         if (fluid == null) return E;
@@ -78,13 +79,13 @@ public class GT_Cover_Fluidfilter extends GT_CoverBehaviorBase<GT_Cover_Fluidfil
     }
 
     @Override
-    protected boolean isRedstoneSensitiveImpl(byte aSide, int aCoverID, FluidFilterData aCoverVariable,
+    protected boolean isRedstoneSensitiveImpl(ForgeDirection side, int aCoverID, FluidFilterData aCoverVariable,
         ICoverable aTileEntity, long aTimer) {
         return false;
     }
 
     @Override
-    protected FluidFilterData doCoverThingsImpl(byte aSide, byte aInputRedstone, int aCoverID,
+    protected FluidFilterData doCoverThingsImpl(ForgeDirection side, byte aInputRedstone, int aCoverID,
         FluidFilterData aCoverVariable, ICoverable aTileEntity, long aTimer) {
         return aCoverVariable;
     }
@@ -104,8 +105,8 @@ public class GT_Cover_Fluidfilter extends GT_CoverBehaviorBase<GT_Cover_Fluidfil
     }
 
     @Override
-    protected FluidFilterData onCoverScrewdriverClickImpl(byte aSide, int aCoverID, FluidFilterData aCoverVariable,
-        ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    protected FluidFilterData onCoverScrewdriverClickImpl(ForgeDirection side, int aCoverID,
+        FluidFilterData aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         aCoverVariable.mFilterMode = (aCoverVariable.mFilterMode + (aPlayer.isSneaking() ? -1 : 1)) % 8;
         if (aCoverVariable.mFilterMode < 0) {
             aCoverVariable.mFilterMode = 7;
@@ -117,21 +118,20 @@ public class GT_Cover_Fluidfilter extends GT_CoverBehaviorBase<GT_Cover_Fluidfil
     }
 
     @Override
-    protected boolean onCoverRightClickImpl(byte aSide, int aCoverID, FluidFilterData aCoverVariable,
+    protected boolean onCoverRightClickImpl(ForgeDirection side, int aCoverID, FluidFilterData aCoverVariable,
         ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        if (((aX > 0.375D) && (aX < 0.625D)) || ((aSide > 3) && ((aY > 0.375D) && (aY < 0.625D)))
-            || ((aSide < 2) && ((aZ > 0.375D) && (aZ < 0.625D)))
-            || (aSide == 2)
-            || (aSide == 3)) {
-            ItemStack tStack = aPlayer.inventory.getCurrentItem();
+        if (((aX > 0.375D) && (aX < 0.625D)) || ((side.offsetX != 0) && ((aY > 0.375D) && (aY < 0.625D)))
+            || ((side.offsetY != 0) && ((aZ > 0.375D) && (aZ < 0.625D)))
+            || (side.offsetZ != 0)) {
+            final ItemStack tStack = aPlayer.inventory.getCurrentItem();
             if (tStack == null) return true;
 
-            FluidStack tFluid = GT_Utility.getFluidForFilledItem(tStack, true);
+            final FluidStack tFluid = GT_Utility.getFluidForFilledItem(tStack, true);
             if (tFluid != null) {
-                int aFluid = tFluid.getFluidID();
+                final int aFluid = tFluid.getFluidID();
                 aCoverVariable.mFluidID = aFluid;
-                aTileEntity.setCoverDataAtSide(aSide, aCoverVariable);
-                FluidStack sFluid = new FluidStack(FluidRegistry.getFluid(aFluid), 1000);
+                aTileEntity.setCoverDataAtSide(side, aCoverVariable);
+                final FluidStack sFluid = new FluidStack(FluidRegistry.getFluid(aFluid), 1000);
                 GT_Utility
                     .sendChatToPlayer(aPlayer, GT_Utility.trans("047", "Filter Fluid: ") + sFluid.getLocalizedName());
             }
@@ -141,43 +141,43 @@ public class GT_Cover_Fluidfilter extends GT_CoverBehaviorBase<GT_Cover_Fluidfil
     }
 
     @Override
-    protected boolean letsRedstoneGoInImpl(byte aSide, int aCoverID,
-        GT_Cover_Fluidfilter.FluidFilterData aCoverVariable, ICoverable aTileEntity) {
-        return true;
-    }
-
-    @Override
-    protected boolean letsRedstoneGoOutImpl(byte aSide, int aCoverID,
-        GT_Cover_Fluidfilter.FluidFilterData aCoverVariable, ICoverable aTileEntity) {
-        return true;
-    }
-
-    @Override
-    protected boolean letsEnergyInImpl(byte aSide, int aCoverID, GT_Cover_Fluidfilter.FluidFilterData aCoverVariable,
+    protected boolean letsRedstoneGoInImpl(ForgeDirection side, int aCoverID, FluidFilterData aCoverVariable,
         ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    protected boolean letsEnergyOutImpl(byte aSide, int aCoverID, GT_Cover_Fluidfilter.FluidFilterData aCoverVariable,
+    protected boolean letsRedstoneGoOutImpl(ForgeDirection side, int aCoverID, FluidFilterData aCoverVariable,
         ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    public boolean letsItemsInImpl(byte aSide, int aCoverID, GT_Cover_Fluidfilter.FluidFilterData aCoverVariable,
-        int aSlot, ICoverable aTileEntity) {
+    protected boolean letsEnergyInImpl(ForgeDirection side, int aCoverID, FluidFilterData aCoverVariable,
+        ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    public boolean letsItemsOutImpl(byte aSide, int aCoverID, GT_Cover_Fluidfilter.FluidFilterData aCoverVariable,
-        int aSlot, ICoverable aTileEntity) {
+    protected boolean letsEnergyOutImpl(ForgeDirection side, int aCoverID, FluidFilterData aCoverVariable,
+        ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    protected boolean letsFluidInImpl(byte aSide, int aCoverID, FluidFilterData aCoverVariable, Fluid aFluid,
+    public boolean letsItemsInImpl(ForgeDirection side, int aCoverID, FluidFilterData aCoverVariable, int aSlot,
+        ICoverable aTileEntity) {
+        return true;
+    }
+
+    @Override
+    public boolean letsItemsOutImpl(ForgeDirection side, int aCoverID, FluidFilterData aCoverVariable, int aSlot,
+        ICoverable aTileEntity) {
+        return true;
+    }
+
+    @Override
+    protected boolean letsFluidInImpl(ForgeDirection side, int aCoverID, FluidFilterData aCoverVariable, Fluid aFluid,
         ICoverable aTileEntity) {
         if (aFluid == null) return true;
 
@@ -192,7 +192,7 @@ public class GT_Cover_Fluidfilter extends GT_CoverBehaviorBase<GT_Cover_Fluidfil
     }
 
     @Override
-    protected boolean letsFluidOutImpl(byte aSide, int aCoverID, FluidFilterData aCoverVariable, Fluid aFluid,
+    protected boolean letsFluidOutImpl(ForgeDirection side, int aCoverID, FluidFilterData aCoverVariable, Fluid aFluid,
         ICoverable aTileEntity) {
         if (aFluid == null) return true;
 
@@ -207,13 +207,14 @@ public class GT_Cover_Fluidfilter extends GT_CoverBehaviorBase<GT_Cover_Fluidfil
     }
 
     @Override
-    protected boolean alwaysLookConnectedImpl(byte aSide, int aCoverID, FluidFilterData aCoverVariable,
+    protected boolean alwaysLookConnectedImpl(ForgeDirection side, int aCoverID, FluidFilterData aCoverVariable,
         ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    protected int getTickRateImpl(byte aSide, int aCoverID, FluidFilterData aCoverVariable, ICoverable aTileEntity) {
+    protected int getTickRateImpl(ForgeDirection side, int aCoverID, FluidFilterData aCoverVariable,
+        ICoverable aTileEntity) {
         return 0;
     }
 

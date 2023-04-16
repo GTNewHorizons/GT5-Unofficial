@@ -1,7 +1,7 @@
 package gregtech.api.multitileentity.base;
 
 import static gregtech.GT_Mod.GT_FML_LOGGER;
-import static gregtech.api.enums.GT_Values.OPOS;
+import static gregtech.api.enums.GT_Values.NBT;
 import static gregtech.api.enums.GT_Values.VALID_SIDES;
 
 import java.io.IOException;
@@ -201,7 +201,7 @@ public abstract class MultiTileEntity extends CoverableTileEntity
     }
 
     @Override
-    public ITexture[] getTexture(Block ignoredBlock, byte ignoredSide) {
+    public ITexture[] getTexture(Block ignoredBlock, ForgeDirection ignoredSide) {
         // We are not going to be using this
         return null;
     }
@@ -361,34 +361,34 @@ public abstract class MultiTileEntity extends CoverableTileEntity
     public void doBlockUpdate() {
         final Block tBlock = getBlock(getCoords());
         worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, tBlock);
-        if (this instanceof IMTE_IsProvidingStrongPower) for (byte tSide : GT_Values.ALL_VALID_SIDES) {
-            if (getBlockAtSide(tSide).isNormalCube(
-                worldObj,
-                xCoord + GT_Values.OFFX[tSide],
-                yCoord + GT_Values.OFFY[tSide],
-                zCoord + GT_Values.OFFZ[tSide])) {
-                worldObj.notifyBlocksOfNeighborChange(
-                    xCoord + GT_Values.OFFX[tSide],
-                    yCoord + GT_Values.OFFY[tSide],
-                    zCoord + GT_Values.OFFZ[tSide],
-                    tBlock,
-                    OPOS[tSide]);
+        if (this instanceof IMTE_IsProvidingStrongPower) {
+            for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+                if (getBlockAtSide(side)
+                    .isNormalCube(worldObj, xCoord + side.offsetX, yCoord + side.offsetY, zCoord + side.offsetZ)) {
+                    worldObj.notifyBlocksOfNeighborChange(
+                        xCoord + side.offsetX,
+                        yCoord + side.offsetY,
+                        zCoord + side.offsetZ,
+                        tBlock,
+                        side.getOpposite()
+                            .ordinal());
+                }
             }
         }
         needsBlockUpdate = false;
     }
 
     @Override
-    public boolean shouldSideBeRendered(byte aSide) {
-        final TileEntity tTileEntity = getTileEntityAtSideAndDistance(aSide, 1);
+    public boolean shouldSideBeRendered(ForgeDirection side) {
+        final TileEntity tTileEntity = getTileEntityAtSideAndDistance(side, 1);
         // TODO: check to an interface
         // if (getBlockAtSide(aSide) == Blocks.glass) return false;
-        return tTileEntity instanceof IMultiTileEntity ? !((IMultiTileEntity) tTileEntity).isSurfaceOpaque(OPOS[aSide])
-            : !getBlockAtSide(aSide).isOpaqueCube();
+        return tTileEntity instanceof IMultiTileEntity mte ? !mte.isSurfaceOpaque(side.getOpposite())
+            : !getBlockAtSide(side).isOpaqueCube();
     }
 
     @Override
-    public boolean isSurfaceOpaque(byte aSide) {
+    public boolean isSurfaceOpaque(ForgeDirection side) {
         return true;
     }
 
@@ -430,13 +430,13 @@ public abstract class MultiTileEntity extends CoverableTileEntity
     }
 
     @Override
-    public boolean isFacingValid(byte aFacing) {
+    public boolean isFacingValid(ForgeDirection facing) {
         return false;
     }
 
     @Override
-    public byte getFrontFacing() {
-        return (byte) facing.ordinal();
+    public ForgeDirection getFrontFacing() {
+        return facing;
     }
 
     /**
@@ -445,9 +445,9 @@ public abstract class MultiTileEntity extends CoverableTileEntity
      * @return Whether the facing was changed
      */
     @Override
-    public boolean setMainFacing(byte aSide) {
-        if (!isValidFacing(aSide)) return false;
-        facing = ForgeDirection.getOrientation(aSide);
+    public boolean setMainFacing(ForgeDirection side) {
+        if (!isValidFacing(side)) return false;
+        facing = side;
 
         issueClientUpdate();
         issueBlockUpdate();
@@ -471,14 +471,13 @@ public abstract class MultiTileEntity extends CoverableTileEntity
     }
 
     @Override
-    public byte getBackFacing() {
-        return (byte) facing.getOpposite()
-            .ordinal();
+    public ForgeDirection getBackFacing() {
+        return facing.getOpposite();
     }
 
     @Override
-    public boolean isValidFacing(byte aSide) {
-        return aSide >= 0 && aSide <= 6 && getValidFacings()[aSide];
+    public boolean isValidFacing(ForgeDirection side) {
+        return side != ForgeDirection.UNKNOWN && getValidFacings()[side.ordinal()];
     }
 
     @Override
@@ -487,8 +486,8 @@ public abstract class MultiTileEntity extends CoverableTileEntity
     }
 
     @Override
-    public void issueCoverUpdate(byte aSide) {
-        super.issueCoverUpdate(aSide);
+    public void issueCoverUpdate(ForgeDirection side) {
+        super.issueCoverUpdate(side);
         issueClientUpdate();
     }
 
@@ -643,7 +642,7 @@ public abstract class MultiTileEntity extends CoverableTileEntity
     }
 
     @Override
-    public boolean allowCoverOnSide(byte aSide, GT_ItemStack aCoverID) {
+    public boolean allowCoverOnSide(ForgeDirection side, GT_ItemStack aCoverID) {
         return true;
     }
 
@@ -707,10 +706,9 @@ public abstract class MultiTileEntity extends CoverableTileEntity
     }
 
     @Override
-    public boolean onPlaced(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, byte aSide,
-        float aHitX, float aHitY, float aHitZ) {
-        facing = ForgeDirection
-            .getOrientation(getSideForPlayerPlacing(aPlayer, (byte) facing.ordinal(), getValidFacings()));
+    public boolean onPlaced(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ,
+        ForgeDirection side, float aHitX, float aHitY, float aHitZ) {
+        facing = getSideForPlayerPlacing(aPlayer, facing, getValidFacings());
         onFacingChange();
         return true;
     }
@@ -725,9 +723,9 @@ public abstract class MultiTileEntity extends CoverableTileEntity
     }
 
     @Override
-    public boolean onBlockActivated(EntityPlayer aPlayer, byte aSide, float aX, float aY, float aZ) {
+    public boolean onBlockActivated(EntityPlayer aPlayer, ForgeDirection side, float aX, float aY, float aZ) {
         try {
-            return allowRightclick(aPlayer) && onRightClick(aPlayer, aSide, aX, aY, aZ);
+            return allowRightclick(aPlayer) && onRightClick(aPlayer, side, aX, aY, aZ);
         } catch (Throwable e) {
             GT_FML_LOGGER.error("onBlockActivated Failed", e);
             e.printStackTrace(GT_Log.err);
@@ -736,24 +734,25 @@ public abstract class MultiTileEntity extends CoverableTileEntity
     }
 
     @Override
-    public boolean onRightClick(EntityPlayer aPlayer, byte aSide, float aX, float aY, float aZ) {
+    public boolean onRightClick(EntityPlayer aPlayer, ForgeDirection side, float aX, float aY, float aZ) {
         if (isClientSide()) {
             // Configure Cover, sneak can also be: screwdriver, wrench, side cutter, soldering iron
             if (aPlayer.isSneaking()) {
-                final byte tSide = (getCoverIDAtSide(aSide) == 0) ? GT_Utility.determineWrenchingSide(aSide, aX, aY, aZ)
-                    : aSide;
+                final ForgeDirection tSide = (getCoverIDAtSide(side) == 0)
+                    ? GT_Utility.determineWrenchingSide(side, aX, aY, aZ)
+                    : side;
                 return (getCoverBehaviorAtSideNew(tSide).hasCoverGUI());
-            } else if (getCoverBehaviorAtSideNew(aSide).onCoverRightclickClient(aSide, this, aPlayer, aX, aY, aZ)) {
+            } else if (getCoverBehaviorAtSideNew(side).onCoverRightclickClient(side, this, aPlayer, aX, aY, aZ)) {
                 return true;
             }
 
-            if (!getCoverInfoAtSide(aSide).isGUIClickable()) return false;
+            if (!getCoverInfoAtSide(side).isGUIClickable()) return false;
         }
         if (isServerSide()) {
             if (!privateAccess() || aPlayer.getDisplayName()
                 .equalsIgnoreCase(getOwnerName())) {
                 final ItemStack tCurrentItem = aPlayer.inventory.getCurrentItem();
-                final byte wrenchSide = GT_Utility.determineWrenchingSide(aSide, aX, aY, aZ);
+                final ForgeDirection wrenchSide = GT_Utility.determineWrenchingSide(side, aX, aY, aZ);
 
                 if (tCurrentItem != null) {
                     if (getColorization() >= 0
@@ -773,7 +772,7 @@ public abstract class MultiTileEntity extends CoverableTileEntity
                     if (GT_Utility.isStackInList(tCurrentItem, GregTech_API.sWireCutterList))
                         return onWireCutterRightClick(aPlayer, tCurrentItem, wrenchSide, aX, aY, aZ);
 
-                    final byte coverSide = getCoverIDAtSide(aSide) == 0 ? wrenchSide : aSide;
+                    final ForgeDirection coverSide = getCoverIDAtSide(side) == 0 ? wrenchSide : side;
 
                     if (getCoverIDAtSide(coverSide) == 0) {
                         if (GT_Utility.isStackInList(tCurrentItem, GregTech_API.sCovers.keySet())) {
@@ -806,47 +805,46 @@ public abstract class MultiTileEntity extends CoverableTileEntity
                                     xCoord,
                                     yCoord,
                                     zCoord);
-                                dropCover(coverSide, aSide, false);
+                                dropCover(coverSide, side, false);
                             }
                             sendCoverDataIfNeeded();
                             return true;
                         }
                     }
                 } else if (aPlayer.isSneaking()) { // Sneak click, no tool -> open cover config if possible.
-                    aSide = (getCoverIDAtSide(aSide) == 0) ? GT_Utility.determineWrenchingSide(aSide, aX, aY, aZ)
-                        : aSide;
-                    return getCoverIDAtSide(aSide) > 0 && getCoverBehaviorAtSideNew(aSide).onCoverShiftRightClick(
-                        aSide,
-                        getCoverIDAtSide(aSide),
-                        getComplexCoverDataAtSide(aSide),
+                    side = (getCoverIDAtSide(side) == 0) ? GT_Utility.determineWrenchingSide(side, aX, aY, aZ) : side;
+                    return getCoverIDAtSide(side) > 0 && getCoverBehaviorAtSideNew(side).onCoverShiftRightClick(
+                        side,
+                        getCoverIDAtSide(side),
+                        getComplexCoverDataAtSide(side),
                         this,
                         aPlayer);
                 }
 
-                if (getCoverBehaviorAtSideNew(aSide).onCoverRightClick(
-                    aSide,
-                    getCoverIDAtSide(aSide),
-                    getComplexCoverDataAtSide(aSide),
+                if (getCoverBehaviorAtSideNew(side).onCoverRightClick(
+                    side,
+                    getCoverIDAtSide(side),
+                    getComplexCoverDataAtSide(side),
                     this,
                     aPlayer,
                     aX,
                     aY,
                     aZ)) return true;
 
-                if (!getCoverInfoAtSide(aSide).isGUIClickable()) return false;
+                if (!getCoverInfoAtSide(side).isGUIClickable()) return false;
 
-                return openModularUi(aPlayer, aSide);
+                return openModularUi(aPlayer, side);
             }
         }
         return false;
     }
 
-    public boolean hasGui(byte aSide) {
+    public boolean hasGui(ForgeDirection side) {
         return false;
     }
 
-    boolean openModularUi(EntityPlayer aPlayer, byte aSide) {
-        if (!hasGui(aSide) || !isServerSide()) {
+    boolean openModularUi(EntityPlayer aPlayer, ForgeDirection side) {
+        if (!hasGui(side) || !isServerSide()) {
             System.out.println("No GUI or Not Serverside");
             return false;
         }
@@ -856,8 +854,8 @@ public abstract class MultiTileEntity extends CoverableTileEntity
         return true;
     }
 
-    public boolean onWrenchRightClick(EntityPlayer aPlayer, ItemStack tCurrentItem, byte wrenchSide, float aX, float aY,
-        float aZ) {
+    public boolean onWrenchRightClick(EntityPlayer aPlayer, ItemStack tCurrentItem, ForgeDirection wrenchSide, float aX,
+        float aY, float aZ) {
         if (setMainFacing(wrenchSide)) {
             GT_ModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer);
             GT_Utility.sendSoundToPlayers(worldObj, SoundResource.IC2_TOOLS_WRENCH, 1.0F, -1, xCoord, yCoord, zCoord);
@@ -865,8 +863,8 @@ public abstract class MultiTileEntity extends CoverableTileEntity
         return true;
     }
 
-    public boolean onScrewdriverRightClick(EntityPlayer aPlayer, ItemStack tCurrentItem, byte wrenchSide, float aX,
-        float aY, float aZ) {
+    public boolean onScrewdriverRightClick(EntityPlayer aPlayer, ItemStack tCurrentItem, ForgeDirection wrenchSide,
+        float aX, float aY, float aZ) {
         if (GT_ModHandler.damageOrDechargeItem(tCurrentItem, 1, 200, aPlayer)) {
             setCoverDataAtSide(
                 wrenchSide,
@@ -885,26 +883,26 @@ public abstract class MultiTileEntity extends CoverableTileEntity
         return true;
     }
 
-    public boolean onHammerRightClick(EntityPlayer aPlayer, ItemStack tCurrentItem, byte wrenchSide, float aX, float aY,
-        float aZ) {
-
-        return true;
-    }
-
-    public boolean onMalletRightClick(EntityPlayer aPlayer, ItemStack tCurrentItem, byte wrenchSide, float aX, float aY,
-        float aZ) {
-
-        return true;
-    }
-
-    public boolean onSolderingRightClick(EntityPlayer aPlayer, ItemStack tCurrentItem, byte wrenchSide, float aX,
+    public boolean onHammerRightClick(EntityPlayer aPlayer, ItemStack tCurrentItem, ForgeDirection wrenchSide, float aX,
         float aY, float aZ) {
 
         return true;
     }
 
-    public boolean onWireCutterRightClick(EntityPlayer aPlayer, ItemStack tCurrentItem, byte wrenchSide, float aX,
+    public boolean onMalletRightClick(EntityPlayer aPlayer, ItemStack tCurrentItem, ForgeDirection wrenchSide, float aX,
         float aY, float aZ) {
+
+        return true;
+    }
+
+    public boolean onSolderingRightClick(EntityPlayer aPlayer, ItemStack tCurrentItem, ForgeDirection wrenchSide,
+        float aX, float aY, float aZ) {
+
+        return true;
+    }
+
+    public boolean onWireCutterRightClick(EntityPlayer aPlayer, ItemStack tCurrentItem, ForgeDirection wrenchSide,
+        float aX, float aY, float aZ) {
 
         return true;
     }
@@ -923,7 +921,7 @@ public abstract class MultiTileEntity extends CoverableTileEntity
     public void onExploded(Explosion aExplosion) {}
 
     @Override
-    public boolean isSideSolid(byte aSide) {
+    public boolean isSideSolid(ForgeDirection side) {
         return true;
     }
 
@@ -949,7 +947,7 @@ public abstract class MultiTileEntity extends CoverableTileEntity
     }
 
     @Override
-    public boolean recolourBlock(byte aSide, byte aColor) {
+    public boolean recolourBlock(ForgeDirection side, byte aColor) {
         // if (aColor > 15 || aColor < -1) aColor = -1;
         // if(paint((byte) (aColor + 1))) {
         //// updateClientData();
@@ -994,12 +992,12 @@ public abstract class MultiTileEntity extends CoverableTileEntity
             color);
 
         packet.setCoverData(
-            getCoverInfoAtSide((byte) 0).getCoverID(),
-            getCoverInfoAtSide((byte) 1).getCoverID(),
-            getCoverInfoAtSide((byte) 2).getCoverID(),
-            getCoverInfoAtSide((byte) 3).getCoverID(),
-            getCoverInfoAtSide((byte) 4).getCoverID(),
-            getCoverInfoAtSide((byte) 5).getCoverID());
+            getCoverInfoAtSide(ForgeDirection.DOWN).getCoverID(),
+            getCoverInfoAtSide(ForgeDirection.UP).getCoverID(),
+            getCoverInfoAtSide(ForgeDirection.NORTH).getCoverID(),
+            getCoverInfoAtSide(ForgeDirection.SOUTH).getCoverID(),
+            getCoverInfoAtSide(ForgeDirection.WEST).getCoverID(),
+            getCoverInfoAtSide(ForgeDirection.EAST).getCoverID());
 
         packet.setRedstoneData(
             (byte) (((mSidedRedstone[0] > 0) ? 1 : 0) | ((mSidedRedstone[1] > 0) ? 2 : 0)
@@ -1077,14 +1075,10 @@ public abstract class MultiTileEntity extends CoverableTileEntity
     }
 
     @Override
-    public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
+    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
         IWailaConfigHandler config) {
-        super.getWailaBody(itemStack, currenttip, accessor, config);
-        currenttip.add(
-            String.format(
-                "Facing: %s",
-                ForgeDirection.getOrientation(getFrontFacing())
-                    .name()));
+        super.getWailaBody(itemStack, currentTip, accessor, config);
+        currentTip.add(String.format("Facing: %s", getFrontFacing().name()));
     }
 
     @Override
@@ -1125,37 +1119,37 @@ public abstract class MultiTileEntity extends CoverableTileEntity
      * Fluid - A Default implementation of the Fluid Tank behaviour, so that every TileEntity can use this to simplify
      * its Code.
      */
-    protected IFluidTank getFluidTankFillable(byte aSide, FluidStack aFluidToFill) {
+    protected IFluidTank getFluidTankFillable(ForgeDirection side, FluidStack aFluidToFill) {
         return null;
     }
 
-    protected IFluidTank getFluidTankDrainable(byte aSide, FluidStack aFluidToDrain) {
+    protected IFluidTank getFluidTankDrainable(ForgeDirection side, FluidStack aFluidToDrain) {
         return null;
     }
 
-    protected IFluidTank[] getFluidTanks(byte aSide) {
+    protected IFluidTank[] getFluidTanks(ForgeDirection side) {
         return GT_Values.emptyFluidTank;
     }
 
-    public boolean isLiquidInput(byte aSide) {
+    public boolean isLiquidInput(ForgeDirection side) {
         return true;
     }
 
-    public boolean isLiquidOutput(byte aSide) {
+    public boolean isLiquidOutput(ForgeDirection side) {
         return true;
     }
 
     @Override
     public int fill(ForgeDirection aDirection, FluidStack aFluid, boolean aDoFill) {
         if (aFluid == null || aFluid.amount <= 0) return 0;
-        final IFluidTank tTank = getFluidTankFillable((byte) aDirection.ordinal(), aFluid);
+        final IFluidTank tTank = getFluidTankFillable(aDirection, aFluid);
         return (tTank == null) ? 0 : tTank.fill(aFluid, aDoFill);
     }
 
     @Override
     public FluidStack drain(ForgeDirection aDirection, FluidStack aFluid, boolean aDoDrain) {
         if (aFluid == null || aFluid.amount <= 0) return null;
-        final IFluidTank tTank = getFluidTankDrainable((byte) aDirection.ordinal(), aFluid);
+        final IFluidTank tTank = getFluidTankDrainable(aDirection, aFluid);
         if (tTank == null || tTank.getFluid() == null
             || tTank.getFluidAmount() == 0
             || !tTank.getFluid()
@@ -1167,7 +1161,7 @@ public abstract class MultiTileEntity extends CoverableTileEntity
     @Override
     public FluidStack drain(ForgeDirection aDirection, int aAmountToDrain, boolean aDoDrain) {
         if (aAmountToDrain <= 0) return null;
-        final IFluidTank tTank = getFluidTankDrainable((byte) aDirection.ordinal(), null);
+        final IFluidTank tTank = getFluidTankDrainable(aDirection, null);
         if (tTank == null || tTank.getFluid() == null || tTank.getFluidAmount() == 0) return null;
         return tTank.drain(aAmountToDrain, aDoDrain);
     }
@@ -1175,7 +1169,7 @@ public abstract class MultiTileEntity extends CoverableTileEntity
     @Override
     public boolean canFill(ForgeDirection aDirection, Fluid aFluid) {
         if (aFluid == null) return false;
-        final IFluidTank tTank = getFluidTankFillable((byte) aDirection.ordinal(), new FluidStack(aFluid, 0));
+        final IFluidTank tTank = getFluidTankFillable(aDirection, new FluidStack(aFluid, 0));
         return tTank != null && (tTank.getFluid() == null || tTank.getFluid()
             .getFluid() == aFluid);
     }
@@ -1183,14 +1177,14 @@ public abstract class MultiTileEntity extends CoverableTileEntity
     @Override
     public boolean canDrain(ForgeDirection aDirection, Fluid aFluid) {
         if (aFluid == null) return false;
-        final IFluidTank tTank = getFluidTankDrainable((byte) aDirection.ordinal(), new FluidStack(aFluid, 0));
+        final IFluidTank tTank = getFluidTankDrainable(aDirection, new FluidStack(aFluid, 0));
         return tTank != null && (tTank.getFluid() != null && tTank.getFluid()
             .getFluid() == aFluid);
     }
 
     @Override
     public FluidTankInfo[] getTankInfo(ForgeDirection aDirection) {
-        final IFluidTank[] tTanks = getFluidTanks((byte) aDirection.ordinal());
+        final IFluidTank[] tTanks = getFluidTanks(aDirection);
         if (tTanks == null || tTanks.length <= 0) return GT_Values.emptyFluidTankInfo;
         final FluidTankInfo[] rInfo = new FluidTankInfo[tTanks.length];
         for (int i = 0; i < tTanks.length; i++) rInfo[i] = new FluidTankInfo(tTanks[i]);
@@ -1246,7 +1240,7 @@ public abstract class MultiTileEntity extends CoverableTileEntity
     }
 
     @Override
-    public boolean drainEnergyUnits(byte aSide, long aVoltage, long aAmperage) {
+    public boolean drainEnergyUnits(ForgeDirection side, long aVoltage, long aAmperage) {
         return false;
     }
 
@@ -1271,17 +1265,17 @@ public abstract class MultiTileEntity extends CoverableTileEntity
     }
 
     @Override
-    public long injectEnergyUnits(byte aSide, long aVoltage, long aAmperage) {
+    public long injectEnergyUnits(ForgeDirection side, long aVoltage, long aAmperage) {
         return 0;
     }
 
     @Override
-    public boolean inputEnergyFrom(byte aSide) {
+    public boolean inputEnergyFrom(ForgeDirection side) {
         return false;
     }
 
     @Override
-    public boolean outputsEnergyTo(byte aSide) {
+    public boolean outputsEnergyTo(ForgeDirection side) {
         return false;
     }
 
@@ -1321,17 +1315,17 @@ public abstract class MultiTileEntity extends CoverableTileEntity
     }
 
     @Override
-    public int[] getAccessibleSlotsFromSide(int aSide) {
+    public int[] getAccessibleSlotsFromSide(int ordinalSide) {
         return GT_Values.emptyIntArray;
     }
 
     @Override
-    public boolean canInsertItem(int aSlot, ItemStack aStack, int aSide) {
+    public boolean canInsertItem(int aSlot, ItemStack aStack, int ordinalSide) {
         return false;
     }
 
     @Override
-    public boolean canExtractItem(int aSlot, ItemStack aStack, int aSide) {
+    public boolean canExtractItem(int aSlot, ItemStack aStack, int ordinalSide) {
         return false;
     }
 
@@ -1379,28 +1373,28 @@ public abstract class MultiTileEntity extends CoverableTileEntity
      * Cover Helpers
      */
 
-    public boolean coverLetsFluidIn(byte aSide, Fluid aFluid) {
-        return getCoverInfoAtSide(aSide).letsFluidIn(aFluid);
+    public boolean coverLetsFluidIn(ForgeDirection side, Fluid aFluid) {
+        return getCoverInfoAtSide(side).letsFluidIn(aFluid);
     }
 
-    public boolean coverLetsFluidOut(byte aSide, Fluid aFluid) {
-        return getCoverInfoAtSide(aSide).letsFluidOut(aFluid);
+    public boolean coverLetsFluidOut(ForgeDirection side, Fluid aFluid) {
+        return getCoverInfoAtSide(side).letsFluidOut(aFluid);
     }
 
-    public boolean coverLetsEnergyIn(byte aSide) {
-        return getCoverInfoAtSide(aSide).letsEnergyIn();
+    public boolean coverLetsEnergyIn(ForgeDirection side) {
+        return getCoverInfoAtSide(side).letsEnergyIn();
     }
 
-    public boolean coverLetsEnergyOut(byte aSide) {
-        return getCoverInfoAtSide(aSide).letsEnergyOut();
+    public boolean coverLetsEnergyOut(ForgeDirection side) {
+        return getCoverInfoAtSide(side).letsEnergyOut();
     }
 
-    public boolean coverLetsItemsIn(byte aSide, int aSlot) {
-        return getCoverInfoAtSide(aSide).letsItemsIn(aSlot);
+    public boolean coverLetsItemsIn(ForgeDirection side, int aSlot) {
+        return getCoverInfoAtSide(side).letsItemsIn(aSlot);
     }
 
-    public boolean coverLetsItemsOut(byte aSide, int aSlot) {
-        return getCoverInfoAtSide(aSide).letsItemsOut(aSlot);
+    public boolean coverLetsItemsOut(ForgeDirection side, int aSlot) {
+        return getCoverInfoAtSide(side).letsItemsOut(aSlot);
     }
 
     @Override

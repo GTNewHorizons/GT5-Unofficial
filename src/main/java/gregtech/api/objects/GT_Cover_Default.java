@@ -1,6 +1,7 @@
 package gregtech.api.objects;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 
 import gregtech.api.interfaces.tileentity.ICoverable;
@@ -22,7 +23,7 @@ public class GT_Cover_Default extends GT_CoverBehavior {
     }
 
     @Override
-    public int onCoverScrewdriverclick(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
+    public int onCoverScrewdriverclick(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
         EntityPlayer aPlayer, float aX, float aY, float aZ) {
         aCoverVariable = ((aCoverVariable + 1) & 15);
         GT_Utility.sendChatToPlayer(
@@ -35,42 +36,46 @@ public class GT_Cover_Default extends GT_CoverBehavior {
     }
 
     @Override
-    public boolean letsRedstoneGoIn(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public boolean letsRedstoneGoIn(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
         return (aCoverVariable & 1) != 0;
     }
 
     @Override
-    public boolean letsRedstoneGoOut(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public boolean letsRedstoneGoOut(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
         return (aCoverVariable & 1) != 0;
     }
 
     @Override
-    public boolean letsEnergyIn(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public boolean letsEnergyIn(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
         return (aCoverVariable & 2) != 0;
     }
 
     @Override
-    public boolean letsEnergyOut(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public boolean letsEnergyOut(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
         return (aCoverVariable & 2) != 0;
     }
 
     @Override
-    public boolean letsFluidIn(byte aSide, int aCoverID, int aCoverVariable, Fluid aFluid, ICoverable aTileEntity) {
+    public boolean letsFluidIn(ForgeDirection side, int aCoverID, int aCoverVariable, Fluid aFluid,
+        ICoverable aTileEntity) {
         return (aCoverVariable & 4) != 0;
     }
 
     @Override
-    public boolean letsFluidOut(byte aSide, int aCoverID, int aCoverVariable, Fluid aFluid, ICoverable aTileEntity) {
+    public boolean letsFluidOut(ForgeDirection side, int aCoverID, int aCoverVariable, Fluid aFluid,
+        ICoverable aTileEntity) {
         return (aCoverVariable & 4) != 0;
     }
 
     @Override
-    public boolean letsItemsIn(byte aSide, int aCoverID, int aCoverVariable, int aSlot, ICoverable aTileEntity) {
+    public boolean letsItemsIn(ForgeDirection side, int aCoverID, int aCoverVariable, int aSlot,
+        ICoverable aTileEntity) {
         return (aCoverVariable & 8) != 0;
     }
 
     @Override
-    public boolean letsItemsOut(byte aSide, int aCoverID, int aCoverVariable, int aSlot, ICoverable aTileEntity) {
+    public boolean letsItemsOut(ForgeDirection side, int aCoverID, int aCoverVariable, int aSlot,
+        ICoverable aTileEntity) {
         return (aCoverVariable & 8) != 0;
     }
 }

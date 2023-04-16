@@ -1,5 +1,7 @@
 package gregtech.common.covers.redstone;
 
+import net.minecraftforge.common.util.ForgeDirection;
+
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 
@@ -10,23 +12,23 @@ public class GT_Cover_AdvancedRedstoneReceiverExternal extends GT_Cover_Advanced
     }
 
     @Override
-    public ReceiverData doCoverThingsImpl(byte aSide, byte aInputRedstone, int aCoverID, ReceiverData aCoverVariable,
-        ICoverable aTileEntity, long aTimer) {
+    public ReceiverData doCoverThingsImpl(ForgeDirection side, byte aInputRedstone, int aCoverID,
+        ReceiverData aCoverVariable, ICoverable aTileEntity, long aTimer) {
         aTileEntity.setOutputRedstoneSignal(
-            aSide,
+            side,
             getSignalAt(aCoverVariable.getUuid(), aCoverVariable.getFrequency(), aCoverVariable.getGateMode()));
 
         return aCoverVariable;
     }
 
     @Override
-    protected boolean isRedstoneSensitiveImpl(byte aSide, int aCoverID, ReceiverData aCoverVariable,
+    protected boolean isRedstoneSensitiveImpl(ForgeDirection side, int aCoverID, ReceiverData aCoverVariable,
         ICoverable aTileEntity, long aTimer) {
         return false;
     }
 
     @Override
-    protected boolean manipulatesSidedRedstoneOutputImpl(byte aSide, int aCoverID, ReceiverData aCoverVariable,
+    protected boolean manipulatesSidedRedstoneOutputImpl(ForgeDirection side, int aCoverID, ReceiverData aCoverVariable,
         ICoverable aTileEntity) {
         return true;
     }

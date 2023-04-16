@@ -1,6 +1,6 @@
 package gregtech.api.util;
 
-import static gregtech.api.enums.GT_Values.ALL_VALID_SIDES;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -35,7 +35,7 @@ public abstract class GT_CircuitryBehavior {
      * returns if there is Redstone applied to any of the valid Inputs (OR)
      */
     public static boolean getAnyRedstone(IRedstoneCircuitBlock aRedstoneCircuitBlock) {
-        for (byte side : ALL_VALID_SIDES) {
+        for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
             if (side != aRedstoneCircuitBlock.getOutputFacing() && aRedstoneCircuitBlock.getCover(side)
                 .letsRedstoneGoIn(
                     side,
@@ -54,7 +54,7 @@ public abstract class GT_CircuitryBehavior {
      * returns if there is Redstone applied to all the valid Inputs (AND)
      */
     public static boolean getAllRedstone(IRedstoneCircuitBlock aRedstoneCircuitBlock) {
-        for (byte side : ALL_VALID_SIDES) {
+        for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
             if (side != aRedstoneCircuitBlock.getOutputFacing() && aRedstoneCircuitBlock.getCover(side)
                 .letsRedstoneGoIn(
                     side,
@@ -74,7 +74,7 @@ public abstract class GT_CircuitryBehavior {
      */
     public static boolean getOneRedstone(IRedstoneCircuitBlock aRedstoneCircuitBlock) {
         int tRedstoneAmount = 0;
-        for (byte side : ALL_VALID_SIDES) {
+        for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
             if (side != aRedstoneCircuitBlock.getOutputFacing() && aRedstoneCircuitBlock.getCover(side)
                 .letsRedstoneGoIn(
                     side,
@@ -94,7 +94,7 @@ public abstract class GT_CircuitryBehavior {
      */
     public static byte getStrongestRedstone(IRedstoneCircuitBlock aRedstoneCircuitBlock) {
         byte tRedstoneAmount = 0;
-        for (byte side : ALL_VALID_SIDES) {
+        for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
             if (side != aRedstoneCircuitBlock.getOutputFacing() && aRedstoneCircuitBlock.getCover(side)
                 .letsRedstoneGoIn(
                     side,
@@ -117,7 +117,7 @@ public abstract class GT_CircuitryBehavior {
     public static byte getWeakestNonZeroRedstone(IRedstoneCircuitBlock aRedstoneCircuitBlock) {
         if (!getAnyRedstone(aRedstoneCircuitBlock)) return 0;
         byte tRedstoneAmount = 15;
-        for (byte side : ALL_VALID_SIDES) {
+        for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
             if (side != aRedstoneCircuitBlock.getOutputFacing() && aRedstoneCircuitBlock.getCover(side)
                 .letsRedstoneGoIn(
                     side,
@@ -137,7 +137,7 @@ public abstract class GT_CircuitryBehavior {
     public static byte getWeakestRedstone(IRedstoneCircuitBlock aRedstoneCircuitBlock) {
         if (!getAnyRedstone(aRedstoneCircuitBlock)) return 0;
         byte tRedstoneAmount = 15;
-        for (byte side : ALL_VALID_SIDES) {
+        for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
             if (side != aRedstoneCircuitBlock.getOutputFacing() && aRedstoneCircuitBlock.getCover(side)
                 .letsRedstoneGoIn(
                     side,

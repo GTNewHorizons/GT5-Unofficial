@@ -14,10 +14,10 @@ public class GT_CopiedBlockTexture extends GT_TextureBase implements ITexture, I
     private final Block mBlock;
     private final byte mSide, mMeta;
 
-    protected GT_CopiedBlockTexture(Block aBlock, int aSide, int aMeta, short[] aRGBa, boolean allowAlpha) {
+    protected GT_CopiedBlockTexture(Block aBlock, int ordinalSide, int aMeta, short[] aRGBa, boolean allowAlpha) {
         if (aRGBa.length != 4) throw new IllegalArgumentException("RGBa doesn't have 4 Values @ GT_CopiedBlockTexture");
         mBlock = aBlock;
-        mSide = (byte) aSide;
+        mSide = (byte) ordinalSide;
         mMeta = (byte) aMeta;
     }
 
@@ -26,8 +26,8 @@ public class GT_CopiedBlockTexture extends GT_TextureBase implements ITexture, I
         return false;
     }
 
-    private IIcon getIcon(int aSide) {
-        if (mSide == 6) return mBlock.getIcon(aSide, mMeta);
+    private IIcon getIcon(int ordinalSide) {
+        if (mSide == 6) return mBlock.getIcon(ordinalSide, mMeta);
         return mBlock.getIcon(mSide, mMeta);
     }
 
@@ -37,7 +37,7 @@ public class GT_CopiedBlockTexture extends GT_TextureBase implements ITexture, I
         aRenderer.field_152631_f = true;
         startDrawingQuads(aRenderer, 1.0f, 0.0f, 0.0f);
         new LightingHelper(aRenderer).setupLightingXPos(aBlock, aX, aY, aZ)
-            .setupColor(ForgeDirection.EAST.ordinal(), 0xffffff);
+            .setupColor(ForgeDirection.EAST, 0xffffff);
         aRenderer.renderFaceXPos(aBlock, aX, aY, aZ, aIcon);
         draw(aRenderer);
         aRenderer.field_152631_f = false;
@@ -48,7 +48,7 @@ public class GT_CopiedBlockTexture extends GT_TextureBase implements ITexture, I
         startDrawingQuads(aRenderer, -1.0f, 0.0f, 0.0f);
         final IIcon aIcon = getIcon(ForgeDirection.WEST.ordinal());
         new LightingHelper(aRenderer).setupLightingXNeg(aBlock, aX, aY, aZ)
-            .setupColor(ForgeDirection.WEST.ordinal(), 0xffffff);
+            .setupColor(ForgeDirection.WEST, 0xffffff);
         aRenderer.renderFaceXNeg(aBlock, aX, aY, aZ, aIcon);
         draw(aRenderer);
     }
@@ -58,7 +58,7 @@ public class GT_CopiedBlockTexture extends GT_TextureBase implements ITexture, I
         startDrawingQuads(aRenderer, 0.0f, 1.0f, 0.0f);
         final IIcon aIcon = getIcon(ForgeDirection.UP.ordinal());
         new LightingHelper(aRenderer).setupLightingYPos(aBlock, aX, aY, aZ)
-            .setupColor(ForgeDirection.UP.ordinal(), 0xffffff);
+            .setupColor(ForgeDirection.UP, 0xffffff);
         aRenderer.renderFaceYPos(aBlock, aX, aY, aZ, aIcon);
         draw(aRenderer);
     }
@@ -68,7 +68,7 @@ public class GT_CopiedBlockTexture extends GT_TextureBase implements ITexture, I
         startDrawingQuads(aRenderer, 0.0f, -1.0f, 0.0f);
         final IIcon aIcon = getIcon(ForgeDirection.DOWN.ordinal());
         new LightingHelper(aRenderer).setupLightingYNeg(aBlock, aX, aY, aZ)
-            .setupColor(ForgeDirection.DOWN.ordinal(), 0xffffff);
+            .setupColor(ForgeDirection.DOWN, 0xffffff);
         aRenderer.renderFaceYNeg(aBlock, aX, aY, aZ, aIcon);
         draw(aRenderer);
     }
@@ -78,7 +78,7 @@ public class GT_CopiedBlockTexture extends GT_TextureBase implements ITexture, I
         startDrawingQuads(aRenderer, 0.0f, 0.0f, 1.0f);
         final IIcon aIcon = getIcon(ForgeDirection.SOUTH.ordinal());
         new LightingHelper(aRenderer).setupLightingZPos(aBlock, aX, aY, aZ)
-            .setupColor(ForgeDirection.SOUTH.ordinal(), 0xffffff);
+            .setupColor(ForgeDirection.SOUTH, 0xffffff);
         aRenderer.renderFaceZPos(aBlock, aX, aY, aZ, aIcon);
         draw(aRenderer);
     }
@@ -89,7 +89,7 @@ public class GT_CopiedBlockTexture extends GT_TextureBase implements ITexture, I
         final IIcon aIcon = getIcon(ForgeDirection.NORTH.ordinal());
         aRenderer.field_152631_f = true;
         new LightingHelper(aRenderer).setupLightingZNeg(aBlock, aX, aY, aZ)
-            .setupColor(ForgeDirection.NORTH.ordinal(), 0xffffff);
+            .setupColor(ForgeDirection.NORTH, 0xffffff);
         aRenderer.renderFaceZNeg(aBlock, aX, aY, aZ, aIcon);
         draw(aRenderer);
         aRenderer.field_152631_f = false;
