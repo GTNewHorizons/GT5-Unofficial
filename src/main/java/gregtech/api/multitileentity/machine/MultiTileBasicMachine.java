@@ -58,8 +58,10 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
 
     protected static final IItemHandlerModifiable EMPTY_INVENTORY = new ItemStackHandler(0);
 
-    public ITexture inactiveOverlayTexture = null;
     public ITexture activeOverlayTexture = null;
+    public ITexture activeOverlayGlowTexture = null;
+    public ITexture inactiveOverlayTexture = null;
+    public ITexture inactiveOverlayGlowTexture = null;
 
     protected int maxParallel = 1;
     protected boolean active = false;
@@ -259,14 +261,22 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
     @Override
     public void loadTextureNBT(NBTTagCompound nbt) {
         super.loadTextureNBT(nbt);
-        activeOverlayTexture = TextureFactory.builder()
-            .addIcon(new CustomIcon("multitileentity/overlays/active/" + nbt.getString(NBT.ACTIVE_OVERLAY_TEXTURE)))
+        activeOverlayGlowTexture = TextureFactory.builder()
+            .addIcon(
+                new CustomIcon(
+                    "multitileentity/overlays/active/" + nbt.getString(NBT.ACTIVE_OVERLAY_TEXTURE) + "_glow"))
             .glow()
             .build();
-        inactiveOverlayTexture = TextureFactory.builder()
-            .addIcon(new CustomIcon("multitileentity/overlays/inactive/" + nbt.getString(NBT.INACTIVE_OVERLAY_TEXTURE)))
+        activeOverlayGlowTexture = TextureFactory
+            .of(new CustomIcon("multitileentity/overlays/active/" + nbt.getString(NBT.ACTIVE_OVERLAY_TEXTURE)));
+        inactiveOverlayGlowTexture = TextureFactory.builder()
+            .addIcon(
+                new CustomIcon(
+                    "multitileentity/overlays/inactive/" + nbt.getString(NBT.INACTIVE_OVERLAY_TEXTURE) + "_glow"))
             .glow()
             .build();
+        inactiveOverlayGlowTexture = TextureFactory
+            .of(new CustomIcon("multitileentity/overlays/inactive/" + nbt.getString(NBT.INACTIVE_OVERLAY_TEXTURE)));
     }
 
     @Override
@@ -279,7 +289,9 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
         }
         final MultiTileBasicMachine canonicalEntity = (MultiTileBasicMachine) tCanonicalTileEntity;
         activeOverlayTexture = canonicalEntity.activeOverlayTexture;
+        activeOverlayGlowTexture = canonicalEntity.activeOverlayGlowTexture;
         inactiveOverlayTexture = canonicalEntity.inactiveOverlayTexture;
+        inactiveOverlayGlowTexture = canonicalEntity.inactiveOverlayGlowTexture;
     }
 
     @Override
@@ -287,10 +299,10 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
         ITexture texture = super.getTexture(side);
         if (side == facing) {
             if (isActive()) {
-                return TextureFactory.of(texture, activeOverlayTexture);
+                return TextureFactory.of(texture, activeOverlayTexture, activeOverlayGlowTexture);
             }
 
-            return TextureFactory.of(texture, inactiveOverlayTexture);
+            return TextureFactory.of(texture, inactiveOverlayTexture, inactiveOverlayGlowTexture);
         }
 
         return texture;
