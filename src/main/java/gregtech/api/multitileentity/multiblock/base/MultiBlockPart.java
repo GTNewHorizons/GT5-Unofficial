@@ -91,14 +91,14 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
         if (modeSelected(ITEM_IN) || modeSelected(ITEM_OUT)) {
             if (!getNameOfInventoryFromIndex(controller, mLockedInventoryIndex).equals(mLockedInventory)) {
                 mLockedInventory = getNameOfInventoryFromIndex(controller, mLockedInventoryIndex);
-                if (mLockedInventory.equals("all")) {
+                if (mLockedInventory.equals(Controller.ALL_INVENTORIES_NAME)) {
                     mLockedInventory = "";
                 }
             }
         } else {
             if (!getNameOfTankArrayFromIndex(controller, mLockedInventoryIndex).equals(mLockedInventory)) {
                 mLockedInventory = getNameOfTankArrayFromIndex(controller, mLockedInventoryIndex);
-                if (mLockedInventory.equals("all")) {
+                if (mLockedInventory.equals(Controller.ALL_INVENTORIES_NAME)) {
                     mLockedInventory = "";
                 }
             }
@@ -682,7 +682,7 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
         dropDown.addDropDownItemsSimple(
             controller.getInventoryNames(this),
             (buttonWidget, index, label, setSelected) -> buttonWidget.setOnClick((clickData, widget) -> {
-                if (getNameOfInventoryFromIndex(controller, index).equals("all")) {
+                if (getNameOfInventoryFromIndex(controller, index).equals(Controller.ALL_INVENTORIES_NAME)) {
                     mLockedInventory = GT_Values.E;
                     mLockedInventoryIndex = 0;
                 } else {
@@ -742,7 +742,7 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
         dropDown.addDropDownItemsSimple(
             controller.getTankArrayNames(this),
             (buttonWidget, index, label, setSelected) -> buttonWidget.setOnClick((clickData, widget) -> {
-                if (getNameOfTankArrayFromIndex(controller, index).equals("all")) {
+                if (getNameOfTankArrayFromIndex(controller, index).equals(Controller.ALL_INVENTORIES_NAME)) {
                     mLockedInventory = GT_Values.E;
                     mLockedInventoryIndex = 0;
                 } else {
