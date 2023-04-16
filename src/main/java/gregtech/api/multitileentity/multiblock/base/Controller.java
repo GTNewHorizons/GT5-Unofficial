@@ -673,7 +673,14 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
 
     @Override
     public FluidStack getDrainableFluid(byte aSide) {
-        final IFluidTank tank = getFluidTankDrainable(aSide, null);
+        return getDrainableFluid(aSide, null);
+    }
+
+    @Override
+    public FluidStack getDrainableFluid(byte aSide, Fluid fluidToDrain) {
+        final IFluidTank tank = getFluidTankDrainable(
+            aSide,
+            fluidToDrain == null ? null : new FluidStack(fluidToDrain, 0));
         return tank == null ? null : tank.getFluid();
     }
 
@@ -1048,11 +1055,11 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
     }
 
     protected IFluidTank getFluidTankFillable(MultiBlockPart aPart, byte aSide, FluidStack aFluidToFill) {
-        return getFluidTankFillable(aSide, aFluidToFill);
+        return getFluidTankFillable(aPart.getFrontFacing(), aSide, aFluidToFill);
     }
 
     protected IFluidTank getFluidTankDrainable(MultiBlockPart aPart, byte aSide, FluidStack aFluidToDrain) {
-        return getFluidTankDrainable(aSide, aFluidToDrain);
+        return getFluidTankDrainable(aPart.getFrontFacing(), aSide, aFluidToDrain);
     }
 
     protected IFluidTank[] getFluidTanks(MultiBlockPart aPart, byte aSide) {

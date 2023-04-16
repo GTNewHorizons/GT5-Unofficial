@@ -334,6 +334,7 @@ public class GT_Values {
             TARGET_X = "gt.target.x", // Number
             TARGET_Y = "gt.target.y", // Number
             TARGET_Z = "gt.target.z", // Number
+            LOCKED_FLUID = "gt.locked.fluid", // String
             LOCKED_INVENTORY = "gt.locked.inventory", // String
             LOCKED_INVENTORY_INDEX = "gt.locked.inventory.index", // Number
             UPGRADE_INVENTORY_SIZE = "gt.invsize.upg", // String

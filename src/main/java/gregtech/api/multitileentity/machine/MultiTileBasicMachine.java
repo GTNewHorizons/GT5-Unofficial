@@ -372,8 +372,13 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
 
     @Override
     public IFluidTank getFluidTankFillable(byte aSide, FluidStack aFluidToFill) {
-        if (!isLiquidInput(aSide)) return null;
-        for (FluidTankGT tankGT : inputTanks) if (tankGT.contains(aFluidToFill)) return tankGT;
+        return getFluidTankFillable((byte) facing.ordinal(), aSide, aFluidToFill);
+    }
+
+    public IFluidTank getFluidTankFillable(byte sideSource, byte sideDestination, FluidStack fluidToFill) {
+        if (ForgeDirection.getOrientation(sideSource)
+            .compareTo(ForgeDirection.getOrientation(sideDestination)) != 0) return null;
+        for (FluidTankGT tankGT : inputTanks) if (tankGT.contains(fluidToFill)) return tankGT;
         // if (!mRecipes.containsInput(aFluidToFill, this, slot(mRecipes.mInputItemsCount +
         // mRecipes.mOutputItemsCount))) return null;
         for (FluidTankGT fluidTankGT : inputTanks) if (fluidTankGT.isEmpty()) return fluidTankGT;
@@ -382,9 +387,14 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
 
     @Override
     protected IFluidTank getFluidTankDrainable(byte aSide, FluidStack aFluidToDrain) {
-        if (!isLiquidOutput(aSide)) return null;
+        return getFluidTankDrainable((byte) facing.ordinal(), aSide, aFluidToDrain);
+    }
+
+    protected IFluidTank getFluidTankDrainable(byte sideSource, byte sideDestination, FluidStack fluidToDrain) {
+        if (ForgeDirection.getOrientation(sideSource)
+            .compareTo(ForgeDirection.getOrientation(sideDestination)) != 0) return null;
         for (FluidTankGT fluidTankGT : outputTanks)
-            if (aFluidToDrain == null ? fluidTankGT.has() : fluidTankGT.contains(aFluidToDrain)) return fluidTankGT;
+            if (fluidToDrain == null ? fluidTankGT.has() : fluidTankGT.contains(fluidToDrain)) return fluidTankGT;
 
         return null;
     }

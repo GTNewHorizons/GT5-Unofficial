@@ -18,6 +18,7 @@ import static org.apache.commons.lang3.ObjectUtils.firstNonNull;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -39,13 +40,10 @@ import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow.Builder;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
-import com.gtnewhorizons.modularui.common.widget.DropDownWidget;
-import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
-import com.gtnewhorizons.modularui.common.widget.Scrollable;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
+import com.gtnewhorizons.modularui.common.widget.*;
 
 import gregtech.api.enums.GT_Values;
+import gregtech.api.fluid.FluidTankGT;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.logic.PowerLogic;
 import gregtech.api.logic.interfaces.PowerLogicHost;
@@ -76,6 +74,7 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
 
     protected String mLockedInventory = GT_Values.E;
     protected int mLockedInventoryIndex = 0;
+    protected FluidTankGT configurationTank = new FluidTankGT();
 
     /**
      * What Part Tier is this part? All Basic Casings are Tier 1, and will allow: Energy, Item, Fluid input/output. Some
@@ -129,6 +128,13 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
         IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currenttip, accessor, config);
         currenttip.add(String.format("Mode: %s", getModeName(mMode)));
+        if (modeSelected(FLUID_OUT)) {
+            currenttip.add(
+                String.format(
+                    "Locked to: %s",
+                    configurationTank.get()
+                        .getLocalizedName()));
+        }
     }
 
     public IMultiBlockController getTarget(boolean aCheckValidity) {
@@ -207,6 +213,9 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
         if (aNBT.hasKey(NBT.LOCKED_INVENTORY_INDEX)) {
             mLockedInventoryIndex = aNBT.getInteger(NBT.LOCKED_INVENTORY_INDEX);
         }
+        if (aNBT.hasKey(NBT.LOCKED_FLUID)) {
+            configurationTank.readFromNBT(aNBT, NBT.LOCKED_FLUID);
+        }
     }
 
     @Override
@@ -225,6 +234,7 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
         if (mLockedInventoryIndex != 0) {
             aNBT.setInteger(NBT.LOCKED_INVENTORY_INDEX, mLockedInventoryIndex);
         }
+        configurationTank.writeToNBT(aNBT, NBT.LOCKED_FLUID);
     }
 
     @Override
@@ -426,8 +436,9 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
     public int fill(ForgeDirection aDirection, FluidStack aFluidStack, boolean aDoFill) {
         if (!modeSelected(FLUID_IN)) return 0;
         final byte aSide = (byte) aDirection.ordinal();
+        if (aFluidStack == null || isWrongFluid(aFluidStack.getFluid())) return 0;
         if (aDirection != ForgeDirection.UNKNOWN && (facing.compareTo(ForgeDirection.getOrientation(aSide)) != 0
-            || !coverLetsFluidIn(aSide, aFluidStack == null ? null : aFluidStack.getFluid()))) return 0;
+            || !coverLetsFluidIn(aSide, aFluidStack.getFluid()))) return 0;
         final IMultiBlockController controller = getTarget(true);
         return controller == null ? 0 : controller.fill(this, aDirection, aFluidStack, aDoFill);
     }
@@ -436,8 +447,9 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
     public FluidStack drain(ForgeDirection aDirection, FluidStack aFluidStack, boolean aDoDrain) {
         if (!modeSelected(FLUID_OUT)) return null;
         final byte aSide = (byte) aDirection.ordinal();
+        if (aFluidStack == null || isWrongFluid(aFluidStack.getFluid())) return null;
         if (aDirection != ForgeDirection.UNKNOWN && (facing.compareTo(ForgeDirection.getOrientation(aSide)) != 0
-            || !coverLetsFluidOut(aSide, aFluidStack == null ? null : aFluidStack.getFluid()))) return null;
+            || !coverLetsFluidOut(aSide, aFluidStack.getFluid()))) return null;
         final IMultiBlockController controller = getTarget(true);
         return controller == null ? null : controller.drain(this, aDirection, aFluidStack, aDoDrain);
     }
@@ -448,10 +460,16 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
         final byte aSide = (byte) aDirection.ordinal();
         final IMultiBlockController controller = getTarget(true);
         if (controller == null) return null;
-        final FluidStack aFluidStack = controller.getDrainableFluid(aSide);
+        FluidStack aFluidStack = null;
+        if (getLockedFluid() != null) {
+            aFluidStack = controller.getDrainableFluid(aSide, getLockedFluid());
+        } else {
+            aFluidStack = controller.getDrainableFluid(aSide);
+        }
+        if (aFluidStack == null || isWrongFluid(aFluidStack.getFluid())) return null;
         if (aDirection != ForgeDirection.UNKNOWN && (facing.compareTo(ForgeDirection.getOrientation(aSide)) != 0
-            || !coverLetsFluidOut(aSide, aFluidStack == null ? null : aFluidStack.getFluid()))) return null;
-        return controller.drain(this, aDirection, aAmountToDrain, aDoDrain);
+            || !coverLetsFluidOut(aSide, aFluidStack.getFluid()))) return null;
+        return controller.drain(this, aDirection, aFluidStack, aDoDrain);
     }
 
     @Override
@@ -461,6 +479,7 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
         if (aDirection != ForgeDirection.UNKNOWN
             && (facing.compareTo(ForgeDirection.getOrientation(aSide)) != 0 || !coverLetsFluidIn(aSide, aFluid)))
             return false;
+        if (isWrongFluid(aFluid)) return false;
         final IMultiBlockController controller = getTarget(true);
         return controller != null && controller.canFill(this, aDirection, aFluid);
     }
@@ -472,6 +491,7 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
         if (aDirection != ForgeDirection.UNKNOWN
             && (facing.compareTo(ForgeDirection.getOrientation(aSide)) != 0 || !coverLetsFluidOut(aSide, aFluid)))
             return false;
+        if (isWrongFluid(aFluid)) return false;
         final IMultiBlockController controller = getTarget(true);
         return controller != null && controller.canDrain(this, aDirection, aFluid);
     }
@@ -716,6 +736,26 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
         return tankNames.get(index);
     }
 
+    protected boolean isWrongFluid(Fluid fluid) {
+        if (fluid == null) {
+            return true;
+        }
+        Fluid lockedFluid = getLockedFluid();
+        if (lockedFluid != null) {
+            return !fluid.equals(lockedFluid);
+        }
+        return false;
+    }
+
+    protected Fluid getLockedFluid() {
+        if (configurationTank.get() != null && configurationTank.get()
+            .getFluid() != null) {
+            return configurationTank.get()
+                .getFluid();
+        }
+        return null;
+    }
+
     protected void addFluidInventory(Builder builder, UIBuildContext buildContext) {
         final IMultiBlockController controller = getTarget(false);
         if (controller == null) {
@@ -767,7 +807,16 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
             return;
         }
         if (modeSelected(FLUID_IN, FLUID_OUT)) {
-            addFluidInventory(builder, buildContext);
+            if (modeSelected(FLUID_OUT)) {
+                addFluidInventory(builder, buildContext);
+            }
+            builder.widget(
+                SlotGroup.ofFluidTanks(Collections.singletonList(configurationTank), 1)
+                    .startFromSlot(0)
+                    .endAtSlot(0)
+                    .phantom(true)
+                    .build()
+                    .setPos(7, 45));
             return;
         }
     }
