@@ -568,6 +568,7 @@ public class GT_Client extends GT_Proxy implements Runnable {
     public void onLoad() {
         super.onLoad();
         new GT_Renderer_Block();
+        new GT_MultiTile_Renderer();
         metaGeneratedItemRenderer = new GT_MetaGenerated_Item_Renderer();
         for (GT_MetaGenerated_Item item : GT_MetaGenerated_Item.sInstances.values()) {
             metaGeneratedItemRenderer.registerItem(item);

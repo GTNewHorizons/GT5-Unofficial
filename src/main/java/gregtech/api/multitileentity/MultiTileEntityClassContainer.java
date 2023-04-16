@@ -9,6 +9,7 @@ import net.minecraft.util.Tuple;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.multitileentity.base.MultiTileEntity;
+import gregtech.api.multitileentity.machine.MultiTileBasicMachine;
 import gregtech.api.multitileentity.multiblock.casing.FunctionalCasing;
 import gregtech.api.multitileentity.multiblock.casing.UpgradeCasing;
 import gregtech.api.util.GT_Util;
@@ -94,25 +95,67 @@ public class MultiTileEntityClassContainer {
 
     // Need a base texture for the MTE machine, and then a separate texture set for the machine/active overlays
 
-    public MultiTileEntityClassContainer material(Materials aMaterial) {
+    public MultiTileEntityClassContainer material(Materials material) {
         // Sets the material, and the color from the material, if not already set
-        mParameters.setString(NBT.MATERIAL, aMaterial.toString());
-        if (!mParameters.hasKey(NBT.COLOR)) mParameters.setInteger(NBT.COLOR, GT_Util.getRGBInt(aMaterial.getRGBA()));
+        mParameters.setString(NBT.MATERIAL, material.toString());
+        if (!mParameters.hasKey(NBT.COLOR)) mParameters.setInteger(NBT.COLOR, GT_Util.getRGBInt(material.getRGBA()));
         return this;
     }
 
-    public MultiTileEntityClassContainer color(int aRPG) {
-        mParameters.setInteger(NBT.COLOR, aRPG);
+    public MultiTileEntityClassContainer color(int rbg) {
+        mParameters.setInteger(NBT.COLOR, rbg);
         return this;
     }
 
-    public MultiTileEntityClassContainer color(short[] aRPGA) {
-        mParameters.setInteger(NBT.COLOR, GT_Util.getRGBInt(aRPGA));
+    public MultiTileEntityClassContainer color(short[] rgba) {
+        mParameters.setInteger(NBT.COLOR, GT_Util.getRGBInt(rgba));
         return this;
     }
 
-    public MultiTileEntityClassContainer texture(String aTexture) {
-        mParameters.setString(NBT.TEXTURE, aTexture);
+    public MultiTileEntityClassContainer baseTexture(String texture) {
+        mParameters.setString(NBT.BASE_TEXTURE, texture);
+        return this;
+    }
+
+    public MultiTileEntityClassContainer upOverlayTexture(String texture) {
+        mParameters.setString(NBT.UP_OVERLAY_TEXTURE, texture);
+        return this;
+    }
+
+    public MultiTileEntityClassContainer downOverlayTexture(String texture) {
+        mParameters.setString(NBT.DOWN_OVERLAY_TEXTURE, texture);
+        return this;
+    }
+
+    public MultiTileEntityClassContainer eastOverlayTexture(String texture) {
+        mParameters.setString(NBT.EAST_OVERLAY_TEXTURE, texture);
+        return this;
+    }
+
+    public MultiTileEntityClassContainer westOverlayTexture(String texture) {
+        mParameters.setString(NBT.WEST_OVERLAY_TEXTURE, texture);
+        return this;
+    }
+
+    public MultiTileEntityClassContainer northOverlayTexture(String texture) {
+        mParameters.setString(NBT.NORTH_OVERLAY_TEXTURE, texture);
+        return this;
+    }
+
+    public MultiTileEntityClassContainer southOverlayTexture(String texture) {
+        mParameters.setString(NBT.SOUTH_OVERLAY_TEXTURE, texture);
+        return this;
+    }
+
+    public MultiTileEntityClassContainer activeOverlayTexture(String texture) {
+        verifyDescendentOf(MultiTileBasicMachine.class);
+        mParameters.setString(NBT.ACTIVE_OVERLAY_TEXTURE, texture);
+        return this;
+    }
+
+    public MultiTileEntityClassContainer inactiveOverlayTexture(String texture) {
+        verifyDescendentOf(MultiTileBasicMachine.class);
+        mParameters.setString(NBT.INACTIVE_OVERLAY_TEXTURE, texture);
         return this;
     }
 
@@ -174,10 +217,8 @@ public class MultiTileEntityClassContainer {
             if (!onlyOne) {
                 verifyDescendentOf(cls);
                 atLeastOne = true;
-            } else {
-                if (cls.isAssignableFrom(mClass)) {
-                    atLeastOne = true;
-                }
+            } else if (cls.isAssignableFrom(mClass)) {
+                atLeastOne = true;
             }
         }
 

@@ -1,9 +1,5 @@
 package gregtech.common.render;
 
-import static gregtech.api.enums.GT_Values.ALL_VALID_SIDES;
-import static gregtech.api.enums.GT_Values.OFFX;
-import static gregtech.api.enums.GT_Values.OFFY;
-import static gregtech.api.enums.GT_Values.OFFZ;
 import static gregtech.api.interfaces.metatileentity.IConnectable.CONNECTED_DOWN;
 import static gregtech.api.interfaces.metatileentity.IConnectable.CONNECTED_EAST;
 import static gregtech.api.interfaces.metatileentity.IConnectable.CONNECTED_NORTH;
@@ -979,94 +975,6 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
         RenderBlocks aRenderer) {
         aRenderer.enableAO = Minecraft.isAmbientOcclusionEnabled() && GT_Mod.gregtechproxy.mRenderTileAmbientOcclusion;
         aRenderer.useInventoryTint = false;
-        if (aBlock instanceof IRenderedBlock) {
-            IRenderedBlock tRenderer = ((IRenderedBlock) aBlock).passRenderingToObject(aWorld, aX, aY, aZ);
-            if (tRenderer != null) tRenderer = tRenderer.passRenderingToObject(aWorld, aX, aY, aZ);
-            if (tRenderer == null) tRenderer = IRenderedBlock.ErrorRenderer.INSTANCE;
-            boolean tNeedsToSetBounds = true;
-            boolean rReturn = false;
-            if (tRenderer.renderBlock(aBlock, aRenderer, aWorld, aX, aY, aZ)) {
-                rReturn = true;
-            } else {
-                final boolean[] tSides = new boolean[6];
-                if (tRenderer instanceof IRenderedBlockSideCheck) {
-                    for (byte tSide : ALL_VALID_SIDES) rReturn |= (tSides[tSide] = ((IRenderedBlockSideCheck) tRenderer)
-                        .renderFullBlockSide(aBlock, aRenderer, tSide));
-                } else {
-                    for (byte tSide : ALL_VALID_SIDES) rReturn |= (tSides[tSide] = aBlock
-                        .shouldSideBeRendered(aWorld, aX + OFFX[tSide], aY + OFFY[tSide], aZ + OFFZ[tSide], tSide));
-                }
-                for (int i = 0, j = tRenderer.getRenderPasses(aBlock); i < j; i++) {
-                    if (tRenderer.usesRenderPass(i)) {
-                        if (tRenderer.setBlockBounds(aBlock, i)) {
-                            tNeedsToSetBounds = true;
-                            aRenderer.setRenderBoundsFromBlock(aBlock);
-                        } else {
-                            if (tNeedsToSetBounds) aBlock.setBlockBounds(0, 0, 0, 1, 1, 1);
-                            aRenderer.setRenderBoundsFromBlock(aBlock);
-                            tNeedsToSetBounds = false;
-                        }
-                        renderNegativeYFacing(
-                            aWorld,
-                            aRenderer,
-                            aBlock,
-                            aX,
-                            aY,
-                            aZ,
-                            tRenderer.getTexture(aBlock, (byte) DOWN.ordinal(), i, tSides),
-                            tSides[DOWN.ordinal()]);
-                        renderPositiveYFacing(
-                            aWorld,
-                            aRenderer,
-                            aBlock,
-                            aX,
-                            aY,
-                            aZ,
-                            tRenderer.getTexture(aBlock, (byte) UP.ordinal(), i, tSides),
-                            tSides[UP.ordinal()]);
-                        renderNegativeZFacing(
-                            aWorld,
-                            aRenderer,
-                            aBlock,
-                            aX,
-                            aY,
-                            aZ,
-                            tRenderer.getTexture(aBlock, (byte) NORTH.ordinal(), i, tSides),
-                            tSides[NORTH.ordinal()]);
-                        renderPositiveZFacing(
-                            aWorld,
-                            aRenderer,
-                            aBlock,
-                            aX,
-                            aY,
-                            aZ,
-                            tRenderer.getTexture(aBlock, (byte) SOUTH.ordinal(), i, tSides),
-                            tSides[SOUTH.ordinal()]);
-                        renderNegativeXFacing(
-                            aWorld,
-                            aRenderer,
-                            aBlock,
-                            aX,
-                            aY,
-                            aZ,
-                            tRenderer.getTexture(aBlock, (byte) WEST.ordinal(), i, tSides),
-                            tSides[WEST.ordinal()]);
-                        renderPositiveXFacing(
-                            aWorld,
-                            aRenderer,
-                            aBlock,
-                            aX,
-                            aY,
-                            aZ,
-                            tRenderer.getTexture(aBlock, (byte) EAST.ordinal(), i, tSides),
-                            tSides[EAST.ordinal()]);
-                    }
-                }
-                if (tNeedsToSetBounds) aBlock.setBlockBounds(0, 0, 0, 1, 1, 1);
-            }
-
-            return rReturn;
-        }
 
         final TileEntity tileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (tileEntity == null) return false;

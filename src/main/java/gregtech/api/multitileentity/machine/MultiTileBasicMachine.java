@@ -6,7 +6,6 @@ import static gregtech.api.enums.GT_Values.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -17,6 +16,7 @@ import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidTank;
 
@@ -28,10 +28,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.GT_Values.NBT;
 import gregtech.api.enums.SoundResource;
-import gregtech.api.enums.Textures;
+import gregtech.api.enums.Textures.BlockIcons.CustomIcon;
 import gregtech.api.enums.TickTime;
 import gregtech.api.fluid.FluidTankGT;
-import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.logic.PollutionLogic;
 import gregtech.api.logic.PowerLogic;
@@ -45,7 +44,6 @@ import gregtech.api.multitileentity.base.TickableMultiTileEntity;
 import gregtech.api.multitileentity.interfaces.IMultiTileMachine;
 import gregtech.api.net.GT_Packet_MultiTileEntity;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Util;
 import gregtech.api.util.GT_Utility;
 import gregtech.client.GT_SoundLoop;
 import gregtech.common.GT_Pollution;
@@ -60,9 +58,8 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
 
     protected static final IItemHandlerModifiable EMPTY_INVENTORY = new ItemStackHandler(0);
 
-    private static final String TEXTURE_LOCATION = "multitileentity/machines/";
-    public IIconContainer[] texturesInactive = emptyIconContainerArray;
-    public IIconContainer[] texturesActive = emptyIconContainerArray;
+    public ITexture inactiveOverlayTexture = null;
+    public ITexture activeOverlayTexture = null;
 
     protected int maxParallel = 1;
     protected boolean active = false;
@@ -260,56 +257,39 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
     }
 
     @Override
-    public void loadTextureNBT(NBTTagCompound aNBT) {
-        // Loading the registry
-        final String textureName = aNBT.getString(NBT.TEXTURE);
-        textures = new IIconContainer[] {
-            new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/bottom"),
-            new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/top"),
-            new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/left"),
-            new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/front"),
-            new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/right"),
-            new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/side") };
-        texturesInactive = new IIconContainer[] {
-            new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/overlay/inactive/bottom"),
-            new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/overlay/inactive/top"),
-            new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/overlay/inactive/left"),
-            new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/overlay/inactive/front"),
-            new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/overlay/inactive/right"),
-            new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/overlay/inactive/back") };
-        texturesActive = new IIconContainer[] {
-            new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/overlay/active/bottom"),
-            new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/overlay/active/top"),
-            new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/overlay/active/left"),
-            new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/overlay/active/front"),
-            new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/overlay/active/right"),
-            new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/overlay/active/back") };
+    public void loadTextureNBT(NBTTagCompound nbt) {
+        super.loadTextureNBT(nbt);
+        activeOverlayTexture = TextureFactory
+            .of(new CustomIcon("multitileentity/overlays/active/" + nbt.getString(NBT.ACTIVE_OVERLAY_TEXTURE)));
+        inactiveOverlayTexture = TextureFactory
+            .of(new CustomIcon("multitileentity/overlays/inactive/" + nbt.getString(NBT.INACTIVE_OVERLAY_TEXTURE)));
     }
 
     @Override
     public void copyTextures() {
-        // Loading an instance
+        super.copyTextures();
         final TileEntity tCanonicalTileEntity = MultiTileEntityRegistry
             .getCanonicalTileEntity(getMultiTileEntityRegistryID(), getMultiTileEntityID());
-        if (tCanonicalTileEntity instanceof MultiTileBasicMachine) {
-            textures = ((MultiTileBasicMachine) tCanonicalTileEntity).textures;
-            texturesInactive = ((MultiTileBasicMachine) tCanonicalTileEntity).texturesInactive;
-            texturesActive = ((MultiTileBasicMachine) tCanonicalTileEntity).texturesActive;
-        } else {
-            textures = texturesInactive = texturesActive = emptyIconContainerArray;
+        if (!(tCanonicalTileEntity instanceof MultiTileBasicMachine)) {
+            return;
         }
+        final MultiTileBasicMachine canonicalEntity = (MultiTileBasicMachine) tCanonicalTileEntity;
+        activeOverlayTexture = canonicalEntity.activeOverlayTexture;
+        inactiveOverlayTexture = canonicalEntity.inactiveOverlayTexture;
     }
 
     @Override
-    public ITexture[] getTexture(Block aBlock, byte aSide, boolean isActive, int aRenderPass) {
-        if (aSide != facing) {
-            return new ITexture[] {
-                TextureFactory.of(textures[GT_Values.FACING_ROTATIONS[facing][aSide]], GT_Util.getRGBaArray(rgba)) };
+    public ITexture getTexture(ForgeDirection side) {
+        ITexture texture = super.getTexture(side);
+        if (side == facing) {
+            if (isActive()) {
+                return TextureFactory.of(texture, activeOverlayTexture);
+            }
+
+            return TextureFactory.of(texture, inactiveOverlayTexture);
         }
-        return new ITexture[] {
-            TextureFactory.of(textures[GT_Values.FACING_ROTATIONS[facing][aSide]], GT_Util.getRGBaArray(rgba)),
-            TextureFactory
-                .of((active ? texturesActive : texturesInactive)[GT_Values.FACING_ROTATIONS[facing][aSide]]) };
+
+        return texture;
     }
 
     @Override
@@ -360,12 +340,12 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
 
     @Override
     public boolean isLiquidInput(byte aSide) {
-        return aSide != facing;
+        return facing.compareTo(ForgeDirection.getOrientation(aSide)) != 0;
     }
 
     @Override
     public boolean isLiquidOutput(byte aSide) {
-        return aSide != facing;
+        return facing.compareTo(ForgeDirection.getOrientation(aSide)) != 0;
     }
 
     @Override
@@ -555,7 +535,7 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
      * Runs only on server side
      */
     protected void consumeEnergy() {
-        PowerLogic logic = ((PowerLogicHost) this).getPowerLogic(GT_Values.SIDE_UNKNOWN);
+        PowerLogic logic = ((PowerLogicHost) this).getPowerLogic(ForgeDirection.UNKNOWN);
 
         if (logic == null) {
             return;
@@ -930,6 +910,8 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
     public void setBooleans(int booleans) {
         if ((booleans & ACTIVE) == ACTIVE) {
             setActive(true);
+        } else {
+            setActive(false);
         }
     }
 

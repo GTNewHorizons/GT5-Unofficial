@@ -2,11 +2,6 @@ package gregtech.common.tileentities.machines.multiblock;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_GLOW;
 import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.ENERGY_IN;
 import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.FLUID_IN;
 import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.FLUID_OUT;
@@ -14,7 +9,6 @@ import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.ITEM_I
 import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.ITEM_OUT;
 import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.NOTHING;
 
-import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
@@ -28,9 +22,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TierEU;
-import gregtech.api.interfaces.ITexture;
 import gregtech.api.multitileentity.multiblock.base.StackableController;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
@@ -139,38 +131,6 @@ public class Macerator extends StackableController<Macerator> {
     @Override
     public Vec3Impl getAfterLastStackOffset() {
         return new Vec3Impl(-1, 0, 0);
-    }
-
-    @Override
-    public ITexture[] getTexture(Block aBlock, byte aSide, boolean isActive, int aRenderPass) {
-        // TODO: MTE(Texture)
-        if (facing == aSide) {
-            return new ITexture[] {
-                // Base Texture
-                MACHINE_CASINGS[1][0],
-                // Active
-                isActive() ? TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE)
-                    .extFacing()
-                    .build()
-                    : TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE)
-                        .extFacing()
-                        .build(),
-                // Active Glow
-                isActive() ? TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build()
-                    : TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_GLOW)
-                        .extFacing()
-                        .glow()
-                        .build() };
-        }
-        // Base Texture
-        return new ITexture[] { MACHINE_CASINGS[1][0] };
     }
 
     @Override

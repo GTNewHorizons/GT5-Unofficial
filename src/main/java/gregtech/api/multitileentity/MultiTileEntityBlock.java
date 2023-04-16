@@ -50,7 +50,6 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IDebugableBlock;
-import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IDebugableTileEntity;
 import gregtech.api.metatileentity.BaseTileEntity;
 import gregtech.api.metatileentity.CoverableTileEntity;
@@ -69,15 +68,13 @@ import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Util;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.covers.CoverInfo;
-import gregtech.common.render.GT_Renderer_Block;
-import gregtech.common.render.IRenderedBlock;
+import gregtech.common.render.GT_MultiTile_Renderer;
 
 /*
  * MultiTileEntityBlock ported from GT6
  */
 @Optional.Interface(iface = "com.cricketcraft.chisel.api.IFacade", modid = "ChiselAPI")
-public class MultiTileEntityBlock extends Block
-    implements IDebugableBlock, ITileEntityProvider, IRenderedBlock, IFacade {
+public class MultiTileEntityBlock extends Block implements IDebugableBlock, ITileEntityProvider, IFacade {
 
     protected static final Map<String, MultiTileEntityBlock> MULTI_BLOCK_MAP = new HashMap<>();
     private static boolean LOCK = false;
@@ -219,7 +216,8 @@ public class MultiTileEntityBlock extends Block
 
     @Override
     public int getRenderType() {
-        return GT_Renderer_Block.INSTANCE == null ? super.getRenderType() : GT_Renderer_Block.INSTANCE.mRenderID;
+        return GT_MultiTile_Renderer.INSTANCE == null ? super.getRenderType()
+            : GT_MultiTile_Renderer.INSTANCE.getRenderId();
     }
 
     @Override
@@ -384,43 +382,6 @@ public class MultiTileEntityBlock extends Block
             for (ItemStack tStack : tList)
                 if (XSTR.XSTR_INSTANCE.nextFloat() <= aChance) dropBlockAsItem(aWorld, aX, aY, aZ, tStack);
         }
-    }
-
-    @Override
-    public ITexture[] getTexture(Block aBlock, byte aSide, int aRenderPass, boolean[] aShouldSideBeRendered) {
-        return null;
-    }
-
-    @Override
-    public ITexture[] getTexture(Block aBlock, byte aSide, boolean isActive, int aRenderPass) {
-        // TODO: MTE(Texture)
-        return null;
-    }
-
-    @Override
-    public int getRenderPasses(Block aBlock) {
-        return 0;
-    }
-
-    @Override
-    public boolean usesRenderPass(int aRenderPass) {
-        return true;
-    }
-
-    @Override
-    public boolean setBlockBounds(Block aBlock, int aRenderPass) {
-        return false;
-    }
-
-    @Override
-    public IRenderedBlock passRenderingToObject(ItemStack aStack) {
-        return null;
-    }
-
-    @Override
-    public IRenderedBlock passRenderingToObject(IBlockAccess aWorld, int aX, int aY, int aZ) {
-        final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        return tTileEntity instanceof IRenderedBlock ? (IRenderedBlock) tTileEntity : null;
     }
 
     @Override

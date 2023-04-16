@@ -337,7 +337,8 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
         final ForgeDirection tDir = ForgeDirection.getOrientation(tSide);
 
         // GT Machine handling
-        if ((tTileEntity instanceof PowerLogicHost && ((PowerLogicHost) tTileEntity).getPowerLogic(aSide) != null)
+        if ((tTileEntity instanceof PowerLogicHost
+            && ((PowerLogicHost) tTileEntity).getPowerLogic(ForgeDirection.getOrientation(aSide)) != null)
             || ((tTileEntity instanceof IEnergyConnected)
                 && (((IEnergyConnected) tTileEntity).inputEnergyFrom(tSide, false)
                     || ((IEnergyConnected) tTileEntity).outputsEnergyTo(tSide, false))))
