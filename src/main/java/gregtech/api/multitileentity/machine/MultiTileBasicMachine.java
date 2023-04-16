@@ -11,6 +11,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
@@ -38,6 +39,7 @@ import gregtech.api.logic.interfaces.PowerLogicHost;
 import gregtech.api.logic.interfaces.ProcessingLogicHost;
 import gregtech.api.metatileentity.GregTechTileClientEvents;
 import gregtech.api.multitileentity.MultiTileEntityRegistry;
+import gregtech.api.multitileentity.base.MultiTileEntity;
 import gregtech.api.multitileentity.base.TickableMultiTileEntity;
 import gregtech.api.multitileentity.interfaces.IMultiTileMachine;
 import gregtech.api.net.GT_Packet_MultiTileEntity;
@@ -45,6 +47,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
 import gregtech.client.GT_SoundLoop;
 import gregtech.common.GT_Pollution;
+import gregtech.api.enums.Textures.BlockIcons.CustomIcon;
 
 public abstract class MultiTileBasicMachine extends TickableMultiTileEntity implements IMultiTileMachine {
 
@@ -56,8 +59,8 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
 
     protected static final IItemHandlerModifiable EMPTY_INVENTORY = new ItemStackHandler(0);
 
-    public ITexture texturesInactive = null;
-    public ITexture texturesActive = null;
+    public ITexture inactiveOverlayTexture = null;
+    public ITexture activeOverlayTexture = null;
 
     protected int maxParallel = 1;
     protected boolean active = false;
@@ -255,13 +258,23 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
     }
 
     @Override
-    public void loadTextureNBT(NBTTagCompound aNBT) {
-        super.loadTextureNBT(aNBT);
+    public void loadTextureNBT(NBTTagCompound nbt) {
+        super.loadTextureNBT(nbt);
+        activeOverlayTexture = TextureFactory.of(new CustomIcon("multitileentity/overlay/active/" + nbt.getString(NBT.ACTIVE_OVERLAY_TEXTURE)));
+        inactiveOverlayTexture = TextureFactory.of(new CustomIcon("multitileentity/overlay/inactive/" + nbt.getString(NBT.INACTIVE_OVERLAY_TEXTURE)));
     }
 
     @Override
     public void copyTextures() {
         super.copyTextures();
+        final TileEntity tCanonicalTileEntity = MultiTileEntityRegistry
+            .getCanonicalTileEntity(getMultiTileEntityRegistryID(), getMultiTileEntityID());
+        if (!(tCanonicalTileEntity instanceof MultiTileBasicMachine)) {
+            return;
+        }
+        final MultiTileBasicMachine canonicalEntity = (MultiTileBasicMachine) tCanonicalTileEntity;
+        activeOverlayTexture = canonicalEntity.activeOverlayTexture;
+        inactiveOverlayTexture = canonicalEntity.inactiveOverlayTexture;
     }
 
     @Override
@@ -269,10 +282,10 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
         ITexture texture = super.getTexture(side);
         if (side == facing) {
             if (isActive()) {
-                return TextureFactory.of(texture, texturesActive);
+                return TextureFactory.of(texture, activeOverlayTexture);
             }
 
-            return TextureFactory.of(texture, texturesInactive);
+            return TextureFactory.of(texture, inactiveOverlayTexture);
         }
 
         return texture;
