@@ -44,6 +44,7 @@ import com.gtnewhorizons.modularui.common.widget.*;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.fluid.FluidTankGT;
+import gregtech.api.gui.modularui.GT_UITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.logic.PowerLogic;
 import gregtech.api.logic.interfaces.PowerLogicHost;
@@ -761,6 +762,19 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
         if (controller == null) {
             return;
         }
+        builder.widget(
+            new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
+                .setPos(7, 4)
+                .setSize(85, 95));
+        if (modeSelected(FLUID_OUT)) {
+            builder.widget(
+                new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SCREEN_BLACK)
+                    .setPos(getGUIWidth() - 77, 4)
+                    .setSize(70, 40))
+                .widget(
+                    new TextWidget("Locked Fluid").setDefaultColor(COLOR_TEXT_WHITE.get())
+                        .setPos(getGUIWidth() - 72, 8));
+        }
         final IFluidTank[] tanks = controller.getFluidTanksForGUI(this);
         final Scrollable scrollable = new Scrollable().setVerticalScroll();
         for (int rows = 0; rows * 4 < tanks.length; rows++) {
@@ -777,7 +791,7 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
         }
         builder.widget(
             scrollable.setSize(18 * 4 + 4, 18 * 4)
-                .setPos(52, 18));
+                .setPos(12, 21));
         DropDownWidget dropDown = new DropDownWidget();
         dropDown.addDropDownItemsSimple(
             controller.getTankArrayNames(this),
@@ -796,7 +810,7 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
             dropDown.setSelected(mLockedInventoryIndex)
                 .setExpandedMaxHeight(60)
                 .setDirection(DropDownWidget.Direction.DOWN)
-                .setPos(53, 5)
+                .setPos(13, 8)
                 .setSize(70, 11));
     }
 
@@ -807,16 +821,16 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
             return;
         }
         if (modeSelected(FLUID_IN, FLUID_OUT)) {
+            addFluidInventory(builder, buildContext);
             if (modeSelected(FLUID_OUT)) {
-                addFluidInventory(builder, buildContext);
+                builder.widget(
+                    SlotGroup.ofFluidTanks(Collections.singletonList(configurationTank), 1)
+                        .startFromSlot(0)
+                        .endAtSlot(0)
+                        .phantom(true)
+                        .build()
+                        .setPos(getGUIWidth() - 72, 20));
             }
-            builder.widget(
-                SlotGroup.ofFluidTanks(Collections.singletonList(configurationTank), 1)
-                    .startFromSlot(0)
-                    .endAtSlot(0)
-                    .phantom(true)
-                    .build()
-                    .setPos(7, 45));
             return;
         }
     }
@@ -839,7 +853,7 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
 
     @Override
     protected int getGUIHeight() {
-        return super.getGUIHeight() + 11;
+        return super.getGUIHeight() + 20;
     }
 
     @Override
@@ -849,6 +863,11 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
                 new DrawableWidget().setDrawable(getGUITextureSet().getGregTechLogo())
                     .setSize(17, 17)
                     .setPos(152, 74));
+        } else if (modeSelected(FLUID_IN, FLUID_OUT)) {
+            builder.widget(
+                new DrawableWidget().setDrawable(getGUITextureSet().getGregTechLogo())
+                    .setSize(17, 17)
+                    .setPos(152, 82));
         } else {
             super.addGregTechLogo(builder);
         }
