@@ -387,7 +387,7 @@ public class GT_TileEntity_Ores extends TileEntity implements ITexturedTileEntit
     }
 
     @Override
-    public ITexture[] getTexture(Block aBlock, byte aSide) {
+    public ITexture[] getTexture(Block aBlock, ForgeDirection aSide) {
         Materials aMaterial = GregTech_API.sGeneratedMaterials[(this.mMetaData % 1000)];
         if ((aMaterial != null) && (this.mMetaData < 32000)) {
             ITexture iTexture = TextureFactory.builder()

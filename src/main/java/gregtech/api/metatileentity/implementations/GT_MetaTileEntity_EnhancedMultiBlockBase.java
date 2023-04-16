@@ -76,16 +76,16 @@ public abstract class GT_MetaTileEntity_EnhancedMultiBlockBase<T extends GT_Meta
     }
 
     @Override
-    public final boolean isFacingValid(byte aFacing) {
-        return canSetToDirectionAny(ForgeDirection.getOrientation(aFacing));
+    public final boolean isFacingValid(ForgeDirection facingDirection) {
+        return canSetToDirectionAny(facingDirection);
     }
 
     @Override
-    public boolean onWrenchRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY,
-        float aZ) {
-        if (aWrenchingSide != getBaseMetaTileEntity().getFrontFacing())
-            return super.onWrenchRightClick(aSide, aWrenchingSide, aPlayer, aX, aY, aZ);
-        if (aPlayer.isSneaking()) {
+    public boolean onWrenchRightClick(ForgeDirection sideDirection, ForgeDirection wrenchingSideDirection, EntityPlayer entityPlayer,
+                                      float aX, float aY, float aZ) {
+        if (wrenchingSideDirection != getBaseMetaTileEntity().getFrontFacing())
+            return super.onWrenchRightClick(sideDirection, wrenchingSideDirection, entityPlayer, aX, aY, aZ);
+        if (entityPlayer.isSneaking()) {
             // we won't be allowing horizontal flips, as it can be perfectly emulated by rotating twice and flipping
             // horizontally
             // allowing an extra round of flip make it hard to draw meaningful flip markers in GT_Proxy#drawGrid
@@ -98,7 +98,7 @@ public abstract class GT_MetaTileEntity_EnhancedMultiBlockBase<T extends GT_Meta
 
     @Override
     public void onFacingChange() {
-        toolSetDirection(ForgeDirection.getOrientation(getBaseMetaTileEntity().getFrontFacing()));
+        toolSetDirection(getBaseMetaTileEntity().getFrontFacing());
     }
 
     @Override
@@ -145,7 +145,7 @@ public abstract class GT_MetaTileEntity_EnhancedMultiBlockBase<T extends GT_Meta
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         mExtendedFacing = ExtendedFacing.of(
-            ForgeDirection.getOrientation(getBaseMetaTileEntity().getFrontFacing()),
+            getBaseMetaTileEntity().getFrontFacing(),
             Rotation.byIndex(aNBT.getByte("eRotation")),
             Flip.byIndex(aNBT.getByte("eFlip")));
     }
@@ -157,14 +157,14 @@ public abstract class GT_MetaTileEntity_EnhancedMultiBlockBase<T extends GT_Meta
 
     /**
      * Explanation of the world coordinate these offset means:
-     *
+     * <p>
      * Imagine you stand in front of the controller, with controller facing towards you not rotated or flipped.
-     *
+     * <p>
      * The horizontalOffset would be the number of blocks on the left side of the controller, not counting controller
      * itself. The verticalOffset would be the number of blocks on the top side of the controller, not counting
      * controller itself. The depthOffset would be the number of blocks between you and controller, not counting
      * controller itself.
-     *
+     * <p>
      * All these offsets can be negative.
      */
     protected final boolean checkPiece(String piece, int horizontalOffset, int verticalOffset, int depthOffset) {

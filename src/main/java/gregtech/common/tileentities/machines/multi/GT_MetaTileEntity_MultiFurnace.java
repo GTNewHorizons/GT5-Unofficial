@@ -107,10 +107,10 @@ public class GT_MetaTileEntity_MultiFurnace
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-        boolean aActive, boolean aRedstone) {
-        if (aSide != aFacing) return new ITexture[] { casingTexturePages[0][CASING_INDEX] };
-        if (aActive) return new ITexture[] { casingTexturePages[0][CASING_INDEX], TextureFactory.builder()
+    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
+        ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
+        if (sideDirection != facingDirection) return new ITexture[] { casingTexturePages[0][CASING_INDEX] };
+        if (active) return new ITexture[] { casingTexturePages[0][CASING_INDEX], TextureFactory.builder()
             .addIcon(OVERLAY_FRONT_MULTI_SMELTER_ACTIVE)
             .extFacing()
             .build(),

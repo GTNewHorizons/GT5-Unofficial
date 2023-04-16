@@ -308,7 +308,7 @@ public abstract class MultiTileEntity extends CoverableTileEntity implements IMu
     }
 
     @Override
-    public boolean shouldSideBeRendered(byte aSide) {
+    public boolean shouldSideBeRendered(ForgeDirection aSide) {
         final TileEntity tTileEntity = getTileEntityAtSideAndDistance(aSide, 1);
         // TODO: check to an interface
         // if (getBlockAtSide(aSide) == Blocks.glass) return false;
@@ -317,7 +317,7 @@ public abstract class MultiTileEntity extends CoverableTileEntity implements IMu
     }
 
     @Override
-    public boolean isSurfaceOpaque(byte aSide) {
+    public boolean isSurfaceOpaque(ForgeDirection aSide) {
         return true;
     }
 
@@ -359,12 +359,13 @@ public abstract class MultiTileEntity extends CoverableTileEntity implements IMu
     }
 
     @Override
-    public ITexture[] getTexture(Block aBlock, byte aSide) {
+    public ITexture[] getTexture(Block aBlock, ForgeDirection aSide) {
         return getTexture(aBlock, aSide, 1, VALID_SIDES);
     }
 
     @Override
-    public final ITexture[] getTexture(Block aBlock, byte aSide, int aRenderPass, boolean[] aShouldSideBeRendered) {
+    public final ITexture[] getTexture(Block aBlock, ForgeDirection aSide, int aRenderPass,
+        boolean[] aShouldSideBeRendered) {
         if (!aShouldSideBeRendered[aSide]) return null;
 
         final ITexture coverTexture = getCoverTexture(aSide);
@@ -378,7 +379,7 @@ public abstract class MultiTileEntity extends CoverableTileEntity implements IMu
     }
 
     @Override
-    public ITexture[] getTexture(Block aBlock, byte aSide, boolean isActive, int aRenderPass) {
+    public ITexture[] getTexture(Block aBlock, ForgeDirection aSide, boolean isActive, int aRenderPass) {
         // Top, bottom or side
         aSide = (byte) Math.min(aSide, 2);
         return new ITexture[] { TextureFactory.of(textures[aSide], GT_Util.getRGBaArray(rgba)) };
@@ -422,7 +423,7 @@ public abstract class MultiTileEntity extends CoverableTileEntity implements IMu
     }
 
     @Override
-    public boolean isFacingValid(byte aFacing) {
+    public boolean isFacingValid(ForgeDirection facing) {
         return false;
     }
 
@@ -437,7 +438,7 @@ public abstract class MultiTileEntity extends CoverableTileEntity implements IMu
      * @return Whether the facing was changed
      */
     @Override
-    public boolean setMainFacing(byte aSide) {
+    public boolean setMainFacing(ForgeDirection aSide) {
         if (!isValidFacing(aSide)) return false;
         facing = aSide;
 
@@ -468,8 +469,8 @@ public abstract class MultiTileEntity extends CoverableTileEntity implements IMu
     }
 
     @Override
-    public boolean isValidFacing(byte aSide) {
-        return aSide >= 0 && aSide <= 6 && getValidFacings()[aSide];
+    public boolean isValidFacing(ForgeDirection aSide) {
+        return aSide != ForgeDirection.UNKNOWN && getValidFacings()[aSide.ordinal()];
     }
 
     @Override
@@ -478,7 +479,7 @@ public abstract class MultiTileEntity extends CoverableTileEntity implements IMu
     }
 
     @Override
-    public void issueCoverUpdate(byte aSide) {
+    public void issueCoverUpdate(ForgeDirection aSide) {
         super.issueCoverUpdate(aSide);
         issueClientUpdate();
     }
@@ -634,7 +635,7 @@ public abstract class MultiTileEntity extends CoverableTileEntity implements IMu
     }
 
     @Override
-    public boolean allowCoverOnSide(byte aSide, GT_ItemStack aCoverID) {
+    public boolean allowCoverOnSide(ForgeDirection aSide, GT_ItemStack aCoverID) {
         return true;
     }
 
@@ -698,8 +699,8 @@ public abstract class MultiTileEntity extends CoverableTileEntity implements IMu
     }
 
     @Override
-    public boolean onPlaced(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, byte aSide,
-        float aHitX, float aHitY, float aHitZ) {
+    public boolean onPlaced(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ,
+        ForgeDirection aSide, float aHitX, float aHitY, float aHitZ) {
         facing = getSideForPlayerPlacing(aPlayer, facing, getValidFacings());
         onFacingChange();
         return true;
@@ -715,7 +716,7 @@ public abstract class MultiTileEntity extends CoverableTileEntity implements IMu
     }
 
     @Override
-    public boolean onBlockActivated(EntityPlayer aPlayer, byte aSide, float aX, float aY, float aZ) {
+    public boolean onBlockActivated(EntityPlayer aPlayer, ForgeDirection aSide, float aX, float aY, float aZ) {
         try {
             return allowRightclick(aPlayer) && onRightClick(aPlayer, aSide, aX, aY, aZ);
         } catch (Throwable e) {
@@ -726,7 +727,7 @@ public abstract class MultiTileEntity extends CoverableTileEntity implements IMu
     }
 
     @Override
-    public boolean onRightClick(EntityPlayer aPlayer, byte aSide, float aX, float aY, float aZ) {
+    public boolean onRightClick(EntityPlayer aPlayer, ForgeDirection aSide, float aX, float aY, float aZ) {
         if (isClientSide()) {
             // Configure Cover, sneak can also be: screwdriver, wrench, side cutter, soldering iron
             if (aPlayer.isSneaking()) {
@@ -831,11 +832,11 @@ public abstract class MultiTileEntity extends CoverableTileEntity implements IMu
         return false;
     }
 
-    public boolean hasGui(byte aSide) {
+    public boolean hasGui(ForgeDirection aSide) {
         return false;
     }
 
-    boolean openModularUi(EntityPlayer aPlayer, byte aSide) {
+    boolean openModularUi(EntityPlayer aPlayer, ForgeDirection aSide) {
         if (!hasGui(aSide) || !isServerSide()) {
             System.out.println("No GUI or Not Serverside");
             return false;
@@ -913,7 +914,7 @@ public abstract class MultiTileEntity extends CoverableTileEntity implements IMu
     public void onExploded(Explosion aExplosion) {}
 
     @Override
-    public boolean isSideSolid(byte aSide) {
+    public boolean isSideSolid(ForgeDirection aSide) {
         return true;
     }
 
@@ -934,7 +935,7 @@ public abstract class MultiTileEntity extends CoverableTileEntity implements IMu
     }
 
     @Override
-    public boolean recolourBlock(byte aSide, byte aColor) {
+    public boolean recolourBlock(ForgeDirection aSide, byte aColor) {
         // if (aColor > 15 || aColor < -1) aColor = -1;
         // if(paint((byte) (aColor + 1))) {
         //// updateClientData();
@@ -1062,10 +1063,10 @@ public abstract class MultiTileEntity extends CoverableTileEntity implements IMu
     }
 
     @Override
-    public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
+    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
         IWailaConfigHandler config) {
-        super.getWailaBody(itemStack, currenttip, accessor, config);
-        currenttip.add(
+        super.getWailaBody(itemStack, currentTip, accessor, config);
+        currentTip.add(
             String.format(
                 "Facing: %s",
                 ForgeDirection.getOrientation(getFrontFacing())
@@ -1113,23 +1114,23 @@ public abstract class MultiTileEntity extends CoverableTileEntity implements IMu
      * Fluid - A Default implementation of the Fluid Tank behaviour, so that every TileEntity can use this to simplify
      * its Code.
      */
-    protected IFluidTank getFluidTankFillable(byte aSide, FluidStack aFluidToFill) {
+    protected IFluidTank getFluidTankFillable(ForgeDirection aSide, FluidStack aFluidToFill) {
         return null;
     }
 
-    protected IFluidTank getFluidTankDrainable(byte aSide, FluidStack aFluidToDrain) {
+    protected IFluidTank getFluidTankDrainable(ForgeDirection aSide, FluidStack aFluidToDrain) {
         return null;
     }
 
-    protected IFluidTank[] getFluidTanks(byte aSide) {
+    protected IFluidTank[] getFluidTanks(ForgeDirection aSide) {
         return GT_Values.emptyFluidTank;
     }
 
-    public boolean isLiquidInput(byte aSide) {
+    public boolean isLiquidInput(ForgeDirection aSide) {
         return true;
     }
 
-    public boolean isLiquidOutput(byte aSide) {
+    public boolean isLiquidOutput(ForgeDirection aSide) {
         return true;
     }
 
@@ -1234,7 +1235,7 @@ public abstract class MultiTileEntity extends CoverableTileEntity implements IMu
     }
 
     @Override
-    public boolean drainEnergyUnits(byte aSide, long aVoltage, long aAmperage) {
+    public boolean drainEnergyUnits(ForgeDirection aSide, long aVoltage, long aAmperage) {
         return false;
     }
 
@@ -1259,17 +1260,17 @@ public abstract class MultiTileEntity extends CoverableTileEntity implements IMu
     }
 
     @Override
-    public long injectEnergyUnits(byte aSide, long aVoltage, long aAmperage) {
+    public long injectEnergyUnits(ForgeDirection aSide, long aVoltage, long aAmperage) {
         return 0;
     }
 
     @Override
-    public boolean inputEnergyFrom(byte aSide) {
+    public boolean inputEnergyFrom(ForgeDirection aSide) {
         return false;
     }
 
     @Override
-    public boolean outputsEnergyTo(byte aSide) {
+    public boolean outputsEnergyTo(ForgeDirection aSide) {
         return false;
     }
 
@@ -1367,27 +1368,27 @@ public abstract class MultiTileEntity extends CoverableTileEntity implements IMu
      * Cover Helpers
      */
 
-    public boolean coverLetsFluidIn(byte aSide, Fluid aFluid) {
+    public boolean coverLetsFluidIn(ForgeDirection aSide, Fluid aFluid) {
         return getCoverInfoAtSide(aSide).letsFluidIn(aFluid);
     }
 
-    public boolean coverLetsFluidOut(byte aSide, Fluid aFluid) {
+    public boolean coverLetsFluidOut(ForgeDirection aSide, Fluid aFluid) {
         return getCoverInfoAtSide(aSide).letsFluidOut(aFluid);
     }
 
-    public boolean coverLetsEnergyIn(byte aSide) {
+    public boolean coverLetsEnergyIn(ForgeDirection aSide) {
         return getCoverInfoAtSide(aSide).letsEnergyIn();
     }
 
-    public boolean coverLetsEnergyOut(byte aSide) {
+    public boolean coverLetsEnergyOut(ForgeDirection aSide) {
         return getCoverInfoAtSide(aSide).letsEnergyOut();
     }
 
-    public boolean coverLetsItemsIn(byte aSide, int aSlot) {
+    public boolean coverLetsItemsIn(ForgeDirection aSide, int aSlot) {
         return getCoverInfoAtSide(aSide).letsItemsIn(aSlot);
     }
 
-    public boolean coverLetsItemsOut(byte aSide, int aSlot) {
+    public boolean coverLetsItemsOut(ForgeDirection aSide, int aSlot) {
         return getCoverInfoAtSide(aSide).letsItemsOut(aSlot);
     }
 

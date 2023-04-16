@@ -79,7 +79,7 @@ public class InventoryUpgrade extends UpgradeCasing {
     }
 
     @Override
-    public boolean hasGui(byte aSide) {
+    public boolean hasGui(ForgeDirection aSide) {
         return true;
     }
 

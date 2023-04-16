@@ -21,7 +21,7 @@ public class GT_Cover_AdvancedRedstoneTransmitterInternal
     }
 
     @Override
-    public TransmitterData doCoverThingsImpl(byte aSide, byte aInputRedstone, int aCoverID,
+    public TransmitterData doCoverThingsImpl(ForgeDirection aSide, byte aInputRedstone, int aCoverID,
         TransmitterData aCoverVariable, ICoverable aTileEntity, long aTimer) {
         byte outputRedstone = aTileEntity.getOutputRedstoneSignal(aSide);
         if (aCoverVariable.isInvert()) {
@@ -35,14 +35,14 @@ public class GT_Cover_AdvancedRedstoneTransmitterInternal
     }
 
     @Override
-    public boolean letsRedstoneGoOutImpl(byte aSide, int aCoverID, TransmitterData aCoverVariable,
+    public boolean letsRedstoneGoOutImpl(ForgeDirection aSide, int aCoverID, TransmitterData aCoverVariable,
         ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    protected boolean manipulatesSidedRedstoneOutputImpl(byte aSide, int aCoverID, TransmitterData aCoverVariable,
-        ICoverable aTileEntity) {
+    protected boolean manipulatesSidedRedstoneOutputImpl(ForgeDirection aSide, int aCoverID,
+        TransmitterData aCoverVariable, ICoverable aTileEntity) {
         return true;
     }
 }

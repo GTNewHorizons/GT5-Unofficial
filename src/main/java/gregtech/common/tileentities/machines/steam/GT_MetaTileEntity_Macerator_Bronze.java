@@ -86,7 +86,7 @@ public class GT_MetaTileEntity_Macerator_Bronze extends GT_MetaTileEntity_BasicM
     }
 
     @Override
-    protected boolean allowPutStackValidated(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide,
+    protected boolean allowPutStackValidated(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection aSide,
         ItemStack aStack) {
         return super.allowPutStackValidated(aBaseMetaTileEntity, aIndex, aSide, aStack)
             && GT_Recipe_Map.sMaceratorRecipes.containsInput(GT_Utility.copyAmount(64L, aStack));

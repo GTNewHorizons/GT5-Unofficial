@@ -21,8 +21,8 @@ public class GT_Cover_RedstoneReceiverInternal extends GT_Cover_RedstoneWireless
     }
 
     @Override
-    public int doCoverThings(byte aSide, byte aInputRedstone, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
-        long aTimer) {
+    public int doCoverThings(ForgeDirection aSide, byte aInputRedstone, int aCoverID, int aCoverVariable,
+        ICoverable aTileEntity, long aTimer) {
         if (aTileEntity instanceof IMachineProgress) {
             if (getRedstoneInput(aSide, aInputRedstone, aCoverID, aCoverVariable, aTileEntity) > 0)
                 ((IMachineProgress) aTileEntity).enableWorking();
@@ -33,20 +33,20 @@ public class GT_Cover_RedstoneReceiverInternal extends GT_Cover_RedstoneWireless
     }
 
     @Override
-    protected boolean isRedstoneSensitiveImpl(byte aSide, int aCoverID,
+    protected boolean isRedstoneSensitiveImpl(ForgeDirection aSide, int aCoverID,
         ISerializableObject.LegacyCoverData aCoverVariable, ICoverable aTileEntity, long aTimer) {
         return true;
     }
 
     @Override
-    public byte getRedstoneInput(byte aSide, byte aInputRedstone, int aCoverID, int aCoverVariable,
+    public byte getRedstoneInput(ForgeDirection aSide, byte aInputRedstone, int aCoverID, int aCoverVariable,
         ICoverable aTileEntity) {
         return GregTech_API.sWirelessRedstone.get(aCoverVariable) == null ? 0
             : GregTech_API.sWirelessRedstone.get(aCoverVariable);
     }
 
     @Override
-    public int getTickRate(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public int getTickRate(ForgeDirection aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
         return 1;
     }
 }

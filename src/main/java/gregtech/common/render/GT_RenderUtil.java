@@ -23,7 +23,7 @@ public class GT_RenderUtil {
     }
 
     public static void renderBlockIcon(RenderBlocks aRenderer, Block aBlock, double aX, double aY, double aZ,
-        IIcon aIcon, byte aSide) {
+        IIcon aIcon, ForgeDirection aSide) {
         switch (aSide) {
             case 0 -> {
                 aRenderer.renderFaceYNeg(aBlock, aX, aY, aZ, aIcon);

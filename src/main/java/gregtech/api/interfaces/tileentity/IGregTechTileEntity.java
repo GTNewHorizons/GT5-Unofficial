@@ -10,6 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.IFluidHandler;
 
 import cpw.mods.fml.relauncher.Side;
@@ -128,9 +129,9 @@ public interface IGregTechTileEntity extends ITexturedTileEntity, IGearEnergyTil
     /**
      * Called when rightclicking the TileEntity
      */
-    boolean onRightclick(EntityPlayer aPlayer, byte aSide, float aX, float aY, float aZ);
+    boolean onRightclick(EntityPlayer aPlayer, ForgeDirection aSide, float aX, float aY, float aZ);
 
-    float getBlastResistance(byte aSide);
+    float getBlastResistance(ForgeDirection aSide);
 
     default void onBlockDestroyed() {}
 

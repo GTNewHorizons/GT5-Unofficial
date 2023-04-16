@@ -72,7 +72,7 @@ public class GT_Cover_ItemMeter extends GT_CoverBehaviorBase<GT_Cover_ItemMeter.
     }
 
     @Override
-    protected boolean isRedstoneSensitiveImpl(byte aSide, int aCoverID, ItemMeterData aCoverVariable,
+    protected boolean isRedstoneSensitiveImpl(ForgeDirection aSide, int aCoverID, ItemMeterData aCoverVariable,
         ICoverable aTileEntity, long aTimer) {
         return false;
     }
@@ -106,7 +106,7 @@ public class GT_Cover_ItemMeter extends GT_CoverBehaviorBase<GT_Cover_ItemMeter.
     }
 
     @Override
-    protected ItemMeterData doCoverThingsImpl(byte aSide, byte aInputRedstone, int aCoverID,
+    protected ItemMeterData doCoverThingsImpl(ForgeDirection aSide, byte aInputRedstone, int aCoverID,
         ItemMeterData aCoverVariable, ICoverable aTileEntity, long aTimer) {
         byte signal = computeSignalBasedOnItems(
             aTileEntity,
@@ -120,8 +120,8 @@ public class GT_Cover_ItemMeter extends GT_CoverBehaviorBase<GT_Cover_ItemMeter.
     }
 
     @Override
-    protected ItemMeterData onCoverScrewdriverClickImpl(byte aSide, int aCoverID, ItemMeterData aCoverVariable,
-        ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    protected ItemMeterData onCoverScrewdriverClickImpl(ForgeDirection aSide, int aCoverID,
+        ItemMeterData aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (aPlayer.isSneaking()) {
             if (aCoverVariable.inverted) {
                 aCoverVariable.inverted = false;
@@ -143,48 +143,50 @@ public class GT_Cover_ItemMeter extends GT_CoverBehaviorBase<GT_Cover_ItemMeter.
     }
 
     @Override
-    protected boolean letsEnergyInImpl(byte aSide, int aCoverID, ItemMeterData aCoverVariable, ICoverable aTileEntity) {
-        return true;
-    }
-
-    @Override
-    protected boolean letsEnergyOutImpl(byte aSide, int aCoverID, ItemMeterData aCoverVariable,
+    protected boolean letsEnergyInImpl(ForgeDirection aSide, int aCoverID, ItemMeterData aCoverVariable,
         ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    protected boolean letsFluidInImpl(byte aSide, int aCoverID, ItemMeterData aCoverVariable, Fluid aFluid,
+    protected boolean letsEnergyOutImpl(ForgeDirection aSide, int aCoverID, ItemMeterData aCoverVariable,
         ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    protected boolean letsFluidOutImpl(byte aSide, int aCoverID, ItemMeterData aCoverVariable, Fluid aFluid,
+    protected boolean letsFluidInImpl(ForgeDirection aSide, int aCoverID, ItemMeterData aCoverVariable, Fluid aFluid,
         ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    protected boolean letsItemsInImpl(byte aSide, int aCoverID, ItemMeterData aCoverVariable, int aSlot,
+    protected boolean letsFluidOutImpl(ForgeDirection aSide, int aCoverID, ItemMeterData aCoverVariable, Fluid aFluid,
         ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    protected boolean letsItemsOutImpl(byte aSide, int aCoverID, ItemMeterData aCoverVariable, int aSlot,
+    protected boolean letsItemsInImpl(ForgeDirection aSide, int aCoverID, ItemMeterData aCoverVariable, int aSlot,
         ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    protected boolean manipulatesSidedRedstoneOutputImpl(byte aSide, int aCoverID, ItemMeterData aCoverVariable,
+    protected boolean letsItemsOutImpl(ForgeDirection aSide, int aCoverID, ItemMeterData aCoverVariable, int aSlot,
         ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    protected int getTickRateImpl(byte aSide, int aCoverID, ItemMeterData aCoverVariable, ICoverable aTileEntity) {
+    protected boolean manipulatesSidedRedstoneOutputImpl(ForgeDirection aSide, int aCoverID,
+        ItemMeterData aCoverVariable, ICoverable aTileEntity) {
+        return true;
+    }
+
+    @Override
+    protected int getTickRateImpl(ForgeDirection aSide, int aCoverID, ItemMeterData aCoverVariable,
+        ICoverable aTileEntity) {
         return 5;
     }
 

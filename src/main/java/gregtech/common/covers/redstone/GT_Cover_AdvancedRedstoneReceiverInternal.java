@@ -11,8 +11,8 @@ public class GT_Cover_AdvancedRedstoneReceiverInternal extends GT_Cover_Advanced
     }
 
     @Override
-    public ReceiverData doCoverThingsImpl(byte aSide, byte aInputRedstone, int aCoverID, ReceiverData aCoverVariable,
-        ICoverable aTileEntity, long aTimer) {
+    public ReceiverData doCoverThingsImpl(ForgeDirection aSide, byte aInputRedstone, int aCoverID,
+        ReceiverData aCoverVariable, ICoverable aTileEntity, long aTimer) {
         if (aTileEntity instanceof IMachineProgress machine) {
             if (getRedstoneInput(aSide, aInputRedstone, aCoverID, aCoverVariable, aTileEntity) > 0) {
                 machine.enableWorking();
@@ -27,13 +27,13 @@ public class GT_Cover_AdvancedRedstoneReceiverInternal extends GT_Cover_Advanced
     }
 
     @Override
-    protected byte getRedstoneInputImpl(byte aSide, byte aInputRedstone, int aCoverID, ReceiverData aCoverVariable,
-        ICoverable aTileEntity) {
+    protected byte getRedstoneInputImpl(ForgeDirection aSide, byte aInputRedstone, int aCoverID,
+        ReceiverData aCoverVariable, ICoverable aTileEntity) {
         return getSignalAt(aCoverVariable.getUuid(), aCoverVariable.getFrequency(), aCoverVariable.getGateMode());
     }
 
     @Override
-    protected boolean isRedstoneSensitiveImpl(byte aSide, int aCoverID, ReceiverData aCoverVariable,
+    protected boolean isRedstoneSensitiveImpl(ForgeDirection aSide, int aCoverID, ReceiverData aCoverVariable,
         ICoverable aTileEntity, long aTimer) {
         return true;
     }

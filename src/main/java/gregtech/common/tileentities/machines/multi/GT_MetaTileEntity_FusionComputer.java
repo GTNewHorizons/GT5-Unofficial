@@ -156,7 +156,7 @@ public abstract class GT_MetaTileEntity_FusionComputer
     public abstract MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity);
 
     @Override
-    public boolean allowCoverOnSide(byte aSide, GT_ItemStack aStack) {
+    public boolean allowCoverOnSide(ForgeDirection aSide, GT_ItemStack aStack) {
 
         return aSide != getBaseMetaTileEntity().getFrontFacing();
     }
@@ -243,8 +243,8 @@ public abstract class GT_MetaTileEntity_FusionComputer
     public abstract int getFusionCoilMeta();
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-        boolean aActive, boolean aRedstone) {
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection aSide, ForgeDirection aFacing,
+        byte aColorIndex, boolean aActive, boolean aRedstone) {
         if (aSide == aFacing) return new ITexture[] { TextureFactory.builder()
             .addIcon(MACHINE_CASING_FUSION_GLASS)
             .extFacing()

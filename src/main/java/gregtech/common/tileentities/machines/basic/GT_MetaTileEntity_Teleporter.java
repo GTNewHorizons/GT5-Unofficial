@@ -210,8 +210,8 @@ public class GT_MetaTileEntity_Teleporter extends GT_MetaTileEntity_BasicTank
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-        boolean aActive, boolean aRedstone) {
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection aSide, ForgeDirection aFacing,
+        byte aColorIndex, boolean aActive, boolean aRedstone) {
         if (aSide != this.getBaseMetaTileEntity()
             .getFrontFacing())
             return new ITexture[] { MACHINE_CASINGS[mTier][aColorIndex + 1],
@@ -455,7 +455,7 @@ public class GT_MetaTileEntity_Teleporter extends GT_MetaTileEntity_BasicTank
     }
 
     @Override
-    public boolean isFacingValid(byte aFacing) {
+    public boolean isFacingValid(ForgeDirection facing) {
         return true;
     }
 
@@ -465,12 +465,12 @@ public class GT_MetaTileEntity_Teleporter extends GT_MetaTileEntity_BasicTank
     }
 
     @Override
-    public boolean isInputFacing(byte aSide) {
+    public boolean isInputFacing(ForgeDirection aSide) {
         return true;
     }
 
     @Override
-    public boolean isOutputFacing(byte aSide) {
+    public boolean isOutputFacing(ForgeDirection aSide) {
         return false;
     }
 

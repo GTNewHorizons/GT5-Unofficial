@@ -4,6 +4,7 @@ import static gregtech.api.enums.GT_Values.V;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -61,7 +62,7 @@ public class GT_MetaTileEntity_Hatch_Energy extends GT_MetaTileEntity_Hatch {
     }
 
     @Override
-    public boolean isFacingValid(byte aFacing) {
+    public boolean isFacingValid(ForgeDirection facingDirection) {
         return true;
     }
 
@@ -76,7 +77,7 @@ public class GT_MetaTileEntity_Hatch_Energy extends GT_MetaTileEntity_Hatch {
     }
 
     @Override
-    public boolean isInputFacing(byte aSide) {
+    public boolean isInputFacing(ForgeDirection aSide) {
         return aSide == getBaseMetaTileEntity().getFrontFacing();
     }
 
@@ -111,12 +112,14 @@ public class GT_MetaTileEntity_Hatch_Energy extends GT_MetaTileEntity_Hatch {
     }
 
     @Override
-    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection aSide,
+        ItemStack aStack) {
         return false;
     }
 
     @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection aSide,
+        ItemStack aStack) {
         return false;
     }
 }

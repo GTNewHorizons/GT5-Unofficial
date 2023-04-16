@@ -387,12 +387,12 @@ public class MultiTileEntityBlock extends Block
     }
 
     @Override
-    public ITexture[] getTexture(Block aBlock, byte aSide, int aRenderPass, boolean[] aShouldSideBeRendered) {
+    public ITexture[] getTexture(Block aBlock, ForgeDirection aSide, int aRenderPass, boolean[] aShouldSideBeRendered) {
         return null;
     }
 
     @Override
-    public ITexture[] getTexture(Block aBlock, byte aSide, boolean isActive, int aRenderPass) {
+    public ITexture[] getTexture(Block aBlock, ForgeDirection aSide, boolean isActive, int aRenderPass) {
         // TODO: MTE(Texture)
         return null;
     }
@@ -435,7 +435,7 @@ public class MultiTileEntityBlock extends Block
     public Block getFacade(IBlockAccess aWorld, int aX, int aY, int aZ, int side) {
         final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (tTileEntity instanceof CoverableTileEntity tile) {
-            final byte aSide = (byte) side;
+            final ForgeDirection aSide = (byte) side;
             if (side != -1) {
                 final Block facadeBlock = tile.getCoverInfoAtSide(aSide)
                     .getFacadeBlock();
@@ -459,7 +459,7 @@ public class MultiTileEntityBlock extends Block
     public int getFacadeMetadata(IBlockAccess aWorld, int aX, int aY, int aZ, int side) {
         final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (tTileEntity instanceof CoverableTileEntity tile) {
-            final byte aSide = (byte) side;
+            final ForgeDirection aSide = (byte) side;
             if (side != -1) {
                 final CoverInfo coverInfo = tile.getCoverInfoAtSide(aSide);
                 final Block facadeBlock = coverInfo.getFacadeBlock();

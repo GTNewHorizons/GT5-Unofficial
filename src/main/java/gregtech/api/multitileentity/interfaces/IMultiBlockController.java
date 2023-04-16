@@ -15,11 +15,11 @@ public interface IMultiBlockController extends IMultiTileEntity, IMultiBlockFlui
     @Override
     ChunkCoordinates getCoords();
 
-    FluidStack getDrainableFluid(byte aSide);
+    FluidStack getDrainableFluid(ForgeDirection aSide);
 
-    boolean isLiquidInput(byte aSide);
+    boolean isLiquidInput(ForgeDirection aSide);
 
-    boolean isLiquidOutput(byte aSide);
+    boolean isLiquidOutput(ForgeDirection aSide);
 
     void registerCoveredPartOnSide(final int aSide, IMultiBlockPart part);
 

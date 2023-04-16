@@ -14,10 +14,10 @@ public interface IRenderedBlock {
 
     /** @return the Textures to be rendered */
     @SideOnly(Side.CLIENT)
-    ITexture[] getTexture(Block aBlock, byte aSide, int aRenderPass, boolean[] aShouldSideBeRendered);
+    ITexture[] getTexture(Block aBlock, ForgeDirection aSide, int aRenderPass, boolean[] aShouldSideBeRendered);
 
     @SideOnly(Side.CLIENT)
-    ITexture[] getTexture(Block aBlock, byte aSide, boolean isActive, int aRenderPass);
+    ITexture[] getTexture(Block aBlock, ForgeDirection aSide, boolean isActive, int aRenderPass);
 
     /** gets the Amount of Render Passes for this TileEntity or similar Handler. Only gets called once per Rendering. */
     @SideOnly(Side.CLIENT)
@@ -57,12 +57,13 @@ public interface IRenderedBlock {
         public ITexture[] mErrorTexture = Textures.BlockIcons.ERROR_RENDERING;
 
         @Override
-        public ITexture[] getTexture(Block aBlock, byte aSide, int aRenderPass, boolean[] aShouldSideBeRendered) {
+        public ITexture[] getTexture(Block aBlock, ForgeDirection aSide, int aRenderPass,
+            boolean[] aShouldSideBeRendered) {
             return mErrorTexture;
         }
 
         @Override
-        public ITexture[] getTexture(Block aBlock, byte aSide, boolean isActive, int aRenderPass) {
+        public ITexture[] getTexture(Block aBlock, ForgeDirection aSide, boolean isActive, int aRenderPass) {
             return mErrorTexture;
         }
 
@@ -83,7 +84,7 @@ public interface IRenderedBlock {
         }
 
         @Override
-        public boolean renderFullBlockSide(Block aBlock, RenderBlocks aRenderer, byte aSide) {
+        public boolean renderFullBlockSide(Block aBlock, RenderBlocks aRenderer, ForgeDirection aSide) {
             return true;
         }
 

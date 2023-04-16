@@ -21,7 +21,7 @@ public class GT_Cover_AdvancedRedstoneTransmitterExternal
     }
 
     @Override
-    public TransmitterData doCoverThingsImpl(byte aSide, byte aInputRedstone, int aCoverID,
+    public TransmitterData doCoverThingsImpl(ForgeDirection aSide, byte aInputRedstone, int aCoverID,
         TransmitterData aCoverVariable, ICoverable aTileEntity, long aTimer) {
         byte outputRedstone = aInputRedstone;
         if (aCoverVariable.isInvert()) {
@@ -36,13 +36,13 @@ public class GT_Cover_AdvancedRedstoneTransmitterExternal
     }
 
     @Override
-    protected boolean isRedstoneSensitiveImpl(byte aSide, int aCoverID, TransmitterData aCoverVariable,
+    protected boolean isRedstoneSensitiveImpl(ForgeDirection aSide, int aCoverID, TransmitterData aCoverVariable,
         ICoverable aTileEntity, long aTimer) {
         return true;
     }
 
     @Override
-    public boolean letsRedstoneGoInImpl(byte aSide, int aCoverID, TransmitterData aCoverVariable,
+    public boolean letsRedstoneGoInImpl(ForgeDirection aSide, int aCoverID, TransmitterData aCoverVariable,
         ICoverable aTileEntity) {
         return true;
     }

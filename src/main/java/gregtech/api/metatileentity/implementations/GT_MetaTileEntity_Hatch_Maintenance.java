@@ -125,7 +125,7 @@ public class GT_MetaTileEntity_Hatch_Maintenance extends GT_MetaTileEntity_Hatch
     }
 
     @Override
-    public boolean isFacingValid(byte aFacing) {
+    public boolean isFacingValid(ForgeDirection facing) {
         return true;
     }
 
@@ -147,8 +147,8 @@ public class GT_MetaTileEntity_Hatch_Maintenance extends GT_MetaTileEntity_Hatch
     }
 
     @Override
-    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, byte aSide, float aX,
-        float aY, float aZ) {
+    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection aSide,
+        float aX, float aY, float aZ) {
         if (aBaseMetaTileEntity.isClientSide()) return true;
         if (aSide == aBaseMetaTileEntity.getFrontFacing()) {
             // only allow OC robot fake player
@@ -294,12 +294,14 @@ public class GT_MetaTileEntity_Hatch_Maintenance extends GT_MetaTileEntity_Hatch
     }
 
     @Override
-    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection aSide,
+        ItemStack aStack) {
         return mAuto && GT_Mod.gregtechproxy.mAMHInteraction;
     }
 
     @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection aSide,
+        ItemStack aStack) {
         if (mAuto && GT_Mod.gregtechproxy.mAMHInteraction) {
             for (int i = 0; i < getSizeInventory(); i++) if (GT_Utility.areStacksEqual(
                 GT_OreDictUnificator.get(false, aStack),

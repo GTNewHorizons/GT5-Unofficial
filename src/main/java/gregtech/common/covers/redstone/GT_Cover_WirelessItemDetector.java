@@ -49,7 +49,7 @@ public class GT_Cover_WirelessItemDetector
     }
 
     @Override
-    public ItemTransmitterData doCoverThingsImpl(byte aSide, byte aInputRedstone, int aCoverID,
+    public ItemTransmitterData doCoverThingsImpl(ForgeDirection aSide, byte aInputRedstone, int aCoverID,
         ItemTransmitterData aCoverVariable, ICoverable aTileEntity, long aTimer) {
         byte signal = GT_Cover_ItemMeter.computeSignalBasedOnItems(
             aTileEntity,
@@ -64,14 +64,14 @@ public class GT_Cover_WirelessItemDetector
     }
 
     @Override
-    public boolean letsRedstoneGoOutImpl(byte aSide, int aCoverID, ItemTransmitterData aCoverVariable,
+    public boolean letsRedstoneGoOutImpl(ForgeDirection aSide, int aCoverID, ItemTransmitterData aCoverVariable,
         ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    protected boolean manipulatesSidedRedstoneOutputImpl(byte aSide, int aCoverID, ItemTransmitterData aCoverVariable,
-        ICoverable aTileEntity) {
+    protected boolean manipulatesSidedRedstoneOutputImpl(ForgeDirection aSide, int aCoverID,
+        ItemTransmitterData aCoverVariable, ICoverable aTileEntity) {
         return true;
     }
 

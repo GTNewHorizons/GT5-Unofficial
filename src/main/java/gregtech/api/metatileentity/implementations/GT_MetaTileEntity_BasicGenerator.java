@@ -5,6 +5,7 @@ import static gregtech.api.enums.GT_Values.V;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
 import net.minecraftforge.fluids.IFluidHandler;
@@ -61,10 +62,12 @@ public abstract class GT_MetaTileEntity_BasicGenerator extends GT_MetaTileEntity
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-        boolean aActive, boolean aRedstone) {
-        return mTextures[(aActive ? 5 : 0) + (aSide == aFacing ? 0
-            : aSide == GT_Utility.getOppositeSide(aFacing) ? 1 : aSide == 0 ? 2 : aSide == 1 ? 3 : 4)][aColorIndex + 1];
+    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
+        ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
+        return mTextures[(active ? 5 : 0) + (sideDirection == facingDirection ? 0
+            : sideDirection == facingDirection.getOpposite() ? 1
+                : sideDirection == ForgeDirection.DOWN ? 2 : sideDirection == ForgeDirection.UP ? 3 : 4)][colorIndex
+                    + 1];
     }
 
     @Override
@@ -122,7 +125,7 @@ public abstract class GT_MetaTileEntity_BasicGenerator extends GT_MetaTileEntity
     }
 
     @Override
-    public boolean isFacingValid(byte aSide) {
+    public boolean isFacingValid(ForgeDirection facingDirection) {
         return true;
     }
 
@@ -142,7 +145,7 @@ public abstract class GT_MetaTileEntity_BasicGenerator extends GT_MetaTileEntity
     }
 
     @Override
-    public boolean isOutputFacing(byte aSide) {
+    public boolean isOutputFacing(ForgeDirection aSide) {
         return true;
     }
 
@@ -198,7 +201,7 @@ public abstract class GT_MetaTileEntity_BasicGenerator extends GT_MetaTileEntity
     }
 
     @Override
-    public boolean isLiquidOutput(byte aSide) {
+    public boolean isLiquidOutput(ForgeDirection aSide) {
         // return super.isLiquidOutput(aSide);
         return false;
     }
@@ -330,7 +333,8 @@ public abstract class GT_MetaTileEntity_BasicGenerator extends GT_MetaTileEntity
     }
 
     @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection aSide,
+        ItemStack aStack) {
         return super.allowPutStack(aBaseMetaTileEntity, aIndex, aSide, aStack) && (getFuelValue(aStack, true) > 0
             || getFuelValue(GT_Utility.getFluidForFilledItem(aStack, true), true) > 0);
     }

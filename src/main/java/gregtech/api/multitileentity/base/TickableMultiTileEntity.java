@@ -107,7 +107,7 @@ public abstract class TickableMultiTileEntity extends MultiTileEntity implements
     }
 
     @Override
-    public byte getComparatorValue(byte aSide) {
+    public byte getComparatorValue(ForgeDirection aSide) {
         return 0;
     }
 }

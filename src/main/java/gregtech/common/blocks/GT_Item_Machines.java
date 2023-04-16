@@ -299,7 +299,7 @@ public class GT_Item_Machines extends ItemBlock implements IFluidContainerItem {
                 }
                 tTileEntity.getMetaTileEntity()
                     .initDefaultModes(aStack.getTagCompound());
-                final byte aSide = GT_Utility.getOppositeSide(side);
+                final ForgeDirection aSide = GT_Utility.getOppositeSide(side);
                 if (tTileEntity.getMetaTileEntity() instanceof IConnectable) {
                     // If we're connectable, try connecting to whatever we're up against
                     ((IConnectable) tTileEntity.getMetaTileEntity()).connect(aSide);

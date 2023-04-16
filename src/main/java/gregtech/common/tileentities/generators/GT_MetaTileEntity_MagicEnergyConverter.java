@@ -41,7 +41,7 @@ public class GT_MetaTileEntity_MagicEnergyConverter extends GT_MetaTileEntity_Ba
     }
 
     @Override
-    public boolean isOutputFacing(byte aSide) {
+    public boolean isOutputFacing(ForgeDirection aSide) {
         return aSide == getBaseMetaTileEntity().getFrontFacing();
     }
 

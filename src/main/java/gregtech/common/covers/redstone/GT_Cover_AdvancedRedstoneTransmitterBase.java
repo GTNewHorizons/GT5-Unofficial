@@ -30,27 +30,27 @@ public abstract class GT_Cover_AdvancedRedstoneTransmitterBase<T extends GT_Cove
         super(typeToken, coverTexture);
     }
 
-    private static void unregisterSignal(byte aSide, TransmitterData aCoverVariable, ICoverable aTileEntity) {
+    private static void unregisterSignal(ForgeDirection aSide, TransmitterData aCoverVariable, ICoverable aTileEntity) {
         long hash = hashCoverCoords(aTileEntity, aSide);
         removeSignalAt(aCoverVariable.uuid, aCoverVariable.frequency, hash);
     }
 
     @Override
-    public boolean onCoverRemovalImpl(byte aSide, int aCoverID, TransmitterData aCoverVariable, ICoverable aTileEntity,
-        boolean aForced) {
+    public boolean onCoverRemovalImpl(ForgeDirection aSide, int aCoverID, TransmitterData aCoverVariable,
+        ICoverable aTileEntity, boolean aForced) {
         unregisterSignal(aSide, aCoverVariable, aTileEntity);
         return true;
     }
 
     @Override
-    protected void onBaseTEDestroyedImpl(byte aSide, int aCoverID, TransmitterData aCoverVariable,
+    protected void onBaseTEDestroyedImpl(ForgeDirection aSide, int aCoverID, TransmitterData aCoverVariable,
         ICoverable aTileEntity) {
         unregisterSignal(aSide, aCoverVariable, aTileEntity);
     }
 
     @Override
-    protected T onCoverScrewdriverClickImpl(byte aSide, int aCoverID, T aCoverVariable, ICoverable aTileEntity,
-        EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    protected T onCoverScrewdriverClickImpl(ForgeDirection aSide, int aCoverID, T aCoverVariable,
+        ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         aCoverVariable.invert = !aCoverVariable.invert;
         GT_Utility.sendChatToPlayer(
             aPlayer,
@@ -60,8 +60,8 @@ public abstract class GT_Cover_AdvancedRedstoneTransmitterBase<T extends GT_Cove
     }
 
     @Override
-    protected void preDataChangedImpl(byte aSide, int aCoverID, int aNewCoverId, T aCoverVariable, T aNewCoverVariable,
-        ICoverable aTileEntity) {
+    protected void preDataChangedImpl(ForgeDirection aSide, int aCoverID, int aNewCoverId, T aCoverVariable,
+        T aNewCoverVariable, ICoverable aTileEntity) {
         if (aCoverVariable.frequency != aNewCoverVariable.frequency
             || !Objects.equals(aCoverVariable.uuid, aNewCoverVariable.uuid)) {
             unregisterSignal(aSide, aCoverVariable, aTileEntity);

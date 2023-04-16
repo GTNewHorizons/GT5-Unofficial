@@ -18,11 +18,11 @@ public interface IMultiBlockInventory {
 
     boolean addStackToSlot(MultiBlockPart aPart, int aIndex, ItemStack aStack, int aAmount);
 
-    int[] getAccessibleSlotsFromSide(MultiBlockPart aPart, byte aSide);
+    int[] getAccessibleSlotsFromSide(MultiBlockPart aPart, ForgeDirection aSide);
 
-    boolean canInsertItem(MultiBlockPart aPart, int aSlot, ItemStack aStack, byte aSide);
+    boolean canInsertItem(MultiBlockPart aPart, int aSlot, ItemStack aStack, ForgeDirection aSide);
 
-    boolean canExtractItem(MultiBlockPart aPart, int aSlot, ItemStack aStack, byte aSide);
+    boolean canExtractItem(MultiBlockPart aPart, int aSlot, ItemStack aStack, ForgeDirection aSide);
 
     int getSizeInventory(MultiBlockPart aPart);
 

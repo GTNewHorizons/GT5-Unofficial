@@ -89,7 +89,7 @@ public class GT_Cover_WirelessMaintenanceDetector
     }
 
     @Override
-    public MaintenanceTransmitterData doCoverThingsImpl(byte aSide, byte aInputRedstone, int aCoverID,
+    public MaintenanceTransmitterData doCoverThingsImpl(ForgeDirection aSide, byte aInputRedstone, int aCoverID,
         MaintenanceTransmitterData aCoverVariable, ICoverable aTileEntity, long aTimer) {
         byte signal = computeSignalBasedOnMaintenance(aCoverVariable, aTileEntity);
         long hash = hashCoverCoords(aTileEntity, aSide);
@@ -99,19 +99,19 @@ public class GT_Cover_WirelessMaintenanceDetector
     }
 
     @Override
-    public boolean letsRedstoneGoOutImpl(byte aSide, int aCoverID, MaintenanceTransmitterData aCoverVariable,
+    public boolean letsRedstoneGoOutImpl(ForgeDirection aSide, int aCoverID, MaintenanceTransmitterData aCoverVariable,
         ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    protected boolean manipulatesSidedRedstoneOutputImpl(byte aSide, int aCoverID,
+    protected boolean manipulatesSidedRedstoneOutputImpl(ForgeDirection aSide, int aCoverID,
         MaintenanceTransmitterData aCoverVariable, ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    public int getTickRateImpl(byte aSide, int aCoverID, MaintenanceTransmitterData aCoverVariable,
+    public int getTickRateImpl(ForgeDirection aSide, int aCoverID, MaintenanceTransmitterData aCoverVariable,
         ICoverable aTileEntity) {
         return 60;
     }

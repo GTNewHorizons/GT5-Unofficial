@@ -28,17 +28,17 @@ public interface IExperimentalEnergyTileEntity extends IColoredTileEntity, IHasW
      *              Side checks for this Side)
      * @return amount of used Amperes. 0 if not accepted anything.
      */
-    long injectEnergy(SubTag aEnergyType, byte aSide, long aPrimary, long aSecondary);
+    long injectEnergy(SubTag aEnergyType, ForgeDirection aSide, long aPrimary, long aSecondary);
 
     /**
      * Sided Energy Input
      */
-    boolean inputEnergyFrom(SubTag aEnergyType, byte aSide);
+    boolean inputEnergyFrom(SubTag aEnergyType, ForgeDirection aSide);
 
     /**
      * Sided Energy Output
      */
-    boolean outputsEnergyTo(SubTag aEnergyType, byte aSide);
+    boolean outputsEnergyTo(SubTag aEnergyType, ForgeDirection aSide);
 
     /**
      * Utility for the Network

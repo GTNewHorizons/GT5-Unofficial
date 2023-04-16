@@ -97,7 +97,7 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_TooltipMultiB
     }
 
     @Override
-    public boolean isFacingValid(byte aFacing) {
+    public boolean isFacingValid(ForgeDirection facingDirection) {
         return aFacing > 1;
     }
 
@@ -319,10 +319,10 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_TooltipMultiB
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-        boolean aActive, boolean aRedstone) {
-        if (aSide == ForgeDirection.DOWN.ordinal() || aSide == ForgeDirection.UP.ordinal()) {
-            return new ITexture[] { TextureFactory.of(BLOCK_PLASCRETE), aActive
+    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
+        ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
+        if (sideDirection == ForgeDirection.DOWN.ordinal() || sideDirection == ForgeDirection.UP.ordinal()) {
+            return new ITexture[] { TextureFactory.of(BLOCK_PLASCRETE), active
                 ? TextureFactory.of(
                     TextureFactory.of(OVERLAY_TOP_CLEANROOM_ACTIVE),
                     TextureFactory.builder()

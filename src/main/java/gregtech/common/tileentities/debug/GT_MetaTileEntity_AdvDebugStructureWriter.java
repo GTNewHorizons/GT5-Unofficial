@@ -70,19 +70,20 @@ public class GT_MetaTileEntity_AdvDebugStructureWriter extends GT_MetaTileEntity
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-        boolean aActive, boolean aRedstone) {
-        return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1], aSide != aFacing
-            ? TextureFactory.of(
-                TextureFactory.builder()
-                    .addIcon(Textures.BlockIcons.OVERLAY_TELEPORTER_ACTIVE)
-                    .glow()
-                    .build())
-            : TextureFactory.of(
-                TextureFactory.builder()
-                    .addIcon(Textures.BlockIcons.STRUCTURE_MARK)
-                    .glow()
-                    .build()) };
+    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
+        ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
+        return new ITexture[] {
+            Textures.BlockIcons.MACHINE_CASINGS[mTier][colorIndex + 1], sideDirection != facingDirection
+                ? TextureFactory.of(
+                    TextureFactory.builder()
+                        .addIcon(Textures.BlockIcons.OVERLAY_TELEPORTER_ACTIVE)
+                        .glow()
+                        .build())
+                : TextureFactory.of(
+                    TextureFactory.builder()
+                        .addIcon(Textures.BlockIcons.STRUCTURE_MARK)
+                        .glow()
+                        .build()) };
     }
 
     @Override
@@ -163,7 +164,7 @@ public class GT_MetaTileEntity_AdvDebugStructureWriter extends GT_MetaTileEntity
     }
 
     @Override
-    public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onScrewdriverRightClick(ForgeDirection aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         IGregTechTileEntity aBaseMetaTileEntity = getBaseMetaTileEntity();
         printStructure(aPlayer);
         aBaseMetaTileEntity.disableWorking();
@@ -199,7 +200,7 @@ public class GT_MetaTileEntity_AdvDebugStructureWriter extends GT_MetaTileEntity
     }
 
     @Override
-    public boolean isFacingValid(byte aFacing) {
+    public boolean isFacingValid(ForgeDirection facingDirection) {
         return true;
     }
 

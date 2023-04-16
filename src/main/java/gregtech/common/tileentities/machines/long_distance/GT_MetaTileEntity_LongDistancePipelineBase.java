@@ -279,7 +279,7 @@ public abstract class GT_MetaTileEntity_LongDistancePipelineBase extends GT_Meta
             + Math.abs(getBaseMetaTileEntity().getZCoord() - aCoords.posZ);
     }
 
-    public ChunkCoordinates getFacingOffset(IGregTechTileEntity gt_tile, byte aSide) {
+    public ChunkCoordinates getFacingOffset(IGregTechTileEntity gt_tile, ForgeDirection aSide) {
         return new ChunkCoordinates(
             gt_tile.getOffsetX(aSide, 1),
             gt_tile.getOffsetY(aSide, 1),

@@ -37,7 +37,7 @@ public class GenerateNodeMapPower extends GenerateNodeMap {
     }
 
     @Override
-    protected boolean addConsumer(TileEntity aTileEntity, byte aSide, int aNodeValue,
+    protected boolean addConsumer(TileEntity aTileEntity, ForgeDirection aSide, int aNodeValue,
         ArrayList<ConsumerNode> aConsumers) {
         if (aTileEntity instanceof BaseMetaTileEntity tBaseTileEntity) {
             if (tBaseTileEntity.inputEnergyFrom(aSide, false)) {
@@ -93,7 +93,7 @@ public class GenerateNodeMapPower extends GenerateNodeMap {
 
     // used to apply voltage on dead ends
     @Override
-    protected Node getEmptyNode(int aNodeValue, byte aSide, TileEntity aTileEntity,
+    protected Node getEmptyNode(int aNodeValue, ForgeDirection aSide, TileEntity aTileEntity,
         ArrayList<ConsumerNode> aConsumers) {
         ConsumerNode tNode = new EmptyPowerConsumer(aNodeValue, aTileEntity, aSide, aConsumers);
         aConsumers.add(tNode);
@@ -101,7 +101,8 @@ public class GenerateNodeMapPower extends GenerateNodeMap {
     }
 
     @Override
-    protected Node getPipeNode(int aNodeValue, byte aSide, TileEntity aTileEntity, ArrayList<ConsumerNode> aConsumers) {
+    protected Node getPipeNode(int aNodeValue, ForgeDirection aSide, TileEntity aTileEntity,
+        ArrayList<ConsumerNode> aConsumers) {
         return new PowerNode(aNodeValue, aTileEntity, aConsumers);
     }
 }

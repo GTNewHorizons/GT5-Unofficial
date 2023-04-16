@@ -118,10 +118,10 @@ public class GT_MetaTileEntity_PyrolyseOven
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-        boolean aActive, boolean aRedstone) {
-        if (aSide == aFacing) {
-            if (aActive) return new ITexture[] { BlockIcons.casingTexturePages[8][66], TextureFactory.builder()
+    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
+        ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
+        if (sideDirection == facingDirection) {
+            if (active) return new ITexture[] { BlockIcons.casingTexturePages[8][66], TextureFactory.builder()
                 .addIcon(OVERLAY_FRONT_PYROLYSE_OVEN_ACTIVE)
                 .extFacing()
                 .build(),

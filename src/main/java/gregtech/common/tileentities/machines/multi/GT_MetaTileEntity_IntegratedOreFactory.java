@@ -371,7 +371,8 @@ public class GT_MetaTileEntity_IntegratedOreFactory extends
     }
 
     @Override
-    public final void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public final void onScrewdriverRightClick(ForgeDirection aSide, EntityPlayer aPlayer, float aX, float aY,
+        float aZ) {
         if (aPlayer.isSneaking()) {
             sVoidStone = !sVoidStone;
             GT_Utility.sendChatToPlayer(
@@ -662,8 +663,8 @@ public class GT_MetaTileEntity_IntegratedOreFactory extends
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-        boolean aActive, boolean aRedstone) {
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection aSide, ForgeDirection aFacing,
+        byte aColorIndex, boolean aActive, boolean aRedstone) {
         if (aSide == aFacing) {
             if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX2),
                 TextureFactory.builder()

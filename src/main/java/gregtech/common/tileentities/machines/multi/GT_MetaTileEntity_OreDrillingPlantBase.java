@@ -72,7 +72,7 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
     }
 
     @Override
-    public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onScrewdriverRightClick(ForgeDirection aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
         if (aPlayer.isSneaking()) {
             if (chunkRadiusConfig > 0) {
@@ -94,8 +94,8 @@ public abstract class GT_MetaTileEntity_OreDrillingPlantBase extends GT_MetaTile
     }
 
     @Override
-    public boolean onWireCutterRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY,
-        float aZ) {
+    public boolean onWireCutterRightClick(ForgeDirection aSide, ForgeDirection aWrenchingSide, EntityPlayer aPlayer,
+        float aX, float aY, float aZ) {
         replaceWithCobblestone = !replaceWithCobblestone;
         GT_Utility.sendChatToPlayer(aPlayer, "Replace with cobblestone " + replaceWithCobblestone);
         return true;

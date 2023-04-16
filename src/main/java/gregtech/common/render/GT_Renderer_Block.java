@@ -709,8 +709,8 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
                 0,
                 tMetaTileEntity.getTexture(
                     iGregTechTileEntity,
-                    (byte) DOWN.ordinal(),
-                    (byte) (CONNECTED_WEST | CONNECTED_EAST),
+                    DOWN,
+                    (CONNECTED_WEST | CONNECTED_EAST),
                     (byte) -1,
                     false,
                     false),
@@ -800,8 +800,8 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
                 0,
                 tMetaTileEntity.getTexture(
                     iGregTechTileEntity,
-                    (byte) DOWN.ordinal(),
-                    (byte) WEST.ordinal(),
+                    DOWN,
+                    WEST,
                     (byte) -1,
                     true,
                     false),

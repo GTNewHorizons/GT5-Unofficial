@@ -87,7 +87,8 @@ public class GT_MetaTileEntity_Filter extends GT_MetaTileEntity_Buffer implement
     }
 
     @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection aSide,
+        ItemStack aStack) {
         if (!super.allowPutStack(aBaseMetaTileEntity, aIndex, aSide, aStack)) {
             return false;
         }

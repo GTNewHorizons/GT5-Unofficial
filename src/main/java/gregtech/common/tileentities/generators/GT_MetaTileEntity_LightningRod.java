@@ -34,15 +34,15 @@ public class GT_MetaTileEntity_LightningRod extends GT_MetaTileEntity_TieredMach
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-        boolean aActive, boolean aRedstone) {
-        if (aSide != ForgeDirection.UP.ordinal()) {
-            return new ITexture[] { BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1],
+    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
+        ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
+        if (sideDirection != ForgeDirection.UP.ordinal()) {
+            return new ITexture[] { BlockIcons.MACHINE_CASINGS[mTier][colorIndex + 1],
                 BlockIcons.OVERLAYS_ENERGY_OUT_POWER[mTier] };
         }
-        if (!aActive) return new ITexture[] { BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1],
+        if (!active) return new ITexture[] { BlockIcons.MACHINE_CASINGS[mTier][colorIndex + 1],
             TextureFactory.of(BlockIcons.MACHINE_CASING_FUSION_GLASS) };
-        return new ITexture[] { BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1],
+        return new ITexture[] { BlockIcons.MACHINE_CASINGS[mTier][colorIndex + 1],
             TextureFactory.of(BlockIcons.MACHINE_CASING_FUSION_GLASS_YELLOW), TextureFactory.builder()
                 .addIcon(BlockIcons.MACHINE_CASING_FUSION_GLASS_YELLOW_GLOW)
                 .glow()
@@ -110,12 +110,14 @@ public class GT_MetaTileEntity_LightningRod extends GT_MetaTileEntity_TieredMach
     }
 
     @Override
-    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection aSide,
+        ItemStack aStack) {
         return false;
     }
 
     @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection aSide,
+        ItemStack aStack) {
         return false;
     }
 
@@ -125,12 +127,12 @@ public class GT_MetaTileEntity_LightningRod extends GT_MetaTileEntity_TieredMach
     }
 
     @Override
-    public boolean isFacingValid(byte aFacing) {
+    public boolean isFacingValid(ForgeDirection facingDirection) {
         return aFacing == 1;
     }
 
     @Override
-    public boolean isOutputFacing(byte aSide) {
+    public boolean isOutputFacing(ForgeDirection aSide) {
         return true;
     }
 

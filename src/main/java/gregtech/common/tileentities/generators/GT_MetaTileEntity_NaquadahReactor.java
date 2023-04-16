@@ -33,7 +33,7 @@ public class GT_MetaTileEntity_NaquadahReactor extends GT_MetaTileEntity_BasicGe
     }
 
     @Override
-    public boolean isOutputFacing(byte aSide) {
+    public boolean isOutputFacing(ForgeDirection aSide) {
         return (aSide > 1) && (aSide != getBaseMetaTileEntity().getFrontFacing())
             && (aSide != getBaseMetaTileEntity().getBackFacing());
     }

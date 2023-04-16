@@ -1,8 +1,6 @@
 package gregtech.common.blocks;
 
 import static gregtech.GT_Mod.GT_FML_LOGGER;
-import static gregtech.api.enums.GT_Values.ALL_VALID_SIDES;
-import static gregtech.api.enums.GT_Values.SIDE_UP;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
 import java.util.ArrayList;
@@ -365,7 +363,7 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
                 return true;
             }
             return ((IGregTechTileEntity) tTileEntity)
-                .onRightclick(aPlayer, (byte) aSide, aOffsetX, aOffsetY, aOffsetZ);
+                .onRightclick(aPlayer, ForgeDirection.getOrientation(aSide), aOffsetX, aOffsetY, aOffsetZ);
         }
         return false;
     }
@@ -474,7 +472,7 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
     public int getComparatorInputOverride(World aWorld, int aX, int aY, int aZ, int aSide) {
         final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (tTileEntity instanceof IGregTechTileEntity) {
-            return ((IGregTechTileEntity) tTileEntity).getComparatorValue((byte) aSide);
+            return ((IGregTechTileEntity) tTileEntity).getComparatorValue(ForgeDirection.getOrientation(aSide));
         }
         return 0;
     }
@@ -486,7 +484,9 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
         }
         final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (tTileEntity instanceof IGregTechTileEntity) {
-            return ((IGregTechTileEntity) tTileEntity).getOutputRedstoneSignal(GT_Utility.getOppositeSide(aSide));
+            return ((IGregTechTileEntity) tTileEntity).getOutputRedstoneSignal(
+                ForgeDirection.getOrientation(aSide)
+                    .getOpposite());
         }
         return 0;
     }
@@ -498,7 +498,9 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
         }
         final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (tTileEntity instanceof IGregTechTileEntity) {
-            return ((IGregTechTileEntity) tTileEntity).getStrongOutputRedstoneSignal(GT_Utility.getOppositeSide(aSide));
+            return ((IGregTechTileEntity) tTileEntity).getStrongOutputRedstoneSignal(
+                ForgeDirection.getOrientation(aSide)
+                    .getOpposite());
         }
         return 0;
     }
@@ -538,8 +540,7 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
                 && (((BaseMetaPipeEntity) tTileEntity).mConnections & 0xFFFFFFC0) != 0) {
                 return true;
             }
-            return tTileEntity instanceof ICoverable
-                && ((ICoverable) tTileEntity).getCoverIDAtSide((byte) aSide.ordinal()) != 0;
+            return tTileEntity instanceof ICoverable && ((ICoverable) tTileEntity).getCoverIDAtSide(aSide) != 0;
         }
         return false;
     }
@@ -598,7 +599,7 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
         double explosionY, double explosionZ) {
         final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (tTileEntity instanceof IGregTechTileEntity) {
-            return ((IGregTechTileEntity) tTileEntity).getBlastResistance((byte) 6);
+            return ((IGregTechTileEntity) tTileEntity).getBlastResistance(ForgeDirection.UNKNOWN);
         }
         return 10.0F;
     }
@@ -619,7 +620,7 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
         final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (!(tTileEntity instanceof IGregTechTileEntity iGregTechTileEntity)) return;
         iGregTechTileEntity.setFrontFacing(
-            BaseTileEntity.getSideForPlayerPlacing(aPlayer, SIDE_UP, iGregTechTileEntity.getValidFacings()));
+            BaseTileEntity.getSideForPlayerPlacing(aPlayer, ForgeDirection.UP, iGregTechTileEntity.getValidFacings()));
     }
 
     @Override
@@ -648,7 +649,7 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
     public Block getFacade(IBlockAccess aWorld, int aX, int aY, int aZ, int side) {
         final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (tTileEntity instanceof CoverableTileEntity tile) {
-            final byte aSide = (byte) side;
+            final ForgeDirection aSide = ForgeDirection.getOrientation(side);
             if (side != -1) {
                 final Block facadeBlock = tile.getCoverInfoAtSide(aSide)
                     .getFacadeBlock();
@@ -656,7 +657,7 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
             } else {
                 // we do not allow more than one type of facade per block, so no need to check every side
                 // see comment in gregtech.common.covers.GT_Cover_FacadeBase.isCoverPlaceable
-                for (byte tSide : ALL_VALID_SIDES) {
+                for (ForgeDirection tSide : ForgeDirection.VALID_DIRECTIONS) {
                     final Block facadeBlock = tile.getCoverInfoAtSide(tSide)
                         .getFacadeBlock();
                     if (facadeBlock != null) {
@@ -672,7 +673,7 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
     public int getFacadeMetadata(IBlockAccess aWorld, int aX, int aY, int aZ, int side) {
         final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (tTileEntity instanceof CoverableTileEntity tile) {
-            final byte aSide = (byte) side;
+            final ForgeDirection aSide = ForgeDirection.getOrientation(side);
             if (side != -1) {
                 final CoverInfo coverInfo = tile.getCoverInfoAtSide(aSide);
                 final Block facadeBlock = coverInfo.getFacadeBlock();
@@ -680,7 +681,7 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
             } else {
                 // we do not allow more than one type of facade per block, so no need to check every side
                 // see comment in gregtech.common.covers.GT_Cover_FacadeBase.isCoverPlaceable
-                for (byte tSide : ALL_VALID_SIDES) {
+                for (ForgeDirection tSide : ForgeDirection.VALID_DIRECTIONS) {
                     final CoverInfo coverInfo = tile.getCoverInfoAtSide(tSide);
                     final Block facadeBlock = coverInfo.getFacadeBlock();
                     if (facadeBlock != null) {

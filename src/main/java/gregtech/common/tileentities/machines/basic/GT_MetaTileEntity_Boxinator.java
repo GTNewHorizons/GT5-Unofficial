@@ -194,7 +194,7 @@ public class GT_MetaTileEntity_Boxinator extends GT_MetaTileEntity_BasicMachine 
     }
 
     @Override
-    protected boolean allowPutStackValidated(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide,
+    protected boolean allowPutStackValidated(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection aSide,
         ItemStack aStack) {
         if (!super.allowPutStackValidated(aBaseMetaTileEntity, aIndex, aSide, aStack)) {
             return false;

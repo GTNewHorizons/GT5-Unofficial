@@ -299,7 +299,7 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
     }
 
     @Override
-    public ITexture[] getTexture(Block aBlock, byte aSide, boolean isActive, int aRenderPass) {
+    public ITexture[] getTexture(Block aBlock, ForgeDirection aSide, boolean isActive, int aRenderPass) {
         if (aSide != facing) {
             return new ITexture[] {
                 TextureFactory.of(textures[GT_Values.FACING_ROTATIONS[facing][aSide]], GT_Util.getRGBaArray(rgba)) };
@@ -357,17 +357,17 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
     }
 
     @Override
-    public boolean isLiquidInput(byte aSide) {
+    public boolean isLiquidInput(ForgeDirection aSide) {
         return aSide != facing;
     }
 
     @Override
-    public boolean isLiquidOutput(byte aSide) {
+    public boolean isLiquidOutput(ForgeDirection aSide) {
         return aSide != facing;
     }
 
     @Override
-    protected IFluidTank[] getFluidTanks(byte aSide) {
+    protected IFluidTank[] getFluidTanks(ForgeDirection aSide) {
         final boolean fluidInput = isLiquidInput(aSide);
         final boolean fluidOutput = isLiquidOutput(aSide);
 
@@ -385,7 +385,7 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
     }
 
     @Override
-    public IFluidTank getFluidTankFillable(byte aSide, FluidStack aFluidToFill) {
+    public IFluidTank getFluidTankFillable(ForgeDirection aSide, FluidStack aFluidToFill) {
         if (!isLiquidInput(aSide)) return null;
         for (FluidTankGT tankGT : inputTanks) if (tankGT.contains(aFluidToFill)) return tankGT;
         // if (!mRecipes.containsInput(aFluidToFill, this, slot(mRecipes.mInputItemsCount +
@@ -395,7 +395,7 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
     }
 
     @Override
-    protected IFluidTank getFluidTankDrainable(byte aSide, FluidStack aFluidToDrain) {
+    protected IFluidTank getFluidTankDrainable(ForgeDirection aSide, FluidStack aFluidToDrain) {
         if (!isLiquidOutput(aSide)) return null;
         for (FluidTankGT fluidTankGT : outputTanks)
             if (aFluidToDrain == null ? fluidTankGT.has() : fluidTankGT.contains(aFluidToDrain)) return fluidTankGT;

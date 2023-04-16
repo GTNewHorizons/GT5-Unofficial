@@ -103,15 +103,17 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
 
     private final ChunkCoordinates mReturnedCoordinates = new ChunkCoordinates();
 
-    public static byte getSideForPlayerPlacing(Entity aPlayer, byte aDefaultFacing, boolean[] aAllowedFacings) {
+    public static ForgeDirection getSideForPlayerPlacing(Entity aPlayer, ForgeDirection aDefaultFacing,
+        boolean[] aAllowedFacings) {
         if (aPlayer != null) {
-            if (aPlayer.rotationPitch >= 65 && aAllowedFacings[SIDE_UP]) return SIDE_UP;
-            if (aPlayer.rotationPitch <= -65 && aAllowedFacings[SIDE_DOWN]) return SIDE_DOWN;
+            if (aPlayer.rotationPitch >= 65 && aAllowedFacings[SIDE_UP]) return ForgeDirection.UP;
+            if (aPlayer.rotationPitch <= -65 && aAllowedFacings[SIDE_DOWN]) return ForgeDirection.DOWN;
             final byte rFacing = COMPASS_DIRECTIONS[MathHelper.floor_double(0.5D + 4.0F * aPlayer.rotationYaw / 360.0F)
                 & 0x3];
-            if (aAllowedFacings[rFacing]) return rFacing;
+            if (aAllowedFacings[rFacing]) return ForgeDirection.getOrientation(rFacing);
         }
-        for (final byte tSide : ALL_VALID_SIDES) if (aAllowedFacings[tSide]) return tSide;
+        for (final byte tSide : ALL_VALID_SIDES)
+            if (aAllowedFacings[tSide]) return ForgeDirection.getOrientation(tSide);
         return aDefaultFacing;
     }
 
@@ -156,18 +158,18 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
     }
 
     @Override
-    public final int getOffsetX(byte aSide, int aMultiplier) {
-        return xCoord + ForgeDirection.getOrientation(aSide).offsetX * aMultiplier;
+    public final int getOffsetX(ForgeDirection aSide, int aMultiplier) {
+        return xCoord + aSide.offsetX * aMultiplier;
     }
 
     @Override
-    public final short getOffsetY(byte aSide, int aMultiplier) {
-        return (short) (yCoord + ForgeDirection.getOrientation(aSide).offsetY * aMultiplier);
+    public final short getOffsetY(ForgeDirection aSide, int aMultiplier) {
+        return (short) (yCoord + aSide.offsetY * aMultiplier);
     }
 
     @Override
-    public final int getOffsetZ(byte aSide, int aMultiplier) {
-        return zCoord + ForgeDirection.getOrientation(aSide).offsetZ * aMultiplier;
+    public final int getOffsetZ(ForgeDirection aSide, int aMultiplier) {
+        return zCoord + aSide.offsetZ * aMultiplier;
     }
 
     @Override
@@ -221,12 +223,12 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
     }
 
     @Override
-    public final Block getBlockAtSide(byte aSide) {
+    public final Block getBlockAtSide(ForgeDirection aSide) {
         return getBlockAtSideAndDistance(aSide, 1);
     }
 
     @Override
-    public final Block getBlockAtSideAndDistance(byte aSide, int aDistance) {
+    public final Block getBlockAtSideAndDistance(ForgeDirection aSide, int aDistance) {
         return getBlock(getOffsetX(aSide, aDistance), getOffsetY(aSide, aDistance), getOffsetZ(aSide, aDistance));
     }
 
@@ -236,12 +238,12 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
     }
 
     @Override
-    public final byte getMetaIDAtSide(byte aSide) {
+    public final byte getMetaIDAtSide(ForgeDirection aSide) {
         return getMetaIDAtSideAndDistance(aSide, 1);
     }
 
     @Override
-    public final byte getMetaIDAtSideAndDistance(byte aSide, int aDistance) {
+    public final byte getMetaIDAtSideAndDistance(ForgeDirection aSide, int aDistance) {
         return getMetaID(getOffsetX(aSide, aDistance), getOffsetY(aSide, aDistance), getOffsetZ(aSide, aDistance));
     }
 
@@ -251,12 +253,12 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
     }
 
     @Override
-    public final byte getLightLevelAtSide(byte aSide) {
+    public final byte getLightLevelAtSide(ForgeDirection aSide) {
         return getLightLevelAtSideAndDistance(aSide, 1);
     }
 
     @Override
-    public final byte getLightLevelAtSideAndDistance(byte aSide, int aDistance) {
+    public final byte getLightLevelAtSideAndDistance(ForgeDirection aSide, int aDistance) {
         return getLightLevel(getOffsetX(aSide, aDistance), getOffsetY(aSide, aDistance), getOffsetZ(aSide, aDistance));
     }
 
@@ -266,12 +268,12 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
     }
 
     @Override
-    public final boolean getOpacityAtSide(byte aSide) {
+    public final boolean getOpacityAtSide(ForgeDirection aSide) {
         return getOpacityAtSideAndDistance(aSide, 1);
     }
 
     @Override
-    public final boolean getOpacityAtSideAndDistance(byte aSide, int aDistance) {
+    public final boolean getOpacityAtSideAndDistance(ForgeDirection aSide, int aDistance) {
         return getOpacity(getOffsetX(aSide, aDistance), getOffsetY(aSide, aDistance), getOffsetZ(aSide, aDistance));
     }
 
@@ -281,12 +283,12 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
     }
 
     @Override
-    public final boolean getSkyAtSide(byte aSide) {
+    public final boolean getSkyAtSide(ForgeDirection aSide) {
         return getSkyAtSideAndDistance(aSide, 1);
     }
 
     @Override
-    public final boolean getSkyAtSideAndDistance(byte aSide, int aDistance) {
+    public final boolean getSkyAtSideAndDistance(ForgeDirection aSide, int aDistance) {
         return getSky(getOffsetX(aSide, aDistance), getOffsetY(aSide, aDistance), getOffsetZ(aSide, aDistance));
     }
 
@@ -296,12 +298,12 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
     }
 
     @Override
-    public final boolean getAirAtSide(byte aSide) {
+    public final boolean getAirAtSide(ForgeDirection aSide) {
         return getAirAtSideAndDistance(aSide, 1);
     }
 
     @Override
-    public final boolean getAirAtSideAndDistance(byte aSide, int aDistance) {
+    public final boolean getAirAtSideAndDistance(ForgeDirection aSide, int aDistance) {
         return getAir(getOffsetX(aSide, aDistance), getOffsetY(aSide, aDistance), getOffsetZ(aSide, aDistance));
     }
 
@@ -311,7 +313,7 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
     }
 
     @Override
-    public final TileEntity getTileEntityAtSideAndDistance(byte aSide, int aDistance) {
+    public final TileEntity getTileEntityAtSideAndDistance(ForgeDirection aSide, int aDistance) {
         if (aDistance == 1) return getTileEntityAtSide(aSide);
         return getTileEntity(getOffsetX(aSide, aDistance), getOffsetY(aSide, aDistance), getOffsetZ(aSide, aDistance));
     }
@@ -331,14 +333,14 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
     }
 
     @Override
-    public final IInventory getIInventoryAtSide(byte aSide) {
+    public final IInventory getIInventoryAtSide(ForgeDirection aSide) {
         final TileEntity tTileEntity = getTileEntityAtSide(aSide);
         if (tTileEntity instanceof IInventory) return (IInventory) tTileEntity;
         return null;
     }
 
     @Override
-    public final IInventory getIInventoryAtSideAndDistance(byte aSide, int aDistance) {
+    public final IInventory getIInventoryAtSideAndDistance(ForgeDirection aSide, int aDistance) {
         final TileEntity tTileEntity = getTileEntityAtSideAndDistance(aSide, aDistance);
         if (tTileEntity instanceof IInventory) return (IInventory) tTileEntity;
         return null;
@@ -359,14 +361,14 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
     }
 
     @Override
-    public final IFluidHandler getITankContainerAtSide(byte aSide) {
+    public final IFluidHandler getITankContainerAtSide(ForgeDirection aSide) {
         final TileEntity tTileEntity = getTileEntityAtSide(aSide);
         if (tTileEntity instanceof IFluidHandler) return (IFluidHandler) tTileEntity;
         return null;
     }
 
     @Override
-    public final IFluidHandler getITankContainerAtSideAndDistance(byte aSide, int aDistance) {
+    public final IFluidHandler getITankContainerAtSideAndDistance(ForgeDirection aSide, int aDistance) {
         final TileEntity tTileEntity = getTileEntityAtSideAndDistance(aSide, aDistance);
         if (tTileEntity instanceof IFluidHandler) return (IFluidHandler) tTileEntity;
         return null;
@@ -387,14 +389,14 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
     }
 
     @Override
-    public final IGregTechTileEntity getIGregTechTileEntityAtSide(byte aSide) {
+    public final IGregTechTileEntity getIGregTechTileEntityAtSide(ForgeDirection aSide) {
         final TileEntity tTileEntity = getTileEntityAtSide(aSide);
         if (tTileEntity instanceof IGregTechTileEntity) return (IGregTechTileEntity) tTileEntity;
         return null;
     }
 
     @Override
-    public final IGregTechTileEntity getIGregTechTileEntityAtSideAndDistance(byte aSide, int aDistance) {
+    public final IGregTechTileEntity getIGregTechTileEntityAtSideAndDistance(ForgeDirection aSide, int aDistance) {
         final TileEntity tTileEntity = getTileEntityAtSideAndDistance(aSide, aDistance);
         if (tTileEntity instanceof IGregTechTileEntity) return (IGregTechTileEntity) tTileEntity;
         return null;
@@ -450,30 +452,30 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
     }
 
     @Override
-    public final TileEntity getTileEntityAtSide(byte aSide) {
-        if (aSide < 0 || aSide >= 6 || mBufferedTileEntities[aSide] == this) return null;
+    public final TileEntity getTileEntityAtSide(ForgeDirection aSide) {
+        if (aSide != ForgeDirection.UNKNOWN || mBufferedTileEntities[aSide.ordinal()] == this) return null;
         final int tX = getOffsetX(aSide, 1);
         final int tY = getOffsetY(aSide, 1);
         final int tZ = getOffsetZ(aSide, 1);
         if (crossedChunkBorder(tX, tZ)) {
-            mBufferedTileEntities[aSide] = null;
+            mBufferedTileEntities[aSide.ordinal()] = null;
             if (ignoreUnloadedChunks && !worldObj.blockExists(tX, tY, tZ)) return null;
         }
-        if (mBufferedTileEntities[aSide] == null) {
-            mBufferedTileEntities[aSide] = worldObj.getTileEntity(tX, tY, tZ);
-            if (mBufferedTileEntities[aSide] == null) {
-                mBufferedTileEntities[aSide] = this;
+        if (mBufferedTileEntities[aSide.ordinal()] == null) {
+            mBufferedTileEntities[aSide.ordinal()] = worldObj.getTileEntity(tX, tY, tZ);
+            if (mBufferedTileEntities[aSide.ordinal()] == null) {
+                mBufferedTileEntities[aSide.ordinal()] = this;
                 return null;
             }
-            return mBufferedTileEntities[aSide];
+            return mBufferedTileEntities[aSide.ordinal()];
         }
-        if (mBufferedTileEntities[aSide].isInvalid()) {
-            mBufferedTileEntities[aSide] = null;
+        if (mBufferedTileEntities[aSide.ordinal()].isInvalid()) {
+            mBufferedTileEntities[aSide.ordinal()] = null;
             return getTileEntityAtSide(aSide);
         }
-        if (mBufferedTileEntities[aSide].xCoord == tX && mBufferedTileEntities[aSide].yCoord == tY
-            && mBufferedTileEntities[aSide].zCoord == tZ) {
-            return mBufferedTileEntities[aSide];
+        if (mBufferedTileEntities[aSide.ordinal()].xCoord == tX && mBufferedTileEntities[aSide.ordinal()].yCoord == tY
+            && mBufferedTileEntities[aSide.ordinal()].zCoord == tZ) {
+            return mBufferedTileEntities[aSide.ordinal()];
         }
         return null;
     }
@@ -515,7 +517,7 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
         isDead = false;
     }
 
-    public final void onAdjacentBlockChange(int aX, int aY, int aZ) {
+    public final void onAdjacentBlockChange(int ignoredAX, int ignoredAY, int ignoredAZ) {
         clearNullMarkersFromTileEntityBuffer();
     }
 
@@ -706,7 +708,6 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
         int titleWidth = 0, titleHeight = 0;
         if (NetworkUtils.isClient()) {
             final FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
-            // noinspection unchecked
             final List<String> titleLines = fontRenderer
                 .listFormattedStringToWidth(title, getGUIWidth() - (TAB_PADDING + TITLE_PADDING) * 2);
             titleWidth = titleLines.size() > 1 ? getGUIWidth() - (TAB_PADDING + TITLE_PADDING) * 2

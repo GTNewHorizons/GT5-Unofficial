@@ -100,7 +100,7 @@ public abstract class GT_MetaTileEntity_BasicMachine_Bronze extends GT_MetaTileE
     }
 
     @Override
-    public boolean isInputFacing(byte aSide) {
+    public boolean isInputFacing(ForgeDirection aSide) {
         return false;
     }
 
@@ -130,8 +130,8 @@ public abstract class GT_MetaTileEntity_BasicMachine_Bronze extends GT_MetaTileE
     }
 
     @Override
-    public boolean isFacingValid(byte aFacing) {
-        return super.isFacingValid(aFacing) && aFacing != mMainFacing;
+    public boolean isFacingValid(ForgeDirection facingDirection) {
+        return super.isFacingValid(facingDirection) && facingDirection != mMainFacing;
     }
 
     @Override
@@ -145,12 +145,12 @@ public abstract class GT_MetaTileEntity_BasicMachine_Bronze extends GT_MetaTileE
     }
 
     @Override
-    public boolean isLiquidInput(byte aSide) {
+    public boolean isLiquidInput(ForgeDirection aSide) {
         return aSide != mMainFacing;
     }
 
     @Override
-    public boolean isLiquidOutput(byte aSide) {
+    public boolean isLiquidOutput(ForgeDirection aSide) {
         return aSide != mMainFacing;
     }
 
@@ -224,9 +224,9 @@ public abstract class GT_MetaTileEntity_BasicMachine_Bronze extends GT_MetaTileE
             new ParticleEventBuilder().setIdentifier(ParticleFX.CLOUD)
                 .setWorld(getBaseMetaTileEntity().getWorld())
                 .setMotion(
-                    ForgeDirection.getOrientation(getBaseMetaTileEntity().getFrontFacing()).offsetX / 5.0,
-                    ForgeDirection.getOrientation(getBaseMetaTileEntity().getFrontFacing()).offsetY / 5.0,
-                    ForgeDirection.getOrientation(getBaseMetaTileEntity().getFrontFacing()).offsetZ / 5.0)
+                    getBaseMetaTileEntity().getFrontFacing().offsetX / 5.0,
+                    getBaseMetaTileEntity().getFrontFacing().offsetY / 5.0,
+                    getBaseMetaTileEntity().getFrontFacing().offsetZ / 5.0)
                 .<ParticleEventBuilder>times(
                     8,
                     x -> x
@@ -244,7 +244,7 @@ public abstract class GT_MetaTileEntity_BasicMachine_Bronze extends GT_MetaTileE
     }
 
     @Override
-    public boolean allowCoverOnSide(byte aSide, GT_ItemStack aCoverID) {
+    public boolean allowCoverOnSide(ForgeDirection aSide, GT_ItemStack aCoverID) {
         return GregTech_API.getCoverBehaviorNew(aCoverID.toStack())
             .isSimpleCover() && super.allowCoverOnSide(aSide, aCoverID);
     }

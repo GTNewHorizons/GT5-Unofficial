@@ -66,7 +66,8 @@ public abstract class GT_MetaTileEntity_SpecialFilter extends GT_MetaTileEntity_
     }
 
     @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection aSide,
+        ItemStack aStack) {
         return (super.allowPutStack(aBaseMetaTileEntity, aIndex, aSide, aStack))
             && ((this.bNBTAllowed) || (!aStack.hasTagCompound()))
             && (this.isStackAllowed(aStack) != this.bInvertFilter);

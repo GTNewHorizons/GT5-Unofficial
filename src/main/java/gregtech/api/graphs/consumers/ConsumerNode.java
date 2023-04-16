@@ -11,7 +11,8 @@ public class ConsumerNode extends Node {
 
     public byte mSide;
 
-    public ConsumerNode(int aNodeValue, TileEntity aTileEntity, byte aSide, ArrayList<ConsumerNode> aConsumers) {
+    public ConsumerNode(int aNodeValue, TileEntity aTileEntity, ForgeDirection aSide,
+        ArrayList<ConsumerNode> aConsumers) {
         super(aNodeValue, aTileEntity, aConsumers);
         this.mSide = aSide;
     }

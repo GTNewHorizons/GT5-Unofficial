@@ -516,7 +516,7 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
     }
 
     @Override
-    public final boolean isFacingValid(byte aFacing) {
+    public final boolean isFacingValid(ForgeDirection facing) {
         return canSetToDirectionAny(ForgeDirection.getOrientation(aFacing));
     }
 
@@ -527,7 +527,7 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
     }
 
     @Override
-    public boolean allowCoverOnSide(byte aSide, GT_ItemStack aCoverID) {
+    public boolean allowCoverOnSide(ForgeDirection aSide, GT_ItemStack aCoverID) {
         return aSide != facing;
     }
 
@@ -562,7 +562,7 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
     }
 
     @Override
-    public FluidStack getDrainableFluid(byte aSide) {
+    public FluidStack getDrainableFluid(ForgeDirection aSide) {
         final IFluidTank tank = getFluidTankDrainable(aSide, null);
         return tank == null ? null : tank.getFluid();
     }
@@ -729,15 +729,15 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
     /**
      * Fluid - MultiBlock related Fluid Tank behaviour.
      */
-    protected IFluidTank getFluidTankFillable(MultiBlockPart aPart, byte aSide, FluidStack aFluidToFill) {
+    protected IFluidTank getFluidTankFillable(MultiBlockPart aPart, ForgeDirection aSide, FluidStack aFluidToFill) {
         return getFluidTankFillable(aSide, aFluidToFill);
     }
 
-    protected IFluidTank getFluidTankDrainable(MultiBlockPart aPart, byte aSide, FluidStack aFluidToDrain) {
+    protected IFluidTank getFluidTankDrainable(MultiBlockPart aPart, ForgeDirection aSide, FluidStack aFluidToDrain) {
         return getFluidTankDrainable(aSide, aFluidToDrain);
     }
 
-    protected IFluidTank[] getFluidTanks(MultiBlockPart aPart, byte aSide) {
+    protected IFluidTank[] getFluidTanks(MultiBlockPart aPart, ForgeDirection aSide) {
         return getFluidTanks(aSide);
     }
 
@@ -938,7 +938,7 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
     }
 
     @Override
-    public int[] getAccessibleSlotsFromSide(MultiBlockPart aPart, byte aSide) {
+    public int[] getAccessibleSlotsFromSide(MultiBlockPart aPart, ForgeDirection aSide) {
         final TIntList tList = new TIntArrayList();
         final Map<String, IItemHandlerModifiable> multiBlockInventory = getMultiBlockInventory(aPart);
         if (multiBlockInventory == null) return tList.toArray();
@@ -962,7 +962,7 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
     }
 
     @Override
-    public boolean canInsertItem(MultiBlockPart aPart, int aSlot, ItemStack aStack, byte aSide) {
+    public boolean canInsertItem(MultiBlockPart aPart, int aSlot, ItemStack aStack, ForgeDirection aSide) {
         final Pair<IItemHandlerModifiable, Integer> tInv = getInventory(aPart, aSlot);
         if (tInv == null) return false;
 
@@ -978,7 +978,7 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
     }
 
     @Override
-    public boolean canExtractItem(MultiBlockPart aPart, int aSlot, ItemStack aStack, byte aSide) {
+    public boolean canExtractItem(MultiBlockPart aPart, int aSlot, ItemStack aStack, ForgeDirection aSide) {
         final Pair<IItemHandlerModifiable, Integer> tInv = getInventory(aPart, aSlot);
         if (tInv == null) return false;
 
@@ -1291,7 +1291,7 @@ public abstract class MultiBlockController<T extends MultiBlockController<T>> ex
     }
 
     @Override
-    public boolean hasGui(byte aSide) {
+    public boolean hasGui(ForgeDirection aSide) {
         return true;
     }
 

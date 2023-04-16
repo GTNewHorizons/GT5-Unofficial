@@ -120,10 +120,10 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
     }
 
     @Override
-    public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
+    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
         IWailaConfigHandler config) {
-        super.getWailaBody(itemStack, currenttip, accessor, config);
-        currenttip.add(String.format("Mode: %s", getModeName(mMode)));
+        super.getWailaBody(itemStack, currentTip, accessor, config);
+        currentTip.add(String.format("Mode: %s", getModeName(mMode)));
     }
 
     public IMultiBlockController getTarget(boolean aCheckValidity) {
@@ -156,7 +156,7 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
     }
 
     @Override
-    public void setCoverItemAtSide(byte aSide, ItemStack aCover) {
+    public void setCoverItemAtSide(ForgeDirection aSide, ItemStack aCover) {
         super.setCoverItemAtSide(aSide, aCover);
         // TODO: Filter on tickable covers
         final IMultiBlockController tTarget = getTarget(true);
@@ -177,7 +177,7 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
     }
 
     @Override
-    public boolean dropCover(byte aSide, byte aDroppedSide, boolean aForced) {
+    public boolean dropCover(ForgeDirection aSide, ForgeDirection aDroppedSide, boolean aForced) {
         final boolean res = super.dropCover(aSide, aDroppedSide, aForced);
         final IMultiBlockController tTarget = getTarget(true);
         if (tTarget != null) {
@@ -339,7 +339,7 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
     }
 
     @Override
-    public ITexture[] getTexture(Block aBlock, byte aSide, boolean isActive, int aRenderPass) {
+    public ITexture[] getTexture(Block aBlock, ForgeDirection aSide, boolean isActive, int aRenderPass) {
         // For normal parts - texture comes from BaseMTE; overlay based on current mode
         // TODO(MTE) - For Advanced parts they might come from somewhere else
         final ITexture baseTexture = TextureFactory.of(super.getTexture(aBlock, aSide, isActive, aRenderPass));
@@ -409,7 +409,7 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
     public void setLightValue(byte aLightValue) {}
 
     @Override
-    public byte getComparatorValue(byte aSide) {
+    public byte getComparatorValue(ForgeDirection aSide) {
         return 0;
     }
 
@@ -429,7 +429,7 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
     @Override
     public int fill(ForgeDirection aDirection, FluidStack aFluidStack, boolean aDoFill) {
         if (!modeSelected(FLUID_IN)) return 0;
-        final byte aSide = (byte) aDirection.ordinal();
+        final ForgeDirection aSide = (byte) aDirection.ordinal();
         if (aDirection != ForgeDirection.UNKNOWN
             && (aSide != facing || !coverLetsFluidIn(aSide, aFluidStack == null ? null : aFluidStack.getFluid())))
             return 0;
@@ -440,7 +440,7 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
     @Override
     public FluidStack drain(ForgeDirection aDirection, FluidStack aFluidStack, boolean aDoDrain) {
         if (!modeSelected(FLUID_OUT)) return null;
-        final byte aSide = (byte) aDirection.ordinal();
+        final ForgeDirection aSide = (byte) aDirection.ordinal();
         if (aDirection != ForgeDirection.UNKNOWN
             && (aSide != facing || !coverLetsFluidOut(aSide, aFluidStack == null ? null : aFluidStack.getFluid())))
             return null;
@@ -451,7 +451,7 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
     @Override
     public FluidStack drain(ForgeDirection aDirection, int aAmountToDrain, boolean aDoDrain) {
         if (!modeSelected(FLUID_OUT)) return null;
-        final byte aSide = (byte) aDirection.ordinal();
+        final ForgeDirection aSide = (byte) aDirection.ordinal();
         final IMultiBlockController controller = getTarget(true);
         if (controller == null) return null;
         final FluidStack aFluidStack = controller.getDrainableFluid(aSide);
@@ -464,7 +464,7 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
     @Override
     public boolean canFill(ForgeDirection aDirection, Fluid aFluid) {
         if (!modeSelected(FLUID_IN)) return false;
-        final byte aSide = (byte) aDirection.ordinal();
+        final ForgeDirection aSide = (byte) aDirection.ordinal();
         if (aDirection != ForgeDirection.UNKNOWN && (aSide != facing || !coverLetsFluidIn(aSide, aFluid))) return false;
         final IMultiBlockController controller = getTarget(true);
         return controller != null && controller.canFill(this, aDirection, aFluid);
@@ -473,7 +473,7 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
     @Override
     public boolean canDrain(ForgeDirection aDirection, Fluid aFluid) {
         if (!modeSelected(FLUID_OUT)) return false;
-        final byte aSide = (byte) aDirection.ordinal();
+        final ForgeDirection aSide = (byte) aDirection.ordinal();
         if (aDirection != ForgeDirection.UNKNOWN && (aSide != facing || !coverLetsFluidOut(aSide, aFluid)))
             return false;
         final IMultiBlockController controller = getTarget(true);
@@ -482,7 +482,7 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
 
     @Override
     public FluidTankInfo[] getTankInfo(ForgeDirection aDirection) {
-        final byte aSide = (byte) aDirection.ordinal();
+        final ForgeDirection aSide = (byte) aDirection.ordinal();
         if (!modeSelected(FLUID_IN, FLUID_OUT) || (aSide != SIDE_UNKNOWN && aSide != facing))
             return GT_Values.emptyFluidTankInfo;
         final IMultiBlockController controller = getTarget(true);
@@ -641,7 +641,7 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
     }
 
     @Override
-    public boolean hasGui(byte aSide) {
+    public boolean hasGui(ForgeDirection aSide) {
         // UIs only for specific mode(s)
         if (modeSelected(ITEM_IN, ITEM_OUT, FLUID_IN, FLUID_OUT)) return true;
 

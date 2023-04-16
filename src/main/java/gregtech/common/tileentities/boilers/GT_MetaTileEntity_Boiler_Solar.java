@@ -128,14 +128,14 @@ public class GT_MetaTileEntity_Boiler_Solar extends GT_MetaTileEntity_Boiler {
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-        boolean aActive, boolean aRedstone) {
-        int i = aColorIndex + 1;
-        if (aSide >= 2) {
-            if (aSide != aFacing) return mTextures[2][i];
+    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
+        ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
+        int i = colorIndex + 1;
+        if (sideDirection >= 2) {
+            if (sideDirection != facingDirection) return mTextures[2][i];
             return mTextures[3][i];
         }
-        return mTextures[aSide][i];
+        return mTextures[sideDirection][i];
     }
 
     @Override

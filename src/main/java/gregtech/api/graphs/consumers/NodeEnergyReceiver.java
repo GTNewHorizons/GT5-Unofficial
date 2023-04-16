@@ -21,7 +21,7 @@ public class NodeEnergyReceiver extends ConsumerNode {
 
     int mRestRF = 0;
 
-    public NodeEnergyReceiver(int aNodeValue, IEnergyReceiver aTileEntity, byte aSide,
+    public NodeEnergyReceiver(int aNodeValue, IEnergyReceiver aTileEntity, ForgeDirection aSide,
         ArrayList<ConsumerNode> aConsumers) {
         super(aNodeValue, (TileEntity) aTileEntity, aSide, aConsumers);
     }

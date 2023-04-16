@@ -28,14 +28,14 @@ public class GT_Cover_Vent extends GT_CoverBehavior {
     }
 
     @Override
-    public boolean isRedstoneSensitive(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
+    public boolean isRedstoneSensitive(ForgeDirection aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
         long aTimer) {
         return false;
     }
 
     @Override
-    public int doCoverThings(byte aSide, byte aInputRedstone, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
-        long aTimer) {
+    public int doCoverThings(ForgeDirection aSide, byte aInputRedstone, int aCoverID, int aCoverVariable,
+        ICoverable aTileEntity, long aTimer) {
         if (aSide == SIDE_UNKNOWN) return 0;
         int ret = 0;
         if (aTileEntity instanceof IFluidHandler) {
@@ -48,16 +48,17 @@ public class GT_Cover_Vent extends GT_CoverBehavior {
     }
 
     @Override
-    public boolean alwaysLookConnected(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public boolean alwaysLookConnected(ForgeDirection aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    public int getTickRate(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public int getTickRate(ForgeDirection aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
         return 100;
     }
 
-    protected int doProgressEfficiency(final byte aSide, final IMachineProgress aTileEntity, final int aCoverVariable) {
+    protected int doProgressEfficiency(final ForgeDirection aSide, final IMachineProgress aTileEntity,
+        final int aCoverVariable) {
         final int offsetX = aTileEntity.getOffsetX(aSide, 1);
         final int offsetY = aTileEntity.getOffsetY(aSide, 1);
         final int offsetZ = aTileEntity.getOffsetZ(aSide, 1);
@@ -69,7 +70,7 @@ public class GT_Cover_Vent extends GT_CoverBehavior {
         return aTileEntity.getProgress();
     }
 
-    protected int doCoolFluid(final byte aSide, final ICoverable aTileEntity) {
+    protected int doCoolFluid(final ForgeDirection aSide, final ICoverable aTileEntity) {
         final int offsetX = aTileEntity.getOffsetX(aSide, 1);
         final int offsetY = aTileEntity.getOffsetY(aSide, 1);
         final int offsetZ = aTileEntity.getOffsetZ(aSide, 1);

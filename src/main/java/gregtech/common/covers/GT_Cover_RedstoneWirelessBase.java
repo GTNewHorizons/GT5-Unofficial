@@ -38,14 +38,14 @@ public abstract class GT_Cover_RedstoneWirelessBase extends GT_CoverBehavior {
     }
 
     @Override
-    public boolean onCoverRemoval(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
+    public boolean onCoverRemoval(ForgeDirection aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
         boolean aForced) {
         GregTech_API.sWirelessRedstone.put(aCoverVariable, (byte) 0);
         return true;
     }
 
     @Override
-    protected boolean onCoverRightClickImpl(byte aSide, int aCoverID,
+    protected boolean onCoverRightClickImpl(ForgeDirection aSide, int aCoverID,
         ISerializableObject.LegacyCoverData aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, float aX,
         float aY, float aZ) {
         if (((aX > 0.375D) && (aX < 0.625D)) || ((aSide > 3) && ((aY > 0.375D) && (aY < 0.625D)))) {
@@ -61,7 +61,7 @@ public abstract class GT_Cover_RedstoneWirelessBase extends GT_CoverBehavior {
 
     @Override
     @SuppressWarnings("deprecation")
-    public boolean onCoverRightclick(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
+    public boolean onCoverRightclick(ForgeDirection aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
         EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (((aX > 0.375D) && (aX < 0.625D)) || ((aSide > 3) && ((aY > 0.375D) && (aY < 0.625D)))) {
             GregTech_API.sWirelessRedstone.put(aCoverVariable, (byte) 0);
@@ -81,7 +81,7 @@ public abstract class GT_Cover_RedstoneWirelessBase extends GT_CoverBehavior {
     }
 
     @Override
-    public int onCoverScrewdriverclick(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
+    public int onCoverScrewdriverclick(ForgeDirection aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
         EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (((aX > 0.375D) && (aX < 0.625D))
             || ((aSide <= 3) || (((aY > 0.375D) && (aY < 0.625D)) || ((((aZ <= 0.375D) || (aZ >= 0.625D))))))) {
@@ -112,42 +112,46 @@ public abstract class GT_Cover_RedstoneWirelessBase extends GT_CoverBehavior {
     }
 
     @Override
-    public boolean letsEnergyIn(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public boolean letsEnergyIn(ForgeDirection aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    public boolean letsEnergyOut(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public boolean letsEnergyOut(ForgeDirection aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    public boolean letsFluidIn(byte aSide, int aCoverID, int aCoverVariable, Fluid aFluid, ICoverable aTileEntity) {
+    public boolean letsFluidIn(ForgeDirection aSide, int aCoverID, int aCoverVariable, Fluid aFluid,
+        ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    public boolean letsFluidOut(byte aSide, int aCoverID, int aCoverVariable, Fluid aFluid, ICoverable aTileEntity) {
+    public boolean letsFluidOut(ForgeDirection aSide, int aCoverID, int aCoverVariable, Fluid aFluid,
+        ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    public boolean letsItemsIn(byte aSide, int aCoverID, int aCoverVariable, int aSlot, ICoverable aTileEntity) {
+    public boolean letsItemsIn(ForgeDirection aSide, int aCoverID, int aCoverVariable, int aSlot,
+        ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    public boolean letsItemsOut(byte aSide, int aCoverID, int aCoverVariable, int aSlot, ICoverable aTileEntity) {
+    public boolean letsItemsOut(ForgeDirection aSide, int aCoverID, int aCoverVariable, int aSlot,
+        ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    public String getDescription(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public String getDescription(ForgeDirection aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
         return GT_Utility.trans("081", "Frequency: ") + aCoverVariable;
     }
 
     @Override
-    public int getTickRate(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public int getTickRate(ForgeDirection aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
         return 1;
     }
 

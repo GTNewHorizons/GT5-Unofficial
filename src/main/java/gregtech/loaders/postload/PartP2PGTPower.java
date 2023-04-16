@@ -39,15 +39,15 @@ public class PartP2PGTPower extends PartP2PIC2Power implements IGridTickable {
         return getTile().zCoord;
     }
 
-    public final int getOffsetX(byte aSide, int aMultiplier) {
+    public final int getOffsetX(ForgeDirection aSide, int aMultiplier) {
         return getXCoord() + ForgeDirection.getOrientation(aSide).offsetX * aMultiplier;
     }
 
-    public final short getOffsetY(byte aSide, int aMultiplier) {
+    public final short getOffsetY(ForgeDirection aSide, int aMultiplier) {
         return (short) (getYCoord() + ForgeDirection.getOrientation(aSide).offsetY * aMultiplier);
     }
 
-    public final int getOffsetZ(byte aSide, int aMultiplier) {
+    public final int getOffsetZ(ForgeDirection aSide, int aMultiplier) {
         return getZCoord() + ForgeDirection.getOrientation(aSide).offsetZ * aMultiplier;
     }
 
@@ -55,7 +55,7 @@ public class PartP2PGTPower extends PartP2PIC2Power implements IGridTickable {
         return getWorld().getTileEntity(aX, aY, aZ);
     }
 
-    public final TileEntity getTileEntityAtSide(byte aSide) {
+    public final TileEntity getTileEntityAtSide(ForgeDirection aSide) {
         int tX = getOffsetX(aSide, 1), tY = getOffsetY(aSide, 1), tZ = getOffsetZ(aSide, 1);
         return getWorld().getTileEntity(tX, tY, tZ);
     }

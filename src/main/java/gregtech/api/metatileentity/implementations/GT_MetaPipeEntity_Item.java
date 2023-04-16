@@ -47,7 +47,7 @@ public class GT_MetaPipeEntity_Item extends MetaPipeEntity implements IMetaTileE
     public final int mStepSize;
     public final int mTickTime;
     public int mTransferredItems = 0;
-    public byte mLastReceivedFrom = 0, oLastReceivedFrom = 0;
+    public ForgeDirection mLastReceivedFrom = ForgeDirection.UNKNOWN, oLastReceivedFrom = ForgeDirection.UNKNOWN;
     public boolean mIsRestrictive = false;
     private int[] cacheSides;
 
@@ -95,8 +95,8 @@ public class GT_MetaPipeEntity_Item extends MetaPipeEntity implements IMetaTileE
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aConnections,
-        byte aColorIndex, boolean aConnected, boolean aRedstone) {
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection aSide, int aConnections,
+        int aColorIndex, boolean aConnected, boolean aRedstone) {
         if (mIsRestrictive) {
             if (aConnected) {
                 float tThickNess = getThickNess();
@@ -163,17 +163,17 @@ public class GT_MetaPipeEntity_Item extends MetaPipeEntity implements IMetaTileE
     }
 
     @Override
-    public boolean isFacingValid(byte aFacing) {
+    public boolean isFacingValid(ForgeDirection facingDirection) {
         return false;
     }
 
     @Override
-    public boolean isValidSlot(int aIndex) {
+    public boolean isValidSlot(int ignoredSlotIndex) {
         return true;
     }
 
     @Override
-    public final boolean renderInside(byte aSide) {
+    public final boolean renderInside(ForgeDirection aSide) {
         return false;
     }
 
@@ -189,13 +189,13 @@ public class GT_MetaPipeEntity_Item extends MetaPipeEntity implements IMetaTileE
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
-        aNBT.setByte("mLastReceivedFrom", mLastReceivedFrom);
+        aNBT.setByte("mLastReceivedFrom", (byte) mLastReceivedFrom.ordinal());
         if (GT_Mod.gregtechproxy.gt6Pipe) aNBT.setByte("mConnections", mConnections);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
-        mLastReceivedFrom = aNBT.getByte("mLastReceivedFrom");
+        mLastReceivedFrom = ForgeDirection.getOrientation(aNBT.getByte("mLastReceivedFrom"));
         if (GT_Mod.gregtechproxy.gt6Pipe) {
             mConnections = aNBT.getByte("mConnections");
         }
@@ -230,21 +230,21 @@ public class GT_MetaPipeEntity_Item extends MetaPipeEntity implements IMetaTileE
                 }
             }
 
-            if (isInventoryEmpty()) mLastReceivedFrom = 6;
+            if (isInventoryEmpty()) mLastReceivedFrom = ForgeDirection.UNKNOWN;
             oLastReceivedFrom = mLastReceivedFrom;
         }
     }
 
     @Override
-    public boolean onWrenchRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY,
-        float aZ) {
+    public boolean onWrenchRightClick(ForgeDirection sideDirection, ForgeDirection wrenchingSideDirection, EntityPlayer entityPlayer,
+                                      float aX, float aY, float aZ) {
         if (GT_Mod.gregtechproxy.gt6Pipe) {
-            final byte tSide = GT_Utility.determineWrenchingSide(aSide, aX, aY, aZ);
+            final ForgeDirection tSide = GT_Utility.determineWrenchingSide(sideDirection, aX, aY, aZ);
             if (isConnectedAtSide(tSide)) {
                 disconnect(tSide);
-                GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("215", "Disconnected"));
+                GT_Utility.sendChatToPlayer(entityPlayer, GT_Utility.trans("215", "Disconnected"));
             } else {
-                if (connect(tSide) > 0) GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("214", "Connected"));
+                if (connect(tSide) > 0) GT_Utility.sendChatToPlayer(entityPlayer, GT_Utility.trans("214", "Connected"));
             }
             return true;
         }
@@ -252,25 +252,25 @@ public class GT_MetaPipeEntity_Item extends MetaPipeEntity implements IMetaTileE
     }
 
     @Override
-    public boolean letsIn(GT_CoverBehavior coverBehavior, byte aSide, int aCoverID, int aCoverVariable,
-        ICoverable aTileEntity) {
-        return coverBehavior.letsItemsIn(aSide, aCoverID, aCoverVariable, -1, aTileEntity);
+    public boolean letsIn(GT_CoverBehavior coverBehavior, ForgeDirection sideDirection, int aCoverID, int aCoverVariable,
+                          ICoverable aTileEntity) {
+        return coverBehavior.letsItemsIn(sideDirection, aCoverID, aCoverVariable, -1, aTileEntity);
     }
 
     @Override
-    public boolean letsOut(GT_CoverBehavior coverBehavior, byte aSide, int aCoverID, int aCoverVariable,
+    public boolean letsOut(GT_CoverBehavior coverBehavior, ForgeDirection aSide, int aCoverID, int aCoverVariable,
         ICoverable aTileEntity) {
         return coverBehavior.letsItemsOut(aSide, aCoverID, aCoverVariable, -1, aTileEntity);
     }
 
     @Override
-    public boolean letsIn(GT_CoverBehaviorBase<?> coverBehavior, byte aSide, int aCoverID,
+    public boolean letsIn(GT_CoverBehaviorBase<?> coverBehavior, ForgeDirection aSide, int aCoverID,
         ISerializableObject aCoverVariable, ICoverable aTileEntity) {
         return coverBehavior.letsItemsIn(aSide, aCoverID, aCoverVariable, -1, aTileEntity);
     }
 
     @Override
-    public boolean letsOut(GT_CoverBehaviorBase<?> coverBehavior, byte aSide, int aCoverID,
+    public boolean letsOut(GT_CoverBehaviorBase<?> coverBehavior, ForgeDirection aSide, int aCoverID,
         ISerializableObject aCoverVariable, ICoverable aTileEntity) {
         return coverBehavior.letsItemsOut(aSide, aCoverID, aCoverVariable, -1, aTileEntity);
     }
@@ -286,28 +286,28 @@ public class GT_MetaPipeEntity_Item extends MetaPipeEntity implements IMetaTileE
     }
 
     @Override
-    public boolean canConnect(byte aSide, TileEntity tTileEntity) {
-        if (tTileEntity == null) return false;
+    public boolean canConnect(ForgeDirection sideDirection, TileEntity tileEntity) {
+        if (tileEntity == null) return false;
 
-        final byte tSide = GT_Utility.getOppositeSide(aSide);
-        boolean connectable = GT_Utility.isConnectableNonInventoryPipe(tTileEntity, tSide);
+        final ForgeDirection oppositeSide = sideDirection.getOpposite();
+        boolean connectable = GT_Utility.isConnectableNonInventoryPipe(tileEntity, oppositeSide);
 
-        final IGregTechTileEntity gTileEntity = (tTileEntity instanceof IGregTechTileEntity)
-            ? (IGregTechTileEntity) tTileEntity
+        final IGregTechTileEntity gTileEntity = (tileEntity instanceof IGregTechTileEntity)
+            ? (IGregTechTileEntity) tileEntity
             : null;
         if (gTileEntity != null) {
             if (gTileEntity.getMetaTileEntity() == null) return false;
             if (gTileEntity.getMetaTileEntity()
-                .connectsToItemPipe(tSide)) return true;
+                .connectsToItemPipe(oppositeSide)) return true;
             connectable = true;
         }
 
-        if (tTileEntity instanceof IInventory) {
-            if (((IInventory) tTileEntity).getSizeInventory() <= 0) return false;
+        if (tileEntity instanceof IInventory) {
+            if (((IInventory) tileEntity).getSizeInventory() <= 0) return false;
             connectable = true;
         }
-        if (tTileEntity instanceof ISidedInventory) {
-            final int[] tSlots = ((ISidedInventory) tTileEntity).getAccessibleSlotsFromSide(tSide);
+        if (tileEntity instanceof ISidedInventory) {
+            final int[] tSlots = ((ISidedInventory) tileEntity).getAccessibleSlotsFromSide(oppositeSide.ordinal());
             if (tSlots == null || tSlots.length <= 0) return false;
             connectable = true;
         }
@@ -331,9 +331,8 @@ public class GT_MetaPipeEntity_Item extends MetaPipeEntity implements IMetaTileE
     public boolean sendItemStack(Object aSender) {
         if (pipeCapacityCheck()) {
             final byte tOffset = (byte) getBaseMetaTileEntity().getRandomNumber(6);
-            byte tSide = 0;
-            for (byte i : ALL_VALID_SIDES) {
-                tSide = (byte) ((i + tOffset) % 6);
+            for (final byte i : ALL_VALID_SIDES) {
+                final ForgeDirection tSide = ForgeDirection.getOrientation((i + tOffset) % 6);
                 if (isConnectedAtSide(tSide)
                     && (isInventoryEmpty() || (tSide != mLastReceivedFrom || aSender != getBaseMetaTileEntity()))) {
                     if (insertItemStackIntoTileEntity(aSender, tSide)) return true;
@@ -344,18 +343,19 @@ public class GT_MetaPipeEntity_Item extends MetaPipeEntity implements IMetaTileE
     }
 
     @Override
-    public boolean insertItemStackIntoTileEntity(Object aSender, byte aSide) {
-        if (getBaseMetaTileEntity().getCoverInfoAtSide(aSide)
+    public boolean insertItemStackIntoTileEntity(Object aSender, ForgeDirection side) {
+        if (getBaseMetaTileEntity().getCoverInfoAtSide(side)
             .letsItemsOut(-1)) {
-            final TileEntity tInventory = getBaseMetaTileEntity().getTileEntityAtSide(aSide);
+            final TileEntity tInventory = getBaseMetaTileEntity().getTileEntityAtSide(side);
             if (tInventory != null && !(tInventory instanceof BaseMetaPipeEntity)) {
                 if ((!(tInventory instanceof TileEntityHopper) && !(tInventory instanceof TileEntityDispenser))
-                    || getBaseMetaTileEntity().getMetaIDAtSide(aSide) != GT_Utility.getOppositeSide(aSide)) {
+                    || getBaseMetaTileEntity().getMetaIDAtSide(side) != side.getOpposite()
+                        .ordinal()) {
                     return GT_Utility.moveMultipleItemStacks(
                         aSender,
                         tInventory,
-                        (byte) 6,
-                        GT_Utility.getOppositeSide(aSide),
+                        ForgeDirection.UNKNOWN,
+                        side.getOpposite(),
                         null,
                         false,
                         (byte) 64,
@@ -395,22 +395,23 @@ public class GT_MetaPipeEntity_Item extends MetaPipeEntity implements IMetaTileE
     }
 
     @Override
-    public boolean canInsertItem(int aIndex, ItemStack aStack, int aSide) {
-        return isConnectedAtSide(aSide) && super.canInsertItem(aIndex, aStack, aSide);
+    public boolean canInsertItem(int slotIndex, ItemStack itemStack, int ordinalSide) {
+        return isConnectedAtSide(ForgeDirection.getOrientation(ordinalSide))
+            && super.canInsertItem(slotIndex, itemStack, ordinalSide);
     }
 
     @Override
-    public boolean canExtractItem(int aIndex, ItemStack aStack, int aSide) {
-        return isConnectedAtSide(aSide);
+    public boolean canExtractItem(int slotIndex, ItemStack itemStack, int ordinalSide) {
+        return isConnectedAtSide(ForgeDirection.getOrientation(ordinalSide));
     }
 
     @Override
-    public int[] getAccessibleSlotsFromSide(int aSide) {
+    public int[] getAccessibleSlotsFromSide(int ordinalSide) {
         final IGregTechTileEntity tTileEntity = getBaseMetaTileEntity();
-        final CoverInfo coverInfo = tTileEntity.getCoverInfoAtSide((byte) aSide);
+        final CoverInfo coverInfo = tTileEntity.getCoverInfoAtSide(ForgeDirection.getOrientation(ordinalSide));
         final boolean tAllow = coverInfo.letsItemsIn(-2) || coverInfo.letsItemsOut(-2);
         if (tAllow) {
-            if (cacheSides == null) cacheSides = super.getAccessibleSlotsFromSide(aSide);
+            if (cacheSides == null) cacheSides = super.getAccessibleSlotsFromSide(ordinalSide);
             return cacheSides;
         } else {
             return GT_Values.emptyIntArray;
@@ -418,12 +419,14 @@ public class GT_MetaPipeEntity_Item extends MetaPipeEntity implements IMetaTileE
     }
 
     @Override
-    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection aSide,
+        ItemStack aStack) {
         return isConnectedAtSide(aSide);
     }
 
     @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection aSide,
+        ItemStack aStack) {
         if (!isConnectedAtSide(aSide)) return false;
         if (isInventoryEmpty()) mLastReceivedFrom = aSide;
         return mLastReceivedFrom == aSide && mInventory[aIndex] == null;
@@ -459,50 +462,55 @@ public class GT_MetaPipeEntity_Item extends MetaPipeEntity implements IMetaTileE
         else return getActualCollisionBoundingBoxFromPool(aWorld, aX, aY, aZ);
     }
 
-    private AxisAlignedBB getActualCollisionBoundingBoxFromPool(World aWorld, int aX, int aY, int aZ) {
+    private AxisAlignedBB getActualCollisionBoundingBoxFromPool(World ignoredAWorld, int aX, int aY, int aZ) {
         final float tSpace = (1f - mThickNess) / 2;
-        float tSide0 = tSpace;
-        float tSide1 = 1f - tSpace;
-        float tSide2 = tSpace;
-        float tSide3 = 1f - tSpace;
-        float tSide4 = tSpace;
-        float tSide5 = 1f - tSpace;
+        float spaceDown = tSpace;
+        float spaceUp = 1f - tSpace;
+        float spaceNorth = tSpace;
+        float spaceSouth = 1f - tSpace;
+        float spaceWest = tSpace;
+        float spaceEast = 1f - tSpace;
 
-        if (getBaseMetaTileEntity().getCoverIDAtSide((byte) 0) != 0) {
-            tSide0 = tSide2 = tSide4 = 0;
-            tSide3 = tSide5 = 1;
+        if (getBaseMetaTileEntity().getCoverIDAtSide(ForgeDirection.DOWN) != 0) {
+            spaceDown = spaceNorth = spaceWest = 0;
+            spaceSouth = spaceEast = 1;
         }
-        if (getBaseMetaTileEntity().getCoverIDAtSide((byte) 1) != 0) {
-            tSide2 = tSide4 = 0;
-            tSide1 = tSide3 = tSide5 = 1;
+        if (getBaseMetaTileEntity().getCoverIDAtSide(ForgeDirection.UP) != 0) {
+            spaceNorth = spaceWest = 0;
+            spaceUp = spaceSouth = spaceEast = 1;
         }
-        if (getBaseMetaTileEntity().getCoverIDAtSide((byte) 2) != 0) {
-            tSide0 = tSide2 = tSide4 = 0;
-            tSide1 = tSide5 = 1;
+        if (getBaseMetaTileEntity().getCoverIDAtSide(ForgeDirection.NORTH) != 0) {
+            spaceDown = spaceNorth = spaceWest = 0;
+            spaceUp = spaceEast = 1;
         }
-        if (getBaseMetaTileEntity().getCoverIDAtSide((byte) 3) != 0) {
-            tSide0 = tSide4 = 0;
-            tSide1 = tSide3 = tSide5 = 1;
+        if (getBaseMetaTileEntity().getCoverIDAtSide(ForgeDirection.SOUTH) != 0) {
+            spaceDown = spaceWest = 0;
+            spaceUp = spaceSouth = spaceEast = 1;
         }
-        if (getBaseMetaTileEntity().getCoverIDAtSide((byte) 4) != 0) {
-            tSide0 = tSide2 = tSide4 = 0;
-            tSide1 = tSide3 = 1;
+        if (getBaseMetaTileEntity().getCoverIDAtSide(ForgeDirection.WEST) != 0) {
+            spaceDown = spaceNorth = spaceWest = 0;
+            spaceUp = spaceSouth = 1;
         }
-        if (getBaseMetaTileEntity().getCoverIDAtSide((byte) 5) != 0) {
-            tSide0 = tSide2 = 0;
-            tSide1 = tSide3 = tSide5 = 1;
+        if (getBaseMetaTileEntity().getCoverIDAtSide(ForgeDirection.EAST) != 0) {
+            spaceDown = spaceNorth = 0;
+            spaceUp = spaceSouth = spaceEast = 1;
         }
 
         final byte tConn = ((BaseMetaPipeEntity) getBaseMetaTileEntity()).mConnections;
-        if ((tConn & (1 << ForgeDirection.DOWN.ordinal())) != 0) tSide0 = 0f;
-        if ((tConn & (1 << ForgeDirection.UP.ordinal())) != 0) tSide1 = 1f;
-        if ((tConn & (1 << ForgeDirection.NORTH.ordinal())) != 0) tSide2 = 0f;
-        if ((tConn & (1 << ForgeDirection.SOUTH.ordinal())) != 0) tSide3 = 1f;
-        if ((tConn & (1 << ForgeDirection.WEST.ordinal())) != 0) tSide4 = 0f;
-        if ((tConn & (1 << ForgeDirection.EAST.ordinal())) != 0) tSide5 = 1f;
+        if ((tConn & (1 << ForgeDirection.DOWN.ordinal())) != 0) spaceDown = 0f;
+        if ((tConn & (1 << ForgeDirection.UP.ordinal())) != 0) spaceUp = 1f;
+        if ((tConn & (1 << ForgeDirection.NORTH.ordinal())) != 0) spaceNorth = 0f;
+        if ((tConn & (1 << ForgeDirection.SOUTH.ordinal())) != 0) spaceSouth = 1f;
+        if ((tConn & (1 << ForgeDirection.WEST.ordinal())) != 0) spaceWest = 0f;
+        if ((tConn & (1 << ForgeDirection.EAST.ordinal())) != 0) spaceEast = 1f;
 
-        return AxisAlignedBB
-            .getBoundingBox(aX + tSide4, aY + tSide0, aZ + tSide2, aX + tSide5, aY + tSide1, aZ + tSide3);
+        return AxisAlignedBB.getBoundingBox(
+            aX + spaceWest,
+            aY + spaceDown,
+            aZ + spaceNorth,
+            aX + spaceEast,
+            aY + spaceUp,
+            aZ + spaceSouth);
     }
 
     @Override

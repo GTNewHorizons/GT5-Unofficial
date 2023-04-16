@@ -62,7 +62,7 @@ public class GT_MetaPipeEntity_Frame extends MetaPipeEntity {
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aConnections,
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection aSide, byte aConnections,
         byte aColorIndex, boolean aConnected, boolean aRedstone) {
         return new ITexture[] { TextureFactory.of(
             mMaterial.mIconSet.mTextures[OrePrefixes.frameGt.mTextureIndex],
@@ -80,7 +80,7 @@ public class GT_MetaPipeEntity_Frame extends MetaPipeEntity {
     }
 
     @Override
-    public final boolean isFacingValid(byte aFacing) {
+    public final boolean isFacingValid(ForgeDirection facing) {
         return false;
     }
 
@@ -90,7 +90,7 @@ public class GT_MetaPipeEntity_Frame extends MetaPipeEntity {
     }
 
     @Override
-    public final boolean renderInside(byte aSide) {
+    public final boolean renderInside(ForgeDirection aSide) {
         return true;
     }
 
@@ -110,24 +110,24 @@ public class GT_MetaPipeEntity_Frame extends MetaPipeEntity {
     }
 
     @Override
-    public final boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide,
+    public final boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection aSide,
         ItemStack aStack) {
         return false;
     }
 
     @Override
-    public final boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide,
+    public final boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection aSide,
         ItemStack aStack) {
         return false;
     }
 
     @Override
-    public int connect(byte aSide) {
+    public int connect(ForgeDirection aSide) {
         return 0;
     }
 
     @Override
-    public void disconnect(byte aSide) {
+    public void disconnect(ForgeDirection aSide) {
         /* Do nothing */
     }
 

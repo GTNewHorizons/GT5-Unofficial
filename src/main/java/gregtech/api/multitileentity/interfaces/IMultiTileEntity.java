@@ -134,14 +134,14 @@ public interface IMultiTileEntity
      *
      * @return Whether the facing was changed
      */
-    boolean setMainFacing(byte aSide);
+    boolean setMainFacing(ForgeDirection aSide);
 
-    boolean isFacingValid(byte aFacing);
+    boolean isFacingValid(ForgeDirection facing);
 
     void onFacingChange();
 
     @Override
-    default void setFrontFacing(byte aSide) {
+    default void setFrontFacing(ForgeDirection aSide) {
         setMainFacing(aSide);
     }
 
@@ -155,13 +155,13 @@ public interface IMultiTileEntity
         /* do nothing */
     }
 
-    boolean onBlockActivated(EntityPlayer aPlayer, byte aSide, float aX, float aY, float aZ);
+    boolean onBlockActivated(EntityPlayer aPlayer, ForgeDirection aSide, float aX, float aY, float aZ);
 
-    boolean onRightClick(EntityPlayer aPlayer, byte aSide, float aX, float aY, float aZ);
+    boolean onRightClick(EntityPlayer aPlayer, ForgeDirection aSide, float aX, float aY, float aZ);
 
     ArrayList<ItemStack> getDrops(int aFortune, boolean aSilkTouch);
 
-    boolean isSideSolid(byte aSide);
+    boolean isSideSolid(ForgeDirection aSide);
 
     float getExplosionResistance(Entity aExploder, double aExplosionX, double aExplosionY, double aExplosionZ);
 
@@ -169,7 +169,7 @@ public interface IMultiTileEntity
 
     void onExploded(Explosion aExplosion);
 
-    boolean recolourBlock(byte aSide, byte aColor);
+    boolean recolourBlock(ForgeDirection aSide, byte aColor);
 
     /** Adds to the Creative Tab. return false to prevent it from being added. */
     boolean getSubItems(MultiTileEntityBlockInternal aBlock, Item aItem, CreativeTabs aTab, List<ItemStack> aList,
@@ -177,11 +177,11 @@ public interface IMultiTileEntity
 
     ItemStack getPickBlock(MovingObjectPosition aTarget);
 
-    boolean shouldSideBeRendered(byte aSide);
+    boolean shouldSideBeRendered(ForgeDirection aSide);
 
-    boolean isSurfaceOpaque(byte aSide);
+    boolean isSurfaceOpaque(ForgeDirection aSide);
 
-    boolean onPlaced(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, byte aSide,
+    boolean onPlaced(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, ForgeDirection aSide,
         float aHitX, float aHitY, float aHitZ);
 
     // ItemStack getPickBlock(MovingObjectPosition aTarget);
@@ -209,7 +209,7 @@ public interface IMultiTileEntity
 
     interface IMTE_ShouldCheckWeakPower extends IMultiTileEntity {
 
-        boolean shouldCheckWeakPower(byte aSide);
+        boolean shouldCheckWeakPower(ForgeDirection aSide);
     }
 
     interface IMTE_GetWeakChanges extends IMultiTileEntity {
@@ -219,7 +219,7 @@ public interface IMultiTileEntity
 
     interface IMTE_GetComparatorInputOverride extends IMultiTileEntity {
 
-        int getComparatorInputOverride(byte aSide);
+        int getComparatorInputOverride(ForgeDirection aSide);
     }
 
     interface IMTE_BreakBlock extends IMultiTileEntity {
@@ -258,14 +258,14 @@ public interface IMultiTileEntity
          * pipes/wires.
          */
         boolean ignoreEntityCollisionWhenPlacing(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY,
-            int aZ, byte aSide, float aHitX, float aHitY, float aHitZ);
+            int aZ, ForgeDirection aSide, float aHitX, float aHitY, float aHitZ);
     }
 
     interface IMTE_CanPlace extends IMultiTileEntity {
 
         /** Return false if this TileEntity cannot be placed at that Location. */
-        boolean canPlace(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, byte aSide,
-            float aHitX, float aHitY, float aHitZ);
+        boolean canPlace(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ,
+            ForgeDirection aSide, float aHitX, float aHitY, float aHitZ);
     }
 
     interface IMTE_GetMaxStackSize extends IMultiTileEntity {

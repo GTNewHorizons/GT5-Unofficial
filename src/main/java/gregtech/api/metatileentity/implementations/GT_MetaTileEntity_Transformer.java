@@ -86,10 +86,10 @@ public class GT_MetaTileEntity_Transformer extends GT_MetaTileEntity_TieredMachi
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-        boolean aActive, boolean aRedstone) {
-        return mTextures[Math.min(2, aSide) + (aSide == aFacing ? 3 : 0)
-            + (aBaseMetaTileEntity.isAllowedToWork() ? 0 : 6)][aColorIndex + 1];
+    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
+        ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
+        return mTextures[Math.min(2, sideDirection) + (sideDirection == facingDirection ? 3 : 0)
+            + (baseMetaTileEntity.isAllowedToWork() ? 0 : 6)][colorIndex + 1];
     }
 
     @Override
@@ -108,7 +108,7 @@ public class GT_MetaTileEntity_Transformer extends GT_MetaTileEntity_TieredMachi
     }
 
     @Override
-    public boolean isFacingValid(byte aFacing) {
+    public boolean isFacingValid(ForgeDirection facingDirection) {
         return true;
     }
 
@@ -123,13 +123,13 @@ public class GT_MetaTileEntity_Transformer extends GT_MetaTileEntity_TieredMachi
     }
 
     @Override
-    public boolean isInputFacing(byte aSide) {
+    public boolean isInputFacing(ForgeDirection aSide) {
         return getBaseMetaTileEntity().isAllowedToWork() ? aSide == getBaseMetaTileEntity().getFrontFacing()
             : aSide != getBaseMetaTileEntity().getFrontFacing();
     }
 
     @Override
-    public boolean isOutputFacing(byte aSide) {
+    public boolean isOutputFacing(ForgeDirection aSide) {
         return !isInputFacing(aSide);
     }
 
@@ -230,12 +230,14 @@ public class GT_MetaTileEntity_Transformer extends GT_MetaTileEntity_TieredMachi
     }
 
     @Override
-    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection aSide,
+        ItemStack aStack) {
         return false;
     }
 
     @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection aSide,
+        ItemStack aStack) {
         return false;
     }
 

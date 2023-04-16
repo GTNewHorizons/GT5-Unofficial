@@ -41,7 +41,7 @@ public class GT_Cover_WirelessFluidDetector
     }
 
     @Override
-    public FluidTransmitterData doCoverThingsImpl(byte aSide, byte aInputRedstone, int aCoverID,
+    public FluidTransmitterData doCoverThingsImpl(ForgeDirection aSide, byte aInputRedstone, int aCoverID,
         FluidTransmitterData aCoverVariable, ICoverable aTileEntity, long aTimer) {
         byte signal = GT_Cover_LiquidMeter
             .computeSignalBasedOnFluid(aTileEntity, aCoverVariable.invert, aCoverVariable.threshold);
@@ -52,14 +52,14 @@ public class GT_Cover_WirelessFluidDetector
     }
 
     @Override
-    public boolean letsRedstoneGoOutImpl(byte aSide, int aCoverID, FluidTransmitterData aCoverVariable,
+    public boolean letsRedstoneGoOutImpl(ForgeDirection aSide, int aCoverID, FluidTransmitterData aCoverVariable,
         ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    protected boolean manipulatesSidedRedstoneOutputImpl(byte aSide, int aCoverID, FluidTransmitterData aCoverVariable,
-        ICoverable aTileEntity) {
+    protected boolean manipulatesSidedRedstoneOutputImpl(ForgeDirection aSide, int aCoverID,
+        FluidTransmitterData aCoverVariable, ICoverable aTileEntity) {
         return true;
     }
 

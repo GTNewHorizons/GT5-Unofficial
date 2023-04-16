@@ -49,8 +49,8 @@ public class MultiTileEntityBlockInternal extends Block implements IRenderedBloc
         return StatCollector.translateToLocal(mMultiTileEntityRegistry.mNameInternal + ".name");
     }
 
-    public boolean placeBlock(World aWorld, int aX, int aY, int aZ, byte aSide, short aMetaData, NBTTagCompound aNBT,
-        boolean aCauseBlockUpdates, boolean aForcePlacement) {
+    public boolean placeBlock(World aWorld, int aX, int aY, int aZ, ForgeDirection aSide, short aMetaData,
+        NBTTagCompound aNBT, boolean aCauseBlockUpdates, boolean aForcePlacement) {
         final MultiTileEntityContainer aMTEContainer = mMultiTileEntityRegistry
             .getNewTileEntityContainer(aWorld, aX, aY, aZ, aMetaData, aNBT);
         if (aMTEContainer == null) return false;
@@ -116,12 +116,12 @@ public class MultiTileEntityBlockInternal extends Block implements IRenderedBloc
     }
 
     @Override
-    public ITexture[] getTexture(Block aBlock, byte aSide, int aRenderPass, boolean[] aShouldSideBeRendered) {
+    public ITexture[] getTexture(Block aBlock, ForgeDirection aSide, int aRenderPass, boolean[] aShouldSideBeRendered) {
         return null;
     }
 
     @Override
-    public ITexture[] getTexture(Block aBlock, byte aSide, boolean isActive, int aRenderPass) {
+    public ITexture[] getTexture(Block aBlock, ForgeDirection aSide, boolean isActive, int aRenderPass) {
         // TODO: MTE(Texture)
         return null;
     }

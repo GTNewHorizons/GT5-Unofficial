@@ -10,7 +10,8 @@ import gregtech.api.metatileentity.BaseMetaPipeEntity;
 // this is here to apply voltage to dead ends
 public class EmptyPowerConsumer extends ConsumerNode {
 
-    public EmptyPowerConsumer(int aNodeValue, TileEntity aTileEntity, byte aSide, ArrayList<ConsumerNode> aConsumers) {
+    public EmptyPowerConsumer(int aNodeValue, TileEntity aTileEntity, ForgeDirection aSide,
+        ArrayList<ConsumerNode> aConsumers) {
         super(aNodeValue, aTileEntity, aSide, aConsumers);
     }
 

@@ -20,14 +20,14 @@ public class GT_Cover_SolarPanel extends GT_CoverBehavior {
     }
 
     @Override
-    public boolean isRedstoneSensitive(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
+    public boolean isRedstoneSensitive(ForgeDirection aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
         long aTimer) {
         return false;
     }
 
     @Override
-    public int doCoverThings(byte aSide, byte aInputRedstone, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
-        long aTimer) {
+    public int doCoverThings(ForgeDirection aSide, byte aInputRedstone, int aCoverID, int aCoverVariable,
+        ICoverable aTileEntity, long aTimer) {
         if (aSide != 1) return 0;
         int coverState = aCoverVariable & 0x3;
         int coverNum = aCoverVariable >> 2;
@@ -67,7 +67,7 @@ public class GT_Cover_SolarPanel extends GT_CoverBehavior {
     }
 
     @Override
-    protected boolean onCoverRightClickImpl(byte aSide, int aCoverID,
+    protected boolean onCoverRightClickImpl(ForgeDirection aSide, int aCoverID,
         ISerializableObject.LegacyCoverData aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, float aX,
         float aY, float aZ) {
         if (aPlayer.capabilities.isCreativeMode) {
@@ -94,7 +94,7 @@ public class GT_Cover_SolarPanel extends GT_CoverBehavior {
 
     @Override
     @SuppressWarnings("deprecation")
-    public boolean onCoverRightclick(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
+    public boolean onCoverRightclick(ForgeDirection aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
         EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (aPlayer.capabilities.isCreativeMode) {
             GT_Utility.sendChatToPlayer(aPlayer, "Cleaned solar panel from " + (aCoverVariable >> 2) + "% dirt");
@@ -118,12 +118,12 @@ public class GT_Cover_SolarPanel extends GT_CoverBehavior {
     }
 
     @Override
-    public boolean alwaysLookConnected(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public boolean alwaysLookConnected(ForgeDirection aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    public int getTickRate(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public int getTickRate(ForgeDirection aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
         return 1;
     }
 }

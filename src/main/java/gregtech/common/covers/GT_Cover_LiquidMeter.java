@@ -53,7 +53,7 @@ public class GT_Cover_LiquidMeter extends GT_CoverBehaviorBase<GT_Cover_LiquidMe
     }
 
     @Override
-    protected boolean isRedstoneSensitiveImpl(byte aSide, int aCoverID, LiquidMeterData aCoverVariable,
+    protected boolean isRedstoneSensitiveImpl(ForgeDirection aSide, int aCoverID, LiquidMeterData aCoverVariable,
         ICoverable aTileEntity, long aTimer) {
         return false;
     }
@@ -86,7 +86,7 @@ public class GT_Cover_LiquidMeter extends GT_CoverBehaviorBase<GT_Cover_LiquidMe
     }
 
     @Override
-    protected LiquidMeterData doCoverThingsImpl(byte aSide, byte aInputRedstone, int aCoverID,
+    protected LiquidMeterData doCoverThingsImpl(ForgeDirection aSide, byte aInputRedstone, int aCoverID,
         LiquidMeterData aCoverVariable, ICoverable aTileEntity, long aTimer) {
         byte signal = computeSignalBasedOnFluid(aTileEntity, aCoverVariable.inverted, aCoverVariable.threshold);
         if (aCoverVariable.strong) {
@@ -99,8 +99,8 @@ public class GT_Cover_LiquidMeter extends GT_CoverBehaviorBase<GT_Cover_LiquidMe
     }
 
     @Override
-    protected LiquidMeterData onCoverScrewdriverClickImpl(byte aSide, int aCoverID, LiquidMeterData aCoverVariable,
-        ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    protected LiquidMeterData onCoverScrewdriverClickImpl(ForgeDirection aSide, int aCoverID,
+        LiquidMeterData aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (aCoverVariable.inverted) {
             aCoverVariable.inverted = false;
             GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("055", "Normal"));
@@ -112,49 +112,50 @@ public class GT_Cover_LiquidMeter extends GT_CoverBehaviorBase<GT_Cover_LiquidMe
     }
 
     @Override
-    protected boolean letsEnergyInImpl(byte aSide, int aCoverID, LiquidMeterData aCoverVariable,
+    protected boolean letsEnergyInImpl(ForgeDirection aSide, int aCoverID, LiquidMeterData aCoverVariable,
         ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    protected boolean letsEnergyOutImpl(byte aSide, int aCoverID, LiquidMeterData aCoverVariable,
+    protected boolean letsEnergyOutImpl(ForgeDirection aSide, int aCoverID, LiquidMeterData aCoverVariable,
         ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    protected boolean letsFluidInImpl(byte aSide, int aCoverID, LiquidMeterData aCoverVariable, Fluid aFluid,
+    protected boolean letsFluidInImpl(ForgeDirection aSide, int aCoverID, LiquidMeterData aCoverVariable, Fluid aFluid,
         ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    protected boolean letsFluidOutImpl(byte aSide, int aCoverID, LiquidMeterData aCoverVariable, Fluid aFluid,
+    protected boolean letsFluidOutImpl(ForgeDirection aSide, int aCoverID, LiquidMeterData aCoverVariable, Fluid aFluid,
         ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    protected boolean letsItemsInImpl(byte aSide, int aCoverID, LiquidMeterData aCoverVariable, int aSlot,
+    protected boolean letsItemsInImpl(ForgeDirection aSide, int aCoverID, LiquidMeterData aCoverVariable, int aSlot,
         ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    protected boolean letsItemsOutImpl(byte aSide, int aCoverID, LiquidMeterData aCoverVariable, int aSlot,
+    protected boolean letsItemsOutImpl(ForgeDirection aSide, int aCoverID, LiquidMeterData aCoverVariable, int aSlot,
         ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    protected boolean manipulatesSidedRedstoneOutputImpl(byte aSide, int aCoverID, LiquidMeterData aCoverVariable,
-        ICoverable aTileEntity) {
+    protected boolean manipulatesSidedRedstoneOutputImpl(ForgeDirection aSide, int aCoverID,
+        LiquidMeterData aCoverVariable, ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    protected int getTickRateImpl(byte aSide, int aCoverID, LiquidMeterData aCoverVariable, ICoverable aTileEntity) {
+    protected int getTickRateImpl(ForgeDirection aSide, int aCoverID, LiquidMeterData aCoverVariable,
+        ICoverable aTileEntity) {
         return 5;
     }
 

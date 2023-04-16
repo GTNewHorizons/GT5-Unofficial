@@ -57,8 +57,8 @@ public class GT_Cover_EUMeter extends GT_CoverBehaviorBase<GT_Cover_EUMeter.EUMe
     }
 
     @Override
-    protected EUMeterData doCoverThingsImpl(byte aSide, byte aInputRedstone, int aCoverID, EUMeterData aCoverVariable,
-        ICoverable aTileEntity, long aTimer) {
+    protected EUMeterData doCoverThingsImpl(ForgeDirection aSide, byte aInputRedstone, int aCoverID,
+        EUMeterData aCoverVariable, ICoverable aTileEntity, long aTimer) {
         final long stored = aCoverVariable.type.getTileEntityStoredEnergy(aTileEntity);
         final long capacity = aCoverVariable.type.getTileEntityEnergyCapacity(aTileEntity);
 
@@ -92,7 +92,7 @@ public class GT_Cover_EUMeter extends GT_CoverBehaviorBase<GT_Cover_EUMeter.EUMe
     }
 
     @Override
-    protected EUMeterData onCoverScrewdriverClickImpl(byte aSide, int aCoverID, EUMeterData aCoverVariable,
+    protected EUMeterData onCoverScrewdriverClickImpl(ForgeDirection aSide, int aCoverID, EUMeterData aCoverVariable,
         ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         int num = (aCoverVariable.getNum() + (aPlayer.isSneaking() ? -1 : 1) + EnergyType.values().length * 2)
             % (EnergyType.values().length * 2);
@@ -119,53 +119,56 @@ public class GT_Cover_EUMeter extends GT_CoverBehaviorBase<GT_Cover_EUMeter.EUMe
 
     // region Static Result Methods
     @Override
-    protected boolean isRedstoneSensitiveImpl(byte aSide, int aCoverID, EUMeterData aCoverVariable,
+    protected boolean isRedstoneSensitiveImpl(ForgeDirection aSide, int aCoverID, EUMeterData aCoverVariable,
         ICoverable aTileEntity, long aTimer) {
         return false;
     }
 
     @Override
-    protected boolean letsEnergyInImpl(byte aSide, int aCoverID, EUMeterData aCoverVariable, ICoverable aTileEntity) {
-        return true;
-    }
-
-    @Override
-    protected boolean letsEnergyOutImpl(byte aSide, int aCoverID, EUMeterData aCoverVariable, ICoverable aTileEntity) {
-        return true;
-    }
-
-    @Override
-    protected boolean letsFluidInImpl(byte aSide, int aCoverID, EUMeterData aCoverVariable, Fluid aFluid,
+    protected boolean letsEnergyInImpl(ForgeDirection aSide, int aCoverID, EUMeterData aCoverVariable,
         ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    protected boolean letsFluidOutImpl(byte aSide, int aCoverID, EUMeterData aCoverVariable, Fluid aFluid,
+    protected boolean letsEnergyOutImpl(ForgeDirection aSide, int aCoverID, EUMeterData aCoverVariable,
         ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    protected boolean letsItemsInImpl(byte aSide, int aCoverID, EUMeterData aCoverVariable, int aSlot,
+    protected boolean letsFluidInImpl(ForgeDirection aSide, int aCoverID, EUMeterData aCoverVariable, Fluid aFluid,
         ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    protected boolean letsItemsOutImpl(byte aSide, int aCoverID, EUMeterData aCoverVariable, int aSlot,
+    protected boolean letsFluidOutImpl(ForgeDirection aSide, int aCoverID, EUMeterData aCoverVariable, Fluid aFluid,
         ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    protected boolean manipulatesSidedRedstoneOutputImpl(byte aSide, int aCoverID, EUMeterData aCoverVariable,
+    protected boolean letsItemsInImpl(ForgeDirection aSide, int aCoverID, EUMeterData aCoverVariable, int aSlot,
         ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    protected int getTickRateImpl(byte aSide, int aCoverID, EUMeterData aCoverVariable, ICoverable aTileEntity) {
+    protected boolean letsItemsOutImpl(ForgeDirection aSide, int aCoverID, EUMeterData aCoverVariable, int aSlot,
+        ICoverable aTileEntity) {
+        return true;
+    }
+
+    @Override
+    protected boolean manipulatesSidedRedstoneOutputImpl(ForgeDirection aSide, int aCoverID, EUMeterData aCoverVariable,
+        ICoverable aTileEntity) {
+        return true;
+    }
+
+    @Override
+    protected int getTickRateImpl(ForgeDirection aSide, int aCoverID, EUMeterData aCoverVariable,
+        ICoverable aTileEntity) {
         return 20;
     }
     // endregion

@@ -77,7 +77,7 @@ public class GT_Cover_FluidStorageMonitor extends GT_CoverBehaviorBase<GT_Cover_
     }
 
     @Override
-    protected FluidStorageData doCoverThingsImpl(byte aSide, byte aInputRedstone, int aCoverID,
+    protected FluidStorageData doCoverThingsImpl(ForgeDirection aSide, byte aInputRedstone, int aCoverID,
         FluidStorageData aCoverVariable, ICoverable aTileEntity, long aTimer) {
         final FluidTankInfo[] tanks = getValidFluidTankInfos(aTileEntity, aCoverVariable.side);
         if (tanks == null) {
@@ -102,13 +102,13 @@ public class GT_Cover_FluidStorageMonitor extends GT_CoverBehaviorBase<GT_Cover_
     }
 
     @Override
-    protected ITexture getSpecialCoverFGTextureImpl(byte aSide, int aCoverID, FluidStorageData aCoverVariable,
+    protected ITexture getSpecialCoverFGTextureImpl(ForgeDirection aSide, int aCoverID, FluidStorageData aCoverVariable,
         ICoverable aTileEntity) {
         return getSpecialCoverTextureImpl(aSide, aCoverID, aCoverVariable, aTileEntity);
     }
 
     @Override
-    protected ITexture getSpecialCoverTextureImpl(byte aSide, int aCoverID, FluidStorageData aCoverVariable,
+    protected ITexture getSpecialCoverTextureImpl(ForgeDirection aSide, int aCoverID, FluidStorageData aCoverVariable,
         ICoverable aTileEntity) {
         if (aCoverVariable.slot == -1 || aCoverVariable.fluid == null || aCoverVariable.scale == 0) {
             return TextureFactory.of(OVERLAY_FLUID_STORAGE_MONITOR0);
@@ -140,7 +140,7 @@ public class GT_Cover_FluidStorageMonitor extends GT_CoverBehaviorBase<GT_Cover_
     }
 
     @Override
-    protected boolean onCoverRightClickImpl(byte aSide, int aCoverID, FluidStorageData aCoverVariable,
+    protected boolean onCoverRightClickImpl(ForgeDirection aSide, int aCoverID, FluidStorageData aCoverVariable,
         ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (aPlayer == null || aPlayer.worldObj == null || aPlayer.worldObj.isRemote) {
             return false;
@@ -266,8 +266,8 @@ public class GT_Cover_FluidStorageMonitor extends GT_CoverBehaviorBase<GT_Cover_
     }
 
     @Override
-    protected FluidStorageData onCoverScrewdriverClickImpl(byte aSide, int aCoverID, FluidStorageData aCoverVariable,
-        ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    protected FluidStorageData onCoverScrewdriverClickImpl(ForgeDirection aSide, int aCoverID,
+        FluidStorageData aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (aPlayer.isSneaking()) {
             aCoverVariable
                 .setSide(ForgeDirection.values()[(aCoverVariable.side.ordinal() + 1) % ForgeDirection.values().length])
@@ -291,25 +291,26 @@ public class GT_Cover_FluidStorageMonitor extends GT_CoverBehaviorBase<GT_Cover_
     }
 
     @Override
-    protected boolean isDataNeededOnClientImpl(byte aSide, int aCoverID, FluidStorageData aCoverVariable,
+    protected boolean isDataNeededOnClientImpl(ForgeDirection aSide, int aCoverID, FluidStorageData aCoverVariable,
         ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    protected boolean letsFluidInImpl(byte aSide, int aCoverID, FluidStorageData aCoverVariable, Fluid aFluid,
+    protected boolean letsFluidInImpl(ForgeDirection aSide, int aCoverID, FluidStorageData aCoverVariable, Fluid aFluid,
         ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    protected boolean letsFluidOutImpl(byte aSide, int aCoverID, FluidStorageData aCoverVariable, Fluid aFluid,
-        ICoverable aTileEntity) {
+    protected boolean letsFluidOutImpl(ForgeDirection aSide, int aCoverID, FluidStorageData aCoverVariable,
+        Fluid aFluid, ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    protected int getTickRateImpl(byte aSide, int aCoverID, FluidStorageData aCoverVariable, ICoverable aTileEntity) {
+    protected int getTickRateImpl(ForgeDirection aSide, int aCoverID, FluidStorageData aCoverVariable,
+        ICoverable aTileEntity) {
         return 10;
     }
 

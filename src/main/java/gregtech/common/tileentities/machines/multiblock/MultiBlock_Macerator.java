@@ -144,7 +144,7 @@ public class MultiBlock_Macerator extends MultiBlock_Stackable<MultiBlock_Macera
     }
 
     @Override
-    public ITexture[] getTexture(Block aBlock, byte aSide, boolean isActive, int aRenderPass) {
+    public ITexture[] getTexture(Block aBlock, ForgeDirection aSide, boolean isActive, int aRenderPass) {
         // TODO: MTE(Texture)
         if (facing == aSide) {
             return new ITexture[] {

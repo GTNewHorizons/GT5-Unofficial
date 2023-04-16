@@ -25,8 +25,8 @@ public class GT_Cover_RedstoneTransmitterExternal extends GT_Cover_RedstoneWirel
     }
 
     @Override
-    public int doCoverThings(byte aSide, byte aInputRedstone, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
-        long aTimer) {
+    public int doCoverThings(ForgeDirection aSide, byte aInputRedstone, int aCoverID, int aCoverVariable,
+        ICoverable aTileEntity, long aTimer) {
         // TODO remove next line after 2.3.0
         if (!IControlsWorkCover.makeSureOnlyOne(aSide, aTileEntity)) return aCoverVariable;
         GregTech_API.sWirelessRedstone.put(aCoverVariable, aInputRedstone);
@@ -34,23 +34,23 @@ public class GT_Cover_RedstoneTransmitterExternal extends GT_Cover_RedstoneWirel
     }
 
     @Override
-    protected boolean isRedstoneSensitiveImpl(byte aSide, int aCoverID,
+    protected boolean isRedstoneSensitiveImpl(ForgeDirection aSide, int aCoverID,
         ISerializableObject.LegacyCoverData aCoverVariable, ICoverable aTileEntity, long aTimer) {
         return true;
     }
 
     @Override
-    public boolean letsRedstoneGoIn(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public boolean letsRedstoneGoIn(ForgeDirection aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    public int getTickRate(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public int getTickRate(ForgeDirection aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
         return 1;
     }
 
     @Override
-    public boolean isCoverPlaceable(byte aSide, ItemStack aStack, ICoverable aTileEntity) {
+    public boolean isCoverPlaceable(ForgeDirection aSide, ItemStack aStack, ICoverable aTileEntity) {
         if (!super.isCoverPlaceable(aSide, aStack, aTileEntity)) return false;
         for (byte tSide : ALL_VALID_SIDES) {
             if (aTileEntity.getCoverBehaviorAtSideNew(tSide) instanceof IControlsWorkCover) {

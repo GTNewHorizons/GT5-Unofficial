@@ -28,23 +28,23 @@ public interface IEnergyConnected extends IColoredTileEntity {
      *              Side checks for this Side)
      * @return amount of used Amperes. 0 if not accepted anything.
      */
-    long injectEnergyUnits(byte aSide, long aVoltage, long aAmperage);
+    long injectEnergyUnits(ForgeDirection aSide, long aVoltage, long aAmperage);
 
     /**
      * Sided Energy Input
      */
-    boolean inputEnergyFrom(byte aSide);
+    boolean inputEnergyFrom(ForgeDirection aSide);
 
-    default boolean inputEnergyFrom(byte aSide, boolean waitForActive) {
+    default boolean inputEnergyFrom(ForgeDirection aSide, boolean waitForActive) {
         return inputEnergyFrom(aSide);
     }
 
     /**
      * Sided Energy Output
      */
-    boolean outputsEnergyTo(byte aSide);
+    boolean outputsEnergyTo(ForgeDirection aSide);
 
-    default boolean outputsEnergyTo(byte aSide, boolean waitForActive) {
+    default boolean outputsEnergyTo(ForgeDirection aSide, boolean waitForActive) {
         return outputsEnergyTo(aSide);
     }
 

@@ -269,7 +269,8 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
     }
 
     @Override
-    public final void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public final void onScrewdriverRightClick(ForgeDirection aSide, EntityPlayer aPlayer, float aX, float aY,
+        float aZ) {
         mVoidOverflow = !mVoidOverflow;
         GT_Utility.sendChatToPlayer(
             aPlayer,
@@ -279,8 +280,8 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
     }
 
     @Override
-    public boolean onSolderingToolRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY,
-        float aZ) {
+    public boolean onSolderingToolRightClick(ForgeDirection aSide, ForgeDirection aWrenchingSide, EntityPlayer aPlayer,
+        float aX, float aY, float aZ) {
         if (super.onSolderingToolRightClick(aSide, aWrenchingSide, aPlayer, aX, aY, aZ)) return true;
         mDisableFilter = !mDisableFilter;
         GT_Utility.sendChatToPlayer(
@@ -350,7 +351,7 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
     }
 
     @Override
-    public boolean isFacingValid(byte aFacing) {
+    public boolean isFacingValid(ForgeDirection facing) {
         return true;
     }
 
@@ -463,13 +464,15 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
     }
 
     @Override
-    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection aSide,
+        ItemStack aStack) {
         if (GregTech_API.mAE2 && GT_Values.disableDigitalChestsExternalAccess && hasActiveMEConnection()) return false;
         return aIndex == 1;
     }
 
     @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection aSide,
+        ItemStack aStack) {
         if (GregTech_API.mAE2 && GT_Values.disableDigitalChestsExternalAccess && hasActiveMEConnection()) return false;
         if (aIndex != 0) return false;
         if ((mInventory[0] != null && !GT_Utility.areStacksEqual(mInventory[0], aStack))) return false;
@@ -479,8 +482,8 @@ public abstract class GT_MetaTileEntity_DigitalChestBase extends GT_MetaTileEnti
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-        boolean aActive, boolean aRedstone) {
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection aSide, ForgeDirection aFacing,
+        byte aColorIndex, boolean aActive, boolean aRedstone) {
         if (aSide != aFacing) return new ITexture[] { MACHINE_CASINGS[mTier][aColorIndex + 1] };
         return new ITexture[] { MACHINE_CASINGS[mTier][aColorIndex + 1], TextureFactory.of(OVERLAY_SCHEST),
             TextureFactory.builder()

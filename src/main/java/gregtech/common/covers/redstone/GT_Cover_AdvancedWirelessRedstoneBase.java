@@ -108,44 +108,48 @@ public abstract class GT_Cover_AdvancedWirelessRedstoneBase<T extends GT_Cover_A
     }
 
     @Override
-    public boolean letsEnergyInImpl(byte aSide, int aCoverID, T aCoverVariable, ICoverable aTileEntity) {
+    public boolean letsEnergyInImpl(ForgeDirection aSide, int aCoverID, T aCoverVariable, ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    public boolean letsEnergyOutImpl(byte aSide, int aCoverID, T aCoverVariable, ICoverable aTileEntity) {
+    public boolean letsEnergyOutImpl(ForgeDirection aSide, int aCoverID, T aCoverVariable, ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    public boolean letsFluidInImpl(byte aSide, int aCoverID, T aCoverVariable, Fluid aFluid, ICoverable aTileEntity) {
+    public boolean letsFluidInImpl(ForgeDirection aSide, int aCoverID, T aCoverVariable, Fluid aFluid,
+        ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    public boolean letsFluidOutImpl(byte aSide, int aCoverID, T aCoverVariable, Fluid aFluid, ICoverable aTileEntity) {
+    public boolean letsFluidOutImpl(ForgeDirection aSide, int aCoverID, T aCoverVariable, Fluid aFluid,
+        ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    public boolean letsItemsInImpl(byte aSide, int aCoverID, T aCoverVariable, int aSlot, ICoverable aTileEntity) {
+    public boolean letsItemsInImpl(ForgeDirection aSide, int aCoverID, T aCoverVariable, int aSlot,
+        ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    public boolean letsItemsOutImpl(byte aSide, int aCoverID, T aCoverVariable, int aSlot, ICoverable aTileEntity) {
+    public boolean letsItemsOutImpl(ForgeDirection aSide, int aCoverID, T aCoverVariable, int aSlot,
+        ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    public String getDescriptionImpl(byte aSide, int aCoverID, T aCoverVariable, ICoverable aTileEntity) {
+    public String getDescriptionImpl(ForgeDirection aSide, int aCoverID, T aCoverVariable, ICoverable aTileEntity) {
         return GT_Utility.trans("081", "Frequency: ") + aCoverVariable.frequency
             + ", Transmission: "
             + (aCoverVariable.uuid == null ? "Public" : "Private");
     }
 
     @Override
-    public int getTickRateImpl(byte aSide, int aCoverID, T aCoverVariable, ICoverable aTileEntity) {
+    public int getTickRateImpl(ForgeDirection aSide, int aCoverID, T aCoverVariable, ICoverable aTileEntity) {
         return 5;
     }
 

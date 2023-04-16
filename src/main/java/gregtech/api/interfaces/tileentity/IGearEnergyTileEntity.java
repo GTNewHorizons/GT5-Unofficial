@@ -1,12 +1,14 @@
 package gregtech.api.interfaces.tileentity;
 
+import net.minecraftforge.common.util.ForgeDirection;
+
 public interface IGearEnergyTileEntity {
 
     /**
      * If Rotation Energy can be accepted on this Side. This means that the Gear/Axle will connect to this Side, and can
      * cause the Gear/Axle to stop if the Energy isn't accepted.
      */
-    boolean acceptsRotationalEnergy(byte aSide);
+    boolean acceptsRotationalEnergy(ForgeDirection aSide);
 
     /**
      * Inject Energy Call for Rotational Energy. Rotation Energy can't be stored, this is just for things like internal
@@ -14,5 +16,5 @@ public interface IGearEnergyTileEntity {
      *
      * @param aSpeed Positive = Clockwise, Negative = Counterclockwise
      */
-    boolean injectRotationalEnergy(byte aSide, long aSpeed, long aEnergy);
+    boolean injectRotationalEnergy(ForgeDirection aSide, long aSpeed, long aEnergy);
 }

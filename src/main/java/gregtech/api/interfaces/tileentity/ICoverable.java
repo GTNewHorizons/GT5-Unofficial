@@ -2,6 +2,7 @@ package gregtech.api.interfaces.tileentity;
 
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.util.GT_CoverBehavior;
 import gregtech.api.util.GT_CoverBehaviorBase;
@@ -10,47 +11,47 @@ import gregtech.common.covers.CoverInfo;
 
 public interface ICoverable extends IRedstoneTileEntity, IHasInventory, IBasicEnergyContainer {
 
-    boolean canPlaceCoverIDAtSide(byte aSide, int aID);
+    boolean canPlaceCoverIDAtSide(ForgeDirection aSide, int aID);
 
-    boolean canPlaceCoverItemAtSide(byte aSide, ItemStack aCover);
+    boolean canPlaceCoverItemAtSide(ForgeDirection aSide, ItemStack aCover);
 
-    boolean dropCover(byte aSide, byte aDroppedSide, boolean aForced);
+    boolean dropCover(ForgeDirection aSide, ForgeDirection aDroppedSide, boolean aForced);
 
     @Deprecated
-    void setCoverDataAtSide(byte aSide, int aData);
+    void setCoverDataAtSide(ForgeDirection aSide, int aData);
 
-    default void setCoverDataAtSide(byte aSide, ISerializableObject aData) {
+    default void setCoverDataAtSide(ForgeDirection aSide, ISerializableObject aData) {
         if (aData instanceof ISerializableObject.LegacyCoverData)
             setCoverDataAtSide(aSide, ((ISerializableObject.LegacyCoverData) aData).get());
     }
 
-    void setCoverIdAndDataAtSide(byte aSide, int aId, ISerializableObject aData);
+    void setCoverIdAndDataAtSide(ForgeDirection aSide, int aId, ISerializableObject aData);
 
-    void setCoverIDAtSide(byte aSide, int aID);
+    void setCoverIDAtSide(ForgeDirection aSide, int aID);
 
-    boolean setCoverIDAtSideNoUpdate(byte aSide, int aID);
+    boolean setCoverIDAtSideNoUpdate(ForgeDirection aSide, int aID);
 
-    void setCoverItemAtSide(byte aSide, ItemStack aCover);
+    void setCoverItemAtSide(ForgeDirection aSide, ItemStack aCover);
 
     @Deprecated
-    int getCoverDataAtSide(byte aSide);
+    int getCoverDataAtSide(ForgeDirection aSide);
 
-    default CoverInfo getCoverInfoAtSide(byte aSide) {
+    default CoverInfo getCoverInfoAtSide(ForgeDirection aSide) {
         return null;
     }
 
-    default ISerializableObject getComplexCoverDataAtSide(byte aSide) {
+    default ISerializableObject getComplexCoverDataAtSide(ForgeDirection aSide) {
         return new ISerializableObject.LegacyCoverData(getCoverDataAtSide(aSide));
     }
 
-    int getCoverIDAtSide(byte aSide);
+    int getCoverIDAtSide(ForgeDirection aSide);
 
-    ItemStack getCoverItemAtSide(byte aSide);
+    ItemStack getCoverItemAtSide(ForgeDirection aSide);
 
     @Deprecated
-    GT_CoverBehavior getCoverBehaviorAtSide(byte aSide);
+    GT_CoverBehavior getCoverBehaviorAtSide(ForgeDirection aSide);
 
-    default GT_CoverBehaviorBase<?> getCoverBehaviorAtSideNew(byte aSide) {
+    default GT_CoverBehaviorBase<?> getCoverBehaviorAtSideNew(ForgeDirection aSide) {
         return getCoverBehaviorAtSide(aSide);
     }
 
@@ -58,18 +59,18 @@ public interface ICoverable extends IRedstoneTileEntity, IHasInventory, IBasicEn
      * For use by the regular MetaTileEntities. Returns the Cover Manipulated input Redstone. Don't use this if you are
      * a Cover Behavior. Only for MetaTileEntities.
      */
-    byte getInternalInputRedstoneSignal(byte aSide);
+    byte getInternalInputRedstoneSignal(ForgeDirection aSide);
 
     /**
      * For use by the regular MetaTileEntities. This makes it not conflict with Cover based Redstone Signals. Don't use
      * this if you are a Cover Behavior. Only for MetaTileEntities.
      */
-    void setInternalOutputRedstoneSignal(byte aSide, byte aStrength);
+    void setInternalOutputRedstoneSignal(ForgeDirection aSide, byte aStrength);
 
     /**
      * Causes a general Cover Texture update. Sends 6 Integers to Client + causes @issueTextureUpdate()
      */
-    void issueCoverUpdate(byte aSide);
+    void issueCoverUpdate(ForgeDirection aSide);
 
     /**
      * Receiving a packet with cover data.

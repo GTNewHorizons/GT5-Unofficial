@@ -8,7 +8,7 @@ import gregtech.api.metatileentity.BaseMetaTileEntity;
 // consumer for gt machines
 public class NodeGTBaseMetaTile extends ConsumerNode {
 
-    public NodeGTBaseMetaTile(int aNodeValue, BaseMetaTileEntity aTileEntity, byte aSide,
+    public NodeGTBaseMetaTile(int aNodeValue, BaseMetaTileEntity aTileEntity, ForgeDirection aSide,
         ArrayList<ConsumerNode> aConsumers) {
         super(aNodeValue, aTileEntity, aSide, aConsumers);
     }

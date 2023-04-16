@@ -129,8 +129,8 @@ public abstract class GenerateNodeMap {
     }
 
     // go over the pipes until we see a valid tile entity that needs a node
-    protected Pair getNextValidTileEntity(TileEntity aTileEntity, ArrayList<MetaPipeEntity> aPipes, byte aSide,
-        HashSet<Node> aNodeMap) {
+    protected Pair getNextValidTileEntity(TileEntity aTileEntity, ArrayList<MetaPipeEntity> aPipes,
+        ForgeDirection aSide, HashSet<Node> aNodeMap) {
         if (isPipe(aTileEntity)) {
             final BaseMetaPipeEntity tPipe = (BaseMetaPipeEntity) aTileEntity;
             final MetaPipeEntity tMetaPipe = (MetaPipeEntity) tPipe.getMetaTileEntity();
@@ -167,20 +167,21 @@ public abstract class GenerateNodeMap {
     }
 
     // checks if the tile entity is a consumer and add to the list
-    protected abstract boolean addConsumer(TileEntity aTileEntity, byte aSide, int aNodeValue,
+    protected abstract boolean addConsumer(TileEntity aTileEntity, ForgeDirection aSide, int aNodeValue,
         ArrayList<ConsumerNode> aConsumers);
 
     // get correct pathClass that you need for your node network
     protected abstract NodePath getNewPath(MetaPipeEntity[] aPipes);
 
     // used for if you need to use dead ends for something can be null
-    protected Node getEmptyNode(int aNodeValue, byte aSide, TileEntity aTileEntity,
+    protected Node getEmptyNode(int aNodeValue, ForgeDirection aSide, TileEntity aTileEntity,
         ArrayList<ConsumerNode> aConsumers) {
         return null;
     }
 
     // get correct node type you need for your network
-    protected Node getPipeNode(int aNodeValue, byte aSide, TileEntity aTileEntity, ArrayList<ConsumerNode> aConsumers) {
+    protected Node getPipeNode(int aNodeValue, ForgeDirection aSide, TileEntity aTileEntity,
+        ArrayList<ConsumerNode> aConsumers) {
         return new Node(aNodeValue, aTileEntity, aConsumers);
     }
 
@@ -189,7 +190,7 @@ public abstract class GenerateNodeMap {
         public byte mSide;
         public TileEntity mTileEntity;
 
-        public Pair(TileEntity aTileEntity, byte aSide) {
+        public Pair(TileEntity aTileEntity, ForgeDirection aSide) {
             this.mTileEntity = aTileEntity;
             this.mSide = aSide;
         }
