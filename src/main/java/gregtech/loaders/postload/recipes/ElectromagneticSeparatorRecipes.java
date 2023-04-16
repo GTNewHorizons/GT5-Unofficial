@@ -22,5 +22,17 @@ public class ElectromagneticSeparatorRecipes implements Runnable {
             .eut(TierEU.RECIPE_HV / 2)
             .addTo(sElectroMagneticSeparatorRecipes);
 
+        GT_Values.RA.stdBuilder()
+            .itemInputs(Materials.TengamRaw.getDust(1))
+            .itemOutputs(
+                Materials.TengamPurified.getDust(1),
+                Materials.NeodymiumMagnetic.getDust(1),
+                Materials.SamariumMagnetic.getDust(1))
+            .outputChances(10000, 1000, 1000)
+            .noFluidInputs()
+            .noFluidOutputs()
+            .duration(10 * SECONDS)
+            .eut(TierEU.RECIPE_UHV / 2)
+            .addTo(sElectroMagneticSeparatorRecipes);
     }
 }

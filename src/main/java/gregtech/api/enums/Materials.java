@@ -915,6 +915,10 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
 
     public static Materials Universium = new Materials(139, new TextureSet("universium", true),   1.0F,4*2621440,  25, 1|2|64|128,   38, 49, 69,  255,   "Universium"                ,   "Universium",    -1,      -1,         0,    0, false,  true,   2,   1,   1, Dyes._NULL         , Collections.singletonList(new TC_AspectStack(TC_Aspects.AQUA, 1))).setProcessingMaterialTierEU(TierEU.RECIPE_UMV);
 
+    public static Materials TengamPurified = new MaterialBuilder(111, TextureSet.SET_METALLIC, "Purified Tengam").addDustItems().addGearItems().addMetalItems().addToolHeadItems().setAspects(Arrays.asList(new TC_AspectStack(TC_Aspects.MAGNETO, 2), new TC_AspectStack(TC_Aspects.ELECTRUM, 2))).setColor(Dyes.dyeLime).setName("TengamPurified").setRGB(186, 223, 112).constructMaterial().setProcessingMaterialTierEU(TierEU.RECIPE_UEV);
+    public static Materials TengamAttuned  = new MaterialBuilder(112, TextureSet.SET_MAGNETIC, "Attuned Tengam") .addDustItems().addGearItems().addMetalItems().addToolHeadItems().setAspects(Arrays.asList(new TC_AspectStack(TC_Aspects.MAGNETO, 4), new TC_AspectStack(TC_Aspects.ELECTRUM, 1))).setColor(Dyes.dyeLime).setName("TengamAttuned") .setRGB(213, 255, 128).constructMaterial().setProcessingMaterialTierEU(TierEU.RECIPE_UEV);
+    public static Materials TengamRaw      = new MaterialBuilder(110, TextureSet.SET_ROUGH,    "Raw Tengam")     .addOreItems()                                                   .setAspects(Arrays.asList(new TC_AspectStack(TC_Aspects.MAGNETO, 1), new TC_AspectStack(TC_Aspects.ELECTRUM, 4))).setColor(Dyes.dyeLime).setName("TengamRaw")     .setRGB(160, 191,  96).constructMaterial().setProcessingMaterialTierEU(TierEU.RECIPE_UEV);
+
     // spotless:on
 
     static {
@@ -1392,6 +1396,9 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Sand.setSmeltingInto(Glass);
         Ice.setSmeltingInto(Water);
         Snow.setSmeltingInto(Water);
+        TengamAttuned.setSmeltingInto(TengamPurified)
+            .setMaceratingInto(TengamPurified)
+            .setArcSmeltingInto(TengamPurified);
     }
 
     private static void setOthers() {
@@ -1819,6 +1826,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Cryolite.addOreByProducts(Aluminiumoxide, Sodium);
         Naquadria.addOreByProduct(Naquadria);
         RoastedNickel.addOreByProduct(Nickel);
+        TengamRaw.addOreByProducts(NeodymiumMagnetic, SamariumMagnetic);
     }
 
     private static void setColors() {
@@ -1904,6 +1912,9 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Grade6PurifiedWater.mChemicalFormula = "H\u2082O";
         Grade7PurifiedWater.mChemicalFormula = "H\u2082O";
         Grade8PurifiedWater.mChemicalFormula = "H\u2082O";
+        TengamRaw.mChemicalFormula = "";
+        TengamPurified.mChemicalFormula = "M";
+        TengamAttuned.mChemicalFormula = "M";
     }
 
     private static void initSubTags() {
@@ -2162,7 +2173,9 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
             Quantium,
             RedstoneAlloy,
             Bedrockium,
-            EnrichedHolmium);
+            EnrichedHolmium,
+            TengamPurified,
+            TengamAttuned);
 
         SubTag.FOOD.addTo(
             MeatRaw,

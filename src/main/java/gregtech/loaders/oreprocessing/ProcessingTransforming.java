@@ -162,6 +162,17 @@ public class ProcessingTransforming implements IOreRecipeRegistrator {
             }
                 break;
 
+            case "TengamPurified":
+            // Polarizer recipes
+            {
+                GT_Values.RA.addPolarizerRecipe(
+                    GT_Utility.copyAmount(1L, aStack),
+                    GT_OreDictUnificator.get(aPrefix, Materials.TengamAttuned, 1L),
+                    (int) Math.max(16L, aPrefix.mMaterialAmount * 128L / GT_Values.M),
+                    (int) TierEU.UHV / 2);
+            }
+                break;
+
             default: { /* NO-OP */ }
         }
     }
