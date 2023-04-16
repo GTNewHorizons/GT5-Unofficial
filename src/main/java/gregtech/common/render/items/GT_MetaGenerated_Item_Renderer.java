@@ -1,6 +1,5 @@
 package gregtech.common.render.items;
 
-import gregtech.api.enums.ItemList;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -9,6 +8,7 @@ import net.minecraftforge.client.MinecraftForgeClient;
 
 import org.lwjgl.opengl.GL11;
 
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.IGT_ItemWithMaterialRenderer;
 import gregtech.api.objects.ItemData;
@@ -83,8 +83,10 @@ public class GT_MetaGenerated_Item_Renderer implements IItemRenderer {
             return aMaterialRenderer != null ? aMaterialRenderer : mMaterialRenderer;
         }
 
-        //handle data stick
-        if(aStack.getItem() == ItemList.Tool_DataStick.getItem() && aStack.hasTagCompound() && aStack.getTagCompound().hasKey("output")){
+        // handle data stick
+        if (aStack.getItem() == ItemList.Tool_DataStick.getItem() && aStack.hasTagCompound()
+            && aStack.getTagCompound()
+                .hasKey("output")) {
             return mDataStickRenderer;
         }
 

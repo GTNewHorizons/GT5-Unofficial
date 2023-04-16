@@ -1,16 +1,17 @@
 package gregtech.common.render.items;
 
-import appeng.items.misc.ItemEncodedPattern;
-import gregtech.api.util.GT_AssemblyLineUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
+
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
-//borrow form ae2
+import gregtech.api.util.GT_AssemblyLineUtils;
+
+// borrow form ae2
 
 public class GT_DataStick_Renderer implements IItemRenderer {
 
