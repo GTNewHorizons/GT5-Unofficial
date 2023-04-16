@@ -1106,9 +1106,6 @@ public abstract class MultiTileEntity extends CoverableTileEntity
                     + mteID
                     + EnumChatFormatting.RESET);
         }
-        if (joinedIc2Enet) tList.add("Joined IC2 ENet");
-
-        tList.add("Energy: " + getUniversalEnergyStored() + "/" + getUniversalEnergyCapacity());
 
         addDebugInfo(aPlayer, aLogLevel, tList);
 

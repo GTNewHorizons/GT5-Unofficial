@@ -1,8 +1,7 @@
 package gregtech.api.multitileentity.machine;
 
 import static com.google.common.primitives.Ints.saturatedCast;
-import static gregtech.api.enums.GT_Values.B;
-import static gregtech.api.enums.GT_Values.emptyIconContainerArray;
+import static gregtech.api.enums.GT_Values.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,6 +16,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidTank;
 
@@ -787,14 +787,77 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
 
     @Override
     protected void addDebugInfo(EntityPlayer player, int logLevel, ArrayList<String> list) {
-        if (isElectric()) {
-            list.add(
-                "Energy: " + EnumChatFormatting.GOLD + getUniversalEnergyStored() + "/" + getUniversalEnergyCapacity());
-        }
+        list.add(
+            GT_Utility.trans("186", "Owned by: ") + EnumChatFormatting.BLUE
+                + getOwnerName()
+                + EnumChatFormatting.RESET
+                + " ("
+                + EnumChatFormatting.AQUA
+                + getOwnerUuid()
+                + EnumChatFormatting.RESET
+                + ")");
 
         if (acceptsFuel()) {
             list.add("Fuel: " + EnumChatFormatting.GOLD + burnTime + "/" + totalBurnTime);
         }
+
+        if (this instanceof PowerLogicHost powerLogicHost) {
+            PowerLogic logic = powerLogicHost.getPowerLogic(facing);
+            if (isElectric) {
+                list.add(
+                    StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
+                        + EnumChatFormatting.GREEN
+                        + GT_Utility.formatNumbers(logic.getStoredEnergy())
+                        + EnumChatFormatting.RESET
+                        + " EU / "
+                        + EnumChatFormatting.YELLOW
+                        + GT_Utility.formatNumbers(logic.getCapacity())
+                        + EnumChatFormatting.RESET
+                        + " EU");
+                list.add(
+                    StatCollector.translateToLocal("GT5U.multiblock.usage") + ": "
+                        + EnumChatFormatting.RED
+                        + GT_Utility.formatNumbers(eut)
+                        + EnumChatFormatting.RESET
+                        + " EU/t");
+                list.add(
+                    StatCollector.translateToLocal("GT5U.multiblock.mei") + ": "
+                        + EnumChatFormatting.YELLOW
+                        + GT_Utility.formatNumbers(logic.getVoltage())
+                        + EnumChatFormatting.RESET
+                        // TODO: Put ampere getter here, once that's variable
+                        + " EU/t(*2A) "
+                        + StatCollector.translateToLocal("GT5U.machines.tier")
+                        + ": "
+                        + EnumChatFormatting.YELLOW
+                        + VN[GT_Utility.getTier(logic.getVoltage())]
+                        + EnumChatFormatting.RESET);
+            }
+        }
+
+        addProgressStringToScanner(player, logLevel, list);
+
+        // TODO: Add CPU load calculator
+        list.add(
+            "Average CPU load of ~" + GT_Utility.formatNumbers(0)
+                + "ns over "
+                + GT_Utility.formatNumbers(0)
+                + " ticks with worst time of "
+                + GT_Utility.formatNumbers(0)
+                + "ns.");
+    }
+
+    protected void addProgressStringToScanner(EntityPlayer player, int logLevel, ArrayList<String> list) {
+        list.add(
+            StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
+                + EnumChatFormatting.GREEN
+                + GT_Utility.formatNumbers(progressTime > 20 ? progressTime / 20 : progressTime)
+                + EnumChatFormatting.RESET
+                + (progressTime > 20 ? " s / " : " ticks / ")
+                + EnumChatFormatting.YELLOW
+                + GT_Utility.formatNumbers(progressTime > 20 ? progressTime / 20 : progressTime)
+                + EnumChatFormatting.RESET
+                + (progressTime > 20 ? " s" : " ticks"));
     }
 
     protected void stopMachine(boolean powerShutDown) {

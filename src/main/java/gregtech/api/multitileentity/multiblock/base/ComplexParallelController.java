@@ -2,22 +2,27 @@ package gregtech.api.multitileentity.multiblock.base;
 
 import static mcp.mobius.waila.api.SpecialChars.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.LongStream;
 
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.logic.ComplexParallelProcessingLogic;
 import gregtech.api.logic.interfaces.PollutionLogicHost;
+import gregtech.api.util.GT_Utility;
 import gregtech.api.util.GT_Waila;
 
 public abstract class ComplexParallelController<T extends ComplexParallelController<T>> extends PowerController<T> {
@@ -188,6 +193,24 @@ public abstract class ComplexParallelController<T extends ComplexParallelControl
     protected long getEutForComplexParallel(int index) {
         // As default behavior we'll give the parallel all remaining EU we have
         return GT_Values.V[tier] - eut;
+    }
+
+    @Override
+    protected void addProgressStringToScanner(EntityPlayer player, int logLevel, ArrayList<String> list) {
+        for (int i = 0; i < maxComplexParallels; i++) {
+            list.add(
+                StatCollector.translateToLocal("GT5U.multiblock.Progress") + " "
+                    + (i + 1)
+                    + ": "
+                    + EnumChatFormatting.GREEN
+                    + GT_Utility.formatNumbers(progressTime > 20 ? progressTime / 20 : progressTime)
+                    + EnumChatFormatting.RESET
+                    + (progressTime > 20 ? " s / " : " ticks / ")
+                    + EnumChatFormatting.YELLOW
+                    + GT_Utility.formatNumbers(progressTime > 20 ? progressTime / 20 : progressTime)
+                    + EnumChatFormatting.RESET
+                    + (progressTime > 20 ? " s" : " ticks"));
+        }
     }
 
     @Override
