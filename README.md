@@ -23,6 +23,8 @@ Please report any issues you to find to the main GTNH issue tracker. Include as 
 
 Please do! However, please take a note of [current issues](https://github.com/GTNewHorizons/GT-New-Horizons-Modpack/issues) and what is currently being worked on.
 
+It is suggested to run `./gradlew build` inside your cloned repository before importing it to your IDE. This will reduce the chance of strange errors.
+
 ## Attribution
 
 Some textures/ideas have been taken from future versions of GT and texture pack authors for GTNH. Credit goes to Jimbno for the UU-Tex texture pack and its contributions to the base pack here: https://github.com/Jimbno/UU-Tex.
