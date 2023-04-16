@@ -1482,6 +1482,7 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         return false;
     }
 
+    @Deprecated
     @Override
     public boolean addForgeHammerRecipe(ItemStack aInput1, ItemStack aOutput1, int aDuration, int aEUt) {
         if ((aInput1 == null) || (aOutput1 == null)) {
@@ -1503,6 +1504,7 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         return true;
     }
 
+    @Deprecated
     @Override
     public boolean addForgeHammerRecipe(ItemStack[] ItemInputArray, FluidStack[] FluidInputArray,
         ItemStack[] ItemOutputArray, FluidStack[] FluidOutputArray, int aDuration, int aEUt) {

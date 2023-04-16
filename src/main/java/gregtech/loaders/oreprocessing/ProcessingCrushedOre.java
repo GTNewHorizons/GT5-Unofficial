@@ -1,8 +1,10 @@
 package gregtech.loaders.oreprocessing;
 
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sHammerRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sSifterRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sThermalCentrifugeRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 
 import gregtech.api.enums.ItemList;
 import net.minecraft.item.ItemStack;
@@ -26,11 +28,15 @@ public class ProcessingCrushedOre implements gregtech.api.interfaces.IOreRecipeR
         ItemStack aStack) {
         switch (aPrefix) {
             case crushedCentrifuged -> {
-                GT_Values.RA.addForgeHammerRecipe(
-                    GT_Utility.copyAmount(1L, aStack),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1L),
-                    10,
-                    16);
+                GT_Values.RA.stdBuilder()
+                    .itemInputs(GT_Utility.copyAmount(1L, aStack))
+                    .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1L))
+                    .noFluidInputs()
+                    .noFluidOutputs()
+                    .duration(10*TICKS)
+                    .eut(16)
+                    .addTo(sHammerRecipes);
+
                 GT_ModHandler.addPulverisationRecipe(
                     GT_Utility.copyAmount(1L, aStack),
                     GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1L),

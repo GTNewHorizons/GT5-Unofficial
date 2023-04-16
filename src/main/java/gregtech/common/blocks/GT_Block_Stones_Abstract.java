@@ -1,11 +1,13 @@
 package gregtech.common.blocks;
 
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sHammerRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sLaserEngraverRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 
 import java.util.List;
 
+import gregtech.api.util.GT_OreDictUnificator;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -122,10 +124,41 @@ public class GT_Block_Stones_Abstract extends GT_Generic_Block implements IOreRe
     }
 
     private void registerForgeHammerRecipes(){
-        GT_Values.RA.addForgeHammerRecipe(new ItemStack(this, 1, 3), new ItemStack(this, 1, 4), 16, 10);
-        GT_Values.RA.addForgeHammerRecipe(new ItemStack(this, 1, 11), new ItemStack(this, 1, 12), 16, 10);
-        GT_Values.RA.addForgeHammerRecipe(new ItemStack(this, 1, 0), new ItemStack(this, 1, 1), 16, 10);
-        GT_Values.RA.addForgeHammerRecipe(new ItemStack(this, 1, 8), new ItemStack(this, 1, 9), 16, 10);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(new ItemStack(this, 1, 3))
+            .itemOutputs(new ItemStack(this, 1, 4))
+            .noFluidInputs()
+            .noFluidOutputs()
+            .duration(16*TICKS)
+            .eut(10)
+            .addTo(sHammerRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(new ItemStack(this, 1, 11))
+            .itemOutputs(new ItemStack(this, 1, 12))
+            .noFluidInputs()
+            .noFluidOutputs()
+            .duration(16 * TICKS)
+            .eut(10)
+            .addTo(sHammerRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(new ItemStack(this, 1, 0))
+            .itemOutputs(new ItemStack(this, 1, 1))
+            .noFluidInputs()
+            .noFluidOutputs()
+            .duration(16 * TICKS)
+            .eut(10)
+            .addTo(sHammerRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(new ItemStack(this, 1, 8))
+            .itemOutputs(new ItemStack(this, 1, 9))
+            .noFluidInputs()
+            .noFluidOutputs()
+            .duration(16 * TICKS)
+            .eut(10)
+            .addTo(sHammerRecipes);
     }
 
 

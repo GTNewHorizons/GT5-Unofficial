@@ -13,6 +13,8 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sHammerRecipes;
+
 public class ProcessingOre implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
     private ArrayList<Materials> mAlreadyListedOres = new ArrayList<>(1000);
@@ -216,11 +218,15 @@ public class ProcessingOre implements gregtech.api.interfaces.IOreRecipeRegistra
         }
 
         if (tCrushed != null) {
-            GT_Values.RA.addForgeHammerRecipe(
-                aOreStack,
-                GT_Utility.copy(GT_Utility.copyAmount(tCrushed.stackSize, tGem), tCrushed),
-                16,
-                10);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(aOreStack)
+                .itemOutputs(GT_Utility.copy(GT_Utility.copyAmount(tCrushed.stackSize, tGem), tCrushed))
+                .noFluidInputs()
+                .noFluidOutputs()
+                .duration(10)
+                .eut(16)
+                .addTo(sHammerRecipes);
+
             GT_ModHandler.addPulverisationRecipe(
                 aOreStack,
                 GT_Utility.mul(2L, tCrushed),

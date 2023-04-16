@@ -1,6 +1,7 @@
 package gregtech.loaders.oreprocessing;
 
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sBenderRecipes;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sHammerRecipes;
 import static gregtech.api.util.GT_Utility.calculateRecipeEU;
 
 import net.minecraft.item.ItemStack;
@@ -88,11 +89,14 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                 if (!aNoSmashing) {
                     // Forge hammer recipes
                     if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
-                        GT_Values.RA.addForgeHammerRecipe(
-                            GT_Utility.copyAmount(3L, aStack),
-                            GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 2L),
-                            (int) Math.max(aMaterialMass, 1L),
-                            calculateRecipeEU(aMaterial, 16));
+                        GT_Values.RA.stdBuilder()
+                            .itemInputs(GT_Utility.copyAmount(3L, aStack))
+                            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 2L))
+                            .noFluidInputs()
+                            .noFluidOutputs()
+                            .duration(Math.max(aMaterialMass, 1L))
+                            .eut(calculateRecipeEU(aMaterial, 16))
+                            .addTo(sHammerRecipes);
                     }
 
                     // Bender recipes

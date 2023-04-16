@@ -3,6 +3,7 @@ package gregtech.api.util;
 import static gregtech.api.enums.GT_Values.*;
 import static gregtech.api.enums.Materials.*;
 import static gregtech.api.enums.Materials.Void;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sHammerRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gregtech.api.util.GT_RecipeConstants.UniversalArcFurnace;
@@ -392,15 +393,25 @@ public class GT_RecipeRegistrator {
                 tHide);
         }
 
-        if (aAllowHammer) for (MaterialStack tMaterial : aData.getAllMaterialStacks())
-            if (tMaterial.mMaterial.contains(SubTag.CRYSTAL) && !tMaterial.mMaterial.contains(SubTag.METAL)
-                && tMaterial.mMaterial != Materials.Glass) {
-                    if (RA.addForgeHammerRecipe(
-                        GT_Utility.copyAmount(1, aStack),
-                        GT_OreDictUnificator.getDust(aData.mMaterial),
-                        200,
-                        30)) break;
-                }
+        if (!aAllowHammer) {
+            return;
+        }
+
+        for (MaterialStack tMaterial : aData.getAllMaterialStacks()) {
+            if (tMaterial.mMaterial.contains(SubTag.CRYSTAL) && !tMaterial.mMaterial.contains(SubTag.METAL) && tMaterial.mMaterial != Materials.Glass) {
+                GT_Values.RA.stdBuilder()
+                    .itemInputs(GT_Utility.copyAmount(1, aStack))
+                    .itemOutputs(GT_OreDictUnificator.getDust(aData.mMaterial))
+                    .noFluidInputs()
+                    .noFluidOutputs()
+                    .duration(10 * SECONDS)
+                    .eut(TierEU.RECIPE_LV)
+                    .addTo(sHammerRecipes);
+
+                break;
+            }
+        }
+
     }
 
     /**
