@@ -259,10 +259,14 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
     @Override
     public void loadTextureNBT(NBTTagCompound nbt) {
         super.loadTextureNBT(nbt);
-        activeOverlayTexture = TextureFactory
-            .of(new CustomIcon("multitileentity/overlays/active/" + nbt.getString(NBT.ACTIVE_OVERLAY_TEXTURE)));
-        inactiveOverlayTexture = TextureFactory
-            .of(new CustomIcon("multitileentity/overlays/inactive/" + nbt.getString(NBT.INACTIVE_OVERLAY_TEXTURE)));
+        activeOverlayTexture = TextureFactory.builder()
+            .addIcon(new CustomIcon("multitileentity/overlays/active/" + nbt.getString(NBT.ACTIVE_OVERLAY_TEXTURE)))
+            .glow()
+            .build();
+        inactiveOverlayTexture = TextureFactory.builder()
+            .addIcon(new CustomIcon("multitileentity/overlays/inactive/" + nbt.getString(NBT.INACTIVE_OVERLAY_TEXTURE)))
+            .glow()
+            .build();
     }
 
     @Override
