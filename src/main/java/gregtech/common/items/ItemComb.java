@@ -2,10 +2,12 @@ package gregtech.common.items;
 
 import static gregtech.api.enums.GT_Values.*;
 import static gregtech.api.enums.Mods.*;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sFluidExtractionRecipes;
 
 import java.util.Arrays;
 import java.util.List;
 
+import gregtech.api.enums.GT_Values;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
@@ -1558,18 +1560,21 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
     }
 
     public void addFluidExtractorProcess(CombType comb, FluidStack fluid, Voltage volt) {
-        if (fluid == null) return;
-        RA.addFluidExtractionRecipe(
-            GT_Utility.copyAmount(1, getStackForType(comb)),
-            null,
-            fluid,
-            100 * 100,
-            (fluid.getFluid()
-                .getDensity() * 128 > 0
-                    ? (fluid.getFluid()
-                        .getDensity() * 100)
-                    : 128),
-            volt.getSimpleEnergy() / 2);
+        if (fluid == null) {
+            return;
+        }
+
+        int duration = (fluid.getFluid().getDensity() * 128 > 0 ? (fluid.getFluid() .getDensity() * 100) : 128);
+        int eut = volt.getSimpleEnergy() / 2;
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_Utility.copyAmount(1, getStackForType(comb)))
+            .noItemOutputs()
+            .noFluidInputs()
+            .fluidOutputs(fluid)
+            .duration(duration)
+            .eut(eut)
+            .addTo(sFluidExtractionRecipes);
     }
 
     /**
