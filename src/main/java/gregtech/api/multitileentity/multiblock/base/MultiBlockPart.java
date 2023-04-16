@@ -323,46 +323,32 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
     }
 
     @Override
-    public void loadTextureNBT(NBTTagCompound aNBT) {
-        // Loading the registry
-        final String textureName = aNBT.getString(NBT.TEXTURE);
-        textures = new IIconContainer[] {
-            new Textures.BlockIcons.CustomIcon("multitileentity/multiblockparts/" + textureName + "/bottom"),
-            new Textures.BlockIcons.CustomIcon("multitileentity/multiblockparts/" + textureName + "/top"),
-            new Textures.BlockIcons.CustomIcon("multitileentity/multiblockparts/" + textureName + "/side"),
-            new Textures.BlockIcons.CustomIcon("multitileentity/multiblockparts/" + textureName + "/overlay/bottom"),
-            new Textures.BlockIcons.CustomIcon("multitileentity/multiblockparts/" + textureName + "/overlay/top"),
-            new Textures.BlockIcons.CustomIcon("multitileentity/multiblockparts/" + textureName + "/overlay/side") };
-    }
-
-    @Override
-    public void copyTextures() {
-        // Loading an instance
-        final TileEntity tCanonicalTileEntity = MultiTileEntityRegistry
-            .getCanonicalTileEntity(getMultiTileEntityRegistryID(), getMultiTileEntityID());
-        if (tCanonicalTileEntity instanceof MultiBlockPart) textures = ((MultiBlockPart) tCanonicalTileEntity).textures;
-    }
-
-    @Override
-    public ITexture[] getTexture(Block aBlock, byte aSide, boolean isActive, int aRenderPass) {
-        // For normal parts - texture comes from BaseMTE; overlay based on current mode
-        // TODO(MTE) - For Advanced parts they might come from somewhere else
-        final ITexture baseTexture = TextureFactory.of(super.getTexture(aBlock, aSide, isActive, aRenderPass));
-        if (mMode != 0 && aSide == facing) {
-            if (mMode == getModeOrdinal(ITEM_IN)) return new ITexture[] { baseTexture,
-                TextureFactory.of(OVERLAY_PIPE_IN), TextureFactory.of(ITEM_IN_SIGN) };
-            if (mMode == getModeOrdinal(ITEM_OUT)) return new ITexture[] { baseTexture,
-                TextureFactory.of(OVERLAY_PIPE_OUT), TextureFactory.of(ITEM_OUT_SIGN) };
-            if (mMode == getModeOrdinal(FLUID_IN)) return new ITexture[] { baseTexture,
-                TextureFactory.of(OVERLAY_PIPE_IN), TextureFactory.of(FLUID_IN_SIGN) };
-            if (mMode == getModeOrdinal(FLUID_OUT)) return new ITexture[] { baseTexture,
-                TextureFactory.of(OVERLAY_PIPE_OUT), TextureFactory.of(FLUID_OUT_SIGN) };
-            if (mMode == getModeOrdinal(ENERGY_IN))
-                return new ITexture[] { baseTexture, TextureFactory.of(OVERLAY_ENERGY_IN_MULTI) };
-            if (mMode == getModeOrdinal(ENERGY_OUT))
-                return new ITexture[] { baseTexture, TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI) };
+    public ITexture getTexture(ForgeDirection side) {
+        ITexture texture = super.getTexture(side);
+        if (mMode != 0 && side == facing) {
+            if (mMode == getModeOrdinal(ITEM_IN)) {
+                return TextureFactory.of(texture, TextureFactory.of(OVERLAY_PIPE_IN), TextureFactory.of(ITEM_IN_SIGN));
+            }
+            if (mMode == getModeOrdinal(ITEM_OUT)) {
+                return TextureFactory
+                    .of(texture, TextureFactory.of(OVERLAY_PIPE_OUT), TextureFactory.of(ITEM_OUT_SIGN));
+            }
+            if (mMode == getModeOrdinal(FLUID_IN)) {
+                return TextureFactory.of(texture, TextureFactory.of(OVERLAY_PIPE_IN), TextureFactory.of(FLUID_IN_SIGN));
+            }
+            if (mMode == getModeOrdinal(FLUID_OUT)) {
+                return TextureFactory
+                    .of(texture, TextureFactory.of(OVERLAY_PIPE_OUT), TextureFactory.of(FLUID_OUT_SIGN));
+            }
+            if (mMode == getModeOrdinal(ENERGY_IN)) {
+                return TextureFactory.of(texture, TextureFactory.of(OVERLAY_ENERGY_IN_MULTI));
+            }
+            if (mMode == getModeOrdinal(ENERGY_OUT)) {
+                return TextureFactory.of(texture, TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI));
+            }
         }
-        return new ITexture[] { baseTexture };
+
+        return texture;
     }
 
     @Override
@@ -792,6 +778,13 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
             issueClientUpdate();
         }
         System.out.println("MultiBlockPart::createWindow");
+        if (modeSelected(NOTHING, ENERGY_IN, ENERGY_OUT)) {
+            IMultiBlockController controller = getTarget(false);
+            if (controller == null) {
+                return super.createWindow(buildContext);
+            }
+            return controller.createWindowGUI(buildContext);
+        }
         return super.createWindow(buildContext);
     }
 
