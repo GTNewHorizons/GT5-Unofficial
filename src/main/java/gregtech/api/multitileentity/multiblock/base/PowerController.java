@@ -11,7 +11,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
-
+import net.minecraftforge.common.util.ForgeDirection;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.logic.PowerLogic;
 import gregtech.api.logic.interfaces.PowerLogicHost;
@@ -39,7 +39,7 @@ public abstract class PowerController<T extends PowerController<T>> extends Cont
     }
 
     @Override
-    public PowerLogic getPowerLogic(byte side) {
+    public PowerLogic getPowerLogic(ForgeDirection side) {
         return power;
     }
 

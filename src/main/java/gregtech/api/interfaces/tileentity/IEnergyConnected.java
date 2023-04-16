@@ -73,7 +73,7 @@ public interface IEnergyConnected extends IColoredTileEntity {
                 final TileEntity tTileEntity = emitterTile.getTileEntityAtSide(i);
                 if (tTileEntity instanceof PowerLogicHost host) {
 
-                    PowerLogic logic = host.getPowerLogic(j);
+                    PowerLogic logic = host.getPowerLogic(ForgeDirection.getOrientation(j));
                     if (logic == null || logic.isEnergyReceiver()) {
                         continue;
                     }

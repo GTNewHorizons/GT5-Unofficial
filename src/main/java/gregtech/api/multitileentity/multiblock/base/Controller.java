@@ -636,7 +636,7 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
 
     @Override
     public boolean allowCoverOnSide(byte aSide, GT_ItemStack aCoverID) {
-        return aSide != facing;
+        return facing.compareTo(ForgeDirection.getOrientation(aSide)) != 0;
     }
 
     @Override
@@ -1126,12 +1126,12 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
 
     // #region Energy
     @Override
-    public PowerLogic getPowerLogic(IMultiBlockPart part, byte side) {
+    public PowerLogic getPowerLogic(IMultiBlockPart part, ForgeDirection side) {
         if (!(this instanceof PowerLogicHost)) {
             return null;
         }
 
-        if (part.getFrontFacing() != side) {
+        if (ForgeDirection.getOrientation(part.getFrontFacing()) != side) {
             return null;
         }
 
@@ -2134,6 +2134,11 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
 
     protected boolean isRecipeLockingEnabled() {
         return recipeLock;
+    }
+
+    @Override
+    public ModularWindow createWindowGUI(UIBuildContext buildContext) {
+        return createWindow(buildContext);
     }
 
     @Override

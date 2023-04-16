@@ -6,5 +6,5 @@ import gregtech.api.interfaces.ITexture;
 
 public interface MultiTileBasicRender {
 
-    ITexture getTexture(ForgeDirection direction);
+    ITexture getTexture(ForgeDirection side);
 }
