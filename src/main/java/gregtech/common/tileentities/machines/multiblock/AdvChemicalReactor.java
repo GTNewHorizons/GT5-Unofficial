@@ -57,6 +57,7 @@ public class AdvChemicalReactor extends ComplexParallelController<AdvChemicalRea
     protected final ArrayList<HashSet<String>> processWhitelists = new ArrayList<>(MAX_PROCESSES);
     protected final ArrayList<ItemStackHandler> processWhitelistInventoryHandlers = new ArrayList<>(MAX_PROCESSES);
     protected final ArrayList<ArrayList<IFluidTank>> processFluidWhiteLists = new ArrayList<>(MAX_PROCESSES);
+    protected boolean wasWhitelistOpened = false;
 
     public AdvChemicalReactor() {
         super();
@@ -338,11 +339,19 @@ public class AdvChemicalReactor extends ComplexParallelController<AdvChemicalRea
                 PROCESS_WINDOW_BASE_ID + i,
                 (player) -> createProcessConfigWindow(player, processIndex));
         }
+        buildContext.addCloseListener(() -> {
+            // Reset HashSet, we will let it re-generate on next item output
+            if (wasWhitelistOpened) {
+                for (int i = 0; i < MAX_PROCESSES; i++) {
+                    processWhitelists.set(i, null);
+                }
+                wasWhitelistOpened = false;
+            }
+        });
     }
 
     protected ModularWindow createProcessConfigWindow(final EntityPlayer player, final int processIndex) {
-        // Reset HashSet, we will let it re-generate on next item output
-        processWhitelists.set(processIndex, null);
+        wasWhitelistOpened = true;
         ModularWindow.Builder builder = ModularWindow.builder(86, 90);
         builder.setBackground(GT_UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
         builder.widget(
