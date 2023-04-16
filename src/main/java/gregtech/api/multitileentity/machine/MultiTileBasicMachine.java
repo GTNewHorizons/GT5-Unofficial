@@ -855,9 +855,9 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
                 + EnumChatFormatting.RESET
                 + (progressTime > 20 ? " s / " : " ticks / ")
                 + EnumChatFormatting.YELLOW
-                + GT_Utility.formatNumbers(progressTime > 20 ? progressTime / 20 : progressTime)
+                + GT_Utility.formatNumbers(maxProgressTime > 20 ? maxProgressTime / 20 : maxProgressTime)
                 + EnumChatFormatting.RESET
-                + (progressTime > 20 ? " s" : " ticks"));
+                + (maxProgressTime > 20 ? " s" : " ticks"));
     }
 
     protected void stopMachine(boolean powerShutDown) {

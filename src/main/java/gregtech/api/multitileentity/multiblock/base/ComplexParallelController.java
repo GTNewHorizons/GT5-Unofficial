@@ -203,13 +203,14 @@ public abstract class ComplexParallelController<T extends ComplexParallelControl
                     + (i + 1)
                     + ": "
                     + EnumChatFormatting.GREEN
-                    + GT_Utility.formatNumbers(progressTime > 20 ? progressTime / 20 : progressTime)
+                    + GT_Utility.formatNumbers(progressTimes[i] > 20 ? progressTimes[i] / 20 : progressTimes[i])
                     + EnumChatFormatting.RESET
-                    + (progressTime > 20 ? " s / " : " ticks / ")
+                    + (progressTimes[i] > 20 ? " s / " : " ticks / ")
                     + EnumChatFormatting.YELLOW
-                    + GT_Utility.formatNumbers(progressTime > 20 ? progressTime / 20 : progressTime)
+                    + GT_Utility
+                        .formatNumbers(maxProgressTimes[i] > 20 ? maxProgressTimes[i] / 20 : maxProgressTimes[i])
                     + EnumChatFormatting.RESET
-                    + (progressTime > 20 ? " s" : " ticks"));
+                    + (maxProgressTimes[i] > 20 ? " s" : " ticks"));
         }
     }
 
