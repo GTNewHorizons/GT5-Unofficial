@@ -28,6 +28,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.GT_Values.NBT;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.Textures.BlockIcons.CustomIcon;
 import gregtech.api.enums.TickTime;
 import gregtech.api.fluid.FluidTankGT;
 import gregtech.api.interfaces.ITexture;
@@ -39,7 +40,6 @@ import gregtech.api.logic.interfaces.PowerLogicHost;
 import gregtech.api.logic.interfaces.ProcessingLogicHost;
 import gregtech.api.metatileentity.GregTechTileClientEvents;
 import gregtech.api.multitileentity.MultiTileEntityRegistry;
-import gregtech.api.multitileentity.base.MultiTileEntity;
 import gregtech.api.multitileentity.base.TickableMultiTileEntity;
 import gregtech.api.multitileentity.interfaces.IMultiTileMachine;
 import gregtech.api.net.GT_Packet_MultiTileEntity;
@@ -47,7 +47,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_Utility;
 import gregtech.client.GT_SoundLoop;
 import gregtech.common.GT_Pollution;
-import gregtech.api.enums.Textures.BlockIcons.CustomIcon;
 
 public abstract class MultiTileBasicMachine extends TickableMultiTileEntity implements IMultiTileMachine {
 
@@ -260,8 +259,10 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
     @Override
     public void loadTextureNBT(NBTTagCompound nbt) {
         super.loadTextureNBT(nbt);
-        activeOverlayTexture = TextureFactory.of(new CustomIcon("multitileentity/overlays/active/" + nbt.getString(NBT.ACTIVE_OVERLAY_TEXTURE)));
-        inactiveOverlayTexture = TextureFactory.of(new CustomIcon("multitileentity/overlays/inactive/" + nbt.getString(NBT.INACTIVE_OVERLAY_TEXTURE)));
+        activeOverlayTexture = TextureFactory
+            .of(new CustomIcon("multitileentity/overlays/active/" + nbt.getString(NBT.ACTIVE_OVERLAY_TEXTURE)));
+        inactiveOverlayTexture = TextureFactory
+            .of(new CustomIcon("multitileentity/overlays/inactive/" + nbt.getString(NBT.INACTIVE_OVERLAY_TEXTURE)));
     }
 
     @Override
@@ -909,6 +910,8 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
     public void setBooleans(int booleans) {
         if ((booleans & ACTIVE) == ACTIVE) {
             setActive(true);
+        } else {
+            setActive(false);
         }
     }
 
