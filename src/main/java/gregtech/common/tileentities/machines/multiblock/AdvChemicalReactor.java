@@ -24,11 +24,13 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
+import com.gtnewhorizons.modularui.api.math.Alignment;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
 import com.gtnewhorizons.modularui.common.widget.MultiChildWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotGroup;
+import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
@@ -323,9 +325,9 @@ public class AdvChemicalReactor extends ComplexParallelController<AdvChemicalRea
                             if (!widget.isClient()) widget.getContext()
                                 .openSyncedWindow(PROCESS_WINDOW_BASE_ID + processIndex);
                         })
-                    .setBackground(GT_UITextures.OVERLAY_BUTTON_BATCH_MODE_ON)
+                    .setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_WHITELIST)
                     .setSize(18, 18)
-                    .setPos(20 * i, 18));
+                    .setPos(20 * i + 18, 18));
         }
         return child;
     }
@@ -352,7 +354,10 @@ public class AdvChemicalReactor extends ComplexParallelController<AdvChemicalRea
 
     protected ModularWindow createProcessConfigWindow(final EntityPlayer player, final int processIndex) {
         wasWhitelistOpened = true;
-        ModularWindow.Builder builder = ModularWindow.builder(86, 90);
+        ModularWindow.Builder builder = ModularWindow.builder(86, 100);
+        builder.widget(
+            new TextWidget("Process " + processIndex).setTextAlignment(Alignment.Center)
+                .setPos(13, 7));
         builder.setBackground(GT_UITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
         builder.widget(
             SlotGroup.ofItemHandler(processWhitelistInventoryHandlers.get(processIndex), 4)
@@ -361,14 +366,14 @@ public class AdvChemicalReactor extends ComplexParallelController<AdvChemicalRea
                 .phantom(true)
                 .background(getGUITextureSet().getItemSlot())
                 .build()
-                .setPos(7, 9));
+                .setPos(7, 19));
         builder.widget(
             SlotGroup.ofFluidTanks(processFluidWhiteLists.get(processIndex), 4)
                 .startFromSlot(0)
                 .endAtSlot(FLUID_WHITELIST_SLOTS - 1)
                 .phantom(true)
                 .build()
-                .setPos(7, 45));
+                .setPos(7, 55));
         return builder.build();
     }
 
