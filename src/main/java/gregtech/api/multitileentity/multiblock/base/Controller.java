@@ -1527,7 +1527,7 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
         List<FluidStack> fluidStacks = new ArrayList<>();
         for (FluidTankGT[] inputTanks : multiBlockInputTank.values()) {
             for (FluidTankGT inputTank : inputTanks) {
-                FluidStack fluidStack = inputTank.getFluid();
+                FluidStack fluidStack = inputTank.get();
                 if (fluidStack != null) {
                     fluidStacks.add(fluidStack);
                 }
