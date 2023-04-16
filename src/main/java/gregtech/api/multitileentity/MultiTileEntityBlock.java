@@ -656,4 +656,8 @@ public class MultiTileEntityBlock extends Block implements IDebugableBlock, ITil
     public TileEntity createNewTileEntity(World world, int i) {
         return null;
     }
+
+    public MultiTileEntityRegistry getRegistry() {
+        return registry;
+    }
 }

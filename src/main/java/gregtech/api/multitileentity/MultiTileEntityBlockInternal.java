@@ -110,4 +110,8 @@ public class MultiTileEntityBlockInternal extends Block {
         }
         return true;
     }
+
+    public MultiTileEntityRegistry getRegistry() {
+        return mMultiTileEntityRegistry;
+    }
 }

@@ -8,12 +8,17 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.lwjgl.opengl.GL11;
+
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import gregtech.GT_Mod;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.logic.ModelRenderLogic;
 import gregtech.api.logic.interfaces.ModelRenderLogicHost;
+import gregtech.api.multitileentity.MultiTileEntityBlockInternal;
+import gregtech.api.multitileentity.MultiTileEntityClassContainer;
+import gregtech.api.multitileentity.MultiTileEntityRegistry;
 import gregtech.api.multitileentity.interfaces.IMultiBlockController;
 import gregtech.api.multitileentity.multiblock.base.MultiBlockPart;
 
@@ -30,8 +35,37 @@ public class GT_MultiTile_Renderer implements ISimpleBlockRenderingHandler {
 
     @Override
     public void renderInventoryBlock(Block block, int metadata, int modelId, RenderBlocks renderer) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'renderInventoryBlock'");
+        if (!(block instanceof MultiTileEntityBlockInternal)) {
+            return;
+        }
+
+        GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
+        GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
+
+        MultiTileEntityBlockInternal mteBlock = (MultiTileEntityBlockInternal) block;
+        MultiTileEntityRegistry registry = mteBlock.getRegistry();
+        if (registry == null) return;
+        MultiTileEntityClassContainer classContainer = registry.getClassContainer(metadata);
+        if (classContainer == null) return;
+        renderer.setRenderBoundsFromBlock(mteBlock);
+
+        for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+            ITexture texture = classContainer.mCanonicalTileEntity.getTexture(side);
+            if (texture == null) continue;
+            switch (side) {
+                case DOWN -> renderYNegative(null, renderer, 0, 0, 0, block, texture, side);
+                case UP -> renderYPositive(null, renderer, 0, 0, 0, block, texture, side);
+                case WEST -> renderXNegative(null, renderer, 0, 0, 0, block, texture, side);
+                case EAST -> renderXPositive(null, renderer, 0, 0, 0, block, texture, side);
+                case NORTH -> renderZNegative(null, renderer, 0, 0, 0, block, texture, side);
+                case SOUTH -> renderZPositive(null, renderer, 0, 0, 0, block, texture, side);
+                default -> {
+                    // Do nothing
+                }
+            }
+        }
+
+        GL11.glTranslatef(0.5F, 0.5F, 0.5F);
     }
 
     @Override
@@ -83,7 +117,7 @@ public class GT_MultiTile_Renderer implements ISimpleBlockRenderingHandler {
 
     @Override
     public boolean shouldRender3DInInventory(int modelId) {
-        return false;
+        return true;
     }
 
     @Override

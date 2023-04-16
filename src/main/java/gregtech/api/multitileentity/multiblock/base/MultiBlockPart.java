@@ -654,10 +654,10 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
 
     @Override
     public boolean hasGui(byte aSide) {
-        // UIs only for specific mode(s)
-        if (modeSelected(ITEM_IN, ITEM_OUT, FLUID_IN, FLUID_OUT)) return true;
-
-        return false;
+        if (modeSelected(ENERGY_IN, ENERGY_OUT) && facing == ForgeDirection.getOrientation(aSide)) {
+            return false;
+        }
+        return true;
     }
 
     protected void addItemInventory(Builder builder, UIBuildContext buildContext) {
@@ -778,7 +778,7 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
             issueClientUpdate();
         }
         System.out.println("MultiBlockPart::createWindow");
-        if (modeSelected(NOTHING, ENERGY_IN, ENERGY_OUT)) {
+        if (modeSelected(NOTHING, ENERGY_IN, ENERGY_OUT) || mMode == NOTHING) {
             IMultiBlockController controller = getTarget(false);
             if (controller == null) {
                 return super.createWindow(buildContext);

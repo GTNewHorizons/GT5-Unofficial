@@ -23,7 +23,6 @@ import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.client.particle.EntityDiggingFX;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -525,150 +524,73 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
 
         GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
         GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
-        if (aBlock instanceof IRenderedBlock) {
-            boolean tNeedsToSetBounds = true;
-            final ItemStack aStack = new ItemStack(aBlock, 1, aMeta);
-            IRenderedBlock tRenderer = ((IRenderedBlock) aBlock).passRenderingToObject(aStack);
-            if (tRenderer != null) tRenderer = tRenderer.passRenderingToObject(aStack);
-            if (tRenderer == null) tRenderer = IRenderedBlock.ErrorRenderer.INSTANCE;
-            for (int i = 0, j = tRenderer.getRenderPasses(aBlock); i < j; i++) {
-                if (tRenderer.usesRenderPass(i)) {
-                    if (tRenderer.setBlockBounds(aBlock, i)) {
-                        tNeedsToSetBounds = true;
-                        aRenderer.setRenderBoundsFromBlock(aBlock);
-                    } else {
-                        if (tNeedsToSetBounds) aBlock.setBlockBoundsForItemRender();
-                        aRenderer.setRenderBoundsFromBlock(aBlock);
-                        tNeedsToSetBounds = false;
-                    }
+        if (aBlock instanceof GT_Block_Ores_Abstract) {
+            final GT_TileEntity_Ores tTileEntity = new GT_TileEntity_Ores();
+            tTileEntity.mMetaData = ((short) aMeta);
 
-                    renderNegativeYFacing(
-                        null,
-                        aRenderer,
-                        aBlock,
-                        0,
-                        0,
-                        0,
-                        tRenderer.getTexture(aBlock, (byte) DOWN.ordinal(), true, i),
-                        !tNeedsToSetBounds);
-                    renderPositiveYFacing(
-                        null,
-                        aRenderer,
-                        aBlock,
-                        0,
-                        0,
-                        0,
-                        tRenderer.getTexture(aBlock, (byte) UP.ordinal(), true, i),
-                        !tNeedsToSetBounds);
-                    renderNegativeZFacing(
-                        null,
-                        aRenderer,
-                        aBlock,
-                        0,
-                        0,
-                        0,
-                        tRenderer.getTexture(aBlock, (byte) NORTH.ordinal(), true, i),
-                        !tNeedsToSetBounds);
-                    renderPositiveZFacing(
-                        null,
-                        aRenderer,
-                        aBlock,
-                        0,
-                        0,
-                        0,
-                        tRenderer.getTexture(aBlock, (byte) SOUTH.ordinal(), true, i),
-                        !tNeedsToSetBounds);
-                    renderNegativeXFacing(
-                        null,
-                        aRenderer,
-                        aBlock,
-                        0,
-                        0,
-                        0,
-                        tRenderer.getTexture(aBlock, (byte) WEST.ordinal(), true, i),
-                        !tNeedsToSetBounds);
-                    renderPositiveXFacing(
-                        null,
-                        aRenderer,
-                        aBlock,
-                        0,
-                        0,
-                        0,
-                        tRenderer.getTexture(aBlock, (byte) EAST.ordinal(), true, i),
-                        !tNeedsToSetBounds);
-                }
+            aBlock.setBlockBoundsForItemRender();
+            aRenderer.setRenderBoundsFromBlock(aBlock);
+            renderNegativeYFacing(
+                null,
+                aRenderer,
+                aBlock,
+                0,
+                0,
+                0,
+                tTileEntity.getTexture(aBlock, (byte) DOWN.ordinal()),
+                true);
+            renderPositiveYFacing(
+                null,
+                aRenderer,
+                aBlock,
+                0,
+                0,
+                0,
+                tTileEntity.getTexture(aBlock, (byte) UP.ordinal()),
+                true);
+            renderNegativeZFacing(
+                null,
+                aRenderer,
+                aBlock,
+                0,
+                0,
+                0,
+                tTileEntity.getTexture(aBlock, (byte) NORTH.ordinal()),
+                true);
+            renderPositiveZFacing(
+                null,
+                aRenderer,
+                aBlock,
+                0,
+                0,
+                0,
+                tTileEntity.getTexture(aBlock, (byte) SOUTH.ordinal()),
+                true);
+            renderNegativeXFacing(
+                null,
+                aRenderer,
+                aBlock,
+                0,
+                0,
+                0,
+                tTileEntity.getTexture(aBlock, (byte) WEST.ordinal()),
+                true);
+            renderPositiveXFacing(
+                null,
+                aRenderer,
+                aBlock,
+                0,
+                0,
+                0,
+                tTileEntity.getTexture(aBlock, (byte) EAST.ordinal()),
+                true);
+        } else if (aMeta > 0 && (aMeta < GregTech_API.METATILEENTITIES.length)
+            && aBlock instanceof GT_Block_Machines
+            && (GregTech_API.METATILEENTITIES[aMeta] != null)
+            && (!GregTech_API.METATILEENTITIES[aMeta].renderInInventory(aBlock, aMeta, aRenderer))) {
+                renderNormalInventoryMetaTileEntity(aBlock, aMeta, aRenderer);
             }
-            if (tNeedsToSetBounds) aBlock.setBlockBounds(0, 0, 0, 1, 1, 1);
-
-        } else {
-            if (aBlock instanceof GT_Block_Ores_Abstract) {
-                final GT_TileEntity_Ores tTileEntity = new GT_TileEntity_Ores();
-                tTileEntity.mMetaData = ((short) aMeta);
-
-                aBlock.setBlockBoundsForItemRender();
-                aRenderer.setRenderBoundsFromBlock(aBlock);
-                renderNegativeYFacing(
-                    null,
-                    aRenderer,
-                    aBlock,
-                    0,
-                    0,
-                    0,
-                    tTileEntity.getTexture(aBlock, (byte) DOWN.ordinal()),
-                    true);
-                renderPositiveYFacing(
-                    null,
-                    aRenderer,
-                    aBlock,
-                    0,
-                    0,
-                    0,
-                    tTileEntity.getTexture(aBlock, (byte) UP.ordinal()),
-                    true);
-                renderNegativeZFacing(
-                    null,
-                    aRenderer,
-                    aBlock,
-                    0,
-                    0,
-                    0,
-                    tTileEntity.getTexture(aBlock, (byte) NORTH.ordinal()),
-                    true);
-                renderPositiveZFacing(
-                    null,
-                    aRenderer,
-                    aBlock,
-                    0,
-                    0,
-                    0,
-                    tTileEntity.getTexture(aBlock, (byte) SOUTH.ordinal()),
-                    true);
-                renderNegativeXFacing(
-                    null,
-                    aRenderer,
-                    aBlock,
-                    0,
-                    0,
-                    0,
-                    tTileEntity.getTexture(aBlock, (byte) WEST.ordinal()),
-                    true);
-                renderPositiveXFacing(
-                    null,
-                    aRenderer,
-                    aBlock,
-                    0,
-                    0,
-                    0,
-                    tTileEntity.getTexture(aBlock, (byte) EAST.ordinal()),
-                    true);
-            } else if (aMeta > 0 && (aMeta < GregTech_API.METATILEENTITIES.length)
-                && aBlock instanceof GT_Block_Machines
-                && (GregTech_API.METATILEENTITIES[aMeta] != null)
-                && (!GregTech_API.METATILEENTITIES[aMeta].renderInInventory(aBlock, aMeta, aRenderer))) {
-                    renderNormalInventoryMetaTileEntity(aBlock, aMeta, aRenderer);
-                }
-            aBlock.setBlockBounds(blockMin, blockMin, blockMin, blockMax, blockMax, blockMax);
-        }
+        aBlock.setBlockBounds(blockMin, blockMin, blockMin, blockMax, blockMax, blockMax);
 
         aRenderer.setRenderBoundsFromBlock(aBlock);
 
