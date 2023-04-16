@@ -76,13 +76,13 @@ public class GT_VolumetricFlask extends GT_Generic_Item implements IFluidContain
     }
 
     @Override
-    public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side,
+    public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int ordinalSide,
         float xOffset, float yOffset, float zOffset) {
         if (player instanceof FakePlayer) {
             return false;
         }
         if (world.isRemote) return false;
-        if (interactWithTank(stack, player, world, x, y, z, side)) {
+        if (interactWithTank(stack, player, world, x, y, z, ordinalSide)) {
             return true;
         }
         MovingObjectPosition mop = getMovingObjectPositionFromPlayer(world, player, true);
@@ -239,7 +239,7 @@ public class GT_VolumetricFlask extends GT_Generic_Item implements IFluidContain
         }
     }
 
-    private boolean interactWithTank(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side) {
+    private boolean interactWithTank(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int ordinalSide) {
         if (world.isRemote) {
             return false;
         }
@@ -247,7 +247,7 @@ public class GT_VolumetricFlask extends GT_Generic_Item implements IFluidContain
         if (!(te instanceof IFluidHandler handler)) {
             return false;
         }
-        ForgeDirection dir = ForgeDirection.getOrientation(side);
+        ForgeDirection dir = ForgeDirection.getOrientation(ordinalSide);
         FluidStack fs = this.getFluid(stack);
         int capacity = getCapacity(stack);
         if (fs != null && (!player.isSneaking() || fs.amount >= capacity)) {

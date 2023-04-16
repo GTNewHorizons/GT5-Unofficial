@@ -44,11 +44,9 @@ public class GT_MetaTileEntity_Macerator_Bronze extends GT_MetaTileEntity_BasicM
         super.onPreTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isClientSide() && aBaseMetaTileEntity.isActive()) {
 
-            final byte topFacing = (byte) ForgeDirection.UP.ordinal();
-
-            if (aBaseMetaTileEntity.getFrontFacing() != topFacing
-                && aBaseMetaTileEntity.getCoverIDAtSide(topFacing) == 0
-                && !aBaseMetaTileEntity.getOpacityAtSide(topFacing)) {
+            if (aBaseMetaTileEntity.getFrontFacing() != ForgeDirection.UP
+                && aBaseMetaTileEntity.getCoverIDAtSide(ForgeDirection.UP) == 0
+                && !aBaseMetaTileEntity.getOpacityAtSide(ForgeDirection.UP)) {
 
                 new ParticleEventBuilder().setMotion(0.0D, 0.0D, 0.0D)
                     .setIdentifier(ParticleFX.SMOKE)
@@ -86,9 +84,9 @@ public class GT_MetaTileEntity_Macerator_Bronze extends GT_MetaTileEntity_BasicM
     }
 
     @Override
-    protected boolean allowPutStackValidated(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide,
+    protected boolean allowPutStackValidated(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
-        return super.allowPutStackValidated(aBaseMetaTileEntity, aIndex, aSide, aStack)
+        return super.allowPutStackValidated(aBaseMetaTileEntity, aIndex, side, aStack)
             && GT_Recipe_Map.sMaceratorRecipes.containsInput(GT_Utility.copyAmount(64L, aStack));
     }
 

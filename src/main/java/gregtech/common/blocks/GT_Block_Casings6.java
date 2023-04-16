@@ -55,11 +55,11 @@ public class GT_Block_Casings6 extends GT_Block_Casings_Abstract {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int aSide, int aMeta) {
-        if (aSide == 0) {
+    public IIcon getIcon(int ordinalSide, int aMeta) {
+        if (ordinalSide == 0) {
             return Textures.BlockIcons.MACHINECASINGS_BOTTOM[aMeta].getIcon();
         }
-        if (aSide == 1) {
+        if (ordinalSide == 1) {
             return Textures.BlockIcons.MACHINECASINGS_TOP[aMeta].getIcon();
         }
         return switch (aMeta) {

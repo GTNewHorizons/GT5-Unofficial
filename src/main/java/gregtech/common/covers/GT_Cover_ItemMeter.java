@@ -8,6 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 
 import com.google.common.io.ByteArrayDataInput;
@@ -71,16 +72,16 @@ public class GT_Cover_ItemMeter extends GT_CoverBehaviorBase<GT_Cover_ItemMeter.
     }
 
     @Override
-    protected boolean isRedstoneSensitiveImpl(byte aSide, int aCoverID, ItemMeterData aCoverVariable,
+    protected boolean isRedstoneSensitiveImpl(ForgeDirection side, int aCoverID, ItemMeterData aCoverVariable,
         ICoverable aTileEntity, long aTimer) {
         return false;
     }
 
     public static byte computeSignalBasedOnItems(ICoverable tileEntity, boolean inverted, int threshold, int slot,
-        int side) {
+        int ordinalSide) {
         long max = 0;
         long used = 0;
-        IMetaTileEntity mte = ((IGregTechTileEntity) tileEntity).getMetaTileEntity();
+        final IMetaTileEntity mte = ((IGregTechTileEntity) tileEntity).getMetaTileEntity();
         if (mte instanceof GT_MetaTileEntity_DigitalChestBase dc) {
             max = dc.getMaxItemCount();
             used = dc.getProgresstime();
@@ -90,12 +91,12 @@ public class GT_Cover_ItemMeter extends GT_CoverBehaviorBase<GT_Cover_ItemMeter.
                 used = 64;
             }
         } else {
-            int[] slots = slot >= 0 ? new int[] { slot } : tileEntity.getAccessibleSlotsFromSide(side);
+            final int[] slots = slot >= 0 ? new int[] { slot } : tileEntity.getAccessibleSlotsFromSide(ordinalSide);
 
             for (int i : slots) {
                 if (i >= 0 && i < tileEntity.getSizeInventory()) {
                     max += 64;
-                    ItemStack stack = tileEntity.getStackInSlot(i);
+                    final ItemStack stack = tileEntity.getStackInSlot(i);
                     if (stack != null) used += ((long) stack.stackSize << 6) / stack.getMaxStackSize();
                 }
             }
@@ -105,21 +106,21 @@ public class GT_Cover_ItemMeter extends GT_CoverBehaviorBase<GT_Cover_ItemMeter.
     }
 
     @Override
-    protected ItemMeterData doCoverThingsImpl(byte aSide, byte aInputRedstone, int aCoverID,
+    protected ItemMeterData doCoverThingsImpl(ForgeDirection side, byte aInputRedstone, int aCoverID,
         ItemMeterData aCoverVariable, ICoverable aTileEntity, long aTimer) {
         byte signal = computeSignalBasedOnItems(
             aTileEntity,
             aCoverVariable.inverted,
             aCoverVariable.threshold,
             aCoverVariable.slot,
-            aSide);
-        aTileEntity.setOutputRedstoneSignal(aSide, signal);
+            side.ordinal());
+        aTileEntity.setOutputRedstoneSignal(side, signal);
 
         return aCoverVariable;
     }
 
     @Override
-    protected ItemMeterData onCoverScrewdriverClickImpl(byte aSide, int aCoverID, ItemMeterData aCoverVariable,
+    protected ItemMeterData onCoverScrewdriverClickImpl(ForgeDirection side, int aCoverID, ItemMeterData aCoverVariable,
         ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (aPlayer.isSneaking()) {
             if (aCoverVariable.inverted) {
@@ -142,48 +143,50 @@ public class GT_Cover_ItemMeter extends GT_CoverBehaviorBase<GT_Cover_ItemMeter.
     }
 
     @Override
-    protected boolean letsEnergyInImpl(byte aSide, int aCoverID, ItemMeterData aCoverVariable, ICoverable aTileEntity) {
-        return true;
-    }
-
-    @Override
-    protected boolean letsEnergyOutImpl(byte aSide, int aCoverID, ItemMeterData aCoverVariable,
+    protected boolean letsEnergyInImpl(ForgeDirection side, int aCoverID, ItemMeterData aCoverVariable,
         ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    protected boolean letsFluidInImpl(byte aSide, int aCoverID, ItemMeterData aCoverVariable, Fluid aFluid,
+    protected boolean letsEnergyOutImpl(ForgeDirection side, int aCoverID, ItemMeterData aCoverVariable,
         ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    protected boolean letsFluidOutImpl(byte aSide, int aCoverID, ItemMeterData aCoverVariable, Fluid aFluid,
+    protected boolean letsFluidInImpl(ForgeDirection side, int aCoverID, ItemMeterData aCoverVariable, Fluid aFluid,
         ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    protected boolean letsItemsInImpl(byte aSide, int aCoverID, ItemMeterData aCoverVariable, int aSlot,
+    protected boolean letsFluidOutImpl(ForgeDirection side, int aCoverID, ItemMeterData aCoverVariable, Fluid aFluid,
         ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    protected boolean letsItemsOutImpl(byte aSide, int aCoverID, ItemMeterData aCoverVariable, int aSlot,
+    protected boolean letsItemsInImpl(ForgeDirection side, int aCoverID, ItemMeterData aCoverVariable, int aSlot,
         ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    protected boolean manipulatesSidedRedstoneOutputImpl(byte aSide, int aCoverID, ItemMeterData aCoverVariable,
+    protected boolean letsItemsOutImpl(ForgeDirection side, int aCoverID, ItemMeterData aCoverVariable, int aSlot,
         ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    protected int getTickRateImpl(byte aSide, int aCoverID, ItemMeterData aCoverVariable, ICoverable aTileEntity) {
+    protected boolean manipulatesSidedRedstoneOutputImpl(ForgeDirection side, int aCoverID,
+        ItemMeterData aCoverVariable, ICoverable aTileEntity) {
+        return true;
+    }
+
+    @Override
+    protected int getTickRateImpl(ForgeDirection side, int aCoverID, ItemMeterData aCoverVariable,
+        ICoverable aTileEntity) {
         return 5;
     }
 

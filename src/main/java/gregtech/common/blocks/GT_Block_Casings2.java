@@ -67,7 +67,7 @@ public class GT_Block_Casings2 extends GT_Block_Casings_Abstract {
     }
 
     @Override
-    public IIcon getIcon(int aSide, int aMeta) {
+    public IIcon getIcon(int ordinalSide, int aMeta) {
         return switch (aMeta) {
             case 0 -> Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
             case 1 -> Textures.BlockIcons.MACHINE_CASING_FROST_PROOF.getIcon();

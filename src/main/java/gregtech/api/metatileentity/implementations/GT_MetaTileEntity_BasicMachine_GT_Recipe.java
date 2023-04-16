@@ -7,6 +7,7 @@ import static gregtech.api.enums.GT_Values.ticksBetweenSounds;
 import static gregtech.api.enums.Mods.BartWorks;
 import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
+import static net.minecraftforge.common.util.ForgeDirection.UP;
 
 import java.util.Locale;
 
@@ -559,9 +560,9 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
     }
 
     @Override
-    protected boolean allowPutStackValidated(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide,
+    protected boolean allowPutStackValidated(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
-        if (!super.allowPutStackValidated(aBaseMetaTileEntity, aIndex, aSide, aStack)) return false;
+        if (!super.allowPutStackValidated(aBaseMetaTileEntity, aIndex, side, aStack)) return false;
         switch (this.mInputSlotCount) {
             case 0 -> {
                 return false;
@@ -636,10 +637,8 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
             // noinspection SwitchStatementWithTooFewBranches
             switch (this.mSpecialEffect) {
                 case TOP_SMOKE -> {
-                    final byte topFacing = (byte) ForgeDirection.UP.ordinal();
-                    if (aBaseMetaTileEntity.getFrontFacing() != topFacing
-                        && aBaseMetaTileEntity.getCoverIDAtSide(topFacing) == 0
-                        && !aBaseMetaTileEntity.getOpacityAtSide(topFacing)) {
+                    if (aBaseMetaTileEntity.getFrontFacing() != UP && aBaseMetaTileEntity.getCoverIDAtSide(UP) == 0
+                        && !aBaseMetaTileEntity.getOpacityAtSide(UP)) {
 
                         new ParticleEventBuilder().setMotion(0.0D, 0.0D, 0.0D)
                             .setIdentifier(ParticleFX.SMOKE)
@@ -671,9 +670,9 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
                 // Random Sparkles at main face
                 if (aBaseMetaTileEntity.isActive() && XSTR_INSTANCE.nextInt(3) == 0) {
 
-                    final byte mainFacing = (byte) this.mMainFacing;
+                    final ForgeDirection mainFacing = this.mMainFacing;
 
-                    if (mainFacing > 1 && aBaseMetaTileEntity.getCoverIDAtSide(mainFacing) == 0
+                    if (mainFacing.ordinal() > 1 && aBaseMetaTileEntity.getCoverIDAtSide(mainFacing) == 0
                         && !aBaseMetaTileEntity.getOpacityAtSide(mainFacing)) {
 
                         final double oX = aBaseMetaTileEntity.getXCoord();
@@ -686,17 +685,17 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
 
                         y = oY + XSTR_INSTANCE.nextFloat() * 10D / 16D + 5D / 16D;
 
-                        if (mainFacing == ForgeDirection.WEST.ordinal()) {
+                        if (mainFacing == ForgeDirection.WEST) {
                             x = oX - offset;
                             mX = -.05D;
                             z = oZ + horizontal;
                             mZ = 0D;
-                        } else if (mainFacing == ForgeDirection.EAST.ordinal()) {
+                        } else if (mainFacing == ForgeDirection.EAST) {
                             x = oX + offset;
                             mX = .05D;
                             z = oZ + horizontal;
                             mZ = 0D;
-                        } else if (mainFacing == ForgeDirection.NORTH.ordinal()) {
+                        } else if (mainFacing == ForgeDirection.NORTH) {
                             x = oX + horizontal;
                             mX = 0D;
                             z = oZ - offset;

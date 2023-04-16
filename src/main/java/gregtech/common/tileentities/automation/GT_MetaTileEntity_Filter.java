@@ -5,6 +5,7 @@ import static gregtech.api.enums.Textures.BlockIcons.AUTOMATION_FILTER_GLOW;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
@@ -87,8 +88,9 @@ public class GT_MetaTileEntity_Filter extends GT_MetaTileEntity_Buffer implement
     }
 
     @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
-        if (!super.allowPutStack(aBaseMetaTileEntity, aIndex, aSide, aStack)) {
+    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
+        ItemStack aStack) {
+        if (!super.allowPutStack(aBaseMetaTileEntity, aIndex, side, aStack)) {
             return false;
         }
         if (this.bInvertFilter) {
@@ -110,8 +112,14 @@ public class GT_MetaTileEntity_Filter extends GT_MetaTileEntity_Buffer implement
                 if (mInventory[i] == null) ++emptySlots;
             }
             if (!bInvert) emptySlots = 9 - emptySlots;
-            for (byte b = 0; b < 6; b++) aBaseMetaTileEntity.setInternalOutputRedstoneSignal(b, (byte) emptySlots);
-        } else for (byte b = 0; b < 6; b++) aBaseMetaTileEntity.setInternalOutputRedstoneSignal(b, (byte) 0);
+            for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+                aBaseMetaTileEntity.setInternalOutputRedstoneSignal(side, (byte) emptySlots);
+            }
+        } else {
+            for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+                aBaseMetaTileEntity.setInternalOutputRedstoneSignal(side, (byte) 0);
+            }
+        }
     }
 
     @Override

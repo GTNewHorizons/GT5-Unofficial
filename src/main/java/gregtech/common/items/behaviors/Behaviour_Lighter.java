@@ -73,23 +73,23 @@ public class Behaviour_Lighter extends Behaviour_None {
 
     @Override
     public boolean onItemUse(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,
-        int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
+        int aY, int aZ, int ordinalSide, float hitX, float hitY, float hitZ) {
         return false;
     }
 
     @Override
     public boolean onItemUseFirst(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,
-        int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
+        int aY, int aZ, ForgeDirection side, float hitX, float hitY, float hitZ) {
         if ((aWorld.isRemote) || (aStack.stackSize != 1)) {
             return false;
         }
         boolean rOutput = false;
 
-        ForgeDirection tDirection = ForgeDirection.getOrientation(aSide);
-        aX += tDirection.offsetX;
-        aY += tDirection.offsetY;
-        aZ += tDirection.offsetZ;
-        if ((!GT_Utility.isBlockAir(aWorld, aX, aY, aZ)) || (!aPlayer.canPlayerEdit(aX, aY, aZ, aSide, aStack))) {
+        aX += side.offsetX;
+        aY += side.offsetY;
+        aZ += side.offsetZ;
+        if ((!GT_Utility.isBlockAir(aWorld, aX, aY, aZ))
+            || (!aPlayer.canPlayerEdit(aX, aY, aZ, side.ordinal(), aStack))) {
             return false;
         }
         prepare(aStack);

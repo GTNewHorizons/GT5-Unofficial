@@ -144,10 +144,10 @@ public abstract class GT_MetaTileEntity_DrillerBase
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-        boolean aActive, boolean aRedstone) {
-        if (aSide == aFacing) {
-            if (aActive) return new ITexture[] { getCasingTextureForId(casingTextureIndex), TextureFactory.builder()
+    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
+        ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
+        if (sideDirection == facingDirection) {
+            if (active) return new ITexture[] { getCasingTextureForId(casingTextureIndex), TextureFactory.builder()
                 .addIcon(OVERLAY_FRONT_ORE_DRILL_ACTIVE)
                 .extFacing()
                 .build(),
@@ -196,17 +196,17 @@ public abstract class GT_MetaTileEntity_DrillerBase
     }
 
     @Override
-    public boolean onSolderingToolRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY,
-        float aZ) {
-        if (aSide == getBaseMetaTileEntity().getFrontFacing()) {
+    public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide,
+        EntityPlayer entityPlayer, float aX, float aY, float aZ) {
+        if (side == getBaseMetaTileEntity().getFrontFacing()) {
             mChunkLoadingEnabled = !mChunkLoadingEnabled;
             GT_Utility.sendChatToPlayer(
-                aPlayer,
+                entityPlayer,
                 mChunkLoadingEnabled ? GT_Utility.trans("502", "Mining chunk loading enabled")
                     : GT_Utility.trans("503", "Mining chunk loading disabled"));
             return true;
         }
-        return super.onSolderingToolRightClick(aSide, aWrenchingSide, aPlayer, aX, aY, aZ);
+        return super.onSolderingToolRightClick(side, wrenchingSide, entityPlayer, aX, aY, aZ);
     }
 
     @Override
@@ -444,7 +444,7 @@ public abstract class GT_MetaTileEntity_DrillerBase
         xDrill = getBaseMetaTileEntity().getXCoord();
         yDrill = getBaseMetaTileEntity().getYCoord();
         zDrill = getBaseMetaTileEntity().getZCoord();
-        back = ForgeDirection.getOrientation(getBaseMetaTileEntity().getBackFacing());
+        back = getBaseMetaTileEntity().getBackFacing();
         xPipe = xDrill + back.offsetX;
         zPipe = zDrill + back.offsetZ;
     }

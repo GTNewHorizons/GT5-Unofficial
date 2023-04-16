@@ -268,14 +268,14 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-        boolean aActive, boolean aRedstone) {
-        if (aSide != ForgeDirection.UP.ordinal()) {
-            if (aSide == aBaseMetaTileEntity.getFrontFacing()) {
-                return new ITexture[] { MACHINE_CASINGS[mTier][aColorIndex + 1], TextureFactory.of(OVERLAY_PIPE) };
-            } else return new ITexture[] { MACHINE_CASINGS[mTier][aColorIndex + 1] };
+    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
+        ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
+        if (sideDirection != ForgeDirection.UP) {
+            if (sideDirection == baseMetaTileEntity.getFrontFacing()) {
+                return new ITexture[] { MACHINE_CASINGS[mTier][colorIndex + 1], TextureFactory.of(OVERLAY_PIPE) };
+            } else return new ITexture[] { MACHINE_CASINGS[mTier][colorIndex + 1] };
         }
-        return new ITexture[] { MACHINE_CASINGS[mTier][aColorIndex + 1], TextureFactory.of(OVERLAY_QTANK),
+        return new ITexture[] { MACHINE_CASINGS[mTier][colorIndex + 1], TextureFactory.of(OVERLAY_QTANK),
             TextureFactory.builder()
                 .addIcon(OVERLAY_QTANK_GLOW)
                 .glow()
@@ -289,8 +289,8 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
     }
 
     @Override
-    public final void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        if (aSide == getBaseMetaTileEntity().getFrontFacing()) {
+    public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        if (side == getBaseMetaTileEntity().getFrontFacing()) {
             mAllowInputFromOutputSide = !mAllowInputFromOutputSide;
             GT_Utility.sendChatToPlayer(
                 aPlayer,
@@ -411,12 +411,9 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
                 if (tTank != null) {
                     FluidStack tDrained = drain(20 * (1 << (3 + 2 * tierPump(mTier))), false);
                     if (tDrained != null) {
-                        int tFilledAmount = tTank
-                            .fill(ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()), tDrained, false);
-                        if (tFilledAmount > 0) tTank.fill(
-                            ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()),
-                            drain(tFilledAmount, true),
-                            true);
+                        int tFilledAmount = tTank.fill(aBaseMetaTileEntity.getBackFacing(), tDrained, false);
+                        if (tFilledAmount > 0)
+                            tTank.fill(aBaseMetaTileEntity.getBackFacing(), drain(tFilledAmount, true), true);
                     }
                 }
             }
@@ -424,27 +421,27 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
     }
 
     @Override
-    public boolean isFacingValid(byte aFacing) {
+    public boolean isFacingValid(ForgeDirection side) {
         return true;
     }
 
     @Override
-    public boolean isInputFacing(byte aSide) {
+    public boolean isInputFacing(ForgeDirection side) {
         return true;
     }
 
     @Override
-    public boolean isOutputFacing(byte aSide) {
+    public boolean isOutputFacing(ForgeDirection side) {
         return false;
     }
 
     @Override
-    public boolean isLiquidInput(byte aSide) {
-        return mAllowInputFromOutputSide || aSide != getBaseMetaTileEntity().getFrontFacing();
+    public boolean isLiquidInput(ForgeDirection side) {
+        return mAllowInputFromOutputSide || side != getBaseMetaTileEntity().getFrontFacing();
     }
 
     @Override
-    public boolean isLiquidOutput(byte aSide) {
+    public boolean isLiquidOutput(ForgeDirection side) {
         return true;
     }
 
@@ -478,7 +475,7 @@ public abstract class GT_MetaTileEntity_DigitalTankBase extends GT_MetaTileEntit
     }
 
     @Override
-    public FluidTankInfo[] getTankInfo(ForgeDirection aSide) {
+    public FluidTankInfo[] getTankInfo(ForgeDirection side) {
         return new FluidTankInfo[] { getInfo() };
     }
 

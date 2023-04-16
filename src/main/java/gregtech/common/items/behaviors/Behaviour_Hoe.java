@@ -28,8 +28,8 @@ public class Behaviour_Hoe extends Behaviour_None {
 
     @Override
     public boolean onItemUse(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,
-        int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
-        if (!aPlayer.canPlayerEdit(aX, aY, aZ, aSide, aStack)) {
+        int aY, int aZ, int ordinalSide, float hitX, float hitY, float hitZ) {
+        if (!aPlayer.canPlayerEdit(aX, aY, aZ, ordinalSide, aStack)) {
             return false;
         }
         UseHoeEvent event = new UseHoeEvent(aPlayer, aStack, aWorld, aX, aY, aZ);
@@ -43,7 +43,7 @@ public class Behaviour_Hoe extends Behaviour_None {
             return true;
         }
         Block aBlock = aWorld.getBlock(aX, aY, aZ);
-        if ((aSide != 0) && (GT_Utility.isBlockAir(aWorld, aX, aY + 1, aZ))
+        if ((ordinalSide != 0) && (GT_Utility.isBlockAir(aWorld, aX, aY + 1, aZ))
             && ((aBlock == Blocks.grass) || (aBlock == Blocks.dirt))) {
             new WorldSpawnedEventBuilder.SoundEventBuilder()
                 .setVolume((Blocks.farmland.stepSound.getVolume() + 1.0F) / 2.0F)

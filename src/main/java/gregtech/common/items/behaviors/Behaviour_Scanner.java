@@ -9,6 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.IItemBehaviour;
@@ -24,15 +25,15 @@ public class Behaviour_Scanner extends Behaviour_None {
 
     @Override
     public boolean onItemUseFirst(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,
-        int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
-        NBTTagCompound tNBT = aStack.getTagCompound();
+        int aY, int aZ, ForgeDirection side, float hitX, float hitY, float hitZ) {
+        final NBTTagCompound tNBT = aStack.getTagCompound();
         if (((aPlayer instanceof EntityPlayerMP)) && (aItem.canUse(aStack, 20000.0D))) {
-            ArrayList<String> tList = new ArrayList<>();
+            final ArrayList<String> tList = new ArrayList<>();
             if (aItem.use(
                 aStack,
-                GT_Utility.getCoordinateScan(tList, aPlayer, aWorld, 1, aX, aY, aZ, aSide, hitX, hitY, hitZ),
+                GT_Utility.getCoordinateScan(tList, aPlayer, aWorld, 1, aX, aY, aZ, side, hitX, hitY, hitZ),
                 aPlayer)) {
-                int tList_sS = tList.size();
+                final int tList_sS = tList.size();
                 tNBT.setInteger("dataLinesCount", tList_sS);
                 for (int i = 0; i < tList_sS; i++) {
                     tNBT.setString("dataLines" + i, tList.get(i));
