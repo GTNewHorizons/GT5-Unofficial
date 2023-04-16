@@ -1159,6 +1159,7 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
             return;
         }
         if (type == Inventory.INPUT || type == Inventory.BOTH) {
+            if (multiBlockInputInventory.containsKey(id)) return;
             multiBlockInputInventory.put(id, inventory);
             multiBlockInputInventoryNames.put(id, name);
         }
