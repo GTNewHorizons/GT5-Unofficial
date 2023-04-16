@@ -1,7 +1,9 @@
 package gregtech.loaders.postload.chains;
 
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sChemicalBathRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sMixerRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -75,27 +77,31 @@ public class GT_BauxiteRefineChain {
             40,
             120);
 
-        GT_Values.RA.addChemicalBathRecipe(
-            GT_OreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Ilmenite, 1),
-            Materials.SulfuricAcid.getFluid(1000),
-            new FluidStack(ItemList.sGreenVitriol, 2000),
-            Materials.Rutile.getDust(1),
-            MaterialsOreAlum.IlmeniteSlag.getDust(1),
-            GT_Values.NI,
-            new int[] { 8500, 3000 },
-            420,
-            1000);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Ilmenite, 1))
+            .itemOutputs(
+                Materials.Rutile.getDust(1),
+                MaterialsOreAlum.IlmeniteSlag.getDust(1)
+            )
+            .outputChances(8500,3000)
+            .fluidInputs(Materials.SulfuricAcid.getFluid(1000))
+            .fluidOutputs( new FluidStack(ItemList.sGreenVitriol, 2000))
+            .duration(21*SECONDS)
+            .eut(1000)
+            .addTo(sChemicalBathRecipes);
 
-        GT_Values.RA.addChemicalBathRecipe(
-            GT_OreDictUnificator.get(OrePrefixes.crushed, Materials.Ilmenite, 1),
-            Materials.SulfuricAcid.getFluid(1000),
-            new FluidStack(ItemList.sGreenVitriol, 2000),
-            Materials.Rutile.getDust(1),
-            MaterialsOreAlum.IlmeniteSlag.getDust(1),
-            GT_Values.NI,
-            new int[] { 8500, 6000 },
-            420,
-            1000);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.crushed, Materials.Ilmenite, 1))
+            .itemOutputs(
+                Materials.Rutile.getDust(1),
+                MaterialsOreAlum.IlmeniteSlag.getDust(1)
+            )
+            .outputChances(8500,6000)
+            .fluidInputs(Materials.SulfuricAcid.getFluid(1000))
+            .fluidOutputs(new FluidStack(ItemList.sGreenVitriol, 2000))
+            .duration(21*SECONDS)
+            .eut(1000)
+            .addTo(sChemicalBathRecipes);
 
         GT_Values.RA.addCentrifugeRecipe(
             MaterialsOreAlum.IlmeniteSlag.getDust(1),

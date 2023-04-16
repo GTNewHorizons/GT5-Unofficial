@@ -1,6 +1,8 @@
 package gregtech.loaders.oreprocessing;
 
 import static gregtech.api.enums.Mods.Railcraft;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sChemicalBathRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -97,15 +99,17 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
             ItemList.FR_Casing_Impregnated.get(1L),
             64,
             16);
-        GT_Values.RA.addChemicalBathRecipe(
-            GT_Utility.copyAmount(1L, aStack),
-            Materials.Creosote.getFluid(1000L),
-            GT_ModHandler.getModItem(Railcraft.ID, "tile.railcraft.cube", 1L, 8),
-            null,
-            null,
-            null,
-            16,
-            16);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_Utility.copyAmount(1L, aStack))
+            .itemOutputs(
+                GT_ModHandler.getModItem(Railcraft.ID, "tile.railcraft.cube", 1L, 8)
+            )
+            .fluidInputs(Materials.Creosote.getFluid(1000L))
+            .noFluidOutputs()
+            .duration(16*TICKS)
+            .eut(TierEU.ULV)
+            .addTo(sChemicalBathRecipes);
 
         short aMeta = (short) aStack.getItemDamage();
 
