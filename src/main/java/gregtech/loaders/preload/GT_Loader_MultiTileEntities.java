@@ -50,6 +50,8 @@ public class GT_Loader_MultiTileEntities implements Runnable {
             .setBlock(machine)
             .material(Materials.Iron)
             .baseTexture("metalwall")
+            .activeOverlayTexture("basic")
+            .inactiveOverlayTexture("basic")
             .tankCapacity(128000L)
             .inputInventorySize(16)
             .outputInventorySize(16)

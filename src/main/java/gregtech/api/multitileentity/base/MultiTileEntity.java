@@ -132,27 +132,27 @@ public abstract class MultiTileEntity extends CoverableTileEntity
         baseTexture = TextureFactory.of(new CustomIcon("multitileentity/base/" + nbt.getString(NBT.BASE_TEXTURE)));
         if (nbt.hasKey(NBT.UP_OVERLAY_TEXTURE)) {
             upOverlayTexture = TextureFactory
-                .of(new CustomIcon("multitileentity/overlay/up/" + nbt.getString(NBT.UP_OVERLAY_TEXTURE)));
+                .of(new CustomIcon("multitileentity/overlays/up/" + nbt.getString(NBT.UP_OVERLAY_TEXTURE)));
         }
         if (nbt.hasKey(NBT.UP_OVERLAY_TEXTURE)) {
             downOverlayTexture = TextureFactory
-                .of(new CustomIcon("multitileentity/overlay/down/" + nbt.getString(NBT.DOWN_OVERLAY_TEXTURE)));
+                .of(new CustomIcon("multitileentity/overlays/down/" + nbt.getString(NBT.DOWN_OVERLAY_TEXTURE)));
         }
         if (nbt.hasKey(NBT.UP_OVERLAY_TEXTURE)) {
             eastOverlayTexture = TextureFactory
-                .of(new CustomIcon("multitileentity/overlay/east/" + nbt.getString(NBT.EAST_OVERLAY_TEXTURE)));
+                .of(new CustomIcon("multitileentity/overlays/east/" + nbt.getString(NBT.EAST_OVERLAY_TEXTURE)));
         }
         if (nbt.hasKey(NBT.UP_OVERLAY_TEXTURE)) {
             westOverlayTexture = TextureFactory
-                .of(new CustomIcon("multitileentity/overlay/west/" + nbt.getString(NBT.WEST_OVERLAY_TEXTURE)));
+                .of(new CustomIcon("multitileentity/overlays/west/" + nbt.getString(NBT.WEST_OVERLAY_TEXTURE)));
         }
         if (nbt.hasKey(NBT.UP_OVERLAY_TEXTURE)) {
             northOverlayTexture = TextureFactory
-                .of(new CustomIcon("multitileentity/overlay/north/" + nbt.getString(NBT.NORTH_OVERLAY_TEXTURE)));
+                .of(new CustomIcon("multitileentity/overlays/north/" + nbt.getString(NBT.NORTH_OVERLAY_TEXTURE)));
         }
         if (nbt.hasKey(NBT.UP_OVERLAY_TEXTURE)) {
             southOverlayTexture = TextureFactory
-                .of(new CustomIcon("multitileentity/overlay/south/" + nbt.getString(NBT.SOUTH_OVERLAY_TEXTURE)));
+                .of(new CustomIcon("multitileentity/overlays/south/" + nbt.getString(NBT.SOUTH_OVERLAY_TEXTURE)));
         }
     }
 
