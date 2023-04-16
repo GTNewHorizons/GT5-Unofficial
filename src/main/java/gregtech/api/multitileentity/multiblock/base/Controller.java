@@ -1406,7 +1406,6 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
     public List<String> getInventoryNames(MultiBlockPart aPart) {
         final List<String> inventoryNames = new ArrayList<>();
         inventoryNames.add("all");
-        inventoryNames.add("controller");
         inventoryNames.addAll(getMultiBlockInventoryNames(aPart).values());
         return inventoryNames;
     }
@@ -1445,7 +1444,6 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
     public List<String> getTankArrayNames(MultiBlockPart aPart) {
         final List<String> inventoryNames = new ArrayList<>();
         inventoryNames.add("all");
-        inventoryNames.add("controller");
         inventoryNames.addAll(getMultiBlockTankArrayNames(aPart).values());
         return inventoryNames;
     }
