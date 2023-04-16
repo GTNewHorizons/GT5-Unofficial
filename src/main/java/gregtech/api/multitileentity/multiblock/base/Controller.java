@@ -107,6 +107,8 @@ import gregtech.common.tileentities.casings.upgrade.Inventory;
 public abstract class Controller<T extends Controller<T>> extends MultiTileBasicMachine implements IAlignment,
     IConstructable, IMultiBlockController, IDescribable, IMTE_AddToolTips, ISurvivalConstructable {
 
+    public static final String ALL_INVENTORIES_NAME = "all";
+
     private static final Map<Integer, GT_Multiblock_Tooltip_Builder> tooltip = new ConcurrentHashMap<>();
     private final List<UpgradeCasing> upgradeCasings = new ArrayList<>();
     private final List<FunctionalCasing> functionalCasings = new ArrayList<>();
@@ -1405,7 +1407,7 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
     @Override
     public List<String> getInventoryNames(MultiBlockPart aPart) {
         final List<String> inventoryNames = new ArrayList<>();
-        inventoryNames.add("all");
+        inventoryNames.add(ALL_INVENTORIES_NAME);
         inventoryNames.addAll(getMultiBlockInventoryNames(aPart).values());
         return inventoryNames;
     }
@@ -1413,7 +1415,7 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
     @Override
     public List<String> getInventoryIDs(MultiBlockPart aPart) {
         final List<String> tInventoryIDs = new ArrayList<>();
-        tInventoryIDs.add("all");
+        tInventoryIDs.add(ALL_INVENTORIES_NAME);
         tInventoryIDs.addAll(getMultiBlockInventory(aPart).keySet());
         return tInventoryIDs;
     }
@@ -1443,7 +1445,7 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
     @Override
     public List<String> getTankArrayNames(MultiBlockPart aPart) {
         final List<String> inventoryNames = new ArrayList<>();
-        inventoryNames.add("all");
+        inventoryNames.add(ALL_INVENTORIES_NAME);
         inventoryNames.addAll(getMultiBlockTankArrayNames(aPart).values());
         return inventoryNames;
     }
@@ -1451,7 +1453,7 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
     @Override
     public List<String> getTankArrayIDs(MultiBlockPart aPart) {
         final List<String> inventoryIDs = new ArrayList<>();
-        inventoryIDs.add("all");
+        inventoryIDs.add(ALL_INVENTORIES_NAME);
         inventoryIDs.addAll(getMultiBlockTankArray(aPart).keySet());
         return inventoryIDs;
     }
