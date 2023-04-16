@@ -157,9 +157,20 @@ public class AdvChemicalReactor extends ComplexParallelController<AdvChemicalRea
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Chemical Reactor")
             .addInfo("Controller block for the Advanced Chemical Reactor")
+            .addInfo("Does not lose efficiency when overclocked")
+            .addInfo("Accepts fluids instead of fluid cells")
+            .addInfo("Can do multiple different recipes at once")
+            .addInfo("By using the whitelist filter a recipe can push its output")
+            .addInfo("to a different recipes input to chain them")
+            .addInfo(GT_Values.Authorminecraft7771)
             .addSeparator()
-            .beginStructureBlock(3, 3, 3, false)
+            .beginStructureBlock(5, 3, 3, false)
             .addController("Front center")
+            .addCasingInfoExactly("PTFE Pipe Machine Casing", 8, false)
+            .addCasingInfoExactly("Heating Coils", 3, true)
+            .addCasingInfoExactly("EV+ Glass", 3, true)
+            .addCasingInfoExactly("Motor Casing", 3, true)
+            .addCasingInfoExactly("Chemical Casing", 27, false)
             .toolTipFinisher("Gregtech");
         return tt;
     }
