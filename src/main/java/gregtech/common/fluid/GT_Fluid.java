@@ -2,6 +2,7 @@ package gregtech.common.fluid;
 
 import javax.annotation.Nonnull;
 
+import gregtech.api.enums.ItemList;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
@@ -17,6 +18,8 @@ import gregtech.api.interfaces.fluid.IGT_Fluid;
 import gregtech.api.interfaces.fluid.IGT_RegisteredFluid;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Utility;
+
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sFluidCannerRecipes;
 
 public class GT_Fluid extends Fluid implements IGT_Fluid, IGT_RegisteredFluid, Runnable {
 
@@ -121,11 +124,14 @@ public class GT_Fluid extends Fluid implements IGT_Fluid, IGT_RegisteredFluid, R
         if (fullContainer != null && emptyContainer != null) {
             final FluidStack fluidStack = new FluidStack(registeredFluid, containerSize);
             if (!FluidContainerRegistry.registerFluidContainer(fluidStack, fullContainer, emptyContainer)) {
-                GT_Values.RA.addFluidCannerRecipe(
-                    fullContainer,
-                    GT_Utility.getContainerItem(fullContainer, false),
-                    null,
-                    fluidStack);
+                GT_Values.RA.stdBuilder()
+                    .itemInputs(fullContainer)
+                    .itemOutputs(GT_Utility.getContainerItem(fullContainer, false))
+                    .noFluidInputs()
+                    .fluidOutputs(fluidStack)
+                    .duration(fluidStack.amount/62)
+                    .eut(1)
+                    .addTo(sFluidCannerRecipes);
             }
         }
         return this;

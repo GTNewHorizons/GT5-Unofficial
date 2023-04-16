@@ -10,8 +10,10 @@ import static gregtech.api.enums.Mods.PamsHarvestCraft;
 import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.enums.Mods.TwilightForest;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sFluidCannerRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sThermalCentrifugeRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 
 import java.util.Locale;
 
@@ -810,11 +812,16 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .buildAndRegister()
             .configureMaterials(Materials.Water)
             .registerBContainers(GT_ModHandler.getIC2Item("steamCell", 1), Materials.Empty.getCells(1));
-        GT_Values.RA.addFluidCannerRecipe(
-            Materials.Empty.getCells(1),
-            GT_ModHandler.getIC2Item("steamCell", 1),
-            GT_ModHandler.getSteam(1000),
-            null);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(Materials.Empty.getCells(1))
+            .itemOutputs(GT_ModHandler.getIC2Item("steamCell", 1))
+            .fluidInputs(GT_ModHandler.getSteam(1000))
+            .noFluidOutputs()
+            .duration(16*TICKS)
+            .eut(1)
+            .addTo(sFluidCannerRecipes);
+
         Materials.Ice.mGas = Materials.Water.mGas;
         Materials.Water.mGas.setTemperature(375)
             .setGaseous(true);

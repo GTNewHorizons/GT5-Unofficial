@@ -1921,6 +1921,7 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         return true;
     }
 
+    @Deprecated
     @Override
     public boolean addFluidCannerRecipe(ItemStack aInput, ItemStack aOutput, FluidStack aFluidInput,
         FluidStack aFluidOutput) {
@@ -1948,6 +1949,7 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         return true;
     }
 
+    @Deprecated
     @Override
     public boolean addFluidCannerRecipe(ItemStack aInput, ItemStack aOutput, FluidStack aFluidInput,
         FluidStack aFluidOutput, int aDuration, int aEUt) {
