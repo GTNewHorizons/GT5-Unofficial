@@ -10,9 +10,12 @@ import static gregtech.api.enums.Mods.PamsHarvestCraft;
 import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.enums.Mods.TwilightForest;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sThermalCentrifugeRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 
 import java.util.Locale;
 
+import gregtech.api.enums.TierEU;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -235,24 +238,44 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                     ItemList.Depleted_Thorium_4.get(1),
                     false));
 
-            GT_ModHandler.addThermalCentrifugeRecipe(
-                ItemList.Depleted_Thorium_1.get(1),
-                5000,
-                GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Lutetium, 2L),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Thorium, 1L),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 1L));
-            GT_ModHandler.addThermalCentrifugeRecipe(
-                ItemList.Depleted_Thorium_2.get(1),
-                5000,
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lutetium, 1L),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Thorium, 2L),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 3L));
-            GT_ModHandler.addThermalCentrifugeRecipe(
-                ItemList.Depleted_Thorium_4.get(1),
-                5000,
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lutetium, 2L),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Thorium, 4L),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 6L));
+            GT_Values.RA.stdBuilder()
+                .itemInputs(ItemList.Depleted_Thorium_1.get(1))
+                .itemOutputs(
+                    GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Lutetium, 2L),
+                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Thorium, 1L),
+                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 1L)
+                )
+                .noFluidInputs()
+                .noFluidOutputs()
+                .duration(25 * SECONDS)
+                .eut(48)
+                .addTo(sThermalCentrifugeRecipes);
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(ItemList.Depleted_Thorium_2.get(1))
+                .itemOutputs(
+                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lutetium, 1L),
+                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Thorium, 2L),
+                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 3L)
+                )
+                .noFluidInputs()
+                .noFluidOutputs()
+                .duration(25 * SECONDS)
+                .eut(48)
+                .addTo(sThermalCentrifugeRecipes);
+
+            GT_Values.RA.stdBuilder()
+                .itemInputs(ItemList.Depleted_Thorium_4.get(1))
+                .itemOutputs(
+                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lutetium, 2L),
+                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Thorium, 4L),
+                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 6L)
+                )
+                .noFluidInputs()
+                .noFluidOutputs()
+                .duration(25 * SECONDS)
+                .eut(48)
+                .addTo(sThermalCentrifugeRecipes);
 
             ItemList.Depleted_Naquadah_1
                 .set(new GT_DepletetCell_Item("NaquadahcellDep", "Fuel Rod (Depleted Naquadah)", 1));

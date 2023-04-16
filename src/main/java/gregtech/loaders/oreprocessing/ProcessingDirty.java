@@ -9,6 +9,9 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sThermalCentrifugeRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+
 public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
     public ProcessingDirty() {
@@ -52,17 +55,24 @@ public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegist
                 GT_Utility.selectItemInList(0, aMaterial.mMacerateInto, aMaterial.mOreByProducts),
                 1L),
             GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1L));
-        GT_ModHandler.addThermalCentrifugeRecipe(
-            GT_Utility.copyAmount(1L, aStack),
-            new int[] { 10000, 1111, 10000 },
-            (int) Math.min(5000L, Math.abs(aMaterial.getMass() * 20L)),
-            GT_OreDictUnificator
-                .get(aPrefix == OrePrefixes.crushed ? OrePrefixes.crushedCentrifuged : OrePrefixes.dust, aMaterial, 1L),
-            GT_OreDictUnificator.get(
-                OrePrefixes.dust,
-                GT_Utility.selectItemInList(1, aMaterial.mMacerateInto, aMaterial.mOreByProducts),
-                1L),
-            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1L));
+
+        OrePrefixes prefix = aPrefix == OrePrefixes.crushed ? OrePrefixes.crushedCentrifuged : OrePrefixes.dust;
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_Utility.copyAmount(1L, aStack))
+            .itemOutputs(
+                GT_OreDictUnificator.get(prefix, aMaterial, 1L),
+                GT_OreDictUnificator.get(OrePrefixes.dust,GT_Utility.selectItemInList(1, aMaterial.mMacerateInto, aMaterial.mOreByProducts), 1L),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Stone, 1L)
+            )
+            .outputChances(10000, 1111, 10000)
+            .noFluidInputs()
+            .noFluidOutputs()
+            .duration(25 * SECONDS)
+            .eut(48)
+            .addTo(sThermalCentrifugeRecipes);
+
+
 
         if (aMaterial.contains(SubTag.WASHING_MERCURY)) GT_Values.RA.addChemicalBathRecipe(
             GT_Utility.copyAmount(1L, aStack),

@@ -1,8 +1,10 @@
 package gregtech.loaders.oreprocessing;
 
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sSifterRecipes;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sThermalCentrifugeRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 
+import gregtech.api.enums.ItemList;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.GT_Values;
@@ -40,19 +42,19 @@ public class ProcessingCrushedOre implements gregtech.api.interfaces.IOreRecipeR
                     false);
             }
             case crushedPurified -> {
-                GT_ModHandler.addThermalCentrifugeRecipe(
-                    GT_Utility.copyAmount(1L, aStack),
-                    new int[] { 10000, 1111 },
-                    (int) Math.min(5000L, Math.abs(aMaterial.getMass() * 20L)),
-                    GT_OreDictUnificator.get(
-                        OrePrefixes.crushedCentrifuged,
-                        aMaterial.mMacerateInto,
-                        GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1L),
-                        1L),
-                    GT_OreDictUnificator.get(
-                        OrePrefixes.dust,
-                        GT_Utility.selectItemInList(1, aMaterial.mMacerateInto, aMaterial.mOreByProducts),
-                        1L));
+                GT_Values.RA.stdBuilder()
+                    .itemInputs(GT_Utility.copyAmount(1L, aStack))
+                    .itemOutputs(
+                        GT_OreDictUnificator.get( OrePrefixes.crushedCentrifuged, aMaterial.mMacerateInto, GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1L), 1L),
+                        GT_OreDictUnificator.get( OrePrefixes.dust, GT_Utility.selectItemInList(1, aMaterial.mMacerateInto, aMaterial.mOreByProducts),1L)
+                    )
+                    .outputChances(10000, 1111)
+                    .noFluidInputs()
+                    .noFluidOutputs()
+                    .duration(25 * SECONDS)
+                    .eut(48)
+                    .addTo(sThermalCentrifugeRecipes);
+
                 ItemStack tGem = GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L);
                 if (tGem != null) {
                     switch (aMaterial.mName) {
