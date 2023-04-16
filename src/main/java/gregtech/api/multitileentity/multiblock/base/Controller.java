@@ -280,11 +280,11 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
 
         // Multiblock inventories are a collection of inventories. The first inventory is the default internal
         // inventory, and the others are added by inventory extending blocks.
-        if (inputInventory != null) multiBlockInputInventory.put("controller", inputInventory);
-        if (outputInventory != null) multiBlockOutputInventory.put("controller", outputInventory);
+        if (inputInventory != null) registerInventory("controller", "controller", inputInventory, Inventory.INPUT);
+        if (outputInventory != null) registerInventory("controller", "controller", outputInventory, Inventory.OUTPUT);
 
-        if (inputTanks != null) multiBlockInputTank.put("controller", inputTanks);
-        if (outputTanks != null) multiBlockOutputTank.put("controller", outputTanks);
+        if (inputTanks != null) registerFluidInventory("controller", "controller", inputTanks, Inventory.INPUT);
+        if (outputTanks != null) registerFluidInventory("controller", "controller", outputTanks, Inventory.OUTPUT);
 
         structureOkay = nbt.getBoolean(NBT.STRUCTURE_OK);
         extendedFacing = ExtendedFacing.of(
@@ -344,7 +344,7 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
             registerFluidInventory(tankName, tankUUID, count, capacity, capacityMultiplier, Inventory.INPUT);
         }
 
-        final NBTTagList listOutputTanks = nbt.getTagList(NBT.UPGRADE_TANKS_INPUT, Constants.NBT.TAG_COMPOUND);
+        final NBTTagList listOutputTanks = nbt.getTagList(NBT.UPGRADE_TANKS_OUTPUT, Constants.NBT.TAG_COMPOUND);
         for (int i = 0; i < listOutputTanks.tagCount(); i++) {
             final NBTTagCompound nbtTank = listOutputTanks.getCompoundTagAt(i);
             String tankUUID = nbtTank.getString(NBT.UPGRADE_TANK_UUID);
@@ -991,22 +991,29 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
             || capacityMultiplier < 0) {
             return;
         }
+        FluidTankGT[] tanks = new FluidTankGT[numberOfSlots];
+        for (int i = 0; i < numberOfSlots; i++) {
+            tanks[i] = new FluidTankGT(capacity).setCapacityMultiplier(capacityMultiplier);
+        }
+        registerFluidInventory(name, id, tanks, type);
+    }
+
+    public void registerFluidInventory(String name, String id, FluidTankGT[] fluidInventory, int type) {
+        if (name == null || name.equals("")
+            || id == null
+            || id.equals("")
+            || fluidInventory == null
+            || fluidInventory.length == 0) {
+            return;
+        }
         if (type == Inventory.INPUT || type == Inventory.BOTH) {
             if (multiBlockInputTank.containsKey(id)) return;
-            FluidTankGT[] tanks = new FluidTankGT[numberOfSlots];
-            for (int i = 0; i < numberOfSlots; i++) {
-                tanks[i] = new FluidTankGT(capacity).setCapacityMultiplier(capacityMultiplier);
-            }
-            multiBlockInputTank.put(id, tanks);
+            multiBlockInputTank.put(id, fluidInventory);
             multiBlockInputTankNames.put(id, name);
         }
         if (type == Inventory.OUTPUT || type == Inventory.BOTH) {
-            if (multiBlockOutputInventory.containsKey(id)) return;
-            FluidTankGT[] tanks = new FluidTankGT[numberOfSlots];
-            for (int i = 0; i < numberOfSlots; i++) {
-                tanks[i] = new FluidTankGT(capacity).setCapacityMultiplier(capacityMultiplier);
-            }
-            multiBlockOutputTank.put(id, tanks);
+            if (multiBlockOutputTank.containsKey(id)) return;
+            multiBlockOutputTank.put(id, fluidInventory);
             multiBlockOutputTankNames.put(id, name);
         }
     }
@@ -1144,18 +1151,22 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
      */
     @Override
     public void registerInventory(String aName, String aID, int aInventorySize, int aType) {
-        if (aName == null || aName.equals("") || aID == null || aID.equals("") || aInventorySize < 0) {
+        registerInventory(aName, aID, new ItemStackHandler(aInventorySize), aType);
+    }
+
+    public void registerInventory(String name, String id, IItemHandlerModifiable inventory, int type) {
+        if (name == null || name.equals("") || id == null || id.equals("") || inventory == null) {
             return;
         }
-        if (aType == Inventory.INPUT || aType == Inventory.BOTH) {
-            if (multiBlockInputInventory.containsKey(aID)) return;
-            multiBlockInputInventory.put(aID, new ItemStackHandler(aInventorySize));
-            multiBlockInputInventoryNames.put(aID, aName);
+        if (type == Inventory.INPUT || type == Inventory.BOTH) {
+            if (multiBlockInputInventory.containsKey(id)) return;
+            multiBlockInputInventory.put(id, inventory);
+            multiBlockInputInventoryNames.put(id, name);
         }
-        if (aType == Inventory.OUTPUT || aType == Inventory.BOTH) {
-            if (multiBlockOutputInventory.containsKey(aID)) return;
-            multiBlockOutputInventory.put(aID, new ItemStackHandler(aInventorySize));
-            multiBlockOutputInventoryNames.put(aID, aName);
+        if (type == Inventory.OUTPUT || type == Inventory.BOTH) {
+            if (multiBlockOutputInventory.containsKey(id)) return;
+            multiBlockOutputInventory.put(id, inventory);
+            multiBlockOutputInventoryNames.put(id, name);
         }
     }
 
