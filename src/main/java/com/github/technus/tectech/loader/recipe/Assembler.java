@@ -15,10 +15,7 @@ import com.github.technus.tectech.thing.CustomItemList;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 
-import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.*;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
@@ -303,6 +300,20 @@ public class Assembler implements Runnable {
                         CustomItemList.eM_dynamoMulti4_UMV.get(1),
                         100,
                         32000000);
+
+                // Dynamo UXV 4A
+                GT_Values.RA.addAssemblerRecipe(
+                        new ItemStack[] { getItemContainer("Hatch_Dynamo_UXV").get(1),
+                                GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.BlackPlutonium, 2),
+                                GT_OreDictUnificator.get(
+                                        OrePrefixes.plate,
+                                        Materials.MagnetohydrodynamicallyConstrainedStarMatter,
+                                        1),
+                                GT_OreDictUnificator.get("plateShirabon", 1L) },
+                        Materials.Silver.getMolten(9216),
+                        CustomItemList.eM_dynamoMulti4_UXV.get(1),
+                        100,
+                        (int) TierEU.RECIPE_UMV);
             }
 
             // Dynamo Hatches 16A
@@ -405,6 +416,21 @@ public class Assembler implements Runnable {
                         CustomItemList.eM_dynamoMulti16_UMV.get(1),
                         200,
                         32000000);
+
+                // Dynamo UXV 16A
+                GT_Values.RA.addAssemblerRecipe(
+                        new ItemStack[] { getItemContainer("Transformer_MAX_UXV").get(1),
+                                CustomItemList.eM_dynamoMulti4_UXV.get(1),
+                                GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.BlackPlutonium, 2),
+                                GT_OreDictUnificator.get(
+                                        OrePrefixes.plate,
+                                        Materials.MagnetohydrodynamicallyConstrainedStarMatter,
+                                        2),
+                                GT_OreDictUnificator.get("plateShirabon", 2L) },
+                        Materials.Electrum.getMolten(9216),
+                        CustomItemList.eM_dynamoMulti16_UXV.get(1),
+                        200,
+                        (int) TierEU.RECIPE_UMV);
             }
 
             // Dynamo Hatches 64A
@@ -510,6 +536,21 @@ public class Assembler implements Runnable {
                         CustomItemList.eM_dynamoMulti64_UMV.get(1),
                         400,
                         32000000);
+
+                // Dynamo UXV 64A
+                GT_Values.RA.addAssemblerRecipe(
+                        new ItemStack[] { getItemContainer("WetTransformer_MAX_UXV").get(1),
+                                CustomItemList.eM_dynamoMulti16_UXV.get(1),
+                                GT_OreDictUnificator.get(OrePrefixes.wireGt12, Materials.BlackPlutonium, 2),
+                                GT_OreDictUnificator.get(
+                                        OrePrefixes.plate,
+                                        Materials.MagnetohydrodynamicallyConstrainedStarMatter,
+                                        3),
+                                GT_OreDictUnificator.get("plateShirabon", 3L) },
+                        Materials.Tungsten.getMolten(9216),
+                        CustomItemList.eM_dynamoMulti64_UXV.get(1),
+                        400,
+                        (int) TierEU.RECIPE_UMV);
             }
         }
 
@@ -613,6 +654,20 @@ public class Assembler implements Runnable {
                         CustomItemList.eM_energyMulti4_UMV.get(1),
                         100,
                         32000000);
+
+                // Energy Hatch UXV 4A
+                GT_Values.RA.addAssemblerRecipe(
+                        new ItemStack[] { getItemContainer("Hatch_Energy_UXV").get(1),
+                                GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.BlackPlutonium, 2),
+                                GT_OreDictUnificator.get(
+                                        OrePrefixes.plate,
+                                        Materials.MagnetohydrodynamicallyConstrainedStarMatter,
+                                        1),
+                                GT_OreDictUnificator.get("plateShirabon", 1L) },
+                        Materials.Silver.getMolten(9216),
+                        CustomItemList.eM_energyMulti4_UXV.get(1),
+                        100,
+                        (int) TierEU.RECIPE_UMV);
             }
 
             // Energy Hatches 16A
@@ -718,6 +773,21 @@ public class Assembler implements Runnable {
                         CustomItemList.eM_energyMulti16_UMV.get(1),
                         200,
                         32000000);
+
+                // Energy Hatch UXV 16A
+                GT_Values.RA.addAssemblerRecipe(
+                        new ItemStack[] { getItemContainer("Transformer_MAX_UXV").get(1),
+                                CustomItemList.eM_energyMulti4_UXV.get(1),
+                                GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.BlackPlutonium, 2),
+                                GT_OreDictUnificator.get(
+                                        OrePrefixes.plate,
+                                        Materials.MagnetohydrodynamicallyConstrainedStarMatter,
+                                        2),
+                                GT_OreDictUnificator.get("plateShirabon", 2L) },
+                        Materials.Electrum.getMolten(9216),
+                        CustomItemList.eM_energyMulti16_UXV.get(1),
+                        200,
+                        (int) TierEU.RECIPE_UMV);
             }
 
             // Energy Hatches 64A
@@ -826,6 +896,22 @@ public class Assembler implements Runnable {
                         CustomItemList.eM_energyMulti64_UMV.get(1),
                         400,
                         32000000);
+
+                // Energy Hatch UXV 64A
+                GT_Values.RA.addAssemblerRecipe(
+                        new ItemStack[] { getItemContainer("WetTransformer_MAX_UXV").get(1),
+                                CustomItemList.eM_energyMulti16_UXV.get(1),
+                                GT_OreDictUnificator.get(OrePrefixes.wireGt12, Materials.BlackPlutonium, 2),
+                                GT_OreDictUnificator.get(
+                                        OrePrefixes.plate,
+                                        Materials.MagnetohydrodynamicallyConstrainedStarMatter,
+                                        3),
+                                GT_OreDictUnificator.get("plateShirabon", 3L) },
+                        Materials.Tungsten.getMolten(9216),
+                        CustomItemList.eM_energyMulti64_UXV.get(1),
+                        400,
+                        (int) TierEU.RECIPE_UMV);
+
             }
         }
 
@@ -926,7 +1012,7 @@ public class Assembler implements Runnable {
 
         // Laser Dynamo
         {
-            // Laser Dynamo IV-UEV 256/t
+            // Laser Dynamo IV-UXV 256/t
             {
                 GT_Values.RA.addAssemblerRecipe(
                         new ItemStack[] { ItemList.Hull_IV.get(1),
@@ -1008,9 +1094,19 @@ public class Assembler implements Runnable {
                         CustomItemList.eM_dynamoTunnel1_UMV.get(1),
                         1000,
                         128000000);
+                GT_Values.RA.addAssemblerRecipe(
+                        new ItemStack[] { getItemContainer("Hull_UXV").get(1),
+                                GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 1),
+                                ItemList.Emitter_UXV.get(1), ItemList.Electric_Pump_UXV.get(1),
+                                GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.BlackPlutonium, 2),
+                                GT_Utility.getIntegratedCircuit(1) },
+                        null,
+                        CustomItemList.eM_dynamoTunnel1_UXV.get(1),
+                        1000,
+                        (int) TierEU.RECIPE_UXV);
             }
 
-            // Laser Dynamo IV-UEV 1024/t
+            // Laser Dynamo IV-UXV 1024/t
             {
                 GT_Values.RA.addAssemblerRecipe(
                         new ItemStack[] { ItemList.Hull_IV.get(1),
@@ -1092,9 +1188,19 @@ public class Assembler implements Runnable {
                         CustomItemList.eM_dynamoTunnel2_UMV.get(1),
                         2000,
                         128000000);
+                GT_Values.RA.addAssemblerRecipe(
+                        new ItemStack[] { getItemContainer("Hull_UXV").get(1),
+                                GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 2),
+                                ItemList.Emitter_UXV.get(2), ItemList.Electric_Pump_UXV.get(2),
+                                GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.BlackPlutonium, 4),
+                                GT_Utility.getIntegratedCircuit(2) },
+                        null,
+                        CustomItemList.eM_dynamoTunnel2_UXV.get(1),
+                        2000,
+                        (int) TierEU.RECIPE_UXV);
             }
 
-            // Laser Dynamo IV-UEV 4096/t
+            // Laser Dynamo IV-UXV 4096/t
             {
                 GT_Values.RA.addAssemblerRecipe(
                         new ItemStack[] { ItemList.Hull_IV.get(1),
@@ -1176,9 +1282,19 @@ public class Assembler implements Runnable {
                         CustomItemList.eM_dynamoTunnel3_UMV.get(1),
                         4000,
                         128000000);
+                GT_Values.RA.addAssemblerRecipe(
+                        new ItemStack[] { getItemContainer("Hull_UXV").get(1),
+                                GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 4),
+                                ItemList.Emitter_UXV.get(4), ItemList.Electric_Pump_UXV.get(4),
+                                GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.BlackPlutonium, 4),
+                                GT_Utility.getIntegratedCircuit(3) },
+                        null,
+                        CustomItemList.eM_dynamoTunnel3_UXV.get(1),
+                        4000,
+                        (int) TierEU.RECIPE_UXV);
             }
 
-            // Laser Dynamo IV-UEV 16384/t
+            // Laser Dynamo IV-UXV 16384/t
             {
                 GT_Values.RA.addAssemblerRecipe(
                         new ItemStack[] { ItemList.Hull_IV.get(1),
@@ -1260,9 +1376,19 @@ public class Assembler implements Runnable {
                         CustomItemList.eM_dynamoTunnel4_UMV.get(1),
                         8000,
                         128000000);
+                GT_Values.RA.addAssemblerRecipe(
+                        new ItemStack[] { getItemContainer("Hull_UXV").get(1),
+                                GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 4),
+                                ItemList.Emitter_UXV.get(8), ItemList.Electric_Pump_UXV.get(8),
+                                GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.BlackPlutonium, 8),
+                                GT_Utility.getIntegratedCircuit(4) },
+                        null,
+                        CustomItemList.eM_dynamoTunnel4_UXV.get(1),
+                        8000,
+                        (int) TierEU.RECIPE_UXV);
             }
 
-            // Laser Dynamo IV-UEV 65536/t
+            // Laser Dynamo IV-UXV 65536/t
             {
                 GT_Values.RA.addAssemblerRecipe(
                         new ItemStack[] { ItemList.Hull_IV.get(1),
@@ -1344,9 +1470,19 @@ public class Assembler implements Runnable {
                         CustomItemList.eM_dynamoTunnel5_UMV.get(1),
                         16000,
                         128000000);
+                GT_Values.RA.addAssemblerRecipe(
+                        new ItemStack[] { getItemContainer("Hull_UXV").get(1),
+                                GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 16),
+                                ItemList.Emitter_UXV.get(16), ItemList.Electric_Pump_UXV.get(16),
+                                GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.BlackPlutonium, 8),
+                                GT_Utility.getIntegratedCircuit(5) },
+                        null,
+                        CustomItemList.eM_dynamoTunnel5_UXV.get(1),
+                        16000,
+                        (int) TierEU.RECIPE_UXV);
             }
 
-            // Laser Dynamo IV-UEV 262144/t
+            // Laser Dynamo IV-UXV 262144/t
             {
                 GT_Values.RA.addAssemblerRecipe(
                         new ItemStack[] { ItemList.Hull_IV.get(1),
@@ -1420,7 +1556,7 @@ public class Assembler implements Runnable {
                         32000000);
                 GT_Values.RA.addAssemblerRecipe(
                         new ItemStack[] { getItemContainer("Hull_UMV").get(1),
-                                GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 4),
+                                GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 32),
                                 ItemList.Emitter_UMV.get(32), ItemList.Electric_Pump_UMV.get(32),
                                 GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.Quantium, 16),
                                 GT_Utility.getIntegratedCircuit(6) },
@@ -1428,9 +1564,19 @@ public class Assembler implements Runnable {
                         CustomItemList.eM_dynamoTunnel6_UMV.get(1),
                         32000,
                         128000000);
+                GT_Values.RA.addAssemblerRecipe(
+                        new ItemStack[] { getItemContainer("Hull_UXV").get(1),
+                                GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 32),
+                                ItemList.Emitter_UXV.get(32), ItemList.Electric_Pump_UXV.get(32),
+                                GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.BlackPlutonium, 16),
+                                GT_Utility.getIntegratedCircuit(6) },
+                        null,
+                        CustomItemList.eM_dynamoTunnel6_UXV.get(1),
+                        32000,
+                        (int) TierEU.RECIPE_UXV);
             }
 
-            // Laser Dynamo IV-UEV 1048576/t
+            // Laser Dynamo IV-UXV 1048576/t
             {
                 GT_Values.RA.addAssemblerRecipe(
                         new ItemStack[] { ItemList.Hull_IV.get(1),
@@ -1512,12 +1658,22 @@ public class Assembler implements Runnable {
                         CustomItemList.eM_dynamoTunnel7_UMV.get(1),
                         64000,
                         128000000);
+                GT_Values.RA.addAssemblerRecipe(
+                        new ItemStack[] { getItemContainer("Hull_UXV").get(1),
+                                GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 64),
+                                ItemList.Emitter_UXV.get(64), ItemList.Electric_Pump_UXV.get(64),
+                                GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.BlackPlutonium, 16),
+                                GT_Utility.getIntegratedCircuit(7) },
+                        null,
+                        CustomItemList.eM_dynamoTunnel7_UXV.get(1),
+                        64000,
+                        (int) TierEU.RECIPE_UXV);
             }
         }
 
         // Laser Target
         {
-            // Laser Target IV-UEV 256/t
+            // Laser Target IV-UXV 256/t
             {
                 GT_Values.RA.addAssemblerRecipe(
                         new ItemStack[] { ItemList.Hull_IV.get(1),
@@ -1599,9 +1755,19 @@ public class Assembler implements Runnable {
                         CustomItemList.eM_energyTunnel1_UMV.get(1),
                         1000,
                         128000000);
+                GT_Values.RA.addAssemblerRecipe(
+                        new ItemStack[] { getItemContainer("Hull_UXV").get(1),
+                                GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 1),
+                                ItemList.Sensor_UXV.get(1), ItemList.Electric_Pump_UXV.get(1),
+                                GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.BlackPlutonium, 2),
+                                GT_Utility.getIntegratedCircuit(1) },
+                        null,
+                        CustomItemList.eM_energyTunnel1_UXV.get(1),
+                        1000,
+                        (int) TierEU.RECIPE_UXV);
             }
 
-            // Laser Target IV-UEV 1024/t
+            // Laser Target IV-UXV 1024/t
             {
                 GT_Values.RA.addAssemblerRecipe(
                         new ItemStack[] { ItemList.Hull_IV.get(1),
@@ -1683,9 +1849,19 @@ public class Assembler implements Runnable {
                         CustomItemList.eM_energyTunnel2_UMV.get(1),
                         2000,
                         128000000);
+                GT_Values.RA.addAssemblerRecipe(
+                        new ItemStack[] { getItemContainer("Hull_UXV").get(1),
+                                GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 2),
+                                ItemList.Sensor_UXV.get(2), ItemList.Electric_Pump_UXV.get(2),
+                                GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.BlackPlutonium, 4),
+                                GT_Utility.getIntegratedCircuit(2) },
+                        null,
+                        CustomItemList.eM_energyTunnel2_UXV.get(1),
+                        2000,
+                        (int) TierEU.RECIPE_UXV);
             }
 
-            // Laser Target IV-UEV 4096/t
+            // Laser Target IV-UXV 4096/t
             {
                 GT_Values.RA.addAssemblerRecipe(
                         new ItemStack[] { ItemList.Hull_IV.get(1),
@@ -1767,9 +1943,19 @@ public class Assembler implements Runnable {
                         CustomItemList.eM_energyTunnel3_UMV.get(1),
                         4000,
                         128000000);
+                GT_Values.RA.addAssemblerRecipe(
+                        new ItemStack[] { getItemContainer("Hull_UXV").get(1),
+                                GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 1),
+                                ItemList.Sensor_UXV.get(4), ItemList.Electric_Pump_UXV.get(4),
+                                GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.BlackPlutonium, 4),
+                                GT_Utility.getIntegratedCircuit(3) },
+                        null,
+                        CustomItemList.eM_energyTunnel3_UXV.get(1),
+                        4000,
+                        (int) TierEU.RECIPE_UXV);
             }
 
-            // Laser Target IV-UEV 16384/t
+            // Laser Target IV-UXV 16384/t
             {
                 GT_Values.RA.addAssemblerRecipe(
                         new ItemStack[] { ItemList.Hull_IV.get(1),
@@ -1851,9 +2037,19 @@ public class Assembler implements Runnable {
                         CustomItemList.eM_energyTunnel4_UMV.get(1),
                         8000,
                         128000000);
+                GT_Values.RA.addAssemblerRecipe(
+                        new ItemStack[] { getItemContainer("Hull_UXV").get(1),
+                                GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 8),
+                                ItemList.Sensor_UXV.get(8), ItemList.Electric_Pump_UXV.get(8),
+                                GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.BlackPlutonium, 8),
+                                GT_Utility.getIntegratedCircuit(4) },
+                        null,
+                        CustomItemList.eM_energyTunnel4_UXV.get(1),
+                        8000,
+                        (int) TierEU.RECIPE_UXV);
             }
 
-            // Laser Target IV-UEV 65536/t
+            // Laser Target IV-UXV 65536/t
             {
                 GT_Values.RA.addAssemblerRecipe(
                         new ItemStack[] { ItemList.Hull_IV.get(1),
@@ -1935,9 +2131,19 @@ public class Assembler implements Runnable {
                         CustomItemList.eM_energyTunnel5_UMV.get(1),
                         16000,
                         128000000);
+                GT_Values.RA.addAssemblerRecipe(
+                        new ItemStack[] { getItemContainer("Hull_UXV").get(1),
+                                GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 16),
+                                ItemList.Sensor_UXV.get(16), ItemList.Electric_Pump_UXV.get(16),
+                                GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.BlackPlutonium, 8),
+                                GT_Utility.getIntegratedCircuit(5) },
+                        null,
+                        CustomItemList.eM_energyTunnel5_UXV.get(1),
+                        16000,
+                        (int) TierEU.RECIPE_UXV);
             }
 
-            // Laser Target IV-UEV 262144/t
+            // Laser Target IV-UXV 262144/t
             {
                 GT_Values.RA.addAssemblerRecipe(
                         new ItemStack[] { ItemList.Hull_IV.get(1),
@@ -2019,9 +2225,19 @@ public class Assembler implements Runnable {
                         CustomItemList.eM_energyTunnel6_UMV.get(1),
                         32000,
                         128000000);
+                GT_Values.RA.addAssemblerRecipe(
+                        new ItemStack[] { getItemContainer("Hull_UXV").get(1),
+                                GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 32),
+                                ItemList.Sensor_UXV.get(32), ItemList.Electric_Pump_UXV.get(32),
+                                GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.BlackPlutonium, 16),
+                                GT_Utility.getIntegratedCircuit(6) },
+                        null,
+                        CustomItemList.eM_energyTunnel6_UXV.get(1),
+                        32000,
+                        (int) TierEU.RECIPE_UXV);
             }
 
-            // Laser Target IV-UEV 1048576/t
+            // Laser Target IV-UXV 1048576/t
             {
                 GT_Values.RA.addAssemblerRecipe(
                         new ItemStack[] { ItemList.Hull_IV.get(1),
@@ -2103,6 +2319,16 @@ public class Assembler implements Runnable {
                         CustomItemList.eM_energyTunnel7_UMV.get(1),
                         64000,
                         128000000);
+                GT_Values.RA.addAssemblerRecipe(
+                        new ItemStack[] { getItemContainer("Hull_UXV").get(1),
+                                GT_OreDictUnificator.get(OrePrefixes.lens, Materials.Diamond, 64),
+                                ItemList.Sensor_UXV.get(64), ItemList.Electric_Pump_UXV.get(64),
+                                GT_OreDictUnificator.get(OrePrefixes.wireGt16, Materials.BlackPlutonium, 16),
+                                GT_Utility.getIntegratedCircuit(7) },
+                        null,
+                        CustomItemList.eM_energyTunnel7_UXV.get(1),
+                        64000,
+                        (int) TierEU.RECIPE_UXV);
             }
         }
 
