@@ -59,6 +59,8 @@ public class GT_Loader_MultiTileEntities implements Runnable {
             .category("MultiblockController")
             .setBlock(machine)
             .baseTexture("cokeOven")
+            .activeOverlayTexture("cokeOven")
+            .inactiveOverlayTexture("cokeOven")
             .inputInventorySize(1)
             .outputInventorySize(1)
             .register();
@@ -68,6 +70,8 @@ public class GT_Loader_MultiTileEntities implements Runnable {
             .setBlock(machine)
             // TODO: Texture
             .baseTexture("chemicalWall")
+            .activeOverlayTexture("basic")
+            .inactiveOverlayTexture("basic")
             .inputInventorySize(16)
             .outputInventorySize(16)
             .tankCapacity(128000L)

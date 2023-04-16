@@ -50,7 +50,6 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IDebugableBlock;
-import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IDebugableTileEntity;
 import gregtech.api.metatileentity.BaseTileEntity;
 import gregtech.api.metatileentity.CoverableTileEntity;
@@ -69,16 +68,13 @@ import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Util;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.covers.CoverInfo;
-import gregtech.common.render.GT_Renderer_Block;
-import gregtech.common.render.IRenderedBlock;
 import gregtech.common.render.GT_MultiTile_Renderer;
 
 /*
  * MultiTileEntityBlock ported from GT6
  */
 @Optional.Interface(iface = "com.cricketcraft.chisel.api.IFacade", modid = "ChiselAPI")
-public class MultiTileEntityBlock extends Block
-    implements IDebugableBlock, ITileEntityProvider, IFacade {
+public class MultiTileEntityBlock extends Block implements IDebugableBlock, ITileEntityProvider, IFacade {
 
     protected static final Map<String, MultiTileEntityBlock> MULTI_BLOCK_MAP = new HashMap<>();
     private static boolean LOCK = false;
@@ -220,7 +216,8 @@ public class MultiTileEntityBlock extends Block
 
     @Override
     public int getRenderType() {
-        return GT_MultiTile_Renderer.INSTANCE == null ? super.getRenderType() : GT_MultiTile_Renderer.INSTANCE.getRenderId();
+        return GT_MultiTile_Renderer.INSTANCE == null ? super.getRenderType()
+            : GT_MultiTile_Renderer.INSTANCE.getRenderId();
     }
 
     @Override

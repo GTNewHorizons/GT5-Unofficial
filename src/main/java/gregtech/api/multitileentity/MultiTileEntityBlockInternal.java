@@ -7,20 +7,14 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.StatCollector;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import gregtech.api.GregTech_API;
-import gregtech.api.interfaces.ITexture;
 import gregtech.api.multitileentity.interfaces.IMultiTileEntity;
 import gregtech.api.multitileentity.interfaces.IMultiTileEntity.IMTE_HasMultiBlockMachineRelevantData;
 import gregtech.common.render.GT_MultiTile_Renderer;
-import gregtech.common.render.GT_Renderer_Block;
-import gregtech.common.render.IRenderedBlock;
 
 public class MultiTileEntityBlockInternal extends Block {
 
@@ -37,7 +31,8 @@ public class MultiTileEntityBlockInternal extends Block {
 
     @Override
     public int getRenderType() {
-        return GT_MultiTile_Renderer.INSTANCE == null ? super.getRenderType() : GT_MultiTile_Renderer.INSTANCE.getRenderId();
+        return GT_MultiTile_Renderer.INSTANCE == null ? super.getRenderType()
+            : GT_MultiTile_Renderer.INSTANCE.getRenderId();
     }
 
     @Override

@@ -67,24 +67,12 @@ public class GT_MultiTile_Renderer implements ISimpleBlockRenderingHandler {
             ITexture texture = renderedEntity.getTexture(side);
             if (texture == null) continue;
             switch (side) {
-                case DOWN -> {
-                    renderYNegative(world, renderer, x, y, z, block, texture, side);
-                }
-                case UP -> {
-                    renderYPositive(world, renderer, x, y, z, block, texture, side);
-                }
-                case WEST -> {
-                    renderXNegative(world, renderer, x, y, z, block, texture, side);
-                }
-                case EAST -> {
-                    renderXPositive(world, renderer, x, y, z, block, texture, side);
-                }
-                case NORTH -> {
-                    renderZNegative(world, renderer, x, y, z, block, texture, side);
-                }
-                case SOUTH -> {
-                    renderZPositive(world, renderer, x, y, z, block, texture, side);
-                }
+                case DOWN -> renderYNegative(world, renderer, x, y, z, block, texture, side);
+                case UP -> renderYPositive(world, renderer, x, y, z, block, texture, side);
+                case WEST -> renderXNegative(world, renderer, x, y, z, block, texture, side);
+                case EAST -> renderXPositive(world, renderer, x, y, z, block, texture, side);
+                case NORTH -> renderZNegative(world, renderer, x, y, z, block, texture, side);
+                case SOUTH -> renderZPositive(world, renderer, x, y, z, block, texture, side);
                 default -> {
                     // Do nothing
                 }

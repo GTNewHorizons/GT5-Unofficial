@@ -1,7 +1,8 @@
 package gregtech.api.logic.interfaces;
 
-import gregtech.api.logic.PowerLogic;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import gregtech.api.logic.PowerLogic;
 
 public interface PowerLogicHost {
 
