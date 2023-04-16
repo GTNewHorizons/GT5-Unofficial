@@ -1012,7 +1012,7 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
             multiBlockInputTankNames.put(id, name);
         }
         if (type == Inventory.OUTPUT || type == Inventory.BOTH) {
-            if (multiBlockOutputInventory.containsKey(id)) return;
+            if (multiBlockOutputTank.containsKey(id)) return;
             multiBlockOutputTank.put(id, fluidInventory);
             multiBlockOutputTankNames.put(id, name);
         }
