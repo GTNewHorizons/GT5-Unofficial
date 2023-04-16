@@ -45,8 +45,8 @@ public class GT_MultiTile_Renderer implements ISimpleBlockRenderingHandler {
         renderer.enableAO = Minecraft.isAmbientOcclusionEnabled() && GT_Mod.gregtechproxy.mRenderTileAmbientOcclusion;
         renderer.useInventoryTint = false;
 
-        if (entity instanceof ModelRenderLogicHost && ((ModelRenderLogicHost) entity).shouldRenderModel()) {
-            ModelRenderLogic renderLogic = ((ModelRenderLogicHost) entity).getRenderLogic();
+        if (entity instanceof ModelRenderLogicHost modelEntity && modelEntity.shouldRenderModel()) {
+            ModelRenderLogic renderLogic = modelEntity.getRenderLogic();
             return true;
         }
 
@@ -106,7 +106,7 @@ public class GT_MultiTile_Renderer implements ISimpleBlockRenderingHandler {
             if (!block.shouldSideBeRendered(world, x, y, z - 1, side.ordinal())) return;
             Tessellator.instance.setBrightness(block.getMixedBrightnessForBlock(world, x, y, z - 1));
         }
-        texture.renderYNeg(renderer, block, x, y, z);
+        texture.renderZNeg(renderer, block, x, y, z);
     }
 
     private static void renderXNegative(IBlockAccess world, RenderBlocks renderer, int x, int y, int z, Block block,
@@ -115,7 +115,7 @@ public class GT_MultiTile_Renderer implements ISimpleBlockRenderingHandler {
             if (!block.shouldSideBeRendered(world, x - 1, y, z, side.ordinal())) return;
             Tessellator.instance.setBrightness(block.getMixedBrightnessForBlock(world, x - 1, y, z));
         }
-        texture.renderYNeg(renderer, block, x, y, z);
+        texture.renderXNeg(renderer, block, x, y, z);
     }
 
     private static void renderYPositive(IBlockAccess world, RenderBlocks renderer, int x, int y, int z, Block block,
@@ -124,7 +124,7 @@ public class GT_MultiTile_Renderer implements ISimpleBlockRenderingHandler {
             if (!block.shouldSideBeRendered(world, x, y + 1, z, side.ordinal())) return;
             Tessellator.instance.setBrightness(block.getMixedBrightnessForBlock(world, x, y + 1, z));
         }
-        texture.renderYNeg(renderer, block, x, y, z);
+        texture.renderYPos(renderer, block, x, y, z);
     }
 
     private static void renderXPositive(IBlockAccess world, RenderBlocks renderer, int x, int y, int z, Block block,
@@ -133,7 +133,7 @@ public class GT_MultiTile_Renderer implements ISimpleBlockRenderingHandler {
             if (!block.shouldSideBeRendered(world, x + 1, y, z, side.ordinal())) return;
             Tessellator.instance.setBrightness(block.getMixedBrightnessForBlock(world, x + 1, y, z));
         }
-        texture.renderYNeg(renderer, block, x, y, z);
+        texture.renderXPos(renderer, block, x, y, z);
     }
 
     private static void renderZPositive(IBlockAccess world, RenderBlocks renderer, int x, int y, int z, Block block,
@@ -142,6 +142,6 @@ public class GT_MultiTile_Renderer implements ISimpleBlockRenderingHandler {
             if (!block.shouldSideBeRendered(world, x, y, z + 1, side.ordinal())) return;
             Tessellator.instance.setBrightness(block.getMixedBrightnessForBlock(world, x, y, z + 1));
         }
-        texture.renderYNeg(renderer, block, x, y, z);
+        texture.renderZPos(renderer, block, x, y, z);
     }
 }
