@@ -1459,26 +1459,12 @@ public class RecipeLoader {
                                             tRecipe.mOutputs[i].stackSize,
                                             WerkstoffMaterialPool.CeriumRichMixture.get(OrePrefixes.dust, 1));
                                     modified = true;
-                                } else if (tRecipe.mOutputs[i]
-                                        .isItemEqual(WerkstoffMaterialPool.Zirconium.get(OrePrefixes.dust, 1))) { // TODO:
-                                                                                                                  // Does
-                                                                                                                  // not
-                                                                                                                  // work
-                                                                                                                  // and
-                                                                                                                  // I
-                                                                                                                  // have
-                                                                                                                  // zero
-                                                                                                                  // clue
-                                                                                                                  // why
-                                            tRecipe.mOutputs[i] = null;
-                                            modified = true;
-                                        } else
-                                    if (tRecipe.mOutputs[i].isItemEqual(Materials.Samarium.getDust(1))) {
-                                        tRecipe.mOutputs[i] = GT_Utility.copyAmount(
-                                                tRecipe.mOutputs[i].stackSize,
-                                                WerkstoffMaterialPool.SamariumOreConcentrate.get(OrePrefixes.dust, 1));
-                                        modified = true;
-                                    }
+                                } else if (tRecipe.mOutputs[i].isItemEqual(Materials.Samarium.getDust(1))) {
+                                    tRecipe.mOutputs[i] = GT_Utility.copyAmount(
+                                            tRecipe.mOutputs[i].stackSize,
+                                            WerkstoffMaterialPool.SamariumOreConcentrate.get(OrePrefixes.dust, 1));
+                                    modified = true;
+                                }
                             }
                             if (modified) {
                                 reAdd.add(tRecipe);
