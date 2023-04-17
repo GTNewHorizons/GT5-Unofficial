@@ -2068,11 +2068,11 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                     aShowVoltageAmperageInNEI,
                     aNEIAllowed);
                 useModularUI(true);
-                setUsualFluidInputCount(16);
+                setUsualFluidInputCount(20);
                 setUsualFluidOutputCount(1);
                 setProgressBarPos(86, 44);
                 setLogoPos(87, 81);
-                setNEIBackgroundSize(172, 100);
+                setNEIBackgroundSize(172, 125);
             }
 
             @Override
@@ -2082,7 +2082,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
 
             @Override
             public List<Pos2d> getFluidInputPositions(int fluidInputCount) {
-                return UIHelper.getGridPositions(fluidInputCount, 6, 26, 4);
+                return UIHelper.getGridPositions(fluidInputCount, 6, 26, 4, 5);
             }
 
             @Override
@@ -2096,7 +2096,7 @@ public class GT_Recipe implements Comparable<GT_Recipe> {
                 // the EU/t.
                 drawNEIText(
                     recipeInfo,
-                    GT_Utility.trans("152", "Total: ") + formatNumbers(1000L * recipeInfo.recipe.mEUt) + " EU");
+                    GT_Utility.trans("152", "Total: ") + formatNumbers(1000L * recipeInfo.recipe.mDuration / 100L * recipeInfo.recipe.mEUt) + " EU");
                 // 1000 / (20 ticks * 5 seconds) = 10L/t. 10L/t * x EU/L = 10 * x EU/t.
                 drawNEIText(recipeInfo, "Average: " + formatNumbers(10L * recipeInfo.recipe.mEUt) + " EU/t");
             }
