@@ -1157,6 +1157,14 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .registerBContainers(
                 GT_OreDictUnificator.get(OrePrefixes.cell, Materials.ExcitedDTEC, 1L),
                 ItemList.Cell_Empty.get(1L));
+        GT_FluidFactory.builder("ExcitedDTSC")
+            .withLocalizedName("Excited Dimensionally Transcendent Stellar Catalyst")
+            .withStateAndTemperature(LIQUID, 500000000)
+            .buildAndRegister()
+            .configureMaterials(Materials.ExcitedDTSC)
+            .registerBContainers(
+                GT_OreDictUnificator.get(OrePrefixes.cell, Materials.ExcitedDTSC, 1L),
+                ItemList.Cell_Empty.get(1L));
 
         GT_FluidFactory.builder(Materials.RawStarMatter.mName)
             .withLocalizedName(Materials.RawStarMatter.mLocalizedName)
