@@ -330,5 +330,15 @@ public class FusionReactorRecipes implements Runnable {
             .eut(98304)
             .metadata(FUSION_THRESHOLD, 500000000)
             .addTo(sFusionRecipes); // FT3
+
+        GT_Values.RA.stdBuilder()
+            .noItemInputs()
+            .noItemOutputs()
+            .fluidInputs(Materials.Lutetium.getMolten(144), Materials.Vanadium.getMolten(144))
+            .fluidOutputs(Materials.Plutonium241.getPlasma(144))
+            .duration(16 * TICKS)
+            .eut(TierEU.RECIPE_UEV / 2)
+            .metadata(FUSION_THRESHOLD, 1_000_000_000)
+            .addTo(sFusionRecipes); // FT5 because of UEV voltage
     }
 }
