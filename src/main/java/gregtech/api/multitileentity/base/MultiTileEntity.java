@@ -34,9 +34,12 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidTank;
 
+import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.GT_Values.NBT;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures.BlockIcons.CustomIcon;
@@ -63,12 +66,12 @@ public abstract class MultiTileEntity extends CoverableTileEntity
     implements IMultiTileEntity.IMTE_BreakBlock, MultiTileBasicRender {
 
     private ITexture baseTexture = null;
-    private ITexture upOverlayTexture = null;
-    private ITexture downOverlayTexture = null;
-    private ITexture eastOverlayTexture = null;
-    private ITexture westOverlayTexture = null;
-    private ITexture northOverlayTexture = null;
-    private ITexture southOverlayTexture = null;
+    private ITexture topOverlayTexture = null;
+    private ITexture bottomOverlayTexture = null;
+    private ITexture leftOverlayTexture = null;
+    private ITexture rightOverlayTexture = null;
+    private ITexture backOverlayTexture = null;
+    private ITexture frontOverlayTexture = null;
 
     // Makes a Bounding Box without having to constantly specify the Offset Coordinates.
     protected static final float[] PX_BOX = { 0, 0, 0, 1, 1, 1 };
@@ -130,12 +133,12 @@ public abstract class MultiTileEntity extends CoverableTileEntity
     public void loadTextures(String folder) {
         // Loading the registry
         baseTexture = TextureFactory.of(new CustomIcon("multitileentity/" + folder + "/base"));
-        upOverlayTexture = TextureFactory.of(new CustomIcon("multitileentity/" + folder + "up"));
-        downOverlayTexture = TextureFactory.of(new CustomIcon("multitileentity/" + folder + "/down"));
-        eastOverlayTexture = TextureFactory.of(new CustomIcon("multitileentity/" + folder + "/east"));
-        westOverlayTexture = TextureFactory.of(new CustomIcon("multitileentity/" + folder + "/west"));
-        northOverlayTexture = TextureFactory.of(new CustomIcon("multitileentity/" + folder + "/north"));
-        southOverlayTexture = TextureFactory.of(new CustomIcon("multitileentity/" + folder + "/south"));
+        topOverlayTexture = TextureFactory.of(new CustomIcon("multitileentity/" + folder + "/top"));
+        bottomOverlayTexture = TextureFactory.of(new CustomIcon("multitileentity/" + folder + "/bottom"));
+        leftOverlayTexture = TextureFactory.of(new CustomIcon("multitileentity/" + folder + "/left"));
+        rightOverlayTexture = TextureFactory.of(new CustomIcon("multitileentity/" + folder + "/right"));
+        backOverlayTexture = TextureFactory.of(new CustomIcon("multitileentity/" + folder + "/back"));
+        frontOverlayTexture = TextureFactory.of(new CustomIcon("multitileentity/" + folder + "/front"));
     }
 
     @Override
@@ -148,25 +151,37 @@ public abstract class MultiTileEntity extends CoverableTileEntity
         }
         final MultiTileEntity canonicalEntity = (MultiTileEntity) tCanonicalTileEntity;
         baseTexture = canonicalEntity.baseTexture;
-        upOverlayTexture = canonicalEntity.upOverlayTexture;
-        downOverlayTexture = canonicalEntity.downOverlayTexture;
-        eastOverlayTexture = canonicalEntity.eastOverlayTexture;
-        westOverlayTexture = canonicalEntity.westOverlayTexture;
-        northOverlayTexture = canonicalEntity.northOverlayTexture;
-        southOverlayTexture = canonicalEntity.southOverlayTexture;
+        topOverlayTexture = canonicalEntity.topOverlayTexture;
+        bottomOverlayTexture = canonicalEntity.bottomOverlayTexture;
+        leftOverlayTexture = canonicalEntity.leftOverlayTexture;
+        rightOverlayTexture = canonicalEntity.rightOverlayTexture;
+        backOverlayTexture = canonicalEntity.backOverlayTexture;
+        frontOverlayTexture = canonicalEntity.frontOverlayTexture;
     }
 
     @Override
     public ITexture getTexture(ForgeDirection side) {
-        return switch (side) {
-            case DOWN -> TextureFactory.of(baseTexture, downOverlayTexture);
-            case EAST -> TextureFactory.of(baseTexture, eastOverlayTexture);
-            case NORTH -> TextureFactory.of(baseTexture, northOverlayTexture);
-            case SOUTH -> TextureFactory.of(baseTexture, southOverlayTexture);
-            case UP -> TextureFactory.of(baseTexture, upOverlayTexture);
-            case WEST -> TextureFactory.of(baseTexture, westOverlayTexture);
-            default -> null;
-        };
+        if (facing == side) {
+            return TextureFactory.of(baseTexture, frontOverlayTexture);
+        }
+
+        if (facing.getOpposite() == side) {
+            return TextureFactory.of(baseTexture, backOverlayTexture);
+        }
+
+        if (side == ForgeDirection.UP) {
+            return TextureFactory.of(baseTexture, topOverlayTexture);
+        }
+
+        if (side == ForgeDirection.DOWN) {
+            return TextureFactory.of(baseTexture, bottomOverlayTexture);
+        }
+
+        if (facing.getRotation(ForgeDirection.DOWN) == side) {
+            return TextureFactory.of(baseTexture, rightOverlayTexture);
+        } else {
+            return TextureFactory.of(baseTexture, leftOverlayTexture);
+        }
     }
 
     @Override
@@ -218,10 +233,12 @@ public abstract class MultiTileEntity extends CoverableTileEntity
             readCoverNBT(nbt);
             readMultiTileNBT(nbt);
 
-            if (GregTech_API.sBlockIcons == null && nbt.hasKey(NBT.TEXTURE_FOLDER)) {
-                loadTextures(nbt.getString(NBT.TEXTURE_FOLDER));
-            } else {
-                copyTextures();
+            if (NetworkUtils.isDedicatedClient()) {
+                if (GregTech_API.sBlockIcons == null && nbt.hasKey(NBT.TEXTURE_FOLDER)) {
+                    loadTextures(nbt.getString(NBT.TEXTURE_FOLDER));
+                } else {
+                    copyTextures();
+                }
             }
 
             if (mSidedRedstone.length != 6) mSidedRedstone = new byte[] { 15, 15, 15, 15, 15, 15 };
