@@ -86,7 +86,8 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
     }
 
     public String getLockedInventory() {
-        issueClientUpdate();
+        // TODO: Can this cause side-effects? Removed for now because it causes huge network traffic when using covers
+        // issueClientUpdate();
         IMultiBlockController controller = getTarget(false);
         if (modeSelected(ITEM_IN) || modeSelected(ITEM_OUT)) {
             if (!getNameOfInventoryFromIndex(controller, mLockedInventoryIndex).equals(mLockedInventory)) {
