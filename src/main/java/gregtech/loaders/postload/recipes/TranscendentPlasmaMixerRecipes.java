@@ -1,10 +1,8 @@
 package gregtech.loaders.postload.recipes;
 
-import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sTranscendentPlasmaMixerRecipes;
 
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.GT_Values;
@@ -117,35 +115,35 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
             .noOptimize()
             .addTo(sTranscendentPlasmaMixerRecipes);
 
-            GT_Values.RA.stdBuilder()
-                .itemInputs(GT_Utility.getIntegratedCircuit(5))
-                .noItemOutputs()
-                .fluidInputs(
-                    Materials.Helium.getPlasma(1000),
-                    Materials.Iron.getPlasma(1000),
-                    Materials.Calcium.getPlasma(1000),
-                    Materials.Niobium.getPlasma(1000),
-                    Materials.Radon.getPlasma(1000),
-                    Materials.Nickel.getPlasma(1000),
-                    Materials.Boron.getPlasma(1000),
-                    Materials.Sulfur.getPlasma(1000),
-                    Materials.Nitrogen.getPlasma(1000),
-                    Materials.Zinc.getPlasma(1000),
-                    Materials.Silver.getPlasma(1000),
-                    Materials.Titanium.getPlasma(1000),
-                    Materials.Americium.getPlasma(1000),
-                    Materials.Bismuth.getPlasma(1000),
-                    Materials.Oxygen.getPlasma(1000),
-                    Materials.Tin.getPlasma(1000),
-                    Materials.Lead.getPlasma(1000),
-                    Materials.Thorium.getPlasma(1000),
-                    Materials.Plutonium241.getPlasma(1000L),
-                    Materials.RawStarMatter.getFluid(25L))
-                .fluidOutputs(Materials.ExcitedDTSC.getFluid(1000L))
-                .duration(200)
-                .eut(STELLAR_EU_PER_HALF_L)
-                .noOptimize()
-                .addTo(sTranscendentPlasmaMixerRecipes);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_Utility.getIntegratedCircuit(5))
+            .noItemOutputs()
+            .fluidInputs(
+                Materials.Helium.getPlasma(1000),
+                Materials.Iron.getPlasma(1000),
+                Materials.Calcium.getPlasma(1000),
+                Materials.Niobium.getPlasma(1000),
+                Materials.Radon.getPlasma(1000),
+                Materials.Nickel.getPlasma(1000),
+                Materials.Boron.getPlasma(1000),
+                Materials.Sulfur.getPlasma(1000),
+                Materials.Nitrogen.getPlasma(1000),
+                Materials.Zinc.getPlasma(1000),
+                Materials.Silver.getPlasma(1000),
+                Materials.Titanium.getPlasma(1000),
+                Materials.Americium.getPlasma(1000),
+                Materials.Bismuth.getPlasma(1000),
+                Materials.Oxygen.getPlasma(1000),
+                Materials.Tin.getPlasma(1000),
+                Materials.Lead.getPlasma(1000),
+                Materials.Thorium.getPlasma(1000),
+                Materials.Plutonium241.getPlasma(1000L),
+                Materials.RawStarMatter.getFluid(25L))
+            .fluidOutputs(Materials.ExcitedDTSC.getFluid(1000L))
+            .duration(200)
+            .eut(STELLAR_EU_PER_HALF_L)
+            .noOptimize()
+            .addTo(sTranscendentPlasmaMixerRecipes);
 
     }
 }
