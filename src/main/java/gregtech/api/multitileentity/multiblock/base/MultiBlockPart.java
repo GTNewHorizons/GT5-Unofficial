@@ -131,11 +131,15 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
         super.getWailaBody(itemStack, currenttip, accessor, config);
         currenttip.add(String.format("Mode: %s", getModeName(mMode)));
         if (modeSelected(FLUID_OUT)) {
-            currenttip.add(
-                String.format(
-                    "Locked to: %s",
-                    configurationTank.get()
-                        .getLocalizedName()));
+            if (configurationTank != null && configurationTank.get() != null) {
+                currenttip.add(
+                    String.format(
+                        "Locked to: %s",
+                        configurationTank.get()
+                            .getLocalizedName()));
+            } else {
+                currenttip.add("Locked to: Nothing");
+            }
         }
     }
 
