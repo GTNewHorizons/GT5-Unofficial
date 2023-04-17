@@ -338,28 +338,44 @@ public abstract class MultiBlockPart extends NonTickableMultiTileEntity
         ITexture texture = super.getTexture(side);
         if (mMode != 0 && side == facing) {
             if (mMode == getModeOrdinal(ITEM_IN)) {
-                return TextureFactory.of(texture, TextureFactory.of(OVERLAY_PIPE_IN), TextureFactory.of(ITEM_IN_SIGN));
+                return TextureFactory.of(
+                    texture,
+                    TextureFactory.of(OVERLAY_PIPE_IN),
+                    TextureFactory.of(ITEM_IN_SIGN),
+                    getCoverTexture((byte) side.ordinal()));
             }
             if (mMode == getModeOrdinal(ITEM_OUT)) {
-                return TextureFactory
-                    .of(texture, TextureFactory.of(OVERLAY_PIPE_OUT), TextureFactory.of(ITEM_OUT_SIGN));
+                return TextureFactory.of(
+                    texture,
+                    TextureFactory.of(OVERLAY_PIPE_OUT),
+                    TextureFactory.of(ITEM_OUT_SIGN),
+                    getCoverTexture((byte) side.ordinal()));
             }
             if (mMode == getModeOrdinal(FLUID_IN)) {
-                return TextureFactory.of(texture, TextureFactory.of(OVERLAY_PIPE_IN), TextureFactory.of(FLUID_IN_SIGN));
+                return TextureFactory.of(
+                    texture,
+                    TextureFactory.of(OVERLAY_PIPE_IN),
+                    TextureFactory.of(FLUID_IN_SIGN),
+                    getCoverTexture((byte) side.ordinal()));
             }
             if (mMode == getModeOrdinal(FLUID_OUT)) {
-                return TextureFactory
-                    .of(texture, TextureFactory.of(OVERLAY_PIPE_OUT), TextureFactory.of(FLUID_OUT_SIGN));
+                return TextureFactory.of(
+                    texture,
+                    TextureFactory.of(OVERLAY_PIPE_OUT),
+                    TextureFactory.of(FLUID_OUT_SIGN),
+                    getCoverTexture((byte) side.ordinal()));
             }
             if (mMode == getModeOrdinal(ENERGY_IN)) {
-                return TextureFactory.of(texture, TextureFactory.of(OVERLAY_ENERGY_IN_MULTI));
+                return TextureFactory
+                    .of(texture, TextureFactory.of(OVERLAY_ENERGY_IN_MULTI), getCoverTexture((byte) side.ordinal()));
             }
             if (mMode == getModeOrdinal(ENERGY_OUT)) {
-                return TextureFactory.of(texture, TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI));
+                return TextureFactory
+                    .of(texture, TextureFactory.of(OVERLAY_ENERGY_OUT_MULTI), getCoverTexture((byte) side.ordinal()));
             }
         }
 
-        return texture;
+        return TextureFactory.of(texture, getCoverTexture((byte) side.ordinal()));
     }
 
     @Override

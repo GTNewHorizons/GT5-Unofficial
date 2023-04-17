@@ -305,7 +305,7 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
             return TextureFactory.of(texture, inactiveOverlayTexture, inactiveOverlayGlowTexture);
         }
 
-        return texture;
+        return TextureFactory.of(texture, getCoverTexture((byte) side.ordinal()));
     }
 
     @Override
