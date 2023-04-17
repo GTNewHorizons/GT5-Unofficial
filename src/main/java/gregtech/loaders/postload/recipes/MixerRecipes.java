@@ -1791,14 +1791,13 @@ public class MixerRecipes implements Runnable {
                 .noOptimize()
                 .addTo(sMixerRecipes);
 
-            if (GTPlusPlus.isModLoaded()) {
             GT_Values.RA.stdBuilder()
                 .itemInputs(GT_Utility.getIntegratedCircuit(13))
                 .noItemOutputs()
                 .fluidInputs(
                     Materials.DimensionallyTranscendentExoticCatalyst.getFluid(1000L),
-                    new FluidStack(FluidRegistry.getFluid("plasma.neptunium"), 1000),
-                    new FluidStack(FluidRegistry.getFluid("plasma.fermium"), 1000),
+                    Materials.Lead.getPlasma(1000),
+                    Materials.Thorium.getPlasma(1000),
                     Materials.Plutonium241.getPlasma(1000L),
                     Materials.RawStarMatter.getFluid(1000L))
                 .fluidOutputs(Materials.DimensionallyTranscendentStellarCatalyst.getFluid(1000L))
@@ -1806,7 +1805,6 @@ public class MixerRecipes implements Runnable {
                 .eut(TierEU.RECIPE_UIV)
                 .noOptimize()
                 .addTo(sMixerRecipes);
-            }
         }
 
         GT_Values.RA.stdBuilder()

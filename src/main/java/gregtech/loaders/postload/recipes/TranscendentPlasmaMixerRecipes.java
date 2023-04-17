@@ -17,7 +17,7 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
     private static final int PROSAIC_EU_PER_L = 66_768_460;
     private static final int RESPLENDENT_EU_PER_L = 269_326_451;
     private static final int EXOTIC_EU_PER_L = 1_073_007_393;
-    private static final int STELLAR_EU_PER_HALF_L = 2_137_858_448;
+    private static final int STELLAR_EU_PER_HALF_L = 2_138_383_760;
 
     @Deprecated
     private static void addTranscendentPlasmaMixerRecipe(final FluidStack fluidOutput, final int circuitNumber,
@@ -117,7 +117,6 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
             .noOptimize()
             .addTo(sTranscendentPlasmaMixerRecipes);
 
-        if (GTPlusPlus.isModLoaded()) {
             GT_Values.RA.stdBuilder()
                 .itemInputs(GT_Utility.getIntegratedCircuit(5))
                 .noItemOutputs()
@@ -138,16 +137,15 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
                     Materials.Bismuth.getPlasma(1000),
                     Materials.Oxygen.getPlasma(1000),
                     Materials.Tin.getPlasma(1000),
-                    new FluidStack(FluidRegistry.getFluid("plasma.neptunium"), 1000),
-                    new FluidStack(FluidRegistry.getFluid("plasma.fermium"), 1000),
+                    Materials.Lead.getPlasma(1000),
+                    Materials.Thorium.getPlasma(1000),
                     Materials.Plutonium241.getPlasma(1000L),
-                    Materials.RawStarMatter.getFluid(1000L))
+                    Materials.RawStarMatter.getFluid(25L))
                 .fluidOutputs(Materials.ExcitedDTSC.getFluid(1000L))
                 .duration(200)
                 .eut(STELLAR_EU_PER_HALF_L)
                 .noOptimize()
                 .addTo(sTranscendentPlasmaMixerRecipes);
-        }
 
     }
 }
