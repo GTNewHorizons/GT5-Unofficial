@@ -2,13 +2,7 @@ package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.enums.GT_Values.NF;
 import static gregtech.api.enums.GT_Values.NI;
-import static gregtech.api.enums.Mods.AppliedEnergistics2;
-import static gregtech.api.enums.Mods.BiomesOPlenty;
-import static gregtech.api.enums.Mods.Forestry;
-import static gregtech.api.enums.Mods.Natura;
-import static gregtech.api.enums.Mods.PamsHarvestCraft;
-import static gregtech.api.enums.Mods.Railcraft;
-import static gregtech.api.enums.Mods.Thaumcraft;
+import static gregtech.api.enums.Mods.*;
 import static gregtech.api.util.GT_ModHandler.getModItem;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sMixerRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
@@ -1749,6 +1743,7 @@ public class MixerRecipes implements Runnable {
                 .fluidOutputs(Materials.DimensionallyTranscendentCrudeCatalyst.getFluid(1000L))
                 .duration(41 * MINUTES + 40 * SECONDS)
                 .eut(TierEU.RECIPE_ZPM)
+                .noOptimize()
                 .addTo(sMixerRecipes);
 
             GT_Values.RA.stdBuilder()
@@ -1762,7 +1757,8 @@ public class MixerRecipes implements Runnable {
                     Materials.Sulfur.getPlasma(1000L))
                 .fluidOutputs(Materials.DimensionallyTranscendentProsaicCatalyst.getFluid(1000L))
                 .duration(41 * MINUTES + 40 * SECONDS)
-                .eut(TierEU.RECIPE_ZPM)
+                .eut(TierEU.RECIPE_UV)
+                .noOptimize()
                 .addTo(sMixerRecipes);
 
             GT_Values.RA.stdBuilder()
@@ -1776,7 +1772,8 @@ public class MixerRecipes implements Runnable {
                     Materials.Titanium.getPlasma(1000L))
                 .fluidOutputs(Materials.DimensionallyTranscendentResplendentCatalyst.getFluid(1000L))
                 .duration(41 * MINUTES + 40 * SECONDS)
-                .eut(TierEU.RECIPE_ZPM)
+                .eut(TierEU.RECIPE_UHV)
+                .noOptimize()
                 .addTo(sMixerRecipes);
 
             GT_Values.RA.stdBuilder()
@@ -1790,8 +1787,26 @@ public class MixerRecipes implements Runnable {
                     Materials.Tin.getPlasma(1000L))
                 .fluidOutputs(Materials.DimensionallyTranscendentExoticCatalyst.getFluid(1000L))
                 .duration(41 * MINUTES + 40 * SECONDS)
-                .eut(TierEU.RECIPE_ZPM)
+                .eut(TierEU.RECIPE_UEV)
+                .noOptimize()
                 .addTo(sMixerRecipes);
+
+            if (GTPlusPlus.isModLoaded()) {
+            GT_Values.RA.stdBuilder()
+                .itemInputs(GT_Utility.getIntegratedCircuit(13))
+                .noItemOutputs()
+                .fluidInputs(
+                    Materials.DimensionallyTranscendentExoticCatalyst.getFluid(1000L),
+                    new FluidStack(FluidRegistry.getFluid("plasma.neptunium"), 1000),
+                    new FluidStack(FluidRegistry.getFluid("plasma.fermium"), 1000),
+                    Materials.Plutonium241.getPlasma(1000L),
+                    Materials.RawStarMatter.getFluid(1000L))
+                .fluidOutputs(Materials.DimensionallyTranscendentStellarCatalyst.getFluid(1000L))
+                .duration(41 * MINUTES + 40 * SECONDS)
+                .eut(TierEU.RECIPE_UIV)
+                .noOptimize()
+                .addTo(sMixerRecipes);
+            }
         }
 
         GT_Values.RA.stdBuilder()
