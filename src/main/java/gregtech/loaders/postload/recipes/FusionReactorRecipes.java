@@ -336,7 +336,27 @@ public class FusionReactorRecipes implements Runnable {
             .noItemOutputs()
             .fluidInputs(Materials.Lutetium.getMolten(144), Materials.Vanadium.getMolten(144))
             .fluidOutputs(Materials.Plutonium241.getPlasma(144))
-            .duration(16 * TICKS)
+            .duration(8 * TICKS)
+            .eut(TierEU.RECIPE_UEV / 2)
+            .metadata(FUSION_THRESHOLD, 1_000_000_000)
+            .addTo(sFusionRecipes); // FT5 because of UEV voltage
+
+        GT_Values.RA.stdBuilder()
+            .noItemInputs()
+            .noItemOutputs()
+            .fluidInputs(Materials.Tellurium.getMolten(144), Materials.Zinc.getMolten(144))
+            .fluidOutputs(Materials.Lead.getPlasma(144))
+            .duration(8 * TICKS)
+            .eut(TierEU.RECIPE_UEV / 2)
+            .metadata(FUSION_THRESHOLD, 1_000_000_000)
+            .addTo(sFusionRecipes); // FT5 because of UEV voltage
+
+        GT_Values.RA.stdBuilder()
+            .noItemInputs()
+            .noItemOutputs()
+            .fluidInputs(Materials.Osmium.getMolten(144), Materials.Silicon.getMolten(144))
+            .fluidOutputs(Materials.Thorium.getPlasma(144))
+            .duration(8 * TICKS)
             .eut(TierEU.RECIPE_UEV / 2)
             .metadata(FUSION_THRESHOLD, 1_000_000_000)
             .addTo(sFusionRecipes); // FT5 because of UEV voltage
