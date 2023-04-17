@@ -9,7 +9,6 @@ import net.minecraft.util.Tuple;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.multitileentity.base.MultiTileEntity;
-import gregtech.api.multitileentity.machine.MultiTileBasicMachine;
 import gregtech.api.multitileentity.multiblock.casing.FunctionalCasing;
 import gregtech.api.multitileentity.multiblock.casing.UpgradeCasing;
 import gregtech.api.util.GT_Util;
@@ -112,50 +111,8 @@ public class MultiTileEntityClassContainer {
         return this;
     }
 
-    public MultiTileEntityClassContainer baseTexture(String texture) {
-        mParameters.setString(NBT.BASE_TEXTURE, texture);
-        return this;
-    }
-
-    public MultiTileEntityClassContainer upOverlayTexture(String texture) {
-        mParameters.setString(NBT.UP_OVERLAY_TEXTURE, texture);
-        return this;
-    }
-
-    public MultiTileEntityClassContainer downOverlayTexture(String texture) {
-        mParameters.setString(NBT.DOWN_OVERLAY_TEXTURE, texture);
-        return this;
-    }
-
-    public MultiTileEntityClassContainer eastOverlayTexture(String texture) {
-        mParameters.setString(NBT.EAST_OVERLAY_TEXTURE, texture);
-        return this;
-    }
-
-    public MultiTileEntityClassContainer westOverlayTexture(String texture) {
-        mParameters.setString(NBT.WEST_OVERLAY_TEXTURE, texture);
-        return this;
-    }
-
-    public MultiTileEntityClassContainer northOverlayTexture(String texture) {
-        mParameters.setString(NBT.NORTH_OVERLAY_TEXTURE, texture);
-        return this;
-    }
-
-    public MultiTileEntityClassContainer southOverlayTexture(String texture) {
-        mParameters.setString(NBT.SOUTH_OVERLAY_TEXTURE, texture);
-        return this;
-    }
-
-    public MultiTileEntityClassContainer activeOverlayTexture(String texture) {
-        verifyDescendentOf(MultiTileBasicMachine.class);
-        mParameters.setString(NBT.ACTIVE_OVERLAY_TEXTURE, texture);
-        return this;
-    }
-
-    public MultiTileEntityClassContainer inactiveOverlayTexture(String texture) {
-        verifyDescendentOf(MultiTileBasicMachine.class);
-        mParameters.setString(NBT.INACTIVE_OVERLAY_TEXTURE, texture);
+    public MultiTileEntityClassContainer textureFolder(String texture) {
+        mParameters.setString(NBT.TEXTURE_FOLDER, texture);
         return this;
     }
 

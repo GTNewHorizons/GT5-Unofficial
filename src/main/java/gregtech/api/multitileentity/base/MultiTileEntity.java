@@ -127,33 +127,15 @@ public abstract class MultiTileEntity extends CoverableTileEntity
     }
 
     @Override
-    public void loadTextureNBT(NBTTagCompound nbt) {
+    public void loadTextures(String folder) {
         // Loading the registry
-        baseTexture = TextureFactory.of(new CustomIcon("multitileentity/base/" + nbt.getString(NBT.BASE_TEXTURE)));
-        if (nbt.hasKey(NBT.UP_OVERLAY_TEXTURE)) {
-            upOverlayTexture = TextureFactory
-                .of(new CustomIcon("multitileentity/overlays/up/" + nbt.getString(NBT.UP_OVERLAY_TEXTURE)));
-        }
-        if (nbt.hasKey(NBT.UP_OVERLAY_TEXTURE)) {
-            downOverlayTexture = TextureFactory
-                .of(new CustomIcon("multitileentity/overlays/down/" + nbt.getString(NBT.DOWN_OVERLAY_TEXTURE)));
-        }
-        if (nbt.hasKey(NBT.UP_OVERLAY_TEXTURE)) {
-            eastOverlayTexture = TextureFactory
-                .of(new CustomIcon("multitileentity/overlays/east/" + nbt.getString(NBT.EAST_OVERLAY_TEXTURE)));
-        }
-        if (nbt.hasKey(NBT.UP_OVERLAY_TEXTURE)) {
-            westOverlayTexture = TextureFactory
-                .of(new CustomIcon("multitileentity/overlays/west/" + nbt.getString(NBT.WEST_OVERLAY_TEXTURE)));
-        }
-        if (nbt.hasKey(NBT.UP_OVERLAY_TEXTURE)) {
-            northOverlayTexture = TextureFactory
-                .of(new CustomIcon("multitileentity/overlays/north/" + nbt.getString(NBT.NORTH_OVERLAY_TEXTURE)));
-        }
-        if (nbt.hasKey(NBT.UP_OVERLAY_TEXTURE)) {
-            southOverlayTexture = TextureFactory
-                .of(new CustomIcon("multitileentity/overlays/south/" + nbt.getString(NBT.SOUTH_OVERLAY_TEXTURE)));
-        }
+        baseTexture = TextureFactory.of(new CustomIcon("multitileentity/" + folder + "/base"));
+        upOverlayTexture = TextureFactory.of(new CustomIcon("multitileentity/" + folder + "up"));
+        downOverlayTexture = TextureFactory.of(new CustomIcon("multitileentity/" + folder + "/down"));
+        eastOverlayTexture = TextureFactory.of(new CustomIcon("multitileentity/" + folder + "/east"));
+        westOverlayTexture = TextureFactory.of(new CustomIcon("multitileentity/" + folder + "/west"));
+        northOverlayTexture = TextureFactory.of(new CustomIcon("multitileentity/" + folder + "/north"));
+        southOverlayTexture = TextureFactory.of(new CustomIcon("multitileentity/" + folder + "/south"));
     }
 
     @Override
@@ -236,8 +218,8 @@ public abstract class MultiTileEntity extends CoverableTileEntity
             readCoverNBT(nbt);
             readMultiTileNBT(nbt);
 
-            if (GregTech_API.sBlockIcons == null && nbt.hasKey(NBT.BASE_TEXTURE)) {
-                loadTextureNBT(nbt);
+            if (GregTech_API.sBlockIcons == null && nbt.hasKey(NBT.TEXTURE_FOLDER)) {
+                loadTextures(nbt.getString(NBT.TEXTURE_FOLDER));
             } else {
                 copyTextures();
             }

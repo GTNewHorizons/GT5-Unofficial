@@ -259,24 +259,18 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
     }
 
     @Override
-    public void loadTextureNBT(NBTTagCompound nbt) {
-        super.loadTextureNBT(nbt);
+    public void loadTextures(String folder) {
+        super.loadTextures(folder);
         activeOverlayGlowTexture = TextureFactory.builder()
-            .addIcon(
-                new CustomIcon(
-                    "multitileentity/overlays/active/" + nbt.getString(NBT.ACTIVE_OVERLAY_TEXTURE) + "_glow"))
+            .addIcon(new CustomIcon("multitileentity/" + folder + "/active_overlay_glow"))
             .glow()
             .build();
-        activeOverlayGlowTexture = TextureFactory
-            .of(new CustomIcon("multitileentity/overlays/active/" + nbt.getString(NBT.ACTIVE_OVERLAY_TEXTURE)));
+        activeOverlayTexture = TextureFactory.of(new CustomIcon("multitileentity/" + folder + "/active_overlay"));
         inactiveOverlayGlowTexture = TextureFactory.builder()
-            .addIcon(
-                new CustomIcon(
-                    "multitileentity/overlays/inactive/" + nbt.getString(NBT.INACTIVE_OVERLAY_TEXTURE) + "_glow"))
+            .addIcon(new CustomIcon("multitileentity/" + folder + "/inactive_overlay_glow"))
             .glow()
             .build();
-        inactiveOverlayGlowTexture = TextureFactory
-            .of(new CustomIcon("multitileentity/overlays/inactive/" + nbt.getString(NBT.INACTIVE_OVERLAY_TEXTURE)));
+        inactiveOverlayTexture = TextureFactory.of(new CustomIcon("multitileentity/" + folder + "/inactive_overlay"));
     }
 
     @Override

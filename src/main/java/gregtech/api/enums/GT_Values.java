@@ -307,15 +307,7 @@ public class GT_Values {
             TANK_CAPACITY = "gt.tankcap", // Number
             TANK_IN = "gt.tank.in.", // FluidStack
             TANK_OUT = "gt.tank.out.", // FluidStack
-            BASE_TEXTURE = "gt.base.texture", // String
-            UP_OVERLAY_TEXTURE = "gt.up.overlay.texture", // String
-            DOWN_OVERLAY_TEXTURE = "gt.down.overlay.texture", // String
-            EAST_OVERLAY_TEXTURE = "gt.east.overlay.texture", // String
-            WEST_OVERLAY_TEXTURE = "gt.west.overlay.texture", // String
-            NORTH_OVERLAY_TEXTURE = "gt.north.overlay.texture", // String
-            SOUTH_OVERLAY_TEXTURE = "gt.south.overlay.texture", // String
-            ACTIVE_OVERLAY_TEXTURE = "gt.active.overlay.texture", // String
-            INACTIVE_OVERLAY_TEXTURE = "gt.inactive.overlay.texture", // String
+            TEXTURE_FOLDER = "gt.texture.folder", // String
             INV_INPUT_SIZE = "gt.invsize.in", // Number
             INV_OUTPUT_SIZE = "gt.invsize.out", // Number
             INV_INPUT_LIST = "gt.invlist.in", // NBT List
