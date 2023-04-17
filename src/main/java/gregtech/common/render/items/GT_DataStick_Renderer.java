@@ -16,13 +16,11 @@ import gregtech.api.util.GT_AssemblyLineUtils;
 public class GT_DataStick_Renderer implements IItemRenderer {
 
     private final RenderItem ri = new RenderItem();
-    private boolean recursive;
 
     @Override
     public boolean handleRenderType(ItemStack item, ItemRenderType type) {
         final boolean isShiftHeld = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT);
-
-        return !this.recursive && type == ItemRenderType.INVENTORY && isShiftHeld;
+        return type == ItemRenderType.INVENTORY && isShiftHeld;
     }
 
     @Override
@@ -32,8 +30,6 @@ public class GT_DataStick_Renderer implements IItemRenderer {
 
     @Override
     public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
-        this.recursive = true;
-
         final ItemStack is = GT_AssemblyLineUtils.getDataStickOutput(item);
         final Minecraft mc = Minecraft.getMinecraft();
 
@@ -42,7 +38,5 @@ public class GT_DataStick_Renderer implements IItemRenderer {
         this.ri.renderItemAndEffectIntoGUI(mc.fontRenderer, mc.getTextureManager(), is, 0, 0);
         RenderHelper.disableStandardItemLighting();
         GL11.glPopAttrib();
-
-        this.recursive = false;
     }
 }
