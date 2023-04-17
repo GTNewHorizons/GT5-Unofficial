@@ -276,8 +276,6 @@ public abstract class MultiTileEntity extends CoverableTileEntity
     @Override
     public NBTTagCompound writeItemNBT(NBTTagCompound aNBT) {
         writeCoverNBT(aNBT, true);
-        writeMultiTileNBT(aNBT);
-
         return aNBT;
     }
 
