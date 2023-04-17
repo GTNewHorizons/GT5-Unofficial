@@ -3,6 +3,7 @@ package gregtech.api.multitileentity.machine;
 import static com.google.common.primitives.Ints.saturatedCast;
 import static gregtech.api.enums.GT_Values.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -25,11 +26,9 @@ import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.*;
 import gregtech.api.enums.GT_Values.NBT;
-import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures.BlockIcons.CustomIcon;
-import gregtech.api.enums.TickTime;
 import gregtech.api.fluid.FluidTankGT;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.logic.PollutionLogic;
@@ -261,16 +260,36 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
     @Override
     public void loadTextures(String folder) {
         super.loadTextures(folder);
-        activeOverlayGlowTexture = TextureFactory.builder()
-            .addIcon(new CustomIcon("multitileentity/" + folder + "/active_overlay_glow"))
-            .glow()
-            .build();
-        activeOverlayTexture = TextureFactory.of(new CustomIcon("multitileentity/" + folder + "/active_overlay"));
-        inactiveOverlayGlowTexture = TextureFactory.builder()
-            .addIcon(new CustomIcon("multitileentity/" + folder + "/inactive_overlay_glow"))
-            .glow()
-            .build();
-        inactiveOverlayTexture = TextureFactory.of(new CustomIcon("multitileentity/" + folder + "/inactive_overlay"));
+        for (StatusTextures textureName : StatusTextures.TEXTURES) {
+            ITexture texture = null;
+            try {
+                Minecraft.getMinecraft()
+                    .getResourceManager()
+                    .getResource(
+                        new ResourceLocation(
+                            Mods.GregTech.ID,
+                            "textures/blocks/multitileentity/" + folder + "/" + textureName.getName() + ".png"));
+            } catch (IOException ignored) {
+                texture = TextureFactory.of(Textures.BlockIcons.VOID);
+            }
+            if (texture == null) {
+                if (textureName.hasGlow()) {
+                    texture = TextureFactory.builder()
+                        .addIcon(new CustomIcon("multitileentity/" + folder + "/" + textureName.getName()))
+                        .glow()
+                        .build();
+                } else {
+                    texture = TextureFactory
+                        .of(new CustomIcon("multitileentity/" + folder + "/" + textureName.getName()));
+                }
+            }
+            switch (textureName) {
+                case Active -> activeOverlayTexture = texture;
+                case ActiveWithGlow -> activeOverlayGlowTexture = texture;
+                case Inactive -> inactiveOverlayTexture = texture;
+                case InactiveWithGlow -> inactiveOverlayGlowTexture = texture;
+            }
+        }
     }
 
     @Override

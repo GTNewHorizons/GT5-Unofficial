@@ -1,10 +1,10 @@
 package gregtech.api.multitileentity.base;
 
 import static gregtech.GT_Mod.GT_FML_LOGGER;
-import static gregtech.api.enums.GT_Values.NBT;
 import static gregtech.api.enums.GT_Values.OPOS;
 import static gregtech.api.enums.GT_Values.VALID_SIDES;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -13,6 +13,7 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -26,6 +27,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -38,10 +40,8 @@ import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.*;
 import gregtech.api.enums.GT_Values.NBT;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures.BlockIcons.CustomIcon;
 import gregtech.api.gui.modularui.GT_UIInfos;
 import gregtech.api.interfaces.ITexture;
@@ -132,13 +132,29 @@ public abstract class MultiTileEntity extends CoverableTileEntity
     @Override
     public void loadTextures(String folder) {
         // Loading the registry
-        baseTexture = TextureFactory.of(new CustomIcon("multitileentity/" + folder + "/base"));
-        topOverlayTexture = TextureFactory.of(new CustomIcon("multitileentity/" + folder + "/top"));
-        bottomOverlayTexture = TextureFactory.of(new CustomIcon("multitileentity/" + folder + "/bottom"));
-        leftOverlayTexture = TextureFactory.of(new CustomIcon("multitileentity/" + folder + "/left"));
-        rightOverlayTexture = TextureFactory.of(new CustomIcon("multitileentity/" + folder + "/right"));
-        backOverlayTexture = TextureFactory.of(new CustomIcon("multitileentity/" + folder + "/back"));
-        frontOverlayTexture = TextureFactory.of(new CustomIcon("multitileentity/" + folder + "/front"));
+        for (SidedTextureNames textureName : SidedTextureNames.TEXTURES) {
+            ITexture texture;
+            try {
+                Minecraft.getMinecraft()
+                    .getResourceManager()
+                    .getResource(
+                        new ResourceLocation(
+                            Mods.GregTech.ID,
+                            "textures/blocks/multitileentity/" + folder + "/" + textureName.getName() + ".png"));
+                texture = TextureFactory.of(new CustomIcon("multitileentity/" + folder + "/" + textureName.getName()));
+            } catch (IOException ignored) {
+                texture = TextureFactory.of(Textures.BlockIcons.VOID);
+            }
+            switch (textureName) {
+                case Top -> topOverlayTexture = texture;
+                case Bottom -> bottomOverlayTexture = texture;
+                case Back -> backOverlayTexture = texture;
+                case Front -> frontOverlayTexture = texture;
+                case Left -> leftOverlayTexture = texture;
+                case Right -> rightOverlayTexture = texture;
+                case Base -> baseTexture = texture;
+            }
+        }
     }
 
     @Override
@@ -1390,5 +1406,52 @@ public abstract class MultiTileEntity extends CoverableTileEntity
     @Override
     public ItemStack getStackForm(long aAmount) {
         return new ItemStack(Item.getItemById(getMultiTileEntityRegistryID()), (int) aAmount, getMultiTileEntityID());
+    }
+
+    protected enum SidedTextureNames {
+
+        Base("base"),
+        Left("left"),
+        Right("right"),
+        Top("top"),
+        Bottom("bottom"),
+        Back("back"),
+        Front("front");
+
+        private final String name;
+        public static final SidedTextureNames[] TEXTURES = { Base, Left, Right, Top, Bottom, Back, Front };
+
+        SidedTextureNames(String name) {
+            this.name = name;
+        }
+
+        public String getName() {
+            return name;
+        }
+    }
+
+    protected enum StatusTextures {
+
+        Active("active", false),
+        ActiveWithGlow("active_glow", true),
+        Inactive("inactive", false),
+        InactiveWithGlow("inactive_glow", true);
+
+        private final String name;
+        private final boolean hasGlow;
+        public static final StatusTextures[] TEXTURES = { Active, ActiveWithGlow, Inactive, InactiveWithGlow };
+
+        StatusTextures(String name, boolean hasGlow) {
+            this.name = name;
+            this.hasGlow = hasGlow;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public boolean hasGlow() {
+            return hasGlow;
+        }
     }
 }
