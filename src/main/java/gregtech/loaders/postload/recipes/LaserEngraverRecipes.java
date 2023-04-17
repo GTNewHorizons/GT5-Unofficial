@@ -21,6 +21,7 @@ public class LaserEngraverRecipes implements Runnable {
             .requiresCleanRoom()
             .duration(41 * MINUTES + 40 * SECONDS)
             .eut((int) TierEU.RECIPE_ZPM)
+            .noOptimize()
             .addTo(sLaserEngraverRecipes);
 
         GT_Values.RA.stdBuilder()
@@ -31,6 +32,7 @@ public class LaserEngraverRecipes implements Runnable {
             .requiresCleanRoom()
             .duration(41 * MINUTES + 40 * SECONDS)
             .eut((int) TierEU.RECIPE_UV)
+            .noOptimize()
             .addTo(sLaserEngraverRecipes);
 
         GT_Values.RA.stdBuilder()
@@ -41,6 +43,7 @@ public class LaserEngraverRecipes implements Runnable {
             .requiresCleanRoom()
             .duration(41 * MINUTES + 40 * SECONDS)
             .eut((int) TierEU.RECIPE_UHV)
+            .noOptimize()
             .addTo(sLaserEngraverRecipes);
 
         GT_Values.RA.stdBuilder()
@@ -51,6 +54,18 @@ public class LaserEngraverRecipes implements Runnable {
             .requiresCleanRoom()
             .duration(41 * MINUTES + 40 * SECONDS)
             .eut((int) TierEU.RECIPE_UEV)
+            .noOptimize()
+            .addTo(sLaserEngraverRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .noItemInputs()
+            .noItemOutputs()
+            .fluidInputs(Materials.DimensionallyTranscendentStellarCatalyst.getFluid(1000))
+            .fluidOutputs(Materials.ExcitedDTSC.getFluid(1000))
+            .requiresCleanRoom()
+            .duration(41 * MINUTES + 40 * SECONDS)
+            .eut((int) TierEU.RECIPE_UIV)
+            .noOptimize()
             .addTo(sLaserEngraverRecipes);
 
     }
