@@ -177,12 +177,12 @@ public abstract class MultiTileEntity extends CoverableTileEntity
     @Override
     public ITexture getTexture(ForgeDirection side) {
         return switch (side) {
-            case DOWN -> TextureFactory.of(baseTexture, downOverlayTexture);
-            case EAST -> TextureFactory.of(baseTexture, eastOverlayTexture);
-            case NORTH -> TextureFactory.of(baseTexture, northOverlayTexture);
-            case SOUTH -> TextureFactory.of(baseTexture, southOverlayTexture);
-            case UP -> TextureFactory.of(baseTexture, upOverlayTexture);
-            case WEST -> TextureFactory.of(baseTexture, westOverlayTexture);
+            case DOWN -> TextureFactory.of(baseTexture, downOverlayTexture, getCoverTexture((byte) side.ordinal()));
+            case EAST -> TextureFactory.of(baseTexture, eastOverlayTexture, getCoverTexture((byte) side.ordinal()));
+            case NORTH -> TextureFactory.of(baseTexture, northOverlayTexture, getCoverTexture((byte) side.ordinal()));
+            case SOUTH -> TextureFactory.of(baseTexture, southOverlayTexture, getCoverTexture((byte) side.ordinal()));
+            case UP -> TextureFactory.of(baseTexture, upOverlayTexture, getCoverTexture((byte) side.ordinal()));
+            case WEST -> TextureFactory.of(baseTexture, westOverlayTexture, getCoverTexture((byte) side.ordinal()));
             default -> null;
         };
     }
