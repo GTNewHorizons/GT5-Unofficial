@@ -126,7 +126,7 @@ public class GT_MetaTileEntity_OilCracker extends GT_MetaTileEntity_EnhancedMult
             .addInfo("Gets 10% EU/t reduction per coil tier, up to a maximum of 50%")
             .addEnergyHatch("Any casing", 1, 2, 3)
             .addMaintenanceHatch("Any casing", 1, 2, 3)
-            .addInputHatch("Steam/Hydrogen ONLY, Any middle ring casing", 1)
+            .addInputHatch("For cracking fluid (Steam/Hydrogen/etc.) ONLY, Any middle ring casing", 1)
             .addInputHatch("Any left/right side casing", 2, 3)
             .addOutputHatch("Any right/left side casing", 2, 3)
             .addStructureInfo("Input/Output Hatches must be on opposite sides!")

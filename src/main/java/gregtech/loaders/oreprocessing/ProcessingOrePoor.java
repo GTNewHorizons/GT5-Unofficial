@@ -1,5 +1,7 @@
 package gregtech.loaders.oreprocessing;
 
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sHammerRecipes;
+
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.GT_Values;
@@ -39,11 +41,15 @@ public class ProcessingOrePoor implements gregtech.api.interfaces.IOreRecipeRegi
                 break;
         }
         if (aMaterial != null) {
-            GT_Values.RA.addForgeHammerRecipe(
-                GT_Utility.copyAmount(1L, aStack),
-                GT_OreDictUnificator.get(OrePrefixes.dustTiny, aMaterial, aMultiplier),
-                16,
-                10);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(GT_Utility.copyAmount(1L, aStack))
+                .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dustTiny, aMaterial, aMultiplier))
+                .noFluidInputs()
+                .noFluidOutputs()
+                .duration(10)
+                .eut(16)
+                .addTo(sHammerRecipes);
+
             GT_ModHandler.addPulverisationRecipe(
                 GT_Utility.copyAmount(1L, aStack),
                 GT_OreDictUnificator.get(OrePrefixes.dustTiny, aMaterial, 2 * aMultiplier),

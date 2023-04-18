@@ -4,9 +4,11 @@ import static gregtech.api.enums.Mods.AppliedEnergistics2;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sBenderRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCompressorRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sElectrolyzerRecipes;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sHammerRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sLaserEngraverRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 import static gregtech.api.util.GT_Utility.calculateRecipeEU;
 
 import net.minecraft.item.ItemStack;
@@ -76,20 +78,26 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                 if (aNoSmashing) {
                     // Forge hammer recipes
                     {
-                        GT_Values.RA.addForgeHammerRecipe(
-                            aStack,
-                            GT_OreDictUnificator.get(OrePrefixes.gemFlawed, aMaterial, 2L),
-                            64,
-                            16);
+                        GT_Values.RA.stdBuilder()
+                            .itemInputs(aStack)
+                            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.gemFlawed, aMaterial, 2L))
+                            .noFluidInputs()
+                            .noFluidOutputs()
+                            .duration(3 * SECONDS + 4 * TICKS)
+                            .eut(16)
+                            .addTo(sHammerRecipes);
                     }
                 } else {
                     // Forge hammer recipes
                     {
-                        GT_Values.RA.addForgeHammerRecipe(
-                            GT_Utility.copyAmount(1L, aStack),
-                            GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L),
-                            (int) Math.max(aMaterialMass, 1L),
-                            calculateRecipeEU(aMaterial, 16));
+                        GT_Values.RA.stdBuilder()
+                            .itemInputs(GT_Utility.copyAmount(1L, aStack))
+                            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L))
+                            .noFluidInputs()
+                            .noFluidOutputs()
+                            .duration(Math.max(aMaterialMass, 1L))
+                            .eut(calculateRecipeEU(aMaterial, 16))
+                            .addTo(sHammerRecipes);
                     }
 
                     // Bender recipes
@@ -333,11 +341,14 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
 
                 // Forge hammer recipes
                 {
-                    GT_Values.RA.addForgeHammerRecipe(
-                        aStack,
-                        GT_OreDictUnificator.get(OrePrefixes.gemFlawless, aMaterial, 2L),
-                        64,
-                        16);
+                    GT_Values.RA.stdBuilder()
+                        .itemInputs(aStack)
+                        .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.gemFlawless, aMaterial, 2L))
+                        .noFluidInputs()
+                        .noFluidOutputs()
+                        .duration(3 * SECONDS + 4 * TICKS)
+                        .eut(16)
+                        .addTo(sHammerRecipes);
                 }
             }
             case gemFlawed -> {
@@ -383,11 +394,15 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                         }
                     }
                 }
-                GT_Values.RA.addForgeHammerRecipe(
-                    aStack,
-                    GT_OreDictUnificator.get(OrePrefixes.gemChipped, aMaterial, 2L),
-                    64,
-                    16);
+                GT_Values.RA.stdBuilder()
+                    .itemInputs(aStack)
+                    .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.gemChipped, aMaterial, 2L))
+                    .noFluidInputs()
+                    .noFluidOutputs()
+                    .duration(3 * SECONDS + 4 * TICKS)
+                    .eut(16)
+                    .addTo(sHammerRecipes);
+
                 for (ItemStack is : OreDictionary.getOres("craftingLens" + aMaterial.mColor.mName.replace(" ", ""))) { // Engraver
 
                     is.stackSize = 0;
@@ -451,8 +466,15 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                         }
                     }
                 }
-                GT_Values.RA
-                    .addForgeHammerRecipe(aStack, GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, 2L), 64, 16);
+                GT_Values.RA.stdBuilder()
+                    .itemInputs(aStack)
+                    .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, 2L))
+                    .noFluidInputs()
+                    .noFluidOutputs()
+                    .duration(3 * SECONDS + 4 * TICKS)
+                    .eut(16)
+                    .addTo(sHammerRecipes);
+
                 for (ItemStack is : OreDictionary.getOres("craftingLens" + aMaterial.mColor.mName.replace(" ", ""))) { // Engraver
 
                     is.stackSize = 0;

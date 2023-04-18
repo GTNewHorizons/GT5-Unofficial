@@ -155,7 +155,7 @@ public class FuelRecipes implements Runnable {
             .addTo(GT_RecipeConstants.Fuel);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(getModItem(TaintedMagic.ID, "WarpedShard", 1L))
+            .itemInputs(getModItem(TaintedMagic.ID, "ItemMaterial", 1L, 3))
             .noItemOutputs()
             .noFluidInputs()
             .noFluidOutputs()
@@ -166,7 +166,7 @@ public class FuelRecipes implements Runnable {
             .addTo(GT_RecipeConstants.Fuel);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(getModItem(TaintedMagic.ID, "FluxShard", 1L))
+            .itemInputs(getModItem(TaintedMagic.ID, "ItemMaterial", 1L, 4))
             .noItemOutputs()
             .noFluidInputs()
             .noFluidOutputs()
@@ -177,7 +177,7 @@ public class FuelRecipes implements Runnable {
             .addTo(GT_RecipeConstants.Fuel);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(getModItem(TaintedMagic.ID, "EldritchShard", 1L))
+            .itemInputs(getModItem(TaintedMagic.ID, "ItemMaterial", 1L, 5))
             .noItemOutputs()
             .noFluidInputs()
             .noFluidOutputs()

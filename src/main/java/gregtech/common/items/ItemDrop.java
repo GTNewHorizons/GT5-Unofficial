@@ -6,6 +6,9 @@ import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.enums.Mods.HardcoreEnderExpansion;
 import static gregtech.api.enums.Mods.MagicBees;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sFluidExtractionRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 
 import java.util.List;
 
@@ -24,6 +27,7 @@ import forestry.api.core.Tabs;
 import forestry.api.recipes.RecipeManagers;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_ModHandler;
 
 public class ItemDrop extends Item {
@@ -188,19 +192,51 @@ public class ItemDrop extends Item {
     }
 
     public void addProcessLV(ItemStack tDrop, FluidStack aOutput, ItemStack aOutput2, int aChance, int aEUt) {
-        GT_Values.RA.addFluidExtractionRecipe(tDrop, aOutput2, aOutput, aChance, 32, aEUt);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(tDrop)
+            .itemOutputs(aOutput2)
+            .outputChances(aChance)
+            .noFluidInputs()
+            .fluidOutputs(aOutput)
+            .duration(1 * SECONDS + 12 * TICKS)
+            .eut(aEUt)
+            .addTo(sFluidExtractionRecipes);
     }
 
     public void addProcessLV(ItemStack tDrop, FluidStack aOutput, ItemStack aOutput2, int aChance, int aDuration,
         int aEUt) {
-        GT_Values.RA.addFluidExtractionRecipe(tDrop, aOutput2, aOutput, aChance, aDuration, aEUt);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(tDrop)
+            .itemOutputs(aOutput2)
+            .outputChances(aChance)
+            .noFluidInputs()
+            .fluidOutputs(aOutput)
+            .duration(aDuration)
+            .eut(aEUt)
+            .addTo(sFluidExtractionRecipes);
     }
 
     public void addProcessMV(ItemStack tDrop, FluidStack aOutput, ItemStack aOutput2, int aChance, int aEUt) {
-        GT_Values.RA.addFluidExtractionRecipe(tDrop, aOutput2, aOutput, aChance, 128, aEUt);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(tDrop)
+            .itemOutputs(aOutput2)
+            .outputChances(aChance)
+            .noFluidInputs()
+            .fluidOutputs(aOutput)
+            .duration(6 * SECONDS + 8 * TICKS)
+            .eut(aEUt)
+            .addTo(sFluidExtractionRecipes);
     }
 
     public void addProcessHV(ItemStack tDrop, FluidStack aOutput, ItemStack aOutput2, int aChance) {
-        GT_Values.RA.addFluidExtractionRecipe(tDrop, aOutput2, aOutput, aChance, 480, 480);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(tDrop)
+            .itemOutputs(aOutput2)
+            .outputChances(aChance)
+            .noFluidInputs()
+            .fluidOutputs(aOutput)
+            .duration(24 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(sFluidExtractionRecipes);
     }
 }

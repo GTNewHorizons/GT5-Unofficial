@@ -617,29 +617,34 @@ public class FluidExtractorRecipes implements Runnable {
         // Beecombs fluid extractor recipes
         if (BartWorks.isModLoaded()) {
             // xenon
-            GT_Values.RA.addFluidExtractionRecipe(
-                getModItem(GregTech.ID, "gt.comb", 1L, 134),
-                null,
-                getFluidStack("xenon", 250),
-                100 * 100,
-                50,
-                8192);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(getModItem(GregTech.ID, "gt.comb", 1L, 134))
+                .noItemOutputs()
+                .noFluidInputs()
+                .fluidOutputs(getFluidStack("xenon", 250))
+                .duration(2 * SECONDS + 10 * TICKS)
+                .eut(TierEU.RECIPE_IV)
+                .addTo(sFluidExtractionRecipes);
+
             // neon
-            GT_Values.RA.addFluidExtractionRecipe(
-                getModItem(GregTech.ID, "gt.comb", 1L, 135),
-                null,
-                getFluidStack("neon", 250),
-                100 * 100,
-                15,
-                8192);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(getModItem(GregTech.ID, "gt.comb", 1L, 135))
+                .noItemOutputs()
+                .noFluidInputs()
+                .fluidOutputs(getFluidStack("neon", 250))
+                .duration(15 * TICKS)
+                .eut(TierEU.RECIPE_IV)
+                .addTo(sFluidExtractionRecipes);
+
             // krpton
-            GT_Values.RA.addFluidExtractionRecipe(
-                getModItem(GregTech.ID, "gt.comb", 1L, 136),
-                null,
-                getFluidStack("krypton", 250),
-                100 * 100,
-                25,
-                8192);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(getModItem(GregTech.ID, "gt.comb", 1L, 136))
+                .noItemOutputs()
+                .noFluidInputs()
+                .fluidOutputs(getFluidStack("krypton", 250))
+                .duration(1 * SECONDS + 5 * TICKS)
+                .eut(TierEU.RECIPE_IV)
+                .addTo(sFluidExtractionRecipes);
         }
     }
 }

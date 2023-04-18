@@ -3,6 +3,9 @@ package gregtech.common.items;
 import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.enums.Mods.HardcoreEnderExpansion;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sFluidExtractionRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 
 import java.util.List;
 
@@ -20,6 +23,7 @@ import forestry.api.core.Tabs;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 
@@ -103,27 +107,38 @@ public class ItemPropolis extends Item {
     }
 
     public void addProcessHV(ItemStack tPropolis, ItemStack aOutput2) {
-        GT_Values.RA
-            .addFluidExtractionRecipe(tPropolis, aOutput2, FluidRegistry.getFluidStack("endergoo", 100), 5000, 50, 480);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(tPropolis)
+            .itemOutputs(aOutput2)
+            .outputChances(5000)
+            .noFluidInputs()
+            .fluidOutputs(FluidRegistry.getFluidStack("endergoo", 100))
+            .duration(2 * SECONDS + 10 * TICKS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(sFluidExtractionRecipes);
     }
 
     public void addProcessEV(ItemStack tPropolis, ItemStack aOutput2) {
-        GT_Values.RA.addFluidExtractionRecipe(
-            tPropolis,
-            aOutput2,
-            FluidRegistry.getFluidStack("endergoo", 200),
-            2500,
-            100,
-            1920);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(tPropolis)
+            .itemOutputs(aOutput2)
+            .outputChances(2500)
+            .noFluidInputs()
+            .fluidOutputs(FluidRegistry.getFluidStack("endergoo", 200))
+            .duration(5 * SECONDS)
+            .eut(TierEU.RECIPE_EV)
+            .addTo(sFluidExtractionRecipes);
     }
 
     public void addProcessIV(ItemStack tPropolis, ItemStack aOutput2) {
-        GT_Values.RA.addFluidExtractionRecipe(
-            tPropolis,
-            aOutput2,
-            FluidRegistry.getFluidStack("endergoo", 300),
-            1500,
-            150,
-            7680);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(tPropolis)
+            .itemOutputs(aOutput2)
+            .outputChances(1500)
+            .noFluidInputs()
+            .fluidOutputs(FluidRegistry.getFluidStack("endergoo", 300))
+            .duration(7 * SECONDS + 10 * TICKS)
+            .eut(TierEU.RECIPE_IV)
+            .addTo(sFluidExtractionRecipes);
     }
 }

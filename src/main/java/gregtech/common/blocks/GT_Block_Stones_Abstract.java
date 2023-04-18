@@ -1,5 +1,6 @@
 package gregtech.common.blocks;
 
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sHammerRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sLaserEngraverRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
@@ -35,6 +36,15 @@ public class GT_Block_Stones_Abstract extends GT_Generic_Block implements IOreRe
         OrePrefixes.crafting.add(this);
         setStepSound(soundTypeStone);
         setCreativeTab(GregTech_API.TAB_GREGTECH_MATERIALS);
+
+        this.registerSmeltingRecipes();
+        this.registerAssemblerRecipes();
+        this.registerCraftingRecipes();
+        this.registerForgeHammerRecipes();
+
+    }
+
+    private void registerSmeltingRecipes() {
         GT_ModHandler.addSmeltingRecipe(new ItemStack(this, 1, 0), new ItemStack(this, 1, 7));
         GT_ModHandler.addSmeltingRecipe(new ItemStack(this, 1, 1), new ItemStack(this, 1, 0));
         GT_ModHandler.addSmeltingRecipe(new ItemStack(this, 1, 2), new ItemStack(this, 1, 0));
@@ -51,6 +61,10 @@ public class GT_Block_Stones_Abstract extends GT_Generic_Block implements IOreRe
         GT_ModHandler.addSmeltingRecipe(new ItemStack(this, 1, 13), new ItemStack(this, 1, 8));
         GT_ModHandler.addSmeltingRecipe(new ItemStack(this, 1, 14), new ItemStack(this, 1, 8));
         GT_ModHandler.addSmeltingRecipe(new ItemStack(this, 1, 15), new ItemStack(this, 1, 8));
+
+    }
+
+    private void registerAssemblerRecipes() {
         GT_Values.RA.addAssemblerRecipe(
             new ItemStack(this, 1, 0),
             ItemList.Circuit_Integrated.getWithDamage(0L, 4L),
@@ -63,6 +77,9 @@ public class GT_Block_Stones_Abstract extends GT_Generic_Block implements IOreRe
             new ItemStack(this, 1, 11),
             50,
             4);
+    }
+
+    private void registerCraftingRecipes() {
         GT_ModHandler.addCraftingRecipe(
             new ItemStack(this, 1, 6),
             GT_ModHandler.RecipeBits.NOT_REMOVABLE,
@@ -87,10 +104,6 @@ public class GT_Block_Stones_Abstract extends GT_Generic_Block implements IOreRe
             new ItemStack(this, 1, 9),
             GT_ModHandler.RecipeBits.NOT_REMOVABLE,
             new Object[] { "h", "X", 'X', new ItemStack(this, 1, 8) });
-        GT_Values.RA.addForgeHammerRecipe(new ItemStack(this, 1, 3), new ItemStack(this, 1, 4), 16, 10);
-        GT_Values.RA.addForgeHammerRecipe(new ItemStack(this, 1, 11), new ItemStack(this, 1, 12), 16, 10);
-        GT_Values.RA.addForgeHammerRecipe(new ItemStack(this, 1, 0), new ItemStack(this, 1, 1), 16, 10);
-        GT_Values.RA.addForgeHammerRecipe(new ItemStack(this, 1, 8), new ItemStack(this, 1, 9), 16, 10);
         GT_ModHandler.addCraftingRecipe(
             new ItemStack(this, 4, 3),
             GT_ModHandler.RecipeBits.NOT_REMOVABLE,
@@ -107,6 +120,44 @@ public class GT_Block_Stones_Abstract extends GT_Generic_Block implements IOreRe
             new ItemStack(this, 4, 11),
             GT_ModHandler.RecipeBits.NOT_REMOVABLE,
             new Object[] { "XX", "XX", 'X', new ItemStack(this, 4, 15) });
+    }
+
+    private void registerForgeHammerRecipes() {
+        GT_Values.RA.stdBuilder()
+            .itemInputs(new ItemStack(this, 1, 3))
+            .itemOutputs(new ItemStack(this, 1, 4))
+            .noFluidInputs()
+            .noFluidOutputs()
+            .duration(16 * TICKS)
+            .eut(10)
+            .addTo(sHammerRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(new ItemStack(this, 1, 11))
+            .itemOutputs(new ItemStack(this, 1, 12))
+            .noFluidInputs()
+            .noFluidOutputs()
+            .duration(16 * TICKS)
+            .eut(10)
+            .addTo(sHammerRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(new ItemStack(this, 1, 0))
+            .itemOutputs(new ItemStack(this, 1, 1))
+            .noFluidInputs()
+            .noFluidOutputs()
+            .duration(16 * TICKS)
+            .eut(10)
+            .addTo(sHammerRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(new ItemStack(this, 1, 8))
+            .itemOutputs(new ItemStack(this, 1, 9))
+            .noFluidInputs()
+            .noFluidOutputs()
+            .duration(16 * TICKS)
+            .eut(10)
+            .addTo(sHammerRecipes);
     }
 
     @Override
