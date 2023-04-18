@@ -165,6 +165,8 @@ public class projectileEM extends LaserProjectile {
                                     true);
                         }
                         break;
+                    default:
+                        break;
                 }
             }
             setDead();
