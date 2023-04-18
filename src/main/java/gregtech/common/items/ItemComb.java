@@ -2,6 +2,7 @@ package gregtech.common.items;
 
 import static gregtech.api.enums.GT_Values.*;
 import static gregtech.api.enums.Mods.*;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sFluidExtractionRecipes;
 import static gregtech.api.util.GT_RecipeConstants.CLEANROOM;
 import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
@@ -1745,20 +1746,24 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
             chance = Arrays.copyOf(chance, 6);
         }
 
-        RA.addCentrifugeRecipe(
-            tComb,
-            NI,
-            NF,
-            NF,
-            aItem[0],
-            aItem[1],
-            aItem[2],
-            aItem[3],
-            aItem[4],
-            aItem[5],
-            chance,
-            duration,
-            volt.getSimpleEnergy());
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                tComb
+            )
+            .itemOutputs(
+                aItem[0],
+                aItem[1],
+                aItem[2],
+                aItem[3],
+                aItem[4],
+                aItem[5]
+            )
+            .outputChances(chance)
+            .noFluidInputs()
+            .noFluidOutputs()
+            .duration(duration)
+            .eut(volt.getSimpleEnergy())
+            .addTo(sCentrifugeRecipes);
     }
 
     public void registerOreDict() {

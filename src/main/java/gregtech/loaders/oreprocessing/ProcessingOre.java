@@ -2,6 +2,7 @@ package gregtech.loaders.oreprocessing;
 
 import java.util.ArrayList;
 
+import gregtech.api.enums.TierEU;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.GT_Values;
@@ -13,7 +14,9 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sHammerRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 
 public class ProcessingOre implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
@@ -37,20 +40,19 @@ public class ProcessingOre implements gregtech.api.interfaces.IOreRecipeRegistra
             || (aPrefix == OrePrefixes.oreDense);
 
         if (aMaterial == Materials.Oilsands) {
-            GT_Values.RA.addCentrifugeRecipe(
-                GT_Utility.copyAmount(1L, aStack),
-                null,
-                null,
-                Materials.OilHeavy.getFluid(tIsRich ? 4000L : 2000L),
-                new ItemStack(net.minecraft.init.Blocks.sand, 1, 0),
-                null,
-                null,
-                null,
-                null,
-                null,
-                new int[] { tIsRich ? 2000 : 4000 },
-                tIsRich ? 600 : 300,
-                30);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(
+                    GT_Utility.copyAmount(1L, aStack)
+                )
+                .itemOutputs(
+                    new ItemStack(net.minecraft.init.Blocks.sand, 1, 0)
+                )
+                .outputChances(tIsRich ? 2000 : 4000)
+                .noFluidInputs()
+                .fluidOutputs(Materials.OilHeavy.getFluid(tIsRich ? 4000L : 2000L))
+                .duration(tIsRich ? 30*SECONDS : 15*SECONDS)
+                .eut(TierEU.RECIPE_LV)
+                .addTo(sCentrifugeRecipes);
         } else {
             registerStandardOreRecipes(
                 aPrefix,

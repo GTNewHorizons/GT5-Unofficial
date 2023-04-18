@@ -100,6 +100,7 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         return true;
     }
 
+    @Deprecated
     @Override
     public boolean addCentrifugeRecipe(ItemStack aInput1, int aInput2, ItemStack aOutput1, ItemStack aOutput2,
         ItemStack aOutput3, ItemStack aOutput4, ItemStack aOutput5, ItemStack aOutput6, int aDuration) {
@@ -119,6 +120,7 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
             5);
     }
 
+    @Deprecated
     @Override
     public boolean addCentrifugeRecipe(ItemStack aInput1, int aInput2, ItemStack aOutput1, ItemStack aOutput2,
         ItemStack aOutput3, ItemStack aOutput4, ItemStack aOutput5, ItemStack aOutput6, int aDuration, int aEUt) {
@@ -138,6 +140,7 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
             aEUt);
     }
 
+    @Deprecated
     @Override
     public boolean addCentrifugeRecipe(ItemStack aInput1, ItemStack aInput2, FluidStack aFluidInput,
         FluidStack aFluidOutput, ItemStack aOutput1, ItemStack aOutput2, ItemStack aOutput3, ItemStack aOutput4,
@@ -159,6 +162,7 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
             false);
     }
 
+    @Deprecated
     @Override
     public boolean addCentrifugeRecipe(ItemStack aInput1, ItemStack aInput2, FluidStack aFluidInput,
         FluidStack aFluidOutput, ItemStack aOutput1, ItemStack aOutput2, ItemStack aOutput3, ItemStack aOutput4,
