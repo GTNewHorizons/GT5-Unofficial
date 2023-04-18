@@ -178,6 +178,7 @@ public class GT_Mod implements IGT_Mod {
         }
     }
 
+    @SuppressWarnings("deprecation")
     public GT_Mod() {
         GT_Values.GT = this;
         GT_Values.DW = new GT_DummyWorld();

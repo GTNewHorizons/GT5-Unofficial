@@ -228,7 +228,6 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
         return tTileEntity != null && tTileEntity.receiveClientEvent(aData1, aData2);
     }
 
-    @SuppressWarnings("unchecked") // Old API uses raw List type
     @Override
     public void addCollisionBoxesToList(World aWorld, int aX, int aY, int aZ, AxisAlignedBB inputAABB,
         List<AxisAlignedBB> outputAABB, Entity collider) {
@@ -605,7 +604,6 @@ public class GT_Block_Machines extends GT_Generic_Block implements IDebugableBlo
 
     @SideOnly(Side.CLIENT)
     @Override
-    @SuppressWarnings("unchecked") // Old API uses raw List type
     public void getSubBlocks(Item item, CreativeTabs aCreativeTab, List<ItemStack> outputSubBlocks) {
         for (int i = 1; i < GregTech_API.METATILEENTITIES.length; i++) {
             if (GregTech_API.METATILEENTITIES[i] != null) {

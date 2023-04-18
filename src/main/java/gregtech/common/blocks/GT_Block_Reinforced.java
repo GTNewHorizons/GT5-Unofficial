@@ -330,6 +330,7 @@ public class GT_Block_Reinforced extends GT_Generic_Block {
         }
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z) {
         if (!world.isRemote && world.getBlockMetadata(x, y, z) == 5) {

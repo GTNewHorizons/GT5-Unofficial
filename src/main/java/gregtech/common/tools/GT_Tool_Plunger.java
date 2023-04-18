@@ -11,6 +11,7 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.IItemBehaviour;
+import gregtech.api.items.GT_MetaBase_Item;
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.util.GT_ToolHarvestHelper;
 import gregtech.api.util.GT_Utility;
@@ -73,7 +74,7 @@ public class GT_Tool_Plunger extends GT_Tool {
                 false,
                 getToolDamagePerDropConversion());
             if ((tObject instanceof IItemBehaviour)) {
-                aItem.addItemBehavior(aID, (IItemBehaviour) tObject);
+                aItem.addItemBehavior(aID, (IItemBehaviour<GT_MetaBase_Item>) tObject);
             }
         } catch (Throwable ignored) {}
     }

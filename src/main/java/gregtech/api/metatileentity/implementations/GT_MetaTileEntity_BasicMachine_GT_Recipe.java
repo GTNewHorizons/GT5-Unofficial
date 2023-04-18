@@ -161,341 +161,249 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
         // TODO: CHECK
         if (aRecipe != null) {
             for (int i = 3; i < aRecipe.length; i++) {
-                if (aRecipe[i] == GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CIRCUIT) {
-                    aRecipe[i] = Tier.ELECTRIC[this.mTier].mManagingObject;
-                    continue;
-                }
-                if (aRecipe[i] == GT_MetaTileEntity_BasicMachine_GT_Recipe.X.BETTER_CIRCUIT) {
-                    aRecipe[i] = Tier.ELECTRIC[this.mTier].mBetterManagingObject;
-                    continue;
-                }
-                if (aRecipe[i] == GT_MetaTileEntity_BasicMachine_GT_Recipe.X.HULL) {
-                    aRecipe[i] = Tier.ELECTRIC[this.mTier].mHullObject;
-                    continue;
-                }
-                if (aRecipe[i] == GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE) {
-                    aRecipe[i] = Tier.ELECTRIC[this.mTier].mConductingObject;
-                    continue;
-                }
-                if (aRecipe[i] == GT_MetaTileEntity_BasicMachine_GT_Recipe.X.WIRE4) {
-                    aRecipe[i] = Tier.ELECTRIC[this.mTier].mLargerConductingObject;
-                    continue;
-                }
+                if (!(aRecipe[i] instanceof X)) continue;
 
-                if (aRecipe[i] == GT_MetaTileEntity_BasicMachine_GT_Recipe.X.GLASS) {
-                    switch (this.mTier) {
-                        case 0:
-                        case 1:
-                        case 2:
-                        case 3:
-                            aRecipe[i] = new ItemStack(Blocks.glass, 1, W);
-                            break;
-                        case 4:
-                        case 5:
-                        case 6:
-                        case 7:
-                        case 8:
-                            if (BartWorks.isModLoaded()) { // todo remove via provider pattern on all enums?
-                                aRecipe[i] = "blockGlass" + VN[aTier];
-                                break;
-                            }
-                        default:
-                            if (BartWorks.isModLoaded()) { // todo remove via provider pattern on all enums?
-                                aRecipe[i] = "blockGlass" + VN[8];
-                            } else {
-                                aRecipe[i] = Ic2Items.reinforcedGlass;
-                            }
-                            break;
-                    }
-                    continue;
-                }
-
-                if (aRecipe[i] == GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PLATE) {
-                    switch (this.mTier) {
-                        case 0, 1 -> aRecipe[i] = OrePrefixes.plate.get(Materials.Steel);
-                        case 2 -> aRecipe[i] = OrePrefixes.plate.get(Materials.Aluminium);
-                        case 3 -> aRecipe[i] = OrePrefixes.plate.get(Materials.StainlessSteel);
-                        case 4 -> aRecipe[i] = OrePrefixes.plate.get(Materials.Titanium);
-                        case 5 -> aRecipe[i] = OrePrefixes.plate.get(Materials.TungstenSteel);
-                        case 6 -> aRecipe[i] = OrePrefixes.plate.get(Materials.HSSG);
-                        case 7 -> aRecipe[i] = OrePrefixes.plate.get(Materials.HSSE);
-                        default -> aRecipe[i] = OrePrefixes.plate.get(Materials.Neutronium);
-                    }
-                    continue;
-                }
-
-                if (aRecipe[i] == GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PIPE) {
-                    switch (this.mTier) {
-                        case 0, 1 -> aRecipe[i] = OrePrefixes.pipeMedium.get(Materials.Bronze);
-                        case 2 -> aRecipe[i] = OrePrefixes.pipeMedium.get(Materials.Steel);
-                        case 3 -> aRecipe[i] = OrePrefixes.pipeMedium.get(Materials.StainlessSteel);
-                        case 4 -> aRecipe[i] = OrePrefixes.pipeMedium.get(Materials.Titanium);
-                        case 5 -> aRecipe[i] = OrePrefixes.pipeMedium.get(Materials.TungstenSteel);
-                        case 6 -> aRecipe[i] = OrePrefixes.pipeSmall.get(Materials.Ultimate);
-                        case 7 -> aRecipe[i] = OrePrefixes.pipeMedium.get(Materials.Ultimate);
-                        case 8 -> aRecipe[i] = OrePrefixes.pipeLarge.get(Materials.Ultimate);
-                        default -> aRecipe[i] = OrePrefixes.pipeHuge.get(Materials.Ultimate);
-                    }
-                    continue;
-                }
-
-                if (aRecipe[i] == GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING) {
-                    switch (this.mTier) {
-                        case 0, 1 -> aRecipe[i] = OrePrefixes.wireGt02.get(Materials.AnyCopper);
-                        case 2 -> aRecipe[i] = OrePrefixes.wireGt02.get(Materials.Cupronickel);
-                        case 3 -> aRecipe[i] = OrePrefixes.wireGt02.get(Materials.Kanthal);
-                        case 4 -> aRecipe[i] = OrePrefixes.wireGt02.get(Materials.Nichrome);
-                        case 5 -> aRecipe[i] = OrePrefixes.wireGt02.get(Materials.TPV);
-                        case 6 -> aRecipe[i] = OrePrefixes.wireGt02.get(Materials.HSSG);
-                        case 7 -> aRecipe[i] = OrePrefixes.wireGt02.get(Materials.Naquadah);
-                        case 8 -> aRecipe[i] = OrePrefixes.wireGt02.get(Materials.NaquadahAlloy);
-                        case 9 -> aRecipe[i] = OrePrefixes.wireGt04.get(Materials.NaquadahAlloy);
-                        default -> aRecipe[i] = OrePrefixes.wireGt08.get(Materials.NaquadahAlloy);
-                    }
-                    continue;
-                }
-
-                if (aRecipe[i] == GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_HEATING_DOUBLE) {
-                    switch (this.mTier) {
-                        case 0, 1 -> aRecipe[i] = OrePrefixes.wireGt04.get(Materials.AnyCopper);
-                        case 2 -> aRecipe[i] = OrePrefixes.wireGt04.get(Materials.Cupronickel);
-                        case 3 -> aRecipe[i] = OrePrefixes.wireGt04.get(Materials.Kanthal);
-                        case 4 -> aRecipe[i] = OrePrefixes.wireGt04.get(Materials.Nichrome);
-                        case 5 -> aRecipe[i] = OrePrefixes.wireGt04.get(Materials.TPV);
-                        case 6 -> aRecipe[i] = OrePrefixes.wireGt04.get(Materials.HSSG);
-                        case 7 -> aRecipe[i] = OrePrefixes.wireGt04.get(Materials.Naquadah);
-                        case 8 -> aRecipe[i] = OrePrefixes.wireGt04.get(Materials.NaquadahAlloy);
-                        case 9 -> aRecipe[i] = OrePrefixes.wireGt08.get(Materials.NaquadahAlloy);
-                        default -> aRecipe[i] = OrePrefixes.wireGt16.get(Materials.NaquadahAlloy);
-                    }
-                    continue;
-                }
-
-                if (aRecipe[i] == GT_MetaTileEntity_BasicMachine_GT_Recipe.X.STICK_DISTILLATION) {
-                    aRecipe[i] = OrePrefixes.stick.get(Materials.Blaze);
-                    continue;
-                }
-
-                if (aRecipe[i] == GT_MetaTileEntity_BasicMachine_GT_Recipe.X.STICK_MAGNETIC) {
-                    switch (this.mTier) {
-                        case 0, 1 -> aRecipe[i] = OrePrefixes.stick.get(Materials.IronMagnetic);
-                        case 2, 3 -> aRecipe[i] = OrePrefixes.stick.get(Materials.SteelMagnetic);
-                        case 4, 5 -> aRecipe[i] = OrePrefixes.stick.get(Materials.NeodymiumMagnetic);
-                        case 6, 7 -> aRecipe[i] = OrePrefixes.stick.get(Materials.SamariumMagnetic);
-                        default -> aRecipe[i] = OrePrefixes.stickLong.get(Materials.SamariumMagnetic);
-                    }
-                    continue;
-                }
-
-                if (aRecipe[i] == GT_MetaTileEntity_BasicMachine_GT_Recipe.X.STICK_ELECTROMAGNETIC) {
-                    switch (this.mTier) {
-                        case 0, 1 -> aRecipe[i] = OrePrefixes.stick.get(Materials.AnyIron);
-                        case 2, 3 -> aRecipe[i] = OrePrefixes.stick.get(Materials.Steel);
-                        case 4 -> aRecipe[i] = OrePrefixes.stick.get(Materials.Neodymium);
-                        default -> aRecipe[i] = OrePrefixes.stick.get(Materials.VanadiumGallium);
-                    }
-                    continue;
-                }
-
-                if (aRecipe[i] == GT_MetaTileEntity_BasicMachine_GT_Recipe.X.COIL_ELECTRIC) {
-                    switch (this.mTier) {
-                        case 0 -> aRecipe[i] = OrePrefixes.wireGt01.get(Materials.Lead);
-                        case 1 -> aRecipe[i] = OrePrefixes.wireGt02.get(Materials.Tin);
-                        case 2 -> aRecipe[i] = OrePrefixes.wireGt02.get(Materials.AnyCopper);
-                        case 3 -> aRecipe[i] = OrePrefixes.wireGt04.get(Materials.AnyCopper);
-                        case 4 -> aRecipe[i] = OrePrefixes.wireGt08.get(Materials.AnnealedCopper);
-                        case 5 -> aRecipe[i] = OrePrefixes.wireGt16.get(Materials.AnnealedCopper);
-                        case 6 -> aRecipe[i] = OrePrefixes.wireGt04.get(Materials.YttriumBariumCuprate);
-                        case 7 -> aRecipe[i] = OrePrefixes.wireGt08.get(Materials.Iridium);
-                        default -> aRecipe[i] = OrePrefixes.wireGt16.get(Materials.Osmium);
-                    }
-                    continue;
-                }
-
-                if (aRecipe[i] == GT_MetaTileEntity_BasicMachine_GT_Recipe.X.ROBOT_ARM) {
-                    switch (this.mTier) {
-                        case 0, 1 -> aRecipe[i] = ItemList.Robot_Arm_LV;
-                        case 2 -> aRecipe[i] = ItemList.Robot_Arm_MV;
-                        case 3 -> aRecipe[i] = ItemList.Robot_Arm_HV;
-                        case 4 -> aRecipe[i] = ItemList.Robot_Arm_EV;
-                        case 5 -> aRecipe[i] = ItemList.Robot_Arm_IV;
-                        case 6 -> aRecipe[i] = ItemList.Robot_Arm_LuV;
-                        case 7 -> aRecipe[i] = ItemList.Robot_Arm_ZPM;
-                        case 8 -> aRecipe[i] = ItemList.Robot_Arm_UV;
-                        case 9 -> aRecipe[i] = ItemList.Robot_Arm_UHV;
-                        case 10 -> aRecipe[i] = ItemList.Robot_Arm_UEV;
-                        case 11 -> aRecipe[i] = ItemList.Robot_Arm_UIV;
-                        case 12 -> aRecipe[i] = ItemList.Robot_Arm_UMV;
-                        case 13 -> aRecipe[i] = ItemList.Robot_Arm_UXV;
-                        case 14 -> aRecipe[i] = ItemList.Robot_Arm_MAX;
-                        default -> aRecipe[i] = ItemList.Robot_Arm_MAX;
-                    }
-                    continue;
-                }
-
-                if (aRecipe[i] == GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PUMP) {
-                    switch (this.mTier) {
-                        case 0, 1 -> aRecipe[i] = ItemList.Electric_Pump_LV;
-                        case 2 -> aRecipe[i] = ItemList.Electric_Pump_MV;
-                        case 3 -> aRecipe[i] = ItemList.Electric_Pump_HV;
-                        case 4 -> aRecipe[i] = ItemList.Electric_Pump_EV;
-                        case 5 -> aRecipe[i] = ItemList.Electric_Pump_IV;
-                        case 6 -> aRecipe[i] = ItemList.Electric_Pump_LuV;
-                        case 7 -> aRecipe[i] = ItemList.Electric_Pump_ZPM;
-                        case 8 -> aRecipe[i] = ItemList.Electric_Pump_UV;
-                        case 9 -> aRecipe[i] = ItemList.Electric_Pump_UHV;
-                        case 10 -> aRecipe[i] = ItemList.Electric_Pump_UEV;
-                        case 11 -> aRecipe[i] = ItemList.Electric_Pump_UIV;
-                        case 12 -> aRecipe[i] = ItemList.Electric_Pump_UMV;
-                        case 13 -> aRecipe[i] = ItemList.Electric_Pump_UXV;
-                        case 14 -> aRecipe[i] = ItemList.Electric_Pump_MAX;
-                        default -> aRecipe[i] = ItemList.Electric_Pump_MAX;
-                    }
-                    continue;
-                }
-
-                if (aRecipe[i] == GT_MetaTileEntity_BasicMachine_GT_Recipe.X.ROTOR) {
-                    switch (this.mTier) {
-                        case 0, 1 -> aRecipe[i] = OrePrefixes.rotor.get(Materials.Tin);
-                        case 2 -> aRecipe[i] = OrePrefixes.rotor.get(Materials.Bronze);
-                        case 3 -> aRecipe[i] = OrePrefixes.rotor.get(Materials.Steel);
-                        case 4 -> aRecipe[i] = OrePrefixes.rotor.get(Materials.StainlessSteel);
-                        case 5 -> aRecipe[i] = OrePrefixes.rotor.get(Materials.TungstenSteel);
-                        case 6 -> aRecipe[i] = OrePrefixes.rotor.get(Materials.Chrome);
-                        case 7 -> aRecipe[i] = OrePrefixes.rotor.get(Materials.Iridium);
-                        default -> aRecipe[i] = OrePrefixes.rotor.get(Materials.Osmium);
-                    }
-                    continue;
-                }
-
-                if (aRecipe[i] == GT_MetaTileEntity_BasicMachine_GT_Recipe.X.MOTOR) {
-                    switch (this.mTier) {
-                        case 0, 1 -> aRecipe[i] = ItemList.Electric_Motor_LV;
-                        case 2 -> aRecipe[i] = ItemList.Electric_Motor_MV;
-                        case 3 -> aRecipe[i] = ItemList.Electric_Motor_HV;
-                        case 4 -> aRecipe[i] = ItemList.Electric_Motor_EV;
-                        case 5 -> aRecipe[i] = ItemList.Electric_Motor_IV;
-                        case 6 -> aRecipe[i] = ItemList.Electric_Motor_LuV;
-                        case 7 -> aRecipe[i] = ItemList.Electric_Motor_ZPM;
-                        case 8 -> aRecipe[i] = ItemList.Electric_Motor_UV;
-                        case 9 -> aRecipe[i] = ItemList.Electric_Motor_UHV;
-                        case 10 -> aRecipe[i] = ItemList.Electric_Motor_UEV;
-                        case 11 -> aRecipe[i] = ItemList.Electric_Motor_UIV;
-                        case 12 -> aRecipe[i] = ItemList.Electric_Motor_UMV;
-                        case 13 -> aRecipe[i] = ItemList.Electric_Motor_UXV;
-                        case 14 -> aRecipe[i] = ItemList.Electric_Motor_MAX;
-                        default -> aRecipe[i] = ItemList.Electric_Motor_MAX;
-                    }
-                    continue;
-                }
-
-                if (aRecipe[i] == GT_MetaTileEntity_BasicMachine_GT_Recipe.X.PISTON) {
-                    switch (this.mTier) {
-                        case 0, 1 -> aRecipe[i] = ItemList.Electric_Piston_LV;
-                        case 2 -> aRecipe[i] = ItemList.Electric_Piston_MV;
-                        case 3 -> aRecipe[i] = ItemList.Electric_Piston_HV;
-                        case 4 -> aRecipe[i] = ItemList.Electric_Piston_EV;
-                        case 5 -> aRecipe[i] = ItemList.Electric_Piston_IV;
-                        case 6 -> aRecipe[i] = ItemList.Electric_Piston_LuV;
-                        case 7 -> aRecipe[i] = ItemList.Electric_Piston_ZPM;
-                        case 8 -> aRecipe[i] = ItemList.Electric_Piston_UV;
-                        case 9 -> aRecipe[i] = ItemList.Electric_Piston_UHV;
-                        case 10 -> aRecipe[i] = ItemList.Electric_Piston_UEV;
-                        case 11 -> aRecipe[i] = ItemList.Electric_Piston_UIV;
-                        case 12 -> aRecipe[i] = ItemList.Electric_Piston_UMV;
-                        case 13 -> aRecipe[i] = ItemList.Electric_Piston_UXV;
-                        case 14 -> aRecipe[i] = ItemList.Electric_Piston_MAX;
-                        default -> aRecipe[i] = ItemList.Electric_Piston_MAX;
-                    }
-                    continue;
-                }
-
-                if (aRecipe[i] == GT_MetaTileEntity_BasicMachine_GT_Recipe.X.CONVEYOR) {
-                    switch (this.mTier) {
-                        case 0, 1 -> aRecipe[i] = ItemList.Conveyor_Module_LV;
-                        case 2 -> aRecipe[i] = ItemList.Conveyor_Module_MV;
-                        case 3 -> aRecipe[i] = ItemList.Conveyor_Module_HV;
-                        case 4 -> aRecipe[i] = ItemList.Conveyor_Module_EV;
-                        case 5 -> aRecipe[i] = ItemList.Conveyor_Module_IV;
-                        case 6 -> aRecipe[i] = ItemList.Conveyor_Module_LuV;
-                        case 7 -> aRecipe[i] = ItemList.Conveyor_Module_ZPM;
-                        case 8 -> aRecipe[i] = ItemList.Conveyor_Module_UV;
-                        case 9 -> aRecipe[i] = ItemList.Conveyor_Module_UHV;
-                        case 10 -> aRecipe[i] = ItemList.Conveyor_Module_UEV;
-                        case 11 -> aRecipe[i] = ItemList.Conveyor_Module_UIV;
-                        case 12 -> aRecipe[i] = ItemList.Conveyor_Module_UMV;
-                        case 13 -> aRecipe[i] = ItemList.Conveyor_Module_UXV;
-                        case 14 -> aRecipe[i] = ItemList.Conveyor_Module_MAX;
-                        default -> aRecipe[i] = ItemList.Conveyor_Module_MAX;
-                    }
-                    continue;
-                }
-
-                if (aRecipe[i] == GT_MetaTileEntity_BasicMachine_GT_Recipe.X.EMITTER) {
-                    switch (this.mTier) {
-                        case 0, 1 -> aRecipe[i] = ItemList.Emitter_LV;
-                        case 2 -> aRecipe[i] = ItemList.Emitter_MV;
-                        case 3 -> aRecipe[i] = ItemList.Emitter_HV;
-                        case 4 -> aRecipe[i] = ItemList.Emitter_EV;
-                        case 5 -> aRecipe[i] = ItemList.Emitter_IV;
-                        case 6 -> aRecipe[i] = ItemList.Emitter_LuV;
-                        case 7 -> aRecipe[i] = ItemList.Emitter_ZPM;
-                        case 8 -> aRecipe[i] = ItemList.Emitter_UV;
-                        case 9 -> aRecipe[i] = ItemList.Emitter_UHV;
-                        case 10 -> aRecipe[i] = ItemList.Emitter_UEV;
-                        case 11 -> aRecipe[i] = ItemList.Emitter_UIV;
-                        case 12 -> aRecipe[i] = ItemList.Emitter_UMV;
-                        case 13 -> aRecipe[i] = ItemList.Emitter_UXV;
-                        case 14 -> aRecipe[i] = ItemList.Emitter_MAX;
-                        default -> aRecipe[i] = ItemList.Emitter_MAX;
-                    }
-                    continue;
-                }
-
-                if (aRecipe[i] == GT_MetaTileEntity_BasicMachine_GT_Recipe.X.SENSOR) {
-                    switch (this.mTier) {
-                        case 0, 1 -> aRecipe[i] = ItemList.Sensor_LV;
-                        case 2 -> aRecipe[i] = ItemList.Sensor_MV;
-                        case 3 -> aRecipe[i] = ItemList.Sensor_HV;
-                        case 4 -> aRecipe[i] = ItemList.Sensor_EV;
-                        case 5 -> aRecipe[i] = ItemList.Sensor_IV;
-                        case 6 -> aRecipe[i] = ItemList.Sensor_LuV;
-                        case 7 -> aRecipe[i] = ItemList.Sensor_ZPM;
-                        case 8 -> aRecipe[i] = ItemList.Sensor_UV;
-                        case 9 -> aRecipe[i] = ItemList.Sensor_UHV;
-                        case 10 -> aRecipe[i] = ItemList.Sensor_UEV;
-                        case 11 -> aRecipe[i] = ItemList.Sensor_UIV;
-                        case 12 -> aRecipe[i] = ItemList.Sensor_UMV;
-                        case 13 -> aRecipe[i] = ItemList.Sensor_UXV;
-                        case 14 -> aRecipe[i] = ItemList.Sensor_MAX;
-                        default -> aRecipe[i] = ItemList.Sensor_MAX;
-                    }
-                    continue;
-                }
-
-                if (aRecipe[i] == GT_MetaTileEntity_BasicMachine_GT_Recipe.X.FIELD_GENERATOR) {
-                    switch (this.mTier) {
-                        case 0, 1 -> aRecipe[i] = ItemList.Field_Generator_LV;
-                        case 2 -> aRecipe[i] = ItemList.Field_Generator_MV;
-                        case 3 -> aRecipe[i] = ItemList.Field_Generator_HV;
-                        case 4 -> aRecipe[i] = ItemList.Field_Generator_EV;
-                        case 5 -> aRecipe[i] = ItemList.Field_Generator_IV;
-                        case 6 -> aRecipe[i] = ItemList.Field_Generator_LuV;
-                        case 7 -> aRecipe[i] = ItemList.Field_Generator_ZPM;
-                        case 8 -> aRecipe[i] = ItemList.Field_Generator_UV;
-                        case 9 -> aRecipe[i] = ItemList.Field_Generator_UHV;
-                        case 10 -> aRecipe[i] = ItemList.Field_Generator_UEV;
-                        case 11 -> aRecipe[i] = ItemList.Field_Generator_UIV;
-                        case 12 -> aRecipe[i] = ItemList.Field_Generator_UMV;
-                        case 13 -> aRecipe[i] = ItemList.Field_Generator_UXV;
-                        case 14 -> aRecipe[i] = ItemList.Field_Generator_MAX;
-                        default -> aRecipe[i] = ItemList.Field_Generator_MAX;
-                    }
-                    continue;
-                }
-
-                if (aRecipe[i] instanceof GT_MetaTileEntity_BasicMachine_GT_Recipe.X)
-                    throw new IllegalArgumentException("MISSING TIER MAPPING FOR: " + aRecipe[i] + " AT TIER " + mTier);
+                // spotless:off
+                aRecipe[i] = switch ((X) aRecipe[i]) {
+                    case CIRCUIT            -> Tier.ELECTRIC[this.mTier].mManagingObject;
+                    case BETTER_CIRCUIT     -> Tier.ELECTRIC[this.mTier].mBetterManagingObject;
+                    case HULL               -> Tier.ELECTRIC[this.mTier].mHullObject;
+                    case WIRE               -> Tier.ELECTRIC[this.mTier].mConductingObject;
+                    case WIRE4              -> Tier.ELECTRIC[this.mTier].mLargerConductingObject;
+                    case STICK_DISTILLATION -> OrePrefixes.stick.get(Materials.Blaze);
+                    
+                    case GLASS -> switch (this.mTier) {
+                        case 0, 1, 2, 3    -> new ItemStack(Blocks.glass, 1, W);
+                        case 4, 5, 6, 7, 8 -> BartWorks.isModLoaded() ? "blockGlass" + VN[aTier] : Ic2Items.reinforcedGlass;
+                        default            -> BartWorks.isModLoaded() ? "blockGlass" + VN[8]     : Ic2Items.reinforcedGlass;
+                    };
+                    
+                    case PLATE -> switch (this.mTier) {
+                        case 0, 1 -> OrePrefixes.plate.get(Materials.Steel);
+                        case 2    -> OrePrefixes.plate.get(Materials.Aluminium);
+                        case 3    -> OrePrefixes.plate.get(Materials.StainlessSteel);
+                        case 4    -> OrePrefixes.plate.get(Materials.Titanium);
+                        case 5    -> OrePrefixes.plate.get(Materials.TungstenSteel);
+                        case 6    -> OrePrefixes.plate.get(Materials.HSSG);
+                        case 7    -> OrePrefixes.plate.get(Materials.HSSE);
+                        default   -> OrePrefixes.plate.get(Materials.Neutronium);
+                    };
+                    
+                    case PIPE -> switch (this.mTier) {
+                        case 0, 1 -> OrePrefixes.pipeMedium.get(Materials.Bronze);
+                        case 2    -> OrePrefixes.pipeMedium.get(Materials.Steel);
+                        case 3    -> OrePrefixes.pipeMedium.get(Materials.StainlessSteel);
+                        case 4    -> OrePrefixes.pipeMedium.get(Materials.Titanium);
+                        case 5    -> OrePrefixes.pipeMedium.get(Materials.TungstenSteel);
+                        case 6    -> OrePrefixes.pipeSmall.get(Materials.Ultimate);
+                        case 7    -> OrePrefixes.pipeMedium.get(Materials.Ultimate);
+                        case 8    -> OrePrefixes.pipeLarge.get(Materials.Ultimate);
+                        default   -> OrePrefixes.pipeHuge.get(Materials.Ultimate);
+                    };
+                    
+                    case COIL_HEATING -> switch (this.mTier) {
+                        case 0, 1 -> OrePrefixes.wireGt02.get(Materials.AnyCopper);
+                        case 2    -> OrePrefixes.wireGt02.get(Materials.Cupronickel);
+                        case 3    -> OrePrefixes.wireGt02.get(Materials.Kanthal);
+                        case 4    -> OrePrefixes.wireGt02.get(Materials.Nichrome);
+                        case 5    -> OrePrefixes.wireGt02.get(Materials.TPV);
+                        case 6    -> OrePrefixes.wireGt02.get(Materials.HSSG);
+                        case 7    -> OrePrefixes.wireGt02.get(Materials.Naquadah);
+                        case 8    -> OrePrefixes.wireGt02.get(Materials.NaquadahAlloy);
+                        case 9    -> OrePrefixes.wireGt04.get(Materials.NaquadahAlloy);
+                        default   -> OrePrefixes.wireGt08.get(Materials.NaquadahAlloy);
+                    };
+                    
+                    case COIL_HEATING_DOUBLE -> switch (this.mTier) {
+                        case 0, 1 -> OrePrefixes.wireGt04.get(Materials.AnyCopper);
+                        case 2    -> OrePrefixes.wireGt04.get(Materials.Cupronickel);
+                        case 3    -> OrePrefixes.wireGt04.get(Materials.Kanthal);
+                        case 4    -> OrePrefixes.wireGt04.get(Materials.Nichrome);
+                        case 5    -> OrePrefixes.wireGt04.get(Materials.TPV);
+                        case 6    -> OrePrefixes.wireGt04.get(Materials.HSSG);
+                        case 7    -> OrePrefixes.wireGt04.get(Materials.Naquadah);
+                        case 8    -> OrePrefixes.wireGt04.get(Materials.NaquadahAlloy);
+                        case 9    -> OrePrefixes.wireGt08.get(Materials.NaquadahAlloy);
+                        default   -> OrePrefixes.wireGt16.get(Materials.NaquadahAlloy);
+                    };
+                    
+                    case STICK_MAGNETIC -> switch (this.mTier) {
+                        case 0, 1       -> OrePrefixes.stick.get(Materials.IronMagnetic);
+                        case 2, 3       -> OrePrefixes.stick.get(Materials.SteelMagnetic);
+                        case 4, 5       -> OrePrefixes.stick.get(Materials.NeodymiumMagnetic);
+                        case 6, 7, 8, 9 -> OrePrefixes.stick.get(Materials.SamariumMagnetic);
+                        default         -> OrePrefixes.stick.get(Materials.TengamAttuned);
+                    };
+                    
+                    case STICK_ELECTROMAGNETIC -> switch (this.mTier) {
+                        case 0, 1 -> OrePrefixes.stick.get(Materials.AnyIron);
+                        case 2, 3 -> OrePrefixes.stick.get(Materials.Steel);
+                        case 4    -> OrePrefixes.stick.get(Materials.Neodymium);
+                        default   -> OrePrefixes.stick.get(Materials.VanadiumGallium);
+                    };
+                    
+                    case COIL_ELECTRIC -> switch (this.mTier) {
+                        case 0  -> OrePrefixes.wireGt01.get(Materials.Lead);
+                        case 1  -> OrePrefixes.wireGt02.get(Materials.Tin);
+                        case 2  -> OrePrefixes.wireGt02.get(Materials.AnyCopper);
+                        case 3  -> OrePrefixes.wireGt04.get(Materials.AnyCopper);
+                        case 4  -> OrePrefixes.wireGt08.get(Materials.AnnealedCopper);
+                        case 5  -> OrePrefixes.wireGt16.get(Materials.AnnealedCopper);
+                        case 6  -> OrePrefixes.wireGt04.get(Materials.YttriumBariumCuprate);
+                        case 7  -> OrePrefixes.wireGt08.get(Materials.Iridium);
+                        default -> OrePrefixes.wireGt16.get(Materials.Osmium);
+                    };
+                    
+                    case ROBOT_ARM -> switch (this.mTier) {
+                        case 0, 1 -> ItemList.Robot_Arm_LV;
+                        case 2    -> ItemList.Robot_Arm_MV;
+                        case 3    -> ItemList.Robot_Arm_HV;
+                        case 4    -> ItemList.Robot_Arm_EV;
+                        case 5    -> ItemList.Robot_Arm_IV;
+                        case 6    -> ItemList.Robot_Arm_LuV;
+                        case 7    -> ItemList.Robot_Arm_ZPM;
+                        case 8    -> ItemList.Robot_Arm_UV;
+                        case 9    -> ItemList.Robot_Arm_UHV;
+                        case 10   -> ItemList.Robot_Arm_UEV;
+                        case 11   -> ItemList.Robot_Arm_UIV;
+                        case 12   -> ItemList.Robot_Arm_UMV;
+                        case 13   -> ItemList.Robot_Arm_UXV;
+                        default   ->  ItemList.Robot_Arm_MAX;
+                    };
+                    
+                    case PUMP -> switch (this.mTier) {
+                        case 0, 1 -> ItemList.Electric_Pump_LV;
+                        case 2    -> ItemList.Electric_Pump_MV;
+                        case 3    -> ItemList.Electric_Pump_HV;
+                        case 4    -> ItemList.Electric_Pump_EV;
+                        case 5    -> ItemList.Electric_Pump_IV;
+                        case 6    -> ItemList.Electric_Pump_LuV;
+                        case 7    -> ItemList.Electric_Pump_ZPM;
+                        case 8    -> ItemList.Electric_Pump_UV;
+                        case 9    -> ItemList.Electric_Pump_UHV;
+                        case 10   -> ItemList.Electric_Pump_UEV;
+                        case 11   -> ItemList.Electric_Pump_UIV;
+                        case 12   -> ItemList.Electric_Pump_UMV;
+                        case 13   -> ItemList.Electric_Pump_UXV;
+                        default   -> ItemList.Electric_Pump_MAX;
+                    };
+                    
+                    case MOTOR -> switch (this.mTier) {
+                        case 0, 1 -> ItemList.Electric_Motor_LV;
+                        case 2    -> ItemList.Electric_Motor_MV;
+                        case 3    -> ItemList.Electric_Motor_HV;
+                        case 4    -> ItemList.Electric_Motor_EV;
+                        case 5    -> ItemList.Electric_Motor_IV;
+                        case 6    -> ItemList.Electric_Motor_LuV;
+                        case 7    -> ItemList.Electric_Motor_ZPM;
+                        case 8    -> ItemList.Electric_Motor_UV;
+                        case 9    -> ItemList.Electric_Motor_UHV;
+                        case 10   -> ItemList.Electric_Motor_UEV;
+                        case 11   -> ItemList.Electric_Motor_UIV;
+                        case 12   -> ItemList.Electric_Motor_UMV;
+                        case 13   -> ItemList.Electric_Motor_UXV;
+                        default   -> ItemList.Electric_Motor_MAX;
+                    };
+                    
+                    case PISTON -> switch (this.mTier) {
+                        case 0, 1 -> ItemList.Electric_Piston_LV;
+                        case 2    -> ItemList.Electric_Piston_MV;
+                        case 3    -> ItemList.Electric_Piston_HV;
+                        case 4    -> ItemList.Electric_Piston_EV;
+                        case 5    -> ItemList.Electric_Piston_IV;
+                        case 6    -> ItemList.Electric_Piston_LuV;
+                        case 7    -> ItemList.Electric_Piston_ZPM;
+                        case 8    -> ItemList.Electric_Piston_UV;
+                        case 9    -> ItemList.Electric_Piston_UHV;
+                        case 10   -> ItemList.Electric_Piston_UEV;
+                        case 11   -> ItemList.Electric_Piston_UIV;
+                        case 12   -> ItemList.Electric_Piston_UMV;
+                        case 13   -> ItemList.Electric_Piston_UXV;
+                        default   -> ItemList.Electric_Piston_MAX;
+                    };
+                    
+                    case CONVEYOR -> switch (this.mTier) {
+                        case 0, 1 -> ItemList.Conveyor_Module_LV;
+                        case 2    -> ItemList.Conveyor_Module_MV;
+                        case 3    -> ItemList.Conveyor_Module_HV;
+                        case 4    -> ItemList.Conveyor_Module_EV;
+                        case 5    -> ItemList.Conveyor_Module_IV;
+                        case 6    -> ItemList.Conveyor_Module_LuV;
+                        case 7    -> ItemList.Conveyor_Module_ZPM;
+                        case 8    -> ItemList.Conveyor_Module_UV;
+                        case 9    -> ItemList.Conveyor_Module_UHV;
+                        case 10   -> ItemList.Conveyor_Module_UEV;
+                        case 11   -> ItemList.Conveyor_Module_UIV;
+                        case 12   -> ItemList.Conveyor_Module_UMV;
+                        case 13   -> ItemList.Conveyor_Module_UXV;
+                        default   -> ItemList.Conveyor_Module_MAX;
+                    };
+                    
+                    case EMITTER -> switch (this.mTier) {
+                        case 0, 1 -> ItemList.Emitter_LV;
+                        case 2    -> ItemList.Emitter_MV;
+                        case 3    -> ItemList.Emitter_HV;
+                        case 4    -> ItemList.Emitter_EV;
+                        case 5    -> ItemList.Emitter_IV;
+                        case 6    -> ItemList.Emitter_LuV;
+                        case 7    -> ItemList.Emitter_ZPM;
+                        case 8    -> ItemList.Emitter_UV;
+                        case 9    -> ItemList.Emitter_UHV;
+                        case 10   -> ItemList.Emitter_UEV;
+                        case 11   -> ItemList.Emitter_UIV;
+                        case 12   -> ItemList.Emitter_UMV;
+                        case 13   -> ItemList.Emitter_UXV;
+                        default   -> ItemList.Emitter_MAX;
+                    };
+                    
+                    case SENSOR -> switch (this.mTier) {
+                        case 0, 1 -> ItemList.Sensor_LV;
+                        case 2    -> ItemList.Sensor_MV;
+                        case 3    -> ItemList.Sensor_HV;
+                        case 4    -> ItemList.Sensor_EV;
+                        case 5    -> ItemList.Sensor_IV;
+                        case 6    -> ItemList.Sensor_LuV;
+                        case 7    -> ItemList.Sensor_ZPM;
+                        case 8    -> ItemList.Sensor_UV;
+                        case 9    -> ItemList.Sensor_UHV;
+                        case 10   -> ItemList.Sensor_UEV;
+                        case 11   -> ItemList.Sensor_UIV;
+                        case 12   -> ItemList.Sensor_UMV;
+                        case 13   -> ItemList.Sensor_UXV;
+                        default   -> ItemList.Sensor_MAX;
+                    };
+                    
+                    case FIELD_GENERATOR -> switch (this.mTier) {
+                        case 0, 1 -> ItemList.Field_Generator_LV;
+                        case 2    -> ItemList.Field_Generator_MV;
+                        case 3    -> ItemList.Field_Generator_HV;
+                        case 4    -> ItemList.Field_Generator_EV;
+                        case 5    -> ItemList.Field_Generator_IV;
+                        case 6    -> ItemList.Field_Generator_LuV;
+                        case 7    -> ItemList.Field_Generator_ZPM;
+                        case 8    -> ItemList.Field_Generator_UV;
+                        case 9    -> ItemList.Field_Generator_UHV;
+                        case 10   -> ItemList.Field_Generator_UEV;
+                        case 11   -> ItemList.Field_Generator_UIV;
+                        case 12   -> ItemList.Field_Generator_UMV;
+                        case 13   -> ItemList.Field_Generator_UXV;
+                        default   -> ItemList.Field_Generator_MAX;
+                    };
+                    
+                    case ROTOR -> switch (this.mTier) {
+                        case 0, 1 -> OrePrefixes.rotor.get(Materials.Tin);
+                        case 2    -> OrePrefixes.rotor.get(Materials.Bronze);
+                        case 3    -> OrePrefixes.rotor.get(Materials.Steel);
+                        case 4    -> OrePrefixes.rotor.get(Materials.StainlessSteel);
+                        case 5    -> OrePrefixes.rotor.get(Materials.TungstenSteel);
+                        case 6    -> OrePrefixes.rotor.get(Materials.Chrome);
+                        case 7    -> OrePrefixes.rotor.get(Materials.Iridium);
+                        default   -> OrePrefixes.rotor.get(Materials.Osmium);
+                    };
+                    
+                    default -> throw new IllegalArgumentException("MISSING TIER MAPPING FOR: " + aRecipe[i] + " AT TIER " + this.mTier);
+                };
+                // spotless:on
             }
 
             if (!GT_ModHandler.addCraftingRecipe(

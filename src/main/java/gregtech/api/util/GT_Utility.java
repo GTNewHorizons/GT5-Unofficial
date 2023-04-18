@@ -20,7 +20,6 @@ import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.*;
-import java.util.Map.Entry;
 import java.util.function.Function;
 import java.util.function.IntFunction;
 import java.util.function.Supplier;
@@ -3005,7 +3004,7 @@ public class GT_Utility {
     public static <X, Y extends Comparable<Y>> LinkedHashMap<X, Y> sortMapByValuesAcending(Map<X, Y> map) {
         return map.entrySet()
             .stream()
-            .sorted(Entry.comparingByValue())
+            .sorted(Map.Entry.comparingByValue())
             .collect(CollectorUtils.entriesToMap(LinkedHashMap::new));
     }
 

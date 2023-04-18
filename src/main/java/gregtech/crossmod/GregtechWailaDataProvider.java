@@ -41,7 +41,6 @@ public class GregtechWailaDataProvider implements IWailaDataProvider {
     @Override
     public List<String> getWailaTail(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
         IWailaConfigHandler config) {
-        final TileEntity tile = accessor.getTileEntity();
         return currenttip;
     }
 

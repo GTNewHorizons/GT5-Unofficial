@@ -30,10 +30,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Maintenance;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBus;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
@@ -179,7 +176,7 @@ public class GT_MetaTileEntity_MultiFurnace
         if (this.mOutputItems.length > 0) {
             this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
             this.mEfficiencyIncrease = 10000;
-            calculateOverclockedNessMulti(4, 512, 1, mVolatage);
+            calculateOverclockedNessMultiInternal(4, 512, 1, mVolatage, false);
             // In case recipe is too OP for that machine
             if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1) return false;
 
@@ -316,15 +313,6 @@ public class GT_MetaTileEntity_MultiFurnace
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 1, 2, 0);
-    }
-
-    private boolean isBottomHatch(IGregTechTileEntity aTileEntity) {
-        if (aTileEntity == null) return false;
-        IMetaTileEntity tMTE = aTileEntity.getMetaTileEntity();
-        if (tMTE == null) return false;
-        return tMTE instanceof GT_MetaTileEntity_Hatch_Energy || tMTE instanceof GT_MetaTileEntity_Hatch_InputBus
-            || tMTE instanceof GT_MetaTileEntity_Hatch_OutputBus
-            || tMTE instanceof GT_MetaTileEntity_Hatch_Maintenance;
     }
 
     @Override

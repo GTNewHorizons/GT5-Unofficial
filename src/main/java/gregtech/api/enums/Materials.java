@@ -915,6 +915,10 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
 
     public static Materials Universium = new Materials(139, new TextureSet("universium", true),   1.0F,4*2621440,  25, 1|2|64|128,   38, 49, 69,  255,   "Universium"                ,   "Universium",    -1,      -1,         0,    0, false,  true,   2,   1,   1, Dyes._NULL         , Collections.singletonList(new TC_AspectStack(TC_Aspects.AQUA, 1))).setProcessingMaterialTierEU(TierEU.RECIPE_UMV);
 
+    public static Materials TengamPurified = new MaterialBuilder(111, TextureSet.SET_METALLIC, "Purified Tengam").addDustItems().addGearItems().addMetalItems().addToolHeadItems().setAspects(Arrays.asList(new TC_AspectStack(TC_Aspects.MAGNETO, 2), new TC_AspectStack(TC_Aspects.ELECTRUM, 2))).setColor(Dyes.dyeLime).setName("TengamPurified").setRGB(186, 223, 112).constructMaterial().setProcessingMaterialTierEU(TierEU.RECIPE_UEV);
+    public static Materials TengamAttuned  = new MaterialBuilder(112, TextureSet.SET_MAGNETIC, "Attuned Tengam") .addDustItems().addGearItems().addMetalItems().addToolHeadItems().setAspects(Arrays.asList(new TC_AspectStack(TC_Aspects.MAGNETO, 4), new TC_AspectStack(TC_Aspects.ELECTRUM, 1))).setColor(Dyes.dyeLime).setName("TengamAttuned") .setRGB(213, 255, 128).constructMaterial().setProcessingMaterialTierEU(TierEU.RECIPE_UEV);
+    public static Materials TengamRaw      = new MaterialBuilder(110, TextureSet.SET_ROUGH,    "Raw Tengam")     .addOreItems()                                                   .setAspects(Arrays.asList(new TC_AspectStack(TC_Aspects.MAGNETO, 1), new TC_AspectStack(TC_Aspects.ELECTRUM, 4))).setColor(Dyes.dyeLime).setName("TengamRaw")     .setRGB(160, 191,  96).constructMaterial().setProcessingMaterialTierEU(TierEU.RECIPE_UEV);
+
     // spotless:on
 
     static {
@@ -1392,6 +1396,9 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Sand.setSmeltingInto(Glass);
         Ice.setSmeltingInto(Water);
         Snow.setSmeltingInto(Water);
+        TengamAttuned.setSmeltingInto(TengamPurified)
+            .setMaceratingInto(TengamPurified)
+            .setArcSmeltingInto(TengamPurified);
     }
 
     private static void setOthers() {
@@ -1819,6 +1826,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Cryolite.addOreByProducts(Aluminiumoxide, Sodium);
         Naquadria.addOreByProduct(Naquadria);
         RoastedNickel.addOreByProduct(Nickel);
+        TengamRaw.addOreByProducts(NeodymiumMagnetic, SamariumMagnetic);
     }
 
     private static void setColors() {
@@ -1891,19 +1899,22 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Universium.mChemicalFormula = "A tear into the space beyond space";
         Longasssuperconductornameforuvwire.mChemicalFormula = "Nq*\u2084(Ir\u2083Os)\u2083EuSm";
         Longasssuperconductornameforuhvwire.mChemicalFormula = "D\u2086(SpNt)\u2087Tn\u2085Am\u2086";
-        SuperconductorUEVBase.mChemicalFormula = "D*\u2085If*\u2085(✦◆✦)(⚷⚙⚷ Ni4Ti6)";
-        SuperconductorUIVBase.mChemicalFormula = "(C\u2081\u2084Os\u2081\u2081O\u2087Ag\u2083SpH\u2082O)\u2084?\u2081\u2080(Fs⚶)\u2086(⌘☯☯⌘)\u2085";
-        SuperconductorUMVBase.mChemicalFormula = "?\u2086Or\u2083(Hy⚶)\u2081\u2081(((CW)\u2087Ti\u2083)\u2083???)\u2085۞\u2082";
+        SuperconductorUEVBase.mChemicalFormula = "D*\u2085If*\u2085(\u2726\u25C6\u2726)(\u26B7\u2699\u26B7 Ni4Ti6)";
+        SuperconductorUIVBase.mChemicalFormula = "(C\u2081\u2084Os\u2081\u2081O\u2087Ag\u2083SpH\u2082O)\u2084?\u2081\u2080(Fs\u26B6)\u2086(\u2318\u262F\u262F\u2318)\u2085";
+        SuperconductorUMVBase.mChemicalFormula = "?\u2086Or\u2083(Hy\u26B6)\u2081\u2081(((CW)\u2087Ti\u2083)\u2083???)\u2085\u06DE\u2082";
         Diatomite.mChemicalFormula = "(SiO\u2082)\u2088Fe\u2082O\u2083(Al\u2082O\u2083)";
         EnrichedHolmium.mChemicalFormula = "Nq+\u2088Ho\u2082";
-        Grade1PurifiedWater.mChemicalFormula = "H₂O";
-        Grade2PurifiedWater.mChemicalFormula = "H₂O";
-        Grade3PurifiedWater.mChemicalFormula = "H₂O";
-        Grade4PurifiedWater.mChemicalFormula = "H₂O";
-        Grade5PurifiedWater.mChemicalFormula = "H₂O";
-        Grade6PurifiedWater.mChemicalFormula = "H₂O";
-        Grade7PurifiedWater.mChemicalFormula = "H₂O";
-        Grade8PurifiedWater.mChemicalFormula = "H₂O";
+        Grade1PurifiedWater.mChemicalFormula = "H\u2082O";
+        Grade2PurifiedWater.mChemicalFormula = "H\u2082O";
+        Grade3PurifiedWater.mChemicalFormula = "H\u2082O";
+        Grade4PurifiedWater.mChemicalFormula = "H\u2082O";
+        Grade5PurifiedWater.mChemicalFormula = "H\u2082O";
+        Grade6PurifiedWater.mChemicalFormula = "H\u2082O";
+        Grade7PurifiedWater.mChemicalFormula = "H\u2082O";
+        Grade8PurifiedWater.mChemicalFormula = "H\u2082O";
+        TengamRaw.mChemicalFormula = "";
+        TengamPurified.mChemicalFormula = "M";
+        TengamAttuned.mChemicalFormula = "M";
     }
 
     private static void initSubTags() {
@@ -2162,7 +2173,9 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
             Quantium,
             RedstoneAlloy,
             Bedrockium,
-            EnrichedHolmium);
+            EnrichedHolmium,
+            TengamPurified,
+            TengamAttuned);
 
         SubTag.FOOD.addTo(
             MeatRaw,
@@ -2353,7 +2366,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Elite.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
         Master.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
         Ultimate.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
-        Superconductor.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
+        Superconductor.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING); // Todo: remove this once it will be fully
+                                                                    // deprecated
         Infinite.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
         Bio.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);
         SuperconductorMV.add(SubTag.NO_SMASHING, SubTag.NO_SMELTING);

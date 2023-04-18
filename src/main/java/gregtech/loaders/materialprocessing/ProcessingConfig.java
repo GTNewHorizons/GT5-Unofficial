@@ -13,6 +13,7 @@ public class ProcessingConfig implements gregtech.api.interfaces.IMaterialHandle
         Materials.add(this);
     }
 
+    @SuppressWarnings("unused")
     @Override
     public void onMaterialsInit() {
         /** This is just left here as an example of how to add new materials. **/

@@ -56,7 +56,6 @@ public class GT_Item_Machines extends ItemBlock implements IFluidContainerItem {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
         try {
             final int tDamage = getDamage(aStack);

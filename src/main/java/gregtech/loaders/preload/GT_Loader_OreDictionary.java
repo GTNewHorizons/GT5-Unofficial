@@ -383,7 +383,7 @@ public class GT_Loader_OreDictionary implements Runnable {
             GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.CircuitZPM", 1L));
         GT_OreDictUnificator.registerOre(
             OrePrefixes.circuit,
-            Materials.Superconductor,
+            Materials.SuperconductorUHV,
             GT_ModHandler.getModItem(NewHorizonsCoreMod.ID, "item.CircuitUV", 1L));
         GT_OreDictUnificator.registerOre(
             OrePrefixes.circuit,
