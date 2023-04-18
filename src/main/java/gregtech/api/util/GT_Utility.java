@@ -15,6 +15,7 @@ import static gregtech.common.GT_UndergroundOil.undergroundOilReadInformation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
@@ -3666,16 +3667,49 @@ public class GT_Utility {
         });
     }
 
-    public static String formatNumbers(BigInteger aNumber) {
-        return getDecimalFormat().format(aNumber);
-    }
+    // public static String formatNumbers(BigInteger aNumber) {
+    // return getDecimalFormat().format(aNumber);
+    // }
+    //
+    // public static String formatNumbers(long aNumber) {
+    // return getDecimalFormat().format(aNumber);
+    // }
+    //
+//     public static String formatNumbers(double aNumber) {
+//     return getDecimalFormat().format(aNumber);
+//     }
 
-    public static String formatNumbers(long aNumber) {
-        return getDecimalFormat().format(aNumber);
-    }
+    private static final BigInteger TRILLION = BigInteger.TEN.pow(12);
 
-    public static String formatNumbers(double aNumber) {
-        return getDecimalFormat().format(aNumber);
+    public static String formatNumbers(Number number) {
+
+        // Handle decimals.
+        if (number instanceof Float || number instanceof Double || number instanceof BigDecimal) {
+            // Format the number using DecimalFormat with 3 decimal places.
+            DecimalFormat decimalFormat = new DecimalFormat("#.###");
+            return decimalFormat.format(number);
+        }
+
+        // Whole number handling.
+        final BigInteger bigIntValue = new BigInteger(number.toString());
+
+        if (bigIntValue.abs().compareTo(TRILLION) >= 0) {
+
+            // Convert the number to standard form.
+
+            int exponent = bigIntValue.toString()
+                .length() - 1;
+
+            // Digits
+            BigDecimal bigDigits = new BigDecimal(bigIntValue).divide(new BigDecimal(BigInteger.TEN.pow(exponent)), 3, RoundingMode.HALF_UP);
+            double digits = bigDigits.doubleValue();
+
+            exponent += (bigIntValue.signum() < 0 ? 1 : 0);
+            return String.format("%.2f x 10^%d", digits, exponent);
+        } else {
+            // Format the number using DecimalFormat.
+            return getDecimalFormat().format(number);
+        }
     }
 
     /*
