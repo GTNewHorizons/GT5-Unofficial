@@ -3,6 +3,10 @@ package gregtech.api.util;
 public abstract class GT_Waila {
 
     public static String getMachineProgressString(boolean isActive, int maxProgress, int progress) {
+        return getMachineProgressString(isActive, (long) maxProgress, (long) progress);
+    }
+
+    public static String getMachineProgressString(boolean isActive, long maxProgress, long progress) {
         final String result;
 
         if (isActive) {

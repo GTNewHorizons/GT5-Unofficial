@@ -35,6 +35,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntityCable;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IEnergyConnected;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.logic.interfaces.PowerLogicHost;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.objects.GT_Cover_None;
@@ -336,8 +337,12 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
         final ForgeDirection tDir = ForgeDirection.getOrientation(tSide);
 
         // GT Machine handling
-        if ((tTileEntity instanceof IEnergyConnected) && (((IEnergyConnected) tTileEntity).inputEnergyFrom(tSide, false)
-            || ((IEnergyConnected) tTileEntity).outputsEnergyTo(tSide, false))) return true;
+        if ((tTileEntity instanceof PowerLogicHost
+            && ((PowerLogicHost) tTileEntity).getPowerLogic(ForgeDirection.getOrientation(aSide)) != null)
+            || ((tTileEntity instanceof IEnergyConnected)
+                && (((IEnergyConnected) tTileEntity).inputEnergyFrom(tSide, false)
+                    || ((IEnergyConnected) tTileEntity).outputsEnergyTo(tSide, false))))
+            return true;
 
         // Solar Panel Compat
         if (coverBehavior instanceof GT_Cover_SolarPanel) return true;

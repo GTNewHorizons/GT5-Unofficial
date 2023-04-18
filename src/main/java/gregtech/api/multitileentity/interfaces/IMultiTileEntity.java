@@ -71,7 +71,7 @@ public interface IMultiTileEntity
     @Override
     boolean isDead();
 
-    void loadTextureNBT(NBTTagCompound aNBT);
+    void loadTextures(String folder);
 
     void copyTextures();
 

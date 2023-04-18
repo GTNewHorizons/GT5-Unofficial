@@ -307,7 +307,7 @@ public class GT_Values {
             TANK_CAPACITY = "gt.tankcap", // Number
             TANK_IN = "gt.tank.in.", // FluidStack
             TANK_OUT = "gt.tank.out.", // FluidStack
-            TEXTURE = "gt.texture", // String
+            TEXTURE_FOLDER = "gt.texture.folder", // String
             INV_INPUT_SIZE = "gt.invsize.in", // Number
             INV_OUTPUT_SIZE = "gt.invsize.out", // Number
             INV_INPUT_LIST = "gt.invlist.in", // NBT List
@@ -326,6 +326,7 @@ public class GT_Values {
             TARGET_X = "gt.target.x", // Number
             TARGET_Y = "gt.target.y", // Number
             TARGET_Z = "gt.target.z", // Number
+            LOCKED_FLUID = "gt.locked.fluid", // String
             LOCKED_INVENTORY = "gt.locked.inventory", // String
             LOCKED_INVENTORY_INDEX = "gt.locked.inventory.index", // Number
             UPGRADE_INVENTORY_SIZE = "gt.invsize.upg", // String
@@ -333,7 +334,18 @@ public class GT_Values {
             UPGRADE_INVENTORY_NAME = "gt.invname.upg", // String
             UPGRADE_INVENTORIES_INPUT = "gt.invlist.upg.in", // NBT List
             UPGRADE_INVENTORIES_OUTPUT = "gt.invlist.upg.out", // NBT List
+            UPGRADE_TANK_CAPACITY = "gt.tankcapacity.upg", // Long
+            UPGRADE_TANK_CAPACITY_MULTIPLIER = "gt.tankcapacitymultiplier.upg", // Long
+            UPGRADE_TANK_UUID = "gt.tankuuid.upg", // String
+            UPGRADE_TANK_NAME = "gt.tankname.upg", // String
+            UPGRADE_TANKS_INPUT = "gt.tanklist.upg.in", // NBT List
+            UPGRADE_TANKS_OUTPUT = "gt.tanklist.upg.out", // NBT List
+            UPGRADE_TANKS_COUNT = "gt.tankcount.upg", // Int
+            UPGRADE_TANKS_PREFIX = "gt.tank.upg", // NBT Tag
             SEPARATE_INPUTS = "gt.separate.inputs", // Boolean
+            VOID_EXCESS = "gt.void.excess", // Boolean
+            BATCH_MODE = "gt.batch.mode", // Boolean
+            RECIPE_LOCK = "gt.recipe.lock", // Boolean
 
             // Logic
             POWER_LOGIC = "gt.power.logic", // NBT Tag
@@ -587,6 +599,10 @@ public class GT_Values {
         + EnumChatFormatting.AQUA
         + EnumChatFormatting.BOLD
         + "Weabo";
+
+    public static final String Authorminecraft7771 = "Author: " + EnumChatFormatting.BLUE
+        + EnumChatFormatting.LIGHT_PURPLE
+        + "minecraft7771";
 
     // 7.5F comes from GT_Tool_Turbine_Large#getBaseDamage() given huge turbines are the most efficient now.
     public static double getMaxPlasmaTurbineEfficiencyFromMaterial(Materials material) {
