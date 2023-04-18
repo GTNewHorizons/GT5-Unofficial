@@ -14,6 +14,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.FakePlayer;
 
@@ -146,7 +147,7 @@ public class EuMeterGT extends Item {
             }
         }
         if (!(aPlayer instanceof EntityPlayerMP)) {
-            GT_Utility.doSoundAtClient(Reference.MODID + ":fx_scan", 1, 1.0F, aX, aY, aZ);
+            GT_Utility.doSoundAtClient(new ResourceLocation(Reference.MODID, "fx_scan"), 1, 1.0F, aX, aY, aZ);
         }
         return false;
     }

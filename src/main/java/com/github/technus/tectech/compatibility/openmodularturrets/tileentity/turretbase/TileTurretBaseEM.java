@@ -70,7 +70,8 @@ public class TileTurretBaseEM extends TurretBaseTierFiveTileEntity {
     }
 
     private EMInstanceStackMap getFromHatch(GT_MetaTileEntity_Hatch_InputElemental hatch) {
-        hatch.updateTexture((byte) 8, (byte) 4);
+        hatch.onValueUpdate((byte) 4);
+        hatch.onTexturePageUpdate((byte) 8);
         return hatch.getContentHandler();
     }
 }

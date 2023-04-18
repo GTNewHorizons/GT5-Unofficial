@@ -11,6 +11,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 
 import com.github.technus.tectech.Reference;
 import com.github.technus.tectech.util.CommonValues;
@@ -40,7 +41,7 @@ public final class TeslaStaff extends Item {
             double aX = aPlayer.posX;
             double aY = aPlayer.posY;
             double aZ = aPlayer.posZ;
-            GT_Utility.doSoundAtClient(Reference.MODID + ":fx_scan", 1, 1.0F, aX, aY, aZ);
+            GT_Utility.doSoundAtClient(new ResourceLocation(Reference.MODID, "fx_scan"), 1, 1.0F, aX, aY, aZ);
         }
         return false;
     }
