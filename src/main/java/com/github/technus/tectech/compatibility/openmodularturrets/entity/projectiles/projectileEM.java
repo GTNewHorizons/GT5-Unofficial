@@ -16,7 +16,7 @@ import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.mechanics.elementalMatter.core.stacks.EMInstanceStack;
 import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.EMHadronDefinition;
 
-import gregtech.api.GregTech_API;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.util.GT_Utility;
 
 /**
@@ -94,7 +94,7 @@ public class projectileEM extends LaserProjectile {
                                     && hitBlock.getMaterial().isSolid()) {
                                 GT_Utility.sendSoundToPlayers(
                                         worldObj,
-                                        GregTech_API.sSoundList.get(209),
+                                        SoundResource.IC2_MACHINES_MACHINE_OVERLOAD,
                                         1.0F,
                                         -1.0F,
                                         movingobjectposition.blockX,
@@ -147,7 +147,7 @@ public class projectileEM extends LaserProjectile {
                         if (TecTech.configTecTech.ENABLE_TURRET_EXPLOSIONS && antiMatter) {
                             GT_Utility.sendSoundToPlayers(
                                     worldObj,
-                                    GregTech_API.sSoundList.get(209),
+                                    SoundResource.IC2_MACHINES_MACHINE_OVERLOAD,
                                     1.0F,
                                     -1.0F,
                                     (int) movingobjectposition.entityHit.posX,
