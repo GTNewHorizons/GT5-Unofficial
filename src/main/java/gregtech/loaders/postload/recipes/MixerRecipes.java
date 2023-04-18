@@ -1799,7 +1799,7 @@ public class MixerRecipes implements Runnable {
                     Materials.Lead.getPlasma(1000),
                     Materials.Thorium.getPlasma(1000),
                     Materials.Plutonium241.getPlasma(1000L),
-                    Materials.RawStarMatter.getFluid(1000L))
+                    Materials.RawStarMatter.getFluid(25L))
                 .fluidOutputs(Materials.DimensionallyTranscendentStellarCatalyst.getFluid(1000L))
                 .duration(41 * MINUTES + 40 * SECONDS)
                 .eut(TierEU.RECIPE_UIV)
