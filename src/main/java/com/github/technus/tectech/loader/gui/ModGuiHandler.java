@@ -1,9 +1,9 @@
 package com.github.technus.tectech.loader.gui;
 
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 
-import com.github.technus.tectech.thing.item.gui.ProgrammerScreen;
 import com.github.technus.tectech.thing.item.gui.ScanDisplayScreen;
 import cpw.mods.fml.common.network.IGuiHandler;
 
@@ -25,7 +25,7 @@ public class ModGuiHandler implements IGuiHandler {
         if (ID == SCAN_DISPLAY_SCREEN_ID) {
             return new ScanDisplayScreen(player);
         } else if (ID == PROGRAMMER_DISPLAY_SCREEN_ID) {
-            return new ProgrammerScreen(player);
+            return new GuiScreen();
         }
         return null;
     }

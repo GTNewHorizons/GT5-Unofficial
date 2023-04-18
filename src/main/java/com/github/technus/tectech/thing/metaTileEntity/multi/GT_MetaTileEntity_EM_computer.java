@@ -459,7 +459,6 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        IGregTechTileEntity igt = getBaseMetaTileEntity();
         structureBuild_EM("front", 1, 2, 0, stackSize, hintsOnly);
         structureBuild_EM("cap", 1, 2, -1, stackSize, hintsOnly);
 

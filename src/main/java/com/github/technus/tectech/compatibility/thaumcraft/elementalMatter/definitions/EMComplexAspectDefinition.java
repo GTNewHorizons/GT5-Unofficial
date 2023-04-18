@@ -32,10 +32,6 @@ public final class EMComplexAspectDefinition extends EMComplexTemplate {
         this(true, new EMConstantStackMap(aspects));
     }
 
-    private EMComplexAspectDefinition(boolean check, EMDefinitionStack... aspects) throws EMException {
-        this(check, new EMConstantStackMap(aspects));
-    }
-
     public EMComplexAspectDefinition(EMConstantStackMap aspects) throws EMException {
         this(true, aspects);
     }

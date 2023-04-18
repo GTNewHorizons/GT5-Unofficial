@@ -31,10 +31,6 @@ public class IMCForNEI {
         FMLInterModComms.sendMessage("NotEnoughItems", "registerHandlerInfo", aNBT);
     }
 
-    private static void sendHandler(String aName, String aBlock) {
-        sendHandler(aName, aBlock, 2);
-    }
-
     private static void sendCatalyst(String aName, String aStack, int aPriority) {
         NBTTagCompound aNBT = new NBTTagCompound();
         aNBT.setString("handlerID", aName);
