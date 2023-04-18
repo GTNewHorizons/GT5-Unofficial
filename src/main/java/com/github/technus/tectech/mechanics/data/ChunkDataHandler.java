@@ -339,6 +339,7 @@ public class ChunkDataHandler {
             return storageMeta.get(key);
         }
 
+        @SuppressWarnings("unlikely-arg-type")
         @Override
         public void clear() {
             storageMeta.entrySet().forEach(this::remove);

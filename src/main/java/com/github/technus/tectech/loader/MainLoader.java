@@ -53,6 +53,7 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 
+@SuppressWarnings("deprecation")
 public final class MainLoader {
 
     public static DamageSource microwaving, elementalPollution, subspace;

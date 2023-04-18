@@ -42,6 +42,7 @@ public class EMRecipe<T> implements Comparable<EMRecipe<T>> {
         return Integer.compare(getID(), o.getID());
     }
 
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof EMRecipe) {

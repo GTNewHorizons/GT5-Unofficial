@@ -217,6 +217,7 @@ public class TecTech {
                         return false;
                     }
 
+                    @SuppressWarnings("unchecked")
                     @Override
                     public Object[] toArray(Object[] a) {
                         return new Object[0];

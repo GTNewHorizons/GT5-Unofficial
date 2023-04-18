@@ -62,7 +62,7 @@ public interface IEMMapWriteExact<T extends IEMStack> extends IEMMapRead<T> {
         getBackingMap().put(defStackUnsafe.getDefinition(), defStackUnsafe);
     }
 
-    default void putReplaceAll(T... defStacksUnsafe) {
+    default void putReplaceAll(@SuppressWarnings("unchecked") T... defStacksUnsafe) {
         for (T defStack : defStacksUnsafe) {
             putReplace(defStack);
         }
@@ -89,6 +89,7 @@ public interface IEMMapWriteExact<T extends IEMStack> extends IEMMapRead<T> {
      * @param amountToConsume
      * @return
      */
+    @SuppressWarnings("unchecked")
     default boolean removeAmountExact(IEMDefinition def, double amountToConsume) {
         T current = get(def);
         if (current != null) {
@@ -134,6 +135,7 @@ public interface IEMMapWriteExact<T extends IEMStack> extends IEMMapRead<T> {
         return true;
     }
 
+    @SuppressWarnings("unchecked")
     default T putUnifyExact(T stack) {
         T target = get(stack.getDefinition());
         if (target == null) {
@@ -151,7 +153,7 @@ public interface IEMMapWriteExact<T extends IEMStack> extends IEMMapRead<T> {
         }
     }
 
-    default void putUnifyAllExact(T... defs) {
+    default void putUnifyAllExact(@SuppressWarnings("unchecked") T... defs) {
         for (T def : defs) {
             putUnifyExact(def);
         }
