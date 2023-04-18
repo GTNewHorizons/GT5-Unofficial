@@ -1296,7 +1296,7 @@ public class RecipeLoader_02 {
 
             // Compact MK5 Computer
             TT_recipeAdder.addResearchableAssemblylineRecipe(
-                    ItemRefer.Compact_Fusion_MK3.get(1),
+                    ItemRefer.Compact_Fusion_MK4.get(1),
                     10_240_000,
                     16_384,
                     (int) TierEU.RECIPE_UEV,
