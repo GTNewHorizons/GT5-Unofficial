@@ -1,11 +1,14 @@
 package gregtech.loaders.oreprocessing;
 
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sMixerRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
+import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
 
 import java.util.Locale;
 
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 
@@ -80,13 +83,16 @@ public class ProcessingDye implements IOreRecipeRegistrator {
         String fluidName = "dye.chemical." + dye.name()
             .toLowerCase(Locale.ENGLISH);
 
-        GT_Values.RA.addChemicalRecipe(
-            GT_Utility.copyAmount(1L, stack),
-            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Salt, 2),
-            Materials.SulfuricAcid.getFluid(432),
-            FluidRegistry.getFluidStack(fluidName, 288),
-            GT_Values.NI,
-            600,
-            48);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_Utility.copyAmount(1L, stack),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Salt, 2)
+            )
+            .noItemOutputs()
+            .fluidInputs(Materials.SulfuricAcid.getFluid(432))
+            .fluidOutputs(FluidRegistry.getFluidStack(fluidName, 288))
+            .duration(30 * SECONDS)
+            .eut(48)
+            .addTo(UniversalChemical);
     }
 }

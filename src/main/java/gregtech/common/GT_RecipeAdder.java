@@ -338,28 +338,33 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         return true;
     }
 
+    @Deprecated
     @Override
     public boolean addChemicalRecipe(ItemStack aInput1, ItemStack aInput2, ItemStack aOutput, int aDuration) {
         return addChemicalRecipe(aInput1, aInput2, null, null, aOutput, aDuration);
     }
 
+    @Deprecated
     @Override
     public boolean addChemicalRecipe(ItemStack aInput1, ItemStack aInput2, ItemStack aOutput, int aDuration, int aEUt) {
         return addChemicalRecipe(aInput1, aInput2, null, null, aOutput, aDuration, aEUt);
     }
 
+    @Deprecated
     @Override
     public boolean addChemicalRecipe(ItemStack aInput1, ItemStack aInput2, FluidStack aFluidInput,
         FluidStack aFluidOutput, ItemStack aOutput, int aDuration) {
         return addChemicalRecipe(aInput1, aInput2, aFluidInput, aFluidOutput, aOutput, aDuration, 30);
     }
 
+    @Deprecated
     @Override
     public boolean addChemicalRecipe(ItemStack aInput1, ItemStack aInput2, FluidStack aFluidInput,
         FluidStack aFluidOutput, ItemStack aOutput, ItemStack aOutput2, int aDuration) {
         return addChemicalRecipe(aInput1, aInput2, aFluidInput, aFluidOutput, aOutput, aOutput2, aDuration, 30);
     }
 
+    @Deprecated
     @Override
     public boolean addChemicalRecipe(ItemStack aInput1, ItemStack aInput2, FluidStack aFluidInput,
         FluidStack aFluidOutput, ItemStack aOutput, int aDuration, int aEUTick) {
@@ -374,6 +379,7 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
             aEUTick);
     }
 
+    @Deprecated
     @Override
     public boolean addChemicalRecipe(ItemStack aInput1, ItemStack aInput2, FluidStack aFluidInput,
         FluidStack aFluidOutput, ItemStack aOutput, ItemStack aOutput2, int aDuration, int aEUtick) {
@@ -389,6 +395,7 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
             false);
     }
 
+    @Deprecated
     @Override
     public boolean addChemicalRecipe(ItemStack aInput1, ItemStack aInput2, FluidStack aFluidInput,
         FluidStack aFluidOutput, ItemStack aOutput, ItemStack aOutput2, int aDuration, int aEUtick,
@@ -493,6 +500,7 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         return true;
     }
 
+    @Deprecated
     @Override
     public void addDefaultPolymerizationRecipes(Fluid aBasicMaterial, ItemStack aBasicMaterialCell, Fluid aPolymer) {
         // Oxygen/Titaniumtetrafluoride -> +50% Output each

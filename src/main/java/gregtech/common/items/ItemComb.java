@@ -3,11 +3,14 @@ package gregtech.common.items;
 import static gregtech.api.enums.GT_Values.*;
 import static gregtech.api.enums.Mods.*;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sFluidExtractionRecipes;
+import static gregtech.api.util.GT_RecipeConstants.CLEANROOM;
+import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
 
 import java.util.Arrays;
 import java.util.List;
 
 import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.TierEU;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
@@ -1589,65 +1592,78 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
     public void addProcessGT(CombType comb, Materials[] aMaterial, Voltage volt) {
         ItemStack tComb = getStackForType(comb);
         for (Materials materials : aMaterial) {
-            if (GT_OreDictUnificator.get(OrePrefixes.crushedPurified, materials, 4) != NI) {
+            if (GT_OreDictUnificator.get(OrePrefixes.crushedPurified, materials, 4) != null) {
+                ItemStack combInput;
+                ItemStack combOutput;
+                FluidStack fluidInput;
+                FluidStack fluidOutput;
+                int durationTicks;
+                int eut;
+                boolean requiresCleanroom;
                 switch (comb) {
-                    case NEUTRONIUM:
-                        RA.addChemicalRecipe(
-                            GT_Utility.copyAmount(4, tComb),
-                            null,
-                            volt.getFluidAccordingToCombTier(),
-                            Materials.Neutronium.getMolten(576l),
-                            Materials.Neutronium.getNuggets(1),
-                            NI,
-                            volt.getComplexTime() * 17,
-                            volt.getChemicalEnergy(),
-                            volt.compareTo(Voltage.IV) > 0);
-                    case OSMIUM:
-                        RA.addChemicalRecipe(
-                            GT_Utility.copyAmount(4, tComb),
-                            null,
-                            volt.getFluidAccordingToCombTier(),
-                            Materials.Osmium.getMolten(288l),
-                            Materials.Osmium.getNuggets(1),
-                            NI,
-                            volt.getComplexTime() * 17,
-                            volt.getChemicalEnergy(),
-                            volt.compareTo(Voltage.IV) > 0);
-                    case PLATINUM:
-                        RA.addChemicalRecipe(
-                            GT_Utility.copyAmount(4, tComb),
-                            null,
-                            volt.getFluidAccordingToCombTier(),
-                            Materials.Platinum.getMolten(288l),
-                            Materials.Platinum.getNuggets(1),
-                            NI,
-                            volt.getComplexTime() * 10,
-                            volt.getChemicalEnergy(),
-                            volt.compareTo(Voltage.HV) > 0);
-                    case IRIDIUM:
-                        RA.addChemicalRecipe(
-                            GT_Utility.copyAmount(4, tComb),
-                            null,
-                            volt.getFluidAccordingToCombTier(),
-                            Materials.Iridium.getMolten(288l),
-                            Materials.Iridium.getNuggets(1),
-                            NI,
-                            volt.getComplexTime() * 14,
-                            volt.getChemicalEnergy(),
-                            volt.compareTo(Voltage.EV) > 0);
-                    default:
-                        RA.addChemicalRecipe(
-                            GT_Utility.copyAmount(4, tComb),
-                            null,
-                            volt.getFluidAccordingToCombTier(),
-                            null,
-                            GT_OreDictUnificator.get(OrePrefixes.crushedPurified, materials, 4),
-                            NI,
-                            volt.getComplexTime(),
-                            volt.getChemicalEnergy(),
-                            volt.compareTo(Voltage.IV) > 0);
-                        break;
+                    case NEUTRONIUM -> {
+                        combInput = GT_Utility.copyAmount(4, tComb);
+                        combOutput = Materials.Neutronium.getNuggets(1);
+                        fluidInput = volt.getFluidAccordingToCombTier();
+                        fluidOutput = Materials.Neutronium.getMolten(576);
+                        durationTicks = volt.getComplexTime() * 17;
+                        eut = volt.getChemicalEnergy();
+                        requiresCleanroom = volt.compareTo(Voltage.IV) > 0;
+                    }
+                    case OSMIUM -> {
+                        combInput = GT_Utility.copyAmount(4, tComb);
+                        combOutput = Materials.Osmium.getNuggets(1);
+                        fluidInput = volt.getFluidAccordingToCombTier();
+                        fluidOutput = Materials.Osmium.getMolten(288);
+                        durationTicks = volt.getComplexTime() * 17;
+                        eut = volt.getChemicalEnergy();
+                        requiresCleanroom = volt.compareTo(Voltage.IV) > 0;
+                    }
+                    case PLATINUM -> {
+                        combInput = GT_Utility.copyAmount(4, tComb);
+                        combOutput = Materials.Platinum.getNuggets(1);
+                        fluidInput = volt.getFluidAccordingToCombTier();
+                        fluidOutput = Materials.Platinum.getMolten(288);
+                        durationTicks = volt.getComplexTime() * 10;
+                        eut = volt.getChemicalEnergy();
+                        requiresCleanroom = volt.compareTo(Voltage.HV) > 0;
+                    }
+                    case IRIDIUM -> {
+                        combInput = GT_Utility.copyAmount(4, tComb);
+                        combOutput = Materials.Iridium.getNuggets(1);
+                        fluidInput = volt.getFluidAccordingToCombTier();
+                        fluidOutput = Materials.Iridium.getMolten(288);
+                        durationTicks = volt.getComplexTime() * 14;
+                        eut = volt.getChemicalEnergy();
+                        requiresCleanroom = volt.compareTo(Voltage.EV) > 0;
+                    }
+                    default -> {
+                        combInput = GT_Utility.copyAmount(4, tComb);
+                        combOutput = GT_OreDictUnificator.get(OrePrefixes.crushedPurified, materials, 4);
+                        fluidInput = volt.getFluidAccordingToCombTier();
+                        fluidOutput = null;
+                        durationTicks = volt.getComplexTime();
+                        eut = volt.getChemicalEnergy();
+                        requiresCleanroom = volt.compareTo(Voltage.IV) > 0;
+                    }
                 }
+                GT_Values.RA.stdBuilder()
+                    .itemInputs(
+                        combInput
+                    )
+                    .itemOutputs(
+                        combOutput
+                    )
+                    .fluidInputs(
+                        fluidInput
+                    )
+                    .fluidOutputs(
+                        fluidOutput
+                    )
+                    .duration(durationTicks)
+                    .eut(eut)
+                    .metadata(CLEANROOM, requiresCleanroom)
+                    .addTo(UniversalChemical);
             }
         }
     }
