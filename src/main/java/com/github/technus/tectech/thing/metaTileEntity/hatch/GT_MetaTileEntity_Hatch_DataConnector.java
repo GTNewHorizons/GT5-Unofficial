@@ -16,7 +16,6 @@ import org.apache.commons.lang3.reflect.FieldUtils;
 
 import com.github.technus.tectech.mechanics.dataTransport.DataPacket;
 import com.github.technus.tectech.mechanics.pipe.IConnectsToDataPipe;
-import com.github.technus.tectech.util.CommonValues;
 import com.github.technus.tectech.util.TT_Utility;
 
 import cpw.mods.fml.relauncher.Side;
@@ -45,12 +44,12 @@ public abstract class GT_MetaTileEntity_Hatch_DataConnector<T extends DataPacket
     public short id = -1;
 
     protected GT_MetaTileEntity_Hatch_DataConnector(int aID, String aName, String aNameRegional, int aTier,
-            String descr) {
+            String[] descr) {
         super(aID, aName, aNameRegional, aTier, 0, descr);
         TT_Utility.setTier(aTier, this);
     }
 
-    protected GT_MetaTileEntity_Hatch_DataConnector(String aName, int aTier, String aDescription,
+    protected GT_MetaTileEntity_Hatch_DataConnector(String aName, int aTier, String[] aDescription,
             ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
     }
@@ -191,12 +190,6 @@ public abstract class GT_MetaTileEntity_Hatch_DataConnector<T extends DataPacket
                 translateToLocalFormatted("tt.keyword.PacketHistory", clientLocale) + ": "
                         + EnumChatFormatting.RED
                         + (q != null ? q.getTraceSize() : 0), };
-    }
-
-    @Override
-    public String[] getDescription() {
-        return new String[] { CommonValues.TEC_MARK_EM, "Text description shouldn't be seen, report to Tec",
-                "High speed fibre optics connector.", EnumChatFormatting.AQUA + "Must be painted to work" };
     }
 
     @Override

@@ -26,18 +26,28 @@ public class GT_MetaTileEntity_DataReader extends GT_MetaTileEntity_BasicMachine
     public static GT_RenderedTexture READER_ONLINE, READER_OFFLINE;
 
     public GT_MetaTileEntity_DataReader(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, 1, "", 1, 1, "dataReader.png", "");
+        super(
+                aID,
+                aName,
+                aNameRegional,
+                aTier,
+                1,
+                new String[] { EnumChatFormatting.DARK_RED + "Deprecated" },
+                1,
+                1,
+                "dataReader.png",
+                "");
         TT_Utility.setTier(aTier, this);
     }
 
-    public GT_MetaTileEntity_DataReader(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_DataReader(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 1, aDescription, aTextures, 1, 1, "dataReader.png", "");
         TT_Utility.setTier(aTier, this);
     }
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_DataReader(mName, mTier, mDescription, mTextures);
+        return new GT_MetaTileEntity_DataReader(mName, mTier, mDescriptionArray, mTextures);
     }
 
     @Override
@@ -97,11 +107,6 @@ public class GT_MetaTileEntity_DataReader extends GT_MetaTileEntity_BasicMachine
     @Override
     public boolean isAccessAllowed(EntityPlayer aPlayer) {
         return true;
-    }
-
-    @Override
-    public String[] getDescription() {
-        return new String[] { EnumChatFormatting.DARK_RED + "Deprecated" };
     }
 
     @Override

@@ -22,14 +22,14 @@ public class GT_MetaTileEntity_Hatch_OutputElemental extends GT_MetaTileEntity_H
         TT_Utility.setTier(aTier, this);
     }
 
-    public GT_MetaTileEntity_Hatch_OutputElemental(String aName, int aTier, String aDescription,
+    public GT_MetaTileEntity_Hatch_OutputElemental(String aName, int aTier, String[] aDescription,
             ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
     }
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_Hatch_OutputElemental(mName, mTier, mDescription, mTextures);
+        return new GT_MetaTileEntity_Hatch_OutputElemental(mName, mTier, mDescriptionArray, mTextures);
     }
 
     @Override

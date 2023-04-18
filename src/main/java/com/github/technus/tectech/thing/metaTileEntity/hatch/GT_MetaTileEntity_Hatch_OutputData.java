@@ -23,17 +23,25 @@ import gregtech.api.util.GT_Utility;
 public class GT_MetaTileEntity_Hatch_OutputData extends GT_MetaTileEntity_Hatch_DataConnector<QuantumDataPacket> {
 
     public GT_MetaTileEntity_Hatch_OutputData(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, "");
+        super(
+                aID,
+                aName,
+                aNameRegional,
+                aTier,
+                new String[] { CommonValues.TEC_MARK_EM, translateToLocal("gt.blockmachines.hatch.dataout.desc.0"),
+                        translateToLocal("gt.blockmachines.hatch.dataout.desc.1"),
+                        EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.hatch.dataout.desc.2") });
         TT_Utility.setTier(aTier, this);
     }
 
-    public GT_MetaTileEntity_Hatch_OutputData(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_Hatch_OutputData(String aName, int aTier, String[] aDescription,
+            ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
     }
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_Hatch_OutputData(mName, mTier, mDescription, mTextures);
+        return new GT_MetaTileEntity_Hatch_OutputData(mName, mTier, mDescriptionArray, mTextures);
     }
 
     @Override
@@ -79,19 +87,6 @@ public class GT_MetaTileEntity_Hatch_OutputData extends GT_MetaTileEntity_Hatch_
             current = next;
         }
         q = null;
-    }
-
-    @Override
-    public String[] getDescription() {
-        return new String[] { CommonValues.TEC_MARK_EM, translateToLocal("gt.blockmachines.hatch.dataout.desc.0"), // Quantum
-                                                                                                                   // Data
-                                                                                                                   // Output
-                                                                                                                   // for
-                                                                                                                   // Multiblocks
-                translateToLocal("gt.blockmachines.hatch.dataout.desc.1"), // High speed fibre optics connector.
-                EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.hatch.dataout.desc.2") // Must be painted
-                                                                                                    // to work
-        };
     }
 
     @Override

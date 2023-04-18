@@ -58,11 +58,21 @@ public class GT_MetaTileEntity_Hatch_Param extends GT_MetaTileEntity_Hatch imple
     private String clientLocale = "en_US";
 
     public GT_MetaTileEntity_Hatch_Param(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, 0, "");
+        super(
+                aID,
+                aName,
+                aNameRegional,
+                aTier,
+                0,
+                new String[] { CommonValues.TEC_MARK_GENERAL,
+                        EnumChatFormatting.DARK_RED
+                                + "Deprecated; Now you can set parameter by clicking LED on multiblock GUI.",
+                        EnumChatFormatting.DARK_RED
+                                + "If it doesn't work, try removing Parametrizer from multiblock structure." });
         TT_Utility.setTier(aTier, this);
     }
 
-    public GT_MetaTileEntity_Hatch_Param(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_Hatch_Param(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
     }
 
@@ -86,7 +96,7 @@ public class GT_MetaTileEntity_Hatch_Param extends GT_MetaTileEntity_Hatch imple
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity iGregTechTileEntity) {
-        return new GT_MetaTileEntity_Hatch_Param(mName, mTier, mDescription, mTextures);
+        return new GT_MetaTileEntity_Hatch_Param(mName, mTier, mDescriptionArray, mTextures);
     }
 
     @Override
@@ -209,15 +219,6 @@ public class GT_MetaTileEntity_Hatch_Param extends GT_MetaTileEntity_Hatch imple
         }
         GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
         return true;
-    }
-
-    @Override
-    public String[] getDescription() {
-        return new String[] { CommonValues.TEC_MARK_GENERAL,
-                EnumChatFormatting.DARK_RED
-                        + "Deprecated; Now you can set parameter by clicking LED on multiblock GUI.",
-                EnumChatFormatting.DARK_RED
-                        + "If it doesn't work, try removing Parametrizer from multiblock structure.", };
     }
 
     @Override

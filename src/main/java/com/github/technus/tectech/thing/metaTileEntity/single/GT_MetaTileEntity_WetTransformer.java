@@ -15,13 +15,13 @@ public class GT_MetaTileEntity_WetTransformer extends GT_MetaTileEntity_TT_Trans
         super(aID, aName, aNameRegional, aTier);
     }
 
-    public GT_MetaTileEntity_WetTransformer(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_WetTransformer(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_WetTransformer(mName, mTier, mDescription, mTextures);
+        return new GT_MetaTileEntity_WetTransformer(mName, mTier, mDescriptionArray, mTextures);
     }
 
     @Override

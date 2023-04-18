@@ -59,11 +59,18 @@ public class GT_MetaTileEntity_Hatch_Rack extends GT_MetaTileEntity_Hatch implem
     private String clientLocale = "en_US";
 
     public GT_MetaTileEntity_Hatch_Rack(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, 4, "");
+        super(
+                aID,
+                aName,
+                aNameRegional,
+                aTier,
+                4,
+                new String[] { CommonValues.TEC_MARK_EM, translateToLocal("gt.blockmachines.hatch.rack.desc.0"),
+                        EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.hatch.rack.desc.1") });
         TT_Utility.setTier(aTier, this);
     }
 
-    public GT_MetaTileEntity_Hatch_Rack(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_Hatch_Rack(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 4, aDescription, aTextures);
     }
 
@@ -103,7 +110,7 @@ public class GT_MetaTileEntity_Hatch_Rack extends GT_MetaTileEntity_Hatch implem
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_Hatch_Rack(mName, mTier, mDescription, mTextures);
+        return new GT_MetaTileEntity_Hatch_Rack(mName, mTier, mDescriptionArray, mTextures);
     }
 
     @Override
@@ -255,16 +262,6 @@ public class GT_MetaTileEntity_Hatch_Rack extends GT_MetaTileEntity_Hatch implem
     @Override
     public int getSizeInventory() { // HACK TO NOT DROP CONTENTS!!!
         return heat > 500 || getBaseMetaTileEntity().isActive() ? 0 : mInventory.length;
-    }
-
-    @Override
-    public String[] getDescription() {
-        return new String[] { CommonValues.TEC_MARK_EM, translateToLocal("gt.blockmachines.hatch.rack.desc.0"), // 4
-                                                                                                                // Slot
-                                                                                                                // Rack
-                EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.hatch.rack.desc.1") // Holds Computer
-                                                                                                 // Components
-        };
     }
 
     @Override

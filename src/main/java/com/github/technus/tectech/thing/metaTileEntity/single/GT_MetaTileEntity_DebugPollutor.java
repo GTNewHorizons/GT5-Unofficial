@@ -47,18 +47,27 @@ public class GT_MetaTileEntity_DebugPollutor extends GT_MetaTileEntity_TieredMac
     public float anomaly = 0;
 
     public GT_MetaTileEntity_DebugPollutor(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, 0, "");
+        super(
+                aID,
+                aName,
+                aNameRegional,
+                aTier,
+                0,
+                new String[] { CommonValues.TEC_MARK_GENERAL,
+                        translateToLocal("gt.blockmachines.debug.tt.pollutor.desc.0"),
+                        EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.debug.tt.pollutor.desc.1"),
+                        EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.debug.tt.pollutor.desc.2") });
         TT_Utility.setTier(aTier, this);
     }
 
-    public GT_MetaTileEntity_DebugPollutor(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_DebugPollutor(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
         TT_Utility.setTier(aTier, this);
     }
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_DebugPollutor(mName, mTier, mDescription, mTextures);
+        return new GT_MetaTileEntity_DebugPollutor(mName, mTier, mDescriptionArray, mTextures);
     }
 
     @Override
@@ -145,17 +154,6 @@ public class GT_MetaTileEntity_DebugPollutor extends GT_MetaTileEntity_TieredMac
     @Override
     public boolean isAccessAllowed(EntityPlayer aPlayer) {
         return true;
-    }
-
-    @Override
-    public String[] getDescription() {
-        return new String[] { CommonValues.TEC_MARK_GENERAL,
-                translateToLocal("gt.blockmachines.debug.tt.pollutor.desc.0"), // Shit genny broke!
-                EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.debug.tt.pollutor.desc.1"), // Infinite
-                                                                                                         // Producer/Consumer
-                EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.debug.tt.pollutor.desc.2") // Since i
-                                                                                                        // wanted one?
-        };
     }
 
     @Override

@@ -49,11 +49,20 @@ public class GT_MetaTileEntity_DebugStructureWriter extends GT_MetaTileEntity_Ti
     public String[] result = new String[] { "Undefined" };
 
     public GT_MetaTileEntity_DebugStructureWriter(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, 0, "");
+        super(
+                aID,
+                aName,
+                aNameRegional,
+                aTier,
+                0,
+                new String[] { CommonValues.TEC_MARK_GENERAL,
+                        translateToLocal("gt.blockmachines.debug.tt.writer.desc.0"),
+                        EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.debug.tt.writer.desc.1"),
+                        EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.debug.tt.writer.desc.2") });
         TT_Utility.setTier(aTier, this);
     }
 
-    public GT_MetaTileEntity_DebugStructureWriter(String aName, int aTier, String aDescription,
+    public GT_MetaTileEntity_DebugStructureWriter(String aName, int aTier, String[] aDescription,
             ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
         TT_Utility.setTier(aTier, this);
@@ -61,7 +70,7 @@ public class GT_MetaTileEntity_DebugStructureWriter extends GT_MetaTileEntity_Ti
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_DebugStructureWriter(mName, mTier, mDescription, mTextures);
+        return new GT_MetaTileEntity_DebugStructureWriter(mName, mTier, mDescriptionArray, mTextures);
     }
 
     @Override
@@ -184,21 +193,6 @@ public class GT_MetaTileEntity_DebugStructureWriter extends GT_MetaTileEntity_Ti
     @Override
     public boolean isAccessAllowed(EntityPlayer aPlayer) {
         return true;
-    }
-
-    @Override
-    public String[] getDescription() {
-        return new String[] { CommonValues.TEC_MARK_GENERAL,
-                translateToLocal("gt.blockmachines.debug.tt.writer.desc.0"), // Scans Blocks Around
-                EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.debug.tt.writer.desc.1"), // Prints
-                                                                                                       // Multiblock
-                                                                                                       // NonTE
-                                                                                                       // structure
-                                                                                                       // check code
-                EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.debug.tt.writer.desc.2") // ABC axises
-                                                                                                      // aligned to
-                                                                                                      // machine front
-        };
     }
 
     @Override

@@ -22,11 +22,18 @@ public class GT_MetaTileEntity_Hatch_OutputDataItems
         extends GT_MetaTileEntity_Hatch_DataConnector<InventoryDataPacket> {
 
     public GT_MetaTileEntity_Hatch_OutputDataItems(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, "");
+        super(
+                aID,
+                aName,
+                aNameRegional,
+                aTier,
+                new String[] { CommonValues.TEC_MARK_EM, translateToLocal("gt.blockmachines.hatch.dataoutass.desc.0"),
+                        translateToLocal("gt.blockmachines.hatch.dataoutass.desc.1"),
+                        EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.hatch.dataoutass.desc.2") });
         TT_Utility.setTier(aTier, this);
     }
 
-    public GT_MetaTileEntity_Hatch_OutputDataItems(String aName, int aTier, String aDescription,
+    public GT_MetaTileEntity_Hatch_OutputDataItems(String aName, int aTier, String[] aDescription,
             ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
     }
@@ -43,7 +50,11 @@ public class GT_MetaTileEntity_Hatch_OutputDataItems
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_Hatch_OutputDataItems(this.mName, this.mTier, this.mDescription, this.mTextures);
+        return new GT_MetaTileEntity_Hatch_OutputDataItems(
+                this.mName,
+                this.mTier,
+                this.mDescriptionArray,
+                this.mTextures);
     }
 
     @Override
@@ -123,19 +134,5 @@ public class GT_MetaTileEntity_Hatch_OutputDataItems
                             return (IConnectsToDataPipe) meta;
                         }
         return null;
-    }
-
-    @Override
-    public String[] getDescription() {
-        return new String[] { CommonValues.TEC_MARK_EM, translateToLocal("gt.blockmachines.hatch.dataoutass.desc.0"), // ItemStack
-                                                                                                                      // Data
-                                                                                                                      // Output
-                                                                                                                      // for
-                                                                                                                      // Multiblocks
-                translateToLocal("gt.blockmachines.hatch.dataoutass.desc.1"), // High speed fibre optics connector.
-                EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.hatch.dataoutass.desc.2") // Must be
-                                                                                                       // painted to
-                                                                                                       // work
-        };
     }
 }

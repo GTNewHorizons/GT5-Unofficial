@@ -8,7 +8,6 @@ import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.BOLD;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.GRAY;
 import static gregtech.api.enums.GT_Values.AuthorColen;
 import static gregtech.api.enums.GT_Values.V;
-import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.math.BigInteger;
 
@@ -40,17 +39,14 @@ public class GT_MetaTileEntity_Hatch_WirelessMulti extends GT_MetaTileEntity_Hat
                 aNameRegional,
                 aTier,
                 0,
-                translateToLocal("gt.blockmachines.hatch.energymulti.desc.0"), // Multiple
-                // Ampere
-                // Energy
-                // Injector
-                // for
-                // Multiblocks
+                new String[] { GRAY + "Stores energy globally in a network, up to 2^(2^31) EU.",
+                        GRAY + "Does not connect to wires. This block withdraws EU from the network.",
+                        AuthorColen + GRAY + BOLD + " & " + BLUE + BOLD + "Cloud" },
                 aAmp);
         TT_Utility.setTier(aTier, this);
     }
 
-    public GT_MetaTileEntity_Hatch_WirelessMulti(String aName, int aTier, int aAmp, String aDescription,
+    public GT_MetaTileEntity_Hatch_WirelessMulti(String aName, int aTier, int aAmp, String[] aDescription,
             ITexture[][][] aTextures) {
         super(aName, aTier, aAmp, aDescription, aTextures);
     }
@@ -146,7 +142,7 @@ public class GT_MetaTileEntity_Hatch_WirelessMulti extends GT_MetaTileEntity_Hat
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_Hatch_WirelessMulti(mName, mTier, Amperes, mDescription, mTextures);
+        return new GT_MetaTileEntity_Hatch_WirelessMulti(mName, mTier, Amperes, mDescriptionArray, mTextures);
     }
 
     @Override
@@ -157,13 +153,6 @@ public class GT_MetaTileEntity_Hatch_WirelessMulti extends GT_MetaTileEntity_Hat
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
         return false;
-    }
-
-    @Override
-    public String[] getDescription() {
-        return new String[] { GRAY + "Stores energy globally in a network, up to 2^(2^31) EU.",
-                GRAY + "Does not connect to wires. This block withdraws EU from the network.",
-                AuthorColen + GRAY + BOLD + " & " + BLUE + BOLD + "Cloud" };
     }
 
     @Override

@@ -131,7 +131,8 @@ public class GT_MetaTileEntity_EM_transformer extends GT_MetaTileEntity_Multiblo
                                                                                                   // running
                 .addSeparator().beginStructureBlock(3, 3, 3, false)
                 .addController(translateToLocal("tt.keyword.Structure.FrontCenter")) // Controller: Front center
-                .addCasingInfo(translateToLocal("gt.blockcasingsTT.0.name"), 5) // 5x High Power Casing (minimum)
+                .addCasingInfoMin(translateToLocal("gt.blockcasingsTT.0.name"), 5, false) // 5x High Power Casing
+                                                                                          // (minimum)
                 .addOtherStructurePart(
                         translateToLocal("tt.keyword.Structure.SuperconductingCoilBlock"),
                         translateToLocal("tt.keyword.Structure.Center")) // SuperconductingCoilBlock: Center

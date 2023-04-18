@@ -54,17 +54,31 @@ public class GT_MetaTileEntity_Hatch_OverflowElemental extends GT_MetaTileEntity
 
     public GT_MetaTileEntity_Hatch_OverflowElemental(int aID, String aName, String aNameRegional, int aTier,
             double max) {
-        super(aID, aName, aNameRegional, aTier, 0, translateToLocal("gt.blockmachines.hatch.emmuffler.desc.0")); // Disposes
-                                                                                                                 // excess
-                                                                                                                 // elemental
-                                                                                                                 // Matter
+        super(
+                aID,
+                aName,
+                aNameRegional,
+                aTier,
+                0,
+                new String[] { CommonValues.TEC_MARK_EM, translateToLocal("gt.blockmachines.hatch.emmuffler.desc.0"),
+                        translateToLocal("gt.blockmachines.hatch.emmuffler.desc.1") + ": "
+                                + EnumChatFormatting.AQUA
+                                + TT_Utility.formatNumberShortExp(max)
+                                + " "
+                                + translateToLocal("tt.keyword.unit.mass"),
+                        translateToLocal("gt.blockmachines.hatch.emmuffler.desc.2") + ": "
+                                + EnumChatFormatting.AQUA
+                                + TT_Utility.formatNumberShortExp(max / (float) (30 - aTier))
+                                + " "
+                                + translateToLocal("tt.keyword.unit.massFlux"),
+                        translateToLocal("gt.blockmachines.hatch.emmuffler.desc.3") });
         overflowMatter = max / 2;
         overflowMax = max;
         overflowDisperse = overflowMax / (float) (30 - aTier);
         TT_Utility.setTier(aTier, this);
     }
 
-    public GT_MetaTileEntity_Hatch_OverflowElemental(String aName, int aTier, double max, String aDescription,
+    public GT_MetaTileEntity_Hatch_OverflowElemental(String aName, int aTier, double max, String[] aDescription,
             ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
         overflowMatter = max / 2;
@@ -101,22 +115,6 @@ public class GT_MetaTileEntity_Hatch_OverflowElemental extends GT_MetaTileEntity
     }
 
     @Override
-    public String[] getDescription() {
-        return new String[] { CommonValues.TEC_MARK_EM, mDescription,
-                translateToLocal("gt.blockmachines.hatch.emmuffler.desc.1") + ": "
-                        + EnumChatFormatting.AQUA
-                        + TT_Utility.formatNumberShortExp(overflowMax)
-                        + " "
-                        + translateToLocal("tt.keyword.unit.mass"),
-                translateToLocal("gt.blockmachines.hatch.emmuffler.desc.2") + ": "
-                        + EnumChatFormatting.AQUA
-                        + TT_Utility.formatNumberShortExp(overflowDisperse)
-                        + " "
-                        + translateToLocal("tt.keyword.unit.massFlux"),
-                translateToLocal("gt.blockmachines.hatch.emmuffler.desc.3") };
-    }
-
-    @Override
     public boolean isSimpleMachine() {
         return true;
     }
@@ -138,7 +136,7 @@ public class GT_MetaTileEntity_Hatch_OverflowElemental extends GT_MetaTileEntity
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_Hatch_OverflowElemental(mName, mTier, overflowMax, mDescription, mTextures);
+        return new GT_MetaTileEntity_Hatch_OverflowElemental(mName, mTier, overflowMax, mDescriptionArray, mTextures);
     }
 
     @Override

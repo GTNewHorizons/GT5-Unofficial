@@ -25,24 +25,30 @@ public class GT_MetaTileEntity_Hatch_EnergyMulti extends GT_MetaTileEntity_Hatch
     public final int Amperes;
 
     public GT_MetaTileEntity_Hatch_EnergyMulti(int aID, String aName, String aNameRegional, int aTier, int aAmp) {
-        super(aID, aName, aNameRegional, aTier, 0, translateToLocal("gt.blockmachines.hatch.energymulti.desc.0")); // Multiple
-                                                                                                                   // Ampere
-                                                                                                                   // Energy
-                                                                                                                   // Injector
-                                                                                                                   // for
-        // Multiblocks
+        super(
+                aID,
+                aName,
+                aNameRegional,
+                aTier,
+                0,
+                new String[] { CommonValues.TEC_MARK_GENERAL,
+                        translateToLocal("gt.blockmachines.hatch.energymulti.desc.0"),
+                        translateToLocal("gt.blockmachines.hatch.energymulti.desc.1") + ": "
+                                + EnumChatFormatting.AQUA
+                                + GT_Utility.formatNumbers(aAmp)
+                                + " A" }); // Multiple Ampere Energy Injector for Multiblocks
         Amperes = aAmp;
         TT_Utility.setTier(aTier, this);
     }
 
-    public GT_MetaTileEntity_Hatch_EnergyMulti(String aName, int aTier, int aAmp, String aDescription,
+    public GT_MetaTileEntity_Hatch_EnergyMulti(String aName, int aTier, int aAmp, String[] aDescription,
             ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
         Amperes = aAmp;
     }
 
     public GT_MetaTileEntity_Hatch_EnergyMulti(int aID, String aName, String aNameRegional, int aTier, int i,
-            String description, int aAmp) {
+            String[] description, int aAmp) {
         super(aID, aName, aNameRegional, aTier, 0, description);
         Amperes = aAmp;
     }
@@ -114,7 +120,7 @@ public class GT_MetaTileEntity_Hatch_EnergyMulti extends GT_MetaTileEntity_Hatch
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_Hatch_EnergyMulti(mName, mTier, Amperes, mDescription, mTextures);
+        return new GT_MetaTileEntity_Hatch_EnergyMulti(mName, mTier, Amperes, mDescriptionArray, mTextures);
     }
 
     @Override
@@ -125,15 +131,5 @@ public class GT_MetaTileEntity_Hatch_EnergyMulti extends GT_MetaTileEntity_Hatch
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
         return false;
-    }
-
-    @Override
-    public String[] getDescription() {
-        return new String[] { CommonValues.TEC_MARK_GENERAL, mDescription,
-                translateToLocal("gt.blockmachines.hatch.energymulti.desc.1") + ": "
-                        + EnumChatFormatting.AQUA
-                        + GT_Utility.formatNumbers(maxAmperesIn())
-                        + " A" // Amperes In
-        };
     }
 }

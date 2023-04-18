@@ -80,7 +80,7 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
         TT_Utility.setTier(aTier, this);
     }
 
-    public GT_MetaTileEntity_TeslaCoil(String aName, int aTier, String aDescription, ITexture[][][] aTextures,
+    public GT_MetaTileEntity_TeslaCoil(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures,
             int aSlotCount) {
         super(aName, aTier, aDescription, aTextures, aSlotCount);
     }
@@ -216,7 +216,7 @@ public class GT_MetaTileEntity_TeslaCoil extends GT_MetaTileEntity_BasicBatteryB
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_TeslaCoil(mName, mTier, mDescription, mTextures, mInventory.length);
+        return new GT_MetaTileEntity_TeslaCoil(mName, mTier, mDescriptionArray, mTextures, mInventory.length);
     }
 
     @Override

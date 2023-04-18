@@ -22,14 +22,14 @@ public class GT_MetaTileEntity_TT_Transformer extends GT_MetaTileEntity_Transfor
         TT_Utility.setTier(aTier, this);
     }
 
-    public GT_MetaTileEntity_TT_Transformer(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_TT_Transformer(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
         TT_Utility.setTier(aTier, this);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_TT_Transformer(mName, mTier, mDescription, mTextures);
+        return new GT_MetaTileEntity_TT_Transformer(mName, mTier, mDescriptionArray, mTextures);
     }
 
     @Override
