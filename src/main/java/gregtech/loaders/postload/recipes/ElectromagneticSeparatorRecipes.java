@@ -32,7 +32,7 @@ public class ElectromagneticSeparatorRecipes implements Runnable {
             .noFluidInputs()
             .noFluidOutputs()
             .duration(10 * SECONDS)
-            .eut(TierEU.RECIPE_UHV / 2)
+            .eut(TierEU.RECIPE_UHV)
             .addTo(sElectroMagneticSeparatorRecipes);
     }
 }

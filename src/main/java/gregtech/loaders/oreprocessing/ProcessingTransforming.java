@@ -169,7 +169,7 @@ public class ProcessingTransforming implements IOreRecipeRegistrator {
                     GT_Utility.copyAmount(1L, aStack),
                     GT_OreDictUnificator.get(aPrefix, Materials.TengamAttuned, 1L),
                     (int) Math.max(16L, aPrefix.mMaterialAmount * 128L / GT_Values.M),
-                    (int) TierEU.UHV / 2);
+                    (int) TierEU.RECIPE_UHV);
             }
                 break;
 
