@@ -1,6 +1,7 @@
 package gregtech.api.multitileentity.multiblock.base;
 
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.logic.PowerLogic;
@@ -29,7 +30,7 @@ public abstract class MultiBlockPowerController<T extends MultiBlockPowerControl
     }
 
     @Override
-    public PowerLogic getPowerLogic(byte side) {
+    public PowerLogic getPowerLogic(ForgeDirection side) {
         return power;
     }
 

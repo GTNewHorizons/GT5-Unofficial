@@ -92,7 +92,7 @@ public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch impl
     }
 
     @Override
-    public boolean isFacingValid(ForgeDirection facingDirection) {
+    public boolean isFacingValid(ForgeDirection facing) {
         return true;
     }
 
@@ -102,7 +102,7 @@ public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch impl
     }
 
     @Override
-    public boolean isLiquidInput(ForgeDirection aSide) {
+    public boolean isLiquidInput(ForgeDirection side) {
         return false;
     }
 
@@ -124,20 +124,14 @@ public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch impl
             IFluidHandler tTileEntity = aBaseMetaTileEntity
                 .getITankContainerAtSide(aBaseMetaTileEntity.getFrontFacing());
             if (tTileEntity != null) {
-                FluidStack tDrained = aBaseMetaTileEntity.drain(
-                    ForgeDirection.getOrientation(aBaseMetaTileEntity.getFrontFacing()),
-                    Math.max(1, mFluid.amount),
-                    false);
+                FluidStack tDrained = aBaseMetaTileEntity
+                    .drain(aBaseMetaTileEntity.getFrontFacing(), Math.max(1, mFluid.amount), false);
                 if (tDrained != null) {
-                    int tFilledAmount = tTileEntity
-                        .fill(ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()), tDrained, false);
+                    int tFilledAmount = tTileEntity.fill(aBaseMetaTileEntity.getBackFacing(), tDrained, false);
                     if (tFilledAmount > 0) {
                         tTileEntity.fill(
-                            ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()),
-                            aBaseMetaTileEntity.drain(
-                                ForgeDirection.getOrientation(aBaseMetaTileEntity.getFrontFacing()),
-                                tFilledAmount,
-                                true),
+                            aBaseMetaTileEntity.getBackFacing(),
+                            aBaseMetaTileEntity.drain(aBaseMetaTileEntity.getFrontFacing(), tFilledAmount, true),
                             true);
                     }
                 }
@@ -222,15 +216,15 @@ public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch impl
     }
 
     @Override
-    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection aSide,
+    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
-        return aSide == aBaseMetaTileEntity.getFrontFacing() && aIndex == 1;
+        return side == aBaseMetaTileEntity.getFrontFacing() && aIndex == 1;
     }
 
     @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection aSide,
+    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
-        return aSide == aBaseMetaTileEntity.getFrontFacing() && aIndex == 0;
+        return side == aBaseMetaTileEntity.getFrontFacing() && aIndex == 0;
     }
 
     @Override
@@ -239,8 +233,8 @@ public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch impl
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        if (!getBaseMetaTileEntity().getCoverInfoAtSide(aSide)
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        if (!getBaseMetaTileEntity().getCoverInfoAtSide(side)
             .isGUIClickable()) return;
         if (aPlayer.isSneaking()) {
             mMode = (byte) ((mMode + 9) % 10);
@@ -325,8 +319,8 @@ public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch impl
         }
     }
 
-    private boolean tryToLockHatch(EntityPlayer aPlayer, ForgeDirection aSide) {
-        if (!getBaseMetaTileEntity().getCoverInfoAtSide(aSide)
+    private boolean tryToLockHatch(EntityPlayer aPlayer, ForgeDirection side) {
+        if (!getBaseMetaTileEntity().getCoverInfoAtSide(side)
             .isGUIClickable()) return false;
         if (!isFluidLocked()) return false;
         final ItemStack tCurrentItem = aPlayer.inventory.getCurrentItem();
@@ -373,10 +367,10 @@ public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch impl
     }
 
     @Override
-    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection aSide,
+    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side,
         float aX, float aY, float aZ) {
-        if (tryToLockHatch(aPlayer, aSide)) return true;
-        return super.onRightclick(aBaseMetaTileEntity, aPlayer, aSide, aX, aY, aZ);
+        if (tryToLockHatch(aPlayer, side)) return true;
+        return super.onRightclick(aBaseMetaTileEntity, aPlayer, side, aX, aY, aZ);
     }
 
     public boolean outputsSteam() {

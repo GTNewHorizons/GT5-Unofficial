@@ -140,9 +140,9 @@ public class GT_MetaTileEntity_ForgeHammer_Bronze extends GT_MetaTileEntity_Basi
         // Random Sparkles at main face
         if (aBaseMetaTileEntity.isActive() && XSTR_INSTANCE.nextInt(3) == 0) {
 
-            final byte mainFacing = (byte) this.mMainFacing;
+            final ForgeDirection mainFacing = this.mMainFacing;
 
-            if (mainFacing > 1 && aBaseMetaTileEntity.getCoverIDAtSide(mainFacing) == 0
+            if (mainFacing.ordinal() > 1 && aBaseMetaTileEntity.getCoverIDAtSide(mainFacing) == 0
                 && !aBaseMetaTileEntity.getOpacityAtSide(mainFacing)) {
 
                 final double oX = aBaseMetaTileEntity.getXCoord();
@@ -155,17 +155,17 @@ public class GT_MetaTileEntity_ForgeHammer_Bronze extends GT_MetaTileEntity_Basi
 
                 y = oY + XSTR_INSTANCE.nextFloat() * 10D / 16D + 5D / 16D;
 
-                if (mainFacing == ForgeDirection.WEST.ordinal()) {
+                if (mainFacing == ForgeDirection.WEST) {
                     x = oX - offset;
                     mX = -.05D;
                     z = oZ + horizontal;
                     mZ = 0D;
-                } else if (mainFacing == ForgeDirection.EAST.ordinal()) {
+                } else if (mainFacing == ForgeDirection.EAST) {
                     x = oX + offset;
                     mX = .05D;
                     z = oZ + horizontal;
                     mZ = 0D;
-                } else if (mainFacing == ForgeDirection.NORTH.ordinal()) {
+                } else if (mainFacing == ForgeDirection.NORTH) {
                     x = oX + horizontal;
                     mX = 0D;
                     z = oZ - offset;

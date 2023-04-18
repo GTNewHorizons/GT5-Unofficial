@@ -113,12 +113,12 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
     }
 
     @Override
-    public boolean isInputFacing(ForgeDirection aSide) {
+    public boolean isInputFacing(ForgeDirection side) {
         return false;
     }
 
     @Override
-    public boolean isOutputFacing(ForgeDirection aSide) {
+    public boolean isOutputFacing(ForgeDirection side) {
         return false;
     }
 
@@ -128,8 +128,8 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
     }
 
     @Override
-    public boolean isFacingValid(ForgeDirection facingDirection) {
-        return aFacing > 1;
+    public boolean isFacingValid(ForgeDirection facing) {
+        return facing.offsetY == 0;
     }
 
     @Override
@@ -154,9 +154,9 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
     }
 
     @Override
-    public boolean allowCoverOnSide(ForgeDirection aSide, GT_ItemStack aCoverID) {
+    public boolean allowCoverOnSide(ForgeDirection side, GT_ItemStack aCoverID) {
         return (GregTech_API.getCoverBehaviorNew(aCoverID.toStack())
-            .isSimpleCover()) && (super.allowCoverOnSide(aSide, aCoverID));
+            .isSimpleCover()) && (super.allowCoverOnSide(side, aCoverID));
     }
 
     @Override
@@ -196,14 +196,12 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
 
     @Override
     public ExtendedFacing getExtendedFacing() {
-        return ExtendedFacing.of(ForgeDirection.getOrientation(getBaseMetaTileEntity().getFrontFacing()));
+        return ExtendedFacing.of(getBaseMetaTileEntity().getFrontFacing());
     }
 
     @Override
     public void setExtendedFacing(ExtendedFacing alignment) {
-        getBaseMetaTileEntity().setFrontFacing(
-            (byte) alignment.getDirection()
-                .ordinal());
+        getBaseMetaTileEntity().setFrontFacing(alignment.getDirection());
     }
 
     @Override
@@ -329,7 +327,7 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
     public void onRandomDisplayTick(IGregTechTileEntity aBaseMetaTileEntity) {
         if (aBaseMetaTileEntity.isActive()) {
 
-            final byte frontFacing = aBaseMetaTileEntity.getFrontFacing();
+            final ForgeDirection frontFacing = aBaseMetaTileEntity.getFrontFacing();
 
             final double oX = aBaseMetaTileEntity.getOffsetX(frontFacing, 1) + 0.5D;
             final double oY = aBaseMetaTileEntity.getOffsetY(frontFacing, 1);
@@ -341,13 +339,13 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
 
             y = oY + XSTR_INSTANCE.nextFloat() * 10D / 16D + 5D / 16D;
 
-            if (frontFacing == ForgeDirection.WEST.ordinal()) {
+            if (frontFacing == ForgeDirection.WEST) {
                 x = oX - offset;
                 z = oZ + horizontal;
-            } else if (frontFacing == ForgeDirection.EAST.ordinal()) {
+            } else if (frontFacing == ForgeDirection.EAST) {
                 x = oX + offset;
                 z = oZ + horizontal;
-            } else if (frontFacing == ForgeDirection.NORTH.ordinal()) {
+            } else if (frontFacing == ForgeDirection.NORTH) {
                 x = oX + horizontal;
                 z = oZ - offset;
             } else // if (frontFacing == ForgeDirection.SOUTH.ordinal())
@@ -441,13 +439,13 @@ public abstract class GT_MetaTileEntity_PrimitiveBlastFurnace extends MetaTileEn
     }
 
     @Override
-    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection aSide,
+    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
         return aIndex > INPUT_SLOTS;
     }
 
     @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection aSide,
+    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
         return !GT_Utility.areStacksEqual(aStack, this.mInventory[0]);
     }

@@ -16,6 +16,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidTank;
 
@@ -299,15 +300,18 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
     }
 
     @Override
-    public ITexture[] getTexture(Block aBlock, ForgeDirection aSide, boolean isActive, int aRenderPass) {
-        if (aSide != facing) {
-            return new ITexture[] {
-                TextureFactory.of(textures[GT_Values.FACING_ROTATIONS[facing][aSide]], GT_Util.getRGBaArray(rgba)) };
+    public ITexture[] getTexture(Block aBlock, ForgeDirection side, boolean isActive, int aRenderPass) {
+        if (side != facing) {
+            return new ITexture[] { TextureFactory.of(
+                textures[GT_Values.FACING_ROTATIONS[facing.ordinal()][side.ordinal()]],
+                GT_Util.getRGBaArray(rgba)) };
         }
         return new ITexture[] {
-            TextureFactory.of(textures[GT_Values.FACING_ROTATIONS[facing][aSide]], GT_Util.getRGBaArray(rgba)),
             TextureFactory
-                .of((active ? texturesActive : texturesInactive)[GT_Values.FACING_ROTATIONS[facing][aSide]]) };
+                .of(textures[GT_Values.FACING_ROTATIONS[facing.ordinal()][side.ordinal()]], GT_Util.getRGBaArray(rgba)),
+            TextureFactory.of(
+                (active ? texturesActive : texturesInactive)[GT_Values.FACING_ROTATIONS[facing.ordinal()][side
+                    .ordinal()]]) };
     }
 
     @Override
@@ -357,19 +361,19 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
     }
 
     @Override
-    public boolean isLiquidInput(ForgeDirection aSide) {
-        return aSide != facing;
+    public boolean isLiquidInput(ForgeDirection side) {
+        return side != facing;
     }
 
     @Override
-    public boolean isLiquidOutput(ForgeDirection aSide) {
-        return aSide != facing;
+    public boolean isLiquidOutput(ForgeDirection side) {
+        return side != facing;
     }
 
     @Override
-    protected IFluidTank[] getFluidTanks(ForgeDirection aSide) {
-        final boolean fluidInput = isLiquidInput(aSide);
-        final boolean fluidOutput = isLiquidOutput(aSide);
+    protected IFluidTank[] getFluidTanks(ForgeDirection side) {
+        final boolean fluidInput = isLiquidInput(side);
+        final boolean fluidOutput = isLiquidOutput(side);
 
         if (fluidInput && fluidOutput) {
             final IFluidTank[] rTanks = new IFluidTank[inputTanks.length + outputTanks.length];
@@ -385,8 +389,8 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
     }
 
     @Override
-    public IFluidTank getFluidTankFillable(ForgeDirection aSide, FluidStack aFluidToFill) {
-        if (!isLiquidInput(aSide)) return null;
+    public IFluidTank getFluidTankFillable(ForgeDirection side, FluidStack aFluidToFill) {
+        if (!isLiquidInput(side)) return null;
         for (FluidTankGT tankGT : inputTanks) if (tankGT.contains(aFluidToFill)) return tankGT;
         // if (!mRecipes.containsInput(aFluidToFill, this, slot(mRecipes.mInputItemsCount +
         // mRecipes.mOutputItemsCount))) return null;
@@ -395,8 +399,8 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
     }
 
     @Override
-    protected IFluidTank getFluidTankDrainable(ForgeDirection aSide, FluidStack aFluidToDrain) {
-        if (!isLiquidOutput(aSide)) return null;
+    protected IFluidTank getFluidTankDrainable(ForgeDirection side, FluidStack aFluidToDrain) {
+        if (!isLiquidOutput(side)) return null;
         for (FluidTankGT fluidTankGT : outputTanks)
             if (aFluidToDrain == null ? fluidTankGT.has() : fluidTankGT.contains(aFluidToDrain)) return fluidTankGT;
 
@@ -554,7 +558,7 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
      * Runs only on server side
      */
     protected void consumeEnergy() {
-        PowerLogic logic = ((PowerLogicHost) this).getPowerLogic(GT_Values.SIDE_UNKNOWN);
+        PowerLogic logic = ((PowerLogicHost) this).getPowerLogic(ForgeDirection.UNKNOWN);
 
         if (logic == null) {
             return;

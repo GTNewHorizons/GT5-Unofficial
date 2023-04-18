@@ -30,13 +30,13 @@ public final class CoverInfo {
     private final WeakReference<ICoverable> coveredTile;
     private boolean needsUpdate = false;
 
-    public CoverInfo(ForgeDirection aSide, ICoverable aTile) {
-        coverSide = aSide;
+    public CoverInfo(ForgeDirection side, ICoverable aTile) {
+        coverSide = side;
         coveredTile = new WeakReference<>(aTile);
     }
 
-    public CoverInfo(ForgeDirection aSide, int aID, ICoverable aTile, ISerializableObject aCoverData) {
-        coverSide = aSide;
+    public CoverInfo(ForgeDirection side, int aID, ICoverable aTile, ISerializableObject aCoverData) {
+        coverSide = side;
         coverID = aID;
         coverBehavior = GregTech_API.getCoverBehaviorNew(aID);
         coverData = aCoverData == null ? coverBehavior.createDataObject() : aCoverData;

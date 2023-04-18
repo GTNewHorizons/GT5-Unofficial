@@ -1,6 +1,7 @@
 package gregtech.api.multitileentity.interfaces;
 
 import net.minecraft.util.ChunkCoordinates;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.logic.PowerLogic;
@@ -15,15 +16,15 @@ public interface IMultiBlockController extends IMultiTileEntity, IMultiBlockFlui
     @Override
     ChunkCoordinates getCoords();
 
-    FluidStack getDrainableFluid(ForgeDirection aSide);
+    FluidStack getDrainableFluid(ForgeDirection side);
 
-    boolean isLiquidInput(ForgeDirection aSide);
+    boolean isLiquidInput(ForgeDirection side);
 
-    boolean isLiquidOutput(ForgeDirection aSide);
+    boolean isLiquidOutput(ForgeDirection side);
 
-    void registerCoveredPartOnSide(final int aSide, IMultiBlockPart part);
+    void registerCoveredPartOnSide(final ForgeDirection side, IMultiBlockPart part);
 
-    void unregisterCoveredPartOnSide(final int aSide, IMultiBlockPart part);
+    void unregisterCoveredPartOnSide(final ForgeDirection side, IMultiBlockPart part);
 
     void registerInventory(String aName, String aID, int aInventorySize, int aType);
 
@@ -31,5 +32,5 @@ public interface IMultiBlockController extends IMultiTileEntity, IMultiBlockFlui
 
     void changeInventoryName(String aName, String aID, int aType);
 
-    PowerLogic getPowerLogic(IMultiBlockPart part, byte side);
+    PowerLogic getPowerLogic(IMultiBlockPart part, ForgeDirection side);
 }

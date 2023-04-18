@@ -9,6 +9,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -30,27 +31,27 @@ public abstract class GT_Cover_AdvancedRedstoneTransmitterBase<T extends GT_Cove
         super(typeToken, coverTexture);
     }
 
-    private static void unregisterSignal(ForgeDirection aSide, TransmitterData aCoverVariable, ICoverable aTileEntity) {
-        long hash = hashCoverCoords(aTileEntity, aSide);
+    private static void unregisterSignal(ForgeDirection side, TransmitterData aCoverVariable, ICoverable aTileEntity) {
+        final long hash = hashCoverCoords(aTileEntity, side);
         removeSignalAt(aCoverVariable.uuid, aCoverVariable.frequency, hash);
     }
 
     @Override
-    public boolean onCoverRemovalImpl(ForgeDirection aSide, int aCoverID, TransmitterData aCoverVariable,
+    public boolean onCoverRemovalImpl(ForgeDirection side, int aCoverID, TransmitterData aCoverVariable,
         ICoverable aTileEntity, boolean aForced) {
-        unregisterSignal(aSide, aCoverVariable, aTileEntity);
+        unregisterSignal(side, aCoverVariable, aTileEntity);
         return true;
     }
 
     @Override
-    protected void onBaseTEDestroyedImpl(ForgeDirection aSide, int aCoverID, TransmitterData aCoverVariable,
+    protected void onBaseTEDestroyedImpl(ForgeDirection side, int aCoverID, TransmitterData aCoverVariable,
         ICoverable aTileEntity) {
-        unregisterSignal(aSide, aCoverVariable, aTileEntity);
+        unregisterSignal(side, aCoverVariable, aTileEntity);
     }
 
     @Override
-    protected T onCoverScrewdriverClickImpl(ForgeDirection aSide, int aCoverID, T aCoverVariable,
-        ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    protected T onCoverScrewdriverClickImpl(ForgeDirection side, int aCoverID, T aCoverVariable, ICoverable aTileEntity,
+        EntityPlayer aPlayer, float aX, float aY, float aZ) {
         aCoverVariable.invert = !aCoverVariable.invert;
         GT_Utility.sendChatToPlayer(
             aPlayer,
@@ -60,11 +61,11 @@ public abstract class GT_Cover_AdvancedRedstoneTransmitterBase<T extends GT_Cove
     }
 
     @Override
-    protected void preDataChangedImpl(ForgeDirection aSide, int aCoverID, int aNewCoverId, T aCoverVariable,
+    protected void preDataChangedImpl(ForgeDirection side, int aCoverID, int aNewCoverId, T aCoverVariable,
         T aNewCoverVariable, ICoverable aTileEntity) {
         if (aCoverVariable.frequency != aNewCoverVariable.frequency
             || !Objects.equals(aCoverVariable.uuid, aNewCoverVariable.uuid)) {
-            unregisterSignal(aSide, aCoverVariable, aTileEntity);
+            unregisterSignal(side, aCoverVariable, aTileEntity);
         }
     }
 

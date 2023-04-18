@@ -36,7 +36,7 @@ public class GT_MetaTileEntity_LightningRod extends GT_MetaTileEntity_TieredMach
     @Override
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
         ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
-        if (sideDirection != ForgeDirection.UP.ordinal()) {
+        if (sideDirection != ForgeDirection.UP) {
             return new ITexture[] { BlockIcons.MACHINE_CASINGS[mTier][colorIndex + 1],
                 BlockIcons.OVERLAYS_ENERGY_OUT_POWER[mTier] };
         }
@@ -110,13 +110,13 @@ public class GT_MetaTileEntity_LightningRod extends GT_MetaTileEntity_TieredMach
     }
 
     @Override
-    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection aSide,
+    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
         return false;
     }
 
     @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection aSide,
+    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
         return false;
     }
@@ -127,12 +127,12 @@ public class GT_MetaTileEntity_LightningRod extends GT_MetaTileEntity_TieredMach
     }
 
     @Override
-    public boolean isFacingValid(ForgeDirection facingDirection) {
-        return aFacing == 1;
+    public boolean isFacingValid(ForgeDirection facing) {
+        return facing == ForgeDirection.UP;
     }
 
     @Override
-    public boolean isOutputFacing(ForgeDirection aSide) {
+    public boolean isOutputFacing(ForgeDirection side) {
         return true;
     }
 

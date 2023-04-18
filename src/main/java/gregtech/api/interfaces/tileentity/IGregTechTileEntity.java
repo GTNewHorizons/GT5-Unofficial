@@ -129,9 +129,9 @@ public interface IGregTechTileEntity extends ITexturedTileEntity, IGearEnergyTil
     /**
      * Called when rightclicking the TileEntity
      */
-    boolean onRightclick(EntityPlayer aPlayer, ForgeDirection aSide, float aX, float aY, float aZ);
+    boolean onRightclick(EntityPlayer aPlayer, ForgeDirection side, float aX, float aY, float aZ);
 
-    float getBlastResistance(ForgeDirection aSide);
+    float getBlastResistance(ForgeDirection side);
 
     default void onBlockDestroyed() {}
 

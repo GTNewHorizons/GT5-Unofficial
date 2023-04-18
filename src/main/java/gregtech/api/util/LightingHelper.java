@@ -14,6 +14,7 @@ import net.minecraft.block.Block;
 import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -195,7 +196,7 @@ public class LightingHelper {
      * @param side the side
      * @param rgba the primary short[] RGBA color array
      */
-    public void setupColor(int side, short[] rgba) {
+    public void setupColor(ForgeDirection side, short[] rgba) {
         setupColor(side, getColor(rgba));
     }
 
@@ -205,9 +206,9 @@ public class LightingHelper {
      * @param side     the side
      * @param hexColor the primary color
      */
-    public void setupColor(int side, int hexColor) {
+    public void setupColor(ForgeDirection side, int hexColor) {
         Tessellator tessellator = Tessellator.instance;
-        float lightness = hasLightnessOverride ? lightnessOverride : LIGHTNESS[side];
+        float lightness = hasLightnessOverride ? lightnessOverride : LIGHTNESS[side.ordinal()];
         float[] rgb = getRGB(hexColor);
 
         if (hasColorOverride && !renderBlocks.hasOverrideBlockTexture()) {
@@ -306,14 +307,14 @@ public class LightingHelper {
      * @see #setupLightingYPos(Block, int, int, int)
      * @see #setupLightingZPos(Block, int, int, int)
      */
-    public LightingHelper setupLighting(Block block, int x, int y, int z, byte facing) {
+    public LightingHelper setupLighting(Block block, int x, int y, int z, ForgeDirection facing) {
         return switch (facing) {
-            case 0 -> setupLightingYNeg(block, x, y, z);
-            case 1 -> setupLightingYPos(block, x, y, z);
-            case 2 -> setupLightingZNeg(block, x, y, z);
-            case 3 -> setupLightingZPos(block, x, y, z);
-            case 4 -> setupLightingXNeg(block, x, y, z);
-            case 5 -> setupLightingXPos(block, x, y, z);
+            case DOWN -> setupLightingYNeg(block, x, y, z);
+            case UP -> setupLightingYPos(block, x, y, z);
+            case NORTH -> setupLightingZNeg(block, x, y, z);
+            case SOUTH -> setupLightingZPos(block, x, y, z);
+            case WEST -> setupLightingXNeg(block, x, y, z);
+            case EAST -> setupLightingXPos(block, x, y, z);
             default -> throw new IllegalArgumentException("Unknown side: " + facing);
         };
     }

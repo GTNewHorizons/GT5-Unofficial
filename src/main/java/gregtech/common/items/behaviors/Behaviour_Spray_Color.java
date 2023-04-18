@@ -65,12 +65,12 @@ public class Behaviour_Spray_Color extends Behaviour_None {
 
     @Override
     public boolean onItemUseFirst(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,
-        int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
+        int aY, int aZ, ForgeDirection side, float hitX, float hitY, float hitZ) {
         if ((aWorld.isRemote) || (aStack.stackSize != 1)) {
             return false;
         }
         boolean rOutput = false;
-        if (!aPlayer.canPlayerEdit(aX, aY, aZ, aSide, aStack)) {
+        if (!aPlayer.canPlayerEdit(aX, aY, aZ, side.ordinal(), aStack)) {
             return false;
         }
         NBTTagCompound tNBT = aStack.getTagCompound();
@@ -97,7 +97,7 @@ public class Behaviour_Spray_Color extends Behaviour_None {
         } else {
             lookSide = look.zCoord > 0 ? ForgeDirection.SOUTH : ForgeDirection.NORTH;
         }
-        while ((GT_Utility.areStacksEqual(aStack, this.mUsed, true)) && (colorize(aWorld, aX, aY, aZ, aSide))) {
+        while ((GT_Utility.areStacksEqual(aStack, this.mUsed, true)) && (colorize(aWorld, aX, aY, aZ, side))) {
             GT_Utility.sendSoundToPlayers(aWorld, SoundResource.IC2_TOOLS_PAINTER, 1.0F, 1.0F, aX, aY, aZ);
             if (!aPlayer.capabilities.isCreativeMode) {
                 tUses -= 1L;
@@ -135,8 +135,8 @@ public class Behaviour_Spray_Color extends Behaviour_None {
         return rOutput;
     }
 
-    private boolean colorize(World aWorld, int aX, int aY, int aZ, int aSide) {
-        Block aBlock = aWorld.getBlock(aX, aY, aZ);
+    private boolean colorize(World aWorld, int aX, int aY, int aZ, ForgeDirection side) {
+        final Block aBlock = aWorld.getBlock(aX, aY, aZ);
         if ((aBlock != Blocks.air)
             && ((this.mAllowedVanillaBlocks.contains(aBlock)) || ((aBlock instanceof BlockColored)))) {
             if (aBlock == Blocks.hardened_clay) {
@@ -157,7 +157,7 @@ public class Behaviour_Spray_Color extends Behaviour_None {
             aWorld.setBlockMetadataWithNotify(aX, aY, aZ, (~this.mColor) & 0xF, 3);
             return true;
         }
-        return aBlock.recolourBlock(aWorld, aX, aY, aZ, ForgeDirection.getOrientation(aSide), (~this.mColor) & 0xF);
+        return aBlock.recolourBlock(aWorld, aX, aY, aZ, side, (~this.mColor) & 0xF);
     }
 
     @Override

@@ -31,10 +31,10 @@ public interface IMetaTileEntityItemPipe extends IMetaTileEntityPipe {
      * Executes the Sending Code for inserting Stacks into the TileEntities.
      *
      * @param aSender the BaseMetaTileEntity sending the Stack.
-     * @param aSide   the Side of the PIPE facing the TileEntity.
+     * @param side    the Side of the PIPE facing the TileEntity.
      * @return if this Side was allowed to Output into the Block.
      */
-    boolean insertItemStackIntoTileEntity(Object aSender, ForgeDirection aSide);
+    boolean insertItemStackIntoTileEntity(Object aSender, ForgeDirection side);
 
     /**
      * Can be used to make flow control Pipes, like Redpowers Restriction Tubes. Every normal Pipe returns a Value of
@@ -58,11 +58,10 @@ public interface IMetaTileEntityItemPipe extends IMetaTileEntityPipe {
                 if (aMap.get(aMetaTileEntity) == null || aMap.get(aMetaTileEntity) > aStep) {
                     final IGregTechTileEntity aBaseMetaTileEntity = aMetaTileEntity.getBaseMetaTileEntity();
                     aMap.put(aMetaTileEntity, aStep);
-                    ForgeDirection oppositeSide;
-                    for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+                    for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
                         if (aMetaTileEntity instanceof IConnectable
                             && !((IConnectable) aMetaTileEntity).isConnectedAtSide(side)) continue;
-                        oppositeSide = side.getOpposite();
+                        final ForgeDirection oppositeSide = side.getOpposite();
                         if (aSuckItems) {
                             if (aBaseMetaTileEntity.getCoverInfoAtSide(side)
                                 .letsItemsIn(-2)) {

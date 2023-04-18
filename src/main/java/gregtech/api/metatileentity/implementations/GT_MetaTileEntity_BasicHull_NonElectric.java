@@ -44,12 +44,12 @@ public abstract class GT_MetaTileEntity_BasicHull_NonElectric extends GT_MetaTil
     }
 
     @Override
-    public boolean isInputFacing(ForgeDirection aSide) {
+    public boolean isInputFacing(ForgeDirection side) {
         return false;
     }
 
     @Override
-    public boolean isOutputFacing(ForgeDirection aSide) {
+    public boolean isOutputFacing(ForgeDirection side) {
         return false;
     }
 

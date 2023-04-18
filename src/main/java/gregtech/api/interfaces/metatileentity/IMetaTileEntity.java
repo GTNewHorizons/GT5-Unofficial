@@ -126,29 +126,29 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
      * If a Cover of that Type can be placed on this Side. Also Called when the Facing of the Block Changes and a Cover
      * is on said Side.
      */
-    boolean allowCoverOnSide(ForgeDirection aSide, GT_ItemStack aStack);
+    boolean allowCoverOnSide(ForgeDirection side, GT_ItemStack aStack);
 
     /**
      * When a Player rightclicks the Facing with a Screwdriver.
      */
-    void onScrewdriverRightClick(ForgeDirection aSide, EntityPlayer aPlayer, float aX, float aY, float aZ);
+    void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ);
 
     /**
      * When a Player right-clicks the Facing with a Wrench.
      */
-    boolean onWrenchRightClick(ForgeDirection sideDirection, ForgeDirection wrenchingSideDirection, EntityPlayer entityPlayer, float aX,
+    boolean onWrenchRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer entityPlayer, float aX,
         float aY, float aZ);
 
     /**
      * When a Player right-clicks the Facing with a wire cutter.
      */
-    boolean onWireCutterRightClick(ForgeDirection sideDirection, ForgeDirection wrenchingSideDirection, EntityPlayer entityPlayer, float aX,
-        float aY, float aZ);
+    boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer entityPlayer,
+        float aX, float aY, float aZ);
 
     /**
      * When a Player right-clicks the Facing with a soldering iron.
      */
-    boolean onSolderingToolRightClick(ForgeDirection sideDirection, ForgeDirection wrenchingSideDirection, EntityPlayer entityPlayer,
+    boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer entityPlayer,
         float aX, float aY, float aZ);
 
     /**
@@ -184,10 +184,10 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
     void onRemoval();
 
     /**
-     * @param facingDirection to test
+     * @param facing
      * @return if aFacing would be a valid Facing for this Device. Used for wrenching.
      */
-    boolean isFacingValid(ForgeDirection facingDirection);
+    boolean isFacingValid(ForgeDirection facing);
 
     /**
      * @return the Server Side Container
@@ -217,12 +217,12 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
     /**
      * From new ISidedInventory
      */
-    boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection aSide, ItemStack aStack);
+    boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side, ItemStack aStack);
 
     /**
      * From new ISidedInventory
      */
-    boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection aSide, ItemStack aStack);
+    boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side, ItemStack aStack);
 
     /**
      * @return if aIndex is a valid Slot. false for things like HoloSlots. Is used for determining if an Item is dropped
@@ -246,12 +246,12 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
     /**
      * If this Side can connect to inputting pipes
      */
-    boolean isLiquidInput(ForgeDirection aSide);
+    boolean isLiquidInput(ForgeDirection side);
 
     /**
      * If this Side can connect to outputting pipes
      */
-    boolean isLiquidOutput(ForgeDirection aSide);
+    boolean isLiquidOutput(ForgeDirection side);
 
     /**
      * Just an Accessor for the Name variable.
@@ -268,7 +268,7 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
      *
      * @return
      */
-    boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection aSide, float aX,
+    boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side, float aX,
         float aY, float aZ);
 
     /**
@@ -367,17 +367,17 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
     /**
      * Icon of the Texture. If this returns null then it falls back to getTextureIndex.
      *
-     * @param sideDirection     is the Side of the Block
-     * @param facingDirection   is the direction the Block is facing
-     * @param colorIndex        The Minecraft Color the Block is having
-     * @param active            if the Machine is currently active (use this instead of calling
-     *                          {@code mBaseMetaTileEntity.mActive)}. Note: In case of Pipes this means if this Side is
-     *                          connected to something or not.
-     * @param redstoneLevel     if the Machine is currently outputting a RedstoneSignal (use this instead of calling
-     *                          {@code mBaseMetaTileEntity.mRedstone} !!!)
+     * @param side          is the Side of the Block
+     * @param facing        is the direction the Block is facing
+     * @param colorIndex    The Minecraft Color the Block is having
+     * @param active        if the Machine is currently active (use this instead of calling
+     *                      {@code mBaseMetaTileEntity.mActive)}. Note: In case of Pipes this means if this Side is
+     *                      connected to something or not.
+     * @param redstoneLevel if the Machine is currently outputting a RedstoneSignal (use this instead of calling
+     *                      {@code mBaseMetaTileEntity.mRedstone} !!!)
      */
-    ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
-                          ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel);
+    ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
+        int colorIndex, boolean active, boolean redstoneLevel);
 
     /**
      * Register Icons here. This gets called when the Icons get initialized by the Base Block Best is you put your Icons
@@ -403,9 +403,9 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
     /**
      * Gets the Output for the comparator on the given Side
      */
-    byte getComparatorValue(ForgeDirection aSide);
+    byte getComparatorValue(ForgeDirection side);
 
-    float getExplosionResistance(ForgeDirection aSide);
+    float getExplosionResistance(ForgeDirection side);
 
     String[] getInfoData();
 
@@ -413,7 +413,7 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
 
     ItemStack[] getRealInventory();
 
-    boolean connectsToItemPipe(ForgeDirection aSide);
+    boolean connectsToItemPipe(ForgeDirection side);
 
     void onColorChangeServer(byte aColor);
 

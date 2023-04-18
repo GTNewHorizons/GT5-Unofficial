@@ -99,8 +99,8 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
-        ForgeDirection facingDirection, byte aColorIndex, boolean active, boolean redstoneLevel) {
-        int colorIndex = aColorIndex + 1;
+        ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
+        colorIndex = colorIndex + 1;
         if (sideDirection == facingDirection) return mTextures[FRONT_INDEX][colorIndex];
         if (sideDirection.getOpposite() == facingDirection) return mTextures[OUTPUT_INDEX][colorIndex];
         switch (facingDirection) {
@@ -176,7 +176,7 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
     }
 
     @Override
-    public boolean isFacingValid(ForgeDirection facingDirection) {
+    public boolean isFacingValid(ForgeDirection facing) {
         return true;
     }
 
@@ -191,13 +191,13 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
     }
 
     @Override
-    public boolean isInputFacing(ForgeDirection aSide) {
-        return !isOutputFacing(aSide);
+    public boolean isInputFacing(ForgeDirection side) {
+        return !isOutputFacing(side);
     }
 
     @Override
-    public boolean isOutputFacing(ForgeDirection aSide) {
-        return getBaseMetaTileEntity().getBackFacing() == aSide;
+    public boolean isOutputFacing(ForgeDirection side) {
+        return getBaseMetaTileEntity().getBackFacing() == side;
     }
 
     @Override
@@ -280,8 +280,8 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        if (aSide == getBaseMetaTileEntity().getBackFacing()) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        if (side == getBaseMetaTileEntity().getBackFacing()) {
 
             mTargetStackSize = (byte) ((mTargetStackSize + (aPlayer.isSneaking() ? -1 : 1)) % 65);
             if (mTargetStackSize < 0) {
@@ -298,11 +298,11 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
     }
 
     @Override
-    public boolean onWrenchRightClick(ForgeDirection sideDirection, ForgeDirection wrenchingSideDirection, EntityPlayer entityPlayer,
-                                      float aX, float aY, float aZ) {
-        ForgeDirection oppositeSide = wrenchingSideDirection.getOpposite();
-        if (getBaseMetaTileEntity().isValidFacing(oppositeSide)) {
-            getBaseMetaTileEntity().setFrontFacing(oppositeSide);
+    public boolean onWrenchRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer entityPlayer,
+        float aX, float aY, float aZ) {
+        wrenchingSide = wrenchingSide.getOpposite();
+        if (getBaseMetaTileEntity().isValidFacing(wrenchingSide)) {
+            getBaseMetaTileEntity().setFrontFacing(wrenchingSide);
             return true;
         }
         return false;
@@ -378,15 +378,15 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
     }
 
     @Override
-    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection aSide,
+    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
         return true;
     }
 
     @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection aSide,
+    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
-        return aSide != aBaseMetaTileEntity.getBackFacing();
+        return side != aBaseMetaTileEntity.getBackFacing();
     }
 
     @Override
@@ -431,18 +431,18 @@ public abstract class GT_MetaTileEntity_Buffer extends GT_MetaTileEntity_TieredM
     }
 
     @Override
-    public boolean onSolderingToolRightClick(ForgeDirection sideDirection, ForgeDirection wrenchingSideDirection, EntityPlayer entityPlayer,
-                                             float aX, float aY, float aZ) {
+    public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide,
+        EntityPlayer entityPlayer, float aX, float aY, float aZ) {
         if (entityPlayer.isSneaking()) {
             // I was so proud of all this but I literally just copied code from OutputBus
             bSortStacks = !bSortStacks;
             GT_Utility.sendChatToPlayer(
-                    entityPlayer,
+                entityPlayer,
                 GT_Utility.trans("200", "Sort mode: ")
                     + (bSortStacks ? GT_Utility.trans("088", "Enabled") : GT_Utility.trans("087", "Disabled")));
             return true;
         }
-        return super.onSolderingToolRightClick(sideDirection, wrenchingSideDirection, entityPlayer, aX, aY, aZ);
+        return super.onSolderingToolRightClick(side, wrenchingSide, entityPlayer, aX, aY, aZ);
     }
 
     @Override

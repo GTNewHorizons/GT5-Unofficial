@@ -16,6 +16,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.IFluidHandler;
 
 import cpw.mods.fml.common.Optional;
@@ -130,19 +131,19 @@ public interface IMultiTileEntity
     int getPaint();
 
     /**
-     * Sets the main facing to {aSide} and update as appropriately
+     * Sets the main facing to {side} and update as appropriately
      *
      * @return Whether the facing was changed
      */
-    boolean setMainFacing(ForgeDirection aSide);
+    boolean setMainFacing(ForgeDirection side);
 
     boolean isFacingValid(ForgeDirection facing);
 
     void onFacingChange();
 
     @Override
-    default void setFrontFacing(ForgeDirection aSide) {
-        setMainFacing(aSide);
+    default void setFrontFacing(ForgeDirection side) {
+        setMainFacing(side);
     }
 
     boolean shouldTriggerBlockUpdate();
@@ -155,13 +156,13 @@ public interface IMultiTileEntity
         /* do nothing */
     }
 
-    boolean onBlockActivated(EntityPlayer aPlayer, ForgeDirection aSide, float aX, float aY, float aZ);
+    boolean onBlockActivated(EntityPlayer aPlayer, ForgeDirection side, float aX, float aY, float aZ);
 
-    boolean onRightClick(EntityPlayer aPlayer, ForgeDirection aSide, float aX, float aY, float aZ);
+    boolean onRightClick(EntityPlayer aPlayer, ForgeDirection side, float aX, float aY, float aZ);
 
     ArrayList<ItemStack> getDrops(int aFortune, boolean aSilkTouch);
 
-    boolean isSideSolid(ForgeDirection aSide);
+    boolean isSideSolid(ForgeDirection side);
 
     float getExplosionResistance(Entity aExploder, double aExplosionX, double aExplosionY, double aExplosionZ);
 
@@ -169,7 +170,7 @@ public interface IMultiTileEntity
 
     void onExploded(Explosion aExplosion);
 
-    boolean recolourBlock(ForgeDirection aSide, byte aColor);
+    boolean recolourBlock(ForgeDirection side, byte aColor);
 
     /** Adds to the Creative Tab. return false to prevent it from being added. */
     boolean getSubItems(MultiTileEntityBlockInternal aBlock, Item aItem, CreativeTabs aTab, List<ItemStack> aList,
@@ -177,11 +178,11 @@ public interface IMultiTileEntity
 
     ItemStack getPickBlock(MovingObjectPosition aTarget);
 
-    boolean shouldSideBeRendered(ForgeDirection aSide);
+    boolean shouldSideBeRendered(ForgeDirection side);
 
-    boolean isSurfaceOpaque(ForgeDirection aSide);
+    boolean isSurfaceOpaque(ForgeDirection side);
 
-    boolean onPlaced(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, ForgeDirection aSide,
+    boolean onPlaced(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, ForgeDirection side,
         float aHitX, float aHitY, float aHitZ);
 
     // ItemStack getPickBlock(MovingObjectPosition aTarget);
@@ -198,18 +199,18 @@ public interface IMultiTileEntity
     interface IMTE_IsProvidingWeakPower extends IMultiTileEntity {
 
         /** Remember that it passes the opposite Side due to the way vanilla works! */
-        int isProvidingWeakPower(byte aOppositeSide);
+        int isProvidingWeakPower(ForgeDirection oppositeSide);
     }
 
     interface IMTE_IsProvidingStrongPower extends IMultiTileEntity {
 
         /** Remember that it passes the opposite Side due to the way vanilla works! */
-        int isProvidingStrongPower(byte aOppositeSide);
+        int isProvidingStrongPower(ForgeDirection oppositeSide);
     }
 
     interface IMTE_ShouldCheckWeakPower extends IMultiTileEntity {
 
-        boolean shouldCheckWeakPower(ForgeDirection aSide);
+        boolean shouldCheckWeakPower(ForgeDirection side);
     }
 
     interface IMTE_GetWeakChanges extends IMultiTileEntity {
@@ -219,7 +220,7 @@ public interface IMultiTileEntity
 
     interface IMTE_GetComparatorInputOverride extends IMultiTileEntity {
 
-        int getComparatorInputOverride(ForgeDirection aSide);
+        int getComparatorInputOverride(ForgeDirection side);
     }
 
     interface IMTE_BreakBlock extends IMultiTileEntity {
@@ -258,14 +259,14 @@ public interface IMultiTileEntity
          * pipes/wires.
          */
         boolean ignoreEntityCollisionWhenPlacing(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY,
-            int aZ, ForgeDirection aSide, float aHitX, float aHitY, float aHitZ);
+            int aZ, ForgeDirection side, float aHitX, float aHitY, float aHitZ);
     }
 
     interface IMTE_CanPlace extends IMultiTileEntity {
 
         /** Return false if this TileEntity cannot be placed at that Location. */
         boolean canPlace(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ,
-            ForgeDirection aSide, float aHitX, float aHitY, float aHitZ);
+            ForgeDirection side, float aHitX, float aHitY, float aHitZ);
     }
 
     interface IMTE_GetMaxStackSize extends IMultiTileEntity {

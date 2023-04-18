@@ -3,6 +3,7 @@ package gregtech.common.tileentities.casings.upgrade;
 import java.util.UUID;
 
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizons.modularui.api.screen.ModularWindow.Builder;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
@@ -79,7 +80,7 @@ public class InventoryUpgrade extends UpgradeCasing {
     }
 
     @Override
-    public boolean hasGui(ForgeDirection aSide) {
+    public boolean hasGui(ForgeDirection side) {
         return true;
     }
 

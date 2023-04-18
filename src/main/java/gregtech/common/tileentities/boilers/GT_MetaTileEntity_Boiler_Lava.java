@@ -86,8 +86,8 @@ public class GT_MetaTileEntity_Boiler_Lava extends GT_MetaTileEntity_Boiler {
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection, ForgeDirection facingDirection,
-        int colorIndex, boolean active, boolean redstoneLevel) {
+    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
+        ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
         final ForgeDirection rearDirection = facingDirection.getOpposite();
         final ITexture[] tmp;
         if (sideDirection.offsetY == 0) {
@@ -265,8 +265,8 @@ public class GT_MetaTileEntity_Boiler_Lava extends GT_MetaTileEntity_Boiler {
         if (mSteam == null || mSteam.amount == 0) return;
         pushSteamToSide(
             aBaseMetaTileEntity,
-            aBaseMetaTileEntity.getFrontFacing().getOpposite()
-               );
+            aBaseMetaTileEntity.getFrontFacing()
+                .getOpposite());
     }
 
     /**
@@ -391,13 +391,13 @@ public class GT_MetaTileEntity_Boiler_Lava extends GT_MetaTileEntity_Boiler {
     }
 
     @Override
-    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection aSide,
+    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
         return true;
     }
 
     @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection aSide,
+    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
         return true;
     }
@@ -406,7 +406,8 @@ public class GT_MetaTileEntity_Boiler_Lava extends GT_MetaTileEntity_Boiler {
     public void doSound(byte aIndex, double aX, double aY, double aZ) {
         if (aIndex != GT_MetaTileEntity_Boiler.SOUND_EVENT_LET_OFF_EXCESS_STEAM) return;
 
-        final ForgeDirection rearDirection = getBaseMetaTileEntity().getFrontFacing().getOpposite();
+        final ForgeDirection rearDirection = getBaseMetaTileEntity().getFrontFacing()
+            .getOpposite();
         GT_Utility.doSoundAtClient(
             SoundResource.RANDOM_FIZZ,
             2,
@@ -456,8 +457,8 @@ public class GT_MetaTileEntity_Boiler_Lava extends GT_MetaTileEntity_Boiler {
     }
 
     @Override
-    public FluidTankInfo[] getTankInfo(ForgeDirection aSide) {
-        return new FluidTankInfo[] { super.getTankInfo(aSide)[0],
+    public FluidTankInfo[] getTankInfo(ForgeDirection side) {
+        return new FluidTankInfo[] { super.getTankInfo(side)[0],
             new FluidTankInfo(this.lavaTank.getFluid(), this.lavaTank.getCapacity()),
             new FluidTankInfo(getDrainableStack(), getCapacity()) };
     }

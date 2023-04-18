@@ -7,6 +7,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZE
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.gtnewhorizon.structurelib.structure.IStructureElement;
@@ -59,10 +60,10 @@ public class GT_MetaTileEntity_VacuumFreezer
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection aSide, ForgeDirection aFacing,
-        byte aColorIndex, boolean aActive, boolean aRedstone) {
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
         ITexture[] rTexture;
-        if (aSide == aFacing) {
+        if (side == aFacing) {
             if (aActive) {
                 rTexture = new ITexture[] { casingTexturePages[0][17], TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE)

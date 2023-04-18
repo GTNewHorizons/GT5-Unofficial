@@ -1,6 +1,5 @@
 package gregtech.common.tileentities.machines.basic;
 
-import static gregtech.api.enums.GT_Values.ALL_VALID_SIDES;
 import static gregtech.api.enums.GT_Values.AuthorKuba;
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.Textures.BlockIcons.*;
@@ -28,6 +27,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import com.google.common.collect.ImmutableSet;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
@@ -183,8 +183,8 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
             openGUI(aBaseMetaTileEntity, aPlayer);
             return true;
         }
-        for (byte tSide : ALL_VALID_SIDES) {
-            if (aBaseMetaTileEntity.getAirAtSide(tSide)) {
+        for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+            if (aBaseMetaTileEntity.getAirAtSide(side)) {
                 openGUI(aBaseMetaTileEntity, aPlayer);
                 return true;
             }
@@ -723,13 +723,13 @@ public class GT_MetaTileEntity_IndustrialApiary extends GT_MetaTileEntity_BasicM
     @Override
     public int getBlockLightValue() {
         return this.getBaseMetaTileEntity()
-            .getLightLevelAtSide((byte) 1);
+            .getLightLevelAtSide(ForgeDirection.UP);
     }
 
     @Override
     public boolean canBlockSeeTheSky() {
         return this.getBaseMetaTileEntity()
-            .getSkyAtSide((byte) 1);
+            .getSkyAtSide(ForgeDirection.UP);
     }
 
     @Override

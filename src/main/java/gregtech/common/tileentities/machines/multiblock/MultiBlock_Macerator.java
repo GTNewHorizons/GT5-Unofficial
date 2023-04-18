@@ -17,6 +17,7 @@ import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.NOTHIN
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -144,9 +145,9 @@ public class MultiBlock_Macerator extends MultiBlock_Stackable<MultiBlock_Macera
     }
 
     @Override
-    public ITexture[] getTexture(Block aBlock, ForgeDirection aSide, boolean isActive, int aRenderPass) {
+    public ITexture[] getTexture(Block aBlock, ForgeDirection side, boolean isActive, int aRenderPass) {
         // TODO: MTE(Texture)
-        if (facing == aSide) {
+        if (facing == side) {
             return new ITexture[] {
                 // Base Texture
                 MACHINE_CASINGS[1][0],

@@ -2,6 +2,8 @@ package gregtech.common.tileentities.generators;
 
 import static gregtech.api.enums.Textures.BlockIcons.*;
 
+import net.minecraftforge.common.util.ForgeDirection;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ConfigCategories;
 import gregtech.api.interfaces.ITexture;
@@ -33,9 +35,9 @@ public class GT_MetaTileEntity_NaquadahReactor extends GT_MetaTileEntity_BasicGe
     }
 
     @Override
-    public boolean isOutputFacing(ForgeDirection aSide) {
-        return (aSide > 1) && (aSide != getBaseMetaTileEntity().getFrontFacing())
-            && (aSide != getBaseMetaTileEntity().getBackFacing());
+    public boolean isOutputFacing(ForgeDirection side) {
+        return (side.offsetY == 0) && (side != getBaseMetaTileEntity().getFrontFacing())
+            && (side != getBaseMetaTileEntity().getBackFacing());
     }
 
     @Override

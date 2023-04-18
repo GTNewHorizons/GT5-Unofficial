@@ -13,6 +13,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.ITexture;
@@ -49,7 +50,7 @@ public class MultiTileEntityBlockInternal extends Block implements IRenderedBloc
         return StatCollector.translateToLocal(mMultiTileEntityRegistry.mNameInternal + ".name");
     }
 
-    public boolean placeBlock(World aWorld, int aX, int aY, int aZ, ForgeDirection aSide, short aMetaData,
+    public boolean placeBlock(World aWorld, int aX, int aY, int aZ, ForgeDirection side, short aMetaData,
         NBTTagCompound aNBT, boolean aCauseBlockUpdates, boolean aForcePlacement) {
         final MultiTileEntityContainer aMTEContainer = mMultiTileEntityRegistry
             .getNewTileEntityContainer(aWorld, aX, aY, aZ, aMetaData, aNBT);
@@ -116,12 +117,12 @@ public class MultiTileEntityBlockInternal extends Block implements IRenderedBloc
     }
 
     @Override
-    public ITexture[] getTexture(Block aBlock, ForgeDirection aSide, int aRenderPass, boolean[] aShouldSideBeRendered) {
+    public ITexture[] getTexture(Block aBlock, ForgeDirection side, int aRenderPass, boolean[] aShouldSideBeRendered) {
         return null;
     }
 
     @Override
-    public ITexture[] getTexture(Block aBlock, ForgeDirection aSide, boolean isActive, int aRenderPass) {
+    public ITexture[] getTexture(Block aBlock, ForgeDirection side, boolean isActive, int aRenderPass) {
         // TODO: MTE(Texture)
         return null;
     }

@@ -1,5 +1,6 @@
 package gregtech.api.metatileentity.implementations;
 
+import static gregtech.api.enums.GT_Values.ALL_VALID_SIDES;
 import static gregtech.api.enums.GT_Values.D1;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
@@ -108,54 +109,57 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection aSide, byte aConnections,
-        byte aColorIndex, boolean aConnected, boolean aRedstone) {
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, int aConnections,
+        int colorIndex, boolean aConnected, boolean redstoneLevel) {
+        final int ordinalSide = side.ordinal();
         final float tThickNess = getThickNess();
         if (mDisableInput == 0)
-            return new ITexture[] { aConnected ? getBaseTexture(tThickNess, mPipeAmount, mMaterial, aColorIndex)
+            return new ITexture[] { aConnected ? getBaseTexture(tThickNess, mPipeAmount, mMaterial, colorIndex)
                 : TextureFactory.of(
                     mMaterial.mIconSet.mTextures[OrePrefixes.pipe.mTextureIndex],
-                    Dyes.getModulation(aColorIndex, mMaterial.mRGBa)) };
+                    Dyes.getModulation(colorIndex, mMaterial.mRGBa)) };
         byte tMask = 0;
         final byte[][] sRestrictionArray = { { 2, 3, 5, 4 }, { 2, 3, 4, 5 }, { 1, 0, 4, 5 }, { 1, 0, 4, 5 },
             { 1, 0, 2, 3 }, { 1, 0, 2, 3 } };
-        if (aSide >= 0 && aSide < 6) {
-            for (byte i = 0; i < 4; i++) if (isInputDisabledAtSide(sRestrictionArray[aSide][i])) tMask |= 1 << i;
+        if (side != ForgeDirection.UNKNOWN) {
+            for (byte i = 0; i < 4; i++)
+                if (isInputDisabledAtSide(ForgeDirection.getOrientation(sRestrictionArray[ordinalSide][i])))
+                    tMask |= 1 << i;
             // Full block size renderer flips side 5 and 2 textures, flip restrictor textures to compensate
-            if (aSide == 5 || aSide == 2) if (tMask > 3 && tMask < 12) tMask = (byte) (tMask ^ 12);
+            if (ordinalSide == 5 || ordinalSide == 2) if (tMask > 3 && tMask < 12) tMask = (byte) (tMask ^ 12);
         }
-        return new ITexture[] { aConnected ? getBaseTexture(tThickNess, mPipeAmount, mMaterial, aColorIndex)
+        return new ITexture[] { aConnected ? getBaseTexture(tThickNess, mPipeAmount, mMaterial, colorIndex)
             : TextureFactory.of(
                 mMaterial.mIconSet.mTextures[OrePrefixes.pipe.mTextureIndex],
-                Dyes.getModulation(aColorIndex, mMaterial.mRGBa)),
+                Dyes.getModulation(colorIndex, mMaterial.mRGBa)),
             getRestrictorTexture(tMask) };
     }
 
-    protected static ITexture getBaseTexture(float aThickNess, int aPipeAmount, Materials aMaterial, byte aColorIndex) {
+    protected static ITexture getBaseTexture(float aThickNess, int aPipeAmount, Materials aMaterial, int colorIndex) {
         if (aPipeAmount >= 9) return TextureFactory.of(
             aMaterial.mIconSet.mTextures[OrePrefixes.pipeNonuple.mTextureIndex],
-            Dyes.getModulation(aColorIndex, aMaterial.mRGBa));
+            Dyes.getModulation(colorIndex, aMaterial.mRGBa));
         if (aPipeAmount >= 4) return TextureFactory.of(
             aMaterial.mIconSet.mTextures[OrePrefixes.pipeQuadruple.mTextureIndex],
-            Dyes.getModulation(aColorIndex, aMaterial.mRGBa));
+            Dyes.getModulation(colorIndex, aMaterial.mRGBa));
         if (aThickNess < 0.124F) return TextureFactory.of(
             aMaterial.mIconSet.mTextures[OrePrefixes.pipe.mTextureIndex],
-            Dyes.getModulation(aColorIndex, aMaterial.mRGBa));
+            Dyes.getModulation(colorIndex, aMaterial.mRGBa));
         if (aThickNess < 0.374F) return TextureFactory.of(
             aMaterial.mIconSet.mTextures[OrePrefixes.pipeTiny.mTextureIndex],
-            Dyes.getModulation(aColorIndex, aMaterial.mRGBa));
+            Dyes.getModulation(colorIndex, aMaterial.mRGBa));
         if (aThickNess < 0.499F) return TextureFactory.of(
             aMaterial.mIconSet.mTextures[OrePrefixes.pipeSmall.mTextureIndex],
-            Dyes.getModulation(aColorIndex, aMaterial.mRGBa));
+            Dyes.getModulation(colorIndex, aMaterial.mRGBa));
         if (aThickNess < 0.749F) return TextureFactory.of(
             aMaterial.mIconSet.mTextures[OrePrefixes.pipeMedium.mTextureIndex],
-            Dyes.getModulation(aColorIndex, aMaterial.mRGBa));
+            Dyes.getModulation(colorIndex, aMaterial.mRGBa));
         if (aThickNess < 0.874F) return TextureFactory.of(
             aMaterial.mIconSet.mTextures[OrePrefixes.pipeLarge.mTextureIndex],
-            Dyes.getModulation(aColorIndex, aMaterial.mRGBa));
+            Dyes.getModulation(colorIndex, aMaterial.mRGBa));
         return TextureFactory.of(
             aMaterial.mIconSet.mTextures[OrePrefixes.pipeHuge.mTextureIndex],
-            Dyes.getModulation(aColorIndex, aMaterial.mRGBa));
+            Dyes.getModulation(colorIndex, aMaterial.mRGBa));
     }
 
     protected static ITexture getRestrictorTexture(byte aMask) {
@@ -195,7 +199,7 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
     }
 
     @Override
-    public boolean isFacingValid(ForgeDirection facingDirection) {
+    public boolean isFacingValid(ForgeDirection facing) {
         return false;
     }
 
@@ -205,7 +209,7 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
     }
 
     @Override
-    public final boolean renderInside(ForgeDirection aSide) {
+    public final boolean renderInside(ForgeDirection side) {
         return false;
     }
 
@@ -376,22 +380,22 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
         // Tank, From, Amount to receive
         final List<MutableTriple<IFluidHandler, ForgeDirection, Integer>> tTanks = new ArrayList<>();
         final int amount = tFluid.amount;
-
-        for (ForgeDirection aSide, i = 0, j = (byte) aBaseMetaTileEntity.getRandomNumber(6); i < 6; i++) {
+        final byte tOffset = (byte) getBaseMetaTileEntity().getRandomNumber(6);
+        for (final byte i : ALL_VALID_SIDES) {
             // Get a list of tanks accepting fluids, and what side they're on
-            aSide = (byte) ((i + j) % 6);
-            final byte tSide = GT_Utility.getOppositeSide(aSide);
-            final IFluidHandler tTank = aBaseMetaTileEntity.getITankContainerAtSide(aSide);
+            final ForgeDirection side = ForgeDirection.getOrientation((i + tOffset) % 6);
+            final ForgeDirection oppositeSide = side.getOpposite();
+            final IFluidHandler tTank = aBaseMetaTileEntity.getITankContainerAtSide(side);
             final IGregTechTileEntity gTank = tTank instanceof IGregTechTileEntity ? (IGregTechTileEntity) tTank : null;
 
-            if (isConnectedAtSide(aSide) && tTank != null
-                && (mLastReceivedFrom & (1 << aSide)) == 0
-                && getBaseMetaTileEntity().getCoverInfoAtSide(aSide)
+            if (isConnectedAtSide(side) && tTank != null
+                && (mLastReceivedFrom & (1 << side.ordinal())) == 0
+                && getBaseMetaTileEntity().getCoverInfoAtSide(side)
                     .letsFluidOut(tFluid.getFluid())
-                && (gTank == null || gTank.getCoverInfoAtSide(tSide)
+                && (gTank == null || gTank.getCoverInfoAtSide(oppositeSide)
                     .letsFluidIn(tFluid.getFluid()))) {
-                if (tTank.fill(ForgeDirection.getOrientation(tSide), tFluid, false) > 0) {
-                    tTanks.add(new MutableTriple<>(tTank, ForgeDirection.getOrientation(tSide), 0));
+                if (tTank.fill(oppositeSide, tFluid, false) > 0) {
+                    tTanks.add(new MutableTriple<>(tTank, oppositeSide, 0));
                 }
                 tFluid.amount = amount; // Because some mods do actually modify input fluid stack
             }
@@ -399,19 +403,19 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
 
         // How much of this fluid is available for distribution?
         final double tAmount = Math.max(1, Math.min(mCapacity * 10, tFluid.amount));
-        final double tNumTanks = tTanks.size();
+
         final FluidStack maxFluid = tFluid.copy();
         maxFluid.amount = Integer.MAX_VALUE;
 
         double availableCapacity = 0;
         // Calculate available capacity for distribution from all tanks
-        for (MutableTriple<IFluidHandler, ForgeDirection, Integer> tEntry : tTanks) {
+        for (final MutableTriple<IFluidHandler, ForgeDirection, Integer> tEntry : tTanks) {
             tEntry.right = tEntry.left.fill(tEntry.middle, maxFluid, false);
             availableCapacity += tEntry.right;
         }
 
         // Now distribute
-        for (MutableTriple<IFluidHandler, ForgeDirection, Integer> tEntry : tTanks) {
+        for (final MutableTriple<IFluidHandler, ForgeDirection, Integer> tEntry : tTanks) {
             // Distribue fluids based on percentage available space at destination
             if (availableCapacity > tAmount)
                 tEntry.right = (int) Math.floor(tEntry.right * tAmount / availableCapacity);
@@ -431,11 +435,11 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
     }
 
     @Override
-    public boolean onWrenchRightClick(ForgeDirection sideDirection, ForgeDirection wrenchingSideDirection, EntityPlayer entityPlayer,
-                                      float aX, float aY, float aZ) {
+    public boolean onWrenchRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer entityPlayer,
+        float aX, float aY, float aZ) {
         if (GT_Mod.gregtechproxy.gt6Pipe) {
-            final byte tSide = GT_Utility.determineWrenchingSide(sideDirection, aX, aY, aZ);
-            final byte tMask = (byte) (1 << tSide);
+            final ForgeDirection tSide = GT_Utility.determineWrenchingSide(side, aX, aY, aZ);
+            final byte tMask = (byte) (1 << tSide.ordinal());
             if (entityPlayer.isSneaking()) {
                 if (isInputDisabledAtSide(tSide)) {
                     mDisableInput &= ~tMask;
@@ -447,7 +451,8 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
                 }
             } else {
                 if (!isConnectedAtSide(tSide)) {
-                    if (connect(tSide) > 0) GT_Utility.sendChatToPlayer(entityPlayer, GT_Utility.trans("214", "Connected"));
+                    if (connect(tSide) > 0)
+                        GT_Utility.sendChatToPlayer(entityPlayer, GT_Utility.trans("214", "Connected"));
                 } else {
                     disconnect(tSide);
                     GT_Utility.sendChatToPlayer(entityPlayer, GT_Utility.trans("215", "Disconnected"));
@@ -459,27 +464,27 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
     }
 
     @Override
-    public boolean letsIn(GT_CoverBehavior coverBehavior, ForgeDirection sideDirection, int aCoverID, int aCoverVariable,
-                          ICoverable aTileEntity) {
-        return coverBehavior.letsFluidIn(sideDirection, aCoverID, aCoverVariable, null, aTileEntity);
-    }
-
-    @Override
-    public boolean letsOut(GT_CoverBehavior coverBehavior, ForgeDirection aSide, int aCoverID, int aCoverVariable,
+    public boolean letsIn(GT_CoverBehavior coverBehavior, ForgeDirection side, int aCoverID, int aCoverVariable,
         ICoverable aTileEntity) {
-        return coverBehavior.letsFluidOut(aSide, aCoverID, aCoverVariable, null, aTileEntity);
+        return coverBehavior.letsFluidIn(side, aCoverID, aCoverVariable, null, aTileEntity);
     }
 
     @Override
-    public boolean letsIn(GT_CoverBehaviorBase<?> coverBehavior, ForgeDirection aSide, int aCoverID,
-        ISerializableObject aCoverVariable, ICoverable aTileEntity) {
-        return coverBehavior.letsFluidIn(aSide, aCoverID, aCoverVariable, null, aTileEntity);
+    public boolean letsOut(GT_CoverBehavior coverBehavior, ForgeDirection side, int aCoverID, int aCoverVariable,
+        ICoverable aTileEntity) {
+        return coverBehavior.letsFluidOut(side, aCoverID, aCoverVariable, null, aTileEntity);
     }
 
     @Override
-    public boolean letsOut(GT_CoverBehaviorBase<?> coverBehavior, ForgeDirection aSide, int aCoverID,
+    public boolean letsIn(GT_CoverBehaviorBase<?> coverBehavior, ForgeDirection side, int aCoverID,
         ISerializableObject aCoverVariable, ICoverable aTileEntity) {
-        return coverBehavior.letsFluidOut(aSide, aCoverID, aCoverVariable, null, aTileEntity);
+        return coverBehavior.letsFluidIn(side, aCoverID, aCoverVariable, null, aTileEntity);
+    }
+
+    @Override
+    public boolean letsOut(GT_CoverBehaviorBase<?> coverBehavior, ForgeDirection side, int aCoverID,
+        ISerializableObject aCoverVariable, ICoverable aTileEntity) {
+        return coverBehavior.letsFluidOut(side, aCoverID, aCoverVariable, null, aTileEntity);
     }
 
     @Override
@@ -493,16 +498,14 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
     }
 
     @Override
-    public boolean canConnect(ForgeDirection sideDirection, TileEntity tileEntity) {
+    public boolean canConnect(ForgeDirection side, TileEntity tileEntity) {
         if (tileEntity == null) return false;
 
-        final byte tSide = (byte) ForgeDirection.getOrientation(sideDirection)
-            .getOpposite()
-            .ordinal();
+        final ForgeDirection tSide = side.getOpposite();
         final IGregTechTileEntity baseMetaTile = getBaseMetaTileEntity();
         if (baseMetaTile == null) return false;
 
-        final GT_CoverBehaviorBase<?> coverBehavior = baseMetaTile.getCoverBehaviorAtSideNew(sideDirection);
+        final GT_CoverBehaviorBase<?> coverBehavior = baseMetaTile.getCoverBehaviorAtSideNew(side);
         final IGregTechTileEntity gTileEntity = (tileEntity instanceof IGregTechTileEntity)
             ? (IGregTechTileEntity) tileEntity
             : null;
@@ -513,7 +516,7 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
         final IFluidHandler fTileEntity = (tileEntity instanceof IFluidHandler) ? (IFluidHandler) tileEntity : null;
 
         if (fTileEntity != null) {
-            final FluidTankInfo[] tInfo = fTileEntity.getTankInfo(ForgeDirection.getOrientation(tSide));
+            final FluidTankInfo[] tInfo = fTileEntity.getTankInfo(tSide);
             if (tInfo != null) {
                 return tInfo.length > 0 || (GregTech_API.mTranslocator && isTranslocator(tileEntity))
                     || gTileEntity != null
@@ -578,7 +581,7 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
     }
 
     @Override
-    public FluidTankInfo[] getTankInfo(ForgeDirection aSide) {
+    public FluidTankInfo[] getTankInfo(ForgeDirection side) {
         if (getCapacity() <= 0 && !getBaseMetaTileEntity().hasSteamEngineUpgrade()) return new FluidTankInfo[] {};
         ArrayList<FluidTankInfo> tList = new ArrayList<>();
         for (FluidStack tFluid : mFluids) tList.add(new FluidTankInfo(tFluid, mCapacity * 20));
@@ -586,13 +589,13 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
     }
 
     @Override
-    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection aSide,
+    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
         return false;
     }
 
     @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection aSide,
+    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
         return false;
     }
@@ -615,7 +618,7 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
     }
 
     @Override
-    public final int fill_default(ForgeDirection aSide, FluidStack aFluid, boolean doFill) {
+    public final int fill_default(ForgeDirection side, FluidStack aFluid, boolean doFill) {
         if (aFluid == null || aFluid.getFluid()
             .getID() <= 0) return 0;
 
@@ -630,26 +633,28 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
                 }
         }
 
-        return fill_default_intoIndex(aSide, aFluid, doFill, index);
+        return fill_default_intoIndex(side, aFluid, doFill, index);
     }
 
-    private int fill_default_intoIndex(ForgeDirection aSide, FluidStack aFluid, boolean doFill, int index) {
+    private int fill_default_intoIndex(ForgeDirection side, FluidStack aFluid, boolean doFill, int index) {
         if (index < 0 || index >= mPipeAmount) return 0;
         if (aFluid == null || aFluid.getFluid()
             .getID() <= 0) return 0;
+
+        final int ordinalSide = side.ordinal();
 
         if (mFluids[index] == null || mFluids[index].getFluid()
             .getID() <= 0) {
             if (aFluid.amount * mPipeAmount <= getCapacity()) {
                 if (doFill) {
                     mFluids[index] = aFluid.copy();
-                    mLastReceivedFrom |= (1 << aSide.ordinal());
+                    mLastReceivedFrom |= (1 << ordinalSide);
                 }
                 return aFluid.amount;
             }
             if (doFill) {
                 mFluids[index] = aFluid.copy();
-                mLastReceivedFrom |= (1 << aSide.ordinal());
+                mLastReceivedFrom |= (1 << ordinalSide);
                 mFluids[index].amount = getCapacity() / mPipeAmount;
             }
             return getCapacity() / mPipeAmount;
@@ -661,13 +666,13 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
         if (aFluid.amount <= space) {
             if (doFill) {
                 mFluids[index].amount += aFluid.amount;
-                mLastReceivedFrom |= (1 << aSide.ordinal());
+                mLastReceivedFrom |= (1 << ordinalSide);
             }
             return aFluid.amount;
         }
         if (doFill) {
             mFluids[index].amount = getCapacity() / mPipeAmount;
-            mLastReceivedFrom |= (1 << aSide.ordinal());
+            mLastReceivedFrom |= (1 << ordinalSide);
         }
         return space;
     }
@@ -744,17 +749,17 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
     }
 
     @Override
-    public boolean isLiquidInput(ForgeDirection aSide) {
-        return !isInputDisabledAtSide(aSide);
+    public boolean isLiquidInput(ForgeDirection side) {
+        return !isInputDisabledAtSide(side);
     }
 
     @Override
-    public boolean isLiquidOutput(ForgeDirection aSide) {
+    public boolean isLiquidOutput(ForgeDirection side) {
         return true;
     }
 
-    public boolean isInputDisabledAtSide(int aSide) {
-        return (mDisableInput & (1 << aSide)) != 0;
+    public boolean isInputDisabledAtSide(ForgeDirection side) {
+        return (mDisableInput & (1 << side.ordinal())) != 0;
     }
 
     @Override
@@ -773,27 +778,27 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
         float tSide4 = tSpace;
         float tSide5 = 1f - tSpace;
 
-        if (getBaseMetaTileEntity().getCoverIDAtSide((byte) 0) != 0) {
+        if (getBaseMetaTileEntity().getCoverIDAtSide(ForgeDirection.DOWN) != 0) {
             tSide0 = tSide2 = tSide4 = 0;
             tSide3 = tSide5 = 1;
         }
-        if (getBaseMetaTileEntity().getCoverIDAtSide((byte) 1) != 0) {
+        if (getBaseMetaTileEntity().getCoverIDAtSide(ForgeDirection.UP) != 0) {
             tSide2 = tSide4 = 0;
             tSide1 = tSide3 = tSide5 = 1;
         }
-        if (getBaseMetaTileEntity().getCoverIDAtSide((byte) 2) != 0) {
+        if (getBaseMetaTileEntity().getCoverIDAtSide(ForgeDirection.NORTH) != 0) {
             tSide0 = tSide2 = tSide4 = 0;
             tSide1 = tSide5 = 1;
         }
-        if (getBaseMetaTileEntity().getCoverIDAtSide((byte) 3) != 0) {
+        if (getBaseMetaTileEntity().getCoverIDAtSide(ForgeDirection.SOUTH) != 0) {
             tSide0 = tSide4 = 0;
             tSide1 = tSide3 = tSide5 = 1;
         }
-        if (getBaseMetaTileEntity().getCoverIDAtSide((byte) 4) != 0) {
+        if (getBaseMetaTileEntity().getCoverIDAtSide(ForgeDirection.WEST) != 0) {
             tSide0 = tSide2 = tSide4 = 0;
             tSide1 = tSide3 = 1;
         }
-        if (getBaseMetaTileEntity().getCoverIDAtSide((byte) 5) != 0) {
+        if (getBaseMetaTileEntity().getCoverIDAtSide(ForgeDirection.EAST) != 0) {
             tSide0 = tSide2 = 0;
             tSide1 = tSide3 = tSide5 = 1;
         }
@@ -821,7 +826,7 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
     }
 
     @Override
-    public FluidStack drain(ForgeDirection aSide, FluidStack aFluid, boolean doDrain) {
+    public FluidStack drain(ForgeDirection side, FluidStack aFluid, boolean doDrain) {
         if (aFluid == null) return null;
         for (int i = 0; i < mFluids.length; ++i) {
             final FluidStack f = mFluids[i];

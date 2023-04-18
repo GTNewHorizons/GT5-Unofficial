@@ -39,6 +39,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
@@ -210,21 +211,21 @@ public class GT_MetaTileEntity_Teleporter extends GT_MetaTileEntity_BasicTank
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection aSide, ForgeDirection aFacing,
-        byte aColorIndex, boolean aActive, boolean aRedstone) {
-        if (aSide != this.getBaseMetaTileEntity()
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        if (side != this.getBaseMetaTileEntity()
             .getFrontFacing())
-            return new ITexture[] { MACHINE_CASINGS[mTier][aColorIndex + 1],
-                TextureFactory.of(OVERLAY_TELEPORTER_SIDES), TextureFactory.builder()
+            return new ITexture[] { MACHINE_CASINGS[mTier][colorIndex + 1], TextureFactory.of(OVERLAY_TELEPORTER_SIDES),
+                TextureFactory.builder()
                     .addIcon(OVERLAY_TELEPORTER_SIDES_GLOW)
                     .glow()
                     .build() };
-        if (aActive) return new ITexture[] { MACHINE_CASINGS[mTier][aColorIndex + 1],
+        if (aActive) return new ITexture[] { MACHINE_CASINGS[mTier][colorIndex + 1],
             TextureFactory.of(OVERLAY_TELEPORTER_ACTIVE), TextureFactory.builder()
                 .addIcon(OVERLAY_TELEPORTER_ACTIVE_GLOW)
                 .glow()
                 .build() };
-        return new ITexture[] { MACHINE_CASINGS[mTier][aColorIndex + 1], TextureFactory.of(OVERLAY_TELEPORTER),
+        return new ITexture[] { MACHINE_CASINGS[mTier][colorIndex + 1], TextureFactory.of(OVERLAY_TELEPORTER),
             TextureFactory.builder()
                 .addIcon(OVERLAY_TELEPORTER_GLOW)
                 .glow()
@@ -314,19 +315,8 @@ public class GT_MetaTileEntity_Teleporter extends GT_MetaTileEntity_BasicTank
         }
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (getBaseMetaTileEntity().isServerSide()) {
-            // if (getBaseMetaTileEntity().getTimer() % 100L == 50L) {
-            // this.hasEgg = checkForEgg();
-            // }
             if ((getBaseMetaTileEntity().isAllowedToWork()) && (getBaseMetaTileEntity().getRedstone())) {
                 if (getBaseMetaTileEntity().decreaseStoredEnergyUnits(sPassiveEnergyDrain, false)) {
-                    // if (hasDimensionalTeleportCapability() && this.mTargetD !=
-                    // getBaseMetaTileEntity().getWorld().provider.dimensionId && (hasEgg ||
-                    // mFluid.isFluidEqual(Materials.Nitrogen.getPlasma(1)))&& new XSTR().nextInt(10)==0) {
-                    // mFluid.amount--;
-                    // if (mFluid.amount < 1) {
-                    // mFluid = null;
-                    // }
-                    // }
                     int tDistance = distanceCalculation();
                     if (mInventory[0] != null) {
                         TileEntity tTile = null;
@@ -343,8 +333,8 @@ public class GT_MetaTileEntity_Teleporter extends GT_MetaTileEntity_BasicTank
                             GT_Utility.moveOneItemStack(
                                 this,
                                 tTile,
-                                (byte) 0,
-                                (byte) 0,
+                                ForgeDirection.DOWN,
+                                ForgeDirection.DOWN,
                                 null,
                                 false,
                                 (byte) 64,
@@ -377,15 +367,7 @@ public class GT_MetaTileEntity_Teleporter extends GT_MetaTileEntity_BasicTank
                             if (getBaseMetaTileEntity().decreaseStoredEnergyUnits(
                                 (long) (Math.pow(tDistance, 1.5) * weightCalculation(tEntity) * sFPowerMultiplyer),
                                 false)) {
-                                // if (hasDimensionalTeleportCapability() && this.mTargetD !=
-                                // getBaseMetaTileEntity().getWorld().provider.dimensionId && (hasEgg ||
-                                // mFluid.isFluidEqual(Materials.Nitrogen.getPlasma(1)))) {
-                                // mFluid.amount = mFluid.amount - ((int) Math.min(10, (Math.pow(tDistance, 1.5) *
-                                // weightCalculation(tEntity) / 8192)));
-                                // if (mFluid.amount < 1) {
-                                // mFluid = null;
-                                // }
-                                // }
+
                                 if (tEntity.ridingEntity != null) {
                                     tEntity.mountEntity(null);
                                 }
@@ -465,12 +447,12 @@ public class GT_MetaTileEntity_Teleporter extends GT_MetaTileEntity_BasicTank
     }
 
     @Override
-    public boolean isInputFacing(ForgeDirection aSide) {
+    public boolean isInputFacing(ForgeDirection side) {
         return true;
     }
 
     @Override
-    public boolean isOutputFacing(ForgeDirection aSide) {
+    public boolean isOutputFacing(ForgeDirection side) {
         return false;
     }
 

@@ -1,5 +1,7 @@
 package gregtech.common.covers;
 
+import net.minecraftforge.common.util.ForgeDirection;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
@@ -19,7 +21,7 @@ public class GT_Cover_RedstoneReceiverExternal extends GT_Cover_RedstoneWireless
     }
 
     @Override
-    public boolean isRedstoneSensitive(ForgeDirection aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
+    public boolean isRedstoneSensitive(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
         long aTimer) {
         return false;
     }
@@ -35,13 +37,13 @@ public class GT_Cover_RedstoneReceiverExternal extends GT_Cover_RedstoneWireless
     }
 
     @Override
-    public boolean manipulatesSidedRedstoneOutput(ForgeDirection aSide, int aCoverID, int aCoverVariable,
+    public boolean manipulatesSidedRedstoneOutput(ForgeDirection side, int aCoverID, int aCoverVariable,
         ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    public int getTickRate(ForgeDirection aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public int getTickRate(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
         return 1;
     }
 }

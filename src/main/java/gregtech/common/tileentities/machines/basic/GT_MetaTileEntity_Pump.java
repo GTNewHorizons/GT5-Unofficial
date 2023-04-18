@@ -150,8 +150,8 @@ public class GT_MetaTileEntity_Pump extends GT_MetaTileEntity_Hatch {
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ);
         int max = getMaxPumpableDistance();
         if (aPlayer.isSneaking()) {
             if (radiusConfig >= 0) {
@@ -175,12 +175,12 @@ public class GT_MetaTileEntity_Pump extends GT_MetaTileEntity_Hatch {
     }
 
     @Override
-    public boolean onSolderingToolRightClick(ForgeDirection sideDirection, ForgeDirection wrenchingSideDirection, EntityPlayer entityPlayer,
-                                             float aX, float aY, float aZ) {
-        if (super.onSolderingToolRightClick(sideDirection, wrenchingSideDirection, entityPlayer, aX, aY, aZ)) return true;
+    public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide,
+        EntityPlayer entityPlayer, float aX, float aY, float aZ) {
+        if (super.onSolderingToolRightClick(side, wrenchingSide, entityPlayer, aX, aY, aZ)) return true;
         mDisallowRetract = !mDisallowRetract;
         GT_Utility.sendChatToPlayer(
-                entityPlayer,
+            entityPlayer,
             StatCollector.translateToLocal(
                 mDisallowRetract ? "GT5U.machines.autoretract.disabled" : "GT5U.machines.autoretract.enabled"));
         return true;
@@ -234,8 +234,8 @@ public class GT_MetaTileEntity_Pump extends GT_MetaTileEntity_Hatch {
 
             IGregTechTileEntity tTileEntity;
             for (int i = 1; (i < 21)
-                && ((tTileEntity = getBaseMetaTileEntity().getIGregTechTileEntityAtSideAndDistance((byte) 0, i))
-                    != null)
+                && ((tTileEntity = getBaseMetaTileEntity()
+                    .getIGregTechTileEntityAtSideAndDistance(ForgeDirection.DOWN, i)) != null)
                 && ((tTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_Pump)); i++) {
                 // Apparently someone might stack 21 pumps on top of each other, so let's check for that
                 getBaseMetaTileEntity().setActive(tTileEntity.isActive());
@@ -400,7 +400,7 @@ public class GT_MetaTileEntity_Pump extends GT_MetaTileEntity_Hatch {
 
             if (this.mFluid != null && (aTick % 20 == 0)) {
                 // auto outputs on top every second or so
-                IFluidHandler tTank = aBaseMetaTileEntity.getITankContainerAtSide((byte) 1); // 1 is up.
+                IFluidHandler tTank = aBaseMetaTileEntity.getITankContainerAtSide(ForgeDirection.UP); // 1 is up.
                 if (tTank != null) {
                     FluidStack tDrained = drain(1000, false);
                     if (tDrained != null) {
@@ -732,7 +732,7 @@ public class GT_MetaTileEntity_Pump extends GT_MetaTileEntity_Hatch {
     }
 
     @Override
-    public boolean isFacingValid(ForgeDirection facingDirection) {
+    public boolean isFacingValid(ForgeDirection facing) {
         return true;
     }
 
@@ -742,12 +742,12 @@ public class GT_MetaTileEntity_Pump extends GT_MetaTileEntity_Hatch {
     }
 
     @Override
-    public boolean isInputFacing(ForgeDirection aSide) {
+    public boolean isInputFacing(ForgeDirection side) {
         return true;
     }
 
     @Override
-    public boolean isOutputFacing(ForgeDirection aSide) {
+    public boolean isOutputFacing(ForgeDirection side) {
         return false;
     }
 
@@ -805,7 +805,7 @@ public class GT_MetaTileEntity_Pump extends GT_MetaTileEntity_Hatch {
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
         ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][colorIndex + 1],
-            (sideDirection == 0 || sideDirection == 1) ? TextureFactory.of(Textures.BlockIcons.OVERLAY_PIPE_OUT)
+            (sideDirection.offsetY != 0) ? TextureFactory.of(Textures.BlockIcons.OVERLAY_PIPE_OUT)
                 : TextureFactory.of(Textures.BlockIcons.OVERLAY_ADV_PUMP) };
     }
 

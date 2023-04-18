@@ -12,6 +12,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.Packet;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
@@ -387,7 +388,7 @@ public class GT_TileEntity_Ores extends TileEntity implements ITexturedTileEntit
     }
 
     @Override
-    public ITexture[] getTexture(Block aBlock, ForgeDirection aSide) {
+    public ITexture[] getTexture(Block aBlock, ForgeDirection side) {
         Materials aMaterial = GregTech_API.sGeneratedMaterials[(this.mMetaData % 1000)];
         if ((aMaterial != null) && (this.mMetaData < 32000)) {
             ITexture iTexture = TextureFactory.builder()

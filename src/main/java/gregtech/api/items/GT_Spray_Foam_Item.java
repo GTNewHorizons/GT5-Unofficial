@@ -32,18 +32,6 @@ public class GT_Spray_Foam_Item extends GT_Tool_Item {
                     */
     }
 
-    /*
-     * @Override public ItemStack getEmptiedItem(ItemStack aStack) { return ItemList.Spray_Empty.get(1); } public void
-     * switchMode(ItemStack aStack, EntityPlayer aPlayer) { setMode(aStack, (getMode(aStack) + 1) % 3); switch
-     * (getMode(aStack)) { case 0: GT_Utility.sendChatToPlayer(aPlayer, "Single Block Mode"); break; case 1:
-     * GT_Utility.sendChatToPlayer(aPlayer, "4m Line Mode"); break; case 2: GT_Utility.sendChatToPlayer(aPlayer,
-     * "3mx3m Area Mode"); break; } }
-     * @Override public void addAdditionalToolTips(List aList, ItemStack aStack) { super.addAdditionalToolTips(aList,
-     * aStack); switch (getMode(aStack)) { case 0: aList.add("Single Block Mode"); break; case 1:
-     * aList.add("4m Line Mode"); break; case 2: aList.add("3mx3m Area Mode"); break; } }
-     * @Override public ItemStack onItemRightClick(ItemStack aStack, World aWorld, EntityPlayer aPlayer) { if
-     * (aPlayer.isSneaking()) switchMode(aStack, aPlayer); return super.onItemRightClick(aStack, aWorld, aPlayer); }
-     */
     @Override
     public boolean onItemUseFirst(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ,
         int aSide, float hitX, float hitY, float hitZ) {

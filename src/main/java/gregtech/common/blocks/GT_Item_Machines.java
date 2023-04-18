@@ -17,6 +17,7 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
 
@@ -220,8 +221,8 @@ public class GT_Item_Machines extends ItemBlock implements IFluidContainerItem {
     }
 
     @Override
-    public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side,
-        float hitX, float hitY, float hitZ) {
+    public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z,
+        int ordinalSide, float hitX, float hitY, float hitZ) {
         return false;
     }
 
@@ -271,8 +272,9 @@ public class GT_Item_Machines extends ItemBlock implements IFluidContainerItem {
     }
 
     @Override
-    public boolean placeBlockAt(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int side,
-        float hitX, float hitY, float hitZ, int aMeta) {
+    public boolean placeBlockAt(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ,
+        int ordinalSide, float hitX, float hitY, float hitZ, int aMeta) {
+        final ForgeDirection side = ForgeDirection.getOrientation(ordinalSide);
         final short tDamage = (short) getDamage(aStack);
         if (tDamage > 0) {
             if (GregTech_API.METATILEENTITIES[tDamage] == null) {
@@ -299,15 +301,15 @@ public class GT_Item_Machines extends ItemBlock implements IFluidContainerItem {
                 }
                 tTileEntity.getMetaTileEntity()
                     .initDefaultModes(aStack.getTagCompound());
-                final ForgeDirection aSide = GT_Utility.getOppositeSide(side);
-                if (tTileEntity.getMetaTileEntity() instanceof IConnectable) {
+                final ForgeDirection oppositeSide = side.getOpposite();
+                if (tTileEntity.getMetaTileEntity() instanceof IConnectable connectable) {
                     // If we're connectable, try connecting to whatever we're up against
-                    ((IConnectable) tTileEntity.getMetaTileEntity()).connect(aSide);
+                    connectable.connect(oppositeSide);
                 } else if (aPlayer != null && aPlayer.isSneaking()) {
                     // If we're being placed against something that is connectable, try telling it to connect to us
-                    final IGregTechTileEntity aTileEntity = tTileEntity.getIGregTechTileEntityAtSide(aSide);
-                    if (aTileEntity != null && aTileEntity.getMetaTileEntity() instanceof IConnectable) {
-                        ((IConnectable) aTileEntity.getMetaTileEntity()).connect((byte) side);
+                    final IGregTechTileEntity aTileEntity = tTileEntity.getIGregTechTileEntityAtSide(oppositeSide);
+                    if (aTileEntity != null && aTileEntity.getMetaTileEntity() instanceof IConnectable connectable) {
+                        connectable.connect(side);
                     }
                 }
             }

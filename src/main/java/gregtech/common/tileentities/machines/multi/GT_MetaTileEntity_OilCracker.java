@@ -322,16 +322,16 @@ public class GT_MetaTileEntity_OilCracker extends GT_MetaTileEntity_EnhancedMult
     }
 
     private void replaceDeprecatedCoils(IGregTechTileEntity aBaseMetaTileEntity) {
-        int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
-        int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ;
-        int tX = aBaseMetaTileEntity.getXCoord() + xDir;
-        int tY = aBaseMetaTileEntity.getYCoord();
-        int tZ = aBaseMetaTileEntity.getZCoord() + zDir;
+        final int xDir = aBaseMetaTileEntity.getBackFacing().offsetX;
+        final int zDir = aBaseMetaTileEntity.getBackFacing().offsetZ;
+        final int tX = aBaseMetaTileEntity.getXCoord() + xDir;
+        final int tY = aBaseMetaTileEntity.getYCoord();
+        final int tZ = aBaseMetaTileEntity.getZCoord() + zDir;
         for (int xPos = tX - 1; xPos <= tX + 1; xPos += (xDir != 0 ? 1 : 2))
             for (int yPos = tY - 1; yPos <= tY + 1; yPos++)
                 for (int zPos = tZ - 1; zPos <= tZ + 1; zPos += (xDir != 0 ? 2 : 1)) {
                     if ((yPos == tY) && (xPos == tX || zPos == tZ)) continue;
-                    byte tUsedMeta = aBaseMetaTileEntity.getMetaID(xPos, yPos, zPos);
+                    final byte tUsedMeta = aBaseMetaTileEntity.getMetaID(xPos, yPos, zPos);
                     if (tUsedMeta < 12) continue;
                     if (tUsedMeta > 14) continue;
                     if (aBaseMetaTileEntity.getBlock(xPos, yPos, zPos) != GregTech_API.sBlockCasings1) continue;
@@ -343,12 +343,12 @@ public class GT_MetaTileEntity_OilCracker extends GT_MetaTileEntity_EnhancedMult
 
     @Override
     public ArrayList<FluidStack> getStoredFluids() {
-        ArrayList<FluidStack> rList = new ArrayList<>();
-        for (GT_MetaTileEntity_Hatch_Input tHatch : mInputHatches) {
+        final ArrayList<FluidStack> rList = new ArrayList<>();
+        for (final GT_MetaTileEntity_Hatch_Input tHatch : mInputHatches) {
             tHatch.mRecipeMap = getRecipeMap();
             if (tHatch instanceof GT_MetaTileEntity_Hatch_MultiInput) {
                 if (isValidMetaTileEntity(tHatch)) {
-                    for (FluidStack tFluid : ((GT_MetaTileEntity_Hatch_MultiInput) tHatch).getStoredFluid()) {
+                    for (final FluidStack tFluid : ((GT_MetaTileEntity_Hatch_MultiInput) tHatch).getStoredFluid()) {
                         if (tFluid != null && !GT_Recipe.GT_Recipe_Map.sCrackingRecipes.isValidCatalystFluid(tFluid)) {
                             rList.add(tFluid);
                         }
@@ -361,11 +361,11 @@ public class GT_MetaTileEntity_OilCracker extends GT_MetaTileEntity_EnhancedMult
                 }
             }
         }
-        for (GT_MetaTileEntity_Hatch_Input tHatch : mMiddleInputHatches) {
+        for (final GT_MetaTileEntity_Hatch_Input tHatch : mMiddleInputHatches) {
             tHatch.mRecipeMap = getRecipeMap();
             if (tHatch instanceof GT_MetaTileEntity_Hatch_MultiInput) {
                 if (isValidMetaTileEntity(tHatch)) {
-                    for (FluidStack tFluid : ((GT_MetaTileEntity_Hatch_MultiInput) tHatch).getStoredFluid()) {
+                    for (final FluidStack tFluid : ((GT_MetaTileEntity_Hatch_MultiInput) tHatch).getStoredFluid()) {
                         if (tFluid != null && GT_Recipe.GT_Recipe_Map.sCrackingRecipes.isValidCatalystFluid(tFluid)) {
                             rList.add(tFluid);
                         }
@@ -373,7 +373,7 @@ public class GT_MetaTileEntity_OilCracker extends GT_MetaTileEntity_EnhancedMult
                 }
             } else {
                 if (isValidMetaTileEntity(tHatch) && tHatch.getFillableStack() != null) {
-                    FluidStack tStack = tHatch.getFillableStack();
+                    final FluidStack tStack = tHatch.getFillableStack();
                     if (GT_Recipe.GT_Recipe_Map.sCrackingRecipes.isValidCatalystFluid(tStack)) {
                         rList.add(tStack);
                     }

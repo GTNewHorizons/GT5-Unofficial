@@ -1,8 +1,7 @@
 package gregtech.common.covers;
 
-import static gregtech.api.enums.GT_Values.ALL_VALID_SIDES;
-
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.ITexture;
@@ -34,25 +33,25 @@ public class GT_Cover_RedstoneTransmitterExternal extends GT_Cover_RedstoneWirel
     }
 
     @Override
-    protected boolean isRedstoneSensitiveImpl(ForgeDirection aSide, int aCoverID,
+    protected boolean isRedstoneSensitiveImpl(ForgeDirection side, int aCoverID,
         ISerializableObject.LegacyCoverData aCoverVariable, ICoverable aTileEntity, long aTimer) {
         return true;
     }
 
     @Override
-    public boolean letsRedstoneGoIn(ForgeDirection aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public boolean letsRedstoneGoIn(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    public int getTickRate(ForgeDirection aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public int getTickRate(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
         return 1;
     }
 
     @Override
-    public boolean isCoverPlaceable(ForgeDirection aSide, ItemStack aStack, ICoverable aTileEntity) {
-        if (!super.isCoverPlaceable(aSide, aStack, aTileEntity)) return false;
-        for (byte tSide : ALL_VALID_SIDES) {
+    public boolean isCoverPlaceable(ForgeDirection side, ItemStack aStack, ICoverable aTileEntity) {
+        if (!super.isCoverPlaceable(side, aStack, aTileEntity)) return false;
+        for (final ForgeDirection tSide : ForgeDirection.VALID_DIRECTIONS) {
             if (aTileEntity.getCoverBehaviorAtSideNew(tSide) instanceof IControlsWorkCover) {
                 return false;
             }

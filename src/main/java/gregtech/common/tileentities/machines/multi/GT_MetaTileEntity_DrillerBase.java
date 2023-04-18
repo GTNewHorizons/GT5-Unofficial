@@ -196,17 +196,17 @@ public abstract class GT_MetaTileEntity_DrillerBase
     }
 
     @Override
-    public boolean onSolderingToolRightClick(ForgeDirection sideDirection, ForgeDirection wrenchingSideDirection, EntityPlayer entityPlayer,
-                                             float aX, float aY, float aZ) {
-        if (sideDirection == getBaseMetaTileEntity().getFrontFacing()) {
+    public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide,
+        EntityPlayer entityPlayer, float aX, float aY, float aZ) {
+        if (side == getBaseMetaTileEntity().getFrontFacing()) {
             mChunkLoadingEnabled = !mChunkLoadingEnabled;
             GT_Utility.sendChatToPlayer(
-                    entityPlayer,
+                entityPlayer,
                 mChunkLoadingEnabled ? GT_Utility.trans("502", "Mining chunk loading enabled")
                     : GT_Utility.trans("503", "Mining chunk loading disabled"));
             return true;
         }
-        return super.onSolderingToolRightClick(sideDirection, wrenchingSideDirection, entityPlayer, aX, aY, aZ);
+        return super.onSolderingToolRightClick(side, wrenchingSide, entityPlayer, aX, aY, aZ);
     }
 
     @Override
@@ -444,7 +444,7 @@ public abstract class GT_MetaTileEntity_DrillerBase
         xDrill = getBaseMetaTileEntity().getXCoord();
         yDrill = getBaseMetaTileEntity().getYCoord();
         zDrill = getBaseMetaTileEntity().getZCoord();
-        back = ForgeDirection.getOrientation(getBaseMetaTileEntity().getBackFacing());
+        back = getBaseMetaTileEntity().getBackFacing();
         xPipe = xDrill + back.offsetX;
         zPipe = zDrill + back.offsetZ;
     }

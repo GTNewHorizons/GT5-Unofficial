@@ -100,7 +100,7 @@ public abstract class GT_MetaTileEntity_BasicMachine_Bronze extends GT_MetaTileE
     }
 
     @Override
-    public boolean isInputFacing(ForgeDirection aSide) {
+    public boolean isInputFacing(ForgeDirection side) {
         return false;
     }
 
@@ -130,8 +130,8 @@ public abstract class GT_MetaTileEntity_BasicMachine_Bronze extends GT_MetaTileE
     }
 
     @Override
-    public boolean isFacingValid(ForgeDirection facingDirection) {
-        return super.isFacingValid(facingDirection) && facingDirection != mMainFacing;
+    public boolean isFacingValid(ForgeDirection facing) {
+        return super.isFacingValid(facing) && facing != mMainFacing;
     }
 
     @Override
@@ -145,13 +145,13 @@ public abstract class GT_MetaTileEntity_BasicMachine_Bronze extends GT_MetaTileE
     }
 
     @Override
-    public boolean isLiquidInput(ForgeDirection aSide) {
-        return aSide != mMainFacing;
+    public boolean isLiquidInput(ForgeDirection side) {
+        return side != mMainFacing;
     }
 
     @Override
-    public boolean isLiquidOutput(ForgeDirection aSide) {
-        return aSide != mMainFacing;
+    public boolean isLiquidOutput(ForgeDirection side) {
+        return side != mMainFacing;
     }
 
     @Override
@@ -244,9 +244,9 @@ public abstract class GT_MetaTileEntity_BasicMachine_Bronze extends GT_MetaTileE
     }
 
     @Override
-    public boolean allowCoverOnSide(ForgeDirection aSide, GT_ItemStack aCoverID) {
+    public boolean allowCoverOnSide(ForgeDirection side, GT_ItemStack aCoverID) {
         return GregTech_API.getCoverBehaviorNew(aCoverID.toStack())
-            .isSimpleCover() && super.allowCoverOnSide(aSide, aCoverID);
+            .isSimpleCover() && super.allowCoverOnSide(side, aCoverID);
     }
 
     public float getSteamDamage() {

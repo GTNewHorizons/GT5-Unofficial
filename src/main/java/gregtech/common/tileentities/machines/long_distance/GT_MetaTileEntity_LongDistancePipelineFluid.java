@@ -35,7 +35,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Utility;
 
 public class GT_MetaTileEntity_LongDistancePipelineFluid extends GT_MetaTileEntity_LongDistancePipelineBase {
 
@@ -68,33 +67,32 @@ public class GT_MetaTileEntity_LongDistancePipelineFluid extends GT_MetaTileEnti
     }
 
     @Override
-    public FluidTankInfo[] getTankInfo(ForgeDirection aSide) {
+    public FluidTankInfo[] getTankInfo(ForgeDirection side) {
         if (checkTarget()) {
             final IFluidHandler tankTile = getTank();
-            if (tankTile != null) return tankTile.getTankInfo(aSide);
+            if (tankTile != null) return tankTile.getTankInfo(side);
         }
 
         return emptyTank;
     }
 
     @Override
-    public int fill(ForgeDirection aSide, FluidStack aFluid, boolean aDoFill) {
+    public int fill(ForgeDirection side, FluidStack aFluid, boolean aDoFill) {
         if (checkTarget()) {
             final IGregTechTileEntity tTile = mTarget.getBaseMetaTileEntity();
             final IFluidHandler tankTile = getTank();
-            if (tankTile != null)
-                return tankTile.fill(ForgeDirection.getOrientation(tTile.getFrontFacing()), aFluid, aDoFill);
+            if (tankTile != null) return tankTile.fill(tTile.getFrontFacing(), aFluid, aDoFill);
         }
         return 0;
     }
 
     @Override
-    public FluidStack drain(ForgeDirection aSide, FluidStack aFluid, boolean aDoDrain) {
+    public FluidStack drain(ForgeDirection side, FluidStack aFluid, boolean aDoDrain) {
         return null;
     }
 
     @Override
-    public FluidStack drain(ForgeDirection aSide, int aMaxDrain, boolean aDoDrain) {
+    public FluidStack drain(ForgeDirection side, int aMaxDrain, boolean aDoDrain) {
         return null;
     }
 
@@ -113,7 +111,7 @@ public class GT_MetaTileEntity_LongDistancePipelineFluid extends GT_MetaTileEnti
         ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
         if (sideDirection == facingDirection) return new ITexture[] { MACHINE_CASINGS[mTier][colorIndex + 1],
             TextureFactory.of(OVERLAY_PIPELINE_FLUID_FRONT) };
-        else if (sideDirection == GT_Utility.getOppositeSide(facingDirection)) return new ITexture[] {
+        else if (sideDirection == facingDirection.getOpposite()) return new ITexture[] {
             MACHINE_CASINGS[mTier][colorIndex + 1], TextureFactory.of(OVERLAY_PIPELINE_FLUID_BACK) };
         else return new ITexture[] { MACHINE_CASINGS[mTier][colorIndex + 1],
             TextureFactory.of(OVERLAY_PIPELINE_FLUID_SIDE), TextureFactory.builder()

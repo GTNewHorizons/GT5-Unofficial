@@ -31,23 +31,23 @@ public class Behaviour_Cover_Tool extends Behaviour_None {
 
     @Override
     public boolean onItemUseFirst(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,
-        int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
+        int aY, int aZ, ForgeDirection side, float hitX, float hitY, float hitZ) {
         if (aWorld.isRemote) {
             return false;
         }
-        NBTTagCompound tNBT = aStack.getTagCompound();
-        TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        boolean isCopyMode = aPlayer.isSneaking();
+        final NBTTagCompound tNBT = aStack.getTagCompound();
+        final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
+        final boolean isCopyMode = aPlayer.isSneaking();
         initDataFromNBT(tNBT);
         if (((aPlayer instanceof EntityPlayerMP)) && (aItem.canUse(aStack, 100.0D))) {
             if (isCopyMode) {
                 ArrayList<String> tList = new ArrayList<>();
-                doCopy(tTileEntity, aWorld, aX, aY, aZ, aSide, hitX, hitY, hitZ, tList);
+                doCopy(tTileEntity, aWorld, aX, aY, aZ, side, hitX, hitY, hitZ, tList);
                 aItem.discharge(aStack, 100.0D, Integer.MAX_VALUE, true, false, false);
                 writeListToNBT(tList, tNBT, aPlayer);
                 saveDataToNBT(tNBT);
             } else {
-                doPaste(tTileEntity, aSide, hitX, hitY, hitZ, aPlayer);
+                doPaste(tTileEntity, side, hitX, hitY, hitZ, aPlayer);
                 aItem.discharge(aStack, 25.0D, Integer.MAX_VALUE, true, false, false);
             }
         }
@@ -84,8 +84,8 @@ public class Behaviour_Cover_Tool extends Behaviour_None {
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    private void doCopy(TileEntity aTileEntity, World aWorld, int aX, int aY, int aZ, int aSide, float hitX, float hitY,
-        float hitZ, List aList) {
+    private void doCopy(TileEntity aTileEntity, World aWorld, int aX, int aY, int aZ, ForgeDirection side, float hitX,
+        float hitY, float hitZ, List aList) {
         aList.add(
             "----- X: " + EnumChatFormatting.AQUA
                 + GT_Utility.formatNumbers(aX)
@@ -104,20 +104,17 @@ public class Behaviour_Cover_Tool extends Behaviour_None {
                 + EnumChatFormatting.RESET
                 + " -----");
         if (aTileEntity instanceof ICoverable tCoverable) {
-            int tSide = tCoverable.getCoverItemAtSide((byte) aSide) != null ? aSide
-                : tCoverable.getCoverItemAtSide(GT_Utility.determineWrenchingSide((byte) aSide, hitX, hitY, hitZ))
-                    != null ? GT_Utility.determineWrenchingSide((byte) aSide, hitX, hitY, hitZ) : -1;
-            if (tSide != -1) {
-                mStoredData = tCoverable.getComplexCoverDataAtSide((byte) tSide);
-                mCoverType = tCoverable.getCoverIDAtSide((byte) tSide);
-                aList.add(
-                    "Block Side: " + EnumChatFormatting.AQUA
-                        + ForgeDirection.getOrientation(tSide)
-                            .name()
-                        + EnumChatFormatting.RESET);
+            final ForgeDirection tSide = tCoverable.getCoverItemAtSide(side) != null ? side
+                : tCoverable.getCoverItemAtSide(GT_Utility.determineWrenchingSide(side, hitX, hitY, hitZ)) != null
+                    ? GT_Utility.determineWrenchingSide(side, hitX, hitY, hitZ)
+                    : ForgeDirection.UNKNOWN;
+            if (tSide != ForgeDirection.UNKNOWN) {
+                mStoredData = tCoverable.getComplexCoverDataAtSide(tSide);
+                mCoverType = tCoverable.getCoverIDAtSide(tSide);
+                aList.add("Block Side: " + EnumChatFormatting.AQUA + tSide.name() + EnumChatFormatting.RESET);
                 aList.add(
                     "Cover Type: " + EnumChatFormatting.GREEN
-                        + tCoverable.getCoverItemAtSide((byte) tSide)
+                        + tCoverable.getCoverItemAtSide(tSide)
                             .getDisplayName()
                         + EnumChatFormatting.RESET);
             } else {
@@ -132,19 +129,21 @@ public class Behaviour_Cover_Tool extends Behaviour_None {
         }
     }
 
-    private void doPaste(TileEntity aTileEntity, int aSide, float hitX, float hitY, float hitZ, EntityPlayer aPlayer) {
+    private void doPaste(TileEntity aTileEntity, ForgeDirection side, float hitX, float hitY, float hitZ,
+        EntityPlayer aPlayer) {
         if (aTileEntity instanceof ICoverable tCoverable) {
             if (mCoverType == 0 || mStoredData == null) {
                 GT_Utility.sendChatToPlayer(aPlayer, "Please Copy a Valid Cover First.");
                 return;
             }
-            int tSide = tCoverable.getCoverItemAtSide((byte) aSide) != null ? aSide
-                : tCoverable.getCoverItemAtSide(GT_Utility.determineWrenchingSide((byte) aSide, hitX, hitY, hitZ))
-                    != null ? GT_Utility.determineWrenchingSide((byte) aSide, hitX, hitY, hitZ) : -1;
-            if (tSide != -1) {
-                int tCoverID = tCoverable.getCoverIDAtSide((byte) tSide);
+            final ForgeDirection tSide = tCoverable.getCoverItemAtSide(side) != null ? side
+                : tCoverable.getCoverItemAtSide(GT_Utility.determineWrenchingSide(side, hitX, hitY, hitZ)) != null
+                    ? GT_Utility.determineWrenchingSide(side, hitX, hitY, hitZ)
+                    : ForgeDirection.UNKNOWN;
+            if (tSide != ForgeDirection.UNKNOWN) {
+                int tCoverID = tCoverable.getCoverIDAtSide(tSide);
                 if (tCoverID == mCoverType) {
-                    tCoverable.setCoverDataAtSide((byte) tSide, mStoredData);
+                    tCoverable.setCoverDataAtSide(tSide, mStoredData);
                     GT_Utility.sendChatToPlayer(aPlayer, "Cover Data Pasted.");
                 } else {
                     GT_Utility.sendChatToPlayer(aPlayer, "Not Matched Cover.");
@@ -158,8 +157,8 @@ public class Behaviour_Cover_Tool extends Behaviour_None {
     @Override
     public List<String> getAdditionalToolTips(GT_MetaBase_Item aItem, List<String> aList, ItemStack aStack) {
         try {
-            NBTTagCompound tNBT = aStack.getTagCompound();
-            int tSize = tNBT.getInteger("dataLinesCount");
+            final NBTTagCompound tNBT = aStack.getTagCompound();
+            final int tSize = tNBT.getInteger("dataLinesCount");
             if (tSize < 1) throw new Exception();
             aList.add(EnumChatFormatting.BLUE + "Stored Cover Data:");
             for (int i = 0; i < tSize; i++) {

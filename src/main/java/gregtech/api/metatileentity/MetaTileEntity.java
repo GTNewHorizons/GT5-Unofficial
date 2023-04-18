@@ -217,51 +217,51 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
     }
 
     @Override
-    public boolean allowCoverOnSide(ForgeDirection aSide, GT_ItemStack aStack) {
+    public boolean allowCoverOnSide(ForgeDirection side, GT_ItemStack aStack) {
         return true;
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         /* Do nothing */
     }
 
     @Override
-    public boolean onWrenchRightClick(ForgeDirection sideDirection, ForgeDirection wrenchingSideDirection, EntityPlayer entityPlayer,
-                                      float aX, float aY, float aZ) {
-        if (getBaseMetaTileEntity().isValidFacing(wrenchingSideDirection)) {
-            getBaseMetaTileEntity().setFrontFacing(wrenchingSideDirection);
+    public boolean onWrenchRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer entityPlayer,
+        float aX, float aY, float aZ) {
+        if (getBaseMetaTileEntity().isValidFacing(wrenchingSide)) {
+            getBaseMetaTileEntity().setFrontFacing(wrenchingSide);
             return true;
         }
         return false;
     }
 
     @Override
-    public boolean onWireCutterRightClick(ForgeDirection sideDirection, ForgeDirection wrenchingSideDirection, EntityPlayer entityPlayer,
-                                          float aX, float aY, float aZ) {
-        if (!entityPlayer.isSneaking()) return false;
-        ForgeDirection oppositeSide = wrenchingSideDirection.getOpposite();
-        TileEntity tTileEntity = getBaseMetaTileEntity().getTileEntityAtSide(wrenchingSideDirection);
-        if ((tTileEntity instanceof IGregTechTileEntity)
-            && (((IGregTechTileEntity) tTileEntity).getMetaTileEntity() instanceof GT_MetaPipeEntity_Cable)) {
+    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
+        float aX, float aY, float aZ) {
+        if (!aPlayer.isSneaking()) return false;
+        final ForgeDirection oppositeSide = wrenchingSide.getOpposite();
+        final TileEntity tTileEntity = getBaseMetaTileEntity().getTileEntityAtSide(wrenchingSide);
+        if ((tTileEntity instanceof IGregTechTileEntity gtTE)
+            && (gtTE.getMetaTileEntity() instanceof GT_MetaPipeEntity_Cable)) {
             // The tile entity we're facing is a cable, let's try to connect to it
-            return ((IGregTechTileEntity) tTileEntity).getMetaTileEntity()
-                .onWireCutterRightClick(wrenchingSideDirection, oppositeSide, entityPlayer, aX, aY, aZ);
+            return gtTE.getMetaTileEntity()
+                .onWireCutterRightClick(wrenchingSide, oppositeSide, aPlayer, aX, aY, aZ);
         }
         return false;
     }
 
     @Override
-    public boolean onSolderingToolRightClick(ForgeDirection sideDirection, ForgeDirection wrenchingSideDirection, EntityPlayer entityPlayer,
-                                             float aX, float aY, float aZ) {
-        if (!entityPlayer.isSneaking()) return false;
-        ForgeDirection oppositeSide = wrenchingSideDirection.getOpposite();
-        TileEntity tTileEntity = getBaseMetaTileEntity().getTileEntityAtSide(wrenchingSideDirection);
-        if ((tTileEntity instanceof IGregTechTileEntity)
-            && (((IGregTechTileEntity) tTileEntity).getMetaTileEntity() instanceof GT_MetaPipeEntity_Cable)) {
+    public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
+        float aX, float aY, float aZ) {
+        if (!aPlayer.isSneaking()) return false;
+        final ForgeDirection oppositeSide = wrenchingSide.getOpposite();
+        TileEntity tTileEntity = getBaseMetaTileEntity().getTileEntityAtSide(wrenchingSide);
+        if ((tTileEntity instanceof IGregTechTileEntity gtTE)
+            && (gtTE.getMetaTileEntity() instanceof GT_MetaPipeEntity_Cable)) {
             // The tile entity we're facing is a cable, let's try to connect to it
-            return ((IGregTechTileEntity) tTileEntity).getMetaTileEntity()
-                .onSolderingToolRightClick(wrenchingSideDirection, oppositeSide, entityPlayer, aX, aY, aZ);
+            return gtTE.getMetaTileEntity()
+                .onSolderingToolRightClick(wrenchingSide, oppositeSide, aPlayer, aX, aY, aZ);
         }
         return false;
     }
@@ -342,7 +342,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
     }
 
     @Override
-    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection aSide,
+    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side,
         float aX, float aY, float aZ) {
         return onRightclick(aBaseMetaTileEntity, aPlayer);
     }
@@ -492,14 +492,14 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
     /**
      * @return true if that Side is an Output.
      */
-    public boolean isOutputFacing(ForgeDirection aSide) {
+    public boolean isOutputFacing(ForgeDirection side) {
         return false;
     }
 
     /**
      * @return true if that Side is an Input.
      */
-    public boolean isInputFacing(ForgeDirection aSide) {
+    public boolean isInputFacing(ForgeDirection side) {
         return false;
     }
 
@@ -511,7 +511,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
     }
 
     @Override
-    public boolean isFacingValid(ForgeDirection facingDirection) {
+    public boolean isFacingValid(ForgeDirection facing) {
         return false;
     }
 
@@ -640,12 +640,12 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
     }
 
     @Override
-    public boolean isLiquidInput(ForgeDirection aSide) {
+    public boolean isLiquidInput(ForgeDirection side) {
         return true;
     }
 
     @Override
-    public boolean isLiquidOutput(ForgeDirection aSide) {
+    public boolean isLiquidOutput(ForgeDirection side) {
         return true;
     }
 
@@ -774,17 +774,17 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
      * Gets the Output for the comparator on the given Side
      */
     @Override
-    public byte getComparatorValue(ForgeDirection aSide) {
+    public byte getComparatorValue(ForgeDirection side) {
         return 0;
     }
 
     @Override
-    public boolean acceptsRotationalEnergy(ForgeDirection aSide) {
+    public boolean acceptsRotationalEnergy(ForgeDirection side) {
         return false;
     }
 
     @Override
-    public boolean injectRotationalEnergy(ForgeDirection aSide, long aSpeed, long aEnergy) {
+    public boolean injectRotationalEnergy(ForgeDirection side, long aSpeed, long aEnergy) {
         return false;
     }
 
@@ -908,28 +908,28 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
     }
 
     @Override
-    public boolean canFill(ForgeDirection aSide, Fluid aFluid) {
-        return fill(aSide, new FluidStack(aFluid, 1), false) == 1;
+    public boolean canFill(ForgeDirection side, Fluid aFluid) {
+        return fill(side, new FluidStack(aFluid, 1), false) == 1;
     }
 
     @Override
-    public boolean canDrain(ForgeDirection aSide, Fluid aFluid) {
-        return drain(aSide, new FluidStack(aFluid, 1), false) != null;
+    public boolean canDrain(ForgeDirection side, Fluid aFluid) {
+        return drain(side, new FluidStack(aFluid, 1), false) != null;
     }
 
     @Override
-    public FluidTankInfo[] getTankInfo(ForgeDirection aSide) {
+    public FluidTankInfo[] getTankInfo(ForgeDirection side) {
         if (getCapacity() <= 0 && !getBaseMetaTileEntity().hasSteamEngineUpgrade()) return new FluidTankInfo[] {};
         return new FluidTankInfo[] { getInfo() };
     }
 
-    public int fill_default(ForgeDirection aSide, FluidStack aFluid, boolean doFill) {
+    public int fill_default(ForgeDirection side, FluidStack aFluid, boolean doFill) {
         markDirty();
         return fill(aFluid, doFill);
     }
 
     @Override
-    public int fill(ForgeDirection aSide, FluidStack aFluid, boolean doFill) {
+    public int fill(ForgeDirection side, FluidStack aFluid, boolean doFill) {
         if (getBaseMetaTileEntity().hasSteamEngineUpgrade() && GT_ModHandler.isSteam(aFluid) && aFluid.amount > 1) {
             int tSteam = (int) Math.min(
                 Integer.MAX_VALUE,
@@ -942,20 +942,20 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
                 return tSteam * 2;
             }
         } else {
-            return fill_default(aSide, aFluid, doFill);
+            return fill_default(side, aFluid, doFill);
         }
         return 0;
     }
 
     @Override
-    public FluidStack drain(ForgeDirection aSide, FluidStack aFluid, boolean doDrain) {
+    public FluidStack drain(ForgeDirection side, FluidStack aFluid, boolean doDrain) {
         if (getFluid() != null && aFluid != null && getFluid().isFluidEqual(aFluid))
             return drain(aFluid.amount, doDrain);
         return null;
     }
 
     @Override
-    public FluidStack drain(ForgeDirection aSide, int maxDrain, boolean doDrain) {
+    public FluidStack drain(ForgeDirection side, int maxDrain, boolean doDrain) {
         return drain(maxDrain, doDrain);
     }
 
@@ -1030,12 +1030,12 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
     }
 
     @Override
-    public boolean connectsToItemPipe(ForgeDirection aSide) {
+    public boolean connectsToItemPipe(ForgeDirection side) {
         return false;
     }
 
     @Override
-    public float getExplosionResistance(ForgeDirection aSide) {
+    public float getExplosionResistance(ForgeDirection side) {
         return 10.0F;
     }
 
@@ -1048,11 +1048,11 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
     public void onColorChangeServer(byte aColor) {
         final IGregTechTileEntity meta = getBaseMetaTileEntity();
         final int aX = meta.getXCoord(), aY = meta.getYCoord(), aZ = meta.getZCoord();
-        for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+        for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
             // Flag surrounding pipes/cables to revaluate their connection with us if we got painted
             final TileEntity tTileEntity = meta.getTileEntityAtSide(side);
-            if ((tTileEntity instanceof BaseMetaPipeEntity)) {
-                ((BaseMetaPipeEntity) tTileEntity).onNeighborBlockChange(aX, aY, aZ);
+            if (tTileEntity instanceof BaseMetaPipeEntity pipe) {
+                pipe.onNeighborBlockChange(aX, aY, aZ);
             }
         }
     }
@@ -1168,7 +1168,7 @@ public abstract class MetaTileEntity implements IMetaTileEntity, IMachineCallbac
 
         if (this instanceof IPowerChannelState state) {
             // adapted from PowerStateWailaDataProvider
-            NBTTagCompound tag = accessor.getNBTData();
+            final NBTTagCompound tag = accessor.getNBTData();
             final boolean isActive = tag.getBoolean("isActive");
             final boolean isPowered = tag.getBoolean("isPowered");
             final boolean isBooting = tag.getBoolean("isBooting");

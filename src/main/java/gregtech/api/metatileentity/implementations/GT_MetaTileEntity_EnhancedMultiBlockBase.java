@@ -76,15 +76,15 @@ public abstract class GT_MetaTileEntity_EnhancedMultiBlockBase<T extends GT_Meta
     }
 
     @Override
-    public final boolean isFacingValid(ForgeDirection facingDirection) {
-        return canSetToDirectionAny(facingDirection);
+    public final boolean isFacingValid(ForgeDirection facing) {
+        return canSetToDirectionAny(facing);
     }
 
     @Override
-    public boolean onWrenchRightClick(ForgeDirection sideDirection, ForgeDirection wrenchingSideDirection, EntityPlayer entityPlayer,
-                                      float aX, float aY, float aZ) {
-        if (wrenchingSideDirection != getBaseMetaTileEntity().getFrontFacing())
-            return super.onWrenchRightClick(sideDirection, wrenchingSideDirection, entityPlayer, aX, aY, aZ);
+    public boolean onWrenchRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer entityPlayer,
+        float aX, float aY, float aZ) {
+        if (wrenchingSide != getBaseMetaTileEntity().getFrontFacing())
+            return super.onWrenchRightClick(side, wrenchingSide, entityPlayer, aX, aY, aZ);
         if (entityPlayer.isSneaking()) {
             // we won't be allowing horizontal flips, as it can be perfectly emulated by rotating twice and flipping
             // horizontally

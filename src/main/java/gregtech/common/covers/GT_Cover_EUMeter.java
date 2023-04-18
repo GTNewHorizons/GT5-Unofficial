@@ -9,6 +9,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 
 import com.google.common.io.ByteArrayDataInput;
@@ -57,7 +58,7 @@ public class GT_Cover_EUMeter extends GT_CoverBehaviorBase<GT_Cover_EUMeter.EUMe
     }
 
     @Override
-    protected EUMeterData doCoverThingsImpl(ForgeDirection aSide, byte aInputRedstone, int aCoverID,
+    protected EUMeterData doCoverThingsImpl(ForgeDirection side, byte aInputRedstone, int aCoverID,
         EUMeterData aCoverVariable, ICoverable aTileEntity, long aTimer) {
         final long stored = aCoverVariable.type.getTileEntityStoredEnergy(aTileEntity);
         final long capacity = aCoverVariable.type.getTileEntityEnergyCapacity(aTileEntity);
@@ -87,12 +88,12 @@ public class GT_Cover_EUMeter extends GT_CoverBehaviorBase<GT_Cover_EUMeter.EUMe
             }
         }
 
-        aTileEntity.setOutputRedstoneSignal(aSide, redstoneSignal);
+        aTileEntity.setOutputRedstoneSignal(side, redstoneSignal);
         return aCoverVariable;
     }
 
     @Override
-    protected EUMeterData onCoverScrewdriverClickImpl(ForgeDirection aSide, int aCoverID, EUMeterData aCoverVariable,
+    protected EUMeterData onCoverScrewdriverClickImpl(ForgeDirection side, int aCoverID, EUMeterData aCoverVariable,
         ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         int num = (aCoverVariable.getNum() + (aPlayer.isSneaking() ? -1 : 1) + EnergyType.values().length * 2)
             % (EnergyType.values().length * 2);
@@ -119,55 +120,55 @@ public class GT_Cover_EUMeter extends GT_CoverBehaviorBase<GT_Cover_EUMeter.EUMe
 
     // region Static Result Methods
     @Override
-    protected boolean isRedstoneSensitiveImpl(ForgeDirection aSide, int aCoverID, EUMeterData aCoverVariable,
+    protected boolean isRedstoneSensitiveImpl(ForgeDirection side, int aCoverID, EUMeterData aCoverVariable,
         ICoverable aTileEntity, long aTimer) {
         return false;
     }
 
     @Override
-    protected boolean letsEnergyInImpl(ForgeDirection aSide, int aCoverID, EUMeterData aCoverVariable,
+    protected boolean letsEnergyInImpl(ForgeDirection side, int aCoverID, EUMeterData aCoverVariable,
         ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    protected boolean letsEnergyOutImpl(ForgeDirection aSide, int aCoverID, EUMeterData aCoverVariable,
+    protected boolean letsEnergyOutImpl(ForgeDirection side, int aCoverID, EUMeterData aCoverVariable,
         ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    protected boolean letsFluidInImpl(ForgeDirection aSide, int aCoverID, EUMeterData aCoverVariable, Fluid aFluid,
+    protected boolean letsFluidInImpl(ForgeDirection side, int aCoverID, EUMeterData aCoverVariable, Fluid aFluid,
         ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    protected boolean letsFluidOutImpl(ForgeDirection aSide, int aCoverID, EUMeterData aCoverVariable, Fluid aFluid,
+    protected boolean letsFluidOutImpl(ForgeDirection side, int aCoverID, EUMeterData aCoverVariable, Fluid aFluid,
         ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    protected boolean letsItemsInImpl(ForgeDirection aSide, int aCoverID, EUMeterData aCoverVariable, int aSlot,
+    protected boolean letsItemsInImpl(ForgeDirection side, int aCoverID, EUMeterData aCoverVariable, int aSlot,
         ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    protected boolean letsItemsOutImpl(ForgeDirection aSide, int aCoverID, EUMeterData aCoverVariable, int aSlot,
+    protected boolean letsItemsOutImpl(ForgeDirection side, int aCoverID, EUMeterData aCoverVariable, int aSlot,
         ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    protected boolean manipulatesSidedRedstoneOutputImpl(ForgeDirection aSide, int aCoverID, EUMeterData aCoverVariable,
+    protected boolean manipulatesSidedRedstoneOutputImpl(ForgeDirection side, int aCoverID, EUMeterData aCoverVariable,
         ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    protected int getTickRateImpl(ForgeDirection aSide, int aCoverID, EUMeterData aCoverVariable,
+    protected int getTickRateImpl(ForgeDirection side, int aCoverID, EUMeterData aCoverVariable,
         ICoverable aTileEntity) {
         return 20;
     }

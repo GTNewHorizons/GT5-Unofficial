@@ -4,6 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -14,10 +15,10 @@ public interface IRenderedBlock {
 
     /** @return the Textures to be rendered */
     @SideOnly(Side.CLIENT)
-    ITexture[] getTexture(Block aBlock, ForgeDirection aSide, int aRenderPass, boolean[] aShouldSideBeRendered);
+    ITexture[] getTexture(Block aBlock, ForgeDirection side, int aRenderPass, boolean[] aShouldSideBeRendered);
 
     @SideOnly(Side.CLIENT)
-    ITexture[] getTexture(Block aBlock, ForgeDirection aSide, boolean isActive, int aRenderPass);
+    ITexture[] getTexture(Block aBlock, ForgeDirection side, boolean isActive, int aRenderPass);
 
     /** gets the Amount of Render Passes for this TileEntity or similar Handler. Only gets called once per Rendering. */
     @SideOnly(Side.CLIENT)
@@ -57,13 +58,13 @@ public interface IRenderedBlock {
         public ITexture[] mErrorTexture = Textures.BlockIcons.ERROR_RENDERING;
 
         @Override
-        public ITexture[] getTexture(Block aBlock, ForgeDirection aSide, int aRenderPass,
+        public ITexture[] getTexture(Block aBlock, ForgeDirection side, int aRenderPass,
             boolean[] aShouldSideBeRendered) {
             return mErrorTexture;
         }
 
         @Override
-        public ITexture[] getTexture(Block aBlock, ForgeDirection aSide, boolean isActive, int aRenderPass) {
+        public ITexture[] getTexture(Block aBlock, ForgeDirection side, boolean isActive, int aRenderPass) {
             return mErrorTexture;
         }
 
@@ -84,7 +85,7 @@ public interface IRenderedBlock {
         }
 
         @Override
-        public boolean renderFullBlockSide(Block aBlock, RenderBlocks aRenderer, ForgeDirection aSide) {
+        public boolean renderFullBlockSide(Block aBlock, RenderBlocks aRenderer, ForgeDirection side) {
             return true;
         }
 

@@ -9,6 +9,7 @@ import javax.annotation.Nonnull;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 
 import com.google.common.io.ByteArrayDataInput;
@@ -102,54 +103,54 @@ public abstract class GT_Cover_AdvancedWirelessRedstoneBase<T extends GT_Cover_A
      * x hashed into first 20 bytes y hashed into second 20 bytes z hashed into fifth 10 bytes dim hashed into sixth 10
      * bytes side hashed into last 4 bytes
      */
-    public static long hashCoverCoords(ICoverable tile, byte side) {
+    public static long hashCoverCoords(ICoverable tile, ForgeDirection side) {
         return (((((long) tile.getXCoord() << 20) + tile.getZCoord() << 10) + tile.getYCoord() << 10)
-            + tile.getWorld().provider.dimensionId << 4) + side;
+            + tile.getWorld().provider.dimensionId << 4) + side.ordinal();
     }
 
     @Override
-    public boolean letsEnergyInImpl(ForgeDirection aSide, int aCoverID, T aCoverVariable, ICoverable aTileEntity) {
+    public boolean letsEnergyInImpl(ForgeDirection side, int aCoverID, T aCoverVariable, ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    public boolean letsEnergyOutImpl(ForgeDirection aSide, int aCoverID, T aCoverVariable, ICoverable aTileEntity) {
+    public boolean letsEnergyOutImpl(ForgeDirection side, int aCoverID, T aCoverVariable, ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    public boolean letsFluidInImpl(ForgeDirection aSide, int aCoverID, T aCoverVariable, Fluid aFluid,
+    public boolean letsFluidInImpl(ForgeDirection side, int aCoverID, T aCoverVariable, Fluid aFluid,
         ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    public boolean letsFluidOutImpl(ForgeDirection aSide, int aCoverID, T aCoverVariable, Fluid aFluid,
+    public boolean letsFluidOutImpl(ForgeDirection side, int aCoverID, T aCoverVariable, Fluid aFluid,
         ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    public boolean letsItemsInImpl(ForgeDirection aSide, int aCoverID, T aCoverVariable, int aSlot,
+    public boolean letsItemsInImpl(ForgeDirection side, int aCoverID, T aCoverVariable, int aSlot,
         ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    public boolean letsItemsOutImpl(ForgeDirection aSide, int aCoverID, T aCoverVariable, int aSlot,
+    public boolean letsItemsOutImpl(ForgeDirection side, int aCoverID, T aCoverVariable, int aSlot,
         ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    public String getDescriptionImpl(ForgeDirection aSide, int aCoverID, T aCoverVariable, ICoverable aTileEntity) {
+    public String getDescriptionImpl(ForgeDirection side, int aCoverID, T aCoverVariable, ICoverable aTileEntity) {
         return GT_Utility.trans("081", "Frequency: ") + aCoverVariable.frequency
             + ", Transmission: "
             + (aCoverVariable.uuid == null ? "Public" : "Private");
     }
 
     @Override
-    public int getTickRateImpl(ForgeDirection aSide, int aCoverID, T aCoverVariable, ICoverable aTileEntity) {
+    public int getTickRateImpl(ForgeDirection side, int aCoverID, T aCoverVariable, ICoverable aTileEntity) {
         return 5;
     }
 

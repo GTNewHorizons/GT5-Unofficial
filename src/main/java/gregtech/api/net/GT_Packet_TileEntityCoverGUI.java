@@ -29,7 +29,7 @@ public class GT_Packet_TileEntityCoverGUI extends GT_Packet_New {
     protected short mY;
     protected int mZ;
 
-    protected byte ordinalSide;
+    protected ForgeDirection side;
     protected int coverID, dimID, playerID;
     protected ISerializableObject coverData;
 
@@ -39,14 +39,14 @@ public class GT_Packet_TileEntityCoverGUI extends GT_Packet_New {
         super(true);
     }
 
-    public GT_Packet_TileEntityCoverGUI(int mX, short mY, int mZ, byte coverSide, int coverID, int coverData, int dimID,
-        int playerID) {
+    public GT_Packet_TileEntityCoverGUI(int mX, short mY, int mZ, ForgeDirection coverSide, int coverID, int coverData,
+        int dimID, int playerID) {
         super(false);
         this.mX = mX;
         this.mY = mY;
         this.mZ = mZ;
 
-        this.ordinalSide = coverSide;
+        this.side = coverSide;
         this.coverID = coverID;
         this.coverData = new ISerializableObject.LegacyCoverData(coverData);
 
@@ -55,14 +55,14 @@ public class GT_Packet_TileEntityCoverGUI extends GT_Packet_New {
         this.parentGuiId = -1;
     }
 
-    public GT_Packet_TileEntityCoverGUI(int mX, short mY, int mZ, byte coverSide, int coverID,
+    public GT_Packet_TileEntityCoverGUI(int mX, short mY, int mZ, ForgeDirection coverSide, int coverID,
         ISerializableObject coverData, int dimID, int playerID) {
         super(false);
         this.mX = mX;
         this.mY = mY;
         this.mZ = mZ;
 
-        this.ordinalSide = coverSide;
+        this.side = coverSide;
         this.coverID = coverID;
         this.coverData = coverData;
         this.dimID = dimID;
@@ -77,8 +77,7 @@ public class GT_Packet_TileEntityCoverGUI extends GT_Packet_New {
         this.mY = tile.getYCoord();
         this.mZ = tile.getZCoord();
 
-        this.ordinalSide = (byte) coverInfo.getSide()
-            .ordinal();
+        this.side = coverInfo.getSide();
         this.coverID = coverInfo.getCoverID();
         this.coverData = coverInfo.getCoverData();
 
@@ -87,14 +86,14 @@ public class GT_Packet_TileEntityCoverGUI extends GT_Packet_New {
         this.parentGuiId = parentGuiId;
     }
 
-    public GT_Packet_TileEntityCoverGUI(int mX, short mY, int mZ, byte coverSide, int coverID,
+    public GT_Packet_TileEntityCoverGUI(int mX, short mY, int mZ, ForgeDirection coverSide, int coverID,
         ISerializableObject coverData, int dimID, int playerID, int parentGuiId) {
         super(false);
         this.mX = mX;
         this.mY = mY;
         this.mZ = mZ;
 
-        this.ordinalSide = coverSide;
+        this.side = coverSide;
         this.coverID = coverID;
         this.coverData = coverData;
         this.dimID = dimID;
@@ -102,7 +101,7 @@ public class GT_Packet_TileEntityCoverGUI extends GT_Packet_New {
         this.parentGuiId = parentGuiId;
     }
 
-    public GT_Packet_TileEntityCoverGUI(byte side, int coverID, int coverData, ICoverable tile,
+    public GT_Packet_TileEntityCoverGUI(ForgeDirection side, int coverID, int coverData, ICoverable tile,
         EntityPlayerMP aPlayer) {
         super(false);
 
@@ -110,7 +109,7 @@ public class GT_Packet_TileEntityCoverGUI extends GT_Packet_New {
         this.mY = tile.getYCoord();
         this.mZ = tile.getZCoord();
 
-        this.ordinalSide = side;
+        this.side = side;
         this.coverID = coverID;
         this.coverData = new ISerializableObject.LegacyCoverData(coverData);
 
@@ -119,13 +118,14 @@ public class GT_Packet_TileEntityCoverGUI extends GT_Packet_New {
         this.parentGuiId = -1;
     }
 
-    public GT_Packet_TileEntityCoverGUI(byte coverSide, int coverID, int coverData, IGregTechTileEntity tile) {
+    public GT_Packet_TileEntityCoverGUI(ForgeDirection coverSide, int coverID, int coverData,
+        IGregTechTileEntity tile) {
         super(false);
         this.mX = tile.getXCoord();
         this.mY = tile.getYCoord();
         this.mZ = tile.getZCoord();
 
-        this.ordinalSide = coverSide;
+        this.side = coverSide;
         this.coverID = coverID;
         this.coverData = new ISerializableObject.LegacyCoverData(coverData);
 
@@ -133,14 +133,14 @@ public class GT_Packet_TileEntityCoverGUI extends GT_Packet_New {
         this.parentGuiId = -1;
     }
 
-    public GT_Packet_TileEntityCoverGUI(byte ordinalSide, int coverID, ISerializableObject coverData, ICoverable tile,
-        EntityPlayerMP aPlayer) {
+    public GT_Packet_TileEntityCoverGUI(ForgeDirection side, int coverID, ISerializableObject coverData,
+        ICoverable tile, EntityPlayerMP aPlayer) {
         super(false);
         this.mX = tile.getXCoord();
         this.mY = tile.getYCoord();
         this.mZ = tile.getZCoord();
 
-        this.ordinalSide = ordinalSide;
+        this.side = side;
         this.coverID = coverID;
         this.coverData = coverData.copy(); // make a copy so we don't get a race condition
 
@@ -160,7 +160,7 @@ public class GT_Packet_TileEntityCoverGUI extends GT_Packet_New {
         aOut.writeShort(mY);
         aOut.writeInt(mZ);
 
-        aOut.writeByte(ordinalSide);
+        aOut.writeByte(side.ordinal());
         aOut.writeInt(coverID);
         coverData.writeToByteBuf(aOut);
 
@@ -172,12 +172,12 @@ public class GT_Packet_TileEntityCoverGUI extends GT_Packet_New {
 
     @Override
     public GT_Packet_New decode(ByteArrayDataInput aData) {
-        int coverID;
+        final int coverID;
         return new GT_Packet_TileEntityCoverGUI(
             aData.readInt(),
             aData.readShort(),
             aData.readInt(),
-            aData.readByte(),
+            ForgeDirection.getOrientation(aData.readByte()),
             coverID = aData.readInt(),
             GregTech_API.getCoverBehaviorNew(coverID)
                 .createDataObject()
@@ -193,8 +193,7 @@ public class GT_Packet_TileEntityCoverGUI extends GT_Packet_New {
             // Using EntityPlayer instead of EntityClientPlayerMP so both client and server can load this
             final EntityPlayer thePlayer = ((EntityPlayer) ((World) aWorld).getEntityByID(playerID));
             final TileEntity tile = aWorld.getTileEntity(mX, mY, mZ);
-            if (tile instanceof IGregTechTileEntity gtTile && !((IGregTechTileEntity) tile).isDead()) {
-                final ForgeDirection side = ForgeDirection.getOrientation(ordinalSide);
+            if (tile instanceof IGregTechTileEntity gtTile && !gtTile.isDead()) {
                 gtTile.setCoverDataAtSide(side, coverData); // Set it client side to read later.
 
                 GT_CoverBehaviorBase<?> cover = gtTile.getCoverBehaviorAtSideNew(side);
@@ -208,8 +207,8 @@ public class GT_Packet_TileEntityCoverGUI extends GT_Packet_New {
                         thePlayer.worldObj);
                     // If it's one of this mod's covers, tell it to exit to the GUI with the specified ID (-1 is
                     // ignored)
-                    if (gui instanceof GT_GUICover) {
-                        ((GT_GUICover) gui).setParentGuiId(parentGuiId);
+                    if (gui instanceof GT_GUICover guiCover) {
+                        guiCover.setParentGuiId(parentGuiId);
                     }
                     Minecraft.getMinecraft()
                         .displayGuiScreen(gui);

@@ -40,23 +40,16 @@ public class GT_UIInfos {
         .of()
         .container((player, world, x, y, z) -> {
             TileEntity te = world.getTileEntity(x, y, z);
-            if (te instanceof ITileWithModularUI) {
-                return createTileEntityContainer(
-                    player,
-                    ((ITileWithModularUI) te)::createWindow,
-                    te::markDirty,
-                    containerConstructor);
+            if (te instanceof ITileWithModularUI mui) {
+                return createTileEntityContainer(player, mui::createWindow, te::markDirty, containerConstructor);
             }
             return null;
         })
         .gui(((player, world, x, y, z) -> {
             if (!world.isRemote) return null;
             TileEntity te = world.getTileEntity(x, y, z);
-            if (te instanceof ITileWithModularUI) {
-                return createTileEntityGuiContainer(
-                    player,
-                    ((ITileWithModularUI) te)::createWindow,
-                    containerConstructor);
+            if (te instanceof ITileWithModularUI mui) {
+                return createTileEntityGuiContainer(player, mui::createWindow, containerConstructor);
             }
             return null;
         }))
@@ -64,17 +57,17 @@ public class GT_UIInfos {
 
     private static final UIInfo<?, ?> GTTileEntityDefaultUI = GTTileEntityUIFactory.apply(ModularUIContainer::new);
 
-    private static final Map<Byte, UIInfo<?, ?>> coverUI = new HashMap<>();
+    private static final Map<ForgeDirection, UIInfo<?, ?>> coverUI = new HashMap<>();
 
     static {
-        for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+        for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
             coverUI.put(
-                (byte) side.ordinal(),
+                side,
                 UIBuilder.of()
                     .container((player, world, x, y, z) -> {
                         final TileEntity te = world.getTileEntity(x, y, z);
                         if (!(te instanceof ICoverable gtTileEntity)) return null;
-                        GT_CoverBehaviorBase<?> cover = gtTileEntity.getCoverBehaviorAtSideNew(side);
+                        final GT_CoverBehaviorBase<?> cover = gtTileEntity.getCoverBehaviorAtSideNew(side);
                         return createCoverContainer(
                             player,
                             cover::createWindow,
@@ -120,13 +113,13 @@ public class GT_UIInfos {
 
         GT_Values.NW.sendToPlayer(
             new GT_Packet_SendCoverData(
-                (byte) side.ordinal(),
+                side,
                 tileEntity.getCoverIDAtSide(side),
                 tileEntity.getComplexCoverDataAtSide(side),
                 tileEntity),
             (EntityPlayerMP) player);
 
-        coverUI.get((byte) side.ordinal())
+        coverUI.get(side)
             .open(
                 player,
                 tileEntity.getWorld(),

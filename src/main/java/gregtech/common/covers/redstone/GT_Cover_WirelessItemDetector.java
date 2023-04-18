@@ -9,6 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
@@ -49,28 +50,28 @@ public class GT_Cover_WirelessItemDetector
     }
 
     @Override
-    public ItemTransmitterData doCoverThingsImpl(ForgeDirection aSide, byte aInputRedstone, int aCoverID,
+    public ItemTransmitterData doCoverThingsImpl(ForgeDirection side, byte aInputRedstone, int aCoverID,
         ItemTransmitterData aCoverVariable, ICoverable aTileEntity, long aTimer) {
         byte signal = GT_Cover_ItemMeter.computeSignalBasedOnItems(
             aTileEntity,
             aCoverVariable.invert,
             aCoverVariable.threshold,
             aCoverVariable.slot,
-            aSide);
-        long hash = hashCoverCoords(aTileEntity, aSide);
+            side.ordinal());
+        final long hash = hashCoverCoords(aTileEntity, side);
         setSignalAt(aCoverVariable.getUuid(), aCoverVariable.getFrequency(), hash, signal);
 
         return aCoverVariable;
     }
 
     @Override
-    public boolean letsRedstoneGoOutImpl(ForgeDirection aSide, int aCoverID, ItemTransmitterData aCoverVariable,
+    public boolean letsRedstoneGoOutImpl(ForgeDirection side, int aCoverID, ItemTransmitterData aCoverVariable,
         ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    protected boolean manipulatesSidedRedstoneOutputImpl(ForgeDirection aSide, int aCoverID,
+    protected boolean manipulatesSidedRedstoneOutputImpl(ForgeDirection side, int aCoverID,
         ItemTransmitterData aCoverVariable, ICoverable aTileEntity) {
         return true;
     }

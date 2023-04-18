@@ -9,8 +9,11 @@ public interface IRedstoneEmitter extends IHasWorldObjectAndCoords {
 
     /**
      * gets the Redstone Level the TileEntity should emit to the given Output Side
+     *
+     * @param side the {@link ForgeDirection} side
+     * @return the Redstone Level the TileEntity
      */
-    byte getOutputRedstoneSignal(ForgeDirection aSide);
+    byte getOutputRedstoneSignal(ForgeDirection side);
 
     /**
      * sets the Redstone Level the TileEntity should emit to the given Output Side
@@ -19,12 +22,12 @@ public interface IRedstoneEmitter extends IHasWorldObjectAndCoords {
      * internal Output Redstone, so that it doesnt conflict with Cover Redstone. This sets the true Redstone Output
      * Signal. Only Cover Behaviors should use it, not MetaTileEntities.
      */
-    void setOutputRedstoneSignal(ForgeDirection aSide, byte aStrength);
+    void setOutputRedstoneSignal(ForgeDirection side, byte aStrength);
 
     /**
      * gets the Redstone Level the TileEntity should emit to the given Output Side
      */
-    byte getStrongOutputRedstoneSignal(ForgeDirection aSide);
+    byte getStrongOutputRedstoneSignal(ForgeDirection side);
 
     /**
      * sets the Redstone Level the TileEntity should emit to the given Output Side
@@ -33,17 +36,17 @@ public interface IRedstoneEmitter extends IHasWorldObjectAndCoords {
      * internal Output Redstone, so that it doesnt conflict with Cover Redstone. This sets the true Redstone Output
      * Signal. Only Cover Behaviors should use it, not MetaTileEntities.
      */
-    void setStrongOutputRedstoneSignal(ForgeDirection aSide, byte aStrength);
+    void setStrongOutputRedstoneSignal(ForgeDirection side, byte aStrength);
 
     /**
      * Gets the Output for the comparator on the given Side
      */
-    byte getComparatorValue(ForgeDirection aSide);
+    byte getComparatorValue(ForgeDirection side);
 
     /**
      * Get the redstone output signal strength for a given side
      */
-    default byte getGeneralRS(ForgeDirection aSide) {
+    default byte getGeneralRS(ForgeDirection side) {
         return 0;
     }
 }

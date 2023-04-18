@@ -485,8 +485,7 @@ public class GT_MetaTileEntity_NanoForge extends
     }
 
     @Override
-    public final void onScrewdriverRightClick(ForgeDirection aSide, EntityPlayer aPlayer, float aX, float aY,
-        float aZ) {
+    public final void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         inputSeparation = !inputSeparation;
         GT_Utility.sendChatToPlayer(
             aPlayer,

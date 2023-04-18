@@ -1,7 +1,6 @@
 package gregtech.api.metatileentity;
 
 import static gregtech.GT_Mod.GT_FML_LOGGER;
-import static gregtech.api.enums.GT_Values.ALL_VALID_SIDES;
 import static gregtech.api.enums.GT_Values.NW;
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
@@ -100,8 +99,8 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity implements IGregTec
     private boolean oRedstone = false;
     private byte mColor = 0, oColor = 0, oStrongRedstone = 0, oRedstoneData = 63, oTextureData = 0, oUpdateData = 0,
         oTexturePage = 0;
-    private byte oLightValueClient = 0, oLightValue = -1, mLightValue = 0, mOtherUpgrades = 0, ordinalFacing = 0, oldOrdinalFacing = 0,
-        mWorkData = 0;
+    private byte oLightValueClient = 0, oLightValue = -1, mLightValue = 0, mOtherUpgrades = 0, mWorkData = 0;
+    private ForgeDirection mFacing, oFacing;
     private int mDisplayErrorCode = 0, oX = 0, oY = 0, oZ = 0, mTimeStatisticsIndex = 0, mLagWarningCount = 0;
     private long oOutput = 0, mAcceptedAmperes = Long.MAX_VALUE;
     private long mLastCheckTick = 0;
@@ -128,7 +127,7 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity implements IGregTec
             aNBT.setByte("mLightValue", mLightValue);
             aNBT.setByte("mOtherUpgrades", mOtherUpgrades);
             aNBT.setByte("mWorkData", mWorkData);
-            aNBT.setShort("mFacing", ordinalFacing);
+            aNBT.setShort("mFacing", (short) mFacing.ordinal());
             aNBT.setString("mOwnerName", mOwnerName);
             aNBT.setString("mOwnerUuid", mOwnerUuid == null ? "" : mOwnerUuid.toString());
             aNBT.setBoolean("mLockUpgrade", mLockUpgrade);
@@ -168,7 +167,7 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity implements IGregTec
             mColor = aNBT.getByte("mColor");
             mLightValue = aNBT.getByte("mLightValue");
             mWorkData = aNBT.getByte("mWorkData");
-            ordinalFacing = oldOrdinalFacing = (byte) aNBT.getShort("mFacing");
+            mFacing = oFacing = ForgeDirection.getOrientation(aNBT.getShort("mFacing"));
             mOwnerName = aNBT.getString("mOwnerName");
             try {
                 mOwnerUuid = UUID.fromString(aNBT.getString("mOwnerUuid"));
@@ -252,7 +251,8 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity implements IGregTec
         final int precipitationHeightAtSide3 = worldObj.getPrecipitationHeight(xCoord, zCoord + 1);
         final int precipitationHeightAtSide4 = worldObj.getPrecipitationHeight(xCoord - 1, zCoord);
         final int precipitationHeightAtSide5 = worldObj.getPrecipitationHeight(xCoord + 1, zCoord);
-        return (getCoverIDAtSide(ForgeDirection.UP) == 0 && worldObj.getPrecipitationHeight(xCoord, zCoord) - 2 < yCoord)
+        return (getCoverIDAtSide(ForgeDirection.UP) == 0
+            && worldObj.getPrecipitationHeight(xCoord, zCoord) - 2 < yCoord)
             || (getCoverIDAtSide(ForgeDirection.NORTH) == 0 && precipitationHeightAtSide2 - 1 < yCoord
                 && precipitationHeightAtSide2 > -1)
             || (getCoverIDAtSide(ForgeDirection.SOUTH) == 0 && precipitationHeightAtSide3 - 1 < yCoord
@@ -356,8 +356,8 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity implements IGregTec
                         clearTileEntityBuffer();
                     }
 
-                    if (ordinalFacing != oldOrdinalFacing) {
-                        oldOrdinalFacing = ordinalFacing;
+                    if (mFacing != oFacing) {
+                        oFacing = mFacing;
                         checkDropCover();
                         issueBlockUpdate();
                     }
@@ -370,9 +370,9 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity implements IGregTec
                         }
 
                         if (mMetaTileEntity.isEnetOutput() || mMetaTileEntity.isEnetInput()) {
-                            for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-                                boolean temp = isEnergyInputSide(side);
+                            for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
                                 final int ordinalSide = side.ordinal();
+                                boolean temp = isEnergyInputSide(side);
                                 if (temp != mActiveEUInputs[ordinalSide]) {
                                     mActiveEUInputs[ordinalSide] = temp;
                                 }
@@ -537,7 +537,7 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity implements IGregTec
                     }
 
                     if (mTickTimer > 10) {
-                        byte tData = (byte) ((ordinalFacing & 7) | (mActive ? 8 : 0)
+                        byte tData = (byte) ((mFacing.ordinal() & 7) | (mActive ? 8 : 0)
                             | (mRedstone ? 16 : 0)
                             | (mLockUpgrade ? 32 : 0)
                             | (mWorks ? 64 : 0));
@@ -645,7 +645,7 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity implements IGregTec
                     getCoverInfoAtSide(ForgeDirection.SOUTH).getCoverID(),
                     getCoverInfoAtSide(ForgeDirection.WEST).getCoverID(),
                     getCoverInfoAtSide(ForgeDirection.EAST).getCoverID(),
-                    oTextureData = (byte) ((ordinalFacing & 7) | (mActive ? 8 : 0)
+                    oTextureData = (byte) ((mFacing.ordinal() & 7) | (mActive ? 8 : 0)
                         | (mRedstone ? 16 : 0)
                         | (mLockUpgrade ? 32 : 0)
                         | (mWorks ? 64 : 0)),
@@ -725,7 +725,7 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity implements IGregTec
             issueTextureUpdate();
             switch (aEventID) {
                 case GregTechTileClientEvents.CHANGE_COMMON_DATA -> {
-                    ordinalFacing = (byte) (aValue & 7);
+                    mFacing = ForgeDirection.getOrientation((byte) (aValue & 7));
                     mActive = ((aValue & 8) != 0);
                     mRedstone = ((aValue & 16) != 0);
                     // mLockUpgrade = ((aValue&32) != 0);
@@ -844,18 +844,18 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity implements IGregTec
 
     @Override
     public ForgeDirection getBackFacing() {
-        return ForgeDirection.getOrientation(ordinalFacing).getOpposite();
+        return mFacing.getOpposite();
     }
 
     @Override
     public ForgeDirection getFrontFacing() {
-        return ForgeDirection.getOrientation(ordinalFacing);
+        return mFacing;
     }
 
     @Override
-    public void setFrontFacing(ForgeDirection facing) {
-        if (isValidFacing(facing)) {
-            ordinalFacing = (byte) facing.ordinal();
+    public void setFrontFacing(ForgeDirection aFacing) {
+        if (isValidFacing(aFacing)) {
+            mFacing = aFacing;
             mMetaTileEntity.onFacingChange();
 
             doEnetUpdate();
@@ -1074,29 +1074,27 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity implements IGregTec
     }
 
     @Override
-    public boolean inputEnergyFrom(ForgeDirection aSide) {
-        return inputEnergyFrom(aSide, true);
+    public boolean inputEnergyFrom(ForgeDirection side) {
+        return inputEnergyFrom(side, true);
     }
 
     @Override
-    public boolean inputEnergyFrom(ForgeDirection aSide, boolean waitForActive) {
-        if (aSide == ForgeDirection.UNKNOWN) return true;
-        if (isServerSide() && waitForActive)
-            return (mActiveEUInputs[aSide.ordinal()]) && !mReleaseEnergy;
-        return isEnergyInputSide(aSide);
+    public boolean inputEnergyFrom(ForgeDirection side, boolean waitForActive) {
+        if (side == ForgeDirection.UNKNOWN) return true;
+        if (isServerSide() && waitForActive) return mActiveEUInputs[side.ordinal()] && !mReleaseEnergy;
+        return isEnergyInputSide(side);
     }
 
     @Override
-    public boolean outputsEnergyTo(ForgeDirection aSide) {
-        return outputsEnergyTo(aSide, true);
+    public boolean outputsEnergyTo(ForgeDirection side) {
+        return outputsEnergyTo(side, true);
     }
 
     @Override
-    public boolean outputsEnergyTo(ForgeDirection aSide, boolean waitForActive) {
-        if (aSide == ForgeDirection.UNKNOWN) return true;
-        if (isServerSide() && waitForActive)
-            return (mActiveEUOutputs[aSide.ordinal()]) || mReleaseEnergy;
-        return isEnergyOutputSide(aSide);
+    public boolean outputsEnergyTo(ForgeDirection side, boolean waitForActive) {
+        if (side == ForgeDirection.UNKNOWN) return true;
+        if (isServerSide() && waitForActive) return (mActiveEUOutputs[side.ordinal()]) || mReleaseEnergy;
+        return isEnergyOutputSide(side);
     }
 
     @Override
@@ -1113,7 +1111,7 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity implements IGregTec
         if (isServerSide() && (isEnetInput() || isEnetOutput())) {
             final int time = MinecraftServer.getServer()
                 .getTickCounter();
-            for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+            for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
                 if (outputsEnergyTo(side, false) || inputEnergyFrom(side, false)) {
                     final IGregTechTileEntity TE = getIGregTechTileEntityAtSide(side);
                     if (TE instanceof BaseMetaPipeEntity) {
@@ -1200,11 +1198,11 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity implements IGregTec
     }
 
     @Override
-    public ITexture[] getTexture(Block aBlock, ForgeDirection aSide) {
-        final ITexture coverTexture = getCoverTexture(aSide);
+    public ITexture[] getTexture(Block aBlock, ForgeDirection side) {
+        final ITexture coverTexture = getCoverTexture(side);
         final ITexture[] textureUncovered = hasValidMetaTileEntity()
             ? mMetaTileEntity
-                .getTexture(this, aSide, ordinalFacing, (byte) (mColor - 1), mActive, getOutputRedstoneSignal(aSide) > 0)
+                .getTexture(this, side, mFacing, (byte) (mColor - 1), mActive, getOutputRedstoneSignal(side) > 0)
             : Textures.BlockIcons.ERROR_RENDERING;
         final ITexture[] textureCovered;
         if (coverTexture != null) {
@@ -1216,22 +1214,22 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity implements IGregTec
         }
     }
 
-    private boolean isEnergyInputSide(ForgeDirection aSide) {
-        if (aSide != ForgeDirection.UNKNOWN) {
-            if (!getCoverInfoAtSide(aSide).letsEnergyIn()) return false;
+    private boolean isEnergyInputSide(ForgeDirection side) {
+        if (side != ForgeDirection.UNKNOWN) {
+            if (!getCoverInfoAtSide(side).letsEnergyIn()) return false;
             if (isInvalid() || mReleaseEnergy) return false;
             if (canAccessData() && mMetaTileEntity.isElectric() && mMetaTileEntity.isEnetInput())
-                return mMetaTileEntity.isInputFacing(aSide);
+                return mMetaTileEntity.isInputFacing(side);
         }
         return false;
     }
 
-    private boolean isEnergyOutputSide(ForgeDirection aSide) {
-        if (aSide != ForgeDirection.UNKNOWN) {
-            if (!getCoverInfoAtSide(aSide).letsEnergyOut()) return false;
+    private boolean isEnergyOutputSide(ForgeDirection side) {
+        if (side != ForgeDirection.UNKNOWN) {
+            if (!getCoverInfoAtSide(side).letsEnergyOut()) return false;
             if (isInvalid() || mReleaseEnergy) return mReleaseEnergy;
             if (canAccessData() && mMetaTileEntity.isElectric() && mMetaTileEntity.isEnetOutput())
-                return mMetaTileEntity.isOutputFacing(aSide);
+                return mMetaTileEntity.isOutputFacing(side);
         }
         return false;
     }
@@ -1413,18 +1411,19 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity implements IGregTec
     }
 
     @Override
-    public boolean onRightclick(EntityPlayer aPlayer, ForgeDirection aSide, float aX, float aY, float aZ) {
+    public boolean onRightclick(EntityPlayer aPlayer, ForgeDirection side, float aX, float aY, float aZ) {
         if (isClientSide()) {
             // Configure Cover, sneak can also be: screwdriver, wrench, side cutter, soldering iron
             if (aPlayer.isSneaking()) {
-                final ForgeDirection tSide = (getCoverIDAtSide(aSide) == 0) ? GT_Utility.determineWrenchingSide(aSide, aX, aY, aZ)
-                    : aSide;
+                final ForgeDirection tSide = (getCoverIDAtSide(side) == 0)
+                    ? GT_Utility.determineWrenchingSide(side, aX, aY, aZ)
+                    : side;
                 return (getCoverBehaviorAtSideNew(tSide).hasCoverGUI());
-            } else if (getCoverBehaviorAtSideNew(aSide).onCoverRightclickClient(aSide, this, aPlayer, aX, aY, aZ)) {
+            } else if (getCoverBehaviorAtSideNew(side).onCoverRightclickClient(side, this, aPlayer, aX, aY, aZ)) {
                 return true;
             }
 
-            if (!getCoverInfoAtSide(aSide).isGUIClickable()) return false;
+            if (!getCoverInfoAtSide(side).isGUIClickable()) return false;
         }
 
         if (isServerSide()) {
@@ -1441,7 +1440,7 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity implements IGregTec
                     if (GT_Utility.isStackInList(tCurrentItem, GregTech_API.sWrenchList)) {
                         if (aPlayer.isSneaking() && mMetaTileEntity instanceof GT_MetaTileEntity_BasicMachine
                             && ((GT_MetaTileEntity_BasicMachine) mMetaTileEntity)
-                                .setMainFacing(GT_Utility.determineWrenchingSide(aSide, aX, aY, aZ))) {
+                                .setMainFacing(GT_Utility.determineWrenchingSide(side, aX, aY, aZ))) {
                             GT_ModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer);
                             GT_Utility.sendSoundToPlayers(
                                 worldObj,
@@ -1453,8 +1452,8 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity implements IGregTec
                                 zCoord);
                             cableUpdateDelay = 10;
                         } else if (mMetaTileEntity.onWrenchRightClick(
-                            aSide,
-                            GT_Utility.determineWrenchingSide(aSide, aX, aY, aZ),
+                            side,
+                            GT_Utility.determineWrenchingSide(side, aX, aY, aZ),
                             aPlayer,
                             aX,
                             aY,
@@ -1476,17 +1475,17 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity implements IGregTec
                     if (GT_Utility.isStackInList(tCurrentItem, GregTech_API.sScrewdriverList)) {
                         if (GT_ModHandler.damageOrDechargeItem(tCurrentItem, 1, 200, aPlayer)) {
                             setCoverDataAtSide(
-                                aSide,
-                                getCoverBehaviorAtSideNew(aSide).onCoverScrewdriverClick(
-                                    aSide,
-                                    getCoverIDAtSide(aSide),
-                                    getComplexCoverDataAtSide(aSide),
+                                side,
+                                getCoverBehaviorAtSideNew(side).onCoverScrewdriverClick(
+                                    side,
+                                    getCoverIDAtSide(side),
+                                    getComplexCoverDataAtSide(side),
                                     this,
                                     aPlayer,
                                     aX,
                                     aY,
                                     aZ));
-                            mMetaTileEntity.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
+                            mMetaTileEntity.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ);
                             GT_Utility.sendSoundToPlayers(
                                 worldObj,
                                 SoundResource.IC2_TOOLS_WRENCH,
@@ -1547,8 +1546,8 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity implements IGregTec
                     }
 
                     if (GT_Utility.isStackInList(tCurrentItem, GregTech_API.sSolderingToolList)) {
-                        final ForgeDirection tSide = GT_Utility.determineWrenchingSide(aSide, aX, aY, aZ);
-                        if (mMetaTileEntity.onSolderingToolRightClick(aSide, tSide, aPlayer, aX, aY, aZ)) {
+                        final ForgeDirection tSide = GT_Utility.determineWrenchingSide(side, aX, aY, aZ);
+                        if (mMetaTileEntity.onSolderingToolRightClick(side, tSide, aPlayer, aX, aY, aZ)) {
                             // logic handled internally
                             GT_Utility.sendSoundToPlayers(
                                 worldObj,
@@ -1559,12 +1558,13 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity implements IGregTec
                                 yCoord,
                                 zCoord);
                         } else if (GT_ModHandler.useSolderingIron(tCurrentItem, aPlayer)) {
-                            mStrongRedstone ^= 1 << tSide.ordinal();
+                            mStrongRedstone ^= (1 << tSide.ordinal());
                             GT_Utility.sendChatToPlayer(
                                 aPlayer,
                                 GT_Utility.trans("091", "Redstone Output at Side ") + tSide
                                     + GT_Utility.trans("092", " set to: ")
-                                    + ((mStrongRedstone & 1 << tSide.ordinal()) != 0 ? GT_Utility.trans("093", "Strong")
+                                    + ((mStrongRedstone & (1 << tSide.ordinal())) != 0
+                                        ? GT_Utility.trans("093", "Strong")
                                         : GT_Utility.trans("094", "Weak")));
                             GT_Utility.sendSoundToPlayers(
                                 worldObj,
@@ -1582,8 +1582,8 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity implements IGregTec
                     }
 
                     if (GT_Utility.isStackInList(tCurrentItem, GregTech_API.sWireCutterList)) {
-                        final ForgeDirection tSide = GT_Utility.determineWrenchingSide(aSide, aX, aY, aZ);
-                        if (mMetaTileEntity.onWireCutterRightClick(aSide, tSide, aPlayer, aX, aY, aZ)) {
+                        final ForgeDirection tSide = GT_Utility.determineWrenchingSide(side, aX, aY, aZ);
+                        if (mMetaTileEntity.onWireCutterRightClick(side, tSide, aPlayer, aX, aY, aZ)) {
                             // logic handled internally
                             GT_Utility.sendSoundToPlayers(
                                 worldObj,
@@ -1599,8 +1599,8 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity implements IGregTec
                         return true;
                     }
 
-                    ForgeDirection coverSide = aSide;
-                    if (getCoverIDAtSide(aSide) == 0) coverSide = GT_Utility.determineWrenchingSide(aSide, aX, aY, aZ);
+                    ForgeDirection coverSide = side;
+                    if (getCoverIDAtSide(side) == 0) coverSide = GT_Utility.determineWrenchingSide(side, aX, aY, aZ);
 
                     if (getCoverIDAtSide(coverSide) == 0) {
                         if (GT_Utility.isStackInList(tCurrentItem, GregTech_API.sCovers.keySet())) {
@@ -1632,34 +1632,33 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity implements IGregTec
                                     xCoord,
                                     yCoord,
                                     zCoord);
-                                dropCover(coverSide, aSide, false);
+                                dropCover(coverSide, side, false);
                             }
                             return true;
                         }
                     }
                     // End item != null
                 } else if (aPlayer.isSneaking()) { // Sneak click, no tool -> open cover config if possible.
-                    aSide = (getCoverIDAtSide(aSide) == 0) ? GT_Utility.determineWrenchingSide(aSide, aX, aY, aZ)
-                        : aSide;
-                    return getCoverIDAtSide(aSide) > 0 && getCoverBehaviorAtSideNew(aSide).onCoverShiftRightClick(
-                        aSide,
-                        getCoverIDAtSide(aSide),
-                        getComplexCoverDataAtSide(aSide),
+                    side = (getCoverIDAtSide(side) == 0) ? GT_Utility.determineWrenchingSide(side, aX, aY, aZ) : side;
+                    return getCoverIDAtSide(side) > 0 && getCoverBehaviorAtSideNew(side).onCoverShiftRightClick(
+                        side,
+                        getCoverIDAtSide(side),
+                        getComplexCoverDataAtSide(side),
                         this,
                         aPlayer);
                 }
 
-                if (getCoverBehaviorAtSideNew(aSide).onCoverRightClick(
-                    aSide,
-                    getCoverIDAtSide(aSide),
-                    getComplexCoverDataAtSide(aSide),
+                if (getCoverBehaviorAtSideNew(side).onCoverRightClick(
+                    side,
+                    getCoverIDAtSide(side),
+                    getComplexCoverDataAtSide(side),
                     this,
                     aPlayer,
                     aX,
                     aY,
                     aZ)) return true;
 
-                if (!getCoverInfoAtSide(aSide).isGUIClickable()) return false;
+                if (!getCoverInfoAtSide(side).isGUIClickable()) return false;
 
                 if (isUpgradable() && tCurrentItem != null) {
                     if (ItemList.Upgrade_Muffler.isStackEqual(aPlayer.inventory.getCurrentItem())) {
@@ -1699,7 +1698,7 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity implements IGregTec
 
         try {
             if (!aPlayer.isSneaking() && hasValidMetaTileEntity())
-                return mMetaTileEntity.onRightclick(this, aPlayer, aSide, aX, aY, aZ);
+                return mMetaTileEntity.onRightclick(this, aPlayer, side, aX, aY, aZ);
         } catch (Throwable e) {
             GT_Log.err.println(
                 "Encountered Exception while rightclicking TileEntity, the Game should've crashed now, but I prevented that. Please report immediately to GregTech Intergalactical!!!");
@@ -1781,12 +1780,8 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity implements IGregTec
     public boolean canExtractItem(int slotIndex, ItemStack stack, int ordinalSide) {
         final ForgeDirection side = ForgeDirection.getOrientation(ordinalSide);
         return canAccessData() && (mRunningThroughTick || !mOutputDisabled)
-            && getCoverBehaviorAtSideNew(side).letsItemsOut(
-                side,
-                getCoverIDAtSide(side),
-                getComplexCoverDataAtSide(side),
-                slotIndex,
-                this)
+            && getCoverBehaviorAtSideNew(side)
+                .letsItemsOut(side, getCoverIDAtSide(side), getComplexCoverDataAtSide(side), slotIndex, this)
             && mMetaTileEntity.canExtractItem(slotIndex, stack, ordinalSide);
     }
 
@@ -1796,9 +1791,9 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity implements IGregTec
     }
 
     @Override
-    public byte getGeneralRS(ForgeDirection aSide) {
+    public byte getGeneralRS(ForgeDirection side) {
         if (mMetaTileEntity == null) return 0;
-        return mMetaTileEntity.allowGeneralRedstoneOutput() ? mSidedRedstone[aSide.ordinal()] : 0;
+        return mMetaTileEntity.allowGeneralRedstoneOutput() ? mSidedRedstone[side.ordinal()] : 0;
     }
 
     @Override
@@ -1894,11 +1889,11 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity implements IGregTec
     }
 
     @Override
-    protected void updateOutputRedstoneSignal(ForgeDirection aSide) {
+    protected void updateOutputRedstoneSignal(ForgeDirection side) {
         if (mMetaTileEntity.hasSidedRedstoneOutputBehavior()) {
-            setOutputRedstoneSignal(aSide, (byte) 0);
+            setOutputRedstoneSignal(side, (byte) 0);
         } else {
-            setOutputRedstoneSignal(aSide, (byte) 15);
+            setOutputRedstoneSignal(side, (byte) 15);
         }
     }
 
@@ -1925,8 +1920,8 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity implements IGregTec
     }
 
     @Override
-    public byte getComparatorValue(ForgeDirection aSide) {
-        return canAccessData() ? mMetaTileEntity.getComparatorValue(aSide) : 0;
+    public byte getComparatorValue(ForgeDirection side) {
+        return canAccessData() ? mMetaTileEntity.getComparatorValue(side) : 0;
     }
 
     @Override
@@ -1939,9 +1934,9 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity implements IGregTec
     }
 
     @Override
-    public long injectEnergyUnits(ForgeDirection aSide, long aVoltage, long aAmperage) {
+    public long injectEnergyUnits(ForgeDirection side, long aVoltage, long aAmperage) {
         if (!canAccessData() || !mMetaTileEntity.isElectric()
-            || !inputEnergyFrom(aSide)
+            || !inputEnergyFrom(side)
             || aAmperage <= 0
             || aVoltage <= 0
             || getStoredEU() >= getEUCapacity()
@@ -1967,9 +1962,9 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity implements IGregTec
     }
 
     @Override
-    public boolean drainEnergyUnits(ForgeDirection aSide, long aVoltage, long aAmperage) {
+    public boolean drainEnergyUnits(ForgeDirection side, long aVoltage, long aAmperage) {
         if (!canAccessData() || !mMetaTileEntity.isElectric()
-            || !outputsEnergyTo(aSide)
+            || !outputsEnergyTo(side)
             || getStoredEU() - (aVoltage * aAmperage) < mMetaTileEntity.getMinimumStoredEU()) return false;
         if (decreaseStoredEU(aVoltage * aAmperage, false)) {
             mAverageEUOutput[mAverageEUOutputIndex] += aVoltage * aAmperage;
@@ -1979,24 +1974,24 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity implements IGregTec
     }
 
     @Override
-    public boolean acceptsRotationalEnergy(ForgeDirection aSide) {
-        if (!canAccessData() || getCoverIDAtSide(aSide) != 0) return false;
-        return mMetaTileEntity.acceptsRotationalEnergy(aSide);
+    public boolean acceptsRotationalEnergy(ForgeDirection side) {
+        if (!canAccessData() || getCoverIDAtSide(side) != 0) return false;
+        return mMetaTileEntity.acceptsRotationalEnergy(side);
     }
 
     @Override
-    public boolean injectRotationalEnergy(ForgeDirection aSide, long aSpeed, long aEnergy) {
-        if (!canAccessData() || getCoverIDAtSide(aSide) != 0) return false;
-        return mMetaTileEntity.injectRotationalEnergy(aSide, aSpeed, aEnergy);
+    public boolean injectRotationalEnergy(ForgeDirection side, long aSpeed, long aEnergy) {
+        if (!canAccessData() || getCoverIDAtSide(side) != 0) return false;
+        return mMetaTileEntity.injectRotationalEnergy(side, aSpeed, aEnergy);
     }
 
     @Override
-    public int fill(ForgeDirection side, FluidStack fluidStack, boolean doFill) {
+    public int fill(ForgeDirection side, FluidStack aFluid, boolean doFill) {
         if (mTickTimer > 5 && canAccessData()
             && (mRunningThroughTick || !mInputDisabled)
             && (side == ForgeDirection.UNKNOWN || (mMetaTileEntity.isLiquidInput(side)
-                && getCoverInfoAtSide(side).letsFluidIn(fluidStack == null ? null : fluidStack.getFluid()))))
-            return mMetaTileEntity.fill(side, fluidStack, doFill);
+                && getCoverInfoAtSide(side).letsFluidIn(aFluid == null ? null : aFluid.getFluid()))))
+            return mMetaTileEntity.fill(side, aFluid, doFill);
         return 0;
     }
 
@@ -2004,8 +1999,8 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity implements IGregTec
     public FluidStack drain(ForgeDirection side, int maxDrain, boolean doDrain) {
         if (mTickTimer > 5 && canAccessData()
             && (mRunningThroughTick || !mOutputDisabled)
-            && (side == ForgeDirection.UNKNOWN || (mMetaTileEntity.isLiquidOutput(side)
-                && getCoverInfoAtSide(side).letsFluidOut(
+            && (side == ForgeDirection.UNKNOWN
+                || (mMetaTileEntity.isLiquidOutput(side) && getCoverInfoAtSide(side).letsFluidOut(
                     mMetaTileEntity.getFluid() == null ? null
                         : mMetaTileEntity.getFluid()
                             .getFluid()))))
@@ -2014,32 +2009,32 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity implements IGregTec
     }
 
     @Override
-    public FluidStack drain(ForgeDirection side, FluidStack fluidStack, boolean doDrain) {
+    public FluidStack drain(ForgeDirection side, FluidStack aFluid, boolean doDrain) {
         if (mTickTimer > 5 && canAccessData()
             && (mRunningThroughTick || !mOutputDisabled)
             && (side == ForgeDirection.UNKNOWN || (mMetaTileEntity.isLiquidOutput(side)
-                && getCoverInfoAtSide(side).letsFluidOut(fluidStack == null ? null : fluidStack.getFluid()))))
-            return mMetaTileEntity.drain(side, fluidStack, doDrain);
+                && getCoverInfoAtSide(side).letsFluidOut(aFluid == null ? null : aFluid.getFluid()))))
+            return mMetaTileEntity.drain(side, aFluid, doDrain);
         return null;
     }
 
     @Override
-    public boolean canFill(ForgeDirection side, Fluid fluid) {
+    public boolean canFill(ForgeDirection side, Fluid aFluid) {
         if (mTickTimer > 5 && canAccessData()
             && (mRunningThroughTick || !mInputDisabled)
-            && (side == ForgeDirection.UNKNOWN || (mMetaTileEntity.isLiquidInput(side)
-                && getCoverInfoAtSide(side).letsFluidIn(fluid))))
-            return mMetaTileEntity.canFill(side, fluid);
+            && (side == ForgeDirection.UNKNOWN
+                || (mMetaTileEntity.isLiquidInput(side) && getCoverInfoAtSide(side).letsFluidIn(aFluid))))
+            return mMetaTileEntity.canFill(side, aFluid);
         return false;
     }
 
     @Override
-    public boolean canDrain(ForgeDirection side, Fluid fluid) {
+    public boolean canDrain(ForgeDirection side, Fluid aFluid) {
         if (mTickTimer > 5 && canAccessData()
             && (mRunningThroughTick || !mOutputDisabled)
-            && (side == ForgeDirection.UNKNOWN || (mMetaTileEntity.isLiquidOutput(side)
-                && getCoverInfoAtSide(side).letsFluidOut(fluid))))
-            return mMetaTileEntity.canDrain(side, fluid);
+            && (side == ForgeDirection.UNKNOWN
+                || (mMetaTileEntity.isLiquidOutput(side) && getCoverInfoAtSide(side).letsFluidOut(aFluid))))
+            return mMetaTileEntity.canDrain(side, aFluid);
         return false;
     }
 
@@ -2056,7 +2051,7 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity implements IGregTec
         return oOutput;
     }
 
-    public boolean isTeleporterCompatible(ForgeDirection aSide) {
+    public boolean isTeleporterCompatible(ForgeDirection side) {
         return canAccessData() && mMetaTileEntity.isTeleporterCompatible();
     }
 
@@ -2159,8 +2154,8 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity implements IGregTec
             return true;
         }
         final ItemStack fromStack = GT_OreDictUnificator.get(stack);
-        if (GT_Utility.areStacksEqual(toStack, fromStack)
-            && toStack.stackSize + fromStack.stackSize <= Math.min(fromStack.getMaxStackSize(), getInventoryStackLimit())) {
+        if (GT_Utility.areStacksEqual(toStack, fromStack) && toStack.stackSize + fromStack.stackSize
+            <= Math.min(fromStack.getMaxStackSize(), getInventoryStackLimit())) {
             toStack.stackSize += fromStack.stackSize;
             markDirty();
             return true;
@@ -2187,8 +2182,8 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity implements IGregTec
     }
 
     @Override
-    public float getBlastResistance(ForgeDirection aSide) {
-        return canAccessData() ? Math.max(0, getMetaTileEntity().getExplosionResistance(aSide)) : 10.0F;
+    public float getBlastResistance(ForgeDirection side) {
+        return canAccessData() ? Math.max(0, getMetaTileEntity().getExplosionResistance(side)) : 10.0F;
     }
 
     @Override
@@ -2330,7 +2325,7 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity implements IGregTec
 
     @Override
     public IGridNode getGridNode(ForgeDirection forgeDirection) {
-        if (ordinalFacing != forgeDirection.ordinal()) return null;
+        if (mFacing != forgeDirection) return null;
         final AENetworkProxy gp = getProxy();
         return gp != null ? gp.getNode() : null;
     }

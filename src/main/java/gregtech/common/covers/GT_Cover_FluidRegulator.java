@@ -93,34 +93,32 @@ public class GT_Cover_FluidRegulator extends GT_CoverBehaviorBase<GT_Cover_Fluid
     }
 
     @Override
-    protected boolean isRedstoneSensitiveImpl(ForgeDirection aSide, int aCoverID, FluidRegulatorData aCoverVariable,
+    protected boolean isRedstoneSensitiveImpl(ForgeDirection side, int aCoverID, FluidRegulatorData aCoverVariable,
         ICoverable aTileEntity, long aTimer) {
         return aCoverVariable.condition.isRedstoneSensitive();
     }
 
     @Override
-    protected FluidRegulatorData doCoverThingsImpl(ForgeDirection aSide, byte aInputRedstone, int aCoverID,
+    protected FluidRegulatorData doCoverThingsImpl(ForgeDirection side, byte aInputRedstone, int aCoverID,
         FluidRegulatorData aCoverVariable, ICoverable aTileEntity, long aTimer) {
-        if (aCoverVariable.speed == 0 || !aCoverVariable.condition.isAllowedToWork(aSide, aCoverID, aTileEntity)) {
+        if (aCoverVariable.speed == 0 || !aCoverVariable.condition.isAllowedToWork(side, aCoverID, aTileEntity)) {
             return aCoverVariable;
         }
         if ((aTileEntity instanceof IFluidHandler)) {
-            IFluidHandler tTank1;
-            IFluidHandler tTank2;
-            ForgeDirection directionFrom;
-            ForgeDirection directionTo;
+            final IFluidHandler tTank1;
+            final IFluidHandler tTank2;
+            final ForgeDirection directionFrom;
+            final ForgeDirection directionTo;
             if (aCoverVariable.speed > 0) {
-                tTank2 = aTileEntity.getITankContainerAtSide(aSide);
+                tTank2 = aTileEntity.getITankContainerAtSide(side);
                 tTank1 = (IFluidHandler) aTileEntity;
-                directionFrom = ForgeDirection.getOrientation(aSide);
-                directionTo = ForgeDirection.getOrientation(aSide)
-                    .getOpposite();
+                directionFrom = side;
+                directionTo = side.getOpposite();
             } else {
-                tTank1 = aTileEntity.getITankContainerAtSide(aSide);
+                tTank1 = aTileEntity.getITankContainerAtSide(side);
                 tTank2 = (IFluidHandler) aTileEntity;
-                directionFrom = ForgeDirection.getOrientation(aSide)
-                    .getOpposite();
-                directionTo = ForgeDirection.getOrientation(aSide);
+                directionFrom = side.getOpposite();
+                directionTo = side;
             }
             if (tTank1 != null && tTank2 != null) {
                 allowFluid = true;
@@ -165,9 +163,9 @@ public class GT_Cover_FluidRegulator extends GT_CoverBehaviorBase<GT_Cover_Fluid
     }
 
     @Override
-    public FluidRegulatorData onCoverScrewdriverClickImpl(ForgeDirection aSide, int aCoverID,
+    public FluidRegulatorData onCoverScrewdriverClickImpl(ForgeDirection side, int aCoverID,
         FluidRegulatorData aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        if (GT_Utility.getClickedFacingCoords(aSide, aX, aY, aZ)[0] >= 0.5F) {
+        if (GT_Utility.getClickedFacingCoords(side, aX, aY, aZ)[0] >= 0.5F) {
             adjustSpeed(aPlayer, aCoverVariable, aPlayer.isSneaking() ? 256 : 16);
         } else {
             adjustSpeed(aPlayer, aCoverVariable, aPlayer.isSneaking() ? -256 : -16);
@@ -176,9 +174,9 @@ public class GT_Cover_FluidRegulator extends GT_CoverBehaviorBase<GT_Cover_Fluid
     }
 
     @Override
-    protected boolean onCoverRightClickImpl(ForgeDirection aSide, int aCoverID, FluidRegulatorData aCoverVariable,
+    protected boolean onCoverRightClickImpl(ForgeDirection side, int aCoverID, FluidRegulatorData aCoverVariable,
         ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        if (GT_Utility.getClickedFacingCoords(aSide, aX, aY, aZ)[0] >= 0.5F) {
+        if (GT_Utility.getClickedFacingCoords(side, aX, aY, aZ)[0] >= 0.5F) {
             adjustSpeed(aPlayer, aCoverVariable, 1);
         } else {
             adjustSpeed(aPlayer, aCoverVariable, -1);
@@ -191,61 +189,61 @@ public class GT_Cover_FluidRegulator extends GT_CoverBehaviorBase<GT_Cover_Fluid
     }
 
     @Override
-    public boolean letsRedstoneGoInImpl(ForgeDirection aSide, int aCoverID, FluidRegulatorData aCoverVariable,
+    public boolean letsRedstoneGoInImpl(ForgeDirection side, int aCoverID, FluidRegulatorData aCoverVariable,
         ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    public boolean letsRedstoneGoOutImpl(ForgeDirection aSide, int aCoverID, FluidRegulatorData aCoverVariable,
+    public boolean letsRedstoneGoOutImpl(ForgeDirection side, int aCoverID, FluidRegulatorData aCoverVariable,
         ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    public boolean letsEnergyInImpl(ForgeDirection aSide, int aCoverID, FluidRegulatorData aCoverVariable,
+    public boolean letsEnergyInImpl(ForgeDirection side, int aCoverID, FluidRegulatorData aCoverVariable,
         ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    public boolean letsEnergyOutImpl(ForgeDirection aSide, int aCoverID, FluidRegulatorData aCoverVariable,
+    public boolean letsEnergyOutImpl(ForgeDirection side, int aCoverID, FluidRegulatorData aCoverVariable,
         ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    public boolean letsItemsInImpl(ForgeDirection aSide, int aCoverID, FluidRegulatorData aCoverVariable, int aSlot,
+    public boolean letsItemsInImpl(ForgeDirection side, int aCoverID, FluidRegulatorData aCoverVariable, int aSlot,
         ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    public boolean letsItemsOutImpl(ForgeDirection aSide, int aCoverID, FluidRegulatorData aCoverVariable, int aSlot,
+    public boolean letsItemsOutImpl(ForgeDirection side, int aCoverID, FluidRegulatorData aCoverVariable, int aSlot,
         ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    public boolean letsFluidInImpl(ForgeDirection aSide, int aCoverID, FluidRegulatorData aCoverVariable, Fluid aFluid,
+    public boolean letsFluidInImpl(ForgeDirection side, int aCoverID, FluidRegulatorData aCoverVariable, Fluid aFluid,
         ICoverable aTileEntity) {
         return allowFluid;
     }
 
     @Override
-    public boolean letsFluidOutImpl(ForgeDirection aSide, int aCoverID, FluidRegulatorData aCoverVariable, Fluid aFluid,
+    public boolean letsFluidOutImpl(ForgeDirection side, int aCoverID, FluidRegulatorData aCoverVariable, Fluid aFluid,
         ICoverable aTileEntity) {
         return allowFluid;
     }
 
     @Override
-    protected boolean alwaysLookConnectedImpl(ForgeDirection aSide, int aCoverID, FluidRegulatorData aCoverVariable,
+    protected boolean alwaysLookConnectedImpl(ForgeDirection side, int aCoverID, FluidRegulatorData aCoverVariable,
         ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    protected int getTickRateImpl(ForgeDirection aSide, int aCoverID, FluidRegulatorData aCoverVariable,
+    protected int getTickRateImpl(ForgeDirection side, int aCoverID, FluidRegulatorData aCoverVariable,
         ICoverable aTileEntity) {
         return aCoverVariable.tickRate;
     }
@@ -419,21 +417,21 @@ public class GT_Cover_FluidRegulator extends GT_CoverBehaviorBase<GT_Cover_Fluid
         Always(false) {
 
             @Override
-            boolean isAllowedToWork(ForgeDirection aSide, int aCoverID, ICoverable aTileEntity) {
+            boolean isAllowedToWork(ForgeDirection side, int aCoverID, ICoverable aTileEntity) {
                 return true;
             }
         },
         Conditional(true) {
 
             @Override
-            boolean isAllowedToWork(ForgeDirection aSide, int aCoverID, ICoverable aTileEntity) {
+            boolean isAllowedToWork(ForgeDirection side, int aCoverID, ICoverable aTileEntity) {
                 return !(aTileEntity instanceof IMachineProgress) || ((IMachineProgress) aTileEntity).isAllowedToWork();
             }
         },
         Inverted(true) {
 
             @Override
-            boolean isAllowedToWork(ForgeDirection aSide, int aCoverID, ICoverable aTileEntity) {
+            boolean isAllowedToWork(ForgeDirection side, int aCoverID, ICoverable aTileEntity) {
                 return !(aTileEntity instanceof IMachineProgress)
                     || !((IMachineProgress) aTileEntity).isAllowedToWork();
             }
@@ -446,7 +444,7 @@ public class GT_Cover_FluidRegulator extends GT_CoverBehaviorBase<GT_Cover_Fluid
             this.redstoneSensitive = redstoneSensitive;
         }
 
-        abstract boolean isAllowedToWork(ForgeDirection aSide, int aCoverID, ICoverable aTileEntity);
+        abstract boolean isAllowedToWork(ForgeDirection side, int aCoverID, ICoverable aTileEntity);
 
         boolean isRedstoneSensitive() {
             return redstoneSensitive;

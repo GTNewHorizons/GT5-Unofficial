@@ -10,5 +10,5 @@ public interface ITexturedTileEntity {
     /**
      * @return the Textures rendered by the GT Rendering
      */
-    ITexture[] getTexture(Block aBlock, ForgeDirection aSide);
+    ITexture[] getTexture(Block aBlock, ForgeDirection side);
 }

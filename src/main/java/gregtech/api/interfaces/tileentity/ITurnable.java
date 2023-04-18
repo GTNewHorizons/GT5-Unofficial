@@ -17,9 +17,9 @@ public interface ITurnable {
     /**
      * Set the block's facing
      *
-     * @param aSide facing to set the block to
+     * @param side facing to set the block to
      */
-    void setFrontFacing(ForgeDirection aSide);
+    void setFrontFacing(ForgeDirection side);
 
     /**
      * Get the block's back facing.
@@ -31,14 +31,14 @@ public interface ITurnable {
     /**
      * Determine if the wrench can be used to set the block's facing.
      */
-    boolean isValidFacing(ForgeDirection aSide);
+    boolean isValidFacing(ForgeDirection side);
 
     /**
      * Get the list of valid facings
      */
     default boolean[] getValidFacings() {
         final boolean[] validFacings = new boolean[6];
-        for (ForgeDirection facing : ForgeDirection.VALID_DIRECTIONS) {
+        for (final ForgeDirection facing : ForgeDirection.VALID_DIRECTIONS) {
             validFacings[facing.ordinal()] = isValidFacing(facing);
         }
         return validFacings;

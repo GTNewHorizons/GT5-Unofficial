@@ -263,11 +263,11 @@ public class GT_MetaTileEntity_PyrolyseOven
     }
 
     private void replaceDeprecatedCoils(IGregTechTileEntity aBaseMetaTileEntity) {
-        int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
-        int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ;
-        int tX = aBaseMetaTileEntity.getXCoord() + xDir * 2;
-        int tY = aBaseMetaTileEntity.getYCoord();
-        int tZ = aBaseMetaTileEntity.getZCoord() + zDir * 2;
+        final int xDir = aBaseMetaTileEntity.getBackFacing().offsetX;
+        final int zDir = aBaseMetaTileEntity.getBackFacing().offsetZ;
+        final int tX = aBaseMetaTileEntity.getXCoord() + xDir * 2;
+        final int tY = aBaseMetaTileEntity.getYCoord();
+        final int tZ = aBaseMetaTileEntity.getZCoord() + zDir * 2;
         for (int xPos = tX - 1; xPos <= tX + 1; xPos++) {
             for (int zPos = tZ - 1; zPos <= tZ + 1; zPos++) {
                 if (aBaseMetaTileEntity.getBlock(xPos, tY, zPos) == GregTech_API.sBlockCasings1

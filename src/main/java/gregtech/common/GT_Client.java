@@ -330,9 +330,9 @@ public class GT_Client extends GT_Proxy implements Runnable {
         byte tConnections = 0;
         if (tTile instanceof ICoverable) {
             if (showCoverConnections) {
-                for (byte tSide : ALL_VALID_SIDES) {
+                for (final ForgeDirection tSide : ForgeDirection.VALID_DIRECTIONS) {
                     if (((ICoverable) tTile).getCoverIDAtSide(tSide) > 0)
-                        tConnections = (byte) (tConnections + (1 << tSide));
+                        tConnections = (byte) (tConnections + (1 << tSide.ordinal()));
                 }
             } else if (tTile instanceof BaseMetaPipeEntity) tConnections = ((BaseMetaPipeEntity) tTile).mConnections;
         }
@@ -779,7 +779,7 @@ public class GT_Client extends GT_Proxy implements Runnable {
 
         if (GT_Utility.isStackInList(aEvent.currentItem, GregTech_API.sWireCutterList)
             || GT_Utility.isStackInList(aEvent.currentItem, GregTech_API.sSolderingToolList)) {
-            if (((ICoverable) aTileEntity).getCoverIDAtSide((byte) aEvent.target.sideHit) == 0)
+            if (((ICoverable) aTileEntity).getCoverIDAtSide(ForgeDirection.getOrientation(aEvent.target.sideHit)) == 0)
                 drawGrid(aEvent, false, false, aEvent.player.isSneaking());
             return;
         }
@@ -787,21 +787,23 @@ public class GT_Client extends GT_Proxy implements Runnable {
         if ((aEvent.currentItem == null && aEvent.player.isSneaking())
             || GT_Utility.isStackInList(aEvent.currentItem, GregTech_API.sCrowbarList)
             || GT_Utility.isStackInList(aEvent.currentItem, GregTech_API.sScrewdriverList)) {
-            if (((ICoverable) aTileEntity).getCoverIDAtSide((byte) aEvent.target.sideHit) == 0)
-                for (byte tSide : ALL_VALID_SIDES) if (((ICoverable) aTileEntity).getCoverIDAtSide(tSide) > 0) {
-                    drawGrid(aEvent, true, false, true);
-                    return;
+            if (((ICoverable) aTileEntity).getCoverIDAtSide(ForgeDirection.getOrientation(aEvent.target.sideHit)) == 0)
+                for (final ForgeDirection tSide : ForgeDirection.VALID_DIRECTIONS) {
+                    if (((ICoverable) aTileEntity).getCoverIDAtSide(tSide) > 0) {
+                        drawGrid(aEvent, true, false, true);
+                        return;
+                    }
                 }
             return;
         }
 
         if (GT_Utility.isStackInList(aEvent.currentItem, GregTech_API.sCovers.keySet())) {
-            if (((ICoverable) aTileEntity).getCoverIDAtSide((byte) aEvent.target.sideHit) == 0)
+            if (((ICoverable) aTileEntity).getCoverIDAtSide(ForgeDirection.getOrientation(aEvent.target.sideHit)) == 0)
                 drawGrid(aEvent, true, false, aEvent.player.isSneaking());
         }
 
         if (GT_Utility.areStacksEqual(ItemList.Tool_Cover_Copy_Paste.get(1), aEvent.currentItem, true)) {
-            if (((ICoverable) aTileEntity).getCoverIDAtSide((byte) aEvent.target.sideHit) == 0)
+            if (((ICoverable) aTileEntity).getCoverIDAtSide(ForgeDirection.getOrientation(aEvent.target.sideHit)) == 0)
                 drawGrid(aEvent, true, false, aEvent.player.isSneaking());
         }
     }

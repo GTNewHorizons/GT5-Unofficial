@@ -27,7 +27,7 @@ public class BlockScanningEvent extends WorldEvent {
      */
     public int mEUCost = 0;
 
-    public BlockScanningEvent(World aWorld, EntityPlayer aPlayer, int aX, int aY, int aZ, ForgeDirection aSide,
+    public BlockScanningEvent(World aWorld, EntityPlayer aPlayer, int aX, int aY, int aZ, ForgeDirection side,
         int aScanLevel, Block aBlock, TileEntity aTileEntity, ArrayList<String> aList, float aClickX, float aClickY,
         float aClickZ) {
         super(aWorld);
@@ -36,7 +36,7 @@ public class BlockScanningEvent extends WorldEvent {
         mTileEntity = aTileEntity;
         mBlock = aBlock;
         mList = aList;
-        mSide = aSide;
+        mSide = side;
         mX = aX;
         mY = aY;
         mZ = aZ;

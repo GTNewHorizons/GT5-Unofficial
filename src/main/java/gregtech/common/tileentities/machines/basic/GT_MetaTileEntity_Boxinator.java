@@ -3,6 +3,7 @@ package gregtech.common.tileentities.machines.basic;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.ITexture;
@@ -194,9 +195,9 @@ public class GT_MetaTileEntity_Boxinator extends GT_MetaTileEntity_BasicMachine 
     }
 
     @Override
-    protected boolean allowPutStackValidated(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection aSide,
+    protected boolean allowPutStackValidated(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
-        if (!super.allowPutStackValidated(aBaseMetaTileEntity, aIndex, aSide, aStack)) {
+        if (!super.allowPutStackValidated(aBaseMetaTileEntity, aIndex, side, aStack)) {
             return false;
         }
         ItemStack tInput1 = getInputAt(1);

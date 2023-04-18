@@ -859,7 +859,7 @@ public class GT_MetaTileEntity_PCBFactory extends
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         inputSeparation = !inputSeparation;
         GT_Utility.sendChatToPlayer(
             aPlayer,

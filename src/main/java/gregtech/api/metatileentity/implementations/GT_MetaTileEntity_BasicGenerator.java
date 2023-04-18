@@ -62,12 +62,11 @@ public abstract class GT_MetaTileEntity_BasicGenerator extends GT_MetaTileEntity
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
+    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side,
         ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
-        return mTextures[(active ? 5 : 0) + (sideDirection == facingDirection ? 0
-            : sideDirection == facingDirection.getOpposite() ? 1
-                : sideDirection == ForgeDirection.DOWN ? 2 : sideDirection == ForgeDirection.UP ? 3 : 4)][colorIndex
-                    + 1];
+        return mTextures[(active ? 5 : 0) + (side == facingDirection ? 0
+            : side == facingDirection.getOpposite() ? 1
+                : side == ForgeDirection.DOWN ? 2 : side == ForgeDirection.UP ? 3 : 4)][colorIndex + 1];
     }
 
     @Override
@@ -125,7 +124,7 @@ public abstract class GT_MetaTileEntity_BasicGenerator extends GT_MetaTileEntity
     }
 
     @Override
-    public boolean isFacingValid(ForgeDirection facingDirection) {
+    public boolean isFacingValid(ForgeDirection side) {
         return true;
     }
 
@@ -145,7 +144,7 @@ public abstract class GT_MetaTileEntity_BasicGenerator extends GT_MetaTileEntity
     }
 
     @Override
-    public boolean isOutputFacing(ForgeDirection aSide) {
+    public boolean isOutputFacing(ForgeDirection side) {
         return true;
     }
 
@@ -201,7 +200,7 @@ public abstract class GT_MetaTileEntity_BasicGenerator extends GT_MetaTileEntity
     }
 
     @Override
-    public boolean isLiquidOutput(ForgeDirection aSide) {
+    public boolean isLiquidOutput(ForgeDirection side) {
         // return super.isLiquidOutput(aSide);
         return false;
     }
@@ -333,9 +332,9 @@ public abstract class GT_MetaTileEntity_BasicGenerator extends GT_MetaTileEntity
     }
 
     @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection aSide,
+    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
-        return super.allowPutStack(aBaseMetaTileEntity, aIndex, aSide, aStack) && (getFuelValue(aStack, true) > 0
+        return super.allowPutStack(aBaseMetaTileEntity, aIndex, side, aStack) && (getFuelValue(aStack, true) > 0
             || getFuelValue(GT_Utility.getFluidForFilledItem(aStack, true), true) > 0);
     }
 

@@ -92,12 +92,14 @@ public class GT_MetaTileEntity_AdvDebugStructureWriter extends GT_MetaTileEntity
     }
 
     @Override
-    public boolean allowPutStack(IGregTechTileEntity iGregTechTileEntity, int i, byte b, ItemStack itemStack) {
+    public boolean allowPutStack(IGregTechTileEntity iGregTechTileEntity, int i, ForgeDirection b,
+        ItemStack itemStack) {
         return false;
     }
 
     @Override
-    public boolean allowPullStack(IGregTechTileEntity iGregTechTileEntity, int i, byte b, ItemStack itemStack) {
+    public boolean allowPullStack(IGregTechTileEntity iGregTechTileEntity, int i, ForgeDirection b,
+        ItemStack itemStack) {
         return false;
     }
 
@@ -133,8 +135,7 @@ public class GT_MetaTileEntity_AdvDebugStructureWriter extends GT_MetaTileEntity
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide()) {
-            ExtendedFacing writerFacing = ExtendedFacing
-                .of(ForgeDirection.getOrientation(aBaseMetaTileEntity.getFrontFacing()));
+            ExtendedFacing writerFacing = ExtendedFacing.of(aBaseMetaTileEntity.getFrontFacing());
             double[] abc = new double[3];
             double[] xyz = new double[3];
             boundingBox.dim = aBaseMetaTileEntity.getWorld().provider.dimensionId;
@@ -164,7 +165,7 @@ public class GT_MetaTileEntity_AdvDebugStructureWriter extends GT_MetaTileEntity
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         IGregTechTileEntity aBaseMetaTileEntity = getBaseMetaTileEntity();
         printStructure(aPlayer);
         aBaseMetaTileEntity.disableWorking();
@@ -174,7 +175,7 @@ public class GT_MetaTileEntity_AdvDebugStructureWriter extends GT_MetaTileEntity
         IGregTechTileEntity aBaseMetaTileEntity = getBaseMetaTileEntity();
         String pseudoJavaCode = StructureUtility.getPseudoJavaCode(
             aBaseMetaTileEntity.getWorld(),
-            ExtendedFacing.of(ForgeDirection.getOrientation(aBaseMetaTileEntity.getFrontFacing())),
+            ExtendedFacing.of(aBaseMetaTileEntity.getFrontFacing()),
             aBaseMetaTileEntity.getXCoord(),
             aBaseMetaTileEntity.getYCoord(),
             aBaseMetaTileEntity.getZCoord(),
@@ -200,7 +201,7 @@ public class GT_MetaTileEntity_AdvDebugStructureWriter extends GT_MetaTileEntity
     }
 
     @Override
-    public boolean isFacingValid(ForgeDirection facingDirection) {
+    public boolean isFacingValid(ForgeDirection facing) {
         return true;
     }
 

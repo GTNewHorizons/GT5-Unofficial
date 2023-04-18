@@ -44,91 +44,91 @@ public interface IHasWorldObjectAndCoords {
 
     TileEntity getTileEntityOffset(int aX, int aY, int aZ);
 
-    TileEntity getTileEntityAtSide(ForgeDirection aSide);
+    TileEntity getTileEntityAtSide(ForgeDirection side);
 
-    TileEntity getTileEntityAtSideAndDistance(ForgeDirection aSide, int aDistance);
+    TileEntity getTileEntityAtSideAndDistance(ForgeDirection side, int aDistance);
 
     IInventory getIInventory(int aX, int aY, int aZ);
 
     IInventory getIInventoryOffset(int aX, int aY, int aZ);
 
-    IInventory getIInventoryAtSide(ForgeDirection aSide);
+    IInventory getIInventoryAtSide(ForgeDirection side);
 
-    IInventory getIInventoryAtSideAndDistance(ForgeDirection aSide, int aDistance);
+    IInventory getIInventoryAtSideAndDistance(ForgeDirection side, int aDistance);
 
     IFluidHandler getITankContainer(int aX, int aY, int aZ);
 
     IFluidHandler getITankContainerOffset(int aX, int aY, int aZ);
 
-    IFluidHandler getITankContainerAtSide(ForgeDirection aSide);
+    IFluidHandler getITankContainerAtSide(ForgeDirection side);
 
-    IFluidHandler getITankContainerAtSideAndDistance(ForgeDirection aSide, int aDistance);
+    IFluidHandler getITankContainerAtSideAndDistance(ForgeDirection side, int aDistance);
 
     IGregTechTileEntity getIGregTechTileEntity(int aX, int aY, int aZ);
 
     IGregTechTileEntity getIGregTechTileEntityOffset(int aX, int aY, int aZ);
 
-    IGregTechTileEntity getIGregTechTileEntityAtSide(ForgeDirection aSide);
+    IGregTechTileEntity getIGregTechTileEntityAtSide(ForgeDirection side);
 
-    IGregTechTileEntity getIGregTechTileEntityAtSideAndDistance(ForgeDirection aSide, int aDistance);
+    IGregTechTileEntity getIGregTechTileEntityAtSideAndDistance(ForgeDirection side, int aDistance);
 
     Block getBlock(int aX, int aY, int aZ);
 
     Block getBlockOffset(int aX, int aY, int aZ);
 
-    Block getBlockAtSide(ForgeDirection aSide);
+    Block getBlockAtSide(ForgeDirection side);
 
-    Block getBlockAtSideAndDistance(ForgeDirection aSide, int aDistance);
+    Block getBlockAtSideAndDistance(ForgeDirection side, int aDistance);
 
     byte getMetaID(int aX, int aY, int aZ);
 
     byte getMetaIDOffset(int aX, int aY, int aZ);
 
-    byte getMetaIDAtSide(ForgeDirection aSide);
+    byte getMetaIDAtSide(ForgeDirection side);
 
-    byte getMetaIDAtSideAndDistance(ForgeDirection aSide, int aDistance);
+    byte getMetaIDAtSideAndDistance(ForgeDirection side, int aDistance);
 
     byte getLightLevel(int aX, int aY, int aZ);
 
     byte getLightLevelOffset(int aX, int aY, int aZ);
 
-    byte getLightLevelAtSide(ForgeDirection aSide);
+    byte getLightLevelAtSide(ForgeDirection side);
 
-    byte getLightLevelAtSideAndDistance(ForgeDirection aSide, int aDistance);
+    byte getLightLevelAtSideAndDistance(ForgeDirection side, int aDistance);
 
     boolean getOpacity(int aX, int aY, int aZ);
 
     boolean getOpacityOffset(int aX, int aY, int aZ);
 
-    boolean getOpacityAtSide(ForgeDirection aSide);
+    boolean getOpacityAtSide(ForgeDirection side);
 
-    boolean getOpacityAtSideAndDistance(ForgeDirection aSide, int aDistance);
+    boolean getOpacityAtSideAndDistance(ForgeDirection side, int aDistance);
 
     boolean getSky(int aX, int aY, int aZ);
 
     boolean getSkyOffset(int aX, int aY, int aZ);
 
-    boolean getSkyAtSide(ForgeDirection aSide);
+    boolean getSkyAtSide(ForgeDirection side);
 
-    boolean getSkyAtSideAndDistance(ForgeDirection aSide, int aDistance);
+    boolean getSkyAtSideAndDistance(ForgeDirection side, int aDistance);
 
     boolean getAir(int aX, int aY, int aZ);
 
     boolean getAirOffset(int aX, int aY, int aZ);
 
-    boolean getAirAtSide(ForgeDirection aSide);
+    boolean getAirAtSide(ForgeDirection side);
 
-    boolean getAirAtSideAndDistance(ForgeDirection aSide, int aDistance);
+    boolean getAirAtSideAndDistance(ForgeDirection side, int aDistance);
 
     BiomeGenBase getBiome();
 
     BiomeGenBase getBiome(int aX, int aZ);
 
-    int getOffsetX(ForgeDirection aSide, int aMultiplier);
+    int getOffsetX(ForgeDirection side, int aMultiplier);
 
-    short getOffsetY(ForgeDirection aSide, int aMultiplier);
+    short getOffsetY(ForgeDirection side, int aMultiplier);
 
-    int getOffsetZ(ForgeDirection aSide, int aMultiplier);
+    int getOffsetZ(ForgeDirection side, int aMultiplier);
 
     /**
      * Checks if the TileEntity is Invalid or Unloaded. Stupid Minecraft cannot do that btw.
@@ -169,7 +169,7 @@ public interface IHasWorldObjectAndCoords {
 
     /**
      * Opens the GUI with this ID of this MetaTileEntity
-     * 
+     *
      * @deprecated Use ModularUI
      */
     @Deprecated
@@ -179,7 +179,7 @@ public interface IHasWorldObjectAndCoords {
 
     /**
      * Opens the GUI with the ID = 0 of this TileEntity
-     * 
+     *
      * @deprecated Use ModularUI
      */
     @Deprecated

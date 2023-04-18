@@ -59,7 +59,7 @@ public interface IBasicEnergyContainer extends IEnergyConnected, IHasWorldObject
     /**
      * Drain Energy Call for Electricity.
      */
-    boolean drainEnergyUnits(ForgeDirection aSide, long aVoltage, long aAmperage);
+    boolean drainEnergyUnits(ForgeDirection side, long aVoltage, long aAmperage);
 
     /**
      * returns the amount of Electricity, accepted by this Block the last 5 ticks as Average.

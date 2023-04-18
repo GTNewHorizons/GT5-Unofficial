@@ -1,9 +1,8 @@
 package gregtech.common.covers;
 
-import static gregtech.api.enums.GT_Values.ALL_VALID_SIDES;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -72,7 +71,7 @@ public class GT_Cover_ControlsWork extends GT_CoverBehavior implements IControls
     }
 
     @Override
-    protected boolean isRedstoneSensitiveImpl(ForgeDirection aSide, int aCoverID,
+    protected boolean isRedstoneSensitiveImpl(ForgeDirection side, int aCoverID,
         ISerializableObject.LegacyCoverData aCoverVariable, ICoverable aTileEntity, long aTimer) {
         return aCoverVariable.get() != 2; // always off, so no redstone needed either
     }
@@ -83,46 +82,46 @@ public class GT_Cover_ControlsWork extends GT_CoverBehavior implements IControls
      *
      * @return true if the cover is the first (side) one
      **/
-    private boolean makeSureOnlyOne(ForgeDirection aSide, ICoverable aTileEntity) {
-        return IControlsWorkCover.makeSureOnlyOne(aSide, aTileEntity);
+    private boolean makeSureOnlyOne(ForgeDirection side, ICoverable aTileEntity) {
+        return IControlsWorkCover.makeSureOnlyOne(side, aTileEntity);
     }
 
     @Override
-    public boolean letsEnergyIn(ForgeDirection aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public boolean letsEnergyIn(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    public boolean letsEnergyOut(ForgeDirection aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public boolean letsEnergyOut(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    public boolean letsFluidIn(ForgeDirection aSide, int aCoverID, int aCoverVariable, Fluid aFluid,
+    public boolean letsFluidIn(ForgeDirection side, int aCoverID, int aCoverVariable, Fluid aFluid,
         ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    public boolean letsFluidOut(ForgeDirection aSide, int aCoverID, int aCoverVariable, Fluid aFluid,
+    public boolean letsFluidOut(ForgeDirection side, int aCoverID, int aCoverVariable, Fluid aFluid,
         ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    public boolean letsItemsIn(ForgeDirection aSide, int aCoverID, int aCoverVariable, int aSlot,
+    public boolean letsItemsIn(ForgeDirection side, int aCoverID, int aCoverVariable, int aSlot,
         ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    public boolean letsItemsOut(ForgeDirection aSide, int aCoverID, int aCoverVariable, int aSlot,
+    public boolean letsItemsOut(ForgeDirection side, int aCoverID, int aCoverVariable, int aSlot,
         ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    public boolean onCoverRemoval(ForgeDirection aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
+    public boolean onCoverRemoval(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
         boolean aForced) {
         if ((aTileEntity instanceof IMachineProgress)) {
             ((IMachineProgress) aTileEntity).enableWorking();
@@ -132,7 +131,7 @@ public class GT_Cover_ControlsWork extends GT_CoverBehavior implements IControls
     }
 
     @Override
-    public int onCoverScrewdriverclick(ForgeDirection aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
+    public int onCoverScrewdriverclick(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
         EntityPlayer aPlayer, float aX, float aY, float aZ) {
         aCoverVariable = (aCoverVariable + (aPlayer.isSneaking() ? -1 : 1)) % 5;
         if (aCoverVariable < 0) {
@@ -158,14 +157,14 @@ public class GT_Cover_ControlsWork extends GT_CoverBehavior implements IControls
     }
 
     @Override
-    public int getTickRate(ForgeDirection aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public int getTickRate(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
         return 1;
     }
 
     @Override
-    public boolean isCoverPlaceable(ForgeDirection aSide, ItemStack aStack, ICoverable aTileEntity) {
-        if (!super.isCoverPlaceable(aSide, aStack, aTileEntity)) return false;
-        for (byte tSide : ALL_VALID_SIDES) {
+    public boolean isCoverPlaceable(ForgeDirection side, ItemStack aStack, ICoverable aTileEntity) {
+        if (!super.isCoverPlaceable(side, aStack, aTileEntity)) return false;
+        for (final ForgeDirection tSide : ForgeDirection.VALID_DIRECTIONS) {
             if (aTileEntity.getCoverBehaviorAtSideNew(tSide) instanceof IControlsWorkCover) {
                 return false;
             }

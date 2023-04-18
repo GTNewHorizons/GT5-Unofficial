@@ -7,6 +7,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import com.google.common.io.ByteArrayDataInput;
 
@@ -28,14 +29,14 @@ public class GT_Packet_WirelessRedstoneCover extends GT_Packet_TileEntityCover {
         super();
     }
 
-    public GT_Packet_WirelessRedstoneCover(int mX, short mY, int mZ, byte coverSide, int coverID, int dimID,
+    public GT_Packet_WirelessRedstoneCover(int mX, short mY, int mZ, ForgeDirection coverSide, int coverID, int dimID,
         int publicChannel, int checkBoxValue) {
         super(mX, mY, mZ, coverSide, coverID, 0, dimID);
         mPublicChannel = publicChannel;
         mCheckBoxValue = checkBoxValue;
     }
 
-    public GT_Packet_WirelessRedstoneCover(byte coverSide, int coverID, ICoverable tile, int publicChannel,
+    public GT_Packet_WirelessRedstoneCover(ForgeDirection coverSide, int coverID, ICoverable tile, int publicChannel,
         int checkBoxValue) {
         super(coverSide, coverID, 0, tile);
         mPublicChannel = publicChannel;
@@ -60,7 +61,7 @@ public class GT_Packet_WirelessRedstoneCover extends GT_Packet_TileEntityCover {
         aOut.writeShort(mY);
         aOut.writeInt(mZ);
 
-        aOut.writeByte(side);
+        aOut.writeByte(side.ordinal());
         aOut.writeInt(coverID);
 
         aOut.writeInt(dimID);
@@ -75,7 +76,7 @@ public class GT_Packet_WirelessRedstoneCover extends GT_Packet_TileEntityCover {
             aData.readInt(),
             aData.readShort(),
             aData.readInt(),
-            aData.readByte(),
+            ForgeDirection.getOrientation(aData.readByte()),
             aData.readInt(),
             aData.readInt(),
             aData.readInt(),

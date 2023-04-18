@@ -5,6 +5,7 @@ import static gregtech.GT_Mod.GT_FML_LOGGER;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.multitileentity.interfaces.IMultiTileEntity.IMTE_OnNeighborBlockChange;
 import gregtech.api.util.GT_Log;
@@ -107,7 +108,7 @@ public abstract class TickableMultiTileEntity extends MultiTileEntity implements
     }
 
     @Override
-    public byte getComparatorValue(ForgeDirection aSide) {
+    public byte getComparatorValue(ForgeDirection side) {
         return 0;
     }
 }

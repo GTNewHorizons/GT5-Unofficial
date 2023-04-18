@@ -1,6 +1,7 @@
 package gregtech.common.covers;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -32,7 +33,7 @@ public class GT_Cover_Shutter extends GT_CoverBehavior {
     }
 
     @Override
-    public boolean isRedstoneSensitive(ForgeDirection aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
+    public boolean isRedstoneSensitive(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
         long aTimer) {
         return false;
     }
@@ -44,7 +45,7 @@ public class GT_Cover_Shutter extends GT_CoverBehavior {
     }
 
     @Override
-    public int onCoverScrewdriverclick(ForgeDirection aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
+    public int onCoverScrewdriverclick(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
         EntityPlayer aPlayer, float aX, float aY, float aZ) {
         aCoverVariable = (aCoverVariable + (aPlayer.isSneaking() ? -1 : 1)) % 4;
         if (aCoverVariable < 0) {
@@ -63,35 +64,35 @@ public class GT_Cover_Shutter extends GT_CoverBehavior {
     }
 
     @Override
-    public boolean letsRedstoneGoIn(ForgeDirection aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public boolean letsRedstoneGoIn(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
         return aCoverVariable >= 2 ? aCoverVariable == 3
             : !(aTileEntity instanceof IMachineProgress)
                 || (((IMachineProgress) aTileEntity).isAllowedToWork() == (aCoverVariable % 2 == 0));
     }
 
     @Override
-    public boolean letsRedstoneGoOut(ForgeDirection aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public boolean letsRedstoneGoOut(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
         return aCoverVariable >= 2 ? aCoverVariable == 2
             : !(aTileEntity instanceof IMachineProgress)
                 || (((IMachineProgress) aTileEntity).isAllowedToWork() == (aCoverVariable % 2 == 0));
     }
 
     @Override
-    public boolean letsEnergyIn(ForgeDirection aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public boolean letsEnergyIn(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
         return aCoverVariable >= 2 ? aCoverVariable == 3
             : !(aTileEntity instanceof IMachineProgress)
                 || (((IMachineProgress) aTileEntity).isAllowedToWork() == (aCoverVariable % 2 == 0));
     }
 
     @Override
-    public boolean letsEnergyOut(ForgeDirection aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public boolean letsEnergyOut(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
         return aCoverVariable >= 2 ? aCoverVariable == 2
             : !(aTileEntity instanceof IMachineProgress)
                 || ((IMachineProgress) aTileEntity).isAllowedToWork() == (aCoverVariable % 2 == 0);
     }
 
     @Override
-    public boolean letsFluidIn(ForgeDirection aSide, int aCoverID, int aCoverVariable, Fluid aFluid,
+    public boolean letsFluidIn(ForgeDirection side, int aCoverID, int aCoverVariable, Fluid aFluid,
         ICoverable aTileEntity) {
         return aCoverVariable >= 2 ? aCoverVariable == 3
             : !(aTileEntity instanceof IMachineProgress)
@@ -99,7 +100,7 @@ public class GT_Cover_Shutter extends GT_CoverBehavior {
     }
 
     @Override
-    public boolean letsFluidOut(ForgeDirection aSide, int aCoverID, int aCoverVariable, Fluid aFluid,
+    public boolean letsFluidOut(ForgeDirection side, int aCoverID, int aCoverVariable, Fluid aFluid,
         ICoverable aTileEntity) {
         return aCoverVariable >= 2 ? aCoverVariable == 2
             : !(aTileEntity instanceof IMachineProgress)
@@ -107,7 +108,7 @@ public class GT_Cover_Shutter extends GT_CoverBehavior {
     }
 
     @Override
-    public boolean letsItemsIn(ForgeDirection aSide, int aCoverID, int aCoverVariable, int aSlot,
+    public boolean letsItemsIn(ForgeDirection side, int aCoverID, int aCoverVariable, int aSlot,
         ICoverable aTileEntity) {
         return aCoverVariable >= 2 ? aCoverVariable == 3
             : !(aTileEntity instanceof IMachineProgress)
@@ -115,7 +116,7 @@ public class GT_Cover_Shutter extends GT_CoverBehavior {
     }
 
     @Override
-    public boolean letsItemsOut(ForgeDirection aSide, int aCoverID, int aCoverVariable, int aSlot,
+    public boolean letsItemsOut(ForgeDirection side, int aCoverID, int aCoverVariable, int aSlot,
         ICoverable aTileEntity) {
         return aCoverVariable >= 2 ? aCoverVariable == 2
             : !(aTileEntity instanceof IMachineProgress)
@@ -123,12 +124,12 @@ public class GT_Cover_Shutter extends GT_CoverBehavior {
     }
 
     @Override
-    public boolean alwaysLookConnected(ForgeDirection aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public boolean alwaysLookConnected(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    public int getTickRate(ForgeDirection aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public int getTickRate(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
         return 0;
     }
 

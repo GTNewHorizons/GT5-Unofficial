@@ -10,9 +10,9 @@ public interface IPipeRenderedTileEntity extends ICoverable, ITexturedTileEntity
 
     byte getConnections();
 
-    ITexture[] getTextureUncovered(ForgeDirection aSide);
+    ITexture[] getTextureUncovered(ForgeDirection side);
 
-    default ITexture[] getTextureCovered(ForgeDirection aSide) {
-        return getTextureUncovered(aSide);
+    default ITexture[] getTextureCovered(ForgeDirection side) {
+        return getTextureUncovered(side);
     }
 }

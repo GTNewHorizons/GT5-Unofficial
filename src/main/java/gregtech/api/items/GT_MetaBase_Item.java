@@ -19,6 +19,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
 
@@ -167,8 +168,18 @@ public abstract class GT_MetaBase_Item extends GT_Generic_Item
         isItemStackUsable(aStack);
         ArrayList<IItemBehaviour<GT_MetaBase_Item>> tList = mItemBehaviors.get((short) getDamage(aStack));
         try {
-            if (tList != null) for (IItemBehaviour<GT_MetaBase_Item> tBehavior : tList)
-                if (tBehavior.onItemUseFirst(this, aStack, aPlayer, aWorld, aX, aY, aZ, aSide, hitX, hitY, hitZ)) {
+            if (tList != null) for (IItemBehaviour<GT_MetaBase_Item> tBehavior : tList) if (tBehavior.onItemUseFirst(
+                this,
+                aStack,
+                aPlayer,
+                aWorld,
+                aX,
+                aY,
+                aZ,
+                ForgeDirection.getOrientation(aSide),
+                hitX,
+                hitY,
+                hitZ)) {
                     if (aStack.stackSize <= 0) aPlayer.destroyCurrentEquippedItem();
                     return true;
                 }

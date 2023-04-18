@@ -1,6 +1,5 @@
 package gregtech.common.covers;
 
-import static gregtech.api.enums.GT_Values.SIDE_UNKNOWN;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
 import net.minecraft.block.Block;
@@ -28,40 +27,40 @@ public class GT_Cover_Vent extends GT_CoverBehavior {
     }
 
     @Override
-    public boolean isRedstoneSensitive(ForgeDirection aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
+    public boolean isRedstoneSensitive(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
         long aTimer) {
         return false;
     }
 
     @Override
-    public int doCoverThings(ForgeDirection aSide, byte aInputRedstone, int aCoverID, int aCoverVariable,
+    public int doCoverThings(ForgeDirection side, byte aInputRedstone, int aCoverID, int aCoverVariable,
         ICoverable aTileEntity, long aTimer) {
-        if (aSide == SIDE_UNKNOWN) return 0;
+        if (side == ForgeDirection.UNKNOWN) return 0;
         int ret = 0;
         if (aTileEntity instanceof IFluidHandler) {
-            ret = doCoolFluid(aSide, aTileEntity);
+            ret = doCoolFluid(side, aTileEntity);
         }
         if ((aTileEntity instanceof IMachineProgress)) {
-            ret = doProgressEfficiency(aSide, (IMachineProgress) aTileEntity, aCoverID);
+            ret = doProgressEfficiency(side, (IMachineProgress) aTileEntity, aCoverID);
         }
         return ret;
     }
 
     @Override
-    public boolean alwaysLookConnected(ForgeDirection aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public boolean alwaysLookConnected(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    public int getTickRate(ForgeDirection aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public int getTickRate(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
         return 100;
     }
 
-    protected int doProgressEfficiency(final ForgeDirection aSide, final IMachineProgress aTileEntity,
+    protected int doProgressEfficiency(final ForgeDirection side, final IMachineProgress aTileEntity,
         final int aCoverVariable) {
-        final int offsetX = aTileEntity.getOffsetX(aSide, 1);
-        final int offsetY = aTileEntity.getOffsetY(aSide, 1);
-        final int offsetZ = aTileEntity.getOffsetZ(aSide, 1);
+        final int offsetX = aTileEntity.getOffsetX(side, 1);
+        final int offsetY = aTileEntity.getOffsetY(side, 1);
+        final int offsetZ = aTileEntity.getOffsetZ(side, 1);
         final World world = aTileEntity.getWorld();
         if (aTileEntity.hasThingsToDo() && aCoverVariable != aTileEntity.getProgress()
             && !GT_Utility.hasBlockHitBox(world, offsetX, offsetY, offsetZ)) {
@@ -70,17 +69,17 @@ public class GT_Cover_Vent extends GT_CoverBehavior {
         return aTileEntity.getProgress();
     }
 
-    protected int doCoolFluid(final ForgeDirection aSide, final ICoverable aTileEntity) {
-        final int offsetX = aTileEntity.getOffsetX(aSide, 1);
-        final int offsetY = aTileEntity.getOffsetY(aSide, 1);
-        final int offsetZ = aTileEntity.getOffsetZ(aSide, 1);
+    protected int doCoolFluid(final ForgeDirection side, final ICoverable aTileEntity) {
+        final int offsetX = aTileEntity.getOffsetX(side, 1);
+        final int offsetY = aTileEntity.getOffsetY(side, 1);
+        final int offsetZ = aTileEntity.getOffsetZ(side, 1);
         final World world = aTileEntity.getWorld();
         final IFluidHandler fluidHandler = (IFluidHandler) aTileEntity;
         if (!fluidHandler.canDrain(ForgeDirection.UNKNOWN, IC2_HOT_COOLANT)) {
             return 0;
         }
         final int chances; // 10000 = 100%
-        final Block blockAtSide = aTileEntity.getBlockAtSide(aSide);
+        final Block blockAtSide = aTileEntity.getBlockAtSide(side);
         if (blockAtSide == null) {
             return 0;
         }

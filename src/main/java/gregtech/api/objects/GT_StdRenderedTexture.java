@@ -12,7 +12,7 @@ import gregtech.api.util.LightingHelper;
  * This ITexture implementation extends the GT_RenderedTexture class to render with bottom side flipped as with dumb
  * blocks rendering. It is used in Ore blocks rendering so they better blends with dumb block ores from vanilla or other
  * mods, when seen from bottom.
- * 
+ *
  * @deprecated Replaced by the {@link gregtech.api.render.TextureFactory} API.
  */
 @Deprecated
@@ -36,10 +36,10 @@ public class GT_StdRenderedTexture extends GT_RenderedTexture {
     public void renderYNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
         LightingHelper lighting = new LightingHelper(aRenderer);
         lighting.setupLightingYNeg(aBlock, aX, aY, aZ)
-            .setupColor(ForgeDirection.DOWN.ordinal(), mRGBa);
+            .setupColor(ForgeDirection.DOWN, mRGBa);
         aRenderer.renderFaceYNeg(aBlock, aX, aY, aZ, mIconContainer.getIcon());
         if (mIconContainer.getOverlayIcon() != null) {
-            lighting.setupColor(ForgeDirection.DOWN.ordinal(), 0xffffff);
+            lighting.setupColor(ForgeDirection.DOWN, 0xffffff);
             aRenderer.renderFaceYNeg(aBlock, aX, aY, aZ, mIconContainer.getOverlayIcon());
         }
     }

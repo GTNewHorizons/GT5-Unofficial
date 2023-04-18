@@ -8,6 +8,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -89,29 +90,29 @@ public class GT_Cover_WirelessMaintenanceDetector
     }
 
     @Override
-    public MaintenanceTransmitterData doCoverThingsImpl(ForgeDirection aSide, byte aInputRedstone, int aCoverID,
+    public MaintenanceTransmitterData doCoverThingsImpl(ForgeDirection side, byte aInputRedstone, int aCoverID,
         MaintenanceTransmitterData aCoverVariable, ICoverable aTileEntity, long aTimer) {
-        byte signal = computeSignalBasedOnMaintenance(aCoverVariable, aTileEntity);
-        long hash = hashCoverCoords(aTileEntity, aSide);
+        final byte signal = computeSignalBasedOnMaintenance(aCoverVariable, aTileEntity);
+        final long hash = hashCoverCoords(aTileEntity, side);
         setSignalAt(aCoverVariable.getUuid(), aCoverVariable.getFrequency(), hash, signal);
 
         return aCoverVariable;
     }
 
     @Override
-    public boolean letsRedstoneGoOutImpl(ForgeDirection aSide, int aCoverID, MaintenanceTransmitterData aCoverVariable,
+    public boolean letsRedstoneGoOutImpl(ForgeDirection side, int aCoverID, MaintenanceTransmitterData aCoverVariable,
         ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    protected boolean manipulatesSidedRedstoneOutputImpl(ForgeDirection aSide, int aCoverID,
+    protected boolean manipulatesSidedRedstoneOutputImpl(ForgeDirection side, int aCoverID,
         MaintenanceTransmitterData aCoverVariable, ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    public int getTickRateImpl(ForgeDirection aSide, int aCoverID, MaintenanceTransmitterData aCoverVariable,
+    public int getTickRateImpl(ForgeDirection side, int aCoverID, MaintenanceTransmitterData aCoverVariable,
         ICoverable aTileEntity) {
         return 60;
     }

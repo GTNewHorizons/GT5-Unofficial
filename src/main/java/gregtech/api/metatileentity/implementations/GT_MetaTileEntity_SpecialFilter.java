@@ -5,6 +5,7 @@ import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizons.modularui.api.drawable.Text;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -66,9 +67,9 @@ public abstract class GT_MetaTileEntity_SpecialFilter extends GT_MetaTileEntity_
     }
 
     @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection aSide,
+    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
-        return (super.allowPutStack(aBaseMetaTileEntity, aIndex, aSide, aStack))
+        return (super.allowPutStack(aBaseMetaTileEntity, aIndex, side, aStack))
             && ((this.bNBTAllowed) || (!aStack.hasTagCompound()))
             && (this.isStackAllowed(aStack) != this.bInvertFilter);
     }

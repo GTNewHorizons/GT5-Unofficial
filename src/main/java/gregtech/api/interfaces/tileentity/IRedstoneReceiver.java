@@ -14,7 +14,7 @@ public interface IRedstoneReceiver extends IHasWorldObjectAndCoords {
      * Input Redstone This returns the true incoming Redstone Signal. Only Cover Behaviors should check it, not
      * MetaTileEntities.
      */
-    byte getInputRedstoneSignal(ForgeDirection aSide);
+    byte getInputRedstoneSignal(ForgeDirection side);
 
     /**
      * gets the strongest Redstone Level the TileEntity receives
@@ -29,5 +29,5 @@ public interface IRedstoneReceiver extends IHasWorldObjectAndCoords {
     /**
      * gets if the TileEntity receives Redstone at this Side
      */
-    boolean getRedstone(ForgeDirection aSide);
+    boolean getRedstone(ForgeDirection side);
 }

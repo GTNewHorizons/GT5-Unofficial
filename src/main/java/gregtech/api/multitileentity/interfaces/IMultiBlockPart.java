@@ -1,6 +1,7 @@
 package gregtech.api.multitileentity.interfaces;
 
 import net.minecraft.util.ChunkCoordinates;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public interface IMultiBlockPart extends IMultiTileEntity {
 
@@ -12,5 +13,5 @@ public interface IMultiBlockPart extends IMultiTileEntity {
 
     int getLockedInventoryIndex();
 
-    boolean tickCoverAtSide(ForgeDirection aSide, long aTickTimer);
+    boolean tickCoverAtSide(ForgeDirection side, long aTickTimer);
 }

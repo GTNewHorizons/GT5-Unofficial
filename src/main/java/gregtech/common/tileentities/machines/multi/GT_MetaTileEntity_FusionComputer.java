@@ -19,6 +19,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.google.common.collect.ImmutableMap;
@@ -156,9 +157,9 @@ public abstract class GT_MetaTileEntity_FusionComputer
     public abstract MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity);
 
     @Override
-    public boolean allowCoverOnSide(ForgeDirection aSide, GT_ItemStack aStack) {
+    public boolean allowCoverOnSide(ForgeDirection side, GT_ItemStack aStack) {
 
-        return aSide != getBaseMetaTileEntity().getFrontFacing();
+        return side != getBaseMetaTileEntity().getFrontFacing();
     }
 
     @Override
@@ -243,9 +244,9 @@ public abstract class GT_MetaTileEntity_FusionComputer
     public abstract int getFusionCoilMeta();
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection aSide, ForgeDirection aFacing,
-        byte aColorIndex, boolean aActive, boolean aRedstone) {
-        if (aSide == aFacing) return new ITexture[] { TextureFactory.builder()
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        if (side == aFacing) return new ITexture[] { TextureFactory.builder()
             .addIcon(MACHINE_CASING_FUSION_GLASS)
             .extFacing()
             .build(), getTextureOverlay() };

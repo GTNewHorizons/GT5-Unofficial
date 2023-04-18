@@ -7,6 +7,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
@@ -25,7 +26,8 @@ import gregtech.api.util.GT_Utility;
 public class GT_MetaTileEntity_ItemDistributor extends GT_MetaTileEntity_Buffer implements IAddUIWidgets {
 
     private byte[] itemsPerSide = new byte[6];
-    private byte currentSide = 0, currentSideItemCount = 0;
+    private ForgeDirection currentSide = ForgeDirection.DOWN;
+    private byte currentSideItemCount = 0;
 
     public GT_MetaTileEntity_ItemDistributor(int aID, String aName, String aNameRegional, int aTier) {
         super(
@@ -74,18 +76,18 @@ public class GT_MetaTileEntity_ItemDistributor extends GT_MetaTileEntity_Buffer 
     }
 
     @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection aSide,
+    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
-        return aSide == aBaseMetaTileEntity.getFrontFacing();
+        return side == aBaseMetaTileEntity.getFrontFacing();
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection aSide, ForgeDirection aFacing,
-        byte aColorIndex, boolean aActive, boolean aRedstone) {
-        if (aSide == aFacing) {
-            return mTextures[0][aColorIndex + 1];
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        if (side == aFacing) {
+            return mTextures[0][colorIndex + 1];
         } else {
-            return mTextures[1][aColorIndex + 1];
+            return mTextures[1][colorIndex + 1];
         }
     }
 
@@ -101,13 +103,13 @@ public class GT_MetaTileEntity_ItemDistributor extends GT_MetaTileEntity_Buffer 
     }
 
     @Override
-    public boolean isInputFacing(ForgeDirection aSide) {
-        return getBaseMetaTileEntity().getFrontFacing() == aSide || itemsPerSide[aSide] == 0;
+    public boolean isInputFacing(ForgeDirection side) {
+        return getBaseMetaTileEntity().getFrontFacing() == side || itemsPerSide[side.ordinal()] == 0;
     }
 
     @Override
-    public boolean isOutputFacing(ForgeDirection aSide) {
-        return getBaseMetaTileEntity().getFrontFacing() != aSide && itemsPerSide[aSide] > 0;
+    public boolean isOutputFacing(ForgeDirection side) {
+        return getBaseMetaTileEntity().getFrontFacing() != side && itemsPerSide[side.ordinal()] > 0;
     }
 
     @Override
@@ -122,18 +124,20 @@ public class GT_MetaTileEntity_ItemDistributor extends GT_MetaTileEntity_Buffer 
         if (itemsPerSide.length != 6) {
             itemsPerSide = new byte[6];
         }
-        currentSide = aNBT.getByte("mCurrentSide");
+        currentSide = ForgeDirection.getOrientation(aNBT.getByte("mCurrentSide"));
         currentSideItemCount = aNBT.getByte("mCurrentSideItemCount");
     }
 
     @Override
     protected void moveItems(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
+        int currentSideOrdinal = currentSide.ordinal();
         fillStacksIntoFirstSlots();
         int movedItems;
         TileEntity adjacentTileEntity = aBaseMetaTileEntity.getTileEntityAtSide(currentSide);
         int inspectedSides = 0;
-        while (itemsPerSide[currentSide] == 0) {
-            currentSide = (byte) ((currentSide + 1) % 6);
+        while (itemsPerSide[currentSideOrdinal] == 0) {
+            currentSideOrdinal = ((currentSideOrdinal + 1) % 6);
+            currentSide = ForgeDirection.getOrientation(currentSideOrdinal);
             currentSideItemCount = 0;
             adjacentTileEntity = aBaseMetaTileEntity.getTileEntityAtSide(currentSide);
             inspectedSides += 1;
@@ -145,16 +149,17 @@ public class GT_MetaTileEntity_ItemDistributor extends GT_MetaTileEntity_Buffer 
             aBaseMetaTileEntity,
             adjacentTileEntity,
             currentSide,
-            GT_Utility.getOppositeSide(currentSide),
+            currentSide.getOpposite(),
             null,
             false,
             (byte) 64,
             (byte) 1,
-            (byte) (itemsPerSide[currentSide] - currentSideItemCount),
+            (byte) (itemsPerSide[currentSideOrdinal] - currentSideItemCount),
             (byte) 1);
         currentSideItemCount += movedItems;
-        if (currentSideItemCount >= itemsPerSide[currentSide]) {
-            currentSide = (byte) ((currentSide + 1) % 6);
+        if (currentSideItemCount >= itemsPerSide[currentSideOrdinal]) {
+            currentSideOrdinal = ((currentSideOrdinal + 1) % 6);
+            currentSide = ForgeDirection.getOrientation(currentSideOrdinal);
             currentSideItemCount = 0;
         }
         if (movedItems > 0 || aBaseMetaTileEntity.hasInventoryBeenModified()) {
@@ -164,18 +169,19 @@ public class GT_MetaTileEntity_ItemDistributor extends GT_MetaTileEntity_Buffer 
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        final int ordinalSide = side.ordinal();
         // Adjust items per side by 1 or -1, constrained to the cyclic interval [0, 127]
-        itemsPerSide[aSide] += aPlayer.isSneaking() ? -1 : 1;
-        itemsPerSide[aSide] = (byte) ((itemsPerSide[aSide] + 128) % 128);
-        GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("211", "Items per side: ") + itemsPerSide[aSide]);
+        itemsPerSide[ordinalSide] += aPlayer.isSneaking() ? -1 : 1;
+        itemsPerSide[ordinalSide] = (byte) ((itemsPerSide[ordinalSide] + 128) % 128);
+        GT_Utility.sendChatToPlayer(aPlayer, GT_Utility.trans("211", "Items per side: ") + itemsPerSide[ordinalSide]);
     }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setByteArray("mItemsPerSide", itemsPerSide);
-        aNBT.setByte("mCurrentSide", currentSide);
+        aNBT.setByte("mCurrentSide", (byte) currentSide.ordinal());
         aNBT.setByte("mCurrentSideItemCount", currentSideItemCount);
     }
 

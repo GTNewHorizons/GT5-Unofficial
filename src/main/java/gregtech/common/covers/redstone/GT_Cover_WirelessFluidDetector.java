@@ -7,6 +7,7 @@ import javax.annotation.Nonnull;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import com.google.common.io.ByteArrayDataInput;
 import com.gtnewhorizons.modularui.api.math.MathExpression;
@@ -41,24 +42,24 @@ public class GT_Cover_WirelessFluidDetector
     }
 
     @Override
-    public FluidTransmitterData doCoverThingsImpl(ForgeDirection aSide, byte aInputRedstone, int aCoverID,
+    public FluidTransmitterData doCoverThingsImpl(ForgeDirection side, byte aInputRedstone, int aCoverID,
         FluidTransmitterData aCoverVariable, ICoverable aTileEntity, long aTimer) {
-        byte signal = GT_Cover_LiquidMeter
+        final byte signal = GT_Cover_LiquidMeter
             .computeSignalBasedOnFluid(aTileEntity, aCoverVariable.invert, aCoverVariable.threshold);
-        long hash = hashCoverCoords(aTileEntity, aSide);
+        final long hash = hashCoverCoords(aTileEntity, side);
         setSignalAt(aCoverVariable.getUuid(), aCoverVariable.getFrequency(), hash, signal);
 
         return aCoverVariable;
     }
 
     @Override
-    public boolean letsRedstoneGoOutImpl(ForgeDirection aSide, int aCoverID, FluidTransmitterData aCoverVariable,
+    public boolean letsRedstoneGoOutImpl(ForgeDirection side, int aCoverID, FluidTransmitterData aCoverVariable,
         ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    protected boolean manipulatesSidedRedstoneOutputImpl(ForgeDirection aSide, int aCoverID,
+    protected boolean manipulatesSidedRedstoneOutputImpl(ForgeDirection side, int aCoverID,
         FluidTransmitterData aCoverVariable, ICoverable aTileEntity) {
         return true;
     }
