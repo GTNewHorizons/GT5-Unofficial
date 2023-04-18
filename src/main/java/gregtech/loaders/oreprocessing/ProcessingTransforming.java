@@ -157,9 +157,8 @@ public class ProcessingTransforming implements IOreRecipeRegistrator {
                     (int) Math.max(16L, aPrefix.mMaterialAmount * 128L / GT_Values.M),
                     (int) TierEU.IV / 2);
             }
-                break;
 
-            case "TengamPurified":
+            case "TengamPurified" ->
             // Polarizer recipes
             {
                 GT_Values.RA.addPolarizerRecipe(
@@ -168,7 +167,6 @@ public class ProcessingTransforming implements IOreRecipeRegistrator {
                     (int) Math.max(16L, aPrefix.mMaterialAmount * 128L / GT_Values.M),
                     (int) TierEU.RECIPE_UHV);
             }
-                break;
 
             default -> { /* NO-OP */ }
         }
