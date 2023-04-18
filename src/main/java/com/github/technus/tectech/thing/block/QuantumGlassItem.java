@@ -23,7 +23,7 @@ public class QuantumGlassItem extends ItemBlock {
     }
 
     @Override
-    public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean aF3_H) {
+    public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
         aList.add(TEC_MARK_EM);
         aList.add(translateToLocal("tile.quantumGlass.desc.0")); // Dense yet transparent
         aList.add(

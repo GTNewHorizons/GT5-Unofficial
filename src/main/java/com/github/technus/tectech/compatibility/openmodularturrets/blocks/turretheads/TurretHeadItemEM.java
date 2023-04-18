@@ -26,7 +26,7 @@ public class TurretHeadItemEM extends ItemBlock {
     }
 
     @Override
-    public void addInformation(ItemStack p_77624_1_, EntityPlayer p_77624_2_, List list, boolean p_77624_4_) {
+    public void addInformation(ItemStack p_77624_1_, EntityPlayer p_77624_2_, List<String> list, boolean p_77624_4_) {
         list.add(TEC_MARK_EM);
         list.add("");
         list.add(EnumChatFormatting.GOLD + "--" + translateToLocal("tooltip.info") + "--");

@@ -23,7 +23,7 @@ public class GT_Item_CasingsTT extends GT_Item_Casings_Abstract {
     }
 
     @Override
-    public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean aF3_H) {
+    public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
         if (aStack.getItemDamage() < 15) {
             aList.add(TEC_MARK_EM);
         } else {

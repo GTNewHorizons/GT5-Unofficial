@@ -87,7 +87,7 @@ public class ChunkDataHandler {
         } else if (!chunkMemory.isLoaded) {
             chunkMemory.isLoaded = true;
 
-            Set<String> tagsDuplicated = new HashSet(loadedKeys);
+            Set<String> tagsDuplicated = new HashSet<>(loadedKeys);
             tagsDuplicated.retainAll(chunkMemory.data.func_150296_c());
 
             if (tagsDuplicated.isEmpty()) {
@@ -204,7 +204,7 @@ public class ChunkDataHandler {
     public void registerChunkMetaDataHandler(IChunkMetaDataHandler handler) {
         metaDataHandlerHashMap.put(handler.getTagName(), handler);
         dimensionWiseMetaChunkData.put(handler.getTagName(), new HashMap<>());
-        Class clazz = handler.getClass();
+        Class<?> clazz = handler.getClass();
         try {
             if (clazz.getMethod("tickServer", HashMap.class, TickEvent.ServerTickEvent.class).getDeclaringClass()
                     != IChunkMetaDataHandler.class) {

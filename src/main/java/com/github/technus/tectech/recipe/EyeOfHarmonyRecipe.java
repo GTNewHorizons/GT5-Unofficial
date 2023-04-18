@@ -44,7 +44,7 @@ public class EyeOfHarmonyRecipe {
             Materials.Universium.getMolten(1152), Materials.Universium.getMolten(4_608),
             Materials.Universium.getMolten(18_432) };
 
-    HashingStrategy<ItemStack> itemStackHashingStrategy = new HashingStrategy<ItemStack>() {
+    HashingStrategy<ItemStack> itemStackHashingStrategy = new HashingStrategy<>() {
 
         @Override
         public int computeHashCode(ItemStack stack) {
@@ -461,7 +461,7 @@ public class EyeOfHarmonyRecipe {
             Materials.Oxygen,
             Materials.Tin).collect(Collectors.toList());
 
-    private static final HashMap<String, Long> plasmaEnergyMap = new HashMap<String, Long>() {
+    private static final HashMap<String, Long> plasmaEnergyMap = new HashMap<>() {
 
         {
             VALID_PLASMAS.forEach(

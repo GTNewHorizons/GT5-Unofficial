@@ -29,7 +29,7 @@ public final class EnderFluidLinkCover extends Item {
     }
 
     @Override
-    public void addInformation(ItemStack aStack, EntityPlayer ep, List aList, boolean boo) {
+    public void addInformation(ItemStack aStack, EntityPlayer ep, List<String> aList, boolean boo) {
         aList.add(CommonValues.THETA_MOVEMENT);
         aList.add(translateToLocal("item.tm.enderfluidlinkcover.desc.0")); // Ender-Fluid-Enables Machines!
         aList.add(EnumChatFormatting.BLUE + translateToLocal("item.tm.enderfluidlinkcover.desc.1")); // Use on any side

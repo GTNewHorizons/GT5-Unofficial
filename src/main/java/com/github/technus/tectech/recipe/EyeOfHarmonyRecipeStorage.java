@@ -32,7 +32,7 @@ public class EyeOfHarmonyRecipeStorage {
     private static final double CHANCE_DECREASE_PER_DIMENSION = 0.05;
 
     // Map is unique so this is fine.
-    HashMap<Block, String> blocksMapInverted = new HashMap<Block, String>() {
+    HashMap<Block, String> blocksMapInverted = new HashMap<>() {
 
         {
             ModBlocks.blocks.forEach((dimString, dimBlock) -> { put(dimBlock, dimString); });

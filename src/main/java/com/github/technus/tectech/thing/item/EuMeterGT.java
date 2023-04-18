@@ -152,7 +152,7 @@ public class EuMeterGT extends Item {
     }
 
     @Override
-    public void addInformation(ItemStack aStack, EntityPlayer ep, List aList, boolean boo) {
+    public void addInformation(ItemStack aStack, EntityPlayer ep, List<String> aList, boolean boo) {
         aList.add(CommonValues.TEC_MARK_GENERAL);
         aList.add(translateToLocal("item.em.EuMeterGT.desc.0")); // Measures basic EU related stuff
         aList.add(EnumChatFormatting.BLUE + translateToLocal("item.em.EuMeterGT.desc.1")); // Just right click on

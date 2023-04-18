@@ -28,7 +28,7 @@ public final class TeslaStaff extends Item {
     }
 
     @Override
-    public void addInformation(ItemStack aStack, EntityPlayer ep, List aList, boolean boo) {
+    public void addInformation(ItemStack aStack, EntityPlayer ep, List<String> aList, boolean boo) {
         aList.add(CommonValues.THETA_MOVEMENT);
         aList.add(translateToLocal("item.tm.teslaStaff.desc"));
     }

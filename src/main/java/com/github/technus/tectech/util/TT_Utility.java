@@ -381,6 +381,7 @@ public final class TT_Utility {
         return objects;
     }
 
+    @SafeVarargs
     public static <T> NBTTagCompound packNBT(Function<T, NBTTagCompound> converter, T... info) {
         NBTTagCompound nbt = new NBTTagCompound();
         nbt.setInteger("i", info.length);

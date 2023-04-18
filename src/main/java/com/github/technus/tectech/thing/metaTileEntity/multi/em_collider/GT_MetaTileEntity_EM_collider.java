@@ -487,11 +487,13 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
                                                                                                           // bigger
                                                                                                           // first
                 colliderHandler = FUSE_HANDLERS.get(
-                        (stack2.getDefinition().getMatterMassType() << 16) | stack.getDefinition().getMatterMassType());
+                        (long) (stack2.getDefinition().getMatterMassType() << 16)
+                                | stack.getDefinition().getMatterMassType());
                 if (handleRecipe(stack2, map, colliderHandler)) return 0;
             } else {
                 colliderHandler = FUSE_HANDLERS.get(
-                        (stack.getDefinition().getMatterMassType() << 16) | stack2.getDefinition().getMatterMassType());
+                        (long) (stack.getDefinition().getMatterMassType() << 16)
+                                | stack2.getDefinition().getMatterMassType());
                 if (handleRecipe(stack2, map, colliderHandler)) return 0;
             }
             for (EMInstanceStack newStack : map.valuesToArray()) {
@@ -519,11 +521,13 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
                                                                                                           // bigger
                                                                                                           // first
                 colliderHandler = FUSE_HANDLERS.get(
-                        (stack2.getDefinition().getMatterMassType() << 16) | stack.getDefinition().getMatterMassType());
+                        (long) (stack2.getDefinition().getMatterMassType() << 16)
+                                | stack.getDefinition().getMatterMassType());
                 if (handleRecipe(stack2, map, colliderHandler)) return 0;
             } else {
                 colliderHandler = FUSE_HANDLERS.get(
-                        (stack.getDefinition().getMatterMassType() << 16) | stack2.getDefinition().getMatterMassType());
+                        (long) (stack.getDefinition().getMatterMassType() << 16)
+                                | stack2.getDefinition().getMatterMassType());
                 if (handleRecipe(stack2, map, colliderHandler)) return 0;
             }
             outputEM = new EMInstanceStackMap[] { map };

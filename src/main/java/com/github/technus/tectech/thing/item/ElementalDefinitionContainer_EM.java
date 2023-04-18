@@ -95,7 +95,7 @@ public final class ElementalDefinitionContainer_EM extends Item implements IElem
     }
 
     @Override
-    public void addInformation(ItemStack aStack, EntityPlayer ep, List aList, boolean boo) {
+    public void addInformation(ItemStack aStack, EntityPlayer ep, List<String> aList, boolean boo) {
         aList.add(CommonValues.TEC_MARK_EM);
         try {
             NBTTagCompound tNBT = aStack.getTagCompound();
@@ -118,7 +118,7 @@ public final class ElementalDefinitionContainer_EM extends Item implements IElem
     }
 
     @Override
-    public void getSubItems(Item item, CreativeTabs tab, List list) {
+    public void getSubItems(Item item, CreativeTabs tab, List<ItemStack> list) {
         ItemStack that = new ItemStack(this, 1);
         that.setTagCompound(new NBTTagCompound());
         list.add(that);
