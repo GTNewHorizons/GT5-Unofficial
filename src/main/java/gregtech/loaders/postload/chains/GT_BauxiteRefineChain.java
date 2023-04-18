@@ -2,6 +2,7 @@ package gregtech.loaders.postload.chains;
 
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sChemicalBathRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sMixerRecipes;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sMultiblockChemicalRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 
@@ -51,16 +52,27 @@ public class GT_BauxiteRefineChain {
             160,
             400);
 
-        GT_Values.RA.addMultiblockChemicalRecipe(
-            new ItemStack[] { Materials.Aluminiumhydroxide.getDust(1), },
-            new FluidStack[] { Materials.CarbonDioxide.getGas(5000),
-                MaterialsOreAlum.HeatedBauxiteSlurry.getFluid(8000) },
-            new FluidStack[] { MaterialsOreAlum.SluiceJuice.getFluid(5000), },
-            new ItemStack[] { Materials.Aluminiumoxide.getDust(64), Materials.Aluminiumoxide.getDust(16),
-                Materials.SodiumCarbonate.getDust(9), Materials.Calcite.getDust(10),
-                MaterialsOreAlum.BauxiteSlag.getDust(16) },
-            300,
-            480);
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                Materials.Aluminiumhydroxide.getDust(1)
+            )
+            .itemOutputs(
+                Materials.Aluminiumoxide.getDust(64),
+                Materials.Aluminiumoxide.getDust(16),
+                Materials.SodiumCarbonate.getDust(9),
+                Materials.Calcite.getDust(10),
+                MaterialsOreAlum.BauxiteSlag.getDust(16)
+            )
+            .fluidInputs(
+                Materials.CarbonDioxide.getGas(5000),
+                MaterialsOreAlum.HeatedBauxiteSlurry.getFluid(8000)
+            )
+            .fluidOutputs(
+                MaterialsOreAlum.SluiceJuice.getFluid(5000)
+            )
+            .duration(15*SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(sMultiblockChemicalRecipes);
 
         GT_Values.RA.addCentrifugeRecipe(
             MaterialsOreAlum.BauxiteSlag.getDust(1),

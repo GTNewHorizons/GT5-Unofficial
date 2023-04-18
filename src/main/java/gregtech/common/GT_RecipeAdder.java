@@ -451,6 +451,7 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         return true;
     }
 
+    @Deprecated
     @Override
     public boolean addMultiblockChemicalRecipe(ItemStack[] aInputs, FluidStack[] aFluidInputs,
         FluidStack[] aFluidOutputs, ItemStack[] aOutputs, int aDuration, int aEUtick) {
