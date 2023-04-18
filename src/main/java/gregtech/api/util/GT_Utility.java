@@ -3667,18 +3667,6 @@ public class GT_Utility {
         });
     }
 
-    // public static String formatNumbers(BigInteger aNumber) {
-    // return getDecimalFormat().format(aNumber);
-    // }
-    //
-    // public static String formatNumbers(long aNumber) {
-    // return getDecimalFormat().format(aNumber);
-    // }
-    //
-//     public static String formatNumbers(double aNumber) {
-//     return getDecimalFormat().format(aNumber);
-//     }
-
     private static final BigInteger TRILLION = BigInteger.TEN.pow(12);
 
     public static String formatNumbers(Number number) {
@@ -3693,15 +3681,19 @@ public class GT_Utility {
         // Whole number handling.
         final BigInteger bigIntValue = new BigInteger(number.toString());
 
-        if (bigIntValue.abs().compareTo(TRILLION) >= 0) {
+        // If value > 1 Trillion use standard form.
+        if (bigIntValue.abs()
+            .compareTo(TRILLION) >= 0) {
 
             // Convert the number to standard form.
 
+            // Exponent of standard form.
             int exponent = bigIntValue.toString()
                 .length() - 1;
 
-            // Digits
-            BigDecimal bigDigits = new BigDecimal(bigIntValue).divide(new BigDecimal(BigInteger.TEN.pow(exponent)), 3, RoundingMode.HALF_UP);
+            // Digits of standard form.
+            BigDecimal bigDigits = new BigDecimal(bigIntValue)
+                .divide(new BigDecimal(BigInteger.TEN.pow(exponent)), 3, RoundingMode.HALF_UP);
             double digits = bigDigits.doubleValue();
 
             exponent += (bigIntValue.signum() < 0 ? 1 : 0);
