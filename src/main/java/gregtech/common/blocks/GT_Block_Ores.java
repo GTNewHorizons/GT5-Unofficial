@@ -47,16 +47,16 @@ public class GT_Block_Ores extends GT_Block_Ores_Abstract {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int side, int meta) {
+    public IIcon getIcon(int ordinalSide, int meta) {
         int index = ((meta / 1000) % 16);
         return switch (index) {
-            case 1 -> Blocks.netherrack.getIcon(side, 0);
-            case 2 -> Blocks.end_stone.getIcon(side, 0);
+            case 1 -> Blocks.netherrack.getIcon(ordinalSide, 0);
+            case 2 -> Blocks.end_stone.getIcon(ordinalSide, 0);
             case 3 -> GRANITE_BLACK_STONE.getIcon();
             case 4 -> GRANITE_RED_STONE.getIcon();
             case 5 -> MARBLE_STONE.getIcon();
             case 6 -> BASALT_STONE.getIcon();
-            default -> Blocks.stone.getIcon(side, 0);
+            default -> Blocks.stone.getIcon(ordinalSide, 0);
         };
     }
 

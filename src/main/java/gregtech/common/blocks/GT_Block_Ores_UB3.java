@@ -36,8 +36,8 @@ public class GT_Block_Ores_UB3 extends GT_Block_Ores_Abstract {
     }
 
     @Override
-    public IIcon getIcon(int side, int meta) {
-        return aUBBlock.getIcon(side, (meta / 1000) % 8);
+    public IIcon getIcon(int ordinalSide, int meta) {
+        return aUBBlock.getIcon(ordinalSide, (meta / 1000) % 8);
     }
 
     @Override

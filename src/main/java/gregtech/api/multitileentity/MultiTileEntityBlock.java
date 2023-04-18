@@ -323,12 +323,12 @@ public class MultiTileEntityBlock extends Block
     }
 
     @Override
-    public boolean onBlockActivated(World aWorld, int aX, int aY, int aZ, EntityPlayer aPlayer, int side, float aHitX,
+    public boolean onBlockActivated(World aWorld, int aX, int aY, int aZ, EntityPlayer aPlayer, int ordinalSide, float aHitX,
         float aHitY, float aHitZ) {
         final TileEntity aTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (aPlayer != null && ItemList.TC_Thaumometer.isStackEqual(aPlayer.getHeldItem(), true, true)) return false;
         return aTileEntity instanceof IMultiTileEntity mte
-            && mte.onBlockActivated(aPlayer, ForgeDirection.getOrientation(side), aHitX, aHitY, aHitZ);
+            && mte.onBlockActivated(aPlayer, ForgeDirection.getOrientation(ordinalSide), aHitX, aHitY, aHitZ);
     }
 
     @Override
@@ -426,11 +426,11 @@ public class MultiTileEntityBlock extends Block
     }
 
     @Override
-    public Block getFacade(IBlockAccess aWorld, int aX, int aY, int aZ, int side) {
+    public Block getFacade(IBlockAccess aWorld, int aX, int aY, int aZ, int ordinalSide) {
         final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (tTileEntity instanceof CoverableTileEntity tile) {
-            final ForgeDirection aSide = ForgeDirection.getOrientation(side);
-            if (side != -1) {
+            final ForgeDirection aSide = ForgeDirection.getOrientation(ordinalSide);
+            if (ordinalSide != -1) {
                 final Block facadeBlock = tile.getCoverInfoAtSide(aSide)
                     .getFacadeBlock();
                 if (facadeBlock != null) return facadeBlock;
@@ -450,11 +450,11 @@ public class MultiTileEntityBlock extends Block
     }
 
     @Override
-    public int getFacadeMetadata(IBlockAccess aWorld, int aX, int aY, int aZ, int side) {
+    public int getFacadeMetadata(IBlockAccess aWorld, int aX, int aY, int aZ, int ordinalSide) {
         final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (tTileEntity instanceof CoverableTileEntity tile) {
-            final ForgeDirection aSide = ForgeDirection.getOrientation(side);
-            if (side != -1) {
+            final ForgeDirection aSide = ForgeDirection.getOrientation(ordinalSide);
+            if (ordinalSide != -1) {
                 final CoverInfo coverInfo = tile.getCoverInfoAtSide(aSide);
                 final Block facadeBlock = coverInfo.getFacadeBlock();
                 if (facadeBlock != null) return coverInfo.getFacadeMeta();

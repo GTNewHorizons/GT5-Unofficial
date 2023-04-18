@@ -483,25 +483,25 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
 
     @SideOnly(Side.CLIENT)
     public static void addHitEffects(EffectRenderer effectRenderer, Block block, World world, int x, int y, int z,
-        int side) {
+        int ordinalSide) {
         double rX = x + XSTR.XSTR_INSTANCE.nextDouble() * 0.8 + 0.1;
         double rY = y + XSTR.XSTR_INSTANCE.nextDouble() * 0.8 + 0.1;
         double rZ = z + XSTR.XSTR_INSTANCE.nextDouble() * 0.8 + 0.1;
-        if (side == 0) {
+        if (ordinalSide == 0) {
             rY = y - 0.1;
-        } else if (side == 1) {
+        } else if (ordinalSide == 1) {
             rY = y + 1.1;
-        } else if (side == 2) {
+        } else if (ordinalSide == 2) {
             rZ = z - 0.1;
-        } else if (side == 3) {
+        } else if (ordinalSide == 3) {
             rZ = z + 1.1;
-        } else if (side == 4) {
+        } else if (ordinalSide == 4) {
             rX = x - 0.1;
-        } else if (side == 5) {
+        } else if (ordinalSide == 5) {
             rX = x + 1.1;
         }
         effectRenderer.addEffect(
-            (new EntityDiggingFX(world, rX, rY, rZ, 0.0, 0.0, 0.0, block, block.getDamageValue(world, x, y, z), side))
+            (new EntityDiggingFX(world, rX, rY, rZ, 0.0, 0.0, 0.0, block, block.getDamageValue(world, x, y, z), ordinalSide))
                 .applyColourMultiplier(x, y, z)
                 .multiplyVelocity(0.2F)
                 .multipleParticleScaleBy(0.6F));

@@ -88,8 +88,8 @@ public abstract class GenerateNodeMap {
         ArrayList<MetaPipeEntity> aPipes, ForgeDirection side, ArrayList<ConsumerNode> aConsumers,
         HashSet<Node> aNodeMap) {
         if (aTileEntity.isInvalid()) return null;
-        final ForgeDirection tSideOp = side.getOpposite();
-        final ForgeDirection tInvalidSide = aPreviousNode == null ? ForgeDirection.UNKNOWN : tSideOp;
+        final ForgeDirection oppositeSide = side.getOpposite();
+        final ForgeDirection tInvalidSide = aPreviousNode == null ? ForgeDirection.UNKNOWN : oppositeSide;
         Node tThisNode = null;
         if (isPipe(aTileEntity)) {
             final BaseMetaPipeEntity tPipe = (BaseMetaPipeEntity) aTileEntity;
@@ -97,10 +97,10 @@ public abstract class GenerateNodeMap {
             final int tConnections = getNumberOfConnections(tMetaPipe);
             final Node tPipeNode;
             if (tConnections == 1) {
-                tPipeNode = getEmptyNode(aNextNodeValue, tSideOp, aTileEntity, aConsumers);
+                tPipeNode = getEmptyNode(aNextNodeValue, oppositeSide, aTileEntity, aConsumers);
                 if (tPipeNode == null) return null;
             } else {
-                tPipeNode = getPipeNode(aNextNodeValue, tSideOp, aTileEntity, aConsumers);
+                tPipeNode = getPipeNode(aNextNodeValue, oppositeSide, aTileEntity, aConsumers);
             }
             tPipe.setNode(tPipeNode);
             aNodeMap.add(tPipeNode);
@@ -111,21 +111,21 @@ public abstract class GenerateNodeMap {
                 tPipeNode.mNeighbourNodes[iInvalid] = aPreviousNode;
                 tPipeNode.mNodePaths[iInvalid] = getNewPath(aPipes.toArray(new MetaPipeEntity[0]));
                 final Lock lock = new Lock();
-                tPipeNode.mNodePaths[tSideOp.ordinal()].lock = lock;
+                tPipeNode.mNodePaths[oppositeSide.ordinal()].lock = lock;
                 tPipeNode.locks[iInvalid] = lock;
                 aPreviousNode.returnValues.mReturnPath = tPipeNode.mNodePaths[iInvalid];
                 aPreviousNode.returnValues.returnLock = lock;
             }
             if (tConnections > 1)
                 generateNextNode(tPipe, tPipeNode, tInvalidSide, aNextNodeValue, aConsumers, aNodeMap);
-        } else if (addConsumer(aTileEntity, tSideOp, aNextNodeValue, aConsumers)) {
-            final int i = tSideOp.ordinal();
+        } else if (addConsumer(aTileEntity, oppositeSide, aNextNodeValue, aConsumers)) {
+            final int oppositeSideOrdinal = oppositeSide.ordinal();
             final ConsumerNode tConsumeNode = aConsumers.get(aConsumers.size() - 1);
-            tConsumeNode.mNeighbourNodes[i] = aPreviousNode;
-            tConsumeNode.mNodePaths[i] = getNewPath(aPipes.toArray(new MetaPipeEntity[0]));
+            tConsumeNode.mNeighbourNodes[oppositeSideOrdinal] = aPreviousNode;
+            tConsumeNode.mNodePaths[oppositeSideOrdinal] = getNewPath(aPipes.toArray(new MetaPipeEntity[0]));
             final Lock lock = new Lock();
-            tConsumeNode.mNodePaths[i].lock = lock;
-            aPreviousNode.returnValues.mReturnPath = tConsumeNode.mNodePaths[i];
+            tConsumeNode.mNodePaths[oppositeSideOrdinal].lock = lock;
+            aPreviousNode.returnValues.mReturnPath = tConsumeNode.mNodePaths[oppositeSideOrdinal];
             aPreviousNode.returnValues.returnLock = lock;
             tThisNode = tConsumeNode;
         }
