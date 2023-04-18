@@ -62,14 +62,6 @@ public class CuttingRecipes implements Runnable {
 
         }
 
-        // doesnt seem to be in game?
-        recipeWithClassicFluids(
-            new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.block, Materials.Graphite, 1) },
-            new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Graphite, 9) },
-            25 * SECONDS,
-            48,
-            true);
-
         // glass pane recipes
         {
             // stained-glass -> glass pane recipes

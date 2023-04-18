@@ -8,6 +8,7 @@ import net.minecraftforge.client.MinecraftForgeClient;
 
 import org.lwjgl.opengl.GL11;
 
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.IGT_ItemWithMaterialRenderer;
 import gregtech.api.objects.ItemData;
@@ -18,6 +19,8 @@ public class GT_MetaGenerated_Item_Renderer implements IItemRenderer {
 
     private final IItemRenderer mItemRenderer = new GT_GeneratedItem_Renderer();
     private final IItemRenderer mMaterialRenderer = new GT_GeneratedMaterial_Renderer();
+
+    private final IItemRenderer mDataStickRenderer = new GT_DataStick_Renderer();
 
     public GT_MetaGenerated_Item_Renderer() {}
 
@@ -78,6 +81,13 @@ public class GT_MetaGenerated_Item_Renderer implements IItemRenderer {
             }
 
             return aMaterialRenderer != null ? aMaterialRenderer : mMaterialRenderer;
+        }
+
+        // handle data stick
+        if (aStack.getItem() == ItemList.Tool_DataStick.getItem() && aStack.hasTagCompound()
+            && aStack.getTagCompound()
+                .hasKey("output")) {
+            return mDataStickRenderer;
         }
 
         return mItemRenderer;

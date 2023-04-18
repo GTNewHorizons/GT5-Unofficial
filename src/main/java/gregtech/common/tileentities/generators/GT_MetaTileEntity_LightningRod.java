@@ -100,6 +100,10 @@ public class GT_MetaTileEntity_LightningRod extends GT_MetaTileEntity_TieredMach
                     aBaseMetaTileEntity
                         .increaseStoredEnergyUnits(maxEUStore() - aBaseMetaTileEntity.getStoredEU(), false);
                     aWorld.addWeatherEffect(new EntityLightningBolt(aWorld, aX, aY + aRodValue, aZ));
+                    // randomly break a rod
+                    if (aWorld.isThundering()) {
+                        aWorld.setBlockToAir(aX, aY + XSTR_INSTANCE.nextInt(aRodValue) + 1, aZ);
+                    }
                 }
             }
         }

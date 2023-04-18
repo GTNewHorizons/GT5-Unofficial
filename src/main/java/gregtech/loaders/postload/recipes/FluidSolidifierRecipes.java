@@ -347,7 +347,7 @@ public class FluidSolidifierRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(ItemList.Shape_Mold_Anvil.get(0L))
-            .itemOutputs(getModItem(Railcraft.ID, "tile.railcraft.anvil", 1L, 0))
+            .itemOutputs(getModItem(Railcraft.ID, "anvil", 1L, 0))
             .fluidInputs(Materials.Steel.getMolten(4464L))
             .noFluidOutputs()
             .duration(6 * SECONDS + 8 * TICKS)

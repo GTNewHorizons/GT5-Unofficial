@@ -56,23 +56,27 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_TooltipMultiB
         tt.addMachineType("Cleanroom")
             .addInfo("Controller block for the Cleanroom")
             .addInfo("Consumes 40 EU/t when first turned on")
-            .addInfo("and 4 EU/t once at 100% efficiency when not overclocked") // ?
-            .addInfo("An energy hatch accepts up to 2A, so you can use 2A LV or 1A MV")
-            .addInfo("2 LV batteries + 1 LV generator or 1 MV generator") // ?
+            .addInfo("and 4 EU/t once at 100% efficiency")
+            .addInfo("If you use an LV energy hatch, it will actually accept 2A instead of just 1A.")
+            .addInfo(
+                "MV+ energy hatches just accept 1A as usual. For HV+ the cleanroom will overclock and gain efficiency faster.")
             .addInfo("Time required to reach full efficiency is proportional to")
             .addInfo("the height of empty space within")
-            .addInfo("Make sure your Energy Hatch matches! ?")
             .addInfo("Machines that cause pollution aren't allowed to be put in.")
             .addSeparator()
             .beginVariableStructureBlock(3, 15, 4, 15, 3, 15, true)
             .addController("Top center")
             .addCasingInfoRange("Plascrete", 20, 1007, false)
-            .addStructureInfo(GT_Values.cleanroomGlass + "% of the Plascrete can be replaced with Reinforced Glass") // check
-            .addStructureInfo("Other material can be used in place of Plascrete. See config for detail") // check
+            .addStructureInfo(
+                GT_Values.cleanroomGlass
+                    + "% of the Plascrete can be replaced with Reinforced Glass (not counting the top layer)")
+            .addStructureInfo(
+                "Other material can be used in place of Plascrete, even in higher percentages. See config for detail")
             .addOtherStructurePart("Filter Machine Casing", "Top besides controller and edges")
-            .addEnergyHatch("Any casing. Exactly one.") // check
-            .addMaintenanceHatch("Any casing")
-            .addStructureInfo("1x Reinforced Door (keep closed or efficiency will reduce)")
+            .addEnergyHatch("Any casing except top layer. Exactly one.")
+            .addMaintenanceHatch("Any casing except top layer")
+            .addStructureInfo("0-2x Reinforced Door (keep closed or efficiency will reduce)")
+            .addStructureInfo("Up to 1 Elevator, Rotating Elevator, and Travel Anchor each")
             .addStructureInfo("Up to 10 Machine Hulls for Item & Energy transfer through walls")
             .addStructureInfo("You can also use Diodes for more power")
             .addStructureInfo("Diodes also count towards 10 Machine Hulls count limit")
