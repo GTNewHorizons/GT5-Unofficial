@@ -455,7 +455,7 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
     protected void runMachine(long tick) {
         if (acceptsFuel() && isActive()) {
             if (!consumeFuel()) {
-                stopMachine();
+                stopMachine(true);
                 return;
             }
         }
@@ -561,7 +561,7 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
         }
 
         if (logic.removeEnergyUnsafe(eut)) {
-            stopMachine();
+            stopMachine(true);
         }
     }
 
@@ -766,11 +766,13 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
         }
     }
 
-    protected void stopMachine() {
+    protected void stopMachine(boolean powerShutDown) {
         progressTime = 0;
         setActive(false);
         disableWorking();
-        setSound(GregTechTileClientEvents.STOP_SOUND_LOOP, INTERRUPT_SOUND_INDEX);
+        if (powerShutDown) {
+            setSound(GregTechTileClientEvents.STOP_SOUND_LOOP, INTERRUPT_SOUND_INDEX);
+        }
         issueClientUpdate();
     }
 

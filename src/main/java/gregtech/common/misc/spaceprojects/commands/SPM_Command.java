@@ -24,6 +24,7 @@ public class SPM_Command extends CommandBase {
 
     private static final String RESET = "reset";
     private static final String UNLOCK = "unlock";
+    private static final String UNLOCK_UPGRADE = "unlock_upgrade";
     private static final String LOCK = "lock";
     private static final String LIST = "list";
     private static final String ALL = "-all";
@@ -77,6 +78,25 @@ public class SPM_Command extends CommandBase {
                     arguments[1],
                     arguments[2],
                     arguments.length >= 4 ? arguments[3] : sender.getCommandSenderName());
+                break;
+            case UNLOCK_UPGRADE:
+                if (!sender.canCommandSenderUseCommand(4, getCommandName())) {
+                    sender.addChatMessage(
+                        new ChatComponentText("You don't have the permissions to execute this command"));
+                    return;
+                }
+                if (arguments.length < 4) {
+                    sender.addChatMessage(
+                        new ChatComponentText(
+                            "Not enough arguments. Needs to mention a project a location and an upgrade name"));
+                    return;
+                }
+                processUnlock(
+                    sender,
+                    arguments[1],
+                    arguments[2],
+                    arguments[3],
+                    arguments.length >= 5 ? arguments[4] : sender.getCommandSenderName());
                 break;
             case LOCK:
                 if (!sender.canCommandSenderUseCommand(4, getCommandName())) {
@@ -144,7 +164,18 @@ public class SPM_Command extends CommandBase {
             }
             case 4 -> {
                 filter = arguments.length == 3 ? "" : arguments[3].trim();
-                autoComplete.addAll(Arrays.asList(getPlayers()));
+                if (arguments[0].equals(UNLOCK_UPGRADE)) {
+                    ISpaceProject project = SpaceProjectManager.getProject(arguments[2]);
+                    if (project != null) {
+                        autoComplete.addAll(
+                            project.getAllUpgrades()
+                                .stream()
+                                .map(ISpaceProject.ISP_Upgrade::getUnlocalizedName)
+                                .collect(Collectors.toList()));
+                    }
+                } else {
+                    autoComplete.addAll(Arrays.asList(getPlayers()));
+                }
             }
         }
         String finalFilter = filter;
@@ -170,7 +201,7 @@ public class SPM_Command extends CommandBase {
     }
 
     private String[] getSubCommands() {
-        return new String[] { RESET, COPY, UNLOCK, LOCK, LIST };
+        return new String[] { RESET, COPY, UNLOCK, UNLOCK_UPGRADE, LOCK, LIST };
     }
 
     private String[] getListArguments() {
@@ -178,7 +209,8 @@ public class SPM_Command extends CommandBase {
     }
 
     private void processReset(ICommandSender sender, String playerName) {
-        SpaceProjectManager.spaceTeamProjects.clear();
+        UUID tID = SpaceProjectManager.getPlayerUUIDFromName(playerName);
+        SpaceProjectManager.spaceTeamProjects.put(tID, null);
         SpaceProjectWorldSavedData.INSTANCE.markDirty();
         sender.addChatMessage(new ChatComponentText("Cleared away map"));
     }
@@ -196,6 +228,27 @@ public class SPM_Command extends CommandBase {
             tProject.setProjectCurrentStage(tProject.getTotalStages());
             SpaceProjectManager.addTeamProject(tID, getLocation(location), projectName, tProject);
             sender.addChatMessage(new ChatComponentText("Project unlocked"));
+        } else {
+            sender.addChatMessage(new ChatComponentText("Incorrect internal project name. Try again"));
+        }
+    }
+
+    private void processUnlock(ICommandSender sender, String projectName, String location, String upgradeName,
+        String playerName) {
+        UUID tID = SpaceProjectManager.getPlayerUUIDFromName(playerName);
+        ISpaceProject tProject = SpaceProjectManager.getTeamProjectOrCopy(tID, projectName, getLocation(location));
+        if (tProject != null) {
+            ISpaceProject.ISP_Upgrade upgrade = tProject.getUpgrade(upgradeName);
+            if (upgrade == null) {
+                sender.addChatMessage(new ChatComponentText("Incorrect internal project upgrade name. Try again"));
+                return;
+            }
+            if (!tProject.isFinished()) {
+                tProject.setProjectCurrentStage(tProject.getTotalStages());
+                SpaceProjectManager.addTeamProject(tID, getLocation(location), projectName, tProject);
+            }
+            tProject.setBuiltUpgrade(upgrade);
+            sender.addChatMessage(new ChatComponentText("Project Upgrade unlocked"));
         } else {
             sender.addChatMessage(new ChatComponentText("Incorrect internal project name. Try again"));
         }
