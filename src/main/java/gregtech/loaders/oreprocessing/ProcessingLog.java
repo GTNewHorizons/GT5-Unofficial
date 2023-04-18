@@ -99,7 +99,7 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
 
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.copyAmount(1L, aStack))
-            .itemOutputs(GT_ModHandler.getModItem(Railcraft.ID, "tile.railcraft.cube", 1L, 8))
+            .itemOutputs(GT_ModHandler.getModItem(Railcraft.ID, "cube", 1L, 8))
             .fluidInputs(Materials.Creosote.getFluid(1000L))
             .noFluidOutputs()
             .duration(16 * TICKS)
