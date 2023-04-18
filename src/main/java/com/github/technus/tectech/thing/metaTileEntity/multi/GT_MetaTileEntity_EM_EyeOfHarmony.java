@@ -45,7 +45,6 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.tuple.Pair;
-import org.spongepowered.libraries.com.google.common.math.LongMath;
 
 import appeng.util.ReadableNumberConverter;
 
@@ -1343,7 +1342,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
                                 + " L");
             }
             long euPerTick = euOutput / maxProgresstime();
-            if (euPerTick < LongMath.pow(10, 12)) {
+            if (euPerTick < Math.pow(10, 12)) {
                 str.add("Estimated EU/t: " + RED + formatNumbers(euOutput / maxProgresstime()) + RESET + " EU/t");
             } else {
                 str.add(
