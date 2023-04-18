@@ -5,6 +5,8 @@ package com.github.technus.tectech.mechanics.elementalMatter.core;
  */
 public final class EMException extends RuntimeException {
 
+    private static final long serialVersionUID = 8030521803764577214L;
+
     public EMException(String message) {
         super(message);
     }

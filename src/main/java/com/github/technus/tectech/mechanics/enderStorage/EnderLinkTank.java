@@ -10,6 +10,7 @@ import com.google.common.base.Objects;
 
 public class EnderLinkTank implements Serializable {
 
+    private static final long serialVersionUID = 1030297456736434221L;
     private final int X;
     private final int Y;
     private final int Z;

@@ -1023,7 +1023,9 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
         structureBuild_EM(STRUCTURE_PIECE_MAIN, 16, 16, 0, stackSize, hintsOnly);
     }
 
-    private final Map<FluidStack, Long> validFluidMap = new HashMap<FluidStack, Long>() {
+    private final Map<FluidStack, Long> validFluidMap = new HashMap<>() {
+
+        private static final long serialVersionUID = -8452610443191188130L;
 
         {
             put(Materials.Hydrogen.getGas(1), 0L);

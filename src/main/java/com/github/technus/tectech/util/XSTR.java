@@ -28,6 +28,8 @@ public class XSTR extends Random {
     private static final AtomicLong seedUniquifier = new AtomicLong(8682522807148012L);
     public static final XSTR XSTR_INSTANCE = new XSTR() {
 
+        private static final long serialVersionUID = 8778284761958251721L;
+
         @Override
         public synchronized void setSeed(long seed) {
             if (!Thread.currentThread().getStackTrace()[2].getClassName().equals(Random.class.getName())) {

@@ -46,6 +46,8 @@ public class EyeOfHarmonyRecipe {
 
     HashingStrategy<ItemStack> itemStackHashingStrategy = new HashingStrategy<>() {
 
+        private static final long serialVersionUID = -3966004160368229212L;
+
         @Override
         public int computeHashCode(ItemStack stack) {
             // Not really sure how this works or if it is "unique enough".
@@ -337,6 +339,8 @@ public class EyeOfHarmonyRecipe {
 
     public static class HashMapHelper extends HashMap<Materials, Double> {
 
+        private static final long serialVersionUID = 2297018142561480614L;
+
         void add(Materials material, double value) {
 
             // If key already exists.
@@ -462,6 +466,8 @@ public class EyeOfHarmonyRecipe {
             Materials.Tin).collect(Collectors.toList());
 
     private static final HashMap<String, Long> plasmaEnergyMap = new HashMap<>() {
+
+        private static final long serialVersionUID = 7933945171103801933L;
 
         {
             VALID_PLASMAS.forEach(

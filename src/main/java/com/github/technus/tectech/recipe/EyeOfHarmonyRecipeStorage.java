@@ -34,12 +34,16 @@ public class EyeOfHarmonyRecipeStorage {
     // Map is unique so this is fine.
     HashMap<Block, String> blocksMapInverted = new HashMap<>() {
 
+        private static final long serialVersionUID = -1634011860327553337L;
+
         {
             ModBlocks.blocks.forEach((dimString, dimBlock) -> { put(dimBlock, dimString); });
         }
     };
 
     private final HashMap<String, EyeOfHarmonyRecipe> recipeHashMap = new HashMap<String, EyeOfHarmonyRecipe>() {
+
+        private static final long serialVersionUID = -3501819612517400500L;
 
         {
             for (String dimAbbreviation : DimensionHelper.DimNameDisplayed) {

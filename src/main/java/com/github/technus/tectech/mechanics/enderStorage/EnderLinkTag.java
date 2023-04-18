@@ -7,6 +7,7 @@ import com.google.common.base.Objects;
 
 public class EnderLinkTag implements Serializable {
 
+    private static final long serialVersionUID = 6884008436570077863L;
     private final String frequency;
     private final UUID player;
 
