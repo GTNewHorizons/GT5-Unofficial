@@ -6,7 +6,6 @@ import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sThermalCentrifugeRecipe
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 
-import gregtech.api.enums.ItemList;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.GT_Values;
@@ -33,7 +32,7 @@ public class ProcessingCrushedOre implements gregtech.api.interfaces.IOreRecipeR
                     .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1L))
                     .noFluidInputs()
                     .noFluidOutputs()
-                    .duration(10*TICKS)
+                    .duration(10 * TICKS)
                     .eut(16)
                     .addTo(sHammerRecipes);
 
@@ -51,9 +50,15 @@ public class ProcessingCrushedOre implements gregtech.api.interfaces.IOreRecipeR
                 GT_Values.RA.stdBuilder()
                     .itemInputs(GT_Utility.copyAmount(1L, aStack))
                     .itemOutputs(
-                        GT_OreDictUnificator.get( OrePrefixes.crushedCentrifuged, aMaterial.mMacerateInto, GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1L), 1L),
-                        GT_OreDictUnificator.get( OrePrefixes.dust, GT_Utility.selectItemInList(1, aMaterial.mMacerateInto, aMaterial.mOreByProducts),1L)
-                    )
+                        GT_OreDictUnificator.get(
+                            OrePrefixes.crushedCentrifuged,
+                            aMaterial.mMacerateInto,
+                            GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1L),
+                            1L),
+                        GT_OreDictUnificator.get(
+                            OrePrefixes.dust,
+                            GT_Utility.selectItemInList(1, aMaterial.mMacerateInto, aMaterial.mOreByProducts),
+                            1L))
                     .outputChances(10000, 1111)
                     .noFluidInputs()
                     .noFluidOutputs()

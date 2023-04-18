@@ -8,7 +8,6 @@ import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
 import java.util.Locale;
 
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 
@@ -84,10 +83,7 @@ public class ProcessingDye implements IOreRecipeRegistrator {
             .toLowerCase(Locale.ENGLISH);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(
-                GT_Utility.copyAmount(1L, stack),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Salt, 2)
-            )
+            .itemInputs(GT_Utility.copyAmount(1L, stack), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Salt, 2))
             .noItemOutputs()
             .fluidInputs(Materials.SulfuricAcid.getFluid(432))
             .fluidOutputs(FluidRegistry.getFluidStack(fluidName, 288))

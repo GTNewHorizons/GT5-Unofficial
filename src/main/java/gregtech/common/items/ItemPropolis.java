@@ -9,7 +9,6 @@ import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 
 import java.util.List;
 
-import gregtech.api.enums.TierEU;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -24,6 +23,7 @@ import forestry.api.core.Tabs;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 
@@ -113,7 +113,7 @@ public class ItemPropolis extends Item {
             .outputChances(5000)
             .noFluidInputs()
             .fluidOutputs(FluidRegistry.getFluidStack("endergoo", 100))
-            .duration(2*SECONDS+10*TICKS)
+            .duration(2 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_HV)
             .addTo(sFluidExtractionRecipes);
     }
@@ -125,7 +125,7 @@ public class ItemPropolis extends Item {
             .outputChances(2500)
             .noFluidInputs()
             .fluidOutputs(FluidRegistry.getFluidStack("endergoo", 200))
-            .duration(5*SECONDS)
+            .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .addTo(sFluidExtractionRecipes);
     }
@@ -137,7 +137,7 @@ public class ItemPropolis extends Item {
             .outputChances(1500)
             .noFluidInputs()
             .fluidOutputs(FluidRegistry.getFluidStack("endergoo", 300))
-            .duration(7*SECONDS+10*TICKS)
+            .duration(7 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_IV)
             .addTo(sFluidExtractionRecipes);
     }

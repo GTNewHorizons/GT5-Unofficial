@@ -622,7 +622,7 @@ public class FluidExtractorRecipes implements Runnable {
                 .noItemOutputs()
                 .noFluidInputs()
                 .fluidOutputs(getFluidStack("xenon", 250))
-                .duration(2*SECONDS+10*TICKS)
+                .duration(2 * SECONDS + 10 * TICKS)
                 .eut(TierEU.RECIPE_IV)
                 .addTo(sFluidExtractionRecipes);
 
@@ -632,7 +632,7 @@ public class FluidExtractorRecipes implements Runnable {
                 .noItemOutputs()
                 .noFluidInputs()
                 .fluidOutputs(getFluidStack("neon", 250))
-                .duration(15*TICKS)
+                .duration(15 * TICKS)
                 .eut(TierEU.RECIPE_IV)
                 .addTo(sFluidExtractionRecipes);
 
@@ -642,7 +642,7 @@ public class FluidExtractorRecipes implements Runnable {
                 .noItemOutputs()
                 .noFluidInputs()
                 .fluidOutputs(getFluidStack("krypton", 250))
-                .duration(1*SECONDS+5*TICKS)
+                .duration(1 * SECONDS + 5 * TICKS)
                 .eut(TierEU.RECIPE_IV)
                 .addTo(sFluidExtractionRecipes);
         }

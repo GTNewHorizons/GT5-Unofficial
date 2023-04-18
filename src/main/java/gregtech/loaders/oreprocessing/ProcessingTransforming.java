@@ -35,36 +35,34 @@ public class ProcessingTransforming implements IOreRecipeRegistrator {
             {
                 GT_Values.RA.stdBuilder()
                     .itemInputs(GT_Utility.copyAmount(1L, aStack))
-                    .itemOutputs(
-                        GT_OreDictUnificator.get(aPrefix, Materials.WoodSealed, 1L)
-                    )
-                    .fluidInputs(Materials.SeedOil.getFluid(GT_Utility.translateMaterialToAmount(aPrefix.mMaterialAmount, 120L, true)))
+                    .itemOutputs(GT_OreDictUnificator.get(aPrefix, Materials.WoodSealed, 1L))
+                    .fluidInputs(
+                        Materials.SeedOil
+                            .getFluid(GT_Utility.translateMaterialToAmount(aPrefix.mMaterialAmount, 120L, true)))
                     .noFluidOutputs()
-                    .duration(5*SECONDS)
+                    .duration(5 * SECONDS)
                     .eut(TierEU.ULV)
                     .addTo(sChemicalBathRecipes);
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(GT_Utility.copyAmount(1L, aStack))
-                    .itemOutputs(
-                        GT_OreDictUnificator.get(aPrefix, Materials.WoodSealed, 1L)
-                    )
-                    .fluidInputs(Materials.SeedOilLin
+                    .itemOutputs(GT_OreDictUnificator.get(aPrefix, Materials.WoodSealed, 1L))
+                    .fluidInputs(
+                        Materials.SeedOilLin
                             .getFluid(GT_Utility.translateMaterialToAmount(aPrefix.mMaterialAmount, 80L, true)))
                     .noFluidOutputs()
-                    .duration(5*SECONDS)
+                    .duration(5 * SECONDS)
                     .eut(TierEU.ULV)
                     .addTo(sChemicalBathRecipes);
 
                 GT_Values.RA.stdBuilder()
                     .itemInputs(GT_Utility.copyAmount(1L, aStack))
-                    .itemOutputs(
-                        GT_OreDictUnificator.get(aPrefix, Materials.WoodSealed, 1L)
-                    )
-                    .fluidInputs(Materials.SeedOilHemp
+                    .itemOutputs(GT_OreDictUnificator.get(aPrefix, Materials.WoodSealed, 1L))
+                    .fluidInputs(
+                        Materials.SeedOilHemp
                             .getFluid(GT_Utility.translateMaterialToAmount(aPrefix.mMaterialAmount, 80L, true)))
                     .noFluidOutputs()
-                    .duration(5*SECONDS)
+                    .duration(5 * SECONDS)
                     .eut(TierEU.ULV)
                     .addTo(sChemicalBathRecipes);
 
@@ -74,12 +72,12 @@ public class ProcessingTransforming implements IOreRecipeRegistrator {
                 {
                     GT_Values.RA.stdBuilder()
                         .itemInputs(GT_Utility.copyAmount(1L, aStack))
-                        .itemOutputs(
-                            GT_OreDictUnificator.get(aPrefix, Materials.FierySteel, 1L)
-                        )
-                        .fluidInputs(Materials.FierySteel.getFluid(GT_Utility.translateMaterialToAmount(aPrefix.mMaterialAmount, 250L, true)))
+                        .itemOutputs(GT_OreDictUnificator.get(aPrefix, Materials.FierySteel, 1L))
+                        .fluidInputs(
+                            Materials.FierySteel
+                                .getFluid(GT_Utility.translateMaterialToAmount(aPrefix.mMaterialAmount, 250L, true)))
                         .noFluidOutputs()
-                        .duration(5*SECONDS)
+                        .duration(5 * SECONDS)
                         .eut(TierEU.ULV)
                         .addTo(sChemicalBathRecipes);
                 }
@@ -98,12 +96,12 @@ public class ProcessingTransforming implements IOreRecipeRegistrator {
                 {
                     GT_Values.RA.stdBuilder()
                         .itemInputs(GT_Utility.copyAmount(1L, aStack))
-                        .itemOutputs(
-                            GT_OreDictUnificator.get(aPrefix, Materials.FierySteel, 1L)
-                        )
-                        .fluidInputs(Materials.FierySteel.getFluid(GT_Utility.translateMaterialToAmount(aPrefix.mMaterialAmount, 225L, true)), )
+                        .itemOutputs(GT_OreDictUnificator.get(aPrefix, Materials.FierySteel, 1L))
+                        .fluidInputs(
+                            Materials.FierySteel
+                                .getFluid(GT_Utility.translateMaterialToAmount(aPrefix.mMaterialAmount, 225L, true)))
                         .noFluidOutputs()
-                        .duration(5*SECONDS)
+                        .duration(5 * SECONDS)
                         .eut(TierEU.ULV)
                         .addTo(sChemicalBathRecipes);
                 }
@@ -122,13 +120,12 @@ public class ProcessingTransforming implements IOreRecipeRegistrator {
                 {
                     GT_Values.RA.stdBuilder()
                         .itemInputs(GT_Utility.copyAmount(1L, aStack))
-                        .itemOutputs(
-                            GT_OreDictUnificator.get(aPrefix, Materials.FierySteel, 1L)
-                        )
-                        .fluidInputs(Materials.FierySteel
+                        .itemOutputs(GT_OreDictUnificator.get(aPrefix, Materials.FierySteel, 1L))
+                        .fluidInputs(
+                            Materials.FierySteel
                                 .getFluid(GT_Utility.translateMaterialToAmount(aPrefix.mMaterialAmount, 200L, true)))
                         .noFluidOutputs()
-                        .duration(5*SECONDS)
+                        .duration(5 * SECONDS)
                         .eut(TierEU.ULV)
                         .addTo(sChemicalBathRecipes);
                 }

@@ -18,7 +18,6 @@ import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 
 import java.util.Locale;
 
-import gregtech.api.enums.TierEU;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -246,8 +245,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                 .itemOutputs(
                     GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Lutetium, 2L),
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Thorium, 1L),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 1L)
-                )
+                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 1L))
                 .noFluidInputs()
                 .noFluidOutputs()
                 .duration(25 * SECONDS)
@@ -259,8 +257,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                 .itemOutputs(
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lutetium, 1L),
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Thorium, 2L),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 3L)
-                )
+                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 3L))
                 .noFluidInputs()
                 .noFluidOutputs()
                 .duration(25 * SECONDS)
@@ -272,8 +269,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                 .itemOutputs(
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lutetium, 2L),
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Thorium, 4L),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 6L)
-                )
+                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 6L))
                 .noFluidInputs()
                 .noFluidOutputs()
                 .duration(25 * SECONDS)
@@ -321,59 +317,50 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                     false));
 
             GT_Values.RA.stdBuilder()
-                .itemInputs(
-                    ItemList.Depleted_Naquadah_1.get(1)
-                )
+                .itemInputs(ItemList.Depleted_Naquadah_1.get(1))
                 .itemOutputs(
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 1L),
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 1L),
                     GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Naquadria, 2L),
                     GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.NaquadahEnriched, 2L),
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.TungstenSteel, 8L),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 1L)
-                )
+                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 1L))
                 .outputChances(10_000, 5_000, 5_000, 2_500, 10_000, 10_000)
                 .noFluidInputs()
                 .noFluidOutputs()
-                .duration(25*SECONDS)
+                .duration(25 * SECONDS)
                 .eut(2000)
                 .addTo(sCentrifugeRecipes);
 
             GT_Values.RA.stdBuilder()
-                .itemInputs(
-                    ItemList.Depleted_Naquadah_2.get(1)
-                )
+                .itemInputs(ItemList.Depleted_Naquadah_2.get(1))
                 .itemOutputs(
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 2L),
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 2L),
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadria, 1L),
                     GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.NaquadahEnriched, 4L),
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.TungstenSteel, 18L),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 2L)
-                )
+                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 2L))
                 .outputChances(10_000, 5_000, 5_000, 2_500, 10_000, 10_000)
                 .noFluidInputs()
                 .noFluidOutputs()
-                .duration(50*SECONDS)
+                .duration(50 * SECONDS)
                 .eut(2000)
                 .addTo(sCentrifugeRecipes);
 
             GT_Values.RA.stdBuilder()
-                .itemInputs(
-                    ItemList.Depleted_Naquadah_4.get(1)
-                )
+                .itemInputs(ItemList.Depleted_Naquadah_4.get(1))
                 .itemOutputs(
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 4L),
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 4L),
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadria, 2L),
                     GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.NaquadahEnriched, 8L),
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.TungstenSteel, 38L),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 4L)
-                )
-                .outputChances(10_000, 5_000, 5_000, 2_500, 10_000, 10_000 )
+                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 4L))
+                .outputChances(10_000, 5_000, 5_000, 2_500, 10_000, 10_000)
                 .noFluidInputs()
                 .noFluidOutputs()
-                .duration(100*SECONDS)
+                .duration(100 * SECONDS)
                 .eut(2000)
                 .addTo(sCentrifugeRecipes);
 
@@ -416,59 +403,50 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
                     true));
 
             GT_Values.RA.stdBuilder()
-                .itemInputs(
-                    ItemList.Depleted_MNq_1.get(1)
-                )
+                .itemInputs(ItemList.Depleted_MNq_1.get(1))
                 .itemOutputs(
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 1L),
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 1L),
                     GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.NaquadahEnriched, 2L),
                     GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Naquadria, 2L),
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.TungstenSteel, 8L),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 1L)
-                )
+                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 1L))
                 .outputChances(10_000, 5_000, 5_000, 2_500, 10_000, 10_000)
                 .noFluidInputs()
                 .noFluidOutputs()
-                .duration(25*SECONDS)
+                .duration(25 * SECONDS)
                 .eut(2000)
                 .addTo(sCentrifugeRecipes);
 
             GT_Values.RA.stdBuilder()
-                .itemInputs(
-                    ItemList.Depleted_MNq_2.get(1)
-                )
+                .itemInputs(ItemList.Depleted_MNq_2.get(1))
                 .itemOutputs(
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 2L),
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 2L),
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.NaquadahEnriched, 1L),
                     GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Naquadria, 4L),
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.TungstenSteel, 18L),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 2L)
-                )
+                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 2L))
                 .outputChances(10_000, 5_000, 5_000, 2_500, 10_000, 10_000)
                 .noFluidInputs()
                 .noFluidOutputs()
-                .duration(50*SECONDS)
+                .duration(50 * SECONDS)
                 .eut(2000)
                 .addTo(sCentrifugeRecipes);
 
             GT_Values.RA.stdBuilder()
-                .itemInputs(
-                    ItemList.Depleted_MNq_4.get(1)
-                )
+                .itemInputs(ItemList.Depleted_MNq_4.get(1))
                 .itemOutputs(
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 4L),
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Naquadah, 4L),
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.NaquadahEnriched, 2L),
                     GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Naquadria, 8L),
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.TungstenSteel, 38L),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 4L)
-                )
-                .outputChances( 10_000, 5_000, 5_000, 2_500, 10_000, 10_000 )
+                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 4L))
+                .outputChances(10_000, 5_000, 5_000, 2_500, 10_000, 10_000)
                 .noFluidInputs()
                 .noFluidOutputs()
-                .duration(100*SECONDS)
+                .duration(100 * SECONDS)
                 .eut(2000)
                 .addTo(sCentrifugeRecipes);
 
@@ -847,7 +825,7 @@ public class GT_Loader_Item_Block_And_Fluid implements Runnable {
             .itemOutputs(GT_ModHandler.getIC2Item("steamCell", 1))
             .fluidInputs(GT_ModHandler.getSteam(1000))
             .noFluidOutputs()
-            .duration(16*TICKS)
+            .duration(16 * TICKS)
             .eut(1)
             .addTo(sFluidCannerRecipes);
 

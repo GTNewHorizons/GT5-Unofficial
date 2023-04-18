@@ -83,7 +83,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.gemFlawed, aMaterial, 2L))
                             .noFluidInputs()
                             .noFluidOutputs()
-                            .duration(3*SECONDS+4*TICKS)
+                            .duration(3 * SECONDS + 4 * TICKS)
                             .eut(16)
                             .addTo(sHammerRecipes);
                     }
@@ -346,7 +346,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                         .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.gemFlawless, aMaterial, 2L))
                         .noFluidInputs()
                         .noFluidOutputs()
-                        .duration(3*SECONDS+4*TICKS)
+                        .duration(3 * SECONDS + 4 * TICKS)
                         .eut(16)
                         .addTo(sHammerRecipes);
                 }
@@ -399,7 +399,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                     .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.gemChipped, aMaterial, 2L))
                     .noFluidInputs()
                     .noFluidOutputs()
-                    .duration(3*SECONDS+4*TICKS)
+                    .duration(3 * SECONDS + 4 * TICKS)
                     .eut(16)
                     .addTo(sHammerRecipes);
 
@@ -471,7 +471,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                     .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, 2L))
                     .noFluidInputs()
                     .noFluidOutputs()
-                    .duration(3*SECONDS+4*TICKS)
+                    .duration(3 * SECONDS + 4 * TICKS)
                     .eut(16)
                     .addTo(sHammerRecipes);
 

@@ -1,5 +1,8 @@
 package gregtech.loaders.oreprocessing;
 
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sChemicalBathRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.item.ItemStack;
@@ -9,9 +12,6 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Proxy;
-
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sChemicalBathRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 
 public class ProcessingArrows implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
@@ -31,13 +31,11 @@ public class ProcessingArrows implements gregtech.api.interfaces.IOreRecipeRegis
             EnchantmentHelper.getEnchantmentLevel(Enchantment.smite.effectId, tOutput) + 3);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs( GT_Utility.copyAmount(1L, aStack))
-            .itemOutputs(
-                tOutput
-            )
+            .itemInputs(GT_Utility.copyAmount(1L, aStack))
+            .itemOutputs(tOutput)
             .fluidInputs(Materials.HolyWater.getFluid(25L))
             .noFluidOutputs()
-            .duration(5*SECONDS)
+            .duration(5 * SECONDS)
             .eut(2)
             .addTo(sChemicalBathRecipes);
 
@@ -50,12 +48,10 @@ public class ProcessingArrows implements gregtech.api.interfaces.IOreRecipeRegis
 
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.copyAmount(1L, aStack))
-            .itemOutputs(
-                tOutput
-            )
+            .itemOutputs(tOutput)
             .fluidInputs(Materials.FierySteel.getFluid(25L))
             .noFluidOutputs()
-            .duration(5*SECONDS)
+            .duration(5 * SECONDS)
             .eut(2)
             .addTo(sChemicalBathRecipes);
 
@@ -68,12 +64,10 @@ public class ProcessingArrows implements gregtech.api.interfaces.IOreRecipeRegis
 
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.copyAmount(1L, aStack))
-            .itemOutputs(
-                tOutput
-            )
+            .itemOutputs(tOutput)
             .fluidInputs(Materials.Blaze.getMolten(18L))
             .noFluidOutputs()
-            .duration(5*SECONDS)
+            .duration(5 * SECONDS)
             .eut(2)
             .addTo(sChemicalBathRecipes);
 
@@ -86,12 +80,10 @@ public class ProcessingArrows implements gregtech.api.interfaces.IOreRecipeRegis
 
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.copyAmount(1L, aStack))
-            .itemOutputs(
-                tOutput
-            )
+            .itemOutputs(tOutput)
             .fluidInputs(Materials.Rubber.getMolten(18L))
             .noFluidOutputs()
-            .duration(5*SECONDS)
+            .duration(5 * SECONDS)
             .eut(2)
             .addTo(sChemicalBathRecipes);
 
@@ -105,12 +97,10 @@ public class ProcessingArrows implements gregtech.api.interfaces.IOreRecipeRegis
 
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.copyAmount(1L, aStack))
-            .itemOutputs(
-                tOutput
-            )
+            .itemOutputs(tOutput)
             .fluidInputs(Materials.Mercury.getFluid(25L))
             .noFluidOutputs()
-            .duration(5*SECONDS)
+            .duration(5 * SECONDS)
             .eut(2)
             .addTo(sChemicalBathRecipes);
 

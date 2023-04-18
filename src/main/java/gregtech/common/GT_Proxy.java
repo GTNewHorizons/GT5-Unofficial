@@ -34,7 +34,6 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 
-import gregtech.api.enums.TierEU;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -78,7 +77,6 @@ import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.ChunkDataEvent;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.RecipeSorter;
@@ -109,6 +107,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TC_Aspects.TC_AspectStack;
+import gregtech.api.enums.TierEU;
 import gregtech.api.enums.ToolDictNames;
 import gregtech.api.fluid.GT_FluidFactory;
 import gregtech.api.interfaces.IBlockOnWalkOver;
@@ -2537,38 +2536,20 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
                 240);
 
             GT_Values.RA.stdBuilder()
-                .itemInputs(
-                    Materials.Hydrogen.getCells(hydrogenAmount),
-                    GT_Utility.getIntegratedCircuit(i + 1)
-                )
-                .itemOutputs(
-                    Materials.Empty.getCells(hydrogenAmount)
-                )
-                .fluidInputs(
-                    new FluidStack(uncrackedFluid, 1000)
-                )
-                .fluidOutputs(
-                    new FluidStack(crackedFluids[i], 800)
-                )
-                .duration((8+4*i) * SECONDS)
+                .itemInputs(Materials.Hydrogen.getCells(hydrogenAmount), GT_Utility.getIntegratedCircuit(i + 1))
+                .itemOutputs(Materials.Empty.getCells(hydrogenAmount))
+                .fluidInputs(new FluidStack(uncrackedFluid, 1000))
+                .fluidOutputs(new FluidStack(crackedFluids[i], 800))
+                .duration((8 + 4 * i) * SECONDS)
                 .eut(TierEU.RECIPE_LV)
                 .addTo(UniversalChemical);
 
             GT_Values.RA.stdBuilder()
-                .itemInputs(
-                    aMaterial.getCells(1),
-                    GT_Utility.getIntegratedCircuit(i + 1)
-                )
-                .itemOutputs(
-                    Materials.Empty.getCells(1)
-                )
-                .fluidInputs(
-                    Materials.Hydrogen.getGas(hydrogenAmount * 1000)
-                )
-                .fluidOutputs(
-                    new FluidStack(crackedFluids[i], 800)
-                )
-                .duration((8+4*i) * SECONDS)
+                .itemInputs(aMaterial.getCells(1), GT_Utility.getIntegratedCircuit(i + 1))
+                .itemOutputs(Materials.Empty.getCells(1))
+                .fluidInputs(Materials.Hydrogen.getGas(hydrogenAmount * 1000))
+                .fluidOutputs(new FluidStack(crackedFluids[i], 800))
+                .duration((8 + 4 * i) * SECONDS)
                 .eut(TierEU.RECIPE_LV)
                 .addTo(UniversalChemical);
         }
@@ -2607,38 +2588,20 @@ public abstract class GT_Proxy implements IGT_Mod, IGuiHandler, IFuelHandler, IG
                 240);
 
             GT_Values.RA.stdBuilder()
-                .itemInputs(
-                    GT_ModHandler.getIC2Item("steamCell", 1L),
-                    GT_Utility.getIntegratedCircuit(i + 1)
-                )
-                .itemOutputs(
-                    Materials.Empty.getCells(1)
-                )
-                .fluidInputs(
-                    new FluidStack(uncrackedFluid, 1000)
-                )
-                .fluidOutputs(
-                    new FluidStack(crackedFluids[i], 800)
-                )
-                .duration((8+4*i) * SECONDS)
+                .itemInputs(GT_ModHandler.getIC2Item("steamCell", 1L), GT_Utility.getIntegratedCircuit(i + 1))
+                .itemOutputs(Materials.Empty.getCells(1))
+                .fluidInputs(new FluidStack(uncrackedFluid, 1000))
+                .fluidOutputs(new FluidStack(crackedFluids[i], 800))
+                .duration((8 + 4 * i) * SECONDS)
                 .eut(TierEU.RECIPE_LV)
                 .addTo(UniversalChemical);
 
             GT_Values.RA.stdBuilder()
-                .itemInputs(
-                    aMaterial.getCells(1),
-                    GT_Utility.getIntegratedCircuit(i + 1)
-                )
-                .itemOutputs(
-                    Materials.Empty.getCells(1)
-                )
-                .fluidInputs(
-                    GT_ModHandler.getSteam(1000)
-                )
-                .fluidOutputs(
-                    new FluidStack(crackedFluids[i], 800)
-                )
-                .duration((8+4*i) * SECONDS)
+                .itemInputs(aMaterial.getCells(1), GT_Utility.getIntegratedCircuit(i + 1))
+                .itemOutputs(Materials.Empty.getCells(1))
+                .fluidInputs(GT_ModHandler.getSteam(1000))
+                .fluidOutputs(new FluidStack(crackedFluids[i], 800))
+                .duration((8 + 4 * i) * SECONDS)
                 .eut(TierEU.RECIPE_LV)
                 .addTo(UniversalChemical);
         }

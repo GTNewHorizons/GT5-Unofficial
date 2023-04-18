@@ -1,5 +1,8 @@
 package gregtech.loaders.oreprocessing;
 
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sHammerRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.TICKS;
+
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.GT_Values;
@@ -8,9 +11,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
-
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sHammerRecipes;
-import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 
 public class ProcessingCrystallized implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
@@ -28,7 +28,7 @@ public class ProcessingCrystallized implements gregtech.api.interfaces.IOreRecip
             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1L))
             .noFluidInputs()
             .noFluidOutputs()
-            .duration(10*TICKS)
+            .duration(10 * TICKS)
             .eut(16)
             .addTo(sHammerRecipes);
 

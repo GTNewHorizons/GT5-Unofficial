@@ -1,5 +1,7 @@
 package gregtech.loaders.oreprocessing;
 
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sHammerRecipes;
+
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.GT_Values;
@@ -8,8 +10,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
-
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sHammerRecipes;
 
 public class ProcessingPure implements gregtech.api.interfaces.IOreRecipeRegistrator {
 

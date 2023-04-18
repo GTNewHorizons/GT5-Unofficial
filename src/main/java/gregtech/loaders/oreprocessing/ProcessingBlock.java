@@ -88,7 +88,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
             .itemOutputs(tStack2)
             .noFluidInputs()
             .noFluidOutputs()
-            .duration(5*SECONDS)
+            .duration(5 * SECONDS)
             .eut(24)
             .addTo(sHammerRecipes);
 

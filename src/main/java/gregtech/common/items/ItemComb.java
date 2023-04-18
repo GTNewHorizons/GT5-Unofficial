@@ -10,8 +10,6 @@ import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
 import java.util.Arrays;
 import java.util.List;
 
-import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.TierEU;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
@@ -30,6 +28,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import forestry.api.core.Tabs;
 import forestry.api.recipes.RecipeManagers;
 import gregtech.GT_Mod;
+import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -1568,7 +1567,11 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
             return;
         }
 
-        int duration = (fluid.getFluid().getDensity() * 128 > 0 ? (fluid.getFluid() .getDensity() * 100) : 128);
+        int duration = (fluid.getFluid()
+            .getDensity() * 128 > 0
+                ? (fluid.getFluid()
+                    .getDensity() * 100)
+                : 128);
         int eut = volt.getSimpleEnergy() / 2;
 
         GT_Values.RA.stdBuilder()
@@ -1649,18 +1652,10 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
                     }
                 }
                 GT_Values.RA.stdBuilder()
-                    .itemInputs(
-                        combInput
-                    )
-                    .itemOutputs(
-                        combOutput
-                    )
-                    .fluidInputs(
-                        fluidInput
-                    )
-                    .fluidOutputs(
-                        fluidOutput
-                    )
+                    .itemInputs(combInput)
+                    .itemOutputs(combOutput)
+                    .fluidInputs(fluidInput)
+                    .fluidOutputs(fluidOutput)
                     .duration(durationTicks)
                     .eut(eut)
                     .metadata(CLEANROOM, requiresCleanroom)
@@ -1747,17 +1742,8 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
         }
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(
-                tComb
-            )
-            .itemOutputs(
-                aItem[0],
-                aItem[1],
-                aItem[2],
-                aItem[3],
-                aItem[4],
-                aItem[5]
-            )
+            .itemInputs(tComb)
+            .itemOutputs(aItem[0], aItem[1], aItem[2], aItem[3], aItem[4], aItem[5])
             .outputChances(chance)
             .noFluidInputs()
             .noFluidOutputs()

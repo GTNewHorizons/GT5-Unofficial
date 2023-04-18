@@ -27,20 +27,16 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
         ItemStack aStack) {
         if (aOreDictName.equals("logRubber")) {
             GT_Values.RA.stdBuilder()
-                .itemInputs(
-                    GT_Utility.copyAmount(1L, aStack),
-                    GT_Utility.getIntegratedCircuit(2)
-                )
+                .itemInputs(GT_Utility.copyAmount(1L, aStack), GT_Utility.getIntegratedCircuit(2))
                 .itemOutputs(
                     ItemList.IC2_Resin.get(1L),
                     GT_ModHandler.getIC2Item("plantBall", 1L),
                     GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 1L),
-                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1L)
-                )
+                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1L))
                 .outputChances(5000, 3750, 2500, 2500)
                 .noFluidInputs()
                 .fluidOutputs(Materials.Methane.getGas(60L))
-                .duration(10*SECONDS)
+                .duration(10 * SECONDS)
                 .eut(20)
                 .addTo(sCentrifugeRecipes);
 
@@ -59,14 +55,11 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                 false);
         } else {
             GT_Values.RA.stdBuilder()
-                .itemInputs(
-                    GT_Utility.copyAmount(1L, aStack),
-                    GT_Utility.getIntegratedCircuit(1)
-                )
+                .itemInputs(GT_Utility.copyAmount(1L, aStack), GT_Utility.getIntegratedCircuit(1))
                 .noItemOutputs()
                 .noFluidInputs()
                 .fluidOutputs(Materials.Methane.getGas(60L))
-                .duration(10*SECONDS)
+                .duration(10 * SECONDS)
                 .eut(20)
                 .addTo(sCentrifugeRecipes);
 
@@ -106,12 +99,10 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
 
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.copyAmount(1L, aStack))
-            .itemOutputs(
-                GT_ModHandler.getModItem(Railcraft.ID, "tile.railcraft.cube", 1L, 8)
-            )
+            .itemOutputs(GT_ModHandler.getModItem(Railcraft.ID, "tile.railcraft.cube", 1L, 8))
             .fluidInputs(Materials.Creosote.getFluid(1000L))
             .noFluidOutputs()
-            .duration(16*TICKS)
+            .duration(16 * TICKS)
             .eut(TierEU.ULV)
             .addTo(sChemicalBathRecipes);
 

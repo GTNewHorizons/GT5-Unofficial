@@ -12,7 +12,6 @@ import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 
 import java.util.List;
 
-import gregtech.api.enums.TierEU;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -28,6 +27,7 @@ import forestry.api.core.Tabs;
 import forestry.api.recipes.RecipeManagers;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_ModHandler;
 
 public class ItemDrop extends Item {
@@ -198,7 +198,7 @@ public class ItemDrop extends Item {
             .outputChances(aChance)
             .noFluidInputs()
             .fluidOutputs(aOutput)
-            .duration(1*SECONDS+12*TICKS)
+            .duration(1 * SECONDS + 12 * TICKS)
             .eut(aEUt)
             .addTo(sFluidExtractionRecipes);
     }
@@ -223,7 +223,7 @@ public class ItemDrop extends Item {
             .outputChances(aChance)
             .noFluidInputs()
             .fluidOutputs(aOutput)
-            .duration(6*SECONDS+8*TICKS)
+            .duration(6 * SECONDS + 8 * TICKS)
             .eut(aEUt)
             .addTo(sFluidExtractionRecipes);
     }
@@ -235,7 +235,7 @@ public class ItemDrop extends Item {
             .outputChances(aChance)
             .noFluidInputs()
             .fluidOutputs(aOutput)
-            .duration(24*SECONDS)
+            .duration(24 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(sFluidExtractionRecipes);
     }
