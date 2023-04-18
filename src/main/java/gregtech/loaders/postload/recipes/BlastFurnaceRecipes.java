@@ -644,8 +644,8 @@ public class BlastFurnaceRecipes implements Runnable {
         if (GTNHLanthanides.isModLoaded() && GTPlusPlus.isModLoaded()) {
 
             GT_Values.RA.stdBuilder()
-                .itemInputs(Materials.TranscendentMetal.getDust(1), GT_Utility.getIntegratedCircuit(1))
-                .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.ingotHot, Materials.TranscendentMetal, 1))
+                .itemInputs(MaterialsUEVplus.TranscendentMetal.getDust(1), GT_Utility.getIntegratedCircuit(1))
+                .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.ingotHot, MaterialsUEVplus.TranscendentMetal, 1))
                 .fluidInputs(Materials.Tungsten.getMolten(144))
                 .fluidOutputs(new FluidStack(FluidRegistry.getFluid("molten.celestialtungsten"), 72))
                 .duration(3 * MINUTES)

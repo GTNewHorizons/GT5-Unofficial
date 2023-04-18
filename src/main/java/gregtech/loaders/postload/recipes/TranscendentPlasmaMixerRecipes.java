@@ -7,6 +7,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.util.GT_Utility;
 
 public class TranscendentPlasmaMixerRecipes implements Runnable {
@@ -43,7 +44,7 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
                 Materials.Iron.getPlasma(1000),
                 Materials.Calcium.getPlasma(1000),
                 Materials.Niobium.getPlasma(1000))
-            .fluidOutputs(Materials.ExcitedDTCC.getFluid(1000L))
+            .fluidOutputs(MaterialsUEVplus.ExcitedDTCC.getFluid(1000L))
             .duration(100)
             .eut(CRUDE_EU_PER_L)
             .noOptimize()
@@ -61,7 +62,7 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
                 Materials.Nickel.getPlasma(1000),
                 Materials.Boron.getPlasma(1000),
                 Materials.Sulfur.getPlasma(1000))
-            .fluidOutputs(Materials.ExcitedDTPC.getFluid(1000L))
+            .fluidOutputs(MaterialsUEVplus.ExcitedDTPC.getFluid(1000L))
             .duration(100)
             .eut(PROSAIC_EU_PER_L)
             .noOptimize()
@@ -83,7 +84,7 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
                 Materials.Zinc.getPlasma(1000),
                 Materials.Silver.getPlasma(1000),
                 Materials.Titanium.getPlasma(1000))
-            .fluidOutputs(Materials.ExcitedDTRC.getFluid(1000L))
+            .fluidOutputs(MaterialsUEVplus.ExcitedDTRC.getFluid(1000L))
             .duration(100)
             .eut(RESPLENDENT_EU_PER_L)
             .noOptimize()
@@ -109,7 +110,7 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
                 Materials.Bismuth.getPlasma(1000),
                 Materials.Oxygen.getPlasma(1000),
                 Materials.Tin.getPlasma(1000))
-            .fluidOutputs(Materials.ExcitedDTEC.getFluid(1000L))
+            .fluidOutputs(MaterialsUEVplus.ExcitedDTEC.getFluid(1000L))
             .duration(100)
             .eut(EXOTIC_EU_PER_L)
             .noOptimize()
@@ -138,8 +139,8 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
                 Materials.Lead.getPlasma(1000),
                 Materials.Thorium.getPlasma(1000),
                 Materials.Plutonium241.getPlasma(1000L),
-                Materials.RawStarMatter.getFluid(25L))
-            .fluidOutputs(Materials.ExcitedDTSC.getFluid(1000L))
+                MaterialsUEVplus.RawStarMatter.getFluid(25L))
+            .fluidOutputs(MaterialsUEVplus.ExcitedDTSC.getFluid(1000L))
             .duration(200)
             .eut(STELLAR_EU_PER_HALF_L)
             .noOptimize()

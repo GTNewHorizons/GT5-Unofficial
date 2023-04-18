@@ -33,6 +33,7 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -306,7 +307,8 @@ public class GT_MetaTileEntity_NanoForge extends
             mSpecialTier = 2;
         }
 
-        if (aStack.isItemEqual(Materials.TranscendentMetal.getNanite(1)) && checkPiece(STRUCTURE_PIECE_MAIN, 4, 37, 1)
+        if (aStack.isItemEqual(MaterialsUEVplus.TranscendentMetal.getNanite(1))
+            && checkPiece(STRUCTURE_PIECE_MAIN, 4, 37, 1)
             && checkPiece(STRUCTURE_PIECE_TIER2, -7, 14, 4)
             && checkPiece(STRUCTURE_PIECE_TIER3, 14, 26, 4)) {
             mSpecialTier = 3;
