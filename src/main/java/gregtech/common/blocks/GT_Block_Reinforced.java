@@ -378,8 +378,8 @@ public class GT_Block_Reinforced extends GT_Generic_Block {
     }
 
     @Override
-    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int ordinalSide, float xOffset,
-        float yOffset, float zOffset) {
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int ordinalSide,
+        float xOffset, float yOffset, float zOffset) {
         if ((player.getCurrentEquippedItem() != null) && (player.getCurrentEquippedItem()
             .getItem() == Items.flint_and_steel) && world.getBlockMetadata(x, y, z) == 5) {
             removedByPlayer(world, player, x, y, z);

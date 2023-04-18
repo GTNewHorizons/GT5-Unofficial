@@ -501,10 +501,19 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
             rX = x + 1.1;
         }
         effectRenderer.addEffect(
-            (new EntityDiggingFX(world, rX, rY, rZ, 0.0, 0.0, 0.0, block, block.getDamageValue(world, x, y, z), ordinalSide))
-                .applyColourMultiplier(x, y, z)
-                .multiplyVelocity(0.2F)
-                .multipleParticleScaleBy(0.6F));
+            (new EntityDiggingFX(
+                world,
+                rX,
+                rY,
+                rZ,
+                0.0,
+                0.0,
+                0.0,
+                block,
+                block.getDamageValue(world, x, y, z),
+                ordinalSide)).applyColourMultiplier(x, y, z)
+                    .multiplyVelocity(0.2F)
+                    .multipleParticleScaleBy(0.6F));
     }
 
     @SideOnly(Side.CLIENT)
