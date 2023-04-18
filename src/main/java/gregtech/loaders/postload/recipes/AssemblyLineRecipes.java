@@ -57,7 +57,7 @@ public class AssemblyLineRecipes implements Runnable {
                 .noFluidOutputs()
                 .itemOutputs(ItemList.Electric_Motor_LuV.get(1))
                 .eut(TierEU.RECIPE_IV)
-                .duration(600)
+                .duration(30 * SECONDS)
                 .addTo(AssemblyLine);
 
             // ZPM motor
