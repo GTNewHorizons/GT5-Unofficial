@@ -60,11 +60,27 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
 
     protected GT_MetaTileEntity_Hatch_ElementalContainer(int aID, String aName, String aNameRegional, int aTier,
             String descr) {
-        super(aID, aName, aNameRegional, aTier, 0, descr);
+        super(
+                aID,
+                aName,
+                aNameRegional,
+                aTier,
+                0,
+                new String[] { TEC_MARK_EM, descr,
+                        translateToLocal("tt.base.emhatch.desc.0") + " "
+                                + EnumChatFormatting.AQUA
+                                + GT_Utility.formatNumbers(aTier * aTier >> 4),
+                        translateToLocal("tt.base.emhatch.desc.1") + " "
+                                + EnumChatFormatting.AQUA
+                                + TT_Utility.formatNumberShortExp(aTier * aTier >> 4),
+                        translateToLocal("tt.base.emhatch.desc.2"), translateToLocal("tt.base.emhatch.desc.3"),
+                        translateToLocal("tt.base.emhatch.desc.4"), translateToLocal("tt.base.emhatch.desc.5"),
+                        translateToLocal("tt.base.emhatch.desc.6"),
+                        EnumChatFormatting.AQUA + translateToLocal("tt.base.emhatch.desc.7") });
         TT_Utility.setTier(aTier, this);
     }
 
-    protected GT_MetaTileEntity_Hatch_ElementalContainer(String aName, int aTier, String aDescription,
+    protected GT_MetaTileEntity_Hatch_ElementalContainer(String aName, int aTier, String[] aDescription,
             ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
     }
@@ -321,24 +337,6 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
 
     public void updateSlots() {
         purgeOverflow();
-    }
-
-    @Override
-    public String[] getDescription() {
-        return new String[] { TEC_MARK_EM, mDescription,
-                translateToLocal("tt.base.emhatch.desc.0") + " "
-                        + EnumChatFormatting.AQUA
-                        + GT_Utility.formatNumbers(getMaxStacksCount()), // Max stacks amount:
-                translateToLocal("tt.base.emhatch.desc.1") + " "
-                        + EnumChatFormatting.AQUA
-                        + TT_Utility.formatNumberShortExp(getMaxStackSize()), // Stack capacity:
-                translateToLocal("tt.base.emhatch.desc.2"), // Place Overflow Hatch behind,on top or below
-                translateToLocal("tt.base.emhatch.desc.3"), // to provide overflow protection while this block
-                translateToLocal("tt.base.emhatch.desc.4"), // is not attached to multi block.
-                translateToLocal("tt.base.emhatch.desc.5"), // Transport range can be extended in straight
-                translateToLocal("tt.base.emhatch.desc.6"), // line up to 15 blocks with quantum tunnels.
-                EnumChatFormatting.AQUA + translateToLocal("tt.base.emhatch.desc.7") // Must be painted to work
-        };
     }
 
     @Override

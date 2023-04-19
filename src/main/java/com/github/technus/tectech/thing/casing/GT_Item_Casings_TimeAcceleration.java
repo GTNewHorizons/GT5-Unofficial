@@ -19,7 +19,7 @@ public class GT_Item_Casings_TimeAcceleration extends GT_Item_Casings_Abstract {
     }
 
     @Override
-    public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean aF3_H) {
+    public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
         switch (aStack.getItemDamage()) {
             case 0:
             case 1:

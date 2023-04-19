@@ -40,6 +40,7 @@ public class EnderWorldSavedData extends WorldSavedData {
         super(s);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void readFromNBT(NBTTagCompound nbtTagCompound) {
         try {

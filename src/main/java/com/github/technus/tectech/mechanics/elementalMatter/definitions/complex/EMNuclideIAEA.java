@@ -7,7 +7,6 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.TreeMap;
 
 public final class EMNuclideIAEA {
@@ -274,16 +273,6 @@ public final class EMNuclideIAEA {
             }
             return Double.NaN;
         }
-    }
-
-    private static HashSet<String> decays = new HashSet<>();
-
-    private static boolean add(String s) {
-        if (decays.add(s)) {
-            System.out.println(s);
-            return true;
-        }
-        return false;
     }
 
     private static iaeaDecay[] getDecaysFixed(String decay1, double chance1, String decay2, double chance2,

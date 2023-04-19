@@ -34,7 +34,7 @@ import com.github.technus.tectech.mechanics.elementalMatter.definitions.complex.
 import com.github.technus.tectech.util.TT_Utility;
 
 import cpw.mods.fml.common.gameevent.TickEvent;
-import gregtech.api.GregTech_API;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Utility;
 
@@ -141,7 +141,7 @@ public class AnomalyHandler implements IChunkMetaDataHandler {
                             }
                             GT_Utility.sendSoundToPlayers(
                                     other.worldObj,
-                                    GregTech_API.sSoundList.get(209),
+                                    SoundResource.IC2_MACHINES_MACHINE_OVERLOAD,
                                     1.0F,
                                     -1,
                                     (int) other.posX,
@@ -149,7 +149,7 @@ public class AnomalyHandler implements IChunkMetaDataHandler {
                                     (int) other.posZ);
                             GT_Utility.sendSoundToPlayers(
                                     player.worldObj,
-                                    GregTech_API.sSoundList.get(209),
+                                    SoundResource.IC2_MACHINES_MACHINE_OVERLOAD,
                                     1.0F,
                                     -1,
                                     (int) player.posX,
@@ -200,7 +200,7 @@ public class AnomalyHandler implements IChunkMetaDataHandler {
                 }
                 GT_Utility.sendSoundToPlayers(
                         a.worldObj,
-                        GregTech_API.sSoundList.get(209),
+                        SoundResource.IC2_MACHINES_MACHINE_OVERLOAD,
                         1.0F,
                         -1,
                         (a.xPosition << 4) + x,
@@ -217,7 +217,7 @@ public class AnomalyHandler implements IChunkMetaDataHandler {
                 }
                 GT_Utility.sendSoundToPlayers(
                         b.worldObj,
-                        GregTech_API.sSoundList.get(209),
+                        SoundResource.IC2_MACHINES_MACHINE_OVERLOAD,
                         1.0F,
                         -1,
                         (b.xPosition << 4) + x,

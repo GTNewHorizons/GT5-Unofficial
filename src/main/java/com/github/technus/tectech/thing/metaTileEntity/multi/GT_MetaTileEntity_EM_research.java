@@ -69,6 +69,7 @@ import gregtech.api.util.IGT_HatchAdder;
 /**
  * Created by danie_000 on 17.12.2016.
  */
+@SuppressWarnings("unchecked")
 public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockBase_EM
         implements ISurvivalConstructable {
 
@@ -187,7 +188,7 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
 
     static {
         try {
-            Class GT_Assemblyline_Server = Class.forName("gregtech.api.util.GT_Assemblyline_Server");
+            Class<?> GT_Assemblyline_Server = Class.forName("gregtech.api.util.GT_Assemblyline_Server");
             lServerNames = (LinkedHashMap<String, String>) GT_Assemblyline_Server.getField("lServerNames").get(null);
         } catch (ClassNotFoundException | NoSuchFieldException | IllegalAccessException e) {
             lServerNames = null;

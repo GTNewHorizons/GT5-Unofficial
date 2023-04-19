@@ -2142,6 +2142,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM
         extraExplosions_EM();
         GT_Pollution.addPollution(getBaseMetaTileEntity(), 600000);
         mInventory[1] = null;
+        @SuppressWarnings("unchecked")
         Iterable<MetaTileEntity> allHatches = Iterables.concat(
                 mInputBusses,
                 mOutputBusses,

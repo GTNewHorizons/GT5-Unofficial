@@ -197,10 +197,6 @@ public class EMAtomDefinition extends EMComplexTemplate {
         this(true, new EMConstantStackMap(things));
     }
 
-    private EMAtomDefinition(boolean check, EMDefinitionStack... things) throws EMException {
-        this(check, new EMConstantStackMap(things));
-    }
-
     public EMAtomDefinition(EMConstantStackMap things) throws EMException {
         this(true, things);
     }

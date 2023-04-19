@@ -315,7 +315,7 @@ public class GT_GUIContainer_MultiMachineEM extends GT_GUIContainerMetaTile_Mach
         }
     }
 
-    protected void hoveringText(List strings, int x, int y, FontRenderer font) {
+    protected void hoveringText(List<String> strings, int x, int y, FontRenderer font) {
         if (!strings.isEmpty()) {
             GL11.glDisable(GL12.GL_RESCALE_NORMAL);
             // RenderHelper.disableStandardItemLighting();

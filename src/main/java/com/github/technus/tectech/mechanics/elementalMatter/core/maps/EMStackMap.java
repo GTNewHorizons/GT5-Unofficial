@@ -30,6 +30,7 @@ abstract class EMStackMap<T extends IEMStack> implements IEMMapRead<T> {
     @Override
     public abstract EMStackMap<T> clone();
 
+    @SuppressWarnings("unchecked")
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {

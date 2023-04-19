@@ -44,7 +44,9 @@ public class EyeOfHarmonyRecipe {
             Materials.Universium.getMolten(1152), Materials.Universium.getMolten(4_608),
             Materials.Universium.getMolten(18_432) };
 
-    HashingStrategy<ItemStack> itemStackHashingStrategy = new HashingStrategy<ItemStack>() {
+    HashingStrategy<ItemStack> itemStackHashingStrategy = new HashingStrategy<>() {
+
+        private static final long serialVersionUID = -3966004160368229212L;
 
         @Override
         public int computeHashCode(ItemStack stack) {
@@ -337,6 +339,8 @@ public class EyeOfHarmonyRecipe {
 
     public static class HashMapHelper extends HashMap<Materials, Double> {
 
+        private static final long serialVersionUID = 2297018142561480614L;
+
         void add(Materials material, double value) {
 
             // If key already exists.
@@ -461,7 +465,9 @@ public class EyeOfHarmonyRecipe {
             Materials.Oxygen,
             Materials.Tin).collect(Collectors.toList());
 
-    private static final HashMap<String, Long> plasmaEnergyMap = new HashMap<String, Long>() {
+    private static final HashMap<String, Long> plasmaEnergyMap = new HashMap<>() {
+
+        private static final long serialVersionUID = 7933945171103801933L;
 
         {
             VALID_PLASMAS.forEach(

@@ -33,7 +33,7 @@ public final class TeslaCoilCapacitor extends Item {
     }
 
     @Override
-    public void addInformation(ItemStack aStack, EntityPlayer ep, List aList, boolean boo) {
+    public void addInformation(ItemStack aStack, EntityPlayer ep, List<String> aList, boolean boo) {
         aList.add(CommonValues.THETA_MOVEMENT);
         if (aStack.getItemDamage() >= 0 && aStack.getItemDamage() <= 6) {
             aList.add(
@@ -100,7 +100,7 @@ public final class TeslaCoilCapacitor extends Item {
     }
 
     @Override
-    public void getSubItems(Item aItem, CreativeTabs par2CreativeTabs, List aList) {
+    public void getSubItems(Item aItem, CreativeTabs par2CreativeTabs, List<ItemStack> aList) {
         for (int i = 0; i <= 6; i++) {
             aList.add(new ItemStack(aItem, 1, i));
         }

@@ -9,9 +9,6 @@ import static com.github.technus.tectech.TecTech.proxy;
 import static com.github.technus.tectech.compatibility.thaumcraft.elementalMatter.transformations.AspectDefinitionCompat.aspectDefinitionCompat;
 import static com.github.technus.tectech.compatibility.thaumcraft.thing.metaTileEntity.multi.EssentiaCompat.essentiaContainerCompat;
 import static com.github.technus.tectech.loader.TecTechConfig.DEBUG_MODE;
-import static gregtech.api.enums.GT_Values.W;
-import static gregtech.api.enums.Mods.ElectroMagicTools;
-import static gregtech.api.enums.Mods.GraviSuite;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.enums.Mods.TwilightForest;
@@ -20,7 +17,6 @@ import java.util.Collection;
 import java.util.HashMap;
 
 import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -49,10 +45,10 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
-import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 
+@SuppressWarnings("deprecation")
 public final class MainLoader {
 
     public static DamageSource microwaving, elementalPollution, subspace;
@@ -164,78 +160,6 @@ public final class MainLoader {
         }
 
         ProgressManager.pop(progressBarPostLoad);
-    }
-
-    private static void registerExtraHazmats() {
-        ItemStack EMT_iqC = GT_ModHandler.getModItem(ElectroMagicTools.ID, "itemArmorQuantumChestplate", 1, W);
-        ItemStack GRAVI_gC = GT_ModHandler.getModItem(GraviSuite.ID, "graviChestPlate", 1, W);
-        ItemStack GRAVI_anC = GT_ModHandler.getModItem(GraviSuite.ID, "advNanoChestPlate", 1, W);
-
-        ItemStack IC2_qH = GT_ModHandler.getIC2Item("quantumHelmet", 1L, W);
-        ItemStack IC2_qC = GT_ModHandler.getIC2Item("quantumBodyarmor", 1L, W);
-        ItemStack IC2_qL = GT_ModHandler.getIC2Item("quantumLeggings", 1L, W);
-        ItemStack IC2_qB = GT_ModHandler.getIC2Item("quantumBoots", 1L, W);
-
-        ItemStack IC2_nH = GT_ModHandler.getIC2Item("nanoHelmet", 1L, W);
-        ItemStack IC2_nC = GT_ModHandler.getIC2Item("nanoBodyarmor", 1L, W);
-        ItemStack IC2_nL = GT_ModHandler.getIC2Item("nanoLeggings", 1L, W);
-        ItemStack IC2_nB = GT_ModHandler.getIC2Item("nanoBoots", 1L, W);
-
-        GregTech_API.sFrostHazmatList.add(EMT_iqC);
-        GregTech_API.sFrostHazmatList.add(GRAVI_gC);
-        GregTech_API.sFrostHazmatList.add(IC2_qH);
-        GregTech_API.sFrostHazmatList.add(IC2_qC);
-        GregTech_API.sFrostHazmatList.add(IC2_qL);
-        GregTech_API.sFrostHazmatList.add(IC2_qB);
-
-        GregTech_API.sHeatHazmatList.add(EMT_iqC);
-        GregTech_API.sHeatHazmatList.add(GRAVI_gC);
-        GregTech_API.sHeatHazmatList.add(IC2_qH);
-        GregTech_API.sHeatHazmatList.add(IC2_qC);
-        GregTech_API.sHeatHazmatList.add(IC2_qL);
-        GregTech_API.sHeatHazmatList.add(IC2_qB);
-
-        GregTech_API.sBioHazmatList.add(EMT_iqC);
-        GregTech_API.sBioHazmatList.add(GRAVI_gC);
-        GregTech_API.sBioHazmatList.add(IC2_qH);
-        GregTech_API.sBioHazmatList.add(IC2_qC);
-        GregTech_API.sBioHazmatList.add(IC2_qL);
-        GregTech_API.sBioHazmatList.add(IC2_qB);
-
-        GregTech_API.sBioHazmatList.add(GRAVI_anC);
-        GregTech_API.sBioHazmatList.add(IC2_nH);
-        GregTech_API.sBioHazmatList.add(IC2_nC);
-        GregTech_API.sBioHazmatList.add(IC2_nL);
-        GregTech_API.sBioHazmatList.add(IC2_nB);
-
-        GregTech_API.sGasHazmatList.add(EMT_iqC);
-        GregTech_API.sGasHazmatList.add(GRAVI_gC);
-        GregTech_API.sGasHazmatList.add(IC2_qH);
-        GregTech_API.sGasHazmatList.add(IC2_qC);
-        GregTech_API.sGasHazmatList.add(IC2_qL);
-        GregTech_API.sGasHazmatList.add(IC2_qB);
-
-        GregTech_API.sGasHazmatList.add(GRAVI_anC);
-        GregTech_API.sGasHazmatList.add(IC2_nH);
-        GregTech_API.sGasHazmatList.add(IC2_nC);
-        GregTech_API.sGasHazmatList.add(IC2_nL);
-        GregTech_API.sGasHazmatList.add(IC2_nB);
-
-        GregTech_API.sRadioHazmatList.add(EMT_iqC);
-        GregTech_API.sRadioHazmatList.add(GRAVI_gC);
-        GregTech_API.sRadioHazmatList.add(IC2_qH);
-        GregTech_API.sRadioHazmatList.add(IC2_qC);
-        GregTech_API.sRadioHazmatList.add(IC2_qL);
-        GregTech_API.sRadioHazmatList.add(IC2_qB);
-
-        GregTech_API.sElectroHazmatList.add(EMT_iqC);
-        GregTech_API.sElectroHazmatList.add(GRAVI_gC);
-        GregTech_API.sElectroHazmatList.add(IC2_qH);
-        GregTech_API.sElectroHazmatList.add(IC2_qC);
-        GregTech_API.sElectroHazmatList.add(IC2_qL);
-        GregTech_API.sElectroHazmatList.add(IC2_qB);
-
-        // todo add GC GS stuff
     }
 
     public static void addAfterGregTechPostLoadRunner() {

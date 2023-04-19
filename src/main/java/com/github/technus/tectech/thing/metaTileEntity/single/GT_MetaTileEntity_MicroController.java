@@ -48,7 +48,7 @@ public class GT_MetaTileEntity_MicroController extends GT_MetaTileEntity_TieredM
         TT_Utility.setTier(aTier, this);
     }
 
-    public GT_MetaTileEntity_MicroController(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_MicroController(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
         TT_Utility.setTier(aTier, this);
         core = new AvrCore();
@@ -62,7 +62,7 @@ public class GT_MetaTileEntity_MicroController extends GT_MetaTileEntity_TieredM
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity iGregTechTileEntity) {
-        return new GT_MetaTileEntity_MicroController(mName, mTier, mDescription, mTextures);
+        return new GT_MetaTileEntity_MicroController(mName, mTier, mDescriptionArray, mTextures);
     }
 
     @Override

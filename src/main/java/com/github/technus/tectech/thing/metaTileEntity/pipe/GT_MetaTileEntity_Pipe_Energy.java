@@ -41,7 +41,7 @@ public class GT_MetaTileEntity_Pipe_Energy extends MetaPipeEntity implements ICo
     private static Textures.BlockIcons.CustomIcon EMpipe;
     public byte connectionCount = 0;
 
-    private boolean active, lastActive;
+    private boolean active;
 
     public GT_MetaTileEntity_Pipe_Energy(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional, 0);

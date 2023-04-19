@@ -195,7 +195,7 @@ public class TecTech {
                     }
 
                     @Override
-                    public boolean addAll(Collection c) {
+                    public boolean addAll(Collection<?> c) {
                         return false;
                     }
 
@@ -203,20 +203,21 @@ public class TecTech {
                     public void clear() {}
 
                     @Override
-                    public boolean retainAll(Collection c) {
+                    public boolean retainAll(Collection<?> c) {
                         return false;
                     }
 
                     @Override
-                    public boolean removeAll(Collection c) {
+                    public boolean removeAll(Collection<?> c) {
                         return false;
                     }
 
                     @Override
-                    public boolean containsAll(Collection c) {
+                    public boolean containsAll(Collection<?> c) {
                         return false;
                     }
 
+                    @SuppressWarnings("unchecked")
                     @Override
                     public Object[] toArray(Object[] a) {
                         return new Object[0];

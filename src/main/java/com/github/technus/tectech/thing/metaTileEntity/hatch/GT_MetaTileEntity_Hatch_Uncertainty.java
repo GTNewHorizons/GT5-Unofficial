@@ -67,7 +67,8 @@ public class GT_MetaTileEntity_Hatch_Uncertainty extends GT_MetaTileEntity_Hatch
         regenerate();
     }
 
-    public GT_MetaTileEntity_Hatch_Uncertainty(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_Hatch_Uncertainty(String aName, int aTier, String[] aDescription,
+            ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
         regenerate();
     }
@@ -106,7 +107,7 @@ public class GT_MetaTileEntity_Hatch_Uncertainty extends GT_MetaTileEntity_Hatch
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity iGregTechTileEntity) {
-        return new GT_MetaTileEntity_Hatch_Uncertainty(mName, mTier, mDescription, mTextures);
+        return new GT_MetaTileEntity_Hatch_Uncertainty(mName, mTier, mDescriptionArray, mTextures);
     }
 
     @Override

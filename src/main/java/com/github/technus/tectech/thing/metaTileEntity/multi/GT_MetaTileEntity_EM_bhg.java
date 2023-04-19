@@ -3,8 +3,6 @@ package com.github.technus.tectech.thing.metaTileEntity.multi;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
-import static com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_decay.URANIUM_INGOT_MASS_DIFF;
-import static com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_decay.URANIUM_MASS_TO_EU_INSTANT;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.util.GT_StructureUtility.ofHatchAdderOptional;
@@ -37,14 +35,6 @@ public class GT_MetaTileEntity_EM_bhg extends GT_MetaTileEntity_MultiblockBase_E
     // region variables
     private static Textures.BlockIcons.CustomIcon ScreenOFF;
     private static Textures.BlockIcons.CustomIcon ScreenON;
-
-    // todo CHECK VALUES
-    private static final double NEUTRONIUM_BLOCK_MASS = 4.1E17;
-    private static final double NEUTRONIUM_BLOCK_ATOM_COUNT = 2.4478671E44;
-    private static final double NEUTRONIUM_BLOCK_TO_EU_INSTANT = URANIUM_MASS_TO_EU_INSTANT * NEUTRONIUM_BLOCK_MASS
-            / (URANIUM_INGOT_MASS_DIFF * 1.78266191e-36); // ~ 5.314e40
-    private static final double NEUTRON_TO_EU_INSTANT = NEUTRONIUM_BLOCK_TO_EU_INSTANT / NEUTRONIUM_BLOCK_ATOM_COUNT; // ~
-                                                                                                                      // 0.00021708694
 
     public boolean glassDome = false;
     // endregion
@@ -1229,111 +1219,6 @@ public class GT_MetaTileEntity_EM_bhg extends GT_MetaTileEntity_MultiblockBase_E
 
     public GT_MetaTileEntity_EM_bhg(String aName) {
         super(aName);
-    }
-
-    /**
-     * Black hole event horizon radius calculator
-     *
-     * @param massKg mass in kg
-     * @return radius in meters
-     */
-    private static double getSchwarzschildRadius(double massKg) {
-        return massKg * 1.48523238761875E-27;
-    }
-
-    /**
-     * Black hole event horizon surface area calculator
-     *
-     * @param massKg mass in kg
-     * @return area in meters^2
-     */
-    private static double getSchwarzschildArea(double massKg) {
-        return Math.pow(getSchwarzschildRadius(massKg), 2) * 12.566370614359172;
-    }
-
-    /**
-     * Black hole event horizon temperature calculator
-     *
-     * @param massKg mass in kg
-     * @return temperature in K
-     */
-    private static double getTemperature(double massKg) {
-        return 2.841438513199716E-9 / (2.3159488515170722E-32 * massKg);
-    }
-
-    /**
-     * Black hole luminosity calculator
-     *
-     * @param massKg mass in kg
-     * @return luminosity in watts
-     */
-    private static double getLuminosity(double massKg) {
-        return getSchwarzschildArea(massKg) * 5.670373e-8 * Math.pow(getTemperature(massKg), 4);
-    }
-
-    /**
-     * Black hole acretion disk luminosity calculator
-     *
-     * @param massKgPer1s mass injection kg per s
-     * @return luminosity in watts
-     */
-    private static double getAcretionDiskLuminosity(double massKgPer1s) {
-        return massKgPer1s * 7.48962648947348E15;
-    }
-
-    /**
-     * Black hole gravity field calculator, should be used for gravity blasting
-     *
-     * @param massKg     mass in kg
-     * @param distanceSq distance squared in meters
-     * @return gravity field
-     */
-    private static double getGravityField(double massKg, double distanceSq) {
-        return massKg * 6.6743015e-11 / distanceSq;
-    }
-
-    /**
-     * Black hole containment force calculator
-     *
-     * @param massKg   mass in kg
-     * @param radiusSq radius squared in meters
-     * @return force in newtons
-     */
-    private static double getContainmentForce(double massKg, double radiusSq) {
-        return Math.pow(massKg, 2) * 6.6743015e-11 / radiusSq;
-    }
-
-    /**
-     * Black hole containment pressure calculator F/s, should be used for bhg initial release explosion?
-     *
-     * @param massKg   mass in kg
-     * @param radiusSq radius squared in meters
-     * @return pressure in pascals
-     */
-    private static double getContainmentPressure(double massKg, double radiusSq) {
-        return getContainmentForce(massKg, radiusSq) / (12.566370614359172 * radiusSq);
-    }
-
-    /**
-     * Black hole containment energy calculator, assuming F*s, and 100% efficient gravity force field
-     *
-     * @param massKg mass in kg
-     * @return power in watts
-     */
-    private static double getContainmentPower(double massKg) {
-        return Math.pow(massKg, 2) * 8.387174624097334E-10;
-    }
-
-    /**
-     * Black hole power balance, zero at mass ~= 2.5525e10 (T~=4.8067e12)
-     *
-     * @param massKg      mass in kg
-     * @param massKgPer1s mass injection kg per s
-     * @return power in watts
-     */
-    @Deprecated
-    private static double getContainmentPowerBalance(double massKg, double massKgPer1s) {
-        return getLuminosity(massKg) + getAcretionDiskLuminosity(massKgPer1s) - getContainmentPower(massKg);
     }
 
     // todo compaction energy 8 * Long.MAx_VALUE?

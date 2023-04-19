@@ -4,6 +4,7 @@ import java.util.List;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 
 import com.github.technus.tectech.thing.CustomItemList;
 import com.github.technus.tectech.thing.item.DebugElementalInstanceContainer_EM;
@@ -25,7 +26,7 @@ public class CreativeTabTecTech extends CreativeTabs {
     }
 
     @Override
-    public void displayAllReleventItems(List stuffToShow) {
+    public void displayAllReleventItems(List<ItemStack> stuffToShow) {
         for (CustomItemList item : CustomItemList.values()) {
             if (item.hasBeenSet() && item.getBlock() == GregTech_API.sBlockMachines) {
                 stuffToShow.add(item.get(1));

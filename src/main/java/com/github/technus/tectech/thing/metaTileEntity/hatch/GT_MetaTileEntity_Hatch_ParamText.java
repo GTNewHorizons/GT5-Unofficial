@@ -46,13 +46,13 @@ public class GT_MetaTileEntity_Hatch_ParamText extends GT_MetaTileEntity_Hatch_P
         super(aID, aName, aNameRegional, aTier);
     }
 
-    public GT_MetaTileEntity_Hatch_ParamText(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_Hatch_ParamText(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity iGregTechTileEntity) {
-        return new GT_MetaTileEntity_Hatch_ParamText(mName, mTier, mDescription, mTextures);
+        return new GT_MetaTileEntity_Hatch_ParamText(mName, mTier, mDescriptionArray, mTextures);
     }
 
     @Override

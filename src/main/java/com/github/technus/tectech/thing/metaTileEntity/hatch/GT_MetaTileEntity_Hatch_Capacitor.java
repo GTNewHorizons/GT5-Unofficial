@@ -43,11 +43,18 @@ public class GT_MetaTileEntity_Hatch_Capacitor extends GT_MetaTileEntity_Hatch i
     private static Map<String, GT_MetaTileEntity_Hatch_Capacitor.CapacitorComponent> componentBinds = new HashMap<>();
 
     public GT_MetaTileEntity_Hatch_Capacitor(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, 16, "");
+        super(
+                aID,
+                aName,
+                aNameRegional,
+                aTier,
+                16,
+                new String[] { CommonValues.THETA_MOVEMENT, translateToLocal("gt.blockmachines.hatch.capacitor.desc.0"),
+                        EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.hatch.capacitor.desc.1") });
         TT_Utility.setTier(aTier, this);
     }
 
-    public GT_MetaTileEntity_Hatch_Capacitor(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_Hatch_Capacitor(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 16, aDescription, aTextures);
     }
 
@@ -76,7 +83,7 @@ public class GT_MetaTileEntity_Hatch_Capacitor extends GT_MetaTileEntity_Hatch i
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_Hatch_Capacitor(mName, mTier, mDescription, mTextures);
+        return new GT_MetaTileEntity_Hatch_Capacitor(mName, mTier, mDescriptionArray, mTextures);
     }
 
     @Override
@@ -118,16 +125,6 @@ public class GT_MetaTileEntity_Hatch_Capacitor extends GT_MetaTileEntity_Hatch i
     @Override
     public int getSizeInventory() {
         return getBaseMetaTileEntity().isActive() ? 0 : mInventory.length;
-    }
-
-    @Override
-    public String[] getDescription() {
-        return new String[] { CommonValues.THETA_MOVEMENT, translateToLocal("gt.blockmachines.hatch.capacitor.desc.0"), // For
-                                                                                                                        // Tesla
-                                                                                                                        // Tower
-                EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.hatch.capacitor.desc.1") // Stores 'nergy!
-                                                                                                      // (for a while)
-        };
     }
 
     public long[] getCapacitors() {

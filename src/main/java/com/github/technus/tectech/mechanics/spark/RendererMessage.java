@@ -31,6 +31,7 @@ public class RendererMessage implements IMessage {
 
     public RendererMessage() {}
 
+    @SuppressWarnings("unchecked")
     @Override
     public void fromBytes(ByteBuf pBuffer) {
         try {

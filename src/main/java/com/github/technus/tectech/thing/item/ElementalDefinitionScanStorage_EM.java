@@ -75,7 +75,7 @@ public final class ElementalDefinitionScanStorage_EM extends Item {
     }
 
     @Override
-    public void addInformation(ItemStack aStack, EntityPlayer ep, List aList, boolean boo) {
+    public void addInformation(ItemStack aStack, EntityPlayer ep, List<String> aList, boolean boo) {
         aList.add(CommonValues.TEC_MARK_EM);
         if (aStack.stackTagCompound != null && aStack.stackTagCompound.hasKey("content")) {
             aList.add(EnumChatFormatting.BLUE + translateToLocal("item.em.definitionScanStorage.desc.0")); // Contains
@@ -113,7 +113,7 @@ public final class ElementalDefinitionScanStorage_EM extends Item {
     }
 
     @Override
-    public void getSubItems(Item item, CreativeTabs tab, List list) {
+    public void getSubItems(Item item, CreativeTabs tab, List<ItemStack> list) {
         ItemStack that = new ItemStack(this, 1);
         list.add(that);
     }

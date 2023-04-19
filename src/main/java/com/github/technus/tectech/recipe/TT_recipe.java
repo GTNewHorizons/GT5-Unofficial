@@ -2,7 +2,6 @@ package com.github.technus.tectech.recipe;
 
 import static com.github.technus.tectech.util.CommonValues.EOH_TIER_FANCY_NAMES;
 import static com.google.common.math.LongMath.pow;
-import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
 import static gregtech.api.util.GT_Utility.formatNumbers;
 import static java.lang.Math.min;
 import static net.minecraft.util.EnumChatFormatting.BOLD;
@@ -236,7 +235,7 @@ public class TT_recipe extends GT_Recipe {
                 "gt.recipe.eyeofharmony",
                 "Eye of Harmony",
                 null,
-                RES_PATH_GUI + "basicmachines/Extractor",
+                "gregtech:textures/gui/basicmachines/Extractor",
                 1,
                 9 * 9,
                 1,

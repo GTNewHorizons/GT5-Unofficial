@@ -118,7 +118,7 @@ public class AvrProgrammer extends Item implements IMedia {
     }
 
     @Override
-    public void addInformation(ItemStack aStack, EntityPlayer ep, List aList, boolean boo) {
+    public void addInformation(ItemStack aStack, EntityPlayer ep, List<String> aList, boolean boo) {
         if (aStack.stackTagCompound.hasKey("avr")) {
             NBTTagCompound avr = aStack.stackTagCompound.getCompoundTag("avr");
             aList.add(translateToLocal("item.em.programmer.desc.0") + ": " + avr.getInteger("programCounter")); // Current
@@ -215,7 +215,7 @@ public class AvrProgrammer extends Item implements IMedia {
     }
 
     @Override
-    public void getSubItems(Item item, CreativeTabs tab, List list) {
+    public void getSubItems(Item item, CreativeTabs tab, List<ItemStack> list) {
         ItemStack stack = new ItemStack(item, 1, 0);
         stack.setTagCompound(new NBTTagCompound());
         list.add(stack);

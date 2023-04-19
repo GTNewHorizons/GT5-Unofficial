@@ -218,7 +218,8 @@ public class GT_MetaTileEntity_EM_switch extends GT_MetaTileEntity_MultiblockBas
                                                                                              // be configured
                 .addSeparator().beginStructureBlock(3, 3, 3, false)
                 .addController(translateToLocal("tt.keyword.Structure.FrontCenter")) // Controller: Front center
-                .addCasingInfo(translateToLocal("gt.blockcasingsTT.1.name"), 0) // 0x Computer Casing (minimum)
+                .addCasingInfoMin(translateToLocal("gt.blockcasingsTT.1.name"), 0, false) // 0x Computer Casing
+                                                                                          // (minimum)
                 .addOtherStructurePart(
                         translateToLocal("gt.blockcasingsTT.3.name"),
                         translateToLocal("tt.keyword.Structure.Center")) // Advanced Computer Casing: Center

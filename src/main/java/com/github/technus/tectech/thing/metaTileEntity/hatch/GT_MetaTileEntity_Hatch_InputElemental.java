@@ -14,19 +14,18 @@ import gregtech.api.metatileentity.MetaTileEntity;
 public class GT_MetaTileEntity_Hatch_InputElemental extends GT_MetaTileEntity_Hatch_ElementalContainer {
 
     public GT_MetaTileEntity_Hatch_InputElemental(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, translateToLocal("gt.blockmachines.emin.desc")); // Elemental Input for
-                                                                                                 // Multiblocks
+        super(aID, aName, aNameRegional, aTier, translateToLocal("gt.blockmachines.emin.desc"));
         TT_Utility.setTier(aTier, this);
     }
 
-    public GT_MetaTileEntity_Hatch_InputElemental(String aName, int aTier, String aDescription,
+    public GT_MetaTileEntity_Hatch_InputElemental(String aName, int aTier, String[] aDescription,
             ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
     }
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_Hatch_InputElemental(mName, mTier, mDescription, mTextures);
+        return new GT_MetaTileEntity_Hatch_InputElemental(mName, mTier, mDescriptionArray, mTextures);
     }
 
     @Override

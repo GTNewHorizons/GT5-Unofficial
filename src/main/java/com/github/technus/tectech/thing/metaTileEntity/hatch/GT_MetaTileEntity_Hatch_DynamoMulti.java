@@ -23,24 +23,27 @@ public class GT_MetaTileEntity_Hatch_DynamoMulti extends GT_MetaTileEntity_Hatch
     public final int Amperes;
 
     public GT_MetaTileEntity_Hatch_DynamoMulti(int aID, String aName, String aNameRegional, int aTier, int aAmp) {
-        super(aID, aName, aNameRegional, aTier, 0, translateToLocal("gt.blockmachines.hatch.dynamomulti.desc.0")); // Multiple
-                                                                                                                   // Ampere
-                                                                                                                   // Energy
-                                                                                                                   // Extractor
-                                                                                                                   // for
-        // Multiblocks
+        super(
+                aID,
+                aName,
+                aNameRegional,
+                aTier,
+                0,
+                new String[] { CommonValues.TEC_MARK_GENERAL,
+                        translateToLocal("gt.blockmachines.hatch.dynamomulti.desc.0") }); // Multiple Ampere Energy
+                                                                                          // Extractor for Multiblocks
         Amperes = aAmp;
         TT_Utility.setTier(aTier, this);
     }
 
-    public GT_MetaTileEntity_Hatch_DynamoMulti(String aName, int aTier, int aAmp, String aDescription,
+    public GT_MetaTileEntity_Hatch_DynamoMulti(String aName, int aTier, int aAmp, String[] aDescription,
             ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
         Amperes = aAmp;
     }
 
     public GT_MetaTileEntity_Hatch_DynamoMulti(int aID, String aName, String aNameRegional, int aTier, int i,
-            String description, int aAmp) {
+            String[] description, int aAmp) {
         super(aID, aName, aNameRegional, aTier, 0, description);
         Amperes = aAmp;
     }
@@ -107,7 +110,7 @@ public class GT_MetaTileEntity_Hatch_DynamoMulti extends GT_MetaTileEntity_Hatch
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_Hatch_DynamoMulti(mName, mTier, Amperes, mDescription, mTextures);
+        return new GT_MetaTileEntity_Hatch_DynamoMulti(mName, mTier, Amperes, mDescriptionArray, mTextures);
     }
 
     @Override
@@ -118,12 +121,5 @@ public class GT_MetaTileEntity_Hatch_DynamoMulti extends GT_MetaTileEntity_Hatch
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
         return false;
-    }
-
-    @Override
-    public String[] getDescription() {
-        return new String[] { CommonValues.TEC_MARK_GENERAL, mDescription
-                // "Amperes Out: "+ EnumChatFormatting.AQUA+Amperes+" A"
-        };
     }
 }

@@ -14,6 +14,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.FakePlayer;
 
@@ -146,13 +147,13 @@ public class EuMeterGT extends Item {
             }
         }
         if (!(aPlayer instanceof EntityPlayerMP)) {
-            GT_Utility.doSoundAtClient(Reference.MODID + ":fx_scan", 1, 1.0F, aX, aY, aZ);
+            GT_Utility.doSoundAtClient(new ResourceLocation(Reference.MODID, "fx_scan"), 1, 1.0F, aX, aY, aZ);
         }
         return false;
     }
 
     @Override
-    public void addInformation(ItemStack aStack, EntityPlayer ep, List aList, boolean boo) {
+    public void addInformation(ItemStack aStack, EntityPlayer ep, List<String> aList, boolean boo) {
         aList.add(CommonValues.TEC_MARK_GENERAL);
         aList.add(translateToLocal("item.em.EuMeterGT.desc.0")); // Measures basic EU related stuff
         aList.add(EnumChatFormatting.BLUE + translateToLocal("item.em.EuMeterGT.desc.1")); // Just right click on

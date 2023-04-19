@@ -23,7 +23,7 @@ public class ReactorSimItem extends ItemBlock {
     }
 
     @Override
-    public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean aF3_H) {
+    public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
         aList.add(TEC_MARK_GENERAL);
         aList.add(translateToLocal("tile.reactorSim.desc.0")); // Fission Reaction Uncertainty Resolver 9001
         aList.add(

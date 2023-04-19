@@ -37,11 +37,18 @@ public class GT_MetaTileEntity_Hatch_Holder extends GT_MetaTileEntity_Hatch impl
     private static Textures.BlockIcons.CustomIcon EM_H_ACTIVE;
 
     public GT_MetaTileEntity_Hatch_Holder(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, 1, "");
+        super(
+                aID,
+                aName,
+                aNameRegional,
+                aTier,
+                1,
+                new String[] { CommonValues.TEC_MARK_EM, translateToLocal("gt.blockmachines.hatch.holder.desc.0"),
+                        EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.hatch.holder.desc.1") });
         TT_Utility.setTier(aTier, this);
     }
 
-    public GT_MetaTileEntity_Hatch_Holder(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_Hatch_Holder(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 1, aDescription, aTextures);
     }
 
@@ -65,7 +72,7 @@ public class GT_MetaTileEntity_Hatch_Holder extends GT_MetaTileEntity_Hatch impl
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_Hatch_Holder(mName, mTier, mDescription, mTextures);
+        return new GT_MetaTileEntity_Hatch_Holder(mName, mTier, mDescriptionArray, mTextures);
     }
 
     @Override
@@ -115,16 +122,6 @@ public class GT_MetaTileEntity_Hatch_Holder extends GT_MetaTileEntity_Hatch impl
     @Override
     public int getInventoryStackLimit() {
         return 1;
-    }
-
-    @Override
-    public String[] getDescription() {
-        return new String[] { CommonValues.TEC_MARK_EM, translateToLocal("gt.blockmachines.hatch.holder.desc.0"), // For
-                                                                                                                  // Research
-                                                                                                                  // Station
-                EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.hatch.holder.desc.1") // Advanced Holding
-                                                                                                   // Mechanism!
-        };
     }
 
     @Override

@@ -44,18 +44,26 @@ public class GT_MetaTileEntity_BuckConverter extends GT_MetaTileEntity_TieredMac
     public int EUT = 0, AMP = 0;
 
     public GT_MetaTileEntity_BuckConverter(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, 0, "");
+        super(
+                aID,
+                aName,
+                aNameRegional,
+                aTier,
+                0,
+                new String[] { CommonValues.TEC_MARK_GENERAL,
+                        translateToLocal("gt.blockmachines.machine.tt.buck.desc.0"),
+                        EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.machine.tt.buck.desc.1"), });
         TT_Utility.setTier(aTier, this);
     }
 
-    public GT_MetaTileEntity_BuckConverter(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_BuckConverter(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
         TT_Utility.setTier(aTier, this);
     }
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_BuckConverter(mName, mTier, mDescription, mTextures);
+        return new GT_MetaTileEntity_BuckConverter(mName, mTier, mDescriptionArray, mTextures);
     }
 
     @Override
@@ -122,18 +130,6 @@ public class GT_MetaTileEntity_BuckConverter extends GT_MetaTileEntity_TieredMac
     @Override
     public boolean isAccessAllowed(EntityPlayer aPlayer) {
         return true;
-    }
-
-    @Override
-    public String[] getDescription() {
-        return new String[] { CommonValues.TEC_MARK_GENERAL,
-                translateToLocal("gt.blockmachines.machine.tt.buck.desc.0"), // Electronic voltage regulator
-                EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.machine.tt.buck.desc.1"), // Adjustable
-                                                                                                       // step down
-                                                                                                       // transformer
-                EnumChatFormatting.BLUE + translateToLocal("gt.blockmachines.machine.tt.buck.desc.2") // Switching power
-                                                                                                      // supply...
-        };
     }
 
     @Override

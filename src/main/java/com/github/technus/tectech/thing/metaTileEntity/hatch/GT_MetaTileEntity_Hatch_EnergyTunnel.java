@@ -31,12 +31,18 @@ public class GT_MetaTileEntity_Hatch_EnergyTunnel extends GT_MetaTileEntity_Hatc
                 aNameRegional,
                 aTier,
                 0,
-                translateToLocal("gt.blockmachines.hatch.energytunnel.desc.0"),
+                new String[] { CommonValues.TEC_MARK_GENERAL,
+                        translateToLocal("gt.blockmachines.hatch.energytunnel.desc.0"),
+                        translateToLocal("gt.blockmachines.hatch.energytunnel.desc.1") + ": "
+                                + EnumChatFormatting.YELLOW
+                                + GT_Utility.formatNumbers(aAmp * V[aTier])
+                                + EnumChatFormatting.RESET
+                                + " EU/t" },
                 aAmp); // Energy injecting terminal for Multiblocks
         TT_Utility.setTier(aTier, this);
     }
 
-    public GT_MetaTileEntity_Hatch_EnergyTunnel(String aName, int aTier, int aAmp, String aDescription,
+    public GT_MetaTileEntity_Hatch_EnergyTunnel(String aName, int aTier, int aAmp, String[] aDescription,
             ITexture[][][] aTextures) {
         super(aName, aTier, aAmp, aDescription, aTextures);
     }
@@ -108,7 +114,7 @@ public class GT_MetaTileEntity_Hatch_EnergyTunnel extends GT_MetaTileEntity_Hatc
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_Hatch_EnergyTunnel(mName, mTier, Amperes, mDescription, mTextures);
+        return new GT_MetaTileEntity_Hatch_EnergyTunnel(mName, mTier, Amperes, mDescriptionArray, mTextures);
     }
 
     @Override
@@ -119,17 +125,6 @@ public class GT_MetaTileEntity_Hatch_EnergyTunnel extends GT_MetaTileEntity_Hatc
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
         return false;
-    }
-
-    @Override
-    public String[] getDescription() {
-        return new String[] { CommonValues.TEC_MARK_GENERAL, mDescription,
-                translateToLocal("gt.blockmachines.hatch.energytunnel.desc.1") + ": "
-                        + EnumChatFormatting.YELLOW
-                        + GT_Utility.formatNumbers(Amperes * maxEUInput())
-                        + EnumChatFormatting.RESET
-                        + " EU/t" // Throughput
-        };
     }
 
     @Override

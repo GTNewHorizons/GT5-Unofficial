@@ -940,10 +940,6 @@ public class GT_MetaTileEntity_TM_teslaCoil extends GT_MetaTileEntity_Multiblock
         return false;
     }
 
-    private boolean addFrameToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-        return aTileEntity != null && aTileEntity.getMetaTileEntity() instanceof GT_MetaPipeEntity_Frame;
-    }
-
     @Override
     public IStructureDefinition<GT_MetaTileEntity_TM_teslaCoil> getStructure_EM() {
         return STRUCTURE_DEFINITION;
