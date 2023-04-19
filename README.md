@@ -3,7 +3,8 @@ GT5-Unofficial
 
 ## About
 
-GT5-Unofficial is a decompiled and modified version of GT5.07.07. The goal of the mod is to maintain and extend the end game of GT5. This version has been heavily modified for use with the GTNH modpack.
+GT5-Unofficial is a decompiled and modified version of GT5.07.07. The goal of the mod is to maintain and extend the end
+game of GT5. This version has been heavily modified for use with the GTNH modpack.
 
 ## Downloads
 
@@ -17,15 +18,21 @@ Place the downloaded jar file into your mods/ folder. A number of other mods may
 
 ## Issues
 
-Please report any issues you to find to the main GTNH issue tracker. Include as much information as possible including as version and steps to reproduce.
+Please report any issues you to find to the main GTNH issue tracker. Include as much information as possible including
+as version and steps to reproduce.
 
 ## Contribution
 
-Please do! However, please take a note of [current issues](https://github.com/GTNewHorizons/GT-New-Horizons-Modpack/issues) and what is currently being worked on.
+Please do! However, please take a note of
+[current issues](https://github.com/GTNewHorizons/GT-New-Horizons-Modpack/issues) and what is currently being worked on.
+
+It is suggested to run `./gradlew build` inside your cloned repository before importing it to your IDE. This will reduce
+the chance of strange errors.
 
 ## Attribution
 
-Some textures/ideas have been taken from future versions of GT and texture pack authors for GTNH. Credit goes to Jimbno for the UU-Tex texture pack and its contributions to the base pack here: https://github.com/Jimbno/UU-Tex.
+Some textures/ideas have been taken from future versions of GT and texture pack authors for GTNH. Credit goes to Jimbno
+for the UU-Tex texture pack and its contributions to the base pack here: https://github.com/Jimbno/UU-Tex.
 
 ## License
 
