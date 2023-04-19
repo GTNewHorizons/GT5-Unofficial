@@ -3683,6 +3683,7 @@ public class GT_Utility {
     }
 
     private static final BigInteger TRILLION = BigInteger.TEN.pow(12);
+
     public static String formatNumbers(Number number) {
 
         // Handle decimals.
