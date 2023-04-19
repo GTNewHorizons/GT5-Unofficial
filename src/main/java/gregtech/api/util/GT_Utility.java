@@ -3667,8 +3667,22 @@ public class GT_Utility {
         });
     }
 
-    private static final BigInteger TRILLION = BigInteger.TEN.pow(12);
+    @Deprecated
+    public static String formatNumbers(BigInteger number) {
+        return formatNumbers((Number) number);
+    }
 
+    @Deprecated
+    public static String formatNumbers(long number) {
+        return formatNumbers((Number) number);
+    }
+
+    @Deprecated
+    public static String formatNumbers(double number) {
+        return formatNumbers((Number) number);
+    }
+
+    private static final BigInteger TRILLION = BigInteger.TEN.pow(12);
     public static String formatNumbers(Number number) {
 
         // Handle decimals.
