@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
+import java.math.BigInteger;
+
 class GT_UtilityTest {
 
     @Test
@@ -35,6 +37,7 @@ class GT_UtilityTest {
         assertEquals("1.35 x 10^12", GT_Utility.formatNumbers(1_346_000_000_491L));
         assertEquals("1.34 x 10^12", GT_Utility.formatNumbers(1_341_000_000_000L));
         assertEquals("1.03 x 10^16", GT_Utility.formatNumbers(10_341_000_592_000_000L));
+        assertEquals("7.72 x 10^86", GT_Utility.formatNumbers(BigInteger.valueOf(13).pow(78)));
 
     }
 }
