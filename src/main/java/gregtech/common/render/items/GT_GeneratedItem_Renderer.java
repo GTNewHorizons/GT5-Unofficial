@@ -149,6 +149,9 @@ public class GT_GeneratedItem_Renderer implements IItemRenderer {
         if (fluidStack != null && fluidStack.getFluid() != null) {
             IIcon fluidIcon = fluidStack.getFluid()
                 .getIcon(fluidStack);
+            if (fluidIcon == null) {
+                fluidIcon = Textures.ItemIcons.RENDERING_ERROR.getIcon();
+            }
             int fluidColor = fluidStack.getFluid()
                 .getColor(fluidStack);
 
