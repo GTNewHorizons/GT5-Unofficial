@@ -21,11 +21,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import common.Blocks;
 
-import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.TierEU;
+import gregtech.api.enums.*;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 
@@ -100,8 +96,8 @@ public class AssemblyLine implements Runnable {
                 .itemInputs(
                         ItemList.Quantum_Tank_IV.get(4),
                         GT_ModHandler.getModItem(Avaritia.ID, "Neutronium_Compressor", 2),
-                        GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.TranscendentMetal, 6),
-                        GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.TranscendentMetal, 6),
+                        GT_OreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.TranscendentMetal, 6),
+                        GT_OreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.TranscendentMetal, 6),
                         GT_OreDictUnificator.get(OrePrefixes.pipeNonuple, Materials.Infinity, 3),
                         ItemList.EnergisedTesseract.get(1),
                         GT_ModHandler.getModItem(GTPlusPlus.ID, "itemRotorHypogen", 6),
@@ -120,11 +116,11 @@ public class AssemblyLine implements Runnable {
                 .itemInputs(
                         ItemList.Quantum_Tank_IV.get(16),
                         GT_ModHandler.getModItem(Avaritia.ID, "Neutronium_Compressor", 4),
-                        GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.SpaceTime, 6),
-                        GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.SpaceTime, 6),
-                        GT_OreDictUnificator.get(OrePrefixes.pipeNonuple, Materials.SpaceTime, 3),
+                        GT_OreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.SpaceTime, 6),
+                        GT_OreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.SpaceTime, 6),
+                        GT_OreDictUnificator.get(OrePrefixes.pipeNonuple, MaterialsUEVplus.SpaceTime, 3),
                         ItemList.EnergisedTesseract.get(6),
-                        GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.SpaceTime, 6),
+                        GT_OreDictUnificator.get(OrePrefixes.rotor, MaterialsUEVplus.SpaceTime, 6),
                         ItemList.Field_Generator_UEV.get(16),
                         ItemList.Field_Generator_UIV.get(4),
                         GT_ModHandler.getModItem(GoodGenerator.ID, "huiCircuit", 4, 4),
