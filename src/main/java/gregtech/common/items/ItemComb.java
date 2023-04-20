@@ -1743,7 +1743,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(tComb)
-            .itemOutputs(aItem[0], aItem[1], aItem[2], aItem[3], aItem[4], aItem[5])
+            .itemOutputs(aItem)
             .outputChances(chance)
             .noFluidInputs()
             .noFluidOutputs()
