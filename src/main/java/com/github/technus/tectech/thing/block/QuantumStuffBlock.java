@@ -45,8 +45,8 @@ public final class QuantumStuffBlock extends BlockBase {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister p_149651_1_) {
-        super.registerBlockIcons(p_149651_1_);
+    public void registerBlockIcons(IIconRegister reg) {
+        super.registerBlockIcons(reg);
         stuff = blockIcon;
     }
 
@@ -78,8 +78,7 @@ public final class QuantumStuffBlock extends BlockBase {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public boolean shouldSideBeRendered(IBlockAccess p_149646_1_, int p_149646_2_, int p_149646_3_, int p_149646_4_,
-            int p_149646_5_) {
+    public boolean shouldSideBeRendered(IBlockAccess worldIn, int x, int y, int z, int side) {
         return false;
     }
 
@@ -99,7 +98,7 @@ public final class QuantumStuffBlock extends BlockBase {
     }
 
     @Override
-    public Item getItemDropped(int p_149650_1_, Random p_149650_2_, int p_149650_3_) {
+    public Item getItemDropped(int meta, Random random, int fortune) {
         return null;
     }
 }

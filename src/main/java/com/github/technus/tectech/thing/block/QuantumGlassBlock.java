@@ -71,11 +71,10 @@ public final class QuantumGlassBlock extends BlockBase {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public boolean shouldSideBeRendered(IBlockAccess p_149646_1_, int p_149646_2_, int p_149646_3_, int p_149646_4_,
-            int p_149646_5_) {
-        Block block = p_149646_1_.getBlock(p_149646_2_, p_149646_3_, p_149646_4_);
-        return block != this; // && super.shouldSideBeRendered(p_149646_1_, p_149646_2_, p_149646_3_, p_149646_4_,
-        // p_149646_5_);
+    public boolean shouldSideBeRendered(IBlockAccess worldIn, int x, int y, int z, int side) {
+        Block block = worldIn.getBlock(x, y, z);
+        return block != this; // && super.shouldSideBeRendered(worldIn, x, y, z,
+        // side);
     }
 
     @Override
@@ -85,8 +84,8 @@ public final class QuantumGlassBlock extends BlockBase {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister p_149651_1_) {
-        super.registerBlockIcons(p_149651_1_);
+    public void registerBlockIcons(IIconRegister reg) {
+        super.registerBlockIcons(reg);
         stuff = blockIcon;
     }
 

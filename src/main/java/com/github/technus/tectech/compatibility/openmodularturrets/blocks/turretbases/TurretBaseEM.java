@@ -32,14 +32,14 @@ public class TurretBaseEM extends BlockAbstractTurretBase {
     }
 
     @Override
-    public TileEntity createNewTileEntity(World p_149915_1_, int p_149915_2_) {
+    public TileEntity createNewTileEntity(World worldIn, int meta) {
         return new TileTurretBaseEM(MaxCharge, MaxIO);
     }
 
     @Override
-    public void registerBlockIcons(IIconRegister p_149651_1_) {
-        super.registerBlockIcons(p_149651_1_);
-        blockIcon = p_149651_1_.registerIcon(Reference.MODID + ":turretBaseEM");
+    public void registerBlockIcons(IIconRegister reg) {
+        super.registerBlockIcons(reg);
+        blockIcon = reg.registerIcon(Reference.MODID + ":turretBaseEM");
     }
 
     public static void run() {
