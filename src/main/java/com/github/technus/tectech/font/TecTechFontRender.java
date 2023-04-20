@@ -384,16 +384,16 @@ public class TecTechFontRender extends FontRenderer {
         return super.getResourceInputStream(location);
     }
 
-    private int drawStringFront(String p_85187_1_, int p_85187_2_, int p_85187_3_, int p_85187_4_) {
+    private int drawStringFront(String text, int x, int y, int color) {
         GL11.glEnable(3008);
         resetStyles();
-        return renderString(p_85187_1_, p_85187_2_, p_85187_3_, p_85187_4_, false);
+        return renderString(text, x, y, color, false);
     }
 
-    private int drawStringBack(String p_85187_1_, int p_85187_2_, int p_85187_3_, int p_85187_4_) {
+    private int drawStringBack(String text, int x, int y, int color) {
         GL11.glEnable(3008);
         resetStyles();
-        return renderString(p_85187_1_, p_85187_2_ + 1, p_85187_3_ + 1, p_85187_4_, true);
+        return renderString(text, x + 1, y + 1, color, true);
     }
 
     @Override

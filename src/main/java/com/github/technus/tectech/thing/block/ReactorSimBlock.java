@@ -58,8 +58,8 @@ public class ReactorSimBlock extends Block implements ITileEntityProvider {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister p_149651_1_) {
-        super.registerBlockIcons(p_149651_1_);
+    public void registerBlockIcons(IIconRegister reg) {
+        super.registerBlockIcons(reg);
         stuff = blockIcon;
     }
 
@@ -70,7 +70,7 @@ public class ReactorSimBlock extends Block implements ITileEntityProvider {
     }
 
     @Override
-    public TileEntity createNewTileEntity(World p_149915_1_, int p_149915_2_) {
+    public TileEntity createNewTileEntity(World worldIn, int meta) {
         return new ReactorSimTileEntity();
     }
 
