@@ -9,6 +9,7 @@ import net.minecraft.block.material.Material;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.MaterialsUEVplus;
+import gregtech.api.enums.Mods;
 import gregtech.api.multitileentity.MultiTileEntityBlock;
 import gregtech.api.multitileentity.MultiTileEntityRegistry;
 import gregtech.api.multitileentity.multiblock.base.WallShareablePart;
@@ -129,9 +130,9 @@ public class GT_Loader_MultiTileEntities implements Runnable {
         componentCasingRegistry.create(20001, Inventory.class)
             .name("Inventory Upgrade LV")
             .category("MultiBlock Special Casing")
-            .setBlock(casing)
+            .setBlock(componentCasing)
             .material(MaterialsUEVplus.SpaceTime)
-            .texture("metalwall")
+            .textureFolder("metalwall")
             .upgradeInventorySize(16)
             .tier(1)
             .register();
