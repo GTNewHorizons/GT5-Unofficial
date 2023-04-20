@@ -7,21 +7,16 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.StatCollector;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import gregtech.api.GregTech_API;
-import gregtech.api.interfaces.ITexture;
 import gregtech.api.multitileentity.interfaces.IMultiTileEntity;
 import gregtech.api.multitileentity.interfaces.IMultiTileEntity.IMTE_HasMultiBlockMachineRelevantData;
-import gregtech.common.render.GT_Renderer_Block;
-import gregtech.common.render.IRenderedBlock;
+import gregtech.common.render.GT_MultiTile_Renderer;
 
-public class MultiTileEntityBlockInternal extends Block implements IRenderedBlock {
+public class MultiTileEntityBlockInternal extends Block {
 
     public MultiTileEntityRegistry mMultiTileEntityRegistry;
 
@@ -36,7 +31,8 @@ public class MultiTileEntityBlockInternal extends Block implements IRenderedBloc
 
     @Override
     public int getRenderType() {
-        return GT_Renderer_Block.INSTANCE == null ? super.getRenderType() : GT_Renderer_Block.INSTANCE.mRenderID;
+        return GT_MultiTile_Renderer.INSTANCE == null ? super.getRenderType()
+            : GT_MultiTile_Renderer.INSTANCE.getRenderId();
     }
 
     @Override
@@ -115,40 +111,7 @@ public class MultiTileEntityBlockInternal extends Block implements IRenderedBloc
         return true;
     }
 
-    @Override
-    public ITexture[] getTexture(Block aBlock, byte aSide, int aRenderPass, boolean[] aShouldSideBeRendered) {
-        return null;
-    }
-
-    @Override
-    public ITexture[] getTexture(Block aBlock, byte aSide, boolean isActive, int aRenderPass) {
-        // TODO: MTE(Texture)
-        return null;
-    }
-
-    @Override
-    public int getRenderPasses(Block aBlock) {
-        return 0;
-    }
-
-    @Override
-    public boolean usesRenderPass(int aRenderPass) {
-        return true;
-    }
-
-    @Override
-    public boolean setBlockBounds(Block aBlock, int aRenderPass) {
-        return false;
-    }
-
-    @Override
-    public IRenderedBlock passRenderingToObject(ItemStack aStack) {
-        final TileEntity tTileEntity = mMultiTileEntityRegistry.getNewTileEntity(aStack);
-        return tTileEntity instanceof IRenderedBlock ? (IRenderedBlock) tTileEntity : null;
-    }
-
-    @Override
-    public IRenderedBlock passRenderingToObject(IBlockAccess aWorld, int aX, int aY, int aZ) {
-        return null;
+    public MultiTileEntityRegistry getRegistry() {
+        return mMultiTileEntityRegistry;
     }
 }

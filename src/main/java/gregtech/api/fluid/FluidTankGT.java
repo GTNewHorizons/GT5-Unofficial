@@ -2,6 +2,8 @@ package gregtech.api.fluid;
 
 import static com.google.common.primitives.Ints.saturatedCast;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import net.minecraft.nbt.NBTTagCompound;
@@ -446,8 +448,25 @@ public class FluidTankGT implements IFluidTank {
         return saturatedCast(capacity());
     }
 
+    public long getCapacityMultiplier() {
+        return mAdjustableMultiplier;
+    }
+
     @Override
     public FluidTankInfo getInfo() {
         return new FluidTankInfo(isEmpty() ? null : mFluid.copy(), saturatedCast(capacity()));
+    }
+
+    public static FluidStack[] getFluidsFromTanks(FluidTankGT[] tanks) {
+        if (tanks == null) {
+            return null;
+        }
+        List<FluidStack> fluidStacks = new ArrayList<>();
+        for (FluidTankGT tank : tanks) {
+            if (tank.getFluid() != null) {
+                fluidStacks.add(tank.getFluid());
+            }
+        }
+        return fluidStacks.toArray(new FluidStack[0]);
     }
 }

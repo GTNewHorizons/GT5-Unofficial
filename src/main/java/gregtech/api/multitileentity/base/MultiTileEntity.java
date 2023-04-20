@@ -1,12 +1,10 @@
 package gregtech.api.multitileentity.base;
 
 import static gregtech.GT_Mod.GT_FML_LOGGER;
-import static gregtech.api.enums.GT_Values.NBT;
 import static gregtech.api.enums.GT_Values.OPOS;
-import static gregtech.api.enums.GT_Values.SIDE_WEST;
 import static gregtech.api.enums.GT_Values.VALID_SIDES;
-import static gregtech.api.enums.GT_Values.emptyIconContainerArray;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -15,7 +13,7 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.client.Minecraft;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -29,8 +27,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.Explosion;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -38,16 +36,14 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidTank;
 
+import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
+
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.SoundResource;
-import gregtech.api.enums.Textures;
+import gregtech.api.enums.*;
+import gregtech.api.enums.GT_Values.NBT;
+import gregtech.api.enums.Textures.BlockIcons.CustomIcon;
 import gregtech.api.gui.modularui.GT_UIInfos;
-import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.metatileentity.CoverableTileEntity;
 import gregtech.api.metatileentity.GregTechTileClientEvents;
@@ -64,13 +60,18 @@ import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Util;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.render.GT_MultiTexture;
-import gregtech.common.render.IRenderedBlock;
+import gregtech.common.render.MultiTileBasicRender;
 
-public abstract class MultiTileEntity extends CoverableTileEntity implements IMultiTileEntity, IRenderedBlock {
+public abstract class MultiTileEntity extends CoverableTileEntity
+    implements IMultiTileEntity.IMTE_BreakBlock, MultiTileBasicRender {
 
-    public IIconContainer[] textures = emptyIconContainerArray;
-    // public IIconContainer[] mTexturesFront = emptyIconContainerArray;
+    private ITexture baseTexture = null;
+    private ITexture topOverlayTexture = null;
+    private ITexture bottomOverlayTexture = null;
+    private ITexture leftOverlayTexture = null;
+    private ITexture rightOverlayTexture = null;
+    private ITexture backOverlayTexture = null;
+    private ITexture frontOverlayTexture = null;
 
     // Makes a Bounding Box without having to constantly specify the Offset Coordinates.
     protected static final float[] PX_BOX = { 0, 0, 0, 1, 1, 1 };
@@ -87,7 +88,8 @@ public abstract class MultiTileEntity extends CoverableTileEntity implements IMu
     protected boolean needsUpdate = false;
     protected boolean hasInventoryChanged = false;
     protected boolean isPainted = false;
-    protected byte facing = SIDE_WEST; // Default to WEST, so it renders facing Left in the inventory
+    protected ForgeDirection facing = ForgeDirection.WEST; // Default to WEST, so it renders facing Left in the
+                                                           // inventory
     protected byte color;
     protected int rgba = GT_Values.UNCOLORED;
     private short mteID = GT_Values.W, mteRegistry = GT_Values.W;
@@ -117,6 +119,9 @@ public abstract class MultiTileEntity extends CoverableTileEntity implements IMu
 
     @Override
     public void initFromNBT(NBTTagCompound nbt, short mteID, short mteRegistry) {
+        if (this.mteID == mteID && this.mteRegistry == mteRegistry) {
+            return;
+        }
         // Set ID and Registry ID.
         this.mteID = mteID;
         this.mteRegistry = mteRegistry;
@@ -125,13 +130,31 @@ public abstract class MultiTileEntity extends CoverableTileEntity implements IMu
     }
 
     @Override
-    public void loadTextureNBT(NBTTagCompound nbt) {
+    public void loadTextures(String folder) {
         // Loading the registry
-        final String textureName = nbt.getString(NBT.TEXTURE);
-        textures = new IIconContainer[] {
-            new Textures.BlockIcons.CustomIcon("multitileentity/base/" + textureName + "/bottom"),
-            new Textures.BlockIcons.CustomIcon("multitileentity/base/" + textureName + "/top"),
-            new Textures.BlockIcons.CustomIcon("multitileentity/base/" + textureName + "/side"), };
+        for (SidedTextureNames textureName : SidedTextureNames.TEXTURES) {
+            ITexture texture;
+            try {
+                Minecraft.getMinecraft()
+                    .getResourceManager()
+                    .getResource(
+                        new ResourceLocation(
+                            Mods.GregTech.ID,
+                            "textures/blocks/multitileentity/" + folder + "/" + textureName.getName() + ".png"));
+                texture = TextureFactory.of(new CustomIcon("multitileentity/" + folder + "/" + textureName.getName()));
+            } catch (IOException ignored) {
+                texture = TextureFactory.of(Textures.BlockIcons.VOID);
+            }
+            switch (textureName) {
+                case Top -> topOverlayTexture = texture;
+                case Bottom -> bottomOverlayTexture = texture;
+                case Back -> backOverlayTexture = texture;
+                case Front -> frontOverlayTexture = texture;
+                case Left -> leftOverlayTexture = texture;
+                case Right -> rightOverlayTexture = texture;
+                case Base -> baseTexture = texture;
+            }
+        }
     }
 
     @Override
@@ -139,8 +162,48 @@ public abstract class MultiTileEntity extends CoverableTileEntity implements IMu
         // Loading an instance
         final TileEntity tCanonicalTileEntity = MultiTileEntityRegistry
             .getCanonicalTileEntity(getMultiTileEntityRegistryID(), getMultiTileEntityID());
-        if (tCanonicalTileEntity instanceof MultiTileEntity)
-            textures = ((MultiTileEntity) tCanonicalTileEntity).textures;
+        if (!(tCanonicalTileEntity instanceof MultiTileEntity)) {
+            return;
+        }
+        final MultiTileEntity canonicalEntity = (MultiTileEntity) tCanonicalTileEntity;
+        baseTexture = canonicalEntity.baseTexture;
+        topOverlayTexture = canonicalEntity.topOverlayTexture;
+        bottomOverlayTexture = canonicalEntity.bottomOverlayTexture;
+        leftOverlayTexture = canonicalEntity.leftOverlayTexture;
+        rightOverlayTexture = canonicalEntity.rightOverlayTexture;
+        backOverlayTexture = canonicalEntity.backOverlayTexture;
+        frontOverlayTexture = canonicalEntity.frontOverlayTexture;
+    }
+
+    @Override
+    public ITexture getTexture(ForgeDirection side) {
+        if (facing == side) {
+            return TextureFactory.of(baseTexture, frontOverlayTexture);
+        }
+
+        if (facing.getOpposite() == side) {
+            return TextureFactory.of(baseTexture, backOverlayTexture);
+        }
+
+        if (side == ForgeDirection.UP) {
+            return TextureFactory.of(baseTexture, topOverlayTexture);
+        }
+
+        if (side == ForgeDirection.DOWN) {
+            return TextureFactory.of(baseTexture, bottomOverlayTexture);
+        }
+
+        if (facing.getRotation(ForgeDirection.DOWN) == side) {
+            return TextureFactory.of(baseTexture, rightOverlayTexture);
+        } else {
+            return TextureFactory.of(baseTexture, leftOverlayTexture);
+        }
+    }
+
+    @Override
+    public ITexture[] getTexture(Block ignoredBlock, byte ignoredSide) {
+        // We are not going to be using this
+        return null;
     }
 
     @Override
@@ -181,15 +244,17 @@ public abstract class MultiTileEntity extends CoverableTileEntity implements IMu
                 ownerUUID = null;
             }
             if (nbt.hasKey(NBT.LOCK_UPGRADE)) lockUpgrade = nbt.getBoolean(NBT.LOCK_UPGRADE);
-            if (nbt.hasKey(NBT.FACING)) facing = nbt.getByte(NBT.FACING);
+            if (nbt.hasKey(NBT.FACING)) facing = ForgeDirection.getOrientation(nbt.getInteger(NBT.FACING));
 
             readCoverNBT(nbt);
             readMultiTileNBT(nbt);
 
-            if (GregTech_API.sBlockIcons == null && nbt.hasKey(NBT.TEXTURE)) {
-                loadTextureNBT(nbt);
-            } else {
-                copyTextures();
+            if (NetworkUtils.isDedicatedClient()) {
+                if (GregTech_API.sBlockIcons == null && nbt.hasKey(NBT.TEXTURE_FOLDER)) {
+                    loadTextures(nbt.getString(NBT.TEXTURE_FOLDER));
+                } else {
+                    copyTextures();
+                }
             }
 
             if (mSidedRedstone.length != 6) mSidedRedstone = new byte[] { 15, 15, 15, 15, 15, 15 };
@@ -228,7 +293,7 @@ public abstract class MultiTileEntity extends CoverableTileEntity implements IMu
             aNBT.setString(NBT.OWNER, ownerName);
             aNBT.setString(NBT.OWNER_UUID, ownerUUID == null ? "" : ownerUUID.toString());
             aNBT.setBoolean(NBT.LOCK_UPGRADE, lockUpgrade);
-            aNBT.setByte(NBT.FACING, facing);
+            aNBT.setInteger(NBT.FACING, facing.ordinal());
 
             writeCoverNBT(aNBT, false);
             writeMultiTileNBT(aNBT);
@@ -244,8 +309,14 @@ public abstract class MultiTileEntity extends CoverableTileEntity implements IMu
     @Override
     public NBTTagCompound writeItemNBT(NBTTagCompound aNBT) {
         writeCoverNBT(aNBT, true);
-
+        if (shouldSaveNBTToItemStack()) {
+            writeMultiTileNBT(aNBT);
+        }
         return aNBT;
+    }
+
+    protected boolean shouldSaveNBTToItemStack() {
+        return false;
     }
 
     @Override
@@ -322,69 +393,6 @@ public abstract class MultiTileEntity extends CoverableTileEntity implements IMu
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public final IRenderedBlock passRenderingToObject(ItemStack aStack) {
-        return this;
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public final IRenderedBlock passRenderingToObject(IBlockAccess aWorld, int aX, int aY, int aZ) {
-        return this;
-    }
-
-    @Override
-    public int getRenderPasses(Block aBlock) {
-        return 1;
-    }
-
-    @Override
-    public boolean usesRenderPass(int aRenderPass) {
-        return true;
-    }
-
-    @Override
-    public boolean setBlockBounds(Block aBlock, int aRenderPass) {
-        return false;
-    }
-
-    @Override
-    public boolean renderItem(Block aBlock, RenderBlocks aRenderer) {
-        return false;
-    }
-
-    @Override
-    public boolean renderBlock(Block aBlock, RenderBlocks aRenderer, IBlockAccess aWorld, int aX, int aY, int aZ) {
-        return false;
-    }
-
-    @Override
-    public ITexture[] getTexture(Block aBlock, byte aSide) {
-        return getTexture(aBlock, aSide, 1, VALID_SIDES);
-    }
-
-    @Override
-    public final ITexture[] getTexture(Block aBlock, byte aSide, int aRenderPass, boolean[] aShouldSideBeRendered) {
-        if (!aShouldSideBeRendered[aSide]) return null;
-
-        final ITexture coverTexture = getCoverTexture(aSide);
-        final ITexture[] textureUncovered = getTexture(aBlock, aSide, true, aRenderPass);
-
-        if (coverTexture != null) {
-            return new ITexture[] { GT_MultiTexture.get(textureUncovered), coverTexture };
-        } else {
-            return textureUncovered;
-        }
-    }
-
-    @Override
-    public ITexture[] getTexture(Block aBlock, byte aSide, boolean isActive, int aRenderPass) {
-        // Top, bottom or side
-        aSide = (byte) Math.min(aSide, 2);
-        return new ITexture[] { TextureFactory.of(textures[aSide], GT_Util.getRGBaArray(rgba)) };
-    }
-
-    @Override
     public void setCustomName(String aName) {
         customName = aName;
     }
@@ -428,18 +436,18 @@ public abstract class MultiTileEntity extends CoverableTileEntity implements IMu
 
     @Override
     public byte getFrontFacing() {
-        return facing;
+        return (byte) facing.ordinal();
     }
 
     /**
      * Sets the main facing to {aSide} and update as appropriately
-     * 
+     *
      * @return Whether the facing was changed
      */
     @Override
     public boolean setMainFacing(byte aSide) {
         if (!isValidFacing(aSide)) return false;
-        facing = aSide;
+        facing = ForgeDirection.getOrientation(aSide);
 
         issueClientUpdate();
         issueBlockUpdate();
@@ -464,7 +472,8 @@ public abstract class MultiTileEntity extends CoverableTileEntity implements IMu
 
     @Override
     public byte getBackFacing() {
-        return GT_Utility.getOppositeSide(facing);
+        return (byte) facing.getOpposite()
+            .ordinal();
     }
 
     @Override
@@ -700,7 +709,8 @@ public abstract class MultiTileEntity extends CoverableTileEntity implements IMu
     @Override
     public boolean onPlaced(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, byte aSide,
         float aHitX, float aHitY, float aHitZ) {
-        facing = getSideForPlayerPlacing(aPlayer, facing, getValidFacings());
+        facing = ForgeDirection
+            .getOrientation(getSideForPlayerPlacing(aPlayer, (byte) facing.ordinal(), getValidFacings()));
         onFacingChange();
         return true;
     }
@@ -922,9 +932,14 @@ public abstract class MultiTileEntity extends CoverableTileEntity implements IMu
         final ArrayList<ItemStack> rList = new ArrayList<>();
         final MultiTileEntityRegistry tRegistry = MultiTileEntityRegistry.getRegistry(getMultiTileEntityRegistryID());
         if (tRegistry != null) rList.add(tRegistry.getItem(getMultiTileEntityID(), writeItemNBT(new NBTTagCompound())));
-
-        onBaseTEDestroyed();
         return rList;
+    }
+
+    @Override
+    public boolean breakBlock() {
+        isDead = true;
+        onBaseTEDestroyed();
+        return false;
     }
 
     @Override
@@ -975,7 +990,7 @@ public abstract class MultiTileEntity extends CoverableTileEntity implements IMu
             zCoord,
             getMultiTileEntityRegistryID(),
             getMultiTileEntityID(),
-            (byte) ((facing & 7) | (mRedstone ? 16 : 0)),
+            (byte) ((facing.ordinal() & 7) | (mRedstone ? 16 : 0)),
             color);
 
         packet.setCoverData(
@@ -1014,7 +1029,7 @@ public abstract class MultiTileEntity extends CoverableTileEntity implements IMu
             issueTextureUpdate();
             switch (aEventID) {
                 case GregTechTileClientEvents.CHANGE_COMMON_DATA:
-                    facing = (byte) (aValue & 7);
+                    facing = ForgeDirection.getOrientation(aValue & 7);
                     // mActive = ((aValue & 8) != 0);
                     mRedstone = ((aValue & 16) != 0);
                     // mLockUpgrade = ((aValue&32) != 0);
@@ -1096,9 +1111,6 @@ public abstract class MultiTileEntity extends CoverableTileEntity implements IMu
                     + mteID
                     + EnumChatFormatting.RESET);
         }
-        if (joinedIc2Enet) tList.add("Joined IC2 ENet");
-
-        tList.add("Energy: " + getUniversalEnergyStored() + "/" + getUniversalEnergyCapacity());
 
         addDebugInfo(aPlayer, aLogLevel, tList);
 
@@ -1394,5 +1406,52 @@ public abstract class MultiTileEntity extends CoverableTileEntity implements IMu
     @Override
     public ItemStack getStackForm(long aAmount) {
         return new ItemStack(Item.getItemById(getMultiTileEntityRegistryID()), (int) aAmount, getMultiTileEntityID());
+    }
+
+    protected enum SidedTextureNames {
+
+        Base("base"),
+        Left("left"),
+        Right("right"),
+        Top("top"),
+        Bottom("bottom"),
+        Back("back"),
+        Front("front");
+
+        private final String name;
+        public static final SidedTextureNames[] TEXTURES = { Base, Left, Right, Top, Bottom, Back, Front };
+
+        SidedTextureNames(String name) {
+            this.name = name;
+        }
+
+        public String getName() {
+            return name;
+        }
+    }
+
+    protected enum StatusTextures {
+
+        Active("active", false),
+        ActiveWithGlow("active_glow", true),
+        Inactive("inactive", false),
+        InactiveWithGlow("inactive_glow", true);
+
+        private final String name;
+        private final boolean hasGlow;
+        public static final StatusTextures[] TEXTURES = { Active, ActiveWithGlow, Inactive, InactiveWithGlow };
+
+        StatusTextures(String name, boolean hasGlow) {
+            this.name = name;
+            this.hasGlow = hasGlow;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public boolean hasGlow() {
+            return hasGlow;
+        }
     }
 }

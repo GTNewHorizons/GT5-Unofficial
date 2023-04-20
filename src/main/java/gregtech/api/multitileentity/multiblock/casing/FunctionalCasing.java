@@ -14,6 +14,8 @@ public abstract class FunctionalCasing extends MultiBlockPart {
         return tier;
     }
 
+    public abstract float getPartModifier();
+
     @Override
     public void readMultiTileNBT(NBTTagCompound nbt) {
         super.readMultiTileNBT(nbt);

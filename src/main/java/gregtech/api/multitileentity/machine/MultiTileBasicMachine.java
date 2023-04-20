@@ -1,12 +1,12 @@
 package gregtech.api.multitileentity.machine;
 
 import static com.google.common.primitives.Ints.saturatedCast;
-import static gregtech.api.enums.GT_Values.B;
-import static gregtech.api.enums.GT_Values.emptyIconContainerArray;
+import static gregtech.api.enums.GT_Values.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
-import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -16,6 +16,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidTank;
 
@@ -24,13 +26,10 @@ import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.*;
 import gregtech.api.enums.GT_Values.NBT;
-import gregtech.api.enums.SoundResource;
-import gregtech.api.enums.Textures;
-import gregtech.api.enums.TickTime;
+import gregtech.api.enums.Textures.BlockIcons.CustomIcon;
 import gregtech.api.fluid.FluidTankGT;
-import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.logic.PollutionLogic;
 import gregtech.api.logic.PowerLogic;
@@ -44,7 +43,6 @@ import gregtech.api.multitileentity.base.TickableMultiTileEntity;
 import gregtech.api.multitileentity.interfaces.IMultiTileMachine;
 import gregtech.api.net.GT_Packet_MultiTileEntity;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GT_Util;
 import gregtech.api.util.GT_Utility;
 import gregtech.client.GT_SoundLoop;
 import gregtech.common.GT_Pollution;
@@ -59,9 +57,10 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
 
     protected static final IItemHandlerModifiable EMPTY_INVENTORY = new ItemStackHandler(0);
 
-    private static final String TEXTURE_LOCATION = "multitileentity/machines/";
-    public IIconContainer[] texturesInactive = emptyIconContainerArray;
-    public IIconContainer[] texturesActive = emptyIconContainerArray;
+    public ITexture activeOverlayTexture = null;
+    public ITexture activeOverlayGlowTexture = null;
+    public ITexture inactiveOverlayTexture = null;
+    public ITexture inactiveOverlayGlowTexture = null;
 
     protected int maxParallel = 1;
     protected boolean active = false;
@@ -82,15 +81,15 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
     protected IItemHandlerModifiable inputInventory = EMPTY_INVENTORY;
     protected IItemHandlerModifiable outputInventory = EMPTY_INVENTORY;
     protected boolean outputInventoryChanged = false;
-    private boolean powerShutDown = false;
-    private boolean wasEnabled = false;
-    private boolean canWork = true;
-    private boolean isElectric = true;
-    private boolean isSteam = false;
-    private boolean acceptsFuel = false;
-    private boolean isWireless = false;
-    private byte soundEvent = 0;
-    private int soundEventValue = 0;
+    protected boolean powerShutDown = false;
+    protected boolean wasEnabled = false;
+    protected boolean canWork = true;
+    protected boolean isElectric = true;
+    protected boolean isSteam = false;
+    protected boolean acceptsFuel = false;
+    protected boolean isWireless = false;
+    protected byte soundEvent = 0;
+    protected int soundEventValue = 0;
 
     @SideOnly(Side.CLIENT)
     protected GT_SoundLoop activitySoundLoop;
@@ -221,7 +220,8 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
                 .readFromNBT(nbt, NBT.TANK_IN + i);
         }
         for (int i = 0; i < outputTanks.length; i++) {
-            outputTanks[i] = new FluidTankGT().readFromNBT(nbt, NBT.TANK_OUT + i);
+            outputTanks[i] = new FluidTankGT(capacity).setCapacityMultiplier(maxParallel * 2L)
+                .readFromNBT(nbt, NBT.TANK_OUT + i);
         }
 
         for (int i = 0; i < fluidsToOutput.length; i++) {
@@ -258,56 +258,67 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
     }
 
     @Override
-    public void loadTextureNBT(NBTTagCompound aNBT) {
-        // Loading the registry
-        final String textureName = aNBT.getString(NBT.TEXTURE);
-        textures = new IIconContainer[] {
-            new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/bottom"),
-            new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/top"),
-            new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/left"),
-            new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/front"),
-            new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/right"),
-            new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/side") };
-        texturesInactive = new IIconContainer[] {
-            new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/overlay/inactive/bottom"),
-            new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/overlay/inactive/top"),
-            new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/overlay/inactive/left"),
-            new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/overlay/inactive/front"),
-            new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/overlay/inactive/right"),
-            new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/overlay/inactive/back") };
-        texturesActive = new IIconContainer[] {
-            new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/overlay/active/bottom"),
-            new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/overlay/active/top"),
-            new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/overlay/active/left"),
-            new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/overlay/active/front"),
-            new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/overlay/active/right"),
-            new Textures.BlockIcons.CustomIcon(TEXTURE_LOCATION + textureName + "/overlay/active/back") };
+    public void loadTextures(String folder) {
+        super.loadTextures(folder);
+        for (StatusTextures textureName : StatusTextures.TEXTURES) {
+            ITexture texture = null;
+            try {
+                Minecraft.getMinecraft()
+                    .getResourceManager()
+                    .getResource(
+                        new ResourceLocation(
+                            Mods.GregTech.ID,
+                            "textures/blocks/multitileentity/" + folder + "/" + textureName.getName() + ".png"));
+            } catch (IOException ignored) {
+                texture = TextureFactory.of(Textures.BlockIcons.VOID);
+            }
+            if (texture == null) {
+                if (textureName.hasGlow()) {
+                    texture = TextureFactory.builder()
+                        .addIcon(new CustomIcon("multitileentity/" + folder + "/" + textureName.getName()))
+                        .glow()
+                        .build();
+                } else {
+                    texture = TextureFactory
+                        .of(new CustomIcon("multitileentity/" + folder + "/" + textureName.getName()));
+                }
+            }
+            switch (textureName) {
+                case Active -> activeOverlayTexture = texture;
+                case ActiveWithGlow -> activeOverlayGlowTexture = texture;
+                case Inactive -> inactiveOverlayTexture = texture;
+                case InactiveWithGlow -> inactiveOverlayGlowTexture = texture;
+            }
+        }
     }
 
     @Override
     public void copyTextures() {
-        // Loading an instance
+        super.copyTextures();
         final TileEntity tCanonicalTileEntity = MultiTileEntityRegistry
             .getCanonicalTileEntity(getMultiTileEntityRegistryID(), getMultiTileEntityID());
-        if (tCanonicalTileEntity instanceof MultiTileBasicMachine) {
-            textures = ((MultiTileBasicMachine) tCanonicalTileEntity).textures;
-            texturesInactive = ((MultiTileBasicMachine) tCanonicalTileEntity).texturesInactive;
-            texturesActive = ((MultiTileBasicMachine) tCanonicalTileEntity).texturesActive;
-        } else {
-            textures = texturesInactive = texturesActive = emptyIconContainerArray;
+        if (!(tCanonicalTileEntity instanceof MultiTileBasicMachine)) {
+            return;
         }
+        final MultiTileBasicMachine canonicalEntity = (MultiTileBasicMachine) tCanonicalTileEntity;
+        activeOverlayTexture = canonicalEntity.activeOverlayTexture;
+        activeOverlayGlowTexture = canonicalEntity.activeOverlayGlowTexture;
+        inactiveOverlayTexture = canonicalEntity.inactiveOverlayTexture;
+        inactiveOverlayGlowTexture = canonicalEntity.inactiveOverlayGlowTexture;
     }
 
     @Override
-    public ITexture[] getTexture(Block aBlock, byte aSide, boolean isActive, int aRenderPass) {
-        if (aSide != facing) {
-            return new ITexture[] {
-                TextureFactory.of(textures[GT_Values.FACING_ROTATIONS[facing][aSide]], GT_Util.getRGBaArray(rgba)) };
+    public ITexture getTexture(ForgeDirection side) {
+        ITexture texture = super.getTexture(side);
+        if (side == facing) {
+            if (isActive()) {
+                return TextureFactory.of(texture, activeOverlayTexture, activeOverlayGlowTexture);
+            }
+
+            return TextureFactory.of(texture, inactiveOverlayTexture, inactiveOverlayGlowTexture);
         }
-        return new ITexture[] {
-            TextureFactory.of(textures[GT_Values.FACING_ROTATIONS[facing][aSide]], GT_Util.getRGBaArray(rgba)),
-            TextureFactory
-                .of((active ? texturesActive : texturesInactive)[GT_Values.FACING_ROTATIONS[facing][aSide]]) };
+
+        return TextureFactory.of(texture, getCoverTexture((byte) side.ordinal()));
     }
 
     @Override
@@ -358,12 +369,12 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
 
     @Override
     public boolean isLiquidInput(byte aSide) {
-        return aSide != facing;
+        return facing.compareTo(ForgeDirection.getOrientation(aSide)) != 0;
     }
 
     @Override
     public boolean isLiquidOutput(byte aSide) {
-        return aSide != facing;
+        return facing.compareTo(ForgeDirection.getOrientation(aSide)) != 0;
     }
 
     @Override
@@ -386,8 +397,13 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
 
     @Override
     public IFluidTank getFluidTankFillable(byte aSide, FluidStack aFluidToFill) {
-        if (!isLiquidInput(aSide)) return null;
-        for (FluidTankGT tankGT : inputTanks) if (tankGT.contains(aFluidToFill)) return tankGT;
+        return getFluidTankFillable((byte) facing.ordinal(), aSide, aFluidToFill);
+    }
+
+    public IFluidTank getFluidTankFillable(byte sideSource, byte sideDestination, FluidStack fluidToFill) {
+        if (ForgeDirection.getOrientation(sideSource)
+            .compareTo(ForgeDirection.getOrientation(sideDestination)) != 0) return null;
+        for (FluidTankGT tankGT : inputTanks) if (tankGT.contains(fluidToFill)) return tankGT;
         // if (!mRecipes.containsInput(aFluidToFill, this, slot(mRecipes.mInputItemsCount +
         // mRecipes.mOutputItemsCount))) return null;
         for (FluidTankGT fluidTankGT : inputTanks) if (fluidTankGT.isEmpty()) return fluidTankGT;
@@ -396,9 +412,14 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
 
     @Override
     protected IFluidTank getFluidTankDrainable(byte aSide, FluidStack aFluidToDrain) {
-        if (!isLiquidOutput(aSide)) return null;
+        return getFluidTankDrainable((byte) facing.ordinal(), aSide, aFluidToDrain);
+    }
+
+    protected IFluidTank getFluidTankDrainable(byte sideSource, byte sideDestination, FluidStack fluidToDrain) {
+        if (ForgeDirection.getOrientation(sideSource)
+            .compareTo(ForgeDirection.getOrientation(sideDestination)) != 0) return null;
         for (FluidTankGT fluidTankGT : outputTanks)
-            if (aFluidToDrain == null ? fluidTankGT.has() : fluidTankGT.contains(aFluidToDrain)) return fluidTankGT;
+            if (fluidToDrain == null ? fluidTankGT.has() : fluidTankGT.contains(fluidToDrain)) return fluidTankGT;
 
         return null;
     }
@@ -428,7 +449,7 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
 
     @Override
     public boolean isItemValidForSlot(int aSlot, ItemStack aStack) {
-        return false;
+        return true;
     }
 
     @Override
@@ -518,9 +539,8 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
         }
         ProcessingLogic logic = ((ProcessingLogicHost) this).getProcessingLogic();
         logic.clear();
-        boolean result = logic.setInputItems(
-            inputInventory.getStacks()
-                .toArray(new ItemStack[0]))
+        boolean result = logic.setInputItems(getInputItems())
+            .setInputFluids(getInputFluids())
             .setCurrentOutputItems(
                 outputInventory.getStacks()
                     .toArray(new ItemStack[0]))
@@ -554,13 +574,13 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
      * Runs only on server side
      */
     protected void consumeEnergy() {
-        PowerLogic logic = ((PowerLogicHost) this).getPowerLogic(GT_Values.SIDE_UNKNOWN);
+        PowerLogic logic = ((PowerLogicHost) this).getPowerLogic(ForgeDirection.UNKNOWN);
 
         if (logic == null) {
             return;
         }
 
-        if (logic.removeEnergyUnsafe(eut)) {
+        if (!logic.removeEnergyUnsafe(eut)) {
             stopMachine(true);
         }
     }
@@ -591,6 +611,7 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
         return 100;
     }
 
+    @SideOnly(Side.CLIENT)
     protected void doActivitySound(ResourceLocation activitySound) {
         if (isActive() && activitySound != null) {
             if (activitySoundLoop == null) {
@@ -606,36 +627,65 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
         }
     }
 
+    @SideOnly(Side.CLIENT)
     protected ResourceLocation getActivitySoundLoop() {
         return null;
     }
 
+    protected ItemStack[] getInputItems() {
+        return inputInventory.getStacks()
+            .toArray(new ItemStack[0]);
+    }
+
+    protected FluidStack[] getInputFluids() {
+        return Arrays.stream(inputTanks)
+            .map(FluidTankGT::get)
+            .toArray(FluidStack[]::new);
+    }
+
     protected void outputItems() {
-        if (itemsToOutput == null) {
+        outputItems(itemsToOutput);
+        itemsToOutput = null;
+    }
+
+    protected void outputItems(ItemStack... itemsToOutput) {
+        outputItems(outputInventory, itemsToOutput);
+    }
+
+    protected void outputItems(IItemHandlerModifiable inventory, ItemStack... itemsToOutput) {
+        if (itemsToOutput == null || inventory == null) {
             return;
         }
         for (ItemStack item : itemsToOutput) {
             int index = 0;
-            while (item != null && item.stackSize > 0 && index < outputInventory.getSlots()) {
-                item = outputInventory.insertItem(index++, item.copy(), false);
+            while (item != null && item.stackSize > 0 && index < inventory.getSlots()) {
+                item = inventory.insertItem(index++, item.copy(), false);
             }
         }
-        itemsToOutput = null;
     }
 
     protected void outputFluids() {
+        outputFluids(fluidsToOutput);
+        fluidsToOutput = null;
+    }
+
+    protected void outputFluids(FluidStack... fluidsToOutput) {
+        outputFluids(outputTanks, fluidsToOutput);
+    }
+
+    protected void outputFluids(FluidTankGT[] tankArray, FluidStack... fluidsToOutput) {
         if (fluidsToOutput == null) {
             return;
         }
         for (FluidStack fluid : fluidsToOutput) {
-            tryToFillTanks(fluid, outputTanks);
+            tryToFillTanks(fluid, tankArray);
         }
     }
 
     protected void tryToFillTanks(FluidStack fluid, FluidTankGT... tanks) {
         for (FluidTankGT tank : tanks) {
             if (tank.canFillAll(fluid)) {
-                tank.add(fluid.amount, fluid);
+                fluid.amount -= tank.add(fluid.amount, fluid);
             }
         }
     }
@@ -756,14 +806,77 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
 
     @Override
     protected void addDebugInfo(EntityPlayer player, int logLevel, ArrayList<String> list) {
-        if (isElectric()) {
-            list.add(
-                "Energy: " + EnumChatFormatting.GOLD + getUniversalEnergyStored() + "/" + getUniversalEnergyCapacity());
-        }
+        list.add(
+            GT_Utility.trans("186", "Owned by: ") + EnumChatFormatting.BLUE
+                + getOwnerName()
+                + EnumChatFormatting.RESET
+                + " ("
+                + EnumChatFormatting.AQUA
+                + getOwnerUuid()
+                + EnumChatFormatting.RESET
+                + ")");
 
         if (acceptsFuel()) {
             list.add("Fuel: " + EnumChatFormatting.GOLD + burnTime + "/" + totalBurnTime);
         }
+
+        if (this instanceof PowerLogicHost powerLogicHost) {
+            PowerLogic logic = powerLogicHost.getPowerLogic(facing);
+            if (isElectric) {
+                list.add(
+                    StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
+                        + EnumChatFormatting.GREEN
+                        + GT_Utility.formatNumbers(logic.getStoredEnergy())
+                        + EnumChatFormatting.RESET
+                        + " EU / "
+                        + EnumChatFormatting.YELLOW
+                        + GT_Utility.formatNumbers(logic.getCapacity())
+                        + EnumChatFormatting.RESET
+                        + " EU");
+                list.add(
+                    StatCollector.translateToLocal("GT5U.multiblock.usage") + ": "
+                        + EnumChatFormatting.RED
+                        + GT_Utility.formatNumbers(eut)
+                        + EnumChatFormatting.RESET
+                        + " EU/t");
+                list.add(
+                    StatCollector.translateToLocal("GT5U.multiblock.mei") + ": "
+                        + EnumChatFormatting.YELLOW
+                        + GT_Utility.formatNumbers(logic.getVoltage())
+                        + EnumChatFormatting.RESET
+                        // TODO: Put ampere getter here, once that's variable
+                        + " EU/t(*2A) "
+                        + StatCollector.translateToLocal("GT5U.machines.tier")
+                        + ": "
+                        + EnumChatFormatting.YELLOW
+                        + VN[GT_Utility.getTier(logic.getVoltage())]
+                        + EnumChatFormatting.RESET);
+            }
+        }
+
+        addProgressStringToScanner(player, logLevel, list);
+
+        // TODO: Add CPU load calculator
+        list.add(
+            "Average CPU load of ~" + GT_Utility.formatNumbers(0)
+                + "ns over "
+                + GT_Utility.formatNumbers(0)
+                + " ticks with worst time of "
+                + GT_Utility.formatNumbers(0)
+                + "ns.");
+    }
+
+    protected void addProgressStringToScanner(EntityPlayer player, int logLevel, ArrayList<String> list) {
+        list.add(
+            StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
+                + EnumChatFormatting.GREEN
+                + GT_Utility.formatNumbers(progressTime > 20 ? progressTime / 20 : progressTime)
+                + EnumChatFormatting.RESET
+                + (progressTime > 20 ? " s / " : " ticks / ")
+                + EnumChatFormatting.YELLOW
+                + GT_Utility.formatNumbers(maxProgressTime > 20 ? maxProgressTime / 20 : maxProgressTime)
+                + EnumChatFormatting.RESET
+                + (maxProgressTime > 20 ? " s" : " ticks"));
     }
 
     protected void stopMachine(boolean powerShutDown) {
@@ -782,6 +895,25 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
             if (item != null && item.stackSize <= 0) {
                 inputInventory.setStackInSlot(i, null);
             }
+        }
+
+        for (FluidTankGT inputTank : inputTanks) {
+            if (inputTank == null) {
+                continue;
+            }
+
+            if (inputTank.get() != null && inputTank.get().amount <= 0) {
+                inputTank.setEmpty();
+                continue;
+            }
+
+            FluidStack afterRecipe = inputTank.get();
+            FluidStack beforeRecipe = inputTank.get(Integer.MAX_VALUE);
+            if (afterRecipe == null || beforeRecipe == null) {
+                continue;
+            }
+            int difference = beforeRecipe.amount - afterRecipe.amount;
+            inputTank.remove(difference);
         }
     }
 
@@ -817,6 +949,8 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
     public void setBooleans(int booleans) {
         if ((booleans & ACTIVE) == ACTIVE) {
             setActive(true);
+        } else {
+            setActive(false);
         }
     }
 
