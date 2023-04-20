@@ -2,7 +2,6 @@ package gregtech.common.items;
 
 import static gregtech.api.enums.GT_Values.*;
 import static gregtech.api.enums.Mods.*;
-import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sFluidExtractionRecipes;
 import static gregtech.api.util.GT_RecipeConstants.CLEANROOM;
 import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
