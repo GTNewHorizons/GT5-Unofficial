@@ -129,10 +129,10 @@ public class GT_Loader_MultiTileEntities implements Runnable {
 
         componentCasingRegistry.create(20001, Inventory.class)
             .name("Inventory Upgrade LV")
-            .category("MultiBlock Special Casing")
+            .category("MultiBlock Upgrade Casing")
             .setBlock(componentCasing)
             .material(MaterialsUEVplus.SpaceTime)
-            .textureFolder("metalwall")
+            .textureFolder("macerator")
             .upgradeInventorySize(16)
             .tier(1)
             .register();
