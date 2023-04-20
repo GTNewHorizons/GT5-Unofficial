@@ -1739,6 +1739,16 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
         if (aItem.length > 6) {
             chance = Arrays.copyOf(chance, 6);
         }
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(tComb)
+            .itemOutputs(aItem)
+            .outputChances(chance)
+            .noFluidInputs()
+            .noFluidOutputs()
+            .duration(duration)
+            .eut(volt.getSimpleEnergy())
+            .addTo(sCentrifugeRecipes);
     }
 
     public void registerOreDict() {
