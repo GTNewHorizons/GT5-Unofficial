@@ -162,7 +162,8 @@ public class GT_AlleleHelper extends AlleleHelper {
     }
 
     @Override
-    public <T extends Enum<T> & IChromosomeType> void set(IAllele[] alleles, T chromosomeType, IAlleleValue value) {
+    public <T extends Enum<T> & IChromosomeType> void set(IAllele[] alleles, T chromosomeType,
+        @SuppressWarnings("rawtypes") IAlleleValue value) {
         set(alleles, chromosomeType, get(value));
     }
 

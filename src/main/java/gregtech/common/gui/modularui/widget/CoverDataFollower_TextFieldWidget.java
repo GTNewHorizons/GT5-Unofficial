@@ -88,7 +88,8 @@ public class CoverDataFollower_TextFieldWidget<T extends ISerializableObject> ex
             } catch (ArithmeticException ignored) {
                 val = Integer.MAX_VALUE;
             }
-            return TextFieldWidget.format.format(val);
+            return this.getDecimalFormatter()
+                .format(val);
         });
         return this;
     }

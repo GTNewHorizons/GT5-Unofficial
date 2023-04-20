@@ -93,7 +93,7 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_TooltipMultiB
     public boolean checkRecipe(ItemStack aStack) {
         mEfficiencyIncrease = 100;
         // use the standard overclock mechanism to determine duration and estimate a maximum consumption
-        calculateOverclockedNessMulti(40, 45 * Math.max(1, mHeight - 1), 1, getMaxInputVoltage());
+        calculateOverclockedNessMultiInternal(40, 45 * Math.max(1, mHeight - 1), 1, getMaxInputVoltage(), false);
         // negate it to trigger the special energy consumption function. divide by 10 to get the actual final
         // consumption.
         mEUt /= -10;
@@ -393,19 +393,15 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_TooltipMultiB
 
         int percentage;
         int allowedCount;
-        int meta;
 
-        ConfigEntry(int percentage, int count, int meta) {
+        ConfigEntry(int percentage, int count) {
             this.percentage = percentage;
             this.allowedCount = count;
-            this.meta = meta;
         }
     }
 
     private static final HashMap<String, ConfigEntry> config = new HashMap<>();
-
     private static final String category = "cleanroom_allowed_blocks";
-    private static final int wildcard_meta = Short.MAX_VALUE;
 
     private static void setDefaultConfigValues(Configuration cfg) {
         cfg.get("cleanroom_allowed_blocks.reinforced_glass", "Name", "blockAlloyGlass");
@@ -438,16 +434,13 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_TooltipMultiB
                     new ConfigEntry(
                         0,
                         cc.get("Count")
-                            .getInt(),
-                        cc.get("Meta")
                             .getInt()));
                 else config.put(
                     name,
                     new ConfigEntry(
                         0,
                         cc.get("Count")
-                            .getInt(),
-                        wildcard_meta));
+                            .getInt()));
             } else if (cc.containsKey("Percentage")) {
                 if (cc.containsKey("Meta")) config.put(
                     name + ":"
@@ -456,16 +449,13 @@ public class GT_MetaTileEntity_Cleanroom extends GT_MetaTileEntity_TooltipMultiB
                     new ConfigEntry(
                         cc.get("Percentage")
                             .getInt(),
-                        0,
-                        cc.get("Meta")
-                            .getInt()));
+                        0));
                 else config.put(
                     name,
                     new ConfigEntry(
                         cc.get("Percentage")
                             .getInt(),
-                        0,
-                        wildcard_meta));
+                        0));
             }
         }
     }

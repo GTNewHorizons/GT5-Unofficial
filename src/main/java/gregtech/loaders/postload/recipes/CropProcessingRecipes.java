@@ -15,7 +15,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_RecipeBuilder;
 import gregtech.api.util.GT_Utility;
 
 public class CropProcessingRecipes implements Runnable {
@@ -131,18 +130,15 @@ public class CropProcessingRecipes implements Runnable {
             FluidStack fluidOutputChemReactor = aMaterialOut.mOreByProducts.isEmpty() ? null
                 : aMaterialOut.mOreByProducts.get(0)
                     .getMolten(144);
-            GT_RecipeBuilder buildChemRecipe = GT_Values.RA.stdBuilder()
+
+            GT_Values.RA.stdBuilder()
                 .itemInputs(
                     GT_Utility.copyAmount(9, tCrop),
                     GT_OreDictUnificator.get(OrePrefixes.crushed, aMaterial, 1))
                 .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.crushedPurified, aMaterial, 4))
-                .fluidInputs(Materials.Water.getFluid(1000));
-            if (fluidOutputChemReactor == null) {
-                buildChemRecipe.noFluidOutputs();
-            } else {
-                buildChemRecipe.fluidOutputs(fluidOutputChemReactor);
-            }
-            buildChemRecipe.duration(4 * SECONDS + 16 * TICKS)
+                .fluidInputs(Materials.Water.getFluid(1000))
+                .fluidOutputs(fluidOutputChemReactor)
+                .duration(4 * SECONDS + 16 * TICKS)
                 .eut(24)
                 .addTo(UniversalChemical);
 

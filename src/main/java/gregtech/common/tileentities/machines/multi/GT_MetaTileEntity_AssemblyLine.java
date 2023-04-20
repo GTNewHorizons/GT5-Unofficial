@@ -306,7 +306,7 @@ public class GT_MetaTileEntity_AssemblyLine
             if (GT_Values.D1) {
                 GT_FML_LOGGER.info("Check overclock");
             }
-            calculateOverclockedNessMulti(tRecipe.mEUt, tRecipe.mDuration, 1, getMaxInputVoltage());
+            calculateOverclockedNessMultiInternal(tRecipe.mEUt, tRecipe.mDuration, 1, getMaxInputVoltage(), false);
             // In case recipe is too OP for that machine
             if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1) {
                 if (GT_Values.D1) {

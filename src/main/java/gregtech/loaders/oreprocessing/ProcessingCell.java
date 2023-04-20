@@ -1,5 +1,8 @@
 package gregtech.loaders.oreprocessing;
 
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sElectrolyzerRecipes;
+
 import java.util.ArrayList;
 
 import net.minecraft.item.ItemStack;
@@ -94,48 +97,71 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                         tItemAmount = GT_Utility.ceilDiv(tItemAmount * tDensityMultiplier, aMaterial.getDensity());
                         if (tList.size() > 0) {
                             if ((aMaterial.mExtraData & 0x1) != 0) {
-                                if (GT_Utility.getFluidForFilledItem(aStack, true) == null) {
-                                    // dust stuffed cell e.g. Phosphate, Phosphorous Pentoxide
-                                    GT_Values.RA.addElectrolyzerRecipe(
-                                        GT_Utility.copyAmount(tItemAmount, aStack),
-                                        tCapsuleCount <= 0L ? 0 : (int) tCapsuleCount,
-                                        tList.get(0),
-                                        tList.size() >= 2 ? tList.get(1) : null,
-                                        tList.size() >= 3 ? tList.get(2) : null,
-                                        tList.size() >= 4 ? tList.get(3) : null,
-                                        tList.size() >= 5 ? tList.get(4) : null,
-                                        tCapsuleCount >= 0L ? tList.size() >= 6 ? tList.get(5) : null
-                                            : ItemList.Cell_Empty.get(-tCapsuleCount),
-                                        (int) Math.max(1L, Math.abs(aMaterial.getProtons() * 2L * tItemAmount)),
-                                        Math.min(4, tList.size()) * 30);
-                                } else {
-                                    long tCellBalance = tCapsuleCount + tItemAmount - 1;
-                                    GT_Values.RA.addElectrolyzerRecipe(
-                                        aStack,
-                                        tCellBalance <= 0L ? 0 : (int) tCellBalance,
-                                        tList.get(0),
-                                        tList.size() >= 2 ? tList.get(1) : null,
-                                        tList.size() >= 3 ? tList.get(2) : null,
-                                        tList.size() >= 4 ? tList.get(3) : null,
-                                        tList.size() >= 5 ? tList.get(4) : null,
-                                        tCapsuleCount >= 0L ? tList.size() >= 6 ? tList.get(5) : null
-                                            : tCellBalance < 0 ? ItemList.Cell_Empty.get(-tCellBalance) : null,
-                                        (int) Math.max(1L, Math.abs(aMaterial.getProtons() * 8L * tItemAmount)),
-                                        Math.min(4, tList.size()) * 30);
+                                // Electrolyzer recipe
+                                {
+                                    if (GT_Utility.getFluidForFilledItem(aStack, true) == null) {
+                                        int capsuleCount = tCapsuleCount <= 0L ? 0 : (int) tCapsuleCount;
+                                        ItemStack cells = capsuleCount <= 0 ? null
+                                            : ItemList.Cell_Empty.get(capsuleCount);
+                                        // dust stuffed cell e.g. Phosphate, Phosphorous Pentoxide
+                                        GT_Values.RA.stdBuilder()
+                                            .itemInputs(GT_Utility.copyAmount(tItemAmount, aStack), cells)
+                                            .itemOutputs(
+                                                tList.get(0),
+                                                tList.size() >= 2 ? tList.get(1) : null,
+                                                tList.size() >= 3 ? tList.get(2) : null,
+                                                tList.size() >= 4 ? tList.get(3) : null,
+                                                tList.size() >= 5 ? tList.get(4) : null,
+                                                tCapsuleCount >= 0L ? tList.size() >= 6 ? tList.get(5) : null
+                                                    : ItemList.Cell_Empty.get(-tCapsuleCount))
+                                            .noFluidInputs()
+                                            .noFluidOutputs()
+                                            .duration(Math.max(1L, Math.abs(aMaterial.getProtons() * 2L * tItemAmount)))
+                                            .eut(Math.min(4, tList.size()) * 30)
+                                            .addTo(sElectrolyzerRecipes);
+                                    } else {
+                                        long tCellBalance = tCapsuleCount + tItemAmount - 1;
+                                        int capsuleCount = tCellBalance <= 0L ? 0 : (int) tCellBalance;
+                                        ItemStack cells = capsuleCount <= 0 ? null
+                                            : ItemList.Cell_Empty.get(capsuleCount);
+
+                                        GT_Values.RA.stdBuilder()
+                                            .itemInputs(aStack, cells)
+                                            .itemOutputs(
+                                                tList.get(0),
+                                                tList.size() >= 2 ? tList.get(1) : null,
+                                                tList.size() >= 3 ? tList.get(2) : null,
+                                                tList.size() >= 4 ? tList.get(3) : null,
+                                                tList.size() >= 5 ? tList.get(4) : null,
+                                                tCapsuleCount >= 0L ? tList.size() >= 6 ? tList.get(5) : null
+                                                    : tCellBalance < 0 ? ItemList.Cell_Empty.get(-tCellBalance) : null)
+                                            .noFluidInputs()
+                                            .noFluidOutputs()
+                                            .duration(Math.max(1L, Math.abs(aMaterial.getProtons() * 8L * tItemAmount)))
+                                            .eut(Math.min(4, tList.size()) * 30)
+                                            .addTo(sElectrolyzerRecipes);
+                                    }
                                 }
                             }
                             if ((aMaterial.mExtraData & 0x2) != 0) {
-                                GT_Values.RA.addCentrifugeRecipe(
-                                    GT_Utility.copyAmount(tItemAmount, aStack),
-                                    tCapsuleCount <= 0L ? 0 : (int) tCapsuleCount,
-                                    tList.get(0),
-                                    tList.size() >= 2 ? tList.get(1) : null,
-                                    tList.size() >= 3 ? tList.get(2) : null,
-                                    tList.size() >= 4 ? tList.get(3) : null,
-                                    tList.size() >= 5 ? tList.get(4) : null,
-                                    tCapsuleCount >= 0L ? tList.size() >= 6 ? tList.get(5) : null
-                                        : ItemList.Cell_Empty.get(-tCapsuleCount),
-                                    (int) Math.max(1L, Math.abs(aMaterial.getMass() * 2L * tItemAmount)));
+                                ItemStack emptyCells = tCapsuleCount > 0 ? ItemList.Cell_Empty.get(tCapsuleCount)
+                                    : null;
+
+                                GT_Values.RA.stdBuilder()
+                                    .itemInputs(GT_Utility.copyAmount(tItemAmount, aStack), emptyCells)
+                                    .itemOutputs(
+                                        tList.get(0),
+                                        tList.size() >= 2 ? tList.get(1) : null,
+                                        tList.size() >= 3 ? tList.get(2) : null,
+                                        tList.size() >= 4 ? tList.get(3) : null,
+                                        tList.size() >= 5 ? tList.get(4) : null,
+                                        tCapsuleCount >= 0L ? tList.size() >= 6 ? tList.get(5) : null
+                                            : ItemList.Cell_Empty.get(-tCapsuleCount))
+                                    .noFluidInputs()
+                                    .noFluidOutputs()
+                                    .duration(Math.max(1L, Math.abs(aMaterial.getMass() * 2L * tItemAmount)))
+                                    .eut(5)
+                                    .addTo(sCentrifugeRecipes);
                             }
                         }
                     }

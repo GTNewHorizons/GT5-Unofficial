@@ -16,8 +16,13 @@ public class ProcessingToolOther implements gregtech.api.interfaces.IOreRecipeRe
     @Override
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
         ItemStack aStack) {
-        if ((aMaterial != Materials.Stone) && (aMaterial != Materials.Flint)) {
-            if (aMaterial != Materials.Rubber) {
+        if ((aMaterial == Materials.Stone) || (aMaterial == Materials.Flint)) {
+            return;
+        }
+
+        if (aMaterial != Materials.Rubber) {
+            // Crafting recipes
+            {
                 GT_ModHandler.addCraftingRecipe(
                     GT_MetaGenerated_Tool_01.INSTANCE
                         .getToolWithStats(GT_MetaGenerated_Tool_01.PLUNGER, 1, aMaterial, aMaterial, null),
@@ -25,8 +30,12 @@ public class ProcessingToolOther implements gregtech.api.interfaces.IOreRecipeRe
                     new Object[] { "xRR", " SR", "S f", 'S', OrePrefixes.stick.get(aMaterial), 'R',
                         OrePrefixes.plate.get(Materials.AnyRubber) });
             }
-            if ((!aMaterial.contains(SubTag.WOOD)) && (!aMaterial.contains(SubTag.BOUNCY))
-                && (!aMaterial.contains(SubTag.NO_SMASHING))) {
+        }
+
+        if ((!aMaterial.contains(SubTag.WOOD)) && (!aMaterial.contains(SubTag.BOUNCY))
+            && (!aMaterial.contains(SubTag.NO_SMASHING))) {
+            // Crafting recipes
+            {
                 GT_ModHandler.addCraftingRecipe(
                     GT_MetaGenerated_Tool_01.INSTANCE
                         .getToolWithStats(GT_MetaGenerated_Tool_01.WRENCH, 1, aMaterial, aMaterial, null),

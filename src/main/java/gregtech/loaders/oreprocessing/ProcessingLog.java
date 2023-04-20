@@ -1,6 +1,10 @@
 package gregtech.loaders.oreprocessing;
 
 import static gregtech.api.enums.Mods.Railcraft;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sChemicalBathRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.GT_RecipeBuilder.TICKS;
 
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -22,20 +26,20 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
         ItemStack aStack) {
         if (aOreDictName.equals("logRubber")) {
-            GT_Values.RA.addCentrifugeRecipe(
-                GT_Utility.copyAmount(1L, aStack),
-                GT_Utility.getIntegratedCircuit(2),
-                null,
-                Materials.Methane.getGas(60L),
-                ItemList.IC2_Resin.get(1L),
-                GT_ModHandler.getIC2Item("plantBall", 1L),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 1L),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1L),
-                GT_Values.NI,
-                GT_Values.NI,
-                new int[] { 5000, 3750, 2500, 2500 },
-                200,
-                20);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(GT_Utility.copyAmount(1L, aStack), GT_Utility.getIntegratedCircuit(2))
+                .itemOutputs(
+                    ItemList.IC2_Resin.get(1L),
+                    GT_ModHandler.getIC2Item("plantBall", 1L),
+                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 1L),
+                    GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1L))
+                .outputChances(5000, 3750, 2500, 2500)
+                .noFluidInputs()
+                .fluidOutputs(Materials.Methane.getGas(60L))
+                .duration(10 * SECONDS)
+                .eut(20)
+                .addTo(sCentrifugeRecipes);
+
             GT_ModHandler.addSawmillRecipe(
                 GT_Utility.copyAmount(1L, aStack),
                 ItemList.IC2_Resin.get(1L),
@@ -50,20 +54,15 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
                 33,
                 false);
         } else {
-            GT_Values.RA.addCentrifugeRecipe(
-                GT_Utility.copyAmount(1L, aStack),
-                GT_Utility.getIntegratedCircuit(1),
-                null,
-                Materials.Methane.getGas(60L),
-                GT_Values.NI,
-                GT_Values.NI,
-                GT_Values.NI,
-                GT_Values.NI,
-                GT_Values.NI,
-                GT_Values.NI,
-                null,
-                200,
-                20);
+            GT_Values.RA.stdBuilder()
+                .itemInputs(GT_Utility.copyAmount(1L, aStack), GT_Utility.getIntegratedCircuit(1))
+                .noItemOutputs()
+                .noFluidInputs()
+                .fluidOutputs(Materials.Methane.getGas(60L))
+                .duration(10 * SECONDS)
+                .eut(20)
+                .addTo(sCentrifugeRecipes);
+
             GT_ModHandler.addPulverisationRecipe(
                 GT_Utility.copyAmount(1L, aStack),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 6L),
@@ -97,15 +96,15 @@ public class ProcessingLog implements gregtech.api.interfaces.IOreRecipeRegistra
             ItemList.FR_Casing_Impregnated.get(1L),
             64,
             16);
-        GT_Values.RA.addChemicalBathRecipe(
-            GT_Utility.copyAmount(1L, aStack),
-            Materials.Creosote.getFluid(1000L),
-            GT_ModHandler.getModItem(Railcraft.ID, "cube", 1L, 8),
-            null,
-            null,
-            null,
-            16,
-            16);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_Utility.copyAmount(1L, aStack))
+            .itemOutputs(GT_ModHandler.getModItem(Railcraft.ID, "cube", 1L, 8))
+            .fluidInputs(Materials.Creosote.getFluid(1000L))
+            .noFluidOutputs()
+            .duration(16 * TICKS)
+            .eut(TierEU.ULV)
+            .addTo(sChemicalBathRecipes);
 
         short aMeta = (short) aStack.getItemDamage();
 

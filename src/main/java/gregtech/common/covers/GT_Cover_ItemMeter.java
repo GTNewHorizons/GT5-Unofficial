@@ -15,7 +15,6 @@ import com.gtnewhorizons.modularui.api.math.MathExpression;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.BaseTextFieldWidget;
-import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
@@ -249,7 +248,8 @@ public class GT_Cover_ItemMeter extends GT_CoverBehaviorBase<GT_Cover_ItemMeter.
                             .setValidator(val -> {
                                 final int valSlot = getIntFromText(val);
                                 if (valSlot > -1) {
-                                    return TextFieldWidget.format.format(Math.min(valSlot, maxSlot));
+                                    return widget.getDecimalFormatter()
+                                        .format(Math.min(valSlot, maxSlot));
                                 } else {
                                     return ALL_TEXT;
                                 }

@@ -46,6 +46,7 @@ import gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_Massfabrica
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeOutput;
 
+@SuppressWarnings("deprecation")
 public class GT_PostLoad {
 
     public static void activateOreDictHandler() {
@@ -426,7 +427,6 @@ public class GT_PostLoad {
                 .collect(Collectors.toSet())
             : new HashSet<>(Arrays.asList(Materials.values()));
 
-        @SuppressWarnings("deprecation") // stable API for MC 1.7.10
         ProgressManager.ProgressBar progressBar = ProgressManager
             .push("Register materials", replaceVanillaItemsSet.size());
         if (GT_Values.cls_enabled) {
@@ -442,7 +442,6 @@ public class GT_PostLoad {
                 doActualRegistration(m);
             });
         }
-        // noinspection deprecation// stable API for MC 1.7.10
         ProgressManager.pop(progressBar);
         // noinspection UnstableApiUsage// stable enough for project
         GT_Mod.GT_FML_LOGGER.info("Replaced Vanilla Materials (" + stopwatch.stop() + "). Have a Cake.");
@@ -472,7 +471,6 @@ public class GT_PostLoad {
                 return ItemList.Circuit_Integrated.getItem();
             }
 
-            @SuppressWarnings("unchecked") // Overrides legacy method with raw types
             @Override
             public void displayAllReleventItems(List<ItemStack> aList) {
 

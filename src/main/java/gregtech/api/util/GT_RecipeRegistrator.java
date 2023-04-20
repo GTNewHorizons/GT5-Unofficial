@@ -3,6 +3,10 @@ package gregtech.api.util;
 import static gregtech.api.enums.GT_Values.*;
 import static gregtech.api.enums.Materials.*;
 import static gregtech.api.enums.Materials.Void;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sHammerRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+import static gregtech.api.util.GT_RecipeBuilder.TICKS;
+import static gregtech.api.util.GT_RecipeConstants.UniversalArcFurnace;
 import static gregtech.api.util.GT_Utility.calculateRecipeEU;
 
 import java.lang.reflect.Field;
@@ -302,17 +306,24 @@ public class GT_RecipeRegistrator {
 
         boolean tHide = !tIron && GT_Mod.gregtechproxy.mHideRecyclingRecipes;
         if (aData.mPrefix == OrePrefixes.toolHeadDrill) {
-            RA.addArcFurnaceRecipe(
-                aStack,
-                new ItemStack[] { GT_OreDictUnificator.getIngotOrDust(aData.mMaterial) },
-                null,
-                90,
-                (int) Math.max(16, tAmount / M),
-                tHide);
+            GT_RecipeBuilder recipeBuilder = GT_Values.RA.stdBuilder();
+
+            recipeBuilder.itemInputs(aStack)
+                .itemOutputs(GT_OreDictUnificator.getIngotOrDust(aData.mMaterial))
+                .fluidInputs(Materials.Oxygen.getGas(90))
+                .noFluidOutputs()
+                .duration(4 * SECONDS + 10 * TICKS)
+                .eut(Math.max(16, tAmount / M));
+            if (tHide) {
+                recipeBuilder.hidden();
+            }
+            recipeBuilder.addTo(UniversalArcFurnace);
         } else {
-            RA.addArcFurnaceRecipe(
-                aStack,
-                new ItemStack[] { GT_OreDictUnificator.getIngotOrDust(aData.mMaterial),
+            GT_RecipeBuilder recipeBuilder = GT_Values.RA.stdBuilder();
+
+            recipeBuilder.itemInputs(aStack)
+                .itemOutputs(
+                    GT_OreDictUnificator.getIngotOrDust(aData.mMaterial),
                     GT_OreDictUnificator.getIngotOrDust(aData.getByProduct(0)),
                     GT_OreDictUnificator.getIngotOrDust(aData.getByProduct(1)),
                     GT_OreDictUnificator.getIngotOrDust(aData.getByProduct(2)),
@@ -320,11 +331,15 @@ public class GT_RecipeRegistrator {
                     GT_OreDictUnificator.getIngotOrDust(aData.getByProduct(5)),
                     GT_OreDictUnificator.getIngotOrDust(aData.getByProduct(6)),
                     GT_OreDictUnificator.getIngotOrDust(aData.getByProduct(7)),
-                    GT_OreDictUnificator.getIngotOrDust(aData.getByProduct(8)) },
-                null,
-                (int) Math.max(16, tAmount / M),
-                90,
-                tHide);
+                    GT_OreDictUnificator.getIngotOrDust(aData.getByProduct(8)))
+                .fluidInputs(Materials.Oxygen.getGas(90))
+                .noFluidOutputs()
+                .duration(8 * SECONDS + 10 * TICKS)
+                .eut((int) Math.max(16, tAmount / M));
+            if (tHide) {
+                recipeBuilder.hidden();
+            }
+            recipeBuilder.addTo(UniversalArcFurnace);
         }
     }
 
@@ -378,15 +393,26 @@ public class GT_RecipeRegistrator {
                 tHide);
         }
 
-        if (aAllowHammer) for (MaterialStack tMaterial : aData.getAllMaterialStacks())
+        if (!aAllowHammer) {
+            return;
+        }
+
+        for (MaterialStack tMaterial : aData.getAllMaterialStacks()) {
             if (tMaterial.mMaterial.contains(SubTag.CRYSTAL) && !tMaterial.mMaterial.contains(SubTag.METAL)
                 && tMaterial.mMaterial != Materials.Glass) {
-                    if (RA.addForgeHammerRecipe(
-                        GT_Utility.copyAmount(1, aStack),
-                        GT_OreDictUnificator.getDust(aData.mMaterial),
-                        200,
-                        30)) break;
-                }
+                GT_Values.RA.stdBuilder()
+                    .itemInputs(GT_Utility.copyAmount(1, aStack))
+                    .itemOutputs(GT_OreDictUnificator.getDust(aData.mMaterial))
+                    .noFluidInputs()
+                    .noFluidOutputs()
+                    .duration(10 * SECONDS)
+                    .eut(TierEU.RECIPE_LV)
+                    .addTo(sHammerRecipes);
+
+                break;
+            }
+        }
+
     }
 
     /**

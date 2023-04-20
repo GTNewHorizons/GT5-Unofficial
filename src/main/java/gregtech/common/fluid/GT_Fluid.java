@@ -1,5 +1,7 @@
 package gregtech.common.fluid;
 
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sFluidCannerRecipes;
+
 import javax.annotation.Nonnull;
 
 import net.minecraft.item.ItemStack;
@@ -121,11 +123,14 @@ public class GT_Fluid extends Fluid implements IGT_Fluid, IGT_RegisteredFluid, R
         if (fullContainer != null && emptyContainer != null) {
             final FluidStack fluidStack = new FluidStack(registeredFluid, containerSize);
             if (!FluidContainerRegistry.registerFluidContainer(fluidStack, fullContainer, emptyContainer)) {
-                GT_Values.RA.addFluidCannerRecipe(
-                    fullContainer,
-                    GT_Utility.getContainerItem(fullContainer, false),
-                    null,
-                    fluidStack);
+                GT_Values.RA.stdBuilder()
+                    .itemInputs(fullContainer)
+                    .itemOutputs(GT_Utility.getContainerItem(fullContainer, false))
+                    .noFluidInputs()
+                    .fluidOutputs(fluidStack)
+                    .duration(fluidStack.amount / 62)
+                    .eut(1)
+                    .addTo(sFluidCannerRecipes);
             }
         }
         return this;

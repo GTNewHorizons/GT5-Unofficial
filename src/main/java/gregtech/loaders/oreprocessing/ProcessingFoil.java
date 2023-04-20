@@ -1,5 +1,6 @@
 package gregtech.loaders.oreprocessing;
 
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sBenderRecipes;
 import static gregtech.api.util.GT_Utility.calculateRecipeEU;
 
 import net.minecraft.item.ItemStack;
@@ -20,14 +21,25 @@ public class ProcessingFoil implements IOreRecipeRegistrator {
     }
 
     @Override
-    public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
-        ItemStack aStack) {
-        GT_Values.RA.addBenderRecipe(
-            GT_Utility.copyAmount(1L, GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 4L)),
-            GT_OreDictUnificator.get(OrePrefixes.foil, aMaterial, 4L),
-            (int) Math.max(aMaterial.getMass(), 1L),
-            calculateRecipeEU(aMaterial, 24));
+    public void registerOre(OrePrefixes prefix, Materials material, String oreDictName, String modName,
+        ItemStack stack) {
+        registerBenderRecipe(material);
+        registerCover(stack, material);
+    }
+
+    private void registerBenderRecipe(Materials material) {
+        GT_Values.RA.stdBuilder()
+            .itemInputs(GT_Utility.copyAmount(1L, GT_OreDictUnificator.get(OrePrefixes.plate, material, 4L)))
+            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.foil, material, 4L))
+            .noFluidInputs()
+            .noFluidOutputs()
+            .duration((int) Math.max(material.getMass(), 1L))
+            .eut(calculateRecipeEU(material, 24))
+            .addTo(sBenderRecipes);
+    }
+
+    private void registerCover(ItemStack stack, Materials material) {
         GregTech_API
-            .registerCover(aStack, TextureFactory.of(aMaterial.mIconSet.mTextures[70], aMaterial.mRGBa, false), null);
+            .registerCover(stack, TextureFactory.of(material.mIconSet.mTextures[70], material.mRGBa, false), null);
     }
 }

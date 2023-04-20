@@ -86,12 +86,6 @@ public class GT_Cover_FluidRegulator extends GT_CoverBehaviorBase<GT_Cover_Fluid
         return new FluidRegulatorData();
     }
 
-    private static int generateNewCoverVariable(int aFlowRate, int aTickRate) {
-        int tToStoreRaw = aTickRate - TICK_RATE_MIN;
-        int tToStore = aFlowRate >= 0 ? tToStoreRaw : ~tToStoreRaw;
-        return aFlowRate & ~TICK_RATE_BITMASK | (tToStore << SPEED_LENGTH);
-    }
-
     @Override
     protected boolean isRedstoneSensitiveImpl(byte aSide, int aCoverID, FluidRegulatorData aCoverVariable,
         ICoverable aTileEntity, long aTimer) {

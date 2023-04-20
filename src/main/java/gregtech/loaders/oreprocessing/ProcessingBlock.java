@@ -1,5 +1,8 @@
 package gregtech.loaders.oreprocessing;
 
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCompressorRecipes;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sHammerRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_Utility.calculateRecipeEU;
 
 import net.minecraft.item.ItemStack;
@@ -79,7 +82,15 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
         if (tStack1 != null) tStack1.stackSize = 9;
         if (tStack2 != null) tStack2.stackSize = 9;
         if (tStack3 != null) tStack3.stackSize = 9;
-        GT_Values.RA.addForgeHammerRecipe(aStack, tStack2, 100, 24);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(aStack)
+            .itemOutputs(tStack2)
+            .noFluidInputs()
+            .noFluidOutputs()
+            .duration(5 * SECONDS)
+            .eut(24)
+            .addTo(sHammerRecipes);
 
         if (GregTech_API.sRecipeFile.get(
             ConfigCategories.Recipes.storageblockdecrafting,
@@ -95,11 +106,15 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
         }
 
         if (!OrePrefixes.block.isIgnored(aMaterial)) {
-            GT_ModHandler.addCompressionRecipe(
-                GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 9L),
-                GT_OreDictUnificator.get(OrePrefixes.block, aMaterial, 1L),
-                300,
-                calculateRecipeEU(aMaterial, 2));
+            // 9 ingots -> 1 block
+            GT_Values.RA.stdBuilder()
+                .itemInputs(GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 9L))
+                .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.block, aMaterial, 1L))
+                .noFluidInputs()
+                .noFluidOutputs()
+                .duration(15 * SECONDS)
+                .eut(calculateRecipeEU(aMaterial, 2))
+                .addTo(sCompressorRecipes);
         }
 
         switch (aMaterial.mName) {
