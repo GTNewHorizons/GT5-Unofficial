@@ -228,10 +228,11 @@ public class GT_MetaTileEntity_BasicMachine_GT_Recipe extends GT_MetaTileEntity_
                     };
                     
                     case STICK_MAGNETIC -> switch (this.mTier) {
-                        case 0, 1 -> OrePrefixes.stick.get(Materials.IronMagnetic);
-                        case 2, 3 -> OrePrefixes.stick.get(Materials.SteelMagnetic);
-                        case 4, 5 -> OrePrefixes.stick.get(Materials.NeodymiumMagnetic);
-                        default   -> OrePrefixes.stick.get(Materials.SamariumMagnetic);
+                        case 0, 1       -> OrePrefixes.stick.get(Materials.IronMagnetic);
+                        case 2, 3       -> OrePrefixes.stick.get(Materials.SteelMagnetic);
+                        case 4, 5       -> OrePrefixes.stick.get(Materials.NeodymiumMagnetic);
+                        case 6, 7, 8, 9 -> OrePrefixes.stick.get(Materials.SamariumMagnetic);
+                        default         -> OrePrefixes.stick.get(Materials.TengamAttuned);
                     };
                     
                     case STICK_ELECTROMAGNETIC -> switch (this.mTier) {
