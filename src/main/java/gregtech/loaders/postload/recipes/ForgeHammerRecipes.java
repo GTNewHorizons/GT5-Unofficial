@@ -167,8 +167,8 @@ public class ForgeHammerRecipes implements Runnable {
             GT_Values.RA.stdBuilder()
                 .itemInputs(ItemList.Tesseract.get(1L), getModItem(GTPlusPlus.ID, "MU-metaitem.01", 1, 32105))
                 .noItemOutputs()
-                .fluidInputs(Materials.SpaceTime.getMolten(2880L))
-                .fluidOutputs(Materials.Space.getMolten(1440L), Materials.Time.getMolten(1440L))
+                .fluidInputs(MaterialsUEVplus.SpaceTime.getMolten(2880L))
+                .fluidOutputs(MaterialsUEVplus.Space.getMolten(1440L), MaterialsUEVplus.Time.getMolten(1440L))
                 .duration(10 * SECONDS)
                 .eut(TierEU.RECIPE_UXV)
                 .addTo(sHammerRecipes);

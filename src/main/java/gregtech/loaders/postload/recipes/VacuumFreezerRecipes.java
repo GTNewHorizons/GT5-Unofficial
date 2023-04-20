@@ -492,8 +492,8 @@ public class VacuumFreezerRecipes implements Runnable {
         if (GTPlusPlus.isModLoaded()) {
             // hot transcendent metal ingot cooling
             GT_Values.RA.stdBuilder()
-                .itemInputs(GT_OreDictUnificator.get(OrePrefixes.ingotHot, Materials.TranscendentMetal, 1L))
-                .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.TranscendentMetal, 1L))
+                .itemInputs(GT_OreDictUnificator.get(OrePrefixes.ingotHot, MaterialsUEVplus.TranscendentMetal, 1L))
+                .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.ingot, MaterialsUEVplus.TranscendentMetal, 1L))
                 .fluidInputs(
                     new FluidStack(FluidRegistry.getFluid("molten.titansteel"), 144),
                     Materials.SuperCoolant.getFluid(1000))

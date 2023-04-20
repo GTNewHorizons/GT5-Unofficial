@@ -11,10 +11,7 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
-import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.*;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_PCBFactoryManager;
@@ -70,7 +67,7 @@ public class GT_PCBFactoryRecipes {
         GT_Values.RA.addAssemblerRecipe(
             new ItemStack[] { GT_ModHandler.getModItem(GTPlusPlus.ID, "blockFrameGtHypogen", 1),
                 GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.Infinity, 2), Materials.Thulium.getPlates(6) },
-            Materials.SpaceTime.getMolten(144 * 8),
+            MaterialsUEVplus.SpaceTime.getMolten(144 * 8),
             ItemList.InfinityCooledCasing.get(1),
             10 * 20,
             (int) GT_Values.VP[12]);
