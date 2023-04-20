@@ -34,6 +34,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import gregtech.api.enums.MaterialsUEVplus;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -963,7 +964,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
                                 + ")^(Recipe tier)"
                                 + GRAY
                                 + "L of molten")
-                .addInfo(Materials.SpaceTime.getLocalizedNameForItem("%material") + " and return half the start EU.")
+                .addInfo(MaterialsUEVplus.SpaceTime.getLocalizedNameForItem("%material") + " and return half the start EU.")
                 .addInfo(TOOLTIP_BAR).addInfo("Animations can be disabled by using a screwdriver on the multiblock.")
                 .addSeparator().addStructureInfo("Eye of Harmony structure is too complex! See schematic for details.")
                 .addStructureInfo(
@@ -1217,7 +1218,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
 
     private void outputFailedChance() {
         // 2^Tier spacetime released upon recipe failure.
-        mOutputFluids = new FluidStack[] { Materials.SpaceTime.getMolten(
+        mOutputFluids = new FluidStack[] { MaterialsUEVplus.SpaceTime.getMolten(
                 (long) (successChance * MOLTEN_SPACETIME_PER_FAILURE_TIER
                         * pow(SPACETIME_FAILURE_BASE, currentRecipe.getRocketTier() + 1))) };
         super.outputAfterRecipe_EM();

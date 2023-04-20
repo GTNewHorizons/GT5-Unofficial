@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import gregtech.api.enums.MaterialsUEVplus;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -37,12 +38,12 @@ import gregtech.api.util.GT_OreDictUnificator;
 @SuppressWarnings("SpellCheckingInspection")
 public class EyeOfHarmonyRecipe {
 
-    static final FluidStack[] SPECIAL_FLUIDS = new FluidStack[] { Materials.WhiteDwarfMatter.getMolten(1152),
-            Materials.WhiteDwarfMatter.getMolten(1152), Materials.WhiteDwarfMatter.getMolten(4_608),
-            Materials.WhiteDwarfMatter.getMolten(18_432), Materials.BlackDwarfMatter.getMolten(1152),
-            Materials.BlackDwarfMatter.getMolten(4_608), Materials.BlackDwarfMatter.getMolten(18_432),
-            Materials.Universium.getMolten(1152), Materials.Universium.getMolten(4_608),
-            Materials.Universium.getMolten(18_432) };
+    static final FluidStack[] SPECIAL_FLUIDS = new FluidStack[] { MaterialsUEVplus.WhiteDwarfMatter.getMolten(1152),
+            MaterialsUEVplus.WhiteDwarfMatter.getMolten(1152), MaterialsUEVplus.WhiteDwarfMatter.getMolten(4_608),
+            MaterialsUEVplus.WhiteDwarfMatter.getMolten(18_432), MaterialsUEVplus.BlackDwarfMatter.getMolten(1152),
+            MaterialsUEVplus.BlackDwarfMatter.getMolten(4_608), MaterialsUEVplus.BlackDwarfMatter.getMolten(18_432),
+            MaterialsUEVplus.Universium.getMolten(1152), MaterialsUEVplus.Universium.getMolten(4_608),
+            MaterialsUEVplus.Universium.getMolten(18_432) };
 
     HashingStrategy<ItemStack> itemStackHashingStrategy = new HashingStrategy<>() {
 
@@ -154,7 +155,7 @@ public class EyeOfHarmonyRecipe {
         }
 
         // Add a bonus fluid of compressed star matter.
-        fluidStackArrayList.add(Materials.RawStarMatter.getFluid((this.spacetimeCasingTierRequired + 1) * 100_000));
+        fluidStackArrayList.add(MaterialsUEVplus.RawStarMatter.getFluid((this.spacetimeCasingTierRequired + 1) * 100_000));
 
         // Tier 0 & 1 - 576 White
         // Tier 2 - 2304 White
