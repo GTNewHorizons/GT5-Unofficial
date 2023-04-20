@@ -1736,11 +1736,6 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer {
             RecipeManagers.centrifugeManager.addRecipe(40, tComb, Product.build());
         }
 
-        aItem = Arrays.copyOf(aItem, 6);
-        if (aItem.length > 6) {
-            chance = Arrays.copyOf(chance, 6);
-        }
-
         GT_Values.RA.stdBuilder()
             .itemInputs(tComb)
             .itemOutputs(aItem)
