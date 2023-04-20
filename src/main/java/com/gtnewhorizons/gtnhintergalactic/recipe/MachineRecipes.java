@@ -3,7 +3,6 @@ package com.gtnewhorizons.gtnhintergalactic.recipe;
 import static gregtech.api.enums.GT_Values.RA;
 import static gregtech.api.enums.GT_Values.VP;
 
-import gregtech.api.enums.MaterialsUEVplus;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.util.RecipeUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
@@ -29,6 +28,7 @@ import goodgenerator.items.MyMaterial;
 import goodgenerator.util.ItemRefer;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -328,8 +328,10 @@ public class MachineRecipes implements Runnable {
                         GT_OreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.SpaceTime, 4),
                         new Object[] { OrePrefixes.circuit.get(Materials.Optical), 16 },
                         ItemList.Electric_Pump_UIV.get(8),
-                        GT_OreDictUnificator.get(OrePrefixes.gearGt, MaterialsUEVplus.SpaceTime, 4), metaStableOgScrew_64, },
-                new FluidStack[] { new FluidStack(solderUEV, 4608), MaterialsUEVplus.TranscendentMetal.getMolten(2304) },
+                        GT_OreDictUnificator.get(OrePrefixes.gearGt, MaterialsUEVplus.SpaceTime, 4),
+                        metaStableOgScrew_64, },
+                new FluidStack[] { new FluidStack(solderUEV, 4608),
+                        MaterialsUEVplus.TranscendentMetal.getMolten(2304) },
                 IGItems.SpaceElevatorModulePumpT2,
                 600 * 20,
                 (int) VP[11]);
@@ -340,7 +342,8 @@ public class MachineRecipes implements Runnable {
                         GT_OreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.SpaceTime, 8),
                         GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Optical, 16),
                         ItemList.Electric_Pump_UIV.get(8),
-                        GT_OreDictUnificator.get(OrePrefixes.gearGt, MaterialsUEVplus.SpaceTime, 8), metaStableOgScrew_64,
+                        GT_OreDictUnificator.get(OrePrefixes.gearGt, MaterialsUEVplus.SpaceTime, 8),
+                        metaStableOgScrew_64,
                         GT_OreDictUnificator.get(OrePrefixes.plateDouble, MaterialsUEVplus.TranscendentMetal, 16), },
                 new FluidStack(solderUEV, 4608),
                 IGItems.SpaceElevatorModulePumpT2,
@@ -402,19 +405,21 @@ public class MachineRecipes implements Runnable {
                 new Object[] { new ItemStack(IGBlocks.SpaceElevatorCasing, 1, 0),
                         new ItemStack(GameRegistry.findItem("gregtech", "gt.blockmachines"), 4, 10786),
                         new ItemStack(GameRegistry.findItem("gregtech", "gt.blockmachines"), 4, 12093),
-                        GT_OreDictUnificator
-                                .get(OrePrefixes.gearGt, MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter, 8),
+                        GT_OreDictUnificator.get(
+                                OrePrefixes.gearGt,
+                                MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter,
+                                8),
                         shirabonGear_8,
                         GT_OreDictUnificator.get(
                                 OrePrefixes.gearGtSmall,
-                            MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter,
+                                MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter,
                                 16),
                         shirabonGearSmall_16, ItemList.Robot_Arm_UXV.get(8), ItemList.Conveyor_Module_UXV.get(16),
                         highComputationStationT5_32, new ItemStack(quantumCircuit, 16),
                         GT_OreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.Universium, 8),
                         GT_OreDictUnificator.get(OrePrefixes.screw, MaterialsUEVplus.Universium, 32) },
                 new FluidStack[] { new FluidStack(solderUEV, 5184), MaterialsUEVplus.BlackDwarfMatter.getMolten(1296),
-                    MaterialsUEVplus.WhiteDwarfMatter.getMolten(1296), MaterialsUEVplus.SpaceTime.getMolten(1296) },
+                        MaterialsUEVplus.WhiteDwarfMatter.getMolten(1296), MaterialsUEVplus.SpaceTime.getMolten(1296) },
                 IGItems.SpaceElevatorModuleAssemblerT3,
                 600 * 20,
                 (int) VP[13]);
