@@ -8,14 +8,16 @@ import cpw.mods.fml.common.Loader;
 
 public enum Mods {
 
+    AE2FluidCraft(Names.A_E2_FLUID_CRAFT),
+    AE2Stuff(Names.AE2STUFF),
+    AFSU(Names.A_F_S_U),
     AdvancedSolarPanel(Names.ADVANCED_SOLAR_PANEL),
     AdventureBackpack(Names.ADVENTURE_BACKPACK),
-    AE2FluidCraft(Names.A_E2_FLUID_CRAFT),
-    AFSU(Names.A_F_S_U),
     AppleCore(Names.APPLE_CORE),
     AppliedEnergistics2(Names.APPLIED_ENERGISTICS2),
     ArchitectureCraft(Names.ARCHITECTURE_CRAFT),
     Aroma1997Core(Names.AROMA1997_CORE),
+    Automagy(Names.AUTOMAGY),
     Avaritia(Names.AVARITIA),
     AvaritiaAddons(Names.AVARITIA_ADDONS),
     Backpack(Names.BACKPACK),
@@ -36,8 +38,9 @@ public enum Mods {
     BuildCraftFactory(Names.BUILD_CRAFT_FACTORY),
     BuildCraftSilicon(Names.BUILD_CRAFT_SILICON),
     BuildCraftTransport(Names.BUILD_CRAFT_TRANSPORT),
-    Chisel(Names.CHISEL),
     COFHCore(Names.C_O_F_H_CORE),
+    CarpentersBlocks(Names.CARPENTERS_BLOCKS),
+    Chisel(Names.CHISEL),
     Computronics(Names.COMPUTRONICS),
     CraftTweaker(Names.CRAFT_TWEAKER),
     CropLoadCore(Names.CROP_LOAD_CORE),
@@ -57,20 +60,20 @@ public enum Mods {
     Forestry(Names.FORESTRY),
     ForgeMicroblocks(Names.FORGE_MICROBLOCKS),
     ForgeRelocation(Names.FORGE_RELOCATION),
+    GTNHIntergalactic(Names.G_T_N_H_INTERGALACTIC),
+    GTNHLanthanides(Names.G_T_N_H_LANTHANIDES),
+    GTPlusPlus(Names.G_T_PLUS_PLUS),
+    GTPlusPlusEverglades(Names.G_T_PLUS_PLUS_EVERGLADES),
     Gadomancy(Names.GADOMANCY),
+    GalactiGreg(Names.GALACTI_GREG),
     GalacticraftCore(Names.GALACTICRAFT_CORE),
     GalacticraftMars(Names.GALACTICRAFT_MARS),
-    GalactiGreg(Names.GALACTI_GREG),
     GalaxySpace(Names.GALAXY_SPACE),
     Gendustry(Names.GENDUSTRY),
     Genetics(Names.GENETICS),
     GoodGenerator(Names.GOOD_GENERATOR),
     GraviSuite(Names.GRAVI_SUITE),
     GregTech(Names.GREG_TECH),
-    GTNHIntergalactic(Names.G_T_N_H_INTERGALACTIC),
-    GTNHLanthanides(Names.G_T_N_H_LANTHANIDES),
-    GTPlusPlus(Names.G_T_PLUS_PLUS),
-    GTPlusPlusEverglades(Names.G_T_PLUS_PLUS_EVERGLADES),
     HardcoreEnderExpansion(Names.HARDCORE_ENDER_EXPANSION),
     HodgePodge(Names.HODGE_PODGE),
     HoloInventory(Names.HOLO_INVENTORY),
@@ -87,10 +90,10 @@ public enum Mods {
     Mantle(Names.MANTLE),
     MineAndBladeBattleGear2(Names.MINE_AND_BLADE_BATTLE_GEAR2),
     Minecraft(Names.MINECRAFT),
-    Natura(Names.NATURA),
-    NaturesCompass(Names.NATURES_COMPASS),
     NEICustomDiagrams(Names.N_E_I_CUSTOM_DIAGRAMS),
     NEIOrePlugin(Names.N_E_I_ORE_PLUGIN),
+    Natura(Names.NATURA),
+    NaturesCompass(Names.NATURES_COMPASS),
     NewHorizonsCoreMod(Names.NEW_HORIZONS_CORE_MOD),
     NotEnoughItems(Names.NOT_ENOUGH_ITEMS),
     OpenBlocks(Names.OPEN_BLOCKS),
@@ -104,10 +107,11 @@ public enum Mods {
     PlayerAPI(Names.PLAYER_API),
     ProjectRedCore(Names.PROJECT_RED_CORE),
     ProjectRedIllumination(Names.PROJECT_RED_ILLUMINATION),
+    ProjectRedIntegration(Names.PROJECT_RED_INTEGRATION),
+    RWG(Names.RWG),
     Railcraft(Names.RAILCRAFT),
     RandomThings(Names.RANDOM_THINGS),
     RemoteIO(Names.REMOTE_IO),
-    RWG(Names.RWG),
     SGCraft(Names.S_G_CRAFT),
     SleepingBags(Names.SLEEPING_BAGS),
     SpiceOfLife(Names.SPICE_OF_LIFE),
@@ -118,6 +122,7 @@ public enum Mods {
     Thaumcraft(Names.THAUMCRAFT),
     ThaumicBases(Names.THAUMIC_BASES),
     ThaumicEnergistics(Names.THAUMIC_ENERGISTICS),
+    ThaumicExploration(Names.THAUMIC_EXPLORATION),
     ThaumicHorizons(Names.THAUMIC_HORIZONS),
     ThaumicMachina(Names.THAUMIC_MACHINA),
     ThaumicTinkerer(Names.THAUMIC_TINKERER),
@@ -146,14 +151,16 @@ public enum Mods {
 
     public static class Names {
 
+        public static final String A_E2_FLUID_CRAFT = "ae2fc";
+        public static final String AE2STUFF = "ae2stuff";
+        public static final String A_F_S_U = "AFSU";
         public static final String ADVANCED_SOLAR_PANEL = "AdvancedSolarPanel";
         public static final String ADVENTURE_BACKPACK = "adventurebackpack";
-        public static final String A_E2_FLUID_CRAFT = "ae2fc";
-        public static final String A_F_S_U = "AFSU";
         public static final String APPLE_CORE = "AppleCore";
         public static final String APPLIED_ENERGISTICS2 = "appliedenergistics2";
         public static final String ARCHITECTURE_CRAFT = "ArchitectureCraft";
         public static final String AROMA1997_CORE = "Aroma1997Core";
+        public static final String AUTOMAGY = "Automagy";
         public static final String AVARITIA = "Avaritia";
         public static final String AVARITIA_ADDONS = "avaritiaddons";
         public static final String BACKPACK = "Backpack";
@@ -174,8 +181,9 @@ public enum Mods {
         public static final String BUILD_CRAFT_FACTORY = "BuildCraft|Factory";
         public static final String BUILD_CRAFT_SILICON = "BuildCraft|Silicon";
         public static final String BUILD_CRAFT_TRANSPORT = "BuildCraft|Transport";
-        public static final String CHISEL = "chisel";
         public static final String C_O_F_H_CORE = "CoFHCore";
+        public static final String CARPENTERS_BLOCKS = "CarpentersBlocks";
+        public static final String CHISEL = "chisel";
         public static final String COMPUTRONICS = "computronics";
         public static final String CRAFT_TWEAKER = "MineTweaker3";
         public static final String CROP_LOAD_CORE = "croploadcore";
@@ -195,20 +203,20 @@ public enum Mods {
         public static final String FORESTRY = "Forestry";
         public static final String FORGE_MICROBLOCKS = "ForgeMicroblock";
         public static final String FORGE_RELOCATION = "ForgeRelocation";
+        public static final String G_T_N_H_INTERGALACTIC = "gtnhintergalactic";
+        public static final String G_T_N_H_LANTHANIDES = "gtnhlanth";
+        public static final String G_T_PLUS_PLUS = "miscutils";
+        public static final String G_T_PLUS_PLUS_EVERGLADES = "ToxicEverglades";
         public static final String GADOMANCY = "gadomancy";
+        public static final String GALACTI_GREG = "galacticgreg";
         public static final String GALACTICRAFT_CORE = "GalacticraftCore";
         public static final String GALACTICRAFT_MARS = "GalacticraftMars";
-        public static final String GALACTI_GREG = "galacticgreg";
         public static final String GALAXY_SPACE = "GalaxySpace";
         public static final String GENDUSTRY = "gendustry";
         public static final String GENETICS = "Genetics";
         public static final String GOOD_GENERATOR = "GoodGenerator";
         public static final String GRAVI_SUITE = "GraviSuite";
         public static final String GREG_TECH = "gregtech";
-        public static final String G_T_N_H_INTERGALACTIC = "gtnhintergalactic";
-        public static final String G_T_N_H_LANTHANIDES = "gtnhlanth";
-        public static final String G_T_PLUS_PLUS = "miscutils";
-        public static final String G_T_PLUS_PLUS_EVERGLADES = "ToxicEverglades";
         public static final String HARDCORE_ENDER_EXPANSION = "HardcoreEnderExpansion";
         public static final String HODGE_PODGE = "hodgepodge";
         public static final String HOLO_INVENTORY = "holoinventory";
@@ -225,10 +233,10 @@ public enum Mods {
         public static final String MANTLE = "Mantle";
         public static final String MINE_AND_BLADE_BATTLE_GEAR2 = "battlegear2";
         public static final String MINECRAFT = "minecraft";
-        public static final String NATURA = "Natura";
-        public static final String NATURES_COMPASS = "naturescompass";
         public static final String N_E_I_CUSTOM_DIAGRAMS = "neicustomdiagram";
         public static final String N_E_I_ORE_PLUGIN = "gtneioreplugin";
+        public static final String NATURA = "Natura";
+        public static final String NATURES_COMPASS = "naturescompass";
         public static final String NEW_HORIZONS_CORE_MOD = "dreamcraft";
         public static final String NOT_ENOUGH_ITEMS = "NotEnoughItems";
         public static final String OPEN_BLOCKS = "OpenBlocks";
@@ -242,10 +250,11 @@ public enum Mods {
         public static final String PLAYER_API = "PlayerAPI";
         public static final String PROJECT_RED_CORE = "ProjRed|Core";
         public static final String PROJECT_RED_ILLUMINATION = "ProjRed|Illumination";
+        public static final String PROJECT_RED_INTEGRATION = "ProjRed|Integration";
+        public static final String RWG = "RWG";
         public static final String RAILCRAFT = "Railcraft";
         public static final String RANDOM_THINGS = "RandomThings";
         public static final String REMOTE_IO = "RIO";
-        public static final String RWG = "RWG";
         public static final String S_G_CRAFT = "SGCraft";
         public static final String SLEEPING_BAGS = "sleepingbag";
         public static final String SPICE_OF_LIFE = "SpiceOfLife";
@@ -256,6 +265,7 @@ public enum Mods {
         public static final String THAUMCRAFT = "Thaumcraft";
         public static final String THAUMIC_BASES = "thaumicbases";
         public static final String THAUMIC_ENERGISTICS = "thaumicenergistics";
+        public static final String THAUMIC_EXPLORATION = "ThaumicExploration";
         public static final String THAUMIC_HORIZONS = "ThaumicHorizons";
         public static final String THAUMIC_MACHINA = "ThaumicMachina";
         public static final String THAUMIC_TINKERER = "ThaumicTinkerer";
