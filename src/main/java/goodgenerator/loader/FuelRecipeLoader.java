@@ -13,6 +13,7 @@ import goodgenerator.items.MyMaterial;
 import goodgenerator.util.ItemRefer;
 import goodgenerator.util.MyRecipeAdder;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_OreDictUnificator;
 
@@ -112,8 +113,8 @@ public class FuelRecipeLoader {
         MyRecipeAdder.instance.addNaquadahFuelRefineRecipe(
                 new FluidStack[] { MyMaterial.naquadahBasedFuelMkIV.getFluidOrGas(2000),
                         FluidRegistry.getFluidStack("heavyradox", 1000), },
-                new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SpaceTime, 8),
-                        GT_OreDictUnificator.get(OrePrefixes.dust, Materials.TranscendentMetal, 16),
+                new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsUEVplus.SpaceTime, 8),
+                        GT_OreDictUnificator.get(OrePrefixes.dust, MaterialsUEVplus.TranscendentMetal, 16),
                         MyMaterial.atomicSeparationCatalyst.get(OrePrefixes.dust, 48), },
                 MyMaterial.naquadahBasedFuelMkV.getFluidOrGas(750),
                 300000000,

@@ -19,10 +19,7 @@ import com.github.technus.tectech.recipe.TT_recipeAdder;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import goodgenerator.util.StackUtils;
-import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.*;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.recipe.common.CI;
@@ -262,13 +259,13 @@ public class ComponentAssemblyLineMiscRecipes {
                 1 << (t - 3),
                 8000000,
                 1,
-                new Object[] { GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.TranscendentMetal, 1),
-                        GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.TranscendentMetal, 6),
+                new Object[] { GT_OreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.TranscendentMetal, 1),
+                        GT_OreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.TranscendentMetal, 6),
                         ComponentType.Robot_Arm.getComponent(t).get(8),
                         ComponentType.Electric_Piston.getComponent(t).get(10),
                         ComponentType.Electric_Motor.getComponent(t).get(16),
-                        GT_OreDictUnificator.get(OrePrefixes.gearGt, Materials.TranscendentMetal, 4),
-                        GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.TranscendentMetal, 16),
+                        GT_OreDictUnificator.get(OrePrefixes.gearGt, MaterialsUEVplus.TranscendentMetal, 4),
+                        GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, MaterialsUEVplus.TranscendentMetal, 16),
                         GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.NetherStar, 8), getALCircuit(t, 8),
                         getALCircuit(t - 1, 16) },
                 new FluidStack[] { new FluidStack(sold, 144 * t * 4), CI.getTieredFluid(t, 144 * t * 2),
@@ -284,13 +281,13 @@ public class ComponentAssemblyLineMiscRecipes {
                 1 << (t - 3),
                 32000000,
                 1,
-                new Object[] { GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.SpaceTime, 1),
-                        GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.SpaceTime, 6),
+                new Object[] { GT_OreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.SpaceTime, 1),
+                        GT_OreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.SpaceTime, 6),
                         ComponentType.Robot_Arm.getComponent(t).get(8),
                         ComponentType.Electric_Piston.getComponent(t).get(10),
                         ComponentType.Electric_Motor.getComponent(t).get(16),
-                        GT_OreDictUnificator.get(OrePrefixes.gearGt, Materials.SpaceTime, 4),
-                        GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.SpaceTime, 16),
+                        GT_OreDictUnificator.get(OrePrefixes.gearGt, MaterialsUEVplus.SpaceTime, 4),
+                        GT_OreDictUnificator.get(OrePrefixes.gearGtSmall, MaterialsUEVplus.SpaceTime, 16),
                         GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.Quantium, 8), getALCircuit(t, 8),
                         getALCircuit(t - 1, 16) },
                 new FluidStack[] { new FluidStack(sold, 144 * t * 4), CI.getTieredFluid(t - 1, 144 * t * 2),

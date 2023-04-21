@@ -374,7 +374,8 @@ public class RecipeLoader_02 {
                         GT_OreDictUnificator.get(OrePrefixes.plateQuintuple, Materials.Infinity, 12),
                         GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.DraconiumAwakened, 8) },
                 new FluidStack[] { Materials.Draconium.getMolten(36864), new FluidStack(solderIndalloy, 30240),
-                        Materials.TranscendentMetal.getMolten(1440), Materials.InfinityCatalyst.getMolten(5670) },
+                        MaterialsUEVplus.TranscendentMetal.getMolten(1440),
+                        Materials.InfinityCatalyst.getMolten(5670) },
                 ItemRefer.Fluid_Storage_Core_T9.get(1),
                 400,
                 134217000);
@@ -388,12 +389,13 @@ public class RecipeLoader_02 {
                         GT_OreDictUnificator.get(OrePrefixes.pipeNonuple, Materials.Infinity, 32),
                         GT_OreDictUnificator.get(OrePrefixes.plateQuintuple, Materials.CosmicNeutronium, 12),
                         GT_OreDictUnificator.get(OrePrefixes.plateQuintuple, Materials.CosmicNeutronium, 12),
-                        GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.SpaceTime, 1),
-                        GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.SpaceTime, 1),
-                        GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.SpaceTime, 1),
-                        GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.SpaceTime, 1) },
+                        GT_OreDictUnificator.get(OrePrefixes.plateDouble, MaterialsUEVplus.SpaceTime, 1),
+                        GT_OreDictUnificator.get(OrePrefixes.plateDouble, MaterialsUEVplus.SpaceTime, 1),
+                        GT_OreDictUnificator.get(OrePrefixes.plateDouble, MaterialsUEVplus.SpaceTime, 1),
+                        GT_OreDictUnificator.get(OrePrefixes.plateDouble, MaterialsUEVplus.SpaceTime, 1) },
                 new FluidStack[] { Materials.Draconium.getMolten(36864), new FluidStack(solderIndalloy, 46080),
-                        Materials.TranscendentMetal.getMolten(4320), Materials.InfinityCatalyst.getMolten(17010) },
+                        MaterialsUEVplus.TranscendentMetal.getMolten(4320),
+                        Materials.InfinityCatalyst.getMolten(17010) },
                 ItemRefer.Fluid_Storage_Core_T10.get(1),
                 400,
                 536800000);
@@ -551,7 +553,7 @@ public class RecipeLoader_02 {
         GT_Values.RA.addAssemblylineRecipe(
                 ItemRefer.YOTTank_Cell_T9.get(1),
                 240000,
-                new Object[] { GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.SpaceTime, 2),
+                new Object[] { GT_OreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.SpaceTime, 2),
                         ItemRefer.Fluid_Storage_Core_T10.get(2),
                         new Object[] { OrePrefixes.circuit.get(Materials.Quantum), 6L },
                         new Object[] { OrePrefixes.circuit.get(Materials.Quantum), 6L },
@@ -559,11 +561,11 @@ public class RecipeLoader_02 {
                         GT_OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.NetherStar, 64),
                         GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.CosmicNeutronium, 12),
                         GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.DraconiumAwakened, 12),
-                        GT_OreDictUnificator.get(OrePrefixes.plate, Materials.SpaceTime, 5),
-                        GT_OreDictUnificator.get(OrePrefixes.plate, Materials.SpaceTime, 5) },
+                        GT_OreDictUnificator.get(OrePrefixes.plate, MaterialsUEVplus.SpaceTime, 5),
+                        GT_OreDictUnificator.get(OrePrefixes.plate, MaterialsUEVplus.SpaceTime, 5) },
                 new FluidStack[] { Materials.DraconiumAwakened.getMolten(14400),
-                        Materials.TranscendentMetal.getMolten(1440), FluidRegistry.getFluidStack("supercoolant", 46080),
-                        Materials.Lubricant.getFluid(46080) },
+                        MaterialsUEVplus.TranscendentMetal.getMolten(1440),
+                        FluidRegistry.getFluidStack("supercoolant", 46080), Materials.Lubricant.getFluid(46080) },
                 ItemRefer.YOTTank_Cell_T10.get(1),
                 1000,
                 536800000);
@@ -660,7 +662,7 @@ public class RecipeLoader_02 {
         GT_Values.RA.addUnboxingRecipe(
                 ItemRefer.YOTTank_Cell_T10.get(1),
                 ItemRefer.Fluid_Storage_Core_T10.get(2),
-                GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.SpaceTime, 1),
+                GT_OreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.SpaceTime, 1),
                 100,
                 480);
 
@@ -1590,8 +1592,8 @@ public class RecipeLoader_02 {
         GT_Values.RA.addPlasmaForgeRecipe(
                 new ItemStack[] { ItemRefer.HiC_T5.get(0) },
                 new FluidStack[] { MyMaterial.metastableOganesson.getMolten(1152),
-                        MyMaterial.preciousMetalAlloy.getMolten(2304), Materials.SpaceTime.getMolten(288),
-                        Materials.DimensionallyTranscendentResidue.getFluid(5000) },
+                        MyMaterial.preciousMetalAlloy.getMolten(2304), MaterialsUEVplus.SpaceTime.getMolten(288),
+                        MaterialsUEVplus.DimensionallyTranscendentResidue.getFluid(5000) },
                 new ItemStack[] {},
                 new FluidStack[] { MyMaterial.shirabon.getMolten(144) },
                 200,

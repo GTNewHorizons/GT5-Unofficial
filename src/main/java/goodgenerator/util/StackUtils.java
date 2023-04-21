@@ -10,6 +10,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import goodgenerator.items.MyMaterial;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.util.GT_Utility;
 
 public class StackUtils {
@@ -116,7 +117,7 @@ public class StackUtils {
             case 11: // UIV
                 return MyMaterial.metastableOganesson.getMolten(aAmount);
             case 12: // UMV
-                return Materials.SpaceTime.getMolten(aAmount);
+                return MaterialsUEVplus.SpaceTime.getMolten(aAmount);
             default:
                 return MyMaterial.shirabon.getMolten(aAmount);
         }
