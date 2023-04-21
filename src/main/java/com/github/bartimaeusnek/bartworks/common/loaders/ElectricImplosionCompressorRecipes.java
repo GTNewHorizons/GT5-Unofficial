@@ -12,11 +12,7 @@ import static gregtech.api.util.GT_ModHandler.getModItem;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
-import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.TierEU;
+import gregtech.api.enums.*;
 import gregtech.api.util.GT_OreDictUnificator;
 
 public class ElectricImplosionCompressorRecipes implements Runnable {
@@ -49,7 +45,7 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
             addElectricImplosionRecipe(
                     // IN.
                     new ItemStack[] { GT_Values.NI },
-                    new FluidStack[] { Materials.SpaceTime.getMolten(72L) },
+                    new FluidStack[] { MaterialsUEVplus.SpaceTime.getMolten(72L) },
                     // OUT.
                     new ItemStack[] { getModItem(EternalSingularity.ID, "eternal_singularity", 1L) },
                     new FluidStack[] { GT_Values.NF },
@@ -109,13 +105,13 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
         // Magneto material recipe for base fluid.
         addElectricImplosionRecipe(
                 // IN.
-                new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.nanite, Materials.WhiteDwarfMatter, 1L),
-                        GT_OreDictUnificator.get(OrePrefixes.nanite, Materials.Universium, 1L),
-                        GT_OreDictUnificator.get(OrePrefixes.nanite, Materials.BlackDwarfMatter, 1L) },
-                new FluidStack[] { Materials.RawStarMatter.getFluid(64 * 144L) },
+                new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.nanite, MaterialsUEVplus.WhiteDwarfMatter, 1L),
+                        GT_OreDictUnificator.get(OrePrefixes.nanite, MaterialsUEVplus.Universium, 1L),
+                        GT_OreDictUnificator.get(OrePrefixes.nanite, MaterialsUEVplus.BlackDwarfMatter, 1L) },
+                new FluidStack[] { MaterialsUEVplus.RawStarMatter.getFluid(64 * 144L) },
                 // OUT.
                 new ItemStack[] { GT_Values.NI },
-                new FluidStack[] { Materials.MagnetohydrodynamicallyConstrainedStarMatter.getMolten(16 * 144L) },
+                new FluidStack[] { MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter.getMolten(16 * 144L) },
                 // Recipe stats.
                 20 * 4,
                 (int) TierEU.RECIPE_UXV);
@@ -156,11 +152,11 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
                     new ItemStack[] { circuit.splitStack(circuitMultiplier),
                             getModItem(SuperSolarPanels.ID, "solarsplitter", 1, 0),
                             getModItem(OpenComputers.ID, "hologram2", circuitMultiplier, 0),
-                            GT_OreDictUnificator.get(part, Materials.Universium, multiplier), },
-                    new FluidStack[] { Materials.MagnetohydrodynamicallyConstrainedStarMatter
+                            GT_OreDictUnificator.get(part, MaterialsUEVplus.Universium, multiplier), },
+                    new FluidStack[] { MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter
                             .getMolten((long) partFraction * multiplier) },
                     new ItemStack[] { GT_OreDictUnificator
-                            .get(part, Materials.MagnetohydrodynamicallyConstrainedStarMatter, multiplier) },
+                            .get(part, MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter, multiplier) },
                     new FluidStack[] { GT_Values.NF },
                     (int) (multiplier * (20 * partFraction / 144.0)),
                     (int) TierEU.RECIPE_UXV);

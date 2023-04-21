@@ -34,7 +34,7 @@ public class TT_MetaTileEntity_LowPowerLaserHatch extends GT_MetaTileEntity_Hatc
 
     public TT_MetaTileEntity_LowPowerLaserHatch(String aName, int aTier, int aAmp, String aDescription,
             ITexture[][][] aTextures) {
-        super(aName, aTier, aAmp, aDescription, aTextures);
+        super(aName, aTier, aAmp, new String[] { aDescription }, aTextures);
     }
 
     @Override

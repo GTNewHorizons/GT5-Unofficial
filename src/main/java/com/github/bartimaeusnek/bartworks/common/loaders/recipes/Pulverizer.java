@@ -8,6 +8,7 @@ import com.github.bartimaeusnek.bartworks.util.BW_Util;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 
 public class Pulverizer implements Runnable {
@@ -65,7 +66,8 @@ public class Pulverizer implements Runnable {
                 BW_Util.getMachineVoltageFromTier(11));
         GT_Values.RA.addPulveriserRecipe(
                 new ItemStack(ItemRegistry.bw_glasses[1], 1, 0),
-                new ItemStack[] { Materials.BorosilicateGlass.getDust(9), Materials.TranscendentMetal.getDust(8) },
+                new ItemStack[] { Materials.BorosilicateGlass.getDust(9),
+                        MaterialsUEVplus.TranscendentMetal.getDust(8) },
                 null,
                 800,
                 BW_Util.getMachineVoltageFromTier(12));

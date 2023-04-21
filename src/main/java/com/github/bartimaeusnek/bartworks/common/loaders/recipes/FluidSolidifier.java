@@ -9,6 +9,7 @@ import com.github.bartimaeusnek.bartworks.util.BW_Util;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.MaterialsUEVplus;
 
 public class FluidSolidifier implements Runnable {
 
@@ -72,7 +73,7 @@ public class FluidSolidifier implements Runnable {
                 BW_Util.getMachineVoltageFromTier(10));
         GT_Values.RA.addFluidSolidifierRecipe(
                 new ItemStack(ItemRegistry.bw_glasses[0], 1, 0),
-                Materials.TranscendentMetal.getMolten(1152),
+                MaterialsUEVplus.TranscendentMetal.getMolten(1152),
                 new ItemStack(ItemRegistry.bw_glasses[1], 1, 0),
                 800,
                 BW_Util.getMachineVoltageFromTier(11));

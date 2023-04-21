@@ -34,7 +34,7 @@ public class TT_MetaTileEntity_LowPowerLaserDynamo extends GT_MetaTileEntity_Hat
 
     public TT_MetaTileEntity_LowPowerLaserDynamo(String aName, int aTier, int aAmp, String aDescription,
             ITexture[][][] aTextures) {
-        super(aName, aTier, aAmp, aDescription, aTextures);
+        super(aName, aTier, aAmp, new String[] { aDescription }, aTextures);
     }
 
     @Override
