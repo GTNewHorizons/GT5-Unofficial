@@ -14,11 +14,7 @@ import common.TileEntities;
 import common.items.ErrorItem;
 import common.items.MetaItem_CraftingComponent;
 
-import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.TierEU;
+import gregtech.api.enums.*;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
@@ -189,8 +185,8 @@ public class Assembler implements Runnable {
         GT_Values.RA.stdBuilder()
                 .itemInputs(
                         ItemList.ZPM5.get(1),
-                        GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.TranscendentMetal, 4),
-                        GT_OreDictUnificator.get(OrePrefixes.screw, Materials.TranscendentMetal, 24),
+                        GT_OreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.TranscendentMetal, 4),
+                        GT_OreDictUnificator.get(OrePrefixes.screw, MaterialsUEVplus.TranscendentMetal, 24),
                         GT_Utility.getIntegratedCircuit(6))
                 .itemOutputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 9)).noFluidInputs().noFluidOutputs()
                 .duration(10 * MINUTES + 40 * SECONDS).eut(TierEU.RECIPE_UEV).addTo(sAssemblerRecipes);
@@ -199,8 +195,8 @@ public class Assembler implements Runnable {
         GT_Values.RA.stdBuilder()
                 .itemInputs(
                         ItemList.ZPM6.get(1),
-                        GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.SpaceTime, 4),
-                        GT_OreDictUnificator.get(OrePrefixes.screw, Materials.SpaceTime, 24),
+                        GT_OreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.SpaceTime, 4),
+                        GT_OreDictUnificator.get(OrePrefixes.screw, MaterialsUEVplus.SpaceTime, 24),
                         GT_Utility.getIntegratedCircuit(6))
                 .itemOutputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 10)).noFluidInputs().noFluidOutputs()
                 .duration(10 * MINUTES + 40 * SECONDS).eut(TierEU.RECIPE_UIV).addTo(sAssemblerRecipes);

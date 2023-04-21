@@ -11,10 +11,7 @@ import net.minecraftforge.fluids.FluidStack;
 import com.github.technus.tectech.recipe.TT_recipeAdder;
 import common.Blocks;
 
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.TierEU;
+import gregtech.api.enums.*;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 
@@ -59,8 +56,8 @@ public class ResearchableAssemblyLine implements Runnable {
                     1_280,
                     32_000_000,
                     32,
-                    new Object[] { GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.TranscendentMetal, 4),
-                            GT_OreDictUnificator.get(OrePrefixes.screw, Materials.TranscendentMetal, 24),
+                    new Object[] { GT_OreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.TranscendentMetal, 4),
+                            GT_OreDictUnificator.get(OrePrefixes.screw, MaterialsUEVplus.TranscendentMetal, 24),
                             GT_ModHandler.getModItem(GTPlusPlus.ID, "itemPlateDoubleHypogen", 32),
                             GT_ModHandler.getModItem(GTPlusPlus.ID, "itemPlateDoubleHypogen", 32),
                             new Object[] { OrePrefixes.circuit.get(Materials.Piko), 1 },
@@ -86,8 +83,8 @@ public class ResearchableAssemblyLine implements Runnable {
                     12_288,
                     128_000_000,
                     64,
-                    new Object[] { GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.SpaceTime, 4),
-                            GT_OreDictUnificator.get(OrePrefixes.screw, Materials.SpaceTime, 24),
+                    new Object[] { GT_OreDictUnificator.get(OrePrefixes.frameGt, MaterialsUEVplus.SpaceTime, 4),
+                            GT_OreDictUnificator.get(OrePrefixes.screw, MaterialsUEVplus.SpaceTime, 24),
                             GT_ModHandler.getModItem(GTPlusPlus.ID, "itemPlateDoubleDragonblood", 32),
                             GT_ModHandler.getModItem(GTPlusPlus.ID, "itemPlateDoubleDragonblood", 32),
                             new Object[] { OrePrefixes.circuit.get(Materials.Quantum), 1 },

@@ -7,11 +7,7 @@ import net.minecraft.item.ItemStack;
 
 import common.Blocks;
 
-import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.TierEU;
+import gregtech.api.enums.*;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 
@@ -72,13 +68,14 @@ public class Unpackager implements Runnable {
 
             GT_Values.RA.stdBuilder()
                     .itemInputs(new ItemStack(Blocks.tfftStorageField, 1, 9), ItemList.Quantum_Tank_IV.get(4))
-                    .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.TranscendentMetal, 12))
+                    .itemOutputs(
+                            GT_OreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.TranscendentMetal, 12))
                     .noFluidInputs().noFluidOutputs().duration(5 * SECONDS).eut(TierEU.RECIPE_HV)
                     .addTo(sUnboxinatorRecipes);
 
             GT_Values.RA.stdBuilder()
                     .itemInputs(new ItemStack(Blocks.tfftStorageField, 1, 10), ItemList.Quantum_Tank_IV.get(16))
-                    .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.SpaceTime, 12))
+                    .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.plateDense, MaterialsUEVplus.SpaceTime, 12))
                     .noFluidInputs().noFluidOutputs().duration(5 * SECONDS).eut(TierEU.RECIPE_HV)
                     .addTo(sUnboxinatorRecipes);
 
@@ -132,14 +129,15 @@ public class Unpackager implements Runnable {
 
             GT_Values.RA.stdBuilder()
                     .itemInputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 9), ItemList.ZPM5.get(1L))
-                    .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.screw, Materials.TranscendentMetal, 24))
+                    .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.screw, MaterialsUEVplus.TranscendentMetal, 24))
                     .noFluidInputs().noFluidOutputs().duration(60 * SECONDS).eut(TierEU.RECIPE_LV)
                     .addTo(sUnboxinatorRecipes);
 
             GT_Values.RA.stdBuilder()
                     .itemInputs(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 10), ItemList.ZPM6.get(1L))
-                    .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.screw, Materials.SpaceTime, 24)).noFluidInputs()
-                    .noFluidOutputs().duration(60 * SECONDS).eut(TierEU.RECIPE_LV).addTo(sUnboxinatorRecipes);
+                    .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.screw, MaterialsUEVplus.SpaceTime, 24))
+                    .noFluidInputs().noFluidOutputs().duration(60 * SECONDS).eut(TierEU.RECIPE_LV)
+                    .addTo(sUnboxinatorRecipes);
 
         }
     }
