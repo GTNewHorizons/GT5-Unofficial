@@ -1,24 +1,24 @@
 dependencies {
-    api('com.github.GTNewHorizons:GT5-Unofficial:5.09.42.45:dev')
-    api("com.github.GTNewHorizons:bartworks:0.5.155:dev")
-    api("com.github.GTNewHorizons:TecTech:5.0.88:dev")
+    api('com.github.GTNewHorizons:GT5-Unofficial:5.09.42.65-pre:dev')
+    api("com.github.GTNewHorizons:bartworks:0.6.12-pre:dev")
+    api("com.github.GTNewHorizons:TecTech:5.1.15-pre:dev")
 
     implementation('curse.maven:cofh-core-69162:2388751')
     // https://www.curseforge.com/minecraft/mc-mods/advancedsolarpanels
     implementation('curse.maven:advsolar-362768:2885953')
 
-    compileOnly('com.github.GTNewHorizons:Baubles:1.0.1.15:dev') {transitive=false}
-    compileOnly('com.github.GTNewHorizons:ForestryMC:4.5.6:dev') {transitive=false}
-    compileOnly('com.github.GTNewHorizons:Railcraft:9.13.16:dev') {transitive=false}
-    compileOnly('com.github.GTNewHorizons:EnderIO:2.3.1.54:dev') {transitive=false}
-    compileOnly('com.github.GTNewHorizons:EnderCore:0.2.12:dev') {transitive=false}
+    compileOnly('com.github.GTNewHorizons:Baubles:1.0.1.16:dev') {transitive=false}
+    compileOnly('com.github.GTNewHorizons:ForestryMC:4.6.5:dev') {transitive=false}
+    compileOnly('com.github.GTNewHorizons:Railcraft:9.14.1:dev') {transitive=false}
+    compileOnly('com.github.GTNewHorizons:EnderIO:2.4.10:dev') {transitive=false}
+    compileOnly('com.github.GTNewHorizons:EnderCore:0.2.13:dev') {transitive=false}
     compileOnly('com.github.GTNewHorizons:SC2:2.0.2:dev') {transitive=false}
     compileOnly('com.github.GTNewHorizons:Binnie:2.0.48:dev') {transitive = false}
     compileOnly('curse.maven:PlayerAPI-228969:2248928') {transitive=false}
-    compileOnly('com.github.GTNewHorizons:BuildCraft:7.1.28:dev') {transitive=false}
+    compileOnly('com.github.GTNewHorizons:BuildCraft:7.1.33:dev') {transitive=false}
     compileOnly('thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev') {transitive=false}
-    compileOnly('com.github.GTNewHorizons:Chisel:2.10.16-GTNH:dev') {transitive=false}
+    compileOnly('com.github.GTNewHorizons:Chisel:2.10.17-GTNH:dev') {transitive=false}
     compileOnly("com.github.GTNewHorizons:ProjectRed:4.7.9-GTNH:dev") {transitive = false}
 
-    runtimeOnly('com.github.GTNewHorizons:ForestryMC:4.5.6:dev')
+    runtimeOnly('com.github.GTNewHorizons:ForestryMC:4.6.5:dev')
 }
