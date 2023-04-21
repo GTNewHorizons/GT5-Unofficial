@@ -11,6 +11,7 @@ import net.minecraft.item.ItemStack;
 import gregtech.GT_Mod;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.*;
 
@@ -189,7 +190,7 @@ public class WiremillRecipes implements Runnable {
 
         registerWiremillRecipes(Materials.Graphene, 20 * SECONDS, 2, OrePrefixes.dust, OrePrefixes.stick, 1);
 
-        registerWiremillRecipes(Materials.SpaceTime, 20 * SECONDS, 32_000);
+        registerWiremillRecipes(MaterialsUEVplus.SpaceTime, 20 * SECONDS, 32_000);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Polycaprolactam, 1L))

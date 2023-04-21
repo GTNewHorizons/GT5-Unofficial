@@ -9549,7 +9549,7 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
         makeWires(Materials.SuperconductorUMV, 2089, 0L, 0L, 64L, gregtech.api.enums.GT_Values.V[12], false, true);
 
         makeWires(Materials.Ichorium, 2600, 2L, 2L, 12L, GT_Values.V[9], false, true);
-        makeWires(Materials.SpaceTime, 2606, 0L, 0L, 1_000_000L, GT_Values.V[14], false, true);
+        makeWires(MaterialsUEVplus.SpaceTime, 2606, 0L, 0L, 1_000_000L, GT_Values.V[14], false, true);
 
         if (!GT_Mod.gregtechproxy.mDisableIC2Cables) {
             GT_ModHandler.addCraftingRecipe(
@@ -9676,18 +9676,30 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
             480,
             600,
             true);
-        generateFluidPipes(Materials.SpaceTime, Materials.SpaceTime.mName, 5300, 250000, 2147483647, true);
-        generateFluidMultiPipes(Materials.SpaceTime, Materials.SpaceTime.mName, 5305, 250000, 2147483647, true);
         generateFluidPipes(
-            Materials.TranscendentMetal,
-            Materials.TranscendentMetal.mName,
+            MaterialsUEVplus.SpaceTime,
+            MaterialsUEVplus.SpaceTime.mName,
+            5300,
+            250000,
+            2147483647,
+            true);
+        generateFluidMultiPipes(
+            MaterialsUEVplus.SpaceTime,
+            MaterialsUEVplus.SpaceTime.mName,
+            5305,
+            250000,
+            2147483647,
+            true);
+        generateFluidPipes(
+            MaterialsUEVplus.TranscendentMetal,
+            MaterialsUEVplus.TranscendentMetal.mName,
             5310,
             220000,
             2147483647,
             true);
         generateFluidMultiPipes(
-            Materials.TranscendentMetal,
-            Materials.TranscendentMetal.mName,
+            MaterialsUEVplus.TranscendentMetal,
+            MaterialsUEVplus.TranscendentMetal.mName,
             5315,
             220000,
             2147483647,

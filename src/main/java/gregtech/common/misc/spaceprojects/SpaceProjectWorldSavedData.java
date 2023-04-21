@@ -100,6 +100,10 @@ public class SpaceProjectWorldSavedData extends WorldSavedData {
             e.printStackTrace();
         }
 
+        if (spaceTeamProjects == null) {
+            spaceTeamProjects = new HashMap<>();
+        }
+
         if (spaceTeams == null) {
             spaceTeams = new HashMap<>();
         }
@@ -107,18 +111,22 @@ public class SpaceProjectWorldSavedData extends WorldSavedData {
 
     @Override
     public void writeToNBT(NBTTagCompound aNBT) {
-        try (JsonWriter writer = new JsonWriter(new FileWriter(teamProjectsFile))) {
-            GSON_SPACE_PROJECT.toJson(spaceTeamProjects, spaceTeamProjects.getClass(), writer);
-        } catch (Exception ex) {
-            System.out.print("FAILED TO SAVE: " + SPACE_TEAM_PROJECTS_JSON);
-            ex.printStackTrace();
+        if (spaceTeamProjects != null) {
+            try (JsonWriter writer = new JsonWriter(new FileWriter(teamProjectsFile))) {
+                GSON_SPACE_PROJECT.toJson(spaceTeamProjects, spaceTeamProjects.getClass(), writer);
+            } catch (Exception ex) {
+                System.out.print("FAILED TO SAVE: " + SPACE_TEAM_PROJECTS_JSON);
+                ex.printStackTrace();
+            }
         }
 
-        try (JsonWriter writer = new JsonWriter(new FileWriter(spaceTeamsFile))) {
-            GSON_TEAMS.toJson(spaceTeams, spaceTeams.getClass(), writer);
-        } catch (Exception ex) {
-            System.out.print("FAILED TO SAVE: " + SPACE_TEAMS_JSON);
-            ex.printStackTrace();
+        if (spaceTeams != null) {
+            try (JsonWriter writer = new JsonWriter(new FileWriter(spaceTeamsFile))) {
+                GSON_TEAMS.toJson(spaceTeams, spaceTeams.getClass(), writer);
+            } catch (Exception ex) {
+                System.out.print("FAILED TO SAVE: " + SPACE_TEAMS_JSON);
+                ex.printStackTrace();
+            }
         }
     }
 

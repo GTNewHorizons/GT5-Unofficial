@@ -9,9 +9,33 @@ test {
 }
 
 minecraft {
-    String version = project.version
-    def (five,major,minor,patch)= version.split("[.-]", 5)
-    injectedTags.put 'VERSION_MAJOR', 500 + major.toInteger()
-    injectedTags.put 'VERSION_MINOR', minor.toInteger()
-    injectedTags.put 'VERSION_PATCH', patch.toInteger()
+    def vMajor, vMinor, vPatch, logLevel = LogLevel.INFO
+    try {
+        String version = project.version
+        def (five,major,minor,patch)= version.split("[.-]", 5)
+
+        vMajor = 500 + major.toInteger()
+        vMinor = minor.toInteger()
+        vPatch = patch.toInteger()
+    } catch (Exception ex) {
+        try {
+            String version = "git describe".execute().text
+            def (five,major,minor,patch)= version.split("[.-]", 5)
+            vMajor = 500 + major.toInteger()
+            vMinor = minor.toInteger()
+            vPatch = patch.toInteger()
+            logLevel = LogLevel.LIFECYCLE
+        } catch (Exception ex2) {
+            def err = "Cannot automatically determine NBT version. Using defaults hardcoded in buildscript. This could break your world!"
+            project.logger.error(err)
+            vMajor = 509
+            vMinor = 42
+            vPatch = 55
+            logLevel = LogLevel.WARN
+        }
+    }
+    injectedTags.put 'VERSION_MAJOR', vMajor
+    injectedTags.put 'VERSION_MINOR', vMinor
+    injectedTags.put 'VERSION_PATCH', vPatch
+    project.logger.log(logLevel, 'Using ({}, {}, {}) as NBT version', vMajor, vMinor, vPatch)
 }

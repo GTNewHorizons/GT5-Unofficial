@@ -11,10 +11,7 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
-import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.*;
 import gregtech.api.util.GT_OreDictUnificator;
 
 public class GT_NaniteChain {
@@ -131,11 +128,11 @@ public class GT_NaniteChain {
 
         // Transcendent Metal Nanites - Used to upgrade the Nano Forge to Tier 3
         GT_Values.RA.addNanoForgeRecipe(
-            new ItemStack[] { aUIVTierLens, Materials.TranscendentMetal.getBlocks(8),
+            new ItemStack[] { aUIVTierLens, MaterialsUEVplus.TranscendentMetal.getBlocks(8),
                 ItemList.Circuit_Chip_SoC2.get(64), ItemList.Circuit_Chip_SoC2.get(64),
                 ItemList.Circuit_Chip_SoC2.get(64) },
             new FluidStack[] { Materials.UUMatter.getFluid(2000000) },
-            new ItemStack[] { Materials.TranscendentMetal.getNanite(1) },
+            new ItemStack[] { MaterialsUEVplus.TranscendentMetal.getNanite(1) },
             null,
             null,
             750 * 20,
@@ -148,12 +145,12 @@ public class GT_NaniteChain {
                 // lens
                 getModItem(GTPlusPlus.ID, "MU-metaitem.01", 0, 32105), // Quantum Anomaly, couldn't find any
                 // better naming
-                Materials.WhiteDwarfMatter.getBlocks(8), getModItem(NewHorizonsCoreMod.ID, "item.PicoWafer", 32),
+                MaterialsUEVplus.WhiteDwarfMatter.getBlocks(8), getModItem(NewHorizonsCoreMod.ID, "item.PicoWafer", 32),
                 getModItem(GoodGenerator.ID, "huiCircuit", 1, 4) // Paradox circuit
             },
-            new FluidStack[] { Materials.UUMatter.getFluid(500_000), Materials.RawStarMatter.getFluid(50_000),
-                Materials.Space.getMolten(720), },
-            new ItemStack[] { Materials.WhiteDwarfMatter.getNanite(4) },
+            new FluidStack[] { Materials.UUMatter.getFluid(500_000), MaterialsUEVplus.RawStarMatter.getFluid(50_000),
+                MaterialsUEVplus.Space.getMolten(720), },
+            new ItemStack[] { MaterialsUEVplus.WhiteDwarfMatter.getNanite(4) },
             null,
             null,
             750 * 20,
@@ -166,12 +163,12 @@ public class GT_NaniteChain {
                 // lens
                 getModItem(GTPlusPlus.ID, "MU-metaitem.01", 0, 32105), // Quantum Anomaly, couldn't find any
                 // better naming
-                Materials.BlackDwarfMatter.getBlocks(8), getModItem(NewHorizonsCoreMod.ID, "item.PicoWafer", 32),
+                MaterialsUEVplus.BlackDwarfMatter.getBlocks(8), getModItem(NewHorizonsCoreMod.ID, "item.PicoWafer", 32),
                 getModItem(GoodGenerator.ID, "huiCircuit", 1, 4) // Paradox circuit
             },
-            new FluidStack[] { Materials.UUMatter.getFluid(500_000), Materials.RawStarMatter.getFluid(50_000),
-                Materials.Time.getMolten(720), },
-            new ItemStack[] { Materials.BlackDwarfMatter.getNanite(4) },
+            new FluidStack[] { Materials.UUMatter.getFluid(500_000), MaterialsUEVplus.RawStarMatter.getFluid(50_000),
+                MaterialsUEVplus.Time.getMolten(720), },
+            new ItemStack[] { MaterialsUEVplus.BlackDwarfMatter.getNanite(4) },
             null,
             null,
             750 * 20,
@@ -182,14 +179,14 @@ public class GT_NaniteChain {
         GT_Values.RA.addNanoForgeRecipe(
             new ItemStack[] { aUMVTierLens,
                 // Quantum Anomaly, couldn't find any better naming.
-                getModItem(GTPlusPlus.ID, "MU-metaitem.01", 0, 32105), Materials.Universium.getBlocks(8),
+                getModItem(GTPlusPlus.ID, "MU-metaitem.01", 0, 32105), MaterialsUEVplus.Universium.getBlocks(8),
 
                 ItemList.Optically_Perfected_CPU.get(16), ItemList.Optically_Compatible_Memory.get(16),
                 getModItem(GoodGenerator.ID, "huiCircuit", 1, 4) // Paradox circuit
             },
-            new FluidStack[] { Materials.SpaceTime.getMolten(144), Materials.Infinity.getMolten(576),
+            new FluidStack[] { MaterialsUEVplus.SpaceTime.getMolten(144), Materials.Infinity.getMolten(576),
                 Materials.UUMatter.getFluid(1_000_000), },
-            new ItemStack[] { Materials.Universium.getNanite(2) },
+            new ItemStack[] { MaterialsUEVplus.Universium.getNanite(2) },
             null,
             null,
             750 * 20,

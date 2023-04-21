@@ -7568,7 +7568,7 @@ public class AssemblerRecipes implements Runnable {
         GT_Values.RA.stdBuilder()
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUMVBase, 33),
-                GT_OreDictUnificator.get(OrePrefixes.pipeTiny, Materials.SpaceTime, 22),
+                GT_OreDictUnificator.get(OrePrefixes.pipeTiny, MaterialsUEVplus.SpaceTime, 22),
                 ItemList.Electric_Pump_UMV.get(1),
                 GT_Utility.getIntegratedCircuit(9))
             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUMV, 33))
