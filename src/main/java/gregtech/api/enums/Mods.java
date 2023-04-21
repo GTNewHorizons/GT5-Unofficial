@@ -14,8 +14,10 @@ public enum Mods {
     AFSU(Names.A_F_S_U),
     AppleCore(Names.APPLE_CORE),
     AppliedEnergistics2(Names.APPLIED_ENERGISTICS2),
+    AE2Stuff(Names.AE2STUFF),
     ArchitectureCraft(Names.ARCHITECTURE_CRAFT),
     Aroma1997Core(Names.AROMA1997_CORE),
+    Automagy(Names.AUTOMAGY),
     Avaritia(Names.AVARITIA),
     AvaritiaAddons(Names.AVARITIA_ADDONS),
     Backpack(Names.BACKPACK),
@@ -38,6 +40,7 @@ public enum Mods {
     BuildCraftTransport(Names.BUILD_CRAFT_TRANSPORT),
     Chisel(Names.CHISEL),
     COFHCore(Names.C_O_F_H_CORE),
+    CarpentersBlocks(Names.CARPENTERS_BLOCKS),
     Computronics(Names.COMPUTRONICS),
     CraftTweaker(Names.CRAFT_TWEAKER),
     CropLoadCore(Names.CROP_LOAD_CORE),
@@ -104,6 +107,7 @@ public enum Mods {
     PlayerAPI(Names.PLAYER_API),
     ProjectRedCore(Names.PROJECT_RED_CORE),
     ProjectRedIllumination(Names.PROJECT_RED_ILLUMINATION),
+    ProjectRedIntegration(Names.PROJECT_RED_INTEGRATION),
     Railcraft(Names.RAILCRAFT),
     RandomThings(Names.RANDOM_THINGS),
     RemoteIO(Names.REMOTE_IO),
@@ -121,6 +125,7 @@ public enum Mods {
     ThaumicHorizons(Names.THAUMIC_HORIZONS),
     ThaumicMachina(Names.THAUMIC_MACHINA),
     ThaumicTinkerer(Names.THAUMIC_TINKERER),
+    ThaumicExploration(Names.THAUMIC_EXPLORATION),
     TinkerConstruct(Names.TINKER_CONSTRUCT),
     TinkersGregworks(Names.TINKERS_GREGWORKS),
     Translocator(Names.TRANSLOCATOR),
@@ -152,8 +157,10 @@ public enum Mods {
         public static final String A_F_S_U = "AFSU";
         public static final String APPLE_CORE = "AppleCore";
         public static final String APPLIED_ENERGISTICS2 = "appliedenergistics2";
+        public static final String AE2STUFF = "ae2stuff";
         public static final String ARCHITECTURE_CRAFT = "ArchitectureCraft";
         public static final String AROMA1997_CORE = "Aroma1997Core";
+        public static final String AUTOMAGY = "Automagy";
         public static final String AVARITIA = "Avaritia";
         public static final String AVARITIA_ADDONS = "avaritiaddons";
         public static final String BACKPACK = "Backpack";
@@ -176,6 +183,7 @@ public enum Mods {
         public static final String BUILD_CRAFT_TRANSPORT = "BuildCraft|Transport";
         public static final String CHISEL = "chisel";
         public static final String C_O_F_H_CORE = "CoFHCore";
+        public static final String CARPENTERS_BLOCKS = "CarpentersBlocks";
         public static final String COMPUTRONICS = "computronics";
         public static final String CRAFT_TWEAKER = "MineTweaker3";
         public static final String CROP_LOAD_CORE = "croploadcore";
@@ -242,6 +250,7 @@ public enum Mods {
         public static final String PLAYER_API = "PlayerAPI";
         public static final String PROJECT_RED_CORE = "ProjRed|Core";
         public static final String PROJECT_RED_ILLUMINATION = "ProjRed|Illumination";
+        public static final String PROJECT_RED_INTEGRATION = "ProjRed|Integration";
         public static final String RAILCRAFT = "Railcraft";
         public static final String RANDOM_THINGS = "RandomThings";
         public static final String REMOTE_IO = "RIO";
@@ -259,6 +268,7 @@ public enum Mods {
         public static final String THAUMIC_HORIZONS = "ThaumicHorizons";
         public static final String THAUMIC_MACHINA = "ThaumicMachina";
         public static final String THAUMIC_TINKERER = "ThaumicTinkerer";
+        public static final String THAUMIC_EXPLORATION = "ThaumicExploration";
         public static final String TINKER_CONSTRUCT = "TConstruct";
         public static final String TINKERS_GREGWORKS = "TGregworks";
         public static final String TRANSLOCATOR = "Translocator";
