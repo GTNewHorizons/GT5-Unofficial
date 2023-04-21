@@ -1,5 +1,7 @@
 package gregtech.loaders.oreprocessing;
 
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sPressRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_Utility.calculateRecipeEU;
 
 import net.minecraft.item.ItemStack;
@@ -1165,12 +1167,17 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                                 'R', OrePrefixes.ring.get(aMaterial), 'S', OrePrefixes.screw.get(aMaterial) });
                     }
 
-                    GT_Values.RA.addFormingPressRecipe(
-                        GT_OreDictUnificator.get(OrePrefixes.plateDouble, aMaterial, 3L),
-                        GT_OreDictUnificator.get(OrePrefixes.screw, aMaterial, 2L),
-                        GT_OreDictUnificator.get(OrePrefixes.turbineBlade, aMaterial, 1L),
-                        200,
-                        calculateRecipeEU(aMaterial, 60));
+                    // Turbine blades
+                    GT_Values.RA.stdBuilder()
+                        .itemInputs(
+                            GT_OreDictUnificator.get(OrePrefixes.plateDouble, aMaterial, 3L),
+                            GT_OreDictUnificator.get(OrePrefixes.screw, aMaterial, 2L))
+                        .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.turbineBlade, aMaterial, 1L))
+                        .noFluidInputs()
+                        .noFluidOutputs()
+                        .duration(10 * SECONDS)
+                        .eut(calculateRecipeEU(aMaterial, 60))
+                        .addTo(sPressRecipes);
                 }
             }
             default -> {}

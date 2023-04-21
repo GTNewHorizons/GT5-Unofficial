@@ -113,6 +113,7 @@ public class Behaviour_Spray_Color extends Behaviour_None {
                 case SOUTH -> aZ += 1;
                 case WEST -> aX -= 1;
                 case EAST -> aX += 1;
+                default -> throw new IllegalArgumentException("Unexpected value: " + lookSide);
             }
         }
         tNBT.removeTag("GT.RemainingPaint");

@@ -122,7 +122,7 @@ public class GT_Tool_Pickaxe extends GT_Tool {
         aPlayer.triggerAchievement(AchievementList.buildPickaxe);
         aPlayer.triggerAchievement(AchievementList.buildBetterPickaxe);
         try {
-            GT_Mod.instance.achievements.issueAchievement(aPlayer, "flintpick");
+            GT_Mod.achievements.issueAchievement(aPlayer, "flintpick");
         } catch (Exception ignored) {}
     }
 

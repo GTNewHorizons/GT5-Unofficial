@@ -1,5 +1,10 @@
 package gregtech.loaders.oreprocessing;
 
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCompressorRecipes;
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sElectrolyzerRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+
 import java.util.ArrayList;
 
 import net.minecraft.item.ItemStack;
@@ -9,7 +14,6 @@ import gregtech.api.enums.*;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_RecipeRegistrator;
 import gregtech.api.util.GT_Utility;
 
@@ -78,9 +82,15 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                 } else if (!aMaterial.contains(SubTag.NO_WORKING)) {
                     if ((!OrePrefixes.block.isIgnored(aMaterial))
                         && (null == GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L))) {
-                        GT_ModHandler.addCompressionRecipe(
-                            GT_Utility.copyAmount(9L, aStack),
-                            GT_OreDictUnificator.get(OrePrefixes.block, aMaterial, 1L));
+
+                        GT_Values.RA.stdBuilder()
+                            .itemInputs(GT_Utility.copyAmount(9L, aStack))
+                            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.block, aMaterial, 1L))
+                            .noFluidInputs()
+                            .noFluidOutputs()
+                            .duration(15 * SECONDS)
+                            .eut(2)
+                            .addTo(sCompressorRecipes);
                     }
                     // This is so disgustingly bad.
                     if (((OrePrefixes.block.isIgnored(aMaterial))
@@ -95,9 +105,17 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                         && (aMaterial != Materials.Paper)
                         && (aMaterial != MaterialsUEVplus.TranscendentMetal)
                         && (aMaterial != Materials.Clay)) {
-                        GT_ModHandler.addCompressionRecipe(
-                            GT_Utility.copyAmount(1L, aStack),
-                            GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L));
+                        // compressor recipe
+                        {
+                            GT_Values.RA.stdBuilder()
+                                .itemInputs(GT_Utility.copyAmount(1L, aStack))
+                                .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L))
+                                .noFluidInputs()
+                                .noFluidOutputs()
+                                .duration(15 * SECONDS)
+                                .eut(2)
+                                .addTo(sCompressorRecipes);
+                        }
                     }
                 }
                 if ((aMaterial.mMaterialList.size() > 0) && ((aMaterial.mExtraData & 0x3) != 0)) {
@@ -152,35 +170,41 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                                 break;
                             }
                         }
-                        if ((aMaterial.mExtraData & 0x1) != 0) GT_Values.RA.addElectrolyzerRecipe(
-                            GT_Utility.copyAmount(tItemAmount, aStack),
-                            tCapsuleCount > 0L ? ItemList.Cell_Empty.get(tCapsuleCount) : null,
-                            null,
-                            tFluid,
-                            tList.size() < 1 ? null : tList.get(0),
-                            tList.size() < 2 ? null : tList.get(1),
-                            tList.size() < 3 ? null : tList.get(2),
-                            tList.size() < 4 ? null : tList.get(3),
-                            tList.size() < 5 ? null : tList.get(4),
-                            tList.size() < 6 ? null : tList.get(5),
-                            null,
-                            (int) Math.max(1L, Math.abs(aMaterial.getProtons() * 2L * tItemAmount)),
-                            Math.min(4, tList.size()) * 30);
+                        if ((aMaterial.mExtraData & 0x1) != 0) {
+                            ItemStack cells = tCapsuleCount > 0L ? ItemList.Cell_Empty.get(tCapsuleCount) : null;
+
+                            GT_Values.RA.stdBuilder()
+                                .itemInputs(GT_Utility.copyAmount(tItemAmount, aStack), cells)
+                                .itemOutputs(
+                                    tList.size() < 1 ? null : tList.get(0),
+                                    tList.size() < 2 ? null : tList.get(1),
+                                    tList.size() < 3 ? null : tList.get(2),
+                                    tList.size() < 4 ? null : tList.get(3),
+                                    tList.size() < 5 ? null : tList.get(4),
+                                    tList.size() < 6 ? null : tList.get(5))
+                                .noFluidInputs()
+                                .fluidOutputs(tFluid)
+                                .duration(Math.max(1L, Math.abs(aMaterial.getProtons() * 2L * tItemAmount)))
+                                .eut(Math.min(4, tList.size()) * 30)
+                                .addTo(sElectrolyzerRecipes);
+                        }
                         if ((aMaterial.mExtraData & 0x2) != 0) {
-                            GT_Values.RA.addCentrifugeRecipe(
-                                GT_Utility.copyAmount(tItemAmount, aStack),
-                                tCapsuleCount > 0L ? ItemList.Cell_Empty.get(tCapsuleCount) : null,
-                                null,
-                                tFluid,
-                                tList.size() < 1 ? null : tList.get(0),
-                                tList.size() < 2 ? null : tList.get(1),
-                                tList.size() < 3 ? null : tList.get(2),
-                                tList.size() < 4 ? null : tList.get(3),
-                                tList.size() < 5 ? null : tList.get(4),
-                                tList.size() < 6 ? null : tList.get(5),
-                                null,
-                                (int) Math.max(1L, Math.abs(aMaterial.getMass() * 4L * tItemAmount)),
-                                Math.min(4, tList.size()) * 5);
+                            GT_Values.RA.stdBuilder()
+                                .itemInputs(
+                                    GT_Utility.copyAmount(tItemAmount, aStack),
+                                    tCapsuleCount > 0L ? ItemList.Cell_Empty.get(tCapsuleCount) : null)
+                                .itemOutputs(
+                                    tList.size() < 1 ? null : tList.get(0),
+                                    tList.size() < 2 ? null : tList.get(1),
+                                    tList.size() < 3 ? null : tList.get(2),
+                                    tList.size() < 4 ? null : tList.get(3),
+                                    tList.size() < 5 ? null : tList.get(4),
+                                    tList.size() < 6 ? null : tList.get(5))
+                                .noFluidInputs()
+                                .fluidOutputs(tFluid)
+                                .duration(Math.max(1L, Math.abs(aMaterial.getMass() * 4L * tItemAmount)))
+                                .eut(Math.min(4, tList.size()) * 5)
+                                .addTo(sCentrifugeRecipes);
                         }
                     }
                 }
@@ -237,7 +261,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                     case "Mercury":
                         break;
                     case "Oilsands":
-                        GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes.addRecipe(
+                        sCentrifugeRecipes.addRecipe(
                             true,
                             new ItemStack[] { GT_Utility.copyAmount(1L, aStack) },
                             null,
@@ -374,90 +398,75 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                         if (tImpureStack == null) {
                             tImpureStack = GT_OreDictUnificator.get(OrePrefixes.cell, tByProduct, 1L);
                             if (tImpureStack == null) {
-                                GT_Values.RA.addCentrifugeRecipe(
-                                    GT_Utility.copyAmount(1L, aStack),
-                                    0,
-                                    GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L),
-                                    null,
-                                    null,
-                                    null,
-                                    null,
-                                    null,
-                                    (int) Math.max(1L, aMaterial.getMass()));
+                                GT_Values.RA.stdBuilder()
+                                    .itemInputs(GT_Utility.copyAmount(1L, aStack))
+                                    .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L))
+                                    .noFluidInputs()
+                                    .noFluidOutputs()
+                                    .duration(Math.max(1L, aMaterial.getMass()))
+                                    .eut(5)
+                                    .addTo(sCentrifugeRecipes);
                             } else {
                                 FluidStack tFluid = GT_Utility.getFluidForFilledItem(tImpureStack, true);
                                 if (tFluid == null) {
-                                    GT_Values.RA.addCentrifugeRecipe(
-                                        GT_Utility.copyAmount(9L, aStack),
-                                        1,
-                                        GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 9L),
-                                        tImpureStack,
-                                        null,
-                                        null,
-                                        null,
-                                        null,
-                                        (int) Math.max(1L, aMaterial.getMass() * 72L));
+                                    GT_Values.RA.stdBuilder()
+                                        .itemInputs(GT_Utility.copyAmount(9L, aStack), ItemList.Cell_Empty.get(1))
+                                        .itemOutputs(
+                                            GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 9L),
+                                            tImpureStack)
+                                        .noFluidInputs()
+                                        .noFluidOutputs()
+                                        .duration(Math.max(1L, aMaterial.getMass() * 72L))
+                                        .eut(5)
+                                        .addTo(sCentrifugeRecipes);
                                 } else {
                                     tFluid.amount /= 10;
-                                    GT_Values.RA.addCentrifugeRecipe(
-                                        GT_Utility.copyAmount(1L, aStack),
-                                        null,
-                                        null,
-                                        tFluid,
-                                        GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L),
-                                        null,
-                                        null,
-                                        null,
-                                        null,
-                                        null,
-                                        null,
-                                        (int) Math.max(1L, aMaterial.getMass() * 8L),
-                                        5);
+                                    GT_Values.RA.stdBuilder()
+                                        .itemInputs(GT_Utility.copyAmount(1L, aStack))
+                                        .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L))
+                                        .noFluidInputs()
+                                        .fluidOutputs(tFluid)
+                                        .duration(Math.max(1L, aMaterial.getMass() * 8L))
+                                        .eut(5)
+                                        .addTo(sCentrifugeRecipes);
                                 }
                             }
                         } else {
-                            GT_Values.RA.addCentrifugeRecipe(
-                                GT_Utility.copyAmount(9L, aStack),
-                                0,
-                                GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 9L),
-                                tImpureStack,
-                                null,
-                                null,
-                                null,
-                                null,
-                                (int) Math.max(1L, aMaterial.getMass() * 72L));
+                            GT_Values.RA.stdBuilder()
+                                .itemInputs(GT_Utility.copyAmount(9L, aStack))
+                                .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 9L), tImpureStack)
+                                .noFluidInputs()
+                                .noFluidOutputs()
+                                .duration(Math.max(1L, aMaterial.getMass() * 72L))
+                                .eut(5)
+                                .addTo(sCentrifugeRecipes);
                         }
                     } else {
-                        GT_Values.RA.addCentrifugeRecipe(
-                            GT_Utility.copyAmount(2L, aStack),
-                            0,
-                            GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 2L),
-                            tImpureStack,
-                            null,
-                            null,
-                            null,
-                            null,
-                            (int) Math.max(1L, aMaterial.getMass() * 16L));
+                        GT_Values.RA.stdBuilder()
+                            .itemInputs(GT_Utility.copyAmount(2L, aStack))
+                            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 2L), tImpureStack)
+                            .noFluidInputs()
+                            .noFluidOutputs()
+                            .duration(Math.max(1L, aMaterial.getMass() * 16L))
+                            .eut(5)
+                            .addTo(sCentrifugeRecipes);
                     }
                 } else {
-                    GT_Values.RA.addCentrifugeRecipe(
-                        GT_Utility.copyAmount(1L, aStack),
-                        null,
-                        null,
-                        null,
-                        GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L),
-                        GT_OreDictUnificator.get(
-                            OrePrefixes.dust,
-                            tByProduct,
-                            GT_OreDictUnificator.get(OrePrefixes.nugget, tByProduct, 1L),
-                            1L),
-                        null,
-                        null,
-                        null,
-                        null,
-                        new int[] { 10000, 1111 },
-                        (int) Math.max(1L, aMaterial.getMass() * 8L),
-                        5);
+                    GT_Values.RA.stdBuilder()
+                        .itemInputs(GT_Utility.copyAmount(1L, aStack))
+                        .itemOutputs(
+                            GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L),
+                            GT_OreDictUnificator.get(
+                                OrePrefixes.dust,
+                                tByProduct,
+                                GT_OreDictUnificator.get(OrePrefixes.nugget, tByProduct, 1L),
+                                1L))
+                        .outputChances(10000, 1111)
+                        .noFluidInputs()
+                        .fluidOutputs()
+                        .duration(Math.max(1L, aMaterial.getMass() * 8L))
+                        .eut(5)
+                        .addTo(sCentrifugeRecipes);
                 }
             }
             case dustSmall -> {

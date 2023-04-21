@@ -308,7 +308,6 @@ public abstract class GT_Block_Ores_Abstract extends GT_Generic_Block implements
 
     public abstract ITexture[] getTextureSet(); // Must have 16 entries.
 
-    @SuppressWarnings({ "unchecked" })
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubBlocks(Item aItem, CreativeTabs aTab, List<ItemStack> aList) {

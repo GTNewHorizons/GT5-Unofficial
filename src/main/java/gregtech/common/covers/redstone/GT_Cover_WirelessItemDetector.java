@@ -11,12 +11,10 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 
 import com.google.common.io.ByteArrayDataInput;
-import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 import com.gtnewhorizons.modularui.api.math.MathExpression;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.BaseTextFieldWidget;
-import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
 
 import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
@@ -153,7 +151,6 @@ public class GT_Cover_WirelessItemDetector
         private static final String ALL_TEXT = "All";
 
         private int maxSlot;
-        private final ItemStackHandler targetSlotHandler = new ItemStackHandler(1);
 
         public WirelessItemDetectorUIFactory(GT_CoverUIBuildContext buildContext) {
             super(buildContext);
@@ -209,7 +206,8 @@ public class GT_Cover_WirelessItemDetector
                         .setValidator(val -> {
                             final int valSlot = getIntFromText(val);
                             if (valSlot > -1) {
-                                return TextFieldWidget.format.format(Math.min(valSlot, maxSlot));
+                                return widget.getDecimalFormatter()
+                                    .format(Math.min(valSlot, maxSlot));
                             } else {
                                 return ALL_TEXT;
                             }

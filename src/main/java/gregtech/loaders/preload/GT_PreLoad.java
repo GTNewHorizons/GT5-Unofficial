@@ -136,7 +136,7 @@ public class GT_PreLoad {
         GT_Log.mLogFile = new File(parentFile, "logs/GregTech.log");
         if (!GT_Log.mLogFile.exists()) {
             try {
-                final boolean ignored = GT_Log.mLogFile.createNewFile();
+                GT_Log.mLogFile.createNewFile();
             } catch (Throwable ignored) {}
         }
         try {
@@ -148,7 +148,7 @@ public class GT_PreLoad {
             GT_Log.mOreDictLogFile = new File(parentFile, "logs/OreDict.log");
             if (!GT_Log.mOreDictLogFile.exists()) {
                 try {
-                    final boolean ignored = GT_Log.mOreDictLogFile.createNewFile();
+                    GT_Log.mOreDictLogFile.createNewFile();
                 } catch (Throwable ignored) {}
             }
             try {
@@ -170,7 +170,7 @@ public class GT_PreLoad {
             GT_Log.mExplosionLog = new File(parentFile, "logs/Explosion.log");
             if (!GT_Log.mExplosionLog.exists()) {
                 try {
-                    final boolean ignored = GT_Log.mExplosionLog.createNewFile();
+                    GT_Log.mExplosionLog.createNewFile();
                 } catch (Throwable ignored) {}
             }
             try {
@@ -183,7 +183,7 @@ public class GT_PreLoad {
             GT_Log.mPlayerActivityLogFile = new File(parentFile, "logs/PlayerActivity.log");
             if (!GT_Log.mPlayerActivityLogFile.exists()) {
                 try {
-                    final boolean ignored = GT_Log.mPlayerActivityLogFile.createNewFile();
+                    GT_Log.mPlayerActivityLogFile.createNewFile();
                 } catch (Throwable ignored) {}
             }
             try {
@@ -675,8 +675,6 @@ public class GT_PreLoad {
             now.get(Calendar.MONTH) == Calendar.APRIL && now.get(Calendar.DAY_OF_MONTH) == 1);
         GT_Mod.gregtechproxy.mCropNeedBlock = tMainConfig.get("general", "CropNeedBlockBelow", true)
             .getBoolean(true);
-        GT_Mod.gregtechproxy.mDisableOldChemicalRecipes = tMainConfig.get("general", "DisableOldChemicalRecipes", false)
-            .getBoolean(false);
         GT_Mod.gregtechproxy.mAMHInteraction = tMainConfig.get("general", "AllowAutoMaintenanceHatchInteraction", false)
             .getBoolean(false);
         GregTech_API.mOutputRF = GregTech_API.sOPStuff.get(ConfigCategories.general, "OutputRF", true);
@@ -689,8 +687,7 @@ public class GT_PreLoad {
             .get(ConfigCategories.machineconfig, "forceFreeFace", true);
         GT_Mod.gregtechproxy.mBrickedBlastFurnace = tMainConfig.get("general", "BrickedBlastFurnace", true)
             .getBoolean(true);
-        GT_Mod.gregtechproxy.mEasierIVPlusCables = tMainConfig.get("general", "EasierEVPlusCables", false)
-            .getBoolean(false);
+
         GT_Mod.gregtechproxy.mMixedOreOnlyYieldsTwoThirdsOfPureOre = tMainConfig
             .get("general", "MixedOreOnlyYieldsTwoThirdsOfPureOre", false)
             .getBoolean(false);

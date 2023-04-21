@@ -1,5 +1,8 @@
 package gregtech.loaders.oreprocessing;
 
+import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCompressorRecipes;
+import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
+
 import net.minecraftforge.fluids.FluidRegistry;
 
 import gregtech.api.enums.GT_Values;
@@ -18,9 +21,18 @@ public class ProcessingCrop implements gregtech.api.interfaces.IOreRecipeRegistr
     @Override
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
         net.minecraft.item.ItemStack aStack) {
-        GT_ModHandler.addCompressionRecipe(
-            gregtech.api.util.GT_Utility.copyAmount(8L, aStack),
-            ItemList.IC2_PlantballCompressed.get(1L));
+        // Compressor recipes
+        {
+            GT_Values.RA.stdBuilder()
+                .itemInputs(gregtech.api.util.GT_Utility.copyAmount(8L, aStack))
+                .itemOutputs(ItemList.IC2_PlantballCompressed.get(1L))
+                .noFluidInputs()
+                .noFluidOutputs()
+                .duration(15 * SECONDS)
+                .eut(2)
+                .addTo(sCompressorRecipes);
+        }
+
         switch (aOreDictName) {
             case "cropTea" -> {
                 GT_Values.RA.addBrewingRecipe(aStack, FluidRegistry.WATER, FluidRegistry.getFluid("potion.tea"), false);

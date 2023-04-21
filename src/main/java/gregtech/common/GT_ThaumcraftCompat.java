@@ -84,31 +84,31 @@ public class GT_ThaumcraftCompat implements IThaumcraftCompat {
 
         TC_Aspects.STRONTIO.mAspect = new Aspect(
             "strontio",
-            15647411,
+            0xEEC2B3,
             new Aspect[] { Aspect.MIND, Aspect.ENTROPY },
             new ResourceLocation("gregtech:textures/aspects/" + TC_Aspects.STRONTIO.name() + ".png"),
             1);
         TC_Aspects.NEBRISUM.mAspect = new Aspect(
             "nebrisum",
-            15658622,
+            0xEEEE7E,
             new Aspect[] { Aspect.MINE, Aspect.GREED },
             new ResourceLocation("gregtech:textures/aspects/" + TC_Aspects.NEBRISUM.name() + ".png"),
             1);
         TC_Aspects.ELECTRUM.mAspect = new Aspect(
             "electrum",
-            12644078,
+            0xC0EEEE,
             new Aspect[] { Aspect.ENERGY, Aspect.MECHANISM },
             new ResourceLocation("gregtech:textures/aspects/" + TC_Aspects.ELECTRUM.name() + ".png"),
             1);
         TC_Aspects.MAGNETO.mAspect = new Aspect(
             "magneto",
-            12632256,
+            0xC0C0C0,
             new Aspect[] { Aspect.METAL, Aspect.TRAVEL },
             new ResourceLocation("gregtech:textures/aspects/" + TC_Aspects.MAGNETO.name() + ".png"),
             1);
         TC_Aspects.RADIO.mAspect = new Aspect(
             "radio",
-            12648384,
+            0xC0FFC0,
             new Aspect[] { Aspect.LIGHT, Aspect.ENERGY },
             new ResourceLocation("gregtech:textures/aspects/" + TC_Aspects.RADIO.name() + ".png"),
             1);
