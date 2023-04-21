@@ -29,7 +29,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.HeatingCoilLevel;
-import gregtech.api.enums.Materials;
+import gregtech.api.enums.MaterialsUEVplus;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -51,8 +51,9 @@ public class GT_MetaTileEntity_PlasmaForge extends GT_MetaTileEntity_AbstractMul
     private static final double maximum_discount = 0.5d;
 
     // Valid fuels which the discount will get applied to.
-    private static final FluidStack[] valid_fuels = { Materials.ExcitedDTEC.getFluid(1L),
-        Materials.ExcitedDTRC.getFluid(1L), Materials.ExcitedDTPC.getFluid(1L), Materials.ExcitedDTCC.getFluid(1L), };
+    private static final FluidStack[] valid_fuels = { MaterialsUEVplus.ExcitedDTEC.getFluid(1L),
+        MaterialsUEVplus.ExcitedDTRC.getFluid(1L), MaterialsUEVplus.ExcitedDTPC.getFluid(1L),
+        MaterialsUEVplus.ExcitedDTCC.getFluid(1L), MaterialsUEVplus.ExcitedDTSC.getFluid(1L) };
 
     // Saves recomputing this every recipe check for overclocking.
     private static final double log4 = log(4);

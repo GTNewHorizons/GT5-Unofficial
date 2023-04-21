@@ -744,22 +744,22 @@ public enum OrePrefixes {
         ingot.mNotGeneratedItems.add(Materials.WoodSealed);
         ingot.mNotGeneratedItems.add(Materials.Wood);
 
-        frame.mNotGeneratedItems.add(Materials.Universium);
-        frameGt.mNotGeneratedItems.add(Materials.Universium);
+        frame.mNotGeneratedItems.add(MaterialsUEVplus.Universium);
+        frameGt.mNotGeneratedItems.add(MaterialsUEVplus.Universium);
 
-        plateDouble.mNotGeneratedItems.add(Materials.MagnetohydrodynamicallyConstrainedStarMatter);
-        plateTriple.mNotGeneratedItems.add(Materials.MagnetohydrodynamicallyConstrainedStarMatter);
-        plateQuadruple.mNotGeneratedItems.add(Materials.MagnetohydrodynamicallyConstrainedStarMatter);
-        plateQuintuple.mNotGeneratedItems.add(Materials.MagnetohydrodynamicallyConstrainedStarMatter);
-        cell.mNotGeneratedItems.add(Materials.MagnetohydrodynamicallyConstrainedStarMatter);
-        ingotDouble.mNotGeneratedItems.add(Materials.MagnetohydrodynamicallyConstrainedStarMatter);
-        ingotTriple.mNotGeneratedItems.add(Materials.MagnetohydrodynamicallyConstrainedStarMatter);
-        ingotQuadruple.mNotGeneratedItems.add(Materials.MagnetohydrodynamicallyConstrainedStarMatter);
-        ingotQuintuple.mNotGeneratedItems.add(Materials.MagnetohydrodynamicallyConstrainedStarMatter);
-        turbineBlade.mNotGeneratedItems.add(Materials.MagnetohydrodynamicallyConstrainedStarMatter);
-        dust.mNotGeneratedItems.add(Materials.MagnetohydrodynamicallyConstrainedStarMatter);
-        dustSmall.mNotGeneratedItems.add(Materials.MagnetohydrodynamicallyConstrainedStarMatter);
-        dustTiny.mNotGeneratedItems.add(Materials.MagnetohydrodynamicallyConstrainedStarMatter);
+        plateDouble.mNotGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
+        plateTriple.mNotGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
+        plateQuadruple.mNotGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
+        plateQuintuple.mNotGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
+        cell.mNotGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
+        ingotDouble.mNotGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
+        ingotTriple.mNotGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
+        ingotQuadruple.mNotGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
+        ingotQuintuple.mNotGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
+        turbineBlade.mNotGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
+        dust.mNotGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
+        dustSmall.mNotGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
+        dustTiny.mNotGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
 
         // ingot.mNotGeneratedItems.add(Materials.Ichorium);
         nugget.mNotGeneratedItems.add(Materials.Gold);
@@ -789,10 +789,10 @@ public enum OrePrefixes {
         block.mNotGeneratedItems.add(Materials.Diamond);
         block.mNotGeneratedItems.add(Materials.Coal);
         toolHeadArrow.mNotGeneratedItems.add(Materials.Glass);
-        toolHeadArrow.mNotGeneratedItems.add(Materials.TranscendentMetal);
-        arrowGtPlastic.mNotGeneratedItems.add(Materials.TranscendentMetal);
-        arrow.mNotGeneratedItems.add(Materials.TranscendentMetal);
-        arrowGtWood.mNotGeneratedItems.add(Materials.TranscendentMetal);
+        toolHeadArrow.mNotGeneratedItems.add(MaterialsUEVplus.TranscendentMetal);
+        arrowGtPlastic.mNotGeneratedItems.add(MaterialsUEVplus.TranscendentMetal);
+        arrow.mNotGeneratedItems.add(MaterialsUEVplus.TranscendentMetal);
+        arrowGtWood.mNotGeneratedItems.add(MaterialsUEVplus.TranscendentMetal);
 
         // -----
 
@@ -817,7 +817,7 @@ public enum OrePrefixes {
         plate.mGeneratedItems.add(Materials.Electrotine);
         plate.mGeneratedItems.add(Materials.Obsidian);
 
-        ingotHot.mGeneratedItems.add(Materials.TranscendentMetal);
+        ingotHot.mGeneratedItems.add(MaterialsUEVplus.TranscendentMetal);
 
         plate.mGeneratedItems.add(Materials.Paper);
         plateDouble.mGeneratedItems.add(Materials.Paper);
@@ -836,19 +836,19 @@ public enum OrePrefixes {
         nanite.mGeneratedItems.add(Materials.Iron);
         nanite.mGeneratedItems.add(Materials.Copper);
         nanite.mGeneratedItems.add(Materials.Silver);
-        nanite.mGeneratedItems.add(Materials.TranscendentMetal);
+        nanite.mGeneratedItems.add(MaterialsUEVplus.TranscendentMetal);
         nanite.mGeneratedItems.add(Materials.Neutronium);
-        nanite.mGeneratedItems.add(Materials.Universium);
-        nanite.mGeneratedItems.add(Materials.WhiteDwarfMatter);
-        nanite.mGeneratedItems.add(Materials.BlackDwarfMatter);
+        nanite.mGeneratedItems.add(MaterialsUEVplus.Universium);
+        nanite.mGeneratedItems.add(MaterialsUEVplus.WhiteDwarfMatter);
+        nanite.mGeneratedItems.add(MaterialsUEVplus.BlackDwarfMatter);
         nanite.mGeneratedItems.add(Materials.Glowstone);
         // -----
 
-        gear.mGeneratedItems.add(Materials.MagnetohydrodynamicallyConstrainedStarMatter);
-        ingot.mGeneratedItems.add(Materials.MagnetohydrodynamicallyConstrainedStarMatter);
-        toolHeadHammer.mGeneratedItems.add(Materials.MagnetohydrodynamicallyConstrainedStarMatter);
-        frame.mGeneratedItems.add(Materials.MagnetohydrodynamicallyConstrainedStarMatter);
-        frameGt.mGeneratedItems.add(Materials.MagnetohydrodynamicallyConstrainedStarMatter);
+        gear.mGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
+        ingot.mGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
+        toolHeadHammer.mGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
+        frame.mGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
+        frameGt.mGeneratedItems.add(MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter);
 
         dust.mGeneratedItems.addAll(dustPure.mGeneratedItems);
         dust.mGeneratedItems.addAll(dustImpure.mGeneratedItems);
@@ -1351,8 +1351,8 @@ public enum OrePrefixes {
                     || aMaterial == Materials.NiobiumTitanium
                     || aMaterial == Materials.YttriumBariumCuprate
                     || aMaterial == Materials.BloodInfusedIron
-                    || aMaterial == Materials.Universium
-                    || aMaterial == Materials.MagnetohydrodynamicallyConstrainedStarMatter))
+                    || aMaterial == MaterialsUEVplus.Universium
+                    || aMaterial == MaterialsUEVplus.MagnetohydrodynamicallyConstrainedStarMatter))
                     wireFine.mDisabledItems.add(aMaterial);
                 // Gears
                 if (!enableUnusedGears && !(aMaterial == Materials.Aluminium || aMaterial == Materials.Titanium
