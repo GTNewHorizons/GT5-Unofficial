@@ -80,7 +80,7 @@ import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_Output_ME;
 public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_MultiblockBase_EM
         implements IConstructable, IGlobalWirelessEnergy, ISurvivalConstructable {
 
-    public static final boolean EOH_DEBUG_MODE = false;
+    public static final boolean EOH_DEBUG_MODE = true;
     private static final long MOLTEN_SPACETIME_PER_FAILURE_TIER = 14_400L;
     private static final double SPACETIME_FAILURE_BASE = 2;
     private static final String TOOLTIP_BAR = GOLD
@@ -103,6 +103,8 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
 
     private String userUUID = "";
     private long euOutput = 0;
+
+    private long startEU = 0;
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
@@ -1126,10 +1128,10 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
             return false;
         }
 
+        startEU = recipeObject.getEUStartCost();
+
         // Remove EU from the users network.
-        if (!addEUToGlobalEnergyMap(
-                userUUID,
-                (long) (-recipeObject.getEUStartCost() * pow(4, currentCircuitMultiplier)))) {
+        if (!addEUToGlobalEnergyMap(userUUID, (long) (-startEU * pow(4, currentCircuitMultiplier)))) {
             return false;
         }
 
@@ -1259,6 +1261,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
                 userUUID,
                 (long) (euOutput * (1 - ((TOTAL_CASING_TIERS_WITH_POWER_PENALTY - stabilisationFieldMetadata)
                         * STABILITY_INCREASE_PROBABILITY_DECREASE_YIELD_PER_TIER))));
+        startEU = 0;
         euOutput = 0;
 
         if (successChance < random()) {
@@ -1336,7 +1339,14 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
             str.add(GOLD + "---------------------- Other Stats ---------------");
             str.add("Recipe Success Chance: " + RED + formatNumbers(100 * successChance) + RESET + "%");
             str.add("Recipe Yield: " + RED + formatNumbers(100 * recipeYieldCalculator()) + RESET + "%");
-            str.add("EU Output: " + RED + formatNumbers(euOutput) + RESET + " EU");
+            str.add(
+                    "EU Output: " + RED
+                            + formatNumbers(
+                                    euOutput * (1
+                                            - ((TOTAL_CASING_TIERS_WITH_POWER_PENALTY - stabilisationFieldMetadata)
+                                                    * STABILITY_INCREASE_PROBABILITY_DECREASE_YIELD_PER_TIER)))
+                            + RESET
+                            + " EU");
             if (mOutputFluids.length > 0) {
                 // Star matter is always the last element in the array.
                 str.add(
@@ -1345,13 +1355,16 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
                                 + RESET
                                 + " L");
             }
-            long euPerTick = euOutput / maxProgresstime();
-            if (euPerTick < LongMath.pow(10, 12)) {
-                str.add("Estimated EU/t: " + RED + formatNumbers(euOutput / maxProgresstime()) + RESET + " EU/t");
+            long euPerTick = (long) -(startEU * pow(4, currentCircuitMultiplier)
+                    - euOutput * (1 - ((TOTAL_CASING_TIERS_WITH_POWER_PENALTY - stabilisationFieldMetadata)
+                            * STABILITY_INCREASE_PROBABILITY_DECREASE_YIELD_PER_TIER)))
+                    / maxProgresstime();
+            if (abs(euPerTick) < LongMath.pow(10, 12)) {
+                str.add("Estimated EU/t: " + RED + formatNumbers(euPerTick) + RESET + " EU/t");
             } else {
                 str.add(
                         "Estimated EU/t: " + RED
-                                + ReadableNumberConverter.INSTANCE.toWideReadableForm(euOutput / maxProgresstime())
+                                + ReadableNumberConverter.INSTANCE.toWideReadableForm(euPerTick)
                                 + RESET
                                 + " EU/t");
             }
