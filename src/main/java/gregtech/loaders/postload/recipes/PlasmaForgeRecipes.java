@@ -18,7 +18,9 @@ public class PlasmaForgeRecipes implements Runnable {
                 ItemList.Field_Generator_UEV.get(64),
                 ItemList.Field_Generator_UIV.get(64),
                 ItemList.Field_Generator_UMV.get(64))
-            .fluidInputs(Materials.ExcitedDTEC.getFluid(100_000_000), Materials.SpaceTime.getMolten(64 * 2 * 9 * 144))
+            .fluidInputs(
+                MaterialsUEVplus.ExcitedDTEC.getFluid(100_000_000),
+                MaterialsUEVplus.SpaceTime.getMolten(64 * 2 * 9 * 144))
             .itemOutputs(ItemList.GigaChad.get(1))
             .noFluidOutputs()
             .duration(86400 * 20 * 2)
@@ -32,7 +34,7 @@ public class PlasmaForgeRecipes implements Runnable {
                 getModItem(GTPlusPlus.ID, "particleBase", 1, 24),
                 getModItem(NewHorizonsCoreMod.ID, "item.ChromaticLens", 0),
                 getModItem(GoodGenerator.ID, "huiCircuit", 0, 4))
-            .fluidInputs(Materials.ExcitedDTRC.getFluid(92), Materials.Duranium.getMolten(144))
+            .fluidInputs(MaterialsUEVplus.ExcitedDTRC.getFluid(92), Materials.Duranium.getMolten(144))
             .itemOutputs(getModItem(GTPlusPlus.ID, "MU-metaitem.01", 1, 32105))
             .noFluidOutputs()
             .duration(60 * SECONDS)

@@ -375,7 +375,9 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity
             boolean active = aBaseMetaTileEntity.isActive() && mPollution > 0;
             setMufflers(active);
         } else {
-            doActivitySound(getActivitySoundLoop());
+            if (!aBaseMetaTileEntity.hasMufflerUpgrade()) {
+                doActivitySound(getActivitySoundLoop());
+            }
         }
     }
 

@@ -539,7 +539,8 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity implements IGregTec
                         byte tData = (byte) ((mFacing & 7) | (mActive ? 8 : 0)
                             | (mRedstone ? 16 : 0)
                             | (mLockUpgrade ? 32 : 0)
-                            | (mWorks ? 64 : 0));
+                            | (mWorks ? 64 : 0)
+                            | (mMuffler ? 128 : 0));
                         if (tData != oTextureData)
                             sendBlockEvent(GregTechTileClientEvents.CHANGE_COMMON_DATA, oTextureData = tData);
 
@@ -729,6 +730,7 @@ public class BaseMetaTileEntity extends CommonMetaTileEntity implements IGregTec
                     mRedstone = ((aValue & 16) != 0);
                     // mLockUpgrade = ((aValue&32) != 0);
                     mWorks = ((aValue & 64) != 0);
+                    mMuffler = ((aValue & 128) != 0);
                 }
                 case GregTechTileClientEvents.CHANGE_CUSTOM_DATA -> {
                     if (hasValidMetaTileEntity()) {
