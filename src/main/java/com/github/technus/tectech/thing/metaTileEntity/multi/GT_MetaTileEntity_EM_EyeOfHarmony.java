@@ -80,7 +80,7 @@ import gregtech.common.tileentities.machines.GT_MetaTileEntity_Hatch_Output_ME;
 public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_MultiblockBase_EM
         implements IConstructable, IGlobalWirelessEnergy, ISurvivalConstructable {
 
-    public static final boolean EOH_DEBUG_MODE = true;
+    public static final boolean EOH_DEBUG_MODE = false;
     private static final long MOLTEN_SPACETIME_PER_FAILURE_TIER = 14_400L;
     private static final double SPACETIME_FAILURE_BASE = 2;
     private static final String TOOLTIP_BAR = GOLD
