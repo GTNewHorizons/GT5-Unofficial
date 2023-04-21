@@ -56,6 +56,7 @@ import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_Rend
 import com.github.technus.tectech.util.CommonValues;
 import com.github.technus.tectech.util.ItemStackLong;
 import com.google.common.collect.ImmutableList;
+import com.google.common.math.LongMath;
 import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IItemSource;
@@ -1345,7 +1346,7 @@ public class GT_MetaTileEntity_EM_EyeOfHarmony extends GT_MetaTileEntity_Multibl
                                 + " L");
             }
             long euPerTick = euOutput / maxProgresstime();
-            if (euPerTick < Math.pow(10, 12)) {
+            if (euPerTick < LongMath.pow(10, 12)) {
                 str.add("Estimated EU/t: " + RED + formatNumbers(euOutput / maxProgresstime()) + RESET + " EU/t");
             } else {
                 str.add(
