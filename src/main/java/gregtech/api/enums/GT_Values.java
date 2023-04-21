@@ -327,15 +327,15 @@ public class GT_Values {
             TARGET_Y = "gt.target.y", // Number
             TARGET_Z = "gt.target.z", // Number
             LOCKED_FLUID = "gt.locked.fluid", // String
-            LOCKED_INVENTORY = "gt.locked.inventory", // String
-            LOCKED_INVENTORY_INDEX = "gt.locked.inventory.index", // Number
+            LOCKED_INVENTORY = "gt.locked.inv", // String
+            LOCKED_INVENTORY_INDEX = "gt.locked.inv.index", // Number
             UPGRADE_INVENTORY_SIZE = "gt.invsize.upg", // String
             UPGRADE_INVENTORY_UUID = "gt.invuuid.upg", // String
             UPGRADE_INVENTORY_NAME = "gt.invname.upg", // String
             UPGRADE_INVENTORIES_INPUT = "gt.invlist.upg.in", // NBT List
             UPGRADE_INVENTORIES_OUTPUT = "gt.invlist.upg.out", // NBT List
-            UPGRADE_TANK_CAPACITY = "gt.tankcapacity.upg", // Long
-            UPGRADE_TANK_CAPACITY_MULTIPLIER = "gt.tankcapacitymultiplier.upg", // Long
+            UPGRADE_TANK_CAPACITY = "gt.tank.cap.upg", // Long
+            UPGRADE_TANK_CAPACITY_MULTIPLIER = "gt.tank.cap.mult.upg", // Long
             UPGRADE_TANK_UUID = "gt.tankuuid.upg", // String
             UPGRADE_TANK_NAME = "gt.tankname.upg", // String
             UPGRADE_TANKS_INPUT = "gt.tanklist.upg.in", // NBT List
@@ -348,12 +348,12 @@ public class GT_Values {
             RECIPE_LOCK = "gt.recipe.lock", // Boolean
 
             // Logic
-            POWER_LOGIC = "gt.power.logic", // NBT Tag
-            POWER_LOGIC_STORED_ENERGY = "gt.power.logic.stored.energy", // Number
-            POWER_LOGIC_ENERGY_CAPACITY = "gt.power.logic.energy.capacity", // Number
-            POWER_LOGIC_VOLTAGE = "gt.power.logic.voltage", // Number
-            POWER_LOGIC_AMPERAGE = "gt.power.logic.voltage", // Number
-            POWER_LOGIC_TYPE = "gt.power.logic.type", // Number
+            POWER_LOGIC = "gt.pow.logic", // NBT Tag
+            POWER_LOGIC_STORED_ENERGY = "gt.pow.energy", // Number
+            POWER_LOGIC_ENERGY_CAPACITY = "gt.pow.energy.cap", // Number
+            POWER_LOGIC_VOLTAGE = "gt.pow.volt", // Number
+            POWER_LOGIC_AMPERAGE = "gt.pow.amp", // Number
+            POWER_LOGIC_TYPE = "gt.pow.type", // Number
             empty_ = "";
     }
 
