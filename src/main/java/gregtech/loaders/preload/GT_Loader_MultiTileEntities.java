@@ -8,8 +8,8 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.Mods;
 import gregtech.api.enums.MaterialsUEVplus;
+import gregtech.api.enums.Mods;
 import gregtech.api.multitileentity.MultiTileEntityBlock;
 import gregtech.api.multitileentity.MultiTileEntityRegistry;
 import gregtech.api.multitileentity.multiblock.base.WallShareablePart;
