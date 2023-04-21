@@ -34,18 +34,14 @@ import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
-import gtPlusPlus.xmod.gregtech.common.helpers.CraftingHelper;
 import gtPlusPlus.xmod.gregtech.common.helpers.autocrafter.AC_Helper_Utils;
 
 public class GT4Entity_AutoCrafter extends GregtechMeta_MultiBlockBase<GT4Entity_AutoCrafter>
         implements ISurvivalConstructable {
 
-    private byte mTier = 1;
     protected GT_Recipe lastRecipeToBuffer;
     private int casing;
     private static IStructureDefinition<GT4Entity_AutoCrafter> STRUCTURE_DEFINITION = null;
-
-    public CraftingHelper inventoryCrafter;
 
     public void onRightclick(EntityPlayer player) {}
 
@@ -78,11 +74,6 @@ public class GT4Entity_AutoCrafter extends GregtechMeta_MultiBlockBase<GT4Entity
     }
 
     @Override
-    public boolean onRunningTick(ItemStack aStack) {
-        return super.onRunningTick(aStack);
-    }
-
-    @Override
     public boolean explodesOnComponentBreak(ItemStack aStack) {
         return false;
     }
@@ -108,9 +99,10 @@ public class GT4Entity_AutoCrafter extends GregtechMeta_MultiBlockBase<GT4Entity
                 .addInfo("200% faster than using single block machines of the same voltage")
                 .addInfo("Processes two items per voltage tier").addPollutionAmount(getPollutionPerSecond(null))
                 .addSeparator().beginStructureBlock(3, 3, 3, true).addController("Front Center")
-                .addCasingInfo("Bulk Production Frame", 10).addInputBus("Any Casing", 1).addOutputBus("Any Casing", 1)
-                .addInputHatch("Any Casing", 1).addEnergyHatch("Any Casing", 1).addMaintenanceHatch("Any Casing", 1)
-                .addMufflerHatch("Any Casing", 1).toolTipFinisher(CORE.GT_Tooltip_Builder.get());
+                .addCasingInfoRange("Bulk Production Frame", 10, 25, false).addInputBus("Any Casing", 1)
+                .addOutputBus("Any Casing", 1).addInputHatch("Any Casing", 1).addEnergyHatch("Any Casing", 1)
+                .addMaintenanceHatch("Any Casing", 1).addMufflerHatch("Any Casing", 1)
+                .toolTipFinisher(CORE.GT_Tooltip_Builder.get());
         return tt;
     }
 
@@ -163,20 +155,12 @@ public class GT4Entity_AutoCrafter extends GregtechMeta_MultiBlockBase<GT4Entity
     @Override
     public boolean checkMachine(IGregTechTileEntity baseMetaTileEntity, ItemStack itemStack) {
         casing = 0;
-        if (checkPiece(mName, 1, 1, 0) && casing >= 10 && checkHatch()) {
-            setTier();
-            return true;
-        } else return false;
+        return checkPiece(mName, 1, 1, 0) && casing >= 10 && checkHatch();
     }
 
     @Override
     public GT_Recipe.GT_Recipe_Map getRecipeMap() {
         return GT_Recipe.GT_Recipe_Map.sAssemblerRecipes;
-    }
-
-    private void setTier() {
-        long tVoltage = getMaxInputVoltage();
-        this.mTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
     }
 
     @Override
@@ -193,13 +177,15 @@ public class GT4Entity_AutoCrafter extends GregtechMeta_MultiBlockBase<GT4Entity
                 }
             }
 
-            return checkRecipeGeneric(
+            if (checkRecipeGeneric(
                     tBusItems.toArray(new ItemStack[] {}),
                     properArray,
                     getMaxParallelRecipes(),
                     100,
                     200,
-                    10_000);
+                    10_000)) {
+                return true;
+            }
 
         }
         return false;
