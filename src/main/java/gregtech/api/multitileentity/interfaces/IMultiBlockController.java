@@ -1,8 +1,12 @@
 package gregtech.api.multitileentity.interfaces;
 
 import net.minecraft.util.ChunkCoordinates;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 import gregtech.api.logic.PowerLogic;
 
 public interface IMultiBlockController extends IMultiTileEntity, IMultiBlockFluidHandler, IMultiBlockInventory {
@@ -16,6 +20,8 @@ public interface IMultiBlockController extends IMultiTileEntity, IMultiBlockFlui
     ChunkCoordinates getCoords();
 
     FluidStack getDrainableFluid(byte aSide);
+
+    FluidStack getDrainableFluid(byte aSide, Fluid fluid);
 
     boolean isLiquidInput(byte aSide);
 
@@ -31,5 +37,7 @@ public interface IMultiBlockController extends IMultiTileEntity, IMultiBlockFlui
 
     void changeInventoryName(String aName, String aID, int aType);
 
-    PowerLogic getPowerLogic(IMultiBlockPart part, byte side);
+    PowerLogic getPowerLogic(IMultiBlockPart part, ForgeDirection side);
+
+    ModularWindow createWindowGUI(UIBuildContext buildContext);
 }

@@ -1,5 +1,7 @@
 package gregtech.api.multitileentity.interfaces;
 
+import java.util.List;
+
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -23,4 +25,8 @@ public interface IMultiBlockFluidHandler {
     FluidTankInfo[] getTankInfo(MultiBlockPart aPart, ForgeDirection aDirection);
 
     IFluidTank[] getFluidTanksForGUI(MultiBlockPart aPart);
+
+    List<String> getTankArrayNames(MultiBlockPart aPart);
+
+    List<String> getTankArrayIDs(MultiBlockPart aPart);
 }
