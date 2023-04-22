@@ -94,14 +94,14 @@ public class CosmicNeutroniumRenderer extends GT_GeneratedMaterial_Renderer {
             } else {
                 GL11.glEnable(GL11.GL_DEPTH_TEST);
                 ItemRenderer.renderItemIn2D(
-                        Tessellator.instance,
-                        icon.getMaxU(),
-                        icon.getMinV(),
-                        icon.getMinU(),
-                        icon.getMaxV(),
-                        icon.getIconWidth(),
-                        icon.getIconHeight(),
-                        0.0625F);
+                    Tessellator.instance,
+                    icon.getMaxU(),
+                    icon.getMinV(),
+                    icon.getMinU(),
+                    icon.getMaxV(),
+                    icon.getIconWidth(),
+                    icon.getIconHeight(),
+                    0.0625F);
             }
             GL11.glPopMatrix();
         }

@@ -11,12 +11,10 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 
 import com.google.common.io.ByteArrayDataInput;
-import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 import com.gtnewhorizons.modularui.api.math.MathExpression;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.gtnewhorizons.modularui.common.widget.textfield.BaseTextFieldWidget;
-import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
 
 import gregtech.api.gui.modularui.GT_CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
@@ -32,7 +30,7 @@ import gregtech.common.tileentities.storage.GT_MetaTileEntity_DigitalChestBase;
 import io.netty.buffer.ByteBuf;
 
 public class GT_Cover_WirelessItemDetector
-        extends GT_Cover_AdvancedRedstoneTransmitterBase<GT_Cover_WirelessItemDetector.ItemTransmitterData> {
+    extends GT_Cover_AdvancedRedstoneTransmitterBase<GT_Cover_WirelessItemDetector.ItemTransmitterData> {
 
     public GT_Cover_WirelessItemDetector(ITexture coverTexture) {
         super(ItemTransmitterData.class, coverTexture);
@@ -50,13 +48,13 @@ public class GT_Cover_WirelessItemDetector
 
     @Override
     public ItemTransmitterData doCoverThingsImpl(byte aSide, byte aInputRedstone, int aCoverID,
-            ItemTransmitterData aCoverVariable, ICoverable aTileEntity, long aTimer) {
+        ItemTransmitterData aCoverVariable, ICoverable aTileEntity, long aTimer) {
         byte signal = GT_Cover_ItemMeter.computeSignalBasedOnItems(
-                aTileEntity,
-                aCoverVariable.invert,
-                aCoverVariable.threshold,
-                aCoverVariable.slot,
-                aSide);
+            aTileEntity,
+            aCoverVariable.invert,
+            aCoverVariable.threshold,
+            aCoverVariable.slot,
+            aSide);
         long hash = hashCoverCoords(aTileEntity, aSide);
         setSignalAt(aCoverVariable.getUuid(), aCoverVariable.getFrequency(), hash, signal);
 
@@ -65,13 +63,13 @@ public class GT_Cover_WirelessItemDetector
 
     @Override
     public boolean letsRedstoneGoOutImpl(byte aSide, int aCoverID, ItemTransmitterData aCoverVariable,
-            ICoverable aTileEntity) {
+        ICoverable aTileEntity) {
         return true;
     }
 
     @Override
     protected boolean manipulatesSidedRedstoneOutputImpl(byte aSide, int aCoverID, ItemTransmitterData aCoverVariable,
-            ICoverable aTileEntity) {
+        ICoverable aTileEntity) {
         return true;
     }
 
@@ -153,7 +151,6 @@ public class GT_Cover_WirelessItemDetector
         private static final String ALL_TEXT = "All";
 
         private int maxSlot;
-        private final ItemStackHandler targetSlotHandler = new ItemStackHandler(1);
 
         public WirelessItemDetectorUIFactory(GT_CoverUIBuildContext buildContext) {
             super(buildContext);
@@ -174,64 +171,57 @@ public class GT_Cover_WirelessItemDetector
             maxSlot = getMaxSlot();
             super.addUIWidgets(builder);
             builder.widget(
-                    new ItemWatcherSlotWidget().setGetter(this::getTargetItem)
-                                               .setPos(startX + spaceX * 4 - 1, startY + spaceY * 3))
-                   .widget(
-                           new TextWidget(GT_Utility.trans("221", "Item threshold"))
-                                                                                    .setDefaultColor(
-                                                                                            COLOR_TEXT_GRAY.get())
-                                                                                    .setPos(
-                                                                                            startX + spaceX * 5,
-                                                                                            4 + startY + spaceY * 2))
-                   .widget(
-                           new TextWidget(GT_Utility.trans("254.0", "Detect Slot"))
-                                                                                   .setDefaultColor(
-                                                                                           COLOR_TEXT_GRAY.get())
-                                                                                   .setPos(
-                                                                                           startX + spaceX * 5,
-                                                                                           4 + startY + spaceY * 3));
+                new ItemWatcherSlotWidget().setGetter(this::getTargetItem)
+                    .setPos(startX + spaceX * 4 - 1, startY + spaceY * 3))
+                .widget(
+                    new TextWidget(GT_Utility.trans("221", "Item threshold")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                        .setPos(startX + spaceX * 5, 4 + startY + spaceY * 2))
+                .widget(
+                    new TextWidget(GT_Utility.trans("254.0", "Detect Slot")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                        .setPos(startX + spaceX * 5, 4 + startY + spaceY * 3));
         }
 
         @Override
         protected void addUIForDataController(CoverDataControllerWidget<ItemTransmitterData> controller) {
             super.addUIForDataController(controller);
             controller.addFollower(
+                new CoverDataFollower_TextFieldWidget<>(),
+                coverData -> String.valueOf(coverData.threshold),
+                (coverData, state) -> {
+                    coverData.threshold = (int) MathExpression.parseMathExpression(state);
+                    return coverData;
+                },
+                widget -> widget.setOnScrollNumbers(1, 10, 64)
+                    .setNumbers(() -> 0, this::getMaxItemCount)
+                    .setPos(1, 2 + spaceY * 2)
+                    .setSize(spaceX * 5 - 4, 12))
+                .addFollower(
                     new CoverDataFollower_TextFieldWidget<>(),
-                    coverData -> String.valueOf(coverData.threshold),
+                    coverData -> getSlotTextFieldContent(coverData.slot),
                     (coverData, state) -> {
-                        coverData.threshold = (int) MathExpression.parseMathExpression(state);
+                        coverData.slot = getIntFromText(state);
                         return coverData;
                     },
-                    widget -> widget.setOnScrollNumbers(1, 10, 64)
-                                    .setNumbers(() -> 0, this::getMaxItemCount)
-                                    .setPos(1, 2 + spaceY * 2)
-                                    .setSize(spaceX * 5 - 4, 12))
-                      .addFollower(
-                              new CoverDataFollower_TextFieldWidget<>(),
-                              coverData -> getSlotTextFieldContent(coverData.slot),
-                              (coverData, state) -> {
-                                  coverData.slot = getIntFromText(state);
-                                  return coverData;
-                              },
-                              widget -> widget.setOnScrollText()
-                                              .setValidator(val -> {
-                                                  final int valSlot = getIntFromText(val);
-                                                  if (valSlot > -1) {
-                                                      return TextFieldWidget.format.format(Math.min(valSlot, maxSlot));
-                                                  } else {
-                                                      return ALL_TEXT;
-                                                  }
-                                              })
-                                              .setPattern(BaseTextFieldWidget.NATURAL_NUMS)
-                                              .setPos(1, 2 + spaceY * 3)
-                                              .setSize(spaceX * 4 - 8, 12));
+                    widget -> widget.setOnScrollText()
+                        .setValidator(val -> {
+                            final int valSlot = getIntFromText(val);
+                            if (valSlot > -1) {
+                                return widget.getDecimalFormatter()
+                                    .format(Math.min(valSlot, maxSlot));
+                            } else {
+                                return ALL_TEXT;
+                            }
+                        })
+                        .setPattern(BaseTextFieldWidget.NATURAL_NUMS)
+                        .setPos(1, 2 + spaceY * 3)
+                        .setSize(spaceX * 4 - 8, 12));
         }
 
         private int getMaxSlot() {
             final ICoverable tile = getUIBuildContext().getTile();
             if (tile instanceof TileEntity && !tile.isDead()
-                    && tile instanceof IGregTechTileEntity
-                    && !(((IGregTechTileEntity) tile).getMetaTileEntity() instanceof GT_MetaTileEntity_DigitalChestBase)) {
+                && tile instanceof IGregTechTileEntity
+                && !(((IGregTechTileEntity) tile).getMetaTileEntity() instanceof GT_MetaTileEntity_DigitalChestBase)) {
                 return tile.getSizeInventory() - 1;
             } else {
                 return -1;
@@ -258,9 +248,9 @@ public class GT_Cover_WirelessItemDetector
             final ICoverable tile = getUIBuildContext().getTile();
             final ItemTransmitterData coverVariable = getCoverData();
             if (coverVariable != null && coverVariable.slot >= 0
-                    && tile instanceof TileEntity
-                    && !tile.isDead()
-                    && tile.getSizeInventory() >= coverVariable.slot) {
+                && tile instanceof TileEntity
+                && !tile.isDead()
+                && tile.getSizeInventory() >= coverVariable.slot) {
                 return tile.getStackInSlot(coverVariable.slot);
             } else {
                 return null;

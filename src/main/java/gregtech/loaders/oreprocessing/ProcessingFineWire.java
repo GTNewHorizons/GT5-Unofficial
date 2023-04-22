@@ -18,16 +18,16 @@ public class ProcessingFineWire implements gregtech.api.interfaces.IOreRecipeReg
 
     @Override
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
-            ItemStack aStack) {
+        ItemStack aStack) {
         if (!aMaterial.contains(gregtech.api.enums.SubTag.NO_SMASHING)) {
             GT_RecipeRegistrator.registerWiremillRecipes(aMaterial, 100, 4);
         }
         if ((aMaterial.mUnificatable) && (aMaterial.mMaterialInto == aMaterial)
-                && !aMaterial.contains(SubTag.NO_WORKING)) {
+            && !aMaterial.contains(SubTag.NO_WORKING)) {
             GT_ModHandler.addCraftingRecipe(
-                    GT_Utility.copyAmount(1L, aStack),
-                    GT_Proxy.tBits,
-                    new Object[] { "Xx", 'X', OrePrefixes.foil.get(aMaterial) });
+                GT_Utility.copyAmount(1L, aStack),
+                GT_Proxy.tBits,
+                new Object[] { "Xx", 'X', OrePrefixes.foil.get(aMaterial) });
         }
     }
 }

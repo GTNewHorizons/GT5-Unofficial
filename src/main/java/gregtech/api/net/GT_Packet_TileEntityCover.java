@@ -74,13 +74,13 @@ public class GT_Packet_TileEntityCover extends GT_Packet_New {
     @Override
     public GT_Packet_New decode(ByteArrayDataInput aData) {
         return new GT_Packet_TileEntityCover(
-                aData.readInt(),
-                aData.readShort(),
-                aData.readInt(),
-                aData.readByte(),
-                aData.readInt(),
-                aData.readInt(),
-                aData.readInt());
+            aData.readInt(),
+            aData.readShort(),
+            aData.readInt(),
+            aData.readByte(),
+            aData.readInt(),
+            aData.readInt(),
+            aData.readInt());
     }
 
     @Override

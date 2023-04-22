@@ -16,9 +16,9 @@ public class ProcessingBeans implements gregtech.api.interfaces.IOreRecipeRegist
 
     @Override
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
-            ItemStack aStack) {
+        ItemStack aStack) {
         if (aOreDictName.equals("beansCocoa")) GT_ModHandler.addPulverisationRecipe(
-                GT_Utility.copyAmount(1L, aStack),
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Cocoa, 1L));
+            GT_Utility.copyAmount(1L, aStack),
+            GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Cocoa, 1L));
     }
 }

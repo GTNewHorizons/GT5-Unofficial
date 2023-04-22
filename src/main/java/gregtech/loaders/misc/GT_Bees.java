@@ -1,6 +1,6 @@
 package gregtech.loaders.misc;
 
-import static gregtech.api.enums.ModIDs.Forestry;
+import static gregtech.api.enums.Mods.Forestry;
 
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
@@ -73,8 +73,8 @@ public class GT_Bees {
         noWork = new AlleleFloat("speedUnproductive", 0, false);
         superSpeed = new AlleleFloat("speedAccelerated", 4F, false);
         speedBlinding = AlleleManager.alleleRegistry.getAllele("magicbees.speedBlinding") == null
-                ? new AlleleFloat("speedBlinding", 2f, false)
-                : (IAlleleFloat) AlleleManager.alleleRegistry.getAllele("magicbees.speedBlinding");
+            ? new AlleleFloat("speedBlinding", 2f, false)
+            : (IAlleleFloat) AlleleManager.alleleRegistry.getAllele("magicbees.speedBlinding");
 
         blinkLife = new AlleleInteger("lifeBlink", 2, false, EnumBeeChromosome.LIFESPAN);
         superLife = new AlleleInteger("lifeEon", 600, false, EnumBeeChromosome.LIFESPAN);
@@ -140,7 +140,7 @@ public class GT_Bees {
 
         @Override
         public float getChance(World world, int x, int y, int z, IAllele allele0, IAllele allele1, IGenome genome0,
-                IGenome genome1, IClimateProvider climate) {
+            IGenome genome1, IClimateProvider climate) {
             if (world.provider.dimensionId == dimID) return 1;
             return 0;
         }
@@ -163,7 +163,7 @@ public class GT_Bees {
 
         @Override
         public float getChance(World world, int x, int y, int z, IAllele allele0, IAllele allele1, IGenome genome0,
-                IGenome genome1, IClimateProvider climate) {
+            IGenome genome1, IClimateProvider climate) {
             if (climate.getBiome().biomeID == biomeID) return 1;
             return 0;
         }

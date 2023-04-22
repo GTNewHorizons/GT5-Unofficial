@@ -41,9 +41,8 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 
-public class GT_MetaTileEntity_DistillationTower
-        extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_DistillationTower>
-        implements ISurvivalConstructable {
+public class GT_MetaTileEntity_DistillationTower extends
+    GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_DistillationTower> implements ISurvivalConstructable {
 
     protected static final int CASING_INDEX = 49;
     protected static final String STRUCTURE_PIECE_BASE = "base";
@@ -53,104 +52,62 @@ public class GT_MetaTileEntity_DistillationTower
     private static final IStructureDefinition<GT_MetaTileEntity_DistillationTower> STRUCTURE_DEFINITION;
 
     static {
-        IHatchElement<GT_MetaTileEntity_DistillationTower> layeredOutputHatch = OutputHatch.withCount(
-                GT_MetaTileEntity_DistillationTower::getCurrentLayerOutputHatchCount)
-                                                                                           .withAdder(
-                                                                                                   GT_MetaTileEntity_DistillationTower::addLayerOutputHatch);
+        IHatchElement<GT_MetaTileEntity_DistillationTower> layeredOutputHatch = OutputHatch
+            .withCount(GT_MetaTileEntity_DistillationTower::getCurrentLayerOutputHatchCount)
+            .withAdder(GT_MetaTileEntity_DistillationTower::addLayerOutputHatch);
         STRUCTURE_DEFINITION = StructureDefinition.<GT_MetaTileEntity_DistillationTower>builder()
-                                                  .addShape(
-                                                          STRUCTURE_PIECE_BASE,
-                                                          transpose(new String[][] { { "b~b", "bbb", "bbb" }, }))
-                                                  .addShape(
-                                                          STRUCTURE_PIECE_LAYER,
-                                                          transpose(new String[][] { { "lll", "lcl", "lll" }, }))
-                                                  .addShape(
-                                                          STRUCTURE_PIECE_LAYER_HINT,
-                                                          transpose(new String[][] { { "lll", "l-l", "lll" }, }))
-                                                  .addShape(
-                                                          STRUCTURE_PIECE_TOP_HINT,
-                                                          transpose(new String[][] { { "LLL", "LLL", "LLL" }, }))
-                                                  .addElement(
-                                                          'b',
-                                                          ofChain(
-                                                                  buildHatchAdder(
-                                                                          GT_MetaTileEntity_DistillationTower.class).atLeast(
-                                                                                  Energy,
-                                                                                  OutputBus,
-                                                                                  InputHatch,
-                                                                                  InputBus,
-                                                                                  Maintenance)
-                                                                                                                    .casingIndex(
-                                                                                                                            CASING_INDEX)
-                                                                                                                    .dot(
-                                                                                                                            1)
-                                                                                                                    .build(),
-                                                                  onElementPass(
-                                                                          GT_MetaTileEntity_DistillationTower::onCasingFound,
-                                                                          ofBlock(GregTech_API.sBlockCasings4, 1))))
-                                                  .addElement(
-                                                          'l',
-                                                          ofChain(
-                                                                  buildHatchAdder(
-                                                                          GT_MetaTileEntity_DistillationTower.class).atLeast(
-                                                                                  layeredOutputHatch)
-                                                                                                                    .casingIndex(
-                                                                                                                            CASING_INDEX)
-                                                                                                                    .dot(
-                                                                                                                            2)
-                                                                                                                    .disallowOnly(
-                                                                                                                            ForgeDirection.UP,
-                                                                                                                            ForgeDirection.DOWN)
-                                                                                                                    .build(),
-                                                                  ofHatchAdder(
-                                                                          GT_MetaTileEntity_DistillationTower::addEnergyInputToMachineList,
-                                                                          CASING_INDEX,
-                                                                          2),
-                                                                  ofHatchAdder(
-                                                                          GT_MetaTileEntity_DistillationTower::addLayerOutputHatch,
-                                                                          CASING_INDEX,
-                                                                          2),
-                                                                  ofHatchAdder(
-                                                                          GT_MetaTileEntity_DistillationTower::addMaintenanceToMachineList,
-                                                                          CASING_INDEX,
-                                                                          2),
-                                                                  onElementPass(
-                                                                          GT_MetaTileEntity_DistillationTower::onCasingFound,
-                                                                          ofBlock(GregTech_API.sBlockCasings4, 1))))
-                                                  // hint element only used in top layer
-                                                  .addElement(
-                                                          'L',
-                                                          buildHatchAdder(
-                                                                  GT_MetaTileEntity_DistillationTower.class).atLeast(
-                                                                          layeredOutputHatch)
-                                                                                                            .casingIndex(
-                                                                                                                    CASING_INDEX)
-                                                                                                            .dot(2)
-                                                                                                            .disallowOnly(
-                                                                                                                    ForgeDirection.UP)
-                                                                                                            .buildAndChain(
-                                                                                                                    GregTech_API.sBlockCasings4,
-                                                                                                                    1))
-                                                  .addElement(
-                                                          'c',
-                                                          ofChain(
-                                                                  onElementPass(
-                                                                          t -> t.onTopLayerFound(false),
-                                                                          ofHatchAdder(
-                                                                                  GT_MetaTileEntity_DistillationTower::addOutputToMachineList,
-                                                                                  CASING_INDEX,
-                                                                                  3)),
-                                                                  onElementPass(
-                                                                          t -> t.onTopLayerFound(false),
-                                                                          ofHatchAdder(
-                                                                                  GT_MetaTileEntity_DistillationTower::addMaintenanceToMachineList,
-                                                                                  CASING_INDEX,
-                                                                                  3)),
-                                                                  onElementPass(
-                                                                          t -> t.onTopLayerFound(true),
-                                                                          ofBlock(GregTech_API.sBlockCasings4, 1)),
-                                                                  isAir()))
-                                                  .build();
+            .addShape(STRUCTURE_PIECE_BASE, transpose(new String[][] { { "b~b", "bbb", "bbb" }, }))
+            .addShape(STRUCTURE_PIECE_LAYER, transpose(new String[][] { { "lll", "lcl", "lll" }, }))
+            .addShape(STRUCTURE_PIECE_LAYER_HINT, transpose(new String[][] { { "lll", "l-l", "lll" }, }))
+            .addShape(STRUCTURE_PIECE_TOP_HINT, transpose(new String[][] { { "LLL", "LLL", "LLL" }, }))
+            .addElement(
+                'b',
+                ofChain(
+                    buildHatchAdder(GT_MetaTileEntity_DistillationTower.class)
+                        .atLeast(Energy, OutputBus, InputHatch, InputBus, Maintenance)
+                        .casingIndex(CASING_INDEX)
+                        .dot(1)
+                        .build(),
+                    onElementPass(
+                        GT_MetaTileEntity_DistillationTower::onCasingFound,
+                        ofBlock(GregTech_API.sBlockCasings4, 1))))
+            .addElement(
+                'l',
+                ofChain(
+                    buildHatchAdder(GT_MetaTileEntity_DistillationTower.class).atLeast(layeredOutputHatch)
+                        .casingIndex(CASING_INDEX)
+                        .dot(2)
+                        .disallowOnly(ForgeDirection.UP, ForgeDirection.DOWN)
+                        .build(),
+                    ofHatchAdder(GT_MetaTileEntity_DistillationTower::addEnergyInputToMachineList, CASING_INDEX, 2),
+                    ofHatchAdder(GT_MetaTileEntity_DistillationTower::addLayerOutputHatch, CASING_INDEX, 2),
+                    ofHatchAdder(GT_MetaTileEntity_DistillationTower::addMaintenanceToMachineList, CASING_INDEX, 2),
+                    onElementPass(
+                        GT_MetaTileEntity_DistillationTower::onCasingFound,
+                        ofBlock(GregTech_API.sBlockCasings4, 1))))
+            // hint element only used in top layer
+            .addElement(
+                'L',
+                buildHatchAdder(GT_MetaTileEntity_DistillationTower.class).atLeast(layeredOutputHatch)
+                    .casingIndex(CASING_INDEX)
+                    .dot(2)
+                    .disallowOnly(ForgeDirection.UP)
+                    .buildAndChain(GregTech_API.sBlockCasings4, 1))
+            .addElement(
+                'c',
+                ofChain(
+                    onElementPass(
+                        t -> t.onTopLayerFound(false),
+                        ofHatchAdder(GT_MetaTileEntity_DistillationTower::addOutputToMachineList, CASING_INDEX, 3)),
+                    onElementPass(
+                        t -> t.onTopLayerFound(false),
+                        ofHatchAdder(
+                            GT_MetaTileEntity_DistillationTower::addMaintenanceToMachineList,
+                            CASING_INDEX,
+                            3)),
+                    onElementPass(t -> t.onTopLayerFound(true), ofBlock(GregTech_API.sBlockCasings4, 1)),
+                    isAir()))
+            .build();
     }
 
     protected final List<List<GT_MetaTileEntity_Hatch_Output>> mOutputHatchesByLayer = new ArrayList<>();
@@ -175,46 +132,45 @@ public class GT_MetaTileEntity_DistillationTower
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Distillery")
-          .addInfo("Controller block for the Distillation Tower")
-          .addInfo("Fluids are only put out at the correct height")
-          .addInfo("The correct height equals the slot number in the NEI recipe")
-          .addSeparator()
-          .beginVariableStructureBlock(3, 3, 3, 12, 3, 3, true)
-          .addController("Front bottom")
-          .addOtherStructurePart("Clean Stainless Steel Machine Casing", "7 x h - 5 (minimum)")
-          .addEnergyHatch("Any casing", 1, 2)
-          .addMaintenanceHatch("Any casing", 1, 2, 3)
-          .addInputHatch("Any bottom layer casing", 1)
-          .addOutputBus("Any bottom layer casing", 1)
-          .addOutputHatch("2-11x Output Hatches (At least one per layer except bottom layer)", 2, 3)
-          .toolTipFinisher("Gregtech");
+            .addInfo("Controller block for the Distillation Tower")
+            .addInfo("Fluids are only put out at the correct height")
+            .addInfo("The correct height equals the slot number in the NEI recipe")
+            .addSeparator()
+            .beginVariableStructureBlock(3, 3, 3, 12, 3, 3, true)
+            .addController("Front bottom")
+            .addOtherStructurePart("Clean Stainless Steel Machine Casing", "7 x h - 5 (minimum)")
+            .addEnergyHatch("Any casing except top centre", 1, 2)
+            .addMaintenanceHatch("Any casing", 1, 2, 3)
+            .addInputHatch("Any bottom layer casing", 1)
+            .addOutputBus("Any bottom layer casing", 1)
+            .addOutputHatch("2-11x Output Hatches (At least one per layer except bottom layer)", 2, 3)
+            .toolTipFinisher("Gregtech");
         return tt;
     }
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-            boolean aActive, boolean aRedstone) {
+        boolean aActive, boolean aRedstone) {
         if (aSide == aFacing) {
             if (aActive) return new ITexture[] { BlockIcons.getCasingTextureForId(CASING_INDEX),
-                    TextureFactory.builder()
-                                  .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE)
-                                  .extFacing()
-                                  .build(),
-                    TextureFactory.builder()
-                                  .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW)
-                                  .extFacing()
-                                  .glow()
-                                  .build() };
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE)
+                    .extFacing()
+                    .build(),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW)
+                    .extFacing()
+                    .glow()
+                    .build() };
             return new ITexture[] { BlockIcons.getCasingTextureForId(CASING_INDEX), TextureFactory.builder()
-                                                                                                  .addIcon(
-                                                                                                          OVERLAY_FRONT_DISTILLATION_TOWER)
-                                                                                                  .extFacing()
-                                                                                                  .build(),
-                    TextureFactory.builder()
-                                  .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_GLOW)
-                                  .extFacing()
-                                  .glow()
-                                  .build() };
+                .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER)
+                .extFacing()
+                .build(),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_GLOW)
+                    .extFacing()
+                    .glow()
+                    .build() };
         }
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX) };
     }
@@ -270,16 +226,16 @@ public class GT_MetaTileEntity_DistillationTower
         FluidStack[] tFluids = tFluidList.toArray(new FluidStack[0]);
         for (FluidStack tFluid : tFluids) {
             tRecipe = GT_Recipe.GT_Recipe_Map.sDistillationRecipes.findRecipe(
-                    getBaseMetaTileEntity(),
-                    false,
-                    gregtech.api.enums.GT_Values.V[tTier],
-                    new FluidStack[] { tFluid },
-                    inputs);
+                getBaseMetaTileEntity(),
+                false,
+                gregtech.api.enums.GT_Values.V[tTier],
+                new FluidStack[] { tFluid },
+                inputs);
             if (tRecipe != null) {
                 if (tRecipe.isRecipeInputEqual(true, tFluids, inputs)) {
                     this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
                     this.mEfficiencyIncrease = 10000;
-                    calculateOverclockedNessMulti(tRecipe.mEUt, tRecipe.mDuration, 1, tVoltage);
+                    calculateOverclockedNessMultiInternal(tRecipe.mEUt, tRecipe.mDuration, 1, tVoltage, false);
                     // In case recipe is too OP for that machine
                     if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1) return false;
                     if (this.mEUt > 0) {
@@ -308,18 +264,17 @@ public class GT_MetaTileEntity_DistillationTower
 
     protected int getCurrentLayerOutputHatchCount() {
         return mOutputHatchesByLayer.size() < mHeight || mHeight <= 0 ? 0
-                : mOutputHatchesByLayer.get(mHeight - 1)
-                                       .size();
+            : mOutputHatchesByLayer.get(mHeight - 1)
+                .size();
     }
 
     protected boolean addLayerOutputHatch(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
         if (aTileEntity == null || aTileEntity.isDead()
-                || !(aTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_Hatch_Output tHatch))
-            return false;
+            || !(aTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_Hatch_Output tHatch)) return false;
         while (mOutputHatchesByLayer.size() < mHeight) mOutputHatchesByLayer.add(new ArrayList<>());
         tHatch.updateTexture(aBaseCasingIndex);
         return mOutputHatchesByLayer.get(mHeight - 1)
-                                    .add(tHatch);
+            .add(tHatch);
     }
 
     @Override
@@ -350,7 +305,7 @@ public class GT_MetaTileEntity_DistillationTower
                 return false;
             }
             if (mOutputHatchesByLayer.size() < mHeight || mOutputHatchesByLayer.get(mHeight - 1)
-                                                                               .isEmpty())
+                .isEmpty())
                 // layer without output hatch
                 return false;
             if (mTopLayerFound) {
@@ -360,8 +315,10 @@ public class GT_MetaTileEntity_DistillationTower
             mHeight++;
         }
 
-        // validate final invariants...
-        return mCasing >= 7 * mHeight - 5 && mHeight >= 2 && mTopLayerFound && mMaintenanceHatches.size() == 1;
+        // validate final invariants... (actual height is mHeight+1)
+        return mCasing >= 7 * (mHeight + 1) - 5 && mHeight + 1 >= 3
+            && mTopLayerFound
+            && mMaintenanceHatches.size() == 1;
     }
 
     @Override
@@ -410,28 +367,28 @@ public class GT_MetaTileEntity_DistillationTower
         for (int i = 1; i < tTotalHeight - 1; i++) {
             mHeight = i;
             built = survivialBuildPiece(
-                    STRUCTURE_PIECE_LAYER_HINT,
-                    stackSize,
-                    1,
-                    i,
-                    0,
-                    elementBudget,
-                    env,
-                    false,
-                    true);
-            if (built >= 0) return built;
-        }
-        mHeight = tTotalHeight - 1;
-        return survivialBuildPiece(
-                STRUCTURE_PIECE_TOP_HINT,
+                STRUCTURE_PIECE_LAYER_HINT,
                 stackSize,
                 1,
-                tTotalHeight - 1,
+                i,
                 0,
                 elementBudget,
                 env,
                 false,
                 true);
+            if (built >= 0) return built;
+        }
+        mHeight = tTotalHeight - 1;
+        return survivialBuildPiece(
+            STRUCTURE_PIECE_TOP_HINT,
+            stackSize,
+            1,
+            tTotalHeight - 1,
+            0,
+            elementBudget,
+            env,
+            false,
+            true);
     }
 
     @Override

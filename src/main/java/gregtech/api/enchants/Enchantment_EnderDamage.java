@@ -46,22 +46,22 @@ public class Enchantment_EnderDamage extends EnchantmentDamage {
     @Override
     public void func_151367_b(EntityLivingBase aHurtEntity, Entity aDamagingEntity, int aLevel) {
         if ((aHurtEntity instanceof EntityEnderman || aHurtEntity instanceof EntityDragon
-                || (aHurtEntity.getClass()
-                               .getName()
-                               .contains(".")
-                        && aHurtEntity.getClass()
-                                      .getName()
-                                      .substring(
-                                              aHurtEntity.getClass()
-                                                         .getName()
-                                                         .lastIndexOf("."))
-                                      .contains("Ender")))) {
+            || (aHurtEntity.getClass()
+                .getName()
+                .contains(".")
+                && aHurtEntity.getClass()
+                    .getName()
+                    .substring(
+                        aHurtEntity.getClass()
+                            .getName()
+                            .lastIndexOf("."))
+                    .contains("Ender")))) {
             // Weakness causes Endermen to not be able to teleport with GT being installed.
-            aHurtEntity.addPotionEffect(
-                    new PotionEffect(Potion.weakness.id, aLevel * 200, Math.max(1, (5 * aLevel) / 7)));
+            aHurtEntity
+                .addPotionEffect(new PotionEffect(Potion.weakness.id, aLevel * 200, Math.max(1, (5 * aLevel) / 7)));
             // They also get Poisoned. If you have this Enchant on an Arrow, you can kill the Ender Dragon easier.
-            aHurtEntity.addPotionEffect(
-                    new PotionEffect(Potion.poison.id, aLevel * 200, Math.max(1, (5 * aLevel) / 7)));
+            aHurtEntity
+                .addPotionEffect(new PotionEffect(Potion.poison.id, aLevel * 200, Math.max(1, (5 * aLevel) / 7)));
         }
     }
 

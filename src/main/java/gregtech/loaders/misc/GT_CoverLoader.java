@@ -19,24 +19,24 @@ public class GT_CoverLoader implements Runnable {
             GregTech_API.registerCover(new ItemStack(Blocks.carpet, 1, i), TextureFactory.of(Blocks.wool, i), null);
         }
         GregTech_API.registerCover(
-                GT_ModHandler.getIC2Item("reactorVent", 1L, 1),
-                TextureFactory.of(VENT_NORMAL),
-                new GT_Cover_Vent(1));
+            GT_ModHandler.getIC2Item("reactorVent", 1L, 1),
+            TextureFactory.of(VENT_NORMAL),
+            new GT_Cover_Vent(1));
         GregTech_API.registerCover(
-                GT_ModHandler.getIC2Item("reactorVentCore", 1L, 1),
-                TextureFactory.of(VENT_NORMAL),
-                new GT_Cover_Vent(1));
+            GT_ModHandler.getIC2Item("reactorVentCore", 1L, 1),
+            TextureFactory.of(VENT_NORMAL),
+            new GT_Cover_Vent(1));
         GregTech_API.registerCover(
-                GT_ModHandler.getIC2Item("reactorVentGold", 1L, 1),
-                TextureFactory.of(VENT_ADVANCED),
-                new GT_Cover_Vent(2));
+            GT_ModHandler.getIC2Item("reactorVentGold", 1L, 1),
+            TextureFactory.of(VENT_ADVANCED),
+            new GT_Cover_Vent(2));
         GregTech_API.registerCover(
-                GT_ModHandler.getIC2Item("reactorVentSpread", 1L),
-                TextureFactory.of(VENT_NORMAL),
-                new GT_Cover_Vent(2));
+            GT_ModHandler.getIC2Item("reactorVentSpread", 1L),
+            TextureFactory.of(VENT_NORMAL),
+            new GT_Cover_Vent(2));
         GregTech_API.registerCover(
-                GT_ModHandler.getIC2Item("reactorVentDiamond", 1L, 1),
-                TextureFactory.of(VENT_ADVANCED),
-                new GT_Cover_Vent(3));
+            GT_ModHandler.getIC2Item("reactorVentDiamond", 1L, 1),
+            TextureFactory.of(VENT_ADVANCED),
+            new GT_Cover_Vent(3));
     }
 }

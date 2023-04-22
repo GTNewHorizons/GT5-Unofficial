@@ -24,7 +24,7 @@ import gregtech.common.gui.modularui.widget.CoverDataFollower_ToggleButtonWidget
 import io.netty.buffer.ByteBuf;
 
 public abstract class GT_Cover_AdvancedRedstoneTransmitterBase<T extends GT_Cover_AdvancedRedstoneTransmitterBase.TransmitterData>
-        extends GT_Cover_AdvancedWirelessRedstoneBase<T> {
+    extends GT_Cover_AdvancedWirelessRedstoneBase<T> {
 
     public GT_Cover_AdvancedRedstoneTransmitterBase(Class<T> typeToken, ITexture coverTexture) {
         super(typeToken, coverTexture);
@@ -37,33 +37,33 @@ public abstract class GT_Cover_AdvancedRedstoneTransmitterBase<T extends GT_Cove
 
     @Override
     public boolean onCoverRemovalImpl(byte aSide, int aCoverID, TransmitterData aCoverVariable, ICoverable aTileEntity,
-            boolean aForced) {
+        boolean aForced) {
         unregisterSignal(aSide, aCoverVariable, aTileEntity);
         return true;
     }
 
     @Override
     protected void onBaseTEDestroyedImpl(byte aSide, int aCoverID, TransmitterData aCoverVariable,
-            ICoverable aTileEntity) {
+        ICoverable aTileEntity) {
         unregisterSignal(aSide, aCoverVariable, aTileEntity);
     }
 
     @Override
     protected T onCoverScrewdriverClickImpl(byte aSide, int aCoverID, T aCoverVariable, ICoverable aTileEntity,
-            EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        EntityPlayer aPlayer, float aX, float aY, float aZ) {
         aCoverVariable.invert = !aCoverVariable.invert;
         GT_Utility.sendChatToPlayer(
-                aPlayer,
-                aCoverVariable.invert ? GT_Utility.trans("054", "Inverted") : GT_Utility.trans("055", "Normal"));
+            aPlayer,
+            aCoverVariable.invert ? GT_Utility.trans("054", "Inverted") : GT_Utility.trans("055", "Normal"));
 
         return aCoverVariable;
     }
 
     @Override
     protected void preDataChangedImpl(byte aSide, int aCoverID, int aNewCoverId, T aCoverVariable, T aNewCoverVariable,
-            ICoverable aTileEntity) {
+        ICoverable aTileEntity) {
         if (aCoverVariable.frequency != aNewCoverVariable.frequency
-                || !Objects.equals(aCoverVariable.uuid, aNewCoverVariable.uuid)) {
+            || !Objects.equals(aCoverVariable.uuid, aNewCoverVariable.uuid)) {
             unregisterSignal(aSide, aCoverVariable, aTileEntity);
         }
     }
@@ -159,29 +159,29 @@ public abstract class GT_Cover_AdvancedRedstoneTransmitterBase<T extends GT_Cove
                 T coverData = getCoverData();
                 if (coverData != null) {
                     return getCoverData().invert ? GT_Utility.trans("INVERTED", "Inverted")
-                            : GT_Utility.trans("NORMAL", "Normal");
+                        : GT_Utility.trans("NORMAL", "Normal");
                 } else {
                     return "";
                 }
             })
-                                     .setSynced(false)
-                                     .setDefaultColor(COLOR_TEXT_GRAY.get())
-                                     .setPos(startX + spaceX * 10, 4 + startY + spaceY * getButtonRow()));
+                .setSynced(false)
+                .setDefaultColor(COLOR_TEXT_GRAY.get())
+                .setPos(startX + spaceX * 10, 4 + startY + spaceY * getButtonRow()));
         }
 
         @Override
         protected void addUIForDataController(CoverDataControllerWidget<T> controller) {
             super.addUIForDataController(controller);
             controller.addFollower(
-                    CoverDataFollower_ToggleButtonWidget.ofRedstone(),
-                    coverData -> coverData.invert,
-                    (coverData, state) -> {
-                        coverData.invert = state;
-                        return coverData;
-                    },
-                    widget -> widget.addTooltip(0, GT_Utility.trans("NORMAL", "Normal"))
-                                    .addTooltip(1, GT_Utility.trans("INVERTED", "Inverted"))
-                                    .setPos(spaceX * 9, spaceY * getButtonRow()));
+                CoverDataFollower_ToggleButtonWidget.ofRedstone(),
+                coverData -> coverData.invert,
+                (coverData, state) -> {
+                    coverData.invert = state;
+                    return coverData;
+                },
+                widget -> widget.addTooltip(0, GT_Utility.trans("NORMAL", "Normal"))
+                    .addTooltip(1, GT_Utility.trans("INVERTED", "Inverted"))
+                    .setPos(spaceX * 9, spaceY * getButtonRow()));
         }
     }
 }

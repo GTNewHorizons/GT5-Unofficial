@@ -70,11 +70,11 @@ public class SP_Command extends CommandBase {
         EntityPlayerMP teamMember = getPlayer(sender, playerInvited);
         invite.add(Pair.of(teamMember, teamLeader));
         String message = EnumChatFormatting.GOLD + teamLeader.getCommandSenderName()
-                + EnumChatFormatting.RESET
-                + " has sent you an invite to join their team. Accept it with"
-                + EnumChatFormatting.GOLD
-                + " /sp accept "
-                + teamLeader.getCommandSenderName();
+            + EnumChatFormatting.RESET
+            + " has sent you an invite to join their team. Accept it with"
+            + EnumChatFormatting.GOLD
+            + " /sp accept "
+            + teamLeader.getCommandSenderName();
         GT_Utility.sendChatToPlayer(teamMember, message);
     }
 
@@ -83,8 +83,8 @@ public class SP_Command extends CommandBase {
         EntityPlayerMP teamLeader = getPlayer(sender, playerInviter);
         if (invite.contains(Pair.of(teamMember, teamLeader))) {
             String message = EnumChatFormatting.GOLD + teamMember.getCommandSenderName()
-                    + EnumChatFormatting.RESET
-                    + " has accepted the invite.";
+                + EnumChatFormatting.RESET
+                + " has accepted the invite.";
             SpaceProjectManager.putInTeam(teamMember.getUniqueID(), teamLeader.getUniqueID());
             GT_Utility.sendChatToPlayer(teamLeader, message);
             invite.remove(Pair.of(teamMember, teamLeader));
@@ -94,10 +94,10 @@ public class SP_Command extends CommandBase {
     private void processLeave(ICommandSender sender) {
         EntityPlayerMP player = getCommandSenderAsPlayer(sender);
         String message = "Are you sure you want to leave the team. You will lose all progress. Use "
-                + EnumChatFormatting.GOLD
-                + "/sp confirm"
-                + EnumChatFormatting.RESET
-                + " to confirm this. This does nothing if you are the team leader.";
+            + EnumChatFormatting.GOLD
+            + "/sp confirm"
+            + EnumChatFormatting.RESET
+            + " to confirm this. This does nothing if you are the team leader.";
         GT_Utility.sendChatToPlayer(player, message);
         confirm.add(player);
     }

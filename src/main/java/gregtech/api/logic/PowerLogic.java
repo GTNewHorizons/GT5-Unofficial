@@ -15,6 +15,7 @@ public class PowerLogic {
     private long voltage = 0;
     private long amperage = 0;
     private int type = 0;
+    private boolean canUseLaser = false;
 
     public PowerLogic() {}
 
@@ -35,6 +36,16 @@ public class PowerLogic {
 
     public PowerLogic setType(int type) {
         this.type = type;
+        return this;
+    }
+
+    public PowerLogic disableLaser() {
+        canUseLaser = false;
+        return this;
+    }
+
+    public PowerLogic enableLaser() {
+        canUseLaser = true;
         return this;
     }
 
@@ -126,5 +137,9 @@ public class PowerLogic {
         amperage = powerLogic.getLong(NBT.POWER_LOGIC_AMPERAGE);
         voltage = powerLogic.getLong(NBT.POWER_LOGIC_VOLTAGE);
         type = powerLogic.getInteger(NBT.POWER_LOGIC_TYPE);
+    }
+
+    public boolean canUseLaser() {
+        return canUseLaser;
     }
 }

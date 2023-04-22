@@ -5,7 +5,7 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockUn
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.GT_HatchElement.*;
-import static gregtech.api.enums.ModIDs.NewHorizonsCoreMod;
+import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PYROLYSE_OVEN;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PYROLYSE_OVEN_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PYROLYSE_OVEN_ACTIVE_GLOW;
@@ -38,8 +38,8 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Single_Recipe_Check;
 import gregtech.api.util.GT_Utility;
 
-public class GT_MetaTileEntity_PyrolyseOven extends
-        GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_PyrolyseOven> implements ISurvivalConstructable {
+public class GT_MetaTileEntity_PyrolyseOven
+    extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_PyrolyseOven> implements ISurvivalConstructable {
 
     private HeatingCoilLevel coilHeat;
     // public static GT_CopiedBlockTexture mTextureULV = new
@@ -50,53 +50,35 @@ public class GT_MetaTileEntity_PyrolyseOven extends
 
     private static IStructureDefinition<GT_MetaTileEntity_PyrolyseOven> createStructureDefinition() {
         IStructureElement<GT_MetaTileEntity_PyrolyseOven> tCasingElement = NewHorizonsCoreMod.isModLoaded()
-                ? ofBlockUnlocalizedName(NewHorizonsCoreMod.modID, "gt.blockcasingsNH", 2)
-                : ofBlock(GregTech_API.sBlockCasings1, 0);
+            ? ofBlockUnlocalizedName(NewHorizonsCoreMod.ID, "gt.blockcasingsNH", 2)
+            : ofBlock(GregTech_API.sBlockCasings1, 0);
 
         return StructureDefinition.<GT_MetaTileEntity_PyrolyseOven>builder()
-                                  .addShape(
-                                          "main",
-                                          transpose(
-                                                  new String[][] { { "ccccc", "ctttc", "ctttc", "ctttc", "ccccc" },
-                                                          { "ccccc", "c---c", "c---c", "c---c", "ccccc" },
-                                                          { "ccccc", "c---c", "c---c", "c---c", "ccccc" },
-                                                          { "bb~bb", "bCCCb", "bCCCb", "bCCCb", "bbbbb" }, }))
-                                  .addElement(
-                                          'c',
-                                          onElementPass(GT_MetaTileEntity_PyrolyseOven::onCasingAdded, tCasingElement))
-                                  .addElement(
-                                          'C',
-                                          ofCoil(
-                                                  GT_MetaTileEntity_PyrolyseOven::setCoilLevel,
-                                                  GT_MetaTileEntity_PyrolyseOven::getCoilLevel))
-                                  .addElement(
-                                          'b',
-                                          buildHatchAdder(
-                                                  GT_MetaTileEntity_PyrolyseOven.class).atLeast(
-                                                          OutputBus,
-                                                          OutputHatch,
-                                                          Energy,
-                                                          Maintenance)
-                                                                                       .casingIndex(CASING_INDEX)
-                                                                                       .dot(1)
-                                                                                       .buildAndChain(
-                                                                                               onElementPass(
-                                                                                                       GT_MetaTileEntity_PyrolyseOven::onCasingAdded,
-                                                                                                       tCasingElement)))
-                                  .addElement(
-                                          't',
-                                          buildHatchAdder(
-                                                  GT_MetaTileEntity_PyrolyseOven.class).atLeast(
-                                                          InputBus,
-                                                          InputHatch,
-                                                          Muffler)
-                                                                                       .casingIndex(CASING_INDEX)
-                                                                                       .dot(1)
-                                                                                       .buildAndChain(
-                                                                                               onElementPass(
-                                                                                                       GT_MetaTileEntity_PyrolyseOven::onCasingAdded,
-                                                                                                       tCasingElement)))
-                                  .build();
+            .addShape(
+                "main",
+                transpose(
+                    new String[][] { { "ccccc", "ctttc", "ctttc", "ctttc", "ccccc" },
+                        { "ccccc", "c---c", "c---c", "c---c", "ccccc" },
+                        { "ccccc", "c---c", "c---c", "c---c", "ccccc" },
+                        { "bb~bb", "bCCCb", "bCCCb", "bCCCb", "bbbbb" }, }))
+            .addElement('c', onElementPass(GT_MetaTileEntity_PyrolyseOven::onCasingAdded, tCasingElement))
+            .addElement(
+                'C',
+                ofCoil(GT_MetaTileEntity_PyrolyseOven::setCoilLevel, GT_MetaTileEntity_PyrolyseOven::getCoilLevel))
+            .addElement(
+                'b',
+                buildHatchAdder(GT_MetaTileEntity_PyrolyseOven.class)
+                    .atLeast(OutputBus, OutputHatch, Energy, Maintenance)
+                    .casingIndex(CASING_INDEX)
+                    .dot(1)
+                    .buildAndChain(onElementPass(GT_MetaTileEntity_PyrolyseOven::onCasingAdded, tCasingElement)))
+            .addElement(
+                't',
+                buildHatchAdder(GT_MetaTileEntity_PyrolyseOven.class).atLeast(InputBus, InputHatch, Muffler)
+                    .casingIndex(CASING_INDEX)
+                    .dot(1)
+                    .buildAndChain(onElementPass(GT_MetaTileEntity_PyrolyseOven::onCasingAdded, tCasingElement)))
+            .build();
     }
 
     private int mCasingAmount;
@@ -113,52 +95,50 @@ public class GT_MetaTileEntity_PyrolyseOven extends
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Coke Oven")
-          .addInfo("Controller block for the Pyrolyse Oven")
-          .addInfo("Industrial Charcoal producer")
-          .addInfo("Processing speed scales linearly with Coil tier:")
-          .addInfo("CuNi: 50%, FeAlCr: 100%, Ni4Cr: 150%, TPV: 200%, etc.")
-          .addInfo("EU/t is not affected by Coil tier")
-          .addPollutionAmount(getPollutionPerSecond(null))
-          .addSeparator()
-          .beginStructureBlock(5, 4, 5, true)
-          .addController("Front center")
-          .addCasingInfoRange("Pyrolyse Oven Casing", 60, 80, false)
-          .addOtherStructurePart("Heating Coils", "Center 3x1x3 of the bottom layer")
-          .addEnergyHatch("Any bottom layer casing", 1)
-          .addMaintenanceHatch("Any bottom layer casing", 1)
-          .addMufflerHatch("Center 3x1x3 area in top layer", 2)
-          .addInputBus("Center 3x1x3 area in top layer", 2)
-          .addInputHatch("Center 3x1x3 area in top layer", 2)
-          .addOutputBus("Any bottom layer casing", 1)
-          .addOutputHatch("Any bottom layer casing", 1)
-          .toolTipFinisher("Gregtech");
+            .addInfo("Controller block for the Pyrolyse Oven")
+            .addInfo("Industrial Charcoal producer")
+            .addInfo("Processing speed scales linearly with Coil tier:")
+            .addInfo("CuNi: 50%, FeAlCr: 100%, Ni4Cr: 150%, TPV: 200%, etc.")
+            .addInfo("EU/t is not affected by Coil tier")
+            .addPollutionAmount(getPollutionPerSecond(null))
+            .addSeparator()
+            .beginStructureBlock(5, 4, 5, true)
+            .addController("Front center")
+            .addCasingInfoRange("Pyrolyse Oven Casing", 60, 80, false)
+            .addOtherStructurePart("Heating Coils", "Center 3x1x3 of the bottom layer")
+            .addEnergyHatch("Any bottom layer casing", 1)
+            .addMaintenanceHatch("Any bottom layer casing", 1)
+            .addMufflerHatch("Center 3x1x3 area in top layer", 2)
+            .addInputBus("Center 3x1x3 area in top layer", 2)
+            .addInputHatch("Center 3x1x3 area in top layer", 2)
+            .addOutputBus("Any bottom layer casing", 1)
+            .addOutputHatch("Any bottom layer casing", 1)
+            .toolTipFinisher("Gregtech");
         return tt;
     }
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-            boolean aActive, boolean aRedstone) {
+        boolean aActive, boolean aRedstone) {
         if (aSide == aFacing) {
             if (aActive) return new ITexture[] { BlockIcons.casingTexturePages[8][66], TextureFactory.builder()
-                                                                                                     .addIcon(
-                                                                                                             OVERLAY_FRONT_PYROLYSE_OVEN_ACTIVE)
-                                                                                                     .extFacing()
-                                                                                                     .build(),
-                    TextureFactory.builder()
-                                  .addIcon(OVERLAY_FRONT_PYROLYSE_OVEN_ACTIVE_GLOW)
-                                  .extFacing()
-                                  .glow()
-                                  .build() };
+                .addIcon(OVERLAY_FRONT_PYROLYSE_OVEN_ACTIVE)
+                .extFacing()
+                .build(),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_PYROLYSE_OVEN_ACTIVE_GLOW)
+                    .extFacing()
+                    .glow()
+                    .build() };
             return new ITexture[] { BlockIcons.casingTexturePages[8][66], TextureFactory.builder()
-                                                                                        .addIcon(
-                                                                                                OVERLAY_FRONT_PYROLYSE_OVEN)
-                                                                                        .extFacing()
-                                                                                        .build(),
-                    TextureFactory.builder()
-                                  .addIcon(OVERLAY_FRONT_PYROLYSE_OVEN_GLOW)
-                                  .extFacing()
-                                  .glow()
-                                  .build() };
+                .addIcon(OVERLAY_FRONT_PYROLYSE_OVEN)
+                .extFacing()
+                .build(),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_PYROLYSE_OVEN_GLOW)
+                    .extFacing()
+                    .glow()
+                    .build() };
         }
         return new ITexture[] { Textures.BlockIcons.casingTexturePages[8][66] };
     }
@@ -196,29 +176,25 @@ public class GT_MetaTileEntity_PyrolyseOven extends
                 // We're locked to a single recipe, but haven't built the recipe checker yet.
                 // Build the checker on next successful recipe.
                 tSingleRecipeCheckBuilder = GT_Single_Recipe_Check.builder(this)
-                                                                  .setBefore();
+                    .setBefore(tInputs, tFluids);
             }
 
-            tRecipe = GT_Recipe.GT_Recipe_Map.sPyrolyseRecipes.findRecipe(
-                    getBaseMetaTileEntity(),
-                    false,
-                    gregtech.api.enums.GT_Values.V[tTier],
-                    tFluids,
-                    tInputs);
+            tRecipe = GT_Recipe.GT_Recipe_Map.sPyrolyseRecipes
+                .findRecipe(getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], tFluids, tInputs);
 
             if (tRecipe == null || !tRecipe.isRecipeInputEqual(true, tFluids, tInputs)) return false;
 
             if (mLockedToSingleRecipe) {
-                mSingleRecipeCheck = tSingleRecipeCheckBuilder.setAfter()
-                                                              .setRecipe(tRecipe)
-                                                              .build();
+                mSingleRecipeCheck = tSingleRecipeCheckBuilder.setAfter(tInputs, tFluids)
+                    .setRecipe(tRecipe)
+                    .build();
             }
         }
 
         this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
         this.mEfficiencyIncrease = 10000;
 
-        calculateOverclockedNessMulti(tRecipe.mEUt, tRecipe.mDuration, 1, tVoltage);
+        calculateOverclockedNessMultiInternal(tRecipe.mEUt, tRecipe.mDuration, 1, tVoltage, false);
         // In case recipe is too OP for that machine
         if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1) return false;
         if (this.mEUt > 0) this.mEUt = (-this.mEUt);
@@ -252,8 +228,8 @@ public class GT_MetaTileEntity_PyrolyseOven extends
         mCasingAmount = 0;
         replaceDeprecatedCoils(aBaseMetaTileEntity);
         return checkPiece("main", 2, 3, 0) && mCasingAmount >= 60
-                && mMaintenanceHatches.size() == 1
-                && !mMufflerHatches.isEmpty();
+            && mMaintenanceHatches.size() == 1
+            && !mMufflerHatches.isEmpty();
     }
 
     @Override
@@ -295,9 +271,9 @@ public class GT_MetaTileEntity_PyrolyseOven extends
         for (int xPos = tX - 1; xPos <= tX + 1; xPos++) {
             for (int zPos = tZ - 1; zPos <= tZ + 1; zPos++) {
                 if (aBaseMetaTileEntity.getBlock(xPos, tY, zPos) == GregTech_API.sBlockCasings1
-                        && aBaseMetaTileEntity.getMetaID(xPos, tY, zPos) == 13) {
+                    && aBaseMetaTileEntity.getMetaID(xPos, tY, zPos) == 13) {
                     aBaseMetaTileEntity.getWorld()
-                                       .setBlock(xPos, tY, zPos, GregTech_API.sBlockCasings5, 1, 3);
+                        .setBlock(xPos, tY, zPos, GregTech_API.sBlockCasings5, 1, 3);
                 }
             }
         }

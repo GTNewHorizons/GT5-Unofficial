@@ -33,12 +33,12 @@ public class GenerateNodeMapPower extends GenerateNodeMap {
     @Override
     protected boolean isPipe(TileEntity aTileEntity) {
         return super.isPipe(aTileEntity)
-                && ((BaseMetaPipeEntity) aTileEntity).getMetaTileEntity() instanceof GT_MetaPipeEntity_Cable;
+            && ((BaseMetaPipeEntity) aTileEntity).getMetaTileEntity() instanceof GT_MetaPipeEntity_Cable;
     }
 
     @Override
     protected boolean addConsumer(TileEntity aTileEntity, byte aSide, int aNodeValue,
-            ArrayList<ConsumerNode> aConsumers) {
+        ArrayList<ConsumerNode> aConsumers) {
         if (aTileEntity instanceof BaseMetaTileEntity tBaseTileEntity) {
             if (tBaseTileEntity.inputEnergyFrom(aSide, false)) {
                 ConsumerNode tConsumerNode = new NodeGTBaseMetaTile(aNodeValue, tBaseTileEntity, aSide, aConsumers);
@@ -61,25 +61,25 @@ public class GenerateNodeMapPower extends GenerateNodeMap {
             boolean crossesChuncks = dX >> 4 != aTileEntity.xCoord >> 4 || dZ >> 4 != aTileEntity.zCoord >> 4;
             TileEntity tNextTo = null;
             if (!crossesChuncks || !aTileEntity.getWorldObj()
-                                               .blockExists(dX, dY, dZ))
+                .blockExists(dX, dY, dZ))
                 tNextTo = aTileEntity.getWorldObj()
-                                     .getTileEntity(dX, dY, dZ);
+                    .getTileEntity(dX, dY, dZ);
 
             if (((IEnergySink) aTileEntity).acceptsEnergyFrom(tNextTo, ForgeDirection.getOrientation(aSide))) {
                 ConsumerNode tConsumerNode = new NodeEnergySink(
-                        aNodeValue,
-                        (IEnergySink) aTileEntity,
-                        aSide,
-                        aConsumers);
+                    aNodeValue,
+                    (IEnergySink) aTileEntity,
+                    aSide,
+                    aConsumers);
                 aConsumers.add(tConsumerNode);
                 return true;
             }
         } else if (GregTech_API.mOutputRF && aTileEntity instanceof IEnergyReceiver) {
             ConsumerNode tConsumerNode = new NodeEnergyReceiver(
-                    aNodeValue,
-                    (IEnergyReceiver) aTileEntity,
-                    aSide,
-                    aConsumers);
+                aNodeValue,
+                (IEnergyReceiver) aTileEntity,
+                aSide,
+                aConsumers);
             aConsumers.add(tConsumerNode);
             return true;
         }
@@ -94,7 +94,7 @@ public class GenerateNodeMapPower extends GenerateNodeMap {
     // used to apply voltage on dead ends
     @Override
     protected Node getEmptyNode(int aNodeValue, byte aSide, TileEntity aTileEntity,
-            ArrayList<ConsumerNode> aConsumers) {
+        ArrayList<ConsumerNode> aConsumers) {
         ConsumerNode tNode = new EmptyPowerConsumer(aNodeValue, aTileEntity, aSide, aConsumers);
         aConsumers.add(tNode);
         return tNode;

@@ -23,7 +23,7 @@ public class GT_CoverUIBuildContext extends UIBuildContext {
      * @param guiColorization The color used to render machine's GUI
      */
     public GT_CoverUIBuildContext(EntityPlayer player, int coverID, byte side, ICoverable tile, boolean anotherWindow,
-            int guiColorization) {
+        int guiColorization) {
         super(player);
         this.coverID = coverID;
         this.side = side;

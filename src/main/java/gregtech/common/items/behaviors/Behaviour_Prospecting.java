@@ -31,9 +31,8 @@ public class Behaviour_Prospecting extends Behaviour_None {
 
     private final int mVanillaCosts;
     private final int mEUCosts;
-    private final String mTooltip = GT_LanguageManager.addStringLocalization(
-            "gt.behaviour.prospecting",
-            "Usable for Prospecting");
+    private final String mTooltip = GT_LanguageManager
+        .addStringLocalization("gt.behaviour.prospecting", "Usable for Prospecting");
 
     public Behaviour_Prospecting(int aVanillaCosts, int aEUCosts) {
         this.mVanillaCosts = aVanillaCosts;
@@ -42,7 +41,7 @@ public class Behaviour_Prospecting extends Behaviour_None {
 
     @Override
     public boolean onItemUseFirst(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,
-            int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
+        int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
         if (aWorld.isRemote) {
             return false;
         }
@@ -54,26 +53,26 @@ public class Behaviour_Prospecting extends Behaviour_None {
 
         ItemData tAssociation = GT_OreDictUnificator.getAssociation(new ItemStack(aBlock, 1, aMeta));
         if (tAssociation != null && tAssociation.mPrefix != null
-                && tAssociation.mMaterial != null
-                && tAssociation.mPrefix.toString()
-                                       .startsWith("ore")) {
+            && tAssociation.mMaterial != null
+            && tAssociation.mPrefix.toString()
+                .startsWith("ore")) {
             GT_Utility.sendChatToPlayer(
-                    aPlayer,
-                    GT_Utility.trans("100", "This is ") + tAssociation.mMaterial.mMaterial.mDefaultLocalName
-                            + GT_Utility.trans("101", " Ore."));
+                aPlayer,
+                GT_Utility.trans("100", "This is ") + tAssociation.mMaterial.mMaterial.mDefaultLocalName
+                    + GT_Utility.trans("101", " Ore."));
             GT_Utility.sendSoundToPlayers(aWorld, SoundResource.RANDOM_ANVIL_USE, 1.0F, -1.0F, aX, aY, aZ);
             return true;
         }
 
         if (aBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, Blocks.stone)
-                || aBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, Blocks.netherrack)
-                || aBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, Blocks.end_stone)
-                || aBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, GregTech_API.sBlockStones)
-                || aBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, GregTech_API.sBlockGranites)
-                || aBlock == GregTech_API.sBlockOresUb1
-                || aBlock == GregTech_API.sBlockOresUb2
-                || aBlock == GregTech_API.sBlockOresUb3
-                || aBlock == GregTech_API.sBlockOres1) {
+            || aBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, Blocks.netherrack)
+            || aBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, Blocks.end_stone)
+            || aBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, GregTech_API.sBlockStones)
+            || aBlock.isReplaceableOreGen(aWorld, aX, aY, aZ, GregTech_API.sBlockGranites)
+            || aBlock == GregTech_API.sBlockOresUb1
+            || aBlock == GregTech_API.sBlockOresUb2
+            || aBlock == GregTech_API.sBlockOresUb3
+            || aBlock == GregTech_API.sBlockOres1) {
             if (GT_ModHandler.damageOrDechargeItem(aStack, this.mVanillaCosts, this.mEUCosts, aPlayer)) {
                 GT_Utility.sendSoundToPlayers(aWorld, SoundResource.RANDOM_ANVIL_USE, 1.0F, -1.0F, aX, aY, aZ);
                 int tMetaID;
@@ -87,27 +86,25 @@ public class Behaviour_Prospecting extends Behaviour_None {
 
                     tBlock = aWorld.getBlock(tX, tY, tZ);
                     if (tBlock == Blocks.lava || tBlock == Blocks.flowing_lava) {
-                        GT_Utility.sendChatToPlayer(
-                                aPlayer,
-                                GT_Utility.trans("102", "There is Lava behind this Rock."));
+                        GT_Utility
+                            .sendChatToPlayer(aPlayer, GT_Utility.trans("102", "There is Lava behind this Rock."));
                         break;
                     }
                     if (tBlock instanceof BlockLiquid || tBlock instanceof IFluidBlock) {
-                        GT_Utility.sendChatToPlayer(
-                                aPlayer,
-                                GT_Utility.trans("103", "There is a Liquid behind this Rock."));
+                        GT_Utility
+                            .sendChatToPlayer(aPlayer, GT_Utility.trans("103", "There is a Liquid behind this Rock."));
                         break;
                     }
                     if (tBlock == Blocks.monster_egg || !GT_Utility.hasBlockHitBox(aWorld, tX, tY, tZ)) {
                         GT_Utility.sendChatToPlayer(
-                                aPlayer,
-                                GT_Utility.trans("104", "There is an Air Pocket behind this Rock."));
+                            aPlayer,
+                            GT_Utility.trans("104", "There is an Air Pocket behind this Rock."));
                         break;
                     }
                     if (tBlock != aBlock) {
                         if (i < 4) GT_Utility.sendChatToPlayer(
-                                aPlayer,
-                                GT_Utility.trans("105", "Material is changing behind this Rock."));
+                            aPlayer,
+                            GT_Utility.trans("105", "Material is changing behind this Rock."));
                         break;
                     }
                 }
@@ -122,12 +119,12 @@ public class Behaviour_Prospecting extends Behaviour_None {
                         TileEntity tTileEntity = aWorld.getTileEntity(tX, tY, tZ);
                         if (tTileEntity instanceof GT_TileEntity_Ores) {
                             Materials tMaterial = GregTech_API.sGeneratedMaterials[((GT_TileEntity_Ores) tTileEntity).mMetaData
-                                    % 1000];
+                                % 1000];
                             if (tMaterial != null && tMaterial != Materials._NULL) {
                                 GT_Utility.sendChatToPlayer(
-                                        aPlayer,
-                                        GT_Utility.trans("106", "Found traces of ") + tMaterial.mDefaultLocalName
-                                                + GT_Utility.trans("101", " Ore."));
+                                    aPlayer,
+                                    GT_Utility.trans("106", "Found traces of ") + tMaterial.mDefaultLocalName
+                                        + GT_Utility.trans("101", " Ore."));
                                 return true;
                             }
                         }
@@ -135,14 +132,14 @@ public class Behaviour_Prospecting extends Behaviour_None {
                         tMetaID = aWorld.getBlockMetadata(tX, tY, tZ);
                         tAssociation = GT_OreDictUnificator.getAssociation(new ItemStack(tBlock, 1, tMetaID));
                         if (tAssociation != null && tAssociation.mPrefix != null
-                                && tAssociation.mMaterial != null
-                                && tAssociation.mPrefix.toString()
-                                                       .startsWith("ore")) {
+                            && tAssociation.mMaterial != null
+                            && tAssociation.mPrefix.toString()
+                                .startsWith("ore")) {
                             GT_Utility.sendChatToPlayer(
-                                    aPlayer,
-                                    GT_Utility.trans("106", "Found traces of ")
-                                            + tAssociation.mMaterial.mMaterial.mDefaultLocalName
-                                            + GT_Utility.trans("101", " Ore."));
+                                aPlayer,
+                                GT_Utility.trans("106", "Found traces of ")
+                                    + tAssociation.mMaterial.mMaterial.mDefaultLocalName
+                                    + GT_Utility.trans("101", " Ore."));
                             return true;
                         }
                     }

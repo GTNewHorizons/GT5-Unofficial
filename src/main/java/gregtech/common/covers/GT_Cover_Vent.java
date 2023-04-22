@@ -29,13 +29,13 @@ public class GT_Cover_Vent extends GT_CoverBehavior {
 
     @Override
     public boolean isRedstoneSensitive(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
-            long aTimer) {
+        long aTimer) {
         return false;
     }
 
     @Override
     public int doCoverThings(byte aSide, byte aInputRedstone, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
-            long aTimer) {
+        long aTimer) {
         if (aSide == SIDE_UNKNOWN) return 0;
         int ret = 0;
         if (aTileEntity instanceof IFluidHandler) {
@@ -63,7 +63,7 @@ public class GT_Cover_Vent extends GT_CoverBehavior {
         final int offsetZ = aTileEntity.getOffsetZ(aSide, 1);
         final World world = aTileEntity.getWorld();
         if (aTileEntity.hasThingsToDo() && aCoverVariable != aTileEntity.getProgress()
-                && !GT_Utility.hasBlockHitBox(world, offsetX, offsetY, offsetZ)) {
+            && !GT_Utility.hasBlockHitBox(world, offsetX, offsetY, offsetZ)) {
             aTileEntity.increaseProgress(this.mEfficiency);
         }
         return aTileEntity.getProgress();
@@ -85,14 +85,14 @@ public class GT_Cover_Vent extends GT_CoverBehavior {
         }
         if (blockAtSide == Blocks.water || blockAtSide == Blocks.flowing_water) {
             chances = switch (mEfficiency) {
-                case 2 -> 10000; // 100% chances for Diamond reactor vent with water
-                case 1 -> 5000; // 50% chances for Gold and Overclocked reactor vents with water
+                case 3 -> 10000; // 100% chances for Diamond reactor vent with water
+                case 2 -> 5000; // 50% chances for Gold and Overclocked reactor vents with water
                 default -> 2500; // 25% chances for Basic reactor vent with water
             };
         } else if (blockAtSide.isAir(world, offsetX, offsetY, offsetZ)) {
             switch (mEfficiency) {
-                case 2 -> chances = 2500; // 25% chances for Diamond reactor vent with air
-                case 1 -> chances = 1250; // 12.5% chances for Gold and Overclocked reactor vents with air
+                case 3 -> chances = 2500; // 25% chances for Diamond reactor vent with air
+                case 2 -> chances = 1250; // 12.5% chances for Gold and Overclocked reactor vents with air
                 default -> {
                     return 0; // Basic reactor vent cannot be used with air
                 }

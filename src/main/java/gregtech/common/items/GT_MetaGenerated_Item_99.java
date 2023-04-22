@@ -36,12 +36,12 @@ public class GT_MetaGenerated_Item_99 extends GT_MetaGenerated_Item {
      * modification that can be made to this list is adding new entries to the end.
      */
     private static final ImmutableList<OrePrefixes> CRACKED_CELL_TYPES = ImmutableList.of(
-            OrePrefixes.cellHydroCracked1,
-            OrePrefixes.cellHydroCracked2,
-            OrePrefixes.cellHydroCracked3,
-            OrePrefixes.cellSteamCracked1,
-            OrePrefixes.cellSteamCracked2,
-            OrePrefixes.cellSteamCracked3);
+        OrePrefixes.cellHydroCracked1,
+        OrePrefixes.cellHydroCracked2,
+        OrePrefixes.cellHydroCracked3,
+        OrePrefixes.cellSteamCracked1,
+        OrePrefixes.cellSteamCracked2,
+        OrePrefixes.cellSteamCracked3);
 
     private static final int NUM_CRACKED_CELL_TYPES = CRACKED_CELL_TYPES.size();
 
@@ -62,10 +62,10 @@ public class GT_MetaGenerated_Item_99 extends GT_MetaGenerated_Item {
             }
 
             if ((tMaterial.contains(SubTag.SMELTING_TO_FLUID)) && (!tMaterial.contains(SubTag.NO_SMELTING))
-                    && !tMaterial.contains(SubTag.SMELTING_TO_GEM)) {
+                && !tMaterial.contains(SubTag.SMELTING_TO_GEM)) {
                 registerMolten(tMaterial, tMaterial.mMetaItemSubID);
                 if (tMaterial.mSmeltInto != tMaterial && tMaterial.mSmeltInto.mMetaItemSubID >= 0
-                        && tMaterial.mSmeltInto.mMetaItemSubID < 1_000) {
+                    && tMaterial.mSmeltInto.mMetaItemSubID < 1_000) {
                     registerMolten(tMaterial.mSmeltInto, tMaterial.mSmeltInto.mMetaItemSubID);
                 }
             }
@@ -85,11 +85,11 @@ public class GT_MetaGenerated_Item_99 extends GT_MetaGenerated_Item {
         enabled.set(i);
 
         GT_LanguageManager.addStringLocalization(
-                getUnlocalizedName(tStack) + ".name",
-                cellMolten.getDefaultLocalNameFormatForItem(tMaterial));
+            getUnlocalizedName(tStack) + ".name",
+            cellMolten.getDefaultLocalNameFormatForItem(tMaterial));
         GT_LanguageManager.addStringLocalization(
-                getUnlocalizedName(tStack) + ".tooltip",
-                tMaterial.getToolTip(cellMolten.mMaterialAmount / M));
+            getUnlocalizedName(tStack) + ".tooltip",
+            tMaterial.getToolTip(cellMolten.mMaterialAmount / M));
 
         if (cellMolten.mIsUnificatable) {
             GT_OreDictUnificator.set(cellMolten, tMaterial, tStack);
@@ -105,11 +105,11 @@ public class GT_MetaGenerated_Item_99 extends GT_MetaGenerated_Item {
             enabled.set(offset + i);
 
             GT_LanguageManager.addStringLocalization(
-                    getUnlocalizedName(tStack) + ".name",
-                    prefix.getDefaultLocalNameFormatForItem(tMaterial));
+                getUnlocalizedName(tStack) + ".name",
+                prefix.getDefaultLocalNameFormatForItem(tMaterial));
             GT_LanguageManager.addStringLocalization(
-                    getUnlocalizedName(tStack) + ".tooltip",
-                    tMaterial.getToolTip(prefix.mMaterialAmount / M));
+                getUnlocalizedName(tStack) + ".tooltip",
+                tMaterial.getToolTip(prefix.mMaterialAmount / M));
 
             if (prefix.mIsUnificatable) {
                 GT_OreDictUnificator.set(prefix, tMaterial, tStack);
@@ -179,8 +179,8 @@ public class GT_MetaGenerated_Item_99 extends GT_MetaGenerated_Item {
     @SideOnly(Side.CLIENT)
     public void getSubItems(Item aItem, CreativeTabs aCreativeTab, List<ItemStack> aList) {
         enabled.stream()
-               .mapToObj(i -> new ItemStack(this, 1, i))
-               .forEach(aList::add);
+            .mapToObj(i -> new ItemStack(this, 1, i))
+            .forEach(aList::add);
     }
 
     @Override

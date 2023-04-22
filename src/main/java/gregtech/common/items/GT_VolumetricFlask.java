@@ -1,6 +1,6 @@
 package gregtech.common.items;
 
-import static gregtech.api.enums.GT_Values.RES_PATH_ITEM;
+import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.util.GT_Utility.formatNumbers;
 import static ic2.core.util.LiquidUtil.drainContainerStack;
 import static ic2.core.util.LiquidUtil.fillContainerStack;
@@ -77,7 +77,7 @@ public class GT_VolumetricFlask extends GT_Generic_Item implements IFluidContain
 
     @Override
     public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side,
-            float xOffset, float yOffset, float zOffset) {
+        float xOffset, float yOffset, float zOffset) {
         if (player instanceof FakePlayer) {
             return false;
         }
@@ -102,8 +102,8 @@ public class GT_VolumetricFlask extends GT_Generic_Item implements IFluidContain
             ForgeDirection dir = ForgeDirection.VALID_DIRECTIONS[mop.sideHit];
             FluidStack fluidStack = drainContainerStack(stack, player, 1000, true);
             if (placeFluid(fluidStack, world, x, y, z)
-                    || (player.canPlayerEdit(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ, mop.sideHit, stack)
-                            && placeFluid(fluidStack, world, x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ))) {
+                || (player.canPlayerEdit(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ, mop.sideHit, stack)
+                    && placeFluid(fluidStack, world, x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ))) {
                 if (!player.capabilities.isCreativeMode) drainContainerStack(stack, player, 1000, false);
                 return true;
             }
@@ -142,7 +142,7 @@ public class GT_VolumetricFlask extends GT_Generic_Item implements IFluidContain
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aIconRegister) {
         super.registerIcons(aIconRegister);
-        iconWindow = aIconRegister.registerIcon(RES_PATH_ITEM + "gt." + unlocalFlaskName + ".window");
+        iconWindow = aIconRegister.registerIcon(GregTech.getResourcePath("gt." + unlocalFlaskName + ".window"));
     }
 
     public void setCapacity(ItemStack stack, int capacity) {
@@ -229,7 +229,7 @@ public class GT_VolumetricFlask extends GT_Generic_Item implements IFluidContain
     public void getSubItems(Item item, CreativeTabs creativeTabs, List<ItemStack> itemList) {
         itemList.add(new ItemStack(this));
         for (Fluid fluid : FluidRegistry.getRegisteredFluids()
-                                        .values()) {
+            .values()) {
             if (fluid != null) {
                 ItemStack stack = new ItemStack(this);
                 setCapacity(stack, getMaxCapacity());
@@ -336,16 +336,16 @@ public class GT_VolumetricFlask extends GT_Generic_Item implements IFluidContain
                 }
             };
             textField.setText(
-                    String.valueOf(((GT_VolumetricFlask) getCurrentItem().getItem()).getCapacity(getCurrentItem())));
+                String.valueOf(((GT_VolumetricFlask) getCurrentItem().getItem()).getCapacity(getCurrentItem())));
             builder.widget(
-                    textField.setNumbers(() -> 1, () -> maxCapacity)
-                             .setPattern(BaseTextFieldWidget.NATURAL_NUMS)
-                             .setTextAlignment(Alignment.CenterLeft)
-                             .setTextColor(Color.WHITE.dark(1))
-                             .setFocusOnGuiOpen(true)
-                             .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD_LIGHT_GRAY.withOffset(-1, -1, 2, 2))
-                             .setPos(60, 55)
-                             .setSize(59, 12));
+                textField.setNumbers(() -> 1, () -> maxCapacity)
+                    .setPattern(BaseTextFieldWidget.NATURAL_NUMS)
+                    .setTextAlignment(Alignment.CenterLeft)
+                    .setTextColor(Color.WHITE.dark(1))
+                    .setFocusOnGuiOpen(true)
+                    .setBackground(GT_UITextures.BACKGROUND_TEXT_FIELD_LIGHT_GRAY.withOffset(-1, -1, 2, 2))
+                    .setPos(60, 55)
+                    .setSize(59, 12));
 
             addChangeAmountButton(builder, "+1", new Pos2d(20, 26), new Size(22, 20), val -> val + 1);
             addChangeAmountButton(builder, "+10", new Pos2d(48, 26), new Size(28, 20), val -> val + 10);
@@ -356,35 +356,34 @@ public class GT_VolumetricFlask extends GT_Generic_Item implements IFluidContain
             addChangeAmountButton(builder, "-100", new Pos2d(82, 75), new Size(32, 20), val -> val - 100);
             addChangeAmountButton(builder, "-1000", new Pos2d(120, 75), new Size(38, 20), val -> val - 1000);
             builder.widget(
-                    new VanillaButtonWidget().setDisplayString("Accept")
-                                             .setClickableGetter(
-                                                     () -> MathExpression.parseMathExpression(textField.getText()) > 0)
-                                             .setOnClick((clickData, widget) -> {
-                                                 if (widget.isClient()) {
-                                                     textField.onRemoveFocus();
-                                                 } else {
-                                                     widget.getWindow()
-                                                           .tryClose();
-                                                 }
-                                             })
-                                             .setPos(128, 51)
-                                             .setSize(38, 20));
+                new VanillaButtonWidget().setDisplayString("Accept")
+                    .setClickableGetter(() -> MathExpression.parseMathExpression(textField.getText()) > 0)
+                    .setOnClick((clickData, widget) -> {
+                        if (widget.isClient()) {
+                            textField.onRemoveFocus();
+                        } else {
+                            widget.getWindow()
+                                .tryClose();
+                        }
+                    })
+                    .setPos(128, 51)
+                    .setSize(38, 20));
 
             return builder.build();
         }
 
         private void addChangeAmountButton(ModularWindow.Builder builder, String text, Pos2d pos, Size size,
-                Function<Integer, Integer> function) {
+            Function<Integer, Integer> function) {
             builder.widget(
-                    new VanillaButtonWidget().setDisplayString(text)
-                                             .setOnClick((clickData, widget) -> {
-                                                 String currentText = textField.getText();
-                                                 int amount = (int) MathExpression.parseMathExpression(currentText, 1);
-                                                 amount = Math.min(maxCapacity, Math.max(1, function.apply(amount)));
-                                                 textField.setText(String.valueOf(amount));
-                                             })
-                                             .setPos(pos)
-                                             .setSize(size));
+                new VanillaButtonWidget().setDisplayString(text)
+                    .setOnClick((clickData, widget) -> {
+                        String currentText = textField.getText();
+                        int amount = (int) MathExpression.parseMathExpression(currentText, 1);
+                        amount = Math.min(maxCapacity, Math.max(1, function.apply(amount)));
+                        textField.setText(String.valueOf(amount));
+                    })
+                    .setPos(pos)
+                    .setSize(size));
         }
 
         private ItemStack getCurrentItem() {

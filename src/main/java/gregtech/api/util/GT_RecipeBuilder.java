@@ -15,7 +15,9 @@ import gregtech.api.util.extensions.ArrayExt;
 
 public class GT_RecipeBuilder {
 
+    // debug mode expose problems. panic mode help you check nothing is wrong-ish without you actively monitoring
     private static final boolean DEBUG_MODE;
+    private static final boolean PANIC_MODE;
 
     public static final int WILDCARD = 32767;
 
@@ -34,15 +36,14 @@ public class GT_RecipeBuilder {
     public static final int BUCKETS = 1000;
 
     static {
-        boolean tmp;
-        try {
-            tmp = Boolean.parseBoolean(System.getProperty("gt.recipebuilder.debug"));
-        } catch (IllegalArgumentException | NullPointerException e) {
+        if (System.getProperties()
+            .containsKey("gt.recipebuilder.debug")) {
+            DEBUG_MODE = Boolean.getBoolean("gt.recipebuilder.debug");
+        } else {
             // turn on debug by default in dev mode
-            // this will be overridden if above property is present and set to false
-            tmp = (Boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
+            DEBUG_MODE = (Boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
         }
-        DEBUG_MODE = tmp;
+        PANIC_MODE = DEBUG_MODE && Boolean.getBoolean("gt.recipebuilder.panic");
     }
 
     protected ItemStack[] inputsBasic;
@@ -69,10 +70,10 @@ public class GT_RecipeBuilder {
     GT_RecipeBuilder() {}
 
     private GT_RecipeBuilder(ItemStack[] inputsBasic, Object[] inputsOreDict, ItemStack[] outputs, ItemStack[][] alts,
-            FluidStack[] fluidInputs, FluidStack[] fluidOutputs, int[] chances, Object special, int duration, int eut,
-            int specialValue, boolean enabled, boolean hidden, boolean fakeRecipe, boolean mCanBeBuffered,
-            boolean mNeedsEmptyOutput, String[] neiDesc, boolean optimize,
-            Map<MetadataIdentifier<?>, Object> additionalData) {
+        FluidStack[] fluidInputs, FluidStack[] fluidOutputs, int[] chances, Object special, int duration, int eut,
+        int specialValue, boolean enabled, boolean hidden, boolean fakeRecipe, boolean mCanBeBuffered,
+        boolean mNeedsEmptyOutput, String[] neiDesc, boolean optimize,
+        Map<MetadataIdentifier<?>, Object> additionalData) {
         this.inputsBasic = inputsBasic;
         this.inputsOreDict = inputsOreDict;
         this.outputs = outputs;
@@ -96,9 +97,9 @@ public class GT_RecipeBuilder {
 
     private static FluidStack[] fix(FluidStack[] fluidInputs) {
         return Arrays.stream(fluidInputs)
-                     .filter(Objects::nonNull)
-                     .map(GT_FluidStack::new)
-                     .toArray(FluidStack[]::new);
+            .filter(Objects::nonNull)
+            .map(GT_FluidStack::new)
+            .toArray(FluidStack[]::new);
     }
 
     private static ItemStack[] fix(ItemStack[] inputs) {
@@ -109,10 +110,27 @@ public class GT_RecipeBuilder {
         return new GT_RecipeBuilder();
     }
 
+    private static boolean containsNull(Object[] arr) {
+        return arr == null || Arrays.stream(arr)
+            .anyMatch(Objects::isNull);
+    }
+
+    private static void handleNullRecipeComponents(String componentType) {
+        if (PANIC_MODE) {
+            throw new IllegalArgumentException("null in argument");
+        } else {
+            // place a breakpoint here to catch all these issues
+            GT_Log.err.print("null detected in ");
+            GT_Log.err.println(componentType);
+            new NullPointerException().printStackTrace(GT_Log.err);
+        }
+    }
+
     /**
      * Non-OreDicted item inputs. Assumes input is unified.
      */
     public GT_RecipeBuilder itemInputsUnified(ItemStack... inputs) {
+        if (DEBUG_MODE && containsNull(inputs)) handleNullRecipeComponents("itemInputUnified");
         inputsBasic = ArrayExt.withoutTrailingNulls(inputs, ItemStack[]::new);
         inputsOreDict = null;
         alts = null;
@@ -123,6 +141,7 @@ public class GT_RecipeBuilder {
      * Non-OreDicted item inputs. Assumes input is not unified.
      */
     public GT_RecipeBuilder itemInputs(ItemStack... inputs) {
+        if (DEBUG_MODE && containsNull(inputs)) handleNullRecipeComponents("itemInputs");
         inputsBasic = fix(inputs);
         inputsOreDict = null;
         alts = null;
@@ -147,25 +166,19 @@ public class GT_RecipeBuilder {
                 if (ores.isEmpty()) continue;
                 int size = ((Number) arr[1]).intValue();
                 alts[i] = ores.stream()
-                              .map(s -> GT_Utility.copyAmount(size, s))
-                              .filter(GT_Utility::isStackValid)
-                              .toArray(ItemStack[]::new);
+                    .map(s -> GT_Utility.copyAmount(size, s))
+                    .filter(GT_Utility::isStackValid)
+                    .toArray(ItemStack[]::new);
             } else if (input == null) {
-                if (DEBUG_MODE) {
-                    throw new NullPointerException();
-                } else {
-                    GT_Log.err.printf(
-                            "null detected in recipe oredict input. ignoring. %s%n",
-                            new NullPointerException());
-                    alts[i] = new ItemStack[0];
-                }
+                handleNullRecipeComponents("recipe oredict input");
+                alts[i] = new ItemStack[0];
             } else {
                 throw new IllegalArgumentException("index " + i + ", unexpected type: " + input.getClass());
             }
         }
         inputsBasic = Arrays.stream(alts)
-                            .map(ss -> ss.length > 0 ? ss[0] : null)
-                            .toArray(ItemStack[]::new);
+            .map(ss -> ss.length > 0 ? ss[0] : null)
+            .toArray(ItemStack[]::new);
         // optimize cannot handle recipes with alts
         return noOptimize();
     }
@@ -182,7 +195,22 @@ public class GT_RecipeBuilder {
     }
 
     public GT_RecipeBuilder itemOutputs(ItemStack... outputs) {
+        if (DEBUG_MODE && containsNull(outputs)) handleNullRecipeComponents("itemOutputs");
         this.outputs = outputs;
+        if (chances != null && chances.length != outputs.length) {
+            throw new IllegalArgumentException("Output chances array and items array length differs");
+        }
+        return this;
+    }
+
+    /**
+     * Not intended to be used by recipe authors.
+     * Intended for recipe rewrite middlewares.
+     */
+    public GT_RecipeBuilder itemOutputs(ItemStack[] outputs, int[] chances) {
+        if (DEBUG_MODE && containsNull(outputs)) handleNullRecipeComponents("itemOutputs");
+        this.outputs = outputs;
+        this.chances = chances;
         if (chances != null && chances.length != outputs.length) {
             throw new IllegalArgumentException("Output chances array and items array length differs");
         }
@@ -194,6 +222,7 @@ public class GT_RecipeBuilder {
     }
 
     public GT_RecipeBuilder fluidInputs(FluidStack... fluidInputs) {
+        if (DEBUG_MODE && containsNull(fluidInputs)) handleNullRecipeComponents("fluidInputs");
         this.fluidInputs = fix(fluidInputs);
         return this;
     }
@@ -203,6 +232,7 @@ public class GT_RecipeBuilder {
     }
 
     public GT_RecipeBuilder fluidOutputs(FluidStack... fluidOutputs) {
+        if (DEBUG_MODE && containsNull(fluidOutputs)) handleNullRecipeComponents("fluidOutputs");
         this.fluidOutputs = fix(fluidOutputs);
         return this;
     }
@@ -238,6 +268,11 @@ public class GT_RecipeBuilder {
 
     public GT_RecipeBuilder duration(int duration) {
         this.duration = duration;
+        return this;
+    }
+
+    public GT_RecipeBuilder duration(long duration) {
+        this.duration = (int) duration;
         return this;
     }
 
@@ -336,25 +371,25 @@ public class GT_RecipeBuilder {
      */
     public GT_RecipeBuilder copy() {
         return new GT_RecipeBuilder(
-                copy(inputsBasic),
-                copy(inputsOreDict),
-                copy(outputs),
-                copy(alts),
-                copy(fluidInputs),
-                copy(fluidOutputs),
-                copy(chances),
-                special,
-                duration,
-                eut,
-                specialValue,
-                enabled,
-                hidden,
-                fakeRecipe,
-                mCanBeBuffered,
-                mNeedsEmptyOutput,
-                neiDesc,
-                optimize,
-                additionalData);
+            copy(inputsBasic),
+            copy(inputsOreDict),
+            copy(outputs),
+            copy(alts),
+            copy(fluidInputs),
+            copy(fluidOutputs),
+            copy(chances),
+            special,
+            duration,
+            eut,
+            specialValue,
+            enabled,
+            hidden,
+            fakeRecipe,
+            mCanBeBuffered,
+            mNeedsEmptyOutput,
+            neiDesc,
+            optimize,
+            additionalData);
     }
 
     /**
@@ -362,25 +397,25 @@ public class GT_RecipeBuilder {
      */
     public GT_RecipeBuilder copyNoMetadata() {
         return new GT_RecipeBuilder(
-                copy(inputsBasic),
-                copy(inputsOreDict),
-                copy(outputs),
-                copy(alts),
-                copy(fluidInputs),
-                copy(fluidOutputs),
-                copy(chances),
-                special,
-                duration,
-                eut,
-                specialValue,
-                enabled,
-                hidden,
-                fakeRecipe,
-                mCanBeBuffered,
-                mNeedsEmptyOutput,
-                neiDesc,
-                optimize,
-                Collections.emptyMap());
+            copy(inputsBasic),
+            copy(inputsOreDict),
+            copy(outputs),
+            copy(alts),
+            copy(fluidInputs),
+            copy(fluidOutputs),
+            copy(chances),
+            special,
+            duration,
+            eut,
+            specialValue,
+            enabled,
+            hidden,
+            fakeRecipe,
+            mCanBeBuffered,
+            mNeedsEmptyOutput,
+            neiDesc,
+            optimize,
+            Collections.emptyMap());
     }
 
     public ItemStack getItemInputBasic(int index) {
@@ -427,6 +462,10 @@ public class GT_RecipeBuilder {
         return duration;
     }
 
+    public int[] getChances() {
+        return chances;
+    }
+
     public int getEUt() {
         return eut;
     }
@@ -466,7 +505,7 @@ public class GT_RecipeBuilder {
      * unset. Both bound inclusive. Only supposed to be called by IGT_RecipeMap and not client code.
      */
     public GT_RecipeBuilder validateNoInputFluid() {
-        return GT_Utility.isArrayEmptyOrNull(fluidInputs) ? noItemInputs() : invalidate();
+        return GT_Utility.isArrayEmptyOrNull(fluidInputs) ? noFluidInputs() : invalidate();
     }
 
     /**
@@ -482,7 +521,7 @@ public class GT_RecipeBuilder {
      * unset. Both bound inclusive. Only supposed to be called by IGT_RecipeMap and not client code.
      */
     public GT_RecipeBuilder validateNoOutputFluid() {
-        return GT_Utility.isArrayEmptyOrNull(fluidOutputs) ? noItemInputs() : invalidate();
+        return GT_Utility.isArrayEmptyOrNull(fluidOutputs) ? noFluidOutputs() : invalidate();
     }
 
     /**
@@ -546,23 +585,23 @@ public class GT_RecipeBuilder {
         preBuildChecks();
         optimize();
         return Optional.of(
-                decorate(
-                        new GT_Recipe(
-                                inputsBasic,
-                                outputs,
-                                fluidInputs,
-                                fluidOutputs,
-                                chances,
-                                special,
-                                duration,
-                                eut,
-                                specialValue,
-                                enabled,
-                                hidden,
-                                fakeRecipe,
-                                mCanBeBuffered,
-                                mNeedsEmptyOutput,
-                                neiDesc)));
+            decorate(
+                new GT_Recipe(
+                    inputsBasic,
+                    outputs,
+                    fluidInputs,
+                    fluidOutputs,
+                    chances,
+                    special,
+                    duration,
+                    eut,
+                    specialValue,
+                    enabled,
+                    hidden,
+                    fakeRecipe,
+                    mCanBeBuffered,
+                    mNeedsEmptyOutput,
+                    neiDesc)));
     }
 
     public GT_RecipeBuilder forceOreDictInput() {
@@ -578,24 +617,24 @@ public class GT_RecipeBuilder {
         preBuildChecks();
         // no optimize.
         return Optional.of(
-                decorate(
-                        new GT_Recipe.GT_Recipe_WithAlt(
-                                inputsBasic,
-                                outputs,
-                                fluidInputs,
-                                fluidOutputs,
-                                chances,
-                                special,
-                                duration,
-                                eut,
-                                specialValue,
-                                enabled,
-                                hidden,
-                                fakeRecipe,
-                                mCanBeBuffered,
-                                mNeedsEmptyOutput,
-                                neiDesc,
-                                alts)));
+            decorate(
+                new GT_Recipe.GT_Recipe_WithAlt(
+                    inputsBasic,
+                    outputs,
+                    fluidInputs,
+                    fluidOutputs,
+                    chances,
+                    special,
+                    duration,
+                    eut,
+                    specialValue,
+                    enabled,
+                    hidden,
+                    fakeRecipe,
+                    mCanBeBuffered,
+                    mNeedsEmptyOutput,
+                    neiDesc,
+                    alts)));
     }
 
     private void preBuildChecks() {
@@ -679,8 +718,8 @@ public class GT_RecipeBuilder {
 
     public final static class MetadataIdentifier<T> {
 
-        private static final Map<MetadataIdentifier<?>, MetadataIdentifier<?>> allIdentifiers = Collections.synchronizedMap(
-                new HashMap<>());
+        private static final Map<MetadataIdentifier<?>, MetadataIdentifier<?>> allIdentifiers = Collections
+            .synchronizedMap(new HashMap<>());
         private final Class<T> clazz;
         private final String identifier;
 

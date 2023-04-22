@@ -34,7 +34,7 @@ public class GT_Packet_GtTileEntityGuiRequest extends GT_Packet_New {
     }
 
     public GT_Packet_GtTileEntityGuiRequest(int mX, short mY, int mZ, int guiId, int dimID, int playerID,
-            int parentGuiId) {
+        int parentGuiId) {
         super(false);
         this.mX = mX;
         this.mY = mY;
@@ -69,13 +69,13 @@ public class GT_Packet_GtTileEntityGuiRequest extends GT_Packet_New {
     @Override
     public GT_Packet_New decode(ByteArrayDataInput aData) {
         return new GT_Packet_GtTileEntityGuiRequest(
-                aData.readInt(),
-                aData.readShort(),
-                aData.readInt(),
-                aData.readInt(),
-                aData.readInt(),
-                aData.readInt(),
-                aData.readInt());
+            aData.readInt(),
+            aData.readShort(),
+            aData.readInt(),
+            aData.readInt(),
+            aData.readInt(),
+            aData.readInt(),
+            aData.readInt());
     }
 
     @Override
@@ -92,22 +92,22 @@ public class GT_Packet_GtTileEntityGuiRequest extends GT_Packet_New {
 
         final EntityPlayerMP player = (EntityPlayerMP) world.getEntityByID(playerId);
         final CoverableTileEntity coverableTile = (baseTile instanceof CoverableTileEntity)
-                ? (CoverableTileEntity) baseTile
-                : null;
+            ? (CoverableTileEntity) baseTile
+            : null;
         // If the requested Gui ID corresponds to a cover, send the cover data to the client so they can open it.
         if (GT_Proxy.GUI_ID_COVER_SIDE_BASE <= guiId && guiId < GT_Proxy.GUI_ID_COVER_SIDE_BASE + 6
-                && coverableTile != null) {
+            && coverableTile != null) {
             final byte coverSide = (byte) (guiId - GT_Proxy.GUI_ID_COVER_SIDE_BASE);
             final GT_Packet_TileEntityCoverGUI packet = new GT_Packet_TileEntityCoverGUI(
-                    this.mX,
-                    this.mY,
-                    this.mZ,
-                    coverSide,
-                    coverableTile.getCoverIDAtSide(coverSide),
-                    coverableTile.getComplexCoverDataAtSide(coverSide),
-                    this.dimId,
-                    this.playerId,
-                    parentGuiId);
+                this.mX,
+                this.mY,
+                this.mZ,
+                coverSide,
+                coverableTile.getCoverIDAtSide(coverSide),
+                coverableTile.getComplexCoverDataAtSide(coverSide),
+                this.dimId,
+                this.playerId,
+                parentGuiId);
             GT_Values.NW.sendToPlayer(packet, player);
         } else if (guiId == 0) {
             if (baseTile.useModularUI()) {

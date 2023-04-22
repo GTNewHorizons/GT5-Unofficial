@@ -17,26 +17,26 @@ public class GT_Cover_RedstoneConductor extends GT_CoverBehavior {
 
     @Override
     public boolean isRedstoneSensitive(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
-            long aTimer) {
+        long aTimer) {
         return false;
     }
 
     @Override
     public int doCoverThings(byte aSide, byte aInputRedstone, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
-            long aTimer) {
+        long aTimer) {
         if (aCoverVariable == 0) {
             aTileEntity.setOutputRedstoneSignal(aSide, aTileEntity.getStrongestRedstone());
         } else if (aCoverVariable < 7) {
             aTileEntity.setOutputRedstoneSignal(
-                    aSide,
-                    aTileEntity.getInternalInputRedstoneSignal((byte) (aCoverVariable - 1)));
+                aSide,
+                aTileEntity.getInternalInputRedstoneSignal((byte) (aCoverVariable - 1)));
         }
         return aCoverVariable;
     }
 
     @Override
     public int onCoverScrewdriverclick(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
-            EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        EntityPlayer aPlayer, float aX, float aY, float aZ) {
         aCoverVariable = (aCoverVariable + (aPlayer.isSneaking() ? -1 : 1)) % 7;
         if (aCoverVariable < 0) {
             aCoverVariable = 6;
@@ -85,7 +85,7 @@ public class GT_Cover_RedstoneConductor extends GT_CoverBehavior {
 
     @Override
     public boolean manipulatesSidedRedstoneOutput(byte aSide, int aCoverID, int aCoverVariable,
-            ICoverable aTileEntity) {
+        ICoverable aTileEntity) {
         return true;
     }
 

@@ -1,5 +1,7 @@
 package gregtech.api.gui.widgets;
 
+import static gregtech.api.enums.Mods.GregTech;
+
 import java.util.Arrays;
 
 import net.minecraft.client.Minecraft;
@@ -58,9 +60,9 @@ public enum GT_GuiIcon implements IGuiIcon {
     TAB_INFO_BLUE(2, 220 + 18, 0, 18, 20),;
 
     private static final int T_SIZE = 256;
-    private static ResourceLocation[] TEXTURES = { new ResourceLocation("gregtech", "textures/gui/GuiButtons.png"),
-            new ResourceLocation("gregtech", "textures/gui/GuiCover.png"),
-            new ResourceLocation("gregtech", "textures/gui/GuiTabs.png"), };
+    private static ResourceLocation[] TEXTURES = { new ResourceLocation(GregTech.ID, "textures/gui/GuiButtons.png"),
+        new ResourceLocation(GregTech.ID, "textures/gui/GuiCover.png"),
+        new ResourceLocation(GregTech.ID, "textures/gui/GuiTabs.png"), };
 
     public final int x, y, width, height;
     public final IGuiIcon overlay;
@@ -84,12 +86,12 @@ public enum GT_GuiIcon implements IGuiIcon {
     }
 
     public static void render(IGuiIcon icon, double x, double y, double width, double height, double zLevel,
-            boolean doDraw) {
+        boolean doDraw) {
         render(icon, x, y, width, height, zLevel, doDraw, false);
     }
 
     public static void render(IGuiIcon icon, double x, double y, double width, double height, double zLevel,
-            boolean doDraw, boolean flipHoritontally) {
+        boolean doDraw, boolean flipHoritontally) {
         Tessellator tess = Tessellator.instance;
         if (doDraw) {
             Minecraft.getMinecraft().renderEngine.bindTexture(TEXTURES[icon.getTexId()]);

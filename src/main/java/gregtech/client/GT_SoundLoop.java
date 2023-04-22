@@ -21,7 +21,7 @@ public class GT_SoundLoop extends MovingSound {
     private boolean fadeMe = false;
 
     public GT_SoundLoop(ResourceLocation p_i45104_1_, IGregTechTileEntity base, boolean stopWhenActive,
-            boolean stopWhenInactive) {
+        boolean stopWhenInactive) {
         super(p_i45104_1_);
         this.whileActive = stopWhenActive;
         this.whileInactive = stopWhenInactive;
@@ -34,7 +34,7 @@ public class GT_SoundLoop extends MovingSound {
     }
 
     public GT_SoundLoop(ResourceLocation sound, MultiTileBasicMachine base, boolean stopWhenActive,
-            boolean stopWhenInactive) {
+        boolean stopWhenInactive) {
         super(sound);
         this.whileActive = stopWhenActive;
         this.whileInactive = stopWhenInactive;
@@ -61,13 +61,8 @@ public class GT_SoundLoop extends MovingSound {
             volume += VOLUME_RAMP;
         }
         World world = Minecraft.getMinecraft().thePlayer.worldObj;
-        donePlaying = world.provider.dimensionId != worldID || !world.checkChunksExist(
-                (int) xPosF,
-                (int) yPosF,
-                (int) zPosF,
-                (int) xPosF,
-                (int) yPosF,
-                (int) zPosF);
+        donePlaying = world.provider.dimensionId != worldID
+            || !world.checkChunksExist((int) xPosF, (int) yPosF, (int) zPosF, (int) xPosF, (int) yPosF, (int) zPosF);
         if (donePlaying) return;
         TileEntity tile = world.getTileEntity((int) xPosF, (int) yPosF, (int) zPosF);
         if ((tile instanceof IGregTechTileEntity)) {

@@ -3,6 +3,9 @@ package gregtech.common.tileentities.machines.multi;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static gregtech.GT_Mod.GT_FML_LOGGER;
 import static gregtech.api.enums.GT_HatchElement.*;
+import static gregtech.api.enums.Mods.BartWorks;
+import static gregtech.api.enums.Mods.IndustrialCraft2;
+import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE_GLOW;
@@ -44,183 +47,86 @@ import gregtech.api.util.GT_Recipe.GT_Recipe_AssemblyLine;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.IGT_HatchAdder;
 
-public class GT_MetaTileEntity_AssemblyLine extends
-        GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_AssemblyLine> implements ISurvivalConstructable {
+public class GT_MetaTileEntity_AssemblyLine
+    extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_AssemblyLine> implements ISurvivalConstructable {
 
     public ArrayList<GT_MetaTileEntity_Hatch_DataAccess> mDataAccessHatches = new ArrayList<>();
     private static final String STRUCTURE_PIECE_FIRST = "first";
     private static final String STRUCTURE_PIECE_LATER = "later";
     private static final String STRUCTURE_PIECE_LAST = "last";
-    private static final IStructureDefinition<GT_MetaTileEntity_AssemblyLine> STRUCTURE_DEFINITION = StructureDefinition.<GT_MetaTileEntity_AssemblyLine>builder()
-                                                                                                                        .addShape(
-                                                                                                                                STRUCTURE_PIECE_FIRST,
-                                                                                                                                transpose(
-                                                                                                                                        new String[][] {
-                                                                                                                                                { " ", "e",
-                                                                                                                                                        " " },
-                                                                                                                                                { "~", "l",
-                                                                                                                                                        "G" },
-                                                                                                                                                { "g", "m",
-                                                                                                                                                        "g" },
-                                                                                                                                                { "b", "i",
-                                                                                                                                                        "b" }, }))
-                                                                                                                        .addShape(
-                                                                                                                                STRUCTURE_PIECE_LATER,
-                                                                                                                                transpose(
-                                                                                                                                        new String[][] {
-                                                                                                                                                { " ", "e",
-                                                                                                                                                        " " },
-                                                                                                                                                { "d", "l",
-                                                                                                                                                        "d" },
-                                                                                                                                                { "g", "m",
-                                                                                                                                                        "g" },
-                                                                                                                                                { "b", "I",
-                                                                                                                                                        "b" }, }))
-                                                                                                                        .addShape(
-                                                                                                                                STRUCTURE_PIECE_LAST,
-                                                                                                                                transpose(
-                                                                                                                                        new String[][] {
-                                                                                                                                                { " ", "e",
-                                                                                                                                                        " " },
-                                                                                                                                                { "d", "l",
-                                                                                                                                                        "d" },
-                                                                                                                                                { "g", "m",
-                                                                                                                                                        "g" },
-                                                                                                                                                { "o", "i",
-                                                                                                                                                        "b" }, }))
-                                                                                                                        .addElement(
-                                                                                                                                'G',
-                                                                                                                                ofBlock(
-                                                                                                                                        GregTech_API.sBlockCasings3,
-                                                                                                                                        10)) // grate
-                                                                                                                                             // machine
-                                                                                                                                             // casing
-                                                                                                                        .addElement(
-                                                                                                                                'l',
-                                                                                                                                ofBlock(
-                                                                                                                                        GregTech_API.sBlockCasings2,
-                                                                                                                                        9)) // assembler
-                                                                                                                                            // machine
-                                                                                                                                            // casing
-                                                                                                                        .addElement(
-                                                                                                                                'm',
-                                                                                                                                ofBlock(
-                                                                                                                                        GregTech_API.sBlockCasings2,
-                                                                                                                                        5)) // assembling
-                                                                                                                                            // line
-                                                                                                                                            // casing
-                                                                                                                        .addElement(
-                                                                                                                                'g',
-                                                                                                                                ofChain(
-                                                                                                                                        ofBlockUnlocalizedName(
-                                                                                                                                                "IC2",
-                                                                                                                                                "blockAlloyGlass",
-                                                                                                                                                0,
-                                                                                                                                                true),
-                                                                                                                                        ofBlockUnlocalizedName(
-                                                                                                                                                "bartworks",
-                                                                                                                                                "BW_GlasBlocks",
-                                                                                                                                                0,
-                                                                                                                                                true),
-                                                                                                                                        ofBlockUnlocalizedName(
-                                                                                                                                                "bartworks",
-                                                                                                                                                "BW_GlasBlocks2",
-                                                                                                                                                0,
-                                                                                                                                                true),
-                                                                                                                                        // warded
-                                                                                                                                        // glass
-                                                                                                                                        ofBlockUnlocalizedName(
-                                                                                                                                                "Thaumcraft",
-                                                                                                                                                "blockCosmeticOpaque",
-                                                                                                                                                2,
-                                                                                                                                                false)))
-                                                                                                                        .addElement(
-                                                                                                                                'e',
-                                                                                                                                ofChain(
-                                                                                                                                        Energy.newAny(
-                                                                                                                                                16,
-                                                                                                                                                1,
-                                                                                                                                                ForgeDirection.UP,
-                                                                                                                                                ForgeDirection.NORTH,
-                                                                                                                                                ForgeDirection.SOUTH),
-                                                                                                                                        ofBlock(
-                                                                                                                                                GregTech_API.sBlockCasings2,
-                                                                                                                                                0)))
-                                                                                                                        .addElement(
-                                                                                                                                'd',
-                                                                                                                                buildHatchAdder(
-                                                                                                                                        GT_MetaTileEntity_AssemblyLine.class).atLeast(
-                                                                                                                                                DataHatchElement.DataAccess)
-                                                                                                                                                                             .dot(
-                                                                                                                                                                                     2)
-                                                                                                                                                                             .casingIndex(
-                                                                                                                                                                                     42)
-                                                                                                                                                                             .allowOnly(
-                                                                                                                                                                                     ForgeDirection.NORTH)
-                                                                                                                                                                             .buildAndChain(
-                                                                                                                                                                                     GregTech_API.sBlockCasings3,
-                                                                                                                                                                                     10))
-                                                                                                                        .addElement(
-                                                                                                                                'b',
-                                                                                                                                buildHatchAdder(
-                                                                                                                                        GT_MetaTileEntity_AssemblyLine.class).atLeast(
-                                                                                                                                                InputHatch,
-                                                                                                                                                InputHatch,
-                                                                                                                                                InputHatch,
-                                                                                                                                                InputHatch,
-                                                                                                                                                Maintenance)
-                                                                                                                                                                             .casingIndex(
-                                                                                                                                                                                     16)
-                                                                                                                                                                             .dot(
-                                                                                                                                                                                     3)
-                                                                                                                                                                             .allowOnly(
-                                                                                                                                                                                     ForgeDirection.DOWN)
-                                                                                                                                                                             .buildAndChain(
-                                                                                                                                                                                     ofBlock(
-                                                                                                                                                                                             GregTech_API.sBlockCasings2,
-                                                                                                                                                                                             0),
-                                                                                                                                                                                     ofHatchAdder(
-                                                                                                                                                                                             GT_MetaTileEntity_AssemblyLine::addOutputToMachineList,
-                                                                                                                                                                                             16,
-                                                                                                                                                                                             4)))
-                                                                                                                        .addElement(
-                                                                                                                                'I',
-                                                                                                                                ofChain(
-                                                                                                                                        // all
-                                                                                                                                        // blocks
-                                                                                                                                        // nearby
-                                                                                                                                        // use
-                                                                                                                                        // solid
-                                                                                                                                        // steel
-                                                                                                                                        // casing,
-                                                                                                                                        // so
-                                                                                                                                        // let's
-                                                                                                                                        // use
-                                                                                                                                        // the
-                                                                                                                                        // texture
-                                                                                                                                        // of
-                                                                                                                                        // that
-                                                                                                                                        InputBus.newAny(
-                                                                                                                                                16,
-                                                                                                                                                5,
-                                                                                                                                                ForgeDirection.DOWN),
-                                                                                                                                        ofHatchAdder(
-                                                                                                                                                GT_MetaTileEntity_AssemblyLine::addOutputToMachineList,
-                                                                                                                                                16,
-                                                                                                                                                4)))
-                                                                                                                        .addElement(
-                                                                                                                                'i',
-                                                                                                                                InputBus.newAny(
-                                                                                                                                        16,
-                                                                                                                                        5,
-                                                                                                                                        ForgeDirection.DOWN))
-                                                                                                                        .addElement(
-                                                                                                                                'o',
-                                                                                                                                OutputBus.newAny(
-                                                                                                                                        16,
-                                                                                                                                        4,
-                                                                                                                                        ForgeDirection.DOWN))
-                                                                                                                        .build();
+    private static final IStructureDefinition<GT_MetaTileEntity_AssemblyLine> STRUCTURE_DEFINITION = StructureDefinition
+        .<GT_MetaTileEntity_AssemblyLine>builder()
+        .addShape(
+            STRUCTURE_PIECE_FIRST,
+            transpose(new String[][] { { " ", "e", " " }, { "~", "l", "G" }, { "g", "m", "g" }, { "b", "i", "b" }, }))
+        .addShape(
+            STRUCTURE_PIECE_LATER,
+            transpose(new String[][] { { " ", "e", " " }, { "d", "l", "d" }, { "g", "m", "g" }, { "b", "I", "b" }, }))
+        .addShape(
+            STRUCTURE_PIECE_LAST,
+            transpose(new String[][] { { " ", "e", " " }, { "d", "l", "d" }, { "g", "m", "g" }, { "o", "i", "b" }, }))
+        .addElement('G', ofBlock(GregTech_API.sBlockCasings3, 10)) // grate
+                                                                   // machine
+                                                                   // casing
+        .addElement('l', ofBlock(GregTech_API.sBlockCasings2, 9)) // assembler
+                                                                  // machine
+                                                                  // casing
+        .addElement('m', ofBlock(GregTech_API.sBlockCasings2, 5)) // assembling
+                                                                  // line
+                                                                  // casing
+        .addElement(
+            'g',
+            ofChain(
+                ofBlockUnlocalizedName(IndustrialCraft2.ID, "blockAlloyGlass", 0, true),
+                ofBlockUnlocalizedName(BartWorks.ID, "BW_GlasBlocks", 0, true),
+                ofBlockUnlocalizedName(BartWorks.ID, "BW_GlasBlocks2", 0, true),
+                // warded
+                // glass
+                ofBlockUnlocalizedName(Thaumcraft.ID, "blockCosmeticOpaque", 2, false)))
+        .addElement(
+            'e',
+            ofChain(
+                Energy.newAny(16, 1, ForgeDirection.UP, ForgeDirection.NORTH, ForgeDirection.SOUTH),
+                ofBlock(GregTech_API.sBlockCasings2, 0)))
+        .addElement(
+            'd',
+            buildHatchAdder(GT_MetaTileEntity_AssemblyLine.class).atLeast(DataHatchElement.DataAccess)
+                .dot(2)
+                .casingIndex(42)
+                .allowOnly(ForgeDirection.NORTH)
+                .buildAndChain(GregTech_API.sBlockCasings3, 10))
+        .addElement(
+            'b',
+            buildHatchAdder(GT_MetaTileEntity_AssemblyLine.class)
+                .atLeast(InputHatch, InputHatch, InputHatch, InputHatch, Maintenance)
+                .casingIndex(16)
+                .dot(3)
+                .allowOnly(ForgeDirection.DOWN)
+                .buildAndChain(
+                    ofBlock(GregTech_API.sBlockCasings2, 0),
+                    ofHatchAdder(GT_MetaTileEntity_AssemblyLine::addOutputToMachineList, 16, 4)))
+        .addElement(
+            'I',
+            ofChain(
+                // all
+                // blocks
+                // nearby
+                // use
+                // solid
+                // steel
+                // casing,
+                // so
+                // let's
+                // use
+                // the
+                // texture
+                // of
+                // that
+                InputBus.newAny(16, 5, ForgeDirection.DOWN),
+                ofHatchAdder(GT_MetaTileEntity_AssemblyLine::addOutputToMachineList, 16, 4)))
+        .addElement('i', InputBus.newAny(16, 5, ForgeDirection.DOWN))
+        .addElement('o', OutputBus.newAny(16, 4, ForgeDirection.DOWN))
+        .build();
 
     public GT_MetaTileEntity_AssemblyLine(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -239,54 +145,52 @@ public class GT_MetaTileEntity_AssemblyLine extends
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Assembling Line")
-          .addInfo("Controller block for the Assembling Line")
-          .addInfo("Used to make complex machine parts (LuV+)")
-          .addInfo("Does not make Assembler items")
-          .addSeparator()
-          .beginVariableStructureBlock(5, 16, 4, 4, 3, 3, false) // ?
-          .addStructureInfo("From Bottom to Top, Left to Right")
-          .addStructureInfo(
-                  "Layer 1 - Solid Steel Machine Casing, Input Bus (last can be Output Bus), Solid Steel Machine Casing")
-          .addStructureInfo(
-                  "Layer 2 - Borosilicate Glass(any)/Warded Glass/Reinforced Glass, Assembling Line Casing, Reinforced Glass")
-          .addStructureInfo("Layer 3 - Grate Machine Casing, Assembler Machine Casing, Grate Machine Casing")
-          .addStructureInfo("Layer 4 - Empty, Solid Steel Machine Casing, Empty")
-          .addStructureInfo("Up to 16 repeating slices, each one allows for 1 more item in recipes")
-          .addController("Either Grate on layer 3 of the first slice")
-          .addEnergyHatch("Any layer 4 casing", 1)
-          .addMaintenanceHatch("Any layer 1 casing", 3)
-          .addInputBus("As specified on layer 1", 4, 5)
-          .addInputHatch("Any layer 1 casing", 3)
-          .addOutputBus("Replaces Input Bus on final slice or on any solid steel casing on layer 1", 4)
-          .addOtherStructurePart("Data Access Hatch", "Optional, next to controller", 2)
-          .toolTipFinisher("Gregtech");
+            .addInfo("Controller block for the Assembling Line")
+            .addInfo("Used to make complex machine parts (LuV+)")
+            .addInfo("Does not make Assembler items")
+            .addSeparator()
+            .beginVariableStructureBlock(5, 16, 4, 4, 3, 3, false) // ?
+            .addStructureInfo("From Bottom to Top, Left to Right")
+            .addStructureInfo(
+                "Layer 1 - Solid Steel Machine Casing, Input Bus (last can be Output Bus), Solid Steel Machine Casing")
+            .addStructureInfo(
+                "Layer 2 - Borosilicate Glass(any)/Warded Glass/Reinforced Glass, Assembling Line Casing, Reinforced Glass")
+            .addStructureInfo("Layer 3 - Grate Machine Casing, Assembler Machine Casing, Grate Machine Casing")
+            .addStructureInfo("Layer 4 - Empty, Solid Steel Machine Casing, Empty")
+            .addStructureInfo("Up to 16 repeating slices, each one allows for 1 more item in recipes")
+            .addController("Either Grate on layer 3 of the first slice")
+            .addEnergyHatch("Any layer 4 casing", 1)
+            .addMaintenanceHatch("Any layer 1 casing", 3)
+            .addInputBus("As specified on layer 1", 4, 5)
+            .addInputHatch("Any layer 1 casing", 3)
+            .addOutputBus("Replaces Input Bus on final slice or on any solid steel casing on layer 1", 4)
+            .addOtherStructurePart("Data Access Hatch", "Optional, next to controller", 2)
+            .toolTipFinisher("Gregtech");
         return tt;
     }
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-            boolean aActive, boolean aRedstone) {
+        boolean aActive, boolean aRedstone) {
         if (aSide == aFacing) {
             if (aActive) return new ITexture[] { BlockIcons.casingTexturePages[0][16], TextureFactory.builder()
-                                                                                                     .addIcon(
-                                                                                                             OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE)
-                                                                                                     .extFacing()
-                                                                                                     .build(),
-                    TextureFactory.builder()
-                                  .addIcon(OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE_GLOW)
-                                  .extFacing()
-                                  .glow()
-                                  .build() };
+                .addIcon(OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE)
+                .extFacing()
+                .build(),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE_GLOW)
+                    .extFacing()
+                    .glow()
+                    .build() };
             return new ITexture[] { BlockIcons.casingTexturePages[0][16], TextureFactory.builder()
-                                                                                        .addIcon(
-                                                                                                OVERLAY_FRONT_ASSEMBLY_LINE)
-                                                                                        .extFacing()
-                                                                                        .build(),
-                    TextureFactory.builder()
-                                  .addIcon(OVERLAY_FRONT_ASSEMBLY_LINE_GLOW)
-                                  .extFacing()
-                                  .glow()
-                                  .build() };
+                .addIcon(OVERLAY_FRONT_ASSEMBLY_LINE)
+                .extFacing()
+                .build(),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_ASSEMBLY_LINE_GLOW)
+                    .extFacing()
+                    .glow()
+                    .build() };
         }
         return new ITexture[] { Textures.BlockIcons.casingTexturePages[0][16] };
     }
@@ -320,9 +224,8 @@ public class GT_MetaTileEntity_AssemblyLine extends
         boolean foundRecipe = false;
 
         nextDataStick: for (ItemStack tDataStick : tDataStickList) {
-            GT_AssemblyLineUtils.LookupResult tLookupResult = GT_AssemblyLineUtils.findAssemblyLineRecipeFromDataStick(
-                    tDataStick,
-                    false);
+            GT_AssemblyLineUtils.LookupResult tLookupResult = GT_AssemblyLineUtils
+                .findAssemblyLineRecipeFromDataStick(tDataStick, false);
 
             if (tLookupResult.getType() == GT_AssemblyLineUtils.LookupResultType.INVALID_STICK) continue;
 
@@ -344,11 +247,11 @@ public class GT_MetaTileEntity_AssemblyLine extends
             if (mInputBusses.size() < tRecipe.mInputs.length || mInputHatches.size() < tRecipe.mFluidInputs.length) {
                 if (GT_Values.D1) {
                     GT_FML_LOGGER.info(
-                            "Not enough sources: Need ({}, {}), has ({}, {})",
-                            mInputBusses.size(),
-                            tRecipe.mInputs.length,
-                            mInputHatches.size(),
-                            tRecipe.mFluidInputs.length);
+                        "Not enough sources: Need ({}, {}), has ({}, {})",
+                        mInputBusses.size(),
+                        tRecipe.mInputs.length,
+                        mInputHatches.size(),
+                        tRecipe.mFluidInputs.length);
                 }
                 continue;
             }
@@ -381,8 +284,7 @@ public class GT_MetaTileEntity_AssemblyLine extends
                 } else {
                     if (mInputHatches.get(i) instanceof GT_MetaTileEntity_Hatch_MultiInput tMultiHatch) {
                         if (!tMultiHatch.hasFluid(tRecipe.mFluidInputs[i])
-                                || tMultiHatch.getFluidAmount(tRecipe.mFluidInputs[i])
-                                        < tRecipe.mFluidInputs[i].amount) {
+                            || tMultiHatch.getFluidAmount(tRecipe.mFluidInputs[i]) < tRecipe.mFluidInputs[i].amount) {
                             continue nextDataStick;
                         }
                         tFluids[i] = tRecipe.mFluidInputs[i].amount;
@@ -390,7 +292,7 @@ public class GT_MetaTileEntity_AssemblyLine extends
                     } else {
                         FluidStack fluidInHatch = mInputHatches.get(i).mFluid;
                         if (!GT_Utility.areFluidsEqual(fluidInHatch, tRecipe.mFluidInputs[i], true)
-                                || fluidInHatch.amount < tRecipe.mFluidInputs[i].amount) {
+                            || fluidInHatch.amount < tRecipe.mFluidInputs[i].amount) {
                             continue nextDataStick;
                         }
                         tFluids[i] = tRecipe.mFluidInputs[i].amount;
@@ -404,7 +306,7 @@ public class GT_MetaTileEntity_AssemblyLine extends
             if (GT_Values.D1) {
                 GT_FML_LOGGER.info("Check overclock");
             }
-            calculateOverclockedNessMulti(tRecipe.mEUt, tRecipe.mDuration, 1, getMaxInputVoltage());
+            calculateOverclockedNessMultiInternal(tRecipe.mEUt, tRecipe.mDuration, 1, getMaxInputVoltage(), false);
             // In case recipe is too OP for that machine
             if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1) {
                 if (GT_Values.D1) {
@@ -430,7 +332,7 @@ public class GT_MetaTileEntity_AssemblyLine extends
         }
         for (int i = 0; i < tStack.length; i++) {
             ItemStack stackInSlot = mInputBusses.get(i)
-                                                .getStackInSlot(0);
+                .getStackInSlot(0);
             stackInSlot.stackSize -= tStack[i];
         }
 
@@ -532,17 +434,15 @@ public class GT_MetaTileEntity_AssemblyLine extends
         for (GT_MetaTileEntity_Hatch_DataAccess tHatch : mDataAccessHatches) {
             if (isValidMetaTileEntity(tHatch)) {
                 for (int i = 0; i < tHatch.getBaseMetaTileEntity()
-                                          .getSizeInventory(); i++) {
+                    .getSizeInventory(); i++) {
                     if (tHatch.getBaseMetaTileEntity()
-                              .getStackInSlot(i)
-                            != null
-                            && isCorrectDataItem(
-                                    tHatch.getBaseMetaTileEntity()
-                                          .getStackInSlot(i),
-                                    state))
+                        .getStackInSlot(i) != null && isCorrectDataItem(
+                            tHatch.getBaseMetaTileEntity()
+                                .getStackInSlot(i),
+                            state))
                         rList.add(
-                                tHatch.getBaseMetaTileEntity()
-                                      .getStackInSlot(i));
+                            tHatch.getBaseMetaTileEntity()
+                                .getStackInSlot(i));
                 }
             }
         }

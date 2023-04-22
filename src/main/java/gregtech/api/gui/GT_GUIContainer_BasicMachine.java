@@ -1,8 +1,8 @@
 package gregtech.api.gui;
 
-import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
+import static gregtech.api.enums.Mods.GregTech;
 
-import java.awt.Rectangle;
+import java.awt.*;
 
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.StatCollector;
@@ -28,40 +28,39 @@ public class GT_GUIContainer_BasicMachine extends GT_GUIContainerMetaTile_Machin
 
     private static final int NEEDS_STEAM_VENTING = 64;
     private static final GT_GuiTabIconSet TAB_ICONSET_BRONZE = new GT_GuiTabIconSet(
-            GT_GuiIcon.TAB_NORMAL_BRONZE,
-            GT_GuiIcon.TAB_HIGHLIGHT_BRONZE,
-            GT_GuiIcon.TAB_DISABLED_BRONZE);
+        GT_GuiIcon.TAB_NORMAL_BRONZE,
+        GT_GuiIcon.TAB_HIGHLIGHT_BRONZE,
+        GT_GuiIcon.TAB_DISABLED_BRONZE);
     private static final GT_GuiTabIconSet TAB_ICONSET_STEEL = new GT_GuiTabIconSet(
-            GT_GuiIcon.TAB_NORMAL_STEEL,
-            GT_GuiIcon.TAB_HIGHLIGHT_STEEL,
-            GT_GuiIcon.TAB_DISABLED_STEEL);
+        GT_GuiIcon.TAB_NORMAL_STEEL,
+        GT_GuiIcon.TAB_HIGHLIGHT_STEEL,
+        GT_GuiIcon.TAB_DISABLED_STEEL);
     private final int textColor = this.getTextColorOrDefault("title", 0x404040);
     public final String mName, mNEI;
     public final byte mProgressBarDirection, mProgressBarAmount;
 
     // Tooltip localization keys
     private static final String BATTERY_SLOT_TOOLTIP = "GT5U.machines.battery_slot.tooltip",
-            BATTERY_SLOT_TOOLTIP_ALT = "GT5U.machines.battery_slot.tooltip.alternative",
-            UNUSED_SLOT_TOOLTIP = "GT5U.machines.unused_slot.tooltip",
-            SPECIAL_SLOT_TOOLTIP = "GT5U.machines.special_slot.tooltip",
-            FLUID_INPUT_TOOLTIP = "GT5U.machines.fluid_input_slot.tooltip",
-            FLUID_OUTPUT_TOOLTIP = "GT5U.machines.fluid_output_slot.tooltip",
-            STALLED_STUTTERING_TOOLTIP = "GT5U.machines.stalled_stuttering.tooltip",
-            STALLED_VENT_TOOLTIP = "GT5U.machines.stalled_vent.tooltip",
-            FLUID_TRANSFER_TOOLTIP = "GT5U.machines.fluid_transfer.tooltip",
-            ITEM_TRANSFER_TOOLTIP = "GT5U.machines.item_transfer.tooltip",
-            POWER_SOURCE_KEY = "GT5U.machines.powersource.";
+        BATTERY_SLOT_TOOLTIP_ALT = "GT5U.machines.battery_slot.tooltip.alternative",
+        UNUSED_SLOT_TOOLTIP = "GT5U.machines.unused_slot.tooltip",
+        SPECIAL_SLOT_TOOLTIP = "GT5U.machines.special_slot.tooltip",
+        FLUID_INPUT_TOOLTIP = "GT5U.machines.fluid_input_slot.tooltip",
+        FLUID_OUTPUT_TOOLTIP = "GT5U.machines.fluid_output_slot.tooltip",
+        STALLED_STUTTERING_TOOLTIP = "GT5U.machines.stalled_stuttering.tooltip",
+        STALLED_VENT_TOOLTIP = "GT5U.machines.stalled_vent.tooltip",
+        FLUID_TRANSFER_TOOLTIP = "GT5U.machines.fluid_transfer.tooltip",
+        ITEM_TRANSFER_TOOLTIP = "GT5U.machines.item_transfer.tooltip", POWER_SOURCE_KEY = "GT5U.machines.powersource.";
 
     public GT_GUIContainer_BasicMachine(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, String aName,
-            String aTextureFile, String aNEI) {
+        String aTextureFile, String aNEI) {
         this(aInventoryPlayer, aTileEntity, aName, aTextureFile, aNEI, (byte) 0, (byte) 1);
     }
 
     public GT_GUIContainer_BasicMachine(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, String aName,
-            String aTextureFile, String aNEI, byte aProgressBarDirection, byte aProgressBarAmount) {
+        String aTextureFile, String aNEI, byte aProgressBarDirection, byte aProgressBarAmount) {
         super(
-                new GT_Container_BasicMachine(aInventoryPlayer, aTileEntity),
-                RES_PATH_GUI + "basicmachines/" + aTextureFile);
+            new GT_Container_BasicMachine(aInventoryPlayer, aTileEntity),
+            GregTech.getResourcePath("textures", "gui", "basicmachines", aTextureFile));
         mProgressBarDirection = aProgressBarDirection;
         mProgressBarAmount = (byte) Math.max(1, aProgressBarAmount);
         mName = aName;
@@ -84,10 +83,10 @@ public class GT_GUIContainer_BasicMachine extends GT_GUIContainerMetaTile_Machin
             batterySlotTooltipKey = UNUSED_SLOT_TOOLTIP;
             batterySlotTooltipArgs = new String[0];
             addToolTip(
-                    new GT_GuiSmartTooltip(
-                            tProblemArea,
-                            () -> hasErrorCode(NEEDS_STEAM_VENTING),
-                            mTooltipCache.getData(STALLED_VENT_TOOLTIP)));
+                new GT_GuiSmartTooltip(
+                    tProblemArea,
+                    () -> hasErrorCode(NEEDS_STEAM_VENTING),
+                    mTooltipCache.getData(STALLED_VENT_TOOLTIP)));
         } else {
             String pTier1 = powerTierName(machine.mTier);
             if (machine.mTier == GT_Values.VN.length - 1) {
@@ -98,44 +97,41 @@ public class GT_GUIContainer_BasicMachine extends GT_GUIContainerMetaTile_Machin
                 batterySlotTooltipArgs = new String[] { pTier1, powerTierName((byte) (machine.mTier + 1)) };
             }
             addToolTip(
-                    new GT_GuiSlotTooltip(
-                            container.slotFluidTransferToggle,
-                            mTooltipCache.getData(FLUID_TRANSFER_TOOLTIP)));
+                new GT_GuiSlotTooltip(
+                    container.slotFluidTransferToggle,
+                    mTooltipCache.getData(FLUID_TRANSFER_TOOLTIP)));
             addToolTip(
-                    new GT_GuiSlotTooltip(
-                            container.slotItemTransferToggle,
-                            mTooltipCache.getData(ITEM_TRANSFER_TOOLTIP)));
+                new GT_GuiSlotTooltip(container.slotItemTransferToggle, mTooltipCache.getData(ITEM_TRANSFER_TOOLTIP)));
         }
         if (recipes != null && recipes.hasFluidInputs()) {
             addToolTip(
-                    new GT_GuiSlotTooltip(
-                            container.slotFluidInput,
-                            mTooltipCache.getData(FLUID_INPUT_TOOLTIP, machine.getCapacity())));
+                new GT_GuiSlotTooltip(
+                    container.slotFluidInput,
+                    mTooltipCache.getData(FLUID_INPUT_TOOLTIP, machine.getCapacity())));
         }
         if (recipes != null && recipes.hasFluidOutputs()) {
             addToolTip(
-                    new GT_GuiSlotTooltip(
-                            container.slotFluidOutput,
-                            mTooltipCache.getData(FLUID_OUTPUT_TOOLTIP, machine.getCapacity())));
+                new GT_GuiSlotTooltip(
+                    container.slotFluidOutput,
+                    mTooltipCache.getData(FLUID_OUTPUT_TOOLTIP, machine.getCapacity())));
         }
         addToolTip(
-                new GT_GuiSlotTooltip(
-                        getContainer().slotBattery,
-                        mTooltipCache.getData(batterySlotTooltipKey, batterySlotTooltipArgs)));
+            new GT_GuiSlotTooltip(
+                getContainer().slotBattery,
+                mTooltipCache.getData(batterySlotTooltipKey, batterySlotTooltipArgs)));
         addToolTip(
-                new GT_GuiSlotTooltip(
-                        container.slotSpecial,
-                        mTooltipCache.getData(
-                                recipes != null && recipes.usesSpecialSlot() ? SPECIAL_SLOT_TOOLTIP
-                                        : UNUSED_SLOT_TOOLTIP)));
+            new GT_GuiSlotTooltip(
+                container.slotSpecial,
+                mTooltipCache.getData(
+                    recipes != null && recipes.usesSpecialSlot() ? SPECIAL_SLOT_TOOLTIP : UNUSED_SLOT_TOOLTIP)));
         addToolTip(
-                new GT_GuiSmartTooltip(
-                        tProblemArea,
-                        () -> container.mStuttering && !hasErrorCode(NEEDS_STEAM_VENTING),
-                        mTooltipCache.getData(
-                                STALLED_STUTTERING_TOOLTIP,
-                                StatCollector.translateToLocal(
-                                        POWER_SOURCE_KEY + (machine.isSteampowered() ? "steam" : "power")))));
+            new GT_GuiSmartTooltip(
+                tProblemArea,
+                () -> container.mStuttering && !hasErrorCode(NEEDS_STEAM_VENTING),
+                mTooltipCache.getData(
+                    STALLED_STUTTERING_TOOLTIP,
+                    StatCollector
+                        .translateToLocal(POWER_SOURCE_KEY + (machine.isSteampowered() ? "steam" : "power")))));
     }
 
     /**
@@ -174,31 +170,30 @@ public class GT_GUIContainer_BasicMachine extends GT_GUIContainerMetaTile_Machin
             if (mContainer.mMaxProgressTime > 0) {
                 int tSize = mProgressBarDirection < 2 ? 20 : 18;
                 int tProgress = Math.max(
-                        1,
-                        Math.min(
-                                tSize * mProgressBarAmount,
-                                (mContainer.mProgressTime > 0 ? 1 : 0) + mContainer.mProgressTime * tSize
-                                        * mProgressBarAmount
-                                        / mContainer.mMaxProgressTime))
-                        % (tSize + 1);
+                    1,
+                    Math.min(
+                        tSize * mProgressBarAmount,
+                        (mContainer.mProgressTime > 0 ? 1 : 0)
+                            + mContainer.mProgressTime * tSize * mProgressBarAmount / mContainer.mMaxProgressTime))
+                    % (tSize + 1);
 
                 switch (mProgressBarDirection) { // yes, my OCD was mad at me before I did the Tabs.
                     case 0 -> drawTexturedModalRect(x + 78, y + 24, 176, 0, tProgress, 18);
                     case 1 -> drawTexturedModalRect(
-                            x + 78 + 20 - tProgress,
-                            y + 24,
-                            176 + 20 - tProgress,
-                            0,
-                            tProgress,
-                            18);
+                        x + 78 + 20 - tProgress,
+                        y + 24,
+                        176 + 20 - tProgress,
+                        0,
+                        tProgress,
+                        18);
                     case 2 -> drawTexturedModalRect(x + 78, y + 24, 176, 0, 20, tProgress);
                     case 3 -> drawTexturedModalRect(
-                            x + 78,
-                            y + 24 + 18 - tProgress,
-                            176,
-                            18 - tProgress,
-                            20,
-                            tProgress);
+                        x + 78,
+                        y + 24 + 18 - tProgress,
+                        176,
+                        18 - tProgress,
+                        20,
+                        tProgress);
                     case 4 -> {
                         tProgress = 20 - tProgress;
                         drawTexturedModalRect(x + 78, y + 24, 176, 0, tProgress, 18);
@@ -224,7 +219,7 @@ public class GT_GUIContainer_BasicMachine extends GT_GUIContainerMetaTile_Machin
     protected GT_GuiTabIconSet getTabBackground() {
         if (getMachine().isSteampowered()) {
             return getMachine() instanceof GT_MetaTileEntity_BasicMachine_Steel ? TAB_ICONSET_STEEL
-                    : TAB_ICONSET_BRONZE;
+                : TAB_ICONSET_BRONZE;
         }
         return super.getTabBackground();
     }

@@ -295,20 +295,20 @@ public class SP_Upgrade implements ISP_Upgrade {
         }
 
         if (requirements.getBodyType() != null && !requirements.getBodyType()
-                                                               .equals(SpaceBodyType.NONE)) {
+            .equals(SpaceBodyType.NONE)) {
             if (!requirements.getBodyType()
-                             .equals(
-                                     projectBelongingTo.getProjectLocation()
-                                                       .getType())) {
+                .equals(
+                    projectBelongingTo.getProjectLocation()
+                        .getType())) {
                 return false;
             }
         }
 
         if (requirements.getStarType() != null) {
             if (!requirements.getStarType()
-                             .equals(
-                                     projectBelongingTo.getProjectLocation()
-                                                       .getStarType())) {
+                .equals(
+                    projectBelongingTo.getProjectLocation()
+                        .getStarType())) {
                 return false;
             }
         }
@@ -335,13 +335,13 @@ public class SP_Upgrade implements ISP_Upgrade {
     @Override
     public SP_Upgrade copy() {
         SP_Upgrade copy = new SP_Upgrade().setUpgradeName(name)
-                                          .setUpgradeUnlocalizedName(unlocalizedName)
-                                          .setUpgradeBuildTime(buildTime)
-                                          .setUpgradeFluidsCost(fluidsCost)
-                                          .setUpgradeItemsCost(itemsCost)
-                                          .setUpgradeRequirements(requirements)
-                                          .setUpgradeTotalStages(totalStages)
-                                          .setUpgradeVoltage(voltage);
+            .setUpgradeUnlocalizedName(unlocalizedName)
+            .setUpgradeBuildTime(buildTime)
+            .setUpgradeFluidsCost(fluidsCost)
+            .setUpgradeItemsCost(itemsCost)
+            .setUpgradeRequirements(requirements)
+            .setUpgradeTotalStages(totalStages)
+            .setUpgradeVoltage(voltage);
         return copy;
     }
 

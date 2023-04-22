@@ -12,7 +12,7 @@ import gregtech.api.multitileentity.base.MultiTileEntity;
 import gregtech.api.multitileentity.multiblock.casing.FunctionalCasing;
 import gregtech.api.multitileentity.multiblock.casing.UpgradeCasing;
 import gregtech.api.util.GT_Util;
-import gregtech.common.tileentities.casings.upgrade.InventoryUpgrade;
+import gregtech.common.tileentities.casings.upgrade.Inventory;
 
 public class MultiTileEntityClassContainer {
 
@@ -32,7 +32,7 @@ public class MultiTileEntityClassContainer {
     public boolean mHidden = false;
 
     public MultiTileEntityClassContainer(MultiTileEntityRegistry aRegistry, int aID,
-            Class<? extends MultiTileEntity> aClass) {
+        Class<? extends MultiTileEntity> aClass) {
         /* Start the Builder */
         mRegistry = new WeakReference<>(aRegistry);
         mID = (short) aID;
@@ -45,10 +45,10 @@ public class MultiTileEntityClassContainer {
         final MultiTileEntityRegistry registry = mRegistry.get();
 
         if (mParameters.hasKey(NBT.MATERIAL) && !mParameters.hasKey(NBT.COLOR)) mParameters.setInteger(
-                NBT.COLOR,
-                GT_Util.getRGBInt(
-                        Materials.get(mParameters.getString(NBT.MATERIAL))
-                                 .getRGBA()));
+            NBT.COLOR,
+            GT_Util.getRGBInt(
+                Materials.get(mParameters.getString(NBT.MATERIAL))
+                    .getRGBA()));
 
         try {
             mCanonicalTileEntity = mClass.newInstance();
@@ -94,25 +94,25 @@ public class MultiTileEntityClassContainer {
 
     // Need a base texture for the MTE machine, and then a separate texture set for the machine/active overlays
 
-    public MultiTileEntityClassContainer material(Materials aMaterial) {
+    public MultiTileEntityClassContainer material(Materials material) {
         // Sets the material, and the color from the material, if not already set
-        mParameters.setString(NBT.MATERIAL, aMaterial.toString());
-        if (!mParameters.hasKey(NBT.COLOR)) mParameters.setInteger(NBT.COLOR, GT_Util.getRGBInt(aMaterial.getRGBA()));
+        mParameters.setString(NBT.MATERIAL, material.toString());
+        if (!mParameters.hasKey(NBT.COLOR)) mParameters.setInteger(NBT.COLOR, GT_Util.getRGBInt(material.getRGBA()));
         return this;
     }
 
-    public MultiTileEntityClassContainer color(int aRPG) {
-        mParameters.setInteger(NBT.COLOR, aRPG);
+    public MultiTileEntityClassContainer color(int rbg) {
+        mParameters.setInteger(NBT.COLOR, rbg);
         return this;
     }
 
-    public MultiTileEntityClassContainer color(short[] aRPGA) {
-        mParameters.setInteger(NBT.COLOR, GT_Util.getRGBInt(aRPGA));
+    public MultiTileEntityClassContainer color(short[] rgba) {
+        mParameters.setInteger(NBT.COLOR, GT_Util.getRGBInt(rgba));
         return this;
     }
 
-    public MultiTileEntityClassContainer texture(String aTexture) {
-        mParameters.setString(NBT.TEXTURE, aTexture);
+    public MultiTileEntityClassContainer textureFolder(String texture) {
+        mParameters.setString(NBT.TEXTURE_FOLDER, texture);
         return this;
     }
 
@@ -138,7 +138,7 @@ public class MultiTileEntityClassContainer {
     }
 
     public MultiTileEntityClassContainer upgradeInventorySize(int aSize) {
-        verifyDescendentOf(InventoryUpgrade.class);
+        verifyDescendentOf(Inventory.class);
 
         mParameters.setInteger(NBT.UPGRADE_INVENTORY_SIZE, aSize);
         return this;
@@ -162,7 +162,7 @@ public class MultiTileEntityClassContainer {
         // Check if cls is extended by mClass
         if (!cls.isAssignableFrom(mClass)) {
             throw new IllegalArgumentException(
-                    "Expected a descendent of " + cls.getName() + " got " + mClass.getName() + " instead.");
+                "Expected a descendent of " + cls.getName() + " got " + mClass.getName() + " instead.");
         }
     }
 
@@ -174,16 +174,14 @@ public class MultiTileEntityClassContainer {
             if (!onlyOne) {
                 verifyDescendentOf(cls);
                 atLeastOne = true;
-            } else {
-                if (cls.isAssignableFrom(mClass)) {
-                    atLeastOne = true;
-                }
+            } else if (cls.isAssignableFrom(mClass)) {
+                atLeastOne = true;
             }
         }
 
         if (!atLeastOne) {
             throw new IllegalArgumentException(
-                    "Expected a descendent of any of these " + classNames + " got " + mClass.getName() + " instead.");
+                "Expected a descendent of any of these " + classNames + " got " + mClass.getName() + " instead.");
         }
     }
 }

@@ -1,7 +1,6 @@
 package gregtech.api.items;
 
-import static gregtech.api.enums.GT_Values.MOD_ID;
-import static gregtech.api.enums.GT_Values.RES_PATH_ITEM;
+import static gregtech.api.enums.Mods.GregTech;
 
 import java.util.List;
 
@@ -45,17 +44,15 @@ public class GT_Generic_Item extends Item implements IProjectileItem {
     }
 
     public GT_Generic_Item(String aUnlocalized, String aEnglish, String aEnglishTooltip,
-            boolean aWriteToolTipIntoLangFile) {
+        boolean aWriteToolTipIntoLangFile) {
         super();
         mName = "gt." + aUnlocalized;
         GT_LanguageManager.addStringLocalization(mName + ".name", aEnglish);
-        if (GT_Utility.isStringValid(aEnglishTooltip)) GT_LanguageManager.addStringLocalization(
-                mTooltip = mName + ".tooltip_main",
-                aEnglishTooltip,
-                aWriteToolTipIntoLangFile);
+        if (GT_Utility.isStringValid(aEnglishTooltip)) GT_LanguageManager
+            .addStringLocalization(mTooltip = mName + ".tooltip_main", aEnglishTooltip, aWriteToolTipIntoLangFile);
         else mTooltip = null;
         setCreativeTab(GregTech_API.TAB_GREGTECH);
-        GameRegistry.registerItem(this, mName, MOD_ID);
+        GameRegistry.registerItem(this, mName, GregTech.ID);
         BlockDispenser.dispenseBehaviorRegistry.putObject(this, new GT_Item_Dispense());
     }
 
@@ -77,7 +74,7 @@ public class GT_Generic_Item extends Item implements IProjectileItem {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aIconRegister) {
-        mIcon = aIconRegister.registerIcon(RES_PATH_ITEM + (GT_Config.troll ? "troll" : mName));
+        mIcon = aIconRegister.registerIcon(GregTech.getResourcePath(GT_Config.troll ? "troll" : mName));
     }
 
     @Override
@@ -127,13 +124,13 @@ public class GT_Generic_Item extends Item implements IProjectileItem {
 
     @Override
     public EntityArrow getProjectile(SubTag aProjectileType, ItemStack aStack, World aWorld, double aX, double aY,
-            double aZ) {
+        double aZ) {
         return null;
     }
 
     @Override
     public EntityArrow getProjectile(SubTag aProjectileType, ItemStack aStack, World aWorld, EntityLivingBase aEntity,
-            float aSpeed) {
+        float aSpeed) {
         return null;
     }
 

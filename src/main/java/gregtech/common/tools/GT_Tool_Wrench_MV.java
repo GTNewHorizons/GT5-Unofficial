@@ -56,14 +56,14 @@ public class GT_Tool_Wrench_MV extends GT_Tool_Wrench_LV {
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
         return aIsToolHead
-                ? GT_MetaGenerated_Tool.getPrimaryMaterial(
-                        aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.toolHeadWrench.mTextureIndex]
-                : Textures.ItemIcons.POWER_UNIT_MV;
+            ? GT_MetaGenerated_Tool.getPrimaryMaterial(
+                aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.toolHeadWrench.mTextureIndex]
+            : Textures.ItemIcons.POWER_UNIT_MV;
     }
 
     @Override
     public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
         return aIsToolHead ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mRGBa
-                : GT_MetaGenerated_Tool.getSecondaryMaterial(aStack).mRGBa;
+            : GT_MetaGenerated_Tool.getSecondaryMaterial(aStack).mRGBa;
     }
 }

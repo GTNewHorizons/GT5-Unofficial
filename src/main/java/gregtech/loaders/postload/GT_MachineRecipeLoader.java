@@ -1,6 +1,6 @@
 package gregtech.loaders.postload;
 
-import static gregtech.api.enums.ModIDs.NotEnoughItems;
+import static gregtech.api.enums.Mods.NotEnoughItems;
 
 import gregtech.api.enums.Materials;
 import gregtech.loaders.postload.chains.GT_BauxiteRefineChain;
@@ -18,7 +18,7 @@ public class GT_MachineRecipeLoader implements Runnable {
     public static final Boolean isAE2Loaded = true;
 
     public static final Materials[] solderingMats = new Materials[] { Materials.Lead, Materials.SolderingAlloy,
-            Materials.Tin };
+        Materials.Tin };
 
     @Override
     public void run() {

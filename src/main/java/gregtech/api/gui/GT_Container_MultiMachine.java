@@ -18,7 +18,7 @@ public class GT_Container_MultiMachine extends GT_ContainerMetaTile_Machine {
     }
 
     public GT_Container_MultiMachine(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity,
-            boolean bindInventory) {
+        boolean bindInventory) {
         super(aInventoryPlayer, aTileEntity, bindInventory);
     }
 

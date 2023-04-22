@@ -1,6 +1,6 @@
 package gregtech.nei.dumper;
 
-import static gregtech.api.enums.ModIDs.NewHorizonsCoreMod;
+import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ChatStyle;
@@ -40,8 +40,8 @@ public abstract class GregTechIDDumper extends DataDumper {
     protected void logWarn() {
         if (!NewHorizonsCoreMod.isModLoaded()) {
             NEIClientUtils.printChatMessage(
-                    new ChatComponentTranslation("nei.options.tools.dump.gt5u.warn_env").setChatStyle(
-                            new ChatStyle().setColor(EnumChatFormatting.DARK_RED)));
+                new ChatComponentTranslation("nei.options.tools.dump.gt5u.warn_env")
+                    .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.DARK_RED)));
         }
     }
 

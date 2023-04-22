@@ -14,8 +14,8 @@ import net.minecraft.world.World;
 public interface IGregtechWailaProvider {
 
     default void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
-            IWailaConfigHandler config) {}
+        IWailaConfigHandler config) {}
 
     default void getWailaNBTData(final EntityPlayerMP player, final TileEntity tile, final NBTTagCompound tag,
-            final World world, int x, int y, int z) {}
+        final World world, int x, int y, int z) {}
 }

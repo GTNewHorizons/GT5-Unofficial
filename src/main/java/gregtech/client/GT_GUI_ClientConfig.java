@@ -1,5 +1,7 @@
 package gregtech.client;
 
+import static gregtech.api.enums.Mods.GregTech;
+
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -18,13 +20,13 @@ public class GT_GUI_ClientConfig extends GuiConfig {
 
     public GT_GUI_ClientConfig(GuiScreen parentScreen) {
         super(
-                parentScreen,
-                getConfigElements(),
-                "gregtech",
-                "client",
-                false,
-                false,
-                getAbridgedConfigPath(GregTech_API.sClientDataFile.mConfig.toString()));
+            parentScreen,
+            getConfigElements(),
+            GregTech.ID,
+            "client",
+            false,
+            false,
+            getAbridgedConfigPath(GregTech_API.sClientDataFile.mConfig.toString()));
     }
 
     @SuppressWarnings("rawtypes")
@@ -32,10 +34,10 @@ public class GT_GUI_ClientConfig extends GuiConfig {
         final Configuration config = GregTech_API.sClientDataFile.mConfig;
         setLanguageKeys(config);
         return config.getCategoryNames()
-                     .stream()
-                     .filter(name -> name.indexOf('.') == -1)
-                     .map(name -> new ConfigElement(config.getCategory(name)))
-                     .collect(Collectors.toList());
+            .stream()
+            .filter(name -> name.indexOf('.') == -1)
+            .map(name -> new ConfigElement(config.getCategory(name)))
+            .collect(Collectors.toList());
     }
 
     private static void setLanguageKeys(Configuration config) {
@@ -48,7 +50,7 @@ public class GT_GUI_ClientConfig extends GuiConfig {
                 int defaultStart = name.lastIndexOf('_');
                 String realName = defaultStart >= 0 ? name.substring(0, defaultStart) : name;
                 entry.getValue()
-                     .setLanguageKey(String.format("%s.%s", category.getLanguagekey(), realName));
+                    .setLanguageKey(String.format("%s.%s", category.getLanguagekey(), realName));
             }
         }
     }

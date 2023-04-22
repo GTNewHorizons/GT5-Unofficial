@@ -9,7 +9,7 @@ import gregtech.api.metatileentity.BaseMetaTileEntity;
 public class NodeGTBaseMetaTile extends ConsumerNode {
 
     public NodeGTBaseMetaTile(int aNodeValue, BaseMetaTileEntity aTileEntity, byte aSide,
-            ArrayList<ConsumerNode> aConsumers) {
+        ArrayList<ConsumerNode> aConsumers) {
         super(aNodeValue, aTileEntity, aSide, aConsumers);
     }
 

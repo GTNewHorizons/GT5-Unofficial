@@ -23,8 +23,8 @@ public class NodeEnergySink extends ConsumerNode {
     public int injectEnergy(long aVoltage, long aMaxAmps) {
         int tUsedAmps = 0;
         while (aMaxAmps > tUsedAmps && ((IEnergySink) mTileEntity).getDemandedEnergy() > 0
-                && ((IEnergySink) mTileEntity).injectEnergy(ForgeDirection.getOrientation(mSide), aVoltage, aVoltage)
-                        < aVoltage)
+            && ((IEnergySink) mTileEntity).injectEnergy(ForgeDirection.getOrientation(mSide), aVoltage, aVoltage)
+                < aVoltage)
             tUsedAmps++;
         return tUsedAmps;
     }

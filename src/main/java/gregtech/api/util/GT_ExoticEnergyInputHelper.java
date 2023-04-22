@@ -24,7 +24,7 @@ public class GT_ExoticEnergyInputHelper {
 
     public static void register(Class<? extends GT_MetaTileEntity_Hatch> clazz) {
         if (!GT_MetaTileEntity_Hatch.class.isAssignableFrom(clazz)) throw new IllegalArgumentException(
-                clazz.getName() + " is not a subclass of " + GT_MetaTileEntity_Hatch.class.getName());
+            clazz.getName() + " is not a subclass of " + GT_MetaTileEntity_Hatch.class.getName());
         sExoticEnergyHatchType.add(clazz);
     }
 
@@ -37,18 +37,18 @@ public class GT_ExoticEnergyInputHelper {
             return;
         }
         if (!GT_MetaTileEntity_Hatch.class.isAssignableFrom(clazz)) throw new IllegalArgumentException(
-                clazz.getName() + " is not a subclass of " + GT_MetaTileEntity_Hatch.class.getName());
+            clazz.getName() + " is not a subclass of " + GT_MetaTileEntity_Hatch.class.getName());
         sExoticEnergyHatchType.add((Class<? extends GT_MetaTileEntity_Hatch>) clazz);
     }
 
     public static boolean drainEnergy(long aEU, Collection<? extends GT_MetaTileEntity_Hatch> hatches) {
         for (GT_MetaTileEntity_Hatch tHatch : hatches) {
             long tDrain = Math.min(
-                    tHatch.getBaseMetaTileEntity()
-                          .getStoredEU(),
-                    aEU);
+                tHatch.getBaseMetaTileEntity()
+                    .getStoredEU(),
+                aEU);
             tHatch.getBaseMetaTileEntity()
-                  .decreaseStoredEnergyUnits(tDrain, false);
+                .decreaseStoredEnergyUnits(tDrain, false);
             aEU -= tDrain;
         }
         return aEU <= 0;
@@ -65,8 +65,7 @@ public class GT_ExoticEnergyInputHelper {
         long rEU = 0L;
         for (GT_MetaTileEntity_Hatch tHatch : hatches)
             if (isValidMetaTileEntity(tHatch)) rEU += tHatch.getBaseMetaTileEntity()
-                                                            .getInputVoltage()
-                    * tHatch.maxWorkingAmperesIn();
+                .getInputVoltage() * tHatch.maxWorkingAmperesIn();
         return rEU;
     }
 
@@ -74,7 +73,7 @@ public class GT_ExoticEnergyInputHelper {
         long rVoltage = 0;
         for (GT_MetaTileEntity_Hatch tHatch : hatches)
             if (isValidMetaTileEntity(tHatch)) rVoltage += tHatch.getBaseMetaTileEntity()
-                                                                 .getInputVoltage();
+                .getInputVoltage();
         return rVoltage;
     }
 
@@ -85,7 +84,7 @@ public class GT_ExoticEnergyInputHelper {
         }
         for (GT_MetaTileEntity_Hatch tHatch : hatches)
             if (isValidMetaTileEntity(tHatch)) rVoltage += tHatch.getBaseMetaTileEntity()
-                                                                 .getInputVoltage();
+                .getInputVoltage();
         return rVoltage / hatches.size();
     }
 
@@ -93,7 +92,7 @@ public class GT_ExoticEnergyInputHelper {
         long rAmp = 0;
         for (GT_MetaTileEntity_Hatch tHatch : hatches)
             if (isValidMetaTileEntity(tHatch)) rAmp += tHatch.getBaseMetaTileEntity()
-                                                             .getInputAmperage();
+                .getInputAmperage();
         return rAmp;
     }
 

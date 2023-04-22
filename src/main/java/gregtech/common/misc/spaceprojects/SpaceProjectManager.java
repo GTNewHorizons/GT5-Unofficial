@@ -104,11 +104,11 @@ public class SpaceProjectManager {
         if (teamMember.equals(teamLeader)) {
             spaceTeams.put(teamMember, teamLeader);
         } else if (!spaceTeams.get(teamLeader)
-                              .equals(teamLeader)) {
-                                  putInTeam(teamMember, spaceTeams.get(teamLeader));
-                              } else {
-                                  spaceTeams.put(teamMember, teamLeader);
-                              }
+            .equals(teamLeader)) {
+                putInTeam(teamMember, spaceTeams.get(teamLeader));
+            } else {
+                spaceTeams.put(teamMember, teamLeader);
+            }
 
         SpaceProjectWorldSavedData.INSTANCE.markDirty();
     }
@@ -182,14 +182,14 @@ public class SpaceProjectManager {
     public static void addProject(ISpaceProject project) {
         spaceProjects.put(project.getProjectName(), project);
         GT_Recipe.GT_Recipe_Map.sFakeSpaceProjectRecipes.add(
-                new GT_Recipe.GT_Recipe_Map.GT_FakeSpaceProjectRecipe(
-                        false,
-                        project.getTotalItemsCost(),
-                        project.getTotalFluidsCost(),
-                        project.getProjectBuildTime(),
-                        (int) project.getProjectVoltage(),
-                        project.getTotalStages(),
-                        project.getProjectName()));
+            new GT_Recipe.GT_Recipe_Map.GT_FakeSpaceProjectRecipe(
+                false,
+                project.getTotalItemsCost(),
+                project.getTotalFluidsCost(),
+                project.getProjectBuildTime(),
+                (int) project.getProjectVoltage(),
+                project.getTotalStages(),
+                project.getProjectName()));
     }
 
     /**
@@ -266,9 +266,9 @@ public class SpaceProjectManager {
      */
     public static UUID getPlayerUUIDFromName(String playerName) {
         return MinecraftServer.getServer()
-                              .func_152358_ax()
-                              .func_152655_a(playerName)
-                              .getId();
+            .func_152358_ax()
+            .func_152655_a(playerName)
+            .getId();
     }
 
     /**
@@ -276,9 +276,9 @@ public class SpaceProjectManager {
      */
     public static String getPlayerNameFromUUID(UUID playerUUID) {
         return MinecraftServer.getServer()
-                              .func_152358_ax()
-                              .func_152652_a(playerUUID)
-                              .getName();
+            .func_152358_ax()
+            .func_152652_a(playerUUID)
+            .getName();
     }
 
     // #endregion

@@ -64,39 +64,39 @@ public class GT_Cover_ItemFilter extends GT_CoverBehaviorBase<GT_Cover_ItemFilte
 
     @Override
     protected boolean isRedstoneSensitiveImpl(byte aSide, int aCoverID, ItemFilterData aCoverVariable,
-            ICoverable aTileEntity, long aTimer) {
+        ICoverable aTileEntity, long aTimer) {
         return false;
     }
 
     @Override
     protected ItemFilterData doCoverThingsImpl(byte aSide, byte aInputRedstone, int aCoverID,
-            ItemFilterData aCoverVariable, ICoverable aTileEntity, long aTimer) {
+        ItemFilterData aCoverVariable, ICoverable aTileEntity, long aTimer) {
         TileEntity tTileEntity = aTileEntity.getTileEntityAtSide(aSide);
         Object fromEntity = mExport ? aTileEntity : tTileEntity, toEntity = !mExport ? aTileEntity : tTileEntity;
         byte fromSide = !mExport ? GT_Utility.getOppositeSide(aSide) : aSide,
-                toSide = mExport ? GT_Utility.getOppositeSide(aSide) : aSide;
+            toSide = mExport ? GT_Utility.getOppositeSide(aSide) : aSide;
 
         List<ItemStack> Filter = Collections.singletonList(aCoverVariable.mFilter);
 
         moveMultipleItemStacks(
-                fromEntity,
-                toEntity,
-                fromSide,
-                toSide,
-                Filter,
-                aCoverVariable.mWhitelist,
-                (byte) 64,
-                (byte) 1,
-                (byte) 64,
-                (byte) 1,
-                64);
+            fromEntity,
+            toEntity,
+            fromSide,
+            toSide,
+            Filter,
+            aCoverVariable.mWhitelist,
+            (byte) 64,
+            (byte) 1,
+            (byte) 64,
+            (byte) 1,
+            64);
 
         return aCoverVariable;
     }
 
     @Override
     protected boolean onCoverRightClickImpl(byte aSide, int aCoverID, ItemFilterData aCoverVariable,
-            ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         ItemStack tStack = aPlayer.inventory.getCurrentItem();
         if (tStack != null) {
             aCoverVariable.mFilter = tStack;
@@ -110,66 +110,66 @@ public class GT_Cover_ItemFilter extends GT_CoverBehaviorBase<GT_Cover_ItemFilte
 
     @Override
     protected ItemFilterData onCoverScrewdriverClickImpl(byte aSide, int aCoverID, ItemFilterData aCoverVariable,
-            ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         aCoverVariable.mWhitelist = !aCoverVariable.mWhitelist;
         GT_Utility.sendChatToPlayer(
-                aPlayer,
-                aCoverVariable.mWhitelist ? GT_Utility.trans("125.1", "Whitelist Mode")
-                        : GT_Utility.trans("124.1", "Blacklist Mode"));
+            aPlayer,
+            aCoverVariable.mWhitelist ? GT_Utility.trans("125.1", "Whitelist Mode")
+                : GT_Utility.trans("124.1", "Blacklist Mode"));
         return aCoverVariable;
     }
 
     @Override
     protected boolean letsRedstoneGoInImpl(byte aSide, int aCoverID, ItemFilterData aCoverVariable,
-            ICoverable aTileEntity) {
+        ICoverable aTileEntity) {
         return true;
     }
 
     @Override
     protected boolean letsRedstoneGoOutImpl(byte aSide, int aCoverID, ItemFilterData aCoverVariable,
-            ICoverable aTileEntity) {
+        ICoverable aTileEntity) {
         return true;
     }
 
     @Override
     protected boolean letsEnergyInImpl(byte aSide, int aCoverID, ItemFilterData aCoverVariable,
-            ICoverable aTileEntity) {
+        ICoverable aTileEntity) {
         return true;
     }
 
     @Override
     protected boolean letsEnergyOutImpl(byte aSide, int aCoverID, ItemFilterData aCoverVariable,
-            ICoverable aTileEntity) {
+        ICoverable aTileEntity) {
         return true;
     }
 
     @Override
     protected boolean letsFluidInImpl(byte aSide, int aCoverID, ItemFilterData aCoverVariable, Fluid aFluid,
-            ICoverable aTileEntity) {
+        ICoverable aTileEntity) {
         return false;
     }
 
     @Override
     protected boolean letsFluidOutImpl(byte aSide, int aCoverID, ItemFilterData aCoverVariable, Fluid aFluid,
-            ICoverable aTileEntity) {
+        ICoverable aTileEntity) {
         return false;
     }
 
     @Override
     protected boolean letsItemsInImpl(byte aSide, int aCoverID, ItemFilterData aCoverVariable, int aSlot,
-            ICoverable aTileEntity) {
+        ICoverable aTileEntity) {
         return true;
     }
 
     @Override
     protected boolean letsItemsOutImpl(byte aSide, int aCoverID, ItemFilterData aCoverVariable, int aSlot,
-            ICoverable aTileEntity) {
+        ICoverable aTileEntity) {
         return true;
     }
 
     @Override
     protected boolean alwaysLookConnectedImpl(byte aSide, int aCoverID, ItemFilterData aCoverVariable,
-            ICoverable aTileEntity) {
+        ICoverable aTileEntity) {
         return true;
     }
 
@@ -214,46 +214,37 @@ public class GT_Cover_ItemFilter extends GT_CoverBehaviorBase<GT_Cover_ItemFilte
                 filterInvHandler.setStackInSlot(0, setStackSize1(getCoverData().mFilter));
             }
             builder.widget(
-                    new CoverDataControllerWidget<>(
-                            this::getCoverData,
-                            this::setCoverData,
-                            GT_Cover_ItemFilter.this).addFollower(
-                                    new CoverDataFollower_ToggleButtonWidget<>(),
-                                    coverData -> coverData.mWhitelist,
-                                    (coverData, state) -> {
-                                        coverData.mWhitelist = state;
-                                        return coverData;
-                                    },
-                                    widget -> widget.setToggleTexture(
-                                            GT_UITextures.OVERLAY_BUTTON_WHITELIST,
-                                            GT_UITextures.OVERLAY_BUTTON_BLACKLIST)
-                                                    .addTooltip(0, GT_Utility.trans("124.1", "Blacklist Mode"))
-                                                    .addTooltip(1, GT_Utility.trans("125.1", "Whitelist Mode"))
-                                                    .setPos(spaceX * 0, spaceY * 0))
-                                                     .addFollower(
-                                                             new CoverDataFollower_SlotWidget<>(
-                                                                     filterInvHandler,
-                                                                     0,
-                                                                     true),
-                                                             coverData -> setStackSize1(coverData.mFilter),
-                                                             (coverData, stack) -> {
-                                                                 coverData.mFilter = setStackSize1(stack);
-                                                                 return coverData;
-                                                             },
-                                                             widget -> widget.setBackground(
-                                                                     GT_UITextures.SLOT_DARK_GRAY)
-                                                                             .setPos(spaceX * 0, spaceY * 2))
-                                                     .setPos(startX, startY))
-                   .widget(
-                           new TextWidget(GT_Utility.trans("317", "Filter: ")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                                                                              .setPos(
-                                                                                      startX + spaceX * 0,
-                                                                                      3 + startY + spaceY * 1))
-                   .widget(
-                           new TextWidget(GT_Utility.trans("318", "Check Mode")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                                                                                .setPos(
-                                                                                        startX + spaceX * 2,
-                                                                                        3 + startY + spaceY * 0));
+                new CoverDataControllerWidget<>(this::getCoverData, this::setCoverData, GT_Cover_ItemFilter.this)
+                    .addFollower(
+                        new CoverDataFollower_ToggleButtonWidget<>(),
+                        coverData -> coverData.mWhitelist,
+                        (coverData, state) -> {
+                            coverData.mWhitelist = state;
+                            return coverData;
+                        },
+                        widget -> widget
+                            .setToggleTexture(
+                                GT_UITextures.OVERLAY_BUTTON_WHITELIST,
+                                GT_UITextures.OVERLAY_BUTTON_BLACKLIST)
+                            .addTooltip(0, GT_Utility.trans("124.1", "Blacklist Mode"))
+                            .addTooltip(1, GT_Utility.trans("125.1", "Whitelist Mode"))
+                            .setPos(spaceX * 0, spaceY * 0))
+                    .addFollower(
+                        new CoverDataFollower_SlotWidget<>(filterInvHandler, 0, true),
+                        coverData -> setStackSize1(coverData.mFilter),
+                        (coverData, stack) -> {
+                            coverData.mFilter = setStackSize1(stack);
+                            return coverData;
+                        },
+                        widget -> widget.setBackground(GT_UITextures.SLOT_DARK_GRAY)
+                            .setPos(spaceX * 0, spaceY * 2))
+                    .setPos(startX, startY))
+                .widget(
+                    new TextWidget(GT_Utility.trans("317", "Filter: ")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                        .setPos(startX + spaceX * 0, 3 + startY + spaceY * 1))
+                .widget(
+                    new TextWidget(GT_Utility.trans("318", "Check Mode")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                        .setPos(startX + spaceX * 2, 3 + startY + spaceY * 0));
         }
 
         private ItemStack setStackSize1(ItemStack stack) {

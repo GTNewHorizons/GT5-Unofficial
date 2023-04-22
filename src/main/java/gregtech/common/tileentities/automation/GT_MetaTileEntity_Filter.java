@@ -28,43 +28,43 @@ public class GT_MetaTileEntity_Filter extends GT_MetaTileEntity_Buffer implement
 
     public GT_MetaTileEntity_Filter(int aID, String aName, String aNameRegional, int aTier) {
         super(
-                aID,
-                aName,
-                aNameRegional,
-                aTier,
-                19,
-                new String[] { "Filters up to 9 different Items", "Use Screwdriver to regulate output stack size",
-                        "Does not consume energy to move Item" });
+            aID,
+            aName,
+            aNameRegional,
+            aTier,
+            19,
+            new String[] { "Filters up to 9 different Items", "Use Screwdriver to regulate output stack size",
+                "Does not consume energy to move Item" });
     }
 
     public GT_MetaTileEntity_Filter(String aName, int aTier, int aInvSlotCount, String aDescription,
-            ITexture[][][] aTextures) {
+        ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
     public GT_MetaTileEntity_Filter(String aName, int aTier, int aInvSlotCount, String[] aDescription,
-            ITexture[][][] aTextures) {
+        ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_Filter(
-                this.mName,
-                this.mTier,
-                this.mInventory.length,
-                this.mDescriptionArray,
-                this.mTextures);
+            this.mName,
+            this.mTier,
+            this.mInventory.length,
+            this.mDescriptionArray,
+            this.mTextures);
     }
 
     @Override
     public ITexture getOverlayIcon() {
         return TextureFactory.of(
-                TextureFactory.of(AUTOMATION_FILTER),
-                TextureFactory.builder()
-                              .addIcon(AUTOMATION_FILTER_GLOW)
-                              .glow()
-                              .build());
+            TextureFactory.of(AUTOMATION_FILTER),
+            TextureFactory.builder()
+                .addIcon(AUTOMATION_FILTER_GLOW)
+                .glow()
+                .build());
     }
 
     @Override
@@ -123,69 +123,67 @@ public class GT_MetaTileEntity_Filter extends GT_MetaTileEntity_Buffer implement
             bInvertFilter = !bInvertFilter;
             if (bInvertFilter) {
                 GT_Utility.sendChatToPlayer(
-                        widget.getContext()
-                              .getPlayer(),
-                        GT_Utility.trans("124", "Invert Filter"));
+                    widget.getContext()
+                        .getPlayer(),
+                    GT_Utility.trans("124", "Invert Filter"));
             } else {
                 GT_Utility.sendChatToPlayer(
-                        widget.getContext()
-                              .getPlayer(),
-                        GT_Utility.trans("125", "Don't invert Filter"));
+                    widget.getContext()
+                        .getPlayer(),
+                    GT_Utility.trans("125", "Don't invert Filter"));
             }
         })
-                                         .setBackground(
-                                                 GT_UITextures.BUTTON_STANDARD,
-                                                 GT_UITextures.OVERLAY_BUTTON_INVERT_FILTER)
-                                         .setPos(61, 62)
-                                         .setSize(18, 18))
-               .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
-                   bIgnoreNBT = !bIgnoreNBT;
-                   if (bIgnoreNBT) {
-                       GT_Utility.sendChatToPlayer(
-                               widget.getContext()
-                                     .getPlayer(),
-                               GT_Utility.trans("126", "Ignore NBT"));
-                   } else {
-                       GT_Utility.sendChatToPlayer(
-                               widget.getContext()
-                                     .getPlayer(),
-                               GT_Utility.trans("127", "NBT has to match"));
-                   }
-               })
-                                         .setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_NBT)
-                                         .setPos(79, 62)
-                                         .setSize(18, 18))
-               .widget(
-                       new DrawableWidget().setDrawable(GT_UITextures.PICTURE_ARROW_24_WHITE.apply(9, false))
-                                           .setPos(6, 19)
-                                           .setSize(9, 24))
-               .widget(
-                       new DrawableWidget().setDrawable(GT_UITextures.PICTURE_ARROW_24_BLUE.apply(24, true))
-                                           .setPos(71, 19)
-                                           .setSize(24, 24))
-               .widget(
-                       new DrawableWidget().setDrawable(GT_UITextures.PICTURE_ARROW_24_RED.apply(19, true))
-                                           .setPos(152, 19)
-                                           .setSize(19, 24))
-               .widget(
-                       new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SLOTS_HOLO_3BY3)
-                                           .setPos(16, 4)
-                                           .setSize(54, 54))
-               .widget(
-                       SlotGroup.ofItemHandler(inventoryHandler, 3)
-                                .startFromSlot(9)
-                                .endAtSlot(17)
-                                .phantom(true)
-                                .applyForWidget(
-                                        widget -> widget.disableShiftInsert()
-                                                        .setBackground(GT_UITextures.TRANSPARENT))
-                                .build()
-                                .setPos(16, 4))
-               .widget(
-                       SlotGroup.ofItemHandler(inventoryHandler, 3)
-                                .startFromSlot(0)
-                                .endAtSlot(8)
-                                .build()
-                                .setPos(97, 4));
+            .setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_INVERT_FILTER)
+            .setPos(61, 62)
+            .setSize(18, 18))
+            .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
+                bIgnoreNBT = !bIgnoreNBT;
+                if (bIgnoreNBT) {
+                    GT_Utility.sendChatToPlayer(
+                        widget.getContext()
+                            .getPlayer(),
+                        GT_Utility.trans("126", "Ignore NBT"));
+                } else {
+                    GT_Utility.sendChatToPlayer(
+                        widget.getContext()
+                            .getPlayer(),
+                        GT_Utility.trans("127", "NBT has to match"));
+                }
+            })
+                .setBackground(GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_NBT)
+                .setPos(79, 62)
+                .setSize(18, 18))
+            .widget(
+                new DrawableWidget().setDrawable(GT_UITextures.PICTURE_ARROW_24_WHITE.apply(9, false))
+                    .setPos(6, 19)
+                    .setSize(9, 24))
+            .widget(
+                new DrawableWidget().setDrawable(GT_UITextures.PICTURE_ARROW_24_BLUE.apply(24, true))
+                    .setPos(71, 19)
+                    .setSize(24, 24))
+            .widget(
+                new DrawableWidget().setDrawable(GT_UITextures.PICTURE_ARROW_24_RED.apply(19, true))
+                    .setPos(152, 19)
+                    .setSize(19, 24))
+            .widget(
+                new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SLOTS_HOLO_3BY3)
+                    .setPos(16, 4)
+                    .setSize(54, 54))
+            .widget(
+                SlotGroup.ofItemHandler(inventoryHandler, 3)
+                    .startFromSlot(9)
+                    .endAtSlot(17)
+                    .phantom(true)
+                    .applyForWidget(
+                        widget -> widget.disableShiftInsert()
+                            .setBackground(GT_UITextures.TRANSPARENT))
+                    .build()
+                    .setPos(16, 4))
+            .widget(
+                SlotGroup.ofItemHandler(inventoryHandler, 3)
+                    .startFromSlot(0)
+                    .endAtSlot(8)
+                    .build()
+                    .setPos(97, 4));
     }
 }

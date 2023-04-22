@@ -176,12 +176,10 @@ public class GT_MetaGenerated_Item_98 extends GT_MetaGenerated_Item {
     /** Struct class holding data that we need to properly handle a registered fluid cell item. */
     private static class RegisteredFluidData {
 
-        private final Fluid fluid;
         private final short[] rgba;
         private final IIconContainer iconContainer;
 
-        private RegisteredFluidData(Fluid fluid, short[] rgba, IIconContainer iconContainer) {
-            this.fluid = fluid;
+        private RegisteredFluidData(short[] rgba, IIconContainer iconContainer) {
             this.rgba = rgba;
             this.iconContainer = iconContainer;
         }
@@ -257,8 +255,8 @@ public class GT_MetaGenerated_Item_98 extends GT_MetaGenerated_Item {
             // These fluids are non-GT fluids, so the mod may not be present.
             if (isStackAlreadySet) {
                 throw new RuntimeException(
-                        "Cell item for fluid " + fluidName
-                                + " has already been created, but the fluid doesn't exist during postload");
+                    "Cell item for fluid " + fluidName
+                        + " has already been created, but the fluid doesn't exist during postload");
             } else {
                 // fluid doesn't exist and this item has not been referenced
                 return;
@@ -268,18 +266,18 @@ public class GT_MetaGenerated_Item_98 extends GT_MetaGenerated_Item {
         FluidStack fluidStack = new FluidStack(fluid, cellType.capacity);
 
         ItemStack emptyCell = ItemList.Cell_Empty.get(1L);
-        FluidContainerRegistry.registerFluidContainer(
-                new FluidContainerRegistry.FluidContainerData(fluidStack, aCell.mStack, emptyCell));
+        FluidContainerRegistry
+            .registerFluidContainer(new FluidContainerRegistry.FluidContainerData(fluidStack, aCell.mStack, emptyCell));
 
         GT_LanguageManager.addStringLocalization(
-                getUnlocalizedName(aCell.mStack) + ".name",
-                cellType.prefix.mLocalizedMaterialPre + fluid.getLocalizedName(fluidStack)
-                        + cellType.prefix.mLocalizedMaterialPost);
+            getUnlocalizedName(aCell.mStack) + ".name",
+            cellType.prefix.mLocalizedMaterialPre + fluid.getLocalizedName(fluidStack)
+                + cellType.prefix.mLocalizedMaterialPost);
 
         int color = fluid.getColor();
         short[] rgba = GT_Util.getRGBaArray(color);
 
-        registeredFluidDataMap.put(id, new RegisteredFluidData(fluid, rgba, iconContainerMap.get(cellType)));
+        registeredFluidDataMap.put(id, new RegisteredFluidData(rgba, iconContainerMap.get(cellType)));
     }
 
     private void registerOreDict() {
@@ -309,15 +307,14 @@ public class GT_MetaGenerated_Item_98 extends GT_MetaGenerated_Item {
         return ItemList.Cell_Empty.get(1L);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubItems(Item aItem, CreativeTabs aCreativeTab, List<ItemStack> aList) {
         Arrays.stream(FluidCell.values())
-              .filter(fluid -> FluidRegistry.getFluid(fluid.getFluidName()) != null)
-              .map(FluidCell::get)
-              .filter(Objects::nonNull)
-              .forEach(aList::add);
+            .filter(fluid -> FluidRegistry.getFluid(fluid.getFluidName()) != null)
+            .map(FluidCell::get)
+            .filter(Objects::nonNull)
+            .forEach(aList::add);
     }
 
     @Override

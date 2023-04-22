@@ -24,13 +24,13 @@ public class GT_MetaTileEntity_Hatch_DataAccess extends GT_MetaTileEntity_Hatch 
 
     public GT_MetaTileEntity_Hatch_DataAccess(int aID, String aName, String aNameRegional, int aTier) {
         super(
-                aID,
-                aName,
-                aNameRegional,
-                aTier,
-                16,
-                new String[] { "Data Access for Multiblocks",
-                        "Adds " + (aTier == 4 ? 4 : 16) + " extra slots for Data Sticks" });
+            aID,
+            aName,
+            aNameRegional,
+            aTier,
+            16,
+            new String[] { "Data Access for Multiblocks",
+                "Adds " + (aTier == 4 ? 4 : 16) + " extra slots for Data Sticks" });
     }
 
     public GT_MetaTileEntity_Hatch_DataAccess(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
@@ -38,7 +38,7 @@ public class GT_MetaTileEntity_Hatch_DataAccess extends GT_MetaTileEntity_Hatch 
     }
 
     public GT_MetaTileEntity_Hatch_DataAccess(String aName, int aTier, String[] aDescription,
-            ITexture[][][] aTextures) {
+        ITexture[][][] aTextures) {
         super(aName, aTier, aTier == 4 ? 4 : 16, aDescription, aTextures);
     }
 
@@ -144,15 +144,11 @@ public class GT_MetaTileEntity_Hatch_DataAccess extends GT_MetaTileEntity_Hatch 
     @Override
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         if (mTier == 4) {
-            getBaseMetaTileEntity().add2by2Slots(
-                    builder,
-                    getGUITextureSet().getItemSlot(),
-                    GT_UITextures.OVERLAY_SLOT_CIRCUIT);
+            getBaseMetaTileEntity()
+                .add2by2Slots(builder, getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_CIRCUIT);
         } else {
-            getBaseMetaTileEntity().add4by4Slots(
-                    builder,
-                    getGUITextureSet().getItemSlot(),
-                    GT_UITextures.OVERLAY_SLOT_CIRCUIT);
+            getBaseMetaTileEntity()
+                .add4by4Slots(builder, getGUITextureSet().getItemSlot(), GT_UITextures.OVERLAY_SLOT_CIRCUIT);
         }
     }
 }

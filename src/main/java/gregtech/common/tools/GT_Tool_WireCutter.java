@@ -98,7 +98,7 @@ public class GT_Tool_WireCutter extends GT_Tool {
     @Override
     public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
         return aIsToolHead ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mRGBa
-                : GT_MetaGenerated_Tool.getSecondaryMaterial(aStack).mRGBa;
+            : GT_MetaGenerated_Tool.getSecondaryMaterial(aStack).mRGBa;
     }
 
     @Override
@@ -107,11 +107,11 @@ public class GT_Tool_WireCutter extends GT_Tool {
     @Override
     public IChatComponent getDeathMessage(EntityLivingBase aPlayer, EntityLivingBase aEntity) {
         return new ChatComponentText(
-                EnumChatFormatting.GREEN + aPlayer.getCommandSenderName()
-                        + EnumChatFormatting.WHITE
-                        + " has cut the Cable for the Life Support Machine of "
-                        + EnumChatFormatting.RED
-                        + aEntity.getCommandSenderName()
-                        + EnumChatFormatting.WHITE);
+            EnumChatFormatting.GREEN + aPlayer.getCommandSenderName()
+                + EnumChatFormatting.WHITE
+                + " has cut the Cable for the Life Support Machine of "
+                + EnumChatFormatting.RED
+                + aEntity.getCommandSenderName()
+                + EnumChatFormatting.WHITE);
     }
 }

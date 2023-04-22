@@ -48,8 +48,8 @@ public class GT_GuiIconButton extends GuiButton implements IGuiScreen.IGuiElemen
         if (this.visible) {
             // moused over
             this.field_146123_n = mouseX >= this.xPosition && mouseY >= this.yPosition
-                    && mouseX < this.xPosition + width
-                    && mouseY < this.yPosition + height;
+                && mouseX < this.xPosition + width
+                && mouseY < this.yPosition + height;
 
             mouseDragged(mc, mouseX, mouseY);
 

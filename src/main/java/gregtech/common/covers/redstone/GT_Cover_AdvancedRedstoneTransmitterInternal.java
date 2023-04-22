@@ -4,7 +4,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 
 public class GT_Cover_AdvancedRedstoneTransmitterInternal
-        extends GT_Cover_AdvancedRedstoneTransmitterBase<GT_Cover_AdvancedRedstoneTransmitterBase.TransmitterData> {
+    extends GT_Cover_AdvancedRedstoneTransmitterBase<GT_Cover_AdvancedRedstoneTransmitterBase.TransmitterData> {
 
     public GT_Cover_AdvancedRedstoneTransmitterInternal(ITexture coverTexture) {
         super(TransmitterData.class, coverTexture);
@@ -22,7 +22,7 @@ public class GT_Cover_AdvancedRedstoneTransmitterInternal
 
     @Override
     public TransmitterData doCoverThingsImpl(byte aSide, byte aInputRedstone, int aCoverID,
-            TransmitterData aCoverVariable, ICoverable aTileEntity, long aTimer) {
+        TransmitterData aCoverVariable, ICoverable aTileEntity, long aTimer) {
         byte outputRedstone = aTileEntity.getOutputRedstoneSignal(aSide);
         if (aCoverVariable.isInvert()) {
             if (outputRedstone > 0) outputRedstone = 0;
@@ -36,13 +36,13 @@ public class GT_Cover_AdvancedRedstoneTransmitterInternal
 
     @Override
     public boolean letsRedstoneGoOutImpl(byte aSide, int aCoverID, TransmitterData aCoverVariable,
-            ICoverable aTileEntity) {
+        ICoverable aTileEntity) {
         return true;
     }
 
     @Override
     protected boolean manipulatesSidedRedstoneOutputImpl(byte aSide, int aCoverID, TransmitterData aCoverVariable,
-            ICoverable aTileEntity) {
+        ICoverable aTileEntity) {
         return true;
     }
 }

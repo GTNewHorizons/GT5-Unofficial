@@ -16,7 +16,7 @@ public enum PropolisType {
     Fireessence("Fireessence", true);
 
     private static int[] colours = new int[] { 0xCC00FA, 0xDCB0E5, 0x9010AD, 0xFFFF00, 0x911ECE, 0x161616, 0xEE053D,
-            0xa0ffff, 0xD41238 };
+        0xa0ffff, 0xD41238 };
 
     public boolean showInList;
     public Materials material;
@@ -35,11 +35,9 @@ public enum PropolisType {
     public String getName() {
         // return "gt.comb."+this.name;
         return GT_LanguageManager.addStringLocalization(
-                "propolis." + this.name,
-                this.name.substring(0, 1)
-                         .toUpperCase()
-                        + this.name.substring(1)
-                        + " Propolis");
+            "propolis." + this.name,
+            this.name.substring(0, 1)
+                .toUpperCase() + this.name.substring(1) + " Propolis");
     }
 
     public int getColours() {

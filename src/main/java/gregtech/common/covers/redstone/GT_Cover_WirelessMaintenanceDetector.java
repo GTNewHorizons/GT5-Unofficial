@@ -27,8 +27,8 @@ import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollower_ToggleButtonWidget;
 import io.netty.buffer.ByteBuf;
 
-public class GT_Cover_WirelessMaintenanceDetector extends
-        GT_Cover_AdvancedRedstoneTransmitterBase<GT_Cover_WirelessMaintenanceDetector.MaintenanceTransmitterData> {
+public class GT_Cover_WirelessMaintenanceDetector
+    extends GT_Cover_AdvancedRedstoneTransmitterBase<GT_Cover_WirelessMaintenanceDetector.MaintenanceTransmitterData> {
 
     public GT_Cover_WirelessMaintenanceDetector(ITexture coverTexture) {
         super(MaintenanceTransmitterData.class, coverTexture);
@@ -45,7 +45,7 @@ public class GT_Cover_WirelessMaintenanceDetector extends
     }
 
     private static byte computeSignalBasedOnMaintenance(MaintenanceTransmitterData coverVariable,
-            ICoverable tileEntity) {
+        ICoverable tileEntity) {
         boolean signal = false;
 
         if (tileEntity instanceof IGregTechTileEntity) {
@@ -57,7 +57,7 @@ public class GT_Cover_WirelessMaintenanceDetector extends
                 switch (coverVariable.mode) {
                     case NO_ISSUE -> signal = ideal == real;
                     case ONE_ISSUE, TWO_ISSUES, THREE_ISSUES, FOUR_ISSUES, FIVE_ISSUES -> signal = ideal - real
-                            >= coverVariable.mode.ordinal();
+                        >= coverVariable.mode.ordinal();
                     case ROTOR_80, ROTOR_100 -> {
                         ItemStack rotor = multiTE.getRealInventory()[1];
                         if (GT_Cover_NeedMaintainance.isRotor(rotor)) {
@@ -68,9 +68,9 @@ public class GT_Cover_WirelessMaintenanceDetector extends
                                 signal = current >= max * 8 / 10;
                             } else {
                                 long expectedDamage = Math.round(
-                                        Math.min(
-                                                (double) multiTE.mEUt / multiTE.damageFactorLow,
-                                                Math.pow(multiTE.mEUt, multiTE.damageFactorHigh)));
+                                    Math.min(
+                                        (double) multiTE.mEUt / multiTE.damageFactorLow,
+                                        Math.pow(multiTE.mEUt, multiTE.damageFactorHigh)));
                                 signal = current + expectedDamage * 2 >= max;
                             }
                         } else {
@@ -90,7 +90,7 @@ public class GT_Cover_WirelessMaintenanceDetector extends
 
     @Override
     public MaintenanceTransmitterData doCoverThingsImpl(byte aSide, byte aInputRedstone, int aCoverID,
-            MaintenanceTransmitterData aCoverVariable, ICoverable aTileEntity, long aTimer) {
+        MaintenanceTransmitterData aCoverVariable, ICoverable aTileEntity, long aTimer) {
         byte signal = computeSignalBasedOnMaintenance(aCoverVariable, aTileEntity);
         long hash = hashCoverCoords(aTileEntity, aSide);
         setSignalAt(aCoverVariable.getUuid(), aCoverVariable.getFrequency(), hash, signal);
@@ -100,19 +100,19 @@ public class GT_Cover_WirelessMaintenanceDetector extends
 
     @Override
     public boolean letsRedstoneGoOutImpl(byte aSide, int aCoverID, MaintenanceTransmitterData aCoverVariable,
-            ICoverable aTileEntity) {
+        ICoverable aTileEntity) {
         return true;
     }
 
     @Override
     protected boolean manipulatesSidedRedstoneOutputImpl(byte aSide, int aCoverID,
-            MaintenanceTransmitterData aCoverVariable, ICoverable aTileEntity) {
+        MaintenanceTransmitterData aCoverVariable, ICoverable aTileEntity) {
         return true;
     }
 
     @Override
     public int getTickRateImpl(byte aSide, int aCoverID, MaintenanceTransmitterData aCoverVariable,
-            ICoverable aTileEntity) {
+        ICoverable aTileEntity) {
         return 60;
     }
 
@@ -183,7 +183,7 @@ public class GT_Cover_WirelessMaintenanceDetector extends
     // GUI stuff
 
     private static final String[] extraTexts = new String[] { "No Issues", ">= 1 Issue", ">= 2 Issues", ">= 3 Issues",
-            ">= 4 Issues", ">= 5 Issues", "Rotor < 80%", "Rotor < 100%" };
+        ">= 4 Issues", ">= 5 Issues", "Rotor < 80%", "Rotor < 100%" };
 
     @Override
     public ModularWindow createWindow(GT_CoverUIBuildContext buildContext) {
@@ -216,10 +216,8 @@ public class GT_Cover_WirelessMaintenanceDetector extends
             super.addUIWidgets(builder);
             for (int i = 0; i < 8; i++) {
                 builder.widget(
-                        new TextWidget(extraTexts[i]).setDefaultColor(COLOR_TEXT_GRAY.get())
-                                                     .setPos(
-                                                             startX + spaceX * (i % 2 == 0 ? 1 : 7),
-                                                             4 + startY + spaceY * (2 + i / 2)));
+                    new TextWidget(extraTexts[i]).setDefaultColor(COLOR_TEXT_GRAY.get())
+                        .setPos(startX + spaceX * (i % 2 == 0 ? 1 : 7), 4 + startY + spaceY * (2 + i / 2)));
             }
         }
 
@@ -229,16 +227,14 @@ public class GT_Cover_WirelessMaintenanceDetector extends
             for (int i = 0; i < 8; i++) {
                 final int index = i;
                 controller.addFollower(
-                        CoverDataFollower_ToggleButtonWidget.ofDisableable(),
-                        coverData -> coverData.mode == MaintenanceMode.values()[index],
-                        (coverData, state) -> {
-                            coverData.mode = MaintenanceMode.values()[index];
-                            return coverData;
-                        },
-                        widget -> widget.setToggleTexture(
-                                GT_UITextures.OVERLAY_BUTTON_CHECKMARK,
-                                GT_UITextures.TRANSPARENT)
-                                        .setPos(spaceX * (index % 2 == 0 ? 0 : 6), spaceY * (2 + index / 2)));
+                    CoverDataFollower_ToggleButtonWidget.ofDisableable(),
+                    coverData -> coverData.mode == MaintenanceMode.values()[index],
+                    (coverData, state) -> {
+                        coverData.mode = MaintenanceMode.values()[index];
+                        return coverData;
+                    },
+                    widget -> widget.setToggleTexture(GT_UITextures.OVERLAY_BUTTON_CHECKMARK, GT_UITextures.TRANSPARENT)
+                        .setPos(spaceX * (index % 2 == 0 ? 0 : 6), spaceY * (2 + index / 2)));
             }
         }
     }

@@ -296,7 +296,7 @@ public enum Element {
      * @param aName            Name of the Element
      */
     Element(long aProtons, long aNeutrons, long aAdditionalMass, long aHalfLifeSeconds, String aDecayTo, String aName,
-            boolean aIsIsotope) {
+        boolean aIsIsotope) {
         mProtons = aProtons;
         mNeutrons = aNeutrons;
         mAdditionalMass = aAdditionalMass;

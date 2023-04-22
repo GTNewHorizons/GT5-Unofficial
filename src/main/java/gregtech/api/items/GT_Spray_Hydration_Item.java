@@ -15,20 +15,20 @@ public class GT_Spray_Hydration_Item extends GT_Tool_Item {
 
     public GT_Spray_Hydration_Item(String aUnlocalized, String aEnglish, int aMaxDamage, int aEntityDamage) {
         super(
-                aUnlocalized,
-                aEnglish,
-                "To hydrate Crops and similar",
-                aMaxDamage,
-                aEntityDamage,
-                true); /*
-                        * setCraftingSound(Sounds.IC2_TOOLS_PAINTER); setBreakingSound(Sounds.IC2_TOOLS_PAINTER);
-                        * setEntityHitSound(Sounds.IC2_TOOLS_PAINTER); setUsageAmounts(20, 3, 1);
-                        */
+            aUnlocalized,
+            aEnglish,
+            "To hydrate Crops and similar",
+            aMaxDamage,
+            aEntityDamage,
+            true); /*
+                    * setCraftingSound(Sounds.IC2_TOOLS_PAINTER); setBreakingSound(Sounds.IC2_TOOLS_PAINTER);
+                    * setEntityHitSound(Sounds.IC2_TOOLS_PAINTER); setUsageAmounts(20, 3, 1);
+                    */
     }
 
     @Override
     public boolean onItemUseFirst(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ,
-            int aSide, float hitX, float hitY, float hitZ) {
+        int aSide, float hitX, float hitY, float hitZ) {
         super.onItemUseFirst(aStack, aPlayer, aWorld, aX, aY, aZ, aSide, hitX, hitY, hitZ);
         if (aWorld.isRemote) {
             return false;
@@ -53,7 +53,7 @@ public class GT_Spray_Hydration_Item extends GT_Tool_Item {
 
         if (aTileEntity instanceof IGregTechTileEntity) {
             if (((IGregTechTileEntity) aTileEntity).getColorization() >= 0
-                    && GT_ModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer)) {
+                && GT_ModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer)) {
                 ((IGregTechTileEntity) aTileEntity).setColorization((byte) -1);
                 GT_Utility.sendSoundToPlayers(aWorld, SoundResource.IC2_TOOLS_PAINTER, 1.0F, -1, aX, aY, aZ);
             }

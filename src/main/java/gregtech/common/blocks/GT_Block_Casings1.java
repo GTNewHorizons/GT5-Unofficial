@@ -33,9 +33,8 @@ public class GT_Block_Casings1 extends GT_Block_Casings_Abstract {
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".9.name", "UHV Machine Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".10.name", "Bronze Plated Bricks");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".11.name", "Heat Proof Machine Casing");
-        GT_LanguageManager.addStringLocalization(
-                getUnlocalizedName() + ".12.name",
-                "Dimensionally Transcendent Casing");
+        GT_LanguageManager
+            .addStringLocalization(getUnlocalizedName() + ".12.name", "Dimensionally Transcendent Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".13.name", "Dimensional Injection Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".14.name", "Dimensional Bridge");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".15.name", "Superconducting Coil Block");
@@ -99,8 +98,7 @@ public class GT_Block_Casings1 extends GT_Block_Casings_Abstract {
     @Override
     public int colorMultiplier(IBlockAccess aWorld, int aX, int aY, int aZ) {
         return aWorld.getBlockMetadata(aX, aY, aZ) > 9 ? super.colorMultiplier(aWorld, aX, aY, aZ)
-                : gregtech.api.enums.Dyes.MACHINE_METAL.mRGBa[0] << 16
-                        | gregtech.api.enums.Dyes.MACHINE_METAL.mRGBa[1] << 8
-                        | gregtech.api.enums.Dyes.MACHINE_METAL.mRGBa[2];
+            : gregtech.api.enums.Dyes.MACHINE_METAL.mRGBa[0] << 16 | gregtech.api.enums.Dyes.MACHINE_METAL.mRGBa[1] << 8
+                | gregtech.api.enums.Dyes.MACHINE_METAL.mRGBa[2];
     }
 }

@@ -73,7 +73,7 @@ public interface IEnergyConnected extends IColoredTileEntity {
                 final TileEntity tTileEntity = emitterTile.getTileEntityAtSide(i);
                 if (tTileEntity instanceof PowerLogicHost host) {
 
-                    PowerLogic logic = host.getPowerLogic(j);
+                    PowerLogic logic = host.getPowerLogic(ForgeDirection.getOrientation(j));
                     if (logic == null || logic.isEnergyReceiver()) {
                         continue;
                     }
@@ -84,25 +84,20 @@ public interface IEnergyConnected extends IColoredTileEntity {
                         final byte tColor = ((IEnergyConnected) tTileEntity).getColorization();
                         if (tColor >= 0 && tColor != aEmitter.getColorization()) continue;
                     }
-                    rUsedAmperes += ((IEnergyConnected) tTileEntity).injectEnergyUnits(
-                            j,
-                            aVoltage,
-                            aAmperage - rUsedAmperes);
+                    rUsedAmperes += ((IEnergyConnected) tTileEntity)
+                        .injectEnergyUnits(j, aVoltage, aAmperage - rUsedAmperes);
 
                 } else if (tTileEntity instanceof IEnergySink) {
-                    if (((IEnergySink) tTileEntity).acceptsEnergyFrom(
-                            (TileEntity) aEmitter,
-                            ForgeDirection.getOrientation(j))) {
+                    if (((IEnergySink) tTileEntity)
+                        .acceptsEnergyFrom((TileEntity) aEmitter, ForgeDirection.getOrientation(j))) {
                         while (aAmperage > rUsedAmperes && ((IEnergySink) tTileEntity).getDemandedEnergy() > 0
-                                && ((IEnergySink) tTileEntity).injectEnergy(
-                                        ForgeDirection.getOrientation(j),
-                                        aVoltage,
-                                        aVoltage) < aVoltage)
+                            && ((IEnergySink) tTileEntity)
+                                .injectEnergy(ForgeDirection.getOrientation(j), aVoltage, aVoltage) < aVoltage)
                             rUsedAmperes++;
                     }
                 } else if (GregTech_API.mOutputRF && tTileEntity instanceof IEnergyReceiver) {
                     final ForgeDirection tDirection = ForgeDirection.getOrientation(i)
-                                                                    .getOpposite();
+                        .getOpposite();
                     final int rfOut = GT_Utility.safeInt(aVoltage * GregTech_API.mEUtoRF / 100);
                     if (((IEnergyReceiver) tTileEntity).receiveEnergy(tDirection, rfOut, true) == rfOut) {
                         ((IEnergyReceiver) tTileEntity).receiveEnergy(tDirection, rfOut, false);

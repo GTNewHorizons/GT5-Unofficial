@@ -7,13 +7,13 @@ public enum GT_MultiTileMachine {
     CokeOven(0),
     NONE(GT_Values.W);
 
-    private final short meta;
+    private final int meta;
 
     GT_MultiTileMachine(int meta) {
-        this.meta = (short) meta;
+        this.meta = meta;
     }
 
-    public short getId() {
+    public int getId() {
         return meta;
     }
 }

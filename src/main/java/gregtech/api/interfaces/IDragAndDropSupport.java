@@ -11,18 +11,19 @@ import codechicken.nei.VisiblityData;
 import codechicken.nei.api.INEIGuiHandler;
 import codechicken.nei.api.TaggedInventoryArea;
 import cpw.mods.fml.common.Optional;
+import gregtech.api.enums.Mods;
 
 /**
  * Implement this interface if your GuiContainer supports Drag-And-Drop behavior on NEI.
  */
-@Optional.Interface(modid = "NotEnoughItems", iface = "codechicken.nei.api.INEIGuiHandler")
+@Optional.Interface(modid = Mods.Names.NOT_ENOUGH_ITEMS, iface = "codechicken.nei.api.INEIGuiHandler")
 public interface IDragAndDropSupport extends INEIGuiHandler {
 
     /**
      * Implement this to handle Drag-And-Drop behavior. This may be invoked on normal click too
      * ({@code isGhost==false}), so be careful if your slot supports both Drag-And-Drop and other behaviors e.g. fluid
      * I/O with FluidDisplay click
-     * 
+     *
      * @param gui          Current gui instance. Make sure to check if it is an instance of your GuiContainer.
      * @param mousex       X position of the mouse
      * @param mousey       Y position of the mouse
@@ -33,7 +34,7 @@ public interface IDragAndDropSupport extends INEIGuiHandler {
      * @return True if success
      */
     boolean handleDragAndDropGT(GuiContainer gui, int mousex, int mousey, ItemStack draggedStack, int button,
-            boolean isGhost);
+        boolean isGhost);
 
     default boolean handleDragNDrop(GuiContainer gui, int mousex, int mousey, ItemStack draggedStack, int button) {
         return handleDragAndDropGT(gui, mousex, mousey, draggedStack, button, NEIClientUtils.getHeldItem() == null);

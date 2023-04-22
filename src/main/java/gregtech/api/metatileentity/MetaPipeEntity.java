@@ -99,7 +99,7 @@ public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable {
             throw new IllegalArgumentException("MetaMachine-Slot Nr. " + aID + " is already occupied!");
         }
         mName = aBasicName.replaceAll(" ", "_")
-                          .toLowerCase(Locale.ENGLISH);
+            .toLowerCase(Locale.ENGLISH);
         setBaseMetaTileEntity(new BaseMetaPipeEntity());
         getBaseMetaTileEntity().setMetaTileID((short) aID);
         GT_LanguageManager.addStringLocalization("gt.blockmachines." + mName + ".name", aRegionalName);
@@ -115,7 +115,7 @@ public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable {
 
         ItemStack tStack = new ItemStack(GregTech_API.sBlockMachines, 1, aID);
         tStack.getItem()
-              .addInformation(tStack, null, new ArrayList<>(), true);
+            .addInformation(tStack, null, new ArrayList<>(), true);
     }
 
     /**
@@ -149,7 +149,7 @@ public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable {
     public void setBaseMetaTileEntity(IGregTechTileEntity aBaseMetaTileEntity) {
         if (mBaseMetaTileEntity != null && aBaseMetaTileEntity == null) {
             mBaseMetaTileEntity.getMetaTileEntity()
-                               .inValidate();
+                .inValidate();
             mBaseMetaTileEntity.setMetaTileEntity(null);
         }
         mBaseMetaTileEntity = aBaseMetaTileEntity;
@@ -241,19 +241,19 @@ public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable {
 
     @Override
     public boolean onWrenchRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY,
-            float aZ) {
+        float aZ) {
         return false;
     }
 
     @Override
     public boolean onWireCutterRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY,
-            float aZ) {
+        float aZ) {
         return false;
     }
 
     @Override
     public boolean onSolderingToolRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY,
-            float aZ) {
+        float aZ) {
         return false;
     }
 
@@ -318,7 +318,7 @@ public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable {
      */
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, byte aSide, float aX,
-            float aY, float aZ) {
+        float aY, float aZ) {
         return false;
     }
 
@@ -397,7 +397,7 @@ public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable {
 
     @Override
     public ArrayList<String> getSpecialDebugInfo(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer,
-            int aLogLevel, ArrayList<String> aList) {
+        int aLogLevel, ArrayList<String> aList) {
         return aList;
     }
 
@@ -598,16 +598,16 @@ public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable {
     @Override
     public boolean canInsertItem(int aIndex, ItemStack aStack, int aSide) {
         return isValidSlot(aIndex) && aStack != null
-                && aIndex < mInventory.length
-                && (mInventory[aIndex] == null || GT_Utility.areStacksEqual(aStack, mInventory[aIndex]))
-                && allowPutStack(getBaseMetaTileEntity(), aIndex, (byte) aSide, aStack);
+            && aIndex < mInventory.length
+            && (mInventory[aIndex] == null || GT_Utility.areStacksEqual(aStack, mInventory[aIndex]))
+            && allowPutStack(getBaseMetaTileEntity(), aIndex, (byte) aSide, aStack);
     }
 
     @Override
     public boolean canExtractItem(int aIndex, ItemStack aStack, int aSide) {
         return isValidSlot(aIndex) && aStack != null
-                && aIndex < mInventory.length
-                && allowPullStack(getBaseMetaTileEntity(), aIndex, (byte) aSide, aStack);
+            && aIndex < mInventory.length
+            && allowPullStack(getBaseMetaTileEntity(), aIndex, (byte) aSide, aStack);
     }
 
     @Override
@@ -756,15 +756,15 @@ public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable {
     public void doExplosion(long aExplosionPower) {
         float tStrength = GT_Values.getExplosionPowerForVoltage(aExplosionPower);
         int tX = getBaseMetaTileEntity().getXCoord(), tY = getBaseMetaTileEntity().getYCoord(),
-                tZ = getBaseMetaTileEntity().getZCoord();
+            tZ = getBaseMetaTileEntity().getZCoord();
         World tWorld = getBaseMetaTileEntity().getWorld();
         tWorld.setBlock(tX, tY, tZ, Blocks.air);
         if (GregTech_API.sMachineExplosions) {
             new WorldSpawnedEventBuilder.ExplosionEffectEventBuilder().setStrength(tStrength)
-                                                                      .setSmoking(true)
-                                                                      .setPosition(tX + 0.5, tY + 0.5, tZ + 0.5)
-                                                                      .setWorld(tWorld)
-                                                                      .run();
+                .setSmoking(true)
+                .setPosition(tX + 0.5, tY + 0.5, tZ + 0.5)
+                .setWorld(tWorld)
+                .run();
         }
     }
 
@@ -775,7 +775,7 @@ public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable {
 
     @Override
     public void addCollisionBoxesToList(World aWorld, int aX, int aY, int aZ, AxisAlignedBB inputAABB,
-            List<AxisAlignedBB> outputAABB, Entity collider) {
+        List<AxisAlignedBB> outputAABB, Entity collider) {
         AxisAlignedBB axisalignedbb1 = getCollisionBoundingBoxFromPool(aWorld, aX, aY, aZ);
         if (axisalignedbb1 != null && inputAABB.intersectsWith(axisalignedbb1)) outputAABB.add(axisalignedbb1);
     }
@@ -850,10 +850,10 @@ public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable {
         if ((alwaysLookConnected || letsIn || letsOut)) {
             // Are we trying to connect to a pipe? let's do it!
             final IMetaTileEntity tPipe = tTileEntity instanceof IGregTechTileEntity
-                    ? ((IGregTechTileEntity) tTileEntity).getMetaTileEntity()
-                    : null;
+                ? ((IGregTechTileEntity) tTileEntity).getMetaTileEntity()
+                : null;
             if (getClass().isInstance(tPipe) || (tPipe != null && tPipe.getClass()
-                                                                       .isInstance(this))) {
+                .isInstance(this))) {
                 connectAtSide(aSide);
                 if (!((MetaPipeEntity) tPipe).isConnectedAtSide(tSide)) {
                     // Make sure pipes all get together -- connect back to us if we're connecting to a pipe
@@ -869,10 +869,8 @@ public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable {
                     return 1;
                 }
             if (!baseMetaTile.getWorld()
-                             .getChunkProvider()
-                             .chunkExists(
-                                     baseMetaTile.getOffsetX(aSide, 1) >> 4,
-                                     baseMetaTile.getOffsetZ(aSide, 1) >> 4)) {
+                .getChunkProvider()
+                .chunkExists(baseMetaTile.getOffsetX(aSide, 1) >> 4, baseMetaTile.getOffsetZ(aSide, 1) >> 4)) {
                 // Target chunk unloaded
                 return -1;
             }
@@ -903,11 +901,10 @@ public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable {
         IGregTechTileEntity tTileEntity = getBaseMetaTileEntity().getIGregTechTileEntityAtSide(aSide);
         IMetaTileEntity tPipe = tTileEntity == null ? null : tTileEntity.getMetaTileEntity();
         if ((this.getClass()
-                 .isInstance(tPipe)
-                || (tPipe != null && tPipe.getClass()
-                                          .isInstance(this)))
-                && ((MetaPipeEntity) tPipe).isConnectedAtSide(tSide))
-            ((MetaPipeEntity) tPipe).disconnect(tSide);
+            .isInstance(tPipe)
+            || (tPipe != null && tPipe.getClass()
+                .isInstance(this)))
+            && ((MetaPipeEntity) tPipe).isConnectedAtSide(tSide)) ((MetaPipeEntity) tPipe).disconnect(tSide);
     }
 
     @Override
@@ -916,7 +913,7 @@ public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable {
     }
 
     public boolean letsIn(GT_CoverBehavior coverBehavior, byte aSide, int aCoverID, int aCoverVariable,
-            ICoverable aTileEntity) {
+        ICoverable aTileEntity) {
         return false;
     }
 
@@ -925,7 +922,7 @@ public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable {
     }
 
     public boolean letsOut(GT_CoverBehavior coverBehavior, byte aSide, int aCoverID, int aCoverVariable,
-            ICoverable aTileEntity) {
+        ICoverable aTileEntity) {
         return false;
     }
 
@@ -934,12 +931,12 @@ public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable {
     }
 
     public boolean letsIn(GT_CoverBehaviorBase<?> coverBehavior, byte aSide, int aCoverID,
-            ISerializableObject aCoverVariable, ICoverable aTileEntity) {
+        ISerializableObject aCoverVariable, ICoverable aTileEntity) {
         return false;
     }
 
     public boolean letsOut(GT_CoverBehaviorBase<?> coverBehavior, byte aSide, int aCoverID,
-            ISerializableObject aCoverVariable, ICoverable aTileEntity) {
+        ISerializableObject aCoverVariable, ICoverable aTileEntity) {
         return false;
     }
 

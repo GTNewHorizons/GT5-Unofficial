@@ -26,8 +26,8 @@ public class GT_Single_Recipe_Check_Processing_Array extends GT_Single_Recipe_Ch
     protected final ItemStack machineStack;
 
     protected GT_Single_Recipe_Check_Processing_Array(GT_MetaTileEntity_MultiBlockBase multiBlockBase, GT_Recipe recipe,
-            ImmutableMap<GT_Utility.ItemId, Integer> itemCost, ImmutableMap<Fluid, Integer> fluidCost,
-            int recipeAmperage, ItemStack machineStack) {
+        ImmutableMap<GT_Utility.ItemId, Integer> itemCost, ImmutableMap<Fluid, Integer> fluidCost, int recipeAmperage,
+        ItemStack machineStack) {
         super(multiBlockBase, recipe, itemCost, fluidCost);
 
         this.recipeAmperage = recipeAmperage;
@@ -95,12 +95,8 @@ public class GT_Single_Recipe_Check_Processing_Array extends GT_Single_Recipe_Ch
             if (totalItemCost > 0) {
                 int remainingItemCost = totalItemCost * finalParallel;
                 Map<GT_Utility.ItemId, Integer> runningItemCost = itemCost.entrySet()
-                                                                          .stream()
-                                                                          .collect(
-                                                                                  Collectors.toMap(
-                                                                                          Map.Entry::getKey,
-                                                                                          entry -> entry.getValue()
-                                                                                                  * finalParallel));
+                    .stream()
+                    .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue() * finalParallel));
 
                 for (ItemStack itemStack : items) {
                     GT_Utility.ItemId key = GT_Utility.ItemId.createNoCopy(itemStack);
@@ -119,12 +115,8 @@ public class GT_Single_Recipe_Check_Processing_Array extends GT_Single_Recipe_Ch
             if (totalFluidCost > 0) {
                 int remainingFluidCost = totalFluidCost * finalParallel;
                 Map<Fluid, Integer> runningFluidCost = fluidCost.entrySet()
-                                                                .stream()
-                                                                .collect(
-                                                                        Collectors.toMap(
-                                                                                Map.Entry::getKey,
-                                                                                entry -> entry.getValue()
-                                                                                        * finalParallel));
+                    .stream()
+                    .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue() * finalParallel));
 
                 for (FluidStack fluidStack : fluids) {
                     Fluid key = fluidStack.getFluid();
@@ -147,17 +139,17 @@ public class GT_Single_Recipe_Check_Processing_Array extends GT_Single_Recipe_Ch
     @Nullable
 
     public static GT_Single_Recipe_Check tryLoad(GT_MetaTileEntity_MultiBlockBase parent,
-            GT_Recipe.GT_Recipe_Map recipeMap, NBTTagCompound tag, ItemStack machineStack) {
+        GT_Recipe.GT_Recipe_Map recipeMap, NBTTagCompound tag, ItemStack machineStack) {
         if (recipeMap == null || machineStack == null) return null;
         GT_Recipe found = tryFindRecipe(parent, recipeMap, tag);
         if (found == null) return null;
         return new GT_Single_Recipe_Check_Processing_Array(
-                parent,
-                found,
-                loadItemCost(tag),
-                loadFluidCost(tag),
-                recipeMap.mAmperage,
-                machineStack.copy());
+            parent,
+            found,
+            loadItemCost(tag),
+            loadFluidCost(tag),
+            recipeMap.mAmperage,
+            machineStack.copy());
     }
 
     public static Builder processingArrayBuilder(GT_MetaTileEntity_MultiBlockBase multiBlockBase) {
@@ -240,12 +232,12 @@ public class GT_Single_Recipe_Check_Processing_Array extends GT_Single_Recipe_Ch
             }
 
             return new GT_Single_Recipe_Check_Processing_Array(
-                    multiBlockBase,
-                    recipe,
-                    itemCostBuilder.build(),
-                    fluidCostBuilder.build(),
-                    recipeAmperage,
-                    multiBlockBase.mInventory[1].copy());
+                multiBlockBase,
+                recipe,
+                itemCostBuilder.build(),
+                fluidCostBuilder.build(),
+                recipeAmperage,
+                multiBlockBase.mInventory[1].copy());
         }
     }
 }

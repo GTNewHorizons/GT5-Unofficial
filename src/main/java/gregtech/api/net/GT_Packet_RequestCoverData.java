@@ -81,11 +81,11 @@ public class GT_Packet_RequestCoverData extends GT_Packet_New {
     @Override
     public GT_Packet_New decode(ByteArrayDataInput aData) {
         return new GT_Packet_RequestCoverData(
-                aData.readInt(),
-                aData.readShort(),
-                aData.readInt(),
-                aData.readByte(),
-                aData.readInt());
+            aData.readInt(),
+            aData.readShort(),
+            aData.readInt(),
+            aData.readByte(),
+            aData.readInt());
     }
 
     @Override

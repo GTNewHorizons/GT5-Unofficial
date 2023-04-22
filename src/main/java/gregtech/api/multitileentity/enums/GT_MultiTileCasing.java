@@ -5,15 +5,16 @@ import gregtech.api.enums.GT_Values;
 public enum GT_MultiTileCasing {
 
     CokeOven(0),
+    Chemical(1),
     NONE(GT_Values.W);
 
-    private final short meta;
+    private final int meta;
 
     GT_MultiTileCasing(int meta) {
-        this.meta = (short) meta;
+        this.meta = meta;
     }
 
-    public short getId() {
+    public int getId() {
         return meta;
     }
 }

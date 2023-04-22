@@ -52,17 +52,17 @@ public class GT_Runnable_Cable_Update extends GT_Runnable_MachineBlockUpdate {
                 // Now see if we should add the nearby blocks to the queue:
                 // only add blocks the cable is connected to
                 if (tTileEntity instanceof BaseMetaPipeEntity
-                        && ((BaseMetaPipeEntity) tTileEntity).getMetaTileEntity() instanceof GT_MetaPipeEntity_Cable) {
+                    && ((BaseMetaPipeEntity) tTileEntity).getMetaTileEntity() instanceof GT_MetaPipeEntity_Cable) {
                     ChunkCoordinates tCoords;
                     for (byte tSide : ALL_VALID_SIDES) {
-                        if (((GT_MetaPipeEntity_Cable) ((BaseMetaPipeEntity) tTileEntity).getMetaTileEntity()).isConnectedAtSide(
-                                tSide)) {
+                        if (((GT_MetaPipeEntity_Cable) ((BaseMetaPipeEntity) tTileEntity).getMetaTileEntity())
+                            .isConnectedAtSide(tSide)) {
                             final ForgeDirection offset = ForgeDirection.getOrientation(tSide);
                             if (visited.add(
-                                    tCoords = new ChunkCoordinates(
-                                            aCoords.posX + offset.offsetX,
-                                            aCoords.posY + offset.offsetY,
-                                            aCoords.posZ + offset.offsetZ)))
+                                tCoords = new ChunkCoordinates(
+                                    aCoords.posX + offset.offsetX,
+                                    aCoords.posY + offset.offsetY,
+                                    aCoords.posZ + offset.offsetZ)))
                                 tQueue.add(tCoords);
                         }
                     }
@@ -70,13 +70,13 @@ public class GT_Runnable_Cable_Update extends GT_Runnable_MachineBlockUpdate {
             }
         } catch (Exception e) {
             GT_Mod.GT_FML_LOGGER.error(
-                    "Well this update was broken... " + mCoords
-                            + ", mWorld={"
-                            + world.getProviderName()
-                            + " @dimId "
-                            + world.provider.dimensionId
-                            + "}",
-                    e);
+                "Well this update was broken... " + mCoords
+                    + ", mWorld={"
+                    + world.getProviderName()
+                    + " @dimId "
+                    + world.provider.dimensionId
+                    + "}",
+                e);
         }
     }
 }

@@ -23,7 +23,7 @@ public class GT_MetaTileEntity_SuperTank extends GT_MetaTileEntity_DigitalTankBa
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_SuperTank(mName, mTier, mDescription, mTextures);
+        return new GT_MetaTileEntity_SuperTank(mName, mTier, mDescriptionArray, mTextures);
     }
 
     @Override
@@ -31,24 +31,24 @@ public class GT_MetaTileEntity_SuperTank extends GT_MetaTileEntity_DigitalTankBa
 
         if (mFluid == null) {
             return new String[] { EnumChatFormatting.BLUE + "Super Tank" + EnumChatFormatting.RESET, "Stored Fluid:",
-                    EnumChatFormatting.GOLD + "No Fluid" + EnumChatFormatting.RESET,
-                    EnumChatFormatting.GREEN + "0 L"
-                            + EnumChatFormatting.RESET
-                            + " "
-                            + EnumChatFormatting.YELLOW
-                            + GT_Utility.formatNumbers(getCapacity())
-                            + " L"
-                            + EnumChatFormatting.RESET };
+                EnumChatFormatting.GOLD + "No Fluid" + EnumChatFormatting.RESET,
+                EnumChatFormatting.GREEN + "0 L"
+                    + EnumChatFormatting.RESET
+                    + " "
+                    + EnumChatFormatting.YELLOW
+                    + GT_Utility.formatNumbers(getCapacity())
+                    + " L"
+                    + EnumChatFormatting.RESET };
         }
         return new String[] { EnumChatFormatting.BLUE + "Super Tank" + EnumChatFormatting.RESET, "Stored Fluid:",
-                EnumChatFormatting.GOLD + mFluid.getLocalizedName() + EnumChatFormatting.RESET,
-                EnumChatFormatting.GREEN + GT_Utility.formatNumbers(mFluid.amount)
-                        + " L"
-                        + EnumChatFormatting.RESET
-                        + " "
-                        + EnumChatFormatting.YELLOW
-                        + GT_Utility.formatNumbers(getCapacity())
-                        + " L"
-                        + EnumChatFormatting.RESET };
+            EnumChatFormatting.GOLD + mFluid.getLocalizedName() + EnumChatFormatting.RESET,
+            EnumChatFormatting.GREEN + GT_Utility.formatNumbers(mFluid.amount)
+                + " L"
+                + EnumChatFormatting.RESET
+                + " "
+                + EnumChatFormatting.YELLOW
+                + GT_Utility.formatNumbers(getCapacity())
+                + " L"
+                + EnumChatFormatting.RESET };
     }
 }

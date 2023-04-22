@@ -1367,12 +1367,6 @@ public enum ItemList implements IItemContainer {
     Machine_EV_FluidCanner,
     Machine_IV_FluidCanner,
 
-    Machine_LV_Disassembler,
-    Machine_MV_Disassembler,
-    Machine_HV_Disassembler,
-    Machine_EV_Disassembler,
-    Machine_IV_Disassembler,
-
     Machine_LV_Bundler,
     Machine_MV_Bundler,
     Machine_HV_Bundler,
@@ -1903,6 +1897,7 @@ public enum ItemList implements IItemContainer {
     Circuit_Chip_NanoCPU,
     Circuit_Wafer_QuantumCPU,
     Circuit_Chip_QuantumCPU,
+    Circuit_Wafer_Bioware,
 
     Circuit_Chip_CrystalCPU,
     Circuit_Chip_CrystalSoC,
@@ -1913,6 +1908,7 @@ public enum ItemList implements IItemContainer {
     Circuit_Parts_RawCrystalParts,
     Circuit_Chip_Biocell,
     Circuit_Chip_Optical,
+    Circuit_Parts_Chip_Bioware,
 
     Tube_Wires,
     KevlarFiber,
@@ -2027,39 +2023,37 @@ public enum ItemList implements IItemContainer {
     Machine_Multi_TranscendentPlasmaMixer;
 
     public static final ItemList[] DYE_ONLY_ITEMS = { Color_00, Color_01, Color_02, Color_03, Color_04, Color_05,
-            Color_06, Color_07, Color_08, Color_09, Color_10, Color_11, Color_12, Color_13, Color_14, Color_15 },
-            SPRAY_CAN_DYES = { Spray_Color_00, Spray_Color_01, Spray_Color_02, Spray_Color_03, Spray_Color_04,
-                    Spray_Color_05, Spray_Color_06, Spray_Color_07, Spray_Color_08, Spray_Color_09, Spray_Color_10,
-                    Spray_Color_11, Spray_Color_12, Spray_Color_13, Spray_Color_14, Spray_Color_15 },
-            SPRAY_CAN_DYES_USED = { Spray_Color_Used_00, Spray_Color_Used_01, Spray_Color_Used_02, Spray_Color_Used_03,
-                    Spray_Color_Used_04, Spray_Color_Used_05, Spray_Color_Used_06, Spray_Color_Used_07,
-                    Spray_Color_Used_08, Spray_Color_Used_09, Spray_Color_Used_10, Spray_Color_Used_11,
-                    Spray_Color_Used_12, Spray_Color_Used_13, Spray_Color_Used_14, Spray_Color_Used_15 },
-            TRANSFORMERS = { Transformer_LV_ULV, Transformer_MV_LV, Transformer_HV_MV, Transformer_EV_HV,
-                    Transformer_IV_EV, Transformer_LuV_IV, Transformer_ZPM_LuV, Transformer_UV_ZPM,
-                    Transformer_MAX_UV },
-            MACHINE_HULLS = { Hull_ULV, Hull_LV, Hull_MV, Hull_HV, Hull_EV, Hull_IV, Hull_LuV, Hull_ZPM, Hull_UV,
-                    Hull_MAX },
-            HATCHES_DYNAMO = { Hatch_Dynamo_ULV, Hatch_Dynamo_LV, Hatch_Dynamo_MV, Hatch_Dynamo_HV, Hatch_Dynamo_EV,
-                    Hatch_Dynamo_IV, Hatch_Dynamo_LuV, Hatch_Dynamo_ZPM, Hatch_Dynamo_UV, Hatch_Dynamo_MAX },
-            HATCHES_ENERGY = { Hatch_Energy_ULV, Hatch_Energy_LV, Hatch_Energy_MV, Hatch_Energy_HV, Hatch_Energy_EV,
-                    Hatch_Energy_IV, Hatch_Energy_LuV, Hatch_Energy_ZPM, Hatch_Energy_UV, Hatch_Energy_MAX },
-            HATCHES_INPUT = { Hatch_Input_ULV, Hatch_Input_LV, Hatch_Input_MV, Hatch_Input_HV, Hatch_Input_EV,
-                    Hatch_Input_IV, Hatch_Input_LuV, Hatch_Input_ZPM, Hatch_Input_UV, Hatch_Input_MAX },
-            HATCHES_INPUT_BUS = { Hatch_Input_Bus_ULV, Hatch_Input_Bus_LV, Hatch_Input_Bus_MV, Hatch_Input_Bus_HV,
-                    Hatch_Input_Bus_EV, Hatch_Input_Bus_IV, Hatch_Input_Bus_LuV, Hatch_Input_Bus_ZPM,
-                    Hatch_Input_Bus_UV, Hatch_Input_Bus_MAX },
-            HATCHES_OUTPUT = { Hatch_Output_ULV, Hatch_Output_LV, Hatch_Output_MV, Hatch_Output_HV, Hatch_Output_EV,
-                    Hatch_Output_IV, Hatch_Output_LuV, Hatch_Output_ZPM, Hatch_Output_UV, Hatch_Output_MAX },
-            HATCHES_OUTPUT_BUS = { Hatch_Output_Bus_ULV, Hatch_Output_Bus_LV, Hatch_Output_Bus_MV, Hatch_Output_Bus_HV,
-                    Hatch_Output_Bus_EV, Hatch_Output_Bus_IV, Hatch_Output_Bus_LuV, Hatch_Output_Bus_ZPM,
-                    Hatch_Output_Bus_UV, Hatch_Output_Bus_MAX },
-            HATCHES_MUFFLER = { Hatch_Muffler_LV, Hatch_Muffler_LV, Hatch_Muffler_MV, Hatch_Muffler_HV,
-                    Hatch_Muffler_EV, Hatch_Muffler_IV, Hatch_Muffler_LuV, Hatch_Muffler_ZPM, Hatch_Muffler_UV,
-                    Hatch_Muffler_MAX };
+        Color_06, Color_07, Color_08, Color_09, Color_10, Color_11, Color_12, Color_13, Color_14, Color_15 },
+        SPRAY_CAN_DYES = { Spray_Color_00, Spray_Color_01, Spray_Color_02, Spray_Color_03, Spray_Color_04,
+            Spray_Color_05, Spray_Color_06, Spray_Color_07, Spray_Color_08, Spray_Color_09, Spray_Color_10,
+            Spray_Color_11, Spray_Color_12, Spray_Color_13, Spray_Color_14, Spray_Color_15 },
+        SPRAY_CAN_DYES_USED = { Spray_Color_Used_00, Spray_Color_Used_01, Spray_Color_Used_02, Spray_Color_Used_03,
+            Spray_Color_Used_04, Spray_Color_Used_05, Spray_Color_Used_06, Spray_Color_Used_07, Spray_Color_Used_08,
+            Spray_Color_Used_09, Spray_Color_Used_10, Spray_Color_Used_11, Spray_Color_Used_12, Spray_Color_Used_13,
+            Spray_Color_Used_14, Spray_Color_Used_15 },
+        TRANSFORMERS = { Transformer_LV_ULV, Transformer_MV_LV, Transformer_HV_MV, Transformer_EV_HV, Transformer_IV_EV,
+            Transformer_LuV_IV, Transformer_ZPM_LuV, Transformer_UV_ZPM, Transformer_MAX_UV },
+        MACHINE_HULLS = { Hull_ULV, Hull_LV, Hull_MV, Hull_HV, Hull_EV, Hull_IV, Hull_LuV, Hull_ZPM, Hull_UV,
+            Hull_MAX },
+        HATCHES_DYNAMO = { Hatch_Dynamo_ULV, Hatch_Dynamo_LV, Hatch_Dynamo_MV, Hatch_Dynamo_HV, Hatch_Dynamo_EV,
+            Hatch_Dynamo_IV, Hatch_Dynamo_LuV, Hatch_Dynamo_ZPM, Hatch_Dynamo_UV, Hatch_Dynamo_MAX },
+        HATCHES_ENERGY = { Hatch_Energy_ULV, Hatch_Energy_LV, Hatch_Energy_MV, Hatch_Energy_HV, Hatch_Energy_EV,
+            Hatch_Energy_IV, Hatch_Energy_LuV, Hatch_Energy_ZPM, Hatch_Energy_UV, Hatch_Energy_MAX },
+        HATCHES_INPUT = { Hatch_Input_ULV, Hatch_Input_LV, Hatch_Input_MV, Hatch_Input_HV, Hatch_Input_EV,
+            Hatch_Input_IV, Hatch_Input_LuV, Hatch_Input_ZPM, Hatch_Input_UV, Hatch_Input_MAX },
+        HATCHES_INPUT_BUS = { Hatch_Input_Bus_ULV, Hatch_Input_Bus_LV, Hatch_Input_Bus_MV, Hatch_Input_Bus_HV,
+            Hatch_Input_Bus_EV, Hatch_Input_Bus_IV, Hatch_Input_Bus_LuV, Hatch_Input_Bus_ZPM, Hatch_Input_Bus_UV,
+            Hatch_Input_Bus_MAX },
+        HATCHES_OUTPUT = { Hatch_Output_ULV, Hatch_Output_LV, Hatch_Output_MV, Hatch_Output_HV, Hatch_Output_EV,
+            Hatch_Output_IV, Hatch_Output_LuV, Hatch_Output_ZPM, Hatch_Output_UV, Hatch_Output_MAX },
+        HATCHES_OUTPUT_BUS = { Hatch_Output_Bus_ULV, Hatch_Output_Bus_LV, Hatch_Output_Bus_MV, Hatch_Output_Bus_HV,
+            Hatch_Output_Bus_EV, Hatch_Output_Bus_IV, Hatch_Output_Bus_LuV, Hatch_Output_Bus_ZPM, Hatch_Output_Bus_UV,
+            Hatch_Output_Bus_MAX },
+        HATCHES_MUFFLER = { Hatch_Muffler_LV, Hatch_Muffler_LV, Hatch_Muffler_MV, Hatch_Muffler_HV, Hatch_Muffler_EV,
+            Hatch_Muffler_IV, Hatch_Muffler_LuV, Hatch_Muffler_ZPM, Hatch_Muffler_UV, Hatch_Muffler_MAX };
     public static Fluid sOilExtraHeavy, sEpichlorhydrin, sDrillingFluid, sBlueVitriol, sNickelSulfate, sGreenVitriol,
-            sToluene, sNitrationMixture, sRocketFuel, sHydricSulfur, sIndiumConcentrate, sLeadZincSolution,
-            sHydrochloricAcid;
+        sToluene, sNitrationMixture, sRocketFuel, sHydricSulfur, sIndiumConcentrate, sLeadZincSolution,
+        sHydrochloricAcid;
     private ItemStack mStack;
     private boolean mHasNotBeenSet;
     private boolean mDeprecated;
@@ -2129,7 +2123,11 @@ public enum ItemList implements IItemContainer {
     @Override
     public ItemStack get(long aAmount, Object... aReplacements) {
         sanityCheck();
-        if (GT_Utility.isStackInvalid(mStack)) return GT_Utility.copyAmount(aAmount, aReplacements);
+        if (GT_Utility.isStackInvalid(mStack)) {
+            GT_Log.out.println("Object in the ItemList is null at:");
+            new NullPointerException().printStackTrace(GT_Log.out);
+            return GT_Utility.copyAmount(aAmount, aReplacements);
+        }
         return GT_Utility.copyAmount(aAmount, GT_OreDictUnificator.get(mStack));
     }
 
@@ -2164,11 +2162,11 @@ public enum ItemList implements IItemContainer {
         final String[] tDisplayNameWords = aDisplayName.split("\\W");
         for (String tWord : tDisplayNameWords) {
             if (tWord.length() > 0) tCamelCasedDisplayNameBuilder.append(
-                    tWord.substring(0, 1)
-                         .toUpperCase(Locale.US));
+                tWord.substring(0, 1)
+                    .toUpperCase(Locale.US));
             if (tWord.length() > 1) tCamelCasedDisplayNameBuilder.append(
-                    tWord.substring(1)
-                         .toLowerCase(Locale.US));
+                tWord.substring(1)
+                    .toLowerCase(Locale.US));
         }
         if (tCamelCasedDisplayNameBuilder.length() == 0) {
             // CamelCased DisplayName is empty, so use hash of aDisplayName

@@ -24,43 +24,43 @@ public class GT_MetaTileEntity_SuperBuffer extends GT_MetaTileEntity_ChestBuffer
 
     public GT_MetaTileEntity_SuperBuffer(int aID, String aName, String aNameRegional, int aTier) {
         super(
-                aID,
-                aName,
-                aNameRegional,
-                aTier,
-                257,
-                new String[] { "Buffers up to 256 Item Stacks", "Use Screwdriver to regulate output stack size",
-                        "Does not consume energy to move Item", getTickRateDesc(aTier) });
+            aID,
+            aName,
+            aNameRegional,
+            aTier,
+            257,
+            new String[] { "Buffers up to 256 Item Stacks", "Use Screwdriver to regulate output stack size",
+                "Does not consume energy to move Item", getTickRateDesc(aTier) });
     }
 
     public GT_MetaTileEntity_SuperBuffer(String aName, int aTier, int aInvSlotCount, String aDescription,
-            ITexture[][][] aTextures) {
+        ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
     public GT_MetaTileEntity_SuperBuffer(String aName, int aTier, int aInvSlotCount, String[] aDescription,
-            ITexture[][][] aTextures) {
+        ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_SuperBuffer(
-                this.mName,
-                this.mTier,
-                this.mInventory.length,
-                this.mDescriptionArray,
-                this.mTextures);
+            this.mName,
+            this.mTier,
+            this.mInventory.length,
+            this.mDescriptionArray,
+            this.mTextures);
     }
 
     @Override
     public ITexture getOverlayIcon() {
         return TextureFactory.of(
-                TextureFactory.of(AUTOMATION_SUPERBUFFER),
-                TextureFactory.builder()
-                              .addIcon(AUTOMATION_SUPERBUFFER_GLOW)
-                              .glow()
-                              .build());
+            TextureFactory.of(AUTOMATION_SUPERBUFFER),
+            TextureFactory.builder()
+                .addIcon(AUTOMATION_SUPERBUFFER_GLOW)
+                .glow()
+                .build());
     }
 
     @Override
@@ -86,7 +86,7 @@ public class GT_MetaTileEntity_SuperBuffer extends GT_MetaTileEntity_ChestBuffer
             do {
                 int slot = validSlots.get(i);
                 mInventory[slot] = stacks.get(entry.getKey())
-                                         .copy();
+                    .copy();
                 int toSet = Math.min(entry.getValue(), mInventory[slot].getMaxStackSize());
                 mInventory[slot].stackSize = toSet;
                 entry.setValue(entry.getValue() - toSet);
@@ -98,8 +98,8 @@ public class GT_MetaTileEntity_SuperBuffer extends GT_MetaTileEntity_ChestBuffer
     @Override
     protected void addMainUI(ModularWindow.Builder builder) {
         builder.widget(
-                new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SUPER_BUFFER)
-                                    .setPos(61, 4)
-                                    .setSize(54, 54));
+            new DrawableWidget().setDrawable(GT_UITextures.PICTURE_SUPER_BUFFER)
+                .setPos(61, 4)
+                .setSize(54, 54));
     }
 }

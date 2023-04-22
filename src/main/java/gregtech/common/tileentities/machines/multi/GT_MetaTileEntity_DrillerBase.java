@@ -50,8 +50,8 @@ import gregtech.api.util.GT_Utility;
 import gregtech.api.util.IGT_HatchAdder;
 
 public abstract class GT_MetaTileEntity_DrillerBase
-        extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_DrillerBase>
-        implements IChunkLoader, ISurvivalConstructable {
+    extends GT_MetaTileEntity_EnhancedMultiBlockBase<GT_MetaTileEntity_DrillerBase>
+    implements IChunkLoader, ISurvivalConstructable {
 
     private static final ItemStack miningPipe = GT_ModHandler.getIC2Item("miningPipe", 0);
     private static final ItemStack miningPipeTip = GT_ModHandler.getIC2Item("miningPipeTip", 0);
@@ -63,41 +63,36 @@ public abstract class GT_MetaTileEntity_DrillerBase
         @Override
         protected IStructureDefinition<GT_MetaTileEntity_DrillerBase> computeValue(Class<?> type) {
             return StructureDefinition.<GT_MetaTileEntity_DrillerBase>builder()
-                                      .addShape(
-                                              STRUCTURE_PIECE_MAIN,
-                                              transpose(
-                                                      new String[][] { { "   ", " f ", "   " }, { "   ", " f ", "   " },
-                                                              { "   ", " f ", "   " }, { " f ", "fcf", " f " },
-                                                              { " f ", "fcf", " f " }, { " f ", "fcf", " f " },
-                                                              { "b~b", "bbb", "bbb" }, }))
-                                      .addElement('f', lazy(t -> ofFrame(t.getFrameMaterial())))
-                                      .addElement(
-                                              'c',
-                                              lazy(
-                                                      t -> ofBlock(
-                                                              t.getCasingBlockItem()
-                                                               .getBlock(),
-                                                              t.getCasingBlockItem()
-                                                               .get(0)
-                                                               .getItemDamage())))
-                                      .addElement(
-                                              'b',
-                                              lazy(
-                                                      t -> buildHatchAdder(
-                                                              GT_MetaTileEntity_DrillerBase.class).atLeastList(
-                                                                      t.getAllowedHatches())
-                                                                                                  .adder(
-                                                                                                          GT_MetaTileEntity_DrillerBase::addToMachineList)
-                                                                                                  .casingIndex(
-                                                                                                          t.casingTextureIndex)
-                                                                                                  .dot(1)
-                                                                                                  .buildAndChain(
-                                                                                                          t.getCasingBlockItem()
-                                                                                                           .getBlock(),
-                                                                                                          t.getCasingBlockItem()
-                                                                                                           .get(0)
-                                                                                                           .getItemDamage())))
-                                      .build();
+                .addShape(
+                    STRUCTURE_PIECE_MAIN,
+                    transpose(
+                        new String[][] { { "   ", " f ", "   " }, { "   ", " f ", "   " }, { "   ", " f ", "   " },
+                            { " f ", "fcf", " f " }, { " f ", "fcf", " f " }, { " f ", "fcf", " f " },
+                            { "b~b", "bbb", "bbb" }, }))
+                .addElement('f', lazy(t -> ofFrame(t.getFrameMaterial())))
+                .addElement(
+                    'c',
+                    lazy(
+                        t -> ofBlock(
+                            t.getCasingBlockItem()
+                                .getBlock(),
+                            t.getCasingBlockItem()
+                                .get(0)
+                                .getItemDamage())))
+                .addElement(
+                    'b',
+                    lazy(
+                        t -> buildHatchAdder(GT_MetaTileEntity_DrillerBase.class).atLeastList(t.getAllowedHatches())
+                            .adder(GT_MetaTileEntity_DrillerBase::addToMachineList)
+                            .casingIndex(t.casingTextureIndex)
+                            .dot(1)
+                            .buildAndChain(
+                                t.getCasingBlockItem()
+                                    .getBlock(),
+                                t.getCasingBlockItem()
+                                    .get(0)
+                                    .getItemDamage())))
+                .build();
         }
     };
 
@@ -139,39 +134,37 @@ public abstract class GT_MetaTileEntity_DrillerBase
     private void initFields() {
         casingBlock = getCasingBlockItem().getBlock();
         casingMeta = getCasingBlockItem().get(0)
-                                         .getItemDamage();
+            .getItemDamage();
         int frameId = 4096 + getFrameMaterial().mMetaItemSubID;
         frameMeta = GregTech_API.METATILEENTITIES[frameId] != null
-                ? GregTech_API.METATILEENTITIES[frameId].getTileEntityBaseType()
-                : W;
+            ? GregTech_API.METATILEENTITIES[frameId].getTileEntityBaseType()
+            : W;
         casingTextureIndex = getCasingTextureIndex();
         workState = STATE_DOWNWARD;
     }
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-            boolean aActive, boolean aRedstone) {
+        boolean aActive, boolean aRedstone) {
         if (aSide == aFacing) {
             if (aActive) return new ITexture[] { getCasingTextureForId(casingTextureIndex), TextureFactory.builder()
-                                                                                                          .addIcon(
-                                                                                                                  OVERLAY_FRONT_ORE_DRILL_ACTIVE)
-                                                                                                          .extFacing()
-                                                                                                          .build(),
-                    TextureFactory.builder()
-                                  .addIcon(OVERLAY_FRONT_ORE_DRILL_ACTIVE_GLOW)
-                                  .extFacing()
-                                  .glow()
-                                  .build() };
+                .addIcon(OVERLAY_FRONT_ORE_DRILL_ACTIVE)
+                .extFacing()
+                .build(),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_ORE_DRILL_ACTIVE_GLOW)
+                    .extFacing()
+                    .glow()
+                    .build() };
             return new ITexture[] { getCasingTextureForId(casingTextureIndex), TextureFactory.builder()
-                                                                                             .addIcon(
-                                                                                                     OVERLAY_FRONT_ORE_DRILL)
-                                                                                             .extFacing()
-                                                                                             .build(),
-                    TextureFactory.builder()
-                                  .addIcon(OVERLAY_FRONT_ORE_DRILL_GLOW)
-                                  .extFacing()
-                                  .glow()
-                                  .build() };
+                .addIcon(OVERLAY_FRONT_ORE_DRILL)
+                .extFacing()
+                .build(),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_ORE_DRILL_GLOW)
+                    .extFacing()
+                    .glow()
+                    .build() };
         }
         return new ITexture[] { getCasingTextureForId(casingTextureIndex) };
     }
@@ -197,20 +190,20 @@ public abstract class GT_MetaTileEntity_DrillerBase
         if (aNBT.hasKey("chunkLoadingEnabled")) mChunkLoadingEnabled = aNBT.getBoolean("chunkLoadingEnabled");
         if (aNBT.getBoolean("isChunkloading")) {
             mCurrentChunk = new ChunkCoordIntPair(
-                    aNBT.getInteger("loadedChunkXPos"),
-                    aNBT.getInteger("loadedChunkZPos"));
+                aNBT.getInteger("loadedChunkXPos"),
+                aNBT.getInteger("loadedChunkZPos"));
         }
     }
 
     @Override
     public boolean onSolderingToolRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY,
-            float aZ) {
+        float aZ) {
         if (aSide == getBaseMetaTileEntity().getFrontFacing()) {
             mChunkLoadingEnabled = !mChunkLoadingEnabled;
             GT_Utility.sendChatToPlayer(
-                    aPlayer,
-                    mChunkLoadingEnabled ? GT_Utility.trans("502", "Mining chunk loading enabled")
-                            : GT_Utility.trans("503", "Mining chunk loading disabled"));
+                aPlayer,
+                mChunkLoadingEnabled ? GT_Utility.trans("502", "Mining chunk loading enabled")
+                    : GT_Utility.trans("503", "Mining chunk loading disabled"));
             return true;
         }
         return super.onSolderingToolRightClick(aSide, aWrenchingSide, aPlayer, aX, aY, aZ);
@@ -226,8 +219,8 @@ public abstract class GT_MetaTileEntity_DrillerBase
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isServerSide() && mCurrentChunk != null
-                && !mWorkChunkNeedsReload
-                && !aBaseMetaTileEntity.isAllowedToWork()) {
+            && !mWorkChunkNeedsReload
+            && !aBaseMetaTileEntity.isAllowedToWork()) {
             // if machine has stopped, stop chunkloading
             GT_ChunkManager.releaseTicket((TileEntity) aBaseMetaTileEntity);
             mWorkChunkNeedsReload = true;
@@ -238,13 +231,9 @@ public abstract class GT_MetaTileEntity_DrillerBase
         if (yHead == yDrill) return isPickingPipes = false;
         if (tryOutputPipe()) {
             if (checkBlockAndMeta(xPipe, yHead + 1, zPipe, miningPipeBlock, W)) getBaseMetaTileEntity().getWorld()
-                                                                                                       .setBlock(
-                                                                                                               xPipe,
-                                                                                                               yHead + 1,
-                                                                                                               zPipe,
-                                                                                                               miningPipeTipBlock);
+                .setBlock(xPipe, yHead + 1, zPipe, miningPipeTipBlock);
             getBaseMetaTileEntity().getWorld()
-                                   .setBlockToAir(xPipe, yHead, zPipe);
+                .setBlockToAir(xPipe, yHead, zPipe);
             return isPickingPipes = true;
         }
         return isPickingPipes = false;
@@ -284,17 +273,16 @@ public abstract class GT_MetaTileEntity_DrillerBase
 
         Block b = getBaseMetaTileEntity().getBlock(xPipe, yHead - 1, zPipe);
         if (b != miningPipeTipBlock && !GT_Utility.setBlockByFakePlayer(
-                getFakePlayer(getBaseMetaTileEntity()),
-                xPipe,
-                yHead - 1,
-                zPipe,
-                miningPipeTipBlock,
-                0,
-                isSimulating))
-            return 3;
+            getFakePlayer(getBaseMetaTileEntity()),
+            xPipe,
+            yHead - 1,
+            zPipe,
+            miningPipeTipBlock,
+            0,
+            isSimulating)) return 3;
         if (!isSimulating) {
             if (yHead != yDrill) getBaseMetaTileEntity().getWorld()
-                                                        .setBlock(xPipe, yHead, zPipe, miningPipeBlock);
+                .setBlock(xPipe, yHead, zPipe, miningPipeBlock);
             if (b != miningPipeBlock && b != miningPipeTipBlock) getBaseMetaTileEntity().decrStackSize(1, 1);
         }
 
@@ -375,7 +363,7 @@ public abstract class GT_MetaTileEntity_DrillerBase
     }
 
     protected boolean workingDownward(ItemStack aStack, int xDrill, int yDrill, int zDrill, int xPipe, int zPipe,
-            int yHead, int oldYHead) {
+        int yHead, int oldYHead) {
         switch (tryLowerPipeState()) {
             case 2 -> {
                 mMaxProgresstime = 0;
@@ -396,7 +384,7 @@ public abstract class GT_MetaTileEntity_DrillerBase
     }
 
     protected boolean workingAtBottom(ItemStack aStack, int xDrill, int yDrill, int zDrill, int xPipe, int zPipe,
-            int yHead, int oldYHead) {
+        int yHead, int oldYHead) {
         if (tryLowerPipeState(true) == 0) {
             workState = STATE_DOWNWARD;
             return true;
@@ -406,7 +394,7 @@ public abstract class GT_MetaTileEntity_DrillerBase
     }
 
     protected boolean workingUpward(ItemStack aStack, int xDrill, int yDrill, int zDrill, int xPipe, int zPipe,
-            int yHead, int oldYHead) {
+        int yHead, int oldYHead) {
         if (tryPickPipe()) {
             return true;
         } else {
@@ -448,8 +436,8 @@ public abstract class GT_MetaTileEntity_DrillerBase
     public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         updateCoordinates();
         return checkPiece(STRUCTURE_PIECE_MAIN, 1, 6, 0) && checkHatches()
-                && GT_Utility.getTier(getMaxInputVoltage()) >= getMinTier()
-                && mMaintenanceHatches.size() == 1;
+            && GT_Utility.getTier(getMaxInputVoltage()) >= getMinTier()
+            && mMaintenanceHatches.size() == 1;
     }
 
     private void updateCoordinates() {
@@ -468,7 +456,7 @@ public abstract class GT_MetaTileEntity_DrillerBase
         if (checkBlockAndMeta(xPipe, yHead, zPipe, miningPipeTipBlock, W) || ++yHead == yDrill) return true;
         // pipe column is broken - try fix
         getBaseMetaTileEntity().getWorld()
-                               .setBlock(xPipe, yHead, zPipe, miningPipeTipBlock);
+            .setBlock(xPipe, yHead, zPipe, miningPipeTipBlock);
         return true;
     }
 
@@ -491,7 +479,7 @@ public abstract class GT_MetaTileEntity_DrillerBase
 
     private boolean checkBlockAndMeta(int x, int y, int z, Block block, int meta) {
         return (meta == W || getBaseMetaTileEntity().getMetaID(x, y, z) == meta)
-                && getBaseMetaTileEntity().getBlock(x, y, z) == block;
+            && getBaseMetaTileEntity().getBlock(x, y, z) == block;
     }
 
     private FakePlayer mFakePlayer = null;
@@ -569,17 +557,15 @@ public abstract class GT_MetaTileEntity_DrillerBase
         for (GT_MetaTileEntity_Hatch_DataAccess tHatch : mDataAccessHatches) {
             if (isValidMetaTileEntity(tHatch)) {
                 for (int i = 0; i < tHatch.getBaseMetaTileEntity()
-                                          .getSizeInventory(); i++) {
+                    .getSizeInventory(); i++) {
                     if (tHatch.getBaseMetaTileEntity()
-                              .getStackInSlot(i)
-                            != null
-                            && isCorrectDataItem(
-                                    tHatch.getBaseMetaTileEntity()
-                                          .getStackInSlot(i),
-                                    state))
+                        .getStackInSlot(i) != null && isCorrectDataItem(
+                            tHatch.getBaseMetaTileEntity()
+                                .getStackInSlot(i),
+                            state))
                         rList.add(
-                                tHatch.getBaseMetaTileEntity()
-                                      .getStackInSlot(i));
+                            tHatch.getBaseMetaTileEntity()
+                                .getStackInSlot(i));
                 }
             }
         }
@@ -589,7 +575,7 @@ public abstract class GT_MetaTileEntity_DrillerBase
     @Override
     public boolean addToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
         return super.addToMachineList(aTileEntity, aBaseCasingIndex)
-                || addDataAccessToMachineList(aTileEntity, aBaseCasingIndex);
+            || addDataAccessToMachineList(aTileEntity, aBaseCasingIndex);
     }
 
     public boolean addDataAccessToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
@@ -621,14 +607,14 @@ public abstract class GT_MetaTileEntity_DrillerBase
 
     protected List<IHatchElement<? super GT_MetaTileEntity_DrillerBase>> getAllowedHatches() {
         return ImmutableList.of(
-                InputHatch,
-                OutputHatch,
-                InputBus,
-                OutputBus,
-                Muffler,
-                Maintenance,
-                Energy,
-                DataHatchElement.DataAccess);
+            InputHatch,
+            OutputHatch,
+            InputBus,
+            OutputBus,
+            Muffler,
+            Maintenance,
+            Energy,
+            DataHatchElement.DataAccess);
     }
 
     protected enum DataHatchElement implements IHatchElement<GT_MetaTileEntity_DrillerBase> {

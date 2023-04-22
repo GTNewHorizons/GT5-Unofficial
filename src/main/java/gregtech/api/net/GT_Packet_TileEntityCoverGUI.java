@@ -39,7 +39,7 @@ public class GT_Packet_TileEntityCoverGUI extends GT_Packet_New {
     }
 
     public GT_Packet_TileEntityCoverGUI(int mX, short mY, int mZ, byte coverSide, int coverID, int coverData, int dimID,
-            int playerID) {
+        int playerID) {
         super(false);
         this.mX = mX;
         this.mY = mY;
@@ -55,7 +55,7 @@ public class GT_Packet_TileEntityCoverGUI extends GT_Packet_New {
     }
 
     public GT_Packet_TileEntityCoverGUI(int mX, short mY, int mZ, byte coverSide, int coverID,
-            ISerializableObject coverData, int dimID, int playerID) {
+        ISerializableObject coverData, int dimID, int playerID) {
         super(false);
         this.mX = mX;
         this.mY = mY;
@@ -86,7 +86,7 @@ public class GT_Packet_TileEntityCoverGUI extends GT_Packet_New {
     }
 
     public GT_Packet_TileEntityCoverGUI(int mX, short mY, int mZ, byte coverSide, int coverID,
-            ISerializableObject coverData, int dimID, int playerID, int parentGuiId) {
+        ISerializableObject coverData, int dimID, int playerID, int parentGuiId) {
         super(false);
         this.mX = mX;
         this.mY = mY;
@@ -101,7 +101,7 @@ public class GT_Packet_TileEntityCoverGUI extends GT_Packet_New {
     }
 
     public GT_Packet_TileEntityCoverGUI(byte side, int coverID, int coverData, ICoverable tile,
-            EntityPlayerMP aPlayer) {
+        EntityPlayerMP aPlayer) {
         super(false);
 
         this.mX = tile.getXCoord();
@@ -132,7 +132,7 @@ public class GT_Packet_TileEntityCoverGUI extends GT_Packet_New {
     }
 
     public GT_Packet_TileEntityCoverGUI(byte side, int coverID, ISerializableObject coverData, ICoverable tile,
-            EntityPlayerMP aPlayer) {
+        EntityPlayerMP aPlayer) {
         super(false);
         this.mX = tile.getXCoord();
         this.mY = tile.getYCoord();
@@ -172,17 +172,17 @@ public class GT_Packet_TileEntityCoverGUI extends GT_Packet_New {
     public GT_Packet_New decode(ByteArrayDataInput aData) {
         int coverID;
         return new GT_Packet_TileEntityCoverGUI(
-                aData.readInt(),
-                aData.readShort(),
-                aData.readInt(),
-                aData.readByte(),
-                coverID = aData.readInt(),
-                GregTech_API.getCoverBehaviorNew(coverID)
-                            .createDataObject()
-                            .readFromPacket(aData, null),
-                aData.readInt(),
-                aData.readInt(),
-                aData.readInt());
+            aData.readInt(),
+            aData.readShort(),
+            aData.readInt(),
+            aData.readByte(),
+            coverID = aData.readInt(),
+            GregTech_API.getCoverBehaviorNew(coverID)
+                .createDataObject()
+                .readFromPacket(aData, null),
+            aData.readInt(),
+            aData.readInt(),
+            aData.readInt());
     }
 
     @Override
@@ -197,19 +197,19 @@ public class GT_Packet_TileEntityCoverGUI extends GT_Packet_New {
                 GT_CoverBehaviorBase<?> cover = gtTile.getCoverBehaviorAtSideNew(side);
                 if (cover.hasCoverGUI()) {
                     final GuiScreen gui = (GuiScreen) cover.getClientGUI(
-                            side,
-                            gtTile.getCoverIDAtSide(side),
-                            gtTile.getComplexCoverDataAtSide(side),
-                            gtTile,
-                            thePlayer,
-                            thePlayer.worldObj);
+                        side,
+                        gtTile.getCoverIDAtSide(side),
+                        gtTile.getComplexCoverDataAtSide(side),
+                        gtTile,
+                        thePlayer,
+                        thePlayer.worldObj);
                     // If it's one of this mod's covers, tell it to exit to the GUI with the specified ID (-1 is
                     // ignored)
                     if (gui instanceof GT_GUICover) {
                         ((GT_GUICover) gui).setParentGuiId(parentGuiId);
                     }
                     Minecraft.getMinecraft()
-                             .displayGuiScreen(gui);
+                        .displayGuiScreen(gui);
                 }
             }
         }

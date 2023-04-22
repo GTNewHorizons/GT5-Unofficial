@@ -22,7 +22,7 @@ public class NodeEnergyReceiver extends ConsumerNode {
     int mRestRF = 0;
 
     public NodeEnergyReceiver(int aNodeValue, IEnergyReceiver aTileEntity, byte aSide,
-            ArrayList<ConsumerNode> aConsumers) {
+        ArrayList<ConsumerNode> aConsumers) {
         super(aNodeValue, (TileEntity) aTileEntity, aSide, aConsumers);
     }
 
@@ -41,7 +41,7 @@ public class NodeEnergyReceiver extends ConsumerNode {
             return ampsUsed;
         }
         if (GregTech_API.mRFExplosions && GregTech_API.sMachineExplosions
-                && ((IEnergyReceiver) mTileEntity).getMaxEnergyStored(tDirection) < rfOut * 600L) {
+            && ((IEnergyReceiver) mTileEntity).getMaxEnergyStored(tDirection) < rfOut * 600L) {
             explode(rfOut);
         }
         return 0;
@@ -55,15 +55,14 @@ public class NodeEnergyReceiver extends ConsumerNode {
             World tWorld = mTileEntity.getWorldObj();
             GT_Utility.sendSoundToPlayers(tWorld, SoundResource.IC2_MACHINES_MACHINE_OVERLOAD, 1.0F, -1, tX, tY, tZ);
             tWorld.setBlock(tX, tY, tZ, Blocks.air);
-            if (GregTech_API.sMachineExplosions) if (GT_Mod.gregtechproxy.mPollution) GT_Pollution.addPollution(
-                    tWorld.getChunkFromBlockCoords(tX, tZ),
-                    GT_Mod.gregtechproxy.mPollutionOnExplosion);
+            if (GregTech_API.sMachineExplosions) if (GT_Mod.gregtechproxy.mPollution) GT_Pollution
+                .addPollution(tWorld.getChunkFromBlockCoords(tX, tZ), GT_Mod.gregtechproxy.mPollutionOnExplosion);
 
             new WorldSpawnedEventBuilder.ExplosionEffectEventBuilder().setStrength(tStrength)
-                                                                      .setSmoking(true)
-                                                                      .setPosition(tX + 0.5, tY + 0.5, tZ + 0.5)
-                                                                      .setWorld(tWorld)
-                                                                      .run();
+                .setSmoking(true)
+                .setPosition(tX + 0.5, tY + 0.5, tZ + 0.5)
+                .setWorld(tWorld)
+                .run();
         }
     }
 }

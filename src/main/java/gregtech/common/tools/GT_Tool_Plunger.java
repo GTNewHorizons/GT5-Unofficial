@@ -11,6 +11,7 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.IItemBehaviour;
+import gregtech.api.items.GT_MetaBase_Item;
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.util.GT_ToolHarvestHelper;
 import gregtech.api.util.GT_Utility;
@@ -57,7 +58,7 @@ public class GT_Tool_Plunger extends GT_Tool {
     @Override
     public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
         return aIsToolHead ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mRGBa
-                : GT_MetaGenerated_Tool.getSecondaryMaterial(aStack).mRGBa;
+            : GT_MetaGenerated_Tool.getSecondaryMaterial(aStack).mRGBa;
     }
 
     @Override
@@ -67,13 +68,13 @@ public class GT_Tool_Plunger extends GT_Tool {
         aItem.addItemBehavior(aID, new Behaviour_Plunger_Fluid(getToolDamagePerDropConversion()));
         try {
             Object tObject = GT_Utility.callConstructor(
-                    "gregtech.common.items.behaviors.Behaviour_Plunger_Essentia",
-                    0,
-                    null,
-                    false,
-                    getToolDamagePerDropConversion());
+                "gregtech.common.items.behaviors.Behaviour_Plunger_Essentia",
+                0,
+                null,
+                false,
+                getToolDamagePerDropConversion());
             if ((tObject instanceof IItemBehaviour)) {
-                aItem.addItemBehavior(aID, (IItemBehaviour) tObject);
+                aItem.addItemBehavior(aID, (IItemBehaviour<GT_MetaBase_Item>) tObject);
             }
         } catch (Throwable ignored) {}
     }
@@ -81,11 +82,11 @@ public class GT_Tool_Plunger extends GT_Tool {
     @Override
     public IChatComponent getDeathMessage(EntityLivingBase aPlayer, EntityLivingBase aEntity) {
         return new ChatComponentText(
-                EnumChatFormatting.RED + aEntity.getCommandSenderName()
-                        + EnumChatFormatting.WHITE
-                        + " got stuck trying to escape through a Pipe while fighting "
-                        + EnumChatFormatting.GREEN
-                        + aPlayer.getCommandSenderName()
-                        + EnumChatFormatting.WHITE);
+            EnumChatFormatting.RED + aEntity.getCommandSenderName()
+                + EnumChatFormatting.WHITE
+                + " got stuck trying to escape through a Pipe while fighting "
+                + EnumChatFormatting.GREEN
+                + aPlayer.getCommandSenderName()
+                + EnumChatFormatting.WHITE);
     }
 }

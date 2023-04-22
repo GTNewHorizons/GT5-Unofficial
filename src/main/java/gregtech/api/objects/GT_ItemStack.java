@@ -25,9 +25,9 @@ public class GT_ItemStack {
 
     public GT_ItemStack(ItemStack aStack, boolean wildcard) {
         this(
-                aStack == null ? null : aStack.getItem(),
-                aStack == null ? 0 : aStack.stackSize,
-                aStack == null ? 0 : wildcard ? GT_Values.W : Items.feather.getDamage(aStack));
+            aStack == null ? null : aStack.getItem(),
+            aStack == null ? 0 : aStack.stackSize,
+            aStack == null ? 0 : wildcard ? GT_Values.W : Items.feather.getDamage(aStack));
     }
 
     public GT_ItemStack(int aHashCode) {

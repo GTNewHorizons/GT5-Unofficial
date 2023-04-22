@@ -15,7 +15,7 @@ import gregtech.api.gui.modularui.IDataFollowerWidget;
 import gregtech.api.util.ISerializableObject;
 
 public class CoverDataFollower_TextFieldWidget<T extends ISerializableObject> extends TextFieldWidget
-        implements IDataFollowerWidget<T, String> {
+    implements IDataFollowerWidget<T, String> {
 
     private Function<T, String> dataToStateGetter;
 
@@ -63,7 +63,7 @@ public class CoverDataFollower_TextFieldWidget<T extends ISerializableObject> ex
     public CoverDataFollower_TextFieldWidget<T> setOnScrollNumbers(int baseStep, int ctrlStep, int shiftStep) {
         setOnScrollNumbers((val, direction) -> {
             int step = (GuiScreen.isShiftKeyDown() ? shiftStep : GuiScreen.isCtrlKeyDown() ? ctrlStep : baseStep)
-                    * direction;
+                * direction;
             try {
                 val = Math.addExact(val, step);
             } catch (ArithmeticException ignored) {
@@ -82,13 +82,14 @@ public class CoverDataFollower_TextFieldWidget<T extends ISerializableObject> ex
         setOnScroll((text, direction) -> {
             int val = (int) MathExpression.parseMathExpression(text, -1);
             int step = (GuiScreen.isShiftKeyDown() ? shiftStep : GuiScreen.isCtrlKeyDown() ? ctrlStep : baseStep)
-                    * direction;
+                * direction;
             try {
                 val = Math.addExact(val, step);
             } catch (ArithmeticException ignored) {
                 val = Integer.MAX_VALUE;
             }
-            return TextFieldWidget.format.format(val);
+            return this.getDecimalFormatter()
+                .format(val);
         });
         return this;
     }
@@ -100,7 +101,7 @@ public class CoverDataFollower_TextFieldWidget<T extends ISerializableObject> ex
     public CoverDataFollower_TextFieldWidget<T> setOnScrollNumbersLong(long baseStep, long ctrlStep, long shiftStep) {
         setOnScrollNumbersLong((val, direction) -> {
             long step = (GuiScreen.isShiftKeyDown() ? shiftStep : GuiScreen.isCtrlKeyDown() ? ctrlStep : baseStep)
-                    * direction;
+                * direction;
             try {
                 val = Math.addExact(val, step);
             } catch (ArithmeticException ignored) {

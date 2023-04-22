@@ -53,12 +53,12 @@ public class GT_FluidFactory {
      * @return the registered {@link Fluid}
      */
     public static Fluid of(final String fluidName, final String localizedName, final Materials material,
-            final FluidState state, final int temperature) {
+        final FluidState state, final int temperature) {
         return builder(fluidName).withLocalizedName(localizedName)
-                                 .withStateAndTemperature(state, temperature)
-                                 .buildAndRegister()
-                                 .configureMaterials(material)
-                                 .asFluid();
+            .withStateAndTemperature(state, temperature)
+            .buildAndRegister()
+            .configureMaterials(material)
+            .asFluid();
     }
 
     /**
@@ -71,11 +71,11 @@ public class GT_FluidFactory {
      * @return the registered {@link Fluid}
      */
     public static Fluid of(final String fluidName, final String localizedName, final FluidState state,
-            final int temperature) {
+        final int temperature) {
         return builder(fluidName).withLocalizedName(localizedName)
-                                 .withStateAndTemperature(state, temperature)
-                                 .buildAndRegister()
-                                 .asFluid();
+            .withStateAndTemperature(state, temperature)
+            .buildAndRegister()
+            .asFluid();
     }
 
     /**

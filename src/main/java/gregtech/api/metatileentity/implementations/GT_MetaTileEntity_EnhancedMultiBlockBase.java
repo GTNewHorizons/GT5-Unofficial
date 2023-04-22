@@ -32,7 +32,7 @@ import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
  * @param <T> type of this
  */
 public abstract class GT_MetaTileEntity_EnhancedMultiBlockBase<T extends GT_MetaTileEntity_EnhancedMultiBlockBase<T>>
-        extends GT_MetaTileEntity_TooltipMultiBlockBase implements IAlignment, IConstructable {
+    extends GT_MetaTileEntity_TooltipMultiBlockBase implements IAlignment, IConstructable {
 
     private ExtendedFacing mExtendedFacing = ExtendedFacing.DEFAULT;
     private IAlignmentLimits mLimits = getInitialAlignmentLimits();
@@ -60,15 +60,15 @@ public abstract class GT_MetaTileEntity_EnhancedMultiBlockBase<T extends GT_Meta
             mUpdated = false;
             mUpdate = 100;
             if (getBaseMetaTileEntity().isServerSide()
-                    && !GregTech_API.isDummyWorld(getBaseMetaTileEntity().getWorld())) {
+                && !GregTech_API.isDummyWorld(getBaseMetaTileEntity().getWorld())) {
                 StructureLibAPI.sendAlignment(
-                        (IAlignmentProvider) base,
-                        new NetworkRegistry.TargetPoint(
-                                base.getWorld().provider.dimensionId,
-                                base.getXCoord(),
-                                base.getYCoord(),
-                                base.getZCoord(),
-                                512));
+                    (IAlignmentProvider) base,
+                    new NetworkRegistry.TargetPoint(
+                        base.getWorld().provider.dimensionId,
+                        base.getXCoord(),
+                        base.getYCoord(),
+                        base.getZCoord(),
+                        512));
             } else {
                 base.issueTextureUpdate();
             }
@@ -82,7 +82,7 @@ public abstract class GT_MetaTileEntity_EnhancedMultiBlockBase<T extends GT_Meta
 
     @Override
     public boolean onWrenchRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY,
-            float aZ) {
+        float aZ) {
         if (aWrenchingSide != getBaseMetaTileEntity().getFrontFacing())
             return super.onWrenchRightClick(aSide, aWrenchingSide, aPlayer, aX, aY, aZ);
         if (aPlayer.isSneaking()) {
@@ -132,22 +132,22 @@ public abstract class GT_MetaTileEntity_EnhancedMultiBlockBase<T extends GT_Meta
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setByte(
-                "eRotation",
-                (byte) mExtendedFacing.getRotation()
-                                      .getIndex());
+            "eRotation",
+            (byte) mExtendedFacing.getRotation()
+                .getIndex());
         aNBT.setByte(
-                "eFlip",
-                (byte) mExtendedFacing.getFlip()
-                                      .getIndex());
+            "eFlip",
+            (byte) mExtendedFacing.getFlip()
+                .getIndex());
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         mExtendedFacing = ExtendedFacing.of(
-                ForgeDirection.getOrientation(getBaseMetaTileEntity().getFrontFacing()),
-                Rotation.byIndex(aNBT.getByte("eRotation")),
-                Flip.byIndex(aNBT.getByte("eFlip")));
+            ForgeDirection.getOrientation(getBaseMetaTileEntity().getFrontFacing()),
+            Rotation.byIndex(aNBT.getByte("eRotation")),
+            Flip.byIndex(aNBT.getByte("eFlip")));
     }
 
     @SuppressWarnings("unchecked")
@@ -170,108 +170,108 @@ public abstract class GT_MetaTileEntity_EnhancedMultiBlockBase<T extends GT_Meta
     protected final boolean checkPiece(String piece, int horizontalOffset, int verticalOffset, int depthOffset) {
         final IGregTechTileEntity tTile = getBaseMetaTileEntity();
         return getCastedStructureDefinition().check(
-                this,
-                piece,
-                tTile.getWorld(),
-                getExtendedFacing(),
-                tTile.getXCoord(),
-                tTile.getYCoord(),
-                tTile.getZCoord(),
-                horizontalOffset,
-                verticalOffset,
-                depthOffset,
-                !mMachine);
+            this,
+            piece,
+            tTile.getWorld(),
+            getExtendedFacing(),
+            tTile.getXCoord(),
+            tTile.getYCoord(),
+            tTile.getZCoord(),
+            horizontalOffset,
+            verticalOffset,
+            depthOffset,
+            !mMachine);
     }
 
     protected final boolean buildPiece(String piece, ItemStack trigger, boolean hintOnly, int horizontalOffset,
-            int verticalOffset, int depthOffset) {
+        int verticalOffset, int depthOffset) {
         final IGregTechTileEntity tTile = getBaseMetaTileEntity();
         return getCastedStructureDefinition().buildOrHints(
-                this,
-                trigger,
-                piece,
-                tTile.getWorld(),
-                getExtendedFacing(),
-                tTile.getXCoord(),
-                tTile.getYCoord(),
-                tTile.getZCoord(),
-                horizontalOffset,
-                verticalOffset,
-                depthOffset,
-                hintOnly);
+            this,
+            trigger,
+            piece,
+            tTile.getWorld(),
+            getExtendedFacing(),
+            tTile.getXCoord(),
+            tTile.getYCoord(),
+            tTile.getZCoord(),
+            horizontalOffset,
+            verticalOffset,
+            depthOffset,
+            hintOnly);
     }
 
     @Deprecated
     protected final int survivialBuildPiece(String piece, ItemStack trigger, int horizontalOffset, int verticalOffset,
-            int depthOffset, int elementsBudget, IItemSource source, EntityPlayerMP actor, boolean check) {
+        int depthOffset, int elementsBudget, IItemSource source, EntityPlayerMP actor, boolean check) {
         final IGregTechTileEntity tTile = getBaseMetaTileEntity();
         return getCastedStructureDefinition().survivalBuild(
-                this,
-                trigger,
-                piece,
-                tTile.getWorld(),
-                getExtendedFacing(),
-                tTile.getXCoord(),
-                tTile.getYCoord(),
-                tTile.getZCoord(),
-                horizontalOffset,
-                verticalOffset,
-                depthOffset,
-                elementsBudget,
-                source,
-                actor,
-                check);
+            this,
+            trigger,
+            piece,
+            tTile.getWorld(),
+            getExtendedFacing(),
+            tTile.getXCoord(),
+            tTile.getYCoord(),
+            tTile.getZCoord(),
+            horizontalOffset,
+            verticalOffset,
+            depthOffset,
+            elementsBudget,
+            source,
+            actor,
+            check);
     }
 
     protected final int survivialBuildPiece(String piece, ItemStack trigger, int horizontalOffset, int verticalOffset,
-            int depthOffset, int elementsBudget, ISurvivalBuildEnvironment env, boolean check) {
+        int depthOffset, int elementsBudget, ISurvivalBuildEnvironment env, boolean check) {
         final IGregTechTileEntity tTile = getBaseMetaTileEntity();
         return getCastedStructureDefinition().survivalBuild(
-                this,
-                trigger,
-                piece,
-                tTile.getWorld(),
-                getExtendedFacing(),
-                tTile.getXCoord(),
-                tTile.getYCoord(),
-                tTile.getZCoord(),
-                horizontalOffset,
-                verticalOffset,
-                depthOffset,
-                elementsBudget,
-                env,
-                check);
+            this,
+            trigger,
+            piece,
+            tTile.getWorld(),
+            getExtendedFacing(),
+            tTile.getXCoord(),
+            tTile.getYCoord(),
+            tTile.getZCoord(),
+            horizontalOffset,
+            verticalOffset,
+            depthOffset,
+            elementsBudget,
+            env,
+            check);
     }
 
     @Deprecated
     protected final int survivialBuildPiece(String piece, ItemStack trigger, int horizontalOffset, int verticalOffset,
-            int depthOffset, int elementsBudget, IItemSource source, EntityPlayerMP actor, boolean check,
-            boolean checkIfPlaced) {
+        int depthOffset, int elementsBudget, IItemSource source, EntityPlayerMP actor, boolean check,
+        boolean checkIfPlaced) {
         int built = survivialBuildPiece(
-                piece,
-                trigger,
-                horizontalOffset,
-                verticalOffset,
-                depthOffset,
-                elementsBudget,
-                source,
-                actor,
-                check);
+            piece,
+            trigger,
+            horizontalOffset,
+            verticalOffset,
+            depthOffset,
+            elementsBudget,
+            source,
+            actor,
+            check);
         if (checkIfPlaced && built > 0) checkStructure(true, getBaseMetaTileEntity());
         return built;
     }
 
     protected final int survivialBuildPiece(String piece, ItemStack trigger, int horizontalOffset, int verticalOffset,
-            int depthOffset, int elementsBudget, ISurvivalBuildEnvironment env, boolean check, boolean checkIfPlaced) {
+        int depthOffset, int elementsBudget, ISurvivalBuildEnvironment env, boolean check, boolean checkIfPlaced) {
         int built = survivialBuildPiece(
-                piece,
-                trigger,
-                horizontalOffset,
-                verticalOffset,
-                depthOffset,
-                elementsBudget,
-                env,
-                check);
+            piece,
+            trigger,
+            horizontalOffset,
+            verticalOffset,
+            depthOffset,
+            elementsBudget,
+            env,
+            check);
         if (checkIfPlaced && built > 0) checkStructure(true, getBaseMetaTileEntity());
         return built;
     }

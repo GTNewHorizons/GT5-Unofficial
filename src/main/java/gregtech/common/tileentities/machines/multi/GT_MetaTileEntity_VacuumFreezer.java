@@ -23,7 +23,7 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 
 public class GT_MetaTileEntity_VacuumFreezer
-        extends GT_MetaTileEntity_CubicMultiBlockBase<GT_MetaTileEntity_VacuumFreezer> {
+    extends GT_MetaTileEntity_CubicMultiBlockBase<GT_MetaTileEntity_VacuumFreezer> {
 
     public GT_MetaTileEntity_VacuumFreezer(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -42,49 +42,47 @@ public class GT_MetaTileEntity_VacuumFreezer
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         final GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Vacuum Freezer")
-          .addInfo("Controller Block for the Vacuum Freezer")
-          .addInfo("Cools hot ingots and cells")
-          .addSeparator()
-          .beginStructureBlock(3, 3, 3, true)
-          .addController("Front center")
-          .addCasingInfoRange("Frost Proof Machine Casing", 16, 24, false)
-          .addEnergyHatch("Any casing", 1)
-          .addMaintenanceHatch("Any casing", 1)
-          .addInputHatch("Any casing", 1)
-          .addOutputHatch("Any casing", 1)
-          .addInputBus("Any casing", 1)
-          .addOutputBus("Any casing", 1)
-          .toolTipFinisher("Gregtech");
+            .addInfo("Controller Block for the Vacuum Freezer")
+            .addInfo("Cools hot ingots and cells")
+            .addSeparator()
+            .beginStructureBlock(3, 3, 3, true)
+            .addController("Front center")
+            .addCasingInfoRange("Frost Proof Machine Casing", 16, 24, false)
+            .addEnergyHatch("Any casing", 1)
+            .addMaintenanceHatch("Any casing", 1)
+            .addInputHatch("Any casing", 1)
+            .addOutputHatch("Any casing", 1)
+            .addInputBus("Any casing", 1)
+            .addOutputBus("Any casing", 1)
+            .toolTipFinisher("Gregtech");
         return tt;
     }
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-            boolean aActive, boolean aRedstone) {
+        boolean aActive, boolean aRedstone) {
         ITexture[] rTexture;
         if (aSide == aFacing) {
             if (aActive) {
                 rTexture = new ITexture[] { casingTexturePages[0][17], TextureFactory.builder()
-                                                                                     .addIcon(
-                                                                                             OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE)
-                                                                                     .extFacing()
-                                                                                     .build(),
-                        TextureFactory.builder()
-                                      .addIcon(OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE_GLOW)
-                                      .extFacing()
-                                      .glow()
-                                      .build() };
+                    .addIcon(OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE)
+                    .extFacing()
+                    .build(),
+                    TextureFactory.builder()
+                        .addIcon(OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE_GLOW)
+                        .extFacing()
+                        .glow()
+                        .build() };
             } else {
                 rTexture = new ITexture[] { casingTexturePages[0][17], TextureFactory.builder()
-                                                                                     .addIcon(
-                                                                                             OVERLAY_FRONT_VACUUM_FREEZER)
-                                                                                     .extFacing()
-                                                                                     .build(),
-                        TextureFactory.builder()
-                                      .addIcon(OVERLAY_FRONT_VACUUM_FREEZER_GLOW)
-                                      .extFacing()
-                                      .glow()
-                                      .build() };
+                    .addIcon(OVERLAY_FRONT_VACUUM_FREEZER)
+                    .extFacing()
+                    .build(),
+                    TextureFactory.builder()
+                        .addIcon(OVERLAY_FRONT_VACUUM_FREEZER_GLOW)
+                        .extFacing()
+                        .glow()
+                        .build() };
             }
         } else {
             rTexture = new ITexture[] { casingTexturePages[0][17] };
@@ -109,18 +107,14 @@ public class GT_MetaTileEntity_VacuumFreezer
 
         long tVoltage = getMaxInputVoltage();
         byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
-        GT_Recipe tRecipe = getRecipeMap().findRecipe(
-                getBaseMetaTileEntity(),
-                false,
-                gregtech.api.enums.GT_Values.V[tTier],
-                tFluidList,
-                tInputList);
+        GT_Recipe tRecipe = getRecipeMap()
+            .findRecipe(getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], tFluidList, tInputList);
         if (tRecipe != null) {
             if (tRecipe.isRecipeInputEqual(true, tFluidList, tInputList)) {
                 this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
                 this.mEfficiencyIncrease = 10000;
 
-                calculateOverclockedNessMulti(tRecipe.mEUt, tRecipe.mDuration, 1, tVoltage);
+                calculateOverclockedNessMultiInternal(tRecipe.mEUt, tRecipe.mDuration, 1, tVoltage, false);
                 // In case recipe is too OP for that machine
                 if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1) return false;
                 if (this.mEUt > 0) {

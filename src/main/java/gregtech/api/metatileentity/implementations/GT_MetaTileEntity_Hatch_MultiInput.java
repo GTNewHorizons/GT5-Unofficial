@@ -36,7 +36,7 @@ public class GT_MetaTileEntity_Hatch_MultiInput extends GT_MetaTileEntity_Hatch_
     }
 
     public GT_MetaTileEntity_Hatch_MultiInput(String aName, int aSlot, int aTier, String[] aDescription,
-            ITexture[][][] aTextures) {
+        ITexture[][][] aTextures) {
         super(aName, aSlot, aTier, aDescription, aTextures);
         this.mStoredFluid = new FluidStack[aSlot];
         mCapacityPer = 8000 * (1 << aTier) / aSlot;
@@ -172,9 +172,7 @@ public class GT_MetaTileEntity_Hatch_MultiInput extends GT_MetaTileEntity_Hatch_
     @Override
     public int fill(FluidStack aFluid, boolean doFill) {
         if (aFluid == null || aFluid.getFluid()
-                                    .getID()
-                <= 0 || aFluid.amount <= 0 || !canTankBeFilled() || !isFluidInputAllowed(aFluid))
-            return 0;
+            .getID() <= 0 || aFluid.amount <= 0 || !canTankBeFilled() || !isFluidInputAllowed(aFluid)) return 0;
         if (!hasFluid(aFluid) && getFirstEmptySlot() != -1) {
             int tFilled = Math.min(aFluid.amount, mCapacityPer);
             if (doFill) {
@@ -297,42 +295,35 @@ public class GT_MetaTileEntity_Hatch_MultiInput extends GT_MetaTileEntity_Hatch_
     public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
         final int SLOT_NUMBER = 4;
         final Pos2d[] positions = new Pos2d[] { new Pos2d(70, 25), new Pos2d(88, 25), new Pos2d(70, 43),
-                new Pos2d(88, 43), };
+            new Pos2d(88, 43), };
 
         for (int i = 0; i < SLOT_NUMBER; i++) {
             final int slotId = i;
             builder.widget(
-                    new FluidDisplaySlotWidget(inventoryHandler, slotId)
-                                                                        .setFluidAccessConstructor(
-                                                                                () -> constructFluidAccess(slotId))
-                                                                        .setIHasFluidDisplay(this)
-                                                                        .setCanDrain(true)
-                                                                        .setCanFill(!isDrainableStackSeparate())
-                                                                        .setActionRealClick(
-                                                                                FluidDisplaySlotWidget.Action.TRANSFER)
-                                                                        .setBeforeRealClick((clickData, widget) -> {
-                                                                            if (NetworkUtils.isClient()) {
-                                                                                // propagate display item content to
-                                                                                // actual fluid stored in this tank
-                                                                                setFluid(
-                                                                                        GT_Utility.getFluidFromDisplayStack(
-                                                                                                widget.getMcSlot()
-                                                                                                      .getStack()),
-                                                                                        slotId);
-                                                                            }
-                                                                            ItemStack tStackHeld = widget.getContext()
-                                                                                                         .getPlayer().inventory.getItemStack();
-                                                                            FluidStack tFluidHeld = GT_Utility.getFluidForFilledItem(
-                                                                                    tStackHeld,
-                                                                                    true);
-                                                                            return constructFluidAccess(slotId).isMatch(
-                                                                                    tFluidHeld,
-                                                                                    slotId);
-                                                                        })
-                                                                        .setUpdateFluidDisplayItem(
-                                                                                () -> updateFluidDisplayItem(slotId))
-                                                                        .setBackground(ModularUITextures.FLUID_SLOT)
-                                                                        .setPos(positions[slotId]));
+                new FluidDisplaySlotWidget(inventoryHandler, slotId)
+                    .setFluidAccessConstructor(() -> constructFluidAccess(slotId))
+                    .setIHasFluidDisplay(this)
+                    .setCanDrain(true)
+                    .setCanFill(!isDrainableStackSeparate())
+                    .setActionRealClick(FluidDisplaySlotWidget.Action.TRANSFER)
+                    .setBeforeRealClick((clickData, widget) -> {
+                        if (NetworkUtils.isClient()) {
+                            // propagate display item content to
+                            // actual fluid stored in this tank
+                            setFluid(
+                                GT_Utility.getFluidFromDisplayStack(
+                                    widget.getMcSlot()
+                                        .getStack()),
+                                slotId);
+                        }
+                        ItemStack tStackHeld = widget.getContext()
+                            .getPlayer().inventory.getItemStack();
+                        FluidStack tFluidHeld = GT_Utility.getFluidForFilledItem(tStackHeld, true);
+                        return constructFluidAccess(slotId).isMatch(tFluidHeld, slotId);
+                    })
+                    .setUpdateFluidDisplayItem(() -> updateFluidDisplayItem(slotId))
+                    .setBackground(ModularUITextures.FLUID_SLOT)
+                    .setPos(positions[slotId]));
         }
     }
 

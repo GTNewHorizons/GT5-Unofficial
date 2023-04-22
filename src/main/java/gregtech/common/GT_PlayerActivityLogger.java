@@ -10,20 +10,22 @@ public class GT_PlayerActivityLogger implements Runnable {
     @Override
     public void run() {
         try {
+            ArrayList<String> buffer = new ArrayList<>();
             for (;;) {
                 if (GT_Log.pal == null) {
                     return;
                 }
-                ArrayList<String> tList = GT_Mod.gregtechproxy.mBufferedPlayerActivity;
-                GT_Mod.gregtechproxy.mBufferedPlayerActivity = new ArrayList<>();
                 String tLastOutput = "";
-                int i = 0;
-                for (int j = tList.size(); i < j; i++) {
-                    if (!tLastOutput.equals(tList.get(i))) {
-                        GT_Log.pal.println(tList.get(i));
+                // Block on first element for efficiency
+                buffer.add(GT_Mod.gregtechproxy.mBufferedPlayerActivity.take());
+                GT_Mod.gregtechproxy.mBufferedPlayerActivity.drainTo(buffer);
+                for (String output : buffer) {
+                    if (!output.equals(tLastOutput)) {
+                        GT_Log.pal.println(output);
+                        tLastOutput = output;
                     }
-                    tLastOutput = tList.get(i);
                 }
+                buffer.clear();
                 Thread.sleep(10000L);
             }
         } catch (Throwable e) {}

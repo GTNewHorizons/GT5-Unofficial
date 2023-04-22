@@ -15,7 +15,7 @@ public class GT_GuiIconCheckButton extends GT_GuiIconButton {
     }
 
     public GT_GuiIconCheckButton(IGuiScreen gui, int id, int x, int y, GT_GuiIcon checkedIcon, GT_GuiIcon normalIcon,
-            String checkedTooltip, String normalTooltip) {
+        String checkedTooltip, String normalTooltip) {
         super(gui, id, x, y, normalIcon);
         this.checkedIcon = checkedIcon;
         this.normalIcon = normalIcon;

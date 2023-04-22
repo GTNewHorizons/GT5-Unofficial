@@ -30,10 +30,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Maintenance;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBus;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
@@ -41,58 +38,35 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_StructureUtility;
 import gregtech.api.util.GT_Utility;
 
-public class GT_MetaTileEntity_MultiFurnace extends
-        GT_MetaTileEntity_AbstractMultiFurnace<GT_MetaTileEntity_MultiFurnace> implements ISurvivalConstructable {
+public class GT_MetaTileEntity_MultiFurnace
+    extends GT_MetaTileEntity_AbstractMultiFurnace<GT_MetaTileEntity_MultiFurnace> implements ISurvivalConstructable {
 
     private int mLevel = 0;
     private int mCostDiscount = 1;
 
     private static final int CASING_INDEX = 11;
     private static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final IStructureDefinition<GT_MetaTileEntity_MultiFurnace> STRUCTURE_DEFINITION = StructureDefinition.<GT_MetaTileEntity_MultiFurnace>builder()
-                                                                                                                        .addShape(
-                                                                                                                                STRUCTURE_PIECE_MAIN,
-                                                                                                                                transpose(
-                                                                                                                                        new String[][] {
-                                                                                                                                                { "ccc", "cmc",
-                                                                                                                                                        "ccc" },
-                                                                                                                                                { "CCC", "C-C",
-                                                                                                                                                        "CCC" },
-                                                                                                                                                { "b~b", "bbb",
-                                                                                                                                                        "bbb" } }))
-                                                                                                                        .addElement(
-                                                                                                                                'c',
-                                                                                                                                ofBlock(
-                                                                                                                                        GregTech_API.sBlockCasings1,
-                                                                                                                                        CASING_INDEX))
-                                                                                                                        .addElement(
-                                                                                                                                'm',
-                                                                                                                                Muffler.newAny(
-                                                                                                                                        CASING_INDEX,
-                                                                                                                                        2))
-                                                                                                                        .addElement(
-                                                                                                                                'C',
-                                                                                                                                GT_StructureUtility.ofCoil(
-                                                                                                                                        GT_MetaTileEntity_MultiFurnace::setCoilLevel,
-                                                                                                                                        GT_MetaTileEntity_MultiFurnace::getCoilLevel))
-                                                                                                                        .addElement(
-                                                                                                                                'b',
-                                                                                                                                ofChain(
-                                                                                                                                        GT_StructureUtility.<GT_MetaTileEntity_MultiFurnace>buildHatchAdder()
-                                                                                                                                                           .atLeast(
-                                                                                                                                                                   Maintenance,
-                                                                                                                                                                   InputBus,
-                                                                                                                                                                   OutputBus,
-                                                                                                                                                                   Energy)
-                                                                                                                                                           .casingIndex(
-                                                                                                                                                                   CASING_INDEX)
-                                                                                                                                                           .dot(
-                                                                                                                                                                   1)
-                                                                                                                                                           .build(),
-                                                                                                                                        ofBlock(
-                                                                                                                                                GregTech_API.sBlockCasings1,
-                                                                                                                                                CASING_INDEX)))
-                                                                                                                        .build();
+    private static final IStructureDefinition<GT_MetaTileEntity_MultiFurnace> STRUCTURE_DEFINITION = StructureDefinition
+        .<GT_MetaTileEntity_MultiFurnace>builder()
+        .addShape(
+            STRUCTURE_PIECE_MAIN,
+            transpose(new String[][] { { "ccc", "cmc", "ccc" }, { "CCC", "C-C", "CCC" }, { "b~b", "bbb", "bbb" } }))
+        .addElement('c', ofBlock(GregTech_API.sBlockCasings1, CASING_INDEX))
+        .addElement('m', Muffler.newAny(CASING_INDEX, 2))
+        .addElement(
+            'C',
+            GT_StructureUtility
+                .ofCoil(GT_MetaTileEntity_MultiFurnace::setCoilLevel, GT_MetaTileEntity_MultiFurnace::getCoilLevel))
+        .addElement(
+            'b',
+            ofChain(
+                GT_StructureUtility.<GT_MetaTileEntity_MultiFurnace>buildHatchAdder()
+                    .atLeast(Maintenance, InputBus, OutputBus, Energy)
+                    .casingIndex(CASING_INDEX)
+                    .dot(1)
+                    .build(),
+                ofBlock(GregTech_API.sBlockCasings1, CASING_INDEX)))
+        .build();
 
     public GT_MetaTileEntity_MultiFurnace(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -111,47 +85,46 @@ public class GT_MetaTileEntity_MultiFurnace extends
     protected GT_Multiblock_Tooltip_Builder createTooltip() {
         GT_Multiblock_Tooltip_Builder tt = new GT_Multiblock_Tooltip_Builder();
         tt.addMachineType("Furnace")
-          .addInfo("Controller Block for the Multi Smelter")
-          .addInfo("Smelts up to 8-8192 items at once")
-          .addInfo("Items smelted increases with coil tier")
-          .addPollutionAmount(getPollutionPerSecond(null))
-          .addSeparator()
-          .beginStructureBlock(3, 3, 3, true)
-          .addController("Front bottom")
-          .addCasingInfoRange("Heat Proof Machine Casing", 8, 14, false)
-          .addOtherStructurePart("Heating Coils", "Middle layer")
-          .addEnergyHatch("Any bottom casing", 1)
-          .addMaintenanceHatch("Any bottom casing", 1)
-          .addMufflerHatch("Top Middle", 2)
-          .addInputBus("Any bottom casing", 1)
-          .addOutputBus("Any bottom casing", 1)
-          .toolTipFinisher("Gregtech");
+            .addInfo("Controller Block for the Multi Smelter")
+            .addInfo("Smelts up to 8-8192 items at once")
+            .addInfo("Items smelted increases with coil tier")
+            .addPollutionAmount(getPollutionPerSecond(null))
+            .addSeparator()
+            .beginStructureBlock(3, 3, 3, true)
+            .addController("Front bottom")
+            .addCasingInfoRange("Heat Proof Machine Casing", 8, 14, false)
+            .addOtherStructurePart("Heating Coils", "Middle layer")
+            .addEnergyHatch("Any bottom casing", 1)
+            .addMaintenanceHatch("Any bottom casing", 1)
+            .addMufflerHatch("Top Middle", 2)
+            .addInputBus("Any bottom casing", 1)
+            .addOutputBus("Any bottom casing", 1)
+            .toolTipFinisher("Gregtech");
         return tt;
     }
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-            boolean aActive, boolean aRedstone) {
+        boolean aActive, boolean aRedstone) {
         if (aSide != aFacing) return new ITexture[] { casingTexturePages[0][CASING_INDEX] };
         if (aActive) return new ITexture[] { casingTexturePages[0][CASING_INDEX], TextureFactory.builder()
-                                                                                                .addIcon(
-                                                                                                        OVERLAY_FRONT_MULTI_SMELTER_ACTIVE)
-                                                                                                .extFacing()
-                                                                                                .build(),
-                TextureFactory.builder()
-                              .addIcon(OVERLAY_FRONT_MULTI_SMELTER_ACTIVE_GLOW)
-                              .extFacing()
-                              .glow()
-                              .build() };
+            .addIcon(OVERLAY_FRONT_MULTI_SMELTER_ACTIVE)
+            .extFacing()
+            .build(),
+            TextureFactory.builder()
+                .addIcon(OVERLAY_FRONT_MULTI_SMELTER_ACTIVE_GLOW)
+                .extFacing()
+                .glow()
+                .build() };
         return new ITexture[] { casingTexturePages[0][CASING_INDEX], TextureFactory.builder()
-                                                                                   .addIcon(OVERLAY_FRONT_MULTI_SMELTER)
-                                                                                   .extFacing()
-                                                                                   .build(),
-                TextureFactory.builder()
-                              .addIcon(OVERLAY_FRONT_MULTI_SMELTER_GLOW)
-                              .extFacing()
-                              .glow()
-                              .build() };
+            .addIcon(OVERLAY_FRONT_MULTI_SMELTER)
+            .extFacing()
+            .build(),
+            TextureFactory.builder()
+                .addIcon(OVERLAY_FRONT_MULTI_SMELTER_GLOW)
+                .extFacing()
+                .glow()
+                .build() };
     }
 
     @Override
@@ -203,7 +176,7 @@ public class GT_MetaTileEntity_MultiFurnace extends
         if (this.mOutputItems.length > 0) {
             this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
             this.mEfficiencyIncrease = 10000;
-            calculateOverclockedNessMulti(4, 512, 1, mVolatage);
+            calculateOverclockedNessMultiInternal(4, 512, 1, mVolatage, false);
             // In case recipe is too OP for that machine
             if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1) return false;
 
@@ -256,9 +229,9 @@ public class GT_MetaTileEntity_MultiFurnace extends
             if ((xPos == tX) && (zPos == tZ)) continue;
             tUsedMeta = aBaseMetaTileEntity.getMetaID(xPos, tY + 1, zPos);
             if (tUsedMeta >= 12 && tUsedMeta <= 14
-                    && aBaseMetaTileEntity.getBlock(xPos, tY + 1, zPos) == GregTech_API.sBlockCasings1)
+                && aBaseMetaTileEntity.getBlock(xPos, tY + 1, zPos) == GregTech_API.sBlockCasings1)
                 aBaseMetaTileEntity.getWorld()
-                                   .setBlock(xPos, tY + 1, zPos, GregTech_API.sBlockCasings5, tUsedMeta - 12, 3);
+                    .setBlock(xPos, tY + 1, zPos, GregTech_API.sBlockCasings5, tUsedMeta - 12, 3);
         }
     }
 
@@ -272,83 +245,74 @@ public class GT_MetaTileEntity_MultiFurnace extends
         long maxEnergy = 0;
         for (GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches) if (isValidMetaTileEntity(tHatch)) {
             storedEnergy += tHatch.getBaseMetaTileEntity()
-                                  .getStoredEU();
+                .getStoredEU();
             maxEnergy += tHatch.getBaseMetaTileEntity()
-                               .getEUCapacity();
+                .getEUCapacity();
         }
 
         return new String[] {
-                StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
-                        + EnumChatFormatting.GREEN
-                        + GT_Utility.formatNumbers(mProgresstime / 20)
-                        + EnumChatFormatting.RESET
-                        + " s / "
-                        + EnumChatFormatting.YELLOW
-                        + GT_Utility.formatNumbers(mMaxProgresstime / 20)
-                        + EnumChatFormatting.RESET
-                        + " s",
-                StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
-                        + EnumChatFormatting.GREEN
-                        + GT_Utility.formatNumbers(storedEnergy)
-                        + EnumChatFormatting.RESET
-                        + " EU / "
-                        + EnumChatFormatting.YELLOW
-                        + GT_Utility.formatNumbers(maxEnergy)
-                        + EnumChatFormatting.RESET
-                        + " EU",
-                StatCollector.translateToLocal("GT5U.multiblock.usage") + ": "
-                        + EnumChatFormatting.RED
-                        + GT_Utility.formatNumbers(-mEUt)
-                        + EnumChatFormatting.RESET
-                        + " EU/t",
-                StatCollector.translateToLocal("GT5U.multiblock.mei") + ": "
-                        + EnumChatFormatting.YELLOW
-                        + GT_Utility.formatNumbers(getMaxInputVoltage())
-                        + EnumChatFormatting.RESET
-                        + " EU/t(*2A) "
-                        + StatCollector.translateToLocal("GT5U.machines.tier")
-                        + ": "
-                        + EnumChatFormatting.YELLOW
-                        + VN[GT_Utility.getTier(getMaxInputVoltage())]
-                        + EnumChatFormatting.RESET,
-                StatCollector.translateToLocal("GT5U.multiblock.problems") + ": "
-                        + EnumChatFormatting.RED
-                        + (getIdealStatus() - getRepairStatus())
-                        + EnumChatFormatting.RESET
-                        + " "
-                        + StatCollector.translateToLocal("GT5U.multiblock.efficiency")
-                        + ": "
-                        + EnumChatFormatting.YELLOW
-                        + mEfficiency / 100.0F
-                        + EnumChatFormatting.RESET
-                        + " %",
-                StatCollector.translateToLocal("GT5U.MS.multismelting") + ": "
-                        + EnumChatFormatting.GREEN
-                        + mLevel
-                        + EnumChatFormatting.RESET
-                        + " Discount: (EU/t) / "
-                        + EnumChatFormatting.GREEN
-                        + GT_Utility.formatNumbers(mCostDiscount)
-                        + EnumChatFormatting.RESET,
-                StatCollector.translateToLocal("GT5U.multiblock.pollution") + ": "
-                        + EnumChatFormatting.GREEN
-                        + mPollutionReduction
-                        + EnumChatFormatting.RESET
-                        + " %" };
+            StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
+                + EnumChatFormatting.GREEN
+                + GT_Utility.formatNumbers(mProgresstime / 20)
+                + EnumChatFormatting.RESET
+                + " s / "
+                + EnumChatFormatting.YELLOW
+                + GT_Utility.formatNumbers(mMaxProgresstime / 20)
+                + EnumChatFormatting.RESET
+                + " s",
+            StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
+                + EnumChatFormatting.GREEN
+                + GT_Utility.formatNumbers(storedEnergy)
+                + EnumChatFormatting.RESET
+                + " EU / "
+                + EnumChatFormatting.YELLOW
+                + GT_Utility.formatNumbers(maxEnergy)
+                + EnumChatFormatting.RESET
+                + " EU",
+            StatCollector.translateToLocal("GT5U.multiblock.usage") + ": "
+                + EnumChatFormatting.RED
+                + GT_Utility.formatNumbers(-mEUt)
+                + EnumChatFormatting.RESET
+                + " EU/t",
+            StatCollector.translateToLocal("GT5U.multiblock.mei") + ": "
+                + EnumChatFormatting.YELLOW
+                + GT_Utility.formatNumbers(getMaxInputVoltage())
+                + EnumChatFormatting.RESET
+                + " EU/t(*2A) "
+                + StatCollector.translateToLocal("GT5U.machines.tier")
+                + ": "
+                + EnumChatFormatting.YELLOW
+                + VN[GT_Utility.getTier(getMaxInputVoltage())]
+                + EnumChatFormatting.RESET,
+            StatCollector.translateToLocal("GT5U.multiblock.problems") + ": "
+                + EnumChatFormatting.RED
+                + (getIdealStatus() - getRepairStatus())
+                + EnumChatFormatting.RESET
+                + " "
+                + StatCollector.translateToLocal("GT5U.multiblock.efficiency")
+                + ": "
+                + EnumChatFormatting.YELLOW
+                + mEfficiency / 100.0F
+                + EnumChatFormatting.RESET
+                + " %",
+            StatCollector.translateToLocal("GT5U.MS.multismelting") + ": "
+                + EnumChatFormatting.GREEN
+                + mLevel
+                + EnumChatFormatting.RESET
+                + " Discount: (EU/t) / "
+                + EnumChatFormatting.GREEN
+                + GT_Utility.formatNumbers(mCostDiscount)
+                + EnumChatFormatting.RESET,
+            StatCollector.translateToLocal("GT5U.multiblock.pollution") + ": "
+                + EnumChatFormatting.GREEN
+                + mPollutionReduction
+                + EnumChatFormatting.RESET
+                + " %" };
     }
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 1, 2, 0);
-    }
-
-    private boolean isBottomHatch(IGregTechTileEntity aTileEntity) {
-        if (aTileEntity == null) return false;
-        IMetaTileEntity tMTE = aTileEntity.getMetaTileEntity();
-        if (tMTE == null) return false;
-        return tMTE instanceof GT_MetaTileEntity_Hatch_Energy || tMTE instanceof GT_MetaTileEntity_Hatch_InputBus
-                || tMTE instanceof GT_MetaTileEntity_Hatch_OutputBus
-                || tMTE instanceof GT_MetaTileEntity_Hatch_Maintenance;
     }
 
     @Override

@@ -24,8 +24,8 @@ public class GT_GeneratedMaterial_Renderer implements IItemRenderer {
     @Override
     public boolean handleRenderType(ItemStack item, ItemRenderType type) {
         return type == ItemRenderType.EQUIPPED || type == ItemRenderType.EQUIPPED_FIRST_PERSON
-                || type == ItemRenderType.INVENTORY
-                || type == ItemRenderType.ENTITY;
+            || type == ItemRenderType.INVENTORY
+            || type == ItemRenderType.ENTITY;
     }
 
     @Override
@@ -72,7 +72,7 @@ public class GT_GeneratedMaterial_Renderer implements IItemRenderer {
 
             if (tOverlay != null && aFluid != null && aFluid.getFluid() != null) {
                 IIcon fluidIcon = aFluid.getFluid()
-                                        .getIcon(aFluid);
+                    .getIcon(aFluid);
                 if (fluidIcon != null) {
                     markNeedsAnimationUpdate(fluidIcon);
                     // Adds colour to a cells fluid. Does not colour full fluid icons as shown in NEI etc.
@@ -92,7 +92,7 @@ public class GT_GeneratedMaterial_Renderer implements IItemRenderer {
     }
 
     protected void renderRegularItem(ItemRenderType type, ItemStack aStack, IIcon icon, boolean shouldModulateColor,
-            int pass, Object... data) {
+        int pass, Object... data) {
         renderRegularItem(type, aStack, icon, shouldModulateColor);
     }
 
@@ -108,14 +108,14 @@ public class GT_GeneratedMaterial_Renderer implements IItemRenderer {
             GT_RenderUtil.renderItemIcon(icon, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
         } else {
             ItemRenderer.renderItemIn2D(
-                    Tessellator.instance,
-                    icon.getMaxU(),
-                    icon.getMinV(),
-                    icon.getMinU(),
-                    icon.getMaxV(),
-                    icon.getIconWidth(),
-                    icon.getIconHeight(),
-                    0.0625F);
+                Tessellator.instance,
+                icon.getMaxU(),
+                icon.getMinV(),
+                icon.getMinU(),
+                icon.getMaxV(),
+                icon.getIconWidth(),
+                icon.getIconHeight(),
+                0.0625F);
         }
     }
 
@@ -130,14 +130,14 @@ public class GT_GeneratedMaterial_Renderer implements IItemRenderer {
             GT_RenderUtil.renderItemIcon(fluidIcon, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
         } else {
             ItemRenderer.renderItemIn2D(
-                    Tessellator.instance,
-                    fluidIcon.getMaxU(),
-                    fluidIcon.getMinV(),
-                    fluidIcon.getMinU(),
-                    fluidIcon.getMaxV(),
-                    fluidIcon.getIconWidth(),
-                    fluidIcon.getIconHeight(),
-                    0.0625F);
+                Tessellator.instance,
+                fluidIcon.getMaxU(),
+                fluidIcon.getMinV(),
+                fluidIcon.getMinU(),
+                fluidIcon.getMaxV(),
+                fluidIcon.getIconWidth(),
+                fluidIcon.getIconHeight(),
+                0.0625F);
         }
         GL11.glDepthFunc(GL11.GL_LEQUAL);
     }
@@ -147,14 +147,14 @@ public class GT_GeneratedMaterial_Renderer implements IItemRenderer {
             GT_RenderUtil.renderItemIcon(overlay, 16.0D, 0.001D, 0.0F, 0.0F, -1.0F);
         } else {
             ItemRenderer.renderItemIn2D(
-                    Tessellator.instance,
-                    overlay.getMaxU(),
-                    overlay.getMinV(),
-                    overlay.getMinU(),
-                    overlay.getMaxV(),
-                    overlay.getIconWidth(),
-                    overlay.getIconHeight(),
-                    0.0625F);
+                Tessellator.instance,
+                overlay.getMaxU(),
+                overlay.getMinV(),
+                overlay.getMinU(),
+                overlay.getMaxV(),
+                overlay.getIconWidth(),
+                overlay.getIconHeight(),
+                0.0625F);
         }
     }
 

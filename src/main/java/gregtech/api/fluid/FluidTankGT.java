@@ -2,6 +2,8 @@ package gregtech.api.fluid;
 
 import static com.google.common.primitives.Ints.saturatedCast;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import net.minecraft.nbt.NBTTagCompound;
@@ -194,16 +196,15 @@ public class FluidTankGT implements IFluidTank {
             return mVoidExcess ? aFluid.amount : (int) tFilled;
         }
         return saturatedCast(
-                isEmpty() ? mVoidExcess ? aFluid.amount : Math.min(capacity(aFluid), aFluid.amount)
-                        : contains(aFluid)
-                                ? mVoidExcess ? aFluid.amount : Math.min(capacity(aFluid) - mAmount, aFluid.amount)
-                                : 0);
+            isEmpty() ? mVoidExcess ? aFluid.amount : Math.min(capacity(aFluid), aFluid.amount)
+                : contains(aFluid) ? mVoidExcess ? aFluid.amount : Math.min(capacity(aFluid) - mAmount, aFluid.amount)
+                    : 0);
     }
 
     public boolean canFillAll(FluidStack aFluid) {
         return aFluid == null || aFluid.amount <= 0
-                || (isEmpty() ? mVoidExcess || aFluid.amount <= capacity(aFluid)
-                        : contains(aFluid) && (mVoidExcess || mAmount + aFluid.amount <= capacity(aFluid)));
+            || (isEmpty() ? mVoidExcess || aFluid.amount <= capacity(aFluid)
+                : contains(aFluid) && (mVoidExcess || mAmount + aFluid.amount <= capacity(aFluid)));
     }
 
     public boolean canFillAll(long aAmount) {
@@ -366,7 +367,7 @@ public class FluidTankGT implements IFluidTank {
 
         final Long tSize = mAdjustableCapacity.get(aFluid);
         return tSize == null ? Math.max(mAmount, mCapacity)
-                : Math.max(tSize * mAdjustableMultiplier, Math.max(mAmount, mCapacity));
+            : Math.max(tSize * mAdjustableMultiplier, Math.max(mAmount, mCapacity));
     }
 
     public boolean isHalf() {
@@ -419,8 +420,8 @@ public class FluidTankGT implements IFluidTank {
 
     public String name() {
         return mFluid == null ? null
-                : mFluid.getFluid()
-                        .getName();
+            : mFluid.getFluid()
+                .getName();
     }
 
     public FluidStack get() {
@@ -447,8 +448,25 @@ public class FluidTankGT implements IFluidTank {
         return saturatedCast(capacity());
     }
 
+    public long getCapacityMultiplier() {
+        return mAdjustableMultiplier;
+    }
+
     @Override
     public FluidTankInfo getInfo() {
         return new FluidTankInfo(isEmpty() ? null : mFluid.copy(), saturatedCast(capacity()));
+    }
+
+    public static FluidStack[] getFluidsFromTanks(FluidTankGT[] tanks) {
+        if (tanks == null) {
+            return null;
+        }
+        List<FluidStack> fluidStacks = new ArrayList<>();
+        for (FluidTankGT tank : tanks) {
+            if (tank.getFluid() != null) {
+                fluidStacks.add(tank.getFluid());
+            }
+        }
+        return fluidStacks.toArray(new FluidStack[0]);
     }
 }

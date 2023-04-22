@@ -35,7 +35,7 @@ public enum ToolDictNames {
         if (!aName.startsWith("craftingTool")) return false;
         for (ToolDictNames tool : ToolDictNames.values()) {
             if (tool.toString()
-                    .equals(aName)) {
+                .equals(aName)) {
                 return true;
             }
         }

@@ -40,85 +40,85 @@ public class GT_MetaTileEntity_Replicator extends GT_MetaTileEntity_BasicMachine
 
     public GT_MetaTileEntity_Replicator(int aID, String aName, String aNameRegional, int aTier) {
         super(
-                aID,
-                aName,
-                aNameRegional,
-                aTier,
-                1,
-                "Producing Elemental Matter",
-                1,
-                1,
-                "Replicator.png",
-                "",
-                TextureFactory.of(
-                        TextureFactory.of(OVERLAY_SIDE_REPLICATOR_ACTIVE),
-                        TextureFactory.builder()
-                                      .addIcon(OVERLAY_SIDE_REPLICATOR_ACTIVE_GLOW)
-                                      .glow()
-                                      .build()),
-                TextureFactory.of(
-                        TextureFactory.of(OVERLAY_SIDE_REPLICATOR),
-                        TextureFactory.builder()
-                                      .addIcon(OVERLAY_SIDE_REPLICATOR_GLOW)
-                                      .glow()
-                                      .build()),
-                TextureFactory.of(
-                        TextureFactory.of(OVERLAY_FRONT_REPLICATOR_ACTIVE),
-                        TextureFactory.builder()
-                                      .addIcon(OVERLAY_FRONT_REPLICATOR_ACTIVE_GLOW)
-                                      .glow()
-                                      .build()),
-                TextureFactory.of(
-                        TextureFactory.of(OVERLAY_FRONT_REPLICATOR),
-                        TextureFactory.builder()
-                                      .addIcon(OVERLAY_FRONT_REPLICATOR_GLOW)
-                                      .glow()
-                                      .build()),
-                TextureFactory.of(
-                        TextureFactory.of(OVERLAY_TOP_REPLICATOR_ACTIVE),
-                        TextureFactory.builder()
-                                      .addIcon(OVERLAY_TOP_REPLICATOR_ACTIVE_GLOW)
-                                      .glow()
-                                      .build()),
-                TextureFactory.of(
-                        TextureFactory.of(OVERLAY_TOP_REPLICATOR),
-                        TextureFactory.builder()
-                                      .addIcon(OVERLAY_TOP_REPLICATOR_GLOW)
-                                      .glow()
-                                      .build()),
-                TextureFactory.of(
-                        TextureFactory.of(OVERLAY_BOTTOM_REPLICATOR_ACTIVE),
-                        TextureFactory.builder()
-                                      .addIcon(OVERLAY_BOTTOM_REPLICATOR_ACTIVE_GLOW)
-                                      .glow()
-                                      .build()),
-                TextureFactory.of(
-                        TextureFactory.of(OVERLAY_BOTTOM_REPLICATOR),
-                        TextureFactory.builder()
-                                      .addIcon(OVERLAY_BOTTOM_REPLICATOR_GLOW)
-                                      .glow()
-                                      .build()));
+            aID,
+            aName,
+            aNameRegional,
+            aTier,
+            1,
+            "Producing Elemental Matter",
+            1,
+            1,
+            "Replicator.png",
+            "",
+            TextureFactory.of(
+                TextureFactory.of(OVERLAY_SIDE_REPLICATOR_ACTIVE),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_SIDE_REPLICATOR_ACTIVE_GLOW)
+                    .glow()
+                    .build()),
+            TextureFactory.of(
+                TextureFactory.of(OVERLAY_SIDE_REPLICATOR),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_SIDE_REPLICATOR_GLOW)
+                    .glow()
+                    .build()),
+            TextureFactory.of(
+                TextureFactory.of(OVERLAY_FRONT_REPLICATOR_ACTIVE),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_REPLICATOR_ACTIVE_GLOW)
+                    .glow()
+                    .build()),
+            TextureFactory.of(
+                TextureFactory.of(OVERLAY_FRONT_REPLICATOR),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_REPLICATOR_GLOW)
+                    .glow()
+                    .build()),
+            TextureFactory.of(
+                TextureFactory.of(OVERLAY_TOP_REPLICATOR_ACTIVE),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_TOP_REPLICATOR_ACTIVE_GLOW)
+                    .glow()
+                    .build()),
+            TextureFactory.of(
+                TextureFactory.of(OVERLAY_TOP_REPLICATOR),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_TOP_REPLICATOR_GLOW)
+                    .glow()
+                    .build()),
+            TextureFactory.of(
+                TextureFactory.of(OVERLAY_BOTTOM_REPLICATOR_ACTIVE),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_BOTTOM_REPLICATOR_ACTIVE_GLOW)
+                    .glow()
+                    .build()),
+            TextureFactory.of(
+                TextureFactory.of(OVERLAY_BOTTOM_REPLICATOR),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_BOTTOM_REPLICATOR_GLOW)
+                    .glow()
+                    .build()));
     }
 
     public GT_MetaTileEntity_Replicator(String aName, int aTier, String aDescription, ITexture[][][] aTextures,
-            String aGUIName, String aNEIName) {
+        String aGUIName, String aNEIName) {
         super(aName, aTier, 1, aDescription, aTextures, 1, 1, aGUIName, aNEIName);
     }
 
     public GT_MetaTileEntity_Replicator(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures,
-            String aGUIName, String aNEIName) {
+        String aGUIName, String aNEIName) {
         super(aName, aTier, 1, aDescription, aTextures, 1, 1, aGUIName, aNEIName);
     }
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_Replicator(
-                this.mName,
-                this.mTier,
-                this.mDescriptionArray,
-                this.mTextures,
-                this.mGUIName,
-                this.mNEIName);
+            this.mName,
+            this.mTier,
+            this.mDescriptionArray,
+            this.mTextures,
+            this.mGUIName,
+            this.mNEIName);
     }
 
     public static long cubicFluidMultiplier(long amount) {
@@ -131,8 +131,7 @@ public class GT_MetaTileEntity_Replicator extends GT_MetaTileEntity_BasicMachine
         if ((tFluid != null) && (tFluid.isFluidEqual(Materials.UUMatter.getFluid(1L)))) {
             ItemStack tDataOrb = getSpecialSlot();
             if ((ItemList.Tool_DataOrb.isStackEqual(tDataOrb, false, true)) && (Behaviour_DataOrb.getDataTitle(tDataOrb)
-                                                                                                 .equals(
-                                                                                                         "Elemental-Scan"))) {
+                .equals("Elemental-Scan"))) {
                 Materials tMaterial = Element.get(Behaviour_DataOrb.getDataName(tDataOrb)).mLinkedMaterials.get(0);
                 long tMass = cubicFluidMultiplier(MASS_OVERRIDES.getOrDefault(tMaterial, tMaterial.getMass()));
                 if ((tFluid.amount >= tMass) && (tMass > 0L)) {
@@ -144,9 +143,9 @@ public class GT_MetaTileEntity_Replicator extends GT_MetaTileEntity_BasicMachine
 
                     if ((this.mOutputItems[0] = GT_OreDictUnificator.get(OrePrefixes.dust, tMaterial, 1L)) == null) {
                         if ((this.mOutputItems[0] = GT_OreDictUnificator.get(OrePrefixes.cell, tMaterial, 1L))
-                                != null) {
+                            != null) {
                             if ((this.mOutputFluid = GT_Utility.getFluidForFilledItem(this.mOutputItems[0], true))
-                                    == null) {
+                                == null) {
                                 if (ItemList.Cell_Empty.isStackEqual(getInputAt(0))) {
                                     if (canOutput(this.mOutputItems[0])) {
                                         getInputAt(0).stackSize -= 1;
@@ -157,8 +156,8 @@ public class GT_MetaTileEntity_Replicator extends GT_MetaTileEntity_BasicMachine
                             } else {
                                 this.mOutputItems[0] = null;
                                 if ((getDrainableStack() == null)
-                                        || ((getDrainableStack().isFluidEqual(this.mOutputFluid))
-                                                && (getDrainableStack().amount < 16000))) {
+                                    || ((getDrainableStack().isFluidEqual(this.mOutputFluid))
+                                        && (getDrainableStack().amount < 16000))) {
                                     tFluid.amount = ((int) (tFluid.amount - tMass));
                                     return 2;
                                 }
@@ -181,9 +180,9 @@ public class GT_MetaTileEntity_Replicator extends GT_MetaTileEntity_BasicMachine
 
     @Override
     protected boolean allowPutStackValidated(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide,
-            ItemStack aStack) {
+        ItemStack aStack) {
         return super.allowPutStackValidated(aBaseMetaTileEntity, aIndex, aSide, aStack)
-                && ItemList.Cell_Empty.isStackEqual(aStack);
+            && ItemList.Cell_Empty.isStackEqual(aStack);
     }
 
     @Override
@@ -195,11 +194,11 @@ public class GT_MetaTileEntity_Replicator extends GT_MetaTileEntity_BasicMachine
     public int getCapacity() {
         if ((sHeaviestElementMass == 0) && (GregTech_API.sPostloadFinished)) {
             sHeaviestElementMass = Materials.getMaterialsMap()
-                                            .values()
-                                            .stream()
-                                            .mapToInt(material -> (int) cubicFluidMultiplier((int) material.getMass()))
-                                            .max()
-                                            .orElseThrow(NoSuchElementException::new);
+                .values()
+                .stream()
+                .mapToInt(material -> (int) cubicFluidMultiplier((int) material.getMass()))
+                .max()
+                .orElseThrow(NoSuchElementException::new);
             // Make the Number nicer =)
             sHeaviestElementMass = 1000 * (sHeaviestElementMass / 1000 + 1);
         }

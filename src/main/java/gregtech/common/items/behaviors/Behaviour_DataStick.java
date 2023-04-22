@@ -33,7 +33,7 @@ public class Behaviour_DataStick extends Behaviour_None {
             }
         }
         short sTier = GT_Utility.ItemNBT.getNBT(aStack)
-                                        .getShort("rocket_tier");
+            .getShort("rocket_tier");
         if (sTier > 0 && sTier < 100) {
             aList.add("Rocket Schematic Tier: " + sTier);
         } else if (sTier >= 100) {
@@ -50,7 +50,7 @@ public class Behaviour_DataStick extends Behaviour_None {
             }
         }
         long lastUpdate = GT_Utility.ItemNBT.getNBT(aStack)
-                                            .getLong("lastUpdate");
+            .getLong("lastUpdate");
         if (lastUpdate != 0) aList.add(String.format("Last update at: %tc", lastUpdate));
 
         return aList;

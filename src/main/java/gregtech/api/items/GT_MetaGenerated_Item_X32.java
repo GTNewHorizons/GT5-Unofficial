@@ -59,20 +59,20 @@ public abstract class GT_MetaGenerated_Item_X32 extends GT_MetaGenerated_Item {
             if (doesMaterialAllowGeneration(tPrefix, tMaterial)) {
                 ItemStack tStack = new ItemStack(this, 1, i);
                 GT_LanguageManager.addStringLocalization(
-                        getUnlocalizedName(tStack) + ".name",
-                        GT_LanguageManager.i18nPlaceholder ? getDefaultLocalizationFormat(tPrefix, tMaterial, i)
-                                : getDefaultLocalization(tPrefix, tMaterial, i));
+                    getUnlocalizedName(tStack) + ".name",
+                    GT_LanguageManager.i18nPlaceholder ? getDefaultLocalizationFormat(tPrefix, tMaterial, i)
+                        : getDefaultLocalization(tPrefix, tMaterial, i));
                 GT_LanguageManager.addStringLocalization(
-                        getUnlocalizedName(tStack) + ".tooltip",
-                        tMaterial.getToolTip(tPrefix.mMaterialAmount / M));
+                    getUnlocalizedName(tStack) + ".tooltip",
+                    tMaterial.getToolTip(tPrefix.mMaterialAmount / M));
                 if (tPrefix.mIsUnificatable) {
                     GT_OreDictUnificator.set(tPrefix, tMaterial, tStack);
                 } else {
                     GT_OreDictUnificator.registerOre(tPrefix.get(tMaterial), tStack);
                 }
                 if ((tPrefix == OrePrefixes.stick || tPrefix == OrePrefixes.wireFine || tPrefix == OrePrefixes.ingot)
-                        && (tMaterial == Materials.Lead || tMaterial == Materials.Tin
-                                || tMaterial == Materials.SolderingAlloy)) {
+                    && (tMaterial == Materials.Lead || tMaterial == Materials.Tin
+                        || tMaterial == Materials.SolderingAlloy)) {
                     GregTech_API.sSolderingMetalList.add(tStack);
                     GT_ModHandler.registerBoxableItemToToolBox(tStack);
                 }
@@ -132,9 +132,9 @@ public abstract class GT_MetaGenerated_Item_X32 extends GT_MetaGenerated_Item {
      */
     public final IIconContainer getIconContainer(int aMetaData, Materials aMaterial) {
         return mGeneratedPrefixList[aMetaData / 1000] != null
-                && mGeneratedPrefixList[aMetaData / 1000].mTextureIndex >= 0
-                        ? aMaterial.mIconSet.mTextures[mGeneratedPrefixList[aMetaData / 1000].mTextureIndex]
-                        : null;
+            && mGeneratedPrefixList[aMetaData / 1000].mTextureIndex >= 0
+                ? aMaterial.mIconSet.mTextures[mGeneratedPrefixList[aMetaData / 1000].mTextureIndex]
+                : null;
     }
 
     /**
@@ -174,13 +174,13 @@ public abstract class GT_MetaGenerated_Item_X32 extends GT_MetaGenerated_Item {
     @Override
     public final IIconContainer getIconContainer(int aMetaData) {
         return GregTech_API.sGeneratedMaterials[aMetaData % 1000] == null ? null
-                : getIconContainer(aMetaData, GregTech_API.sGeneratedMaterials[aMetaData % 1000]);
+            : getIconContainer(aMetaData, GregTech_API.sGeneratedMaterials[aMetaData % 1000]);
     }
 
     @Override
     public GT_GeneratedMaterial_Renderer getMaterialRenderer(int aMetaData) {
         return GregTech_API.sGeneratedMaterials[aMetaData % 1000] == null ? null
-                : GregTech_API.sGeneratedMaterials[aMetaData % 1000].renderer;
+            : GregTech_API.sGeneratedMaterials[aMetaData % 1000].renderer;
     }
 
     @Override
@@ -191,7 +191,7 @@ public abstract class GT_MetaGenerated_Item_X32 extends GT_MetaGenerated_Item {
             Materials aMaterial = GregTech_API.sGeneratedMaterials[i % 1000];
             if (aPrefix != null && aMaterial != null) {
                 if (doesMaterialAllowGeneration(aPrefix, aMaterial)
-                        && doesShowInCreative(aPrefix, aMaterial, GregTech_API.sDoShowAllItemsInCreative)) {
+                    && doesShowInCreative(aPrefix, aMaterial, GregTech_API.sDoShowAllItemsInCreative)) {
                     ItemStack tStack = new ItemStack(this, 1, i);
                     isItemStackUsable(tStack);
                     aList.add(tStack);

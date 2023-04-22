@@ -1,7 +1,5 @@
 package gregtech.api.multitileentity.interfaces;
 
-import static gregtech.api.enums.GT_Values.MOD_ID_APC;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -21,6 +19,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fluids.IFluidHandler;
 
 import cpw.mods.fml.common.Optional;
+import gregtech.api.enums.Mods;
 import gregtech.api.interfaces.tileentity.*;
 import gregtech.api.multitileentity.MultiTileEntityBlockInternal;
 import gregtech.api.multitileentity.MultiTileEntityItemInternal;
@@ -30,8 +29,8 @@ import gregtech.api.multitileentity.MultiTileEntityRegistry;
  * Heavily inspired by GT6
  */
 public interface IMultiTileEntity
-        extends IHasWorldObjectAndCoords, ICoverable, ITurnable, IHasInventory, IEnergyConnected, IBasicEnergyContainer,
-        IFluidHandler, ITexturedTileEntity, IDebugableTileEntity, IColoredTileEntity {
+    extends IHasWorldObjectAndCoords, ICoverable, ITurnable, IHasInventory, IEnergyConnected, IBasicEnergyContainer,
+    IFluidHandler, ITexturedTileEntity, IDebugableTileEntity, IColoredTileEntity {
 
     /**
      * Those two IDs HAVE to be saved inside the NBT of the TileEntity itself. They get set by the Registry itself, when
@@ -72,7 +71,7 @@ public interface IMultiTileEntity
     @Override
     boolean isDead();
 
-    void loadTextureNBT(NBTTagCompound aNBT);
+    void loadTextures(String folder);
 
     void copyTextures();
 
@@ -174,7 +173,7 @@ public interface IMultiTileEntity
 
     /** Adds to the Creative Tab. return false to prevent it from being added. */
     boolean getSubItems(MultiTileEntityBlockInternal aBlock, Item aItem, CreativeTabs aTab, List<ItemStack> aList,
-            short aID);
+        short aID);
 
     ItemStack getPickBlock(MovingObjectPosition aTarget);
 
@@ -183,7 +182,7 @@ public interface IMultiTileEntity
     boolean isSurfaceOpaque(byte aSide);
 
     boolean onPlaced(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, byte aSide,
-            float aHitX, float aHitY, float aHitZ);
+        float aHitX, float aHitY, float aHitZ);
 
     // ItemStack getPickBlock(MovingObjectPosition aTarget);
 
@@ -242,7 +241,7 @@ public interface IMultiTileEntity
 
     interface IMTE_GetFoodValues extends IMultiTileEntity {
 
-        @Optional.Method(modid = MOD_ID_APC)
+        @Optional.Method(modid = Mods.Names.APPLE_CORE)
         squeek.applecore.api.food.FoodValues getFoodValues(MultiTileEntityItemInternal aItem, ItemStack aStack);
     }
 
@@ -259,14 +258,14 @@ public interface IMultiTileEntity
          * pipes/wires.
          */
         boolean ignoreEntityCollisionWhenPlacing(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY,
-                int aZ, byte aSide, float aHitX, float aHitY, float aHitZ);
+            int aZ, byte aSide, float aHitX, float aHitY, float aHitZ);
     }
 
     interface IMTE_CanPlace extends IMultiTileEntity {
 
         /** Return false if this TileEntity cannot be placed at that Location. */
         boolean canPlace(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, byte aSide,
-                float aHitX, float aHitY, float aHitZ);
+            float aHitX, float aHitY, float aHitZ);
     }
 
     interface IMTE_GetMaxStackSize extends IMultiTileEntity {
