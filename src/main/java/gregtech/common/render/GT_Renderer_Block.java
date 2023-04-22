@@ -1,9 +1,5 @@
 package gregtech.common.render;
 
-import static gregtech.api.enums.GT_Values.ALL_VALID_SIDES;
-import static gregtech.api.enums.GT_Values.OFFX;
-import static gregtech.api.enums.GT_Values.OFFY;
-import static gregtech.api.enums.GT_Values.OFFZ;
 import static gregtech.api.enums.GT_Values.SIDE_DOWN;
 import static gregtech.api.enums.GT_Values.SIDE_EAST;
 import static gregtech.api.enums.GT_Values.SIDE_NORTH;
@@ -500,10 +496,19 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
             rX = x + 1.1;
         }
         effectRenderer.addEffect(
-            (new EntityDiggingFX(world, rX, rY, rZ, 0.0, 0.0, 0.0, block, block.getDamageValue(world, x, y, z), ordinalSide))
-                .applyColourMultiplier(x, y, z)
-                .multiplyVelocity(0.2F)
-                .multipleParticleScaleBy(0.6F));
+            (new EntityDiggingFX(
+                world,
+                rX,
+                rY,
+                rZ,
+                0.0,
+                0.0,
+                0.0,
+                block,
+                block.getDamageValue(world, x, y, z),
+                ordinalSide)).applyColourMultiplier(x, y, z)
+                    .multiplyVelocity(0.2F)
+                    .multipleParticleScaleBy(0.6F));
     }
 
     @SideOnly(Side.CLIENT)
@@ -541,71 +546,69 @@ public class GT_Renderer_Block implements ISimpleBlockRenderingHandler {
             final GT_TileEntity_Ores tTileEntity = new GT_TileEntity_Ores();
             tTileEntity.mMetaData = ((short) aMeta);
 
-
-                aBlock.setBlockBoundsForItemRender();
-                aRenderer.setRenderBoundsFromBlock(aBlock);
-                renderNegativeYFacing(
-                    null,
-                    aRenderer,
-                    aBlock,
-                    0,
-                    0,
-                    0,
-                    tTileEntity.getTexture(aBlock, ForgeDirection.DOWN),
-                    true);
-                renderPositiveYFacing(
-                    null,
-                    aRenderer,
-                    aBlock,
-                    0,
-                    0,
-                    0,
-                    tTileEntity.getTexture(aBlock, ForgeDirection.UP),
-                    true);
-                renderNegativeZFacing(
-                    null,
-                    aRenderer,
-                    aBlock,
-                    0,
-                    0,
-                    0,
-                    tTileEntity.getTexture(aBlock, ForgeDirection.NORTH),
-                    true);
-                renderPositiveZFacing(
-                    null,
-                    aRenderer,
-                    aBlock,
-                    0,
-                    0,
-                    0,
-                    tTileEntity.getTexture(aBlock, ForgeDirection.SOUTH),
-                    true);
-                renderNegativeXFacing(
-                    null,
-                    aRenderer,
-                    aBlock,
-                    0,
-                    0,
-                    0,
-                    tTileEntity.getTexture(aBlock, ForgeDirection.WEST),
-                    true);
-                renderPositiveXFacing(
-                    null,
-                    aRenderer,
-                    aBlock,
-                    0,
-                    0,
-                    0,
-                    tTileEntity.getTexture(aBlock, ForgeDirection.EAST),
-                    true);
-            } else if (aMeta > 0 && (aMeta < GregTech_API.METATILEENTITIES.length)
-                && aBlock instanceof GT_Block_Machines
-                && (GregTech_API.METATILEENTITIES[aMeta] != null)
-                && (!GregTech_API.METATILEENTITIES[aMeta].renderInInventory(aBlock, aMeta, aRenderer)))
-            {
+            aBlock.setBlockBoundsForItemRender();
+            aRenderer.setRenderBoundsFromBlock(aBlock);
+            renderNegativeYFacing(
+                null,
+                aRenderer,
+                aBlock,
+                0,
+                0,
+                0,
+                tTileEntity.getTexture(aBlock, ForgeDirection.DOWN),
+                true);
+            renderPositiveYFacing(
+                null,
+                aRenderer,
+                aBlock,
+                0,
+                0,
+                0,
+                tTileEntity.getTexture(aBlock, ForgeDirection.UP),
+                true);
+            renderNegativeZFacing(
+                null,
+                aRenderer,
+                aBlock,
+                0,
+                0,
+                0,
+                tTileEntity.getTexture(aBlock, ForgeDirection.NORTH),
+                true);
+            renderPositiveZFacing(
+                null,
+                aRenderer,
+                aBlock,
+                0,
+                0,
+                0,
+                tTileEntity.getTexture(aBlock, ForgeDirection.SOUTH),
+                true);
+            renderNegativeXFacing(
+                null,
+                aRenderer,
+                aBlock,
+                0,
+                0,
+                0,
+                tTileEntity.getTexture(aBlock, ForgeDirection.WEST),
+                true);
+            renderPositiveXFacing(
+                null,
+                aRenderer,
+                aBlock,
+                0,
+                0,
+                0,
+                tTileEntity.getTexture(aBlock, ForgeDirection.EAST),
+                true);
+        } else if (aMeta > 0 && (aMeta < GregTech_API.METATILEENTITIES.length)
+            && aBlock instanceof GT_Block_Machines
+            && (GregTech_API.METATILEENTITIES[aMeta] != null)
+            && (!GregTech_API.METATILEENTITIES[aMeta].renderInInventory(aBlock, aMeta, aRenderer))) {
                 renderNormalInventoryMetaTileEntity(aBlock, aMeta, aRenderer);
             }
-            aBlock.setBlockBounds(blockMin, blockMin, blockMin, blockMax, blockMax, blockMax);
+        aBlock.setBlockBounds(blockMin, blockMin, blockMin, blockMax, blockMax, blockMax);
 
         aRenderer.setRenderBoundsFromBlock(aBlock);
 

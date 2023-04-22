@@ -11,7 +11,6 @@ import static gregtech.api.multitileentity.multiblock.base.MultiBlockPart.NOTHIN
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.tuple.Pair;
 

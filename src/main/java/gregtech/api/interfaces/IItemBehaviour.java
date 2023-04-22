@@ -19,8 +19,8 @@ public interface IItemBehaviour<E extends Item> {
 
     boolean onLeftClickEntity(E aItem, ItemStack aStack, EntityPlayer aPlayer, Entity aEntity);
 
-    boolean onItemUse(E aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int ordinalSide,
-        float hitX, float hitY, float hitZ);
+    boolean onItemUse(E aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ,
+        int ordinalSide, float hitX, float hitY, float hitZ);
 
     boolean onItemUseFirst(E aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ,
         ForgeDirection side, float hitX, float hitY, float hitZ);

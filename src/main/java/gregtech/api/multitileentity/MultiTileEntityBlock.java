@@ -321,8 +321,8 @@ public class MultiTileEntityBlock extends Block implements IDebugableBlock, ITil
     }
 
     @Override
-    public boolean onBlockActivated(World aWorld, int aX, int aY, int aZ, EntityPlayer aPlayer, int ordinalSide, float aHitX,
-        float aHitY, float aHitZ) {
+    public boolean onBlockActivated(World aWorld, int aX, int aY, int aZ, EntityPlayer aPlayer, int ordinalSide,
+        float aHitX, float aHitY, float aHitZ) {
         final TileEntity aTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (aPlayer != null && ItemList.TC_Thaumometer.isStackEqual(aPlayer.getHeldItem(), true, true)) return false;
         return aTileEntity instanceof IMultiTileEntity mte
@@ -380,7 +380,8 @@ public class MultiTileEntityBlock extends Block implements IDebugableBlock, ITil
 
     @Override
     public final boolean shouldSideBeRendered(IBlockAccess aWorld, int aX, int aY, int aZ, int ordinalSide) {
-        final TileEntity aTileEntity = aWorld.getTileEntity(aX - OFFX[ordinalSide], aY - OFFY[ordinalSide], aZ - OFFZ[ordinalSide]);
+        final TileEntity aTileEntity = aWorld
+            .getTileEntity(aX - OFFX[ordinalSide], aY - OFFY[ordinalSide], aZ - OFFZ[ordinalSide]);
         return aTileEntity instanceof IMultiTileEntity
             ? ((IMultiTileEntity) aTileEntity).shouldSideBeRendered(ForgeDirection.getOrientation(ordinalSide))
             : super.shouldSideBeRendered(aWorld, aX, aY, aZ, ordinalSide);

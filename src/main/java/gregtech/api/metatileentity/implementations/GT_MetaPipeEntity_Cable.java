@@ -332,8 +332,7 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
         final ForgeDirection oppositeSide = side.getOpposite();
 
         // GT Machine handling
-        if ((tileEntity instanceof PowerLogicHost powerLogic
-            && powerLogic.getPowerLogic(side) != null)
+        if ((tileEntity instanceof PowerLogicHost powerLogic && powerLogic.getPowerLogic(side) != null)
             || ((tileEntity instanceof IEnergyConnected energyConnected)
                 && (energyConnected.inputEnergyFrom(oppositeSide, false)
                     || energyConnected.outputsEnergyTo(oppositeSide, false))))

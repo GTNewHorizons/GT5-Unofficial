@@ -400,7 +400,8 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
         return getFluidTankFillable(facing, side, aFluidToFill);
     }
 
-    public IFluidTank getFluidTankFillable(ForgeDirection sideSource, ForgeDirection sideDestination, FluidStack fluidToFill) {
+    public IFluidTank getFluidTankFillable(ForgeDirection sideSource, ForgeDirection sideDestination,
+        FluidStack fluidToFill) {
         if (sideSource.compareTo(sideDestination) != 0) return null;
         for (FluidTankGT tankGT : inputTanks) if (tankGT.contains(fluidToFill)) return tankGT;
         // if (!mRecipes.containsInput(aFluidToFill, this, slot(mRecipes.mInputItemsCount +
@@ -414,7 +415,8 @@ public abstract class MultiTileBasicMachine extends TickableMultiTileEntity impl
         return getFluidTankDrainable(facing, side, aFluidToDrain);
     }
 
-    protected IFluidTank getFluidTankDrainable(ForgeDirection sideSource, ForgeDirection sideDestination, FluidStack fluidToDrain) {
+    protected IFluidTank getFluidTankDrainable(ForgeDirection sideSource, ForgeDirection sideDestination,
+        FluidStack fluidToDrain) {
         if (sideSource.compareTo(sideDestination) != 0) return null;
         for (FluidTankGT fluidTankGT : outputTanks)
             if (fluidToDrain == null ? fluidTankGT.has() : fluidTankGT.contains(fluidToDrain)) return fluidTankGT;

@@ -20,6 +20,7 @@ public interface IMultiBlockController extends IMultiTileEntity, IMultiBlockFlui
     ChunkCoordinates getCoords();
 
     FluidStack getDrainableFluid(ForgeDirection side);
+
     FluidStack getDrainableFluid(ForgeDirection side, Fluid fluid);
 
     boolean isLiquidInput(ForgeDirection side);

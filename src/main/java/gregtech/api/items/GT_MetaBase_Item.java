@@ -140,8 +140,8 @@ public abstract class GT_MetaBase_Item extends GT_Generic_Item
     }
 
     @Override
-    public boolean onItemUse(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int ordinalSide,
-        float hitX, float hitY, float hitZ) {
+    public boolean onItemUse(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ,
+        int ordinalSide, float hitX, float hitY, float hitZ) {
         use(aStack, 0, aPlayer);
         isItemStackUsable(aStack);
         ArrayList<IItemBehaviour<GT_MetaBase_Item>> tList = mItemBehaviors.get((short) getDamage(aStack));

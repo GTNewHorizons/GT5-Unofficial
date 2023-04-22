@@ -2,7 +2,6 @@ package gregtech.api.multitileentity.multiblock.base;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static gregtech.GT_Mod.GT_FML_LOGGER;
-import static gregtech.api.enums.GT_Values.ALL_VALID_SIDES;
 import static gregtech.api.multitileentity.enums.GT_MultiTileComponentCasing.*;
 import static gregtech.loaders.preload.GT_Loader_MultiTileEntities.COMPONENT_CASING_REGISTRY;
 import static mcp.mobius.waila.api.SpecialChars.*;
@@ -683,7 +682,6 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
         return tank == null ? null : tank.getFluid();
     }
 
-
     /**
      * Increases the Progress, returns the overflown Progress.
      */
@@ -990,71 +988,71 @@ public abstract class Controller<T extends Controller<T>> extends MultiTileBasic
     /**
      * Fluid - MultiBlock related Fluid Tank behaviour.
      */
-        public void registerFluidInventory(String name, String id, int numberOfSlots, long capacity,
+    public void registerFluidInventory(String name, String id, int numberOfSlots, long capacity,
         long capacityMultiplier, int type) {
-            if (name == null || name.equals("")
-                || id == null
-                || id.equals("")
-                || numberOfSlots < 0
-                || capacity < 0
-                || capacityMultiplier < 0) {
-                return;
-            }
-            FluidTankGT[] tanks = new FluidTankGT[numberOfSlots];
-            for (int i = 0; i < numberOfSlots; i++) {
-                tanks[i] = new FluidTankGT(capacity).setCapacityMultiplier(capacityMultiplier);
-            }
-            registerFluidInventory(name, id, tanks, type);
+        if (name == null || name.equals("")
+            || id == null
+            || id.equals("")
+            || numberOfSlots < 0
+            || capacity < 0
+            || capacityMultiplier < 0) {
+            return;
         }
-
-        public void registerFluidInventory(String name, String id, FluidTankGT[] fluidInventory, int type) {
-            if (name == null || name.equals("")
-                || id == null
-                || id.equals("")
-                || fluidInventory == null
-                || fluidInventory.length == 0) {
-                return;
-            }
-            if (type == Inventory.INPUT || type == Inventory.BOTH) {
-                if (multiBlockInputTank.containsKey(id)) return;
-                multiBlockInputTank.put(id, fluidInventory);
-                multiBlockInputTankNames.put(id, name);
-            }
-            if (type == Inventory.OUTPUT || type == Inventory.BOTH) {
-                if (multiBlockOutputTank.containsKey(id)) return;
-                multiBlockOutputTank.put(id, fluidInventory);
-                multiBlockOutputTankNames.put(id, name);
-            }
+        FluidTankGT[] tanks = new FluidTankGT[numberOfSlots];
+        for (int i = 0; i < numberOfSlots; i++) {
+            tanks[i] = new FluidTankGT(capacity).setCapacityMultiplier(capacityMultiplier);
         }
+        registerFluidInventory(name, id, tanks, type);
+    }
 
-        public void unregisterFluidInventory(String aName, String aID, int aType) {
-            if ((aType == Inventory.INPUT || aType == Inventory.BOTH) && multiBlockInputTank.containsKey(aID)) {
-                multiBlockInputTank.remove(aID, multiBlockInputTank.get(aID));
-                multiBlockInputTankNames.remove(aID, aName);
-            }
-            if ((aType == Inventory.OUTPUT || aType == Inventory.BOTH) && multiBlockOutputTank.containsKey(aID)) {
-                multiBlockOutputTank.remove(aID, multiBlockOutputTank.get(aID));
-                multiBlockOutputTankNames.remove(aID, aName);
-            }
+    public void registerFluidInventory(String name, String id, FluidTankGT[] fluidInventory, int type) {
+        if (name == null || name.equals("")
+            || id == null
+            || id.equals("")
+            || fluidInventory == null
+            || fluidInventory.length == 0) {
+            return;
         }
-
-        protected FluidTankGT[] getTanksForInput() {
-            List<FluidTankGT> tanks = new ArrayList<>();
-            for (FluidTankGT[] inputTanks : multiBlockInputTank.values()) {
-                tanks.addAll(Arrays.asList(inputTanks));
-            }
-            return tanks.toArray(new FluidTankGT[0]);
+        if (type == Inventory.INPUT || type == Inventory.BOTH) {
+            if (multiBlockInputTank.containsKey(id)) return;
+            multiBlockInputTank.put(id, fluidInventory);
+            multiBlockInputTankNames.put(id, name);
         }
-
-        protected FluidTankGT[] getTanksForOutput() {
-            List<FluidTankGT> tanks = new ArrayList<>();
-            for (FluidTankGT[] outputTanks : multiBlockOutputTank.values()) {
-                tanks.addAll(Arrays.asList(outputTanks));
-            }
-            return tanks.toArray(new FluidTankGT[0]);
+        if (type == Inventory.OUTPUT || type == Inventory.BOTH) {
+            if (multiBlockOutputTank.containsKey(id)) return;
+            multiBlockOutputTank.put(id, fluidInventory);
+            multiBlockOutputTankNames.put(id, name);
         }
+    }
 
-        protected IFluidTank getFluidTankFillable(MultiBlockPart aPart, ForgeDirection side, FluidStack aFluidToFill) {
+    public void unregisterFluidInventory(String aName, String aID, int aType) {
+        if ((aType == Inventory.INPUT || aType == Inventory.BOTH) && multiBlockInputTank.containsKey(aID)) {
+            multiBlockInputTank.remove(aID, multiBlockInputTank.get(aID));
+            multiBlockInputTankNames.remove(aID, aName);
+        }
+        if ((aType == Inventory.OUTPUT || aType == Inventory.BOTH) && multiBlockOutputTank.containsKey(aID)) {
+            multiBlockOutputTank.remove(aID, multiBlockOutputTank.get(aID));
+            multiBlockOutputTankNames.remove(aID, aName);
+        }
+    }
+
+    protected FluidTankGT[] getTanksForInput() {
+        List<FluidTankGT> tanks = new ArrayList<>();
+        for (FluidTankGT[] inputTanks : multiBlockInputTank.values()) {
+            tanks.addAll(Arrays.asList(inputTanks));
+        }
+        return tanks.toArray(new FluidTankGT[0]);
+    }
+
+    protected FluidTankGT[] getTanksForOutput() {
+        List<FluidTankGT> tanks = new ArrayList<>();
+        for (FluidTankGT[] outputTanks : multiBlockOutputTank.values()) {
+            tanks.addAll(Arrays.asList(outputTanks));
+        }
+        return tanks.toArray(new FluidTankGT[0]);
+    }
+
+    protected IFluidTank getFluidTankFillable(MultiBlockPart aPart, ForgeDirection side, FluidStack aFluidToFill) {
         return getFluidTankFillable(side, aFluidToFill);
     }
 

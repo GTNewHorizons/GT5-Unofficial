@@ -2,7 +2,6 @@ package gregtech.api.multitileentity.base;
 
 import static gregtech.GT_Mod.GT_FML_LOGGER;
 import static gregtech.api.enums.GT_Values.NBT;
-import static gregtech.api.enums.GT_Values.OPOS;
 import static gregtech.api.enums.GT_Values.VALID_SIDES;
 
 import java.io.IOException;
