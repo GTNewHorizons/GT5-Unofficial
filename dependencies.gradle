@@ -28,7 +28,7 @@ dependencies {
     api("com.github.GTNewHorizons:GTNHLib:0.0.12:dev")
     api("com.github.GTNewHorizons:ModularUI:1.1.2:dev")
     api("com.github.GTNewHorizons:waila:1.5.23:dev")
-    api("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-156-GTNH:dev")
+    api("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-195-GTNH:dev")
     implementation("com.github.GTNewHorizons:Eternal-Singularity:1.0.10:dev")
 
     api("net.industrial-craft:industrialcraft-2:2.2.828-experimental:dev")
@@ -41,7 +41,7 @@ dependencies {
     compileOnly("com.github.GTNewHorizons:AppleCore:3.2.10:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:TinkersConstruct:1.9.23-GTNH:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:Chisel:2.10.17-GTNH:dev") { transitive = false }
-    compileOnly("com.github.GTNewHorizons:EnderIO:2.3.1.57:dev") { transitive = false }
+    compileOnly("com.github.GTNewHorizons:EnderIO:2.4.10:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:BuildCraft:7.1.28:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:Translocators:1.1.2.21:dev") { transitive = false }
     compileOnly("curse.maven:cofh-core-69162:2388751") { transitive = false }
@@ -49,7 +49,7 @@ dependencies {
     compileOnly("thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:Avaritia:1.31:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:ProjectRed:4.7.9-GTNH:dev") { transitive = false }
-    compileOnly("com.github.GTNewHorizons:Hodgepodge:2.0.34:dev") { transitive = false }
+    compileOnly("com.github.GTNewHorizons:Hodgepodge:2.2.8:dev") { transitive = false }
 
     // fix universium animation
     runtimeOnly("com.github.GTNewHorizons:Avaritia:1.33:dev")
