@@ -18,7 +18,7 @@ dependencies {
 
     runtimeOnly('com.github.GTNewHorizons:BuildCraft:7.1.33:dev')
     runtimeOnly('com.github.GTNewHorizons:Electro-Magic-Tools:1.2.9:dev')
-    runtimeOnly('com.github.GTNewHorizons:EnderIO:2.4.10:dev')
+    runtimeOnly('com.github.GTNewHorizons:EnderIO:2.4.11:dev')
     runtimeOnly('com.github.GTNewHorizons:GTplusplus:1.8.40:dev')
 
     runtimeOnly('com.github.GTNewHorizons:NewHorizonsCoreMod:2.0.31:dev')
