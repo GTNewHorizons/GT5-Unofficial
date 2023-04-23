@@ -882,7 +882,8 @@ public class GT_Loader_MetaTileEntities implements Runnable { // TODO CHECK CIRC
             ItemList.Transformer_HV_MV.get(1L),
             bitsd,
             new Object[] { "KBB", "CM ", "KBB", 'M', ItemList.Hull_MV, 'C', OrePrefixes.cableGt01.get(Materials.Gold),
-                'B', OrePrefixes.cableGt01.get(Materials.AnyCopper), 'K', ItemList.Circuit_Parts_Coil });
+                'B', OrePrefixes.cableGt01.get(Materials.AnyCopper), 'K',
+                OrePrefixes.componentCircuit.get(Materials.Inductor) });
         GT_ModHandler.addCraftingRecipe(
             ItemList.Transformer_EV_HV.get(1L),
             bitsd,
