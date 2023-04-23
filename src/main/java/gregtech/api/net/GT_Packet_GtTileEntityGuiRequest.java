@@ -5,6 +5,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import com.google.common.io.ByteArrayDataInput;
 
@@ -88,7 +89,7 @@ public class GT_Packet_GtTileEntityGuiRequest extends GT_Packet_New {
         final World world = DimensionManager.getWorld(this.dimId);
         if (world == null) return;
         final TileEntity tile = world.getTileEntity(this.mX, this.mY, this.mZ);
-        if (!(tile instanceof BaseTileEntity baseTile) || ((BaseTileEntity) tile).isDead()) return;
+        if (!(tile instanceof BaseTileEntity baseTile) || baseTile.isDead()) return;
 
         final EntityPlayerMP player = (EntityPlayerMP) world.getEntityByID(playerId);
         final CoverableTileEntity coverableTile = (baseTile instanceof CoverableTileEntity)
@@ -97,7 +98,8 @@ public class GT_Packet_GtTileEntityGuiRequest extends GT_Packet_New {
         // If the requested Gui ID corresponds to a cover, send the cover data to the client so they can open it.
         if (GT_Proxy.GUI_ID_COVER_SIDE_BASE <= guiId && guiId < GT_Proxy.GUI_ID_COVER_SIDE_BASE + 6
             && coverableTile != null) {
-            final byte coverSide = (byte) (guiId - GT_Proxy.GUI_ID_COVER_SIDE_BASE);
+            final ForgeDirection coverSide = ForgeDirection
+                .getOrientation((byte) (guiId - GT_Proxy.GUI_ID_COVER_SIDE_BASE));
             final GT_Packet_TileEntityCoverGUI packet = new GT_Packet_TileEntityCoverGUI(
                 this.mX,
                 this.mY,

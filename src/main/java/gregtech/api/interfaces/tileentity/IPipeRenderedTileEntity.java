@@ -1,5 +1,7 @@
 package gregtech.api.interfaces.tileentity;
 
+import net.minecraftforge.common.util.ForgeDirection;
+
 import gregtech.api.interfaces.ITexture;
 
 public interface IPipeRenderedTileEntity extends ICoverable, ITexturedTileEntity {
@@ -8,9 +10,9 @@ public interface IPipeRenderedTileEntity extends ICoverable, ITexturedTileEntity
 
     byte getConnections();
 
-    ITexture[] getTextureUncovered(byte aSide);
+    ITexture[] getTextureUncovered(ForgeDirection side);
 
-    default ITexture[] getTextureCovered(byte aSide) {
-        return getTextureUncovered(aSide);
+    default ITexture[] getTextureCovered(ForgeDirection side) {
+        return getTextureUncovered(side);
     }
 }

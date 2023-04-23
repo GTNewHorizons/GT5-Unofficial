@@ -8,6 +8,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.items.GT_Generic_Block;
 import gregtech.api.items.GT_MetaBase_Item;
@@ -41,7 +42,7 @@ public class Behaviour_Switch_Metadata extends Behaviour_None {
 
     @Override
     public boolean onItemUseFirst(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,
-        int aY, int aZ, int aSide, float aHitX, float aHitY, float aHitZ) {
+        int aY, int aZ, ForgeDirection side, float aHitX, float aHitY, float aHitZ) {
         if (aStack != null && (aPlayer == null || aPlayer.isSneaking()) && !aWorld.isRemote) {
             if (mCheckTarget) {
                 Block aBlock = aWorld.blockExists(aX, aY, aZ) ? aWorld.getBlock(aX, aY, aZ) : Blocks.air;

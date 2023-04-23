@@ -24,28 +24,28 @@ public interface IEnergyConnected extends IColoredTileEntity {
      * <p/>
      * Note: you have to check for @inputEnergyFrom because the Network won't check for that by itself.
      *
-     * @param aSide 0 - 5 = Vanilla Directions of YOUR Block the Energy gets inserted to. 6 = No specific Side (don't do
-     *              Side checks for this Side)
+     * @param side 0 - 5 = Vanilla Directions of YOUR Block the Energy gets inserted to. 6 = No specific Side (don't do
+     *             Side checks for this Side)
      * @return amount of used Amperes. 0 if not accepted anything.
      */
-    long injectEnergyUnits(byte aSide, long aVoltage, long aAmperage);
+    long injectEnergyUnits(ForgeDirection side, long aVoltage, long aAmperage);
 
     /**
      * Sided Energy Input
      */
-    boolean inputEnergyFrom(byte aSide);
+    boolean inputEnergyFrom(ForgeDirection side);
 
-    default boolean inputEnergyFrom(byte aSide, boolean waitForActive) {
-        return inputEnergyFrom(aSide);
+    default boolean inputEnergyFrom(ForgeDirection side, boolean waitForActive) {
+        return inputEnergyFrom(side);
     }
 
     /**
      * Sided Energy Output
      */
-    boolean outputsEnergyTo(byte aSide);
+    boolean outputsEnergyTo(ForgeDirection side);
 
-    default boolean outputsEnergyTo(byte aSide, boolean waitForActive) {
-        return outputsEnergyTo(aSide);
+    default boolean outputsEnergyTo(ForgeDirection side, boolean waitForActive) {
+        return outputsEnergyTo(side);
     }
 
     /**
@@ -64,43 +64,38 @@ public interface IEnergyConnected extends IColoredTileEntity {
                 return 0;
             }
 
-            for (byte i = 0, j = 0; i < 6 && aAmperage > rUsedAmperes; i++) {
-                if (!aEmitter.outputsEnergyTo(i)) {
+            for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+                if (rUsedAmperes > aAmperage) break;
+                if (!aEmitter.outputsEnergyTo(side)) {
                     continue;
                 }
 
-                j = GT_Utility.getOppositeSide(i);
-                final TileEntity tTileEntity = emitterTile.getTileEntityAtSide(i);
+                final ForgeDirection oppositeSide = side.getOpposite();
+                final TileEntity tTileEntity = emitterTile.getTileEntityAtSide(side);
                 if (tTileEntity instanceof PowerLogicHost host) {
 
-                    PowerLogic logic = host.getPowerLogic(ForgeDirection.getOrientation(j));
+                    final PowerLogic logic = host.getPowerLogic(oppositeSide);
                     if (logic == null || logic.isEnergyReceiver()) {
                         continue;
                     }
 
                     rUsedAmperes += logic.injectEnergy(aVoltage, aAmperage - rUsedAmperes);
-                } else if (tTileEntity instanceof IEnergyConnected) {
+                } else if (tTileEntity instanceof IEnergyConnected energyConnected) {
                     if (aEmitter.getColorization() >= 0) {
-                        final byte tColor = ((IEnergyConnected) tTileEntity).getColorization();
+                        final byte tColor = energyConnected.getColorization();
                         if (tColor >= 0 && tColor != aEmitter.getColorization()) continue;
                     }
-                    rUsedAmperes += ((IEnergyConnected) tTileEntity)
-                        .injectEnergyUnits(j, aVoltage, aAmperage - rUsedAmperes);
+                    rUsedAmperes += energyConnected.injectEnergyUnits(oppositeSide, aVoltage, aAmperage - rUsedAmperes);
 
-                } else if (tTileEntity instanceof IEnergySink) {
-                    if (((IEnergySink) tTileEntity)
-                        .acceptsEnergyFrom((TileEntity) aEmitter, ForgeDirection.getOrientation(j))) {
-                        while (aAmperage > rUsedAmperes && ((IEnergySink) tTileEntity).getDemandedEnergy() > 0
-                            && ((IEnergySink) tTileEntity)
-                                .injectEnergy(ForgeDirection.getOrientation(j), aVoltage, aVoltage) < aVoltage)
-                            rUsedAmperes++;
+                } else if (tTileEntity instanceof IEnergySink sink) {
+                    if (sink.acceptsEnergyFrom((TileEntity) aEmitter, oppositeSide)) {
+                        while (aAmperage > rUsedAmperes && sink.getDemandedEnergy() > 0
+                            && sink.injectEnergy(oppositeSide, aVoltage, aVoltage) < aVoltage) rUsedAmperes++;
                     }
-                } else if (GregTech_API.mOutputRF && tTileEntity instanceof IEnergyReceiver) {
-                    final ForgeDirection tDirection = ForgeDirection.getOrientation(i)
-                        .getOpposite();
+                } else if (GregTech_API.mOutputRF && tTileEntity instanceof IEnergyReceiver receiver) {
                     final int rfOut = GT_Utility.safeInt(aVoltage * GregTech_API.mEUtoRF / 100);
-                    if (((IEnergyReceiver) tTileEntity).receiveEnergy(tDirection, rfOut, true) == rfOut) {
-                        ((IEnergyReceiver) tTileEntity).receiveEnergy(tDirection, rfOut, false);
+                    if (receiver.receiveEnergy(oppositeSide, rfOut, true) == rfOut) {
+                        receiver.receiveEnergy(oppositeSide, rfOut, false);
                         rUsedAmperes++;
                     }
                 }

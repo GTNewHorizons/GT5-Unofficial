@@ -15,6 +15,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
@@ -116,15 +117,15 @@ public class GT_MetaTileEntity_MicrowaveEnergyTransmitter extends GT_MetaTileEnt
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-        boolean aActive, boolean aRedstone) {
-        if (aSide == 0) return new ITexture[] { MACHINE_CASINGS[mTier][aColorIndex + 1] };
-        if (aActive) return new ITexture[] { MACHINE_CASINGS[mTier][aColorIndex + 1],
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        if (side == ForgeDirection.DOWN) return new ITexture[] { MACHINE_CASINGS[mTier][colorIndex + 1] };
+        if (aActive) return new ITexture[] { MACHINE_CASINGS[mTier][colorIndex + 1],
             TextureFactory.of(OVERLAY_TELEPORTER_ACTIVE), TextureFactory.builder()
                 .addIcon(OVERLAY_TELEPORTER_ACTIVE_GLOW)
                 .glow()
                 .build() };
-        return new ITexture[] { MACHINE_CASINGS[mTier][aColorIndex + 1], TextureFactory.of(OVERLAY_TELEPORTER),
+        return new ITexture[] { MACHINE_CASINGS[mTier][colorIndex + 1], TextureFactory.of(OVERLAY_TELEPORTER),
             TextureFactory.builder()
                 .addIcon(OVERLAY_TELEPORTER_GLOW)
                 .glow()
@@ -251,7 +252,8 @@ public class GT_MetaTileEntity_MicrowaveEnergyTransmitter extends GT_MetaTileEnt
                             }
                             energyUse = packetSize + ((V[mTier] * energyUse) / 100);
                             if (getBaseMetaTileEntity().isUniversalEnergyStored(energyUse)) {
-                                if (((IEnergyConnected) tTile).injectEnergyUnits((byte) 6, packetSize, 1) > 0) {
+                                if (((IEnergyConnected) tTile).injectEnergyUnits(ForgeDirection.UNKNOWN, packetSize, 1)
+                                    > 0) {
                                     getBaseMetaTileEntity().decreaseStoredEnergyUnits(energyUse, false);
                                 }
                             }
@@ -296,7 +298,7 @@ public class GT_MetaTileEntity_MicrowaveEnergyTransmitter extends GT_MetaTileEnt
     }
 
     @Override
-    public boolean isFacingValid(byte aFacing) {
+    public boolean isFacingValid(ForgeDirection facing) {
         return true;
     }
 
@@ -306,12 +308,12 @@ public class GT_MetaTileEntity_MicrowaveEnergyTransmitter extends GT_MetaTileEnt
     }
 
     @Override
-    public boolean isInputFacing(byte aSide) {
+    public boolean isInputFacing(ForgeDirection side) {
         return true;
     }
 
     @Override
-    public boolean isOutputFacing(byte aSide) {
+    public boolean isOutputFacing(ForgeDirection side) {
         return false;
     }
 

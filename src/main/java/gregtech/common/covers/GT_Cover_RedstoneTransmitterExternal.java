@@ -1,8 +1,7 @@
 package gregtech.common.covers;
 
-import static gregtech.api.enums.GT_Values.ALL_VALID_SIDES;
-
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.ITexture;
@@ -25,34 +24,34 @@ public class GT_Cover_RedstoneTransmitterExternal extends GT_Cover_RedstoneWirel
     }
 
     @Override
-    public int doCoverThings(byte aSide, byte aInputRedstone, int aCoverID, int aCoverVariable, ICoverable aTileEntity,
-        long aTimer) {
+    public int doCoverThings(ForgeDirection side, byte aInputRedstone, int aCoverID, int aCoverVariable,
+        ICoverable aTileEntity, long aTimer) {
         // TODO remove next line after 2.3.0
-        if (!IControlsWorkCover.makeSureOnlyOne(aSide, aTileEntity)) return aCoverVariable;
+        if (!IControlsWorkCover.makeSureOnlyOne(side, aTileEntity)) return aCoverVariable;
         GregTech_API.sWirelessRedstone.put(aCoverVariable, aInputRedstone);
         return aCoverVariable;
     }
 
     @Override
-    protected boolean isRedstoneSensitiveImpl(byte aSide, int aCoverID,
+    protected boolean isRedstoneSensitiveImpl(ForgeDirection side, int aCoverID,
         ISerializableObject.LegacyCoverData aCoverVariable, ICoverable aTileEntity, long aTimer) {
         return true;
     }
 
     @Override
-    public boolean letsRedstoneGoIn(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public boolean letsRedstoneGoIn(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    public int getTickRate(byte aSide, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
+    public int getTickRate(ForgeDirection side, int aCoverID, int aCoverVariable, ICoverable aTileEntity) {
         return 1;
     }
 
     @Override
-    public boolean isCoverPlaceable(byte aSide, ItemStack aStack, ICoverable aTileEntity) {
-        if (!super.isCoverPlaceable(aSide, aStack, aTileEntity)) return false;
-        for (byte tSide : ALL_VALID_SIDES) {
+    public boolean isCoverPlaceable(ForgeDirection side, ItemStack aStack, ICoverable aTileEntity) {
+        if (!super.isCoverPlaceable(side, aStack, aTileEntity)) return false;
+        for (final ForgeDirection tSide : ForgeDirection.VALID_DIRECTIONS) {
             if (aTileEntity.getCoverBehaviorAtSideNew(tSide) instanceof IControlsWorkCover) {
                 return false;
             }

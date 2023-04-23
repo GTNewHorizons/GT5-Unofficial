@@ -45,8 +45,8 @@ public class GT_Cover_FluidLimiter extends GT_CoverBehaviorBase<GT_Cover_FluidLi
     }
 
     @Override
-    protected FluidLimiterData onCoverScrewdriverClickImpl(byte aSide, int aCoverID, FluidLimiterData aCoverVariable,
-        ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    protected FluidLimiterData onCoverScrewdriverClickImpl(ForgeDirection side, int aCoverID,
+        FluidLimiterData aCoverVariable, ICoverable aTileEntity, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (aTileEntity instanceof IFluidHandler) {
             adjustThreshold(aCoverVariable, !aPlayer.isSneaking());
             GT_Utility.sendChatToPlayer(aPlayer, String.format("Threshold: %f", aCoverVariable.threshold));
@@ -55,13 +55,13 @@ public class GT_Cover_FluidLimiter extends GT_CoverBehaviorBase<GT_Cover_FluidLi
     }
 
     @Override
-    protected boolean letsFluidInImpl(byte aSide, int aCoverID, FluidLimiterData aCoverVariable, Fluid aFluid,
+    protected boolean letsFluidInImpl(ForgeDirection side, int aCoverID, FluidLimiterData aCoverVariable, Fluid aFluid,
         ICoverable aTileEntity) {
         return allowsFluidIn(aCoverVariable, aTileEntity);
     }
 
     @Override
-    protected boolean alwaysLookConnectedImpl(byte aSide, int aCoverID, FluidLimiterData aCoverVariable,
+    protected boolean alwaysLookConnectedImpl(ForgeDirection side, int aCoverID, FluidLimiterData aCoverVariable,
         ICoverable aTileEntity) {
         return true;
     }

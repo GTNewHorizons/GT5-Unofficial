@@ -21,14 +21,14 @@ public class NodeEnergyReceiver extends ConsumerNode {
 
     int mRestRF = 0;
 
-    public NodeEnergyReceiver(int aNodeValue, IEnergyReceiver aTileEntity, byte aSide,
+    public NodeEnergyReceiver(int aNodeValue, IEnergyReceiver aTileEntity, ForgeDirection side,
         ArrayList<ConsumerNode> aConsumers) {
-        super(aNodeValue, (TileEntity) aTileEntity, aSide, aConsumers);
+        super(aNodeValue, (TileEntity) aTileEntity, side, aConsumers);
     }
 
     @Override
     public int injectEnergy(long aVoltage, long aMaxAmps) {
-        ForgeDirection tDirection = ForgeDirection.getOrientation(mSide);
+        ForgeDirection tDirection = mSide;
         int rfOut = GT_Utility.safeInt(aVoltage * GregTech_API.mEUtoRF / 100);
         int ampsUsed = 0;
         if (mRestRF < rfOut) {

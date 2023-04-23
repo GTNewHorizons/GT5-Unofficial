@@ -74,7 +74,7 @@ public class GT_Block_Casings8 extends GT_Block_Casings_Abstract {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int aSide, int aMeta) {
+    public IIcon getIcon(int ordinalSide, int aMeta) {
         return switch (aMeta) {
             case 0 -> Textures.BlockIcons.MACHINE_CASING_CHEMICALLY_INERT.getIcon();
             case 1 -> Textures.BlockIcons.MACHINE_CASING_PIPE_POLYTETRAFLUOROETHYLENE.getIcon();
@@ -117,11 +117,11 @@ public class GT_Block_Casings8 extends GT_Block_Casings_Abstract {
         };
     }
 
-    private static int isTurbineControllerWithSide(IBlockAccess aWorld, int aX, int aY, int aZ, int aSide) {
+    private static int isTurbineControllerWithSide(IBlockAccess aWorld, int aX, int aY, int aZ, int ordinalSide) {
         TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (!(tTileEntity instanceof IGregTechTileEntity tTile)) return 0;
-        if (tTile.getMetaTileEntity() instanceof GT_MetaTileEntity_LargeTurbine turbine
-            && tTile.getFrontFacing() == aSide) {
+        if (tTile.getMetaTileEntity() instanceof GT_MetaTileEntity_LargeTurbine turbine && tTile.getFrontFacing()
+            .ordinal() == ordinalSide) {
             if (turbine.isNewStyleRendering()) return 0;
             if (tTile.isActive()) return 1;
             return turbine.hasTurbine() ? 2 : 3;
@@ -131,22 +131,26 @@ public class GT_Block_Casings8 extends GT_Block_Casings_Abstract {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public IIcon getIcon(IBlockAccess aWorld, int xCoord, int yCoord, int zCoord, int aSide) {
+    public IIcon getIcon(IBlockAccess aWorld, int xCoord, int yCoord, int zCoord, int ordinalSide) {
         aWorld = GT_RenderingWorld.getInstance(aWorld);
-        int tMeta = aWorld.getBlockMetadata(xCoord, yCoord, zCoord);
+        final int tMeta = aWorld.getBlockMetadata(xCoord, yCoord, zCoord);
         if (tMeta != 9 || !mConnectedMachineTextures) {
-            return getIcon(aSide, tMeta);
+            return getIcon(ordinalSide, tMeta);
         }
         if (tMeta == 9) {
-            int tInvertLeftRightMod = aSide % 2 * 2 - 1;
-            switch (aSide / 2) {
+            int tInvertLeftRightMod = ordinalSide % 2 * 2 - 1;
+            switch (ordinalSide / 2) {
                 case 0 -> {
                     for (int i = -1; i < 2; i++) {
                         for (int j = -1; j < 2; j++) {
                             if (i == 0 && j == 0) continue;
                             int tState;
-                            if ((tState = isTurbineControllerWithSide(aWorld, xCoord + j, yCoord, zCoord + i, aSide))
-                                != 0) {
+                            if ((tState = isTurbineControllerWithSide(
+                                aWorld,
+                                xCoord + j,
+                                yCoord,
+                                zCoord + i,
+                                ordinalSide)) != 0) {
                                 return getTurbineCasing(tMeta, 4 - i * 3 - j, tState == 1, tState == 2);
                             }
                         }
@@ -157,8 +161,12 @@ public class GT_Block_Casings8 extends GT_Block_Casings_Abstract {
                         for (int j = -1; j < 2; j++) {
                             if (i == 0 && j == 0) continue;
                             int tState;
-                            if ((tState = isTurbineControllerWithSide(aWorld, xCoord + j, yCoord + i, zCoord, aSide))
-                                != 0) {
+                            if ((tState = isTurbineControllerWithSide(
+                                aWorld,
+                                xCoord + j,
+                                yCoord + i,
+                                zCoord,
+                                ordinalSide)) != 0) {
                                 return getTurbineCasing(
                                     tMeta,
                                     4 + i * 3 - j * tInvertLeftRightMod,
@@ -173,8 +181,12 @@ public class GT_Block_Casings8 extends GT_Block_Casings_Abstract {
                         for (int j = -1; j < 2; j++) {
                             if (i == 0 && j == 0) continue;
                             int tState;
-                            if ((tState = isTurbineControllerWithSide(aWorld, xCoord, yCoord + i, zCoord + j, aSide))
-                                != 0) {
+                            if ((tState = isTurbineControllerWithSide(
+                                aWorld,
+                                xCoord,
+                                yCoord + i,
+                                zCoord + j,
+                                ordinalSide)) != 0) {
                                 return getTurbineCasing(
                                     tMeta,
                                     4 + i * 3 + j * tInvertLeftRightMod,

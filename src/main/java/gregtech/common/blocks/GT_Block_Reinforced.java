@@ -159,7 +159,7 @@ public class GT_Block_Reinforced extends GT_Generic_Block {
     }
 
     @Override
-    public IIcon getIcon(int aSide, int aMeta) {
+    public IIcon getIcon(int ordinalSide, int aMeta) {
         if ((aMeta >= 0) && (aMeta < 16)) {
             switch (aMeta) {
                 case 0 -> {
@@ -379,15 +379,15 @@ public class GT_Block_Reinforced extends GT_Generic_Block {
     }
 
     @Override
-    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float xOffset,
-        float yOffset, float zOffset) {
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int ordinalSide,
+        float xOffset, float yOffset, float zOffset) {
         if ((player.getCurrentEquippedItem() != null) && (player.getCurrentEquippedItem()
             .getItem() == Items.flint_and_steel) && world.getBlockMetadata(x, y, z) == 5) {
             removedByPlayer(world, player, x, y, z);
 
             return true;
         }
-        return super.onBlockActivated(world, x, y, z, player, side, xOffset, yOffset, zOffset);
+        return super.onBlockActivated(world, x, y, z, player, ordinalSide, xOffset, yOffset, zOffset);
     }
 
     @Override

@@ -495,7 +495,7 @@ public class GT_HatchElementBuilder<T> {
                             if (facing.offsetY == 0) break;
                         }
                         assert result != null;
-                        ((IGregTechTileEntity) tileEntity).setFrontFacing((byte) result.ordinal());
+                        ((IGregTechTileEntity) tileEntity).setFrontFacing(result);
                     }
                 }
                 return mNoStop ? PlaceResult.ACCEPT : PlaceResult.ACCEPT_STOP;

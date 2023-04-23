@@ -137,14 +137,14 @@ public abstract class GT_MetaTileEntity_LargeTurbine
         if (!isNewStyleRendering() || !mFormed) return false;
         int[] tABCCoord = new int[] { -1, -1, 0 };
         int[] tXYZOffset = new int[3];
-        byte tFacing = getBaseMetaTileEntity().getFrontFacing();
-        ExtendedFacing tExtendedFacing = getExtendedFacing();
-        ForgeDirection tDirection = tExtendedFacing.getDirection();
-        LightingHelper tLighting = new LightingHelper(aRenderer);
+        final ForgeDirection tFacing = getBaseMetaTileEntity().getFrontFacing();
+        final ExtendedFacing tExtendedFacing = getExtendedFacing();
+        final ForgeDirection tDirection = tExtendedFacing.getDirection();
+        final LightingHelper tLighting = new LightingHelper(aRenderer);
 
         // for some reason +x and -z need this field set to true, but not any other sides
-        if (tFacing == 2 || tFacing == 5) aRenderer.field_152631_f = true;
-        Block tBlock = getCasingBlock();
+        if (tFacing == ForgeDirection.NORTH || tFacing == ForgeDirection.EAST) aRenderer.field_152631_f = true;
+        final Block tBlock = getCasingBlock();
 
         IIconContainer[] tTextures;
         if (getBaseMetaTileEntity().isActive()) tTextures = getTurbineTextureActive();

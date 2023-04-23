@@ -15,17 +15,17 @@ public class GT_CopiedBlockTexture extends gregtech.common.render.GT_CopiedBlock
     @Deprecated
     public short[] mRGBa;
 
-    public GT_CopiedBlockTexture(Block aBlock, int aSide, int aMeta, short[] aRGBa, boolean aAllowAlpha) {
-        super(aBlock, aSide, aMeta, aRGBa, aAllowAlpha);
+    public GT_CopiedBlockTexture(Block aBlock, int ordinalSide, int aMeta, short[] aRGBa, boolean aAllowAlpha) {
+        super(aBlock, ordinalSide, aMeta, aRGBa, aAllowAlpha);
         GT_CopiedBlockTexture.this.mRGBa = aRGBa;
     }
 
-    public GT_CopiedBlockTexture(Block aBlock, int aSide, int aMeta, short[] aRGBa) {
-        this(aBlock, aSide, aMeta, aRGBa, true);
+    public GT_CopiedBlockTexture(Block aBlock, int ordinalSide, int aMeta, short[] aRGBa) {
+        this(aBlock, ordinalSide, aMeta, aRGBa, true);
     }
 
-    public GT_CopiedBlockTexture(Block aBlock, int aSide, int aMeta) {
-        this(aBlock, aSide, aMeta, Dyes._NULL.mRGBa);
+    public GT_CopiedBlockTexture(Block aBlock, int ordinalSide, int aMeta) {
+        this(aBlock, ordinalSide, aMeta, Dyes._NULL.mRGBa);
     }
 
     @Override

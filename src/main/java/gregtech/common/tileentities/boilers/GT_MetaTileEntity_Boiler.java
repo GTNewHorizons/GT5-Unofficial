@@ -70,11 +70,16 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-        boolean aActive, boolean aRedstone) {
-        ITexture[] tmp = mTextures[aSide >= 2 ? aSide != aFacing ? 2 : ((byte) (aActive ? 4 : 3)) : aSide][aColorIndex
-            + 1];
-        if (aSide != aFacing && tmp.length == 2) {
+    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
+        ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
+        ITexture[] tmp;
+        if (sideDirection.offsetY == 0) {
+            if (sideDirection != facingDirection) tmp = mTextures[2][colorIndex + 1];
+            else tmp = mTextures[(byte) (active ? 4 : 3)][colorIndex + 1];
+        } else {
+            tmp = mTextures[sideDirection.ordinal()][colorIndex + 1];
+        }
+        if (sideDirection != facingDirection && tmp.length == 2) {
             tmp = new ITexture[] { tmp[0] };
         }
         return tmp;
@@ -86,23 +91,8 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
     }
 
     @Override
-    public boolean isPneumatic() {
-        return false;
-    }
-
-    @Override
-    public boolean isSteampowered() {
-        return false;
-    }
-
-    @Override
-    public boolean isSimpleMachine() {
-        return false;
-    }
-
-    @Override
-    public boolean isFacingValid(byte aFacing) {
-        return aFacing > 1;
+    public boolean isFacingValid(ForgeDirection facingDirection) {
+        return facingDirection.offsetY == 0;
     }
 
     @Override
@@ -197,7 +187,7 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
     }
 
     @Override
-    public boolean allowCoverOnSide(byte aSide, GT_ItemStack aCover) {
+    public boolean allowCoverOnSide(ForgeDirection side, GT_ItemStack aCover) {
         return GregTech_API.getCoverBehaviorNew(aCover.toStack())
             .isSimpleCover();
     }
@@ -324,26 +314,17 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
      * Pushes Steam to a Side of this Boiler
      *
      * @param aBaseMetaTileEntity The tile-entity instance of this Boiler
-     * @param aSide               The ordinal direction of the side to push Steam to
+     * @param side                The direction of the side to push Steam to
      */
-    protected final void pushSteamToSide(IGregTechTileEntity aBaseMetaTileEntity, int aSide) {
+    protected final void pushSteamToSide(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side) {
         if (mSteam == null || mSteam.amount == 0) return;
-        IFluidHandler tTileEntity = aBaseMetaTileEntity.getITankContainerAtSide((byte) aSide);
+        final IFluidHandler tTileEntity = aBaseMetaTileEntity.getITankContainerAtSide(side);
         if (tTileEntity == null) return;
-        FluidStack tDrained = aBaseMetaTileEntity
-            .drain(ForgeDirection.getOrientation(aSide), Math.max(1, this.mSteam.amount / 2), false);
+        final FluidStack tDrained = aBaseMetaTileEntity.drain(side, Math.max(1, this.mSteam.amount / 2), false);
         if (tDrained == null) return;
-        int tFilledAmount = tTileEntity.fill(
-            ForgeDirection.getOrientation(aSide)
-                .getOpposite(),
-            tDrained,
-            false);
+        final int tFilledAmount = tTileEntity.fill(side.getOpposite(), tDrained, false);
         if (tFilledAmount <= 0) return;
-        tTileEntity.fill(
-            ForgeDirection.getOrientation(aSide)
-                .getOpposite(),
-            aBaseMetaTileEntity.drain(ForgeDirection.getOrientation(aSide), tFilledAmount, true),
-            true);
+        tTileEntity.fill(side.getOpposite(), aBaseMetaTileEntity.drain(side, tFilledAmount, true), true);
     }
 
     /**
@@ -353,9 +334,10 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
      */
     protected void pushSteamToInventories(IGregTechTileEntity aBaseMetaTileEntity) {
         if (mSteam == null || mSteam.amount == 0) return;
-        for (int i = 1; (this.mSteam != null) && (i < 6); i++) {
-            if (i == aBaseMetaTileEntity.getFrontFacing()) continue;
-            pushSteamToSide(aBaseMetaTileEntity, i);
+        for (final ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS) {
+            if (direction == aBaseMetaTileEntity.getFrontFacing()) continue;
+            if (this.mSteam == null) break;
+            pushSteamToSide(aBaseMetaTileEntity, direction);
         }
     }
 
@@ -371,12 +353,14 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
     }
 
     @Override
-    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
+        ItemStack aStack) {
         return GT_Mod.gregtechproxy.mAllowSmallBoilerAutomation;
     }
 
     @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
+        ItemStack aStack) {
         return GT_Mod.gregtechproxy.mAllowSmallBoilerAutomation;
     }
 

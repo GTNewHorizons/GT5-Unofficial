@@ -90,7 +90,7 @@ public class GT_Block_LongDistancePipe extends GT_Generic_Block {
     }
 
     @Override
-    public IIcon getIcon(int aSide, int aMeta) {
+    public IIcon getIcon(int ordinalSide, int aMeta) {
         return mIcons[aMeta % mIcons.length].getIcon();
     }
 

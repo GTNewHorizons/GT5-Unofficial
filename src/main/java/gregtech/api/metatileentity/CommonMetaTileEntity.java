@@ -6,6 +6,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.Packet;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -140,8 +141,8 @@ public abstract class CommonMetaTileEntity extends CoverableTileEntity implement
     }
 
     @Override
-    public boolean isValidFacing(byte aSide) {
-        if (canAccessData()) return getMetaTileEntity().isFacingValid(aSide);
+    public boolean isValidFacing(ForgeDirection side) {
+        if (canAccessData()) return getMetaTileEntity().isFacingValid(side);
         return false;
     }
 
@@ -163,13 +164,13 @@ public abstract class CommonMetaTileEntity extends CoverableTileEntity implement
     }
 
     @Override
-    public boolean allowCoverOnSide(byte aSide, GT_ItemStack aCoverID) {
-        return hasValidMetaTileEntity() && getMetaTileEntity().allowCoverOnSide(aSide, aCoverID);
+    public boolean allowCoverOnSide(ForgeDirection side, GT_ItemStack aCoverID) {
+        return hasValidMetaTileEntity() && getMetaTileEntity().allowCoverOnSide(side, aCoverID);
     }
 
     @Override
-    public void issueCoverUpdate(byte aSide) {
-        super.issueCoverUpdate(aSide);
+    public void issueCoverUpdate(ForgeDirection side) {
+        super.issueCoverUpdate(side);
         issueClientUpdate();
     }
 

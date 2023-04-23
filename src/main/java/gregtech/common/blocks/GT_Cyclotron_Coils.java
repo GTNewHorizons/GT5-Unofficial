@@ -44,71 +44,71 @@ public class GT_Cyclotron_Coils extends GT_Block_Casings_Abstract {
     }
 
     @Override
-    public IIcon getIcon(int aSide, int aMeta) {
+    public IIcon getIcon(int ordinalSide, int aMeta) {
         if ((aMeta >= 0) && (aMeta < 16)) {
             switch (aMeta) {
                 case 0 -> {
-                    if (aSide == 0 || aSide == 1) {
+                    if (ordinalSide == 0 || ordinalSide == 1) {
                         return Textures.BlockIcons.MV_TOP_CYCLOTRON_SOLENOID.getIcon();
                     }
                     return Textures.BlockIcons.MV_SIDE_CYCLOTRON_SOLENOID.getIcon();
                 }
                 case 1 -> {
-                    if (aSide == 0 || aSide == 1) {
+                    if (ordinalSide == 0 || ordinalSide == 1) {
                         return Textures.BlockIcons.HV_TOP_CYCLOTRON_SOLENOID.getIcon();
                     }
                     return Textures.BlockIcons.HV_SIDE_CYCLOTRON_SOLENOID.getIcon();
                 }
                 case 2 -> {
-                    if (aSide == 0 || aSide == 1) {
+                    if (ordinalSide == 0 || ordinalSide == 1) {
                         return Textures.BlockIcons.EV_TOP_CYCLOTRON_SOLENOID.getIcon();
                     }
                     return Textures.BlockIcons.EV_SIDE_CYCLOTRON_SOLENOID.getIcon();
                 }
                 case 3 -> {
-                    if (aSide == 0 || aSide == 1) {
+                    if (ordinalSide == 0 || ordinalSide == 1) {
                         return Textures.BlockIcons.IV_TOP_CYCLOTRON_SOLENOID.getIcon();
                     }
                     return Textures.BlockIcons.IV_SIDE_CYCLOTRON_SOLENOID.getIcon();
                 }
                 case 4 -> {
-                    if (aSide == 0 || aSide == 1) {
+                    if (ordinalSide == 0 || ordinalSide == 1) {
                         return Textures.BlockIcons.LuV_TOP_CYCLOTRON_SOLENOID.getIcon();
                     }
                     return Textures.BlockIcons.LuV_SIDE_CYCLOTRON_SOLENOID.getIcon();
                 }
                 case 5 -> {
-                    if (aSide == 0 || aSide == 1) {
+                    if (ordinalSide == 0 || ordinalSide == 1) {
                         return Textures.BlockIcons.ZPM_TOP_CYCLOTRON_SOLENOID.getIcon();
                     }
                     return Textures.BlockIcons.ZPM_SIDE_CYCLOTRON_SOLENOID.getIcon();
                 }
                 case 6 -> {
-                    if (aSide == 0 || aSide == 1) {
+                    if (ordinalSide == 0 || ordinalSide == 1) {
                         return Textures.BlockIcons.UV_TOP_CYCLOTRON_SOLENOID.getIcon();
                     }
                     return Textures.BlockIcons.UV_SIDE_CYCLOTRON_SOLENOID.getIcon();
                 }
                 case 7 -> {
-                    if (aSide == 0 || aSide == 1) {
+                    if (ordinalSide == 0 || ordinalSide == 1) {
                         return Textures.BlockIcons.UHV_TOP_CYCLOTRON_SOLENOID.getIcon();
                     }
                     return Textures.BlockIcons.UHV_SIDE_CYCLOTRON_SOLENOID.getIcon();
                 }
                 case 8 -> {
-                    if (aSide == 0 || aSide == 1) {
+                    if (ordinalSide == 0 || ordinalSide == 1) {
                         return Textures.BlockIcons.UEV_TOP_CYCLOTRON_SOLENOID.getIcon();
                     }
                     return Textures.BlockIcons.UEV_SIDE_CYCLOTRON_SOLENOID.getIcon();
                 }
                 case 9 -> {
-                    if (aSide == 0 || aSide == 1) {
+                    if (ordinalSide == 0 || ordinalSide == 1) {
                         return Textures.BlockIcons.UIV_TOP_CYCLOTRON_SOLENOID.getIcon();
                     }
                     return Textures.BlockIcons.UIV_SIDE_CYCLOTRON_SOLENOID.getIcon();
                 }
                 case 10 -> {
-                    if (aSide == 0 || aSide == 1) {
+                    if (ordinalSide == 0 || ordinalSide == 1) {
                         return Textures.BlockIcons.UMV_TOP_CYCLOTRON_SOLENOID.getIcon();
                     }
                     return Textures.BlockIcons.UMV_SIDE_CYCLOTRON_SOLENOID.getIcon();

@@ -10,6 +10,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.multitileentity.interfaces.IMultiTileEntity;
@@ -45,8 +46,8 @@ public class MultiTileEntityBlockInternal extends Block {
         return StatCollector.translateToLocal(mMultiTileEntityRegistry.mNameInternal + ".name");
     }
 
-    public boolean placeBlock(World aWorld, int aX, int aY, int aZ, byte aSide, short aMetaData, NBTTagCompound aNBT,
-        boolean aCauseBlockUpdates, boolean aForcePlacement) {
+    public boolean placeBlock(World aWorld, int aX, int aY, int aZ, ForgeDirection side, short aMetaData,
+        NBTTagCompound aNBT, boolean aCauseBlockUpdates, boolean aForcePlacement) {
         final MultiTileEntityContainer aMTEContainer = mMultiTileEntityRegistry
             .getNewTileEntityContainer(aWorld, aX, aY, aZ, aMetaData, aNBT);
         if (aMTEContainer == null) return false;

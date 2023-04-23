@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.GT_Mod;
@@ -30,10 +31,10 @@ public class GT_MetaTileEntity_LargeTurbine_GasAdvanced extends GT_MetaTileEntit
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-        boolean aActive, boolean aRedstone) {
-        return new ITexture[] { MACHINE_CASINGS[1][aColorIndex + 1],
-            aFacing == aSide ? (aActive ? TextureFactory.builder()
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        return new ITexture[] { MACHINE_CASINGS[1][colorIndex + 1],
+            aFacing == side ? (aActive ? TextureFactory.builder()
                 .addIcon(LARGETURBINE_NEW_ACTIVE5)
                 .build()
                 : hasTurbine() ? TextureFactory.builder()

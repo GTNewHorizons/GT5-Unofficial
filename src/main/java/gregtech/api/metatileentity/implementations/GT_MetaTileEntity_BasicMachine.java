@@ -1,6 +1,5 @@
 package gregtech.api.metatileentity.implementations;
 
-import static gregtech.api.enums.GT_Values.ALL_VALID_SIDES;
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.GT_Values.debugCleanroom;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
@@ -102,7 +101,8 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
         mHasBeenUpdated = false, mStuttering = false, mCharge = false, mDecharge = false;
     public boolean mDisableFilter = true;
     public boolean mDisableMultiStack = true;
-    public int mMainFacing = -1, mProgresstime = 0, mMaxProgresstime = 0, mEUt = 0, mOutputBlocked = 0;
+    public int mProgresstime = 0, mMaxProgresstime = 0, mEUt = 0, mOutputBlocked = 0;
+    public ForgeDirection mMainFacing = ForgeDirection.UNKNOWN;
     public FluidStack mOutputFluid;
     public String mGUIName, mNEIName;
     protected final Power mPower;
@@ -190,15 +190,15 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
         return new BasicMachineEUPower(mTier, mAmperage);
     }
 
-    protected boolean isValidMainFacing(byte aSide) {
-        return aSide > 1;
+    protected boolean isValidMainFacing(ForgeDirection side) {
+        return side.offsetY == 0; // Neither DOWN nor UP
     }
 
-    public boolean setMainFacing(byte aSide) {
-        if (!isValidMainFacing(aSide)) return false;
-        mMainFacing = aSide;
+    public boolean setMainFacing(ForgeDirection side) {
+        if (!isValidMainFacing(side)) return false;
+        mMainFacing = side;
         if (getBaseMetaTileEntity().getFrontFacing() == mMainFacing) {
-            getBaseMetaTileEntity().setFrontFacing(GT_Utility.getOppositeSide(aSide));
+            getBaseMetaTileEntity().setFrontFacing(side.getOpposite());
         }
         onFacingChange();
         onMachineBlockUpdate();
@@ -235,39 +235,39 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-        boolean aActive, boolean aRedstone) {
+    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
+        ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
         final int textureIndex;
-        if (mMainFacing < 2) {
-            if (aSide == aFacing) {
-                textureIndex = aActive ? 2 : 3;
+        if (mMainFacing.offsetY != 0) { // UP or DOWN
+            if (sideDirection == facingDirection) {
+                textureIndex = active ? 2 : 3;
             } else {
-                textureIndex = switch (aSide) {
-                    case 0 -> aActive ? 6 : 7;
-                    case 1 -> aActive ? 4 : 5;
-                    default -> aActive ? 0 : 1;
+                textureIndex = switch (sideDirection) {
+                    case DOWN -> active ? 6 : 7;
+                    case UP -> active ? 4 : 5;
+                    default -> active ? 0 : 1;
                 };
             }
         } else {
-            if (aSide == mMainFacing) {
-                textureIndex = aActive ? 2 : 3;
+            if (sideDirection == mMainFacing) {
+                textureIndex = active ? 2 : 3;
             } else {
-                if (showPipeFacing() && aSide == aFacing) {
-                    textureIndex = switch (aSide) {
-                        case 0 -> aActive ? 8 : 9;
-                        case 1 -> aActive ? 10 : 11;
-                        default -> aActive ? 12 : 13;
+                if (showPipeFacing() && sideDirection == facingDirection) {
+                    textureIndex = switch (sideDirection) {
+                        case DOWN -> active ? 8 : 9;
+                        case UP -> active ? 10 : 11;
+                        default -> active ? 12 : 13;
                     };
                 } else {
-                    textureIndex = switch (aSide) {
-                        case 0 -> aActive ? 6 : 7;
-                        case 1 -> aActive ? 4 : 5;
-                        default -> aActive ? 0 : 1;
+                    textureIndex = switch (sideDirection) {
+                        case DOWN -> active ? 6 : 7;
+                        case UP -> active ? 4 : 5;
+                        default -> active ? 0 : 1;
                     };
                 }
             }
         }
-        return mTextures[textureIndex][aColorIndex + 1];
+        return mTextures[textureIndex][colorIndex + 1];
     }
 
     @Override
@@ -298,8 +298,8 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
     }
 
     @Override
-    public boolean isFacingValid(byte aFacing) {
-        return mMainFacing > 1 || aFacing > 1;
+    public boolean isFacingValid(ForgeDirection facing) {
+        return facing.offsetY == 0 || facing.offsetY == 0;
     }
 
     @Override
@@ -308,12 +308,12 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
     }
 
     @Override
-    public boolean isInputFacing(byte aSide) {
-        return aSide != mMainFacing;
+    public boolean isInputFacing(ForgeDirection side) {
+        return side != mMainFacing;
     }
 
     @Override
-    public boolean isOutputFacing(byte aSide) {
+    public boolean isOutputFacing(ForgeDirection side) {
         return false;
     }
 
@@ -323,13 +323,13 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
     }
 
     @Override
-    public boolean isLiquidInput(byte aSide) {
-        return aSide != mMainFacing && (mAllowInputFromOutputSide || aSide != getBaseMetaTileEntity().getFrontFacing());
+    public boolean isLiquidInput(ForgeDirection side) {
+        return side != mMainFacing && (mAllowInputFromOutputSide || side != getBaseMetaTileEntity().getFrontFacing());
     }
 
     @Override
-    public boolean isLiquidOutput(byte aSide) {
-        return aSide != mMainFacing;
+    public boolean isLiquidOutput(ForgeDirection side) {
+        return side != mMainFacing;
     }
 
     @Override
@@ -490,8 +490,8 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
             }
             return true;
         }
-        for (byte tSide : ALL_VALID_SIDES) {
-            if (aBaseMetaTileEntity.getAirAtSide(tSide)) {
+        for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+            if (aBaseMetaTileEntity.getAirAtSide(side)) {
                 if (useModularUI()) {
                     GT_UIInfos.openGTTileEntityUI(aBaseMetaTileEntity, aPlayer);
                 } else {
@@ -524,7 +524,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
 
     @Override
     public void initDefaultModes(NBTTagCompound aNBT) {
-        mMainFacing = -1;
+        mMainFacing = ForgeDirection.UNKNOWN;
         if (!getBaseMetaTileEntity().getWorld().isRemote) {
             GT_ClientPreference tPreference = GT_Mod.gregtechproxy
                 .getClientPreference(getBaseMetaTileEntity().getOwnerUuid());
@@ -545,7 +545,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
         aNBT.setBoolean("mDisableFilter", mDisableFilter);
         aNBT.setBoolean("mDisableMultiStack", mDisableMultiStack);
         aNBT.setInteger("mEUt", mEUt);
-        aNBT.setInteger("mMainFacing", mMainFacing);
+        aNBT.setInteger("mMainFacing", mMainFacing.ordinal());
         aNBT.setInteger("mProgresstime", mProgresstime);
         aNBT.setInteger("mMaxProgresstime", mMaxProgresstime);
         if (mOutputFluid != null) aNBT.setTag("mOutputFluid", mOutputFluid.writeToNBT(new NBTTagCompound()));
@@ -565,7 +565,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
         mDisableFilter = aNBT.getBoolean("mDisableFilter");
         mDisableMultiStack = aNBT.getBoolean("mDisableMultiStack");
         mEUt = aNBT.getInteger("mEUt");
-        mMainFacing = aNBT.getInteger("mMainFacing");
+        mMainFacing = ForgeDirection.getOrientation(aNBT.getInteger("mMainFacing"));
         mProgresstime = aNBT.getInteger("mProgresstime");
         mMaxProgresstime = aNBT.getInteger("mMaxProgresstime");
         mOutputFluid = FluidStack.loadFluidStackFromNBT(aNBT.getCompoundTag("mOutputFluid"));
@@ -634,12 +634,9 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
                 if (tTank != null) {
                     FluidStack tDrained = drain(1000, false);
                     if (tDrained != null) {
-                        int tFilledAmount = tTank
-                            .fill(ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()), tDrained, false);
-                        if (tFilledAmount > 0) tTank.fill(
-                            ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()),
-                            drain(tFilledAmount, true),
-                            true);
+                        final int tFilledAmount = tTank.fill(aBaseMetaTileEntity.getBackFacing(), tDrained, false);
+                        if (tFilledAmount > 0)
+                            tTank.fill(aBaseMetaTileEntity.getBackFacing(), drain(tFilledAmount, true), true);
                     }
                 }
                 if (getDrainableStack() == null) tRemovedOutputFluid = true;
@@ -726,10 +723,10 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
     }
 
     protected void doDisplayThings() {
-        if (mMainFacing < 2 && getBaseMetaTileEntity().getFrontFacing() > 1) {
+        if (mMainFacing.offsetY != 0 && getBaseMetaTileEntity().getFrontFacing().offsetY == 0) {
             mMainFacing = getBaseMetaTileEntity().getFrontFacing();
         }
-        if (mMainFacing >= 2 && !mHasBeenUpdated) {
+        if (mMainFacing.offsetY == 0 && !mHasBeenUpdated) {
             mHasBeenUpdated = true;
             getBaseMetaTileEntity().setFrontFacing(getBaseMetaTileEntity().getBackFacing());
         }
@@ -852,12 +849,12 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
 
     @Override
     public void onValueUpdate(byte aValue) {
-        mMainFacing = aValue;
+        mMainFacing = ForgeDirection.getOrientation(aValue);
     }
 
     @Override
     public byte getUpdateData() {
-        return (byte) mMainFacing;
+        return (byte) mMainFacing.ordinal();
     }
 
     @Override
@@ -955,8 +952,8 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
     }
 
     @Override
-    public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        if (aSide == getBaseMetaTileEntity().getFrontFacing() || aSide == mMainFacing) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        if (side == getBaseMetaTileEntity().getFrontFacing() || side == mMainFacing) {
             if (aPlayer.isSneaking()) {
                 mDisableFilter = !mDisableFilter;
                 GT_Utility.sendChatToPlayer(
@@ -973,44 +970,46 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
     }
 
     @Override
-    public boolean onSolderingToolRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY,
-        float aZ) {
-        if (!aPlayer.isSneaking()) return false;
-        boolean click = super.onSolderingToolRightClick(aSide, aWrenchingSide, aPlayer, aX, aY, aZ);
+    public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide,
+        EntityPlayer entityPlayer, float aX, float aY, float aZ) {
+        if (!entityPlayer.isSneaking()) return false;
+        final boolean click = super.onSolderingToolRightClick(side, wrenchingSide, entityPlayer, aX, aY, aZ);
         if (click) return true;
-        if (aWrenchingSide != mMainFacing) return false;
+        if (wrenchingSide != mMainFacing) return false;
         mDisableMultiStack = !mDisableMultiStack;
         GT_Utility.sendChatToPlayer(
-            aPlayer,
+            entityPlayer,
             StatCollector.translateToLocal("GT5U.hatch.disableMultiStack." + mDisableMultiStack));
         return true;
     }
 
     @Override
-    public boolean allowCoverOnSide(byte aSide, GT_ItemStack aCoverID) {
-        if (aSide != mMainFacing) return true;
+    public boolean allowCoverOnSide(ForgeDirection side, GT_ItemStack aCoverID) {
+        if (side != mMainFacing) return true;
         GT_CoverBehaviorBase<?> tBehavior = GregTech_API.getCoverBehaviorNew(aCoverID.toStack());
         return tBehavior.isGUIClickable(
-            aSide,
+            side,
             GT_Utility.stackToInt(aCoverID.toStack()),
             tBehavior.createDataObject(),
             getBaseMetaTileEntity());
     }
 
     @Override
-    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
-        return aSide != mMainFacing && aIndex >= getOutputSlot() && aIndex < getOutputSlot() + mOutputItems.length;
+    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
+        ItemStack aStack) {
+        return side != mMainFacing && aIndex >= getOutputSlot() && aIndex < getOutputSlot() + mOutputItems.length;
     }
 
     @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
-        if (aSide == mMainFacing || aIndex < getInputSlot()
+    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
+        ItemStack aStack) {
+        if (side == mMainFacing || aIndex < getInputSlot()
             || aIndex >= getInputSlot() + mInputSlotCount
-            || (!mAllowInputFromOutputSide && aSide == aBaseMetaTileEntity.getFrontFacing())) return false;
+            || (!mAllowInputFromOutputSide && side == aBaseMetaTileEntity.getFrontFacing())) return false;
         for (int i = getInputSlot(), j = i + mInputSlotCount; i < j; i++)
             if (GT_Utility.areStacksEqual(GT_OreDictUnificator.get(aStack), mInventory[i]) && mDisableMultiStack)
                 return i == aIndex;
-        return mDisableFilter || allowPutStackValidated(aBaseMetaTileEntity, aIndex, aSide, aStack);
+        return mDisableFilter || allowPutStackValidated(aBaseMetaTileEntity, aIndex, side, aStack);
     }
 
     /**
@@ -1018,7 +1017,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
      * method it is ensured there is no such kind of item inside any input slots already. Otherwise, you don't need to
      * check for it anyway.
      */
-    protected boolean allowPutStackValidated(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide,
+    protected boolean allowPutStackValidated(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
         return !mDisableMultiStack || mInventory[aIndex] == null;
     }
@@ -1265,13 +1264,16 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
 
         tag.setInteger("progressSingleBlock", mProgresstime);
         tag.setInteger("maxProgressSingleBlock", mMaxProgresstime);
-        tag.setInteger("mainFacingSingleBlock", mMainFacing);
+        tag.setInteger("mainFacingSingleBlock", mMainFacing.ordinal());
         tag.setBoolean("stutteringSingleBlock", mStuttering);
 
-        IGregTechTileEntity tileEntity = getBaseMetaTileEntity();
+        final IGregTechTileEntity tileEntity = getBaseMetaTileEntity();
         if (tileEntity != null) {
             tag.setBoolean("isActiveSingleBlock", tileEntity.isActive());
-            tag.setInteger("outputFacingSingleBlock", tileEntity.getFrontFacing());
+            tag.setInteger(
+                "outputFacingSingleBlock",
+                tileEntity.getFrontFacing()
+                    .ordinal());
             if (tileEntity.isActive()) tag.setInteger("eut", mEUt);
         }
     }
