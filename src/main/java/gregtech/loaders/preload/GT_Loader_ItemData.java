@@ -55,6 +55,9 @@ public class GT_Loader_ItemData implements Runnable {
             new ItemData(Materials.Knightmetal, 3628800L));
         GT_OreDictUnificator.addItemData(ItemList.TF_LiveRoot.get(1L), new ItemData(Materials.LiveRoot, 3628800L));
         GT_OreDictUnificator.addItemData(
+            GT_ModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 1),
+            new ItemData(Materials.CertusQuartzCharged, 3628800L));
+        GT_OreDictUnificator.addItemData(
             GT_ModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 10),
             new ItemData(Materials.CertusQuartz, 1814400L));
         GT_OreDictUnificator.addItemData(

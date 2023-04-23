@@ -1227,6 +1227,7 @@ public enum OrePrefixes {
                         || aMaterial == Materials.YttriumBariumCuprate
                         || aMaterial == Materials.NiobiumTitanium
                         || aMaterial == Materials.CertusQuartz
+                        || aMaterial == Materials.CertusQuartzCharged
                         || aMaterial == Materials.NetherQuartz
                         || aMaterial == Materials.Lazurite
                         || aMaterial == Materials.Lapis
