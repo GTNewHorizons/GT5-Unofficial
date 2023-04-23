@@ -2,10 +2,23 @@ package gregtech.api.metatileentity.implementations;
 
 import static gregtech.api.enums.GT_Values.ALL_VALID_SIDES;
 import static gregtech.api.enums.GT_Values.D1;
+import static gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Fluid.Border.BOTTOM;
+import static gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Fluid.Border.LEFT;
+import static gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Fluid.Border.RIGHT;
+import static gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Fluid.Border.TOP;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
+import static net.minecraftforge.common.util.ForgeDirection.DOWN;
+import static net.minecraftforge.common.util.ForgeDirection.EAST;
+import static net.minecraftforge.common.util.ForgeDirection.NORTH;
+import static net.minecraftforge.common.util.ForgeDirection.SOUTH;
+import static net.minecraftforge.common.util.ForgeDirection.UP;
+import static net.minecraftforge.common.util.ForgeDirection.WEST;
 
 import java.util.ArrayList;
+import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -26,8 +39,14 @@ import org.apache.commons.lang3.tuple.MutableTriple;
 import cpw.mods.fml.common.Optional;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.*;
+import gregtech.api.enums.Dyes;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.Mods;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.ParticleFX;
+import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICoverable;
@@ -35,7 +54,11 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.*;
+import gregtech.api.util.GT_CoverBehavior;
+import gregtech.api.util.GT_CoverBehaviorBase;
+import gregtech.api.util.GT_Log;
+import gregtech.api.util.GT_Utility;
+import gregtech.api.util.ISerializableObject;
 import gregtech.api.util.WorldSpawnedEventBuilder.ParticleEventBuilder;
 import gregtech.common.GT_Client;
 import gregtech.common.covers.CoverInfo;
@@ -43,6 +66,38 @@ import gregtech.common.covers.GT_Cover_Drain;
 import gregtech.common.covers.GT_Cover_FluidRegulator;
 
 public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
+
+    protected static final EnumMap<ForgeDirection, EnumMap<Border, ForgeDirection>> FACE_BORDER_MAP = new EnumMap<>(
+        ForgeDirection.class);
+
+    static {
+        FACE_BORDER_MAP.put(DOWN, borderMap(NORTH, SOUTH, EAST, WEST));
+        FACE_BORDER_MAP.put(UP, borderMap(NORTH, SOUTH, WEST, EAST));
+        FACE_BORDER_MAP.put(NORTH, borderMap(UP, DOWN, EAST, WEST));
+        FACE_BORDER_MAP.put(SOUTH, borderMap(UP, DOWN, WEST, EAST));
+        FACE_BORDER_MAP.put(WEST, borderMap(UP, DOWN, NORTH, SOUTH));
+        FACE_BORDER_MAP.put(EAST, borderMap(UP, DOWN, SOUTH, NORTH));
+    }
+
+    protected static final Map<Integer, IIconContainer> RESTR_TEXTURE_MAP = new HashMap<>();
+
+    static {
+        RESTR_TEXTURE_MAP.put(TOP.mask, Textures.BlockIcons.PIPE_RESTRICTOR_UP);
+        RESTR_TEXTURE_MAP.put(BOTTOM.mask, Textures.BlockIcons.PIPE_RESTRICTOR_DOWN);
+        RESTR_TEXTURE_MAP.put(TOP.mask | BOTTOM.mask, Textures.BlockIcons.PIPE_RESTRICTOR_UD);
+        RESTR_TEXTURE_MAP.put(LEFT.mask, Textures.BlockIcons.PIPE_RESTRICTOR_LEFT);
+        RESTR_TEXTURE_MAP.put(TOP.mask | LEFT.mask, Textures.BlockIcons.PIPE_RESTRICTOR_UL);
+        RESTR_TEXTURE_MAP.put(BOTTOM.mask | LEFT.mask, Textures.BlockIcons.PIPE_RESTRICTOR_DL);
+        RESTR_TEXTURE_MAP.put(TOP.mask | BOTTOM.mask | LEFT.mask, Textures.BlockIcons.PIPE_RESTRICTOR_NR);
+        RESTR_TEXTURE_MAP.put(RIGHT.mask, Textures.BlockIcons.PIPE_RESTRICTOR_RIGHT);
+        RESTR_TEXTURE_MAP.put(TOP.mask | RIGHT.mask, Textures.BlockIcons.PIPE_RESTRICTOR_UR);
+        RESTR_TEXTURE_MAP.put(BOTTOM.mask | RIGHT.mask, Textures.BlockIcons.PIPE_RESTRICTOR_DR);
+        RESTR_TEXTURE_MAP.put(TOP.mask | BOTTOM.mask | RIGHT.mask, Textures.BlockIcons.PIPE_RESTRICTOR_NL);
+        RESTR_TEXTURE_MAP.put(LEFT.mask | RIGHT.mask, Textures.BlockIcons.PIPE_RESTRICTOR_LR);
+        RESTR_TEXTURE_MAP.put(TOP.mask | LEFT.mask | RIGHT.mask, Textures.BlockIcons.PIPE_RESTRICTOR_ND);
+        RESTR_TEXTURE_MAP.put(BOTTOM.mask | LEFT.mask | RIGHT.mask, Textures.BlockIcons.PIPE_RESTRICTOR_NU);
+        RESTR_TEXTURE_MAP.put(TOP.mask | BOTTOM.mask | LEFT.mask | RIGHT.mask, Textures.BlockIcons.PIPE_RESTRICTOR);
+    }
 
     public final float mThickNess;
     public final Materials mMaterial;
@@ -111,28 +166,23 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, int aConnections,
         int colorIndex, boolean aConnected, boolean redstoneLevel) {
-        final int ordinalSide = side.ordinal();
+        if (side == ForgeDirection.UNKNOWN) return Textures.BlockIcons.ERROR_RENDERING;
         final float tThickNess = getThickNess();
         if (mDisableInput == 0)
             return new ITexture[] { aConnected ? getBaseTexture(tThickNess, mPipeAmount, mMaterial, colorIndex)
                 : TextureFactory.of(
                     mMaterial.mIconSet.mTextures[OrePrefixes.pipe.mTextureIndex],
                     Dyes.getModulation(colorIndex, mMaterial.mRGBa)) };
-        byte tMask = 0;
-        final byte[][] sRestrictionArray = { { 2, 3, 5, 4 }, { 2, 3, 4, 5 }, { 1, 0, 4, 5 }, { 1, 0, 4, 5 },
-            { 1, 0, 2, 3 }, { 1, 0, 2, 3 } };
-        if (side != ForgeDirection.UNKNOWN) {
-            for (byte i = 0; i < 4; i++)
-                if (isInputDisabledAtSide(ForgeDirection.getOrientation(sRestrictionArray[ordinalSide][i])))
-                    tMask |= 1 << i;
-            // Full block size renderer flips side 5 and 2 textures, flip restrictor textures to compensate
-            if (ordinalSide == 5 || ordinalSide == 2) if (tMask > 3 && tMask < 12) tMask = (byte) (tMask ^ 12);
+        int borderMask = 0;
+        for (Border border : Border.values()) {
+            if (isInputDisabledAtSide(getSideAtBorder(side, border))) borderMask |= border.mask;
         }
+
         return new ITexture[] { aConnected ? getBaseTexture(tThickNess, mPipeAmount, mMaterial, colorIndex)
             : TextureFactory.of(
                 mMaterial.mIconSet.mTextures[OrePrefixes.pipe.mTextureIndex],
                 Dyes.getModulation(colorIndex, mMaterial.mRGBa)),
-            getRestrictorTexture(tMask) };
+            getRestrictorTexture(borderMask) };
     }
 
     protected static ITexture getBaseTexture(float aThickNess, int aPipeAmount, Materials aMaterial, int colorIndex) {
@@ -162,25 +212,14 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
             Dyes.getModulation(colorIndex, aMaterial.mRGBa));
     }
 
-    protected static ITexture getRestrictorTexture(byte aMask) {
-        return switch (aMask) {
-            case 1 -> TextureFactory.of(Textures.BlockIcons.PIPE_RESTRICTOR_UP);
-            case 2 -> TextureFactory.of(Textures.BlockIcons.PIPE_RESTRICTOR_DOWN);
-            case 3 -> TextureFactory.of(Textures.BlockIcons.PIPE_RESTRICTOR_UD);
-            case 4 -> TextureFactory.of(Textures.BlockIcons.PIPE_RESTRICTOR_LEFT);
-            case 5 -> TextureFactory.of(Textures.BlockIcons.PIPE_RESTRICTOR_UL);
-            case 6 -> TextureFactory.of(Textures.BlockIcons.PIPE_RESTRICTOR_DL);
-            case 7 -> TextureFactory.of(Textures.BlockIcons.PIPE_RESTRICTOR_NR);
-            case 8 -> TextureFactory.of(Textures.BlockIcons.PIPE_RESTRICTOR_RIGHT);
-            case 9 -> TextureFactory.of(Textures.BlockIcons.PIPE_RESTRICTOR_UR);
-            case 10 -> TextureFactory.of(Textures.BlockIcons.PIPE_RESTRICTOR_DR);
-            case 11 -> TextureFactory.of(Textures.BlockIcons.PIPE_RESTRICTOR_NL);
-            case 12 -> TextureFactory.of(Textures.BlockIcons.PIPE_RESTRICTOR_LR);
-            case 13 -> TextureFactory.of(Textures.BlockIcons.PIPE_RESTRICTOR_ND);
-            case 14 -> TextureFactory.of(Textures.BlockIcons.PIPE_RESTRICTOR_NU);
-            case 15 -> TextureFactory.of(Textures.BlockIcons.PIPE_RESTRICTOR);
-            default -> null;
-        };
+    @Deprecated
+    protected static ITexture getRestrictorTexture(byte borderMask) {
+        return getRestrictorTexture((int) borderMask);
+    }
+
+    protected static ITexture getRestrictorTexture(int borderMask) {
+        final IIconContainer restrictorIcon = RESTR_TEXTURE_MAP.get(borderMask);
+        return restrictorIcon != null ? TextureFactory.of(restrictorIcon) : null;
     }
 
     @Override
@@ -834,5 +873,34 @@ public class GT_MetaPipeEntity_Fluid extends MetaPipeEntity {
             return drainFromIndex(aFluid.amount, doDrain, i);
         }
         return null;
+    }
+
+    private static EnumMap<Border, ForgeDirection> borderMap(ForgeDirection topSide, ForgeDirection bottomSide,
+        ForgeDirection leftSide, ForgeDirection rightSide) {
+        final EnumMap<Border, ForgeDirection> sideMap = new EnumMap<>(Border.class);
+        sideMap.put(TOP, topSide);
+        sideMap.put(BOTTOM, bottomSide);
+        sideMap.put(LEFT, leftSide);
+        sideMap.put(RIGHT, rightSide);
+        return sideMap;
+    }
+
+    protected static ForgeDirection getSideAtBorder(ForgeDirection side, Border border) {
+        return FACE_BORDER_MAP.get(side)
+            .get(border);
+    }
+
+    protected enum Border {
+
+        TOP(),
+        BOTTOM(),
+        LEFT(),
+        RIGHT();
+
+        public final int mask;
+
+        Border() {
+            mask = 1 << this.ordinal();
+        }
     }
 }
