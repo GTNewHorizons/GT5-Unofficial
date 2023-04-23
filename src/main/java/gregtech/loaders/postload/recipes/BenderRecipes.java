@@ -367,7 +367,9 @@ public class BenderRecipes implements Runnable {
             .addTo(sBenderRecipes);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.itemCasing, Materials.Iron, 2L), GT_Utility.getIntegratedCircuit(2))
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.itemCasing, Materials.Iron, 2L),
+                GT_Utility.getIntegratedCircuit(2))
             .itemOutputs(GT_ModHandler.getIC2Item("fuelRod", 1L))
             .noFluidInputs()
             .noFluidOutputs()
@@ -376,7 +378,9 @@ public class BenderRecipes implements Runnable {
             .addTo(sBenderRecipes);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.itemCasing, Materials.Tin, 1L), GT_Utility.getIntegratedCircuit(1))
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.itemCasing, Materials.Tin, 1L),
+                GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(ItemList.IC2_Food_Can_Empty.get(1L))
             .noFluidInputs()
             .noFluidOutputs()
