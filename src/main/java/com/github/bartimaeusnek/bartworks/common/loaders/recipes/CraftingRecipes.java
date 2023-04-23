@@ -185,71 +185,32 @@ public class CraftingRecipes implements Runnable {
                 GT_ModHandler.addCraftingRecipe(
                         ItemRegistry.diode12A[i],
                         RecipeLoader.BITSD,
-                        new Object[] { "WDW", "DCD", "PDP", 'D',
-                                ItemList.Circuit_Parts_Diode.get(1L, ItemList.Circuit_Parts_DiodeSMD.get(1L)), 'W',
-                                GT_OreDictUnificator.get(OrePrefixes.cableGt12, cable, 1L), 'P', hull, 'C',
-                                machinehull });
-                GT_ModHandler.addCraftingRecipe(
-                        ItemRegistry.diode12A[i],
-                        RecipeLoader.BITSD,
-                        new Object[] { "WDW", "DCD", "PDP", 'D',
-                                ItemList.Circuit_Parts_DiodeSMD.get(1L, ItemList.Circuit_Parts_Diode.get(1L)), 'W',
+                        new Object[] { "WDW", "DCD", "PDP", 'D', OrePrefixes.componentCircuit.get(Materials.Diode), 'W',
                                 GT_OreDictUnificator.get(OrePrefixes.cableGt12, cable, 1L), 'P', hull, 'C',
                                 machinehull });
                 GT_ModHandler.addCraftingRecipe(
                         ItemRegistry.diode8A[i],
                         RecipeLoader.BITSD,
-                        new Object[] { "WDW", "DCD", "PDP", 'D',
-                                ItemList.Circuit_Parts_Diode.get(1L, ItemList.Circuit_Parts_DiodeSMD.get(1L)), 'W',
-                                GT_OreDictUnificator.get(OrePrefixes.cableGt08, cable, 1L), 'P', hull, 'C',
-                                machinehull });
-                GT_ModHandler.addCraftingRecipe(
-                        ItemRegistry.diode8A[i],
-                        RecipeLoader.BITSD,
-                        new Object[] { "WDW", "DCD", "PDP", 'D',
-                                ItemList.Circuit_Parts_DiodeSMD.get(1L, ItemList.Circuit_Parts_Diode.get(1L)), 'W',
+                        new Object[] { "WDW", "DCD", "PDP", 'D', OrePrefixes.componentCircuit.get(Materials.Diode), 'W',
                                 GT_OreDictUnificator.get(OrePrefixes.cableGt08, cable, 1L), 'P', hull, 'C',
                                 machinehull });
                 GT_ModHandler.addCraftingRecipe(
                         ItemRegistry.diode4A[i],
                         RecipeLoader.BITSD,
-                        new Object[] { "WDW", "DCD", "PDP", 'D',
-                                ItemList.Circuit_Parts_Diode.get(1L, ItemList.Circuit_Parts_DiodeSMD.get(1L)), 'W',
-                                GT_OreDictUnificator.get(OrePrefixes.cableGt04, cable, 1L), 'P', hull, 'C',
-                                machinehull });
-                GT_ModHandler.addCraftingRecipe(
-                        ItemRegistry.diode4A[i],
-                        RecipeLoader.BITSD,
-                        new Object[] { "WDW", "DCD", "PDP", 'D',
-                                ItemList.Circuit_Parts_DiodeSMD.get(1L, ItemList.Circuit_Parts_Diode.get(1L)), 'W',
+                        new Object[] { "WDW", "DCD", "PDP", 'D', OrePrefixes.componentCircuit.get(Materials.Diode), 'W',
                                 GT_OreDictUnificator.get(OrePrefixes.cableGt04, cable, 1L), 'P', hull, 'C',
                                 machinehull });
                 GT_ModHandler.addCraftingRecipe(
                         ItemRegistry.diode2A[i],
                         RecipeLoader.BITSD,
-                        new Object[] { "WDW", "DCD", "PDP", 'D',
-                                ItemList.Circuit_Parts_Diode.get(1L, ItemList.Circuit_Parts_DiodeSMD.get(1L)), 'W',
-                                GT_OreDictUnificator.get(OrePrefixes.cableGt02, cable, 1L), 'P', hull, 'C',
-                                machinehull });
-                GT_ModHandler.addCraftingRecipe(
-                        ItemRegistry.diode2A[i],
-                        RecipeLoader.BITSD,
-                        new Object[] { "WDW", "DCD", "PDP", 'D',
-                                ItemList.Circuit_Parts_DiodeSMD.get(1L, ItemList.Circuit_Parts_Diode.get(1L)), 'W',
+                        new Object[] { "WDW", "DCD", "PDP", 'D', OrePrefixes.componentCircuit.get(Materials.Diode), 'W',
                                 GT_OreDictUnificator.get(OrePrefixes.cableGt02, cable, 1L), 'P', hull, 'C',
                                 machinehull });
                 GT_ModHandler.addCraftingRecipe(
                         ItemRegistry.diode16A[i],
                         RecipeLoader.BITSD,
-                        new Object[] { "WHW", "DCD", "PDP", 'H', ItemList.Circuit_Parts_Coil.get(1L), 'D',
-                                ItemList.Circuit_Parts_Diode.get(1L, ItemList.Circuit_Parts_DiodeSMD.get(1L)), 'W',
-                                GT_OreDictUnificator.get(OrePrefixes.wireGt16, cable, 1L), 'P', hull, 'C',
-                                machinehull });
-                GT_ModHandler.addCraftingRecipe(
-                        ItemRegistry.diode16A[i],
-                        RecipeLoader.BITSD,
-                        new Object[] { "WHW", "DCD", "PDP", 'H', ItemList.Circuit_Parts_Coil.get(1L), 'D',
-                                ItemList.Circuit_Parts_DiodeSMD.get(1L, ItemList.Circuit_Parts_Diode.get(1L)), 'W',
+                        new Object[] { "WHW", "DCD", "PDP", 'H', OrePrefixes.componentCircuit.get(Materials.Inductor),
+                                'D', OrePrefixes.componentCircuit.get(Materials.Diode), 'W',
                                 GT_OreDictUnificator.get(OrePrefixes.wireGt16, cable, 1L), 'P', hull, 'C',
                                 machinehull });
 
