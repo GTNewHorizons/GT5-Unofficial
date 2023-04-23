@@ -29,7 +29,9 @@ public class ProcessingFoil implements IOreRecipeRegistrator {
 
     private void registerBenderRecipe(Materials material) {
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_Utility.copyAmount(1L, GT_OreDictUnificator.get(OrePrefixes.plate, material, 4L)), GT_Utility.getIntegratedCircuit(1))
+            .itemInputs(
+                GT_Utility.copyAmount(1L, GT_OreDictUnificator.get(OrePrefixes.plate, material, 4L)),
+                GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.foil, material, 4L))
             .noFluidInputs()
             .noFluidOutputs()

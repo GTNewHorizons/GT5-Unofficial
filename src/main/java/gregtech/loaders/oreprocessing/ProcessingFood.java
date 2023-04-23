@@ -46,7 +46,7 @@ public class ProcessingFood implements gregtech.api.interfaces.IOreRecipeRegistr
 
     private void registerBenderRecipes(ItemStack stack) {
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_Utility.copyAmount(1L, stack),  GT_Utility.getIntegratedCircuit(1))
+            .itemInputs(GT_Utility.copyAmount(1L, stack), GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(ItemList.Food_Flat_Dough.get(1L))
             .noFluidInputs()
             .noFluidOutputs()
