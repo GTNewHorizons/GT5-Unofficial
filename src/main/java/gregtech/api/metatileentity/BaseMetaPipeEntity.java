@@ -736,7 +736,7 @@ public class BaseMetaPipeEntity extends CommonMetaTileEntity
             this,
             sideDirection,
             tConnections,
-            (int) (mColor - 1),
+            mColor - 1,
             tConnections == 0 || (tConnections & (1 << sideDirection.ordinal())) != 0,
             getOutputRedstoneSignal(sideDirection) > 0);
         return Textures.BlockIcons.ERROR_RENDERING;
