@@ -59,7 +59,7 @@ public class ProcessingStick implements gregtech.api.interfaces.IOreRecipeRegist
             // bender recipe
             {
                 GT_Values.RA.stdBuilder()
-                    .itemInputs(GT_Utility.copyAmount(1L, aStack))
+                    .itemInputs(GT_Utility.copyAmount(1L, aStack), GT_Utility.getIntegratedCircuit(1))
                     .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.springSmall, aMaterial, 2L))
                     .noFluidInputs()
                     .noFluidOutputs()

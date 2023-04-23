@@ -312,47 +312,57 @@ public class BenderRecipes implements Runnable {
             .addTo(sBenderRecipes);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Tin, 12L))
-            .itemOutputs(ItemList.Cell_Empty.get(6L))
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Tin, 2L),
+                GT_Utility.getIntegratedCircuit(12))
+            .itemOutputs(ItemList.Cell_Empty.get(1L))
             .noFluidInputs()
             .noFluidOutputs()
-            .duration(60 * SECONDS)
+            .duration(10 * SECONDS)
             .eut(8)
             .addTo(sBenderRecipes);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 12L))
-            .itemOutputs(ItemList.Cell_Empty.get(12L))
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 1L),
+                GT_Utility.getIntegratedCircuit(12))
+            .itemOutputs(ItemList.Cell_Empty.get(1L))
             .noFluidInputs()
             .noFluidOutputs()
-            .duration(60 * SECONDS)
+            .duration(5 * SECONDS)
             .eut(8)
             .addTo(sBenderRecipes);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Polytetrafluoroethylene, 12L))
-            .itemOutputs(ItemList.Cell_Empty.get(48L))
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Polytetrafluoroethylene, 1L),
+                GT_Utility.getIntegratedCircuit(12))
+            .itemOutputs(ItemList.Cell_Empty.get(4L))
             .noFluidInputs()
             .noFluidOutputs()
-            .duration(60 * SECONDS)
+            .duration(5 * SECONDS)
             .eut(8)
             .addTo(sBenderRecipes);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 12L))
-            .itemOutputs(new ItemStack(Items.bucket, 4, 0))
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 3L),
+                GT_Utility.getIntegratedCircuit(12))
+            .itemOutputs(new ItemStack(Items.bucket, 1, 0))
             .noFluidInputs()
             .noFluidOutputs()
-            .duration(40 * SECONDS)
+            .duration(10 * SECONDS)
             .eut(4)
             .addTo(sBenderRecipes);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.WroughtIron, 12L))
-            .itemOutputs(new ItemStack(Items.bucket, 4, 0))
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.WroughtIron, 3L),
+                GT_Utility.getIntegratedCircuit(12))
+            .itemOutputs(new ItemStack(Items.bucket, 1, 0))
             .noFluidInputs()
             .noFluidOutputs()
-            .duration(40 * SECONDS)
+            .duration(10 * SECONDS)
             .eut(4)
             .addTo(sBenderRecipes);
 

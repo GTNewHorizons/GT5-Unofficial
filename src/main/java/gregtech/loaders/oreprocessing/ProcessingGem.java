@@ -104,7 +104,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                     {
                         // Plate
                         GT_Values.RA.stdBuilder()
-                            .itemInputs(GT_Utility.copyAmount(1L, aStack))
+                            .itemInputs(GT_Utility.copyAmount(1L, aStack), GT_Utility.getIntegratedCircuit(1))
                             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L))
                             .noFluidInputs()
                             .noFluidOutputs()
@@ -114,7 +114,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
 
                         // Double plates
                         GT_Values.RA.stdBuilder()
-                            .itemInputs(GT_Utility.copyAmount(2L, aStack))
+                            .itemInputs(GT_Utility.copyAmount(2L, aStack), GT_Utility.getIntegratedCircuit(2))
                             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.plateDouble, aMaterial, 1L))
                             .noFluidInputs()
                             .noFluidOutputs()
@@ -124,7 +124,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
 
                         // Triple plate
                         GT_Values.RA.stdBuilder()
-                            .itemInputs(GT_Utility.copyAmount(3L, aStack))
+                            .itemInputs(GT_Utility.copyAmount(3L, aStack), GT_Utility.getIntegratedCircuit(3))
                             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.plateTriple, aMaterial, 1L))
                             .noFluidInputs()
                             .noFluidOutputs()
@@ -134,7 +134,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
 
                         // Quadruple plate
                         GT_Values.RA.stdBuilder()
-                            .itemInputs(GT_Utility.copyAmount(4L, aStack))
+                            .itemInputs(GT_Utility.copyAmount(4L, aStack), GT_Utility.getIntegratedCircuit(4))
                             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.plateQuadruple, aMaterial, 1L))
                             .noFluidInputs()
                             .noFluidOutputs()
@@ -144,7 +144,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
 
                         // Quintuple plate
                         GT_Values.RA.stdBuilder()
-                            .itemInputs(GT_Utility.copyAmount(5L, aStack))
+                            .itemInputs(GT_Utility.copyAmount(5L, aStack), GT_Utility.getIntegratedCircuit(5))
                             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.plateQuintuple, aMaterial, 1L))
                             .noFluidInputs()
                             .noFluidOutputs()
@@ -154,7 +154,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
 
                         // dense plate
                         GT_Values.RA.stdBuilder()
-                            .itemInputs(GT_Utility.copyAmount(9L, aStack))
+                            .itemInputs(GT_Utility.copyAmount(9L, aStack), GT_Utility.getIntegratedCircuit(9))
                             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.plateDense, aMaterial, 1L))
                             .noFluidInputs()
                             .noFluidOutputs()
