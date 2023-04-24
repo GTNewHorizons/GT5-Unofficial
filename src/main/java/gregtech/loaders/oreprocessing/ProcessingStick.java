@@ -58,24 +58,28 @@ public class ProcessingStick implements gregtech.api.interfaces.IOreRecipeRegist
         if (!aMaterial.contains(gregtech.api.enums.SubTag.NO_SMASHING)) {
             // bender recipe
             {
-                GT_Values.RA.stdBuilder()
-                    .itemInputs(GT_Utility.copyAmount(1L, aStack), GT_Utility.getIntegratedCircuit(1))
-                    .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.springSmall, aMaterial, 2L))
-                    .noFluidInputs()
-                    .noFluidOutputs()
-                    .duration(5 * SECONDS)
-                    .eut(calculateRecipeEU(aMaterial, 8))
-                    .addTo(sBenderRecipes);
+                if (GT_OreDictUnificator.get(OrePrefixes.springSmall, aMaterial, 1L) != null) {
+                    GT_Values.RA.stdBuilder()
+                        .itemInputs(GT_Utility.copyAmount(1L, aStack), GT_Utility.getIntegratedCircuit(1))
+                        .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.springSmall, aMaterial, 2L))
+                        .noFluidInputs()
+                        .noFluidOutputs()
+                        .duration(5 * SECONDS)
+                        .eut(calculateRecipeEU(aMaterial, 8))
+                        .addTo(sBenderRecipes);
+                }
             }
 
-            GT_Values.RA.stdBuilder()
-                .itemInputs(GT_Utility.copyAmount(2L, aStack))
-                .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.stickLong, aMaterial, 1L))
-                .noFluidInputs()
-                .noFluidOutputs()
-                .duration(Math.max(aMaterial.getMass(), 1L))
-                .eut(calculateRecipeEU(aMaterial, 16))
-                .addTo(sHammerRecipes);
+            if (GT_OreDictUnificator.get(OrePrefixes.stickLong, aMaterial, 1L) != null) {
+                GT_Values.RA.stdBuilder()
+                    .itemInputs(GT_Utility.copyAmount(2L, aStack))
+                    .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.stickLong, aMaterial, 1L))
+                    .noFluidInputs()
+                    .noFluidOutputs()
+                    .duration(Math.max(aMaterial.getMass(), 1L))
+                    .eut(calculateRecipeEU(aMaterial, 16))
+                    .addTo(sHammerRecipes);
+            }
         }
         GT_Values.RA.addAssemblerRecipe(
             GT_OreDictUnificator.get(OrePrefixes.stick, Materials.Wood, 1),
