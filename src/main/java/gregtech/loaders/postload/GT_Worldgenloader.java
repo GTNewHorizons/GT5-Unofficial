@@ -1145,6 +1145,26 @@ public class GT_Worldgenloader implements Runnable {
             false,
             false,
             Materials.DeepIron);
+        new GT_Worldgen_GT_Ore_SmallPieces(
+            "ore.small.redgarnet",
+            true,
+            5,
+            35,
+            2,
+            false,
+            false,
+            false,
+            Materials.GarnetRed);
+        new GT_Worldgen_GT_Ore_SmallPieces(
+            "ore.small.chargedcertus",
+            true,
+            5,
+            115,
+            4,
+            false,
+            false,
+            false,
+            Materials.CertusQuartzCharged);
 
         // GT Default Veins
 
@@ -2236,6 +2256,111 @@ public class GT_Worldgenloader implements Runnable {
             Materials.Apatite,
             Materials.Tantalite,
             Materials.Pyrochlore);
+        new GT_Worldgen_GT_Ore_Layer(
+            "ore.mix.certusquartz",
+            true,
+            40,
+            80,
+            60,
+            5,
+            32,
+            false,
+            false,
+            false,
+            Materials.CertusQuartz,
+            Materials.CertusQuartz,
+            Materials.CertusQuartzCharged,
+            Materials.QuartzSand);
+        new GT_Worldgen_GT_Ore_Layer(
+            "ore.mix.infinitycatalyst",
+            true,
+            5,
+            20,
+            15,
+            2,
+            16,
+            false,
+            false,
+            false,
+            Materials.Neutronium,
+            Materials.Adamantium,
+            Materials.InfinityCatalyst,
+            Materials.Bedrockium);
+        new GT_Worldgen_GT_Ore_Layer(
+            "ore.mix.cosmicneutronium",
+            true,
+            5,
+            20,
+            15,
+            2,
+            16,
+            false,
+            false,
+            false,
+            Materials.Neutronium,
+            Materials.CosmicNeutronium,
+            Materials.BlackPlutonium,
+            Materials.Bedrockium);
+        new GT_Worldgen_GT_Ore_Layer(
+            "ore.mix.dilithium",
+            true,
+            30,
+            100,
+            30,
+            3,
+            24,
+            false,
+            false,
+            false,
+            Materials.Dilithium,
+            Materials.Dilithium,
+            Materials.MysteriousCrystal,
+            Materials.Vinteum);
+        new GT_Worldgen_GT_Ore_Layer(
+            "ore.mix.naquadria",
+            true,
+            10,
+            90,
+            40,
+            4,
+            24,
+            false,
+            false,
+            false,
+            Materials.Naquadah,
+            Materials.NaquadahEnriched,
+            Materials.Naquadria,
+            Materials.Trinium);
+        new GT_Worldgen_GT_Ore_Layer(
+            "ore.mix.awakeneddraconium",
+            true,
+            20,
+            40,
+            20,
+            3,
+            16,
+            false,
+            false,
+            false,
+            Materials.Draconium,
+            Materials.Draconium,
+            Materials.DraconiumAwakened,
+            Materials.NetherStar);
+        new GT_Worldgen_GT_Ore_Layer(
+            "ore.mix.tengam",
+            true,
+            30,
+            180,
+            80,
+            2,
+            32,
+            false,
+            false,
+            false,
+            Materials.TengamRaw,
+            Materials.TengamRaw,
+            Materials.Electrotine,
+            Materials.Samarium);
 
         // DO NOT DELETE V THIS V - this is needed so that gregtech generates its Ore Layer's first (the ones up there),
         // which can then be transformed into "GT_Worldgen_GT_Ore_Layer_Space". Also, Reflexion is slow.
