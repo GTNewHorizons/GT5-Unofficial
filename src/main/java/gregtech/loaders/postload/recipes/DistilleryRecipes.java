@@ -163,7 +163,7 @@ public class DistilleryRecipes implements Runnable {
             .addTo(sDistilleryRecipes);
 
         GT_Values.RA.stdBuilder()
-            .noItemInputs()
+            .itemInputs(GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(MaterialsOreAlum.SluiceSand.getDust(1))
             .fluidInputs(MaterialsOreAlum.SluiceJuice.getFluid(1000))
             .fluidOutputs(Materials.Water.getFluid(500))
@@ -218,7 +218,7 @@ public class DistilleryRecipes implements Runnable {
             .addTo(sDistilleryRecipes);
 
         GT_Values.RA.stdBuilder()
-            .noItemInputs()
+            .itemInputs(GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(ItemList.IC2_Fertilizer.get(1))
             .fluidInputs(Materials.FermentedBiomass.getFluid(1000))
             .fluidOutputs(Materials.AceticAcid.getFluid(25))
@@ -227,7 +227,7 @@ public class DistilleryRecipes implements Runnable {
             .addTo(sDistilleryRecipes);
 
         GT_Values.RA.stdBuilder()
-            .noItemInputs()
+            .itemInputs(GT_Utility.getIntegratedCircuit(2))
             .itemOutputs(ItemList.IC2_Fertilizer.get(1))
             .fluidInputs(Materials.FermentedBiomass.getFluid(1000))
             .fluidOutputs(Materials.Water.getFluid(375))
@@ -236,7 +236,7 @@ public class DistilleryRecipes implements Runnable {
             .addTo(sDistilleryRecipes);
 
         GT_Values.RA.stdBuilder()
-            .noItemInputs()
+            .itemInputs(GT_Utility.getIntegratedCircuit(3))
             .itemOutputs(ItemList.IC2_Fertilizer.get(1))
             .fluidInputs(Materials.FermentedBiomass.getFluid(1000))
             .fluidOutputs(Materials.Ethanol.getFluid(150))
@@ -245,7 +245,7 @@ public class DistilleryRecipes implements Runnable {
             .addTo(sDistilleryRecipes);
 
         GT_Values.RA.stdBuilder()
-            .noItemInputs()
+            .itemInputs(GT_Utility.getIntegratedCircuit(4))
             .itemOutputs(ItemList.IC2_Fertilizer.get(1))
             .fluidInputs(Materials.FermentedBiomass.getFluid(1000))
             .fluidOutputs(Materials.Methanol.getFluid(150))
@@ -254,7 +254,7 @@ public class DistilleryRecipes implements Runnable {
             .addTo(sDistilleryRecipes);
 
         GT_Values.RA.stdBuilder()
-            .noItemInputs()
+            .itemInputs(GT_Utility.getIntegratedCircuit(5))
             .itemOutputs(ItemList.IC2_Fertilizer.get(1))
             .fluidInputs(Materials.FermentedBiomass.getFluid(1000))
             .fluidOutputs(Materials.Ammonia.getGas(100))
@@ -263,7 +263,7 @@ public class DistilleryRecipes implements Runnable {
             .addTo(sDistilleryRecipes);
 
         GT_Values.RA.stdBuilder()
-            .noItemInputs()
+            .itemInputs(GT_Utility.getIntegratedCircuit(6))
             .itemOutputs(ItemList.IC2_Fertilizer.get(1))
             .fluidInputs(Materials.FermentedBiomass.getFluid(1000))
             .fluidOutputs(Materials.CarbonDioxide.getGas(400))
@@ -272,7 +272,7 @@ public class DistilleryRecipes implements Runnable {
             .addTo(sDistilleryRecipes);
 
         GT_Values.RA.stdBuilder()
-            .noItemInputs()
+            .itemInputs(GT_Utility.getIntegratedCircuit(7))
             .itemOutputs(ItemList.IC2_Fertilizer.get(1))
             .fluidInputs(Materials.FermentedBiomass.getFluid(1000))
             .fluidOutputs(Materials.Methane.getGas(600))
@@ -281,7 +281,7 @@ public class DistilleryRecipes implements Runnable {
             .addTo(sDistilleryRecipes);
 
         GT_Values.RA.stdBuilder()
-            .noItemInputs()
+            .itemInputs(GT_Utility.getIntegratedCircuit(17))
             .itemOutputs(ItemList.IC2_Fertilizer.get(1))
             .fluidInputs(Materials.FermentedBiomass.getFluid(1000))
             .fluidOutputs(new FluidStack(FluidRegistry.getFluid("ic2biogas"), 1800))
@@ -290,7 +290,7 @@ public class DistilleryRecipes implements Runnable {
             .addTo(sDistilleryRecipes);
 
         GT_Values.RA.stdBuilder()
-            .noItemInputs()
+            .itemInputs(GT_Utility.getIntegratedCircuit(1))
             .noItemOutputs()
             .fluidInputs(Materials.Methane.getGas(1000))
             .fluidOutputs(new FluidStack(FluidRegistry.getFluid("ic2biogas"), 3000))
