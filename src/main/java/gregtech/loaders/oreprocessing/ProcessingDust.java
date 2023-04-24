@@ -81,7 +81,8 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                     }
                 } else if (!aMaterial.contains(SubTag.NO_WORKING)) {
                     if ((!OrePrefixes.block.isIgnored(aMaterial))
-                        && (null == GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L))) {
+                        && (null == GT_OreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L))
+                        && GT_OreDictUnificator.get(OrePrefixes.block, aMaterial, 1L) != null) {
 
                         GT_Values.RA.stdBuilder()
                             .itemInputs(GT_Utility.copyAmount(9L, aStack))
@@ -107,14 +108,16 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                         && (aMaterial != Materials.Clay)) {
                         // compressor recipe
                         {
-                            GT_Values.RA.stdBuilder()
-                                .itemInputs(GT_Utility.copyAmount(1L, aStack))
-                                .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L))
-                                .noFluidInputs()
-                                .noFluidOutputs()
-                                .duration(15 * SECONDS)
-                                .eut(2)
-                                .addTo(sCompressorRecipes);
+                            if (GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L) != null) {
+                                GT_Values.RA.stdBuilder()
+                                    .itemInputs(GT_Utility.copyAmount(1L, aStack))
+                                    .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L))
+                                    .noFluidInputs()
+                                    .noFluidOutputs()
+                                    .duration(15 * SECONDS)
+                                    .eut(2)
+                                    .addTo(sCompressorRecipes);
+                            }
                         }
                     }
                 }

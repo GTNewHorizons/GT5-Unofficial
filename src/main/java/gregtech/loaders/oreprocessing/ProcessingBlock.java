@@ -83,14 +83,16 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
         if (tStack2 != null) tStack2.stackSize = 9;
         if (tStack3 != null) tStack3.stackSize = 9;
 
-        GT_Values.RA.stdBuilder()
-            .itemInputs(aStack)
-            .itemOutputs(tStack2)
-            .noFluidInputs()
-            .noFluidOutputs()
-            .duration(5 * SECONDS)
-            .eut(24)
-            .addTo(sHammerRecipes);
+        if (tStack2 != null) {
+            GT_Values.RA.stdBuilder()
+                .itemInputs(aStack)
+                .itemOutputs(tStack2)
+                .noFluidInputs()
+                .noFluidOutputs()
+                .duration(5 * SECONDS)
+                .eut(24)
+                .addTo(sHammerRecipes);
+        }
 
         if (GregTech_API.sRecipeFile.get(
             ConfigCategories.Recipes.storageblockdecrafting,
@@ -105,7 +107,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                 GT_ModHandler.addShapelessCraftingRecipe(tStack1, new Object[] { OrePrefixes.block.get(aMaterial) });
         }
 
-        if (!OrePrefixes.block.isIgnored(aMaterial)) {
+        if (!OrePrefixes.block.isIgnored(aMaterial) && tStack1 != null) {
             // 9 ingots -> 1 block
             GT_Values.RA.stdBuilder()
                 .itemInputs(GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 9L))
