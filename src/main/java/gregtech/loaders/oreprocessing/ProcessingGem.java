@@ -115,7 +115,9 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                                 .duration((int) Math.max(aMaterialMass * 2L, 1L))
                                 .eut(calculateRecipeEU(aMaterial, 24))
                                 .addTo(sBenderRecipes);
+                        }
 
+                        if (GT_OreDictUnificator.get(OrePrefixes.plateDouble, aMaterial, 1L) != null) {
                             // Double plates
                             GT_Values.RA.stdBuilder()
                                 .itemInputs(GT_Utility.copyAmount(2L, aStack), GT_Utility.getIntegratedCircuit(2))
