@@ -57,24 +57,28 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
                 if (!aMaterial.contains(SubTag.NO_SMASHING)) {
                     // Bender recipes
                     {
-                        GT_Values.RA.stdBuilder()
-                            .itemInputs(GT_Utility.copyAmount(1L, aStack), GT_Utility.getIntegratedCircuit(1))
-                            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.springSmall, aMaterial, 2L))
-                            .noFluidInputs()
-                            .noFluidOutputs()
-                            .duration(5 * SECONDS)
-                            .eut(calculateRecipeEU(aMaterial, 8))
-                            .addTo(sBenderRecipes);
+                        if (GT_OreDictUnificator.get(OrePrefixes.springSmall, aMaterial, 1L) != null) {
+                            GT_Values.RA.stdBuilder()
+                                .itemInputs(GT_Utility.copyAmount(1L, aStack), GT_Utility.getIntegratedCircuit(1))
+                                .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.springSmall, aMaterial, 2L))
+                                .noFluidInputs()
+                                .noFluidOutputs()
+                                .duration(5 * SECONDS)
+                                .eut(calculateRecipeEU(aMaterial, 8))
+                                .addTo(sBenderRecipes);
+                        }
                     }
 
                     // Wiremill Recipes
                     {
-                        GT_Values.RA.addWiremillRecipe(
-                            GT_Utility.copyAmount(1L, aStack),
-                            GT_Utility.getIntegratedCircuit(1),
-                            GT_OreDictUnificator.get(OrePrefixes.wireFine, aMaterial, 4L),
-                            200,
-                            calculateRecipeEU(aMaterial, 8));
+                        if (GT_OreDictUnificator.get(OrePrefixes.wireFine, aMaterial, 1L) != null) {
+                            GT_Values.RA.addWiremillRecipe(
+                                GT_Utility.copyAmount(1L, aStack),
+                                GT_Utility.getIntegratedCircuit(1),
+                                GT_OreDictUnificator.get(OrePrefixes.wireFine, aMaterial, 4L),
+                                200,
+                                calculateRecipeEU(aMaterial, 8));
+                        }
                     }
                 }
 
