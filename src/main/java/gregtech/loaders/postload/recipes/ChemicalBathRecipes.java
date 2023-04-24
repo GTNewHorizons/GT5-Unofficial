@@ -1,7 +1,6 @@
 package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.enums.Mods.BuildCraftTransport;
-import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.util.GT_ModHandler.getModItem;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sChemicalBathRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.MINUTES;
@@ -366,14 +365,5 @@ public class ChemicalBathRecipes implements Runnable {
                 .eut(8)
                 .addTo(sChemicalBathRecipes);
         }
-
-        GT_Values.RA.stdBuilder()
-            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.log, Materials.Wood, 1))
-            .itemOutputs(getModItem(Railcraft.ID, "cube", 1, 8))
-            .fluidInputs(Materials.Creosote.getFluid(100))
-            .noFluidOutputs()
-            .duration(5 * SECONDS)
-            .eut(4)
-            .addTo(sChemicalBathRecipes);
     }
 }
