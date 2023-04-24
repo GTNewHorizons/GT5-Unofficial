@@ -3696,7 +3696,7 @@ public class GT_Utility {
                 if (aX > 0.75) {
                     if (aY < 0.25) return tBack;
                     if (aY > 0.75) return tBack;
-                    return WEST;
+                    return EAST;
                 }
                 if (aY < 0.25) return DOWN;
                 if (aY > 0.75) return UP;
