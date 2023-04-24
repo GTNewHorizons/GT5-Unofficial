@@ -77,7 +77,7 @@ public class CuttingRecipes implements Runnable {
 
             recipeWithClassicFluids(
                 new ItemStack[] { new ItemStack(Blocks.glass, 3, 0) },
-                new ItemStack[] { new ItemStack(Blocks.glass, 3, 0), new ItemStack(Blocks.glass_pane, 8, 0) },
+                new ItemStack[] { new ItemStack(Blocks.glass_pane, 8, 0) },
                 2 * SECONDS + 10 * TICKS,
                 8,
                 false);
