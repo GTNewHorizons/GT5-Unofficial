@@ -101,68 +101,82 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
 
                     // Bender recipes
                     {
-                        GT_Values.RA.stdBuilder()
-                            .itemInputs(GT_Utility.copyAmount(1L, aStack), GT_Utility.getIntegratedCircuit(1))
-                            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L))
-                            .noFluidInputs()
-                            .noFluidOutputs()
-                            .duration(Math.max(aMaterialMass, 1L))
-                            .eut(calculateRecipeEU(aMaterial, 24))
-                            .addTo(sBenderRecipes);
+                        if (GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L) != null) {
+                            GT_Values.RA.stdBuilder()
+                                .itemInputs(GT_Utility.copyAmount(1L, aStack), GT_Utility.getIntegratedCircuit(1))
+                                .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L))
+                                .noFluidInputs()
+                                .noFluidOutputs()
+                                .duration(Math.max(aMaterialMass, 1L))
+                                .eut(calculateRecipeEU(aMaterial, 24))
+                                .addTo(sBenderRecipes);
+                        }
 
-                        GT_Values.RA.stdBuilder()
-                            .itemInputs(GT_Utility.copyAmount(2L, aStack), GT_Utility.getIntegratedCircuit(2))
-                            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.plateDouble, aMaterial, 1L))
-                            .noFluidInputs()
-                            .noFluidOutputs()
-                            .duration(Math.max(aMaterialMass * 2L, 1L))
-                            .eut(calculateRecipeEU(aMaterial, 96))
-                            .addTo(sBenderRecipes);
+                        if (GT_OreDictUnificator.get(OrePrefixes.plateDouble, aMaterial, 1L) != null) {
+                            GT_Values.RA.stdBuilder()
+                                .itemInputs(GT_Utility.copyAmount(2L, aStack), GT_Utility.getIntegratedCircuit(2))
+                                .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.plateDouble, aMaterial, 1L))
+                                .noFluidInputs()
+                                .noFluidOutputs()
+                                .duration(Math.max(aMaterialMass * 2L, 1L))
+                                .eut(calculateRecipeEU(aMaterial, 96))
+                                .addTo(sBenderRecipes);
+                        }
 
-                        GT_Values.RA.stdBuilder()
-                            .itemInputs(GT_Utility.copyAmount(3L, aStack), GT_Utility.getIntegratedCircuit(3))
-                            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.plateTriple, aMaterial, 1L))
-                            .noFluidInputs()
-                            .noFluidOutputs()
-                            .duration(Math.max(aMaterialMass * 3L, 1L))
-                            .eut(calculateRecipeEU(aMaterial, 96))
-                            .addTo(sBenderRecipes);
+                        if (GT_OreDictUnificator.get(OrePrefixes.plateTriple, aMaterial, 1L) != null) {
+                            GT_Values.RA.stdBuilder()
+                                .itemInputs(GT_Utility.copyAmount(3L, aStack), GT_Utility.getIntegratedCircuit(3))
+                                .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.plateTriple, aMaterial, 1L))
+                                .noFluidInputs()
+                                .noFluidOutputs()
+                                .duration(Math.max(aMaterialMass * 3L, 1L))
+                                .eut(calculateRecipeEU(aMaterial, 96))
+                                .addTo(sBenderRecipes);
+                        }
 
-                        GT_Values.RA.stdBuilder()
-                            .itemInputs(GT_Utility.copyAmount(4L, aStack), GT_Utility.getIntegratedCircuit(4))
-                            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.plateQuadruple, aMaterial, 1L))
-                            .noFluidInputs()
-                            .noFluidOutputs()
-                            .duration(Math.max(aMaterialMass * 4L, 1L))
-                            .eut(calculateRecipeEU(aMaterial, 96))
-                            .addTo(sBenderRecipes);
+                        if (GT_OreDictUnificator.get(OrePrefixes.plateQuadruple, aMaterial, 1L) != null) {
+                            GT_Values.RA.stdBuilder()
+                                .itemInputs(GT_Utility.copyAmount(4L, aStack), GT_Utility.getIntegratedCircuit(4))
+                                .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.plateQuadruple, aMaterial, 1L))
+                                .noFluidInputs()
+                                .noFluidOutputs()
+                                .duration(Math.max(aMaterialMass * 4L, 1L))
+                                .eut(calculateRecipeEU(aMaterial, 96))
+                                .addTo(sBenderRecipes);
+                        }
 
-                        GT_Values.RA.stdBuilder()
-                            .itemInputs(GT_Utility.copyAmount(5L, aStack), GT_Utility.getIntegratedCircuit(5))
-                            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.plateQuintuple, aMaterial, 1L))
-                            .noFluidInputs()
-                            .noFluidOutputs()
-                            .duration(Math.max(aMaterialMass * 5L, 1L))
-                            .eut(calculateRecipeEU(aMaterial, 96))
-                            .addTo(sBenderRecipes);
+                        if (GT_OreDictUnificator.get(OrePrefixes.plateQuintuple, aMaterial, 1L) != null) {
+                            GT_Values.RA.stdBuilder()
+                                .itemInputs(GT_Utility.copyAmount(5L, aStack), GT_Utility.getIntegratedCircuit(5))
+                                .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.plateQuintuple, aMaterial, 1L))
+                                .noFluidInputs()
+                                .noFluidOutputs()
+                                .duration(Math.max(aMaterialMass * 5L, 1L))
+                                .eut(calculateRecipeEU(aMaterial, 96))
+                                .addTo(sBenderRecipes);
+                        }
 
-                        GT_Values.RA.stdBuilder()
-                            .itemInputs(GT_Utility.copyAmount(9L, aStack), GT_Utility.getIntegratedCircuit(9))
-                            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.plateDense, aMaterial, 1L))
-                            .noFluidInputs()
-                            .noFluidOutputs()
-                            .duration(Math.max(aMaterialMass * 9L, 1L))
-                            .eut(calculateRecipeEU(aMaterial, 96))
-                            .addTo(sBenderRecipes);
+                        if (GT_OreDictUnificator.get(OrePrefixes.plateDense, aMaterial, 1L) != null) {
+                            GT_Values.RA.stdBuilder()
+                                .itemInputs(GT_Utility.copyAmount(9L, aStack), GT_Utility.getIntegratedCircuit(9))
+                                .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.plateDense, aMaterial, 1L))
+                                .noFluidInputs()
+                                .noFluidOutputs()
+                                .duration(Math.max(aMaterialMass * 9L, 1L))
+                                .eut(calculateRecipeEU(aMaterial, 96))
+                                .addTo(sBenderRecipes);
+                        }
 
-                        GT_Values.RA.stdBuilder()
-                            .itemInputs(GT_Utility.copyAmount(1L, aStack), GT_Utility.getIntegratedCircuit(10))
-                            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.foil, aMaterial, 4L))
-                            .noFluidInputs()
-                            .noFluidOutputs()
-                            .duration(Math.max(aMaterialMass * 2L, 1L))
-                            .eut(calculateRecipeEU(aMaterial, 24))
-                            .addTo(sBenderRecipes);
+                        if (GT_OreDictUnificator.get(OrePrefixes.foil, aMaterial, 1L) != null) {
+                            GT_Values.RA.stdBuilder()
+                                .itemInputs(GT_Utility.copyAmount(1L, aStack), GT_Utility.getIntegratedCircuit(10))
+                                .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.foil, aMaterial, 4L))
+                                .noFluidInputs()
+                                .noFluidOutputs()
+                                .duration(Math.max(aMaterialMass * 2L, 1L))
+                                .eut(calculateRecipeEU(aMaterial, 24))
+                                .addTo(sBenderRecipes);
+                        }
                     }
                 }
                 break;
