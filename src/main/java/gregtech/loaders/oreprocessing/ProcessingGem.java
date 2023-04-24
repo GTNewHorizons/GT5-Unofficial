@@ -79,14 +79,16 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                 if (aNoSmashing) {
                     // Forge hammer recipes
                     {
-                        GT_Values.RA.stdBuilder()
-                            .itemInputs(aStack)
-                            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.gemFlawed, aMaterial, 2L))
-                            .noFluidInputs()
-                            .noFluidOutputs()
-                            .duration(3 * SECONDS + 4 * TICKS)
-                            .eut(16)
-                            .addTo(sHammerRecipes);
+                        if (GT_OreDictUnificator.get(OrePrefixes.gemFlawed, aMaterial, 1L) != null) {
+                            GT_Values.RA.stdBuilder()
+                                .itemInputs(aStack)
+                                .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.gemFlawed, aMaterial, 2L))
+                                .noFluidInputs()
+                                .noFluidOutputs()
+                                .duration(3 * SECONDS + 4 * TICKS)
+                                .eut(16)
+                                .addTo(sHammerRecipes);
+                        }
                     }
                 } else {
                     // Forge hammer recipes
@@ -127,7 +129,9 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                                 .duration(Math.max(aMaterialMass * 2L, 1L))
                                 .eut(calculateRecipeEU(aMaterial, 96))
                                 .addTo(sBenderRecipes);
+                        }
 
+                        if (GT_OreDictUnificator.get(OrePrefixes.plateTriple, aMaterial, 1L) != null) {
                             // Triple plate
                             GT_Values.RA.stdBuilder()
                                 .itemInputs(GT_Utility.copyAmount(3L, aStack), GT_Utility.getIntegratedCircuit(3))
@@ -137,7 +141,9 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                                 .duration(Math.max(aMaterialMass * 3L, 1L))
                                 .eut(calculateRecipeEU(aMaterial, 96))
                                 .addTo(sBenderRecipes);
+                        }
 
+                        if (GT_OreDictUnificator.get(OrePrefixes.plateQuadruple, aMaterial, 1L) != null) {
                             // Quadruple plate
                             GT_Values.RA.stdBuilder()
                                 .itemInputs(GT_Utility.copyAmount(4L, aStack), GT_Utility.getIntegratedCircuit(4))
@@ -147,7 +153,9 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                                 .duration(Math.max(aMaterialMass * 4L, 1L))
                                 .eut(calculateRecipeEU(aMaterial, 96))
                                 .addTo(sBenderRecipes);
+                        }
 
+                        if (GT_OreDictUnificator.get(OrePrefixes.plateQuintuple, aMaterial, 1L) != null) {
                             // Quintuple plate
                             GT_Values.RA.stdBuilder()
                                 .itemInputs(GT_Utility.copyAmount(5L, aStack), GT_Utility.getIntegratedCircuit(5))
@@ -157,7 +165,9 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                                 .duration(Math.max(aMaterialMass * 5L, 1L))
                                 .eut(calculateRecipeEU(aMaterial, 96))
                                 .addTo(sBenderRecipes);
+                        }
 
+                        if (GT_OreDictUnificator.get(OrePrefixes.plateDense, aMaterial, 1L) != null) {
                             // dense plate
                             GT_Values.RA.stdBuilder()
                                 .itemInputs(GT_Utility.copyAmount(9L, aStack), GT_Utility.getIntegratedCircuit(9))
