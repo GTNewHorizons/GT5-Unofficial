@@ -310,10 +310,10 @@ public class GT_RecipeRegistrator {
 
             recipeBuilder.itemInputs(aStack)
                 .itemOutputs(GT_OreDictUnificator.getIngotOrDust(aData.mMaterial))
-                .fluidInputs(Materials.Oxygen.getGas(90))
+                .fluidInputs(Materials.Oxygen.getGas((int) Math.max(16, tAmount / M)))
                 .noFluidOutputs()
-                .duration(4 * SECONDS + 10 * TICKS)
-                .eut(Math.max(16, tAmount / M));
+                .duration(((int) Math.max(16, tAmount / M)) * TICKS)
+                .eut(90);
             if (tHide) {
                 recipeBuilder.hidden();
             }
@@ -332,10 +332,10 @@ public class GT_RecipeRegistrator {
                     GT_OreDictUnificator.getIngotOrDust(aData.getByProduct(6)),
                     GT_OreDictUnificator.getIngotOrDust(aData.getByProduct(7)),
                     GT_OreDictUnificator.getIngotOrDust(aData.getByProduct(8)))
-                .fluidInputs(Materials.Oxygen.getGas(90))
+                .fluidInputs(Materials.Oxygen.getGas((int) Math.max(16, tAmount / M)))
                 .noFluidOutputs()
-                .duration(8 * SECONDS + 10 * TICKS)
-                .eut((int) Math.max(16, tAmount / M));
+                .duration(((int) Math.max(16, tAmount / M)) * TICKS)
+                .eut(90);
             if (tHide) {
                 recipeBuilder.hidden();
             }
