@@ -2671,11 +2671,11 @@ public class ResearchStationAssemblyLine implements Runnable {
                             // Large Bedrockium Plate
                             getModItem(TinkerConstruct.ID, "heavyPlate", 1, 315),
                             // Large Cosmic Neutronium Plate
-                            getModItem(TinkerConstruct.ID, "heavyPlate", 1, 500),
+                            getModItem(TinkerConstruct.ID, "heavyPlate", 1, 1671),
                             // Large Shirabon Plate
                             largeShirabonPlate,
                             // Large Infinity Plate
-                            getModItem(TinkerConstruct.ID, "heavyPlate", 1, 501),
+                            getModItem(TinkerConstruct.ID, "heavyPlate", 1, 1669),
 
                             // UV Solar panel
                             getModItem(SuperSolarPanels.ID, "PhotonicSolarPanel", 1, 0),
@@ -3163,11 +3163,11 @@ public class ResearchStationAssemblyLine implements Runnable {
                             // Large Bedrockium Plate
                             getModItem(TinkerConstruct.ID, "heavyPlate", 1, 315),
                             // Large Cosmic Neutronium Plate
-                            getModItem(TinkerConstruct.ID, "heavyPlate", 1, 500),
+                            getModItem(TinkerConstruct.ID, "heavyPlate", 1, 1671),
                             // Large Shirabon Plate
                             largeShirabonPlate,
                             // Large Infinity Plate
-                            getModItem(TinkerConstruct.ID, "heavyPlate", 1, 501),
+                            getModItem(TinkerConstruct.ID, "heavyPlate", 1, 1669),
 
                             // UV Solar panel
                             getModItem(SuperSolarPanels.ID, "PhotonicSolarPanel", 1, 0),
