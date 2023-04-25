@@ -3998,7 +3998,7 @@ public class ChemicalRecipes implements Runnable {
             .fluidOutputs(new GT_FluidStack(aPolymer, 144))
             .duration(8 * SECONDS)
             .eut(TierEU.RECIPE_LV)
-            .addTo(sChemicalRecipes);
+            .addTo(UniversalChemical);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(Materials.Oxygen.getCells(1), GT_Utility.getIntegratedCircuit(1))
@@ -4007,7 +4007,7 @@ public class ChemicalRecipes implements Runnable {
             .fluidOutputs(new GT_FluidStack(aPolymer, 216))
             .duration(8 * SECONDS)
             .eut(TierEU.RECIPE_LV)
-            .addTo(sChemicalRecipes);
+            .addTo(UniversalChemical);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(aBasicMaterialCell, GT_Utility.getIntegratedCircuit(1))
@@ -4016,7 +4016,7 @@ public class ChemicalRecipes implements Runnable {
             .fluidOutputs(new GT_FluidStack(aPolymer, 1000))
             .duration(56 * SECONDS)
             .eut(TierEU.RECIPE_LV)
-            .addTo(sChemicalRecipes);
+            .addTo(UniversalChemical);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(aBasicMaterialCell, GT_Utility.getIntegratedCircuit(1))
@@ -4025,7 +4025,7 @@ public class ChemicalRecipes implements Runnable {
             .fluidOutputs(new GT_FluidStack(aPolymer, 1500))
             .duration(56 * SECONDS)
             .eut(TierEU.RECIPE_LV)
-            .addTo(sChemicalRecipes);
+            .addTo(UniversalChemical);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(GT_Utility.getIntegratedCircuit(2))
