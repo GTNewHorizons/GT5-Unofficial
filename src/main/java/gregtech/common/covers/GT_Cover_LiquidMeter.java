@@ -218,16 +218,6 @@ public class GT_Cover_LiquidMeter extends GT_CoverBehaviorBase<GT_Cover_LiquidMe
                             .addTooltip(1, INVERTED)
                             .setPos(spaceX * 0, spaceY * 0))
                     .addFollower(
-                        CoverDataFollower_ToggleButtonWidget.ofRedstone(),
-                        coverData -> coverData.strong,
-                        (coverData, state) -> {
-                            coverData.strong = state;
-                            return coverData;
-                        },
-                        widget -> widget.addTooltip(0, WEAK)
-                            .addTooltip(1, STRONG)
-                            .setPos(spaceX * 0, spaceY * 1))
-                    .addFollower(
                         new CoverDataFollower_TextFieldWidget<>(),
                         coverData -> String.valueOf(coverData.threshold),
                         (coverData, state) -> {
@@ -237,7 +227,7 @@ public class GT_Cover_LiquidMeter extends GT_CoverBehaviorBase<GT_Cover_LiquidMe
                         widget -> widget.setOnScrollNumbers(1000, 100, 100000)
                             .setNumbers(0, maxCapacity > 0 ? maxCapacity : Integer.MAX_VALUE)
                             .setFocusOnGuiOpen(true)
-                            .setPos(spaceX * 0, spaceY * 2 + 2)
+                            .setPos(spaceX * 0, spaceY * 1 + 2)
                             .setSize(spaceX * 4 + 5, 12))
                     .setPos(startX, startY))
                 .widget(
@@ -247,13 +237,8 @@ public class GT_Cover_LiquidMeter extends GT_CoverBehaviorBase<GT_Cover_LiquidMe
                         .setDefaultColor(COLOR_TEXT_GRAY.get())
                         .setPos(startX + spaceX * 1, 4 + startY + spaceY * 0))
                 .widget(
-                    TextWidget.dynamicString(() -> getCoverData() != null ? getCoverData().strong ? STRONG : WEAK : "")
-                        .setSynced(false)
-                        .setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(startX + spaceX * 1, 4 + startY + spaceY * 1))
-                .widget(
                     new TextWidget(GT_Utility.trans("222", "Fluid threshold")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(startX + spaceX * 5 - 10, startY + spaceY * 2 + 4));
+                        .setPos(startX + spaceX * 5 - 10, startY + spaceY * 1 + 4));
         }
     }
 
