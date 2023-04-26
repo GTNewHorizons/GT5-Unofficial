@@ -56,9 +56,11 @@ item.em.frontRotate.desc.1=Rotates only the front panel,
 item.em.frontRotate.desc.2=which allows structure rotation.
 
 item.em.parametrizerMemoryCard.name=Parametrizer Memory Card
+item.em.parametrizerMemoryCard.name.paste=Parametrizer Memory Card (Paste Mode)
+item.em.parametrizerMemoryCard.name.copy=Parametrizer Memory Card (Copy Mode)
 item.em.parametrizerMemoryCard.desc.0=Stores Parameters
-item.em.parametrizerMemoryCard.desc.1=Use on Parametrizer/Controller to configure it
-item.em.parametrizerMemoryCard.desc.2=Use on Parametrizer to store parameters
+item.em.parametrizerMemoryCard.desc.1=Use on Multiblock Controller to configure it
+item.em.parametrizerMemoryCard.desc.2=Use on Multiblock Controller to store parameters
 item.em.parametrizerMemoryCard.desc.3=Sneak right click to lock/unlock
 
 item.tm.teslaCoilCapacitor.0.name=LV Tesla Capacitor
