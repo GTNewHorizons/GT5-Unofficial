@@ -14,14 +14,18 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.Constants;
 
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_Param;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_ParamText;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.Parameters;
 import com.github.technus.tectech.util.CommonValues;
 import com.github.technus.tectech.util.TT_Utility;
 
@@ -51,71 +55,97 @@ public final class ParametrizerMemoryCard extends Item {
     public boolean onItemUseFirst(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ,
             int aSide, float hitX, float hitY, float hitZ) {
         TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if (aPlayer instanceof EntityPlayerMP) {
-            aStack.stackSize = 1;
-            if (tTileEntity instanceof IGregTechTileEntity) {
-                IMetaTileEntity metaTE = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity();
-                if (metaTE != null) {
-                    if (metaTE instanceof GT_MetaTileEntity_Hatch_Param) {
-                        GT_MetaTileEntity_Hatch_Param parametrizer = (GT_MetaTileEntity_Hatch_Param) metaTE;
-                        if (aStack.getTagCompound() == null) {
-                            aStack.setTagCompound(new NBTTagCompound());
-                        }
-                        NBTTagCompound tNBT = aStack.getTagCompound();
-                        if (aStack.getItemDamage() == 1) {
-                            // write to parametrizer
-                            parametrizer.param = tNBT.getInteger("param");
-                            parametrizer.value0D = tNBT.getDouble("value0D");
-                            parametrizer.value1D = tNBT.getDouble("value1D");
-                        } else {
-                            // read from parametrizer
-                            tNBT.setInteger("param", parametrizer.param);
-                            tNBT.setDouble("value0D", parametrizer.value0D);
-                            tNBT.setDouble("value1D", parametrizer.value1D);
-                            tNBT.removeTag("value0s");
-                            tNBT.removeTag("value1s");
-                        }
-                        return true;
-                    } else if (metaTE instanceof GT_MetaTileEntity_MultiblockBase_EM) {
-                        GT_MetaTileEntity_MultiblockBase_EM base = (GT_MetaTileEntity_MultiblockBase_EM) metaTE;
-                        if (aStack.getTagCompound() == null) {
-                            aStack.setTagCompound(new NBTTagCompound());
-                        }
-                        NBTTagCompound tNBT = aStack.getTagCompound();
-                        if (aStack.getItemDamage() == 1) {
-                            base.parametrization.trySetParameters(
-                                    tNBT.getInteger("param"),
-                                    tNBT.getDouble("value0D"),
-                                    tNBT.getDouble("value1D"));
-                            return true;
-                        }
-                    } else if (metaTE instanceof GT_MetaTileEntity_Hatch_ParamText) {
-                        GT_MetaTileEntity_Hatch_ParamText parametrizer = (GT_MetaTileEntity_Hatch_ParamText) metaTE;
-                        if (aStack.getTagCompound() == null) {
-                            aStack.setTagCompound(new NBTTagCompound());
-                        }
-                        NBTTagCompound tNBT = aStack.getTagCompound();
-                        if (aStack.getItemDamage() == 1) {
-                            // write to parametrizer
-                            parametrizer.param = tNBT.getInteger("param");
-                            parametrizer.value0D = tNBT.getDouble("value0D");
-                            parametrizer.value1D = tNBT.getDouble("value1D");
-                            parametrizer.value0s = tNBT.getString("value0s");
-                            parametrizer.value1s = tNBT.getString("value1s");
-                        } else {
-                            // read from parametrizer
-                            tNBT.setInteger("param", parametrizer.param);
-                            tNBT.setDouble("value0D", parametrizer.value0D);
-                            tNBT.setDouble("value1D", parametrizer.value1D);
-                            tNBT.setString("value0s", parametrizer.value0s);
-                            tNBT.setString("value1s", parametrizer.value1s);
-                        }
-                        return true;
-                    }
-                }
+        if (!(aPlayer instanceof EntityPlayerMP)) return false;
+        if (!(tTileEntity instanceof IGregTechTileEntity)) return false;
+        aStack.stackSize = 1;
+        IMetaTileEntity metaTE = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity();
+
+        if (metaTE instanceof GT_MetaTileEntity_Hatch_ParamText parametrizer) {
+            if (aStack.getTagCompound() == null) {
+                aStack.setTagCompound(new NBTTagCompound());
             }
+            NBTTagCompound tNBT = aStack.getTagCompound();
+            if (aStack.getItemDamage() == 1) {
+                // write to parametrizer
+                parametrizer.param = tNBT.getInteger("param");
+                parametrizer.value0D = tNBT.getDouble("value0D");
+                parametrizer.value1D = tNBT.getDouble("value1D");
+                parametrizer.value0s = tNBT.getString("value0s");
+                parametrizer.value1s = tNBT.getString("value1s");
+            } else {
+                // read from parametrizer
+                NBTTagCompound newTag = new NBTTagCompound();
+                newTag.setInteger("param", parametrizer.param);
+                newTag.setDouble("value0D", parametrizer.value0D);
+                newTag.setDouble("value1D", parametrizer.value1D);
+                newTag.setString("value0s", parametrizer.value0s);
+                newTag.setString("value1s", parametrizer.value1s);
+                aStack.setTagCompound(newTag);
+            }
+            return true;
+        } else if (metaTE instanceof GT_MetaTileEntity_Hatch_Param parametrizer) {
+            if (aStack.getTagCompound() == null) {
+                aStack.setTagCompound(new NBTTagCompound());
+            }
+            NBTTagCompound tNBT = aStack.getTagCompound();
+            if (aStack.getItemDamage() == 1) {
+                // write to parametrizer
+                parametrizer.param = tNBT.getInteger("param");
+                parametrizer.value0D = tNBT.getDouble("value0D");
+                parametrizer.value1D = tNBT.getDouble("value1D");
+            } else {
+                // read from parametrizer
+                NBTTagCompound newTag = new NBTTagCompound();
+                tNBT.setInteger("param", parametrizer.param);
+                tNBT.setDouble("value0D", parametrizer.value0D);
+                tNBT.setDouble("value1D", parametrizer.value1D);
+                aStack.setTagCompound(newTag);
+            }
+            return true;
+        } else if (metaTE instanceof GT_MetaTileEntity_MultiblockBase_EM controller) {
+            if (aStack.getTagCompound() == null) {
+                aStack.setTagCompound(new NBTTagCompound());
+            }
+            NBTTagCompound tNBT = aStack.getTagCompound();
+            if (aStack.getItemDamage() == 1) {
+                // write to controller
+                if (tNBT.hasKey("paramList", Constants.NBT.TAG_LIST)) {
+                    // from controller
+                    NBTTagList tagList = tNBT.getTagList("paramList", Constants.NBT.TAG_COMPOUND);
+                    for (int hatch = 0; hatch < 10; hatch++) {
+                        NBTTagCompound tag = tagList.getCompoundTagAt(hatch);
+                        if (tag.hasKey("value0D", Constants.NBT.TAG_DOUBLE)
+                                && tag.hasKey("value1D", Constants.NBT.TAG_DOUBLE)) {
+                            controller.parametrization
+                                    .trySetParameters(hatch, tag.getDouble("value0D"), tag.getDouble("value1D"));
+                        }
+                    }
+                } else {
+                    // from parametrizer
+                    controller.parametrization.trySetParameters(
+                            tNBT.getInteger("param"),
+                            tNBT.getDouble("value0D"),
+                            tNBT.getDouble("value1D"));
+                }
+            } else {
+                // read from controller
+                NBTTagCompound newTag = new NBTTagCompound();
+                NBTTagList tagList = new NBTTagList();
+                for (int hatch = 0; hatch < 10; hatch++) {
+                    NBTTagCompound tagChild = new NBTTagCompound();
+                    Parameters.Group.ParameterIn[] parameters = controller.parametrization.getGroup(hatch).parameterIn;
+                    if (parameters[0] != null && parameters[1] != null) {
+                        tagChild.setDouble("value0D", parameters[0].get());
+                        tagChild.setDouble("value1D", parameters[1].get());
+                    }
+                    tagList.appendTag(tagChild);
+                }
+                newTag.setTag("paramList", tagList);
+                aStack.setTagCompound(newTag);
+            }
+            return true;
         }
-        return aPlayer instanceof EntityPlayerMP;
+        return false;
     }
 
     @Override
@@ -133,26 +163,29 @@ public final class ParametrizerMemoryCard extends Item {
     }
 
     @Override
+    public String getItemStackDisplayName(ItemStack stack) {
+        if (stack.getItemDamage() == 1) {
+            return StatCollector.translateToLocal("item.em.parametrizerMemoryCard.name.paste");
+        } else {
+            return StatCollector.translateToLocal("item.em.parametrizerMemoryCard.name.copy");
+        }
+    }
+
+    @Override
     public void addInformation(ItemStack aStack, EntityPlayer ep, List<String> aList, boolean boo) {
         NBTTagCompound tNBT = aStack.getTagCompound();
         aList.add(CommonValues.THETA_MOVEMENT);
         aList.add(translateToLocal("item.em.parametrizerMemoryCard.desc.0")); // Stores Parameters
 
         if (aStack.getItemDamage() == 1) {
-            aList.add(EnumChatFormatting.BLUE + translateToLocal("item.em.parametrizerMemoryCard.desc.1")); // Use on
-                                                                                                            // Parametrizer/Controller
-                                                                                                            // to
-                                                                                                            // configure
-                                                                                                            // it
+            // Use on Multiblock Controller to configure it
+            aList.add(EnumChatFormatting.BLUE + translateToLocal("item.em.parametrizerMemoryCard.desc.1"));
         } else {
-            aList.add(EnumChatFormatting.BLUE + translateToLocal("item.em.parametrizerMemoryCard.desc.2")); // Use on
-                                                                                                            // Parametrizer
-                                                                                                            // to store
-                                                                                                            // parameters
+            // Use on Multiblock Controller to store parameters
+            aList.add(EnumChatFormatting.BLUE + translateToLocal("item.em.parametrizerMemoryCard.desc.2"));
         }
-        aList.add(EnumChatFormatting.BLUE + translateToLocal("item.em.parametrizerMemoryCard.desc.3")); // Sneak right
-                                                                                                        // click to
-                                                                                                        // lock/unlock
+        // Sneak right click to lock/unlock
+        aList.add(EnumChatFormatting.BLUE + translateToLocal("item.em.parametrizerMemoryCard.desc.3"));
 
         double temp;
         if (tNBT != null && tNBT.hasKey("param")) {

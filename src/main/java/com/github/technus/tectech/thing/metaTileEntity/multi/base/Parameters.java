@@ -146,8 +146,8 @@ public class Parameters {
     public class Group {
 
         private final int hatchNo;
-        final ParameterIn[] parameterIn = new ParameterIn[2];
-        final ParameterOut[] parameterOut = new ParameterOut[2];
+        public final ParameterIn[] parameterIn = new ParameterIn[2];
+        public final ParameterOut[] parameterOut = new ParameterOut[2];
         public boolean updateWhileRunning;
 
         private Group(int hatchNo, boolean updateWhileRunning) {
