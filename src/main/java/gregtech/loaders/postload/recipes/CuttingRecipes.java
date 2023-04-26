@@ -68,8 +68,7 @@ public class CuttingRecipes implements Runnable {
             for (int i = 0; i < 16; i++) {
                 recipeWithClassicFluids(
                     new ItemStack[] { new ItemStack(Blocks.stained_glass, 3, i) },
-                    new ItemStack[] { new ItemStack(Blocks.stained_glass, 3, i),
-                        new ItemStack(Blocks.stained_glass_pane, 8, i) },
+                    new ItemStack[] { new ItemStack(Blocks.stained_glass_pane, 8, i) },
                     2 * SECONDS + 10 * TICKS,
                     8,
                     false);
@@ -78,7 +77,7 @@ public class CuttingRecipes implements Runnable {
 
             recipeWithClassicFluids(
                 new ItemStack[] { new ItemStack(Blocks.glass, 3, 0) },
-                new ItemStack[] { new ItemStack(Blocks.glass, 3, 0), new ItemStack(Blocks.glass_pane, 8, 0) },
+                new ItemStack[] { new ItemStack(Blocks.glass_pane, 8, 0) },
                 2 * SECONDS + 10 * TICKS,
                 8,
                 false);
@@ -86,8 +85,7 @@ public class CuttingRecipes implements Runnable {
             if (TinkerConstruct.isModLoaded()) {
                 recipeWithClassicFluids(
                     new ItemStack[] { getModItem(TinkerConstruct.ID, "GlassBlock", 3L, 0) },
-                    new ItemStack[] { getModItem(TinkerConstruct.ID, "GlassBlock", 3L, 0),
-                        getModItem(TinkerConstruct.ID, "GlassPane", 8L, 0) },
+                    new ItemStack[] { getModItem(TinkerConstruct.ID, "GlassPane", 8L, 0) },
                     2 * SECONDS + 10 * TICKS,
                     8,
                     false);
@@ -98,50 +96,49 @@ public class CuttingRecipes implements Runnable {
         {
             recipeWithClassicFluids(
                 new ItemStack[] { new ItemStack(Blocks.stone, 1, 0) },
-                new ItemStack[] { new ItemStack(Blocks.stone, 1, 0), new ItemStack(Blocks.stone_slab, 2, 0) },
+                new ItemStack[] { new ItemStack(Blocks.stone_slab, 2, 0) },
                 1 * SECONDS + 5 * TICKS,
                 8,
                 false);
 
             recipeWithClassicFluids(
                 new ItemStack[] { new ItemStack(Blocks.sandstone, 1, 0) },
-                new ItemStack[] { new ItemStack(Blocks.sandstone, 1, 0), new ItemStack(Blocks.stone_slab, 2, 1) },
+                new ItemStack[] { new ItemStack(Blocks.stone_slab, 2, 1) },
                 1 * SECONDS + 5 * TICKS,
                 8,
                 false);
 
             recipeWithClassicFluids(
                 new ItemStack[] { new ItemStack(Blocks.cobblestone, 1, 0) },
-                new ItemStack[] { new ItemStack(Blocks.cobblestone, 1, 0), new ItemStack(Blocks.stone_slab, 2, 3) },
+                new ItemStack[] { new ItemStack(Blocks.stone_slab, 2, 3) },
                 1 * SECONDS + 5 * TICKS,
                 8,
                 false);
 
             recipeWithClassicFluids(
                 new ItemStack[] { new ItemStack(Blocks.brick_block, 1, 0) },
-                new ItemStack[] { new ItemStack(Blocks.brick_block, 1, 0), new ItemStack(Blocks.stone_slab, 2, 4) },
+                new ItemStack[] { new ItemStack(Blocks.stone_slab, 2, 4) },
                 1 * SECONDS + 5 * TICKS,
                 8,
                 false);
 
             recipeWithClassicFluids(
                 new ItemStack[] { new ItemStack(Blocks.stonebrick, 1, 0) },
-                new ItemStack[] { new ItemStack(Blocks.stonebrick, 1, 0), new ItemStack(Blocks.stone_slab, 2, 5) },
+                new ItemStack[] { new ItemStack(Blocks.stone_slab, 2, 5) },
                 1 * SECONDS + 5 * TICKS,
                 8,
                 false);
 
             recipeWithClassicFluids(
                 new ItemStack[] { new ItemStack(Blocks.nether_brick, 1, 0) },
-                new ItemStack[] { new ItemStack(Blocks.nether_brick, 1, 0), new ItemStack(Blocks.stone_slab, 2, 6) },
+                new ItemStack[] { new ItemStack(Blocks.stone_slab, 2, 6) },
                 1 * SECONDS + 5 * TICKS,
                 8,
                 false);
 
             recipeWithClassicFluids(
                 new ItemStack[] { new ItemStack(Blocks.quartz_block, 1, 32767) },
-                new ItemStack[] { new ItemStack(Blocks.quartz_block, 1, 32767),
-                    new ItemStack(Blocks.stone_slab, 2, 7) },
+                new ItemStack[] { new ItemStack(Blocks.stone_slab, 2, 7) },
                 1 * SECONDS + 5 * TICKS,
                 8,
                 false);
@@ -149,8 +146,7 @@ public class CuttingRecipes implements Runnable {
 
         recipeWithClassicFluids(
             new ItemStack[] { new ItemStack(Blocks.glowstone, 1, 0) },
-            new ItemStack[] { new ItemStack(Blocks.glowstone, 1, 0),
-                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Glowstone, 4) },
+            new ItemStack[] { GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Glowstone, 4) },
             5 * SECONDS,
             16,
             false);
@@ -158,7 +154,7 @@ public class CuttingRecipes implements Runnable {
         for (byte i = 0; i < 16; i++) {
             recipeWithClassicFluids(
                 new ItemStack[] { new ItemStack(Blocks.wool, 1, i) },
-                new ItemStack[] { new ItemStack(Blocks.wool, 1, i), new ItemStack(Blocks.carpet, 2, i) },
+                new ItemStack[] { new ItemStack(Blocks.carpet, 2, i) },
                 2 * SECONDS + 10 * TICKS,
                 8,
                 false);
@@ -172,7 +168,7 @@ public class CuttingRecipes implements Runnable {
             for (int i = 0; i < 6; i++) {
                 recipeWithClassicFluids(
                     new ItemStack[] { new ItemStack(Blocks.wooden_slab, 1, i) },
-                    new ItemStack[] { new ItemStack(Blocks.wooden_slab, 1, i), plankArray[i] },
+                    new ItemStack[] { plankArray[i] },
                     2 * SECONDS + 10 * TICKS,
                     8,
                     false);
@@ -195,14 +191,14 @@ public class CuttingRecipes implements Runnable {
 
                 recipeWithClassicFluids(
                     new ItemStack[] { slabWood },
-                    new ItemStack[] { slabWood, coverIDs[i] },
+                    new ItemStack[] { coverIDs[i] },
                     2 * SECONDS,
                     8,
                     false);
 
                 recipeWithClassicFluids(
                     new ItemStack[] { slabWoodFireproof },
-                    new ItemStack[] { slabWoodFireproof, coverIDs[i] },
+                    new ItemStack[] { coverIDs[i] },
                     2 * SECONDS,
                     8,
                     false);
@@ -214,9 +210,7 @@ public class CuttingRecipes implements Runnable {
             recipeWithClassicFluids(
                 new ItemStack[] {
                     getModItem(BuildCraftTransport.ID, "item.buildcraftPipe.pipestructurecobblestone", 1L, 0) },
-                new ItemStack[] {
-                    getModItem(BuildCraftTransport.ID, "item.buildcraftPipe.pipestructurecobblestone", 1L, 0),
-                    getModItem(BuildCraftTransport.ID, "pipePlug", 8L, 0) },
+                new ItemStack[] { getModItem(BuildCraftTransport.ID, "pipePlug", 8L, 0) },
                 1 * SECONDS + 12 * TICKS,
                 16,
                 false);
