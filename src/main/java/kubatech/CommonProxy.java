@@ -53,11 +53,11 @@ public class CommonProxy {
 
     public void init(FMLInitializationEvent event) {
         if (LoaderReference.MineTweaker) MTLoader.init();
-        if (LoaderReference.Thaumcraft) TCLoader.init();
     }
 
     public void postInit(FMLPostInitializationEvent event) {
         RecipeLoader.addRecipes();
+        if (LoaderReference.Thaumcraft) TCLoader.init();
     }
 
     public void serverAboutToStart(FMLServerAboutToStartEvent event) {}
