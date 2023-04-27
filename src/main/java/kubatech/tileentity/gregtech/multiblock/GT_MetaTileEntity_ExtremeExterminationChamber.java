@@ -684,7 +684,8 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
                 })
                     .addTooltip(0, new Text("Disabled").color(Color.RED.dark(3)))
                     .addTooltip(1, new Text("Enabled").color(Color.GREEN.dark(3)))
-                    .setVariableBackgroundGetter(toggleButtonBackgroundGetter)
+                    .setTextureGetter(toggleButtonTextureGetter)
+                    .setBackground(GT_UITextures.BUTTON_STANDARD)
                     .setSize(18, 18)
                     .addTooltip("Working status"))
                 .widget(configurationElements.setEnabled(widget -> !getBaseMetaTileEntity().isActive()))
@@ -721,7 +722,8 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
                 else GT_Utility.sendChatToPlayer(buildContext.getPlayer(), "Can't connect to the ritual");
             }
         })
-            .setVariableBackgroundGetter(toggleButtonBackgroundGetter)
+            .setTextureGetter(toggleButtonTextureGetter)
+            .setBackground(GT_UITextures.BUTTON_STANDARD)
             .setSize(18, 18)
             .addTooltip("Ritual mode"));
         configurationElements.widget(new CycleButtonWidget().setToggle(() -> mIsProducingInfernalDrops, v -> {
@@ -737,7 +739,8 @@ public class GT_MetaTileEntity_ExtremeExterminationChamber
                 .sendChatToPlayer(buildContext.getPlayer(), "Mobs will now be prevented from spawning infernal");
             else GT_Utility.sendChatToPlayer(buildContext.getPlayer(), "Mobs can spawn infernal now");
         })
-            .setVariableBackgroundGetter(toggleButtonBackgroundGetter)
+            .setTextureGetter(toggleButtonTextureGetter)
+            .setBackground(GT_UITextures.BUTTON_STANDARD)
             .setSize(18, 18)
             .addTooltip("Is allowed to spawn infernal mobs")
             .addTooltip(new Text("Does not affect mobs that are always infernal !").color(Color.GRAY.normal)));

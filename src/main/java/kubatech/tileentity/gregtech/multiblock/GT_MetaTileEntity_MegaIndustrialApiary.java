@@ -699,7 +699,8 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
                 })
                     .addTooltip(0, new Text("Disabled").color(Color.RED.dark(3)))
                     .addTooltip(1, new Text("Enabled").color(Color.GREEN.dark(3)))
-                    .setVariableBackgroundGetter(toggleButtonBackgroundGetter)
+                    .setTextureGetter(toggleButtonTextureGetter)
+                    .setBackground(GT_UITextures.BUTTON_STANDARD)
                     .setSize(18, 18)
                     .addTooltip("Working status"))
                 .widget(
@@ -896,15 +897,16 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
                         .addTooltip(0, new Text("Input").color(Color.YELLOW.dark(3)))
                         .addTooltip(1, new Text("Output").color(Color.YELLOW.dark(3)))
                         .addTooltip(2, new Text("Operating").color(Color.GREEN.dark(3)))
-                        .setVariableBackgroundGetter(
-                            i -> new IDrawable[] { ModularUITextures.VANILLA_BACKGROUND,
-                                GT_UITextures.OVERLAY_BUTTON_CYCLIC.withFixedSize(18, 18), i
-                                    == 0 ? new Text("Input").color(Color.YELLOW.dark(3))
-                                        .withFixedSize(70 - 18, 18, 15, 0)
-                                        : i == 1 ? new Text("Output").color(Color.YELLOW.dark(3))
-                                            .withFixedSize(70 - 18, 18, 15, 0)
-                                            : new Text("Operating").color(Color.GREEN.dark(3))
-                                                .withFixedSize(70 - 18, 18, 15, 0) })
+                        .setTextureGetter(
+                            i -> i == 0 ? new Text("Input").color(Color.YELLOW.dark(3))
+                                .withFixedSize(70 - 18, 18, 15, 0)
+                                : i == 1 ? new Text("Output").color(Color.YELLOW.dark(3))
+                                    .withFixedSize(70 - 18, 18, 15, 0)
+                                    : new Text("Operating").color(Color.GREEN.dark(3))
+                                        .withFixedSize(70 - 18, 18, 15, 0))
+                        .setBackground(
+                            ModularUITextures.VANILLA_BACKGROUND,
+                            GT_UITextures.OVERLAY_BUTTON_CYCLIC.withFixedSize(18, 18))
                         .setSize(70, 18)
                         .addTooltip("Primary mode"))
                     .widget(
@@ -930,13 +932,14 @@ public class GT_MetaTileEntity_MegaIndustrialApiary
                             })
                             .addTooltip(0, new Text("Normal").color(Color.GREEN.dark(3)))
                             .addTooltip(1, new Text("Swarmer").color(Color.YELLOW.dark(3)))
-                            .setVariableBackgroundGetter(
-                                i -> new IDrawable[] { ModularUITextures.VANILLA_BACKGROUND,
-                                    GT_UITextures.OVERLAY_BUTTON_CYCLIC.withFixedSize(18, 18), i
-                                        == 0 ? new Text("Normal").color(Color.GREEN.dark(3))
-                                            .withFixedSize(70 - 18, 18, 15, 0)
-                                            : new Text("Swarmer").color(Color.YELLOW.dark(3))
-                                                .withFixedSize(70 - 18, 18, 15, 0) })
+                            .setTextureGetter(
+                                i -> i == 0 ? new Text("Normal").color(Color.GREEN.dark(3))
+                                    .withFixedSize(70 - 18, 18, 15, 0)
+                                    : new Text("Swarmer").color(Color.YELLOW.dark(3))
+                                        .withFixedSize(70 - 18, 18, 15, 0))
+                            .setBackground(
+                                ModularUITextures.VANILLA_BACKGROUND,
+                                GT_UITextures.OVERLAY_BUTTON_CYCLIC.withFixedSize(18, 18))
                             .setSize(70, 18)
                             .addTooltip("Secondary mode"))
                     .setEnabled(widget -> !getBaseMetaTileEntity().isActive())

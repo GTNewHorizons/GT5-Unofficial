@@ -223,8 +223,7 @@ public abstract class KubaTechGTMultiBlockBase<T extends GT_MetaTileEntity_Exten
     }
 
     protected final Function<Widget, Boolean> isFixed = widget -> getIdealStatus() == getRepairStatus() && mMachine;
-    protected static final Function<Integer, IDrawable[]> toggleButtonBackgroundGetter = val -> {
-        if (val == 0) return new IDrawable[] { GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_CROSS };
-        else return new IDrawable[] { GT_UITextures.BUTTON_STANDARD, GT_UITextures.OVERLAY_BUTTON_CHECKMARK };
-    };
+    protected static final Function<Integer, IDrawable> toggleButtonTextureGetter = val -> val == 0
+        ? GT_UITextures.OVERLAY_BUTTON_CROSS
+        : GT_UITextures.OVERLAY_BUTTON_CHECKMARK;
 }
