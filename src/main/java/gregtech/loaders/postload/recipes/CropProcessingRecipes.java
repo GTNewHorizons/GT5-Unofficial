@@ -143,9 +143,7 @@ public class CropProcessingRecipes implements Runnable {
                 .addTo(UniversalChemical);
 
             GT_Values.RA.stdBuilder()
-                .itemInputs(
-                    GT_Utility.copyAmount(16, tCrop),
-                    GT_OreDictUnificator.get(OrePrefixes.crushed, aMaterial, 1))
+                .itemInputs(GT_Utility.copyAmount(16, tCrop))
                 .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.crushedPurified, aMaterial, 1))
                 .fluidInputs(Materials.UUMatter.getFluid(Math.max(1, ((aMaterial.getMass() + 9) / 10))))
                 .noFluidOutputs()
