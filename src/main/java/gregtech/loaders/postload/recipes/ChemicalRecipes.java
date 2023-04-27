@@ -716,25 +716,36 @@ public class ChemicalRecipes implements Runnable {
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Rutile, 1),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Rutile, 3),
                 GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Carbon, 2))
             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.cell, Materials.CarbonMonoxide, 2))
             .fluidInputs(Materials.Chlorine.getGas(4000))
             .fluidOutputs(Materials.Titaniumtetrachloride.getFluid(1000))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_HV)
-            .addTo(UniversalChemical);
+            .addTo(sChemicalRecipes);
 
         GT_Values.RA.stdBuilder()
             .itemInputs(
-                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Rutile, 1),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Rutile, 3),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 2))
             .noItemOutputs()
             .fluidInputs(Materials.Chlorine.getGas(4000))
             .fluidOutputs(Materials.Titaniumtetrachloride.getFluid(1000))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_HV)
-            .addTo(UniversalChemical);
+            .addTo(sChemicalRecipes);
+
+        GT_Values.RA.stdBuilder()
+            .itemInputs(
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Rutile, 3),
+                GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 2))
+            .noItemOutputs()
+            .fluidInputs(Materials.Chlorine.getGas(4000))
+            .fluidOutputs(Materials.CarbonMonoxide.getGas(2000), Materials.Titaniumtetrachloride.getFluid(1000))
+            .duration(20 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(sMultiblockChemicalRecipes);
 
         // 4Na + 2MgCl2 = 2Mg + 4NaCl
 
