@@ -99,20 +99,18 @@ public class GregtechFluidHandler {
         generateIC2FluidCell("SulfuricApatite");
 
         // Check for Hydrogen Chloride
-        if (ItemUtils.getItemStackOfAmountFromOreDict("cellHydrogenChloride", 1) == null) {
-            if (FluidUtils.getFluidStack("hydrogenchloride", 1) == null) {
-                FluidUtils.addGtFluid(
-                        "hydrogenChloride",
-                        "Industrial Strength Hydrogen Chloride",
-                        GT_Materials.HydrogenChloride,
-                        4,
-                        75,
-                        GT_OreDictUnificator.get(OrePrefixes.cell, GT_Materials.HydrogenChloride, 1L),
-                        ItemUtils.getEmptyCell(),
-                        1000,
-                        false);
-                generateIC2FluidCell("HydrogenChloride");
-            }
+        if (FluidUtils.getFluidStack("hydrogenchloride", 1) == null) {
+            FluidUtils.addGtFluid(
+                    "hydrogenChloride",
+                    "Industrial Strength Hydrogen Chloride",
+                    GT_Materials.HydrogenChloride,
+                    4,
+                    75,
+                    GT_OreDictUnificator.get(OrePrefixes.cell, GT_Materials.HydrogenChloride, 1L),
+                    ItemUtils.getEmptyCell(),
+                    1000,
+                    false);
+            generateIC2FluidCell("HydrogenChloride");
         }
 
         FluidUtils.addGtFluid(
