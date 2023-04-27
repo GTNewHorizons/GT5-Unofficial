@@ -734,7 +734,7 @@ public class ChemicalRecipes implements Runnable {
             .fluidOutputs(Materials.Titaniumtetrachloride.getFluid(1000))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_HV)
-            .addTo(UniversalChemical);
+            .addTo(sChemicalRecipes);
 
         // 4Na + 2MgCl2 = 2Mg + 4NaCl
 
