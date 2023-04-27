@@ -255,6 +255,7 @@ ig.siphon.structure.AdvMachineFrame=Advanced Machine Frame
 ig.siphon.structure.FrameTungstensteel=Tungstensteel Frame Box
 ig.siphon.structure.ReboltedRhodiumPalladiumCasing=Rebolted Rhodium-Plated Palladium Casing
 ig.elevator.structure.ProjectModule=Project Module
+ig.elevator.structure.Motor=Space Elevator Motor
 ig.elevator.structure.FrameNeutronium=Neutronium Frame Box
 ig.elevator.structure.Parametrizer=Parametrizer
 ig.elevator.structure.OpticalConnector=Optical Connector

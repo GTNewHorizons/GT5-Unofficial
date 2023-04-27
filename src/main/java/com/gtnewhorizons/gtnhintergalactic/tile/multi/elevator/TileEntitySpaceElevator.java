@@ -710,19 +710,8 @@ public class TileEntitySpaceElevator extends GT_MetaTileEntity_EnhancedMultiBloc
                 .addCasingInfoExactly(GCCoreUtil.translate("gt.blockcasings.ig.2.name"), 360, false)
                 .addCasingInfoExactly(GCCoreUtil.translate("gt.blockcasings.ig.cable.name"), 1, false)
                 .addCasingInfoExactly(GCCoreUtil.translate("ig.elevator.structure.FrameNeutronium"), 56, false)
-                .addInputBus(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-                .addOutputBus(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-                .addInputHatch(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-                .addOutputHatch(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
+                .addCasingInfoExactly(GCCoreUtil.translate("ig.elevator.structure.Motor"), 88, true)
                 .addEnergyHatch(GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"), 1)
-                .addOtherStructurePart(
-                        GCCoreUtil.translate("ig.elevator.structure.Parametrizer"),
-                        GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"),
-                        1)
-                .addOtherStructurePart(
-                        GCCoreUtil.translate("ig.elevator.structure.OpticalConnector"),
-                        GCCoreUtil.translate("ig.elevator.structure.AnyBaseCasingWith1Dot"),
-                        1)
                 .toolTipFinisher(DARK_PURPLE + Tags.MODNAME);
         return tt;
     }
