@@ -742,7 +742,7 @@ public class ChemicalRecipes implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 2))
             .noItemOutputs()
             .fluidInputs(Materials.Chlorine.getGas(4000))
-            .fluidOutputs(Materials.CarbonMonoxide.getFluid(2000), Materials.Titaniumtetrachloride.getFluid(1000))
+            .fluidOutputs(Materials.CarbonMonoxide.getGas(2000), Materials.Titaniumtetrachloride.getFluid(1000))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(sMultiblockChemicalRecipes);
