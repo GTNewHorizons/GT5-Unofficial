@@ -34,16 +34,17 @@ public class ProcessingTransforming implements IOreRecipeRegistrator {
             // Chemical bath recipes
             {
                 if (GT_OreDictUnificator.get(aPrefix, Materials.WoodSealed, 1L) != null) {
-				GT_Values.RA.stdBuilder()
-                    .itemInputs(GT_Utility.copyAmount(1L, aStack))
-                    .itemOutputs(GT_OreDictUnificator.get(aPrefix, Materials.WoodSealed, 1L))
-                    .fluidInputs(
-                        Materials.SeedOil
-                            .getFluid(GT_Utility.translateMaterialToAmount(aPrefix.mMaterialAmount, 120L, true)))
-                    .noFluidOutputs()
-                    .duration(5 * SECONDS)
-                    .eut(TierEU.ULV)
-                    .addTo(sChemicalBathRecipes);}
+                    GT_Values.RA.stdBuilder()
+                        .itemInputs(GT_Utility.copyAmount(1L, aStack))
+                        .itemOutputs(GT_OreDictUnificator.get(aPrefix, Materials.WoodSealed, 1L))
+                        .fluidInputs(
+                            Materials.SeedOil
+                                .getFluid(GT_Utility.translateMaterialToAmount(aPrefix.mMaterialAmount, 120L, true)))
+                        .noFluidOutputs()
+                        .duration(5 * SECONDS)
+                        .eut(TierEU.ULV)
+                        .addTo(sChemicalBathRecipes);
+                }
 
             }
             case "Iron" -> {
@@ -76,16 +77,17 @@ public class ProcessingTransforming implements IOreRecipeRegistrator {
                 // Chemical bath recipes
                 {
                     if (GT_OreDictUnificator.get(aPrefix, Materials.FierySteel, 1L) != null) {
-					GT_Values.RA.stdBuilder()
-                        .itemInputs(GT_Utility.copyAmount(1L, aStack))
-                        .itemOutputs(GT_OreDictUnificator.get(aPrefix, Materials.FierySteel, 1L))
-                        .fluidInputs(
-                            Materials.FierySteel
-                                .getFluid(GT_Utility.translateMaterialToAmount(aPrefix.mMaterialAmount, 225L, true)))
-                        .noFluidOutputs()
-                        .duration(5 * SECONDS)
-                        .eut(TierEU.ULV)
-					.addTo(sChemicalBathRecipes);}
+                        GT_Values.RA.stdBuilder()
+                            .itemInputs(GT_Utility.copyAmount(1L, aStack))
+                            .itemOutputs(GT_OreDictUnificator.get(aPrefix, Materials.FierySteel, 1L))
+                            .fluidInputs(
+                                Materials.FierySteel.getFluid(
+                                    GT_Utility.translateMaterialToAmount(aPrefix.mMaterialAmount, 225L, true)))
+                            .noFluidOutputs()
+                            .duration(5 * SECONDS)
+                            .eut(TierEU.ULV)
+                            .addTo(sChemicalBathRecipes);
+                    }
                 }
 
                 // Polarizer recipes
@@ -101,16 +103,17 @@ public class ProcessingTransforming implements IOreRecipeRegistrator {
                 // Chemical Bath recipes
                 {
                     if (GT_OreDictUnificator.get(aPrefix, Materials.FierySteel, 1L) != null) {
-					GT_Values.RA.stdBuilder()
-                        .itemInputs(GT_Utility.copyAmount(1L, aStack))
-                        .itemOutputs(GT_OreDictUnificator.get(aPrefix, Materials.FierySteel, 1L))
-                        .fluidInputs(
-                            Materials.FierySteel
-                                .getFluid(GT_Utility.translateMaterialToAmount(aPrefix.mMaterialAmount, 200L, true)))
-                        .noFluidOutputs()
-                        .duration(5 * SECONDS)
-                        .eut(TierEU.ULV)
-					.addTo(sChemicalBathRecipes);}
+                        GT_Values.RA.stdBuilder()
+                            .itemInputs(GT_Utility.copyAmount(1L, aStack))
+                            .itemOutputs(GT_OreDictUnificator.get(aPrefix, Materials.FierySteel, 1L))
+                            .fluidInputs(
+                                Materials.FierySteel.getFluid(
+                                    GT_Utility.translateMaterialToAmount(aPrefix.mMaterialAmount, 200L, true)))
+                            .noFluidOutputs()
+                            .duration(5 * SECONDS)
+                            .eut(TierEU.ULV)
+                            .addTo(sChemicalBathRecipes);
+                    }
                 }
 
                 // polarizer recipes
