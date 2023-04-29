@@ -164,14 +164,16 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
 
         if (!aNoSmashing) {
             // 2 double -> 1 quadruple plate
-            GT_Values.RA.stdBuilder()
-                .itemInputs(GT_Utility.copyAmount(2L, aStack), GT_Utility.getIntegratedCircuit(2))
-                .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.plateQuadruple, aMaterial, 1L))
-                .noFluidInputs()
-                .noFluidOutputs()
-                .duration(Math.max(aMaterialMass * 2L, 1L))
-                .eut(calculateRecipeEU(aMaterial, 96))
-                .addTo(sBenderRecipes);
+            if (GT_OreDictUnificator.get(OrePrefixes.plateQuadruple, aMaterial, 1L) != null) {
+                GT_Values.RA.stdBuilder()
+                    .itemInputs(GT_Utility.copyAmount(2L, aStack), GT_Utility.getIntegratedCircuit(2))
+                    .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.plateQuadruple, aMaterial, 1L))
+                    .noFluidInputs()
+                    .noFluidOutputs()
+                    .duration(Math.max(aMaterialMass * 2L, 1L))
+                    .eut(calculateRecipeEU(aMaterial, 96))
+                    .addTo(sBenderRecipes);
+            }
 
             if (GregTech_API.sRecipeFile.get(
                 gregtech.api.enums.ConfigCategories.Tools.hammerdoubleplate,

@@ -50,14 +50,16 @@ public class ProcessingStickLong implements gregtech.api.interfaces.IOreRecipeRe
         if (!aMaterial.contains(SubTag.NO_SMASHING)) {
             // Bender recipes
             {
-                GT_Values.RA.stdBuilder()
-                    .itemInputs(GT_Utility.copyAmount(1L, aStack), GT_Utility.getIntegratedCircuit(1))
-                    .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.spring, aMaterial, 1L))
-                    .noFluidInputs()
-                    .noFluidOutputs()
-                    .duration(10 * SECONDS)
-                    .eut(calculateRecipeEU(aMaterial, 16))
-                    .addTo(sBenderRecipes);
+                if (GT_OreDictUnificator.get(OrePrefixes.spring, aMaterial, 1L) != null) {
+                    GT_Values.RA.stdBuilder()
+                        .itemInputs(GT_Utility.copyAmount(1L, aStack), GT_Utility.getIntegratedCircuit(1))
+                        .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.spring, aMaterial, 1L))
+                        .noFluidInputs()
+                        .noFluidOutputs()
+                        .duration(10 * SECONDS)
+                        .eut(calculateRecipeEU(aMaterial, 16))
+                        .addTo(sBenderRecipes);
+                }
             }
 
             if (aMaterial.mUnificatable && (aMaterial.mMaterialInto == aMaterial))
