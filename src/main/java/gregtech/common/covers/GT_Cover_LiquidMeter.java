@@ -44,7 +44,7 @@ public class GT_Cover_LiquidMeter extends GT_CoverBehaviorBase<GT_Cover_LiquidMe
 
     @Override
     public LiquidMeterData createDataObject(int aLegacyData) {
-        return new LiquidMeterData(aLegacyData == 0, false, 0);
+        return new LiquidMeterData(aLegacyData == 0, 0);
     }
 
     @Override
@@ -89,11 +89,7 @@ public class GT_Cover_LiquidMeter extends GT_CoverBehaviorBase<GT_Cover_LiquidMe
     protected LiquidMeterData doCoverThingsImpl(ForgeDirection side, byte aInputRedstone, int aCoverID,
         LiquidMeterData aCoverVariable, ICoverable aTileEntity, long aTimer) {
         byte signal = computeSignalBasedOnFluid(aTileEntity, aCoverVariable.inverted, aCoverVariable.threshold);
-        if (aCoverVariable.strong) {
-            aTileEntity.setStrongOutputRedstoneSignal(side, signal);
-        } else {
-            aTileEntity.setOutputRedstoneSignal(side, signal);
-        }
+        aTileEntity.setOutputRedstoneSignal(side, signal);
 
         return aCoverVariable;
     }
@@ -192,8 +188,6 @@ public class GT_Cover_LiquidMeter extends GT_CoverBehaviorBase<GT_Cover_LiquidMe
         protected void addUIWidgets(ModularWindow.Builder builder) {
             final String INVERTED = GT_Utility.trans("INVERTED", "Inverted");
             final String NORMAL = GT_Utility.trans("NORMAL", "Normal");
-            final String STRONG = GT_Utility.trans("STRONG", "Strong");
-            final String WEAK = GT_Utility.trans("WEAK", "Weak");
             final int maxCapacity;
 
             if (getUIBuildContext().getTile() instanceof IFluidHandler) {
@@ -219,16 +213,6 @@ public class GT_Cover_LiquidMeter extends GT_CoverBehaviorBase<GT_Cover_LiquidMe
                             .addTooltip(1, INVERTED)
                             .setPos(spaceX * 0, spaceY * 0))
                     .addFollower(
-                        CoverDataFollower_ToggleButtonWidget.ofRedstone(),
-                        coverData -> coverData.strong,
-                        (coverData, state) -> {
-                            coverData.strong = state;
-                            return coverData;
-                        },
-                        widget -> widget.addTooltip(0, WEAK)
-                            .addTooltip(1, STRONG)
-                            .setPos(spaceX * 0, spaceY * 1))
-                    .addFollower(
                         new CoverDataFollower_TextFieldWidget<>(),
                         coverData -> String.valueOf(coverData.threshold),
                         (coverData, state) -> {
@@ -238,7 +222,7 @@ public class GT_Cover_LiquidMeter extends GT_CoverBehaviorBase<GT_Cover_LiquidMe
                         widget -> widget.setOnScrollNumbers(1000, 100, 100000)
                             .setNumbers(0, maxCapacity > 0 ? maxCapacity : Integer.MAX_VALUE)
                             .setFocusOnGuiOpen(true)
-                            .setPos(spaceX * 0, spaceY * 2 + 2)
+                            .setPos(spaceX * 0, spaceY * 1 + 2)
                             .setSize(spaceX * 4 + 5, 12))
                     .setPos(startX, startY))
                 .widget(
@@ -248,20 +232,14 @@ public class GT_Cover_LiquidMeter extends GT_CoverBehaviorBase<GT_Cover_LiquidMe
                         .setDefaultColor(COLOR_TEXT_GRAY.get())
                         .setPos(startX + spaceX * 1, 4 + startY + spaceY * 0))
                 .widget(
-                    TextWidget.dynamicString(() -> getCoverData() != null ? getCoverData().strong ? STRONG : WEAK : "")
-                        .setSynced(false)
-                        .setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(startX + spaceX * 1, 4 + startY + spaceY * 1))
-                .widget(
                     new TextWidget(GT_Utility.trans("222", "Fluid threshold")).setDefaultColor(COLOR_TEXT_GRAY.get())
-                        .setPos(startX + spaceX * 5 - 10, startY + spaceY * 2 + 4));
+                        .setPos(startX + spaceX * 5 - 10, startY + spaceY * 1 + 4));
         }
     }
 
     public static class LiquidMeterData implements ISerializableObject {
 
         private boolean inverted;
-        private boolean strong;
         /**
          * The special value {@code 0} means threshold check is disabled.
          */
@@ -269,20 +247,18 @@ public class GT_Cover_LiquidMeter extends GT_CoverBehaviorBase<GT_Cover_LiquidMe
 
         public LiquidMeterData() {
             inverted = false;
-            strong = false;
             threshold = 0;
         }
 
-        public LiquidMeterData(boolean inverted, boolean strong, int threshold) {
+        public LiquidMeterData(boolean inverted, int threshold) {
             this.inverted = inverted;
-            this.strong = strong;
             this.threshold = threshold;
         }
 
         @Nonnull
         @Override
         public ISerializableObject copy() {
-            return new LiquidMeterData(inverted, strong, threshold);
+            return new LiquidMeterData(inverted, threshold);
         }
 
         @Nonnull
@@ -290,7 +266,6 @@ public class GT_Cover_LiquidMeter extends GT_CoverBehaviorBase<GT_Cover_LiquidMe
         public NBTBase saveDataToNBT() {
             NBTTagCompound tag = new NBTTagCompound();
             tag.setBoolean("invert", inverted);
-            tag.setBoolean("strong", strong);
             tag.setInteger("threshold", threshold);
             return tag;
         }
@@ -298,7 +273,6 @@ public class GT_Cover_LiquidMeter extends GT_CoverBehaviorBase<GT_Cover_LiquidMe
         @Override
         public void writeToByteBuf(ByteBuf aBuf) {
             aBuf.writeBoolean(inverted);
-            aBuf.writeBoolean(strong);
             aBuf.writeInt(threshold);
         }
 
@@ -306,7 +280,6 @@ public class GT_Cover_LiquidMeter extends GT_CoverBehaviorBase<GT_Cover_LiquidMe
         public void loadDataFromNBT(NBTBase aNBT) {
             NBTTagCompound tag = (NBTTagCompound) aNBT;
             inverted = tag.getBoolean("invert");
-            strong = tag.getBoolean("strong");
             threshold = tag.getInteger("threshold");
         }
 
@@ -314,7 +287,6 @@ public class GT_Cover_LiquidMeter extends GT_CoverBehaviorBase<GT_Cover_LiquidMe
         @Override
         public ISerializableObject readFromPacket(ByteArrayDataInput aBuf, EntityPlayerMP aPlayer) {
             inverted = aBuf.readBoolean();
-            strong = aBuf.readBoolean();
             threshold = aBuf.readInt();
             return this;
         }

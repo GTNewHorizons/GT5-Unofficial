@@ -413,10 +413,6 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
 
         final int ordinalSide = side.ordinal();
         if (mSidedRedstone[ordinalSide] != cappedStrength || (mStrongRedstone & (1 << ordinalSide)) > 0) {
-            if ((mStrongRedstone & (1 << ordinalSide)) > 0) {
-                mStrongRedstone ^= (1 << ordinalSide);
-                issueBlockUpdate();
-            }
             mSidedRedstone[ordinalSide] = cappedStrength;
             issueBlockUpdate();
         }
@@ -424,15 +420,8 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
 
     @Override
     public void setStrongOutputRedstoneSignal(ForgeDirection side, byte strength) {
-        final byte cappedStrength = (byte) Math.min(Math.max(0, strength), 15);
-        if (side == ForgeDirection.UNKNOWN) return;
-
-        final int ordinalSide = side.ordinal();
-        if (mSidedRedstone[ordinalSide] != cappedStrength || (mStrongRedstone & (1 << ordinalSide)) == 0) {
-            mStrongRedstone |= (1 << ordinalSide);
-            mSidedRedstone[ordinalSide] = cappedStrength;
-            issueBlockUpdate();
-        }
+        mStrongRedstone |= (1 << side.ordinal());
+        setOutputRedstoneSignal(side, strength);
     }
 
     @Override
