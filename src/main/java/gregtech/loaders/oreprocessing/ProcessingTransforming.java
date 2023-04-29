@@ -70,16 +70,18 @@ public class ProcessingTransforming implements IOreRecipeRegistrator {
             case "Iron" -> {
                 // Chemical bath recipes
                 {
-                    GT_Values.RA.stdBuilder()
-                        .itemInputs(GT_Utility.copyAmount(1L, aStack))
-                        .itemOutputs(GT_OreDictUnificator.get(aPrefix, Materials.FierySteel, 1L))
-                        .fluidInputs(
-                            Materials.FierySteel
-                                .getFluid(GT_Utility.translateMaterialToAmount(aPrefix.mMaterialAmount, 250L, true)))
-                        .noFluidOutputs()
-                        .duration(5 * SECONDS)
-                        .eut(TierEU.ULV)
-                        .addTo(sChemicalBathRecipes);
+                    if (GT_OreDictUnificator.get(aPrefix, Materials.FierySteel, 1L) != null) {
+                        GT_Values.RA.stdBuilder()
+                            .itemInputs(GT_Utility.copyAmount(1L, aStack))
+                            .itemOutputs(GT_OreDictUnificator.get(aPrefix, Materials.FierySteel, 1L))
+                            .fluidInputs(
+                                Materials.FierySteel.getFluid(
+                                    GT_Utility.translateMaterialToAmount(aPrefix.mMaterialAmount, 250L, true)))
+                            .noFluidOutputs()
+                            .duration(5 * SECONDS)
+                            .eut(TierEU.ULV)
+                            .addTo(sChemicalBathRecipes);
+                    }
                 }
 
                 // Polarizer recipes
