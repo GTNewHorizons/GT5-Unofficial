@@ -23,14 +23,16 @@ public class ProcessingCrystallized implements gregtech.api.interfaces.IOreRecip
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
         ItemStack aStack) {
 
-        GT_Values.RA.stdBuilder()
-            .itemInputs(GT_Utility.copyAmount(1L, aStack))
-            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1L))
-            .noFluidInputs()
-            .noFluidOutputs()
-            .duration(10 * TICKS)
-            .eut(16)
-            .addTo(sHammerRecipes);
+        if (GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1L) != null) {
+            GT_Values.RA.stdBuilder()
+                .itemInputs(GT_Utility.copyAmount(1L, aStack))
+                .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1L))
+                .noFluidInputs()
+                .noFluidOutputs()
+                .duration(10 * TICKS)
+                .eut(16)
+                .addTo(sHammerRecipes);
+        }
 
         GT_ModHandler.addPulverisationRecipe(
             GT_Utility.copyAmount(1L, aStack),
