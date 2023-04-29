@@ -258,16 +258,19 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                 for (ItemStack is : OreDictionary.getOres("craftingLens" + aMaterial.mColor.mName.replace(" ", ""))) { // Engraver
                     // Laser engraver recipes
                     {
-                        is.stackSize = 0;
 
-                        GT_Values.RA.stdBuilder()
-                            .itemInputs(GT_Utility.copyAmount(3L, aStack), is)
-                            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.gemFlawless, aMaterial, 1L))
-                            .noFluidInputs()
-                            .noFluidOutputs()
-                            .duration(60 * SECONDS)
-                            .eut(TierEU.RECIPE_HV)
-                            .addTo(sLaserEngraverRecipes);
+                        if (GT_OreDictUnificator.get(OrePrefixes.gemFlawless, aMaterial, 1L) != null) {
+                            is.stackSize = 0;
+
+                            GT_Values.RA.stdBuilder()
+                                .itemInputs(GT_Utility.copyAmount(3L, aStack), is)
+                                .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.gemFlawless, aMaterial, 1L))
+                                .noFluidInputs()
+                                .noFluidOutputs()
+                                .duration(60 * SECONDS)
+                                .eut(TierEU.RECIPE_HV)
+                                .addTo(sLaserEngraverRecipes);
+                        }
 
                     }
                 }
