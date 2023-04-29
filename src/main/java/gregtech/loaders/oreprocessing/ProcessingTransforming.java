@@ -43,29 +43,7 @@ public class ProcessingTransforming implements IOreRecipeRegistrator {
                     .noFluidOutputs()
                     .duration(5 * SECONDS)
                     .eut(TierEU.ULV)
-                    .addTo(sChemicalBathRecipes);
-
-                GT_Values.RA.stdBuilder()
-                    .itemInputs(GT_Utility.copyAmount(1L, aStack))
-                    .itemOutputs(GT_OreDictUnificator.get(aPrefix, Materials.WoodSealed, 1L))
-                    .fluidInputs(
-                        Materials.SeedOilLin
-                            .getFluid(GT_Utility.translateMaterialToAmount(aPrefix.mMaterialAmount, 80L, true)))
-                    .noFluidOutputs()
-                    .duration(5 * SECONDS)
-                    .eut(TierEU.ULV)
-                    .addTo(sChemicalBathRecipes);
-
-                GT_Values.RA.stdBuilder()
-                    .itemInputs(GT_Utility.copyAmount(1L, aStack))
-                    .itemOutputs(GT_OreDictUnificator.get(aPrefix, Materials.WoodSealed, 1L))
-                    .fluidInputs(
-                        Materials.SeedOilHemp
-                            .getFluid(GT_Utility.translateMaterialToAmount(aPrefix.mMaterialAmount, 80L, true)))
-                    .noFluidOutputs()
-                    .duration(5 * SECONDS)
-                    .eut(TierEU.ULV)
-				.addTo(sChemicalBathRecipes);}
+                    .addTo(sChemicalBathRecipes);}
 
             }
             case "Iron" -> {
