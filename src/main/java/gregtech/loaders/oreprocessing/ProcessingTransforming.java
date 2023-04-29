@@ -33,7 +33,8 @@ public class ProcessingTransforming implements IOreRecipeRegistrator {
             case "Wood" ->
             // Chemical bath recipes
             {
-                GT_Values.RA.stdBuilder()
+                if (GT_OreDictUnificator.get(aPrefix, Materials.WoodSealed, 1L) != null) {
+				GT_Values.RA.stdBuilder()
                     .itemInputs(GT_Utility.copyAmount(1L, aStack))
                     .itemOutputs(GT_OreDictUnificator.get(aPrefix, Materials.WoodSealed, 1L))
                     .fluidInputs(
@@ -64,7 +65,7 @@ public class ProcessingTransforming implements IOreRecipeRegistrator {
                     .noFluidOutputs()
                     .duration(5 * SECONDS)
                     .eut(TierEU.ULV)
-                    .addTo(sChemicalBathRecipes);
+				.addTo(sChemicalBathRecipes);}
 
             }
             case "Iron" -> {
@@ -96,7 +97,8 @@ public class ProcessingTransforming implements IOreRecipeRegistrator {
             case "WroughtIron" -> {
                 // Chemical bath recipes
                 {
-                    GT_Values.RA.stdBuilder()
+                    if (GT_OreDictUnificator.get(aPrefix, Materials.FierySteel, 1L) != null) {
+					GT_Values.RA.stdBuilder()
                         .itemInputs(GT_Utility.copyAmount(1L, aStack))
                         .itemOutputs(GT_OreDictUnificator.get(aPrefix, Materials.FierySteel, 1L))
                         .fluidInputs(
@@ -105,7 +107,7 @@ public class ProcessingTransforming implements IOreRecipeRegistrator {
                         .noFluidOutputs()
                         .duration(5 * SECONDS)
                         .eut(TierEU.ULV)
-                        .addTo(sChemicalBathRecipes);
+					.addTo(sChemicalBathRecipes);}
                 }
 
                 // Polarizer recipes
@@ -120,7 +122,8 @@ public class ProcessingTransforming implements IOreRecipeRegistrator {
             case "Steel" -> {
                 // Chemical Bath recipes
                 {
-                    GT_Values.RA.stdBuilder()
+                    if (GT_OreDictUnificator.get(aPrefix, Materials.FierySteel, 1L) != null) {
+					GT_Values.RA.stdBuilder()
                         .itemInputs(GT_Utility.copyAmount(1L, aStack))
                         .itemOutputs(GT_OreDictUnificator.get(aPrefix, Materials.FierySteel, 1L))
                         .fluidInputs(
@@ -129,7 +132,7 @@ public class ProcessingTransforming implements IOreRecipeRegistrator {
                         .noFluidOutputs()
                         .duration(5 * SECONDS)
                         .eut(TierEU.ULV)
-                        .addTo(sChemicalBathRecipes);
+					.addTo(sChemicalBathRecipes);}
                 }
 
                 // polarizer recipes
