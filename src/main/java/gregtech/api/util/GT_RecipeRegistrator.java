@@ -399,7 +399,8 @@ public class GT_RecipeRegistrator {
 
         for (MaterialStack tMaterial : aData.getAllMaterialStacks()) {
             if (tMaterial.mMaterial.contains(SubTag.CRYSTAL) && !tMaterial.mMaterial.contains(SubTag.METAL)
-                && tMaterial.mMaterial != Materials.Glass) {
+                && tMaterial.mMaterial != Materials.Glass
+                && GT_OreDictUnificator.getDust(aData.mMaterial) != null) {
                 GT_Values.RA.stdBuilder()
                     .itemInputs(GT_Utility.copyAmount(1, aStack))
                     .itemOutputs(GT_OreDictUnificator.getDust(aData.mMaterial))
