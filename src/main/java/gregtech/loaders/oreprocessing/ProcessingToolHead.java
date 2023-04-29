@@ -1168,16 +1168,19 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                     }
 
                     // Turbine blades
-                    GT_Values.RA.stdBuilder()
-                        .itemInputs(
-                            GT_OreDictUnificator.get(OrePrefixes.plateDouble, aMaterial, 3L),
-                            GT_OreDictUnificator.get(OrePrefixes.screw, aMaterial, 2L))
-                        .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.turbineBlade, aMaterial, 1L))
-                        .noFluidInputs()
-                        .noFluidOutputs()
-                        .duration(10 * SECONDS)
-                        .eut(calculateRecipeEU(aMaterial, 60))
-                        .addTo(sPressRecipes);
+                    if (GT_OreDictUnificator.get(OrePrefixes.plateDouble, aMaterial, 1L) != null
+                        && GT_OreDictUnificator.get(OrePrefixes.screw, aMaterial, 1L) != null) {
+                        GT_Values.RA.stdBuilder()
+                            .itemInputs(
+                                GT_OreDictUnificator.get(OrePrefixes.plateDouble, aMaterial, 3L),
+                                GT_OreDictUnificator.get(OrePrefixes.screw, aMaterial, 2L))
+                            .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.turbineBlade, aMaterial, 1L))
+                            .noFluidInputs()
+                            .noFluidOutputs()
+                            .duration(10 * SECONDS)
+                            .eut(calculateRecipeEU(aMaterial, 60))
+                            .addTo(sPressRecipes);
+                    }
                 }
             }
             default -> {}
