@@ -1,11 +1,11 @@
 package com.gtnewhorizons.gtnhintergalactic.loader;
 
-import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-
 import com.gtnewhorizons.gtnhintergalactic.item.IGItems;
 import com.gtnewhorizons.gtnhintergalactic.tile.multi.TileEntityPlanetaryGasSiphon;
 import com.gtnewhorizons.gtnhintergalactic.tile.multi.elevator.TileEntitySpaceElevator;
 import com.gtnewhorizons.gtnhintergalactic.tile.multi.elevatormodules.*;
+
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 
 /**
  * Loader for all machines

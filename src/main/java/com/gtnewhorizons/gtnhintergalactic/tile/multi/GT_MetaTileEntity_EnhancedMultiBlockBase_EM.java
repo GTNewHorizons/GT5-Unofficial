@@ -3,13 +3,11 @@ package com.gtnewhorizons.gtnhintergalactic.tile.multi;
 import java.util.HashMap;
 import java.util.Map;
 
-import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
-
 import net.minecraftforge.common.util.ForgeDirection;
+
 import org.lwjgl.input.Keyboard;
 
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
@@ -20,6 +18,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 
 import gregtech.api.interfaces.ISecondaryDescribable;
 import gregtech.api.util.GT_Multiblock_Tooltip_Builder;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 
 public abstract class GT_MetaTileEntity_EnhancedMultiBlockBase_EM extends GT_MetaTileEntity_MultiblockBase_EM
         implements IConstructable, ISecondaryDescribable {
@@ -35,8 +34,8 @@ public abstract class GT_MetaTileEntity_EnhancedMultiBlockBase_EM extends GT_Met
     }
 
     @Override
-    public boolean onWrenchRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer, float aX, float aY,
-            float aZ) {
+    public boolean onWrenchRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer, float aX,
+            float aY, float aZ) {
         if (wrenchingSide != getBaseMetaTileEntity().getFrontFacing())
             return super.onWrenchRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ);
         if (aPlayer.isSneaking()) {

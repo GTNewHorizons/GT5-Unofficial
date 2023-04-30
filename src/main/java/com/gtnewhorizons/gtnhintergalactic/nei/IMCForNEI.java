@@ -3,6 +3,7 @@ package com.gtnewhorizons.gtnhintergalactic.nei;
 import net.minecraft.nbt.NBTTagCompound;
 
 import com.gtnewhorizons.gtnhintergalactic.Tags;
+
 import cpw.mods.fml.common.event.FMLInterModComms;
 
 public class IMCForNEI {

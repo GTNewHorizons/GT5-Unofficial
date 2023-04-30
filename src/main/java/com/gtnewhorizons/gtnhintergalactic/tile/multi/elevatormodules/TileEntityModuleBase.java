@@ -1,9 +1,8 @@
 package com.gtnewhorizons.gtnhintergalactic.tile.multi.elevatormodules;
 
-import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.*;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.render.TT_RenderedExtendedFacingTexture;
@@ -22,7 +21,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_StructureUtility;
 import gregtech.api.util.GT_Utility;
-import net.minecraftforge.common.util.ForgeDirection;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 
 /**
  * Base class for modules of the Space Elevator
@@ -343,8 +342,8 @@ public abstract class TileEntityModuleBase extends GT_MetaTileEntity_EnhancedMul
      * @return Texture array of this controller
      */
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing, int colorIndex,
-            boolean aActive, boolean aRedstone) {
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
+            int colorIndex, boolean aActive, boolean aRedstone) {
         if (side == facing) {
             return new ITexture[] {
                     Textures.BlockIcons.getCasingTextureForId(TileEntitySpaceElevator.CASING_INDEX_BASE),

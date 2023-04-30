@@ -9,6 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 
 import com.gtnewhorizons.gtnhintergalactic.GTNHIntergalactic;
+
 import gregtech.api.enums.Materials;
 
 /**

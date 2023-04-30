@@ -2,8 +2,6 @@ package com.gtnewhorizons.gtnhintergalactic.tile.multi.elevatormodules;
 
 import static net.minecraft.util.EnumChatFormatting.DARK_PURPLE;
 
-import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidStack;
@@ -23,6 +21,7 @@ import gregtech.api.util.GT_ParallelHelper;
 import gregtech.api.util.GT_Recipe;
 import gregtech.common.power.BasicMachineEUPower;
 import gregtech.common.power.Power;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 
 /**
  * Space Assembler project module of the Space Elevator
