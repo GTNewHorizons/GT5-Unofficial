@@ -1,21 +1,19 @@
 package common.blocks;
 
-import kekztech.KekzCore;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-import client.renderer.ConduitRenderer;
-
 import common.itemBlocks.IB_ItemProxyCable;
 import common.tileentities.TE_ItemProxyCable;
 
+import client.renderer.ConduitRenderer;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import kekztech.KekzCore;
 
 public class Block_ItemProxyCable extends Block {
 

@@ -15,14 +15,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 
-import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
-import thaumcraft.common.blocks.BlockJar;
-import thaumcraft.common.config.ConfigBlocks;
-import thaumcraft.common.config.ConfigItems;
-import thaumcraft.common.items.ItemEssence;
-import thaumcraft.common.tiles.TileJarFillable;
-
 import common.itemBlocks.IB_ThaumiumReinforcedJar;
 import common.tileentities.TE_ThaumiumReinforcedJar;
 import common.tileentities.TE_ThaumiumReinforcedVoidJar;
@@ -30,6 +22,13 @@ import common.tileentities.TE_ThaumiumReinforcedVoidJar;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import thaumcraft.api.aspects.Aspect;
+import thaumcraft.api.aspects.AspectList;
+import thaumcraft.common.blocks.BlockJar;
+import thaumcraft.common.config.ConfigBlocks;
+import thaumcraft.common.config.ConfigItems;
+import thaumcraft.common.items.ItemEssence;
+import thaumcraft.common.tiles.TileJarFillable;
 
 public class Block_ThaumiumReinforcedJar extends BlockJar {
 

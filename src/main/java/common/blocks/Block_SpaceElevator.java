@@ -11,6 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 
 import common.itemBlocks.IB_SpaceElevator;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public class Block_SpaceElevator extends BaseGTUpdateableBlock {

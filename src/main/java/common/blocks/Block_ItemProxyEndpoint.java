@@ -1,8 +1,5 @@
 package common.blocks;
 
-import kekztech.GuiHandler;
-import kekztech.KekzCore;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
@@ -12,7 +9,10 @@ import net.minecraft.world.World;
 
 import common.itemBlocks.IB_ItemProxyEndpoint;
 import common.tileentities.TE_ItemProxyEndpoint;
+
 import cpw.mods.fml.common.registry.GameRegistry;
+import kekztech.GuiHandler;
+import kekztech.KekzCore;
 
 public class Block_ItemProxyEndpoint extends Block {
 

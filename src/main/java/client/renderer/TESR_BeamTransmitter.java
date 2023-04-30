@@ -1,7 +1,5 @@
 package client.renderer;
 
-import kekztech.KekzCore;
-
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -12,6 +10,8 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
 import common.tileentities.TE_BeamTransmitter;
+
+import kekztech.KekzCore;
 
 public class TESR_BeamTransmitter extends TileEntitySpecialRenderer {
 

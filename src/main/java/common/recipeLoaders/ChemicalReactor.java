@@ -3,14 +3,13 @@ package common.recipeLoaders;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 import static gregtech.api.util.GT_RecipeConstants.UniversalChemical;
 
-import kekztech.Items;
-
 import common.items.MetaItem_CraftingComponent;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GT_Utility;
+import kekztech.Items;
 
 public class ChemicalReactor implements Runnable {
 

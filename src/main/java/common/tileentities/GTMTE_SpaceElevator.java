@@ -9,9 +9,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import util.Vector3i;
-import util.Vector3ic;
-
 import common.Blocks;
 
 import gregtech.api.enums.Dyes;
@@ -21,6 +18,8 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.objects.GT_RenderedTexture;
+import util.Vector3i;
+import util.Vector3ic;
 
 public class GTMTE_SpaceElevator extends GT_MetaTileEntity_MultiBlockBase {
 
@@ -78,12 +77,12 @@ public class GTMTE_SpaceElevator extends GT_MetaTileEntity_MultiBlockBase {
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-            boolean aActive, boolean aRedstone) {
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
+            int colorIndex, boolean aActive, boolean aRedstone) {
         ITexture[] sTexture = new ITexture[] { new GT_RenderedTexture(
                 Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS,
                 Dyes.getModulation(-1, Dyes._NULL.mRGBa)) };
-        if (aSide == aFacing && aActive) {
+        if (side == facing && aActive) {
             sTexture = new ITexture[] { new GT_RenderedTexture(
                     Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS_YELLOW,
                     Dyes.getModulation(-1, Dyes._NULL.mRGBa)) };
@@ -120,15 +119,15 @@ public class GTMTE_SpaceElevator extends GT_MetaTileEntity_MultiBlockBase {
     @Override
     public boolean checkMachine(IGregTechTileEntity thisController, ItemStack guiSlotItem) {
         // Make sure the controller is either facing up or down
-        if (thisController.getFrontFacing() > 1) {
+        if (thisController.getFrontFacing().offsetY != 0) {
             return false;
         }
 
         // Figure out the vector for the direction the back face of the controller is facing
         final Vector3ic forgeDirection = new Vector3i(
-                ForgeDirection.getOrientation(thisController.getBackFacing()).offsetX,
-                ForgeDirection.getOrientation(thisController.getBackFacing()).offsetY,
-                ForgeDirection.getOrientation(thisController.getBackFacing()).offsetZ);
+                thisController.getBackFacing().offsetX,
+                thisController.getBackFacing().offsetY,
+                thisController.getBackFacing().offsetZ);
         boolean formationChecklist = true;
         int minCasingAmount = 320;
         int firstCoilMeta = -1;

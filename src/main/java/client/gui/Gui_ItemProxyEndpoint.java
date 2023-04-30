@@ -1,7 +1,5 @@
 package client.gui;
 
-import kekztech.KekzCore;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.I18n;
@@ -14,6 +12,8 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
 import common.container.Container_ItemProxyEndpoint;
+
+import kekztech.KekzCore;
 
 public class Gui_ItemProxyEndpoint extends GuiContainer {
 

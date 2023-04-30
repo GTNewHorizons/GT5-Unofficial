@@ -2,8 +2,6 @@ package common.recipeLoaders;
 
 import net.minecraft.item.ItemStack;
 
-import util.Util;
-
 import common.Blocks;
 import common.TileEntities;
 
@@ -13,6 +11,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
+import util.Util;
 
 public class Crafting implements Runnable {
 

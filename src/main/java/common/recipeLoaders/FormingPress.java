@@ -3,13 +3,12 @@ package common.recipeLoaders;
 import static gregtech.api.util.GT_Recipe.GT_Recipe_Map.sPressRecipes;
 import static gregtech.api.util.GT_RecipeBuilder.SECONDS;
 
-import kekztech.Items;
-
 import common.items.MetaItem_CraftingComponent;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.TierEU;
+import kekztech.Items;
 
 public class FormingPress implements Runnable {
 

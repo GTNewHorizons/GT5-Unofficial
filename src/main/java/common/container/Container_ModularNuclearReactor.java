@@ -5,8 +5,8 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-import reactor.ButtonSlot;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import reactor.ButtonSlot;
 
 public class Container_ModularNuclearReactor extends Container {
 

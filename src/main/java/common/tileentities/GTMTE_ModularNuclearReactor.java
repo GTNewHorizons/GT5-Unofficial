@@ -67,9 +67,9 @@ public class GTMTE_ModularNuclearReactor extends GT_MetaTileEntity_MultiBlockBas
     }
 
     @Override
-    public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing,
-            final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
-        return aSide == aFacing
+    public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final ForgeDirection side,
+            final ForgeDirection facing, final int colorIndex, final boolean aActive, final boolean aRedstone) {
+        return side == facing
                 ? new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_TEXTURE_ID),
                         new GT_RenderedTexture(
                                 aActive ? Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER_ACTIVE
@@ -101,8 +101,8 @@ public class GTMTE_ModularNuclearReactor extends GT_MetaTileEntity_MultiBlockBas
     @Override
     public boolean checkMachine(IGregTechTileEntity thisController, ItemStack guiSlotItem) {
         // Figure out the vector for the direction the back face of the controller is facing
-        final int dirX = ForgeDirection.getOrientation(thisController.getBackFacing()).offsetX;
-        final int dirZ = ForgeDirection.getOrientation(thisController.getBackFacing()).offsetZ;
+        final int dirX = thisController.getBackFacing().offsetX;
+        final int dirZ = thisController.getBackFacing().offsetZ;
         int minCasingAmount = 100;
         boolean checklist = true; // if this is still true at the end, machine is good to go :)
 
