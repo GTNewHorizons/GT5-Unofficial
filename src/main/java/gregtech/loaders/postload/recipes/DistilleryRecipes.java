@@ -209,7 +209,7 @@ public class DistilleryRecipes implements Runnable {
         // (NaCl·H2O) = NaCl + H2O
 
         GT_Values.RA.stdBuilder()
-            .noItemInputs()
+            .itemInputs(GT_Utility.getIntegratedCircuit(1))
             .itemOutputs(Materials.Salt.getDust(2))
             .fluidInputs(Materials.SaltWater.getFluid(1000))
             .fluidOutputs(GT_ModHandler.getDistilledWater(1000))
