@@ -1291,8 +1291,8 @@ public class DistilleryRecipes implements Runnable {
         }
         buildDT.fluidInputs(aInput)
             .fluidOutputs(aOutputs)
-            .duration(20 * SECONDS)
-            .eut(TierEU.RECIPE_MV)
+            .duration(aDuration)
+            .eut(aEUt)
             .addTo(sDistillationRecipes);
     }
 
@@ -1321,8 +1321,8 @@ public class DistilleryRecipes implements Runnable {
         }
         buildDT.fluidInputs(aInput)
             .fluidOutputs(aOutputs)
-            .duration(20 * SECONDS)
-            .eut(TierEU.RECIPE_MV)
+            .duration(aDuration)
+            .eut(aEUt)
             .addTo(sDistillationRecipes);
     }
 }
