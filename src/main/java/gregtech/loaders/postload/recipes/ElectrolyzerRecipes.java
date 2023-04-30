@@ -81,7 +81,7 @@ public class ElectrolyzerRecipes implements Runnable {
             .addTo(sElectrolyzerRecipes);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Water, 1L), ItemList.Cell_Empty.get(0))
+            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Water, 1L))
             .itemOutputs(GT_ModHandler.getIC2Item("electrolyzedWaterCell", 1L))
             .noFluidInputs()
             .noFluidOutputs()
@@ -90,7 +90,7 @@ public class ElectrolyzerRecipes implements Runnable {
             .addTo(sElectrolyzerRecipes);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(ItemList.Dye_Bonemeal.get(3L), ItemList.Cell_Empty.get(0))
+            .itemInputs(ItemList.Dye_Bonemeal.get(3L))
             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Calcium, 1L))
             .noFluidInputs()
             .noFluidOutputs()
@@ -99,7 +99,7 @@ public class ElectrolyzerRecipes implements Runnable {
             .addTo(sElectrolyzerRecipes);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(new ItemStack(Blocks.sand, 8, 0), ItemList.Cell_Empty.get(0))
+            .itemInputs(new ItemStack(Blocks.sand, 8, 0))
             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 3L))
             .noFluidInputs()
             .noFluidOutputs()
@@ -108,7 +108,7 @@ public class ElectrolyzerRecipes implements Runnable {
             .addTo(sElectrolyzerRecipes);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(new ItemStack(Blocks.sand, 8, 1), ItemList.Cell_Empty.get(0))
+            .itemInputs(new ItemStack(Blocks.sand, 8, 1))
             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.SiliconDioxide, 3L))
             .noFluidInputs()
             .noFluidOutputs()
@@ -117,7 +117,7 @@ public class ElectrolyzerRecipes implements Runnable {
             .addTo(sElectrolyzerRecipes);
 
         GT_Values.RA.stdBuilder()
-            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Graphite, 1), ItemList.Cell_Empty.get(0))
+            .itemInputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Graphite, 1))
             .itemOutputs(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 4))
             .noFluidInputs()
             .noFluidOutputs()
