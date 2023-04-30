@@ -188,8 +188,8 @@ public class DissolutionTank extends GT_MetaTileEntity_EnhancedMultiBlockBase<Di
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity te, ForgeDirection side, ForgeDirection facing, int colorIndex, boolean active,
-            boolean redstone) {
+    public ITexture[] getTexture(IGregTechTileEntity te, ForgeDirection side, ForgeDirection facing, int colorIndex,
+            boolean active, boolean redstone) {
 
         if (side == facing) {
             if (active) return new ITexture[] { casingTexturePages[0][49],

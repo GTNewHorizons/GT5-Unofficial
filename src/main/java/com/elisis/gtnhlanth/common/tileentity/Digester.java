@@ -151,8 +151,8 @@ public class Digester extends GT_MetaTileEntity_EnhancedMultiBlockBase<Digester>
         return DescTextLocalization.addText("Digester.hint", 6);
     }
 
-    public ITexture[] getTexture(IGregTechTileEntity te, ForgeDirection side, ForgeDirection facing, int colorIndex, boolean active,
-            boolean redstone) {
+    public ITexture[] getTexture(IGregTechTileEntity te, ForgeDirection side, ForgeDirection facing, int colorIndex,
+            boolean active, boolean redstone) {
 
         // Oil Cracker textures cuz I'm lazy
 
