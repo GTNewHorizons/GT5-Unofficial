@@ -1,4 +1,4 @@
-//version: 1681680742
+//version: 1682616243
 /*
  DO NOT CHANGE THIS FILE!
  Also, you may replace this file at any time if there is an update available.
@@ -6,29 +6,25 @@
  */
 
 
-import com.diffplug.blowdryer.Blowdryer
-import com.github.jengelman.gradle.plugins.shadow.tasks.ConfigureShadowRelocation
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import com.gtnewhorizons.retrofuturagradle.ObfuscationAttribute
 import com.gtnewhorizons.retrofuturagradle.mcp.ReobfuscatedJar
 import com.gtnewhorizons.retrofuturagradle.minecraft.RunMinecraftTask
+import com.gtnewhorizons.retrofuturagradle.util.Distribution
 import com.matthewprenger.cursegradle.CurseArtifact
 import com.matthewprenger.cursegradle.CurseRelation
 import com.modrinth.minotaur.dependencies.ModDependency
 import com.modrinth.minotaur.dependencies.VersionDependency
-import cpw.mods.fml.relauncher.Side
-import org.gradle.api.tasks.options.Option;
 import org.gradle.internal.logging.text.StyledTextOutput.Style
 import org.gradle.internal.logging.text.StyledTextOutputFactory
 import org.gradle.internal.xml.XmlTransformer
-import org.jetbrains.gradle.ext.*
+import org.jetbrains.gradle.ext.Application
+import org.jetbrains.gradle.ext.Gradle
 
+import javax.inject.Inject
 import java.nio.file.Files
 import java.nio.file.Paths
 import java.util.concurrent.TimeUnit
-import java.util.zip.ZipEntry
-import java.util.zip.ZipOutputStream
-import javax.inject.Inject
 
 buildscript {
     repositories {
@@ -66,14 +62,14 @@ plugins {
     id 'org.jetbrains.kotlin.kapt' version '1.8.0' apply false
     id 'com.google.devtools.ksp' version '1.8.0-1.0.9' apply false
     id 'org.ajoberstar.grgit' version '4.1.1' // 4.1.1 is the last jvm8 supporting version, unused, available for addon.gradle
-    id 'com.github.johnrengelman.shadow' version '7.1.2' apply false
+    id 'com.github.johnrengelman.shadow' version '8.1.1' apply false
     id 'com.palantir.git-version' version '3.0.0' apply false
-    id 'de.undercouch.download' version '5.3.0'
+    id 'de.undercouch.download' version '5.4.0'
     id 'com.github.gmazzo.buildconfig' version '3.1.0' apply false // Unused, available for addon.gradle
-    id 'com.diffplug.spotless' version '6.7.2' apply false
+    id 'com.diffplug.spotless' version '6.13.0' apply false // 6.13.0 is the last jvm8 supporting version
     id 'com.modrinth.minotaur' version '2.+' apply false
     id 'com.matthewprenger.cursegradle' version '1.4.0' apply false
-    id 'com.gtnewhorizons.retrofuturagradle' version '1.2.5'
+    id 'com.gtnewhorizons.retrofuturagradle' version '1.3.7'
 }
 boolean settingsupdated = verifySettingsGradle()
 settingsupdated = verifyGitAttributes() || settingsupdated
@@ -133,7 +129,7 @@ propertyDefaultIfUnset("enableGenericInjection", false) // On by default for new
 // this is meant to be set using the user wide property file. by default we do nothing.
 propertyDefaultIfUnset("ideaOverrideBuildType", "") // Can be nothing, "gradle" or "idea"
 
-project.extensions.add(Blowdryer, "Blowdryer", Blowdryer) // Make blowdryer available in "apply from:" scripts
+project.extensions.add(com.diffplug.blowdryer.Blowdryer, "Blowdryer", com.diffplug.blowdryer.Blowdryer) // Make blowdryer available in "apply from:" scripts
 if (!disableSpotless) {
     apply plugin: 'com.diffplug.spotless'
     apply from: Blowdryer.file('spotless.gradle')
@@ -408,7 +404,7 @@ minecraft {
 
     username = developmentEnvironmentUserName.toString()
 
-    lwjgl3Version = "3.3.2-SNAPSHOT"
+    lwjgl3Version = "3.3.2"
 
     // Enable assertions in the current mod
     extraRunJvmArguments.add("-ea:${modGroup}")
@@ -722,13 +718,13 @@ ext.java17PatchDependenciesCfg = configurations.create("java17PatchDependencies"
 }
 
 dependencies {
-    def lwjgl3ifyVersion = '1.3.3'
+    def lwjgl3ifyVersion = '1.3.5'
     def asmVersion = '9.4'
     if (modId != 'lwjgl3ify') {
         java17Dependencies("com.github.GTNewHorizons:lwjgl3ify:${lwjgl3ifyVersion}")
     }
     if (modId != 'hodgepodge') {
-        java17Dependencies('com.github.GTNewHorizons:Hodgepodge:2.2.4')
+        java17Dependencies('com.github.GTNewHorizons:Hodgepodge:2.2.8')
     }
 
     java17PatchDependencies('net.minecraft:launchwrapper:1.15') {transitive = false}
@@ -802,7 +798,7 @@ public abstract class RunHotswappableMinecraftTask extends RunMinecraftTask {
     public boolean setEnableHotswap(boolean enable) { enableHotswap = enable }
 
     @Inject
-    public RunHotswappableMinecraftTask(Side side, String superTask, org.gradle.api.invocation.Gradle gradle) {
+    public RunHotswappableMinecraftTask(Distribution side, String superTask, org.gradle.api.invocation.Gradle gradle) {
         super(side, gradle)
 
         this.lwjglVersion = 3
@@ -811,7 +807,7 @@ public abstract class RunHotswappableMinecraftTask extends RunMinecraftTask {
         this.extraJvmArgs.addAll(project.provider(() -> enableHotswap ? project.hotswapJvmArgs : []))
 
         this.classpath(project.java17PatchDependenciesCfg)
-        if (side == Side.CLIENT) {
+        if (side == Distribution.CLIENT) {
             this.classpath(project.minecraftTasks.lwjgl3Configuration)
         }
         // Use a raw provider instead of map to not create a dependency on the task
@@ -823,7 +819,7 @@ public abstract class RunHotswappableMinecraftTask extends RunMinecraftTask {
     }
 }
 
-def runClient17Task = tasks.register("runClient17", RunHotswappableMinecraftTask, Side.CLIENT, "runClient")
+def runClient17Task = tasks.register("runClient17", RunHotswappableMinecraftTask, Distribution.CLIENT, "runClient")
 runClient17Task.configure {
     setup(project)
     group = "Modded Minecraft"
@@ -834,7 +830,7 @@ runClient17Task.configure {
     userUUID = minecraft.userUUID
 }
 
-def runServer17Task = tasks.register("runServer17", RunHotswappableMinecraftTask, Side.SERVER, "runServer")
+def runServer17Task = tasks.register("runServer17", RunHotswappableMinecraftTask, Distribution.DEDICATED_SERVER, "runServer")
 runServer17Task.configure {
     setup(project)
     group = "Modded Minecraft"
@@ -875,11 +871,6 @@ tasks.named("jar", Jar).configure {
 }
 
 if (usesShadowedDependencies.toBoolean()) {
-    tasks.register('relocateShadowJar', ConfigureShadowRelocation) {
-        target = tasks.shadowJar
-        prefix = modGroup + ".shadow"
-        enabled = relocateShadowedDependencies.toBoolean()
-    }
     tasks.named("shadowJar", ShadowJar).configure {
         manifest {
             attributes(getManifestAttributes())
@@ -895,7 +886,8 @@ if (usesShadowedDependencies.toBoolean()) {
         ]
         archiveClassifier.set('dev')
         if (relocateShadowedDependencies.toBoolean()) {
-            dependsOn(relocateShadowJar)
+            relocationPrefix = modGroup + ".shadow"
+            enableRelocation = true
         }
     }
     configurations.runtimeElements.outgoing.artifacts.clear()
@@ -1228,7 +1220,7 @@ def addCurseForgeRelation(String type, String name) {
 
 // Updating
 
-def buildscriptGradleVersion = "8.0.2"
+def buildscriptGradleVersion = "8.1.1"
 
 tasks.named('wrapper', Wrapper).configure {
     gradleVersion = buildscriptGradleVersion

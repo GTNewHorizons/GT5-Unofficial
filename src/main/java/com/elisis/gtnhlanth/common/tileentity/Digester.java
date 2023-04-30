@@ -15,6 +15,7 @@ import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 import java.util.ArrayList;
 
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.elisis.gtnhlanth.loader.RecipeAdder;
@@ -150,8 +151,7 @@ public class Digester extends GT_MetaTileEntity_EnhancedMultiBlockBase<Digester>
         return DescTextLocalization.addText("Digester.hint", 6);
     }
 
-    @Override
-    public ITexture[] getTexture(IGregTechTileEntity te, byte side, byte facing, byte colorIndex, boolean active,
+    public ITexture[] getTexture(IGregTechTileEntity te, ForgeDirection side, ForgeDirection facing, int colorIndex, boolean active,
             boolean redstone) {
 
         // Oil Cracker textures cuz I'm lazy
