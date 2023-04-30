@@ -2679,7 +2679,7 @@ public class ChemicalRecipes implements Runnable {
             .itemInputs(
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Tin, 1),
                 GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Saltpeter, 1))
-            .itemOutputs(getModItem(Railcraft.ID, "tile.railcraft.glass", 6))
+            .itemOutputs(getModItem(Railcraft.ID, "glass", 6))
             .fluidInputs(Materials.Glass.getMolten(864))
             .noFluidOutputs()
             .duration(2 * SECONDS + 10 * TICKS)
