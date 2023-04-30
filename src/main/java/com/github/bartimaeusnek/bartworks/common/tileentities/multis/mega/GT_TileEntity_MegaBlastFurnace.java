@@ -45,6 +45,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -308,6 +309,15 @@ public class GT_TileEntity_MegaBlastFurnace extends GT_TileEntity_MegaMultiBlock
                 || addInputToMachineList(aTileEntity, aBaseCasingIndex)
                 || addOutputToMachineList(aTileEntity, aBaseCasingIndex)
                 || addEnergyInputToMachineList(aTileEntity, aBaseCasingIndex);
+    }
+
+    @Override
+    protected String[] getExtendedInfoData() {
+        return new String[] { StatCollector.translateToLocal("GT5U.EBF.heat") + ": "
+                + EnumChatFormatting.GREEN
+                + GT_Utility.formatNumbers(mHeatingCapacity)
+                + EnumChatFormatting.RESET
+                + " K" };
     }
 
     @Override

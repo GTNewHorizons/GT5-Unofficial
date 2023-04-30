@@ -5,6 +5,7 @@ import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.Mods.TecTech;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -137,6 +138,10 @@ public abstract class GT_TileEntity_MegaMultiBlockBase<T extends GT_TileEntity_M
         return TecTech.isModLoaded() ? this.getInfoDataArray(this) : super.getInfoData();
     }
 
+    protected String[] getExtendedInfoData() {
+        return new String[0];
+    }
+
     @Override
     public String[] getInfoDataArray(GT_MetaTileEntity_MultiBlockBase multiBlockBase) {
         int mPollutionReduction = 0;
@@ -163,7 +168,9 @@ public abstract class GT_TileEntity_MegaMultiBlockBase<T extends GT_TileEntity_M
         String tName = BW_Util.getTierNameFromVoltage(nominalV);
         if (tName.equals("MAX+")) tName = EnumChatFormatting.OBFUSCATED + "MAX+";
 
-        return new String[] {
+        String[] extendedInfo = getExtendedInfoData();
+
+        String[] baseInfo = new String[] {
                 StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
                         + EnumChatFormatting.GREEN
                         + GT_Utility.formatNumbers(this.mProgresstime / 20)
@@ -216,8 +223,15 @@ public abstract class GT_TileEntity_MegaMultiBlockBase<T extends GT_TileEntity_M
                         + EnumChatFormatting.GREEN
                         + mPollutionReduction
                         + EnumChatFormatting.RESET
-                        + " %",
-                BW_Tooltip_Reference.BW };
+                        + " %" };
+
+        String[] combinedInfo = Arrays.copyOf(baseInfo, baseInfo.length + extendedInfo.length + 1);
+
+        System.arraycopy(extendedInfo, 0, combinedInfo, baseInfo.length, extendedInfo.length);
+
+        combinedInfo[combinedInfo.length - 1] = BW_Tooltip_Reference.BW;
+
+        return combinedInfo;
     }
 
     /**
