@@ -581,8 +581,8 @@ public class TileEntitySpaceElevator extends GT_MetaTileEntity_EnhancedMultiBloc
             } else if (!isLoadedChunk) {
                 // load a 3x3 area when machine is running
                 GT_ChunkManager.releaseTicket((TileEntity) aBaseMetaTileEntity);
-                int offX = ForgeDirection.getOrientation(aBaseMetaTileEntity.getFrontFacing()).offsetX;
-                int offZ = ForgeDirection.getOrientation(aBaseMetaTileEntity.getFrontFacing()).offsetZ;
+                int offX = aBaseMetaTileEntity.getFrontFacing().offsetX;
+                int offZ = aBaseMetaTileEntity.getFrontFacing().offsetZ;
                 for (int i = -1; i < 2; i++) {
                     for (int j = -1; j < 2; j++) {
                         GT_ChunkManager.requestChunkLoad(
@@ -720,17 +720,17 @@ public class TileEntitySpaceElevator extends GT_MetaTileEntity_EnhancedMultiBloc
      * Get the texture of this controller
      *
      * @param aBaseMetaTileEntity This
-     * @param aSide               Side for which the texture will be gotten
-     * @param aFacing             Facing side of the controller
-     * @param aColorIndex         Color index
+     * @param side                Side for which the texture will be gotten
+     * @param facing              Facing side of the controller
+     * @param colorIndex          Color index
      * @param aActive             Flag if the controller is active
      * @param aRedstone           Flag if Redstone is present
      * @return Texture array of this controller
      */
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing, int colorIndex,
             boolean aActive, boolean aRedstone) {
-        if (aSide == aFacing) {
+        if (side == facing) {
             return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_BASE),
                     new TT_RenderedExtendedFacingTexture(
                             aActive ? GT_MetaTileEntity_MultiblockBase_EM.ScreenON

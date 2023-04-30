@@ -20,6 +20,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -224,7 +225,7 @@ public class TileEntityPlanetaryGasSiphon extends GT_MetaTileEntity_EnhancedMult
      * @return Texture of this controller for the input conditions
      */
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, byte side, byte facing, byte colorIndex,
+    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection facing, int colorIndex,
             boolean active, boolean redstone) {
         if (side == facing) {
             if (active) return new ITexture[] {
@@ -433,7 +434,7 @@ public class TileEntityPlanetaryGasSiphon extends GT_MetaTileEntity_EnhancedMult
      * @return True if event was processed, else false
      */
     @Override
-    public boolean onSolderingToolRightClick(byte side, byte wrenchingSide, EntityPlayer player, float x, float y,
+    public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer player, float x, float y,
             float z) {
         if (side == getBaseMetaTileEntity().getFrontFacing()) {
             mChunkLoadingEnabled = !mChunkLoadingEnabled;

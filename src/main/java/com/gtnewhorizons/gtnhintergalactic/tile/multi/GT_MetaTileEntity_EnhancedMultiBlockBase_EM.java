@@ -9,6 +9,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 
+import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.input.Keyboard;
 
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
@@ -34,10 +35,10 @@ public abstract class GT_MetaTileEntity_EnhancedMultiBlockBase_EM extends GT_Met
     }
 
     @Override
-    public boolean onWrenchRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY,
+    public boolean onWrenchRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer, float aX, float aY,
             float aZ) {
-        if (aWrenchingSide != getBaseMetaTileEntity().getFrontFacing())
-            return super.onWrenchRightClick(aSide, aWrenchingSide, aPlayer, aX, aY, aZ);
+        if (wrenchingSide != getBaseMetaTileEntity().getFrontFacing())
+            return super.onWrenchRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ);
         if (aPlayer.isSneaking()) {
             // we won't be allowing horizontal flips, as it can be perfectly emulated by rotating twice and flipping
             // horizontally
