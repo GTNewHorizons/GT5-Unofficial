@@ -16,7 +16,7 @@ dependencies {
     compile('net.industrial-craft:industrialcraft-2:2.2.828-experimental:dev')
 
     compileOnly('com.github.GTNewHorizons:EnderCore:0.2.13:dev') {transitive=false}
-    compileOnly('com.github.GTNewHorizons:AppleCore:3.1.10:dev') {transitive = false}
+    compileOnly('com.github.GTNewHorizons:AppleCore:3.2.10:dev') {transitive = false}
     compileOnly('com.github.GTNewHorizons:Railcraft:9.14.1:dev') {transitive = false}
     compileOnly('com.github.GTNewHorizons:EnderIO:2.4.11:dev') {transitive=false}
     compileOnly('com.github.GTNewHorizons:ExtraCells2:2.5.33:dev') {transitive=false}
