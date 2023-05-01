@@ -11,7 +11,7 @@ dependencies {
 
     compileOnly('com.github.GTNewHorizons:OpenModularTurrets:2.2.11-247:dev') {transitive=false}
     compileOnly('com.github.GTNewHorizons:OpenComputers:1.9.4-GTNH:dev') {transitive=false}
-    compileOnly('com.github.GTNewHorizons:GTplusplus:1.8.38-pre:dev') {transitive=false}
+    compileOnly('com.github.GTNewHorizons:GTplusplus:1.9.1:dev') {transitive=false}
 
     compileOnly('curse.maven:cofh-lib-220333:2388748') {transitive=false}
     compileOnly('curse.maven:computercraft-67504:2269339') {transitive=false}
