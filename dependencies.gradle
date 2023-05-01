@@ -10,7 +10,7 @@ dependencies {
     }
 
     api("com.github.GTNewHorizons:Galacticraft:3.0.68-GTNH:dev")
-    api("com.github.GTNewHorizons:ModularUI:1.1.3:dev")
+    api("com.github.GTNewHorizons:ModularUI:1.1.2:dev")
 
     api("com.github.GTNewHorizons:Avaritia:1.39:dev")
 
