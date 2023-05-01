@@ -24,6 +24,7 @@ import java.util.Map;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.github.bartimaeusnek.crossmod.emt.recipe.TCRecipeHandler;
@@ -177,8 +178,8 @@ public class GT_Industrial_Alchemic_Construct extends GT_MetaTileEntity_MultiBlo
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity iGregTechTileEntity, byte b, byte b1, byte b2, boolean b3,
-            boolean b4) {
+    public ITexture[] getTexture(IGregTechTileEntity iGregTechTileEntity, ForgeDirection side, ForgeDirection facing,
+            int colorIndex, boolean b3, boolean b4) {
         return new ITexture[0];
     }
 }

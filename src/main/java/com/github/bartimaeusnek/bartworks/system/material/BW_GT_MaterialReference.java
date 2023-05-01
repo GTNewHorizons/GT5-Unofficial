@@ -19,6 +19,7 @@ import static com.github.bartimaeusnek.bartworks.system.material.Werkstoff.Types
 import static com.github.bartimaeusnek.bartworks.system.material.Werkstoff.Types.MIXTURE;
 
 import com.github.bartimaeusnek.bartworks.MainMod;
+
 import gregtech.api.enums.Materials;
 
 public class BW_GT_MaterialReference {

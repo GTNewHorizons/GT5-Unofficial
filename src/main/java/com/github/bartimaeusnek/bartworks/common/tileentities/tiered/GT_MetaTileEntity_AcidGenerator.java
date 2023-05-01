@@ -14,6 +14,7 @@
 package com.github.bartimaeusnek.bartworks.common.tileentities.tiered;
 
 import net.minecraft.util.StatCollector;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import com.github.bartimaeusnek.bartworks.util.BWRecipes;
 import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
@@ -121,8 +122,8 @@ public class GT_MetaTileEntity_AcidGenerator extends GT_MetaTileEntity_BasicGene
                 TextureFactory.of(Textures.BlockIcons.MACHINE_CASING_ACIDHAZARD) };
     }
 
-    public boolean isOutputFacing(byte aSide) {
-        return aSide == this.getBaseMetaTileEntity().getFrontFacing();
+    public boolean isOutputFacing(ForgeDirection side) {
+        return side == this.getBaseMetaTileEntity().getFrontFacing();
     }
 
     public String[] getDescription() {

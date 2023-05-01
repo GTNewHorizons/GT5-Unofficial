@@ -23,6 +23,7 @@ import static gregtech.api.util.GT_StructureUtility.ofHatchAdder;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -352,9 +353,9 @@ public class GT_TileEntity_THTR extends GT_MetaTileEntity_EnhancedMultiBlockBase
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-            boolean aActive, boolean aRedstone) {
-        if (aSide == aFacing) {
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
+            int aColorIndex, boolean aActive, boolean aRedstone) {
+        if (side == facing) {
             if (aActive)
                 return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(GT_TileEntity_THTR.BASECASINGINDEX),
                         TextureFactory.builder().addIcon(Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER_ACTIVE)
@@ -371,7 +372,7 @@ public class GT_TileEntity_THTR extends GT_MetaTileEntity_EnhancedMultiBlockBase
     }
 
     @Override
-    public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (this.mMaxProgresstime > 0) {
             GT_Utility.sendChatToPlayer(aPlayer, "THTR mode cannot be changed while the machine is running.");
             return;

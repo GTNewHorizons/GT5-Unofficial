@@ -40,6 +40,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
@@ -209,8 +210,8 @@ public class GT_TileEntity_MegaVacuumFreezer extends GT_TileEntity_MegaMultiBloc
     }
 
     @Override
-    public boolean onWireCutterRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY,
-            float aZ) {
+    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
+            float aX, float aY, float aZ) {
         if (aPlayer.isSneaking()) {
             batchMode = !batchMode;
             if (batchMode) {
@@ -309,10 +310,10 @@ public class GT_TileEntity_MegaVacuumFreezer extends GT_TileEntity_MegaMultiBloc
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-            boolean aActive, boolean aRedstone) {
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
+            int aColorIndex, boolean aActive, boolean aRedstone) {
         ITexture[] rTexture;
-        if (aSide == aFacing) {
+        if (side == facing) {
             if (aActive) {
                 rTexture = new ITexture[] { casingTexturePages[0][17],
                         TextureFactory.builder().addIcon(OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE).extFacing().build(),

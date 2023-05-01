@@ -25,6 +25,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import com.github.bartimaeusnek.bartworks.API.modularUI.BW_UITextures;
 import com.github.bartimaeusnek.bartworks.MainMod;
@@ -212,9 +213,8 @@ public class GT_TileEntity_LESU extends GT_MetaTileEntity_MultiBlockBase {
     }
 
     @Override
-    @SuppressWarnings("ALL")
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-            boolean aActive, boolean aRedstone) {
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
+            int aColorIndex, boolean aActive, boolean aRedstone) {
 
         ITexture[] ret = new ITexture[0];
 
@@ -225,10 +225,10 @@ public class GT_TileEntity_LESU extends GT_MetaTileEntity_MultiBlockBase {
                         .of(GT_TileEntity_LESU.iIconContainers[i], Dyes.getModulation(0, Dyes.MACHINE_METAL.mRGBa));
             }
 
-            if (aSide == aFacing && this.getBaseMetaTileEntity().getUniversalEnergyStored() <= 0)
+            if (side == facing && this.getBaseMetaTileEntity().getUniversalEnergyStored() <= 0)
                 ret = GT_TileEntity_LESU.iTextures[GT_TileEntity_LESU.TEXID_EMPTY];
-            else if (aSide == aFacing && !aActive) ret = GT_TileEntity_LESU.iTextures[GT_TileEntity_LESU.TEXID_IDLE];
-            else if (aSide == aFacing && aActive) ret = GT_TileEntity_LESU.iTextures[GT_TileEntity_LESU.TEXID_CHARGING];
+            else if (side == facing && !aActive) ret = GT_TileEntity_LESU.iTextures[GT_TileEntity_LESU.TEXID_IDLE];
+            else if (side == facing && aActive) ret = GT_TileEntity_LESU.iTextures[GT_TileEntity_LESU.TEXID_CHARGING];
             else ret = GT_TileEntity_LESU.iTextures[GT_TileEntity_LESU.TEXID_SIDE];
         }
 
@@ -305,13 +305,13 @@ public class GT_TileEntity_LESU extends GT_MetaTileEntity_MultiBlockBase {
     }
 
     @Override
-    public boolean isInputFacing(byte aSide) {
-        return aSide != this.getBaseMetaTileEntity().getFrontFacing();
+    public boolean isInputFacing(ForgeDirection side) {
+        return side != this.getBaseMetaTileEntity().getFrontFacing();
     }
 
     @Override
-    public boolean isOutputFacing(byte aSide) {
-        return aSide == this.getBaseMetaTileEntity().getFrontFacing();
+    public boolean isOutputFacing(ForgeDirection side) {
+        return side == this.getBaseMetaTileEntity().getFrontFacing();
     }
 
     @Override

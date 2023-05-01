@@ -15,6 +15,7 @@ package com.github.bartimaeusnek.bartworks.system.material;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.ITexture;
@@ -23,7 +24,7 @@ import gregtech.api.render.TextureFactory;
 public class BW_MetaGeneratedOreTE extends BW_MetaGenerated_Block_TE {
 
     @Override
-    public ITexture[] getTexture(Block aBlock, byte aSide) {
+    public ITexture[] getTexture(Block aBlock, ForgeDirection side) {
         Werkstoff aMaterial = Werkstoff.werkstoffHashMap.get(this.mMetaData);
         if ((aMaterial != null)) {
             ITexture aIconSet = TextureFactory

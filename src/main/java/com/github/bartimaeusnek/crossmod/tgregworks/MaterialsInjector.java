@@ -10,12 +10,6 @@ import java.util.HashMap;
 
 import net.minecraftforge.common.config.Property;
 
-import tconstruct.library.TConstructRegistry;
-import vexatos.tgregworks.TGregworks;
-import vexatos.tgregworks.integration.TGregRegistry;
-import vexatos.tgregworks.item.ItemTGregPart;
-import vexatos.tgregworks.reference.Config;
-
 import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
 
@@ -24,6 +18,11 @@ import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import tconstruct.library.TConstructRegistry;
+import vexatos.tgregworks.TGregworks;
+import vexatos.tgregworks.integration.TGregRegistry;
+import vexatos.tgregworks.item.ItemTGregPart;
+import vexatos.tgregworks.reference.Config;
 
 @Mod(
         modid = MaterialsInjector.MOD_ID,

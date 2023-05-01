@@ -18,6 +18,7 @@ import java.util.Optional;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.interfaces.ITexture;
@@ -59,22 +60,24 @@ public abstract class TT_Abstract_LowPowerLaserThingy extends GT_MetaTileEntity_
     }
 
     @Override
-    public boolean allowPullStack(IGregTechTileEntity iGregTechTileEntity, int i, byte b, ItemStack itemStack) {
+    public boolean allowPullStack(IGregTechTileEntity iGregTechTileEntity, int i, ForgeDirection side,
+            ItemStack itemStack) {
         return false;
     }
 
     @Override
-    public boolean allowPutStack(IGregTechTileEntity iGregTechTileEntity, int i, byte b, ItemStack itemStack) {
+    public boolean allowPutStack(IGregTechTileEntity iGregTechTileEntity, int i, ForgeDirection side,
+            ItemStack itemStack) {
         return false;
     }
 
     @Override
-    public boolean isInputFacing(byte aSide) {
+    public boolean isInputFacing(ForgeDirection side) {
         return true;
     }
 
     @Override
-    public boolean isOutputFacing(byte aSide) {
+    public boolean isOutputFacing(ForgeDirection side) {
         return true;
     }
 
@@ -109,7 +112,7 @@ public abstract class TT_Abstract_LowPowerLaserThingy extends GT_MetaTileEntity_
     }
 
     @Override
-    public boolean isFacingValid(byte aFacing) {
+    public boolean isFacingValid(ForgeDirection facing) {
         return true;
     }
 

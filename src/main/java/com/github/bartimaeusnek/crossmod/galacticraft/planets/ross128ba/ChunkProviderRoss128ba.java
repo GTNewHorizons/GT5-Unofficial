@@ -16,12 +16,6 @@ package com.github.bartimaeusnek.crossmod.galacticraft.planets.ross128ba;
 import java.util.Arrays;
 import java.util.Random;
 
-import micdoodle8.mods.galacticraft.api.prefab.world.gen.MapGenBaseMeta;
-import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
-import micdoodle8.mods.galacticraft.core.world.gen.BiomeGenBaseMoon;
-import micdoodle8.mods.galacticraft.core.world.gen.ChunkProviderMoon;
-import micdoodle8.mods.galacticraft.core.world.gen.MapGenCavesMoon;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFalling;
 import net.minecraft.init.Blocks;
@@ -32,7 +26,13 @@ import net.minecraft.world.chunk.IChunkProvider;
 
 import com.github.bartimaeusnek.bartworks.util.NoiseUtil.BartsNoise;
 import com.github.bartimaeusnek.crossmod.galacticraft.planets.ross128b.ChunkProviderRoss128b;
+
 import gregtech.api.objects.XSTR;
+import micdoodle8.mods.galacticraft.api.prefab.world.gen.MapGenBaseMeta;
+import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
+import micdoodle8.mods.galacticraft.core.world.gen.BiomeGenBaseMoon;
+import micdoodle8.mods.galacticraft.core.world.gen.ChunkProviderMoon;
+import micdoodle8.mods.galacticraft.core.world.gen.MapGenCavesMoon;
 
 public class ChunkProviderRoss128ba extends ChunkProviderMoon {
 

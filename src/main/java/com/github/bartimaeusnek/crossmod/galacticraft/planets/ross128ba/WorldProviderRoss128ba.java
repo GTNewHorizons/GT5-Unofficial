@@ -13,16 +13,16 @@
 
 package com.github.bartimaeusnek.crossmod.galacticraft.planets.ross128ba;
 
-import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
-import micdoodle8.mods.galacticraft.api.vector.Vector3;
-import micdoodle8.mods.galacticraft.core.world.gen.WorldChunkManagerMoon;
-
 import net.minecraft.world.biome.WorldChunkManager;
 import net.minecraft.world.chunk.IChunkProvider;
 
 import com.github.bartimaeusnek.bartworks.util.MathUtils;
 import com.github.bartimaeusnek.crossmod.galacticraft.planets.AbstractWorldProviderSpace;
 import com.github.bartimaeusnek.crossmod.galacticraft.solarsystems.Ross128SolarSystem;
+
+import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
+import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.core.world.gen.WorldChunkManagerMoon;
 
 public class WorldProviderRoss128ba extends AbstractWorldProviderSpace {
 

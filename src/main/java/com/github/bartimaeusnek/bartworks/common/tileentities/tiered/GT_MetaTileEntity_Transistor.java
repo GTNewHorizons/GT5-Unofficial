@@ -92,7 +92,7 @@ public class GT_MetaTileEntity_Transistor extends GT_MetaTileEntity_TieredMachin
 
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide()) {
-            byte side = (byte) ForgeDirection.EAST.flag;
+            final ForgeDirection side = ForgeDirection.EAST;
             if (aBaseMetaTileEntity.inputEnergyFrom(side)) {
                 TileEntity tTileEntity = aBaseMetaTileEntity.getTileEntityAtSide(side);
                 if (!(tTileEntity instanceof IBasicEnergyContainer)) {
@@ -100,8 +100,7 @@ public class GT_MetaTileEntity_Transistor extends GT_MetaTileEntity_TieredMachin
                     return;
                 }
                 IBasicEnergyContainer tileAtSide = (IBasicEnergyContainer) tTileEntity;
-                if (!tileAtSide.outputsEnergyTo((byte) ForgeDirection.WEST.flag)
-                        || !tileAtSide.isUniversalEnergyStored(4L)) {
+                if (!tileAtSide.outputsEnergyTo(ForgeDirection.WEST) || !tileAtSide.isUniversalEnergyStored(4L)) {
                     this.powered = false;
                     return;
                 }
@@ -140,18 +139,20 @@ public class GT_MetaTileEntity_Transistor extends GT_MetaTileEntity_TieredMachin
     public void loadNBTData(NBTTagCompound nbtTagCompound) {}
 
     @Override
-    public boolean allowPullStack(IGregTechTileEntity iGregTechTileEntity, int i, byte b, ItemStack itemStack) {
+    public boolean allowPullStack(IGregTechTileEntity iGregTechTileEntity, int i, ForgeDirection side,
+            ItemStack itemStack) {
         return false;
     }
 
     @Override
-    public boolean allowPutStack(IGregTechTileEntity iGregTechTileEntity, int i, byte b, ItemStack itemStack) {
+    public boolean allowPutStack(IGregTechTileEntity iGregTechTileEntity, int i, ForgeDirection side,
+            ItemStack itemStack) {
         return false;
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity iGregTechTileEntity, byte b, byte b1, byte b2, boolean b3,
-            boolean b4) {
+    public ITexture[] getTexture(IGregTechTileEntity iGregTechTileEntity, ForgeDirection side, ForgeDirection facing,
+            int colorIndex, boolean b3, boolean b4) {
         return new ITexture[0];
     }
 }

@@ -23,6 +23,7 @@ import com.github.bartimaeusnek.bartworks.common.tileentities.multis.GT_TileEnti
 import com.github.bartimaeusnek.bartworks.util.BW_ColorUtil;
 import com.github.bartimaeusnek.bartworks.util.Coords;
 import com.google.common.io.ByteArrayDataInput;
+
 import gregtech.api.net.GT_Packet;
 
 public class RendererPacket extends GT_Packet {

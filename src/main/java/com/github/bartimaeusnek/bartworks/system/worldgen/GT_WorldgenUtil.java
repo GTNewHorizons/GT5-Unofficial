@@ -18,6 +18,7 @@ import java.util.Random;
 import net.minecraft.block.Block;
 
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
+
 import gregtech.api.GregTech_API;
 
 public class GT_WorldgenUtil {

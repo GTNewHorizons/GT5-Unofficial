@@ -25,6 +25,7 @@ import net.minecraftforge.common.DimensionManager;
 
 import com.github.bartimaeusnek.bartworks.common.items.Circuit_Programmer;
 import com.google.common.io.ByteArrayDataInput;
+
 import gregtech.api.net.GT_Packet;
 
 public class CircuitProgrammerPacket extends GT_Packet {

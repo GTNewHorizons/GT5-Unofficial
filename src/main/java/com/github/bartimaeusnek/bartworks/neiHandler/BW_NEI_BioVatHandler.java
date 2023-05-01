@@ -17,13 +17,12 @@ import java.util.Collections;
 
 import net.minecraft.item.ItemStack;
 
+import com.github.bartimaeusnek.bartworks.common.items.LabParts;
+
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.GuiCraftingRecipe;
 import codechicken.nei.recipe.GuiUsageRecipe;
 import codechicken.nei.recipe.TemplateRecipeHandler;
-
-import com.github.bartimaeusnek.bartworks.common.items.LabParts;
-
 import cpw.mods.fml.common.event.FMLInterModComms;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.util.GT_Recipe;

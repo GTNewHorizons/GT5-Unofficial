@@ -22,6 +22,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import com.github.bartimaeusnek.bartworks.API.modularUI.BW_UITextures;
 import com.github.bartimaeusnek.bartworks.MainMod;
@@ -276,8 +277,7 @@ public class GT_MetaTileEntity_RadioHatch extends GT_MetaTileEntity_Hatch implem
         return true;
     }
 
-    @Override
-    public boolean isFacingValid(byte aFacing) {
+    public boolean isFacingValid(ForgeDirection facing) {
         return true;
     }
 
@@ -292,13 +292,15 @@ public class GT_MetaTileEntity_RadioHatch extends GT_MetaTileEntity_Hatch implem
     }
 
     @Override
-    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
+            ItemStack aStack) {
         return false;
     }
 
     @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
-        return aSide == this.getBaseMetaTileEntity().getFrontFacing()
+    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
+            ItemStack aStack) {
+        return side == this.getBaseMetaTileEntity().getFrontFacing()
                 && BWRecipes.instance.getMappingsFor(BWRecipes.RADHATCH).containsInput(aStack);
     }
 

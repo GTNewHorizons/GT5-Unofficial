@@ -13,12 +13,13 @@
 
 package com.github.bartimaeusnek.crossmod.tectech.tileentites.tiered;
 
+import net.minecraftforge.common.util.ForgeDirection;
+
 import com.github.technus.tectech.mechanics.pipe.IConnectsToEnergyTunnel;
 import com.github.technus.tectech.thing.metaTileEntity.pipe.GT_MetaTileEntity_Pipe_Energy;
 
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.util.GT_Utility;
 
 public interface LowPowerLaser extends IMetaTileEntity, IConnectsToEnergyTunnel {
 
@@ -28,7 +29,7 @@ public interface LowPowerLaser extends IMetaTileEntity, IConnectsToEnergyTunnel 
 
     boolean isTunnel();
 
-    default boolean isConnectedCorrectly(byte side) {
+    default boolean isConnectedCorrectly(ForgeDirection side) {
         return false;
     }
 
@@ -57,8 +58,8 @@ public interface LowPowerLaser extends IMetaTileEntity, IConnectsToEnergyTunnel 
     default void moveAroundLowPower(IGregTechTileEntity aBaseMetaTileEntity) {
         byte color = this.getBaseMetaTileEntity().getColorization();
         if (color >= 0) {
-            byte front = aBaseMetaTileEntity.getFrontFacing();
-            byte opposite = GT_Utility.getOppositeSide(front);
+            ForgeDirection front = aBaseMetaTileEntity.getFrontFacing();
+            ForgeDirection opposite = front.getOpposite();
 
             for (short dist = 1; dist < 250; ++dist) {
                 IGregTechTileEntity tGTTileEntity = aBaseMetaTileEntity

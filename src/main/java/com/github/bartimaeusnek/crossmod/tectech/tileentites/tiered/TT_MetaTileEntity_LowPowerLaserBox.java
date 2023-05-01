@@ -13,6 +13,8 @@
 
 package com.github.bartimaeusnek.crossmod.tectech.tileentites.tiered;
 
+import net.minecraftforge.common.util.ForgeDirection;
+
 import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
 import com.github.bartimaeusnek.bartworks.util.ChatColorHelper;
 
@@ -80,8 +82,8 @@ public class TT_MetaTileEntity_LowPowerLaserBox extends TT_Abstract_LowPowerLase
     }
 
     @Override
-    public boolean canConnect(byte aSide) {
-        return aSide == this.getBaseMetaTileEntity().getFrontFacing();
+    public boolean canConnect(ForgeDirection side) {
+        return side == this.getBaseMetaTileEntity().getFrontFacing();
     }
 
     @Override
@@ -150,9 +152,10 @@ public class TT_MetaTileEntity_LowPowerLaserBox extends TT_Abstract_LowPowerLase
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-            boolean aActive, boolean aRedstone) {
-        return this.mTextures[Math.min(2, aSide) + (aSide == aFacing ? 3 : 0) + (aActive ? 0 : 6)][aColorIndex + 1];
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
+            int aColorIndex, boolean aActive, boolean aRedstone) {
+        return this.mTextures[Math.min(2, side.ordinal()) + (side == facing ? 3 : 0) + (aActive ? 0 : 6)][aColorIndex
+                + 1];
     }
 
     @Override

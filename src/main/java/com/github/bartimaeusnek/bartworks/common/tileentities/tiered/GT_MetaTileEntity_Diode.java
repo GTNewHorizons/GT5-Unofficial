@@ -16,6 +16,7 @@ package com.github.bartimaeusnek.bartworks.common.tileentities.tiered;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
 import com.github.bartimaeusnek.bartworks.util.BW_Tooltip_Reference;
@@ -53,8 +54,8 @@ public class GT_MetaTileEntity_Diode extends GT_MetaTileEntity_BasicHull {
     }
 
     @Override
-    public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ);
 
         if (this.getBaseMetaTileEntity().getWorld().isRemote) return;
         if (!aPlayer.isSneaking()) {

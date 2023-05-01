@@ -13,17 +13,17 @@
 
 package com.github.bartimaeusnek.crossmod.galaxySpace.tileEntity;
 
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 
 public class DysonSwarmSunReplacement extends MetaTileEntity {
 
@@ -90,12 +90,14 @@ public class DysonSwarmSunReplacement extends MetaTileEntity {
     }
 
     @Override
-    public boolean allowPullStack(IGregTechTileEntity iGregTechTileEntity, int i, byte b, ItemStack itemStack) {
+    public boolean allowPullStack(IGregTechTileEntity iGregTechTileEntity, int i, ForgeDirection side,
+            ItemStack itemStack) {
         return false;
     }
 
     @Override
-    public boolean allowPutStack(IGregTechTileEntity iGregTechTileEntity, int i, byte b, ItemStack itemStack) {
+    public boolean allowPutStack(IGregTechTileEntity iGregTechTileEntity, int i, ForgeDirection side,
+            ItemStack itemStack) {
         return false;
     }
 
@@ -105,8 +107,8 @@ public class DysonSwarmSunReplacement extends MetaTileEntity {
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity iGregTechTileEntity, byte b, byte b1, byte b2, boolean b3,
-            boolean b4) {
+    public ITexture[] getTexture(IGregTechTileEntity iGregTechTileEntity, ForgeDirection side, ForgeDirection facing,
+            int colorIndex, boolean b3, boolean b4) {
         return new ITexture[0];
     }
 }

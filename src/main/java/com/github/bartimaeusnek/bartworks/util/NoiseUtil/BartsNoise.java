@@ -17,6 +17,7 @@ import java.util.Random;
 
 import com.github.bartimaeusnek.bartworks.API.INoiseGen;
 import com.github.bartimaeusnek.bartworks.util.MathUtils;
+
 import gregtech.api.objects.XSTR;
 
 public class BartsNoise implements INoiseGen {

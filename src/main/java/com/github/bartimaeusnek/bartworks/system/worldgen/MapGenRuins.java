@@ -27,6 +27,7 @@ import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraftforge.common.ChestGenHooks;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import com.github.bartimaeusnek.bartworks.util.Pair;
 
@@ -37,7 +38,6 @@ import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.objects.XSTR;
 import gregtech.api.threads.GT_Runnable_MachineBlockUpdate;
-import gregtech.api.util.GT_Utility;
 
 @SuppressWarnings({ "ALL" })
 public abstract class MapGenRuins extends WorldGenerator {
@@ -138,7 +138,8 @@ public abstract class MapGenRuins extends WorldGenerator {
         } else this.setBlock(worldObj, x, y, z, Blocks.air, 0);
     }
 
-    protected void setGTMachine(World worldObj, int x, int y, int z, int meta, String ownerName, byte facing) {
+    protected void setGTMachine(World worldObj, int x, int y, int z, int meta, String ownerName,
+            ForgeDirection facing) {
         try {
             GT_Runnable_MachineBlockUpdate.setDisabled();
         } catch (Throwable ignored) {}
@@ -154,7 +155,7 @@ public abstract class MapGenRuins extends WorldGenerator {
     }
 
     private void checkTile(BaseMetaTileEntity BTE, World worldObj, int x, int y, int z, int meta, String ownerName,
-            byte facing, int depth) {
+            ForgeDirection facing, int depth) {
         if (depth < 25) {
             if (BTE.getMetaTileID() != meta || worldObj.getTileEntity(x, y, z) != BTE || BTE.isInvalid()) {
                 redoTile(BTE, worldObj, x, y, z, meta, ownerName, facing);
@@ -167,7 +168,7 @@ public abstract class MapGenRuins extends WorldGenerator {
     }
 
     private void redoTile(BaseMetaTileEntity BTE, World worldObj, int x, int y, int z, int meta, String ownerName,
-            byte facing) {
+            ForgeDirection facing) {
         reSetGTTileEntity(BTE, worldObj, x, y, z, meta);
         BTE = (BaseMetaTileEntity) worldObj.getTileEntity(x, y, z);
         BTE.setOwnerName(ownerName);
@@ -181,7 +182,7 @@ public abstract class MapGenRuins extends WorldGenerator {
         BaseMetaPipeEntity BTE = (BaseMetaPipeEntity) setGTMachineBlock(worldObj, x, y, z, meta);
         MetaPipeEntity MPE = (MetaPipeEntity) BTE.getMetaTileEntity();
         BTE.mConnections |= (byte) (1 << (byte) 4);
-        BTE.mConnections |= (byte) (1 << GT_Utility.getOppositeSide(4));
+        BTE.mConnections |= (byte) (1 << (ForgeDirection.getOrientation(4).getOpposite().ordinal()));
         BaseMetaTileEntity BPE = (BaseMetaTileEntity) worldObj.getTileEntity(x, y, z - 1);
         if (BPE != null) {
             BTE.mConnections |= (byte) (1 << (byte) 2);
@@ -310,11 +311,18 @@ public abstract class MapGenRuins extends WorldGenerator {
                                             z + dz,
                                             meta,
                                             owner,
-                                            tier > 0 ? (byte) 4 : (byte) 2);
+                                            tier > 0 ? ForgeDirection.WEST : ForgeDirection.UP);
                                 } else if (dx == 3 && dz == 4) {
                                     if (tier > 0) {
                                         short meta = GT_WorldgenUtil.getBuffer(secureRandom, tier);
-                                        this.setGTMachine(worldObj, x + dx, y + dy, z + dz, meta, owner, (byte) 4);
+                                        this.setGTMachine(
+                                                worldObj,
+                                                x + dx,
+                                                y + dy,
+                                                z + dz,
+                                                meta,
+                                                owner,
+                                                ForgeDirection.WEST);
                                     } else {
                                         this.setGTCablekWChance(worldObj, x + dx, y + dy, z + dz, rand, 33, cablemeta);
                                     }
@@ -323,7 +331,14 @@ public abstract class MapGenRuins extends WorldGenerator {
                                 } else if (dx < 3 && dx > -5 && dz == 3 && set < toSet) {
                                     if (!lastset || treeinaRow > 2) {
                                         short meta = GT_WorldgenUtil.getMachine(secureRandom, tier);
-                                        this.setGTMachine(worldObj, x + dx, y + dy, z + dz, meta, owner, (byte) 2);
+                                        this.setGTMachine(
+                                                worldObj,
+                                                x + dx,
+                                                y + dy,
+                                                z + dz,
+                                                meta,
+                                                owner,
+                                                ForgeDirection.UP);
 
                                         set++;
                                         treeinaRow = 0;
@@ -422,7 +437,7 @@ public abstract class MapGenRuins extends WorldGenerator {
                     if (set < toSet) {
                         if (!lastset || treeinaRow > 2 && worldObj.getTileEntity(x + dx, y + dy, z + dz) == null) {
                             short meta = GT_WorldgenUtil.getMachine(secureRandom, tier);
-                            this.setGTMachine(worldObj, x + dx, y + dy, z + dz, meta, owner, (byte) 2);
+                            this.setGTMachine(worldObj, x + dx, y + dy, z + dz, meta, owner, ForgeDirection.UP);
 
                             set++;
                             treeinaRow = 0;

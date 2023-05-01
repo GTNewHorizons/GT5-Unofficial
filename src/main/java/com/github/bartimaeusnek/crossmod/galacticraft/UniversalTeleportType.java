@@ -17,16 +17,16 @@ import static gregtech.api.enums.Mods.GalacticraftMars;
 
 import java.util.Random;
 
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
+
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.ITeleportType;
 import micdoodle8.mods.galacticraft.core.entities.EntityLander;
 import micdoodle8.mods.galacticraft.core.entities.EntityLanderBase;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
-
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
 
 public class UniversalTeleportType implements ITeleportType {
 

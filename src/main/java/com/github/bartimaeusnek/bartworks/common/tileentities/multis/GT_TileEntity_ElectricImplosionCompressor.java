@@ -33,6 +33,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -496,9 +497,10 @@ public class GT_TileEntity_ElectricImplosionCompressor
         return new GT_TileEntity_ElectricImplosionCompressor(this.mName);
     }
 
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-            boolean aActive, boolean aRedstone) {
-        if (aSide == aFacing) {
+    @Override
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
+            int aColorIndex, boolean aActive, boolean aRedstone) {
+        if (side == facing) {
             if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX),
                     TextureFactory.builder().addIcon(OVERLAY_FRONT_IMPLOSION_COMPRESSOR_ACTIVE).extFacing().build(),
                     TextureFactory.builder().addIcon(OVERLAY_FRONT_IMPLOSION_COMPRESSOR_ACTIVE_GLOW).extFacing().glow()
@@ -522,9 +524,8 @@ public class GT_TileEntity_ElectricImplosionCompressor
         return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 6, 0, elementBudget, env, false, true);
     }
 
-    @Override
-    public boolean onWireCutterRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY,
-            float aZ) {
+    public boolean onWireCutterRightClick(ForgeDirection side, byte aWrenchingSide, EntityPlayer aPlayer, float aX,
+            float aY, float aZ) {
         if (aPlayer.isSneaking()) {
             batchMode = !batchMode;
             if (batchMode) {

@@ -22,6 +22,7 @@ import java.util.Arrays;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 
@@ -182,12 +183,12 @@ public class GT_TileEntity_DEHP extends GT_MetaTileEntity_DrillerBase {
     }
 
     @Override
-    public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (this.getBaseMetaTileEntity().getWorld().isRemote) return;
         ++this.mMode;
         if (this.mMode >= 4) this.mMode = 0;
         GT_Utility.sendChatToPlayer(aPlayer, "Mode: " + this.mMode);
-        super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
+        super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ);
     }
 
     protected boolean workingDownward(ItemStack aStack, int xDrill, int yDrill, int zDrill, int xPipe, int zPipe,

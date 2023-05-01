@@ -31,14 +31,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkProviderServer;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
-
-import bloodasp.galacticgreg.GT_Worldgen_GT_Ore_Layer_Space;
-import bloodasp.galacticgreg.GT_Worldgen_GT_Ore_SmallPieces_Space;
-import bloodasp.galacticgreg.GalacticGreg;
-import bloodasp.galacticgreg.api.ModDimensionDef;
-import bloodasp.galacticgreg.bartworks.BW_Worldgen_Ore_Layer_Space;
-import bloodasp.galacticgreg.bartworks.BW_Worldgen_Ore_SmallOre_Space;
 
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
 import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
@@ -47,6 +41,12 @@ import com.github.bartimaeusnek.bartworks.system.oregen.BW_OreLayer;
 import com.github.bartimaeusnek.bartworks.util.Pair;
 import com.google.common.collect.ArrayListMultimap;
 
+import bloodasp.galacticgreg.GT_Worldgen_GT_Ore_Layer_Space;
+import bloodasp.galacticgreg.GT_Worldgen_GT_Ore_SmallPieces_Space;
+import bloodasp.galacticgreg.GalacticGreg;
+import bloodasp.galacticgreg.api.ModDimensionDef;
+import bloodasp.galacticgreg.bartworks.BW_Worldgen_Ore_Layer_Space;
+import bloodasp.galacticgreg.bartworks.BW_Worldgen_Ore_SmallOre_Space;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
@@ -569,7 +569,7 @@ public abstract class GT_TileEntity_VoidMiner_Base extends GT_MetaTileEntity_Dri
     }
 
     @Override
-    public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         mBlacklist = !mBlacklist;
         GT_Utility.sendChatToPlayer(aPlayer, "Mode: " + (mBlacklist ? "Blacklist" : "Whitelist"));
     }

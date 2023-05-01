@@ -5,6 +5,7 @@ import static gregtech.api.enums.Mods.NotEnoughItems;
 import net.minecraft.nbt.NBTTagCompound;
 
 import com.github.bartimaeusnek.bartworks.MainMod;
+
 import cpw.mods.fml.common.event.FMLInterModComms;
 
 public class IMCForNEI {

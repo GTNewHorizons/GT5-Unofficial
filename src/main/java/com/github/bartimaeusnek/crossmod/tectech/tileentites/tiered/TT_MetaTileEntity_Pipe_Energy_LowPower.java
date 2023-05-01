@@ -31,7 +31,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Cable;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GT_CoverBehavior;
-import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Client;
 import ic2.core.Ic2Items;
 
@@ -66,13 +65,12 @@ public class TT_MetaTileEntity_Pipe_Energy_LowPower extends GT_MetaPipeEntity_Ca
         }
     }
 
-    @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aConnections,
-            byte aColorIndex, boolean aConnected, boolean aRedstone) {
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection siide, byte aConnections,
+            int aColorIndex, boolean aConnected, boolean aRedstone) {
         return new ITexture[] { TextureFactory.of(
                 Block.getBlockFromItem(Ic2Items.glassFiberCableBlock.getItem()),
                 Ic2Items.glassFiberCableBlock.getItemDamage(),
-                ForgeDirection.getOrientation(aSide)) };
+                siide) };
     }
 
     @Override
@@ -114,8 +112,7 @@ public class TT_MetaTileEntity_Pipe_Energy_LowPower extends GT_MetaPipeEntity_Ca
         return true;
     }
 
-    @Override
-    public boolean canConnect(byte b) {
+    public boolean canConnect(ForgeDirection side) {
         return true;
     }
 
@@ -125,8 +122,8 @@ public class TT_MetaTileEntity_Pipe_Energy_LowPower extends GT_MetaPipeEntity_Ca
     }
 
     @Override
-    public boolean isConnectedCorrectly(byte aSide) {
-        return this.isConnectedAtSide(aSide) && this.isConnectedAtSide(GT_Utility.getOppositeSide(aSide));
+    public boolean isConnectedCorrectly(ForgeDirection side) {
+        return this.isConnectedAtSide(side) && this.isConnectedAtSide(side.getOpposite());
     }
 
     @Override
@@ -135,31 +132,32 @@ public class TT_MetaTileEntity_Pipe_Energy_LowPower extends GT_MetaPipeEntity_Ca
     }
 
     @Override
-    public long injectEnergyUnits(byte aSide, long aVoltage, long aAmperage) {
+    public long injectEnergyUnits(ForgeDirection side, long aVoltage, long aAmperage) {
         return 0L;
     }
 
     @Override
     @Deprecated
     @SuppressWarnings("deprecation")
-    public long transferElectricity(byte aSide, long aVoltage, long aAmperage,
+    public long transferElectricity(ForgeDirection side, long aVoltage, long aAmperage,
             ArrayList<TileEntity> aAlreadyPassedTileEntityList) {
         return 0L;
     }
 
     @Override
-    public long transferElectricity(byte aSide, long aVoltage, long aAmperage, HashSet<TileEntity> aAlreadyPassedSet) {
+    public long transferElectricity(ForgeDirection side, long aVoltage, long aAmperage,
+            HashSet<TileEntity> aAlreadyPassedSet) {
         return 0L;
     }
 
     @Override
-    public boolean letsIn(GT_CoverBehavior coverBehavior, byte aSide, int aCoverID, int aCoverVariable,
+    public boolean letsIn(GT_CoverBehavior coverBehavior, ForgeDirection side, int aCoverID, int aCoverVariable,
             ICoverable aTileEntity) {
         return true;
     }
 
     @Override
-    public boolean letsOut(GT_CoverBehavior coverBehavior, byte aSide, int aCoverID, int aCoverVariable,
+    public boolean letsOut(GT_CoverBehavior coverBehavior, ForgeDirection side, int aCoverID, int aCoverVariable,
             ICoverable aTileEntity) {
         return true;
     }

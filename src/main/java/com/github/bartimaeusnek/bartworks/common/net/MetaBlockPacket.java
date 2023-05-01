@@ -23,6 +23,7 @@ import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.system.material.BW_MetaGenerated_Block_TE;
 import com.github.bartimaeusnek.bartworks.util.MurmurHash3;
 import com.google.common.io.ByteArrayDataInput;
+
 import gregtech.api.net.GT_Packet;
 
 public class MetaBlockPacket extends GT_Packet {

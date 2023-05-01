@@ -17,11 +17,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import li.cil.oc.api.machine.Arguments;
-import li.cil.oc.api.machine.Callback;
-import li.cil.oc.api.machine.Context;
-import li.cil.oc.api.network.SimpleComponent;
-
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
@@ -39,6 +34,10 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Mods;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.items.behaviors.Behaviour_DataOrb;
+import li.cil.oc.api.machine.Arguments;
+import li.cil.oc.api.machine.Callback;
+import li.cil.oc.api.machine.Context;
+import li.cil.oc.api.network.SimpleComponent;
 
 @Optional.Interface(iface = "li.cil.oc.api.network.SimpleComponent", modid = Mods.Names.OPEN_COMPUTERS)
 public class TileEntity_GTDataServer extends TileEntity

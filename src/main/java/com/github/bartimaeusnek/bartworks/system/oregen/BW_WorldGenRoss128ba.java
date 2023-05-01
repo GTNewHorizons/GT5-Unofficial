@@ -49,6 +49,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
+
 import gregtech.api.interfaces.ISubTagContainer;
 
 public class BW_WorldGenRoss128ba extends BW_OreLayer {

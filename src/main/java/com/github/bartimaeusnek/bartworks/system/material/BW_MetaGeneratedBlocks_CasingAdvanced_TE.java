@@ -15,6 +15,7 @@ package com.github.bartimaeusnek.bartworks.system.material;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import com.github.bartimaeusnek.bartworks.API.SideReference;
 import com.github.bartimaeusnek.bartworks.client.textures.PrefixTextureLinker;
@@ -32,7 +33,7 @@ public class BW_MetaGeneratedBlocks_CasingAdvanced_TE extends BW_MetaGenerated_B
     }
 
     @Override
-    public ITexture[] getTexture(Block aBlock, byte aSide) {
+    public ITexture[] getTexture(Block aBlock, ForgeDirection side) {
         if (SideReference.Side.Client) {
             Werkstoff aMaterial = Werkstoff.werkstoffHashMap.get(this.mMetaData);
             if ((aMaterial != null)) {

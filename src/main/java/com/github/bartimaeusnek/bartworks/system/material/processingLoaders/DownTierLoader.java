@@ -19,6 +19,7 @@ import java.util.Set;
 
 import com.github.bartimaeusnek.bartworks.util.BW_Util;
 import com.github.bartimaeusnek.bartworks.util.StreamUtils;
+
 import gregtech.api.util.GT_Recipe;
 
 public class DownTierLoader {

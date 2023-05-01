@@ -40,6 +40,7 @@ import com.github.bartimaeusnek.bartworks.common.configs.ConfigHandler;
 import com.github.bartimaeusnek.bartworks.system.oregen.BW_WordGenerator;
 import com.github.bartimaeusnek.bartworks.system.worldgen.MapGenRuins;
 import com.github.bartimaeusnek.crossmod.thaumcraft.util.ThaumcraftHandler;
+
 import gregtech.api.objects.XSTR;
 
 public class ChunkProviderRoss128b extends ChunkProviderGenerate {

@@ -17,6 +17,7 @@ import static gregtech.api.enums.GT_Values.RA;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.ItemList;
@@ -66,9 +67,8 @@ public class BW_MetaGeneratedFrames extends MetaPipeEntity {
         return new BW_MetaGeneratedFrames(this.mName, this.mMaterial);
     }
 
-    @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aConnections,
-            byte aColorIndex, boolean aConnected, boolean aRedstone) {
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, byte aConnections,
+            int aColorIndex, boolean aConnected, boolean aRedstone) {
         return new ITexture[] { TextureFactory.of(
                 this.mMaterial.getTexSet().mTextures[OrePrefixes.frameGt.mTextureIndex],
                 Dyes.getModulation(aColorIndex, this.mMaterial.getRGBA())) };
@@ -85,7 +85,7 @@ public class BW_MetaGeneratedFrames extends MetaPipeEntity {
     }
 
     @Override
-    public final boolean isFacingValid(byte aFacing) {
+    public final boolean isFacingValid(ForgeDirection facing) {
         return false;
     }
 
@@ -95,7 +95,7 @@ public class BW_MetaGeneratedFrames extends MetaPipeEntity {
     }
 
     @Override
-    public final boolean renderInside(byte aSide) {
+    public final boolean renderInside(ForgeDirection side) {
         return true;
     }
 
@@ -115,22 +115,22 @@ public class BW_MetaGeneratedFrames extends MetaPipeEntity {
     }
 
     @Override
-    public final boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide,
+    public final boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
             ItemStack aStack) {
         return false;
     }
 
     @Override
-    public final boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide,
+    public final boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
             ItemStack aStack) {
         return false;
     }
 
-    public int connect(byte aSide) {
+    public int connect(ForgeDirection side) {
         return 0;
     }
 
-    public void disconnect(byte aSide) {
+    public void disconnect(ForgeDirection side) {
         /* Do nothing */
     }
 }

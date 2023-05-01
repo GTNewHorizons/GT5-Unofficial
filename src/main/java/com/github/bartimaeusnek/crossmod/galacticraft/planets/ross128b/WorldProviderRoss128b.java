@@ -13,9 +13,6 @@
 
 package com.github.bartimaeusnek.crossmod.galacticraft.planets.ross128b;
 
-import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
-import micdoodle8.mods.galacticraft.api.vector.Vector3;
-
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.biome.WorldChunkManager;
@@ -26,6 +23,8 @@ import com.github.bartimaeusnek.crossmod.galacticraft.solarsystems.Ross128SolarS
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
+import micdoodle8.mods.galacticraft.api.vector.Vector3;
 
 public class WorldProviderRoss128b extends AbstractWorldProviderSpace {
 

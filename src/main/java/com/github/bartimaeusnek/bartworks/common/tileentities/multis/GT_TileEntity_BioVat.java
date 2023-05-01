@@ -640,11 +640,11 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_EnhancedMultiBlockBa
     }
 
     private int getXDir() {
-        return ForgeDirection.getOrientation(this.getBaseMetaTileEntity().getBackFacing()).offsetX * 2;
+        return this.getBaseMetaTileEntity().getBackFacing().offsetX * 2;
     }
 
     private int getZDir() {
-        return ForgeDirection.getOrientation(this.getBaseMetaTileEntity().getBackFacing()).offsetZ * 2;
+        return this.getBaseMetaTileEntity().getBackFacing().offsetZ * 2;
     }
 
     private void sendRenderPackets() {
@@ -699,9 +699,9 @@ public class GT_TileEntity_BioVat extends GT_MetaTileEntity_EnhancedMultiBlockBa
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-            boolean aActive, boolean aRedstone) {
-        if (aSide == aFacing) {
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
+            int aColorIndex, boolean aActive, boolean aRedstone) {
+        if (side == facing) {
             if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX),
                     TextureFactory.builder().addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE).extFacing().build(),
                     TextureFactory.builder().addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW).extFacing().glow()

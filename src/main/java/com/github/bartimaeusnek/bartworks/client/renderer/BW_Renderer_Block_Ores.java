@@ -24,6 +24,7 @@ import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
 
@@ -51,12 +52,60 @@ public class BW_Renderer_Block_Ores implements ISimpleBlockRenderingHandler {
         aRenderer.setRenderBoundsFromBlock(aBlock);
         GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
         GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
-        renderNegativeYFacing(null, aRenderer, aBlock, 0, 0, 0, tTileEntity.getTexture(aBlock, (byte) 0), true);
-        renderPositiveYFacing(null, aRenderer, aBlock, 0, 0, 0, tTileEntity.getTexture(aBlock, (byte) 1), true);
-        renderNegativeZFacing(null, aRenderer, aBlock, 0, 0, 0, tTileEntity.getTexture(aBlock, (byte) 2), true);
-        renderPositiveZFacing(null, aRenderer, aBlock, 0, 0, 0, tTileEntity.getTexture(aBlock, (byte) 3), true);
-        renderNegativeXFacing(null, aRenderer, aBlock, 0, 0, 0, tTileEntity.getTexture(aBlock, (byte) 4), true);
-        renderPositiveXFacing(null, aRenderer, aBlock, 0, 0, 0, tTileEntity.getTexture(aBlock, (byte) 5), true);
+        renderNegativeYFacing(
+                null,
+                aRenderer,
+                aBlock,
+                0,
+                0,
+                0,
+                tTileEntity.getTexture(aBlock, ForgeDirection.DOWN),
+                true);
+        renderPositiveYFacing(
+                null,
+                aRenderer,
+                aBlock,
+                0,
+                0,
+                0,
+                tTileEntity.getTexture(aBlock, ForgeDirection.UP),
+                true);
+        renderNegativeZFacing(
+                null,
+                aRenderer,
+                aBlock,
+                0,
+                0,
+                0,
+                tTileEntity.getTexture(aBlock, ForgeDirection.NORTH),
+                true);
+        renderPositiveZFacing(
+                null,
+                aRenderer,
+                aBlock,
+                0,
+                0,
+                0,
+                tTileEntity.getTexture(aBlock, ForgeDirection.SOUTH),
+                true);
+        renderNegativeXFacing(
+                null,
+                aRenderer,
+                aBlock,
+                0,
+                0,
+                0,
+                tTileEntity.getTexture(aBlock, ForgeDirection.WEST),
+                true);
+        renderPositiveXFacing(
+                null,
+                aRenderer,
+                aBlock,
+                0,
+                0,
+                0,
+                tTileEntity.getTexture(aBlock, ForgeDirection.EAST),
+                true);
         aRenderer.setRenderBoundsFromBlock(aBlock);
         aBlock.setBlockBounds(blockMin, blockMin, blockMin, blockMax, blockMax, blockMax);
         GL11.glTranslatef(0.5F, 0.5F, 0.5F);
@@ -72,12 +121,60 @@ public class BW_Renderer_Block_Ores implements ISimpleBlockRenderingHandler {
         aBlock.setBlockBounds(blockMin, blockMin, blockMin, blockMax, blockMax, blockMax);
         aRenderer.enableAO = Minecraft.isAmbientOcclusionEnabled() && GT_Mod.gregtechproxy.mRenderTileAmbientOcclusion;
         aRenderer.setRenderBoundsFromBlock(aBlock);
-        renderNegativeYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tTileEntity.getTexture(aBlock, (byte) 0), true);
-        renderPositiveYFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tTileEntity.getTexture(aBlock, (byte) 1), true);
-        renderNegativeZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tTileEntity.getTexture(aBlock, (byte) 2), true);
-        renderPositiveZFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tTileEntity.getTexture(aBlock, (byte) 3), true);
-        renderNegativeXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tTileEntity.getTexture(aBlock, (byte) 4), true);
-        renderPositiveXFacing(aWorld, aRenderer, aBlock, aX, aY, aZ, tTileEntity.getTexture(aBlock, (byte) 5), true);
+        renderNegativeYFacing(
+                aWorld,
+                aRenderer,
+                aBlock,
+                aX,
+                aY,
+                aZ,
+                tTileEntity.getTexture(aBlock, ForgeDirection.DOWN),
+                true);
+        renderPositiveYFacing(
+                aWorld,
+                aRenderer,
+                aBlock,
+                aX,
+                aY,
+                aZ,
+                tTileEntity.getTexture(aBlock, ForgeDirection.UP),
+                true);
+        renderNegativeZFacing(
+                aWorld,
+                aRenderer,
+                aBlock,
+                aX,
+                aY,
+                aZ,
+                tTileEntity.getTexture(aBlock, ForgeDirection.NORTH),
+                true);
+        renderPositiveZFacing(
+                aWorld,
+                aRenderer,
+                aBlock,
+                aX,
+                aY,
+                aZ,
+                tTileEntity.getTexture(aBlock, ForgeDirection.SOUTH),
+                true);
+        renderNegativeXFacing(
+                aWorld,
+                aRenderer,
+                aBlock,
+                aX,
+                aY,
+                aZ,
+                tTileEntity.getTexture(aBlock, ForgeDirection.WEST),
+                true);
+        renderPositiveXFacing(
+                aWorld,
+                aRenderer,
+                aBlock,
+                aX,
+                aY,
+                aZ,
+                tTileEntity.getTexture(aBlock, ForgeDirection.EAST),
+                true);
         return true;
     }
 

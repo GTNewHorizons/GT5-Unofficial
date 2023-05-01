@@ -25,6 +25,7 @@ import net.minecraft.network.Packet;
 import net.minecraft.tileentity.TileEntity;
 
 import com.github.bartimaeusnek.bartworks.common.net.MetaBlockPacket;
+
 import gregtech.api.interfaces.tileentity.ITexturedTileEntity;
 
 public abstract class BW_MetaGenerated_Block_TE extends TileEntity implements ITexturedTileEntity {

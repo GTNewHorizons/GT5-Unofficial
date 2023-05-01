@@ -22,11 +22,6 @@ import java.util.Objects;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 
-import codechicken.lib.gui.GuiDraw;
-import codechicken.nei.PositionedStack;
-import codechicken.nei.recipe.GuiCraftingRecipe;
-import codechicken.nei.recipe.TemplateRecipeHandler;
-
 import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.system.material.BW_MetaGenerated_Ores;
 import com.github.bartimaeusnek.bartworks.system.material.BW_MetaGenerated_SmallOres;
@@ -36,6 +31,10 @@ import com.github.bartimaeusnek.bartworks.system.oregen.BW_WorldGenRoss128b;
 import com.github.bartimaeusnek.bartworks.system.oregen.BW_WorldGenRoss128ba;
 import com.github.bartimaeusnek.bartworks.util.ChatColorHelper;
 
+import codechicken.lib.gui.GuiDraw;
+import codechicken.nei.PositionedStack;
+import codechicken.nei.recipe.GuiCraftingRecipe;
+import codechicken.nei.recipe.TemplateRecipeHandler;
 import cpw.mods.fml.common.event.FMLInterModComms;
 import gregtech.api.enums.OrePrefixes;
 

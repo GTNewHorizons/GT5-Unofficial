@@ -15,15 +15,15 @@ package com.github.bartimaeusnek.bartworks.neiHandler;
 
 import net.minecraft.item.ItemStack;
 
-import codechicken.nei.PositionedStack;
-import codechicken.nei.api.API;
-import codechicken.nei.api.IConfigureNEI;
-
 import com.github.bartimaeusnek.bartworks.MainMod;
 import com.github.bartimaeusnek.bartworks.common.loaders.FluidLoader;
 import com.github.bartimaeusnek.bartworks.common.loaders.ItemRegistry;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import com.github.bartimaeusnek.bartworks.util.BWRecipes;
+
+import codechicken.nei.PositionedStack;
+import codechicken.nei.api.API;
+import codechicken.nei.api.IConfigureNEI;
 import gregtech.api.enums.OrePrefixes;
 
 public class NEI_BW_Config implements IConfigureNEI {

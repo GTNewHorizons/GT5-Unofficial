@@ -19,6 +19,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import net.minecraft.item.ItemStack;
 
 import com.github.bartimaeusnek.bartworks.util.Pair;
+
 import gregtech.api.util.GT_OreDictUnificator;
 
 public class OreDictAdder {

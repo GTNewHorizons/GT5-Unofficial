@@ -19,6 +19,7 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -115,7 +116,7 @@ public class BW_MetaGeneratedSmallOreTE extends BW_MetaGeneratedOreTE {
     }
 
     @Override
-    public ITexture[] getTexture(Block aBlock, byte aSide) {
+    public ITexture[] getTexture(Block aBlock, ForgeDirection side) {
         Werkstoff aMaterial = Werkstoff.werkstoffHashMap.get(this.mMetaData);
         if ((aMaterial != null)) {
             ITexture aIconSet = TextureFactory

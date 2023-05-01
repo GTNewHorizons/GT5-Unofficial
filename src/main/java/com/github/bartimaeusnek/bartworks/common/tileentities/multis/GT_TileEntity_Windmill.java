@@ -38,6 +38,7 @@ import net.minecraft.tileentity.TileEntityDispenser;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import com.github.bartimaeusnek.bartworks.API.modularUI.BW_UITextures;
 import com.github.bartimaeusnek.bartworks.MainMod;
@@ -215,7 +216,8 @@ public class GT_TileEntity_Windmill extends GT_MetaTileEntity_EnhancedMultiBlock
     }
 
     @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
+            ItemStack aStack) {
         return true;
     }
 
@@ -480,17 +482,17 @@ public class GT_TileEntity_Windmill extends GT_MetaTileEntity_EnhancedMultiBlock
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex,
-            boolean aActive, boolean aRedstone) {
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
+            int aColorIndex, boolean aActive, boolean aRedstone) {
 
         ITexture[] ret = new ITexture[6];
 
         if (this.isClientSide()) {
 
-            if (aFacing == aSide || aSide == 0) {
+            if (facing == side || side == ForgeDirection.DOWN) {
                 GT_TileEntity_Windmill.iTextures[0] = TextureFactory.of(GT_TileEntity_Windmill.iIconContainers[0]);
                 Arrays.fill(ret, GT_TileEntity_Windmill.iTextures[0]);
-            } else if (aSide == 1) {
+            } else if (side == ForgeDirection.UP) {
                 GT_TileEntity_Windmill.iTextures[1] = TextureFactory.of(GT_TileEntity_Windmill.iIconContainers[1]);
                 Arrays.fill(ret, GT_TileEntity_Windmill.iTextures[1]);
             } else {

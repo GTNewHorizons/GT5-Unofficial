@@ -19,10 +19,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
-import micdoodle8.mods.galacticraft.api.galaxies.GalaxyRegistry;
-import micdoodle8.mods.galacticraft.api.world.IAtmosphericGas;
-
 import com.github.bartimaeusnek.bartworks.system.material.Werkstoff;
 import com.github.bartimaeusnek.bartworks.system.material.WerkstoffLoader;
 import com.github.bartimaeusnek.bartworks.util.Pair;
@@ -32,6 +28,9 @@ import com.google.common.collect.ArrayListMultimap;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ISubTagContainer;
+import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
+import micdoodle8.mods.galacticraft.api.galaxies.GalaxyRegistry;
+import micdoodle8.mods.galacticraft.api.world.IAtmosphericGas;
 
 @SuppressWarnings({ "unused", "RedundantSuppression" })
 public final class BWAtmosphereManager {

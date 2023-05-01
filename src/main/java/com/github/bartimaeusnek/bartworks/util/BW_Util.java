@@ -47,7 +47,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
@@ -294,8 +293,8 @@ public class BW_Util {
 
     public static boolean addBlockToMachine(int x, int y, int z, int offsetsize,
             IGregTechTileEntity aBaseMetaTileEntity, Block block) {
-        int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX * offsetsize;
-        int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ * offsetsize;
+        int xDir = aBaseMetaTileEntity.getBackFacing().offsetX * offsetsize;
+        int zDir = aBaseMetaTileEntity.getBackFacing().offsetZ * offsetsize;
 
         return block == Blocks.air ? aBaseMetaTileEntity.getAirOffset(xDir + x, y, zDir + z)
                 : aBaseMetaTileEntity.getBlockOffset(xDir + x, y, zDir + z).equals(block);
@@ -304,8 +303,8 @@ public class BW_Util {
     public static boolean addBlockToMachine(int x, int y, int z, int offsetsize,
             IGregTechTileEntity aBaseMetaTileEntity, Block block, int damage) {
         byte dmg = (byte) damage;
-        int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX * offsetsize;
-        int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ * offsetsize;
+        int xDir = aBaseMetaTileEntity.getBackFacing().offsetX * offsetsize;
+        int zDir = aBaseMetaTileEntity.getBackFacing().offsetZ * offsetsize;
 
         return block == Blocks.air ? aBaseMetaTileEntity.getAirOffset(xDir + x, y, zDir + z)
                 : aBaseMetaTileEntity.getBlockOffset(xDir + x, y, zDir + z).equals(block)
@@ -687,8 +686,8 @@ public class BW_Util {
     public static boolean check_layer(IGregTechTileEntity aBaseMetaTileEntity, int radius, int yLevel, int height,
             Block block, int dmg, int offset, boolean controllerLayer, boolean freeCorners, boolean insideCheck,
             Block inside, int dmginside, boolean allowHatches, int aBaseCasingIndex) {
-        int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX * offset;
-        int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ * offset;
+        int xDir = aBaseMetaTileEntity.getBackFacing().offsetX * offset;
+        int zDir = aBaseMetaTileEntity.getBackFacing().offsetZ * offset;
         for (int x = -radius; x <= radius; x++) {
             for (int y = yLevel; y < height; y++) {
                 for (int z = -radius; z <= radius; z++) {
@@ -794,8 +793,8 @@ public class BW_Util {
     public static List<Byte> getMetasFromLayer(IGregTechTileEntity aBaseMetaTileEntity, int radius, int yLevel,
             int height, int offset, boolean controllerLayer, boolean freeCorners, boolean insideCheck) {
         ArrayList<Byte> ret = new ArrayList<>();
-        int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX * offset;
-        int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ * offset;
+        int xDir = aBaseMetaTileEntity.getBackFacing().offsetX * offset;
+        int zDir = aBaseMetaTileEntity.getBackFacing().offsetZ * offset;
         for (int x = -radius; x <= radius; x++) {
             for (int y = yLevel; y < height; y++) {
                 for (int z = -radius; z <= radius; z++) {
