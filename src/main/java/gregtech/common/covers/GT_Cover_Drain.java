@@ -79,8 +79,9 @@ public class GT_Cover_Drain extends GT_CoverBehavior {
                                 false);
                         }
                     if ((tLiquid != null) && (tLiquid.getFluid() != null)
-                        && ((side.ordinal() > 1) || ((side == ForgeDirection.DOWN) && (tLiquid.getFluid()
-                            .getDensity() <= 0))
+                        && (((side.offsetX != 0 || side.offsetZ != 0))
+                            || ((side == ForgeDirection.DOWN) && (tLiquid.getFluid()
+                                .getDensity() <= 0))
                             || ((side == ForgeDirection.UP) && (tLiquid.getFluid()
                                 .getDensity() >= 0)))
                         && (((IFluidHandler) aTileEntity).fill(side, tLiquid, false) == tLiquid.amount)) {

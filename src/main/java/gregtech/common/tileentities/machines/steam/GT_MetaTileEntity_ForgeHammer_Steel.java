@@ -142,7 +142,8 @@ public class GT_MetaTileEntity_ForgeHammer_Steel extends GT_MetaTileEntity_Basic
 
             final ForgeDirection mainFacing = this.mMainFacing;
 
-            if (mainFacing.ordinal() > 1 && aBaseMetaTileEntity.getCoverIDAtSide(mainFacing) == 0
+            if ((mainFacing.offsetX != 0 || mainFacing.offsetZ != 0)
+                && aBaseMetaTileEntity.getCoverIDAtSide(mainFacing) == 0
                 && !aBaseMetaTileEntity.getOpacityAtSide(mainFacing)) {
 
                 final double oX = aBaseMetaTileEntity.getXCoord();

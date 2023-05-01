@@ -190,7 +190,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
     }
 
     protected boolean isValidMainFacing(ForgeDirection side) {
-        return side.ordinal() > 1; // Neither DOWN nor UP
+        return (side.offsetX != 0 || side.offsetZ != 0); // Neither DOWN nor UP
     }
 
     public boolean setMainFacing(ForgeDirection side) {
@@ -298,7 +298,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
 
     @Override
     public boolean isFacingValid(ForgeDirection facing) {
-        return mMainFacing.ordinal() > 1 || facing.ordinal() > 1;
+        return (mMainFacing.offsetX != 0 || mMainFacing.offsetZ != 0) || (facing.offsetX != 0 || facing.offsetZ != 0);
     }
 
     @Override
@@ -725,7 +725,7 @@ public abstract class GT_MetaTileEntity_BasicMachine extends GT_MetaTileEntity_B
         if (mMainFacing.offsetY != 0 && getBaseMetaTileEntity().getFrontFacing().offsetY == 0) {
             mMainFacing = getBaseMetaTileEntity().getFrontFacing();
         }
-        if (mMainFacing.ordinal() > 1 && !mHasBeenUpdated) {
+        if ((mMainFacing.offsetX != 0 || mMainFacing.offsetZ != 0) && !mHasBeenUpdated) {
             mHasBeenUpdated = true;
             getBaseMetaTileEntity().setFrontFacing(getBaseMetaTileEntity().getBackFacing());
         }

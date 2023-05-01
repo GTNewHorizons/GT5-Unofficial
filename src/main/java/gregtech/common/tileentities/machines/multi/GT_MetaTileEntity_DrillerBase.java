@@ -424,7 +424,7 @@ public abstract class GT_MetaTileEntity_DrillerBase
 
     @Override
     protected IAlignmentLimits getInitialAlignmentLimits() {
-        return (d, r, f) -> d.ordinal() > 1 && r.isNotRotated() && !f.isVerticallyFliped();
+        return (d, r, f) -> (d.offsetX != 0 || d.offsetZ != 0) && r.isNotRotated() && !f.isVerticallyFliped();
     }
 
     @Override

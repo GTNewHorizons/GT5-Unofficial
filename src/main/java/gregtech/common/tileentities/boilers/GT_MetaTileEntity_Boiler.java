@@ -73,7 +73,7 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
         ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
         ITexture[] tmp;
-        if (sideDirection.ordinal() > 1) { // Neither UP nor DOWN
+        if ((sideDirection.offsetX != 0 || sideDirection.offsetZ != 0)) { // Neither UP nor DOWN
             if (sideDirection != facingDirection) tmp = mTextures[2][colorIndex + 1];
             else tmp = mTextures[(byte) (active ? 4 : 3)][colorIndex + 1];
         } else {
@@ -92,7 +92,7 @@ public abstract class GT_MetaTileEntity_Boiler extends GT_MetaTileEntity_BasicTa
 
     @Override
     public boolean isFacingValid(ForgeDirection facingDirection) {
-        return facingDirection.ordinal() > 1;
+        return (facingDirection.offsetX != 0 || facingDirection.offsetZ != 0);
     }
 
     @Override

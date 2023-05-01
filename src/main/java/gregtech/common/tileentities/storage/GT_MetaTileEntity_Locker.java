@@ -89,7 +89,7 @@ public class GT_MetaTileEntity_Locker extends GT_MetaTileEntity_TieredMachineBlo
 
     @Override
     public boolean isFacingValid(ForgeDirection facing) {
-        return facing.ordinal() > 1;
+        return (facing.offsetX != 0 || facing.offsetZ != 0);
     }
 
     @Override
